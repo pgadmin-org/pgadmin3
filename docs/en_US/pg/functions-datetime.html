@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
 <link rel="next" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">
@@ -142,7 +142,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id2590002"></a><a name="id2590007"></a><a name="id2590013"></a><a name="id2590019"></a><a name="id2590025"></a><a name="id2590030"></a><a name="id2590036"></a><a name="id2590042"></a><a name="id2590048"></a><a name="id2590053"></a><a name="id2590059"></a><a name="id2590065"></a><a name="id2590071"></a><a name="id2590077"></a><a name="id2590083"></a><a name="id2590088"></a><a name="id2590094"></a><a name="id2590100"></a><div class="table">
+<br class="table-break"><a name="id2590006"></a><a name="id2590012"></a><a name="id2590018"></a><a name="id2590024"></a><a name="id2590030"></a><a name="id2590035"></a><a name="id2590041"></a><a name="id2590047"></a><a name="id2590053"></a><a name="id2590058"></a><a name="id2590064"></a><a name="id2590070"></a><a name="id2590076"></a><a name="id2590082"></a><a name="id2590088"></a><a name="id2590093"></a><a name="id2590099"></a><a name="id2590105"></a><div class="table">
 <a name="functions-datetime-table"></a><p class="title"><b>Table 9.26. Date/Time Functions</b></p>
 <div class="table-contents"><table summary="Date/Time Functions" border="1">
 <colgroup>
@@ -385,7 +385,7 @@ SELECT (DATE '2001-02-16', INTERVAL '100 days') OVERLAPS
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-extract"></a>9.9.1. <code class="function">EXTRACT</code>, <code class="function">date_part</code></h3></div></div></div>
-<a name="id2591059"></a><a name="id2591065"></a><pre class="synopsis">EXTRACT(<em class="replaceable"><code>field</code></em> FROM <em class="replaceable"><code>source</code></em>)</pre>
+<a name="id2591064"></a><a name="id2591070"></a><pre class="synopsis">EXTRACT(<em class="replaceable"><code>field</code></em> FROM <em class="replaceable"><code>source</code></em>)</pre>
 <p>    The <code class="function">extract</code> function retrieves subfields
     such as year or hour from date/time values.
     <em class="replaceable"><code>source</code></em> must be a value expression of
@@ -541,7 +541,7 @@ SELECT EXTRACT(MONTH FROM INTERVAL '2 years 13 months');
 <dt><span class="term"><code class="literal">second</code></span></dt>
 <dd>
 <p>        The seconds field, including fractional parts (0 -
-        59<sup>[<a name="id2591582" href="#ftn.id2591582">5</a>]</sup>)
+        59<sup>[<a name="id2591587" href="#ftn.id2591587">5</a>]</sup>)
        </p>
 <pre class="screen">SELECT EXTRACT(SECOND FROM TIMESTAMP '2001-02-16 20:38:40');
 <em class="lineannotation"><span class="lineannotation">Result: </span></em><code class="computeroutput">40</code>
@@ -611,7 +611,7 @@ SELECT date_part('hour', INTERVAL '4 hours 3 minutes');
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-trunc"></a>9.9.2. <code class="function">date_trunc</code></h3></div></div></div>
-<a name="id2591848"></a><p>    The function <code class="function">date_trunc</code> is conceptually
+<a name="id2591853"></a><p>    The function <code class="function">date_trunc</code> is conceptually
     similar to the <code class="function">trunc</code> function for numbers.
    </p>
 <pre class="synopsis">date_trunc('<em class="replaceable"><code>field</code></em>', <em class="replaceable"><code>source</code></em>)</pre>
@@ -659,7 +659,7 @@ SELECT date_trunc('year', TIMESTAMP '2001-02-16 20:38:40');
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-zoneconvert"></a>9.9.3. <code class="literal">AT TIME ZONE</code></h3></div></div></div>
-<a name="id2592048"></a><a name="id2592056"></a><p>    The <code class="literal">AT TIME ZONE</code> construct allows conversions
+<a name="id2592053"></a><a name="id2592061"></a><p>    The <code class="literal">AT TIME ZONE</code> construct allows conversions
     of time stamps to different time zones.  <a href="functions-datetime.html#functions-datetime-zoneconvert-table" title="Table 9.27. AT TIME ZONE Variants">Table 9.27, &#8220;<code class="literal">AT TIME ZONE</code> Variants&#8221;</a> shows its
     variants.
    </p>
@@ -725,7 +725,7 @@ SELECT TIMESTAMP WITH TIME ZONE '2001-02-16 20:38:40-05' AT TIME ZONE 'MST';
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-current"></a>9.9.4. Current Date/Time</h3></div></div></div>
-<a name="id2592285"></a><a name="id2592293"></a><p>    <span class="productname">PostgreSQL</span> provides a number of functions
+<a name="id2592290"></a><a name="id2592298"></a><p>    <span class="productname">PostgreSQL</span> provides a number of functions
     that return values related to the current date and time.  These
     SQL-standard functions all return values based on the start time of
     the current transaction:
@@ -844,7 +844,7 @@ SELECT TIMESTAMP 'now';  -- incorrect for use with DEFAULT</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="functions-datetime-delay"></a>9.9.5. Delaying Execution</h3></div></div></div>
-<a name="id2592626"></a><a name="id2592632"></a><a name="id2592638"></a><p>    The following function is available to delay execution of the server
+<a name="id2592631"></a><a name="id2592637"></a><a name="id2592643"></a><p>    The following function is available to delay execution of the server
     process:
 </p>
 <pre class="synopsis">pg_sleep(<em class="replaceable"><code>seconds</code></em>)</pre>
@@ -878,7 +878,7 @@ SELECT TIMESTAMP 'now';  -- incorrect for use with DEFAULT</pre>
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2591582" href="#id2591582">5</a>] </sup>60 if leap seconds are
+<div class="footnote"><p><sup>[<a name="ftn.id2591587" href="#id2591587">5</a>] </sup>60 if leap seconds are
         implemented by the operating system</p></div>
 </div>
 </div></body>

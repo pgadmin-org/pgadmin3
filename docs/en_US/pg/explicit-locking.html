@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
 <link rel="prev" href="transaction-iso.html" title="12.2. Transaction Isolation">
 <link rel="next" href="applevel-consistency.html" title="12.4. Data Consistency Checks at the Application Level">
@@ -14,26 +14,27 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="explicit-locking"></a>12.3. Explicit Locking</h2></div></div></div>
-<a name="id2610338"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
+<a name="id2610335"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
     to control concurrent access to data in tables.  These modes can
     be used for application-controlled locking in situations where
     <acronym class="acronym">MVCC</acronym> does not give the desired behavior.  Also,
     most <span class="productname">PostgreSQL</span> commands automatically
     acquire locks of appropriate modes to ensure that referenced
     tables are not dropped or modified in incompatible ways while the
-    command executes.  (For example, <code class="command">ALTER TABLE</code> cannot be
-    executed concurrently with other operations on the same table.)
+    command executes.  (For example, <code class="command">ALTER TABLE</code> cannot safely be
+    executed concurrently with other operations on the same table, so it
+    obtains an exclusive lock on the table to enforce that.)
    </p>
 <p>    To examine a list of the currently outstanding locks in a database
-    server, use the <code class="structname">pg_locks</code> system view
-    (<a href="view-pg-locks.html" title="43.39. pg_locks">Section 43.39, &#8220;<code class="structname">pg_locks</code>&#8221;</a>). For more
-    information on monitoring the status of the lock manager
-    subsystem, refer to <a href="monitoring.html" title="Chapter 25. Monitoring Database Activity">Chapter 25, <i>Monitoring Database Activity</i></a>.
+    server, use the
+    <a href="view-pg-locks.html" title="43.39. pg_locks"><code class="structname">pg_locks</code></a>
+    system view. For more information on monitoring the status of the lock
+    manager subsystem, refer to <a href="monitoring.html" title="Chapter 25. Monitoring Database Activity">Chapter 25, <i>Monitoring Database Activity</i></a>.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="locking-tables"></a>12.3.1. Table-Level Locks</h3></div></div></div>
-<a name="id2610406"></a><p>    The list below shows the available lock modes and the contexts in
+<a name="id2610404"></a><p>    The list below shows the available lock modes and the contexts in
     which they are used automatically by
     <span class="productname">PostgreSQL</span>.  You can also acquire any
     of these locks explicitly with the command <a href="sql-lock.html">LOCK</a>.
@@ -53,7 +54,6 @@
     an <code class="literal">ACCESS EXCLUSIVE</code> lock cannot be held by more than one
     transaction at a time) while others are not self-conflicting (for example,
     an <code class="literal">ACCESS SHARE</code> lock can be held by multiple transactions).
-    Once acquired, a lock is held till end of transaction.
    </p>
 <div class="variablelist">
 <p class="title"><b>Table-level lock modes</b></p>
@@ -183,6 +183,14 @@
        statement.
       </p>
 </div>
+<p>    Once acquired, a lock is normally held till end of transaction.  But if a
+    lock is acquired after establishing a savepoint, the lock is released
+    immediately if the savepoint is rolled back to.  This is consistent with
+    the principle that <code class="command">ROLLBACK</code> cancels all effects of the
+    commands since the savepoint.  The same holds for locks acquired within a
+    <span class="application">PL/pgSQL</span> exception block: an error escape from the block
+    releases locks acquired within it.
+   </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
@@ -191,8 +199,9 @@
      can be exclusive or shared locks.  An exclusive row-level lock on a
      specific row is automatically acquired when the row is updated or
      deleted.  The lock is held until the transaction commits or rolls
-     back.  Row-level locks do not affect data querying; they block
-     <span class="emphasis"><em>writers to the same row</em></span> only.
+     back, in just the same way as for table-level locks.  Row-level locks do
+     not affect data querying; they block <span class="emphasis"><em>writers to the same
+     row</em></span> only.
     </p>
 <p>     To acquire an exclusive row-level lock on a row without actually
      modifying the row, select the row with <code class="command">SELECT FOR
@@ -205,7 +214,7 @@
      other transactions from acquiring the same shared lock.  However,
      no transaction is allowed to update, delete, or exclusively lock a
      row on which any other transaction holds a shared lock.  Any attempt
-     to do so will block until the shared locks have been released.
+     to do so will block until the shared lock(s) have been released.
     </p>
 <p>     <span class="productname">PostgreSQL</span> doesn't remember any
      information about modified rows in memory, so it has no limit to
@@ -224,7 +233,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="locking-deadlocks"></a>12.3.3. Deadlocks</h3></div></div></div>
-<a name="id2611118"></a><p>     The use of explicit locking can increase the likelihood of
+<a name="id2611137"></a><p>     The use of explicit locking can increase the likelihood of
      <em class="firstterm">deadlocks</em>, wherein two (or more) transactions each
      hold locks that the other wants.  For example, if transaction 1
      acquires an exclusive lock on table A and then tries to acquire
@@ -296,7 +305,7 @@ UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 11111;</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="advisory-locks"></a>12.3.4. Advisory Locks</h3></div></div></div>
-<a name="id2611241"></a><p>     <span class="productname">PostgreSQL</span> provides a means for
+<a name="id2611260"></a><p>     <span class="productname">PostgreSQL</span> provides a means for
      creating locks that have application-defined meanings.  These are
      called <em class="firstterm">advisory locks</em>, because the system does not
      enforce their use &#8212; it is up to the application to use them
@@ -304,10 +313,11 @@ UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 11111;</pre>
      that are an awkward fit for the MVCC model.  Once acquired, an
      advisory lock is held until explicitly released or the session ends.
      Unlike standard locks, advisory locks do not
-     honor transaction semantics.  For example, a lock acquired during a
+     honor transaction semantics: a lock acquired during a
      transaction that is later rolled back will still be held following the
-     rollback.  The same lock can be acquired multiple times by its
-     owning process: for each lock request there must be a corresponding
+     rollback, and likewise an unlock is effective even if the calling
+     transaction fails later.  The same lock can be acquired multiple times by
+     its owning process: for each lock request there must be a corresponding
      unlock request before the lock is actually released.  (If a session
      already holds a given lock, additional requests will always succeed, even
      if other sessions are awaiting the lock.)  Like all locks in

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="gin.html" title="Chapter 51. GIN Indexes">
 <link rel="prev" href="gin.html" title="Chapter 51. GIN Indexes">
 <link rel="next" href="gin-implementation.html" title="51.3. Implementation">
@@ -15,14 +15,53 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="gin-extensibility"></a>51.2. Extensibility</h2></div></div></div>
 <p>   The <acronym class="acronym">GIN</acronym> interface has a high level of abstraction,
-   requiring the access method implementer to only implement the semantics of
+   requiring the access method implementer only to implement the semantics of
    the data type being accessed.  The <acronym class="acronym">GIN</acronym> layer itself
    takes care of concurrency, logging and searching the tree structure.
  </p>
 <p>   All it takes to get a <acronym class="acronym">GIN</acronym> access method working
    is to implement four user-defined methods, which define the behavior of
-   keys in the tree. In short, <acronym class="acronym">GIN</acronym> combines extensibility
-   along with generality, code reuse, and a clean interface.
+   keys in the tree and the relationships between keys, indexed values,
+   and indexable queries. In short, <acronym class="acronym">GIN</acronym> combines
+   extensibility with generality, code reuse, and a clean interface.
  </p>
+<p>   The four methods that an index operator class for
+   <acronym class="acronym">GIN</acronym> must provide are:
+ </p>
+<div class="variablelist"><dl>
+<dt><span class="term">int compare(Datum a, Datum b)</span></dt>
+<dd><p>       Compares keys (not indexed values!) and returns an integer less than
+       zero, zero, or greater than zero, indicating whether the first key is
+       less than, equal to, or greater than the second.
+      </p></dd>
+<dt><span class="term">Datum* extractValue(Datum inputValue, uint32 *nkeys)</span></dt>
+<dd><p>       Returns an array of keys given a value to be indexed.  The
+       number of returned keys must be stored into <code class="literal">*nkeys</code>.
+      </p></dd>
+<dt><span class="term">Datum* extractQuery(Datum query, uint32 *nkeys,
+        StrategyNumber n)</span></dt>
+<dd><p>       Returns an array of keys given a value to be queried; that is,
+       <code class="literal">query</code> is the value on the right-hand side of an
+       indexable operator whose left-hand side is the indexed column.
+       <code class="literal">n</code> is the strategy number of the operator within the
+       operator class (see <a href="xindex.html#xindex-strategies" title="33.14.2. Index Method Strategies">Section 33.14.2, &#8220;Index Method Strategies&#8221;</a>).
+       Often, <code class="function">extractQuery</code> will need
+       to consult <code class="literal">n</code> to determine the data type of
+       <code class="literal">query</code> and the key values that need to be extracted.
+       The number of returned keys must be stored into <code class="literal">*nkeys</code>.
+      </p></dd>
+<dt><span class="term">bool consistent(bool check[], StrategyNumber n, Datum query)</span></dt>
+<dd><p>       Returns TRUE if the indexed value satisfies the query operator with
+       strategy number <code class="literal">n</code> (or may satisfy, if the operator is
+       marked RECHECK in the operator class).  The <code class="literal">check</code> array has
+       the same length as the number of keys previously returned by
+       <code class="function">extractQuery</code> for this query.  Each element of the
+       <code class="literal">check</code> array is TRUE if the indexed value contains the
+       corresponding query key, ie, if (check[i] == TRUE) the i-th key of the
+       <code class="function">extractQuery</code> result array is present in the indexed value.
+       The original <code class="literal">query</code> datum (not the extracted key array!) is
+       passed in case the <code class="function">consistent</code> method needs to consult it.
+      </p></dd>
+</dl></div>
 </div></body>
 </html>

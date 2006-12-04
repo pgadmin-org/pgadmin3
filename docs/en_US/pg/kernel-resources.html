@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="server-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="server-shutdown.html" title="16.5. Shutting Down the Server">
@@ -23,7 +23,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sysvipc"></a>16.4.1. Shared Memory and Semaphores</h3></div></div></div>
-<a name="id2621029"></a><a name="id2621038"></a><p>    Shared memory and semaphores are collectively referred to as
+<a name="id2621301"></a><a name="id2621310"></a><p>    Shared memory and semaphores are collectively referred to as
     &#8220;<span class="quote"><span class="systemitem">System V</span>
     <acronym class="acronym">IPC</acronym></span>&#8221; (together with message queues, which are not
     relevant for <span class="productname">PostgreSQL</span>). Almost all modern
@@ -117,7 +117,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><p>    <a name="id2621296"></a> The most important
+<br class="table-break"><p>    <a name="id2621568"></a> The most important
     shared memory parameter is <code class="varname">SHMMAX</code>, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
     <code class="function">shmget</code> like <span class="errorname">Invalid argument</span>, it is
@@ -195,7 +195,7 @@
 <pre class="programlisting">options "SHMALL=8192"
 options "SHMMAX=\(SHMALL*PAGE_SIZE\)"</pre>
 <p>
-         <code class="varname">SHMALL</code> is measured in 4KB pages, so a value of
+         <code class="varname">SHMALL</code> is measured in 4 kB pages, so a value of
          1024 represents 4 MB of shared memory. Therefore the above increases
          the maximum shared memory area to 32 MB.
          For those running 4.3 or later, you will probably also need to increase
@@ -377,7 +377,7 @@ kern.sysv.shmall=1024</pre>
 <p>        Beware that recent releases of OS X ignore attempts to set
         <code class="varname">SHMMAX</code> to a value that isn't an exact multiple of 4096.
        </p>
-<p>        <code class="varname">SHMALL</code> is measured in 4KB pages on this platform.
+<p>        <code class="varname">SHMALL</code> is measured in 4 kB pages on this platform.
        </p>
 <p>        In all OS X versions, you'll need to reboot to make changes in the
         shared memory parameters take effect.  
@@ -514,7 +514,7 @@ set semsys:seminfo_semmsl=32</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2622639"></a>16.4.2. Resource Limits</h3></div></div></div>
+<a name="id2622911"></a>16.4.2. Resource Limits</h3></div></div></div>
 <p>    Unix-like operating systems enforce various kinds of resource limits
     that might interfere with the operation of your
     <span class="productname">PostgreSQL</span> server. Of particular
@@ -582,7 +582,7 @@ set semsys:seminfo_semmsl=32</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2622819"></a>16.4.3. Linux Memory Overcommit</h3></div></div></div>
+<a name="id2623090"></a>16.4.3. Linux Memory Overcommit</h3></div></div></div>
 <p>    In Linux 2.4 and later, the default virtual memory behavior is not
     optimal for <span class="productname">PostgreSQL</span>. Because of the
     way that the kernel implements memory overcommit, the kernel may

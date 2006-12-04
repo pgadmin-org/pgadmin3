@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="gin.html" title="Chapter 51. GIN Indexes">
 <link rel="prev" href="gin-tips.html" title="51.4. GIN tips and tricks">
 <link rel="next" href="gin-examples.html" title="51.6. Examples">
@@ -14,17 +14,24 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="gin-limit"></a>51.5. Limitations</h2></div></div></div>
-<p>  <acronym class="acronym">GIN</acronym> doesn't support full index scans due to their
-  extreme inefficiency: because there are often many keys per value,
-  each heap pointer will returned several times.
+<p>  <acronym class="acronym">GIN</acronym> doesn't support full index scans: because there are
+  often many keys per value, each heap pointer would be returned many times,
+  and there is no easy way to prevent this.
  </p>
 <p>  When <code class="function">extractQuery</code> returns zero keys,
-  <acronym class="acronym">GIN</acronym> will emit an error: for different opclasses and
-  strategies the semantic meaning of a void query may be different (for
-  example, any array contains the void array, but they don't overlap the
-  void array), and <acronym class="acronym">GIN</acronym> can't suggest a reasonable answer.
+  <acronym class="acronym">GIN</acronym> will emit an error.  Depending on the operator,
+  a void query might match all, some, or none of the indexed values (for
+  example, every array contains the empty array, but does not overlap the
+  empty array), and <acronym class="acronym">GIN</acronym> can't determine the correct
+  answer, nor produce a full-index-scan result if it could determine that
+  that was correct.
  </p>
-<p>  <acronym class="acronym">GIN</acronym> searches keys only by equality matching.  This may 
+<p>  It is not an error for <code class="function">extractValue</code> to return zero keys,
+  but in this case the indexed value will be unrepresented in the index.
+  This is another reason why full index scan is not useful &#8212; it would
+  miss such rows.
+ </p>
+<p>  <acronym class="acronym">GIN</acronym> searches keys only by equality matching.  This may
   be improved in future.
  </p>
 </div></body>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-schemas.html" title="5.7. Schemas">
 <link rel="next" href="ddl-partitioning.html" title="5.9. Partitioning">
@@ -152,10 +152,9 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    does not contain the column <code class="structfield">state</code>, and so the
    command will be rejected before the rule can be applied.
   </p>
-<p>   Check constraints can be defined on tables within an inheritance
-   hierarchy. All check constraints on a parent table are
-   automatically inherited by all of its children.  Other types of
-   constraints are not inherited, however.
+<p>   All check constraints and not-null constraints on a parent table are
+   automatically inherited by its children.  Other types of constraints
+   (unique, primary key, and foreign key constraints) are not inherited.
   </p>
 <p>   A table can inherit from more than one parent table, in which case it has
    the union of the columns defined by the parent tables.  Any columns
@@ -165,7 +164,8 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    so that there is only one such column in the child table.  To be merged,
    columns must have the same data types, else an error is raised.  The
    merged column will have copies of all the check constraints coming from
-   any one of the column definitions it came from.
+   any one of the column definitions it came from, and will be marked not-null
+   if any of them are.
   </p>
 <p>   Table inheritance is typically established when the child table is
    created, using the <code class="literal">INHERITS</code> clause of the

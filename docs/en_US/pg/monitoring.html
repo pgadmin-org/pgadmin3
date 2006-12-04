@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="high-availability.html" title="Chapter 24. High Availability and Load Balancing">
 <link rel="next" href="monitoring-stats.html" title="25.2. The Statistics Collector">
@@ -24,9 +24,16 @@
 <dt><span class="sect2"><a href="monitoring-stats.html#monitoring-stats-views">25.2.2. Viewing Collected Statistics</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="monitoring-locks.html">25.3. Viewing Locks</a></span></dt>
+<dt><span class="sect1"><a href="dynamic-trace.html">25.4. Dynamic Tracing</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="dynamic-trace.html#compiling-for-trace">25.4.1. Compiling for Dynamic Trace</a></span></dt>
+<dt><span class="sect2"><a href="dynamic-trace.html#trace-points">25.4.2. Built-in Trace Points</a></span></dt>
+<dt><span class="sect2"><a href="dynamic-trace.html#using-trace-points">25.4.3. Using Trace Points</a></span></dt>
+<dt><span class="sect2"><a href="dynamic-trace.html#defining-trace-points">25.4.4. Defining Trace Points</a></span></dt>
+</dl></dd>
 </dl>
 </div>
-<a name="id2650347"></a><a name="id2650358"></a><p>  A database administrator frequently wonders, &#8220;<span class="quote">What is the system
+<a name="id2650681"></a><a name="id2650693"></a><p>  A database administrator frequently wonders, &#8220;<span class="quote">What is the system
   doing right now?</span>&#8221;
   This chapter discusses how to find that out.
  </p>
@@ -45,7 +52,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-ps"></a>25.1. Standard Unix Tools</h2></div></div></div>
-<a name="id2650451"></a><p>   On most platforms, <span class="productname">PostgreSQL</span> modifies its
+<a name="id2650785"></a><p>   On most platforms, <span class="productname">PostgreSQL</span> modifies its
    command title as reported by <code class="command">ps</code>, so that individual server
    processes can readily be identified.  A sample display is
 

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-savepoint.html" title="SAVEPOINT">
 <link rel="next" href="sql-selectinto.html" title="SELECT INTO">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>SELECT &#8212; retrieve rows from a table or view</p>
 </div>
-<a name="id2766275"></a><div class="refsynopsisdiv">
+<a name="id2767016"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">SELECT [ ALL | DISTINCT [ ON ( <em class="replaceable"><code>expression</code></em> [, ...] ) ] ]
     * | <em class="replaceable"><code>expression</code></em> [ AS <em class="replaceable"><code>output_name</code></em> ] [, ...]
@@ -40,7 +40,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     <em class="replaceable"><code>from_item</code></em> [ NATURAL ] <em class="replaceable"><code>join_type</code></em> <em class="replaceable"><code>from_item</code></em> [ ON <em class="replaceable"><code>join_condition</code></em> | USING ( <em class="replaceable"><code>join_column</code></em> [, ...] ) ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2766494"></a><h2>Description</h2>
+<a name="id2767235"></a><h2>Description</h2>
 <p>   <code class="command">SELECT</code> retrieves rows from zero or more tables.
    The general processing of <code class="command">SELECT</code> is as follows:
 
@@ -114,7 +114,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2766896"></a><h2>Parameters</h2>
+<a name="id2767636"></a><h2>Parameters</h2>
 <div class="refsect2" lang="en">
 <a name="sql-from"></a><h3>
 <code class="literal">FROM</code> Clause</h3>
@@ -666,6 +666,31 @@ OFFSET <em class="replaceable"><code>start</code></em></pre>
     used in contexts where returned rows can't be clearly identified with
     individual table rows; for example they can't be used with aggregation.
    </p>
+<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Caution</h3>
+<p>    Avoid locking a row and then modifying it within a later savepoint or
+    <span class="application">PL/pgSQL</span> exception block.  A subsequent
+    rollback would cause the lock to be lost.  For example,
+</p>
+<pre class="programlisting">BEGIN;
+SELECT * FROM mytable WHERE key = 1 FOR UPDATE;
+SAVEPOINT s;
+UPDATE mytable SET ... WHERE key = 1;
+ROLLBACK TO s;</pre>
+<p>
+    After the <code class="command">ROLLBACK</code>, the row is effectively unlocked, rather
+    than returned to its pre-savepoint state of being locked but not modified.
+    This hazard occurs if a row locked in the current transaction is updated
+    or deleted, or if a shared lock is upgraded to exclusive: in all these
+    cases, the former lock state is forgotten.  If the transaction is then
+    rolled back to a state between the original locking command and the
+    subsequent change, the row will appear not to be locked at all.  This is
+    an implementation deficiency which will be addressed in a future release
+    of <span class="productname">PostgreSQL</span>.
+   </p>
+</div>
+<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Caution</h3>
 <p>    It is possible for a <code class="command">SELECT</code> command using both
     <code class="literal">LIMIT</code> and  <code class="literal">FOR UPDATE/SHARE</code>
     clauses to return fewer rows than specified by <code class="literal">LIMIT</code>.
@@ -678,8 +703,9 @@ OFFSET <em class="replaceable"><code>start</code></em></pre>
    </p>
 </div>
 </div>
+</div>
 <div class="refsect1" lang="en">
-<a name="id2769394"></a><h2>Examples</h2>
+<a name="id2770171"></a><h2>Examples</h2>
 <p>   To join the table <code class="literal">films</code> with the table
    <code class="literal">distributors</code>:
 
@@ -809,13 +835,13 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2769563"></a><h2>Compatibility</h2>
+<a name="id2770339"></a><h2>Compatibility</h2>
 <p>   Of course, the <code class="command">SELECT</code> statement is compatible
    with the SQL standard.  But there are some extensions and some
    missing features.
   </p>
 <div class="refsect2" lang="en">
-<a name="id2769577"></a><h3>Omitted <code class="literal">FROM</code> Clauses</h3>
+<a name="id2770353"></a><h3>Omitted <code class="literal">FROM</code> Clauses</h3>
 <p>    <span class="productname">PostgreSQL</span> allows one to omit the
     <code class="literal">FROM</code> clause.  It has a straightforward use to
     compute the results of simple expressions:
@@ -847,7 +873,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2769662"></a><h3>The <code class="literal">AS</code> Key Word</h3>
+<a name="id2770439"></a><h3>The <code class="literal">AS</code> Key Word</h3>
 <p>    In the SQL standard, the optional key word <code class="literal">AS</code> is just
     noise and can be omitted without affecting the meaning.  The
     <span class="productname">PostgreSQL</span> parser requires this key
@@ -858,7 +884,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2769701"></a><h3>Namespace Available to <code class="literal">GROUP BY</code> and <code class="literal">ORDER BY</code>
+<a name="id2770478"></a><h3>Namespace Available to <code class="literal">GROUP BY</code> and <code class="literal">ORDER BY</code>
 </h3>
 <p>    In the SQL-92 standard, an <code class="literal">ORDER BY</code> clause may
     only use result column names or numbers, while a <code class="literal">GROUP
@@ -879,7 +905,7 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2769773"></a><h3>Nonstandard Clauses</h3>
+<a name="id2770550"></a><h3>Nonstandard Clauses</h3>
 <p>    The clauses <code class="literal">DISTINCT ON</code>,
     <code class="literal">LIMIT</code>, and <code class="literal">OFFSET</code> are not
     defined in the SQL standard.

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="migration.html" title="23.5. Migration Between Releases">
 <link rel="next" href="monitoring.html" title="Chapter 25. Monitoring Database Activity">
@@ -14,8 +14,8 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="high-availability">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="high-availability"></a>Chapter 24. High Availability and Load Balancing</h2></div></div></div>
-<a name="id2649975"></a><a name="id2649980"></a><a name="id2649986"></a><a name="id2649992"></a><a name="id2649998"></a><a name="id2650003"></a><p>  Database servers can work together to allow a second server to
-  quickly take over quickly if the primary server fails (high
+<a name="id2650318"></a><a name="id2650324"></a><a name="id2650330"></a><a name="id2650335"></a><a name="id2650341"></a><a name="id2650347"></a><p>  Database servers can work together to allow a second server to
+  take over quickly if the primary server fails (high
   availability), or to allow several computers to serve the same
   data (load balancing).  Ideally, database servers could work
   together seamlessly.  Web servers serving static web pages can
@@ -47,8 +47,8 @@
   committed until all servers have committed the transaction.  This
   guarantees that a failover will not lose any data and that all
   load-balanced servers will return consistent results no matter
-  which server is queried. Asynchronous updating has a delay between
-  the time of commit and its propagation to the other servers,
+  which server is queried. In contrast, asynchronous solutions allow some
+  delay between the time of a commit and its propagation to the other servers,
   opening the possibility that some transactions might be lost in
   the switch to a backup server, and that load balanced servers
   might return slightly stale results.  Asynchronous communication
@@ -85,7 +85,7 @@
     standby server should never access the shared storage while
     the primary server is running.  It is also possible to use
     some type of file system mirroring to keep the standby server
-    current, but the mirroring must be done in a way that the
+    current, but the mirroring must be done in a way that ensures the
     standby server has a consistent copy of the file system.
    </p>
 </dd>
@@ -114,10 +114,10 @@
 <dt><span class="term">Statement-Based Replication Middleware</span></dt>
 <dd>
 <p>    With statement-based replication middleware, a program intercepts
-    every SQL query and sends it to all servers.  Each server
-    operates independently.  Read-only queries can be sent to a
-    single server because there is no need for all servers to
-    process it.
+    every SQL query and sends it to one or all servers.  Each server
+    operates independently.  Read-write queries are sent to all servers,
+    while read-only queries can be sent to just one server, allowing
+    the read workload to be distributed.
    </p>
 <p>    If queries are simply broadcast unmodified, functions like
     <code class="function">random()</code>, <code class="function">CURRENT_TIMESTAMP</code>, and

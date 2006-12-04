@@ -5,16 +5,16 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
-<link rel="prev" href="backup-file.html" title="23.2. File system level backup">
+<link rel="prev" href="backup-file.html" title="23.2. File System Level Backup">
 <link rel="next" href="warm-standby.html" title="23.4. Warm Standby Servers for High Availability">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="continuous-archiving"></a>23.3. Continuous Archiving and Point-In-Time Recovery (PITR)</h2></div></div></div>
-<a name="id2647464"></a><a name="id2647473"></a><a name="id2647482"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="id2647756"></a><a name="id2647765"></a><a name="id2647774"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <em class="firstterm">write ahead log</em> (WAL) in the <code class="filename">pg_xlog/</code>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -50,7 +50,7 @@
     </p></li>
 <li><p>     If we continuously feed the series of WAL files to another
      machine that has been loaded with the same base backup file, we
-     have a &#8220;<span class="quote">hot standby</span>&#8221; system: at any point we can bring up
+     have a <em class="firstterm">warm standby</em> system: at any point we can bring up
      the second machine and it will have a nearly-current copy of the
      database.
     </p></li>
@@ -94,7 +94,7 @@
     available hardware, there could be many different ways of &#8220;<span class="quote">saving
     the data somewhere</span>&#8221;: we could copy the segment files to an NFS-mounted
     directory on another machine, write them onto a tape drive (ensuring that
-    you have a way of restoring the file with its original file name), or batch
+    you have a way of identifying the original name of each file), or batch
     them together and burn them onto CDs, or something else entirely.  To
     provide the database administrator with as much flexibility as possible,
     <span class="productname">PostgreSQL</span> tries not to make any assumptions about how 
@@ -180,7 +180,7 @@
     remember the file name (<code class="literal">%f</code>).
    </p>
 <p>    Note that although WAL archiving will allow you to restore any
-    modifications made to the data in your <span class="productname">PostgreSQL</span> database
+    modifications made to the data in your <span class="productname">PostgreSQL</span> database,
     it will not restore changes made to configuration files (that is,
     <code class="filename">postgresql.conf</code>, <code class="filename">pg_hba.conf</code> and
     <code class="filename">pg_ident.conf</code>), since those are edited manually rather
@@ -244,10 +244,10 @@
 </p>
 <pre class="programlisting">SELECT pg_stop_backup();</pre>
 <p>
-     This should return successfully; however, the backup is not yet fully
-     valid.  An automatic switch to the next WAL segment occurs, so all
-     WAL segment files that relate to the backup will now be marked ready for
-     archiving.
+     This terminates the backup mode and performs an automatic switch to
+     the next WAL segment.  The reason for the switch is to arrange that
+     the last WAL segment file written during the backup interval is
+     immediately ready to archive.
     </p>
 </li>
 <li><p>     Once the WAL segment files used during the backup are archived, you are
@@ -257,7 +257,7 @@
      already configured <code class="varname">archive_command</code>. In many cases, this
      happens fairly quickly, but you are advised to monitor your archival
      system to ensure this has taken place so that you can be certain you
-     have a valid backup.  
+     have a complete backup.  
     </p></li>
 </ol></div>
 <p>
@@ -280,14 +280,14 @@
 <p>    It is not necessary to be very concerned about the amount of time elapsed
     between <code class="function">pg_start_backup</code> and the start of the actual backup,
     nor between the end of the backup and <code class="function">pg_stop_backup</code>; a
-    few minutes' delay won't hurt anything.  However, if you normally run the
+    few minutes' delay won't hurt anything.  (However, if you normally run the
     server with <code class="varname">full_page_writes</code> disabled, you may notice a drop
     in performance between <code class="function">pg_start_backup</code> and 
-    <code class="function">pg_stop_backup</code>.  You must ensure that these backup operations
-    are carried out in sequence without any possible overlap, or you will
-    invalidate the backup.
+    <code class="function">pg_stop_backup</code>, since <code class="varname">full_page_writes</code> is
+    effectively forced on during backup mode.)  You must ensure that these
+    steps are carried out in sequence without any possible
+    overlap, or you will invalidate the backup.
    </p>
-<p>   </p>
 <p>    Be certain that your backup dump includes all of the files underneath
     the database cluster directory (e.g., <code class="filename">/usr/local/pgsql/data</code>).
     If you are using tablespaces that do not reside underneath this directory,
@@ -303,7 +303,7 @@
     the cluster directory, which is a common setup anyway for performance
     reasons.
    </p>
-<p>    To make use of this backup, you will need to keep around all the WAL
+<p>    To make use of the backup, you will need to keep around all the WAL
     segment files generated during and after the file system backup.
     To aid you in doing this, the <code class="function">pg_stop_backup</code> function
     creates a <em class="firstterm">backup history file</em> that is immediately
@@ -380,7 +380,7 @@
 <li><p>     Restore the database files from your backup dump.  Be careful that they
      are restored with the right ownership (the database system user, not
      root!) and with the right permissions.  If you are using tablespaces,
-     you may want to verify that the symbolic links in <code class="filename">pg_tblspc/</code>
+     you should verify that the symbolic links in <code class="filename">pg_tblspc/</code>
      were correctly restored.
     </p></li>
 <li><p>     Remove any files present in <code class="filename">pg_xlog/</code>; these came from the
@@ -474,15 +474,17 @@
      </p>
 </div>
 <p>    If recovery finds a corruption in the WAL data then recovery will
-    complete at that point and the server will not start. The recovery 
-    process could be re-run from the beginning, specifying a 
-    &#8220;<span class="quote">recovery target</span>&#8221; so that recovery can complete normally.
+    complete at that point and the server will not start. In such a case the
+    recovery process could be re-run from the beginning, specifying a 
+    &#8220;<span class="quote">recovery target</span>&#8221; before the point of corruption so that recovery
+    can complete normally.
     If recovery fails for an external reason, such as a system crash or
-    the WAL archive has become inaccessible, then the recovery can be
-    simply restarted and it will restart almost from where it failed.
-    Restartable recovery works by writing a restart-point record to the control
-    file at the first safely usable checkpoint record found after 
-    <code class="varname">checkpoint_timeout</code> seconds. 
+    if the WAL archive has become inaccessible, then the recovery can simply
+    be restarted and it will restart almost from where it failed.
+    Recovery restart works much like checkpointing in normal operation:
+    the server periodically forces all its state to disk, and then updates
+    the <code class="filename">pg_control</code> file to indicate that the already-processed
+    WAL data need not be scanned again.
    </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
@@ -578,7 +580,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="backup-timelines"></a>23.3.4. Timelines</h3></div></div></div>
-<a name="id2648962"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="id2649260"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.
@@ -633,34 +635,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="backup-incremental-updated"></a>23.3.5. Incrementally Updated Backups</h3></div></div></div>
-<a name="id2649077"></a><a name="id2649086"></a><p>    Restartable Recovery can also be utilised to offload the expense of
-    taking periodic base backups from a main server, by instead backing
-    up a Standby server's files.  This concept is also generally known as 
-    incrementally updated backups, log change accumulation or more simply,
-    change accumulation.
-   </p>
-<p>    If we take a backup of the server files whilst a recovery is in progress,
-    we will be able to restart the recovery from the last restart point. 
-    That backup now has many of the changes from previous WAL archive files,
-    so this version is now an updated version of the original base backup.
-    If we need to recover, it will be faster to recover from the 
-    incrementally updated backup than from the base backup.
-   </p>
-<p>    To make use of this capability you will need to setup a Standby database
-    on a second system, as described in <a href="warm-standby.html" title="23.4. Warm Standby Servers for High Availability">Section 23.4, &#8220;Warm Standby Servers for High Availability&#8221;</a>. By
-    taking a backup of the Standby server while it is running you will
-    have produced an incrementally updated backup. Once this configuration
-    has been implemented you will no longer need to produce regular base 
-    backups of the Primary server: all base backups can be performed on the 
-    Standby server. If you wish to do this, it is not a requirement that you
-    also implement the failover features of a Warm Standby configuration,
-    though you may find it desirable to do both.
-   </p>
-</div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="continuous-archiving-caveats"></a>23.3.6. Caveats</h3></div></div></div>
+<a name="continuous-archiving-caveats"></a>23.3.5. Caveats</h3></div></div></div>
 <p>    At this writing, there are several limitations of the continuous archiving
     technique.  These will probably be fixed in future releases:
 

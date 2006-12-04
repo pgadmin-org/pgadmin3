@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="sql.html" title="Part II. The SQL Language">
 <link rel="prev" href="locking-indexes.html" title="12.5. Locking and Indexes">
 <link rel="next" href="planner-stats.html" title="13.2. Statistics Used by the Planner">
@@ -33,7 +33,7 @@
 </dl></dd>
 </dl>
 </div>
-<a name="id2611660"></a><p>   Query performance can be affected by many things. Some of these can 
+<a name="id2611680"></a><p>   Query performance can be affected by many things. Some of these can 
    be manipulated by the user, while others are fundamental to the underlying
    design of the system.  This chapter provides some hints about understanding
    and tuning <span class="productname">PostgreSQL</span> performance.
@@ -41,7 +41,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="using-explain"></a>13.1. Using <code class="command">EXPLAIN</code></h2></div></div></div>
-<a name="id2611694"></a><a name="id2611703"></a><p>    <span class="productname">PostgreSQL</span> devises a <em class="firstterm">query
+<a name="id2611714"></a><a name="id2611723"></a><p>    <span class="productname">PostgreSQL</span> devises a <em class="firstterm">query
     plan</em> for each query it is given.  Choosing the right
     plan to match the query structure and the properties of the data
     is absolutely critical for good performance, so the system includes
@@ -68,7 +68,7 @@
     that the planner seeks to minimize.
    </p>
 <p>    Here is a trivial example, just to show what the output looks like.
-    <sup>[<a name="id2611778" href="#ftn.id2611778">7</a>]</sup>
+    <sup>[<a name="id2611798" href="#ftn.id2611798">7</a>]</sup>
 
 </p>
 <pre class="programlisting">EXPLAIN SELECT * FROM tenk1;
@@ -400,7 +400,7 @@ EXPLAIN SELECT * FROM tenk1 t1, tenk2 t2 WHERE t1.unique1 &lt; 100 AND t1.unique
 </div>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2611778" href="#id2611778">7</a>] </sup>      Examples in this section are drawn from the regression test database
+<div class="footnote"><p><sup>[<a name="ftn.id2611798" href="#id2611798">7</a>] </sup>      Examples in this section are drawn from the regression test database
       after doing a <code class="command">VACUUM ANALYZE</code>, using 8.2 development sources.
       You should be able to get similar results if you try the examples yourself,
       but your estimated costs and row counts will probably vary slightly

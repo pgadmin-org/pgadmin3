@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="extend.html" title="Chapter 33. Extending SQL">
 <link rel="prev" href="xoper-optimization.html" title="33.13. Operator Optimization Information">
 <link rel="next" href="triggers.html" title="Chapter 34. Triggers">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xindex"></a>33.14. Interfacing Extensions To Indexes</h2></div></div></div>
-<a name="id2697978"></a><p>   The procedures described thus far let you define new types, new
+<a name="id2698718"></a><p>   The procedures described thus far let you define new types, new
    functions, and new operators. However, we cannot yet define an
    index on a column of a new data type.  To do this, we must define an
    <em class="firstterm">operator class</em> for the new data type.  Later in this
@@ -49,7 +49,7 @@
 <p>   The routines for an index method do not directly know anything
    about the data types that the index method will operate on.
    Instead, an <em class="firstterm">operator
-   class</em><a name="id2698087"></a>
+   class</em><a name="id2698827"></a>
    identifies the set of operations that the index method needs to use
    to work with a particular data type.  Operator classes are so
    called because one thing they specify is the set of
@@ -229,15 +229,16 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><p>   GIN indexes are similar to GiST's in flexibility: they don't have a fixed
-   et of strategies. Instead, the &#8220;<span class="quote">consistency</span>&#8221; support routine
-   interprets the strategy numbers accordingly with operator class
-   definition. As an example, strategies of operator class over arrays
-   is shown in <a href="xindex.html#xindex-gin-array-strat-table" title="Table 33.5. GIN Array's Strategies">Table 33.5, &#8220;GIN Array's Strategies&#8221;</a>.
+<br class="table-break"><p>   GIN indexes are similar to GiST indexes in flexibility: they don't have a
+   fixed set of strategies. Instead the support routines of each operator
+   class interpret the strategy numbers according to the operator class's
+   definition. As an example, the strategy numbers used by the built-in
+   operator classes for arrays are
+   shown in <a href="xindex.html#xindex-gin-array-strat-table" title="Table 33.5. GIN Array Strategies">Table 33.5, &#8220;GIN Array Strategies&#8221;</a>.
   </p>
 <div class="table">
-<a name="xindex-gin-array-strat-table"></a><p class="title"><b>Table 33.5. GIN Array's Strategies</b></p>
-<div class="table-contents"><table summary="GIN Array's Strategies" border="1">
+<a name="xindex-gin-array-strat-table"></a><p class="title"><b>Table 33.5. GIN Array Strategies</b></p>
+<div class="table-contents"><table summary="GIN Array Strategies" border="1">
 <colgroup>
 <col>
 <col>
@@ -357,36 +358,35 @@
 <tbody>
 <tr>
 <td>consistent - determine whether key satisfies the 
-		query qualifier</td>
+        query qualifier</td>
 <td>1</td>
 </tr>
 <tr>
-<td>union - compute union of of a set of given keys</td>
+<td>union - compute union of a set of keys</td>
 <td>2</td>
 </tr>
 <tr>
-<td>compress - computes a compressed representation of a key or value
-		to be indexed</td>
+<td>compress - compute a compressed representation of a key or value
+        to be indexed</td>
 <td>3</td>
 </tr>
 <tr>
-<td>decompress - computes a decompressed representation of a 
-	   compressed key </td>
+<td>decompress - compute a decompressed representation of a 
+        compressed key</td>
 <td>4</td>
 </tr>
 <tr>
 <td>penalty - compute penalty for inserting new key into subtree 
-	   with given subtree's key</td>
+       with given subtree's key</td>
 <td>5</td>
 </tr>
 <tr>
 <td>picksplit - determine which entries of a page are to be moved
-	   to the new page and compute the union keys for resulting pages </td>
+       to the new page and compute the union keys for resulting pages</td>
 <td>6</td>
 </tr>
 <tr>
-<td>equal - compare two keys and returns true if they are equal 
-		</td>
+<td>equal - compare two keys and return true if they are equal</td>
 <td>7</td>
 </tr>
 </tbody>
@@ -408,23 +408,22 @@
 </tr></thead>
 <tbody>
 <tr>
-<td>   compare - Compare two keys and return an integer less than zero, zero, or
-   greater than zero, indicating whether the first key is less than, equal to,
-   or greater than the second.
-	   </td>
+<td>        compare - compare two keys and return an integer less than zero, zero,
+        or greater than zero, indicating whether the first key is less than,
+        equal to, or greater than the second
+       </td>
 <td>1</td>
 </tr>
 <tr>
-<td>extractValue - extract keys from value to be indexed</td>
+<td>extractValue - extract keys from a value to be indexed</td>
 <td>2</td>
 </tr>
 <tr>
-<td>extractQuery - extract keys from query</td>
+<td>extractQuery - extract keys from a query condition</td>
 <td>3</td>
 </tr>
 <tr>
-<td>consistent - determine whether value matches by the
-			   query</td>
+<td>consistent - determine whether value matches query condition</td>
 <td>4</td>
 </tr>
 </tbody>
@@ -656,7 +655,7 @@ DEFAULT FOR TYPE int8 USING btree AS
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="xindex-opclass-dependencies"></a>33.14.6. System Dependencies on Operator Classes</h3></div></div></div>
-<a name="id2699176"></a><p>   <span class="productname">PostgreSQL</span> uses operator classes to infer the
+<a name="id2699919"></a><p>   <span class="productname">PostgreSQL</span> uses operator classes to infer the
    properties of operators in more ways than just whether they can be used
    with indexes.  Therefore, you might want to create operator classes
    even if you have no intention of indexing any columns of your data type.
@@ -735,12 +734,16 @@ DEFAULT FOR TYPE int8 USING btree AS
         STORAGE box;</pre>
 <p>
 
-   At present, only the GiST and GIN index method supports a
+   At present, only the GiST and GIN index methods support a
    <code class="literal">STORAGE</code> type that's different from the column data type.
-   The GiST <code class="literal">compress</code> and <code class="literal">decompress</code> support
+   The GiST <code class="function">compress</code> and <code class="function">decompress</code> support
    routines must deal with data-type conversion when <code class="literal">STORAGE</code>
-   is used. Functions named <code class="literal">extractValue</code> and <code class="literal">extractQuery</code>
-   do conversation into internally used types for GIN.
+   is used.  In GIN, the <code class="literal">STORAGE</code> type identifies the type of
+   the &#8220;<span class="quote">key</span>&#8221; values, which normally is different from the type
+   of the indexed column &#8212; for example, an operator class for
+   integer array columns might have keys that are just integers.  The
+   GIN <code class="function">extractValue</code> and <code class="function">extractQuery</code> support
+   routines are responsible for extracting keys from indexed values.
   </p>
 </div>
 </div></body>

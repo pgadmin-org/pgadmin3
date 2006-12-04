@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="storage.html" title="Chapter 52. Database Physical Storage">
 <link rel="prev" href="storage.html" title="Chapter 52. Database Physical Storage">
 <link rel="next" href="storage-page-layout.html" title="52.3. Database Page Layout">
@@ -14,10 +14,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="storage-toast"></a>52.2. TOAST</h2></div></div></div>
-<a name="id2821252"></a><a name="id2821258"></a><p>This section provides an overview of <acronym class="acronym">TOAST</acronym> (The
+<a name="id2822254"></a><a name="id2822260"></a><p>This section provides an overview of <acronym class="acronym">TOAST</acronym> (The
 Oversized-Attribute Storage Technique).</p>
 <p><span class="productname">PostgreSQL</span> uses a fixed page size (commonly
-8Kb), and does not allow tuples to span multiple pages.  Therefore,  it is
+8 kB), and does not allow tuples to span multiple pages.  Therefore,  it is
 not possible to store very large field values directly.  To overcome 
 this limitation, large  field values are compressed and/or broken up into
 multiple physical rows. This happens transparently to the user, with only
@@ -35,7 +35,7 @@ by invoking <code class="function">PG_DETOAST_DATUM</code> before doing anything
 value, but in some cases more efficient approaches are possible.)</p>
 <p><acronym class="acronym">TOAST</acronym> usurps the high-order two bits of the varlena length word,
 thereby limiting the logical size of any value of a <acronym class="acronym">TOAST</acronym>-able
-data type to 1Gb (2<sup>30</sup> - 1 bytes).  When both bits are zero,
+data type to 1 GB (2<sup>30</sup> - 1 bytes).  When both bits are zero,
 the value is an ordinary un-<acronym class="acronym">TOAST</acronym>ed value of the data type.  One
 of these bits, if set, indicates that the value has been compressed and must
 be decompressed before use.  The other bit, if set, indicates that the value
@@ -72,7 +72,7 @@ the total size of a <acronym class="acronym">TOAST</acronym> pointer datum is th
 regardless of the actual size of the represented value.</p>
 <p>The <acronym class="acronym">TOAST</acronym> code is triggered only
 when a row value to be stored in a table is wider than <code class="literal">BLCKSZ/4</code>
-bytes (normally 2Kb).  The <acronym class="acronym">TOAST</acronym> code will compress and/or move
+bytes (normally 2 kB).  The <acronym class="acronym">TOAST</acronym> code will compress and/or move
 field values out-of-line until the row value is shorter than
 <code class="literal">BLCKSZ/4</code> bytes or no more gains can be had.  During an UPDATE
 operation, values of unchanged fields are normally preserved as-is; so an
@@ -123,6 +123,6 @@ containing typical HTML pages and their URLs was stored in about half of the
 raw data size including the <acronym class="acronym">TOAST</acronym> table, and that the main table
 contained only about 10% of the entire data (the URLs and some small HTML
 pages). There was no run time difference compared to an un-<acronym class="acronym">TOAST</acronym>ed
-comparison table, in which all the HTML pages were cut down to 7Kb to fit.</p>
+comparison table, in which all the HTML pages were cut down to 7 kB to fit.</p>
 </div></body>
 </html>

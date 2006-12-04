@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2rc1 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
 <link rel="up" href="spi-memory.html" title="41.3. Memory Management">
 <link rel="prev" href="spi-spi-copytuple.html" title="SPI_copytuple">
 <link rel="next" href="spi-spi-modifytuple.html" title="SPI_modifytuple">
@@ -17,12 +17,12 @@
 <h2>Name</h2>
 <p>SPI_returntuple &#8212; prepare to return a tuple as a Datum</p>
 </div>
-<a name="id2723352"></a><div class="refsynopsisdiv">
+<a name="id2724138"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">HeapTupleHeader SPI_returntuple(HeapTuple <em class="parameter"><code>row</code></em>, TupleDesc <em class="parameter"><code>rowdesc</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2723376"></a><h2>Description</h2>
+<a name="id2724162"></a><h2>Description</h2>
 <p>   <code class="function">SPI_returntuple</code> makes a copy of a row in
    the upper executor context, returning it in the form of a row type <code class="type">Datum</code>.
    The returned pointer need only be converted to <code class="type">Datum</code> via <code class="function">PointerGetDatum</code>
@@ -34,7 +34,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2723415"></a><h2>Arguments</h2>
+<a name="id2724201"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">HeapTuple <em class="parameter"><code>row</code></em></code></span></dt>
 <dd><p>      row to be copied
@@ -46,7 +46,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2723451"></a><h2>Return Value</h2>
+<a name="id2724238"></a><h2>Return Value</h2>
 <p>   <code class="type">HeapTupleHeader</code> pointing to copied row;
    <code class="symbol">NULL</code> only if
    <em class="parameter"><code>row</code></em> or <em class="parameter"><code>rowdesc</code></em> is
