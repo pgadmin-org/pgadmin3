@@ -289,11 +289,11 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     scratchPad = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
 
     // Kickstart wxAUI
-    manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-    manager.AddPane(cbConnection, wxPaneInfo().Name(wxT("databaseBar")).Caption(_("Database bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-    manager.AddPane(sqlQuery, wxPaneInfo().Name(wxT("sqlQuery")).Caption(_("SQL query")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
-    manager.AddPane(outputPane, wxPaneInfo().Name(wxT("outputPane")).Caption(_("Output pane")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
-    manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Right().MinSize(wxSize(100,100)).BestSize(wxSize(250,200)));
+    manager.AddPane(toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(cbConnection, wxAuiPaneInfo().Name(wxT("databaseBar")).Caption(_("Database bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(sqlQuery, wxAuiPaneInfo().Name(wxT("sqlQuery")).Caption(_("SQL query")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
+    manager.AddPane(outputPane, wxAuiPaneInfo().Name(wxT("outputPane")).Caption(_("Output pane")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
+    manager.AddPane(scratchPad, wxAuiPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Right().MinSize(wxSize(100,100)).BestSize(wxSize(250,200)));
 
     // Now load the layout
     wxString perspective;
@@ -443,7 +443,7 @@ void frmQuery::OnToggleOutputPane(wxCommandEvent& event)
     manager.Update();
 }
 
-void frmQuery::OnAuiUpdate(wxFrameManagerEvent& event)
+void frmQuery::OnAuiUpdate(wxAuiManagerEvent& event)
 {
     if(event.pane->name == wxT("databaseBar"))
     {
@@ -952,7 +952,7 @@ void frmQuery::updateMenu(wxObject *obj)
     bool canFind=false;
     bool canAddFavourite=false;
 
-    wxFloatingPane *fp = wxDynamicCastThis(wxFloatingPane);
+    wxAuiFloatingFrame *fp = wxDynamicCastThis(wxAuiFloatingFrame);
     if (fp)
         return;
 

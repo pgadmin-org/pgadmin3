@@ -14,40 +14,6 @@
 
 #include "wx/calctrl.h"
 
-#if !wxCHECK_VERSION(2, 7, 0) && defined(wxUSE_DATEPICKCTRL)
-#define pgUSE_WX_CAL  1
-#else
-#define pgUSE_WX_CAL  0
-#endif
-
-#if pgUSE_WX_CAL
-#include "wx/datectrl.h"
-
-
-#ifdef __WXMSW__
-
-#include "wx/generic/datectrl.h"
-#define wxDPC   wxDatePickerCtrlGeneric
-
-#else
-
-#define wxDPC   wxDatePickerCtrl
-
-#endif
-
-class wxCalendarBox : public wxDPC
-{
-public:
-    wxCalendarBox();
-    wxCalendarBox(wxWindow *parent,
-                   wxWindowID id,
-                   const wxDateTime& date = wxDefaultDateTime,
-                   const wxPoint& pos = wxDefaultPosition,
-                   const wxSize& size = wxDefaultSize);
-};
-
-
-#else
 class wxCalendarBox : public wxControl
 {
 public:
@@ -118,8 +84,6 @@ private:
     DECLARE_EVENT_TABLE()
     DECLARE_NO_COPY_CLASS(wxCalendarBox)
 };
-
-#endif
 
 #endif // _WX_CALBOX_H_
 

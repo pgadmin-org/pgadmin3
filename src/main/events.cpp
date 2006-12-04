@@ -828,7 +828,7 @@ void frmMain::OnToggleToolBar(wxCommandEvent& event)
     manager.Update();
 }
 
-void frmMain::OnAuiUpdate(wxFrameManagerEvent& event)
+void frmMain::OnAuiUpdate(wxAuiManagerEvent& event)
 {
     if(event.pane->name == wxT("objectBrowser"))
     {

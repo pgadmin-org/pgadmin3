@@ -25,12 +25,6 @@ class ctlComboBoxFix : public wxComboBox
 public:
     ctlComboBoxFix(wxWindow *wnd, int id, wxPoint pos, wxSize siz, long attr);
 
-#if wxCHECK_VERSION(2,6,2) && !defined(__WXMAC__)
-    // we have GetCurrentSelection() in wxChoice, implementing the old GetSelection() semantics
-#else
-    int GetCurrentSelection() const { return wxComboBox::GetSelection(); }
-#endif
-
     int FillLongKey(pgConnBase *conn, const wxChar *qry);
     int FillOidKey(pgConnBase *conn, const wxChar *qry);
     int FillStringKey(pgConnBase *conn, const wxChar *qry);
@@ -46,14 +40,6 @@ public:
     int Append(const wxString& item, const wxString &str);
     int Append(const wxString& item, long l);
     int Append(const wxString& item, OID oid);
-
-
-
-#ifdef __WXMSW__
-#if !wxCHECK_VERSION(2, 7, 2)
-    wxString GetValue() const { return wxGetWindowText(GetHwnd()); }
-#endif
-#endif
 };
 
 class ctlComboBox : public ctlComboBoxFix

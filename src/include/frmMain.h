@@ -24,14 +24,6 @@
 #include "dlgClasses.h"
 #include "base/factory.h"
 
-// Backwards compatibility
-#if wxCHECK_VERSION(2, 7, 2)
-#define wxFrameManager wxAuiManager
-#define wxFrameManagerEvent wxAuiManagerEvent
-#define wxPaneInfo wxAuiPaneInfo
-#define wxFloatingPane wxAuiFloatingFrame
-#endif
-
 #define FRMMAIN_PERPSECTIVE_VER wxT("$Rev$")
 
 #ifdef __WXMAC__
@@ -92,7 +84,7 @@ public:
 	pgServer *ConnectToServer(const wxString& servername, bool restore = false);
 
 private:
-    wxFrameManager manager;
+    wxAuiManager manager;
     ctlTree *browser;
     ctlListView *properties;
     ctlListView *statistics;
@@ -129,7 +121,7 @@ private:
     void OnToggleObjectBrowser(wxCommandEvent& event);
     void OnToggleToolBar(wxCommandEvent& event);
     void OnDefaultView(wxCommandEvent& event);
-    void OnAuiUpdate(wxFrameManagerEvent& event);
+    void OnAuiUpdate(wxAuiManagerEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
     void OnPageChange(wxNotebookEvent& event);

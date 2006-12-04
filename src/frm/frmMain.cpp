@@ -167,10 +167,10 @@ frmMain::frmMain(const wxString& title)
     menuFactories->CheckMenu(0, menuBar, toolBar);
 
     // Kickstart wxAUI
-    manager.AddPane(browser, wxPaneInfo().Name(wxT("objectBrowser")).Caption(_("Object browser")).Left().MinSize(wxSize(100, 200)).BestSize(wxSize(200, 450)));
-    manager.AddPane(listViews, wxPaneInfo().Name(wxT("listViews")).Caption(_("Info pane")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200, 100)).BestSize(wxSize(400, 200)));
-    manager.AddPane(sqlPane, wxPaneInfo().Name(wxT("sqlPane")).Caption(_("SQL pane")).Bottom().MinSize(wxSize(200, 100)).BestSize(wxSize(400, 200)));
-    manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(browser, wxAuiPaneInfo().Name(wxT("objectBrowser")).Caption(_("Object browser")).Left().MinSize(wxSize(100, 200)).BestSize(wxSize(200, 450)));
+    manager.AddPane(listViews, wxAuiPaneInfo().Name(wxT("listViews")).Caption(_("Info pane")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200, 100)).BestSize(wxSize(400, 200)));
+    manager.AddPane(sqlPane, wxAuiPaneInfo().Name(wxT("sqlPane")).Caption(_("SQL pane")).Bottom().MinSize(wxSize(200, 100)).BestSize(wxSize(400, 200)));
+    manager.AddPane(toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
 
     // Now load the layout
     wxString perspective;

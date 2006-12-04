@@ -194,8 +194,6 @@ int ctlSQLGrid::Copy()
 
 void ctlSQLGrid::OnLabelDoubleClick(wxGridEvent& event)
 {
-#if wxCHECK_VERSION(2, 5, 0)
-    // at the moment, not implemented for 2.4
     int maxHeight, maxWidth;
     GetClientSize(&maxWidth, &maxHeight);
     int row = event.GetRow();
@@ -277,7 +275,6 @@ void ctlSQLGrid::OnLabelDoubleClick(wxGridEvent& event)
             EndBatch();
         }
     }
-#endif
 }
 
 wxSize ctlSQLGrid::GetBestSize(int row, int col)

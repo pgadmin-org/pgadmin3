@@ -206,10 +206,10 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     sqlGrid->SetAcceleratorTable(accel);
 
     // Kickstart wxAUI
-    manager.AddPane(toolBar, wxPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-    manager.AddPane(cbLimit, wxPaneInfo().Name(wxT("limitBar")).Caption(_("Limit bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
-    manager.AddPane(sqlGrid, wxPaneInfo().Name(wxT("sqlGrid")).Caption(_("Data grid")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200, 100)).BestSize(wxSize(300, 200)));
-    manager.AddPane(scratchPad, wxPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Bottom().MinSize(wxSize(200, 100)).BestSize(wxSize(300, 150)));
+    manager.AddPane(toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(cbLimit, wxAuiPaneInfo().Name(wxT("limitBar")).Caption(_("Limit bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
+    manager.AddPane(sqlGrid, wxAuiPaneInfo().Name(wxT("sqlGrid")).Caption(_("Data grid")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200, 100)).BestSize(wxSize(300, 200)));
+    manager.AddPane(scratchPad, wxAuiPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Bottom().MinSize(wxSize(200, 100)).BestSize(wxSize(300, 150)));
 
     // Now load the layout
     wxString perspective;
@@ -291,7 +291,7 @@ void frmEditGrid::OnToggleScratchPad(wxCommandEvent& event)
     manager.Update();
 }
 
-void frmEditGrid::OnAuiUpdate(wxFrameManagerEvent& event)
+void frmEditGrid::OnAuiUpdate(wxAuiManagerEvent& event)
 {
     if(event.pane->name == wxT("limitBar"))
     {
@@ -1051,64 +1051,6 @@ void ctlSQLEditGrid::ResizeEditor(int row, int col)
         attr->DecRef();
     }
 }
-
-
-#if wxCHECK_VERSION(2,5,0)
-    // problems are fixed
-#else
-
-bool ctlSQLEditGrid::SetTable(wxGridTableBase *table, bool takeOwnership)
-{
-    bool done=false;
-    if (m_created)
-    {
-        m_created = false;
-        if (m_ownTable)
-            delete m_table;
-
-        delete m_selection;
-
-        // stop all processing
-        m_table=0;
-        m_selection=0;
-        m_numRows=0;
-        m_numCols=0;
-    }
-    if (table)
-    {
-
-
-	int col;
-	wxCoord w, h, wmax;
-
-        done= wxGrid::SetTable(table, takeOwnership);
-
-	wxClientDC dc(this);
-	dc.SetFont(GetLabelFont());
-
-	for (col=0 ; col < m_numCols ; col++)
-	{
-            wxString str=GetColLabelValue(col);
-	    dc.GetTextExtent(str.BeforeFirst('\n'), &wmax, &h);
-            int crPos=str.Find('\n');
-            if (crPos)
-            {
-    	        dc.GetTextExtent(str.Mid(crPos+1), &w, &h);
-                if (w>wmax)
-                    wmax=w;
-            }
-            wmax += 4;      // looks better
-            if (wmax < 40)
-                wmax = 40;
-
-            SetColSize(col, wmax);
-	}
-    }
-    return done;
-}
-#endif
-
-
 
 wxArrayInt ctlSQLEditGrid::GetSelectedRows() const
 {

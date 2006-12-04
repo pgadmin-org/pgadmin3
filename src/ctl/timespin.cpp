@@ -76,11 +76,7 @@ bool wxTimeSpinCtrl::Create(wxWindow *parent,
     canWrap = (style & wxSP_WRAP) != 0;
     SetMax(24*60*60 -1);
 
-#if wxCHECK_VERSION(2, 7, 2)
     SetInitialSize(size);
-#else
-    SetBestFittingSize(size);
-#endif
 
     return true;
 }

@@ -19,14 +19,6 @@
 // wxAUI
 #include <wx/aui/aui.h>
 
-// Backwards compatibility
-#if wxCHECK_VERSION(2, 7, 2)
-#define wxFrameManager wxAuiManager
-#define wxFrameManagerEvent wxAuiManagerEvent
-#define wxPaneInfo wxAuiPaneInfo
-#define wxFloatingPane wxAuiFloatingFrame
-#endif
-
 #define FRMQUERY_PERPSECTIVE_VER wxT("$Rev$")
 
 #ifdef __WXMAC__
@@ -51,7 +43,7 @@ public:
 
 private:
     frmMain *mainForm;
-    wxFrameManager manager;
+    wxAuiManager manager;
     ctlSQLBox *sqlQuery;
     wxNotebook *outputPane;
     ctlSQLResult *sqlResult;
@@ -110,7 +102,7 @@ private:
     void OnToggleDatabaseBar(wxCommandEvent& event);
     void OnToggleToolBar(wxCommandEvent& event);
     void OnToggleOutputPane(wxCommandEvent& event);
-    void OnAuiUpdate(wxFrameManagerEvent& event);
+    void OnAuiUpdate(wxAuiManagerEvent& event);
     void OnDefaultView(wxCommandEvent& event);
 
     bool CheckChanged(bool canVeto);

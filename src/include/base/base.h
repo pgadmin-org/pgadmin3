@@ -46,11 +46,7 @@ typedef unsigned long OID;
 #define END_OF_LINE wxT("\n")
 #endif
 
-#if wxCHECK_VERSION(2, 5, 1)
 #define wxCookieType wxTreeItemIdValue
-#else
-#define wxCookieType long
-#endif
 
 class sysSettings;
 extern sysSettings *settings;

@@ -21,14 +21,6 @@
 #include "dlgClasses.h"
 #include "ctl/ctlSQLGrid.h"
 
-// Backwards compatibility
-#if wxCHECK_VERSION(2, 7, 2)
-#define wxFrameManager wxAuiManager
-#define wxFrameManagerEvent wxAuiManagerEvent
-#define wxPaneInfo wxAuiPaneInfo
-#define wxFloatingPane wxAuiFloatingFrame
-#endif
-
 #define FRMEDITGRID_PERPSECTIVE_VER wxT("$Rev$")
 
 #ifdef __WXMAC__
@@ -101,12 +93,6 @@ public:
     wxArrayInt GetSelectedRows() const;
     bool CheckRowPresent(int row);
     virtual bool IsColText(int col);
-
-#if wxCHECK_VERSION(2,5,0)
-    // problems are fixed
-#else
-    bool SetTable(wxGridTableBase *table, bool takeOwnership=false);
-#endif
 };
 
 
@@ -218,10 +204,10 @@ private:
     void OnToggleScratchPad(wxCommandEvent& event);
     void OnToggleLimitBar(wxCommandEvent& event);
     void OnToggleToolBar(wxCommandEvent& event);
-    void OnAuiUpdate(wxFrameManagerEvent& event);
+    void OnAuiUpdate(wxAuiManagerEvent& event);
     void OnDefaultView(wxCommandEvent& event);
 
-    wxFrameManager manager;
+    wxAuiManager manager;
     ctlSQLEditGrid *sqlGrid;
 
     frmMain *mainForm;

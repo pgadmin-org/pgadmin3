@@ -34,11 +34,9 @@
 #include <signal.h>
 #endif
 
-#if wxCHECK_VERSION(2,5,1)
 #ifdef __WXGTK__
 #include <wx/renderer.h>
 #endif
-#endif 
 
 // App headers
 #include "copyright.h"
@@ -101,8 +99,6 @@ private:
 
 IMPLEMENT_APP(pgAdmin3)
 
-
-#if wxCHECK_VERSION(2,5,1)
 #ifdef __WXGTK__
 
 class pgRendererNative : public wxDelegateRendererNative
@@ -116,7 +112,6 @@ public:
 	}
 };
 
-#endif
 #endif
 #define CTL_LB  100
 class frmDlgTest : public wxFrame
@@ -244,12 +239,6 @@ bool pgAdmin3::OnInit()
     wxLogInfo(msg);
     wxLogInfo(wxT("##############################################################"));
 
-#if wxCHECK_VERSION(2,5,0)
-    // that's what we expect
-#else
-    wxLogInfo(wxT("Not compiled against wxWindows 2.5 or above: using ") wxVERSION_STRING);
-#endif
-
 #ifdef SSL
     wxLogInfo(wxT("Compiled with dynamically linked SSL support"));
 #endif
@@ -263,12 +252,10 @@ bool pgAdmin3::OnInit()
     for (unsigned int x=0; x<path.Count(); x++)
         wxLogInfo(wxT("    %s"), path[x].c_str());
 
-#if wxCHECK_VERSION(2,5,1)
 #ifdef __WXGTK__
 	static pgRendererNative *renderer=new pgRendererNative();
 	wxRendererNative::Get();
 	wxRendererNative::Set(renderer);
-#endif
 #endif
 
 #ifdef __LINUX__
@@ -588,11 +575,7 @@ char **pgAppearanceFactory::GetSplashImage()
 #ifdef __WXMAC__
 #define SPLASH_FONTSIZE 11
 #else
-#if wxCHECK_VERSION(2,5,0)
 #define SPLASH_FONTSIZE 9
-#else
-#define SPLASH_FONTSIZE 11
-#endif
 #endif
 #endif
 

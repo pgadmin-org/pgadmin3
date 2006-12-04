@@ -13,25 +13,6 @@
 
 #include "ctl/calbox.h"
 
-
-#if pgUSE_WX_CAL
-
-
-wxCalendarBox::wxCalendarBox(wxWindow *parent,
-                            wxWindowID id,
-                            const wxDateTime& date,
-                            const wxPoint& pos,
-                            const wxSize& size)
-: wxDPC(parent, id, date, pos, size, wxDP_DROPDOWN|wxDP_SHOWCENTURY|wxDP_ALLOWNONE)
-{
-}
-
-wxCalendarBox::wxCalendarBox() : wxDPC()
-{
-}
-
-#else
-
 #if defined(__WXMSW__)
     #define TXTCTRL_FLAGS     wxNO_BORDER
     #define CALBORDER         0
@@ -169,12 +150,7 @@ bool wxCalendarBox::Create(wxWindow *parent,
     yearControl->SetSize(width-yearSize.x-CALBORDER/2, yearPosition.y, yearSize.x, yearSize.y);
 	m_cal->GetMonthControl()->Move(0, 0);
 
-#if wxCHECK_VERSION(2, 7, 2)
     SetInitialSize(size);
-#else
-    SetBestFittingSize(size);
-#endif
-
 
     panel->SetClientSize(width+CALBORDER/2, calSize.y-2+CALBORDER);
     m_dlg->SetClientSize(panel->GetSize());
@@ -516,4 +492,3 @@ void wxCalendarBox::OnCalKey(wxKeyEvent & ev)
     else
         ev.Skip();
 }
-#endif
