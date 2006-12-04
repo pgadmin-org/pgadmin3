@@ -28,7 +28,9 @@ public:
 #if wxCHECK_VERSION(2,6,2) && !defined(__WXMAC__)
     // we have GetCurrentSelection() in wxChoice, implementing the old GetSelection() semantics
 #else
+#if !wxCHECK_VERSION(2,7,2)
     int GetCurrentSelection() const { return wxComboBox::GetSelection(); }
+#endif
 #endif
 
     int FillLongKey(pgConnBase *conn, const wxChar *qry);
