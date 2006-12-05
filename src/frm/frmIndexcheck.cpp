@@ -61,7 +61,6 @@ frmIndexcheck::frmIndexcheck(frmMain *form, pgObject *obj) : ExecutionDialog(for
     txtMessages = new wxTextCtrl(nbNotebook, CTL_MSG, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxHSCROLL);
     nbNotebook->AddPage(txtMessages, _("Messages"));
 
-    CenterOnParent();
 }
 
 

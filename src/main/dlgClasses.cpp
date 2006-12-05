@@ -133,7 +133,7 @@ void pgDialog::RestorePosition(int defaultX, int defaultY, int defaultW, int def
     wxPoint pos(settings->Read(dlgName, wxPoint(defaultX, defaultY)));
     wxSize size;
     if (defaultW < 0)
-        size = GetSize();
+        size = settings->Read(dlgName, GetSize());
     else
         size = settings->Read(dlgName, wxSize(defaultW, defaultH));
 

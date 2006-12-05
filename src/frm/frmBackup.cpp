@@ -89,7 +89,6 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 
     wxCommandEvent ev;
     OnChangePlain(ev);
-    CenterOnParent();
 }
 
 

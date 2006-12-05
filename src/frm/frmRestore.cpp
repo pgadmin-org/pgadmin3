@@ -110,7 +110,6 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 
     wxCommandEvent ev;
     OnChange(ev);
-    CenterOnParent();
 }
 
 
