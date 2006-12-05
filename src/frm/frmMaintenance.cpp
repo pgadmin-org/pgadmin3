@@ -73,7 +73,6 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
     }
     wxCommandEvent ev;
     OnAction(ev);
-    CenterOnParent();
 }
 
 
