@@ -878,7 +878,7 @@ void frmEditGrid::Go()
     }
 
     // Check we have access
-    if (connection->ExecuteScalar(wxT("SELECT 1 FROM ") + tableName) != wxT("1"))
+    if (connection->ExecuteScalar(wxT("SELECT count(*) FROM ") + tableName + wxT(" WHERE false")) == wxT(""))
         return;
 
     SetStatusText(_("Refreshing data, please wait."), 0);
