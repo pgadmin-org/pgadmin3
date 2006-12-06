@@ -36,7 +36,6 @@
 #include "pgCollection.h"
 #include "frmHelp.h"
 #include "dlgProperty.h"
-#include "frmUpdate.h"
 
 extern wxString loadPath;
 

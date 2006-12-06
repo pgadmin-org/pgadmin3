@@ -70,7 +70,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/frmRestore.h \
 	$(srcdir)/include/frmSplash.h \
 	$(srcdir)/include/frmStatus.h \
-	$(srcdir)/include/frmUpdate.h \
 	$(srcdir)/include/menu.h \
 	$(srcdir)/include/pgAdmin3.h \
 	$(srcdir)/include/pgAggregate.h \

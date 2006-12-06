@@ -19,7 +19,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/utils/sysProcess.cpp \
 	$(srcdir)/utils/sysSettings.cpp \
 	$(srcdir)/utils/tabcomplete.c \
-	$(srcdir)/utils/update.cpp \
 	$(srcdir)/utils/utffile.cpp
 
 EXTRA_DIST += \

@@ -48,7 +48,6 @@
 #include "version.h"
 #include "utils/misc.h"
 #include "utils/sysSettings.h"
-#include "utils/update.h"
 #include "pgServer.h"
 #include "frmMain.h"
 #include "frmConfig.h"

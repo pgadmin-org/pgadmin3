@@ -59,7 +59,6 @@
 #include "frmPassword.h"
 #include "frmQuery.h"
 #include "frmEditGrid.h"
-#include "frmUpdate.h"
 #include "dlgServer.h"
 #include "dlgDatabase.h"
 #include "dlgTable.h"

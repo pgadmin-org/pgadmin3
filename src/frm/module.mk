@@ -30,8 +30,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/frm/frmReport.cpp \
 	$(srcdir)/frm/frmRestore.cpp \
 	$(srcdir)/frm/frmSplash.cpp \
-	$(srcdir)/frm/frmStatus.cpp \
-	$(srcdir)/frm/frmUpdate.cpp
+	$(srcdir)/frm/frmStatus.cpp
 
 EXTRA_DIST += \
         $(srcdir)/frm/module.mk
