@@ -62,6 +62,29 @@ const float SERVER_MIN_VERSION = 7.3f;
 #define strincmp _strincmp
 #endif
 
+extern wxPathList path;                  // The search path
+extern wxString loadPath;              // Where the program is loaded from
+extern wxString docPath;               // Where docs are stored
+extern wxString uiPath;                // Where ui data is stored
+extern wxString i18nPath;              // Where i18n data is stored
+
+// Class declarations
+class pgAdmin3 : public wxApp
+{
+public:
+    virtual bool OnInit();
+    virtual int OnExit();
+
+private:
+    bool LoadAllXrc(const wxString dir);
+
+protected:
+    void InitPaths();
+    void InitLogger();
+    void InitNetwork();
+    void InitXml();
+
+};
 
 class pgAppearanceFactory
 {

@@ -10,7 +10,6 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/base/appbase.cpp \
 	$(srcdir)/base/sysLogger.cpp \
 	$(srcdir)/base/factory.cpp 
 
