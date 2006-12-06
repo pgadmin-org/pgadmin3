@@ -15,7 +15,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include "base/base.h"
+#include "misc.h"
 
 
 

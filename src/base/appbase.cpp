@@ -20,7 +20,7 @@
 #include <wx/stdpaths.h>
 
 #include "copyright.h"
-#include "base/base.h"
+#include "misc.h"
 #include "base/appbase.h"
 #include "pgConn.h"
 #include "base/sysLogger.h"
