@@ -25,7 +25,7 @@ AC_DEFUN([CHECK_CPP_COMPILER],
 #############################
 AC_DEFUN([SET_WX_VERSION],
 [
-	AC_ARG_WITH(wx-version, [  --with-wx-version=<version number>  the wxWidgets version in major.minor format (default: 2.7)],
+	AC_ARG_WITH(wx-version, [  --with-wx-version=<version number>  the wxWidgets version in major.minor format (default: 2.8)],
 	[
 		if test "$withval" = yes; then
 			AC_MSG_ERROR([you must specify a version number when using --with-wx-version=<version number>])
@@ -38,7 +38,7 @@ AC_DEFUN([SET_WX_VERSION],
 		fi
 	],
 	[
-		WX_VERSION="2.7"
+		WX_VERSION="2.8"
 	])
 ])
 
