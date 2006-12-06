@@ -7,8 +7,6 @@
 # Makefile - Makefile for *nix systems
 ##############################################################################
 
-SUBDIRS = pgaevent
-
 bin_PROGRAMS = pgagent
 
 pgagent_SOURCES = \
