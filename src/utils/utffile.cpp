@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "utffile.h"
+#include "utils/utffile.h"
 
 wxMBConvUTF16BE wxConvUTF16BE;
 wxMBConvUTF16LE wxConvUTF16LE;

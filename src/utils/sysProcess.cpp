@@ -16,7 +16,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "sysProcess.h"
+#include "utils/sysProcess.h"
 
 
 sysProcess::sysProcess(wxEvtHandler *evh)

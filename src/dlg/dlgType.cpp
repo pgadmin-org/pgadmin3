@@ -16,7 +16,7 @@
 
 
 // App headers
-#include "misc.h"
+#include "utils/misc.h"
 #include "dlgType.h"
 #include "pgSchema.h"
 #include "pgType.h"

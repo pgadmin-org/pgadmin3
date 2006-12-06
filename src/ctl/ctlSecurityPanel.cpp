@@ -16,7 +16,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "sysLogger.h"
+#include "utils/sysLogger.h"
 #include "ctlSecurityPanel.h"
 #include "pgConn.h"
 #include "pgObject.h"

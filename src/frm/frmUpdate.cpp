@@ -13,7 +13,7 @@
 #include "pgAdmin3.h"
 
 #include "frmUpdate.h"
-#include "update.h"
+#include "utils/update.h"
 #include "version.h"
 
 

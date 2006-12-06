@@ -23,9 +23,9 @@
 #include <wx/stdpaths.h>
 
 // App headers
-#include "sysSettings.h"
-#include "sysLogger.h"
-#include "misc.h"
+#include "utils/sysSettings.h"
+#include "utils/sysLogger.h"
+#include "utils/misc.h"
 
 extern wxString docPath;
 

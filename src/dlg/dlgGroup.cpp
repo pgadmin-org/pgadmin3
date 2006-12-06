@@ -15,7 +15,7 @@
 #include <wx/wx.h>
 
 // App headers
-#include "misc.h"
+#include "utils/misc.h"
 #include "dlgGroup.h"
 #include "pgGroup.h"
 

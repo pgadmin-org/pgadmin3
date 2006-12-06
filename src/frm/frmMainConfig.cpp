@@ -21,7 +21,7 @@
 #include "frmMainConfig.h"
 #include "frmMain.h"
 #include "dlgMainConfig.h"
-#include "utffile.h"
+#include "utils/utffile.h"
 #include "pgServer.h"
 #include "menu.h"
 #include "pgfeatures.h"

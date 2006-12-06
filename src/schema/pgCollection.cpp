@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "menu.h"
-#include "misc.h"
+#include "utils/misc.h"
 #include "pgaJob.h"
 #include "pgSchema.h"
 #include "pgTable.h"

@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "menu.h"
-#include "misc.h"
+#include "utils/misc.h"
 #include "frmMain.h"
 #include "frmHint.h"
 #include "dlgConnect.h"
@@ -25,7 +25,7 @@
 #include "pgUser.h"
 #include "pgRole.h"
 #include "pgaJob.h"
-#include "utffile.h"
+#include "utils/utffile.h"
 #include "pgfeatures.h"
 #include "frmReport.h"
 

@@ -19,7 +19,7 @@
 #include "pgAdmin3.h"
 #include "frmMaintenance.h"
 #include "frmMain.h"
-#include "sysLogger.h"
+#include "utils/sysLogger.h"
 #include "pgIndex.h"
 
 // Icons

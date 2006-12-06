@@ -24,7 +24,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "pgDefs.h"
+#include "utils/pgDefs.h"
 #include "frmMain.h"
 
 #include "frmEditGrid.h"

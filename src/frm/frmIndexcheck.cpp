@@ -18,7 +18,7 @@
 #include "pgAdmin3.h"
 #include "frmMain.h"
 #include "frmIndexcheck.h"
-#include "sysLogger.h"
+#include "utils/sysLogger.h"
 #include "pgTable.h"
 #include "ctlSecurityPanel.h"
 

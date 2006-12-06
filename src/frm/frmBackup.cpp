@@ -18,7 +18,7 @@
 #include "pgAdmin3.h"
 #include "frmMain.h"
 #include "frmBackup.h"
-#include "sysLogger.h"
+#include "utils/sysLogger.h"
 #include "pgSchema.h"
 #include "pgTable.h"
 

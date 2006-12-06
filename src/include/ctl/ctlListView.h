@@ -15,7 +15,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/listctrl.h>
-#include "misc.h"
+#include "utils/misc.h"
 
 class frmMain;
 

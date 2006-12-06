@@ -16,7 +16,7 @@
 #include <wx/datetime.h>
 #include <wx/tokenzr.h>
 
-#include "misc.h"
+#include "utils/misc.h"
 
 class wxImageList;
 extern wxImageList *imageList;

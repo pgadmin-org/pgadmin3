@@ -19,7 +19,7 @@
 #include "pgAdmin3.h"
 #include "frmGrantWizard.h"
 #include "frmMain.h"
-#include "sysLogger.h"
+#include "utils/sysLogger.h"
 #include "ctlSecurityPanel.h"
 #include "pgFunction.h"
 #include "pgSequence.h"

@@ -13,7 +13,7 @@
 #include "pgAdmin3.h"
 
 #include "wx/url.h"
-#include "update.h"
+#include "utils/update.h"
 #include "menu.h"
 #include "frmMain.h"
 

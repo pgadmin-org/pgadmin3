@@ -46,9 +46,9 @@
 // App headers
 #include "copyright.h"
 #include "version.h"
-#include "misc.h"
-#include "sysSettings.h"
-#include "update.h"
+#include "utils/misc.h"
+#include "utils/sysSettings.h"
+#include "utils/update.h"
 #include "pgServer.h"
 #include "frmMain.h"
 #include "frmConfig.h"
@@ -56,7 +56,7 @@
 #include "frmSplash.h"
 #include "dlgSelectConnection.h"
 #include "pgConn.h"
-#include "base/sysLogger.h"
+#include "utils/sysLogger.h"
 #include "frmHint.h"
 
 #include "ctl/xh_calb.h"

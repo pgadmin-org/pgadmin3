@@ -28,7 +28,6 @@ TMP_ui =
 
 # Include all the sub-Makefiles
 include $(srcdir)/agent/module.mk
-include $(srcdir)/base/module.mk
 include $(srcdir)/ctl/module.mk
 include $(srcdir)/db/module.mk
 include $(srcdir)/dlg/module.mk

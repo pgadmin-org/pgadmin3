@@ -14,7 +14,7 @@
 #define FRMBACKUP_H
 
 #include "dlgClasses.h"
-#include "base/factory.h"
+#include "utils/factory.h"
 
 class frmMain;
 

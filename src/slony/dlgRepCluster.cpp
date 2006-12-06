@@ -14,7 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "pgDefs.h"
+#include "utils/pgDefs.h"
 #include <wx/textbuf.h>
 #include <wx/file.h>
 
@@ -24,7 +24,7 @@
 #include "slSet.h"
 #include "slCluster.h"
 #include "pgDatatype.h"
-#include "sysProcess.h"
+#include "utils/sysProcess.h"
 
 
 extern wxString backupExecutable;

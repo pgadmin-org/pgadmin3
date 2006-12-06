@@ -21,8 +21,8 @@
 #include "pgSet.h"
 #include "pgConn.h"
 #include "pgQueryThread.h"
-#include "base/sysLogger.h"
-#include "base/pgDefs.h"
+#include "utils/sysLogger.h"
+#include "utils/pgDefs.h"
 
 pgSet::pgSet(PGresult *newRes, pgConn *newConn, wxMBConv &cnv, bool needColQt)
 : conv(cnv)

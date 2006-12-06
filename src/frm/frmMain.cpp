@@ -32,7 +32,7 @@
 #include <wx/aui/aui.h>
 
 // App headers
-#include "misc.h"
+#include "utils/misc.h"
 #include "menu.h"
 #include "pgfeatures.h"
 #include "frmMain.h"

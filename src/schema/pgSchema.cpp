@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "menu.h"
-#include "misc.h"
+#include "utils/misc.h"
 #include "pgSchema.h"
 #include "frmMain.h"
 #include "pgDomain.h"

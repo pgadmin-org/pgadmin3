@@ -17,7 +17,7 @@
 
 #include "pgConn.h"
 #include "ctl/ctlSQLGrid.h"
-#include "sysSettings.h"
+#include "utils/sysSettings.h"
 #include "frmExport.h"
 
 

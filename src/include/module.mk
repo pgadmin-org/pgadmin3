@@ -49,7 +49,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlgUser.h \
 	$(srcdir)/include/dlgView.h \
 	$(srcdir)/include/explainCanvas.h \
-	$(srcdir)/include/favourites.h \
 	$(srcdir)/include/frmAbout.h \
 	$(srcdir)/include/frmBackup.h \
 	$(srcdir)/include/frmConfig.h \
@@ -72,9 +71,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/frmSplash.h \
 	$(srcdir)/include/frmStatus.h \
 	$(srcdir)/include/frmUpdate.h \
-	$(srcdir)/include/md5.h \
 	$(srcdir)/include/menu.h \
-	$(srcdir)/include/misc.h \
 	$(srcdir)/include/pgAdmin3.h \
 	$(srcdir)/include/pgAggregate.h \
 	$(srcdir)/include/pgCast.h \
@@ -110,25 +107,17 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/pgType.h \
 	$(srcdir)/include/pgUser.h \
 	$(srcdir)/include/pgView.h \
-	$(srcdir)/include/pgconfig.h \
 	$(srcdir)/include/pgfeatures.h \
 	$(srcdir)/include/postgres.h \
-	$(srcdir)/include/precomp.h \
-    $(srcdir)/include/svnversion.h \
-	$(srcdir)/include/sysLogger.h \
-	$(srcdir)/include/sysProcess.h \
-	$(srcdir)/include/sysSettings.h \
-	$(srcdir)/include/update.h \
-	$(srcdir)/include/utffile.h \
+  $(srcdir)/include/svnversion.h \
 	$(srcdir)/include/version.h \
 	$(srcdir)/include/wxgridsel.h
 
 EXTRA_DIST += \
         $(srcdir)/include/module.mk
 
-include $(srcdir)/include/base/module.mk
 include $(srcdir)/include/ctl/module.mk
 include $(srcdir)/include/images/module.mk
 include $(srcdir)/include/nodes/module.mk
 include $(srcdir)/include/parser/module.mk
-
+include $(srcdir)/include/utils/module.mk

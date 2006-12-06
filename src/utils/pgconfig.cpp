@@ -13,10 +13,10 @@
 
 #include <wx/textbuf.h>
 
-#include "pgconfig.h"
+#include "utils/pgconfig.h"
 #include "pgConn.h"
 #include "pgSet.h"
-#include "utffile.h"
+#include "utils/utffile.h"
 
 
 #define DEFAULT_COMMENT_INDEX       wxT("\t\t# ")

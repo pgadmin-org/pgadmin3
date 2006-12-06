@@ -16,7 +16,7 @@
 #include <wx/arrimpl.cpp>
 
 // App headers
-#include "misc.h"
+#include "utils/misc.h"
 #include "pgObject.h"
 #include "pgDatabase.h"
 #include "pgCollection.h"

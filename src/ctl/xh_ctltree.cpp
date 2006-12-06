@@ -11,7 +11,7 @@
  
 #include "wx/wx.h"
 
-#include "misc.h"
+#include "utils/misc.h"
 #include "ctl/ctlTree.h"
 #include "ctl/xh_ctltree.h"
 

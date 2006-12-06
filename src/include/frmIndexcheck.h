@@ -13,7 +13,7 @@
 #define __FRMINDEXCHECK_H
 
 #include "dlgClasses.h"
-#include "base/factory.h"
+#include "utils/factory.h"
 
 
 // Class declarations

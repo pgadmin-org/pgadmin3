@@ -14,10 +14,10 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "misc.h"
+#include "utils/misc.h"
 #include "pgDatatype.h"
 #include "pgDatabase.h"
-#include "pgDefs.h"
+#include "utils/pgDefs.h"
 
 
 pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup, long numdims, long typmod)

@@ -17,7 +17,7 @@
 #include <wx/listctrl.h>
 #include <wx/xrc/xmlres.h>
 
-#include "misc.h"
+#include "utils/misc.h"
 #include <ctl/ctlTree.h>
 #include "ctl/ctlSQLBox.h"
 #include "ctl/ctlListView.h"
@@ -25,12 +25,10 @@
 #include "dlgClasses.h"
 #include "pgConn.h"
 #include "pgSet.h"
-#include "base/factory.h"
-
-#include "precomp.h"
+#include "utils/factory.h"
 
 // App headers
-#include "sysSettings.h"
+#include "utils/sysSettings.h"
 
 #ifdef __WXMSW__
 #else

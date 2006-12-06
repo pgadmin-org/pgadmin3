@@ -14,10 +14,10 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "misc.h"
+#include "utils/misc.h"
 #include "pgRole.h"
 #include "frmMain.h"
-#include "pgDefs.h"
+#include "utils/pgDefs.h"
 #include "pgDatabase.h"
 #include "pgTablespace.h"
 

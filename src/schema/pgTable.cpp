@@ -11,7 +11,7 @@
 
 
 #include "pgAdmin3.h"
-#include "misc.h"
+#include "utils/misc.h"
 #include "frmHint.h"
 #include "frmMain.h"
 #include "frmMaintenance.h"
@@ -20,7 +20,7 @@
 #include "pgIndexConstraint.h"
 #include "pgForeignKey.h"
 #include "pgCheck.h"
-#include "sysSettings.h"
+#include "utils/sysSettings.h"
 #include "pgfeatures.h"
 #include "pgRule.h"
 #include "pgTrigger.h"

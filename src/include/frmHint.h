@@ -30,7 +30,7 @@
 #define HINT_RC_FIX             42
 
 #include "dlgClasses.h"
-#include "base/factory.h"
+#include "utils/factory.h"
 
 class frmMain;
 class frmHint : public DialogWithHelp

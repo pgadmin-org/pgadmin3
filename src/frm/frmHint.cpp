@@ -24,7 +24,7 @@
 #include "frmHint.h"
 #include "frmMain.h"
 #include "pgObject.h"
-#include "utffile.h"
+#include "utils/utffile.h"
 
 // Icons
 #include "images/hint.xpm"

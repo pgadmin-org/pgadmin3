@@ -13,7 +13,7 @@
 #define FRMMAINTENANCE_H
 
 #include "dlgClasses.h"
-#include "base/factory.h"
+#include "utils/factory.h"
 
 // Class declarations
 class frmMaintenance : public ExecutionDialog

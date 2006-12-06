@@ -21,7 +21,7 @@
 #include "pgSet.h"
 #include "pgConn.h"
 #include "pgQueryThread.h"
-#include "base/sysLogger.h"
+#include "utils/sysLogger.h"
 
 static void pgNoticeProcessor(void *arg, const char *message)
 {

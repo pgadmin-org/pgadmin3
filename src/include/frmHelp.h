@@ -16,7 +16,7 @@
 #include "wx/wxhtml.h"
 
 #include "dlgClasses.h"
-#include "base/factory.h"
+#include "utils/factory.h"
 
 class ctlHelpWindow;
 class frmMain;

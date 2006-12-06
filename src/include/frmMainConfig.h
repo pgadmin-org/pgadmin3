@@ -12,10 +12,10 @@
 #ifndef FRMMAINCONFIG_H
 #define FRMMAINCONFIG_H
 
-#include "pgconfig.h"
+#include "utils/pgconfig.h"
 #include "frmConfig.h"
 #include "dlgClasses.h"
-#include "base/factory.h"
+#include "utils/factory.h"
 
 class ctlListView;
 class pgServer;

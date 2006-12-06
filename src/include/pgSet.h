@@ -19,7 +19,7 @@
 // PostgreSQL headers
 #include <libpq-fe.h>
 
-#include "misc.h"
+#include "utils/misc.h"
 
 typedef enum
 {

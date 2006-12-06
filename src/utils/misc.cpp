@@ -22,7 +22,7 @@
 #include <wx/fontenc.h>
 #include <wx/display.h>
 
-#include "utffile.h"
+#include "utils/utffile.h"
 #include <locale.h>
 
 #ifdef __WXMSW__
@@ -33,7 +33,7 @@
 #include <stdlib.h>
 
 // App headers
-#include "misc.h"
+#include "utils/misc.h"
 #include "frmMain.h"
 #include "frmHelp.h"
 

@@ -26,7 +26,7 @@
 #include "frmMain.h"
 #include "frmAbout.h"
 #include "frmHelp.h"
-#include "utffile.h"
+#include "utils/utffile.h"
 #include "pgConn.h"
 #include "pgSet.h"
 #include "menu.h"

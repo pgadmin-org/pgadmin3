@@ -20,7 +20,7 @@
 #include "frmMain.h"
 #include "pgConn.h"
 #include "pgObject.h"
-#include "sysProcess.h"
+#include "utils/sysProcess.h"
 #include "menu.h"
 #include "pgQueryThread.h"
 

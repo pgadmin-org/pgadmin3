@@ -13,7 +13,7 @@
 #define FRMABOUT_H
 
 #include "dlgClasses.h"
-#include "base/factory.h"
+#include "utils/factory.h"
 
 // Class declarations
 class frmAbout : public wxDialog

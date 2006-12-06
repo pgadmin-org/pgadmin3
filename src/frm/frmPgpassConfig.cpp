@@ -21,7 +21,7 @@
 #include "frmPgpassConfig.h"
 #include "dlgPgpassConfig.h"
 #include "frmMain.h"
-#include "utffile.h"
+#include "utils/utffile.h"
 #include "pgServer.h"
 #include "menu.h"
 #include "pgfeatures.h"

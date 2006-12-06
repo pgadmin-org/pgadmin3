@@ -34,13 +34,13 @@
 #endif
 
 // App headers
-#include "misc.h"
-#include "base/sysLogger.h"
+#include "utils/misc.h"
+#include "utils/sysLogger.h"
 #include "pgConn.h"
-#include "misc.h"
-#include "md5.h"
+#include "utils/misc.h"
+#include "utils/md5.h"
 #include "pgSet.h"
-#include "sysLogger.h"
+#include "utils/sysLogger.h"
 
 double pgConn::libpqVersion=8.0;
 

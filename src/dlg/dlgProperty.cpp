@@ -18,8 +18,8 @@
 #include "ctl/ctlSQLBox.h"
 #include "pgCollection.h"
 #include "pgDatatype.h"
-#include "misc.h"
-#include "pgDefs.h"
+#include "utils/misc.h"
+#include "utils/pgDefs.h"
 #include "ctlSecurityPanel.h"
 
 // Images

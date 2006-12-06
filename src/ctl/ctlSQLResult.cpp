@@ -16,7 +16,7 @@
 #include "pgConn.h"
 #include "pgQueryThread.h"
 #include "ctl/ctlSQLResult.h"
-#include "sysSettings.h"
+#include "utils/sysSettings.h"
 #include "frmExport.h"
 
 

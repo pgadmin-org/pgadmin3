@@ -15,7 +15,7 @@
 #include <wx/wx.h>
 
 // App headers
-#include "misc.h"
+#include "utils/misc.h"
 #include "dlgRole.h"
 #include "pgRole.h"
 

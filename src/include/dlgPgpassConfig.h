@@ -13,7 +13,7 @@
 #define __DLGPGPASSCONFIG_H
 
 #include "dlgClasses.h"
-#include "pgconfig.h"
+#include "utils/pgconfig.h"
 
 // Class declarations
 class dlgPgpassConfig : public DialogWithHelp

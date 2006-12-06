@@ -15,8 +15,8 @@
 #include "pgAdmin3.h"
 #include <wx/file.h>
 #include "frmExport.h"
-#include "sysSettings.h"
-#include "misc.h"
+#include "utils/sysSettings.h"
+#include "utils/misc.h"
 
 
 #define txtFilename     CTRL_TEXT("txtFilename")

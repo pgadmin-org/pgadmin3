@@ -13,7 +13,7 @@
 #define dlgAddFavourite_H
 
 #include "dlgClasses.h"
-#include "favourites.h"
+#include "utils/favourites.h"
 
 // Class declarations
 class dlgAddFavourite : public pgDialog

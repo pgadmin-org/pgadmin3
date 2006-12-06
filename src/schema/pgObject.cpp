@@ -14,7 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "misc.h"
+#include "utils/misc.h"
 #include "pgObject.h"
 #include "pgServer.h"
 #include "frmMain.h"
@@ -42,7 +42,7 @@
 #include "pgForeignKey.h"
 #include "pgRule.h"
 #include "pgRole.h"
-#include "pgDefs.h"
+#include "utils/pgDefs.h"
 #include "pgaJob.h"
 
 

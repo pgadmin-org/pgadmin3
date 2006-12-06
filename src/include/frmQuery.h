@@ -13,8 +13,8 @@
 #define __FRM_QUERY_H
 
 #include "dlgClasses.h"
-#include "base/factory.h"
-#include "favourites.h"
+#include "utils/factory.h"
+#include "utils/favourites.h"
 
 // wxAUI
 #include <wx/aui/aui.h>

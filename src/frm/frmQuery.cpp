@@ -31,7 +31,7 @@
 #include "dlgSelectConnection.h"
 #include "dlgAddFavourite.h"
 #include "dlgManageFavourites.h"
-#include "favourites.h"
+#include "utils/favourites.h"
 #include "frmReport.h"
 
 #include <wx/clipbrd.h>

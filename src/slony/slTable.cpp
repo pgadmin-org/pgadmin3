@@ -14,7 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "misc.h"
+#include "utils/misc.h"
 #include "slTable.h"
 #include "frmMain.h"
 

@@ -9,16 +9,17 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include "pgAdmin3.h"
 
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/ffile.h>
 #include <wx/datetime.h>
 #include <wx/log.h>
-#include "copyright.h"      // needed for APPNAME_L caption
 
 // App headers
-#include "base/sysLogger.h"
+#include "copyright.h"      // needed for APPNAME_L caption
+#include "utils/sysLogger.h"
 
 wxLogLevel sysLogger::logLevel=LOG_ERRORS;
 wxString sysLogger::logFile=wxT("debug.log");

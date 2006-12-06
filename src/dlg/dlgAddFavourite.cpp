@@ -17,12 +17,12 @@
 #include "dlgAddFavourite.h"
 #include "pgConn.h"
 #include "pgServer.h"
-#include "sysLogger.h"
+#include "utils/sysLogger.h"
 #include "ctl/ctlTree.h"
 
 #include "images/folder.xpm"
 
-#include "favourites.h"
+#include "utils/favourites.h"
 
 #include <wx/imaglist.h>
 

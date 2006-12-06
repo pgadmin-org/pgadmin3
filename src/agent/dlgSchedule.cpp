@@ -12,7 +12,7 @@
 #include "pgAdmin3.h"
 
 // App headers
-#include "misc.h"
+#include "utils/misc.h"
 #include "dlgSchedule.h"
 #include "pgaSchedule.h"
 

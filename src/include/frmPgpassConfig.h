@@ -13,7 +13,7 @@
 #define frmPgpassConfig_H
 
 #include "frmConfig.h"
-#include "pgconfig.h"
+#include "utils/pgconfig.h"
 
 class pgConn;
 class pgServer;

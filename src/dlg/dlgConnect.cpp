@@ -17,7 +17,7 @@
 #include "dlgConnect.h"
 #include "pgConn.h"
 #include "pgServer.h"
-#include "sysLogger.h"
+#include "utils/sysLogger.h"
 
 #include "images/connect.xpm"
 

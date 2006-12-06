@@ -14,7 +14,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
-#include "md5.h"
+#include "utils/md5.h"
 
 /*
  *	PRIVATE FUNCTIONS

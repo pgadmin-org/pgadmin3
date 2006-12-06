@@ -22,7 +22,7 @@
 #include "frmHbaConfig.h"
 #include "dlgHbaConfig.h"
 #include "frmMain.h"
-#include "utffile.h"
+#include "utils/utffile.h"
 #include "pgServer.h"
 #include "menu.h"
 #include "pgfeatures.h"

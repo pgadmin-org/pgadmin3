@@ -13,8 +13,8 @@
 #include <wx/wx.h>
 
 #include "pgAdmin3.h"
-#include "favourites.h"
-#include "sysSettings.h"
+#include "utils/favourites.h"
+#include "utils/sysSettings.h"
 
 #include <wx/file.h>
 
