@@ -330,7 +330,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
             long typmod=columns->GetLong(wxT("atttypmod"));
             pgDatatype dt(columns->GetVal(wxT("typnspname")), columns->GetVal(wxT("typname")), 
                 columns->GetBool(wxT("isdup")),
-                columns->GetBool(wxT("isarray"))? 1 : 0, typmod);
+                columns->GetLong(wxT("attndims")), typmod);
 
 
             column->iSetTypmod(typmod);
