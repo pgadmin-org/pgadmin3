@@ -16,7 +16,7 @@
 #ifdef __WX_FULLSOURCE
 #include "wx/generic/gridsel.h"
 #else
-#include "wxgridsel.h"
+#include "ctl/wxgridsel.h"
 #endif
 
 // App headers
