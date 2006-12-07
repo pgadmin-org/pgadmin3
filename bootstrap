@@ -9,7 +9,7 @@
 #######################################################################
 
 # Insert the version number wherever it's needed
-LONG_VER=`grep '#define VERSION_PACKAGE' src/include/version.h | awk '{print $3}'`
+LONG_VER=`grep '#define VERSION_PACKAGE' pgadmin/include/version.h | awk '{print $3}'`
 SHORT_VER=`echo $LONG_VER | cut -d . -f1,2`
 
 sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" configure.ac.in > configure.ac

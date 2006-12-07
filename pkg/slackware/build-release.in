@@ -26,11 +26,11 @@ export PATH PGDIR WXDIR
 
 # Now make the binary build
 make all
-/usr/bin/strip src/pgadmin3
+/usr/bin/strip pgadmin/pgadmin3
 /usr/bin/strip xtra/pgagent/pgagent
 
 # Build a clean distro
-if [ -x src/pgadmin3 ]; then
+if [ -x pgadmin/pgadmin3 ]; then
 
 	# Use the build system
 	make install
@@ -41,7 +41,7 @@ if [ -x src/pgadmin3 ]; then
 	mkdir -p ./slackpack/install
 	mv /usr/share/pgadmin3 ./slackpack/usr/share/
 	cp ./pkg/pgadmin3.desktop ./slackpack/opt/kde/share/applnk/Development
-	cp ./src/include/images/elephant48.xpm ./slackpack/usr/share/pgadmin3/pgadmin3.xpm
+	cp ./pgadmin/include/images/elephant48.xpm ./slackpack/usr/share/pgadmin3/pgadmin3.xpm
 	echo "pgadmin3-$VERSION: pgAdmin III - PostgreSQL Tools" >> ./slackpack/install/slack-desc
 	echo "pgadmin3-$VERSION: " >> ./slackpack/install/slack-desc
 	echo "pgadmin3-$VERSION: pgAdmin III is the most popular Open Source management tool for" >> ./slackpack/install/slack-desc

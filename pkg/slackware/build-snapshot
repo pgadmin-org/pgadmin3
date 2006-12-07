@@ -23,7 +23,7 @@ rm -rf ./slackpack
 rm -rf ./doc
 rm -rf ./i18n
 rm -rf ./pkg
-rm -rf ./src
+rm -rf ./pgadmin
 rm -rf ./xtra
 
 # SVN update
@@ -39,11 +39,11 @@ rm -rf ./xtra
 
 # Now make the binary build
 make all
-/usr/bin/strip src/pgadmin3
+/usr/bin/strip pgadmin/pgadmin3
 /usr/bin/strip xtra/pgagent/pgagent
 
 # Build a clean distro
-if [ -x src/pgadmin3 ]; then
+if [ -x pgadmin/pgadmin3 ]; then
 
 	# Use the build system
 	make install
@@ -54,7 +54,7 @@ if [ -x src/pgadmin3 ]; then
 	mkdir -p ./slackpack/install
 	mv /usr/share/pgadmin3 ./slackpack/usr/share/
 	cp ./pkg/pgadmin3.desktop ./slackpack/opt/kde/share/applnk/Development
-	cp ./src/include/images/elephant48.xpm ./slackpack/usr/share/pgadmin3/pgadmin3.xpm
+	cp ./pgadmin/include/images/elephant48.xpm ./slackpack/usr/share/pgadmin3/pgadmin3.xpm
 	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: pgAdmin III - PostgreSQL Tools" >> ./slackpack/install/slack-desc
 	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: " >> ./slackpack/install/slack-desc
 	echo "pgadmin3-`/usr/bin/date +%Y%m%d`: pgAdmin III is the most popular Open Source mamangement tool for" >> ./slackpack/install/slack-desc

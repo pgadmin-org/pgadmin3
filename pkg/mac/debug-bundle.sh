@@ -13,8 +13,8 @@ mkdir -p "$bundle_name.app/Contents/SharedSupport"
 
 (cd "$bundle_name.app/"; ln -s ../pkg/mac/PkgInfo PkgInfo) &&
 (cd "$bundle_name.app/Contents" && ln -s ../../pkg/mac/Info-Debug.plist Info.plist) &&
-(cd "$bundle_name.app/Contents/MacOS" && ln -s ../../../src/pgadmin3 "$bundle_name") &&
+(cd "$bundle_name.app/Contents/MacOS" && ln -s ../../../pgadmin/pgadmin3 "$bundle_name") &&
 (cd "$bundle_name.app/Contents/Resources" && ln -s "../../../pkg/mac/pgAdmin3.icns" "$bundle_name.icns") &&
-(cd "$bundle_name.app/Contents/SharedSupport" && ln -s ../../../src/ui ui) &&
+(cd "$bundle_name.app/Contents/SharedSupport" && ln -s ../../../pgadmin/ui ui) &&
 (cd "$bundle_name.app/Contents/SharedSupport" && ln -s ../../../docs docs) &&
 (cd "$bundle_name.app/Contents/SharedSupport" && ln -s ../../../i18n i18n)
