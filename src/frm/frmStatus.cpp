@@ -118,6 +118,9 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     if (connection->BackendMinimumVersion(7, 4))
         statusList->AddColumn(_("Query start"), 50);
 
+    if (connection->BackendMinimumVersion(8, 3))
+        statusList->AddColumn(_("TX start"), 50);
+
     statusList->AddColumn(_("Query"), 500);
 
     lockList->AddColumn(wxT("PID"), 50);
@@ -373,6 +376,9 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                         else
 							statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("query_start")));
 					}
+
+                    if (connection->BackendMinimumVersion(8, 3))
+					    statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("txn_start")));
 
     				statusList->SetItem(row, colpos, qry.Left(250));
 					row++;
