@@ -58,7 +58,9 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
                 length += wxT(",") + NumToStr(prec);
         }
         else if (name == wxT("time") || name == wxT("timetz")
+              || name == wxT("time without time zone") || name == wxT("time with time zone")
               || name == wxT("timestamp") || name == wxT("timestamptz")
+              || name == wxT("timestamp without time zone") || name == wxT("timestamp with time zone")
               || name == wxT("bit"))
         {
             prec=0;
@@ -83,7 +85,19 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
         len=prec=0;
 }
 
-
+wxString pgDatatype::FullName() const 
+{
+    if (name == wxT("time with time zone"))
+        return wxT("time") + length + wxT(" with time zone") + array;
+    else if (name == wxT("time without time zone"))
+        return wxT("time") + length + wxT(" without time zone") + array;
+    else if (name == wxT("timestamp with time zone"))
+        return wxT("timestamp") + length + wxT(" with time zone") + array;
+    else if (name == wxT("timestamp without time zone"))
+        return wxT("timestamp") + length + wxT(" without time zone") + array;
+    else
+        return name + length + array;
+}
 
 wxString pgDatatype::GetSchemaPrefix(pgDatabase *db) const
 {
@@ -115,7 +129,9 @@ long pgDatatype::GetTypmod(const wxString &name, const wxString &len, const wxSt
         return (((long)StrToLong(len) << 16) + StrToLong(prec)) +4;
     }
     else if (name == wxT("time") || name == wxT("timetz")
+          || name == wxT("time without time zone") || name == wxT("time with time zone")
           || name == wxT("timestamp") || name == wxT("timestamptz")
+          || name == wxT("timestamp without time zone") || name == wxT("timestamp with time zone")
           || name == wxT("interval")  || name == wxT("bit"))
     {
         return StrToLong(len);
