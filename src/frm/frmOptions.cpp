@@ -24,7 +24,7 @@
 #include "utils/sysSettings.h"
 #include "utils/sysLogger.h"
 #include "utils/misc.h"
-#include "menu.h"
+#include "frm/menu.h"
 
 #include "images/properties.xpm"
 

@@ -16,7 +16,7 @@
 
 // PostgreSQL headers
 #include <libpq-fe.h>
-#include "pgfeatures.h"
+#include "utils/pgfeatures.h"
 
 // Network  headers
 #ifdef __WXMSW__
@@ -36,10 +36,10 @@
 // App headers
 #include "utils/misc.h"
 #include "utils/sysLogger.h"
-#include "schema/pgConn.h"
+#include "db/pgConn.h"
 #include "utils/misc.h"
 #include "utils/md5.h"
-#include "schema/pgSet.h"
+#include "db/pgSet.h"
 #include "utils/sysLogger.h"
 
 double pgConn::libpqVersion=8.0;

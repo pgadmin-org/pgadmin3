@@ -23,8 +23,8 @@
 // wxWindows headers
 #include <wx/thread.h>
 
-#include "schema/pgSet.h"
-#include "schema/pgConn.h"
+#include "db/pgSet.h"
+#include "db/pgConn.h"
 #if USE_LISTVIEW
 #include <wx/listctrl.h>
 #else

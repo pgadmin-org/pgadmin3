@@ -13,7 +13,7 @@
 #include "pgAdmin3.h"
 
 #include "schema/pgCollection.h"
-#include "menu.h"
+#include "frm/menu.h"
 
 #include <wx/imaglist.h>
 

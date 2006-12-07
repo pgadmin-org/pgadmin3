@@ -15,7 +15,7 @@
 #include <wx/wx.h>
 #include <wx/clipbrd.h>
 
-#include "schema/pgConn.h"
+#include "db/pgConn.h"
 #include "ctl/ctlSQLGrid.h"
 #include "utils/sysSettings.h"
 #include "frm/frmExport.h"

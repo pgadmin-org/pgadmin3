@@ -15,10 +15,10 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "schema/pgSet.h"
+#include "db/pgSet.h"
 #include "ctl/ctlSQLBox.h"
 #include "dlg/dlgFindReplace.h"
-#include "menu.h"
+#include "frm/menu.h"
 
 // Must be last for reasons I haven't fully grokked...
 #include <wx/regex.h>

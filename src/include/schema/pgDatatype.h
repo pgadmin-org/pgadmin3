@@ -16,8 +16,8 @@
 
 // App headers
 
-#include "pgSet.h"
-#include "pgConn.h"
+#include "db/pgSet.h"
+#include "db/pgConn.h"
 
 class pgDatabase;
 

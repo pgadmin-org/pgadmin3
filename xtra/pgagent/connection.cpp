@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "schema/pgAgent.h"
+#include "pgAgent.h"
 
 DBconn *DBconn::primaryConn;
 wxString DBconn::basicConnectString;

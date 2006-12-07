@@ -20,9 +20,9 @@
 #include "frm/frmMain.h"
 #include "frm/frmQuery.h"
 #include "frm/frmHelp.h"
-#include "menu.h"
-#include "explainCanvas.h"
-#include "schema/pgConn.h"
+#include "frm/menu.h"
+#include "ctl/explainCanvas.h"
+#include "db/pgConn.h"
 
 #include "ctl/ctlSQLResult.h"
 #include "schema/pgDatabase.h"

@@ -16,7 +16,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgfeatures.h"
+#include "utils/pgfeatures.h"
 #include "schema/pgTablespace.h"
 #include "schema/pgDatabase.h"
 #include "frm/frmMain.h"

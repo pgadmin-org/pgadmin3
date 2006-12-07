@@ -21,7 +21,7 @@
 #include "schema/pgForeignKey.h"
 #include "schema/pgCheck.h"
 #include "utils/sysSettings.h"
-#include "pgfeatures.h"
+#include "utils/pgfeatures.h"
 #include "schema/pgRule.h"
 #include "schema/pgTrigger.h"
 #include "schema/pgConstraints.h"

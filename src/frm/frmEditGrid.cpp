@@ -23,8 +23,8 @@
 #include "pgAdmin3.h"
 #include "utils/pgDefs.h"
 #include "frm/frmMain.h"
-#include "menu.h"
-#include "pgQueryThread.h"
+#include "frm/menu.h"
+#include "db/pgQueryThread.h"
 
 #include <wx/generic/gridctrl.h>
 #include <wx/clipbrd.h>

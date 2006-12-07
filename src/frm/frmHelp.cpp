@@ -22,7 +22,7 @@
 #include "copyright.h"
 #include "frm/frmHelp.h"
 #include "frm/frmMain.h"
-#include "menu.h"
+#include "frm/menu.h"
 
 // Icons
 #include "images/reload.xpm"

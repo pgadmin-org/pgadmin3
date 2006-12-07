@@ -16,11 +16,9 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "ctl/explainCanvas.h"
 
 #include <wx/docview.h>
-#include <explainCanvas.h>
-
-
 
 #include "images/ex_unknown.xpm"
 #include "images/ex_limit.xpm"

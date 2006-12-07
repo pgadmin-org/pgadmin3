@@ -16,7 +16,7 @@
 // App headers
 #include "pgAdmin3.h"
 
-#include <explainCanvas.h>
+#include "ctl/explainCanvas.h"
 
 
 

@@ -11,27 +11,38 @@
 
 #ifdef WX_PRECOMP
 
+#include "copyright.h"
+#include "pgAdmin3.h"
+#include "version.h"
+
 #include "agent/dlgJob.h"
 #include "agent/dlgSchedule.h"
 #include "agent/dlgStep.h"
 #include "agent/pgaJob.h"
 #include "agent/pgaSchedule.h"
 #include "agent/pgaStep.h"
-#include "copyright.h"
+
 #include "ctl/calbox.h"
 #include "ctl/ctlComboBox.h"
 #include "ctl/ctlListView.h"
+#include "ctl/ctlSecurityPanel.h"
 #include "ctl/ctlSQLBox.h"
 #include "ctl/ctlSQLGrid.h"
 #include "ctl/ctlSQLResult.h"
 #include "ctl/ctlTree.h"
+#include "ctl/explainCanvas.h"
 #include "ctl/timespin.h"
+#include "ctl/wxgridsel.h"
 #include "ctl/xh_calb.h"
 #include "ctl/xh_ctlcombo.h"
 #include "ctl/xh_ctltree.h"
 #include "ctl/xh_sqlbox.h"
 #include "ctl/xh_timespin.h"
-#include "ctl/ctlSecurityPanel.h"
+
+#include "db/pgConn.h"
+#include "db/pgQueryThread.h"
+#include "db/pgSet.h"
+
 #include "dlg/dlgAddFavourite.h"
 #include "dlg/dlgAggregate.h"
 #include "dlg/dlgCast.h"
@@ -68,7 +79,7 @@
 #include "dlg/dlgType.h"
 #include "dlg/dlgUser.h"
 #include "dlg/dlgView.h"
-#include "explainCanvas.h"
+
 #include "frm/frmAbout.h"
 #include "frm/frmBackup.h"
 #include "frm/frmConfig.h"
@@ -90,17 +101,18 @@
 #include "frm/frmRestore.h"
 #include "frm/frmSplash.h"
 #include "frm/frmStatus.h"
-#include "menu.h"
+#include "frm/menu.h"
+
 //#include "nodes/parsenodes.h"
 //#include "parser/keywords.h"
 //#include "parser/parse.h"
-#include "pgAdmin3.h"
+
 #include "schema/pgAggregate.h"
 #include "schema/pgCast.h"
 #include "schema/pgCheck.h"
 #include "schema/pgCollection.h"
 #include "schema/pgColumn.h"
-#include "schema/pgConn.h"
+
 #include "schema/pgConstraints.h"
 #include "schema/pgConversion.h"
 #include "schema/pgDatabase.h"
@@ -115,20 +127,19 @@
 #include "schema/pgObject.h"
 #include "schema/pgOperator.h"
 #include "schema/pgOperatorClass.h"
-#include "pgQueryThread.h"
 #include "schema/pgRole.h"
 #include "schema/pgRule.h"
 #include "schema/pgSchema.h"
 #include "schema/pgSequence.h"
 #include "schema/pgServer.h"
-#include "schema/pgSet.h"
 #include "schema/pgTable.h"
 #include "schema/pgTablespace.h"
 #include "schema/pgTrigger.h"
 #include "schema/pgType.h"
 #include "schema/pgUser.h"
 #include "schema/pgView.h"
-#include "pgfeatures.h"
+
+#include "utils/pgfeatures.h"
 #include "utils/factory.h"
 #include "utils/favourites.h"
 #include "utils/md5.h"
@@ -139,8 +150,5 @@
 #include "utils/sysProcess.h"
 #include "utils/sysSettings.h"
 #include "utils/utffile.h"
-#include "version.h"
-#include "wxgridsel.h"
-
 
 #endif

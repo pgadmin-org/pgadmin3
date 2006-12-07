@@ -12,7 +12,7 @@
 #ifndef PGSERVER_H
 #define PGSERVER_H
 
-#include "pgConn.h"
+#include "db/pgConn.h"
 #include "pgCollection.h"
 
 

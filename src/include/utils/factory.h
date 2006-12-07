@@ -15,7 +15,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 
-#include "menu.h"
+#include "frm/menu.h"
 
 #ifdef WIN32
 #ifndef __GNUC__

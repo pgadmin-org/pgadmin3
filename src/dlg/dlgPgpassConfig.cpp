@@ -15,8 +15,8 @@
 #include "pgAdmin3.h"
 
 #include "dlg/dlgPgpassConfig.h"
-#include "schema/pgConn.h"
-#include "schema/pgSet.h"
+#include "db/pgConn.h"
+#include "db/pgSet.h"
 
 // Icons
 #include "images/property.xpm"

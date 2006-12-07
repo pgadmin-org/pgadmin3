@@ -14,8 +14,8 @@
 #include <wx/textbuf.h>
 
 #include "utils/pgconfig.h"
-#include "schema/pgConn.h"
-#include "schema/pgSet.h"
+#include "db/pgConn.h"
+#include "db/pgSet.h"
 #include "utils/utffile.h"
 
 

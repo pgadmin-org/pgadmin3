@@ -9,7 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "schema/pgAgent.h"
+#include "pgAgent.h"
+
 #include <wx/file.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>

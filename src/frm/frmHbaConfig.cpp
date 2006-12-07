@@ -24,8 +24,8 @@
 #include "frm/frmMain.h"
 #include "utils/utffile.h"
 #include "schema/pgServer.h"
-#include "menu.h"
-#include "pgfeatures.h"
+#include "frm/menu.h"
+#include "utils/pgfeatures.h"
 
 #define CTL_CFGVIEW 345
 

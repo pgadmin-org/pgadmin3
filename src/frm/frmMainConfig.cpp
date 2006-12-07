@@ -23,8 +23,8 @@
 #include "dlg/dlgMainConfig.h"
 #include "utils/utffile.h"
 #include "schema/pgServer.h"
-#include "menu.h"
-#include "pgfeatures.h"
+#include "frm/menu.h"
+#include "utils/pgfeatures.h"
 
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(pgConfigOrgLineArray);

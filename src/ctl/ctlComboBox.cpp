@@ -13,8 +13,8 @@
 
 // App headers
 #include "ctl/ctlComboBox.h"
-#include "schema/pgConn.h"
-#include "schema/pgSet.h"
+#include "db/pgConn.h"
+#include "db/pgSet.h"
 
 
 class StringClientData : public wxClientData

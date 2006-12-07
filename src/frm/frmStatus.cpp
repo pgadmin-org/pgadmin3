@@ -21,7 +21,7 @@
 #include "frm/frmStatus.h"
 #include "frm/frmHint.h"
 #include "frm/frmMain.h"
-#include "pgfeatures.h"
+#include "utils/pgfeatures.h"
 #include "schema/pgServer.h"
 
 

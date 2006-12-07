@@ -18,9 +18,9 @@
 #include <libpq-fe.h>
 
 // App headers
-#include "schema/pgSet.h"
-#include "schema/pgConn.h"
-#include "pgQueryThread.h"
+#include "db/pgSet.h"
+#include "db/pgConn.h"
+#include "db/pgQueryThread.h"
 #include "utils/sysLogger.h"
 
 static void pgNoticeProcessor(void *arg, const char *message)

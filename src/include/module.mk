@@ -10,20 +10,17 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	  $(srcdir)/include/copyright.h \
-	  $(srcdir)/include/explainCanvas.h \
-	  $(srcdir)/include/menu.h \
-	  $(srcdir)/include/pgAdmin3.h \
-	  $(srcdir)/include/pgfeatures.h \
-	  $(srcdir)/include/postgres.h \
+	$(srcdir)/include/copyright.h \
+	$(srcdir)/include/pgAdmin3.h \
+	$(srcdir)/include/postgres.h \
     $(srcdir)/include/svnversion.h \
-	  $(srcdir)/include/version.h \
-	  $(srcdir)/include/wxgridsel.h
+	$(srcdir)/include/version.h
 
 EXTRA_DIST += \
     $(srcdir)/include/module.mk
 
 include $(srcdir)/include/agent/module.mk
+include $(srcdir)/include/db/module.mk
 include $(srcdir)/include/ctl/module.mk
 include $(srcdir)/include/frm/module.mk
 include $(srcdir)/include/images/module.mk

@@ -54,7 +54,7 @@
 #include "frm/frmQuery.h"
 #include "frm/frmSplash.h"
 #include "dlg/dlgSelectConnection.h"
-#include "schema/pgConn.h"
+#include "db/pgConn.h"
 #include "utils/sysLogger.h"
 #include "frm/frmHint.h"
 

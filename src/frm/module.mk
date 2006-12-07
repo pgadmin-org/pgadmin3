@@ -10,6 +10,7 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
+	$(srcdir)/frm/events.cpp \
 	$(srcdir)/frm/frmAbout.cpp \
 	$(srcdir)/frm/frmBackup.cpp \
 	$(srcdir)/frm/frmConfig.cpp \
@@ -33,5 +34,5 @@ pgadmin3_SOURCES += \
 	$(srcdir)/frm/frmStatus.cpp
 
 EXTRA_DIST += \
-        $(srcdir)/frm/module.mk
+    $(srcdir)/frm/module.mk
 

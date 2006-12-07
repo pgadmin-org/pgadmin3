@@ -13,6 +13,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dlg/dlgAddFavourite.cpp \
 	$(srcdir)/dlg/dlgAggregate.cpp \
 	$(srcdir)/dlg/dlgCast.cpp \
+    $(srcdir)/dlg/dlgClasses.cpp \
 	$(srcdir)/dlg/dlgCheck.cpp \
 	$(srcdir)/dlg/dlgColumn.cpp \
 	$(srcdir)/dlg/dlgConnect.cpp \

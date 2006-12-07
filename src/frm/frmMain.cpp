@@ -33,13 +33,13 @@
 
 // App headers
 #include "utils/misc.h"
-#include "menu.h"
-#include "pgfeatures.h"
+#include "frm/menu.h"
+#include "utils/pgfeatures.h"
 #include "frm/frmMain.h"
 #include "ctl/ctlSQLBox.h"
-#include "schema/pgConn.h"
+#include "db/pgConn.h"
 #include "schema/pgDatabase.h"
-#include "schema/pgSet.h"
+#include "db/pgSet.h"
 #include "schema/pgServer.h"
 #include "schema/pgObject.h"
 #include "schema/pgCollection.h"

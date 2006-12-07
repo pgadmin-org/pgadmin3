@@ -17,7 +17,8 @@ pgadmin3_SOURCES = \
 
 EXTRA_DIST = \
 	$(srcdir)/pgAdmin3.vcproj \
-	$(srcdir)/precomp.cpp
+	$(srcdir)/precomp.cpp \
+    $(srcdir)/pgAdmin3.rc
 
 # Generate svnversion.h every time, but only if repo version has changed.
 .PHONY: $(srcdir)/include/svnversion.cpp
@@ -63,7 +64,7 @@ install-exec-hook:
 	mv pgadmin3 tmp ;\
 	mv tmp pgAdmin3 ;\
 	if test "$(BUILD_DEBUG)" = "no"; then \
-		strip pgAdmin3 ;\
+	    strip pgAdmin3 ;\
 	fi
 
 endif

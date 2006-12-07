@@ -18,11 +18,11 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frm/frmMain.h"
-#include "schema/pgConn.h"
+#include "db/pgConn.h"
 #include "schema/pgObject.h"
 #include "utils/sysProcess.h"
-#include "menu.h"
-#include "pgQueryThread.h"
+#include "frm/menu.h"
+#include "db/pgQueryThread.h"
 
 #include <wx/listimpl.cpp>
 WX_DEFINE_LIST(windowList);

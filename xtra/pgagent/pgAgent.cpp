@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "schema/pgAgent.h"
+#include "pgAgent.h"
 
 #ifndef __WXMSW__
 #include <unistd.h>
