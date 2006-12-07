@@ -20,6 +20,45 @@ AC_DEFUN([CHECK_CPP_COMPILER],
 	fi
 ])
 
+###########################################
+# Check if we can use precompiled headers #
+###########################################
+
+AC_DEFUN([CHECK_PRECOMP_HEADERS],
+[
+	AC_MSG_CHECKING([whether to use precompiled headers])
+	USE_PRECOMP=""
+	AC_ARG_ENABLE(precomp, [  --enable-precomp        Use precompiled headers], USE_PRECOMP="$enableval")
+
+	if test -z "$USE_PRECOMP"; then
+		if test "X$GCC" = Xyes; then
+			if gcc_version=`$CC -dumpversion` > /dev/null 2>&1; then
+				major=`echo $gcc_version | cut -d. -f1`
+				minor=`echo $gcc_version | sed "s/@<:@-,a-z,A-Z@:>@.*//" | cut -d. -f2`
+				if test -z "$major" || test -z "$minor"; then
+					USE_PRECOMP=no
+				elif test "$major" -ge 4; then
+					USE_PRECOMP=yes
+				elif test "$major" -ge 3 && test "$minor" -ge 4; then
+					USE_PRECOMP=yes
+				else
+					USE_PRECOMP=no
+				fi
+			else
+				USE_PRECOMP=no
+			fi
+		else
+			USE_PRECOMP=no
+		fi
+	fi
+	if test "x$USE_PRECOMP" = "xyes"; then
+		AC_MSG_RESULT([yes])
+	else
+		AC_MSG_RESULT([no])
+	fi
+])
+AC_SUBST(USE_PRECOMP)
+
 #############################
 # Override wxWidgets version #
 #############################
