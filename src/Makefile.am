@@ -35,7 +35,6 @@ include $(srcdir)/db/module.mk
 include $(srcdir)/dlg/module.mk
 include $(srcdir)/frm/module.mk
 include $(srcdir)/include/module.mk
-include $(srcdir)/main/module.mk
 include $(srcdir)/schema/module.mk
 include $(srcdir)/slony/module.mk
 include $(srcdir)/ui/module.mk
