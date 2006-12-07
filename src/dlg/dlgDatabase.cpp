@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "dlgDatabase.h"
+#include "dlg/dlgDatabase.h"
 #include "pgDatabase.h"
 
 

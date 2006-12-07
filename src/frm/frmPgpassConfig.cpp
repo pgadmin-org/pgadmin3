@@ -19,7 +19,7 @@
 #include <wx/imaglist.h>
 
 #include "frmPgpassConfig.h"
-#include "dlgPgpassConfig.h"
+#include "dlg/dlgPgpassConfig.h"
 #include "frmMain.h"
 #include "utils/utffile.h"
 #include "pgServer.h"

@@ -13,7 +13,7 @@
 #ifndef FRMBACKUP_H
 #define FRMBACKUP_H
 
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
 class frmMain;

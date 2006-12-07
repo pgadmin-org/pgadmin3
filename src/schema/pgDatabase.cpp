@@ -20,7 +20,7 @@
 #include "pgCast.h"
 #include "pgLanguage.h"
 #include "pgSchema.h"
-#include "slCluster.h"
+#include "slony/slCluster.h"
 #include "frmHint.h"
 #include "frmReport.h"
 

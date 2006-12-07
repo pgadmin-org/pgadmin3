@@ -28,7 +28,7 @@
 #include "frmMain.h"
 
 #include "frmEditGrid.h"
-#include "dlgEditGridOptions.h"
+#include "dlg/dlgEditGridOptions.h"
 #include "pgTable.h"
 #include "pgView.h"
 

@@ -17,7 +17,7 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
-#include "dlgLanguage.h"
+#include "dlg/dlgLanguage.h"
 #include "pgLanguage.h"
 
 

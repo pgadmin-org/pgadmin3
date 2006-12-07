@@ -16,7 +16,7 @@
 
 // App headers
 #include "utils/misc.h"
-#include "dlgRole.h"
+#include "dlg/dlgRole.h"
 #include "pgRole.h"
 
 

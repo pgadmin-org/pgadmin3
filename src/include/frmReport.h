@@ -12,7 +12,7 @@
 #ifndef FRMREPORT_H
 #define FRMREPORT_H
 
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "ctl/ctlListView.h"
 #include "ctl/ctlSQLResult.h"
 

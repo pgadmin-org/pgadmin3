@@ -53,7 +53,7 @@
 #include "frmConfig.h"
 #include "frmQuery.h"
 #include "frmSplash.h"
-#include "dlgSelectConnection.h"
+#include "dlg/dlgSelectConnection.h"
 #include "pgConn.h"
 #include "utils/sysLogger.h"
 #include "frmHint.h"

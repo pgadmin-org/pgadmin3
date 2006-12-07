@@ -16,9 +16,9 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "pgObject.h"
-#include "slListen.h"
-#include "slNode.h"
-#include "slCluster.h"
+#include "slony/slListen.h"
+#include "slony/slNode.h"
+#include "slony/slCluster.h"
 #include "frmMain.h"
 
 

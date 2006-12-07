@@ -18,7 +18,7 @@
 #include "utils/misc.h"
 #include "frmMain.h"
 #include "frmHint.h"
-#include "dlgConnect.h"
+#include "dlg/dlgConnect.h"
 #include "pgDatabase.h"
 #include "pgTablespace.h"
 #include "pgGroup.h"

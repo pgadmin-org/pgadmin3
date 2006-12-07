@@ -15,10 +15,10 @@
 // App headers
 #include "pgAdmin3.h"
 
-#include "dlgRepSequence.h"
-#include "slCluster.h"
-#include "slSet.h"
-#include "slSequence.h"
+#include "slony/dlgRepSequence.h"
+#include "slony/slCluster.h"
+#include "slony/slSet.h"
+#include "slony/slSequence.h"
 #include "pgDatatype.h"
 
 

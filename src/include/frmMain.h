@@ -21,7 +21,7 @@
 // wxAUI
 #include <wx/aui/aui.h>
 
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
 #define FRMMAIN_PERPSECTIVE_VER wxT("$Rev$")

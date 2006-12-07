@@ -17,7 +17,7 @@
 #include "pgAdmin3.h"
 #include "pgSet.h"
 #include "ctl/ctlSQLBox.h"
-#include "dlgFindReplace.h"
+#include "dlg/dlgFindReplace.h"
 #include "menu.h"
 
 // Must be last for reasons I haven't fully grokked...

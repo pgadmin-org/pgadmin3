@@ -17,7 +17,7 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
-#include "dlgColumn.h"
+#include "dlg/dlgColumn.h"
 #include "pgSchema.h"
 #include "pgColumn.h"
 #include "pgTable.h"

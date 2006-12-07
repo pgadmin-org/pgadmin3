@@ -16,7 +16,7 @@
 
 // App headers
 #include "utils/misc.h"
-#include "dlgUser.h"
+#include "dlg/dlgUser.h"
 #include "pgUser.h"
 
 

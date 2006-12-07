@@ -16,7 +16,7 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "frmMain.h"
-#include "dlgServer.h"
+#include "dlg/dlgServer.h"
 #include "pgDatabase.h"
 #include <wx/busyinfo.h>
 

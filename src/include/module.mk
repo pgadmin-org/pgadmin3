@@ -11,43 +11,6 @@
 
 pgadmin3_SOURCES += \
 	$(srcdir)/include/copyright.h \
-	$(srcdir)/include/ctlSecurityPanel.h \
-	$(srcdir)/include/dlgAddFavourite.h \
-	$(srcdir)/include/dlgAggregate.h \
-	$(srcdir)/include/dlgCast.h \
-	$(srcdir)/include/dlgCheck.h \
-	$(srcdir)/include/dlgClasses.h \
-	$(srcdir)/include/dlgColumn.h \
-	$(srcdir)/include/dlgConnect.h \
-	$(srcdir)/include/dlgConversion.h \
-	$(srcdir)/include/dlgDatabase.h \
-	$(srcdir)/include/dlgDomain.h \
-	$(srcdir)/include/dlgEditGridOptions.h \
-	$(srcdir)/include/dlgFindReplace.h \
-	$(srcdir)/include/dlgForeignKey.h \
-	$(srcdir)/include/dlgFunction.h \
-	$(srcdir)/include/dlgGroup.h \
-	$(srcdir)/include/dlgHbaConfig.h \
-	$(srcdir)/include/dlgIndex.h \
-	$(srcdir)/include/dlgIndexConstraint.h \
-	$(srcdir)/include/dlgLanguage.h \
-	$(srcdir)/include/dlgMainConfig.h \
-	$(srcdir)/include/dlgManageFavourites.h \
-	$(srcdir)/include/dlgOperator.h \
-	$(srcdir)/include/dlgPgpassConfig.h \
-	$(srcdir)/include/dlgProperty.h \
-	$(srcdir)/include/dlgRole.h \
-	$(srcdir)/include/dlgRule.h \
-	$(srcdir)/include/dlgSchema.h \
-	$(srcdir)/include/dlgSelectConnection.h \
-	$(srcdir)/include/dlgSequence.h \
-	$(srcdir)/include/dlgServer.h \
-	$(srcdir)/include/dlgTable.h \
-	$(srcdir)/include/dlgTablespace.h \
-	$(srcdir)/include/dlgTrigger.h \
-	$(srcdir)/include/dlgType.h \
-	$(srcdir)/include/dlgUser.h \
-	$(srcdir)/include/dlgView.h \
 	$(srcdir)/include/explainCanvas.h \
 	$(srcdir)/include/frmAbout.h \
 	$(srcdir)/include/frmBackup.h \
@@ -120,4 +83,5 @@ include $(srcdir)/include/ctl/module.mk
 include $(srcdir)/include/images/module.mk
 include $(srcdir)/include/nodes/module.mk
 include $(srcdir)/include/parser/module.mk
+include $(srcdir)/include/slony/module.mk
 include $(srcdir)/include/utils/module.mk

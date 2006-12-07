@@ -16,11 +16,11 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "pgObject.h"
-#include "slNode.h"
-#include "slCluster.h"
-#include "slPath.h"
-#include "slListen.h"
-#include "slSet.h"
+#include "slony/slNode.h"
+#include "slony/slCluster.h"
+#include "slony/slPath.h"
+#include "slony/slListen.h"
+#include "slony/slSet.h"
 #include "frmMain.h"
 
 

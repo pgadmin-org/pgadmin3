@@ -12,7 +12,7 @@
 #ifndef SPLASH_H
 #define SPLASH_H
 
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
 // Class declarations

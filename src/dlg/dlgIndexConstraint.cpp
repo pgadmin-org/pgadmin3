@@ -16,7 +16,7 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "frmMain.h"
-#include "dlgIndexConstraint.h"
+#include "dlg/dlgIndexConstraint.h"
 #include "pgIndex.h"
 #include "pgColumn.h"
 #include "pgTable.h"

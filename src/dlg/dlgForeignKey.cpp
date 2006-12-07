@@ -19,7 +19,7 @@
 #include "frmHint.h"
 #include "pgTable.h"
 #include "pgForeignKey.h"
-#include "dlgForeignKey.h"
+#include "dlg/dlgForeignKey.h"
 #include "pgColumn.h"
 
 

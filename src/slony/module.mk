@@ -31,5 +31,4 @@ pgadmin3_SOURCES += \
 EXTRA_DIST += \
         $(srcdir)/slony/module.mk
 
-include $(srcdir)/slony/include/module.mk
 

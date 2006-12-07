@@ -13,7 +13,7 @@
 #ifndef __DLG_STEPPROP
 #define __DLG_STEPPROP
 
-#include "dlgProperty.h"
+#include "dlg/dlgProperty.h"
 
 class pgaStep;
 class pgaJob;

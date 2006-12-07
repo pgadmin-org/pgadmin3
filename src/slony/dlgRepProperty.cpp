@@ -14,8 +14,8 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "dlgRepProperty.h"
-#include "slCluster.h"
+#include "slony/dlgRepProperty.h"
+#include "slony/slCluster.h"
 
 
 dlgRepProperty::dlgRepProperty(pgaFactory *f, frmMain *frame, slCluster *c, const wxString &resName)

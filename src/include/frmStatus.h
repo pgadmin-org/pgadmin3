@@ -19,7 +19,7 @@
 #include <wx/spinctrl.h>
 #include <wx/notebook.h>
 
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
 #define CTL_STATUSLIST 300

@@ -14,7 +14,7 @@
 // App headers
 #include "pgAdmin3.h"
 
-#include "dlgHbaConfig.h"
+#include "dlg/dlgHbaConfig.h"
 #include "pgConn.h"
 #include "pgSet.h"
 

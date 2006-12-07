@@ -16,9 +16,9 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "pgObject.h"
-#include "slCluster.h"
-#include "slNode.h"
-#include "slSet.h"
+#include "slony/slCluster.h"
+#include "slony/slNode.h"
+#include "slony/slSet.h"
 #include "frmMain.h"
 
 #include <wx/arrimpl.cpp>

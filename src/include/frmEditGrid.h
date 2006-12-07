@@ -18,7 +18,7 @@
 #include <wx/aui/aui.h>
 
 #define CTL_EDITGRID 357
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "ctl/ctlSQLGrid.h"
 
 #define FRMEDITGRID_PERPSECTIVE_VER wxT("$Rev$")

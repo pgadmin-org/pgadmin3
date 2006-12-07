@@ -14,7 +14,7 @@
 // App headers
 #include "pgAdmin3.h"
 
-#include "dlgFindReplace.h"
+#include "dlg/dlgFindReplace.h"
 #include "ctl/ctlSQLBox.h"
 
 BEGIN_EVENT_TABLE(dlgFindReplace, pgDialog)

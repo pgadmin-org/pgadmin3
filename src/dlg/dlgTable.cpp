@@ -18,11 +18,11 @@
 #include "frmMain.h"
 #include "frmHint.h"
 
-#include "dlgTable.h"
-#include "dlgColumn.h"
-#include "dlgIndexConstraint.h"
-#include "dlgForeignKey.h"
-#include "dlgCheck.h"
+#include "dlg/dlgTable.h"
+#include "dlg/dlgColumn.h"
+#include "dlg/dlgIndexConstraint.h"
+#include "dlg/dlgForeignKey.h"
+#include "dlg/dlgCheck.h"
 
 #include "pgSchema.h"
 #include "pgTable.h"

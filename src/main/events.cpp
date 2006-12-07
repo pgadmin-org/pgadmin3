@@ -35,7 +35,7 @@
 #include "pgObject.h"
 #include "pgCollection.h"
 #include "frmHelp.h"
-#include "dlgProperty.h"
+#include "dlg/dlgProperty.h"
 
 extern wxString loadPath;
 

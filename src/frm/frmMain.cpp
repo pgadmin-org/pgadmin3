@@ -59,12 +59,12 @@
 #include "frmPassword.h"
 #include "frmQuery.h"
 #include "frmEditGrid.h"
-#include "dlgServer.h"
-#include "dlgDatabase.h"
-#include "dlgTable.h"
-#include "dlgServer.h"
-#include "dlgRepCluster.h"
-#include "dlgRepSet.h"
+#include "dlg/dlgServer.h"
+#include "dlg/dlgDatabase.h"
+#include "dlg/dlgTable.h"
+#include "dlg/dlgServer.h"
+#include "slony/dlgRepCluster.h"
+#include "slony/dlgRepSet.h"
 
 
 enum

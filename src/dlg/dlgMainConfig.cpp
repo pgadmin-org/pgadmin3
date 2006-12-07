@@ -14,7 +14,7 @@
 // App headers
 #include "pgAdmin3.h"
 
-#include "dlgMainConfig.h"
+#include "dlg/dlgMainConfig.h"
 
 
 // Icons

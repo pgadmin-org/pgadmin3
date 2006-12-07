@@ -18,7 +18,7 @@
 #include <wx/fdrepdlg.h>
 
 #include "pgConn.h"
-#include "dlgFindReplace.h"
+#include "dlg/dlgFindReplace.h"
 
 // These structs are from Scintilla.h which isn't easily #included :-(
 struct CharacterRange {

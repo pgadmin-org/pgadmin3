@@ -15,10 +15,10 @@
 // App headers
 #include "pgAdmin3.h"
 
-#include "dlgRepListen.h"
-#include "slCluster.h"
-#include "slNode.h"
-#include "slListen.h"
+#include "slony/dlgRepListen.h"
+#include "slony/slCluster.h"
+#include "slony/slNode.h"
+#include "slony/slListen.h"
 #include "pgDatatype.h"
 
 // pointer to controls

@@ -15,8 +15,8 @@
 #include "pgAdmin3.h"
 
 #include "frmMain.h"
-#include "dlgSelectConnection.h"
-#include "dlgConnect.h"
+#include "dlg/dlgSelectConnection.h"
+#include "dlg/dlgConnect.h"
 #include "pgServer.h"
 #include "images/connect.xpm"
 

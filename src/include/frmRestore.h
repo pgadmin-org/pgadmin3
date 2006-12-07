@@ -13,7 +13,7 @@
 #ifndef FRMRESTORE_H
 #define FRMRESTORE_H
 
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
 class pgServer;

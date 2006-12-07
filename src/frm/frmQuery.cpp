@@ -28,9 +28,9 @@
 #include "pgDatabase.h"
 #include "pgTable.h"
 #include "pgView.h"
-#include "dlgSelectConnection.h"
-#include "dlgAddFavourite.h"
-#include "dlgManageFavourites.h"
+#include "dlg/dlgSelectConnection.h"
+#include "dlg/dlgAddFavourite.h"
+#include "dlg/dlgManageFavourites.h"
 #include "utils/favourites.h"
 #include "frmReport.h"
 

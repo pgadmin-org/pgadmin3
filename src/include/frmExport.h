@@ -16,7 +16,7 @@
 class ctlSQLResult;
 class pgSet;
 
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 
 // Class declarations
 class frmExport : public pgDialog

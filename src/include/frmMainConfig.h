@@ -14,7 +14,7 @@
 
 #include "utils/pgconfig.h"
 #include "frmConfig.h"
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
 class ctlListView;

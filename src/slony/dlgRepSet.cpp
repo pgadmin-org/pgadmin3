@@ -15,10 +15,10 @@
 // App headers
 #include "pgAdmin3.h"
 
-#include "dlgRepSet.h"
-#include "slCluster.h"
-#include "slNode.h"
-#include "slSet.h"
+#include "slony/dlgRepSet.h"
+#include "slony/slCluster.h"
+#include "slony/slNode.h"
+#include "slony/slSet.h"
 #include "frmMain.h"
 
 

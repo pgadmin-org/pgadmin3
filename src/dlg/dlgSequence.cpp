@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "dlgSequence.h"
+#include "dlg/dlgSequence.h"
 
 #include "pgSchema.h"
 #include "pgSequence.h"

@@ -17,7 +17,7 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
-#include "dlgConversion.h"
+#include "dlg/dlgConversion.h"
 #include "pgConversion.h"
 #include "pgSchema.h"
 

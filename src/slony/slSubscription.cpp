@@ -15,9 +15,9 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "slSubscription.h"
-#include "slTable.h"
-#include "slSequence.h"
+#include "slony/slSubscription.h"
+#include "slony/slTable.h"
+#include "slony/slSequence.h"
 #include "frmMain.h"
 
 

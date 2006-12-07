@@ -14,7 +14,7 @@
 // App headers
 #include "pgAdmin3.h"
 
-#include "dlgAddFavourite.h"
+#include "dlg/dlgAddFavourite.h"
 #include "pgConn.h"
 #include "pgServer.h"
 #include "utils/sysLogger.h"

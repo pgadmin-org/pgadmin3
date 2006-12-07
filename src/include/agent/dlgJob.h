@@ -13,7 +13,7 @@
 #ifndef __DLG_JOBPROP
 #define __DLG_JOBPROP
 
-#include "dlgProperty.h"
+#include "dlg/dlgProperty.h"
 
 class pgaJob;
 

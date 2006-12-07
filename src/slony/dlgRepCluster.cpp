@@ -19,10 +19,10 @@
 #include <wx/file.h>
 
 #include "frmMain.h"
-#include "dlgRepCluster.h"
-#include "slCluster.h"
-#include "slSet.h"
-#include "slCluster.h"
+#include "slony/dlgRepCluster.h"
+#include "slony/slCluster.h"
+#include "slony/slSet.h"
+#include "slony/slCluster.h"
 #include "pgDatatype.h"
 #include "utils/sysProcess.h"
 

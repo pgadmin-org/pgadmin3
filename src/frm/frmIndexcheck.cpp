@@ -20,7 +20,7 @@
 #include "frmIndexcheck.h"
 #include "utils/sysLogger.h"
 #include "pgTable.h"
-#include "ctlSecurityPanel.h"
+#include "ctl/ctlSecurityPanel.h"
 
 
 // Icons

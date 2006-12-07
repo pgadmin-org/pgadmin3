@@ -18,7 +18,7 @@
 #include "frmMain.h"
 #include "pgTable.h"
 #include "pgCheck.h"
-#include "dlgCheck.h"
+#include "dlg/dlgCheck.h"
 
 
 #define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")

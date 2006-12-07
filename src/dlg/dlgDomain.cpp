@@ -17,7 +17,7 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
-#include "dlgDomain.h"
+#include "dlg/dlgDomain.h"
 #include "pgSchema.h"
 #include "pgDomain.h"
 #include "pgDatatype.h"

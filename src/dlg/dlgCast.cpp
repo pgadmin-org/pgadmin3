@@ -17,7 +17,7 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
-#include "dlgCast.h"
+#include "dlg/dlgCast.h"
 #include "pgCast.h"
 #include "pgDatatype.h"
 

@@ -17,7 +17,7 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
-#include "dlgTrigger.h"
+#include "dlg/dlgTrigger.h"
 #include "pgTrigger.h"
 #include "pgTable.h"
 #include "pgSchema.h"

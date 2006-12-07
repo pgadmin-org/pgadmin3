@@ -20,7 +20,7 @@
 
 #include "frmMainConfig.h"
 #include "frmMain.h"
-#include "dlgMainConfig.h"
+#include "dlg/dlgMainConfig.h"
 #include "utils/utffile.h"
 #include "pgServer.h"
 #include "menu.h"

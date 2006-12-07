@@ -13,7 +13,7 @@
 #ifndef __DLG_SCHEDULEPROP
 #define __DLG_SCHEDULEPROP
 
-#include "dlgProperty.h"
+#include "dlg/dlgProperty.h"
 #include "ctl/timespin.h"
 #include "ctl/calbox.h"
 

@@ -14,9 +14,9 @@
 #include "pgAdmin3.h"
 
 
-#include "dlgRepNode.h"
-#include "slCluster.h"
-#include "slNode.h"
+#include "slony/dlgRepNode.h"
+#include "slony/slCluster.h"
+#include "slony/slNode.h"
 
 
 // pointer to controls

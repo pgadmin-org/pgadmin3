@@ -12,7 +12,7 @@
 #ifndef __FRMINDEXCHECK_H
 #define __FRMINDEXCHECK_H
 
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
 

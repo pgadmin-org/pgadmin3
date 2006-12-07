@@ -17,7 +17,7 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
-#include "dlgAggregate.h"
+#include "dlg/dlgAggregate.h"
 #include "pgSchema.h"
 #include "pgAggregate.h"
 #include "pgDatatype.h"

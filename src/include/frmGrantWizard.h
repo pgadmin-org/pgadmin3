@@ -13,7 +13,7 @@
 #define FRMGRANTWIZARD_H
 
 #include <wx/notebook.h>
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
 class ctlSecurityPanel;

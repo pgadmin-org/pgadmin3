@@ -19,7 +19,7 @@
 
 // App headers
 #include "utils/misc.h"
-#include "dlgTablespace.h"
+#include "dlg/dlgTablespace.h"
 #include "pgTablespace.h"
 
 

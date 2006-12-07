@@ -22,7 +22,7 @@
 #include "ctl/ctlSQLBox.h"
 #include "ctl/ctlListView.h"
 #include "ctl/ctlComboBox.h"
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "pgConn.h"
 #include "pgSet.h"
 #include "utils/factory.h"

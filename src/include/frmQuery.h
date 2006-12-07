@@ -12,7 +12,7 @@
 #ifndef __FRM_QUERY_H
 #define __FRM_QUERY_H
 
-#include "dlgClasses.h"
+#include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 #include "utils/favourites.h"
 

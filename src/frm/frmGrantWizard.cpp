@@ -20,7 +20,7 @@
 #include "frmGrantWizard.h"
 #include "frmMain.h"
 #include "utils/sysLogger.h"
-#include "ctlSecurityPanel.h"
+#include "ctl/ctlSecurityPanel.h"
 #include "pgFunction.h"
 #include "pgSequence.h"
 #include "pgTable.h"

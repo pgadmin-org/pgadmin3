@@ -20,7 +20,7 @@
 #include <wx/imaglist.h>
 
 #include "frmHbaConfig.h"
-#include "dlgHbaConfig.h"
+#include "dlg/dlgHbaConfig.h"
 #include "frmMain.h"
 #include "utils/utffile.h"
 #include "pgServer.h"

@@ -17,7 +17,7 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
-#include "dlgOperator.h"
+#include "dlg/dlgOperator.h"
 #include "pgSchema.h"
 #include "pgOperator.h"
 #include "pgDatatype.h"
