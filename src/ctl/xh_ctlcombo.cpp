@@ -9,6 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
  
+#include "pgAdmin3.h"
+
 #include "wx/wx.h"
 #include "ctl/ctlComboBox.h"
 #include "ctl/xh_ctlcombo.h"

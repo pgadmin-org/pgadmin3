@@ -9,6 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
  
+#include "pgAdmin3.h"
+
 #include "wx/wx.h"
 #include "ctl/xh_calb.h"
 #include "ctl/calbox.h"
