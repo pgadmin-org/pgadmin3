@@ -13,12 +13,12 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "dlgJob.h"
-#include "dlgStep.h"
-#include "dlgSchedule.h"
-#include "pgaJob.h"
-#include "pgaStep.h"
-#include "pgaSchedule.h"
+#include "agent/dlgJob.h"
+#include "agent/dlgStep.h"
+#include "agent/dlgSchedule.h"
+#include "agent/pgaJob.h"
+#include "agent/pgaStep.h"
+#include "agent/pgaSchedule.h"
 #include "frmMain.h"
 
 

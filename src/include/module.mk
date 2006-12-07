@@ -115,6 +115,7 @@ pgadmin3_SOURCES += \
 EXTRA_DIST += \
         $(srcdir)/include/module.mk
 
+include $(srcdir)/include/agent/module.mk
 include $(srcdir)/include/ctl/module.mk
 include $(srcdir)/include/images/module.mk
 include $(srcdir)/include/nodes/module.mk

@@ -23,6 +23,5 @@ pgadmin3_SOURCES += \
 
 EXTRA_DIST += \
 	$(srcdir)/utils/module.mk \
-	$(srcdir)/utils/precomp.cpp \
 	$(srcdir)/utils/tab-complete.inc \
 	$(srcdir)/utils/tabcomplete.pl

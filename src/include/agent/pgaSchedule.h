@@ -12,7 +12,7 @@
 #ifndef PGASCHEDULE_H
 #define PGASCHEDULE_H
 
-#include "pgaJob.h"
+#include "agent/pgaJob.h"
 
 
 class pgaScheduleFactory : public pgaJobObjFactory

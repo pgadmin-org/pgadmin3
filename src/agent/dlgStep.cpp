@@ -12,8 +12,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "dlgStep.h"
-#include "pgaStep.h"
+#include "agent/dlgStep.h"
+#include "agent/pgaStep.h"
 
 
 // pointer to controls

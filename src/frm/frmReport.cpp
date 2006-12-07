@@ -28,7 +28,7 @@
 #include "pgTable.h"
 #include "pgColumn.h"
 #include "pgConstraints.h"
-#include "pgaJob.h"
+#include "agent/pgaJob.h"
 #include "pgForeignKey.h"
 #include "pgIndexConstraint.h"
 #include "pgCheck.h"

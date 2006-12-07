@@ -18,9 +18,9 @@
 #include "pgObject.h"
 #include "pgCollection.h"
 #include "pgDatabase.h"
-#include "pgaJob.h"
-#include "pgaStep.h"
-#include "pgaSchedule.h"
+#include "agent/pgaJob.h"
+#include "agent/pgaStep.h"
+#include "agent/pgaSchedule.h"
 
 extern sysSettings *settings;
 

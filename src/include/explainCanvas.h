@@ -9,6 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#ifndef EXPLAINCANVAS_H
+#define EXPLAINCANVAS_H
 
 #include <wx/ogl/ogl.h>
 
@@ -102,3 +104,4 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
+#endif

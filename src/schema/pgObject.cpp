@@ -43,7 +43,7 @@
 #include "pgRule.h"
 #include "pgRole.h"
 #include "utils/pgDefs.h"
-#include "pgaJob.h"
+#include "agent/pgaJob.h"
 
 
 int pgObject::GetType() const

@@ -27,6 +27,8 @@
 #include "pgSet.h"
 #include "utils/factory.h"
 
+#include "precomp.h"
+
 // App headers
 #include "utils/sysSettings.h"
 

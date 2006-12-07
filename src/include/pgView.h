@@ -9,8 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGView_H
-#define PGView_H
+#ifndef PGVIEW_H
+#define PGVIEW_H
 
 #include "pgRule.h"
 

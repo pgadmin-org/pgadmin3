@@ -40,9 +40,9 @@
 #include "dlgCheck.h"
 #include "dlgRule.h"
 #include "dlgTrigger.h"
-#include "dlgJob.h"
-#include "dlgStep.h"
-#include "dlgSchedule.h"
+#include "agent/dlgJob.h"
+#include "agent/dlgStep.h"
+#include "agent/dlgSchedule.h"
 
 #include "dlgRepCluster.h"
 #include "dlgRepNode.h"

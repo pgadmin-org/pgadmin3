@@ -13,8 +13,8 @@
 
 // App headers
 #include "utils/misc.h"
-#include "dlgSchedule.h"
-#include "pgaSchedule.h"
+#include "agent/dlgSchedule.h"
+#include "agent/pgaSchedule.h"
 
 
 // pointer to controls

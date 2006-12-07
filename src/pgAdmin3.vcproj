@@ -154,7 +154,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;../../pgadmin3-deps/wxwidgets/include&quot;;&quot;../../pgadmin3-deps/wxwidgets/contrib/include&quot;;&quot;c:/program files/postgresql/8.2/include&quot;;&quot;../../pgadmin3-deps/libxml2/include/&quot;;&quot;../../pgadmin3-deps/libxslt/include/&quot;;&quot;../../pgadmin3-deps/iconv/include/&quot;;include/;agent/include;slony/include"
+				AdditionalIncludeDirectories="&quot;../../pgadmin3-deps/wxwidgets/include&quot;;&quot;../../pgadmin3-deps/wxwidgets/contrib/include&quot;;&quot;c:/program files/postgresql/8.2/include&quot;;&quot;../../pgadmin3-deps/libxml2/include/&quot;;&quot;../../pgadmin3-deps/libxslt/include/&quot;;&quot;../../pgadmin3-deps/iconv/include/&quot;;include/;slony/include"
 				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE=1;WIN32;_DEBUG;_WINDOWS;__WINDOWS__;__WXMSW__;DEBUG=1;__WXDEBUG__;__WIN95__;__WIN32__;WINVER=0x0400;STRICT;wxUSE_UNICODE=1;UNICODE;SSL"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
@@ -369,38 +369,6 @@
 					/>
 				</FileConfiguration>
 			</File>
-			<Filter
-				Name="include"
-				>
-				<File
-					RelativePath="agent\include\dlgJob.h"
-					>
-				</File>
-				<File
-					RelativePath="agent\include\dlgSchedule.h"
-					>
-				</File>
-				<File
-					RelativePath="agent\include\dlgStep.h"
-					>
-				</File>
-				<File
-					RelativePath=".\agent\include\module.mk"
-					>
-				</File>
-				<File
-					RelativePath="agent\include\pgaJob.h"
-					>
-				</File>
-				<File
-					RelativePath="agent\include\pgaSchedule.h"
-					>
-				</File>
-				<File
-					RelativePath="agent\include\pgaStep.h"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="ctl"
@@ -1187,6 +1155,10 @@
 			</File>
 			<File
 				RelativePath=".\include\postgres.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\precomp.h"
 				>
 			</File>
 			<File
@@ -2013,6 +1985,38 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="agent"
+				>
+				<File
+					RelativePath=".\include\agent\dlgJob.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\agent\dlgSchedule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\agent\dlgStep.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\agent\module.mk"
+					>
+				</File>
+				<File
+					RelativePath=".\include\agent\pgaJob.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\agent\pgaSchedule.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\agent\pgaStep.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="main"
@@ -2622,10 +2626,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\utils\precomp.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\utils\sysLogger.cpp"
 				>
 			</File>
@@ -2684,7 +2684,7 @@
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions=""
-					UsePrecompiledHeader="1"
+					UsePrecompiledHeader="2"
 				/>
 			</FileConfiguration>
 			<FileConfiguration
@@ -2694,7 +2694,31 @@
 					Name="VCCLCompilerTool"
 					AdditionalIncludeDirectories=""
 					PreprocessorDefinitions=""
+					UsePrecompiledHeader="2"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\precomp.cpp"
+			>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
 					UsePrecompiledHeader="1"
+					ObjectFile="$(IntDir)\$(InputName)1.obj"
+					XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+					ObjectFile="$(IntDir)\$(InputName)1.obj"
+					XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 				/>
 			</FileConfiguration>
 		</File>

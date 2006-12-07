@@ -9,6 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#ifndef VERSION_H
+#define VERSION_H
 
 // Application Versions
 #define VERSION_STR     wxT("1.7.0")
@@ -38,3 +40,5 @@
 #endif
 #define VERSION_WITH_DATE       wxT("Version ") VERSION_STR wxT(" (") __TDATE__ wxT(")")
 #define VERSION_WITHOUT_DATE    wxT("Version ") VERSION_STR
+
+#endif

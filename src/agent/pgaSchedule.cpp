@@ -20,9 +20,9 @@
 #include "pgObject.h"
 #include "pgDatabase.h"
 #include "pgCollection.h"
-#include "pgaSchedule.h"
-#include "pgaStep.h"
-#include "pgaSchedule.h"
+#include "agent/pgaSchedule.h"
+#include "agent/pgaStep.h"
+#include "agent/pgaSchedule.h"
 
 
 pgaSchedule::pgaSchedule(pgCollection *_collection, const wxString& newName)

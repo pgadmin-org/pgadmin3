@@ -62,8 +62,6 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
-#endif
-
 ///////////////////////////////////////////////////////
 // Report Factory base class
 ///////////////////////////////////////////////////////
@@ -158,3 +156,4 @@ public:
     void GenerateReport(frmReport *report, pgObject *object);
 };
 
+#endif

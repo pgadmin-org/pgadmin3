@@ -24,7 +24,7 @@
 #include "pgGroup.h"
 #include "pgUser.h"
 #include "pgRole.h"
-#include "pgaJob.h"
+#include "agent/pgaJob.h"
 #include "utils/utffile.h"
 #include "pgfeatures.h"
 #include "frmReport.h"

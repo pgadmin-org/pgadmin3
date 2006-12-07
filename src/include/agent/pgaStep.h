@@ -12,7 +12,7 @@
 #ifndef PGASTEP_H
 #define PGASTEP_H
 
-#include "pgaJob.h"
+#include "agent/pgaJob.h"
 
 
 

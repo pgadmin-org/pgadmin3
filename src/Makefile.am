@@ -16,7 +16,8 @@ pgadmin3_SOURCES = \
 	$(srcdir)/pgAdmin3.cpp 
 
 EXTRA_DIST = \
-	$(srcdir)/pgAdmin3.vcproj
+	$(srcdir)/pgAdmin3.vcproj \
+	$(srcdir)/precomp.cpp \
 
 # Generate svnversion.h every time, but only if repo version has changed.
 .PHONY: $(srcdir)/include/svnversion.cpp
@@ -42,9 +43,9 @@ include $(srcdir)/utils/module.mk
 if !APPBUNDLE
 
 nobase_dist_pkgdata_DATA = $(TMP_ui)
-AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -Wno-non-virtual-dtor -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
-AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -Wno-non-virtual-dtor -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
-AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
+AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -Wno-non-virtual-dtor -I$(top_srcdir)/src/include -I$(top_srcdir)/src/slony/include
+AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -Wno-non-virtual-dtor -I$(top_srcdir)/src/include -I$(top_srcdir)/src/slony/include
+AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -I$(top_srcdir)/src/include -I$(top_srcdir)/src/slony/include
 
 # Automake trys to execute install-exec-hook if it appears anywhere in the file, so we need a dummy
 # for non-APPBUNDLE cases.
@@ -53,9 +54,9 @@ install-exec-hook:
 else
 
 nobase_dist_data_DATA = $(TMP_ui)
-AM_CXXFLAGS = -Wall -Wno-non-virtual-dtor -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
-AM_CPPFLAGS = -Wall -Wno-non-virtual-dtor -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
-AM_CFLAGS = -Wall -I$(top_srcdir)/src/include -I$(top_srcdir)/src/agent/include -I$(top_srcdir)/src/slony/include
+AM_CXXFLAGS = -Wall -Wno-non-virtual-dtor -I$(top_srcdir)/src/include -I$(top_srcdir)/src/slony/include
+AM_CPPFLAGS = -Wall -Wno-non-virtual-dtor -I$(top_srcdir)/src/include -I$(top_srcdir)/src/slony/include
+AM_CFLAGS = -Wall -I$(top_srcdir)/src/include -I$(top_srcdir)/src/slony/include
 
 install-exec-hook:
 	cd $(bindir) ;\
