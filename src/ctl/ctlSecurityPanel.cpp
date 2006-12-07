@@ -18,10 +18,10 @@
 #include "pgAdmin3.h"
 #include "utils/sysLogger.h"
 #include "ctl/ctlSecurityPanel.h"
-#include "pgConn.h"
-#include "pgObject.h"
-#include "pgGroup.h"
-#include "pgUser.h"
+#include "schema/pgConn.h"
+#include "schema/pgObject.h"
+#include "schema/pgGroup.h"
+#include "schema/pgUser.h"
 
 
 

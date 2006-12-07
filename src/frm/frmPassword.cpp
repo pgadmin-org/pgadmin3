@@ -17,7 +17,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frm/frmPassword.h"
-#include "pgServer.h"
+#include "schema/pgServer.h"
 
 #include "images/connect.xpm"
 

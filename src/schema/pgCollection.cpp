@@ -17,8 +17,8 @@
 #include "menu.h"
 #include "utils/misc.h"
 #include "agent/pgaJob.h"
-#include "pgSchema.h"
-#include "pgTable.h"
+#include "schema/pgSchema.h"
+#include "schema/pgTable.h"
 #include "frm/frmMain.h"
 #include "frm/frmReport.h"
 

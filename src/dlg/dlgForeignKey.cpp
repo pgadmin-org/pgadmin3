@@ -17,10 +17,10 @@
 #include "utils/misc.h"
 #include "frm/frmMain.h"
 #include "frm/frmHint.h"
-#include "pgTable.h"
-#include "pgForeignKey.h"
+#include "schema/pgTable.h"
+#include "schema/pgForeignKey.h"
 #include "dlg/dlgForeignKey.h"
-#include "pgColumn.h"
+#include "schema/pgColumn.h"
 
 
 #define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")

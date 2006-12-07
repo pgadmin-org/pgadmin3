@@ -17,8 +17,8 @@
 #include "utils/misc.h"
 #include "dlg/dlgSequence.h"
 
-#include "pgSchema.h"
-#include "pgSequence.h"
+#include "schema/pgSchema.h"
+#include "schema/pgSequence.h"
 
 
 #define txtIncrement        CTRL_TEXT("txtIncrement")

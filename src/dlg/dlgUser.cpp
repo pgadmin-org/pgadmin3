@@ -17,7 +17,7 @@
 // App headers
 #include "utils/misc.h"
 #include "dlg/dlgUser.h"
-#include "pgUser.h"
+#include "schema/pgUser.h"
 
 
 // pointer to controls

@@ -15,8 +15,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgDomain.h"
-#include "pgDatatype.h"
+#include "schema/pgDomain.h"
+#include "schema/pgDatatype.h"
 
 
 pgDomain::pgDomain(pgSchema *newSchema, const wxString& newName)

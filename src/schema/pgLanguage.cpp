@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgLanguage.h"
+#include "schema/pgLanguage.h"
 
 
 pgLanguage::pgLanguage(const wxString& newName)

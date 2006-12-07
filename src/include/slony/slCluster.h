@@ -12,7 +12,7 @@
 #ifndef SLCLUSTER_H
 #define SLCLUSTER_H
 
-#include "pgDatabase.h"
+#include "schema/pgDatabase.h"
 
 class frmMain;
 class RemoteConn;

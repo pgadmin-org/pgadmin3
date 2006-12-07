@@ -18,9 +18,9 @@
 #include "utils/pgDefs.h"
 
 #include "dlg/dlgTrigger.h"
-#include "pgTrigger.h"
-#include "pgTable.h"
-#include "pgSchema.h"
+#include "schema/pgTrigger.h"
+#include "schema/pgTable.h"
+#include "schema/pgSchema.h"
 
 
 // pointer to controls

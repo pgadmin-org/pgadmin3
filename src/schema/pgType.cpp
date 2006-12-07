@@ -15,8 +15,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgType.h"
-#include "pgDatatype.h"
+#include "schema/pgType.h"
+#include "schema/pgDatatype.h"
 
 
 pgType::pgType(pgSchema *newSchema, const wxString& newName)

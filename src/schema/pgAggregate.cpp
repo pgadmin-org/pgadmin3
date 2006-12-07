@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgAggregate.h"
+#include "schema/pgAggregate.h"
 
 
 pgAggregate::pgAggregate(pgSchema *newSchema, const wxString& newName)

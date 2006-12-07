@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgObject.h"
+#include "schema/pgObject.h"
 #include "slony/slNode.h"
 #include "slony/slCluster.h"
 #include "slony/slPath.h"

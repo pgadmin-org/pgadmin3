@@ -16,10 +16,10 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
-#include "pgObject.h"
+#include "schema/pgObject.h"
 
-#include "pgTrigger.h"
-#include "pgFunction.h"
+#include "schema/pgTrigger.h"
+#include "schema/pgFunction.h"
 
 
 pgTrigger::pgTrigger(pgTable *newTable, const wxString& newName)

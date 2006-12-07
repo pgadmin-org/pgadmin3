@@ -27,8 +27,8 @@
 #include "frm/frmAbout.h"
 #include "frm/frmHelp.h"
 #include "utils/utffile.h"
-#include "pgConn.h"
-#include "pgSet.h"
+#include "schema/pgConn.h"
+#include "schema/pgSet.h"
 #include "menu.h"
 #include "pgfeatures.h"
 

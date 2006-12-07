@@ -12,7 +12,7 @@
 // wxWindows headers
 #include "pgAdmin3.h"
 
-#include "pgCollection.h"
+#include "schema/pgCollection.h"
 #include "menu.h"
 
 #include <wx/imaglist.h>

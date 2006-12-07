@@ -15,7 +15,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "pgSet.h"
+#include "schema/pgSet.h"
 #include "ctl/ctlSQLBox.h"
 #include "dlg/dlgFindReplace.h"
 #include "menu.h"

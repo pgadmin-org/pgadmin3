@@ -21,10 +21,10 @@
 #include "frm/frmMain.h"
 #include "utils/sysLogger.h"
 #include "ctl/ctlSecurityPanel.h"
-#include "pgFunction.h"
-#include "pgSequence.h"
-#include "pgTable.h"
-#include "pgView.h"
+#include "schema/pgFunction.h"
+#include "schema/pgSequence.h"
+#include "schema/pgTable.h"
+#include "schema/pgView.h"
 
 // Icons
 #include "images/index.xpm"

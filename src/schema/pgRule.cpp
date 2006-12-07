@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgRule.h"
+#include "schema/pgRule.h"
 
 
 pgRule::pgRule(pgSchema *newSchema, const wxString& newName)

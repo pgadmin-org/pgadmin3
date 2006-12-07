@@ -20,7 +20,7 @@
 #include "frm/frmMaintenance.h"
 #include "frm/frmMain.h"
 #include "utils/sysLogger.h"
-#include "pgIndex.h"
+#include "schema/pgIndex.h"
 
 // Icons
 #include "images/vacuum.xpm"

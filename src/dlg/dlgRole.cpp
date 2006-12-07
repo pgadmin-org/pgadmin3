@@ -17,7 +17,7 @@
 // App headers
 #include "utils/misc.h"
 #include "dlg/dlgRole.h"
-#include "pgRole.h"
+#include "schema/pgRole.h"
 
 
 // pointer to controls

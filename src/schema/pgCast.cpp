@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgCast.h"
+#include "schema/pgCast.h"
 
 pgCast::pgCast(const wxString& newName)
 : pgDatabaseObject(castFactory, newName)

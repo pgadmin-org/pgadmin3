@@ -15,11 +15,11 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgRole.h"
+#include "schema/pgRole.h"
 #include "frm/frmMain.h"
 #include "utils/pgDefs.h"
-#include "pgDatabase.h"
-#include "pgTablespace.h"
+#include "schema/pgDatabase.h"
+#include "schema/pgTablespace.h"
 
 
 pgLoginRole::pgLoginRole(const wxString& newName)

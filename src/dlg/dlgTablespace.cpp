@@ -20,7 +20,7 @@
 // App headers
 #include "utils/misc.h"
 #include "dlg/dlgTablespace.h"
-#include "pgTablespace.h"
+#include "schema/pgTablespace.h"
 
 
 // pointer to controls

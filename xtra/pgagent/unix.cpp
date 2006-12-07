@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "pgAgent.h"
+#include "schema/pgAgent.h"
 
 #ifdef __WXMSW__
 #error this file is for unix only!

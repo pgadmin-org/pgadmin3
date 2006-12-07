@@ -15,8 +15,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgForeignKey.h"
-#include "pgConstraints.h"
+#include "schema/pgForeignKey.h"
+#include "schema/pgConstraints.h"
 
 pgForeignKey::pgForeignKey(pgTable *newTable, const wxString& newName)
 : pgTableObject(newTable, foreignKeyFactory, newName)

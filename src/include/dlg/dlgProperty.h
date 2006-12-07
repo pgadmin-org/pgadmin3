@@ -15,8 +15,8 @@
 
 
 #include <wx/notebook.h>
-#include "pgObject.h"
-#include "pgConn.h"
+#include "schema/pgObject.h"
+#include "schema/pgConn.h"
 #include "ctl/ctlSecurityPanel.h"
 
 class pgSchema;

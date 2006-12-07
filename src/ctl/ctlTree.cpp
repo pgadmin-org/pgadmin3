@@ -16,8 +16,8 @@
 #include "pgAdmin3.h"
 #include "ctl/ctlTree.h"
 
-#include "pgObject.h"
-#include "pgCollection.h"
+#include "schema/pgObject.h"
+#include "schema/pgCollection.h"
 
 ctlTree::ctlTree(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 : wxTreeCtrl(parent, id, pos, size, style)

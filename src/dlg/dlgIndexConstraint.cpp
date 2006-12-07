@@ -17,10 +17,10 @@
 #include "utils/misc.h"
 #include "frm/frmMain.h"
 #include "dlg/dlgIndexConstraint.h"
-#include "pgIndex.h"
-#include "pgColumn.h"
-#include "pgTable.h"
-#include "pgIndexConstraint.h"
+#include "schema/pgIndex.h"
+#include "schema/pgColumn.h"
+#include "schema/pgTable.h"
+#include "schema/pgIndexConstraint.h"
 
 
 

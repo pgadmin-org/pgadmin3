@@ -18,8 +18,8 @@
 #include <libpq-fe.h>
 
 // App headers
-#include "pgSet.h"
-#include "pgConn.h"
+#include "schema/pgSet.h"
+#include "schema/pgConn.h"
 #include "pgQueryThread.h"
 #include "utils/sysLogger.h"
 

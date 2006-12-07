@@ -17,7 +17,7 @@
 #include "utils/misc.h"
 #include "frm/frmMain.h"
 #include "dlg/dlgServer.h"
-#include "pgDatabase.h"
+#include "schema/pgDatabase.h"
 #include <wx/busyinfo.h>
 
 

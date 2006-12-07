@@ -16,8 +16,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "ctl/ctlSQLBox.h"
-#include "pgCollection.h"
-#include "pgDatatype.h"
+#include "schema/pgCollection.h"
+#include "schema/pgDatatype.h"
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 #include "ctl/ctlSecurityPanel.h"
@@ -52,11 +52,11 @@
 #include "slony/dlgRepSequence.h"
 #include "slony/dlgRepTable.h"
 #include "slony/dlgRepSubscription.h"
-#include "pgTable.h"
-#include "pgColumn.h"
-#include "pgTrigger.h"
-#include "pgGroup.h"
-#include "pgUser.h"
+#include "schema/pgTable.h"
+#include "schema/pgColumn.h"
+#include "schema/pgTrigger.h"
+#include "schema/pgGroup.h"
+#include "schema/pgUser.h"
 
 
 

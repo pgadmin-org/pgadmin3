@@ -22,7 +22,7 @@
 #include "frm/frmHint.h"
 #include "frm/frmMain.h"
 #include "pgfeatures.h"
-#include "pgServer.h"
+#include "schema/pgServer.h"
 
 
 #define TIMER_ID 333

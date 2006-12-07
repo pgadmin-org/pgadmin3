@@ -18,9 +18,9 @@
 // App headers
 #include "utils/misc.h"
 #include "dlg/dlgType.h"
-#include "pgSchema.h"
-#include "pgType.h"
-#include "pgDatatype.h"
+#include "schema/pgSchema.h"
+#include "schema/pgType.h"
+#include "schema/pgDatatype.h"
 
 
 // pointer to controls

@@ -17,7 +17,7 @@
 #include "frm/frmMain.h"
 #include "dlg/dlgSelectConnection.h"
 #include "dlg/dlgConnect.h"
-#include "pgServer.h"
+#include "schema/pgServer.h"
 #include "images/connect.xpm"
 
 #define CTRLID_CBSERVER 4242

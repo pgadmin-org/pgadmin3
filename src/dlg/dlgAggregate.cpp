@@ -18,9 +18,9 @@
 #include "utils/pgDefs.h"
 
 #include "dlg/dlgAggregate.h"
-#include "pgSchema.h"
-#include "pgAggregate.h"
-#include "pgDatatype.h"
+#include "schema/pgSchema.h"
+#include "schema/pgAggregate.h"
+#include "schema/pgDatatype.h"
 
 // Images
 

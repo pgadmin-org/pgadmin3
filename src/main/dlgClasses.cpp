@@ -18,8 +18,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "frm/frmMain.h"
-#include "pgConn.h"
-#include "pgObject.h"
+#include "schema/pgConn.h"
+#include "schema/pgObject.h"
 #include "utils/sysProcess.h"
 #include "menu.h"
 #include "pgQueryThread.h"

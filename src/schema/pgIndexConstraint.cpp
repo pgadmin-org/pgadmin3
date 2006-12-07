@@ -15,8 +15,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgConstraints.h"
-#include "pgIndexConstraint.h"
+#include "schema/pgConstraints.h"
+#include "schema/pgIndexConstraint.h"
 
 
 

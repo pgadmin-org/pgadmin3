@@ -12,7 +12,7 @@
 #ifndef PGAJOB_H
 #define PGAJOB_H
 
-#include "pgServer.h"
+#include "schema/pgServer.h"
 
 
 class pgaJobFactory : public pgServerObjFactory

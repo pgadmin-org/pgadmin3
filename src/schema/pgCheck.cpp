@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "pgCheck.h"
+#include "schema/pgCheck.h"
 
 
 pgCheck::pgCheck(pgTable *newTable, const wxString& newName)

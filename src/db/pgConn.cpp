@@ -36,10 +36,10 @@
 // App headers
 #include "utils/misc.h"
 #include "utils/sysLogger.h"
-#include "pgConn.h"
+#include "schema/pgConn.h"
 #include "utils/misc.h"
 #include "utils/md5.h"
-#include "pgSet.h"
+#include "schema/pgSet.h"
 #include "utils/sysLogger.h"
 
 double pgConn::libpqVersion=8.0;

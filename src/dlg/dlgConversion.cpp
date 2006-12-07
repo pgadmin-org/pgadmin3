@@ -18,8 +18,8 @@
 #include "utils/pgDefs.h"
 
 #include "dlg/dlgConversion.h"
-#include "pgConversion.h"
-#include "pgSchema.h"
+#include "schema/pgConversion.h"
+#include "schema/pgSchema.h"
 
 
 // pointer to controls

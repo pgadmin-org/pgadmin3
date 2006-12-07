@@ -23,7 +23,7 @@
 #include "slony/slCluster.h"
 #include "slony/slSet.h"
 #include "slony/slCluster.h"
-#include "pgDatatype.h"
+#include "schema/pgDatatype.h"
 #include "utils/sysProcess.h"
 
 

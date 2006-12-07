@@ -18,7 +18,7 @@
 #include "utils/pgDefs.h"
 
 #include "dlg/dlgLanguage.h"
-#include "pgLanguage.h"
+#include "schema/pgLanguage.h"
 
 
 // pointer to controls

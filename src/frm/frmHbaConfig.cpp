@@ -23,7 +23,7 @@
 #include "dlg/dlgHbaConfig.h"
 #include "frm/frmMain.h"
 #include "utils/utffile.h"
-#include "pgServer.h"
+#include "schema/pgServer.h"
 #include "menu.h"
 #include "pgfeatures.h"
 

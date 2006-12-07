@@ -18,10 +18,10 @@
 #include "utils/pgDefs.h"
 
 #include "dlg/dlgColumn.h"
-#include "pgSchema.h"
-#include "pgColumn.h"
-#include "pgTable.h"
-#include "pgDatatype.h"
+#include "schema/pgSchema.h"
+#include "schema/pgColumn.h"
+#include "schema/pgTable.h"
+#include "schema/pgDatatype.h"
 
 
 // pointer to controls

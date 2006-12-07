@@ -32,8 +32,8 @@
 #include "frm/frmEditGrid.h"
 #include "dlg/dlgEditGridOptions.h"
 #include "frm/frmHint.h"
-#include "pgTable.h"
-#include "pgView.h"
+#include "schema/pgTable.h"
+#include "schema/pgView.h"
 
 // wxAUI
 #include <wx/aui/aui.h>

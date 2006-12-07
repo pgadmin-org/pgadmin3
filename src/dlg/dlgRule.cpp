@@ -19,9 +19,9 @@
 
 #include "ctl/ctlSQLBox.h"
 #include "dlg/dlgRule.h"
-#include "pgRule.h"
-#include "pgTable.h"
-#include "pgCollection.h"
+#include "schema/pgRule.h"
+#include "schema/pgTable.h"
+#include "schema/pgCollection.h"
 
 
 

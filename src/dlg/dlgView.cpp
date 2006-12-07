@@ -19,8 +19,8 @@
 
 #include "ctl/ctlSQLBox.h"
 #include "dlg/dlgView.h"
-#include "pgView.h"
-#include "pgSchema.h"
+#include "schema/pgView.h"
+#include "schema/pgSchema.h"
 
 
 

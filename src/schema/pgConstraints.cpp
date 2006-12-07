@@ -14,11 +14,11 @@
 
 
 #include "pgAdmin3.h"
-#include "pgTable.h"
-#include "pgConstraints.h"
-#include "pgIndexConstraint.h"
-#include "pgCheck.h"
-#include "pgForeignKey.h"
+#include "schema/pgTable.h"
+#include "schema/pgConstraints.h"
+#include "schema/pgIndexConstraint.h"
+#include "schema/pgCheck.h"
+#include "schema/pgForeignKey.h"
 
 
 

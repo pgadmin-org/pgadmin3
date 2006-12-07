@@ -19,7 +19,7 @@
 #include "frm/frmMain.h"
 #include "frm/frmIndexcheck.h"
 #include "utils/sysLogger.h"
-#include "pgTable.h"
+#include "schema/pgTable.h"
 #include "ctl/ctlSecurityPanel.h"
 
 

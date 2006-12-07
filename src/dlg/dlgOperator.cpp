@@ -18,9 +18,9 @@
 #include "utils/pgDefs.h"
 
 #include "dlg/dlgOperator.h"
-#include "pgSchema.h"
-#include "pgOperator.h"
-#include "pgDatatype.h"
+#include "schema/pgSchema.h"
+#include "schema/pgOperator.h"
+#include "schema/pgDatatype.h"
 
 
 // pointer to controls

@@ -17,9 +17,9 @@
 #include "utils/misc.h"
 #include "frm/frmMain.h"
 #include "dlg/dlgIndex.h"
-#include "pgIndex.h"
-#include "pgColumn.h"
-#include "pgTable.h"
+#include "schema/pgIndex.h"
+#include "schema/pgColumn.h"
+#include "schema/pgTable.h"
 
 
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")

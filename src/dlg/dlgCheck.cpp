@@ -16,8 +16,8 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "frm/frmMain.h"
-#include "pgTable.h"
-#include "pgCheck.h"
+#include "schema/pgTable.h"
+#include "schema/pgCheck.h"
 #include "dlg/dlgCheck.h"
 
 

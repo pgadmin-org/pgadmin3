@@ -19,8 +19,8 @@
 #include "frm/frmMain.h"
 #include "frm/frmBackup.h"
 #include "utils/sysLogger.h"
-#include "pgSchema.h"
-#include "pgTable.h"
+#include "schema/pgSchema.h"
+#include "schema/pgTable.h"
 
 // Icons
 #include "images/backup.xpm"

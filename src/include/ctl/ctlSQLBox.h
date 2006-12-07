@@ -17,7 +17,7 @@
 #include <wx/stc/stc.h>
 #include <wx/fdrepdlg.h>
 
-#include "pgConn.h"
+#include "schema/pgConn.h"
 #include "dlg/dlgFindReplace.h"
 
 // These structs are from Scintilla.h which isn't easily #included :-(

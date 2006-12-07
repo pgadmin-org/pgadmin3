@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "pgAgent.h"
+#include "schema/pgAgent.h"
 
 #ifndef WIN32
 #error this file is for win32 only!

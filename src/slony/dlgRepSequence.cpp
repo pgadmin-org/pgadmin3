@@ -19,7 +19,7 @@
 #include "slony/slCluster.h"
 #include "slony/slSet.h"
 #include "slony/slSequence.h"
-#include "pgDatatype.h"
+#include "schema/pgDatatype.h"
 
 
 // pointer to controls

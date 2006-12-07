@@ -23,8 +23,8 @@
 #include "ctl/ctlListView.h"
 #include "ctl/ctlComboBox.h"
 #include "dlg/dlgClasses.h"
-#include "pgConn.h"
-#include "pgSet.h"
+#include "schema/pgConn.h"
+#include "schema/pgSet.h"
 #include "utils/factory.h"
 
 #include "precomp.h"

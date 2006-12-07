@@ -29,8 +29,8 @@
 
 #include "frm/frmEditGrid.h"
 #include "dlg/dlgEditGridOptions.h"
-#include "pgTable.h"
-#include "pgView.h"
+#include "schema/pgTable.h"
+#include "schema/pgView.h"
 
 // Icons
 #include "images/sortfilter.xpm"

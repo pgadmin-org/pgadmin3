@@ -24,12 +24,12 @@
 #include "dlg/dlgForeignKey.h"
 #include "dlg/dlgCheck.h"
 
-#include "pgSchema.h"
-#include "pgTable.h"
-#include "pgColumn.h"
-#include "pgCheck.h"
-#include "pgForeignKey.h"
-#include "pgIndexConstraint.h"
+#include "schema/pgSchema.h"
+#include "schema/pgTable.h"
+#include "schema/pgColumn.h"
+#include "schema/pgCheck.h"
+#include "schema/pgForeignKey.h"
+#include "schema/pgIndexConstraint.h"
 
 
 

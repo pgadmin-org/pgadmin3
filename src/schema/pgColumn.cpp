@@ -16,8 +16,8 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
-#include "pgDatatype.h"
-#include "pgColumn.h"
+#include "schema/pgDatatype.h"
+#include "schema/pgColumn.h"
 
 
 pgColumn::pgColumn(pgTable *newTable, const wxString& newName)

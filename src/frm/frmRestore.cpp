@@ -19,13 +19,13 @@
 #include "frm/frmRestore.h"
 #include "frm/frmMain.h"
 #include "utils/sysLogger.h"
-#include "pgTable.h"
+#include "schema/pgTable.h"
 #include <wx/process.h>
 #include <wx/textbuf.h>
 #include <wx/file.h>
-#include "pgLanguage.h"
-#include "pgConstraints.h"
-#include "pgForeignKey.h"
+#include "schema/pgLanguage.h"
+#include "schema/pgConstraints.h"
+#include "schema/pgForeignKey.h"
 
 // Icons
 #include "images/restore.xpm"

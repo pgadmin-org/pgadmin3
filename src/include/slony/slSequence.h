@@ -12,7 +12,7 @@
 #ifndef SLSEQUENCE_H
 #define SLSEQUENCE_H
 
-#include "pgDatabase.h"
+#include "schema/pgDatabase.h"
 #include "slony/slSet.h"
 
 class slSlSequenceFactory : public slSetObjFactory

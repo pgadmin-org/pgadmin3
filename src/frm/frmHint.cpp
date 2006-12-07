@@ -23,7 +23,7 @@
 #include "copyright.h"
 #include "frm/frmHint.h"
 #include "frm/frmMain.h"
-#include "pgObject.h"
+#include "schema/pgObject.h"
 #include "utils/utffile.h"
 
 // Icons

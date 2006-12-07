@@ -15,8 +15,8 @@
 #include "pgAdmin3.h"
 
 #include "dlg/dlgAddFavourite.h"
-#include "pgConn.h"
-#include "pgServer.h"
+#include "schema/pgConn.h"
+#include "schema/pgServer.h"
 #include "utils/sysLogger.h"
 #include "ctl/ctlTree.h"
 

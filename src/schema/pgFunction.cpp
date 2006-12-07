@@ -16,7 +16,7 @@
 #include "pgAdmin3.h"
 #include "menu.h"
 #include "utils/misc.h"
-#include "pgFunction.h"
+#include "schema/pgFunction.h"
 #include "frm/frmReport.h"
 #include "frm/frmHint.h"
 

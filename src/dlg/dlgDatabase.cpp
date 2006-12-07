@@ -16,7 +16,7 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "dlg/dlgDatabase.h"
-#include "pgDatabase.h"
+#include "schema/pgDatabase.h"
 
 
 // pointer to controls
