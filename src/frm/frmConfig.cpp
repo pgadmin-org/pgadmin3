@@ -18,14 +18,14 @@
 
 #include <wx/imaglist.h>
 
-#include "frmConfig.h"
-#include "frmHint.h"
-#include "frmMainConfig.h"
-#include "frmHbaConfig.h"
-#include "frmPgpassConfig.h"
-#include "frmMain.h"
-#include "frmAbout.h"
-#include "frmHelp.h"
+#include "frm/frmConfig.h"
+#include "frm/frmHint.h"
+#include "frm/frmMainConfig.h"
+#include "frm/frmHbaConfig.h"
+#include "frm/frmPgpassConfig.h"
+#include "frm/frmMain.h"
+#include "frm/frmAbout.h"
+#include "frm/frmHelp.h"
 #include "utils/utffile.h"
 #include "pgConn.h"
 #include "pgSet.h"

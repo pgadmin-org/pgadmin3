@@ -19,7 +19,7 @@
 #include "slony/slPath.h"
 #include "slony/slNode.h"
 #include "slony/slCluster.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 
 
 slPath::slPath(slNode *n, const wxString& newName)

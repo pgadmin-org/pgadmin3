@@ -16,8 +16,8 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "frmRestore.h"
-#include "frmMain.h"
+#include "frm/frmRestore.h"
+#include "frm/frmMain.h"
 #include "utils/sysLogger.h"
 #include "pgTable.h"
 #include <wx/process.h>

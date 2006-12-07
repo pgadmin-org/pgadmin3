@@ -34,8 +34,8 @@
 
 // App headers
 #include "utils/misc.h"
-#include "frmMain.h"
-#include "frmHelp.h"
+#include "frm/frmMain.h"
+#include "frm/frmHelp.h"
 
 extern "C"
 {

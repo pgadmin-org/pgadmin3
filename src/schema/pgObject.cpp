@@ -17,8 +17,8 @@
 #include "utils/misc.h"
 #include "pgObject.h"
 #include "pgServer.h"
-#include "frmMain.h"
-#include "frmReport.h"
+#include "frm/frmMain.h"
+#include "frm/frmReport.h"
 #include "pgDomain.h"
 
 #include "pgSequence.h"

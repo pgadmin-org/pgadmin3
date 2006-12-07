@@ -18,7 +18,7 @@
 #include "slony/slSubscription.h"
 #include "slony/slTable.h"
 #include "slony/slSequence.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 
 
 

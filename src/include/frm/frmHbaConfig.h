@@ -5,14 +5,14 @@
 // Copyright (C) 2002 - 2006, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// frmPgpassConfig.h - Pgpass.conf editor
+// frmHbaConfig.h - Backend access configuration tool
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef frmPgpassConfig_H
-#define frmPgpassConfig_H
+#ifndef FRMHBACONFIG_H
+#define FRMHBACONFIG_H
 
-#include "frmConfig.h"
+#include "frm/frmConfig.h"
 #include "utils/pgconfig.h"
 
 class pgConn;
@@ -20,14 +20,14 @@ class pgServer;
 class ctlListView;
 
 
-WX_DECLARE_OBJARRAY(pgPassConfigLine, pgPassConfigLineArray);
+WX_DECLARE_OBJARRAY(pgHbaConfigLine, pgHbaConfigLineArray);
 
-class frmPgpassConfig : public frmConfig
+class frmHbaConfig : public frmConfig
 {
 public:
-    frmPgpassConfig(const wxString& title, const wxString &configFile);
-	frmPgpassConfig(frmMain *parent);
-    ~frmPgpassConfig();
+    frmHbaConfig(const wxString& title, const wxString &configFile);
+    frmHbaConfig(frmMain *parent, pgServer *server=0);
+    ~frmHbaConfig();
 
 protected:
     void DisplayFile(const wxString &str);
@@ -37,7 +37,7 @@ protected:
 
 private:
     void Init();
-    void UpdateDisplay(pgPassConfigLine &line);
+    void UpdateDisplay(pgHbaConfigLine &line);
 
     void OnContents(wxCommandEvent& event);
     void OnUndo(wxCommandEvent& event);
@@ -46,16 +46,25 @@ private:
     void OnSelectSetting(wxListEvent& event);
 
     ctlListView *listEdit;
-    pgPassConfigLineArray lines;
+    pgHbaConfigLineArray lines;
 
 
     DECLARE_EVENT_TABLE()
 };
 
-class pgpassConfigFileFactory : public actionFactory
+class hbaConfigFactory : public actionFactory
 {
 public:
-    pgpassConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    hbaConfigFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+
+class hbaConfigFileFactory : public actionFactory
+{
+public:
+    hbaConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 

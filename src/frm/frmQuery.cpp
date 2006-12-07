@@ -17,9 +17,9 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "frmMain.h"
-#include "frmQuery.h"
-#include "frmHelp.h"
+#include "frm/frmMain.h"
+#include "frm/frmQuery.h"
+#include "frm/frmHelp.h"
 #include "menu.h"
 #include "explainCanvas.h"
 #include "pgConn.h"
@@ -32,7 +32,7 @@
 #include "dlg/dlgAddFavourite.h"
 #include "dlg/dlgManageFavourites.h"
 #include "utils/favourites.h"
-#include "frmReport.h"
+#include "frm/frmReport.h"
 
 #include <wx/clipbrd.h>
 

@@ -21,7 +21,7 @@
 #include "slony/slPath.h"
 #include "slony/slListen.h"
 #include "slony/slSet.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 
 
 slNode::slNode(slCluster *cl, const wxString& newName)

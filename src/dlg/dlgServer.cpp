@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 #include "dlg/dlgServer.h"
 #include "pgDatabase.h"
 #include <wx/busyinfo.h>

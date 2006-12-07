@@ -15,7 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 #include "dlg/dlgIndexConstraint.h"
 #include "pgIndex.h"
 #include "pgColumn.h"

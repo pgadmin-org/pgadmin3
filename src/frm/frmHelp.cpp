@@ -20,8 +20,8 @@
 
 // App headers
 #include "copyright.h"
-#include "frmHelp.h"
-#include "frmMain.h"
+#include "frm/frmHelp.h"
+#include "frm/frmMain.h"
 #include "menu.h"
 
 // Icons

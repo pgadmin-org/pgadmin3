@@ -14,7 +14,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include <wx/file.h>
-#include "frmExport.h"
+#include "frm/frmExport.h"
 #include "utils/sysSettings.h"
 #include "utils/misc.h"
 

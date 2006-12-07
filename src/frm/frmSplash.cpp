@@ -15,7 +15,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "frmSplash.h"
+#include "frm/frmSplash.h"
 
 
 // Copyright text

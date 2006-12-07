@@ -16,13 +16,13 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "pgfeatures.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 #include "pgCast.h"
 #include "pgLanguage.h"
 #include "pgSchema.h"
 #include "slony/slCluster.h"
-#include "frmHint.h"
-#include "frmReport.h"
+#include "frm/frmHint.h"
+#include "frm/frmReport.h"
 
 pgDatabase::pgDatabase(const wxString& newName)
 : pgServerObject(databaseFactory, newName)

@@ -17,7 +17,7 @@
 #include "menu.h"
 #include "utils/misc.h"
 #include "pgSchema.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 #include "pgDomain.h"
 #include "pgAggregate.h"
 #include "pgConversion.h"
@@ -28,7 +28,7 @@
 #include "pgOperator.h"
 #include "pgOperatorClass.h"
 #include "pgView.h"
-#include "frmReport.h"
+#include "frm/frmReport.h"
 
 #include "wx/regex.h"
 

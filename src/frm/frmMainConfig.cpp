@@ -18,8 +18,8 @@
 
 #include <wx/imaglist.h>
 
-#include "frmMainConfig.h"
-#include "frmMain.h"
+#include "frm/frmMainConfig.h"
+#include "frm/frmMain.h"
 #include "dlg/dlgMainConfig.h"
 #include "utils/utffile.h"
 #include "pgServer.h"

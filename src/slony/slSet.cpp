@@ -21,7 +21,7 @@
 #include "slony/slSequence.h"
 #include "slony/slTable.h"
 #include "slony/slSubscription.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 
 
 slSet::slSet(slCluster *cl, const wxString& newName)

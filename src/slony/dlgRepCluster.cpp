@@ -18,7 +18,7 @@
 #include <wx/textbuf.h>
 #include <wx/file.h>
 
-#include "frmMain.h"
+#include "frm/frmMain.h"
 #include "slony/dlgRepCluster.h"
 #include "slony/slCluster.h"
 #include "slony/slSet.h"

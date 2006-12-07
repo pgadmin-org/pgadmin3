@@ -19,7 +19,7 @@
 #include "slony/slListen.h"
 #include "slony/slNode.h"
 #include "slony/slCluster.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 
 
 slListen::slListen(slNode *n, const wxString& newName)

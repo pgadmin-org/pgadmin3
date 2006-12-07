@@ -16,7 +16,7 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "slony/slTable.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 
 
 slTable::slTable(slSet *s, const wxString& newName)

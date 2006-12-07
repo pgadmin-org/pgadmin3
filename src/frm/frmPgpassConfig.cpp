@@ -18,9 +18,9 @@
 
 #include <wx/imaglist.h>
 
-#include "frmPgpassConfig.h"
+#include "frm/frmPgpassConfig.h"
 #include "dlg/dlgPgpassConfig.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 #include "utils/utffile.h"
 #include "pgServer.h"
 #include "menu.h"

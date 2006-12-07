@@ -12,9 +12,9 @@
 
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "frmHint.h"
-#include "frmMain.h"
-#include "frmMaintenance.h"
+#include "frm/frmHint.h"
+#include "frm/frmMain.h"
+#include "frm/frmMaintenance.h"
 #include "pgTable.h"
 #include "pgColumn.h"
 #include "pgIndexConstraint.h"

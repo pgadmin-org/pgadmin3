@@ -19,7 +19,7 @@
 #include "pgQueryThread.h"
 #include "ctl/ctlSQLResult.h"
 #include "utils/sysSettings.h"
-#include "frmExport.h"
+#include "frm/frmExport.h"
 
 
 

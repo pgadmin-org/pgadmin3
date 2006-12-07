@@ -18,7 +18,7 @@
 #include "pgConn.h"
 #include "ctl/ctlSQLGrid.h"
 #include "utils/sysSettings.h"
-#include "frmExport.h"
+#include "frm/frmExport.h"
 
 
 BEGIN_EVENT_TABLE(ctlSQLGrid, wxGrid)

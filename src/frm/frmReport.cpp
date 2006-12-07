@@ -15,8 +15,8 @@
 #include "pgAdmin3.h"
 #include <wx/file.h>
 
-#include "frmMain.h"
-#include "frmReport.h"
+#include "frm/frmMain.h"
+#include "frm/frmReport.h"
 #include "utils/sysSettings.h"
 #include "utils/misc.h"
 #include "ctl/ctlListView.h"

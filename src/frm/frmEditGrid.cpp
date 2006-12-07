@@ -22,16 +22,16 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/pgDefs.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 #include "menu.h"
 #include "pgQueryThread.h"
 
 #include <wx/generic/gridctrl.h>
 #include <wx/clipbrd.h>
 
-#include "frmEditGrid.h"
+#include "frm/frmEditGrid.h"
 #include "dlg/dlgEditGridOptions.h"
-#include "frmHint.h"
+#include "frm/frmHint.h"
 #include "pgTable.h"
 #include "pgView.h"
 

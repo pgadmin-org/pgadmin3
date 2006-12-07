@@ -19,8 +19,8 @@
 #include "agent/pgaJob.h"
 #include "pgSchema.h"
 #include "pgTable.h"
-#include "frmMain.h"
-#include "frmReport.h"
+#include "frm/frmMain.h"
+#include "frm/frmReport.h"
 
 pgCollection::pgCollection(pgaFactory *factory)
 : pgObject(*factory)

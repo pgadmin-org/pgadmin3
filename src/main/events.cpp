@@ -25,8 +25,8 @@
 // App headers
 #include "utils/misc.h"
 #include "menu.h"
-#include "frmMain.h"
-#include "frmOptions.h"
+#include "frm/frmMain.h"
+#include "frm/frmOptions.h"
 #include "ctl/ctlSQLBox.h"
 #include "pgConn.h"
 #include "pgDatabase.h"
@@ -34,7 +34,7 @@
 #include "pgServer.h"
 #include "pgObject.h"
 #include "pgCollection.h"
-#include "frmHelp.h"
+#include "frm/frmHelp.h"
 #include "dlg/dlgProperty.h"
 
 extern wxString loadPath;

@@ -15,7 +15,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "frmAbout.h"
+#include "frm/frmAbout.h"
 
 // Copyright text
 #include "copyright.h"

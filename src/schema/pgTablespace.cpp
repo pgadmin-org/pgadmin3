@@ -19,7 +19,7 @@
 #include "pgfeatures.h"
 #include "pgTablespace.h"
 #include "pgDatabase.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 
 
 pgTablespace::pgTablespace(const wxString& newName)

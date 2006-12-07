@@ -25,9 +25,9 @@
 // Images
 #include "images/properties.xpm"
 
-#include "frmMain.h"
-#include "frmHelp.h"
-#include "frmHint.h"
+#include "frm/frmMain.h"
+#include "frm/frmHelp.h"
+#include "frm/frmHint.h"
 
 // Property dialogs
 #include "dlg/dlgProperty.h"

@@ -16,8 +16,8 @@
 #include "pgAdmin3.h"
 #include "menu.h"
 #include "utils/misc.h"
-#include "frmMain.h"
-#include "frmHint.h"
+#include "frm/frmMain.h"
+#include "frm/frmHint.h"
 #include "dlg/dlgConnect.h"
 #include "pgDatabase.h"
 #include "pgTablespace.h"
@@ -27,7 +27,7 @@
 #include "agent/pgaJob.h"
 #include "utils/utffile.h"
 #include "pgfeatures.h"
-#include "frmReport.h"
+#include "frm/frmReport.h"
 
 #define DEFAULT_PG_DATABASE wxT("postgres")
 

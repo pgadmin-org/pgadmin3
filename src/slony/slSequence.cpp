@@ -19,7 +19,7 @@
 #include "slony/slSequence.h"
 #include "slony/slSet.h"
 #include "slony/slCluster.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 
 
 slSequence::slSequence(slSet *s, const wxString& newName)

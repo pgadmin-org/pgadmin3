@@ -17,8 +17,8 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "frmGrantWizard.h"
-#include "frmMain.h"
+#include "frm/frmGrantWizard.h"
+#include "frm/frmMain.h"
 #include "utils/sysLogger.h"
 #include "ctl/ctlSecurityPanel.h"
 #include "pgFunction.h"

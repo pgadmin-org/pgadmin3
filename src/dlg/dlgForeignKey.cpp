@@ -15,8 +15,8 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
-#include "frmMain.h"
-#include "frmHint.h"
+#include "frm/frmMain.h"
+#include "frm/frmHint.h"
 #include "pgTable.h"
 #include "pgForeignKey.h"
 #include "dlg/dlgForeignKey.h"

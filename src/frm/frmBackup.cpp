@@ -16,8 +16,8 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "frmMain.h"
-#include "frmBackup.h"
+#include "frm/frmMain.h"
+#include "frm/frmBackup.h"
 #include "utils/sysLogger.h"
 #include "pgSchema.h"
 #include "pgTable.h"

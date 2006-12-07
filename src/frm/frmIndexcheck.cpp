@@ -16,8 +16,8 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "frmMain.h"
-#include "frmIndexcheck.h"
+#include "frm/frmMain.h"
+#include "frm/frmIndexcheck.h"
 #include "utils/sysLogger.h"
 #include "pgTable.h"
 #include "ctl/ctlSecurityPanel.h"

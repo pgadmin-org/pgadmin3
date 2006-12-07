@@ -19,9 +19,9 @@
 
 #include <wx/imaglist.h>
 
-#include "frmHbaConfig.h"
+#include "frm/frmHbaConfig.h"
 #include "dlg/dlgHbaConfig.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 #include "utils/utffile.h"
 #include "pgServer.h"
 #include "menu.h"

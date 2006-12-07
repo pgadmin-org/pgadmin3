@@ -19,7 +19,7 @@
 #include "slony/slCluster.h"
 #include "slony/slNode.h"
 #include "slony/slSet.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 
 
 // pointer to controls

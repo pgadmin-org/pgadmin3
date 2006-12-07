@@ -21,8 +21,8 @@
 
 // App headers
 #include "copyright.h"
-#include "frmHint.h"
-#include "frmMain.h"
+#include "frm/frmHint.h"
+#include "frm/frmMain.h"
 #include "pgObject.h"
 #include "utils/utffile.h"
 

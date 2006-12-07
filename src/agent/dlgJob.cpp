@@ -19,7 +19,7 @@
 #include "agent/pgaJob.h"
 #include "agent/pgaStep.h"
 #include "agent/pgaSchedule.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 
 
 // pointer to controls

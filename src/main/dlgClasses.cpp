@@ -17,7 +17,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "frmMain.h"
+#include "frm/frmMain.h"
 #include "pgConn.h"
 #include "pgObject.h"
 #include "utils/sysProcess.h"

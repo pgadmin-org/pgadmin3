@@ -18,9 +18,9 @@
 #include <wx/fontutil.h>
 
 // App headers
-#include "frmOptions.h"
-#include "frmMain.h"
-#include "frmHint.h"
+#include "frm/frmOptions.h"
+#include "frm/frmMain.h"
+#include "frm/frmHint.h"
 #include "utils/sysSettings.h"
 #include "utils/sysLogger.h"
 #include "utils/misc.h"

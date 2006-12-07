@@ -13,7 +13,7 @@
 #define FRMMAINCONFIG_H
 
 #include "utils/pgconfig.h"
-#include "frmConfig.h"
+#include "frm/frmConfig.h"
 #include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 

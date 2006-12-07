@@ -12,27 +12,6 @@
 pgadmin3_SOURCES += \
 	$(srcdir)/include/copyright.h \
 	$(srcdir)/include/explainCanvas.h \
-	$(srcdir)/include/frmAbout.h \
-	$(srcdir)/include/frmBackup.h \
-	$(srcdir)/include/frmConfig.h \
-	$(srcdir)/include/frmEditGrid.h \
-	$(srcdir)/include/frmExport.h \
-	$(srcdir)/include/frmGrantWizard.h \
-	$(srcdir)/include/frmHbaConfig.h \
-	$(srcdir)/include/frmHelp.h \
-	$(srcdir)/include/frmHint.h \
-	$(srcdir)/include/frmIndexcheck.h \
-	$(srcdir)/include/frmMain.h \
-	$(srcdir)/include/frmMainConfig.h \
-	$(srcdir)/include/frmMaintenance.h \
-	$(srcdir)/include/frmOptions.h \
-	$(srcdir)/include/frmPassword.h \
-	$(srcdir)/include/frmPgpassConfig.h \
-	$(srcdir)/include/frmQuery.h \
-	$(srcdir)/include/frmReport.h \
-	$(srcdir)/include/frmRestore.h \
-	$(srcdir)/include/frmSplash.h \
-	$(srcdir)/include/frmStatus.h \
 	$(srcdir)/include/menu.h \
 	$(srcdir)/include/pgAdmin3.h \
 	$(srcdir)/include/pgAggregate.h \
@@ -80,6 +59,7 @@ EXTRA_DIST += \
 
 include $(srcdir)/include/agent/module.mk
 include $(srcdir)/include/ctl/module.mk
+include $(srcdir)/include/frm/module.mk
 include $(srcdir)/include/images/module.mk
 include $(srcdir)/include/nodes/module.mk
 include $(srcdir)/include/parser/module.mk

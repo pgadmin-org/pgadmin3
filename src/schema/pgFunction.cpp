@@ -17,8 +17,8 @@
 #include "menu.h"
 #include "utils/misc.h"
 #include "pgFunction.h"
-#include "frmReport.h"
-#include "frmHint.h"
+#include "frm/frmReport.h"
+#include "frm/frmHint.h"
 
 
 pgFunction::pgFunction(pgSchema *newSchema, const wxString& newName)
