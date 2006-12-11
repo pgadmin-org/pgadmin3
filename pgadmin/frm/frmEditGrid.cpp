@@ -76,7 +76,7 @@ BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
     EVT_GRID_EDITOR_SHOWN(      frmEditGrid::OnEditorShown)
     EVT_GRID_EDITOR_HIDDEN(     frmEditGrid::OnEditorHidden)
     EVT_GRID_LABEL_RIGHT_CLICK( frmEditGrid::OnLabelRightClick)
-    EVT_AUI_PANEBUTTON(         frmEditGrid::OnAuiUpdate)
+    EVT_AUI_PANE_BUTTON(        frmEditGrid::OnAuiUpdate)
 END_EVENT_TABLE()
 
 

@@ -103,7 +103,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
     EVT_STC_UPDATEUI(CTL_SQLQUERY,  frmQuery::OnPositionStc)
-    EVT_AUI_PANECLOSE(              frmQuery::OnAuiUpdate)
+    EVT_AUI_PANE_CLOSE(             frmQuery::OnAuiUpdate)
 END_EVENT_TABLE()
 
 frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxString& query)

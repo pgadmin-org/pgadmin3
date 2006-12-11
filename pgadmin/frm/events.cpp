@@ -70,7 +70,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_STC_UPDATEUI(CTL_SQLPANE,           frmMain::OnPositionStc)
     EVT_CLOSE(                              frmMain::OnClose)
 
-    EVT_AUI_PANECLOSE(                      frmMain::OnAuiUpdate)
+    EVT_AUI_PANE_CLOSE(                     frmMain::OnAuiUpdate)
 
 #ifdef __WXGTK__
     EVT_TREE_KEY_DOWN(CTL_BROWSER,          frmMain::OnTreeKeyDown)
