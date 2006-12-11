@@ -75,7 +75,11 @@ BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
     EVT_GRID_EDITOR_SHOWN(      frmEditGrid::OnEditorShown)
     EVT_GRID_EDITOR_HIDDEN(     frmEditGrid::OnEditorHidden)
     EVT_GRID_LABEL_RIGHT_CLICK( frmEditGrid::OnLabelRightClick)
+#if wxCHECK_VERSION(2,8,0)
+    EVT_AUI_PANE_BUTTON(        frmEditGrid::OnAuiUpdate)
+#else
     EVT_AUI_PANEBUTTON(         frmEditGrid::OnAuiUpdate)
+#endif
 END_EVENT_TABLE()
 
 

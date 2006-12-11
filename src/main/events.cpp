@@ -70,8 +70,11 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_TREE_ITEM_RIGHT_CLICK(CTL_BROWSER,  frmMain::OnSelRightClick) 
     EVT_STC_UPDATEUI(CTL_SQLPANE,           frmMain::OnPositionStc)
     EVT_CLOSE(                              frmMain::OnClose)
-
+#if wxCHECK_VERSION(2,8,0)
+    EVT_AUI_PANE_CLOSE(                     frmMain::OnAuiUpdate)
+#else
     EVT_AUI_PANECLOSE(                      frmMain::OnAuiUpdate)
+#endif
 
 #ifdef __WXGTK__
     EVT_TREE_KEY_DOWN(CTL_BROWSER,          frmMain::OnTreeKeyDown)
