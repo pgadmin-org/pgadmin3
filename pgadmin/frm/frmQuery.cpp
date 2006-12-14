@@ -65,7 +65,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_COMBOBOX(CTRLID_CONNECTION, frmQuery::OnChangeConnection)
     EVT_CLOSE(                      frmQuery::OnClose)
     EVT_SET_FOCUS(                  frmQuery::OnSetFocus)
-    EVT_MENU(MNU_NEW,                frmQuery::OnNew)
+    EVT_MENU(MNU_NEW,               frmQuery::OnNew)
     EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
     EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
     EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
@@ -87,7 +87,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_HELP,              frmQuery::OnHelp)
     EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
-    EVT_MENU(MNU_SELECTALL,            frmQuery::OnSelectAll)
+    EVT_MENU(MNU_SELECTALL,         frmQuery::OnSelectAll)
     EVT_MENU(MNU_QUICKREPORT,       frmQuery::OnQuickReport)
     EVT_MENU(MNU_WORDWRAP,          frmQuery::OnWordWrap)
     EVT_MENU(MNU_SHOWWHITESPACE,    frmQuery::OnShowWhitespace)
@@ -632,6 +632,10 @@ void frmQuery::OnContents(wxCommandEvent& event)
 
 void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 {
+    // On Solaris, this event seems to get fired when the form closes(!!)
+    if(!IsVisible())
+        return; 
+
     unsigned int sel=cbConnection->GetCurrentSelection();
     if (sel == cbConnection->GetCount()-1)
     {
