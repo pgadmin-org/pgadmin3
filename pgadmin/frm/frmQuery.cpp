@@ -191,7 +191,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     favouritesMenu->AppendSeparator();
     favourites = queryFavouriteFileProvider::LoadFavourites(true);
     UpdateFavouritesList();
-    menuBar->Append(favouritesMenu, _("&Favourites"));
+    menuBar->Append(favouritesMenu, _("Fav&ourites"));
 
     wxMenu *helpMenu=new wxMenu();
     helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the pgAdmin III helpfile."));
