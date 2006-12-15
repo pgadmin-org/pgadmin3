@@ -77,7 +77,8 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
     cbDatabase->SetSelection(0);
 
     txtPort->SetValue(NumToStr((long)settings->GetLastPort()));    
-    cbSSL->SetSelection(settings->GetLastSSL());
+    if (!cbSSL->IsEmpty())
+        cbSSL->SetSelection(settings->GetLastSSL());
     txtUsername->SetValue(settings->GetLastUsername());
  
     chkTryConnect->SetValue(true);
