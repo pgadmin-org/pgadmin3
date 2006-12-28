@@ -146,7 +146,7 @@ void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
         properties->AppendItem(_("Function"), GetFunction() + wxT("(") + GetArguments() + wxT(")"));
         properties->AppendItem(_("Enabled?"), GetEnabled());
         properties->AppendItem(_("System trigger?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

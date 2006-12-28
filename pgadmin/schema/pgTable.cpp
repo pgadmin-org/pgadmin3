@@ -572,7 +572,7 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
             properties->AppendItem(_("Inherited tables"), GetInheritedTables());
         properties->AppendItem(_("Has OIDs?"), GetHasOids());
         properties->AppendItem(_("System table?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 
     }
     if (form && GetVacuumHint() && !hintShown)

@@ -111,7 +111,7 @@ void pgSequence::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Cache"), GetCacheValue());
         properties->AppendItem(_("Cycled"), GetCycled());
         properties->AppendItem(_("System sequence?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

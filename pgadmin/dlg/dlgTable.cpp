@@ -119,14 +119,14 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
     lstColumns->AddColumn(_("Column name"), 90);
     lstColumns->AddColumn(_("Definition"), 135);
 #ifndef __WXMAC__
-    lstColumns->AddColumn(wxT("Inherited from table"), 40);
+    lstColumns->AddColumn(_("Inherited from table"), 40);
 #else
-    lstColumns->AddColumn(wxT("Inherited from table"), 80);
+    lstColumns->AddColumn(_("Inherited from table"), 80);
 #endif
-    lstColumns->AddColumn(wxT("Column definition"), 0);
-    lstColumns->AddColumn(wxT("Column comment"), 0);
-    lstColumns->AddColumn(wxT("Column statistics"), 0);
-    lstColumns->AddColumn(wxT("Column"), 0);
+    lstColumns->AddColumn(_("Column definition"), 0);
+    lstColumns->AddColumn(_("Column comment"), 0);
+    lstColumns->AddColumn(_("Column statistics"), 0);
+    lstColumns->AddColumn(_("Column"), 0);
 
     lstConstraints->CreateColumns(0, _("Constraint name"), _("Definition"), 90);
 }
@@ -1057,7 +1057,10 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             pk.SetDatabase(database);
             if (pk.Go(true) != wxID_CANCEL)
             {
-                lstConstraints->AppendItem(primaryKeyFactory.GetIconId(), pk.GetName(), pk.GetDefinition());
+                wxString tmpDef = pk.GetDefinition();
+                tmpDef.Replace(wxT("\n"), wxT(" "));
+
+                lstConstraints->AppendItem(primaryKeyFactory.GetIconId(), pk.GetName(), tmpDef);
                 hasPK=true;
                 FillConstraint();
             }
@@ -1070,9 +1073,10 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             fk.SetDatabase(database);
             if (fk.Go(true) != wxID_CANCEL)
             {
-                wxString str=fk.GetDefinition();
-                str.Replace(wxT("\n"), wxT(" "));
-                lstConstraints->AppendItem(foreignKeyFactory.GetIconId(), fk.GetName(), str);
+                wxString tmpDef = fk.GetDefinition();
+                tmpDef.Replace(wxT("\n"), wxT(" "));
+
+                lstConstraints->AppendItem(foreignKeyFactory.GetIconId(), fk.GetName(), tmpDef);
             }
             break;
         }
@@ -1082,7 +1086,12 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             unq.CenterOnParent();
             unq.SetDatabase(database);
             if (unq.Go(true) != wxID_CANCEL)
-                lstConstraints->AppendItem(uniqueFactory.GetIconId(), unq.GetName(), unq.GetDefinition());
+            {
+                wxString tmpDef = unq.GetDefinition();
+                tmpDef.Replace(wxT("\n"), wxT(" "));
+
+                lstConstraints->AppendItem(uniqueFactory.GetIconId(), unq.GetName(), tmpDef);
+            }
             break;
         }
         case 3: // Check
@@ -1091,7 +1100,12 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             chk.CenterOnParent();
             chk.SetDatabase(database);
             if (chk.Go(true) != wxID_CANCEL)
-                lstConstraints->AppendItem(checkFactory.GetIconId(), chk.GetName(), chk.GetDefinition());
+            {
+                wxString tmpDef = chk.GetDefinition();
+                tmpDef.Replace(wxT("\n"), wxT(" "));
+
+                lstConstraints->AppendItem(checkFactory.GetIconId(), chk.GetName(), tmpDef);
+            }
             break;
         }
     }

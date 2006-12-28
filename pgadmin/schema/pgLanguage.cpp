@@ -75,7 +75,7 @@ void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Validator"), GetValidatorProc());
         properties->AppendItem(_("System language?"), GetSystemObject());
         if (GetConnection()->BackendMinimumVersion(7, 5))
-            properties->AppendItem(_("Comment"), GetComment());
+            properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

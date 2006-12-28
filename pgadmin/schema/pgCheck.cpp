@@ -77,7 +77,7 @@ void pgCheck::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         properties->AppendItem(_("Deferrable?"), BoolToYesNo(GetDeferrable()));
         properties->AppendItem(_("Initially?"), 
             GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

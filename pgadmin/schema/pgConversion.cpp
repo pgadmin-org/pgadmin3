@@ -70,7 +70,7 @@ void pgConversion::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
         properties->AppendItem(_("Default?"), GetDefaultConversion());
         properties->AppendItem(_("System conversion?"), GetSystemObject());
         if (GetConnection()->BackendMinimumVersion(7, 5))
-            properties->AppendItem(_("Comment"), GetComment());
+            properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

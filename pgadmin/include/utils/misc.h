@@ -155,6 +155,8 @@ wxString HtmlEntities(const wxString &str);
 
 wxString VerFromRev(const wxString &rev);
 
+wxString firstLineOnly(const wxString &str);
+
 enum 
 {
     PGM_SERVER,

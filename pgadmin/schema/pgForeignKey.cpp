@@ -164,7 +164,7 @@ void pgForeignKey::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
             properties->AppendItem(_("Initially?"), 
                 GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
         properties->AppendItem(_("System foreign key?"), BoolToYesNo(GetSystemObject()));
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

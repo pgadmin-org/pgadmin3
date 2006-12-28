@@ -208,7 +208,7 @@ void slSet::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *propert
         if (!lockXXID.IsEmpty())
             properties->AppendItem(_("Lock XXID"), lockXXID);
 
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 
