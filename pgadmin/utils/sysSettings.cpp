@@ -144,6 +144,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("IndentSpaces"), &indentSpaces, 0L);
 	Read(wxT("TabForCompletion"), &tabForCompletion, false);
     Read(wxT("StickySql"), &stickySql, false);
+    Read(wxT("frmQuery/IndicateNull"), &indicateNull, false);
     Read(wxT("DoubleClickProperties"), &doubleClickProperties, true);
     Read(wxT("SuppressGuruHints"), &suppressGuruHints, false);
     Read(wxT("WriteUnicodeFile"), &unicodeFile, false);
@@ -491,6 +492,16 @@ void sysSettings::SetStickySql(const bool newval)
 {
     stickySql = newval;
     Write(wxT("StickySql"), stickySql);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// IndicateNull
+//////////////////////////////////////////////////////////////////////////
+
+void sysSettings::SetIndicateNull(const bool newval)
+{
+    indicateNull = newval;
+    Write(wxT("frmQuery/IndicateNull"), indicateNull);
 }
 
 //////////////////////////////////////////////////////////////////////////

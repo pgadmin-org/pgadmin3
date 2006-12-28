@@ -53,6 +53,7 @@ extern wxArrayString existingLangNames;
 #define cbCopySeparator				CTRL_COMBOBOX("cbCopySeparator")
 #define chkTabForCompletion			CTRL_CHECKBOX("chkTabForCompletion")
 #define chkStickySql                CTRL_CHECKBOX("chkStickySql")
+#define chkIndicateNull             CTRL_CHECKBOX("chkIndicateNull")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
 #define cbLanguage                  CTRL_COMBOBOX("cbLanguage")
 #define txtSqlFont                  CTRL_TEXT("txtSqlFont")
@@ -117,6 +118,7 @@ frmOptions::frmOptions(frmMain *parent)
 
 	chkTabForCompletion->SetValue(settings->GetTabForCompletion());
     chkStickySql->SetValue(settings->GetStickySql());
+    chkIndicateNull->SetValue(settings->GetIndicateNull());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
     txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
     txtProxy->SetValue(settings->GetProxy());
@@ -242,6 +244,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 
 	settings->SetTabForCompletion(chkTabForCompletion->GetValue());
     settings->SetStickySql(chkStickySql->GetValue());
+    settings->SetIndicateNull(chkIndicateNull->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());
     settings->SetFont(currentFont);

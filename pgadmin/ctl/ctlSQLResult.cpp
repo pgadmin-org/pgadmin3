@@ -298,7 +298,10 @@ wxString sqlResultTable::GetValue(int row, int col)
 		if (col >= 0)
 		{
 			thread->DataSet()->Locate(row+1);
-			return thread->DataSet()->GetVal(col);
+            if (settings->GetIndicateNull() && thread->DataSet()->IsNull(col))
+                return wxT("<NULL>");
+            else
+			    return thread->DataSet()->GetVal(col);
 		}
 		else
 			return thread->DataSet()->ColName(col);

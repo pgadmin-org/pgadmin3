@@ -94,6 +94,10 @@ public:
     bool GetStickySql() const { return stickySql; }
     void SetStickySql(const bool newval);
 
+    // Indicate Null
+    bool GetIndicateNull() const { return indicateNull; }
+    void SetIndicateNull(const bool newval);
+
     // DoubleClick for Properties
     bool GetDoubleClickProperties() const { return doubleClickProperties; }
     void SetDoubleClickProperties(const bool newval);
@@ -201,7 +205,7 @@ private:
     bool askSaveConfirmation;
     bool confirmDelete, suppressGuruHints;
     long maxRows, maxColSize, autoRowCountThreshold, indentSpaces;
-    bool stickySql, unicodeFile, tabForCompletion;
+    bool stickySql, indicateNull, unicodeFile, tabForCompletion;
     bool doubleClickProperties;
     long maxServerLogSize;
 
