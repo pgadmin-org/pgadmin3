@@ -68,7 +68,7 @@ void pgaStep::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         properties->AppendItem(_("Code"), GetCode());
         properties->AppendItem(_("On error"), GetOnError());
 
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

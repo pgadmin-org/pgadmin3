@@ -73,7 +73,7 @@ void pgRule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
             properties->AppendItem(_("Definition"), def);
         }
         properties->AppendItem(_("System rule?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

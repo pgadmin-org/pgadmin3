@@ -240,7 +240,7 @@ void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         if (GetCluster()->ClusterMinimumVersion(1,1))
             properties->AppendItem(_("Log spooler"), GetSpool());
         properties->AppendItem(_("Connected"), conn != NULL);
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 
         if (conn && pid < 0)
             pid=StrToLong(conn->ExecuteScalar(

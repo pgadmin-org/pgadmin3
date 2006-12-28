@@ -310,7 +310,7 @@ void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 
         properties->AppendItem(_("Version"), GetClusterVersion());
         properties->AppendItem(_("Owner"), GetOwner());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

@@ -67,7 +67,7 @@ void pgaSchedule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 		properties->AppendItem(_("Months"), GetMonthsString());
 		properties->AppendItem(_("Exceptions"), GetExceptionsString());
 
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

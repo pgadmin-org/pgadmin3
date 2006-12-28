@@ -170,7 +170,7 @@ void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
             properties->AppendItem(wxT("FUNCTION"), functions.Item(i));
         properties->AppendItem(_("System operator class?"), GetSystemObject());
         if (GetConnection()->BackendMinimumVersion(7, 5))
-            properties->AppendItem(_("Comment"), GetComment());
+            properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

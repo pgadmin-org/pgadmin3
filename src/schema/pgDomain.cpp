@@ -102,7 +102,7 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
         properties->AppendItem(_("Check"), GetCheck());
         properties->AppendItem(_("Not NULL?"), GetNotNull());
         properties->AppendItem(_("System domain?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

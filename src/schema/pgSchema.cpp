@@ -140,7 +140,7 @@ void pgSchema::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("ACL"), GetAcl());
         properties->AppendItem(_("System schema?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

@@ -133,7 +133,7 @@ void pgOperator::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Greater than operator"), GetGreaterOperator());
         properties->AppendItem(_("Supports hash?"), GetHashJoins());
         properties->AppendItem(_("System operator?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

@@ -97,7 +97,7 @@ void pgaJob::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		else
 			properties->AppendItem(_("Running at"), _("Not currently running"));
 
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

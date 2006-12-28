@@ -217,7 +217,7 @@ void pgIndexBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
         properties->AppendItem(_("Access method"), GetIndexType());
         properties->AppendItem(_("Constraint"), GetConstraint());
         properties->AppendItem(_("System index?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

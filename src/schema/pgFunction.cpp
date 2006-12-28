@@ -148,14 +148,14 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
             properties->AppendItem(_("Link symbol"), GetSource());
         }
         else
-            properties->AppendItem(_("Source"), GetSource());
+            properties->AppendItem(_("Source"), firstLineOnly(GetSource()));
 
         properties->AppendItem(_("Volatility"), GetVolatility());
         properties->AppendItem(_("Security of definer?"), GetSecureDefiner());
         properties->AppendItem(_("Strict?"), GetIsStrict());
         properties->AppendItem(_("ACL"), GetAcl());
         properties->AppendItem(_("System function?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

@@ -92,7 +92,7 @@ void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
             properties->AppendItem(_("Sort operator"), GetSortOp());
         properties->AppendItem(_("Initial condition"), GetInitialCondition());
         properties->AppendItem(_("System aggregate?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

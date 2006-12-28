@@ -436,7 +436,7 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
             properties->AppendItem(_("Old style FKs"), GetMissingFKs());
         if (!GetSchemaRestriction().IsEmpty())
             properties->AppendItem(_("Schema restriction"), GetSchemaRestriction());
-        properties->AppendItem(_("Comment"), GetComment());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
     if (form && GetCanHint() && !hintShown)
     {

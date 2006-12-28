@@ -637,3 +637,22 @@ wxString VerFromRev(const wxString &rev)
    ret = ret.BeforeFirst(' ');
    return ret;
 }
+
+wxString firstLineOnly(const wxString &str)
+{
+    wxString tmp;
+    if (str.Contains(wxT("\r\n")))
+    {
+        tmp = str.BeforeFirst('\r');
+        if (str.BeforeFirst('\r').Length() != str.Length())
+            tmp += wxT("...");
+    }
+    else
+    {
+        tmp = str.BeforeFirst('\n');
+        if (str.BeforeFirst('\n').Length() != str.Length())
+            tmp += wxT("...");
+    }
+
+    return tmp;
+}
