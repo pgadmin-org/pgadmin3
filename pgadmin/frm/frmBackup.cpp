@@ -47,6 +47,7 @@
 BEGIN_EVENT_TABLE(frmBackup, ExternProcessDialog)
     EVT_TEXT(XRCID("txtFilename"),          frmBackup::OnChange)
     EVT_BUTTON(XRCID("btnFilename"),        frmBackup::OnSelectFilename)
+    EVT_BUTTON(wxID_OK,                     frmBackup::OnOK)
     EVT_RADIOBOX(XRCID("rbxFormat"),        frmBackup::OnChangePlain)
     EVT_CHECKBOX(XRCID("chkOnlyData"),      frmBackup::OnChangePlain)
     EVT_CHECKBOX(XRCID("chkOnlySchema"),    frmBackup::OnChangePlain)
@@ -70,6 +71,10 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     canBlob = (obj->GetMetaType() == PGM_DATABASE);
     chkBlobs->SetValue(canBlob);
     chkDisableDollar->Enable(obj->GetConnection()->BackendMinimumVersion(7, 5));
+
+    wxString val;
+    settings->Read(wxT("frmBackup/LastFile"), &val, wxEmptyString);
+    txtFilename->SetValue(val);
 
     if (!object->GetDatabase()->GetServer()->GetPasswordIsStored())
         environment.Add(wxT("PGPASSWORD=") + object->GetDatabase()->GetServer()->GetPassword());
@@ -123,7 +128,7 @@ void frmBackup::OnSelectFilename(wxCommandEvent &ev)
     }
 
     
-    wxFileDialog file(this, title, wxGetHomeDir(), txtFilename->GetValue(), prompt, wxSAVE);
+    wxFileDialog file(this, title, ::wxPathOnly(txtFilename->GetValue()), txtFilename->GetValue(), prompt, wxSAVE);
 
     if (file.ShowModal() == wxID_OK)
     {
@@ -154,6 +159,9 @@ void frmBackup::OnChangePlain(wxCommandEvent &ev)
     chkDropDb->Enable(isPlain);
     chkCreateDb->Enable(isPlain);
     chkDisableTrigger->Enable(chkOnlyData->GetValue());
+
+    wxCommandEvent nullEvent;
+    OnChange(nullEvent);
 }
 
 
@@ -267,6 +275,11 @@ void frmBackup::Go()
     Show(true);
 }
 
+void frmBackup::OnOK(wxCommandEvent &ev)
+{
+    settings->Write(wxT("frmBackup/LastFile"), txtFilename->GetValue());
+    ExternProcessDialog::OnOK(ev);
+}
 
 backupFactory::backupFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {

@@ -35,6 +35,7 @@ private:
     void OnChangePlain(wxCommandEvent &ev);
     wxString getCmdPart1();
     wxString getCmdPart2();
+    void OnOK(wxCommandEvent &ev);
 
     pgObject *object;
 

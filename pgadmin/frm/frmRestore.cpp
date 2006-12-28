@@ -98,6 +98,10 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
         chkSingleObject->Disable();
     }
 
+    wxString val;
+    settings->Read(wxT("frmRestore/LastFile"), &val, wxEmptyString);
+    txtFilename->SetValue(val);
+
     // Icon
     SetIcon(wxIcon(restore_xpm));
 
@@ -109,7 +113,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
         environment.Add(wxT("PGPASSWORD=") + server->GetPassword());
 
     wxCommandEvent ev;
-    OnChange(ev);
+    OnChangeName(ev);
 }
 
 
@@ -130,7 +134,7 @@ wxString frmRestore::GetHelpPage() const
 
 void frmRestore::OnSelectFilename(wxCommandEvent &ev)
 {
-    wxFileDialog file(this, _("Select backup filename"), wxGetHomeDir(), txtFilename->GetValue(), 
+    wxFileDialog file(this, _("Select backup filename"), ::wxPathOnly(txtFilename->GetValue()), txtFilename->GetValue(), 
         _("Backup files (*.backup)|*.backup|All files (*.*)|*.*"));
 
     if (file.ShowModal() == wxID_OK)
@@ -359,10 +363,13 @@ void frmRestore::OnView(wxCommandEvent &ev)
 
 void frmRestore::OnOK(wxCommandEvent &ev)
 {
+    settings->Write(wxT("frmRestore/LastFile"), txtFilename->GetValue());
+
     viewRunning = false;
     btnView->Disable();
 
     ExternProcessDialog::OnOK(ev);
+
 }
 
 
