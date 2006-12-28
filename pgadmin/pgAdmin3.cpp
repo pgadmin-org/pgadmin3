@@ -28,6 +28,7 @@
 #include <wx/ogl/ogl.h>
 #include <wx/socket.h>
 #include <wx/stdpaths.h>
+#include <wx/clipbrd.h>
 
 // Windows headers
 #ifdef __WXMSW__
@@ -526,6 +527,8 @@ int pgAdmin3::OnExit()
 #ifdef __WXMSW__
     WSACleanup();
 #endif
+
+    wxTheClipboard->Flush();
 
     return 1;
 }
