@@ -238,6 +238,14 @@ void pgaJob::ShowStatistics(frmMain *form, ctlListView *statistics)
     }
 }
 
+bool pgaJob::RunNow()
+{
+    if (!GetConnection()->ExecuteVoid(wxT("UPDATE pgagent.pga_job SET jobnextrun = now() WHERE jobid=") + NumToStr(GetRecId())))
+        return false;
+
+    return true;
+}
+
 pgaJobObject::pgaJobObject(pgaJob *_job, pgaFactory &factory, const wxString& newName)
 : pgServerObject(factory, newName)
 {
@@ -273,9 +281,37 @@ pgCollection *pgaJobObjFactory::CreateCollection(pgObject *obj)
 pgaJobFactory::pgaJobFactory() 
 : pgServerObjFactory(__("pgAgent Job"), __("New Job"), __("Create a new Job."), job_xpm)
 {
+    metaType = PGM_JOB;
     disabledId = addIcon(jobdisabled_xpm);
 }
 
 
 pgaJobFactory jobFactory;
 static pgaCollectionFactory cf(&jobFactory, __("Jobs"), jobs_xpm);
+
+runNowFactory::runNowFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("&Run now"), _("Reschedule the job to run now."));
+}
+
+
+wxWindow *runNowFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (!((pgaJob *)(obj))->RunNow())
+        wxLogError(_("Failed to reschedule the job."));
+
+    form->Refresh(obj);
+
+    return 0;
+}
+
+
+bool runNowFactory::CheckEnable(pgObject *obj)
+{
+    if (obj)
+    {
+        if (obj->GetMetaType() == PGM_JOB)
+            return true;
+    }
+    return false;
+}

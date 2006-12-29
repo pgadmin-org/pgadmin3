@@ -178,6 +178,7 @@ enum
     PGM_COLUMN,
 	PGM_ROLE,
 
+    PGM_JOB,
     PGM_STEP,
     PGM_SCHEDULE,
 

@@ -60,6 +60,7 @@ public:
     void iSetHostAgent(const wxString &s) { hostAgent=s; }
     long GetRecId() const { return recId; }
     void iSetRecId(const long l) { recId=l; }
+    bool RunNow();
 
     wxMenu *GetNewMenu();
     bool CanCreate() { return true; }
@@ -108,4 +109,13 @@ public:
         : pgServerObjFactory(tn, ns, nls, img, imgSm) {}
     virtual pgCollection *CreateCollection(pgObject *obj);
 };
+
+class runNowFactory : public contextActionFactory
+{
+public:
+    runNowFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
 #endif

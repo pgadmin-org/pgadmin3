@@ -359,6 +359,9 @@ void frmMain::CreateMenus()
     toolsMenu->Append(MNU_CONFIGSUBMENU, _("Server Configuration"), cfgMenu);
     toolsMenu->AppendSeparator();
 
+    new runNowFactory(menuFactories, toolsMenu, 0);
+    toolsMenu->AppendSeparator();
+
     new separatorFactory(menuFactories);
 
     new propertyFactory(menuFactories, editMenu, 0);
