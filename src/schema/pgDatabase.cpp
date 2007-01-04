@@ -451,28 +451,9 @@ pgObject *pgDatabase::Refresh(ctlTree *browser, const wxTreeItemId item)
     pgDatabase *database=0;
     pgCollection *coll=browser->GetParentCollection(item);
     if (coll)
-    {
         database = (pgDatabase*)databaseFactory.CreateObjects(coll, 0, wxT(" WHERE db.oid=") + GetOidStr() + wxT("\n"));
-        if (database)
-        {
-            sql=wxT("");
-            iSetAcl(database->GetAcl());
-            size_t i;
-            for (i=0 ; i < database->GetVariables().GetCount() ; i++)
-                variables.Add(database->GetVariables().Item(i));
 
-            if (connection()->BackendMinimumVersion(8, 2))
-                iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_shdescription WHERE objoid=") + GetOidStr()));
-            else
-                iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
-
-            delete database;
-        }
-    }
-
-    UpdateDefaultSchema();
-
-    return this;
+    return database;
 }
 
 
@@ -542,6 +523,13 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
                 database->iSetSchemaRestriction(value);
             }
 
+            if (collection->GetConnection()->BackendMinimumVersion(8, 2))
+                database->iSetComment(collection->GetConnection()->ExecuteScalar(wxT("SELECT description FROM pg_shdescription WHERE objoid=") + database->GetOidStr()));
+            else
+                database->iSetComment(collection->GetConnection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + database->GetOidStr()));
+
+			database->UpdateDefaultSchema();
+
             // Add the treeview node if required
             if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 
             {
@@ -567,7 +555,6 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     }
     return database;
 }
-
 
 pgDatabaseCollection::pgDatabaseCollection(pgaFactory *factory, pgServer *sv)
 : pgServerObjCollection(factory, sv)
