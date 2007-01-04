@@ -71,6 +71,8 @@ dlgDatabase::dlgDatabase(pgaFactory *f, frmMain *frame, pgDatabase *node)
     lstVariables->CreateColumns(0, _("Variable"), _("Value"));
 
     chkValue->Hide();
+
+	dirtyVars = false;
 }
 
 pgObject *dlgDatabase::GetObject()
@@ -269,7 +271,8 @@ void dlgDatabase::CheckChange()
         enable = txtSchemaRestr->GetValue() != database->GetSchemaRestriction()
                || txtComment->GetValue() != database->GetComment()
 			   || txtName->GetValue() != database->GetName()
-               || cbOwner->GetValue() != database->GetOwner();
+               || cbOwner->GetValue() != database->GetOwner()
+			   || dirtyVars;
     }
 
     CheckValid(enable, !GetName().IsEmpty(), _("Please specify name."));
@@ -344,6 +347,7 @@ void dlgDatabase::OnVarAdd(wxCommandEvent &ev)
         }
         lstVariables->SetItem(pos, 1, value);
     }
+	dirtyVars = true;
     CheckChange();
 }
 
@@ -351,6 +355,7 @@ void dlgDatabase::OnVarAdd(wxCommandEvent &ev)
 void dlgDatabase::OnVarRemove(wxCommandEvent &ev)
 {
     lstVariables->DeleteCurrentItem();
+	dirtyVars = true;
     CheckChange();
 }
 
