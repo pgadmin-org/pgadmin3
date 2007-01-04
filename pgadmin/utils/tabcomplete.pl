@@ -3,7 +3,7 @@
 ##
 ## pgAdmin III - Tab completion
 ## RCS-ID:      $Id$
-## Copyright (C) 2002 - 2006, The pgAdmin Development Team
+## Copyright (C) 2002 - 2007, The pgAdmin Development Team
 ## This software is released under the Artistic Licence
 ##
 ## tab-complete.pl - Script to build tab-complete.inc 

@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: pgSetBase.cpp 5510 2006-10-21 23:08:05Z dpage $
-// Copyright (C) 2002 - 2006, The pgAdmin Development Team
+// Copyright (C) 2002 - 2007, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // pgQueryThread.cpp - PostgreSQL threaded query class
