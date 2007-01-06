@@ -4,8 +4,8 @@
 <title>27.15. Building libpq Programs</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.10 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
 <link rel="prev" href="libpq-threading.html" title="27.14. Behavior in Threaded Programs">
 <link rel="next" href="libpq-example.html" title="27.16. Example Programs">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="libpq-build"></a>27.15. Building <span class="application">libpq</span> Programs</h2></div></div></div>
-<a name="id2650168"></a><p>   To build (i.e., compile and link) a program using
+<a name="id2654995"></a><p>   To build (i.e., compile and link) a program using
    <span class="application">libpq</span> you need to 
    do all of the following things:
 
@@ -57,7 +57,7 @@ foo.c:95: `PGRES_TUPLES_OK' undeclared (first use in this function)</pre>
 <p>      If there is any chance that your program might be compiled by
       other users then you should not hardcode the directory location
       like that.  Instead, you can run the utility
-      <code class="command">pg_config</code><a name="id2650272"></a> to find out where the header
+      <code class="command">pg_config</code><a name="id2655099"></a> to find out where the header
       files are on the local system:
 </p>
 <pre class="screen"><code class="prompt">$</code> pg_config --includedir
@@ -110,7 +110,7 @@ testlibpq.o(.text+0xa4): undefined reference to `PQerrorMessage'</pre>
 </ul></div>
 <p>
   </p>
-<p>   <a name="id2650416"></a>
+<p>   <a name="id2655243"></a>
    If your codes references the header file
    <code class="filename">libpq-int.h</code> and you refuse to fix your code to
    not use it, starting in <span class="productname">PostgreSQL</span> 7.2, this file will be found in

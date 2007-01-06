@@ -1,39 +1,45 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.13. Release 7.4.14</title>
+<title>E.2. Release 8.0.9</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
 <link rel="start" href="index.html" title="PostgreSQL 8.0.10 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-4-15.html" title="E.12. Release 7.4.15">
-<link rel="next" href="release-7-4-13.html" title="E.14. Release 7.4.13">
+<link rel="prev" href="release.html" title="Appendix E. Release Notes">
+<link rel="next" href="release-8-0-8.html" title="E.3. Release 8.0.8">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-7-4-14"></a>E.13. Release 7.4.14</h2></div></div></div>
+<a name="release-8-0-9"></a>E.2. Release 8.0.9</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2006-10-16</p>
 </div>
-<p>    This release contains a variety of fixes from 7.4.13.
+<p>    This release contains a variety of fixes from 8.0.8.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2808922"></a>E.13.1. Migration to version 7.4.14</h3></div></div></div>
-<p>     A dump/restore is not required for those running 7.4.X.  However,
-     if you are upgrading from a version earlier than 7.4.11, see the release
-     notes for 7.4.11.
+<a name="id2802652"></a>E.2.1. Migration to version 8.0.9</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.0.X.  However,
+     if you are upgrading from a version earlier than 8.0.6, see the release
+     notes for 8.0.6.
     </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2808931"></a>E.13.2. Changes</h3></div></div></div>
+<a name="id2802660"></a>E.2.2. Changes</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
+<li><p>Fix crash when referencing <code class="literal">NEW</code> row
+values in rule WHERE expressions (Tom)</p></li>
 <li><p>Fix core dump when an untyped literal is taken as
 ANYARRAY</p></li>
+<li><p>Fix mishandling of AFTER triggers when query contains a SQL
+function returning multiple rows (Tom)</p></li>
+<li><p>Fix <code class="command">ALTER TABLE ... TYPE</code> to recheck
+<code class="literal">NOT NULL</code> for <code class="literal">USING</code> clause (Tom)</p></li>
 <li>
 <p>Fix <code class="function">string_to_array()</code> to handle overlapping
   matches for the separator string</p>
@@ -43,8 +49,12 @@ ANYARRAY</p></li>
   <span class="application">psql</span>'s <code class="literal">\d</code> commands</p></li>
 <li><p>Fix index-corrupting bugs in /contrib/ltree
   (Teodor)</p></li>
+<li><p>Numerous robustness fixes in <span class="application">ecpg</span> (Joachim
+Wieland)</p></li>
 <li><p>Fix backslash escaping in /contrib/dbmirror</p></li>
-<li><p>Adjust regression tests for recent changes in US DST laws</p></li>
+<li><p>Fix instability of statistics collection on Win32 (Tom, Andrew)</p></li>
+<li><p>Fixes for <span class="systemitem">AIX</span> and
+<span class="productname">Intel</span> compilers (Tom)</p></li>
 </ul></div>
 </div>
 </div></body>
