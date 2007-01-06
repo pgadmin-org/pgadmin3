@@ -4,8 +4,8 @@
 <title>20.2. Authentication methods</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
 <link rel="up" href="client-authentication.html" title="Chapter 20. Client Authentication">
 <link rel="prev" href="client-authentication.html" title="Chapter 20. Client Authentication">
 <link rel="next" href="client-authentication-problems.html" title="20.3. Authentication problems">
@@ -57,7 +57,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="auth-password"></a>20.2.2. Password authentication</h3></div></div></div>
-<a name="id2635979"></a><a name="id2635985"></a><a name="id2635990"></a><p>    The password-based authentication methods are <code class="literal">md5</code>,
+<a name="id2640812"></a><a name="id2640818"></a><a name="id2640823"></a><p>    The password-based authentication methods are <code class="literal">md5</code>,
     <code class="literal">crypt</code>, and <code class="literal">password</code>. These methods operate
     similarly except for the way that the password is sent across the
     connection: respectively, MD5-hashed, crypt-encrypted, and clear-text.
@@ -86,7 +86,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="kerberos-auth"></a>20.2.3. Kerberos authentication</h3></div></div></div>
-<a name="id2636122"></a><p>    <span class="productname">Kerberos</span> is an industry-standard secure
+<a name="id2640955"></a><p>    <span class="productname">Kerberos</span> is an industry-standard secure
     authentication system suitable for distributed computing over a public
     network. A description of the <span class="productname">Kerberos</span> system
     is far beyond the scope of this document; in full generality it can be
@@ -161,7 +161,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="auth-ident"></a>20.2.4. Ident-based authentication</h3></div></div></div>
-<a name="id2636449"></a><p>    The ident authentication method works by obtaining the client's
+<a name="id2641282"></a><p>    The ident authentication method works by obtaining the client's
     operating system user name, then determining the allowed database
     user names using a map file that lists the permitted
     corresponding pairs of names.  The determination of the client's
@@ -170,7 +170,7 @@
    </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2636463"></a>20.2.4.1. Ident Authentication over TCP/IP</h4></div></div></div>
+<a name="id2641296"></a>20.2.4.1. Ident Authentication over TCP/IP</h4></div></div></div>
 <p>    The &#8220;<span class="quote">Identification Protocol</span>&#8221; is described in
     <em class="citetitle">RFC 1413</em>. Virtually every Unix-like
     operating system ships with an ident server that listens on TCP
@@ -220,7 +220,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2636552"></a>20.2.4.2. Ident Authentication over Local Sockets</h4></div></div></div>
+<a name="id2641385"></a>20.2.4.2. Ident Authentication over Local Sockets</h4></div></div></div>
 <p>    On systems supporting <code class="symbol">SO_PEERCRED</code> requests for
     Unix-domain sockets (currently <span class="systemitem">Linux</span>, <span class="systemitem">FreeBSD</span>,
     <span class="systemitem">NetBSD</span>, <span class="systemitem">OpenBSD</span>, 
@@ -252,7 +252,7 @@
    </p>
 <p>    Ident maps other than <code class="literal">sameuser</code> are defined in the
     ident map file, which by default is named
-    <code class="filename">pg_ident.conf</code><a name="id2636692"></a>
+    <code class="filename">pg_ident.conf</code><a name="id2641525"></a>
     and is stored in the
     cluster's data directory.  (It is possible to place the map file
     elsewhere, however; see the <a href="runtime-config-file-locations.html#guc-ident-file">ident_file</a>
@@ -273,7 +273,7 @@
    </p>
 <p>   The <code class="filename">pg_ident.conf</code> file is read on start-up and
    when the main server process (<code class="command">postmaster</code>) receives a
-   <span class="systemitem">SIGHUP</span><a name="id2636771"></a>
+   <span class="systemitem">SIGHUP</span><a name="id2641604"></a>
    signal. If you edit the file on an
    active system, you will need to signal the <code class="command">postmaster</code>
    (using <code class="literal">pg_ctl reload</code> or <code class="literal">kill -HUP</code>) to make it
@@ -308,7 +308,7 @@ omicron       bryanh            guest1</pre></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="auth-pam"></a>20.2.5. PAM authentication</h3></div></div></div>
-<a name="id2636934"></a><p>    This authentication method operates similarly to
+<a name="id2641767"></a><p>    This authentication method operates similarly to
     <code class="literal">password</code> except that it uses PAM (Pluggable
     Authentication Modules) as the authentication mechanism. The
     default PAM service name is <code class="literal">postgresql</code>. You can

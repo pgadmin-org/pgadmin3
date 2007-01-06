@@ -4,8 +4,8 @@
 <title>12.3. Explicit Locking</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
 <link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
 <link rel="prev" href="transaction-iso.html" title="12.2. Transaction Isolation">
 <link rel="next" href="applevel-consistency.html" title="12.4. Data Consistency Checks at the Application Level">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="explicit-locking"></a>12.3. Explicit Locking</h2></div></div></div>
-<a name="id2607761"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
+<a name="id2612584"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
     to control concurrent access to data in tables.  These modes can
     be used for application-controlled locking in situations where
     <acronym class="acronym">MVCC</acronym> does not give the desired behavior.  Also,
@@ -33,7 +33,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="locking-tables"></a>12.3.1. Table-Level Locks</h3></div></div></div>
-<a name="id2607830"></a><p>    The list below shows the available lock modes and the contexts in
+<a name="id2612652"></a><p>    The list below shows the available lock modes and the contexts in
     which they are used automatically by
     <span class="productname">PostgreSQL</span>.  You can also acquire any
     of these locks explicitly with the command <a href="sql-lock.html">LOCK</a>.
@@ -223,7 +223,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="locking-deadlocks"></a>12.3.3. Deadlocks</h3></div></div></div>
-<a name="id2608516"></a><p>     The use of explicit locking can increase the likelihood of
+<a name="id2613339"></a><p>     The use of explicit locking can increase the likelihood of
      <em class="firstterm">deadlocks</em>, wherein two (or more) transactions each
      hold locks that the other wants.  For example, if transaction 1
      acquires an exclusive lock on table A and then tries to acquire

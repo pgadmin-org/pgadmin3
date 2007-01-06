@@ -4,8 +4,8 @@
 <title>17.5. Write Ahead Log</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-resource.html" title="17.4. Resource Consumption">
 <link rel="next" href="runtime-config-query.html" title="17.6. Query Planning">
@@ -190,9 +190,11 @@
 <p>        The shell command to execute to archive a completed segment of
         the WAL file series. If this is an empty string (the default),
         WAL archiving is disabled. Any <code class="literal">%p</code> in the string is
-        replaced by the absolute path of the file to archive, and any
-        <code class="literal">%f</code> is replaced by the file name only. Use
-        <code class="literal">%%</code> to embed an actual <code class="literal">%</code> character in the
+        replaced by the path name of the file to archive, and any
+        <code class="literal">%f</code> is replaced by the file name only.
+        (The path name is relative to the working directory of the server,
+        i.e., the cluster's data directory.)
+        Use <code class="literal">%%</code> to embed an actual <code class="literal">%</code> character in the
         command. For more information see <a href="backup-online.html#backup-archiving-wal" title="23.3.1. Setting up WAL archiving">Section 23.3.1, &#8220;Setting up WAL archiving&#8221;</a>. This option can only be set at
         server start or in the <code class="filename">postgresql.conf</code>
         file.

@@ -4,8 +4,8 @@
 <title>9.20. System Administration Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-info.html" title="9.19. System Information Functions">
 <link rel="next" href="typeconv.html" title="Chapter 10. Type Conversion">
@@ -48,7 +48,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id2602220"></a><a name="id2602230"></a><a name="id2602239"></a><p>    The function <code class="function">current_setting</code> yields the
+<br class="table-break"><a name="id2607042"></a><a name="id2607052"></a><a name="id2607061"></a><p>    The function <code class="function">current_setting</code> yields the
     current value of the setting <em class="parameter"><code>setting_name</code></em>.
     It corresponds to the <acronym class="acronym">SQL</acronym> command
     <code class="command">SHOW</code>.  An example:
@@ -78,7 +78,7 @@
 (1 row)</pre>
 <p>
    </p>
-<a name="id2602342"></a><a name="id2602352"></a><a name="id2602361"></a><a name="id2602370"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-signal-table" title="Table 9.45. Server Signalling Functions">Table 9.45, &#8220;Server Signalling Functions&#8221;</a> send control signals to
+<a name="id2607164"></a><a name="id2607174"></a><a name="id2607183"></a><a name="id2607192"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-signal-table" title="Table 9.45. Server Signalling Functions">Table 9.45, &#8220;Server Signalling Functions&#8221;</a> send control signals to
     other server processes.  Use of these functions is restricted
     to superusers.
    </p>
@@ -137,7 +137,7 @@
     <code class="varname">redirect_stderr</code> is used for logging, since otherwise there
     is no log-file manager subprocess.
    </p>
-<a name="id2602575"></a><a name="id2602584"></a><a name="id2602594"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-backup-table" title="Table 9.46. Backup Control Functions">Table 9.46, &#8220;Backup Control Functions&#8221;</a> assist in making on-line backups.
+<a name="id2607397"></a><a name="id2607406"></a><a name="id2607416"></a><p>    The functions shown in <a href="functions-admin.html#functions-admin-backup-table" title="Table 9.46. Backup Control Functions">Table 9.46, &#8220;Backup Control Functions&#8221;</a> assist in making on-line backups.
     Use of these functions is restricted to superusers.
    </p>
 <div class="table">
@@ -191,7 +191,7 @@
 <p>    The functions shown in <a href="functions-admin.html#functions-admin-dbsize" title="Table 9.47. Database Object Size Functions">Table 9.47, &#8220;Database Object Size Functions&#8221;</a> calculate
     the actual disk space usage of database objects.
    </p>
-<a name="id2602749"></a><a name="id2602758"></a><a name="id2602768"></a><a name="id2602777"></a><a name="id2602786"></a><a name="id2602796"></a><div class="table">
+<a name="id2607571"></a><a name="id2607580"></a><a name="id2607589"></a><a name="id2607598"></a><a name="id2607608"></a><a name="id2607618"></a><div class="table">
 <a name="functions-admin-dbsize"></a><p class="title"><b>Table 9.47. Database Object Size Functions</b></p>
 <div class="table-contents"><table summary="Database Object Size Functions" border="1">
 <colgroup>
@@ -335,16 +335,16 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id2603266"></a><p>    <code class="function">pg_ls_dir</code> returns all the names in the specified
+<br class="table-break"><a name="id2608088"></a><p>    <code class="function">pg_ls_dir</code> returns all the names in the specified
     directory, except the special entries &#8220;<span class="quote"><code class="literal">.</code></span>&#8221; and
     &#8220;<span class="quote"><code class="literal">..</code></span>&#8221;.
    </p>
-<a name="id2603298"></a><p>    <code class="function">pg_read_file</code> returns part of a text file, starting
+<a name="id2608120"></a><p>    <code class="function">pg_read_file</code> returns part of a text file, starting
     at the given <em class="parameter"><code>offset</code></em>, returning at most <em class="parameter"><code>length</code></em>
     bytes (less if the end of file is reached first).  If <em class="parameter"><code>offset</code></em>
     is negative, it is relative to the end of the file.
    </p>
-<a name="id2603336"></a><p>    <code class="function">pg_stat_file</code> returns a record containing the file
+<a name="id2608158"></a><p>    <code class="function">pg_stat_file</code> returns a record containing the file
     size, last accessed time stamp, last modified time stamp, 
     last file status change time stamp (Unix platforms only), 
     file creation timestamp (Windows only), and a <code class="type">boolean</code> indicating 

@@ -4,8 +4,8 @@
 <title>23.3. On-line backup and point-in-time recovery (PITR)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="backup-file.html" title="23.2. File system level backup">
 <link rel="next" href="migration.html" title="23.4. Migration Between Releases">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="backup-online"></a>23.3. On-line backup and point-in-time recovery (PITR)</h2></div></div></div>
-<a name="id2643067"></a><a name="id2643076"></a><a name="id2643085"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="id2647907"></a><a name="id2647916"></a><a name="id2647925"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <em class="firstterm">write ahead log</em> (WAL) in the <code class="filename">pg_xlog/</code>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -106,8 +106,10 @@
 <p>    The shell command to use is specified by the <a href="runtime-config-wal.html#guc-archive-command">archive_command</a> configuration parameter, which in practice
     will always be placed in the <code class="filename">postgresql.conf</code> file.
     In this string,
-    any <code class="literal">%p</code> is replaced by the absolute path of the file to
+    any <code class="literal">%p</code> is replaced by the path name of the file to
     archive, while any <code class="literal">%f</code> is replaced by the file name only.
+    (The path name is relative to the working directory of the server,
+    i.e., the cluster's data directory.)
     Write <code class="literal">%%</code> if you need to embed an actual <code class="literal">%</code>
     character in the command.  The simplest useful command is something
     like
@@ -411,7 +413,9 @@
     WAL file segments.  Like the <code class="varname">archive_command</code>, this is
     a shell command string.  It may contain <code class="literal">%f</code>, which is
     replaced by the name of the desired log file, and <code class="literal">%p</code>,
-    which is replaced by the absolute path to copy the log file to.
+    which is replaced by the path name to copy the log file to.
+    (The path name is relative to the working directory of the server,
+    i.e., the cluster's data directory.)
     Write <code class="literal">%%</code> if you need to embed an actual <code class="literal">%</code>
     character in the command.  The simplest useful command is
     something like
@@ -474,8 +478,10 @@
         the WAL file series. This parameter is required.
         Any <code class="literal">%f</code> in the string is
         replaced by the name of the file to retrieve from the archive,
-        and any <code class="literal">%p</code> is replaced by the absolute path to copy
+        and any <code class="literal">%p</code> is replaced by the path name to copy
         it to on the server.
+        (The path name is relative to the working directory of the server,
+        i.e., the cluster's data directory.)
         Write <code class="literal">%%</code> to embed an actual <code class="literal">%</code> character
         in the command. 
        </p>
@@ -549,7 +555,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="backup-timelines"></a>23.3.4. Timelines</h3></div></div></div>
-<a name="id2644498"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="id2649344"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.

@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.8. Release 8.0.10</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-1.html" title="E.7. Release 8.1">
+<link rel="next" href="release-8-0-9.html" title="E.9. Release 8.0.9">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-0-10"></a>E.8. Release 8.0.10</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2007-01-08</p>
+</div>
+<p>    This release contains a variety of fixes from 8.0.9.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2829613"></a>E.8.1. Migration to version 8.0.10</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.0.X.  However,
+     if you are upgrading from a version earlier than 8.0.6, see the release
+     notes for 8.0.6.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2829622"></a>E.8.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>       Improve handling of <code class="function">getaddrinfo()</code> on AIX (Tom)
+      </p>
+<p>       This fixes a problem with starting the statistics collector,
+       among other things.
+      </p>
+</li>
+<li><p>        Fix &#8220;<span class="quote">failed to re-find parent key</span>&#8221; errors in
+        <code class="command">VACUUM</code> (Tom)
+       </p></li>
+<li><p>        Fix race condition for truncation of a large relation across a
+        gigabyte boundary by <code class="command">VACUUM</code> (Tom)
+       </p></li>
+<li><p>        Fix bugs affecting multi-gigabyte hash indexes (Tom)
+       </p></li>
+<li><p>       Fix possible deadlock in Windows signal handling (Teodor)
+      </p></li>
+<li><p>       Fix error when constructing an <code class="literal">ARRAY[]</code> made up of multiple
+       empty elements (Tom)
+      </p></li>
+<li><p>       Fix ecpg memory leak during connection (Michael)
+      </p></li>
+<li>
+<p>       <code class="function">to_number()</code> and <code class="function">to_char(numeric)</code>
+       are now <code class="literal">STABLE</code>, not <code class="literal">IMMUTABLE</code>, for
+       new <span class="application">initdb</span> installs (Tom)
+      </p>
+<p>       This is because <code class="varname">lc_numeric</code> can potentially
+       change the output of these functions.
+      </p>
+</li>
+<li>
+<p>       Improve index usage of regular expressions that use parentheses (Tom)
+      </p>
+<p>       This improves <span class="application">psql</span> <code class="literal">\d</code> performance also.
+      </p>
+</li>
+<li>
+<p>       Update timezone database
+      </p>
+<p>       This affects Australian and Canadian daylight-savings rules in
+       particular.
+      </p>
+</li>
+</ul></div>
+</div>
+</div></body>
+</html>
