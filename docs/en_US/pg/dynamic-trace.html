@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
 <link rel="up" href="monitoring.html" title="Chapter 25. Monitoring Database Activity">
 <link rel="prev" href="monitoring-locks.html" title="25.3. Viewing Locks">
 <link rel="next" href="diskusage.html" title="Chapter 26. Monitoring Disk Usage">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dynamic-trace"></a>25.4. Dynamic Tracing</h2></div></div></div>
-<a name="id2652412"></a><p>   <span class="productname">PostgreSQL</span> provides facilities to support
+<a name="id2658916"></a><p>   <span class="productname">PostgreSQL</span> provides facilities to support
    dynamic tracing of the database server. This allows an external
    utility to be called at specific points in the code and thereby trace
    execution.  Currently, this facility is primarily intended for use by
@@ -35,27 +35,11 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="compiling-for-trace"></a>25.4.1. Compiling for Dynamic Trace</h3></div></div></div>
+<a name="compiling-for-trace"></a>25.4.1. Compiling for Dynamic Tracing</h3></div></div></div>
 <p>   By default, trace points are disabled, so you will need to
    explicitly tell the configure script to make the probes available
    in <span class="productname">PostgreSQL</span>. To include DTrace support
-   in a 32-bit binary, specify <code class="option">--enable-dtrace</code> to configure.
-   For example:
-</p>
-<pre class="programlisting">      $ ./configure --enable-dtrace ...</pre>
-<p>
-   To include DTrace support in a 64-bit binary, specify 
-   <code class="option">--enable-dtrace</code>
-   and <code class="literal">DTRACEFLAGS="-64"</code> to configure. For example,
-   using the gcc compiler:
-</p>
-<pre class="programlisting">      $ ./configure CC='gcc -m64' --enable-dtrace DTRACEFLAGS='-64' ...</pre>
-<p>            
-   Using Sun's compiler:
-</p>
-<pre class="programlisting">            
-      $ ./configure CC='/path_to_sun_compiler/cc -xtarget=native64' --enable-dtrace DTRACEFLAGS='-64' ...</pre>
-<p>
+   specify <code class="option">--enable-dtrace</code> to configure.  See <a href="install-procedure.html" title="14.5. Installation Procedure">Section 14.5, &#8220;Installation Procedure&#8221;</a> for further information.
   </p>
 </div>
 <div class="sect2" lang="en">
@@ -63,7 +47,7 @@
 <a name="trace-points"></a>25.4.2. Built-in Trace Points</h3></div></div></div>
 <p>   A few standard trace points are provided in the source code
    (of course, more can be added as needed for a particular problem).
-   These are:
+   These are shown in <a href="dynamic-trace.html#trace-point-table" title="Table 25.3. Built-in Trace Points">Table 25.3, &#8220;Built-in Trace Points&#8221;</a>.
   </p>
 <div class="table">
 <a name="trace-point-table"></a><p class="title"><b>Table 25.3. Built-in Trace Points</b></p>
@@ -182,12 +166,11 @@ postgresql$1:::transaction-commit
    be replaced by a hyphen when using D script.
    When executed, the example D script gives output such as:
 </p>
-<pre class="programlisting"># ./txn_count.d `pgrep -n postgres`
+<pre class="screen"># ./txn_count.d `pgrep -n postgres`
 ^C
 
 Start                                          71
 Commit                                         70
-Abort                                           1
 Total time (ns)                        2312105013</pre>
 <p>
   </p>
@@ -203,7 +186,7 @@ Total time (ns)                        2312105013</pre>
 <div class="titlepage"><div><div><h3 class="title">
 <a name="defining-trace-points"></a>25.4.4. Defining Trace Points</h3></div></div></div>
 <p>   New trace points can be defined within the code wherever the developer
-   desires, though this will require a re-compile.
+   desires, though this will require a recompilation.
   </p>
 <p>   A trace point can be inserted by using one of the
    trace macros. These are chosen according to how many variables will
@@ -211,14 +194,14 @@ Total time (ns)                        2312105013</pre>
    occurrence of an event can be achieved with a single line, using
    just the trace point name, e.g.
 </p>
-<pre class="programlisting">      PG_TRACE (my__new__trace__point);</pre>
+<pre class="programlisting">PG_TRACE (my__new__trace__point);</pre>
 <p>
    More complex trace points can be provided with one or more variables
    for inspection by the dynamic tracing utility by using the
    <code class="literal">PG_TRACE</code><em class="replaceable"><code>n</code></em> macro that corresponds to the number
    of parameters after the trace point name:
 </p>
-<pre class="programlisting">      PG_TRACE3 (my__complex__event, varX, varY, varZ);</pre>
+<pre class="programlisting">PG_TRACE3 (my__complex__event, varX, varY, varZ);</pre>
 <p>
    The definition of the transaction__start trace point is shown below:
 </p>
@@ -253,7 +236,7 @@ StartTransaction(void)
  };</pre>
 <p>
   </p>
-<p>   You should take care that the datatypes specified for the probe arguments
+<p>   You should take care that the data types specified for the probe arguments
    match the datatypes of the variables used in the <code class="literal">PG_TRACE</code>
    macro. This is not checked at compile time. You can check that your newly
    added trace point is available by recompiling, then running the new binary,

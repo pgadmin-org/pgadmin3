@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.  Installation Instructions">
 <link rel="prev" href="install-upgrading.html" title="14.4. If You Are Upgrading">
 <link rel="next" href="install-post.html" title="14.6. Post-Installation Setup">
@@ -17,7 +17,7 @@
 <div class="procedure"><ol type="1">
 <li>
 <a name="configure"></a><p class="title"><b>Configuration</b></p>
-<a name="id2615120"></a><p>    The first step of the installation procedure is to configure the
+<a name="id2621635"></a><p>    The first step of the installation procedure is to configure the
     source tree for your system and choose the options you would like.
     This is done by running the <code class="filename">configure</code> script. For a
     default installation simply enter
@@ -239,11 +239,11 @@
          before proceeding.
         </p></dd>
 <dt><span class="term"><code class="option">--with-pam</code></span></dt>
-<dd><p>         Build with <acronym class="acronym">PAM</acronym><a name="id2615888"></a>
+<dd><p>         Build with <acronym class="acronym">PAM</acronym><a name="id2622403"></a>
          (Pluggable Authentication Modules) support.
         </p></dd>
 <dt><span class="term"><code class="option">--with-ldap</code></span></dt>
-<dd><p>         Build with <acronym class="acronym">LDAP</acronym><a name="id2615907"></a>
+<dd><p>         Build with <acronym class="acronym">LDAP</acronym><a name="id2622421"></a>
          support for authentication and connection parameter lookup (see 
          <a href="libpq-ldap.html" title="29.15. LDAP Lookup of Connection Parameters">Section 29.15, &#8220;LDAP Lookup of Connection Parameters&#8221;</a> and
          <a href="auth-methods.html#auth-ldap" title="20.2.5. LDAP authentication">Section 20.2.5, &#8220;LDAP authentication&#8221;</a> for more information). On Unix,
@@ -299,7 +299,7 @@
          threading support in your operating system.
         </p></dd>
 <dt><span class="term"><code class="option">--without-zlib</code></span></dt>
-<dd><p>         <a name="id2616113"></a>
+<dd><p>         <a name="id2622627"></a>
          Prevents use of the <span class="application">Zlib</span> library.  This disables
          support for compressed archives in <span class="application">pg_dump</span>
          and <span class="application">pg_restore</span>.
@@ -340,7 +340,7 @@
         </p></dd>
 <dt><span class="term"><code class="option">--enable-dtrace</code></span></dt>
 <dd>
-<p>         <a name="id2616210"></a>
+<p>         <a name="id2622724"></a>
          Compiles with support for the dynamic tracing tool DTrace.
          Operating system support for DTrace is currently only
          available in Solaris.
@@ -353,6 +353,18 @@
          options for the <code class="command">dtrace</code> program can be
          specified in the environment variable
          <code class="envar">DTRACEFLAGS</code>.
+        </p>
+<p>         To include DTrace support in a 64-bit binary, specify
+         <code class="literal">DTRACEFLAGS="-64"</code> to configure.  For example,
+         using the GCC compiler:
+</p>
+<pre class="screen">./configure CC='gcc -m64' --enable-dtrace DTRACEFLAGS='-64' ...</pre>
+<p>            
+         Using Sun's compiler:
+</p>
+<pre class="screen">            
+./configure CC='/opt/SUNWspro/bin/cc -xtarget=native64' --enable-dtrace DTRACEFLAGS='-64' ...</pre>
+<p>
         </p>
 </dd>
 </dl></div>
@@ -439,7 +451,7 @@
 </li>
 <li>
 <p class="title"><b>Regression Tests</b></p>
-<a name="id2616504"></a><p>    If you want to test the newly built server before you install it,
+<a name="id2623044"></a><p>    If you want to test the newly built server before you install it,
     you can run the regression tests at this point. The regression
     tests are a test suite to verify that <span class="productname">PostgreSQL</span>
     runs on your machine in the way the developers expected it

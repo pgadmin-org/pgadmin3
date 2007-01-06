@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="prev" href="app-pgresetxlog.html" title="pg_resetxlog">
 <link rel="next" href="app-postmaster.html" title="postmaster">
@@ -17,12 +17,12 @@
 <h2>Name</h2>
 <p>postgres &#8212; <span class="productname">PostgreSQL</span> database server</p>
 </div>
-<a name="id2795272"></a><div class="refsynopsisdiv">
+<a name="id2801642"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">postgres</code> [<em class="replaceable"><code>option</code></em>...]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2795298"></a><h2>Description</h2>
+<a name="id2801668"></a><h2>Description</h2>
 <p>   <code class="command">postgres</code> is the
    <span class="productname">PostgreSQL</span> database server.  In order
    for a client application to access a database it connects (over a
@@ -42,30 +42,29 @@
    <code class="option">-D</code> option or the <code class="envar">PGDATA</code> environment
    variable; there is no default.  Typically, <code class="option">-D</code> or
    <code class="envar">PGDATA</code> points directly to the data area directory
-   created by <span class="application">initdb</span>.  Other possible file layouts are
-   discussed in <a href="runtime-config-file-locations.html" title="17.2. File Locations">Section 17.2, &#8220;File Locations&#8221;</a>.  A
-   data area is created with <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>.
+   created by <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>.  Other possible file layouts are
+   discussed in <a href="runtime-config-file-locations.html" title="17.2. File Locations">Section 17.2, &#8220;File Locations&#8221;</a>.
   </p>
 <p>   By default <code class="command">postgres</code> starts in the
    foreground and prints log messages to the standard error stream.  In
-   practical applications the <code class="command">postgres</code>
+   practical applications <code class="command">postgres</code>
    should be started as a background process, perhaps at boot time.
   </p>
 <p>   The <code class="command">postgres</code> command can also be called in
    single-user mode.  The primary use for this mode is during
    bootstrapping by <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>.  Sometimes it is used
-   for debugging or disaster recovery.  When invoked in interactive
+   for debugging or disaster recovery (but note that running a single-user
+   server is not truly suitable for debugging the server, since no
+   realistic interprocess communication and locking will happen).
+   When invoked in single-user
    mode from the shell, the user can enter queries and the results
    will be printed to the screen, but in a form that is more useful
-   for developers than end users.  But note that running a single-user
-   server is not truly suitable for debugging the server since no
-   realistic interprocess communication and locking will happen.  When
-   running a stand-alone server, the session user will be set to the
-   user with ID 1.  This user does not actually have to exist, so a
-   stand-alone server can be used to manually recover from certain
-   kinds of accidental damage to the system catalogs.  Implicit
-   superuser powers are granted to the user with ID 1 in single-user
-   mode.
+   for developers than end users.  In the single-user mode,
+   the session user will be set to the user with ID 1, and implicit
+   superuser powers are granted to this user.
+   This user does not actually have to exist, so the single-user mode
+   can be used to manually recover from certain
+   kinds of accidental damage to the system catalogs.
   </p>
 </div>
 <div class="refsect1" lang="en">
@@ -81,7 +80,7 @@
     <code class="command">postgres</code> command-line options.
    </p>
 <div class="refsect2" lang="en">
-<a name="id2795488"></a><h3>General Purpose</h3>
+<a name="id2801851"></a><h3>General Purpose</h3>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="option">-A 0|1</code></span></dt>
 <dd><p>        Enables run-time assertion checks, which is a debugging aid to
@@ -90,9 +89,9 @@
         compiled. If so, the default is on.
        </p></dd>
 <dt><span class="term"><code class="option">-B <em class="replaceable"><code>nbuffers</code></em></code></span></dt>
-<dd><p>	Sets the number of shared buffers for use by the server
-	processes.  The default value of this parameter is chosen
-	automatically by <span class="application">initdb</span>; refer to <a href="runtime-config-resource.html#runtime-config-resource-memory" title="17.4.1. Memory">Section 17.4.1, &#8220;Memory&#8221;</a> for more information.
+<dd><p>        Sets the number of shared buffers for use by the server
+        processes.  The default value of this parameter is chosen
+        automatically by <span class="application">initdb</span>; refer to <a href="runtime-config-resource.html#runtime-config-resource-memory" title="17.4.1. Memory">Section 17.4.1, &#8220;Memory&#8221;</a> for more information.
        </p></dd>
 <dt><span class="term"><code class="option">-c <em class="replaceable"><code>name</code></em>=<em class="replaceable"><code>value</code></em></code></span></dt>
 <dd><p>        Sets a named run-time parameter. The configuration parameters
@@ -107,7 +106,7 @@
         debugging output is written to the server log.  Values are
         from 1 to 5.  It is also possible to pass <code class="literal">-d
         0</code> for a specific session, which will prevent the
-        server log level of the <code class="command">postgres</code> from being
+        server log level of the parent <code class="command">postgres</code> process from being
         propagated to this session.
        </p></dd>
 <dt><span class="term"><code class="option">-D <em class="replaceable"><code>datadir</code></em></code></span></dt>
@@ -117,22 +116,17 @@
        </p></dd>
 <dt><span class="term"><code class="option">-e</code></span></dt>
 <dd><p>        Sets the default date style to &#8220;<span class="quote">European</span>&#8221;, that is
-	<code class="literal">DMY</code> ordering of input date fields.  This also causes
-	the day to be printed before the month in certain date output formats.
-	See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
+        <code class="literal">DMY</code> ordering of input date fields.  This also causes
+        the day to be printed before the month in certain date output formats.
+        See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
        </p></dd>
 <dt><span class="term"><code class="option">-F</code></span></dt>
-<dd>
-<p>        Disables <code class="function">fsync</code> calls for improved
+<dd><p>        Disables <code class="function">fsync</code> calls for improved
         performance, at the risk of data corruption in the event of a
         system crash.  Specifying this option is equivalent to
         disabling the <a href="runtime-config-wal.html#guc-fsync">fsync</a> configuration
         parameter. Read the detailed documentation before using this!
-       </p>
-<p>        <code class="option">--fsync=true</code> has the opposite effect
-        of this option.
-       </p>
-</dd>
+       </p></dd>
 <dt><span class="term"><code class="option">-h <em class="replaceable"><code>hostname</code></em></code></span></dt>
 <dd><p>        Specifies the IP host name or address on which
         <code class="command">postgres</code> is to listen for TCP/IP
@@ -141,7 +135,7 @@
         listening on all available interfaces.  An empty value
         specifies not listening on any IP addresses, in which case
         only Unix-domain sockets can be used to connect to the
-        <code class="command">postgres</code>.  Defaults to listening only on
+        server.  Defaults to listening only on
         <span class="systemitem">localhost</span>.
         Specifying this option is equivalent to setting the <a href="runtime-config-connection.html#guc-listen-addresses">listen_addresses</a> configuration parameter.
        </p></dd>
@@ -159,74 +153,62 @@
        </p>
 </dd>
 <dt><span class="term"><code class="option">-k <em class="replaceable"><code>directory</code></em></code></span></dt>
-<dd><p>	Specifies the directory of the Unix-domain socket on which
-	<code class="command">postgres</code> is to listen for
-	connections from client applications.  The default is normally
-	<code class="filename">/tmp</code>, but can be changed at build time.
+<dd><p>        Specifies the directory of the Unix-domain socket on which
+        <code class="command">postgres</code> is to listen for
+        connections from client applications.  The default is normally
+        <code class="filename">/tmp</code>, but can be changed at build time.
        </p></dd>
 <dt><span class="term"><code class="option">-l</code></span></dt>
-<dd><p>	Enables secure connections using <acronym class="acronym">SSL</acronym>.
-	<span class="productname">PostgreSQL</span> must have been compiled with
-	support for <acronym class="acronym">SSL</acronym> for this option to be
-	available. For more information on using <acronym class="acronym">SSL</acronym>,
-	refer to <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a>.
+<dd><p>        Enables secure connections using <acronym class="acronym">SSL</acronym>.
+        <span class="productname">PostgreSQL</span> must have been compiled with
+        support for <acronym class="acronym">SSL</acronym> for this option to be
+        available. For more information on using <acronym class="acronym">SSL</acronym>,
+        refer to <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a>.
        </p></dd>
 <dt><span class="term"><code class="option">-N <em class="replaceable"><code>max-connections</code></em></code></span></dt>
-<dd><p>	Sets the maximum number of client connections that this
-	<code class="command">postgres</code> will accept.  By
-	default, this value is 32, but it can be set as high as your
-	system will support.  (Note that
-	<code class="option">-B</code> is required to be at least twice
-	<code class="option">-N</code>.  See <a href="kernel-resources.html" title="16.4. Managing Kernel Resources">Section 16.4, &#8220;Managing Kernel Resources&#8221;</a> for a discussion of
-	system resource requirements for large numbers of client
-	connections.) Specifying this option is equivalent to setting the
-	<a href="runtime-config-connection.html#guc-max-connections">max_connections</a> configuration parameter.
+<dd><p>        Sets the maximum number of client connections that this
+        server will accept.  By
+        default, this value is 32, but it can be set as high as your
+        system will support.  (Note that
+        <code class="option">-B</code> is required to be at least twice
+        <code class="option">-N</code>.  See <a href="kernel-resources.html" title="16.4. Managing Kernel Resources">Section 16.4, &#8220;Managing Kernel Resources&#8221;</a> for a discussion of
+        system resource requirements for large numbers of client
+        connections.) Specifying this option is equivalent to setting the
+        <a href="runtime-config-connection.html#guc-max-connections">max_connections</a> configuration parameter.
        </p></dd>
 <dt><span class="term"><code class="option">-o <em class="replaceable"><code>extra-options</code></em></code></span></dt>
 <dd>
-<p>	The command line-style options specified in <em class="replaceable"><code>extra-options</code></em> are passed to
-	all server processes started by this
-	<code class="command">postgres</code>.  If the option string contains
-	any spaces, the entire string must be quoted.
+<p>        The command line-style options specified in <em class="replaceable"><code>extra-options</code></em> are passed to
+        all server processes started by this
+        <code class="command">postgres</code> process.  If the option string contains
+        any spaces, the entire string must be quoted.
        </p>
 <p>        The use of this option is obsolete; all command-line options
         for server processes can be specified directly on the
-        <code class="command">postgres</code> command line
+        <code class="command">postgres</code> command line.
        </p>
 </dd>
 <dt><span class="term"><code class="option">-p <em class="replaceable"><code>port</code></em></code></span></dt>
-<dd><p>	Specifies the TCP/IP port or local Unix domain socket file
-	extension on which <code class="command">postgres</code>
-	is to listen for connections from client applications.
-	Defaults to the value of the <code class="envar">PGPORT</code> environment
-	variable, or if <code class="envar">PGPORT</code> is not set, then
-	defaults to the value established during compilation (normally
-	5432).  If you specify a port other than the default port,
-	then all client applications must specify the same port using
-	either command-line options or <code class="envar">PGPORT</code>.
+<dd><p>        Specifies the TCP/IP port or local Unix domain socket file
+        extension on which <code class="command">postgres</code>
+        is to listen for connections from client applications.
+        Defaults to the value of the <code class="envar">PGPORT</code> environment
+        variable, or if <code class="envar">PGPORT</code> is not set, then
+        defaults to the value established during compilation (normally
+        5432).  If you specify a port other than the default port,
+        then all client applications must specify the same port using
+        either command-line options or <code class="envar">PGPORT</code>.
        </p></dd>
 <dt><span class="term"><code class="option">-s</code></span></dt>
-<dd><p>	Print time information and other statistics at the end of each command.
-	This is useful for benchmarking or for use in tuning the number of
-	buffers.
+<dd><p>        Print time information and other statistics at the end of each command.
+        This is useful for benchmarking or for use in tuning the number of
+        buffers.
        </p></dd>
-<dt><span class="term"><code class="option">-S</code></span></dt>
-<dd>
-<p>	Specifies that the <code class="command">postgres</code>
-	process should start up in silent mode.  That is, it will
-	disassociate from the user's (controlling) terminal, start its
-	own process group, and redirect its standard output and
-	standard error to <code class="filename">/dev/null</code>.
-       </p>
-<p>        Using this switch discards all logging output, which is
-	probably not what you want, since it makes it very difficult
-	to troubleshoot problems.  See below for a better way to start
-	<code class="command">postgres</code> in the background.
-       </p>
-<p>        <code class="option">--silent-mode=false</code> has the opposite effect
-        of this option.
-       </p>
-</dd>
+<dt><span class="term"><code class="option">-S</code> <em class="replaceable"><code>work-mem</code></em></span></dt>
+<dd><p>        Specifies the amount of memory to be used by internal sorts and hashes
+        before resorting to temporary disk files.  See the description of the
+        <code class="varname">work_mem</code> configuration parameter in <a href="runtime-config-resource.html#runtime-config-resource-memory" title="17.4.1. Memory">Section 17.4.1, &#8220;Memory&#8221;</a>.
+       </p></dd>
 <dt><span class="term"><code class="option">--<em class="replaceable"><code>name</code></em>=<em class="replaceable"><code>value</code></em></code></span></dt>
 <dd><p>        Sets a named run-time parameter; a shorter form of
         <code class="option">-c</code>.
@@ -239,7 +221,7 @@
 </dl></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2796040"></a><h3>Semi-internal Options</h3>
+<a name="id2802375"></a><h3>Semi-internal Options</h3>
 <p>     There are several other options that may be specified, used
      mainly for debugging purposes and in some cases to assist with
      recovery of severely damaged databases. There should be no reason
@@ -251,11 +233,11 @@
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="option">-f</code> <code class="literal">{ s | i | m | n | h }</code></span></dt>
 <dd>
-<p>	Forbids the use of particular scan and join methods:
-	<code class="literal">s</code> and <code class="literal">i</code>
-	disable sequential and index scans respectively, while
-	<code class="literal">n</code>, <code class="literal">m</code>, and <code class="literal">h</code>
-	disable nested-loop, merge and hash joins respectively.
+<p>        Forbids the use of particular scan and join methods:
+        <code class="literal">s</code> and <code class="literal">i</code>
+        disable sequential and index scans respectively, while
+        <code class="literal">n</code>, <code class="literal">m</code>, and <code class="literal">h</code>
+        disable nested-loop, merge and hash joins respectively.
        </p>
 <p>        Neither sequential scans nor nested-loop joins can be disabled
         completely; the <code class="literal">-fs</code> and
@@ -276,18 +258,18 @@
         memory and semaphore state.
        </p></dd>
 <dt><span class="term"><code class="option">-O</code></span></dt>
-<dd><p>	Allows the structure of system tables to be modified.  This is
-	used by <code class="command">initdb</code>.
+<dd><p>        Allows the structure of system tables to be modified.  This is
+        used by <code class="command">initdb</code>.
        </p></dd>
 <dt><span class="term"><code class="option">-P</code></span></dt>
-<dd><p>	Ignore system indexes when reading system tables (but still update
-	the indexes when modifying the tables).  This is useful when
-	recovering from damaged system indexes.
+<dd><p>        Ignore system indexes when reading system tables (but still update
+        the indexes when modifying the tables).  This is useful when
+        recovering from damaged system indexes.
        </p></dd>
 <dt><span class="term"><code class="option">-t</code> <code class="literal">pa[rser] | pl[anner] | e[xecutor]</code></span></dt>
-<dd><p>	Print timing statistics for each query relating to each of the
-	major system modules.  This option cannot be used together
-	with the <code class="option">-s</code> option.
+<dd><p>        Print timing statistics for each query relating to each of the
+        major system modules.  This option cannot be used together
+        with the <code class="option">-s</code> option.
        </p></dd>
 <dt><span class="term"><code class="option">-T</code></span></dt>
 <dd><p>        This option is for debugging problems that cause a server
@@ -303,9 +285,9 @@
         dumps from all server processes by hand.
        </p></dd>
 <dt><span class="term"><code class="option">-v</code> <em class="replaceable"><code>protocol</code></em></span></dt>
-<dd><p>	Specifies the version number of the frontend/backend protocol
-	to be used for a particular session.  This option is for
-	internal use only.
+<dd><p>        Specifies the version number of the frontend/backend protocol
+        to be used for a particular session.  This option is for
+        internal use only.
        </p></dd>
 <dt><span class="term"><code class="option">-W</code> <em class="replaceable"><code>seconds</code></em></span></dt>
 <dd><p>        A delay of this many seconds occurs when a new server process
@@ -314,41 +296,41 @@
         server process with a debugger.
        </p></dd>
 <dt><span class="term"><code class="option">-y</code> <em class="replaceable"><code>database</code></em></span></dt>
-<dd><p>	Indicates that this is a subprocess started by
-	<code class="command">postgres</code> and specifies the database to
-	use.  This option is for internal use only.
+<dd><p>        Indicates that this is a subprocess started by a parent
+        <code class="command">postgres</code> process, and specifies the database to
+        use.  This option is for internal use only.
        </p></dd>
 </dl></div>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2796275"></a><h3>Options for single-user mode</h3>
+<a name="id2802612"></a><h3>Options for single-user mode</h3>
 <p>     The following options only apply to the single-user mode.
     </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="option">--single</code></span></dt>
-<dd><p>	Selects the single-user mode.  This must be the first argument
-	on the command line.
+<dd><p>        Selects the single-user mode.  This must be the first argument
+        on the command line.
        </p></dd>
 <dt><span class="term"><em class="replaceable"><code>database</code></em></span></dt>
-<dd><p>	Specifies the name of the database to be accessed.  If it is
-	omitted it defaults to the user name.	
+<dd><p>        Specifies the name of the database to be accessed.  If it is
+        omitted it defaults to the user name.   
        </p></dd>
 <dt><span class="term"><code class="option">-E</code></span></dt>
-<dd><p>	Echo all commands.
+<dd><p>        Echo all commands.
        </p></dd>
 <dt><span class="term"><code class="option">-j</code></span></dt>
-<dd><p>	Disables use of newline as a statement delimiter.
+<dd><p>        Disables use of newline as a statement delimiter.
        </p></dd>
 <dt><span class="term"><code class="option">-r</code> <em class="replaceable"><code>filename</code></em></span></dt>
-<dd><p>	Send all server log output to <em class="replaceable"><code>filename</code></em>.  In normal multiuser
-	mode, this option is ignored, and <span class="systemitem">stderr</span> is
-	used by all processes.
+<dd><p>        Send all server log output to <em class="replaceable"><code>filename</code></em>.  In normal multiuser
+        mode, this option is ignored, and <span class="systemitem">stderr</span> is
+        used by all processes.
        </p></dd>
 </dl></div>
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2796349"></a><h2>Environment</h2>
+<a name="id2802687"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PGCLIENTENCODING</code></span></dt>
 <dd><p>      Default character encoding used by clients.  (The clients may
@@ -371,7 +353,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2796406"></a><h2>Diagnostics</h2>
+<a name="id2802744"></a><h2>Diagnostics</h2>
 <p>    A failure message mentioning <code class="literal">semget</code> or
     <code class="literal">shmget</code> probably indicates you need to configure your
     kernel to provide adequate shared memory and semaphores.  For more
@@ -408,7 +390,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2796518"></a><h2>Notes</h2>
+<a name="id2802856"></a><h2>Notes</h2>
 <p>   If at all possible, <span class="emphasis"><em>do not</em></span> use
    <code class="literal">SIGKILL</code> to kill the main
    <code class="command">postgres</code> server.  Doing so will prevent
@@ -454,7 +436,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2796708"></a><h2>Usage</h2>
+<a name="id2803047"></a><h2>Usage</h2>
 <p>    To start a single-user mode server, use a command like
 </p>
 <pre class="screen"><strong class="userinput"><code>postgres --single -D /usr/local/pgsql/data <em class="replaceable"><code>other-options</code></em> my_database</code></strong></pre>
@@ -500,8 +482,7 @@
 <p>
    This command will start up <code class="command">postgres</code>
    communicating through the port 1234. In order to connect to this
-   <code class="command">postgres</code> using <span class="application">psql</span>, you would need to
-   run it as
+   server using <span class="application">psql</span>, you would need to run it as
 </p>
 <pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>psql -p 1234</code></strong></pre>
 <p>
@@ -526,7 +507,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2796973"></a><h2>See Also</h2>
+<a name="id2803306"></a><h2>See Also</h2>
 <p>   <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>,
    <a href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a>
   </p>

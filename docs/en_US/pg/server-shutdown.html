@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="kernel-resources.html" title="16.4. Managing Kernel Resources">
 <link rel="next" href="encryption-options.html" title="16.6. Encryption Options">
@@ -14,27 +14,27 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="server-shutdown"></a>16.5. Shutting Down the Server</h2></div></div></div>
-<a name="id2623248"></a><p>   There are several ways to shut down the database server. You control
+<a name="id2629788"></a><p>   There are several ways to shut down the database server. You control
    the type of shutdown by sending different signals to the master
    <code class="command">postgres</code> process.
 
    </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><span class="systemitem">SIGTERM</span><a name="id2623276"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGTERM</span><a name="id2629816"></a></span></dt>
 <dd><p>       After receiving <span class="systemitem">SIGTERM</span>, the server
        disallows new connections, but lets existing sessions end their
        work normally. It shuts down only after all of the sessions
        terminate normally. This is the <em class="firstterm">Smart
        Shutdown</em>.
       </p></dd>
-<dt><span class="term"><span class="systemitem">SIGINT</span><a name="id2623306"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGINT</span><a name="id2629846"></a></span></dt>
 <dd><p>       The server disallows new connections and sends all existing
        server processes <span class="systemitem">SIGTERM</span>, which will cause them
        to abort their current transactions and exit promptly. It then
        waits for the server processes to exit and finally shuts down. This is the
        <em class="firstterm">Fast Shutdown</em>.
       </p></dd>
-<dt><span class="term"><span class="systemitem">SIGQUIT</span><a name="id2623336"></a></span></dt>
+<dt><span class="term"><span class="systemitem">SIGQUIT</span><a name="id2629876"></a></span></dt>
 <dd><p>      This is the <em class="firstterm">Immediate Shutdown</em>, which
       will cause the master <code class="command">postgres</code> process to send a
       <span class="systemitem">SIGQUIT</span> to all child processes and exit

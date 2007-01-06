@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-bit.html" title="8.9. Bit String Types">
 <link rel="next" href="rowtypes.html" title="8.11. Composite Types">
@@ -14,14 +14,14 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="arrays"></a>8.10. Arrays</h2></div></div></div>
-<a name="id2571157"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
+<a name="id2577672"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
   defined as variable-length multidimensional arrays. Arrays of any
   built-in or user-defined base type can be created.  (Arrays of
   composite types or domains are not yet supported, however.)
  </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2571175"></a>8.10.1. Declaration of Array Types</h3></div></div></div>
+<a name="id2577689"></a>8.10.1. Declaration of Array Types</h3></div></div></div>
 <p>  To illustrate the use of array types, we create this table:
 </p>
 <pre class="programlisting">CREATE TABLE sal_emp (
@@ -75,8 +75,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2571283"></a>8.10.2. Array Value Input</h3></div></div></div>
-<a name="id2571286"></a><p>   To write an array value as a literal constant, enclose the element
+<a name="id2577797"></a>8.10.2. Array Value Input</h3></div></div></div>
+<a name="id2577801"></a><p>   To write an array value as a literal constant, enclose the element
    values within curly braces and separate them by commas.  (If you
    know C, this is not unlike the C syntax for initializing
    structures.)  You may put double quotes around any element value,
@@ -167,7 +167,7 @@ ERROR:  multidimensional arrays must have array expressions with matching dimens
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2571492"></a>8.10.3. Accessing Arrays</h3></div></div></div>
+<a name="id2578006"></a>8.10.3. Accessing Arrays</h3></div></div></div>
 <p>  Now, we can run some queries on the table.
   First, we show how to access a single element of an array at a time.
   This query retrieves the names of the employees whose pay changed in
@@ -282,7 +282,7 @@ ERROR:  multidimensional arrays must have array expressions with matching dimens
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2571690"></a>8.10.4. Modifying Arrays</h3></div></div></div>
+<a name="id2578204"></a>8.10.4. Modifying Arrays</h3></div></div></div>
 <p>  An array value can be replaced completely:
 
 </p>
@@ -438,7 +438,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2571912"></a>8.10.5. Searching in Arrays</h3></div></div></div>
+<a name="id2578427"></a>8.10.5. Searching in Arrays</h3></div></div></div>
 <p>  To search for a value in an array, you must check each value of the
   array. This can be done by hand, if you know the size of the array.
   For example:
@@ -479,7 +479,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2571964"></a>8.10.6. Array Input and Output Syntax</h3></div></div></div>
+<a name="id2578478"></a>8.10.6. Array Input and Output Syntax</h3></div></div></div>
 <p>   The external text representation of an array value consists of items that
    are interpreted according to the I/O conversion rules for the array's
    element type, plus decoration that indicates the array structure.

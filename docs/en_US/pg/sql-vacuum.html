@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.0 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-update.html" title="UPDATE">
 <link rel="next" href="sql-values.html" title="VALUES">
@@ -17,13 +17,13 @@
 <h2>Name</h2>
 <p>VACUUM &#8212; garbage-collect and optionally analyze a database</p>
 </div>
-<a name="id2774581"></a><div class="refsynopsisdiv">
+<a name="id2780954"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] [ <em class="replaceable"><code>table</code></em> ]
 VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>table</code></em> [ (<em class="replaceable"><code>column</code></em> [, ...] ) ] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2774615"></a><h2>Description</h2>
+<a name="id2780988"></a><h2>Description</h2>
 <p>   <code class="command">VACUUM</code> reclaims storage occupied by deleted tuples.
    In normal <span class="productname">PostgreSQL</span> operation, tuples that
    are deleted or obsoleted by an update are not physically removed from
@@ -53,7 +53,7 @@ VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>t
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2774725"></a><h2>Parameters</h2>
+<a name="id2781098"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">FULL</code></span></dt>
 <dd><p>      Selects &#8220;<span class="quote">full</span>&#8221; vacuum, which may reclaim more
@@ -84,14 +84,14 @@ VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>t
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2774834"></a><h2>Outputs</h2>
+<a name="id2781208"></a><h2>Outputs</h2>
 <p>    When <code class="literal">VERBOSE</code> is specified, <code class="command">VACUUM</code> emits
     progress messages to indicate which table is currently being
     processed.  Various statistics about the tables are printed as well.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2774854"></a><h2>Notes</h2>
+<a name="id2781228"></a><h2>Notes</h2>
 <p>    <code class="command">VACUUM</code> cannot be executed inside a transaction block.
    </p>
 <p>    We recommend that active production databases be
@@ -124,7 +124,7 @@ VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>t
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2774950"></a><h2>Examples</h2>
+<a name="id2781323"></a><h2>Examples</h2>
 <p>   The following is an example from running <code class="command">VACUUM</code> on a
    table in the regression database:
 
@@ -161,12 +161,12 @@ VACUUM</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2775012"></a><h2>Compatibility</h2>
+<a name="id2781364"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">VACUUM</code> statement in the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2775023"></a><h2>See Also</h2>
+<a name="id2781375"></a><h2>See Also</h2>
 <span class="simplelist"><a href="app-vacuumdb.html"><span class="application">vacuumdb</span></a>, <a href="runtime-config-resource.html#runtime-config-resource-vacuum-cost">       Cost-Based Vacuum Delay
      </a></span>
 </div>
