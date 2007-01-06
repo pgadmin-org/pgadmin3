@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.1 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="next" href="slonstart.html" title="3. Slon daemons">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="firstdb"></a>2. Replicating Your First Database</h2></div></div></div>
-<a name="id2551237"></a><p>In this example, we will be replicating a brand new
+<a name="id2557794"></a><p>In this example, we will be replicating a brand new
 <span class="application">pgbench</span> database.  The mechanics of
 replicating an existing database are covered here, however we
 recommend that you learn how <span class="productname">Slony-I</span> functions by using a fresh new
@@ -77,12 +77,12 @@ in an error similar to the following:</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2551490"></a>2.1. Creating the <span class="application">pgbench</span> user</h3></div></div></div>
+<a name="id2558046"></a>2.1. Creating the <span class="application">pgbench</span> user</h3></div></div></div>
 <p><code class="command">createuser -A -D $PGBENCHUSER</code></p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2551505"></a>2.2. Preparing the databases</h3></div></div></div>
+<a name="id2558062"></a>2.2. Preparing the databases</h3></div></div></div>
 <pre class="programlisting">createdb -O $PGBENCHUSER -h $MASTERHOST $MASTERDBNAME
 createdb -O $PGBENCHUSER -h $SLAVEHOST $SLAVEDBNAME
 pgbench -i -s 1 -U $PGBENCHUSER -h $MASTERHOST $MASTERDBNAME</pre>
@@ -116,7 +116,7 @@ database running on localhost as the pgbench user.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2551616"></a>2.3. Configuring the Database for Replication.</h3></div></div></div>
+<a name="id2558172"></a>2.3. Configuring the Database for Replication.</h3></div></div></div>
 <p>Creating the configuration tables, stored procedures, triggers
 and configuration is all done through the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 tool. It is a specialized scripting aid that mostly calls stored
