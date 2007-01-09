@@ -181,11 +181,7 @@ wxString pgTable::GetSql(ctlTree *browser)
                     {
                         sql += wxT(",");
                         if (!prevComment.IsEmpty())
-                        {
-                            sql += wxT(" -- ") + prevComment.BeforeFirst('\n');
-                            if (prevComment.BeforeFirst('\n').Length() != prevComment.Length())
-                                sql += wxT("...");
-                        }
+							sql += wxT(" -- ") + firstLineOnly(prevComment);
 
                         sql += wxT("\n");
                     }
@@ -224,12 +220,7 @@ wxString pgTable::GetSql(ctlTree *browser)
                 sql += wxT(",");
 
                 if (!prevComment.IsEmpty())
-                {
-                    sql += wxT(" -- ") + prevComment.BeforeFirst('\n');
-                    if (prevComment.BeforeFirst('\n').Length() != prevComment.Length())
-                        sql += wxT("...");
-                }
-
+					sql += wxT(" -- ") + firstLineOnly(prevComment);
 
                 sql += wxT("\n  CONSTRAINT ") + data->GetQuotedIdentifier() 
                     + wxT(" ") + data->GetTypeName().Upper() 
@@ -253,12 +244,7 @@ wxString pgTable::GetSql(ctlTree *browser)
             }
         }
         if (!prevComment.IsEmpty())
-       {
-            sql += wxT(" -- ") + prevComment.BeforeFirst('\n');
-            if (prevComment.BeforeFirst('\n').Length() != prevComment.Length())
-                sql += wxT("...");
-       }
-
+			sql += wxT(" -- ") + firstLineOnly(prevComment);
 
         sql += wxT("\n) ");
         if (GetInheritedTableCount())
