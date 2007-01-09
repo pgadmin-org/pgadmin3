@@ -112,6 +112,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     mainForm=form;
     conn=_conn;
 
+	loading = true;
     closing = false;
 
     dlgName = wxT("frmQuery");
@@ -543,6 +544,7 @@ void frmQuery::Go()
 
     Show(true);
     sqlQuery->SetFocus();
+	loading = false;
 }
 
 
@@ -633,7 +635,7 @@ void frmQuery::OnContents(wxCommandEvent& event)
 void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 {
     // On Solaris, this event seems to get fired when the form closes(!!)
-    if(!IsVisible())
+    if(!IsVisible() && !loading)
         return; 
 
     unsigned int sel=cbConnection->GetCurrentSelection();

@@ -55,7 +55,9 @@ private:
     pgConn *conn;
     wxLongLong elapsedQuery, elapsedRetrieve;
 
-    bool closing;
+	// These status flags are required to work round some wierdness on wxGTK,
+	// particularly on Solaris.
+    bool closing, loading;
     
     void OnEraseBackground(wxEraseEvent& event);
     void OnSize(wxSizeEvent& event);
