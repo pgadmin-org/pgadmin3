@@ -23,7 +23,7 @@
 
 typedef enum
 {
-    PGTYPCLASS_NUMERIC,
+    PGTYPCLASS_NUMERIC = 1,
     PGTYPCLASS_BOOL,
     PGTYPCLASS_STRING,
     PGTYPCLASS_DATE,
@@ -96,6 +96,7 @@ protected:
     wxMBConv &conv;
     bool needColQuoting;
     wxArrayString colTypes, colFullTypes;
+	wxArrayInt colClasses;
 };
 
 

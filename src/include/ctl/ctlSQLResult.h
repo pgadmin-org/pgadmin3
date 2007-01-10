@@ -56,6 +56,7 @@ public:
     int Abort();
 
     bool Export();
+	bool ToFile();
     bool CanExport() { return NumRows() >0 && colNames.GetCount() > 0; }
 
 	wxString OnGetItemText(long item, long col) const;

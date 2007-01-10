@@ -60,6 +60,17 @@ bool ctlSQLResult::Export()
     {
         frmExport dlg(this);
         if (dlg.ShowModal() == wxID_OK)
+            return dlg.Export(NULL);
+    }
+    return false;
+}
+
+bool ctlSQLResult::ToFile()
+{
+    if (NumRows() > 0)
+    {
+        frmExport dlg(this);
+        if (dlg.ShowModal() == wxID_OK)
             return dlg.Export(thread->DataSet());
     }
     return false;

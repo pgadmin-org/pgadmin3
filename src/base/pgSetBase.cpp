@@ -45,6 +45,7 @@ pgSetBase::pgSetBase(PGresult *newRes, pgConnBase *newConn, wxMBConv &cnv, bool 
         {
             colTypes.Add(wxT(""));
             colFullTypes.Add(wxT(""));
+			colClasses.Add(0);
         }
 
         nRows = PQntuples(res);
@@ -90,6 +91,9 @@ pgTypClass pgSetBase::ColTypClass(const int col) const
 {
     wxASSERT(col < nCols && col >= 0);
 
+    if (colClasses[col] != 0)
+        return (pgTypClass)colClasses[col];
+
     wxString typoid=ExecuteScalar(
         wxT("SELECT CASE WHEN typbasetype=0 THEN oid else typbasetype END AS basetype\n")
         wxT("  FROM pg_type WHERE oid=") + NumToStr(ColTypeOid(col)));
@@ -111,22 +115,28 @@ pgTypClass pgSetBase::ColTypClass(const int col) const
         case PGOID_TYPE_MONEY:
         case PGOID_TYPE_BIT:
         case PGOID_TYPE_NUMERIC:
-            return PGTYPCLASS_NUMERIC;
+			colClasses[col] = PGTYPCLASS_NUMERIC;
+			break;
         case PGOID_TYPE_BYTEA:
         case PGOID_TYPE_CHAR:
         case PGOID_TYPE_NAME:
         case PGOID_TYPE_TEXT:
         case PGOID_TYPE_VARCHAR:
-            return PGTYPCLASS_STRING;
+            colClasses[col] = PGTYPCLASS_STRING;
+			break;
         case PGOID_TYPE_TIMESTAMP:
         case PGOID_TYPE_TIMESTAMPTZ:
         case PGOID_TYPE_TIME:
         case PGOID_TYPE_TIMETZ:
         case PGOID_TYPE_INTERVAL:
-            return PGTYPCLASS_DATE;
+            colClasses[col] = PGTYPCLASS_DATE;
+			break;
         default:
-            return PGTYPCLASS_OTHER;
+            colClasses[col] = PGTYPCLASS_OTHER;
+			break;
     }
+
+	return (pgTypClass)colClasses[col];
 }
 
 

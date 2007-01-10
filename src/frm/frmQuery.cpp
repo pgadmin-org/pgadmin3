@@ -1594,7 +1594,7 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                     queryMenu->Enable(MNU_CANCEL, false);
                     SetCursor(*wxHOURGLASS_CURSOR);
 
-                    if (sqlResult->Export())
+                    if (sqlResult->ToFile())
                         SetStatusText(_("Data written to file."), STATUSPOS_MSGS);
                     else
                         SetStatusText(_("Data export aborted."), STATUSPOS_MSGS);
