@@ -17,7 +17,7 @@
 #include "frm/frmExport.h"
 #include "utils/sysSettings.h"
 #include "utils/misc.h"
-
+#include "ctl/ctlSQLResult.h"
 
 #define txtFilename     CTRL_TEXT("txtFilename")
 #define btnOK           CTRL_BUTTON("wxID_OK")
@@ -137,6 +137,15 @@ void frmExport::OnOK(wxCommandEvent &ev)
 
 bool frmExport::Export(pgSet *set)
 {
+	ctlSQLResult *grid;
+	if (!set)
+	{
+		wxLogInfo(wxT("Exporting data from the grid"));
+		grid = (ctlSQLResult *)parent;
+	}
+	else
+		wxLogInfo(wxT("Exporting data from a resultset"));
+
     wxFile file(txtFilename->GetValue(), wxFile::write);
     if (!file.IsOpened())
     {
@@ -150,9 +159,16 @@ bool frmExport::Export(pgSet *set)
 
     int colCount, rowCount;
 
-
-	colCount = set->NumCols();
-    rowCount = set->NumRows();
+	if (set)
+	{
+		colCount = set->NumCols();
+		rowCount = set->NumRows();
+	}
+	else
+	{
+		colCount = grid->GetNumberCols();
+		rowCount = grid->NumRows();
+	}
 
     int col;
     if (chkColnames->GetValue())
@@ -167,12 +183,23 @@ bool frmExport::Export(pgSet *set)
             if (rbQuoteStrings->GetValue() || rbQuoteAll->GetValue())
             {
                 wxString qc = cbQuoteChar->GetValue();
-                wxString hdr = set->ColName(col);
+				
+				wxString hdr;
+				if (set)
+                    hdr = set->ColName(col);
+				else
+					hdr = grid->OnGetItemText(-1, col+1).BeforeFirst('\n');
+
                 hdr.Replace(qc, qc+qc);
                 line += qc + hdr + qc;
             }
             else
-                line += set->ColName(col);
+			{
+				if (set)
+                    line += set->ColName(col);
+				else
+					line += grid->OnGetItemText(-1, col+1).BeforeFirst('\n');
+			}
         }
         if (rbCRLF->GetValue())
             line += wxT("\r\n");
@@ -207,8 +234,16 @@ bool frmExport::Export(pgSet *set)
 
             bool needQuote=rbQuoteAll->GetValue();
 
-            text = set->GetVal(col);
-            typOid = set->ColTypeOid(col);
+			if (set)
+			{
+                text = set->GetVal(col);
+                typOid = set->ColTypClass(col);
+			}
+			else
+			{
+				text = grid->OnGetItemText(row, col+1);
+				typOid = grid->colTypClasses[col];
+			}
 
             if (!needQuote && rbQuoteStrings->GetValue())
             {
@@ -248,7 +283,8 @@ bool frmExport::Export(pgSet *set)
                 file.Write(line, wxConvLibc);
         }
 
-        set->MoveNext();
+		if (set)
+			set->MoveNext();
     }
     file.Close();
 
