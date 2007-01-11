@@ -62,14 +62,17 @@ wxString pgOperator::GetSql(ctlTree *browser)
         AppendIfFilled(sql, wxT(",\n  COMMUTATOR = "), GetCommutator());
         AppendIfFilled(sql, wxT(",\n  RESTRICT = "), qtIdent(GetRestrictFunction()));
         AppendIfFilled(sql, wxT(",\n  JOIN = "), qtIdent(GetJoinFunction()));
-        if (GetHashJoins())  sql += wxT(",\n  HASHES");
-        if (!leftSortOperator.IsNull() || !rightSortOperator.IsNull() ||
-            !lessOperator.IsNull() || !greaterOperator.IsNull())
-            sql += wxT(",\n  MERGES");
-        AppendIfFilled(sql, wxT(",\n  SORT1 = "), GetLeftSortOperator());
-        AppendIfFilled(sql, wxT(",\n  SORT2 = "), GetRightSortOperator());
-        AppendIfFilled(sql, wxT(",\n  LTCMP = "), GetLessOperator());
-        AppendIfFilled(sql, wxT(",\n  GTCMP = "), GetGreaterOperator());
+        if (GetHashJoins()) sql += wxT(",\n  HASHES");
+        if (GetMergeJoins()) sql += wxT(",\n  MERGES");
+
+		if (!GetDatabase()->BackendMinimumVersion(8, 3))
+		{
+			AppendIfFilled(sql, wxT(",\n  SORT1 = "), GetLeftSortOperator());
+			AppendIfFilled(sql, wxT(",\n  SORT2 = "), GetRightSortOperator());
+			AppendIfFilled(sql, wxT(",\n  LTCMP = "), GetLessOperator());
+			AppendIfFilled(sql, wxT(",\n  GTCMP = "), GetGreaterOperator());
+		}
+
         sql += wxT(");\n");
 
 	if (!GetComment().IsNull())
@@ -127,11 +130,17 @@ void pgOperator::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Negator"), GetNegator());
         properties->AppendItem(_("Join function"), GetJoinFunction());
         properties->AppendItem(_("Restrict function"), GetRestrictFunction());
-        properties->AppendItem(_("Left Sort operator"), GetLeftSortOperator());
-        properties->AppendItem(_("Right Sort operator"), GetRightSortOperator());
-        properties->AppendItem(_("Less Than operator"), GetLessOperator());
-        properties->AppendItem(_("Greater than operator"), GetGreaterOperator());
+
+		if (!GetDatabase()->BackendMinimumVersion(8, 3))
+		{
+			properties->AppendItem(_("Left Sort operator"), GetLeftSortOperator());
+			properties->AppendItem(_("Right Sort operator"), GetRightSortOperator());
+			properties->AppendItem(_("Less Than operator"), GetLessOperator());
+			properties->AppendItem(_("Greater than operator"), GetGreaterOperator());
+		}
+
         properties->AppendItem(_("Supports hash?"), GetHashJoins());
+        properties->AppendItem(_("Supports merge?"), GetMergeJoins());
         properties->AppendItem(_("System operator?"), GetSystemObject());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
@@ -158,26 +167,48 @@ pgObject *pgOperatorFactory::CreateObjects(pgCollection *collection, ctlTree *br
 {
     pgOperator *oper=0;
 
-    pgSet *operators= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT op.oid, op.oprname, pg_get_userbyid(op.oprowner) as opowner, op.oprkind, op.oprcanhash,\n")
-        wxT("       op.oprleft, op.oprright, lt.typname as lefttype, rt.typname as righttype, et.typname as resulttype,\n")
-        wxT("       co.oprname as compop, ne.oprname as negop, lso.oprname as leftsortop, rso.oprname as rightsortop,\n")
-        wxT("       lco.oprname as lscmpop, gco.oprname as gtcmpop,\n")
-        wxT("       op.oprcode as operproc, op.oprjoin as joinproc, op.oprrest as restrproc, description\n")
-        wxT("  FROM pg_operator op\n")
-        wxT("  LEFT OUTER JOIN pg_type lt ON lt.oid=op.oprleft\n")
-        wxT("  LEFT OUTER JOIN pg_type rt ON rt.oid=op.oprright\n")
-        wxT("  JOIN pg_type et on et.oid=op.oprresult\n")
-        wxT("  LEFT OUTER JOIN pg_operator co ON co.oid=op.oprcom\n")
-        wxT("  LEFT OUTER JOIN pg_operator ne ON ne.oid=op.oprnegate\n")
-        wxT("  LEFT OUTER JOIN pg_operator lso ON lso.oid=op.oprlsortop\n")
-        wxT("  LEFT OUTER JOIN pg_operator rso ON rso.oid=op.oprrsortop\n")
-        wxT("  LEFT OUTER JOIN pg_operator lco ON lco.oid=op.oprltcmpop\n")
-        wxT("  LEFT OUTER JOIN pg_operator gco ON gco.oid=op.oprgtcmpop\n")
-        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=op.oid\n")
-        wxT(" WHERE op.oprnamespace = ") + collection->GetSchema()->GetOidStr() 
-        + restriction + wxT("\n")
-        wxT(" ORDER BY op.oprname"));
+	pgSet *operators;
+	if (collection->GetDatabase()->BackendMinimumVersion(8, 3))
+	{
+		operators = collection->GetDatabase()->ExecuteSet(
+			wxT("SELECT op.oid, op.oprname, pg_get_userbyid(op.oprowner) as opowner, op.oprkind, op.oprcanhash, op.oprcanmerge,\n")
+			wxT("       op.oprleft, op.oprright, lt.typname as lefttype, rt.typname as righttype, et.typname as resulttype,\n")
+			wxT("       co.oprname as compop, ne.oprname as negop,\n")
+			wxT("       op.oprcode as operproc, op.oprjoin as joinproc, op.oprrest as restrproc, description\n")
+			wxT("  FROM pg_operator op\n")
+			wxT("  LEFT OUTER JOIN pg_type lt ON lt.oid=op.oprleft\n")
+			wxT("  LEFT OUTER JOIN pg_type rt ON rt.oid=op.oprright\n")
+			wxT("  JOIN pg_type et on et.oid=op.oprresult\n")
+			wxT("  LEFT OUTER JOIN pg_operator co ON co.oid=op.oprcom\n")
+			wxT("  LEFT OUTER JOIN pg_operator ne ON ne.oid=op.oprnegate\n")
+			wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=op.oid\n")
+			wxT(" WHERE op.oprnamespace = ") + collection->GetSchema()->GetOidStr() 
+			+ restriction + wxT("\n")
+			wxT(" ORDER BY op.oprname"));
+	}
+	else
+	{
+		operators = collection->GetDatabase()->ExecuteSet(
+			wxT("SELECT op.oid, op.oprname, pg_get_userbyid(op.oprowner) as opowner, op.oprkind, op.oprcanhash,\n")
+			wxT("       op.oprleft, op.oprright, lt.typname as lefttype, rt.typname as righttype, et.typname as resulttype,\n")
+			wxT("       co.oprname as compop, ne.oprname as negop, lso.oprname as leftsortop, rso.oprname as rightsortop,\n")
+			wxT("       lco.oprname as lscmpop, gco.oprname as gtcmpop,\n")
+			wxT("       op.oprcode as operproc, op.oprjoin as joinproc, op.oprrest as restrproc, description\n")
+			wxT("  FROM pg_operator op\n")
+			wxT("  LEFT OUTER JOIN pg_type lt ON lt.oid=op.oprleft\n")
+			wxT("  LEFT OUTER JOIN pg_type rt ON rt.oid=op.oprright\n")
+			wxT("  JOIN pg_type et on et.oid=op.oprresult\n")
+			wxT("  LEFT OUTER JOIN pg_operator co ON co.oid=op.oprcom\n")
+			wxT("  LEFT OUTER JOIN pg_operator ne ON ne.oid=op.oprnegate\n")
+			wxT("  LEFT OUTER JOIN pg_operator lso ON lso.oid=op.oprlsortop\n")
+			wxT("  LEFT OUTER JOIN pg_operator rso ON rso.oid=op.oprrsortop\n")
+			wxT("  LEFT OUTER JOIN pg_operator lco ON lco.oid=op.oprltcmpop\n")
+			wxT("  LEFT OUTER JOIN pg_operator gco ON gco.oid=op.oprgtcmpop\n")
+			wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=op.oid\n")
+			wxT(" WHERE op.oprnamespace = ") + collection->GetSchema()->GetOidStr() 
+			+ restriction + wxT("\n")
+			wxT(" ORDER BY op.oprname"));
+	}
 
     if (operators)
     {
@@ -193,16 +224,22 @@ pgObject *pgOperatorFactory::CreateObjects(pgCollection *collection, ctlTree *br
             oper->iSetRightTypeOid(operators->GetOid(wxT("oprright")));
             oper->iSetResultType(operators->GetVal(wxT("resulttype")));
             oper->iSetOperatorFunction(operators->GetVal(wxT("operproc")));
-	    wxString tmp=operators->GetVal(wxT("joinproc"));
-	    if (tmp != wxT("-"))
-		oper->iSetJoinFunction(tmp);
-	    tmp = operators->GetVal(wxT("restrproc"));
-	    if (tmp != wxT("-"))
-		oper->iSetRestrictFunction(tmp);
-            oper->iSetLeftSortOperator(operators->GetVal(wxT("leftsortop")));
-            oper->iSetRightSortOperator(operators->GetVal(wxT("rightsortop")));
-            oper->iSetLessOperator(operators->GetVal(wxT("lscmpop")));
-            oper->iSetGreaterOperator(operators->GetVal(wxT("gtcmpop")));
+
+			wxString tmp=operators->GetVal(wxT("joinproc"));
+			if (tmp != wxT("-"))
+			oper->iSetJoinFunction(tmp);
+			tmp = operators->GetVal(wxT("restrproc"));
+			if (tmp != wxT("-"))
+			oper->iSetRestrictFunction(tmp);
+			
+			if (!collection->GetDatabase()->BackendMinimumVersion(8, 3))
+			{
+				oper->iSetLeftSortOperator(operators->GetVal(wxT("leftsortop")));
+				oper->iSetRightSortOperator(operators->GetVal(wxT("rightsortop")));
+				oper->iSetLessOperator(operators->GetVal(wxT("lscmpop")));
+				oper->iSetGreaterOperator(operators->GetVal(wxT("gtcmpop")));
+			}
+
             oper->iSetCommutator(operators->GetVal(wxT("compop")));
             oper->iSetNegator(operators->GetVal(wxT("negop")));
             wxString kind=operators->GetVal(wxT("oprkind"));
@@ -210,6 +247,13 @@ pgObject *pgOperatorFactory::CreateObjects(pgCollection *collection, ctlTree *br
                            kind.IsSameAs(wxT("l")) ? wxT("prefix") :
                            kind.IsSameAs(wxT("r")) ? wxT("postfix") : wxT("unknown"));
             oper->iSetHashJoins(operators->GetBool(wxT("oprcanhash")));
+
+			if (!collection->GetDatabase()->BackendMinimumVersion(8, 3))
+				oper->iSetMergeJoins(!oper->GetLeftSortOperator().IsNull() || !oper->GetRightSortOperator().IsNull() ||
+					                 !oper->GetLessOperator().IsNull() || !oper->GetGreaterOperator().IsNull());
+			else
+				oper->iSetMergeJoins(operators->GetBool(wxT("oprcanmerge")));
+			
 
             if (browser)
             {

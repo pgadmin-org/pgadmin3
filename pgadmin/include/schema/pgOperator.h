@@ -69,6 +69,8 @@ public:
     void iSetGreaterOperator(const wxString& s) {  greaterOperator=s; }
     bool GetHashJoins() const { return hashJoins; }
     void iSetHashJoins(bool b) {  hashJoins=b; }
+    bool GetMergeJoins() const { return mergeJoins; }
+    void iSetMergeJoins(bool b) {  mergeJoins=b; }
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetSql(ctlTree *browser);
@@ -84,7 +86,7 @@ private:
              commutator, negator, kind, 
              leftSortOperator, rightSortOperator, lessOperator, greaterOperator;
     OID leftTypeOid, rightTypeOid;
-    bool hashJoins;
+    bool hashJoins, mergeJoins;
 };
 
 #endif

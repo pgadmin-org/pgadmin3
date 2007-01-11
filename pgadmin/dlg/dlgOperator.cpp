@@ -117,22 +117,23 @@ int dlgOperator::Go(bool modal)
         cbNegator->Append(oper->GetNegator());
         cbNegator->SetSelection(0);
 
-        cbLeftSort->Append(oper->GetLeftSortOperator());
-        cbLeftSort->SetSelection(0);
+		if (!connection->BackendMinimumVersion(8, 3))
+		{
+			cbLeftSort->Append(oper->GetLeftSortOperator());
+			cbLeftSort->SetSelection(0);
 
-        cbRightSort->Append(oper->GetRightSortOperator());
-        cbRightSort->SetSelection(0);
+	        cbRightSort->Append(oper->GetRightSortOperator());
+			cbRightSort->SetSelection(0);
 
-        cbLess->Append(oper->GetLessOperator());
-        cbLess->SetSelection(0);
+			cbLess->Append(oper->GetLessOperator());
+			cbLess->SetSelection(0);
 
-        cbGreater->Append(oper->GetGreaterOperator());
-        cbGreater->SetSelection(0);
+			cbGreater->Append(oper->GetGreaterOperator());
+			cbGreater->SetSelection(0);
+		}
 
         chkCanHash->SetValue(oper->GetHashJoins());
-        if (!oper->GetLeftSortOperator().IsNull() || !oper->GetRightSortOperator().IsNull() ||
-            !oper->GetLessOperator().IsNull() || !oper->GetGreaterOperator().IsNull())
-            chkCanMerge->SetValue(true);
+		chkCanMerge->SetValue(oper->GetMergeJoins());
 
 
         txtName->Disable();
@@ -229,10 +230,15 @@ void dlgOperator::CheckChangeType()
 
     cbRestrict->Enable(binaryOp);
     cbJoin->Enable(binaryOp);
-    cbLeftSort->Enable(binaryOp);
-    cbRightSort->Enable(binaryOp);
-    cbLess->Enable(binaryOp);
-    cbGreater->Enable(binaryOp);
+
+	if (!connection->BackendMinimumVersion(8, 3))
+	{
+		cbLeftSort->Enable(binaryOp);
+		cbRightSort->Enable(binaryOp);
+		cbLess->Enable(binaryOp);
+		cbGreater->Enable(binaryOp);
+	}
+
     chkCanHash->Enable(binaryOp);
     chkCanMerge->Enable(binaryOp);
 
@@ -243,10 +249,14 @@ void dlgOperator::CheckChangeType()
     cbRestrict->Clear();
     cbCommutator->Clear();
     cbNegator->Clear();
-    cbLeftSort->Clear();
-    cbRightSort->Clear();
-    cbLess->Clear();
-    cbGreater->Clear();
+
+	if (!connection->BackendMinimumVersion(8, 3))
+	{
+		cbLeftSort->Clear();
+		cbRightSort->Clear();
+		cbLess->Clear();
+		cbGreater->Clear();
+	}
 
     cbRestrict->Append(wxEmptyString);
     cbJoin->Append(wxEmptyString);
@@ -319,10 +329,13 @@ void dlgOperator::CheckChangeType()
 
         cbCommutator->Append(wxT(" "));
         cbNegator->Append(wxT(" "));
-        cbLeftSort->Append(wxT(" "));
-        cbRightSort->Append(wxT(" "));
-        cbLess->Append(wxT(" "));
-        cbGreater->Append(wxT(" "));
+		if (!connection->BackendMinimumVersion(8, 3))
+		{
+			cbLeftSort->Append(wxT(" "));
+			cbRightSort->Append(wxT(" "));
+			cbLess->Append(wxT(" "));
+			cbGreater->Append(wxT(" "));
+		}
 
         set=connection->ExecuteSet(qry);
         if (set)
@@ -333,7 +346,7 @@ void dlgOperator::CheckChangeType()
 
                 cbCommutator->Append(opname);
                 cbNegator->Append(opname);
-                if (binaryOp)
+                if (binaryOp && !connection->BackendMinimumVersion(8, 3))
                 {
                     cbLeftSort->Append(opname);
                     cbRightSort->Append(opname);
@@ -422,10 +435,13 @@ wxString dlgOperator::GetSql()
             if (cbJoin->GetCurrentSelection() > 0)
                 sql += wxT(",\n   JOIN=") + procedures.Item(cbJoin->GetCurrentSelection()-1);
 
-            AppendFilledOperator(sql, wxT(",\n   SORT1="), cbLeftSort);
-            AppendFilledOperator(sql, wxT(",\n   SORT2="), cbRightSort);
-            AppendFilledOperator(sql, wxT(",\n   LTCMP="), cbLess);
-            AppendFilledOperator(sql, wxT(",\n   GTCMP="), cbGreater);
+			if (!connection->BackendMinimumVersion(8, 3))
+			{
+				AppendFilledOperator(sql, wxT(",\n   SORT1="), cbLeftSort);
+				AppendFilledOperator(sql, wxT(",\n   SORT2="), cbRightSort);
+				AppendFilledOperator(sql, wxT(",\n   LTCMP="), cbLess);
+				AppendFilledOperator(sql, wxT(",\n   GTCMP="), cbGreater);
+			}
 
             if (chkCanMerge->GetValue() || chkCanHash->GetValue())
             {

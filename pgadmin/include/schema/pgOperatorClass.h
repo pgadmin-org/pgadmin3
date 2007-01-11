@@ -47,6 +47,8 @@ public:
     wxString GetSql(ctlTree *browser);
     bool GetOpcDefault() const { return opcDefault; }
     void iSetOpcDefault(const bool b) { opcDefault=b; }
+    wxString GetFamily() const {return opFamily; }
+    void iSetFamily(const wxString&s) { opFamily=s; }
 
     bool CanCreate() { return false; }
     bool CanEdit() { return false; }
@@ -59,7 +61,7 @@ public:
     bool HasReferences() { return true; }
 
 private:
-    wxString inType, keyType, accessMethod;
+    wxString inType, keyType, accessMethod,opFamily ;
     wxArrayString operators;
     wxArrayString functions, quotedFunctions;
     wxArrayString functionOids;

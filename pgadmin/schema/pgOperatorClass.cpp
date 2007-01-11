@@ -82,14 +82,34 @@ void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
         expandedKids=true;
 
         pgSet *set;
-        set=ExecuteSet(
-            wxT("SELECT amopstrategy, amopreqcheck, oprname, lt.typname as lefttype, rt.typname as righttype\n")
-            wxT("  FROM pg_amop am\n")
-            wxT("  JOIN pg_operator op ON amopopr=op.oid\n")
-            wxT("  LEFT OUTER JOIN pg_type lt ON lt.oid=oprleft\n")
-            wxT("  LEFT OUTER JOIN pg_type rt ON rt.oid=oprright\n")
-            wxT(" WHERE amopclaid=") + GetOidStr()+ wxT("\n")
-            wxT(" ORDER BY amopstrategy"));
+
+		if (!GetConnection()->BackendMinimumVersion(8, 3))
+		{
+			set=ExecuteSet(
+				wxT("SELECT amopstrategy, amopreqcheck, oprname, lt.typname as lefttype, rt.typname as righttype\n")
+				wxT("  FROM pg_amop am\n")
+				wxT("  JOIN pg_operator op ON amopopr=op.oid\n")
+				wxT("  LEFT OUTER JOIN pg_type lt ON lt.oid=oprleft\n")
+				wxT("  LEFT OUTER JOIN pg_type rt ON rt.oid=oprright\n")
+				wxT(" WHERE amopclaid=") + GetOidStr()+ wxT("\n")
+				wxT(" ORDER BY amopstrategy"));
+		}
+		else
+		{
+			set=ExecuteSet(
+				wxT("SELECT amopstrategy, amopreqcheck, oprname, lt.typname as lefttype, rt.typname as righttype\n")
+				wxT("  FROM pg_amop am\n")
+				wxT("  JOIN pg_operator op ON amopopr=op.oid\n")
+				wxT("  JOIN pg_opfamily opf ON amopfamily = opf.oid\n")
+				wxT("  JOIN pg_opclass opc ON opf.oid = opcfamily\n")
+				wxT("  LEFT OUTER JOIN pg_type lt ON lt.oid=oprleft\n")
+				wxT("  LEFT OUTER JOIN pg_type rt ON rt.oid=oprright\n")
+				wxT(" WHERE opc.oid=") + GetOidStr()+ wxT("\n")
+				wxT(" AND amopmethod = opf.opfmethod\n")
+				wxT(" AND amoplefttype = op.oprleft AND amoprighttype = op.oprright\n")
+				wxT(" ORDER BY amopstrategy"));
+		}
+
         if (set)
         {
             while (!set->Eof())
@@ -123,11 +143,26 @@ void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
             delete set;
         }
 
-        set=ExecuteSet(
-            wxT("SELECT amprocnum, amproc::oid\n")
-            wxT("  FROM pg_amproc am\n")
-            wxT(" WHERE amopclaid=") + GetOidStr() +wxT("\n")
-            wxT(" ORDER BY amprocnum"));
+		if (!GetConnection()->BackendMinimumVersion(8, 3))
+		{
+	        set=ExecuteSet(
+				wxT("SELECT amprocnum, amproc::oid\n")
+				wxT("  FROM pg_amproc am\n")
+				wxT(" WHERE amopclaid=") + GetOidStr() +wxT("\n")
+	            wxT(" ORDER BY amprocnum"));
+		}
+		else
+		{
+			set=ExecuteSet(
+				wxT("SELECT amprocnum, amproc::oid\n")
+				wxT("  FROM pg_amproc am\n")
+				wxT("  JOIN pg_opfamily opf ON amprocfamily = opf.oid\n")
+				wxT("  JOIN pg_opclass opc ON opf.oid = opcfamily\n")
+				wxT(" WHERE opc.oid=") + GetOidStr() +wxT("\n")
+				wxT(" AND amproclefttype = opc.opcintype AND amprocrighttype = opc.opcintype\n")
+	            wxT(" ORDER BY amprocnum"));
+		}
+
         if (set)
         {
             while (!set->Eof())
@@ -161,6 +196,9 @@ void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
         properties->AppendItem(_("Default?"), GetOpcDefault());
         properties->AppendItem(_("For type"), GetInType());
         properties->AppendItem(_("Access method"), GetAccessMethod());
+		if (GetConnection()->BackendMinimumVersion(8, 3))
+            properties->AppendItem(_("Family"), GetFamily());
+
         if (!GetKeyType().IsEmpty())
             properties->AppendItem(_("Storage"), GetKeyType());  
         unsigned int i;
@@ -194,15 +232,33 @@ pgObject *pgOperatorClassFactory::CreateObjects(pgCollection *collection, ctlTre
 {
     pgOperatorClass *operatorClass=0;
 
-    pgSet *operatorClasses= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT op.oid, op.*, pg_get_userbyid(op.opcowner) as opowner, it.typname as intypename, dt.typname as keytypename, amname\n")
-        wxT("  FROM pg_opclass op\n")
-        wxT("  JOIN pg_am am ON am.oid=opcamid\n")
-        wxT("  JOIN pg_type it ON it.oid=opcintype\n")
-        wxT("  LEFT OUTER JOIN pg_type dt ON dt.oid=opckeytype\n")
-        wxT(" WHERE opcnamespace = ") + collection->GetSchema()->GetOidStr()
-        + restriction + wxT("\n")
-        wxT(" ORDER BY opcname"));
+	pgSet *operatorClasses;
+	if (collection->GetDatabase()->BackendMinimumVersion(8, 3))
+	{
+		operatorClasses= collection->GetDatabase()->ExecuteSet(
+			wxT("SELECT op.oid, op.*, pg_get_userbyid(op.opcowner) as opowner, it.typname as intypename, dt.typname as keytypename, amname, opfname\n")
+			wxT("  FROM pg_opclass op\n")
+			wxT("  JOIN pg_opfamily opf ON op.opcfamily=opf.oid\n")
+			wxT("  JOIN pg_am am ON am.oid=opf.opfmethod\n")
+			wxT("  JOIN pg_type it ON it.oid=opcintype\n")
+			wxT("  LEFT OUTER JOIN pg_type dt ON dt.oid=opckeytype\n")
+			wxT(" WHERE opcnamespace = ") + collection->GetSchema()->GetOidStr()
+			+ restriction + wxT("\n")
+			wxT(" ORDER BY opcname"));
+	}
+	else
+	{
+		operatorClasses= collection->GetDatabase()->ExecuteSet(
+			wxT("SELECT op.oid, op.*, pg_get_userbyid(op.opcowner) as opowner, it.typname as intypename, dt.typname as keytypename, amname\n")
+			wxT("  FROM pg_opclass op\n")
+			wxT("  JOIN pg_am am ON am.oid=opcamid\n")
+			wxT("  JOIN pg_type it ON it.oid=opcintype\n")
+			wxT("  LEFT OUTER JOIN pg_type dt ON dt.oid=opckeytype\n")
+			wxT(" WHERE opcnamespace = ") + collection->GetSchema()->GetOidStr()
+			+ restriction + wxT("\n")
+			wxT(" ORDER BY opcname"));
+	}
+
 
     if (operatorClasses)
     {
@@ -217,6 +273,9 @@ pgObject *pgOperatorClassFactory::CreateObjects(pgCollection *collection, ctlTre
             operatorClass->iSetInType(operatorClasses->GetVal(wxT("intypename")));
             operatorClass->iSetKeyType(operatorClasses->GetVal(wxT("keytypename")));
             operatorClass->iSetOpcDefault(operatorClasses->GetBool(wxT("opcdefault")));
+
+			if (collection->GetDatabase()->BackendMinimumVersion(8, 3))
+				operatorClass->iSetFamily(operatorClasses->GetVal(wxT("opfname")));
 
             if (browser)
             {
