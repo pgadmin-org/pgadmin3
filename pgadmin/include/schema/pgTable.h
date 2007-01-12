@@ -86,10 +86,13 @@ public:
     bool CanRestore() { return true; }
     bool WantDummyChild() { return true; }
     bool GetCanHint();
+    bool GetShowExtendedStatistics() { return showExtendedStatistics; }
+    void iSetShowExtendedStatistics(bool b) { showExtendedStatistics = b; }
 
     bool HasStats() { return true; }
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
+    bool HasPgstattuple();
 
     wxMenu *GetNewMenu();
     wxString GetSql(ctlTree *browser);
@@ -107,7 +110,7 @@ private:
     void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
     wxULongLong rows;
     double estimatedRows;
-    bool hasOids, hasSubclass, rowsCounted, isReplicated;
+    bool hasOids, hasSubclass, rowsCounted, isReplicated, showExtendedStatistics;
     long inheritedTableCount;
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
         primaryKeyName, primaryKeyColNumbers, tablespace;

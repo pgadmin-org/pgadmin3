@@ -77,6 +77,7 @@ public:
     ctlListView *GetDependenciesCtl();
     ctlListView *GetReferencedBy();
     ctlListView *GetReferencedByCtl();
+	void SelectStatisticsTab() { listViews->SetSelection(1); };
     void StoreServers();
     int ReconnectServer(pgServer *server, bool restore = true);
     void ReportConnError(pgServer *server);
@@ -141,8 +142,6 @@ private:
     void OnCopy(wxCommandEvent &ev) { sqlPane->Copy(); };
 
     void OnCheckAlive(wxCommandEvent& event);
-    void OnOnlineUpdate(wxCommandEvent& event);
-    void OnOnlineUpdateNewData(wxCommandEvent& event);
 
     void OnPositionStc(wxStyledTextEvent& event);
 

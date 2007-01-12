@@ -82,4 +82,14 @@ public:
     bool CheckEnable(pgObject *obj);
 };
 
+
+class executePgstattupleFactory : public contextActionFactory
+{
+public:
+    executePgstattupleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+	bool CheckChecked(pgObject *obj);
+};
+
 #endif

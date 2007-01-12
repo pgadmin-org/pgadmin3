@@ -1171,3 +1171,38 @@ bool countRowsFactory::CheckEnable(pgObject *obj)
 {
     return obj && obj->IsCreatedBy(tableFactory);
 }
+
+
+executePgstattupleFactory::executePgstattupleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("&Extended statistics"), _("Get extended statistics via pgstattuple for the selected object."), wxITEM_CHECK);
+}
+
+
+wxWindow *executePgstattupleFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	if (!((pgTable*)obj)->GetShowExtendedStatistics())
+	{
+		((pgTable*)obj)->iSetShowExtendedStatistics(true);
+		wxTreeItemId item=form->GetBrowser()->GetSelection();
+		if (obj == form->GetBrowser()->GetObject(item))
+			form->SelectStatisticsTab();
+	}
+	else
+		((pgTable*)obj)->iSetShowExtendedStatistics(false);
+
+	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), form->GetToolBar());
+
+    return 0;
+}
+
+
+bool executePgstattupleFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(tableFactory) && ((pgTable*)obj)->HasPgstattuple();
+}
+
+bool executePgstattupleFactory::CheckChecked(pgObject *obj)
+{
+    return obj && ((pgTable*)obj)->GetShowExtendedStatistics();
+}

@@ -246,6 +246,11 @@ void menuFactoryList::CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *to
                 menubar->Enable(id, how);
             if (toolbar)
                 toolbar->EnableTool(id, how);
+
+            bool chk=f->CheckChecked(obj);
+			wxMenuItem *itm = menubar->FindItem(id);
+            if (itm && itm->IsCheckable())
+                menubar->Check(id, chk);
         }
     }
 	for (id=0 ; id < GetCount() ; id++)
@@ -298,7 +303,11 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
                 if (menuItem && menuItem->IsEnabled())
 				{
 					if (!menuItem->IsSubMenu())
-						lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp());
+					{
+						lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
+						if (menuItem->IsChecked())
+							treeContextMenu->FindItem(id)->Check();
+					}
 					else
 					{
 						/* Copy of submenu */
@@ -313,7 +322,10 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 							wxMenuItem *oldMenuItem = oldSubMenu->FindItemByPosition(i);
 							if (oldMenuItem->IsEnabled())
 							{
-								newSubMenu->Append(oldMenuItem->GetId(), oldMenuItem->GetLabel(), oldMenuItem->GetHelp());
+								newSubMenu->Append(oldMenuItem->GetId(), oldMenuItem->GetLabel(), oldMenuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
+								if (oldMenuItem->IsChecked())
+									newSubMenu->FindItem(oldMenuItem->GetId())->Check();
+
 								itemCount++;
 								singleMenuItem = oldMenuItem;
 							}
@@ -324,7 +336,11 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 						{
 							delete newSubMenu;
 							if (itemCount)
-								lastItem = treeContextMenu->Append(singleMenuItem->GetId(), singleMenuItem->GetLabel(), singleMenuItem->GetHelp());
+							{
+								lastItem = treeContextMenu->Append(singleMenuItem->GetId(), singleMenuItem->GetLabel(), singleMenuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
+								if (singleMenuItem->IsChecked())
+									treeContextMenu->FindItem(singleMenuItem->GetId())->Check();
+							}
 						}
 					}
 				}

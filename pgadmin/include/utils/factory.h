@@ -126,6 +126,7 @@ public:
     virtual bool IsAction() { return true; }
     virtual wxWindow *StartDialog(frmMain *form, pgObject *obj)=0;
     virtual bool CheckEnable(pgObject *obj) { return true; }
+    virtual bool CheckChecked(pgObject *obj) { return true; }
     bool GetContext() { return context; }
     int GetId() { return id; }
 

@@ -58,6 +58,7 @@ public:
     void RestorePosition(int defaultX=-1, int defaultY=-1, int defaultW=-1, int defaultH=-1, int minW=100, int minH=70);
     void SavePosition();
     void OnAction(wxCommandEvent& event);
+	menuFactoryList *GetMenuFactories() { return menuFactories; }
 
 protected:
 

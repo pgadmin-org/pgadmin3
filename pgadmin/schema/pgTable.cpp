@@ -34,6 +34,7 @@ pgTable::pgTable(pgSchema *newSchema, const wxString& newName)
 {
     inheritedTableCount=0;
     rowsCounted = false;
+    showExtendedStatistics = false;
 }
 
 pgTable::~pgTable()
@@ -636,6 +637,12 @@ pgObject *pgTable::Refresh(ctlTree *browser, const wxTreeItemId item)
 }
 
 
+bool pgTable::HasPgstattuple()
+{
+    return GetConnection()->HasFeature(FEATURE_PGSTATTUPLE);
+}
+
+
 ///////////////////////////////////////////////////////////
 
 
@@ -690,6 +697,7 @@ void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 
 	    delete stats;
     }
+
 }
 
 
@@ -721,11 +729,30 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
             +  wxT(", CASE WHEN cl.reltoastrelid = 0 THEN ") + qtDbString(_("none")) + wxT(" ELSE pg_size_pretty(pg_relation_size(cl.reltoastrelid)+ COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=cl.reltoastrelid)::int8, 0)) END AS ") + qtIdent(_("Toast Table Size"))
             +  wxT(", pg_size_pretty(COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=stat.relid)::int8, 0)) AS ") + qtIdent(_("Indexes Size"));
     }
+
+    if (showExtendedStatistics)
+    {
+        sql += wxT("\n")
+               wxT(", tuple_count AS ") + qtIdent(_("Tuple Count")) + wxT(",\n")
+               wxT("  pg_size_pretty(tuple_len) AS ") + qtIdent(_("Tuple Length")) + wxT(",\n")
+               wxT("  tuple_percent AS ") + qtIdent(_("Tuple Percent")) + wxT(",\n")
+               wxT("  dead_tuple_count AS ") + qtIdent(_("Dead Tuple Count")) + wxT(",\n")
+               wxT("  pg_size_pretty(dead_tuple_len) AS ") + qtIdent(_("Dead Tuple Length")) + wxT(",\n")
+               wxT("  dead_tuple_percent AS ") + qtIdent(_("Dead Tuple Percent")) + wxT(",\n")
+               wxT("  pg_size_pretty(free_space) AS ") + qtIdent(_("Free Space")) + wxT(",\n")
+               wxT("  free_percent AS ") + qtIdent(_("Free Percent")) + wxT("\n")
+               wxT("  FROM pgstattuple('") + GetQuotedFullIdentifier() + wxT("'), pg_stat_all_tables stat");
+    }
+    else
+    {
+        sql += wxT("\n")
+               wxT("  FROM pg_stat_all_tables stat");
+    }
     sql +=  wxT("\n")
-        wxT("  FROM pg_stat_all_tables stat\n")
         wxT("  JOIN pg_statio_all_tables statio ON stat.relid = statio.relid\n")
         wxT("  JOIN pg_class cl ON cl.oid=stat.relid\n")
         wxT(" WHERE stat.relid = ") + GetOidStr();
+
 
     DisplayStatistics(statistics, sql);
 }

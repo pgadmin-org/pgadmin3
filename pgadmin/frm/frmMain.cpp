@@ -257,6 +257,7 @@ void frmMain::CreateMenus()
     viewMenu->AppendSeparator();
     actionFactory *refFact=new refreshFactory(menuFactories, viewMenu, toolBar);
     new countRowsFactory(menuFactories, viewMenu, 0);
+    new executePgstattupleFactory(menuFactories, viewMenu, 0);
 
    
 	//--------------------------

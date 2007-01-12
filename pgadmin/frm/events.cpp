@@ -45,7 +45,6 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_ERASE_BACKGROUND(                   frmMain::OnEraseBackground)
     EVT_SIZE(                               frmMain::OnSize)
     EVT_MENU(MNU_ACTION,                    frmMain::OnAction)
-    EVT_MENU(MNU_ONLINEUPDATE_NEWDATA,      frmMain::OnOnlineUpdateNewData)
 
     EVT_MENU(MNU_COPY,						frmMain::OnCopy)
     EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
@@ -154,13 +153,6 @@ void frmMain::OnAction(wxCommandEvent &ev)
             AddFrame(wnd);
     }
 }
-
-
-void frmMain::OnOnlineUpdateNewData(wxCommandEvent &event)
-{
-    wxLogError(__("Could not contact pgAdmin web site to check for updates.\nMaybe your proxy option setting needs adjustment."));
-}
-
 
 wxString frmMain::GetHelpPage() const
 {
