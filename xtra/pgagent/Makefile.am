@@ -30,11 +30,23 @@ noinst_HEADERS = \
 		$(srcdir)/include/misc.h \
 		$(srcdir)/include/pgAgent.h
 
+if !SUN_CC
+  __CFLAGS=-Wall
+else
+  __CFLAGS=""
+endif
+
+if !SUN_CXX
+  __CXXFLAGS=-Wall -Wno-non-virtual-dtor
+else
+  __CXXFLAGS=""
+endif
+
 if !APPBUNDLE
 
-AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -Wno-non-virtual-dtor -I$(srcdir)/include
-AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -Wno-non-virtual-dtor -I$(srcdir)/include
-AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" -Wall -I$(srcdir)/include
+AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" $(__CXXFLAGS) -I$(srcdir)/include
+AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" $(__CXXFLAGS) -I$(srcdir)/include
+AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" $(__CFLAGS) -I$(srcdir)/include
 
 install-data-local:
 	$(install_sh) -c -m 644 pgagent.sql $(DESTDIR)/$(pkgdatadir)/pgagent.sql

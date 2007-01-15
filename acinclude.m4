@@ -20,6 +20,28 @@ AC_DEFUN([CHECK_CPP_COMPILER],
 	fi
 ])
 
+#################################
+# Check this is SUN compiler #
+#################################
+
+AC_DEFUN([CHECK_SUN_COMPILER],
+[
+       $CC -V 2>test.txt
+       SUN_STR=`head -1 test.txt |cut -f2 -d" "`
+       rm -rf test.txt
+       if test "$SUN_STR" = "Sun"; then
+               SUN_CC_COMPILER=yes 
+       fi
+
+       $CXX -V 2>test.txt
+       SUN_STR=`head -1 test.txt |cut -f2 -d" "`
+       rm -rf test.txt
+       if test "$SUN_STR" = "Sun"; then
+               SUN_CXX_COMPILER=yes
+       fi
+
+])
+
 #############################
 # Override wxWidgets version #
 #############################
