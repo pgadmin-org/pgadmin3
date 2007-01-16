@@ -157,7 +157,7 @@ void dlgServer::OnChangeRestr(wxCommandEvent &ev)
         wxString sql=wxT("EXPLAIN SELECT 1 FROM pg_database DB\n");
         if (connection->BackendMinimumVersion(8, 0))
             sql += wxT(" JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n");
-        sql += wxT(" WHERE datname='") + txtDbRestriction->GetValue() + wxT("'");
+        sql += wxT(" WHERE (") + txtDbRestriction->GetValue() + wxT(")");
 
 
         wxLogNull nix;
