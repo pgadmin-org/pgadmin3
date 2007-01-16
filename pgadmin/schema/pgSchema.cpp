@@ -167,10 +167,10 @@ pgObject *pgSchemaFactory::CreateObjects(pgCollection *collection, ctlTree *brow
     if (!collection->GetDatabase()->GetSchemaRestriction().IsEmpty())
     {
         if (restr.IsEmpty())
-            restr += wxT(" WHERE (");
+            restr += wxT(" WHERE datname='");
         else
-            restr += wxT("   AND (");
-        restr += collection->GetDatabase()->GetSchemaRestriction() + wxT(")");
+            restr += wxT("   AND datname='");
+        restr += collection->GetDatabase()->GetSchemaRestriction() + wxT("'");
     }
 
 	wxString sql;
