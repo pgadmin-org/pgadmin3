@@ -467,11 +467,11 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     if (!collection->GetServer()->GetDbRestriction().IsEmpty())
     {
         if (restr.IsEmpty())
-            restr = wxT(" WHERE (");
+            restr = wxT(" WHERE datname='");
         else
-            restr = wxT("   AND (");
+            restr = wxT("   AND datname='");
 
-        restr += collection->GetServer()->GetDbRestriction() + wxT(")\n");
+        restr += collection->GetServer()->GetDbRestriction() + wxT("'");
     }
     
     if (collection->GetConnection()->BackendMinimumVersion(7, 5))
