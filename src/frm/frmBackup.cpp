@@ -190,6 +190,7 @@ wxString frmBackup::getCmdPart1()
 
 wxString frmBackup::getCmdPart2()
 {
+    extern wxString backupExecutable;
     wxString cmd;
     // if (server->GetSSL())
     // pg_dump doesn't support ssl
@@ -248,11 +249,30 @@ wxString frmBackup::getCmdPart2()
     cmd.Append(wxT(" -f \"") + txtFilename->GetValue() + wxT("\""));
 
     if (object->GetMetaType() == PGM_SCHEMA)
-        cmd.Append(wxT(" -n ") + ((pgSchema*)object)->GetQuotedIdentifier());
+#ifdef WIN32
+        cmd.Append(wxT(" -n \\\"") + ((pgSchema*)object)->GetIdentifier() + wxT("\\\""));
+#else
+		cmd.Append(wxT(" -n '") + ((pgSchema*)object)->GetQuotedIdentifier() + wxT("'"));
+#endif
+
     else if (object->GetMetaType() == PGM_TABLE) 
     {
-        cmd.Append(wxT(" -t ") + ((pgTable*)object)->GetQuotedIdentifier());
-        cmd.Append(wxT(" -n ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+		// The syntax changed in 8.2 :-(
+		if (pgAppMinimumVersion(backupExecutable + wxT(" --version"), 8, 2))
+		{
+#ifdef WIN32
+			cmd.Append(wxT(" -t \"\\\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
+					   wxT("\\\".\\\"") + ((pgTable*)object)->GetIdentifier() + wxT("\\\"\""));
+#else
+			cmd.Append(wxT(" -t '") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier() + 
+					   wxT(".") + ((pgTable*)object)->GetQuotedIdentifier() + wxT("'"));
+#endif
+		}
+		else
+		{
+			cmd.Append(wxT(" -t ") + ((pgTable*)object)->GetQuotedIdentifier());
+			cmd.Append(wxT(" -n ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+		}
     }
 
     cmd.Append(wxT(" ") + object->GetDatabase()->GetQuotedIdentifier());
