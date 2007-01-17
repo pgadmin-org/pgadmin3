@@ -867,3 +867,24 @@ wxString firstLineOnly(const wxString &str)
 
     return tmp;
 }
+
+bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int minorVer)
+{
+	wxArrayString output;
+
+	wxExecute(cmd, output, 0);
+
+	wxString version = output[0].AfterLast(' ');
+	long actualMajor = 0, actualMinor = 0;
+	
+	version.BeforeFirst('.').ToLong(&actualMajor);
+	version.AfterFirst('.').BeforeLast('.').ToLong(&actualMinor);
+
+	if (actualMajor > majorVer)
+		return true;
+
+	if (actualMajor == majorVer && actualMinor >= minorVer)
+		return true;
+
+	return false;
+}
