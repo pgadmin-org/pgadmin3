@@ -112,7 +112,7 @@ frmOptions::frmOptions(frmMain *parent)
 
     wxString copySeparator = settings->GetCopyColSeparator();
     if (copySeparator == wxT("\t"))
-        copySeparator = wxT("Tab");
+        copySeparator = _("Tab");
     cbCopySeparator->SetValue(copySeparator);
 
 	chkTabForCompletion->SetValue(settings->GetTabForCompletion());
@@ -236,7 +236,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	settings->SetCopyQuoteChar(cbCopyQuoteChar->GetValue());
 	
     wxString copySeparator = cbCopySeparator->GetValue();
-    if (copySeparator == wxT("Tab"))
+    if (copySeparator == _("Tab"))
         copySeparator = wxT("\t");
     settings->SetCopyColSeparator(copySeparator);
 
