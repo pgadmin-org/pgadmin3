@@ -16,8 +16,10 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "schema/pgObject.h"
+#include "slony/dlgRepSet.h"
 #include "slony/slSet.h"
 #include "slony/slCluster.h"
+#include "slony/slNode.h"
 #include "slony/slSequence.h"
 #include "slony/slTable.h"
 #include "slony/slSubscription.h"
@@ -333,4 +335,128 @@ pgCollection *slSetObjFactory::CreateCollection(pgObject *obj)
 
 slSetFactory setFactory;
 static pgaCollectionFactory cf(&setFactory, __("Replication Sets"), slsets_xpm);
+
+////////////////////////////////////////////////////////////
+
+slonyMergeSetFactory::slonyMergeSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Merge Set"), _("Merge two replication sets."));
+}
+
+
+wxWindow *slonyMergeSetFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    dlgProperty *dlg=new dlgRepSetMerge(&setFactory, form, (slSet*)obj);
+    dlg->InitDialog(form, obj);
+    dlg->CreateAdditionalPages();
+    dlg->Go(false);
+    dlg->CheckChange();
+    return 0;
+}
+
+
+bool slonyMergeSetFactory::CheckEnable(pgObject *obj)
+{
+    if (!obj || !obj->IsCreatedBy(setFactory))
+        return false;
+
+    slSet *set=(slSet*)obj;
+
+    return set->GetOriginId() == set->GetCluster()->GetLocalNodeID();
+}
+
+
+/////////////////////////////
+
+slonyLockSetFactory::slonyLockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Lock Set"), _("Lock a replication set against updates."));
+}
+
+
+wxWindow *slonyLockSetFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    slSet *set=(slSet*)obj;
+
+    if (set->GetCluster()->GetLocalNode(form->GetBrowser())->CheckAcksAndContinue(form))
+    {
+        if (set->Lock())
+            form->Refresh(set);
+    }    
+    return 0;
+}
+
+
+bool slonyLockSetFactory::CheckEnable(pgObject *obj)
+{
+    if (!obj || !obj->IsCreatedBy(setFactory))
+        return false;
+
+    slSet *set=(slSet*)obj;
+
+    return set->GetOriginId() == set->GetCluster()->GetLocalNodeID() && set->GetLockXXID().IsEmpty();
+}
+
+
+/////////////////////////////
+
+slonyUnlockSetFactory::slonyUnlockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Unlock Set"), _("Unlock a replication set and re-allow updates."));
+}
+
+
+wxWindow *slonyUnlockSetFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    slSet *set=(slSet*)obj;
+
+    if (set->GetCluster()->GetLocalNode(form->GetBrowser())->CheckAcksAndContinue(form))
+    {
+        if (set->Unlock())
+            form->Refresh(set);
+    }
+    return 0;
+}
+
+
+bool slonyUnlockSetFactory::CheckEnable(pgObject *obj)
+{
+    if (!obj || !obj->IsCreatedBy(setFactory))
+        return false;
+
+    slSet *set=(slSet*)obj;
+
+    return set->GetOriginId() == set->GetCluster()->GetLocalNodeID() && !set->GetLockXXID().IsEmpty();
+}
+
+
+////////////////////////////////
+
+
+slonyMoveSetFactory::slonyMoveSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Move Set"), _("Move replication set to different node"));
+}
+
+
+wxWindow *slonyMoveSetFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    dlgProperty *dlg=new dlgRepSetMove(&setFactory, form, (slSet*)obj);
+    dlg->InitDialog(form, obj);
+    dlg->CreateAdditionalPages();
+    dlg->Go(false);
+    dlg->CheckChange();
+    return 0;
+}
+
+
+bool slonyMoveSetFactory::CheckEnable(pgObject *obj)
+{
+    if (!obj || ! obj->IsCreatedBy(setFactory))
+        return false;
+
+    slSet *set=(slSet*)obj;
+
+    return set->GetOriginId() == set->GetCluster()->GetLocalNodeID()  && !set->GetLockXXID().IsEmpty();
+}
 

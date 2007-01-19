@@ -48,6 +48,23 @@ bool pgTrigger::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+void pgTrigger::iSetEnabled(const bool b)
+{
+    if (GetQuotedFullTable().Len() > 0 && ((enabled && !b) || (!enabled && b)))
+    {
+        wxString sql = wxT("ALTER TABLE ") + GetQuotedFullTable() + wxT(" ");
+        if (enabled && !b)
+            sql += wxT("DISABLE");
+        else if (!enabled && b)
+            sql += wxT("ENABLE");
+        sql += wxT(" TRIGGER ") + GetQuotedIdentifier();
+        GetDatabase()->ExecuteVoid(sql);
+    }
+
+    enabled=b;
+}
+
+
 void pgTrigger::SetDirty()
 {
     if (expandedKids)
@@ -252,3 +269,33 @@ pgTriggerFactory::pgTriggerFactory()
 
 pgTriggerFactory triggerFactory;
 static pgaCollectionFactory cf(&triggerFactory, __("Triggers"), triggers_xpm);
+
+enabledisableTriggerFactory::enabledisableTriggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Trigger enabled?"), _("Enable or disable selected trigger."), wxITEM_CHECK);
+}
+
+
+wxWindow *enabledisableTriggerFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    ((pgTrigger*)obj)->iSetEnabled(!((pgTrigger*)obj)->GetEnabled());
+
+    wxTreeItemId item=form->GetBrowser()->GetSelection();
+    if (obj == form->GetBrowser()->GetObject(item))
+        obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+    form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), form->GetToolBar());
+
+    return 0;
+}
+
+
+bool enabledisableTriggerFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(triggerFactory)
+               && ((pgTrigger*)obj)->GetConnection()->BackendMinimumVersion(8, 1);
+}
+
+bool enabledisableTriggerFactory::CheckChecked(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(triggerFactory) && ((pgTrigger*)obj)->GetEnabled();
+}

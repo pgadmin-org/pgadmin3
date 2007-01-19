@@ -206,5 +206,46 @@ public:
     bool CanCreate();
 };
 
+class addServerFactory : public actionFactory
+{
+public:
+    addServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+
+class startServiceFactory : public contextActionFactory
+{
+public:
+    startServiceFactory (menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+class stopServiceFactory : public contextActionFactory
+{
+public:
+    stopServiceFactory (menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+
+class connectServerFactory : public contextActionFactory
+{
+public:
+    connectServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+
+class disconnectServerFactory : public contextActionFactory
+{
+public:
+    disconnectServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
 
 #endif

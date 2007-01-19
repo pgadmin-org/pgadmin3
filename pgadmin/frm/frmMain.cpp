@@ -62,10 +62,11 @@
 #include "frm/frmEditGrid.h"
 #include "dlg/dlgServer.h"
 #include "dlg/dlgDatabase.h"
-#include "dlg/dlgTable.h"
-#include "dlg/dlgServer.h"
-#include "slony/dlgRepCluster.h"
-#include "slony/dlgRepSet.h"
+#include "schema/pgTable.h"
+#include "schema/pgTrigger.h"
+#include "schema/pgServer.h"
+#include "slony/slCluster.h"
+#include "slony/slSet.h"
 
 
 enum
@@ -258,8 +259,10 @@ void frmMain::CreateMenus()
     actionFactory *refFact=new refreshFactory(menuFactories, viewMenu, toolBar);
     new countRowsFactory(menuFactories, viewMenu, 0);
     new executePgstattupleFactory(menuFactories, viewMenu, 0);
+    new enabledisableTriggerFactory(menuFactories, toolsMenu, 0);
+    new disableAllTriggersFactory(menuFactories, toolsMenu, 0);
+	new enableAllTriggersFactory(menuFactories, toolsMenu, 0);
 
-   
 	//--------------------------
     new separatorFactory(menuFactories);
 

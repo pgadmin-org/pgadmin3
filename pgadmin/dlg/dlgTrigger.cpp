@@ -15,6 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
+#include "frm/frmMain.h"
 #include "utils/pgDefs.h"
 
 #include "dlg/dlgTrigger.h"

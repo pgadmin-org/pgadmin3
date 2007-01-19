@@ -97,37 +97,4 @@ private:
     DECLARE_EVENT_TABLE()
 };
 
-
-class clusterActionFactory : public contextActionFactory
-{
-public:
-    clusterActionFactory(menuFactoryList *list) : contextActionFactory(list) {}
-    bool CheckEnable(pgObject *obj);
-};
-
-
-class slonyRestartFactory : public clusterActionFactory
-{
-public:
-    slonyRestartFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
-};
-
-
-class slonyUpgradeFactory : public clusterActionFactory
-{
-public:
-    slonyUpgradeFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
-};
-
-
-class slonyFailoverFactory : public clusterActionFactory
-{
-public:
-    slonyFailoverFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
-    bool CheckEnable(pgObject *obj);
-};
-
 #endif

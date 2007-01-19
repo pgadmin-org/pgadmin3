@@ -78,6 +78,7 @@ public:
     void iSetHasSubclass(bool b) { hasSubclass = b; }
     void iSetIsReplicated(bool b) { isReplicated = b; }
     bool GetIsReplicated() const { return isReplicated; }
+    bool EnableTriggers(const bool b);
     void UpdateRows();
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     bool CanView() { return true; }
@@ -101,6 +102,7 @@ public:
     wxString GetUpdateSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const;
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+	void iSetTriggersEnabled(ctlTree *browser, bool enable);
 
 private:
     void UpdateInheritance();
@@ -159,5 +161,38 @@ public:
     virtual pgCollection *CreateCollection(pgObject *obj);
 };
 
+class countRowsFactory : public contextActionFactory
+{
+public:
+    countRowsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+
+class executePgstattupleFactory : public contextActionFactory
+{
+public:
+    executePgstattupleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+	bool CheckChecked(pgObject *obj);
+};
+
+class disableAllTriggersFactory : public contextActionFactory
+{
+public:
+    disableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+class enableAllTriggersFactory : public contextActionFactory
+{
+public:
+    enableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
 
 #endif

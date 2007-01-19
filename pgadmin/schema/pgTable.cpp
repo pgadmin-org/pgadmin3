@@ -9,6 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#ifndef PGTABLE_H
+#define PGTABLE_H
 
 #include "pgAdmin3.h"
 #include "utils/misc.h"
@@ -408,6 +410,20 @@ wxString pgTable::GetUpdateSql(ctlTree *browser)
 }
 
 
+bool pgTable::EnableTriggers(const bool b)
+{
+	wxString sql = wxT("ALTER TABLE ") + GetQuotedFullIdentifier() + wxT(" ");
+    
+	if (!b)
+        sql += wxT("DISABLE");
+	else
+        sql += wxT("ENABLE");
+        
+	sql += wxT(" TRIGGER ALL");
+
+    return GetDatabase()->ExecuteVoid(sql);
+}
+
 void pgTable::UpdateRows()
 {
     pgSet *props = ExecuteSet(wxT("SELECT count(*) AS rows FROM ONLY ") + GetQuotedFullIdentifier());
@@ -642,6 +658,21 @@ bool pgTable::HasPgstattuple()
     return GetConnection()->HasFeature(FEATURE_PGSTATTUPLE);
 }
 
+void pgTable::iSetTriggersEnabled(ctlTree *browser, bool enable)
+{
+    pgCollection *triggers=browser->FindCollection(triggerFactory, GetId());
+    if (triggers)
+    {
+        triggers->ShowTreeDetail(browser);
+        treeObjectIterator trgIt(browser, triggers);
+
+        pgTrigger *trigger;
+        while ((trigger = (pgTrigger *)trgIt.GetNextObject()) != 0)
+        {
+			trigger->iSetEnabled(enable);
+		}
+	}
+}
 
 ///////////////////////////////////////////////////////////
 
@@ -861,3 +892,115 @@ pgCollection *pgTableObjFactory::CreateCollection(pgObject *obj)
 {
     return new pgTableObjCollection(GetCollectionFactory(), (pgTable*)obj);
 }
+
+
+countRowsFactory::countRowsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("&Count"), _("Count rows in the selected object."));
+}
+
+
+wxWindow *countRowsFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    ((pgTable*)obj)->UpdateRows();
+    
+    wxTreeItemId item=form->GetBrowser()->GetSelection();
+    if (obj == form->GetBrowser()->GetObject(item))
+        obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+
+    return 0;
+}
+
+
+bool countRowsFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(tableFactory);
+}
+
+
+executePgstattupleFactory::executePgstattupleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("&Extended statistics"), _("Get extended statistics via pgstattuple for the selected object."), wxITEM_CHECK);
+}
+
+
+wxWindow *executePgstattupleFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	if (!((pgTable*)obj)->GetShowExtendedStatistics())
+	{
+		((pgTable*)obj)->iSetShowExtendedStatistics(true);
+		wxTreeItemId item=form->GetBrowser()->GetSelection();
+		if (obj == form->GetBrowser()->GetObject(item))
+			form->SelectStatisticsTab();
+	}
+	else
+		((pgTable*)obj)->iSetShowExtendedStatistics(false);
+
+	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), form->GetToolBar());
+
+    return 0;
+}
+
+
+bool executePgstattupleFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(tableFactory) && ((pgTable*)obj)->HasPgstattuple();
+}
+
+bool executePgstattupleFactory::CheckChecked(pgObject *obj)
+{
+    return obj && ((pgTable*)obj)->GetShowExtendedStatistics();
+}
+
+disableAllTriggersFactory::disableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Disable triggers"), _("Disable all triggers on selected the table."));
+}
+
+
+wxWindow *disableAllTriggersFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	if (wxMessageBox(_("Are you sure you wish to disable all triggers on this table?"), _("Disable triggers"), wxYES_NO) == wxNO)
+		return 0;
+	
+	if (!((pgTable*)obj)->EnableTriggers(false))
+		return 0;
+
+	((pgTable *)obj)->iSetTriggersEnabled(form->GetBrowser(), false);
+	
+    return 0;
+}
+
+
+bool disableAllTriggersFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(tableFactory)
+               && ((pgTable*)obj)->GetConnection()->BackendMinimumVersion(8, 1);
+}
+
+enableAllTriggersFactory::enableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Enable triggers"), _("Enable all triggers on selected the table."));
+}
+
+
+wxWindow *enableAllTriggersFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	if (wxMessageBox(_("Are you sure you wish to enable all triggers on this table?"), _("Enable triggers"), wxYES_NO) == wxNO)
+		return 0;
+	
+	if (!((pgTable*)obj)->EnableTriggers(true))
+		return 0;
+
+	((pgTable *)obj)->iSetTriggersEnabled(form->GetBrowser(), true);
+
+    return 0;
+}
+
+
+bool enableAllTriggersFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(tableFactory)
+               && ((pgTable*)obj)->GetConnection()->BackendMinimumVersion(8, 1);
+}
+

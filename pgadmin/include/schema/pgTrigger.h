@@ -45,7 +45,7 @@ public:
     long GetTriggerType() const {return triggerType; }
     void iSetTriggerType(const long l) { triggerType=l; }
     bool GetEnabled() const { return enabled; }
-    void iSetEnabled(const bool b) {enabled=b; }
+    void iSetEnabled(const bool b);
     void iSetTriggerFunction(pgFunction *fkt) { triggerFunction=fkt; }
     wxString GetQuotedFullTable() const { return quotedFullTable; }
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
@@ -68,6 +68,16 @@ private:
     long triggerType;
     bool enabled;
     pgFunction *triggerFunction;
+};
+
+
+class enabledisableTriggerFactory : public contextActionFactory
+{
+public:
+    enabledisableTriggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+    bool CheckChecked(pgObject *obj);
 };
 
 #endif

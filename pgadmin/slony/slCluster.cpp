@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "schema/pgObject.h"
+#include "slony/dlgRepCluster.h"
 #include "slony/slCluster.h"
 #include "slony/slNode.h"
 #include "slony/slSet.h"
@@ -406,3 +407,83 @@ pgCollection *slObjFactory::CreateCollection(pgObject *obj)
 
 pgaSlClusterFactory slClusterFactory;
 static pgaCollectionFactory cf(&slClusterFactory, __("Replication"), slclusters_xpm);
+
+//////////////////////////////////////////////7
+
+bool clusterActionFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(slClusterFactory);
+}
+
+
+slonyRestartFactory::slonyRestartFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : clusterActionFactory(list)
+{
+    mnu->Append(id, _("Restart Node"), _("Restart node."));
+}
+
+
+wxWindow *slonyRestartFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    slCluster *cluster=(slCluster*)obj;
+
+    wxString notifyName=cluster->GetDatabase()->ExecuteScalar(
+        wxT("SELECT relname FROM pg_listener")
+        wxT(" WHERE relname=") + cluster->GetDatabase()->GetConnection()->qtDbString(wxT("_") + cluster->GetName() + wxT("_Restart")));
+
+    if (notifyName.IsEmpty())
+    {
+        wxMessageDialog dlg(form, wxString::Format(_("Node \"%s\" not running"), cluster->GetLocalNodeName().c_str()),
+              _("Can't restart node"), wxICON_EXCLAMATION|wxOK);
+        dlg.ShowModal();
+        form->CheckAlive();
+
+        return 0;
+    }
+
+    wxMessageDialog dlg(form, wxString::Format(_("Restart node \"%s\"?"), 
+        cluster->GetLocalNodeName().c_str()), _("Restart node"), wxICON_EXCLAMATION|wxYES_NO|wxNO_DEFAULT);
+
+    if (dlg.ShowModal() != wxID_YES)
+        return 0;
+
+    if (!cluster->GetDatabase()->ExecuteVoid(
+        wxT("NOTIFY ") + qtIdent(notifyName)))
+        form->CheckAlive();
+
+    return 0;
+}
+
+
+slonyUpgradeFactory::slonyUpgradeFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : clusterActionFactory(list)
+{
+    mnu->Append(id, _("Upgrade Node"), _("Upgrade node to newest replication software version."));
+}
+
+
+wxWindow *slonyUpgradeFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    dlgProperty *dlg=new dlgRepClusterUpgrade(&slClusterFactory, form, (slCluster*)obj);
+    dlg->InitDialog(form, obj);
+    dlg->CreateAdditionalPages();
+    dlg->Go(false);
+    dlg->CheckChange();
+    return 0;
+}
+
+
+slonyFailoverFactory::slonyFailoverFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : clusterActionFactory(list)
+{
+    mnu->Append(id, _("Failover"), _("Failover to backup node."));
+}
+
+
+wxWindow *slonyFailoverFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    return 0;
+}
+
+
+bool slonyFailoverFactory::CheckEnable(pgObject *obj)
+{
+    return false;
+}

@@ -9,11 +9,13 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include "pgAdmin3.h"
+
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/busyinfo.h>
 
 // App headers
-#include "pgAdmin3.h"
 #include "frm/menu.h"
 #include "utils/misc.h"
 #include "frm/frmMain.h"
@@ -1136,3 +1138,202 @@ pgCollection *pgServerObjFactory::CreateCollection(pgObject *obj)
 
 pgServerFactory serverFactory;
 static pgaCollectionFactory cf(&serverFactory, __("Servers"), servers_xpm);
+
+#include "images/connect.xpm"
+addServerFactory::addServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+{
+    mnu->Append(id, _("&Add Server..."), _("Add a connection to a server."));
+    toolbar->AddTool(id, _("Add Server"), wxBitmap(connect_xpm), _("Add a connection to a server."), wxITEM_NORMAL);
+}
+
+
+wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    int rc = PGCONN_BAD;
+    
+    dlgServer dlg(&serverFactory, form, 0);
+    dlg.CenterOnParent();
+
+    ctlTree *browser=form->GetBrowser();
+
+    while (rc != PGCONN_OK)
+    {
+        if (dlg.GoNew() != wxID_OK)
+            return 0;
+
+        pgServer *server=(pgServer*)dlg.CreateObject(0);
+
+        if (dlg.GetTryConnect())
+        {
+            wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
+                server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), form);
+            rc = server->Connect(form, false, dlg.GetPassword(), true);
+        }
+        else
+        {
+            rc = PGCONN_OK;
+            server->InvalidatePassword();
+        }
+        switch (rc)
+        {
+            case PGCONN_OK:
+            {
+                int icon;
+                if (server->GetConnected())
+                    icon = serverFactory.GetIconId();
+                else
+                    icon = serverFactory.GetClosedIconId();
+                wxLogInfo(wxT("pgServer object initialised as required."));
+                browser->AppendItem(form->GetServerCollection()->GetId(), server->GetFullName(), 
+                    icon, -1, server);
+
+                browser->Expand(form->GetServerCollection()->GetId());
+                wxString label;
+                label.Printf(_("Servers (%d)"), form->GetBrowser()->GetChildrenCount(form->GetServerCollection()->GetId(), false));
+                browser->SetItemText(form->GetServerCollection()->GetId(), label);
+                form->StoreServers();
+                return 0;
+            }
+            case PGCONN_DNSERR:
+            {
+                delete server;
+                break;
+            }
+            case PGCONN_BAD:
+            case PGCONN_BROKEN:
+            {
+                form->ReportConnError(server);
+                delete server;
+
+                break;
+            }
+            default:
+            {
+                wxLogInfo(__("pgServer object didn't initialise because the user aborted."));
+                delete server;
+                return 0;
+            }
+        }
+    }
+    return 0;
+}
+
+
+startServiceFactory::startServiceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Start Service"), _("Start PostgreSQL Service"));
+}
+
+
+wxWindow *startServiceFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    pgServer *server= (pgServer*)obj;
+    form->StartMsg(_("Starting Service"));
+    bool rc = server->StartService();
+    if (rc)
+        form->execSelChange(server->GetId(), true);
+    form->EndMsg(rc);
+    return 0;
+}
+
+
+bool startServiceFactory::CheckEnable(pgObject *obj)
+{
+    if (obj && obj->IsCreatedBy(serverFactory))
+    {
+        pgServer *server=(pgServer*)obj;
+        return server->GetServerControllable() && !server->GetServerRunning();
+    }
+    return false;
+}
+
+
+stopServiceFactory::stopServiceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Stop Service"), _("Stop PostgreSQL Service"));
+}
+
+
+wxWindow *stopServiceFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    pgServer *server= (pgServer*)obj;
+	wxMessageDialog msg(form, _("Are you sure you wish to shutdown this server?"),
+            _("Stop Service"), wxYES_NO | wxICON_QUESTION);
+    if (msg.ShowModal() == wxID_YES)
+    {
+        form->StartMsg(_("Stopping service"));
+
+        bool done=server->StopService();
+
+        if (done)
+	    {
+            if (server->Disconnect(form))
+            {
+                form->GetBrowser()->DeleteChildren(server->GetId());
+                form->execSelChange(server->GetId(), true);
+            }
+	    }
+        form->EndMsg(done);
+    }
+    return 0;
+}
+
+
+bool stopServiceFactory::CheckEnable(pgObject *obj)
+{
+    if (obj && obj->IsCreatedBy(serverFactory))
+    {
+        pgServer *server=(pgServer*)obj;
+        return server->GetServerControllable() && server->GetServerRunning();
+    }
+    return false;
+}
+
+
+connectServerFactory::connectServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("&Connect"), _("Connect to the selected server."));
+}
+
+
+wxWindow *connectServerFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    pgServer *server = (pgServer *)obj;
+    form->ReconnectServer(server);
+    return 0;
+}
+
+
+bool connectServerFactory::CheckEnable(pgObject *obj)
+{
+    if (obj && obj->IsCreatedBy(serverFactory))
+        return !((pgServer*)obj)->GetConnected();
+
+    return false;
+}
+
+
+disconnectServerFactory::disconnectServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Disconnec&t"), _("Disconnect from the selected server."));
+}
+
+
+wxWindow *disconnectServerFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    pgServer *server=(pgServer*)obj;
+    server->Disconnect(form);
+    server->UpdateIcon(form->GetBrowser());
+    form->GetBrowser()->DeleteChildren(obj->GetId());
+    form->execSelChange(obj->GetId(), true);
+    return 0;
+}
+
+
+bool disconnectServerFactory::CheckEnable(pgObject *obj)
+{
+    if (obj && obj->IsCreatedBy(serverFactory))
+        return ((pgServer*)obj)->GetConnected();
+
+    return false;
+}
