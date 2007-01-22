@@ -30,6 +30,7 @@
 #include "utils/utffile.h"
 #include "utils/pgfeatures.h"
 #include "frm/frmReport.h"
+#include "dlg/dlgServer.h"
 
 #define DEFAULT_PG_DATABASE wxT("postgres")
 

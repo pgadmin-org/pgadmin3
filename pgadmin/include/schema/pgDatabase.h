@@ -70,6 +70,7 @@ public:
     wxString GetSearchPath() const { return searchPath; }
     wxString GetSchemaPrefix(const wxString &schemaname) const;
     wxString GetQuotedSchemaPrefix(const wxString &schemaname) const;
+	wxString GetDefaultSchema() { return defaultSchema; };
     bool GetConnected() { return connected; }
     bool GetSystemObject() const;
     long GetMissingFKs() const { return missingFKs; }

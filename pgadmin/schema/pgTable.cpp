@@ -9,10 +9,9 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#ifndef PGTABLE_H
-#define PGTABLE_H
-
 #include "pgAdmin3.h"
+
+
 #include "utils/misc.h"
 #include "frm/frmHint.h"
 #include "frm/frmMain.h"

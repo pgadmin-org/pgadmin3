@@ -218,7 +218,7 @@ void dlgForeignKey::OnSelChangeRef(wxCommandEvent &ev)
         tab=tab.AfterFirst('.');
     }
     else
-        nsp=wxT("public");
+		nsp=database->GetDefaultSchema();
 
     pgSet *set=connection->ExecuteSet(
         wxT("SELECT attname\n")
