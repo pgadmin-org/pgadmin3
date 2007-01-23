@@ -50,14 +50,14 @@ bool pgCollection::IsCollectionFor(pgObject *obj)
 }
 
 
-bool pgCollection::IsCollectionForType(int objType)
+bool pgCollection::IsCollectionForType(const int type)
 {
     if (GetFactory())
     {
-        pgaFactory *f=pgaFactory::GetFactory(objType);
+        pgaFactory *f=pgaFactory::GetFactoryByMetaType(type);
         return (f && f->GetCollectionFactory() == GetFactory());
     }
-    return (GetType() == objType-1);
+    return false;
 }
 
 

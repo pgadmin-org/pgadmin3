@@ -45,6 +45,7 @@ public:
 
     static pgaFactory *GetFactory(int id);
     static pgaFactory *GetFactory(const wxString &name);
+	static pgaFactory *GetFactoryByMetaType(const int type);
     int GetId() { return id; }
     int GetMetaType();
     wxChar *GetTypeName() { return typeName; }

@@ -267,6 +267,9 @@ pgSchemaObjCollection::pgSchemaObjCollection(pgaFactory *factory, pgSchema *sch)
 
 bool pgSchemaObjCollection::CanCreate()
 {
+	if(IsCollectionForType(PGM_OPCLASS))
+		return false;
+
     return GetSchema()->GetCreatePrivilege();
 }
 

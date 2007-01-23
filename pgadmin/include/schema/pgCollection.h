@@ -28,7 +28,7 @@ public:
     pgCollection(pgaFactory *factory);
     ~pgCollection();
     virtual bool IsCollection() const { return true; }
-    bool IsCollectionForType(int objType);
+    bool IsCollectionForType(const int type);
     bool IsCollectionFor(pgObject *obj);
 
     pgServer *GetServer() const { return server; }

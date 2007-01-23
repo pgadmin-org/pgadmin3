@@ -91,6 +91,19 @@ pgaFactory *pgaFactory::GetFactory(const wxString &name)
     return 0;
 }
 
+pgaFactory *pgaFactory::GetFactoryByMetaType(const int type)
+{
+    int i;
+    pgaFactory *factory;
+
+    for (i=FACTORY_OFFSET ; (factory=GetFactory(i)) != 0 ; i++)
+    {
+        if (factory->GetMetaType() == type)
+            return factory;
+    }
+    return 0;
+}
+
 
 #include "images/property.xpm"
 #include "images/public.xpm"

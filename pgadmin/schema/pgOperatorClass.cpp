@@ -298,6 +298,7 @@ pgObject *pgOperatorClassFactory::CreateObjects(pgCollection *collection, ctlTre
 pgOperatorClassFactory::pgOperatorClassFactory() 
 : pgSchemaObjFactory(__("Operator Class"), __("New Operator Class..."), __("Create a new Operator Class."), operatorclass_xpm)
 {
+    metaType = PGM_OPCLASS;
 }
 
 dlgProperty *pgOperatorClassFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
