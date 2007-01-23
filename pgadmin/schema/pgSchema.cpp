@@ -27,6 +27,7 @@
 #include "schema/pgTable.h"
 #include "schema/pgOperator.h"
 #include "schema/pgOperatorClass.h"
+#include "schema/pgOperatorFamily.h"
 #include "schema/pgView.h"
 #include "frm/frmReport.h"
 
@@ -59,6 +60,7 @@ wxMenu *pgSchema::GetNewMenu()
             procedureFactory.AppendMenu(menu);
         operatorFactory.AppendMenu(menu);
 //      opclass
+//		opfamily
         sequenceFactory.AppendMenu(menu);
         tableFactory.AppendMenu(menu);
         typeFactory.AppendMenu(menu);
@@ -122,6 +124,10 @@ void pgSchema::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 
         browser->AppendCollection(this, operatorFactory);
         browser->AppendCollection(this, operatorClassFactory);
+
+		if (GetConnection()->BackendMinimumVersion(8, 3))
+			browser->AppendCollection(this, operatorFamilyFactory);
+
         browser->AppendCollection(this, sequenceFactory);
         browser->AppendCollection(this, tableFactory);
         browser->AppendCollection(this, typeFactory);
@@ -267,7 +273,7 @@ pgSchemaObjCollection::pgSchemaObjCollection(pgaFactory *factory, pgSchema *sch)
 
 bool pgSchemaObjCollection::CanCreate()
 {
-	if(IsCollectionForType(PGM_OPCLASS))
+	if(IsCollectionForType(PGM_OPCLASS) || IsCollectionForType(PGM_OPFAMILY))
 		return false;
 
     return GetSchema()->GetCreatePrivilege();
