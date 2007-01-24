@@ -30,6 +30,7 @@ pgadmin3_SOURCES += \
 	  $(srcdir)/include/schema/pgObject.h \
 	  $(srcdir)/include/schema/pgOperator.h \
 	  $(srcdir)/include/schema/pgOperatorClass.h \
+	  $(srcdir)/include/schema/pgOperatorFamily.h \
 	  $(srcdir)/include/schema/pgQueryThread.h \
 	  $(srcdir)/include/schema/pgRole.h \
 	  $(srcdir)/include/schema/pgRule.h \

@@ -31,6 +31,7 @@ pgadmin3_SOURCES += \
         $(subdir)/pgObject.cpp \
         $(subdir)/pgOperator.cpp \
         $(subdir)/pgOperatorClass.cpp \
+        $(subdir)/pgOperatorFamily.cpp \
         $(subdir)/pgRole.cpp \
         $(subdir)/pgRule.cpp \
         $(subdir)/pgSchema.cpp \
