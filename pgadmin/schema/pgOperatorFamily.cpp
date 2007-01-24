@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2007, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// pgOperatorFamily.cpp - OperatorClass class
+// pgOperatorFamily.cpp - OperatorFamily class
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +20,7 @@
 
 
 pgOperatorFamily::pgOperatorFamily(pgSchema *newSchema, const wxString& newName)
-: pgSchemaObject(newSchema, operatorClassFactory, newName)
+: pgSchemaObject(newSchema, operatorFamilyFactory, newName)
 {
 }
 
@@ -70,12 +70,12 @@ void pgOperatorFamily::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVi
 
 pgObject *pgOperatorFamily::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
-    pgObject *operatorClass=0;
+    pgObject *operatorFamily=0;
     pgCollection *coll=browser->GetParentCollection(item);
     if (coll)
-        operatorClass = operatorClassFactory.CreateObjects(coll, 0, wxT("\n   AND opf.oid=") + GetOidStr());
+        operatorFamily = operatorFamilyFactory.CreateObjects(coll, 0, wxT("\n   AND opf.oid=") + GetOidStr());
 
-    return operatorClass;
+    return operatorFamily;
 }
 
 
