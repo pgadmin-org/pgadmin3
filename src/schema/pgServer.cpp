@@ -995,13 +995,13 @@ pgServerObjCollection::pgServerObjCollection(pgaFactory *factory, pgServer *sv)
 bool pgServerObjCollection::CanCreate()
 {
     if (server->GetMetaType() == PGM_DATABASE)
-        return GetServer()->GetCreatePrivilege();
+        return (GetServer()->GetCreatePrivilege() || GetServer()->GetSuperUser());
     else
 	{
 		if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_ROLE)
-			return server->GetCreateRole();
+			return (server->GetCreateRole() || server->GetSuperUser());
 		else if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_DATABASE)
-			return server->GetCreatePrivilege();
+			return (server->GetCreatePrivilege() || server->GetSuperUser());
 		else
 			return server->GetSuperUser();
 	}
