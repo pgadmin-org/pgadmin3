@@ -254,7 +254,7 @@ void frmHint::SetHint(const wxString &info)
             if (a<0)
                 a=0;
             if (o < 0)
-                o=wxSTRING_MAXLEN;
+                o=wxStringBase::npos;
 
 
             int ha=page.Find(wxT("<H3>"));

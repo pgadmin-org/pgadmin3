@@ -43,7 +43,7 @@ void pgDialog::AddStatusBar()
     if (!statusBar)
     {
         long flags=0;
-        if (GetWindowStyle() & wxTHICK_FRAME)
+        if (GetWindowStyle() & wxRESIZE_BORDER)
             flags = wxST_SIZEGRIP;
         statusBar = new wxStatusBar(this, -1, flags);
 
@@ -72,7 +72,7 @@ void pgDialog::PostCreation()
     if (!statusBar && FindWindow(STATUSBAR_CONTAINER))
         AddStatusBar();
 
-    if (GetWindowStyle() & wxTHICK_FRAME)   // is designed with sizers; don't change
+    if (GetWindowStyle() & wxRESIZE_BORDER)   // is designed with sizers; don't change
         return;
 
     if (!btnCancel)

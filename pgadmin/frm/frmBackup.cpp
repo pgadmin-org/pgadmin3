@@ -128,7 +128,7 @@ void frmBackup::OnSelectFilename(wxCommandEvent &ev)
     }
 
     
-    wxFileDialog file(this, title, ::wxPathOnly(txtFilename->GetValue()), txtFilename->GetValue(), prompt, wxSAVE);
+    wxFileDialog file(this, title, ::wxPathOnly(txtFilename->GetValue()), txtFilename->GetValue(), prompt, wxFD_SAVE);
 
     if (file.ShowModal() == wxID_OK)
     {

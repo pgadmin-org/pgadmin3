@@ -260,7 +260,7 @@ void frmConfig::OnOpen(wxCommandEvent& event)
         return;
 
     wxFileDialog dlg(this, _("Open configuration file"), lastDir, wxT(""), 
-        _("Configuration files (*.conf)|*.conf|All files (*.*)|*.*"), wxOPEN);
+        _("Configuration files (*.conf)|*.conf|All files (*.*)|*.*"), wxFD_OPEN);
     if (dlg.ShowModal() == wxID_OK)
     {
         lastFilename=dlg.GetFilename();
@@ -293,7 +293,7 @@ void frmConfig::OnSave(wxCommandEvent& event)
 void frmConfig::OnSaveAs(wxCommandEvent& event)
 {
     wxFileDialog *dlg=new wxFileDialog(this, _("Save configuration file as"), lastDir, lastFilename, 
-        _("Configuration files (*.conf)|*.conf|All files (*.*)|*.*"), wxSAVE|wxOVERWRITE_PROMPT);
+        _("Configuration files (*.conf)|*.conf|All files (*.*)|*.*"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
     if (dlg->ShowModal() == wxID_OK)
     {
         lastFilename=dlg->GetFilename();

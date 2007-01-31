@@ -130,7 +130,7 @@ dlgProperty::~dlgProperty()
     wxString prop=wxT("Properties/") + wxString(factory->GetTypeName());
 	settings->Write(prop, GetPosition());
 
-    if (GetWindowStyle() & wxTHICK_FRAME)
+    if (GetWindowStyle() & wxRESIZE_BORDER)
         settings->Write(prop, GetSize());
 }
 
@@ -202,7 +202,7 @@ int dlgProperty::Go(bool modal)
 
     wxSize origSize = GetSize();
 
-    if (GetWindowStyle() & wxTHICK_FRAME)
+    if (GetWindowStyle() & wxRESIZE_BORDER)
         SetSize(settings->Read(prop, GetSize()));
 
     wxPoint pos=settings->Read(prop, GetPosition());

@@ -425,7 +425,7 @@ void frmReport::OnBrowseStylesheet(wxCommandEvent &ev)
         if (!wxFile::Exists(def))
             def.Empty();
    
-        wxFileDialog file(this, _("Select stylesheet filename"), wxGetHomeDir(), def, _("HTML Stylesheet files (*.css)|*.css|All files (*.*)|*.*"), wxOPEN);
+        wxFileDialog file(this, _("Select stylesheet filename"), wxGetHomeDir(), def, _("HTML Stylesheet files (*.css)|*.css|All files (*.*)|*.*"), wxFD_OPEN);
 
         if (file.ShowModal() == wxID_OK)
         {
@@ -440,7 +440,7 @@ void frmReport::OnBrowseStylesheet(wxCommandEvent &ev)
         if (!wxFile::Exists(def))
             def.Empty();
    
-        wxFileDialog file(this, _("Select stylesheet filename"), wxGetHomeDir(), def, _("XML Stylesheet files (*.xsl)|*.xsl|All files (*.*)|*.*"), wxOPEN);
+        wxFileDialog file(this, _("Select stylesheet filename"), wxGetHomeDir(), def, _("XML Stylesheet files (*.xsl)|*.xsl|All files (*.*)|*.*"), wxFD_OPEN);
 
         if (file.ShowModal() == wxID_OK)
         {
@@ -455,7 +455,7 @@ void frmReport::OnBrowseFile(wxCommandEvent &ev)
     if (rbHtml->GetValue())
     {
         wxFileDialog file(this, _("Select output filename"), wxGetHomeDir(), txtHtmlFile->GetValue(),
-            _("HTML files (*.html)|*.html|All files (*.*)|*.*"), wxSAVE && wxOVERWRITE_PROMPT);
+            _("HTML files (*.html)|*.html|All files (*.*)|*.*"), wxFD_SAVE && wxFD_OVERWRITE_PROMPT);
 
         if (file.ShowModal() == wxID_OK)
         {
@@ -466,7 +466,7 @@ void frmReport::OnBrowseFile(wxCommandEvent &ev)
     else
     {
         wxFileDialog file(this, _("Select output filename"), wxGetHomeDir(), txtXmlFile->GetValue(),
-            _("XML files (*.xml)|*.xml|All files (*.*)|*.*"), wxSAVE && wxOVERWRITE_PROMPT);
+            _("XML files (*.xml)|*.xml|All files (*.*)|*.*"), wxFD_SAVE && wxFD_OVERWRITE_PROMPT);
 
         if (file.ShowModal() == wxID_OK)
         {

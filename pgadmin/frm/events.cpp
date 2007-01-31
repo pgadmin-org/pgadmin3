@@ -722,7 +722,7 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
     wxString file;
     settings->Read(wxT("frmMain/LastFile"), &file, wxEmptyString);
 
-    wxFileDialog filename(this, _("Select output file"), ::wxPathOnly(file), file, _("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"), wxSAVE | wxOVERWRITE_PROMPT);
+    wxFileDialog filename(this, _("Select output file"), ::wxPathOnly(file), file, _("SQL Scripts (*.sql)|*.sql|All files (*.*)|*.*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
     // Show the dialogue
     if (filename.ShowModal() == wxID_OK)
