@@ -4,8 +4,8 @@
 <title>CREATE DATABASE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.10 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.11 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createconversion.html" title="CREATE CONVERSION">
 <link rel="next" href="sql-createdomain.html" title="CREATE DOMAIN">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE DATABASE &#8212; create a new database</p>
 </div>
-<a name="id2712918"></a><div class="refsynopsisdiv">
+<a name="id2720663"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE DATABASE <em class="replaceable"><code>name</code></em>
     [ [ WITH ] [ OWNER [=] <em class="replaceable"><code>dbowner</code></em> ]
@@ -26,13 +26,13 @@
            [ TABLESPACE [=] <em class="replaceable"><code>tablespace</code></em> ] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2712964"></a><h2>Description</h2>
+<a name="id2720709"></a><h2>Description</h2>
 <p>   <code class="command">CREATE DATABASE</code> creates a new
    <span class="productname">PostgreSQL</span> database.
   </p>
 <p>   To create a database, you must be a superuser or have the special
    <code class="literal">CREATEDB</code> privilege.
-   See <a href="sql-createuser.html">CREATE USER</a>.
+   See <a href="sql-createuser.html" title="CREATE USER">CREATE USER</a>.
   </p>
 <p>   Normally, the creator becomes the owner of the new database.
    Superusers can create databases owned by other users using the
@@ -53,7 +53,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2713065"></a><h2>Parameters</h2>
+<a name="id2720809"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of a database to create.
@@ -82,7 +82,7 @@
         template database's tablespace. This
         tablespace will be the default tablespace used for objects
         created in this database. See
-        <a href="sql-createtablespace.html">CREATE TABLESPACE</a>
+        <a href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a>
         for more information.
        </p></dd>
 </dl></div>
@@ -91,7 +91,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2713196"></a><h2>Notes</h2>
+<a name="id2720941"></a><h2>Notes</h2>
 <p>    <code class="command">CREATE DATABASE</code> cannot be executed inside a transaction
     block.
    </p>
@@ -99,9 +99,9 @@
     are most likely related to insufficient permissions on the data
     directory, a full disk, or other file system problems.
    </p>
-<p>    Use <a href="sql-dropdatabase.html">DROP DATABASE</a> to remove a database.
+<p>    Use <a href="sql-dropdatabase.html" title="DROP DATABASE">DROP DATABASE</a> to remove a database.
    </p>
-<p>    The program <a href="app-createdb.html"><span class="application">createdb</span></a> is a
+<p>    The program <a href="app-createdb.html" title="createdb"><span class="application">createdb</span></a> is a
     wrapper program around this command, provided for convenience.
    </p>
 <p>   Although it is possible to copy a database other than <code class="literal">template1</code>
@@ -112,7 +112,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2713270"></a><h2>Examples</h2>
+<a name="id2721015"></a><h2>Examples</h2>
 <p>   To create a new database:
 
 </p>
@@ -135,7 +135,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2713326"></a><h2>Compatibility</h2>
+<a name="id2721070"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">CREATE DATABASE</code> statement in the SQL
    standard.  Databases are equivalent to catalogs, whose creation is
    implementation-defined.

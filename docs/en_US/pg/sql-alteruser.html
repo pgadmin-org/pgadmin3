@@ -4,8 +4,8 @@
 <title>ALTER USER</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.10 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.11 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-altertype.html" title="ALTER TYPE">
 <link rel="next" href="sql-analyze.html" title="ANALYZE">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>ALTER USER &#8212; change a database user account</p>
 </div>
-<a name="id2706962"></a><div class="refsynopsisdiv">
+<a name="id2714707"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER USER <em class="replaceable"><code>name</code></em> [ [ WITH ] <em class="replaceable"><code>option</code></em> [ ... ] ]
 
@@ -34,7 +34,7 @@ ALTER USER <em class="replaceable"><code>name</code></em> SET <em class="replace
 ALTER USER <em class="replaceable"><code>name</code></em> RESET <em class="replaceable"><code>parameter</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2707042"></a><h2>Description</h2>
+<a name="id2714787"></a><h2>Description</h2>
 <p>   <code class="command">ALTER USER</code> changes the attributes of a
    <span class="productname">PostgreSQL</span> user account.  Attributes not
    mentioned in the command retain their previous settings.
@@ -63,7 +63,7 @@ ALTER USER <em class="replaceable"><code>name</code></em> RESET <em class="repla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2707110"></a><h2>Parameters</h2>
+<a name="id2714855"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of the user whose attributes are to be altered.
@@ -93,7 +93,7 @@ ALTER USER <em class="replaceable"><code>name</code></em> RESET <em class="repla
 </dt>
 <dd><p>        These key words control whether the password is stored
         encrypted in <code class="literal">pg_shadow</code>.  (See
-        <a href="sql-createuser.html">CREATE USER</a>
+        <a href="sql-createuser.html" title="CREATE USER">CREATE USER</a>
         for more information about this choice.)
        </p></dd>
 <dt><span class="term"><em class="replaceable"><code>abstime</code></em></span></dt>
@@ -116,19 +116,19 @@ ALTER USER <em class="replaceable"><code>name</code></em> RESET <em class="repla
         inherit the system-wide default setting in new sessions.  Use
         <code class="literal">RESET ALL</code> to clear all user-specific settings.
        </p>
-<p>        See <a href="sql-set.html">SET</a> and <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for more information about allowed
+<p>        See <a href="sql-set.html" title="SET">SET</a> and <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for more information about allowed
         parameter names and values.
        </p>
 </dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2707313"></a><h2>Notes</h2>
-<p>   Use <a href="sql-createuser.html">CREATE USER</a>
-   to add new users, and <a href="sql-dropuser.html">DROP USER</a> to remove a user.
+<a name="id2715058"></a><h2>Notes</h2>
+<p>   Use <a href="sql-createuser.html" title="CREATE USER">CREATE USER</a>
+   to add new users, and <a href="sql-dropuser.html" title="DROP USER">DROP USER</a> to remove a user.
   </p>
 <p>   <code class="command">ALTER USER</code> cannot change a user's group memberships.
-   Use <a href="sql-altergroup.html">ALTER GROUP</a>
+   Use <a href="sql-altergroup.html" title="ALTER GROUP">ALTER GROUP</a>
    to do that.
   </p>
 <p>   The <code class="literal">VALID UNTIL</code> clause defines an expiration time for a
@@ -138,13 +138,13 @@ ALTER USER <em class="replaceable"><code>name</code></em> RESET <em class="repla
   </p>
 <p>   It is also possible to tie a
    session default to a specific database rather than to a user; see
-   <a href="sql-alterdatabase.html">ALTER DATABASE</a>.
+   <a href="sql-alterdatabase.html" title="ALTER DATABASE">ALTER DATABASE</a>.
    User-specific settings override database-specific
    ones if there is a conflict.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2707388"></a><h2>Examples</h2>
+<a name="id2715133"></a><h2>Examples</h2>
 <p>   Change a user's password:
 
 </p>
@@ -177,15 +177,15 @@ ALTER USER <em class="replaceable"><code>name</code></em> RESET <em class="repla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2707444"></a><h2>Compatibility</h2>
+<a name="id2715189"></a><h2>Compatibility</h2>
 <p>   The <code class="command">ALTER USER</code> statement is a
    <span class="productname">PostgreSQL</span> extension.  The SQL standard
    leaves the definition of users to the implementation.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2707464"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createuser.html">CREATE USER</a>, <a href="sql-dropuser.html">DROP USER</a>, <a href="sql-set.html">SET</a></span>
+<a name="id2715208"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createuser.html" title="CREATE USER">CREATE USER</a>, <a href="sql-dropuser.html" title="DROP USER">DROP USER</a>, <a href="sql-set.html" title="SET">SET</a></span>
 </div>
 </div></body>
 </html>

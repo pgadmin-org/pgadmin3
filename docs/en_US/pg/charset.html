@@ -4,8 +4,8 @@
 <title>Chapter 20. Localization</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.10 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.11 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="client-authentication-problems.html" title="19.3. Authentication problems">
 <link rel="next" href="multibyte.html" title="20.2. Character Set Support">
@@ -19,16 +19,16 @@
 <dl>
 <dt><span class="sect1"><a href="charset.html#locale">20.1. Locale Support</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="charset.html#id2634530">20.1.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="charset.html#id2634852">20.1.2. Behavior</a></span></dt>
-<dt><span class="sect2"><a href="charset.html#id2634939">20.1.3. Problems</a></span></dt>
+<dt><span class="sect2"><a href="charset.html#id2642274">20.1.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="charset.html#id2642597">20.1.2. Behavior</a></span></dt>
+<dt><span class="sect2"><a href="charset.html#id2642683">20.1.3. Problems</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="multibyte.html">20.2. Character Set Support</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="multibyte.html#multibyte-charset-supported">20.2.1. Supported Character Sets</a></span></dt>
-<dt><span class="sect2"><a href="multibyte.html#id2635548">20.2.2. Setting the Character Set</a></span></dt>
-<dt><span class="sect2"><a href="multibyte.html#id2635736">20.2.3. Automatic Character Set Conversion Between Server and Client</a></span></dt>
-<dt><span class="sect2"><a href="multibyte.html#id2637003">20.2.4. Further Reading</a></span></dt>
+<dt><span class="sect2"><a href="multibyte.html#id2643292">20.2.2. Setting the Character Set</a></span></dt>
+<dt><span class="sect2"><a href="multibyte.html#id2643481">20.2.3. Automatic Character Set Conversion Between Server and Client</a></span></dt>
+<dt><span class="sect2"><a href="multibyte.html#id2644747">20.2.4. Further Reading</a></span></dt>
 </dl></dd>
 </dl>
 </div>
@@ -55,7 +55,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="locale"></a>20.1. Locale Support</h2></div></div></div>
-<a name="id2634501"></a><p>   <em class="firstterm">Locale</em> support refers to an application respecting
+<a name="id2642245"></a><p>   <em class="firstterm">Locale</em> support refers to an application respecting
    cultural preferences regarding alphabets, sorting, number
    formatting, etc.  <span class="productname">PostgreSQL</span> uses the standard ISO
    C and <acronym class="acronym">POSIX</acronym> locale facilities provided by the server operating
@@ -64,7 +64,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2634530"></a>20.1.1. Overview</h3></div></div></div>
+<a name="id2642274"></a>20.1.1. Overview</h3></div></div></div>
 <p>    Locale support is automatically initialized when a database
     cluster is created using <code class="command">initdb</code>.
     <code class="command">initdb</code> will initialize the database cluster
@@ -191,16 +191,16 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2634852"></a>20.1.2. Behavior</h3></div></div></div>
+<a name="id2642597"></a>20.1.2. Behavior</h3></div></div></div>
 <p>    Locale support influences the following features:
 
     </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>       Sort order in queries using <code class="literal">ORDER BY</code>
-       <a name="id2634870"></a>
+       <a name="id2642614"></a>
       </p></li>
 <li><p>       The ability to use indexes with <code class="literal">LIKE</code> clauses
-       <a name="id2634889"></a>
+       <a name="id2642634"></a>
       </p></li>
 <li><p>       The <code class="function">to_char</code> family of functions
       </p></li>
@@ -216,7 +216,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2634939"></a>20.1.3. Problems</h3></div></div></div>
+<a name="id2642683"></a>20.1.3. Problems</h3></div></div></div>
 <p>    If locale support doesn't work in spite of the explanation above,
     check that the locale support in your operating system is
     correctly configured.  To check what locales are installed on your

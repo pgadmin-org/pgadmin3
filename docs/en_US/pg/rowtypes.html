@@ -4,8 +4,8 @@
 <title>8.11. Composite Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.10 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.11 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="arrays.html" title="8.10. Arrays">
 <link rel="next" href="datatype-oid.html" title="8.12. Object Identifier Types">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="rowtypes"></a>8.11. Composite Types</h2></div></div></div>
-<a name="id2576534"></a><a name="id2576540"></a><p>  A <em class="firstterm">composite type</em> describes the structure of a row or record;
+<a name="id2584278"></a><a name="id2584284"></a><p>  A <em class="firstterm">composite type</em> describes the structure of a row or record;
   it is in essence just a list of field names and their data types.
   <span class="productname">PostgreSQL</span> allows values of composite types to be
   used in many of the same ways that simple types can be used.  For example, a
@@ -22,7 +22,7 @@
  </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2576562"></a>8.11.1. Declaration of Composite Types</h3></div></div></div>
+<a name="id2584306"></a>8.11.1. Declaration of Composite Types</h3></div></div></div>
 <p>  Here are two simple examples of defining composite types:
 </p>
 <pre class="programlisting">CREATE TYPE complex AS (
@@ -86,8 +86,8 @@ SELECT price_extension(item, 10) FROM on_hand;</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2576660"></a>8.11.2. Composite Value Input</h3></div></div></div>
-<a name="id2576664"></a><p>   To write a composite value as a literal constant, enclose the field
+<a name="id2584404"></a>8.11.2. Composite Value Input</h3></div></div></div>
+<a name="id2584408"></a><p>   To write a composite value as a literal constant, enclose the field
    values within parentheses and separate them by commas.  You may put double
    quotes around any field value, and must do so if it contains commas or
    parentheses.  (More details appear below.)  Thus, the general format of a
@@ -137,7 +137,7 @@ ROW('', 42, NULL)</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2576778"></a>8.11.3. Accessing Composite Types</h3></div></div></div>
+<a name="id2584522"></a>8.11.3. Accessing Composite Types</h3></div></div></div>
 <p>  To access a field of a composite column, one writes a dot and the field
   name, much like selecting a field from a table name.  In fact, it's so
   much like selecting from a table name that you often have to use parentheses
@@ -179,7 +179,7 @@ ROW('', 42, NULL)</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2576851"></a>8.11.4. Modifying Composite Types</h3></div></div></div>
+<a name="id2584595"></a>8.11.4. Modifying Composite Types</h3></div></div></div>
 <p>  Here are some examples of the proper syntax for inserting and updating
   composite columns.
   First, inserting or updating a whole column:
@@ -216,7 +216,7 @@ UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2576911"></a>8.11.5. Composite Type Input and Output Syntax</h3></div></div></div>
+<a name="id2584655"></a>8.11.5. Composite Type Input and Output Syntax</h3></div></div></div>
 <p>   The external text representation of a composite value consists of items that
    are interpreted according to the I/O conversion rules for the individual
    field types, plus decoration that indicates the composite structure.

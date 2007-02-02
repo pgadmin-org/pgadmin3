@@ -4,8 +4,8 @@
 <title>13.4. Populating a Database</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.10 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.11 Documentation">
 <link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
 <link rel="prev" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
 <link rel="next" href="admin.html" title="Part III. Server Administration">
@@ -21,7 +21,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="disable-autocommit"></a>13.4.1. Disable Autocommit</h3></div></div></div>
-<a name="id2611068"></a><p>    Turn off autocommit and just do one commit at the end.  (In plain
+<a name="id2618813"></a><p>    Turn off autocommit and just do one commit at the end.  (In plain
     SQL, this means issuing <code class="command">BEGIN</code> at the start and
     <code class="command">COMMIT</code> at the end.  Some client libraries may
     do this behind your back, in which case you need to make sure the
@@ -38,7 +38,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="populate-copy-from"></a>13.4.2. Use <code class="command">COPY</code></h3></div></div></div>
-<p>    Use <a href="sql-copy.html">COPY</a> to load
+<p>    Use <a href="sql-copy.html" title="COPY">COPY</a> to load
     all the rows in one command, instead of using a series of
     <code class="command">INSERT</code> commands.  The <code class="command">COPY</code>
     command is optimized for loading large numbers of rows; it is less
@@ -47,7 +47,7 @@
     is a single command, there is no need to disable autocommit if you
     use this method to populate a table.
    </p>
-<p>    If you cannot use <code class="command">COPY</code>, it may help to use <a href="sql-prepare.html">PREPARE</a> to create a
+<p>    If you cannot use <code class="command">COPY</code>, it may help to use <a href="sql-prepare.html" title="PREPARE">PREPARE</a> to create a
     prepared <code class="command">INSERT</code> statement, and then use
     <code class="command">EXECUTE</code> as many times as required.  This avoids
     some of the overhead of repeatedly parsing and planning
@@ -109,7 +109,7 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="populate-analyze"></a>13.4.6. Run <code class="command">ANALYZE</code> Afterwards</h3></div></div></div>
 <p>    Whenever you have significantly altered the distribution of data
-    within a table, running <a href="sql-analyze.html">ANALYZE</a> is strongly recommended. This
+    within a table, running <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a> is strongly recommended. This
     includes bulk loading large amounts of data into the table.  Running
     <code class="command">ANALYZE</code> (or <code class="command">VACUUM ANALYZE</code>)
     ensures that the planner has up-to-date statistics about the

@@ -4,8 +4,8 @@
 <title>9.16. Subquery Expressions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.10 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.11 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-aggregate.html" title="9.15. Aggregate Functions">
 <link rel="next" href="functions-comparisons.html" title="9.17. Row and Array Comparisons">
@@ -14,14 +14,14 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-subquery"></a>9.16. Subquery Expressions</h2></div></div></div>
-<a name="id2600092"></a><a name="id2600098"></a><a name="id2600103"></a><a name="id2600109"></a><a name="id2600114"></a><a name="id2600120"></a><a name="id2600126"></a><p>   This section describes the <acronym class="acronym">SQL</acronym>-compliant subquery
+<a name="id2607836"></a><a name="id2607842"></a><a name="id2607847"></a><a name="id2607853"></a><a name="id2607858"></a><a name="id2607864"></a><a name="id2607870"></a><p>   This section describes the <acronym class="acronym">SQL</acronym>-compliant subquery
    expressions available in <span class="productname">PostgreSQL</span>.
    All of the expression forms documented in this section return
    Boolean (true/false) results.
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2600146"></a>9.16.1. <code class="literal">EXISTS</code></h3></div></div></div>
+<a name="id2607890"></a>9.16.1. <code class="literal">EXISTS</code></h3></div></div></div>
 <pre class="synopsis">EXISTS ( <em class="replaceable"><code>subquery</code></em> )</pre>
 <p>   The argument of <code class="token">EXISTS</code> is an arbitrary <code class="command">SELECT</code> statement,
    or <em class="firstterm">subquery</em>.  The
@@ -57,7 +57,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2600259"></a>9.16.2. <code class="literal">IN</code></h3></div></div></div>
+<a name="id2608003"></a>9.16.2. <code class="literal">IN</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> IN (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
@@ -97,7 +97,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2600368"></a>9.16.3. <code class="literal">NOT IN</code></h3></div></div></div>
+<a name="id2608112"></a>9.16.3. <code class="literal">NOT IN</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> NOT IN (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
@@ -137,7 +137,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2600479"></a>9.16.4. <code class="literal">ANY</code>/<code class="literal">SOME</code></h3></div></div></div>
+<a name="id2608223"></a>9.16.4. <code class="literal">ANY</code>/<code class="literal">SOME</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> ANY (<em class="replaceable"><code>subquery</code></em>)
 <em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> SOME (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
@@ -188,7 +188,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2600664"></a>9.16.5. <code class="literal">ALL</code></h3></div></div></div>
+<a name="id2608408"></a>9.16.5. <code class="literal">ALL</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> ALL (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
@@ -237,8 +237,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2600817"></a>9.16.6. Row-wise Comparison</h3></div></div></div>
-<a name="id2600820"></a><pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> (<em class="replaceable"><code>subquery</code></em>)</pre>
+<a name="id2608561"></a>9.16.6. Row-wise Comparison</h3></div></div></div>
+<a name="id2608564"></a><pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The left-hand side is a row constructor,
    as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized subquery, which must return exactly

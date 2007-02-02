@@ -4,8 +4,8 @@
 <title>31.11. User-Defined Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.10 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.11 Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
 <link rel="prev" href="xaggr.html" title="31.10. User-Defined Aggregates">
 <link rel="next" href="xoper.html" title="31.12. User-Defined Operators">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="xtypes"></a>31.11. User-Defined Types</h2></div></div></div>
-<a name="id2676236"></a><p>   As described in <a href="extend-type-system.html" title="31.2. The PostgreSQL Type System">Section 31.2, &#8220;The <span class="productname">PostgreSQL</span> Type System&#8221;</a>,
+<a name="id2683980"></a><p>   As described in <a href="extend-type-system.html" title="31.2. The PostgreSQL Type System">Section 31.2, &#8220;The <span class="productname">PostgreSQL</span> Type System&#8221;</a>,
    <span class="productname">PostgreSQL</span> can be extended to support new
    data types.  This section describes how to define new base types,
    which are data types defined below the level of the <acronym class="acronym">SQL</acronym>
@@ -27,10 +27,10 @@
    See the <code class="filename">README</code> file in that directory for instructions
    about running the examples.
   </p>
-<p>  <a name="id2676300"></a>
-  <a name="id2676307"></a>
+<p>  <a name="id2684045"></a>
+  <a name="id2684052"></a>
   A user-defined type must always have input and output
-  functions.<a name="id2676316"></a><a name="id2676324"></a>
+  functions.<a name="id2684060"></a><a name="id2684069"></a>
   These functions determine how the type appears in strings (for input
   by the user and output to the user) and how the type is organized in
   memory.  The input function takes a null-terminated character string
@@ -194,7 +194,7 @@ CREATE FUNCTION complex_send(complex)
 <p>  When you define a new base type,
   <span class="productname">PostgreSQL</span> automatically provides support
   for arrays of that
-  type.<a name="id2676536"></a> For historical reasons, the array type
+  type.<a name="id2684281"></a> For historical reasons, the array type
   has the same name as the base type with the underscore character
   (<code class="literal">_</code>) prepended.
  </p>
@@ -204,7 +204,7 @@ CREATE FUNCTION complex_send(complex)
   created to support indexing of the data type.  These additional
   layers are discussed in following sections.
  </p>
-<p>   <a name="id2676564"></a>
+<p>   <a name="id2684308"></a>
   If the values of your data type might exceed a few hundred bytes in
   size (in internal form), you should make the data type
   <acronym class="acronym">TOAST</acronym>-able (see <a href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a>).
@@ -221,7 +221,7 @@ CREATE FUNCTION complex_send(complex)
   storage option.
  </p>
 <p>  For further details see the description of the
-  <a href="sql-createtype.html">CREATE TYPE</a> command.
+  <a href="sql-createtype.html" title="CREATE TYPE">CREATE TYPE</a> command.
  </p>
 </div></body>
 </html>

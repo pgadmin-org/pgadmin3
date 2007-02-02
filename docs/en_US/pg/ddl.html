@@ -4,8 +4,8 @@
 <title>Chapter 5. Data Definition</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.10 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.11 Documentation">
 <link rel="up" href="sql.html" title="Part II. The SQL Language">
 <link rel="prev" href="sql-expressions.html" title="4.2. Value Expressions">
 <link rel="next" href="ddl-default.html" title="5.2. Default Values">
@@ -21,24 +21,24 @@
 <dt><span class="sect1"><a href="ddl-default.html">5.2. Default Values</a></span></dt>
 <dt><span class="sect1"><a href="ddl-constraints.html">5.3. Constraints</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2561671">5.3.1. Check Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2561872">5.3.2. Not-Null Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2562002">5.3.3. Unique Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2562105">5.3.4. Primary Keys</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2569415">5.3.1. Check Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2569616">5.3.2. Not-Null Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2569746">5.3.3. Unique Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2569849">5.3.4. Primary Keys</a></span></dt>
 <dt><span class="sect2"><a href="ddl-constraints.html#ddl-constraints-fk">5.3.5. Foreign Keys</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ddl-system-columns.html">5.4. System Columns</a></span></dt>
 <dt><span class="sect1"><a href="ddl-inherit.html">5.5. Inheritance</a></span></dt>
 <dt><span class="sect1"><a href="ddl-alter.html">5.6. Modifying Tables</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ddl-alter.html#id2563233">5.6.1. Adding a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2563291">5.6.2. Removing a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2563344">5.6.3. Adding a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2563386">5.6.4. Removing a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2563458">5.6.5. Changing a Column's Default Value</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2563502">5.6.6. Changing a Column's Data Type</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2563554">5.6.7. Renaming a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2563576">5.6.8. Renaming a Table</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2570977">5.6.1. Adding a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2571035">5.6.2. Removing a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2571088">5.6.3. Adding a Constraint</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2571130">5.6.4. Removing a Constraint</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2571202">5.6.5. Changing a Column's Default Value</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2571246">5.6.6. Changing a Column's Data Type</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2571298">5.6.7. Renaming a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2571320">5.6.8. Renaming a Table</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ddl-priv.html">5.7. Privileges</a></span></dt>
 <dt><span class="sect1"><a href="ddl-schemas.html">5.8. Schemas</a></span></dt>
@@ -68,7 +68,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="ddl-basics"></a>5.1. Table Basics</h2></div></div></div>
-<a name="id2561238"></a><a name="id2561247"></a><a name="id2561252"></a><p>   A table in a relational database is much like a table on paper: It
+<a name="id2568982"></a><a name="id2568991"></a><a name="id2568996"></a><p>   A table in a relational database is much like a table on paper: It
    consists of rows and columns.  The number and order of the columns
    is fixed, and each column has a name.  The number of rows is
    variable -- it reflects how much data is stored at a given moment.
@@ -101,7 +101,7 @@
    time-of-day values, and <code class="type">timestamp</code> for values
    containing both date and time.
   </p>
-<a name="id2561336"></a><p>   To create a table, you use the aptly named <code class="command">CREATE
+<a name="id2569080"></a><p>   To create a table, you use the aptly named <code class="command">CREATE
    TABLE</code> command.  In this command you specify at least a
    name for the new table, the names of the columns and the data type
    of each column.  For example:
@@ -148,7 +148,7 @@
    However, defining a table with anywhere near this many columns is
    highly unusual and often a questionable design.
   </p>
-<a name="id2561434"></a><p>   If you no longer need a table, you can remove it using the
+<a name="id2569178"></a><p>   If you no longer need a table, you can remove it using the
    <code class="command">DROP TABLE</code> command.  For example:
 </p>
 <pre class="programlisting">DROP TABLE my_first_table;
