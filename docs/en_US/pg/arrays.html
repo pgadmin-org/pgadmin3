@@ -4,8 +4,8 @@
 <title>8.10. Arrays</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-bit.html" title="8.9. Bit String Types">
 <link rel="next" href="rowtypes.html" title="8.11. Composite Types">
@@ -14,14 +14,14 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="arrays"></a>8.10. Arrays</h2></div></div></div>
-<a name="id2577672"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
+<a name="id2585398"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
   defined as variable-length multidimensional arrays. Arrays of any
   built-in or user-defined base type can be created.  (Arrays of
   composite types or domains are not yet supported, however.)
  </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2577689"></a>8.10.1. Declaration of Array Types</h3></div></div></div>
+<a name="id2585415"></a>8.10.1. Declaration of Array Types</h3></div></div></div>
 <p>  To illustrate the use of array types, we create this table:
 </p>
 <pre class="programlisting">CREATE TABLE sal_emp (
@@ -75,8 +75,8 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2577797"></a>8.10.2. Array Value Input</h3></div></div></div>
-<a name="id2577801"></a><p>   To write an array value as a literal constant, enclose the element
+<a name="id2585523"></a>8.10.2. Array Value Input</h3></div></div></div>
+<a name="id2585527"></a><p>   To write an array value as a literal constant, enclose the element
    values within curly braces and separate them by commas.  (If you
    know C, this is not unlike the C syntax for initializing
    structures.)  You may put double quotes around any element value,
@@ -167,7 +167,7 @@ ERROR:  multidimensional arrays must have array expressions with matching dimens
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2578006"></a>8.10.3. Accessing Arrays</h3></div></div></div>
+<a name="id2585732"></a>8.10.3. Accessing Arrays</h3></div></div></div>
 <p>  Now, we can run some queries on the table.
   First, we show how to access a single element of an array at a time.
   This query retrieves the names of the employees whose pay changed in
@@ -282,7 +282,7 @@ ERROR:  multidimensional arrays must have array expressions with matching dimens
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2578204"></a>8.10.4. Modifying Arrays</h3></div></div></div>
+<a name="id2585930"></a>8.10.4. Modifying Arrays</h3></div></div></div>
 <p>  An array value can be replaced completely:
 
 </p>
@@ -438,7 +438,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2578427"></a>8.10.5. Searching in Arrays</h3></div></div></div>
+<a name="id2586153"></a>8.10.5. Searching in Arrays</h3></div></div></div>
 <p>  To search for a value in an array, you must check each value of the
   array. This can be done by hand, if you know the size of the array.
   For example:
@@ -479,7 +479,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2578478"></a>8.10.6. Array Input and Output Syntax</h3></div></div></div>
+<a name="id2586204"></a>8.10.6. Array Input and Output Syntax</h3></div></div></div>
 <p>   The external text representation of an array value consists of items that
    are interpreted according to the I/O conversion rules for the array's
    element type, plus decoration that indicates the array structure.
@@ -531,17 +531,17 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
    pre-8.2 versions of <span class="productname">PostgreSQL</span>, the <a href="runtime-config-compatible.html#guc-array-nulls">array_nulls</a> configuration parameter may be turned
    <code class="literal">off</code> to suppress recognition of <code class="literal">NULL</code> as a NULL.
   </p>
-<p>   As shown previously, when writing an array value you may write double
+<p>   As shown previously, when writing an array value you can write double
    quotes around any individual array element. You <span class="emphasis"><em>must</em></span> do so
    if the element value would otherwise confuse the array-value parser.
    For example, elements containing curly braces, commas (or whatever the
    delimiter character is), double quotes, backslashes, or leading or trailing
    whitespace must be double-quoted.  Empty strings and strings matching the
    word <code class="literal">NULL</code> must be quoted, too.  To put a double quote or
-   backslash in a
-   quoted array element value, precede it with a backslash. Alternatively, you
-   can use backslash-escaping to protect all data characters that would
-   otherwise be taken as array syntax.
+   backslash in a quoted array element value, use escape string syntax
+   and precede it with a backslash. Alternatively, you can use
+   backslash-escaping to protect all data characters that would otherwise
+   be taken as array syntax.
   </p>
 <p>   You may write whitespace before a left brace or after a right
    brace. You may also write whitespace before or after any individual item
@@ -556,16 +556,16 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
    backslashes you need.  For example, to insert a <code class="type">text</code> array
    value containing a backslash and a double quote, you'd need to write
 </p>
-<pre class="programlisting">INSERT ... VALUES ('{"\\\\","\\""}');</pre>
+<pre class="programlisting">INSERT ... VALUES (E'{"\\\\","\\""}');</pre>
 <p>
-   The string-literal processor removes one level of backslashes, so that
+   The escape string processor removes one level of backslashes, so that
    what arrives at the array-value parser looks like <code class="literal">{"\\","\""}</code>.
    In turn, the strings fed to the <code class="type">text</code> data type's input routine
    become <code class="literal">\</code> and <code class="literal">"</code> respectively.  (If we were working
    with a data type whose input routine also treated backslashes specially,
    <code class="type">bytea</code> for example, we might need as many as eight backslashes
    in the command to get one backslash into the stored array element.)
-   Dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) may be
+   Dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) can be
    used to avoid the need to double backslashes.
   </p>
 </div>

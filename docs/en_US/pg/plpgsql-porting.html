@@ -4,8 +4,8 @@
 <title>37.11. Porting from Oracle PL/SQL</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-trigger.html" title="37.10. Trigger Procedures">
 <link rel="next" href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plpgsql-porting"></a>37.11. Porting from <span class="productname">Oracle</span> PL/SQL</h2></div></div></div>
-<a name="id2719480"></a><a name="id2719494"></a><p>   This section explains differences between
+<a name="id2727402"></a><a name="id2727416"></a><p>   This section explains differences between
    <span class="productname">PostgreSQL</span>'s <span class="application">PL/pgSQL</span>
    language and Oracle's <span class="application">PL/SQL</span> language,
    to help developers who port applications from
@@ -60,7 +60,7 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2719659"></a>37.11.1. Porting Examples</h3></div></div></div>
+<a name="id2727581"></a>37.11.1. Porting Examples</h3></div></div></div>
 <p>    <a href="plpgsql-porting.html#pgsql-porting-ex1" title="Example 37.5. Porting a Simple Function from PL/SQL to PL/pgSQL">Example 37.5, &#8220;Porting a Simple Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a simple
     function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>.
    </p>
@@ -216,16 +216,14 @@ $func$ LANGUAGE plpgsql;</pre>
     </p>
 </div>
 </div>
-<br class="example-break"><p>    <a href="plpgsql-porting.html#plpgsql-porting-ex3" title="Example 37.7. Porting a Procedure With String Manipulation and
-    OUT Parameters from PL/SQL to
-    PL/pgSQL">Example 37.7, &#8220;Porting a Procedure With String Manipulation and
+<br class="example-break"><p>    <a href="plpgsql-porting.html#plpgsql-porting-ex3" title="Example 37.7. Porting a Procedure With String Manipulation and OUT Parameters from PL/SQL to PL/pgSQL">Example 37.7, &#8220;Porting a Procedure With String Manipulation and
     <code class="literal">OUT</code> Parameters from <span class="application">PL/SQL</span> to
     <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a function
     with <code class="literal">OUT</code> parameters and string manipulation.
     <span class="productname">PostgreSQL</span> does not have a built-in
     <code class="function">instr</code> function, but you can create one
     using a combination of other
-    functions.<a name="id2720061"></a> In <a href="plpgsql-porting.html#plpgsql-porting-appendix" title="37.11.3. Appendix">Section 37.11.3, &#8220;Appendix&#8221;</a> there is a
+    functions.<a name="id2727979"></a> In <a href="plpgsql-porting.html#plpgsql-porting-appendix" title="37.11.3. Appendix">Section 37.11.3, &#8220;Appendix&#8221;</a> there is a
     <span class="application">PL/pgSQL</span> implementation of
     <code class="function">instr</code> that you can use to make your porting
     easier.
@@ -496,7 +494,7 @@ $$ LANGUAGE plpgsql;</pre>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2720553"></a>37.11.2.2. <code class="command">EXECUTE</code></h4></div></div></div>
+<a name="id2728486"></a>37.11.2.2. <code class="command">EXECUTE</code></h4></div></div></div>
 <p>     The <span class="application">PL/pgSQL</span> version of
      <code class="command">EXECUTE</code> works similarly to the
      <span class="application">PL/SQL</span> version, but you have to remember to use
@@ -513,7 +511,7 @@ $$ LANGUAGE plpgsql;</pre>
      modifiers to optimize execution: &#8220;<span class="quote">volatility</span>&#8221; (whether
      the function always returns the same result when given the same
      arguments) and &#8220;<span class="quote">strictness</span>&#8221; (whether the function
-     returns null if any argument is null).  Consult the <a href="sql-createfunction.html">CREATE FUNCTION</a>
+     returns null if any argument is null).  Consult the <a href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
      reference page for details.
     </p>
 <p>     When making use of these optimization attributes, your

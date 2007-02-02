@@ -4,8 +4,8 @@
 <title>9.5. Binary String Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-string.html" title="9.4. String Functions and Operators">
 <link rel="next" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-binarystring"></a>9.5. Binary String Functions and Operators</h2></div></div></div>
-<a name="id2587972"></a><p>    This section describes functions and operators for examining and
+<a name="id2595699"></a><p>    This section describes functions and operators for examining and
     manipulating values of type <code class="type">bytea</code>.
    </p>
 <p>    <acronym class="acronym">SQL</acronym> defines some string functions with a
@@ -49,9 +49,9 @@
         <em class="parameter"><code>string</code></em></code></td>
 <td> <code class="type">bytea</code> </td>
 <td>        String concatenation
-        <a name="id2588076"></a>
+        <a name="id2595803"></a>
        </td>
-<td><code class="literal">'\\\\Post'::bytea || '\\047gres\\000'::bytea</code></td>
+<td><code class="literal">E'\\\\Post'::bytea || E'\\047gres\\000'::bytea</code></td>
 <td><code class="literal">\\Post'gres\000</code></td>
 </tr>
 <tr>
@@ -59,9 +59,9 @@
 <code class="function">get_bit</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>offset</code></em>)</td>
 <td><code class="type">int</code></td>
 <td>        Extract bit from string
-        <a name="id2588123"></a>
+        <a name="id2595851"></a>
        </td>
-<td><code class="literal">get_bit('Th\\000omas'::bytea, 45)</code></td>
+<td><code class="literal">get_bit(E'Th\\000omas'::bytea, 45)</code></td>
 <td><code class="literal">1</code></td>
 </tr>
 <tr>
@@ -69,23 +69,23 @@
 <code class="function">get_byte</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>offset</code></em>)</td>
 <td><code class="type">int</code></td>
 <td>        Extract byte from string
-        <a name="id2588167"></a>
+        <a name="id2595894"></a>
        </td>
-<td><code class="literal">get_byte('Th\\000omas'::bytea, 4)</code></td>
+<td><code class="literal">get_byte(E'Th\\000omas'::bytea, 4)</code></td>
 <td><code class="literal">109</code></td>
 </tr>
 <tr>
 <td><code class="literal"><code class="function">octet_length</code>(<em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">int</code></td>
 <td>Number of bytes in binary string</td>
-<td><code class="literal">octet_length( 'jo\\000se'::bytea)</code></td>
+<td><code class="literal">octet_length( E'jo\\000se'::bytea)</code></td>
 <td><code class="literal">5</code></td>
 </tr>
 <tr>
 <td><code class="literal"><code class="function">position</code>(<em class="parameter"><code>substring</code></em> in <em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">int</code></td>
 <td>Location of specified substring</td>
-<td><code class="literal">position('\\000om'::bytea in 'Th\\000omas'::bytea)</code></td>
+<td><code class="literal">position(E'\\000om'::bytea in E'Th\\000omas'::bytea)</code></td>
 <td><code class="literal">3</code></td>
 </tr>
 <tr>
@@ -94,9 +94,9 @@
        <em class="parameter"><code>offset</code></em>, <em class="parameter"><code>newvalue</code></em>)</td>
 <td><code class="type">bytea</code></td>
 <td>        Set bit in string
-        <a name="id2588292"></a>
+        <a name="id2596019"></a>
        </td>
-<td><code class="literal">set_bit('Th\\000omas'::bytea, 45, 0)</code></td>
+<td><code class="literal">set_bit(E'Th\\000omas'::bytea, 45, 0)</code></td>
 <td><code class="literal">Th\000omAs</code></td>
 </tr>
 <tr>
@@ -105,18 +105,18 @@
        <em class="parameter"><code>offset</code></em>, <em class="parameter"><code>newvalue</code></em>)</td>
 <td><code class="type">bytea</code></td>
 <td>        Set byte in string
-        <a name="id2588342"></a>
+        <a name="id2596070"></a>
        </td>
-<td><code class="literal">set_byte('Th\\000omas'::bytea, 4, 64)</code></td>
+<td><code class="literal">set_byte(E'Th\\000omas'::bytea, 4, 64)</code></td>
 <td><code class="literal">Th\000o@as</code></td>
 </tr>
 <tr>
 <td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> [<span class="optional">from <code class="type">int</code></span>] [<span class="optional">for <code class="type">int</code></span>])</code></td>
 <td><code class="type">bytea</code></td>
 <td>        Extract substring
-        <a name="id2588396"></a>
+        <a name="id2596123"></a>
        </td>
-<td><code class="literal">substring('Th\\000omas'::bytea from 2 for 3)</code></td>
+<td><code class="literal">substring(E'Th\\000omas'::bytea from 2 for 3)</code></td>
 <td><code class="literal">h\000o</code></td>
 </tr>
 <tr>
@@ -129,7 +129,7 @@
         <em class="parameter"><code>bytes</code></em> from the start
         and end of <em class="parameter"><code>string</code></em>
        </td>
-<td><code class="literal">trim('\\000'::bytea from '\\000Tom\\000'::bytea)</code></td>
+<td><code class="literal">trim(E'\\000'::bytea from E'\\000Tom\\000'::bytea)</code></td>
 <td><code class="literal">Tom</code></td>
 </tr>
 </tbody>
@@ -166,7 +166,7 @@
         in <em class="parameter"><code>bytes</code></em> from the start and end of
         <em class="parameter"><code>string</code></em>
       </td>
-<td><code class="literal">btrim('\\000trim\\000'::bytea, '\\000'::bytea)</code></td>
+<td><code class="literal">btrim(E'\\000trim\\000'::bytea, E'\\000'::bytea)</code></td>
 <td><code class="literal">trim</code></td>
 </tr>
 <tr>
@@ -177,7 +177,7 @@
 <td>       Decode binary string from <em class="parameter"><code>string</code></em> previously 
        encoded with <code class="function">encode</code>.  Parameter type is same as in <code class="function">encode</code>.
       </td>
-<td><code class="literal">decode('123\\000456', 'escape')</code></td>
+<td><code class="literal">decode(E'123\\000456', 'escape')</code></td>
 <td><code class="literal">123\000456</code></td>
 </tr>
 <tr>
@@ -188,17 +188,17 @@
 <td>       Encode binary string to <acronym class="acronym">ASCII</acronym>-only representation.  Supported
        types are: <code class="literal">base64</code>, <code class="literal">hex</code>, <code class="literal">escape</code>.
       </td>
-<td><code class="literal">encode('123\\000456'::bytea, 'escape')</code></td>
+<td><code class="literal">encode(E'123\\000456'::bytea, 'escape')</code></td>
 <td><code class="literal">123\000456</code></td>
 </tr>
 <tr>
 <td><code class="literal"><code class="function">length</code>(<em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">int</code></td>
 <td>       Length of binary string
-       <a name="id2588746"></a>
-       <a name="id2588755"></a>
+       <a name="id2596473"></a>
+       <a name="id2596482"></a>
       </td>
-<td><code class="literal">length('jo\\000se'::bytea)</code></td>
+<td><code class="literal">length(E'jo\\000se'::bytea)</code></td>
 <td><code class="literal">5</code></td>
 </tr>
 <tr>
@@ -207,7 +207,7 @@
 <td>       Calculates the MD5 hash of <em class="parameter"><code>string</code></em>,
        returning the result in hexadecimal
       </td>
-<td><code class="literal">md5('Th\\000omas'::bytea)</code></td>
+<td><code class="literal">md5(E'Th\\000omas'::bytea)</code></td>
 <td><code class="literal">8ab2d3c9689aaf18 b4958c334c82d8b1</code></td>
 </tr>
 </tbody>

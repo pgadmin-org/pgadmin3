@@ -4,8 +4,8 @@
 <title>Chapter 24. High Availability and Load Balancing</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="migration.html" title="23.5. Migration Between Releases">
 <link rel="next" href="monitoring.html" title="Chapter 25. Monitoring Database Activity">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="high-availability">
 <div class="titlepage"><div><div><h2 class="title">
 <a name="high-availability"></a>Chapter 24. High Availability and Load Balancing</h2></div></div></div>
-<a name="id2656837"></a><a name="id2656842"></a><a name="id2656848"></a><a name="id2656854"></a><a name="id2656860"></a><a name="id2656865"></a><p>  Database servers can work together to allow a second server to
+<a name="id2664613"></a><a name="id2664619"></a><a name="id2664625"></a><a name="id2664630"></a><a name="id2664636"></a><a name="id2664642"></a><p>  Database servers can work together to allow a second server to
   take over quickly if the primary server fails (high
   availability), or to allow several computers to serve the same
   data (load balancing).  Ideally, database servers could work
@@ -83,10 +83,15 @@
     disk array fails or becomes corrupt, the primary and standby
     servers are both nonfunctional.  Another issue is that the
     standby server should never access the shared storage while
-    the primary server is running.  It is also possible to use
-    some type of file system mirroring to keep the standby server
-    current, but the mirroring must be done in a way that ensures the
-    standby server has a consistent copy of the file system.
+    the primary server is running.
+   </p>
+<p>    A modified version of shared hardware functionality is file system
+    replication, where all changes to a file system are mirrored to a file
+    system residing on another computer.  The only restriction is that
+    the mirroring must be done in a way that ensures the standby server
+    has a consistent copy of the file system &#8212; specifically, writes
+    to the standby must be done in the same order as those on the master.
+    DRBD is a popular file system replication solution for Linux.
    </p>
 </dd>
 <dt><span class="term">Warm Standby Using Point-In-Time Recovery</span></dt>
@@ -128,7 +133,7 @@
     must query such values from a single server and then use those
     values in write queries.  Also, care must be taken that all
     transactions either commit or abort on all servers, perhaps
-    using two-phase commit (<a href="sql-prepare-transaction.html">PREPARE TRANSACTION</a> and <a href="sql-commit-prepared.html">COMMIT PREPARED</a>.
+    using two-phase commit (<a href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a> and <a href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>.
     Pgpool and Sequoia are an example of this type of replication.
    </p>
 </dd>
@@ -150,7 +155,7 @@
     functions like <code class="function">random()</code>.
    </p>
 <p>    <span class="productname">PostgreSQL</span> does not offer this type of replication,
-    though <span class="productname">PostgreSQL</span> two-phase commit (<a href="sql-prepare-transaction.html">PREPARE TRANSACTION</a> and <a href="sql-commit-prepared.html">COMMIT PREPARED</a>)
+    though <span class="productname">PostgreSQL</span> two-phase commit (<a href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a> and <a href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>)
     can be used to implement this in application code or middleware.
    </p>
 </dd>

@@ -4,8 +4,8 @@
 <title>3. System Requirements</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="slonylistenercosts.html" title="2.  Slony-I Communications Costs">
 <link rel="next" href="installation.html" title="4. Slony-I Installation">
@@ -25,7 +25,7 @@ OS-X-10.3, Linux-2.4X-i386 Linux-2.6X-i386 Linux-2.6X-amd64,
 and <span class="trademark">Windows</span>&#8482; 2000, XP and 2003 (32 bit).</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2505865"></a>3.1.  <span class="productname">Slony-I</span> Software Dependancies</h3></div></div></div>
+<a name="id2513620"></a>3.1.  <span class="productname">Slony-I</span> Software Dependancies</h3></div></div></div>
 <p> At present, <span class="productname">Slony-I</span> <span class="emphasis"><em>as well as <span class="productname">PostgreSQL</span></em></span>
 need to be able to be compiled from source at your site.</p>
 <p> In order to compile <span class="productname">Slony-I</span>, you need to have the following
@@ -49,16 +49,16 @@ you must have <span class="productname">PostgreSQL</span> version 7.3.3 or newer
 and use <span class="productname">Slony-I</span>.  </p>
 <p> Earlier versions of <span class="productname">PostgreSQL</span> are <span class="emphasis"><em> not </em></span>
 supported, but note that one user has &#8220;<span class="quote">hacked</span>&#8221; <span class="productname">Slony-I</span>
-to do a 7.2-to-7.4 upgrade; see <a href="faq.html#v72upgrade"> <span class="productname">PostgreSQL</span>
+to do a 7.2-to-7.4 upgrade; see <a href="faq.html#v72upgrade" title="Question"> <span class="productname">PostgreSQL</span>
 7.2 notes </a>. </p>
 <p> Versions of <span class="productname">PostgreSQL</span> prior to 7.4.8 may run into a
-longstanding race condition that leads to problems of <a href="faq.html#dupkey"> &#8220;<span class="quote">duplicate keys</span>&#8221;</a>, so you may
+longstanding race condition that leads to problems of <a href="faq.html#dupkey" title="Question"> &#8220;<span class="quote">duplicate keys</span>&#8221;</a>, so you may
 want to consider upgrades if you are running earlier versions.</p>
 <p> If you are running a version of <span class="productname">PostgreSQL</span> earlier
 than 8.0, you need to make sure that server header files were
 installed.  If installing from sources, this is done via the command
 <code class="command">make install-all-headers</code>.  Otherwise, you will
-encounter the <a href="faq.html#missingheaders"> missing headers for
+encounter the <a href="faq.html#missingheaders" title="Question"> missing headers for
 libpqserver</a> problem described in the FAQ.</p>
 </li>
 <li><p> GNU packages may be included in the standard
@@ -92,7 +92,7 @@ will need to be prepared to compile <span class="productname">Slony-I</span> you
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2506208"></a>3.2.  Getting <span class="productname">Slony-I</span> Source</h3></div></div></div>
+<a name="id2513964"></a>3.2.  Getting <span class="productname">Slony-I</span> Source</h3></div></div></div>
 <p>You can get the <span class="productname">Slony-I</span> source from <a href="http://developer.postgresql.org/~wieck/slony1/download/" target="_top">http://developer.postgresql.org/~wieck/slony1/download/</a></p>
 </div>
 <div class="sect2" lang="en">
@@ -111,7 +111,7 @@ boundary conditions between these variant encodings, you may never
 experience any problems.  </p>
 <p> In <span class="productname">PostgreSQL</span> 8.1, changes were made to the
 <code class="envar">UNICODE</code> encoding because earlier versions accepted some
-invalid encodings.  This can lead to <a href="faq.html#faqunicode">replication problems.</a> </p>
+invalid encodings.  This can lead to <a href="faq.html#faqunicode" title="Question">replication problems.</a> </p>
 <p> Note also that if the client encoding (configured assortedly in
 <code class="filename">postgresql.conf</code>, parameter
 <code class="envar">client_encoding</code>, or via the
@@ -168,7 +168,7 @@ leaping around due to Daylight Savings Time.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2506514"></a>3.5.  Network Connectivity</h3></div></div></div>
+<a name="id2514270"></a>3.5.  Network Connectivity</h3></div></div></div>
 <p>It is necessary that the hosts that are to replicate between one
 another have <span class="emphasis"><em>bidirectional</em></span> network communications
 between the <span class="productname">PostgreSQL</span> instances.  That is, if node B is replicating
@@ -177,8 +177,7 @@ from B to A.  It is recommended that, as much as possible, all nodes
 in a <span class="productname">Slony-I</span> cluster allow this sort of bidirection communications
 from any node in the cluster to any other node in the cluster.</p>
 <p>For ease of configuration, network addresses should ideally be
-consistent across all of the nodes.  <a href="stmtstorepath.html" title="STORE
-     PATH"><span class="refentrytitle">STORE
+consistent across all of the nodes.  <a href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
      PATH</span></a>
 does allow them to vary, but down this road lies madness as you try to
 manage the multiplicity of paths pointing to the same server.</p>
@@ -191,7 +190,7 @@ using a different port for each destination.</p>
 <span class="application">slon</span> instances need no special connections
 or protocols to communicate with one another; they merely need access
 to the <span class="productname">PostgreSQL</span> databases, connecting as a &#8220;<span class="quote">superuser</span>&#8221;
-<a href="faq.html#morethansuper">that has the ability to update system
+<a href="faq.html#morethansuper" title="Question">that has the ability to update system
 tables.</a></p>
 <p> An implication of this communications model is that the entire
 extended network in which a <span class="productname">Slony-I</span> cluster operates must be able to

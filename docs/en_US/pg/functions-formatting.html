@@ -4,8 +4,8 @@
 <title>9.8. Data Type Formatting Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-matching.html" title="9.7. Pattern Matching">
 <link rel="next" href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-formatting"></a>9.8. Data Type Formatting Functions</h2></div></div></div>
-<a name="id2593676"></a><a name="id2593682"></a><a name="id2593687"></a><a name="id2593693"></a><a name="id2593699"></a><p>    The <span class="productname">PostgreSQL</span> formatting functions
+<a name="id2601405"></a><a name="id2601411"></a><a name="id2601417"></a><a name="id2601423"></a><a name="id2601428"></a><p>    The <span class="productname">PostgreSQL</span> formatting functions
     provide a powerful set of tools for converting various data types
     (date/time, integer, floating point, numeric) to formatted strings
     and for converting from formatted strings to specific data types.
@@ -299,7 +299,7 @@
 </tr>
 <tr>
 <td><code class="literal">CC</code></td>
-<td>century (2 digits)</td>
+<td>century (2 digits) (The twenty-first century starts on 2001-01-01.)</td>
 </tr>
 <tr>
 <td><code class="literal">J</code></td>
@@ -415,10 +415,10 @@
        will not be.
       </p></li>
 <li><p>       If you want to have a double quote in the output you must
-       precede it with a backslash, for example <code class="literal">'\\"YYYY
+       precede it with a backslash, for example <code class="literal">E'\\"YYYY
        Month\\"'</code>. 
        (Two backslashes are necessary because the backslash already
-       has a special meaning in a string constant.)
+       has a special meaning when using the escape string syntax.)
       </p></li>
 <li><p>       The <code class="literal">YYYY</code> conversion from string to <code class="type">timestamp</code> or
        <code class="type">date</code> has a restriction if you use a year with more than 4 digits. You must

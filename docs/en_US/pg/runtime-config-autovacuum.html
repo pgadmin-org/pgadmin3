@@ -4,8 +4,8 @@
 <title>17.9. Automatic Vacuuming</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-statistics.html" title="17.8. Run-Time Statistics">
 <link rel="next" href="runtime-config-client.html" title="17.10. Client Connection Defaults">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="runtime-config-autovacuum"></a>17.9. Automatic Vacuuming</h2></div></div></div>
-<a name="id2638372"></a><p>      These settings control the behavior of the <em class="firstterm">autovacuum</em>
+<a name="id2646140"></a><p>      These settings control the behavior of the <em class="firstterm">autovacuum</em>
       feature.  Refer to <a href="maintenance.html#autovacuum" title="22.1.4. The auto-vacuum daemon">Section 22.1.4, &#8220;The auto-vacuum daemon&#8221;</a> for
       more information.
      </p>
@@ -36,7 +36,7 @@
         daemon.  In each round the daemon examines one database
         and issues <code class="command">VACUUM</code> and <code class="command">ANALYZE</code> commands
         as needed for tables in that database.  The delay is measured
-        in seconds, and the default is 60.
+        in seconds, and the default is one minute (<code class="literal">1m</code>).
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
        </p></dd>
@@ -45,7 +45,7 @@
 </dt>
 <dd><p>        Specifies the minimum number of updated or deleted tuples needed
         to trigger a <code class="command">VACUUM</code> in any one table.
-        The default is 500.
+        The default is 500 tuples.
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
         This setting can be overridden for individual tables by entries in
@@ -56,7 +56,7 @@
 </dt>
 <dd><p>        Specifies the minimum number of inserted, updated or deleted tuples
         needed to trigger an <code class="command">ANALYZE</code> in any one table.
-        The default is 250.
+        The default is 250 tuples.
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
         This setting can be overridden for individual tables by entries in
@@ -68,7 +68,7 @@
 <dd><p>        Specifies a fraction of the table size to add to
         <code class="varname">autovacuum_vacuum_threshold</code>
         when deciding whether to trigger a <code class="command">VACUUM</code>.
-        The default is 0.2.
+        The default is 0.2 (20% of table size).
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
         This setting can be overridden for individual tables by entries in
@@ -80,7 +80,7 @@
 <dd><p>        Specifies a fraction of the table size to add to
         <code class="varname">autovacuum_analyze_threshold</code>
         when deciding whether to trigger an <code class="command">ANALYZE</code>.
-        The default is 0.1.
+        The default is 0.1 (10% of table size).
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
         This setting can be overridden for individual tables by entries in
@@ -95,7 +95,7 @@
         transaction ID wraparound within the table.  Note that the system
         will launch autovacuum processes to prevent wraparound even when
         autovacuum is otherwise disabled.
-        The default is 200000000 (200 million).
+        The default is 200 million transactions.
         This parameter can only be set at server start, but the setting
         can be reduced for individual tables by entries in
         <code class="structname">pg_autovacuum</code>.
@@ -105,8 +105,8 @@
 <a name="guc-autovacuum-vacuum-cost-delay"></a><span class="term"><code class="varname">autovacuum_vacuum_cost_delay</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Specifies the cost delay value that will be used in automatic
-        <code class="command">VACUUM</code> operations.  If -1 is specified (which is the
-        default), the regular
+        <code class="command">VACUUM</code> operations.  If <code class="literal">-1</code> is
+        specified (which is the default), the regular
         <a href="runtime-config-resource.html#guc-vacuum-cost-delay">vacuum_cost_delay</a> value will be used.
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
@@ -117,7 +117,7 @@
 <a name="guc-autovacuum-vacuum-cost-limit"></a><span class="term"><code class="varname">autovacuum_vacuum_cost_limit</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Specifies the cost limit value that will be used in automatic
-        <code class="command">VACUUM</code> operations.  If -1 is specified (which is the
+        <code class="command">VACUUM</code> operations.  If <code class="literal">-1</code> is specified (which is the
         default), the regular
         <a href="runtime-config-resource.html#guc-vacuum-cost-limit">vacuum_cost_limit</a> value will be used.
         This parameter can only be set in the <code class="filename">postgresql.conf</code>

@@ -4,8 +4,8 @@
 <title>11.2. Index Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="next" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
@@ -20,8 +20,8 @@
    By default, the <code class="command">CREATE INDEX</code> command will create a
    B-tree index, which fits the most common situations.
   </p>
-<p>   <a name="id2614151"></a>
-   <a name="id2614160"></a>
+<p>   <a name="id2621884"></a>
+   <a name="id2621893"></a>
    B-trees can handle equality and range queries on data that can be sorted
    into some ordering.
    In particular, the <span class="productname">PostgreSQL</span> query planner
@@ -57,8 +57,8 @@
    non-alphabetic characters, i.e. characters that are not affected by
    upper/lower case conversion.
   </p>
-<p>   <a name="id2614306"></a>
-   <a name="id2614315"></a>
+<p>   <a name="id2622037"></a>
+   <a name="id2622046"></a>
    Hash indexes can only handle simple equality comparisons.
    The query planner will consider using a hash index whenever an
    indexed column is involved in a comparison using the
@@ -79,8 +79,8 @@
     For these reasons, hash index use is presently discouraged.
    </p>
 </div>
-<p>   <a name="id2614374"></a>
-   <a name="id2614383"></a>
+<p>   <a name="id2622106"></a>
+   <a name="id2622115"></a>
    GiST indexes are not a single kind of index, but rather an infrastructure
    within which many different indexing strategies can be implemented.
    Accordingly, the particular operators with which a GiST index can be
@@ -113,8 +113,8 @@
    classes are available in the <code class="literal">contrib</code> collection or as separate
    projects.  For more information see <a href="gist.html" title="Chapter 50. GiST Indexes">Chapter 50, <i>GiST Indexes</i></a>.
   </p>
-<p>   <a name="id2614506"></a>
-   <a name="id2614515"></a>
+<p>   <a name="id2622238"></a>
+   <a name="id2622247"></a>
    GIN indexes are inverted indexes which can handle values that contain more
    than one key, arrays for example. Like GiST, GIN can support
    many different user-defined indexing strategies and the particular 

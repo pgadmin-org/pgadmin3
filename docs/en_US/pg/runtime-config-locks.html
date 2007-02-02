@@ -4,8 +4,8 @@
 <title>17.11. Lock Management</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-client.html" title="17.10. Client Connection Defaults">
 <link rel="next" href="runtime-config-compatible.html" title="17.12. Version and Platform Compatibility">
@@ -26,7 +26,7 @@
         just wait on the lock for a while before starting the check for a
         deadlock. Increasing this value reduces the amount of time
         wasted in needless deadlock checks, but slows down reporting of
-        real deadlock errors. The default is 1000 (i.e., one second),
+        real deadlock errors. The default is one second (<code class="literal">1s</code>),
         which is probably about the smallest value you would want in
         practice. On a heavily loaded server you might want to raise it.
         Ideally the setting should exceed your typical transaction time,
@@ -37,18 +37,18 @@
 <a name="guc-max-locks-per-transaction"></a><span class="term"><code class="varname">max_locks_per_transaction</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd>
-<p>        The shared lock table is created with room to describe locks on
-        <code class="varname">max_locks_per_transaction</code> *
-        (<a href="runtime-config-connection.html#guc-max-connections">max_connections</a> +
-        <a href="runtime-config-resource.html#guc-max-prepared-transactions">max_prepared_transactions</a>) objects;
-        hence, no more than this many distinct objects can
-        be locked at any one time. (Thus, this parameter's name may be
-        confusing: it is not a hard limit on the number of locks taken
-        by any one transaction, but rather a maximum average value.)
-        The default, 64, has historically
-        proven sufficient, but you might need to raise this value if you
-        have clients that touch many different tables in a single
-        transaction. This parameter can only be set at server start.
+<p>        The shared lock table is created to track locks on
+        <code class="varname">max_locks_per_transaction</code> * (<a href="runtime-config-connection.html#guc-max-connections">max_connections</a> + <a href="runtime-config-resource.html#guc-max-prepared-transactions">max_prepared_transactions</a>) objects (e.g.  tables);
+        hence, no more than this many distinct objects can be locked at
+        any one time.  This parameter controls the average number of object
+        locks allocated for each transaction;  individual transactions
+        can lock more objects as long as the locks of all transactions
+        fit in the lock table.  This is <span class="emphasis"><em>not</em></span> the number of
+        rows that can be locked; that value is unlimited.  The default,
+        64, has historically proven sufficient, but you might need to
+        raise this value if you have clients that touch many different
+        tables in a single transaction. This parameter can only be set at
+        server start.
        </p>
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
         to request more <span class="systemitem">System V</span> shared

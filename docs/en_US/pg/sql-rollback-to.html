@@ -4,8 +4,8 @@
 <title>ROLLBACK TO SAVEPOINT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-rollback-prepared.html" title="ROLLBACK PREPARED">
 <link rel="next" href="sql-savepoint.html" title="SAVEPOINT">
@@ -17,12 +17,12 @@
 <h2>Name</h2>
 <p>ROLLBACK TO SAVEPOINT &#8212; roll back to a savepoint</p>
 </div>
-<a name="id2772870"></a><a name="id2772880"></a><div class="refsynopsisdiv">
+<a name="id2780823"></a><a name="id2780833"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ROLLBACK [ WORK | TRANSACTION ] TO [ SAVEPOINT ] <em class="replaceable"><code>savepoint_name</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2772900"></a><h2>Description</h2>
+<a name="id2780853"></a><h2>Description</h2>
 <p>   Roll back all commands that were executed after the savepoint was
    established.  The savepoint remains valid and can be rolled back to
    again later, if needed.
@@ -32,7 +32,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2772918"></a><h2>Parameters</h2>
+<a name="id2780871"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>savepoint_name</code></em></span></dt>
 <dd><p>      The savepoint to roll back to.
@@ -40,8 +40,8 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2772933"></a><h2>Notes</h2>
-<p>   Use <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a> to destroy a savepoint without
+<a name="id2780886"></a><h2>Notes</h2>
+<p>   Use <a href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">RELEASE SAVEPOINT</a> to destroy a savepoint without
    discarding the effects of commands executed after it was established.
   </p>
 <p>   Specifying a savepoint name that has not been established is an error.
@@ -60,7 +60,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2772991"></a><h2>Examples</h2>
+<a name="id2780944"></a><h2>Examples</h2>
 <p>   To undo the effects of the commands executed after <code class="literal">my_savepoint</code>
    was established:
 </p>
@@ -92,7 +92,7 @@ COMMIT;</pre>
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2773023"></a><h2>Compatibility</h2>
+<a name="id2780976"></a><h2>Compatibility</h2>
 <p>   The <acronym class="acronym">SQL</acronym> standard specifies that the key word
    <code class="literal">SAVEPOINT</code> is mandatory, but <span class="productname">PostgreSQL</span>
    and <span class="productname">Oracle</span> allow it to be omitted.  SQL allows
@@ -104,8 +104,8 @@ COMMIT;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2773084"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-begin.html">BEGIN</a>, <a href="sql-commit.html">COMMIT</a>, <a href="sql-release-savepoint.html">RELEASE SAVEPOINT</a>, <a href="sql-rollback.html">ROLLBACK</a>, <a href="sql-savepoint.html">SAVEPOINT</a></span>
+<a name="id2781037"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-begin.html" title="BEGIN">BEGIN</a>, <a href="sql-commit.html" title="COMMIT">COMMIT</a>, <a href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">RELEASE SAVEPOINT</a>, <a href="sql-rollback.html" title="ROLLBACK">ROLLBACK</a>, <a href="sql-savepoint.html" title="SAVEPOINT">SAVEPOINT</a></span>
 </div>
 </div></body>
 </html>

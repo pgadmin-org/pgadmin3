@@ -4,8 +4,8 @@
 <title>5. Monitoring</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="subscribenodes.html" title="4. Subscribing Nodes">
 <link rel="next" href="maintenance.html" title="6. Slony-I Maintenance">
@@ -14,10 +14,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring"></a>5. Monitoring</h2></div></div></div>
-<a name="id2559058"></a><div class="sect2" lang="en">
+<a name="id2566802"></a><div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2559068"></a>5.1.  <span class="productname">Nagios</span> Replication Checks </h3></div></div></div>
-<a name="id2559078"></a><p> The script in the <code class="filename">tools</code> directory called
+<a name="id2566812"></a>5.1.  <span class="productname">Nagios</span> Replication Checks </h3></div></div></div>
+<a name="id2566822"></a><p> The script in the <code class="filename">tools</code> directory called
 <code class="command"> pgsql_replication_check.pl </code> represents some of the
 best answers arrived at in attempts to build replication tests to plug
 into the <a href="http://www.nagios.org/" target="_top"> <span class="productname">Nagios</span> </a> system
@@ -57,7 +57,7 @@ that is to be monitored; that is the way <span class="productname">Nagios</span>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="slonymrtg"></a>5.2.  Monitoring <span class="productname">Slony-I</span> using MRTG </h3></div></div></div>
-<a name="id2559234"></a><p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
+<a name="id2566978"></a><p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
 <a href="http://people.ee.ethz.ch/~oetiker/webtools/mrtg/" target="_top"><span class="application"> mrtg - Multi Router Traffic Grapher </span></a> to monitor <span class="productname">Slony-I</span> replication.</p>
 <p> ... Since I use <span class="application">mrtg</span> to graph data
 from multiple servers I use snmp (<span class="application">net-snmp</span>
@@ -79,7 +79,7 @@ Options[db_replication_lagtime]: gauge,nopercent,growright</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="testslonystate"></a>5.3.  test_slony_state</h3></div></div></div>
-<a name="id2559332"></a><p> This script does various sorts of analysis of the state of a
+<a name="id2567076"></a><p> This script does various sorts of analysis of the state of a
 <span class="productname">Slony-I</span> cluster.</p>
 <p> You specify arguments including <code class="option">database</code>,
 <code class="option">host</code>, <code class="option">user</code>,
@@ -93,7 +93,7 @@ via the environment variables used by
 <span class="application">libpq</span>, <span class="emphasis"><em>e.g.</em></span> - using
 <code class="envar">PGPORT</code>, <code class="envar">PGDATABASE</code>,
 <code class="envar">PGUSER</code>, <code class="envar">PGSERVICE</code>, and such.</p>
-<p> The script then rummages through <a href="table.sl-path.html">sl_path</a>
+<p> The script then rummages through <a href="table.sl-path.html" title="1.9.  Table: sl_path">sl_path</a>
 to find all of the nodes in the cluster, and the DSNs to allow it to,
 in turn, connect to each of them.</p>
 <p> For each node, the script examines the state of things,
@@ -101,7 +101,7 @@ including such things as:
 
 </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p> Checking <a href="table.sl-listen.html">sl_listen</a> for some
+<li><p> Checking <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a> for some
 &#8220;<span class="quote">analytically determinable</span>&#8221; problems.  It lists paths
 that are not covered.</p></li>
 <li>
@@ -110,9 +110,9 @@ that are not covered.</p></li>
 suggests a problem.</p>
 </li>
 <li>
-<p> Summarizes the &#8220;<span class="quote">aging</span>&#8221; of table <a href="table.sl-confirm.html">sl_confirm</a> </p>
+<p> Summarizes the &#8220;<span class="quote">aging</span>&#8221; of table <a href="table.sl-confirm.html" title="1.2.  Table: sl_confirm">sl_confirm</a> </p>
 <p> If one or another of the nodes in the cluster hasn't reported
-back recently, that tends to lead to cleanups of tables like <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-seqlog.html">sl_seqlog</a> not
+back recently, that tends to lead to cleanups of tables like <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a> and <a href="table.sl-seqlog.html" title="1.12.  Table: sl_seqlog">sl_seqlog</a> not
 taking place.</p>
 </li>
 <li>
@@ -124,7 +124,7 @@ configured to collect command strings, as controlled by the option
 <p> If you have broken applications that hold connections open,
 this will find them.</p>
 <p> If you have broken applications that hold connections open,
-that has several unsalutory effects as <a href="faq.html#longtxnsareevil"> described in the
+that has several unsalutory effects as <a href="faq.html#longtxnsareevil" title="Question"> described in the
 FAQ</a>.</p>
 </li>
 </ul></div>
@@ -136,7 +136,7 @@ script; if you don't like the values, pick your favorites!</p>
 <a name="search-logs"></a>5.4.  <code class="command">search-logs.sh</code> </h3></div></div></div>
 <p> This script is constructed to search for <span class="productname">Slony-I</span> log files at
 a given path (<code class="envar">LOGHOME</code>), based both on the naming
-conventions used by the <a href="adminscripts.html#launchclusters" title="19.3.  launch_clusters.sh ">Section 19.3, &#8220; launch_clusters.sh &#8221;</a> and <a href="adminscripts.html#slonwatchdog" title="19.1.20. slon_watchdog">Section 19.1.20, &#8220;slon_watchdog&#8221;</a> systems used for launching <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes.</p>
+conventions used by the <a href="adminscripts.html#launchclusters" title="19.3.  launch_clusters.sh">Section 19.3, &#8220; launch_clusters.sh &#8221;</a> and <a href="adminscripts.html#slonwatchdog" title="19.1.20. slon_watchdog">Section 19.1.20, &#8220;slon_watchdog&#8221;</a> systems used for launching <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes.</p>
 <p> Errors, if found, are listed, by log file, and emailed to the
 specified user (<code class="envar">LOGRECIPIENT</code>); if no email address is
 specified, output goes to standard output. </p>

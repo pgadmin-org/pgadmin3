@@ -4,8 +4,8 @@
 <title>CREATE TABLE AS</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createtable.html" title="CREATE TABLE">
 <link rel="next" href="sql-createtablespace.html" title="CREATE TABLESPACE">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE TABLE AS &#8212; define a new table from the results of a query</p>
 </div>
-<a name="id2755521"></a><div class="refsynopsisdiv">
+<a name="id2763474"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em>
     [ (<em class="replaceable"><code>column_name</code></em> [, ...] ) ]
@@ -27,7 +27,7 @@
     AS <em class="replaceable"><code>query</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2755568"></a><h2>Description</h2>
+<a name="id2763522"></a><h2>Description</h2>
 <p>   <code class="command">CREATE TABLE AS</code> creates a table and fills it
    with data computed by a <code class="command">SELECT</code> command.
    The table columns have the
@@ -45,17 +45,17 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2755616"></a><h2>Parameters</h2>
+<a name="id2763569"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">GLOBAL</code> or <code class="literal">LOCAL</code></span></dt>
-<dd><p>      Ignored for compatibility. Refer to <a href="sql-createtable.html">CREATE TABLE</a> for
+<dd><p>      Ignored for compatibility. Refer to <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for
       details.
      </p></dd>
 </dl></div>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd><p>      If specified, the table is created as a temporary table.
-      Refer to <a href="sql-createtable.html">CREATE TABLE</a> for details.
+      Refer to <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for details.
      </p></dd>
 <dt><span class="term"><em class="replaceable"><code>table_name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table to be created.
@@ -69,13 +69,13 @@
      </p></dd>
 <dt><span class="term"><code class="literal">WITH ( <em class="replaceable"><code>storage_parameter</code></em> [= <em class="replaceable"><code>value</code></em>] [, ... ] )</code></span></dt>
 <dd><p>      This clause specifies optional storage parameters for the new table;
-      see <a href="sql-createtable.html#sql-createtable-storage-parameters">Storage Parameters</a> for more
+      see <a href="sql-createtable.html#sql-createtable-storage-parameters" title="Storage Parameters">Storage Parameters</a> for more
       information.  The <code class="literal">WITH</code> clause
       can also include <code class="literal">OIDS=TRUE</code> (or just <code class="literal">OIDS</code>)
       to specify that rows of the new table
       should have OIDs (object identifiers) assigned to them, or
       <code class="literal">OIDS=FALSE</code> to specify that the rows should not have OIDs.
-      See <a href="sql-createtable.html">CREATE TABLE</a> for more information.
+      See <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for more information.
      </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WITH OIDS</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">WITHOUT OIDS</code></span>
@@ -99,7 +99,7 @@
          </p></dd>
 <dt><span class="term"><code class="literal">DELETE ROWS</code></span></dt>
 <dd><p>          All rows in the temporary table will be deleted at the end
-          of each transaction block.  Essentially, an automatic <a href="sql-truncate.html">TRUNCATE</a> is done
+          of each transaction block.  Essentially, an automatic <a href="sql-truncate.html" title="TRUNCATE">TRUNCATE</a> is done
           at each commit.
          </p></dd>
 <dt><span class="term"><code class="literal">DROP</code></span></dt>
@@ -119,16 +119,16 @@
       string.
      </p></dd>
 <dt><span class="term"><em class="replaceable"><code>query</code></em></span></dt>
-<dd><p>      A <a href="sql-select.html">SELECT</a> or
-      <a href="sql-values.html">VALUES</a> command,
-      or an <a href="sql-execute.html">EXECUTE</a> command
+<dd><p>      A <a href="sql-select.html" title="SELECT">SELECT</a> or
+      <a href="sql-values.html" title="VALUES">VALUES</a> command,
+      or an <a href="sql-execute.html" title="EXECUTE">EXECUTE</a> command
       that runs a prepared <code class="command">SELECT</code> or <code class="command">VALUES</code> query.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2755966"></a><h2>Notes</h2>
-<p>   This command is functionally similar to <a href="sql-selectinto.html">SELECT INTO</a>, but it is
+<a name="id2763920"></a><h2>Notes</h2>
+<p>   This command is functionally similar to <a href="sql-selectinto.html" title="SELECT INTO">SELECT INTO</a>, but it is
    preferred since it is less likely to be confused with other uses of
    the <code class="command">SELECT INTO</code> syntax. Furthermore, <code class="command">CREATE
    TABLE AS</code> offers a superset of the functionality offered
@@ -150,7 +150,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756064"></a><h2>Examples</h2>
+<a name="id2764018"></a><h2>Examples</h2>
 <p>   Create a new table <code class="literal">films_recent</code> consisting of only
    recent entries from the table <code class="literal">films</code>:
 
@@ -172,7 +172,7 @@ CREATE TEMP TABLE films_recent WITH (OIDS) ON COMMIT DROP AS
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756121"></a><h2>Compatibility</h2>
+<a name="id2764075"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE TABLE AS</code> conforms to the <acronym class="acronym">SQL</acronym>
    standard, with the following exceptions:
 
@@ -191,7 +191,7 @@ CREATE TEMP TABLE films_recent WITH (OIDS) ON COMMIT DROP AS
      </p></li>
 <li><p>      <span class="productname">PostgreSQL</span> handles temporary tables in a way
       rather different from the standard; see
-      <a href="sql-createtable.html">CREATE TABLE</a>
+      <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>
       for details.
      </p></li>
 <li><p>      The <code class="literal">WITH</code> clause is a <span class="productname">PostgreSQL</span>
@@ -206,8 +206,8 @@ CREATE TEMP TABLE films_recent WITH (OIDS) ON COMMIT DROP AS
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756250"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createtable.html">CREATE TABLE</a>, <a href="sql-execute.html">EXECUTE</a>, <a href="sql-select.html">SELECT</a>, <a href="sql-selectinto.html">SELECT INTO</a>, <a href="sql-values.html">VALUES</a></span>
+<a name="id2764204"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>, <a href="sql-execute.html" title="EXECUTE">EXECUTE</a>, <a href="sql-select.html" title="SELECT">SELECT</a>, <a href="sql-selectinto.html" title="SELECT INTO">SELECT INTO</a>, <a href="sql-values.html" title="VALUES">VALUES</a></span>
 </div>
 </div></body>
 </html>

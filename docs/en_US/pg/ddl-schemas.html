@@ -4,8 +4,8 @@
 <title>5.7. Schemas</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-priv.html" title="5.6. Privileges">
 <link rel="next" href="ddl-inherit.html" title="5.8. Inheritance">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="ddl-schemas"></a>5.7. Schemas</h2></div></div></div>
-<a name="id2563936"></a><p>   A <span class="productname">PostgreSQL</span> database cluster
+<a name="id2571680"></a><p>   A <span class="productname">PostgreSQL</span> database cluster
    contains one or more named databases.  Users and groups of users are
    shared across the entire cluster, but no other data is shared across
    databases.  Any given client connection to the server can access
@@ -62,13 +62,13 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="ddl-schemas-create"></a>5.7.1. Creating a Schema</h3></div></div></div>
-<a name="id2564041"></a><p>    To create a schema, use the <a href="sql-createschema.html">CREATE SCHEMA</a> command.  Give the schema a name
+<a name="id2571785"></a><p>    To create a schema, use the <a href="sql-createschema.html" title="CREATE SCHEMA">CREATE SCHEMA</a> command.  Give the schema a name
     of your choice.  For example:
 </p>
 <pre class="programlisting">CREATE SCHEMA myschema;</pre>
 <p>
    </p>
-<a name="id2564075"></a><a name="id2564081"></a><p>    To create or access objects in a schema, write a
+<a name="id2571819"></a><a name="id2571825"></a><p>    To create or access objects in a schema, write a
     <em class="firstterm">qualified name</em> consisting of the schema name and
     table name separated by a dot:
 </p>
@@ -95,7 +95,7 @@
 );</pre>
 <p>
    </p>
-<a name="id2564156"></a><p>    To drop a schema if it's empty (all objects in it have been
+<a name="id2571900"></a><p>    To drop a schema if it's empty (all objects in it have been
     dropped), use
 </p>
 <pre class="programlisting">DROP SCHEMA myschema;</pre>
@@ -123,7 +123,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="ddl-schemas-public"></a>5.7.2. The Public Schema</h3></div></div></div>
-<a name="id2564234"></a><p>    In the previous sections we created tables without specifying any
+<a name="id2571978"></a><p>    In the previous sections we created tables without specifying any
     schema names.  By default, such tables (and other objects) are
     automatically put into a schema named &#8220;<span class="quote">public</span>&#8221;.  Every new
     database contains such a schema.  Thus, the following are equivalent:
@@ -139,7 +139,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="ddl-schemas-path"></a>5.7.3. The Schema Search Path</h3></div></div></div>
-<a name="id2564277"></a><a name="id2564283"></a><a name="id2564288"></a><p>    Qualified names are tedious to write, and it's often best not to
+<a name="id2572021"></a><a name="id2572027"></a><a name="id2572032"></a><p>    Qualified names are tedious to write, and it's often best not to
     wire a particular schema name into applications anyway.  Therefore
     tables are often referred to by <em class="firstterm">unqualified names</em>,
     which consist of just the table name.  The system determines which table
@@ -149,12 +149,12 @@
     path, an error is reported, even if matching table names exist
     in other schemas in the database.
    </p>
-<a name="id2564315"></a><p>    The first schema named in the search path is called the current schema.
+<a name="id2572059"></a><p>    The first schema named in the search path is called the current schema.
     Aside from being the first schema searched, it is also the schema in
     which new tables will be created if the <code class="command">CREATE TABLE</code>
     command does not specify a schema name.
    </p>
-<a name="id2564336"></a><p>    To show the current search path, use the following command:
+<a name="id2572080"></a><p>    To show the current search path, use the following command:
 </p>
 <pre class="programlisting">SHOW search_path;</pre>
 <p>
@@ -221,7 +221,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="ddl-schemas-priv"></a>5.7.4. Schemas and Privileges</h3></div></div></div>
-<a name="id2564476"></a><p>    By default, users cannot access any objects in schemas they do not
+<a name="id2572220"></a><p>    By default, users cannot access any objects in schemas they do not
     own.  To allow that, the owner of the schema needs to grant the
     <code class="literal">USAGE</code> privilege on the schema.  To allow users
     to make use of the objects in the schema, additional privileges
@@ -249,7 +249,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="ddl-schemas-catalog"></a>5.7.5. The System Catalog Schema</h3></div></div></div>
-<a name="id2564577"></a><p>    In addition to <code class="literal">public</code> and user-created schemas, each
+<a name="id2572320"></a><p>    In addition to <code class="literal">public</code> and user-created schemas, each
     database contains a <code class="literal">pg_catalog</code> schema, which contains
     the system tables and all the built-in data types, functions, and
     operators.  <code class="literal">pg_catalog</code> is always effectively part of

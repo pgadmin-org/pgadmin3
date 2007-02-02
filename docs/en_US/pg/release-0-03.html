@@ -1,26 +1,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.91. Postgres95 Release 0.03</title>
+<title>E.96. Postgres95 Release 0.03</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-1-0.html" title="E.90. Release 1.0">
-<link rel="next" href="release-0-02.html" title="E.92. Postgres95 Release 0.02">
+<link rel="prev" href="release-1-0.html" title="E.95. Release 1.0">
+<link rel="next" href="release-0-02.html" title="E.97. Postgres95 Release 0.02">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-0-03"></a>E.91. <span class="productname">Postgres95</span> Release 0.03</h2></div></div></div>
+<a name="release-0-03"></a>E.96. <span class="productname">Postgres95</span> Release 0.03</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1995-07-21</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2881266"></a>E.91.1. Changes</h3></div></div></div>
+<a name="id2889781"></a>E.96.1. Changes</h3></div></div></div>
 <pre class="programlisting">Incompatible changes:
  * BETA-0.3 IS INCOMPATIBLE WITH DATABASES CREATED WITH PREVIOUS VERSIONS
    (due to system catalog changes and indexing structure changes).
@@ -32,7 +32,7 @@
  * float literals (eg. 3.14) are now of type float4 (instead of float8 in
    previous releases); you might have to do typecasting if you depend on it
    being of type float8.  If you neglect to do the typecasting and you assign
-   a float literal to a field of type float8, you may get incorrect values
+   a float literal to a field of type float8, you might get incorrect values
    stored!
  * LIBPQ has been totally revamped so that frontend applications
    can connect to multiple backends
@@ -51,34 +51,34 @@ more compliant to the SQL-92 standard):
                 integer, int -&gt; int4
                 float, real  -&gt; float4
    char(N) and varchar(N) are implemented as truncated text types. In
-   addition, char(N) does blank-padding. 
+   addition, char(N) does blank-padding.
  * single-quote (') is used for quoting string literals; '' (in addition to
    \') is supported as means of inserting a single quote in a string
  * SQL standard aggregate names (MAX, MIN, AVG, SUM, COUNT) are used
    (Also, aggregates can now be overloaded, i.e. you can define your
    own MAX aggregate to take in a user-defined type.)
- * CHANGE ACL removed. GRANT/REVOKE syntax added.  
+ * CHANGE ACL removed. GRANT/REVOKE syntax added.
    - Privileges can be given to a group using the "GROUP" key word.
         For example:
                 GRANT SELECT ON foobar TO GROUP my_group;
-        The key word 'PUBLIC' is also supported to mean all users.      
+        The key word 'PUBLIC' is also supported to mean all users.
 
         Privileges can only be granted or revoked to one user or group
-        at a time.  
+        at a time.
 
         "WITH GRANT OPTION" is not supported.  Only class owners can change
         access control
    - The default access control is to to grant users readonly access.
      You must explicitly grant insert/update access to users.  To change
-     this, modify the line in 
-                src/backend/utils/acl.h 
-     that defines ACL_WORLD_DEFAULT 
+     this, modify the line in
+                src/backend/utils/acl.h
+     that defines ACL_WORLD_DEFAULT
 
 Bug fixes:
  * the bug where aggregates of empty tables were not run has been fixed. Now,
    aggregates run on empty tables will return the initial conditions of the
    aggregates. Thus, COUNT of an empty  table will now properly return 0.
-   MAX/MIN of an empty table will return a row of value NULL. 
+   MAX/MIN of an empty table will return a row of value NULL.
  * allow the use of \; inside the monitor
  * the LISTEN/NOTIFY asynchronous notification mechanism now work
  * NOTIFY in rule action bodies now work
@@ -93,7 +93,7 @@ Other changes and enhancements:
  * WARN and NOTICE messages no longer have timestamps on them. To turn on
    timestamps of error messages, uncomment the line in
    src/backend/utils/elog.h:
-        /* define ELOG_TIMESTAMPS */ 
+        /* define ELOG_TIMESTAMPS */
  * On an access control violation, the message
         "Either no such class or insufficient privilege"
    will be given.  This is the same message that is returned when
@@ -112,8 +112,8 @@ libpgtcl changes:
 Portability enhancements and New Ports:
  * flex/lex problems have been cleared up.  Now, you should be able to use
    flex instead of lex on any platforms.  We no longer make assumptions of
-   what lexer you use based on the platform you use. 
- * The Linux-ELF port is now supported.  Various configuration have been 
+   what lexer you use based on the platform you use.
+ * The Linux-ELF port is now supported.  Various configuration have been
    tested:  The following configuration is known to work:
         kernel 1.2.10, gcc 2.6.3, libc 4.7.2, flex 2.5.2, bison 1.24
    with everything in ELF format,

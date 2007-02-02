@@ -4,8 +4,8 @@
 <title>Chapter 39. PL/Perl - Perl Procedural Language</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="pltcl-procnames.html" title="38.8. Tcl Procedure Names">
 <link rel="next" href="plperl-database.html" title="39.2. Database Access from PL/Perl">
@@ -26,7 +26,7 @@
 <dt><span class="sect1"><a href="plperl-missing.html">39.7. Limitations and Missing Features</a></span></dt>
 </dl>
 </div>
-<a name="id2722568"></a><a name="id2722576"></a><p>   PL/Perl is a loadable procedural language that enables you to write
+<a name="id2730510"></a><a name="id2730518"></a><p>   PL/Perl is a loadable procedural language that enables you to write
    <span class="productname">PostgreSQL</span> functions in the 
    <a href="http://www.perl.com" target="_top">Perl programming language</a>.
   </p>
@@ -55,7 +55,7 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plperl-funcs"></a>39.1. PL/Perl Functions and Arguments</h2></div></div></div>
 <p>   To create a function in the PL/Perl language, use the standard
-   <a href="sql-createfunction.html">CREATE FUNCTION</a>
+   <a href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
    syntax:
 
 </p>
@@ -82,10 +82,10 @@ $$ LANGUAGE plperl;</pre>
 <p>   The syntax of the <code class="command">CREATE FUNCTION</code> command requires
    the function body to be written as a string constant.  It is usually
    most convenient to use dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) for the string constant.
-   If you choose to use regular single-quoted string constant syntax,
-   you must escape single quote marks (<code class="literal">'</code>) and backslashes
-   (<code class="literal">\</code>) used in the body of the function, typically by
-   doubling them (see <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>).
+   If you choose to use escape string syntax <code class="literal">E''</code>,
+   you must double the single quote marks (<code class="literal">'</code>) and backslashes
+   (<code class="literal">\</code>) used in the body of the function 
+   (see <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>).
   </p>
 <p>   Arguments and results are handled as in any other Perl subroutine:
    arguments are passed in <code class="varname">@_</code>, and a result value
@@ -102,7 +102,7 @@ $$ LANGUAGE plperl;</pre>
 $$ LANGUAGE plperl;</pre>
 <p>
   </p>
-<p>   If an SQL null value<a name="id2722777"></a> is passed to a function,
+<p>   If an SQL null value<a name="id2730724"></a> is passed to a function,
    the argument value will appear as &#8220;<span class="quote">undefined</span>&#8221; in Perl.  The
    above function definition will not behave very nicely with null
    inputs (in fact, it will act as though they are zeroes).  We could

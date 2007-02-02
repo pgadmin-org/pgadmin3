@@ -4,8 +4,8 @@
 <title>PREPARE TRANSACTION</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-prepare.html" title="PREPARE">
 <link rel="next" href="sql-reassign-owned.html" title="REASSIGN OWNED">
@@ -17,12 +17,12 @@
 <h2>Name</h2>
 <p>PREPARE TRANSACTION &#8212; prepare the current transaction for two-phase commit</p>
 </div>
-<a name="id2770323"></a><div class="refsynopsisdiv">
+<a name="id2778277"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">PREPARE TRANSACTION <em class="replaceable"><code>transaction_id</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2770344"></a><h2>Description</h2>
+<a name="id2778298"></a><h2>Description</h2>
 <p>   <code class="command">PREPARE TRANSACTION</code> prepares the current transaction
    for two-phase commit. After this command, the transaction is no longer 
    associated with the current session; instead, its state is fully stored on
@@ -31,8 +31,8 @@
    requested.
   </p>
 <p>   Once prepared, a transaction can later be committed or rolled back
-   with <a href="sql-commit-prepared.html">COMMIT PREPARED</a>
-   or <a href="sql-rollback-prepared.html">ROLLBACK PREPARED</a>,
+   with <a href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>
+   or <a href="sql-rollback-prepared.html" title="ROLLBACK PREPARED">ROLLBACK PREPARED</a>,
    respectively.  Those commands can be issued from any session, not
    only the one that executed the original transaction.
   </p>
@@ -48,7 +48,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2770421"></a><h2>Parameters</h2>
+<a name="id2778375"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>transaction_id</code></em></span></dt>
 <dd><p>      An arbitrary identifier that later identifies this transaction for
@@ -60,8 +60,8 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2770453"></a><h2>Notes</h2>
-<p>   This command must be used inside a transaction block. Use <a href="sql-begin.html">BEGIN</a> to start one.
+<a name="id2778407"></a><h2>Notes</h2>
+<p>   This command must be used inside a transaction block. Use <a href="sql-begin.html" title="BEGIN">BEGIN</a> to start one.
   </p>
 <p>   It is not currently allowed to <code class="command">PREPARE</code> a transaction that
    has executed any operations involving temporary tables or
@@ -107,8 +107,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2770611"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-commit-prepared.html">COMMIT PREPARED</a>, <a href="sql-rollback-prepared.html">ROLLBACK PREPARED</a></span>
+<a name="id2778565"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>, <a href="sql-rollback-prepared.html" title="ROLLBACK PREPARED">ROLLBACK PREPARED</a></span>
 </div>
 </div></body>
 </html>

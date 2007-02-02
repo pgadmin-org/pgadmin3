@@ -1,26 +1,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.2. Release 8.2</title>
+<title>E.3. Release 8.2</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release.html" title="Appendix E. Release Notes">
-<link rel="next" href="release-8-1-6.html" title="E.3. Release 8.1.6">
+<link rel="prev" href="release-8-2-1.html" title="E.2. Release 8.2.1">
+<link rel="next" href="release-8-1-7.html" title="E.4. Release 8.1.7">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-8-2"></a>E.2. Release 8.2</h2></div></div></div>
+<a name="release-8-2"></a>E.3. Release 8.2</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2006-12-05</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2847412"></a>E.2.1. Overview</h3></div></div></div>
+<a name="id2855520"></a>E.3.1. Overview</h3></div></div></div>
 <p>     This release adds many functionality and performance improvements that
      were requested by users, including:
 
@@ -72,7 +72,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2847555"></a>E.2.2. Migration to version 8.2</h3></div></div></div>
+<a name="id2855663"></a>E.3.2. Migration to version 8.2</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span> is
      required for those wishing to migrate data from any previous
      release.
@@ -214,10 +214,17 @@
 <li>
 <p>        Improve cost estimation for nested-loop index scans (Tom)
        </p>
-<p>        This may eliminate the need to set unrealistically small
+<p>        This might eliminate the need to set unrealistically small
         values of <a href="runtime-config-query.html#guc-random-page-cost"><code class="varname">random_page_cost</code></a>.
         If you have been using a very small <code class="varname">random_page_cost</code>,
         please recheck your test cases.
+       </p>
+</li>
+<li>
+<p>        Change behavior of <code class="command">pg_dump</code> <code class="literal">-n</code> and
+        <code class="literal">-t</code> options.  (Greg Sabino Mullane)
+       </p>
+<p>        See the <code class="command">pg_dump</code> manual page for details.
        </p>
 </li>
 <li><p>        Change <a href="libpq.html" title="Chapter 29. libpq - C Library"><span class="application">libpq</span></a>
@@ -282,14 +289,14 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2848210"></a>E.2.3. Changes</h3></div></div></div>
+<a name="id2856348"></a>E.3.3. Changes</h3></div></div></div>
 <p>     Below you will find a detailed account of the
      changes between <span class="productname">PostgreSQL</span> 8.2 and
      the previous major release.
     </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2848224"></a>E.2.3.1. Performance Improvements</h4></div></div></div>
+<a name="id2856362"></a>E.3.3.1. Performance Improvements</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Allow the planner to reorder <a href="queries-table-expressions.html#queries-join" title="7.2.1.1. Joined Tables">outer
@@ -383,7 +390,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2848514"></a>E.2.3.2. Server Changes</h4></div></div></div>
+<a name="id2856644"></a>E.3.3.2. Server Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Allow a forced switch to a new transaction log file (Simon, Tom)
@@ -508,7 +515,7 @@
         for every command (Bruce)
        </p>
 <p>        On platforms where it is expensive to update the <span class="application">ps</span>
-        display, it may be worthwhile to turn this off and rely solely on
+        display, it might be worthwhile to turn this off and rely solely on
         <code class="structname">pg_stat_activity</code> for status information.
        </p>
 </li>
@@ -582,7 +589,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2849015"></a>E.2.3.3. Query Changes</h4></div></div></div>
+<a name="id2857146"></a>E.3.3.3. Query Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Add <a href="sql-insert.html" title="INSERT"><code class="command">INSERT</code></a>/<a href="sql-update.html" title="UPDATE"><code class="command">UPDATE</code></a>/<a href="sql-delete.html" title="DELETE"><code class="command">DELETE</code></a>
@@ -688,7 +695,7 @@
        </p>
 <p>        This prevents surprising behavior due to multiple evaluation
         of a <code class="literal">volatile</code> function (such as <code class="function">random()</code>
-        or <code class="function">nextval()</code>).  It may cause performance
+        or <code class="function">nextval()</code>).  It might cause performance
         degradation in the presence of functions that are unnecessarily
         marked as <code class="literal">volatile</code>.
        </p>
@@ -723,7 +730,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2849550"></a>E.2.3.4. Object Manipulation Changes</h4></div></div></div>
+<a name="id2857681"></a>E.3.3.4. Object Manipulation Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Add <code class="literal">TABLESPACE</code> clause to <a href="sql-createtableas.html" title="CREATE TABLE AS"><code class="command">CREATE TABLE AS</code></a>
@@ -841,7 +848,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2849926"></a>E.2.3.5. Utility Command Changes</h4></div></div></div>
+<a name="id2858057"></a>E.3.3.5. Utility Command Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Add option to allow indexes to be created without blocking
@@ -894,7 +901,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2850088"></a>E.2.3.6. Date/Time Changes</h4></div></div></div>
+<a name="id2858219"></a>E.3.3.6. Date/Time Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Allow full timezone names in <a href="datatype-datetime.html" title="8.5. Date/Time Types"><code class="type">timestamp</code></a> input values
@@ -957,7 +964,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2850311"></a>E.2.3.7. Other Data Type and Function Changes</h4></div></div></div>
+<a name="id2858441"></a>E.3.3.7. Other Data Type and Function Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Allow arrays to contain <code class="literal">NULL</code> elements (Tom)
        </p></li>
@@ -1050,7 +1057,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2850714"></a>E.2.3.8. PL/PgSQL Server-Side Language Changes</h4></div></div></div>
+<a name="id2858845"></a>E.3.3.8. PL/PgSQL Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Add <code class="literal">TG_table_name</code> and <code class="literal">TG_table_schema</code> to
@@ -1080,7 +1087,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2850816"></a>E.2.3.9. PL/Perl Server-Side Language Changes</h4></div></div></div>
+<a name="id2858946"></a>E.3.3.9. PL/Perl Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add <code class="literal">table_name</code> and <code class="literal">table_schema</code> to
         trigger parameters (Adam Sj[oslash]gren)
@@ -1108,7 +1115,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2850868"></a>E.2.3.10. PL/Python Server-Side Language Changes</h4></div></div></div>
+<a name="id2858998"></a>E.3.3.10. PL/Python Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Named parameters are passed as ordinary variables, as well as in the
         <code class="literal">args[]</code> array (Sven Suursoho)
@@ -1129,7 +1136,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2850940"></a>E.2.3.11. <a href="app-psql.html" title="psql"><span class="application">psql</span></a> Changes</h4></div></div></div>
+<a name="id2859071"></a>E.3.3.11. <a href="app-psql.html" title="psql"><span class="application">psql</span></a> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add new command <code class="literal">\password</code> for changing role
         password with client-side password encryption (Peter)
@@ -1191,7 +1198,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2851116"></a>E.2.3.12. <a href="app-pgdump.html" title="pg_dump"><span class="application">pg_dump</span></a> Changes</h4></div></div></div>
+<a name="id2859247"></a>E.3.3.12. <a href="app-pgdump.html" title="pg_dump"><span class="application">pg_dump</span></a> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Allow complex selection of objects to be included or excluded
@@ -1224,7 +1231,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2851252"></a>E.2.3.13. <a href="libpq.html" title="Chapter 29. libpq - C Library"><span class="application">libpq</span></a> Changes</h4></div></div></div>
+<a name="id2859382"></a>E.3.3.13. <a href="libpq.html" title="Chapter 29. libpq - C Library"><span class="application">libpq</span></a> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Add <a href="libpq-misc.html" title="29.10. Miscellaneous Functions"><code class="function">PQencryptPassword()</code></a>
@@ -1265,7 +1272,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2851386"></a>E.2.3.14. <a href="ecpg.html" title="Chapter 31. ECPG - Embedded SQL in C"><span class="application">ecpg</span></a> Changes</h4></div></div></div>
+<a name="id2859517"></a>E.3.3.14. <a href="ecpg.html" title="Chapter 31. ECPG - Embedded SQL in C"><span class="application">ecpg</span></a> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Allow <a href="sql-show.html" title="SHOW"><code class="command">SHOW</code></a> to
         put its result into a variable (Joachim Wieland)
@@ -1281,7 +1288,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2851438"></a>E.2.3.15. <span class="application">Win32</span> Port</h4></div></div></div>
+<a name="id2859568"></a>E.3.3.15. <span class="application">Win32</span> Port</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Allow <acronym class="acronym">MSVC</acronym> to compile the <span class="productname">PostgreSQL</span>
         server (Magnus, Hiroshi Saito)
@@ -1308,7 +1315,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2851525"></a>E.2.3.16. Source Code Changes</h4></div></div></div>
+<a name="id2859656"></a>E.3.3.16. Source Code Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add <a href="gin.html" title="Chapter 51. GIN Indexes"><acronym class="acronym">GIN</acronym></a> (Generalized
         Inverted iNdex) index access method (Teodor, Oleg)
@@ -1328,7 +1335,7 @@
 <p>        Add a configure flag to allow libedit to be preferred over
         <acronym class="acronym">GNU</acronym> readline (Bruce)
        </p>
-<p>        Use configure <a href="install-procedure.html#configure"><code class="literal">--with-libedit-preferred</code></a>.
+<p>        Use configure <a href="install-procedure.html#configure" title="Configuration"><code class="literal">--with-libedit-preferred</code></a>.
        </p>
 </li>
 <li><p>        Allow installation into directories containing spaces
@@ -1426,7 +1433,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2851865"></a>E.2.3.17. Contrib Changes</h4></div></div></div>
+<a name="id2859995"></a>E.3.3.17. Contrib Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Major tsearch2 improvements (Oleg, Teodor)

@@ -4,8 +4,8 @@
 <title>4. Subscribing Nodes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="slonstart.html" title="3. Slon daemons">
 <link rel="next" href="monitoring.html" title="5. Monitoring">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="subscribenodes"></a>4. Subscribing Nodes</h2></div></div></div>
-<a name="id2558822"></a><p>Before you subscribe a node to a set, be sure that you have
+<a name="id2566566"></a><p>Before you subscribe a node to a set, be sure that you have
 <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes running for both the provider and the
 new subscribing node. If you don't have slons running, nothing will
 happen, and you'll beat your head against a wall trying to figure out
@@ -91,7 +91,7 @@ cursor for select log_origin, log_xid, log_tableid, log_actionseq,
 log_cmdtype, log_cmddata from "_T1".sl_log_1 where log_origin = 11 and
 ( order by log_actionseq; " PGRES_FATAL_ERROR ERROR: syntax error at
 or near "order" at character 162</pre>
-<p> The function <a href="function.subscribeset-integer-integer-integer-boolean.html">schemadocsubscribeset( integer, integer, integer, boolean )</a> will
+<p> The function <a href="function.subscribeset-integer-integer-integer-boolean.html" title="1.121.  subscribeset( integer, integer, integer, boolean )">schemadocsubscribeset( integer, integer, integer, boolean )</a> will
 generate a warning if given a replication set that lacks any tables to
 replicate, as shown in the following example.</p>
 <pre class="screen">cbbrowne@dba2:/tmp&gt; cat create_empty_set.slonik

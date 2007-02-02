@@ -4,8 +4,8 @@
 <title>SELECT INTO</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-select.html" title="SELECT">
 <link rel="next" href="sql-set.html" title="SET">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>SELECT INTO &#8212; define a new table from the results of a query</p>
 </div>
-<a name="id2776969"></a><div class="refsynopsisdiv">
+<a name="id2784922"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">SELECT [ ALL | DISTINCT [ ON ( <em class="replaceable"><code>expression</code></em> [, ...] ) ] ]
     * | <em class="replaceable"><code>expression</code></em> [ AS <em class="replaceable"><code>output_name</code></em> ] [, ...]
@@ -33,7 +33,7 @@
     [ FOR { UPDATE | SHARE } [ OF <em class="replaceable"><code>table_name</code></em> [, ...] ] [ NOWAIT ] [...] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2777073"></a><h2>Description</h2>
+<a name="id2785026"></a><h2>Description</h2>
 <p>   <code class="command">SELECT INTO</code> creates a new table and fills it
    with data computed by a query.  The data is not returned to the
    client, as it is with a normal <code class="command">SELECT</code>.  The new
@@ -42,22 +42,22 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2777100"></a><h2>Parameters</h2>
+<a name="id2785053"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd><p>     If specified, the table is created as a temporary table.  Refer
-     to <a href="sql-createtable.html">CREATE TABLE</a> for details.
+     to <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for details.
     </p></dd>
 <dt><span class="term"><em class="replaceable"><code>new_table</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table to be created.
      </p></dd>
 </dl></div>
-<p>   All other parameters are described in detail under <a href="sql-select.html">SELECT</a>.
+<p>   All other parameters are described in detail under <a href="sql-select.html" title="SELECT">SELECT</a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2777156"></a><h2>Notes</h2>
-<p>   <a href="sql-createtableas.html">CREATE TABLE AS</a> is functionally similar to
+<a name="id2785109"></a><h2>Notes</h2>
+<p>   <a href="sql-createtableas.html" title="CREATE TABLE AS">CREATE TABLE AS</a> is functionally similar to
    <code class="command">SELECT INTO</code>.  <code class="command">CREATE TABLE AS</code>
    is the recommended syntax, since this form of <code class="command">SELECT
    INTO</code> is not available in <span class="application">ECPG</span>
@@ -75,7 +75,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2777265"></a><h2>Examples</h2>
+<a name="id2785218"></a><h2>Examples</h2>
 <p>   Create a new table <code class="literal">films_recent</code> consisting of only
    recent entries from the table <code class="literal">films</code>:
 
@@ -85,7 +85,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2777291"></a><h2>Compatibility</h2>
+<a name="id2785244"></a><h2>Compatibility</h2>
 <p>   The SQL standard uses <code class="command">SELECT INTO</code> to
    represent selecting values into scalar variables of a host program,
    rather than creating a new table.  This indeed is the usage found
@@ -98,8 +98,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2777349"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createtableas.html">CREATE TABLE AS</a></span>
+<a name="id2785302"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createtableas.html" title="CREATE TABLE AS">CREATE TABLE AS</a></span>
 </div>
 </div></body>
 </html>

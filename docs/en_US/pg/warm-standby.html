@@ -4,8 +4,8 @@
 <title>23.4. Warm Standby Servers for High Availability</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="continuous-archiving.html" title="23.3. Continuous Archiving and Point-In-Time Recovery (PITR)">
 <link rel="next" href="migration.html" title="23.5. Migration Between Releases">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="warm-standby"></a>23.4. Warm Standby Servers for High Availability</h2></div></div></div>
-<a name="id2656029"></a><a name="id2656037"></a><a name="id2656046"></a><a name="id2656056"></a><a name="id2656065"></a><a name="id2656074"></a><a name="id2656082"></a><p>   Continuous archiving can be used to create a <em class="firstterm">high
+<a name="id2663800"></a><a name="id2663809"></a><a name="id2663818"></a><a name="id2663827"></a><a name="id2663836"></a><a name="id2663845"></a><a name="id2663854"></a><p>   Continuous archiving can be used to create a <em class="firstterm">high
    availability</em> (HA) cluster configuration with one or more
    <em class="firstterm">standby servers</em> ready to take 
    over operations if the primary server fails. This
@@ -70,7 +70,7 @@
     associated with tablespaces will be passed across as-is, so both
     primary and standby servers must have the same mount paths for
     tablespaces if that feature is used.  Keep in mind that if
-    <a href="sql-createtablespace.html">CREATE TABLESPACE</a>
+    <a href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a>
     is executed on the primary, any new mount point needed for it must
     be created on both the primary and all standby servers before the command
     is executed. Hardware need not be exactly the same, but experience shows
@@ -263,7 +263,7 @@ if (!triggered)
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="backup-incremental-updated"></a>23.4.5. Incrementally Updated Backups</h3></div></div></div>
-<a name="id2656568"></a><a name="id2656577"></a><p>    In a warm standby configuration, it is possible to offload the expense of
+<a name="id2664344"></a><a name="id2664354"></a><p>    In a warm standby configuration, it is possible to offload the expense of
     taking periodic base backups from the primary server; instead base backups
     can be made by backing
     up a standby server's files.  This concept is generally known as 

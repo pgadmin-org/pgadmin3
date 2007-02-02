@@ -1,25 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.71. Release 7.0</title>
+<title>E.76. Release 7.0</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-0-1.html" title="E.70. Release 7.0.1">
-<link rel="next" href="release-6-5-3.html" title="E.72. Release 6.5.3">
+<link rel="prev" href="release-7-0-1.html" title="E.75. Release 7.0.1">
+<link rel="next" href="release-6-5-3.html" title="E.77. Release 6.5.3">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-7-0"></a>E.71. Release 7.0</h2></div></div></div>
+<a name="release-7-0"></a>E.76. Release 7.0</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2000-05-08</p>
 </div>
-<p> 
-    This release contains improvements in many areas, demonstrating
+<p>    This release contains improvements in many areas, demonstrating
     the continued growth of <span class="productname">PostgreSQL</span>.
     There are more improvements and fixes in 7.0 than in any previous
     release. The developers have confidence that this is the best
@@ -57,11 +56,11 @@
 </dl></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2877215"></a>E.71.1. Migration to version 7.0</h3></div></div></div>
+<a name="id2885592"></a>E.76.1. Migration to version 7.0</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span>
      is required for those wishing to migrate data from any
      previous release of <span class="productname">PostgreSQL</span>.
-     For those upgrading from 6.5.*, you may instead use 
+     For those upgrading from 6.5.*, you can instead use
      <span class="application">pg_upgrade</span> to upgrade to this
      release; however, a full dump/reload installation is always the
      most robust method for upgrades.
@@ -77,7 +76,7 @@
        ease the transition by allowing
        <span class="productname">PostgreSQL</span> to recognize
        the deprecated type names and translate them to the new type
-       names, this mechanism may not be completely transparent to
+       names, this mechanism cannot be completely transparent to
        your existing application.
       </p></li>
 <li><p>       The optimizer has been substantially improved in the area of
@@ -85,8 +84,8 @@
        decreased query times as the optimizer makes a better choice
        for the preferred plan. However, in a small number of cases,
        usually involving pathological distributions of data, your
-       query times may go up. If you are dealing with large amounts
-       of data, you may want to check your queries to verify
+       query times might go up. If you are dealing with large amounts
+       of data, you might want to check your queries to verify
        performance.
       </p></li>
 <li><p>       The <acronym class="acronym">JDBC</acronym> and <acronym class="acronym">ODBC</acronym>
@@ -102,7 +101,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2877327"></a>E.71.2. Changes</h3></div></div></div>
+<a name="id2885704"></a>E.76.2. Changes</h3></div></div></div>
 <p>     </p>
 <pre class="programlisting">Bug Fixes
 ---------
@@ -218,8 +217,8 @@ Force permissions on PGDATA directory to be secure, even if it exists (Tom)
 Added psql LASTOID variable to return last inserted oid (Peter E)
 Allow concurrent vacuum and remove pg_vlock vacuum lock file (Tom)
 Add privilege check for vacuum (Peter E)
-New libpq functions to allow asynchronous connections: PQconnectStart(), 
-   PQconnectPoll(), PQresetStart(), PQresetPoll(), PQsetenvStart(), 
+New libpq functions to allow asynchronous connections: PQconnectStart(),
+   PQconnectPoll(), PQresetStart(), PQresetPoll(), PQsetenvStart(),
    PQsetenvPoll(), PQsetenvAbort (Ewan Mellor)
 New libpq PQsetenv() function (Ewan Mellor)
 create/alter user extension (Peter E)
@@ -237,7 +236,7 @@ Add CREATE/ALTER/DROP GROUP (Peter E)
 All administration scripts now support --long options (Peter E, Karel)
 Vacuumdb script now supports --all option (Peter E)
 ecpg new portable FETCH syntax
-Add ecpg EXEC SQL IFDEF, EXEC SQL IFNDEF, EXEC SQL ELSE, EXEC SQL ELIF 
+Add ecpg EXEC SQL IFDEF, EXEC SQL IFNDEF, EXEC SQL ELSE, EXEC SQL ELIF
         and EXEC SQL ENDIF directives
 Add pg_ctl script to control backend start-up (Tatsuo)
 Add postmaster.opts.default file to store start-up flags (Tatsuo)
@@ -312,7 +311,7 @@ Cleanups for int8 inputs, range checking, and type conversion (Tom)
 Fix for SELECT timespan('21:11:26'::time) (Tom)
 netmask('x.x.x.x/0') is 255.255.255.255 instead of 0.0.0.0 (Oleg Sharoiko)
 Add btree index on NUMERIC (Jan)
-Perl fix for large objects containing NUL characters (Douglas Thomson) 
+Perl fix for large objects containing NUL characters (Douglas Thomson)
 ODBC fix for for large objects (free)
 Fix indexing of cidr data type
 Fix for Ethernet MAC addresses (macaddr type) comparisons

@@ -4,8 +4,8 @@
 <title>17.4. Resource Consumption</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-connection.html" title="17.3. Connections and Authentication">
 <link rel="next" href="runtime-config-wal.html" title="17.5. Write Ahead Log">
@@ -22,17 +22,17 @@
 <a name="guc-shared-buffers"></a><span class="term"><code class="varname">shared_buffers</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd>
-<p>        Sets the number of shared memory buffers used by the database
-        server. The default is typically 4000, but may be less if your
-        kernel settings will not support it (as determined during
-        <span class="application">initdb</span>).  Each buffer is 8192 bytes, unless a
-        different value of <code class="symbol">BLCKSZ</code> was chosen when building
-        the server.  This setting must be at least 16, as well as at
-        least twice the value of <a href="runtime-config-connection.html#guc-max-connections">max_connections</a>;
-        however, settings significantly higher than the minimum are
-        usually needed for good performance.  Values of a few thousand
-        are recommended for production installations.  This parameter can
-        only be set at server start.
+<p>        Sets the amount of memory the database server uses for shared
+        memory buffers.  The default is typically 32 megabytes
+        (<code class="literal">32MB</code>), but may be less if your kernel settings will
+        not support it (as determined during <span class="application">initdb</span>).
+        This setting must be at least 128 kilobytes and at least 16
+        kilobytes times <a href="runtime-config-connection.html#guc-max-connections">max_connections</a>.  (Non-default
+        values of <code class="symbol">BLCKSZ</code> change the minimum.)  However,
+        settings significantly higher than the minimum are usually needed
+        for good performance.  Several tens of megabytes are recommended
+        for production installations.  This parameter can only be set at
+        server start.
        </p>
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
         to request more <span class="systemitem">System V</span> shared
@@ -46,11 +46,12 @@
 </dt>
 <dd>
 <p>        Sets the maximum number of temporary buffers used by each database
-        session.  These are session-local buffers used only for access
-        to temporary tables.  The default is 1000.  The setting can
-        be changed within individual sessions, but only up until the
-        first use of temporary tables within a session; subsequent
-        attempts to change the value will have no effect on that session.
+        session.  These are session-local buffers used only for access to
+        temporary tables.  The default is eight megabytes
+        (<code class="literal">8MB</code>).  The setting can be changed within individual
+        sessions, but only up until the first use of temporary tables
+        within a session; subsequent attempts to change the value will
+        have no effect on that session.
        </p>
 <p>        A session will allocate temporary buffers as needed up to the limit
         given by <code class="varname">temp_buffers</code>.  The cost of setting a large
@@ -66,10 +67,10 @@
 </dt>
 <dd>
 <p>        Sets the maximum number of transactions that can be in the
-        &#8220;<span class="quote">prepared</span>&#8221; state simultaneously (see <a href="sql-prepare-transaction.html">PREPARE TRANSACTION</a>).
+        &#8220;<span class="quote">prepared</span>&#8221; state simultaneously (see <a href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a>).
         Setting this parameter to zero disables the prepared-transaction
         feature.
-        The default is 5.
+        The default is five transactions.
         This parameter can only be set at server start.
        </p>
 <p>        If you are not using prepared transactions, this parameter may as
@@ -90,7 +91,7 @@
 </dt>
 <dd><p>        Specifies the amount of memory to be used by internal sort operations
         and hash tables before switching to temporary disk files. The value is
-        specified in kilobytes, and defaults to 1024 kilobytes (1 MB).
+        defaults to one megabyte (<code class="literal">1MB</code>).
         Note that for a complex query, several sort or hash operations might be
         running in parallel; each one will be allowed to use as much memory
         as this value specifies before it starts to put data into temporary
@@ -108,14 +109,13 @@
 </dt>
 <dd><p>        Specifies the maximum amount of memory to be used in maintenance
         operations, such as <code class="command">VACUUM</code>, <code class="command">CREATE
-        INDEX</code>, and <code class="command">ALTER TABLE ADD FOREIGN KEY</code>.
-        The value is specified in kilobytes, and defaults to 16384 kilobytes
-        (16 MB).  Since only one of these operations can be executed at 
-        a time by a database session, and an installation normally doesn't
-        have very many of them happening concurrently, it's safe to set this
-        value significantly larger than <code class="varname">work_mem</code>.  Larger
-        settings may improve performance for vacuuming and for restoring
-        database dumps.
+        INDEX</code>, and <code class="command">ALTER TABLE ADD FOREIGN KEY</code>.  It defaults
+        to 16 megabytes (<code class="literal">16MB</code>).  Since only one of these
+        operations can be executed at a time by a database session, and
+        an installation normally doesn't have many of them running
+        concurrently, it's safe to set this value significantly larger
+        than <code class="varname">work_mem</code>.  Larger settings may improve
+        performance for vacuuming and for restoring database dumps.
        </p></dd>
 <dt>
 <a name="guc-max-stack-depth"></a><span class="term"><code class="varname">max_stack_depth</code> (<code class="type">integer</code>)</span>
@@ -127,11 +127,11 @@
         equivalent), less a safety margin of a megabyte or so.  The safety
         margin is needed because the stack depth is not checked in every
         routine in the server, but only in key potentially-recursive routines
-        such as expression evaluation.  The default setting is
-        2048 kB (two megabytes), which is conservatively small and unlikely
-        to risk crashes.  However, it may be too small to allow execution
-        of complex functions.
-        Only superusers can change this setting.
+        such as expression evaluation.  The default setting is two
+        megabytes (<code class="literal">2MB</code>), which is conservatively small and
+        unlikely to risk crashes.  However, it may be too small to allow
+        execution of complex functions.  Only superusers can change this
+        setting.
        </p>
 <p>        Setting <code class="varname">max_stack_depth</code> higher than
         the actual kernel limit will mean that a runaway recursive function
@@ -147,7 +147,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="runtime-config-resource-fsm"></a>17.4.2. Free Space Map</h3></div></div></div>
-<a name="id2632858"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
+<a name="id2640616"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
       map</em>, which tracks the locations of unused space in the database.
       An undersized free space map may cause the database to consume
       increasing amounts of disk space over time, because free space that
@@ -171,10 +171,10 @@
 </dt>
 <dd><p>        Sets the maximum number of disk pages for which free space will
         be tracked in the shared free-space map.  Six bytes of shared memory
-        are consumed for each page slot.  This setting must be more than
+        are consumed for each page slot.  This setting must be at least
         16 * <code class="varname">max_fsm_relations</code>.  The default is chosen
         by <span class="application">initdb</span> depending on the amount of available memory,
-        and can range from 20000 to 200000.
+        and can range from 20k to 200k pages.
         This parameter can only be set at server start.
        </p></dd>
 <dt>
@@ -183,7 +183,7 @@
 <dd><p>        Sets the maximum number of relations (tables and indexes) for which
         free space will be tracked in the shared free-space map.  Roughly
         seventy bytes of shared memory are consumed for each slot.
-        The default is 1000.
+        The default is one thousand relations.
         This parameter can only be set at server start.
        </p></dd>
 </dl></div>
@@ -196,7 +196,7 @@
 <a name="guc-max-files-per-process"></a><span class="term"><code class="varname">max_files_per_process</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Sets the maximum number of simultaneously open files allowed to each
-        server subprocess. The default is 1000. If the kernel is enforcing
+        server subprocess. The default is one thousand files. If the kernel is enforcing
         a safe per-process limit, you don't need to worry about this setting.
         But on some platforms (notably, most BSD systems), the kernel will
         allow individual processes to open many more files than the system
@@ -245,7 +245,7 @@
 <div class="titlepage"><div><div><h3 class="title">
 <a name="runtime-config-resource-vacuum-cost"></a>17.4.4.        Cost-Based Vacuum Delay
      </h3></div></div></div>
-<p>      During the execution of <a href="sql-vacuum.html">VACUUM</a> and <a href="sql-analyze.html">ANALYZE</a> commands, the system maintains an
+<p>      During the execution of <a href="sql-vacuum.html" title="VACUUM">VACUUM</a> and <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a> commands, the system maintains an
       internal counter that keeps track of the estimated cost of the
       various I/O operations that are performed.  When the accumulated
       cost reaches a limit (specified by
@@ -274,7 +274,7 @@
 </dt>
 <dd><p>         The length of time, in milliseconds, that the process will sleep
          when the cost limit has been exceeded.
-         The default value is 0, which disables the cost-based vacuum
+         The default value is zero, which disables the cost-based vacuum
          delay feature.  Positive values enable cost-based vacuuming.
          Note that on many systems, the effective resolution
          of sleep delays is 10 milliseconds; setting
@@ -288,7 +288,7 @@
 <dd><p>         The estimated cost for vacuuming a buffer found in the shared buffer
          cache. It represents the cost to lock the buffer pool, lookup
          the shared hash table and scan the content of the page. The
-         default value is 1.
+         default value is one.
         </p></dd>
 <dt>
 <a name="guc-vacuum-cost-page-miss"></a><span class="term"><code class="varname">vacuum_cost_page_miss</code> (<code class="type">integer</code>)</span>
@@ -355,13 +355,13 @@
          background writer.  In each round the writer issues writes
          for some number of dirty buffers (controllable by the
          following parameters).  It then sleeps for <code class="varname">bgwriter_delay</code>
-         milliseconds, and repeats.  The default value is 200. Note
-         that on many systems, the effective resolution of sleep
-         delays is 10 milliseconds; setting <code class="varname">bgwriter_delay</code>
-         to a value that is not a multiple of 10 may have the same
-         results as setting it to the next higher multiple of 10.
-         This parameter can only be set in the <code class="filename">postgresql.conf</code>
-         file or on the server command line.
+         milliseconds, and repeats.  The default value is 200 milliseconds
+         (<code class="literal">200ms</code>). Note that on many systems, the effective
+         resolution of sleep delays is 10 milliseconds; setting
+         <code class="varname">bgwriter_delay</code> to a value that is not a multiple of
+         10 may have the same results as setting it to the next higher
+         multiple of 10.  This parameter can only be set in the
+         <code class="filename">postgresql.conf</code> file or on the server command line.
         </p></dd>
 <dt>
 <a name="guc-bgwriter-lru-percent"></a><span class="term"><code class="varname">bgwriter_lru_percent</code> (<code class="type">floating point</code>)</span>
@@ -371,8 +371,7 @@
          are likely to be recycled soon.  In each round, it examines up to
          <code class="varname">bgwriter_lru_percent</code> of the buffers that are nearest to
          being recycled, and writes any that are dirty.
-         The default value is 1.0 (this is a percentage of the total number
-         of shared buffers).
+         The default value is 1.0 (1% of the total number of shared buffers).
          This parameter can only be set in the <code class="filename">postgresql.conf</code>
          file or on the server command line.
         </p></dd>
@@ -381,7 +380,7 @@
 </dt>
 <dd><p>         In each round, no more than this many buffers will be written
          as a result of scanning soon-to-be-recycled buffers.
-         The default value is 5.
+         The default value is five buffers.
          This parameter can only be set in the <code class="filename">postgresql.conf</code>
          file or on the server command line.
         </p></dd>
@@ -393,7 +392,7 @@
          buffer pool, writing buffers that are found to be dirty.
          In each round, it examines up to
          <code class="varname">bgwriter_all_percent</code> of the buffers for this purpose.
-         The default value is 0.333 (this is a percentage of the total number
+         The default value is 0.333 (0.333% of the total number
          of shared buffers).  With the default <code class="varname">bgwriter_delay</code>
          setting, this will allow the entire shared buffer pool to be scanned
          about once per minute.
@@ -407,7 +406,7 @@
          as a result of the scan of the entire buffer pool.  (If this
          limit is reached, the scan stops, and resumes at the next buffer
          during the next round.)
-         The default value is 5.
+         The default value is five buffers.
          This parameter can only be set in the <code class="filename">postgresql.conf</code>
          file or on the server command line.
         </p></dd>

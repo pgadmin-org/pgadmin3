@@ -1,26 +1,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.20. Release 8.0</title>
+<title>E.23. Release 8.0</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-0-1.html" title="E.19. Release 8.0.1">
-<link rel="next" href="release-7-4-15.html" title="E.21. Release 7.4.15">
+<link rel="prev" href="release-8-0-1.html" title="E.22. Release 8.0.1">
+<link rel="next" href="release-7-4-16.html" title="E.24. Release 7.4.16">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-8-0"></a>E.20. Release 8.0</h2></div></div></div>
+<a name="release-8-0"></a>E.23. Release 8.0</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2005-01-19</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2859973"></a>E.20.1. Overview</h3></div></div></div>
+<a name="id2868266"></a>E.23.1. Overview</h3></div></div></div>
 <p>     Major changes in this release:
     </p>
 <div class="variablelist"><dl>
@@ -107,7 +107,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2860217"></a>E.20.2. Migration to version 8.0</h3></div></div></div>
+<a name="id2868511"></a>E.23.2. Migration to version 8.0</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span> is
      required for those wishing to migrate data from any previous
      release.
@@ -222,8 +222,7 @@
        behavior across all platforms.  In most cases, there should be
        little noticeable difference in time zone behavior, except that
        the time zone names used by <code class="command">SET</code>/<code class="command">SHOW</code>
-       <code class="varname">TimeZone</code> may
-       be different from what your platform provides.
+       <code class="varname">TimeZone</code> might be different from what your platform provides.
       </p></li>
 <li><p>       <span class="application">Configure</span>'s threading option no longer requires
        users to run tests or edit configuration files; threading options
@@ -241,7 +240,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2860651"></a>E.20.3. Deprecated Features</h3></div></div></div>
+<a name="id2868944"></a>E.23.3. Deprecated Features</h3></div></div></div>
 <p>     Some aspects of <span class="productname">PostgreSQL</span>'s behavior
      have been determined to be suboptimal. For the sake of backward
      compatibility these have not been removed in 8.0, but they are
@@ -272,13 +271,13 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2860739"></a>E.20.4. Changes</h3></div></div></div>
+<a name="id2869032"></a>E.23.4. Changes</h3></div></div></div>
 <p>     Below you will find a detailed account of the changes between
      release 8.0 and the previous major release.
     </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2860747"></a>E.20.4.1. Performance Improvements</h4></div></div></div>
+<a name="id2869040"></a>E.23.4.1. Performance Improvements</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Support cross-data-type index usage (Tom)
@@ -296,7 +295,7 @@
         did not consider the number of times a specific cache entry was
         accessed, so large table scans could force out useful cache pages.
         The new cache algorithm uses four separate lists to track most
-        recently used and most frequently used cache pages and dynamically 
+        recently used and most frequently used cache pages and dynamically
         optimize their replacement based on the work load. This should
         lead to much more efficient use of the shared buffer cache.
         Administrators who have tested shared buffer sizes in the past
@@ -428,7 +427,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2861021"></a>E.20.4.2. Server Changes</h4></div></div></div>
+<a name="id2869315"></a>E.23.4.2. Server Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add WAL file archiving and point-in-time recovery (Simon Riggs)
        </p></li>
@@ -517,7 +516,7 @@
 <li><p>        Some logging-related configuration parameters could formerly be adjusted
         by ordinary users, but only in the &#8220;<span class="quote">more verbose</span>&#8221; direction.
         They are now treated more strictly: only superusers can set them.
-        However, a superuser may use <code class="command">ALTER USER</code> to provide per-user
+        However, a superuser can use <code class="command">ALTER USER</code> to provide per-user
         settings of these values for non-superusers.  Also, it is now possible
         for superusers to set values of superuser-only configuration parameters
         via <code class="literal">PGOPTIONS</code>.
@@ -571,7 +570,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2861423"></a>E.20.4.3. Query Changes</h4></div></div></div>
+<a name="id2869716"></a>E.23.4.3. Query Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add savepoints (nested transactions) (Alvaro)
        </p></li>
@@ -592,7 +591,7 @@
         a query type different from the originally submitted query (Tom)
        </p></li>
 <li>
-<p>        Implement dollar quoting to simplify single-quote usage (Andrew, Tom, 
+<p>        Implement dollar quoting to simplify single-quote usage (Andrew, Tom,
         David Fetter)
        </p>
 <p>        In previous releases, because single quotes had to be used to
@@ -627,7 +626,7 @@
         <code class="varname">max_stack_depth</code> parameter, measured in kilobytes of stack
         size (Tom)
        </p>
-<p>       This gives us a fairly bulletproof defense against crashing due to 
+<p>       This gives us a fairly bulletproof defense against crashing due to
        runaway recursive functions. Instead of measuring the depth of expression
        nesting, we now directly measure the size of the execution stack.
        </p>
@@ -678,7 +677,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2861642"></a>E.20.4.4. Object Manipulation Changes</h4></div></div></div>
+<a name="id2869935"></a>E.23.4.4. Object Manipulation Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add <code class="command">COMMENT ON</code> for casts, conversions, languages,
         operator classes, and large objects (Christopher)
@@ -786,7 +785,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2861938"></a>E.20.4.5. Utility Command Changes</h4></div></div></div>
+<a name="id2870231"></a>E.23.4.5. Utility Command Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Allow <code class="command">CREATE SCHEMA</code> to create triggers,
         indexes, and sequences (Neil)
@@ -879,7 +878,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2862204"></a>E.20.4.6. Data Type and Function Changes</h4></div></div></div>
+<a name="id2870497"></a>E.23.4.6. Data Type and Function Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        More complete support for composite types (row types)  (Tom)
@@ -1049,7 +1048,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2862700"></a>E.20.4.7. Server-Side Language Changes</h4></div></div></div>
+<a name="id2870993"></a>E.23.4.7. Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        In <code class="literal">READ COMMITTED</code> serialization mode, volatile functions
         now see the results of concurrent transactions committed up to the
@@ -1131,7 +1130,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2862886"></a>E.20.4.8. <span class="application">psql</span> Changes</h4></div></div></div>
+<a name="id2871179"></a>E.23.4.8. <span class="application">psql</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Improve <span class="application">psql</span> information display about database
         objects (Christopher)
@@ -1189,7 +1188,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2863143"></a>E.20.4.9. <span class="application">pg_dump</span> Changes</h4></div></div></div>
+<a name="id2871436"></a>E.23.4.9. <span class="application">pg_dump</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Use dependency information to improve the reliability of
@@ -1236,7 +1235,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2863294"></a>E.20.4.10. libpq Changes</h4></div></div></div>
+<a name="id2871587"></a>E.23.4.10. libpq Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Make libpq's <code class="option">SIGPIPE</code> handling thread-safe (Bruce)
        </p></li>
@@ -1263,7 +1262,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2863396"></a>E.20.4.11. Source Code Changes</h4></div></div></div>
+<a name="id2871689"></a>E.23.4.11. Source Code Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Allow the database server to run natively on Windows (Claudio, Magnus, Andrew)
        </p></li>
@@ -1342,7 +1341,7 @@
 <li><p>        Use Olson's public domain <span class="application">timezone</span> library (Magnus)
        </p></li>
 <li>
-<p>        With threading enabled, use thread flags on Unixware for 
+<p>        With threading enabled, use thread flags on Unixware for
         backend executables too (Bruce)
        </p>
 <p>        Unixware cannot mix threaded and nonthreaded object files in the
@@ -1375,7 +1374,7 @@
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2863680"></a>E.20.4.12. Contrib Changes</h4></div></div></div>
+<a name="id2871973"></a>E.23.4.12. Contrib Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Overhaul of <code class="filename">contrib/dblink</code> (Joe)
        </p></li>

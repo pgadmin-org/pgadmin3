@@ -4,8 +4,8 @@
 <title>17.10. Client Connection Defaults</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-autovacuum.html" title="17.9. Automatic Vacuuming">
 <link rel="next" href="runtime-config-locks.html" title="17.11. Lock Management">
@@ -91,7 +91,7 @@
 <a name="guc-check-function-bodies"></a><span class="term"><code class="varname">check_function_bodies</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        This parameter is normally on. When set to <code class="literal">off</code>, it
-        disables validation of the function body string during <a href="sql-createfunction.html">CREATE FUNCTION</a>. Disabling validation is
+        disables validation of the function body string during <a href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>. Disabling validation is
         occasionally useful to avoid problems such as forward references
         when restoring function definitions from a dump.
        </p></dd>
@@ -106,7 +106,7 @@
         default isolation level of each new transaction. The default
         is &#8220;<span class="quote">read committed</span>&#8221;.
        </p>
-<p>        Consult <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> and <a href="sql-set-transaction.html">SET TRANSACTION</a> for more information.
+<p>        Consult <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> and <a href="sql-set-transaction.html" title="SET TRANSACTION">SET TRANSACTION</a> for more information.
        </p>
 </dd>
 <dt>
@@ -117,7 +117,7 @@
         This parameter controls the default read-only status of each new
         transaction. The default is <code class="literal">off</code> (read/write).
        </p>
-<p>        Consult <a href="sql-set-transaction.html">SET TRANSACTION</a> for more information.
+<p>        Consult <a href="sql-set-transaction.html" title="SET TRANSACTION">SET TRANSACTION</a> for more information.
        </p>
 </dd>
 <dt>
@@ -136,11 +136,12 @@
 <dd><p>        Specifies the cutoff age (in transactions) that <code class="command">VACUUM</code>
         should use to decide whether to replace transaction IDs with
         <code class="literal">FrozenXID</code> while scanning a table.
-        The default is 100000000 (100 million).  Although users can set this
-        value anywhere from zero to 1000000000, <code class="command">VACUUM</code> will
-        silently limit the effective value to half the value of <a href="runtime-config-autovacuum.html#guc-autovacuum-freeze-max-age">autovacuum_freeze_max_age</a>, so that there is not an
-        unreasonably short time between forced autovacuums.
-        For more information see <a href="maintenance.html#vacuum-for-wraparound" title="22.1.3. Preventing transaction ID wraparound failures">Section 22.1.3, &#8220;Preventing transaction ID wraparound failures&#8221;</a>.
+        The default is 100 million transactions.  Although
+        users can set this value anywhere from zero to one billion,
+        <code class="command">VACUUM</code> will silently limit the effective value to half
+        the value of <a href="runtime-config-autovacuum.html#guc-autovacuum-freeze-max-age">autovacuum_freeze_max_age</a>, so
+        that there is not an unreasonably short time between forced
+        autovacuums.  For more information see <a href="maintenance.html#vacuum-for-wraparound" title="22.1.3. Preventing transaction ID wraparound failures">Section 22.1.3, &#8220;Preventing transaction ID wraparound failures&#8221;</a>.
        </p></dd>
 </dl></div>
 </div>
@@ -171,15 +172,16 @@
 <dt>
 <a name="guc-timezone"></a><span class="term"><code class="varname">timezone</code> (<code class="type">string</code>)</span>
 </dt>
-<dd><p>        Sets the time zone for displaying and interpreting time
-        stamps.  The default is 'unknown', which means to use whatever 
-        the system environment specifies as the time zone.  See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
+<dd><p>        Sets the time zone for displaying and interpreting time stamps.
+        The default is <code class="literal">'unknown'</code>, which means to use whatever
+        the system environment specifies as the time zone.  See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more
+        information.
        </p></dd>
 <dt>
 <a name="guc-timezone-abbreviations"></a><span class="term"><code class="varname">timezone_abbreviations</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Sets the collection of time zone abbreviations that will be accepted
-        by the server for datetime input.  The default is 'Default',
+        by the server for datetime input.  The default is <code class="literal">'Default'</code>,
         which is a collection that works in most of the world; there are
         also 'Australia' and 'India', and other collections can be defined
         for a particular installation.  See <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for more information.

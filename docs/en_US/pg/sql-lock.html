@@ -4,8 +4,8 @@
 <title>LOCK</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-load.html" title="LOAD">
 <link rel="next" href="sql-move.html" title="MOVE">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>LOCK &#8212; lock a table</p>
 </div>
-<a name="id2768764"></a><div class="refsynopsisdiv">
+<a name="id2776727"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">LOCK [ TABLE ] <em class="replaceable"><code>name</code></em> [, ...] [ IN <em class="replaceable"><code>lockmode</code></em> MODE ] [ NOWAIT ]
 
@@ -27,7 +27,7 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
     | SHARE | SHARE ROW EXCLUSIVE | EXCLUSIVE | ACCESS EXCLUSIVE</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2768800"></a><h2>Description</h2>
+<a name="id2776763"></a><h2>Description</h2>
 <p>   <code class="command">LOCK TABLE</code> obtains a table-level lock, waiting
    if necessary for any conflicting locks to be released.  If
    <code class="literal">NOWAIT</code> is specified, <code class="command">LOCK
@@ -85,7 +85,7 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2769004"></a><h2>Parameters</h2>
+<a name="id2776967"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd>
@@ -116,7 +116,7 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2769089"></a><h2>Notes</h2>
+<a name="id2777052"></a><h2>Notes</h2>
 <p>    <code class="literal">LOCK TABLE ... IN ACCESS SHARE MODE</code> requires <code class="literal">SELECT</code>
     privileges on the target table.  All other forms of <code class="command">LOCK</code>
     require <code class="literal">UPDATE</code> and/or <code class="literal">DELETE</code> privileges.
@@ -137,12 +137,12 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
    <code class="command">LOCK TABLE</code> is concerned, differing only in the rules
    about which modes conflict with which. For information on how to
    acquire an actual row-level lock, see <a href="explicit-locking.html#locking-rows" title="12.3.2. Row-Level Locks">Section 12.3.2, &#8220;Row-Level Locks&#8221;</a>
-   and the <a href="sql-select.html#sql-for-update-share"><code class="literal">FOR UPDATE</code>/<code class="literal">FOR SHARE</code> Clause</a> in the <code class="command">SELECT</code>
+   and the <a href="sql-select.html#sql-for-update-share" title="FOR UPDATE/FOR SHARE Clause"><code class="literal">FOR UPDATE</code>/<code class="literal">FOR SHARE</code> Clause</a> in the <code class="command">SELECT</code>
    reference documentation.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2769217"></a><h2>Examples</h2>
+<a name="id2777180"></a><h2>Examples</h2>
 <p>   Obtain a <code class="literal">SHARE</code> lock on a primary key table when going to perform
    inserts into a foreign key table:
 
@@ -171,11 +171,11 @@ COMMIT WORK;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2769261"></a><h2>Compatibility</h2>
+<a name="id2777224"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">LOCK TABLE</code> in the SQL standard,
    which instead uses <code class="command">SET TRANSACTION</code> to specify
    concurrency levels on transactions.  <span class="productname">PostgreSQL</span> supports that too;
-   see <a href="sql-set-transaction.html">SET TRANSACTION</a> for details.
+   see <a href="sql-set-transaction.html" title="SET TRANSACTION">SET TRANSACTION</a> for details.
   </p>
 <p>   Except for <code class="literal">ACCESS SHARE</code>, <code class="literal">ACCESS EXCLUSIVE</code>,
    and <code class="literal">SHARE UPDATE EXCLUSIVE</code> lock modes, the

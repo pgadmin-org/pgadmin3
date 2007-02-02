@@ -4,8 +4,8 @@
 <title>Chapter 17. Server Configuration</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="ssh-tunnels.html" title="16.8. Secure TCP/IP Connections with SSH Tunnels">
 <link rel="next" href="runtime-config-file-locations.html" title="17.2. File Locations">
@@ -77,7 +77,7 @@
 <dt><span class="sect1"><a href="runtime-config-short.html">17.16. Short Options</a></span></dt>
 </dl>
 </div>
-<a name="id2630616"></a><p>   There are many configuration parameters that affect the behavior of
+<a name="id2638333"></a><p>   There are many configuration parameters that affect the behavior of
    the database system. In the first section of this chapter, we
    describe how to set configuration parameters. The subsequent sections
    discuss each parameter in detail.
@@ -93,20 +93,20 @@
     <code class="literal">NO</code>, <code class="literal">1</code>, <code class="literal">0</code>
     (all case-insensitive) or any unambiguous prefix of these.
    </p>
-<p>    Some settings specify a memory or time value.  Each of these has
-    an implicit unit, which is either kilobytes, blocks (typically 8
-    kilobytes), milliseconds, seconds, or minutes.  For convenience, a
-    (possibly different) unit can also be specified explicitly.  Valid
-    memory units are <code class="literal">kB</code> (kilobytes),
-    <code class="literal">MB</code> (megabytes), and <code class="literal">GB</code>
-    (gigabytes); valid time units are <code class="literal">ms</code>
-    (milliseconds), <code class="literal">s</code> (seconds),
-    <code class="literal">min</code> (minutes), <code class="literal">h</code> (hours),
-    and <code class="literal">d</code> (days).  Note that the multiplier for
-    memory units is 1024, not 1000.
+<p>    Some settings specify a memory or time value.  Each of these has an
+    implicit unit, which is either kilobytes, blocks (typically eight
+    kilobytes), milliseconds, seconds, or minutes.  Default units can be
+    queried by referencing <code class="literal">pg_settings.unit</code>. For convenience,
+    a different unit can also be specified explicitly.  Valid memory units
+    are <code class="literal">kB</code> (kilobytes), <code class="literal">MB</code>
+    (megabytes), and <code class="literal">GB</code> (gigabytes); valid time units
+    are <code class="literal">ms</code> (milliseconds), <code class="literal">s</code>
+    (seconds), <code class="literal">min</code> (minutes), <code class="literal">h</code>
+    (hours), and <code class="literal">d</code> (days).  Note that the multiplier
+    for memory units is 1024, not 1000.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <code class="filename">postgresql.conf</code><a name="id2630754"></a>,
+    <code class="filename">postgresql.conf</code><a name="id2638478"></a>,
     which is normally kept in the data directory. (<span class="application">initdb</span>
     installs a default copy there.) An example of what this file might look
     like is:
@@ -124,7 +124,7 @@ shared_buffers = 128MB</pre>
     numbers must be single-quoted.  To embed a single quote in a parameter
     value, write either two quotes (preferred) or backslash-quote.
    </p>
-<p>    <a name="id2630792"></a>
+<p>    <a name="id2638516"></a>
     In addition to parameter settings, the <code class="filename">postgresql.conf</code>
     file can contain <em class="firstterm">include directives</em>, which specify
     another file to read and process as if it were inserted into the
@@ -136,7 +136,7 @@ shared_buffers = 128MB</pre>
     the directory containing the referencing configuration file.
     Inclusions can be nested.
    </p>
-<p>    <a name="id2630830"></a>
+<p>    <a name="id2638554"></a>
     The configuration file is reread whenever the main server process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
     of <code class="literal">pg_ctl reload</code>). The main server process
@@ -173,8 +173,8 @@ shared_buffers = 128MB</pre>
 <p>    Furthermore, it is possible to assign a set of parameter settings to
     a user or a database.  Whenever a session is started, the default
     settings for the user and database involved are loaded.  The
-    commands <a href="sql-alteruser.html">ALTER USER</a>
-    and <a href="sql-alterdatabase.html">ALTER DATABASE</a>,
+    commands <a href="sql-alteruser.html" title="ALTER USER">ALTER USER</a>
+    and <a href="sql-alterdatabase.html" title="ALTER DATABASE">ALTER DATABASE</a>,
     respectively, are used to configure these settings.  Per-database
     settings override anything received from the
     <code class="command">postgres</code> command-line or the configuration
@@ -182,7 +182,7 @@ shared_buffers = 128MB</pre>
     overridden by per-session settings.
    </p>
 <p>    Some parameters can be changed in individual <acronym class="acronym">SQL</acronym>
-    sessions with the <a href="sql-set.html">SET</a>
+    sessions with the <a href="sql-set.html" title="SET">SET</a>
     command, for example:
 </p>
 <pre class="screen">SET ENABLE_SEQSCAN TO OFF;</pre>
@@ -195,7 +195,7 @@ shared_buffers = 128MB</pre>
     be modified via <code class="command">SET</code> or <code class="command">ALTER</code> by superusers,
     but not by ordinary users.
    </p>
-<p>    The <a href="sql-show.html">SHOW</a>
+<p>    The <a href="sql-show.html" title="SHOW">SHOW</a>
     command allows inspection of the current values of all parameters.
    </p>
 <p>    The virtual table <code class="structname">pg_settings</code>

@@ -4,8 +4,8 @@
 <title>Chapter 30. Large Objects</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="client-interfaces.html" title="Part IV. Client Interfaces">
 <link rel="prev" href="libpq-example.html" title="29.19. Example Programs">
 <link rel="next" href="lo-implementation.html" title="30.2. Implementation Features">
@@ -21,22 +21,22 @@
 <dt><span class="sect1"><a href="lo-implementation.html">30.2. Implementation Features</a></span></dt>
 <dt><span class="sect1"><a href="lo-interfaces.html">30.3. Client Interfaces</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2673453">30.3.1. Creating a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2673610">30.3.2. Importing a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2673646">30.3.3. Exporting a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2673683">30.3.4. Opening an Existing Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2673848">30.3.5. Writing Data to a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2673900">30.3.6. Reading Data from a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2673953">30.3.7. Seeking in a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2674008">30.3.8. Obtaining the Seek Position of a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2674030">30.3.9. Closing a Large Object Descriptor</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2674074">30.3.10. Removing a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2681363">30.3.1. Creating a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2681519">30.3.2. Importing a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2681556">30.3.3. Exporting a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2681593">30.3.4. Opening an Existing Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2681757">30.3.5. Writing Data to a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2681810">30.3.6. Reading Data from a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2681862">30.3.7. Seeking in a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2681918">30.3.8. Obtaining the Seek Position of a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2681940">30.3.9. Closing a Large Object Descriptor</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2681984">30.3.10. Removing a Large Object</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="lo-funcs.html">30.4. Server-Side Functions</a></span></dt>
 <dt><span class="sect1"><a href="lo-examplesect.html">30.5. Example Program</a></span></dt>
 </dl>
 </div>
-<a name="id2673243"></a><a name="id2673253"></a><p>    <span class="productname">PostgreSQL</span> has a <em class="firstterm">large object</em>
+<a name="id2681153"></a><a name="id2681163"></a><p>    <span class="productname">PostgreSQL</span> has a <em class="firstterm">large object</em>
     facility, which provides stream-style access to user data that is stored
     in a special large-object structure.  Streaming access is useful
     when working with data values that are too large to manipulate
@@ -54,7 +54,7 @@
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="lo-intro"></a>30.1. Introduction</h2></div></div></div>
-<a name="id2673312"></a><p>    All large objects are placed in a single system table called
+<a name="id2681222"></a><p>    All large objects are placed in a single system table called
     <code class="classname">pg_largeobject</code>.
     <span class="productname">PostgreSQL</span> also supports a storage system called
     &#8220;<span class="quote"><acronym class="acronym">TOAST</acronym></span>&#8221; that automatically stores values

@@ -4,8 +4,8 @@
 <title>ALTER TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-altersequence.html" title="ALTER SEQUENCE">
 <link rel="next" href="sql-altertablespace.html" title="ALTER TABLESPACE">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>ALTER TABLE &#8212; change the definition of a table</p>
 </div>
-<a name="id2736238"></a><div class="refsynopsisdiv">
+<a name="id2744184"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER TABLE [ ONLY ] <em class="replaceable"><code>name</code></em> [ * ]
     <em class="replaceable"><code>action</code></em> [, ... ]
@@ -53,7 +53,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
     SET TABLESPACE <em class="replaceable"><code>new_tablespace</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2736478"></a><h2>Description</h2>
+<a name="id2744424"></a><h2>Description</h2>
 <p>   <code class="command">ALTER TABLE</code> changes the definition of an existing table.
    There are several subforms:
 
@@ -61,7 +61,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">ADD COLUMN</code></span></dt>
 <dd><p>      This form adds a new column to the table, using the same syntax as
-      <a href="sql-createtable.html">CREATE TABLE</a>.
+      <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>.
      </p></dd>
 <dt><span class="term"><code class="literal">DROP COLUMN</code></span></dt>
 <dd><p>      This form drops a column from a table.  Indexes and
@@ -97,7 +97,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
 <dt><span class="term"><code class="literal">SET STATISTICS</code></span></dt>
 <dd><p>      This form
       sets the per-column statistics-gathering target for subsequent
-      <a href="sql-analyze.html">ANALYZE</a> operations.
+      <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a> operations.
       The target can be set in the range 0 to 1000; alternatively, set it
       to -1 to revert to using the system default statistics
       target (<a href="runtime-config-query.html#guc-default-statistics-target">default_statistics_target</a>).
@@ -124,7 +124,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
      </p></dd>
 <dt><span class="term"><code class="literal">ADD <em class="replaceable"><code>table_constraint</code></em></code></span></dt>
 <dd><p>      This form adds a new constraint to a table using the same syntax as
-      <a href="sql-createtable.html">CREATE TABLE</a>. 
+      <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>. 
      </p></dd>
 <dt><span class="term"><code class="literal">DROP CONSTRAINT</code></span></dt>
 <dd><p>      This form drops the specified constraint on a table.
@@ -144,12 +144,12 @@ where <em class="replaceable"><code>action</code></em> is one of:
      </p></dd>
 <dt><span class="term"><code class="literal">CLUSTER</code></span></dt>
 <dd><p>      This form selects the default index for future 
-      <a href="sql-cluster.html">CLUSTER</a>
+      <a href="sql-cluster.html" title="CLUSTER">CLUSTER</a>
       operations.  It does not actually re-cluster the table.
      </p></dd>
 <dt><span class="term"><code class="literal">SET WITHOUT CLUSTER</code></span></dt>
 <dd><p>      This form removes the most recently used
-      <a href="sql-cluster.html">CLUSTER</a>
+      <a href="sql-cluster.html" title="CLUSTER">CLUSTER</a>
       index specification from the table.  This affects
       future cluster operations that don't specify an index.
      </p></dd>
@@ -169,11 +169,11 @@ where <em class="replaceable"><code>action</code></em> is one of:
 <dt><span class="term"><code class="literal">SET ( <em class="replaceable"><code>storage_parameter</code></em> = <em class="replaceable"><code>value</code></em> [, ... ] )</code></span></dt>
 <dd>
 <p>      This form changes one or more storage parameters for the table.  See
-      <a href="sql-createtable.html">CREATE TABLE</a>
+      <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>
       for details on the available parameters.  Note that the table contents
       will not be modified immediately by this command; depending on the
       parameter you may need to rewrite the table to get the desired effects.
-      That can be done with <a href="sql-cluster.html">CLUSTER</a> or one of the forms of <code class="command">ALTER
+      That can be done with <a href="sql-cluster.html" title="CLUSTER">CLUSTER</a> or one of the forms of <code class="command">ALTER
       TABLE</code> that forces a table rewrite.
      </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -224,7 +224,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
       Indexes on the table, if any, are not moved; but they can be moved
       separately with additional <code class="literal">SET TABLESPACE</code> commands.
       See also 
-      <a href="sql-createtablespace.html">CREATE TABLESPACE</a>.
+      <a href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a>.
      </p></dd>
 <dt><span class="term"><code class="literal">RENAME</code></span></dt>
 <dd><p>      The <code class="literal">RENAME</code> forms change the name of a table
@@ -258,7 +258,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2737245"></a><h2>Parameters</h2>
+<a name="id2745192"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name (possibly schema-qualified) of an existing table to
@@ -335,7 +335,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2737506"></a><h2>Notes</h2>
+<a name="id2745453"></a><h2>Notes</h2>
 <p>    The key word <code class="literal">COLUMN</code> is noise and can be omitted.
    </p>
 <p>    When a column is added with <code class="literal">ADD COLUMN</code>, all existing
@@ -411,13 +411,13 @@ where <em class="replaceable"><code>action</code></em> is one of:
    </p>
 <p>    Changing any part of a system catalog table is not permitted.
    </p>
-<p>    Refer to <a href="sql-createtable.html">CREATE TABLE</a> for a further description of valid
+<p>    Refer to <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for a further description of valid
     parameters. <a href="ddl.html" title="Chapter 5. Data Definition">Chapter 5, <i>Data Definition</i></a> has further information on
     inheritance.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2737792"></a><h2>Examples</h2>
+<a name="id2745738"></a><h2>Examples</h2>
 <p>   To add a column of type <code class="type">varchar</code> to a table:
 </p>
 <pre class="programlisting">ALTER TABLE distributors ADD COLUMN address varchar(30);</pre>
@@ -519,7 +519,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2737972"></a><h2>Compatibility</h2>
+<a name="id2745918"></a><h2>Compatibility</h2>
 <p>   The <code class="literal">ADD</code>, <code class="literal">DROP</code>, and <code class="literal">SET DEFAULT</code>
    forms conform with the SQL standard.  The other forms are
    <span class="productname">PostgreSQL</span> extensions of the SQL standard.

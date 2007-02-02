@@ -4,8 +4,8 @@
 <title>18.  Not Using Slonik - Bare Metal Slony-I Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="slonikshell.html" title="17.  Embedding Slonik in Shell Scripts">
 <link rel="next" href="adminscripts.html" title="19. Slony-I Administration Scripts">
@@ -30,7 +30,7 @@ is suggested that you examine how the stored procedures are used in
 of the functions.</p>
 <p> When debugging problems in &#8220;<span class="quote">troubled</span>&#8221; <span class="productname">Slony-I</span>
 clusters, it has also occasionally proven useful to use the stored
-functions.  This has been particularly useful for cases where <a href="table.sl-listen.html">sl_listen</a> configuration has been broken, and events
+functions.  This has been particularly useful for cases where <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a> configuration has been broken, and events
 have not been propagating properly.  The &#8220;<span class="quote">easiest</span>&#8221; fix
 was to:</p>
 <p> <code class="command"> select
@@ -67,15 +67,15 @@ thus:
 suffix) is called on a &#8220;<span class="quote">relevant</span>&#8221; node in the <span class="productname">Slony-I</span>
 cluster.</p>
 <p> In some cases, the function may be called on any node, and it
-can satisfactorily propagate to other nodes.  That is true for <a href="function.storelisten-integer-integer-integer.html">schemadocstorelisten( integer, integer, integer )</a>, for instance.
+can satisfactorily propagate to other nodes.  That is true for <a href="function.storelisten-integer-integer-integer.html" title="1.111.  storelisten( integer, integer, integer )">schemadocstorelisten( integer, integer, integer )</a>, for instance.
 In other cases, the function needs to be called on some particular
 node because that is the only place where data may be reasonably
-validated.  For instance, <a href="function.subscribeset-integer-integer-integer-boolean.html">schemadocsubscribeset( integer, integer, integer, boolean )</a> must
+validated.  For instance, <a href="function.subscribeset-integer-integer-integer-boolean.html" title="1.121.  subscribeset( integer, integer, integer, boolean )">schemadocsubscribeset( integer, integer, integer, boolean )</a> must
 be called on the receivernode.</p>
 </li>
 <li><p> If that &#8220;<span class="quote">main</span>&#8221; function succeeds, then
 the configuration change is performed on the local node, and an event
-is created using <a href="function.createevent-name-text.html">schemadoccreateevent( name, text )</a> to
+is created using <a href="function.createevent-name-text.html" title="1.27.  createevent( name, text )">schemadoccreateevent( name, text )</a> to
 cause the configuration change to propagate to all of the other nodes
 in the <span class="productname">Slony-I</span> cluster.</p></li>
 <li>

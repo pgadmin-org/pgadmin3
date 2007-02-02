@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.28. Release 7.4.8</title>
+<title>E.32. Release 7.4.8</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-4-9.html" title="E.27. Release 7.4.9">
-<link rel="next" href="release-7-4-7.html" title="E.29. Release 7.4.7">
+<link rel="prev" href="release-7-4-9.html" title="E.31. Release 7.4.9">
+<link rel="next" href="release-7-4-7.html" title="E.33. Release 7.4.7">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-7-4-8"></a>E.28. Release 7.4.8</h2></div></div></div>
+<a name="release-7-4-8"></a>E.32. Release 7.4.8</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2005-05-09</p>
@@ -23,7 +23,7 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2864826"></a>E.28.1. Migration to version 7.4.8</h3></div></div></div>
+<a name="id2873186"></a>E.32.1. Migration to version 7.4.8</h3></div></div></div>
 <p>     A dump/restore is not required for those running 7.4.X.  However,
      it is one possible way of handling two significant security problems
      that have been found in the initial contents of 7.4.X system
@@ -47,7 +47,7 @@
 <p>     It is strongly recommended that all installations repair these errors,
      either by initdb or by following the manual repair procedures given
      below.  The errors at least allow unprivileged database users to crash
-     their server process, and may allow unprivileged users to gain the
+     their server process, and might allow unprivileged users to gain the
      privileges of a database superuser.
     </p>
 <p>     If you wish not to do an initdb, perform the following procedures instead.
@@ -63,7 +63,7 @@ WHERE pronamespace = 11 AND pronargs = 5
 COMMIT;</pre>
 <p>
 
-     Next, if you have installed <code class="filename">contrib/tsearch2</code>, do
+     Next, if you have installed <code class="filename">contrib/tsearch2</code>, do:
 
 </p>
 <pre class="programlisting">BEGIN;
@@ -90,12 +90,12 @@ COMMIT;</pre>
      template databases then any subsequently created databases will contain
      the same errors.  <code class="literal">template1</code> can be fixed in the same way
      as any other database, but fixing <code class="literal">template0</code> requires
-     additional steps.  First, from any database issue
+     additional steps.  First, from any database issue:
 </p>
 <pre class="programlisting">UPDATE pg_database SET datallowconn = true WHERE datname = 'template0';</pre>
 <p>
       Next connect to <code class="literal">template0</code> and perform the above repair
-      procedures.  Finally, do
+      procedures.  Finally, do:
 </p>
 <pre class="programlisting">-- re-freeze template0:
 VACUUM FREEZE;
@@ -106,7 +106,7 @@ UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2864984"></a>E.28.2. Changes</h3></div></div></div>
+<a name="id2873352"></a>E.32.2. Changes</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Change encoding function signature to prevent
 misuse</p></li>

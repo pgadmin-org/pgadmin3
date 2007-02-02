@@ -4,8 +4,8 @@
 <title>DELETE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.1 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-declare.html" title="DECLARE">
 <link rel="next" href="sql-dropaggregate.html" title="DROP AGGREGATE">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>DELETE &#8212; delete rows of a table</p>
 </div>
-<a name="id2760000"></a><div class="refsynopsisdiv">
+<a name="id2767963"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">DELETE FROM [ ONLY ] <em class="replaceable"><code>table</code></em> [ [ AS ] <em class="replaceable"><code>alias</code></em> ]
     [ USING <em class="replaceable"><code>usinglist</code></em> ]
@@ -25,7 +25,7 @@
     [ RETURNING * | <em class="replaceable"><code>output_expression</code></em> [ AS <em class="replaceable"><code>output_name</code></em> ] [, ...] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2760051"></a><h2>Description</h2>
+<a name="id2768014"></a><h2>Description</h2>
 <p>   <code class="command">DELETE</code> deletes rows that satisfy the
    <code class="literal">WHERE</code> clause from the specified table.  If the
    <code class="literal">WHERE</code> clause is absent, the effect is to delete
@@ -33,7 +33,7 @@
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p>     <a href="sql-truncate.html">TRUNCATE</a> is a
+<p>     <a href="sql-truncate.html" title="TRUNCATE">TRUNCATE</a> is a
      <span class="productname">PostgreSQL</span> extension that provides a
      faster mechanism to remove all rows from a table.
     </p>
@@ -63,7 +63,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2760192"></a><h2>Parameters</h2>
+<a name="id2768155"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">ONLY</code></span></dt>
 <dd><p>      If specified, delete rows from the named table only.  When not
@@ -82,7 +82,7 @@
 <dt><span class="term"><em class="replaceable"><code>usinglist</code></em></span></dt>
 <dd><p>      A list of table expressions, allowing columns from other tables
       to appear in the <code class="literal">WHERE</code> condition.  This is similar
-      to the list of tables that can be specified in the <a href="sql-select.html#sql-from"><code class="literal">FROM</code> Clause</a> of a
+      to the list of tables that can be specified in the <a href="sql-select.html#sql-from" title="FROM Clause"><code class="literal">FROM</code> Clause</a> of a
       <code class="command">SELECT</code> statement; for example, an alias for
       the table name can be specified.  Do not repeat the target table
       in the <em class="replaceable"><code>usinglist</code></em>,
@@ -106,7 +106,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2760365"></a><h2>Outputs</h2>
+<a name="id2768328"></a><h2>Outputs</h2>
 <p>   On successful completion, a <code class="command">DELETE</code> command returns a command
    tag of the form
 </p>
@@ -125,7 +125,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2760437"></a><h2>Notes</h2>
+<a name="id2768401"></a><h2>Notes</h2>
 <p>   <span class="productname">PostgreSQL</span> lets you reference columns of
    other tables in the <code class="literal">WHERE</code> condition by specifying the
    other tables in the <code class="literal">USING</code> clause.  For example,
@@ -147,7 +147,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2760494"></a><h2>Examples</h2>
+<a name="id2768458"></a><h2>Examples</h2>
 <p>   Delete all films but musicals:
 </p>
 <pre class="programlisting">DELETE FROM films WHERE kind &lt;&gt; 'Musical';</pre>
@@ -165,7 +165,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2760532"></a><h2>Compatibility</h2>
+<a name="id2768495"></a><h2>Compatibility</h2>
 <p>   This command conforms to the <acronym class="acronym">SQL</acronym> standard, except
    that the <code class="literal">USING</code> and <code class="literal">RETURNING</code> clauses
    are <span class="productname">PostgreSQL</span> extensions.

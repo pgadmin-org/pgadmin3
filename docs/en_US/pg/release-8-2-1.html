@@ -1,0 +1,86 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.2. Release 8.2.1</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release.html" title="Appendix E. Release Notes">
+<link rel="next" href="release-8-2.html" title="E.3. Release 8.2">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-2-1"></a>E.2. Release 8.2.1</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2007-01-08</p>
+</div>
+<p>    This release contains a variety of fixes from 8.2.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2855333"></a>E.2.1. Migration to version 8.2.1</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.2.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2855340"></a>E.2.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       Fix crash with <code class="literal">SELECT</code> ... <code class="literal">LIMIT ALL</code> (also
+       <code class="literal">LIMIT NULL</code>) (Tom)
+      </p></li>
+<li><p>       <code class="filename">Several /contrib/tsearch2</code> fixes (Teodor)
+      </p></li>
+<li>
+<p>       On Windows, make log messages coming from the operating system use
+       <acronym class="acronym">ASCII</acronym> encoding (Hiroshi Saito)
+      </p>
+<p>       This fixes a conversion problem when there is a mismatch between
+       the encoding of the operating system and database server.
+      </p>
+</li>
+<li><p>       Fix Windows linking of <span class="application">pg_dump</span> using
+       <code class="filename">win32.mak</code>
+       (Hiroshi Saito)
+      </p></li>
+<li><p>       Fix planner mistakes for outer join queries (Tom)
+      </p></li>
+<li><p>       Fix several problems in queries involving sub-SELECTs (Tom)
+      </p></li>
+<li>
+<p>       Fix potential crash in SPI during subtransaction abort (Tom)
+      </p>
+<p>       This affects all PL functions since they all use SPI.
+      </p>
+</li>
+<li><p>       Improve build speed of <acronym class="acronym">PDF</acronym> documentation (Peter)
+      </p></li>
+<li><p>       Re-add <acronym class="acronym">JST</acronym> (Japan) timezone abbreviation (Tom)
+      </p></li>
+<li><p>       Improve optimization decisions related to index scans (Tom)
+      </p></li>
+<li><p>       Have <span class="application">psql</span> print multi-byte combining characters as
+       before, rather than output as <code class="literal">\u</code> (Tom)
+      </p></li>
+<li>
+<p>       Improve index usage of regular expressions that use parentheses (Tom)
+      </p>
+<p>       This improves <span class="application">psql</span> <code class="literal">\d</code> performance also.
+      </p>
+</li>
+<li>
+<p>       Make <span class="application">pg_dumpall</span> assume that databases have public
+       <code class="literal">CONNECT</code> privilege, when dumping from a pre-8.2 server (Tom)
+      </p>
+<p>       This preserves the previous behavior that anyone can connect to a
+       database if allowed by <code class="filename">pg_hba.conf</code>.
+      </p>
+</li>
+</ul></div>
+</div>
+</div></body>
+</html>

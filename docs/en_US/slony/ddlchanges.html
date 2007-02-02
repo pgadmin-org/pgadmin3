@@ -4,8 +4,8 @@
 <title>15. Database Schema Changes (DDL)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">
 <link rel="next" href="usingslonik.html" title="16. Using Slonik">
@@ -14,12 +14,12 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="ddlchanges"></a>15. Database Schema Changes (DDL)</h2></div></div></div>
-<a name="id2564866"></a><p>When changes are made to the database schema,
+<a name="id2572610"></a><p>When changes are made to the database schema,
 <span class="emphasis"><em>e.g.</em></span> - adding fields to a table, it is necessary
 for this to be handled rather carefully, otherwise different nodes may
 get rather deranged because they disagree on how particular tables are
 built.</p>
-<p>If you pass the changes through <span class="productname">Slony-I</span> via <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> (slonik) / <a href="function.ddlscript-complete-integer-text-integer.html">schemadocddlscript_complete( integer, text, integer )</a> (stored function),
+<p>If you pass the changes through <span class="productname">Slony-I</span> via <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> (slonik) / <a href="function.ddlscript-complete-integer-text-integer.html" title="1.36.  ddlscript_complete( integer, text, integer )">schemadocddlscript_complete( integer, text, integer )</a> (stored function),
 this allows you to be certain that the changes take effect at the same
 point in the transaction streams on all of the nodes.  That may not be
 so important if you can take something of an outage to do schema
@@ -28,7 +28,7 @@ transactions are still winding their way through your systems, this is
 necessary.  </p>
 <p>It is essential to use <code class="command">EXECUTE SCRIPT</code> if you
 alter tables so as to change their schemas.  If you do not, then you
-may run into the problems <a href="faq.html#neededexecddl"> described
+may run into the problems <a href="faq.html#neededexecddl" title="Question"> described
 here </a> where triggers on modified tables do not take account of
 the schema change.  This has the potential to corrupt data on
 subscriber nodes.</p>
@@ -48,7 +48,7 @@ you do not control.</p></li>
 the script, or about how it executes on a particular node, this will
 cause the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemon for that node to panic and
 crash.  You may see various expected messages (positive and negative)
-in <a href="loganalysis.html#ddllogs" title="23.4.2.  Log Messages -  DDL scripts ">Section 23.4.2, &#8220; Log Messages -  DDL scripts &#8221;</a>.  If you restart the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, it will,
+in <a href="loganalysis.html#ddllogs" title="23.4.2.  Log Messages - DDL scripts">Section 23.4.2, &#8220; Log Messages -  DDL scripts &#8221;</a>.  If you restart the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, it will,
 more likely than not, try to
 <span class="emphasis"><em>repeat</em></span> the DDL script, which will, almost
 certainly, fail the second time in the same way it did the first time.
@@ -173,7 +173,7 @@ more discussion of related issues.</p>
 here: <a href="http://www.varlena.com/varlena/GeneralBits/88.php" target="_top">Varlena General Bits</a></p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2565381"></a>15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
+<a name="id2573125"></a>15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
 process using <code class="command">EXECUTE SCRIPT</code></h3></div></div></div>
 <p> While it is <span class="emphasis"><em> vitally necessary </em></span> to use
 <code class="command">EXECUTE SCRIPT</code> to propagate DDL modifications to
@@ -231,7 +231,7 @@ should catch up quickly enough once the index is
 created.</p>
 </li>
 <li><p> <span class="productname">Slony-I</span> stores the &#8220;<span class="quote">primary index</span>&#8221; name
-in <a href="table.sl-table.html">sl_table</a>, and uses that name to control what
+in <a href="table.sl-table.html" title="1.17.  Table: sl_table">sl_table</a>, and uses that name to control what
 columns are considered the &#8220;<span class="quote">key columns</span>&#8221; when the log
 trigger is attached.  It would be plausible to drop that index and
 replace it with another primary key candidate, but changing the name
@@ -240,7 +240,7 @@ of the primary key candidate would break things. </p></li>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2565557"></a>15.2.  Testing DDL Changes </h3></div></div></div>
+<a name="id2573301"></a>15.2.  Testing DDL Changes </h3></div></div></div>
 <p> A method for testing DDL changes has been pointed out as a
 likely &#8220;<span class="quote">best practice.</span>&#8221;</p>
 <p> You <span class="emphasis"><em>need</em></span> to test DDL scripts in a
