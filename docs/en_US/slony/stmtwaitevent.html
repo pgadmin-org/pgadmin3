@@ -4,8 +4,8 @@
 <title>WAIT FOR EVENT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtupdatefunctions.html" title="UPDATE FUNCTIONS">
 <link rel="next" href="stmtrepairconfig.html" title="REPAIR CONFIG">
@@ -23,7 +23,7 @@
 <div class="cmdsynopsis"><p><code class="command">WAIT FOR EVENT (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586487"></a><h2>Description</h2>
+<a name="id2594231"></a><h2>Description</h2>
 <p> Waits for event Confirmation.</p>
 <p> <span class="application">Slonik</span> remembers the last event
      generated on every node during script execution (events generated
@@ -45,7 +45,7 @@
 <dt><span class="term"><code class="literal"> CONFIRMED = ival | ALL </code></span></dt>
 <dd><p> The node ID of the receiver that must confirm the event(s).</p></dd>
 <dt><span class="term"><code class="literal"> WAIT ON = ival </code></span></dt>
-<dd><p> The ID of the node where the <a href="table.sl-confirm.html">sl_confirm</a> table
+<dd><p> The ID of the node where the <a href="table.sl-confirm.html" title="1.2.  Table: sl_confirm">sl_confirm</a> table
 	 is to be checked.  The default value is 1.</p></dd>
 <dt><span class="term"><code class="literal"> TIMEOUT = ival </code></span></dt>
 <dd><p> The number of seconds to wait.  Default is 600
@@ -54,7 +54,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586607"></a><h2>Example</h2>
+<a name="id2594351"></a><h2>Example</h2>
 <pre class="programlisting">WAIT FOR EVENT (
   ORIGIN = ALL,
   CONFIRMED = ALL,
@@ -63,15 +63,15 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586617"></a><h2> Locking Behaviour </h2>
+<a name="id2594361"></a><h2> Locking Behaviour </h2>
 <p> No application-visible locking should take place. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586623"></a><h2> Version Information </h2>
+<a name="id2594367"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586636"></a><h2> Oddities </h2>
+<a name="id2594380"></a><h2> Oddities </h2>
 <p> Not all events return
    interesting results.  For instance, many people have run afoul of
    problems with <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a>, when subscribing a

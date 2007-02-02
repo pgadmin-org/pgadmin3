@@ -4,8 +4,8 @@
 <title>18.4. Role Membership</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.7 Documentation">
 <link rel="up" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">
 <link rel="prev" href="privileges.html" title="18.3. Privileges">
 <link rel="next" href="perm-functions.html" title="18.5. Functions and Triggers">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="role-membership"></a>18.4. Role Membership</h2></div></div></div>
-<a name="id2637621"></a><p>   It is frequently convenient to group users together to ease
+<a name="id2645366"></a><p>   It is frequently convenient to group users together to ease
    management of privileges: that way, privileges can be granted to, or
    revoked from, a group as a whole.  In <span class="productname">PostgreSQL</span>
    this is done by creating a role that represents the group, and then
@@ -29,8 +29,8 @@
    attribute, though you can set it if you wish.
   </p>
 <p>   Once the group role exists, you can add and remove members using the
-   <a href="sql-grant.html">GRANT</a> and
-   <a href="sql-revoke.html">REVOKE</a> commands:
+   <a href="sql-grant.html" title="GRANT">GRANT</a> and
+   <a href="sql-revoke.html" title="REVOKE">REVOKE</a> commands:
 </p>
 <pre class="synopsis">GRANT <em class="replaceable"><code>group_role</code></em> TO <em class="replaceable"><code>role1</code></em>, ... ;
 REVOKE <em class="replaceable"><code>group_role</code></em> FROM <em class="replaceable"><code>role1</code></em>, ... ;</pre>
@@ -43,7 +43,7 @@ REVOKE <em class="replaceable"><code>group_role</code></em> FROM <em class="repl
   </p>
 <p>   The members of a role can use the privileges of the group role in two
    ways.  First, every member of a group can explicitly do
-   <a href="sql-set-role.html">SET ROLE</a> to
+   <a href="sql-set-role.html" title="SET ROLE">SET ROLE</a> to
    temporarily &#8220;<span class="quote">become</span>&#8221; the group role.  In this state, the
    database session has access to the privileges of the group role rather
    than the original login role, and any database objects created are
@@ -117,7 +117,7 @@ RESET ROLE;</pre>
    <code class="command">SET ROLE admin</code>.
   </p>
 <p>  </p>
-<p>   To destroy a group role, use <a href="sql-droprole.html">DROP ROLE</a>:
+<p>   To destroy a group role, use <a href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a>:
 </p>
 <pre class="synopsis">DROP ROLE <em class="replaceable"><code>name</code></em>;</pre>
 <p>

@@ -4,8 +4,8 @@
 <title>23.3. On-line backup and point-in-time recovery (PITR)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.7 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="backup-file.html" title="23.2. File system level backup">
 <link rel="next" href="migration.html" title="23.4. Migration Between Releases">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="backup-online"></a>23.3. On-line backup and point-in-time recovery (PITR)</h2></div></div></div>
-<a name="id2647907"></a><a name="id2647916"></a><a name="id2647925"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<a name="id2655652"></a><a name="id2655661"></a><a name="id2655670"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <em class="firstterm">write ahead log</em> (WAL) in the <code class="filename">pg_xlog/</code>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -385,7 +385,7 @@
      problem occurs and you have to start over.)
     </p></li>
 <li><p>     Create a recovery command file <code class="filename">recovery.conf</code> in the cluster
-     data directory (see <a href="backup-online.html#recovery-config-settings">Recovery Settings</a>). You may 
+     data directory (see <a href="backup-online.html#recovery-config-settings" title="23.3.3.1. Recovery Settings">Recovery Settings</a>). You may 
      also want to temporarily modify <code class="filename">pg_hba.conf</code> to prevent 
      ordinary users from connecting until you are sure the recovery has worked.
     </p></li>
@@ -555,7 +555,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="backup-timelines"></a>23.3.4. Timelines</h3></div></div></div>
-<a name="id2649344"></a><p>    The ability to restore the database to a previous point in time creates
+<a name="id2657088"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.

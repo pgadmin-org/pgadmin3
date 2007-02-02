@@ -4,8 +4,8 @@
 <title>CREATE TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.7 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createsequence.html" title="CREATE SEQUENCE">
 <link rel="next" href="sql-createtableas.html" title="CREATE TABLE AS">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE TABLE &#8212; define a new table</p>
 </div>
-<a name="id2732275"></a><div class="refsynopsisdiv">
+<a name="id2740019"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em> ( [
   { <em class="replaceable"><code>column_name</code></em> <em class="replaceable"><code>data_type</code></em> [ DEFAULT <em class="replaceable"><code>default_expr</code></em> ] [ <em class="replaceable"><code>column_constraint</code></em> [ ... ] ]
@@ -86,7 +86,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2732537"></a><h2>Parameters</h2>
+<a name="id2740282"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd>
@@ -102,7 +102,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 <p>      Optionally, <code class="literal">GLOBAL</code> or <code class="literal">LOCAL</code>
       can be written before <code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code>.
       This makes no difference in <span class="productname">PostgreSQL</span>, but see
-      <a href="sql-createtable.html#sql-createtable-compatibility">Compatibility</a>.
+      <a href="sql-createtable.html#sql-createtable-compatibility" title="Compatibility">Compatibility</a>.
      </p>
 </dd>
 <dt><span class="term"><em class="replaceable"><code>table_name</code></em></span></dt>
@@ -202,7 +202,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
       table reduces the space required to store the table on disk by
       4 bytes per row (on most machines), slightly improving performance.
      </p>
-<p>      To remove OIDs from a table after it has been created, use <a href="sql-altertable.html">ALTER TABLE</a>.
+<p>      To remove OIDs from a table after it has been created, use <a href="sql-altertable.html" title="ALTER TABLE">ALTER TABLE</a>.
      </p>
 </dd>
 <dt><span class="term"><code class="literal">CONSTRAINT <em class="replaceable"><code>constraint_name</code></em></code></span></dt>
@@ -363,7 +363,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
       constraint that is not deferrable will be checked immediately
       after every command.  Checking of constraints that are
       deferrable may be postponed until the end of the transaction
-      (using the <a href="sql-set-constraints.html">SET CONSTRAINTS</a> command).
+      (using the <a href="sql-set-constraints.html" title="SET CONSTRAINTS">SET CONSTRAINTS</a> command).
       <code class="literal">NOT DEFERRABLE</code> is the default.  Only foreign
       key constraints currently accept this clause.  All other
       constraint types are not deferrable.
@@ -377,7 +377,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
       statement. This is the default.  If the constraint is
       <code class="literal">INITIALLY DEFERRED</code>, it is checked only at the
       end of the transaction.  The constraint check time can be
-      altered with the <a href="sql-set-constraints.html">SET CONSTRAINTS</a> command.
+      altered with the <a href="sql-set-constraints.html" title="SET CONSTRAINTS">SET CONSTRAINTS</a> command.
      </p></dd>
 <dt><span class="term"><code class="literal">ON COMMIT</code></span></dt>
 <dd>
@@ -447,7 +447,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 <p>     <span class="productname">PostgreSQL</span> automatically creates an
      index for each unique constraint and primary key constraint to
      enforce uniqueness.  Thus, it is not necessary to create an
-     index explicitly for primary key columns.  (See <a href="sql-createindex.html">CREATE INDEX</a> for more information.)
+     index explicitly for primary key columns.  (See <a href="sql-createindex.html" title="CREATE INDEX">CREATE INDEX</a> for more information.)
     </p>
 <p>     Unique constraints and primary keys are not inherited in the
      current implementation.  This makes the combination of
@@ -621,7 +621,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    <acronym class="acronym">SQL</acronym> standard, with exceptions listed below.
   </p>
 <div class="refsect2" lang="en">
-<a name="id2733893"></a><h3>Temporary Tables</h3>
+<a name="id2741638"></a><h3>Temporary Tables</h3>
 <p>    Although the syntax of <code class="literal">CREATE TEMPORARY TABLE</code>
     resembles that of the SQL standard, the effect is not the same.  In the
     standard,
@@ -656,7 +656,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2734018"></a><h3>Column Check Constraints</h3>
+<a name="id2741762"></a><h3>Column Check Constraints</h3>
 <p>    The SQL standard says that <code class="literal">CHECK</code> column constraints
     may only refer to the column they apply to; only <code class="literal">CHECK</code>
     table constraints may refer to multiple columns.
@@ -665,7 +665,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2734046"></a><h3>
+<a name="id2741790"></a><h3>
 <code class="literal">NULL</code> &#8220;<span class="quote">Constraint</span>&#8221;</h3>
 <p>    The <code class="literal">NULL</code> &#8220;<span class="quote">constraint</span>&#8221; (actually a
     non-constraint) is a <span class="productname">PostgreSQL</span>
@@ -676,7 +676,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2734084"></a><h3>Inheritance</h3>
+<a name="id2741829"></a><h3>Inheritance</h3>
 <p>    Multiple inheritance via the <code class="literal">INHERITS</code> clause is
     a <span class="productname">PostgreSQL</span> language extension.
     SQL:1999 and later define single inheritance using a
@@ -686,13 +686,13 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2734111"></a><h3>Object IDs</h3>
+<a name="id2741856"></a><h3>Object IDs</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of OIDs is not
     standard.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2734124"></a><h3>Zero-column tables</h3>
+<a name="id2741868"></a><h3>Zero-column tables</h3>
 <p>    <span class="productname">PostgreSQL</span> allows a table of no columns
     to be created (for example, <code class="literal">CREATE TABLE foo();</code>).  This
     is an extension from the SQL standard, which does not allow zero-column
@@ -702,7 +702,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2734153"></a><h3>Tablespaces</h3>
+<a name="id2741898"></a><h3>Tablespaces</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of tablespaces is not
     part of the standard.  Hence, the clauses <code class="literal">TABLESPACE</code>
     and <code class="literal">USING INDEX TABLESPACE</code> are extensions.
@@ -710,8 +710,8 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2734179"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-altertable.html">ALTER TABLE</a>, <a href="sql-droptable.html">DROP TABLE</a>, <a href="sql-createtablespace.html">CREATE TABLESPACE</a></span>
+<a name="id2741923"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-altertable.html" title="ALTER TABLE">ALTER TABLE</a>, <a href="sql-droptable.html" title="DROP TABLE">DROP TABLE</a>, <a href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a></span>
 </div>
 </div></body>
 </html>

@@ -4,8 +4,8 @@
 <title>7. Defining Slony-I Replication Sets</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="cluster.html" title="6. Defining Slony-I Clusters">
 <link rel="next" href="slonyadmin.html" title="Slony-I Administration">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="definingsets"></a>7. Defining <span class="productname">Slony-I</span> Replication Sets</h2></div></div></div>
-<a name="id2555554"></a><p>Defining the nodes indicated the shape of the cluster of
+<a name="id2563298"></a><p>Defining the nodes indicated the shape of the cluster of
 database servers; it is now time to determine what data is to be
 copied between them.  The groups of data that are copied are defined
 as &#8220;<span class="quote">replication sets.</span>&#8221;</p>
@@ -27,8 +27,8 @@ suitable primary key</p></li>
 </ul></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2555585"></a>7.1. Primary Keys</h3></div></div></div>
-<a name="id2555588"></a><p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
+<a name="id2563329"></a>7.1. Primary Keys</h3></div></div></div>
+<a name="id2563332"></a><p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
 candidate thereof on each table that is replicated.  PK values are
 used as the primary identifier for each tuple that is modified in the
 source system.  Note that they can be composite keys composed of
@@ -88,8 +88,8 @@ replication set:
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p> The initial <code class="command">COPY_SET</code> event for a
-large set leads to a <a href="faq.html#longtxnsareevil"> long running
-transaction </a> on the provider node.  The <a href="faq.html">FAQ </a> outlines a number of problems that result from long
+large set leads to a <a href="faq.html#longtxnsareevil" title="Question"> long running
+transaction </a> on the provider node.  The <a href="faq.html" title="Slony-I FAQ">FAQ </a> outlines a number of problems that result from long
 running transactions that will injure system performance.</p>
 <p> If you can split such a large set into several smaller pieces,
 that will shorten the length of each of the transactions, lessening
@@ -112,8 +112,7 @@ complete successfully.</p>
 <p> The more tables you have in a set, the more tables need to be
 locked, and the greater the chances of deadlocks. </p>
 <p> By the same token, if a particular DDL script only needs to
-affect a couple of tables, you might use <a href="stmtsetmovetable.html" title="SET MOVE
-     TABLE"><span class="refentrytitle">SET MOVE
+affect a couple of tables, you might use <a href="stmtsetmovetable.html" title="SET MOVE TABLE"><span class="refentrytitle">SET MOVE
      TABLE</span></a> to move them temporarily to a new
 replication set.  By diminishing the number of locks needed, this
 should ease the ability to get the DDL change into place.</p>
@@ -125,10 +124,10 @@ intrude on your applications.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2555879"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
-<a name="id2555883"></a><p> Each time a SYNC is processed, values are recorded for
+<a name="id2563623"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
+<a name="id2563627"></a><p> Each time a SYNC is processed, values are recorded for
 <span class="emphasis"><em>all</em></span> of the sequences in the set.  If there are a
-lot of sequences, this can cause <a href="table.sl-seqlog.html">sl_seqlog</a> to
+lot of sequences, this can cause <a href="table.sl-seqlog.html" title="1.12.  Table: sl_seqlog">sl_seqlog</a> to
 grow rather large.</p>
 <p> This points to an important difference between tables and
 sequences: if you add additional tables that do not see much/any
@@ -143,16 +142,16 @@ the effects:
 <p> A replicated table that is never updated does not
 introduce much work to the system.</p>
 <p> If it is not updated, the trigger on the table on the origin
-never fires, and no entries are added to <a href="table.sl-log-1.html">sl_log_1</a>.  The table never appears in any of the
+never fires, and no entries are added to <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a>.  The table never appears in any of the
 further replication queries (<span class="emphasis"><em>e.g.</em></span> in the
 <code class="command">FETCH 100 FROM LOG</code> queries used to find
 replicatable data) as they only look for tables for which there are
-entries in <a href="table.sl-log-1.html">sl_log_1</a>.</p>
+entries in <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a>.</p>
 </li>
 <li>
 <p> In contrast, a fixed amount of work is introduced to
 each SYNC by each sequence that is replicated.</p>
-<p> Replicate 300 sequence and 300 rows need to be added to <a href="table.sl-seqlog.html">sl_seqlog</a> on a regular basis.</p>
+<p> Replicate 300 sequence and 300 rows need to be added to <a href="table.sl-seqlog.html" title="1.12.  Table: sl_seqlog">sl_seqlog</a> on a regular basis.</p>
 <p> It is more than likely that if the value of a particular
 sequence hasn't changed since it was last checked, perhaps the same
 value need not be stored over and over; some thought needs to go into
@@ -161,7 +160,7 @@ how to do that safely.</p>
 <li>
 <p> <a href="http://gborg.postgresql.org/project/slony1/bugs/bugupdate.php?1226" target="_top">Bug #1226 </a> indicates an error condition that can come up if
 you have a replication set that consists solely of sequences. </p>
-<p> This is documented more in the <a href="faq.html#sequenceset"> FAQ
+<p> This is documented more in the <a href="faq.html#sequenceset" title="Question"> FAQ
 here;</a> the long and short is that having a replication set
 consisting only of sequences is not a particularly good
 idea.</p>

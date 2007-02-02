@@ -4,8 +4,8 @@
 <title>VACUUM</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.7 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-update.html" title="UPDATE">
 <link rel="next" href="reference-client.html" title="PostgreSQL Client Applications">
@@ -17,13 +17,13 @@
 <h2>Name</h2>
 <p>VACUUM &#8212; garbage-collect and optionally analyze a database</p>
 </div>
-<a name="id2758123"></a><div class="refsynopsisdiv">
+<a name="id2765872"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">VACUUM [ FULL | FREEZE ] [ VERBOSE ] [ <em class="replaceable"><code>table</code></em> ]
 VACUUM [ FULL | FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>table</code></em> [ (<em class="replaceable"><code>column</code></em> [, ...] ) ] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758157"></a><h2>Description</h2>
+<a name="id2765905"></a><h2>Description</h2>
 <p>   <code class="command">VACUUM</code> reclaims storage occupied by deleted tuples.
    In normal <span class="productname">PostgreSQL</span> operation, tuples that
    are deleted or obsoleted by an update are not physically removed from
@@ -38,7 +38,7 @@ VACUUM [ FULL | FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>tab
 <p>   <code class="command">VACUUM ANALYZE</code> performs a <code class="command">VACUUM</code>
    and then an <code class="command">ANALYZE</code> for each selected table.  This
    is a handy combination form for routine maintenance scripts.  See
-   <a href="sql-analyze.html">ANALYZE</a>
+   <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a>
    for more details about its processing.
   </p>
 <p>   Plain <code class="command">VACUUM</code> (without <code class="literal">FULL</code>) simply reclaims
@@ -66,7 +66,7 @@ VACUUM [ FULL | FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>tab
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758311"></a><h2>Parameters</h2>
+<a name="id2766059"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">FULL</code></span></dt>
 <dd><p>      Selects &#8220;<span class="quote">full</span>&#8221; vacuum, which may reclaim more
@@ -92,14 +92,14 @@ VACUUM [ FULL | FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>tab
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758392"></a><h2>Outputs</h2>
+<a name="id2766141"></a><h2>Outputs</h2>
 <p>    When <code class="literal">VERBOSE</code> is specified, <code class="command">VACUUM</code> emits
     progress messages to indicate which table is currently being
     processed.  Various statistics about the tables are printed as well.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758413"></a><h2>Notes</h2>
+<a name="id2766161"></a><h2>Notes</h2>
 <p>    We recommend that active production databases be
     vacuumed frequently (at least nightly), in order to
     remove expired rows. After adding or deleting a large number
@@ -119,13 +119,12 @@ VACUUM [ FULL | FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>tab
 <p>    <code class="command">VACUUM</code> causes a substantial increase in I/O traffic,
     which can cause poor performance for other active sessions.  Therefore,
     it is sometimes advisable to use the cost-based vacuum delay feature.
-    See <a href="runtime-config-resource.html#runtime-config-resource-vacuum-cost" title="17.4.4.        Cost-Based Vacuum Delay
-     ">Section 17.4.4, &#8220;       Cost-Based Vacuum Delay
+    See <a href="runtime-config-resource.html#runtime-config-resource-vacuum-cost" title="17.4.4.  Cost-Based Vacuum Delay">Section 17.4.4, &#8220;       Cost-Based Vacuum Delay
      &#8221;</a> for details.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758479"></a><h2>Examples</h2>
+<a name="id2766227"></a><h2>Examples</h2>
 <p>   The following is an example from running <code class="command">VACUUM</code> on a
    table in the regression database:
 
@@ -162,13 +161,13 @@ VACUUM</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758542"></a><h2>Compatibility</h2>
+<a name="id2766290"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">VACUUM</code> statement in the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758553"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-vacuumdb.html"><span class="application">vacuumdb</span></a>, <a href="runtime-config-resource.html#runtime-config-resource-vacuum-cost">       Cost-Based Vacuum Delay
+<a name="id2766302"></a><h2>See Also</h2>
+<span class="simplelist"><a href="app-vacuumdb.html" title="vacuumdb"><span class="application">vacuumdb</span></a>, <a href="runtime-config-resource.html#runtime-config-resource-vacuum-cost" title="17.4.4.  Cost-Based Vacuum Delay">       Cost-Based Vacuum Delay
      </a></span>
 </div>
 </div></body>

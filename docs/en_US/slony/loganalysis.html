@@ -4,8 +4,8 @@
 <title>23. Log Analysis</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="testbed.html" title="22.  Slony-I Test Bed Framework">
 <link rel="next" href="help.html" title="24. More Slony-I Help">
@@ -14,11 +14,11 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="loganalysis"></a>23. Log Analysis</h2></div></div></div>
-<a name="id2569499"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
+<a name="id2577243"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
 and explanations of what they mean.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2569514"></a>23.1. CONFIG notices</h3></div></div></div>
+<a name="id2577258"></a>23.1. CONFIG notices</h3></div></div></div>
 <p>These entries are pretty straightforward. They are informative
 messages about your configuration.</p>
 <p>Here are some typical entries that you will probably run into in
@@ -35,7 +35,7 @@ CONFIG main: configuration complete - starting threads</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2569537"></a>23.2. DEBUG Notices</h3></div></div></div>
+<a name="id2577281"></a>23.2. DEBUG Notices</h3></div></div></div>
 <p>Debug notices are always prefaced by the name of the thread that
 the notice originates from. You will see messages from the following
 threads:
@@ -64,8 +64,8 @@ events.</p></dd>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2569588"></a>23.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
-<a name="id2569598"></a><p> Note that as far as slon is concerned, there is no
+<a name="id2577332"></a>23.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
+<a name="id2577342"></a><p> Note that as far as slon is concerned, there is no
 &#8220;<span class="quote">master</span>&#8221; or &#8220;<span class="quote">slave.</span>&#8221; They are just
 nodes. </p>
 <p>What you can expect, initially, is to see, on both nodes, some
@@ -88,19 +88,18 @@ but recognize <span class="emphasis"><em>nothing</em></span> about what is going
 other nodes.</p>
 </li>
 <li>
-<p> Do the <a href="stmtstorepath.html" title="STORE
-     PATH"><span class="refentrytitle">STORE
+<p> Do the <a href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
      PATH</span></a> to set up
 communications paths.  That will allow the nodes to start to become
 aware of one another.</p>
 <p> The slon logs should now start to receive events from
 &#8220;<span class="quote">foreign</span>&#8221; nodes.</p>
-<p> In version 1.0, <a href="table.sl-listen.html">sl_listen</a> is not set up
+<p> In version 1.0, <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a> is not set up
 automatically, so things still remain quiet until you explicitly
 submit <code class="command">STORE LISTEN</code> requests. In version 1.1, the
 &#8220;<span class="quote">listen paths</span>&#8221; are set up automatically, which will much
 more quickly get the communications network up and running.  </p>
-<p> If you look at the contents of the tables <a href="table.sl-node.html">sl_node</a> and <a href="table.sl-path.html">sl_path</a> and <a href="table.sl-listen.html">sl_listen</a>, on each node, that should give a good idea
+<p> If you look at the contents of the tables <a href="table.sl-node.html" title="1.7.  Table: sl_node">sl_node</a> and <a href="table.sl-path.html" title="1.9.  Table: sl_path">sl_path</a> and <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a>, on each node, that should give a good idea
 as to where things stand.  Until the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> starts,
 each node may only be partly configured.  If there are two nodes,
 there should be two entries in all three of these tables once the
@@ -120,7 +119,7 @@ node or the other, and propagating to the other. </p>
 (<a href="stmtcreateset.html" title="CREATE SET"><span class="refentrytitle">CREATE SET</span></a>), add tables
 (<a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a>), and sequences
 (<a href="stmtsetaddsequence.html" title="SET ADD SEQUENCE"><span class="refentrytitle">SET ADD SEQUENCE</span></a>), and will see relevant
-events <a href="loganalysis.html#logaddobjects" title="23.4.7.  Log Entries - Adding Objects to Sets  ">Section 23.4.7, &#8220; Log Entries - Adding Objects to Sets  &#8221;</a> only in the logs for the origin
+events <a href="loganalysis.html#logaddobjects" title="23.4.7.  Log Entries - Adding Objects to Sets">Section 23.4.7, &#8220; Log Entries - Adding Objects to Sets  &#8221;</a> only in the logs for the origin
 node for the set. </p></li>
 <li>
 <p> Then, when you submit the <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> request, the event should go to both
@@ -128,7 +127,7 @@ nodes. </p>
 <p> The origin node has little more to do, after that...  The
 subscriber will then have a <code class="command">COPY_SET</code> event, which
 will lead to logging information about adding each table and copying
-its data.  See <a href="loganalysis.html#logsubtime" title="23.4.4.  Log Entries At Subscription Time ">Section 23.4.4, &#8220; Log Entries At Subscription Time &#8221;</a> for more
+its data.  See <a href="loganalysis.html#logsubtime" title="23.4.4.  Log Entries At Subscription Time">Section 23.4.4, &#8220; Log Entries At Subscription Time &#8221;</a> for more
 details.</p>
 </li>
 </ul></div>
@@ -137,7 +136,7 @@ details.</p>
 <li><p> On the origin, there won't be too terribly much
 logged, just indication that some <code class="command">SYNC</code> events are
 being generated and confirmed by other nodes.
-See <a href="loganalysis.html#lognormalsync" title="23.4.6.  Log Entries Associated With Normal SYNC activity ">Section 23.4.6, &#8220; Log Entries Associated With Normal SYNC activity &#8221;</a> to see the sorts of log entries to
+See <a href="loganalysis.html#lognormalsync" title="23.4.6.  Log Entries Associated With Normal SYNC activity">Section 23.4.6, &#8220; Log Entries Associated With Normal SYNC activity &#8221;</a> to see the sorts of log entries to
 expect.</p></li>
 <li><p> On the subscriber, there will be reports of
 <code class="command">SYNC</code> events, and that the subscriber pulls data
@@ -148,7 +147,7 @@ happen frequently when the origin sees heavy updates. </p></li>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2569844"></a>23.4.  Log Messages and Implications </h3></div></div></div>
+<a name="id2577587"></a>23.4.  Log Messages and Implications </h3></div></div></div>
 <p> This section lists numerous of the error messages found in
 <span class="productname">Slony-I</span>, along with a brief explanation of implications.  It is a
 fairly well comprehensive list, leaving out mostly some of
@@ -286,7 +285,7 @@ a <span class="emphasis"><em>second</em></span> time?  </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2570233"></a>23.4.3.  Threading Issues </h4></div></div></div>
+<a name="id2577977"></a>23.4.3.  Threading Issues </h4></div></div></div>
 <p> There should not be any &#8220;<span class="quote">user-serviceable</span>&#8221; aspects
 to the <span class="productname">Slony-I</span> threading model; each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> creates a quite
 well-specified set of helper threads to manage the various database
@@ -564,8 +563,7 @@ connections... </p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="logmergeset"></a>23.4.5.  Log Entries Associated with MERGE SET</h4></div></div></div>
-<p> These various exceptions cause <a href="stmtmergeset.html" title="MERGE
-     SET"><span class="refentrytitle">MERGE
+<p> These various exceptions cause <a href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
      SET</span></a> to
 be rejected; something ought to be corrected before submitting the request again. </p>
 <div class="itemizedlist"><ul type="disc">
@@ -579,8 +577,7 @@ be rejected; something ought to be corrected before submitting the request again
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: set % does not originate on local node</code></p>
-<p> The <a href="stmtmergeset.html" title="MERGE
-     SET"><span class="refentrytitle">MERGE
+<p> The <a href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
      SET</span></a> request must be submitted to
 the origin node for the sets that are to be merged. </p>
 </li>
@@ -591,15 +588,13 @@ lists.  </p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: set % has subscriptions in progress - cannot merge</code></p>
-<p> <a href="stmtmergeset.html" title="MERGE
-     SET"><span class="refentrytitle">MERGE
+<p> <a href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
      SET</span></a> cannot proceed until all
 subscriptions have completed processing.  If this message arises, that
 indicates that the subscriber lists <span class="emphasis"><em>are</em></span> the same,
 but that one or more of the nodes has not yet completed setting up its
 subscription.  It may be that waiting a short while will permit
-resubmitting the <a href="stmtmergeset.html" title="MERGE
-     SET"><span class="refentrytitle">MERGE
+resubmitting the <a href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
      SET</span></a> request.</p>
 </li>
 </ul></div>
@@ -787,7 +782,7 @@ already in use.</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2571790"></a>23.4.8.  Logging When Moving Objects Between Sets  </h4></div></div></div>
+<a name="id2579533"></a>23.4.8.  Logging When Moving Objects Between Sets  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setMoveTable_int(): table % not found</code></p>
@@ -833,7 +828,7 @@ already in use.</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2571908"></a>23.4.9.  Issues with Dropping Objects  </h4></div></div></div>
+<a name="id2579652"></a>23.4.9.  Issues with Dropping Objects  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setDropTable(): table % not found</code></p>
@@ -863,7 +858,7 @@ already in use.</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2571990"></a>23.4.10.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
+<a name="id2579734"></a>23.4.10.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
 <p> Many of these errors will occur if you submit a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 script that describes a reconfiguration incompatible with your
 cluster's current configuration.  Those will lead to the
@@ -922,7 +917,7 @@ forwarding turned on. </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2572166"></a>23.4.11.  Log Switching </h4></div></div></div>
+<a name="id2579909"></a>23.4.11.  Log Switching </h4></div></div></div>
 <p> These messages relate to the new-in-1.2 facility whereby
 <span class="productname">Slony-I</span> periodically switches back and forth between storing data
 in <code class="envar">sl_log_1</code> and <code class="envar">sl_log_2</code>.</p>
@@ -955,7 +950,7 @@ to halt...</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2572270"></a>23.4.12.  Miscellanea </h4></div></div></div>
+<a name="id2580014"></a>23.4.12.  Miscellanea </h4></div></div></div>
 <p> Perhaps these messages should be categorized further; that
 remains a task for the documentors.</p>
 <div class="itemizedlist"><ul type="disc">

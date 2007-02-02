@@ -4,8 +4,8 @@
 <title>16.4. Managing Kernel Resources</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.7 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="postmaster-shutdown.html" title="16.5. Shutting Down the Server">
@@ -23,7 +23,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="sysvipc"></a>16.4.1. Shared Memory and Semaphores</h3></div></div></div>
-<a name="id2622792"></a><a name="id2622800"></a><p>    Shared memory and semaphores are collectively referred to as
+<a name="id2630536"></a><a name="id2630544"></a><p>    Shared memory and semaphores are collectively referred to as
     &#8220;<span class="quote"><span class="systemitem">System V</span>
     <acronym class="acronym">IPC</acronym></span>&#8221; (together with message queues, which are not
     relevant for <span class="productname">PostgreSQL</span>). Almost all modern
@@ -118,15 +118,14 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><p>    <a name="id2623075"></a> The most important
+<br class="table-break"><p>    <a name="id2630820"></a> The most important
     shared memory parameter is <code class="varname">SHMMAX</code>, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
     <code class="function">shmget</code> like <span class="errorname">Invalid argument</span>, it is
     likely that this limit has been exceeded. The size of the required
     shared memory segment varies depending on several
     <span class="productname">PostgreSQL</span> configuration parameters, as shown in
-    <a href="kernel-resources.html#shared-memory-parameters" title="Table 16.2. Configuration parameters affecting
-    PostgreSQL's shared memory usage">Table 16.2, &#8220;Configuration parameters affecting
+    <a href="kernel-resources.html#shared-memory-parameters" title="Table 16.2. Configuration parameters affecting PostgreSQL's shared memory usage">Table 16.2, &#8220;Configuration parameters affecting
     <span class="productname">PostgreSQL</span>'s shared memory usage&#8221;</a>.
     You can, as a temporary solution, lower some of those settings to
     avoid the failure.  As a rough approximation, you can estimate the
@@ -503,7 +502,7 @@ set semsys:seminfo_semmsl=32</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2624386"></a>16.4.2. Resource Limits</h3></div></div></div>
+<a name="id2632131"></a>16.4.2. Resource Limits</h3></div></div></div>
 <p>    Unix-like operating systems enforce various kinds of resource limits
     that might interfere with the operation of your
     <span class="productname">PostgreSQL</span> server. Of particular
@@ -571,7 +570,7 @@ set semsys:seminfo_semmsl=32</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2624566"></a>16.4.3. Linux Memory Overcommit</h3></div></div></div>
+<a name="id2632310"></a>16.4.3. Linux Memory Overcommit</h3></div></div></div>
 <p>    In Linux 2.4 and later, the default virtual memory behavior is not
     optimal for <span class="productname">PostgreSQL</span>. Because of the
     way that the kernel implements memory overcommit, the kernel may

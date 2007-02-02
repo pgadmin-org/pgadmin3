@@ -4,8 +4,8 @@
 <title>2.  Slony-I Communications Costs</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="next" href="requirements.html" title="3. System Requirements">
@@ -21,12 +21,12 @@ increases.  Note the following relationships:
 
 </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p> It is necessary to have <a href="table.sl-listen.html">sl_listen</a> entries allowing connection from each node
+<li><p> It is necessary to have <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a> entries allowing connection from each node
 to every other node.  Most will normally not need to be very heavily,
 but it still means that there needs to be n(n-1) paths.</p></li>
 <li><p> Each SYNC applied needs to be reported back to all of
 the other nodes participating in the set so that the nodes all know
-that it is safe to purge <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a> data, as any &#8220;<span class="quote">forwarding</span>&#8221; node
+that it is safe to purge <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a> and <a href="table.sl-log-2.html" title="1.6.  Table: sl_log_2">sl_log_2</a> data, as any &#8220;<span class="quote">forwarding</span>&#8221; node
 could potentially take over as &#8220;<span class="quote">master</span>&#8221; at any time.  One
 might expect SYNC messages to need to travel through n/2 nodes to get
 propagated to their destinations; this means that each SYNC is

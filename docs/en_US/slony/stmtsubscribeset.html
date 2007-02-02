@@ -4,8 +4,8 @@
 <title>SUBSCRIBE SET</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="Slony-I 1.2.5 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtdroptrigger.html" title="DROP TRIGGER">
 <link rel="next" href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET">
@@ -22,7 +22,7 @@
 <div class="cmdsynopsis"><p><code class="command">SUBSCRIBE SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2584849"></a><h2>Description</h2>
+<a name="id2592593"></a><h2>Description</h2>
 <p> This performs one of two actions: </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
@@ -102,10 +102,10 @@
 	 possible candidate for the provider role for future
 	 nodes.</p></dd>
 </dl></div>
-<p> This uses <a href="function.subscribeset-integer-integer-integer-boolean.html">schemadocsubscribeset( integer, integer, integer, boolean )</a>. </p>
+<p> This uses <a href="function.subscribeset-integer-integer-integer-boolean.html" title="1.121.  subscribeset( integer, integer, integer, boolean )">schemadocsubscribeset( integer, integer, integer, boolean )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585060"></a><h2>Example</h2>
+<a name="id2592804"></a><h2>Example</h2>
 <pre class="programlisting">SUBSCRIBE SET (
    ID = 1,
    PROVIDER = 1,
@@ -115,10 +115,10 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585070"></a><h2> Forwarding Behaviour </h2>
+<a name="id2592814"></a><h2> Forwarding Behaviour </h2>
 <p> The <code class="command">FORWARD=boolean</code> flag indicates
     whether the subscriber will store log information in tables
-    <a href="table.sl-log-1.html">sl_log_1</a> and <a href="table.sl-log-2.html">sl_log_2</a>.  Several implications fall from
+    <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a> and <a href="table.sl-log-2.html" title="1.6.  Table: sl_log_2">sl_log_2</a>.  Several implications fall from
     this...</p>
 <p> By storing the data in these tables on the subscriber,
     there is some additional processing burden.  If you are certain
@@ -138,7 +138,7 @@
     processed data up to SYNC 88895.  At that moment, the disk system
     on the origin node catches fire.  Node 2 has the
     <span class="emphasis"><em>data</em></span> up to SYNC 88897, but there is no
-    remaining node that contains, in <a href="table.sl-log-1.html">sl_log_1</a> or <a href="table.sl-log-2.html">sl_log_2</a>, the data
+    remaining node that contains, in <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a> or <a href="table.sl-log-2.html" title="1.6.  Table: sl_log_2">sl_log_2</a>, the data
     for SYNCs 88896 and 88897, so there is no way to bring nodes 3-5
     up to that point.</p>
 <p> At that point, there are only two choices: To drop node 2,
@@ -150,7 +150,7 @@
     on. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585170"></a><h2> Dangerous/Unintuitive Behaviour </h2>
+<a name="id2592913"></a><h2> Dangerous/Unintuitive Behaviour </h2>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p> The fact that the request returns immediately
@@ -180,7 +180,7 @@
 </ul></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585261"></a><h2> Locking Behaviour </h2>
+<a name="id2593005"></a><h2> Locking Behaviour </h2>
 <p> This operation does <span class="emphasis"><em>not</em></span> require
     acquiring any locks on the provider node.</p>
 <p> On the subscriber node, it will have the effect of locking
@@ -192,7 +192,7 @@
     </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2585280"></a><h2> Version Information </h2>
+<a name="id2593024"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

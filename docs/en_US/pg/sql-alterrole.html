@@ -4,8 +4,8 @@
 <title>ALTER ROLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.7 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-alteropclass.html" title="ALTER OPERATOR CLASS">
 <link rel="next" href="sql-alterschema.html" title="ALTER SCHEMA">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>ALTER ROLE &#8212; change a database role</p>
 </div>
-<a name="id2715584"></a><div class="refsynopsisdiv">
+<a name="id2723328"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER ROLE <em class="replaceable"><code>name</code></em> [ [ WITH ] <em class="replaceable"><code>option</code></em> [ ... ] ]
 
@@ -39,17 +39,17 @@ ALTER ROLE <em class="replaceable"><code>name</code></em> SET <em class="replace
 ALTER ROLE <em class="replaceable"><code>name</code></em> RESET <em class="replaceable"><code>parameter</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2715671"></a><h2>Description</h2>
+<a name="id2723416"></a><h2>Description</h2>
 <p>   <code class="command">ALTER ROLE</code> changes the attributes of a
    <span class="productname">PostgreSQL</span> role.
   </p>
 <p>   The first variant of this command listed in the synopsis can change
    many of the role attributes that can be specified in 
-   <a href="sql-createrole.html">CREATE ROLE</a>,
+   <a href="sql-createrole.html" title="CREATE ROLE">CREATE ROLE</a>,
    which see for details.  (All the possible attributes are covered,
    except that there are no options for adding or removing memberships; use
-   <a href="sql-grant.html">GRANT</a> and
-   <a href="sql-revoke.html">REVOKE</a> for that.)
+   <a href="sql-grant.html" title="GRANT">GRANT</a> and
+   <a href="sql-revoke.html" title="REVOKE">REVOKE</a> for that.)
    Attributes not mentioned in the command retain their previous settings.
    Database superusers can change any of these settings for any role.
    Roles having <code class="literal">CREATEROLE</code> privilege can change any of these
@@ -82,7 +82,7 @@ ALTER ROLE <em class="replaceable"><code>name</code></em> RESET <em class="repla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2715798"></a><h2>Parameters</h2>
+<a name="id2723543"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of the role whose attributes are to be altered.
@@ -91,7 +91,7 @@ ALTER ROLE <em class="replaceable"><code>name</code></em> RESET <em class="repla
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">SUPERUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NOSUPERUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">CREATEDB</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NOCREATEDB</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">CREATEROLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NOCREATEROLE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">CREATEUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NOCREATEUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">INHERIT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NOINHERIT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">LOGIN</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">NOLOGIN</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">CONNECTION LIMIT</code> <em xmlns="" class="replaceable"><code>connlimit</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">PASSWORD</code> <em xmlns="" class="replaceable"><code>password</code></em></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">ENCRYPTED</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">UNENCRYPTED</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">VALID UNTIL</code> '<em class="replaceable"><code>timestamp</code></em>'</span>
 </dt>
 <dd><p>        These clauses alter attributes originally set by
-        <a href="sql-createrole.html">CREATE ROLE</a>,
+        <a href="sql-createrole.html" title="CREATE ROLE">CREATE ROLE</a>,
         which see for more information.
        </p></dd>
 <dt><span class="term"><em class="replaceable"><code>newname</code></em></span></dt>
@@ -109,31 +109,31 @@ ALTER ROLE <em class="replaceable"><code>name</code></em> RESET <em class="repla
         inherit the system-wide default setting in new sessions.  Use
         <code class="literal">RESET ALL</code> to clear all role-specific settings.
        </p>
-<p>        See <a href="sql-set.html">SET</a> and <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a> for more information about allowed
+<p>        See <a href="sql-set.html" title="SET">SET</a> and <a href="runtime-config.html" title="Chapter 17. Server Configuration">Chapter 17, <i>Server Configuration</i></a> for more information about allowed
         parameter names and values.
        </p>
 </dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2716012"></a><h2>Notes</h2>
-<p>   Use <a href="sql-createrole.html">CREATE ROLE</a>
-   to add new roles, and <a href="sql-droprole.html">DROP ROLE</a> to remove a role.
+<a name="id2723756"></a><h2>Notes</h2>
+<p>   Use <a href="sql-createrole.html" title="CREATE ROLE">CREATE ROLE</a>
+   to add new roles, and <a href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a> to remove a role.
   </p>
 <p>   <code class="command">ALTER ROLE</code> cannot change a role's memberships.
-   Use <a href="sql-grant.html">GRANT</a> and
-   <a href="sql-revoke.html">REVOKE</a>
+   Use <a href="sql-grant.html" title="GRANT">GRANT</a> and
+   <a href="sql-revoke.html" title="REVOKE">REVOKE</a>
    to do that.
   </p>
 <p>   It is also possible to tie a
    session default to a specific database rather than to a role; see
-   <a href="sql-alterdatabase.html">ALTER DATABASE</a>.
+   <a href="sql-alterdatabase.html" title="ALTER DATABASE">ALTER DATABASE</a>.
    Role-specific settings override database-specific
    ones if there is a conflict.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2716080"></a><h2>Examples</h2>
+<a name="id2723824"></a><h2>Examples</h2>
 <p>   Change a role's password:
 
 </p>
@@ -167,14 +167,14 @@ ALTER ROLE <em class="replaceable"><code>name</code></em> RESET <em class="repla
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2716142"></a><h2>Compatibility</h2>
+<a name="id2723886"></a><h2>Compatibility</h2>
 <p>   The <code class="command">ALTER ROLE</code> statement is a
    <span class="productname">PostgreSQL</span> extension.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2716160"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createrole.html">CREATE ROLE</a>, <a href="sql-droprole.html">DROP ROLE</a>, <a href="sql-set.html">SET</a></span>
+<a name="id2723905"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-createrole.html" title="CREATE ROLE">CREATE ROLE</a>, <a href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a>, <a href="sql-set.html" title="SET">SET</a></span>
 </div>
 </div></body>
 </html>

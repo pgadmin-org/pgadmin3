@@ -4,8 +4,8 @@
 <title>9.5. Binary String Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.7 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-string.html" title="9.4. String Functions and Operators">
 <link rel="next" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="functions-binarystring"></a>9.5. Binary String Functions and Operators</h2></div></div></div>
-<a name="id2586510"></a><p>    This section describes functions and operators for examining and
+<a name="id2594254"></a><p>    This section describes functions and operators for examining and
     manipulating values of type <code class="type">bytea</code>.
    </p>
 <p>    <acronym class="acronym">SQL</acronym> defines some string functions with a
@@ -49,7 +49,7 @@
         <em class="parameter"><code>string</code></em></code></td>
 <td> <code class="type">bytea</code> </td>
 <td>        String concatenation
-        <a name="id2586613"></a>
+        <a name="id2594357"></a>
        </td>
 <td><code class="literal">'\\\\Post'::bytea || '\\047gres\\000'::bytea</code></td>
 <td><code class="literal">\\Post'gres\000</code></td>
@@ -72,7 +72,7 @@
 <td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> [<span class="optional">from <code class="type">int</code></span>] [<span class="optional">for <code class="type">int</code></span>])</code></td>
 <td><code class="type">bytea</code></td>
 <td>        Extract substring
-        <a name="id2586744"></a>
+        <a name="id2594488"></a>
        </td>
 <td><code class="literal">substring('Th\\000omas'::bytea from 2 for 3)</code></td>
 <td><code class="literal">h\000o</code></td>
@@ -95,7 +95,7 @@
 <code class="function">get_byte</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>offset</code></em>)</td>
 <td><code class="type">int</code></td>
 <td>        Extract byte from string
-        <a name="id2586848"></a>
+        <a name="id2594592"></a>
        </td>
 <td><code class="literal">get_byte('Th\\000omas'::bytea, 4)</code></td>
 <td><code class="literal">109</code></td>
@@ -106,7 +106,7 @@
        <em class="parameter"><code>offset</code></em>, <em class="parameter"><code>newvalue</code></em>)</td>
 <td><code class="type">bytea</code></td>
 <td>        Set byte in string
-        <a name="id2586898"></a>
+        <a name="id2594642"></a>
        </td>
 <td><code class="literal">set_byte('Th\\000omas'::bytea, 4, 64)</code></td>
 <td><code class="literal">Th\000o@as</code></td>
@@ -116,7 +116,7 @@
 <code class="function">get_bit</code>(<em class="parameter"><code>string</code></em>, <em class="parameter"><code>offset</code></em>)</td>
 <td><code class="type">int</code></td>
 <td>        Extract bit from string
-        <a name="id2586942"></a>
+        <a name="id2594687"></a>
        </td>
 <td><code class="literal">get_bit('Th\\000omas'::bytea, 45)</code></td>
 <td><code class="literal">1</code></td>
@@ -127,7 +127,7 @@
        <em class="parameter"><code>offset</code></em>, <em class="parameter"><code>newvalue</code></em>)</td>
 <td><code class="type">bytea</code></td>
 <td>        Set bit in string
-        <a name="id2586992"></a>
+        <a name="id2594737"></a>
        </td>
 <td><code class="literal">set_bit('Th\\000omas'::bytea, 45, 0)</code></td>
 <td><code class="literal">Th\000omAs</code></td>
@@ -173,8 +173,8 @@
 <td><code class="literal"><code class="function">length</code>(<em class="parameter"><code>string</code></em>)</code></td>
 <td><code class="type">int</code></td>
 <td>       Length of binary string
-       <a name="id2587142"></a>
-       <a name="id2587151"></a>
+       <a name="id2594886"></a>
+       <a name="id2594895"></a>
       </td>
 <td><code class="literal">length('jo\\000se'::bytea)</code></td>
 <td><code class="literal">5</code></td>

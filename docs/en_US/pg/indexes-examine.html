@@ -4,8 +4,8 @@
 <title>11.9. Examining Index Usage</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.7 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes-opclass.html" title="11.8. Operator Classes">
 <link rel="next" href="mvcc.html" title="Chapter 12. Concurrency Control">
@@ -14,11 +14,11 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="indexes-examine"></a>11.9. Examining Index Usage</h2></div></div></div>
-<a name="id2611567"></a><p>   Although indexes in <span class="productname">PostgreSQL</span> do not need
+<a name="id2619311"></a><p>   Although indexes in <span class="productname">PostgreSQL</span> do not need
    maintenance and tuning, it is still important to check
    which indexes are actually used by the real-life query workload.
    Examining index usage for an individual query is done with the
-   <a href="sql-explain.html">EXPLAIN</a>
+   <a href="sql-explain.html" title="EXPLAIN">EXPLAIN</a>
    command; its application for this purpose is
    illustrated in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>.
    It is also possible to gather overall statistics about index usage
@@ -31,7 +31,7 @@
    The rest of this section gives some tips for that.
   </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>     Always run <a href="sql-analyze.html">ANALYZE</a>
+<li><p>     Always run <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a>
      first.  This command
      collects statistics about the distribution of the values in the
      table.  This information is required to guess the number of rows
@@ -85,13 +85,12 @@
      again, two possibilities.  The total cost is computed from the
      per-row costs of each plan node times the selectivity estimate of
      the plan node.  The costs estimated for the plan nodes can be adjusted
-     via run-time parameters (described in <a href="runtime-config-query.html#runtime-config-query-constants" title="17.6.2.       Planner Cost Constants
-     ">Section 17.6.2, &#8220;      Planner Cost Constants
+     via run-time parameters (described in <a href="runtime-config-query.html#runtime-config-query-constants" title="17.6.2.  Planner Cost Constants">Section 17.6.2, &#8220;      Planner Cost Constants
      &#8221;</a>).
      An inaccurate selectivity estimate is due to
      insufficient statistics.  It may be possible to improve this by
      tuning the statistics-gathering parameters (see
-     <a href="sql-altertable.html">ALTER TABLE</a>).
+     <a href="sql-altertable.html" title="ALTER TABLE">ALTER TABLE</a>).
     </p>
 <p>     If you do not succeed in adjusting the costs to be more
      appropriate, then you may have to resort to forcing index usage

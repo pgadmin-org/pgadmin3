@@ -4,8 +4,8 @@
 <title>FETCH</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.71.1">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.6 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.7 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-explain.html" title="EXPLAIN">
 <link rel="next" href="sql-grant.html" title="GRANT">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>FETCH &#8212; retrieve rows from a query using a cursor</p>
 </div>
-<a name="id2743627"></a><a name="id2743636"></a><div class="refsynopsisdiv">
+<a name="id2751375"></a><a name="id2751384"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">FETCH [ <em class="replaceable"><code>direction</code></em> { FROM | IN } ] <em class="replaceable"><code>cursorname</code></em>
 
@@ -39,7 +39,7 @@ where <em class="replaceable"><code>direction</code></em> can be empty or one of
     BACKWARD ALL</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2743703"></a><h2>Description</h2>
+<a name="id2751451"></a><h2>Description</h2>
 <p>   <code class="command">FETCH</code> retrieves rows using a previously-created cursor.
   </p>
 <p>   A cursor has an associated position, which is used by
@@ -74,7 +74,7 @@ where <em class="replaceable"><code>direction</code></em> can be empty or one of
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2743841"></a><h2>Parameters</h2>
+<a name="id2751589"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>direction</code></em></span></dt>
 <dd>
@@ -156,7 +156,7 @@ where <em class="replaceable"><code>direction</code></em> can be empty or one of
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2744245"></a><h2>Outputs</h2>
+<a name="id2751993"></a><h2>Outputs</h2>
 <p>   On successful completion, a <code class="command">FETCH</code> command returns a command
    tag of the form
 </p>
@@ -170,7 +170,7 @@ where <em class="replaceable"><code>direction</code></em> can be empty or one of
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2744289"></a><h2>Notes</h2>
+<a name="id2752038"></a><h2>Notes</h2>
 <p>   The cursor should be declared with the <code class="literal">SCROLL</code>
    option if one intends to use any variants of <code class="command">FETCH</code>
    other than <code class="command">FETCH NEXT</code> or <code class="command">FETCH FORWARD</code> with
@@ -191,14 +191,14 @@ where <em class="replaceable"><code>direction</code></em> can be empty or one of
 <p>   Updating data via a cursor is currently not supported by
    <span class="productname">PostgreSQL</span>.
   </p>
-<p>   <a href="sql-declare.html">DECLARE</a>
+<p>   <a href="sql-declare.html" title="DECLARE">DECLARE</a>
    is used to define a cursor.  Use
-   <a href="sql-move.html">MOVE</a>
+   <a href="sql-move.html" title="MOVE">MOVE</a>
    to change cursor position without retrieving data.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2744394"></a><h2>Examples</h2>
+<a name="id2752142"></a><h2>Examples</h2>
 <p>   The following example traverses a table using a cursor.
 
 </p>
@@ -232,7 +232,7 @@ COMMIT WORK;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2744422"></a><h2>Compatibility</h2>
+<a name="id2752170"></a><h2>Compatibility</h2>
 <p>   The SQL standard defines <code class="command">FETCH</code> for use in
    embedded SQL only.  The variant of <code class="command">FETCH</code>
    described here returns the data as if it were a
@@ -251,8 +251,8 @@ COMMIT WORK;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2744521"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-close.html">CLOSE</a>, <a href="sql-declare.html">DECLARE</a>, <a href="sql-move.html">MOVE</a></span>
+<a name="id2752270"></a><h2>See Also</h2>
+<span class="simplelist"><a href="sql-close.html" title="CLOSE">CLOSE</a>, <a href="sql-declare.html" title="DECLARE">DECLARE</a>, <a href="sql-move.html" title="MOVE">MOVE</a></span>
 </div>
 </div></body>
 </html>
