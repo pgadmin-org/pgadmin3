@@ -192,7 +192,13 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
     }
     else if (token2 == wxT("Scan"))
     {
-        if (token == wxT("Index"))          s = new ExplainShape(ex_index_scan_xpm, descr, 3, 2);
+        if (token == wxT("Index"))
+		{
+		    if (token3 == wxT("Backward"))
+				s = new ExplainShape(ex_index_scan_xpm, descr, 4, 3);
+			else
+			    s = new ExplainShape(ex_index_scan_xpm, descr, 3, 2);
+		}
         else if (token == wxT("Tid"))       s = new ExplainShape(ex_tid_scan_xpm, descr, 3, 2);
         else                                s = new ExplainShape(ex_scan_xpm, descr, 3, 2);
     }
