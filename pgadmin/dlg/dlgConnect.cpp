@@ -16,6 +16,7 @@
 
 #include "dlg/dlgConnect.h"
 #include "db/pgConn.h"
+#include "frm/frmHint.h"
 #include "schema/pgServer.h"
 #include "utils/sysLogger.h"
 
@@ -70,6 +71,13 @@ wxString dlgConnect::GetHelpPage() const
 
 void dlgConnect::OnOK(wxCommandEvent& ev)
 {
+    // Display the 'save password' hint if required
+    if(chkStorePwd->GetValue())
+    {
+        if (frmHint::ShowHint(this, HINT_SAVING_PASSWORDS) == wxID_CANCEL)
+                return;
+    }
+	
     EndModal(wxID_OK);
 }
 

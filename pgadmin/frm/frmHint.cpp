@@ -133,6 +133,13 @@ hintArray[]=
         wxT("query"),
         HINT_CANSUPPRESS|HINT_CANABORT
     },
+    {
+        HINT_SAVING_PASSWORDS,
+        _("Saving passwords"),
+        0,
+        wxT("pg/libpq-pgpass"),
+        HINT_CANSUPPRESS|HINT_CANABORT
+    },
     { 0,0,0,0 }
 };
 

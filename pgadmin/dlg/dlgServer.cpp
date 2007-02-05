@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "frm/frmMain.h"
+#include "frm/frmHint.h"
 #include "dlg/dlgServer.h"
 #include "schema/pgDatabase.h"
 
@@ -110,6 +111,13 @@ pgObject *dlgServer::GetObject()
 
 void dlgServer::OnOK(wxCommandEvent &ev)
 {
+    // Display the 'save password' hint if required
+    if(chkStorePwd->GetValue())
+    {
+        if (frmHint::ShowHint(this, HINT_SAVING_PASSWORDS) == wxID_CANCEL)
+                return;
+    }
+
     // notice: changes active after reconnect
 
     EnableOK(false);

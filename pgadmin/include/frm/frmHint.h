@@ -25,7 +25,8 @@
 #define HINT_ENCODING_UNICODE   wxT("encoding-unicode")
 #define HINT_READONLY_NOPK      wxT("view-without-pk")
 #define HINT_AUTOVACUUM         wxT("autovacuum")
-#define HINT_OBJECT_EDITING    wxT("object-editing")
+#define HINT_OBJECT_EDITING     wxT("object-editing")
+#define HINT_SAVING_PASSWORDS   wxT("saving-passwords")
 
 #define HINT_RC_FIX             42
 
