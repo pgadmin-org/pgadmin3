@@ -217,9 +217,12 @@ int ctlComboBox::GetGuessedSelection() const
 
 int ctlComboBox::GetSelection() const
 {
-    int sel=GetCurrentSelection();
+    int sel=0;
+#ifdef __WXMSW__
+    sel=GetCurrentSelection();
 
     if (sel < 0)
+#endif
         sel = FindString(GetValue());
     return sel;
 }
