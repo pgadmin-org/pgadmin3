@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.2 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.3 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-creategroup.html" title="CREATE GROUP">
 <link rel="next" href="sql-createlanguage.html" title="CREATE LANGUAGE">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE INDEX &#8212; define a new index</p>
 </div>
-<a name="id2755720"></a><div class="refsynopsisdiv">
+<a name="id2755626"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ UNIQUE ] INDEX [ CONCURRENTLY ] <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> [ USING <em class="replaceable"><code>method</code></em> ]
     ( { <em class="replaceable"><code>column</code></em> | ( <em class="replaceable"><code>expression</code></em> ) } [ <em class="replaceable"><code>opclass</code></em> ] [, ...] )
@@ -26,7 +26,7 @@
     [ WHERE <em class="replaceable"><code>predicate</code></em> ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2755796"></a><h2>Description</h2>
+<a name="id2755702"></a><h2>Description</h2>
 <p>   <code class="command">CREATE INDEX</code> constructs an index <em class="replaceable"><code>index_name</code></em> on the specified table.
    Indexes are primarily used to enhance database performance (though
    inappropriate use can result in slower performance).
@@ -75,7 +75,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2755927"></a><h2>Parameters</h2>
+<a name="id2755833"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">UNIQUE</code></span></dt>
 <dd><p>        Causes the system to check for
@@ -157,7 +157,7 @@
 </div>
 <div class="refsect2" lang="en">
 <a name="sql-createindex-concurrently"></a><h3>Building Indexes Concurrently</h3>
-<a name="id2756189"></a><p>    Creating an index can interfere with regular operation of a database.
+<a name="id2756095"></a><p>    Creating an index can interfere with regular operation of a database.
     Normally <span class="productname">PostgreSQL</span> locks the table to be indexed against
     writes and performs the entire index build with a single scan of the
     table. Other transactions can still read the table, but if they try to
@@ -212,7 +212,7 @@
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756337"></a><h2>Notes</h2>
+<a name="id2756243"></a><h2>Notes</h2>
 <p>   See <a href="indexes.html" title="Chapter 11. Indexes">Chapter 11, <i>Indexes</i></a> for information about when indexes can
    be used, when they are not used, and in which particular situations
    they can be useful.
@@ -253,7 +253,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756442"></a><h2>Examples</h2>
+<a name="id2756348"></a><h2>Examples</h2>
 <p>   To create a B-tree index on the column <code class="literal">title</code> in
    the table <code class="literal">films</code>:
 </p>
@@ -285,14 +285,14 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756525"></a><h2>Compatibility</h2>
+<a name="id2756431"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE INDEX</code> is a
    <span class="productname">PostgreSQL</span> language extension.  There
    are no provisions for indexes in the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756542"></a><h2>See Also</h2>
+<a name="id2756448"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-alterindex.html" title="ALTER INDEX">ALTER INDEX</a>, <a href="sql-dropindex.html" title="DROP INDEX">DROP INDEX</a></span>
 </div>
 </div></body>
