@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.11 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.12 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="prev" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="kernel-resources.html" title="16.5. Managing Kernel Resources">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="runtime-config"></a>16.4. Run-time Configuration</h2></div></div></div>
-<a name="id2625739"></a><p>    There are a lot of configuration parameters that affect the
+<a name="id2625746"></a><p>    There are a lot of configuration parameters that affect the
     behavior of the database system. In this subsection, we describe
     how to set configuration parameters; the following subsections
     discuss each parameter in detail.
@@ -28,7 +28,7 @@
     (all case-insensitive) or any unambiguous prefix of these.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <code class="filename">postgresql.conf</code><a name="id2625813"></a>,
+    <code class="filename">postgresql.conf</code><a name="id2625820"></a>,
     which is normally kept in the data directory. (<code class="command">initdb</code>
     installs a default copy there.) An example of what this file might look
     like is:
@@ -44,7 +44,7 @@ search_path = '$user, public'</pre>
     anywhere.  Parameter values that are not simple identifiers or
     numbers must be single-quoted.
    </p>
-<p>    <a name="id2625849"></a>
+<p>    <a name="id2625856"></a>
     The configuration file is reread whenever the
     <code class="command">postmaster</code> process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
@@ -1148,7 +1148,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <a name="id2629774"></a><div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
 <a name="runtime-config-logging-where"></a>16.4.6.1. Where to log</h4></div></div></div>
-<a name="id2629793"></a><div class="variablelist"><dl>
+<a name="id2629794"></a><div class="variablelist"><dl>
 <dt>
 <a name="guc-log-destination"></a><span class="term"><code class="varname">log_destination</code> (<code class="type">string</code>)</span>
 </dt>
@@ -2049,7 +2049,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         nor <code class="literal">WITHOUT OIDS</code> is specified. It also
         determines whether OIDs will be included in tables created by
         <code class="command">SELECT INTO</code>. In
-        <span class="productname">PostgreSQL</span> 8.0.11
+        <span class="productname">PostgreSQL</span> 8.0.12
         <code class="varname">default_with_oids</code> defaults to true. This is
         also the behavior of previous versions of
         <span class="productname">PostgreSQL</span>. However, assuming that
