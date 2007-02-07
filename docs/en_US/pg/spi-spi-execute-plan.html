@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.7 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.8 Documentation">
 <link rel="up" href="spi.html#spi-interface" title="40.1. Interface Functions">
 <link rel="prev" href="spi-spi-is-cursor-plan.html" title="SPI_is_cursor_plan">
 <link rel="next" href="spi-spi-execp.html" title="SPI_execp">
@@ -17,13 +17,13 @@
 <h2>Name</h2>
 <p>SPI_execute_plan &#8212; execute a plan prepared by <code class="function">SPI_prepare</code></p>
 </div>
-<a name="id2716290"></a><div class="refsynopsisdiv">
+<a name="id2716327"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">int SPI_execute_plan(void * <em class="parameter"><code>plan</code></em>, Datum * <em class="parameter"><code>values</code></em>, const char * <em class="parameter"><code>nulls</code></em>,
                      bool <em class="parameter"><code>read_only</code></em>, long <em class="parameter"><code>count</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2716332"></a><h2>Description</h2>
+<a name="id2716370"></a><h2>Description</h2>
 <p>   <code class="function">SPI_execute_plan</code> executes a plan prepared by
    <code class="function">SPI_prepare</code>.  <em class="parameter"><code>read_only</code></em> and
    <em class="parameter"><code>count</code></em> have the same interpretation as in
@@ -31,7 +31,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2716369"></a><h2>Arguments</h2>
+<a name="id2716406"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">void * <em class="parameter"><code>plan</code></em></code></span></dt>
 <dd><p>      execution plan (returned by <code class="function">SPI_prepare</code>)
@@ -62,7 +62,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2716504"></a><h2>Return Value</h2>
+<a name="id2716541"></a><h2>Return Value</h2>
 <p>   The return value is the same as for <code class="function">SPI_execute</code>,
    with the following additional possible error (negative) results:
 
@@ -85,7 +85,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2716584"></a><h2>Notes</h2>
+<a name="id2716621"></a><h2>Notes</h2>
 <p>   If one of the objects (a table, function, etc.) referenced by the
    prepared plan is dropped during the session then the result of
    <code class="function">SPI_execute_plan</code> for this plan will be unpredictable.

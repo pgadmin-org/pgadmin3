@@ -1,0 +1,74 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.2. Release 8.1.7</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.8 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release.html" title="Appendix E. Release Notes">
+<link rel="next" href="release-8-1-6.html" title="E.3. Release 8.1.6">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="release-8-1-7"></a>E.2. Release 8.1.7</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2007-02-05</p>
+</div>
+<p>    This release contains a variety of fixes from 8.1.6, including
+    a security fix.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2832028"></a>E.2.1. Migration to version 8.1.7</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.1.X.
+     However, if you are upgrading from a version earlier than 8.1.2,
+     see the release notes for 8.1.2.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id2832037"></a>E.2.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      Remove security vulnerabilities that allowed connected users
+      to read backend memory (Tom)
+     </p>
+<p>      The vulnerabilities involve suppressing the normal check that a SQL
+      function returns the data type it's declared to, and changing the
+      data type of a table column (CVE-2007-0555, CVE-2007-0556).  These
+      errors can easily be exploited to cause a backend crash, and in
+      principle might be used to read database content that the user
+      should not be able to access.
+     </p>
+</li>
+<li><p>      Fix rare bug wherein btree index page splits could fail
+      due to choosing an infeasible split point (Heikki Linnakangas)
+     </p></li>
+<li><p>      Improve <code class="command">VACUUM</code> performance for databases with many tables (Tom)
+     </p></li>
+<li>
+<p>      Fix autovacuum to avoid leaving non-permanent transaction IDs in
+      non-connectable databases (Alvaro)
+     </p>
+<p>      This bug affects the 8.1 branch only.
+     </p>
+</li>
+<li><p>      Fix for rare Assert() crash triggered by <code class="literal">UNION</code> (Tom)
+     </p></li>
+<li><p>      Tighten security of multi-byte character processing for UTF8 sequences
+      over three bytes long (Tom)
+     </p></li>
+<li><p>      Fix bogus &#8220;<span class="quote">permission denied</span>&#8221; failures occurring on Windows
+      due to attempts to fsync already-deleted files (Magnus, Tom)
+     </p></li>
+<li><p>      Fix possible crashes when an already-in-use PL/pgSQL function is
+      updated (Tom)
+     </p></li>
+</ul></div>
+</div>
+</div></body>
+</html>
