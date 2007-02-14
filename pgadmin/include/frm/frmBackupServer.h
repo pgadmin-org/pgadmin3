@@ -1,28 +1,28 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: frmBackup.h 5828 2007-01-04 16:41:08Z dpage $
+// RCS-ID:      $Id: frmBackupServer.h 5828 2007-01-04 16:41:08Z dpage $
 // Copyright (C) 2002 - 2007, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// frmBackupGlobals.h - Backup globals dialogue
+// frmBackupServer.h - Backup server dialogue
 //
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef FRMBACKUPGLOBALS_H
-#define FRMBACKUPGLOBALS_H
+#ifndef FRMBACKUPSERVER_H
+#define FRMBACKUPSERVER_H
 
 #include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
 class frmMain;
 
-class frmBackupGlobals : public ExternProcessDialog
+class frmBackupServer : public ExternProcessDialog
 {
 public:
-    frmBackupGlobals(frmMain *form, pgObject *_object);
-    ~frmBackupGlobals();
+    frmBackupServer(frmMain *form, pgObject *_object);
+    ~frmBackupServer();
 
     void Go();
     wxString GetDisplayCmd(int step);
@@ -42,10 +42,10 @@ private:
 };
 
 
-class backupGlobalsFactory : public contextActionFactory
+class backupServerFactory : public contextActionFactory
 {
 public:
-    backupGlobalsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    backupServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

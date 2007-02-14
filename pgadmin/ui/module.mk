@@ -63,6 +63,8 @@ TMP_ui += \
 	$(srcdir)/ui/dlgView.xrc \
 	$(srcdir)/ui/frmAddTableView.xrc \
 	$(srcdir)/ui/frmBackup.xrc \
+	$(srcdir)/ui/frmBackupGlobals.xrc \
+	$(srcdir)/ui/frmBackupServer.xrc \
 	$(srcdir)/ui/frmExport.xrc \
 	$(srcdir)/ui/frmGrantWizard.xrc \
 	$(srcdir)/ui/frmHint.xrc \

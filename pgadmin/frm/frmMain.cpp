@@ -54,6 +54,7 @@
 #include "frm/frmPgpassConfig.h"
 #include "frm/frmBackup.h"
 #include "frm/frmBackupGlobals.h"
+#include "frm/frmBackupServer.h"
 #include "frm/frmRestore.h"
 #include "frm/frmReport.h"
 #include "frm/frmMaintenance.h"
@@ -358,6 +359,7 @@ void frmMain::CreateMenus()
 
     new backupFactory(menuFactories, toolsMenu, 0);
 	new backupGlobalsFactory(menuFactories, toolsMenu, 0);
+	new backupServerFactory(menuFactories, toolsMenu, 0);
     new restoreFactory(menuFactories, toolsMenu, 0);
 
     new grantWizardFactory(menuFactories, toolsMenu, 0);
