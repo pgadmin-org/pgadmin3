@@ -321,3 +321,4 @@ bool backupFactory::CheckEnable(pgObject *obj)
 
     return obj && obj->CanBackup() && !backupExecutable.IsEmpty();
 }
+

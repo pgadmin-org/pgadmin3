@@ -123,6 +123,7 @@ public:
     bool GetCanHint();
     bool CanEdit() { return true; }
     bool CanDrop() { return true; }
+	bool CanBackupGlobals() { return true; }
     bool HasStats() { return true; }
     bool HasDepends() { return false; }
     bool HasReferences() { return false; }

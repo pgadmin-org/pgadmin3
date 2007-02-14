@@ -53,6 +53,7 @@
 #include "frm/frmHbaConfig.h"
 #include "frm/frmPgpassConfig.h"
 #include "frm/frmBackup.h"
+#include "frm/frmBackupGlobals.h"
 #include "frm/frmRestore.h"
 #include "frm/frmReport.h"
 #include "frm/frmMaintenance.h"
@@ -356,6 +357,7 @@ void frmMain::CreateMenus()
 	new maintenanceFactory(menuFactories, toolsMenu, toolBar);
 
     new backupFactory(menuFactories, toolsMenu, 0);
+	new backupGlobalsFactory(menuFactories, toolsMenu, 0);
     new restoreFactory(menuFactories, toolsMenu, 0);
 
     new grantWizardFactory(menuFactories, toolsMenu, 0);
@@ -778,6 +780,7 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
 				else
 					EndMsg(true);
 			}
+			GetMenuFactories()->CheckMenu(server, GetMenuBar(), GetToolBar());
             return res;
         }
         case PGCONN_DNSERR:

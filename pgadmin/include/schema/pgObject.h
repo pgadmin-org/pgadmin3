@@ -123,6 +123,7 @@ public:
     virtual bool RequireDropConfirm() { return false; }
     virtual bool WantDummyChild() { return false; }
     virtual bool CanBackup() { return false; }
+	virtual bool CanBackupGlobals() { return false; }
     virtual bool CanRestore() { return false; }
     virtual bool GetCanHint() { return false; }
     virtual bool HasStats() { return false; }

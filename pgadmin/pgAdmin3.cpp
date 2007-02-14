@@ -81,7 +81,8 @@ wxArrayString existingLangNames;
 wxLocale *locale=0;
 pgAppearanceFactory *appearanceFactory=0;
 
-wxString backupExecutable;      // complete filename of pg_dump and pg_restore, if available
+wxString backupExecutable;      // complete filename of pg_dump, pg_dumpall and pg_restore, if available
+wxString backupAllExecutable;
 wxString restoreExecutable;
 
 wxPathList path;                // The search path
@@ -215,9 +216,11 @@ bool pgAdmin3::OnInit()
 
 #if defined(__WXMSW__)
     backupExecutable  = path.FindValidPath(wxT("pg_dump.exe"));
+    backupAllExecutable  = path.FindValidPath(wxT("pg_dumpall.exe"));
     restoreExecutable = path.FindValidPath(wxT("pg_restore.exe"));
 #else
     backupExecutable  = path.FindValidPath(wxT("pg_dump"));
+	backupAllExecutable  = path.FindValidPath(wxT("pg_dumpall"));
     restoreExecutable = path.FindValidPath(wxT("pg_restore"));
 #endif
 
