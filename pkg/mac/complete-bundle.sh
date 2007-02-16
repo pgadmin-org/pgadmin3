@@ -12,7 +12,7 @@ echo "Completing bundle: $bundle"
 
 cd "$bundle"
 
-todo=$(file `find ./ -perm +0111 ! -type d` | grep "Mach-O executable" | awk -F: -F\  '{print $1}' | uniq)
+todo=$(file `find ./ -perm +0111 ! -type d` | grep "Mach-O executable" | awk -F ':| ' '{ORS=" "; print $1}' | uniq)
 
 echo "Found executables: $todo"
 
