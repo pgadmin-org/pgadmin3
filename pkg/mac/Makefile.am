@@ -31,6 +31,7 @@ if APPBUNDLE
 	$$($(WX_CONFIG) --rescomp | sed 's/-t[[:space:]]*APPL//') \
 		 "$(bundledir)/Contents/Resources/pgAdmin3.rsrc" -useDF
 	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_dump" "$(bundledir)/Contents/SharedSupport/helper/pg_dump"
+	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_dump" "$(bundledir)/Contents/SharedSupport/helper/pg_dumpall"
 	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_restore" "$(bundledir)/Contents/SharedSupport/helper/pg_restore"
 	./complete-bundle.sh "$(bundledir)"
 endif
