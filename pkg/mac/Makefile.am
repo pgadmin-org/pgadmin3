@@ -9,18 +9,16 @@
 
 EXTRA_DIST = \
 		$(srcdir)/complete-bundle.sh \
+		$(srcdir)/create-dmg.sh \
 		$(srcdir)/debug-bundle.sh \
 		$(srcdir)/Info.plist \
 		$(srcdir)/Info.plist.in \
 		$(srcdir)/Info-Debug.plist \
 		$(srcdir)/Info-Debug.plist.in \
+		$(srcdir)/licence.r \
 		$(srcdir)/pgadmin3.icns \
 		$(srcdir)/sql.icns \
-		$(srcdir)/PkgInfo \
-		$(srcdir)/installer/installer.pmproj \
-		$(srcdir)/installer/intro.rtf \
-		$(srcdir)/installer/licence.rtf \
-		$(srcdir)/installer/logo.jpg
+		$(srcdir)/PkgInfo 
 
 install-exec-hook:
 if APPBUNDLE
