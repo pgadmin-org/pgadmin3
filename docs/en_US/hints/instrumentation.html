@@ -18,14 +18,19 @@ in all PostgreSQL versions. These enable some tasks that make life easier when
 dealing with log files and configuration files.
 </p>
 <p>
-When you installed PostgreSQL 8.0 or up using the Windows installer, you just need to 
-check the "admin option".
+When you install PostgreSQL 8.0 or up using the Windows installer, you just need to 
+select the "admin" or "adminpack" module.c
 </p>
 <p>
 When compiling from source, the necessary files can be found in the xtra subdirectory
 of the pgAdmin source tree. For PostgreSQL 8.0, copy the admin directory under 
 the postgresql contrib source directory, make and make install from there. For PostgreSQL 8.1, 
 use the admin81 directory for that.
+<p>
+PostgreSLQ 8.2 and above include the instrumentation functions in the "adminpack" contrib 
+module.
+</p>
+</p>
 After the module is installed, you need to create the instrumentation functions in 
 your maintenance database using the admin.sql script (admin81.sql for PostgreSQL 8.1) 
 which are usually located in the pgsql share directory (e.g. /usr/local/pgsql/share)
