@@ -303,11 +303,22 @@ int dlgRepCluster::Go(bool modal)
         txtAdminNodeID->SetValidator(numericValidator);
         txtClusterName->Hide();
 
-        if (!AddScript(createScript, wxT("xxid.v74.sql")) || 
-            !AddScript(createScript, wxT("slony1_base.sql")) || 
-            !AddScript(createScript, wxT("slony1_funcs.sql")) || 
-            !AddScript(createScript, wxT("slony1_funcs.v74.sql")))
-            createScript = wxEmptyString;
+		if (connection->BackendMinimumVersion(8, 0))
+		{
+			if (!AddScript(createScript, wxT("xxid.v80.sql")) || 
+				!AddScript(createScript, wxT("slony1_base.sql")) || 
+				!AddScript(createScript, wxT("slony1_funcs.sql")) || 
+				!AddScript(createScript, wxT("slony1_funcs.v80.sql")))
+				createScript = wxEmptyString;
+		}
+		else
+		{
+			if (!AddScript(createScript, wxT("xxid.v74.sql")) || 
+				!AddScript(createScript, wxT("slony1_base.sql")) || 
+				!AddScript(createScript, wxT("slony1_funcs.sql")) || 
+				!AddScript(createScript, wxT("slony1_funcs.v74.sql")))
+				createScript = wxEmptyString;
+		}
 
         treeObjectIterator it(mainForm->GetBrowser(), mainForm->GetServerCollection());
         pgServer *s;
