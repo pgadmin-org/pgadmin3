@@ -1638,6 +1638,30 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
     columns = new sqlCellAttr[nCols];
     savedLine.cols = new wxString[nCols];
 
+    // Get the "real" column list, including any dropped columns, as 
+	// key positions etc do not ignore these.
+	pgSet *allColsSet=connection->ExecuteSet(
+		wxT("SELECT attisdropped FROM pg_attribute")
+		wxT(" WHERE attnum > 0 AND attrelid=") + NumToStr(relid) + wxT("::oid\n")
+        wxT(" ORDER BY attnum"));
+
+	int x = 1;
+	if (allColsSet)
+	{
+		for (i=0; i < allColsSet->NumRows(); i++)
+		{
+			if (allColsSet->GetVal(wxT("attisdropped")) == wxT("t"))
+			{
+				colMap.Add(0);
+			}
+			else
+			{
+				colMap.Add(x);
+				x++;
+			}
+			allColsSet->MoveNext();
+		}
+	}
 
     pgSet *colSet=connection->ExecuteSet(
         wxT("SELECT n.nspname AS nspname, relname, format_type(t.oid,NULL) AS typname, format_type(t.oid, att.atttypmod) AS displaytypname, ")
@@ -1950,6 +1974,9 @@ wxString sqlTable::MakeKey(cacheLine *line)
         while (collist.HasMoreTokens())
         {
             cn=StrToLong(collist.GetNextToken());
+
+			// Translate the column location to the real location in the actual columns still present
+			cn = colMap[cn-1];
 
             wxString colval=line->cols[cn-offset];
             if (colval.IsEmpty())

@@ -95,7 +95,6 @@ public:
     virtual bool IsColText(int col);
 };
 
-
 class sqlTable : public wxGridTableBase
 {
 public:
@@ -152,6 +151,8 @@ private:
     int rowsStored;     // rows added and stored to db
     int rowsDeleted;    // rows deleted from initial dataSet
     sqlCellAttr *columns;
+
+	wxArrayInt colMap;
 
     friend class ctlSQLEditGrid;
 };
