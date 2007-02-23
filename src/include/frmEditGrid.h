@@ -167,6 +167,8 @@ private:
     int rowsDeleted;    // rows deleted from initial dataSet
     sqlCellAttr *columns;
 
+	wxArrayInt colMap;
+
     friend class ctlSQLEditGrid;
 };
 
