@@ -2,7 +2,7 @@
 //
 // pgAgent - PostgreSQL Tools
 // $Id: connection.h 4899 2006-01-17 09:46:28Z dpage $
-// Copyright (C) 2002 - 2006 The pgAdmin Development Team
+// Copyright (C) 2002 - 2007, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // connection.h - database connection
