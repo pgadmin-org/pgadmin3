@@ -24,6 +24,10 @@ public:
     sysSettings(const wxString& name);
     ~sysSettings();
 
+	// Display options
+	bool GetDisplayOption(const wxString &objtype);
+	void SetDisplayOption(const wxString &objtype, bool display);
+
     // Tip Of The Day
     int GetShowTipOfTheDay() const { return showTipOfTheDay; }
     void SetShowTipOfTheDay(const bool newval);

@@ -112,26 +112,42 @@ void pgSchema::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
         // Log
         wxLogInfo(wxT("Adding child object to schema ") + GetIdentifier());
 
-        
-        browser->AppendCollection(this, aggregateFactory);
-        browser->AppendCollection(this, conversionFactory);
-        browser->AppendCollection(this, domainFactory);
-        browser->AppendCollection(this, functionFactory);
-        browser->AppendCollection(this, triggerFunctionFactory);
+        if (settings->GetDisplayOption(wxT("Aggregates")))
+			browser->AppendCollection(this, aggregateFactory);
+		if (settings->GetDisplayOption(wxT("Conversions")))
+			browser->AppendCollection(this, conversionFactory);
+		if (settings->GetDisplayOption(wxT("Domains")))
+			browser->AppendCollection(this, domainFactory);
+		if (settings->GetDisplayOption(wxT("Functions")))
+			browser->AppendCollection(this, functionFactory);
+		if (settings->GetDisplayOption(wxT("Trigger functions")))
+			browser->AppendCollection(this, triggerFunctionFactory);
 
-        if (GetConnection()->BackendMinimumVersion(8, 1) || GetConnection()->EdbMinimumVersion(8, 0))
-            browser->AppendCollection(this, procedureFactory);
+		if (settings->GetDisplayOption(wxT("Procedures")))
+		{
+			if (GetConnection()->BackendMinimumVersion(8, 1) || GetConnection()->EdbMinimumVersion(8, 0))
+				browser->AppendCollection(this, procedureFactory);
+		}
 
-        browser->AppendCollection(this, operatorFactory);
-        browser->AppendCollection(this, operatorClassFactory);
+		if (settings->GetDisplayOption(wxT("Operators")))
+			browser->AppendCollection(this, operatorFactory);
+		if (settings->GetDisplayOption(wxT("Operator classes")))
+			browser->AppendCollection(this, operatorClassFactory);
 
-		if (GetConnection()->BackendMinimumVersion(8, 3))
-			browser->AppendCollection(this, operatorFamilyFactory);
+		if (settings->GetDisplayOption(wxT("Operator families")))
+		{
+			if (GetConnection()->BackendMinimumVersion(8, 3))
+				browser->AppendCollection(this, operatorFamilyFactory);
+		}
 
-        browser->AppendCollection(this, sequenceFactory);
-        browser->AppendCollection(this, tableFactory);
-        browser->AppendCollection(this, typeFactory);
-        browser->AppendCollection(this, viewFactory);
+		if (settings->GetDisplayOption(wxT("Sequences")))
+			browser->AppendCollection(this, sequenceFactory);
+		if (settings->GetDisplayOption(wxT("Tables")))
+			browser->AppendCollection(this, tableFactory);
+		if (settings->GetDisplayOption(wxT("Types")))
+			browser->AppendCollection(this, typeFactory);
+		if (settings->GetDisplayOption(wxT("Views")))
+			browser->AppendCollection(this, viewFactory);
     }
 
 

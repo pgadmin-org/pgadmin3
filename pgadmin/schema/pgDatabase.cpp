@@ -387,10 +387,14 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         {
             wxLogInfo(wxT("Adding child object to database ") + GetIdentifier());
 
-            browser->AppendCollection(this, castFactory);
-            browser->AppendCollection(this, languageFactory);
-            browser->AppendCollection(this, schemaFactory);
-            browser->AppendCollection(this, slClusterFactory);
+			if (settings->GetDisplayOption(wxT("Casts")))
+				browser->AppendCollection(this, castFactory);
+			if (settings->GetDisplayOption(wxT("Languages")))
+				browser->AppendCollection(this, languageFactory);
+			if (settings->GetDisplayOption(wxT("Schemas")))
+				browser->AppendCollection(this, schemaFactory);
+			if (settings->GetDisplayOption(wxT("Slony clusters")))
+				browser->AppendCollection(this, slClusterFactory);
             
             missingFKs = StrToLong(connection()->ExecuteScalar(
                 wxT("SELECT COUNT(*) FROM\n")

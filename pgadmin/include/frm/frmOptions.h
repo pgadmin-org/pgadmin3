@@ -17,6 +17,12 @@
 
 class frmMain;
 
+class ItemWithString : public wxClientData
+{
+public:
+	wxString data;
+};
+
 // Class declarations
 class frmOptions : public pgDialog
 {

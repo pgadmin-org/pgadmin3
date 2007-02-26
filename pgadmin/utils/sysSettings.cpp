@@ -219,6 +219,120 @@ sysSettings::~sysSettings()
 	Save();
 }
 
+bool sysSettings::GetDisplayOption(const wxString &objtype)
+{
+	bool retval, def = true;
+	wxString engtype;
+
+	if (objtype == _("Databases")) 
+		engtype = wxT("Databases");
+	else if (objtype == _("Tablespaces")) 
+		engtype = wxT("Tablespaces");
+	else if (objtype == _("pgAgent jobs")) 
+		engtype = wxT("pgAgent jobs");
+	else if (objtype == _("Groups/group roles")) 
+		engtype = wxT("Groups/login roles");
+	else if (objtype == _("Users/login roles")) 
+		engtype = wxT("Users/login roles");
+	else if (objtype == _("Casts")) 
+	{
+		engtype = wxT("Casts");
+		def = false;
+	}
+	else if (objtype == _("Languages")) 
+	{
+		engtype = wxT("Languages");
+		def = false;
+	}
+	else if (objtype == _("Schemas")) 
+		engtype = wxT("Schemas");
+	else if (objtype == _("Slony clusters")) 
+		engtype = wxT("Slony clusters");
+	else if (objtype == _("Aggregates")) 
+	{
+		engtype = wxT("Aggregates");
+		def = false;
+	}
+	else if (objtype == _("Conversions"))
+	{
+		engtype = wxT("Conversions");
+		def = false;
+	}
+	else if (objtype == _("Domains")) 
+		engtype = wxT("Domains");
+	else if (objtype == _("Functions")) 
+		engtype = wxT("Functions");
+	else if (objtype == _("Trigger functions")) 
+		engtype = wxT("Trigger functions");
+	else if (objtype == _("Procedures")) 
+		engtype = wxT("Procedures");
+	else if (objtype == _("Operators")) 
+	{
+		engtype = wxT("Operators");
+		def = false;
+	}
+	else if (objtype == _("Operator classes")) 
+	{
+		engtype = wxT("Operator classes");
+		def = false;
+	}
+	else if (objtype == _("Operator families")) 
+	{
+		engtype = wxT("Operator families");
+		def = false;
+	}
+	else if (objtype == _("Rules")) 
+	{
+		engtype = wxT("Rules");
+		def = false;
+	}
+	else if (objtype == _("Sequences")) 
+		engtype = wxT("Sequences");
+	else if (objtype == _("Tables")) 
+		engtype = wxT("Tables");
+	else if (objtype == _("Types")) 
+	{
+		engtype = wxT("Types");
+		def = false;
+	}
+	else if (objtype == _("Views")) 
+		engtype = wxT("Views");
+
+	Read(wxT("Display/") + objtype, &retval, def);
+
+	return retval;
+}
+
+void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
+{
+	wxString engtype;
+
+	if (objtype == _("Databases")) engtype = wxT("Databases");
+	else if (objtype == _("Tablespaces")) engtype = wxT("Tablespaces");
+	else if (objtype == _("pgAgent jobs")) engtype = wxT("pgAgent jobs");
+	else if (objtype == _("Groups/group roles")) engtype = wxT("Groups/login roles");
+	else if (objtype == _("Users/login roles")) engtype = wxT("Users/login roles");
+	else if (objtype == _("Casts")) engtype = wxT("Casts");
+	else if (objtype == _("Languages")) engtype = wxT("Languages");
+	else if (objtype == _("Schemas")) engtype = wxT("Schemas");
+	else if (objtype == _("Slony clusters")) engtype = wxT("Slony clusters");
+	else if (objtype == _("Aggregates")) engtype = wxT("Aggregates");
+	else if (objtype == _("Conversions")) engtype = wxT("Conversions");
+	else if (objtype == _("Domains")) engtype = wxT("Domains");
+	else if (objtype == _("Functions")) engtype = wxT("Functions");
+	else if (objtype == _("Trigger functions")) engtype = wxT("Trigger functions");
+	else if (objtype == _("Procedures")) engtype = wxT("Procedures");
+	else if (objtype == _("Operators")) engtype = wxT("Operators");
+	else if (objtype == _("Operator classes")) engtype = wxT("Operator classes");
+	else if (objtype == _("Operator families")) engtype = wxT("Operator families");
+	else if (objtype == _("Rules")) engtype = wxT("Rules");
+	else if (objtype == _("Sequences")) engtype = wxT("Sequences");
+	else if (objtype == _("Tables")) engtype = wxT("Tables");
+	else if (objtype == _("Types")) engtype = wxT("Types");
+	else if (objtype == _("Views")) engtype = wxT("Views");
+
+	Write(wxT("Display/") + engtype, display);
+}
 
 bool sysSettings::moveStringValue(wxChar *oldKey, wxChar *newKey, int index)
 {

@@ -59,6 +59,7 @@ extern wxArrayString existingLangNames;
 #define txtSqlFont                  CTRL_TEXT("txtSqlFont")
 #define chkSuppressHints            CTRL_CHECKBOX("chkSuppressHints")
 #define chkResetHints               CTRL_CHECKBOX("chkResetHints")
+#define lstDisplay					CTRL_CHECKLISTBOX("lstDisplay")
 
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
@@ -152,6 +153,34 @@ frmOptions::frmOptions(frmMain *parent)
     txtFont->SetValue(currentFont.GetNativeFontInfoUserDesc());
     currentSqlFont=settings->GetSQLFont();
     txtSqlFont->SetValue(currentSqlFont.GetNativeFontInfoUserDesc());
+
+	// Load the display options
+	lstDisplay->Append(_("Databases"));
+	lstDisplay->Append(_("Tablespaces"));
+	lstDisplay->Append(_("pgAgent jobs"));
+	lstDisplay->Append(_("Groups/group roles"));
+	lstDisplay->Append(_("Users/login roles"));
+	lstDisplay->Append(_("Casts"));
+	lstDisplay->Append(_("Languages"));
+	lstDisplay->Append(_("Schemas"));
+	lstDisplay->Append(_("Slony clusters"));
+	lstDisplay->Append(_("Aggregates"));
+	lstDisplay->Append(_("Conversions"));
+	lstDisplay->Append(_("Domains"));
+	lstDisplay->Append(_("Functions"));
+	lstDisplay->Append(_("Trigger functions"));
+	lstDisplay->Append(_("Procedures"));
+	lstDisplay->Append(_("Operators"));
+	lstDisplay->Append(_("Operator classes"));
+	lstDisplay->Append(_("Operator families"));
+	lstDisplay->Append(_("Rules"));
+	lstDisplay->Append(_("Sequences"));
+	lstDisplay->Append(_("Tables"));
+	lstDisplay->Append(_("Types"));
+	lstDisplay->Append(_("Views"));
+
+	for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
+		lstDisplay->Check(x, settings->GetDisplayOption(lstDisplay->GetString(x)));
 }
 
 
@@ -160,7 +189,6 @@ frmOptions::~frmOptions()
     wxLogInfo(wxT("Destroying an options dialogue"));
     SavePosition();
 }
-
 
 void frmOptions::OnHelp(wxCommandEvent &ev)
 {
@@ -299,6 +327,18 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         }
 
     }
+
+	// Save the display options
+	int changed = false;
+	for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
+	{
+		if (lstDisplay->IsChecked(x) != settings->GetDisplayOption(lstDisplay->GetString(x)))
+			changed = true;
+		settings->SetDisplayOption(lstDisplay->GetString(x), lstDisplay->IsChecked(x));
+	}
+
+	if (changed)
+		wxMessageBox(_("Changes to the display options may not be visible until the browser tree is refreshed."), _("Display options"), wxICON_INFORMATION);
 
     settings->Save();
     Destroy();

@@ -799,29 +799,37 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
             
             wxLogInfo(wxT("Adding child object to server ") + GetIdentifier());
     
-            browser->AppendCollection(this, databaseFactory);
+			if (settings->GetDisplayOption(wxT("Databases")))
+				browser->AppendCollection(this, databaseFactory);
 
-            if (conn->BackendMinimumVersion(7, 5))
+            if (conn->BackendMinimumVersion(8, 0) && settings->GetDisplayOption(wxT("Tablespaces")))
                 browser->AppendCollection(this, tablespaceFactory);
 
             // Jobs
             // We only add the Jobs node if the appropriate objects are the initial DB.
-            wxString exists = conn->ExecuteScalar(
-                wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
-                wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
+			if (settings->GetDisplayOption(wxT("pgAgent jobs")))
+			{
+				wxString exists = conn->ExecuteScalar(
+					wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
+					wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
 
-            if (!exists.IsNull())
-                browser->AppendCollection(this, jobFactory);
+				if (!exists.IsNull())
+					browser->AppendCollection(this, jobFactory);
+			}
 
             if (conn->BackendMinimumVersion(8, 1))
             {
-                browser->AppendCollection(this, groupRoleFactory);
+				if (settings->GetDisplayOption(wxT("Groups/group roles")))
+					browser->AppendCollection(this, groupRoleFactory);
+				if (settings->GetDisplayOption(wxT("Users/login roles")))
                 browser->AppendCollection(this, loginRoleFactory);
             }
             else
             {
-                browser->AppendCollection(this, groupFactory);
-                browser->AppendCollection(this, userFactory);
+				if (settings->GetDisplayOption(wxT("Groups/group roles")))
+					browser->AppendCollection(this, groupFactory);
+				if (settings->GetDisplayOption(wxT("Users/login roles")))
+					browser->AppendCollection(this, userFactory);
             }
         }
 
