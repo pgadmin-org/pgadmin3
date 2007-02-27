@@ -28,6 +28,7 @@
 BEGIN_EVENT_TABLE(frmAbout, wxFrame)
     EVT_PAINT(frmAbout::OnPaint)
     
+    EVT_KEY_UP(frmAbout::OnKeyUp)
     EVT_LEFT_DOWN(frmAbout::OnLeftDown)
 #ifdef __WXGTK__
     EVT_WINDOW_CREATE(frmAbout::OnWindowCreate)
@@ -63,9 +64,16 @@ void frmAbout::OnLeftDown(wxMouseEvent& WXUNUSED(evt))
     this->Close();
 }
 
+void frmAbout::OnKeyUp(wxKeyEvent& evt)
+{
+    if (evt.GetKeyCode() == WXK_ESCAPE)
+        this->Close();
+}
+
+
 void frmAbout::SetWindowShape()
 {
-	wxRegion region(about);
+    wxRegion region(about);
     SetShape(region);
 }
 
@@ -74,15 +82,15 @@ void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
     wxPoint pos=appearanceFactory->GetSplashTextPos();
 
     wxPaintDC dc(this);
-	dc.DrawBitmap(about, 0, 0, true);
+    dc.DrawBitmap(about, 0, 0, true);
     dc.SetTextForeground(appearanceFactory->GetSplashTextColour());
     dc.SetFont(appearanceFactory->GetSplashTextFont());
 
-	if (appearanceFactory->IsBranded())
-	{
-		dc.DrawText(_("This program is based on pgAdmin III"), pos);
-		pos.y += appearanceFactory->GetSplashTextOffset();
-	}
+    if (appearanceFactory->IsBranded())
+    {
+        dc.DrawText(_("This program is based on pgAdmin III"), pos);
+        pos.y += appearanceFactory->GetSplashTextOffset();
+    }
     dc.DrawText(VERSION_WITH_DATE_AND_SVN, pos);
     pos.y += appearanceFactory->GetSplashTextOffset();
     dc.DrawText(COPYRIGHT, pos);

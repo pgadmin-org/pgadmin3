@@ -24,6 +24,7 @@ private:
     void SetWindowShape();
     void OnWindowCreate(wxWindowCreateEvent& WXUNUSED(evt));
     void OnLeftDown(wxMouseEvent& WXUNUSED(evt));
+    void OnKeyUp(wxKeyEvent& evt);
 
     wxBitmap about;
     DECLARE_EVENT_TABLE()
