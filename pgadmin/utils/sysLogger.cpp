@@ -173,7 +173,7 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     }
 
     // Display a messagebox if required.
-    if (icon != 0) wxMessageBox(preamble + wxGetTranslation(msg), APPNAME_L, 
+	if (icon != 0) wxMessageBox(preamble + wxGetTranslation(msg), appearanceFactory->GetLongAppName(), 
 		wxOK | wxCENTRE | icon);
 }
 

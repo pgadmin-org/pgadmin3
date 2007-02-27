@@ -181,7 +181,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
     // Help menu
     helpMenu = new wxMenu();
-    helpMenu->Append(MNU_CONTENTS, _("&Help contents"),_("Open the pgAdmin III helpfile."));
+    helpMenu->Append(MNU_CONTENTS, _("&Help contents"),_("Open the helpfile."));
     helpMenu->Append(MNU_HELP, _("&Edit grid help"),_("Display help on this window."));
 
     menuBar = new wxMenuBar();
@@ -2628,7 +2628,7 @@ wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filte
     pgConn *conn= db->CreateConn();
     if (conn)
     {
-        wxString txt = wxT("pgAdmin III Edit Data - ")
+        wxString txt = wxT("Edit Data - ")
             + server->GetDescription() 
             + wxT(" (") + server->GetName() 
             + wxT(":") + NumToStr((long)server->GetPort()) 

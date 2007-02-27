@@ -40,7 +40,7 @@ BEGIN_EVENT_TABLE(frmMainConfig, frmConfig)
 END_EVENT_TABLE()
 
 
-#define BCE_TITLE wxString(wxT("pgAdmin III - ")) + _("Backend Configuration Editor")
+#define BCE_TITLE _("Backend Configuration Editor")
 
 
 frmMainConfig::frmMainConfig(frmMain *parent, pgServer *server)

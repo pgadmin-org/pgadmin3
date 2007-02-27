@@ -40,7 +40,7 @@ BEGIN_EVENT_TABLE(frmPgpassConfig, frmConfig)
     EVT_LIST_ITEM_SELECTED(CTL_CFGVIEW,     frmPgpassConfig::OnSelectSetting)
 END_EVENT_TABLE()
 
-#define CACE_TITLE wxString(wxT("pgAdmin III - ")) + _("Client Access Configuration Editor")
+#define CACE_TITLE _("Client Access Configuration Editor")
 
 frmPgpassConfig::frmPgpassConfig(const wxString& title, const wxString &configFile)
 : frmConfig(title + wxT(" - ") + _("Client Access Configuration Editor"), configFile)

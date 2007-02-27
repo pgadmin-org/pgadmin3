@@ -66,7 +66,7 @@ frmHelp::frmHelp(wxWindow *fr)
     
     CreateStatusBar();
     htmlWindow = new ctlHelpWindow(this);
-    htmlWindow->SetRelatedFrame(this, APPNAME_L wxT(" - %s"));
+    htmlWindow->SetRelatedFrame(this, appearanceFactory->GetLongAppName() + wxT(" - %s"));
     htmlWindow->SetRelatedStatusBar(0);
 
     RestorePosition(-1, -1, 400, 500, 200, 150);
@@ -217,7 +217,7 @@ void ctlHelpWindow::OnLinkClicked(const wxHtmlLinkInfo& link)
 
 contentsFactory::contentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("&Help contents"), _("Open the pgAdmin III helpfile."));
+    mnu->Append(id, _("&Help contents"), _("Open the helpfile."));
 }
 
 
@@ -230,7 +230,7 @@ wxWindow *contentsFactory::StartDialog(frmMain *form, pgObject *obj)
 
 faqFactory::faqFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("pgAdmin III &FAQ"), _("Frequently asked questions about pgAdmin III."));
+    mnu->Append(id, _("&FAQ"), _("Frequently asked questions."));
 }
 
 

@@ -219,7 +219,7 @@ void frmHint::SetHint(const wxString &info)
     {
         if (hintArray[currentHint].flags & HINT_CANSUPPRESS)
             canSuppress=true;
-        SetTitle(_("pgAdmin III Guru Hint") + wxString(wxT(" - ")) + wxGetTranslation(hintArray[currentHint].hintCaption));
+        SetTitle(_("Guru Hint") + wxString(wxT(" - ")) + wxGetTranslation(hintArray[currentHint].hintCaption));
 
         wxString page=GetPage(hintArray[currentHint].hintPage);
         page.Replace(wxT("<INFO>"), info);
@@ -228,7 +228,7 @@ void frmHint::SetHint(const wxString &info)
     }
     else
     {
-        SetTitle(_("pgAdmin III Guru Hints"));
+        SetTitle(_("Guru Hints"));
 
         wxString header = GetPage(wxT("multiple"));
         wxString pages;

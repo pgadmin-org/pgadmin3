@@ -12,11 +12,8 @@
 #ifndef FRMABOUT_H
 #define FRMABOUT_H
 
-#include "dlg/dlgClasses.h"
-#include "utils/factory.h"
-
 // Class declarations
-class frmAbout : public wxDialog
+class frmAbout : public wxFrame
 {
 public:
     frmAbout(wxFrame *parent);
@@ -24,6 +21,10 @@ public:
     void OnPaint(wxPaintEvent&);
     
 private:
+    void SetWindowShape();
+    void OnWindowCreate(wxWindowCreateEvent& WXUNUSED(evt));
+	void OnLeftUp(wxMouseEvent& WXUNUSED(evt));
+
     wxBitmap about;
     DECLARE_EVENT_TABLE()
 };

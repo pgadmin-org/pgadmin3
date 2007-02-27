@@ -65,9 +65,10 @@
 #include "ctl/xh_ctlcombo.h"
 #include "ctl/xh_ctltree.h"
 
-#define DOC_DIR     wxT("/docs")
-#define UI_DIR      wxT("/ui")
-#define I18N_DIR    wxT("/i18n")
+#define DOC_DIR      wxT("/docs")
+#define UI_DIR       wxT("/ui")
+#define I18N_DIR     wxT("/i18n")
+#define BRANDING_DIR wxT("/branding")
 
 #define HELPER_DIR  wxT("/helper")
 
@@ -90,6 +91,7 @@ wxString loadPath;              // Where the program is loaded from
 wxString docPath;               // Where docs are stored
 wxString uiPath;                // Where ui data is stored
 wxString i18nPath;              // Where i18n data is stored
+wxString brandingPath;			// Where branding data is stored
 wxLog *logger;
 
 bool dialogTestMode=false;
@@ -224,18 +226,25 @@ bool pgAdmin3::OnInit()
     restoreExecutable = path.FindValidPath(wxT("pg_restore"));
 #endif
 
+	// Setup the image handlers and appearance factory before we do any GUI or config stuff
+    wxImage::AddHandler(new wxJPEGHandler());
+    wxImage::AddHandler(new wxPNGHandler());
+    wxImage::AddHandler(new wxGIFHandler());
+
+	appearanceFactory = new pgAppearanceFactory();
+
     // Load the Settings
 #ifdef __WXMSW__
-    settings = new sysSettings(APPNAME_L);
+    settings = new sysSettings(wxT("pgAdmin III"));
 #else
-    settings = new sysSettings(APPNAME_S);
+    settings = new sysSettings(wxT("pgadmin3"));
 #endif
 
 	// Setup logging
     InitLogger();
 
     wxString msg;
-    msg << wxT("# ") << APPNAME_L << wxT(" Version ") << VERSION_STR << wxT(" Startup");
+    msg << wxT("# ") << appearanceFactory->GetLongAppName() << wxT(" Version ") << VERSION_STR << wxT(" Startup");
     wxLogInfo(wxT("##############################################################"));
     wxLogInfo(msg);
     wxLogInfo(wxT("##############################################################"));
@@ -245,9 +254,10 @@ bool pgAdmin3::OnInit()
 #endif
 
     // Log the path info
-    wxLogInfo(wxT("i18n path: %s"), i18nPath.c_str());
-    wxLogInfo(wxT("UI path  : %s"), uiPath.c_str());
-    wxLogInfo(wxT("Doc path : %s"), docPath.c_str());
+    wxLogInfo(wxT("i18n path    : %s"), i18nPath.c_str());
+    wxLogInfo(wxT("UI path      : %s"), uiPath.c_str());
+    wxLogInfo(wxT("Doc path     : %s"), docPath.c_str());
+    wxLogInfo(wxT("Branding path: %s"), brandingPath.c_str());
 
     wxLogInfo(wxT("Executable search directories:"));
     for (unsigned int x=0; x<path.Count(); x++)
@@ -320,8 +330,9 @@ bool pgAdmin3::OnInit()
         }
     }
 
-
-#ifndef __WXDEBUG__
+#ifdef __WXDEBUG__
+	frmSplash *winSplash = NULL;
+#else
     // Show the splash screen
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
     if (!winSplash) 
@@ -333,17 +344,11 @@ bool pgAdmin3::OnInit()
 	    winSplash->Update();
         wxTheApp->Yield(true);
     }
-#else
-	frmSplash *winSplash = NULL;
 #endif
 
 	
     // Startup the windows sockets if required
     InitNetwork();
-
-    wxImage::AddHandler(new wxJPEGHandler());
-    wxImage::AddHandler(new wxPNGHandler());
-    wxImage::AddHandler(new wxGIFHandler());
 
     wxFileSystem::AddHandler(new wxZipFSHandler);
 
@@ -355,14 +360,12 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->AddHandler(new ctlComboBoxXmlHandler);
     wxXmlResource::Get()->AddHandler(new ctlTreeXmlHandler);
 
-
-    appearanceFactory = new pgAppearanceFactory();
     InitXml();
 
     wxOGLInitialize();
 
     // Set some defaults
-    SetAppName(APPNAME_L);
+    SetAppName(appearanceFactory->GetLongAppName());
 
 #ifndef __WXDEBUG__
     wxTheApp->Yield(true);
@@ -374,12 +377,12 @@ bool pgAdmin3::OnInit()
     {
 		if (configMode == frmConfig::ANYFILE && wxDir::Exists(configFile))
 		{
-			frmConfig::Create(APPNAME_L, configFile + wxT("/pg_hba.conf"), frmConfig::HBAFILE);
-			frmConfig::Create(APPNAME_L, configFile + wxT("/postgresql.conf"), frmConfig::MAINFILE);
+			frmConfig::Create(appearanceFactory->GetLongAppName(), configFile + wxT("/pg_hba.conf"), frmConfig::HBAFILE);
+			frmConfig::Create(appearanceFactory->GetLongAppName(), configFile + wxT("/postgresql.conf"), frmConfig::MAINFILE);
 		}
 		else
 		{
-			frmConfig::Create(APPNAME_L, configFile, configMode);
+			frmConfig::Create(appearanceFactory->GetLongAppName(), configFile, configMode);
 		}
         if (winSplash)
         {
@@ -466,7 +469,7 @@ bool pgAdmin3::OnInit()
 		else
 		{
             // Create & show the main form
-            winMain = new frmMain(APPNAME_L);
+            winMain = new frmMain(appearanceFactory->GetLongAppName());
 
             if (!winMain) 
                 wxLogFatalError(__("Couldn't create the main window!"));
@@ -575,11 +578,18 @@ void pgAdmin3::InitPaths()
     else
         uiPath = loadPath + wxT("/..") UI_DIR;
 
+    if (wxDir::Exists(loadPath + BRANDING_DIR))
+        brandingPath = loadPath + BRANDING_DIR;
+    else if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") + BRANDING_DIR))
+        brandingPath = loadPath + wxT("/../pgAdmin III") + BRANDING_DIR;
+    else 
+        brandingPath = loadPath + wxT("/../..") + BRANDING_DIR;
+
     // Look for a path 'hint' on Windows. This registry setting may
     // be set by the Win32 PostgreSQL installer which will generally
     // install pg_dump et al. in the PostgreSQL bindir rather than
     // the pgAdmin directory.
-    wxRegKey hintKey(wxT("HKEY_LOCAL_MACHINE\\Software\\") APPNAME_L);
+    wxRegKey hintKey(wxT("HKEY_LOCAL_MACHINE\\Software\\pgAdmin III"));
     if (hintKey.HasValue(wxT("Helper Path")))
     {
         wxString hintPath;
@@ -622,6 +632,9 @@ void pgAdmin3::InitPaths()
 
         if (wxDir::Exists(dataDir + DOC_DIR))
             docPath = dataDir + DOC_DIR ;
+
+        if (wxDir::Exists(dataDir + BRANDING_DIR))
+            brandingPath = dataDir + BRANDING_DIR ;
     }
 
     if (i18nPath.IsEmpty())
@@ -638,13 +651,19 @@ void pgAdmin3::InitPaths()
         else 
             uiPath = loadPath + wxT("/..") UI_DIR;
     }
-
     if (docPath.IsEmpty())
     {
         if (wxDir::Exists(loadPath + DOC_DIR))
             docPath = loadPath + DOC_DIR ;
         else
             docPath = loadPath + wxT("/..") DOC_DIR ;
+    }
+    if (brandingPath.IsEmpty())
+    {
+        if (wxDir::Exists(loadPath + BRANDING_DIR))
+            brandingPath = loadPath + BRANDING_DIR ;
+        else
+            brandingPath = loadPath + wxT("/..") BRANDING_DIR ;
     }
 #endif
 
@@ -712,76 +731,171 @@ void pgAdmin3::InitNetwork()
 
 pgAppearanceFactory::pgAppearanceFactory()
 {
+	is_branded = false;
+
+	// Setup the default branding options
+#ifdef __WIN32__
+	splash_font_size = 8;
+#else
+#ifdef __WXMAC__
+	splash_font_size = 11;
+#else
+	splash_font_size = 9;
+#endif
+#endif
+
+	splash_pos_x = 128;
+	splash_pos_y = 281;
+	splash_pos_offset = 15;
+
+	large_icon = wxImage(elephant32_xpm);
+	small_icon = wxImage(pgAdmin3_xpm);
+	splash_image = wxImage(splash_xpm);
+
+	splash_text_colour = wxColour(255, 255, 255);
+
+	// Attempt to overload branding information
+	wxFileName brIni(brandingPath + wxT("/branding.ini"));
+	if (brIni.FileExists())
+	{
+		wxString brCfg = FileRead(brIni.GetFullPath());
+
+		wxStringTokenizer tkz(brCfg, wxT("\r\n"));
+
+		while(tkz.HasMoreTokens())
+		{
+			wxString token = tkz.GetNextToken();
+
+			if (token.Trim() == wxEmptyString || token.StartsWith(wxT(";")))
+				continue;
+
+			if (token.Lower().StartsWith(wxT("largeicon=")))
+			{
+				large_icon = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
+				if (!large_icon.IsOk())
+					large_icon = wxImage(elephant32_xpm);
+				else
+					is_branded = true;
+			}
+			else if (token.Lower().StartsWith(wxT("smallicon=")))
+			{
+				small_icon = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
+				if (!small_icon.IsOk())
+					small_icon = wxImage(pgAdmin3_xpm);
+				else
+					is_branded = true;
+			}
+			else if (token.Lower().StartsWith(wxT("splashimage=")))
+			{
+				splash_image = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
+				if (!splash_image.IsOk())
+					splash_image = wxImage(splash_xpm);
+				else
+					is_branded = true;
+			}
+#ifdef __WIN32__
+			else if (token.Lower().StartsWith(wxT("splashfontsizewin=")))
+#else
+#ifdef __WXMAC__
+			else if (token.Lower().StartsWith(wxT("splashfontsizemac=")))
+#else
+			else if (token.Lower().StartsWith(wxT("splashfontsizegtk=")))
+#endif
+#endif
+			{
+				token.AfterFirst('=').Trim().ToLong(&splash_font_size);
+				is_branded = true;
+			}
+			else if (token.Lower().StartsWith(wxT("splashposx=")))
+			{
+				token.AfterFirst('=').Trim().ToLong(&splash_pos_x);
+				is_branded = true;
+			}
+			else if (token.Lower().StartsWith(wxT("splashposy=")))
+			{
+				token.AfterFirst('=').Trim().ToLong(&splash_pos_y);
+				is_branded = true;
+			}
+			else if (token.Lower().StartsWith(wxT("splashposoffset=")))
+			{
+				token.AfterFirst('=').Trim().ToLong(&splash_pos_offset);
+				is_branded = true;
+			}
+			else if (token.Lower().StartsWith(wxT("splashtextcolour=")))
+			{
+				splash_text_colour = wxColor(token.AfterFirst('=').Trim());
+				is_branded = true;
+			}
+			else if (token.Lower().StartsWith(wxT("shortappname=")))
+			{
+				short_appname = token.AfterFirst('=').Trim();
+				is_branded = true;
+			}
+			else if (token.Lower().StartsWith(wxT("longappname=")))
+			{
+				long_appname = token.AfterFirst('=').Trim();
+				is_branded = true;
+			}
+		}
+	}
 }
 
 void pgAppearanceFactory::SetIcons(wxDialog *dlg)
 {
     wxIconBundle icons;
-    icons.AddIcon(wxIcon(pgAdmin3_xpm));
-    icons.AddIcon(wxIcon(elephant32_xpm));
+    icons.AddIcon(GetSmallIconImage());
+    icons.AddIcon(GetBigIconImage());
     dlg->SetIcons(icons);
 }
 
 void pgAppearanceFactory::SetIcons(wxTopLevelWindow *dlg)
 {
     wxIconBundle icons;
-    icons.AddIcon(wxIcon(pgAdmin3_xpm));
-    icons.AddIcon(wxIcon(elephant32_xpm));
+    icons.AddIcon(GetSmallIconImage());
+    icons.AddIcon(GetBigIconImage());
     dlg->SetIcons(icons);
 }
 
-char **pgAppearanceFactory::GetSmallIconImage()
+wxIcon pgAppearanceFactory::GetSmallIconImage()
 {
-    return pgAdmin3_xpm;
+	wxIcon icon;
+	icon.CopyFromBitmap(wxBitmap(small_icon));
+    return icon;
 }
 
-char **pgAppearanceFactory::GetBigIconImage()
+wxIcon pgAppearanceFactory::GetBigIconImage()
 {
-    return elephant32_xpm;
+	wxIcon icon;
+	icon.CopyFromBitmap(wxBitmap(large_icon));
+    return icon;
 }
 
-char **pgAppearanceFactory::GetSplashImage()
+wxBitmap pgAppearanceFactory::GetSplashImage()
 {
-    return splash_xpm;
+    return wxBitmap(splash_image);
 }
-
-
-#ifdef __WIN32__
-#define SPLASH_FONTSIZE 8
-#else
-#ifdef __WXMAC__
-#define SPLASH_FONTSIZE 11
-#else
-#define SPLASH_FONTSIZE 9
-#endif
-#endif
-
-#define SPLASH_X0       128
-#define SPLASH_Y0       281
-#define SPLASH_OFFS     15
-
 
 wxPoint pgAppearanceFactory::GetSplashTextPos()
 {
-    return wxPoint(SPLASH_X0, SPLASH_Y0);
+    return wxPoint(splash_pos_x, splash_pos_y);
 }
 
 
 int pgAppearanceFactory::GetSplashTextOffset()
 {
-    return SPLASH_OFFS;
+    return splash_pos_offset;
 }
 
 
 wxFont pgAppearanceFactory::GetSplashTextFont()
 {
     wxFont fnt(*wxNORMAL_FONT);
-    fnt.SetPointSize(SPLASH_FONTSIZE);
+    fnt.SetPointSize(splash_font_size);
     return fnt;
 }
 
 
 wxColour pgAppearanceFactory::GetSplashTextColour()
 {
-    return wxColour(255, 255, 255);
+    return splash_text_colour;
 }

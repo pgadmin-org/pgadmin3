@@ -41,7 +41,7 @@ BEGIN_EVENT_TABLE(frmHbaConfig, frmConfig)
     EVT_LIST_ITEM_SELECTED(CTL_CFGVIEW,     frmHbaConfig::OnSelectSetting)
 END_EVENT_TABLE()
 
-#define BACE_TITLE wxString(wxT("pgAdmin III - ")) + _("Backend Access Configuration Editor")
+#define BACE_TITLE _("Backend Access Configuration Editor")
 
 
 frmHbaConfig::frmHbaConfig(frmMain *parent, pgServer *server)

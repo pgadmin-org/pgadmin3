@@ -93,13 +93,23 @@ public:
 
     void SetIcons(wxDialog *dlg);
     void SetIcons(wxTopLevelWindow *dlg);
-    char **GetSmallIconImage();
-    char **GetBigIconImage();
-    char **GetSplashImage();
+    wxIcon GetSmallIconImage();
+    wxIcon GetBigIconImage();
+    wxBitmap GetSplashImage();
     wxFont GetSplashTextFont();
     wxColour GetSplashTextColour();
     int GetSplashTextOffset();
     wxPoint GetSplashTextPos();
+	wxString GetShortAppName() { return short_appname; };
+    wxString GetLongAppName() { return long_appname; };
+	bool IsBranded() { return is_branded; };
+
+private:
+	wxString long_appname, short_appname;
+	wxImage large_icon, small_icon, splash_image;
+	long splash_font_size, splash_pos_x, splash_pos_y, splash_pos_offset;
+	wxColor splash_text_colour;
+	bool is_branded;
 };
 
 extern pgAppearanceFactory *appearanceFactory;

@@ -12,11 +12,8 @@
 #ifndef SPLASH_H
 #define SPLASH_H
 
-#include "dlg/dlgClasses.h"
-#include "utils/factory.h"
-
 // Class declarations
-class frmSplash : public pgFrame
+class frmSplash : public wxFrame
 {
 public:
     frmSplash(wxFrame *parent);
@@ -24,6 +21,9 @@ public:
     void OnPaint(wxPaintEvent&);
     
 private:
+    void SetWindowShape();
+    void OnWindowCreate(wxWindowCreateEvent& WXUNUSED(evt));
+
     wxBitmap splash;
     DECLARE_EVENT_TABLE()
 };

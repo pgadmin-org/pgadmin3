@@ -25,22 +25,30 @@
 #define VERSION_WITH_DATE_AND_SVN       wxT("Version ") VERSION_STR wxT(" (") __TDATE__ wxT(", rev: ") wxT(VERSION_SVN) wxT(")")
 
 
-BEGIN_EVENT_TABLE(frmAbout, wxDialog)
-EVT_PAINT(frmAbout::OnPaint)
+BEGIN_EVENT_TABLE(frmAbout, wxFrame)
+	EVT_PAINT(frmAbout::OnPaint)
+    EVT_LEFT_UP(frmAbout::OnLeftUp)
+#ifdef __WXGTK__
+    EVT_WINDOW_CREATE(frmAbout::OnWindowCreate)
+#endif
 END_EVENT_TABLE()
 
 frmAbout::frmAbout(wxFrame *parent)
-: wxDialog(parent, -1, APPNAME_L, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxCAPTION | 0 | wxSYSTEM_MENU | wxSTAY_ON_TOP)
+: wxFrame((wxFrame *)NULL, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 100), 0 | wxFRAME_SHAPED | wxSIMPLE_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP)
 {
 
     wxLogInfo(wxT("Creating an about box"));
 
     appearanceFactory->SetIcons(this);
-    about = wxBitmap(appearanceFactory->GetSplashImage());
+    about = appearanceFactory->GetSplashImage();
 
     SetClientSize(about.GetWidth(), about.GetHeight());
 
 	this->Center();
+
+#ifndef __WXGTK__
+	SetWindowShape();
+#endif
 }
 
 
@@ -49,16 +57,31 @@ frmAbout::~frmAbout()
     wxLogInfo(wxT("Destroying an about box"));
 }
 
+void frmAbout::OnLeftUp(wxMouseEvent& WXUNUSED(evt))
+{
+    this->Close();
+}
+
+void frmAbout::SetWindowShape()
+{
+	wxRegion region(about);
+    SetShape(region);
+}
 
 void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
     wxPoint pos=appearanceFactory->GetSplashTextPos();
 
     wxPaintDC dc(this);
-	dc.DrawBitmap(about, 0, 0);
+	dc.DrawBitmap(about, 0, 0, true);
     dc.SetTextForeground(appearanceFactory->GetSplashTextColour());
     dc.SetFont(appearanceFactory->GetSplashTextFont());
 
+	if (appearanceFactory->IsBranded())
+	{
+		dc.DrawText(_("This program is based on pgAdmin III"), pos);
+		pos.y += appearanceFactory->GetSplashTextOffset();
+	}
     dc.DrawText(VERSION_WITH_DATE_AND_SVN, pos);
     pos.y += appearanceFactory->GetSplashTextOffset();
     dc.DrawText(COPYRIGHT, pos);
@@ -66,6 +89,10 @@ void frmAbout::OnPaint(wxPaintEvent& WXUNUSED(event))
     dc.DrawText(LICENSE, pos);
 }
 
+void frmAbout::OnWindowCreate(wxWindowCreateEvent& WXUNUSED(evt))
+{
+    SetWindowShape();
+}
 
 aboutFactory::aboutFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {

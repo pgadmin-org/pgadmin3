@@ -195,7 +195,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     menuBar->Append(favouritesMenu, _("Fav&ourites"));
 
     wxMenu *helpMenu=new wxMenu();
-    helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the pgAdmin III helpfile."));
+    helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the helpfile."));
     helpMenu->Append(MNU_HELP, _("&SQL Help\tF1"),                _("Display help on SQL commands."));
     menuBar->Append(helpMenu, _("&Help"));
 
@@ -673,7 +673,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
     {
         conn = (pgConn*)cbConnection->GetClientData(sel);
         sqlResult->SetConnection(conn);
-        title = wxT("pgAdmin III Query - ") + cbConnection->GetValue();
+        title = wxT("Query - ") + cbConnection->GetValue();
         setExtendedTitle();
     }
 }
@@ -1049,7 +1049,7 @@ bool frmQuery::CheckChanged(bool canVeto)
         wxString fn;
         if (!lastPath.IsNull())
             fn = wxT(" in file ") + lastPath;
-        wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\nDo you want to save changes?"), fn.c_str()), _("pgAdmin III Query"), 
+        wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\nDo you want to save changes?"), fn.c_str()), _("Query"), 
                     wxYES_NO|wxICON_EXCLAMATION|
                     (canVeto ? wxCANCEL : 0));
 
@@ -1078,7 +1078,7 @@ void frmQuery::OnClose(wxCloseEvent& event)
     {
         if (event.CanVeto())
         {
-            wxMessageDialog msg(this, _("A query is running. Do you wish to cancel it?"), _("pgAdmin III Query"), 
+            wxMessageDialog msg(this, _("A query is running. Do you wish to cancel it?"), _("Query"), 
                         wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION);
 
             if (msg.ShowModal() == wxID_NO)
