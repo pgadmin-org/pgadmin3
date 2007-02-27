@@ -26,15 +26,16 @@
 
 
 BEGIN_EVENT_TABLE(frmAbout, wxFrame)
-	EVT_PAINT(frmAbout::OnPaint)
-    EVT_LEFT_UP(frmAbout::OnLeftUp)
+    EVT_PAINT(frmAbout::OnPaint)
+    
+    EVT_LEFT_DOWN(frmAbout::OnLeftDown)
 #ifdef __WXGTK__
     EVT_WINDOW_CREATE(frmAbout::OnWindowCreate)
 #endif
 END_EVENT_TABLE()
 
 frmAbout::frmAbout(wxFrame *parent)
-: wxFrame((wxFrame *)NULL, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 100), 0 | wxFRAME_SHAPED | wxSIMPLE_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP)
+: wxFrame(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 100), 0 | wxFRAME_SHAPED | wxSIMPLE_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP)
 {
 
     wxLogInfo(wxT("Creating an about box"));
@@ -57,7 +58,7 @@ frmAbout::~frmAbout()
     wxLogInfo(wxT("Destroying an about box"));
 }
 
-void frmAbout::OnLeftUp(wxMouseEvent& WXUNUSED(evt))
+void frmAbout::OnLeftDown(wxMouseEvent& WXUNUSED(evt))
 {
     this->Close();
 }
