@@ -51,6 +51,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/edit_undo.xpm \
 	$(srcdir)/include/images/elephant32.xpm \
 	$(srcdir)/include/images/elephant48.xpm \
+	$(srcdir)/include/images/enumeration.xpm \
+	$(srcdir)/include/images/enumerations.xpm \
 	$(srcdir)/include/images/ex_aggregate.xpm \
 	$(srcdir)/include/images/ex_append.xpm \
 	$(srcdir)/include/images/ex_bmp_heap.xpm \
@@ -101,9 +103,13 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/namespace.xpm \
 	$(srcdir)/include/images/namespaces.xpm \
 	$(srcdir)/include/images/operator.xpm \
+	$(srcdir)/include/images/operators.xpm \
 	$(srcdir)/include/images/operatorclass.xpm \
 	$(srcdir)/include/images/operatorclasses.xpm \
-	$(srcdir)/include/images/operators.xpm \
+	$(srcdir)/include/images/operatorfamily.xpm \
+	$(srcdir)/include/images/operatorfamilies.xpm \
+	$(srcdir)/include/images/package.xpm \
+	$(srcdir)/include/images/packages.xpm \
 	$(srcdir)/include/images/pgAdmin3.xpm \
 	$(srcdir)/include/images/primarykey.xpm \
 	$(srcdir)/include/images/properties.xpm \
@@ -153,6 +159,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/step.xpm \
 	$(srcdir)/include/images/steps.xpm \
 	$(srcdir)/include/images/storedata.xpm \
+	$(srcdir)/include/images/synonym.xpm \
+	$(srcdir)/include/images/synonyms.xpm \
 	$(srcdir)/include/images/table-repl-sm.xpm \
 	$(srcdir)/include/images/table-repl.xpm \
 	$(srcdir)/include/images/table-sm.xpm \
