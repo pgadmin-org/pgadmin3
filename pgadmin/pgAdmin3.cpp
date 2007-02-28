@@ -753,6 +753,11 @@ pgAppearanceFactory::pgAppearanceFactory()
 	splash_image = wxImage(splash_xpm);
 
 	splash_text_colour = wxColour(255, 255, 255);
+	report_key_colour = wxColour(0, 154, 206);
+
+	long_appname = wxT("pgAdmin III");
+	short_appname = wxT("pgadmin3");
+	website_url = wxT("http://www.pgadmin.org/");
 
 	// Attempt to overload branding information
 	wxFileName brIni(brandingPath + wxT("/branding.ini"));
@@ -836,6 +841,16 @@ pgAppearanceFactory::pgAppearanceFactory()
 				long_appname = token.AfterFirst('=').Trim();
 				is_branded = true;
 			}
+			else if (token.Lower().StartsWith(wxT("websiteurl=")))
+			{
+				website_url = token.AfterFirst('=').Trim();
+				is_branded = true;
+			}
+			else if (token.Lower().StartsWith(wxT("reportkeycolour=")))
+			{
+				report_key_colour = wxColor(token.AfterFirst('=').Trim());
+				is_branded = true;
+			}
 		}
 	}
 }
@@ -870,32 +885,9 @@ wxIcon pgAppearanceFactory::GetBigIconImage()
     return icon;
 }
 
-wxBitmap pgAppearanceFactory::GetSplashImage()
-{
-    return wxBitmap(splash_image);
-}
-
-wxPoint pgAppearanceFactory::GetSplashTextPos()
-{
-    return wxPoint(splash_pos_x, splash_pos_y);
-}
-
-
-int pgAppearanceFactory::GetSplashTextOffset()
-{
-    return splash_pos_offset;
-}
-
-
 wxFont pgAppearanceFactory::GetSplashTextFont()
 {
     wxFont fnt(*wxNORMAL_FONT);
     fnt.SetPointSize(splash_font_size);
     return fnt;
-}
-
-
-wxColour pgAppearanceFactory::GetSplashTextColour()
-{
-    return splash_text_colour;
 }

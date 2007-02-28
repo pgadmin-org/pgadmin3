@@ -95,20 +95,22 @@ public:
     void SetIcons(wxTopLevelWindow *dlg);
     wxIcon GetSmallIconImage();
     wxIcon GetBigIconImage();
-    wxBitmap GetSplashImage();
+	wxBitmap GetSplashImage() { return wxBitmap(splash_image); };
     wxFont GetSplashTextFont();
-    wxColour GetSplashTextColour();
-    int GetSplashTextOffset();
-    wxPoint GetSplashTextPos();
+	wxColour GetSplashTextColour() { return splash_text_colour; };
+	long GetSplashTextOffset() { return splash_pos_offset; };
+	wxPoint GetSplashTextPos() { return wxPoint(splash_pos_x, splash_pos_y); };
 	wxString GetShortAppName() { return short_appname; };
     wxString GetLongAppName() { return long_appname; };
+    wxString GetWebsiteUrl() { return website_url; };
+    wxColour GetReportKeyColour() { return report_key_colour; };
 	bool IsBranded() { return is_branded; };
 
 private:
-	wxString long_appname, short_appname;
+	wxString long_appname, short_appname, website_url;
 	wxImage large_icon, small_icon, splash_image;
 	long splash_font_size, splash_pos_x, splash_pos_y, splash_pos_offset;
-	wxColor splash_text_colour;
+	wxColor splash_text_colour, report_key_colour;
 	bool is_branded;
 };
 
@@ -116,4 +118,3 @@ extern pgAppearanceFactory *appearanceFactory;
 
 
 #endif // PGADMIN3_H
-
