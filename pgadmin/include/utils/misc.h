@@ -161,6 +161,7 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
 
 enum 
 {
+	PGM_CATALOG,
     PGM_CHECK,
     PGM_COLUMN,    
 	PGM_CONSTRAINT,

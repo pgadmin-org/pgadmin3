@@ -160,6 +160,7 @@ frmOptions::frmOptions(frmMain *parent)
 	lstDisplay->Append(_("pgAgent jobs"));
 	lstDisplay->Append(_("Groups/group roles"));
 	lstDisplay->Append(_("Users/login roles"));
+	lstDisplay->Append(_("Catalogs"));
 	lstDisplay->Append(_("Casts"));
 	lstDisplay->Append(_("Languages"));
 	lstDisplay->Append(_("Schemas"));

@@ -387,6 +387,8 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         {
             wxLogInfo(wxT("Adding child object to database ") + GetIdentifier());
 
+			if (settings->GetDisplayOption(wxT("Catalogs")))
+				browser->AppendCollection(this, catalogFactory);
 			if (settings->GetDisplayOption(wxT("Casts")))
 				browser->AppendCollection(this, castFactory);
 			if (settings->GetDisplayOption(wxT("Languages")))
@@ -626,6 +628,9 @@ pgDatabaseObjCollection::pgDatabaseObjCollection(pgaFactory *factory, pgDatabase
 
 bool pgDatabaseObjCollection::CanCreate()
 {
+    if (IsCollectionForType(PGM_CATALOG))
+        return false;
+
     return GetDatabase()->GetCreatePrivilege();
 }
 

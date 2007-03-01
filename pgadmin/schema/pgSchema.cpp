@@ -34,18 +34,44 @@
 #include "wx/regex.h"
 
 pgSchema::pgSchema(const wxString& newName)
-: pgDatabaseObject(schemaFactory, newName)
+: pgSchemaBase(schemaFactory, newName)
 {
     wxLogInfo(wxT("Creating a pgSchema object"));
 }
 
-pgSchema::~pgSchema()
+pgCatalog::pgCatalog(const wxString& newName)
+: pgSchemaBase(catalogFactory, newName)
 {
-    wxLogInfo(wxT("Destroying a pgSchema object"));
+    wxLogInfo(wxT("Creating a pgCatalog object"));
+}
+
+pgSchemaBase::pgSchemaBase(pgaFactory &factory, const wxString& newName)
+: pgDatabaseObject(factory, newName)
+{
+    wxLogInfo(wxT("Creating a pgSchemaBase object"));
+}
+
+pgSchemaBase::~pgSchemaBase()
+{
+    wxLogInfo(wxT("Destroying a pgSchemaBase object"));
+}
+
+wxString pgCatalog::GetDisplayName() const
+{
+	if (GetFullName() == wxT("pg_catalog"))
+		return wxT("PostgreSQL (pg_catalog)");
+	else if (GetFullName() == wxT("information_schema"))
+		return wxT("ANSI (information_schema)");
+	else if (GetFullName() == wxT("dbo"))
+		return wxT("Redmond (dbo)");
+	else if (GetFullName() == wxT("sys"))
+		return wxT("Redwood (sys)");
+	else
+		return GetFullName();
 }
 
 
-wxMenu *pgSchema::GetNewMenu()
+wxMenu *pgSchemaBase::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();
 
@@ -69,7 +95,7 @@ wxMenu *pgSchema::GetNewMenu()
     return menu;
 }
 
-bool pgSchema::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
+bool pgSchemaBase::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP SCHEMA ") + GetQuotedFullIdentifier();
     if (cascaded)
@@ -78,12 +104,16 @@ bool pgSchema::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
-wxString pgSchema::GetSql(ctlTree *browser)
+wxString pgSchemaBase::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Schema: \"") + GetName() + wxT("\"\n\n")
-            + wxT("-- DROP SCHEMA ") + GetQuotedFullIdentifier() + wxT(";")
+        if (GetMetaType() == PGM_CATALOG)
+            sql = wxT("-- Catalog: \"") + GetName() + wxT("\"\n\n");
+        else
+            sql = wxT("-- Schema: \"") + GetName() + wxT("\"\n\n");
+
+        sql += wxT("-- DROP SCHEMA ") + GetQuotedFullIdentifier() + wxT(";")
             + wxT("\n\nCREATE SCHEMA ") + qtIdent(GetName()) 
             + wxT("\n  AUTHORIZATION ") + qtIdent(GetOwner());
 
@@ -95,10 +125,8 @@ wxString pgSchema::GetSql(ctlTree *browser)
 }
 
 
-void pgSchema::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
+void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
-//    if (form)
-//        form->SetDatabase(GetDatabase());
 
     GetDatabase()->GetServer()->iSetLastDatabase(GetDatabase()->GetName());
     GetDatabase()->GetServer()->iSetLastSchema(GetName());
@@ -153,66 +181,104 @@ void pgSchema::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for schema ") + GetIdentifier());
+		if (GetMetaType() == PGM_CATALOG)
+			wxLogInfo(wxT("Displaying properties for schema ") + GetIdentifier());
+		else
+			wxLogInfo(wxT("Displaying properties for catalog ") + GetIdentifier());
 
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
-        properties->AppendItem(_("ACL"), GetAcl());
-        properties->AppendItem(_("System schema?"), GetSystemObject());
+		properties->AppendItem(_("ACL"), GetAcl());
+		if (GetMetaType() != PGM_CATALOG)
+			properties->AppendItem(_("System schema?"), GetSystemObject());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 
 
 
-pgObject *pgSchema::Refresh(ctlTree *browser, const wxTreeItemId item)
+pgObject *pgSchemaBase::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
     pgObject *schema=0;
     pgCollection *coll=browser->GetParentCollection(item);
     if (coll)
-        schema = schemaFactory.CreateObjects(coll, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
+    {
+        if (coll->IsCollectionForType(PGM_CATALOG))
+            schema = catalogFactory.CreateObjects(coll, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
+        else
+            schema = schemaFactory.CreateObjects(coll, 0, wxT(" WHERE nsp.oid=") + GetOidStr() + wxT("\n"));
+    }
 
     return schema;
 }
 
 
 
-pgObject *pgSchemaFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
+pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgSchema *schema=0;
+    pgCatalog *catalog=0;
 
     wxString restr=restriction;
 
-    if (!collection->GetDatabase()->GetSchemaRestriction().IsEmpty())
+    if (restr.IsEmpty())
+        restr += wxT(" WHERE ");
+    else
+        restr += wxT("   AND ");
+
+    if (GetMetaType() == PGM_CATALOG)
+	{
+        restr += wxT("((nspname = 'pg_catalog' and (SELECT count(*) FROM pg_class WHERE relname = 'pg_class' AND relnamespace = nsp.oid) > 0) OR\n");
+        restr += wxT("(nspname = 'information_schema' and (SELECT count(*) FROM pg_class WHERE relname = 'tables' AND relnamespace = nsp.oid) > 0) OR\n");
+        restr += wxT("(nspname = 'dbo' and (SELECT count(*) FROM pg_class WHERE relname = 'systables' AND relnamespace = nsp.oid) > 0) OR\n");
+        restr += wxT("(nspname = 'sys' and (SELECT count(*) FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid) > 0))\n");
+    }
+    else
     {
-        if (restr.IsEmpty())
-            restr += wxT(" WHERE (");
-        else
-            restr += wxT("   AND (");
-        restr += collection->GetDatabase()->GetSchemaRestriction() + wxT(")");
+        restr += wxT("NOT ((nspname = 'pg_catalog' and (SELECT count(*) FROM pg_class WHERE relname = 'pg_class' AND relnamespace = nsp.oid) > 0) OR\n");
+        restr += wxT("(nspname = 'information_schema' and (SELECT count(*) FROM pg_class WHERE relname = 'tables' AND relnamespace = nsp.oid) > 0) OR\n");
+        restr += wxT("(nspname = 'dbo' and (SELECT count(*) FROM pg_class WHERE relname = 'systables' AND relnamespace = nsp.oid) > 0) OR\n");
+        restr += wxT("(nspname = 'sys' and (SELECT count(*) FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid) > 0))\n");
     }
 
+    if (!collection->GetDatabase()->GetSchemaRestriction().IsEmpty())
+        restr += wxT("(") + collection->GetDatabase()->GetSchemaRestriction() + wxT(")");
+
 	wxString sql;
-	if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
+
+	if (GetMetaType() == PGM_CATALOG)
 	{
-		sql =   wxT("SELECT CASE WHEN nspname LIKE E'pg\\_temp\\_%%' THEN 1\n")
-				wxT("            WHEN (nspname LIKE E'pg\\_%' OR nspname = 'information_schema') THEN 0\n");
+		sql = wxT("SELECT 2 AS nsptyp,\n")
+			  wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
+			  wxT("       FALSE as cancreate\n")
+			  wxT("  FROM pg_namespace nsp\n")
+			  wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
+			  + restr +
+			  wxT(" ORDER BY 1, nspname");
 	}
 	else
 	{
-		sql =   wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
-				wxT("            WHEN (nspname LIKE 'pg\\_%' OR nspname = 'information_schema') THEN 0\n");
+		if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
+		{
+			sql = wxT("SELECT CASE WHEN nspname LIKE E'pg\\_temp\\_%%' THEN 1\n")
+			      wxT("            WHEN (nspname LIKE E'pg\\_%') THEN 0\n");
+		}
+		else
+		{
+			sql = wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
+				  wxT("            WHEN (nspname LIKE 'pg\\_%') THEN 0\n");
+		}
+		sql += wxT("            ELSE 3 END AS nsptyp,\n")
+			   wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
+			   wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
+			   wxT("  FROM pg_namespace nsp\n")
+			   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
+			   + restr +
+			   wxT(" ORDER BY 1, nspname");
 	}
-	sql +=	wxT("            ELSE 3 END AS nsptyp,\n")
-			wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
-			wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
-			wxT("  FROM pg_namespace nsp\n")
-			wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
-			+ restr +
-			wxT(" ORDER BY 1, nspname");
 
     pgSet *schemas = collection->GetDatabase()->ExecuteSet(sql);
 
@@ -234,37 +300,65 @@ pgObject *pgSchemaFactory::CreateObjects(pgCollection *collection, ctlTree *brow
                 }
             }
 
-            if (nsptyp <= SCHEMATYP_USERSYS && !settings->GetShowSystemObjects())
+            if (nsptyp <= SCHEMATYP_USERSYS && this->GetMetaType() != PGM_CATALOG && !settings->GetShowSystemObjects())
             {
                 schemas->MoveNext();
                 continue;
             }
 
-            schema = new pgSchema(name);
-            schema->iSetSchemaTyp(nsptyp);
-            schema->iSetDatabase(collection->GetDatabase());
-            schema->iSetComment(schemas->GetVal(wxT("description")));
-            schema->iSetOid(schemas->GetOid(wxT("oid")));
-            schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
-            schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
-            schema->iSetCreatePrivilege(schemas->GetBool(wxT("cancreate")));
+			if (GetMetaType() == PGM_CATALOG)
+			{
+				catalog = new pgCatalog(name);
 
-            if (browser)
-            {
-                browser->AppendObject(collection, schema);
-				schemas->MoveNext();
-            }
-            else
-                break;
+				catalog->iSetSchemaTyp(nsptyp);
+				catalog->iSetDatabase(collection->GetDatabase());
+				catalog->iSetComment(schemas->GetVal(wxT("description")));
+				catalog->iSetOid(schemas->GetOid(wxT("oid")));
+				catalog->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
+				catalog->iSetAcl(schemas->GetVal(wxT("nspacl")));
+				catalog->iSetCreatePrivilege(false);
+
+				if (browser)
+				{
+					browser->AppendObject(collection, catalog);
+					schemas->MoveNext();
+				}
+				else
+					break;
+			}
+			else
+			{
+				schema = new pgSchema(name);
+
+				schema->iSetSchemaTyp(nsptyp);
+				schema->iSetDatabase(collection->GetDatabase());
+				schema->iSetComment(schemas->GetVal(wxT("description")));
+				schema->iSetOid(schemas->GetOid(wxT("oid")));
+				schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
+				schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
+				schema->iSetCreatePrivilege(schemas->GetBool(wxT("cancreate")));
+
+				if (browser)
+				{
+					browser->AppendObject(collection, schema);
+					schemas->MoveNext();
+				}
+				else
+	                break;
+			}
         }
 
 		delete schemas;
     }
-    return schema;
+
+	if (GetMetaType() == PGM_CATALOG)
+		return catalog;
+	else
+		return schema;
 }
 
 
-pgObject *pgSchema::ReadObjects(pgCollection *collection, ctlTree *browser)
+pgObject *pgSchemaBase::ReadObjects(pgCollection *collection, ctlTree *browser)
 {
     wxString systemRestriction;
     if (!settings->GetShowSystemObjects())
@@ -299,11 +393,26 @@ bool pgSchemaObjCollection::CanCreate()
 #include "images/namespace.xpm"
 #include "images/namespace-sm.xpm"
 #include "images/namespaces.xpm"
+#include "images/catalog.xpm"
+#include "images/catalog-sm.xpm"
+#include "images/catalogs.xpm"
+
+pgSchemaBaseFactory::pgSchemaBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **imgSm) 
+: pgDatabaseObjFactory(tn, ns, nls, img, imgSm)
+{
+
+}
 
 pgSchemaFactory::pgSchemaFactory() 
-: pgDatabaseObjFactory(__("Schema"), __("New Schema..."), __("Create a new Schema."), namespace_xpm, namespace_sm_xpm)
+: pgSchemaBaseFactory(__("Schema"), __("New Schema..."), __("Create a new Schema."), namespace_xpm, namespace_sm_xpm)
 {
     metaType = PGM_SCHEMA;
+}
+
+pgCatalogFactory::pgCatalogFactory() 
+: pgSchemaBaseFactory(__("Catalog"), __("New Catalog..."), __("Create a new Catalog."), catalog_xpm, catalog_sm_xpm)
+{
+	metaType = PGM_CATALOG;
 }
 
 pgCollection *pgSchemaObjFactory::CreateCollection(pgObject *obj)
@@ -313,4 +422,7 @@ pgCollection *pgSchemaObjFactory::CreateCollection(pgObject *obj)
 
 
 pgSchemaFactory schemaFactory;
-static pgaCollectionFactory cf(&schemaFactory, __("Schemas"), namespaces_xpm);
+static pgaCollectionFactory scf(&schemaFactory, __("Schemas"), namespaces_xpm);
+
+pgCatalogFactory catalogFactory;
+static pgaCollectionFactory ccf(&catalogFactory, __("Catalogs"), catalogs_xpm);

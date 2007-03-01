@@ -24,7 +24,7 @@
 BEGIN_EVENT_TABLE(dlgSchema, dlgSecurityProperty)
 END_EVENT_TABLE();
 
-dlgProperty *pgSchemaFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgSchemaBaseFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
     return new dlgSchema(this, frame, (pgSchema*)node);
 }
@@ -55,6 +55,12 @@ int dlgSchema::Go(bool modal)
 
         if (!connection->BackendMinimumVersion(7, 5))
             cbOwner->Disable();
+
+        if (schema->GetMetaType() == PGM_CATALOG)
+        {
+            cbOwner->Disable();
+            txtName->Disable();
+        }
     }
     else
     {

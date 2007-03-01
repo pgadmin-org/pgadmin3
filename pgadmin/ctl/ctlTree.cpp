@@ -62,7 +62,7 @@ wxTreeItemId ctlTree::AppendObject(pgObject *parent, pgObject *object)
     if (object->IsCollection())
         label = object->GetTypeName();
     else
-        label = object->GetFullName();
+        label = object->GetDisplayName();
     item = AppendItem(parent->GetId(), label, object->GetIconId(), -1, object);
     if (object->IsCollection())
         object->ShowTreeDetail(this);

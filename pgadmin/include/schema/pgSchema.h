@@ -23,21 +23,37 @@ enum
     SCHEMATYP_NORMAL
 };
 
-class pgSchemaFactory : public pgDatabaseObjFactory
+class pgSchemaBaseFactory : public pgDatabaseObjFactory
 {
 public:
-    pgSchemaFactory();
+	pgSchemaBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **imgSm=0);
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
-extern pgSchemaFactory schemaFactory;
 
-
-class pgSchema : public pgDatabaseObject
+class pgSchemaFactory : public pgSchemaBaseFactory
 {
 public:
-    pgSchema(const wxString& newName = wxT(""));
-    ~pgSchema();
+    pgSchemaFactory();
+};
+
+class pgCatalogFactory : public pgSchemaBaseFactory
+{
+public:
+    pgCatalogFactory();
+    bool CanCreate() { return false; }
+    bool CanEdit() { return true; }
+};
+
+extern pgSchemaFactory schemaFactory;
+extern pgCatalogFactory catalogFactory;
+
+
+class pgSchemaBase : public pgDatabaseObject
+{
+public:
+    pgSchemaBase(pgaFactory &factory, const wxString& newName = wxT(""));
+    ~pgSchemaBase();
 
     wxString GetPrefix() const { return database->GetSchemaPrefix(GetName()); }
     wxString GetQuotedPrefix() const { return database->GetQuotedSchemaPrefix(GetName()); }
@@ -68,6 +84,20 @@ private:
     bool createPrivilege;
 };
 
+class pgSchema : public pgSchemaBase
+{
+public:
+	pgSchema(const wxString& newName = wxT(""));
+};
+
+class pgCatalog : public pgSchemaBase
+{
+public:
+	pgCatalog(const wxString& newName = wxT(""));
+	virtual wxString GetDisplayName() const;
+    bool CanCreate() { return false; }
+    bool CanEdit() { return true; }
+};
 
 /////////////////////////////////////////////////////
 

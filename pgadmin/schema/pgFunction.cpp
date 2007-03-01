@@ -251,7 +251,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             if (obj->GetConnection()->BackendMinimumVersion(7, 5))
                 argNames = functions->GetVal(wxT("proargnames"));
 
-            if (obj->GetConnection()->EdbMinimumVersion(8, 0) && isProcedure)
+            if (obj->GetConnection()->EdbMinimumVersion(8, 0) && !obj->GetConnection()->EdbMinimumVersion(8, 1) && isProcedure)
             {
                 wxString argDirs=functions->GetVal(wxT("proargdirs"));
                 modes.SetString(argDirs);
