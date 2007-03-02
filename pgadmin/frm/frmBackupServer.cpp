@@ -189,7 +189,7 @@ bool backupServerFactory::CheckEnable(pgObject *obj)
     if (!obj)
         return false;
 
-    if (!((pgServer *)obj)->GetConnected())
+    if (!((pgServer *)obj)->GetConnected() || obj->GetMetaType() != PGM_SERVER)
         return false;
 
     return !backupAllExecutable.IsEmpty();
