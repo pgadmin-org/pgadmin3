@@ -161,7 +161,7 @@ int dlgFunction::Go(bool modal)
 
     if (isProcedure)
     {
-        if (connection->EdbMinimumVersion(8, 0))
+        if (connection->EdbMinimumVersion(8, 0) && !connection->EdbMinimumVersion(8, 1))
         {
             rdbDirection->SetString(2, wxT("IN OUT"));
             stLanguage->Hide();
