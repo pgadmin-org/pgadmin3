@@ -35,17 +35,20 @@ Changes
 
 Date       Dev Ver    Change details
 ---------- --- -----  --------------
-2007-03-01 DP  1.8.0  Display catalogs separately from schemas, and don't 
+2007-01-12 DP  1.8.0  Use pg_statindex (if available) to optionally display
+                      additional index statistics on a per-table basis. Also
+                      works for index-constraints [Guillaume Lelarge]
+2007-03-01 DP  1.8.0  Display catalogs separately from schemas, and don't
                       treat them as system objects any longer (they can be
                       hidden using the display options).
 2007-02-27 DP  1.8.0  Allow install time re-branding. This allows rebranded
-                      versions of pgAdmin to be distributed without code 
-                      modifications, but with references to the original 
+                      versions of pgAdmin to be distributed without code
+                      modifications, but with references to the original
                       pgAdmin being displayed instead. Also add support for
                       shaped splash screens.
 2007-02-26 DP  1.8.0  Add a set of options to allow the user to hide selected
                       object types from the treeview. Note that the new default
-                      settings will hide less commonly used objects such as 
+                      settings will hide less commonly used objects such as
                       casts, languages, aggregates, operators etc.
 2007-02-23 DP  1.6.3  Fix a rare bug in the Edit Grid which could cause a crash
                       when editting data in tables with deleted columns and a
@@ -61,7 +64,7 @@ Date       Dev Ver    Change details
                       G. Pflug]
 2007-02-14 DP  1.8.0  Allow entire servers to be backed up.
 2007-02-14 DP  1.8.0  Allow global objects to be backed up.
-2007-02-05 DP  1.8.0  Add a guru hint to warn the user of the consequences of 
+2007-02-05 DP  1.8.0  Add a guru hint to warn the user of the consequences of
                       storing passwords, per Tony Caduto.
 2007-02-05 DP  1.6.3  Fix the graphical explain to properly display backwards
                       index scan nodes, per Brendan O'Shea.
@@ -82,7 +85,7 @@ Date       Dev Ver    Change details
 2007-01-17 DP  1.6.3  Update to support the changed syntax of pg_dump 8.2+.
 2007-01-15 DP  1.6.3  Add support for Sun's compiler [Dhanaraj M]
 2007-01-12 DP  1.8.0  Use pg_stattuple (if available) to optionally display
-                      additional table statistics on a per-table basis 
+                      additional table statistics on a per-table basis
                       [Guillaume Lelarge, Dave Page]
 2007-01-11 DP  1.8.0  Support for operators and op-classes in PostgreSQL 8.3.
 2007-01-10 DP  1.6.3  Fix an issue in the Query Tool export option that could

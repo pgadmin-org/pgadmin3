@@ -65,6 +65,7 @@
 #include "dlg/dlgServer.h"
 #include "dlg/dlgDatabase.h"
 #include "schema/pgTable.h"
+#include "schema/pgIndex.h"
 #include "schema/pgTrigger.h"
 #include "schema/pgServer.h"
 #include "slony/slCluster.h"
@@ -261,9 +262,10 @@ void frmMain::CreateMenus()
     actionFactory *refFact=new refreshFactory(menuFactories, viewMenu, toolBar);
     new countRowsFactory(menuFactories, viewMenu, 0);
     new executePgstattupleFactory(menuFactories, viewMenu, 0);
+    new executePgstatindexFactory(menuFactories, viewMenu, 0);
     new enabledisableTriggerFactory(menuFactories, toolsMenu, 0);
     new disableAllTriggersFactory(menuFactories, toolsMenu, 0);
-	new enableAllTriggersFactory(menuFactories, toolsMenu, 0);
+    new enableAllTriggersFactory(menuFactories, toolsMenu, 0);
 
 	//--------------------------
     new separatorFactory(menuFactories);

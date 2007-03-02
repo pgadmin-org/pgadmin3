@@ -14,6 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "frm/frmMain.h"
 #include "utils/misc.h"
 #include "utils/pgfeatures.h"
 #include "schema/pgIndex.h"
@@ -24,6 +25,7 @@
 pgIndexBase::pgIndexBase(pgTable *newTable, pgaFactory &factory, const wxString& newName)
 : pgTableObject(newTable, factory, newName)
 {
+    showExtendedStatistics = false;
 }
 
 bool pgIndexBase::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
@@ -224,9 +226,35 @@ void pgIndexBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 
 void pgIndexBase::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
+    wxString sql;
+
     if (GetConnection()->HasFeature(FEATURE_SIZE))
-        DisplayStatistics(statistics, 
-            wxT("SELECT pg_size_pretty(pg_relation_size(") + GetOidStr() + wxT(")) AS ") + qtIdent(_("Index Size")));
+        sql = wxT("SELECT pg_size_pretty(pg_relation_size(") + GetOidStr() + wxT(")) AS ") + qtIdent(_("Index Size"));
+
+    if (showExtendedStatistics)
+    {
+        if (sql.Length() == 0)
+        {
+          sql = wxT("SELECT ");
+        }
+        else
+        {
+          sql += wxT(", ");
+        }
+        sql += wxT(" version AS ") + qtIdent(_("Version")) + wxT(",\n")
+               wxT("  tree_level AS ") + qtIdent(_("Tree Level")) + wxT(",\n")
+               wxT("  pg_size_pretty(index_size) AS ") + qtIdent(_("Index Size")) + wxT(",\n")
+               wxT("  root_block_no AS ") + qtIdent(_("Root Block No")) + wxT(",\n")
+               wxT("  internal_pages AS ") + qtIdent(_("Internal Pages")) + wxT(",\n")
+               wxT("  leaf_pages AS ") + qtIdent(_("Leaf Pages")) + wxT(",\n")
+               wxT("  empty_pages AS ") + qtIdent(_("Empty Pages")) + wxT(",\n")
+               wxT("  deleted_pages AS ") + qtIdent(_("Deleted Pages")) + wxT(",\n")
+               wxT("  avg_leaf_density AS ") + qtIdent(_("Average Leaf Density")) + wxT(",\n")
+               wxT("  leaf_fragmentation AS ") + qtIdent(_("Leaf Fragmentation")) + wxT("\n")
+               wxT("  FROM pgstatindex('") + GetQuotedFullIdentifier() + wxT("')");
+    }
+
+    DisplayStatistics(statistics, sql);
 }
 
 
@@ -238,6 +266,48 @@ pgObject *pgIndexBase::Refresh(ctlTree *browser, const wxTreeItemId item)
         index = indexFactory.CreateObjects(coll, 0, wxT("\n   AND cls.oid=") + GetOidStr());
 
     return index;
+}
+
+
+bool pgIndexBase::HasPgstatindex()
+{
+    return GetConnection()->HasFeature(FEATURE_PGSTATINDEX);
+}
+
+executePgstatindexFactory::executePgstatindexFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("&Extended statistics"), _("Get extended statistics via pgstatindex for the selected object."), wxITEM_CHECK);
+}
+
+
+wxWindow *executePgstatindexFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	if (!((pgIndexBase*)obj)->GetShowExtendedStatistics())
+	{
+		((pgIndexBase*)obj)->iSetShowExtendedStatistics(true);
+		wxTreeItemId item=form->GetBrowser()->GetSelection();
+		if (obj == form->GetBrowser()->GetObject(item))
+			form->SelectStatisticsTab();
+	}
+	else
+		((pgIndexBase*)obj)->iSetShowExtendedStatistics(false);
+
+	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), form->GetToolBar());
+
+    return 0;
+}
+
+
+bool executePgstatindexFactory::CheckEnable(pgObject *obj)
+{
+    return obj && 
+           (obj->IsCreatedBy(indexFactory) || obj->IsCreatedBy(primaryKeyFactory) || obj->IsCreatedBy(uniqueFactory)) &&
+           ((pgIndexBase*)obj)->HasPgstatindex();
+}
+
+bool executePgstatindexFactory::CheckChecked(pgObject *obj)
+{
+    return obj && ((pgIndexBase*)obj)->GetShowExtendedStatistics();
 }
 
 

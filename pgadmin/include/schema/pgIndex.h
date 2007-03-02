@@ -77,10 +77,13 @@ public:
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     bool CanMaintenance() { return true; }
+    bool GetShowExtendedStatistics() { return showExtendedStatistics; }
+    void iSetShowExtendedStatistics(bool b) { showExtendedStatistics = b; }
 
     bool HasStats() { return true; }
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
+    bool HasPgstatindex();
 
 protected:
     void ReadColumnDetails();
@@ -90,7 +93,7 @@ private:
     wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
     long columnCount;
     bool isUnique, isPrimary, isClustered;
-    bool deferrable, deferred;
+    bool deferrable, deferred, showExtendedStatistics;
     OID relTableOid;
 };
 
@@ -119,6 +122,15 @@ public:
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
 extern pgIndexFactory indexFactory;
+
+class executePgstatindexFactory : public contextActionFactory
+{
+public:
+    executePgstatindexFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+	bool CheckChecked(pgObject *obj);
+};
 
 
 #endif
