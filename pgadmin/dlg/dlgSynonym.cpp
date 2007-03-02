@@ -104,6 +104,19 @@ pgObject *dlgSynonym::CreateObject(pgCollection *collection)
 
 void dlgSynonym::CheckChange()
 {
+    bool enable=true;
+    CheckValid(enable, !txtName->GetValue().IsEmpty(), _("Please specify name."));
+    CheckValid(enable, !cbTargetType->GetValue().IsEmpty(), _("Please select target type."));
+    if (cbTargetType->GetValue() != _("Public synonym"))
+        CheckValid(enable, !cbTargetSchema->GetValue().IsEmpty(), _("Please select target schema."));
+    CheckValid(enable, !cbTargetObject->GetValue().IsEmpty(), _("Please select target object."));
+
+    if (!enable)
+    {
+        EnableOK(enable);
+        return;
+    }
+
     if (synonym)
         EnableOK(synonym->GetTargetObject() != cbTargetObject->GetValue());
     else
