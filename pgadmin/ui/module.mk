@@ -55,6 +55,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgSequence.xrc \
 	$(srcdir)/ui/dlgServer.xrc \
 	$(srcdir)/ui/dlgStep.xrc \
+	$(srcdir)/ui/dlgSynonym.xrc \
 	$(srcdir)/ui/dlgTable.xrc \
 	$(srcdir)/ui/dlgTablespace.xrc \
 	$(srcdir)/ui/dlgTrigger.xrc \

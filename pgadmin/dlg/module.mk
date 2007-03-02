@@ -13,7 +13,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dlg/dlgAddFavourite.cpp \
 	$(srcdir)/dlg/dlgAggregate.cpp \
 	$(srcdir)/dlg/dlgCast.cpp \
-    $(srcdir)/dlg/dlgClasses.cpp \
+	$(srcdir)/dlg/dlgClasses.cpp \
 	$(srcdir)/dlg/dlgCheck.cpp \
 	$(srcdir)/dlg/dlgColumn.cpp \
 	$(srcdir)/dlg/dlgConnect.cpp \
@@ -40,6 +40,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dlg/dlgSelectConnection.cpp \
 	$(srcdir)/dlg/dlgSequence.cpp \
 	$(srcdir)/dlg/dlgServer.cpp \
+	$(srcdir)/dlg/dlgSynonym.cpp \
 	$(srcdir)/dlg/dlgTable.cpp \
 	$(srcdir)/dlg/dlgTablespace.cpp \
 	$(srcdir)/dlg/dlgTrigger.cpp \

@@ -17,6 +17,7 @@
 #include "utils/misc.h"
 #include "utils/pgfeatures.h"
 #include "frm/frmMain.h"
+#include "schema/edbSynonym.h"
 #include "schema/pgCast.h"
 #include "schema/pgLanguage.h"
 #include "schema/pgSchema.h"
@@ -376,11 +377,7 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
     if (Connect() == PGCONN_OK)
     {
         // Set the icon if required
-        if (UpdateIcon(browser))
-        {
-//            if (form)
-//                form->->SetButtons(this);
-        }
+        UpdateIcon(browser);
 
             // Add child nodes if necessary
         if (browser->GetChildrenCount(GetId(), false) == 0)
@@ -397,6 +394,8 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 				browser->AppendCollection(this, schemaFactory);
 			if (settings->GetDisplayOption(wxT("Slony clusters")))
 				browser->AppendCollection(this, slClusterFactory);
+			if (settings->GetDisplayOption(wxT("Synonyms")) && connection()->EdbMinimumVersion(8,0))
+				browser->AppendCollection(this, synonymFactory);
             
             missingFKs = StrToLong(connection()->ExecuteScalar(
                 wxT("SELECT COUNT(*) FROM\n")

@@ -40,6 +40,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlg/dlgSelectConnection.h \
 	$(srcdir)/include/dlg/dlgSequence.h \
 	$(srcdir)/include/dlg/dlgServer.h \
+	$(srcdir)/include/dlg/dlgSynonym.h \
 	$(srcdir)/include/dlg/dlgTable.h \
 	$(srcdir)/include/dlg/dlgTablespace.h \
 	$(srcdir)/include/dlg/dlgTrigger.h \
