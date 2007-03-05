@@ -86,10 +86,10 @@ void pgCollection::ShowList(const wxString& name, ctlTree *browser, ctlListView 
             {
                 properties->InsertItem(pos, data->GetFullName(), data->GetIconId());
                 properties->SetItem(pos, 1, data->GetComment());
+                pos++;
             }
             // Get the next item
             item = browser->GetNextChild(GetId(), cookie);
-            pos++;
         }
     }
 }

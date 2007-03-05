@@ -239,8 +239,6 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
         {
             bool isProcedure=false;
             wxString lanname=functions->GetVal(wxT("lanname"));
-            if (obj->GetConnection()->EdbMinimumVersion(8, 0) && lanname == wxT("edbspl"))
-                isProcedure=true;
 
             wxString oids=functions->GetVal(wxT("proargtypes"));
             wxStringTokenizer args(oids);

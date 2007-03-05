@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2007, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// edbSynonym.h PostgreSQL Cast
+// edbSynonym.h - EnterpriseDB Synonym class
 //
 //////////////////////////////////////////////////////////////////////////
 

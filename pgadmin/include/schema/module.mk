@@ -10,6 +10,7 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
+	  $(srcdir)/include/schema/edbPackage.h \
 	  $(srcdir)/include/schema/edbSynonym.h \
 	  $(srcdir)/include/schema/pgAggregate.h \
 	  $(srcdir)/include/schema/pgCast.h \

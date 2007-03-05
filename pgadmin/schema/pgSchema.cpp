@@ -18,16 +18,17 @@
 #include "utils/misc.h"
 #include "schema/pgSchema.h"
 #include "frm/frmMain.h"
+#include "schema/edbPackage.h"
 #include "schema/pgDomain.h"
 #include "schema/pgAggregate.h"
 #include "schema/pgConversion.h"
 #include "schema/pgFunction.h"
-#include "schema/pgType.h"
-#include "schema/pgSequence.h"
-#include "schema/pgTable.h"
 #include "schema/pgOperator.h"
 #include "schema/pgOperatorClass.h"
 #include "schema/pgOperatorFamily.h"
+#include "schema/pgSequence.h"
+#include "schema/pgTable.h"
+#include "schema/pgType.h"
 #include "schema/pgView.h"
 #include "frm/frmReport.h"
 
@@ -148,14 +149,6 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 			browser->AppendCollection(this, domainFactory);
 		if (settings->GetDisplayOption(wxT("Functions")))
 			browser->AppendCollection(this, functionFactory);
-		if (settings->GetDisplayOption(wxT("Trigger functions")))
-			browser->AppendCollection(this, triggerFunctionFactory);
-
-		if (settings->GetDisplayOption(wxT("Procedures")))
-		{
-			if (GetConnection()->BackendMinimumVersion(8, 1) || GetConnection()->EdbMinimumVersion(8, 0))
-				browser->AppendCollection(this, procedureFactory);
-		}
 
 		if (settings->GetDisplayOption(wxT("Operators")))
 			browser->AppendCollection(this, operatorFactory);
@@ -168,10 +161,21 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 				browser->AppendCollection(this, operatorFamilyFactory);
 		}
 
+		if (settings->GetDisplayOption(wxT("Packages")) && GetConnection()->EdbMinimumVersion(8,1))
+			browser->AppendCollection(this, packageFactory);
+
+		if (settings->GetDisplayOption(wxT("Procedures")))
+		{
+			if (GetConnection()->BackendMinimumVersion(8, 1) || GetConnection()->EdbMinimumVersion(8, 0))
+				browser->AppendCollection(this, procedureFactory);
+		}
+
 		if (settings->GetDisplayOption(wxT("Sequences")))
 			browser->AppendCollection(this, sequenceFactory);
 		if (settings->GetDisplayOption(wxT("Tables")))
 			browser->AppendCollection(this, tableFactory);
+        if (settings->GetDisplayOption(wxT("Trigger functions")))
+		    browser->AppendCollection(this, triggerFunctionFactory);
 		if (settings->GetDisplayOption(wxT("Types")))
 			browser->AppendCollection(this, typeFactory);
 		if (settings->GetDisplayOption(wxT("Views")))

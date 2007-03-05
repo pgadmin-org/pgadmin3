@@ -852,7 +852,7 @@ wxString VerFromRev(const wxString &rev)
 wxString firstLineOnly(const wxString &str)
 {
     wxString tmp;
-    if (str.Contains(wxT("\r\n")))
+    if (str.Contains(wxT("\r\n")) && (str.First(wxT("\r")) < str.First(wxT("\n"))))
     {
         tmp = str.BeforeFirst('\r');
         if (str.BeforeFirst('\r').Length() != str.Length())

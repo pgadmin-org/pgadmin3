@@ -63,7 +63,6 @@ void edbSynonym::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Target schema"), GetTargetSchema());
         properties->AppendItem(_("Target object"), GetTargetObject());
         properties->AppendItem(_("System synonym?"), GetSystemObject());
-        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 

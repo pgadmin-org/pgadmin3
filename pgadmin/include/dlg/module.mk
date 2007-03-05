@@ -32,6 +32,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlg/dlgMainConfig.h \
 	$(srcdir)/include/dlg/dlgManageFavourites.h \
 	$(srcdir)/include/dlg/dlgOperator.h \
+	$(srcdir)/include/dlg/dlgPackage.h \
 	$(srcdir)/include/dlg/dlgPgpassConfig.h \
 	$(srcdir)/include/dlg/dlgProperty.h \
 	$(srcdir)/include/dlg/dlgRole.h \
