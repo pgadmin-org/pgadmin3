@@ -565,10 +565,15 @@ wxString dlgFunction::GetArgs(bool withNames, bool quoted)
                     if (isProcedure)
                     {
                         int i=GetDirection(colName);
-                        wxString dir=rdbDirection->GetString(i);
-                        colName = colName.Mid(dir.Length()+1);
 
-                        args += dir + wxT(" ") + qtIdent(colName) + wxT(" ");
+                        if (i >= 0)
+                        {
+                            wxString dir=rdbDirection->GetString(i);
+                            colName = colName.Mid(dir.Length()+1);
+                            args += dir + wxT(" ") + qtIdent(colName) + wxT(" ");
+                        }
+                        else
+                            args += qtIdent(colName) + wxT(" ");
                     }
                     else
                     {
