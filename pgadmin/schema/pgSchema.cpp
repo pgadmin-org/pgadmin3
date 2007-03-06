@@ -248,6 +248,9 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
         restr += wxT("(nspname = 'sys' and (SELECT count(*) FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid) > 0))\n");
     }
 
+    if (collection->GetConnection()->EdbMinimumVersion(8, 2))
+        restr += wxT("  AND nsp.nspparent = 0\n");
+
     if (!collection->GetDatabase()->GetSchemaRestriction().IsEmpty())
         restr += wxT("(") + collection->GetDatabase()->GetSchemaRestriction() + wxT(")");
 
