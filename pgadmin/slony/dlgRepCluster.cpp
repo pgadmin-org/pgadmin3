@@ -834,7 +834,10 @@ wxString dlgRepCluster::GetSql()
             sql = wxT("CREATE SCHEMA ") + quotedName + wxT(";\n\n")
                 + ReplaceString(createScript, wxT("@NAMESPACE@"), quotedName);
 
-            sql = ReplaceString(sql, wxT("@CLUSTERNAME@"), txtClusterName->GetValue());
+            if (chkJoinCluster->GetValue())
+                sql = ReplaceString(sql, wxT("@CLUSTERNAME@"), cbClusterName->GetValue());
+            else
+                sql = ReplaceString(sql, wxT("@CLUSTERNAME@"), txtClusterName->GetValue());
 
             // From Slony 1.2 onwards, the scripts include the module version.
             // To figure it out, temporarily load and use _Slony_I_getModuleVersion.
