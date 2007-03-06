@@ -142,6 +142,8 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         server->iSetDbRestriction(txtDbRestriction->GetValue());
         mainForm->execSelChange(server->GetId(), true);
         mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
+
+        wxMessageBox(_("Note: changes to server settings will take effect the next time the server is connected."), _("Server settings"), wxICON_INFORMATION);
     }
 
     if (IsModal())

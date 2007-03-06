@@ -578,26 +578,29 @@ void dlgProperty::ShowObject()
 
 bool dlgProperty::apply(const wxString &sql)
 {
-    wxString tmp;
-    if (cbClusterSet && cbClusterSet->GetSelection() > 0)
+    if (!sql.IsEmpty())
     {
-        replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+        wxString tmp;
+        if (cbClusterSet && cbClusterSet->GetSelection() > 0)
+        {
+            replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
 
-        tmp = wxT("SELECT ") + qtIdent(data->cluster)
-            + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
-            + qtDbString(sql) + wxT(", 0);\n");
+            tmp = wxT("SELECT ") + qtIdent(data->cluster)
+                + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
+                + qtDbString(sql) + wxT(", 0);\n");
+        }
+        else
+            tmp = sql;
+
+        if (!connection->ExecuteVoid(tmp))
+        {
+            // error message is displayed inside ExecuteVoid
+            return false;
+        }
+
+        if (database)
+            database->AppendSchemaChange(tmp);
     }
-    else
-        tmp = sql;
-
-    if (!connection->ExecuteVoid(tmp))
-    {
-        // error message is displayed inside ExecuteVoid
-        return false;
-    }
-
-    if (database)
-        database->AppendSchemaChange(tmp);
 
     ShowObject();
 
@@ -617,9 +620,8 @@ void dlgProperty::OnApply(wxCommandEvent &ev)
 
     wxString sql=GetSql();
 
-    if (!sql.IsEmpty())
-        if (!apply(sql))
-            return;
+    if (!apply(sql))
+        return;
 
     if (statusBar)
         statusBar->SetStatusText(_("Changes applied."));
@@ -644,14 +646,12 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
 
     wxString sql=GetSql();
 
-    if (!sql.IsEmpty())
+    if (!apply(sql))
     {
-        if (!apply(sql))
-        {
-            EnableOK(true);
-            return;
-        }
+        EnableOK(true);
+        return;
     }
+
     Destroy();
 }
 
