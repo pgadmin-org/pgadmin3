@@ -261,7 +261,10 @@ void dlgDatabase::OnChangeRestr(wxCommandEvent &ev)
 void dlgDatabase::OnOK(wxCommandEvent &ev)
 {
     if (database)
-        database->iSetSchemaRestriction(txtSchemaRestr->GetValue());
+    {
+        database->iSetSchemaRestriction(txtSchemaRestr->GetValue().Trim());
+        settings->Write(wxString::Format(wxT("Servers/%d/Databases/%s/SchemaRestriction"), database->GetServer()->GetServerIndex(), database->GetName()), txtSchemaRestr->GetValue().Trim());
+    }
     dlgSecurityProperty::OnOK(ev);
 }
 
