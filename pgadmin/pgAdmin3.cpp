@@ -263,6 +263,10 @@ bool pgAdmin3::OnInit()
     for (unsigned int x=0; x<path.Count(); x++)
         wxLogInfo(wxT("    %s"), path[x].c_str());
 
+    wxLogInfo(wxT("pg_dump   : %s"), backupExecutable.c_str());
+    wxLogInfo(wxT("pg_dumpall: %s"), backupAllExecutable.c_str());
+    wxLogInfo(wxT("pg_restore: %s"), restoreExecutable.c_str());
+
 #ifdef __WXGTK__
 	static pgRendererNative *renderer=new pgRendererNative();
 	wxRendererNative::Get();
