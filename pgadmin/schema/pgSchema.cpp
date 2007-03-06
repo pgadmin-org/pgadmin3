@@ -252,7 +252,7 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
         restr += wxT("  AND nsp.nspparent = 0\n");
 
     if (!collection->GetDatabase()->GetSchemaRestriction().IsEmpty())
-        restr += wxT("(") + collection->GetDatabase()->GetSchemaRestriction() + wxT(")");
+        restr += wxT("  AND (") + collection->GetDatabase()->GetSchemaRestriction() + wxT(")");
 
 	wxString sql;
 

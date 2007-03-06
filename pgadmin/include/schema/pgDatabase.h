@@ -61,7 +61,7 @@ public:
     void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
     wxString GetEncoding() const { return encoding; }
     void iSetEncoding(const wxString& newVal) { encoding = newVal; }
-    wxString GetSchemaRestriction() const { return schemaRestriction; }
+    wxString GetSchemaRestriction() { return schemaRestriction; }
     void iSetSchemaRestriction(const wxString &s) { schemaRestriction = s; }
 
     wxArrayString& GetVariables() { return variables; }
