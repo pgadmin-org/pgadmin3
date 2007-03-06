@@ -1041,8 +1041,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
         // SSL mode
 #ifdef SSL
-        key.Printf(wxT("Servers/SSL%d"), loop);
-        settings->Read(key, &ssl, 0);
+        settings->Read(key + wxT("SSL"), &ssl, 0);
 #endif
 
         // Add the Server node
