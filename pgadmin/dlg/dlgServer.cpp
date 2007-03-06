@@ -139,7 +139,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         server->iSetUsername(txtUsername->GetValue());
         server->iSetStorePwd(chkStorePwd->GetValue());
         server->iSetRestore(chkRestore->GetValue());
-        server->iSetDbRestriction(txtDbRestriction->GetValue());
+        server->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
         mainForm->execSelChange(server->GetId(), true);
         mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
 
