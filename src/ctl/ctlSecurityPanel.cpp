@@ -372,15 +372,18 @@ void ctlSecurityPanel::OnPrivSelChange(wxListEvent &ev)
         int i;
         for (i=0 ; i < privilegeCount ; i++)
         {
-            privCheckboxes[i*2]->Enable();
-            int index=value.Find(privilegeChars[i]);
-            if (index >= 0)
+            if (privCheckboxes[i*2]->GetName() != wxT("DISABLE"))
             {
-                privCheckboxes[i*2]->SetValue(true);
-                privCheckboxes[i*2+1]->SetValue(value.Mid(index+1, 1) == wxT("*"));
+                privCheckboxes[i*2]->Enable();
+                int index=value.Find(privilegeChars[i]);
+                if (index >= 0)
+                {
+                    privCheckboxes[i*2]->SetValue(true);
+                    privCheckboxes[i*2+1]->SetValue(value.Mid(index+1, 1) == wxT("*"));
+                }
+                else
+                    privCheckboxes[i*2]->SetValue(false);
             }
-            else
-                privCheckboxes[i*2]->SetValue(false);
             CheckGrantOpt(i);
         }
     }
