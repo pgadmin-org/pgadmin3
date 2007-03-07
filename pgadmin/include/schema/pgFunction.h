@@ -12,7 +12,11 @@
 #ifndef PGFUNCTION_H
 #define PGFUNCTION_H
 
+#include <wx/hashmap.h>
+
 #include "pgSchema.h"
+
+WX_DECLARE_STRING_HASH_MAP(wxString, typeMap);
 
 class pgCollection;
 class pgFunction;

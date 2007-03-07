@@ -20,7 +20,6 @@
 #include "frm/frmReport.h"
 #include "frm/frmHint.h"
 
-
 pgFunction::pgFunction(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, functionFactory, newName)
 {
@@ -231,7 +230,15 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             wxT(" ORDER BY proname"));
 
     pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
-                    "SELECT t.oid, format_type(t.oid, t.typtypmod) AS typname, n.nspname FROM pg_type t, pg_namespace n WHERE t.typnamespace = n.oid"));
+                    "SELECT oid, format_type(oid, typtypmod) AS typname FROM pg_type"));
+
+    typeMap map;
+
+    while(!types->Eof())
+    {
+        map[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
+        types->MoveNext();
+    }
 
     if (functions)
     {
@@ -284,54 +291,41 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             {
                 type = args.GetNextToken();
 
-                if (types)
+                if (!argTypes.IsNull())
                 {
-                    types->MoveFirst();
-                    while (types->GetVal(wxT("oid")) != type)
-                    {
-                        if (types->Eof())
-                        {
-                            wxLogError(wxT("Internal Error while checking function args"));
-                            return 0;
-                        }
-                        types->MoveNext();
-                    }
-                    if (!argTypes.IsNull())
-                    {
-                        argTypes += wxT(", ");
-                        argTypeNames += wxT(", ");
-                    }
-                    name = names.GetNextToken();
-                    if (name[0] == '"')
-                        name = name.Mid(1, name.Length()-2);
-
-                    mode = modes.GetNextToken();
-                    
-                    if (!mode.IsNull())
-                    {
-                        if (mode == wxT('o') || mode == wxT("2"))
-                            mode = wxT("OUT");
-                        else if (mode == wxT("b"))
-                            mode = wxT("INOUT");
-                        else if (mode == wxT("3"))
-                            mode = wxT("IN OUT");
-                        else
-                            mode = wxT("IN");
-
-                        function->iAddArgMode(mode);
-                        if (isProcedure)
-                            argTypes += mode + wxT(" ");
-                        argTypeNames += mode + wxT(" ");
-                    }
-                    if (!name.IsNull())
-                    {
-                        function->iAddArgName(name);
-                        argTypeNames += qtIdent(name) + wxT(" ");
-                    }
-
-    				argTypeNames += types->GetVal(wxT("typname"));
-    				argTypes += types->GetVal(wxT("typname"));
+                    argTypes += wxT(", ");
+                    argTypeNames += wxT(", ");
                 }
+                name = names.GetNextToken();
+                if (name[0] == '"')
+                    name = name.Mid(1, name.Length()-2);
+
+                mode = modes.GetNextToken();
+                
+                if (!mode.IsNull())
+                {
+                    if (mode == wxT('o') || mode == wxT("2"))
+                        mode = wxT("OUT");
+                    else if (mode == wxT("b"))
+                        mode = wxT("INOUT");
+                    else if (mode == wxT("3"))
+                        mode = wxT("IN OUT");
+                    else
+                        mode = wxT("IN");
+
+                    function->iAddArgMode(mode);
+                    if (isProcedure)
+                        argTypes += mode + wxT(" ");
+                    argTypeNames += mode + wxT(" ");
+                }
+                if (!name.IsNull())
+                {
+                    function->iAddArgName(name);
+                    argTypeNames += qtIdent(name) + wxT(" ");
+                }
+
+                argTypeNames += map[type];
+                argTypes += map[type];
             }
 
             function->iSetOid(functions->GetOid(wxT("oid")));
