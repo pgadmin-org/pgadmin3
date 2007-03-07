@@ -307,7 +307,11 @@ bool executePgstatindexFactory::CheckEnable(pgObject *obj)
 
 bool executePgstatindexFactory::CheckChecked(pgObject *obj)
 {
-    return obj && ((pgIndexBase*)obj)->GetShowExtendedStatistics();
+    if (!obj)
+        return false;
+
+    if (obj->GetMetaType() == PGM_INDEX || obj->GetMetaType() == PGM_PRIMARYKEY || obj->GetMetaType() == PGM_UNIQUE)
+        return ((pgIndexBase*)obj)->GetShowExtendedStatistics();
 }
 
 

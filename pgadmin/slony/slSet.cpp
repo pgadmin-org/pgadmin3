@@ -55,15 +55,9 @@ wxMenu *slSet::GetNewMenu()
     {
         slSequenceFactory.AppendMenu(menu);
         slTableFactory.AppendMenu(menu);
+    }
 
-        if (GetCluster()->ClusterMinimumVersion(1,1))
-            subscriptionFactory.AppendMenu(menu);
-    }
-    else
-    {
-        if (!GetCluster()->ClusterMinimumVersion(1,1))
-            subscriptionFactory.AppendMenu(menu);
-    }
+    subscriptionFactory.AppendMenu(menu);
 
     return menu;
 }
@@ -165,7 +159,10 @@ bool slSet::Unlock()
 
 bool slSet::CanDrop()
 {
-    return !GetSubscriptionCount() && GetOriginId() == GetCluster()->GetLocalNodeID();
+    if (GetMetaType() != SLM_SUBSCRIPTION)
+        return !GetSubscriptionCount() && GetOriginId() == GetCluster()->GetLocalNodeID();
+    else
+        return GetOriginId() != GetCluster()->GetLocalNodeID();
 }
 
 
@@ -290,13 +287,29 @@ slSetObject::slSetObject(slSet *s, pgaFactory &factory, const wxString &newName)
 
 bool slSetObject::CanDrop()
 {
-    return !set->GetSubscriptionCount() && set->GetOriginId() == GetCluster()->GetLocalNodeID();
+    if (GetMetaType() != SLM_SUBSCRIPTION)
+        return !set->GetSubscriptionCount() && set->GetOriginId() == GetCluster()->GetLocalNodeID();
+    else
+    {
+        if (GetCluster()->ClusterMinimumVersion(1, 1))
+            return (set->GetOriginId() == GetCluster()->GetLocalNodeID() || ((slSubscription *)this)->GetForward());
+        else
+            return set->GetOriginId() != GetCluster()->GetLocalNodeID();
+    }
 }
 
 
 bool slSetObject::CanCreate()
 {
-    return !set->GetSubscriptionCount() && set->GetOriginId() == GetCluster()->GetLocalNodeID();
+    if (GetMetaType() != SLM_SUBSCRIPTION)
+        return !set->GetSubscriptionCount() && set->GetOriginId() == GetCluster()->GetLocalNodeID();
+    else
+    {
+        if (GetCluster()->ClusterMinimumVersion(1, 1))
+            return (set->GetOriginId() == GetCluster()->GetLocalNodeID() || ((slSubscription *)this)->GetForward());
+        else
+            return set->GetOriginId() != GetCluster()->GetLocalNodeID();
+    }
 }
 
 
@@ -311,17 +324,20 @@ slSetObjCollection::slSetObjCollection(pgaFactory *factory, slSet *_set)
 
 bool slSetObjCollection::CanCreate()
 {
-    if (set->GetSubscriptionCount())
-        return false;
-
     switch (GetMetaType())
     {
         case SLM_SUBSCRIPTION:
-            return set->GetOriginId() != GetCluster()->GetLocalNodeID();
+            if (GetCluster()->ClusterMinimumVersion(1, 1))
+                return (set->GetOriginId() == GetCluster()->GetLocalNodeID() || ((slSubscription *)this)->GetForward());
+            else
+                return set->GetOriginId() != GetCluster()->GetLocalNodeID();
 
         case SLM_TABLE:
         case SLM_SEQUENCE:
-            return set->GetOriginId() == GetCluster()->GetLocalNodeID();
+            if (set->GetSubscriptionCount())
+                return false;
+            else
+                return set->GetOriginId() == GetCluster()->GetLocalNodeID();
         default:
             return false;
     }
