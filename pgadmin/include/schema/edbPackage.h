@@ -15,8 +15,10 @@
 
 // App headers
 #include "pgDatabase.h"
+#include "pgSchema.h"
 
 class pgCollection;
+
 class edbPackageFactory : public pgSchemaObjFactory
 {
 public:
