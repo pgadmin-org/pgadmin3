@@ -312,6 +312,8 @@ bool executePgstatindexFactory::CheckChecked(pgObject *obj)
 
     if (obj->GetMetaType() == PGM_INDEX || obj->GetMetaType() == PGM_PRIMARYKEY || obj->GetMetaType() == PGM_UNIQUE)
         return ((pgIndexBase*)obj)->GetShowExtendedStatistics();
+
+    return false;
 }
 
 
