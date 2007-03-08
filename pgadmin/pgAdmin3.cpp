@@ -706,6 +706,12 @@ void pgAdmin3::InitPaths()
     pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("/pg_restore");
 #endif
 
+    if (!wxFile::Exists(pgBackupExecutable))
+        pgBackupExecutable = wxEmptyString;
+    if (!wxFile::Exists(pgBackupAllExecutable))
+        pgBackupAllExecutable = wxEmptyString;
+    if (!wxFile::Exists(pgRestoreExecutable))
+        pgRestoreExecutable = wxEmptyString;
 
     // Now, EnterpriseDB
 #ifdef __WXMSW__
@@ -743,6 +749,13 @@ void pgAdmin3::InitPaths()
 	edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dumpall");
     edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("/pg_restore");
 #endif
+
+    if (!wxFile::Exists(edbBackupExecutable))
+        edbBackupExecutable = wxEmptyString;
+    if (!wxFile::Exists(edbBackupAllExecutable))
+        edbBackupAllExecutable = wxEmptyString;
+    if (!wxFile::Exists(edbRestoreExecutable))
+        edbRestoreExecutable = wxEmptyString;
 
 }
 

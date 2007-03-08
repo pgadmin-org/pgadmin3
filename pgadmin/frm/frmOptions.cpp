@@ -32,6 +32,14 @@ extern wxLocale *locale;
 extern wxArrayInt existingLangs;
 extern wxArrayString existingLangNames;
 
+extern wxString pgBackupExecutable;
+extern wxString pgBackupAllExecutable;
+extern wxString pgRestoreExecutable;
+
+extern wxString edbBackupExecutable;
+extern wxString edbBackupAllExecutable;
+extern wxString edbRestoreExecutable;
+
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
 #define txtSqlHelpSite              CTRL_TEXT("txtSqlHelpSite")
 #define txtProxy                    CTRL_TEXT("txtProxy")
@@ -299,7 +307,44 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetSuppressGuruHints(chkSuppressHints->GetValue());
     settings->SetSlonyPath(txtSlonyPath->GetValue());
     settings->SetPostgresqlPath(txtPostgresqlPath->GetValue());
+
+    // Setup PostgreSQL working paths
+#if defined(__WXMSW__)
+    pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("\\pg_dump.exe");
+    pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("\\pg_dumpall.exe");
+    pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("\\pg_restore.exe");
+#else
+    pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dump");
+	pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dumpall");
+    pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("/pg_restore");
+#endif
+
+    if (!wxFile::Exists(pgBackupExecutable))
+        pgBackupExecutable = wxEmptyString;
+    if (!wxFile::Exists(pgBackupAllExecutable))
+        pgBackupAllExecutable = wxEmptyString;
+    if (!wxFile::Exists(pgRestoreExecutable))
+        pgRestoreExecutable = wxEmptyString;
+
     settings->SetEnterprisedbPath(txtEnterprisedbPath->GetValue());
+
+    // Setup EnterpriseDB working paths
+#if defined(__WXMSW__)
+    edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dump.exe");
+    edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dumpall.exe");
+    edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("\\pg_restore.exe");
+#else
+    edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dump");
+	edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dumpall");
+    edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("/pg_restore");
+#endif
+
+    if (!wxFile::Exists(edbBackupExecutable))
+        edbBackupExecutable = wxEmptyString;
+    if (!wxFile::Exists(edbBackupAllExecutable))
+        edbBackupAllExecutable = wxEmptyString;
+    if (!wxFile::Exists(edbRestoreExecutable))
+        edbRestoreExecutable = wxEmptyString;
 
     if (chkResetHints->GetValue())
         frmHint::ResetHints();
