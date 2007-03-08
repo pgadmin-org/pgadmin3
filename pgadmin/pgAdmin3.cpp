@@ -381,6 +381,7 @@ bool pgAdmin3::OnInit()
         {
             winSplash->Close();
             delete winSplash;
+            winSplash = 0;
         }
     }
 
@@ -466,8 +467,6 @@ bool pgAdmin3::OnInit()
             if (!winMain) 
                 wxLogFatalError(__("Couldn't create the main window!"));
 
-            // updateThread = BackgroundCheckUpdates(winMain);
-
             winMain->Show();
             SetTopWindow(winMain);
 
@@ -476,6 +475,12 @@ bool pgAdmin3::OnInit()
 			wxCommandEvent evt = wxCommandEvent();
 			if (winMain && settings->GetShowTipOfTheDay())
 			{
+                if (winSplash)
+                {
+                    winSplash->Close();
+                    delete winSplash;
+                    winSplash = 0;
+                }
 				tipOfDayFactory tip(0, 0, 0);
 				tip.StartDialog(winMain, 0);
 			}
@@ -503,6 +508,7 @@ bool pgAdmin3::OnInit()
         {
             winSplash->Close();
             delete winSplash;
+            winSplash = 0;
         }
     }
 
