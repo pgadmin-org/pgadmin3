@@ -851,17 +851,20 @@ wxString VerFromRev(const wxString &rev)
 
 wxString firstLineOnly(const wxString &str)
 {
-    wxString tmp;
-    if (str.Contains(wxT("\r\n")) && (str.First(wxT("\r")) < str.First(wxT("\n"))))
+    wxString ip, tmp;
+    ip = str;
+    ip = ip.Trim(true).Trim(false);
+
+    if (ip.Contains(wxT("\r\n")) && (ip.First(wxT("\r")) < ip.First(wxT("\n"))))
     {
-        tmp = str.BeforeFirst('\r');
-        if (str.BeforeFirst('\r').Length() != str.Length())
+        tmp = ip.BeforeFirst('\r');
+        if (ip.BeforeFirst('\r').Length() != ip.Length())
             tmp += wxT("...");
     }
     else
     {
-        tmp = str.BeforeFirst('\n');
-        if (str.BeforeFirst('\n').Length() != str.Length())
+        tmp = ip.BeforeFirst('\n');
+        if (ip.BeforeFirst('\n').Length() != ip.Length())
             tmp += wxT("...");
     }
 
