@@ -130,12 +130,26 @@ void pgDialog::PostCreation()
 
 void pgDialog::RestorePosition(int defaultX, int defaultY, int defaultW, int defaultH, int minW, int minH)
 {
+    if (minW == -1)
+        minW = GetSize().GetX();
+
+    if (minH == -1)
+        minH = GetSize().GetY();
+
     wxPoint pos(settings->Read(dlgName, wxPoint(defaultX, defaultY)));
     wxSize size;
-    if (defaultW < 0)
-        size = settings->Read(dlgName, GetSize());
+
+    if ((this->GetWindowStyle() & wxRESIZE_BORDER) == wxRESIZE_BORDER)
+    {
+        if (defaultW < 0)
+            size = settings->Read(dlgName, GetSize());
+        else
+            size = settings->Read(dlgName, wxSize(defaultW, defaultH));
+    }
     else
-        size = settings->Read(dlgName, wxSize(defaultW, defaultH));
+    {
+        size = GetSize();
+    }
 
     bool posDefault = (pos.x == -1 && pos.y == -1);
 
