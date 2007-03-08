@@ -27,7 +27,8 @@
 #include "utils/sysProcess.h"
 
 
-extern wxString backupExecutable;
+extern wxString pgBackupExecutable;
+extern wxString edbBackupExecutable;
 
 #define cbServer            CTRL_COMBOBOX("cbServer")
 #define cbDatabase          CTRL_COMBOBOX("cbDatabase")
@@ -766,6 +767,11 @@ wxString dlgRepCluster::GetSql()
     else
     {
         // create mode
+        wxString backupExecutable;
+        if (remoteServer && remoteServer->GetConnection()->EdbMinimumVersion(8, 0))
+            backupExecutable = edbBackupExecutable;
+        else
+            backupExecutable = pgBackupExecutable;
 
         if (remoteServer && clusterBackup.IsEmpty() && !backupExecutable.IsEmpty())
         {

@@ -135,15 +135,20 @@ wxString frmBackupGlobals::GetDisplayCmd(int step)
 
 wxString frmBackupGlobals::getCmdPart1()
 {
-    extern wxString backupAllExecutable;
-
-    wxString cmd=backupAllExecutable;
+    extern wxString pgBackupAllExecutable;
+    extern wxString edbBackupAllExecutable;
 
 	pgServer * server;
 	if (object->GetMetaType() == PGM_SERVER)
 		server = (pgServer *)object;
 	else
         server=object->GetDatabase()->GetServer();
+
+    wxString cmd;
+    if (server->GetConnection()->EdbMinimumVersion(8,0))
+        cmd=edbBackupAllExecutable;
+    else
+        cmd=pgBackupAllExecutable;
 
     cmd +=  wxT(" -i")
             wxT(" -h ") + server->GetName()
@@ -198,7 +203,8 @@ wxWindow *backupGlobalsFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool backupGlobalsFactory::CheckEnable(pgObject *obj)
 {
-    extern wxString backupAllExecutable;
+    extern wxString pgBackupExecutable;
+    extern wxString edbBackupExecutable;
 
 	if (!obj)
 		return false;
@@ -207,5 +213,8 @@ bool backupGlobalsFactory::CheckEnable(pgObject *obj)
 		if (!((pgServer *)obj)->GetConnected())
 			return false;
 
-    return obj->CanBackupGlobals() && !backupAllExecutable.IsEmpty();
+    if (obj->GetConnection()->EdbMinimumVersion(8, 0))
+        return obj->CanBackupGlobals() && !edbBackupExecutable.IsEmpty() && pgAppMinimumVersion(edbBackupExecutable, 8, 3);
+    else
+        return obj->CanBackupGlobals() && !pgBackupExecutable.IsEmpty() && pgAppMinimumVersion(pgBackupExecutable, 8, 3);
 }

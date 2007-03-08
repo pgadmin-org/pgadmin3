@@ -268,9 +268,15 @@ wxString frmRestore::GetDisplayCmd(int step)
 
 wxString frmRestore::getCmdPart1()
 {
-    extern wxString restoreExecutable;
+    extern wxString pgRestoreExecutable;
+    extern wxString edbRestoreExecutable;
 
-    wxString cmd=restoreExecutable;
+    wxString cmd;
+
+    if (object->GetConnection()->EdbMinimumVersion(8,0))
+        cmd=edbRestoreExecutable;
+    else
+        cmd=pgRestoreExecutable;
 
     cmd += wxT(" -i")
            wxT(" -h ") + server->GetName()
@@ -469,7 +475,14 @@ wxWindow *restoreFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool restoreFactory::CheckEnable(pgObject *obj)
 {
-    extern wxString restoreExecutable;
+    extern wxString pgRestoreExecutable;
+    extern wxString edbRestoreExecutable;
 
-    return obj && obj->CanRestore() && !restoreExecutable.IsEmpty();
+    if (!obj)
+        return false;
+
+    if (obj->GetServer() && obj->GetServer()->GetConnected() && obj->GetConnection()->EdbMinimumVersion(8, 0))
+        return obj->CanRestore() && !edbRestoreExecutable.IsEmpty();
+    else
+        return obj->CanRestore() && !pgRestoreExecutable.IsEmpty();
 }

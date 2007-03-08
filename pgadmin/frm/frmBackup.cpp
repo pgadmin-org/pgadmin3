@@ -183,11 +183,17 @@ wxString frmBackup::GetDisplayCmd(int step)
 
 wxString frmBackup::getCmdPart1()
 {
-    extern wxString backupExecutable;
-
-    wxString cmd=backupExecutable;
+    extern wxString pgBackupExecutable;
+    extern wxString edbBackupExecutable;
 
     pgServer *server=object->GetDatabase()->GetServer();
+
+    wxString cmd;
+    if (object->GetConnection()->EdbMinimumVersion(8,0))
+        cmd=edbBackupExecutable;
+    else
+        cmd=pgBackupExecutable;
+
     cmd +=  wxT(" -i")
             wxT(" -h ") + server->GetName()
          +  wxT(" -p ") + NumToStr((long)server->GetPort())
@@ -198,7 +204,15 @@ wxString frmBackup::getCmdPart1()
 
 wxString frmBackup::getCmdPart2()
 {
-    extern wxString backupExecutable;
+    extern wxString pgBackupExecutable;
+    extern wxString edbBackupExecutable;
+
+    wxString backupExecutable;
+    if (object->GetConnection()->EdbMinimumVersion(8,0))
+        backupExecutable=edbBackupExecutable;
+    else
+        backupExecutable=pgBackupExecutable;
+
     wxString cmd;
     // if (server->GetSSL())
     // pg_dump doesn't support ssl
@@ -266,7 +280,7 @@ wxString frmBackup::getCmdPart2()
     else if (object->GetMetaType() == PGM_TABLE) 
     {
 		// The syntax changed in 8.2 :-(
-		if (pgAppMinimumVersion(backupExecutable + wxT(" --version"), 8, 2))
+		if (pgAppMinimumVersion(backupExecutable, 8, 2))
 		{
 #ifdef WIN32
 			cmd.Append(wxT(" -t \"\\\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
@@ -317,8 +331,16 @@ wxWindow *backupFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool backupFactory::CheckEnable(pgObject *obj)
 {
-    extern wxString backupExecutable;
+    extern wxString pgBackupExecutable;
+    extern wxString edbBackupExecutable;
 
-    return obj && obj->CanBackup() && !backupExecutable.IsEmpty();
+    if (!obj)
+        return false;
+
+    if (obj->GetServer() && obj->GetServer()->GetConnected() && obj->GetConnection()->EdbMinimumVersion(8, 0))
+        return obj->CanBackup() && !edbBackupExecutable.IsEmpty();
+    else
+        return obj->CanBackup() && !pgBackupExecutable.IsEmpty();
+
 }
 

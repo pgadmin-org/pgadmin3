@@ -37,6 +37,8 @@ private:
     void OnBrowseLogFile(wxCommandEvent &ev);
     void OnSqlFontSelect(wxCommandEvent &ev);
     void OnSlonyPathSelect(wxCommandEvent &ev);
+    void OnPostgresqlPathSelect(wxCommandEvent &ev);
+    void OnEnterprisedbPathSelect(wxCommandEvent &ev);
     void OnFontSelect(wxCommandEvent &ev);
     void OnOK(wxCommandEvent &ev);
     void OnCancel(wxCommandEvent &ev);

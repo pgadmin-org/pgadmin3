@@ -64,6 +64,10 @@ public:
 
     wxString GetSlonyPath() const { return slonyPath; }
     void SetSlonyPath(const wxString &s) { slonyPath=s; }
+    wxString GetPostgresqlPath() const { return postgresqlPath; }
+    void SetPostgresqlPath(const wxString &s) { postgresqlPath=s; }
+    wxString GetEnterprisedbPath() const { return enterprisedbPath; }
+    void SetEnterprisedbPath(const wxString &s) { enterprisedbPath=s; }
     wxString GetSqlHelpSite() const { return sqlHelpSite; }
     void SetSqlHelpSite(const wxString& s) { sqlHelpSite = s; }
     wxString GetProxy() const { return proxy; }
@@ -202,7 +206,7 @@ private:
 
     bool explainVerbose, explainAnalyze;
 
-    wxString slonyPath;
+    wxString slonyPath, postgresqlPath, enterprisedbPath;
     wxString sqlHelpSite, proxy;
     wxString canonicalLanguage;
     bool showUsersForPrivileges;

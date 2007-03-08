@@ -152,6 +152,8 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("MaxServerLogSize"), &maxServerLogSize, 100000L);
     Read(wxT("Export/Unicode"), &exportUnicode, false);
     Read(wxT("SlonyPath"), &slonyPath, wxEmptyString);
+    Read(wxT("PostgreSQLPath"), &postgresqlPath, wxEmptyString);
+    Read(wxT("EnterpriseDBPath"), &enterprisedbPath, wxEmptyString);
 
     wxString val;
 #ifdef __WXMSW__
@@ -412,6 +414,8 @@ void sysSettings::Save()
     Write(wxT("MaxServerLogSize"), maxServerLogSize);
     Write(wxT("SuppressGuruHints"), suppressGuruHints);
     Write(wxT("SlonyPath"), slonyPath);
+    Write(wxT("PostgreSQLPath"), postgresqlPath);
+    Write(wxT("EnterpriseDBPath"), enterprisedbPath);
     Write(wxT("IndentSpaces"), indentSpaces);
 	Write(wxT("TabForCompletion"), tabForCompletion);
 

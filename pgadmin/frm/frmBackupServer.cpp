@@ -127,11 +127,16 @@ wxString frmBackupServer::GetDisplayCmd(int step)
 
 wxString frmBackupServer::getCmdPart1()
 {
-    extern wxString backupAllExecutable;
-
-    wxString cmd=backupAllExecutable;
+    extern wxString pgBackupAllExecutable;
+    extern wxString edbBackupAllExecutable;
 
     pgServer *server = (pgServer *)object;
+
+    wxString cmd;
+    if (server->GetConnection()->EdbMinimumVersion(8,0))
+        cmd=edbBackupAllExecutable;
+    else
+        cmd=pgBackupAllExecutable;
 
     cmd +=  wxT(" -i")
             wxT(" -h ") + server->GetName()
@@ -184,7 +189,8 @@ wxWindow *backupServerFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool backupServerFactory::CheckEnable(pgObject *obj)
 {
-    extern wxString backupAllExecutable;
+    extern wxString pgBackupExecutable;
+    extern wxString edbBackupExecutable;
 
     if (!obj)
         return false;
@@ -192,5 +198,8 @@ bool backupServerFactory::CheckEnable(pgObject *obj)
     if (!((pgServer *)obj)->GetConnected() || obj->GetMetaType() != PGM_SERVER)
         return false;
 
-    return !backupAllExecutable.IsEmpty();
+    if (obj->GetConnection()->EdbMinimumVersion(8, 0))
+        return !edbBackupExecutable.IsEmpty() && pgAppMinimumVersion(edbBackupExecutable, 8, 3);
+    else
+        return !pgBackupExecutable.IsEmpty() && pgAppMinimumVersion(pgBackupExecutable, 8, 3);
 }

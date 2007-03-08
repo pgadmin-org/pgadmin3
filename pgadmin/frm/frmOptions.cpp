@@ -36,6 +36,8 @@ extern wxArrayString existingLangNames;
 #define txtSqlHelpSite              CTRL_TEXT("txtSqlHelpSite")
 #define txtProxy                    CTRL_TEXT("txtProxy")
 #define txtSlonyPath                CTRL_TEXT("txtSlonyPath")
+#define txtPostgresqlPath           CTRL_TEXT("txtPostgresqlPath")
+#define txtEnterprisedbPath         CTRL_TEXT("txtEnterprisedbPath")
 #define txtSystemSchemas            CTRL_TEXT("txtSystemSchemas")
 #define txtLogfile                  CTRL_TEXT("txtLogfile")
 #define radLoglevel                 CTRL_RADIOBOX("radLoglevel")
@@ -68,6 +70,8 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_BUTTON (XRCID("btnSqlFont"),          frmOptions::OnSqlFontSelect)
     EVT_BUTTON (XRCID("btnBrowseLogfile"),    frmOptions::OnBrowseLogFile)
     EVT_BUTTON (XRCID("btnSlonyPath"),        frmOptions::OnSlonyPathSelect)
+    EVT_BUTTON (XRCID("btnPostgresqlPath"),   frmOptions::OnPostgresqlPathSelect)
+    EVT_BUTTON (XRCID("btnEnterprisedbPath"), frmOptions::OnEnterprisedbPathSelect)
     EVT_CHECKBOX(XRCID("chkSuppressHints"),   frmOptions::OnSuppressHints)
     EVT_CHECKBOX(XRCID("chkResetHints"),      frmOptions::OnResetHints)
     EVT_BUTTON (wxID_OK,                      frmOptions::OnOK)
@@ -127,7 +131,8 @@ frmOptions::frmOptions(frmMain *parent)
     chkUnicodeFile->SetValue(settings->GetUnicodeFile());
     chkSuppressHints->SetValue(settings->GetSuppressGuruHints());
     txtSlonyPath->SetValue(settings->GetSlonyPath());
-
+    txtPostgresqlPath->SetValue(settings->GetPostgresqlPath());
+    txtEnterprisedbPath->SetValue(settings->GetEnterprisedbPath());
 
     cbLanguage->Append(_("Default"));
     int sel=0;
@@ -205,6 +210,19 @@ void frmOptions::OnSlonyPathSelect(wxCommandEvent &ev)
         txtSlonyPath->SetValue(dlg.GetPath());
 }
 
+void frmOptions::OnPostgresqlPathSelect(wxCommandEvent &ev)
+{
+    wxDirDialog dlg(this, _("Select directory with PostgreSQL utilities"), txtPostgresqlPath->GetValue());
+    if (dlg.ShowModal() == wxID_OK)
+        txtPostgresqlPath->SetValue(dlg.GetPath());
+}
+
+void frmOptions::OnEnterprisedbPathSelect(wxCommandEvent &ev)
+{
+    wxDirDialog dlg(this, _("Select directory with EnterpriseDB utilities"), txtEnterprisedbPath->GetValue());
+    if (dlg.ShowModal() == wxID_OK)
+        txtEnterprisedbPath->SetValue(dlg.GetPath());
+}
 
 void frmOptions::OnSuppressHints(wxCommandEvent &ev)
 {
@@ -280,6 +298,8 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetSQLFont(currentSqlFont);
     settings->SetSuppressGuruHints(chkSuppressHints->GetValue());
     settings->SetSlonyPath(txtSlonyPath->GetValue());
+    settings->SetPostgresqlPath(txtPostgresqlPath->GetValue());
+    settings->SetEnterprisedbPath(txtEnterprisedbPath->GetValue());
 
     if (chkResetHints->GetValue())
         frmHint::ResetHints();

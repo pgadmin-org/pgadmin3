@@ -872,13 +872,31 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
 {
 	wxArrayString output;
 
-	wxExecute(cmd, output, 0);
+	wxExecute(cmd + wxT(" --version"), output, 0);
 
 	wxString version = output[0].AfterLast(' ');
 	long actualMajor = 0, actualMinor = 0;
 	
-	version.BeforeFirst('.').ToLong(&actualMajor);
-	version.AfterFirst('.').BeforeLast('.').ToLong(&actualMinor);
+    wxString tmp=wxT("");
+    int x=0;
+    while(version[x] == '0' || version[x] == '1' || version[x] == '2' || version[x] == '3' || version[x] == '4' ||
+          version[x] == '5' || version[x] == '6' || version[x] == '7' || version[x] == '8' || version[x] == '9')
+    {
+        tmp += version[x];
+        x++;
+    }
+    tmp.ToLong(&actualMajor);
+    x++;
+
+    tmp = wxT("");
+    while(version[x] == '0' || version[x] == '1' || version[x] == '2' || version[x] == '3' || version[x] == '4' ||
+          version[x] == '5' || version[x] == '6' || version[x] == '7' || version[x] == '8' || version[x] == '9')
+    {
+        tmp += version[x];
+        x++;
+    }
+
+    tmp.ToLong(&actualMinor);
 
 	if (actualMajor > majorVer)
 		return true;
