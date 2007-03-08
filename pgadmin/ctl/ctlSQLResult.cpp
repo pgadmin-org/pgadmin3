@@ -90,6 +90,11 @@ int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
 {
     colSizes.Empty();
     colHeaders.Empty();
+    for (int col=0 ; col < GetNumberCols() ; col++)
+    {
+        colSizes.Add(GetColSize(col));
+        colHeaders.Add(this->GetColLabelValue(col));
+    }
 
     wxGridTableMessage *msg;
     sqlResultTable *table = (sqlResultTable *)GetTable();
@@ -148,7 +153,7 @@ void ctlSQLResult::DisplayData(bool single)
     Freeze();
 
     /*
-     * Resize and repopulate by informing itto delete all the rows and
+     * Resize and repopulate by informing it to delete all the rows and
      * columns, then append the correct number of them. Probably is a
      * better way to do this.
      */
@@ -184,6 +189,7 @@ void ctlSQLResult::DisplayData(bool single)
 	else
     {
         wxString colName, colType;
+        int w;
 
         size_t hdrIndex=0;
 		long col, nCols=thread->DataSet()->NumCols();
@@ -195,23 +201,13 @@ void ctlSQLResult::DisplayData(bool single)
             colNames.Add(colName);
             colTypes.Add(colType);
             colTypClasses.Add(thread->DataSet()->ColTypClass(col));
-
+            
             wxString colHeader = colName + wxT("\n") + colType;
 
-            int w;
-            if (hdrIndex < colHeaders.GetCount() && colHeaders.Item(hdrIndex) == colHeader) {
+            if (hdrIndex < colHeaders.GetCount() && colHeaders.Item(hdrIndex) == colHeader)
                 w = colSizes.Item(hdrIndex++);
-            }
             else
-            {
-                if (hdrIndex+1 < colHeaders.GetCount() && colHeaders.Item(hdrIndex+1) == colHeader)
-                {
-                    hdrIndex++;
-                    w = colSizes.Item(hdrIndex++);
-                }
-                else
-                    w=-1;
-            }
+                w=-1;
 
             SetColSize(col, w);
         }
