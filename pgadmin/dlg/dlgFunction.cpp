@@ -161,23 +161,18 @@ int dlgFunction::Go(bool modal)
 
     if (isProcedure)
     {
-        if (connection->EdbMinimumVersion(8, 0) & !connection->EdbMinimumVersion(8, 1))
-        {
-            rdbDirection->SetString(2, wxT("IN OUT"));
-            stLanguage->Hide();
-            cbLanguage->Hide();
-            chkStrict->Hide();
-            chkSecureDefiner->Hide();
-            stVolatility->Hide();
-            cbVolatility->Hide();
-        }
-        stReturntype->Hide();
-        cbReturntype->Hide();
+        rdbDirection->SetString(2, wxT("IN OUT"));
+        stLanguage->Disable();
+        cbLanguage->Disable();
+        chkStrict->Disable();
+        chkSecureDefiner->Disable();
+        chkSetof->Disable();
+        stVolatility->Disable();
+        cbVolatility->Disable();
+        stReturntype->Disable();
+        cbReturntype->Disable();
     }
-    else
-    {
-        rdbDirection->Hide();
-    }
+
     pgSet *lang=connection->ExecuteSet(wxT("SELECT lanname FROM pg_language"));
     if (lang)
     {
@@ -296,6 +291,8 @@ int dlgFunction::Go(bool modal)
             txtArgName->Disable();
             sel=cbLanguage->FindString(wxT("c"));
         }
+        else if (isProcedure)
+            sel=cbLanguage->FindString(wxT("edbspl"));
         else
             sel=cbLanguage->FindString(wxT("sql"));
 
@@ -341,7 +338,7 @@ void dlgFunction::CheckChange()
               || chkStrict->GetValue() != function->GetIsStrict()
               || cbLanguage->GetValue() != function->GetLanguage()
               || cbOwner->GetValue() != function->GetOwner()
-              || GetArgs(true, true) != function->GetArgTypeNames()
+              || GetArgs() != function->GetArgTypeNames()
               || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
               || (!isC && txtSqlBox->GetText() != function->GetSource()));
     }
@@ -419,13 +416,21 @@ void dlgFunction::OnSelChangeArg(wxListEvent &ev)
         if (typeColNo)
         {
             wxString colName=lstArguments->GetText(row, 0);
-            if (isProcedure)
+            int i=GetDirection(colName);
+            rdbDirection->SetSelection(i);
+
+            if (colName != rdbDirection->GetString(i))
             {
-                int i=GetDirection(colName);
-                rdbDirection->SetSelection(i);
-                colName = colName.Mid(rdbDirection->GetString(i).Length() +1);
+                if (isProcedure)
+                    colName = colName.Left(colName.Length() - (rdbDirection->GetString(i).Length() + 1));
+                else
+                    colName = colName.Mid(rdbDirection->GetString(i).Length() +1);
+                    
+                txtArgName->SetValue(colName);
             }
-            txtArgName->SetValue(colName);
+            else
+                txtArgName->SetValue(wxEmptyString);
+
             cbDatatype->SetValue(lstArguments->GetText(row, typeColNo));
         }
         else
@@ -479,9 +484,16 @@ void dlgFunction::OnChangeArg(wxCommandEvent &ev)
         if (typeColNo)
         {
             wxString colName;
-            if (isProcedure)
-                colName = rdbDirection->GetStringSelection() + wxT(" ");
-            colName += txtArgName->GetValue();
+
+            if (txtArgName->GetValue().IsEmpty())
+                colName = rdbDirection->GetStringSelection(); 
+            else
+            {
+                if (isProcedure)
+                    colName = txtArgName->GetValue() + wxT(" ") + rdbDirection->GetStringSelection(); 
+                else
+                    colName = rdbDirection->GetStringSelection() + wxT(" ") + txtArgName->GetValue();
+            }
 
             lstArguments->SetItem(row, 0, colName);
             lstArguments->SetItem(row, typeColNo, cbDatatype->GetValue());
@@ -503,9 +515,17 @@ void dlgFunction::OnAddArg(wxCommandEvent &ev)
     if (typeColNo)
     {
         wxString colName;
-        if (isProcedure)
-            colName = rdbDirection->GetStringSelection() + wxT(" ");
-        colName += txtArgName->GetValue();
+
+        if (txtArgName->GetValue().IsEmpty())
+            colName = rdbDirection->GetStringSelection(); 
+        else
+        {
+            if (isProcedure)
+                colName = txtArgName->GetValue() + wxT(" ") + rdbDirection->GetStringSelection(); 
+            else
+                colName = rdbDirection->GetStringSelection() + wxT(" ") + txtArgName->GetValue();
+        }
+
         lstArguments->AppendItem(-1, colName, cbDatatype->GetValue());
     }
     else
@@ -534,23 +554,31 @@ int dlgFunction::GetDirection(const wxString &colName)
 {
     unsigned int i;
     wxString sel;
-    for (i=0 ; i < rdbDirection->GetCount() ; i++)
+    for (i=rdbDirection->GetCount() ; i>0  ; i--)
     {
-        sel = rdbDirection->GetString(i);
+        sel = rdbDirection->GetString(i-1);
         if (sel == colName)
-            return i;
-        if (colName.Left(sel.Length()+1) == sel + wxT(" "))
-            return i;
+            return i-1;
+        if (isProcedure)
+        {
+            if (colName.Right(sel.Length()+1) == wxT(" ") + sel)
+                return i-1;
+        }
+        else
+        {
+            if (colName.Left(sel.Length()+1) == sel + wxT(" "))
+                return i-1;
+        }
     }
     return -1;
 }
 
 
-wxString dlgFunction::GetArgs(bool withNames, bool quoted)
+wxString dlgFunction::GetArgs(const bool withNames)
 {
     wxString args;
-    int i;
-    for (i=0 ; i < lstArguments->GetItemCount() ; i++)
+ 
+    for (int i=0; i < lstArguments->GetItemCount(); i++)
     {
         if (i)
             args += wxT(", ");
@@ -559,50 +587,40 @@ wxString dlgFunction::GetArgs(bool withNames, bool quoted)
         {
             if (withNames)
             {
-                if (quoted)
+                wxString colName = lstArguments->GetText(i);
+
+                int i=GetDirection(colName);
+
+                if (i >= 0)
                 {
-                    wxString colName = lstArguments->GetText(i);
+                    wxString dir=rdbDirection->GetString(i);
                     if (isProcedure)
                     {
-                        int i=GetDirection(colName);
-
-                        if (i >= 0)
+                        if (colName != dir)
                         {
-                            wxString dir=rdbDirection->GetString(i);
+                            colName = colName.Left(colName.Length() - (dir.Length() + 1));
+                            args += qtIdent(colName) + wxT(" ") + dir + wxT(" ");
+                        }
+                        else
+                            args += dir + wxT(" ");
+                    }
+                    else
+                    {
+                        if (colName != dir)
+                        {
                             colName = colName.Mid(dir.Length()+1);
                             args += dir + wxT(" ") + qtIdent(colName) + wxT(" ");
                         }
                         else
-                            args += qtIdent(colName) + wxT(" ");  
+                            args += dir + wxT(" ");
                     }
-                    else
-                    {
-                        if (!colName.IsEmpty())
-                            args += qtIdent(colName) + wxT(" ");
-                    }
-
-                    
                 }
                 else
-                    args += lstArguments->GetText(i) + wxT(" ");
+                    args += qtIdent(colName) + wxT(" ");  
             }
         }
-        wxString typname=lstArguments->GetText(i, typeColNo);
-        wxString braces;
-        if (typname.Right(2) == wxT("[]"))
-        {
-            braces = wxT("[]");
-            typname = typname.Left(typname.Length()-2);
-        }
 
-        if (isProcedure && !withNames)
-            args += lstArguments->GetText(i, 0).BeforeFirst(' ') + wxT(" ");
-
-        if (quoted)
-            AppendQuotedType(args, typname);
-        else
-            args += typname;
-        args += braces;
+        args += lstArguments->GetText(i, typeColNo);
     }
 
     return args;
@@ -614,7 +632,7 @@ wxString dlgFunction::GetSql()
     wxString sql;
     wxString name=GetName();
     wxString objType;
-    if (isProcedure && connection->EdbMinimumVersion(8, 0))
+    if (isProcedure)
         objType = wxT("PROCEDURE ");
     else
         objType = wxT("FUNCTION ");
@@ -625,7 +643,7 @@ wxString dlgFunction::GetSql()
         || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
         || chkStrict->GetValue() != function->GetIsStrict()
         || cbOwner->GetValue() != function->GetOwner()
-        || GetArgs(true, true) != function->GetArgTypeNames()
+        || GetArgs() != function->GetArgTypeNames()
         || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
         || (!isC && txtSqlBox->GetText() != function->GetSource());
 
@@ -650,52 +668,15 @@ wxString dlgFunction::GetSql()
 
 
     name = schema->GetQuotedPrefix() + qtIdent(name) 
-         + wxT("(") + GetArgs(false, true) + wxT(")");
+         + wxT("(") + GetArgs(false) + wxT(")");
 
 
     if (didChange)
     {
         sql  += schema->GetQuotedPrefix() + qtIdent(GetName()) 
-             + wxT("(") + GetArgs(true, true) + wxT(")");
+             + wxT("(") + GetArgs() + wxT(")");
 
-        if (isProcedure)
-        {
-            if (!connection->EdbMinimumVersion(8, 0))
-            {
-                int outParams=0;
-                wxString setType;
-
-                int i;
-                for (i=0 ; i < lstArguments->GetItemCount() ; i++)
-                {
-                    if (GetDirection(lstArguments->GetText(i)) > 0)
-                    {
-                        setType = lstArguments->GetText(i, typeColNo);
-                        outParams++;
-                    }
-                }
-
-                if (outParams == 0)
-                    sql += wxT(" RETURNS void");
-                else 
-                {
-                    if (chkSetof->GetValue())
-                    {
-                        if (outParams == 1)
-                        {
-                            sql += wxT(" RETURNS SETOF ") + setType;
-                        }
-                        else
-                        {
-                            sql += wxT(" RETURNS SETOF record");
-                        }
-                    }
-                }
-                    
-            }
-
-        }
-        else
+        if (!isProcedure)
         {
             sql += wxT(" RETURNS ");
             if (chkSetof->GetValue())
@@ -706,33 +687,36 @@ wxString dlgFunction::GetSql()
 
         sql += wxT(" AS\n");
 
-        if (cbLanguage->GetValue().IsSameAs(wxT("C"), false))
+        if (isProcedure)
         {
-            sql += qtDbString(txtObjectFile->GetValue());
-            if (!txtLinkSymbol->GetValue().IsEmpty())
-                sql += wxT(", ") + qtDbString(txtLinkSymbol->GetValue());
-        }
-        else
-        {
-            if (connection->BackendMinimumVersion(7, 5))
-                sql += qtDbStringDollar(txtSqlBox->GetText());
-            else
-                sql += qtDbString(txtSqlBox->GetText());
-        }
-
-        if (isProcedure && connection->EdbMinimumVersion(8, 0))
+            sql += txtSqlBox->GetText();
             sql += wxT("\n");
+        }
         else
         {
+            if (cbLanguage->GetValue().IsSameAs(wxT("C"), false))
+            {
+                sql += qtDbString(txtObjectFile->GetValue());
+                if (!txtLinkSymbol->GetValue().IsEmpty())
+                    sql += wxT(", ") + qtDbString(txtLinkSymbol->GetValue());
+            }
+            else
+            {
+                if (connection->BackendMinimumVersion(7, 5))
+                    sql += qtDbStringDollar(txtSqlBox->GetText());
+                else
+                    sql += qtDbString(txtSqlBox->GetText());
+            }
+
             sql += wxT("\nLANGUAGE ") + qtDbString(cbLanguage->GetValue())
                 +  wxT(" ") + cbVolatility->GetValue();
             if (chkStrict->GetValue())
                 sql += wxT(" STRICT");
             if (chkSecureDefiner->GetValue())
                 sql += wxT(" SECURITY DEFINER");
-        }
 
-        sql += wxT(";\n");
+            sql += wxT(";\n");
+        }
     }
 
     if (function)

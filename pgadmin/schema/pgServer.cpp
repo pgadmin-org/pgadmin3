@@ -91,16 +91,21 @@ wxMenu *pgServer::GetNewMenu()
     if (connected && (GetSuperUser() || GetCreateRole()))
     {
         menu=new wxMenu();
-        tablespaceFactory.AppendMenu(menu);
+        if (settings->GetDisplayOption(wxT("Tablespaces")))
+            tablespaceFactory.AppendMenu(menu);
         if (GetConnection()->BackendMinimumVersion(8, 1))
         {
-            groupRoleFactory.AppendMenu(menu);
-            loginRoleFactory.AppendMenu(menu);
+            if (settings->GetDisplayOption(wxT("Groups/group roles")))
+                groupRoleFactory.AppendMenu(menu);
+            if (settings->GetDisplayOption(wxT("Users/login roles")))
+                loginRoleFactory.AppendMenu(menu);
         }
         else
         {
-            groupFactory.AppendMenu(menu);
-            userFactory.AppendMenu(menu);
+            if (settings->GetDisplayOption(wxT("Groups/group roles")))
+                groupFactory.AppendMenu(menu);
+            if (settings->GetDisplayOption(wxT("Users/login roles")))
+                userFactory.AppendMenu(menu);
         }
     }
     return menu;

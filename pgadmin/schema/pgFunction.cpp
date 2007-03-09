@@ -74,9 +74,10 @@ wxString pgFunction::GetSql(ctlTree *browser)
     if (sql.IsNull())
     {
         wxString qtName = GetQuotedFullIdentifier()  + wxT("(") + GetArgTypeNames() + wxT(")");
+        wxString qtSig = GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(")");
 
-        sql = wxT("-- Function: ") + GetQuotedFullIdentifier() + wxT("(") + GetArgTypeNames() + wxT(")\n\n")
-            + wxT("-- DROP FUNCTION ") + qtName + wxT(";")
+        sql = wxT("-- Function: ") + qtSig + wxT("\n\n")
+            + wxT("-- DROP FUNCTION ") + qtSig + wxT(";")
             + wxT("\n\nCREATE OR REPLACE FUNCTION ") + qtName;
 
         if (!GetIsProcedure())
@@ -112,12 +113,12 @@ wxString pgFunction::GetSql(ctlTree *browser)
         if (GetSecureDefiner())
             sql += wxT(" SECURITY DEFINER");
         sql += wxT(";\n")
-            +  GetOwnerSql(8, 0, wxT("FUNCTION ") + qtName)
-            +  GetGrant(wxT("X"), wxT("FUNCTION ") + qtName);
+            +  GetOwnerSql(8, 0, wxT("FUNCTION ") + qtSig)
+            +  GetGrant(wxT("X"), wxT("FUNCTION ") + qtSig);
 
         if (!GetComment().IsNull())
         {
-            sql += wxT("COMMENT ON FUNCTION ") + qtName
+            sql += wxT("COMMENT ON FUNCTION ") + qtSig
                 + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
         }
     }
@@ -172,25 +173,33 @@ wxString pgProcedure::GetSql(ctlTree *browser)
 
     if (sql.IsNull())
     {
-        wxString qtName = GetQuotedFullIdentifier() + wxT("(") + GetArgTypeNames() + wxT(")");
+        wxString qtName, qtSig;
 
-        sql = wxT("-- Procedure: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-            + wxT("-- DROP PROCEDURE") + GetQuotedFullIdentifier() + wxT(";")
-            + wxT("\n\nCREATE OR REPLACE ") + qtName;
-
-        if (GetReturnAsSet())
+        if (GetArgTypeNames().IsEmpty())
         {
-            sql += wxT("\n  RETURNS SETOF ");
-            sql +=GetReturnType();
+            qtName = GetQuotedFullIdentifier();
+            qtSig = GetQuotedFullIdentifier();
+        }
+        else
+        {
+            qtName = GetQuotedFullIdentifier() + wxT("(") + GetArgTypeNames() + wxT(")");
+            qtSig = GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(")");
         }
 
-        sql += wxT(" AS\n")
-            + qtDbStringDollar(GetSource())
-            + wxT(";\n");
+        sql = wxT("-- Procedure: ") + qtSig + wxT("\n\n")
+            + wxT("-- DROP PROCEDURE ") + qtSig + wxT(";")
+            + wxT("\n\nCREATE OR REPLACE PROCEDURE ") + qtName;
+
+
+        sql += wxT(" AS")
+            + GetSource()
+            + wxT("\n\n")
+            + GetOwnerSql(8, 0, wxT("FUNCTION ") + qtSig)
+            + GetGrant(wxT("X"), wxT("FUNCTION ") + qtSig);
 
         if (!GetComment().IsNull())
         {
-            sql += wxT("COMMENT ON FUNCTION ") + qtName
+            sql += wxT("COMMENT ON FUNCTION ") + qtSig
                 + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
         }
     }
@@ -246,17 +255,20 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
         {
             bool isProcedure=false;
             wxString lanname=functions->GetVal(wxT("lanname"));
-
+            wxString typname=functions->GetVal(wxT("typname"));
             wxString oids=functions->GetVal(wxT("proargtypes"));
             wxStringTokenizer args(oids);
             wxStringTokenizer modes(wxEmptyString);
 
             wxString argNames;
 
-            if (obj->GetConnection()->BackendMinimumVersion(7, 5))
+            if (obj->GetConnection()->EdbMinimumVersion(8, 0) && lanname == wxT("edbspl") && typname == wxT("void"))
+                isProcedure = true;
+
+            if (obj->GetConnection()->BackendMinimumVersion(8, 0))
                 argNames = functions->GetVal(wxT("proargnames"));
 
-            if (obj->GetConnection()->EdbMinimumVersion(8, 0) && !obj->GetConnection()->EdbMinimumVersion(8, 1) && isProcedure)
+            if (!obj->GetConnection()->EdbMinimumVersion(8, 1) && isProcedure)
             {
                 wxString argDirs=functions->GetVal(wxT("proargdirs"));
                 modes.SetString(argDirs);
@@ -269,15 +281,12 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
                 wxString argModes= functions->GetVal(wxT("proargmodes"));
                 if (!argModes.IsEmpty())
-                {
                     modes.SetString(argModes.Mid(1, argModes.Length()-2), wxT(","));
-                    isProcedure=true;
-                }
             }
 
             if (isProcedure)
                 function = new pgProcedure(schema, functions->GetVal(wxT("proname")));
-            else if (functions->GetVal(wxT("typname")).IsSameAs(wxT("\"trigger\"")))
+            else if (typname == wxT("\"trigger\""))
                 function = new pgTriggerFunction(schema, functions->GetVal(wxT("proname")));
             else
                 function = new pgFunction(schema, functions->GetVal(wxT("proname")));
@@ -307,22 +316,35 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                     if (mode == wxT('o') || mode == wxT("2"))
                         mode = wxT("OUT");
                     else if (mode == wxT("b"))
-                        mode = wxT("INOUT");
+                        if (isProcedure)
+                            mode = wxT("IN OUT");
+                        else
+                            mode = wxT("INOUT");
                     else if (mode == wxT("3"))
                         mode = wxT("IN OUT");
                     else
                         mode = wxT("IN");
 
                     function->iAddArgMode(mode);
-                    if (isProcedure)
-                        argTypes += mode + wxT(" ");
-                    argTypeNames += mode + wxT(" ");
+                    argTypes += mode + wxT(" ");
                 }
+
                 if (!name.IsNull())
                 {
                     function->iAddArgName(name);
-                    argTypeNames += qtIdent(name) + wxT(" ");
+                    if (isProcedure)
+                        if (mode.IsEmpty())
+                            argTypeNames += qtIdent(name) + wxT(" ");
+                        else
+                            argTypeNames += qtIdent(name) + wxT(" ") + mode + wxT(" ");
+                    else
+                        if (mode.IsEmpty())
+                            argTypeNames += qtIdent(name) + wxT(" ");
+                        else
+                            argTypeNames += mode + wxT(" ") + qtIdent(name) + wxT(" ");
                 }
+                else
+                    argTypeNames += mode + wxT(" ");
 
                 argTypeNames += map[type];
                 argTypes += map[type];
@@ -395,10 +417,8 @@ pgObject *pgFunctionFactory::CreateObjects(pgCollection *collection, ctlTree *br
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
         + wxT("::oid\n   AND typname <> 'trigger'\n");
 
-    if (collection->GetConnection()->BackendMinimumVersion(8, 1))
-        funcRestriction += wxT("   AND proargmodes IS NULL");
-    else if (collection->GetConnection()->EdbMinimumVersion(8, 0))
-        funcRestriction += wxT("   AND lanname <>'edbspl' AND typname <> 'void'\n");
+    if (collection->GetConnection()->EdbMinimumVersion(8, 0))
+        funcRestriction += wxT("   AND NOT (lanname = 'edbspl' AND typname = 'void')\n");
 
     // Get the Functions
     return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
@@ -422,9 +442,7 @@ pgObject *pgProcedureFactory::CreateObjects(pgCollection *collection, ctlTree *b
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
         + wxT("::oid\n");
 
-    if (collection->GetConnection()->BackendMinimumVersion(8, 1))
-        funcRestriction += wxT("   AND proargmodes IS NOT NULL");
-    else if (collection->GetConnection()->EdbMinimumVersion(8, 0))
+    if (collection->GetConnection()->EdbMinimumVersion(8, 0))
         funcRestriction += wxT("   AND lanname = 'edbspl' AND typname = 'void'\n");
 
     // Get the Functions

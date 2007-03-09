@@ -176,13 +176,15 @@ frmOptions::frmOptions(frmMain *parent)
 	lstDisplay->Append(_("Catalogs"));
 	lstDisplay->Append(_("Casts"));
 	lstDisplay->Append(_("Languages"));
+	lstDisplay->Append(_("Public synonyms"));
 	lstDisplay->Append(_("Schemas"));
-	lstDisplay->Append(_("Slony clusters"));
+	lstDisplay->Append(_("Slony-I clusters"));
 	lstDisplay->Append(_("Aggregates"));
 	lstDisplay->Append(_("Conversions"));
 	lstDisplay->Append(_("Domains"));
 	lstDisplay->Append(_("Functions"));
 	lstDisplay->Append(_("Trigger functions"));
+	lstDisplay->Append(_("Packages"));
 	lstDisplay->Append(_("Procedures"));
 	lstDisplay->Append(_("Operators"));
 	lstDisplay->Append(_("Operator classes"));

@@ -44,7 +44,7 @@ private:
     void OnRemoveArg(wxCommandEvent &ev);
 
     int GetDirection(const wxString &colName);
-    wxString GetArgs(bool withNames=true, bool quoted=false);
+    wxString GetArgs(const bool withNames = true);
     void ReplaceSizer(wxWindow *w, bool isC, int border);
 
 	virtual bool IsUpToDate();

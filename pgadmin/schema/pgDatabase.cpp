@@ -59,10 +59,16 @@ wxMenu *pgDatabase::GetNewMenu()
 
     if (GetCreatePrivilege())
     {
-        castFactory.AppendMenu(menu);
-        languageFactory.AppendMenu(menu);
-        schemaFactory.AppendMenu(menu);
-        slClusterFactory.AppendMenu(menu);
+        if (settings->GetDisplayOption(wxT("Casts")))
+            castFactory.AppendMenu(menu);
+        if (settings->GetDisplayOption(wxT("Languages")))
+            languageFactory.AppendMenu(menu);
+        if (settings->GetDisplayOption(wxT("Public synonyms")) && GetConnection()->EdbMinimumVersion(8, 0))
+                synonymFactory.AppendMenu(menu);
+        if (settings->GetDisplayOption(wxT("Schemas")))
+            schemaFactory.AppendMenu(menu);
+        if (settings->GetDisplayOption(wxT("Slony")))
+            slClusterFactory.AppendMenu(menu);
     }
     return menu;
 }
@@ -390,12 +396,12 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 				browser->AppendCollection(this, castFactory);
 			if (settings->GetDisplayOption(wxT("Languages")))
 				browser->AppendCollection(this, languageFactory);
+			if (settings->GetDisplayOption(wxT("Public synonyms")) && connection()->EdbMinimumVersion(8,0))
+				browser->AppendCollection(this, synonymFactory);
 			if (settings->GetDisplayOption(wxT("Schemas")))
 				browser->AppendCollection(this, schemaFactory);
 			if (settings->GetDisplayOption(wxT("Slony clusters")))
 				browser->AppendCollection(this, slClusterFactory);
-			if (settings->GetDisplayOption(wxT("Synonyms")) && connection()->EdbMinimumVersion(8,0))
-				browser->AppendCollection(this, synonymFactory);
             
             missingFKs = StrToLong(connection()->ExecuteScalar(
                 wxT("SELECT COUNT(*) FROM\n")

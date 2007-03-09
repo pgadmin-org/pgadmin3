@@ -140,7 +140,7 @@ pgObject *edbSynonymFactory::CreateObjects(pgCollection *collection, ctlTree *br
 #include "images/synonyms.xpm"
 
 edbSynonymFactory::edbSynonymFactory()
-: pgDatabaseObjFactory(__("Synonym"), __("New public synonym..."), __("Create a new public synonym."), synonym_xpm)
+: pgDatabaseObjFactory(__("Synonym"), __("New Public synonym..."), __("Create a new public synonym."), synonym_xpm)
 {
 }
 
