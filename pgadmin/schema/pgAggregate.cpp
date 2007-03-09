@@ -67,7 +67,7 @@ wxString pgAggregate::GetSql(ctlTree *browser)
 }
 
 
-wxString pgAggregate::GetFullName() const
+wxString pgAggregate::GetFullName()
 {
     return GetName() + wxT("(") + GetInputType() + wxT(")");
 }

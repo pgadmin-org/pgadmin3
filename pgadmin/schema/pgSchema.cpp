@@ -57,7 +57,7 @@ pgSchemaBase::~pgSchemaBase()
     wxLogInfo(wxT("Destroying a pgSchemaBase object"));
 }
 
-wxString pgCatalog::GetDisplayName() const
+wxString pgCatalog::GetDisplayName()
 {
 	if (GetFullName() == wxT("pg_catalog"))
 		return wxT("PostgreSQL (pg_catalog)");

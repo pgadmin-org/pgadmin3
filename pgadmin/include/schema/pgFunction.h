@@ -47,16 +47,17 @@ public:
 
     virtual bool GetIsProcedure() const {return false; }
 
-    wxString GetFullName() const {return GetName()+wxT("(")+GetArgTypes()+wxT(")"); }
-    wxString GetArgTypeNames() const { return argTypeNames; }
-    void iSetArgTypeNames(const wxString& s) { argTypeNames=s; }
-    wxString GetArgTypes() const { return argTypes; }
-    void iSetArgTypes(const wxString& s) { argTypes=s; }
+    wxString GetFullName();
+    wxString GetArgTypeNames();
+    wxString GetArgTypes();
     wxString GetArgTypeOids() const { return argTypeOids; }
-    wxArrayString &GetArgNames() { return argNames; }
-    void iAddArgName(const wxString &s) { argNames.Add(s); }
-    wxArrayString &GetArgModes() { return argModes; }
-    void iAddArgMode(const wxString &s) { argModes.Add(s); }
+    wxArrayString &GetArgNamesArray() { return argNamesArray; }
+    void iAddArgName(const wxString &s) { argNamesArray.Add(s); }
+    wxArrayString &GetArgTypesArray() { return argTypesArray; }
+    void iAddArgType(const wxString &s) { argTypesArray.Add(s); }
+    wxArrayString &GetArgModesArray() { return argModesArray; }
+    void iAddArgMode(const wxString &s) { argModesArray.Add(s); }
+
     void iSetArgTypeOids(const wxString& s) { argTypeOids = s; }
     wxString GetReturnType() const { return returnType; }
     void iSetReturnType(const wxString& s) { returnType = s; }
@@ -96,9 +97,9 @@ protected:
     pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxT(""));
 
 private:
-    wxString argTypeOids, argTypes, argTypeNames, returnType, language, volatility, source, bin;
-    wxArrayString argNames, argModes;
-    bool returnAsSet, secureDefiner, isStrict, isProcedure;
+    wxString argTypeOids, returnType, language, volatility, source, bin;
+    wxArrayString argNamesArray, argTypesArray, argModesArray;
+    bool returnAsSet, secureDefiner, isStrict;
     long argCount;
 };
 
@@ -134,9 +135,10 @@ class pgProcedure : public pgFunction
 {
 public:
     pgProcedure(pgSchema *newSchema, const wxString& newName = wxT(""));
+    wxString GetFullName();
     static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser);
 
-    bool GetIsProcedure() const {return true; }
+    bool GetIsProcedure() const { return true; }
 
     wxString GetSql(ctlTree *browser);
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);

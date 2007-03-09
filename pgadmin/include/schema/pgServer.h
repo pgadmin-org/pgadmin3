@@ -93,8 +93,8 @@ public:
 
     long GetServerIndex() const { return serverIndex; }
     void iSetServerIndex(long l) { serverIndex=l; }
-    wxString GetFullName() const;
-    wxString GetFullIdentifier() const;
+    wxString GetFullName();
+    wxString GetFullIdentifier();
     int GetPort() const { return port; }
     int GetSSL() const { return ssl; }
     bool GetConnected() const { return connected; }

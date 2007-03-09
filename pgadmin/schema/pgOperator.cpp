@@ -101,7 +101,7 @@ wxString pgOperator::GetOperands() const
 
     return sql;
 }
-wxString pgOperator::GetFullName() const
+wxString pgOperator::GetFullName()
 {
     if (leftType.IsEmpty() || rightType.IsEmpty())
         return GetName() + wxT(" (") + leftType + rightType + wxT(")");

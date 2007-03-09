@@ -33,7 +33,7 @@ public:
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
-    wxString GetFullName() const { return GetName() + wxT("(") + GetAccessMethod() + wxT(")"); }
+    wxString GetFullName() { return GetName() + wxT("(") + GetAccessMethod() + wxT(")"); }
         wxString GetAccessMethod() const { return accessMethod; }
     void iSetAccessMethod(const wxString&s) { accessMethod=s; }
 

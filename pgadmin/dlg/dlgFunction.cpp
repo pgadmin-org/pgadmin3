@@ -147,7 +147,7 @@ int dlgFunction::Go(bool modal)
         cbOwner->Disable();
 
     // the listview's column that contains the type name
-    typeColNo = (connection->BackendMinimumVersion(7, 5) ? 1 : 0);
+    typeColNo = (connection->BackendMinimumVersion(8, 0) ? 1 : 0);
 
     if (factory != &triggerFunctionFactory)
     {
@@ -192,44 +192,43 @@ int dlgFunction::Go(bool modal)
 
         if (factory != &triggerFunctionFactory)
         {
-			wxString args = function->GetArgTypes();
-            size_t cnt=0;
-			while (args.Len() > 0)
-			{
-				wxString str;
-				int ofs = args.Find(wxT(", "));
-				if (ofs == -1)
-				{
-					str = args;
-					args = wxT("");
-				}
-				else
-				{
-					str = args.Left(ofs);
-					args = args.Mid(ofs+2);
-				}
-                if (str.IsEmpty())
-                    continue;
+			wxArrayString argTypes = function->GetArgTypesArray();
+            wxArrayString argNames = function->GetArgNamesArray();
+            wxArrayString argModes = function->GetArgModesArray();
+
+            for (unsigned int i=0; i<argTypes.Count(); i++)
+            {
                 if (typeColNo)
                 {
-                    wxString colname;
-                    if (isProcedure && cnt < function->GetArgModes().GetCount())
-                    {
-                        colname = function->GetArgModes().Item(cnt) + wxT(" ");
+                    wxString arg;
 
-                        // Strip the IN/OUT/INOUT if required
-                        if (str.StartsWith(function->GetArgModes().Item(cnt) + wxT(" ")))
-                            str = str.Mid(function->GetArgModes().Item(cnt).Length() + 1);
+                    if (isProcedure)
+                    {
+                        if (!argNames.Item(i).IsEmpty())
+                            arg += argNames.Item(i);
+
+                        if (!argModes.Item(i).IsEmpty())
+                            if (arg.IsEmpty())
+                                arg += argModes.Item(i);
+                            else
+                                arg += wxT(" ") + argModes.Item(i);
+                    }
+                    else
+                    {
+                        if (!argModes.Item(i).IsEmpty())
+                            arg += argModes.Item(i);
+
+                        if (!argNames.Item(i).IsEmpty())
+                            if (arg.IsEmpty())
+                                arg += argNames.Item(i);
+                            else
+                                arg += wxT(" ") + argNames.Item(i);
                     }
 
-                    if (cnt < function->GetArgNames().GetCount())
-                        colname += function->GetArgNames().Item(cnt);
-
-                    lstArguments->AppendItem(-1, colname, str);
+                    lstArguments->AppendItem(-1, arg, argTypes.Item(i));
                 }
                 else
-                    lstArguments->AppendItem(-1, str);
-                cnt++;
+                    lstArguments->AppendItem(-1, argTypes.Item(i));
             }
         }
 
@@ -616,7 +615,8 @@ wxString dlgFunction::GetArgs(const bool withNames)
                     }
                 }
                 else
-                    args += qtIdent(colName) + wxT(" ");  
+                    if (!colName.IsEmpty())
+                        args += qtIdent(colName) + wxT(" ");  
             }
         }
 

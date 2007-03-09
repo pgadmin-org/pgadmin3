@@ -89,10 +89,10 @@ public:
     wxTreeItemId AppendBrowserItem(ctlTree *browser, pgObject *object);
     
     virtual wxString GetHelpPage(bool forCreate) const;
-    virtual wxString GetFullName() const { return name; }
+    virtual wxString GetFullName() { return name; }
     virtual wxString GetIdentifier() const { return name; }
     virtual wxString GetQuotedIdentifier() const { return qtIdent(name); }
-	virtual wxString GetDisplayName() const { return GetFullName(); };
+	virtual wxString GetDisplayName() { return GetFullName(); };
 
     virtual wxMenu *GetNewMenu();
 

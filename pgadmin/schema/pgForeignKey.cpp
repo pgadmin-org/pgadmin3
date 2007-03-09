@@ -91,7 +91,7 @@ wxString pgForeignKey::GetSql(ctlTree *browser)
 }
 
 
-wxString pgForeignKey::GetFullName() const
+wxString pgForeignKey::GetFullName()
 {
     return GetName() + wxT(" -> ") + GetReferences();
 }

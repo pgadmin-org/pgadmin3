@@ -94,7 +94,7 @@ class pgCatalog : public pgSchemaBase
 {
 public:
 	pgCatalog(const wxString& newName = wxT(""));
-	virtual wxString GetDisplayName() const;
+	virtual wxString GetDisplayName();
     bool CanCreate() { return false; }
     bool CanEdit() { return true; }
 };

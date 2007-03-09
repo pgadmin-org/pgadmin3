@@ -36,7 +36,7 @@ public:
     bool CanDropCascaded() { return true; }
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    wxString GetFullName() const;
+    wxString GetFullName();
     wxString GetInputType() const { return inputType; }
     void iSetInputType(const wxString& s) { inputType=s; }
     wxString GetStateType() { return stateType; }

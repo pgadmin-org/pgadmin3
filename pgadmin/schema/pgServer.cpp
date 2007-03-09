@@ -141,7 +141,7 @@ pgConn *pgServer::CreateConn(wxString dbName, OID oid)
 }
 
 
-wxString pgServer::GetFullName() const
+wxString pgServer::GetFullName()
 {
     if (GetDescription().Length() > 0)
       return GetDescription() + wxT(" (") + GetIdentifier() + wxT(")");
@@ -149,7 +149,7 @@ wxString pgServer::GetFullName() const
       return wxT("(") + GetIdentifier() + wxT(")");
 }
 
-wxString pgServer::GetFullIdentifier() const 
+wxString pgServer::GetFullIdentifier() 
 {
     return GetFullName();
 }

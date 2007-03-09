@@ -30,7 +30,7 @@ public:
     ~pgForeignKey();
     
     wxString GetDefinition();
-    wxString GetFullName() const;
+    wxString GetFullName();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 

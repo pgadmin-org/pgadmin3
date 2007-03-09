@@ -35,7 +35,7 @@ public:
     virtual wxString GetQuotedIdentifier() const { return GetName(); }
     bool CanDropCascaded() { return true; }
 
-    wxString GetFullName() const;
+    wxString GetFullName();
     wxString GetOperands() const;
     wxString GetLeftType() const { return leftType; }
     void iSetLeftType(const wxString& s) { leftType=s; }

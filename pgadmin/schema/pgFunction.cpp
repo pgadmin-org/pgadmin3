@@ -36,6 +36,16 @@ pgFunction::~pgFunction()
 {
 }
 
+pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newName)
+: pgFunction(newSchema, triggerFunctionFactory, newName)
+{
+}
+
+pgProcedure::pgProcedure(pgSchema *newSchema, const wxString& newName)
+: pgFunction(newSchema, procedureFactory, newName)
+{
+}
+
 bool pgFunction::IsUpToDate()
 {
     wxString sql = wxT("SELECT xmin FROM pg_proc WHERE oid = ") + this->GetOidStr();
@@ -53,19 +63,17 @@ bool pgFunction::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-pgFunction::pgFunction(pgSchema *newSchema, int newType, const wxString& newName)
-: pgSchemaObject(newSchema, newType, newName)
-{
+wxString pgFunction::GetFullName()
+{ 
+    return GetName() + wxT("(") + GetArgTypes() + wxT(")");
 }
 
-pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newName)
-: pgFunction(newSchema, triggerFunctionFactory, newName)
-{
-}
-
-pgProcedure::pgProcedure(pgSchema *newSchema, const wxString& newName)
-: pgFunction(newSchema, procedureFactory, newName)
-{
+wxString pgProcedure::GetFullName()
+{ 
+    if (GetArgTypes().IsEmpty())
+        return GetName();
+    else
+        return GetName() + wxT("(") + GetArgTypes() + wxT(")");
 }
 
 
@@ -217,8 +225,63 @@ bool pgProcedure::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
+wxString pgFunction::GetArgTypeNames()
+{
+    wxString args;
 
+    for (unsigned int i=0; i < argTypesArray.Count(); i++)
+    {
+        if (i > 0)
+            args += wxT(", ");
 
+        wxString arg;
+
+        if (GetIsProcedure())
+        {
+            if (!argNamesArray.Item(i).IsEmpty())
+                arg += qtIdent(argNamesArray.Item(i));
+
+            if (!argModesArray.Item(i).IsEmpty())
+                if (arg.IsEmpty())
+                    arg += argModesArray.Item(i);
+                else
+                    arg += wxT(" ") + argModesArray.Item(i);
+        }
+        else
+        {
+            if (!argModesArray.Item(i).IsEmpty())
+                arg += argModesArray.Item(i);
+
+            if (!argNamesArray.Item(i).IsEmpty())
+                if (arg.IsEmpty())
+                    arg += qtIdent(argNamesArray.Item(i));
+                else
+                    arg += wxT(" ") + qtIdent(argNamesArray.Item(i));
+        }
+
+        if (!arg.IsEmpty())
+            arg += wxT(" ") + argTypesArray.Item(i);
+        else
+            arg += argTypesArray.Item(i);
+
+        args += arg;
+    }
+    return args;
+}
+
+wxString pgFunction::GetArgTypes()
+{
+    wxString args;
+
+    for (unsigned int i=0; i < argTypesArray.Count(); i++)
+    {
+        if (i > 0)
+            args += wxT(", ");
+
+        args += argTypesArray.Item(i);
+    }
+    return args;
+}
 
 pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, ctlTree *browser, const wxString &restriction)
 {
@@ -292,7 +355,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 function = new pgFunction(schema, functions->GetVal(wxT("proname")));
 
 
-            wxString type, name, argTypes, argTypeNames, mode;
+            wxString type, name, mode;
             wxStringTokenizer names(argNames.Mid(1, argNames.Length()-2), wxT(","));
 
             
@@ -300,14 +363,10 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             {
                 type = args.GetNextToken();
 
-                if (!argTypes.IsNull())
-                {
-                    argTypes += wxT(", ");
-                    argTypeNames += wxT(", ");
-                }
                 name = names.GetNextToken();
                 if (name[0] == '"')
                     name = name.Mid(1, name.Length()-2);
+                function->iAddArgName(name);
 
                 mode = modes.GetNextToken();
                 
@@ -326,28 +385,11 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                         mode = wxT("IN");
 
                     function->iAddArgMode(mode);
-                    argTypes += mode + wxT(" ");
-                }
-
-                if (!name.IsNull())
-                {
-                    function->iAddArgName(name);
-                    if (isProcedure)
-                        if (mode.IsEmpty())
-                            argTypeNames += qtIdent(name) + wxT(" ");
-                        else
-                            argTypeNames += qtIdent(name) + wxT(" ") + mode + wxT(" ");
-                    else
-                        if (mode.IsEmpty())
-                            argTypeNames += qtIdent(name) + wxT(" ");
-                        else
-                            argTypeNames += mode + wxT(" ") + qtIdent(name) + wxT(" ");
                 }
                 else
-                    argTypeNames += mode + wxT(" ");
+                    function->iAddArgMode(wxEmptyString);
 
-                argTypeNames += map[type];
-                argTypes += map[type];
+                function->iAddArgType(map[type]);
             }
 
             function->iSetOid(functions->GetOid(wxT("oid")));
@@ -359,9 +401,6 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             function->iSetReturnType(functions->GetVal(wxT("typname")));
             function->iSetComment(functions->GetVal(wxT("description")));
             function->iSetArgTypeOids(oids);
-
-            function->iSetArgTypes(argTypes);
-            function->iSetArgTypeNames(argTypeNames);
 
             function->iSetLanguage(lanname);
             function->iSetSecureDefiner(functions->GetBool(wxT("prosecdef")));
@@ -440,10 +479,7 @@ pgObject *pgProcedureFactory::CreateObjects(pgCollection *collection, ctlTree *b
 {
     wxString funcRestriction=wxT(
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
-        + wxT("::oid\n");
-
-    if (collection->GetConnection()->EdbMinimumVersion(8, 0))
-        funcRestriction += wxT("   AND lanname = 'edbspl' AND typname = 'void'\n");
+        + wxT("::oid AND lanname = 'edbspl' AND typname = 'void'\n");
 
     // Get the Functions
     return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
