@@ -187,7 +187,12 @@ pgObject *pgTrigger::Refresh(ctlTree *browser, const wxTreeItemId item)
     pgObject *trigger=0;
     pgCollection *coll=browser->GetParentCollection(item);
     if (coll)
-        trigger = triggerFactory.CreateObjects(coll, 0, wxT("\n   AND t.oid=") + GetOidStr());
+    {
+        wxString restr = wxT("\n   AND t.tgname='") + GetName() + 
+                         wxT("' AND cl.oid=") + GetTable()->GetOidStr() + 
+                         wxT("::oid AND cl.relnamespace=") + GetSchema()->GetOidStr() + wxT("::oid");
+        trigger = triggerFactory.CreateObjects(coll, 0, restr);
+    }
 
     return trigger;
 }
