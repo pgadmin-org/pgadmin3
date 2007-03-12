@@ -27,7 +27,7 @@ wxString pgCatalogObject::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Catalog Object: \"") + GetName() + wxT("\"\n");
+        sql = wxT("-- Catalog Object: ") + GetQuotedIdentifier() + wxT("\n");
     }
     return sql;
 }
