@@ -468,7 +468,8 @@ pgObject *pgTriggerFunctionFactory::CreateObjects(pgCollection *collection, ctlT
 {
     wxString funcRestriction=wxT(
         " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid()) 
-        + wxT("::oid\n   AND typname = 'trigger'\n");
+        + wxT("::oid\n   AND typname = 'trigger'\n")
+        + wxT("   AND lanname != 'edbspl'\n");
 
     // Get the Functions
     return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
