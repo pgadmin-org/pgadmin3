@@ -104,8 +104,6 @@ bool wxUtfFile::Write(const wxString& str)
         return wxFile::Write(str, *m_conversion);
     else
         return wxFile::Write(str.c_str(), len*sizeof(wxChar)) == len*sizeof(wxChar);
-
-    return false;
 }
 
 
