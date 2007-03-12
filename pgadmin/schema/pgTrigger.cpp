@@ -75,18 +75,30 @@ void pgTrigger::SetDirty()
 
 wxString pgTrigger::GetSql(ctlTree *browser)
 {
-    if (sql.IsNull() && this->triggerFunction)
+    if (sql.IsNull() && (this->triggerFunction || GetLanguage() == wxT("edbspl")))
     {
         sql = wxT("-- Trigger: ") + GetName() + wxT(" on ") + GetQuotedFullTable() + wxT("\n\n")
             + wxT("-- DROP TRIGGER ") + qtIdent(GetName())
-            + wxT(" ON ") + GetQuotedFullTable() +wxT(";\n\nCREATE TRIGGER ") + qtIdent(GetName())
-            + wxT("\n  ") + GetFireWhen() 
+            + wxT(" ON ") + GetQuotedFullTable() +wxT(";\n\n");
+
+        if (GetLanguage() == wxT("edbspl"))
+            sql += wxT("CREATE OR REPLACE TRIGGER ") + qtIdent(GetName());
+        else
+            sql += wxT("CREATE TRIGGER ") + qtIdent(GetName());
+
+        sql += wxT("\n  ") + GetFireWhen() 
             + wxT(" ") + GetEvent()
             + wxT("\n  ON ") + GetQuotedFullTable()
-            + wxT("\n  FOR EACH ") + GetForEach()
-            + wxT("\n  EXECUTE PROCEDURE ") + triggerFunction->GetQuotedFullIdentifier() 
-            + wxT("(") + GetArguments() + wxT(")")
-            + wxT(";\n");
+            + wxT("\n  FOR EACH ") + GetForEach();
+        
+        if (GetLanguage() == wxT("edbspl"))
+            sql += GetSource();
+        else
+        {
+            sql += wxT("\n  EXECUTE PROCEDURE ") + triggerFunction->GetQuotedFullIdentifier() 
+                + wxT("(") + GetArguments() + wxT(")")
+                + wxT(";\n");
+        }
 
         if (!GetComment().IsEmpty())
             sql += wxT("COMMENT ON TRIGGER ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable()
@@ -132,7 +144,7 @@ wxString pgTrigger::GetForEach() const
 
 void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
-    if (!expandedKids)
+    if (!expandedKids && GetLanguage() != wxT("edbspl"))
     {
         if (browser)
         {
@@ -160,7 +172,8 @@ void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
         properties->AppendItem(_("Fires"), GetFireWhen());
         properties->AppendItem(_("Event"), GetEvent());
         properties->AppendItem(_("For each"), GetForEach());
-        properties->AppendItem(_("Function"), GetFunction() + wxT("(") + GetArguments() + wxT(")"));
+        if (GetLanguage() != wxT("edbspl"))
+            properties->AppendItem(_("Function"), GetFunction() + wxT("(") + GetArguments() + wxT(")"));
         properties->AppendItem(_("Enabled?"), GetEnabled());
         properties->AppendItem(_("System trigger?"), GetSystemObject());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
@@ -187,12 +200,14 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
     pgTrigger *trigger=0;
 
     wxString trig_sql;
-    trig_sql = wxT("SELECT t.oid, t.*, relname, nspname, des.description\n")
+    trig_sql = wxT("SELECT t.oid, t.*, relname, nspname, des.description, l.lanname, p.prosrc \n")
         wxT("  FROM pg_trigger t\n")
         wxT("  JOIN pg_class cl ON cl.oid=tgrelid\n")
         wxT("  JOIN pg_namespace na ON na.oid=relnamespace\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n")
-               wxT(" WHERE NOT tgisconstraint \n");
+        wxT("  LEFT OUTER JOIN pg_proc p ON p.oid=t.tgfoid\n")
+        wxT("  LEFT OUTER JOIN pg_language l ON l.oid=p.prolang\n")
+        wxT(" WHERE NOT tgisconstraint \n");
     if (restriction.IsEmpty())
         trig_sql += wxT(" AND tgrelid = ") + collection->GetOidStr() + wxT("\n");
     else
@@ -211,6 +226,8 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
             trigger->iSetFunctionOid(triggers->GetOid(wxT("tgfoid")));
             trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
             trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));
+            trigger->iSetLanguage(triggers->GetVal(wxT("lanname")));
+            trigger->iSetSource(triggers->GetVal(wxT("prosrc")));
             trigger->iSetQuotedFullTable(collection->GetDatabase()->GetQuotedSchemaPrefix(triggers->GetVal(wxT("nspname"))) + qtIdent(triggers->GetVal(wxT("relname"))));
             wxString arglist=triggers->GetVal(wxT("tgargs"));
             wxString args;

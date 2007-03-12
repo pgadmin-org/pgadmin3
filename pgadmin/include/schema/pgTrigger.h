@@ -42,6 +42,10 @@ public:
     void iSetFunction(const wxString& s) { function=s; }
     void iSetArguments(const wxString& s) { arguments=s; }
     wxString GetArguments() const { return arguments; }
+    wxString GetLanguage() const { return language; }
+    void iSetLanguage(const wxString& s) { language=s; }
+    wxString GetSource() const { return source; }
+    void iSetSource(const wxString& s) { source=s; }
     long GetTriggerType() const {return triggerType; }
     void iSetTriggerType(const long l) { triggerType=l; }
     bool GetEnabled() const { return enabled; }
@@ -63,7 +67,7 @@ public:
     bool HasReferences() { return true; }
 
 private:
-    wxString function, quotedFullTable, arguments;
+    wxString function, quotedFullTable, arguments, language, source;
     OID functionOid;
     long triggerType;
     bool enabled;
