@@ -1534,7 +1534,9 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
                     if (line < maxLine)
                     {
                         wasChanged=changed;
+                        sqlQuery->GotoPos(sPos);
                         sqlQuery->MarkerAdd(line, 0);
+
                         if (!wasChanged)
                         {
                             changed=false;
