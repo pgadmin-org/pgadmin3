@@ -29,7 +29,6 @@ class slListen : public slNodeObject
 {
 public:
     slListen(slNode *n, const wxString& newName = wxT(""));
-    ~slListen();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 

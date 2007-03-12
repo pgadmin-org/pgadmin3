@@ -47,8 +47,6 @@ END_EVENT_TABLE()
 
 frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(form, obj)
 {
-    wxLogInfo(wxT("Creating a maintenance dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
-
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(form, wxT("frmMaintenance"));
     RestorePosition();
@@ -59,9 +57,6 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
 
     // Icon
     SetIcon(wxIcon(vacuum_xpm));
-
-    // Bitmap
-//    stBitmap->SetBitmap(wxBitmap(vacuum_xpm));
 
     txtMessages->SetMaxLength(0L);
 
@@ -78,7 +73,6 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
 
 frmMaintenance::~frmMaintenance()
 {
-    wxLogInfo(wxT("Destroying a maintenance dialogue"));
     SavePosition();
     Abort();
 }

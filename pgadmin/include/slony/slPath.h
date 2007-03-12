@@ -30,7 +30,6 @@ class slPath : public slNodeObject
 {
 public:
     slPath(slNode *n, const wxString& newName = wxT(""));
-    ~slPath();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(slNodeCollection *coll, ctlTree *browser);

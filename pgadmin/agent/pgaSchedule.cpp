@@ -28,14 +28,7 @@
 pgaSchedule::pgaSchedule(pgCollection *_collection, const wxString& newName)
 : pgaJobObject(_collection->GetJob(), scheduleFactory, newName)
 {
-    wxLogInfo(wxT("Creating a pgaSchedule object"));
 }
-
-pgaSchedule::~pgaSchedule()
-{
-    wxLogInfo(wxT("Destroying a pgaSchedule object"));
-}
-
 
 bool pgaSchedule::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {

@@ -24,15 +24,7 @@
 pgUser::pgUser(const wxString& newName)
 : pgServerObject(userFactory, newName)
 {
-    wxLogInfo(wxT("Creating a pgUser object"));
 }
-
-pgUser::~pgUser()
-{
-    wxLogInfo(wxT("Destroying a pgUser object"));
-}
-
-
 
 bool pgUser::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {

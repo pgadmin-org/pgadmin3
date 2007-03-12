@@ -29,8 +29,6 @@ class pgUser : public pgServerObject
 {
 public:
     pgUser(const wxString& newName = wxT(""));
-    ~pgUser();
-
 
     // User Specific
     bool GetSystemObject() const { return userId < 100; }

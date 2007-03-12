@@ -20,7 +20,7 @@ class pgConstraintCollection : public pgTableObjCollection
 {
 public:
     pgConstraintCollection(pgaFactory *factory, pgTable *table);
-    ~pgConstraintCollection();
+
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
     bool CanCreate() { return false; }
     wxMenu *GetNewMenu();

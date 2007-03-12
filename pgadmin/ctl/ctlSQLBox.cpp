@@ -57,8 +57,6 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const 
 
 void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 {
-    wxLogInfo(wxT("Creating a ctlSQLBox"));
-
     wxStyledTextCtrl::Create(parent,id , pos, size, style);
 
     // Clear all styles
@@ -386,7 +384,6 @@ void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)
 
 ctlSQLBox::~ctlSQLBox()
 {
-    wxLogInfo(wxT("Destroying a ctlSQLBox"));
     if (m_dlgFindReplace)
     {
         m_dlgFindReplace->Destroy();

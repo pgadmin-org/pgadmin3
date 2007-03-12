@@ -33,9 +33,6 @@ END_EVENT_TABLE()
 frmSplash::frmSplash(wxFrame *parent)
 : wxFrame((wxFrame *)NULL, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 100), 0 | wxFRAME_SHAPED | wxSIMPLE_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP)
 {
-    
-    wxLogInfo(wxT("Creating a splash screen"));
-
     appearanceFactory->SetIcons(this);
     splash = appearanceFactory->GetSplashImage();
     
@@ -46,12 +43,6 @@ frmSplash::frmSplash(wxFrame *parent)
 #ifndef __WXGTK__
 	SetWindowShape();
 #endif
-}
-
-
-frmSplash::~frmSplash()
-{
-    wxLogInfo(wxT("Destroying a splash screen"));
 }
 
 void frmSplash::SetWindowShape()

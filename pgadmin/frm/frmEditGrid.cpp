@@ -84,7 +84,6 @@ END_EVENT_TABLE()
 frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, pgSchemaObject *obj)
 : pgFrame(NULL, _title)
 {
-    wxLogInfo(wxT("Creating EditGrid"));
     SetIcon(wxIcon(viewdata_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
     dlgName = wxT("frmEditGrid");
@@ -974,7 +973,6 @@ void frmEditGrid::Go()
 
 frmEditGrid::~frmEditGrid()
 {
-    wxLogInfo(wxT("Destroying SQL EditGrid"));
     mainForm->RemoveFrame(this);
 
     settings->Write(wxT("frmEditGrid/Perspective-") + VerFromRev(FRMEDITGRID_PERPSECTIVE_VER), manager.SavePerspective());

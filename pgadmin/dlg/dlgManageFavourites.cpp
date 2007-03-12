@@ -46,8 +46,6 @@ END_EVENT_TABLE()
 dlgManageFavourites::dlgManageFavourites(wxWindow *parent, queryFavouriteFolder *favourites) : 
 pgDialog()
 {
-    wxLogInfo(wxT("Creating a manage favourites dialogue"));
-
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(parent, wxT("dlgManageFavourites"));
     RestorePosition();
@@ -87,7 +85,6 @@ int dlgManageFavourites::ManageFavourites()
 
 dlgManageFavourites::~dlgManageFavourites()
 {
-    wxLogInfo(wxT("Destroying a manage favourites dialogue"));
     SavePosition();
 }
 

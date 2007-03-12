@@ -42,15 +42,8 @@ WX_DEFINE_OBJARRAY(RemoteConnArray);
 slCluster::slCluster(const wxString& newName)
 : pgDatabaseObject(slClusterFactory, newName)
 {
-    wxLogInfo(wxT("Creating a slCluster object"));
     localNode=0;
 }
-
-slCluster::~slCluster()
-{
-    wxLogInfo(wxT("Destroying a slCluster object"));
-}
-
 
 wxMenu *slCluster::GetNewMenu()
 {

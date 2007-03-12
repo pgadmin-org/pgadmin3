@@ -27,15 +27,8 @@
 slNode::slNode(slCluster *cl, const wxString& newName)
 : slObject(cl, nodeFactory, newName)
 {
-    wxLogInfo(wxT("Creating a slNode object"));
     pid = -1;
 }
-
-slNode::~slNode()
-{
-    wxLogInfo(wxT("Destroying a slNode object"));
-}
-
 
 int slNode::GetIconId()
 {

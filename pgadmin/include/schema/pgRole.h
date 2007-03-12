@@ -53,7 +53,6 @@ protected:
     pgRole(pgaFactory &factory, const wxString& newName = wxT(""));
 
 public:
-    ~pgRole();
     int GetIconId();
 
 

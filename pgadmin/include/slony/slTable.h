@@ -28,7 +28,6 @@ class slTable : public slSetObject
 {
 public:
     slTable(slSet *set, const wxString& newName = wxT(""));
-    ~slTable();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 

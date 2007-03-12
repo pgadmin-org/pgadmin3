@@ -25,15 +25,7 @@
 slSubscription::slSubscription(slSet *s, const wxString& newName)
 : slSetObject(s, subscriptionFactory, newName)
 {
-    wxLogInfo(wxT("Creating a slSubscription object"));
 }
-
-slSubscription::~slSubscription()
-{
-    wxLogInfo(wxT("Destroying a slSubscription object"));
-}
-
-
 
 int slSubscription::GetIconId()
 {

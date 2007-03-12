@@ -44,8 +44,6 @@ END_EVENT_TABLE()
 
 frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(form, obj)
 {
-    wxLogInfo(wxT("Creating a grant wizard dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
-
     nbNotebook = 0;
 
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -69,7 +67,6 @@ frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(f
 
 frmGrantWizard::~frmGrantWizard()
 {
-    wxLogInfo(wxT("Destroying a grant wizard dialogue"));
     SavePosition();
     Abort();
 }

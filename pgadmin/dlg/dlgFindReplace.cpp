@@ -45,8 +45,6 @@ END_EVENT_TABLE()
 dlgFindReplace::dlgFindReplace(ctlSQLBox *parent) :
 pgDialog()
 {
-    wxLogInfo(wxT("Creating a search & replace dialogue"));
-
     sqlbox = parent;
 
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -118,7 +116,6 @@ pgDialog()
 
 dlgFindReplace::~dlgFindReplace()
 {
-    wxLogInfo(wxT("Destroying a search & replace dialogue"));
     SavePosition();
 }
 

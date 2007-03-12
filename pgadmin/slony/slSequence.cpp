@@ -25,14 +25,7 @@
 slSequence::slSequence(slSet *s, const wxString& newName)
 : slSetObject(s, slSequenceFactory, newName)
 {
-    wxLogInfo(wxT("Creating a slSequence object"));
 }
-
-slSequence::~slSequence()
-{
-    wxLogInfo(wxT("Destroying a slSequence object"));
-}
-
 
 bool slSequence::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {

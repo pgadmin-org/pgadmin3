@@ -32,7 +32,6 @@ class pgaJob : public pgServerObject
 {
 public:
     pgaJob(const wxString& newName = wxT(""));
-    ~pgaJob();
 
     int GetIconId();
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);

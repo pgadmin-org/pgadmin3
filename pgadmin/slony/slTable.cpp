@@ -22,14 +22,7 @@
 slTable::slTable(slSet *s, const wxString& newName)
 : slSetObject(s, slTableFactory, newName)
 {
-    wxLogInfo(wxT("Creating a slTable object"));
 }
-
-slTable::~slTable()
-{
-    wxLogInfo(wxT("Destroying a slTable object"));
-}
-
 
 bool slTable::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {

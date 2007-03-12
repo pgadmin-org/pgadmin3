@@ -49,8 +49,6 @@ END_EVENT_TABLE()
 dlgPgpassConfig::dlgPgpassConfig(pgFrame *parent, pgPassConfigLine *_line) : 
 DialogWithHelp((frmMain*)parent)
 {
-    wxLogInfo(wxT("Creating a pgpass config dialogue"));
-
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource((wxWindow*)parent, wxT("dlgPgpassConfig"));
 
@@ -75,7 +73,6 @@ DialogWithHelp((frmMain*)parent)
 
 dlgPgpassConfig::~dlgPgpassConfig()
 {
-    wxLogInfo(wxT("Destroying a pgpass config dialogue"));
     SavePosition();
 }
 

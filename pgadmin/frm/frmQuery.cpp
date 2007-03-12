@@ -127,7 +127,6 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     SetIcon(wxIcon(sql_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
-    wxLogInfo(wxT("Creating SQL Query box"));
     menuBar = new wxMenuBar();
 
     fileMenu = new wxMenu();
@@ -364,8 +363,6 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
 frmQuery::~frmQuery()
 {
-    wxLogInfo(wxT("Destroying SQL Query box"));
-
     sqlQuery->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));

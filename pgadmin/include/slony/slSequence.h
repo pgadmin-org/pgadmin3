@@ -29,7 +29,6 @@ class slSequence : public slSetObject
 {
 public:
     slSequence(slSet *set, const wxString& newName = wxT(""));
-    ~slSequence();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 

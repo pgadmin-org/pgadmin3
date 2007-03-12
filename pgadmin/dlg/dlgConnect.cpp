@@ -39,8 +39,6 @@ END_EVENT_TABLE()
 dlgConnect::dlgConnect(frmMain *form, const wxString& description, bool storePwd) : 
 DialogWithHelp(form)
 {
-    wxLogInfo(wxT("Creating a connect dialogue"));
-
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource((wxWindow*)form, wxT("dlgConnect"));
 
@@ -58,7 +56,6 @@ DialogWithHelp(form)
 
 dlgConnect::~dlgConnect()
 {
-    wxLogInfo(wxT("Destroying a connect dialogue"));
     SavePosition();
 }
 

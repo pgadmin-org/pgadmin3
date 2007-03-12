@@ -35,8 +35,6 @@ END_EVENT_TABLE()
 
 frmPassword::frmPassword(wxFrame *parent, pgObject *obj)
 {
-    wxLogInfo(wxT("Creating a change password dialogue"));
-
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(parent, wxT("frmPassword")); 
     RestorePosition();
@@ -48,7 +46,6 @@ frmPassword::frmPassword(wxFrame *parent, pgObject *obj)
 
 frmPassword::~frmPassword()
 {
-    wxLogInfo(wxT("Destroying a change password dialogue"));
     SavePosition();
 }
 

@@ -25,14 +25,7 @@
 pgConstraintCollection::pgConstraintCollection(pgaFactory *factory, pgTable *table)
 : pgTableObjCollection(factory, table)
 { 
-    wxLogInfo(wxT("Creating a pgConstraintCollection object")); 
 }
-
-pgConstraintCollection::~pgConstraintCollection()
-{
-    wxLogInfo(wxT("Destroying a pgConstraintCollection object"));
-}
-
 
 wxMenu *pgConstraintCollection::GetNewMenu()
 {

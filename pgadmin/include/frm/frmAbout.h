@@ -17,7 +17,7 @@ class frmAbout : public wxFrame
 {
 public:
     frmAbout(wxFrame *parent);
-    ~frmAbout();
+
     void OnPaint(wxPaintEvent&);
     
 private:

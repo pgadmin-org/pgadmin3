@@ -28,8 +28,6 @@
 pgDatabase::pgDatabase(const wxString& newName)
 : pgServerObject(databaseFactory, newName)
 {
-    wxLogInfo(wxT("Creating a pgDatabase object"));
-
     allowConnections = true;
     connected = false;
     conn = NULL;
@@ -39,7 +37,6 @@ pgDatabase::pgDatabase(const wxString& newName)
 
 pgDatabase::~pgDatabase()
 {
-    wxLogInfo(wxT("Destroying a pgDatabase object"));
     Disconnect();
 }
 

@@ -29,14 +29,7 @@
 slSet::slSet(slCluster *cl, const wxString& newName)
 : slObject(cl, setFactory, newName)
 {
-    wxLogInfo(wxT("Creating a slSet object"));
 }
-
-slSet::~slSet()
-{
-    wxLogInfo(wxT("Destroying a slSet object"));
-}
-
 
 int slSet::GetIconId()
 {

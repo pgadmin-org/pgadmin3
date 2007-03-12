@@ -38,24 +38,16 @@
 pgSchema::pgSchema(const wxString& newName)
 : pgSchemaBase(schemaFactory, newName)
 {
-    wxLogInfo(wxT("Creating a pgSchema object"));
 }
 
 pgCatalog::pgCatalog(const wxString& newName)
 : pgSchemaBase(catalogFactory, newName)
 {
-    wxLogInfo(wxT("Creating a pgCatalog object"));
 }
 
 pgSchemaBase::pgSchemaBase(pgaFactory &factory, const wxString& newName)
 : pgDatabaseObject(factory, newName)
 {
-    wxLogInfo(wxT("Creating a pgSchemaBase object"));
-}
-
-pgSchemaBase::~pgSchemaBase()
-{
-    wxLogInfo(wxT("Destroying a pgSchemaBase object"));
 }
 
 wxString pgCatalog::GetDisplayName()

@@ -30,8 +30,6 @@ class pgGroup : public pgServerObject
 {
 public:
     pgGroup(const wxString& newName = wxT(""));
-    ~pgGroup();
-
 
     // Group Specific
     long GetGroupId() const { return groupId; }

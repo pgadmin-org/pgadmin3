@@ -53,7 +53,6 @@ class pgSchemaBase : public pgDatabaseObject
 {
 public:
     pgSchemaBase(pgaFactory &factory, const wxString& newName = wxT(""));
-    ~pgSchemaBase();
 
     wxString GetPrefix() const { return database->GetSchemaPrefix(GetName()); }
     wxString GetQuotedPrefix() const { return database->GetQuotedSchemaPrefix(GetName()); }
@@ -114,12 +113,9 @@ class pgSchemaObject : public pgDatabaseObject
 {
 public:
     pgSchemaObject(pgSchema *newSchema, pgaFactory &factory, const wxString& newName=wxEmptyString) : pgDatabaseObject(factory, newName) 
-        { SetSchema(newSchema); wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
+        { SetSchema(newSchema); }
     pgSchemaObject(pgSchema *newSchema, int newType, const wxString& newName = wxT("")) : pgDatabaseObject(newType, newName)
-        { SetSchema(newSchema); wxLogInfo(wxT("Creating a pg") + GetTypeName() + wxT(" object")); }
-
-    ~pgSchemaObject()
-        { wxLogInfo(wxT("Destroying a pg") + GetTypeName() + wxT(" object")); }
+        { SetSchema(newSchema); }
 
     bool GetSystemObject() const;
 

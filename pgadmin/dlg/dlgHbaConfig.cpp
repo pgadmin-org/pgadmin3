@@ -55,8 +55,6 @@ END_EVENT_TABLE()
 dlgHbaConfig::dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *_line, pgConn *conn) : 
 DialogWithHelp((frmMain*)parent)
 {
-    wxLogInfo(wxT("Creating a hba config dialogue"));
-
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource((wxWindow*)parent, wxT("dlgHbaConfig"));
 
@@ -140,7 +138,6 @@ DialogWithHelp((frmMain*)parent)
 
 dlgHbaConfig::~dlgHbaConfig()
 {
-    wxLogInfo(wxT("Destroying a hba config dialogue"));
     SavePosition();
 }
 

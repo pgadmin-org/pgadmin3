@@ -77,7 +77,6 @@ void ChangeButtonId(wxButton *btn, int id, const wxChar *txt)
 
 frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 {
-    wxLogInfo(wxT("Creating server status box"));
 	loaded = false;
     xactPage=2;
     logPage=3;
@@ -215,7 +214,6 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 
 frmStatus::~frmStatus()
 {
-    wxLogInfo(wxT("Destroying server status box"));
     mainForm->RemoveFrame(this);
 
     SavePosition();

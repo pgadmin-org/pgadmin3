@@ -33,7 +33,6 @@ class slSet : public slObject
 {
 public:
     slSet(slCluster *_cluster, const wxString& newName = wxT(""));
-    ~slSet();
 
     int GetIconId();
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);

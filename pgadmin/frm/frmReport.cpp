@@ -81,8 +81,6 @@ frmReport::frmReport(wxWindow *p)
     parent = p;
     header = wxT("");
 
-    wxLogInfo(wxT("Creating the report dialogue"));
-
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(p, wxT("frmReport"));
 
@@ -176,7 +174,6 @@ frmReport::frmReport(wxWindow *p)
 
 frmReport::~frmReport()
 {
-    wxLogInfo(wxT("Destroying the report dialogue"));
     SavePosition();
 }
 

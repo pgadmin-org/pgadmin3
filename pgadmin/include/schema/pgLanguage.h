@@ -28,7 +28,6 @@ class pgLanguage : public pgDatabaseObject
 {
 public:
     pgLanguage(const wxString& newName = wxT(""));
-    ~pgLanguage();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return true; }

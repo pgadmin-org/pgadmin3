@@ -29,7 +29,6 @@ pgSet::pgSet(PGresult *newRes, pgConn *newConn, wxMBConv &cnv, bool needColQt)
 {
     needColQuoting = needColQt;
 
-    wxLogInfo(wxT("Creating pgSet object"));
     conn = newConn;
     res = newRes;
 
@@ -58,7 +57,6 @@ pgSet::pgSet(PGresult *newRes, pgConn *newConn, wxMBConv &cnv, bool needColQt)
 
 pgSet::~pgSet()
 {
-    wxLogInfo(wxT("Destroying pgSet object"));
     PQclear(res);
 }
 

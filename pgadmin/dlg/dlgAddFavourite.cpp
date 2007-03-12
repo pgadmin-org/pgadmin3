@@ -42,8 +42,6 @@ END_EVENT_TABLE()
 dlgAddFavourite::dlgAddFavourite(wxWindow *parent, queryFavouriteFolder *favourites) : 
 pgDialog()
 {
-    wxLogInfo(wxT("Creating an add favourite dialogue"));
-
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(parent, wxT("dlgAddFavourite"));
     RestorePosition();
@@ -84,7 +82,6 @@ bool dlgAddFavourite::AddFavourite(wxString newtext)
 
 dlgAddFavourite::~dlgAddFavourite()
 {
-    wxLogInfo(wxT("Destroying an add favourite dialogue"));
     SavePosition();
 }
 

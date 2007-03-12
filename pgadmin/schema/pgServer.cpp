@@ -37,8 +37,6 @@
 pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, bool _restore, int _ssl)
 : pgObject(serverFactory, newName)
 {  
-    wxLogInfo(wxT("Creating a pgServer object"));
-
 	description = newDescription;
     database = newDatabase;
     username = newUsername;
@@ -72,7 +70,6 @@ pgServer::~pgServer()
     if (scmHandle)
         CloseServiceHandle(scmHandle);
 #endif
-    wxLogInfo(wxT("Destroying a pgServer object"));
 }
 
 

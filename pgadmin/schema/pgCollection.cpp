@@ -25,19 +25,11 @@
 pgCollection::pgCollection(pgaFactory *factory)
 : pgObject(*factory)
 { 
-    wxLogInfo(wxT("Creating a pgCollection object")); 
 	job=0;
     schema=0;
     database=0;
     server= 0;
 }
-
-
-pgCollection::~pgCollection()
-{
-    wxLogInfo(wxT("Destroying a pgCollection object"));
-}
-
 
 bool pgCollection::IsCollectionFor(pgObject *obj)
 {

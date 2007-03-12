@@ -21,12 +21,6 @@
 pgLanguage::pgLanguage(const wxString& newName)
 : pgDatabaseObject(languageFactory, newName)
 {
-    wxLogInfo(wxT("Creating a pgLanguage object"));
-}
-
-pgLanguage::~pgLanguage()
-{
-    wxLogInfo(wxT("Destroying a pgLanguage object"));
 }
 
 bool pgLanguage::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)

@@ -25,14 +25,7 @@
 slListen::slListen(slNode *n, const wxString& newName)
 : slNodeObject(n, listenFactory, newName)
 {
-    wxLogInfo(wxT("Creating a slListen object"));
 }
-
-slListen::~slListen()
-{
-    wxLogInfo(wxT("Destroying a slListen object"));
-}
-
 
 bool slListen::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {

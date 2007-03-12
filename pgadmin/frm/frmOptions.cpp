@@ -89,7 +89,6 @@ END_EVENT_TABLE()
 
 frmOptions::frmOptions(frmMain *parent)
 {
-    wxLogInfo(wxT("Creating an options dialogue"));
     mainForm=parent;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(parent, wxT("frmOptions")); 
@@ -202,7 +201,6 @@ frmOptions::frmOptions(frmMain *parent)
 
 frmOptions::~frmOptions()
 {
-    wxLogInfo(wxT("Destroying an options dialogue"));
     SavePosition();
 }
 

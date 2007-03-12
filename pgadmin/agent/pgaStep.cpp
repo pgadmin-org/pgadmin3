@@ -26,12 +26,6 @@ extern sysSettings *settings;
 pgaStep::pgaStep(pgCollection *_collection, const wxString& newName)
 : pgaJobObject(_collection->GetJob(), stepFactory, newName)
 {
-    wxLogInfo(wxT("Creating a pgaStep object"));
-}
-
-pgaStep::~pgaStep()
-{
-    wxLogInfo(wxT("Destroying a pgaStep object"));
 }
 
 bool pgaStep::IsUpToDate()

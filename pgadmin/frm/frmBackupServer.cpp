@@ -44,7 +44,6 @@ END_EVENT_TABLE()
 frmBackupServer::frmBackupServer(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 {
     object=obj;
-    wxLogInfo(wxT("Creating a backup server dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(form, wxT("frmBackupServer"));
@@ -73,7 +72,6 @@ frmBackupServer::frmBackupServer(frmMain *form, pgObject *obj) : ExternProcessDi
 
 frmBackupServer::~frmBackupServer()
 {
-    wxLogInfo(wxT("Destroying a backup server dialogue"));
     SavePosition();
 }
 

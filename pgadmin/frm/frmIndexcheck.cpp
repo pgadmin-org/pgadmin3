@@ -40,8 +40,6 @@ END_EVENT_TABLE()
 
 frmIndexcheck::frmIndexcheck(frmMain *form, pgObject *obj) : ExecutionDialog(form, obj)
 {
-    wxLogInfo(wxT("Creating a Index Check dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
-
     nbNotebook = 0;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(form, wxT("frmIndexCheck"));
@@ -66,7 +64,6 @@ frmIndexcheck::frmIndexcheck(frmMain *form, pgObject *obj) : ExecutionDialog(for
 
 frmIndexcheck::~frmIndexcheck()
 {
-    wxLogInfo(wxT("Destroying a Index Check dialogue"));
     SavePosition();
     Abort();
 }

@@ -75,8 +75,6 @@ static const wxChar* sourceStrings[]=
 dlgMainConfig::dlgMainConfig(pgFrame *parent, pgSettingItem *_item) : 
 DialogWithHelp((frmMain*)parent)
 {
-    wxLogInfo(wxT("Creating a main config dialogue"));
-
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource((wxWindow*)parent, wxT("dlgMainConfig"));
 
@@ -135,7 +133,6 @@ DialogWithHelp((frmMain*)parent)
 
 dlgMainConfig::~dlgMainConfig()
 {
-    wxLogInfo(wxT("Destroying a main config dialogue"));
     SavePosition();
 }
 

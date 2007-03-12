@@ -28,14 +28,7 @@ extern sysSettings *settings;
 pgaJob::pgaJob(const wxString& newName)
 : pgServerObject(jobFactory, newName)
 {
-    wxLogInfo(wxT("Creating a pgaJob object"));
 }
-
-pgaJob::~pgaJob()
-{
-    wxLogInfo(wxT("Destroying a pgaJob object"));
-}
-
 
 int pgaJob::GetIconId()
 {

@@ -25,14 +25,7 @@
 slPath::slPath(slNode *n, const wxString& newName)
 : slNodeObject(n, pathFactory, newName)
 {
-    wxLogInfo(wxT("Creating a slPath object"));
 }
-
-slPath::~slPath()
-{
-    wxLogInfo(wxT("Destroying a slPath object"));
-}
-
 
 bool slPath::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {

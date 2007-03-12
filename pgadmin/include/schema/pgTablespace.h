@@ -30,7 +30,6 @@ class pgTablespace : public pgServerObject
 {
 public:
     pgTablespace(const wxString& newName = wxT(""));
-    ~pgTablespace();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);

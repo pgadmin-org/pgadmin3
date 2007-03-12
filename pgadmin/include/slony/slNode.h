@@ -35,7 +35,7 @@ class slNode : public slObject
 {
 public:
     slNode(slCluster *_cluster, const wxString& newName = wxT(""));
-    ~slNode();
+
     int GetIconId();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);

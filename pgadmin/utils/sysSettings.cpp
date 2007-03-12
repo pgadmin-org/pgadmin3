@@ -216,8 +216,6 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 
 sysSettings::~sysSettings()
 {
-    wxLogInfo(wxT("Destroying sysSettings object and saving settings"));
-    // frMain size/position
 	Save();
 }
 

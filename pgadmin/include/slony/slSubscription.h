@@ -33,7 +33,6 @@ class slSubscription : public slSetObject
 {
 public:
     slSubscription(slSet *set, const wxString& newName = wxT(""));
-    ~slSubscription();
 
     int GetIconId();
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);

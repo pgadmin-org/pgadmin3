@@ -30,7 +30,6 @@ class pgaStep : public pgaJobObject
 {
 public:
     pgaStep(pgCollection *collection, const wxString& newName = wxT(""));
-    ~pgaStep();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 	void ShowStatistics(frmMain *form, ctlListView *statistics);

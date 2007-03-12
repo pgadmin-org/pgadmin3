@@ -36,7 +36,6 @@ class slCluster : public pgDatabaseObject
 {
 public:
     slCluster(const wxString& newName = wxT(""));
-    ~slCluster();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *coll, ctlTree *browser);

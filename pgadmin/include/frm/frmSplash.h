@@ -17,7 +17,6 @@ class frmSplash : public wxFrame
 {
 public:
     frmSplash(wxFrame *parent);
-    ~frmSplash();
     void OnPaint(wxPaintEvent&);
     
 private:

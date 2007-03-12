@@ -37,12 +37,6 @@ pgGroupRole::pgGroupRole(const wxString& newName)
 pgRole::pgRole(pgaFactory &factory, const wxString& newName)
 : pgServerObject(factory, newName)
 {
-    wxLogInfo(wxT("Creating a pgRole object"));
-}
-
-pgRole::~pgRole()
-{
-    wxLogInfo(wxT("Destroying a pgRole object"));
 }
 
 

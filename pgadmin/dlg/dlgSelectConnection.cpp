@@ -41,9 +41,7 @@ END_EVENT_TABLE()
 dlgSelectConnection::dlgSelectConnection(wxWindow *parent, frmMain *form) : 
 DialogWithHelp(form)
 {
-    wxLogInfo(wxT("Creating a select connection dialogue"));
-
-	remoteServer = NULL;
+ 	remoteServer = NULL;
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(parent, wxT("dlgSelectConnection"));
@@ -72,7 +70,6 @@ DialogWithHelp(form)
 
 dlgSelectConnection::~dlgSelectConnection()
 {
-    wxLogInfo(wxT("Destroying a select connection dialogue"));
     SavePosition();
 }
 

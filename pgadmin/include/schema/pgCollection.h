@@ -26,7 +26,7 @@ class pgCollection : public pgObject
 {
 public:
     pgCollection(pgaFactory *factory);
-    ~pgCollection();
+
     virtual bool IsCollection() const { return true; }
     bool IsCollectionForType(const int type);
     bool IsCollectionFor(pgObject *obj);

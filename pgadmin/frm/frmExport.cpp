@@ -49,7 +49,6 @@ END_EVENT_TABLE()
 frmExport::frmExport(wxWindow *p)
 {
     parent=p;
-    wxLogInfo(wxT("Creating the export dialogue"));
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(p, wxT("frmExport"));
@@ -91,7 +90,6 @@ frmExport::frmExport(wxWindow *p)
 
 frmExport::~frmExport()
 {
-    wxLogInfo(wxT("Destroying the export dialogue"));
     SavePosition();
 }
 

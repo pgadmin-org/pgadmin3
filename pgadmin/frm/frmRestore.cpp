@@ -71,7 +71,6 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
         server=object->GetDatabase()->GetServer();
 
     form=_form;
-    wxLogInfo(wxT("Creating a restore dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(_form, wxT("frmRestore"));
@@ -119,7 +118,6 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 
 frmRestore::~frmRestore()
 {
-    wxLogInfo(wxT("Destroying a restore dialogue"));
     SavePosition();
 }
 

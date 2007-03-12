@@ -44,7 +44,6 @@ END_EVENT_TABLE()
 frmBackupGlobals::frmBackupGlobals(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 {
     object=obj;
-    wxLogInfo(wxT("Creating a backup globals dialogue for %s %s"), object->GetTypeName().c_str(), object->GetFullName().c_str());
 
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(form, wxT("frmBackupGlobals"));
@@ -81,7 +80,6 @@ frmBackupGlobals::frmBackupGlobals(frmMain *form, pgObject *obj) : ExternProcess
 
 frmBackupGlobals::~frmBackupGlobals()
 {
-    wxLogInfo(wxT("Destroying a backup globals dialogue"));
     SavePosition();
 }
 

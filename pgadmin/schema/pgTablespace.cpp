@@ -25,14 +25,7 @@
 pgTablespace::pgTablespace(const wxString& newName)
 : pgServerObject(tablespaceFactory, newName)
 {
-    wxLogInfo(wxT("Creating a pgTablespace object"));
 }
-
-pgTablespace::~pgTablespace()
-{
-    wxLogInfo(wxT("Destroying a pgTablespace object"));
-}
-
 
 void pgTablespace::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where)
 {

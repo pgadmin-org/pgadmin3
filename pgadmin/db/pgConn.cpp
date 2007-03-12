@@ -51,7 +51,6 @@ static void pgNoticeProcessor(void *arg, const char *message)
 
 pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, OID oid)
 {
-    wxLogInfo(wxT("Creating pgConn object"));
     wxString msg, hostip, hostname;
 
 	save_server = server;
@@ -239,7 +238,6 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 
 pgConn::~pgConn()
 {
-    wxLogInfo(wxT("Destroying pgConn object"));
     Close();
 }
 

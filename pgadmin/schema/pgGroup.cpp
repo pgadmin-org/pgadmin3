@@ -21,13 +21,7 @@
 pgGroup::pgGroup(const wxString& newName)
 : pgServerObject(groupFactory, newName)
 {
-    wxLogInfo(wxT("Creating a pgGroup object"));
     memberCount=0;
-}
-
-pgGroup::~pgGroup()
-{
-    wxLogInfo(wxT("Destroying a pgGroup object"));
 }
 
 bool pgGroup::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
