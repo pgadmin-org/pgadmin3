@@ -16,7 +16,7 @@
 #include "wsDirectdbg.h"
 #include "debugger.h"
 
-#include "images/appIcon.xpm"
+#include "images/pgAdmin3.xpm"
 
 #include "debuggerMenu.h"
 
