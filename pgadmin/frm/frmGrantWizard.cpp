@@ -300,7 +300,7 @@ bool grantWizardFactory::CheckEnable(pgObject *obj)
             case PGM_FUNCTION:
             case PGM_SEQUENCE:
             case PGM_VIEW:
-                return true;
+                return obj->CanEdit();
             default:
                 break;
         }

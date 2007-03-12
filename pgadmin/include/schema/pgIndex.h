@@ -26,7 +26,7 @@ protected:
 public:
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
-    bool CanDropCascaded() { return true; }
+    bool CanDropCascaded() { return GetSchema()->GetMetaType() != PGM_CATALOG; }
 
     wxString GetProcArgs() const { return procArgs; }
     wxString GetQuotedTypedColumns() const { return quotedTypedColumns; }

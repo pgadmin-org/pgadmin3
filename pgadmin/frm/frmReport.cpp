@@ -577,6 +577,12 @@ wxString frmReport::GetDefaultXsl(const wxString &css)
     data += wxT(": </b><xsl:value-of select=\"header/database\" /><br />\n")
             wxT("    </xsl:if>\n")
             wxT("\n")
+            wxT("    <xsl:if test=\"header/catalog != ''\">\n")
+            wxT("      <b>");
+    data +=   _("Catalog");
+    data += wxT(": </b><xsl:value-of select=\"header/catalog\" /><br />\n")
+            wxT("    </xsl:if>\n")
+            wxT("\n")
             wxT("    <xsl:if test=\"header/schema != ''\">\n")
             wxT("      <b>");
     data +=   _("Schema");
@@ -1136,7 +1142,12 @@ wxWindow *reportBaseFactory::StartDialog(frmMain *form, pgObject *obj)
     if (obj->GetDatabase())
         report->XmlAddHeaderValue(wxT("database"), obj->GetDatabase()->GetName());
     if (obj->GetSchema())
-        report->XmlAddHeaderValue(wxT("schema"), obj->GetSchema()->GetName());
+    {
+        if (obj->GetSchema()->GetMetaType() == PGM_CATALOG)
+            report->XmlAddHeaderValue(wxT("catalog"), obj->GetSchema()->GetDisplayName());
+        else
+            report->XmlAddHeaderValue(wxT("schema"), obj->GetSchema()->GetName());
+    }
     if (obj->GetJob())
         report->XmlAddHeaderValue(wxT("job"), obj->GetJob()->GetName());
     if (obj->GetTable())
@@ -1199,7 +1210,7 @@ bool reportObjectDdlFactory::CheckEnable(pgObject *obj)
 {
     if (obj)
     {
-        if (obj->GetMetaType() == PGM_SERVER || obj->IsCollection())
+        if (obj->GetMetaType() == PGM_SERVER || obj->GetMetaType() == PGM_CATALOGOBJECT || obj->IsCollection())
             return false;
         else
             return true;

@@ -330,6 +330,7 @@ void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
 	else if (objtype == _("Domains")) engtype = wxT("Domains");
 	else if (objtype == _("Functions")) engtype = wxT("Functions");
 	else if (objtype == _("Trigger functions")) engtype = wxT("Trigger functions");
+    else if (objtype == _("Packages")) engtype = wxT("Packages");
 	else if (objtype == _("Procedures")) engtype = wxT("Procedures");
 	else if (objtype == _("Operators")) engtype = wxT("Operators");
 	else if (objtype == _("Operator classes")) engtype = wxT("Operator classes");

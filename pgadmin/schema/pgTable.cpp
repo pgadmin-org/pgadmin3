@@ -973,7 +973,7 @@ wxWindow *disableAllTriggersFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool disableAllTriggersFactory::CheckEnable(pgObject *obj)
 {
-    return obj && obj->IsCreatedBy(tableFactory)
+    return obj && obj->IsCreatedBy(tableFactory) && obj->CanEdit()
                && (obj->GetOwner() == obj->GetConnection()->GetUser() || obj->GetServer()->GetSuperUser())
                && ((pgTable*)obj)->GetConnection()->BackendMinimumVersion(8, 1);
 }
@@ -1000,7 +1000,7 @@ wxWindow *enableAllTriggersFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool enableAllTriggersFactory::CheckEnable(pgObject *obj)
 {
-    return obj && obj->IsCreatedBy(tableFactory)
+    return obj && obj->IsCreatedBy(tableFactory) && obj->CanEdit()
                && (obj->GetOwner() == obj->GetConnection()->GetUser() || obj->GetServer()->GetSuperUser())
                && ((pgTable*)obj)->GetConnection()->BackendMinimumVersion(8, 1);
 }

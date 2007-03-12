@@ -22,6 +22,9 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/catalog.xpm \
 	$(srcdir)/include/images/catalog-sm.xpm \
 	$(srcdir)/include/images/catalogs.xpm \
+	$(srcdir)/include/images/catalogobject.xpm \
+	$(srcdir)/include/images/catalogobject-sm.xpm \
+	$(srcdir)/include/images/catalogobjects.xpm \
 	$(srcdir)/include/images/check.xpm \
 	$(srcdir)/include/images/checked.xpm \
 	$(srcdir)/include/images/clip_copy.xpm \

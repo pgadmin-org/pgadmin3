@@ -32,6 +32,7 @@
 #include "frm/frmEditGrid.h"
 #include "dlg/dlgEditGridOptions.h"
 #include "frm/frmHint.h"
+#include "schema/pgCatalogObject.h"
 #include "schema/pgTable.h"
 #include "schema/pgView.h"
 
@@ -245,13 +246,21 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
         if (!orderBy.IsEmpty())
             orderBy += wxT(" ASC");
     }
-    else if (obj->IsCreatedBy(viewFactory))
+    else if (obj->GetMetaType() == PGM_VIEW)
     {
         pgView *view=(pgView*)obj;
 
         relkind = 'v';
         hasOids=false;
         tableName=view->GetQuotedFullIdentifier();
+    }
+    else if (obj->GetMetaType() == PGM_CATALOGOBJECT)
+    {
+        pgCatalogObject *catobj=(pgCatalogObject*)obj;
+
+        relkind = 'v';
+        hasOids=false;
+        tableName=catobj->GetQuotedFullIdentifier();
     }
 }
 
@@ -2614,7 +2623,7 @@ bool editGridFactoryBase::CheckEnable(pgObject *obj)
     if (obj)
     {
         pgaFactory *factory=obj->GetFactory();
-        return factory == &tableFactory || factory == &viewFactory;
+        return factory == &tableFactory || factory == &viewFactory || factory == &catalogObjectFactory;
     }
     return false;
 }

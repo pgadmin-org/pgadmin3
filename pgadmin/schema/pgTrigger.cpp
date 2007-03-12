@@ -291,7 +291,7 @@ wxWindow *enabledisableTriggerFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool enabledisableTriggerFactory::CheckEnable(pgObject *obj)
 {
-    return obj && obj->IsCreatedBy(triggerFactory)
+    return obj && obj->IsCreatedBy(triggerFactory) && obj->CanEdit()
                && ((pgTrigger*)obj)->GetConnection()->BackendMinimumVersion(8, 1);
 }
 

@@ -59,7 +59,7 @@ public:
     wxString GetQuotedPrefix() const { return database->GetQuotedSchemaPrefix(GetName()); }
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser);
-    bool CanDropCascaded() { return true; }
+    bool CanDropCascaded() { return GetMetaType() != PGM_CATALOG; }
 
     long GetSchemaTyp() const { return schemaTyp; }
     void iSetSchemaTyp(const long l) { schemaTyp=l; }
@@ -123,8 +123,8 @@ public:
 
     bool GetSystemObject() const;
 
-    bool CanDrop();
-    bool CanEdit() { return true; }
+    bool CanDrop(); 
+    bool CanEdit() { return schema->GetMetaType() != PGM_CATALOG; }
     bool CanCreate();
 
     void SetSchema(pgSchema *newSchema);

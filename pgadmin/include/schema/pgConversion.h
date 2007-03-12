@@ -33,7 +33,7 @@ public:
     ~pgConversion();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    bool CanDropCascaded() { return true; }
+    bool CanDropCascaded() { return GetSchema()->GetMetaType() != PGM_CATALOG; }
 
     wxString GetProc() const { return proc; }
     void iSetProc(const wxString &s) { proc=s; }

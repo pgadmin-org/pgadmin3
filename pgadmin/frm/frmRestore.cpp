@@ -339,6 +339,7 @@ wxString frmRestore::getCmdPart2(int step)
                     cmd.Append(wxT(" -t ") + object->GetQuotedIdentifier());
                     break;
                 case PGM_FUNCTION:
+                    cmd.Append(wxT(" -P ") + object->GetQuotedIdentifier());
                     break;
                 default:
                     break;
@@ -482,7 +483,7 @@ bool restoreFactory::CheckEnable(pgObject *obj)
         return false;
 
     if (obj->GetServer() && obj->GetServer()->GetConnected() && obj->GetConnection()->EdbMinimumVersion(8, 0))
-        return obj->CanRestore() && !edbRestoreExecutable.IsEmpty();
+        return obj->CanCreate() && obj->CanRestore() && !edbRestoreExecutable.IsEmpty();
     else
-        return obj->CanRestore() && !pgRestoreExecutable.IsEmpty();
+        return obj->CanCreate() && obj->CanRestore() && !pgRestoreExecutable.IsEmpty();
 }

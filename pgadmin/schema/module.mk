@@ -12,10 +12,12 @@
 subdir = $(srcdir)/schema
 
 pgadmin3_SOURCES += \
+	$(subdir)/pgCatalogObject.cpp \
 	$(subdir)/edbPackage.cpp \
 	$(subdir)/edbSynonym.cpp \
 	$(subdir)/pgAggregate.cpp \
 	$(subdir)/pgCast.cpp \
+	$(subdir)/pgCatalogObject.cpp \
 	$(subdir)/pgCheck.cpp \
         $(subdir)/pgCollection.cpp \
         $(subdir)/pgColumn.cpp \

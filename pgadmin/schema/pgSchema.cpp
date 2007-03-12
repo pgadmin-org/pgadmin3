@@ -18,6 +18,7 @@
 #include "utils/misc.h"
 #include "schema/pgSchema.h"
 #include "frm/frmMain.h"
+#include "schema/pgCatalogObject.h"
 #include "schema/edbPackage.h"
 #include "schema/pgDomain.h"
 #include "schema/pgAggregate.h"
@@ -159,45 +160,50 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
         // Log
         wxLogInfo(wxT("Adding child object to schema ") + GetIdentifier());
 
-        if (settings->GetDisplayOption(wxT("Aggregates")))
-			browser->AppendCollection(this, aggregateFactory);
-		if (settings->GetDisplayOption(wxT("Conversions")))
-			browser->AppendCollection(this, conversionFactory);
-		if (settings->GetDisplayOption(wxT("Domains")))
-			browser->AppendCollection(this, domainFactory);
-		if (settings->GetDisplayOption(wxT("Functions")))
-			browser->AppendCollection(this, functionFactory);
+        if (!(GetMetaType() == PGM_CATALOG && (GetFullName() == wxT("dbo") || GetFullName() == wxT("sys") || GetFullName() == wxT("information_schema"))))
+        {
+            if (settings->GetDisplayOption(wxT("Aggregates")))
+			    browser->AppendCollection(this, aggregateFactory);
+		    if (settings->GetDisplayOption(wxT("Conversions")))
+			    browser->AppendCollection(this, conversionFactory);
+		    if (settings->GetDisplayOption(wxT("Domains")))
+			    browser->AppendCollection(this, domainFactory);
+		    if (settings->GetDisplayOption(wxT("Functions")))
+			    browser->AppendCollection(this, functionFactory);
 
-		if (settings->GetDisplayOption(wxT("Operators")))
-			browser->AppendCollection(this, operatorFactory);
-		if (settings->GetDisplayOption(wxT("Operator classes")))
-			browser->AppendCollection(this, operatorClassFactory);
+		    if (settings->GetDisplayOption(wxT("Operators")))
+			    browser->AppendCollection(this, operatorFactory);
+		    if (settings->GetDisplayOption(wxT("Operator classes")))
+			    browser->AppendCollection(this, operatorClassFactory);
 
-		if (settings->GetDisplayOption(wxT("Operator families")))
-		{
-			if (GetConnection()->BackendMinimumVersion(8, 3))
-				browser->AppendCollection(this, operatorFamilyFactory);
-		}
+		    if (settings->GetDisplayOption(wxT("Operator families")))
+		    {
+			    if (GetConnection()->BackendMinimumVersion(8, 3))
+				    browser->AppendCollection(this, operatorFamilyFactory);
+		    }
 
-		if (settings->GetDisplayOption(wxT("Packages")) && GetConnection()->EdbMinimumVersion(8,1))
-			browser->AppendCollection(this, packageFactory);
+		    if (settings->GetDisplayOption(wxT("Packages")) && GetConnection()->EdbMinimumVersion(8,1))
+			    browser->AppendCollection(this, packageFactory);
 
-		if (settings->GetDisplayOption(wxT("Procedures")))
-		{
-			if (GetConnection()->EdbMinimumVersion(8, 0))
-				browser->AppendCollection(this, procedureFactory);
-		}
+		    if (settings->GetDisplayOption(wxT("Procedures")))
+		    {
+			    if (GetConnection()->EdbMinimumVersion(8, 0))
+				    browser->AppendCollection(this, procedureFactory);
+		    }
 
-		if (settings->GetDisplayOption(wxT("Sequences")))
-			browser->AppendCollection(this, sequenceFactory);
-		if (settings->GetDisplayOption(wxT("Tables")))
-			browser->AppendCollection(this, tableFactory);
-        if (settings->GetDisplayOption(wxT("Trigger functions")))
-		    browser->AppendCollection(this, triggerFunctionFactory);
-		if (settings->GetDisplayOption(wxT("Types")))
-			browser->AppendCollection(this, typeFactory);
-		if (settings->GetDisplayOption(wxT("Views")))
-			browser->AppendCollection(this, viewFactory);
+		    if (settings->GetDisplayOption(wxT("Sequences")))
+			    browser->AppendCollection(this, sequenceFactory);
+		    if (settings->GetDisplayOption(wxT("Tables")))
+			    browser->AppendCollection(this, tableFactory);
+            if (settings->GetDisplayOption(wxT("Trigger functions")))
+		        browser->AppendCollection(this, triggerFunctionFactory);
+		    if (settings->GetDisplayOption(wxT("Types")))
+			    browser->AppendCollection(this, typeFactory);
+		    if (settings->GetDisplayOption(wxT("Views")))
+			    browser->AppendCollection(this, viewFactory);
+        }
+        else
+            browser->AppendCollection(this, catalogObjectFactory);
     }
 
 

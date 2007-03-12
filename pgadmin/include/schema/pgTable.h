@@ -49,7 +49,7 @@ public:
     void ShowHint(frmMain *form, bool force);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 
-    bool CanDropCascaded() { return true; }
+    bool CanDropCascaded() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
     int GetReplicationStatus(ctlTree *browser, wxString *clusterName=0, long *setId=0);
 
     bool GetHasOids() const { return hasOids; }

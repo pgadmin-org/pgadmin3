@@ -31,7 +31,7 @@ public:
     ~pgType();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    bool CanDropCascaded() { return true; }
+    bool CanDropCascaded() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
 
     wxString GetAlias() const { return alias; }
     void iSetAlias(const wxString& s) { alias=s; }

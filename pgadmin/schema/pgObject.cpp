@@ -886,13 +886,13 @@ bool pgSchemaObject::GetSystemObject() const
 
 bool pgSchemaObject::CanDrop()
 {
-    return schema->GetCreatePrivilege();
+    return schema->GetCreatePrivilege() && schema->GetMetaType() != PGM_CATALOG;
 }
 
 
 bool pgSchemaObject::CanCreate()
 {
-    return schema->GetCreatePrivilege();
+    return schema->GetCreatePrivilege() && schema->GetMetaType() != PGM_CATALOG;
 }
 
 
