@@ -106,7 +106,6 @@ pgaFactory *pgaFactory::GetFactoryByMetaType(const int type)
 
 
 #include "images/property.xpm"
-#include "images/public.xpm"
 #include "images/statistics.xpm"
 
 
@@ -123,7 +122,6 @@ int pgaFactory::addIcon(char **img)
 
             deferredImagesArray->Add(property_xpm);
             deferredImagesArray->Add(statistics_xpm);
-            deferredImagesArray->Add(public_xpm);
         }
 
         deferredImagesArray->Add(img);

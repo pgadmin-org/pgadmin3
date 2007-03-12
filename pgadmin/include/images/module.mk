@@ -120,7 +120,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/primarykey.xpm \
 	$(srcdir)/include/images/properties.xpm \
 	$(srcdir)/include/images/property.xpm \
-	$(srcdir)/include/images/public.xpm \
 	$(srcdir)/include/images/query_cancel.xpm \
 	$(srcdir)/include/images/query_execfile.xpm \
 	$(srcdir)/include/images/query_execute.xpm \
