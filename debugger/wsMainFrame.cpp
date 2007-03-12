@@ -83,7 +83,7 @@ wsMainFrame::wsMainFrame( wxDocManager * docManager, const wxString & title, con
 	  m_statusBar( NULL )
 {
 	// Define the icon for this window
-    SetIcons( wxIconBundle( wxIcon( appIcon_xpm )));
+    SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
 
 	// Create (and configure) the menu bar, toolbar, and status bar
     m_menuBar   = setupMenuBar();
