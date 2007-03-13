@@ -648,13 +648,25 @@ void pgAdmin3::InitPaths()
     // Now setup the app helper paths
     //////////////////////////////////
 
-    // First, PostgreSQL
-
+    // First, check and invalidate the paths if they're no good.
 #ifdef __WXMSW__
-    if (settings->GetPostgresqlPath().IsEmpty() || !wxFile::Exists(settings->GetPostgresqlPath() + wxT("\\pg_dump.exe")))
+    if (!isPgApp(settings->GetPostgresqlPath() + wxT("\\pg_dump.exe")))
+        settings->SetPostgresqlPath(wxEmptyString);
+
+    if (!isEdbApp(settings->GetEnterprisedbPath() + wxT("\\pg_dump.exe")))
+        settings->SetEnterprisedbPath(wxEmptyString);
 #else
-    if (settings->GetPostgresqlPath().IsEmpty() || !wxFile::Exists(settings->GetPostgresqlPath() + wxT("/pg_dump")))
+    if (!isPgApp(settings->GetPostgresqlPath() + wxT("/pg_dump")))
+        settings->SetPostgresqlPath(wxEmptyString);
+
+    if (!isEdbApp(settings->GetEnterprisedbPath() + wxT("/pg_dump")))
+        settings->SetEnterprisedbPath(wxEmptyString);
 #endif
+
+    // Now, if either path is empty, start a search for helpers
+    // If we find apps, record the appropriate path *only* if it's 
+    // not already set
+    if (settings->GetPostgresqlPath().IsEmpty() || settings->GetEnterprisedbPath().IsEmpty())
     {
         wxPathList path;
 
@@ -692,33 +704,45 @@ void pgAdmin3::InitPaths()
         wxFileName tmp = path.FindValidPath(wxT("pg_dump"));
 #endif
 
-        settings->SetPostgresqlPath(tmp.GetPath());
+        if (tmp.FileExists())
+        {
+            if (isPgApp(tmp.GetFullPath()) && settings->GetPostgresqlPath().IsEmpty())
+                settings->SetPostgresqlPath(tmp.GetPath());
+            else if (isEdbApp(tmp.GetFullPath()) && settings->GetEnterprisedbPath().IsEmpty())
+                settings->SetEnterprisedbPath(tmp.GetPath());
+        }
     }
 
-    // Setup PostgreSQL working paths
-#if defined(__WXMSW__)
-    pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("\\pg_dump.exe");
-    pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("\\pg_dumpall.exe");
-    pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("\\pg_restore.exe");
-#else
-    pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dump");
-	pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dumpall");
-    pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("/pg_restore");
-#endif
+    // Now, if either path is still empty, try a less intelligent search for each
 
-    if (!wxFile::Exists(pgBackupExecutable))
-        pgBackupExecutable = wxEmptyString;
-    if (!wxFile::Exists(pgBackupAllExecutable))
-        pgBackupAllExecutable = wxEmptyString;
-    if (!wxFile::Exists(pgRestoreExecutable))
-        pgRestoreExecutable = wxEmptyString;
+    // PostgreSQL
+    if (settings->GetPostgresqlPath().IsEmpty())
+    {
+        wxPathList path;
 
-    // Now, EnterpriseDB
 #ifdef __WXMSW__
-    if (settings->GetEnterprisedbPath().IsEmpty() || !wxFile::Exists(settings->GetEnterprisedbPath() + wxT("\\pg_dump.exe")))
+        path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.2\\bin"));
+        path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.1\\bin"));
+        path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.0\\bin"));
+
+        wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
-    if (settings->GetEnterprisedbPath().IsEmpty() || !wxFile::Exists(settings->GetEnterprisedbPath() + wxT("/pg_dump")))
-#endif
+        path.Add(wxT("/usr/local/pgsql/bin"));
+        path.Add(wxT("/usr/local/bin"));
+        path.Add(wxT("/usr/bin"));
+
+        wxFileName tmp = path.FindValidPath(wxT("pg_dump"));
+#endif 
+
+        if (tmp.FileExists())
+        {
+            if (isPgApp(tmp.GetFullPath()))
+                settings->SetPostgresqlPath(tmp.GetPath());
+        }
+    }
+
+    // EnterpriseDB
+    if (settings->GetEnterprisedbPath().IsEmpty())
     {
         wxPathList path;
 
@@ -726,37 +750,55 @@ void pgAdmin3::InitPaths()
         path.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.0\\dbserver\\bin"));
-#else
-        path.Add(wxT("/usr/local/enterpriseDB"));
-#endif 
 
-#ifdef __WXMSW__
         wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
-        wxFileName tmp = path.FindValidPath(wxT("pg_dump"));
-#endif
+        path.Add(wxT("/usr/local/enterpriseDB/bin"));
+        path.Add(wxT("/usr/local/bin"));
+        path.Add(wxT("/usr/bin"));
 
-        settings->SetEnterprisedbPath(tmp.GetPath());
+        wxFileName tmp = path.FindValidPath(wxT("pg_dump"));
+#endif 
+
+        if (tmp.FileExists())
+        {
+            if (isEdbApp(tmp.GetFullPath()))
+                settings->SetEnterprisedbPath(tmp.GetPath());
+        }
     }
 
-    // Setup EnterpriseDB working paths
+    // Now setup and verify the paths for each individual helper
 #if defined(__WXMSW__)
+    pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("\\pg_dump.exe");
+    pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("\\pg_dumpall.exe");
+    pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("\\pg_restore.exe");
+
     edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dump.exe");
     edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dumpall.exe");
     edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("\\pg_restore.exe");
 #else
+    pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dump");
+	pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dumpall");
+    pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("/pg_restore");
+
     edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dump");
 	edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dumpall");
     edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("/pg_restore");
 #endif
 
-    if (!wxFile::Exists(edbBackupExecutable))
-        edbBackupExecutable = wxEmptyString;
-    if (!wxFile::Exists(edbBackupAllExecutable))
-        edbBackupAllExecutable = wxEmptyString;
-    if (!wxFile::Exists(edbRestoreExecutable))
-        edbRestoreExecutable = wxEmptyString;
+    if (!isPgApp(pgBackupExecutable))
+        pgBackupExecutable = wxEmptyString;
+    if (!isPgApp(pgBackupAllExecutable))
+        pgBackupAllExecutable = wxEmptyString;
+    if (!isPgApp(pgRestoreExecutable))
+        pgRestoreExecutable = wxEmptyString;
 
+    if (!isEdbApp(edbBackupExecutable))
+        edbBackupExecutable = wxEmptyString;
+    if (!isEdbApp(edbBackupAllExecutable))
+        edbBackupAllExecutable = wxEmptyString;
+    if (!isEdbApp(edbRestoreExecutable))
+        edbRestoreExecutable = wxEmptyString;
 }
 
 void pgAdmin3::InitXml()

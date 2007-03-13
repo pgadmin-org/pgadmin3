@@ -248,6 +248,26 @@ void frmOptions::OnResetHints(wxCommandEvent &ev)
 
 void frmOptions::OnOK(wxCommandEvent &ev)
 {
+    // Check the PostgreSQL and EnterpriseDB paths
+#ifdef __WXMSW__
+    if (!txtPostgresqlPath->GetValue().IsEmpty() && !isPgApp(txtPostgresqlPath->GetValue() + wxT("\\pg_dump.exe")))
+#else
+    if (!txtPostgresqlPath->GetValue().IsEmpty() && !isPgApp(txtPostgresqlPath->GetValue() + wxT("/pg_dump")))
+#endif
+    {
+        wxMessageBox(_("The PostgreSQL bin path specified is not valid or does not contain a PostgreSQL pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR); 
+        return;
+    }   
+
+#ifdef __WXMSW__
+    if (!txtEnterprisedbPath->GetValue().IsEmpty() && !isEdbApp(txtEnterprisedbPath->GetValue() + wxT("\\pg_dump.exe")))
+#else
+    if (!txtEnterprisedbPath->GetValue().IsEmpty() && !isEdbApp(txtEnterprisedbPath->GetValue() + wxT("/pg_dump")))
+#endif
+    {
+        wxMessageBox(_("The EnterpriseDB bin path specified is not valid or does not contain an EnterpriseDB pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR); 
+        return;
+    } 
 
     // Logfile
     wxString logFile = txtLogfile->GetValue();
@@ -307,16 +327,25 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetSuppressGuruHints(chkSuppressHints->GetValue());
     settings->SetSlonyPath(txtSlonyPath->GetValue());
     settings->SetPostgresqlPath(txtPostgresqlPath->GetValue());
+    settings->SetEnterprisedbPath(txtEnterprisedbPath->GetValue());
 
-    // Setup PostgreSQL working paths
+    // Setup PostgreSQL/EnterpriseDB working paths
 #if defined(__WXMSW__)
     pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("\\pg_dump.exe");
     pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("\\pg_dumpall.exe");
     pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("\\pg_restore.exe");
+
+    edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dump.exe");
+    edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dumpall.exe");
+    edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("\\pg_restore.exe");
 #else
     pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dump");
 	pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dumpall");
     pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("/pg_restore");
+
+    edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dump");
+	edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dumpall");
+    edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("/pg_restore");
 #endif
 
     if (!wxFile::Exists(pgBackupExecutable))
@@ -325,19 +354,6 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         pgBackupAllExecutable = wxEmptyString;
     if (!wxFile::Exists(pgRestoreExecutable))
         pgRestoreExecutable = wxEmptyString;
-
-    settings->SetEnterprisedbPath(txtEnterprisedbPath->GetValue());
-
-    // Setup EnterpriseDB working paths
-#if defined(__WXMSW__)
-    edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dump.exe");
-    edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dumpall.exe");
-    edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("\\pg_restore.exe");
-#else
-    edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dump");
-	edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dumpall");
-    edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("/pg_restore");
-#endif
 
     if (!wxFile::Exists(edbBackupExecutable))
         edbBackupExecutable = wxEmptyString;
@@ -348,7 +364,6 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 
     if (chkResetHints->GetValue())
         frmHint::ResetHints();
-
 
     // Make sure there's a slash on the end of the path
 

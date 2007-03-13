@@ -158,6 +158,8 @@ wxString VerFromRev(const wxString &rev);
 wxString firstLineOnly(const wxString &str);
 
 bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int minorVer);
+bool isPgApp(const wxString &app);
+bool isEdbApp(const wxString &app);
 
 enum 
 {

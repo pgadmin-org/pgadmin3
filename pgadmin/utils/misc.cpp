@@ -909,3 +909,33 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
 
 	return false;
 }
+
+bool isPgApp(const wxString &app)
+{
+    if (!wxFile::Exists(app))
+        return false;
+
+	wxArrayString output;
+
+	wxExecute(app + wxT(" --version"), output, 0);
+
+    if (output[0].Contains(wxT("PostgreSQL")))
+        return true;
+
+	return false;
+}
+
+bool isEdbApp(const wxString &app)
+{
+    if (!wxFile::Exists(app))
+        return false;
+
+	wxArrayString output;
+
+	wxExecute(app + wxT(" --version"), output, 0);
+
+    if (output[0].Contains(wxT("EnterpriseDB")))
+        return true;
+
+	return false;
+}
