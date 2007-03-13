@@ -91,7 +91,6 @@
 #include "frm/frmHbaConfig.h"
 #include "frm/frmHelp.h"
 #include "frm/frmHint.h"
-#include "frm/frmIndexcheck.h"
 #include "frm/frmMain.h"
 #include "frm/frmMainConfig.h"
 #include "frm/frmMaintenance.h"

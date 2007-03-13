@@ -22,7 +22,6 @@ pgadmin3_SOURCES += \
   	$(srcdir)/include/frm/frmHbaConfig.h \
   	$(srcdir)/include/frm/frmHelp.h \
 	$(srcdir)/include/frm/frmHint.h \
-  	$(srcdir)/include/frm/frmIndexcheck.h \
 	$(srcdir)/include/frm/frmMain.h \
 	$(srcdir)/include/frm/frmMainConfig.h \
 	$(srcdir)/include/frm/frmMaintenance.h \

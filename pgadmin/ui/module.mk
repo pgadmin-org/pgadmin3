@@ -70,7 +70,6 @@ TMP_ui += \
 	$(srcdir)/ui/frmExport.xrc \
 	$(srcdir)/ui/frmGrantWizard.xrc \
 	$(srcdir)/ui/frmHint.xrc \
-	$(srcdir)/ui/frmIndexcheck.xrc \
 	$(srcdir)/ui/frmMaintenance.xrc \
 	$(srcdir)/ui/frmOptions.xrc \
 	$(srcdir)/ui/frmPassword.xrc \
