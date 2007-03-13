@@ -33,7 +33,6 @@ class edbPackage : public pgSchemaObject
 {
 public:
     edbPackage(pgSchema *newSchema, const wxString& newName = wxT(""));
-    ~edbPackage();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
@@ -60,6 +59,8 @@ public:
     bool HasStats() { return false; }
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
+
+    bool IsUpToDate();
 
 private:
     wxString GetInner(const wxString &def);

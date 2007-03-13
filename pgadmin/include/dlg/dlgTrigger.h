@@ -28,12 +28,15 @@ public:
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+    void SetObject(pgObject *obj) { trigger = (pgTrigger*)obj; }
 
 private:
     pgTable *table;
     pgTrigger *trigger;
 
     void OnChangeFunc(wxCommandEvent &ev);
+
+	virtual bool IsUpToDate();
 
     DECLARE_EVENT_TABLE()
 };

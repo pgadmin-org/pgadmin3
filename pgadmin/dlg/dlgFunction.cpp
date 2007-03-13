@@ -327,10 +327,29 @@ void dlgFunction::CheckChange()
 {
     wxString name=GetName();
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
+    bool enable=true;
+
+    CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+    if (!isProcedure)
+        CheckValid(enable, cbReturntype->GetGuessedSelection() >= 0, _("Please select return type."));
+
+    if (!isProcedure || !connection->EdbMinimumVersion(8, 0))
+        CheckValid(enable, cbLanguage->GetCurrentSelection() >= 0, _("Please select language."));
+
+    if (isC)
+    {
+        wxString objfile=txtObjectFile->GetValue();
+        CheckValid(enable, !objfile.IsEmpty() && objfile != TXTOBJ_LIB, _("Please specify object library."));
+    }
+    else
+    {
+        CheckValid(enable, !txtSqlBox->GetText().IsEmpty(), _("Please enter function source code."));
+    }
+
     if (function)
     {
-
-        EnableOK(txtComment->GetValue() != function->GetComment()
+        EnableOK(enable
+              && (txtComment->GetValue() != function->GetComment()
               || name != function->GetName()
               || cbVolatility->GetValue() != function->GetVolatility()
               || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
@@ -339,30 +358,10 @@ void dlgFunction::CheckChange()
               || cbOwner->GetValue() != function->GetOwner()
               || GetArgs() != function->GetArgTypeNames()
               || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
-              || (!isC && txtSqlBox->GetText() != function->GetSource()));
+              || (!isC && txtSqlBox->GetText() != function->GetSource())));
     }
     else
     {
-
-        bool enable=true;
-
-        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        if (!isProcedure)
-            CheckValid(enable, cbReturntype->GetGuessedSelection() >= 0, _("Please select return type."));
-
-        if (!isProcedure || !connection->EdbMinimumVersion(8, 0))
-            CheckValid(enable, cbLanguage->GetCurrentSelection() >= 0, _("Please select language."));
-
-        if (isC)
-        {
-            wxString objfile=txtObjectFile->GetValue();
-            CheckValid(enable, !objfile.IsEmpty() && objfile != TXTOBJ_LIB, _("Please specify object library."));
-        }
-        else
-        {
-            CheckValid(enable, !txtSqlBox->GetText().IsEmpty(), _("Please enter function source code."));
-        }
-
         EnableOK(enable);
     }
 }

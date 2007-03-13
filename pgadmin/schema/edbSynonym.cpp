@@ -22,10 +22,6 @@ edbSynonym::edbSynonym(const wxString& newName)
 {
 }
 
-edbSynonym::~edbSynonym()
-{
-}
-
 bool edbSynonym::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP PUBLIC SYNONYM ") + GetQuotedIdentifier();

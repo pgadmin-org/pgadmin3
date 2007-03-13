@@ -31,7 +31,6 @@ class edbSynonym : public pgDatabaseObject
 {
 public:
     edbSynonym(const wxString& newName = wxT(""));
-    ~edbSynonym();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 

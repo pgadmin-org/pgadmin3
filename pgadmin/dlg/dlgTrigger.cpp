@@ -32,15 +32,18 @@
 #define chkInsert       CTRL_CHECKBOX("chkInsert")
 #define chkUpdate       CTRL_CHECKBOX("chkUpdate")
 #define chkDelete       CTRL_CHECKBOX("chkDelete")
-
+#define txtBody         CTRL_SQLBOX("txtBody")
 
 BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
+    EVT_RADIOBOX(XRCID("rdbFires"),                 dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkRow"),                   dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkInsert"),                dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkUpdate"),                dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbFunction"),                   dlgTrigger::OnChangeFunc)
     EVT_COMBOBOX(XRCID("cbFunction"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtArguments"),                 dlgProperty::OnChange)
+    EVT_STC_MODIFIED(XRCID("txtBody"),              dlgProperty::OnChangeStc)
 END_EVENT_TABLE();
 
 
@@ -80,19 +83,34 @@ int dlgTrigger::Go(bool modal)
         txtArguments->SetValue(trigger->GetArguments());
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
-        chkRow->Disable();
-        cbFunction->Append(trigger->GetFunction());
+
+        if (trigger->GetLanguage() == wxT("edbspl"))
+        {
+            cbFunction->Append(wxString::Format(wxT("<%s>"), _("inline edbspl")));
+            txtBody->SetText(trigger->GetSource());
+        }
+        else
+            cbFunction->Append(trigger->GetFunction());
+
         cbFunction->SetSelection(0);
         txtArguments->Disable();
         cbFunction->Disable();
-        rdbFires->Disable();
-        chkInsert->Disable();
-        chkUpdate->Disable();
-        chkDelete->Disable();
+
+        if (!connection->EdbMinimumVersion(8,0))
+        {
+            chkRow->Disable();
+            rdbFires->Disable();
+            chkInsert->Disable();
+            chkUpdate->Disable();
+            chkDelete->Disable();
+        }
     }
     else
     {
         // create mode
+        if (connection->EdbMinimumVersion(8,0))
+            cbFunction->Append(wxString::Format(wxT("<%s>"), _("inline edbspl")));
+
         wxString sysRestr;
         if (!settings->GetShowSystemObjects())
             sysRestr = wxT("   AND ") + connection->SystemNamespaceRestriction(wxT("nspname"));
@@ -115,6 +133,8 @@ int dlgTrigger::Go(bool modal)
             chkRow->SetValue(true);
             chkRow->Disable();
         }
+        
+        txtBody->Disable();
     }
     return dlgProperty::Go(modal);
 }
@@ -129,11 +149,22 @@ wxString dlgTrigger::GetSql()
     {
         if (name != trigger->GetName())
             sql = wxT("ALTER TRIGGER ") + trigger->GetQuotedIdentifier() + wxT(" ON ") + table->GetQuotedFullIdentifier()
-                + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+                + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n\n");
     }
-    else
+
+    if (!trigger ||
+        txtBody->GetText() != trigger->GetSource() ||
+        chkRow->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_ROW) ||
+        chkInsert->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_INSERT ? true : false) ||
+        chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||
+        chkDelete->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_DELETE ? true : false) ||
+        rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1))
     {
-        sql = wxT("CREATE TRIGGER ") + qtIdent(name);
+        if (trigger || cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("inline edbspl")))
+            sql += wxT("CREATE OR REPLACE TRIGGER ") + qtIdent(name);
+        else
+            sql += wxT("CREATE TRIGGER ") + qtIdent(name);
+
         if (rdbFires->GetSelection())
             sql += wxT(" AFTER");
         else
@@ -163,9 +194,17 @@ wxString dlgTrigger::GetSql()
             sql += wxT("ROW");
         else
             sql += wxT("STATEMENT");
-        sql += wxT("\n   EXECUTE PROCEDURE ") + cbFunction->GetValue()
-            + wxT("(") + txtArguments->GetValue()
-            + wxT(");\n");
+
+        if (cbFunction->GetValue() != wxString::Format(wxT("<%s>"), _("inline edbspl")))
+        {
+            sql += wxT("\n   EXECUTE PROCEDURE ") + cbFunction->GetValue()
+                + wxT("(") + txtArguments->GetValue()
+                + wxT(");\n");
+        }
+        else
+        {
+            sql += wxT("\n") + txtBody->GetText();
+        }
     }
     AppendComment(sql, wxT("TRIGGER ") + qtIdent(GetName()) 
         + wxT(" ON ") + table->GetQuotedFullIdentifier(), trigger);
@@ -187,25 +226,57 @@ pgObject *dlgTrigger::CreateObject(pgCollection *collection)
 void dlgTrigger::OnChangeFunc(wxCommandEvent &ev)
 {
     cbFunction->GuessSelection(ev);
+
+    if (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("inline edbspl")))
+    {
+        txtArguments->Disable();
+        txtBody->Enable();
+    }
+    else
+    {
+        txtArguments->Enable();
+        txtBody->Disable();
+    }
+
     CheckChange();
 }
 
 
 void dlgTrigger::CheckChange()
 {
+    bool enable=true;
+
+    wxString function=cbFunction->GetValue();
+    wxString name=GetName();
+
+    CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+    CheckValid(enable, !function.IsEmpty(), _("Please specify trigger function."));
+    CheckValid(enable, chkInsert->GetValue() || chkUpdate->GetValue() ||chkDelete->GetValue(),
+        _("Please specify at least one action."));
+
     if (trigger)
-        EnableOK(txtComment->GetValue() != trigger->GetComment());
+    {
+        EnableOK(enable &&
+                 (txtComment->GetValue() != trigger->GetComment() ||
+                 txtName->GetValue() != trigger->GetName() ||
+                 txtBody->GetText() != trigger->GetSource() ||
+                 chkRow->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_ROW ? true : false) ||
+                 chkInsert->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_INSERT ? true : false) ||
+                 chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||
+                 chkDelete->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_DELETE ? true : false) ||
+                 rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1)));
+    }
     else
     {
-        wxString function=cbFunction->GetValue();
-        wxString name=GetName();
-
-        bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, !function.IsEmpty(), _("Please specify trigger function."));
-        CheckValid(enable, chkInsert->GetValue() || chkUpdate->GetValue() ||chkDelete->GetValue(),
-            _("Please specify at least one action."));
-
         EnableOK(enable);
     }
 }
+
+bool dlgTrigger::IsUpToDate()
+{
+	if (trigger && !trigger->IsUpToDate())
+		return false;
+	else
+		return true;
+}
+

@@ -98,19 +98,26 @@ void dlgPackage::CheckChange()
 {
     bool enable=true;
 
+    CheckValid(enable, !txtName->GetValue().IsEmpty(), _("Please specify name."));
+    CheckValid(enable, !txtHeader->GetText().IsEmpty(), _("Please specify package header."));
+    CheckValid(enable, !txtBody->GetText().IsEmpty(), _("Please specify package body."));
+
     if (package)
     {
        if (!(txtBody->GetText() != package->GetBodyInner() ||
            txtHeader->GetText() != package->GetHeaderInner())) 
            enable = false;
     }
-    else
-    {
-        CheckValid(enable, !txtName->GetValue().IsEmpty(), _("Please specify name."));
-        CheckValid(enable, !txtHeader->GetText().IsEmpty(), _("Please specify package header."));
-        CheckValid(enable, !txtBody->GetText().IsEmpty(), _("Please specify package body."));
-    }
+
     EnableOK(enable);
+}
+
+bool dlgPackage::IsUpToDate()
+{
+	if (package && !package->IsUpToDate())
+		return false;
+	else
+		return true;
 }
 
 

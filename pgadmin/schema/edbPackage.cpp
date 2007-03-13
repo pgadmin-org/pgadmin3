@@ -22,8 +22,13 @@ edbPackage::edbPackage(pgSchema *newSchema, const wxString& newName)
 {
 }
 
-edbPackage::~edbPackage()
+bool edbPackage::IsUpToDate()
 {
+    wxString sql = wxT("SELECT xmin FROM edb_package WHERE oid = ") + this->GetOidStr();
+	if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) != NumToStr(GetXid()))
+		return false;
+	else
+		return true;
 }
 
 bool edbPackage::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
@@ -134,7 +139,7 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 {
     edbPackage *package=0;
 
-    wxString sql = wxT("SELECT oid, *, pg_get_userbyid(pkgowner) AS owner,\n") 
+    wxString sql = wxT("SELECT oid, xmin, *, pg_get_userbyid(pkgowner) AS owner,\n") 
                    wxT("(SELECT count(*) FROM edb_pkgelements WHERE packageoid = p.oid AND eltclass = 'P') AS numprocedures,\n")
                    wxT("(SELECT count(*) FROM edb_pkgelements WHERE packageoid = p.oid AND eltclass = 'F') AS numfunctions,\n")
                    wxT("(SELECT count(*) FROM edb_pkgelements WHERE packageoid = p.oid AND eltclass = 'V') AS numvariables\n")
@@ -153,6 +158,7 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
             package = new edbPackage(collection->GetSchema(), name);
 
             package->iSetOid(packages->GetOid(wxT("oid")));
+            package->iSetXid(packages->GetOid(wxT("xmin")));
             package->iSetDatabase(collection->GetDatabase());
             package->iSetOwner(packages->GetVal(wxT("owner")));
             package->iSetNumProcedures(packages->GetLong(wxT("numprocedures")));

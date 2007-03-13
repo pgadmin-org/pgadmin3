@@ -66,6 +66,8 @@ public:
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
 
+    bool IsUpToDate();
+
 private:
     wxString function, quotedFullTable, arguments, language, source;
     OID functionOid;

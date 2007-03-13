@@ -27,10 +27,13 @@ public:
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+    void SetObject(pgObject *obj) { package = (edbPackage*)obj; }
 
 private:
     edbPackage *package;
     pgSchema *schema;
+
+	virtual bool IsUpToDate();
 
     DECLARE_EVENT_TABLE()
 };

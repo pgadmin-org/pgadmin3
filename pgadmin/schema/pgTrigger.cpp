@@ -39,6 +39,15 @@ pgTrigger::~pgTrigger()
     }
 }
 
+bool pgTrigger::IsUpToDate()
+{
+    wxString sql = wxT("SELECT xmin FROM pg_trigger WHERE oid = ") + this->GetOidStr();
+	if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) != NumToStr(GetXid()))
+		return false;
+	else
+		return true;
+}
+
 bool pgTrigger::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP TRIGGER ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable();
@@ -205,7 +214,7 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
     pgTrigger *trigger=0;
 
     wxString trig_sql;
-    trig_sql = wxT("SELECT t.oid, t.*, relname, nspname, des.description, l.lanname, p.prosrc \n")
+    trig_sql = wxT("SELECT t.oid, t.xmin, t.*, relname, nspname, des.description, l.lanname, p.prosrc \n")
         wxT("  FROM pg_trigger t\n")
         wxT("  JOIN pg_class cl ON cl.oid=tgrelid\n")
         wxT("  JOIN pg_namespace na ON na.oid=relnamespace\n")
@@ -227,6 +236,7 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
             trigger = new pgTrigger(collection->GetTable(), triggers->GetVal(wxT("tgname")));
 
             trigger->iSetOid(triggers->GetOid(wxT("oid")));
+            trigger->iSetXid(triggers->GetOid(wxT("xmin")));
             trigger->iSetComment(triggers->GetVal(wxT("description")));
             trigger->iSetFunctionOid(triggers->GetOid(wxT("tgfoid")));
             trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
