@@ -14,7 +14,6 @@
 
 #include "pgSchema.h"
 
-
 class pgCatalogObjectFactory : public pgSchemaObjFactory
 {
 public:

@@ -12,7 +12,6 @@
 subdir = $(srcdir)/schema
 
 pgadmin3_SOURCES += \
-	$(subdir)/pgCatalogObject.cpp \
 	$(subdir)/edbPackage.cpp \
 	$(subdir)/edbSynonym.cpp \
 	$(subdir)/pgAggregate.cpp \

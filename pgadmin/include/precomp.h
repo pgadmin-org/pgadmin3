@@ -109,6 +109,7 @@
 #include "schema/edbSynonym.h"
 #include "schema/pgAggregate.h"
 #include "schema/pgCast.h"
+#include "schema/pgCatalogObject.h"
 #include "schema/pgCheck.h"
 #include "schema/pgCollection.h"
 #include "schema/pgColumn.h"
