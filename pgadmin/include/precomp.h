@@ -105,6 +105,8 @@
 #include "frm/menu.h"
 
 #include "schema/edbPackage.h"
+#include "schema/edbPackageFunction.h"
+#include "schema/edbPackageVariable.h"
 #include "schema/edbSynonym.h"
 #include "schema/pgAggregate.h"
 #include "schema/pgCast.h"

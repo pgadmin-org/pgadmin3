@@ -104,15 +104,28 @@ wxString edbPackage::GetInner(const wxString &def)
 
 void edbPackage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
+    if (!expandedKids)
+    {
+        expandedKids=true;
+
+        browser->RemoveDummyChild(this);
+
+        // Log
+        wxLogInfo(wxT("Adding child object to package ") + GetIdentifier());
+
+        browser->AppendCollection(this, packageFunctionFactory);
+        browser->AppendCollection(this, packageProcedureFactory);
+        browser->AppendCollection(this, packageVariableFactory);
+    }
+
+
     if (properties)
     {
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
+        properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
-        properties->AppendItem(_("Functions"), GetNumFunctions());
-        properties->AppendItem(_("Procedures"), GetNumProcedures());
-        properties->AppendItem(_("Variables"), GetNumVariables());
         properties->AppendItem(_("Header"), firstLineOnly(GetHeader()));
         properties->AppendItem(_("Body"), firstLineOnly(GetBody()));
         properties->AppendItem(_("ACL"), GetAcl());
@@ -128,7 +141,12 @@ pgObject *edbPackage::Refresh(ctlTree *browser, const wxTreeItemId item)
 
     pgCollection *coll=browser->GetParentCollection(item);
     if (coll)
-        package = packageFactory.CreateObjects(coll, 0, wxT(" AND oid=") + GetOidStr());
+    {
+        if (coll->GetConnection()->EdbMinimumVersion(8, 2))
+            package = packageFactory.CreateObjects(coll, 0, wxT(" AND nspname='") + GetName() + wxT("'"));
+        else
+            package = packageFactory.CreateObjects(coll, 0, wxT(" AND pkgname='") + GetName() + wxT("'"));
+    }
 
     return package;
 }
@@ -139,14 +157,26 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 {
     edbPackage *package=0;
 
-    wxString sql = wxT("SELECT oid, xmin, *, pg_get_userbyid(pkgowner) AS owner,\n") 
-                   wxT("(SELECT count(*) FROM edb_pkgelements WHERE packageoid = p.oid AND eltclass = 'P') AS numprocedures,\n")
-                   wxT("(SELECT count(*) FROM edb_pkgelements WHERE packageoid = p.oid AND eltclass = 'F') AS numfunctions,\n")
-                   wxT("(SELECT count(*) FROM edb_pkgelements WHERE packageoid = p.oid AND eltclass = 'V') AS numvariables\n")
-                    wxT("  FROM edb_package p")
-                    wxT("  WHERE pkgnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
-                    + restriction +
-                    wxT("  ORDER BY pkgname;");
+    wxString sql;
+    
+    if (collection->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2))
+    {
+        sql = wxT("SELECT oid, xmin, nspname AS pkgname, nspbodysrc AS pkgbodysrc, nspheadsrc AS pkgheadsrc,\n")
+              wxT("       nspacl AS pkgacl, pg_get_userbyid(nspowner) AS owner\n") 
+              wxT("  FROM pg_namespace")
+              wxT("  WHERE nspparent = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
+              + restriction +
+              wxT("  ORDER BY nspname;");
+    }
+    else
+    {
+
+        sql = wxT("SELECT oid, xmin, *, pg_get_userbyid(pkgowner) AS owner\n") 
+              wxT("  FROM edb_package")
+              wxT("  WHERE pkgnamespace = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
+              + restriction +
+              wxT("  ORDER BY pkgname;");
+    }
 
     pgSet *packages = collection->GetDatabase()->ExecuteSet(sql);
 
@@ -161,9 +191,6 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
             package->iSetXid(packages->GetOid(wxT("xmin")));
             package->iSetDatabase(collection->GetDatabase());
             package->iSetOwner(packages->GetVal(wxT("owner")));
-            package->iSetNumProcedures(packages->GetLong(wxT("numprocedures")));
-            package->iSetNumFunctions(packages->GetLong(wxT("numfunctions")));
-            package->iSetNumVariables(packages->GetLong(wxT("numvariables")));
             package->iSetHeader(packages->GetVal(wxT("pkgheadsrc")));
             package->iSetBody(packages->GetVal(wxT("pkgbodysrc")));
 

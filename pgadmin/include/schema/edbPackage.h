@@ -37,12 +37,6 @@ public:
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
     bool GetSystemObject() const { return GetOid() <= GetConnection()->GetLastSystemOID(); }
-    void iSetNumProcedures(const long num) { numProcedures = num; };
-    long GetNumProcedures() { return numProcedures; };
-    void iSetNumFunctions(const long num) { numFunctions = num; };
-    long GetNumFunctions() { return numFunctions; };
-    void iSetNumVariables(const long num) { numVariables = num; };
-    long GetNumVariables() { return numVariables; };
 
     void iSetHeader(const wxString &data) { header = data; };
     wxString GetHeader() { return header; };
@@ -67,6 +61,54 @@ private:
 
     long numProcedures, numFunctions, numVariables;
     wxString body, header;
+};
+
+class edbPackageObject : public pgSchemaObject
+{
+public:
+    edbPackageObject(edbPackage *newPackage, pgaFactory &factory, const wxString& newName = wxT(""))
+        : pgSchemaObject(newPackage->GetSchema(), factory, newName) { package = newPackage; }
+    virtual edbPackage *GetPackage() const { return package; }
+    OID GetPackageOid() const {return package->GetOid(); }
+    wxString GetPackageOidStr() const {return NumToStr(package->GetOid()) + wxT("::oid"); }
+
+    bool CanCreate() { return false; }
+    bool CanEdit() { return false; }
+    bool CanDrop() { return false; }
+    bool CanDropCascaded() { return false; }
+
+    bool HasStats() { return false; }
+    bool HasDepends() { return false; }
+    bool HasReferences() { return false; }
+
+protected:
+    edbPackage *package;
+};
+
+class edbPackageCollection : public pgSchemaObjCollection
+{
+public:
+    edbPackageCollection(pgaFactory *factory, pgSchema *sch);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
+};
+
+class edbPackageObjCollection : public pgSchemaObjCollection
+{
+public:
+    edbPackageObjCollection(pgaFactory *factory, edbPackage *_package)
+    : pgSchemaObjCollection(factory, _package->GetSchema()) { iSetOid(_package->GetOid()); package=_package; }
+    virtual edbPackage *GetPackage() const { return package; }
+
+protected:
+    edbPackage *package;
+};
+
+class edbPackageObjFactory : public pgSchemaObjFactory
+{
+public:
+    edbPackageObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **imgSm=0) 
+        : pgSchemaObjFactory(tn, ns, nls, img, imgSm) {}
+    virtual pgCollection *CreateCollection(pgObject *obj);
 };
 
 #endif

@@ -11,6 +11,8 @@
 
 pgadmin3_SOURCES += \
 	$(srcdir)/include/schema/edbPackage.h \
+	$(srcdir)/include/schema/edbPackageFunction.h \
+	$(srcdir)/include/schema/edbPackageVariable.h \
 	$(srcdir)/include/schema/edbSynonym.h \
 	$(srcdir)/include/schema/pgAggregate.h \
 	$(srcdir)/include/schema/pgCatalogObject.h \
