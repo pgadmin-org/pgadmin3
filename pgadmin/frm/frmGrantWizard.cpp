@@ -252,7 +252,7 @@ wxString frmGrantWizard::GetSql()
                 {
                     tmp = securityPage->GetGrant(wxT("X"), wxT("FUNCTION ") 
                         + obj->GetQuotedFullIdentifier() + wxT("(")
-                        + ((pgFunction*)obj)->GetArgTypes() + wxT(")"));
+                        + ((pgFunction*)obj)->GetArgSigList() + wxT(")"));
                     break;
                 }
                 case PGM_VIEW:

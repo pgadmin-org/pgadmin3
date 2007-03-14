@@ -177,7 +177,7 @@ void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
                 {
                     functions.Add(set->GetVal(wxT("amprocnum")) + wxT("  ") + function->GetFullName());
                     quotedFunctions.Add(set->GetVal(wxT("amprocnum")) + wxT("  ") 
-                        + function->GetQuotedFullIdentifier() + wxT("(") + function->GetArgTypes() + wxT(")"));
+                        + function->GetQuotedFullIdentifier() + wxT("(") + function->GetArgSigList() + wxT(")"));
                     delete function;
                 }
 

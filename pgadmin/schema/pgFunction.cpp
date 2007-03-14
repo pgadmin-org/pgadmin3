@@ -31,11 +31,6 @@ pgFunction::pgFunction(pgSchema *newSchema, pgaFactory &factory, const wxString&
 {
 }
 
-
-pgFunction::~pgFunction()
-{
-}
-
 pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newName)
 : pgFunction(newSchema, triggerFunctionFactory, newName)
 {
@@ -57,7 +52,7 @@ bool pgFunction::IsUpToDate()
 
 bool pgFunction::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql=wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(")");
+    wxString sql=wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgSigList() + wxT(")");
     if (cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);
@@ -65,15 +60,15 @@ bool pgFunction::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 
 wxString pgFunction::GetFullName()
 { 
-    return GetName() + wxT("(") + GetArgTypes() + wxT(")");
+    return GetName() + wxT("(") + GetArgSigList() + wxT(")");
 }
 
 wxString pgProcedure::GetFullName()
 { 
-    if (GetArgTypes().IsEmpty())
+    if (GetArgSigList().IsEmpty())
         return GetName();
     else
-        return GetName() + wxT("(") + GetArgTypes() + wxT(")");
+        return GetName() + wxT("(") + GetArgSigList() + wxT(")");
 }
 
 
@@ -81,8 +76,8 @@ wxString pgFunction::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        wxString qtName = GetQuotedFullIdentifier()  + wxT("(") + GetArgTypeNames() + wxT(")");
-        wxString qtSig = GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(")");
+        wxString qtName = GetQuotedFullIdentifier()  + wxT("(") + GetArgListWithNames() + wxT(")");
+        wxString qtSig = GetQuotedFullIdentifier()  + wxT("(") + GetArgSigList() + wxT(")");
 
         sql = wxT("-- Function: ") + qtSig + wxT("\n\n")
             + wxT("-- DROP FUNCTION ") + qtSig + wxT(";")
@@ -145,7 +140,8 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("Argument count"), GetArgCount());
-        properties->AppendItem(_("Arguments"), GetArgTypeNames());
+        properties->AppendItem(_("Arguments"), GetArgListWithNames());
+        properties->AppendItem(_("Signature arguments"), GetArgSigList());
         if (!GetIsProcedure())
             properties->AppendItem(_("Return type"), GetReturnType());
         properties->AppendItem(_("Language"), GetLanguage());
@@ -183,15 +179,15 @@ wxString pgProcedure::GetSql(ctlTree *browser)
     {
         wxString qtName, qtSig;
 
-        if (GetArgTypeNames().IsEmpty())
+        if (GetArgListWithNames().IsEmpty())
         {
             qtName = GetQuotedFullIdentifier();
             qtSig = GetQuotedFullIdentifier();
         }
         else
         {
-            qtName = GetQuotedFullIdentifier() + wxT("(") + GetArgTypeNames() + wxT(")");
-            qtSig = GetQuotedFullIdentifier()  + wxT("(") + GetArgTypes() + wxT(")");
+            qtName = GetQuotedFullIdentifier() + wxT("(") + GetArgListWithNames() + wxT(")");
+            qtSig = GetQuotedFullIdentifier()  + wxT("(") + GetArgSigList() + wxT(")");
         }
 
         sql = wxT("-- Procedure: ") + qtSig + wxT("\n\n")
@@ -225,7 +221,7 @@ bool pgProcedure::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
     return GetDatabase()->ExecuteVoid(sql);
 }
 
-wxString pgFunction::GetArgTypeNames()
+wxString pgFunction::GetArgListWithNames()
 {
     wxString args;
 
@@ -269,16 +265,20 @@ wxString pgFunction::GetArgTypeNames()
     return args;
 }
 
-wxString pgFunction::GetArgTypes()
+wxString pgFunction::GetArgSigList()
 {
     wxString args;
 
     for (unsigned int i=0; i < argTypesArray.Count(); i++)
     {
-        if (i > 0)
-            args += wxT(", ");
+        // OUT parameters are not considered part of the signature
+        if (argModesArray.Item(i) != wxT("OUT"))
+        {
+            if (i > 0)
+                args += wxT(", ");
 
-        args += argTypesArray.Item(i);
+            args += argTypesArray.Item(i);
+        }
     }
     return args;
 }
@@ -287,16 +287,16 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 {
     pgFunction *function=0;
     wxString argNamesCol;
-    if (obj->GetConnection()->BackendMinimumVersion(7, 5))
+    if (obj->GetConnection()->BackendMinimumVersion(8, 0))
         argNamesCol = wxT("proargnames, ");
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(
-            wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, TYPNS.nspname AS typnsp, lanname, ") + argNamesCol + 
-                        wxT("pg_get_userbyid(proowner) as funcowner, description\n")
+            wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") + argNamesCol + 
+            wxT("       pg_get_userbyid(proowner) as funcowner, description\n")
             wxT("  FROM pg_proc pr\n")
-            wxT("  JOIN pg_type TYP ON TYP.oid=prorettype\n")
-            wxT("  JOIN pg_namespace TYPNS ON TYPNS.oid=TYP.typnamespace\n")
-            wxT("  JOIN pg_language LNG ON LNG.oid=prolang\n")
+            wxT("  JOIN pg_type typ ON typ.oid=prorettype\n")
+            wxT("  JOIN pg_namespace typns ON typns.oid=typ.typnamespace\n")
+            wxT("  JOIN pg_language lng ON lng.oid=prolang\n")
             wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=pr.oid\n")
             + restriction +
             wxT(" ORDER BY proname"));
@@ -319,34 +319,12 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             bool isProcedure=false;
             wxString lanname=functions->GetVal(wxT("lanname"));
             wxString typname=functions->GetVal(wxT("typname"));
-            wxString oids=functions->GetVal(wxT("proargtypes"));
-            wxStringTokenizer args(oids);
-            wxStringTokenizer modes(wxEmptyString);
 
-            wxString argNames;
-
+            // Is this an EDB Stored Procedure?
             if (obj->GetConnection()->EdbMinimumVersion(8, 0) && lanname == wxT("edbspl") && typname == wxT("void"))
                 isProcedure = true;
 
-            if (obj->GetConnection()->BackendMinimumVersion(8, 0))
-                argNames = functions->GetVal(wxT("proargnames"));
-
-            if (!obj->GetConnection()->EdbMinimumVersion(8, 1) && isProcedure)
-            {
-                wxString argDirs=functions->GetVal(wxT("proargdirs"));
-                modes.SetString(argDirs);
-            }
-            if (obj->GetConnection()->BackendMinimumVersion(8, 1))
-            {
-                wxString allArgTypes=functions->GetVal(wxT("proallargtypes"));
-                if (!allArgTypes.IsEmpty())
-                    args.SetString(allArgTypes.Mid(1, allArgTypes.Length()-2), wxT(","));
-
-                wxString argModes= functions->GetVal(wxT("proargmodes"));
-                if (!argModes.IsEmpty())
-                    modes.SetString(argModes.Mid(1, argModes.Length()-2), wxT(","));
-            }
-
+            // Create the new object
             if (isProcedure)
                 function = new pgProcedure(schema, functions->GetVal(wxT("proname")));
             else if (typname == wxT("\"trigger\""))
@@ -354,23 +332,63 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             else
                 function = new pgFunction(schema, functions->GetVal(wxT("proname")));
 
-
-            wxString type, name, mode;
-            wxStringTokenizer names(argNames.Mid(1, argNames.Length()-2), wxT(","));
-
             
-            while (args.HasMoreTokens())
+            // Tokenize the arguments
+            wxStringTokenizer argNamesTkz(wxEmptyString), argTypesTkz(wxEmptyString), argModesTkz(wxEmptyString);
+            wxString tmp;
+
+            // We always have types
+            argTypesTkz.SetString(functions->GetVal(wxT("proargtypes")));
+
+            // We only have names in 8.0+
+            if (obj->GetConnection()->BackendMinimumVersion(8, 0))
             {
-                type = args.GetNextToken();
+                tmp = functions->GetVal(wxT("proargnames"));
+                if (!tmp.IsEmpty())
+                    argNamesTkz.SetString(tmp.Mid(1, tmp.Length()-2), wxT(","));
+            }
 
-                name = names.GetNextToken();
-                if (name[0] == '"')
-                    name = name.Mid(1, name.Length()-2);
-                function->iAddArgName(name);
+            // EDB 8.0 had modes in pg_proc.proargdirs
+            if (!obj->GetConnection()->EdbMinimumVersion(8, 1) && isProcedure)
+                argModesTkz.SetString(functions->GetVal(wxT("proargdirs")));
 
-                mode = modes.GetNextToken();
-                
-                if (!mode.IsNull())
+            // EDB 8.1 and PostgreSQL 8.1 have modes in pg_proc.proargmodes
+            if (obj->GetConnection()->BackendMinimumVersion(8, 1))
+            {
+                tmp = functions->GetVal(wxT("proallargtypes"));
+                if (!tmp.IsEmpty())
+                    argTypesTkz.SetString(tmp.Mid(1, tmp.Length()-2), wxT(","));
+
+                tmp = functions->GetVal(wxT("proargmodes"));
+                if (!tmp.IsEmpty())
+                    argModesTkz.SetString(tmp.Mid(1, tmp.Length()-2), wxT(","));
+            }
+
+            // Now iterate the arguments and build the arrays
+            wxString type, name, mode;
+            
+            while (argTypesTkz.HasMoreTokens())
+            {
+                // Add the arg type. This is a type oid, so 
+                // look it up in the hashmap
+                type = argTypesTkz.GetNextToken();
+                function->iAddArgType(map[type]);
+
+                // Now add the name, stripping the quotes if
+                // necessary. 
+                name = argNamesTkz.GetNextToken();
+                if (!name.IsEmpty())
+                {
+                    if (name[0] == '"')
+                        name = name.Mid(1, name.Length()-2);
+                    function->iAddArgName(name);
+                }
+                else
+                    function->iAddArgName(wxEmptyString);
+
+                // Now the mode
+                mode = argModesTkz.GetNextToken();
+                if (!mode.IsEmpty())
                 {
                     if (mode == wxT('o') || mode == wxT("2"))
                         mode = wxT("OUT");
@@ -388,8 +406,6 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 }
                 else
                     function->iAddArgMode(wxEmptyString);
-
-                function->iAddArgType(map[type]);
             }
 
             function->iSetOid(functions->GetOid(wxT("oid")));
@@ -400,7 +416,6 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));
             function->iSetReturnType(functions->GetVal(wxT("typname")));
             function->iSetComment(functions->GetVal(wxT("description")));
-            function->iSetArgTypeOids(oids);
 
             function->iSetLanguage(lanname);
             function->iSetSecureDefiner(functions->GetBool(wxT("prosecdef")));
@@ -515,7 +530,6 @@ pgProcedureFactory::pgProcedureFactory()
 : pgFunctionFactory(__("Procedure"), __("New Procedure"), __("Create a new Procedure."), function_xpm)
 {
 }
-
 
 pgProcedureFactory procedureFactory;
 static pgaCollectionFactory cfp(&procedureFactory, __("Procedures"), functions_xpm);

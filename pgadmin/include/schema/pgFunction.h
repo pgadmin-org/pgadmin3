@@ -12,11 +12,7 @@
 #ifndef PGFUNCTION_H
 #define PGFUNCTION_H
 
-#include <wx/hashmap.h>
-
 #include "pgSchema.h"
-
-WX_DECLARE_STRING_HASH_MAP(wxString, typeMap);
 
 class pgCollection;
 class pgFunction;
@@ -39,7 +35,6 @@ class pgFunction : public pgSchemaObject
 public:
     pgFunction(pgSchema *newSchema, const wxString& newName = wxT(""));
     pgFunction(pgSchema *newSchema, pgaFactory &factory, const wxString& newName = wxT(""));
-    ~pgFunction();
 
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
@@ -48,9 +43,9 @@ public:
     virtual bool GetIsProcedure() const {return false; }
 
     wxString GetFullName();
-    wxString GetArgTypeNames();
-    wxString GetArgTypes();
-    wxString GetArgTypeOids() const { return argTypeOids; }
+    wxString GetArgListWithNames();
+    wxString GetArgSigList();
+
     wxArrayString &GetArgNamesArray() { return argNamesArray; }
     void iAddArgName(const wxString &s) { argNamesArray.Add(s); }
     wxArrayString &GetArgTypesArray() { return argTypesArray; }
@@ -58,7 +53,6 @@ public:
     wxArrayString &GetArgModesArray() { return argModesArray; }
     void iAddArgMode(const wxString &s) { argModesArray.Add(s); }
 
-    void iSetArgTypeOids(const wxString& s) { argTypeOids = s; }
     wxString GetReturnType() const { return returnType; }
     void iSetReturnType(const wxString& s) { returnType = s; }
     wxString GetLanguage() const { return language; }
@@ -97,7 +91,7 @@ protected:
     pgFunction(pgSchema *newSchema, int newType, const wxString& newName = wxT(""));
 
 private:
-    wxString argTypeOids, returnType, language, volatility, source, bin;
+    wxString returnType, language, volatility, source, bin;
     wxArrayString argNamesArray, argTypesArray, argModesArray;
     bool returnAsSet, secureDefiner, isStrict;
     long argCount;

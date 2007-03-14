@@ -14,6 +14,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/hashmap.h>
 #include <wx/listctrl.h>
 #include <wx/xrc/xmlres.h>
 
@@ -62,11 +63,13 @@ const float SERVER_MIN_VERSION = 7.3f;
 #define strincmp _strincmp
 #endif
 
-extern wxPathList path;                  // The search path
+extern wxPathList path;                // The search path
 extern wxString loadPath;              // Where the program is loaded from
 extern wxString docPath;               // Where docs are stored
 extern wxString uiPath;                // Where ui data is stored
 extern wxString i18nPath;              // Where i18n data is stored
+
+WX_DECLARE_STRING_HASH_MAP(wxString, typeMap);
 
 // Class declarations
 class pgAdmin3 : public wxApp

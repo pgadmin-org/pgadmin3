@@ -232,7 +232,7 @@ int dlgFunction::Go(bool modal)
             }
         }
 
-        txtArguments->SetValue(function->GetArgTypeNames());
+        txtArguments->SetValue(function->GetArgListWithNames());
         cbReturntype->Append(function->GetReturnType());
         cbReturntype->SetValue(function->GetReturnType());
 
@@ -356,7 +356,7 @@ void dlgFunction::CheckChange()
               || chkStrict->GetValue() != function->GetIsStrict()
               || cbLanguage->GetValue() != function->GetLanguage()
               || cbOwner->GetValue() != function->GetOwner()
-              || GetArgs() != function->GetArgTypeNames()
+              || GetArgs() != function->GetArgListWithNames()
               || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
               || (!isC && txtSqlBox->GetText() != function->GetSource())));
     }
@@ -572,13 +572,13 @@ int dlgFunction::GetDirection(const wxString &colName)
 }
 
 
-wxString dlgFunction::GetArgs(const bool withNames)
+wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
 {
     wxString args;
  
     for (int i=0; i < lstArguments->GetItemCount(); i++)
     {
-        if (i)
+        if (i && !args.EndsWith(wxT(", ")))
             args += wxT(", ");
 
         if (typeColNo)
@@ -592,25 +592,28 @@ wxString dlgFunction::GetArgs(const bool withNames)
                 if (i >= 0)
                 {
                     wxString dir=rdbDirection->GetString(i);
-                    if (isProcedure)
+                    if (!(inOnly && dir != wxT("OUT")))
                     {
-                        if (colName != dir)
+                        if (isProcedure)
                         {
-                            colName = colName.Left(colName.Length() - (dir.Length() + 1));
-                            args += qtIdent(colName) + wxT(" ") + dir + wxT(" ");
+                            if (colName != dir)
+                            {
+                                colName = colName.Left(colName.Length() - (dir.Length() + 1));
+                                args += qtIdent(colName) + wxT(" ") + dir + wxT(" ");
+                            }
+                            else
+                                args += dir + wxT(" ");
                         }
                         else
-                            args += dir + wxT(" ");
-                    }
-                    else
-                    {
-                        if (colName != dir)
                         {
-                            colName = colName.Mid(dir.Length()+1);
-                            args += dir + wxT(" ") + qtIdent(colName) + wxT(" ");
+                            if (colName != dir)
+                            {
+                                colName = colName.Mid(dir.Length()+1);
+                                args += dir + wxT(" ") + qtIdent(colName) + wxT(" ");
+                            }
+                            else
+                                args += dir + wxT(" ");
                         }
-                        else
-                            args += dir + wxT(" ");
                     }
                 }
                 else
@@ -618,10 +621,26 @@ wxString dlgFunction::GetArgs(const bool withNames)
                         args += qtIdent(colName) + wxT(" ");  
             }
         }
-
-        args += lstArguments->GetText(i, typeColNo);
+        if (!inOnly)       
+            args += lstArguments->GetText(i, typeColNo);
+        else
+        {
+            if (isProcedure)
+            {
+                if (!(lstArguments->GetText(i, 0).EndsWith(wxT("OUT")) && !lstArguments->GetText(i, 0).EndsWith(wxT("INOUT")) && !lstArguments->GetText(i, 0).EndsWith(wxT("IN OUT"))))
+                    args += lstArguments->GetText(i, typeColNo);
+            }
+            else
+            {
+                if (!lstArguments->GetText(i, 0).StartsWith(wxT("OUT")))
+                    args += lstArguments->GetText(i, typeColNo);
+            }
+        }
+                
     }
 
+    if (args.EndsWith(wxT(", ")))
+        args = args.Mid(0, args.Length()-2);
     return args;
 }
 
@@ -642,7 +661,7 @@ wxString dlgFunction::GetSql()
         || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
         || chkStrict->GetValue() != function->GetIsStrict()
         || cbOwner->GetValue() != function->GetOwner()
-        || GetArgs() != function->GetArgTypeNames()
+        || GetArgs() != function->GetArgListWithNames()
         || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
         || (!isC && txtSqlBox->GetText() != function->GetSource());
 
@@ -652,7 +671,7 @@ wxString dlgFunction::GetSql()
         if (name != function->GetName())
         {
             sql = wxT("ALTER FUNCTION ") + function->GetQuotedFullIdentifier() 
-                                         + wxT("(") + function->GetArgTypes() + wxT(")")
+                                         + wxT("(") + function->GetArgSigList() + wxT(")")
                 + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
         }
  
@@ -664,11 +683,6 @@ wxString dlgFunction::GetSql()
         // create mode
         sql = wxT("CREATE " ) + objType;
     }
-
-
-    name = schema->GetQuotedPrefix() + qtIdent(name) 
-         + wxT("(") + GetArgs(false) + wxT(")");
-
 
     if (didChange)
     {
@@ -717,6 +731,9 @@ wxString dlgFunction::GetSql()
             sql += wxT(";\n");
         }
     }
+
+    name = schema->GetQuotedPrefix() + qtIdent(name) 
+         + wxT("(") + GetArgs(false, true) + wxT(")");
 
     if (function)
     {
