@@ -57,21 +57,26 @@ void pgRule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
     if (properties)
     {
         CreateListColumns(properties);
-        wxString def=GetDefinition().Left(250);
+        wxString def = GetFormattedDefinition();
+        if (!def.IsEmpty())
+        {
+            int doPos=def.Find(wxT(" DO INSTEAD "));
+            if (doPos > 0)
+                def = def.Mid(doPos + 12).Strip(wxString::both);
+            else
+            {
+                doPos = def.Find(wxT(" DO "));
+                if (doPos > 0)
+                    def = def.Mid(doPos+4).Strip(wxString::both);
+            }
+        }
 
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Event"), GetEvent());
         properties->AppendItem(_("Condition"), GetCondition());
         properties->AppendItem(_("Do instead?"), GetDoInstead());
-        properties->AppendItem(_("Action"), GetAction().Left(250));
-        if (def.IsEmpty())
-            properties->AppendItem(_("Definition"), wxT("NOTHING"));
-        else
-        {
-            def.Replace(wxT("\n"), wxT(" "));
-            properties->AppendItem(_("Definition"), def);
-        }
+        properties->AppendItem(_("Definition"), firstLineOnly(def));
         properties->AppendItem(_("System rule?"), GetSystemObject());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
