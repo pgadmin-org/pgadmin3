@@ -162,6 +162,10 @@ int dlgFunction::Go(bool modal)
     if (isProcedure)
     {
         rdbDirection->SetString(2, wxT("IN OUT"));
+        if (function)
+            txtName->Disable();
+        cbOwner->Disable();
+        txtComment->Disable();
         stLanguage->Disable();
         cbLanguage->Disable();
         chkStrict->Disable();
@@ -686,8 +690,15 @@ wxString dlgFunction::GetSql()
 
     if (didChange)
     {
-        sql  += schema->GetQuotedPrefix() + qtIdent(GetName()) 
-             + wxT("(") + GetArgs() + wxT(")");
+        if (isProcedure && GetArgs().IsEmpty())
+        {
+            sql += schema->GetQuotedPrefix() + qtIdent(GetName());
+        }
+        else
+        {
+            sql += schema->GetQuotedPrefix() + qtIdent(GetName()) 
+                + wxT("(") + GetArgs() + wxT(")");
+        }
 
         if (!isProcedure)
         {
@@ -748,7 +759,11 @@ wxString dlgFunction::GetSql()
             AppendOwnerNew(sql,wxT("FUNCTION ") + name);
     }
 
-    sql += GetGrant(wxT("X"), wxT("FUNCTION ") + name);
+    if (isProcedure)
+        sql += GetGrant(wxT("X"), wxT("PROCEDURE ") + name);
+    else
+        sql += GetGrant(wxT("X"), wxT("FUNCTION ") + name);
+
     AppendComment(sql, wxT("FUNCTION ") + name, function);
 
     return sql;

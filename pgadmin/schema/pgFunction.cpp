@@ -198,14 +198,7 @@ wxString pgProcedure::GetSql(ctlTree *browser)
         sql += wxT(" AS")
             + GetSource()
             + wxT("\n\n")
-            + GetOwnerSql(8, 0, wxT("FUNCTION ") + qtSig)
-            + GetGrant(wxT("X"), wxT("FUNCTION ") + qtSig);
-
-        if (!GetComment().IsNull())
-        {
-            sql += wxT("COMMENT ON FUNCTION ") + qtSig
-                + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
-        }
+            + GetGrant(wxT("X"), wxT("PROCEDURE ") + qtSig);
     }
 
     return sql;
