@@ -121,13 +121,13 @@ pgObject *edbPackageVariableFactory::CreateObjects(pgCollection *collection, ctl
     return packageVariable;
 }
 
-#include "images/function.xpm"
-#include "images/functions.xpm"
+#include "images/variable.xpm"
+#include "images/variables.xpm"
 
 edbPackageVariableFactory::edbPackageVariableFactory() 
-: edbPackageObjFactory(__("Variable"), __("New Variable..."), __("Create a new Variable."), function_xpm)
+: edbPackageObjFactory(__("Variable"), __("New Variable..."), __("Create a new Variable."), variable_xpm)
 {
 }
 
 edbPackageVariableFactory packageVariableFactory;
-static pgaCollectionFactory cf(&packageVariableFactory, __("Variables"), functions_xpm);
+static pgaCollectionFactory cf(&packageVariableFactory, __("Variables"), variables_xpm);

@@ -360,10 +360,13 @@ pgCollection *edbPackageObjFactory::CreateCollection(pgObject *obj)
     return new edbPackageObjCollection(GetCollectionFactory(), (edbPackage*)obj);
 }
 
+#include "images/procedure.xpm"
+#include "images/procedures.xpm"
+
 edbPackageProcedureFactory::edbPackageProcedureFactory() 
-: edbPackageFunctionFactory(__("Procedure"), __("New Procedure..."), __("Create a new Procedure."), function_xpm)
+: edbPackageFunctionFactory(__("Procedure"), __("New Procedure..."), __("Create a new Procedure."), procedure_xpm)
 {
 }
 
 edbPackageProcedureFactory packageProcedureFactory;
-static pgaCollectionFactory cfp(&packageProcedureFactory, __("Procedures"), functions_xpm);
+static pgaCollectionFactory cfp(&packageProcedureFactory, __("Procedures"), procedures_xpm);

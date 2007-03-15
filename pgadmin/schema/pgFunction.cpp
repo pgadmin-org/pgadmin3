@@ -519,10 +519,13 @@ pgTriggerFunctionFactory::pgTriggerFunctionFactory()
 pgTriggerFunctionFactory triggerFunctionFactory;
 static pgaCollectionFactory cft(&triggerFunctionFactory, __("Trigger Functions"), triggerfunctions_xpm);
 
+#include "images/procedure.xpm"
+#include "images/procedures.xpm"
+
 pgProcedureFactory::pgProcedureFactory() 
-: pgFunctionFactory(__("Procedure"), __("New Procedure"), __("Create a new Procedure."), function_xpm)
+: pgFunctionFactory(__("Procedure"), __("New Procedure"), __("Create a new Procedure."), procedure_xpm)
 {
 }
 
 pgProcedureFactory procedureFactory;
-static pgaCollectionFactory cfp(&procedureFactory, __("Procedures"), functions_xpm);
+static pgaCollectionFactory cfp(&procedureFactory, __("Procedures"), procedures_xpm);
