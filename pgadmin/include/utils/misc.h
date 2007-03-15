@@ -163,6 +163,9 @@ bool isEdbApp(const wxString &app);
 
 enum 
 {
+    EDB_PACKAGE,
+    EDB_PACKAGEFUNCTION,
+
 	PGM_CATALOG,
   	PGM_CATALOGOBJECT,
     PGM_CHECK,

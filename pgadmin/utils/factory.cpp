@@ -9,12 +9,13 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-// wxWindows headers
+// App headers
 #include "pgAdmin3.h"
 
 #include "schema/pgCollection.h"
 #include "frm/menu.h"
 
+// wxWindows headers
 #include <wx/imaglist.h>
 
 wxArrayPtrVoid *factoryArray=0;

@@ -35,6 +35,7 @@
 #include "utils/misc.h"
 #include "frm/menu.h"
 #include "utils/pgfeatures.h"
+#include "utils/debugger.h"
 #include "frm/frmMain.h"
 #include "ctl/ctlSQLBox.h"
 #include "db/pgConn.h"
@@ -238,6 +239,7 @@ void frmMain::CreateMenus()
     slonyMenu=new wxMenu();
 	scriptingMenu=new wxMenu();
 	viewDataMenu = new wxMenu();
+    debuggingMenu=new wxMenu();
     reportMenu=new wxMenu();
     wxMenu *cfgMenu=new wxMenu();
     helpMenu = new wxMenu();
@@ -329,6 +331,11 @@ void frmMain::CreateMenus()
     toolBar->AddSeparator();
     toolsMenu->AppendSeparator();
     
+    debuggingMenuFactory = new submenuFactory(menuFactories);     // placeholder where "Debugging" submenu will be inserted
+    toolsMenu->Append(debuggingMenuFactory->GetId(), _("&Debugging"), debuggingMenu,    _("Debugging options for the selected item."));
+    new debuggerFactory(menuFactories, debuggingMenu, 0);
+	new breakpointFactory(menuFactories, debuggingMenu, 0);
+
 	new queryToolFactory(menuFactories, toolsMenu, toolBar);
     scriptingMenuFactory = new submenuFactory(menuFactories);    // placeholder where "Query Template" submenu will be inserted
 	toolsMenu->Append(scriptingMenuFactory->GetId(), _("Scripts"), scriptingMenu, _("Start Query Tool with scripted query."));

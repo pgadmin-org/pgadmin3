@@ -349,6 +349,7 @@ pgObject *edbPackageProcedureFactory::CreateObjects(pgCollection *collection, ct
 edbPackageFunctionFactory::edbPackageFunctionFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) 
 : edbPackageObjFactory(tn, ns, nls, img)
 {
+    metaType = EDB_PACKAGEFUNCTION;
 }
 
 edbPackageFunctionFactory packageFunctionFactory(__("Function"), __("New Function..."), __("Create a new Function."), function_xpm);

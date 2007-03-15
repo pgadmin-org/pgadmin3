@@ -92,12 +92,13 @@ private:
     ctlListView *dependents, *dependencies;
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
-    wxMenu *newMenu, *reportMenu, *toolsMenu, *viewMenu, *treeContextMenu, *newContextMenu, *slonyMenu, 
-		*scriptingMenu, *viewDataMenu;
+    wxMenu *newMenu, *debuggingMenu, *reportMenu, *toolsMenu, *viewMenu, 
+          *treeContextMenu, *newContextMenu, *slonyMenu, *scriptingMenu, *viewDataMenu;
     pgServerCollection *serversObj;
 
     propertyFactory *propFactory;
     actionFactory *newMenuFactory;
+    actionFactory *debuggingMenuFactory;
     actionFactory *reportMenuFactory;
 	actionFactory *scriptingMenuFactory;
 	actionFactory *viewdataMenuFactory;

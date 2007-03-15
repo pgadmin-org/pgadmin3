@@ -220,6 +220,7 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 edbPackageFactory::edbPackageFactory()
 : pgSchemaObjFactory(__("Package"), __("New Package..."), __("Create a new package."), package_xpm)
 {
+    metaType = EDB_PACKAGE;
 }
 
 

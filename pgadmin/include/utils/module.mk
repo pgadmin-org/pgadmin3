@@ -10,6 +10,7 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
+	$(srcdir)/include/utils/debugger.h \
 	$(srcdir)/include/utils/factory.h \
 	$(srcdir)/include/utils/favourites.h \
 	$(srcdir)/include/utils/md5.h \

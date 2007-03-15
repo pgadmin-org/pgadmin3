@@ -82,13 +82,15 @@ wxArrayString existingLangNames;
 wxLocale *locale=0;
 pgAppearanceFactory *appearanceFactory=0;
 
-wxString pgBackupExecutable;      // complete filename of PostgreSQL's pg_dump, pg_dumpall and pg_restore, if available
+wxString pgBackupExecutable;       // complete filename of PostgreSQL's pg_dump, pg_dumpall and pg_restore, if available
 wxString pgBackupAllExecutable;
 wxString pgRestoreExecutable;
 
 wxString edbBackupExecutable;      // complete filename of EnterpriseDB's pg_dump, pg_dumpall and pg_restore, if available
 wxString edbBackupAllExecutable;
 wxString edbRestoreExecutable;
+
+wxString debuggerExecutable;       // complete filename of the pl/pgsql & edbspl debugger
 
 wxString loadPath;              // Where the program is loaded from
 wxString docPath;               // Where docs are stored
@@ -255,6 +257,8 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("EDB pg_dump   : %s"), edbBackupExecutable.c_str());
     wxLogInfo(wxT("EDB pg_dumpall: %s"), edbBackupAllExecutable.c_str());
     wxLogInfo(wxT("EDB pg_restore: %s"), edbRestoreExecutable.c_str());
+
+    wxLogInfo(wxT("Debugger      : %s"), debuggerExecutable.c_str());
 
 #ifdef __WXGTK__
 	static pgRendererNative *renderer=new pgRendererNative();
@@ -580,6 +584,19 @@ void pgAdmin3::InitPaths()
     else 
         brandingPath = loadPath + wxT("/../..") + BRANDING_DIR;
 
+    // The debugger is a little different. In a regular install,
+    // it should be in the same directory. In a development env,
+    // it will be in ..\..\debugger\Debug|Release
+    if (wxFile::Exists(loadPath + wxT("\\debugger.exe")))
+        debuggerExecutable = loadPath + wxT("\\debugger.exe");
+#ifdef __WXDEBUG__
+    else if (wxFile::Exists(loadPath + wxT("\\..\\..\\debugger\\Debug\\debugger.exe")))
+        debuggerExecutable = loadPath + wxT("\\..\\..\\debugger\\Debug\\debugger.exe");
+#else
+    else if (wxFile::Exists(loadPath + wxT("\\..\\..\\debugger\\Release\\debugger.exe")))
+        debuggerExecutable = loadPath + wxT("\\..\\..\\debugger\\Release\\debugger.exe");
+#endif
+
 #else
 
     wxString dataDir;
@@ -642,6 +659,15 @@ void pgAdmin3::InitPaths()
         else
             brandingPath = loadPath + wxT("/..") BRANDING_DIR ;
     }
+
+    // The debugger is a little different. In a regular install,
+    // it should be in the same directory. In a development env,
+    // it will be in ../debugger/
+    if (wxFile::Exists(loadPath + wxT("/debugger")))
+        debuggerExecutable = loadPath + wxT("/debugger");
+    else if (wxFile::Exists(loadPath + wxT("/../debugger/debugger")))
+        debuggerExecutable = loadPath + wxT("/../debugger/debugger");
+
 #endif
 
     //////////////////////////////////
