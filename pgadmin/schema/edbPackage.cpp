@@ -16,6 +16,8 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "schema/edbPackage.h"
+#include "schema/edbPackageFunction.h"
+#include "schema/edbPackageVariable.h"
 
 edbPackage::edbPackage(pgSchema *newSchema, const wxString& newName)
 : pgSchemaObject(newSchema, packageFactory, newName)

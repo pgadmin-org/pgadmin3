@@ -50,17 +50,17 @@ void edbPackageVariable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlList
 
 pgObject *edbPackageVariable::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
-    pgObject *packageFunction=0;
+    pgObject *packageVariable=0;
     pgCollection *coll=browser->GetParentCollection(item);
     if (coll)
     {
         if (coll->GetConnection()->EdbMinimumVersion(8, 2))
-            packageFunction = packageFunctionFactory.CreateObjects(coll, 0, wxT("\n   AND varname='") + GetName() + wxT("'"));
+            packageVariable = packageVariableFactory.CreateObjects(coll, 0, wxT("\n   AND varname='") + GetName() + wxT("'"));
         else
-            packageFunction = packageFunctionFactory.CreateObjects(coll, 0, wxT("\n   AND eltname='") + GetName() + wxT("'"));
+            packageVariable = packageVariableFactory.CreateObjects(coll, 0, wxT("\n   AND eltname='") + GetName() + wxT("'"));
     }
 
-    return packageFunction;
+    return packageVariable;
 }
 
 
