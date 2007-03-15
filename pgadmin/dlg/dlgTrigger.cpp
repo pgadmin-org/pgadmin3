@@ -86,7 +86,7 @@ int dlgTrigger::Go(bool modal)
 
         if (trigger->GetLanguage() == wxT("edbspl"))
         {
-            cbFunction->Append(wxString::Format(wxT("<%s>"), _("inline edbspl")));
+            cbFunction->Append(wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")));
             txtBody->SetText(trigger->GetSource());
         }
         else
@@ -109,7 +109,7 @@ int dlgTrigger::Go(bool modal)
     {
         // create mode
         if (connection->EdbMinimumVersion(8,0))
-            cbFunction->Append(wxString::Format(wxT("<%s>"), _("inline edbspl")));
+            cbFunction->Append(wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")));
 
         wxString sysRestr;
         if (!settings->GetShowSystemObjects())
@@ -160,7 +160,7 @@ wxString dlgTrigger::GetSql()
         chkDelete->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_DELETE ? true : false) ||
         rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1))
     {
-        if (trigger || cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("inline edbspl")))
+        if (trigger || cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
             sql += wxT("CREATE OR REPLACE TRIGGER ") + qtIdent(name);
         else
             sql += wxT("CREATE TRIGGER ") + qtIdent(name);
@@ -195,7 +195,7 @@ wxString dlgTrigger::GetSql()
         else
             sql += wxT("STATEMENT");
 
-        if (cbFunction->GetValue() != wxString::Format(wxT("<%s>"), _("inline edbspl")))
+        if (cbFunction->GetValue() != wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
         {
             sql += wxT("\n   EXECUTE PROCEDURE ") + cbFunction->GetValue()
                 + wxT("(") + txtArguments->GetValue()
@@ -227,7 +227,7 @@ void dlgTrigger::OnChangeFunc(wxCommandEvent &ev)
 {
     cbFunction->GuessSelection(ev);
 
-    if (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("inline edbspl")))
+    if (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
     {
         txtArguments->Disable();
         txtBody->Enable();
