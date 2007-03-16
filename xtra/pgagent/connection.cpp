@@ -21,6 +21,8 @@ DBconn::DBconn(const wxString &db)
     inUse = false;
     next=0;
     prev=0;
+    majorVersion=0;
+    minorVersion=0;
     Connect(basicConnectString  + wxT(" dbname=") + dbname);
 }
 
@@ -31,6 +33,8 @@ DBconn::DBconn(const wxString &connectString, const wxString &db)
     inUse = false;
     next=0;
     prev=0;
+    majorVersion=0;
+    minorVersion=0;
     Connect(connectString);
 }
 
@@ -62,6 +66,36 @@ DBconn::~DBconn()
     }
 }
 
+wxString DBconn::qtDbString(const wxString& value)
+{
+    wxString result = value;	
+
+    result.Replace(wxT("\\"), wxT("\\\\"));
+    result.Replace(wxT("'"), wxT("''"));
+    result.Append(wxT("'"));
+
+	if (BackendMinimumVersion(8, 1))
+	{
+		if (result.Contains(wxT("\\")))
+		    result.Prepend(wxT("E'"));
+		else
+			result.Prepend(wxT("'"));
+	}
+	else
+		result.Prepend(wxT("'"));
+
+    return result;
+}
+
+bool DBconn::BackendMinimumVersion(int major, int minor)
+{
+    if (!majorVersion)
+    {
+        wxString version=ExecuteScalar(wxT("SELECT version();")) ;
+	    sscanf(version.ToAscii(), "%*s %d.%d", &majorVersion, &minorVersion);
+    }
+	return majorVersion > major || (majorVersion == major && minorVersion >= minor);
+}
 
 DBconn *DBconn::InitConnection(const wxString &connectString)
 {
@@ -237,6 +271,20 @@ DBresult *DBconn::Execute(const wxString &query)
     return res;
 }
 
+wxString DBconn::ExecuteScalar(const wxString& query)
+{
+    int rows=-1;
+    DBresult *res=Execute(query);
+    wxString data;
+    if (res)
+    {
+        data=res->GetString(0);
+        rows = res->RowsAffected();
+        delete res;
+        return data;
+    }
+    return wxEmptyString;
+}
 
 int DBconn::ExecuteVoid(const wxString &query)
 {

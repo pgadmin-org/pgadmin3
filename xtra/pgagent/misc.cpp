@@ -132,14 +132,3 @@ wxString NumToStr(const long l)
 }
 
 
-wxString qtDbString(const wxString& value)
-{
-    wxString result = value;
-
-    result.Replace(wxT("\\"), wxT("\\\\"));
-    result.Replace(wxT("'"), wxT("\\'"));
-    result.Append(wxT("'"));
-    result.Prepend(wxT("'"));
-
-    return result;
-}

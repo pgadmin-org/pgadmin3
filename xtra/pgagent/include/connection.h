@@ -26,6 +26,10 @@ protected:
     ~DBconn();
 
 public:
+    wxString qtDbString(const wxString& value);
+
+    bool BackendMinimumVersion(int major, int minor);
+
     static DBconn *Get(const wxString &db);
     static DBconn *InitConnection(const wxString &connectString);
 
@@ -37,11 +41,14 @@ public:
     bool IsValid() { return conn != 0; }
 
     DBresult *Execute(const wxString &query);
+    wxString ExecuteScalar(const wxString &query);
     int ExecuteVoid(const wxString &query);
 	void Return();
 
 private:
     bool Connect(const wxString &connectString);
+
+    int minorVersion, majorVersion;
 
 protected:
     static wxString basicConnectString;
