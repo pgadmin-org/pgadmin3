@@ -370,3 +370,4 @@ edbPackageProcedureFactory::edbPackageProcedureFactory()
 
 edbPackageProcedureFactory packageProcedureFactory;
 static pgaCollectionFactory cfp(&packageProcedureFactory, __("Procedures"), procedures_xpm);
+

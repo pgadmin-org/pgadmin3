@@ -148,3 +148,4 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
     }
     return false;
 }
+
