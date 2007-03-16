@@ -26,7 +26,6 @@ EXTRA_DIST = \
 	$(top_srcdir)/pgadmin3-release.pot \
 	$(top_srcdir)/pgAdmin3.sln \
 	$(top_srcdir)/stringextract \
-	$(top_srcdir)/stringextract.bat \
 	$(top_srcdir)/stringmerge
 
 TMP_docs_local = \
