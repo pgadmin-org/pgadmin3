@@ -38,11 +38,11 @@ frmSplash::frmSplash(wxFrame *parent)
     
     SetClientSize(splash.GetWidth(), splash.GetHeight());
 
-    Center();
-
 #ifndef __WXGTK__
 	SetWindowShape();
 #endif
+
+    CenterOnScreen();
 }
 
 void frmSplash::SetWindowShape()

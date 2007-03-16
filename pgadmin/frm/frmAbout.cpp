@@ -43,11 +43,11 @@ frmAbout::frmAbout(wxFrame *parent)
 
     SetClientSize(about.GetWidth(), about.GetHeight());
 
-	this->Center();
-
 #ifndef __WXGTK__
-	SetWindowShape();
+    SetWindowShape();
 #endif
+
+    CenterOnParent();
 }
 
 void frmAbout::OnLeftDown(wxMouseEvent& WXUNUSED(evt))
