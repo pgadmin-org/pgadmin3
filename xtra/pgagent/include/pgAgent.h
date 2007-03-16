@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAgent - PostgreSQL Tools
-// $Id: pgAgent.h 4875 2006-01-06 21:06:46Z dpage $
+// $Id$
 // Copyright (C) 2002 - 2007, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
