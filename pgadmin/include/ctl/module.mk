@@ -5,7 +5,7 @@
 # Copyright (C) 2002 - 2007, The pgAdmin Development Team
 # This software is released under the Artistic Licence
 #
-# module.mk - src/include/ctl/ Makefile fragment
+# module.mk - pgadmin/include/ctl/ Makefile fragment
 #
 #######################################################################
 
