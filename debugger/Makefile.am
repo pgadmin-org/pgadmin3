@@ -9,34 +9,32 @@
 #
 ##############################################################################
 
-SUBDIRS = debugger
-
-bin_PROGRAMS =debugger
+bin_PROGRAMS = debugger
 
 debugger_SOURCES = \
-	$(srcdir)/src/debugger.cpp \
-	$(srcdir)/src/wsBreakPoint.cpp \
-	$(srcdir)/src/wsCodeWindow.cpp \
-	$(srcdir)/src/wsConnProp.cpp \
-	$(srcdir)/src/wsConsole.cpp \
-	$(srcdir)/src/wsDbresult.cpp \
-	$(srcdir)/src/wsDirectdbg.cpp \
-	$(srcdir)/src/wsDocmgr.cpp \
-	$(srcdir)/src/wsFuncdoc.cpp \
-	$(srcdir)/src/wsFuncView.cpp \
-	$(srcdir)/src/wsMainFrame.cpp \
-	$(srcdir)/src/wsMessageWindow.cpp \
-	$(srcdir)/src/wsPgconn.cpp \
-	$(srcdir)/src/wsPgthread.cpp \
-	$(srcdir)/src/wsQueryWindow.cpp \
-	$(srcdir)/src/wsResultGrid.cpp \
-	$(srcdir)/src/wsResultset.cpp \
-	$(srcdir)/src/wsRichWindow.cpp \
-	$(srcdir)/src/wsStackWindow.cpp \
-	$(srcdir)/src/wsTabWindow.cpp \
-	$(srcdir)/src/wsTargetInfo.cpp \
-	$(srcdir)/src/wsVarWindow.cpp \
-	$(srcdir)/src/wsWaitingDialog.cpp
+	$(srcdir)/debugger.cpp \
+	$(srcdir)/wsBreakPoint.cpp \
+	$(srcdir)/wsCodeWindow.cpp \
+	$(srcdir)/wsConnProp.cpp \
+	$(srcdir)/wsConsole.cpp \
+	$(srcdir)/wsDbresult.cpp \
+	$(srcdir)/wsDirectdbg.cpp \
+	$(srcdir)/wsDocmgr.cpp \
+	$(srcdir)/wsFuncdoc.cpp \
+	$(srcdir)/wsFuncView.cpp \
+	$(srcdir)/wsMainFrame.cpp \
+	$(srcdir)/wsMessageWindow.cpp \
+	$(srcdir)/wsPgconn.cpp \
+	$(srcdir)/wsPgthread.cpp \
+	$(srcdir)/wsQueryWindow.cpp \
+	$(srcdir)/wsResultGrid.cpp \
+	$(srcdir)/wsResultset.cpp \
+	$(srcdir)/wsRichWindow.cpp \
+	$(srcdir)/wsStackWindow.cpp \
+	$(srcdir)/wsTabWindow.cpp \
+	$(srcdir)/wsTargetInfo.cpp \
+	$(srcdir)/wsVarWindow.cpp \
+	$(srcdir)/wsWaitingDialog.cpp
 
 EXTRA_DIST = \
 	$(srcdir)/debugger.rc \

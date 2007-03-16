@@ -495,12 +495,14 @@ AC_DEFUN([SETUP_WXWIDGETS],
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
 			
+			debugger_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 		else
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2"
 		
+			debugger_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 		fi
@@ -538,6 +540,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 	fi
 ])
 AC_SUBST(WX_CONFIG)
+AC_SUBST(debugger_LDADD)
 AC_SUBST(pgadmin3_LDADD)
 AC_SUBST(pgagent_LDADD)
 
@@ -563,7 +566,7 @@ AC_DEFUN([SETUP_LIBXML2],
 	fi
 ])
 AC_SUBST(XML2_CONFIG)
-AC_SUBST(pgagent_LDADD)
+AC_SUBST(pgadmin3_LDADD)
 	
 #########################
 # Setup libxslt headers #
@@ -587,7 +590,7 @@ AC_DEFUN([SETUP_LIBXSLT],
 	fi
 ])
 AC_SUBST(XSLT_CONFIG)
-AC_SUBST(pgagent_LDADD)
+AC_SUBST(pgadmin3_LDADD)
 
 ###########
 # Cleanup #
