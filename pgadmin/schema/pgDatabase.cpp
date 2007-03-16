@@ -32,6 +32,8 @@ pgDatabase::pgDatabase(const wxString& newName)
     connected = false;
     conn = NULL;
     missingFKs=0;
+    canDebugPlpgsql=0;
+    canDebugEdbspl=0;
 }
 
 
@@ -208,12 +210,12 @@ wxString pgDatabase::ExecuteScalar(const wxString& sql)
 }
 
 
-bool pgDatabase::ExecuteVoid(const wxString& sql)
+bool pgDatabase::ExecuteVoid(const wxString& sql, bool reportError)
 {
     bool rc=0;
     if (connection())
     {
-        rc = connection()->ExecuteVoid(sql);
+        rc = connection()->ExecuteVoid(sql, reportError);
         if (!rc)
             CheckAlive();
     }
@@ -564,6 +566,81 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     return database;
 }
 
+bool pgDatabase::CanDebugPlpgsql()
+{
+    // Result cache - 0 = not tested, 1 = false, 2 = true.
+    if (canDebugPlpgsql == 1)
+        return false;
+    else if (canDebugPlpgsql == 2)
+        return true;
+
+    if (ExecuteVoid(wxT("SELECT * FROM pldbg_get_target_info('version', 'f');"), false) == false)
+    {
+        canDebugPlpgsql = 1;
+        return false;
+    }
+
+    // If this is EDBAS81, the debuggers will be built into the PLs
+    // so we don't need to check any further.
+    if (server->GetConnection()->EdbMinimumVersion(8, 1))
+    {
+        canDebugPlpgsql = 2;
+        return true;
+    }
+
+    // On EDBAS82 and PostgreSQL, we need to check to make sure that
+    // the debugger library is also available.
+    if (ExecuteVoid(wxT("LOAD '$libdir/plugins/plugin_debugger';"), false) == false)
+    {
+        canDebugPlpgsql = 1;
+        return false;
+    }
+    else
+    {
+        canDebugPlpgsql = 2;
+        return true;
+    }
+
+    return true;
+}
+
+bool pgDatabase::CanDebugEdbspl()
+{
+    // Result cache - 0 = not tested, 1 = false, 2 = true.
+    if (canDebugEdbspl == 1)
+        return false;
+    else if (canDebugEdbspl == 2)
+        return true;
+
+    if (ExecuteVoid(wxT("SELECT * FROM pldbg_get_target_info('version', 'f');"), false) == false)
+    {
+        canDebugEdbspl = 1;
+        return false;
+    }
+
+    // If this is EDBAS81, the debuggers will be built into the PLs
+    // so we don't need to check any further.
+    if (server->GetConnection()->EdbMinimumVersion(8, 1))
+    {
+        canDebugEdbspl = 2;
+        return true;
+    }
+
+    // On EDBAS82 and PostgreSQL, we need to check to make sure that
+    // the debugger library is also available.
+    if (ExecuteVoid(wxT("LOAD '$libdir/plugins/plugin_spl_debugger';"), false) == false)
+    {
+        canDebugEdbspl = 1;
+        return false;
+    }
+    else
+    {
+        canDebugEdbspl = 2;
+        return true;
+    }
+
+    return true;
+}
 
 pgDatabaseCollection::pgDatabaseCollection(pgaFactory *factory, pgServer *sv)
 : pgServerObjCollection(factory, sv)

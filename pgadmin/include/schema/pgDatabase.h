@@ -46,7 +46,7 @@ public:
 
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);
-    bool ExecuteVoid(const wxString& sql);
+    bool ExecuteVoid(const wxString& sql, bool reportError = true);
     void UpdateDefaultSchema();
 
     pgConn *CreateConn() { return server->CreateConn(GetName(), GetOid()); }
@@ -100,6 +100,9 @@ public:
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
 
+    bool CanDebugPlpgsql();
+    bool CanDebugEdbspl();
+
 private:
     pgConn *conn;
     bool connected;
@@ -112,6 +115,8 @@ private:
 
     wxString schemaChanges;
     wxString schemaRestriction;
+
+    int canDebugPlpgsql, canDebugEdbspl;
 };
 
 class pgDatabaseCollection : public pgServerObjCollection

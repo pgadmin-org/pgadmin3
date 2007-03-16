@@ -503,7 +503,7 @@ int pgConn::GetTxStatus()
 // Execute SQL
 //////////////////////////////////////////////////////////////////////////
 
-bool pgConn::ExecuteVoid(const wxString& sql)
+bool pgConn::ExecuteVoid(const wxString& sql, bool reportError)
 {
     if (GetStatus() != PGCONN_OK)
         return false;
@@ -520,7 +520,8 @@ bool pgConn::ExecuteVoid(const wxString& sql)
     if (lastResultStatus != PGRES_TUPLES_OK &&
         lastResultStatus != PGRES_COMMAND_OK)
     {
-        LogError();
+        if (reportError)
+            LogError();
         return false;
     }
 

@@ -59,17 +59,29 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
     if (debuggerExecutable.IsEmpty())
         return false;
 
-    if (obj)
+    if (obj && !obj->IsCollection())
     {
         switch (obj->GetMetaType())
         {
             case PGM_FUNCTION:
-                if (((pgFunction *)obj)->GetReturnType() != wxT("trigger"))
-                    return true;
+                {
+                    pgFunction *func = (pgFunction *)obj;
+                    if (func->GetReturnType() != wxT("trigger"))
+                    {
+                        if (func->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
+                            return true;
+                        else if (func->GetLanguage() == wxT("edbspl") && obj->GetDatabase()->CanDebugEdbspl())
+                            return true;
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+                }
                 break;
 
             case EDB_PACKAGEFUNCTION:
-                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2))
+                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && obj->GetDatabase()->CanDebugEdbspl())
                     return true;
                 break;
 
@@ -124,22 +136,42 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
     if (debuggerExecutable.IsEmpty())
         return false;
 
-    if (obj)
+    if (obj && !obj->IsCollection())
     {
         switch (obj->GetMetaType())
         {
             case PGM_FUNCTION:
-                if (((pgFunction *)obj)->GetReturnType() != wxT("trigger"))
-                    return true;
+                {
+                    pgFunction *func = (pgFunction *)obj;
+                    if (func->GetReturnType() != wxT("trigger"))
+                    {
+                        if (func->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
+                            return true;
+                        else if (func->GetLanguage() == wxT("edbspl") && obj->GetDatabase()->CanDebugEdbspl())
+                            return true;
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+                }
                 break;
 
             case EDB_PACKAGEFUNCTION:
-                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2))
+                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && obj->GetDatabase()->CanDebugPlpgsql())
                     return true;
                 break;
 
             case PGM_TRIGGER:
-                return true;
+                {
+                    pgTrigger *trig = (pgTrigger *)obj;
+                    if (trig->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
+                        return true;
+                    else if (trig->GetLanguage() == wxT("edbspl") && obj->GetDatabase()->CanDebugEdbspl())
+                        return true;
+                    else
+                        return false;
+                }
                 break;
 
             default:

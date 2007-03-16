@@ -100,7 +100,7 @@ public:
     static double GetLibpqVersion() { return libpqVersion; }
 
     void Close();
-    bool ExecuteVoid(const wxString& sql);
+    bool ExecuteVoid(const wxString& sql, bool reportError = true);
     wxString ExecuteScalar(const wxString& sql);
     pgSet *ExecuteSet(const wxString& sql);
     wxString GetUser() const { return wxString(PQuser(conn), *conv); }
