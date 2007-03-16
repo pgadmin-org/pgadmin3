@@ -229,7 +229,7 @@ int Job::Execute()
 				// The Windows way
 				HANDLE h_script;
 				DWORD dwRead; 
-				char chBuf[4096];
+				char chBuf[4098];
                 
 				h_script = win32_popen_r(filename.wc_str());
                 if (!h_script)
@@ -261,7 +261,7 @@ int Job::Execute()
 #else
 				// The *nix way.
 				FILE *fp_script;
-				char buf[4096];
+				char buf[4098];
 
                 fp_script = popen(filename.mb_str(wxConvUTF8), "r");
                 if (!fp_script)
