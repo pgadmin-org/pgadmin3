@@ -205,7 +205,7 @@ class wsCodeWindow : public wxMDIChildFrame
 	static wxString m_commandCreateListener;
 	static wxString m_commandWaitForTarget;
 	
-	void wsCodeWindow::OnClose( wxCloseEvent & event );
+	void OnClose( wxCloseEvent & event );
 
     DECLARE_EVENT_TABLE()
 };
