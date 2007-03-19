@@ -73,13 +73,19 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
             len=(typmod & 0xffff);
             length += NumToStr(len);
         }
-        else
+        else if (name == wxT("date"))
+        {
+            len=prec=0;
+            length = wxT(""); /* Clear Length */
+        }
+        else 
         {
             prec=0;
             len=typmod-4L;
             length += NumToStr(len);
         }
-        length += wxT(")");
+	if (len > 0)
+	    length += wxT(")");
     }
     else
         len=prec=0;
