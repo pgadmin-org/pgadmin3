@@ -39,7 +39,7 @@ echo Building pgAdmin III Installer...
 candle -nologo -dAPPNAME="pgAdmin III" -dVERSION="%1" -dSYSTEM32DIR="%SystemRoot%\System32" -dPFILESDIR="%ProgramFiles%" src/pgadmin3.wxs
 IF ERRORLEVEL 1 GOTO ERR_HANDLER
 
-light -nologo pgadmin3.wixobj
+light -nologo -ext WixUIExtension -cultures:en-us pgadmin3.wixobj
 IF ERRORLEVEL 1 GOTO ERR_HANDLER
 
 echo.
