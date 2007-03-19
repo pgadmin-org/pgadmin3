@@ -16,6 +16,7 @@
 #include <wx/xrc/xmlres.h>
 #include <wx/fontdlg.h>
 #include <wx/fontutil.h>
+#include <wx/file.h>
 
 // App headers
 #include "frm/frmOptions.h"
