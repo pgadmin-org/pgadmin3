@@ -11,15 +11,10 @@ EXTRA_DIST = \
     $(srcdir)/Make.bat \
     $(srcdir)/README.txt \
     $(srcdir)/upgrade.bat \
+    $(srcdir)/resources/background.bmp \
     $(srcdir)/resources/banner.bmp \
-    $(srcdir)/resources/new.bmp \
-    $(srcdir)/resources/up.bmp \
-    $(srcdir)/resources/modify.ico \
-    $(srcdir)/resources/remove.ico \
     $(srcdir)/resources/licence.rtf \
     $(srcdir)/src/i18ndata.wxs \
     $(srcdir)/src/i18nrefs.wxs \
     $(srcdir)/src/pgadmin3.wxs \
-    $(srcdir)/src/ui.wxs \
-    $(srcdir)/src/uidata.wxs \
     $(srcdir)/utils/RegenGuids.pl
