@@ -24,7 +24,7 @@ debugger_SOURCES += \
 	$(srcdir)/include/wsFuncView.h \
 	$(srcdir)/include/wsMainFrame.h \
 	$(srcdir)/include/wsMessageWindow.h \
-	$(srcdir)/include/wsPgcon.h \
+	$(srcdir)/include/wsPgconn.h \
 	$(srcdir)/include/wsPgthread.h \
 	$(srcdir)/include/wsQueryWindow.h \
 	$(srcdir)/include/wsResultGrid.h \
