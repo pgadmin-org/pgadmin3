@@ -219,7 +219,8 @@ wsCodeWindow::wsCodeWindow( wxMDIParentFrame * parent, wxWindowID id, const wsCo
 	m_view->MarkerDefine( MARKER_BREAKPOINT, wxSTC_MARK_CIRCLEPLUS, *wxRED, *wxRED );
 
 	// Debug line number
-	m_view->StyleSetFont(wxSTC_STYLE_DEFAULT, wxFont(8, wxSWISS, wxNORMAL, wxNORMAL));
+	wxFont lineFont( 8, wxSWISS, wxNORMAL, wxNORMAL );
+	m_view->StyleSetFont(wxSTC_STYLE_DEFAULT, lineFont);
 	m_view->SetMarginType(1, wxSTC_MARGIN_NUMBER);
 	m_view->SetMarginWidth( 1, 30 );
 
