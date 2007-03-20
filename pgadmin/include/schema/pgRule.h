@@ -60,6 +60,8 @@ public:
     void iSetAction(const wxString& s) { action=s; }
     bool GetDoInstead() const { return doInstead; }
     void iSetDoInstead(const bool b) { doInstead=b; }
+    bool GetEnabled() const { return enabled; }
+    void iSetEnabled(const bool b) { enabled=b; }
     wxString GetQuotedFullTable() const { return quotedFullTable; }
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
 
@@ -74,7 +76,7 @@ public:
     bool HasReferences() { return true; }
 private:
     wxString event, condition, action, quotedFullTable;
-    bool doInstead;
+    bool doInstead, enabled;
 };
 
 #endif

@@ -77,6 +77,8 @@ void pgRule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         properties->AppendItem(_("Condition"), GetCondition());
         properties->AppendItem(_("Do instead?"), GetDoInstead());
         properties->AppendItem(_("Definition"), firstLineOnly(def));
+        if (this->GetDatabase()->connection()->BackendMinimumVersion(8, 3))
+            properties->AppendItem(_("Enabled?"), GetEnabled());
         properties->AppendItem(_("System rule?"), GetSystemObject());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
@@ -100,7 +102,7 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
     pgRule *rule=0;
 
     pgSet *rules= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT rw.oid, rw.ev_class, rulename, relname, nspname, description, is_instead, ev_type, ev_action, ev_qual,\n")
+        wxT("SELECT rw.oid, rw.*, relname, nspname, description,\n")
         wxT("       pg_get_ruledef(rw.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition\n")
         wxT("  FROM pg_rewrite rw\n")
         wxT("  JOIN pg_class cl ON cl.oid=rw.ev_class\n")
@@ -108,7 +110,7 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=rw.oid\n")
         wxT(" WHERE ev_class = ") + NumToStr(collection->GetOid())
         + restriction + wxT("\n")
-        wxT(" ORDER BY rulename"));
+        wxT(" ORDER BY rw.rulename"));
 
     if (rules)
     {
@@ -118,6 +120,15 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 
             rule->iSetOid(rules->GetOid(wxT("oid")));
             rule->iSetComment(rules->GetVal(wxT("description")));
+
+            if (collection->GetDatabase()->connection()->BackendMinimumVersion(8, 3))
+            {
+                if (rules->GetVal(wxT("ev_enabled")) != wxT("D"))
+                    rule->iSetEnabled(true);
+                else
+                    rule->iSetEnabled(false);
+            }
+
             rule->iSetDoInstead(rules->GetBool(wxT("is_instead")));
             rule->iSetAction(rules->GetVal(wxT("ev_action")));
             wxString definition=rules->GetVal(wxT("definition"));

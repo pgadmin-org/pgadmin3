@@ -239,7 +239,17 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
             trigger->iSetXid(triggers->GetOid(wxT("xmin")));
             trigger->iSetComment(triggers->GetVal(wxT("description")));
             trigger->iSetFunctionOid(triggers->GetOid(wxT("tgfoid")));
-            trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
+
+            if (collection->GetDatabase()->connection()->BackendMinimumVersion(8, 3))
+            {
+                if (triggers->GetVal(wxT("tgenabled")) != wxT("D"))
+                    trigger->iSetEnabled(true);
+                else
+                    trigger->iSetEnabled(false);
+            }
+            else
+                trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
+
             trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));
             trigger->iSetLanguage(triggers->GetVal(wxT("lanname")));
             trigger->iSetSource(triggers->GetVal(wxT("prosrc")));
