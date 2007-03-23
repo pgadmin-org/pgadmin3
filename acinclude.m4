@@ -332,7 +332,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		case "${host}" in
 			*solaris*)
 				LDFLAGS="$LDFLAGS -L${PG_HOME}/lib -lssl"
-				;;
+				;; 
 			*)
 				LDFLAGS="$LDFLAGS -L${PG_HOME}/lib"
 				;;
@@ -342,7 +342,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		AC_LANG_C
 		AC_CHECK_LIB(pq, PQexec, [PG_LIBPQ=yes], [PG_LIBPQ=no])
 
-		if test "$build_cpu-$build_vendor" = "powerpc-apple"
+		if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
 		then
 			echo -n "checking if libpq links against libssl: "
 			if test "$(otool -L ${PG_HOME}/lib/libpq.?.dylib | grep -c libssl)" -gt 0
