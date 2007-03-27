@@ -204,8 +204,6 @@ wxString dlgSequence::GetSql()
                 else
                     tmp += wxT("\n   MAXVALUE ") + txtMax->GetValue();
             }
-            if (txtStart->GetValue() != sequence->GetLastValue().ToString())
-                tmp += wxT("\n   RESTART WITH ") + txtStart->GetValue();
 
             if (txtCache->GetValue() != sequence->GetCacheValue().ToString())
                 tmp += wxT("\n   CACHE ") + txtCache->GetValue();
@@ -222,13 +220,11 @@ wxString dlgSequence::GetSql()
                     +  tmp + wxT(";\n");
             }
         }
-        else
-        {
-            if (txtStart->GetValue() != sequence->GetLastValue().ToString())
-                sql += wxT("SELECT setval('") + qtIdent(schema->GetName()) + wxT(".") + qtIdent(name)
-                    +  wxT("', ") + txtStart->GetValue()
-                    +  wxT(", false);\n");
-        }
+
+        if (txtStart->GetValue() != sequence->GetLastValue().ToString())
+            sql += wxT("SELECT setval('") + qtIdent(schema->GetName()) + wxT(".") + qtIdent(name)
+                +  wxT("', ") + txtStart->GetValue()
+                +  wxT(", true);\n");
     }
     else
     {
