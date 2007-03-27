@@ -13,6 +13,9 @@
 #ifndef PGAGENT_H
 #define PGAGENT_H
 
+// Disable all the GUI classes that might get pulled in through the headers
+#define wxUSE_GUI 0
+
 #include <wx/wx.h>
 
 #include "misc.h"
