@@ -1989,6 +1989,9 @@ wxString sqlTable::MakeKey(cacheLine *line)
             if (colval.IsEmpty())
                 return wxEmptyString;
 
+            if (colval == wxT("''") && columns[cn-offset].typeName == wxT("text"))
+                colval = wxEmptyString;
+
             if (!whereClause.IsEmpty())
                 whereClause += wxT(" AND ");
             whereClause += qtIdent(columns[cn-offset].name) + wxT(" = ") + connection->qtDbString(colval);
