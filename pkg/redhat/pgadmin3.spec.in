@@ -6,27 +6,19 @@
 
 Summary:	Graphical client for PostgreSQL
 Name:		pgadmin3
-Version:        PGADMIN_LONG_VERSION
-Release:        1
-License:        Artistic
-Group:          Applications/Databases
+Version:	PGADMIN_LONG_VERSION
+Release:	1%{?dist}
+License:	Artistic
+Group:		Applications/Databases
 URL:		http://www.pgadmin.org/
-Packager:	pgAdmin project <pgadmin-hackers@postgresql.org>
 Source:		pgadmin3-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
-BuildRequires:	postgresql-devel
-Requires:	postgresql
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires:  wxGTK2-devel wxGTK2-stc wxGTK2-xrc postgresql-devel desktop-file-utils openssl-devel libxml2-devel libxslt-devel
 
-%define wxGTK2_version 2.6
-%define withwxconfig wx-config
-%define desktop_vendor pgadmin
+#Patch1:		pgadmin3-1.6.1-frm.patch
 
 %define beta 0
 %{?beta:%define __os_install_post /usr/lib/rpm/brp-compress}
-
-# When rebuilding, wxWindows source installation is needed. Currently we don't have
-# a stable RPM for wxWindows.
-#BuildRequires: wxGTK2ud >= 2.5-%{wxGTK2_version}, wxGTK2ud-devel >= 2.5-%{wxGTK2_version}, wxGTK2ud-stc >= 2.5-%{wxGTK2_version}, wxGTK2ud-xrc >= 2.5-%{wxGTK2_version}
 
 %description
 pgAdmin III is a powerful administration and development 
@@ -40,52 +32,68 @@ The application also includes a query builder, an SQL
 editor, a server-side code editor and much more. 
 
 %package docs
-Summary: Documentation for pgAdmin3
-Group: Applications/Databases
-Requires: %{name} = %{version}
+Summary:	Documentation for pgAdmin3
+Group:		Applications/Databases
+Requires:	%{name} = %{version}
+
 %description docs
 This package contains documentation for various languages,
 which are in html format.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q 
+#%patch1 -p0
 
 %build
-%configure --disable-debug
-make all
-# Remove the following line for next release (Currently: 1.4.3)
- for i in `find docs -iname "*.*"`; do dos2unix -q $i; done
+export LIBS="-lwx_gtk2u_core-2.8"
+%configure --disable-debug --with-wx-version=2.8 --with-wx=/usr
+make %{?_smp_mflags} all
 
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
-strip --strip-debug %{buildroot}/%{_bindir}/%{name}
-chmod +x $RPM_BUILD_ROOT/%{_bindir}/pgagent
-chmod +x $RPM_BUILD_ROOT/%{_bindir}/pgadmin3
 
-cp -f ./src/include/images/elephant32.xpm %{buildroot}/%{_datadir}/%{name}/%{name}.xpm
-cp -f ./pkg/%{name}.desktop %{buildroot}/%{_datadir}/%{name}/%{name}.desktop
+make DESTDIR=%{buildroot} install
+
+cp -f ./src/include/images/elephant48.xpm %{buildroot}/%{_datadir}/%{name}/%{name}.xpm
 
 mkdir -p %{buildroot}/%{_datadir}/applications
 
-desktop-file-install --vendor %{desktop_vendor} --delete-original  --dir %{buildroot}/%{_datadir}/applications --add-category X-Red-Hat-Base --add-category Application --add-category Development %{buildroot}/%{_datadir}/%{name}/%{name}.desktop
+desktop-file-install --vendor fedora --dir %{buildroot}/%{_datadir}/applications \
+	--add-category X-Fedora\
+	--add-category Application\
+	--add-category Development\
+	./pkg/%{name}.desktop
 
 %clean
 rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
+%doc BUGS CHANGELOG LICENSE README
 %{_bindir}/*
-%doc LICENCE.txt BUGS.txt README.txt
 %{_datadir}/%{name}
-%{_datadir}/applications
+%{_datadir}/applications/*
 
 %files docs
 %defattr(-,root,root)
 %doc docs/*
 
-
 %changelog
+* Tue Mar 27 2007 Devrim GUNDUZ <devrim@commandprompt.com> 1.6.3-1
+- Update to 1.6.3
+
+* Mon Jan 8 2007 Devrim GUNDUZ <devrim@commandprompt.com> 1.6.2-1
+- Update to 1.6.2
+- Removed patch1 that is already in this version
+
+* Tue Jan 2 2007 Devrim GUNDUZ <devrim@commandprompt.com> 1.6.1-2
+- Rebuilt
+
+* Wed Dec 20 2006 Devrim GUNDUZ <devrim@commandprompt.com> 1.6.1-1
+- Update to 1.6.1
+- Sync to Fedora Extras spec as much as possible
+
 * Thu Jul 20 2006 Devrim GUNDUZ <devrim@commandprompt.com> 1.4.3-1
 - 1.4.3
 - Fixed all rpmlint errors and some warnings
