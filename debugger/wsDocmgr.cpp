@@ -80,7 +80,8 @@ wxString wsDocMgr::selectFunctionFromServer()
 		else
 		{
 			wxMessageBox( wxString( PQresultErrorMessage( result ), wxConvUTF8 ), _( "Can't read function list from server" ), wxOK | wxICON_EXCLAMATION );
-			return( wxString( wxT( "" )));
+			return(wxEmptyString);
 		}
 	}
+    return wxEmptyString;
 }

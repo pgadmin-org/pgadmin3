@@ -508,4 +508,5 @@ bool wsFuncDoc::OnOpenDocument( const wxString & name )
 			return( true );
 		}
 	}
+    return false;
 }
