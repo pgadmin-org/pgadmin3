@@ -31,8 +31,6 @@ IMPLEMENT_APP( wsApp )
 
 wsMainFrame		*glMainFrame = NULL;
 wsApp			*glApp       = NULL;
-wxFrameManager	manager;
-wxArrayString	m_perspectives;
 
 // cmdLineDesc - defines the options, switches, and parameters that we 
 // 		 expect to find on the command line.

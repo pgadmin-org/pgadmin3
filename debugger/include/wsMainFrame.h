@@ -50,42 +50,44 @@ class wsMainFrame : public wxDocParentFrame
     DECLARE_CLASS( wsMainFrame )
 
   public:
-    wsMainFrame(  wxDocManager * docManager, const wxString & title, const wxPoint & pos, const wxSize & size );
+	wsMainFrame( wxDocManager * docManager, const wxString & title, const wxPoint & pos, const wxSize & size );
 	virtual ~wsMainFrame();
 
-    bool            addConnect( const wxString & host, const wxString & database, const wxString & port, const wxString & user, const wxString & password );
-	wsDirectDbg   * addDirectDbg( const wsConnProp & connProp );		// Create a new direct-debugging window
-    wsCodeWindow  * addDebug( const wsConnProp & props );			   	// Create a new debugger window
-	wxStatusBar   * getStatusBar() { return( m_statusBar ); }			// Returns pointer to the status bar
+	bool	addConnect( const wxString & host, const wxString & database, const wxString & port, const wxString & user, const wxString & password );
+	wsDirectDbg   *addDirectDbg( const wsConnProp & connProp );		// Create a new direct-debugging window
+	wsCodeWindow  *addDebug( const wsConnProp & props );			   	// Create a new debugger window
+	wxStatusBar   *getStatusBar() { return( m_statusBar ); }			// Returns pointer to the status bar
 
-	wxDocChildFrame * makeFuncFrame( wxDocument * doc, wxView * view );	// Create a new function-editor frame
+	wxDocChildFrame *makeFuncFrame( wxDocument * doc, wxView * view );	// Create a new function-editor frame
 
-    wxMenuBar			*	m_menuBar;			// Menu bar
-    wxToolBar			*	m_toolBar;			// Frames' toolbar
+	wxMenuBar	*m_menuBar;	// Menu bar
+	wxToolBar	*m_toolBar;	// Frames' toolbar
+	wxFrameManager  manager;
+	wxArrayString   m_perspectives;
 
 	void PerspectivesDef();
 
   private:
-    wsConsole			*	m_console;				// Console window (eventually a list)
-	wsCodeWindow		* 	m_standaloneDebugger;	// Standalone debugger window
-	wsDirectDbg         *   m_standaloneDirectDbg;	// Standalone direct debugger
+	wsConsole	*m_console;	// Console window (eventually a list)
+	wsCodeWindow	*m_standaloneDebugger;	// Standalone debugger window
+	wsDirectDbg	*m_standaloneDirectDbg;	// Standalone direct debugger
 
   private:
 
-    wxStatusBar			*	m_statusBar;		// Frame's status bar
-	wxMenu				*	m_perspectives_menu;
+	wxStatusBar	*m_statusBar;	// Frame's status bar
+	wxMenu		*m_perspectives_menu;
 
-    wxMenuBar	*	setupMenuBar( void );
-    wxToolBar	* 	setupToolBar( void );
-    wxStatusBar	*	setupStatusBar( void );
-	void			writeSettings();
-	void			readSettings();
+	wxMenuBar	*setupMenuBar( void );
+	wxToolBar	*setupToolBar( void );
+	wxStatusBar	*setupStatusBar( void );
+	void		writeSettings();
+	void		readSettings();
 
     DECLARE_EVENT_TABLE()
 
-    void OnExecute( wxCommandEvent & event );
-    void OnDebugCommand( wxCommandEvent & event );
-    void OnClose( wxCloseEvent & event );
+	void OnExecute( wxCommandEvent & event );
+	void OnDebugCommand( wxCommandEvent & event );
+	void OnClose( wxCloseEvent & event );
 	void OnSize( wxSizeEvent & event );
 	void OnChar( wxKeyEvent & event );
 	void OnEditCommand( wxCommandEvent & event );	// Route cut,copy,paste... tool to active child
@@ -111,8 +113,6 @@ class wsMainFrame : public wxDocParentFrame
 //  +-- m_treeWindow
 };
 
-extern wsMainFrame		*glMainFrame;		// The only instance of this class
-extern wxFrameManager	manager;		// wxAUI manager 
-extern wxArrayString	m_perspectives;
+extern wsMainFrame	*glMainFrame;	// The only instance of this class
 
 #endif // WSMAINFRAMEH

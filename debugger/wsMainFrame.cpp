@@ -234,6 +234,11 @@ void wsMainFrame ::PerspectivesDef()
 
 void wsMainFrame::OnSize( wxSizeEvent & event )
 {
+#if 0
+    wxLayoutAlgorithm	layout;
+
+    layout.LayoutMDIFrame( this );
+#endif
 	event.Skip();
 }
 
@@ -403,7 +408,7 @@ void wsMainFrame::OnChar( wxKeyEvent & event )
 ////////////////////////////////////////////////////////////////////////////////
 // makeFuncFrame()
 //
-// This function creates a new DocChild frame to hold a view (presumably a 
+// This function creates a new MDI child frame to hold a view (presumably a 
 // wsFuncView). We also adjust the File menu here to reflect the fact that 
 // we now have a document to work with.
 
@@ -435,7 +440,7 @@ wxDocChildFrame * wsMainFrame::makeFuncFrame( wxDocument * doc, wxView * view )
 //  OnEditCommand()
 //
 //	This event handler forwards toolbar/menu bar commands to the currently-
-//  active child (that is, the DocChild frame that holds the focus).
+//  active child (that is, the MDI child frame that holds the focus).
 
 void wsMainFrame::OnEditCommand( wxCommandEvent & event )
 {

@@ -116,20 +116,20 @@ wsQueryWindow::wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn 
 	}
 
 	m_command->AppendText( defaultCmd );
-    m_command->AppendText( wxT( "\n" ));
-    m_command->SetSelection( -1, -1 );
+	m_command->AppendText( wxT( "\n" ));
+	m_command->SetSelection( -1, -1 );
 
-    wxLayoutAlgorithm	layout;
-    layout.LayoutWindow( glMainFrame /*this*/, m_commandHolder );
+	wxLayoutAlgorithm	layout;
+	layout.LayoutWindow( glMainFrame /*this*/, m_commandHolder );
 	
 	// wxAUI
-    manager.AddPane(m_gridHolder, wxAuiPaneInfo().Name(wxT("resultGrid")).Caption(_("resultGrid")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
-	manager.AddPane(m_commandHolder, wxAuiPaneInfo().Name(wxT("command")).Caption(_("command")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
+	glMainFrame->manager.AddPane(m_gridHolder, wxAuiPaneInfo().Name(wxT("resultGrid")).Caption(_("resultGrid")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
+	glMainFrame->manager.AddPane(m_commandHolder, wxAuiPaneInfo().Name(wxT("command")).Caption(_("command")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
 
-    manager.GetPane(wxT("resultGrid")).Caption(_("resultGrid"));
-    manager.GetPane(wxT("command")).Caption(_("command"));
+	glMainFrame->manager.GetPane(wxT("resultGrid")).Caption(_("resultGrid"));
+	glMainFrame->manager.GetPane(wxT("command")).Caption(_("command"));
 
-	manager.Update();
+	glMainFrame->manager.Update();
 
 }
 

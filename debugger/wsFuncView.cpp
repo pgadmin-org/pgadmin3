@@ -50,7 +50,7 @@ wsFuncView::wsFuncView( )
 ////////////////////////////////////////////////////////////////////////////////
 // wsFuncView destructor
 //
-//	Just tear down the frame (DocChild frame) and edit control
+//	Just tear down the frame (MDI child frame) and edit control
 
 wsFuncView::~wsFuncView( )
 {
@@ -62,7 +62,7 @@ wsFuncView::~wsFuncView( )
 // OnCreate()
 //
 //	This function is called when we create a view to display a wsFuncDoc.  
-//  OnCreate() asks the main frame to create a new DocChild frame to hold a 
+//  OnCreate() asks the main frame to create a new MDI child frame to hold a 
 //  a wsRichWindow (which is derived from wxStyledTextCtrl).  
 
 bool wsFuncView::OnCreate( wxDocument * doc, long flags )
@@ -116,7 +116,7 @@ bool wsFuncView::OnClose( bool deleteWindow )
 	// Give the focus to some other window
 	Activate( false );
 
-	// And trash the DocChild frame that we used to live in
+	// And trash the MDI child frame that we used to live in
 	if( deleteWindow )
 	{
 		m_frame->Destroy();
