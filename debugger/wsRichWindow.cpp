@@ -17,12 +17,12 @@ IMPLEMENT_DYNAMIC_CLASS( wsRichWindow, wxStyledTextCtrl )
 
 BEGIN_EVENT_TABLE( wsRichWindow, wxStyledTextCtrl )
     EVT_CHAR( wsRichWindow::OnChar )
-	EVT_STC_UPDATEUI( wxID_ANY, wsRichWindow::OnSTCUpdateUI)
-	EVT_TOOL( wxID_CUT,			wsRichWindow::OnEditCommand)
-	EVT_TOOL( wxID_COPY,		wsRichWindow::OnEditCommand)
-	EVT_TOOL( wxID_PASTE,		wsRichWindow::OnEditCommand)
-	EVT_TOOL( wxID_UNDO,		wsRichWindow::OnEditCommand)
-	EVT_TOOL( wxID_REDO,		wsRichWindow::OnEditCommand)
+    EVT_STC_UPDATEUI( wxID_ANY, wsRichWindow::OnSTCUpdateUI)
+    EVT_TOOL( wxID_CUT,			wsRichWindow::OnEditCommand)
+    EVT_TOOL( wxID_COPY,		wsRichWindow::OnEditCommand)
+    EVT_TOOL( wxID_PASTE,		wsRichWindow::OnEditCommand)
+    EVT_TOOL( wxID_UNDO,		wsRichWindow::OnEditCommand)
+    EVT_TOOL( wxID_REDO,		wsRichWindow::OnEditCommand)
 
 END_EVENT_TABLE()
 
@@ -50,15 +50,15 @@ static const char * keywords7 =
 // 
 
 wsRichWindow::wsRichWindow( wxWindow * parent, wxWindowID id, const wxSize & size )
-    : wxStyledTextCtrl( parent, id, wxDefaultPosition, size ),
-      m_parentWantsKeys( false )
+	: wxStyledTextCtrl( parent, id, wxDefaultPosition, size ),
+	m_parentWantsKeys( false )
 {
 
 	// Set the default font - FIXME: should get this from the .pgAdmin3 settings file
 
 	wxString fontName;
 
-    if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
+	if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
 	{
 		wxFont	font( fontName );
 
@@ -88,24 +88,24 @@ wsRichWindow::wsRichWindow( wxWindow * parent, wxWindowID id, const wxSize & siz
 	// Initialize the style-specific fonts
 
 	// No margins required by default
-    SetMarginWidth(1, 0);
+	SetMarginWidth(1, 0);
 
-    // Setup the different highlight colours
-    StyleSetForeground( 0,  wxColour( 0x80, 0x80, 0x80 ));
-    StyleSetForeground( 1,  wxColour( 0x00, 0x7f, 0x00 ));
-    StyleSetForeground( 2,  wxColour( 0x00, 0x7f, 0x00 ));
-    StyleSetForeground( 3,  wxColour( 0x7f, 0x7f, 0x7f ));
-    StyleSetForeground( 4,  wxColour( 0x00, 0x7f, 0x7f ));
-    StyleSetForeground( 5,  wxColour( 0x00, 0x00, 0x7f ));
-    StyleSetForeground( 6,  wxColour( 0x7f, 0x00, 0x7f ));
-    StyleSetForeground( 7,  wxColour( 0x7f, 0x00, 0x7f ));
-    StyleSetForeground( 8,  wxColour( 0x00, 0x7f, 0x7f ));
-    StyleSetForeground( 9,  wxColour( 0x7f, 0x7f, 0x7f ));
-    StyleSetForeground( 10, wxColour( 0x00, 0x00, 0x00 ));
-    StyleSetForeground( 11, wxColour( 0x00, 0x00, 0x00 ));
+	// Setup the different highlight colours
+	StyleSetForeground( 0,  wxColour( 0x80, 0x80, 0x80 ));
+	StyleSetForeground( 1,  wxColour( 0x00, 0x7f, 0x00 ));
+	StyleSetForeground( 2,  wxColour( 0x00, 0x7f, 0x00 ));
+	StyleSetForeground( 3,  wxColour( 0x7f, 0x7f, 0x7f ));
+	StyleSetForeground( 4,  wxColour( 0x00, 0x7f, 0x7f ));
+	StyleSetForeground( 5,  wxColour( 0x00, 0x00, 0x7f ));
+	StyleSetForeground( 6,  wxColour( 0x7f, 0x00, 0x7f ));
+	StyleSetForeground( 7,  wxColour( 0x7f, 0x00, 0x7f ));
+	StyleSetForeground( 8,  wxColour( 0x00, 0x7f, 0x7f ));
+	StyleSetForeground( 9,  wxColour( 0x7f, 0x7f, 0x7f ));
+	StyleSetForeground( 10, wxColour( 0x00, 0x00, 0x00 ));
+	StyleSetForeground( 11, wxColour( 0x00, 0x00, 0x00 ));
 
 	// Select the SQL lexer (the lexer handles colorizing and fontification)
-    SetLexer( wxSTC_LEX_SQL );
+	SetLexer( wxSTC_LEX_SQL );
 	SetKeyWords( 0, wxString( wxString( keywords1, wxConvUTF8 )
 			+ wxString( keywords2, wxConvUTF8 )
 			+ wxString( keywords3, wxConvUTF8 )
@@ -127,10 +127,10 @@ wsRichWindow::wsRichWindow( wxWindow * parent, wxWindowID id, const wxSize & siz
 
 void wsRichWindow::OnChar( wxKeyEvent & event )
 {
-    if( m_parentWantsKeys )
+	if( m_parentWantsKeys )
 		GetParent()->AddPendingEvent( event );
 	
-	event.Skip();		// Make sure that a base class handles this event
+	event.Skip();	// Make sure that a base class handles this event
 }
 
 ////////////////////////////////////////////////////////////////////////////////

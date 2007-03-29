@@ -28,7 +28,7 @@ WX_DEFINE_OBJARRAY( wsArgInfoArray );
 #define COL_IS_FUNCTION		"isfunc"
 #define COL_TARGET_OID		"target"
 #define COL_PACKAGE_OID		"pkg"
-#define COL_FQ_NAME			"fqname"		/* Fully qualified name	*/
+#define COL_FQ_NAME		"fqname"		/* Fully qualified name	*/
 
 ////////////////////////////////////////////////////////////////////////////////
 // wsTargetInfo constructor

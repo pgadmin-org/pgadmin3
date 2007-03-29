@@ -51,14 +51,14 @@ static const wxCmdLineEntryDesc cmdLineDesc[] =
     { wxCMD_LINE_OPTION, wxT( "h" ), wxT( "host" ),     		wxT( "database server host or socket directory" ),   wxCMD_LINE_VAL_STRING, 0 },
     { wxCMD_LINE_OPTION, wxT( "p" ), wxT( "port" ),     		wxT( "database server port" ),                       wxCMD_LINE_VAL_STRING, 0 },
     { wxCMD_LINE_OPTION, wxT( "U" ), wxT( "user" ),     		wxT( "database user name" ),                         wxCMD_LINE_VAL_STRING, 0 },
-	{ wxCMD_LINE_OPTION, wxT( "k" ), wxT( "debug" ),    		wxT( "attach to debugger" ),                         wxCMD_LINE_VAL_STRING, 0 },
+    { wxCMD_LINE_OPTION, wxT( "k" ), wxT( "debug" ),    		wxT( "attach to debugger" ),                         wxCMD_LINE_VAL_STRING, 0 },
 
-	{ wxCMD_LINE_OPTION, wxT( "f" ), wxT( "function" ), 	 	wxT( "set breakpoint on function" ),         		 wxCMD_LINE_VAL_STRING, 0 },
-	{ wxCMD_LINE_OPTION, wxT( "s" ), wxT( "procedure" ),		wxT( "set breakpoint on procedure" ),        		 wxCMD_LINE_VAL_STRING, 0 },
+    { wxCMD_LINE_OPTION, wxT( "f" ), wxT( "function" ), 	 	wxT( "set breakpoint on function" ),         		 wxCMD_LINE_VAL_STRING, 0 },
+    { wxCMD_LINE_OPTION, wxT( "s" ), wxT( "procedure" ),		wxT( "set breakpoint on procedure" ),        		 wxCMD_LINE_VAL_STRING, 0 },
     { wxCMD_LINE_OPTION, wxT( "o" ), wxT( "oid" ),      		wxT( "set breakpoint on object (oid or oid.oid)" ),  wxCMD_LINE_VAL_STRING, 0 },
-	{ wxCMD_LINE_OPTION, wxT( "t" ), wxT( "trigger" ),			wxT( "set breakpoint on trigger" ),		     		 wxCMD_LINE_VAL_STRING, 0 },
-	{ wxCMD_LINE_SWITCH, wxT( "i" ), wxT( "invoke" ),			wxT( "invoke debugger target automatically" ),		 wxCMD_LINE_VAL_NONE,   0 },
-	{ wxCMD_LINE_OPTION, wxT( "P" ), wxT( "process" ),			wxT( "restrict global breakpoint to given process" ),wxCMD_LINE_VAL_STRING, 0 },
+    { wxCMD_LINE_OPTION, wxT( "t" ), wxT( "trigger" ),			wxT( "set breakpoint on trigger" ),		     		 wxCMD_LINE_VAL_STRING, 0 },
+    { wxCMD_LINE_SWITCH, wxT( "i" ), wxT( "invoke" ),			wxT( "invoke debugger target automatically" ),		 wxCMD_LINE_VAL_NONE,   0 },
+    { wxCMD_LINE_OPTION, wxT( "P" ), wxT( "process" ),			wxT( "restrict global breakpoint to given process" ),wxCMD_LINE_VAL_STRING, 0 },
 
     { wxCMD_LINE_OPTION, wxT( "w" ), wxT( "password" ), 		wxT( "database user password" ),      			     wxCMD_LINE_VAL_STRING, 0 },    	
     { wxCMD_LINE_SWITCH, wxT( "H" ), wxT( "help" ),     		wxT( "help" ),                                       wxCMD_LINE_VAL_NONE,   wxCMD_LINE_OPTION_HELP },
@@ -89,17 +89,17 @@ bool wsApp::OnInit( )
 		wxLogNull * disableLogging = new( wxLogNull );
 	}
 
-    // Disable timestamps on log messages
+	// Disable timestamps on log messages
 
-    wxLog::GetActiveTarget()->SetTimestamp( NULL );	
+	wxLog::GetActiveTarget()->SetTimestamp( NULL );	
     
-    m_settings = new wxConfig( wxT("pgadmin3_debugger"));
+	m_settings = new wxConfig( wxT("pgadmin3_debugger"));
 
 	// Parse the command line according to the cmdLineDesc defined above
 
-    m_cmdLine = new wxCmdLineParser( cmdLineDesc, argc, argv );
+	m_cmdLine = new wxCmdLineParser( cmdLineDesc, argc, argv );
 
-    if( m_cmdLine->Parse( true ) != 0 )
+	if( m_cmdLine->Parse( true ) != 0 )
 		exit( 0 );
 
 	// Create a document manager
@@ -109,18 +109,18 @@ bool wsApp::OnInit( )
 	(void) new wxDocTemplate( m_docManager, _T( "SQL" ), _T( "*.sql" ), _T( "" ), _T( "sql" ), _T( "SQL Document" ), _T( "SQL View" ), CLASSINFO( wsFuncDoc ), CLASSINFO( wsFuncView ));
 
 	// Create a new frame that manages the entire user interface
-    glMainFrame = m_mainFrame = new wsMainFrame( m_docManager , _( "pgAdmin3 PL/pgSQL debugger (Build 1)" ), wxDefaultPosition, wxSize(800, 600));
+	glMainFrame = m_mainFrame = new wsMainFrame( m_docManager , _( "pgAdmin3 PL/pgSQL debugger (Build 1)" ), wxDefaultPosition, wxSize(800, 600));
 
-    m_mainFrame->Show( true );
+	m_mainFrame->Show( true );
 	m_mainFrame->Raise();
 
-    SetTopWindow( m_mainFrame );
+	SetTopWindow( m_mainFrame );
 
 	// Now interpret the command line arguments (connecting to a PostgreSQl
 	// server if we found the right pieces on the command line).
-    handleCmdLine( );
+	handleCmdLine( );
 
-    return( true );
+	return( true );
 
 }
 
@@ -132,7 +132,7 @@ bool wsApp::OnInit( )
 
 int wsApp::OnExit( )
 {
-    return( 0 );
+	return( 0 );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -165,11 +165,11 @@ void wsApp::handleCmdLine( void )
 		}
 		else if( p->Found( wxT( "f" )) || p->Found( wxT( "s" )) || p->Found( wxT( "o" )) || p->Found( wxT( "t" )))
 		{
-			wsCodeWindow * debugger       = NULL;
-			wsDirectDbg  * directDebugger = NULL;
-			int			   targetCount    = 0;
-			wxString	   target;
-			wxString	   targetProcess( wxT( "'NULL'" ));
+			wsCodeWindow *debugger       = NULL;
+			wsDirectDbg  *directDebugger = NULL;
+			int	targetCount    = 0;
+			wxString	target;
+			wxString	targetProcess( wxT( "'NULL'" ));
 
 			p->Found( wxT( "P" ), &targetProcess );
 
@@ -254,7 +254,7 @@ wxStatusBar * wsApp::getStatusBar()
 
 void wsApp::initializeLocale( wxChar * argv0 )
 {
-    wxString 	appPath = wxPathOnly( argv0 );
+	wxString 	appPath = wxPathOnly( argv0 );
 	wxString   	i18nPath;      	// Where i18n data is stored
 
 	// Figure out where the pgadmin3 language catalog is located

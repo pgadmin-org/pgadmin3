@@ -43,7 +43,7 @@ wxDocTemplate * wsDocMgr::SelectDocumentPath( wxDocTemplate ** templates, int no
 
 wxString wsDocMgr::selectFunctionFromServer()
 {
-    wsConnProp connectProperties( glApp->getConnProp());
+	wsConnProp connectProperties( glApp->getConnProp());
 
 	wsPgConn * conn = new wsPgConn( connectProperties );
 

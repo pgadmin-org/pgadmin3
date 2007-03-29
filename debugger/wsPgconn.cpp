@@ -53,7 +53,7 @@ void wsPgConn::Init( const wxString & server, const wxString & database, const w
 	else
 		m_workerThread = NULL;
 
-    wxString 	msg;
+	wxString 	msg;
 	wxString	delimiter;
 
 	// To keep the user interface thread responsive while we're waiting for the 
@@ -70,62 +70,62 @@ void wsPgConn::Init( const wxString & server, const wxString & database, const w
 	}
 
 	// Build up a connection string
-    wxString connectParams;
+	wxString connectParams;
 
-    if( server.Length()) 
-    {
+	if( server.Length()) 
+	{
 		connectParams.Append( wxT( "host=" ));
 		connectParams.Append( server );
 
 		msg += delimiter + server; delimiter = _( ":" );
-    }
+	}
 
-    if( port.Length()) 
-    {
+	if( port.Length()) 
+	{
 		connectParams += wxT( " port=" );
 		connectParams += port;
 
 		msg += delimiter + port; delimiter = _( ":" );
-    }
+	}
 
 
-    if( database.Length()) 
-    {
+	if( database.Length()) 
+	{
 		connectParams.Append( wxT( " dbname=" ));
 		connectParams.Append( database );
 
 		msg += delimiter + database; delimiter = _( ":" );
-    }
+	}
 
-    if( username.Length()) 
-    {
+	if( username.Length()) 
+	{
 		connectParams.Append( wxT( " user=" ));
 		connectParams.Append( username );
 
 		msg += delimiter + username; delimiter =  _( ":" );
-    }
+	}
 
-    if( password.Length()) 
-    {
+	if( password.Length()) 
+	{
 		connectParams.Append( wxT( " password=" ));
 		connectParams.Append( password );
-    }
+	}
 
-    connectParams.Trim( true );
-    connectParams.Trim( false );
+	connectParams.Trim( true );
+	connectParams.Trim( false );
 
 	glApp->getStatusBar()->SetStatusText( wxString(_( "Connecting to " )) + msg, 1 );	
-    m_pgConn = PQconnectdb( connectParams.ToAscii());
+	m_pgConn = PQconnectdb( connectParams.ToAscii());
 
-    if( PQstatus( m_pgConn ) == CONNECTION_OK )
-    {
+	if( PQstatus( m_pgConn ) == CONNECTION_OK )
+	{
 		glApp->getStatusBar()->SetStatusText( wxString(_( "Connected to " )) + msg, 1 );	
 #if wxUSE_UNICODE
-        PQsetClientEncoding( m_pgConn, "UNICODE" );
+		PQsetClientEncoding( m_pgConn, "UNICODE" );
 #else
-        PQsetClientEncoding( m_pgConn, "SQL_ASCII" );
+		PQsetClientEncoding( m_pgConn, "SQL_ASCII" );
 #endif
-    }
+	}
 	else
 	{
 		throw( std::runtime_error( PQerrorMessage( m_pgConn )));
@@ -145,9 +145,9 @@ wsPgConn::~wsPgConn()
 
 bool wsPgConn::isConnected( void ) const
 {
-    if( m_pgConn && PQstatus( m_pgConn ) == CONNECTION_OK )
+	if( m_pgConn && PQstatus( m_pgConn ) == CONNECTION_OK )
 		return( true );
-    else
+	else
 		return( false );
 }
 
@@ -159,12 +159,12 @@ bool wsPgConn::isConnected( void ) const
 
 const wxString wsPgConn::getName() const
 {
-    wxString 	result = wxString( PQhost( m_pgConn ), wxConvUTF8 );
+	wxString 	result = wxString( PQhost( m_pgConn ), wxConvUTF8 );
 
-    result += wxT( "/" );
-    result.Append( wxString( PQdb( m_pgConn ), wxConvUTF8 ));
+	result += wxT( "/" );
+	result.Append( wxString( PQdb( m_pgConn ), wxConvUTF8 ));
 
-    return( result );
+	return( result );
 
 }
 
@@ -206,9 +206,9 @@ PGconn * wsPgConn::getConnection()
 
 void wsPgConn::startCommand( const wxString & command, wxEvtHandler * caller, wxEventType eventType )
 {
-    wxLogInfo( command );
+	wxLogInfo( command );
 
-    m_workerThread->startCommand( command, caller, eventType );
+	m_workerThread->startCommand( command, caller, eventType );
 }
 
 PGresult * wsPgConn::waitForCommand( const wxString & command )
@@ -234,7 +234,7 @@ PGresult * wsPgConn::waitForCommand( const wxString & command )
 
 void wsPgConn::setNoticeHandler( PQnoticeProcessor handler, void * arg )
 {
-    PQnoticeProcessor p = PQsetNoticeProcessor( m_pgConn, handler, arg );
+	PQnoticeProcessor p = PQsetNoticeProcessor( m_pgConn, handler, arg );
 }
 
 void wsPgConn::close()

@@ -24,9 +24,9 @@ IMPLEMENT_CLASS( wsQueryWindow, wxSashLayoutWindow );
 BEGIN_EVENT_TABLE( wsQueryWindow, wxSashLayoutWindow )
     EVT_CLOSE(                       	  wsQueryWindow::OnClose )
     EVT_MENU( MENU_ID_EXECUTE,       	  wsQueryWindow::OnExecute )
-	EVT_MENU( RESULT_ID_RESULT_SET_READY, wsQueryWindow::OnResultReady )
-	EVT_BUTTON( MENU_ID_SPAWN_DEBUGGER,   wsQueryWindow::OnSpawnDebugger )
-	EVT_SASH_DRAGGED( wxID_ANY,           wsQueryWindow::OnSashDrag )
+    EVT_MENU( RESULT_ID_RESULT_SET_READY, wsQueryWindow::OnResultReady )
+    EVT_BUTTON( MENU_ID_SPAWN_DEBUGGER,   wsQueryWindow::OnSpawnDebugger )
+    EVT_SASH_DRAGGED( wxID_ANY,           wsQueryWindow::OnSashDrag )
 
     EVT_CHAR( wsQueryWindow::OnKeyEvent )
 
@@ -39,7 +39,7 @@ END_EVENT_TABLE()
 //  pointer and initializes the text control with a 'demo' command.
 
 wsQueryWindow::wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn )
-    : wxSashLayoutWindow( parent , id ), m_conn( conn )
+	: wxSashLayoutWindow( parent , id ), m_conn( conn )
 {
 	// For demo purposes, we fill the edit control with the text of a few commands and then
 	// select that text so that it's easy to delete it if you don't want the demo...
@@ -96,7 +96,7 @@ wsQueryWindow::wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn 
 	m_command->SetMarginType(1, wxSTC_MARGIN_NUMBER); 
 	m_command->SetMarginWidth( 1, 30 );
 
-    m_command->SetReadOnly( false );
+	m_command->SetReadOnly( false );
 
 	wxFile history( _T( ".ws_history" ), wxFile::read );
 
@@ -146,12 +146,12 @@ void wsQueryWindow::OnSpawnDebugger( wxCommandEvent & event )
 	// we need  in order to connect to the debugger server
 
 	wsConnProp * debugProps = (wsConnProp *)event.GetClientData();
-    wsConsole  * parent = dynamic_cast<wsConsole *>( GetParent());
+	wsConsole  * parent = dynamic_cast<wsConsole *>( GetParent());
 
 	// Ask our parent (a wsConsole) to attach to create a new 
 	// debugger window and attach to the debugger server...
 
-    if( parent )
+	if( parent )
 		parent->doDebug( *debugProps );
 }
 
@@ -164,18 +164,18 @@ void wsQueryWindow::OnSpawnDebugger( wxCommandEvent & event )
 
 void wsQueryWindow::OnResultReady( wxCommandEvent & event )
 {
-    ::wxLogDebug( _( "OnResultReady() called\n" ));
+	::wxLogDebug( _( "OnResultReady() called\n" ));
 
 	// Extract the result set handle from the event and log the status info
 
-    PGresult * result = (PGresult *)event.GetClientData();
+	PGresult * result = (PGresult *)event.GetClientData();
 
-    ::wxLogDebug( wxT( "%s\n" ), PQresStatus( PQresultStatus( result )));
+	::wxLogDebug( wxT( "%s\n" ), PQresStatus( PQresultStatus( result )));
 
 	// If the query failed, write the error message to the status line, otherwise, copy the result set into the grid
 
-    if(( PQresultStatus( result ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( result ) == PGRES_FATAL_ERROR ))
-    {
+	if(( PQresultStatus( result ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( result ) == PGRES_FATAL_ERROR ))
+	{
 		wxString	message( wxString( PQresultErrorMessage( result ), wxConvUTF8 ));
 
 		message.Replace( wxT( "\r" ), wxT( "" ));
@@ -183,12 +183,12 @@ void wsQueryWindow::OnResultReady( wxCommandEvent & event )
 
 		glApp->getStatusBar()->SetStatusText( message, 1 );
 		::wxLogDebug( wxT( "%s\n" ), PQerrorMessage( m_conn->getConnection()));
-    }
-    else
-    {
+	}
+	else
+	{
 		glApp->getStatusBar()->SetStatusText( wxString( PQcmdStatus( result ), wxConvUTF8 ), 1 );
 		m_resultGrid->fillGrid( result );
-    }
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -203,8 +203,8 @@ void wsQueryWindow::OnKeyEvent( wxKeyEvent & event )
 	// For now, we intercept Ctrl+Enter and Ctrl+Space
 	// and map those combinations into the Execute verb.
 
-    switch( event.GetKeyCode())
-    {
+	switch( event.GetKeyCode())
+	{
 		case WXK_RETURN:
 		case WXK_SPACE:
 		{
@@ -223,9 +223,9 @@ void wsQueryWindow::OnKeyEvent( wxKeyEvent & event )
 				// return;
 			}
 		}
-    }
+	}
 
-    event.Skip();
+	event.Skip();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -235,7 +235,7 @@ void wsQueryWindow::OnKeyEvent( wxKeyEvent & event )
 
 void wsQueryWindow::OnClose( wxCloseEvent & event )
 {
-    Destroy();
+	Destroy();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -247,7 +247,7 @@ void wsQueryWindow::OnClose( wxCloseEvent & event )
 
 void wsQueryWindow::OnExecute( wxCommandEvent & event )
 {
-    doExecute();
+	doExecute();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -268,21 +268,21 @@ void wsQueryWindow::doExecute( void )
 
 	wxString	command = m_command->GetSelectedText();
 
-    if( command.IsNull())
+	if( command.IsNull())
 		command = m_command->GetText();
 
-    if( !command.IsNull())
-    {
+	if( !command.IsNull())
+	{
 		::wxLogDebug( command );
-    }
+	}
 
-    ::wxLogDebug( _( "main thread starting command for handler %p\n" ), GetEventHandler());
+	::wxLogDebug( _( "main thread starting command for handler %p\n" ), GetEventHandler());
 
 	// Notify the worker thread (the one connected to the database)
 	// that it has a command to execute.
 
 	glApp->getStatusBar()->SetStatusText( _( "Executing..." ), 1 );
-    m_conn->startCommand( command, GetEventHandler());
+	m_conn->startCommand( command, GetEventHandler());
 
 	wxFile history;
 
@@ -295,11 +295,11 @@ void wsQueryWindow::doExecute( void )
 
 void wsQueryWindow::OnSashDrag( wxSashEvent & event )
 {
-    if( event.GetDragStatus() == wxSASH_STATUS_OUT_OF_RANGE )
-        return;
+	if( event.GetDragStatus() == wxSASH_STATUS_OUT_OF_RANGE )
+		return;
 
-    switch( event.GetId())
-    {
+	switch( event.GetId())
+	{
 		case WINDOW_ID_RESULT_GRID:
 			m_gridHolder->SetDefaultSize( wxSize( 60, event.GetDragRect().height ));
 			break;
@@ -307,9 +307,9 @@ void wsQueryWindow::OnSashDrag( wxSashEvent & event )
 		case WINDOW_ID_COMMAND:
 			m_commandHolder->SetDefaultSize( wxSize( 60, event.GetDragRect().height ));
 			break;
-    }
+	}
 
-    wxLayoutAlgorithm	layout;
-    layout.LayoutWindow( this, m_commandHolder );
+	wxLayoutAlgorithm	layout;
+	layout.LayoutWindow( this, m_commandHolder );
 	
 }

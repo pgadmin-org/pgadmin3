@@ -27,7 +27,7 @@ wsVarWindow::wsVarWindow( wxWindow * parent, wxWindowID id )
 	  m_nameFont( GetDefaultCellFont())
 {
 	// Create the grid control
-    CreateGrid( 0, 0 );
+	CreateGrid( 0, 0 );
 	SetRowLabelSize( 0 );	// Turn off the row labels
 
 	// Set up three columns: name, value, and data type
@@ -39,7 +39,7 @@ wsVarWindow::wsVarWindow( wxWindow * parent, wxWindowID id )
 	// Choose a font
 	wxString fontName;
 
-    if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
+	if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
 	{
 		wxFont	font( fontName );
 		SetDefaultCellFont( font );
@@ -84,21 +84,21 @@ void wsVarWindow::addVar( wxString name, wxString value, wxString type, bool rea
 	if( m_hiddenTypes.find( type ) != m_hiddenTypes.end())
 		return;
 
-    if( m_cells == NULL )
-    {
+	if( m_cells == NULL )
+	{
 		// This is the first variable we're adding to this grid,
 		// layout the grid and set the column headers.
 
 		m_cells = new wsCellHash;
-    }
+	}
 
 	// Try to find an existing grid cell for this variable...
-    wxString	key( name );
+	wxString	key( name );
 
-    wsCellHash::iterator cell = m_cells->find( key );
+	wsCellHash::iterator cell = m_cells->find( key );
 
-    if( cell == m_cells->end())
-    {
+	if( cell == m_cells->end())
+	{
 		// Can't find this variable in the grid, go ahead and add it
 
 		gridCell	newCell;
@@ -122,9 +122,9 @@ void wsVarWindow::addVar( wxString name, wxString value, wxString type, bool rea
 		SetReadOnly( newCell.m_row, COL_VALUE, readOnly );
 
 		(*m_cells)[key] = newCell;
-    }
-    else
-    {
+	}
+	else
+	{
 		// This variable is already in the grid, update the value
 		// and hilite it so the user knows that it has changed.
 
@@ -140,11 +140,11 @@ void wsVarWindow::addVar( wxString name, wxString value, wxString type, bool rea
 		// FIXME: why is this part conditional? 
 		// FIXME: why do we need this code? can the type ever change?
 
-        if( GetCellValue( cell->second.m_row, COL_TYPE) == wxT( "" ))
-        {
-            SetCellValue( cell->second.m_row, COL_TYPE, type );
-        }
-    }
+		if( GetCellValue( cell->second.m_row, COL_TYPE) == wxT( "" ))
+		{
+			SetCellValue( cell->second.m_row, COL_TYPE, type );
+		}
+	}
 
 	// AutoSizeColumns( false );
 }

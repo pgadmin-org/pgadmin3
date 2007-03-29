@@ -31,12 +31,12 @@ WX_DEFINE_LIST( ThreadCommandList );
 //  (and thus the user interface) responsive while we're waiting for the server.
 
 wsPgThread::wsPgThread( wsPgConn & owner )
-    : wxThread( ),
-      m_owner( owner ),
-	  m_queueCounter(),
-	  m_queueMutex(),
-	  m_commandQueue(),
-	  m_currentCommand( NULL )
+	: wxThread( ),
+	m_owner( owner ),
+	m_queueCounter(),
+	m_queueMutex(),
+	m_commandQueue(),
+	m_currentCommand( NULL )
 {
 }
 
@@ -77,14 +77,14 @@ void wsPgThread::startCommand( const wxString & command, wxEvtHandler * caller, 
 void * wsPgThread::Entry( void )
 {
 
-    ::wxLogDebug( _( "worker thread waiting for some work to do..." ));
+	::wxLogDebug( _( "worker thread waiting for some work to do..." ));
 
-    // This thread should hang at the call to m_condition.Wait()
+	// This thread should hang at the call to m_condition.Wait()
 	// When m_condition is signaled, we wake up, send a command
 	// to the PostgreSQL server, and wait for a result.
 
-    while( m_queueCounter.Wait() == wxSEMA_NO_ERROR )
-    {
+	while( m_queueCounter.Wait() == wxSEMA_NO_ERROR )
+	{
 		m_owner.setNoticeHandler( noticeHandler, this );
 
 		m_currentCommand = getNextCommand();
@@ -119,7 +119,7 @@ void * wsPgThread::Entry( void )
 
 			m_currentCommand->getCaller()->AddPendingEvent( resultEvent );
 		}
-    }
+	}
 
 	return this;
 }
@@ -133,13 +133,13 @@ void * wsPgThread::Entry( void )
 
 void wsPgThread::noticeHandler( void * arg, const char * message )
 {
-    ::wxLogDebug( wxT( "%s\n" ), message );
+	::wxLogDebug( wxT( "%s\n" ), message );
 
 	wsPgThread   * thread = (wsPgThread *)arg;
 	wxEvtHandler * caller = thread->m_currentCommand->getCaller();
 
-    if( strstr( message, "PLDBGBREAK" ))
-    {
+	if( strstr( message, "PLDBGBREAK" ))
+	{
 		// Construct a command line that will re-invoke this application
 		// in debugger-mode
 
@@ -180,7 +180,7 @@ void wsPgThread::noticeHandler( void * arg, const char * message )
 		buttonEvent.SetString( command );
 		buttonEvent.SetClientData((wxClientData *)debugProps );
 		caller->AddPendingEvent( buttonEvent );
-    }
+	}
 	else if( strstr( message, "INFO" ))
 	{
 		if( strstr( message, "CONTEXT:" ) == NULL )

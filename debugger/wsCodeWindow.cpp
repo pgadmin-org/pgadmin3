@@ -62,18 +62,18 @@ IMPLEMENT_CLASS( wsCodeWindow,  wxSashLayoutWindow )
 #define MARKERINDEX_TO_MARKERMASK( MI ) ( 1 << MI )
 
 BEGIN_EVENT_TABLE( wsCodeWindow , wxSashLayoutWindow )
-  EVT_MENU( MENU_ID_SET_BREAK,	 	 wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_CLEAR_BREAK, 	 wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_CLEAR_ALL_BREAK, wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_SET_WATCH,	 	 wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_CLEAR_WATCH, 	 wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_SET_BREAK,	 	wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_CLEAR_BREAK, 	wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_CLEAR_ALL_BREAK,	wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_SET_WATCH,	 	wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_CLEAR_WATCH, 	wsCodeWindow::OnCommand )
 
-  EVT_MENU( MENU_ID_CONTINUE,	 	 wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_STEP_OVER,	 	 wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_STEP_INTO,	 	 wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_SET_PC,		 	 wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_STOP,	 		 wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_RESTART,	 	 wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_CONTINUE,	 	wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_STEP_OVER,	 	wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_STEP_INTO,	 	wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_SET_PC,		wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_STOP,	 	wsCodeWindow::OnCommand )
+  EVT_MENU( MENU_ID_RESTART,	 	wsCodeWindow::OnCommand )
 
   EVT_IDLE( wsCodeWindow::OnIdle )
 
@@ -92,16 +92,16 @@ BEGIN_EVENT_TABLE( wsCodeWindow , wxSashLayoutWindow )
   EVT_GRID_CELL_CHANGE( wsCodeWindow::OnVarChange )
 
   EVT_MENU( RESULT_ID_ATTACH_TO_PORT, 		wsCodeWindow::ResultPortAttach )
-  EVT_MENU( RESULT_ID_BREAKPOINT,			wsCodeWindow::ResultBreakpoint )
-  EVT_MENU( RESULT_ID_GET_VARS,				wsCodeWindow::ResultVarList )
-  EVT_MENU( RESULT_ID_GET_STACK,			wsCodeWindow::ResultStack )
+  EVT_MENU( RESULT_ID_BREAKPOINT,		wsCodeWindow::ResultBreakpoint )
+  EVT_MENU( RESULT_ID_GET_VARS,			wsCodeWindow::ResultVarList )
+  EVT_MENU( RESULT_ID_GET_STACK,		wsCodeWindow::ResultStack )
   EVT_MENU( RESULT_ID_GET_BREAKPOINTS,		wsCodeWindow::ResultBreakpoints )
-  EVT_MENU( RESULT_ID_GET_SOURCE,			wsCodeWindow::ResultSource )
+  EVT_MENU( RESULT_ID_GET_SOURCE,		wsCodeWindow::ResultSource )
   EVT_MENU( RESULT_ID_NEW_BREAKPOINT,		wsCodeWindow::ResultNewBreakpoint )
   EVT_MENU( RESULT_ID_NEW_BREAKPOINT_WAIT,	wsCodeWindow::ResultNewBreakpointWait )
   EVT_MENU( RESULT_ID_DEL_BREAKPOINT,		wsCodeWindow::ResultDeletedBreakpoint )
   EVT_MENU( RESULT_ID_DEPOSIT_VALUE,		wsCodeWindow::ResultDepositValue )
-  EVT_MENU( RESULT_ID_ABORT_TARGET,			wsCodeWindow::ResultAbortTarget )
+  EVT_MENU( RESULT_ID_ABORT_TARGET,		wsCodeWindow::ResultAbortTarget )
   EVT_MENU( RESULT_ID_ADD_BREAKPOINT,   	wsCodeWindow::ResultAddBreakpoint )
   EVT_MENU( RESULT_ID_LAST_BREAKPOINT,  	wsCodeWindow::ResultLastBreakpoint )
   EVT_MENU( RESULT_ID_LISTENER_CREATED, 	wsCodeWindow::ResultListenerCreated )
@@ -172,39 +172,39 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 	SetTitle( wxT( "" ));
 
 	// Define the icon for this window
-    SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
+	SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
 #endif
 	// A wsCodeWindow is the user interface (the client side) of the PL debugger. We
 	// display the source code for a PL function (the function being debugged) in a 
 	// wsRichWindow (m_view) so we'll create that window now.
 
-    // Create the leftmost window - a tree control (currently unused)
+	// Create the leftmost window - a tree control (currently unused)
 
 	m_layout = (wxSashLayoutWindow*) this;
 
 	m_stackWindow = new wsStackWindow( parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
 
-	int width;
+	int	width;
 	int	height;
 	
 	glApp->getSettings().Read( wxT( "StackWindow/width" ), &width, 120 );
 
-    m_stackWindow->SetDefaultSize( wxSize( width, 1000 ));
-    m_stackWindow->SetOrientation( wxLAYOUT_VERTICAL );
-    m_stackWindow->SetAlignment( wxLAYOUT_RIGHT );
-    m_stackWindow->SetSashVisible( wxSASH_LEFT, true );
-    m_stackWindow->SetBackgroundColour( wxColor( 128, 128, 128 ));
+	m_stackWindow->SetDefaultSize( wxSize( width, 1000 ));
+	m_stackWindow->SetOrientation( wxLAYOUT_VERTICAL );
+	m_stackWindow->SetAlignment( wxLAYOUT_RIGHT );
+	m_stackWindow->SetSashVisible( wxSASH_LEFT, true );
+	m_stackWindow->SetBackgroundColour( wxColor( 128, 128, 128 ));
 
-    // Create the bottom window (Notebook)
-    m_tabWindow = new wsTabWindow( parent , WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
+	// Create the bottom window (Notebook)
+	m_tabWindow = new wsTabWindow( parent , WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
     
 	glApp->getSettings().Read( wxT( "TabWindow/height" ), &height, 180 );
 
-    m_tabWindow->SetDefaultSize( wxSize( 1000, height ));
-    m_tabWindow->SetOrientation( wxLAYOUT_HORIZONTAL );
-    m_tabWindow->SetAlignment( wxLAYOUT_BOTTOM );
-    m_tabWindow->SetSashVisible( wxSASH_TOP, true );
-    m_tabWindow->SetBackgroundColour( wxColor( 128,128,128 ));
+	m_tabWindow->SetDefaultSize( wxSize( 1000, height ));
+	m_tabWindow->SetOrientation( wxLAYOUT_HORIZONTAL );
+	m_tabWindow->SetAlignment( wxLAYOUT_BOTTOM );
+	m_tabWindow->SetSashVisible( wxSASH_TOP, true );
+	m_tabWindow->SetBackgroundColour( wxColor( 128,128,128 ));
 
 	m_viewHolder = new wxSashLayoutWindow( m_layout, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
 
@@ -213,7 +213,7 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 	m_viewHolder->SetAlignment( wxLAYOUT_LEFT );
 
 	m_view = new wsRichWindow( m_viewHolder, -1);
-    m_view->m_parentWantsKeys = true;						// Send keystrokes to this object
+	m_view->m_parentWantsKeys = true;						// Send keystrokes to this object
 
 	// Set up the markers that we use do indicate the current line and a breakpoint
 	m_view->MarkerDefine( MARKER_CURRENT, wxSTC_MARK_ARROW , *wxGREEN, *wxGREEN );
@@ -239,8 +239,8 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 	// Make sure the user can't edit the source code for this function...
 	m_view->SetReadOnly( true );
 
-    wxLayoutAlgorithm	layout;
-    layout.LayoutWindow( m_layout, m_viewHolder );
+	wxLayoutAlgorithm	layout;
+	layout.LayoutWindow( m_layout, m_viewHolder );
 
 	// Now setup the accelerators (function key mappings)
 	wxAcceleratorEntry entries[8];
@@ -962,8 +962,8 @@ void wsCodeWindow::updateUI( wsResultSet & breakpoint )
 {
 	// Arrange for the lazy parts of our UI to be updated
 	// during the next IDLE time
-	m_updateVars  	    = FALSE;
-	m_updateStack 		= FALSE;
+	m_updateVars	= FALSE;
+	m_updateStack	= FALSE;
 	m_updateBreakpoints = FALSE;
 
 	updateSourceCode( breakpoint );
@@ -1078,7 +1078,7 @@ void wsCodeWindow::displaySource( const wxString & packageOID, const wxString & 
 		wsCodeCache & codeCache = m_sourceCodeMap[funcOID];
 
 	    // Now erase any old code and write out the new listing
-	    m_view->SetReadOnly( false );
+		m_view->SetReadOnly( false );
 		m_view->SetText( codeCache.getSource());
 		m_view->Colourise( 0, codeCache.getSource().Length());
 		m_view->SetReadOnly( true );
@@ -1256,11 +1256,11 @@ void wsCodeWindow::OnWriteAttempt( wxStyledTextEvent & event )
 
 void wsCodeWindow::OnSashDrag( wxSashEvent & event )
 {
-    if( event.GetDragStatus() == wxSASH_STATUS_OUT_OF_RANGE )
-        return;
+	if( event.GetDragStatus() == wxSASH_STATUS_OUT_OF_RANGE )
+		return;
 
-    switch (event.GetId())
-    {
+	switch (event.GetId())
+	{
 		case WINDOW_ID_STACK:
 			m_stackWindow->SetDefaultSize( wxSize( event.GetDragRect().width, 10 ));
 			break;
@@ -1268,10 +1268,10 @@ void wsCodeWindow::OnSashDrag( wxSashEvent & event )
 		case WINDOW_ID_TABS:
 			m_tabWindow->SetDefaultSize( wxSize( 60, event.GetDragRect().height ));
 			break;
-    }
+	}
 
-    wxLayoutAlgorithm	layout;
-    layout.LayoutWindow( m_layout, m_viewHolder );
+	wxLayoutAlgorithm	layout;
+	layout.LayoutWindow( m_layout, m_viewHolder );
 }
 
 void wsCodeWindow::OnNoticeReceived( wxCommandEvent & event )

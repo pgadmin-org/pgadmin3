@@ -36,25 +36,22 @@ END_EVENT_TABLE()
 //  A wsConsole object is typically a child of the wsMainFrame object
 
 wsConsole::wsConsole( wxDocParentFrame * parent, const wxString & title, const wxPoint & pos, const wxSize & size, wsPgConn * conn )
-//	:wxDocChildFrame(NULL, NULL, parent, -1, _T(""),
-//        wxDefaultPosition, wxDefaultSize, wxFRAME_NO_TASKBAR ),
-//    : wxDocChildFrame( parent, -1, title, pos, size ),
 	: wxTextCtrl( parent , wxID_ANY , title,
-                          wxDefaultPosition, wxDefaultSize, wxFRAME_NO_TASKBAR ),
-      m_codeWindow( NULL ),
-      m_queryWindow( NULL ),
-      m_conn( conn )
+			wxDefaultPosition, wxDefaultSize, wxFRAME_NO_TASKBAR ),
+	m_codeWindow( NULL ),
+	m_queryWindow( NULL ),
+	m_conn( conn )
 {
 
 	// Define the icon for this window
 #if 0
-    SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
+	SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
 #endif
 	// Create a query window - we'll create a debug window later if required
 
-    m_queryWindow = new wsQueryWindow( glMainFrame /* this */  , -1, m_conn );
+	m_queryWindow = new wsQueryWindow( glMainFrame /* this */  , -1, m_conn );
 #if 0
-    m_queryWindow->Show( true );
+	m_queryWindow->Show( true );
 	m_queryWindow->SetFocus();
 #endif
 	glMainFrame->PerspectivesDef();
@@ -68,7 +65,7 @@ wsConsole::wsConsole( wxDocParentFrame * parent, const wxString & title, const w
 
 void wsConsole::doExecute( void )
 {
-    m_queryWindow->doExecute();
+	m_queryWindow->doExecute();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,12 +75,12 @@ void wsConsole::doExecute( void )
 
 void wsConsole::doDebug( wsConnProp & connProps )
 {
-    m_codeWindow = glMainFrame->addDebug( connProps );
-    m_codeWindow->Show( true );
+	m_codeWindow = glMainFrame->addDebug( connProps );
+	m_codeWindow->Show( true );
 
 	// And start soliciting debugger events...
 
-    m_codeWindow->startLocalDebugging( );
+	m_codeWindow->startLocalDebugging( );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -94,7 +91,7 @@ void wsConsole::doDebug( wsConnProp & connProps )
 
 void wsConsole::OnDebugCommand( wxCommandEvent & event )
 {
-    if( m_codeWindow )
+	if( m_codeWindow )
 		m_codeWindow->OnCommand( event );
 }
 

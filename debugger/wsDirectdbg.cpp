@@ -39,8 +39,8 @@ BEGIN_EVENT_TABLE( wsDirectDbg, wxDialog )
     EVT_BUTTON( MENU_ID_SPAWN_DEBUGGER,  wsDirectDbg::OnDebug )
     EVT_BUTTON( MENU_ID_NOTICE_RECEIVED, wsDirectDbg::OnNoticeReceived )
 
-	EVT_MENU( RESULT_ID_DIRECT_TARGET_COMPLETE, wsDirectDbg::OnTargetComplete )
-	EVT_MENU( RESULT_ID_RESULT_SET_READY,       wsDirectDbg::OnResultReady )
+    EVT_MENU( RESULT_ID_DIRECT_TARGET_COMPLETE, wsDirectDbg::OnTargetComplete )
+    EVT_MENU( RESULT_ID_RESULT_SET_READY,       wsDirectDbg::OnResultReady )
 
     EVT_CLOSE( wsDirectDbg::OnClose )
 
@@ -62,13 +62,13 @@ END_EVENT_TABLE()
 
 wsDirectDbg::wsDirectDbg( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProp )
 	: wxDialog( parent, id,  connProp.m_host + wxT( "/" ) + connProp.m_database, 
-		wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION  ),
-	  m_target(),
-	  m_connProp( connProp ),
-	  m_targetInfo( NULL ),
-	  m_grid( NULL ),
-	  m_conn( NULL ),
-	  m_codeWindow( NULL )
+	wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION  ),
+	m_target(),
+	m_connProp( connProp ),
+	m_targetInfo( NULL ),
+	m_grid( NULL ),
+	m_conn( NULL ),
+	m_codeWindow( NULL )
 {
 	setupParamWindow();
 }
@@ -314,14 +314,14 @@ void wsDirectDbg::populateParamGrid( )
 
 void wsDirectDbg::OnOk( wxCommandEvent & event )
 {
-    if( activateDebugger())
-    {
+	if( activateDebugger())
+	{
 #if 0
-        glMainFrame->SetLastSize( );
-        this->Show( false );
-        glMainFrame->getToolBar( )->Show( true );
+		glMainFrame->SetLastSize( );
+		this->Show( false );
+		glMainFrame->getToolBar( )->Show( true );
 #endif
-    }
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -490,7 +490,7 @@ bool wsDirectDbg::activateDebugger( )
 		return( false );
 	}
 
-    return( true );
+	return( true );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -593,18 +593,18 @@ void wsDirectDbg::invokeTarget()
 
 void wsDirectDbg::OnResultReady( wxCommandEvent & event )
 {
-    ::wxLogDebug( _( "OnResultReady() called\n" ));
+	::wxLogDebug( _( "OnResultReady() called\n" ));
 
 	// Extract the result set handle from the event and log the status info
 
-    PGresult * result = (PGresult *)event.GetClientData();
+	PGresult *result = (PGresult *)event.GetClientData();
 
-    ::wxLogDebug( wxT( "%s\n" ), PQresStatus( PQresultStatus( result )));
+	::wxLogDebug( wxT( "%s\n" ), PQresStatus( PQresultStatus( result )));
 
 	// If the query failed, write the error message to the status line, otherwise, copy the result set into the grid
 
-    if(( PQresultStatus( result ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( result ) == PGRES_FATAL_ERROR ))
-    {
+	if(( PQresultStatus( result ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( result ) == PGRES_FATAL_ERROR ))
+	{
 		wxString	message( wxString(PQresultErrorMessage( result ), wxConvUTF8));
 
 		message.Replace( wxT( "\r" ), wxT( "" ));
@@ -612,9 +612,9 @@ void wsDirectDbg::OnResultReady( wxCommandEvent & event )
 
 		glApp->getStatusBar()->SetStatusText( message, 1 );
 		::wxLogDebug( wxT( "%s\n" ), PQerrorMessage( m_conn->getConnection()));
-    }
-    else
-    {
+	}
+	else
+	{
 		wxString message( wxString( PQcmdStatus( result ), wxConvUTF8 ));
 
 		message.Replace( wxT( "\r" ), wxT( "" ));
@@ -627,18 +627,18 @@ void wsDirectDbg::OnResultReady( wxCommandEvent & event )
 
 		if( m_codeWindow && PQnfields( result ))
 			m_codeWindow->OnResultSet( result );
-    }
-#if 1    
-    this->Show( true );
-    this->SetFocus();
+	}
+
+	this->Show( true );
+	this->SetFocus();
 //    this->Activate();
     
-    // Debugging has finished so we need to hide the code window.
-    if (m_codeWindow)
-    {
-    	m_codeWindow->Show( false );
-    }
-#endif
+	// Debugging has finished so we need to hide the code window.
+	if (m_codeWindow)
+	{
+		m_codeWindow->Show( false );
+	}
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -660,13 +660,13 @@ void wsDirectDbg::OnTargetComplete( wxCommandEvent & event )
 	PGresult   * rawResult = (PGresult *)event.GetClientData();
 	wsResultSet  result( rawResult );
 
-    ::wxLogDebug( _( "OnTargetComplete() called\n" ));
-    ::wxLogDebug( wxT( "%s\n" ), PQresStatus( PQresultStatus( rawResult )));
+	::wxLogDebug( _( "OnTargetComplete() called\n" ));
+	::wxLogDebug( wxT( "%s\n" ), PQresStatus( PQresultStatus( rawResult )));
 
 	// If the query failed, write the error message to the status line, otherwise, copy the result set into the grid
 
-    if(( PQresultStatus( rawResult ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( rawResult ) == PGRES_FATAL_ERROR ))
-    {
+	if(( PQresultStatus( rawResult ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( rawResult ) == PGRES_FATAL_ERROR ))
+	{
 		wxString	message( wxString( PQresultErrorMessage( rawResult ), wxConvUTF8 ));
 
 		message.Replace( wxT( "\r" ), wxT( "" ));
@@ -674,9 +674,9 @@ void wsDirectDbg::OnTargetComplete( wxCommandEvent & event )
 
 		glApp->getStatusBar()->SetStatusText( message, 1 );
 		::wxLogDebug( wxT( "%s\n" ), PQerrorMessage( m_conn->getConnection()));
-    }
-    else
-    {
+	}
+	else
+	{
 		wxString message( wxString( PQcmdStatus( rawResult ), wxConvUTF8 ));
 
 		message.Replace( wxT( "\r" ), wxT( "" ));
@@ -693,12 +693,12 @@ void wsDirectDbg::OnTargetComplete( wxCommandEvent & event )
 
 			m_codeWindow->disableTools( );
 		}
-    }
+	}
 
-    this->Show( true );
-    this->SetFocus();
-// DEBUG
+	this->Show( true );
+	this->SetFocus();
 //    this->Activate();
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -750,7 +750,7 @@ void wsDirectDbg::OnDebug( wxCommandEvent & event )
 
 	m_codeWindow = glMainFrame->addDebug( *debugProps );
 
-    m_codeWindow->Show( true );
+	m_codeWindow->Show( true );
 	m_codeWindow->startLocalDebugging();
 
 	this->Show( false );

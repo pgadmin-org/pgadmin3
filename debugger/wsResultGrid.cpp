@@ -20,9 +20,9 @@ IMPLEMENT_CLASS( wsResultGrid, wxGrid )
 //  is a minor extension of the wxGrid class.
 
 wsResultGrid::wsResultGrid( wxWindow * parent, wxWindowID id )
-  : wxGrid( parent, id )
+	: wxGrid( parent, id )
 {
-    CreateGrid( 0, 0 );
+	CreateGrid( 0, 0 );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,19 +33,19 @@ wsResultGrid::wsResultGrid( wxWindow * parent, wxWindowID id )
 
 void wsResultGrid::fillGrid( PGresult * result )
 {
-    int	rowCount = PQntuples( result );
-    int	colCount = PQnfields( result );
+	int	rowCount = PQntuples( result );
+	int	colCount = PQnfields( result );
 
 	// If this PGresult represents a non-query command 
 	// (like an INSERT), there won't be any columns in 
 	// the result set - just return
 
-    if( colCount == 0 )
+	if( colCount == 0 )
 		return;
 
 	// Disable repaints to we don't flicker too much
 
-    BeginBatch();
+	BeginBatch();
 
 	// Clear out the old results (if any) and resize 
 	// grid to match the result set
@@ -55,20 +55,20 @@ void wsResultGrid::fillGrid( PGresult * result )
 	if( GetNumberCols())
 		DeleteCols( 0, GetNumberCols());
 
-    AppendRows( rowCount );
-    AppendCols( colCount );
+	AppendRows( rowCount );
+	AppendCols( colCount );
 
-    EnableEditing( false );
+	EnableEditing( false );
 
 	// Copy the column names from the result set into the column headers
 
-    for( int col = 0; col < colCount; ++col )
+	for( int col = 0; col < colCount; ++col )
 		SetColLabelValue( col, wxString( PQfname( result, col ), wxConvUTF8 ));
 
 	// Now copy each value from the result set into the grid
 
-    for( int row = 0; row < rowCount; ++row )
-    {
+	for( int row = 0; row < rowCount; ++row )
+	{
 		for( int col = 0; col < colCount; ++col )
 		{
 			if( PQgetisnull( result, row, col ))
@@ -76,13 +76,13 @@ void wsResultGrid::fillGrid( PGresult * result )
 			else
 				SetCellValue( row, col, wxString( PQgetvalue( result, row, col ), wxConvUTF8 ));
 		}
-    }
+	}
 
 	// Resize each column to fit its content
 
-    AutoSizeColumns( false );
+	AutoSizeColumns( false );
 
 	// Enable repaints
 
-    EndBatch();
+	EndBatch();
 }

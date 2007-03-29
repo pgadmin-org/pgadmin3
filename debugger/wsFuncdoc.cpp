@@ -19,8 +19,8 @@
 #include <wx/filesys.h>
 #include <wx/tokenzr.h>
 
-#include "wx/wfstream.h"
-#include "wx/txtstrm.h"
+#include <wx/wfstream.h>
+#include <wx/txtstrm.h>
 
 IMPLEMENT_DYNAMIC_CLASS( wsFuncDoc, wxDocument )
 
@@ -46,7 +46,7 @@ END_EVENT_TABLE()
 //   OnSaveDocument()).
 
 wsFuncDoc::wsFuncDoc( const wxString & sourceCode, const wxString & title, const wxString & funcOID )
-  : m_sourceCode( _( "-- Loading" )),
+	: m_sourceCode( _( "-- Loading" )),
 	m_docHandle( NULL ),
 	m_oid( funcOID ),
 	m_conn( NULL )
@@ -65,7 +65,7 @@ wsFuncDoc::wsFuncDoc( const wxString & sourceCode, const wxString & title, const
 }
 
 wsFuncDoc::wsFuncDoc()
-  : m_docHandle( NULL ),
+	: m_docHandle( NULL ),
 	m_conn( NULL ),
 	m_result( NULL )
 {
@@ -321,10 +321,10 @@ bool wsFuncDoc::IsModified() const
 
 void wsFuncDoc::Modify( bool mod )
 {
-  wsFuncView * view = (wsFuncView *)GetFirstView();
+	wsFuncView *view = (wsFuncView *)GetFirstView();
 
-  view->Modify( mod );
-  wxDocument::Modify( mod );
+	view->Modify( mod );
+	wxDocument::Modify( mod );
 
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -339,39 +339,39 @@ void wsFuncDoc::Modify( bool mod )
 
 wsPgConn * wsFuncDoc::getPgConn()
 {
-    // If we've already connected to the server, just return that connection handle
-    if( m_conn )
-        return( m_conn );
+	// If we've already connected to the server, just return that connection handle
+	if( m_conn )
+		return( m_conn );
         
-    // We haven't connected to the server yet - grab any connection properties that
-    // appear in the command-line
-    wsConnProp connectProperties( glApp->getConnProp());
+	// We haven't connected to the server yet - grab any connection properties that
+	// appear in the command-line
+	wsConnProp connectProperties( glApp->getConnProp());
     
-    do
-    {
-        // Try to connect using the current set of connection properties        
-        m_conn = new wsPgConn( connectProperties );
+	do
+	{
+		// Try to connect using the current set of connection properties        
+		m_conn = new wsPgConn( connectProperties );
         
-        if( m_conn->isConnected())
-            return( m_conn );
+		if( m_conn->isConnected())
+			return( m_conn );
             
-        // That didn't work... throw out this connection object 
-        delete( m_conn );
-        m_conn = NULL;
+		// That didn't work... throw out this connection object 
+		delete( m_conn );
+		m_conn = NULL;
             
-        // Ask the user to adjust the connection properties        
-        wsConnPropDlg * connDlg = new wsConnPropDlg( NULL );
+		// Ask the user to adjust the connection properties        
+		wsConnPropDlg * connDlg = new wsConnPropDlg( NULL );
 
-        connDlg->setDefaults( connectProperties );
+		connDlg->setDefaults( connectProperties );
         
-        if( connDlg->ShowModal() != wxID_OK )
-            return( NULL );
-        else
-            connDlg->getChoices( connectProperties );                
+		if( connDlg->ShowModal() != wxID_OK )
+			return( NULL );
+		else
+			connDlg->getChoices( connectProperties );             
             
         // If the user didn't cancel this dialog, loop back and try to connect to the server again
         
-     } while( true );
+	} while( true );
 }
 ////////////////////////////////////////////////////////////////////////////////
 // readFunction()

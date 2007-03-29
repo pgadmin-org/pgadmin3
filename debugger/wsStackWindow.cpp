@@ -29,8 +29,8 @@ wsStackWindow::wsStackWindow( wxWindow * parent, wxWindowID id, const wxPoint & 
 {
 	wxString fontName;
 
-    if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
-        m_grid->SetFont( wxFont( fontName ));
+	if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
+		m_grid->SetFont( wxFont( fontName ));
 	else
 		m_grid->SetFont( wxFont(  10, wxTELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ));
 

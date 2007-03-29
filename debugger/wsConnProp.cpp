@@ -26,18 +26,18 @@
 
 wsConnPropDlg::wsConnPropDlg( wxWindow * parent, wxWindowID id )
 {
-    // NOTE: Don't call the wxDialog constructor here - we need two-stage
-    //       construction so we can call the LoadDialog() function. 
+	// NOTE: Don't call the wxDialog constructor here - we need two-stage
+	//       construction so we can call the LoadDialog() function. 
     
-    wxXmlResource::Get()->InitAllHandlers();
+	wxXmlResource::Get()->InitAllHandlers();
     
-    wxString fontName;
+	wxString fontName;
     
-    if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
-        wxWindowBase::SetFont( wxFont( fontName ));
+	if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
+		wxWindowBase::SetFont( wxFont( fontName ));
     
-    wxXmlResource::Get()->Load( wxT( "resources/wsconnprop.xrc" ));
-    wxXmlResource::Get()->LoadDialog( this, parent, wxT( "wsConnPropDlg" ));
+	wxXmlResource::Get()->Load( wxT( "resources/wsconnprop.xrc" ));
+	wxXmlResource::Get()->LoadDialog( this, parent, wxT( "wsConnPropDlg" ));
     
 }
 
@@ -49,11 +49,11 @@ wsConnPropDlg::wsConnPropDlg( wxWindow * parent, wxWindowID id )
 
 void wsConnPropDlg::setDefaults( const wsConnProp & defaults )
 {
-    XRCCTRL( *this, "m_host", wxTextCtrl )->SetValue( defaults.m_host );
-    XRCCTRL( *this, "m_database", wxTextCtrl )->SetValue( defaults.m_database );
-    XRCCTRL( *this, "m_userName", wxTextCtrl )->SetValue( defaults.m_userName );
-    XRCCTRL( *this, "m_password", wxTextCtrl )->SetValue( defaults.m_password );
-    XRCCTRL( *this, "m_port",     wxTextCtrl )->SetValue( defaults.m_port );
+	XRCCTRL( *this, "m_host", wxTextCtrl )->SetValue( defaults.m_host );
+	XRCCTRL( *this, "m_database", wxTextCtrl )->SetValue( defaults.m_database );
+	XRCCTRL( *this, "m_userName", wxTextCtrl )->SetValue( defaults.m_userName );
+	XRCCTRL( *this, "m_password", wxTextCtrl )->SetValue( defaults.m_password );
+	XRCCTRL( *this, "m_port",     wxTextCtrl )->SetValue( defaults.m_port );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,10 +64,10 @@ void wsConnPropDlg::setDefaults( const wsConnProp & defaults )
 
 void wsConnPropDlg::getChoices( wsConnProp & result )
 {
-    result.m_host     = XRCCTRL( *this, "m_host",     wxTextCtrl )->GetValue();
-    result.m_database = XRCCTRL( *this, "m_database", wxTextCtrl )->GetValue();
-    result.m_userName = XRCCTRL( *this, "m_userName", wxTextCtrl )->GetValue();
-    result.m_password = XRCCTRL( *this, "m_password", wxTextCtrl )->GetValue();
-    result.m_port     = XRCCTRL( *this, "m_port",     wxTextCtrl )->GetValue();
+	result.m_host     = XRCCTRL( *this, "m_host",     wxTextCtrl )->GetValue();
+	result.m_database = XRCCTRL( *this, "m_database", wxTextCtrl )->GetValue();
+	result.m_userName = XRCCTRL( *this, "m_userName", wxTextCtrl )->GetValue();
+	result.m_password = XRCCTRL( *this, "m_password", wxTextCtrl )->GetValue();
+	result.m_port     = XRCCTRL( *this, "m_port",     wxTextCtrl )->GetValue();
 }
 
