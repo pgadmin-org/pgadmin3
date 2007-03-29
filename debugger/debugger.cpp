@@ -29,8 +29,10 @@
 
 IMPLEMENT_APP( wsApp )
 
-wsMainFrame * glMainFrame = NULL;
-wsApp       * glApp       = NULL;
+wsMainFrame		*glMainFrame = NULL;
+wsApp			*glApp       = NULL;
+wxFrameManager	manager;
+wxArrayString	m_perspectives;
 
 // cmdLineDesc - defines the options, switches, and parameters that we 
 // 		 expect to find on the command line.
@@ -109,7 +111,7 @@ bool wsApp::OnInit( )
 	(void) new wxDocTemplate( m_docManager, _T( "SQL" ), _T( "*.sql" ), _T( "" ), _T( "sql" ), _T( "SQL Document" ), _T( "SQL View" ), CLASSINFO( wsFuncDoc ), CLASSINFO( wsFuncView ));
 
 	// Create a new frame that manages the entire user interface
-    glMainFrame = m_mainFrame = new wsMainFrame( m_docManager, _( "pgAdmin3 PL/pgSQL debugger (Build 1)" ), wxPoint( -1, -1 ), wxSize( -1, -1 ));
+    glMainFrame = m_mainFrame = new wsMainFrame( m_docManager , _( "pgAdmin3 PL/pgSQL debugger (Build 1)" ), wxDefaultPosition, wxSize(800, 600));
 
     m_mainFrame->Show( true );
 	m_mainFrame->Raise();
@@ -121,7 +123,6 @@ bool wsApp::OnInit( )
     handleCmdLine( );
 
     return( true );
-
 
 }
 

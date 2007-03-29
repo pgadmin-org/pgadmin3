@@ -31,9 +31,9 @@
 
 #include <stdexcept>
 
-IMPLEMENT_CLASS( wsDirectDbg, wxMDIChildFrame )
+IMPLEMENT_CLASS( wsDirectDbg, wxDialog )
 
-BEGIN_EVENT_TABLE( wsDirectDbg, wxMDIChildFrame )
+BEGIN_EVENT_TABLE( wsDirectDbg, wxDialog )
     EVT_BUTTON( wxID_OK,       			 wsDirectDbg::OnOk )
     EVT_BUTTON( wxID_CANCEL,   			 wsDirectDbg::OnCancel )    
     EVT_BUTTON( MENU_ID_SPAWN_DEBUGGER,  wsDirectDbg::OnDebug )
@@ -60,8 +60,9 @@ END_EVENT_TABLE()
 //  EXEC statement that invokes the target (with the parameter values 
 //  provided by the user).
 
-wsDirectDbg::wsDirectDbg( wxMDIParentFrame * parent, wxWindowID id, const wsConnProp & connProp )
-	: wxMDIChildFrame( parent, id,  connProp.m_host + wxT( "/" ) + connProp.m_database  ),
+wsDirectDbg::wsDirectDbg( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProp )
+	: wxDialog( parent, id,  connProp.m_host + wxT( "/" ) + connProp.m_database, 
+		wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION  ),
 	  m_target(),
 	  m_connProp( connProp ),
 	  m_targetInfo( NULL ),
@@ -82,14 +83,14 @@ wsDirectDbg::wsDirectDbg( wxMDIParentFrame * parent, wxWindowID id, const wsConn
 
 void wsDirectDbg::setupParamWindow( )
 {
-	wxStaticText * txtMessage  = new wxStaticText( this, ID_TXTMESSAGE, _( "Please enter argument values here. \nPress Enter after each value." ), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
+	wxStaticText * txtMessage  = new wxStaticText( this, ID_TXTMESSAGE, _( "Please enter argument values here. Press Enter after each value." ), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
 	wxBoxSizer   * topSizer    = new wxBoxSizer( wxVERTICAL ); 
 	wxBoxSizer   * buttonSizer = new wxBoxSizer( wxHORIZONTAL );   
 
 	// Create the grid control and add three columns:
 	//	(Parameter) Name, Type, and Value
 
-	m_grid = new wxGrid( this, ID_GRDFUNCARGS );
+	m_grid = new wxGrid( this, ID_GRDFUNCARGS, wxDefaultPosition, wxSize( 380, 120));
 	
 	m_grid->CreateGrid( 0, 3 );
 	m_grid->SetColLabelValue( COL_NAME,  _( "Name" ));
@@ -108,20 +109,20 @@ void wsDirectDbg::setupParamWindow( )
 	// the grid control
 
 	topSizer->Add( txtMessage, 0, wxGROW, 0 );      
-	topSizer->Add( m_grid, 1, wxEXPAND | wxALL, 10 );      
+	topSizer->Add( m_grid, 1, wxEXPAND | wxALL, 7 );      
 	// Now add an OK button and a Cancel button
 
-	buttonSizer->Add( m_debugInitializer, 0, wxALL, 10 );
-	buttonSizer->Add( new wxButton( this, wxID_OK, _( "OK" )), 0, wxALL, 10 );      
-	buttonSizer->Add( new wxButton( this, wxID_CANCEL, _( "Cancel" )), 0, wxALL, 10 );      
+	buttonSizer->Add( m_debugInitializer, 0, wxALL, 7 );
+	buttonSizer->Add( new wxButton( this, wxID_OK, _( "OK" )), 0, wxALL, 7 );      
+	buttonSizer->Add( new wxButton( this, wxID_CANCEL, _( "Cancel" )), 0, wxALL, 7 );      
 
 	topSizer->Add( buttonSizer, 0, wxALIGN_CENTER ); 
 
 	// And size everything to fit within the window
-
 	SetSizer( topSizer ); 			// use the sizer for layout 
 	topSizer->Fit( this );          // fit the dialog to the contents 
 	topSizer->SetSizeHints( this ); // set hints to honor min size 	
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -300,6 +301,7 @@ void wsDirectDbg::populateParamGrid( )
 		m_grid->SetCellFont( 0, COL_NAME, font );
 		m_grid->AutoSizeColumns();
 		activateDebugger();
+
 	}
 }
 
@@ -626,10 +628,10 @@ void wsDirectDbg::OnResultReady( wxCommandEvent & event )
 		if( m_codeWindow && PQnfields( result ))
 			m_codeWindow->OnResultSet( result );
     }
-#if 0    
+#if 1    
     this->Show( true );
     this->SetFocus();
-    this->Activate();
+//    this->Activate();
     
     // Debugging has finished so we need to hide the code window.
     if (m_codeWindow)
@@ -695,7 +697,8 @@ void wsDirectDbg::OnTargetComplete( wxCommandEvent & event )
 
     this->Show( true );
     this->SetFocus();
-    this->Activate();
+// DEBUG
+//    this->Activate();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

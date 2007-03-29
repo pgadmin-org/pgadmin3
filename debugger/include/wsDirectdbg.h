@@ -30,20 +30,20 @@
 #ifndef WSDIRECTDBGH
 #define WSDIRECTDBGH
 
-#include	<wx/mdi.h>
+#include <wx/docview.h>		
 #include    "wsConnProp.h"
 #include    "wsBreakPoint.h"
 class wsTargetInfo;
 class wsPgConn;
 class wsCodeWindow;
 
-class wsDirectDbg : public wxMDIChildFrame	// FIXME: shouldn't this be a wxDialog?
+class wsDirectDbg : public wxDialog	// FIXME: shouldn't this be a wxDialog?
 {
 	DECLARE_CLASS( wsDirectDbg )
 
 public:
 
-	wsDirectDbg( wxMDIParentFrame * parent, wxWindowID id, const wsConnProp & connProp );
+	wsDirectDbg( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProp );
 	wsBreakpointList & getBreakpointList();
 	void startDebugging();
 

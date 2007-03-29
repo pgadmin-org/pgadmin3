@@ -29,7 +29,7 @@
 #ifndef WSCODEWINDOWH
 #define WSCODEWINDOWH
 
-#include <wx/mdi.h>
+#include <wx/docview.h>		
 #include <wx/toolbar.h>
 #include <wx/timer.h>
 
@@ -59,12 +59,12 @@ private:
 
 };
 
-class wsCodeWindow : public wxMDIChildFrame
+class wsCodeWindow : public wxSashLayoutWindow  
 {
     DECLARE_CLASS( wsCodeWindow )
 
  public:
-    wsCodeWindow( wxMDIParentFrame * parent, wxWindowID id, const wsConnProp & connProps );
+    wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProps );
 	virtual ~wsCodeWindow();
 
     void startLocalDebugging();			 						 // Start debugging 
@@ -75,7 +75,6 @@ class wsCodeWindow : public wxMDIChildFrame
 	void OnWriteAttempt( wxStyledTextEvent & event );			 // Do something useful when the user types into the source code window
 	void OnNoticeReceived( wxCommandEvent & event );			 // NOTICE received from server
 	void OnResultSet( PGresult * result );						 // Result set received from server
-
 	void disableTools();										 // Disable toolbar tools
 	void enableTools();										 	 // Enable toolbar tools
 
@@ -95,7 +94,7 @@ class wsCodeWindow : public wxMDIChildFrame
 
     void 	OnSashDrag( wxSashEvent & event );					// Handle geometry changes
     void 	OnActivate( wxActivateEvent & event );				// Display/Remove debugger toolbar
-	void	OnMarginClick( wxStyledTextEvent & event );			// Set/clear breakpoint on margin click
+ 	void	OnMarginClick( wxStyledTextEvent & event );			// Set/clear breakpoint on margin click
 	void	OnSelectFrame( wxCommandEvent & event );			// Select a different stack frame
 	void    OnVarChange( wxGridEvent & event );					// User changed a variable
 	void	OnIdle( wxIdleEvent & event );						// Idle processor
@@ -129,8 +128,8 @@ class wsCodeWindow : public wxMDIChildFrame
     wsPgConn		 	*	m_dbgConn;				// Network connection to debugger server
 	bool					m_toolsEnabled;			// Should toolbar buttons be enabled?
 	wxString				m_debugPort;			// Port at which debugger server is listening
-    wxToolBar		 	*	m_toolBar;				// Debugger toolbar
-    wxMDIParentFrame 	*	m_parent;				// Parent window
+
+    wxDocParentFrame 	*	m_parent;				// Parent window
     int				    	m_currentLineNumber;	// Current line number
 
     wsRichWindow	 	*	m_view;					// Window that displays function source code

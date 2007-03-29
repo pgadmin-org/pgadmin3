@@ -25,6 +25,16 @@
 #include <wx/docview.h>
 #include <wx/config.h>
 
+#include <wx/aui/aui.h>
+
+// Backwards compatibility
+#if wxCHECK_VERSION(2, 7, 2)
+#define wxFrameManager wxAuiManager
+#define wxFrameManagerEvent wxAuiManagerEvent
+#define wxPaneInfo wxAuiPaneInfo
+#define wxFloatingPane wxAuiFloatingFrame
+#endif
+
 #include "wsConnProp.h"
 
 class wsMainFrame;		 	// Forward (incomplete) declaration

@@ -37,7 +37,7 @@ static const char * keywords4 =
 static const char * keywords5 = 
 " procedural procedure quote read real recheck references reindex relative release rename repeatable replace reset restart restrict returns revoke right rollback row rows rule savepoint schema scroll second security select sequence serializable session session set setof share show similar simple smallint some stable start statement statistics stdin stdout storage strict substring";
 static const char * keywords6 = 
-" sysid table tablespace temp template temporary then time timestamp to toast trailing transaction treat trigger trim true truncate trusted";
+" sysid table tablespace temp template temporary then time timestamp to toast trailing transaction treat trigger trim true truncate trusted raise return exception";
 static const char * keywords7 = 
 " date type uncommitted unencrypted union unique unknown unlisten until update usage user using vacuum valid validator values varchar varying verbose view volatile when where with without work write year zone";
 
@@ -157,7 +157,7 @@ void wsRichWindow::OnSTCUpdateUI( wxStyledTextEvent & event )
 {
 	event.Skip();
 
-	wxToolBar  * t = glMainFrame->getToolBar();
+	wxToolBar  * t = glMainFrame->m_toolBar;
 
 	t->EnableTool( wxID_PASTE, CanPaste());
 	t->EnableTool( wxID_COPY, ( GetSelectionEnd() != GetSelectionStart()));

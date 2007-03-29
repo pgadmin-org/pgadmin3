@@ -57,11 +57,11 @@
 //  we tell wsPgThread to send us a RESULT_ID_GET_SOURCE event when the query 
 //	completes and we handle that event in a function named ResultSource.
 
-IMPLEMENT_CLASS( wsCodeWindow, wxMDIChildFrame )
+IMPLEMENT_CLASS( wsCodeWindow,  wxSashLayoutWindow )
 
 #define MARKERINDEX_TO_MARKERMASK( MI ) ( 1 << MI )
 
-BEGIN_EVENT_TABLE( wsCodeWindow, wxMDIChildFrame )
+BEGIN_EVENT_TABLE( wsCodeWindow , wxSashLayoutWindow )
   EVT_MENU( MENU_ID_SET_BREAK,	 	 wsCodeWindow::OnCommand )
   EVT_MENU( MENU_ID_CLEAR_BREAK, 	 wsCodeWindow::OnCommand )
   EVT_MENU( MENU_ID_CLEAR_ALL_BREAK, wsCodeWindow::OnCommand )
@@ -108,7 +108,7 @@ BEGIN_EVENT_TABLE( wsCodeWindow, wxMDIChildFrame )
   EVT_MENU( RESULT_ID_TARGET_READY,     	wsCodeWindow::ResultTargetReady )
 
   EVT_TIMER( wxID_ANY, wsCodeWindow::OnTimer )
-  
+
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -148,8 +148,8 @@ wxString wsCodeWindow::m_commandWaitForTarget( wxT( "SELECT * FROM pldbg_wait_fo
 //  line (that is, the line about to execute).  We use hilight the current line.
 //  If m_currentLineNumber is -1, there is no current line.  
 
-wsCodeWindow::wsCodeWindow( wxMDIParentFrame * parent, wxWindowID id, const wsConnProp & connProps )
-	: wxMDIChildFrame( parent, id, wxT( "" )),
+wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProps )
+	:wxSashLayoutWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN),
 	  m_parent( parent ),
 	  m_toolsEnabled( true ),
 	  m_currentLineNumber( -1 ),
@@ -167,20 +167,22 @@ wsCodeWindow::wsCodeWindow( wxMDIParentFrame * parent, wxWindowID id, const wsCo
 	  m_timer( this ),
 	  m_targetAborted( false )
 {
-    SetTitle( wxT( "" ));
+
+#if 0
+	SetTitle( wxT( "" ));
 
 	// Define the icon for this window
     SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
-
+#endif
 	// A wsCodeWindow is the user interface (the client side) of the PL debugger. We
 	// display the source code for a PL function (the function being debugged) in a 
 	// wsRichWindow (m_view) so we'll create that window now.
 
     // Create the leftmost window - a tree control (currently unused)
 
-	m_layout = new wxSashLayoutWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
+	m_layout = (wxSashLayoutWindow*) this;
 
-	m_stackWindow = new wsStackWindow( m_layout, WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
+	m_stackWindow = new wsStackWindow( parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
 
 	int width;
 	int	height;
@@ -194,8 +196,8 @@ wsCodeWindow::wsCodeWindow( wxMDIParentFrame * parent, wxWindowID id, const wsCo
     m_stackWindow->SetBackgroundColour( wxColor( 128, 128, 128 ));
 
     // Create the bottom window (Notebook)
-    m_tabWindow = new wsTabWindow( m_layout, WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
-
+    m_tabWindow = new wsTabWindow( parent , WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
+    
 	glApp->getSettings().Read( wxT( "TabWindow/height" ), &height, 180 );
 
     m_tabWindow->SetDefaultSize( wxSize( 1000, height ));
@@ -206,24 +208,29 @@ wsCodeWindow::wsCodeWindow( wxMDIParentFrame * parent, wxWindowID id, const wsCo
 
 	m_viewHolder = new wxSashLayoutWindow( m_layout, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
 
-	m_viewHolder->SetDefaultSize( wxSize( 1000, 180 ));
+	m_viewHolder->SetDefaultSize( wxSize( 1000, 180 ) );
 	m_viewHolder->SetOrientation( wxLAYOUT_VERTICAL );
 	m_viewHolder->SetAlignment( wxLAYOUT_LEFT );
 
-	m_view = new wsRichWindow( m_viewHolder, -1 );
+	m_view = new wsRichWindow( m_viewHolder, -1);
     m_view->m_parentWantsKeys = true;						// Send keystrokes to this object
 
 	// Set up the markers that we use do indicate the current line and a breakpoint
-	m_view->MarkerDefine( MARKER_CURRENT, wxSTC_MARK_ARROW, *wxGREEN, *wxGREEN );
+	m_view->MarkerDefine( MARKER_CURRENT, wxSTC_MARK_ARROW , *wxGREEN, *wxGREEN );
 	m_view->MarkerDefine( MARKER_CURRENT_BG, wxSTC_MARK_BACKGROUND, *wxGREEN, *wxGREEN );
 	m_view->MarkerDefine( MARKER_BREAKPOINT, wxSTC_MARK_CIRCLEPLUS, *wxRED, *wxRED );
 
-	// Debug line number
-	wxFont lineFont( 8, wxSWISS, wxNORMAL, wxNORMAL );
-	m_view->StyleSetFont(wxSTC_STYLE_DEFAULT, lineFont);
-	m_view->SetMarginType(1, wxSTC_MARGIN_NUMBER);
+	wxFont	numfont(8, wxSWISS, wxNORMAL, wxNORMAL);
+	m_view->StyleSetFont(wxSTC_STYLE_DEFAULT, numfont);
+	m_view->SetMarginType(1, wxSTC_MARGIN_NUMBER); 
 	m_view->SetMarginWidth( 1, 30 );
-
+	// m_view->SetMarginWidth( 1, 16 );
+/*
+	wxFont	font(10, wxDEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
+	m_view->StyleSetFont(0, font);
+	m_view->StyleSetFont(1, font);
+	m_view->StyleSetFont(2, font);
+*/
 	// Make sure that the text control tells us when the user clicks in the left margin
 	m_view->SetMarginSensitive( 0, true );
 	m_view->SetMarginSensitive( 1, true );
@@ -247,14 +254,28 @@ wsCodeWindow::wsCodeWindow( wxMDIParentFrame * parent, wxWindowID id, const wsCo
 	entries[6].Set( wxACCEL_NORMAL, WXK_F8, MENU_ID_STOP );
 	entries[7].Set( wxACCEL_NORMAL, WXK_F9, MENU_ID_RESTART );
 
-	SetAcceleratorTable( wxAcceleratorTable( 8, entries ));
+	glMainFrame->SetAcceleratorTable( wxAcceleratorTable( 8, entries ));
 
-
+#if 0
 	SetTitle( _( "Debugger... connecting" ));
-
+#endif
+	
 	// We create a wsCodeWindow when a wsPgThread intercepts a PLDBGBREAK NOTICE
 	// generated by the PostgreSQL server.   The NOTICE contains a TCP port number
 	// and we connect to that port here.
+	manager.AddPane(m_layout, wxAuiPaneInfo().Name(wxT("view")).Caption(_("view")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
+    manager.AddPane(m_stackWindow, wxAuiPaneInfo().Name(wxT("stackWindow")).Caption(_("stackWindow")).Right().MinSize(wxSize(100,100)).BestSize(wxSize(250,200)));
+	manager.AddPane(m_tabWindow, wxAuiPaneInfo().Name(wxT("tabWindow")).Caption(_("tabWindow")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
+
+    manager.GetPane(wxT("view")).Caption(_("view"));
+    manager.GetPane(wxT("stackWindow")).Caption(_("stackWindow"));
+    manager.GetPane(wxT("tabWindow")).Caption(_("tabWindow"));
+ 
+	glMainFrame->PerspectivesDef();
+
+	manager.Update();
+
+	glMainFrame->Refresh();
 
 	// The wsDbgConn constructor connects to the given host+port and
 	// and sends events to us whenever a string arrives from the 
@@ -272,6 +293,12 @@ wsCodeWindow::wsCodeWindow( wxMDIParentFrame * parent, wxWindowID id, const wsCo
 	PQclear( m_dbgConn->waitForCommand( wxT( "SET log_min_messages TO fatal" )));
 
 	m_sessionType = SESSION_TYPE_UNKNOWN;
+
+	// force
+	enableTools();
+	wxActivateEvent   fakeActivate( 0, true );
+	OnActivate( fakeActivate );
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -373,7 +400,9 @@ void wsCodeWindow::OnActivate( wxActivateEvent & event )
 	if( m_toolsEnabled == FALSE )
 		activateDebug = FALSE;
 
-	wxToolBar * t = m_parent->GetToolBar();
+	manager.GetPane(wxT("Toolbar")).Caption(_("Toolbar"));
+
+	wxToolBar * t = glMainFrame->m_toolBar;
 
 	// We may find that our toolbar has disappeared during application shutdown -
 	// It seems a little strange that OnActivate() is called during shutdown, but 
@@ -500,9 +529,9 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 			// Change our focus
 			m_focusPackageOid = result.getString( wxT( "pkg" ));
 			m_focusFuncOid    = result.getString( wxT( "func" ));
-
+#if 0
 			SetTitle( result.getString( _( "targetname" )));
-
+#endif
 			// The result set contains one tuple: 
 			//	packageOID, functionOID, linenumber
 			glApp->getStatusBar()->SetStatusText( wxString::Format( _( "Paused at line %s" ), result.getString( wxT( "linenumber" )).c_str()), 1 );		
@@ -524,9 +553,9 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 
 				glApp->getStatusBar()->SetStatusText( _( "Waiting for a target" ), 1 );
 				glApp->getStatusBar()->SetStatusText( wxT( "" ), 2 );
-
+#if 0
 				SetTitle( _( "Debugger... waiting for target" ));
-
+#endif
 				launchWaitingDialog();
 			}
 		}
@@ -537,9 +566,9 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 void wsCodeWindow::launchWaitingDialog()
 {
 	glApp->getStatusBar()->SetStatusText( wxString::Format( _( "Waiting for another session to invoke %s" ), m_targetName.c_str()), 1 );
-
+#if 0
 	SetTitle( wxString::Format( _( "Debugger...waiting for %s" ), m_targetName.c_str()));
-
+#endif
 	// NOTE: the waiting-dialog takes forever to appear running a remote X session so you can disable it by defining the following env. variable
 	if( getenv( "SUPPRESS_WAIT_DIALOG" ))
 		m_progressBar = NULL;
@@ -1566,3 +1595,4 @@ wsCodeCache::wsCodeCache( const wxString & packageOID, const wxString & funcOID,
   : m_packageOID( packageOID ), m_funcOID( funcOID ), m_sourceCode( source )
 {
 }
+

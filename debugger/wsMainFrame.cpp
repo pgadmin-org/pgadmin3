@@ -45,10 +45,14 @@
 
 #include <wx/log.h>
 
-IMPLEMENT_CLASS( wsMainFrame, wxDocMDIParentFrame )
+IMPLEMENT_CLASS( wsMainFrame, wxDocParentFrame  )
 
-BEGIN_EVENT_TABLE( wsMainFrame, wxDocMDIParentFrame )
+BEGIN_EVENT_TABLE( wsMainFrame, wxDocParentFrame  )
     EVT_MENU( MENU_ID_EXECUTE, wsMainFrame::OnExecute )
+    EVT_MENU(wxID_ABOUT, wsMainFrame ::OnAbout)
+    EVT_MENU_RANGE(wsMainFrame ::ID_FirstPerspective, 
+				   wsMainFrame ::ID_FirstPerspective+1000,
+                   wsMainFrame ::OnRestorePerspective)
 
     EVT_MENU_RANGE( MENU_ID_SET_BREAK, MENU_ID_SET_PC, wsMainFrame::OnDebugCommand )
 
@@ -74,14 +78,18 @@ END_EVENT_TABLE()
 //	(such as window sizing and layout, and creation of new windows).
 
 
-wsMainFrame::wsMainFrame( wxDocManager * docManager, const wxString & title, const wxPoint & pos, const wxSize & size )
-	: wxDocMDIParentFrame( docManager, NULL, wxID_ANY, title, pos, size ),
+wsMainFrame::wsMainFrame( wxDocManager* docManager, const wxString & title, const wxPoint & pos, const wxSize & size )
+	: wxDocParentFrame( docManager, NULL, wxID_ANY, title, pos, size ),
 	  m_console( NULL ),
 	  m_standaloneDebugger( NULL ),
 	  m_menuBar( NULL ),
 	  m_toolBar( NULL ),
 	  m_statusBar( NULL )
 {
+
+	manager.SetManagedWindow(this);
+	manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+
 	// Define the icon for this window
     SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
 
@@ -90,10 +98,18 @@ wsMainFrame::wsMainFrame( wxDocManager * docManager, const wxString & title, con
     m_toolBar   = setupToolBar();
     m_statusBar = setupStatusBar();
 
+	readSettings();
+
 	// NOTE: We don't create the console window (that's the big window that the 
 	// user types into) until we successfully connect to a database - see addConnect().
+    manager.AddPane(m_toolBar, wxAuiPaneInfo().
+                  Name(wxT("Toolbar")).Caption(wxT("Toolbar")).
+                  ToolbarPane().Top().Row(1).Position(1).
+                  LeftDockable(false).RightDockable(false));
 
-	readSettings();
+
+	manager.Update();
+
 }
 
 wsMainFrame::~wsMainFrame()
@@ -109,10 +125,11 @@ wsCodeWindow * wsMainFrame::addDebug( const wsConnProp & connProps )
 {
 	if( m_console == NULL )
 	{
-		m_standaloneDebugger = new wsCodeWindow( this, -1, connProps );
-
+		m_standaloneDebugger = new wsCodeWindow( this , -1, connProps );
 		m_standaloneDebugger->Show( true );
-		m_standaloneDebugger->Maximize( true );		
+#if 0
+		m_standaloneDebugger->Maximize( true );	
+#endif
 
 		return( m_standaloneDebugger );
 	}
@@ -129,7 +146,9 @@ wsDirectDbg * wsMainFrame::addDirectDbg( const wsConnProp & connProp )
 	{
 		m_standaloneDirectDbg = new wsDirectDbg( this, -1, connProp );
 		m_standaloneDirectDbg->Show( true );
+#if 0
 		m_standaloneDirectDbg->Maximize( true );		
+#endif
 
 		return( m_standaloneDirectDbg );
 	}
@@ -160,9 +179,10 @@ bool wsMainFrame::addConnect( const wxString & host, const wxString & database, 
     if( conn->isConnected())
     {
 		m_console = new wsConsole( this, conn->getName(), wxDefaultPosition, wxDefaultSize, conn );
-		m_console->Show( true );
+		m_console->Show( false );
+#if 0
 		m_console->SetFocus();
-
+#endif
 		return( true );
     } 
     else
@@ -187,6 +207,25 @@ void wsMainFrame::OnDebugCommand( wxCommandEvent & event )
 		m_console->OnDebugCommand( event );
 }
 
+void wsMainFrame ::OnAbout(wxCommandEvent& WXUNUSED(event))
+{
+    wxMessageBox(_("\tpgAdmin3 PL/pgSQL debugger\n Copyright (C) 2002-2007, The pgAdmin Development Team"), _("pgAdmin3 PL/pgSQL debugger"), wxOK, this);
+}
+
+void wsMainFrame ::OnRestorePerspective(wxCommandEvent& evt)
+{
+    manager.LoadPerspective(m_perspectives.Item(evt.GetId() - ID_FirstPerspective));
+}
+
+void wsMainFrame ::PerspectivesDef()
+{
+	wxString perspective_all = manager.SavePerspective();
+    wxString perspective_default = manager.SavePerspective();
+
+    m_perspectives.Add(perspective_default);
+    m_perspectives.Add(perspective_all);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // OnSize()
 //
@@ -195,9 +234,7 @@ void wsMainFrame::OnDebugCommand( wxCommandEvent & event )
 
 void wsMainFrame::OnSize( wxSizeEvent & event )
 {
-    wxLayoutAlgorithm	layout;
-
-    layout.LayoutMDIFrame( this );
+	event.Skip();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +244,9 @@ void wsMainFrame::OnSize( wxSizeEvent & event )
 
 wxToolBar * wsMainFrame::setupToolBar( void )
 {
-    wxToolBar * t = m_toolBar = CreateToolBar( );
+    wxToolBar* t = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+                                   wxTB_FLAT | wxTB_NODIVIDER);
+//    wxToolBar * t = m_toolBar = CreateToolBar( );
 
     t->SetToolBitmapSize( wxSize( 24, 24 ));
 
@@ -260,6 +299,8 @@ wxToolBar * wsMainFrame::setupToolBar( void )
 	t->EnableTool( MENU_ID_CLEAR_WATCH, 	false );
 	t->EnableTool( MENU_ID_SET_PC,      	false );
 #endif
+	
+	m_toolBar = t;
 
     return( m_toolBar );
 }
@@ -297,8 +338,16 @@ wxMenuBar * wsMainFrame::setupMenuBar( void )
 	fileMenu->Append( wxID_OPEN, _( "&Open" ));
 #endif
     fileMenu->Append( wxID_EXIT, _( "E&xit" ));
-
     m_menuBar->Append( fileMenu, _( "&File" ));
+
+    m_perspectives_menu = new wxMenu;
+    m_perspectives_menu->Append(ID_FirstPerspective, _("&Default view"));
+    m_menuBar->Append(m_perspectives_menu, _("&View"));
+
+    wxMenu* help_menu = new wxMenu;
+    help_menu->Append(wxID_ABOUT, _("&About..."));
+    m_menuBar->Append(help_menu, _("&Help"));
+
 
     SetMenuBar( m_menuBar );
 
@@ -312,6 +361,7 @@ wxMenuBar * wsMainFrame::setupMenuBar( void )
 
 void wsMainFrame::OnClose( wxCloseEvent & event )
 {
+	manager.UnInit();
     Destroy();
 }
 
@@ -353,13 +403,13 @@ void wsMainFrame::OnChar( wxKeyEvent & event )
 ////////////////////////////////////////////////////////////////////////////////
 // makeFuncFrame()
 //
-// This function creates a new MDI child frame to hold a view (presumably a 
+// This function creates a new DocChild frame to hold a view (presumably a 
 // wsFuncView). We also adjust the File menu here to reflect the fact that 
 // we now have a document to work with.
 
-wxDocMDIChildFrame * wsMainFrame::makeFuncFrame( wxDocument * doc, wxView * view )
+wxDocChildFrame * wsMainFrame::makeFuncFrame( wxDocument * doc, wxView * view )
 {
-	wxDocMDIChildFrame * child = new wxDocMDIChildFrame( doc, view, this, wxID_ANY, doc->GetTitle());
+	wxDocChildFrame * child = new wxDocChildFrame( doc, view, this, wxID_ANY, doc->GetTitle());
 
 	wxMenu *fileMenu = new wxMenu;
 
@@ -385,11 +435,14 @@ wxDocMDIChildFrame * wsMainFrame::makeFuncFrame( wxDocument * doc, wxView * view
 //  OnEditCommand()
 //
 //	This event handler forwards toolbar/menu bar commands to the currently-
-//  active child (that is, the MDI child frame that holds the focus).
+//  active child (that is, the DocChild frame that holds the focus).
 
 void wsMainFrame::OnEditCommand( wxCommandEvent & event )
 {
+#if 0
 	GetActiveChild()->ProcessEvent( event );
+#endif
+	glMainFrame->ProcessEvent( event );
 }
 
 ////////////////////////////////////////////////////////////////////////////////

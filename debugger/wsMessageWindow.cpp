@@ -34,6 +34,12 @@ wsMessageWindow::wsMessageWindow( wxWindow * parent, wxWindowID id )
 	else
 	{
 		wxFont	font( 10, wxTELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
+//#ifdef __WXMSW__
+//        wxFont	font(9, wxTELETYPE, wxNORMAL, wxNORMAL);
+//#else
+//        wxFont	font(12, wxTELETYPE, wxNORMAL, wxNORMAL);
+//#endif
+
 		SetDefaultStyle(wxTextAttr (wxNullColour,wxNullColour,font,wxTEXT_ALIGNMENT_DEFAULT));
 
 		// Note: we should not have to call SetFont() here, but under Win32, it's required otherwise

@@ -23,18 +23,19 @@
 #ifndef WSCONSOLE
 #define WSCONSOLE
 
-#include	<wx/mdi.h>
+#include "wx/textdlg.h"
+#include <wx/docview.h>		
 #include	"wsPgconn.h"
 
 class wsCodeWindow;
 class wsQueryWindow;
 
-class wsConsole : public wxMDIChildFrame
+class wsConsole : public wxTextCtrl
 {
     DECLARE_CLASS( wsConsole )
 
   public:
-    wsConsole( wxMDIParentFrame * parent, const wxString & title, const wxPoint & pos, const wxSize & size, wsPgConn * conn );
+    wsConsole( wxDocParentFrame * parent, const wxString & title, const wxPoint & pos, const wxSize & size, wsPgConn * conn );
 
     void	doExecute( void );
     void	doDebug( wsConnProp & connProps );

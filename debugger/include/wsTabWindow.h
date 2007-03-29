@@ -26,7 +26,7 @@
 #define WSTABWINDOWH
 
 #include <wx/frame.h>		
-#include <wx/mdi.h>		
+#include <wx/docview.h>
 #include <wx/laywin.h>
 #include <wx/notebook.h>
 #include "wx/hashmap.h"

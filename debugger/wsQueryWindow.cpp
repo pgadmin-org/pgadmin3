@@ -39,14 +39,13 @@ END_EVENT_TABLE()
 //  pointer and initializes the text control with a 'demo' command.
 
 wsQueryWindow::wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn )
-    : wxSashLayoutWindow( parent, id ),
-      m_conn( conn )
+    : wxSashLayoutWindow( parent , id ), m_conn( conn )
 {
 	// For demo purposes, we fill the edit control with the text of a few commands and then
 	// select that text so that it's easy to delete it if you don't want the demo...
 
-	m_gridHolder    = new wxSashLayoutWindow( this, WINDOW_ID_RESULT_GRID );
-	m_commandHolder = new wxSashLayoutWindow( this, WINDOW_ID_COMMAND );
+	m_gridHolder    = new wxSashLayoutWindow( glMainFrame /* this */ , WINDOW_ID_RESULT_GRID );
+	m_commandHolder = new wxSashLayoutWindow( glMainFrame /* this */ , WINDOW_ID_COMMAND );
 
 	m_gridHolder->SetOrientation( wxLAYOUT_HORIZONTAL );
 	m_gridHolder->SetAlignment( wxLAYOUT_BOTTOM );
@@ -92,6 +91,11 @@ wsQueryWindow::wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn 
                             wxT("-- And call the function\n")
 						    wxT("SELECT my_factorial( 4 );\n"));
 
+	wxFont	numfont(8, wxSWISS, wxNORMAL, wxNORMAL);
+	m_command->StyleSetFont(wxSTC_STYLE_DEFAULT, numfont);
+	m_command->SetMarginType(1, wxSTC_MARGIN_NUMBER); 
+	m_command->SetMarginWidth( 1, 30 );
+
     m_command->SetReadOnly( false );
 
 	wxFile history( _T( ".ws_history" ), wxFile::read );
@@ -116,7 +120,16 @@ wsQueryWindow::wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn 
     m_command->SetSelection( -1, -1 );
 
     wxLayoutAlgorithm	layout;
-    layout.LayoutWindow( this, m_commandHolder );
+    layout.LayoutWindow( glMainFrame /*this*/, m_commandHolder );
+	
+	// wxAUI
+    manager.AddPane(m_gridHolder, wxAuiPaneInfo().Name(wxT("resultGrid")).Caption(_("resultGrid")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
+	manager.AddPane(m_commandHolder, wxAuiPaneInfo().Name(wxT("command")).Caption(_("command")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
+
+    manager.GetPane(wxT("resultGrid")).Caption(_("resultGrid"));
+    manager.GetPane(wxT("command")).Caption(_("command"));
+
+	manager.Update();
 
 }
 

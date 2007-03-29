@@ -20,9 +20,9 @@
 
 #include <wx/log.h>
 
-IMPLEMENT_CLASS( wsConsole, wxMDIChildFrame )
+IMPLEMENT_CLASS( wsConsole, wxTextCtrl )
 
-BEGIN_EVENT_TABLE( wsConsole, wxMDIChildFrame )
+BEGIN_EVENT_TABLE( wsConsole, wxTextCtrl )
     EVT_ACTIVATE( wsConsole::OnActivate )
 END_EVENT_TABLE()
 
@@ -35,22 +35,29 @@ END_EVENT_TABLE()
 //
 //  A wsConsole object is typically a child of the wsMainFrame object
 
-wsConsole::wsConsole( wxMDIParentFrame * parent, const wxString & title, const wxPoint & pos, const wxSize & size, wsPgConn * conn )
-    : wxMDIChildFrame( parent, -1, title, pos, size ),
+wsConsole::wsConsole( wxDocParentFrame * parent, const wxString & title, const wxPoint & pos, const wxSize & size, wsPgConn * conn )
+//	:wxDocChildFrame(NULL, NULL, parent, -1, _T(""),
+//        wxDefaultPosition, wxDefaultSize, wxFRAME_NO_TASKBAR ),
+//    : wxDocChildFrame( parent, -1, title, pos, size ),
+	: wxTextCtrl( parent , wxID_ANY , title,
+                          wxDefaultPosition, wxDefaultSize, wxFRAME_NO_TASKBAR ),
       m_codeWindow( NULL ),
       m_queryWindow( NULL ),
       m_conn( conn )
 {
 
 	// Define the icon for this window
-
+#if 0
     SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
-
+#endif
 	// Create a query window - we'll create a debug window later if required
 
-    m_queryWindow = new wsQueryWindow( this, -1, m_conn );
+    m_queryWindow = new wsQueryWindow( glMainFrame /* this */  , -1, m_conn );
+#if 0
     m_queryWindow->Show( true );
 	m_queryWindow->SetFocus();
+#endif
+	glMainFrame->PerspectivesDef();
 }
   
 ////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +100,7 @@ void wsConsole::OnDebugCommand( wxCommandEvent & event )
 
 void wsConsole::OnActivate( wxActivateEvent & event )
 {
-	wxToolBar * t = glMainFrame->getToolBar();
+	wxToolBar * t = glMainFrame->m_toolBar;
 
 	t->EnableTool( MENU_ID_EXECUTE, event.GetActive());
 }

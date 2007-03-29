@@ -44,7 +44,7 @@ public:
 	void	 moveTo( int position );				  	// Move caret to given position
 
 private:
-    wxMDIChildFrame *	m_frame;						// Pointer to our parent frame
+    wxDocChildFrame *	m_frame;						// Pointer to our parent frame
     wsRichWindow 	*	m_text;
   
     bool 	OnCreate( wxDocument *doc, long flags );	// Create the STC text control and a new frame
