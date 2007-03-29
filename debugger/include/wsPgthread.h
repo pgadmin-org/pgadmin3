@@ -41,13 +41,13 @@ class wsPgThreadCommand
 public:
 	wsPgThreadCommand( const wxString & command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL ) : m_command( command ), m_caller( caller ), m_eventType( eventType ) {};
 
-	wxString		  & getCommand()   { return( m_command ); }
-	wxEvtHandler      * getCaller()    { return( m_caller ); }
-	wxEventType			getEventType() { return( m_eventType ); }
+	wxString	&getCommand()   { return( m_command ); }
+	wxEvtHandler	*getCaller()    { return( m_caller ); }
+	wxEventType	getEventType() { return( m_eventType ); }
 private:
-    wxString			m_command;		// Text of the command we're supposed to execute
-    wxEvtHandler      * m_caller;		// Event handler that we post results to
-	wxEventType			m_eventType;	// Event to report when result set arrives
+	wxString	m_command;	// Text of the command we're supposed to execute
+	wxEvtHandler	*m_caller;	// Event handler that we post results to
+	wxEventType	m_eventType;	// Event to report when result set arrives
 };
 
 WX_DECLARE_LIST( wsPgThreadCommand, ThreadCommandList );
@@ -56,23 +56,23 @@ class wsPgThread : public wxThread
 {
 
 public:
-    wsPgThread( wsPgConn & owner );
+	wsPgThread( wsPgConn & owner );
 
-    virtual void   * Entry();
-    void  			 startCommand( const wxString & command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL );
+	virtual void   * Entry();
+	void	startCommand( const wxString & command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL );
 
 private:
 
-    static void	noticeHandler( void * arg, const char * message );
+	static void	noticeHandler( void * arg, const char * message );
 
 	wsPgThreadCommand * getNextCommand();	// Grab next command from queue 
 
-    wsPgConn	      & m_owner;			// Connection to the PostgreSQL server
-	wxSemaphore			m_queueCounter;		// Number of entries in queue (thread synchronizer)
-	wxMutex			    m_queueMutex;		// Mutex to serialize access to m_commandQueue
+	wsPgConn	&m_owner;		// Connection to the PostgreSQL server
+	wxSemaphore	m_queueCounter;		// Number of entries in queue (thread synchronizer)
+	wxMutex		m_queueMutex;		// Mutex to serialize access to m_commandQueue
 	ThreadCommandList	m_commandQueue;		// Queue of pending commands
 
-	wsPgThreadCommand * m_currentCommand;	// Currently executing command
+	wsPgThreadCommand *m_currentCommand;	// Currently executing command
 };
 
 #endif

@@ -42,26 +42,26 @@ class wsMainFrame;		 	// Forward (incomplete) declaration
 class wsApp : public wxApp
 {
   public:
-    virtual	bool	OnInit();			// Initialize the Workstation application
-    virtual	int		OnExit();			// De-initialize the Workstation application
+	virtual	bool	OnInit();	// Initialize the Workstation application
+	virtual	int	OnExit();	// De-initialize the Workstation application
 
-	wxDocManager *  getDocMgr() { return( m_docManager ); }		// Returns document manager
-	wsConnProp   &  getConnProp() { return( m_connProp ); }		// Returns command-line connection properties
-	wxConfig     &  getSettings() { return( *m_settings ); }    // Returns settings/configuration object
-	wxStatusBar  *  getStatusBar();								// Returns application-wide status bar
+	wxDocManager *getDocMgr() { return( m_docManager ); }	// Returns document manager
+	wsConnProp   &getConnProp() { return( m_connProp ); }	// Returns command-line connection properties
+	wxConfig     &getSettings() { return( *m_settings ); }	// Returns settings/configuration object
+	wxStatusBar  *getStatusBar();				// Returns application-wide status bar
 
   private:   
 
-    wxCmdLineParser	*	m_cmdLine;		// Command line given by the user
-    wsMainFrame		*	m_mainFrame;	// Main frame object
-	wxDocManager    *   m_docManager;	// Document/View manager
-    wxConfig        *   m_settings;     // Setting/configuration manager
-	wsConnProp			m_connProp;     // Connection properties (from command-line)
+	wxCmdLineParser	*m_cmdLine;	// Command line given by the user
+	wsMainFrame	*m_mainFrame;	// Main frame object
+	wxDocManager    *m_docManager;	// Document/View manager
+	wxConfig	*m_settings;	// Setting/configuration manager
+	wsConnProp	m_connProp;	// Connection properties (from command-line)
 
-	void handleCmdLine( void );					// Process command-line arguments
+	void handleCmdLine( void );	// Process command-line arguments
 	void initializeLocale( wxChar * argv0 );	// Initialize locale and load language catalog
 };
 
-extern wsApp * glApp;
+extern wsApp *glApp;
 
 #endif // WSAPPH

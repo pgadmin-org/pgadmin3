@@ -36,12 +36,12 @@ public:
 	wsBreakpoint( eTargetType targetType, wxString & target, wxString & process ): m_targetType( targetType ), m_target( target ), m_targetProcess( process ) {}
 
 	eTargetType   getTargetType() 	 { return( m_targetType ); }
-	wxString    & getTarget() 		 { return( m_target ); }
+	wxString    & getTarget() 	 { return( m_target ); }
 	wxString    & getTargetProcess() { return( m_targetProcess ); }
 private:
 	eTargetType 	m_targetType;
-	wxString		m_target;
-	wxString		m_targetProcess;
+	wxString	m_target;
+	wxString	m_targetProcess;
 
 };
 

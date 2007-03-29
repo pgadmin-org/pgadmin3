@@ -31,8 +31,8 @@
 #define WSDIRECTDBGH
 
 #include <wx/docview.h>		
-#include    "wsConnProp.h"
-#include    "wsBreakPoint.h"
+#include "wsConnProp.h"
+#include "wsBreakPoint.h"
 class wsTargetInfo;
 class wsPgConn;
 class wsCodeWindow;
@@ -51,20 +51,20 @@ private:
 
 	enum
 	{
-		COL_NAME = 0,				// Column 0 contains the variable name
-		COL_TYPE,					// This column contains the variable type
-		COL_VALUE					// This column contains the variable value
+		COL_NAME = 0,	// Column 0 contains the variable name
+		COL_TYPE,	// This column contains the variable type
+		COL_VALUE	// This column contains the variable value
 	};
 
-	wxString     	   m_target;			// Target name (function/procedure signature or OID)
-	bool			   m_isFunc;
-	const wsConnProp & m_connProp;			// Connection properties (used to connect to the server)
-	wsTargetInfo     * m_targetInfo;		// Detailed information about the target (like argument types, name, ...)
-	wxGrid           * m_grid;				// A grid that we use to prompt the user for parameter values
-	wsPgConn         * m_conn;				// The connection to the server
-	wsCodeWindow     * m_codeWindow;		// A pointer to the debugger window that we'll create
-	wsBreakpointList   m_breakpoints;		// List of initial breakpoints to create
-	wxCheckBox		 * m_debugInitializer;	// Checkbox for "Debug package initializer?"
+	wxString	m_target;	// Target name (function/procedure signature or OID)
+	bool		m_isFunc;
+	const wsConnProp &m_connProp;	// Connection properties (used to connect to the server)
+	wsTargetInfo     *m_targetInfo;	// Detailed information about the target (like argument types, name, ...)
+	wxGrid           *m_grid;		// A grid that we use to prompt the user for parameter values
+	wsPgConn         *m_conn;		// The connection to the server
+	wsCodeWindow     *m_codeWindow;		// A pointer to the debugger window that we'll create
+	wsBreakpointList m_breakpoints;		// List of initial breakpoints to create
+	wxCheckBox	 * m_debugInitializer;	// Checkbox for "Debug package initializer?"
 
 	void loadTargetInfo( const wxString & target, const wsConnProp & connProp, char targetType );
 	void setupParamWindow();

@@ -29,9 +29,9 @@ class wsResultGrid : public wxGrid
     DECLARE_CLASS( wsResultGrid )
 
 public:
-    wsResultGrid( wxWindow * parent, wxWindowID id );
+	wsResultGrid( wxWindow * parent, wxWindowID id );
 
-    void	fillGrid( PGresult * result );		// Copy a result set into the grid
+	void	fillGrid( PGresult * result );	// Copy a result set into the grid
 };
 
 #endif

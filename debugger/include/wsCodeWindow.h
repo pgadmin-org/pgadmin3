@@ -53,9 +53,9 @@ public:
 	const wxString & getSource()   { return( m_sourceCode ); }
 
 private:
-	wxString		m_packageOID;	// Package OID
-	wxString		m_funcOID;		// Function OID
-	wxString		m_sourceCode;	// Source code for this function
+	wxString	m_packageOID;	// Package OID
+	wxString	m_funcOID;	// Function OID
+	wxString	m_sourceCode;	// Source code for this function
 
 };
 
@@ -64,19 +64,19 @@ class wsCodeWindow : public wxSashLayoutWindow
     DECLARE_CLASS( wsCodeWindow )
 
  public:
-    wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProps );
+	wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProps );
 	virtual ~wsCodeWindow();
 
-    void startLocalDebugging();			 						 // Start debugging 
-    void resumeLocalDebugging();			 					 // Start debugging, already attached to the proxy
-    void startGlobalDebugging(); 								 // Start debugging 
-    void OnCommand( wxCommandEvent & event );					 // Handle menu/toolbar commands
-    void processResult( wxString & result );					 // Handle a message from the debugger server
+	void startLocalDebugging();	 	 // Start debugging 
+	void resumeLocalDebugging();		 // Start debugging, already attached to the proxy
+	void startGlobalDebugging(); 		 // Start debugging 
+	void OnCommand( wxCommandEvent & event );					 // Handle menu/toolbar commands
+	void processResult( wxString & result );					 // Handle a message from the debugger server
 	void OnWriteAttempt( wxStyledTextEvent & event );			 // Do something useful when the user types into the source code window
 	void OnNoticeReceived( wxCommandEvent & event );			 // NOTICE received from server
 	void OnResultSet( PGresult * result );						 // Result set received from server
-	void disableTools();										 // Disable toolbar tools
-	void enableTools();										 	 // Enable toolbar tools
+	void disableTools();			 // Disable toolbar tools
+	void enableTools();		 	 // Enable toolbar tools
 
 	wsBreakpointList & getBreakpointList();
 
@@ -92,20 +92,20 @@ class wsCodeWindow : public wxSashLayoutWindow
 	wsVarWindow		* getPkgVarWindow( bool create )  { return( m_tabWindow->getPkgVarWindow( create )); } 
 	wsResultGrid    * getResultWindow()               { return( m_tabWindow->getResultWindow()); }
 
-    void 	OnSashDrag( wxSashEvent & event );					// Handle geometry changes
-    void 	OnActivate( wxActivateEvent & event );				// Display/Remove debugger toolbar
- 	void	OnMarginClick( wxStyledTextEvent & event );			// Set/clear breakpoint on margin click
-	void	OnSelectFrame( wxCommandEvent & event );			// Select a different stack frame
-	void    OnVarChange( wxGridEvent & event );					// User changed a variable
-	void	OnIdle( wxIdleEvent & event );						// Idle processor
-	void	OnTimer( wxTimerEvent & event );					// Clock tick
+	void	OnSashDrag( wxSashEvent & event );		// Handle geometry changes
+	void	OnActivate( wxActivateEvent & event );		// Display/Remove debugger toolbar
+	void	OnMarginClick( wxStyledTextEvent & event );	// Set/clear breakpoint on margin click
+	void	OnSelectFrame( wxCommandEvent & event );	// Select a different stack frame
+	void    OnVarChange( wxGridEvent & event );		// User changed a variable
+	void	OnIdle( wxIdleEvent & event );			// Idle processor
+	void	OnTimer( wxTimerEvent & event );		// Clock tick
 
-	int		getLineNo( );										// Compute line number for current cursor position
+	int		getLineNo( );				// Compute line number for current cursor position
 	void 	closeConnection();									// Closes proxy connection
-	void	updateUI( wsResultSet & breakpoint );				// Update the lazy parts of the UI
-	void	updateSourceCode( wsResultSet & breakpoint );		// Update the source code window
-	bool	connectionLost( wsResultSet & resultSet );			// Returns TRUE if proxy lost it's connection
-	bool	gotFatalError( wsResultSet & resultSet );			// Returns TRUE if result set indicates a fatal error has occurred
+	void	updateUI( wsResultSet & breakpoint );		// Update the lazy parts of the UI
+	void	updateSourceCode( wsResultSet & breakpoint );	// Update the source code window
+	bool	connectionLost( wsResultSet & resultSet );	// Returns TRUE if proxy lost it's connection
+	bool	gotFatalError( wsResultSet & resultSet );	// Returns TRUE if result set indicates a fatal error has occurred
 	void 	popupError( wsResultSet & resultSet, wxString title);
 	void	addBreakpoint( wsBreakpoint * breakpoint, wxEventType nextStep );
 
@@ -125,31 +125,31 @@ class wsCodeWindow : public wxSashLayoutWindow
 	void	ResultTargetReady( wxCommandEvent & event );		// Target session attached, ready to wait for a breakpoint
 	void	ResultLastBreakpoint( wxCommandEvent & event );		// Adding last breakpoint 
 
-    wsPgConn		 	*	m_dbgConn;				// Network connection to debugger server
-	bool					m_toolsEnabled;			// Should toolbar buttons be enabled?
-	wxString				m_debugPort;			// Port at which debugger server is listening
+	wsPgConn	*m_dbgConn;	// Network connection to debugger server
+	bool		m_toolsEnabled;	// Should toolbar buttons be enabled?
+	wxString	m_debugPort;	// Port at which debugger server is listening
 
-    wxDocParentFrame 	*	m_parent;				// Parent window
-    int				    	m_currentLineNumber;	// Current line number
+	wxDocParentFrame 	*m_parent;		// Parent window
+	int	m_currentLineNumber;	// Current line number
 
-    wsRichWindow	 	*	m_view;					// Window that displays function source code
-    wsStackWindow		*	m_stackWindow;			// Stack Window
-    wsTabWindow			*	m_tabWindow;			// Tab Window
-	wxSashLayoutWindow  *   m_layout;
-	wxSashLayoutWindow  *   m_viewHolder;
+	wsRichWindow	*m_view;	// Window that displays function source code
+	wsStackWindow	*m_stackWindow;	// Stack Window
+	wsTabWindow	*m_tabWindow;	// Tab Window
+	wxSashLayoutWindow  *m_layout;
+	wxSashLayoutWindow  *m_viewHolder;
 
 	typedef enum
 	{
-		SESSION_TYPE_UNKNOWN,						// Session could be in-context or direct
-		SESSION_TYPE_INCONTEXT,						// Session is configured for in-context debugging
-		SESSION_TYPE_DIRECT							// Session is configured for direct debugging
+		SESSION_TYPE_UNKNOWN,		// Session could be in-context or direct
+		SESSION_TYPE_INCONTEXT,		// Session is configured for in-context debugging
+		SESSION_TYPE_DIRECT		// Session is configured for direct debugging
 	} eSessionType;
 
-    eSessionType			m_sessionType;			// Debugging mode is in-context or direct?
-	bool					m_updateVars;			// Update variable window in next idle period?
-	bool				    m_updateStack;			// Update stack window in next idle period?
-	bool					m_updateBreakpoints;	// Update breakpoints in next idle period?
-	wsBreakpointList	    m_breakpoints;			// List of initial breakpoints to create
+	eSessionType	m_sessionType;		// Debugging mode is in-context or direct?
+	bool	m_updateVars;			// Update variable window in next idle period?
+	bool    m_updateStack;			// Update stack window in next idle period?
+	bool	m_updateBreakpoints;	// Update breakpoints in next idle period?
+	wsBreakpointList    m_breakpoints;	// List of initial breakpoints to create
 
 	enum
 	{
@@ -158,32 +158,32 @@ class wsCodeWindow : public wxSashLayoutWindow
 		MARKER_BREAKPOINT = 0x01,		// Breakpoint marker
 	};
 
-	sourceHash				m_sourceCodeMap;
+	sourceHash	m_sourceCodeMap;
 
-	wxString				m_focusPackageOid;		// Which package has the debug focus?
-	wxString				m_focusFuncOid;			// Which function has the debug focus?
-	wxString				m_displayedFuncOid;	  	// Which function are we currently displaying? (function OID component)
-	wxString				m_displayedPackageOid;	// Which function are we currently displaying? (package OID component)
-	wxString				m_sessionHandle;		// Handle to proxy's server session
-	wxString				m_targetName;			// User-friendly target name
+	wxString	m_focusPackageOid;	// Which package has the debug focus?
+	wxString	m_focusFuncOid;		// Which function has the debug focus?
+	wxString	m_displayedFuncOid;	// Which function are we currently displaying? (function OID component)
+	wxString	m_displayedPackageOid;	// Which function are we currently displaying? (package OID component)
+	wxString	m_sessionHandle;	// Handle to proxy's server session
+	wxString	m_targetName;		// User-friendly target name
 
-	wsWaitingDialog 	  * m_progressBar;			// "Waiting for target" dialog
-	int						m_progress;				// Simple counter for advancing m_progressBar
-	wxTimer					m_timer;
-	bool					m_targetAborted;		// Have we aborted the target? (true) or are we waiting for a breakpoint? (false)
-	bool			 findSourceInCache( const wxString & packageOID, const wxString & funcOID );
-	void			 getSource(  const wxString & packageOID, const wxString & funcOID );
-	void			 cacheSource( const wxString & packageOID, const wxString & funcOID, const wxString & sourceCode );
-	void		     displaySource( const wxString & packageOID, const wxString & funcID );
-	void 			 unhilightCurrentLine();
-	void			 launchWaitingDialog();
+	wsWaitingDialog	*m_progressBar;		// "Waiting for target" dialog
+	int	m_progress;			// Simple counter for advancing m_progressBar
+	wxTimer	m_timer;
+	bool	m_targetAborted;		// Have we aborted the target? (true) or are we waiting for a breakpoint? (false)
+	bool	findSourceInCache( const wxString & packageOID, const wxString & funcOID );
+	void	getSource(  const wxString & packageOID, const wxString & funcOID );
+	void	cacheSource( const wxString & packageOID, const wxString & funcOID, const wxString & sourceCode );
+	void	displaySource( const wxString & packageOID, const wxString & funcID );
+	void	unhilightCurrentLine();
+	void	launchWaitingDialog();
 
-	void 			 clearBreakpoint( int lineNumber, bool requestUpdate );
-	void			 setBreakpoint( int lineNumber );
-	void			 clearAllBreakpoints();
-	void			 clearBreakpointMarkers();
-	void			 stopDebugging();
-	void			 restartDebugging();
+	void 	clearBreakpoint( int lineNumber, bool requestUpdate );
+	void	setBreakpoint( int lineNumber );
+	void	clearAllBreakpoints();
+	void	clearBreakpointMarkers();
+	void	stopDebugging();
+	void	restartDebugging();
 
 	static wxString	m_commandAttach;
 	static wxString m_commandWaitForBreakpoint;

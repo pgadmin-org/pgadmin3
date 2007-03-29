@@ -38,10 +38,10 @@ class wsVarWindow : public wxGrid
     DECLARE_CLASS( wsVarWindow )
 
 public:
-    wsVarWindow( wxWindow * parent, wxWindowID id );
+	wsVarWindow( wxWindow * parent, wxWindowID id );
 
-    void		addVar( wxString name, wxString value, wxString type, bool readOnly );	// Add a variable to the window
-    void		delVar( wxString name = wxEmptyString);								    // Remove a variable from the window
+	void	addVar( wxString name, wxString value, wxString type, bool readOnly );	// Add a variable to the window
+	void	delVar( wxString name = wxEmptyString);								    // Remove a variable from the window
 	wxString	getVarName( int row );
 	wxString	getVarValue( int row );
 
@@ -51,16 +51,16 @@ private:
 
     typedef struct
     {
-		int			m_row;			// Row number for this variable/grid cell
-		wxString	m_value;		// Variable value
-		wxString	m_type;			// Variable type
+	int		m_row;	 // Row number for this variable/grid cell
+	wxString	m_value; // Variable value
+	wxString	m_type;	 // Variable type
     } gridCell;
 
 	enum
 	{
-		COL_NAME = 0,				// Column 0 contains the variable name
-		COL_TYPE,					// This column contains the variable type
-		COL_VALUE					// This column contains the variable value
+		COL_NAME = 0,		// Column 0 contains the variable name
+		COL_TYPE,		// This column contains the variable type
+		COL_VALUE		// This column contains the variable value
 	};
 
 	// The m_cells hash translates variable names into gridCell references
@@ -69,10 +69,10 @@ public:
 	WX_DECLARE_HASH_SET( wxString, wxStringHash, wxStringEqual, wsStringSet );
 
 private:
-	wsStringSet		m_hiddenNames;	// List of hidden variable names
-	wsStringSet		m_hiddenTypes;	// List of hidden variable types
-    wsCellHash 	  *	m_cells;		// name-to-gridCell map
-	wxFont		  	m_nameFont;		// Font used to display field names
+	wsStringSet	m_hiddenNames;	// List of hidden variable names
+	wsStringSet	m_hiddenTypes;	// List of hidden variable types
+	wsCellHash	*m_cells;	// name-to-gridCell map
+	wxFont		m_nameFont;	// Font used to display field names
 };
 
 #endif

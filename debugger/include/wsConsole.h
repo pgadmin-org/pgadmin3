@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // class wsConsole
 //
-//	This class manages the user interface for a single connection to a server.  
+//  This class manages the user interface for a single connection to a server.  
 //  Each wsConsole object keeps track of a connection (m_conn), a debugger window
 //  (m_codeWindow), and a query window (m_queryWindow).
 //
@@ -23,33 +23,33 @@
 #ifndef WSCONSOLE
 #define WSCONSOLE
 
-#include "wx/textdlg.h"
+#include <wx/textdlg.h>
 #include <wx/docview.h>		
-#include	"wsPgconn.h"
+#include "wsPgconn.h"
 
 class wsCodeWindow;
 class wsQueryWindow;
 
 class wsConsole : public wxTextCtrl
 {
-    DECLARE_CLASS( wsConsole )
+  DECLARE_CLASS( wsConsole )
 
   public:
-    wsConsole( wxDocParentFrame * parent, const wxString & title, const wxPoint & pos, const wxSize & size, wsPgConn * conn );
+	wsConsole( wxDocParentFrame * parent, const wxString & title, const wxPoint & pos, const wxSize & size, wsPgConn * conn );
 
-    void	doExecute( void );
-    void	doDebug( wsConnProp & connProps );
-    void	OnDebugCommand( wxCommandEvent & event );
+	void	doExecute( void );
+	void	doDebug( wsConnProp & connProps );
+	void	OnDebugCommand( wxCommandEvent & event );
 
 private:
 
-    wsCodeWindow		*	m_codeWindow;		// Source code (debugger) window
-    wsQueryWindow		*	m_queryWindow;		// Query window
-    wsPgConn			*	m_conn;				// Connection to server
+	wsCodeWindow	*m_codeWindow;	// Source code (debugger) window
+	wsQueryWindow	*m_queryWindow;	// Query window
+	wsPgConn	*m_conn;	// Connection to server
 
 	void OnActivate( wxActivateEvent & event );
 
-    DECLARE_EVENT_TABLE()
+  DECLARE_EVENT_TABLE()
 };
 
 #endif // WSCONSOLE

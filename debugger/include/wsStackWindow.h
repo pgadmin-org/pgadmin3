@@ -35,13 +35,13 @@ class wsStackWindow : public wxSashLayoutWindow
 
 public:
 
-    wsStackWindow( wxWindow * parent, wxWindowID id, const wxPoint & pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCLIP_CHILDREN | wxSW_3D, const wxString& name = wxT( "stackWindow" ));
+	wsStackWindow( wxWindow * parent, wxWindowID id, const wxPoint & pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCLIP_CHILDREN | wxSW_3D, const wxString& name = wxT( "stackWindow" ));
 	void clear();											// Remove all frames from the stack trace
 	void addFrame( int level, const wxString & entry );		// Add a frame to the stack trace
 	void setStack( const wxArrayString & stack );			// Add an array of frames to the stack trace 
 
 private:
-	wxListBox	*	m_grid;									// Window that displays the stack trace
+	wxListBox	*m_grid;	// Window that displays the stack trace
 
 };
 

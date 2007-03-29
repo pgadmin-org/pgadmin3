@@ -29,17 +29,17 @@ class wsMessageWindow : public wxTextCtrl
     DECLARE_CLASS( wsMessageWindow )
 
 public:
-    wsMessageWindow( wxWindow * parent, wxWindowID id );
+	wsMessageWindow( wxWindow * parent, wxWindowID id );
 
-    void		addMessage( wxString message );	// Add a message to the window
-    void		delMessage( const char * name = NULL );								    // Remove a message from the window
+	void	addMessage( wxString message );	// Add a message to the window
+	void	delMessage( const char * name = NULL );								    // Remove a message from the window
 	wxString	getMessage( int row );
 
 private:
 
     typedef struct
     {
-		int			m_row;			// Row number for this variable/grid cell
+	int	m_row;		// Row number for this variable/grid cell
     } gridCell;
 };
 

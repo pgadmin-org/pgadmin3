@@ -38,13 +38,13 @@ class wsDBResult : public wxEvent
 {
 
 public:
-    wsDBResult( PGresult * result ) : wxEvent( 0, wsDBRESULT ), m_result( result ) { }
+	wsDBResult( PGresult * result ) : wxEvent( 0, wsDBRESULT ), m_result( result ) { }
 
-    wxEvent  * Clone( void ) const { return( new wsDBResult( *this )); }
-    PGresult * getResult( void )   { return( m_result ); }
+	wxEvent  * Clone( void ) const { return( new wsDBResult( *this )); }
+	PGresult * getResult( void )   { return( m_result ); }
 
 private:
-    PGresult	*	m_result;
+	PGresult	*m_result;
 };
 
 #endif

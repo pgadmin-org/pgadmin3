@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // class wsConnProp
 //
-//	A wsConnProp object is used to hold a set of connection properties, that is.
+//  wsConnProp object is used to hold a set of connection properties, that is.
 //  it's a collection of all of the information that we need in order to connect
 //  to a server.
 //
@@ -34,20 +34,20 @@ public:
 	wxString	m_password;		// Password
 	wxString	m_port;			// Port number
 	wxString	m_debugPort;	// Port number for debugger connection
-	int			m_sslMode;		// SSL Mode
+	int		m_sslMode;		// SSL Mode
 };
 
 class wsConnPropDlg : public wxDialog
 {
 public:
-    wsConnPropDlg( wxWindow * parent, wxWindowID id = wxID_ANY );
+	wsConnPropDlg( wxWindow * parent, wxWindowID id = wxID_ANY );
 
-    void setDefaults( const wsConnProp & defaults );
-    void getChoices( wsConnProp & result );
+	void setDefaults( const wsConnProp & defaults );
+	void getChoices( wsConnProp & result );
     
 private:
 
-    wsConnProp      m_properties;    
+	wsConnProp	m_properties;    
 
 };
 

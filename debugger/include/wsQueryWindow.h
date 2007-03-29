@@ -37,24 +37,24 @@ class wsQueryWindow : public wxSashLayoutWindow
     DECLARE_CLASS( wsQueryWindow )
 
  public:
-    wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn );
+	wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn );
 
-    void doExecute( void );
+	void doExecute( void );
 
  private:
 
-    wsPgConn 			* m_conn;					// Connection to PostgreSQL server
-	wxSashLayoutWindow  * m_gridHolder;
-	wxSashLayoutWindow  * m_commandHolder;
-	wsResultGrid 		* m_resultGrid;
-	wsRichWindow        * m_command;
+	wsPgConn 	*m_conn;	// Connection to PostgreSQL server
+	wxSashLayoutWindow  *m_gridHolder;
+	wxSashLayoutWindow  *m_commandHolder;
+	wsResultGrid	*m_resultGrid;
+	wsRichWindow	*m_command;
 
-    void OnKeyEvent( wxKeyEvent & event );			// Intercept Ctrl-Enter, Ctrl-space, and Control-C 
-    void OnClose( wxCloseEvent & event );			// Destroy window
-    void OnExecute( wxCommandEvent & event );		// Handle the 'Execute' menu option
+	void OnKeyEvent( wxKeyEvent & event );	// Intercept Ctrl-Enter, Ctrl-space, and Control-C 
+	void OnClose( wxCloseEvent & event );		// Destroy window
+	void OnExecute( wxCommandEvent & event );	// Handle the 'Execute' menu option
 	void OnResultReady( wxCommandEvent & event );	// Handle an incoming result set
 	void OnSpawnDebugger( wxCommandEvent & event );	// Handle an incoming debugger message
-	void OnSashDrag( wxSashEvent & event );			// Recompute window layout
+	void OnSashDrag( wxSashEvent & event );		// Recompute window layout
 
     DECLARE_EVENT_TABLE()
 

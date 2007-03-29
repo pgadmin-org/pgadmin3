@@ -35,27 +35,27 @@ class wsFuncView: public wxView
 
 public:
 
-    wsFuncView();
-    ~wsFuncView();
+	wsFuncView();
+	~wsFuncView();
 
-	bool 	 IsModified() const;						// Returns true if view has been modified
-	void	 Modify( bool mod );						// Marks this view as "saved"
+	bool 	 IsModified() const;	// Returns true if view has been modified
+	void	 Modify( bool mod );	// Marks this view as "saved"
 	wxString getText() { return( m_text->GetText()); }	// Return document content
 	void	 moveTo( int position );				  	// Move caret to given position
 
 private:
-    wxDocChildFrame *	m_frame;						// Pointer to our parent frame
-    wsRichWindow 	*	m_text;
+	wxDocChildFrame	*m_frame;		// Pointer to our parent frame
+	wsRichWindow	*m_text;
   
-    bool 	OnCreate( wxDocument *doc, long flags );	// Create the STC text control and a new frame
-    bool 	OnClose( bool deleteWindow = true );		// Close this view (and the underlying document)
+	bool	OnCreate( wxDocument *doc, long flags );	// Create the STC text control and a new frame
+	bool 	OnClose( bool deleteWindow = true );		// Close this view (and the underlying document)
 	void 	OnGainFocus( wxFocusEvent & event );		// Move the focus to the edit control when we gain focus
-	void 	OnDraw( wxDC *) {}							// Render view (handled by m_text)
+	void 	OnDraw( wxDC *) {}				// Render view (handled by m_text)
 	void 	OnEditCommand( wxCommandEvent & event );	// Handle cut/copy/paste/...
 	void    OnUpdate( wxView * sender, wxObject * hint );	// Handle document modification
 	void    OnActivateView( bool activate, wxView *activeView, wxView *deactiveView );
-    DECLARE_EVENT_TABLE()
-	DECLARE_DYNAMIC_CLASS( wsFuncView )
+  DECLARE_EVENT_TABLE()
+  DECLARE_DYNAMIC_CLASS( wsFuncView )
 };
 
 #endif
