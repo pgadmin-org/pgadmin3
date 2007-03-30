@@ -84,8 +84,8 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
             len=typmod-4L;
             length += NumToStr(len);
         }
-	if (len > 0)
-	    length += wxT(")");
+        if (length.Length() > 0)
+	        length += wxT(")");
     }
     else
         len=prec=0;
