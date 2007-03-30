@@ -48,7 +48,7 @@ bool pgSequence::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 void pgSequence::UpdateValues()
 {
     pgSet *sequence=ExecuteSet(
-        wxT("SELECT last_value, min_value, max_value, cache_value, is_cycled, increment_by\n")
+        wxT("SELECT last_value, min_value, max_value, cache_value, is_cycled, increment_by, is_called\n")
         wxT("  FROM ") + GetQuotedFullIdentifier());
     if (sequence)
     {
@@ -58,6 +58,7 @@ void pgSequence::UpdateValues()
         cacheValue = sequence->GetLongLong(wxT("cache_value"));
         increment = sequence->GetLongLong(wxT("increment_by"));
         cycled = sequence->GetBool(wxT("is_cycled"));
+        called = sequence->GetBool(wxT("is_called"));
 
         delete sequence;
     }
@@ -109,7 +110,8 @@ void pgSequence::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Maximum"), GetMaxValue());
         properties->AppendItem(_("Increment"), GetIncrement());
         properties->AppendItem(_("Cache"), GetCacheValue());
-        properties->AppendItem(_("Cycled"), GetCycled());
+        properties->AppendItem(_("Cycled?"), GetCycled());
+        properties->AppendItem(_("Called?"), GetCalled());
         properties->AppendItem(_("System sequence?"), GetSystemObject());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }

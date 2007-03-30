@@ -45,6 +45,7 @@ public:
     wxULongLong GetCacheValue() const { return cacheValue; }
     wxULongLong GetIncrement() const { return increment; }
     bool GetCycled() const { return cycled; }
+    bool GetCalled() const { return called; }
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetSql(ctlTree *browser);
@@ -56,7 +57,7 @@ public:
 
 private:
     wxULongLong lastValue, minValue, maxValue, cacheValue, increment;
-    bool cycled, isReplicated;
+    bool cycled, called, isReplicated;
 };
 
 #endif
