@@ -156,6 +156,7 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
     // possible keywords can be found in postgresql/src/backend/commands/explain.c
 
     if (token == wxT("Total"))              return 0;
+    else if (token == wxT("Trigger"))       return 0;
     else if (token == wxT("Result"))        s = new ExplainShape(ex_result_xpm, descr);
     else if (token == wxT("Append"))        s = new ExplainShape(ex_append_xpm, descr);
     else if (token == wxT("Nested"))        s = new ExplainShape(ex_nested_xpm, descr);
