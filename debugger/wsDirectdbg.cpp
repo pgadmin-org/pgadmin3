@@ -605,7 +605,7 @@ void wsDirectDbg::OnResultReady( wxCommandEvent & event )
 
 	if(( PQresultStatus( result ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( result ) == PGRES_FATAL_ERROR ))
 	{
-		wxString	message( wxString(PQresultErrorMessage( result ), wxConvUTF8));
+		wxString message( PQresultErrorMessage( result ), wxConvUTF8 ) ;
 
 		message.Replace( wxT( "\r" ), wxT( "" ));
 		message.Replace( wxT( "\n" ), wxT( " " ));
@@ -615,7 +615,7 @@ void wsDirectDbg::OnResultReady( wxCommandEvent & event )
 	}
 	else
 	{
-		wxString message( wxString( PQcmdStatus( result ), wxConvUTF8 ));
+		wxString message( PQcmdStatus( result ), wxConvUTF8 );
 
 		message.Replace( wxT( "\r" ), wxT( "" ));
 		message.Replace( wxT( "\n" ), wxT( " " ));
@@ -667,7 +667,7 @@ void wsDirectDbg::OnTargetComplete( wxCommandEvent & event )
 
 	if(( PQresultStatus( rawResult ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( rawResult ) == PGRES_FATAL_ERROR ))
 	{
-		wxString	message( wxString( PQresultErrorMessage( rawResult ), wxConvUTF8 ));
+		wxString	message( PQresultErrorMessage( rawResult ), wxConvUTF8 );
 
 		message.Replace( wxT( "\r" ), wxT( "" ));
 		message.Replace( wxT( "\n" ), wxT( " " ));
@@ -677,7 +677,7 @@ void wsDirectDbg::OnTargetComplete( wxCommandEvent & event )
 	}
 	else
 	{
-		wxString message( wxString( PQcmdStatus( rawResult ), wxConvUTF8 ));
+		wxString message( PQcmdStatus( rawResult ), wxConvUTF8 );
 
 		message.Replace( wxT( "\r" ), wxT( "" ));
 		message.Replace( wxT( "\n" ), wxT( " " ));

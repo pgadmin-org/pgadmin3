@@ -176,7 +176,7 @@ void wsQueryWindow::OnResultReady( wxCommandEvent & event )
 
 	if(( PQresultStatus( result ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( result ) == PGRES_FATAL_ERROR ))
 	{
-		wxString	message( wxString( PQresultErrorMessage( result ), wxConvUTF8 ));
+		wxString	message( PQresultErrorMessage( result ), wxConvUTF8 );
 
 		message.Replace( wxT( "\r" ), wxT( "" ));
 		message.Replace( wxT( "\n" ), wxT( " " ));
