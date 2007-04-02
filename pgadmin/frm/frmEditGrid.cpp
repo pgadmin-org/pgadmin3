@@ -366,10 +366,25 @@ void frmEditGrid::SetLimit(const int rowlimit)
 
 void frmEditGrid::OnLabelRightClick(wxGridEvent& event)
 {
-    wxArrayInt rows=sqlGrid->GetSelectedRows();
-    if (rows.GetCount())
-    {
-    }
+	wxMenu *xmenu = new wxMenu();
+	wxArrayInt rows=sqlGrid->GetSelectedRows();
+	xmenu->Append(MNU_COPY, _("&Copy"),_("Copy selected cells to clipboard."));
+	xmenu->Append(MNU_PASTE, _("&Paste"),_("Paste data from the clipboard."));
+	xmenu->Append(MNU_DELETE, _("&Delete"),_("Delete selected rows."));
+
+	if ((rows.GetCount()) && (!sqlGrid->IsCurrentCellReadOnly()))
+	{
+		xmenu->Enable(MNU_COPY, true);
+		xmenu->Enable(MNU_DELETE, true);
+		xmenu->Enable(MNU_PASTE, true);
+	}
+	else
+	{
+		xmenu->Enable(MNU_COPY, false);
+		xmenu->Enable(MNU_DELETE, false);
+		xmenu->Enable(MNU_PASTE, false);
+	}
+	sqlGrid->PopupMenu(xmenu);
 }
 
 
