@@ -36,6 +36,7 @@ private:
 
     void OnChangeArgName(wxCommandEvent &ev);
     void OnChangeReturn(wxCommandEvent &ev);
+    void OnChangeSetof(wxCommandEvent &ev);
     void OnSelChangeLanguage(wxCommandEvent &ev);
     void OnSelChangeArg(wxListEvent &ev);
     void OnSelChangeType(wxCommandEvent &ev);

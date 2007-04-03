@@ -36,6 +36,8 @@
 #define cbVolatility        CTRL_COMBOBOX("cbVolatility")
 #define chkStrict           CTRL_CHECKBOX("chkStrict")
 #define chkSecureDefiner    CTRL_CHECKBOX("chkSecureDefiner")
+#define txtCost             CTRL_TEXT("txtCost")
+#define txtRows             CTRL_TEXT("txtRows")
 
 #define lstArguments        CTRL_LISTVIEW("lstArguments")
 #define rdbDirection        CTRL_RADIOBOX("rdbDirection")
@@ -60,8 +62,11 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_CHECKBOX(XRCID("chkSecureDefiner"),         dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtObjectFile"),                dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtLinkSymbol"),                dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtCost"),                      dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtRows"),                      dlgProperty::OnChange)
     EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgProperty::OnChangeStc)
 
+    EVT_CHECKBOX(XRCID("chkSetof"),                 dlgFunction::OnChangeSetof)
     EVT_TEXT(XRCID("cbReturntype"),                 dlgFunction::OnChangeReturn)
     EVT_COMBOBOX(XRCID("cbReturntype"),             dlgFunction::OnChangeReturn)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgFunction::OnSelChangeType)
@@ -146,6 +151,11 @@ int dlgFunction::Go(bool modal)
     if (!connection->BackendMinimumVersion(8, 0))
         cbOwner->Disable();
 
+    if (!connection->BackendMinimumVersion(8, 3))
+        txtCost->Disable();
+
+    txtRows->Disable();
+
     // the listview's column that contains the type name
     typeColNo = (connection->BackendMinimumVersion(8, 0) ? 1 : 0);
 
@@ -175,6 +185,8 @@ int dlgFunction::Go(bool modal)
         cbVolatility->Disable();
         stReturntype->Disable();
         cbReturntype->Disable();
+        txtCost->Disable();
+        txtRows->Disable();
     }
 
     pgSet *lang=connection->ExecuteSet(wxT("SELECT lanname FROM pg_language"));
@@ -247,6 +259,18 @@ int dlgFunction::Go(bool modal)
         chkStrict->SetValue(function->GetIsStrict());
         chkSecureDefiner->SetValue(function->GetSecureDefiner());
 
+        if (connection->BackendMinimumVersion(8, 3))
+        {
+            txtCost->SetValue(NumToStr(function->GetCost()));
+            if (function->GetReturnAsSet())
+            {
+                txtRows->SetValue(NumToStr(function->GetRows()));
+                txtRows->Enable();
+            }
+            else
+                txtRows->Disable();
+        }
+
         if (function->GetLanguage().IsSameAs(wxT("C"), false))
         {
             txtObjectFile->SetValue(function->GetBin());
@@ -257,6 +281,7 @@ int dlgFunction::Go(bool modal)
 
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
+
         cbReturntype->Disable();
         chkSetof->Disable();
         cbDatatype->Disable();
@@ -331,7 +356,7 @@ void dlgFunction::CheckChange()
 {
     wxString name=GetName();
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
-    bool enable=true;
+    bool enable=true, didChange;
 
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
     if (!isProcedure)
@@ -352,8 +377,7 @@ void dlgFunction::CheckChange()
 
     if (function)
     {
-        EnableOK(enable
-              && (txtComment->GetValue() != function->GetComment()
+        didChange = (txtComment->GetValue() != function->GetComment()
               || name != function->GetName()
               || cbVolatility->GetValue() != function->GetVolatility()
               || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
@@ -362,12 +386,17 @@ void dlgFunction::CheckChange()
               || cbOwner->GetValue() != function->GetOwner()
               || GetArgs() != function->GetArgListWithNames()
               || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
-              || (!isC && txtSqlBox->GetText() != function->GetSource())));
+              || (!isC && txtSqlBox->GetText() != function->GetSource()));
+
+        if (connection->BackendMinimumVersion(8, 3))
+        {
+            didChange = (didChange ||
+                txtCost->GetValue() != NumToStr(function->GetCost()) ||
+                (chkSetof->GetValue() && txtRows->GetValue() != NumToStr(function->GetRows())));
+        }
     }
-    else
-    {
-        EnableOK(enable);
-    }
+
+    EnableOK(enable && didChange);
 }
 
 bool dlgFunction::IsUpToDate()
@@ -447,6 +476,17 @@ void dlgFunction::OnSelChangeArg(wxListEvent &ev)
 void dlgFunction::OnChangeReturn(wxCommandEvent &ev)
 {
     cbReturntype->GuessSelection(ev);
+    CheckChange();
+}
+
+
+void dlgFunction::OnChangeSetof(wxCommandEvent &ev)
+{
+    if (chkSetof->GetValue() && connection->BackendMinimumVersion(8, 3) && !isProcedure)
+        txtRows->Enable();
+    else
+        txtRows->Disable();
+
     CheckChange();
 }
 
@@ -669,6 +709,13 @@ wxString dlgFunction::GetSql()
         || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
         || (!isC && txtSqlBox->GetText() != function->GetSource());
 
+    if (connection->BackendMinimumVersion(8, 3))
+    {
+        didChange = (didChange ||
+            txtCost->GetValue() != NumToStr(function->GetCost()) ||
+            (chkSetof->GetValue() && txtRows->GetValue() != NumToStr(function->GetRows())));
+    }
+
     if (function)
     {
         // edit mode
@@ -738,6 +785,15 @@ wxString dlgFunction::GetSql()
                 sql += wxT(" STRICT");
             if (chkSecureDefiner->GetValue())
                 sql += wxT(" SECURITY DEFINER");
+
+            // PostgreSQL 8.3+ cost/row estimations
+            if (connection->BackendMinimumVersion(8, 3))
+            {
+                sql += wxT("\nCOST ") + txtCost->GetValue();
+
+                if (chkSetof->GetValue())
+                    sql += wxT("\nROWS ") + txtRows->GetValue();
+            }
 
             sql += wxT(";\n");
         }

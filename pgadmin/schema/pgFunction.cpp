@@ -115,6 +115,16 @@ wxString pgFunction::GetSql(ctlTree *browser)
             sql += wxT(" STRICT");
         if (GetSecureDefiner())
             sql += wxT(" SECURITY DEFINER");
+
+        // PostgreSQL 8.3+ cost/row estimations
+        if (GetConnection()->BackendMinimumVersion(8, 3))
+        {
+            sql += wxT("\n  COST ") + NumToStr(GetCost());
+
+            if (GetReturnAsSet())
+                sql += wxT("\n  ROWS ") + NumToStr(GetRows());
+        }
+
         sql += wxT(";\n")
             +  GetOwnerSql(8, 0, wxT("FUNCTION ") + qtSig)
             +  GetGrant(wxT("X"), wxT("FUNCTION ") + qtSig);
@@ -153,6 +163,13 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         }
         else
             properties->AppendItem(_("Source"), firstLineOnly(GetSource()));
+
+        if (GetConnection()->BackendMinimumVersion(8, 3))
+        {
+            properties->AppendItem(_("Estimated cost"), GetCost());
+            if (GetReturnAsSet())
+                properties->AppendItem(_("Estimated rows"), GetRows());
+        }
 
         properties->AppendItem(_("Volatility"), GetVolatility());
         properties->AppendItem(_("Security of definer?"), GetSecureDefiner());
@@ -423,6 +440,12 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 vol.IsSameAs(wxT("s")) ? wxT("STABLE") :
                 vol.IsSameAs(wxT("v")) ? wxT("VOLATILE") : wxT("unknown"));
 
+            // PostgreSQL 8.3 cost/row estimations
+            if (obj->GetConnection()->BackendMinimumVersion(8, 3))
+            {
+                function->iSetCost(functions->GetLong(wxT("procost")));
+                function->iSetRows(functions->GetLong(wxT("prorows")));
+            }
 
             if (browser)
             {
