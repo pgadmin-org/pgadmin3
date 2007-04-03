@@ -60,7 +60,22 @@ private:
 };
 
 
+class sqlCell
+{
+public:
+    sqlCell() { ClearCell(); }
 
+    void SetCell(long r, long c) { row = r; col = c; }
+    void ClearCell() { row = -1; col = -1; }
+    bool IsSet() { return row != -1 && col != -1; }
+
+    long GetRow() { return row; }
+    long GetCol() { return col; }
+
+private:
+    long row;
+    long col;
+};
 
 // we cannot derive from wxGridCellAttr because destructor is private but not virtual 
 class sqlCellAttr
@@ -228,7 +243,7 @@ private:
     wxString orderBy;
 	wxString rowFilter;
 	int limit;
-    bool editorShown;
+    sqlCell *editorCell;
 
     DECLARE_EVENT_TABLE()
 };

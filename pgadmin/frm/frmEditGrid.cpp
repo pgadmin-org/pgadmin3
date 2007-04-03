@@ -94,7 +94,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     relkind=0;
 	limit=0;
     relid=(Oid)obj->GetOid();
-    editorShown = false;
+    editorCell = new sqlCell();
 
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
@@ -425,9 +425,20 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
     }
     else
     {
-        int copied;
-        copied = sqlGrid->Copy();
-        SetStatusText(wxString::Format(_("Data from %d rows copied to clipboard."), copied));
+		if (editorCell->IsSet())
+        {
+            if (wxTheClipboard->Open())
+            {
+                wxTheClipboard->SetData(new wxTextDataObject(sqlGrid->GetCellEditor(editorCell->GetRow(), editorCell->GetCol())->GetValue()));
+                wxTheClipboard->Close();
+            }
+        }
+		else
+		{
+		    int copied;
+            copied = sqlGrid->Copy();
+            SetStatusText(wxString::Format(_("Data from %d rows copied to clipboard."), copied));
+		}
     }
 }
 
@@ -439,9 +450,37 @@ void frmEditGrid::OnPaste(wxCommandEvent &ev)
     {
         scratchPad->Paste();
     }
-    else if (editorShown)
+    else if (editorCell->IsSet())
     {
-        // ev.Skip();
+        if (wxTheClipboard->Open())
+        {
+            if (wxTheClipboard->IsSupported(wxDF_TEXT))
+            {
+                wxTextDataObject data;
+                wxTheClipboard->GetData(data);
+                wxControl *ed = sqlGrid->GetCellEditor(editorCell->GetRow(), editorCell->GetCol())->GetControl();
+                if (ed->IsKindOf(CLASSINFO(wxTextCtrl)))
+                {
+                    wxTextCtrl *txtEd = (wxTextCtrl *)ed;
+
+                    long from, to;
+                    txtEd->GetSelection(&from, &to);
+                    txtEd->Replace(from, to, data.GetText());
+                }
+                else if (ed->IsKindOf(CLASSINFO(wxCheckBox)))
+                {
+                    wxCheckBox *boolEd = (wxCheckBox *)ed;
+
+                    if (data.GetText().Lower() == wxT("true"))
+                        boolEd->Set3StateValue(wxCHK_CHECKED);
+                    else if (data.GetText().Lower() == wxT("false"))
+                        boolEd->Set3StateValue(wxCHK_UNCHECKED);
+                    else
+                        boolEd->Set3StateValue(wxCHK_UNDETERMINED);
+                }
+            }  
+            wxTheClipboard->Close();
+        }
     }
     else
     {
@@ -510,7 +549,7 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
 #endif
         case WXK_DELETE:
         {
-			if (editorShown || !toolBar->GetToolEnabled(MNU_DELETE))
+			if (editorCell->IsSet() || !toolBar->GetToolEnabled(MNU_DELETE))
 			{
 				if (!sqlGrid->IsCurrentCellReadOnly())
 				{
@@ -731,7 +770,7 @@ int ArrayCmp(T *a, T *b)
 
 void frmEditGrid::OnDelete(wxCommandEvent& event)
 {
-    if (editorShown)
+    if (editorCell->IsSet())
     {
         wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
         if (text->GetInsertionPoint() <= text->GetLastPosition())
@@ -787,7 +826,7 @@ void frmEditGrid::OnEditorShown(wxGridEvent& event)
     toolBar->EnableTool(MNU_UNDO, true);
     fileMenu->Enable(MNU_SAVE, true);
     editMenu->Enable(MNU_UNDO, true);
-    editorShown = true;
+    editorCell->SetCell(event.GetRow(), event.GetCol());
 
     event.Skip();
 }
@@ -795,7 +834,7 @@ void frmEditGrid::OnEditorShown(wxGridEvent& event)
 
 void frmEditGrid::OnEditorHidden(wxGridEvent& event)
 {
-    editorShown = false;
+    editorCell->ClearCell();
 }
 
 
