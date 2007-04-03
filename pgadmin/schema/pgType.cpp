@@ -43,10 +43,15 @@ wxString pgType::GetSql(ctlTree *browser)
         sql = wxT("-- Type: ") + GetQuotedFullIdentifier() + wxT("\n\n")
             + wxT("-- DROP TYPE ") + GetQuotedFullIdentifier() + wxT(";")
             + wxT("\n\nCREATE TYPE ") + GetQuotedFullIdentifier();
-        if (GetIsComposite())
+        if (GetTypeClass() == TYPE_COMPOSITE)
         {
             sql += wxT(" AS\n   (");
             sql += GetQuotedTypesList();
+        }
+        if (GetTypeClass() == TYPE_ENUM)
+        {
+            sql += wxT(" AS ENUM\n   (");
+            sql += GetQuotedLabelList();
         }
         else
         {
@@ -77,7 +82,7 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
     if (!expandedKids)
     {
         expandedKids=true;
-        if (isComposite)
+        if (GetTypeClass() == TYPE_COMPOSITE)
         {
             pgSet *set=ExecuteSet(
                 wxT("SELECT attname, format_type(t.oid,NULL) AS typname, attndims, atttypmod, nspname,\n")
@@ -117,7 +122,35 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
                 delete set;
             }
         }
+        else if (GetTypeClass() == TYPE_ENUM)
+        {
+            pgSet *set=ExecuteSet(
+                wxT("SELECT enumlabel\n")
+                wxT("  FROM pg_enum\n")
+                wxT(" WHERE enumtypid=") + GetOidStr() + wxT("\n")
+                wxT(" ORDER by oid"));
+            if (set)
+            {
+                int anzvar=0;
+                while (!set->Eof())
+                {
+                    wxString element;
+                    if (anzvar++)
+                    {
+                        labelList += wxT(", ");
+                        quotedLabelList += wxT(",\n    ");
+                    }
+                    labelList += set->GetVal(wxT("enumlabel"));
+                    labelArray.Add(set->GetVal(wxT("enumlabel")));
+                    quotedLabelList += GetDatabase()->connection()->qtDbString(set->GetVal(wxT("enumlabel")));
+
+                    set->MoveNext();
+                }
+                delete set;
+            }
+        }
     }
+
     if (properties)
     {
         wxLogInfo(wxT("Displaying properties for type %s"), GetIdentifier().c_str());
@@ -128,9 +161,13 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("Alias"), GetAlias());
-        if (isComposite)
+        if (GetTypeClass() == TYPE_COMPOSITE)
         {
             properties->AppendItem(_("Members"), GetTypesList());
+        }
+        if (GetTypeClass() == TYPE_ENUM)
+        {
+            properties->AppendItem(_("Labels"), GetLabelList());
         }
         else
         {
@@ -207,7 +244,14 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
             type->iSetAlias(types->GetVal(wxT("alias")));
             type->iSetComment(types->GetVal(wxT("description")));
             type->iSetPassedByValue(types->GetBool(wxT("typbyval")));
-            type->iSetIsComposite(types->GetVal(wxT("typtype")) == wxT("c"));
+
+            if (types->GetVal(wxT("typtype")) == wxT("c"))
+                type->iSetTypeClass(TYPE_COMPOSITE);
+            else if (types->GetVal(wxT("typtype")) == wxT("e"))
+                type->iSetTypeClass(TYPE_ENUM);
+            else
+                type->iSetTypeClass(TYPE_EXTERNAL);
+
             type->iSetRelOid(types->GetOid(wxT("typrelid")));
             type->iSetIsRecordType(types->GetOid(wxT("taboid")) != 0);
             type->iSetInternalLength(types->GetLong(wxT("typlen")));

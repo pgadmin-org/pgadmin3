@@ -33,14 +33,17 @@ private:
     pgSchema *schema;
     pgType *type;
     void OnTypeChange(wxCommandEvent &ev);
-    void OnVarAdd(wxCommandEvent &ev);
-    void OnVarRemove(wxCommandEvent &ev);
-    void OnVarSelChange(wxListEvent &ev);
+    void OnMemberAdd(wxCommandEvent &ev);
+    void OnMemberRemove(wxCommandEvent &ev);
+    void OnMemberSelChange(wxListEvent &ev);
+    void OnLabelAdd(wxCommandEvent &ev);
+    void OnLabelRemove(wxCommandEvent &ev);
+    void OnLabelSelChange(wxListEvent &ev);
     void OnSelChangeTyp(wxCommandEvent &ev);
     void OnSelChangeTypOrLen(wxCommandEvent &ev);
     void OnChangeMember(wxCommandEvent &ev);
 
-    void showDefinition(bool isComposite);
+    void showDefinition(int panel);
 
     wxArrayString memberTypes, memberSizes;
 

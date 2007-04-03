@@ -14,6 +14,13 @@
 
 #include "pgSchema.h"
 
+// Note: This must match the radio buttons on dlgType
+enum TYPE_CLASS
+{
+    TYPE_COMPOSITE = 0,
+    TYPE_ENUM,
+    TYPE_EXTERNAL
+};
 
 class pgTypeFactory : public pgSchemaObjFactory
 {
@@ -57,14 +64,17 @@ public:
     void iSetInternalLength(const long l)  { internalLength=l; }
     bool GetPassedByValue() const { return passedByValue; }
     void iSetPassedByValue(const bool b) { passedByValue=b; }
-    bool GetIsComposite() const {return isComposite; }
-    void iSetIsComposite(const bool b) { isComposite=b; }
+    int GetTypeClass() const {return typeClass; }
+    void iSetTypeClass(const int c) { typeClass=c; }
     bool GetIsRecordType() const { return isRecordType; }
     void iSetIsRecordType(const bool b) { isRecordType=b; }
     void iSetRelOid(const OID d) { relOid=d; }
     const wxArrayString &GetTypesArray() { return typesArray; }
+    const wxArrayString &GetLabelArray() { return labelArray; }
     wxString GetTypesList() const { return typesList; }
     wxString GetQuotedTypesList() const {return quotedTypesList; }
+    wxString GetLabelList() const { return labelList; }
+    wxString GetQuotedLabelList() const {return quotedLabelList; }
     bool GetSystemObject() const { return pgSchemaObject::GetSystemObject() || isRecordType; }
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
@@ -77,10 +87,11 @@ public:
 
 private:
     wxString alias, inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage,
-        typesList, quotedTypesList, sendFunction, receiveFunction;
-	wxArrayString typesArray;
+        typesList, quotedTypesList, labelList, quotedLabelList, sendFunction, receiveFunction;
+	wxArrayString typesArray, labelArray;
     long internalLength;
-    bool passedByValue, isComposite, isRecordType;
+    int typeClass;
+    bool passedByValue, isRecordType;
     OID relOid;
 };
 
