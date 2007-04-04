@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   
 <!-- Product details -->
@@ -202,6 +202,54 @@
                                 </Directory>
                             </Directory>
 
+                           <Directory Id="zh_cnDocsDir" Name="zh_CN">
+
+                                <Component Id="zh_cn_docs" Guid="{71F9D57A-BEDC-4E4A-9EB0-7B5A2DDB2BAA}">
+                                    <File Id="zh_cn_docs.tips.txt" Name="tips.txt" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/tips.txt" />
+                                </Component>
+
+                                <Directory Id="zh_cnHintsDir" Name="Hints">
+                                    <Component Id="zh_cn_hints" Guid="{9310422D-D590-41FE-A6DC-6BC18A4E6B57}">
+                                        <File Id="zh_cn_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/autovacuum.html" />
+                                        <File Id="zh_cn_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/conn-hba.html" />
+                                        <File Id="zh_cn_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/conn-ident.html" />
+                                        <File Id="zh_cn_hints.conn_listen.html" Name="conn-listen.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/conn-listen.html" />
+                                        <File Id="zh_cn_hints.encoding_ascii.html" Name="encoding-ascii.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/encoding-ascii.html" />
+                                        <File Id="zh_cn_hints.encoding_unicode.html" Name="encoding-unicode.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/encoding-unicode.html" />
+                                        <File Id="zh_cn_hints.fki.html" Name="fki.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/fki.html" />
+                                        <File Id="zh_cn_hints.instrumentation.html" Name="instrumentation.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/instrumentation.html" />
+                                        <File Id="zh_cn_hints.multiple.html" Name="multiple.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/multiple.html" />
+                                        <File Id="zh_cn_hints.pk.html" Name="pk.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/pk.html" />
+                                        <File Id="zh_cn_hints.vacuum.html" Name="vacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/vacuum.html" />
+                                        <File Id="zh_cn_hints.view_without_pk.html" Name="view-without-pk.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/view-without-pk.html" />
+                                    </Component>
+                                </Directory>
+                            </Directory>
+
+                           <Directory Id="zh_twDocsDir" Name="zh_TW">
+
+                                <Component Id="zh_tw_docs" Guid="{B0DD5591-690F-41AD-8A6D-EF5FBC947CD4}">
+                                    <File Id="zh_tw_docs.tips.txt" Name="tips.txt" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/tips.txt" />
+                                </Component>
+
+                                <Directory Id="zh_twHintsDir" Name="Hints">
+                                    <Component Id="zh_tw_hints" Guid="{DB08F8E3-2D5C-4045-B600-E0B3667DA0F1}">
+                                        <File Id="zh_tw_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/autovacuum.html" />
+                                        <File Id="zh_tw_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/conn-hba.html" />
+                                        <File Id="zh_tw_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/conn-ident.html" />
+                                        <File Id="zh_tw_hints.conn_listen.html" Name="conn-listen.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/conn-listen.html" />
+                                        <File Id="zh_tw_hints.encoding_ascii.html" Name="encoding-ascii.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/encoding-ascii.html" />
+                                        <File Id="zh_tw_hints.encoding_unicode.html" Name="encoding-unicode.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/encoding-unicode.html" />
+                                        <File Id="zh_tw_hints.fki.html" Name="fki.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/fki.html" />
+                                        <File Id="zh_tw_hints.instrumentation.html" Name="instrumentation.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/instrumentation.html" />
+                                        <File Id="zh_tw_hints.multiple.html" Name="multiple.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/multiple.html" />
+                                        <File Id="zh_tw_hints.pk.html" Name="pk.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/pk.html" />
+                                        <File Id="zh_tw_hints.vacuum.html" Name="vacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/vacuum.html" />
+                                        <File Id="zh_tw_hints.view_without_pk.html" Name="view-without-pk.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/view-without-pk.html" />
+                                    </Component>
+                                </Directory>
+                            </Directory>
+
                         </Directory>
                         
                         <Component Id="pgagent_exes" Guid="{470B4DE8-204D-44D1-B508-FFB579DBB2FD}">
@@ -271,6 +319,10 @@
                 <ComponentRef Id="fr_fr_hints" />
 		<ComponentRef Id="sl_si_docs" />
                 <ComponentRef Id="sl_si_hints" />
+		<ComponentRef Id="zh_cn_docs" />
+		<ComponentRef Id="zh_cn_hints" />
+		<ComponentRef Id="zh_tw_docs" />
+		<ComponentRef Id="zh_tw_hints" />
                 <ComponentRef Id="pgadmin_il8n" />
                 <ComponentRef Id="smdir" />
                         

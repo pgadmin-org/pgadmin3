@@ -43,7 +43,11 @@ TMP_docs_local = \
 	$(top_srcdir)/docs/fr_FR/tips.txt \
 	$(top_srcdir)/docs/fr_FR/hints/*.html \
 	$(top_srcdir)/docs/sl_SI/tips.txt \
-	$(top_srcdir)/docs/sl_SI/hints/*.html
+	$(top_srcdir)/docs/sl_SI/hints/*.html \
+	$(top_srcdir)/docs/zh_CN/tips.txt \
+	$(top_srcdir)/docs/zh_CN/hints/*.html \
+	$(top_srcdir)/docs/zh_TW/tips.txt \
+	$(top_srcdir)/docs/zh_TW/hints/*.html
 
 TMP_docs_external = \
 	$(top_srcdir)/docs/en_US/pg/*.css \
