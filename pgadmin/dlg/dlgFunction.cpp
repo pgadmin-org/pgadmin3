@@ -356,7 +356,7 @@ void dlgFunction::CheckChange()
 {
     wxString name=GetName();
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
-    bool enable=true, didChange;
+    bool enable=true, didChange=false;
 
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
     if (!isProcedure)
