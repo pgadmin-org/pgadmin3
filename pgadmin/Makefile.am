@@ -56,7 +56,6 @@ if !APPBUNDLE
 
 nobase_dist_pkgdata_DATA = $(TMP_ui)
 AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" $(__CXXFLAGS) -I$(top_srcdir)/pgadmin/include
-AM_CPPFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" $(__CXXFLAGS) -I$(top_srcdir)/pgadmin/include
 AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" $(__CFLAGS) -I$(top_srcdir)/pgadmin/include
 
 # Automake trys to execute install-exec-hook if it appears anywhere in the file, so we need a dummy
@@ -67,7 +66,6 @@ else
 
 nobase_dist_data_DATA = $(TMP_ui)
 AM_CXXFLAGS = $(__CXXFLAGS) -I$(top_srcdir)/pgadmin/include
-AM_CPPFLAGS = $(__CXXFLAGS) -I$(top_srcdir)/pgadmin/include
 AM_CFLAGS = $(__CFLAGS) -I$(top_srcdir)/pgadmin/include
 
 install-exec-hook:

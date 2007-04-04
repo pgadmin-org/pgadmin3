@@ -314,9 +314,9 @@ AC_DEFUN([ENABLE_STATIC],
 	])
 ])
 
-############################
-# Build an pgAdmin III.app  #
-############################
+##########################################################
+# Build a Mac App Bundle. This will force a static build #
+##########################################################
 AC_DEFUN([ENABLE_APPBUNDLE],
 [
 	AC_ARG_ENABLE(appbundle, [  --enable-appbundle   Build a Mac OS X appbundle],
@@ -327,8 +327,12 @@ AC_DEFUN([ENABLE_APPBUNDLE],
 			prefix=$(pwd)/tmp
 			bundledir="$(pwd)/pgAdmin3.app"
 			bindir="$bundledir/Contents/MacOS"
+			debuggerbindir="$bundledir/Contents/Resources/Debugger.app/Contents/MacOS"
 			datadir="$bundledir/Contents/SharedSupport"
 			AC_SUBST(bundledir)
+			AC_SUBST(debuggerbindir)
+			BUILD_STATIC=yes
+			WX_STATIC="--static=yes"
 		else
 			BUILD_APPBUNDLE=no
 		fi
@@ -395,7 +399,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 			AC_CHECK_LIB(pq, SSL_connect, [PG_SSL=yes], [PG_SSL=no])
 		fi
 
-		if test "$build_cpu-$build_vendor" = "powerpc-apple"
+		if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
 		then
 			echo -n "checking if libpq links against libkrb5: "
 			if test "$(otool -L ${PG_HOME}/lib/libpq.?.dylib | grep -c libkrb5)" -gt 0
@@ -427,7 +431,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		
 		if test "$BUILD_STATIC" = "yes"
 		then
-			if test "$build_cpu-$build_vendor" = "powerpc-apple"
+			if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
 			then
 				CRYPT_LIB=""
 			else
@@ -637,7 +641,7 @@ AC_DEFUN([SUMMARY],
 	fi
 	if test "$BUILD_APPBUNDLE" = yes
 	then
-		echo "Building a Mac OS X appbundle:		Yes"
+		echo "Building a Mac OS X appbundle:		Yes (Static linking forced)"
 	else
 		echo "Building a Mac OS X appbundle:		No"
 	fi

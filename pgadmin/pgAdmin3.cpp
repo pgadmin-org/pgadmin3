@@ -603,9 +603,9 @@ void pgAdmin3::InitPaths()
 
 #ifdef __WXMAC__
 
-    //When using wxStandardPaths on OSX, wx defaults to the unix,
-    //not to the mac variants. Therefor, we request wxStandardPathsCF
-    //directly.
+    // When using wxStandardPaths on OSX, wx default to the unix,
+    // not to the mac variants. Therefore, we request wxStandardPathsCF
+    // directly.
     wxStandardPathsCF stdPaths ;
     dataDir = stdPaths.GetDataDir() ;
 
@@ -661,10 +661,16 @@ void pgAdmin3::InitPaths()
     }
 
     // The debugger is a little different. In a regular install,
-    // it should be in the same directory. In a development env,
-    // it will be in ../debugger/
+    // it should be in the same directory (except on Macs). 
+	// In a development env it will be in ../debugger/
+#ifndef __WXMAC__
     if (wxFile::Exists(loadPath + wxT("/debugger")))
         debuggerExecutable = loadPath + wxT("/debugger");
+#else
+    // In a Mac AppBundle, we include the debugger in a sub-bundle.
+    if (wxFile::Exists(loadPath + wxT("/../Resources/Debugger.app/Contents/MacOS/Debugger")))
+        debuggerExecutable = loadPath + wxT("/../Resources/Debugger.app/Contents/MacOS/Debugger");
+#endif
     else if (wxFile::Exists(loadPath + wxT("/../debugger/debugger")))
         debuggerExecutable = loadPath + wxT("/../debugger/debugger");
 

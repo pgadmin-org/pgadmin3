@@ -13,8 +13,10 @@ LONG_VER=`grep '#define VERSION_PACKAGE' pgadmin/include/version.h | awk '{print
 SHORT_VER=`echo $LONG_VER | cut -d . -f1,2`
 
 sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" configure.ac.in > configure.ac
-sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mac/Info.plist.in > pkg/mac/Info.plist
-sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mac/Info-Debug.plist.in > pkg/mac/Info-Debug.plist
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mac/debugger.Info.plist.in > pkg/mac/debugger.Info.plist
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mac/pgadmin.Info.plist.in > pkg/mac/pgadmin.Info.plist
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mac/debug.debugger.Info.plist.in > pkg/mac/debug.debugger.Info.plist
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mac/debug.pgadmin.Info.plist.in > pkg/mac/debug.pgadmin.Info.plist
 sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mandrake/pgadmin3.spec.in > pkg/mandrake/pgadmin3.spec
 sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/redhat/pgadmin3.spec.in > pkg/redhat/pgadmin3.spec
 sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/slackware/build-release.in > pkg/slackware/build-release

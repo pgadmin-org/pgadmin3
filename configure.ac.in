@@ -35,6 +35,8 @@ AC_CHECK_FUNCS([gethostbyname inet_ntoa memmove memset strchr])
 # Custom checks
 ENABLE_DEBUG
 ENABLE_STATIC
+
+# ENABLE_APPBUNDLE must be after ENABLE_STATIC as it must force it on.
 ENABLE_APPBUNDLE
 DISABLE_DOCS
 AM_CONDITIONAL([APPBUNDLE], [test x$BUILD_APPBUNDLE = xyes])

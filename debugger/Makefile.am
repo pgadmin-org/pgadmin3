@@ -76,8 +76,10 @@ AM_CFLAGS = $(__CFLAGS) -I$(top_srcdir)/debugger/include
 
 install-exec-hook:
 	cd $(bindir) ;\
+	mkdir -p $(debuggerbindir) ;\
+	mv debugger $(debuggerbindir)/Debugger ;\
 	if test "$(BUILD_DEBUG)" = "no"; then \
-	    strip debugger ;\
+	    strip $(debuggerbindir)/Debugger ;\
 	fi
 
 endif
