@@ -352,7 +352,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
     }
     pgSet *indexes= collection->GetDatabase()->ExecuteSet(
         wxT("SELECT DISTINCT ON(cls.relname) cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
-        wxT("       ") + proname + wxT("tab.relname as tabname, indclass, CASE contype WHEN 'p' THEN desp.description ELSE des.description END AS description,\n")
+        wxT("       ") + proname + wxT("tab.relname as tabname, indclass, con.oid AS conoid, CASE contype WHEN 'p' THEN desp.description ELSE des.description END AS description,\n")
         wxT("       pg_get_expr(indpred, indrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as indconstraint, contype, condeferrable, condeferred, amname\n")
         wxT("  FROM pg_index idx\n")
         wxT("  JOIN pg_class cls ON cls.oid=indexrelid\n")
@@ -376,18 +376,23 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
             {
                 case 0:
                     index = new pgIndex(collection->GetTable(), indexes->GetVal(wxT("idxname")));
+                    index->iSetOid(indexes->GetOid(wxT("oid")));
                     break;
                 case 'p':
                     index = new pgPrimaryKey(collection->GetTable(), indexes->GetVal(wxT("idxname")));
+                    index->iSetOid(indexes->GetOid(wxT("conoid")));
+                    ((pgPrimaryKey *)index)->iSetIndexOid(indexes->GetOid(wxT("oid")));
                     break;
                 case 'u':
                     index = new pgUnique(collection->GetTable(), indexes->GetVal(wxT("idxname")));
+                    index->iSetOid(indexes->GetOid(wxT("conoid")));
+                    ((pgUnique *)index)->iSetIndexOid(indexes->GetOid(wxT("oid")));
                     break;
                 default:
                     index=0;
                     break;
             }
-            index->iSetOid(indexes->GetOid(wxT("oid")));
+            
             index->iSetIsClustered(indexes->GetBool(wxT("indisclustered")));
             index->iSetIsUnique(indexes->GetBool(wxT("indisunique")));
             index->iSetIsPrimary(indexes->GetBool(wxT("indisprimary")));

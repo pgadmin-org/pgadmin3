@@ -24,10 +24,15 @@ public:
     wxString GetCreate();
     wxString GetSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
+    OID GetIndexOid() { return indexOid; }
+    void iSetIndexOid(const OID o) { indexOid = o; }
 
 protected:
     pgIndexConstraint(pgTable *newTable, pgaFactory &factory, const wxString& newName)
         : pgIndexBase(newTable, factory, newName) {}
+
+private:
+    OID indexOid;
 };
 
 
