@@ -1,0 +1,23 @@
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title></head>
+
+<h3>推薦運行 pg_autovacuum</h3>
+<p>
+pg_autovacuum 以 前 是 一 個 外 部 服 務 進 程， PostgreSQL 8.1 開 始 已 經 被 整 合 進 資 料 庫 後 端，
+它 將 在 被 修 改 的 資 料 總 數 達 到 指 定 值 以 後 自 動 運 行 VACUUM。
+</p>
+<p>
+在 PostgreSQL 伺 服 器 上 運 行 VACUUM 保 持 資 料 完 整 和 伺 服 器 效 率 是 強 制 要 求，
+推 薦 通 過 在 postgresql.conf 文 件 中 設 置 'autovacuum'、'stats_start_collector' 和 'stats_row_level' 參 數 為 'on' 來 開 啟 pg_autovacuum 守 護 程 序。
+追 蹤 資 料 變 化 時 對 性 能 會 有 輕 微 的 影 響， 但 是 就 總 體 來 講， 您 將 從 自 動 運 行 VACUUM 中 獲 得 更 多 益 處。
+</p>
+<p>
+
+為 特 殊 需 求 調 整 pg_autovacuum 的 執 行， 可 以 修 改 postgresql.conf 的 全 局 參 數 或 者 某 個 資 料 表 的 個 別 設 置， 請 參 閱 文 檔。
+</p>
+</body>
+</html>
