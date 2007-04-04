@@ -62,7 +62,7 @@ public:
     OID GetLastSystemOID();
     wxString GetDatabaseName() const { return database; }
     wxString GetUsername() const { return username; }
-    wxString GetPassword() const { return password; }
+    wxString GetPassword() const { return (password == wxEmptyString ? conn->GetPassword() : password); }
     bool GetStorePwd() const { return storePwd; }
     bool GetRestore() const { return restore; }
     wxString GetLastError() const;
