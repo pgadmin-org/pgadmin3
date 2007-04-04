@@ -33,8 +33,8 @@ wxWidgets
         
 [MAC] wxProcess::IsInputAvailable()/IsErrorAvailable() crash in wx2.7.0, 
       which prevents messages from pg_dump/pg_restore being displayed.
-	    To avoid the crash, on Mac the streams aren't checked until the 
-	    process ends. See ExternProcessDialog::Execute().
+      To avoid the crash, on Mac the streams aren't checked until the 
+      process ends. See ExternProcessDialog::Execute().
       wxWidgets bug ref 1584387.
         
 [STC] On wxMSW 2.6.3 with Num Lock turned off, the control functions 
@@ -64,6 +64,10 @@ wxWidgets
       
 [FRM] Opening a modal dialogue from one query tool window blocks shortcut
       keys in another which is currently focused.
+
+[MAC] Command-W doesn't close dialogs as expected on Mac. This is more 
+      tricky than it sounds because key events don't propagate from controls
+      to the parent window.
 
 Known issues, that might stay unfixed
 -------------------------------------
