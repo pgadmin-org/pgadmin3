@@ -36,13 +36,14 @@
 #include "images/sortfilter.xpm"
 
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
-#define btnAsc                        CTRL_BUTTON("btnAsc")
-#define btnDesc                        CTRL_BUTTON("btnDesc")
-#define btnRemove                    CTRL_BUTTON("wxID_REMOVE")
+#define btnAsc                      CTRL_BUTTON("btnAsc")
+#define btnDesc                     CTRL_BUTTON("btnDesc")
+#define btnRemove                   CTRL_BUTTON("wxID_REMOVE")
 #define cboColumns                  CTRL_COMBOBOX("cboColumns")
 #define lstSortCols                 CTRL_LISTVIEW("lstSortCols")
 #define pnlSort                     CTRL_PANEL("pnlSort")
 #define pnlFilter                   CTRL_PANEL("pnlFilter")
+#define filter                      CTRL_SQLBOX("sqlFilter")
 
 BEGIN_EVENT_TABLE(dlgEditGridOptions, pgDialog)
     EVT_BUTTON               (wxID_OK,              dlgEditGridOptions::OnOK)
@@ -91,8 +92,6 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
 
     // Setup the filter SQL box. This is an XRC 'unknown' control so must
     // be manually created and attache to the XRC global resource.
-    filter = new ctlSQLBox(this);
-    wxXmlResource::Get()->AttachUnknownControl(wxT("sqlFilter"), filter);
     filter->SetText(parent->GetFilter());
 
     // Get the current sort columns, and populate the listbox.
