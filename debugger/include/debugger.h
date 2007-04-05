@@ -49,6 +49,7 @@ class wsApp : public wxApp
 	wsConnProp   &getConnProp() { return( m_connProp ); }	// Returns command-line connection properties
 	wxConfig     &getSettings() { return( *m_settings ); }	// Returns settings/configuration object
 	wxStatusBar  *getStatusBar();				// Returns application-wide status bar
+	wxFont		GetSystemFont() { return( systemFont) ; }
 
   private:   
 
@@ -57,6 +58,8 @@ class wsApp : public wxApp
 	wxDocManager    *m_docManager;	// Document/View manager
 	wxConfig	*m_settings;	// Setting/configuration manager
 	wsConnProp	m_connProp;	// Connection properties (from command-line)
+
+	wxFont systemFont;
 
 	void handleCmdLine( void );	// Process command-line arguments
 	void initializeLocale( wxChar * argv0 );	// Initialize locale and load language catalog

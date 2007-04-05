@@ -78,9 +78,23 @@ bool wsApp::OnInit( )
 {
 	glApp = this;
 
+    // Load the Settings
+#ifdef __WXMSW__
+	m_settings = new wxConfig( wxT("pgAdmin III"));
+#else
+	m_settings = new wxConfig( wxT("pgadmin3"));
+#endif
 	// Initialize our locale and load the language catalog...
 
 	initializeLocale( argv[0] );
+
+	wxString fontName;
+	m_settings->Read(wxT("Font"), &fontName, wxEmptyString);
+
+	if (fontName.IsEmpty())
+		systemFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
+	else
+		systemFont = wxFont(fontName);
 
 	// Disable wxWidgets logging unless ENABLE_LOGGING is defined
 
@@ -93,8 +107,6 @@ bool wsApp::OnInit( )
 
 	wxLog::GetActiveTarget()->SetTimestamp( NULL );	
     
-	m_settings = new wxConfig( wxT("pgadmin3_debugger"));
-
 	// Parse the command line according to the cmdLineDesc defined above
 
 	m_cmdLine = new wxCmdLineParser( cmdLineDesc, argc, argv );
@@ -275,10 +287,13 @@ void wsApp::initializeLocale( wxChar * argv0 )
 
 	locale->AddCatalogLookupPathPrefix( i18nPath );
 
-	wxLanguage langId = (wxLanguage)wxLANGUAGE_DEFAULT;
+	wxLanguage langId = (wxLanguage)m_settings->Read(wxT("LanguageId"), wxLANGUAGE_DEFAULT);
 
 	if( locale->Init( langId ))
 	{
+#ifdef __LINUX__
+		locale->AddCatalog(wxT("fileutils"));
+#endif
 		locale->AddCatalog( wxT( "pgAdmin3" ));
 	}
 }

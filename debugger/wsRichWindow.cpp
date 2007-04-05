@@ -54,36 +54,9 @@ wsRichWindow::wsRichWindow( wxWindow * parent, wxWindowID id, const wxSize & siz
 	m_parentWantsKeys( false )
 {
 
-	// Set the default font - FIXME: should get this from the .pgAdmin3 settings file
-
-	wxString fontName;
-
-	if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
-	{
-		wxFont	font( fontName );
-
-		StyleSetFont( wxSTC_STYLE_DEFAULT, font );
-
-		for( int i = 0; i <= 12; ++i )
-			StyleSetFont( i, font );
-	}
-	else
-	{
-#if 0
-		StyleSetSpec( wxSTC_STYLE_DEFAULT, wxT( "size:10,face:Courier" ));
-
-		for( int i = 0; i <= 12; ++i )
-			StyleSetSpec( i , wxT( "size:10,face:Courier" ));
-#else
-		wxFont mainFont( 12 , wxDEFAULT , wxNORMAL , wxNORMAL );
-		wxFont otherFont( 10 , wxDEFAULT , wxNORMAL , wxNORMAL );
-
-		StyleSetFont( wxSTC_STYLE_DEFAULT, mainFont );
-
-		for( int i = 0; i <= 12; ++i )
-			StyleSetFont( i , otherFont );
-#endif
-	}
+	StyleSetFont( wxSTC_STYLE_DEFAULT, glApp->GetSystemFont() );
+	for( int i = 0; i <= 12; ++i )
+		StyleSetFont( i, glApp->GetSystemFont() );
 
 	// Initialize the style-specific fonts
 
