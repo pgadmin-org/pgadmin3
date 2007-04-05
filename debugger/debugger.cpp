@@ -121,7 +121,7 @@ bool wsApp::OnInit( )
 	(void) new wxDocTemplate( m_docManager, _T( "SQL" ), _T( "*.sql" ), _T( "" ), _T( "sql" ), _T( "SQL Document" ), _T( "SQL View" ), CLASSINFO( wsFuncDoc ), CLASSINFO( wsFuncView ));
 
 	// Create a new frame that manages the entire user interface
-	glMainFrame = m_mainFrame = new wsMainFrame( m_docManager , _( "pgAdmin3 PL/pgSQL debugger (Build 1)" ), wxDefaultPosition, wxSize(800, 600));
+	glMainFrame = m_mainFrame = new wsMainFrame( m_docManager , _( "pgAdmin III PL/pgSQL debugger (Build 1)" ), wxDefaultPosition, wxSize(800, 600));
 
 	m_mainFrame->Show( true );
 	m_mainFrame->Raise();
