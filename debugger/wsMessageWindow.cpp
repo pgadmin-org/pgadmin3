@@ -25,28 +25,21 @@ wsMessageWindow::wsMessageWindow( wxWindow * parent, wxWindowID id )
 	: wxTextCtrl( parent, wxID_ANY, _T(""), wxPoint(0, 0), wxSize(0, 0),
                                wxTE_MULTILINE | wxTE_READONLY)
 {
-	wxString fontName;
 
-	if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
-	{
-		wxFont	font( fontName );
-	}
-	else
-	{
-		wxFont	font( 10, wxTELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
 //#ifdef __WXMSW__
 //        wxFont	font(9, wxTELETYPE, wxNORMAL, wxNORMAL);
 //#else
 //        wxFont	font(12, wxTELETYPE, wxNORMAL, wxNORMAL);
 //#endif
 
-		SetDefaultStyle(wxTextAttr (wxNullColour,wxNullColour,font,wxTEXT_ALIGNMENT_DEFAULT));
+	wxFont sFont(glApp->GetSystemFont());
 
-		// Note: we should not have to call SetFont() here, but under Win32, it's required otherwise
-		//	     we get a proportional font
+	SetDefaultStyle(wxTextAttr (wxNullColour,wxNullColour,sFont,wxTEXT_ALIGNMENT_DEFAULT));
 
-		SetFont( font );
-	}
+	// Note: we should not have to call SetFont() here, but under Win32, it's required otherwise
+	//	     we get a proportional font
+
+	SetFont( sFont );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
