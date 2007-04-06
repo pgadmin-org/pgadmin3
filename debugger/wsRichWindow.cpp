@@ -54,9 +54,11 @@ wsRichWindow::wsRichWindow( wxWindow * parent, wxWindowID id, const wxSize & siz
 	m_parentWantsKeys( false )
 {
 
-	StyleSetFont( wxSTC_STYLE_DEFAULT, glApp->GetSystemFont() );
+	wxFont sFont( glApp->GetSystemFont() );
+
+	StyleSetFont( wxSTC_STYLE_DEFAULT, sFont );
 	for( int i = 0; i <= 12; ++i )
-		StyleSetFont( i, glApp->GetSystemFont() );
+		StyleSetFont( i, sFont );
 
 	// Initialize the style-specific fonts
 
