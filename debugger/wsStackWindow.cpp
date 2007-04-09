@@ -27,7 +27,8 @@ wsStackWindow::wsStackWindow( wxWindow * parent, wxWindowID id, const wxPoint & 
 	: wxSashLayoutWindow( parent, id, pos, size, style, name ),
 	  m_grid( new wxListBox( this , wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_HSCROLL|wxLB_NEEDED_SB ))
 {
-	m_grid->SetFont( glApp->GetSystemFont());
+	wxFont sFont( glApp->GetSystemFont() );
+	m_grid->SetFont( sFont );
 	m_grid->SetBackgroundColour( *wxWHITE );
 }
 
