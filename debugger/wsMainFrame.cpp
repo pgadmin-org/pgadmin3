@@ -45,6 +45,13 @@
 
 #include <wx/log.h>
 
+// Copyright text(pgadmin)
+#include "../../pgadmin/include/copyright.h"
+#include "../../pgadmin/include/version.h"
+#include "../../pgadmin/include/svnversion.h"
+
+#define VERSION_WITH_DATE_AND_SVN       wxT("Version ") VERSION_STR wxT(" (") __TDATE__ wxT(", rev: ") wxT(VERSION_SVN) wxT(")")
+
 IMPLEMENT_CLASS( wsMainFrame, wxDocParentFrame  )
 
 BEGIN_EVENT_TABLE( wsMainFrame, wxDocParentFrame  )
@@ -209,7 +216,12 @@ void wsMainFrame::OnDebugCommand( wxCommandEvent & event )
 
 void wsMainFrame ::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
-	wxMessageBox(_("\tpgAdmin3 PL/pgSQL debugger\n Copyright (C) 2002-2007, The pgAdmin Development Team"), _("pgAdmin3 PL/pgSQL debugger"), wxOK, this);
+	wxString Versions( VERSION_WITH_DATE_AND_SVN );
+	Versions += wxT("\n");
+	Versions += COPYRIGHT;
+	Versions += wxT("\n");
+	Versions += LICENSE;
+	wxMessageBox(Versions, _("Debugger"), wxOK, this);
 }
 
 void wsMainFrame ::OnRestorePerspective(wxCommandEvent& event)
