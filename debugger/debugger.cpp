@@ -224,6 +224,9 @@ void wsApp::handleCmdLine( void )
 					exit( 0 );
 				}
 
+				/* only values input dialog.
+				   at the revives by displaying the code. */
+				glMainFrame->Show( false );
 				directDebugger->startDebugging();
 			}
 			else

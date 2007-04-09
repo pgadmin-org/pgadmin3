@@ -439,6 +439,9 @@ void wsCodeWindow::OnActivate( wxActivateEvent & event )
 	t->EnableTool( MENU_ID_CLEAR_WATCH, activateDebug );
 	t->EnableTool( MENU_ID_SET_PC,      activateDebug );
 #endif
+
+	/* Activate hook */
+	glMainFrame->Show( true );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
