@@ -37,12 +37,11 @@ wsVarWindow::wsVarWindow( wxWindow * parent, wxWindowID id )
 	SetColLabelValue( COL_VALUE, _( "Value" ));
 
 	// Choose a font
-	wxString fontName;
+	wxFont sFont(glApp->GetSystemFont());
 
-	if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
+	if( sFont.Ok() )
 	{
-		wxFont	font( fontName );
-		SetDefaultCellFont( font );
+		SetDefaultCellFont( sFont );
 	}
 	else
 	{
