@@ -212,9 +212,12 @@ void wsMainFrame ::OnAbout(wxCommandEvent& WXUNUSED(event))
 	wxMessageBox(_("\tpgAdmin3 PL/pgSQL debugger\n Copyright (C) 2002-2007, The pgAdmin Development Team"), _("pgAdmin3 PL/pgSQL debugger"), wxOK, this);
 }
 
-void wsMainFrame ::OnRestorePerspective(wxCommandEvent& evt)
+void wsMainFrame ::OnRestorePerspective(wxCommandEvent& event)
 {
-	manager.LoadPerspective(m_perspectives.Item(evt.GetId() - ID_FirstPerspective));
+	if( !m_perspectives.IsEmpty() )
+		manager.LoadPerspective(m_perspectives.Item(event.GetId() - ID_FirstPerspective));
+	else
+		event.Skip();
 }
 
 void wsMainFrame ::PerspectivesDef()
