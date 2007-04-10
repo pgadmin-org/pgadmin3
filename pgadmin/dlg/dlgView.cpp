@@ -57,7 +57,7 @@ pgObject *dlgView::GetObject()
 int dlgView::Go(bool modal)
 {
     AddGroups();
-    AddUsers();
+    AddUsers(cbOwner);
 
     if (view)
     {
