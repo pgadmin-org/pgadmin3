@@ -110,7 +110,7 @@ public:
 	bool IsBranded() { return is_branded; };
 
 private:
-	wxString long_appname, short_appname, website_url;
+	wxString long_appname, short_appname, website_url, icon;
 	wxImage large_icon, small_icon, splash_image;
 	long splash_font_size, splash_pos_x, splash_pos_y, splash_pos_offset;
 	wxColor splash_text_colour, report_key_colour;

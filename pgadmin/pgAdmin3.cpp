@@ -960,6 +960,11 @@ pgAppearanceFactory::pgAppearanceFactory()
 				else
 					is_branded = true;
 			}
+			else if (token.Lower().StartsWith(wxT("icon=")))
+			{
+				icon = token.AfterFirst('=').Trim();
+				is_branded = true;
+			}
 #ifdef __WIN32__
 			else if (token.Lower().StartsWith(wxT("splashfontsizewin=")))
 #else
@@ -1029,7 +1034,28 @@ pgAppearanceFactory::pgAppearanceFactory()
 	//wxString tmp;
 	//tmp.Printf(wxT("%s"), long_appname);
 	pRegKey->SetValue(paths.GetExecutablePath(), GetLongAppName());
+    delete pRegKey;
 
+    // Reset the image for the task bar group. This can only by
+    // set per-exe name unfortunately. If we don't find an icon,
+    // remove the registry value.
+    wxString icon_path = brandingPath + wxT("\\") + icon;
+
+
+    pRegKey = new wxRegKey(wxT("HKEY_CURRENT_USER\\Software\\Classes\\Applications\\") + wxFileName(paths.GetExecutablePath()).GetFullName());
+	if(!pRegKey->Exists())
+		pRegKey->Create();
+
+    if (wxFile::Exists(icon_path))
+    {
+        pRegKey->SetValue(wxT("TaskbarGroupIcon"), icon_path);
+    }
+    else
+    {
+        if (pRegKey->HasValue(wxT("TaskbarGroupIcon")))
+            pRegKey->DeleteValue(wxT("TaskbarGroupIcon"));
+    }
+    delete pRegKey;
 #endif
 }
 
