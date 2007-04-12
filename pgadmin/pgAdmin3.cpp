@@ -1015,6 +1015,22 @@ pgAppearanceFactory::pgAppearanceFactory()
 			}
 		}
 	}
+
+#ifdef __WXMSW__
+
+	// Set the MUI cache value for the grouped task bar title, 
+	// otherwise we get the value from the resources which is 
+	// definitely not what we want in branded mode!
+	wxRegKey *pRegKey = new wxRegKey(wxT("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\ShellNoRoam\\MUICache"));
+	if(!pRegKey->Exists())
+		pRegKey->Create();
+
+	wxStandardPaths paths;
+	//wxString tmp;
+	//tmp.Printf(wxT("%s"), long_appname);
+	pRegKey->SetValue(paths.GetExecutablePath(), GetLongAppName());
+
+#endif
 }
 
 void pgAppearanceFactory::SetIcons(wxDialog *dlg)
