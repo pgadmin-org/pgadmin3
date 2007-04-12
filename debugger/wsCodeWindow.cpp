@@ -537,9 +537,22 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 #endif
 			// The result set contains one tuple: 
 			//	packageOID, functionOID, linenumber
-			glApp->getStatusBar()->SetStatusText( wxString::Format( _( "Paused at line %s" ), result.getString( wxT( "linenumber" )).c_str()), 1 );		
-
+			glApp->getStatusBar()->SetStatusText( wxString::Format( _( "Paused at line %s" ), result.getString( wxT( "linenumber" )).c_str()), 1 );	
 			updateUI( result );
+
+			/* break point markup line number */
+			unhilightCurrentLine();
+
+			int current_line = atoi(result.getString( wxT( "linenumber" )).ToAscii());
+			if ( current_line < 1) 
+				current_line = 1;
+
+			m_view->SetAnchor( m_view->PositionFromLine(current_line -1 ));
+			m_view->SetCurrentPos( m_view->PositionFromLine( current_line -1 ));
+			m_view->MarkerAdd( current_line -1, MARKER_CURRENT );
+			m_view->MarkerAdd( current_line -1, MARKER_CURRENT_BG );
+			m_view->EnsureCaretVisible();
+
 		}
 		else if( result.getCommandStatus() == PGRES_FATAL_ERROR )
 		{
@@ -901,13 +914,7 @@ void wsCodeWindow::closeConnection()
 	glApp->getStatusBar()->SetStatusText( _( "Debugger connection terminated (session complete)" ), 1 );		
 
 	// Remove the current-line indicator
-	int	lineNo = m_view->MarkerNext( 0, MARKERINDEX_TO_MARKERMASK( MARKER_CURRENT ));
-
-	if( lineNo != -1 )
-	{
-		m_view->MarkerDelete( lineNo, MARKER_CURRENT );
-		m_view->MarkerDelete( lineNo, MARKER_CURRENT_BG );
-	}
+	unhilightCurrentLine();
 
 	// And force the toolbar to refresh itself (to disable the debugger-related tools)
 	wxActivateEvent   fakeActivate;
@@ -1087,22 +1094,24 @@ void wsCodeWindow::displaySource( const wxString & packageOID, const wxString & 
 		m_view->SetReadOnly( true );
 	}
 
-	// Clear the current-line indicator
-
+	// Clear the current-line indicator 
 	int	lineNo = m_view->MarkerNext( 0, MARKERINDEX_TO_MARKERMASK( MARKER_CURRENT ));
+	int current_line = m_currentLineNumber;
 
-	if( lineNo != m_currentLineNumber )
+
+	if ( lineNo != -1 )
 	{
-		if( lineNo != -1 )
-		{
-			m_view->MarkerDelete( lineNo, MARKER_CURRENT );
-			m_view->MarkerDelete( lineNo, MARKER_CURRENT_BG );
-		}
-
-		// Add the current-line indicator to the current line of code
-		m_view->MarkerAdd( m_currentLineNumber, MARKER_CURRENT );
-		m_view->MarkerAdd( m_currentLineNumber, MARKER_CURRENT_BG );
+		m_view->MarkerDelete( lineNo, MARKER_CURRENT );
+		m_view->MarkerDelete( lineNo, MARKER_CURRENT_BG );
 	}
+
+	/* Adjustment of the next position */
+	if ( current_line > 1 ) 
+		current_line--;
+
+	// Add the current-line indicator to the current line of code
+	m_view->MarkerAdd( current_line , MARKER_CURRENT );
+	m_view->MarkerAdd( current_line , MARKER_CURRENT_BG );
 
 	// Scroll the source code listing (if required) to make sure
 	// that this line of code is visible 
@@ -1110,13 +1119,18 @@ void wsCodeWindow::displaySource( const wxString & packageOID, const wxString & 
 	// (note: we set the anchor and the caret to the same position to avoid
 	// creating a selection region)
 
-	m_view->SetAnchor( m_view->PositionFromLine( m_currentLineNumber ));
-	m_view->SetCurrentPos( m_view->PositionFromLine( m_currentLineNumber ));
+	m_view->SetAnchor( m_view->PositionFromLine( current_line ));
+	m_view->SetCurrentPos( m_view->PositionFromLine( current_line ));
 	m_view->EnsureCaretVisible();
 
 	// Update the next lazy part of the user interface (the variable list)
 	m_updateVars = TRUE;
 
+	/* Probabry, necessary to still adjust the event. * *
+	   TimerWait can't be picked up when forcibly generated here...<sigh>..
+	wxCommandEvent	fakeCommandEvent( 0, true );
+	ResultBreakpoint( fakeCommandEvent );
+	*/
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1175,7 +1189,7 @@ void wsCodeWindow::OnCommand( wxCommandEvent & event )
 
 			m_dbgConn->startCommand( wxString::Format( m_commandContinue, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
 			glApp->getStatusBar()->SetStatusText( _( "waiting for target (continue)" ), 1 );
-			unhilightCurrentLine();
+//			unhilightCurrentLine();
 
 			break;
 		}
@@ -1188,7 +1202,7 @@ void wsCodeWindow::OnCommand( wxCommandEvent & event )
 
 			m_dbgConn->startCommand( wxString::Format( m_commandStepOver, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
 			glApp->getStatusBar()->SetStatusText( _( "waiting for target (step over)" ), 1 );
-			unhilightCurrentLine();
+//			unhilightCurrentLine();
 
 			break;
 		}
@@ -1201,7 +1215,7 @@ void wsCodeWindow::OnCommand( wxCommandEvent & event )
 
 			m_dbgConn->startCommand( wxString::Format( m_commandStepInto, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
 			glApp->getStatusBar()->SetStatusText( _( "waiting for target (step into)" ), 1 );
-			unhilightCurrentLine();
+//			unhilightCurrentLine();
 
 			break;
 		}
@@ -1544,6 +1558,7 @@ wsBreakpointList & wsCodeWindow::getBreakpointList()
 
 void wsCodeWindow::unhilightCurrentLine()
 {
+	
 	int	lineNo = m_view->MarkerNext( 0, MARKERINDEX_TO_MARKERMASK( MARKER_CURRENT ));
 
 	if( lineNo != -1 )
@@ -1551,6 +1566,7 @@ void wsCodeWindow::unhilightCurrentLine()
 		m_view->MarkerDelete( lineNo, MARKER_CURRENT );
 		m_view->MarkerDelete( lineNo, MARKER_CURRENT_BG );
 	}
+	
 }
 
 
