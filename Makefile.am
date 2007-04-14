@@ -9,7 +9,7 @@
 
 AUTOMAKE_OPTIONS = foreign
 
-SUBDIRS = branding i18n pgadmin pkg xtra debugger
+SUBDIRS = branding i18n pgadmin xtra debugger pkg
 
 EXTRA_DIST = \
 	$(top_srcdir)/BUGS \
