@@ -282,7 +282,7 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 	// debugger server.
 
 	glApp->getStatusBar()->SetStatusText( _( "Connecting to debugger" ), 1 );
-	m_dbgConn = new wsPgConn( connProps, this );
+    m_dbgConn = new wsPgConn( connProps, (this != 0 ? true : false) );
 	glApp->getStatusBar()->SetStatusText( _( "Connecting to debugger..." ), 1 );
 
 	// Our proxy API may throw (perfectly legitimate) errors at us (for example,
@@ -1451,7 +1451,7 @@ void wsCodeWindow::ResultListenerCreated( wxCommandEvent & event )
 		// package).  As each (targetInfo) result arrives, we add a 
 		// breakpoint at the resulting OID.
 
-		int	index = 1;
+		unsigned int	index = 1;
 
 		for( wsBreakpointList::Node * node = m_breakpoints.GetFirst(); node; node = node->GetNext(), ++index )
 		{
