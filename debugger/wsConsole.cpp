@@ -54,7 +54,7 @@ wsConsole::wsConsole( wxDocParentFrame * parent, const wxString & title, const w
 	m_queryWindow->Show( true );
 	m_queryWindow->SetFocus();
 #endif
-	glMainFrame->PerspectivesDef();
+
 }
   
 ////////////////////////////////////////////////////////////////////////////////

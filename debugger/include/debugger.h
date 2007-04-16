@@ -17,23 +17,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef WSAPPH
-#define WSAPPH
+#ifndef DEBUGGER
+#define DEBUGGER
 
 #include <wx/wx.h>
 #include <wx/cmdline.h>
 #include <wx/docview.h>
 #include <wx/config.h>
-
 #include <wx/aui/aui.h>
-
-// Backwards compatibility
-#if wxCHECK_VERSION(2, 7, 2)
-#define wxFrameManager wxAuiManager
-#define wxFrameManagerEvent wxAuiManagerEvent
-#define wxPaneInfo wxAuiPaneInfo
-#define wxFloatingPane wxAuiFloatingFrame
-#endif
 
 #include "wsConnProp.h"
 
@@ -65,6 +56,14 @@ class wsApp : public wxApp
 	void initializeLocale( wxChar * argv0 );	// Initialize locale and load language catalog
 };
 
+enum
+{
+    MNU_TOOLBAR = 10001,
+    MNU_STACKPANE,
+    MNU_OUTPUTPANE,
+    MNU_DEFAULTVIEW
+};
+
 extern wsApp *glApp;
 
-#endif // WSAPPH
+#endif // DEBUGGER

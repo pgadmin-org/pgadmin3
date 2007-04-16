@@ -15,11 +15,9 @@
 #include "wsPgconn.h"
 #include "wsDirectdbg.h"
 #include "debugger.h"
-
-#include "images/pgAdmin3.xpm"
-
 #include "debuggerMenu.h"
 
+#include "images/pgAdmin3.xpm"
 #include "images/file_open.xpm"
 #include "images/file_save.xpm"
 #include "images/execute.xpm"
@@ -57,9 +55,6 @@ IMPLEMENT_CLASS( wsMainFrame, wxDocParentFrame  )
 BEGIN_EVENT_TABLE( wsMainFrame, wxDocParentFrame  )
     EVT_MENU( MENU_ID_EXECUTE, wsMainFrame::OnExecute )
     EVT_MENU(wxID_ABOUT, wsMainFrame ::OnAbout)
-    EVT_MENU_RANGE(wsMainFrame ::ID_FirstPerspective, 
-				   wsMainFrame ::ID_FirstPerspective+1000,
-                   wsMainFrame ::OnRestorePerspective)
 
     EVT_MENU_RANGE( MENU_ID_SET_BREAK, MENU_ID_SET_PC, wsMainFrame::OnDebugCommand )
 
@@ -67,12 +62,17 @@ BEGIN_EVENT_TABLE( wsMainFrame, wxDocParentFrame  )
     EVT_SIZE( wsMainFrame::OnSize )
     EVT_CHAR( wsMainFrame::OnChar )
 
-    EVT_TOOL( wxID_CUT,   wsMainFrame::OnEditCommand)
-    EVT_TOOL( wxID_COPY,  wsMainFrame::OnEditCommand)
-    EVT_TOOL( wxID_PASTE, wsMainFrame::OnEditCommand)
-    EVT_TOOL( wxID_UNDO,  wsMainFrame::OnEditCommand)
-    EVT_TOOL( wxID_REDO,  wsMainFrame::OnEditCommand)
+    EVT_TOOL( wxID_CUT,         wsMainFrame::OnEditCommand)
+    EVT_TOOL( wxID_COPY,        wsMainFrame::OnEditCommand)
+    EVT_TOOL( wxID_PASTE,       wsMainFrame::OnEditCommand)
+    EVT_TOOL( wxID_UNDO,        wsMainFrame::OnEditCommand)
+    EVT_TOOL( wxID_REDO,        wsMainFrame::OnEditCommand)
 
+    EVT_MENU(MNU_TOOLBAR,       wsMainFrame::OnToggleToolBar)
+    EVT_MENU(MNU_STACKPANE,     wsMainFrame::OnToggleStackPane)
+    EVT_MENU(MNU_OUTPUTPANE,    wsMainFrame::OnToggleOutputPane)
+    EVT_MENU(MNU_DEFAULTVIEW,   wsMainFrame::OnDefaultView)
+    EVT_AUI_PANE_CLOSE(         wsMainFrame::OnAuiUpdate)
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -105,15 +105,22 @@ wsMainFrame::wsMainFrame( wxDocManager* docManager, const wxString & title, cons
 	m_toolBar   = setupToolBar();
 	m_statusBar = setupStatusBar();
 
-	readSettings();
-
 	// NOTE: We don't create the console window (that's the big window that the 
 	// user types into) until we successfully connect to a database - see addConnect().
-	manager.AddPane(m_toolBar, wxAuiPaneInfo().
-                  Name(wxT("Toolbar")).Caption(wxT("Toolbar")).
-                  ToolbarPane().Top().Row(1).Position(1).
-                  LeftDockable(false).RightDockable(false));
+	manager.AddPane(m_toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(wxT("Toolbar")).ToolbarPane().Top().Row(1).Position(1).LeftDockable(false).RightDockable(false));
 
+    // Now load the layout
+    wxString perspective;
+    glApp->getSettings().Read(wxT("Debugger/wsMainFrame/Perspective-") + VerFromRev(WSMAINFRAME_PERPSECTIVE_VER), &perspective, WSMAINFRAME_DEFAULT_PERSPECTIVE);
+    manager.LoadPerspective(perspective, true);
+
+    // and reset the captions for the current language
+    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+
+    // Sync the View menu options
+    m_view_menu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+    m_view_menu->Check(MNU_STACKPANE, manager.GetPane(wxT("stackPane")).IsShown());
+    m_view_menu->Check(MNU_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
 
 	manager.Update();
 
@@ -121,8 +128,22 @@ wsMainFrame::wsMainFrame( wxDocManager* docManager, const wxString & title, cons
 
 wsMainFrame::~wsMainFrame()
 {
-	writeSettings();
+    glApp->getSettings().Write(wxT("Debugger/wsMainFrame/Perspective-") + VerFromRev(WSMAINFRAME_PERPSECTIVE_VER), manager.SavePerspective());
+    manager.UnInit();
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// VerFromRev()
+//
+// 	Get a version number from a revision string
+wxString wsMainFrame::VerFromRev(const wxString &rev)
+{
+   wxString ret = rev.AfterFirst(' ');
+   ret = ret.BeforeFirst(' ');
+   return ret;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // addDebug()
 //
@@ -222,23 +243,6 @@ void wsMainFrame ::OnAbout(wxCommandEvent& WXUNUSED(event))
 	Versions += wxT("\n");
 	Versions += LICENSE;
 	wxMessageBox(Versions, _("Debugger"), wxOK, this);
-}
-
-void wsMainFrame ::OnRestorePerspective(wxCommandEvent& event)
-{
-	if( !m_perspectives.IsEmpty() )
-		manager.LoadPerspective(m_perspectives.Item(event.GetId() - ID_FirstPerspective));
-	else
-		event.Skip();
-}
-
-void wsMainFrame ::PerspectivesDef()
-{
-	wxString perspective_all = manager.SavePerspective();
-	wxString perspective_default = manager.SavePerspective();
-
-	m_perspectives.Add(perspective_default);
-	m_perspectives.Add(perspective_all);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -354,9 +358,14 @@ wxMenuBar * wsMainFrame::setupMenuBar( void )
 	fileMenu->Append( wxID_EXIT, _( "E&xit" ));
 	m_menuBar->Append( fileMenu, _( "&File" ));
 
-	m_perspectives_menu = new wxMenu;
-	m_perspectives_menu->Append(ID_FirstPerspective, _("&Default view"));
-	m_menuBar->Append(m_perspectives_menu, _("&View"));
+	m_view_menu = new wxMenu;
+    m_view_menu->Append(MNU_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
+    m_view_menu->Append(MNU_STACKPANE, _("&Stack pane"),   _("Show or hide the stack pane."), wxITEM_CHECK);
+    m_view_menu->Append(MNU_TOOLBAR, _("&Tool bar"),       _("Show or hide the tool bar."), wxITEM_CHECK);
+    m_view_menu->AppendSeparator();
+    m_view_menu->Append(MNU_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
+
+	m_menuBar->Append(m_view_menu, _("&View"));
 
 	wxMenu* help_menu = new wxMenu;
 	help_menu->Append(wxID_ABOUT, _("&About..."));
@@ -460,43 +469,83 @@ void wsMainFrame::OnEditCommand( wxCommandEvent & event )
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// writeSettings()
+//  OnToggleToolBar()
 //
-//	This function saves the application configuration information. It saves
-//  application frame, subframes and procedure information in config file.
-//
-
-void wsMainFrame::writeSettings()
+//	Turn the tool bar on or off
+void wsMainFrame::OnToggleToolBar(wxCommandEvent& event)
 {
-	int 		count =	1;
-	wxString 	key;
-	int		width;
-	int		height;
-
-	GetClientSize( &width, &height );
-
-	glApp->getSettings().Write( wxT( "Resolution/width" ), width );
-	glApp->getSettings().Write( wxT( "Resolution/height" ), height );
-
-	glApp->getSettings().Flush();
-
+    if (m_view_menu->IsChecked(MNU_TOOLBAR))
+        manager.GetPane(wxT("toolBar")).Show(true);
+    else
+        manager.GetPane(wxT("toolBar")).Show(false);
+    manager.Update();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+//  OnToggleStackPane()
+//
+//	Turn the tool bar on or off
+void wsMainFrame::OnToggleStackPane(wxCommandEvent& event)
+{
+    if (m_view_menu->IsChecked(MNU_STACKPANE))
+        manager.GetPane(wxT("stackPane")).Show(true);
+    else
+        manager.GetPane(wxT("stackPane")).Show(false);
+    manager.Update();
+}
 
 ////////////////////////////////////////////////////////////////////////////////
-// readSettings()
+//  OnToggleOutputPane()
 //
-//  This function reads information about procedure and frame resolution
-//  from previously saved configuration file.
-//
-
-void wsMainFrame::readSettings()
+//	Turn the tool bar on or off
+void wsMainFrame::OnToggleOutputPane(wxCommandEvent& event)
 {
-	int	width;
-	int	height;
+    if (m_view_menu->IsChecked(MNU_OUTPUTPANE))
+        manager.GetPane(wxT("outputPane")).Show(true);
+    else
+        manager.GetPane(wxT("outputPane")).Show(false);
+    manager.Update();
+}
 
-	glApp->getSettings().Read( wxT( "Resolution/width" ),  &width,  700 );
-	glApp->getSettings().Read( wxT( "Resolution/height" ), &height, 500 );
+////////////////////////////////////////////////////////////////////////////////
+//  OnAuiUpdate()
+//
+//	Update the view menu to reflect AUI changes
+void wsMainFrame::OnAuiUpdate(wxAuiManagerEvent& event)
+{
+    if(event.pane->name == wxT("toolBar"))
+    {
+        m_view_menu->Check(MNU_TOOLBAR, false);
+    }
+    else if(event.pane->name == wxT("stackPane"))
+    {
+        m_view_menu->Check(MNU_STACKPANE, false);
+    }
+    else if(event.pane->name == wxT("outputPane"))
+    {
+        m_view_menu->Check(MNU_OUTPUTPANE, false);
+    }
+    event.Skip();
+}
 
-	SetClientSize( width, height );
+////////////////////////////////////////////////////////////////////////////////
+//  OnDefaultView()
+//
+//	Reset the AUI view to the default
+void wsMainFrame::OnDefaultView(wxCommandEvent& event)
+{
+    manager.LoadPerspective(WSMAINFRAME_DEFAULT_PERSPECTIVE, true);
+
+    // Reset the captions for the current language
+    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+    manager.GetPane(wxT("stackPane")).Caption(_("Stack pane"));
+    manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
+
+    // tell the manager to "commit" all the changes just made
+    manager.Update();
+
+    // Sync the View menu options
+    m_view_menu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+    m_view_menu->Check(MNU_STACKPANE, manager.GetPane(wxT("stackPane")).IsShown());
+    m_view_menu->Check(MNU_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
 }

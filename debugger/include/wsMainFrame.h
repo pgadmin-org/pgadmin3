@@ -24,6 +24,7 @@
 #define WSMAINFRAMEH
 
 #include "debugger.h"
+
 #include <wx/frame.h>		
 #include <wx/docview.h>		
 #include <wx/laywin.h>
@@ -34,6 +35,18 @@
 #include "wsConsole.h"
 #include "wsTabWindow.h"
 
+#define WSMAINFRAME_PERPSECTIVE_VER wxT("$Rev$")
+
+#ifdef __WXMAC__
+#define WSMAINFRAME_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Tool bar;state=2108144;dir=1;layer=10;row=0;pos=1;prop=100000;bestw=217;besth=31;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sourcePane;caption=sourcePane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=stackPane;caption=stackPane;state=2099196;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=outputPane;state=2099196;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=33|dock_size(5,0,0)=237|dock_size(2,0,0)=237|dock_size(3,0,0)=156|")
+#else
+#ifdef __WXGTK__
+#define WSMAINFRAME_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Tool bar;state=2108144;dir=1;layer=10;row=0;pos=1;prop=100000;bestw=217;besth=31;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sourcePane;caption=sourcePane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=stackPane;caption=stackPane;state=2099196;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=outputPane;state=2099196;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=33|dock_size(5,0,0)=237|dock_size(2,0,0)=237|dock_size(3,0,0)=156|")
+#else
+#define WSMAINFRAME_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Tool bar;state=2108144;dir=1;layer=10;row=0;pos=1;prop=100000;bestw=217;besth=31;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sourcePane;caption=sourcePane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=stackPane;caption=stackPane;state=2099196;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=outputPane;state=2099196;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=33|dock_size(5,0,0)=237|dock_size(2,0,0)=237|dock_size(3,0,0)=156|")
+#endif
+#endif
+
 class wsResultGrid;
 class wsVarWindow;
 class wsCodeWindow;
@@ -41,12 +54,7 @@ class wsDirectDbg;
 class wxSizeReportCtrl;
 
 class wsMainFrame : public wxDocParentFrame  
-{
-	enum
-	{
-        ID_FirstPerspective = wxID_HIGHEST+1
-	};
-    
+{    
     DECLARE_CLASS( wsMainFrame )
 
   public:
@@ -62,26 +70,21 @@ class wsMainFrame : public wxDocParentFrame
 
 	wxMenuBar	*m_menuBar;	// Menu bar
 	wxToolBar	*m_toolBar;	// Frames' toolbar
-	wxFrameManager  manager;
-	wxArrayString   m_perspectives;
 
-	void PerspectivesDef();
+    wxAuiManager manager;
+
+    wxString VerFromRev(const wxString &rev);
 
   private:
 	wsConsole	*m_console;	// Console window (eventually a list)
 	wsCodeWindow	*m_standaloneDebugger;	// Standalone debugger window
 	wsDirectDbg	*m_standaloneDirectDbg;	// Standalone direct debugger
-
-  private:
-
 	wxStatusBar	*m_statusBar;	// Frame's status bar
-	wxMenu		*m_perspectives_menu;
+	wxMenu		*m_view_menu;
 
 	wxMenuBar	*setupMenuBar( void );
 	wxToolBar	*setupToolBar( void );
 	wxStatusBar	*setupStatusBar( void );
-	void		writeSettings();
-	void		readSettings();
 
     DECLARE_EVENT_TABLE()
 
@@ -93,8 +96,12 @@ class wsMainFrame : public wxDocParentFrame
 	void OnEditCommand( wxCommandEvent & event );	// Route cut,copy,paste... tool to active child
 
 	void OnAbout(wxCommandEvent& evt);
-	void OnRestorePerspective(wxCommandEvent& evt);
-//    void OnToggleToolBar(wxCommandEvent& event);	// wxAUI
+
+    void OnToggleToolBar(wxCommandEvent& event);
+    void OnToggleStackPane(wxCommandEvent& event);
+    void OnToggleOutputPane(wxCommandEvent& event);
+    void OnAuiUpdate(wxAuiManagerEvent& event);
+    void OnDefaultView(wxCommandEvent& event);
 
 //  	+---------------------------------------+
 //  	|_______________________________________| <-- Toolbar  

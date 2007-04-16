@@ -18,6 +18,7 @@
 #include "wsBreakPoint.h"
 #include "wsDirectdbg.h"
 
+#include <wx/aui/aui.h>
 #include <wx/log.h>
 #include <wx/dir.h>
 #include <wx/filesys.h>

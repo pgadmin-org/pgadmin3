@@ -285,7 +285,7 @@ void wsDirectDbg::populateParamGrid( )
 		wxStaticText * txtMessage = (wxStaticText *)FindWindow( ID_TXTMESSAGE );
 
 		if( txtMessage )
-			txtMessage->SetLabel( wxString::Format( _( "This %s requires no argument values\nClick 'OK' to invoke %s" ), m_targetInfo->getIsFunction() ? "function" : "procedure", m_targetInfo->getFQName().c_str()));
+			txtMessage->SetLabel( wxString::Format( _( "This %s requires no argument values\nClick 'OK' to invoke %s" ), m_targetInfo->getIsFunction() ? _("function") : _("procedure"), m_targetInfo->getFQName().c_str()));
 
 		m_grid->AppendRows( 1 );
 		m_grid->SetReadOnly( i, COL_NAME,  true );
