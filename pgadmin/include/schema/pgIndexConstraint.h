@@ -24,15 +24,15 @@ public:
     wxString GetCreate();
     wxString GetSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
-    OID GetIndexOid() { return indexOid; }
-    void iSetIndexOid(const OID o) { indexOid = o; }
+    OID GetConstraintOid() { return constraintOid; }
+    void iSetConstraintOid(const OID o) { constraintOid = o; }
 
 protected:
     pgIndexConstraint(pgTable *newTable, pgaFactory &factory, const wxString& newName)
         : pgIndexBase(newTable, factory, newName) {}
 
 private:
-    OID indexOid;
+    OID constraintOid;
 };
 
 
@@ -51,6 +51,7 @@ public:
     pgPrimaryKey(pgTable *newTable, const wxString& newName = wxT(""))
         : pgIndexConstraint(newTable, primaryKeyFactory, newName) {}
 
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     bool CanCreate() { return false; }
 };
 
@@ -69,6 +70,8 @@ class pgUnique : public pgIndexConstraint
 public:
     pgUnique(pgTable *newTable, const wxString& newName = wxT(""))
         : pgIndexConstraint(newTable, uniqueFactory, newName) {}
+
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 };
 
 

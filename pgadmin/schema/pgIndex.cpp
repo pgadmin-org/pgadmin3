@@ -323,12 +323,6 @@ pgIndex::pgIndex(pgTable *newTable, const wxString& newName)
 }
 
 
-pgIndex::~pgIndex()
-{
-}
-
-
-
 pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
     pgTableObjCollection *collection=(pgTableObjCollection*)coll;
@@ -376,23 +370,21 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
             {
                 case 0:
                     index = new pgIndex(collection->GetTable(), indexes->GetVal(wxT("idxname")));
-                    index->iSetOid(indexes->GetOid(wxT("oid")));
                     break;
                 case 'p':
                     index = new pgPrimaryKey(collection->GetTable(), indexes->GetVal(wxT("idxname")));
-                    index->iSetOid(indexes->GetOid(wxT("conoid")));
-                    ((pgPrimaryKey *)index)->iSetIndexOid(indexes->GetOid(wxT("oid")));
+                    ((pgPrimaryKey *)index)->iSetConstraintOid(indexes->GetOid(wxT("conoid")));
                     break;
                 case 'u':
                     index = new pgUnique(collection->GetTable(), indexes->GetVal(wxT("idxname")));
-                    index->iSetOid(indexes->GetOid(wxT("conoid")));
-                    ((pgUnique *)index)->iSetIndexOid(indexes->GetOid(wxT("oid")));
+                    ((pgUnique *)index)->iSetConstraintOid(indexes->GetOid(wxT("conoid")));
                     break;
                 default:
                     index=0;
                     break;
             }
-            
+
+            index->iSetOid(indexes->GetOid(wxT("oid")));
             index->iSetIsClustered(indexes->GetBool(wxT("indisclustered")));
             index->iSetIsUnique(indexes->GetBool(wxT("indisunique")));
             index->iSetIsPrimary(indexes->GetBool(wxT("indisprimary")));

@@ -102,7 +102,6 @@ class pgIndex : public pgIndexBase
 {
 public:
     pgIndex(pgTable *newTable, const wxString& newName = wxT(""));
-    ~pgIndex();
 };
 
 

@@ -91,8 +91,8 @@ void pgIndexConstraint::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListV
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("OID"), GetOid());
-        properties->AppendItem(_("Index OID"), GetIndexOid());
+        properties->AppendItem(_("OID"), GetConstraintOid());
+        properties->AppendItem(_("Index OID"), GetOid());
         if (GetProcName().IsNull())
             properties->AppendItem(_("Columns"), GetColumns());
         else
@@ -110,7 +110,25 @@ void pgIndexConstraint::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListV
     }
 }
 
+pgObject *pgPrimaryKey::Refresh(ctlTree *browser, const wxTreeItemId item)
+{
+    pgObject *index=0;
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        index = primaryKeyFactory.CreateObjects(coll, 0, wxT("\n   AND cls.oid=") + GetOidStr());
 
+    return index;
+}
+
+pgObject *pgUnique::Refresh(ctlTree *browser, const wxTreeItemId item)
+{
+    pgObject *index=0;
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        index = uniqueFactory.CreateObjects(coll, 0, wxT("\n   AND cls.oid=") + GetOidStr());
+
+    return index;
+}
 
 pgObject *pgPrimaryKeyFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &where)
 {
