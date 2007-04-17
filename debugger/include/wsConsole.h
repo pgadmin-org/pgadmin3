@@ -35,7 +35,7 @@ class wsConsole : public wxTextCtrl
   DECLARE_CLASS( wsConsole )
 
   public:
-	wsConsole( wxDocParentFrame * parent, const wxString & title, const wxPoint & pos, const wxSize & size, wsPgConn * conn );
+	wsConsole( wsPgConn * conn );
 
 	void	doExecute( void );
 	void	doDebug( wsConnProp & connProps );

@@ -337,7 +337,7 @@ void wsDirectDbg::loadSettings()
 	wxConfig  & settings = glApp->getSettings();
 	long		lastOID;
 	
-	settings.Read( wxT( "Proc/OID" ), &lastOID, -1 );
+	settings.Read( wxT( "Debugger/Proc/OID" ), &lastOID, -1 );
 
 	if( lastOID == m_targetInfo->getOid())
 	{
@@ -349,7 +349,7 @@ void wsDirectDbg::loadSettings()
 
 			if( arg.getMode() != wxT( "o" ))
 			{
-				settings.Read( wxString::Format( wxT( "Proc/argValue%d" ), ++count ), &(arg.getValue()), wxT( "" ));
+				settings.Read( wxString::Format( wxT( "Debugger/Proc/argValue%d" ), ++count ), &(arg.getValue()), wxT( "" ));
 			}
 		}
 	}
@@ -368,7 +368,7 @@ void wsDirectDbg::saveSettings()
 {
 	wxConfig & settings = glApp->getSettings();
 
-	settings.Write( wxT( "Proc/OID" ), m_targetInfo->getOid());
+	settings.Write( wxT( "Debugger/Proc/OID" ), m_targetInfo->getOid());
 
 	int	count = 0;
 
@@ -378,9 +378,9 @@ void wsDirectDbg::saveSettings()
 
 		if( arg.getMode() != wxT( "o" ))
 		{
-			settings.Write( wxString::Format( wxT( "Proc/argName%d" ), ++count ), arg.getName());
-			settings.Write( wxString::Format( wxT( "Proc/argType%d" ),   count ), arg.getType());
-			settings.Write( wxString::Format( wxT( "Proc/argValue%d" ),  count ), arg.getValue());
+			settings.Write( wxString::Format( wxT( "Debugger/Proc/argName%d" ), ++count ), arg.getName());
+			settings.Write( wxString::Format( wxT( "Debugger/Proc/argType%d" ),   count ), arg.getType());
+			settings.Write( wxString::Format( wxT( "Debugger/Proc/argValue%d" ),  count ), arg.getValue());
 		}
 	}
 
@@ -750,7 +750,6 @@ void wsDirectDbg::OnDebug( wxCommandEvent & event )
 
 	m_codeWindow = glMainFrame->addDebug( *debugProps );
 
-	m_codeWindow->Show( true );
 	m_codeWindow->startLocalDebugging();
 
 	this->Show( false );

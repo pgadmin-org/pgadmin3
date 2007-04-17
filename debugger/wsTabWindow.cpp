@@ -14,7 +14,7 @@
 #include "wsConst.h"
 #include <wx/thread.h>
 
-IMPLEMENT_CLASS( wsTabWindow, wxSashLayoutWindow )
+IMPLEMENT_CLASS( wsTabWindow, wxWindow )
 
 ////////////////////////////////////////////////////////////////////////////////
 // wsTabWindow constructor
@@ -24,8 +24,7 @@ IMPLEMENT_CLASS( wsTabWindow, wxSashLayoutWindow )
 //
 
 wsTabWindow::wsTabWindow( wxWindow * parent, wxWindowID id, const wxPoint & pos, const wxSize & size, long style, const wxString& name )
-	: wxSashLayoutWindow( parent, id, pos, size, style, name ),
-	m_noteBook( 0 ),
+  : wxNotebook( parent, id, pos, size, style | wxNB_BOTTOM ),
 	m_resultWindow( 0 ),
 	m_varWindow( 0 ),
 	m_pkgVarWindow( 0 ),
@@ -34,8 +33,6 @@ wsTabWindow::wsTabWindow( wxWindow * parent, wxWindowID id, const wxPoint & pos,
 	m_messageWindow( 0 )
 {
 	m_tabMap   = new wsTabHash();
-	m_noteBook = new wxNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxNB_BOTTOM );
-
 }
 
 void wsTabWindow::selectTab( wxWindowID id )
@@ -44,17 +41,8 @@ void wsTabWindow::selectTab( wxWindowID id )
 
 	if( result != m_tabMap->end())
 	{
-		m_noteBook->SetSelection( result->second );
+		SetSelection( result->second );
 	}
-#if 0
-	switch( id )
-	{
-		case ID_PARAMGRID:  m_noteBook->SetSelection( 0 ); break;
-		case ID_VARGRID:    m_noteBook->SetSelection( 1 ); break;
-		case ID_MSG_PAGE:   m_noteBook->SetSelection( 2 ); break;
-		default: break;
-	}
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,8 +58,8 @@ wsResultGrid * wsTabWindow::getResultWindow( void )
 	{
 		// We don't have a result window yet - go ahead and create one
 
-		m_resultWindow = new wsResultGrid( m_noteBook, -1 );
-		m_noteBook->AddPage( m_resultWindow, _( "Results" ), true );
+		m_resultWindow = new wsResultGrid( this, -1 );
+		AddPage( m_resultWindow, _( "Results" ), true );
 	}
 
 	return( m_resultWindow );
@@ -90,10 +78,10 @@ wsVarWindow * wsTabWindow::getVarWindow( bool create )
 	{
 		// We don't have a variable window yet - go ahead and create one
 
-		(*m_tabMap)[ID_VARGRID] = m_noteBook->GetPageCount();
+		(*m_tabMap)[ID_VARGRID] = GetPageCount();
 
-		m_varWindow = new wsVarWindow( m_noteBook, ID_VARGRID );
-		m_noteBook->AddPage( m_varWindow, _( "Local Variables" ), true );
+		m_varWindow = new wsVarWindow( this, ID_VARGRID );
+		AddPage( m_varWindow, _( "Local Variables" ), true );
 	}
 
 	return( m_varWindow );
@@ -112,10 +100,10 @@ wsVarWindow * wsTabWindow::getPkgVarWindow( bool create )
 	{
 		// We don't have a variable window yet - go ahead and create one
 
-		(*m_tabMap)[ID_PKGVARGRID] = m_noteBook->GetPageCount();
+		(*m_tabMap)[ID_PKGVARGRID] = GetPageCount();
 
-		m_pkgVarWindow = new wsVarWindow( m_noteBook, ID_PKGVARGRID );
-		m_noteBook->AddPage( m_pkgVarWindow, _( "Package Variables" ), true );
+		m_pkgVarWindow = new wsVarWindow( this, ID_PKGVARGRID );
+		AddPage( m_pkgVarWindow, _( "Package Variables" ), true );
 	}
 
 	return( m_pkgVarWindow );
@@ -134,10 +122,10 @@ wsVarWindow * wsTabWindow::getParamWindow( bool create )
 	{
 		// We don't have a variable window yet - go ahead and create one
 
-		(*m_tabMap)[ID_PARAMGRID] = m_noteBook->GetPageCount();
+		(*m_tabMap)[ID_PARAMGRID] = GetPageCount();
 
-		m_paramWindow = new wsVarWindow( m_noteBook, ID_PARAMGRID );
-		m_noteBook->AddPage( m_paramWindow, _( "Parameters" ), true );
+		m_paramWindow = new wsVarWindow( this, ID_PARAMGRID );
+		AddPage( m_paramWindow, _( "Parameters" ), true );
 	}
 
 	return( m_paramWindow );
@@ -156,10 +144,10 @@ wsMessageWindow * wsTabWindow::getMessageWindow( void )
 	{
 		// We don't have a variable window yet - go ahead and create one
 
-		(*m_tabMap)[ID_MSG_PAGE] = m_noteBook->GetPageCount();
+		(*m_tabMap)[ID_MSG_PAGE] = GetPageCount();
 
-		m_messageWindow = new wsMessageWindow( m_noteBook, ID_MSG_PAGE );
-		m_noteBook->AddPage( m_messageWindow, _( "DBMS Messages" ), true );
+		m_messageWindow = new wsMessageWindow( this, ID_MSG_PAGE );
+		AddPage( m_messageWindow, _( "DBMS Messages" ), true );
 	}
 	return( m_messageWindow );
 }
@@ -176,8 +164,8 @@ wsStackWindow * wsTabWindow::getStackWindow( )
 	if( m_stackWindow == 0 )
 	{
 		// We don't have a stack-trace window yet - go ahead and create one
-		m_stackWindow = new wsStackWindow( m_noteBook, -1 );
-		m_noteBook->AddPage( m_stackWindow, _( "Stack" ), true );
+		m_stackWindow = new wsStackWindow( this, -1 );
+		AddPage( m_stackWindow, _( "Stack" ), true );
 	}
 
 	return( m_stackWindow );

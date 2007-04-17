@@ -15,7 +15,7 @@
 #include <wx/log.h>
 #include <wx/tokenzr.h>
 
-IMPLEMENT_CLASS( wsStackWindow, wxSashLayoutWindow )
+IMPLEMENT_CLASS( wsStackWindow, wxListBox )
 
 ////////////////////////////////////////////////////////////////////////////////
 // wsStackWindow constructor
@@ -24,12 +24,9 @@ IMPLEMENT_CLASS( wsStackWindow, wxSashLayoutWindow )
 //
 
 wsStackWindow::wsStackWindow( wxWindow * parent, wxWindowID id, const wxPoint & pos, const wxSize & size, long style, const wxString & name )
-	: wxSashLayoutWindow( parent, id, pos, size, style, name ),
-	  m_grid( new wxListBox( this , wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_HSCROLL|wxLB_NEEDED_SB ))
+	: wxListBox( parent , id, pos, size, 0, NULL, style|wxLB_HSCROLL|wxLB_NEEDED_SB )
 {
-	wxFont sFont( glApp->GetSystemFont() );
-	m_grid->SetFont( sFont );
-	m_grid->SetBackgroundColour( *wxWHITE );
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +37,7 @@ wsStackWindow::wsStackWindow( wxWindow * parent, wxWindowID id, const wxPoint & 
 
 void wsStackWindow::clear( )
 {
-	m_grid->Set( 0, NULL );
+	Set( 0, NULL );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -54,6 +51,6 @@ void wsStackWindow::setStack( const wxArrayString & stack )
 {
 	for( size_t i = 0; i < stack.GetCount(); ++i )
 	{
-		m_grid->Append( stack[i] );
+		Append( stack[i] );
 	}
 }

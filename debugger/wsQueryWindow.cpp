@@ -19,14 +19,13 @@
 #include <wx/file.h>
 #include "wsMainFrame.h"
 
-IMPLEMENT_CLASS( wsQueryWindow, wxSashLayoutWindow );
+IMPLEMENT_CLASS( wsQueryWindow, wxWindow );
 
-BEGIN_EVENT_TABLE( wsQueryWindow, wxSashLayoutWindow )
+BEGIN_EVENT_TABLE( wsQueryWindow, wxWindow )
     EVT_CLOSE(                       	  wsQueryWindow::OnClose )
     EVT_MENU( MENU_ID_EXECUTE,       	  wsQueryWindow::OnExecute )
     EVT_MENU( RESULT_ID_RESULT_SET_READY, wsQueryWindow::OnResultReady )
     EVT_BUTTON( MENU_ID_SPAWN_DEBUGGER,   wsQueryWindow::OnSpawnDebugger )
-    EVT_SASH_DRAGGED( wxID_ANY,           wsQueryWindow::OnSashDrag )
 
     EVT_CHAR( wsQueryWindow::OnKeyEvent )
 
@@ -39,26 +38,11 @@ END_EVENT_TABLE()
 //  pointer and initializes the text control with a 'demo' command.
 
 wsQueryWindow::wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn )
-	: wxSashLayoutWindow( parent , id ), m_conn( conn )
+	: wxWindow( parent , id ), m_conn( conn )
 {
-	// For demo purposes, we fill the edit control with the text of a few commands and then
-	// select that text so that it's easy to delete it if you don't want the demo...
 
-	m_gridHolder    = new wxSashLayoutWindow( glMainFrame /* this */ , WINDOW_ID_RESULT_GRID );
-	m_commandHolder = new wxSashLayoutWindow( glMainFrame /* this */ , WINDOW_ID_COMMAND );
-
-	m_gridHolder->SetOrientation( wxLAYOUT_HORIZONTAL );
-	m_gridHolder->SetAlignment( wxLAYOUT_BOTTOM );
-	m_gridHolder->SetSashVisible( wxSASH_TOP, true );
-	m_gridHolder->SetDefaultSize( wxSize( 1000, 60 ));
-
-	m_commandHolder->SetOrientation( wxLAYOUT_HORIZONTAL );
-	m_commandHolder->SetAlignment( wxLAYOUT_TOP );
-	m_commandHolder->SetSashVisible( wxSASH_BOTTOM, true );
-	m_commandHolder->SetDefaultSize( wxSize( 1000, 180 ));
-
-	m_resultGrid    = new wsResultGrid( m_gridHolder, wxID_ANY );
-	m_command       = new wsRichWindow( m_commandHolder, wxID_ANY );
+	m_resultGrid    = new wsResultGrid( glMainFrame, wxID_ANY );
+	m_command       = new wsRichWindow( glMainFrame, wxID_ANY );
 
 	wxString	defaultCmd( wxT("CREATE OR REPLACE FUNCTION my_factorial( INTEGER ) RETURNS INTEGER AS $$\n")
 							wxT("DECLARE\n")
@@ -118,13 +102,10 @@ wsQueryWindow::wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn 
 	m_command->AppendText( defaultCmd );
 	m_command->AppendText( wxT( "\n" ));
 	m_command->SetSelection( -1, -1 );
-
-	wxLayoutAlgorithm	layout;
-	layout.LayoutWindow( glMainFrame /*this*/, m_commandHolder );
 	
 	// wxAUI
-	glMainFrame->manager.AddPane(m_gridHolder, wxAuiPaneInfo().Name(wxT("resultGrid")).Caption(_("resultGrid")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
-	glMainFrame->manager.AddPane(m_commandHolder, wxAuiPaneInfo().Name(wxT("command")).Caption(_("command")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
+	glMainFrame->manager.AddPane(m_resultGrid, wxAuiPaneInfo().Name(wxT("resultGrid")).Caption(_("resultGrid")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
+	glMainFrame->manager.AddPane(m_command, wxAuiPaneInfo().Name(wxT("command")).Caption(_("command")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
 
 	glMainFrame->manager.GetPane(wxT("resultGrid")).Caption(_("resultGrid"));
 	glMainFrame->manager.GetPane(wxT("command")).Caption(_("command"));
@@ -291,25 +272,4 @@ void wsQueryWindow::doExecute( void )
 		history.Write( command );
 		history.Close();
 	}
-}
-
-void wsQueryWindow::OnSashDrag( wxSashEvent & event )
-{
-	if( event.GetDragStatus() == wxSASH_STATUS_OUT_OF_RANGE )
-		return;
-
-	switch( event.GetId())
-	{
-		case WINDOW_ID_RESULT_GRID:
-			m_gridHolder->SetDefaultSize( wxSize( 60, event.GetDragRect().height ));
-			break;
-
-		case WINDOW_ID_COMMAND:
-			m_commandHolder->SetDefaultSize( wxSize( 60, event.GetDragRect().height ));
-			break;
-	}
-
-	wxLayoutAlgorithm	layout;
-	layout.LayoutWindow( this, m_commandHolder );
-	
 }

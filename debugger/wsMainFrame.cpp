@@ -53,14 +53,12 @@
 IMPLEMENT_CLASS( wsMainFrame, wxDocParentFrame  )
 
 BEGIN_EVENT_TABLE( wsMainFrame, wxDocParentFrame  )
-    EVT_MENU( MENU_ID_EXECUTE, wsMainFrame::OnExecute )
     EVT_MENU(wxID_ABOUT, wsMainFrame ::OnAbout)
 
     EVT_MENU_RANGE( MENU_ID_SET_BREAK, MENU_ID_SET_PC, wsMainFrame::OnDebugCommand )
 
     EVT_CLOSE( wsMainFrame::OnClose )
     EVT_SIZE( wsMainFrame::OnSize )
-    EVT_CHAR( wsMainFrame::OnChar )
 
     EVT_TOOL( wxID_CUT,         wsMainFrame::OnEditCommand)
     EVT_TOOL( wxID_COPY,        wsMainFrame::OnEditCommand)
@@ -115,12 +113,10 @@ wsMainFrame::wsMainFrame( wxDocManager* docManager, const wxString & title, cons
     manager.LoadPerspective(perspective, true);
 
     // and reset the captions for the current language
-    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+    manager.GetPane(wxT("toolBar")).Caption(_("Toolbar"));
 
     // Sync the View menu options
     m_view_menu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
-    m_view_menu->Check(MNU_STACKPANE, manager.GetPane(wxT("stackPane")).IsShown());
-    m_view_menu->Check(MNU_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
 
 	manager.Update();
 
@@ -129,7 +125,9 @@ wsMainFrame::wsMainFrame( wxDocManager* docManager, const wxString & title, cons
 wsMainFrame::~wsMainFrame()
 {
     glApp->getSettings().Write(wxT("Debugger/wsMainFrame/Perspective-") + VerFromRev(WSMAINFRAME_PERPSECTIVE_VER), manager.SavePerspective());
-    manager.UnInit();
+
+    // FIXME - why does this throw an assert??
+    // manager.UnInit();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -154,11 +152,7 @@ wsCodeWindow * wsMainFrame::addDebug( const wsConnProp & connProps )
 	if( m_console == NULL )
 	{
 		m_standaloneDebugger = new wsCodeWindow( this , -1, connProps );
-		m_standaloneDebugger->Show( true );
-#if 0
-		m_standaloneDebugger->Maximize( true );	
-#endif
-
+		m_standaloneDebugger->Show( false );
 		return( m_standaloneDebugger );
 	}
 	else
@@ -174,10 +168,6 @@ wsDirectDbg * wsMainFrame::addDirectDbg( const wsConnProp & connProp )
 	{
 		m_standaloneDirectDbg = new wsDirectDbg( this, -1, connProp );
 		m_standaloneDirectDbg->Show( true );
-#if 0
-		m_standaloneDirectDbg->Maximize( true );		
-#endif
-
 		return( m_standaloneDirectDbg );
 	}
 	else
@@ -206,11 +196,7 @@ bool wsMainFrame::addConnect( const wxString & host, const wxString & database, 
 
 	if( conn->isConnected())
 	{
-		m_console = new wsConsole( this, conn->getName(), wxDefaultPosition, wxDefaultSize, conn );
-		m_console->Show( false );
-#if 0
-		m_console->SetFocus();
-#endif
+		m_console = new wsConsole( conn );
 		return( true );
 	} 
 	else
@@ -389,41 +375,6 @@ void wsMainFrame::OnClose( wxCloseEvent & event )
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// OnExecute()
-//
-// 	This event handler is called when the user clicks the Execute tool on the
-//	toolbar.  We just forward the event to the console window.
-
-void wsMainFrame::OnExecute( wxCommandEvent & event )
-{
-	m_console->doExecute( );
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// OnChar()
-//
-// This event handler intercepts Ctrl+Enter and Ctrl+Space and maps them into
-// the Execute command (which sends the selected text to the PostgreSQL server)
-
-void wsMainFrame::OnChar( wxKeyEvent & event )
-{
-	switch( event.GetKeyCode())
-	{
-		case WXK_RETURN:
-		case WXK_SPACE:
-		{
-			if( event.ControlDown())
-			{
-				m_console->doExecute( );
-				return;
-			}
-		}
-	}
-
-	event.Skip();
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // makeFuncFrame()
 //
 // This function creates a new DocChild frame to hold a view (presumably a 
@@ -537,7 +488,7 @@ void wsMainFrame::OnDefaultView(wxCommandEvent& event)
     manager.LoadPerspective(WSMAINFRAME_DEFAULT_PERSPECTIVE, true);
 
     // Reset the captions for the current language
-    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+    manager.GetPane(wxT("toolBar")).Caption(_("Toolbar"));
     manager.GetPane(wxT("stackPane")).Caption(_("Stack pane"));
     manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
 

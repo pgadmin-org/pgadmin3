@@ -32,7 +32,7 @@
 #include "wsDbresult.h"
 #include "wsResultGrid.h"
 
-class wsQueryWindow : public wxSashLayoutWindow
+class wsQueryWindow : public wxWindow
 {
     DECLARE_CLASS( wsQueryWindow )
 
@@ -44,8 +44,6 @@ class wsQueryWindow : public wxSashLayoutWindow
  private:
 
 	wsPgConn 	*m_conn;	// Connection to PostgreSQL server
-	wxSashLayoutWindow  *m_gridHolder;
-	wxSashLayoutWindow  *m_commandHolder;
 	wsResultGrid	*m_resultGrid;
 	wsRichWindow	*m_command;
 
@@ -54,7 +52,6 @@ class wsQueryWindow : public wxSashLayoutWindow
 	void OnExecute( wxCommandEvent & event );	// Handle the 'Execute' menu option
 	void OnResultReady( wxCommandEvent & event );	// Handle an incoming result set
 	void OnSpawnDebugger( wxCommandEvent & event );	// Handle an incoming debugger message
-	void OnSashDrag( wxSashEvent & event );		// Recompute window layout
 
     DECLARE_EVENT_TABLE()
 

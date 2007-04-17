@@ -59,13 +59,12 @@ private:
 
 };
 
-class wsCodeWindow : public wxSashLayoutWindow  
+class wsCodeWindow : public wxWindow  
 {
     DECLARE_CLASS( wsCodeWindow )
 
  public:
 	wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProps );
-	virtual ~wsCodeWindow();
 
 	void startLocalDebugging();	 	 // Start debugging 
 	void resumeLocalDebugging();		 // Start debugging, already attached to the proxy
@@ -92,7 +91,6 @@ class wsCodeWindow : public wxSashLayoutWindow
 	wsVarWindow		* getPkgVarWindow( bool create )  { return( m_tabWindow->getPkgVarWindow( create )); } 
 	wsResultGrid    * getResultWindow()               { return( m_tabWindow->getResultWindow()); }
 
-	void	OnSashDrag( wxSashEvent & event );		// Handle geometry changes
 	void	OnActivate( wxActivateEvent & event );		// Display/Remove debugger toolbar
 	void	OnMarginClick( wxStyledTextEvent & event );	// Set/clear breakpoint on margin click
 	void	OnSelectFrame( wxCommandEvent & event );	// Select a different stack frame
@@ -135,8 +133,6 @@ class wsCodeWindow : public wxSashLayoutWindow
 	wsRichWindow	*m_view;	// Window that displays function source code
 	wsStackWindow	*m_stackWindow;	// Stack Window
 	wsTabWindow	*m_tabWindow;	// Tab Window
-	wxSashLayoutWindow  *m_layout;
-	wxSashLayoutWindow  *m_viewHolder;
 
 	typedef enum
 	{

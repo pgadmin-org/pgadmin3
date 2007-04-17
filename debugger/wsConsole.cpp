@@ -35,26 +35,13 @@ END_EVENT_TABLE()
 //
 //  A wsConsole object is typically a child of the wsMainFrame object
 
-wsConsole::wsConsole( wxDocParentFrame * parent, const wxString & title, const wxPoint & pos, const wxSize & size, wsPgConn * conn )
-	: wxTextCtrl( parent , wxID_ANY , title,
-			wxDefaultPosition, wxDefaultSize, wxFRAME_NO_TASKBAR ),
-	m_codeWindow( NULL ),
+wsConsole::wsConsole( wsPgConn * conn )
+  : m_codeWindow( NULL ),
 	m_queryWindow( NULL ),
 	m_conn( conn )
 {
-
-	// Define the icon for this window
-#if 0
-	SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
-#endif
 	// Create a query window - we'll create a debug window later if required
-
 	m_queryWindow = new wsQueryWindow( glMainFrame /* this */  , -1, m_conn );
-#if 0
-	m_queryWindow->Show( true );
-	m_queryWindow->SetFocus();
-#endif
-
 }
   
 ////////////////////////////////////////////////////////////////////////////////

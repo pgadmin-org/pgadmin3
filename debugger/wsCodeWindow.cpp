@@ -57,11 +57,11 @@
 //  we tell wsPgThread to send us a RESULT_ID_GET_SOURCE event when the query 
 //	completes and we handle that event in a function named ResultSource.
 
-IMPLEMENT_CLASS( wsCodeWindow,  wxSashLayoutWindow )
+IMPLEMENT_CLASS( wsCodeWindow,  wxWindow )
 
 #define MARKERINDEX_TO_MARKERMASK( MI ) ( 1 << MI )
 
-BEGIN_EVENT_TABLE( wsCodeWindow , wxSashLayoutWindow )
+BEGIN_EVENT_TABLE( wsCodeWindow , wxWindow )
   EVT_MENU( MENU_ID_SET_BREAK,	 	wsCodeWindow::OnCommand )
   EVT_MENU( MENU_ID_CLEAR_BREAK, 	wsCodeWindow::OnCommand )
   EVT_MENU( MENU_ID_CLEAR_ALL_BREAK,	wsCodeWindow::OnCommand )
@@ -80,8 +80,6 @@ BEGIN_EVENT_TABLE( wsCodeWindow , wxSashLayoutWindow )
   EVT_CLOSE( wsCodeWindow::OnClose)
 
   EVT_BUTTON( MENU_ID_NOTICE_RECEIVED, wsCodeWindow::OnNoticeReceived )
-
-  EVT_SASH_DRAGGED_RANGE( WINDOW_ID_STACK, WINDOW_ID_BREAKPOINTS, wsCodeWindow::OnSashDrag )
 
   EVT_STC_MARGINCLICK( wxID_ANY,     wsCodeWindow::OnMarginClick )
   EVT_STC_ROMODIFYATTEMPT( wxID_ANY, wsCodeWindow::OnWriteAttempt )
@@ -117,7 +115,7 @@ END_EVENT_TABLE()
 wxString wsCodeWindow::m_commandAttach( wxT( "SELECT * FROM pldbg_attach_to_port(%s)" ));
 wxString wsCodeWindow::m_commandWaitForBreakpoint( wxT( "SELECT * FROM pldbg_wait_for_breakpoint(%s)" ));
 wxString wsCodeWindow::m_commandGetVars( wxT( "SELECT name, varClass, value, pg_catalog.format_type( dtype, NULL ) as dtype, isconst FROM pldbg_get_variables(%s)" ));
-wxString wsCodeWindow::m_commandGetStack( wxT( "SELECT targetName, args, linenumber FROM pldbg_get_stack(%s) ORDER BY level" ));
+wxString wsCodeWindow::m_commandGetStack( wxT( "SELECT targetName, args, (linenumber + 1) AS linenumber FROM pldbg_get_stack(%s) ORDER BY level" ));
 wxString wsCodeWindow::m_commandGetBreakpoints( wxT( "SELECT * FROM pldbg_get_breakpoints(%s)" ));
 wxString wsCodeWindow::m_commandGetSource( wxT( "SELECT %s AS pkg, %s AS func, pldbg_get_source(%s,%s,%s) AS source" ));
 wxString wsCodeWindow::m_commandStepOver( wxT( "SELECT * FROM pldbg_step_over(%s)" ));
@@ -149,7 +147,7 @@ wxString wsCodeWindow::m_commandWaitForTarget( wxT( "SELECT * FROM pldbg_wait_fo
 //  If m_currentLineNumber is -1, there is no current line.  
 
 wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProps )
-	:wxSashLayoutWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN),
+	:wxWindow(parent, id, wxDefaultPosition, wxDefaultSize),
 	  m_parent( parent ),
 	  m_toolsEnabled( true ),
 	  m_currentLineNumber( -1 ),
@@ -167,52 +165,9 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 	  m_timer( this ),
 	  m_targetAborted( false )
 {
-
-#if 0
-	SetTitle( wxT( "" ));
-
-	// Define the icon for this window
-	SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
-#endif
-	// A wsCodeWindow is the user interface (the client side) of the PL debugger. We
-	// display the source code for a PL function (the function being debugged) in a 
-	// wsRichWindow (m_view) so we'll create that window now.
-
-	// Create the leftmost window - a tree control (currently unused)
-
-	m_layout = (wxSashLayoutWindow*) this;
-
-	m_stackWindow = new wsStackWindow( parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
-
-	int	width;
-	int	height;
-	
-	glApp->getSettings().Read( wxT( "StackWindow/width" ), &width, 120 );
-
-	m_stackWindow->SetDefaultSize( wxSize( width, 1000 ));
-	m_stackWindow->SetOrientation( wxLAYOUT_VERTICAL );
-	m_stackWindow->SetAlignment( wxLAYOUT_RIGHT );
-	m_stackWindow->SetSashVisible( wxSASH_LEFT, true );
-	m_stackWindow->SetBackgroundColour( wxColor( 128, 128, 128 ));
-
-	// Create the bottom window (Notebook)
+	m_stackWindow = new wsStackWindow( parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, 0 );
 	m_tabWindow = new wsTabWindow( parent , WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
-    
-	glApp->getSettings().Read( wxT( "TabWindow/height" ), &height, 180 );
-
-	m_tabWindow->SetDefaultSize( wxSize( 1000, height ));
-	m_tabWindow->SetOrientation( wxLAYOUT_HORIZONTAL );
-	m_tabWindow->SetAlignment( wxLAYOUT_BOTTOM );
-	m_tabWindow->SetSashVisible( wxSASH_TOP, true );
-	m_tabWindow->SetBackgroundColour( wxColor( 128,128,128 ));
-
-	m_viewHolder = new wxSashLayoutWindow( m_layout, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
-
-	m_viewHolder->SetDefaultSize( wxSize( 1000, 180 ) );
-	m_viewHolder->SetOrientation( wxLAYOUT_VERTICAL );
-	m_viewHolder->SetAlignment( wxLAYOUT_LEFT );
-
-	m_view = new wsRichWindow( m_viewHolder, -1);
+	m_view = new wsRichWindow( parent, -1);
 	m_view->m_parentWantsKeys = true;						// Send keystrokes to this object
 
 	// Set up the markers that we use do indicate the current line and a breakpoint
@@ -224,13 +179,7 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 	m_view->StyleSetFont(wxSTC_STYLE_DEFAULT, numfont);
 	m_view->SetMarginType(1, wxSTC_MARGIN_NUMBER); 
 	m_view->SetMarginWidth( 1, 30 );
-	// m_view->SetMarginWidth( 1, 16 );
-/*
-	wxFont	font(10, wxDEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
-	m_view->StyleSetFont(0, font);
-	m_view->StyleSetFont(1, font);
-	m_view->StyleSetFont(2, font);
-*/
+
 	// Make sure that the text control tells us when the user clicks in the left margin
 	m_view->SetMarginSensitive( 0, true );
 	m_view->SetMarginSensitive( 1, true );
@@ -238,9 +187,6 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 
 	// Make sure the user can't edit the source code for this function...
 	m_view->SetReadOnly( true );
-
-	wxLayoutAlgorithm	layout;
-	layout.LayoutWindow( m_layout, m_viewHolder );
 
 	// Now setup the accelerators (function key mappings)
 	wxAcceleratorEntry entries[8];
@@ -255,30 +201,25 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 	entries[7].Set( wxACCEL_NORMAL, WXK_F9, MENU_ID_RESTART );
 
 	glMainFrame->SetAcceleratorTable( wxAcceleratorTable( 8, entries ));
-
-#if 0
-	SetTitle( _( "Debugger... connecting" ));
-#endif
 	
 	// We create a wsCodeWindow when a wsPgThread intercepts a PLDBGBREAK NOTICE
 	// generated by the PostgreSQL server.   The NOTICE contains a TCP port number
 	// and we connect to that port here.
-	glMainFrame->manager.AddPane(m_layout, wxAuiPaneInfo().Name(wxT("sourcePane")).Caption(_("sourcePane")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
-	glMainFrame->manager.AddPane(m_stackWindow, wxAuiPaneInfo().Name(wxT("stackPane")).Caption(_("stackWindow")).Right().MinSize(wxSize(100,100)).BestSize(wxSize(250,200)));
-	glMainFrame->manager.AddPane(m_tabWindow, wxAuiPaneInfo().Name(wxT("outputPane")).Caption(_("tabWindow")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
+	glMainFrame->manager.AddPane(m_view, wxAuiPaneInfo().Name(wxT("sourcePane")).Caption(_("Source pane")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
+	glMainFrame->manager.AddPane(m_stackWindow, wxAuiPaneInfo().Name(wxT("stackPane")).Caption(_("Stack pane")).Right().MinSize(wxSize(100,100)).BestSize(wxSize(250,200)));
+	glMainFrame->manager.AddPane(m_tabWindow, wxAuiPaneInfo().Name(wxT("outputPane")).Caption(_("Output pane")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
 
     // Now (re)load the layout
     wxString perspective;
     glApp->getSettings().Read(wxT("Debugger/wsMainFrame/Perspective-") + glMainFrame->VerFromRev(WSMAINFRAME_PERPSECTIVE_VER), &perspective, WSMAINFRAME_DEFAULT_PERSPECTIVE);
     glMainFrame->manager.LoadPerspective(perspective, true);
+
     // And reset the captions
-	glMainFrame->manager.GetPane(wxT("sourcePane")).Caption(_("sourcePane"));
-	glMainFrame->manager.GetPane(wxT("stackPane")).Caption(_("stackPane"));
-	glMainFrame->manager.GetPane(wxT("outputPane")).Caption(_("outputPane"));
+	glMainFrame->manager.GetPane(wxT("sourcePane")).Caption(_("Source pane"));
+	glMainFrame->manager.GetPane(wxT("stackPane")).Caption(_("Stack pane"));
+	glMainFrame->manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
 
 	glMainFrame->manager.Update();
-
-	glMainFrame->Refresh();
 
 	// The wsDbgConn constructor connects to the given host+port and
 	// and sends events to us whenever a string arrives from the 
@@ -301,39 +242,6 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 	enableTools();
 	wxActivateEvent   fakeActivate( 0, true );
 	OnActivate( fakeActivate );
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// wsCodeWindow destructor
-//
-//	Shuts down a debugger session.  At the moment, we just record window 
-//	geometries and go home.
-
-wsCodeWindow::~wsCodeWindow()
-{
-	int	height;
-	int width;
-
-	// Save the width of the stack window...
-
-	m_stackWindow->GetClientSize( &width, &height );
-	glApp->getSettings().Write( wxT( "StackWindow/width" ), width );
-
-	// And the height of the tab window...
-
-	m_tabWindow->GetClientSize( &width, &height );
-	glApp->getSettings().Write( wxT( "TabWindow/height" ), height );
-
-	glApp->getSettings().Flush();
-
-	// NOTE: you may be tempted to delete m_dbgConn here, but don't do it.
-	//		 m_dbgConn has an associated thread and that thread my be 
-	//		 waiting for the server (for example, that thread may be waiting 
-	//		 for a call to pldbg_continue()).  We don't want to delete the
-	//		 data structures that that thread requires so we'll just leave
-	//		 it alone for now.
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -403,8 +311,6 @@ void wsCodeWindow::OnActivate( wxActivateEvent & event )
 	if( m_toolsEnabled == FALSE )
 		activateDebug = FALSE;
 
-	glMainFrame->manager.GetPane(wxT("Toolbar")).Caption(_("Toolbar"));
-
 	wxToolBar * t = glMainFrame->m_toolBar;
 
 	// We may find that our toolbar has disappeared during application shutdown -
@@ -434,8 +340,6 @@ void wsCodeWindow::OnActivate( wxActivateEvent & event )
 	t->EnableTool( MENU_ID_EXECUTE,    ! activateDebug );
 	t->EnableTool( wxID_CUT,   		   ! activateDebug );
 	t->EnableTool( wxID_PASTE, 		   ! activateDebug );		
-
-
 
 #if INCLUDE_WATCHPOINTS
 	t->EnableTool( MENU_ID_SET_WATCH,   activateDebug );
@@ -535,9 +439,7 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 			// Change our focus
 			m_focusPackageOid = result.getString( wxT( "pkg" ));
 			m_focusFuncOid    = result.getString( wxT( "func" ));
-#if 0
-			SetTitle( result.getString( _( "targetname" )));
-#endif
+
 			// The result set contains one tuple: 
 			//	packageOID, functionOID, linenumber
 			glApp->getStatusBar()->SetStatusText( wxString::Format( _( "Paused at line %s" ), result.getString( wxT( "linenumber" )).c_str()), 1 );	
@@ -549,6 +451,7 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 			int current_line = atoi(result.getString( wxT( "linenumber" )).ToAscii());
 			if ( current_line < 1) 
 				current_line = 1;
+            m_currentLineNumber = current_line;
 
 			m_view->SetAnchor( m_view->PositionFromLine(current_line -1 ));
 			m_view->SetCurrentPos( m_view->PositionFromLine( current_line -1 ));
@@ -572,9 +475,7 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 
 				glApp->getStatusBar()->SetStatusText( _( "Waiting for a target" ), 1 );
 				glApp->getStatusBar()->SetStatusText( wxT( "" ), 2 );
-#if 0
-				SetTitle( _( "Debugger... waiting for target" ));
-#endif
+
 				launchWaitingDialog();
 			}
 		}
@@ -585,9 +486,7 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 void wsCodeWindow::launchWaitingDialog()
 {
 	glApp->getStatusBar()->SetStatusText( wxString::Format( _( "Waiting for another session to invoke %s" ), m_targetName.c_str()), 1 );
-#if 0
-	SetTitle( wxString::Format( _( "Debugger...waiting for %s" ), m_targetName.c_str()));
-#endif
+
 	// NOTE: the waiting-dialog takes forever to appear running a remote X session so you can disable it by defining the following env. variable
 	if( getenv( "SUPPRESS_WAIT_DIALOG" ))
 		m_progressBar = NULL;
@@ -1088,7 +987,7 @@ void wsCodeWindow::displaySource( const wxString & packageOID, const wxString & 
 		m_displayedFuncOid 	  = funcOID;
 		m_displayedPackageOid = packageOID;
 
-		wsCodeCache & codeCache = m_sourceCodeMap[funcOID];
+		wsCodeCache &codeCache = m_sourceCodeMap[funcOID];
 
 	    // Now erase any old code and write out the new listing
 		m_view->SetReadOnly( false );
@@ -1108,7 +1007,7 @@ void wsCodeWindow::displaySource( const wxString & packageOID, const wxString & 
 		m_view->MarkerDelete( lineNo, MARKER_CURRENT_BG );
 	}
 
-	/* Adjustment of the next position */
+	// Adjustment of the next position
 	if ( current_line > 1 ) 
 		current_line--;
 
@@ -1129,11 +1028,11 @@ void wsCodeWindow::displaySource( const wxString & packageOID, const wxString & 
 	// Update the next lazy part of the user interface (the variable list)
 	m_updateVars = TRUE;
 
-	/* Probabry, necessary to still adjust the event. * *
-	   TimerWait can't be picked up when forcibly generated here...<sigh>..
+	// Probabry, necessary to still adjust the event.
+	//   TimerWait can't be picked up when forcibly generated here...<sigh>..
 	wxCommandEvent	fakeCommandEvent( 0, true );
 	ResultBreakpoint( fakeCommandEvent );
-	*/
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1266,32 +1165,6 @@ void wsCodeWindow::OnWriteAttempt( wxStyledTextEvent & event )
 #if INCLUDE_FUNCTION_EDITOR
 	wsFuncDoc::OpenDoc( m_view->GetText(), GetTitle() + wxT( "*" ), m_displayedFuncOid, m_view->GetCurrentPos());
 #endif
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// OnSashDrag()
-//
-//	wxWidgets calls this member function when the user drags the sash that 
-//  separates the tree window from the other windows
-
-void wsCodeWindow::OnSashDrag( wxSashEvent & event )
-{
-	if( event.GetDragStatus() == wxSASH_STATUS_OUT_OF_RANGE )
-		return;
-
-	switch (event.GetId())
-	{
-		case WINDOW_ID_STACK:
-			m_stackWindow->SetDefaultSize( wxSize( event.GetDragRect().width, 10 ));
-			break;
-
-		case WINDOW_ID_TABS:
-			m_tabWindow->SetDefaultSize( wxSize( 60, event.GetDragRect().height ));
-			break;
-	}
-
-	wxLayoutAlgorithm	layout;
-	layout.LayoutWindow( m_layout, m_viewHolder );
 }
 
 void wsCodeWindow::OnNoticeReceived( wxCommandEvent & event )
