@@ -9,6 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include "debugger.h"
 #include "wsResultGrid.h"
 
 IMPLEMENT_CLASS( wsResultGrid, wxGrid )
@@ -22,6 +23,8 @@ IMPLEMENT_CLASS( wsResultGrid, wxGrid )
 wsResultGrid::wsResultGrid( wxWindow * parent, wxWindowID id )
 	: wxGrid( parent, id )
 {
+    wxWindowBase::SetFont(glApp->GetSystemFont());
+
 	CreateGrid( 0, 0 );
 }
 

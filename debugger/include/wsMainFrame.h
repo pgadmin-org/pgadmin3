@@ -70,6 +70,7 @@ class wsMainFrame : public wxDocParentFrame
 
 	wxMenuBar	*m_menuBar;	// Menu bar
 	wxToolBar	*m_toolBar;	// Frames' toolbar
+	wxMenu		*m_view_menu; // View menu (can be modified by wxCodeWindow)
 
     wxAuiManager manager;
 
@@ -80,7 +81,6 @@ class wsMainFrame : public wxDocParentFrame
 	wsCodeWindow	*m_standaloneDebugger;	// Standalone debugger window
 	wsDirectDbg	*m_standaloneDirectDbg;	// Standalone direct debugger
 	wxStatusBar	*m_statusBar;	// Frame's status bar
-	wxMenu		*m_view_menu;
 
 	wxMenuBar	*setupMenuBar( void );
 	wxToolBar	*setupToolBar( void );

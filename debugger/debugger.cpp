@@ -89,6 +89,7 @@ bool wsApp::OnInit( )
 
 	initializeLocale( argv[0] );
 
+    // Get the fonts from pgAdmin's settings
 	wxString fontName;
 	m_settings->Read(wxT("Font"), &fontName, wxEmptyString);
 
@@ -96,6 +97,19 @@ bool wsApp::OnInit( )
 		systemFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
 	else
 		systemFont = wxFont(fontName);
+
+    glApp->getSettings().Read(wxT("frmQuery/Font"), &fontName, wxEmptyString);
+
+    if (fontName.IsEmpty())
+    {
+#ifdef __WXMSW__
+        sqlFont = wxFont(9, wxTELETYPE, wxNORMAL, wxNORMAL);
+#else
+        sqlFont = wxFont(12, wxTELETYPE, wxNORMAL, wxNORMAL);
+#endif
+    }
+    else
+    	sqlFont = wxFont(fontName);
 
 	// Disable wxWidgets logging unless ENABLE_LOGGING is defined
 
@@ -225,8 +239,7 @@ void wsApp::handleCmdLine( void )
 					exit( 0 );
 				}
 
-				/* only values input dialog.
-				   at the revives by displaying the code. */
+				// Hide the main debugger window until we have some parameters
 				glMainFrame->Show( false );
 				directDebugger->startDebugging();
 			}

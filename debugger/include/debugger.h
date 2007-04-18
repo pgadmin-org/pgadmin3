@@ -40,7 +40,8 @@ class wsApp : public wxApp
 	wsConnProp   &getConnProp() { return( m_connProp ); }	// Returns command-line connection properties
 	wxConfig     &getSettings() { return( *m_settings ); }	// Returns settings/configuration object
 	wxStatusBar  *getStatusBar();				// Returns application-wide status bar
-	wxFont		GetSystemFont() { return( systemFont) ; }
+	wxFont		 GetSystemFont() { return( systemFont) ; }
+	wxFont		 GetSqlFont() { return( sqlFont) ; }
 
   private:   
 
@@ -50,18 +51,10 @@ class wsApp : public wxApp
 	wxConfig	*m_settings;	// Setting/configuration manager
 	wsConnProp	m_connProp;	// Connection properties (from command-line)
 
-	wxFont systemFont;
+	wxFont systemFont, sqlFont;
 
 	void handleCmdLine( void );	// Process command-line arguments
 	void initializeLocale( wxChar * argv0 );	// Initialize locale and load language catalog
-};
-
-enum
-{
-    MNU_TOOLBAR = 10001,
-    MNU_STACKPANE,
-    MNU_OUTPUTPANE,
-    MNU_DEFAULTVIEW
 };
 
 extern wsApp *glApp;

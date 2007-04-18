@@ -66,10 +66,10 @@ BEGIN_EVENT_TABLE( wsMainFrame, wxDocParentFrame  )
     EVT_TOOL( wxID_UNDO,        wsMainFrame::OnEditCommand)
     EVT_TOOL( wxID_REDO,        wsMainFrame::OnEditCommand)
 
-    EVT_MENU(MNU_TOOLBAR,       wsMainFrame::OnToggleToolBar)
-    EVT_MENU(MNU_STACKPANE,     wsMainFrame::OnToggleStackPane)
-    EVT_MENU(MNU_OUTPUTPANE,    wsMainFrame::OnToggleOutputPane)
-    EVT_MENU(MNU_DEFAULTVIEW,   wsMainFrame::OnDefaultView)
+    EVT_MENU(MENU_ID_VIEW_TOOLBAR,       wsMainFrame::OnToggleToolBar)
+    EVT_MENU(MENU_ID_VIEW_STACKPANE,     wsMainFrame::OnToggleStackPane)
+    EVT_MENU(MENU_ID_VIEW_OUTPUTPANE,    wsMainFrame::OnToggleOutputPane)
+    EVT_MENU(MENU_ID_VIEW_DEFAULTVIEW,   wsMainFrame::OnDefaultView)
     EVT_AUI_PANE_CLOSE(         wsMainFrame::OnAuiUpdate)
 END_EVENT_TABLE()
 
@@ -91,6 +91,7 @@ wsMainFrame::wsMainFrame( wxDocManager* docManager, const wxString & title, cons
 	  m_toolBar( NULL ),
 	  m_statusBar( NULL )
 {
+    wxWindowBase::SetFont(glApp->GetSystemFont());
 
 	manager.SetManagedWindow(this);
 	manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
@@ -116,7 +117,7 @@ wsMainFrame::wsMainFrame( wxDocManager* docManager, const wxString & title, cons
     manager.GetPane(wxT("toolBar")).Caption(_("Toolbar"));
 
     // Sync the View menu options
-    m_view_menu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+    m_view_menu->Check(MENU_ID_VIEW_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
 
 	manager.Update();
 
@@ -345,11 +346,11 @@ wxMenuBar * wsMainFrame::setupMenuBar( void )
 	m_menuBar->Append( fileMenu, _( "&File" ));
 
 	m_view_menu = new wxMenu;
-    m_view_menu->Append(MNU_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
-    m_view_menu->Append(MNU_STACKPANE, _("&Stack pane"),   _("Show or hide the stack pane."), wxITEM_CHECK);
-    m_view_menu->Append(MNU_TOOLBAR, _("&Tool bar"),       _("Show or hide the tool bar."), wxITEM_CHECK);
+    m_view_menu->Append(MENU_ID_VIEW_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
+    m_view_menu->Append(MENU_ID_VIEW_STACKPANE, _("&Stack pane"),   _("Show or hide the stack pane."), wxITEM_CHECK);
+    m_view_menu->Append(MENU_ID_VIEW_TOOLBAR, _("&Tool bar"),       _("Show or hide the tool bar."), wxITEM_CHECK);
     m_view_menu->AppendSeparator();
-    m_view_menu->Append(MNU_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
+    m_view_menu->Append(MENU_ID_VIEW_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
 
 	m_menuBar->Append(m_view_menu, _("&View"));
 
@@ -425,7 +426,7 @@ void wsMainFrame::OnEditCommand( wxCommandEvent & event )
 //	Turn the tool bar on or off
 void wsMainFrame::OnToggleToolBar(wxCommandEvent& event)
 {
-    if (m_view_menu->IsChecked(MNU_TOOLBAR))
+    if (m_view_menu->IsChecked(MENU_ID_VIEW_TOOLBAR))
         manager.GetPane(wxT("toolBar")).Show(true);
     else
         manager.GetPane(wxT("toolBar")).Show(false);
@@ -438,7 +439,7 @@ void wsMainFrame::OnToggleToolBar(wxCommandEvent& event)
 //	Turn the tool bar on or off
 void wsMainFrame::OnToggleStackPane(wxCommandEvent& event)
 {
-    if (m_view_menu->IsChecked(MNU_STACKPANE))
+    if (m_view_menu->IsChecked(MENU_ID_VIEW_STACKPANE))
         manager.GetPane(wxT("stackPane")).Show(true);
     else
         manager.GetPane(wxT("stackPane")).Show(false);
@@ -451,7 +452,7 @@ void wsMainFrame::OnToggleStackPane(wxCommandEvent& event)
 //	Turn the tool bar on or off
 void wsMainFrame::OnToggleOutputPane(wxCommandEvent& event)
 {
-    if (m_view_menu->IsChecked(MNU_OUTPUTPANE))
+    if (m_view_menu->IsChecked(MENU_ID_VIEW_OUTPUTPANE))
         manager.GetPane(wxT("outputPane")).Show(true);
     else
         manager.GetPane(wxT("outputPane")).Show(false);
@@ -466,15 +467,15 @@ void wsMainFrame::OnAuiUpdate(wxAuiManagerEvent& event)
 {
     if(event.pane->name == wxT("toolBar"))
     {
-        m_view_menu->Check(MNU_TOOLBAR, false);
+        m_view_menu->Check(MENU_ID_VIEW_TOOLBAR, false);
     }
     else if(event.pane->name == wxT("stackPane"))
     {
-        m_view_menu->Check(MNU_STACKPANE, false);
+        m_view_menu->Check(MENU_ID_VIEW_STACKPANE, false);
     }
     else if(event.pane->name == wxT("outputPane"))
     {
-        m_view_menu->Check(MNU_OUTPUTPANE, false);
+        m_view_menu->Check(MENU_ID_VIEW_OUTPUTPANE, false);
     }
     event.Skip();
 }
@@ -496,7 +497,7 @@ void wsMainFrame::OnDefaultView(wxCommandEvent& event)
     manager.Update();
 
     // Sync the View menu options
-    m_view_menu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
-    m_view_menu->Check(MNU_STACKPANE, manager.GetPane(wxT("stackPane")).IsShown());
-    m_view_menu->Check(MNU_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
+    m_view_menu->Check(MENU_ID_VIEW_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+    m_view_menu->Check(MENU_ID_VIEW_STACKPANE, manager.GetPane(wxT("stackPane")).IsShown());
+    m_view_menu->Check(MENU_ID_VIEW_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
 }

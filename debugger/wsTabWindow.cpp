@@ -32,6 +32,7 @@ wsTabWindow::wsTabWindow( wxWindow * parent, wxWindowID id, const wxPoint & pos,
 	m_paramWindow( 0 ),
 	m_messageWindow( 0 )
 {
+    wxWindowBase::SetFont(glApp->GetSystemFont());
 	m_tabMap   = new wsTabHash();
 }
 

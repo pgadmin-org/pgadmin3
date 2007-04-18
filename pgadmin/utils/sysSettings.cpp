@@ -231,9 +231,9 @@ bool sysSettings::GetDisplayOption(const wxString &objtype)
 	else if (objtype == _("pgAgent jobs")) 
 		engtype = wxT("pgAgent jobs");
 	else if (objtype == _("Groups/group roles")) 
-		engtype = wxT("Groups/login roles");
+		engtype = wxT("Groups-login roles");
 	else if (objtype == _("Users/login roles")) 
-		engtype = wxT("Users/login roles");
+		engtype = wxT("Users-login roles");
 	else if (objtype == _("Catalogs")) 
 		engtype = wxT("Catalogs");
 	else if (objtype == _("Casts")) 
@@ -316,8 +316,8 @@ void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
 	if (objtype == _("Databases")) engtype = wxT("Databases");
 	else if (objtype == _("Tablespaces")) engtype = wxT("Tablespaces");
 	else if (objtype == _("pgAgent jobs")) engtype = wxT("pgAgent jobs");
-	else if (objtype == _("Groups/group roles")) engtype = wxT("Groups/login roles");
-	else if (objtype == _("Users/login roles")) engtype = wxT("Users/login roles");
+	else if (objtype == _("Groups/group roles")) engtype = wxT("Groups-login roles");
+	else if (objtype == _("Users/login roles")) engtype = wxT("Users-login roles");
 	else if (objtype == _("Catalogs")) engtype = wxT("Catalogs");
 	else if (objtype == _("Casts")) engtype = wxT("Casts");
 	else if (objtype == _("Languages")) engtype = wxT("Languages");

@@ -31,11 +31,8 @@ wsConnPropDlg::wsConnPropDlg( wxWindow * parent, wxWindowID id )
     
 	wxXmlResource::Get()->InitAllHandlers();
     
-	wxString fontName;
-    
-	if( glApp->getSettings().Read( wxT( "Font" ), &fontName ))
-		wxWindowBase::SetFont( wxFont( fontName ));
-    
+    wxWindowBase::SetFont(glApp->GetSystemFont());
+
 	wxXmlResource::Get()->Load( wxT( "resources/wsconnprop.xrc" ));
 	wxXmlResource::Get()->LoadDialog( this, parent, wxT( "wsConnPropDlg" ));
     

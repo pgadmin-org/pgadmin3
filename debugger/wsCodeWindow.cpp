@@ -165,6 +165,8 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 	  m_timer( this ),
 	  m_targetAborted( false )
 {
+    wxWindowBase::SetFont(glApp->GetSystemFont());
+
 	m_stackWindow = new wsStackWindow( parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, 0 );
 	m_tabWindow = new wsTabWindow( parent , WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
 	m_view = new wsRichWindow( parent, -1);
@@ -218,6 +220,10 @@ wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsCo
 	glMainFrame->manager.GetPane(wxT("sourcePane")).Caption(_("Source pane"));
 	glMainFrame->manager.GetPane(wxT("stackPane")).Caption(_("Stack pane"));
 	glMainFrame->manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
+
+    // Sync the View menu options
+    glMainFrame->m_view_menu->Check(MENU_ID_VIEW_STACKPANE, glMainFrame->manager.GetPane(wxT("stackPane")).IsShown());
+    glMainFrame->m_view_menu->Check(MENU_ID_VIEW_OUTPUTPANE, glMainFrame->manager.GetPane(wxT("outputPane")).IsShown());
 
 	glMainFrame->manager.Update();
 

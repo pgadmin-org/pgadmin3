@@ -70,6 +70,8 @@ wsDirectDbg::wsDirectDbg( wxDocParentFrame * parent, wxWindowID id, const wsConn
 	m_conn( NULL ),
 	m_codeWindow( NULL )
 {
+    wxWindowBase::SetFont(glApp->GetSystemFont());
+
 	setupParamWindow();
 }
 

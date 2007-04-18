@@ -40,6 +40,7 @@ END_EVENT_TABLE()
 wsQueryWindow::wsQueryWindow( wxWindow * parent, wxWindowID id, wsPgConn * conn )
 	: wxWindow( parent , id ), m_conn( conn )
 {
+    wxWindowBase::SetFont(glApp->GetSystemFont());
 
 	m_resultGrid    = new wsResultGrid( glMainFrame, wxID_ANY );
 	m_command       = new wsRichWindow( glMainFrame, wxID_ANY );

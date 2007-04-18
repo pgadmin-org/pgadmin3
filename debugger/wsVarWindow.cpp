@@ -26,6 +26,8 @@ wsVarWindow::wsVarWindow( wxWindow * parent, wxWindowID id )
 	  m_cells( NULL ),
 	  m_nameFont( GetDefaultCellFont())
 {
+    wxWindowBase::SetFont(glApp->GetSystemFont());
+
 	// Create the grid control
 	CreateGrid( 0, 0 );
 	SetRowLabelSize( 0 );	// Turn off the row labels
@@ -35,19 +37,6 @@ wsVarWindow::wsVarWindow( wxWindow * parent, wxWindowID id )
 	SetColLabelValue( COL_NAME,  _( "Name" ));
 	SetColLabelValue( COL_TYPE,  _( "Type" ));
 	SetColLabelValue( COL_VALUE, _( "Value" ));
-
-	// Choose a font
-	wxFont sFont(glApp->GetSystemFont());
-
-	if( sFont.Ok() )
-	{
-		SetDefaultCellFont( sFont );
-	}
-	else
-	{
-		wxFont	font( 10, wxTELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
-		SetDefaultCellFont( font );
-	}
 
 	EnableDragGridSize( true );
 

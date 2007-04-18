@@ -46,6 +46,11 @@ enum
 	WINDOW_ID_COMMAND,		// Command window
 	SOCKET_ID_DEBUG,		// Debugger Socket ID
 
+    MENU_ID_VIEW_TOOLBAR,       // View menu options
+    MENU_ID_VIEW_STACKPANE,
+    MENU_ID_VIEW_OUTPUTPANE,
+    MENU_ID_VIEW_DEFAULTVIEW,
+
 	RESULT_ID_RESULT_SET_READY,	// Generic - result set received from server
 
 	RESULT_ID_ATTACH_TO_PORT,	// Debugger - attach to port completed
@@ -67,6 +72,10 @@ enum
 	RESULT_ID_DIRECT_TARGET_COMPLETE,	// DirectDebug - target function complete
 
 	ID_DEBUG_INITIALIZER,		// Debugger - debug package initializer? checkbox
+};
+enum
+{
+
 };
 
 

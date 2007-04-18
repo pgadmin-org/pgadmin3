@@ -20,6 +20,7 @@
 #include "wx/timer.h"
 #include "wx/settings.h"
 
+#include "debugger.h"
 #include "wsWaitingDialog.h"
 
 // ----------------------------------------------------------------------------
@@ -63,6 +64,8 @@ wsWaitingDialog::wsWaitingDialog( wxString const &title,
                   m_delay( 3 ), 
                   m_hasAbortButton( false )
 {
+    wxWindowBase::SetFont(glApp->GetSystemFont());
+
     // we may disappear at any moment, let the others know about it
     SetExtraStyle( GetExtraStyle( ) | wxWS_EX_TRANSIENT );
     m_windowStyle |= style;

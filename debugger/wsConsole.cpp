@@ -40,6 +40,8 @@ wsConsole::wsConsole( wsPgConn * conn )
 	m_queryWindow( NULL ),
 	m_conn( conn )
 {
+    wxWindowBase::SetFont(glApp->GetSystemFont());
+
 	// Create a query window - we'll create a debug window later if required
 	m_queryWindow = new wsQueryWindow( glMainFrame /* this */  , -1, m_conn );
 }
