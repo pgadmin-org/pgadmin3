@@ -32,6 +32,7 @@
 #include <wx/splitter.h>
 #include <wx/toolbar.h>
 
+#include "wsRichWindow.h"
 #include "wsConsole.h"
 #include "wsTabWindow.h"
 
@@ -61,6 +62,7 @@ class wsMainFrame : public wxFrame
 	wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint & pos, const wxSize & size );
 	virtual ~wsMainFrame();
 
+	void	OnMarginClick( wxStyledTextEvent & event );	// Set/clear breakpoint on margin click
 	bool	addConnect( const wxString &host, const wxString &database, const wxString &port, const wxString &user, const wxString &password );
 	wsDirectDbg   *addDirectDbg( const wsConnProp & connProp );		// Create a new direct-debugging window
 	wsCodeWindow  *addDebug( const wsConnProp & props );			   	// Create a new debugger window

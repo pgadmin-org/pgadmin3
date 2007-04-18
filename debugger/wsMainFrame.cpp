@@ -45,6 +45,8 @@ BEGIN_EVENT_TABLE( wsMainFrame, wxWindow  )
     EVT_CLOSE(wsMainFrame::OnClose)
     EVT_SIZE(wsMainFrame::OnSize)
 
+    EVT_STC_MARGINCLICK(wxID_ANY,        wsMainFrame::OnMarginClick)
+
     EVT_MENU(MENU_ID_VIEW_TOOLBAR,       wsMainFrame::OnToggleToolBar)
     EVT_MENU(MENU_ID_VIEW_STACKPANE,     wsMainFrame::OnToggleStackPane)
     EVT_MENU(MENU_ID_VIEW_OUTPUTPANE,    wsMainFrame::OnToggleOutputPane)
@@ -57,10 +59,6 @@ END_EVENT_TABLE()
 //
 //  wsMainFrame manages the user interface for the workstation. This class
 //  manages the toolbar, menu, status bar, and top-level windows.  
-//
-//	This class also defines event handlers for a number of high-level events
-//	(such as window sizing and layout, and creation of new windows).
-
 
 wsMainFrame::wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint & pos, const wxSize & size )
 	: wxFrame( parent, wxID_ANY, title, pos, size ),
@@ -83,8 +81,6 @@ wsMainFrame::wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint
 	m_toolBar   = setupToolBar();
 	m_statusBar = setupStatusBar();
 
-	// NOTE: We don't create the console window (that's the big window that the 
-	// user types into) until we successfully connect to a database - see addConnect().
 	manager.AddPane(m_toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(wxT("Toolbar")).ToolbarPane().Top().Row(1).Position(1).LeftDockable(false).RightDockable(false));
 
     // Now load the layout
@@ -119,6 +115,32 @@ wxString wsMainFrame::VerFromRev(const wxString &rev)
    wxString ret = rev.AfterFirst(' ');
    ret = ret.BeforeFirst(' ');
    return ret;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// OnMarginClick()
+// 
+//  This event handler is called when the user clicks in the margin to the left
+//  of a line of source code. We use the margin to display breakpoint indicators
+//  so it makes sense that if you click on an breakpoint indicator, we will clear
+//  that breakpoint.  If you click on a spot that does not contain a breakpoint
+//  indicator (but it's still in the margin), we create a new breakpoint at that
+//  line.
+
+void wsMainFrame::OnMarginClick( wxStyledTextEvent& event ) 
+{
+    if (m_standaloneDebugger)
+    {
+	    int lineNumber = m_standaloneDebugger->GetLine(event.GetPosition());
+
+	    // If we already have a breakpoint at the clickpoint, disable it, otherwise
+	    // create a new breakpoint.
+
+	    if(m_standaloneDebugger->isBreakpoint(lineNumber))
+		    m_standaloneDebugger->clearBreakpoint( lineNumber, true );
+	    else
+		    m_standaloneDebugger->setBreakpoint( lineNumber );
+    }
 }
 
 

@@ -58,8 +58,6 @@
 
 IMPLEMENT_CLASS(wsCodeWindow,  wxWindow)
 
-#define MARKERINDEX_TO_MARKERMASK( MI ) ( 1 << MI )
-
 BEGIN_EVENT_TABLE(wsCodeWindow , wxWindow)
   EVT_MENU(MENU_ID_SET_BREAK,	 	    wsCodeWindow::OnCommand)
   EVT_MENU(MENU_ID_CLEAR_BREAK, 	    wsCodeWindow::OnCommand)
@@ -73,8 +71,6 @@ BEGIN_EVENT_TABLE(wsCodeWindow , wxWindow)
   EVT_IDLE(wsCodeWindow::OnIdle)
 
   EVT_BUTTON(MENU_ID_NOTICE_RECEIVED,  wsCodeWindow::OnNoticeReceived)
-
-  EVT_STC_MARGINCLICK(wxID_ANY,        wsCodeWindow::OnMarginClick)
 
   EVT_LISTBOX(wxID_ANY, wsCodeWindow::OnSelectFrame)
   EVT_GRID_CELL_CHANGE(wsCodeWindow::OnVarChange)
@@ -159,15 +155,12 @@ wsCodeWindow::wsCodeWindow( wxWindow *parent, wxWindowID id, const wsConnProp & 
 	m_stackWindow = new wsStackWindow( parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, 0 );
 	m_tabWindow = new wsTabWindow( parent , WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
 	m_view = new wsRichWindow( parent, -1);
-	m_view->m_parentWantsKeys = true;						// Send keystrokes to this object
 
 	// Set up the markers that we use do indicate the current line and a breakpoint
 	m_view->MarkerDefine( MARKER_CURRENT, wxSTC_MARK_ARROW , *wxGREEN, *wxGREEN );
 	m_view->MarkerDefine( MARKER_CURRENT_BG, wxSTC_MARK_BACKGROUND, *wxGREEN, *wxGREEN );
 	m_view->MarkerDefine( MARKER_BREAKPOINT, wxSTC_MARK_CIRCLEPLUS, *wxRED, *wxRED );
 
-	wxFont	numfont(8, wxSWISS, wxNORMAL, wxNORMAL);
-	m_view->StyleSetFont(wxSTC_STYLE_DEFAULT, numfont);
 	m_view->SetMarginType(1, wxSTC_MARGIN_NUMBER); 
 	m_view->SetMarginWidth( 1, 30 );
 
@@ -1167,30 +1160,6 @@ void wsCodeWindow::clearAllBreakpoints( )
 void wsCodeWindow::stopDebugging()
 {
 	m_dbgConn->startCommand( wxString::Format( m_commandAbortTarget, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_ABORT_TARGET );
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// OnMarginClick()
-// 
-//  This event handler is called when the user clicks in the margin to the left
-//  of a line of source code. We use the margin to display breakpoint indicators
-//  so it makes sense that if you click on an breakpoint indicator, we will clear
-//  that breakpoint.  If you click on a spot that does not contain a breakpoint
-//  indicator (but it's still in the margin), we create a new breakpoint at that
-//  line.
-
-void wsCodeWindow::OnMarginClick( wxStyledTextEvent& event ) 
-{
-	int lineNumber = m_view->LineFromPosition( event.GetPosition());
-
-	// If we already have a breakpoint at the clickpoint, disable it, otherwise
-	// create a new breakpoint.
-
-	if( m_view->MarkerGet( lineNumber ) & MARKERINDEX_TO_MARKERMASK( MARKER_BREAKPOINT ))
-		clearBreakpoint( lineNumber, true );
-	else
-		setBreakpoint( lineNumber );
 }
 
 ////////////////////////////////////////////////////////////////////////////////

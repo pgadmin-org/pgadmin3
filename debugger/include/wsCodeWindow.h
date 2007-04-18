@@ -43,6 +43,8 @@ class wsResultSet;
 class wsConnProp;
 class wsWaitingDialog;
 
+#define MARKERINDEX_TO_MARKERMASK( MI ) ( 1 << MI )
+
 class wsCodeCache
 {
 public:
@@ -77,6 +79,11 @@ class wsCodeWindow : public wxWindow
 	void disableTools();			 // Disable toolbar tools
 	void enableTools();		 	 // Enable toolbar tools
 
+    int GetLine(int position) { return m_view->LineFromPosition(position); }
+    bool isBreakpoint(int lineNumber) { return (m_view->MarkerGet( lineNumber ) & MARKERINDEX_TO_MARKERMASK( MARKER_BREAKPOINT ) ? true : false); }
+	void 	clearBreakpoint( int lineNumber, bool requestUpdate );
+	void	setBreakpoint( int lineNumber );
+
 	wsBreakpointList & getBreakpointList();
 
 	WX_DECLARE_STRING_HASH_MAP( wsCodeCache, sourceHash );
@@ -92,7 +99,6 @@ class wsCodeWindow : public wxWindow
 	wsResultGrid    * getResultWindow()               { return( m_tabWindow->getResultWindow()); }
 
 	void	setTools(bool enable);		// Enable/disable debugger options
-	void	OnMarginClick( wxStyledTextEvent & event );	// Set/clear breakpoint on margin click
 	void	OnSelectFrame( wxCommandEvent & event );	// Select a different stack frame
 	void    OnVarChange( wxGridEvent & event );		// User changed a variable
 	void	OnIdle( wxIdleEvent & event );			// Idle processor
@@ -173,8 +179,6 @@ class wsCodeWindow : public wxWindow
 	void	unhilightCurrentLine();
 	void	launchWaitingDialog();
 
-	void 	clearBreakpoint( int lineNumber, bool requestUpdate );
-	void	setBreakpoint( int lineNumber );
 	void	clearAllBreakpoints();
 	void	clearBreakpointMarkers();
 	void	stopDebugging();
