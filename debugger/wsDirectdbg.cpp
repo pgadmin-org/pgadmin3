@@ -623,14 +623,6 @@ void wsDirectDbg::OnResultReady( wxCommandEvent & event )
 
 	this->Show( true );
 	this->SetFocus();
-//    this->Activate();
-    
-	// Debugging has finished so we need to hide the code window.
-	if (m_codeWindow)
-	{
-		m_codeWindow->Show( false );
-	}
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -689,8 +681,6 @@ void wsDirectDbg::OnTargetComplete( wxCommandEvent & event )
 
 	this->Show( true );
 	this->SetFocus();
-//    this->Activate();
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
