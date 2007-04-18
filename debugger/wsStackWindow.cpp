@@ -23,7 +23,7 @@ IMPLEMENT_CLASS( wsStackWindow, wxListBox )
 //  Initialize the grid control and clear it out....
 //
 
-wsStackWindow::wsStackWindow( wxWindow * parent, wxWindowID id, const wxPoint & pos, const wxSize & size, long style, const wxString & name )
+wsStackWindow::wsStackWindow( wxWindow * parent, wxWindowID id, const wxPoint & pos, const wxSize & size, long style, const wxString &name )
 	: wxListBox( parent , id, pos, size, 0, NULL, style|wxLB_HSCROLL|wxLB_NEEDED_SB )
 {
     wxWindowBase::SetFont(glApp->GetSystemFont());

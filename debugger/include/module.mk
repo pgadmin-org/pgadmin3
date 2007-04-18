@@ -19,9 +19,6 @@ debugger_SOURCES += \
 	$(srcdir)/include/wsConst.h \
 	$(srcdir)/include/wsDbresult.h \
 	$(srcdir)/include/wsDirectdbg.h \
-	$(srcdir)/include/wsDocmgr.h \
-	$(srcdir)/include/wsFuncdoc.h \
-	$(srcdir)/include/wsFuncView.h \
 	$(srcdir)/include/wsMainFrame.h \
 	$(srcdir)/include/wsMessageWindow.h \
 	$(srcdir)/include/wsPgconn.h \

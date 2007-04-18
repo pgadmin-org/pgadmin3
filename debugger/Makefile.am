@@ -19,9 +19,6 @@ debugger_SOURCES = \
 	$(srcdir)/wsConsole.cpp \
 	$(srcdir)/wsDbresult.cpp \
 	$(srcdir)/wsDirectdbg.cpp \
-	$(srcdir)/wsDocmgr.cpp \
-	$(srcdir)/wsFuncdoc.cpp \
-	$(srcdir)/wsFuncView.cpp \
 	$(srcdir)/wsMainFrame.cpp \
 	$(srcdir)/wsMessageWindow.cpp \
 	$(srcdir)/wsPgconn.cpp \

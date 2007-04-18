@@ -28,8 +28,7 @@
 
 #ifndef WSCODEWINDOWH
 #define WSCODEWINDOWH
-
-#include <wx/docview.h>		
+	
 #include <wx/toolbar.h>
 #include <wx/timer.h>
 
@@ -48,14 +47,16 @@ class wsCodeCache
 {
 public:
 	wsCodeCache() {}
-	wsCodeCache( const wxString & packageOID, const wxString & funcOID, const wxString & source );
+	wsCodeCache(const wxString &packageOID, const wxString &funcOID, const wxString &source, const wxString &signature);
 
-	const wxString & getSource()   { return( m_sourceCode ); }
+	const wxString &getSource()   { return( m_sourceCode ); }
+	const wxString &getSignature(){ return( m_signature ); }
 
 private:
 	wxString	m_packageOID;	// Package OID
 	wxString	m_funcOID;	// Function OID
 	wxString	m_sourceCode;	// Source code for this function
+    wxString    m_signature; // Function sig
 
 };
 
@@ -64,7 +65,7 @@ class wsCodeWindow : public wxWindow
     DECLARE_CLASS( wsCodeWindow )
 
  public:
-	wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProps );
+	wsCodeWindow( wxWindow *parent, wxWindowID id, const wsConnProp & connProps );
 
 	void startLocalDebugging();	 	 // Start debugging 
 	void resumeLocalDebugging();		 // Start debugging, already attached to the proxy
@@ -127,7 +128,7 @@ class wsCodeWindow : public wxWindow
 	bool		m_toolsEnabled;	// Should toolbar buttons be enabled?
 	wxString	m_debugPort;	// Port at which debugger server is listening
 
-	wxDocParentFrame 	*m_parent;		// Parent window
+	wxWindow 	*m_parent;		// Parent window
 	int	m_currentLineNumber;	// Current line number
 
 	wsRichWindow	*m_view;	// Window that displays function source code
@@ -167,10 +168,10 @@ class wsCodeWindow : public wxWindow
 	int	m_progress;			// Simple counter for advancing m_progressBar
 	wxTimer	m_timer;
 	bool	m_targetAborted;		// Have we aborted the target? (true) or are we waiting for a breakpoint? (false)
-	bool	findSourceInCache( const wxString & packageOID, const wxString & funcOID );
-	void	getSource(  const wxString & packageOID, const wxString & funcOID );
-	void	cacheSource( const wxString & packageOID, const wxString & funcOID, const wxString & sourceCode );
-	void	displaySource( const wxString & packageOID, const wxString & funcID );
+	bool	findSourceInCache( const wxString &packageOID, const wxString &funcOID);
+	void	getSource(const wxString &packageOID, const wxString &funcOID);
+	void	cacheSource(const wxString &packageOID, const wxString &funcOID, const wxString &sourceCode, const wxString &signature);
+	void	displaySource(const wxString &packageOID, const wxString &funcID);
 	void	unhilightCurrentLine();
 	void	launchWaitingDialog();
 

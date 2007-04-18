@@ -11,9 +11,6 @@
 
 #include "debugger.h"
 #include "wsMainFrame.h"
-#include "wsDocmgr.h"
-#include "wsFuncdoc.h"
-#include "wsFuncView.h"
 #include "wsCodeWindow.h"
 #include "wsBreakPoint.h"
 #include "wsDirectdbg.h"
@@ -45,9 +42,6 @@ static const wxCmdLineEntryDesc cmdLineDesc[] =
     // Entry type       name         name               		description         		                         data type              flags
     // ---------------  ----         -------------      		--------------------------------------               -----------------      -----------
     { wxCMD_LINE_OPTION, wxT( "d" ), wxT( "database" ), 		wxT( "specify database name to connect to" ),        wxCMD_LINE_VAL_STRING, 0 },
-//  { wxCMD_LINE_OPTION, wxT( "c" ), wxT( "command" ),  		wxT( "run only single command and exit" ),           wxCMD_LINE_VAL_STRING, 0 },
-//  { wxCMD_LINE_OPTION, wxT( "f" ), wxT( "from" ),     		wxT( "execute commands from file, then exit" ),      wxCMD_LINE_VAL_STRING, 0 },
-//  { wxCMD_LINE_SWITCH, wxT( "X" ), wxT( "no-rc" ),    		wxT( "do not read startup file (~/.wsrc)" ),         wxCMD_LINE_VAL_NONE,   0 },
     { wxCMD_LINE_OPTION, wxT( "h" ), wxT( "host" ),     		wxT( "database server host or socket directory" ),   wxCMD_LINE_VAL_STRING, 0 },
     { wxCMD_LINE_OPTION, wxT( "p" ), wxT( "port" ),     		wxT( "database server port" ),                       wxCMD_LINE_VAL_STRING, 0 },
     { wxCMD_LINE_OPTION, wxT( "U" ), wxT( "user" ),     		wxT( "database user name" ),                         wxCMD_LINE_VAL_STRING, 0 },
@@ -128,14 +122,8 @@ bool wsApp::OnInit( )
 	if( m_cmdLine->Parse( true ) != 0 )
 		exit( 0 );
 
-	// Create a document manager
-	m_docManager = new wsDocMgr;
-
-	// Create a template relating SQL documents to their views
-	(void) new wxDocTemplate( m_docManager, _T( "SQL" ), _T( "*.sql" ), _T( "" ), _T( "sql" ), _T( "SQL Document" ), _T( "SQL View" ), CLASSINFO( wsFuncDoc ), CLASSINFO( wsFuncView ));
-
 	// Create a new frame that manages the entire user interface
-	glMainFrame = m_mainFrame = new wsMainFrame( m_docManager , _( "Debugger" ), wxDefaultPosition, wxSize(800, 600));
+	glMainFrame = m_mainFrame = new wsMainFrame( NULL , _( "Debugger" ), wxDefaultPosition, wxSize(800, 600));
 
 	m_mainFrame->Show( true );
 	m_mainFrame->Raise();

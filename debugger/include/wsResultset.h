@@ -32,11 +32,11 @@ public:
 	const char	*getRawErrorMessage();	// Return error message as a char *
 	const wxString getErrorMessage();	// Return error message as a wxString
 	const wxString getString( int column, int row = 0 );
-	const wxString getString( const wxString & columnName, int row = 0 );
+	const wxString getString( const wxString &columnName, int row = 0 );
 	long	getLong( int column, int row = 0 );
-	long	getLong( const wxString & columnName, int row = 0 );
+	long	getLong( const wxString &columnName, int row = 0 );
 	bool	getBool( int column, int row = 0 );
-	bool	getBool( const wxString & columnName, int row = 0 );
+	bool	getBool( const wxString &columnName, int row = 0 );
 	int	getRowCount() { return( PQntuples( m_handle )); }
 
 	ExecStatusType getCommandStatus();

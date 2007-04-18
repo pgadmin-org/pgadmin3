@@ -53,15 +53,15 @@ class wsCodeWindow;
 class wsDirectDbg;
 class wxSizeReportCtrl;
 
-class wsMainFrame : public wxDocParentFrame  
+class wsMainFrame : public wxFrame  
 {    
     DECLARE_CLASS( wsMainFrame )
 
   public:
-	wsMainFrame( wxDocManager * docManager, const wxString & title, const wxPoint & pos, const wxSize & size );
+	wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint & pos, const wxSize & size );
 	virtual ~wsMainFrame();
 
-	bool	addConnect( const wxString & host, const wxString & database, const wxString & port, const wxString & user, const wxString & password );
+	bool	addConnect( const wxString &host, const wxString &database, const wxString &port, const wxString &user, const wxString &password );
 	wsDirectDbg   *addDirectDbg( const wsConnProp & connProp );		// Create a new direct-debugging window
 	wsCodeWindow  *addDebug( const wsConnProp & props );			   	// Create a new debugger window
 	wxStatusBar   *getStatusBar() { return( m_statusBar ); }			// Returns pointer to the status bar

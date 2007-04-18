@@ -50,7 +50,7 @@ WX_DEFINE_OBJARRAY( wsArgInfoArray );
 //	This class offers a number of (inline) member functions that you can call
 //  to extract the above information after it's been queried from the server.
 
-wsTargetInfo::wsTargetInfo( const wxString & target,  wsPgConn * conn, char targetType )
+wsTargetInfo::wsTargetInfo( const wxString &target,  wsPgConn * conn, char targetType )
 {
 	wxString query = 
 		wxT("select")
@@ -137,7 +137,7 @@ wsArgInfo & wsTargetInfo::operator[]( int index )
 //	Once the user has had a chance to enter values for each of the IN and INOUT
 //	arguments, we store those values inside of the corresponding wsArgInfo objects
 
-wsArgInfo::wsArgInfo( const wxString & argName, const wxString & argType, const wxString & argMode )
+wsArgInfo::wsArgInfo( const wxString &argName, const wxString &argType, const wxString &argMode )
 	: m_name( argName.Strip( wxString::both )),
 	  m_type( argType.Strip( wxString::both )),
 	  m_mode( argMode == wxT( "" ) ? wxT( "i" ) : argMode.Strip( wxString::both )),

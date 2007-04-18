@@ -39,7 +39,7 @@ class wsPgConn;
 class wsPgThreadCommand
 {
 public:
-	wsPgThreadCommand( const wxString & command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL ) : m_command( command ), m_caller( caller ), m_eventType( eventType ) {};
+	wsPgThreadCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL ) : m_command( command ), m_caller( caller ), m_eventType( eventType ) {};
 
 	wxString	&getCommand()   { return( m_command ); }
 	wxEvtHandler	*getCaller()    { return( m_caller ); }
@@ -59,7 +59,7 @@ public:
 	wsPgThread( wsPgConn & owner );
 
 	virtual void   * Entry();
-	void	startCommand( const wxString & command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL );
+	void	startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL );
 
 private:
 

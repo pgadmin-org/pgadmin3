@@ -34,7 +34,7 @@
 //
 //	The constructor creates a new thread and connects to the specified server
 
-wsPgConn::wsPgConn( const wxString & server, const wxString & database, const wxString & userName, const wxString & password, const wxString & port, int sslmode )
+wsPgConn::wsPgConn( const wxString &server, const wxString &database, const wxString &userName, const wxString &password, const wxString &port, int sslmode )
 {
 	Init( server, database, userName, password, port, sslmode, true );
 }
@@ -44,7 +44,7 @@ wsPgConn::wsPgConn( const wsConnProp & props, bool startThread )
 	Init(  props.m_host, props.m_database, props.m_userName, props.m_password, props.m_port, props.m_sslMode, startThread );
 }
 
-void wsPgConn::Init( const wxString & server, const wxString & database, const wxString & username, const wxString & password, const wxString & port, int sslmode, bool startThread )
+void wsPgConn::Init( const wxString &server, const wxString &database, const wxString &username, const wxString &password, const wxString &port, int sslmode, bool startThread )
 {
 	m_pgConn       = NULL;
 
@@ -204,14 +204,14 @@ PGconn * wsPgConn::getConnection()
 // 	The GUI thread invokes startCommand() when the user asks us to execute a
 //	command.  We pass off the real work to the worker thread.
 
-void wsPgConn::startCommand( const wxString & command, wxEvtHandler * caller, wxEventType eventType )
+void wsPgConn::startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType )
 {
 	wxLogInfo( command );
 
 	m_workerThread->startCommand( command, caller, eventType );
 }
 
-PGresult * wsPgConn::waitForCommand( const wxString & command )
+PGresult * wsPgConn::waitForCommand( const wxString &command )
 {
 	::wxLogDebug( _( "waiting for %s" ), command.c_str());
 

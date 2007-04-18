@@ -26,6 +26,7 @@
 #include <wx/config.h>
 #include <wx/aui/aui.h>
 
+#include "wsConst.h"
 #include "wsConnProp.h"
 
 class wsMainFrame;		 	// Forward (incomplete) declaration

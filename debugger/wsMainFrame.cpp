@@ -50,9 +50,9 @@
 
 #define VERSION_WITH_DATE_AND_SVN       wxT("Version ") VERSION_STR wxT(" (") __TDATE__ wxT(", rev: ") wxT(VERSION_SVN) wxT(")")
 
-IMPLEMENT_CLASS( wsMainFrame, wxDocParentFrame  )
+IMPLEMENT_CLASS( wsMainFrame, wxWindow  )
 
-BEGIN_EVENT_TABLE( wsMainFrame, wxDocParentFrame  )
+BEGIN_EVENT_TABLE( wsMainFrame, wxWindow  )
     EVT_MENU(wxID_ABOUT, wsMainFrame ::OnAbout)
 
     EVT_MENU_RANGE( MENU_ID_SET_BREAK, MENU_ID_SET_PC, wsMainFrame::OnDebugCommand )
@@ -83,8 +83,8 @@ END_EVENT_TABLE()
 //	(such as window sizing and layout, and creation of new windows).
 
 
-wsMainFrame::wsMainFrame( wxDocManager* docManager, const wxString & title, const wxPoint & pos, const wxSize & size )
-	: wxDocParentFrame( docManager, NULL, wxID_ANY, title, pos, size ),
+wsMainFrame::wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint & pos, const wxSize & size )
+	: wxFrame( parent, wxID_ANY, title, pos, size ),
 	  m_console( NULL ),
 	  m_standaloneDebugger( NULL ),
 	  m_menuBar( NULL ),
@@ -97,7 +97,7 @@ wsMainFrame::wsMainFrame( wxDocManager* docManager, const wxString & title, cons
 	manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
 
 	// Define the icon for this window
-	SetIcons( wxIconBundle( wxIcon( pgAdmin3_xpm )));
+	SetIcon( wxIcon( pgAdmin3_xpm ));
 
 	// Create (and configure) the menu bar, toolbar, and status bar
 	m_menuBar   = setupMenuBar();
@@ -184,7 +184,7 @@ wsDirectDbg * wsMainFrame::addDirectDbg( const wsConnProp & connProp )
 //  attempt succeeds, we create a new console window (a window where the 
 //  user can type in and execute commands)
 
-bool wsMainFrame::addConnect( const wxString & host, const wxString & database, const wxString & port, const wxString & user, const wxString & password )
+bool wsMainFrame::addConnect( const wxString &host, const wxString &database, const wxString &port, const wxString &user, const wxString &password )
 {
 	// Try to connect to the given server
 	//

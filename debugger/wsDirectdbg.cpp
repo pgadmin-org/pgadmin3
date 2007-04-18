@@ -60,7 +60,7 @@ END_EVENT_TABLE()
 //  EXEC statement that invokes the target (with the parameter values 
 //  provided by the user).
 
-wsDirectDbg::wsDirectDbg( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProp )
+wsDirectDbg::wsDirectDbg( wxWindow *parent, wxWindowID id, const wsConnProp & connProp )
 	: wxDialog( parent, id,  connProp.m_host + wxT( "/" ) + connProp.m_database, 
 	wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION  ),
 	m_target(),
@@ -184,7 +184,7 @@ void wsDirectDbg::startDebugging( void )
 //  information required to connect to the server (like the hostname, port number,
 //  and user name).
 
-void wsDirectDbg::loadTargetInfo( const wxString & target, const wsConnProp & connProp, char targetType )
+void wsDirectDbg::loadTargetInfo( const wxString &target, const wsConnProp & connProp, char targetType )
 {
 	// Connect to the server using the connection properties contained in connProp
 

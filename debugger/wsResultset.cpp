@@ -46,7 +46,7 @@ const wxString wsResultSet::getString( int column, int row )
 //
 //  Notice that row defaults to 0.
 
-const wxString wsResultSet::getString( const wxString & columnName, int row )
+const wxString wsResultSet::getString( const wxString &columnName, int row )
 {
 	return( getString( PQfnumber( m_handle, columnName.mb_str( wxConvUTF8 )), row ));
 }
@@ -72,7 +72,7 @@ long wsResultSet::getLong( int column, int row )
 //
 //  Notice that row defaults to 0.
 
-long wsResultSet::getLong( const wxString & columnName, int row )
+long wsResultSet::getLong( const wxString &columnName, int row )
 {
 	return( getLong( PQfnumber( m_handle, columnName.mb_str( wxConvUTF8 )), row ));
 }
@@ -98,7 +98,7 @@ bool wsResultSet::getBool( int column, int row )
 //
 //  Notice that row defaults to 0.
 
-bool wsResultSet::getBool( const wxString & columnName, int row )
+bool wsResultSet::getBool( const wxString &columnName, int row )
 {
 	return( getBool( PQfnumber( m_handle, columnName.mb_str( wxConvUTF8 )), row ));
 }

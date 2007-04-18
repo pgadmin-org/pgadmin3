@@ -43,7 +43,7 @@ class wsDirectDbg : public wxDialog	// FIXME: shouldn't this be a wxDialog?
 
 public:
 
-	wsDirectDbg( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProp );
+	wsDirectDbg( wxWindow *parent, wxWindowID id, const wsConnProp & connProp );
 	wsBreakpointList & getBreakpointList();
 	void startDebugging();
 
@@ -66,7 +66,7 @@ private:
 	wsBreakpointList m_breakpoints;		// List of initial breakpoints to create
 	wxCheckBox	 * m_debugInitializer;	// Checkbox for "Debug package initializer?"
 
-	void loadTargetInfo( const wxString & target, const wsConnProp & connProp, char targetType );
+	void loadTargetInfo( const wxString &target, const wsConnProp & connProp, char targetType );
 	void setupParamWindow();
 	void populateParamGrid();
 	void OnOk( wxCommandEvent & event );

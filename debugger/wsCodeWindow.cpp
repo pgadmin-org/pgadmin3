@@ -14,7 +14,6 @@
 #include "wsVarWindow.h"
 #include "wsMainFrame.h"
 #include "debuggerMenu.h"
-#include "wsFuncdoc.h"
 #include "wsConst.h"
 #include "wsResultset.h"
 #include "wsBreakPoint.h"
@@ -117,7 +116,7 @@ wxString wsCodeWindow::m_commandWaitForBreakpoint( wxT( "SELECT * FROM pldbg_wai
 wxString wsCodeWindow::m_commandGetVars( wxT( "SELECT name, varClass, value, pg_catalog.format_type( dtype, NULL ) as dtype, isconst FROM pldbg_get_variables(%s)" ));
 wxString wsCodeWindow::m_commandGetStack( wxT( "SELECT targetName, args, (linenumber + 1) AS linenumber FROM pldbg_get_stack(%s) ORDER BY level" ));
 wxString wsCodeWindow::m_commandGetBreakpoints( wxT( "SELECT * FROM pldbg_get_breakpoints(%s)" ));
-wxString wsCodeWindow::m_commandGetSource( wxT( "SELECT %s AS pkg, %s AS func, pldbg_get_source(%s,%s,%s) AS source" ));
+wxString wsCodeWindow::m_commandGetSource( wxT( "SELECT %s AS pkg, %s AS func, pldbg_get_source(%s,%s,%s) AS source, targetName, args FROM pldbg_get_stack(%s) ORDER BY level LIMIT 1" ));
 wxString wsCodeWindow::m_commandStepOver( wxT( "SELECT * FROM pldbg_step_over(%s)" ));
 wxString wsCodeWindow::m_commandStepInto( wxT( "SELECT * FROM pldbg_step_into(%s)" ));
 wxString wsCodeWindow::m_commandContinue( wxT( "SELECT * FROM pldbg_continue(%s)" ));
@@ -146,7 +145,7 @@ wxString wsCodeWindow::m_commandWaitForTarget( wxT( "SELECT * FROM pldbg_wait_fo
 //  line (that is, the line about to execute).  We use hilight the current line.
 //  If m_currentLineNumber is -1, there is no current line.  
 
-wsCodeWindow::wsCodeWindow( wxDocParentFrame * parent, wxWindowID id, const wsConnProp & connProps )
+wsCodeWindow::wsCodeWindow( wxWindow *parent, wxWindowID id, const wsConnProp & connProps )
 	:wxWindow(parent, id, wxDefaultPosition, wxDefaultSize),
 	  m_parent( parent ),
 	  m_toolsEnabled( true ),
@@ -628,16 +627,16 @@ void wsCodeWindow::ResultBreakpoints( wxCommandEvent & event )
 //  round trip for each step. In this function, we add the source code to 
 //  the cache and then display the source code in the source window.
 
-void wsCodeWindow::ResultSource( wxCommandEvent & event )
+void wsCodeWindow::ResultSource(wxCommandEvent & event)
 {
 	wsResultSet  result((PGresult *)event.GetClientData()); 
 
-	if( connectionLost( result ))
+	if( connectionLost(result))
 		closeConnection();
 	else
 	{
-		cacheSource( result.getString( wxT( "pkg" )), result.getString( wxT( "func" )), result.getString( wxT( "source" )));
-		displaySource( result.getString( wxT( "pkg" )), result.getString( wxT( "func" )));
+		cacheSource(result.getString(wxT("pkg")), result.getString( wxT("func")), result.getString(wxT("source")), wxString::Format(wxT( "%s(%s)"), result.getString(wxT("targetName")).c_str(), result.getString(wxT("args")).c_str()));
+		displaySource(result.getString(wxT("pkg")), result.getString( wxT("func")));
 	}
 }
 
@@ -855,13 +854,13 @@ void wsCodeWindow::updateSourceCode( wsResultSet & breakpoint )
 
 	m_currentLineNumber = atoi((const char *)lineNumber.c_str());
 
-	if( !findSourceInCache( packageOID, funcOID ))
+	if( !findSourceInCache(packageOID, funcOID))
 	{
-		getSource( packageOID, funcOID );
+		getSource(packageOID, funcOID);
 	}
 	else
 	{
-		displaySource( packageOID, funcOID );
+		displaySource(packageOID, funcOID);
 	}
 }
 
@@ -876,7 +875,7 @@ void wsCodeWindow::updateSourceCode( wsResultSet & breakpoint )
 //  refresh completes, we schedule a variable refresh for the next idle period. 
 //	When the variable refresh completes, it schedules a stack refresh...
 
-void wsCodeWindow::updateUI( wsResultSet & breakpoint )
+void wsCodeWindow::updateUI(wsResultSet & breakpoint)
 {
 	// Arrange for the lazy parts of our UI to be updated
 	// during the next IDLE time
@@ -884,7 +883,7 @@ void wsCodeWindow::updateUI( wsResultSet & breakpoint )
 	m_updateStack	= FALSE;
 	m_updateBreakpoints = FALSE;
 
-	updateSourceCode( breakpoint );
+	updateSourceCode(breakpoint);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -919,16 +918,16 @@ void wsCodeWindow::clearBreakpointMarkers()
 //  whether the function exists in the cache - to retreive the actual source
 //  code for a function, call getSource()
 
-bool wsCodeWindow::findSourceInCache(  const wxString & packageOID, const wxString & funcOID )
+bool wsCodeWindow::findSourceInCache(const wxString &packageOID, const wxString &funcOID)
 {
-	sourceHash::iterator match = m_sourceCodeMap.find( funcOID );
+	sourceHash::iterator match = m_sourceCodeMap.find(funcOID);
 
-	if( match == m_sourceCodeMap.end())
-		return( false );
+	if (match == m_sourceCodeMap.end())
+		return(false);
 	else
 	{
 		// FIXME: compare the xid and cid here, throw out out the cached copy (and return false) if they don't match
-		return( true );
+		return(true);
 	}
 }
 
@@ -938,13 +937,13 @@ bool wsCodeWindow::findSourceInCache(  const wxString & packageOID, const wxStri
 //	This function adds the source code for a given function to the cache.  See
 //  findSourceInCache() for more details.
 
-void wsCodeWindow::cacheSource( const wxString & packageOID, const wxString & funcOID, const wxString & sourceCode )
+void wsCodeWindow::cacheSource(const wxString &packageOID, const wxString &funcOID, const wxString &sourceCode, const wxString &signature)
 {
 	// Throw out any stale version
-	m_sourceCodeMap.erase( funcOID );
+	m_sourceCodeMap.erase(funcOID);
 
 	// And add the new version to the cache.
-	m_sourceCodeMap[funcOID] = wsCodeCache( packageOID, funcOID, sourceCode );
+	m_sourceCodeMap[funcOID] = wsCodeCache(packageOID, funcOID, sourceCode, signature);
 
 }
 
@@ -955,9 +954,9 @@ void wsCodeWindow::cacheSource( const wxString & packageOID, const wxString & fu
 //  PostgreSQL server. We don't actually wait for completionm, we just 
 //  schedule the request.
 
-void wsCodeWindow::getSource( const wxString & packageOID, const wxString & funcOID )
+void wsCodeWindow::getSource(const wxString &packageOID, const wxString &funcOID)
 {
-	m_dbgConn->startCommand( wxString::Format( m_commandGetSource, packageOID.c_str(), funcOID.c_str(), m_sessionHandle.c_str(), packageOID.c_str(), funcOID.c_str()), GetEventHandler(), RESULT_ID_GET_SOURCE );
+	m_dbgConn->startCommand(wxString::Format( m_commandGetSource, packageOID.c_str(), funcOID.c_str(), m_sessionHandle.c_str(), packageOID.c_str(), funcOID.c_str(), m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_GET_SOURCE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -967,7 +966,7 @@ void wsCodeWindow::getSource( const wxString & packageOID, const wxString & func
 //  If the requested function is already loaded, we just return without doing
 //  any extra work.
 
-void wsCodeWindow::displaySource( const wxString & packageOID, const wxString & funcOID )
+void wsCodeWindow::displaySource( const wxString &packageOID, const wxString &funcOID )
 {
 
 	// We're about to display the source code for the target, give the keyboard
@@ -997,9 +996,16 @@ void wsCodeWindow::displaySource( const wxString & packageOID, const wxString & 
 
 	    // Now erase any old code and write out the new listing
 		m_view->SetReadOnly( false );
-		m_view->SetText( codeCache.getSource());
-		m_view->Colourise( 0, codeCache.getSource().Length());
-		m_view->SetReadOnly( true );
+
+        // If the first line appears to be empty, prepend the function sig
+        // to make it look more complete.
+        wxString src = codeCache.getSource();
+        if (src.StartsWith(wxT("\n")) || src.StartsWith(wxT("\r")))
+            src = codeCache.getSignature() + src;
+		m_view->SetText(src);
+
+		m_view->Colourise(0, src.Length());
+		m_view->SetReadOnly(true);
 	}
 
 	// Clear the current-line indicator 
@@ -1169,7 +1175,7 @@ void wsCodeWindow::OnCommand( wxCommandEvent & event )
 void wsCodeWindow::OnWriteAttempt( wxStyledTextEvent & event )
 {
 #if INCLUDE_FUNCTION_EDITOR
-	wsFuncDoc::OpenDoc( m_view->GetText(), GetTitle() + wxT( "*" ), m_displayedFuncOid, m_view->GetCurrentPos());
+//	wsFuncDoc::OpenDoc( m_view->GetText(), GetTitle() + wxT( "*" ), m_displayedFuncOid, m_view->GetCurrentPos());
 #endif
 }
 
@@ -1492,8 +1498,8 @@ void wsCodeWindow::OnTimer( wxTimerEvent & event )
 //	Each entry in our code cache (wsCodeWindow::m_sourceCodeMap) is an object 
 //  of class wsCodeCache. 
 
-wsCodeCache::wsCodeCache( const wxString & packageOID, const wxString & funcOID,  const wxString & source )
-  : m_packageOID( packageOID ), m_funcOID( funcOID ), m_sourceCode( source )
+wsCodeCache::wsCodeCache(const wxString &packageOID, const wxString &funcOID, const wxString &source, const wxString &signature)
+  : m_packageOID(packageOID), m_funcOID(funcOID), m_sourceCode(source), m_signature(signature)
 {
 }
 

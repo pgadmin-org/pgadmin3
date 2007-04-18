@@ -35,11 +35,11 @@ class wsPgConn
 {
   public:
 
-	wsPgConn( const wxString & server   = wxT( "" ), 
-			  const wxString & database = wxT( "" ), 
-			  const wxString & username = wxT( "" ), 
-			  const wxString & password = wxT( "" ), 
-			  const wxString & port     = wxT( "5432" ), 
+	wsPgConn( const wxString &server   = wxT( "" ), 
+			  const wxString &database = wxT( "" ), 
+			  const wxString &username = wxT( "" ), 
+			  const wxString &password = wxT( "" ), 
+			  const wxString &port     = wxT( "5432" ), 
 			  int sslmode               = 0 );
 
 	wsPgConn( const wsConnProp & props, bool startThread = true );
@@ -53,13 +53,13 @@ class wsPgConn
 	PGconn	*getConnection();		// Returns the libpq connection handle
 	void	close(); 			// Close this connection
 
-	void	startCommand( const wxString & command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL );	// Starts executing a command	
+	void	startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL );	// Starts executing a command	
 	void	setNoticeHandler( PQnoticeProcessor handler, void * arg );			// Registers a NOTICE handler
-	PGresult  * waitForCommand( const wxString & command );							// Starts a command and waits for completion
+	PGresult  * waitForCommand( const wxString &command );							// Starts a command and waits for completion
 
   private:
 
-	void Init( const wxString & server, const wxString & database, const wxString & userName, const wxString & password, const wxString & port, int sslmode, bool startThread );
+	void Init( const wxString &server, const wxString &database, const wxString &userName, const wxString &password, const wxString &port, int sslmode, bool startThread );
 
 	PGconn	*m_pgConn;			// libpq connection handler
 	wsPgThread	*m_workerThread;	// Worker thread (this thread interacts with the server)

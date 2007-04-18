@@ -27,14 +27,14 @@
 class wsArgInfo
 {
 public:
-	wsArgInfo( const wxString & argName, const wxString & argType, const wxString & argMode );
+	wsArgInfo( const wxString &argName, const wxString &argType, const wxString &argMode );
 
-	const wxString & getName()    { return( m_name ); }
-	const wxString & getType()    { return( m_type ); }
-	const wxString & getMode()    { return( m_mode ); }
+	const wxString &getName()    { return( m_name ); }
+	const wxString &getType()    { return( m_type ); }
+	const wxString &getMode()    { return( m_mode ); }
   	wxString & getValue()   { return( m_value ); } // NOTE: non-const, caller may modifiy value
 	const wxString   quoteValue();
-	void  setValue( const wxString & newValue ) { m_value = newValue; }
+	void  setValue( const wxString &newValue ) { m_value = newValue; }
 
 private:	
 	wxString	m_name;
@@ -70,17 +70,17 @@ class wsPgConn;
 class wsTargetInfo
 {
 public:
-	wsTargetInfo( const wxString & target, wsPgConn * conn, char targetType );
+	wsTargetInfo( const wxString &target, wsPgConn * conn, char targetType );
 
 	int	getArgInCount() 	{ return( m_argInCount ); }
 	int 	getArgOutCount()   { return( m_argOutCount ); }
 	int 	getArgInOutCount() { return( m_argInOutCount ); }
 	int	getArgCount() 		{ return( m_argInCount + m_argOutCount + m_argInOutCount ); }
 
-	const wxString & getLanguage()      { return( m_language ); }
-	const wxString & getSchema()        { return( m_schema ); }
-	const wxString & getName()          { return( m_name ); }
-	const wxString & getFQName()        { return( m_fqName ); } 
+	const wxString &getLanguage()      { return( m_language ); }
+	const wxString &getSchema()        { return( m_schema ); }
+	const wxString &getName()          { return( m_name ); }
+	const wxString &getFQName()        { return( m_fqName ); } 
 	long	getOid()           { return( m_oid ); }
 	long	getPkgOid()        { return( m_pkgOid ); }
 	bool	getIsFunction()    { return( m_isFunction ); } 

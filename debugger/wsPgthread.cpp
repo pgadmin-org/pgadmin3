@@ -48,7 +48,7 @@ wsPgThread::wsPgThread( wsPgConn & owner )
 // 	separate thread to interact with the PostgreSQL server. This function
 //  wakes up the worker thread.
 
-void wsPgThread::startCommand( const wxString & command, wxEvtHandler * caller, wxEventType eventType )
+void wsPgThread::startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType )
 {
 	// Save the command text (and the event handler that we should 
 	// notify on completion) in the command queue and then wake up the
