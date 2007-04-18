@@ -1014,12 +1014,6 @@ void wsCodeWindow::displaySource( const wxString &packageOID, const wxString &fu
 
 	// Update the next lazy part of the user interface (the variable list)
 	m_updateVars = TRUE;
-
-	// Probabry, necessary to still adjust the event.
-	//   TimerWait can't be picked up when forcibly generated here...<sigh>..
-	wxCommandEvent	fakeCommandEvent( 0, true );
-	ResultBreakpoint( fakeCommandEvent );
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
