@@ -25,7 +25,6 @@
 
 #include <stdexcept>
 
-
 #define I18N_DIR wxT("/i18n")
 
 IMPLEMENT_APP( wsApp )
@@ -283,22 +282,60 @@ wxStatusBar * wsApp::getStatusBar()
 
 void wsApp::initializeLocale( wxChar * argv0 )
 {
-	wxString 	appPath = wxPathOnly( argv0 );
+	wxString 	loadPath = wxPathOnly( argv0 );
 	wxString   	i18nPath;      	// Where i18n data is stored
+
+    if (loadPath.IsEmpty())
+        loadPath = wxT(".");
 
 	// Figure out where the pgadmin3 language catalog is located
 
-	if( appPath.IsEmpty())
-		appPath = wxT(".");
+#ifdef __WXMSW__
 
-	if( wxDir::Exists( appPath + I18N_DIR ))
-		i18nPath = appPath + I18N_DIR;
-	else if( wxDir::Exists( appPath + wxT( "/.." ) + I18N_DIR ))
-		i18nPath = appPath + wxT( "/.." ) + I18N_DIR;
-	else if( wxDir::Exists( appPath + wxT( "/../devstudio" ) + I18N_DIR ))
-		i18nPath = appPath + wxT( "/../devstudio" ) + I18N_DIR;
-	else
-		i18nPath = appPath + wxT( "/../.." ) + I18N_DIR;
+    // Search for the right paths. We check the following locations:
+    //
+    // 1) ./xxx               - Running as a standalone install
+    // 2) ../pgAdmin/xxx      - Running in a pgInstaller 8.1 installation 
+    //                          (with the .exe and dlls in the main bin dir)
+    // 3) ../../xxx or ../xxx - Running in a development environment
+    
+    if (wxDir::Exists(loadPath + I18N_DIR))
+        i18nPath = loadPath + I18N_DIR;
+    else if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") + I18N_DIR))
+        i18nPath = loadPath + wxT("/../pgAdmin III") + I18N_DIR;
+    else 
+        i18nPath = loadPath + wxT("/../..") + I18N_DIR;
+
+#else
+
+    wxString dataDir;
+
+#ifdef __WXMAC__
+
+    // When using wxStandardPaths on OSX, wx default to the unix,
+    // not to the mac variants. Therefore, we request wxStandardPathsCF
+    // directly.
+    wxStandardPathsCF stdPaths ;
+    dataDir = stdPaths.GetDataDir() ;
+
+#else // other *ixes
+
+// Data path (defined by configure under Unix).
+#ifndef DATA_DIR
+#define DATA_DIR "./"
+#endif
+
+    dataDir = wxString::FromAscii(DATA_DIR);
+#endif
+
+    if (wxDir::Exists(dataDir + I18N_DIR))
+        i18nPath = dataDir + I18N_DIR;
+#ifdef __WXMAC__ // On Mac, the catalog might be in the parent bundle.
+    else if (wxDir::Exists(dataDir + wxT("/../../..") + I18N_DIR))
+        i18nPath = dataDir + wxT("/../../..") + I18N_DIR;
+#endif
+
+#endif
 
 	wxLocale * locale = new wxLocale();
 
@@ -311,6 +348,6 @@ void wsApp::initializeLocale( wxChar * argv0 )
 #ifdef __LINUX__
 		locale->AddCatalog(wxT("fileutils"));
 #endif
-		locale->AddCatalog( wxT( "pgAdmin3" ));
+		locale->AddCatalog( wxT( "pgadmin3" ));
 	}
 }
