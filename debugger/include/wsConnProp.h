@@ -34,21 +34,7 @@ public:
 	wxString	m_password;		// Password
 	wxString	m_port;			// Port number
 	wxString	m_debugPort;	// Port number for debugger connection
-	int		m_sslMode;		// SSL Mode
-};
-
-class wsConnPropDlg : public wxDialog
-{
-public:
-	wsConnPropDlg( wxWindow * parent, wxWindowID id = wxID_ANY );
-
-	void setDefaults( const wsConnProp & defaults );
-	void getChoices( wsConnProp & result );
-    
-private:
-
-	wsConnProp	m_properties;    
-
+	int		m_sslMode;		    // SSL Mode
 };
 
 #endif
