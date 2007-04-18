@@ -21,20 +21,14 @@
 enum
 {
 	MENU_ID_EXECUTE = 101,		// Execute command entered by user
-	MENU_ID_OPEN,			// Open a file
-	MENU_ID_DEBUG,			// Open the debugger window (obsolete)
 
 	MENU_ID_SET_BREAK,		// Set breakpoint
 	MENU_ID_CLEAR_BREAK,		// Clear breakpoint
 	MENU_ID_CLEAR_ALL_BREAK,	// Clear all breakpoints
-	MENU_ID_SET_WATCH,		// Set watchpoint
-	MENU_ID_CLEAR_WATCH,		// Clear watchpoint
 	MENU_ID_CONTINUE,		// Continue
 	MENU_ID_STEP_OVER,		// Step over	
 	MENU_ID_STEP_INTO,		// Step into
 	MENU_ID_STOP,			// Stop debugging
-	MENU_ID_RESTART,		// Restart debugging with the initially given values
-	MENU_ID_SET_PC,			// Set program counter
 
 	MENU_ID_SPAWN_DEBUGGER,		// Spawn a separate debugger process
 	MENU_ID_NOTICE_RECEIVED,	// NOTICE received from server

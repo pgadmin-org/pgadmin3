@@ -316,14 +316,7 @@ void wsDirectDbg::populateParamGrid( )
 
 void wsDirectDbg::OnOk( wxCommandEvent & event )
 {
-	if( activateDebugger())
-	{
-#if 0
-		glMainFrame->SetLastSize( );
-		this->Show( false );
-		glMainFrame->getToolBar( )->Show( true );
-#endif
-	}
+	activateDebugger();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -571,10 +564,7 @@ void wsDirectDbg::invokeTarget()
 	// it and let code window come in front.
 	if (m_codeWindow) 
 	{
-		m_codeWindow->Show( true );
-		m_codeWindow->SetFocus();
 		m_codeWindow->enableTools();
-		
 		m_codeWindow->resumeLocalDebugging();
 	}
 	

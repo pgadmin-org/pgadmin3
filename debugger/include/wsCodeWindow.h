@@ -72,7 +72,6 @@ class wsCodeWindow : public wxWindow
 	void startGlobalDebugging(); 		 // Start debugging 
 	void OnCommand( wxCommandEvent & event );					 // Handle menu/toolbar commands
 	void processResult( wxString & result );					 // Handle a message from the debugger server
-	void OnWriteAttempt( wxStyledTextEvent & event );			 // Do something useful when the user types into the source code window
 	void OnNoticeReceived( wxCommandEvent & event );			 // NOTICE received from server
 	void OnResultSet( PGresult * result );						 // Result set received from server
 	void disableTools();			 // Disable toolbar tools
@@ -92,7 +91,7 @@ class wsCodeWindow : public wxWindow
 	wsVarWindow		* getPkgVarWindow( bool create )  { return( m_tabWindow->getPkgVarWindow( create )); } 
 	wsResultGrid    * getResultWindow()               { return( m_tabWindow->getResultWindow()); }
 
-	void	OnActivate( wxActivateEvent & event );		// Display/Remove debugger toolbar
+	void	setTools(bool enable);		// Enable/disable debugger options
 	void	OnMarginClick( wxStyledTextEvent & event );	// Set/clear breakpoint on margin click
 	void	OnSelectFrame( wxCommandEvent & event );	// Select a different stack frame
 	void    OnVarChange( wxGridEvent & event );		// User changed a variable
@@ -125,7 +124,6 @@ class wsCodeWindow : public wxWindow
 	void	ResultLastBreakpoint( wxCommandEvent & event );		// Adding last breakpoint 
 
 	wsPgConn	*m_dbgConn;	// Network connection to debugger server
-	bool		m_toolsEnabled;	// Should toolbar buttons be enabled?
 	wxString	m_debugPort;	// Port at which debugger server is listening
 
 	wxWindow 	*m_parent;		// Parent window
@@ -200,8 +198,6 @@ class wsCodeWindow : public wxWindow
 	static wxString m_commandAddBreakpoint;
 	static wxString m_commandCreateListener;
 	static wxString m_commandWaitForTarget;
-	
-	void OnClose( wxCloseEvent & event );
 
     DECLARE_EVENT_TABLE()
 };

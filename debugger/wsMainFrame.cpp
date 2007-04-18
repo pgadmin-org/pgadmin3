@@ -17,29 +17,14 @@
 #include "debugger.h"
 #include "debuggerMenu.h"
 
-#include "images/pgAdmin3.xpm"
-#include "images/file_open.xpm"
-#include "images/file_save.xpm"
-#include "images/execute.xpm"
-#include "images/orange.xpm"
-#include "images/bug.xpm"
-#include "images/img.xpm"
-#include "images/clip_cut.xpm"
-#include "images/clip_copy.xpm"
-#include "images/clip_paste.xpm"
-#include "images/undo.xpm"
-#include "images/redo.xpm"
-#include "images/setBreak.xpm"
+#include "images/debugger.xpm"
+#include "images/clearAll.xpm"
 #include "images/clrBreak.xpm"
-#include "images/setWatch.xpm"
-#include "images/clrWatch.xpm"
 #include "images/continue.xpm"
+#include "images/setBreak.xpm"
 #include "images/stepOver.xpm"
 #include "images/stepInto.xpm"
-#include "images/setPC.xpm"
 #include "images/stop.xpm"
-#include "images/clearall.xpm"
-#include "images/restart.xpm"
 
 #include <wx/log.h>
 
@@ -54,23 +39,17 @@ IMPLEMENT_CLASS( wsMainFrame, wxWindow  )
 
 BEGIN_EVENT_TABLE( wsMainFrame, wxWindow  )
     EVT_MENU(wxID_ABOUT, wsMainFrame ::OnAbout)
+    EVT_MENU(wxID_EXIT,  wsMainFrame ::OnExit)
 
-    EVT_MENU_RANGE( MENU_ID_SET_BREAK, MENU_ID_SET_PC, wsMainFrame::OnDebugCommand )
-
-    EVT_CLOSE( wsMainFrame::OnClose )
-    EVT_SIZE( wsMainFrame::OnSize )
-
-    EVT_TOOL( wxID_CUT,         wsMainFrame::OnEditCommand)
-    EVT_TOOL( wxID_COPY,        wsMainFrame::OnEditCommand)
-    EVT_TOOL( wxID_PASTE,       wsMainFrame::OnEditCommand)
-    EVT_TOOL( wxID_UNDO,        wsMainFrame::OnEditCommand)
-    EVT_TOOL( wxID_REDO,        wsMainFrame::OnEditCommand)
+    EVT_MENU_RANGE(MENU_ID_SET_BREAK, MENU_ID_STOP, wsMainFrame::OnDebugCommand)
+    EVT_CLOSE(wsMainFrame::OnClose)
+    EVT_SIZE(wsMainFrame::OnSize)
 
     EVT_MENU(MENU_ID_VIEW_TOOLBAR,       wsMainFrame::OnToggleToolBar)
     EVT_MENU(MENU_ID_VIEW_STACKPANE,     wsMainFrame::OnToggleStackPane)
     EVT_MENU(MENU_ID_VIEW_OUTPUTPANE,    wsMainFrame::OnToggleOutputPane)
     EVT_MENU(MENU_ID_VIEW_DEFAULTVIEW,   wsMainFrame::OnDefaultView)
-    EVT_AUI_PANE_CLOSE(         wsMainFrame::OnAuiUpdate)
+    EVT_AUI_PANE_CLOSE(wsMainFrame::OnAuiUpdate)
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +76,7 @@ wsMainFrame::wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint
 	manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
 
 	// Define the icon for this window
-	SetIcon( wxIcon( pgAdmin3_xpm ));
+	SetIcon(wxIcon(debugger_xpm));
 
 	// Create (and configure) the menu bar, toolbar, and status bar
 	m_menuBar   = setupMenuBar();
@@ -117,7 +96,7 @@ wsMainFrame::wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint
     manager.GetPane(wxT("toolBar")).Caption(_("Toolbar"));
 
     // Sync the View menu options
-    m_view_menu->Check(MENU_ID_VIEW_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+    m_viewMenu->Check(MENU_ID_VIEW_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
 
 	manager.Update();
 
@@ -250,44 +229,17 @@ void wsMainFrame::OnSize( wxSizeEvent & event )
 
 wxToolBar * wsMainFrame::setupToolBar( void )
 {
-	wxToolBar *t = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
-                            wxTB_FLAT | wxTB_NODIVIDER);
+	wxToolBar *t = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 
 	t->SetToolBitmapSize( wxSize( 24, 24 ));
-
-#if INCLUDE_FUNCTION_EDITOR
-	t->AddTool( wxID_OPEN,       _( "Open" ),    wxBitmap( file_open_xpm ),  _( "Open File" ), wxITEM_NORMAL );
-	t->AddTool( wxID_SAVE,       _( "Save" ),    wxBitmap( file_save_xpm ),  _( "Save" ),      wxITEM_NORMAL );
-    t->AddTool( MENU_ID_EXECUTE, _( "Execute" ), wxBitmap( execute_xpm ),    _( "Execute" ),   wxITEM_NORMAL );
-
-	t->AddSeparator();
-
-	t->AddTool( wxID_CUT,   	 _( "Cut" ),     wxBitmap( clip_cut_xpm ),   _( "Cut" ),   	   wxITEM_NORMAL );
-	t->AddTool( wxID_COPY,  	 _( "Copy" ),    wxBitmap( clip_copy_xpm ),  _( "Copy" ),  	   wxITEM_NORMAL );
-	t->AddTool( wxID_PASTE, 	 _( "Paste" ),   wxBitmap( clip_paste_xpm ), _( "Paste" ), 	   wxITEM_NORMAL );
-	t->AddTool( wxID_UNDO, 		 _( "Undo" ),    wxBitmap( undo_xpm ),       _( "Undo" ), 	   wxITEM_NORMAL );
-	t->AddTool( wxID_REDO, 		 _( "Redo" ),    wxBitmap( redo_xpm ),       _( "Redo" ), 	   wxITEM_NORMAL );
-
-	t->AddSeparator();
-#endif
 
 	t->AddTool( MENU_ID_STEP_INTO,		 _( "Step Into" ),    		 wxBitmap( step_into_xpm ),   _( "Step Into (F2)" ),        	  wxITEM_NORMAL );
 	t->AddTool( MENU_ID_STEP_OVER,		 _( "Step Over" ),    		 wxBitmap( step_over_xpm ),   _( "Step Over (F3)" ),        	  wxITEM_NORMAL );
 	t->AddTool( MENU_ID_CONTINUE,		 _( "Continue" ),    		 wxBitmap( continue_xpm ),    _( "Continue (F4)" ),         	  wxITEM_NORMAL );
 	t->AddTool( MENU_ID_SET_BREAK,		 _( "Set Breakpoint" ),   	 wxBitmap( set_break_xpm ),   _( "Set Breakpoint (F5)" ),   	  wxITEM_NORMAL );
 	t->AddTool( MENU_ID_CLEAR_BREAK, 	 _( "Clear Breakpoint" ), 	 wxBitmap( clear_break_xpm ), _( "Clear Breakpoint (F6)" ), 	  wxITEM_NORMAL );
-	t->AddTool( MENU_ID_CLEAR_ALL_BREAK, _( "Clear All Breakpoints" ), wxBitmap( clearall_xpm ),  _( "Clear ALL Breakpoints (F7)" ),  wxITEM_NORMAL );
+	t->AddTool( MENU_ID_CLEAR_ALL_BREAK, _( "Clear All Breakpoints" ), wxBitmap( clearAll_xpm ),  _( "Clear ALL Breakpoints (F7)" ),  wxITEM_NORMAL );
 	t->AddTool( MENU_ID_STOP,      		 _( "Stop Debugging" ),    	 wxBitmap(stop_xpm),          _( "Stop Debugging (F8)" ),         wxITEM_NORMAL );
-
-#if INCLUDE_RESTART
-	t->AddTool( MENU_ID_RESTART,      	 _( "Restart Debugging" ),   wxBitmap( restart_xpm ),     _( "Restart Debugging (F9)" ), 	  wxITEM_NORMAL );
-#endif
-
-#if INCLUDE_WATCHPOINTS
-	t->AddTool( MENU_ID_SET_WATCH,		 _( "Set Watchpoint" ),   	 wxBitmap( set_watch_xpm ),   _( "Set Watchpoint" ),   			wxITEM_NORMAL );
-	t->AddTool( MENU_ID_CLEAR_WATCH, 	 _( "Clear Watchpoint" ), 	 wxBitmap( clear_watch_xpm ), _( "Clear Watchpoint" ), 			wxITEM_NORMAL );
-	t->AddTool( MENU_ID_SET_PC,      	 _( "Jump To" ),    		 wxBitmap( set_pc_xpm ),      _( "Jump To" ),          			wxITEM_NORMAL );
-#endif
 
 	t->Realize();
     
@@ -298,12 +250,6 @@ wxToolBar * wsMainFrame::setupToolBar( void )
 	t->EnableTool( MENU_ID_CLEAR_BREAK, 	false );
 	t->EnableTool( MENU_ID_CLEAR_ALL_BREAK, false );
 	t->EnableTool( MENU_ID_STOP,        	false );
-	t->EnableTool( MENU_ID_RESTART,     	false );
-#if INCLUDE_WATCHPOINTS
-	t->EnableTool( MENU_ID_SET_WATCH,   	false );
-	t->EnableTool( MENU_ID_CLEAR_WATCH, 	false );
-	t->EnableTool( MENU_ID_SET_PC,      	false );
-#endif
 	
 	m_toolBar = t;
 
@@ -321,8 +267,8 @@ wxStatusBar * wsMainFrame::setupStatusBar( void )
 	wxStatusBar * bar = CreateStatusBar( 3, wxST_SIZEGRIP );
 	int			  widths[] = { 0, -1, -1 };
 
-	bar->SetStatusWidths( 3, widths );
-	bar->SetStatusText( _( "Initializing..." ), 1 );
+	bar->SetStatusWidths(3, widths);
+	bar->SetStatusText(_( "Initializing..."), 1);
 
     return( bar );
 }
@@ -332,27 +278,31 @@ wxStatusBar * wsMainFrame::setupStatusBar( void )
 //
 //	This function creates the standard menu bar
 
-wxMenuBar * wsMainFrame::setupMenuBar( void )
+wxMenuBar *wsMainFrame::setupMenuBar(void)
 {
 	m_menuBar = new wxMenuBar;
 
-	wxMenu * fileMenu = new wxMenu;
+	wxMenu *fileMenu = new wxMenu;
+	fileMenu->Append(wxID_EXIT, _("E&xit"));
+	m_menuBar->Append(fileMenu, _("&File"));
 
-#if 0
-	fileMenu->Append( wxID_NEW,  _( "&New" ));
-	fileMenu->Append( wxID_OPEN, _( "&Open" ));
-#endif
-	fileMenu->Append( wxID_EXIT, _( "E&xit" ));
-	m_menuBar->Append( fileMenu, _( "&File" ));
+	m_debugMenu = new wxMenu;
+	m_debugMenu->Append(MENU_ID_STEP_INTO, _( "Step into\tF2" ));
+	m_debugMenu->Append(MENU_ID_STEP_OVER, _( "Step over\tF3" ));
+    m_debugMenu->Append(MENU_ID_CONTINUE, _( "Continue\tF4" ));
+    m_debugMenu->Append(MENU_ID_SET_BREAK, _( "Set breakpoint\tF5" ));
+    m_debugMenu->Append(MENU_ID_CLEAR_BREAK, _( "Clear breakpoint\tF6" ));
+    m_debugMenu->Append(MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints\tF7" ));
+    m_debugMenu->Append(MENU_ID_STOP, _( "Stop debugging\tF8" ));
+	m_menuBar->Append(m_debugMenu, _("&Debug"));
 
-	m_view_menu = new wxMenu;
-    m_view_menu->Append(MENU_ID_VIEW_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
-    m_view_menu->Append(MENU_ID_VIEW_STACKPANE, _("&Stack pane"),   _("Show or hide the stack pane."), wxITEM_CHECK);
-    m_view_menu->Append(MENU_ID_VIEW_TOOLBAR, _("&Tool bar"),       _("Show or hide the tool bar."), wxITEM_CHECK);
-    m_view_menu->AppendSeparator();
-    m_view_menu->Append(MENU_ID_VIEW_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
-
-	m_menuBar->Append(m_view_menu, _("&View"));
+	m_viewMenu = new wxMenu;
+    m_viewMenu->Append(MENU_ID_VIEW_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
+    m_viewMenu->Append(MENU_ID_VIEW_STACKPANE, _("&Stack pane"),   _("Show or hide the stack pane."), wxITEM_CHECK);
+    m_viewMenu->Append(MENU_ID_VIEW_TOOLBAR, _("&Tool bar"),       _("Show or hide the tool bar."), wxITEM_CHECK);
+    m_viewMenu->AppendSeparator();
+    m_viewMenu->Append(MENU_ID_VIEW_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
+	m_menuBar->Append(m_viewMenu, _("&View"));
 
 	wxMenu* help_menu = new wxMenu;
 	help_menu->Append(wxID_ABOUT, _("&About..."));
@@ -376,49 +326,15 @@ void wsMainFrame::OnClose( wxCloseEvent & event )
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// makeFuncFrame()
+// OnExit()
 //
-// This function creates a new DocChild frame to hold a view (presumably a 
-// wsFuncView). We also adjust the File menu here to reflect the fact that 
-// we now have a document to work with.
+//	Close the debugger
 
-wxDocChildFrame * wsMainFrame::makeFuncFrame( wxDocument * doc, wxView * view )
+void wsMainFrame::OnExit( wxCommandEvent & event )
 {
-	wxDocChildFrame * child = new wxDocChildFrame( doc, view, this, wxID_ANY, doc->GetTitle());
-
-	wxMenu *fileMenu = new wxMenu;
-
-#if INCLUDE_FUNCTION_EDITOR
-	fileMenu->Append( wxID_NEW,    _T( "&New..." ));
-	fileMenu->Append( wxID_OPEN,   _T( "&Open..." ));
-#endif
-	fileMenu->Append( wxID_CLOSE,  _T( "&Close" ));
-	fileMenu->Append( wxID_SAVE,   _T( "&Save" ));
-	fileMenu->Append( wxID_SAVEAS, _T( "Save &As..." ));
-
-	wxMenuBar *menuBar = new wxMenuBar;
-
-	menuBar->Append( fileMenu, _T( "&File" ));
-
-	child->SetMenuBar( menuBar );
-
-	return( child );
-
+	this->Close();
 }
 
-////////////////////////////////////////////////////////////////////////////////
-//  OnEditCommand()
-//
-//	This event handler forwards toolbar/menu bar commands to the currently-
-//  active child (that is, the DocChild frame that holds the focus).
-
-void wsMainFrame::OnEditCommand( wxCommandEvent & event )
-{
-#if 0
-	GetActiveChild()->ProcessEvent( event );
-#endif
-	glMainFrame->ProcessEvent( event );
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 //  OnToggleToolBar()
@@ -426,7 +342,7 @@ void wsMainFrame::OnEditCommand( wxCommandEvent & event )
 //	Turn the tool bar on or off
 void wsMainFrame::OnToggleToolBar(wxCommandEvent& event)
 {
-    if (m_view_menu->IsChecked(MENU_ID_VIEW_TOOLBAR))
+    if (m_viewMenu->IsChecked(MENU_ID_VIEW_TOOLBAR))
         manager.GetPane(wxT("toolBar")).Show(true);
     else
         manager.GetPane(wxT("toolBar")).Show(false);
@@ -439,7 +355,7 @@ void wsMainFrame::OnToggleToolBar(wxCommandEvent& event)
 //	Turn the tool bar on or off
 void wsMainFrame::OnToggleStackPane(wxCommandEvent& event)
 {
-    if (m_view_menu->IsChecked(MENU_ID_VIEW_STACKPANE))
+    if (m_viewMenu->IsChecked(MENU_ID_VIEW_STACKPANE))
         manager.GetPane(wxT("stackPane")).Show(true);
     else
         manager.GetPane(wxT("stackPane")).Show(false);
@@ -452,7 +368,7 @@ void wsMainFrame::OnToggleStackPane(wxCommandEvent& event)
 //	Turn the tool bar on or off
 void wsMainFrame::OnToggleOutputPane(wxCommandEvent& event)
 {
-    if (m_view_menu->IsChecked(MENU_ID_VIEW_OUTPUTPANE))
+    if (m_viewMenu->IsChecked(MENU_ID_VIEW_OUTPUTPANE))
         manager.GetPane(wxT("outputPane")).Show(true);
     else
         manager.GetPane(wxT("outputPane")).Show(false);
@@ -467,15 +383,15 @@ void wsMainFrame::OnAuiUpdate(wxAuiManagerEvent& event)
 {
     if(event.pane->name == wxT("toolBar"))
     {
-        m_view_menu->Check(MENU_ID_VIEW_TOOLBAR, false);
+        m_viewMenu->Check(MENU_ID_VIEW_TOOLBAR, false);
     }
     else if(event.pane->name == wxT("stackPane"))
     {
-        m_view_menu->Check(MENU_ID_VIEW_STACKPANE, false);
+        m_viewMenu->Check(MENU_ID_VIEW_STACKPANE, false);
     }
     else if(event.pane->name == wxT("outputPane"))
     {
-        m_view_menu->Check(MENU_ID_VIEW_OUTPUTPANE, false);
+        m_viewMenu->Check(MENU_ID_VIEW_OUTPUTPANE, false);
     }
     event.Skip();
 }
@@ -497,7 +413,7 @@ void wsMainFrame::OnDefaultView(wxCommandEvent& event)
     manager.Update();
 
     // Sync the View menu options
-    m_view_menu->Check(MENU_ID_VIEW_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
-    m_view_menu->Check(MENU_ID_VIEW_STACKPANE, manager.GetPane(wxT("stackPane")).IsShown());
-    m_view_menu->Check(MENU_ID_VIEW_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
+    m_viewMenu->Check(MENU_ID_VIEW_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+    m_viewMenu->Check(MENU_ID_VIEW_STACKPANE, manager.GetPane(wxT("stackPane")).IsShown());
+    m_viewMenu->Check(MENU_ID_VIEW_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
 }

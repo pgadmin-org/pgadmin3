@@ -16,7 +16,7 @@
 #include "wsMainFrame.h"
 #include "debuggerMenu.h"
 
-#include "images/pgAdmin3.xpm"
+#include "images/debugger.xpm"
 
 #include <wx/log.h>
 

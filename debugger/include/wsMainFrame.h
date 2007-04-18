@@ -70,7 +70,8 @@ class wsMainFrame : public wxFrame
 
 	wxMenuBar	*m_menuBar;	// Menu bar
 	wxToolBar	*m_toolBar;	// Frames' toolbar
-	wxMenu		*m_view_menu; // View menu (can be modified by wxCodeWindow)
+	wxMenu		*m_viewMenu; // View menu (can be modified by wxCodeWindow)
+	wxMenu		*m_debugMenu; // Debug menu (can be modified by wxCodeWindow)
 
     wxAuiManager manager;
 
@@ -91,9 +92,8 @@ class wsMainFrame : public wxFrame
 	void OnExecute( wxCommandEvent & event );
 	void OnDebugCommand( wxCommandEvent & event );
 	void OnClose( wxCloseEvent & event );
+    void OnExit( wxCommandEvent & event );
 	void OnSize( wxSizeEvent & event );
-	void OnChar( wxKeyEvent & event );
-	void OnEditCommand( wxCommandEvent & event );	// Route cut,copy,paste... tool to active child
 
 	void OnAbout(wxCommandEvent& evt);
 

@@ -17,9 +17,6 @@
 #ifndef WSCONSTH
 #define WSCONSTH
 
-#define	INCLUDE_WATCHPOINTS	0	// Enable watchpoint support? (currently incomplete)
-#define INCLUDE_FUNCTION_EDITOR	0	// Enable function editor infrastructure?
-
 const int 	ID_BTNNEXT	   = 1800;
 const int  	ID_GRDFUNCARGS = 1810;
 const int  	ID_TXTMESSAGE  = 1820;

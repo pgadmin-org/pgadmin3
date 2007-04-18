@@ -19,7 +19,7 @@
 #include "wsBreakPoint.h"
 #include "wsWaitingDialog.h"
 
-#include "images/pgAdmin3.xpm"
+#include "images/debugger.xpm"
 
 #include <wx/colour.h>
 #include <wx/tokenzr.h>		// wxStringTokenizer
@@ -56,55 +56,46 @@
 //  we tell wsPgThread to send us a RESULT_ID_GET_SOURCE event when the query 
 //	completes and we handle that event in a function named ResultSource.
 
-IMPLEMENT_CLASS( wsCodeWindow,  wxWindow )
+IMPLEMENT_CLASS(wsCodeWindow,  wxWindow)
 
 #define MARKERINDEX_TO_MARKERMASK( MI ) ( 1 << MI )
 
-BEGIN_EVENT_TABLE( wsCodeWindow , wxWindow )
-  EVT_MENU( MENU_ID_SET_BREAK,	 	wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_CLEAR_BREAK, 	wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_CLEAR_ALL_BREAK,	wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_SET_WATCH,	 	wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_CLEAR_WATCH, 	wsCodeWindow::OnCommand )
+BEGIN_EVENT_TABLE(wsCodeWindow , wxWindow)
+  EVT_MENU(MENU_ID_SET_BREAK,	 	    wsCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_CLEAR_BREAK, 	    wsCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_CLEAR_ALL_BREAK,	    wsCodeWindow::OnCommand)
 
-  EVT_MENU( MENU_ID_CONTINUE,	 	wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_STEP_OVER,	 	wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_STEP_INTO,	 	wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_SET_PC,		wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_STOP,	 	wsCodeWindow::OnCommand )
-  EVT_MENU( MENU_ID_RESTART,	 	wsCodeWindow::OnCommand )
+  EVT_MENU(MENU_ID_CONTINUE,	 	    wsCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_STEP_OVER,	 	    wsCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_STEP_INTO,	 	    wsCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_STOP,	 	        wsCodeWindow::OnCommand)
 
-  EVT_IDLE( wsCodeWindow::OnIdle )
+  EVT_IDLE(wsCodeWindow::OnIdle)
 
-  EVT_CLOSE( wsCodeWindow::OnClose)
+  EVT_BUTTON(MENU_ID_NOTICE_RECEIVED,  wsCodeWindow::OnNoticeReceived)
 
-  EVT_BUTTON( MENU_ID_NOTICE_RECEIVED, wsCodeWindow::OnNoticeReceived )
+  EVT_STC_MARGINCLICK(wxID_ANY,        wsCodeWindow::OnMarginClick)
 
-  EVT_STC_MARGINCLICK( wxID_ANY,     wsCodeWindow::OnMarginClick )
-  EVT_STC_ROMODIFYATTEMPT( wxID_ANY, wsCodeWindow::OnWriteAttempt )
+  EVT_LISTBOX(wxID_ANY, wsCodeWindow::OnSelectFrame)
+  EVT_GRID_CELL_CHANGE(wsCodeWindow::OnVarChange)
 
-  EVT_ACTIVATE( wsCodeWindow::OnActivate )
+  EVT_MENU(RESULT_ID_ATTACH_TO_PORT, 	wsCodeWindow::ResultPortAttach)
+  EVT_MENU(RESULT_ID_BREAKPOINT,		wsCodeWindow::ResultBreakpoint)
+  EVT_MENU(RESULT_ID_GET_VARS,			wsCodeWindow::ResultVarList)
+  EVT_MENU(RESULT_ID_GET_STACK,		    wsCodeWindow::ResultStack)
+  EVT_MENU(RESULT_ID_GET_BREAKPOINTS,	wsCodeWindow::ResultBreakpoints)
+  EVT_MENU(RESULT_ID_GET_SOURCE,		wsCodeWindow::ResultSource)
+  EVT_MENU(RESULT_ID_NEW_BREAKPOINT,	wsCodeWindow::ResultNewBreakpoint)
+  EVT_MENU(RESULT_ID_NEW_BREAKPOINT_WAIT,	wsCodeWindow::ResultNewBreakpointWait)
+  EVT_MENU(RESULT_ID_DEL_BREAKPOINT,	wsCodeWindow::ResultDeletedBreakpoint)
+  EVT_MENU(RESULT_ID_DEPOSIT_VALUE,		wsCodeWindow::ResultDepositValue)
+  EVT_MENU(RESULT_ID_ABORT_TARGET,		wsCodeWindow::ResultAbortTarget)
+  EVT_MENU(RESULT_ID_ADD_BREAKPOINT,   	wsCodeWindow::ResultAddBreakpoint)
+  EVT_MENU(RESULT_ID_LAST_BREAKPOINT,  	wsCodeWindow::ResultLastBreakpoint)
+  EVT_MENU(RESULT_ID_LISTENER_CREATED, 	wsCodeWindow::ResultListenerCreated)
+  EVT_MENU(RESULT_ID_TARGET_READY,     	wsCodeWindow::ResultTargetReady)
 
-  EVT_LISTBOX( wxID_ANY, wsCodeWindow::OnSelectFrame )
-  EVT_GRID_CELL_CHANGE( wsCodeWindow::OnVarChange )
-
-  EVT_MENU( RESULT_ID_ATTACH_TO_PORT, 		wsCodeWindow::ResultPortAttach )
-  EVT_MENU( RESULT_ID_BREAKPOINT,		wsCodeWindow::ResultBreakpoint )
-  EVT_MENU( RESULT_ID_GET_VARS,			wsCodeWindow::ResultVarList )
-  EVT_MENU( RESULT_ID_GET_STACK,		wsCodeWindow::ResultStack )
-  EVT_MENU( RESULT_ID_GET_BREAKPOINTS,		wsCodeWindow::ResultBreakpoints )
-  EVT_MENU( RESULT_ID_GET_SOURCE,		wsCodeWindow::ResultSource )
-  EVT_MENU( RESULT_ID_NEW_BREAKPOINT,		wsCodeWindow::ResultNewBreakpoint )
-  EVT_MENU( RESULT_ID_NEW_BREAKPOINT_WAIT,	wsCodeWindow::ResultNewBreakpointWait )
-  EVT_MENU( RESULT_ID_DEL_BREAKPOINT,		wsCodeWindow::ResultDeletedBreakpoint )
-  EVT_MENU( RESULT_ID_DEPOSIT_VALUE,		wsCodeWindow::ResultDepositValue )
-  EVT_MENU( RESULT_ID_ABORT_TARGET,		wsCodeWindow::ResultAbortTarget )
-  EVT_MENU( RESULT_ID_ADD_BREAKPOINT,   	wsCodeWindow::ResultAddBreakpoint )
-  EVT_MENU( RESULT_ID_LAST_BREAKPOINT,  	wsCodeWindow::ResultLastBreakpoint )
-  EVT_MENU( RESULT_ID_LISTENER_CREATED, 	wsCodeWindow::ResultListenerCreated )
-  EVT_MENU( RESULT_ID_TARGET_READY,     	wsCodeWindow::ResultTargetReady )
-
-  EVT_TIMER( wxID_ANY, wsCodeWindow::OnTimer )
+  EVT_TIMER(wxID_ANY, wsCodeWindow::OnTimer)
 
 END_EVENT_TABLE()
 
@@ -148,7 +139,6 @@ wxString wsCodeWindow::m_commandWaitForTarget( wxT( "SELECT * FROM pldbg_wait_fo
 wsCodeWindow::wsCodeWindow( wxWindow *parent, wxWindowID id, const wsConnProp & connProps )
 	:wxWindow(parent, id, wxDefaultPosition, wxDefaultSize),
 	  m_parent( parent ),
-	  m_toolsEnabled( true ),
 	  m_currentLineNumber( -1 ),
 	  m_view( NULL ),
 	  m_stackWindow( NULL ),
@@ -190,18 +180,17 @@ wsCodeWindow::wsCodeWindow( wxWindow *parent, wxWindowID id, const wsConnProp & 
 	m_view->SetReadOnly( true );
 
 	// Now setup the accelerators (function key mappings)
-	wxAcceleratorEntry entries[8];
+	wxAcceleratorEntry entries[7];
 
-	entries[0].Set( wxACCEL_NORMAL, WXK_F2, MENU_ID_STEP_INTO );
-	entries[1].Set( wxACCEL_NORMAL, WXK_F3, MENU_ID_STEP_OVER );
-	entries[2].Set( wxACCEL_NORMAL, WXK_F4, MENU_ID_CONTINUE );
-	entries[3].Set( wxACCEL_NORMAL, WXK_F5, MENU_ID_SET_BREAK );
-	entries[4].Set( wxACCEL_NORMAL, WXK_F6, MENU_ID_CLEAR_BREAK );
-	entries[5].Set( wxACCEL_NORMAL, WXK_F7, MENU_ID_CLEAR_ALL_BREAK );
-	entries[6].Set( wxACCEL_NORMAL, WXK_F8, MENU_ID_STOP );
-	entries[7].Set( wxACCEL_NORMAL, WXK_F9, MENU_ID_RESTART );
+	entries[0].Set(wxACCEL_NORMAL, WXK_F2, MENU_ID_STEP_INTO);
+	entries[1].Set(wxACCEL_NORMAL, WXK_F3, MENU_ID_STEP_OVER);
+	entries[2].Set(wxACCEL_NORMAL, WXK_F4, MENU_ID_CONTINUE);
+	entries[3].Set(wxACCEL_NORMAL, WXK_F5, MENU_ID_SET_BREAK);
+	entries[4].Set(wxACCEL_NORMAL, WXK_F6, MENU_ID_CLEAR_BREAK);
+	entries[5].Set(wxACCEL_NORMAL, WXK_F7, MENU_ID_CLEAR_ALL_BREAK);
+	entries[6].Set(wxACCEL_NORMAL, WXK_F8, MENU_ID_STOP);
 
-	glMainFrame->SetAcceleratorTable( wxAcceleratorTable( 8, entries ));
+	glMainFrame->SetAcceleratorTable( wxAcceleratorTable(7, entries));
 	
 	// We create a wsCodeWindow when a wsPgThread intercepts a PLDBGBREAK NOTICE
 	// generated by the PostgreSQL server.   The NOTICE contains a TCP port number
@@ -221,8 +210,8 @@ wsCodeWindow::wsCodeWindow( wxWindow *parent, wxWindowID id, const wsConnProp & 
 	glMainFrame->manager.GetPane(wxT("outputPane")).Caption(_("Output pane"));
 
     // Sync the View menu options
-    glMainFrame->m_view_menu->Check(MENU_ID_VIEW_STACKPANE, glMainFrame->manager.GetPane(wxT("stackPane")).IsShown());
-    glMainFrame->m_view_menu->Check(MENU_ID_VIEW_OUTPUTPANE, glMainFrame->manager.GetPane(wxT("outputPane")).IsShown());
+    glMainFrame->m_viewMenu->Check(MENU_ID_VIEW_STACKPANE, glMainFrame->manager.GetPane(wxT("stackPane")).IsShown());
+    glMainFrame->m_viewMenu->Check(MENU_ID_VIEW_OUTPUTPANE, glMainFrame->manager.GetPane(wxT("outputPane")).IsShown());
 
 	glMainFrame->manager.Update();
 
@@ -245,8 +234,6 @@ wsCodeWindow::wsCodeWindow( wxWindow *parent, wxWindowID id, const wsConnProp & 
 
 	// force
 	enableTools();
-	wxActivateEvent   fakeActivate( 0, true );
-	OnActivate( fakeActivate );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -293,64 +280,56 @@ void wsCodeWindow::resumeLocalDebugging()
 // 	When we become active, we want to display the debugger toolbar.
 // 	When we become inactive, we want to hide the debugger toolbar.
 
-void wsCodeWindow::disableTools( )
+void wsCodeWindow::disableTools()
 {
-	m_toolsEnabled = FALSE;
+	setTools(false);
 }
 
-void wsCodeWindow::enableTools( )
+void wsCodeWindow::enableTools()
 {
-	m_toolsEnabled = TRUE;
+	setTools(true);
 }
 
-void wsCodeWindow::OnActivate( wxActivateEvent & event )
+void wsCodeWindow::setTools(bool enable)
 {
-	bool activateDebug = event.GetActive();
-
 	// If we don't have a connection to the debugger proxy, disable all
 	// of the debugger controls
+    bool activateDebug = true;
 
 	if( m_dbgConn == NULL )
-		activateDebug = FALSE;
+		activateDebug = false;
 
-	if( m_toolsEnabled == FALSE )
-		activateDebug = FALSE;
+	if( enable == FALSE )
+		activateDebug = false;
 
-	wxToolBar * t = glMainFrame->m_toolBar;
+	wxToolBar *t = glMainFrame->m_toolBar;
+    wxMenu *m = glMainFrame->m_debugMenu;
 
 	// We may find that our toolbar has disappeared during application shutdown -
 	// It seems a little strange that OnActivate() is called during shutdown, but 
 	// that does seem to happen on Win32 hosts.
 
-	if( t == NULL )
-		return;
+	if (t)
+    {
+	    t->EnableTool( MENU_ID_STEP_INTO,   	activateDebug );
+	    t->EnableTool( MENU_ID_STEP_OVER,   	activateDebug );
+	    t->EnableTool( MENU_ID_CONTINUE,    	activateDebug );
+	    t->EnableTool( MENU_ID_SET_BREAK,   	activateDebug );
+	    t->EnableTool( MENU_ID_CLEAR_BREAK, 	activateDebug );
+	    t->EnableTool( MENU_ID_CLEAR_ALL_BREAK, activateDebug );
+	    t->EnableTool( MENU_ID_STOP,			activateDebug );
+    }
 
-	t->EnableTool( MENU_ID_STEP_INTO,   	activateDebug );
-	t->EnableTool( MENU_ID_STEP_OVER,   	activateDebug );
-	t->EnableTool( MENU_ID_CONTINUE,    	activateDebug );
-	t->EnableTool( MENU_ID_SET_BREAK,   	activateDebug );
-	t->EnableTool( MENU_ID_CLEAR_BREAK, 	activateDebug );
-	t->EnableTool( MENU_ID_CLEAR_ALL_BREAK, activateDebug );
-	t->EnableTool( MENU_ID_STOP,			activateDebug );
-	
-	// Restart functionality shall not be available during in-context
-	// debugging so make the Restart button inactive
-
-	if( m_sessionType == SESSION_TYPE_INCONTEXT )
-		t->EnableTool( MENU_ID_RESTART, false );
-	else 
-		t->EnableTool( MENU_ID_RESTART, activateDebug );
-	
-
-	t->EnableTool( MENU_ID_EXECUTE,    ! activateDebug );
-	t->EnableTool( wxID_CUT,   		   ! activateDebug );
-	t->EnableTool( wxID_PASTE, 		   ! activateDebug );		
-
-#if INCLUDE_WATCHPOINTS
-	t->EnableTool( MENU_ID_SET_WATCH,   activateDebug );
-	t->EnableTool( MENU_ID_CLEAR_WATCH, activateDebug );
-	t->EnableTool( MENU_ID_SET_PC,      activateDebug );
-#endif
+    if (m)
+    {
+	    m->Enable( MENU_ID_STEP_INTO,   	activateDebug );
+	    m->Enable( MENU_ID_STEP_OVER,   	activateDebug );
+	    m->Enable( MENU_ID_CONTINUE,    	activateDebug );
+	    m->Enable( MENU_ID_SET_BREAK,   	activateDebug );
+	    m->Enable( MENU_ID_CLEAR_BREAK, 	activateDebug );
+	    m->Enable( MENU_ID_CLEAR_ALL_BREAK, activateDebug );
+	    m->Enable( MENU_ID_STOP,			activateDebug );
+    }
 
 	/* Activate hook */
 	glMainFrame->Show( true );
@@ -757,9 +736,7 @@ void wsCodeWindow::ResultAbortTarget( wxCommandEvent & event )
 			unhilightCurrentLine();
 
 			// And force the toolbar to refresh itself (to disable the debugger-related tools)
-			wxActivateEvent   fakeActivate( 0, false );
-
-			OnActivate( fakeActivate );
+			setTools(false);
 		}
 		else
 		{
@@ -824,9 +801,7 @@ void wsCodeWindow::closeConnection()
 	unhilightCurrentLine();
 
 	// And force the toolbar to refresh itself (to disable the debugger-related tools)
-	wxActivateEvent   fakeActivate;
-
-	OnActivate( fakeActivate );
+	setTools(false);
 
 
 }
@@ -1139,44 +1114,10 @@ void wsCodeWindow::OnCommand( wxCommandEvent & event )
 			stopDebugging();
 			break;
 		}
-		
-		case MENU_ID_RESTART:
-		{
-			restartDebugging();	 
-			break;
-		}
 
-		case MENU_ID_SET_PC:
-		case MENU_ID_SET_WATCH:
-		case MENU_ID_CLEAR_WATCH:
 		default:
-		{
-			// The user wants to change the program counter (that is, jump to
-			// a different point in this function), set a variable watchpoint,
-			// or clear a variable watchpoint).
-			// 
-			// These functions are not yet complete.
-
-			::wxMessageBox( _( "This function not yet complete" ), _( "Sorry..." ));
 			break;
-		}
     }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// OnWriteAttempt()
-//
-//	This event handler is invoked when the user tries to type into the source
-//  code listing. We can't let the user modify this view since we always want 
-//  to show the real source code that the user is stepping through.  Instead,
-//  we create a new window and let the user modify a copy of the function source
-//  code.  We use the document/view mechanism to handle the tough work.
-
-void wsCodeWindow::OnWriteAttempt( wxStyledTextEvent & event )
-{
-#if INCLUDE_FUNCTION_EDITOR
-//	wsFuncDoc::OpenDoc( m_view->GetText(), GetTitle() + wxT( "*" ), m_displayedFuncOid, m_view->GetCurrentPos());
-#endif
 }
 
 void wsCodeWindow::OnNoticeReceived( wxCommandEvent & event )
@@ -1234,10 +1175,7 @@ void wsCodeWindow::stopDebugging()
 	m_dbgConn->startCommand( wxString::Format( m_commandAbortTarget, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_ABORT_TARGET );
 }
 
-void wsCodeWindow::restartDebugging()
-{
-	wxMessageBox( _( "Restart not yet implemented" ), _( "Not Yet Implemented" ));
-}
+
 ////////////////////////////////////////////////////////////////////////////////
 // OnMarginClick()
 // 
@@ -1455,20 +1393,6 @@ void wsCodeWindow::unhilightCurrentLine()
 		m_view->MarkerDelete( lineNo, MARKER_CURRENT_BG );
 	}
 	
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
-// OnClose()
-//
-//	wxWidgets invokes this event handler when the user closes the parameter
-//	window. We close the connection with server and raise close event for 
-//	MainFrame.
-
-void wsCodeWindow::OnClose( wxCloseEvent & event )
-{
-	// This close event will make the mainFrame close
-	glMainFrame->Close();
 }
 
 void wsCodeWindow::OnTimer( wxTimerEvent & event )
