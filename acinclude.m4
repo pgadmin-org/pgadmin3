@@ -331,8 +331,6 @@ AC_DEFUN([ENABLE_APPBUNDLE],
 			datadir="$bundledir/Contents/SharedSupport"
 			AC_SUBST(bundledir)
 			AC_SUBST(debuggerbindir)
-			BUILD_STATIC=yes
-			WX_STATIC="--static=yes"
 		else
 			BUILD_APPBUNDLE=no
 		fi
@@ -641,7 +639,7 @@ AC_DEFUN([SUMMARY],
 	fi
 	if test "$BUILD_APPBUNDLE" = yes
 	then
-		echo "Building a Mac OS X appbundle:		Yes (Static linking forced)"
+		echo "Building a Mac OS X appbundle:		Yes"
 	else
 		echo "Building a Mac OS X appbundle:		No"
 	fi
