@@ -234,7 +234,8 @@ PGresult * wsPgConn::waitForCommand( const wxString &command )
 
 void wsPgConn::setNoticeHandler( PQnoticeProcessor handler, void * arg )
 {
-	PQnoticeProcessor p = PQsetNoticeProcessor( m_pgConn, handler, arg );
+	PQnoticeProcessor p=NULL;
+        p = PQsetNoticeProcessor( m_pgConn, handler, arg );
 }
 
 void wsPgConn::close()

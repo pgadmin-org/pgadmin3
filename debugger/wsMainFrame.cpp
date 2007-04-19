@@ -63,10 +63,7 @@ END_EVENT_TABLE()
 wsMainFrame::wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint & pos, const wxSize & size )
 	: wxFrame( parent, wxID_ANY, title, pos, size ),
 	  m_console( NULL ),
-	  m_standaloneDebugger( NULL ),
-	  m_menuBar( NULL ),
-	  m_toolBar( NULL ),
-	  m_statusBar( NULL )
+	  m_standaloneDebugger( NULL )
 {
     wxWindowBase::SetFont(glApp->GetSystemFont());
 

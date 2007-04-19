@@ -109,7 +109,8 @@ bool wsApp::OnInit( )
 
 	if( getenv( "ENABLE_LOGGING" ) == NULL )
 	{
-		wxLogNull * disableLogging = new( wxLogNull );
+		wxLogNull *disableLogging;
+		disableLogging = new( wxLogNull );
 	}
 
 	// Disable timestamps on log messages

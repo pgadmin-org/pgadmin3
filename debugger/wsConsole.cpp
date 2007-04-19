@@ -16,8 +16,6 @@
 #include "wsMainFrame.h"
 #include "debuggerMenu.h"
 
-#include "images/debugger.xpm"
-
 #include <wx/log.h>
 
 IMPLEMENT_CLASS( wsConsole, wxTextCtrl )

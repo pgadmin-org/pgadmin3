@@ -61,9 +61,7 @@ END_EVENT_TABLE()
 //  provided by the user).
 
 wsDirectDbg::wsDirectDbg( wxWindow *parent, wxWindowID id, const wsConnProp & connProp )
-	: wxDialog( parent, id,  connProp.m_host + wxT( "/" ) + connProp.m_database, 
-	wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION  ),
-	m_target(),
+	: wxDialog( parent, id,  connProp.m_host + wxT( "/" ) + connProp.m_database, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION  ),
 	m_connProp( connProp ),
 	m_targetInfo( NULL ),
 	m_grid( NULL ),
@@ -154,7 +152,7 @@ void wsDirectDbg::startDebugging( void )
 
 	m_target = breakpoint->getTarget();
 
-	char	targetType;
+	char	targetType=0;
 
 	switch( breakpoint->getTargetType())
 	{

@@ -19,8 +19,6 @@
 #include "wsBreakPoint.h"
 #include "wsWaitingDialog.h"
 
-#include "images/debugger.xpm"
-
 #include <wx/colour.h>
 #include <wx/tokenzr.h>		// wxStringTokenizer
 #include <wx/msgdlg.h>		// wxMessageBox
@@ -134,17 +132,12 @@ wxString wsCodeWindow::m_commandWaitForTarget( wxT( "SELECT * FROM pldbg_wait_fo
 
 wsCodeWindow::wsCodeWindow( wxWindow *parent, wxWindowID id, const wsConnProp & connProps )
 	:wxWindow(parent, id, wxDefaultPosition, wxDefaultSize),
+	  m_debugPort( connProps.m_debugPort ),
 	  m_parent( parent ),
 	  m_currentLineNumber( -1 ),
-	  m_view( NULL ),
-	  m_stackWindow( NULL ),
-	  m_tabWindow( NULL ),
-	  m_debugPort( connProps.m_debugPort ),
-	  m_sessionHandle(),
 	  m_updateVars( false ),
 	  m_updateStack( false ),
 	  m_updateBreakpoints( false ),
-	  m_targetName(),
 	  m_progressBar( NULL ),
 	  m_progress( 0 ),
 	  m_timer( this ),
@@ -1282,7 +1275,7 @@ void wsCodeWindow::addBreakpoint( wsBreakpoint * breakpoint, wxEventType nextSte
 	// target happens to reside in a package).  When the target info arrives, we'll get a
 	// RESULT_ID_ADD_BREAKPOINT message.
 
-	char	targetType;
+	char	targetType=0;
 
 	switch( breakpoint->getTargetType())
 	{
