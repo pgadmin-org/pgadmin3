@@ -70,8 +70,9 @@ BEGIN_EVENT_TABLE(wsCodeWindow , wxWindow)
 
   EVT_BUTTON(MENU_ID_NOTICE_RECEIVED,  wsCodeWindow::OnNoticeReceived)
 
-  EVT_LISTBOX(wxID_ANY, wsCodeWindow::OnSelectFrame)
-  EVT_GRID_CELL_CHANGE(wsCodeWindow::OnVarChange)
+  EVT_LISTBOX(wxID_ANY,                wsCodeWindow::OnSelectFrame)
+  EVT_GRID_CELL_CHANGE(                wsCodeWindow::OnVarChange)
+  EVT_STC_MARGINCLICK(wxID_ANY,        wsCodeWindow::OnMarginClick)
 
   EVT_MENU(RESULT_ID_ATTACH_TO_PORT, 	wsCodeWindow::ResultPortAttach)
   EVT_MENU(RESULT_ID_BREAKPOINT,		wsCodeWindow::ResultBreakpoint)
@@ -207,6 +208,30 @@ wsCodeWindow::wsCodeWindow( wxWindow *parent, wxWindowID id, const wsConnProp & 
 
 	// force
 	enableTools();
+}
+
+
+//////////////////////////////////////////////////////////////////////////////// 	 
+// OnMarginClick() 	 
+// 	 
+//  This event handler is called when the user clicks in the margin to the left 	 
+//  of a line of source code. We use the margin to display breakpoint indicators 	 
+//  so it makes sense that if you click on an breakpoint indicator, we will clear 	 
+//  that breakpoint.  If you click on a spot that does not contain a breakpoint 	 
+//  indicator (but it's still in the margin), we create a new breakpoint at that 	 
+//  line. 	 
+ 	 
+void wsCodeWindow::OnMarginClick( wxStyledTextEvent& event ) 	 
+{ 	 
+    int lineNumber = m_view->LineFromPosition( event.GetPosition()); 	 
+ 	 
+    // If we already have a breakpoint at the clickpoint, disable it, otherwise 	 
+    // create a new breakpoint. 	 
+ 	 
+    if( m_view->MarkerGet( lineNumber ) & MARKERINDEX_TO_MARKERMASK( MARKER_BREAKPOINT )) 	 
+        clearBreakpoint( lineNumber, true ); 	 
+    else 	 
+        setBreakpoint( lineNumber ); 	 
 }
 
 ////////////////////////////////////////////////////////////////////////////////

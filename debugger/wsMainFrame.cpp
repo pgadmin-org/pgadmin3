@@ -44,6 +44,7 @@ BEGIN_EVENT_TABLE( wsMainFrame, wxWindow  )
     EVT_SIZE(wsMainFrame::OnSize)
 
     EVT_STC_MARGINCLICK(wxID_ANY,        wsMainFrame::OnMarginClick)
+    EVT_LISTBOX(wxID_ANY,                wsMainFrame::OnSelectFrame)
 
     EVT_MENU(MENU_ID_VIEW_TOOLBAR,       wsMainFrame::OnToggleToolBar)
     EVT_MENU(MENU_ID_VIEW_STACKPANE,     wsMainFrame::OnToggleStackPane)
@@ -109,33 +110,6 @@ wxString wsMainFrame::VerFromRev(const wxString &rev)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// OnMarginClick()
-// 
-//  This event handler is called when the user clicks in the margin to the left
-//  of a line of source code. We use the margin to display breakpoint indicators
-//  so it makes sense that if you click on an breakpoint indicator, we will clear
-//  that breakpoint.  If you click on a spot that does not contain a breakpoint
-//  indicator (but it's still in the margin), we create a new breakpoint at that
-//  line.
-
-void wsMainFrame::OnMarginClick( wxStyledTextEvent& event ) 
-{
-    if (m_standaloneDebugger)
-    {
-	    int lineNumber = m_standaloneDebugger->GetLine(event.GetPosition());
-
-	    // If we already have a breakpoint at the clickpoint, disable it, otherwise
-	    // create a new breakpoint.
-
-	    if(m_standaloneDebugger->isBreakpoint(lineNumber))
-		    m_standaloneDebugger->clearBreakpoint( lineNumber, true );
-	    else
-		    m_standaloneDebugger->setBreakpoint( lineNumber );
-    }
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 // addDebug()
 //
 // 	This function creates a new debugger window...
@@ -160,11 +134,33 @@ wsDirectDbg * wsMainFrame::addDirectDbg( const wsConnProp & connProp )
 //
 // 	This event handler is invoked when the user clicks one of the debugger 
 // 	tools (on the debugger toolbar) - we simply forward the event to the 
-// 	console window (who then forwards it to the debugger window).
+//  debugger window.
 
 void wsMainFrame::OnDebugCommand( wxCommandEvent & event )
 {
     m_standaloneDebugger->OnCommand( event );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// OnSelectFrame()
+//
+// 	This event handler is invoked when the user clicks one of the stack frames
+//  - we simply forward the event to the debugger window.
+
+void wsMainFrame::OnSelectFrame( wxCommandEvent & event )
+{
+    m_standaloneDebugger->OnSelectFrame( event );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// OnMarginClick()
+//
+// 	This event handler is invoked when the user clicks one of the stack frames
+//  - we simply forward the event to the debugger window.
+
+void wsMainFrame::OnMarginClick( wxStyledTextEvent & event )
+{
+    m_standaloneDebugger->OnMarginClick( event );
 }
 
 void wsMainFrame ::OnAbout(wxCommandEvent& WXUNUSED(event))

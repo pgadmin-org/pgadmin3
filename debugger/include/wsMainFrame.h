@@ -61,7 +61,6 @@ class wsMainFrame : public wxFrame
 	wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint & pos, const wxSize & size );
 	virtual ~wsMainFrame();
 
-	void	OnMarginClick( wxStyledTextEvent & event );	// Set/clear breakpoint on margin click
 	wsDirectDbg   *addDirectDbg( const wsConnProp & connProp );		// Create a new direct-debugging window
 	wsCodeWindow  *addDebug( const wsConnProp & props );			   	// Create a new debugger window
 	wxStatusBar   *getStatusBar() { return( m_statusBar ); }			// Returns pointer to the status bar
@@ -90,6 +89,8 @@ class wsMainFrame : public wxFrame
 
 	void OnExecute( wxCommandEvent & event );
 	void OnDebugCommand( wxCommandEvent & event );
+    void OnSelectFrame( wxCommandEvent & event );
+	void OnMarginClick( wxStyledTextEvent & event );	// Set/clear breakpoint on margin click
 	void OnClose( wxCloseEvent & event );
     void OnExit( wxCommandEvent & event );
 	void OnSize( wxSizeEvent & event );
