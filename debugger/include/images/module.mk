@@ -12,6 +12,7 @@
 debugger_SOURCES += \
 	$(srcdir)/include/images/clearAll.xpm \
       	$(srcdir)/include/images/continue.xpm \
+	$(srcdir)/include/images/debugger.ico \
 	$(srcdir)/include/images/debugger.xpm \
 	$(srcdir)/include/images/setBreak.xpm \
 	$(srcdir)/include/images/stepInto.xpm \
