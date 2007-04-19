@@ -60,23 +60,23 @@ END_EVENT_TABLE()
 //  manages the toolbar, menu, status bar, and top-level windows.  
 
 wsMainFrame::wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint & pos, const wxSize & size )
-	: wxFrame( parent, wxID_ANY, title, pos, size ),
-	  m_standaloneDebugger( NULL )
+    : wxFrame( parent, wxID_ANY, title, pos, size ),
+      m_standaloneDebugger( NULL )
 {
     wxWindowBase::SetFont(glApp->GetSystemFont());
 
-	manager.SetManagedWindow(this);
-	manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+    manager.SetManagedWindow(this);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
 
-	// Define the icon for this window
-	SetIcon(wxIcon(debugger_xpm));
+    // Define the icon for this window
+    SetIcon(wxIcon(debugger_xpm));
 
-	// Create (and configure) the menu bar, toolbar, and status bar
-	m_menuBar   = setupMenuBar();
-	m_toolBar   = setupToolBar();
-	m_statusBar = setupStatusBar();
+    // Create (and configure) the menu bar, toolbar, and status bar
+    m_menuBar   = setupMenuBar();
+    m_toolBar   = setupToolBar();
+    m_statusBar = setupStatusBar();
 
-	manager.AddPane(m_toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(wxT("Toolbar")).ToolbarPane().Top().Row(1).Position(1).LeftDockable(false).RightDockable(false));
+    manager.AddPane(m_toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(wxT("Toolbar")).ToolbarPane().Top().Row(1).Position(1).LeftDockable(false).RightDockable(false));
 
     // Now load the layout
     wxString perspective;
@@ -89,7 +89,7 @@ wsMainFrame::wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint
     // Sync the View menu options
     m_viewMenu->Check(MENU_ID_VIEW_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
 
-	manager.Update();
+    manager.Update();
 
 }
 
@@ -101,7 +101,7 @@ wsMainFrame::~wsMainFrame()
 ////////////////////////////////////////////////////////////////////////////////
 // VerFromRev()
 //
-// 	Get a version number from a revision string
+//     Get a version number from a revision string
 wxString wsMainFrame::VerFromRev(const wxString &rev)
 {
    wxString ret = rev.AfterFirst(' ');
@@ -112,28 +112,28 @@ wxString wsMainFrame::VerFromRev(const wxString &rev)
 ////////////////////////////////////////////////////////////////////////////////
 // addDebug()
 //
-// 	This function creates a new debugger window...
+//     This function creates a new debugger window...
 
 wsCodeWindow * wsMainFrame::addDebug( const wsConnProp & connProps )
 {
     m_standaloneDebugger = new wsCodeWindow( this , -1, connProps );
-	m_standaloneDebugger->Show( false );
+    m_standaloneDebugger->Show( false );
     return( m_standaloneDebugger );
 }
 
 wsDirectDbg * wsMainFrame::addDirectDbg( const wsConnProp & connProp )
 {
 
-	m_standaloneDirectDbg = new wsDirectDbg( this, -1, connProp );
-	m_standaloneDirectDbg->Show( true );
-	return( m_standaloneDirectDbg );
+    m_standaloneDirectDbg = new wsDirectDbg( this, -1, connProp );
+    m_standaloneDirectDbg->Show( true );
+    return( m_standaloneDirectDbg );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // OnDebugCommand()
 //
-// 	This event handler is invoked when the user clicks one of the debugger 
-// 	tools (on the debugger toolbar) - we simply forward the event to the 
+//     This event handler is invoked when the user clicks one of the debugger 
+//     tools (on the debugger toolbar) - we simply forward the event to the 
 //  debugger window.
 
 void wsMainFrame::OnDebugCommand( wxCommandEvent & event )
@@ -144,7 +144,7 @@ void wsMainFrame::OnDebugCommand( wxCommandEvent & event )
 ////////////////////////////////////////////////////////////////////////////////
 // OnSelectFrame()
 //
-// 	This event handler is invoked when the user clicks one of the stack frames
+//     This event handler is invoked when the user clicks one of the stack frames
 //  - we simply forward the event to the debugger window.
 
 void wsMainFrame::OnSelectFrame( wxCommandEvent & event )
@@ -155,7 +155,7 @@ void wsMainFrame::OnSelectFrame( wxCommandEvent & event )
 ////////////////////////////////////////////////////////////////////////////////
 // OnMarginClick()
 //
-// 	This event handler is invoked when the user clicks one of the stack frames
+//     This event handler is invoked when the user clicks one of the stack frames
 //  - we simply forward the event to the debugger window.
 
 void wsMainFrame::OnMarginClick( wxStyledTextEvent & event )
@@ -165,64 +165,64 @@ void wsMainFrame::OnMarginClick( wxStyledTextEvent & event )
 
 void wsMainFrame ::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
-	wxString Versions( VERSION_WITH_DATE_AND_SVN );
-	Versions += wxT("\n");
-	Versions += COPYRIGHT;
-	Versions += wxT("\n");
-	Versions += LICENSE;
-	wxMessageBox(Versions, _("Debugger"), wxOK, this);
+    wxString Versions( VERSION_WITH_DATE_AND_SVN );
+    Versions += wxT("\n");
+    Versions += COPYRIGHT;
+    Versions += wxT("\n");
+    Versions += LICENSE;
+    wxMessageBox(Versions, _("Debugger"), wxOK, this);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // OnSize()
 //
-//	This event handler is called when a resize event occurs (that is, when 
+//    This event handler is called when a resize event occurs (that is, when 
 //  wxWidgets needs to size the application window)
 
 void wsMainFrame::OnSize( wxSizeEvent & event )
 {
-	event.Skip();
+    event.Skip();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // setupToolBar()
 //
-//	This function creates the standard toolbar
+//    This function creates the standard toolbar
 
 wxToolBar * wsMainFrame::setupToolBar( void )
 {
-	wxToolBar *t = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
+    wxToolBar *t = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 
-	t->SetToolBitmapSize( wxSize( 16, 16 ));
+    t->SetToolBitmapSize( wxSize( 16, 16 ));
  
-	t->AddTool( MENU_ID_STEP_INTO,		 _( "Step into" ),    		 wxBitmap(stepInto_xpm));
-	t->AddTool( MENU_ID_STEP_OVER,		 _( "Step over" ),    		 wxBitmap(stepOver_xpm));
-	t->AddTool( MENU_ID_CONTINUE,		 _( "Continue" ),    		 wxBitmap(continue_xpm));
+    t->AddTool( MENU_ID_STEP_INTO,		 _( "Step into" ),    		 wxBitmap(stepInto_xpm));
+    t->AddTool( MENU_ID_STEP_OVER,		 _( "Step over" ),    		 wxBitmap(stepOver_xpm));
+    t->AddTool( MENU_ID_CONTINUE,		 _( "Continue" ),    		 wxBitmap(continue_xpm));
     t->AddSeparator();
-	t->AddTool( MENU_ID_TOGGLE_BREAK,	 _( "Toggle breakpoint" ),   wxBitmap(setBreak_xpm));
-	t->AddTool( MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints" ), wxBitmap(clearAll_xpm));
+    t->AddTool( MENU_ID_TOGGLE_BREAK,	 _( "Toggle breakpoint" ),   wxBitmap(setBreak_xpm));
+    t->AddTool( MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints" ), wxBitmap(clearAll_xpm));
     t->AddSeparator();
-	t->AddTool( MENU_ID_STOP,      		 _( "Stop debugging" ),    	 wxBitmap(stop_xpm));
+    t->AddTool( MENU_ID_STOP,      		 _( "Stop debugging" ),    	 wxBitmap(stop_xpm));
 
-	t->Realize();
-	m_toolBar = t;
+    t->Realize();
+    m_toolBar = t;
 
-	return( m_toolBar );
+    return( m_toolBar );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // setupStatusBar()
 //
-//	This function initializes the status bar (we don't have one at the moment
+//    This function initializes the status bar (we don't have one at the moment
 //  so this function simply returns)
 
 wxStatusBar * wsMainFrame::setupStatusBar( void )
 {
-	wxStatusBar * bar = CreateStatusBar( 3, wxST_SIZEGRIP );
-	int			  widths[] = { 0, -1, -1 };
+    wxStatusBar * bar = CreateStatusBar( 3, wxST_SIZEGRIP );
+    int			  widths[] = { 0, -1, -1 };
 
-	bar->SetStatusWidths(3, widths);
-	bar->SetStatusText(_( "Initializing..."), 1);
+    bar->SetStatusWidths(3, widths);
+    bar->SetStatusText(_( "Initializing..."), 1);
 
     return( bar );
 }
@@ -230,71 +230,75 @@ wxStatusBar * wsMainFrame::setupStatusBar( void )
 ////////////////////////////////////////////////////////////////////////////////
 // setupMenuBar()
 //
-//	This function creates the standard menu bar
+//    This function creates the standard menu bar
 
 wxMenuBar *wsMainFrame::setupMenuBar(void)
 {
-	m_menuBar = new wxMenuBar;
+    m_menuBar = new wxMenuBar;
 
-	wxMenu *fileMenu = new wxMenu;
-	fileMenu->Append(wxID_EXIT, _("E&xit"));
-	m_menuBar->Append(fileMenu, _("&File"));
+    wxMenu *fileMenu = new wxMenu;
+    fileMenu->Append(wxID_EXIT, _("E&xit"));
+// Don't append the File menu on Mac, as the Exit option
+// will be moved to the application menu, leaving File empty.
+#ifndef __WXMAC__
+    m_menuBar->Append(fileMenu, _("&File"));
+#endif
 
-	m_debugMenu = new wxMenu;
-	m_debugMenu->Append(MENU_ID_STEP_INTO, _( "Step into\tF11" ));
-	m_debugMenu->Append(MENU_ID_STEP_OVER, _( "Step over\tF10" ));
+    m_debugMenu = new wxMenu;
+    m_debugMenu->Append(MENU_ID_STEP_INTO, _( "Step into\tF11" ));
+    m_debugMenu->Append(MENU_ID_STEP_OVER, _( "Step over\tF10" ));
     m_debugMenu->Append(MENU_ID_CONTINUE, _( "Continue\tF5" ));
     m_debugMenu->AppendSeparator();
     m_debugMenu->Append(MENU_ID_TOGGLE_BREAK, _( "Toggle breakpoint\tF9" ));
     m_debugMenu->Append(MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints\tCtrl+Shift+F9" ));
     m_debugMenu->AppendSeparator();
     m_debugMenu->Append(MENU_ID_STOP, _( "Stop debugging\tF8" ));
-	m_menuBar->Append(m_debugMenu, _("&Debug"));
+    m_menuBar->Append(m_debugMenu, _("&Debug"));
 
-	m_viewMenu = new wxMenu;
+    m_viewMenu = new wxMenu;
     m_viewMenu->Append(MENU_ID_VIEW_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
     m_viewMenu->Append(MENU_ID_VIEW_STACKPANE, _("&Stack pane"),   _("Show or hide the stack pane."), wxITEM_CHECK);
     m_viewMenu->Append(MENU_ID_VIEW_TOOLBAR, _("&Tool bar"),       _("Show or hide the tool bar."), wxITEM_CHECK);
     m_viewMenu->AppendSeparator();
     m_viewMenu->Append(MENU_ID_VIEW_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
-	m_menuBar->Append(m_viewMenu, _("&View"));
+    m_menuBar->Append(m_viewMenu, _("&View"));
 
-	wxMenu* help_menu = new wxMenu;
-	help_menu->Append(wxID_ABOUT, _("&About..."));
-	m_menuBar->Append(help_menu, _("&Help"));
+    wxMenu* help_menu = new wxMenu;
+    help_menu->Append(wxID_ABOUT, _("&About..."));
+    m_menuBar->Append(help_menu, _("&Help"));
 
 
-	SetMenuBar( m_menuBar );
+    SetMenuBar( m_menuBar );
 
-	return( m_menuBar );
+    return( m_menuBar );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // OnClose()
 //
-//	wxWidgets invokes this event handler when the user closes the main window
+//    wxWidgets invokes this event handler when the user closes the main window
 
 void wsMainFrame::OnClose( wxCloseEvent & event )
 {
-	manager.UnInit();
-	Destroy();
+    manager.UnInit();
+    Destroy();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // OnExit()
 //
-//	Close the debugger
+//    Close the debugger
 
 void wsMainFrame::OnExit( wxCommandEvent & event )
 {
-	this->Close();
+    this->Close();
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 //  OnToggleToolBar()
 //
-//	Turn the tool bar on or off
+//    Turn the tool bar on or off
 void wsMainFrame::OnToggleToolBar(wxCommandEvent& event)
 {
     if (m_viewMenu->IsChecked(MENU_ID_VIEW_TOOLBAR))
@@ -307,7 +311,7 @@ void wsMainFrame::OnToggleToolBar(wxCommandEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 //  OnToggleStackPane()
 //
-//	Turn the tool bar on or off
+//    Turn the tool bar on or off
 void wsMainFrame::OnToggleStackPane(wxCommandEvent& event)
 {
     if (m_viewMenu->IsChecked(MENU_ID_VIEW_STACKPANE))
@@ -320,7 +324,7 @@ void wsMainFrame::OnToggleStackPane(wxCommandEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 //  OnToggleOutputPane()
 //
-//	Turn the tool bar on or off
+//    Turn the tool bar on or off
 void wsMainFrame::OnToggleOutputPane(wxCommandEvent& event)
 {
     if (m_viewMenu->IsChecked(MENU_ID_VIEW_OUTPUTPANE))
@@ -333,7 +337,7 @@ void wsMainFrame::OnToggleOutputPane(wxCommandEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 //  OnAuiUpdate()
 //
-//	Update the view menu to reflect AUI changes
+//    Update the view menu to reflect AUI changes
 void wsMainFrame::OnAuiUpdate(wxAuiManagerEvent& event)
 {
     if(event.pane->name == wxT("toolBar"))
@@ -354,7 +358,7 @@ void wsMainFrame::OnAuiUpdate(wxAuiManagerEvent& event)
 ////////////////////////////////////////////////////////////////////////////////
 //  OnDefaultView()
 //
-//	Reset the AUI view to the default
+//    Reset the AUI view to the default
 void wsMainFrame::OnDefaultView(wxCommandEvent& event)
 {
     manager.LoadPerspective(WSMAINFRAME_DEFAULT_PERSPECTIVE, true);
