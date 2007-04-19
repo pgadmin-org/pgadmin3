@@ -224,7 +224,7 @@ void wsApp::handleCmdLine( void )
 			{
 				if( targetCount != 1 )
 				{
-					wxMessageBox( _( "-f, -s, -t and -o options are mutually exclusive - you may only use one of them at time." ), _( "Error" ), wxOK | wxICON_ERROR );
+					wxMessageBox( _( "One of the options -f, -s, -t or -o must be specified." ), _( "Error" ), wxOK | wxICON_ERROR );
 					exit( 0 );
 				}
 
@@ -239,7 +239,7 @@ void wsApp::handleCmdLine( void )
 		}
 		else
 		{
-			m_mainFrame->addConnect( m_connProp.m_host, m_connProp.m_database, m_connProp.m_port, m_connProp.m_userName, wxString( wxT( "" )));
+			wxMessageBox( _( "-f, -s, -t and -o options are mutually exclusive - you may only use one of them at time." ), _( "Error" ), wxOK | wxICON_ERROR );
 		}
 	}
 	catch( std::runtime_error & error )

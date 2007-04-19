@@ -33,18 +33,17 @@
 #include <wx/toolbar.h>
 
 #include "wsRichWindow.h"
-#include "wsConsole.h"
 #include "wsTabWindow.h"
 
 #define WSMAINFRAME_PERPSECTIVE_VER wxT("$Rev$")
 
 #ifdef __WXMAC__
-#define WSMAINFRAME_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Toolbar;state=2108144;dir=1;layer=10;row=0;pos=1;prop=100000;bestw=177;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sourcePane;caption=Source pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=stackPane;caption=Stack pane;state=2099196;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=2099196;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=237|dock_size(2,0,0)=237|dock_size(3,0,0)=156|")
+#define WSMAINFRAME_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Toolbar;state=2108144;dir=1;layer=10;row=0;pos=1;prop=100000;bestw=154;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sourcePane;caption=Source pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=stackPane;caption=Stack pane;state=2099196;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=2099196;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=237|dock_size(2,0,0)=237|dock_size(3,0,0)=156|")
 #else
 #ifdef __WXGTK__
-#define WSMAINFRAME_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Toolbar;state=2108144;dir=1;layer=10;row=0;pos=1;prop=100000;bestw=177;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sourcePane;caption=Source pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=stackPane;caption=Stack pane;state=2099196;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=2099196;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=237|dock_size(2,0,0)=237|dock_size(3,0,0)=156|")
+#define WSMAINFRAME_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Toolbar;state=2108144;dir=1;layer=10;row=0;pos=1;prop=100000;bestw=154;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sourcePane;caption=Source pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=stackPane;caption=Stack pane;state=2099196;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=2099196;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=237|dock_size(2,0,0)=237|dock_size(3,0,0)=156|")
 #else
-#define WSMAINFRAME_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Toolbar;state=2108144;dir=1;layer=10;row=0;pos=1;prop=100000;bestw=177;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sourcePane;caption=Source pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=stackPane;caption=Stack pane;state=2099196;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=2099196;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=237|dock_size(2,0,0)=237|dock_size(3,0,0)=156|")
+#define WSMAINFRAME_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Toolbar;state=2108144;dir=1;layer=10;row=0;pos=1;prop=100000;bestw=154;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sourcePane;caption=Source pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=stackPane;caption=Stack pane;state=2099196;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=2099196;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=237|dock_size(2,0,0)=237|dock_size(3,0,0)=156|")
 #endif
 #endif
 
@@ -63,7 +62,6 @@ class wsMainFrame : public wxFrame
 	virtual ~wsMainFrame();
 
 	void	OnMarginClick( wxStyledTextEvent & event );	// Set/clear breakpoint on margin click
-	bool	addConnect( const wxString &host, const wxString &database, const wxString &port, const wxString &user, const wxString &password );
 	wsDirectDbg   *addDirectDbg( const wsConnProp & connProp );		// Create a new direct-debugging window
 	wsCodeWindow  *addDebug( const wsConnProp & props );			   	// Create a new debugger window
 	wxStatusBar   *getStatusBar() { return( m_statusBar ); }			// Returns pointer to the status bar
@@ -80,7 +78,6 @@ class wsMainFrame : public wxFrame
     wxString VerFromRev(const wxString &rev);
 
   private:
-	wsConsole	*m_console;	// Console window (eventually a list)
 	wsCodeWindow	*m_standaloneDebugger;	// Standalone debugger window
 	wsDirectDbg	*m_standaloneDirectDbg;	// Standalone direct debugger
 	wxStatusBar	*m_statusBar;	// Frame's status bar

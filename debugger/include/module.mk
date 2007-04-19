@@ -15,7 +15,6 @@ debugger_SOURCES += \
 	$(srcdir)/include/wsBreakPoint.h \
 	$(srcdir)/include/wsCodeWindow.h \
 	$(srcdir)/include/wsConnProp.h \
-	$(srcdir)/include/wsConsole.h \
 	$(srcdir)/include/wsConst.h \
 	$(srcdir)/include/wsDbresult.h \
 	$(srcdir)/include/wsDirectdbg.h \
@@ -23,7 +22,6 @@ debugger_SOURCES += \
 	$(srcdir)/include/wsMessageWindow.h \
 	$(srcdir)/include/wsPgconn.h \
 	$(srcdir)/include/wsPgthread.h \
-	$(srcdir)/include/wsQueryWindow.h \
 	$(srcdir)/include/wsResultGrid.h \
 	$(srcdir)/include/wsResultset.h \
 	$(srcdir)/include/wsRichWindow.h \

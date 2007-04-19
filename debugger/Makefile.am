@@ -16,14 +16,12 @@ debugger_SOURCES = \
 	$(srcdir)/wsBreakPoint.cpp \
 	$(srcdir)/wsCodeWindow.cpp \
 	$(srcdir)/wsConnProp.cpp \
-	$(srcdir)/wsConsole.cpp \
 	$(srcdir)/wsDbresult.cpp \
 	$(srcdir)/wsDirectdbg.cpp \
 	$(srcdir)/wsMainFrame.cpp \
 	$(srcdir)/wsMessageWindow.cpp \
 	$(srcdir)/wsPgconn.cpp \
 	$(srcdir)/wsPgthread.cpp \
-	$(srcdir)/wsQueryWindow.cpp \
 	$(srcdir)/wsResultGrid.cpp \
 	$(srcdir)/wsResultset.cpp \
 	$(srcdir)/wsRichWindow.cpp \

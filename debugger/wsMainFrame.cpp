@@ -11,7 +11,6 @@
 
 #include "wsMainFrame.h"
 #include "wsCodeWindow.h"
-#include "wsQueryWindow.h"
 #include "wsPgconn.h"
 #include "wsDirectdbg.h"
 #include "debugger.h"
@@ -61,7 +60,6 @@ END_EVENT_TABLE()
 
 wsMainFrame::wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint & pos, const wxSize & size )
 	: wxFrame( parent, wxID_ANY, title, pos, size ),
-	  m_console( NULL ),
 	  m_standaloneDebugger( NULL )
 {
     wxWindowBase::SetFont(glApp->GetSystemFont());
@@ -97,9 +95,6 @@ wsMainFrame::wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint
 wsMainFrame::~wsMainFrame()
 {
     glApp->getSettings().Write(wxT("Debugger/wsMainFrame/Perspective-") + VerFromRev(WSMAINFRAME_PERPSECTIVE_VER), manager.SavePerspective());
-
-    // FIXME - why does this throw an assert??
-    // manager.UnInit();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -147,61 +142,17 @@ void wsMainFrame::OnMarginClick( wxStyledTextEvent& event )
 
 wsCodeWindow * wsMainFrame::addDebug( const wsConnProp & connProps )
 {
-	if( m_console == NULL )
-	{
-		m_standaloneDebugger = new wsCodeWindow( this , -1, connProps );
-		m_standaloneDebugger->Show( false );
-		return( m_standaloneDebugger );
-	}
-	else
-	{
-		return( new wsCodeWindow( this, -1, connProps ));
-	}
+    m_standaloneDebugger = new wsCodeWindow( this , -1, connProps );
+	m_standaloneDebugger->Show( false );
+    return( m_standaloneDebugger );
 }
 
 wsDirectDbg * wsMainFrame::addDirectDbg( const wsConnProp & connProp )
 {
 
-	if( m_console == NULL )
-	{
-		m_standaloneDirectDbg = new wsDirectDbg( this, -1, connProp );
-		m_standaloneDirectDbg->Show( true );
-		return( m_standaloneDirectDbg );
-	}
-	else
-	{
-		return( new wsDirectDbg( this, -1, connProp ));
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// addConnect()
-//
-//	This function tries to create to the given PostgreSQL server - if the
-//  attempt succeeds, we create a new console window (a window where the 
-//  user can type in and execute commands)
-
-bool wsMainFrame::addConnect( const wxString &host, const wxString &database, const wxString &port, const wxString &user, const wxString &password )
-{
-	// Try to connect to the given server
-	//
-	// FIXME: the following call to wsPgConn() hangs the GUI thread - we should 
-	//	      really use an asynchronous connect function
-
-	wsPgConn * conn = new wsPgConn( host, database, user, password, port );
-
-	// If the connection attempt succeeded, create a new console window and give it the input focus
-
-	if( conn->isConnected())
-	{
-		m_console = new wsConsole( conn );
-		return( true );
-	} 
-	else
-	{
-		delete( conn );
-		return( false );
-	}
+	m_standaloneDirectDbg = new wsDirectDbg( this, -1, connProp );
+	m_standaloneDirectDbg->Show( true );
+	return( m_standaloneDirectDbg );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -213,10 +164,7 @@ bool wsMainFrame::addConnect( const wxString &host, const wxString &database, co
 
 void wsMainFrame::OnDebugCommand( wxCommandEvent & event )
 {
-	if( m_standaloneDebugger )
-		m_standaloneDebugger->OnCommand( event );
-	else
-		m_console->OnDebugCommand( event );
+    m_standaloneDebugger->OnCommand( event );
 }
 
 void wsMainFrame ::OnAbout(wxCommandEvent& WXUNUSED(event))

@@ -23,7 +23,6 @@
 //	wsRichWindow provides a few convenience functions for:
 //		setting the foreground (text) color
 //		setting the background color
-//		switching between italic and roman font variants
 //
 ////////////////////////////////////////////////////////////////////////////////
 
