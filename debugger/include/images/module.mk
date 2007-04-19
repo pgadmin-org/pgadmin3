@@ -11,7 +11,6 @@
 
 debugger_SOURCES += \
 	$(srcdir)/include/images/clearAll.xpm \
-	$(srcdir)/include/images/clrBreak.xpm \
       	$(srcdir)/include/images/continue.xpm \
 	$(srcdir)/include/images/debugger.xpm \
 	$(srcdir)/include/images/setBreak.xpm \

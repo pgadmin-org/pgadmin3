@@ -19,7 +19,6 @@
 
 #include "images/debugger.xpm"
 #include "images/clearAll.xpm"
-#include "images/clrBreak.xpm"
 #include "images/continue.xpm"
 #include "images/setBreak.xpm"
 #include "images/stepOver.xpm"
@@ -41,7 +40,7 @@ BEGIN_EVENT_TABLE( wsMainFrame, wxWindow  )
     EVT_MENU(wxID_ABOUT, wsMainFrame ::OnAbout)
     EVT_MENU(wxID_EXIT,  wsMainFrame ::OnExit)
 
-    EVT_MENU_RANGE(MENU_ID_SET_BREAK, MENU_ID_STOP, wsMainFrame::OnDebugCommand)
+    EVT_MENU_RANGE(MENU_ID_TOGGLE_BREAK, MENU_ID_STOP, wsMainFrame::OnDebugCommand)
     EVT_CLOSE(wsMainFrame::OnClose)
     EVT_SIZE(wsMainFrame::OnSize)
 
@@ -256,22 +255,12 @@ wxToolBar * wsMainFrame::setupToolBar( void )
 	t->AddTool( MENU_ID_STEP_OVER,		 _( "Step over" ),    		 wxBitmap(stepOver_xpm));
 	t->AddTool( MENU_ID_CONTINUE,		 _( "Continue" ),    		 wxBitmap(continue_xpm));
     t->AddSeparator();
-	t->AddTool( MENU_ID_SET_BREAK,		 _( "Set breakpoint" ),   	 wxBitmap(setBreak_xpm));
-	t->AddTool( MENU_ID_CLEAR_BREAK, 	 _( "Clear breakpoint" ), 	 wxBitmap(clrBreak_xpm));
+	t->AddTool( MENU_ID_TOGGLE_BREAK,	 _( "Toggle breakpoint" ),   wxBitmap(setBreak_xpm));
 	t->AddTool( MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints" ), wxBitmap(clearAll_xpm));
     t->AddSeparator();
 	t->AddTool( MENU_ID_STOP,      		 _( "Stop debugging" ),    	 wxBitmap(stop_xpm));
 
 	t->Realize();
-    
-	t->EnableTool( MENU_ID_STEP_INTO,   	false );
-	t->EnableTool( MENU_ID_STEP_OVER,   	false );
-	t->EnableTool( MENU_ID_CONTINUE,    	false );
-	t->EnableTool( MENU_ID_SET_BREAK,   	false );
-	t->EnableTool( MENU_ID_CLEAR_BREAK, 	false );
-	t->EnableTool( MENU_ID_CLEAR_ALL_BREAK, false );
-	t->EnableTool( MENU_ID_STOP,        	false );
-	
 	m_toolBar = t;
 
 	return( m_toolBar );
@@ -308,13 +297,12 @@ wxMenuBar *wsMainFrame::setupMenuBar(void)
 	m_menuBar->Append(fileMenu, _("&File"));
 
 	m_debugMenu = new wxMenu;
-	m_debugMenu->Append(MENU_ID_STEP_INTO, _( "Step into\tF2" ));
-	m_debugMenu->Append(MENU_ID_STEP_OVER, _( "Step over\tF3" ));
-    m_debugMenu->Append(MENU_ID_CONTINUE, _( "Continue\tF4" ));
+	m_debugMenu->Append(MENU_ID_STEP_INTO, _( "Step into\tF11" ));
+	m_debugMenu->Append(MENU_ID_STEP_OVER, _( "Step over\tF10" ));
+    m_debugMenu->Append(MENU_ID_CONTINUE, _( "Continue\tF5" ));
     m_debugMenu->AppendSeparator();
-    m_debugMenu->Append(MENU_ID_SET_BREAK, _( "Set breakpoint\tF5" ));
-    m_debugMenu->Append(MENU_ID_CLEAR_BREAK, _( "Clear breakpoint\tF6" ));
-    m_debugMenu->Append(MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints\tF7" ));
+    m_debugMenu->Append(MENU_ID_TOGGLE_BREAK, _( "Toggle breakpoint\tF9" ));
+    m_debugMenu->Append(MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints\tCtrl+Shift+F9" ));
     m_debugMenu->AppendSeparator();
     m_debugMenu->Append(MENU_ID_STOP, _( "Stop debugging\tF8" ));
 	m_menuBar->Append(m_debugMenu, _("&Debug"));

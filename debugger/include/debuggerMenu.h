@@ -22,8 +22,7 @@ enum
 {
 	MENU_ID_EXECUTE = 101,		// Execute command entered by user
 
-	MENU_ID_SET_BREAK,		// Set breakpoint
-	MENU_ID_CLEAR_BREAK,		// Clear breakpoint
+	MENU_ID_TOGGLE_BREAK,		// Set/Unset breakpoint
 	MENU_ID_CLEAR_ALL_BREAK,	// Clear all breakpoints
 	MENU_ID_CONTINUE,		// Continue
 	MENU_ID_STEP_OVER,		// Step over	
