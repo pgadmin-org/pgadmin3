@@ -19,6 +19,7 @@
 #include <wx/log.h>
 #include <wx/dir.h>
 #include <wx/filesys.h>
+#include <wx/stdpaths.h>
 
 #include <stdexcept>
 

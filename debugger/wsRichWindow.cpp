@@ -53,9 +53,10 @@ wsRichWindow::wsRichWindow( wxWindow * parent, wxWindowID id, const wxSize & siz
 	: wxStyledTextCtrl( parent, id, wxDefaultPosition, size ),
 	m_parentWantsKeys( false )
 {
-	StyleSetFont( wxSTC_STYLE_DEFAULT, glApp->GetSqlFont() );
+	wxFont sFont = glApp->GetSqlFont();
+	StyleSetFont( wxSTC_STYLE_DEFAULT, sFont );
 	for( int i = 0; i <= 12; ++i )
-		StyleSetFont( i, glApp->GetSqlFont() );
+		StyleSetFont( i, sFont );
 
 	// No margins required by default
 	SetMarginWidth(1, 0);
