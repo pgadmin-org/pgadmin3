@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.12 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createsequence.html" title="CREATE SEQUENCE">
 <link rel="next" href="sql-createtableas.html" title="CREATE TABLE AS">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE TABLE &#8212; define a new table</p>
 </div>
-<a name="id2726522"></a><div class="refsynopsisdiv">
+<a name="id2726654"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em> (
   { <em class="replaceable"><code>column_name</code></em> <em class="replaceable"><code>data_type</code></em> [ DEFAULT <em class="replaceable"><code>default_expr</code></em> ] [ <em class="replaceable"><code>column_constraint</code></em> [ ... ] ]
@@ -85,7 +85,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2726784"></a><h2>Parameters</h2>
+<a name="id2726917"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd>
@@ -618,7 +618,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    to a subset of SQL:1999, with exceptions listed below.
   </p>
 <div class="refsect2" lang="en">
-<a name="id2728136"></a><h3>Temporary Tables</h3>
+<a name="id2728269"></a><h3>Temporary Tables</h3>
 <p>    Although the syntax of <code class="literal">CREATE TEMPORARY TABLE</code>
     resembles that of the SQL standard, the effect is not the same.  In the
     standard,
@@ -653,7 +653,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2728260"></a><h3>Column Check Constraints</h3>
+<a name="id2728392"></a><h3>Column Check Constraints</h3>
 <p>    The SQL standard says that <code class="literal">CHECK</code> column constraints
     may only refer to the column they apply to; only <code class="literal">CHECK</code>
     table constraints may refer to multiple columns.
@@ -662,7 +662,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2728288"></a><h3>
+<a name="id2728420"></a><h3>
 <code class="literal">NULL</code> &#8220;<span class="quote">Constraint</span>&#8221;</h3>
 <p>    The <code class="literal">NULL</code> &#8220;<span class="quote">constraint</span>&#8221; (actually a
     non-constraint) is a <span class="productname">PostgreSQL</span>
@@ -673,7 +673,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2728326"></a><h3>Inheritance</h3>
+<a name="id2728459"></a><h3>Inheritance</h3>
 <p>    Multiple inheritance via the <code class="literal">INHERITS</code> clause is
     a <span class="productname">PostgreSQL</span> language extension.
     SQL:1999 (but not SQL-92) defines single inheritance using a
@@ -683,13 +683,13 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2728354"></a><h3>Object IDs</h3>
+<a name="id2728486"></a><h3>Object IDs</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of OIDs is not
     standard.
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2728366"></a><h3>Zero-column tables</h3>
+<a name="id2728498"></a><h3>Zero-column tables</h3>
 <p>    <span class="productname">PostgreSQL</span> allows a table of no columns
     to be created (for example, <code class="literal">CREATE TABLE foo();</code>).  This
     is an extension from the SQL standard, which does not allow zero-column
@@ -699,7 +699,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    </p>
 </div>
 <div class="refsect2" lang="en">
-<a name="id2728395"></a><h3>Tablespaces</h3>
+<a name="id2728528"></a><h3>Tablespaces</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of tablespaces is not
     part of the standard.  Hence, the clauses <code class="literal">TABLESPACE</code>
     and <code class="literal">USING INDEX TABLESPACE</code> are extensions.
@@ -707,7 +707,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2728421"></a><h2>See Also</h2>
+<a name="id2728553"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-altertable.html" title="ALTER TABLE">ALTER TABLE</a>, <a href="sql-droptable.html" title="DROP TABLE">DROP TABLE</a>, <a href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a></span>
 </div>
 </div></body>

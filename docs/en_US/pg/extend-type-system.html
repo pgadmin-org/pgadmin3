@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.12 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
 <link rel="prev" href="extend.html" title="Chapter 31. Extending SQL">
 <link rel="next" href="xfunc.html" title="31.3. User-Defined Functions">
@@ -14,12 +14,12 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="extend-type-system"></a>31.2. The <span class="productname">PostgreSQL</span> Type System</h2></div></div></div>
-<a name="id2677732"></a><a name="id2677743"></a><a name="id2677754"></a><a name="id2677763"></a><p>    <span class="productname">PostgreSQL</span> data types are divided into base
+<a name="id2677765"></a><a name="id2677775"></a><a name="id2677787"></a><a name="id2677796"></a><p>    <span class="productname">PostgreSQL</span> data types are divided into base
     types, composite types, domains, and pseudo-types.
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2677785"></a>31.2.1. Base Types</h3></div></div></div>
+<a name="id2677817"></a>31.2.1. Base Types</h3></div></div></div>
 <p>     Base types are those, like <code class="type">int4</code>, that are
      implemented below the level of the <acronym class="acronym">SQL</acronym> language
      (typically in a low-level language such as C).  They generally
@@ -35,7 +35,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2677814"></a>31.2.2. Composite Types</h3></div></div></div>
+<a name="id2677846"></a>31.2.2. Composite Types</h3></div></div></div>
 <p>     Composite types, or row types, are created whenever the user
      creates a table; it's also possible to define a
      &#8220;<span class="quote">stand-alone</span>&#8221; composite type with no associated table.  A
@@ -47,7 +47,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2677833"></a>31.2.3. Domains</h3></div></div></div>
+<a name="id2677865"></a>31.2.3. Domains</h3></div></div></div>
 <p>     A domain is based on a particular base type and for many purposes
      is interchangeable with its base type.  However, a domain may
      have constraints that restrict its valid values to a subset of
@@ -60,7 +60,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2677863"></a>31.2.4. Pseudo-Types</h3></div></div></div>
+<a name="id2677896"></a>31.2.4. Pseudo-Types</h3></div></div></div>
 <p>     There are a few &#8220;<span class="quote">pseudo-types</span>&#8221; for special purposes.
      Pseudo-types cannot appear as columns of tables or attributes of
      composite types, but they can be used to declare the argument and
@@ -72,7 +72,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="extend-types-polymorphic"></a>31.2.5. Polymorphic Types</h3></div></div></div>
-<a name="id2677892"></a><a name="id2677902"></a><a name="id2677911"></a><a name="id2677923"></a><p>     Two pseudo-types of special interest are <code class="type">anyelement</code> and
+<a name="id2677925"></a><a name="id2677934"></a><a name="id2677944"></a><a name="id2677956"></a><p>     Two pseudo-types of special interest are <code class="type">anyelement</code> and
      <code class="type">anyarray</code>, which are collectively called <em class="firstterm">polymorphic
      types</em>.  Any function declared using these types is said to be
      a <em class="firstterm">polymorphic function</em>.  A polymorphic function can
