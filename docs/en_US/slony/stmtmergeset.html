@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtdropset.html" title="DROP SET">
 <link rel="next" href="stmtsetaddtable.html" title="SET ADD TABLE">
@@ -23,7 +23,7 @@
 <div class="cmdsynopsis"><p><code class="command">MERGE SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591166"></a><h2>Description</h2>
+<a name="id2591848"></a><h2>Description</h2>
 <p> Merge a set of tables and sequences into another one. This
     function is a workaround for the problem that it is not possible
     to add tables/sequences to already-subscribed sets. One may create
@@ -46,7 +46,7 @@
 <p> This uses <a href="function.mergeset-integer-integer.html" title="1.77.  mergeset( integer, integer )">schemadocmergeset( integer, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591238"></a><h2>Example</h2>
+<a name="id2591913"></a><h2>Example</h2>
 <pre class="programlisting">     # Assuming that set 1 has direct subscribers 2 and 3
      SUBSCRIBE SET (ID = 999, PROVIDER = 1, RECEIVER = 2);
      WAIT FOR EVENT (ORIGIN = 2, CONFIRMED = 1);
@@ -54,15 +54,15 @@
      SUBSCRIBE SET (ID = 999, PROVIDER = 1, RECEIVER = 3);
      WAIT FOR EVENT (ORIGIN = 3, CONFIRMED = 1);
      SYNC (ID=1);
-     MERGE SET ( ID = 2, ADD ID = 9999, ORIGIN = 1 );
+     MERGE SET ( ID = 1, ADD ID = 9999, ORIGIN = 1 );
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591252"></a><h2> Locking Behaviour </h2>
+<a name="id2591927"></a><h2> Locking Behaviour </h2>
 <p> No application-visible locking should take place. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591259"></a><h2> Dangerous/Unintuitive Behaviour </h2>
+<a name="id2591934"></a><h2> Dangerous/Unintuitive Behaviour </h2>
 <p> Merging takes place based on the configuration on the origin
    node.  If a merge is requested while subscriptions are still being
    processed, this can cause in-progress subscribers' replication to
@@ -71,7 +71,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591270"></a><h2> Version Information </h2>
+<a name="id2591945"></a><h2> Version Information </h2>
 <p> This command
    was introduced in <span class="productname">Slony-I</span> 1.0.5.  In 1.2.1, a race condition was
    rectified where the merge request would be submitted while

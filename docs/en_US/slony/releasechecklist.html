@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
-<link rel="up" href="index.html" title="Slony-I 1.2.6 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<link rel="up" href="index.html" title="Slony-I 1.2.9 Documentation">
 <link rel="prev" href="supportedplatforms.html" title="Slony-I Supported Platforms">
 <link rel="next" href="schema.html" title="Chapter 1. Schema schemadoc">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
@@ -17,12 +17,32 @@
 <a name="releasechecklist"></a> Release Checklist </h2></div></div>
 <hr>
 </div>
-<a name="id2595136"></a><p> Here are things that should be done whenever a release is prepared:</p>
+<a name="id2595840"></a><p> Here are things that should be done whenever a release is prepared:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Positive build reports for each supported platform -
-  although it is arguably less necessary for a comprehensive list if
-  we are releasing a minor upgrade </p></li>
+although it is arguably less necessary for a comprehensive list if we
+are releasing a minor upgrade </p></li>
 <li><p>Some kind of Standard Test Plan</p></li>
+<li><p> If the release modified the set of version-specific
+SQL files in <code class="filename">src/backend</code>
+(<span class="emphasis"><em>e.g.</em></span> - it added a new
+<code class="filename">slony1_base.v83.sql</code> or
+<code class="filename">slony1_funcs.v83.sql</code>), or if we have other
+changes to the shape of <span class="productname">PostgreSQL</span> version support, the function
+<code class="function">load_slony_functions() </code> in
+<code class="filename">src/slonik/slonik.c</code> needs to be revised to
+reflect the new shape of things.</p></li>
+<li>
+<p> The new release needs to be added to function
+<code class="function">upgradeSchema(text)</code> in
+<code class="filename">src/backend/slony1_funcs.sql</code>. </p>
+<p> This takes place in a &#8220;<span class="quote">cross-branch</span>&#8221; fashion; if
+we add version 1.1.9, in the 1.1 branch, then version 1.1.9 needs to
+be added to the 1.2 branch as well as to later branches
+(<span class="emphasis"><em>e.g.</em></span> - 1.3, 1.4, HEAD).  Earlier branches will
+normally not need to be made aware of versions added to later
+branches... </p>
+</li>
 <li><p>Binary RPM packages</p></li>
 <li>
 <p>If the release is a &#8220;<span class="quote">.0</span>&#8221; one, we need to
@@ -34,14 +54,10 @@ open a new STABLE branch</p>
 would be <code class="envar">REL_1_1_2 </code></p>
 <p> <code class="command"> cvs tag REL_1_1_2 </code></p>
 </li>
-<li><p>Check out a copy via <code class="command">cvs export -rREL_1_1_2 </code>
-
-  </p></li>
+<li><p>Check out a copy via <code class="command">cvs export -rREL_1_1_2</code> </p></li>
 <li><p>Run <span class="application">autoconf</span> so as to
 regenerate <code class="filename">configure</code> from
-<code class="filename">configure.ac</code>
-
-  </p></li>
+<code class="filename">configure.ac</code></p></li>
 <li><p>Purge directory <code class="filename">autom4te.cache</code> so it is not included in the build  </p></li>
 <li><p>Purge out .cvsignore files; this can be done with the command <code class="command"> find . -name .cvsignore | xargs rm </code>  </p></li>
 <li>

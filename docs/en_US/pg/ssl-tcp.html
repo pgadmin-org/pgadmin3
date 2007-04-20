@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="encryption-options.html" title="16.6. Encryption Options">
 <link rel="next" href="ssh-tunnels.html" title="16.8. Secure TCP/IP Connections with SSH Tunnels">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="ssl-tcp"></a>16.7. Secure TCP/IP Connections with SSL</h2></div></div></div>
-<a name="id2637930"></a><p>   <span class="productname">PostgreSQL</span> has native support for using
+<a name="id2638051"></a><p>   <span class="productname">PostgreSQL</span> has native support for using
    <acronym class="acronym">SSL</acronym> connections to encrypt client/server communications
    for increased security. This requires that
    <span class="productname">OpenSSL</span> is installed on both client and
@@ -74,10 +74,10 @@ chmod og-rwx server.key</pre>
    certificates of the <acronym class="acronym">CA</acronym>(s) you wish to check for in
    the file <code class="filename">root.crt</code> in the data directory.  When
    present, a client certificate will be requested from the client
-   during SSL connection startup, and it must have been signed by one of the
-   certificates present in <code class="filename">root.crt</code>.  Certificate 
-   Revocation List (CRL) entries are also checked if the file 
-   <code class="filename">root.crl</code> exists.
+   during SSL connection startup, and it must have been signed by one of
+   the certificates present in <code class="filename">root.crt</code>.  (See <a href="libpq-ssl.html" title="29.16. SSL Support">Section 29.16, &#8220;SSL Support&#8221;</a> for a description of how to set up client
+   certificates.) Certificate Revocation List (CRL) entries are also
+   checked if the file <code class="filename">root.crl</code> exists.
   </p>
 <p>   When the <code class="filename">root.crt</code> file is not present, client
    certificates will not be requested or checked.  In this mode, SSL

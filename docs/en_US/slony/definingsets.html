@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="cluster.html" title="6. Defining Slony-I Clusters">
 <link rel="next" href="slonyadmin.html" title="Slony-I Administration">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="definingsets"></a>7. Defining <span class="productname">Slony-I</span> Replication Sets</h2></div></div></div>
-<a name="id2563298"></a><p>Defining the nodes indicated the shape of the cluster of
+<a name="id2563338"></a><p>Defining the nodes indicated the shape of the cluster of
 database servers; it is now time to determine what data is to be
 copied between them.  The groups of data that are copied are defined
 as &#8220;<span class="quote">replication sets.</span>&#8221;</p>
@@ -27,8 +27,8 @@ suitable primary key</p></li>
 </ul></div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2563329"></a>7.1. Primary Keys</h3></div></div></div>
-<a name="id2563332"></a><p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
+<a name="id2563368"></a>7.1. Primary Keys</h3></div></div></div>
+<a name="id2563372"></a><p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
 candidate thereof on each table that is replicated.  PK values are
 used as the primary identifier for each tuple that is modified in the
 source system.  Note that they can be composite keys composed of
@@ -44,11 +44,20 @@ there is a primary key, and use it.</p></li>
 <p> If the table hasn't got a primary key, but has some
 <span class="emphasis"><em>candidate</em></span> primary key, that is, some index on a
 combination of fields that is both UNIQUE and NOT NULL, then you can
-specify the key, as in</p>
+specify that key, as shown in the following example. </p>
 <pre class="programlisting">SET ADD TABLE (set id = 1, origin = 1, id = 42, 
                full qualified name = 'public.this_table', 
                key = 'this_by_that', 
      comment='this_table has this_by_that as a candidate primary key');</pre>
+<p> However, once you have come this far, there is little reason not
+to just declare some suitable index to be a primary key, which requires
+that the columns involved are NOT NULL, and which will establish a unique
+index. Here is an example of this: </p>
+<pre class="programlisting">DROP INDEX my_table_name_col1_col2_uniq_idx;
+ALTER TABLE my_table_name ADD PRIMARY KEY (col1, col2);</pre>
+<p>If your application is not somehow referencing the index by name,
+the this should not lose you anything, and it gives you the clear design
+benefit that a primary key has been declared for the table. </p>
 <p> Notice that while you need to specify the namespace for the
 table, you must <span class="emphasis"><em>not</em></span> specify the namespace for the
 key, as it infers the namespace from the table.</p>
@@ -62,13 +71,13 @@ should be used.</p></li>
 </ul></div>
 <p> It is not terribly important whether you pick a
 &#8220;<span class="quote">true</span>&#8221; primary key or a mere &#8220;<span class="quote">candidate primary
-key;</span>&#8221; it is, however, recommended that you have one of those
-instead of having <span class="productname">Slony-I</span> populate the PK column for you.  If you
-don't have a suitable primary key, that means that the table hasn't
-got any mechanism from your application's standpoint for keeping
-values unique.  <span class="productname">Slony-I</span> may therefore introduce a new failure mode
-for your application, and this also implies that you had a way to
-enter confusing data into the database.</p>
+key;</span>&#8221; it is, however, strongly recommended that you have one of
+those instead of having <span class="productname">Slony-I</span> populate the PK column for you. If you
+don't have a suitable primary key, that means that the table hasn't got
+any mechanism, from your application's standpoint, for keeping values
+unique. <span class="productname">Slony-I</span> may, therefore, introduce a new failure mode for your
+application, and this also implies that you had a way to enter confusing
+data into the database.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
@@ -124,8 +133,8 @@ intrude on your applications.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2563623"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
-<a name="id2563627"></a><p> Each time a SYNC is processed, values are recorded for
+<a name="id2563682"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
+<a name="id2563686"></a><p> Each time a SYNC is processed, values are recorded for
 <span class="emphasis"><em>all</em></span> of the sequences in the set.  If there are a
 lot of sequences, this can cause <a href="table.sl-seqlog.html" title="1.12.  Table: sl_seqlog">sl_seqlog</a> to
 grow rather large.</p>

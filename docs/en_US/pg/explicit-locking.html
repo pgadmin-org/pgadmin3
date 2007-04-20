@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
 <link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
 <link rel="prev" href="transaction-iso.html" title="12.2. Transaction Isolation">
 <link rel="next" href="applevel-consistency.html" title="12.4. Data Consistency Checks at the Application Level">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="explicit-locking"></a>12.3. Explicit Locking</h2></div></div></div>
-<a name="id2624581"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
+<a name="id2624669"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
     to control concurrent access to data in tables.  These modes can
     be used for application-controlled locking in situations where
     <acronym class="acronym">MVCC</acronym> does not give the desired behavior.  Also,
@@ -34,7 +34,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="locking-tables"></a>12.3.1. Table-Level Locks</h3></div></div></div>
-<a name="id2624650"></a><p>    The list below shows the available lock modes and the contexts in
+<a name="id2624737"></a><p>    The list below shows the available lock modes and the contexts in
     which they are used automatically by
     <span class="productname">PostgreSQL</span>.  You can also acquire any
     of these locks explicitly with the command <a href="sql-lock.html" title="LOCK">LOCK</a>.
@@ -233,7 +233,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="locking-deadlocks"></a>12.3.3. Deadlocks</h3></div></div></div>
-<a name="id2625382"></a><p>     The use of explicit locking can increase the likelihood of
+<a name="id2625470"></a><p>     The use of explicit locking can increase the likelihood of
      <em class="firstterm">deadlocks</em>, wherein two (or more) transactions each
      hold locks that the other wants.  For example, if transaction 1
      acquires an exclusive lock on table A and then tries to acquire
@@ -305,7 +305,7 @@ UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 11111;</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="advisory-locks"></a>12.3.4. Advisory Locks</h3></div></div></div>
-<a name="id2625506"></a><p>     <span class="productname">PostgreSQL</span> provides a means for
+<a name="id2625604"></a><p>     <span class="productname">PostgreSQL</span> provides a means for
      creating locks that have application-defined meanings.  These are
      called <em class="firstterm">advisory locks</em>, because the system does not
      enforce their use &#8212; it is up to the application to use them

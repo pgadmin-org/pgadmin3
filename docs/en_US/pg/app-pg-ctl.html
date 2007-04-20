@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="prev" href="app-pgcontroldata.html" title="pg_controldata">
 <link rel="next" href="app-pgresetxlog.html" title="pg_resetxlog">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>pg_ctl &#8212; start, stop, or restart a <span class="productname">PostgreSQL</span> server</p>
 </div>
-<a name="id2807644"></a><div class="refsynopsisdiv">
+<a name="id2808126"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">pg_ctl</code>  start  [-w] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-l <em class="replaceable"><code>filename</code></em>] [-o <em class="replaceable"><code>options</code></em>] [-p <em class="replaceable"><code>path</code></em>]<br><code class="command">pg_ctl</code>  stop  [-W] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-m
       [s[mart]] |  [f[ast]] |  [i[mmediate]] 
@@ -167,7 +167,7 @@
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2808542"></a><h2>Environment</h2>
+<a name="id2809024"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PGDATA</code></span></dt>
 <dd><p>      Default data directory location.
@@ -176,11 +176,14 @@
 <dd><p>      Default port for <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> (used by the -w option).
      </p></dd>
 </dl></div>
-<p>   For others, see <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a>.
+<p>   For additional server variables, see <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a>.
+   This utility, like most other <span class="productname">PostgreSQL</span> utilities,
+   also uses the environment variables supported by <span class="application">libpq</span>
+   (see <a href="libpq-envars.html" title="29.12. Environment Variables">Section 29.12, &#8220;Environment Variables&#8221;</a>).
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2808578"></a><h2>Files</h2>
+<a name="id2809080"></a><h2>Files</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="filename">postmaster.pid</code></span></dt>
 <dd><p>      The existence of this file in the data directory is used to help
@@ -210,7 +213,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2808695"></a><h2>Notes</h2>
+<a name="id2809197"></a><h2>Notes</h2>
 <p>   Waiting for complete start is not a well-defined operation and may
    fail if access control is set up so that a local client cannot
    connect without manual interaction (e.g., password authentication).
@@ -284,7 +287,7 @@ Command line was:
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2808929"></a><h2>See Also</h2>
+<a name="id2809431"></a><h2>See Also</h2>
 <p>   <a href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a>
   </p>
 </div>

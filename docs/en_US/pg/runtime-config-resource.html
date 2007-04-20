@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-connection.html" title="17.3. Connections and Authentication">
 <link rel="next" href="runtime-config-wal.html" title="17.5. Write Ahead Log">
@@ -147,7 +147,7 @@
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="runtime-config-resource-fsm"></a>17.4.2. Free Space Map</h3></div></div></div>
-<a name="id2640624"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
+<a name="id2640753"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
       map</em>, which tracks the locations of unused space in the database.
       An undersized free space map may cause the database to consume
       increasing amounts of disk space over time, because free space that
@@ -230,6 +230,17 @@
         uses the library.  So this parameter is recommended only for
         libraries that will be used in most sessions. 
        </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>        On Windows hosts, preloading a library at server start will not reduce
+        the time required to start each new server process; each server process
+        will re-load all preload libraries.  However, <code class="varname">shared_preload_libraries
+        </code> is still useful on Windows hosts because some shared libraries may 
+        need to perform certain operations that only take place at postmaster start
+        (for example, a shared library may need to reserve lightweight locks
+        or shared memory and you can't do that after the postmaster has started).
+       </p>
+</div>
 <p>        If a specified library is not found,
         the server will fail to start.
        </p>

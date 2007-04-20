@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
 <link rel="next" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">
@@ -31,7 +31,7 @@
     These functions are also implemented using the regular syntax for
     function invocation.  (See <a href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.)
    </p>
-<a name="id2591034"></a><a name="id2591040"></a><a name="id2591046"></a><a name="id2591052"></a><a name="id2591057"></a><a name="id2591063"></a><a name="id2591069"></a><a name="id2591075"></a><a name="id2591080"></a><a name="id2591086"></a><div class="table">
+<a name="id2591082"></a><a name="id2591088"></a><a name="id2591094"></a><a name="id2591100"></a><a name="id2591105"></a><a name="id2591111"></a><a name="id2591117"></a><a name="id2591123"></a><a name="id2591128"></a><a name="id2591134"></a><div class="table">
 <a name="functions-string-sql"></a><p class="title"><b>Table 9.5. <acronym class="acronym">SQL</acronym> String Functions and Operators</b></p>
 <div class="table-contents"><table summary="SQL String Functions and Operators" border="1">
 <colgroup>
@@ -54,7 +54,7 @@
         <em class="parameter"><code>string</code></em></code></td>
 <td> <code class="type">text</code> </td>
 <td>        String concatenation
-        <a name="id2591150"></a>
+        <a name="id2591198"></a>
        </td>
 <td><code class="literal">'Post' || 'greSQL'</code></td>
 <td><code class="literal">PostgreSQL</code></td>
@@ -72,8 +72,8 @@
 </td>
 <td><code class="type">int</code></td>
 <td>        Number of characters in string
-        <a name="id2591244"></a>
-        <a name="id2591254"></a>
+        <a name="id2591292"></a>
+        <a name="id2591302"></a>
        </td>
 <td><code class="literal">char_length('jose')</code></td>
 <td><code class="literal">4</code></td>
@@ -175,7 +175,7 @@
     listed in <a href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.  Some of them are used internally to implement the
     <acronym class="acronym">SQL</acronym>-standard string functions listed in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<acronym class="acronym">SQL</acronym> String Functions and Operators&#8221;</a>.
    </p>
-<a name="id2591762"></a><a name="id2591768"></a><a name="id2591773"></a><a name="id2591779"></a><a name="id2591785"></a><a name="id2591790"></a><a name="id2591796"></a><a name="id2591802"></a><a name="id2591808"></a><a name="id2591813"></a><a name="id2591819"></a><a name="id2591825"></a><a name="id2591831"></a><a name="id2591837"></a><a name="id2591842"></a><a name="id2591848"></a><a name="id2591854"></a><a name="id2591860"></a><a name="id2591865"></a><a name="id2591871"></a><a name="id2591877"></a><a name="id2591882"></a><div class="table">
+<a name="id2591810"></a><a name="id2591816"></a><a name="id2591821"></a><a name="id2591827"></a><a name="id2591833"></a><a name="id2591838"></a><a name="id2591844"></a><a name="id2591850"></a><a name="id2591856"></a><a name="id2591861"></a><a name="id2591867"></a><a name="id2591873"></a><a name="id2591879"></a><a name="id2591885"></a><a name="id2591890"></a><a name="id2591896"></a><a name="id2591902"></a><a name="id2591908"></a><a name="id2591913"></a><a name="id2591919"></a><a name="id2591925"></a><a name="id2591930"></a><div class="table">
 <a name="functions-string-other"></a><p class="title"><b>Table 9.6. Other String Functions</b></p>
 <div class="table-contents"><table summary="Other String Functions" border="1">
 <colgroup>
@@ -251,8 +251,10 @@
         <em class="parameter"><code>type</code></em> <code class="type">text</code>)</code>
        </td>
 <td><code class="type">text</code></td>
-<td>        Encode binary data to <acronym class="acronym">ASCII</acronym>-only representation.  Supported
+<td>        Encode binary data to different representation.  Supported
         types are: <code class="literal">base64</code>, <code class="literal">hex</code>, <code class="literal">escape</code>.
+        <code class="literal">Escape</code> merely outputs null bytes as <code class="literal">\000</code> and
+        doubles backslashes.
        </td>
 <td><code class="literal">encode( E'123\\000\\001', 'base64')</code></td>
 <td><code class="literal">MTIzAAE=</code></td>
@@ -479,7 +481,7 @@
 </colgroup>
 <thead><tr>
 <th>Conversion Name
-        <sup>[<a name="id2593455" href="#ftn.id2593455">a</a>]</sup>
+        <sup>[<a name="id2593512" href="#ftn.id2593512">a</a>]</sup>
        </th>
 <th>Source Encoding</th>
 <th>Destination Encoding</th>
@@ -1086,7 +1088,7 @@
 <td><code class="literal">UTF8</code></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id2593455" href="#id2593455">a</a>] </sup>          The conversion names follow a standard naming scheme: The
+<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id2593512" href="#id2593512">a</a>] </sup>          The conversion names follow a standard naming scheme: The
           official name of the source encoding with all
           non-alphanumeric characters replaced by underscores followed
           by <code class="literal">_to_</code> followed by the equally processed

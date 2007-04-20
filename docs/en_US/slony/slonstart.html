@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="firstdb.html" title="2. Replicating Your First Database">
 <link rel="next" href="subscribenodes.html" title="4. Subscribing Nodes">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="slonstart"></a>3. Slon daemons</h2></div></div></div>
-<a name="id2566234"></a><p>The programs that actually perform <span class="productname">Slony-I</span> replication are the
+<a name="id2566485"></a><p>The programs that actually perform <span class="productname">Slony-I</span> replication are the
 <span class="application">slon</span> daemons.</p>
 <p>You need to run one <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> instance for each node
 in a <span class="productname">Slony-I</span> cluster, whether you consider that node a
@@ -87,8 +87,9 @@ issue.</p></li>
 <span class="emphasis"><em>usually</em></span> the preferable thing to run.  It was at
 one point not preferable to run it whilst subscribing a very large
 replication set where it is expected to take many hours to do the
-initial <code class="command">COPY SET</code>.  The problem that came up in that
-case was that it figured that since it hasn't done a
+<code class="command">COPY SET</code> (the main event that processes a
+<code class="command">SUBSCRIBE SET</code> request).  The problem that came up
+in that case was that it figured that since it hasn't done a
 <code class="command">SYNC</code> in 2 hours, something was broken requiring
 restarting slon, thereby restarting the <code class="command">COPY SET</code>
 event.  More recently, the script has been changed to detect

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.3 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-autovacuum.html" title="17.9. Automatic Vacuuming">
 <link rel="next" href="runtime-config-locks.html" title="17.11. Lock Management">
@@ -41,9 +41,15 @@
         mentioned in the path then it will be searched in the specified
         order.  If <code class="literal">pg_catalog</code> is not in the path then it will
         be searched <span class="emphasis"><em>before</em></span> searching any of the path items.
-        It should also be noted that the temporary-table schema,
-        <code class="literal">pg_temp_<em class="replaceable"><code>nnn</code></em></code>, is implicitly searched before any of
-        these.
+       </p>
+<p>        Likewise, the current session's temporary-table schema,
+        <code class="literal">pg_temp_<em class="replaceable"><code>nnn</code></em></code>, is always searched if it
+        exists.  It can be explicitly listed in the path by using the
+        alias <code class="literal">pg_temp</code>.  If it is not listed in the path then
+        it is searched first (before even <code class="literal">pg_catalog</code>).  However,
+        the temporary schema is only searched for relation (table, view,
+        sequence, etc) and data type names.  It will never be searched for
+        function or operator names.
        </p>
 <p>        When objects are created without specifying a particular target
         schema, they will be placed in the first schema listed

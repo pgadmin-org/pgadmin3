@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="testbed.html" title="22.  Slony-I Test Bed Framework">
 <link rel="next" href="help.html" title="24. More Slony-I Help">
@@ -14,11 +14,11 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="loganalysis"></a>23. Log Analysis</h2></div></div></div>
-<a name="id2577243"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
+<a name="id2577658"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
 and explanations of what they mean.</p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2577258"></a>23.1. CONFIG notices</h3></div></div></div>
+<a name="id2577674"></a>23.1. CONFIG notices</h3></div></div></div>
 <p>These entries are pretty straightforward. They are informative
 messages about your configuration.</p>
 <p>Here are some typical entries that you will probably run into in
@@ -35,7 +35,7 @@ CONFIG main: configuration complete - starting threads</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2577281"></a>23.2. DEBUG Notices</h3></div></div></div>
+<a name="id2577696"></a>23.2. DEBUG Notices</h3></div></div></div>
 <p>Debug notices are always prefaced by the name of the thread that
 the notice originates from. You will see messages from the following
 threads:
@@ -61,11 +61,16 @@ and deleting old data.</p></dd>
 <dd><p> Generates SYNC
 events.</p></dd>
 </dl></div>
+<p> How much information they display is controlled by
+the <code class="envar">log_level</code> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> parameter;
+ERROR/WARN/CONFIG/INFO messages will always be displayed, while
+choosing increasing values from 1 to 4 will lead to additional DEBUG
+level messages being displayed. </p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2577332"></a>23.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
-<a name="id2577342"></a><p> Note that as far as slon is concerned, there is no
+<a name="id2577763"></a>23.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
+<a name="id2577772"></a><p> Note that as far as slon is concerned, there is no
 &#8220;<span class="quote">master</span>&#8221; or &#8220;<span class="quote">slave.</span>&#8221; They are just
 nodes. </p>
 <p>What you can expect, initially, is to see, on both nodes, some
@@ -147,7 +152,7 @@ happen frequently when the origin sees heavy updates. </p></li>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2577587"></a>23.4.  Log Messages and Implications </h3></div></div></div>
+<a name="id2578018"></a>23.4.  Log Messages and Implications </h3></div></div></div>
 <p> This section lists numerous of the error messages found in
 <span class="productname">Slony-I</span>, along with a brief explanation of implications.  It is a
 fairly well comprehensive list, leaving out mostly some of
@@ -285,7 +290,7 @@ a <span class="emphasis"><em>second</em></span> time?  </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2577977"></a>23.4.3.  Threading Issues </h4></div></div></div>
+<a name="id2578408"></a>23.4.3.  Threading Issues </h4></div></div></div>
 <p> There should not be any &#8220;<span class="quote">user-serviceable</span>&#8221; aspects
 to the <span class="productname">Slony-I</span> threading model; each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> creates a quite
 well-specified set of helper threads to manage the various database
@@ -622,6 +627,23 @@ data provider.  That shouldn't be possible,
 normally...</p>
 </li>
 <li>
+<p><code class="command">ERROR: remoteListenThread_%d: timeout for event selection</code></p>
+<p> This means that the listener thread
+(<code class="filename">src/slon/remote_listener.c</code>) timed out when
+trying to determine what events were outstanding for it.</p>
+<p> This could occur because network connections broke, in which case restarting the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> might help. </p>
+<p> Alternatively, this might occur because the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> for this
+node has been broken for a long time, and there are an enormous number
+of entries in <code class="envar">sl_event</code> on this or other nodes for the
+node to work through, and it is taking more than <a href="slon-config-interval.html#slon-config-remote-listen-timeout">slon_conf_remote_listen_timeout</a> seconds to run the query.
+In older versions of <span class="productname">Slony-I</span>, that configuration parameter did not
+exist; the timeout was fixed at 300 seconds.  In newer versions, you
+might increase that timeout in the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> config file to a larger
+value so that it can continue to completion.  And then investigate why
+nobody was monitoring things such that replication broke for such a
+long time... </p>
+</li>
+<li>
 <p><code class="command">ERROR: remoteWorkerThread_%d: cannot connect to data provider %d on 'dsn'</code></p>
 <p> Oh dear, we haven't got <span class="emphasis"><em>correct</em></span> connection
 information to connect to the data provider.</p>
@@ -738,11 +760,35 @@ subscribers at subscription time.  </p>
 <li>
 <p><code class="command">NOTICE: Slony-I setAddTable_int(): table % PK column % nullable</code></p>
 <p> You tried to replicate a table where one of the columns in the would-be primary key is allowed to be null.  All PK columns must be <code class="command">NOT NULL.</code> This request is about to fail. </p>
+<p> A check for this condition was introduced in <span class="productname">Slony-I</span> version
+1.2.  If you have a 1.1 replica, it will continue to function after
+upgrading to 1.2, but you will experience this complaint when you try
+to add new subscribers. </p>
+<p> You can look for table/index combinations on an existing
+node that have NULLABLE columns in the primary key via the
+following query:
+</p>
+<pre class="screen">select c.relname as table_name, ic.relname as index_name, att.attname, att2.attnotnull
+from _cluster.sl_table t, pg_catalog.pg_class c, pg_index i, pg_catalog.pg_class ic, pg_catalog.pg_attribute att, pg_catalog.pg_attribute att2
+where t.tab_reloid = c.oid 
+    and t.tab_idxname = ic.relname 
+    and  ic.oid = i.indexrelid
+    and att.attrelid = i.indexrelid
+    and att2.attname = att.attname
+    and att2.attrelid = c.oid
+    and att2.attnotnull = 'f';</pre>
+<p> </p>
+<p> These may be rectified via submitting, for each one, a query of
+the form: <code class="command"> alter table mytable alter column nullablecol set
+not null; </code> Running this against a subscriber where the table
+is empty will complete very quickly. It will take longer to apply this
+change to a table that already contains a great deal of data, as the
+alteration will scan the table to verify that there are no tuples
+where the column is NULL.</p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I setAddTable_int(): table % not replicable!</code></p>
-<p> 
-This happens because of the NULLable PK column. </p>
+<p> This happens because of the NULLable PK column. </p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I setAddTable_int(): table id % has already been assigned!</code></p>
@@ -782,7 +828,7 @@ already in use.</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2579533"></a>23.4.8.  Logging When Moving Objects Between Sets  </h4></div></div></div>
+<a name="id2580076"></a>23.4.8.  Logging When Moving Objects Between Sets  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setMoveTable_int(): table % not found</code></p>
@@ -828,7 +874,7 @@ already in use.</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2579652"></a>23.4.9.  Issues with Dropping Objects  </h4></div></div></div>
+<a name="id2580194"></a>23.4.9.  Issues with Dropping Objects  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setDropTable(): table % not found</code></p>
@@ -858,7 +904,7 @@ already in use.</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2579734"></a>23.4.10.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
+<a name="id2580277"></a>23.4.10.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
 <p> Many of these errors will occur if you submit a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 script that describes a reconfiguration incompatible with your
 cluster's current configuration.  Those will lead to the
@@ -917,7 +963,7 @@ forwarding turned on. </p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2579909"></a>23.4.11.  Log Switching </h4></div></div></div>
+<a name="id2580452"></a>23.4.11.  Log Switching </h4></div></div></div>
 <p> These messages relate to the new-in-1.2 facility whereby
 <span class="productname">Slony-I</span> periodically switches back and forth between storing data
 in <code class="envar">sl_log_1</code> and <code class="envar">sl_log_2</code>.</p>
@@ -950,7 +996,7 @@ to halt...</p>
 </div>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="id2580014"></a>23.4.12.  Miscellanea </h4></div></div></div>
+<a name="id2580556"></a>23.4.12.  Miscellanea </h4></div></div></div>
 <p> Perhaps these messages should be categorized further; that
 remains a task for the documentors.</p>
 <div class="itemizedlist"><ul type="disc">
