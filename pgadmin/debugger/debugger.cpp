@@ -14,7 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
-#include "utils/debugger.h"
+#include "debugger/debugger.h"
 #include "schema/pgFunction.h"
 #include "schema/pgTrigger.h"
 

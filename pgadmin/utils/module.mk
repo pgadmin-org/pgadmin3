@@ -10,7 +10,6 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/utils/debugger.cpp \
 	$(srcdir)/utils/factory.cpp \
 	$(srcdir)/utils/favourites.cpp \
 	$(srcdir)/utils/md5.cpp \

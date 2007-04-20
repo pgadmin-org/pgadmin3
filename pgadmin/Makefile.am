@@ -32,6 +32,7 @@ TMP_ui =
 include $(srcdir)/agent/module.mk
 include $(srcdir)/ctl/module.mk
 include $(srcdir)/db/module.mk
+include $(srcdir)/debugger/module.mk
 include $(srcdir)/dlg/module.mk
 include $(srcdir)/frm/module.mk
 include $(srcdir)/include/module.mk

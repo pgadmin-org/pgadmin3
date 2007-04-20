@@ -27,6 +27,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/catalogobjects.xpm \
 	$(srcdir)/include/images/check.xpm \
 	$(srcdir)/include/images/checked.xpm \
+	$(srcdir)/include/images/clearAll.xpm \
 	$(srcdir)/include/images/clip_copy.xpm \
 	$(srcdir)/include/images/clip_cut.xpm \
 	$(srcdir)/include/images/clip_paste.xpm \
@@ -37,6 +38,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/columns.xpm \
 	$(srcdir)/include/images/connect.xpm \
 	$(srcdir)/include/images/constraints.xpm \
+	$(srcdir)/include/images/continue.xpm \
 	$(srcdir)/include/images/conversion.xpm \
 	$(srcdir)/include/images/conversions.xpm \
 	$(srcdir)/include/images/create.xpm \
@@ -143,6 +145,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/serverbad-sm.xpm \
 	$(srcdir)/include/images/serverbad.xpm \
 	$(srcdir)/include/images/servers.xpm \
+	$(srcdir)/include/images/setBreak.xpm \
 	$(srcdir)/include/images/slcluster.xpm \
 	$(srcdir)/include/images/slclusters.xpm \
 	$(srcdir)/include/images/sllisten.xpm \
@@ -165,6 +168,9 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/statistics.xpm \
 	$(srcdir)/include/images/step.xpm \
 	$(srcdir)/include/images/steps.xpm \
+	$(srcdir)/include/images/stepInto.xpm \
+	$(srcdir)/include/images/stepOver.xpm \
+	$(srcdir)/include/images/stop.xpm \
 	$(srcdir)/include/images/storedata.xpm \
 	$(srcdir)/include/images/synonym.xpm \
 	$(srcdir)/include/images/synonyms.xpm \
