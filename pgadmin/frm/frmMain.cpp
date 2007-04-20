@@ -35,7 +35,7 @@
 #include "utils/misc.h"
 #include "frm/menu.h"
 #include "utils/pgfeatures.h"
-#include "utils/debugger.h"
+#include "debugger/debugger.h"
 #include "frm/frmMain.h"
 #include "ctl/ctlSQLBox.h"
 #include "db/pgConn.h"

@@ -24,6 +24,8 @@
 #ifndef WSTABWINDOWH
 #define WSTABWINDOWH
 
+#include <wx/notebook.h>
+
 #include "debugger/wsVarWindow.h"
 #include "debugger/wsMessageWindow.h"
 #include "debugger/wsStackWindow.h"

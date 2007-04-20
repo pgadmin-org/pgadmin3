@@ -23,6 +23,8 @@
 #ifndef WSMAINFRAMEH
 #define WSMAINFRAMEH
 
+#include <wx/aui/aui.h>
+
 #include "debugger/wsConnProp.h"
 #include "debugger/wsRichWindow.h"
 #include "debugger/wsTabWindow.h"

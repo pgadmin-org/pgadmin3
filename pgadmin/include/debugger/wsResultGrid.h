@@ -21,6 +21,8 @@
 #ifndef WSRESULTGRIDH
 #define WSRESULTGRIDH
 
+#include <wx/grid.h>
+
 class wsResultGrid : public wxGrid
 {
     DECLARE_CLASS( wsResultGrid )

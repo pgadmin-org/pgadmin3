@@ -31,6 +31,7 @@
 
 #include <wx/hashmap.h>
 #include <wx/hashset.h>
+#include <wx/grid.h>
 
 class wsVarWindow : public wxGrid
 {
