@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.8 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
 <link rel="up" href="spi.html#spi-interface" title="40.1. Interface Functions">
 <link rel="prev" href="spi-spi-exec.html" title="SPI_exec">
 <link rel="next" href="spi-spi-getargcount.html" title="SPI_getargcount">
@@ -17,12 +17,12 @@
 <h2>Name</h2>
 <p>SPI_prepare &#8212; prepare a plan for a command, without executing it yet</p>
 </div>
-<a name="id2715645"></a><div class="refsynopsisdiv">
+<a name="id2715742"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">void * SPI_prepare(const char * <em class="parameter"><code>command</code></em>, int <em class="parameter"><code>nargs</code></em>, Oid * <em class="parameter"><code>argtypes</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2715674"></a><h2>Description</h2>
+<a name="id2715771"></a><h2>Description</h2>
 <p>   <code class="function">SPI_prepare</code> creates and returns an execution
    plan for the specified command but doesn't execute the command.
    This function should only be called from a connected procedure.
@@ -48,7 +48,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2715755"></a><h2>Arguments</h2>
+<a name="id2715852"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">const char * <em class="parameter"><code>command</code></em></code></span></dt>
 <dd><p>      command string
@@ -63,7 +63,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2715821"></a><h2>Return Value</h2>
+<a name="id2715918"></a><h2>Return Value</h2>
 <p>   <code class="function">SPI_prepare</code> returns a non-null pointer to an
    execution plan.  On error, <code class="symbol">NULL</code> will be returned,
    and <code class="varname">SPI_result</code> will be set to one of the same
@@ -75,7 +75,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2715884"></a><h2>Notes</h2>
+<a name="id2715982"></a><h2>Notes</h2>
 <p>   There is a disadvantage to using parameters: since the planner does
    not know the values that will be supplied for the parameters, it
    may make worse planning choices than it would make for a normal

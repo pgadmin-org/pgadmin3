@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="next" href="slonstart.html" title="3. Slon daemons">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="firstdb"></a>2. Replicating Your First Database</h2></div></div></div>
-<a name="id2565538"></a><p>In this example, we will be replicating a brand new
+<a name="id2565730"></a><p>In this example, we will be replicating a brand new
 <span class="application">pgbench</span> database.  The mechanics of
 replicating an existing database are covered here, however we
 recommend that you learn how <span class="productname">Slony-I</span> functions by using a fresh new
@@ -77,12 +77,12 @@ in an error similar to the following:</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2565790"></a>2.1. Creating the <span class="application">pgbench</span> user</h3></div></div></div>
+<a name="id2565982"></a>2.1. Creating the <span class="application">pgbench</span> user</h3></div></div></div>
 <p><code class="command">createuser -A -D $PGBENCHUSER</code></p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2565806"></a>2.2. Preparing the databases</h3></div></div></div>
+<a name="id2565998"></a>2.2. Preparing the databases</h3></div></div></div>
 <pre class="programlisting">createdb -O $PGBENCHUSER -h $MASTERHOST $MASTERDBNAME
 createdb -O $PGBENCHUSER -h $SLAVEHOST $SLAVEDBNAME
 pgbench -i -s 1 -U $PGBENCHUSER -h $MASTERHOST $MASTERDBNAME</pre>
@@ -116,15 +116,44 @@ database running on localhost as the pgbench user.</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2565916"></a>2.3. Configuring the Database for Replication.</h3></div></div></div>
+<a name="id2566108"></a>2.3. Configuring the Database for Replication.</h3></div></div></div>
 <p>Creating the configuration tables, stored procedures, triggers
 and configuration is all done through the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 tool. It is a specialized scripting aid that mostly calls stored
-procedures in the master/slave (node) databases.  The script to create
-the initial configuration for the simple master-slave setup of our
-<span class="application">pgbench</span> database looks like this:
+procedures in the master/slave (node) databases. </p>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2566124"></a>2.3.1. Using the altperl scripts</h4></div></div></div>
+<p>Using the <a href="adminscripts.html#altperl" title="19.1. altperl Scripts">Section 19.1, &#8220;altperl Scripts&#8221;</a> scripts is an easy way to get started.  The
+<code class="command">slonik_build_env</code> script will generate output providing
+details you need to  omplete building a <code class="filename">slon_tools.conf</code>. 
+An example <code class="filename">slon_tools.conf</code> is provided in the distribution
+to get you started.  The altperl scripts will all reference
+this central configuration file in the future to ease administration. Once 
+slon_tools.conf has been created, you can proceed as follows:</p>
+<pre class="programlisting"># Initialize cluster:
+$ slonik_init_cluster  | slonik 
 
-</p>
+# Start slon  (here 1 and 2 are node numbers)
+$ slon_start 1    
+$ slon_start 2
+
+# Create Sets (here 1 is a set number)
+$ slonik_create_set 1             
+
+# subscribe set to second node (1= set ID, 2= node ID)
+$ slonik_subscribe_set  2 | slonik</pre>
+<p> You have now replicated your first database.  You can skip the following section
+of documentation if you'd like, which documents more of a &#8220;<span class="quote">bare-metal</span>&#8221; approach.</p>
+</div>
+<div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="id2566179"></a>2.3.2. Using slonik command directly</h4></div></div></div>
+<p>The traditional approach to administering slony is to craft slonik
+commands directly. An example of this given here. </p>
+<p> The script to create
+the initial configuration for the simple master-slave setup of our
+<span class="application">pgbench</span> database looks like this:</p>
 <pre class="programlisting">#!/bin/sh
 
 slonik &lt;&lt;_EOF_
@@ -180,8 +209,6 @@ slonik &lt;&lt;_EOF_
 	store node (id=2, comment = 'Slave node');
 	store path (server = 1, client = 2, conninfo='dbname=$MASTERDBNAME host=$MASTERHOST user=$REPLICATIONUSER');
 	store path (server = 2, client = 1, conninfo='dbname=$SLAVEDBNAME host=$SLAVEHOST user=$REPLICATIONUSER');
-	store listen (origin=1, provider = 1, receiver =2);
-	store listen (origin=2, provider = 2, receiver =1);
 _EOF_</pre>
 <p>Is the <span class="application">pgbench</span> still running?  If
 not, then start it again.</p>
@@ -249,9 +276,7 @@ are in fact the same.</p>
 databases and compare them.  Make sure that
 <span class="application">pgbench</span> has completed, so that there are no
 new updates hitting the origin node, and that your slon sessions have
-caught up.
-
-</p>
+caught up.</p>
 <pre class="programlisting">#!/bin/sh
 echo -n "**** comparing sample1 ... "
 psql -U $REPLICATIONUSER -h $MASTERHOST $MASTERDBNAME &gt;dump.tmp.1.$$ &lt;&lt;_EOF_
@@ -289,6 +314,7 @@ the process in the <span class="productname">Slony-I</span> source code tree in 
 <code class="filename">slony-I-basic-mstr-slv.txt</code>.</p>
 <p>If this script returns <code class="command">FAILED</code> please contact the
 developers at <a href="http://slony.info/" target="_top">http://slony.info/</a></p>
+</div>
 </div>
 </div></body>
 </html>

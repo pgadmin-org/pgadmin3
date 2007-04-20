@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
 <link rel="up" href="commandreference.html" title="Part I. Core Slony-I Programs">
 <link rel="prev" href="slon.html" title="slon">
 <link rel="next" href="slon-config-connection.html" title="2. Connection settings">
@@ -26,7 +26,7 @@
 <dt><span class="sect1"><a href="slon-config-interval.html">4. Event Tuning</a></span></dt>
 </dl>
 </div>
-<a name="id2587151"></a><p>    There are several configuration parameters that affect the
+<a name="id2587796"></a><p>    There are several configuration parameters that affect the
     behavior of the replication system.  In this section, we describe
     how to set the <span class="application">slon</span> daemon's
     configuration parameters; the following subsections discuss each
@@ -77,7 +77,13 @@
 <dt>
 <a name="slon-config-logging-log-level"></a><span class="term"><code class="varname">log_level</code> (<code class="type">integer</code>)</span>
 </dt>
-<dd><p>Debug log level (higher value ==&gt; more output).  Range: [0,4], default 4</p></dd>
+<dd>
+<p>Debug log level (higher value ==&gt; more output).  Range: [0,4], default 2</p>
+<p> There are <a href="slon.html#nineloglevels">nine log
+	message types</a>; using this option, some or all of
+	the &#8220;<span class="quote">debugging</span>&#8221; levels may be left out of the
+	slon logs. </p>
+</dd>
 <dt>
 <a name="slon-config-logging-log-pid"></a><span class="term"><code class="varname">log_pid</code> (<code class="type">boolean</code>)</span>
 </dt>

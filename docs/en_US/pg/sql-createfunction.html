@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.8 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createdomain.html" title="CREATE DOMAIN">
 <link rel="next" href="sql-creategroup.html" title="CREATE GROUP">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE FUNCTION &#8212; define a new function</p>
 </div>
-<a name="id2733681"></a><div class="refsynopsisdiv">
+<a name="id2733739"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ OR REPLACE ] FUNCTION
     <em class="replaceable"><code>name</code></em> ( [ [ <em class="replaceable"><code>argmode</code></em> ] [ <em class="replaceable"><code>argname</code></em> ] <em class="replaceable"><code>argtype</code></em> [, ...] ] )
@@ -64,7 +64,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2733846"></a><h2>Parameters</h2>
+<a name="id2733904"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>       The name (optionally schema-qualified) of the function to create.
@@ -326,6 +326,47 @@ SELECT * FROM dup(42);</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
+<a name="sql-createfunction-security"></a><h2>Writing <code class="literal">SECURITY DEFINER</code> Functions Safely</h2>
+<p>    Because a <code class="literal">SECURITY DEFINER</code> function is executed
+    with the privileges of the user that created it, care is needed to
+    ensure that the function cannot be misused.  For security,
+    <a href="runtime-config-client.html#guc-search-path">search_path</a> should be set to exclude any schemas
+    writable by untrusted users.  This prevents
+    malicious users from creating objects that mask objects used by the
+    function.  Particularly important is in this regard is the
+    temporary-table schema, which is searched first by default, and
+    is normally writable by anyone.  A secure arrangement can be had
+    by forcing the temporary schema to be searched last.  To do this,
+    write <code class="literal">pg_temp</code> as the last entry in <code class="varname">search_path</code>.
+    This function illustrates safe usage:
+   </p>
+<pre class="programlisting">CREATE FUNCTION check_password(uname TEXT, pass TEXT)
+RETURNS BOOLEAN AS $$
+DECLARE passed BOOLEAN;
+        old_path TEXT;
+BEGIN
+        -- Save old search_path; notice we must qualify current_setting
+        -- to ensure we invoke the right function
+        old_path := pg_catalog.current_setting('search_path');
+
+        -- Set a secure search_path: trusted schemas, then 'pg_temp'.
+        -- We set is_local = true so that the old value will be restored
+        -- in event of an error before we reach the function end.
+        PERFORM pg_catalog.set_config('search_path', 'admin, pg_temp', true);
+
+        -- Do whatever secure work we came for.
+        SELECT  (pwd = $2) INTO passed
+        FROM    pwds
+        WHERE   username = $1;
+
+        -- Restore caller's search_path
+        PERFORM pg_catalog.set_config('search_path', old_path, true);
+
+        RETURN passed;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;</pre>
+</div>
+<div class="refsect1" lang="en">
 <a name="sql-createfunction-compat"></a><h2>Compatibility</h2>
 <p>   A <code class="command">CREATE FUNCTION</code> command is defined in SQL:1999 and later.
    The <span class="productname">PostgreSQL</span> version is similar but
@@ -339,7 +380,7 @@ SELECT * FROM dup(42);</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2734651"></a><h2>See Also</h2>
+<a name="id2734779"></a><h2>See Also</h2>
 <span class="simplelist"><a href="sql-alterfunction.html" title="ALTER FUNCTION">ALTER FUNCTION</a>, <a href="sql-dropfunction.html" title="DROP FUNCTION">DROP FUNCTION</a>, <a href="sql-grant.html" title="GRANT">GRANT</a>, <a href="sql-load.html" title="LOAD">LOAD</a>, <a href="sql-revoke.html" title="REVOKE">REVOKE</a>, <a href="app-createlang.html" title="createlang"><span class="application">createlang</span></a></span>
 </div>
 </div></body>

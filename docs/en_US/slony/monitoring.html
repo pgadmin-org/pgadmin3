@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.6 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="subscribenodes.html" title="4. Subscribing Nodes">
 <link rel="next" href="maintenance.html" title="6. Slony-I Maintenance">
@@ -14,10 +14,10 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring"></a>5. Monitoring</h2></div></div></div>
-<a name="id2566802"></a><div class="sect2" lang="en">
+<a name="id2567059"></a><div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2566812"></a>5.1.  <span class="productname">Nagios</span> Replication Checks </h3></div></div></div>
-<a name="id2566822"></a><p> The script in the <code class="filename">tools</code> directory called
+<a name="id2567070"></a>5.1.  <span class="productname">Nagios</span> Replication Checks </h3></div></div></div>
+<a name="id2567079"></a><p> The script in the <code class="filename">tools</code> directory called
 <code class="command"> pgsql_replication_check.pl </code> represents some of the
 best answers arrived at in attempts to build replication tests to plug
 into the <a href="http://www.nagios.org/" target="_top"> <span class="productname">Nagios</span> </a> system
@@ -57,7 +57,7 @@ that is to be monitored; that is the way <span class="productname">Nagios</span>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="slonymrtg"></a>5.2.  Monitoring <span class="productname">Slony-I</span> using MRTG </h3></div></div></div>
-<a name="id2566978"></a><p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
+<a name="id2567236"></a><p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
 <a href="http://people.ee.ethz.ch/~oetiker/webtools/mrtg/" target="_top"><span class="application"> mrtg - Multi Router Traffic Grapher </span></a> to monitor <span class="productname">Slony-I</span> replication.</p>
 <p> ... Since I use <span class="application">mrtg</span> to graph data
 from multiple servers I use snmp (<span class="application">net-snmp</span>
@@ -79,7 +79,7 @@ Options[db_replication_lagtime]: gauge,nopercent,growright</pre>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="testslonystate"></a>5.3.  test_slony_state</h3></div></div></div>
-<a name="id2567076"></a><p> This script does various sorts of analysis of the state of a
+<a name="id2567334"></a><p> This script does various sorts of analysis of the state of a
 <span class="productname">Slony-I</span> cluster.</p>
 <p> You specify arguments including <code class="option">database</code>,
 <code class="option">host</code>, <code class="option">user</code>,
@@ -136,7 +136,8 @@ script; if you don't like the values, pick your favorites!</p>
 <a name="search-logs"></a>5.4.  <code class="command">search-logs.sh</code> </h3></div></div></div>
 <p> This script is constructed to search for <span class="productname">Slony-I</span> log files at
 a given path (<code class="envar">LOGHOME</code>), based both on the naming
-conventions used by the <a href="adminscripts.html#launchclusters" title="19.3.  launch_clusters.sh">Section 19.3, &#8220; launch_clusters.sh &#8221;</a> and <a href="adminscripts.html#slonwatchdog" title="19.1.20. slon_watchdog">Section 19.1.20, &#8220;slon_watchdog&#8221;</a> systems used for launching <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes.</p>
+conventions used by the <a href="adminscripts.html#launchclusters" title="19.3.  launch_clusters.sh">Section 19.3, &#8220; launch_clusters.sh &#8221;</a> and <a href="adminscripts.html#slonwatchdog" title="19.1.20. slon_watchdog">Section 19.1.20, &#8220;slon_watchdog&#8221;</a> systems used for launching <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> 
+processes.</p>
 <p> Errors, if found, are listed, by log file, and emailed to the
 specified user (<code class="envar">LOGRECIPIENT</code>); if no email address is
 specified, output goes to standard output. </p>
@@ -144,6 +145,24 @@ specified, output goes to standard output. </p>
 evaluate (rather than the last hour). </p>
 <p> An administrator might run this script once an hour to monitor
 for replication problems. </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="wikigen"></a>5.5.  Building MediaWiki Cluster Summary </h3></div></div></div>
+<p> The script <code class="filename">mkmediawiki.pl </code>, in
+<code class="filename">tools</code>, may be used to generate a cluster summary
+compatible with the popular <a href="http://www.mediawiki.org/" target="_top">MediaWiki </a> software. </p>
+<p> The gentle user might use the script as follows: </p>
+<pre class="screen">~/logtail.en&gt;         mvs login -d mywiki.example.info -u "Chris Browne" -p `cat ~/.wikipass` -w wiki/index.php                     
+Doing login with host: logtail and lang: en
+~/logtail.en&gt; perl $SLONYHOME/tools/mkmediawiki.pl --host localhost --database slonyregress1 --cluster slony_regress1  &gt; Slony_replication.wiki
+~/logtail.en&gt; mvs commit -m "More sophisticated generated Slony-I cluster docs" Slony_replication.wiki
+Doing commit Slony_replication.wiki with host: logtail and lang: en</pre>
+<p> Note that <code class="command">mvs</code> is a client written in Perl;
+on <a href="http://www.debian.org/" target="_top"> Debian GNU/Linux</a>, the
+relevant package is called
+<span class="application">libwww-mediawiki-client-perl</span>; other systems
+may have a packaged version of this under some similar name. </p>
 </div>
 </div></body>
 </html>

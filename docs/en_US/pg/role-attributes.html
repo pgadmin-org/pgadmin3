@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.8 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
 <link rel="up" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">
 <link rel="prev" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">
 <link rel="next" href="privileges.html" title="18.3. Privileges">
@@ -19,7 +19,7 @@
 
     </p>
 <div class="variablelist"><dl>
-<dt><span class="term">login privilege<a name="id2644818"></a></span></dt>
+<dt><span class="term">login privilege<a name="id2644838"></a></span></dt>
 <dd>
 <p>        Only roles that have the <code class="literal">LOGIN</code> attribute can be used
         as the initial role name for a database connection.  A role with
@@ -35,7 +35,7 @@ CREATE USER <em class="replaceable"><code>name</code></em>;</pre>
         default, while <code class="command">CREATE ROLE</code> does not.)
        </p>
 </dd>
-<dt><span class="term">superuser status<a name="id2644895"></a></span></dt>
+<dt><span class="term">superuser status<a name="id2644915"></a></span></dt>
 <dd><p>        A database superuser bypasses all permission checks.  This is a
         dangerous privilege and should not be used carelessly; it is best
         to do most of your work as a role that is not a superuser.
@@ -43,13 +43,13 @@ CREATE USER <em class="replaceable"><code>name</code></em>;</pre>
         <em class="replaceable"><code>name</code></em> SUPERUSER</code>.  You must do
         this as a role that is already a superuser.
        </p></dd>
-<dt><span class="term">database creation<a name="id2644923"></a></span></dt>
+<dt><span class="term">database creation<a name="id2644943"></a></span></dt>
 <dd><p>        A role must be explicitly given permission to create databases
         (except for superusers, since those bypass all permission
         checks). To create such a role, use <code class="literal">CREATE ROLE
         <em class="replaceable"><code>name</code></em> CREATEDB</code>.
        </p></dd>
-<dt><span class="term">role creation<a name="id2644952"></a></span></dt>
+<dt><span class="term">role creation<a name="id2644971"></a></span></dt>
 <dd><p>        A role must be explicitly given permission to create more roles
         (except for superusers, since those bypass all permission
         checks). To create such a role, use <code class="literal">CREATE ROLE
@@ -60,7 +60,7 @@ CREATE USER <em class="replaceable"><code>name</code></em>;</pre>
         superuser role, superuser status is required;
         <code class="literal">CREATEROLE</code> is not sufficient for that.
        </p></dd>
-<dt><span class="term">password<a name="id2644996"></a></span></dt>
+<dt><span class="term">password<a name="id2645016"></a></span></dt>
 <dd><p>        A password is only significant if the client authentication
         method requires the user to supply a password when connecting
         to the database. The <code class="option">password</code>,
@@ -74,7 +74,7 @@ CREATE USER <em class="replaceable"><code>name</code></em>;</pre>
 <p>
 
     A role's attributes can be modified after creation with
-    <code class="command">ALTER ROLE</code>.<a name="id2645043"></a>
+    <code class="command">ALTER ROLE</code>.<a name="id2645063"></a>
     See the reference pages for the <a href="sql-createrole.html" title="CREATE ROLE">CREATE ROLE</a> and <a href="sql-alterrole.html" title="ALTER ROLE">ALTER ROLE</a> commands for details.
    </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.8 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
 <link rel="up" href="datetime-appendix.html" title="Appendix B. Date/Time Support">
 <link rel="prev" href="datetime-appendix.html" title="Appendix B. Date/Time Support">
 <link rel="next" href="datetime-units-history.html" title="B.3. History of Units">
@@ -181,7 +181,7 @@
     longer the case however and this key word will likely be dropped in
     a future release.
    </p>
-<a name="id2817019"></a><p>    <a href="datetime-keywords.html#datetime-timezone-input-table" title="Table B.4. Time Zone Abbreviations for Input">Table B.4, &#8220;Time Zone Abbreviations for Input&#8221;</a> shows the time zone
+<a name="id2817112"></a><p>    <a href="datetime-keywords.html#datetime-timezone-input-table" title="Table B.4. Time Zone Abbreviations for Input">Table B.4, &#8220;Time Zone Abbreviations for Input&#8221;</a> shows the time zone
     abbreviations recognized by <span class="productname">PostgreSQL</span>
     in date/time input values.  Note that these names are <span class="emphasis"><em>not</em></span>
     necessarily used for date/time output [mdash ] output is driven by the
@@ -772,7 +772,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><a name="id2818101"></a><p>    <a href="datetime-keywords.html#datetime-timezone-set-table" title="Table B.6. Time Zone Names for Setting timezone">Table B.6, &#8220;Time Zone Names for Setting <code class="varname">timezone</code>&#8221;</a> shows the time zone
+<br class="table-break"><a name="id2818194"></a><p>    <a href="datetime-keywords.html#datetime-timezone-set-table" title="Table B.6. Time Zone Names for Setting timezone">Table B.6, &#8220;Time Zone Names for Setting <code class="varname">timezone</code>&#8221;</a> shows the time zone
     names recognized by <span class="productname">PostgreSQL</span> as valid
     settings for the <a href="runtime-config-client.html#guc-timezone">timezone</a> parameter.  Note that
     these names are conceptually as well as practically different from
@@ -1198,22 +1198,29 @@
 </table></div>
 </div>
 <br class="table-break"><p>    In addition to the names listed in the table,
-    <span class="productname">PostgreSQL</span> will accept time zone names of the
-    form <em class="replaceable"><code>STD</code></em><em class="replaceable"><code>offset</code></em> or
+    <span class="productname">PostgreSQL</span> will accept POSIX-style time zone
+    specifications of the form <em class="replaceable"><code>STD</code></em><em class="replaceable"><code>offset</code></em> or
     <em class="replaceable"><code>STD</code></em><em class="replaceable"><code>offset</code></em><em class="replaceable"><code>DST</code></em>, where
     <em class="replaceable"><code>STD</code></em> is a zone abbreviation, <em class="replaceable"><code>offset</code></em> is a
     numeric offset in hours west from UTC, and <em class="replaceable"><code>DST</code></em> is an
-    optional daylight-savings zone abbreviation, assumed to stand for one hour
-    ahead of the given offset.  For example, if <code class="literal">EST5EDT</code> were not
-    already a recognized zone name, it would be accepted and would be
-    functionally equivalent to USA East Coast time.  When a daylight-savings
-    zone name is present, it is assumed to be used according to USA time zone
-    rules, so this feature is of limited use outside North America.
-    One should also be wary that this provision can lead to
-    silently accepting bogus input, since there is no check on the
-    reasonableness of the zone abbreviations.  For example,
-    <code class="literal">SET TIMEZONE TO FOOBAR0</code> will work, leaving the system
-    effectively using a rather peculiar abbreviation for GMT.
+    optional daylight-savings zone abbreviation, assumed to stand for one
+    hour ahead of the given offset. For example, if <code class="literal">EST5EDT</code>
+    were not already a recognized zone name, it would be accepted and would
+    be functionally equivalent to USA East Coast time.  When a
+    daylight-savings zone name is present, it is assumed to be used
+    according to the same daylight-savings transition rules used in the
+    <code class="literal">zic</code> time zone database's <code class="filename">posixrules</code> entry.
+    In a standard <span class="productname">PostgreSQL</span> installation,
+    <code class="filename">posixrules</code> is the same as <code class="literal">US/Eastern</code>, so
+    that POSIX-style time zone specifications follow USA daylight-savings
+    rules.  If needed, you can adjust this behavior by replacing the
+    <code class="filename">posixrules</code> file.
    </p>
+<p>     One should be wary that the POSIX-style time zone feature can
+     lead to silently accepting bogus input, since there is no check on the
+     reasonableness of the zone abbreviations.  For example, <code class="literal">SET
+     TIMEZONE TO FOOBAR0</code> will work, leaving the system effectively using
+     a rather peculiar abbreviation for UTC.
+    </p>
 </div></body>
 </html>
