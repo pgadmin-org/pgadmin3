@@ -33,7 +33,7 @@ debuggerFactory::debuggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *
 wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     // Setup the debugger frame
-    wsMainFrame *debugger = new wsMainFrame(form, _("Debugger"));
+    wsMainFrame *debugger = new wsMainFrame(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier()));
     debugger->Show(true);
     debugger->Raise();
 
@@ -110,7 +110,7 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
         dbgOid = NumToStr((long)obj->GetOid());
 
     // Setup the debugger frame
-    wsMainFrame *debugger = new wsMainFrame(form, _("Debugger"));
+    wsMainFrame *debugger = new wsMainFrame(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier()));
     debugger->Show(true);
     debugger->Raise();
 
