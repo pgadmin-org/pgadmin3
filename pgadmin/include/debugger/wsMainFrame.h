@@ -25,6 +25,7 @@
 
 #include <wx/aui/aui.h>
 
+#include "frm/frmMain.h"
 #include "debugger/wsConnProp.h"
 #include "debugger/wsRichWindow.h"
 #include "debugger/wsTabWindow.h"
@@ -96,33 +97,35 @@ class wsCodeWindow;
 class wsDirectDbg;
 class wxSizeReportCtrl;
 
-class wsMainFrame : public wxFrame
+class wsMainFrame : public pgFrame
 {    
     DECLARE_CLASS( wsMainFrame )
 
   public:
-    wsMainFrame( wxWindow *parent, const wxString &title, const wxPoint & pos, const wxSize & size );
+    wsMainFrame(frmMain *parent, const wxString &title);
     virtual ~wsMainFrame();
 
     wsDirectDbg   *addDirectDbg( const wsConnProp & connProp );        // Create a new direct-debugging window
     wsCodeWindow  *addDebug( const wsConnProp & props );                   // Create a new debugger window
     wxStatusBar   *getStatusBar() { return( m_statusBar ); }            // Returns pointer to the status bar
 
-    wxMenuBar    *m_menuBar;    // Menu bar
-    wxToolBar    *m_toolBar;    // Frames' toolbar
+    wxMenuBar     *m_menuBar;    // Menu bar
+    wxToolBar     *m_toolBar;    // Frames' toolbar
     wxMenu        *m_viewMenu; // View menu (can be modified by wxCodeWindow)
     wxMenu        *m_debugMenu; // Debug menu (can be modified by wxCodeWindow)
 
     wxAuiManager manager;
 
   private:
-    wsCodeWindow    *m_standaloneDebugger;    // Standalone debugger window
+    wsCodeWindow   *m_standaloneDebugger;    // Standalone debugger window
     wsDirectDbg    *m_standaloneDirectDbg;    // Standalone direct debugger
     wxStatusBar    *m_statusBar;    // Frame's status bar
 
     wxMenuBar    *setupMenuBar( void );
     wxToolBar    *setupToolBar( void );
-    wxStatusBar    *setupStatusBar( void );
+    wxStatusBar  *setupStatusBar( void );
+
+    frmMain *m_parent;
 
     DECLARE_EVENT_TABLE()
 
@@ -133,8 +136,8 @@ class wsMainFrame : public wxFrame
     void OnClose( wxCloseEvent & event );
     void OnExit( wxCommandEvent & event );
     void OnSize( wxSizeEvent & event );
-
-    void OnAbout(wxCommandEvent& evt);
+    void OnHelp(wxCommandEvent& event);
+    void OnContents(wxCommandEvent& event);
 
     void OnToggleToolBar(wxCommandEvent& event);
     void OnToggleStackPane(wxCommandEvent& event);

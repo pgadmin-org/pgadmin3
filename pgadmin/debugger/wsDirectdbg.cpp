@@ -210,7 +210,7 @@ void wsDirectDbg::loadTargetInfo( const wxString &target, const wsConnProp & con
 		}
 		catch( std::runtime_error & e )
 		{
-			m_conn->close();
+			m_conn->Close();
 
 			throw( e );
 		}
@@ -383,15 +383,6 @@ void wsDirectDbg::saveSettings()
 
 void wsDirectDbg::OnCancel( wxCommandEvent & event )
 {
-// This piece of code is disabled as it is repeated in wsDirectDbg::OnClose().
-// We simply raise close event to notify wsDirectDbg::OnClose().
-
-#if 0
-	if( m_conn )
-		m_conn->close();
-
-#endif
-
 	// This will raise close event which is handled by 
 	// wsDirectDbg::OnClose().
 	Close();
@@ -407,7 +398,7 @@ void wsDirectDbg::OnCancel( wxCommandEvent & event )
 void wsDirectDbg::OnClose( wxCloseEvent & event )
 {
 	if( m_conn )
-		m_conn->close();
+		m_conn->Close();
 			
 	// This will inform the MainWindow to close.
 	m_parent->Close();

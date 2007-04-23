@@ -51,7 +51,7 @@ class wsPgConn
 	const wxString  getHost() const;	// Returns the host-name (or IP address) for this connection
 	const wxString  getDatabase() const;	// Returns the name of the database that we're connected to
 	PGconn	*getConnection();		// Returns the libpq connection handle
-	void	close(); 			// Close this connection
+	void	Close(); 			// Close this connection
 
 	void	startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL );	// Starts executing a command	
 	void	setNoticeHandler( PQnoticeProcessor handler, void * arg );			// Registers a NOTICE handler

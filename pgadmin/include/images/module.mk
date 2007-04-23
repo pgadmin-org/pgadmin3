@@ -45,6 +45,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/database-sm.xpm \
 	$(srcdir)/include/images/database.xpm \
 	$(srcdir)/include/images/databases.xpm \
+	$(srcdir)/include/images/debugger.xpm \
 	$(srcdir)/include/images/delete.xpm \
 	$(srcdir)/include/images/dnd_copy.xpm \
 	$(srcdir)/include/images/dnd_move.xpm \

@@ -189,6 +189,10 @@ wsCodeWindow::wsCodeWindow( wsMainFrame *parent, wxWindowID id, const wsConnProp
     m_parent->m_viewMenu->Check(MENU_ID_VIEW_STACKPANE, m_parent->manager.GetPane(wxT("stackPane")).IsShown());
     m_parent->m_viewMenu->Check(MENU_ID_VIEW_OUTPUTPANE, m_parent->manager.GetPane(wxT("outputPane")).IsShown());
 
+    // Enable the options for these controls
+	m_parent->m_viewMenu->Enable(MENU_ID_VIEW_OUTPUTPANE, true);
+	m_parent->m_viewMenu->Enable(MENU_ID_VIEW_STACKPANE,  true);
+
 	m_parent->manager.Update();
 
 	// The wsDbgConn constructor connects to the given host+port and
@@ -789,7 +793,7 @@ void wsCodeWindow::closeConnection()
 {
 	// Close the debugger (proxy) connection
 
-	m_dbgConn->close();
+	m_dbgConn->Close();
 	m_dbgConn = NULL;
  
 	// Let the user know what happened
@@ -1139,10 +1143,13 @@ void wsCodeWindow::clearAllBreakpoints( )
 {
 	int	lineNo = 0;
 
-	while(( lineNo = m_view->MarkerNext( lineNo, MARKERINDEX_TO_MARKERMASK( MARKER_BREAKPOINT ))) != -1 )
-		clearBreakpoint( lineNo++, false );
+    if (m_view)
+    {
+	    while(( lineNo = m_view->MarkerNext( lineNo, MARKERINDEX_TO_MARKERMASK( MARKER_BREAKPOINT ))) != -1 )
+    		clearBreakpoint( lineNo++, false );
 
-	m_updateBreakpoints = TRUE;
+    	m_updateBreakpoints = TRUE;
+    }
 }
 
 void wsCodeWindow::stopDebugging()

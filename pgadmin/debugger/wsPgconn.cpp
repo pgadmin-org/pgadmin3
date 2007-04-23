@@ -138,7 +138,7 @@ void wsPgConn::Init( const wxString &server, const wxString &database, const wxS
 
 wsPgConn::~wsPgConn()
 {
-	close();
+	Close();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -242,7 +242,7 @@ void wsPgConn::setNoticeHandler( PQnoticeProcessor handler, void * arg )
         p = PQsetNoticeProcessor( m_pgConn, handler, arg );
 }
 
-void wsPgConn::close()
+void wsPgConn::Close()
 {
 	if( m_pgConn )
 		PQfinish( m_pgConn );

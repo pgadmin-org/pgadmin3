@@ -10,9 +10,6 @@ mkdir "$bundle_name.app"
 mkdir -p "$bundle_name.app/Contents/MacOS"
 mkdir -p "$bundle_name.app/Contents/Resources"
 mkdir -p "$bundle_name.app/Contents/SharedSupport"
-mkdir -p "$bundle_name.app/Contents/Resources/Debugger.app/Contents/MacOS"
-mkdir -p "$bundle_name.app/Contents/Resources/Debugger.app/Contents/Resources"
-mkdir -p "$bundle_name.app/Contents/Resources/Debugger.app/Contents/SharedSupport"
 
 (cd "$bundle_name.app/Contents"; ln -s ../../pkg/mac/PkgInfo PkgInfo) &&
 (cd "$bundle_name.app/Contents" && ln -s ../../pkg/mac/debug.pgadmin.Info.plist Info.plist) &&
@@ -20,8 +17,4 @@ mkdir -p "$bundle_name.app/Contents/Resources/Debugger.app/Contents/SharedSuppor
 (cd "$bundle_name.app/Contents/Resources" && ln -s "../../../pkg/mac/pgadmin3.icns" "$bundle_name.icns") &&
 (cd "$bundle_name.app/Contents/SharedSupport" && ln -s ../../../pgadmin/ui ui) &&
 (cd "$bundle_name.app/Contents/SharedSupport" && ln -s ../../../docs docs) &&
-(cd "$bundle_name.app/Contents/SharedSupport" && ln -s ../../../i18n i18n) &&
-(cd "$bundle_name.app/Contents/Resources/Debugger.app/Contents"; ln -s ../../../../../pkg/mac/PkgInfo PkgInfo) &&
-(cd "$bundle_name.app/Contents/Resources/Debugger.app/Contents" && ln -s ../../../../../pkg/mac/debug.debugger.Info.plist Info.plist) &&
-(cd "$bundle_name.app/Contents/Resources/Debugger.app/Contents/MacOS" && ln -s ../../../../../../debugger/debugger Debugger) &&
-(cd "$bundle_name.app/Contents/Resources/Debugger.app/Contents/Resources" && ln -s "../../../../../../pkg/mac/debugger.icns" "Debugger.icns")
+(cd "$bundle_name.app/Contents/SharedSupport" && ln -s ../../../i18n i18n)

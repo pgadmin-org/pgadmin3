@@ -90,8 +90,6 @@ wxString edbBackupExecutable;      // complete filename of EnterpriseDB's pg_dum
 wxString edbBackupAllExecutable;
 wxString edbRestoreExecutable;
 
-wxString debuggerExecutable;       // complete filename of the pl/pgsql & edbspl debugger
-
 wxString loadPath;              // Where the program is loaded from
 wxString docPath;               // Where docs are stored
 wxString uiPath;                // Where ui data is stored
@@ -257,8 +255,6 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("EDB pg_dump   : %s"), edbBackupExecutable.c_str());
     wxLogInfo(wxT("EDB pg_dumpall: %s"), edbBackupAllExecutable.c_str());
     wxLogInfo(wxT("EDB pg_restore: %s"), edbRestoreExecutable.c_str());
-
-    wxLogInfo(wxT("Debugger      : %s"), debuggerExecutable.c_str());
 
 #ifdef __WXGTK__
 	static pgRendererNative *renderer=new pgRendererNative();
@@ -583,20 +579,6 @@ void pgAdmin3::InitPaths()
         brandingPath = loadPath + wxT("/../pgAdmin III") + BRANDING_DIR;
     else 
         brandingPath = loadPath + wxT("/../..") + BRANDING_DIR;
-
-    // The debugger is a little different. In a regular install,
-    // it should be in the same directory. In a development env,
-    // it will be in ..\..\debugger\Debug|Release
-    if (wxFile::Exists(loadPath + wxT("\\debugger.exe")))
-        debuggerExecutable = loadPath + wxT("\\debugger.exe");
-#ifdef __WXDEBUG__
-    else if (wxFile::Exists(loadPath + wxT("\\..\\..\\debugger\\Debug\\debugger.exe")))
-        debuggerExecutable = loadPath + wxT("\\..\\..\\debugger\\Debug\\debugger.exe");
-#else
-    else if (wxFile::Exists(loadPath + wxT("\\..\\..\\debugger\\Release\\debugger.exe")))
-        debuggerExecutable = loadPath + wxT("\\..\\..\\debugger\\Release\\debugger.exe");
-#endif
-
 #else
 
     wxString dataDir;
@@ -659,21 +641,6 @@ void pgAdmin3::InitPaths()
         else
             brandingPath = loadPath + wxT("/..") BRANDING_DIR ;
     }
-
-    // The debugger is a little different. In a regular install,
-    // it should be in the same directory (except on Macs). 
-	// In a development env it will be in ../debugger/
-#ifndef __WXMAC__
-    if (wxFile::Exists(loadPath + wxT("/debugger")))
-        debuggerExecutable = loadPath + wxT("/debugger");
-#else
-    // In a Mac AppBundle, we include the debugger in a sub-bundle.
-    if (wxFile::Exists(loadPath + wxT("/../Resources/Debugger.app/Contents/MacOS/Debugger")))
-        debuggerExecutable = loadPath + wxT("/../Resources/Debugger.app/Contents/MacOS/Debugger");
-#endif
-    else if (wxFile::Exists(loadPath + wxT("/../debugger/debugger")))
-        debuggerExecutable = loadPath + wxT("/../debugger/debugger");
-
 #endif
 
     //////////////////////////////////

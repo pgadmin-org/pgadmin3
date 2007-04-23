@@ -15,6 +15,10 @@
 // App headers
 #include "pgAdmin3.h"
 #include "debugger/debugger.h"
+#include "debugger/wsBreakPoint.h"
+#include "debugger/wsCodeWindow.h"
+#include "debugger/wsDirectdbg.h"
+#include "debugger/wsMainFrame.h"
 #include "schema/pgFunction.h"
 #include "schema/pgTrigger.h"
 
@@ -28,37 +32,34 @@ debuggerFactory::debuggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *
 
 wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    extern wxString debuggerExecutable;
+    // Setup the debugger frame
+    wsMainFrame *debugger = new wsMainFrame(form, _("Debugger"));
+    debugger->Show(true);
+    debugger->Raise();
 
-    // Store the password in the environment if it is not stored. 
-    // We don't set it on the command line because thats insecure 
-    // on some platforms.
-    if (!obj->GetDatabase()->GetServer()->GetPasswordIsStored())
-        wxSetEnv(wxT("PGPASSWORD"), obj->GetDatabase()->GetServer()->GetPassword());
+    // Setup the connection properties to be used by the debugger
+    wsConnProp cp;
+    cp.m_database = obj->GetDatabase()->GetQuotedIdentifier();
+    cp.m_host = obj->GetServer()->GetName();
+    cp.m_password = obj->GetDatabase()->GetServer()->GetPassword();
+    cp.m_port = NumToStr((long)obj->GetServer()->GetPort());
+    cp.m_sslMode = obj->GetServer()->GetSSL();
+    cp.m_userName = obj->GetServer()->GetUsername();
 
-    // Setup the debugger command
-    wxString cmd = debuggerExecutable;
+    // Setup the debugging session
+	wsDirectDbg *directDebugger = NULL;
+    directDebugger = debugger->addDirectDbg(cp);
 
-    cmd += wxT(" -d ") + obj->GetDatabase()->GetQuotedIdentifier();
-    cmd += wxT(" -p ") + NumToStr((long)obj->GetServer()->GetPort());
-    cmd += wxT(" -U ") + obj->GetServer()->GetUsername();
-    cmd += wxT(" -h ") + obj->GetServer()->GetName();
-    cmd += wxT(" -o ") + NumToStr((long)obj->GetOid());
-    cmd += wxT(" -i");
+    wsBreakpointList &breakpoints = directDebugger->getBreakpointList();
+    breakpoints.Append(new wsBreakpoint(wsBreakpoint::OID, NumToStr((long)obj->GetOid()), wxString(wxT("'NULL'"))));
+    directDebugger->startDebugging();
 
-    // Fire off the debugger...
-    wxExecute(cmd);
-
-    return 0;
+    // Return the debugger window to frmMain.
+    return debugger;
 }
 
 bool debuggerFactory::CheckEnable(pgObject *obj)
 {
-    extern wxString debuggerExecutable;
-
-    if (debuggerExecutable.IsEmpty())
-        return false;
-
     if (obj && !obj->IsCollection())
     {
         switch (obj->GetMetaType())
@@ -102,40 +103,40 @@ breakpointFactory::breakpointFactory(menuFactoryList *list, wxMenu *mnu, wxToolB
 
 wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    extern wxString debuggerExecutable;
-
-    // Store the password in the environment if it is not stored. 
-    // We don't set it on the command line because thats insecure 
-    // on some platforms.
-    if (!obj->GetDatabase()->GetServer()->GetPasswordIsStored())
-        wxSetEnv(wxT("PGPASSWORD"), obj->GetDatabase()->GetServer()->GetPassword());
-
-    // Setup the debugger command
-    wxString cmd = debuggerExecutable;
-
-    cmd += wxT(" -d ") + obj->GetDatabase()->GetQuotedIdentifier();
-    cmd += wxT(" -p ") + NumToStr((long)obj->GetServer()->GetPort());
-    cmd += wxT(" -U ") + obj->GetServer()->GetUsername();
-    cmd += wxT(" -h ") + obj->GetServer()->GetName();
-
+    wxString dbgOid;
     if (obj->GetMetaType() == PGM_TRIGGER)
-        cmd += wxT(" -o ") + NumToStr((long)((pgTrigger *)obj)->GetFunctionOid());
+        dbgOid = NumToStr((long)((pgTrigger *)obj)->GetFunctionOid());
     else
-        cmd += wxT(" -o ") + NumToStr((long)obj->GetOid());
+        dbgOid = NumToStr((long)obj->GetOid());
 
-    // Fire off the debugger...
-    wxExecute(cmd);
+    // Setup the debugger frame
+    wsMainFrame *debugger = new wsMainFrame(form, _("Debugger"));
+    debugger->Show(true);
+    debugger->Raise();
 
-    return 0;
+    // Setup the connection properties to be used by the debugger
+    wsConnProp cp;
+    cp.m_database = obj->GetDatabase()->GetQuotedIdentifier();
+    cp.m_host = obj->GetServer()->GetName();
+    cp.m_password = obj->GetDatabase()->GetServer()->GetPassword();
+    cp.m_port = NumToStr((long)obj->GetServer()->GetPort());
+    cp.m_sslMode = obj->GetServer()->GetSSL();
+    cp.m_userName = obj->GetServer()->GetUsername();
+
+    // Setup the debugging session
+	wsCodeWindow *globalDebugger = NULL;
+    globalDebugger = debugger->addDebug(cp);
+
+    wsBreakpointList &breakpoints = globalDebugger->getBreakpointList();
+    breakpoints.Append(new wsBreakpoint(wsBreakpoint::OID, dbgOid, wxString(wxT("'NULL'"))));
+    globalDebugger->startGlobalDebugging();
+
+    // Return the debugger window to frmMain.
+    return debugger;
 }
 
 bool breakpointFactory::CheckEnable(pgObject *obj)
 {
-    extern wxString debuggerExecutable;
-
-    if (debuggerExecutable.IsEmpty())
-        return false;
-
     if (obj && !obj->IsCollection())
     {
         switch (obj->GetMetaType())

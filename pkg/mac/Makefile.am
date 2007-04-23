@@ -11,12 +11,8 @@ EXTRA_DIST = \
 		$(srcdir)/complete-bundle.sh \
 		$(srcdir)/create-dmg.sh \
 		$(srcdir)/debug-bundle.sh \
-		$(srcdir)/debugger.Info.plist \
-		$(srcdir)/debugger.Info.plist.in \
 		$(srcdir)/pgadmin.Info.plist \
 		$(srcdir)/pgadmin.Info.plist.in \
-		$(srcdir)/debug.debugger.Info.plist \
-		$(srcdir)/debug.debugger.Info.plist.in \
 		$(srcdir)/debug.pgadmin.Info.plist \
 		$(srcdir)/debug.pgadmin.Info.plist.in \
 		$(srcdir)/licence.r \
@@ -32,11 +28,6 @@ if APPBUNDLE
 	$(install_sh_DATA) "sql.icns" "$(bundledir)/Contents/Resources/sql.icns"
 	$$($(WX_CONFIG) --rescomp | sed 's/-t[[:space:]]*APPL//') \
 		 "$(bundledir)/Contents/Resources/pgAdmin3.rsrc" -useDF
-	$(install_sh_DATA) PkgInfo $(bundledir)/Contents/Resources/Debugger.app/Contents/PkgInfo
-	$(install_sh_DATA) debugger.Info.plist $(bundledir)/Contents/Resources/Debugger.app/Contents/Info.plist
-	$(install_sh_DATA) "debugger.icns" "$(bundledir)/Contents/Resources/Debugger.app/Contents/Resources/Debugger.icns"
-#	$$($(WX_CONFIG) --rescomp | sed 's/-t[[:space:]]*APPL//') \
-#		 "$(bundledir)/Contents/Resources/Debugger.app/Contents/Resources/Debugger.rsrc" -useDF
 	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_dump" "$(bundledir)/Contents/SharedSupport/helper/pg_dump"
 	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_dumpall" "$(bundledir)/Contents/SharedSupport/helper/pg_dumpall"
 	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_restore" "$(bundledir)/Contents/SharedSupport/helper/pg_restore"
