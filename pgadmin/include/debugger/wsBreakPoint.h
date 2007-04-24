@@ -30,7 +30,7 @@ public:
 		OID
 	};
 
-	wsBreakpoint( eTargetType targetType, wxString & target, wxString & process ): m_targetType( targetType ), m_target( target ), m_targetProcess( process ) {}
+	wsBreakpoint(eTargetType targetType, const wxString &target, const wxString &process ): m_targetType(targetType), m_target(target), m_targetProcess(process) {}
 
 	eTargetType   getTargetType() 	 { return( m_targetType ); }
 	wxString    & getTarget() 	 { return( m_target ); }

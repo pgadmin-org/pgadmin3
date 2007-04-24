@@ -33,7 +33,7 @@ debuggerFactory::debuggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *
 wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     // Setup the debugger frame
-    wsMainFrame *debugger = new wsMainFrame(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier()));
+    wsMainFrame *debugger = new wsMainFrame(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier().c_str()));
     debugger->Show(true);
     debugger->Raise();
 
@@ -51,7 +51,7 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
     directDebugger = debugger->addDirectDbg(cp);
 
     wsBreakpointList &breakpoints = directDebugger->getBreakpointList();
-    breakpoints.Append(new wsBreakpoint(wsBreakpoint::OID, NumToStr((long)obj->GetOid()), wxString(wxT("'NULL'"))));
+    breakpoints.Append(new wsBreakpoint(wsBreakpoint::OID, NumToStr((long)obj->GetOid()), wxT("'NULL'")));
     directDebugger->startDebugging();
 
     // Return the debugger window to frmMain.
@@ -110,7 +110,7 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
         dbgOid = NumToStr((long)obj->GetOid());
 
     // Setup the debugger frame
-    wsMainFrame *debugger = new wsMainFrame(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier()));
+    wsMainFrame *debugger = new wsMainFrame(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier().c_str()));
     debugger->Show(true);
     debugger->Raise();
 
@@ -128,7 +128,7 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
     globalDebugger = debugger->addDebug(cp);
 
     wsBreakpointList &breakpoints = globalDebugger->getBreakpointList();
-    breakpoints.Append(new wsBreakpoint(wsBreakpoint::OID, dbgOid, wxString(wxT("'NULL'"))));
+    breakpoints.Append(new wsBreakpoint(wsBreakpoint::OID, dbgOid, wxT("'NULL'")));
     globalDebugger->startGlobalDebugging();
 
     // Return the debugger window to frmMain.
