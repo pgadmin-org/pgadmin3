@@ -35,14 +35,15 @@
 
 #define VERSION_WITH_DATE_AND_SVN       wxT("Version ") VERSION_STR wxT(" (") __TDATE__ wxT(", rev: ") wxT(VERSION_SVN) wxT(")")
 
-IMPLEMENT_CLASS( wsMainFrame, wxWindow  )
+IMPLEMENT_CLASS( wsMainFrame, pgFrame  )
 
-BEGIN_EVENT_TABLE( wsMainFrame, wxWindow  )
+BEGIN_EVENT_TABLE( wsMainFrame, pgFrame  )
     EVT_MENU(MNU_EXIT,  wsMainFrame ::OnExit)
 
     EVT_MENU_RANGE(MENU_ID_TOGGLE_BREAK, MENU_ID_STOP, wsMainFrame::OnDebugCommand)
     EVT_CLOSE(wsMainFrame::OnClose)
     EVT_SIZE(wsMainFrame::OnSize)
+	EVT_ERASE_BACKGROUND(wsMainFrame::OnEraseBackground)
 
     EVT_STC_MARGINCLICK(wxID_ANY,        wsMainFrame::OnMarginClick)
     EVT_LISTBOX(wxID_ANY,                wsMainFrame::OnSelectFrame)
@@ -190,6 +191,11 @@ void wsMainFrame::OnMarginClick( wxStyledTextEvent & event )
 //  wxWidgets needs to size the application window)
 
 void wsMainFrame::OnSize( wxSizeEvent & event )
+{
+    event.Skip();
+}
+
+void wsMainFrame::OnEraseBackground(wxEraseEvent& event)
 {
     event.Skip();
 }

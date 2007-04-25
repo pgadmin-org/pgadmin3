@@ -148,9 +148,9 @@ wsCodeWindow::wsCodeWindow( wsMainFrame *parent, wxWindowID id, const wsConnProp
 {
     wxWindowBase::SetFont(settings->GetSystemFont());
 
-	m_stackWindow = new wsStackWindow( parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, 0 );
-	m_tabWindow = new wsTabWindow( parent , WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, wxNO_BORDER | wxSW_3D | wxCLIP_CHILDREN );
-	m_view = new wsRichWindow( parent, -1);
+	m_stackWindow = new wsStackWindow(parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, 0);
+	m_tabWindow = new wsTabWindow(parent , WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, 0);
+	m_view = new wsRichWindow(parent, -1);
 
 	// Set up the markers that we use do indicate the current line and a breakpoint
 	m_view->MarkerDefine( MARKER_CURRENT, wxSTC_MARK_ARROW , *wxGREEN, *wxGREEN );

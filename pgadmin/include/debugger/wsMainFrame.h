@@ -135,7 +135,8 @@ class wsMainFrame : public pgFrame
     void OnMarginClick( wxStyledTextEvent & event );    // Set/clear breakpoint on margin click
     void OnClose( wxCloseEvent & event );
     void OnExit( wxCommandEvent & event );
-    void OnSize( wxSizeEvent & event );
+	void OnSize( wxSizeEvent & event );
+    void OnEraseBackground(wxEraseEvent& event);
     void OnHelp(wxCommandEvent& event);
     void OnContents(wxCommandEvent& event);
 
