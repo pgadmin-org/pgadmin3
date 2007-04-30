@@ -30,6 +30,7 @@
 #ifndef WSDIRECTDBGH
 #define WSDIRECTDBGH
 
+#include "dlg/dlgClasses.h"
 #include "debugger/wsBreakPoint.h"
 #include "debugger/wsConnProp.h"
 #include "debugger/wsMainFrame.h"
@@ -38,7 +39,7 @@ class wsTargetInfo;
 class wsPgConn;
 class wsCodeWindow;
 
-class wsDirectDbg : public wxDialog	// FIXME: shouldn't this be a wxDialog?
+class wsDirectDbg : public pgDialog
 {
 	DECLARE_CLASS( wsDirectDbg )
 
@@ -46,6 +47,7 @@ public:
 
 	wsDirectDbg( wsMainFrame *parent, wxWindowID id, const wsConnProp & connProp );
 	wsBreakpointList & getBreakpointList();
+    void setupParamWindow();
 	void startDebugging();
 
 private:
@@ -61,15 +63,12 @@ private:
 	bool		m_isFunc;
 	const wsConnProp &m_connProp;	// Connection properties (used to connect to the server)
 	wsTargetInfo     *m_targetInfo;	// Detailed information about the target (like argument types, name, ...)
-	wxGrid           *m_grid;		// A grid that we use to prompt the user for parameter values
 	wsPgConn         *m_conn;		// The connection to the server
 	wsCodeWindow     *m_codeWindow;		// A pointer to the debugger window that we'll create
 	wsBreakpointList m_breakpoints;		// List of initial breakpoints to create
-	wxCheckBox		 *m_debugInitializer;	// Checkbox for "Debug package initializer?"
 	wsMainFrame		 *m_parent;
 
 	void loadTargetInfo( const wxString &target, const wsConnProp & connProp, char targetType );
-	void setupParamWindow();
 	void populateParamGrid();
 	void OnOk( wxCommandEvent & event );
 	void OnCancel( wxCommandEvent & event );

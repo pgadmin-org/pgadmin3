@@ -26,11 +26,17 @@
 #include "debugger/wsDbresult.h"
 #include "debugger/wsCodeWindow.h"
 
+#include "images/debugger.xpm"
+
 #include <stdexcept>
 
-IMPLEMENT_CLASS( wsDirectDbg, wxDialog )
+#define lblMessage                  CTRL_STATIC("lblMessage")
+#define grdParams                   CTRL("grdParams", wxGrid)
+#define chkPkgInit                  CTRL_CHECKBOX("chkPkgInit")
 
-BEGIN_EVENT_TABLE( wsDirectDbg, wxDialog )
+IMPLEMENT_CLASS( wsDirectDbg, pgDialog )
+
+BEGIN_EVENT_TABLE( wsDirectDbg, pgDialog )
     EVT_BUTTON( wxID_OK,       			 wsDirectDbg::OnOk )
     EVT_BUTTON( wxID_CANCEL,   			 wsDirectDbg::OnCancel )    
     EVT_BUTTON( MENU_ID_SPAWN_DEBUGGER,  wsDirectDbg::OnDebug )
@@ -58,17 +64,18 @@ END_EVENT_TABLE()
 //  provided by the user).
 
 wsDirectDbg::wsDirectDbg( wsMainFrame *parent, wxWindowID id, const wsConnProp & connProp )
-	: wxDialog( (wxWindow *)parent, id,  connProp.m_host + wxT( "/" ) + connProp.m_database, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION  ),
-	m_connProp(connProp),
+  : m_connProp(connProp),
 	m_targetInfo(NULL),
-	m_grid(NULL),
 	m_conn(NULL),
 	m_codeWindow(NULL),
 	m_parent (parent)
 {
     wxWindowBase::SetFont(settings->GetSystemFont());
+    LoadResource(m_parent, wxT("wsDirectdbg"));
 
-	setupParamWindow();
+    // Icon
+    SetIcon(wxIcon(debugger_xpm));
+    RestorePosition();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -81,46 +88,20 @@ wsDirectDbg::wsDirectDbg( wsMainFrame *parent, wxWindowID id, const wsConnProp &
 
 void wsDirectDbg::setupParamWindow( )
 {
-	wxStaticText * txtMessage  = new wxStaticText( this, ID_TXTMESSAGE, _( "Please enter argument values here. Press Enter after each value." ), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE );
-	wxBoxSizer   * topSizer    = new wxBoxSizer( wxVERTICAL ); 
-	wxBoxSizer   * buttonSizer = new wxBoxSizer( wxHORIZONTAL );   
+	// Add three columns to the grid control:
+	//	(Parameter) Name, Type, and Valu
+	grdParams->CreateGrid( 0, 3 );
+	grdParams->SetColLabelValue( COL_NAME,  _( "Name" ));
+	grdParams->SetColLabelValue( COL_TYPE,  _( "Type" ));
+	grdParams->SetColLabelValue( COL_VALUE, _( "Value" ));
+	grdParams->SetRowLabelSize( 25 );
+	grdParams->SetColSize( 0, 80 );
+	grdParams->SetColSize( 1, 100 );
+	grdParams->SetColSize( 2, grdParams->GetClientSize().x - 210 );
+	grdParams->SetColLabelSize( 18 );
 
-	// Create the grid control and add three columns:
-	//	(Parameter) Name, Type, and Value
-
-	m_grid = new wxGrid( this, ID_GRDFUNCARGS, wxDefaultPosition, wxSize( 380, 120));
-	
-	m_grid->CreateGrid( 0, 3 );
-	m_grid->SetColLabelValue( COL_NAME,  _( "Name" ));
-	m_grid->SetColLabelValue( COL_TYPE,  _( "Type" ));
-	m_grid->SetColLabelValue( COL_VALUE, _( "Value" ));
-	m_grid->SetRowLabelSize( 40 );
-	m_grid->SetColSize( 0, 110 );
-	m_grid->SetColSize( 1, 105 );
-	m_grid->SetColSize( 2, 114 );
-
-	m_debugInitializer = new wxCheckBox( this, ID_DEBUG_INITIALIZER, _( "Debug package initializer?" ));
-	m_debugInitializer->SetValue(false);
-	m_debugInitializer->Hide();
-
-	// Add a prompt to the top of the window and then add 
-	// the grid control
-
-	topSizer->Add( txtMessage, 0, wxGROW, 0 );      
-	topSizer->Add( m_grid, 1, wxEXPAND | wxALL, 7 );      
-	// Now add an OK button and a Cancel button
-
-	buttonSizer->Add( m_debugInitializer, 0, wxALL, 7 );
-	buttonSizer->Add( new wxButton( this, wxID_OK, _( "OK" )), 0, wxALL, 7 );      
-	buttonSizer->Add( new wxButton( this, wxID_CANCEL, _( "Cancel" )), 0, wxALL, 7 );      
-
-	topSizer->Add( buttonSizer, 0, wxALIGN_CENTER ); 
-
-	// And size everything to fit within the window
-	SetSizer( topSizer ); 			// use the sizer for layout 
-	topSizer->Fit( this );          // fit the dialog to the contents 
-	topSizer->SetSizeHints( this ); // set hints to honor min size 	
-
+	chkPkgInit->SetValue(false);
+	chkPkgInit->Disable();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -246,14 +227,14 @@ void wsDirectDbg::populateParamGrid( )
 
 		if( arg.getMode() != wxT( "o" ))
 		{
-			m_grid->AppendRows( 1 );
-			m_grid->SetCellValue( i, COL_NAME,  arg.getName());
-			m_grid->SetCellValue( i, COL_TYPE,  arg.getType());
-			m_grid->SetCellValue( i, COL_VALUE, arg.getValue());
+			grdParams->AppendRows( 1 );
+			grdParams->SetCellValue( i, COL_NAME,  arg.getName());
+			grdParams->SetCellValue( i, COL_TYPE,  arg.getType());
+			grdParams->SetCellValue( i, COL_VALUE, arg.getValue());
 		
-			m_grid->SetReadOnly( i, COL_NAME,  true );
-			m_grid->SetReadOnly( i, COL_TYPE,  true );
-			m_grid->SetReadOnly( i, COL_VALUE, false );
+			grdParams->SetReadOnly( i, COL_NAME,  true );
+			grdParams->SetReadOnly( i, COL_TYPE,  true );
+			grdParams->SetReadOnly( i, COL_VALUE, false );
 		
 			i++;
 		}
@@ -262,17 +243,17 @@ void wsDirectDbg::populateParamGrid( )
 	// Move the cursor to the first value (so that the user
 	// can just start typing)
 
-	m_grid->SetGridCursor( 0, COL_VALUE );
-	m_grid->SetFocus();
+	grdParams->SetGridCursor( 0, COL_VALUE );
+	grdParams->SetFocus();
 
 	// If the target is defined within package, offer the user
 	// a chance to debug the initializer (there may or may not
 	// be an initializer, we don't really know at this point)
 
 	if( m_targetInfo->getPkgOid() == 0 )
-		m_debugInitializer->Hide();
+		chkPkgInit->Disable();
 	else
-		m_debugInitializer->Show();
+		chkPkgInit->Enable();
 
 	// If the target function has no parameters (and it's not defined within
 	// a package), there's no good reason to wait for the user to hit the Ok
@@ -280,27 +261,21 @@ void wsDirectDbg::populateParamGrid( )
 
 	if(( m_targetInfo->getArgCount() == 0 ) && ( m_targetInfo->getPkgOid() == 0 ))
 	{
-		wxStaticText * txtMessage = (wxStaticText *)FindWindow( ID_TXTMESSAGE );
+		grdParams->AppendRows( 1 );
+		grdParams->SetReadOnly( i, COL_NAME,  true );
+		grdParams->SetReadOnly( i, COL_TYPE,  true );
+		grdParams->SetReadOnly( i, COL_VALUE, true );
 
-		if( txtMessage )
-			txtMessage->SetLabel( wxString::Format( _( "This %s requires no argument values\nClick 'OK' to invoke %s" ), m_targetInfo->getIsFunction() ? _("function") : _("procedure"), m_targetInfo->getFQName().c_str()));
-
-		m_grid->AppendRows( 1 );
-		m_grid->SetReadOnly( i, COL_NAME,  true );
-		m_grid->SetReadOnly( i, COL_TYPE,  true );
-		m_grid->SetReadOnly( i, COL_VALUE, true );
-
-		m_grid->SetCellValue( 0, COL_NAME, _T( "   No arguments required   " ));
-
-		wxFont	font = m_grid->GetCellFont( 0, COL_NAME );
-		
+		grdParams->SetCellValue( 0, COL_NAME, _T( "No arguments required" ));
+		wxFont font = grdParams->GetCellFont( 0, COL_NAME );
 		font.SetStyle( wxFONTSTYLE_ITALIC );
+		grdParams->SetCellFont( 0, COL_NAME, font );
 
-		m_grid->SetCellFont( 0, COL_NAME, font );
-		m_grid->AutoSizeColumns();
+		grdParams->AutoSizeColumns();
 		activateDebugger();
-
 	}
+    else
+        this->Show(true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -427,10 +402,10 @@ bool wsDirectDbg::activateDebugger( )
 
 		if( arg.getMode() != wxT( "o" ))
 		{
-			if( m_grid->GetCellValue( i, COL_VALUE ) == wxT( "" ))
+			if( grdParams->GetCellValue( i, COL_VALUE ) == wxT( "" ))
 				arg.setValue( wxT( "NULL" ));
 			else
-				arg.setValue( m_grid->GetCellValue( i, COL_VALUE ));
+				arg.setValue( grdParams->GetCellValue( i, COL_VALUE ));
 			i++;
 		}	
 	}
@@ -444,7 +419,7 @@ bool wsDirectDbg::activateDebugger( )
 	
 	try
 	{
-		if( m_debugInitializer->GetValue())
+		if( chkPkgInit->GetValue())
 			setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getPkgOid());
 
 		setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getOid());

@@ -76,7 +76,8 @@ TMP_ui += \
 	$(srcdir)/ui/frmReport.xrc \
 	$(srcdir)/ui/frmRestore.xrc \
 	$(srcdir)/ui/frmStatus.xrc \
-	$(srcdir)/ui/frmUpdate.xrc
+	$(srcdir)/ui/frmUpdate.xrc \
+        $(srcdir)/ui/wsDirectdbg.xrc
 
 EXTRA_DIST += \
         $(srcdir)/ui/module.mk \

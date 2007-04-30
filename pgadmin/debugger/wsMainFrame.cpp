@@ -143,7 +143,7 @@ wsDirectDbg * wsMainFrame::addDirectDbg( const wsConnProp & connProp )
 {
 
     m_standaloneDirectDbg = new wsDirectDbg( this, -1, connProp );
-    m_standaloneDirectDbg->Show( true );
+    m_standaloneDirectDbg->setupParamWindow();
     return( m_standaloneDirectDbg );
 }
 

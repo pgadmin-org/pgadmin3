@@ -34,8 +34,6 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     // Setup the debugger frame
     wsMainFrame *debugger = new wsMainFrame(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier().c_str()));
-    debugger->Show(true);
-    debugger->Raise();
 
     // Setup the connection properties to be used by the debugger
     wsConnProp cp;
