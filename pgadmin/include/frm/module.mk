@@ -10,7 +10,6 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/frm/events.h \
 	$(srcdir)/include/frm/frmAbout.h \
 	$(srcdir)/include/frm/frmBackup.h \
 	$(srcdir)/include/frm/frmBackupGlobals.h \
