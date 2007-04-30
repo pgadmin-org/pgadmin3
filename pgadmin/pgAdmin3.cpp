@@ -284,7 +284,6 @@ bool pgAdmin3::OnInit()
 
     long langCount=0;
     const wxLanguageInfo *langInfo;
-    int langNo;
 
     wxString langfile=FileRead(i18nPath + wxT("/") LANG_FILE, 1);
 
