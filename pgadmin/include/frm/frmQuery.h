@@ -115,9 +115,13 @@ private:
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();
     void UpdateFavouritesList();
+    void SetLineEndingStyle();
+    int GetLineEndingStyle();
+    void OnSetEOLMode(wxCommandEvent& event);
     wxWindow *currentControl();
     wxMenu *queryMenu;
     wxMenu *favouritesMenu;
+    wxMenu *lineEndMenu;
     wxString title;
     wxString lastFilename, lastDir;
 
@@ -135,6 +139,7 @@ private:
 enum
 {
     STATUSPOS_MSGS = 1,
+    STATUSPOS_FORMAT,
     STATUSPOS_POS,
     STATUSPOS_ROWS,
     STATUSPOS_SECS

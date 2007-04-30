@@ -9,14 +9,16 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include "pgAdmin3.h"
+
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/regex.h>
 
 // wxAUI
 #include <wx/aui/aui.h>
 
 // App headers
-#include "pgAdmin3.h"
 #include "frm/frmMain.h"
 #include "frm/frmQuery.h"
 #include "frm/frmHelp.h"
@@ -99,6 +101,9 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_SCRATCHPAD,        frmQuery::OnToggleScratchPad)
     EVT_MENU(MNU_OUTPUTPANE,        frmQuery::OnToggleOutputPane)
     EVT_MENU(MNU_DEFAULTVIEW,       frmQuery::OnDefaultView)
+    EVT_MENU(MNU_LF,                frmQuery::OnSetEOLMode)
+    EVT_MENU(MNU_CRLF,              frmQuery::OnSetEOLMode)
+    EVT_MENU(MNU_CR,                frmQuery::OnSetEOLMode)
     EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
@@ -144,6 +149,11 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     menuBar->Append(fileMenu, _("&File"));
 
+    lineEndMenu = new wxMenu();
+    lineEndMenu->AppendRadioItem(MNU_LF, _("Unix (LF)"), _("Use Unix style line endings"));
+    lineEndMenu->AppendRadioItem(MNU_CRLF, _("DOS (CRLF)"), _("Use DOS style line endings"));
+    lineEndMenu->AppendRadioItem(MNU_CR, _("Mac (CR)"), _("Use Mac style line endings"));
+
     editMenu = new wxMenu();
     editMenu->Append(MNU_UNDO, _("&Undo\tCtrl-Z"), _("Undo last action"), wxITEM_NORMAL);
     editMenu->Append(MNU_REDO, _("&Redo\tCtrl-Y"), _("Redo last action"), wxITEM_NORMAL);
@@ -158,6 +168,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     editMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
     editMenu->Append(MNU_SHOWWHITESPACE, _("&Show whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
     editMenu->Append(MNU_SHOWLINEENDS, _("&Show line ends"), _("Enable or disable display of line ends"), wxITEM_CHECK);
+    editMenu->AppendSeparator();
+    editMenu->Append(MNU_RECENT, _("&Line ends"), lineEndMenu);
     menuBar->Append(editMenu, _("&Edit"));
 
     // View menu
@@ -225,10 +237,10 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     queryMenu->Enable(MNU_CANCEL, false);
 
-    int iWidths[5] = {0, -1, 130, 80, 80};
-    statusBar=CreateStatusBar(5);
+    int iWidths[6] = {0, -1, 40, 130, 80, 80};
+    statusBar=CreateStatusBar(6);
     SetStatusBarPane(-1);
-    SetStatusWidths(5, iWidths);
+    SetStatusWidths(6, iWidths);
     SetStatusText(_("ready"), STATUSPOS_MSGS);
 
     toolBar = new wxToolBar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
@@ -268,6 +280,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     sqlQuery = new ctlSQLBox(this, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
     sqlQuery->SetDatabase(conn);
     sqlQuery->SetMarginWidth(1, 16);
+    SetLineEndingStyle();
 
     // Results pane
     outputPane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 300));
@@ -1127,7 +1140,12 @@ void frmQuery::OnPositionStc(wxStyledTextEvent& event)
 
 void frmQuery::OpenLastFile()
 {
-    wxString str=FileRead(lastPath);
+    wxString str;
+    wxUtfFile file(lastPath, wxFile::read, wxFONTENCODING_DEFAULT);
+
+    if (file.IsOpened())
+        file.Read(str);
+
     if (!str.IsEmpty())
     {
         sqlQuery->SetText(str);
@@ -1135,6 +1153,7 @@ void frmQuery::OpenLastFile()
         wxSafeYield();  // needed to process sqlQuery modify event
         changed = false;
         setExtendedTitle();
+        SetLineEndingStyle();
         UpdateRecentFiles();
     }
 }
@@ -1183,6 +1202,112 @@ void frmQuery::OnSave(wxCommandEvent& event)
     }
 }
 
+void frmQuery::SetLineEndingStyle()
+{
+    // Detect the file mode
+    wxRegEx *reLF = new wxRegEx(wxT("[^\r]\n"), wxRE_NEWLINE);
+    wxRegEx *reCRLF = new wxRegEx(wxT("\r\n"), wxRE_NEWLINE);
+    wxRegEx *reCR = new wxRegEx(wxT("\r[^\n]"), wxRE_NEWLINE);
+
+    bool haveLF = reLF->Matches(sqlQuery->GetText());
+    bool haveCRLF = reCRLF->Matches(sqlQuery->GetText());
+    bool haveCR = reCR->Matches(sqlQuery->GetText());
+    int mode = GetLineEndingStyle();
+
+    if (haveLF && haveCR ||
+        haveLF && haveCRLF ||
+        haveCR && haveCRLF)
+    {
+        wxMessageBox(_("This file contain mixed line endings. They will be converted to the current setting."), _("Warning"), wxICON_INFORMATION);
+        sqlQuery->ConvertEOLs(mode);
+        changed=true;
+        setExtendedTitle();
+        updateMenu();
+    }
+    else
+    {
+        if (haveLF)
+            mode = wxSTC_EOL_LF;
+        else if (haveCRLF)
+            mode = wxSTC_EOL_CRLF;
+        else if (haveCR)
+            mode = wxSTC_EOL_CR;
+    }
+
+    // Now set the status text, menu options, and the mode
+    sqlQuery->SetEOLMode(mode);
+    switch(mode)
+    {
+
+        case wxSTC_EOL_LF:
+            lineEndMenu->Check(MNU_LF, true);
+            SetStatusText(_("Unix"), STATUSPOS_FORMAT);
+            break;
+
+        case wxSTC_EOL_CRLF:
+            lineEndMenu->Check(MNU_CRLF, true);
+            SetStatusText(_("DOS"), STATUSPOS_FORMAT);
+            break;
+
+        case wxSTC_EOL_CR:
+            lineEndMenu->Check(MNU_CR, true);
+            SetStatusText(_("Mac"), STATUSPOS_FORMAT);
+            break;
+
+        default:
+            wxLogError(_("Someone created a new line ending style! Run, run for your lives!!"));
+    }
+
+    delete reCRLF;
+    delete reCR;
+    delete reLF;
+}
+
+int frmQuery::GetLineEndingStyle()
+{
+    if (lineEndMenu->IsChecked(MNU_LF))
+        return wxSTC_EOL_LF;
+    else if (lineEndMenu->IsChecked(MNU_CRLF))
+        return wxSTC_EOL_CRLF;
+    else if (lineEndMenu->IsChecked(MNU_CR))
+        return wxSTC_EOL_CR;
+    else 
+        return sqlQuery->GetEOLMode();
+}
+
+void frmQuery::OnSetEOLMode(wxCommandEvent& event)
+{
+    int mode = GetLineEndingStyle();
+    sqlQuery->ConvertEOLs(mode);
+
+    switch(mode)
+    {
+
+        case wxSTC_EOL_LF:
+            lineEndMenu->Check(MNU_LF, true);
+            SetStatusText(_("Unix"), STATUSPOS_FORMAT);
+            break;
+
+        case wxSTC_EOL_CRLF:
+            lineEndMenu->Check(MNU_CRLF, true);
+            SetStatusText(_("DOS"), STATUSPOS_FORMAT);
+            break;
+
+        case wxSTC_EOL_CR:
+            lineEndMenu->Check(MNU_CR, true);
+            SetStatusText(_("Mac"), STATUSPOS_FORMAT);
+            break;
+
+        default:
+            wxLogError(_("Someone created a new line ending style! Run, run for your lives!!"));
+    }
+
+    if (!changed)
+    {
+        changed=true;
+        setExtendedTitle();  
+    }
+}
 
 void frmQuery::OnSaveAs(wxCommandEvent& event)
 {

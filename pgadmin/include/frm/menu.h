@@ -81,8 +81,11 @@ enum
 	MNU_SHOWLINEENDS,
     MNU_QUICKREPORT,
 
-    MNU_RECENT,
+    MNU_CR,
+    MNU_CRLF,
+    MNU_LF,
 
+    MNU_RECENT,
     MNU_NEW=MNU_RECENT+15,  // leave space for recent file entries
 
     MNU_ACTION=MNU_NEW+1000, // leave space for objects
