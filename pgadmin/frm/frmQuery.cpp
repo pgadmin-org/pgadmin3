@@ -34,6 +34,7 @@
 #include "dlg/dlgAddFavourite.h"
 #include "dlg/dlgManageFavourites.h"
 #include "utils/favourites.h"
+#include "utils/utffile.h"
 #include "frm/frmReport.h"
 
 #include <wx/clipbrd.h>
