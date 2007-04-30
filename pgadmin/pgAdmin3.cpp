@@ -301,24 +301,17 @@ bool pgAdmin3::OnInit()
             wxString englishName=line.BeforeFirst(',').Trim(true);
             wxString translatedName=line.AfterFirst(',').Trim(false);
 
-            langNo=2;       // skipping default, unknown
-
-            while (true)
+            langInfo=wxLocale::FindLanguageInfo(englishName);
+            if (langInfo)
             {
-                langInfo=wxLocale::GetLanguageInfo(langNo);
-                if (!langInfo)
-                    break;
-
-                if (englishName == langInfo->Description && 
-                    (langInfo->CanonicalName == wxT("en_US") || 
+                if (langInfo->CanonicalName == wxT("en_US") || 
                     (!langInfo->CanonicalName.IsEmpty() && 
-                     wxDir::Exists(i18nPath + wxT("/") + langInfo->CanonicalName))))
+                     wxDir::Exists(i18nPath + wxT("/") + langInfo->CanonicalName)))
                 {
-                    existingLangs.Add(langNo);
+                    existingLangs.Add(langInfo->Language);
                     existingLangNames.Add(translatedName);
                     langCount++;
                 }
-                langNo++;
             }
         }
     }
