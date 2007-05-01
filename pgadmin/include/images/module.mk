@@ -193,6 +193,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/user.xpm \
 	$(srcdir)/include/images/users.xpm \
 	$(srcdir)/include/images/vacuum.xpm \
+	$(srcdir)/include/images/variable.xpm \
+	$(srcdir)/include/images/variables.xpm \
 	$(srcdir)/include/images/view-sm.xpm \
 	$(srcdir)/include/images/view.xpm \
 	$(srcdir)/include/images/viewdata.xpm \

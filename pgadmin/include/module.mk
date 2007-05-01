@@ -13,7 +13,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/copyright.h \
 	$(srcdir)/include/pgAdmin3.h \
 	$(srcdir)/include/postgres.h \
-    $(srcdir)/include/svnversion.h \
+	$(srcdir)/include/precomp.h \
+	$(srcdir)/include/svnversion.h \
 	$(srcdir)/include/version.h
 
 EXTRA_DIST += \
@@ -21,6 +22,7 @@ EXTRA_DIST += \
 
 include $(srcdir)/include/agent/module.mk
 include $(srcdir)/include/db/module.mk
+include $(srcdir)/include/dlg/module.mk
 include $(srcdir)/include/debugger/module.mk
 include $(srcdir)/include/ctl/module.mk
 include $(srcdir)/include/frm/module.mk

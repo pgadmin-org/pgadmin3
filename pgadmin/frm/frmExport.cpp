@@ -135,7 +135,7 @@ void frmExport::OnOK(wxCommandEvent &ev)
 
 bool frmExport::Export(pgSet *set)
 {
-	ctlSQLResult *grid;
+	ctlSQLResult *grid=0;
 	if (!set)
 	{
 		wxLogInfo(wxT("Exporting data from the grid"));

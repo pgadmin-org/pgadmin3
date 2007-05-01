@@ -24,7 +24,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/schema/pgConversion.h \
 	$(srcdir)/include/schema/pgDatabase.h \
 	$(srcdir)/include/schema/pgDatatype.h \
-	$(srcdir)/include/schema/pgDefs.h \
 	$(srcdir)/include/schema/pgDomain.h \
 	$(srcdir)/include/schema/pgForeignKey.h \
 	$(srcdir)/include/schema/pgFunction.h \
@@ -36,7 +35,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/schema/pgOperator.h \
 	$(srcdir)/include/schema/pgOperatorClass.h \
 	$(srcdir)/include/schema/pgOperatorFamily.h \
-	$(srcdir)/include/schema/pgQueryThread.h \
 	$(srcdir)/include/schema/pgRole.h \
 	$(srcdir)/include/schema/pgRule.h \
 	$(srcdir)/include/schema/pgSchema.h \
