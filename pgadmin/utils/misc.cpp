@@ -40,7 +40,6 @@
 extern "C"
 {
 #define YYSTYPE_IS_DECLARED
-#define DECIMAL DECIMAL_P
   typedef int YYSTYPE;
 #include "parser/keywords.h"
 #include "parser/parse.h"
