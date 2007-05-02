@@ -96,6 +96,7 @@ private:
     void OnManageFavourites(wxCommandEvent& event);
     void OnSelectFavourite(wxCommandEvent& event);
     void OnQuickReport(wxCommandEvent& event);
+    void OnAutoIndent(wxCommandEvent& event);
     void OnWordWrap(wxCommandEvent& event);
     void OnShowIndentGuides(wxCommandEvent& event);
     void OnShowWhitespace(wxCommandEvent& event);

@@ -42,6 +42,7 @@ IMPLEMENT_DYNAMIC_CLASS(ctlSQLBox, wxStyledTextCtrl)
 ctlSQLBox::ctlSQLBox()
 {
     m_dlgFindReplace=0;
+    m_autoIndent=false;
 }
 
 
@@ -298,7 +299,20 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 		wxCommandEvent e;
 		OnAutoComplete(e);
 	}
-	else 
+	else if (m_autoIndent && event.GetKeyCode() == WXK_RETURN)
+    {
+        wxString indent = wxT("\n"), line;
+        line = GetLine(GetCurrentLine());
+
+        int x = 0;
+        while (line[x] == '\t' || line[x] == ' ')
+            indent += line[x++];
+
+        InsertText(GetCurrentPos(), indent);
+        SetCurrentPos(GetCurrentPos() + indent.Length());
+        SetSelection(-1, -1);
+    }
+    else
 		event.Skip();
 }
 

@@ -55,7 +55,8 @@ public:
     bool Replace(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
     bool ReplaceAll(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps);
     bool DoFind(const wxString &find, const wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
-    
+    void SetAutoIndent(bool on) { m_autoIndent = on; }
+
     CharacterRange RegexFindText(int minPos, int maxPos, const wxString& text);
 
     DECLARE_DYNAMIC_CLASS(ctlSQLBox)
@@ -67,6 +68,7 @@ private:
 
     dlgFindReplace* m_dlgFindReplace;
 	pgConn *m_database;
+    bool m_autoIndent;
 };
 
 

@@ -92,6 +92,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_SAVEHISTORY,       frmQuery::OnSaveHistory)
     EVT_MENU(MNU_SELECTALL,         frmQuery::OnSelectAll)
     EVT_MENU(MNU_QUICKREPORT,       frmQuery::OnQuickReport)
+    EVT_MENU(MNU_AUTOINDENT,        frmQuery::OnAutoIndent)
     EVT_MENU(MNU_WORDWRAP,          frmQuery::OnWordWrap)
     EVT_MENU(MNU_SHOWINDENTGUIDES,  frmQuery::OnShowIndentGuides)
     EVT_MENU(MNU_SHOWWHITESPACE,    frmQuery::OnShowWhitespace)
@@ -167,6 +168,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     editMenu->AppendSeparator();
     editMenu->Append(MNU_FIND, _("&Find and Replace\tCtrl-F"), _("Find and replace text"), wxITEM_NORMAL);
     editMenu->AppendSeparator();
+    editMenu->Append(MNU_AUTOINDENT, _("&Auto indent"), _("Automatically indent text to the same level as the preceding line"), wxITEM_CHECK);
     editMenu->Append(MNU_LINEENDS, _("&Line ends"), lineEndMenu);
     menuBar->Append(editMenu, _("&Edit"));
 
@@ -338,6 +340,14 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     bool bVal;
 
+    // Auto indent
+    settings->Read(wxT("frmQuery/AutoIndent"), &bVal, true);
+    editMenu->Check(MNU_AUTOINDENT, bVal);
+    if (bVal)
+        sqlQuery->SetAutoIndent(true);
+    else
+        sqlQuery->SetAutoIndent(false);
+
     // Word wrap
     settings->Read(wxT("frmQuery/WordWrap"), &bVal, false);
     viewMenu->Check(MNU_WORDWRAP, bVal);
@@ -506,6 +516,18 @@ void frmQuery::OnDefaultView(wxCommandEvent& event)
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
     viewMenu->Check(MNU_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
     viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
+}
+
+void frmQuery::OnAutoIndent(wxCommandEvent &event)
+{
+    editMenu->Check(MNU_AUTOINDENT, event.IsChecked());
+
+    settings->Write(wxT("frmQuery/AutoIndent"), editMenu->IsChecked(MNU_AUTOINDENT));
+    
+    if (editMenu->IsChecked(MNU_AUTOINDENT))
+        sqlQuery->SetAutoIndent(true);
+    else
+        sqlQuery->SetAutoIndent(false);
 }
 
 void frmQuery::OnWordWrap(wxCommandEvent &event)
