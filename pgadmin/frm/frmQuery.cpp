@@ -166,20 +166,8 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     editMenu->AppendSeparator();
     editMenu->Append(MNU_FIND, _("&Find and Replace\tCtrl-F"), _("Find and replace text"), wxITEM_NORMAL);
     editMenu->AppendSeparator();
-    editMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
-    editMenu->Append(MNU_SHOWWHITESPACE, _("&Show whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
-    editMenu->Append(MNU_SHOWLINEENDS, _("&Show line ends"), _("Enable or disable display of line ends"), wxITEM_CHECK);
-    editMenu->AppendSeparator();
-    editMenu->Append(MNU_RECENT, _("&Line ends"), lineEndMenu);
+    editMenu->Append(MNU_LINEENDS, _("&Line ends"), lineEndMenu);
     menuBar->Append(editMenu, _("&Edit"));
-
-    // View menu
-    viewMenu = new wxMenu();
-    viewMenu->Append(MNU_DATABASEBAR, _("&Database bar"), _("Show or hide the database selection bar."), wxITEM_CHECK);
-    viewMenu->Append(MNU_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
-    viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad"), _("Show or hide the scratch pad."), wxITEM_CHECK);
-    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"), _("Show or hide the tool bar."), wxITEM_CHECK);
-    menuBar->Append(viewMenu, _("&View"));
 
     queryMenu = new wxMenu();
     queryMenu->Append(MNU_EXECUTE, _("&Execute\tF5"), _("Execute query"));
@@ -205,6 +193,18 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     favourites = queryFavouriteFileProvider::LoadFavourites(true);
     UpdateFavouritesList();
     menuBar->Append(favouritesMenu, _("Fav&ourites"));
+
+    // View menu
+    viewMenu = new wxMenu();
+    viewMenu->Append(MNU_DATABASEBAR, _("&Database bar"), _("Show or hide the database selection bar."), wxITEM_CHECK);
+    viewMenu->Append(MNU_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
+    viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad"), _("Show or hide the scratch pad."), wxITEM_CHECK);
+    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"), _("Show or hide the tool bar."), wxITEM_CHECK);
+    viewMenu->AppendSeparator();
+    viewMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
+    viewMenu->Append(MNU_SHOWWHITESPACE, _("&Whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
+    viewMenu->Append(MNU_SHOWLINEENDS, _("&Line ends"), _("Enable or disable display of line ends"), wxITEM_CHECK);
+    menuBar->Append(viewMenu, _("&View"));
 
     wxMenu *helpMenu=new wxMenu();
     helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the helpfile."));
@@ -336,7 +336,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // Word wrap
     settings->Read(wxT("frmQuery/WordWrap"), &bVal, false);
-    editMenu->Check(MNU_WORDWRAP, bVal);
+    viewMenu->Check(MNU_WORDWRAP, bVal);
     if (bVal)
         sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
     else
@@ -344,7 +344,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // Whitespace
     settings->Read(wxT("frmQuery/ShowWhitespace"), &bVal, false);
-    editMenu->Check(MNU_SHOWWHITESPACE, bVal);
+    viewMenu->Check(MNU_SHOWWHITESPACE, bVal);
     if (bVal)
         sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
     else
@@ -352,7 +352,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // Line ends
     settings->Read(wxT("frmQuery/ShowLineEnds"), &bVal, false);
-    editMenu->Check(MNU_SHOWLINEENDS, bVal);
+    viewMenu->Check(MNU_SHOWLINEENDS, bVal);
     if (bVal)
         sqlQuery->SetViewEOL(1);
     else
@@ -498,11 +498,11 @@ void frmQuery::OnDefaultView(wxCommandEvent& event)
 
 void frmQuery::OnWordWrap(wxCommandEvent &event)
 {
-    editMenu->Check(MNU_WORDWRAP, event.IsChecked());
+    viewMenu->Check(MNU_WORDWRAP, event.IsChecked());
 
-    settings->Write(wxT("frmQuery/WordWrap"), editMenu->IsChecked(MNU_WORDWRAP));
+    settings->Write(wxT("frmQuery/WordWrap"), viewMenu->IsChecked(MNU_WORDWRAP));
     
-    if (editMenu->IsChecked(MNU_WORDWRAP))
+    if (viewMenu->IsChecked(MNU_WORDWRAP))
         sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
     else
         sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
@@ -510,11 +510,11 @@ void frmQuery::OnWordWrap(wxCommandEvent &event)
 
 void frmQuery::OnShowWhitespace(wxCommandEvent& event)
 {
-    editMenu->Check(MNU_SHOWWHITESPACE, event.IsChecked());
+    viewMenu->Check(MNU_SHOWWHITESPACE, event.IsChecked());
 
-    settings->Write(wxT("frmQuery/ShowWhitespace"), editMenu->IsChecked(MNU_SHOWWHITESPACE));
+    settings->Write(wxT("frmQuery/ShowWhitespace"), viewMenu->IsChecked(MNU_SHOWWHITESPACE));
     
-    if (editMenu->IsChecked(MNU_SHOWWHITESPACE))
+    if (viewMenu->IsChecked(MNU_SHOWWHITESPACE))
         sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
     else
         sqlQuery->SetViewWhiteSpace(wxSTC_WS_INVISIBLE);
@@ -522,11 +522,11 @@ void frmQuery::OnShowWhitespace(wxCommandEvent& event)
 
 void frmQuery::OnShowLineEnds(wxCommandEvent& event)
 {
-    editMenu->Check(MNU_SHOWLINEENDS, event.IsChecked());
+    viewMenu->Check(MNU_SHOWLINEENDS, event.IsChecked());
 
-    settings->Write(wxT("frmQuery/ShowLineEnds"), editMenu->IsChecked(MNU_SHOWLINEENDS));
+    settings->Write(wxT("frmQuery/ShowLineEnds"), viewMenu->IsChecked(MNU_SHOWLINEENDS));
     
-    if (editMenu->IsChecked(MNU_SHOWLINEENDS))
+    if (viewMenu->IsChecked(MNU_SHOWLINEENDS))
         sqlQuery->SetViewEOL(1);
     else
         sqlQuery->SetViewEOL(0);

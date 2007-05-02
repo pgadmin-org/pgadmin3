@@ -81,6 +81,7 @@ enum
 	MNU_SHOWLINEENDS,
     MNU_QUICKREPORT,
 
+    MNU_LINEENDS,
     MNU_CR,
     MNU_CRLF,
     MNU_LF,
