@@ -59,6 +59,7 @@ extern wxString edbRestoreExecutable;
 #define chkShowUsersForPrivileges   CTRL_CHECKBOX("chkShowUsersForPrivileges")
 #define txtAutoRowCount             CTRL_TEXT("txtAutoRowCount")
 #define txtIndent                   CTRL_TEXT("txtIndent")
+#define chkSpacesForTabs			CTRL_CHECKBOX("chkSpacesForTabs")
 #define cbCopyQuote					CTRL_COMBOBOX("cbCopyQuote")
 #define cbCopyQuoteChar				CTRL_COMBOBOX("cbCopyQuoteChar")
 #define cbCopySeparator				CTRL_COMBOBOX("cbCopySeparator")
@@ -121,6 +122,7 @@ frmOptions::frmOptions(frmMain *parent)
     chkShowUsersForPrivileges->SetValue(settings->GetShowUsersForPrivileges());
     txtAutoRowCount->SetValue(NumToStr(settings->GetAutoRowCountThreshold()));
     txtIndent->SetValue(NumToStr(settings->GetIndentSpaces()));
+    chkSpacesForTabs->SetValue(settings->GetSpacesForTabs());
 	cbCopyQuote->SetSelection(settings->GetCopyQuoting());
 	cbCopyQuoteChar->SetValue(settings->GetCopyQuoteChar());
 
@@ -310,6 +312,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetShowUsersForPrivileges(chkShowUsersForPrivileges->GetValue());
     settings->SetAutoRowCountThreshold(StrToLong(txtAutoRowCount->GetValue()));
     settings->SetIndentSpaces(StrToLong(txtIndent->GetValue()));
+    settings->SetSpacesForTabs(chkSpacesForTabs->GetValue());
 	settings->SetCopyQuoting(cbCopyQuote->GetCurrentSelection());
 	settings->SetCopyQuoteChar(cbCopyQuoteChar->GetValue());
 	

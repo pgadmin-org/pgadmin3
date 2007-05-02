@@ -142,6 +142,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
     Read(wxT("AutoRowCount"), &autoRowCountThreshold, 2000L);
     Read(wxT("IndentSpaces"), &indentSpaces, 0L);
+    Read(wxT("SpacesForTabs"), &spacesForTabs, false);
 	Read(wxT("TabForCompletion"), &tabForCompletion, false);
     Read(wxT("StickySql"), &stickySql, false);
     Read(wxT("frmQuery/IndicateNull"), &indicateNull, false);
@@ -420,6 +421,7 @@ void sysSettings::Save()
     Write(wxT("PostgreSQLPath"), postgresqlPath);
     Write(wxT("EnterpriseDBPath"), enterprisedbPath);
     Write(wxT("IndentSpaces"), indentSpaces);
+    Write(wxT("SpacesForTabs"), spacesForTabs);
 	Write(wxT("TabForCompletion"), tabForCompletion);
 
     Write(wxT("Export/Unicode"), exportUnicode);
