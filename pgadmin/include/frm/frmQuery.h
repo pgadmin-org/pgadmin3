@@ -97,6 +97,7 @@ private:
     void OnSelectFavourite(wxCommandEvent& event);
     void OnQuickReport(wxCommandEvent& event);
     void OnWordWrap(wxCommandEvent& event);
+    void OnShowIndentGuides(wxCommandEvent& event);
     void OnShowWhitespace(wxCommandEvent& event);
     void OnShowLineEnds(wxCommandEvent& event);
 

@@ -93,6 +93,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_SELECTALL,         frmQuery::OnSelectAll)
     EVT_MENU(MNU_QUICKREPORT,       frmQuery::OnQuickReport)
     EVT_MENU(MNU_WORDWRAP,          frmQuery::OnWordWrap)
+    EVT_MENU(MNU_SHOWINDENTGUIDES,  frmQuery::OnShowIndentGuides)
     EVT_MENU(MNU_SHOWWHITESPACE,    frmQuery::OnShowWhitespace)
     EVT_MENU(MNU_SHOWLINEENDS,      frmQuery::OnShowLineEnds)
     EVT_MENU(MNU_FAVOURITES_ADD,    frmQuery::OnAddFavourite)
@@ -201,9 +202,12 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad"), _("Show or hide the scratch pad."), wxITEM_CHECK);
     viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"), _("Show or hide the tool bar."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
-    viewMenu->Append(MNU_SHOWWHITESPACE, _("&Whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
+    viewMenu->Append(MNU_SHOWINDENTGUIDES, _("&Indent guides"), _("Enable or disable display of indent guides"), wxITEM_CHECK);
     viewMenu->Append(MNU_SHOWLINEENDS, _("&Line ends"), _("Enable or disable display of line ends"), wxITEM_CHECK);
+    viewMenu->Append(MNU_SHOWWHITESPACE, _("&Whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
+    viewMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
+
+
     menuBar->Append(viewMenu, _("&View"));
 
     wxMenu *helpMenu=new wxMenu();
@@ -341,6 +345,14 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
         sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
     else
         sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
+
+    // Indent Guides
+    settings->Read(wxT("frmQuery/ShowIndentGuides"), &bVal, false);
+    viewMenu->Check(MNU_SHOWINDENTGUIDES, bVal);
+    if (bVal)
+        sqlQuery->SetIndentationGuides(true);
+    else
+        sqlQuery->SetIndentationGuides(false); 
 
     // Whitespace
     settings->Read(wxT("frmQuery/ShowWhitespace"), &bVal, false);
@@ -506,6 +518,18 @@ void frmQuery::OnWordWrap(wxCommandEvent &event)
         sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
     else
         sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
+}
+
+void frmQuery::OnShowIndentGuides(wxCommandEvent& event)
+{
+    viewMenu->Check(MNU_SHOWINDENTGUIDES, event.IsChecked());
+
+    settings->Write(wxT("frmQuery/ShowIndentGuides"), viewMenu->IsChecked(MNU_SHOWINDENTGUIDES));
+    
+    if (viewMenu->IsChecked(MNU_SHOWINDENTGUIDES))
+        sqlQuery->SetIndentationGuides(true);
+    else
+        sqlQuery->SetIndentationGuides(false);
 }
 
 void frmQuery::OnShowWhitespace(wxCommandEvent& event)
