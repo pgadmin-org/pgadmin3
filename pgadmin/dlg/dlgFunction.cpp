@@ -40,7 +40,10 @@
 #define txtRows             CTRL_TEXT("txtRows")
 
 #define lstArguments        CTRL_LISTVIEW("lstArguments")
-#define rdbDirection        CTRL_RADIOBOX("rdbDirection")
+#define rdbIn               CTRL_RADIOBUTTON("rdbIn")
+#define rdbOut              CTRL_RADIOBUTTON("rdbOut")
+#define rdbInOut            CTRL_RADIOBUTTON("rdbInOut")
+
 #define txtArgName          CTRL_TEXT("txtArgName")
 #define btnAdd              CTRL_BUTTON("wxID_ADD")
 #define btnChange           CTRL_BUTTON("wxID_CHANGE")
@@ -109,8 +112,6 @@ dlgFunction::dlgFunction(pgaFactory *f, frmMain *frame, pgFunction *node, pgSche
     txtSqlBox->SetMarginType(1, wxSTC_MARGIN_NUMBER);
     txtSqlBox->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
 
-    libcSizer = stObjectFile->GetContainingSizer();
-
     btnAdd->Disable();
     btnRemove->Disable();
     btnChange->Disable();
@@ -139,7 +140,9 @@ int dlgFunction::Go(bool modal)
 {
     if (function)
     {
-        rdbDirection->Disable();
+        rdbIn->Disable();
+        rdbOut->Disable();
+        rdbInOut->Disable();
         isProcedure = function->GetIsProcedure();
     }
     else
@@ -147,6 +150,10 @@ int dlgFunction::Go(bool modal)
 
     AddGroups();
     AddUsers(cbOwner);
+
+    lstArguments->AddColumn(_("Type"), 80);
+    lstArguments->AddColumn(_("Direction"), 40);
+    lstArguments->AddColumn(_("Name"), 80);
 
     if (!connection->BackendMinimumVersion(8, 0))
         cbOwner->Disable();
@@ -156,22 +163,11 @@ int dlgFunction::Go(bool modal)
 
     txtRows->Disable();
 
-    // the listview's column that contains the type name
-    typeColNo = (connection->BackendMinimumVersion(8, 0) ? 1 : 0);
-
-    if (factory != &triggerFunctionFactory)
-    {
-        if (typeColNo)
-            lstArguments->CreateColumns(0, _("Name"), _("Type"));
-        else
-            lstArguments->CreateColumns(0, _("Type"), wxEmptyString, 0);
-    }
-    if (!typeColNo)
+    if (!connection->BackendMinimumVersion(8, 0))
         txtArgName->Disable();
 
     if (isProcedure)
     {
-        rdbDirection->SetString(2, wxT("IN OUT"));
         if (function)
             txtName->Disable();
         cbOwner->Disable();
@@ -187,6 +183,16 @@ int dlgFunction::Go(bool modal)
         cbReturntype->Disable();
         txtCost->Disable();
         txtRows->Disable();
+    }
+    else
+    {
+        if (!connection->BackendMinimumVersion(8, 1))
+        {
+            rdbIn->SetValue(true);
+            rdbIn->Disable();
+            rdbOut->Disable();
+            rdbInOut->Disable();
+        }
     }
 
     pgSet *lang=connection->ExecuteSet(wxT("SELECT lanname FROM pg_language"));
@@ -214,37 +220,7 @@ int dlgFunction::Go(bool modal)
 
             for (unsigned int i=0; i<argTypes.Count(); i++)
             {
-                if (typeColNo)
-                {
-                    wxString arg;
-
-                    if (isProcedure)
-                    {
-                        if (!argNames.Item(i).IsEmpty())
-                            arg += argNames.Item(i);
-
-                        if (!argModes.Item(i).IsEmpty())
-                            if (arg.IsEmpty())
-                                arg += argModes.Item(i);
-                            else
-                                arg += wxT(" ") + argModes.Item(i);
-                    }
-                    else
-                    {
-                        if (!argModes.Item(i).IsEmpty())
-                            arg += argModes.Item(i);
-
-                        if (!argNames.Item(i).IsEmpty())
-                            if (arg.IsEmpty())
-                                arg += argNames.Item(i);
-                            else
-                                arg += wxT(" ") + argNames.Item(i);
-                    }
-
-                    lstArguments->AppendItem(-1, arg, argTypes.Item(i));
-                }
-                else
-                    lstArguments->AppendItem(-1, argTypes.Item(i));
+                lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i]);
             }
         }
 
@@ -356,7 +332,7 @@ void dlgFunction::CheckChange()
 {
     wxString name=GetName();
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
-    bool enable=true, didChange=false;
+    bool enable=true, didChange=true;
 
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
     if (!isProcedure)
@@ -406,17 +382,7 @@ bool dlgFunction::IsUpToDate()
 	else
 		return true;
 }
-
-
-void dlgFunction::ReplaceSizer(wxWindow *w, bool isC, int border)
-{
-    if (isC && !w->GetContainingSizer())
-        libcSizer->Add(w, 0, wxLEFT|wxTOP, border);
-    else
-        libcSizer->Detach(w);
-}
-
-        
+  
 void dlgFunction::OnSelChangeLanguage(wxCommandEvent &ev)
 {
     bool isC=(cbLanguage->GetValue().IsSameAs(wxT("C"), false));
@@ -427,12 +393,6 @@ void dlgFunction::OnSelChangeLanguage(wxCommandEvent &ev)
     txtLinkSymbol->Show(isC);
     txtSqlBox->Show(!isC);
 
-    ReplaceSizer(stObjectFile, isC, 3);
-    ReplaceSizer(txtObjectFile, isC, 0);
-    ReplaceSizer(stLinkSymbol, isC, 3);
-    ReplaceSizer(txtLinkSymbol, isC, 0);
-
-    libcSizer->Layout();
     txtSqlBox->GetContainingSizer()->Layout();
 
     CheckChange();
@@ -444,28 +404,15 @@ void dlgFunction::OnSelChangeArg(wxListEvent &ev)
     int row=lstArguments->GetSelection();
     if (row >= 0)
     {
-        if (typeColNo)
-        {
-            wxString colName=lstArguments->GetText(row, 0);
-            int i=GetDirection(colName);
-            rdbDirection->SetSelection(i);
-
-            if (colName != rdbDirection->GetString(i))
-            {
-                if (isProcedure)
-                    colName = colName.Left(colName.Length() - (rdbDirection->GetString(i).Length() + 1));
-                else
-                    colName = colName.Mid(rdbDirection->GetString(i).Length() +1);
-                    
-                txtArgName->SetValue(colName);
-            }
-            else
-                txtArgName->SetValue(wxEmptyString);
-
-            cbDatatype->SetValue(lstArguments->GetText(row, typeColNo));
-        }
-        else
-            cbDatatype->SetValue(lstArguments->GetText(row, 0));
+        cbDatatype->SetValue(lstArguments->GetText(row, 0));
+        wxString mode = lstArguments->GetText(row, 1);
+        if (mode == wxT("IN"))
+            rdbIn->SetValue(true);
+        else if (mode == wxT("OUT"))
+            rdbOut->SetValue(true);
+        else if (mode == wxT("IN OUT") || mode == wxT("INOUT"))
+            rdbInOut->SetValue(true);
+        txtArgName->SetValue(lstArguments->GetText(row, 2));
 
         wxCommandEvent ev;
         OnChangeArgName(ev);
@@ -523,25 +470,9 @@ void dlgFunction::OnChangeArg(wxCommandEvent &ev)
 
     if (row >= 0)
     {
-        if (typeColNo)
-        {
-            wxString colName;
-
-            if (txtArgName->GetValue().IsEmpty())
-                colName = rdbDirection->GetStringSelection(); 
-            else
-            {
-                if (isProcedure)
-                    colName = txtArgName->GetValue() + wxT(" ") + rdbDirection->GetStringSelection(); 
-                else
-                    colName = rdbDirection->GetStringSelection() + wxT(" ") + txtArgName->GetValue();
-            }
-
-            lstArguments->SetItem(row, 0, colName);
-            lstArguments->SetItem(row, typeColNo, cbDatatype->GetValue());
-        }
-        else
-            lstArguments->SetItem(row, 0, cbDatatype->GetValue());
+        lstArguments->SetItem(row, 0, cbDatatype->GetValue());
+        lstArguments->SetItem(row, 1, GetSelectedDirection());
+        lstArguments->SetItem(row, 2, txtArgName->GetValue());
 
         if (!function)
             argOids.Item(row) = typOids.Item(cbDatatype->GetGuessedSelection());
@@ -554,24 +485,7 @@ void dlgFunction::OnChangeArg(wxCommandEvent &ev)
 
 void dlgFunction::OnAddArg(wxCommandEvent &ev)
 {
-    if (typeColNo)
-    {
-        wxString colName;
-
-        if (txtArgName->GetValue().IsEmpty())
-            colName = rdbDirection->GetStringSelection(); 
-        else
-        {
-            if (isProcedure)
-                colName = txtArgName->GetValue() + wxT(" ") + rdbDirection->GetStringSelection(); 
-            else
-                colName = rdbDirection->GetStringSelection() + wxT(" ") + txtArgName->GetValue();
-        }
-
-        lstArguments->AppendItem(-1, colName, cbDatatype->GetValue());
-    }
-    else
-        lstArguments->AppendItem(-1, cbDatatype->GetValue());
+    lstArguments->AppendItem(-1, cbDatatype->GetValue(), GetSelectedDirection(), txtArgName->GetValue());
 
     if (!function)
         argOids.Add(typOids.Item(cbDatatype->GetGuessedSelection()));
@@ -591,28 +505,21 @@ void dlgFunction::OnRemoveArg(wxCommandEvent &ev)
     OnChangeArgName(ev);
 }
 
-
-int dlgFunction::GetDirection(const wxString &colName)
+wxString dlgFunction::GetSelectedDirection()
 {
-    unsigned int i;
-    wxString sel;
-    for (i=rdbDirection->GetCount() ; i>0  ; i--)
+    if (rdbIn->GetValue())
+        return wxT("IN");
+    else if (rdbOut->GetValue())
+        return wxT("OUT");
+    else if (rdbInOut->GetValue())
     {
-        sel = rdbDirection->GetString(i-1);
-        if (sel == colName)
-            return i-1;
         if (isProcedure)
-        {
-            if (colName.Right(sel.Length()+1) == wxT(" ") + sel)
-                return i-1;
-        }
+            return wxT("IN OUT");
         else
-        {
-            if (colName.Left(sel.Length()+1) == sel + wxT(" "))
-                return i-1;
-        }
+            return wxT("INOUT");
     }
-    return -1;
+    else
+        return wxEmptyString;
 }
 
 
@@ -622,69 +529,34 @@ wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
  
     for (int i=0; i < lstArguments->GetItemCount(); i++)
     {
+        if (inOnly && lstArguments->GetText(i, 1) == wxT("OUT"))
+            continue;
+
         if (i && !args.EndsWith(wxT(", ")))
             args += wxT(", ");
 
-        if (typeColNo)
+        if (isProcedure)
         {
-            if (withNames)
-            {
-                wxString colName = lstArguments->GetText(i);
+            if (withNames && lstArguments->GetText(i, 2) != wxEmptyString)
+                args += qtIdent(lstArguments->GetText(i, 2)) + wxT(" ");
 
-                int i=GetDirection(colName);
-
-                if (i >= 0)
-                {
-                    wxString dir=rdbDirection->GetString(i);
-                    if (!(inOnly && dir != wxT("OUT")))
-                    {
-                        if (isProcedure)
-                        {
-                            if (colName != dir)
-                            {
-                                colName = colName.Left(colName.Length() - (dir.Length() + 1));
-                                args += qtIdent(colName) + wxT(" ") + dir + wxT(" ");
-                            }
-                            else
-                                args += dir + wxT(" ");
-                        }
-                        else
-                        {
-                            if (colName != dir)
-                            {
-                                colName = colName.Mid(dir.Length()+1);
-                                args += dir + wxT(" ") + qtIdent(colName) + wxT(" ");
-                            }
-                            else
-                                args += dir + wxT(" ");
-                        }
-                    }
-                }
-                else
-                    if (!colName.IsEmpty())
-                        args += qtIdent(colName) + wxT(" ");  
-            }
+            if (lstArguments->GetText(i, 1) != wxEmptyString)
+                args += lstArguments->GetText(i, 1) + wxT(" ") + 
+                
+            args += lstArguments->GetText(i, 0);
         }
-        if (!inOnly)       
-            args += lstArguments->GetText(i, typeColNo);
         else
         {
-            if (isProcedure)
-            {
-                if (!(lstArguments->GetText(i, 0).EndsWith(wxT("OUT")) && !lstArguments->GetText(i, 0).EndsWith(wxT("INOUT")) && !lstArguments->GetText(i, 0).EndsWith(wxT("IN OUT"))))
-                    args += lstArguments->GetText(i, typeColNo);
-            }
-            else
-            {
-                if (!lstArguments->GetText(i, 0).StartsWith(wxT("OUT")))
-                    args += lstArguments->GetText(i, typeColNo);
-            }
+            if (connection->BackendMinimumVersion(8, 1) && lstArguments->GetText(i, 1) != wxEmptyString)
+                args += lstArguments->GetText(i, 1) + wxT(" ");
+
+            if (connection->BackendMinimumVersion(8, 0) && withNames && lstArguments->GetText(i, 2) != wxEmptyString)
+                args += qtIdent(lstArguments->GetText(i, 2)) + wxT(" ");
+
+            args += lstArguments->GetText(i, 0);
         }
-                
     }
 
-    if (args.EndsWith(wxT(", ")))
-        args = args.Mid(0, args.Length()-2);
     return args;
 }
 

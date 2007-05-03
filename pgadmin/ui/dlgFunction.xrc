@@ -138,167 +138,152 @@
           <pos>2,2d</pos>
           <size>214,235d</size>
           <object class="notebookpage">
-            <label>Parameter</label>
-            <object class="wxPanel" name="pnlParameter">
+            <label>Parameters</label>
+            <object class="wxPanel" name="pnlParameters">
               <object class="wxFlexGridSizer">
                 <cols>1</cols>
-                <rows>2</rows>
+                <rows>3</rows>
                 <object class="sizeritem">
-                  <object class="wxStaticBoxSizer">
-                    <label>Arguments</label>
-                    <orient>wxHORIZONTAL</orient>
+                  <object class="wxListCtrl" name="lstArguments">
+                    <pos>70,15d</pos>
+                    <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+                  </object>
+                  <option>80</option>
+                  <flag>wxALL|wxEXPAND</flag>
+                  <border>5</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxFlexGridSizer">
                     <object class="sizeritem">
-                      <object class="wxBoxSizer">
-                        <orient>wxVERTICAL</orient>
-                        <object class="spacer">
-                          <size>60,35d</size>
+                      <object class="wxStaticText" name="stDatatype">
+                        <label>Datatype</label>
+                      </object>
+                      <flag>wxALIGN_CENTRE_VERTICAL</flag>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxComboBox" name="cbDatatype">
+                        <content/>
+                        <pos>70,80d</pos>
+                        <style>wxCB_DROPDOWN</style>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxStaticText" name="stMode">
+                        <label>Mode</label>
+                      </object>
+                      <flag>wxALIGN_CENTRE_VERTICAL</flag>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxGridSizer">
+                        <cols>3</cols>
+                        <rows>1</rows>
+                        <object class="sizeritem">
+                          <object class="wxRadioButton" name="rdbIn">
+                            <label>IN</label>
+                            <style>wxRB_GROUP</style>
+                          </object>
                         </object>
                         <object class="sizeritem">
-                          <object class="wxBoxSizer">
-                            <orient>wxVERTICAL</orient>
-                            <object class="sizeritem">
-                              <object class="wxButton" name="wxID_CHANGE">
-                                <label>Change</label>
-                                <pos>13,78d</pos>
-                              </object>
-                              <flag>wxBOTTOM|wxALIGN_CENTRE_HORIZONTAL</flag>
-                              <border>5</border>
-                            </object>
-                            <object class="sizeritem">
-                              <object class="wxButton" name="wxID_ADD">
-                                <label>Add</label>
-                                <pos>13,78d</pos>
-                              </object>
-                              <flag>wxBOTTOM|wxALIGN_CENTRE_HORIZONTAL</flag>
-                              <border>5</border>
-                            </object>
-                            <object class="sizeritem">
-                              <object class="wxButton" name="wxID_REMOVE">
-                                <label>Remove</label>
-                                <pos>13,58d</pos>
-                              </object>
-                              <flag>wxALIGN_CENTRE_HORIZONTAL</flag>
-                            </object>
+                          <object class="wxRadioButton" name="rdbOut">
+                            <label>OUT</label>
                           </object>
-                          <flag>wxBOTTOM|wxALIGN_BOTTOM</flag>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxRadioButton" name="rdbInOut">
+                            <label>IN OUT</label>
+                          </object>
                         </object>
                       </object>
-                      <flag>wxBOTTOM|wxALIGN_BOTTOM</flag>
+                      <flag>wxTOP|wxBOTTOM</flag>
                       <border>5</border>
                     </object>
                     <object class="sizeritem">
-                      <object class="wxBoxSizer">
-                        <orient>wxVERTICAL</orient>
-                        <object class="sizeritem">
-                          <object class="wxListCtrl" name="lstArguments">
-                            <pos>70,15d</pos>
-                            <size>136,60d</size>
-                            <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
-                          </object>
-                          <flag>wxRIGHT</flag>
-                          <border>2</border>
-                        </object>
-                        <object class="sizeritem">
-                          <object class="wxRadioBox" name="rdbDirection">
-                            <label></label>
-                            <content>
-                              <item>IN</item>
-                              <item>OUT</item>
-                              <item>INOUT</item>
-                            </content>
-                            <dimension>1</dimension>
-                            <style>wxRA_SPECIFY_ROWS</style>
-                          </object>
-                          <flag>wxRIGHT|wxGROW</flag>
-                          <border>5</border>
-                        </object>
-                        <object class="sizeritem">
-                          <object class="wxComboBox" name="cbDatatype">
-                            <content/>
-                            <pos>70,80d</pos>
-                            <size>136,12d</size>
-                            <style>wxCB_DROPDOWN</style>
-                          </object>
-                          <flag>wxTOP|wxBOTTOM|wxRIGHT</flag>
-                          <border>5</border>
-                        </object>
-                        <object class="sizeritem">
-                          <object class="wxTextCtrl" name="txtArgName">
-                            <size>136,-1d</size>
-                          </object>
-                          <flag>wxBOTTOM</flag>
-                          <border>3</border>
-                        </object>
+                      <object class="wxStaticText" name="stArgName">
+                        <label>Argument name</label>
                       </object>
+                      <flag>wxALIGN_CENTRE_VERTICAL</flag>
                     </object>
+                    <object class="sizeritem">
+                      <object class="wxTextCtrl" name="txtArgName"/>
+                      <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                    </object>
+                    <cols>2</cols>
+                    <rows>3</rows>
+                    <vgap>5</vgap>
+                    <hgap>5</hgap>
+                    <growablecols>1</growablecols>
                   </object>
-                  <flag>wxTOP|wxLEFT</flag>
-                  <border>2</border>
+                  <flag>wxALL|wxEXPAND|wxALIGN_BOTTOM|wxALIGN_CENTRE_HORIZONTAL</flag>
+                  <border>5</border>
                 </object>
                 <object class="sizeritem">
-                  <object class="wxStaticBoxSizer">
-                    <label>Definition</label>
-                    <orient>wxVERTICAL</orient>
+                  <object class="wxFlexGridSizer">
                     <object class="sizeritem">
-                      <object class="wxFlexGridSizer">
-                        <cols>2</cols>
-                        <rows>2</rows>
-                        <object class="spacer">
-                          <size>60,0d</size>
-                        </object>
-                        <object class="spacer">
-                          <size>0,0</size>
-                        </object>
-                        <object class="sizeritem">
-                          <object class="wxStaticText" name="stObjectFile">
-                            <label>Object file</label>
-                            <pos>13,118d</pos>
-                            <size>70,12d</size>
-                          </object>
-                          <flag>wxTOP|wxLEFT</flag>
-                          <border>3</border>
-                        </object>
-                        <object class="sizeritem">
-                          <object class="wxTextCtrl" name="txtObjectFile">
-                            <pos>70,116d</pos>
-                            <size>136,-1d</size>
-                          </object>
-                        </object>
-                        <object class="sizeritem">
-                          <object class="wxStaticText" name="stLinkSymbol">
-                            <label>Link symbol</label>
-                            <pos>13,134d</pos>
-                            <size>70,12d</size>
-                          </object>
-                          <flag>wxTOP|wxLEFT</flag>
-                          <border>3</border>
-                        </object>
-                        <object class="sizeritem">
-                          <object class="wxTextCtrl" name="txtLinkSymbol">
-                            <pos>70,132d</pos>
-                            <size>136,-1d</size>
-                          </object>
-                        </object>
+                      <object class="wxButton" name="wxID_REMOVE">
+                        <label>Remove</label>
+                        <pos>13,58d</pos>
                       </object>
+                      <flag>wxALL|wxALIGN_RIGHT</flag>
+                      <border>2</border>
                     </object>
                     <object class="sizeritem">
-                      <object class="ctlSQLBox" name="txtSqlBox">
-                        <size>10,10</size>
-                        <style>wxTE_MULTILINE|wxSUNKEN_BORDER|wxTE_RICH2</style>
+                      <object class="wxButton" name="wxID_ADD">
+                        <label>Add</label>
+                        <pos>13,78d</pos>
                       </object>
-                      <option>1</option>
-                      <flag>wxTOP|wxRIGHT|wxGROW</flag>
-                      <border>5</border>
+                      <flag>wxALL|wxALIGN_RIGHT</flag>
+                      <border>2</border>
                     </object>
+                    <object class="sizeritem">
+                      <object class="wxButton" name="wxID_CHANGE">
+                        <label>Change</label>
+                        <pos>13,78d</pos>
+                      </object>
+                      <flag>wxALL|wxALIGN_RIGHT</flag>
+                      <border>2</border>
+                    </object>
+                    <cols>3</cols>
+                    <rows>1</rows>
                   </object>
-                  <flag>wxLEFT|wxRIGHT|wxGROW|wxALIGN_CENTRE</flag>
-                  <border>2</border>
+                  <flag>wxALIGN_RIGHT</flag>
                 </object>
-                <object class="spacer">
-                  <size>2,3d</size>
-                </object>
+                <growablerows>0</growablerows>
                 <growablecols>0</growablecols>
-                <growablerows>1</growablerows>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Definition</label>
+            <object class="wxPanel" name="pnlDefinition">
+              <object class="wxStaticText" name="stObjectFile">
+                <label>Object file</label>
+                <pos>5,7d</pos>
+              </object>
+              <object class="wxTextCtrl" name="txtObjectFile">
+                <pos>70,5d</pos>
+                <size>135,-1d</size>
+              </object>
+              <object class="wxStaticText" name="stLinkSymbol">
+                <label>Link symbol</label>
+                <pos>5,22d</pos>
+              </object>
+              <object class="wxTextCtrl" name="txtLinkSymbol">
+                <pos>70,20d</pos>
+                <size>135,-1d</size>
+              </object>
+              <object class="wxFlexGridSizer">
+                <object class="sizeritem">
+                  <object class="ctlSQLBox" name="txtSqlBox">
+                    <style>wxTE_MULTILINE|wxSUNKEN_BORDER|wxTE_RICH2</style>
+                  </object>
+                  <flag>wxALL|wxEXPAND</flag>
+                  <border>5</border>
+                </object>
+                <cols>1</cols>
+                <rows>1</rows>
+                <growablerows>0</growablerows>
+                <growablecols>0</growablecols>
               </object>
             </object>
           </object>

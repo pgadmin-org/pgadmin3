@@ -44,7 +44,7 @@ private:
     void OnChangeArg(wxCommandEvent &ev);
     void OnRemoveArg(wxCommandEvent &ev);
 
-    int GetDirection(const wxString &colName);
+    wxString GetSelectedDirection();
     wxString GetArgs(const bool withNames = true, const bool inOnly = false);
     void ReplaceSizer(wxWindow *w, bool isC, int border);
 
@@ -54,7 +54,6 @@ private:
     wxArrayString types;
     wxArrayString argOids;
 
-    wxSizer *libcSizer;
     int typeColNo;
 
 protected:

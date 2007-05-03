@@ -61,6 +61,9 @@ dlgTrigger::dlgTrigger(pgaFactory *f, frmMain *frame, pgTrigger *node, pgTable *
     trigger=node;
     table=parentNode;
     wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
+
+    txtBody->SetMarginType(1, wxSTC_MARGIN_NUMBER);
+    txtBody->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
 }
 
 
@@ -90,7 +93,10 @@ int dlgTrigger::Go(bool modal)
             txtBody->SetText(trigger->GetSource());
         }
         else
+        {
             cbFunction->Append(trigger->GetFunction());
+            txtBody->Disable();
+        }
 
         cbFunction->SetSelection(0);
         txtArguments->Disable();
@@ -259,7 +265,7 @@ void dlgTrigger::CheckChange()
         EnableOK(enable &&
                  (txtComment->GetValue() != trigger->GetComment() ||
                  txtName->GetValue() != trigger->GetName() ||
-                 txtBody->GetText() != trigger->GetSource() ||
+                 (txtBody->GetText() != trigger->GetSource() && cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL"))) ||
                  chkRow->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_ROW ? true : false) ||
                  chkInsert->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_INSERT ? true : false) ||
                  chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||
