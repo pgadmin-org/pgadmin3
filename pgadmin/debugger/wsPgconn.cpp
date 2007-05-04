@@ -242,6 +242,17 @@ void wsPgConn::setNoticeHandler( PQnoticeProcessor handler, void * arg )
 void wsPgConn::Close()
 {
     // Attempt to cancel any ongoing query
+    Cancel();
+
+	if(m_pgConn)
+		PQfinish(m_pgConn);
+
+	m_pgConn = NULL;
+}
+
+void wsPgConn::Cancel()
+{
+    // Attempt to cancel any ongoing query
     if (m_pgConn)
     {
         PGcancel *cancel = PQgetCancel(m_pgConn);
@@ -249,9 +260,4 @@ void wsPgConn::Close()
         PQcancel(cancel, errbuf, sizeof(errbuf));
         PQfreeCancel(cancel);
     }
-
-	if(m_pgConn)
-		PQfinish(m_pgConn);
-
-	m_pgConn = NULL;
 }

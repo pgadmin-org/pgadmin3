@@ -217,8 +217,24 @@ wsCodeWindow::wsCodeWindow( wsMainFrame *parent, wxWindowID id, const wsConnProp
 
 void wsCodeWindow::OnClose(wxCloseEvent& event)
 {
-    if ((!m_targetComplete && !m_targetAborted) || !m_parent->m_standaloneDirectDbg)
-        stopDebugging();
+    // If we're global debugging, we may be waiting for a
+    // breakpoint if we're waiting for the function to be
+    // called a second, third, fourth etc. time
+    if (!m_parent->m_standaloneDirectDbg)
+    {
+        m_targetAborted = true;
+        if (m_dbgConn)
+        {
+            m_dbgConn->Cancel();
+            stopDebugging();
+        }
+    }
+    else
+    {
+        // If we haven't completed or aborted, stop debugging.
+        if (!m_targetComplete && !m_targetAborted)
+            stopDebugging();
+    }
 
     // Wait for the abort to complete.
     while (!m_targetComplete && !m_targetAborted)
@@ -463,22 +479,23 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 		}
 		else if( result.getCommandStatus() == PGRES_FATAL_ERROR )
 		{
-			/* 
-			 * We were waiting for a breakpoint (because we just sent a step into, step over, or continue request) and
-			 * the proxy sent us an error instead.  Presumably, the target process exited before reaching a breakpoint.
-			 *
-			 * If we have any global breakpoints, we must have a listener in the proxy... wait for the next target process.
-			 */
+            if (!m_targetAborted)
+            { 
+			    // We were waiting for a breakpoint (because we just sent a step into, step over, or continue request) and
+			    // the proxy sent us an error instead.  Presumably, the target process exited before reaching a breakpoint.
+			    //
+			    // If we have any global breakpoints, we must have a listener in the proxy... wait for the next target process.
 
-			if( m_breakpoints.GetCount())
-			{
-				m_dbgConn->startCommand( wxString::Format( m_commandWaitForTarget, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_TARGET_READY );		
+			    if( m_breakpoints.GetCount())
+			    {
+				    m_dbgConn->startCommand( wxString::Format( m_commandWaitForTarget, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_TARGET_READY );		
 
-				m_parent->getStatusBar()->SetStatusText( _( "Waiting for a target" ), 1 );
-				m_parent->getStatusBar()->SetStatusText( wxT( "" ), 2 );
+				    m_parent->getStatusBar()->SetStatusText( _( "Waiting for a target" ), 1 );
+				    m_parent->getStatusBar()->SetStatusText( wxT( "" ), 2 );
 
-				launchWaitingDialog();
-			}
+				    launchWaitingDialog();
+			    }
+            }
 		}
 	}
 }
@@ -1116,6 +1133,8 @@ void wsCodeWindow::OnCommand( wxCommandEvent & event )
 		case MENU_ID_STOP:
 		{
 			stopDebugging();
+            if (!m_parent->m_standaloneDirectDbg)
+                closeConnection();
             unhilightCurrentLine();
 			break;
 		}
@@ -1181,15 +1200,6 @@ void wsCodeWindow::clearAllBreakpoints()
 void wsCodeWindow::stopDebugging()
 {
 	m_dbgConn->startCommand( wxString::Format( m_commandAbortTarget, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_ABORT_TARGET );
-
-    // If we're running in global mode, close the connection to drop 
-    // all the breakpoints etc. Set the aborted flag to prevent
-    // a repeat of this cleanup on close.
-    if (!m_parent->m_standaloneDirectDbg)
-    {
-        m_targetAborted = true;
-        closeConnection();
-    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -46,12 +46,13 @@ class wsPgConn
 
 	~wsPgConn();
 
-	bool	isConnected() const;	// Returns true if the connection attempt succeeded
-	const wxString  getName() const;	// Returns human-friendly name for this connection
-	const wxString  getHost() const;	// Returns the host-name (or IP address) for this connection
+	bool	isConnected() const;	        // Returns true if the connection attempt succeeded
+	const wxString  getName() const;	    // Returns human-friendly name for this connection
+	const wxString  getHost() const;	    // Returns the host-name (or IP address) for this connection
 	const wxString  getDatabase() const;	// Returns the name of the database that we're connected to
-	PGconn	*getConnection();		// Returns the libpq connection handle
-	void	Close(); 			// Close this connection
+	PGconn	*getConnection();		        // Returns the libpq connection handle
+	void Close();    			            // Close this connection
+    void Cancel();                          // Cancel any ongoing queries
 
 	void	startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL );	// Starts executing a command	
 	void	setNoticeHandler( PQnoticeProcessor handler, void * arg );			// Registers a NOTICE handler

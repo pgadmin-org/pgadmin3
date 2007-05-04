@@ -189,6 +189,13 @@ void wsPgThread::noticeHandler( void * arg, const char * message )
 			caller->AddPendingEvent( buttonEvent );
 		}
 	}
+    else
+    {
+        	wxCommandEvent buttonEvent( wxEVT_COMMAND_BUTTON_CLICKED, MENU_ID_NOTICE_RECEIVED );
+
+			buttonEvent.SetString( wxString( message, wxConvUTF8 ) );
+			caller->AddPendingEvent( buttonEvent );
+    }
 }
 
 wsPgThreadCommand * wsPgThread::getNextCommand()
