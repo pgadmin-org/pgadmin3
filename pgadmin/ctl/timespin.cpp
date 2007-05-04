@@ -136,13 +136,13 @@ bool wxTimeSpinCtrl::Enable(bool enable)
 {
     if ( !wxControl::Enable(enable) )
     {
-        return FALSE;
+        return false;
     }
 
     m_txt->Enable(enable);
     m_spn->Enable(enable);
 
-    return TRUE;
+    return true;
 }
 
 void wxTimeSpinCtrl::SetMax(long seconds, bool useDay)

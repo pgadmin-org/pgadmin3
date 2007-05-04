@@ -61,7 +61,6 @@
 #include "debugger/wsTabWindow.h"
 #include "debugger/wsTargetInfo.h"
 #include "debugger/wsVarWindow.h"
-#include "debugger/wsWaitingDialog.h"
 
 #include "dlg/dlgAddFavourite.h"
 #include "dlg/dlgAggregate.h"

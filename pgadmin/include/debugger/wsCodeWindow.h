@@ -29,6 +29,8 @@
 #ifndef WSCODEWINDOWH
 #define WSCODEWINDOWH
 
+#include <wx/progdlg.h>
+
 #include "debugger/wsMainFrame.h"
 #include "debugger/wsBreakPoint.h"
 #include "debugger/wsRichWindow.h"
@@ -63,13 +65,14 @@ private:
 
 };
 
-class wsCodeWindow : public wxWindow  
+class wsCodeWindow : public pgFrame  
 {
     DECLARE_CLASS( wsCodeWindow )
 
  public:
 	wsCodeWindow( wsMainFrame *parent, wxWindowID id, const wsConnProp & connProps );
-
+    
+    void OnClose(wxCloseEvent& event);
 	void startLocalDebugging();	 	                    // Start debugging 
 	void resumeLocalDebugging();		                // Start debugging, already attached to the proxy
 	void startGlobalDebugging(); 		                // Start debugging 
@@ -83,6 +86,8 @@ class wsCodeWindow : public wxWindow
 	void enableTools();		 	                        // Enable toolbar tools
 	wsMainFrame *GetFrame() { return m_parent; }
 
+    bool	m_targetAborted;		    // Have we aborted the target? (true) or are we waiting for a breakpoint? (false)
+    bool	m_targetComplete;		    // Is the target complete? (true) or is it still running (or aborted)? (false)
 	wsBreakpointList & getBreakpointList();
 
 	WX_DECLARE_STRING_HASH_MAP( wsCodeCache, sourceHash );
@@ -110,8 +115,8 @@ class wsCodeWindow : public wxWindow
 	void 	closeConnection();								// Closes proxy connection
 	void	updateUI( wsResultSet & breakpoint );		    // Update the lazy parts of the UI
 	void	updateSourceCode( wsResultSet & breakpoint );	// Update the source code window
-	bool	connectionLost( wsResultSet & resultSet );	    // Returns TRUE if proxy lost it's connection
-	bool	gotFatalError( wsResultSet & resultSet );	    // Returns TRUE if result set indicates a fatal error has occurred
+	bool	connectionLost( wsResultSet & resultSet );	    // Returns true if proxy lost it's connection
+	bool	gotFatalError( wsResultSet & resultSet );	    // Returns true if result set indicates a fatal error has occurred
 	void 	popupError( wsResultSet & resultSet, wxString title);
 	void	addBreakpoint( wsBreakpoint * breakpoint, wxEventType nextStep );
 
@@ -170,10 +175,8 @@ class wsCodeWindow : public wxWindow
 	wxString	m_sessionHandle;	    // Handle to proxy's server session
 	wxString	m_targetName;		    // User-friendly target name
 
-	wsWaitingDialog	*m_progressBar;		// "Waiting for target" dialog
-	int	m_progress;			            // Simple counter for advancing m_progressBar
+	wxProgressDialog *m_progressBar;	// "Waiting for target" dialog
 	wxTimer	m_timer;
-	bool	m_targetAborted;		    // Have we aborted the target? (true) or are we waiting for a breakpoint? (false)
 	bool	findSourceInCache( const wxString &packageOID, const wxString &funcOID);
 	void	getSource(const wxString &packageOID, const wxString &funcOID);
 	void	cacheSource(const wxString &packageOID, const wxString &funcOID, const wxString &sourceCode, const wxString &signature);
@@ -184,7 +187,6 @@ class wsCodeWindow : public wxWindow
 	void	clearAllBreakpoints();
 	void	clearBreakpointMarkers();
 	void	stopDebugging();
-	void	restartDebugging();
 
 	static wxString	m_commandAttach;
 	static wxString m_commandWaitForBreakpoint;

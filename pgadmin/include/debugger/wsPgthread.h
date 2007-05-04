@@ -68,6 +68,7 @@ private:
 	ThreadCommandList	m_commandQueue;		// Queue of pending commands
 
 	wsPgThreadCommand *m_currentCommand;	// Currently executing command
+    wxMBConv *conv;
 };
 
 #endif

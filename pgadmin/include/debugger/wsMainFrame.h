@@ -115,10 +115,10 @@ class wsMainFrame : public pgFrame
     wxMenu        *m_debugMenu; // Debug menu (can be modified by wxCodeWindow)
 
     wxAuiManager manager;
-
-  private:
     wsCodeWindow   *m_standaloneDebugger;    // Standalone debugger window
     wsDirectDbg    *m_standaloneDirectDbg;    // Standalone direct debugger
+
+  private:
     wxStatusBar    *m_statusBar;    // Frame's status bar
 
     wxMenuBar    *setupMenuBar( void );

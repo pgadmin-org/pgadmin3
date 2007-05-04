@@ -15,6 +15,7 @@
 #include <wx/wx.h>
 #include <wx/colour.h>
 #include <wx/tokenzr.h>
+#include <wx/progdlg.h>
 
 // App headers
 #include "debugger/wsCodeWindow.h"
@@ -24,7 +25,6 @@
 #include "debugger/wsPgconn.h"
 #include "debugger/wsResultset.h"
 #include "debugger/wsBreakPoint.h"
-#include "debugger/wsWaitingDialog.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTES:
@@ -57,9 +57,9 @@
 //  we tell wsPgThread to send us a RESULT_ID_GET_SOURCE event when the query 
 //	completes and we handle that event in a function named ResultSource.
 
-IMPLEMENT_CLASS(wsCodeWindow,  wxWindow)
+IMPLEMENT_CLASS(wsCodeWindow,  pgFrame)
 
-BEGIN_EVENT_TABLE(wsCodeWindow , wxWindow)
+BEGIN_EVENT_TABLE(wsCodeWindow , pgFrame)
   EVT_MENU(MENU_ID_TOGGLE_BREAK, 	    wsCodeWindow::OnCommand)
   EVT_MENU(MENU_ID_CLEAR_ALL_BREAK,	    wsCodeWindow::OnCommand)
 
@@ -92,8 +92,7 @@ BEGIN_EVENT_TABLE(wsCodeWindow , wxWindow)
   EVT_MENU(RESULT_ID_LISTENER_CREATED, 	wsCodeWindow::ResultListenerCreated)
   EVT_MENU(RESULT_ID_TARGET_READY,     	wsCodeWindow::ResultTargetReady)
 
-  EVT_TIMER(wxID_ANY, wsCodeWindow::OnTimer)
-
+  EVT_TIMER(wxID_ANY,                   wsCodeWindow::OnTimer)
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -134,17 +133,17 @@ wxString wsCodeWindow::m_commandWaitForTarget( wxT( "SELECT * FROM pldbg_wait_fo
 //  If m_currentLineNumber is -1, there is no current line.  
 
 wsCodeWindow::wsCodeWindow( wsMainFrame *parent, wxWindowID id, const wsConnProp & connProps )
-	:wxWindow((wxWindow *)parent, id, wxDefaultPosition, wxDefaultSize),
-	  m_debugPort( connProps.m_debugPort ),
-	  m_parent( parent ),
-	  m_currentLineNumber( -1 ),
-	  m_updateVars( false ),
-	  m_updateStack( false ),
-	  m_updateBreakpoints( false ),
-	  m_progressBar( NULL ),
-	  m_progress( 0 ),
-	  m_timer( this ),
-	  m_targetAborted( false )
+	:pgFrame(NULL, wxEmptyString),
+	  m_debugPort(connProps.m_debugPort),
+	  m_parent(parent),
+	  m_currentLineNumber(-1),
+	  m_updateVars(false),
+	  m_updateStack(false),
+	  m_updateBreakpoints(false),
+	  m_progressBar(NULL),
+	  m_timer(this),
+	  m_targetAborted(false),
+      m_targetComplete(false)
 {
     wxWindowBase::SetFont(settings->GetSystemFont());
 
@@ -157,8 +156,8 @@ wsCodeWindow::wsCodeWindow( wsMainFrame *parent, wxWindowID id, const wsConnProp
 	m_view->MarkerDefine( MARKER_CURRENT_BG, wxSTC_MARK_BACKGROUND, *wxGREEN, *wxGREEN );
 	m_view->MarkerDefine( MARKER_BREAKPOINT, wxSTC_MARK_CIRCLEPLUS, *wxRED, *wxRED );
 
-	m_view->SetMarginType(1, wxSTC_MARGIN_NUMBER); 
-	m_view->SetMarginWidth( 1, 30 );
+    m_view->SetMarginType(1, wxSTC_MARGIN_NUMBER);
+    m_view->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
 
 	// Make sure that the text control tells us when the user clicks in the left margin
 	m_view->SetMarginSensitive( 0, true );
@@ -216,6 +215,18 @@ wsCodeWindow::wsCodeWindow( wsMainFrame *parent, wxWindowID id, const wsConnProp
 	enableTools();
 }
 
+void wsCodeWindow::OnClose(wxCloseEvent& event)
+{
+    if ((!m_targetComplete && !m_targetAborted) || !m_parent->m_standaloneDirectDbg)
+        stopDebugging();
+
+    // Wait for the abort to complete.
+    while (!m_targetComplete && !m_targetAborted)
+        wxTheApp->Yield(true);
+
+    closeConnection();
+    m_timer.Stop();
+}
 
 //////////////////////////////////////////////////////////////////////////////// 	 
 // OnMarginClick() 	 
@@ -303,7 +314,7 @@ void wsCodeWindow::setTools(bool enable)
 	if( m_dbgConn == NULL )
 		activateDebug = false;
 
-	if( enable == FALSE )
+	if( enable == false )
 		activateDebug = false;
 
 	wxToolBar *t = m_parent->m_toolBar;
@@ -349,23 +360,26 @@ void wsCodeWindow::setTools(bool enable)
 
 void wsCodeWindow::OnIdle( wxIdleEvent & event )
 {
+    if (m_targetAborted)
+        return;
+
 	if( m_updateVars )
 	{	
-		m_updateVars = FALSE;
+		m_updateVars = false;
 		m_dbgConn->startCommand( wxString::Format( m_commandGetVars, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_GET_VARS );
 		return;
 	}
 
 	if( m_updateStack )
 	{
-		m_updateStack = FALSE;
+		m_updateStack = false;
 		m_dbgConn->startCommand( wxString::Format( m_commandGetStack, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_GET_STACK );		
 		return;
 	}
 	
 	if( m_updateBreakpoints )
 	{
-		m_updateBreakpoints = FALSE;
+		m_updateBreakpoints = false;
 		m_dbgConn->startCommand( wxString::Format( m_commandGetBreakpoints, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_GET_BREAKPOINTS );
 		return;
 	}
@@ -444,6 +458,7 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 			m_view->MarkerAdd( current_line -1, MARKER_CURRENT );
 			m_view->MarkerAdd( current_line -1, MARKER_CURRENT_BG );
 			m_view->EnsureCaretVisible();
+            enableTools();
 
 		}
 		else if( result.getCommandStatus() == PGRES_FATAL_ERROR )
@@ -471,16 +486,16 @@ void wsCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 
 void wsCodeWindow::launchWaitingDialog()
 {
-	m_parent->getStatusBar()->SetStatusText( wxString::Format( _( "Waiting for another session to invoke %s" ), m_targetName.c_str()), 1 );
+	m_parent->getStatusBar()->SetStatusText(wxString::Format( _( "Waiting for another session to invoke %s" ), m_targetName.c_str()), 1 );
 
 	// NOTE: the waiting-dialog takes forever to appear running a remote X session so you can disable it by defining the following env. variable
 	if( getenv( "SUPPRESS_WAIT_DIALOG" ))
 		m_progressBar = NULL;
 	else
 	{
-		m_progressBar = new wsWaitingDialog(  _( "Waiting for target" ), wxString::Format( _( "Waiting for breakpoint in %s" ), m_targetName.c_str()), 0, this, wxPD_CAN_ABORT | wxPD_ELAPSED_TIME );
+		m_progressBar = new wxProgressDialog(_( "Waiting for target" ), wxString::Format( _( "Waiting for breakpoint in %s" ), m_targetName.c_str()), 100, m_parent, wxPD_SMOOTH | wxPD_CAN_ABORT | wxPD_ELAPSED_TIME );
 		
-		m_timer.Start( 1000 );	// One clock tick per second
+		m_timer.Start( 100 );	// 10 clock ticks per second
 	}
 }
 
@@ -525,7 +540,7 @@ void wsCodeWindow::ResultVarList( wxCommandEvent & event )
 		}
 
 		// Update the next part of the user interface 
-		m_updateStack = TRUE;
+		m_updateStack = true;
 	}
 }
 
@@ -562,7 +577,7 @@ void wsCodeWindow::ResultStack( wxCommandEvent & event )
 										 
 		}
 
-		m_updateBreakpoints = TRUE;
+		m_updateBreakpoints = true;
 	}
 }
 
@@ -640,7 +655,7 @@ void wsCodeWindow::ResultDeletedBreakpoint( wxCommandEvent & event )
 	{
 		if( result.getBool( 0 ))
 		{
-			m_updateBreakpoints = TRUE;
+			m_updateBreakpoints = true;
 			m_parent->getStatusBar()->SetStatusText( _( "Breakpoint dropped" ), 1 );		
 		}
 	}
@@ -677,6 +692,7 @@ void wsCodeWindow::ResultNewBreakpointWait( wxCommandEvent & event )
 		popupError( result, _( "Can't set breakpoint" ));
 	else
 	{
+        setTools(false);
 		m_dbgConn->startCommand( wxString::Format( m_commandWaitForTarget, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_TARGET_READY );		
 
 		launchWaitingDialog();
@@ -701,7 +717,7 @@ void wsCodeWindow::ResultDepositValue( wxCommandEvent & event )
 		if( result.getBool( 0 ))
 		{
 			m_parent->getStatusBar()->SetStatusText( _( "Value changed" ), 1 );		
-			m_updateVars = TRUE;
+			m_updateVars = true;
 		}
 		else
 		{
@@ -757,10 +773,13 @@ void wsCodeWindow::ResultAbortTarget( wxCommandEvent & event )
 
 bool wsCodeWindow::connectionLost( wsResultSet & resultSet )
 {
+    if (!m_dbgConn)
+        return true;
+
 	if( m_dbgConn->isConnected())
-		return( false );
+		return false;
 	else
-		return( true );
+		return true;
 }
 
 bool wsCodeWindow::gotFatalError( wsResultSet & resultSet )
@@ -792,8 +811,8 @@ void wsCodeWindow::popupError( wsResultSet & resultSet, wxString title )
 void wsCodeWindow::closeConnection()
 {
 	// Close the debugger (proxy) connection
-
-	m_dbgConn->Close();
+    if (m_dbgConn)
+	    m_dbgConn->Close();
 	m_dbgConn = NULL;
  
 	// Let the user know what happened
@@ -856,9 +875,9 @@ void wsCodeWindow::updateUI(wsResultSet & breakpoint)
 {
 	// Arrange for the lazy parts of our UI to be updated
 	// during the next IDLE time
-	m_updateVars	= FALSE;
-	m_updateStack	= FALSE;
-	m_updateBreakpoints = FALSE;
+	m_updateVars	= false;
+	m_updateStack	= false;
+	m_updateBreakpoints = false;
 
 	updateSourceCode(breakpoint);
 }
@@ -1015,7 +1034,7 @@ void wsCodeWindow::displaySource( const wxString &packageOID, const wxString &fu
 	m_view->EnsureCaretVisible();
 
 	// Update the next lazy part of the user interface (the variable list)
-	m_updateVars = TRUE;
+	m_updateVars = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1063,8 +1082,10 @@ void wsCodeWindow::OnCommand( wxCommandEvent & event )
 			// The user wants to continue execution (as opposed to
 			// single-stepping through the code).  Unhilite all 
 			// variables and tell the debugger server to continue.
-			m_dbgConn->startCommand( wxString::Format( m_commandContinue, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
+		    m_dbgConn->startCommand( wxString::Format( m_commandContinue, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
 			m_parent->getStatusBar()->SetStatusText( _( "waiting for target (continue)" ), 1 );
+            unhilightCurrentLine();
+            disableTools();
 			break;
 		}
 
@@ -1075,6 +1096,8 @@ void wsCodeWindow::OnCommand( wxCommandEvent & event )
 			// debugger server to step-over
 			m_dbgConn->startCommand( wxString::Format( m_commandStepOver, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
 			m_parent->getStatusBar()->SetStatusText( _( "waiting for target (step over)" ), 1 );
+            unhilightCurrentLine();
+            disableTools();
 			break;
 		}
 
@@ -1085,12 +1108,15 @@ void wsCodeWindow::OnCommand( wxCommandEvent & event )
 			// debugger server to step-into
 			m_dbgConn->startCommand( wxString::Format( m_commandStepInto, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
 			m_parent->getStatusBar()->SetStatusText( _( "waiting for target (step into)" ), 1 );
+            unhilightCurrentLine();
+            disableTools();
 			break;
 		}
 
 		case MENU_ID_STOP:
 		{
 			stopDebugging();
+            unhilightCurrentLine();
 			break;
 		}
 
@@ -1120,7 +1146,7 @@ void wsCodeWindow::OnResultSet( PGresult * result )
 void wsCodeWindow::setBreakpoint( int lineNumber )
 {
 	m_dbgConn->startCommand( wxString::Format( m_commandSetBreakpoint, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber ), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT );
-	m_updateBreakpoints = TRUE;
+	m_updateBreakpoints = true;
 
 }
 
@@ -1135,11 +1161,11 @@ void wsCodeWindow::clearBreakpoint( int lineNumber, bool requestUpdate )
 	m_dbgConn->startCommand( wxString::Format( m_commandClearBreakpoint, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber ), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT );
 
 	if( requestUpdate )
-		m_updateBreakpoints = TRUE;
+		m_updateBreakpoints = true;
 		
 }
 
-void wsCodeWindow::clearAllBreakpoints( )
+void wsCodeWindow::clearAllBreakpoints()
 {
 	int	lineNo = 0;
 
@@ -1148,13 +1174,22 @@ void wsCodeWindow::clearAllBreakpoints( )
 	    while(( lineNo = m_view->MarkerNext( lineNo, MARKERINDEX_TO_MARKERMASK( MARKER_BREAKPOINT ))) != -1 )
     		clearBreakpoint( lineNo++, false );
 
-    	m_updateBreakpoints = TRUE;
+    	m_updateBreakpoints = true;
     }
 }
 
 void wsCodeWindow::stopDebugging()
 {
 	m_dbgConn->startCommand( wxString::Format( m_commandAbortTarget, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_ABORT_TARGET );
+
+    // If we're running in global mode, close the connection to drop 
+    // all the breakpoints etc. Set the aborted flag to prevent
+    // a repeat of this cleanup on close.
+    if (!m_parent->m_standaloneDirectDbg)
+    {
+        m_targetAborted = true;
+        closeConnection();
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1172,7 +1207,8 @@ void wsCodeWindow::stopDebugging()
 
 void wsCodeWindow::OnSelectFrame( wxCommandEvent & event )
 {
-	m_dbgConn->startCommand( wxString::Format( m_commandSelectFrame, m_sessionHandle.c_str(), event.GetSelection()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
+    if (!m_targetComplete && !m_targetAborted)
+	    m_dbgConn->startCommand( wxString::Format( m_commandSelectFrame, m_sessionHandle.c_str(), event.GetSelection()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
 }
 
 void wsCodeWindow::OnVarChange( wxGridEvent & event )
@@ -1264,6 +1300,7 @@ void wsCodeWindow::ResultTargetReady(  wxCommandEvent & event )
 		closeConnection();
 	else
 	{
+        setTools(true);
 		m_parent->getStatusBar()->SetStatusText( wxString::Format( _( "Connected to process %s" ), result.getString( 0 ).c_str()), 2 );
 		m_dbgConn->startCommand( wxString::Format( m_commandWaitForBreakpoint, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
 	}
@@ -1357,21 +1394,15 @@ void wsCodeWindow::OnTimer( wxTimerEvent & event )
 {
 	if( m_progressBar )
 	{
-		if( m_progress >= 9 )
-			m_progress = 0;
-		else
-			m_progress++;
-
-#if 1
-		m_progress = -1;
-#endif
-
-		if( m_progressBar->Update( m_progress ) == false )
+        if( m_progressBar->Pulse() == false )
 		{
 			m_timer.Stop();
+            m_targetAborted = true;
 			m_parent->Close();
 		}
 	}
+    else
+        m_timer.Stop();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

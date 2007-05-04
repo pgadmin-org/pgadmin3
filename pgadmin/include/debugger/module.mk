@@ -27,8 +27,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/debugger/wsStackWindow.h \
 	$(srcdir)/include/debugger/wsTabWindow.h \
 	$(srcdir)/include/debugger/wsTargetInfo.h \
-	$(srcdir)/include/debugger/wsVarWindow.h \
-	$(srcdir)/include/debugger/wsWaitingDialog.h
+	$(srcdir)/include/debugger/wsVarWindow.h
 
 EXTRA_DIST += \
 	$(srcdir)/include/debugger/module.mk

@@ -68,6 +68,7 @@ END_EVENT_TABLE()
 wsMainFrame::wsMainFrame(frmMain *parent, const wxString &title)
     : pgFrame(NULL, title),
       m_standaloneDebugger(NULL),
+      m_standaloneDirectDbg(NULL),
       m_parent(parent)
 {
     dlgName = wxT("wsMainFrame");
@@ -310,6 +311,9 @@ wxMenuBar *wsMainFrame::setupMenuBar(void)
 
 void wsMainFrame::OnClose( wxCloseEvent & event )
 {
+    if (m_standaloneDebugger)
+        m_standaloneDebugger->OnClose( event );
+
     Hide();
     Destroy();
 }

@@ -42,6 +42,7 @@ wsPgThread::wsPgThread( wsPgConn & owner )
 	m_commandQueue(),
 	m_currentCommand( NULL )
 {
+    conv = &wxConvLibc;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -100,10 +101,16 @@ void * wsPgThread::Entry( void )
 
 		PGresult * result = PQexec( m_owner.getConnection(), m_currentCommand->getCommand().mb_str( wxConvUTF8 ));
 
-		::wxLogDebug( _( "Complete: %s" ), PQresStatus( PQresultStatus( result )));
+        if(!result)
+        {
+            ::wxLogDebug(wxT( "NULL PGresult - user abort?" ));
+            this->Exit();
+        }
 
-		if( PQresultStatus( result ) == PGRES_FATAL_ERROR )
-			::wxLogDebug( wxT( "        : %s" ), PQresultErrorMessage( result ));
+		::wxLogDebug(_( "Complete: %s" ), wxString(PQresStatus(PQresultStatus(result)), *conv));
+
+		if( PQresultStatus(result) == PGRES_FATAL_ERROR)
+			::wxLogDebug(wxT( "        : %s" ), wxString(PQresultErrorMessage(result), *conv));
 
 		// Notify the GUI thread that a result set is ready for display
 
@@ -144,29 +151,13 @@ void wsPgThread::noticeHandler( void * arg, const char * message )
 
 	if( strstr( message, "PLDBGBREAK" ))
 	{
-		// Construct a command line that will re-invoke this application
-		// in debugger-mode
-
-		wxString	command( wxTheApp->argv[0] );
-
 		wxStringTokenizer	tokens( wxString( message, wxConvUTF8 ), wxT( ":\n" ));
 
 		wxString NOTICE     = tokens.GetNextToken();		// NOTICE:
 		wxString PLDBGBREAK = tokens.GetNextToken();		// PLDBGBREAK:
 		wxString PORT       = tokens.GetNextToken();		// port
 
-		command += wxT( " -k " );
-		command += PORT;
-
 		PGconn * conn = thread->m_owner.getConnection();
-
-		command += wxT( " --database=" ); command += wxString( PQdb( conn ), wxConvUTF8 );
-		command += wxT( " --host=" );     command += wxString( PQhost( conn ), wxConvUTF8 );
-		command += wxT( " --port=" );     command += wxString( PQport( conn ), wxConvUTF8 );
-		command += wxT( " --user=" );     command += wxString( PQuser( conn ), wxConvUTF8 );
-		command += wxT( " --password=" ); command += wxString( PQpass( conn ), wxConvUTF8 );
-
-		command += wxT( " &" );
 
 		// Create a wsConnProp object that contains the same information in a 
 		// more convenient format
@@ -181,7 +172,6 @@ void wsPgThread::noticeHandler( void * arg, const char * message )
 		debugProps->m_password  = wxString( PQpass( conn ), wxConvUTF8 );
 
 		wxCommandEvent buttonEvent( wxEVT_COMMAND_BUTTON_CLICKED, MENU_ID_SPAWN_DEBUGGER );
-		buttonEvent.SetString( command );
 		buttonEvent.SetClientData((wxClientData *)debugProps );
 		caller->AddPendingEvent( buttonEvent );
 	}

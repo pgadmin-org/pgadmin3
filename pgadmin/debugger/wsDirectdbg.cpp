@@ -196,7 +196,7 @@ void wsDirectDbg::loadTargetInfo( const wxString &target, const wsConnProp & con
 			throw( e );
 		}
 
-		this->SetTitle( m_connProp.m_host + wxT( "/" ) + m_connProp.m_database + wxT( "/" ) + m_targetInfo->getName());
+		this->SetTitle(m_targetInfo->getName());
 	}
 }
 
@@ -371,10 +371,7 @@ void wsDirectDbg::OnCancel( wxCommandEvent & event )
 //	MainFrame.
 
 void wsDirectDbg::OnClose( wxCloseEvent & event )
-{
-	if( m_conn )
-		m_conn->Close();
-			
+{			
 	// This will inform the MainWindow to close.
 	m_parent->Close();
 }
@@ -390,6 +387,10 @@ void wsDirectDbg::OnClose( wxCloseEvent & event )
 
 bool wsDirectDbg::activateDebugger( )
 {
+    // Unset the completed flag (if it exists)
+    if (m_codeWindow)
+        m_codeWindow->m_targetComplete = false;
+
 	// Copy the parameter values from the grid into m_targetInfo
 	int i = 0;
 
@@ -426,7 +427,7 @@ bool wsDirectDbg::activateDebugger( )
 	}
 	catch( const std::runtime_error & error )
 	{
-		wxMessageBox( wxString( error.what(), wxConvUTF8 ), _( "Can't Create Breakpoint" ), wxOK | wxICON_ERROR );
+		wxMessageBox( wxString( error.what(), wxConvUTF8 ), _( "Cannot create breakpoint" ), wxOK | wxICON_ERROR );
 		return( false );
 	}
 
@@ -440,7 +441,7 @@ bool wsDirectDbg::activateDebugger( )
 	}
 	catch( const std::runtime_error & error )
 	{
-		wxMessageBox( wxString( error.what(), wxConvUTF8 ), _( "Can't Invoke Target" ), wxOK | wxICON_ERROR );
+		wxMessageBox( wxString( error.what(), wxConvUTF8 ), _( "Cannot invoke target" ), wxOK | wxICON_ERROR );
 		return( false );
 	}
 
@@ -580,6 +581,8 @@ void wsDirectDbg::OnResultReady( wxCommandEvent & event )
 			m_codeWindow->OnResultSet( result );
 	}
 
+    m_codeWindow->m_targetComplete = true;
+    m_codeWindow->disableTools( );
 	this->Show( true );
 	this->SetFocus();
 }
@@ -633,11 +636,11 @@ void wsDirectDbg::OnTargetComplete( wxCommandEvent & event )
 		if( m_codeWindow && PQnfields( rawResult ))
 		{
 			m_codeWindow->OnResultSet( rawResult );
-
-			m_codeWindow->disableTools( );
 		}
 	}
 
+    m_codeWindow->m_targetComplete = true;
+    m_codeWindow->disableTools( );
 	this->Show( true );
 	this->SetFocus();
 }

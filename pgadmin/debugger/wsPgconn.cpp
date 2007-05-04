@@ -124,11 +124,8 @@ void wsPgConn::Init( const wxString &server, const wxString &database, const wxS
 	if( PQstatus( m_pgConn ) == CONNECTION_OK )
 	{
 		m_frame->getStatusBar()->SetStatusText( wxString(_( "Connected to " )) + msg, 1 );	
-#if wxUSE_UNICODE
+
 		PQsetClientEncoding( m_pgConn, "UNICODE" );
-#else
-		PQsetClientEncoding( m_pgConn, "SQL_ASCII" );
-#endif
 	}
 	else
 	{
@@ -144,8 +141,8 @@ wsPgConn::~wsPgConn()
 ////////////////////////////////////////////////////////////////////////////////
 // isConnected()
 //
-//	Returns TRUE if the connection to the PostgreSQL server is alive and well,
-//  otherwise, returns FALSE.
+//	Returns true if the connection to the PostgreSQL server is alive and well,
+//  otherwise, returns false.
 
 bool wsPgConn::isConnected( void ) const
 {
@@ -244,8 +241,17 @@ void wsPgConn::setNoticeHandler( PQnoticeProcessor handler, void * arg )
 
 void wsPgConn::Close()
 {
-	if( m_pgConn )
-		PQfinish( m_pgConn );
+    // Attempt to cancel any ongoing query
+    if (m_pgConn)
+    {
+        PGcancel *cancel = PQgetCancel(m_pgConn);
+        char errbuf[256];
+        PQcancel(cancel, errbuf, sizeof(errbuf));
+        PQfreeCancel(cancel);
+    }
+
+	if(m_pgConn)
+		PQfinish(m_pgConn);
 
 	m_pgConn = NULL;
 }

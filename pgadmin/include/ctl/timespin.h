@@ -97,8 +97,8 @@ public:
     bool SetValue(const wxTimeSpan& span);
     wxTimeSpan GetValue();
 
-    virtual bool Enable(bool enable = TRUE);
-    virtual bool Show(bool show = TRUE);
+    virtual bool Enable(bool enable = true);
+    virtual bool Show(bool show = true);
     virtual void DoMoveWindow(int x, int y, int width, int height);
 
 private:

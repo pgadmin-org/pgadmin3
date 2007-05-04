@@ -232,7 +232,7 @@ bool wxCalendarBox::Show(bool show)
 {
     if ( !wxControl::Show(show) )
     {
-        return FALSE;
+        return false;
     }
 
     if (!show)
@@ -244,7 +244,7 @@ bool wxCalendarBox::Show(bool show)
         }
     }
 
-    return TRUE;
+    return true;
 }
 
 
@@ -252,7 +252,7 @@ bool wxCalendarBox::Enable(bool enable)
 {
     if ( !wxControl::Enable(enable) )
     {
-        return FALSE;
+        return false;
     }
 
     if (!enable)
@@ -262,7 +262,7 @@ bool wxCalendarBox::Enable(bool enable)
     }
     if (m_btn)
         m_btn->Enable(enable);
-    return TRUE;
+    return true;
 }
 
 
