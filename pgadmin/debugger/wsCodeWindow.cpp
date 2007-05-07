@@ -141,10 +141,11 @@ wsCodeWindow::wsCodeWindow( wsMainFrame *parent, wxWindowID id, const wsConnProp
 	  m_updateStack(false),
 	  m_updateBreakpoints(false),
 	  m_progressBar(NULL),
-	  m_timer(this),
-	  m_targetAborted(false),
-      m_targetComplete(false)
+	  m_timer(this)
 {
+	  m_targetComplete = false;
+	  m_targetAborted = false;
+
     wxWindowBase::SetFont(settings->GetSystemFont());
 
 	m_stackWindow = new wsStackWindow(parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, 0);
