@@ -107,10 +107,10 @@ void * wsPgThread::Entry( void )
             this->Exit();
         }
 
-		::wxLogDebug(_( "Complete: %s" ), wxString(PQresStatus(PQresultStatus(result)), *conv));
+		::wxLogDebug(_( "Complete: %s" ), wxString(PQresStatus(PQresultStatus(result)), *conv).c_str());
 
 		if( PQresultStatus(result) == PGRES_FATAL_ERROR)
-			::wxLogDebug(wxT( "        : %s" ), wxString(PQresultErrorMessage(result), *conv));
+			::wxLogDebug(wxT( "        : %s" ), wxString(PQresultErrorMessage(result), *conv).c_str());
 
 		// Notify the GUI thread that a result set is ready for display
 
