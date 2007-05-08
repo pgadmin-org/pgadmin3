@@ -10,24 +10,24 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/include/debugger/debugger.h \
-	$(srcdir)/include/debugger/wsBreakPoint.h \
-	$(srcdir)/include/debugger/wsCodeWindow.h \
-	$(srcdir)/include/debugger/wsConnProp.h \
-	$(srcdir)/include/debugger/wsConst.h \
-	$(srcdir)/include/debugger/wsDbresult.h \
-	$(srcdir)/include/debugger/wsDirectdbg.h \
-	$(srcdir)/include/debugger/wsMainFrame.h \
-	$(srcdir)/include/debugger/wsMessageWindow.h \
-	$(srcdir)/include/debugger/wsPgconn.h \
-	$(srcdir)/include/debugger/wsPgthread.h \
-	$(srcdir)/include/debugger/wsResultGrid.h \
-	$(srcdir)/include/debugger/wsResultset.h \
-	$(srcdir)/include/debugger/wsRichWindow.h \
-	$(srcdir)/include/debugger/wsStackWindow.h \
-	$(srcdir)/include/debugger/wsTabWindow.h \
-	$(srcdir)/include/debugger/wsTargetInfo.h \
-	$(srcdir)/include/debugger/wsVarWindow.h
+	$(srcdir)/include/debugger/ctlCodeWindow.h \
+	$(srcdir)/include/debugger/ctlMessageWindow.h \
+	$(srcdir)/include/debugger/ctlResultGrid.h \
+	$(srcdir)/include/debugger/ctlRichWindow.h \
+	$(srcdir)/include/debugger/ctlStackWindow.h \
+	$(srcdir)/include/debugger/ctlTabWindow.h \
+	$(srcdir)/include/debugger/ctlVarWindow.h \
+	$(srcdir)/include/debugger/dbgBreakPoint.h \
+	$(srcdir)/include/debugger/dbgConnProp.h \
+	$(srcdir)/include/debugger/dbgConst.h \
+	$(srcdir)/include/debugger/dbgDbResult.h \
+	$(srcdir)/include/debugger/dbgDirect.h \
+	$(srcdir)/include/debugger/dbgPgConn.h \
+	$(srcdir)/include/debugger/dbgPgThread.h \
+ 	$(srcdir)/include/debugger/dbgResultset.h \
+	$(srcdir)/include/debugger/dbgTargetInfo.h \
+ 	$(srcdir)/include/debugger/debugger.h \
+	$(srcdir)/include/debugger/frmDebugger.h
 
 EXTRA_DIST += \
 	$(srcdir)/include/debugger/module.mk

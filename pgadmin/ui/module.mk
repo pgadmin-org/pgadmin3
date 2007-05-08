@@ -21,6 +21,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgConnect.xrc \
 	$(srcdir)/ui/dlgConversion.xrc \
 	$(srcdir)/ui/dlgDatabase.xrc \
+        $(srcdir)/ui/dlgDirectDbg.xrc \
 	$(srcdir)/ui/dlgDomain.xrc \
 	$(srcdir)/ui/dlgEditGridOptions.xrc \
 	$(srcdir)/ui/dlgFindReplace.xrc \
@@ -76,8 +77,7 @@ TMP_ui += \
 	$(srcdir)/ui/frmReport.xrc \
 	$(srcdir)/ui/frmRestore.xrc \
 	$(srcdir)/ui/frmStatus.xrc \
-	$(srcdir)/ui/frmUpdate.xrc \
-        $(srcdir)/ui/wsDirectdbg.xrc
+	$(srcdir)/ui/frmUpdate.xrc
 
 EXTRA_DIST += \
         $(srcdir)/ui/module.mk \

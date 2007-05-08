@@ -10,22 +10,22 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
+	$(srcdir)/debugger/ctlCodeWindow.cpp \
+	$(srcdir)/debugger/ctlMessageWindow.cpp \
+	$(srcdir)/debugger/ctlResultGrid.cpp \
+	$(srcdir)/debugger/ctlRichWindow.cpp \
+	$(srcdir)/debugger/ctlStackWindow.cpp \
+	$(srcdir)/debugger/ctlTabWindow.cpp \
+	$(srcdir)/debugger/ctlVarWindow.cpp \
+	$(srcdir)/debugger/dbgBreakPoint.cpp \
+	$(srcdir)/debugger/dbgDbResult.cpp \
+	$(srcdir)/debugger/dbgDirect.cpp \
+ 	$(srcdir)/debugger/dbgPgConn.cpp \
+	$(srcdir)/debugger/dbgPgThread.cpp \
+	$(srcdir)/debugger/dbgResultset.cpp \
+ 	$(srcdir)/debugger/dbgTargetInfo.cpp \
 	$(srcdir)/debugger/debugger.cpp \
-	$(srcdir)/debugger/wsBreakPoint.cpp \
-	$(srcdir)/debugger/wsCodeWindow.cpp \
-	$(srcdir)/debugger/wsDbresult.cpp \
-	$(srcdir)/debugger/wsDirectdbg.cpp \
-	$(srcdir)/debugger/wsMainFrame.cpp \
-	$(srcdir)/debugger/wsMessageWindow.cpp \
-	$(srcdir)/debugger/wsPgconn.cpp \
-	$(srcdir)/debugger/wsPgthread.cpp \
-	$(srcdir)/debugger/wsResultGrid.cpp \
-	$(srcdir)/debugger/wsResultset.cpp \
-	$(srcdir)/debugger/wsRichWindow.cpp \
-	$(srcdir)/debugger/wsStackWindow.cpp \
-	$(srcdir)/debugger/wsTabWindow.cpp \
-	$(srcdir)/debugger/wsTargetInfo.cpp \
-	$(srcdir)/debugger/wsVarWindow.cpp
+	$(srcdir)/debugger/frmDebugger.cpp
 
 EXTRA_DIST += \
 	$(srcdir)/debugger/module.mk

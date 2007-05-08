@@ -15,10 +15,10 @@
 // App headers
 #include "pgAdmin3.h"
 #include "debugger/debugger.h"
-#include "debugger/wsBreakPoint.h"
-#include "debugger/wsCodeWindow.h"
-#include "debugger/wsDirectdbg.h"
-#include "debugger/wsMainFrame.h"
+#include "debugger/dbgBreakPoint.h"
+#include "debugger/ctlCodeWindow.h"
+#include "debugger/dbgDirect.h"
+#include "debugger/frmDebugger.h"
 #include "schema/pgFunction.h"
 #include "schema/pgTrigger.h"
 
@@ -33,10 +33,10 @@ debuggerFactory::debuggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *
 wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     // Setup the debugger frame
-    wsMainFrame *debugger = new wsMainFrame(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier().c_str()));
+    frmDebugger *debugger = new frmDebugger(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier().c_str()));
 
     // Setup the connection properties to be used by the debugger
-    wsConnProp cp;
+    dbgConnProp cp;
     cp.m_database = obj->GetDatabase()->GetQuotedIdentifier();
     cp.m_host = obj->GetServer()->GetName();
     cp.m_password = obj->GetDatabase()->GetServer()->GetPassword();
@@ -45,11 +45,11 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
     cp.m_userName = obj->GetServer()->GetUsername();
 
     // Setup the debugging session
-	wsDirectDbg *directDebugger = NULL;
+	dlgDirectDbg *directDebugger = NULL;
     directDebugger = debugger->addDirectDbg(cp);
 
-    wsBreakpointList &breakpoints = directDebugger->getBreakpointList();
-    breakpoints.Append(new wsBreakpoint(wsBreakpoint::OID, NumToStr((long)obj->GetOid()), wxT("'NULL'")));
+    dbgBreakPointList &breakpoints = directDebugger->getBreakpointList();
+    breakpoints.Append(new dbgBreakPoint(dbgBreakPoint::OID, NumToStr((long)obj->GetOid()), wxT("'NULL'")));
     directDebugger->startDebugging();
 
     // Return the debugger window to frmMain.
@@ -108,12 +108,12 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
         dbgOid = NumToStr((long)obj->GetOid());
 
     // Setup the debugger frame
-    wsMainFrame *debugger = new wsMainFrame(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier().c_str()));
+    frmDebugger *debugger = new frmDebugger(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier().c_str()));
     debugger->Show(true);
     debugger->Raise();
 
     // Setup the connection properties to be used by the debugger
-    wsConnProp cp;
+    dbgConnProp cp;
     cp.m_database = obj->GetDatabase()->GetQuotedIdentifier();
     cp.m_host = obj->GetServer()->GetName();
     cp.m_password = obj->GetDatabase()->GetServer()->GetPassword();
@@ -122,11 +122,11 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
     cp.m_userName = obj->GetServer()->GetUsername();
 
     // Setup the debugging session
-	wsCodeWindow *globalDebugger = NULL;
+	ctlCodeWindow *globalDebugger = NULL;
     globalDebugger = debugger->addDebug(cp);
 
-    wsBreakpointList &breakpoints = globalDebugger->getBreakpointList();
-    breakpoints.Append(new wsBreakpoint(wsBreakpoint::OID, dbgOid, wxT("'NULL'")));
+    dbgBreakPointList &breakpoints = globalDebugger->getBreakpointList();
+    breakpoints.Append(new dbgBreakPoint(dbgBreakPoint::OID, dbgOid, wxT("'NULL'")));
     globalDebugger->startGlobalDebugging();
 
     // Return the debugger window to frmMain.
