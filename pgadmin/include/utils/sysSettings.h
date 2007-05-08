@@ -25,7 +25,7 @@ public:
     ~sysSettings();
 
 	// Display options
-	bool GetDisplayOption(const wxString &objtype);
+	bool GetDisplayOption(const wxString &objtype, bool GetDefault = false);
 	void SetDisplayOption(const wxString &objtype, bool display);
 
     // Tip Of The Day

@@ -220,7 +220,7 @@ sysSettings::~sysSettings()
 	Save();
 }
 
-bool sysSettings::GetDisplayOption(const wxString &objtype)
+bool sysSettings::GetDisplayOption(const wxString &objtype, bool GetDefault)
 {
 	bool retval, def = true;
 	wxString engtype;
@@ -305,8 +305,12 @@ bool sysSettings::GetDisplayOption(const wxString &objtype)
 	else if (objtype == _("Views")) 
 		engtype = wxT("Views");
 
+    // If we just want the default, return it.
+    if (GetDefault)
+        return def;
+ 
+    // Otherwise get the reg value.
 	Read(wxT("Display/") + objtype, &retval, def);
-
 	return retval;
 }
 

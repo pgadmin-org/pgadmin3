@@ -43,6 +43,7 @@ private:
     void OnOK(wxCommandEvent &ev);
     void OnCancel(wxCommandEvent &ev);
     void OnHelp(wxCommandEvent &ev);
+    void OnDefault(wxCommandEvent &ev);
     void OnSuppressHints(wxCommandEvent &ev);
     void OnResetHints(wxCommandEvent &ev);
     DECLARE_EVENT_TABLE()

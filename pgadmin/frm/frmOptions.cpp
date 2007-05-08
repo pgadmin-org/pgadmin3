@@ -82,6 +82,7 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_BUTTON (XRCID("btnSlonyPath"),        frmOptions::OnSlonyPathSelect)
     EVT_BUTTON (XRCID("btnPostgresqlPath"),   frmOptions::OnPostgresqlPathSelect)
     EVT_BUTTON (XRCID("btnEnterprisedbPath"), frmOptions::OnEnterprisedbPathSelect)
+    EVT_BUTTON (XRCID("btnDefault"),          frmOptions::OnDefault)
     EVT_CHECKBOX(XRCID("chkSuppressHints"),   frmOptions::OnSuppressHints)
     EVT_CHECKBOX(XRCID("chkResetHints"),      frmOptions::OnResetHints)
     EVT_BUTTON (wxID_OK,                      frmOptions::OnOK)
@@ -213,6 +214,13 @@ void frmOptions::OnHelp(wxCommandEvent &ev)
     DisplayHelp(this, wxT("options-tab") + NumToStr(page+1L));
 }
 
+void frmOptions::OnDefault(wxCommandEvent &ev)
+{
+    // Reset the display options to the defaults.
+    // Clear them all first
+    for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
+		lstDisplay->Check(x, settings->GetDisplayOption(lstDisplay->GetString(x), true));
+}
 
 void frmOptions::OnSlonyPathSelect(wxCommandEvent &ev)
 {
