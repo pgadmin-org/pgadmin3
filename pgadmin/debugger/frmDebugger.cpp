@@ -46,6 +46,7 @@ BEGIN_EVENT_TABLE( frmDebugger, pgFrame  )
 	EVT_ERASE_BACKGROUND(frmDebugger::OnEraseBackground)
 
     EVT_STC_MARGINCLICK(wxID_ANY,        frmDebugger::OnMarginClick)
+    EVT_STC_UPDATEUI(wxID_ANY,           frmDebugger::OnPositionStc)
     EVT_LISTBOX(wxID_ANY,                frmDebugger::OnSelectFrame)
 
     EVT_MENU(MENU_ID_VIEW_TOOLBAR,       frmDebugger::OnToggleToolBar)
@@ -186,6 +187,19 @@ void frmDebugger::OnMarginClick( wxStyledTextEvent & event )
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// OnPositionStc()
+//
+//     This event handler is invoked when the user positions the cursor in the 
+//       code window
+//  - we simply forward the event to the debugger window.
+
+void frmDebugger::OnPositionStc( wxStyledTextEvent & event )
+{
+    if (m_standaloneDebugger)
+        m_standaloneDebugger->OnPositionStc( event );
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // OnSize()
 //
 //    This event handler is called when a resize event occurs (that is, when 
@@ -242,7 +256,7 @@ wxToolBar * frmDebugger::setupToolBar( void )
 wxStatusBar * frmDebugger::setupStatusBar( void )
 {
     wxStatusBar * bar = CreateStatusBar( 3, wxST_SIZEGRIP );
-    int			  widths[] = { 0, -1, -1 };
+    int			  widths[] = { 0, -1, 130 };
 
     bar->SetStatusWidths(3, widths);
     bar->SetStatusText(_( "Initializing..."), 1);

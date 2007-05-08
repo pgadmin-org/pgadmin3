@@ -19,7 +19,7 @@
 //  A ctlCodeWindow object creates (and manages) a toolbar and handles toolbar
 //  and keystroke messages. The input messages are treated as debugger commands.
 //
-//	The m_view member is a ctlRichWindow that displays the code for the PL
+//	The m_view member is a ctlSQLBox that displays the code for the PL
 //  function that you're debugging.  The m_hilite member tracks the current 
 //  line (that is, the line about to execute).  We use hilight the current line.
 //  If m_hilite is -1, there is no current line.  
@@ -31,9 +31,9 @@
 
 #include <wx/progdlg.h>
 
+#include "ctl/ctlSQLBox.h"
 #include "debugger/frmDebugger.h"
 #include "debugger/dbgBreakPoint.h"
-#include "debugger/ctlRichWindow.h"
 #include "debugger/ctlTabWindow.h"
 
 class dbgPgConn;
@@ -79,6 +79,7 @@ class ctlCodeWindow : public pgFrame
 	void OnCommand( wxCommandEvent & event );		    // Handle menu/toolbar commands
     void OnSelectFrame( wxCommandEvent & event );	    // Select a different stack frame
     void OnMarginClick( wxStyledTextEvent & event );    // Set/clear breakpoint on margin click
+    void OnPositionStc( wxStyledTextEvent & event );    // update the status bar text
 	void processResult( wxString & result );		    // Handle a message from the debugger server
 	void OnNoticeReceived( wxCommandEvent & event );    // NOTICE received from server
 	void OnResultSet( PGresult * result );			    // Result set received from server
@@ -142,7 +143,7 @@ class ctlCodeWindow : public pgFrame
 	frmDebugger 	*m_parent;		// Parent window
 	int	m_currentLineNumber;	// Current line number
 
-	ctlRichWindow	*m_view;	    // Window that displays function source code
+	ctlSQLBox       *m_view;	    // Window that displays function source code
 	ctlStackWindow	*m_stackWindow;	// Stack Window
 	ctlTabWindow	*m_tabWindow;	    // Tab Window
 

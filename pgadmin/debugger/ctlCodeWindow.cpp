@@ -75,6 +75,7 @@ BEGIN_EVENT_TABLE(ctlCodeWindow , pgFrame)
   EVT_LISTBOX(wxID_ANY,                ctlCodeWindow::OnSelectFrame)
   EVT_GRID_CELL_CHANGE(                ctlCodeWindow::OnVarChange)
   EVT_STC_MARGINCLICK(wxID_ANY,        ctlCodeWindow::OnMarginClick)
+  EVT_STC_UPDATEUI(wxID_ANY,           ctlCodeWindow::OnPositionStc)
 
   EVT_MENU(RESULT_ID_ATTACH_TO_PORT, 	ctlCodeWindow::ResultPortAttach)
   EVT_MENU(RESULT_ID_BREAKPOINT,		ctlCodeWindow::ResultBreakpoint)
@@ -127,7 +128,7 @@ wxString ctlCodeWindow::m_commandWaitForTarget( wxT( "SELECT * FROM pldbg_wait_f
 //  A ctlCodeWindow object creates (and manages) a toolbar and handles toolbar
 //  and keystroke messages. The input messages are treated as debugger commands.
 //
-//	The m_view member is a ctlRichWindow that displays the code for the PL
+//	The m_view member is a ctlSQLBox that displays the code for the PL
 //  function that you're debugging.  The m_currentLineNumber member tracks the current 
 //  line (that is, the line about to execute).  We use hilight the current line.
 //  If m_currentLineNumber is -1, there is no current line.  
@@ -150,7 +151,7 @@ ctlCodeWindow::ctlCodeWindow( frmDebugger *parent, wxWindowID id, const dbgConnP
 
 	m_stackWindow = new ctlStackWindow(parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, 0);
 	m_tabWindow = new ctlTabWindow(parent , WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, 0);
-	m_view = new ctlRichWindow(parent, -1);
+	m_view = new ctlSQLBox(parent, -1);
 
 	// Set up the markers that we use do indicate the current line and a breakpoint
 	m_view->MarkerDefine( MARKER_CURRENT, wxSTC_MARK_ARROW , *wxGREEN, *wxGREEN );
@@ -267,6 +268,19 @@ void ctlCodeWindow::OnMarginClick( wxStyledTextEvent& event )
     else 	 
         setBreakpoint( lineNumber ); 	 
 }
+
+//////////////////////////////////////////////////////////////////////////////// 	 
+// OnPositionStc() 	 
+// 	 
+//  Update the current line number etc in the status bar.
+ 	 
+void ctlCodeWindow::OnPositionStc( wxStyledTextEvent& event ) 	 
+{ 	 
+    wxString pos; 
+    pos.Printf(_("Ln %d Col %d Ch %d"), m_view->LineFromPosition(m_view->GetCurrentPos()) + 1, m_view->GetColumn(m_view->GetCurrentPos()) + 1, m_view->GetCurrentPos() + 1);
+    m_parent->getStatusBar()->SetStatusText(pos, 2);  
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // doDebug()
@@ -1312,7 +1326,6 @@ void ctlCodeWindow::ResultTargetReady(  wxCommandEvent & event )
 	else
 	{
         setTools(true);
-		m_parent->getStatusBar()->SetStatusText( wxString::Format( _( "Connected to process %s" ), result.getString( 0 ).c_str()), 2 );
 		m_dbgConn->startCommand( wxString::Format( m_commandWaitForBreakpoint, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );		
 	}
 }

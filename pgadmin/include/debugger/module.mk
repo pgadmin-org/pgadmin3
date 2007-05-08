@@ -13,7 +13,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/debugger/ctlCodeWindow.h \
 	$(srcdir)/include/debugger/ctlMessageWindow.h \
 	$(srcdir)/include/debugger/ctlResultGrid.h \
-	$(srcdir)/include/debugger/ctlRichWindow.h \
 	$(srcdir)/include/debugger/ctlStackWindow.h \
 	$(srcdir)/include/debugger/ctlTabWindow.h \
 	$(srcdir)/include/debugger/ctlVarWindow.h \

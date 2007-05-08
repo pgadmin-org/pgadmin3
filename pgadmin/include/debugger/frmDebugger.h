@@ -25,9 +25,9 @@
 
 #include <wx/aui/aui.h>
 
+#include "ctl/ctlSQLBox.h"
 #include "frm/frmMain.h"
 #include "debugger/dbgConnProp.h"
-#include "debugger/ctlRichWindow.h"
 #include "debugger/ctlTabWindow.h"
 
 #define FRMDEBUGGER_PERPSECTIVE_VER wxT("$Rev: 6216 $")
@@ -133,6 +133,7 @@ class frmDebugger : public pgFrame
     void OnDebugCommand( wxCommandEvent & event );
     void OnSelectFrame( wxCommandEvent & event );
     void OnMarginClick( wxStyledTextEvent & event );    // Set/clear breakpoint on margin click
+    void OnPositionStc( wxStyledTextEvent & event ); 
     void OnClose( wxCloseEvent & event );
     void OnExit( wxCommandEvent & event );
 	void OnSize( wxSizeEvent & event );
