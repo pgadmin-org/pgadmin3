@@ -158,7 +158,6 @@ ctlCodeWindow::ctlCodeWindow( frmDebugger *parent, wxWindowID id, const dbgConnP
 	m_view->MarkerDefine( MARKER_CURRENT_BG, wxSTC_MARK_BACKGROUND, *wxGREEN, *wxGREEN );
 	m_view->MarkerDefine( MARKER_BREAKPOINT, wxSTC_MARK_CIRCLEPLUS, *wxRED, *wxRED );
 
-    m_view->SetMarginType(1, wxSTC_MARGIN_NUMBER);
     m_view->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
 
 	// Make sure that the text control tells us when the user clicks in the left margin
@@ -311,6 +310,11 @@ void ctlCodeWindow::resumeLocalDebugging()
 	// to hit a breakpoint so we don't have to do anything here.  If m_targetAborted
 	// is true, the proxy is waiting for another command from us - send it a waitForBreakpoint
 	// request
+
+    // Clear the source cache in case someone updated the function in another session
+    m_sourceCodeMap.clear();
+    m_displayedFuncOid = wxT("-1");
+    m_displayedPackageOid = wxT("-1");
 
 	if( m_targetAborted )
 	{

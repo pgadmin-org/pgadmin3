@@ -517,7 +517,6 @@ void dlgDirectDbg::invokeTarget()
 	// And send the completed command to the server - we'll get 
 	// a dbgDbResult event when the command completes (and that 
 	// event will get routed to dlgDirectDbg::OnResultReady())
-
 	m_conn->startCommand( query, GetEventHandler(), RESULT_ID_DIRECT_TARGET_COMPLETE );
 	
 	// Since parameter window has done its job, we need to hide
