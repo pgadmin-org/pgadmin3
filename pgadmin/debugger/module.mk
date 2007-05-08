@@ -19,12 +19,12 @@ pgadmin3_SOURCES += \
 	$(srcdir)/debugger/ctlVarWindow.cpp \
 	$(srcdir)/debugger/dbgBreakPoint.cpp \
 	$(srcdir)/debugger/dbgDbResult.cpp \
-	$(srcdir)/debugger/dbgDirect.cpp \
  	$(srcdir)/debugger/dbgPgConn.cpp \
 	$(srcdir)/debugger/dbgPgThread.cpp \
 	$(srcdir)/debugger/dbgResultset.cpp \
  	$(srcdir)/debugger/dbgTargetInfo.cpp \
 	$(srcdir)/debugger/debugger.cpp \
+	$(srcdir)/debugger/dlgDirectDbg.cpp \
 	$(srcdir)/debugger/frmDebugger.cpp
 
 EXTRA_DIST += \

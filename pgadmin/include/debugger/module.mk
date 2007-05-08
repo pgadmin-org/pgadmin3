@@ -21,12 +21,12 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/debugger/dbgConnProp.h \
 	$(srcdir)/include/debugger/dbgConst.h \
 	$(srcdir)/include/debugger/dbgDbResult.h \
-	$(srcdir)/include/debugger/dbgDirect.h \
 	$(srcdir)/include/debugger/dbgPgConn.h \
 	$(srcdir)/include/debugger/dbgPgThread.h \
  	$(srcdir)/include/debugger/dbgResultset.h \
 	$(srcdir)/include/debugger/dbgTargetInfo.h \
  	$(srcdir)/include/debugger/debugger.h \
+	$(srcdir)/include/debugger/dlgDirectDbg.h \
 	$(srcdir)/include/debugger/frmDebugger.h
 
 EXTRA_DIST += \

@@ -17,7 +17,7 @@
 #include "debugger/debugger.h"
 #include "debugger/dbgBreakPoint.h"
 #include "debugger/ctlCodeWindow.h"
-#include "debugger/dbgDirect.h"
+#include "debugger/dlgDirectDbg.h"
 #include "debugger/frmDebugger.h"
 #include "schema/pgFunction.h"
 #include "schema/pgTrigger.h"

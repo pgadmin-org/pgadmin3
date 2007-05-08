@@ -16,7 +16,7 @@
 #include <wx/grid.h>
 
 // App headers
-#include "debugger/dbgDirect.h"
+#include "debugger/dlgDirectDbg.h"
 #include "debugger/frmDebugger.h"
 #include "debugger/dbgTargetInfo.h"
 #include "debugger/dbgPgConn.h"

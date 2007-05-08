@@ -49,7 +49,7 @@
 #include "debugger/dbgConnProp.h"
 #include "debugger/dbgConst.h"
 #include "debugger/dbgDbResult.h"
-#include "debugger/dbgDirect.h"
+#include "debugger/dlgDirectDbg.h"
 #include "debugger/frmDebugger.h"
 #include "debugger/ctlMessageWindow.h"
 #include "debugger/dbgPgConn.h"

@@ -18,7 +18,7 @@
 #include "debugger/frmDebugger.h"
 #include "debugger/ctlCodeWindow.h"
 #include "debugger/dbgPgConn.h"
-#include "debugger/dbgDirect.h"
+#include "debugger/dlgDirectDbg.h"
 
 #include "images/debugger.xpm"
 #include "images/clearAll.xpm"
