@@ -341,11 +341,39 @@ void frmMainConfig::WriteFile(pgConn *conn)
 
 void frmMainConfig::DisplayFile(const wxString &str)
 {
-//    lines.Empty();
+    lines.Empty();
+    options.clear();
 
     filetype = wxTextFileType_Unix;
     wxStringTokenizer strtok;
     wxArrayString *unknownCategory=0;
+
+    // Check that the categories are loaded - if not
+    // (because this is a new file being loaded), attempt to do so
+    if (categories.size() == 0)
+    {
+        pgSettingReader *reader;
+        if (conn)
+        {
+            // read settings from server
+            reader = new pgSettingDbReader(conn);
+        }
+        else
+        {
+            // read settings from file. First, use localized file...
+            reader = new pgSettingFileReader(true);
+
+            if (reader->IsValid())
+                Init(reader);
+            delete reader;
+
+            // ... then add default file
+            reader = new pgSettingFileReader(false);
+        }
+
+        if (reader->IsValid())
+            Init(reader);
+    }
 
     if (str.Find('\r') >= 0)
     {

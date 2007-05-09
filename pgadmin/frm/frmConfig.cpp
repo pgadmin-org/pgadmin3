@@ -256,7 +256,7 @@ void frmConfig::OnExecute(wxCommandEvent& event)
 
 void frmConfig::OnOpen(wxCommandEvent& event)
 {
-    if (CheckChanged(false))
+    if (CheckChanged(true))
         return;
 
     wxFileDialog dlg(this, _("Open configuration file"), lastDir, wxT(""), 
