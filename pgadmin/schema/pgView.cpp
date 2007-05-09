@@ -15,6 +15,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
+#include "schema/pgColumn.h"
 #include "schema/pgView.h"
 #include "frm/frmHint.h"
 
