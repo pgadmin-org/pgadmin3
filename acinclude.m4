@@ -502,7 +502,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 		else
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
-			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2"
+			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2 -DEMBED_XRC"
 		
 			debugger_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`

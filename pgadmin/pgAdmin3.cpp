@@ -242,6 +242,10 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("Compiled with dynamically linked SSL support"));
 #endif
 
+#ifdef __WXDEBUG__
+    wxLogInfo(wxT("*** RUNNING A DEBUG BUILD ***"));
+#endif
+
     // Log the path info
     wxLogInfo(wxT("i18n path    : %s"), i18nPath.c_str());
     wxLogInfo(wxT("UI path      : %s"), uiPath.c_str());
@@ -811,12 +815,14 @@ void pgAdmin3::InitXml()
 
 
 #ifdef EMBED_XRC
-
+    wxLogInfo(__("Using embedded XRC data."));   
+	
     // resources are loaded from memory
     extern void InitXmlResource();
     InitXmlResource();
 
 #else
+    wxLogInfo(__("Using external XRC files."));
 
     // for debugging, dialog resources are read from file
     wxXmlResource::Get()->Load(uiPath + wxT("/*.xrc"));
