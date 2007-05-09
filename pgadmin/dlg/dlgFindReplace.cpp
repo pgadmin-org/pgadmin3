@@ -276,3 +276,12 @@ void dlgFindReplace::OnReplaceAll(wxCommandEvent& ev)
 
     sqlbox->ReplaceAll(txtFind->GetValue(), txtReplace->GetValue(), wholeWord, matchCase, useRegexps);
 }
+
+void dlgFindReplace::FindNext() 
+{ 
+    if (btnFind->IsEnabled() && !txtFind->IsEmpty())
+    {
+        wxCommandEvent ev; 
+        OnFind(ev);
+    }
+}

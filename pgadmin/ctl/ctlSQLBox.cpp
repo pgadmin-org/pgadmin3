@@ -312,6 +312,10 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
         SetCurrentPos(GetCurrentPos() + indent.Length());
         SetSelection(-1, -1);
     }
+    else if (m_dlgFindReplace && event.GetKeyCode() == WXK_F3)
+    {
+        m_dlgFindReplace->FindNext();
+    }
     else
 		event.Skip();
 }

@@ -23,6 +23,7 @@ public:
     dlgFindReplace(ctlSQLBox *parent);
     ~dlgFindReplace();
     void FocusSearch();
+    void FindNext();
 
 private:
 
