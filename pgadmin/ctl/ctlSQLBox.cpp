@@ -310,7 +310,7 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 
         InsertText(GetCurrentPos(), indent);
         SetCurrentPos(GetCurrentPos() + indent.Length());
-        SetSelection(-1, -1);
+        SetSelection(GetCurrentPos(), GetCurrentPos());
     }
     else if (m_dlgFindReplace && event.GetKeyCode() == WXK_F3)
     {
