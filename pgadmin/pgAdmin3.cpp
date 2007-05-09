@@ -175,7 +175,10 @@ void frmDlgTest::OnSelect(wxCommandEvent &ev)
 
 // The Application!
 bool pgAdmin3::OnInit()
-{
+{	
+    // Force logging off until we're ready
+	wxLog::Suspend();
+	
 	static const wxCmdLineEntryDesc cmdLineDesc[] = 
 	{
 		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
@@ -243,7 +246,9 @@ bool pgAdmin3::OnInit()
 #endif
 
 #ifdef __WXDEBUG__
-    wxLogInfo(wxT("*** RUNNING A DEBUG BUILD ***"));
+    wxLogInfo(wxT("Running a DEBUG build."));
+#else
+    wxLogInfo(wxT("Running a RELEASE build."));
 #endif
 
     // Log the path info
@@ -835,6 +840,7 @@ void pgAdmin3::InitLogger()
 {
     logger = new sysLogger();
     wxLog::SetActiveTarget(logger);
+	wxLog::Resume();
 }
 
 
