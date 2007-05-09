@@ -68,6 +68,7 @@ protected:
     void OnHelp(wxCommandEvent& event);
 
     virtual void OpenLastFile() {}
+    virtual bool CheckChanged(bool canVeto) { return false; }
     virtual wxString GetHelpPage() const { return wxEmptyString; }
 
     void UpdateRecentFiles();

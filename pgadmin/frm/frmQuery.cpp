@@ -1215,7 +1215,7 @@ void frmQuery::OnNew(wxCommandEvent& event)
 
 void frmQuery::OnOpen(wxCommandEvent& event)
 {
-    if (CheckChanged(false))
+    if (CheckChanged(true))
         return;
 
     wxFileDialog dlg(this, _("Open query file"), lastDir, wxT(""), 

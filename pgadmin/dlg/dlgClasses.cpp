@@ -278,6 +278,9 @@ void pgFrame::OnRecent(wxCommandEvent& event)
 
     if (!lastPath.IsNull())
     {
+        if (CheckChanged(true))
+            return;
+
         int dirsep;
         dirsep = lastPath.Find(wxFILE_SEP_PATH, true);
         lastDir = lastPath.Mid(0, dirsep);
