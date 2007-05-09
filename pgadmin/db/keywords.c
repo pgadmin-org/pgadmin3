@@ -12,16 +12,20 @@
  *
  *-------------------------------------------------------------------------
  */
+
+///////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin note: This file is based on src/backend/parser/keywords.c from
+//               PostgreSQL. It should be periodically updated to include 
+//               new keywords. The ScanKeywords array and the definition 
+//               of ScanKeywordLookup are all that are required here - when
+//               updating, ensure that no unecessary includes are added.
+//
+//               This file is under the BSD licence, per PostgreSQL.
+///////////////////////////////////////////////////////////////////////////
+
 #include "postgres.h"
-
-#include <ctype.h>
-
-// #include "nodes/parsenodes.h"
-// #include "parser/gramparse.h"	/* required before parser/parse.h! */
 #include "parser/keywords.h"
-#include "parser/parse.h"
-
-/* NB: This file is also used by pg_dump. */
 
 /*
  * List of (keyword-name, keyword-token-value) pairs.

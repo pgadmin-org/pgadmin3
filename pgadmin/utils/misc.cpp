@@ -43,7 +43,6 @@ extern "C"
 #define DECIMAL DECIMAL_P
   typedef int YYSTYPE;
 #include "parser/keywords.h"
-#include "parser/parse.h"
 }
 
 wxImageList *imageList=0;
