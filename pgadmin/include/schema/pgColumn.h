@@ -92,7 +92,8 @@ public:
 	wxString GetCommentSql();
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtable"); }
 
-    virtual bool CanDrop() { return inheritedCount == 0 && pgSchemaObject::CanDrop() && GetSchema()->GetMetaType() != PGM_CATALOG; }
+    virtual bool CanDrop() { return inheritedCount == 0 && pgSchemaObject::CanDrop() && GetSchema()->GetMetaType() != PGM_CATALOG && GetTable()->GetMetaType() != PGM_VIEW; }
+    virtual bool CanCreate() { return GetTable()->GetMetaType() != PGM_VIEW; }
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
     bool HasStats() { return true; }

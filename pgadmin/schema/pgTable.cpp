@@ -861,6 +861,14 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
     return table;
 }
 
+bool pgTableObjCollection::CanCreate()
+{
+    if (GetTable()->GetMetaType() == PGM_VIEW)
+        return false;
+
+    return GetSchema()->GetCreatePrivilege();
+}
+
 
 #include "images/table.xpm"
 #include "images/table-repl.xpm"

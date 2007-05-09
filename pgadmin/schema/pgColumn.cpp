@@ -76,35 +76,49 @@ wxString pgColumn::GetSql(ctlTree *browser)
 {
     if (sql.IsNull() && !GetSystemObject())
     {
-        if (GetInheritedCount())
-            sql = wxT("-- Column inherited; cannot be changed");
+        if (GetTable()->GetMetaType() != PGM_VIEW)
+        {
+            if (GetInheritedCount())
+                sql = wxT("-- Column inherited; cannot be changed");
+            else
+            {
+                sql = wxT("-- Column: ") + GetQuotedFullIdentifier() + wxT("\n\n")
+                    + wxT("-- ALTER TABLE ") + GetQuotedFullTable()
+                    + wxT(" DROP COLUMN ") + GetQuotedIdentifier() + wxT(";")
+                    
+                    + wxT("\n\nALTER TABLE ") + GetQuotedFullTable()
+                    + wxT(" ADD COLUMN ") + GetQuotedIdentifier() + wxT(" ") + GetQuotedTypename()
+                    
+                    + wxT(";\nALTER TABLE ")+ GetQuotedFullTable()
+                    + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+                    + wxT(" SET STORAGE ") + GetStorage() + wxT(";\n");
+
+                if (GetNotNull())
+                    sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
+                        + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+                        + wxT(" SET NOT NULL;\n");
+                if (!GetDefault().IsEmpty())
+                    sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
+                        + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+                        + wxT(" SET DEFAULT ") + GetDefault() + wxT(";\n");
+                if (GetAttstattarget() >= 0)
+                    sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
+                        + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+                        + wxT(" SET STATISTICS ") + NumToStr(GetAttstattarget()) + wxT(";\n");
+
+			    sql += GetCommentSql();
+            }
+        }
         else
         {
-            sql = wxT("-- Column: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-                + wxT("-- ALTER TABLE ") + GetQuotedFullTable()
-                + wxT(" DROP COLUMN ") + GetQuotedIdentifier() + wxT(";")
-                
-                + wxT("\n\nALTER TABLE ") + GetQuotedFullTable()
-                + wxT(" ADD COLUMN ") + GetQuotedIdentifier() + wxT(" ") + GetQuotedTypename()
-                
-                + wxT(";\nALTER TABLE ")+ GetQuotedFullTable()
-                + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
-                + wxT(" SET STORAGE ") + GetStorage() + wxT(";\n");
+            sql = wxT("-- Column: ") + GetQuotedFullIdentifier() + wxT("\n\n");
 
-            if (GetNotNull())
-                sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
-                    + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
-                    + wxT(" SET NOT NULL;\n");
             if (!GetDefault().IsEmpty())
                 sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                     + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
                     + wxT(" SET DEFAULT ") + GetDefault() + wxT(";\n");
-            if (GetAttstattarget() >= 0)
-                sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
-                    + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
-                    + wxT(" SET STATISTICS ") + NumToStr(GetAttstattarget()) + wxT(";\n");
 
-			sql += GetCommentSql();
+            sql += GetCommentSql();
         }
     }
 
@@ -215,16 +229,20 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
         properties->AppendItem(_("Position"), GetColNumber());
         properties->AppendItem(_("Data type"), GetVarTypename());
         properties->AppendItem(_("Default"), GetDefault());
-        properties->AppendItem(_("Sequence"), database->GetSchemaPrefix(GetSerialSchema()) + GetSerialSequence());
-        properties->AppendItem(_("Not NULL?"), GetNotNull());
-        properties->AppendItem(_("Primary key?"), GetIsPK());
-        properties->AppendItem(_("Foreign key?"), GetIsFK());
-        properties->AppendItem(_("Storage"), GetStorage());
-        properties->AppendItem(_("Inherited"), GetInheritedCount() != 0);
-        properties->AppendItem(_("Statistics"), GetAttstattarget());
+        if (GetTable()->GetMetaType() != PGM_VIEW)
+        {
+            properties->AppendItem(_("Sequence"), database->GetSchemaPrefix(GetSerialSchema()) + GetSerialSequence());
+
+            properties->AppendItem(_("Not NULL?"), GetNotNull());
+            properties->AppendItem(_("Primary key?"), GetIsPK());
+            properties->AppendItem(_("Foreign key?"), GetIsFK());
+            properties->AppendItem(_("Storage"), GetStorage());
+            properties->AppendItem(_("Inherited"), GetInheritedCount() != 0);
+            properties->AppendItem(_("Statistics"), GetAttstattarget());
 
 
-        properties->AppendItem(_("System column?"), GetSystemObject());
+            properties->AppendItem(_("System column?"), GetSystemObject());
+        }
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }

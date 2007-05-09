@@ -54,7 +54,7 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
 {
     column=node;
     table=parentNode;
-    wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
+    wxASSERT(!table || (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == PGM_VIEW));
 
     txtAttstattarget->SetValidator(numericValidator);
     cbSequence->Disable();
@@ -118,10 +118,18 @@ int dlgColumn::Go(bool modal)
         cbSequence->SetSelection(0);
 
         previousDefinition=GetDefinition();
-        if (column->GetColNumber() < 0)
+        if (column->GetColNumber() < 0)  // Disable controls not valid for system columns
         {
             txtName->Disable();
             txtDefault->Disable();
+            chkNotNull->Disable();
+            txtLength->Disable();
+            cbDatatype->Disable();
+            txtAttstattarget->Disable();
+        }
+        else if (column->GetTable()->GetMetaType() == PGM_VIEW) // Disable controls not valid for view columns
+        {
+            txtName->Disable();
             chkNotNull->Disable();
             txtLength->Disable();
             cbDatatype->Disable();
@@ -410,10 +418,10 @@ void dlgColumn::CheckChange()
 {
     long varlen=StrToLong(txtLength->GetValue()), 
          varprec=StrToLong(txtPrecision->GetValue());
-    txtPrecision->Enable(isVarPrec && varlen > 0);
 
     if (column)
     {
+        txtPrecision->Enable(column->GetTable()->GetMetaType() != PGM_VIEW && isVarPrec && varlen > 0);
 
         bool enable=true;
         EnableOK(enable);   // to get rid of old messages
@@ -444,6 +452,7 @@ void dlgColumn::CheckChange()
     }
     else
     {
+        txtPrecision->Enable(isVarPrec && varlen > 0);
 
         wxString name=GetName();
 

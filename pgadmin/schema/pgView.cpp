@@ -70,7 +70,38 @@ wxString pgView::GetSql(ctlTree *browser)
             + wxT("\n\n") 
             + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier())
             + GetGrant(wxT("arwdRxt"), wxT("TABLE ") + GetQuotedFullIdentifier())
-            + GetCommentSql();
+            + GetCommentSql()
+            + wxT("\n");
+
+        pgCollection *columns=browser->FindCollection(columnFactory, GetId());
+        if (columns)
+        {
+            wxString defaults, comments;
+            columns->ShowTreeDetail(browser);
+            treeObjectIterator colIt(browser, columns);
+
+            pgColumn *column;
+            while ((column = (pgColumn*)colIt.GetNextObject()) != 0)
+            {
+                column->ShowTreeDetail(browser);
+                if (column->GetColNumber() > 0)
+                {
+                    if (!column->GetDefault().IsEmpty())
+                    {
+                        defaults += wxT("ALTER TABLE ") + GetQuotedFullIdentifier()
+                                 +  wxT(" ALTER COLUMN ") + column->GetQuotedIdentifier()
+                                 +  wxT(" SET DEFAULT ") + column->GetDefault()
+                                 + wxT(";\n");
+                    }
+                    comments += column->GetCommentSql();
+                }
+            }
+            if (!defaults.IsEmpty())
+                sql += defaults + wxT("\n");
+
+            if (!comments.IsEmpty())
+                sql += comments + wxT("\n");
+        }
     }
     return sql;
 }
@@ -161,6 +192,8 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         expandedKids = true;
         browser->RemoveDummyChild(this);
         
+        browser->AppendCollection(this, columnFactory);
+
         pgCollection *collection = browser->AppendCollection(this, ruleFactory);
         collection->iSetOid(GetOid());
 		collection->ShowTreeDetail(browser);

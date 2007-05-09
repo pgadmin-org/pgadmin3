@@ -148,6 +148,7 @@ public:
     pgTableObjCollection(pgaFactory *factory, pgTable *_table)
     : pgSchemaObjCollection(factory, _table->GetSchema()) { iSetOid(_table->GetOid()); table=_table; }
     virtual pgTable *GetTable() const { return table; }
+    bool CanCreate();
 
 protected:
     pgTable *table;
