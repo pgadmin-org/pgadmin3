@@ -185,6 +185,7 @@ bool pgAdmin3::OnInit()
 		{wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
+        {wxCMD_LINE_OPTION, wxT("f"), wxT("file"), _("file to load into the qury tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
         {wxCMD_LINE_OPTION, wxT("cp"), NULL, _("edit pgpass configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
@@ -394,7 +395,7 @@ bool pgAdmin3::OnInit()
             dtf->Show();
             SetTopWindow(dtf);
         }
-        else if ((cmdParser.Found(wxT("q")) || cmdParser.Found(wxT("qc"))) &&!cmdParser.Found(wxT("s")))
+        else if ((cmdParser.Found(wxT("q")) || cmdParser.Found(wxT("qc"))) && !cmdParser.Found(wxT("s")))
         {
 			// -q specified, but not -s. Open a query tool but do *not* open the main window
 			pgConn *conn = NULL;
@@ -459,7 +460,9 @@ bool pgAdmin3::OnInit()
 			}
 			if (!conn)
 				return false;
-			frmQuery *fq = new frmQuery(NULL, wxEmptyString, conn, wxEmptyString);
+            wxString fn;
+            cmdParser.Found(wxT("f"), &fn);
+			frmQuery *fq = new frmQuery(NULL, wxEmptyString, conn, wxEmptyString, fn);
 			fq->Go();
 		}
 		else
@@ -498,7 +501,9 @@ bool pgAdmin3::OnInit()
 					conn = srv->CreateConn();
 					if (conn)
 					{
-						frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxEmptyString);
+                        wxString fn;
+                        cmdParser.Found(wxT("f"), &fn);
+						frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxEmptyString, fn);
 						fq->Go();
 					}
 				}

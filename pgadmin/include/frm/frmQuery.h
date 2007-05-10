@@ -37,7 +37,7 @@ class ctlSQLResult;
 class frmQuery : public pgFrame
 {
 public:
-    frmQuery(frmMain *form, const wxString& _title, pgConn *conn, const wxString& qry);
+    frmQuery(frmMain *form, const wxString& _title, pgConn *conn, const wxString& qry, const wxString& file = wxEmptyString);
     ~frmQuery();
     void Go();
 

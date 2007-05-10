@@ -14,6 +14,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/regex.h>
+#include <wx/filename.h>
 
 // wxAUI
 #include <wx/aui/aui.h>
@@ -114,7 +115,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_AUI_PANE_CLOSE(             frmQuery::OnAuiUpdate)
 END_EVENT_TABLE()
 
-frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxString& query)
+frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxString& query, const wxString& file)
 : pgFrame(NULL, _title)
 {
     mainForm=form;
@@ -380,7 +381,17 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     else
         sqlQuery->SetViewEOL(0);
 
-    sqlQuery->SetText(query);
+    if (!file.IsEmpty() && wxFileName::FileExists(file))
+    {
+        wxFileName fn = file;
+        lastFilename=fn.GetFullName();
+        lastDir = fn.GetPath();
+        lastPath = fn.GetFullPath();
+        OpenLastFile();    
+    }
+    else
+        sqlQuery->SetText(query);
+
     sqlQuery->Colourise(0, query.Length());
 
     changed = !query.IsNull() && settings->GetStickySql();
