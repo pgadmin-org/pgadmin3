@@ -248,16 +248,30 @@ wxString pgTable::GetSql(ctlTree *browser)
         if (!prevComment.IsEmpty())
 			sql += wxT(" -- ") + firstLineOnly(prevComment);
 
-        sql += wxT("\n) ");
+        sql += wxT("\n)\n");
         if (GetInheritedTableCount())
         {
-            sql += wxT("INHERITS (") + GetQuotedInheritedTables() + wxT(") ");
+            sql += wxT("INHERITS (") + GetQuotedInheritedTables() + wxT(")\n");
         }
 
-        if (GetHasOids())
-            sql += wxT("\nWITH OIDS");
+        if (GetConnection()->BackendMinimumVersion(8, 2))
+        {
+            sql += wxT("WITH (");
+            if (GetFillFactor().Length() > 0)
+                sql += wxT("FILLFACTOR=") + GetFillFactor() + wxT(", ");
+            if (GetHasOids())
+                sql +=  wxT("OIDS=TRUE");
+            else
+                sql +=  wxT("OIDS=FALSE");
+            sql += wxT(")\n");
+        }
         else
-            sql += wxT("\nWITHOUT OIDS");
+        {
+            if (GetHasOids())
+                sql +=  wxT("WITH OIDS\n");
+            else
+                sql +=  wxT("WITHOUT OIDS\n");
+        }
 
         AppendIfFilled(sql, wxT(" TABLESPACE "), qtIdent(tablespace));
 
@@ -537,6 +551,9 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 
         properties->AppendItem(_("Rows (estimated)"), GetEstimatedRows());
 
+        if (GetConnection()->BackendMinimumVersion(8, 2))
+            properties->AppendItem(_("Fill factor"), GetFillFactor());
+
         if (rowsCounted)
             properties->AppendItem(_("Rows (counted)"), rows);
         else
@@ -790,30 +807,31 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
 
 pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
+    wxString query;
     pgTable *table=0;
 
     pgSet *tables;
     if (collection->GetConnection()->BackendMinimumVersion(8, 0))
     {
-        tables= collection->GetDatabase()->ExecuteSet(
-            wxT("SELECT rel.oid, relname, spcname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
+        query= wxT("SELECT rel.oid, relname, spcname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
                     wxT("relhassubclass, reltuples, description, conname, conkey,\n")
             wxT("       EXISTS(select 1 FROM pg_trigger\n")
             wxT("                       JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'\n")
             wxT("                       JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'\n")
-            wxT("                     WHERE tgrelid=rel.oid) AS isrepl\n")
-            wxT("  FROM pg_class rel\n")
+            wxT("                     WHERE tgrelid=rel.oid) AS isrepl\n");
+        if (collection->GetConnection()->BackendMinimumVersion(8, 2))
+            query += wxT(", substring(array_to_string(reloptions, ',') from 'fillfactor=([0-9]*)') AS fillfactor \n");
+        query += wxT("  FROM pg_class rel\n")
             wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=rel.reltablespace\n")
             wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0)\n")
             wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
             wxT(" WHERE relkind IN ('r','s','t') AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
             + restriction + 
-            wxT(" ORDER BY relname"));
+            wxT(" ORDER BY relname");
     }
     else
     {
-        tables= collection->GetDatabase()->ExecuteSet(
-            wxT("SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
+        query= wxT("SELECT rel.oid, relname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
                     wxT("relhassubclass, reltuples, description, conname, conkey,\n")
             wxT("       EXISTS(select 1 FROM pg_trigger\n")
             wxT("                       JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'\n")
@@ -824,8 +842,9 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n")
             wxT(" WHERE relkind IN ('r','s','t') AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
             + restriction + 
-            wxT(" ORDER BY relname"));
+            wxT(" ORDER BY relname");
     }
+    tables= collection->GetDatabase()->ExecuteSet(query);
     if (tables)
     {
         while (!tables->Eof())
@@ -840,6 +859,9 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             table->iSetComment(tables->GetVal(wxT("description")));
             table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
             table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")));
+            if (collection->GetConnection()->BackendMinimumVersion(8, 2)) {
+                table->iSetFillFactor(tables->GetVal(wxT("fillfactor")));
+            }
             table->iSetHasSubclass(tables->GetBool(wxT("relhassubclass")));
             table->iSetPrimaryKeyName(tables->GetVal(wxT("conname")));
             table->iSetIsReplicated(tables->GetBool(wxT("isrepl")));

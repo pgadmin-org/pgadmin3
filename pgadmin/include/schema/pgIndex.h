@@ -57,6 +57,8 @@ public:
     void iSetRelTableOid(const OID d) { relTableOid=d; }
     wxString GetTablespace() const { return tablespace; };
     void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
+    wxString GetFillFactor() { return fillFactor; }
+    void iSetFillFactor(const wxString& s) { fillFactor = s; }
 
     wxString GetProcName() const { return procName; }
     void iSetProcName(const wxString& s) { procName=s; }
@@ -95,6 +97,7 @@ private:
     bool isUnique, isPrimary, isClustered;
     bool deferrable, deferred, showExtendedStatistics;
     OID relTableOid;
+    wxString fillFactor;
 };
 
 

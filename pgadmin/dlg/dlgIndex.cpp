@@ -28,6 +28,7 @@
 #define chkClustered    CTRL_CHECKBOX("chkClustered")
 #define chkConcurrent   CTRL_CHECKBOX("chkConcurrent")
 #define txtWhere        CTRL_TEXT("txtWhere")
+#define txtFillFactor   CTRL_TEXT("txtFillFactor")
 
 #define btnAddCol       CTRL_BUTTON("btnAddCol")
 #define btnRemoveCol    CTRL_BUTTON("btnRemoveCol")
@@ -37,6 +38,7 @@
 BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtFillFactor"),                dlgProperty::OnChange)
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndexBase::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndexBase::OnRemoveCol)
     EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"),     dlgIndexBase::OnSelectListCol)
@@ -92,11 +94,19 @@ int dlgIndexBase::Go(bool modal)
                 str.RemoveLast();       // there's a space
             lstColumns->InsertItem(pos++, str, columnFactory.GetIconId());
         }
+
+        txtFillFactor->SetValue(index->GetFillFactor());
     }
     else
     {
         // create mode
     }
+
+    txtFillFactor->SetValidator(numericValidator);
+    if (connection->BackendMinimumVersion(8, 2))
+        txtFillFactor->Enable();
+    else
+        txtFillFactor->Disable();
 
     btnAddCol->Disable();
     btnRemoveCol->Disable();
@@ -208,7 +218,7 @@ void dlgIndex::CheckChange()
 {
     if (index)
     {
-        EnableOK(txtComment->GetValue() != index->GetComment() || chkClustered->GetValue() != index->GetIsClustered());
+        EnableOK(txtFillFactor->GetValue() != index->GetFillFactor() || txtComment->GetValue() != index->GetComment() || chkClustered->GetValue() != index->GetIsClustered());
     }
     else
     {
@@ -292,6 +302,10 @@ wxString dlgIndex::GetSql()
                 + wxT(")");
 
             AppendIfFilled(sql, wxT("\n       TABLESPACE "), qtIdent(cbTablespace->GetValue()));
+
+            if (connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
+                sql += wxT("\n  WITH (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(")");
+
             AppendIfFilled(sql, wxT(" WHERE "), txtWhere->GetValue());
             sql +=  wxT(";\n");
         }
@@ -304,6 +318,10 @@ wxString dlgIndex::GetSql()
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                     +  wxT(" CLUSTER ON ") + qtIdent(name) + wxT(";\n");
         }
+        if (index && connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
+            sql += wxT("ALTER INDEX ") + qtIdent(name)
+                +  wxT(" SET (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(");\n")
+                +  wxT("REINDEX INDEX ") + qtIdent(name) + wxT(";\n");
         AppendComment(sql, wxT("INDEX"), table->GetSchema(), index);
     }
     return sql;

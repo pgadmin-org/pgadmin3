@@ -89,6 +89,9 @@ public:
     bool GetCanHint();
     bool GetShowExtendedStatistics() { return showExtendedStatistics; }
     void iSetShowExtendedStatistics(bool b) { showExtendedStatistics = b; }
+    wxString GetFillFactor() { return fillFactor; }
+    void iSetFillFactor(const wxString& s) { fillFactor = s; }
+
 
     bool HasStats() { return true; }
     bool HasDepends() { return true; }
@@ -112,6 +115,7 @@ private:
     void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
     wxULongLong rows;
     double estimatedRows;
+    wxString fillFactor;
     bool hasOids, hasSubclass, rowsCounted, isReplicated, showExtendedStatistics;
     long inheritedTableCount;
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,

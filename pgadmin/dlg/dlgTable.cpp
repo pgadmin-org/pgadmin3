@@ -40,6 +40,7 @@
 #define btnRemoveTable  CTRL_BUTTON("btnRemoveTable")
 #define cbTables        CTRL_COMBOBOX2("cbTables")
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
+#define txtFillFactor   CTRL_TEXT("txtFillFactor")
 
 #define btnAddCol       CTRL_BUTTON("btnAddCol")
 #define btnChangeCol    CTRL_BUTTON("btnChangeCol")
@@ -449,6 +450,21 @@ int dlgTable::Go(bool modal)
         // Disable the checkbox
         if (!DisablePrivilege(wxT("RULE")))
             wxLogError(_("Failed to disable the RULE privilege checkbox!"));
+
+        if (table)
+        {
+            txtFillFactor->SetValue(table->GetFillFactor());
+            txtFillFactor->Disable();
+        }
+        else
+        {
+            txtFillFactor->Enable();
+            txtFillFactor->SetValidator(numericValidator);
+        }
+    }
+    else
+    {
+        txtFillFactor->Disable();
     }
 
     return dlgSecurityProperty::Go();
@@ -720,9 +736,25 @@ wxString dlgTable::GetSql()
                     sql += wxT(", ");
                 sql += lbTables->GetString(i);
             }
+            sql += wxT(")");
+        }
+
+        if (connection->BackendMinimumVersion(8, 2))
+        {
+            sql += wxT("WITH (");
+            if (txtFillFactor->GetValue().Length() > 0)
+                sql += wxT("FILLFACTOR=") + txtFillFactor->GetValue() + wxT(", ");
+            if (chkHasOids->GetValue())
+                sql +=  wxT("OIDS=TRUE");
+            else
+                sql +=  wxT("OIDS=FALSE");
             sql += wxT(")\n");
         }
-        sql += (chkHasOids->GetValue() ? wxT("WITH OIDS") : wxT("WITHOUT OIDS"));
+        else
+        {
+            sql += (chkHasOids->GetValue() ? wxT("\nWITH OIDS") : wxT("\nWITHOUT OIDS"));
+        }
+
         if (cbTablespace->GetCurrentSelection() > 0)
             sql += wxT("\nTABLESPACE ") + qtIdent(cbTablespace->GetValue());
 

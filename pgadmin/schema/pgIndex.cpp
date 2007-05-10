@@ -60,6 +60,10 @@ wxString pgIndexBase::GetCreate()
 
     str += wxT(")");
     AppendIfFilled(str, wxT("\n  TABLESPACE "), qtIdent(tablespace));
+
+    if (GetConnection()->BackendMinimumVersion(8, 2) && GetFillFactor().Length() > 0)
+        str += wxT("\n  WITH (FILLFACTOR=") + GetFillFactor() + wxT(")");
+
     AppendIfFilled(str, wxT("\n  WHERE "), GetConstraint());
 
     str += wxT(";\n");
@@ -219,6 +223,8 @@ void pgIndexBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
         properties->AppendItem(_("Access method"), GetIndexType());
         properties->AppendItem(_("Constraint"), GetConstraint());
         properties->AppendItem(_("System index?"), GetSystemObject());
+        if (GetConnection()->BackendMinimumVersion(8, 2))
+            properties->AppendItem(_("Fill factor"), GetFillFactor());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
@@ -327,6 +333,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 {
     pgTableObjCollection *collection=(pgTableObjCollection*)coll;
     pgIndexBase *index=0;
+    wxString query;
 
     wxString proname, projoin;
     if (collection->GetConnection()->BackendMinimumVersion(7, 4))
@@ -344,11 +351,12 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
         projoin =   wxT("  LEFT OUTER JOIN pg_proc pr ON pr.oid=indproc\n")
                     wxT("  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n");
     }
-    pgSet *indexes= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT DISTINCT ON(cls.relname) cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
+    query = wxT("SELECT DISTINCT ON(cls.relname) cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
         wxT("       ") + proname + wxT("tab.relname as tabname, indclass, con.oid AS conoid, CASE contype WHEN 'p' THEN desp.description ELSE des.description END AS description,\n")
-        wxT("       pg_get_expr(indpred, indrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as indconstraint, contype, condeferrable, condeferred, amname\n")
-        wxT("  FROM pg_index idx\n")
+        wxT("       pg_get_expr(indpred, indrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as indconstraint, contype, condeferrable, condeferred, amname\n");
+    if (collection->GetConnection()->BackendMinimumVersion(8, 2))
+        query += wxT(", substring(array_to_string(cls.reloptions, ',') from 'fillfactor=([0-9]*)') AS fillfactor \n");
+     query += wxT("  FROM pg_index idx\n")
         wxT("  JOIN pg_class cls ON cls.oid=indexrelid\n")
         wxT("  JOIN pg_class tab ON tab.oid=indrelid\n")
         + projoin + 
@@ -360,7 +368,8 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
         wxT("  LEFT OUTER JOIN pg_description desp ON (desp.objoid=con.oid AND desp.objsubid = 0)\n")
         wxT(" WHERE indrelid = ") + collection->GetOidStr()
         + restriction + wxT("\n")
-        wxT(" ORDER BY cls.relname"));
+        wxT(" ORDER BY cls.relname");
+    pgSet *indexes= collection->GetDatabase()->ExecuteSet(query);
 
     if (indexes)
     {
@@ -411,6 +420,8 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
             index->iSetDeferred(indexes->GetBool(wxT("condeferred")));
             index->iSetConstraint(indexes->GetVal(wxT("indconstraint")));
             index->iSetIndexType(indexes->GetVal(wxT("amname")));
+            if (collection->GetConnection()->BackendMinimumVersion(8, 2))
+                index->iSetFillFactor(indexes->GetVal(wxT("fillfactor")));
 
             if (browser)
             {
