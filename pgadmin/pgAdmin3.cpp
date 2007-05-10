@@ -327,10 +327,10 @@ bool pgAdmin3::OnInit()
         }
     }
 
-#ifdef __WXDEBUG__
-	frmSplash *winSplash = NULL;
-#else
     // Show the splash screen
+    // NOTE: We must *always* do this as in -q and -qc modes
+    //       the splash screen becomes the top level window and
+    //       allows the logon dialogs to be displayed!!
     frmSplash* winSplash = new frmSplash((wxFrame *)NULL);
     if (!winSplash) 
         wxLogError(__("Couldn't create the splash screen!"));
@@ -341,8 +341,6 @@ bool pgAdmin3::OnInit()
 	    winSplash->Update();
         wxTheApp->Yield(true);
     }
-#endif
-
 	
     // Startup the windows sockets if required
     InitNetwork();
@@ -368,7 +366,6 @@ bool pgAdmin3::OnInit()
     wxTheApp->Yield(true);
     wxSleep(2);
 #endif
-
 
     if (configMode)
     {
@@ -419,6 +416,8 @@ bool pgAdmin3::OnInit()
 				while (tkn.HasMoreTokens())
 				{
 					wxString str = tkn.GetNextToken();
+					if (str.StartsWith(wxT("hostaddr="), &host))
+						continue;
 					if (str.StartsWith(wxT("host="), &host))
 						continue;
 					if (str.StartsWith(wxT("dbname="), &database))
