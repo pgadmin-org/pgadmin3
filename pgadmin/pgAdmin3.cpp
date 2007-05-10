@@ -187,6 +187,7 @@ bool pgAdmin3::OnInit()
 		{wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+        {wxCMD_LINE_OPTION, wxT("cp"), NULL, _("edit pgpass configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_OPTION, wxT("c"), NULL, _("edit configuration files in cluster directory"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_SWITCH, wxT("t"), NULL, _("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_NONE}
@@ -219,6 +220,8 @@ bool pgAdmin3::OnInit()
 		configMode = frmConfig::MAINFILE;
 	else if (cmdParser.Found(wxT("ch"), &configFile))
 		configMode = frmConfig::HBAFILE;
+	else if (cmdParser.Found(wxT("cp"), &configFile))
+		configMode = frmConfig::PGPASSFILE;
 	else if (cmdParser.Found(wxT("c"), &configFile))
 		configMode = frmConfig::ANYFILE;
 

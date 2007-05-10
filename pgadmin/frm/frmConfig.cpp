@@ -426,7 +426,7 @@ frmConfig *frmConfig ::Create(const wxString &title, const wxString &configFile,
             frm = new frmHbaConfig(title, configFile);
         else if (mode == MAINFILE || configFile.Right(15) == wxT("postgresql.conf"))
             frm = new frmMainConfig(title, configFile);
-		else if (mode == PGPASSFILE || configFile.Right(11) == wxT("pgpass.conf"))
+		else if (mode == PGPASSFILE || configFile.Right(11) == wxT("pgpass.conf") || configFile.Right(7) == wxT(".pgpass"))
 			frm = new frmPgpassConfig(title, configFile);
 
         // unknown config file!
