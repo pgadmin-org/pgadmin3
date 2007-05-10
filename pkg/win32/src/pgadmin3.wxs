@@ -60,6 +60,9 @@
                                 <Icon Id="pgadmin3.ico" SourceFile="$(var.BUILDTREE)/pgadmin/include/images/pgAdmin3.ico" />
 <?endif?>
                             </Shortcut>
+                            <Extension ContentType="text\plain" Id="sql">
+                                <Verb Id="open" Command="Open" TargetFile="pgadmin_exes.pgadmin3.exe" Argument='-q -f "%1"' />
+                            </Extension>
                         </Component>
 
 <?if $(var.BRANDED) = 1 ?>
