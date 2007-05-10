@@ -49,6 +49,7 @@ frmMainConfig::frmMainConfig(frmMain *parent, pgServer *server)
     if (server)
         conn = server->CreateConn();
 
+    InitForm();
     Init();
 
     if (conn)
@@ -78,6 +79,7 @@ frmMainConfig::frmMainConfig(frmMain *parent, pgServer *server)
 frmMainConfig::frmMainConfig(const wxString& title, const wxString &configFile)
 : frmConfig(title + wxT(" - ") + _("Backend Configuration Editor"), configFile)
 {
+    InitForm();
     Init();
     OpenLastFile();
 }
@@ -86,7 +88,8 @@ frmMainConfig::frmMainConfig(const wxString& title, const wxString &configFile)
 frmMainConfig::~frmMainConfig()
 {
     options.clear();
-    lines.Empty();
+    categories.clear();
+    lines.Clear();
 }
 
 
@@ -128,21 +131,10 @@ void frmMainConfig::Init(pgSettingReader *reader)
 
 void frmMainConfig::Init()
 {
-    appearanceFactory->SetIcons(this);
- 
-    InitFrame(wxT("frmMainConfig"));
-    RestorePosition(50, 50, 600, 600, 300, 200);
-
-    cfgList = new ctlListView(this, CTL_CFGVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-
-    cfgList->SetImageList(configImageList, wxIMAGE_LIST_SMALL);
-
-    cfgList->AddColumn(_("Setting name"), 120);
-    cfgList->AddColumn(_("Value"), 80);
-    if (conn)
-        cfgList->AddColumn(_("Current value"), 80);
-    cfgList->AddColumn(_("Comment"), 400);
-
+    // Cleanup first, in case we're re-initing
+    options.clear();
+    categories.clear();
+    lines.Clear();
 
     pgSettingReader *reader;
     if (conn)
@@ -167,6 +159,24 @@ void frmMainConfig::Init()
         Init(reader);
 
     delete reader;
+}
+
+void frmMainConfig::InitForm()
+{
+    appearanceFactory->SetIcons(this);
+ 
+    InitFrame(wxT("frmMainConfig"));
+    RestorePosition(50, 50, 600, 600, 300, 200);
+
+    cfgList = new ctlListView(this, CTL_CFGVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+
+    cfgList->SetImageList(configImageList, wxIMAGE_LIST_SMALL);
+
+    cfgList->AddColumn(_("Setting name"), 120);
+    cfgList->AddColumn(_("Value"), 80);
+    if (conn)
+        cfgList->AddColumn(_("Current value"), 80);
+    cfgList->AddColumn(_("Comment"), 400);
 }
 
 void frmMainConfig::OnSelectSetting(wxListEvent& event)
@@ -341,39 +351,11 @@ void frmMainConfig::WriteFile(pgConn *conn)
 
 void frmMainConfig::DisplayFile(const wxString &str)
 {
-    lines.Empty();
-    options.clear();
+    lines.Clear();
 
     filetype = wxTextFileType_Unix;
     wxStringTokenizer strtok;
     wxArrayString *unknownCategory=0;
-
-    // Check that the categories are loaded - if not
-    // (because this is a new file being loaded), attempt to do so
-    if (categories.size() == 0)
-    {
-        pgSettingReader *reader;
-        if (conn)
-        {
-            // read settings from server
-            reader = new pgSettingDbReader(conn);
-        }
-        else
-        {
-            // read settings from file. First, use localized file...
-            reader = new pgSettingFileReader(true);
-
-            if (reader->IsValid())
-                Init(reader);
-            delete reader;
-
-            // ... then add default file
-            reader = new pgSettingFileReader(false);
-        }
-
-        if (reader->IsValid())
-            Init(reader);
-    }
 
     if (str.Find('\r') >= 0)
     {
@@ -640,6 +622,24 @@ wxString frmMainConfig::GetHintString()
     return str;
 }
 
+void frmMainConfig::OnOpen(wxCommandEvent& event)
+{
+    if (CheckChanged(true))
+        return;
+
+    wxFileDialog dlg(this, _("Open configuration file"), lastDir, wxT(""), 
+        _("Configuration files (*.conf)|*.conf|All files (*.*)|*.*"), wxFD_OPEN);
+    if (dlg.ShowModal() == wxID_OK)
+    {
+        Init();
+
+        lastFilename=dlg.GetFilename();
+        lastDir = dlg.GetDirectory();
+        lastPath = dlg.GetPath();
+        OpenLastFile();
+        UpdateRecentFiles();
+    }
+}
 
 mainConfigFactory::mainConfigFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {

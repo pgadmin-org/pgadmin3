@@ -39,6 +39,7 @@ protected:
 private:
     void Init();
     void Init(pgSettingReader *reader);
+    void InitForm();
 
     void FillList(const wxString &categoryMember);
     void FillList(wxArrayString *category);
@@ -49,6 +50,8 @@ private:
     void OnSelectSetting(wxListEvent& event);
 
     void UpdateLine(int line);
+
+    void OnOpen(wxCommandEvent& event);
 
 
     ctlListView *cfgList;

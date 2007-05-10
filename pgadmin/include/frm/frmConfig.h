@@ -51,10 +51,11 @@ protected:
     void OpenLastFile();
     void InitFrame(const wxChar *frameName);
     bool DoWriteFile(const wxChar *str, pgConn *conn);
+    bool CheckChanged(bool canVeto);
 
 private:
 
-    void OnOpen(wxCommandEvent& event);
+    virtual void OnOpen(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
     void OnSaveAs(wxCommandEvent& event);
 
@@ -64,7 +65,6 @@ private:
     void OnHint(wxCommandEvent& event);
     void OnBugreport(wxCommandEvent& event);
 
-    bool CheckChanged(bool canVeto);
     void DisplayHint(bool force);
 
 protected:
