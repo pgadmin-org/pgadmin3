@@ -77,10 +77,18 @@ class pgAdmin3 : public wxApp
 public:
     virtual bool OnInit();
     virtual int OnExit();
+	
+#ifdef __WXMAC__
+    void MacOpenFile(const wxString &fileName); 
+#endif
 
 private:
     bool LoadAllXrc(const wxString dir);
 
+#ifdef __WXMAC__
+	wxString macFileToOpen;
+#endif
+	
 protected:
     void InitPaths();
     void InitLogger();

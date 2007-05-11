@@ -372,11 +372,13 @@ bool pgAdmin3::OnInit()
     {
 		if (configMode == frmConfig::ANYFILE && wxDir::Exists(configFile))
 		{
+		    wxLogInfo(wxT("Starting in ANYFILE config editor mode, in directory: %s"), configFile.c_str());
 			frmConfig::Create(appearanceFactory->GetLongAppName(), configFile + wxT("/pg_hba.conf"), frmConfig::HBAFILE);
 			frmConfig::Create(appearanceFactory->GetLongAppName(), configFile + wxT("/postgresql.conf"), frmConfig::MAINFILE);
 		}
 		else
 		{
+		    wxLogInfo(wxT("Starting in config editor mode, file: %s"), configFile.c_str());
 			frmConfig::Create(appearanceFactory->GetLongAppName(), configFile, configMode);
 		}
         if (winSplash)
@@ -391,19 +393,34 @@ bool pgAdmin3::OnInit()
     {
         if (dialogTestMode)
         {
+		    wxLogInfo(wxT("Starting in dialog test mode."));
             wxFrame *dtf=new frmDlgTest();
             dtf->Show();
             SetTopWindow(dtf);
         }
+
+#ifdef __WXMAC__
+        else if (((cmdParser.Found(wxT("q")) || cmdParser.Found(wxT("qc"))) && !cmdParser.Found(wxT("s"))) || !macFileToOpen.IsEmpty())
+#else		
         else if ((cmdParser.Found(wxT("q")) || cmdParser.Found(wxT("qc"))) && !cmdParser.Found(wxT("s")))
+#endif
         {
 			// -q specified, but not -s. Open a query tool but do *not* open the main window
 			pgConn *conn = NULL;
 			wxString connstr;
 
+#ifdef __WXMAC__
+			if (cmdParser.Found(wxT("q")) || !macFileToOpen.IsEmpty())
+#else
 			if (cmdParser.Found(wxT("q")))
+#endif
 			{
+			    wxLogInfo(wxT("Starting in query tool mode (-q)."), configFile.c_str());
+
+				winSplash->Show(false);
 				dlgSelectConnection dlg(NULL, NULL);
+				dlg.CenterOnParent();
+				
 		        int rc=dlg.Go(conn, NULL);
 				if (rc != wxID_OK)
 					return false;
@@ -411,6 +428,7 @@ bool pgAdmin3::OnInit()
 			}
 			else if (cmdParser.Found(wxT("qc"), &connstr))
 			{
+			    wxLogInfo(wxT("Starting in query tool connect mode (-qc)."), configFile.c_str());
 				wxString host, database, username, tmps;
 				int sslmode=0,port=0;
 				wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
@@ -450,7 +468,9 @@ bool pgAdmin3::OnInit()
 					wxMessageBox(_("Unknown token in connection string: ") + str);
 					return false;
 				}
+				winSplash->Show(false);
 				dlgSelectConnection dlg(NULL, NULL);
+				dlg.CenterOnParent();
 				conn = dlg.CreateConn(host, database, username, port, sslmode);
 			}
 			else
@@ -460,8 +480,21 @@ bool pgAdmin3::OnInit()
 			}
 			if (!conn)
 				return false;
+
             wxString fn;
+#ifdef __WXMAC__
+            if (!macFileToOpen.IsEmpty())
+			{
+			    wxLogInfo(wxT("Mac file launch: %s."), macFileToOpen.c_str());
+			    fn = macFileToOpen;
+			}
+			else
+			    cmdParser.Found(wxT("f"), &fn);
+#else
             cmdParser.Found(wxT("f"), &fn);
+#endif
+			if (!fn.IsEmpty())
+			    wxLogInfo(wxT("Auto-loading file: %s"), fn.c_str());
 			frmQuery *fq = new frmQuery(NULL, wxEmptyString, conn, wxEmptyString, fn);
 			fq->Go();
 		}
@@ -503,6 +536,8 @@ bool pgAdmin3::OnInit()
 					{
                         wxString fn;
                         cmdParser.Found(wxT("f"), &fn);
+						if (!fn.IsEmpty())
+						    wxLogInfo(wxT("Auto-loading file: %s"), fn.c_str());
 						frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxEmptyString, fn);
 						fq->Go();
 					}
@@ -522,7 +557,6 @@ bool pgAdmin3::OnInit()
 
     return true;
 }
-
 
 // Not the Application!
 int pgAdmin3::OnExit()
@@ -544,6 +578,15 @@ int pgAdmin3::OnExit()
 
     return 1;
 }
+
+// On the Mac, this function is called before Init, if the finder launches the app
+// via a registered filetype. Grab the filename here, and test for it in Init.
+#ifdef __WXMAC__
+void pgAdmin3::MacOpenFile(const wxString &fileName) 
+{
+	macFileToOpen = fileName;
+}
+#endif
 
 void pgAdmin3::InitPaths()
 {
