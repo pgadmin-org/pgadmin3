@@ -177,8 +177,9 @@ void frmDlgTest::OnSelect(wxCommandEvent &ev)
 bool pgAdmin3::OnInit()
 {	
     // Force logging off until we're ready
-	wxLog::Suspend();
-	
+    wxLog *seLog=new wxLogStderr();
+    wxLog::SetActiveTarget(seLog);
+  	
 	static const wxCmdLineEntryDesc cmdLineDesc[] = 
 	{
 		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
@@ -804,8 +805,14 @@ void pgAdmin3::InitPaths()
         wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
         path.Add(wxT("/usr/local/enterpriseDB/bin"));
+        path.Add(wxT("/usr/local/enterprisedb/bin"));
+        path.Add(wxT("/usr/local/edb/bin"));
         path.Add(wxT("/usr/local/bin"));
         path.Add(wxT("/usr/bin"));
+        path.Add(wxT("/opt/local/enterpriseDB/bin"));
+        path.Add(wxT("/opt/local/enterprisedb/bin"));
+        path.Add(wxT("/opt/local/edb/bin"));
+        path.Add(wxT("/opt/local/bin"));
 
         wxFileName tmp = path.FindValidPath(wxT("pg_dump"));
 #endif 
