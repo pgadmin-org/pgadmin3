@@ -48,7 +48,7 @@ wxString pgType::GetSql(ctlTree *browser)
             sql += wxT(" AS\n   (");
             sql += GetQuotedTypesList();
         }
-        if (GetTypeClass() == TYPE_ENUM)
+        else if (GetTypeClass() == TYPE_ENUM)
         {
             sql += wxT(" AS ENUM\n   (");
             sql += GetQuotedLabelList();
