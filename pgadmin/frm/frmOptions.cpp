@@ -72,7 +72,7 @@ extern wxString edbRestoreExecutable;
 #define chkSuppressHints            CTRL_CHECKBOX("chkSuppressHints")
 #define chkResetHints               CTRL_CHECKBOX("chkResetHints")
 #define lstDisplay					CTRL_CHECKLISTBOX("lstDisplay")
-
+#define chkSystemObjects            CTRL_CHECKBOX("chkSystemObjects")
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_MENU(MNU_HELP,                        frmOptions::OnHelp)
@@ -200,6 +200,8 @@ frmOptions::frmOptions(frmMain *parent)
 
 	for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
 		lstDisplay->Check(x, settings->GetDisplayOption(lstDisplay->GetString(x)));
+
+    chkSystemObjects->SetValue(settings->GetShowSystemObjects());
 }
 
 
@@ -426,9 +428,17 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
 	{
 		if (lstDisplay->IsChecked(x) != settings->GetDisplayOption(lstDisplay->GetString(x)))
+        {
 			changed = true;
-		settings->SetDisplayOption(lstDisplay->GetString(x), lstDisplay->IsChecked(x));
+		    settings->SetDisplayOption(lstDisplay->GetString(x), lstDisplay->IsChecked(x));
+        }
 	}
+
+    if (chkSystemObjects->GetValue() != settings->GetShowSystemObjects())
+    {
+        changed = true;
+        settings->SetShowSystemObjects(chkSystemObjects->GetValue());
+    }
 
 	if (changed)
 		wxMessageBox(_("Changes to the display options may not be visible until the browser tree is refreshed."), _("Display options"), wxICON_INFORMATION);

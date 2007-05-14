@@ -49,7 +49,6 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_COPY,						frmMain::OnCopy)
     EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
     EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
-    EVT_MENU(MNU_SYSTEMOBJECTS,             frmMain::OnShowSystemObjects)
     EVT_MENU(MNU_SQLPANE,                   frmMain::OnToggleSqlPane)
     EVT_MENU(MNU_OBJECTBROWSER,             frmMain::OnToggleObjectBrowser)
     EVT_MENU(MNU_TOOLBAR,                   frmMain::OnToggleToolBar)
@@ -737,64 +736,6 @@ void frmMain::OnSaveDefinition(wxCommandEvent& event)
     }
 
     settings->Write(wxT("frmMain/LastFile"), filename.GetPath());
-}
-
-
-void frmMain::OnShowSystemObjects(wxCommandEvent& event)
-{
-    // Warn the user
-    int rc;
-
-	wxMessageDialog *dlg;
-    if (settings->GetShowSystemObjects())
-	{
-		dlg=new wxMessageDialog(this, 
-							  _("System objects will not be removed from the object tree until a refresh is performed.\nClose all connections now?"),
-							  _("Hide system objects"),
-							  wxYES_NO|wxCANCEL | wxICON_QUESTION);
-	}
-    else
-	{
-        dlg=new wxMessageDialog(this,
-								_("System objects will not show in the the object tree until a refresh is performed.\nClose all connections now?"),
-								_("Show system objects"),
-								wxYES_NO|wxCANCEL | wxICON_QUESTION);
-	}
-	dlg->Center();
-	rc=dlg->ShowModal();
-	delete dlg;
-
-    if (rc == wxID_CANCEL)
-    {
-        viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
-        return;
-    }
-
-    settings->SetShowSystemObjects(!settings->GetShowSystemObjects());
-    viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
-
-    if (rc == wxID_YES)
-    {
-        wxLogInfo(wxT("Clearing treeview to toggle ShowSystemObjects"));
-
-		// Store the servers to prevent dropped ones reappearing in a minute.
-		StoreServers();
-
-        // Clear the treeview
-        browser->DeleteAllItems();
-
-        // Add the root node
-        serversObj = new pgServerCollection(&serverFactory);
-        wxTreeItemId servers = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
-            serversObj->GetIconId(), -1, serversObj);
-
-        RetrieveServers();
-        browser->Expand(servers);
-        browser->SelectItem(servers);
-#ifdef __WIN32__
-        denyCollapseItem = servers;
-#endif
-    }
 }
 
 void frmMain::OnToggleSqlPane(wxCommandEvent& event)

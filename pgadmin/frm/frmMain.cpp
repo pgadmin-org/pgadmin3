@@ -272,8 +272,6 @@ void frmMain::CreateMenus()
 	//--------------------------
     new separatorFactory(menuFactories);
 
-    viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_SYSTEMOBJECTS, _("&System Objects"),     _("Show or hide system objects."), wxITEM_CHECK);
     toolBar->AddSeparator();
 
     new passwordFactory(menuFactories, fileMenu, 0);
@@ -420,8 +418,6 @@ void frmMain::CreateMenus()
 
     treeContextMenu = 0;
 
-    viewMenu->Check(MNU_SYSTEMOBJECTS, settings->GetShowSystemObjects());
-
     // Status bar
     statusBar = CreateStatusBar(3);
     int iWidths[3] = {0, -1, 100};
@@ -440,7 +436,6 @@ void frmMain::CreateMenus()
 
     SetAcceleratorTable(accel);
 
-    
     // Display the bar and configure buttons. 
     toolBar->Realize();
 }
