@@ -78,9 +78,11 @@ public:
 	const wxString &getSchema()        { return( m_schema ); }
 	const wxString &getName()          { return( m_name ); }
 	const wxString &getFQName()        { return( m_fqName ); } 
+	const wxString &getReturnType()    { return( m_returnType ); }
 	long	getOid()           { return( m_oid ); }
 	long	getPkgOid()        { return( m_pkgOid ); }
 	bool	getIsFunction()    { return( m_isFunction ); } 
+	bool	getReturnsSet()    { return( m_returnsSet ); } 
 
 	wsArgInfo & operator[]( int index );
 
@@ -92,7 +94,9 @@ private:
 	wxString	m_argModes;	 // Argument modes
 	wxString	m_argTypes;	 // Argument types
 	wxString	m_fqName;	 // Fully-qualified name (schema.package.func or package.func)
+    wxString    m_returnType;// Return type
 	bool	m_isFunction;	 // true->target is a function, false->target is a procedure
+    bool    m_returnsSet;    // Returns a set?
 	int	m_argInCount;	 // Number of IN arguments
 	int	m_argOutCount;	 // Number of OUT arguments
 	int	m_argInOutCount; // Number of INOUT arguments	

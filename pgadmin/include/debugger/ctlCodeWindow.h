@@ -85,6 +85,7 @@ class ctlCodeWindow : public pgFrame
 	void OnResultSet( PGresult * result );			    // Result set received from server
 	void disableTools();			                    // Disable toolbar tools
 	void enableTools();		 	                        // Enable toolbar tools
+
 	frmDebugger *GetFrame() { return m_parent; }
 
     bool	m_targetAborted;		    // Have we aborted the target? (true) or are we waiting for a breakpoint? (false)

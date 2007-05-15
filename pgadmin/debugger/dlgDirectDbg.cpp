@@ -371,9 +371,18 @@ void dlgDirectDbg::OnCancel( wxCommandEvent & event )
 //	MainFrame.
 
 void dlgDirectDbg::OnClose( wxCloseEvent & event )
-{			
+{
+	// Close the debugger (proxy) connection
+    if (m_conn)
+	    m_conn->Close();
+	m_conn = NULL;
+
 	// This will inform the MainWindow to close.
-	m_parent->Close();
+    // if it's not visible yet.
+    if (m_parent->IsShown())
+        event.Skip();
+    else
+        m_parent->Close();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -481,27 +490,39 @@ void dlgDirectDbg::setBreakpoint( long pkgOid, long funcOid )
 void dlgDirectDbg::invokeTarget()
 {
 	wxString	 query( m_targetInfo->getIsFunction() ? wxT( "SELECT " ) : wxT( "EXEC " ));
-	wxString delimiter = wxT( "( " );
+
+    // If this is a function, and the return type is not record, or 
+    // we have at least one OUT/INOUT param, we should select from
+    // the function to get a full resultset.
+    if (m_targetInfo->getIsFunction() &&
+        (m_targetInfo->getReturnType() != wxT("record") || 
+         m_targetInfo->getArgInOutCount() > 0 ||
+         m_targetInfo->getArgOutCount() > 0))
+         query.Append(wxT("* FROM "));
 
 	// Stuff the verb (SELECT or EXEC), schema, and target name into the query
-
 	query.Append( m_targetInfo->getFQName());
 
 	// Now append the argument list
+    query.Append(wxT("("));
 
 	for( int i = 0; i < m_targetInfo->getArgCount(); ++i )
 	{
 		wsArgInfo & arg = (*m_targetInfo)[i];
 
-		query.Append( delimiter );
-
-		if( arg.getMode() == wxT( "o" ))
-			query.Append( wxT( "NULL::" ) + arg.getType());
+		if( arg.getMode() == wxT("o"))
+        {
+            if (!m_targetInfo->getIsFunction())
+			    query.Append( wxT("NULL::") + arg.getType() + wxT(", "));
+        }
 		else
-			query.Append( arg.quoteValue() + wxT( "::" ) + arg.getType());
-
-		delimiter = wxT( ", " );
+			query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
 	}
+
+    if (query.EndsWith(wxT(", ")))
+        query = query.Left(query.Length() - 2);
+    else if (query.EndsWith(wxT("(")))
+        query = query.Left(query.Length() - 1);
 
 	// And terminate the argument list
 	if( m_targetInfo->getArgCount() == 0 )
@@ -511,7 +532,7 @@ void dlgDirectDbg::invokeTarget()
 	}
 	else
 	{
-		query.Append( wxT( " )" ));
+		query.Append( wxT( ")" ));
 	}
 
 	// And send the completed command to the server - we'll get 
@@ -580,8 +601,11 @@ void dlgDirectDbg::OnResultReady( wxCommandEvent & event )
 			m_codeWindow->OnResultSet( result );
 	}
 
-    m_codeWindow->m_targetComplete = true;
-    m_codeWindow->disableTools( );
+    if (m_codeWindow)
+    {
+        m_codeWindow->m_targetComplete = true;
+        m_codeWindow->disableTools( );
+    }
 	this->Show( true );
 	this->SetFocus();
 }
@@ -638,8 +662,11 @@ void dlgDirectDbg::OnTargetComplete( wxCommandEvent & event )
 		}
 	}
 
-    m_codeWindow->m_targetComplete = true;
-    m_codeWindow->disableTools( );
+    if (m_codeWindow)
+    {
+        m_codeWindow->m_targetComplete = true;
+        m_codeWindow->disableTools( );
+    }
 	this->Show( true );
 	this->SetFocus();
 }

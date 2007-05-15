@@ -328,8 +328,11 @@ void frmDebugger::OnClose( wxCloseEvent & event )
     if (m_standaloneDebugger)
         m_standaloneDebugger->OnClose( event );
 
-    Hide();
-    Destroy();
+    if (!event.GetVeto())
+    {
+        Hide();
+        Destroy();
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

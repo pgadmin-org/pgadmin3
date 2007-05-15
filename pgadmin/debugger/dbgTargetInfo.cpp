@@ -35,6 +35,8 @@ WX_DEFINE_OBJARRAY( wsArgInfoArray );
 #define COL_TARGET_OID		"target"
 #define COL_PACKAGE_OID		"pkg"
 #define COL_FQ_NAME		"fqname"		/* Fully qualified name	*/
+#define COL_RETURNS_SET		"proretset"
+#define COL_RETURN_TYPE		"rettype"
 
 ////////////////////////////////////////////////////////////////////////////////
 // dbgTargetInfo constructor
@@ -62,13 +64,15 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn * conn, char ta
 		wxT("select")
 		wxT("  t.target, t.pkg, t.targetname, t.argnames, t.argmodes, t.isfunc, t.fqname,")
 		wxT("  pg_catalog.oidvectortypes( t.argtypes ) as argtypes,")
-		wxT("  l.lanname, n.nspname")
+		wxT("  l.lanname, n.nspname, p.proretset, y.typname AS rettype")
 		wxT(" from")
-		wxT("  pldbg_get_target_info( '%s', '%c' ) t , pg_namespace n, pg_language l")
+		wxT("  pldbg_get_target_info( '%s', '%c' ) t , pg_namespace n, pg_language l, pg_proc p, pg_type y")
 		wxT(" where")
 		wxT("  n.oid = t.schema and ")
-		wxT("  l.oid = t.targetlang" );
-
+		wxT("  l.oid = t.targetlang and " )
+        wxT("  p.oid = t.target and ")
+        wxT("  y.oid = t.returntype");
+ 
 	dbgResultset * result = new dbgResultset( conn->waitForCommand( wxString::Format( query, target.c_str(), targetType )));
 
 	if( result->getCommandStatus() != PGRES_TUPLES_OK )
@@ -84,6 +88,8 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn * conn, char ta
 	m_oid      	 = result->getLong( wxString( COL_TARGET_OID, wxConvUTF8 ));
 	m_pkgOid	 = result->getLong( wxString( COL_PACKAGE_OID, wxConvUTF8 ));
 	m_fqName	 = result->getString( wxString( COL_FQ_NAME, wxConvUTF8 ));
+    m_returnsSet = result->getBool( wxString( COL_RETURNS_SET, wxConvUTF8 ));
+    m_returnType = result->getString( wxString( COL_RETURN_TYPE, wxConvUTF8 ));
 
 	// Parse out the argument types, names, and modes
   

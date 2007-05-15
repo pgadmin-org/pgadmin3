@@ -218,6 +218,14 @@ ctlCodeWindow::ctlCodeWindow( frmDebugger *parent, wxWindowID id, const dbgConnP
 
 void ctlCodeWindow::OnClose(wxCloseEvent& event)
 {
+    if (event.CanVeto() && !m_targetAborted && !m_targetComplete)
+    {
+        if (wxMessageBox(_("Are you sure you wish to abort the debugging session?\nThis will abort the function currently being debugged."), _("Close debugger"), wxICON_QUESTION | wxYES_NO) == wxNO)
+        {
+            event.Veto();
+            return;
+        }
+    }
     // If we're global debugging, we may be waiting for a
     // breakpoint if we're waiting for the function to be
     // called a second, third, fourth etc. time
@@ -259,6 +267,9 @@ void ctlCodeWindow::OnMarginClick( wxStyledTextEvent& event )
 { 	 
     int lineNumber = m_view->LineFromPosition( event.GetPosition()); 	 
  	 
+    if (!lineNumber)
+        return;
+
     // If we already have a breakpoint at the clickpoint, disable it, otherwise 	 
     // create a new breakpoint. 	 
  	 
@@ -1030,10 +1041,14 @@ void ctlCodeWindow::displaySource( const wxString &packageOID, const wxString &f
 		m_view->SetReadOnly( false );
 
         // If the first line appears to be empty, prepend the function sig
-        // to make it look more complete.
+        // to make it look more complete. If not, prepend it anyway, other
+        // wise our line tracking will be 1 line out!!
         wxString src = codeCache.getSource();
         if (src.StartsWith(wxT("\n")) || src.StartsWith(wxT("\r")))
             src = codeCache.getSignature() + src;
+        else
+            src = codeCache.getSignature() + wxT("\n") + src;
+
 		m_view->SetText(src);
 
 		m_view->Colourise(0, src.Length());
