@@ -267,7 +267,7 @@ void pgFrame::OnExit(wxCommandEvent& event)
 void pgFrame::OnHelp(wxCommandEvent& WXUNUSED(event))
 {
     wxString page=GetHelpPage();
-    DisplayHelp(this, page);
+    DisplayHelp(page, HELP_PGADMIN);
 }
 
 
@@ -392,7 +392,7 @@ void DialogWithHelp::OnHelp(wxCommandEvent& ev)
     wxString page=GetHelpPage();
 
     if (!page.IsEmpty())
-        DisplaySqlHelp(this, page);
+        DisplayHelp(page, HELP_POSTGRESQL);
 }
 
 

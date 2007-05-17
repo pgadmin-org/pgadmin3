@@ -25,7 +25,6 @@
 #include "frm/frmPgpassConfig.h"
 #include "frm/frmMain.h"
 #include "frm/frmAbout.h"
-#include "frm/frmHelp.h"
 #include "utils/utffile.h"
 #include "db/pgConn.h"
 #include "db/pgSet.h"
@@ -226,7 +225,7 @@ void frmConfig::OnClose(wxCloseEvent& event)
 
 void frmConfig::OnHelp(wxCommandEvent& event)
 {
-	DisplayHelp(this, GetHelpPage());
+	DisplayHelp(GetHelpPage(), HELP_PGADMIN);
 }
 
 void frmConfig::OnHint(wxCommandEvent& event)
@@ -237,7 +236,7 @@ void frmConfig::OnHint(wxCommandEvent& event)
 
 void frmConfig::OnBugreport(wxCommandEvent& event)
 {
-    DisplayHelp(this, wxT("bugreport"));
+    DisplayHelp(wxT("bugreport"), HELP_PGADMIN);
 }
 
 

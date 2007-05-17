@@ -16,9 +16,11 @@
 #include <wx/app.h>
 #include <wx/timer.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/dir.h>
 #include <wx/file.h>
 #include <wx/textbuf.h>
 #include <wx/help.h>
+#include <wx/html/helpctrl.h>
 #include <wx/fontenc.h>
 #include <wx/display.h>
 
@@ -35,7 +37,6 @@
 // App headers
 #include "utils/misc.h"
 #include "frm/frmMain.h"
-#include "frm/frmHelp.h"
 
 extern "C"
 {
@@ -565,12 +566,120 @@ bool FileWrite(const wxString &filename, const wxString &data, int format)
 }
 
 
-void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
+wxString CleanHelpPath(const wxString &path)
+{
+    wxString thePath = path;
+
+    if (thePath.IsEmpty())
+        return wxEmptyString;
+
+    // If the filename ends in .chm, .hhp or .zip, it's
+    // a file based help system and we can assumes it's
+    // correct.
+    if (thePath.Lower().EndsWith(wxT(".hhp")) || 
+#if defined (__WXMSW__) || wxUSE_LIBMSPACK
+        thePath.Lower().EndsWith(wxT(".chm")) ||
+#endif
+        thePath.Lower().EndsWith(wxT(".zip")))
+        return thePath;
+
+    // In all othe cases we must have a directory
+    wxString sep;
+
+    // Figure out the appropriate seperator
+    if (thePath.Lower().Contains(wxT("://")))
+        sep = wxT("/");
+    else
+        sep = wxFileName::GetPathSeparator();
+
+    // First, correct the path separators
+    thePath.Replace(wxT("/"), sep);
+    thePath.Replace(wxT("\\"), sep);
+
+    // Now, append the seperator if it's not there
+    if (!thePath.EndsWith(sep))
+        thePath += sep;
+
+    return thePath;
+}
+
+bool HelpPathValid(const wxString &path)
+{
+    if (path.IsEmpty())
+        return true;
+
+    // If the filename contains any of the sensible URL schemes
+    // we just assume it's correct if the end also looks right.
+    if ((path.Lower().StartsWith(wxT("http://")) ||
+         path.Lower().StartsWith(wxT("https://")) ||
+         path.Lower().StartsWith(wxT("file://")) ||
+         path.Lower().StartsWith(wxT("ftp://"))) &&
+        (path.Lower().EndsWith(wxT(".hhp")) ||
+#if defined (__WXMSW__) || wxUSE_LIBMSPACK
+         path.Lower().EndsWith(wxT(".chm")) ||
+#endif
+         path.Lower().EndsWith(wxT(".zip")) ||
+         path.Lower().EndsWith(wxT("/"))))
+         return true;
+
+    // Otherwise, we're looking for a file (or directory) that 
+    // actually exists.
+    wxString sep = wxFileName::GetPathSeparator();
+    if (path.Lower().EndsWith(wxT(".hhp")) ||
+#if defined (__WXMSW__) || wxUSE_LIBMSPACK
+        path.Lower().EndsWith(wxT(".chm")) ||
+#endif
+        path.Lower().EndsWith(wxT(".zip")))
+        return wxFile::Exists(path);
+    else if (path.Lower().EndsWith(sep))
+        return wxDir::Exists(path);
+    else
+        return false;
+}
+
+void DisplayHelp(const wxString &helpTopic, const HelpType helpType)
+{
+    static wxHelpControllerBase *pgHelpCtl=0;
+    static wxHelpControllerBase *edbHelpCtl=0;
+    static wxHelpControllerBase *slonyHelpCtl=0;
+    static wxString pgInitPath = wxEmptyString;
+    static wxString edbInitPath = wxEmptyString;
+    static wxString slonyInitPath = wxEmptyString;
+
+    switch (helpType)
+    {
+        case HELP_PGADMIN:
+            DisplayPgAdminHelp(helpTopic);
+            break;
+
+        case HELP_POSTGRESQL:
+            DisplayExternalHelp(helpTopic, settings->GetPgHelpPath(), pgHelpCtl, (pgInitPath != settings->GetPgHelpPath() ? true : false));
+            pgInitPath = settings->GetPgHelpPath();
+            break;
+
+        case HELP_ENTERPRISEDB:
+            DisplayExternalHelp(helpTopic, settings->GetEdbHelpPath(), edbHelpCtl, (edbInitPath != settings->GetEdbHelpPath() ? true : false));
+            edbInitPath = settings->GetEdbHelpPath();
+            break;
+
+        case HELP_SLONY:
+            DisplayExternalHelp(helpTopic, settings->GetSlonyHelpPath(), slonyHelpCtl, (slonyInitPath != settings->GetSlonyHelpPath() ? true : false));
+            slonyInitPath = settings->GetSlonyHelpPath();
+            break;
+
+        default:
+            DisplayPgAdminHelp(helpTopic);
+            break;
+    }
+}
+
+void DisplayPgAdminHelp(const wxString &helpTopic)
 {
     extern wxString docPath;
     static wxHelpControllerBase *helpCtl=0;
     static bool firstCall=true;
 
+    // Startup the main help system
     if (firstCall)
     {
         firstCall=false;
@@ -622,20 +731,80 @@ void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
     }
     else
     {
-        while (wnd->GetParent())
-            wnd=wnd->GetParent();
-    
-        frmHelp::LoadLocalDoc(wnd, page, icon);
+        wxLaunchDefaultBrowser(page);
     }
 }
 
-
-void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon)
+void DisplayExternalHelp(const wxString &helpTopic, const wxString &docPath, wxHelpControllerBase *helpCtl, const bool init)
 {
-    if (helpTopic.Left(3) == wxT("pg/") && settings->GetSqlHelpSite().length() != 0) 
-        frmHelp::LoadSqlDoc(wnd, helpTopic.Mid(3)  + wxT(".html"));
+    // Build the page name
+    wxString page;
+    int hashPos = helpTopic.Find('#');
+    if (hashPos < 0)
+        page = helpTopic + wxT(".html");
     else
-        DisplayHelp(wnd, helpTopic, icon);
+        page = helpTopic.Left(hashPos) + wxT(".html") + helpTopic.Mid(hashPos);
+
+    // If the docPath doesn't end in .chm, .zip or .hhp, then we must be using
+    // plain HTML files, so just fire off the browser and be done with it.
+    if (!docPath.Lower().EndsWith(wxT(".hhp")) &&
+#if defined (__WXMSW__) || wxUSE_LIBMSPACK
+        !docPath.Lower().EndsWith(wxT(".chm")) &&
+#endif
+        !docPath.Lower().EndsWith(wxT(".zip")))
+    {
+        wxLaunchDefaultBrowser(docPath + page);
+        return;
+    }
+
+    // We must be using HTML Help, so init the appropriate help controller
+    // Note the path that we init for - if it changes, we need to init a 
+    // new controller in case it's no longer the same type
+    if (init || !helpCtl)
+    {
+        // Get shot of the old help controller if there is one.
+        if (helpCtl)
+            delete helpCtl;
+
+#ifdef __WXMSW__
+        // For Windows builds we us the MS HTML Help viewer for .chm files
+        if (docPath.Lower().EndsWith(wxT(".chm")) && wxFile::Exists(docPath))
+        {
+            helpCtl=new wxCHMHelpController();
+            helpCtl->Initialize(docPath);
+        }
+        else
+#endif
+#if wxUSE_LIBMSPACK
+        // If we can use a .chm file...
+        if ((docPath.Lower().EndsWith(wxT(".chm")) && wxFile::Exists(docPath)) ||
+            (docPath.Lower().EndsWith(wxT(".hhp")) && wxFile::Exists(docPath)) ||
+            (docPath.Lower().EndsWith(wxT(".zip")) && wxFile::Exists(docPath)))
+#else
+        // Otherwise...
+        if ((docPath.Lower().EndsWith(wxT(".hhp")) && wxFile::Exists(docPath)) ||
+            (docPath.Lower().EndsWith(wxT(".zip")) && wxFile::Exists(docPath)))
+#endif
+        {
+            helpCtl=new wxHtmlHelpController();
+            ((wxHtmlHelpController*)helpCtl)->SetTempDir(wxFileName(docPath).GetPath());
+            helpCtl->Initialize(docPath);
+        }
+    }
+
+    // Display the page using the help controller
+    // If it's foobar'ed, use the browser.
+    if (helpCtl)
+    {
+        if (helpTopic == wxT("index.html"))
+            helpCtl->DisplayContents();
+        else
+            helpCtl->DisplaySection(page);
+    }
+    else
+    {
+        wxLaunchDefaultBrowser(page);
+    }
 }
 
 wxString GetHtmlEntity(const wxChar ch)

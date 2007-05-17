@@ -518,12 +518,12 @@ void frmEditGrid::OnPaste(wxCommandEvent &ev)
 
 void frmEditGrid::OnHelp(wxCommandEvent &ev)
 {
-    DisplayHelp(this, wxT("editgrid"), viewdata_xpm);
+    DisplayHelp(wxT("editgrid"), HELP_PGADMIN);
 }
 
 void frmEditGrid::OnContents(wxCommandEvent &ev)
 {
-    DisplayHelp(this, wxT("index"));
+    DisplayHelp(wxT("index"), HELP_PGADMIN);
 }
 
 void frmEditGrid::OnKey(wxKeyEvent &event)

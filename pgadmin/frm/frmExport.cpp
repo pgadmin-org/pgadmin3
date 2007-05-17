@@ -96,7 +96,7 @@ frmExport::~frmExport()
 
 void frmExport::OnHelp(wxCommandEvent &ev)
 {
-    DisplayHelp(this, wxT("export"));
+    DisplayHelp(wxT("export"), HELP_PGADMIN);
 }
 
 

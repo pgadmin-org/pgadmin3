@@ -121,12 +121,12 @@ frmDebugger::~frmDebugger()
 //     Help menu options
 void frmDebugger::OnContents(wxCommandEvent& event)
 {
-    DisplayHelp(this, wxT("debugger"), debugger_xpm);
+    DisplayHelp(wxT("debugger"), HELP_PGADMIN);
 }
 
 void frmDebugger::OnHelp(wxCommandEvent& event)
 {
-    DisplayHelp(this, wxT("pg/plpgsql"), debugger_xpm);
+    DisplayHelp(wxT("plpgsql"), HELP_POSTGRESQL);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

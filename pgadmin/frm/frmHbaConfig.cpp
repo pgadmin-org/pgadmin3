@@ -231,7 +231,7 @@ wxString frmHbaConfig::GetHelpPage() const
 
 void frmHbaConfig::OnContents(wxCommandEvent& event)
 {
-    DisplayHelp(this, wxT("config"));
+    DisplayHelp(wxT("config"), HELP_PGADMIN);
 }
 
 

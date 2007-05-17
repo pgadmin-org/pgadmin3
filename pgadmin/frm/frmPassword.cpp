@@ -52,7 +52,7 @@ frmPassword::~frmPassword()
 
 void frmPassword::OnHelp(wxCommandEvent &ev)
 {
-    DisplayHelp(this, wxT("password"));
+    DisplayHelp(wxT("password"), HELP_PGADMIN);
 }
 
 

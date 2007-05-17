@@ -219,7 +219,7 @@ void frmMainConfig::OnEditSetting(wxListEvent& event)
 
 void frmMainConfig::OnContents(wxCommandEvent& event)
 {
-    DisplayHelp(this, wxT("config"));
+    DisplayHelp(wxT("config"), HELP_PGADMIN);
 }
 
 

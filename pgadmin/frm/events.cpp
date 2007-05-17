@@ -34,7 +34,6 @@
 #include "schema/pgServer.h"
 #include "schema/pgObject.h"
 #include "schema/pgCollection.h"
-#include "frm/frmHelp.h"
 #include "dlg/dlgProperty.h"
 
 extern wxString loadPath;

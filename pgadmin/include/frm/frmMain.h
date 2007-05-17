@@ -167,6 +167,51 @@ enum
     CTL_SQLPANE
 };
 
+class contentsFactory : public actionFactory
+{
+public:
+    contentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+
+class pgsqlHelpFactory : public actionFactory
+{
+public:
+    pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+
+class edbHelpFactory : public actionFactory
+{
+public:
+    edbHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+class slonyHelpFactory : public actionFactory
+{
+public:
+    slonyHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+
+class faqFactory : public actionFactory
+{
+public:
+    faqFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+
+class bugReportFactory : public actionFactory
+{
+public:
+    bugReportFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
 
 
 #endif

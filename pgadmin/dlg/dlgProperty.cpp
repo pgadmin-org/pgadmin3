@@ -26,7 +26,6 @@
 #include "images/properties.xpm"
 
 #include "frm/frmMain.h"
-#include "frm/frmHelp.h"
 #include "frm/frmHint.h"
 
 // Property dialogs
@@ -829,6 +828,31 @@ wxString dlgProperty::qtDbString(const wxString &str)
         ret.Prepend(wxT("'"));
 		return ret;
 	}
+}
+
+void dlgProperty::OnHelp(wxCommandEvent& ev)
+{
+    wxString page=GetHelpPage();
+
+    if (!page.IsEmpty())
+    {
+        if (page.StartsWith(wxT("pg/")))
+        {
+            if (connection)
+            {
+                if (connection->GetIsEdb())
+                    DisplayHelp(page.Mid(3), HELP_ENTERPRISEDB);
+                else
+                    DisplayHelp(page.Mid(3), HELP_POSTGRESQL);
+            }
+            else
+                DisplayHelp(page.Mid(3), HELP_POSTGRESQL);
+        }
+        else if (page.StartsWith(wxT("slony/")))
+            DisplayHelp(page.Mid(6), HELP_SLONY);
+        else
+            DisplayHelp(page, HELP_PGADMIN);
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////

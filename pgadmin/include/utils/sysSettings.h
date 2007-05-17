@@ -68,10 +68,14 @@ public:
     void SetPostgresqlPath(const wxString &s) { postgresqlPath=s; }
     wxString GetEnterprisedbPath() const { return enterprisedbPath; }
     void SetEnterprisedbPath(const wxString &s) { enterprisedbPath=s; }
-    wxString GetSqlHelpSite() const { return sqlHelpSite; }
-    void SetSqlHelpSite(const wxString& s) { sqlHelpSite = s; }
-    wxString GetProxy() const { return proxy; }
-    void SetProxy(const wxString& s);
+
+    wxString GetPgHelpPath() const { return pgHelpPath; }
+    void SetPgHelpPath(const wxString &s) { pgHelpPath = s; }
+    wxString GetEdbHelpPath() const { return edbHelpPath; }
+    void SetEdbHelpPath(const wxString &s) { edbHelpPath = s; }
+    wxString GetSlonyHelpPath() const { return slonyHelpPath; }
+    void SetSlonyHelpPath(const wxString &s) { slonyHelpPath = s; }
+    
     void SetSystemSchemas(const wxString &s) { systemSchemas = s; }
     wxString GetSystemSchemas() const { return systemSchemas; }
 
@@ -210,7 +214,7 @@ private:
     bool explainVerbose, explainAnalyze;
 
     wxString slonyPath, postgresqlPath, enterprisedbPath;
-    wxString sqlHelpSite, proxy;
+    wxString pgHelpPath, edbHelpPath, slonyHelpPath;
     wxString canonicalLanguage;
     bool showUsersForPrivileges;
     bool askSaveConfirmation;

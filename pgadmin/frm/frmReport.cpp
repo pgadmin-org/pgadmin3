@@ -180,7 +180,7 @@ frmReport::~frmReport()
 
 void frmReport::OnHelp(wxCommandEvent &ev)
 {
-    DisplayHelp(this, wxT("reports"));
+    DisplayHelp(wxT("reports"), HELP_PGADMIN);
 }
 
 

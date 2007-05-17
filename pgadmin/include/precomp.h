@@ -107,7 +107,6 @@
 #include "frm/frmExport.h"
 #include "frm/frmGrantWizard.h"
 #include "frm/frmHbaConfig.h"
-#include "frm/frmHelp.h"
 #include "frm/frmHint.h"
 #include "frm/frmMain.h"
 #include "frm/frmMainConfig.h"

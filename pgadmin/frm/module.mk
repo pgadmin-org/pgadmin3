@@ -20,7 +20,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/frm/frmExport.cpp \
 	$(srcdir)/frm/frmGrantWizard.cpp \
 	$(srcdir)/frm/frmHbaConfig.cpp \
-	$(srcdir)/frm/frmHelp.cpp \
 	$(srcdir)/frm/frmHint.cpp \
 	$(srcdir)/frm/frmMain.cpp \
 	$(srcdir)/frm/frmMainConfig.cpp \

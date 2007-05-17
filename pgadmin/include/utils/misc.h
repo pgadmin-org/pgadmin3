@@ -21,6 +21,8 @@
 class wxImageList;
 extern wxImageList *imageList;
 
+class wxHelpControllerBase;
+
 #define __(str) wxT(str)
 
 typedef unsigned long OID;
@@ -143,8 +145,19 @@ private:
 wxString FileRead(const wxString &filename, int format=-1);
 bool FileWrite(const wxString &filename, const wxString &data, int format=-1);
 
-void DisplayHelp(wxWindow *wnd, const wxString &helpTopic, char **icon=0);
-void DisplaySqlHelp(wxWindow *wnd, const wxString &helpTopic, char **icon=0);
+typedef enum
+{
+    HELP_PGADMIN,
+    HELP_POSTGRESQL,
+    HELP_ENTERPRISEDB,
+    HELP_SLONY
+} HelpType;
+
+wxString CleanHelpPath(const wxString &path);
+bool HelpPathValid(const wxString &path);
+void DisplayHelp(const wxString &helpTopic, const HelpType helpType);
+void DisplayPgAdminHelp(const wxString &helpTopic);
+void DisplayExternalHelp(const wxString &helpTopic, const wxString &docPath, wxHelpControllerBase *helpCtl, const bool init);
 
 #ifndef WIN32
 wxString ExecProcess(const wxString &cmd);
@@ -209,7 +222,5 @@ enum        // depends on pgaFactory::addImage order!
     PGICON_STATISTICS,
     PGICON_PUBLIC
 };
-
-
 
 #endif

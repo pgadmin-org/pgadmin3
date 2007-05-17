@@ -42,8 +42,9 @@ extern wxString edbBackupAllExecutable;
 extern wxString edbRestoreExecutable;
 
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
-#define txtSqlHelpSite              CTRL_TEXT("txtSqlHelpSite")
-#define txtProxy                    CTRL_TEXT("txtProxy")
+#define txtPgHelpPath               CTRL_TEXT("txtPgHelpPath")
+#define txtEdbHelpPath              CTRL_TEXT("txtEdbHelpPath")
+#define txtSlonyHelpPath            CTRL_TEXT("txtSlonyHelpPath")
 #define txtSlonyPath                CTRL_TEXT("txtSlonyPath")
 #define txtPostgresqlPath           CTRL_TEXT("txtPostgresqlPath")
 #define txtEnterprisedbPath         CTRL_TEXT("txtEnterprisedbPath")
@@ -136,8 +137,11 @@ frmOptions::frmOptions(frmMain *parent)
     chkStickySql->SetValue(settings->GetStickySql());
     chkIndicateNull->SetValue(settings->GetIndicateNull());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
-    txtSqlHelpSite->SetValue(settings->GetSqlHelpSite());
-    txtProxy->SetValue(settings->GetProxy());
+
+    txtPgHelpPath->SetValue(settings->GetPgHelpPath());
+    txtEdbHelpPath->SetValue(settings->GetEdbHelpPath());
+    txtSlonyHelpPath->SetValue(settings->GetSlonyHelpPath());
+    
     txtSystemSchemas->SetValue(settings->GetSystemSchemas());
     chkUnicodeFile->SetValue(settings->GetUnicodeFile());
     chkSuppressHints->SetValue(settings->GetSuppressGuruHints());
@@ -213,7 +217,7 @@ frmOptions::~frmOptions()
 void frmOptions::OnHelp(wxCommandEvent &ev)
 {
     long page=nbOptions->GetSelection();
-    DisplayHelp(this, wxT("options-tab") + NumToStr(page+1L));
+    DisplayHelp(wxT("options-tab") + NumToStr(page+1L), HELP_PGADMIN);
 }
 
 void frmOptions::OnDefault(wxCommandEvent &ev)
@@ -269,6 +273,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 #endif
     {
         wxMessageBox(_("The PostgreSQL bin path specified is not valid or does not contain a PostgreSQL pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR); 
+        txtPostgresqlPath->SetFocus();
         return;
     }   
 
@@ -279,8 +284,34 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 #endif
     {
         wxMessageBox(_("The EnterpriseDB bin path specified is not valid or does not contain an EnterpriseDB pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR); 
+        txtEnterprisedbPath->SetFocus();
         return;
-    } 
+    }
+
+    // Clean and check the help paths
+    txtPgHelpPath->SetValue(CleanHelpPath(txtPgHelpPath->GetValue()));
+    if (!HelpPathValid(txtPgHelpPath->GetValue()))
+    {
+        wxMessageBox(_("An invalid PostgreSQL help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR);
+        txtPgHelpPath->SetFocus();
+        return;
+    }
+
+    txtEdbHelpPath->SetValue(CleanHelpPath(txtEdbHelpPath->GetValue()));
+    if (!HelpPathValid(txtEdbHelpPath->GetValue()))
+    {
+        wxMessageBox(_("An invalid EnterpriseDB help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR);
+        txtEdbHelpPath->SetFocus();
+        return;
+    }
+
+    txtSlonyHelpPath->SetValue(CleanHelpPath(txtSlonyHelpPath->GetValue()));
+    if (!HelpPathValid(txtSlonyHelpPath->GetValue()))
+    {
+        wxMessageBox(_("An invalid Slony help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR);
+        txtSlonyHelpPath->SetFocus();
+        return;
+    }
 
     // Logfile
     wxString logFile = txtLogfile->GetValue();
@@ -379,18 +410,11 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     if (chkResetHints->GetValue())
         frmHint::ResetHints();
 
-    // Make sure there's a slash on the end of the path
+    // Set the help paths
+    settings->SetPgHelpPath(txtPgHelpPath->GetValue());
+    settings->SetEdbHelpPath(txtEdbHelpPath->GetValue());
+    settings->SetSlonyHelpPath(txtSlonyHelpPath->GetValue());
 
-    if (txtSqlHelpSite->GetValue().length() != 0) {
-        if (txtSqlHelpSite->GetValue().Last() == '/' || txtSqlHelpSite->GetValue().Last() == '\\')
-            settings->SetSqlHelpSite(txtSqlHelpSite->GetValue());
-        else
-            settings->SetSqlHelpSite(txtSqlHelpSite->GetValue() + wxT("/"));
-    }
-    else
-        settings->SetSqlHelpSite(wxT(""));
-    
-    settings->SetProxy(txtProxy->GetValue());
     settings->SetSystemSchemas(txtSystemSchemas->GetValue());
 
     int langNo=cbLanguage->GetCurrentSelection();

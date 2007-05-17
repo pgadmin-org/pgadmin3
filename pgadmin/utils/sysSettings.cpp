@@ -124,14 +124,20 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     // Show System Objects
     Read(wxT("ShowSystemObjects"), &showSystemObjects, false); 
 
-//    Read(wxT("SqlHelpSite"), &sqlHelpSite, docPath + wxT("/en_US/pg/"));
-    Read(wxT("SqlHelpSite"), &sqlHelpSite, wxT(""));
-    if (sqlHelpSite.length() > 0) {
-        if (sqlHelpSite.Last() != '/' && sqlHelpSite.Last() != '\\')
-            sqlHelpSite += wxT("/");
-    }
-    Read(wxT("Proxy"), &proxy, wxGetenv(wxT("HTTP_PROXY")));
-    SetProxy(proxy);
+    Read(wxT("PgHelpPath"), &pgHelpPath, wxT(""));
+    pgHelpPath = CleanHelpPath(pgHelpPath);
+    if (!HelpPathValid(pgHelpPath))
+        pgHelpPath = wxEmptyString;
+
+    Read(wxT("EdbHelpPath"), &edbHelpPath, wxT(""));
+    edbHelpPath = CleanHelpPath(edbHelpPath);
+    if (!HelpPathValid(edbHelpPath))
+        edbHelpPath = wxEmptyString;
+
+    Read(wxT("SlonyHelpPath"), &slonyHelpPath, wxT(""));
+    slonyHelpPath = CleanHelpPath(slonyHelpPath);
+    if (!HelpPathValid(slonyHelpPath))
+        slonyHelpPath = wxEmptyString;
 
     maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
     maxColSize=Read(wxT("frmQuery/MaxColSize"), 256L);
@@ -414,8 +420,9 @@ void sysSettings::Save()
     Write(wxT("AskSaveConfirmation"), BoolToStr(askSaveConfirmation));
     Write(wxT("ConfirmDelete"), BoolToStr(confirmDelete));
     Write(wxT("ShowUsersForPrivileges"), BoolToStr(showUsersForPrivileges));
-    Write(wxT("SqlHelpSite"), sqlHelpSite);
-    Write(wxT("Proxy"), proxy);
+    Write(wxT("PgHelpPath"), pgHelpPath);
+    Write(wxT("EdbHelpPath"), edbHelpPath);
+    Write(wxT("SlonyHelpPath"), slonyHelpPath);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);
     Write(wxT("SystemSchemas"), systemSchemas);
@@ -476,16 +483,6 @@ void sysSettings::Save()
     else
         Write(wxT("Font"), fontName);
 }
-
-
-void sysSettings::SetProxy(const wxString &s)
-{
-    proxy=s;
-    if (!s.IsEmpty() && s.Find(':') < 0)
-        proxy += wxT(":80");
-    wxURL::SetDefaultProxy(proxy);
-}
-
 
 bool sysSettings::Read(const wxString& key, bool *val, bool defaultVal) const
 {

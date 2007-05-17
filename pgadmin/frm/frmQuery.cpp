@@ -22,7 +22,6 @@
 // App headers
 #include "frm/frmMain.h"
 #include "frm/frmQuery.h"
-#include "frm/frmHelp.h"
 #include "frm/menu.h"
 #include "ctl/explainCanvas.h"
 #include "db/pgConn.h"
@@ -696,7 +695,7 @@ SqlTokenHelp sqlTokenHelp[] =
 
 void frmQuery::OnContents(wxCommandEvent& event)
 {
-    DisplayHelp(this, wxT("query"), sql_xpm);
+    DisplayHelp(wxT("query"), HELP_PGADMIN);
 }
 
 
@@ -817,7 +816,7 @@ void frmQuery::OnHelp(wxCommandEvent& event)
     if (page.IsEmpty())
         page=wxT("pg/sql-commands");
 
-    DisplaySqlHelp(this, page);
+    DisplayHelp(page, HELP_POSTGRESQL);
 }
 
 

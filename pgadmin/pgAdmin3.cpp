@@ -204,6 +204,7 @@ bool pgAdmin3::OnInit()
 
     // we are here
     InitPaths();
+    InitHelp();
 
     frmConfig::tryMode configMode=frmConfig::NONE;
 	wxString configFile;
@@ -269,6 +270,10 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("EDB pg_dump   : %s"), edbBackupExecutable.c_str());
     wxLogInfo(wxT("EDB pg_dumpall: %s"), edbBackupAllExecutable.c_str());
     wxLogInfo(wxT("EDB pg_restore: %s"), edbRestoreExecutable.c_str());
+
+    wxLogInfo(wxT("PG Help       : %s"), settings->GetPgHelpPath().c_str());
+    wxLogInfo(wxT("EDB Help      : %s"), settings->GetEdbHelpPath().c_str());
+    wxLogInfo(wxT("Slony Help    : %s"), settings->GetSlonyHelpPath().c_str());
 
 #ifdef __WXGTK__
 	static pgRendererNative *renderer=new pgRendererNative();
@@ -856,6 +861,19 @@ void pgAdmin3::InitPaths()
         edbBackupAllExecutable = wxEmptyString;
     if (!isEdbApp(edbRestoreExecutable))
         edbRestoreExecutable = wxEmptyString;
+}
+
+void pgAdmin3::InitHelp()
+{
+    // TODO - Search for external docs!
+
+    // Last resorts - if we still have no help by now, use the websites!
+    if (settings->GetPgHelpPath().IsEmpty())
+        settings->SetPgHelpPath(wxT("http://www.postgresql.org/docs/current/static/"));
+    if (settings->GetEdbHelpPath().IsEmpty())
+        settings->SetEdbHelpPath(wxT("http://www.enterprisedb.com/documentation/"));
+    if (settings->GetSlonyHelpPath().IsEmpty())
+        settings->SetSlonyHelpPath(wxT("http://www.slony.info/documentation/"));
 }
 
 void pgAdmin3::InitXml()

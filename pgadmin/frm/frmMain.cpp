@@ -46,7 +46,6 @@
 #include "schema/pgObject.h"
 #include "schema/pgCollection.h"
 #include "frm/frmOptions.h"
-#include "frm/frmHelp.h"
 #include "frm/frmAbout.h"
 #include "frm/frmHint.h"
 #include "frm/frmGrantWizard.h"
@@ -387,15 +386,20 @@ void frmMain::CreateMenus()
 	//--------------------------
     toolBar->AddSeparator();
 
-    actionFactory *helpFact = new pgsqlHelpFactory(menuFactories, helpMenu, toolBar, true);
-    new contentsFactory(menuFactories, helpMenu, 0);
+    actionFactory *helpFact=new contentsFactory(menuFactories, helpMenu, 0);
     new hintFactory(menuFactories, helpMenu, toolBar, true);
     new faqFactory(menuFactories, helpMenu, 0);
-
-    new tipOfDayFactory(menuFactories, helpMenu, 0);
-    helpMenu->AppendSeparator();
-    // new onlineUpdateFactory(menuFactories, helpMenu, 0);
     new bugReportFactory(menuFactories, helpMenu, 0);
+    new tipOfDayFactory(menuFactories, helpMenu, 0);
+    
+    helpMenu->AppendSeparator();
+
+    new pgsqlHelpFactory(menuFactories, helpMenu, toolBar, true);
+    new edbHelpFactory(menuFactories, helpMenu, toolBar, true);
+    new slonyHelpFactory(menuFactories, helpMenu, toolBar, true);
+    
+    helpMenu->AppendSeparator();
+
     actionFactory *abFact=new aboutFactory(menuFactories, helpMenu, 0);
     
 #ifdef __WXMAC__
@@ -984,4 +988,92 @@ void frmMain::SetStatusText(const wxString &msg)
     statusBar->SetStatusText(wxEmptyString, 2);
 }
 
+/////////////////////////////////////////
 
+
+contentsFactory::contentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+{
+    mnu->Append(id, _("&Help contents"), _("Open the helpfile."));
+}
+
+
+wxWindow *contentsFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    DisplayHelp(wxT("index"), HELP_PGADMIN);
+    return 0;
+}
+
+
+faqFactory::faqFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+{
+    mnu->Append(id, _("&FAQ"), _("Frequently asked questions."));
+}
+
+
+wxWindow *faqFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+   wxLaunchDefaultBrowser(wxT("http://www.pgadmin.org/support/faq.php"));
+
+   return 0;
+}
+
+#include "images/help.xpm"
+#include "images/help2.xpm"
+pgsqlHelpFactory::pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigIcon) : actionFactory(list)
+{
+    mnu->Append(id, _("&PostgreSQL Help"), _("Display help on the PostgreSQL database system."));
+    if (toolbar)
+    {
+        if (bigIcon)
+            toolbar->AddTool(id, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
+        else
+            toolbar->AddTool(id, _("SQL Help"), wxBitmap(help_xpm), _("Display help on SQL commands."));
+    }
+}
+
+
+wxWindow *pgsqlHelpFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (obj && obj->GetConnection() && obj->GetConnection()->GetIsEdb())
+        DisplayHelp(wxT("index"), HELP_ENTERPRISEDB);
+    else
+        DisplayHelp(wxT("index"), HELP_POSTGRESQL);
+
+    return 0;
+}
+
+edbHelpFactory::edbHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigIcon) : actionFactory(list)
+{
+    mnu->Append(id, _("&EnterpriseDB Help"), _("Display help on the EnterpriseDB database system."));
+}
+
+
+wxWindow *edbHelpFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    DisplayHelp(wxT("index"), HELP_ENTERPRISEDB);
+    return 0;
+}
+
+slonyHelpFactory::slonyHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigIcon) : actionFactory(list)
+{
+    mnu->Append(id, _("&Slony Help"), _("Display help on the Slony replication system."));
+}
+
+
+wxWindow *slonyHelpFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    DisplayHelp(wxT("index"), HELP_SLONY);
+    return 0;
+}
+
+bugReportFactory::bugReportFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+{
+    mnu->Append(id, _("&Bug Report"), _("How to send a bugreport to the pgAdmin Development Team."));
+}
+
+
+wxWindow *bugReportFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    DisplayHelp(wxT("bugreport"), HELP_PGADMIN);
+    return 0;
+}

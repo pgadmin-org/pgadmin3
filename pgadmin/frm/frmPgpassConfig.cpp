@@ -205,7 +205,7 @@ wxString frmPgpassConfig::GetHelpPage() const
 
 void frmPgpassConfig::OnContents(wxCommandEvent& event)
 {
-    DisplayHelp(this, wxT("config"));
+    DisplayHelp(wxT("config"), HELP_PGADMIN);
 }
 
 

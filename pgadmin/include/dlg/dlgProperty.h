@@ -88,6 +88,7 @@ protected:
     void AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2=0);
     void FillCombobox(const wxString &query, ctlComboBoxFix *cb1, ctlComboBoxFix *cb2=0);
     void PrepareTablespace(ctlComboBoxFix *cb, const wxChar *current=0);
+    void OnHelp(wxCommandEvent& ev);
 
     pgConn *connection;
     pgDatabase *database;

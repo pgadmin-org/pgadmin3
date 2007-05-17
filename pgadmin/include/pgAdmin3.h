@@ -91,6 +91,7 @@ private:
 	
 protected:
     void InitPaths();
+    void InitHelp();
     void InitLogger();
     void InitNetwork();
     void InitXml();

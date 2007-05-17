@@ -340,25 +340,6 @@ AC_DEFUN([ENABLE_APPBUNDLE],
 	])
 ])
 
-#################################################################################
-# Check whether to skip installation of documentation provided with pgAdmin III #
-#################################################################################
-AC_DEFUN([DISABLE_DOCS],
-[
-	AC_ARG_ENABLE(docs, [  --disable-docs        disable installation of documentation],
-	[
-		if test "$enableval" = yes
-		then
-			INSTALL_DOCS=yes
-		else
-			INSTALL_DOCS=no
-		fi
-	],
-	[
-		INSTALL_DOCS=yes
-	])
-])
-
 #########################################
 # Check for libpq libraries and headers #
 #########################################
@@ -642,12 +623,6 @@ AC_DEFUN([SUMMARY],
 		echo "Building a Mac OS X appbundle:		Yes"
 	else
 		echo "Building a Mac OS X appbundle:		No"
-	fi
-	if test "$INSTALL_DOCS" = yes
-	then
-		echo "Include documentation:			Yes"
-	else
-		echo "Include documentation:			No"
 	fi
 	echo
 
