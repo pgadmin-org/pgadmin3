@@ -204,7 +204,6 @@ bool pgAdmin3::OnInit()
 
     // we are here
     InitPaths();
-    InitHelp();
 
     frmConfig::tryMode configMode=frmConfig::NONE;
 	wxString configFile;
@@ -270,10 +269,6 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("EDB pg_dump   : %s"), edbBackupExecutable.c_str());
     wxLogInfo(wxT("EDB pg_dumpall: %s"), edbBackupAllExecutable.c_str());
     wxLogInfo(wxT("EDB pg_restore: %s"), edbRestoreExecutable.c_str());
-
-    wxLogInfo(wxT("PG Help       : %s"), settings->GetPgHelpPath().c_str());
-    wxLogInfo(wxT("EDB Help      : %s"), settings->GetEdbHelpPath().c_str());
-    wxLogInfo(wxT("Slony Help    : %s"), settings->GetSlonyHelpPath().c_str());
 
 #ifdef __WXGTK__
 	static pgRendererNative *renderer=new pgRendererNative();
@@ -368,6 +363,12 @@ bool pgAdmin3::OnInit()
 
     // Set some defaults
     SetAppName(appearanceFactory->GetLongAppName());
+
+    // Setup the help paths
+    InitHelp();
+    wxLogInfo(wxT("PG Help       : %s"), settings->GetPgHelpPath().c_str());
+    wxLogInfo(wxT("EDB Help      : %s"), settings->GetEdbHelpPath().c_str());
+    wxLogInfo(wxT("Slony Help    : %s"), settings->GetSlonyHelpPath().c_str());
 
 #ifndef __WXDEBUG__
     wxTheApp->Yield(true);
@@ -777,6 +778,7 @@ void pgAdmin3::InitPaths()
         wxPathList path;
 
 #ifdef __WXMSW__
+        path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.3\\bin"));
         path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.2\\bin"));
         path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.1\\bin"));
         path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.0\\bin"));
@@ -786,6 +788,9 @@ void pgAdmin3::InitPaths()
         path.Add(wxT("/usr/local/pgsql/bin"));
         path.Add(wxT("/usr/local/bin"));
         path.Add(wxT("/usr/bin"));
+        path.Add(wxT("/opt/local/pgsql/bin"));
+        path.Add(wxT("/opt/local/bin"));
+        path.Add(wxT("/opt/bin"));
 
         wxFileName tmp = path.FindValidPath(wxT("pg_dump"));
 #endif 
@@ -803,6 +808,7 @@ void pgAdmin3::InitPaths()
         wxPathList path;
 
 #ifdef __WXMSW__
+        path.Add(wxT("C:\\EnterpriseDB\\8.3\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.0\\dbserver\\bin"));
@@ -865,15 +871,136 @@ void pgAdmin3::InitPaths()
 
 void pgAdmin3::InitHelp()
 {
-    // TODO - Search for external docs!
+    // Search for external docs. As Windows and *nix etc 
+    // are likely to be very different, we'll #ifdef them all.
+    wxPathList stdPaths, noPaths, pgPaths, edbPaths, slonyPaths;
+    wxString sep = wxFileName::GetPathSeparator();
+
+    stdPaths.Add(docPath + sep + settings->GetCanonicalLanguage());
+    stdPaths.Add(docPath + sep + wxT("en_US"));
+    stdPaths.Add(docPath);
+
+#ifdef __WXMSW__
+    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.3\\doc"));
+    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.2\\doc"));
+    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.1\\doc"));
+    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.0\\doc"));
+
+    edbPaths.Add(wxT("C:\\EnterpriseDB\\8.3\\dbserver\\doc"));
+    edbPaths.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\doc"));
+    edbPaths.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\doc"));
+    edbPaths.Add(wxT("C:\\EnterpriseDB\\8.0\\dbserver\\doc"));
+#else
+    pgPaths.Add(wxT("/usr/local/pgsql/doc"));
+    pgPaths.Add(wxT("/usr/local/doc"));
+    pgPaths.Add(wxT("/usr/doc"));
+    pgPaths.Add(wxT("/opt/local/pgsql/doc"));
+    pgPaths.Add(wxT("/opt/local/doc"));
+    pgPaths.Add(wxT("/opt/doc"));
+
+    edbPaths.Add(wxT("/usr/local/enterpriseDB/doc"));
+    edbPaths.Add(wxT("/usr/local/enterprisedb/doc"));
+    edbPaths.Add(wxT("/usr/local/edb/doc"));
+    edbPaths.Add(wxT("/opt/local/enterpriseDB/doc"));
+    edbPaths.Add(wxT("/opt/local/enterprisedb/doc"));
+    edbPaths.Add(wxT("/opt/local/edb/doc"));
+#endif 
+
+    // Slony will be installed into one of the DBMS directories
+    slonyPaths.Add(pgPaths);
+    slonyPaths.Add(edbPaths);
+
+    // First look for a chm, then a zip, then an hhp file. For PostgreSQL
+    // and EnterpriseDB we'll then look for an index.html. No point for 
+    // Slony as we'd most likely find the DBMS's help.
+
+    wxString pgHelpPath = settings->GetPgHelpPath();
+    wxString edbHelpPath = settings->GetEdbHelpPath();
+    wxString slonyHelpPath = settings->GetSlonyHelpPath();
+
+#if defined (__WXMSW__) || wxUSE_LIBMSPACK
+    pgHelpPath = GenerateHelpPath(wxT("PostgreSQL.chm"), pgHelpPath, stdPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("postgresql.chm"), pgHelpPath, stdPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("postgres.chm"), pgHelpPath, stdPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("pgsql.chm"), pgHelpPath, stdPaths, pgPaths);
+
+    edbHelpPath = GenerateHelpPath(wxT("EnterpriseDB.chm"), edbHelpPath, stdPaths, edbPaths);
+    edbHelpPath = GenerateHelpPath(wxT("enterprisedb.chm"), edbHelpPath, stdPaths, edbPaths);
+    edbHelpPath = GenerateHelpPath(wxT("edb.chm"), edbHelpPath, stdPaths, edbPaths);
+
+    slonyHelpPath = GenerateHelpPath(wxT("Slony-I.chm"), slonyHelpPath, stdPaths, slonyPaths);
+    slonyHelpPath = GenerateHelpPath(wxT("slony-i.chm"), slonyHelpPath, stdPaths, slonyPaths);
+    slonyHelpPath = GenerateHelpPath(wxT("slony1.chm"), slonyHelpPath, stdPaths, slonyPaths);
+    slonyHelpPath = GenerateHelpPath(wxT("slony.chm"), slonyHelpPath, stdPaths, slonyPaths);
+#endif
+
+    pgHelpPath = GenerateHelpPath(wxT("PostgreSQL.zip"), pgHelpPath, stdPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("postgresql.zip"), pgHelpPath, stdPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("postgres.zip"), pgHelpPath, stdPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("pgsql.zip"), pgHelpPath, stdPaths, pgPaths);
+
+    edbHelpPath = GenerateHelpPath(wxT("EnterpriseDB.zip"), edbHelpPath, stdPaths, edbPaths);
+    edbHelpPath = GenerateHelpPath(wxT("enterprisedb.zip"), edbHelpPath, stdPaths, edbPaths);
+    edbHelpPath = GenerateHelpPath(wxT("edb.zip"), edbHelpPath, stdPaths, edbPaths);
+
+    slonyHelpPath = GenerateHelpPath(wxT("Slony-I.zip"), slonyHelpPath, stdPaths, slonyPaths);
+    slonyHelpPath = GenerateHelpPath(wxT("slony-i.zip"), slonyHelpPath, stdPaths, slonyPaths);
+    slonyHelpPath = GenerateHelpPath(wxT("slony1.zip"), slonyHelpPath, stdPaths, slonyPaths);
+    slonyHelpPath = GenerateHelpPath(wxT("slony.zip"), slonyHelpPath, stdPaths, slonyPaths);
+
+    pgHelpPath = GenerateHelpPath(wxT("PostgreSQL.hhp"), pgHelpPath, stdPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("postgresql.hhp"), pgHelpPath, stdPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("postgres.hhp"), pgHelpPath, stdPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("pgsql.hhp"), pgHelpPath, stdPaths, pgPaths);
+
+    edbHelpPath = GenerateHelpPath(wxT("EnterpriseDB.hhp"), edbHelpPath, stdPaths, edbPaths);
+    edbHelpPath = GenerateHelpPath(wxT("enterprisedb.hhp"), edbHelpPath, stdPaths, edbPaths);
+    edbHelpPath = GenerateHelpPath(wxT("edb.hhp"), edbHelpPath, stdPaths, edbPaths);
+
+    slonyHelpPath = GenerateHelpPath(wxT("Slony-I.hhp"), slonyHelpPath, stdPaths, slonyPaths);
+    slonyHelpPath = GenerateHelpPath(wxT("slony-i.hhp"), slonyHelpPath, stdPaths, slonyPaths);
+    slonyHelpPath = GenerateHelpPath(wxT("slony1.hhp"), slonyHelpPath, stdPaths, slonyPaths);
+    slonyHelpPath = GenerateHelpPath(wxT("slony.hhp"), slonyHelpPath, stdPaths, slonyPaths);
+
+    pgHelpPath = GenerateHelpPath(wxT("index.html"), pgHelpPath, noPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("index.html"), pgHelpPath, noPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("index.html"), pgHelpPath, noPaths, pgPaths);
+    pgHelpPath = GenerateHelpPath(wxT("index.html"), pgHelpPath, noPaths, pgPaths);
+
+    edbHelpPath = GenerateHelpPath(wxT("index.html"), edbHelpPath, noPaths, edbPaths);
+    edbHelpPath = GenerateHelpPath(wxT("index.html"), edbHelpPath, noPaths, edbPaths);
+    edbHelpPath = GenerateHelpPath(wxT("index.html"), edbHelpPath, noPaths, edbPaths);
 
     // Last resorts - if we still have no help by now, use the websites!
+    if (pgHelpPath.IsEmpty())
+        pgHelpPath = wxT("http://www.postgresql.org/docs/current/static/");
+    if (edbHelpPath.IsEmpty())
+        edbHelpPath = wxT("http://www.enterprisedb.com/documentation/");
+    if (slonyHelpPath.IsEmpty())
+        slonyHelpPath = wxT("http://www.slony.info/documentation/");
+
+    // OK, so set the values
     if (settings->GetPgHelpPath().IsEmpty())
-        settings->SetPgHelpPath(wxT("http://www.postgresql.org/docs/current/static/"));
+        settings->SetPgHelpPath(pgHelpPath);
     if (settings->GetEdbHelpPath().IsEmpty())
-        settings->SetEdbHelpPath(wxT("http://www.enterprisedb.com/documentation/"));
+        settings->SetEdbHelpPath(edbHelpPath);
     if (settings->GetSlonyHelpPath().IsEmpty())
-        settings->SetSlonyHelpPath(wxT("http://www.slony.info/documentation/"));
+        settings->SetSlonyHelpPath(slonyHelpPath);
+}
+
+wxString pgAdmin3::GenerateHelpPath(const wxString &file, const wxString &current, wxPathList stdPaths, wxPathList dbmsPaths)
+{
+    // If we already have a value, don't change it.
+    if (!current.IsEmpty())
+        return current;
+
+    if (!stdPaths.FindValidPath(file).IsEmpty())
+        return stdPaths.FindValidPath(file);
+
+    if (!dbmsPaths.FindValidPath(file).IsEmpty())
+        return dbmsPaths.FindValidPath(file);
+
+    return wxEmptyString;
 }
 
 void pgAdmin3::InitXml()

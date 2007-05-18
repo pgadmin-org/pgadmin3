@@ -803,7 +803,7 @@ void DisplayExternalHelp(const wxString &helpTopic, const wxString &docPath, wxH
     }
     else
     {
-        wxLaunchDefaultBrowser(page);
+        wxLogError(_("The help source (%s) could not be opened. Please check the help configuration options."), docPath);
     }
 }
 

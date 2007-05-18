@@ -83,6 +83,7 @@ public:
 #endif
 
 private:
+    wxString GenerateHelpPath(const wxString &file, const wxString &current, wxPathList stdPaths, wxPathList dbmsPaths);
     bool LoadAllXrc(const wxString dir);
 
 #ifdef __WXMAC__

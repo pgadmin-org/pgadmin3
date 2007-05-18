@@ -124,12 +124,12 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     // Show System Objects
     Read(wxT("ShowSystemObjects"), &showSystemObjects, false); 
 
-    Read(wxT("PgHelpPath"), &pgHelpPath, wxT(""));
+    Read(wxT("PostgreSQLHelpPath"), &pgHelpPath, wxT(""));
     pgHelpPath = CleanHelpPath(pgHelpPath);
     if (!HelpPathValid(pgHelpPath))
         pgHelpPath = wxEmptyString;
 
-    Read(wxT("EdbHelpPath"), &edbHelpPath, wxT(""));
+    Read(wxT("EnterpriseDBHelpPath"), &edbHelpPath, wxT(""));
     edbHelpPath = CleanHelpPath(edbHelpPath);
     if (!HelpPathValid(edbHelpPath))
         edbHelpPath = wxEmptyString;
@@ -420,8 +420,8 @@ void sysSettings::Save()
     Write(wxT("AskSaveConfirmation"), BoolToStr(askSaveConfirmation));
     Write(wxT("ConfirmDelete"), BoolToStr(confirmDelete));
     Write(wxT("ShowUsersForPrivileges"), BoolToStr(showUsersForPrivileges));
-    Write(wxT("PgHelpPath"), pgHelpPath);
-    Write(wxT("EdbHelpPath"), edbHelpPath);
+    Write(wxT("PostgreSQLHelpPath"), pgHelpPath);
+    Write(wxT("EnterpriseDBHelpPath"), edbHelpPath);
     Write(wxT("SlonyHelpPath"), slonyHelpPath);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);
