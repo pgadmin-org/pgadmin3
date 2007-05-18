@@ -882,28 +882,48 @@ void pgAdmin3::InitHelp()
 
 #ifdef __WXMSW__
     pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.3\\doc"));
+    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.3\\doc\\html"));
     pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.2\\doc"));
+    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.2\\doc\\html"));
     pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.1\\doc"));
+    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.1\\doc\\html"));
     pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.0\\doc"));
+    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.0\\doc\\html"));
 
     edbPaths.Add(wxT("C:\\EnterpriseDB\\8.3\\dbserver\\doc"));
+    edbPaths.Add(wxT("C:\\EnterpriseDB\\8.3\\dbserver\\doc\\html"));
     edbPaths.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\doc"));
+    edbPaths.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\doc\\html"));
     edbPaths.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\doc"));
+    edbPaths.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\doc\\html"));
     edbPaths.Add(wxT("C:\\EnterpriseDB\\8.0\\dbserver\\doc"));
+    edbPaths.Add(wxT("C:\\EnterpriseDB\\8.0\\dbserver\\doc\\html"));
 #else
     pgPaths.Add(wxT("/usr/local/pgsql/doc"));
-    pgPaths.Add(wxT("/usr/local/doc"));
-    pgPaths.Add(wxT("/usr/doc"));
+    pgPaths.Add(wxT("/usr/local/pgsql/doc/html"));
+    pgPaths.Add(wxT("/usr/local/doc/postgresql"));
+    pgPaths.Add(wxT("/usr/local/doc/postgresql/html"));
+    pgPaths.Add(wxT("/usr/doc/postgresql"));
+    pgPaths.Add(wxT("/usr/doc/postgresql/html"));
     pgPaths.Add(wxT("/opt/local/pgsql/doc"));
-    pgPaths.Add(wxT("/opt/local/doc"));
-    pgPaths.Add(wxT("/opt/doc"));
+    pgPaths.Add(wxT("/opt/local/pgsql/doc/html"));
+    pgPaths.Add(wxT("/opt/local/doc/postgresql"));
+    pgPaths.Add(wxT("/opt/local/doc/postgresql/html"));
+    pgPaths.Add(wxT("/opt/doc/postgresql"));
+    pgPaths.Add(wxT("/opt/doc/postgresql/html"));
 
     edbPaths.Add(wxT("/usr/local/enterpriseDB/doc"));
+    edbPaths.Add(wxT("/usr/local/enterpriseDB/doc/html"));
     edbPaths.Add(wxT("/usr/local/enterprisedb/doc"));
+    edbPaths.Add(wxT("/usr/local/enterprisedb/doc/html"));
     edbPaths.Add(wxT("/usr/local/edb/doc"));
+    edbPaths.Add(wxT("/usr/local/edb/doc/html"));
     edbPaths.Add(wxT("/opt/local/enterpriseDB/doc"));
+    edbPaths.Add(wxT("/opt/local/enterpriseDB/doc/html"));
     edbPaths.Add(wxT("/opt/local/enterprisedb/doc"));
+    edbPaths.Add(wxT("/opt/local/enterprisedb/doc/html"));
     edbPaths.Add(wxT("/opt/local/edb/doc"));
+    edbPaths.Add(wxT("/opt/local/edb/doc/html"));
 #endif 
 
     // Slony will be installed into one of the DBMS directories
@@ -970,6 +990,25 @@ void pgAdmin3::InitHelp()
     edbHelpPath = GenerateHelpPath(wxT("index.html"), edbHelpPath, noPaths, edbPaths);
     edbHelpPath = GenerateHelpPath(wxT("index.html"), edbHelpPath, noPaths, edbPaths);
     edbHelpPath = GenerateHelpPath(wxT("index.html"), edbHelpPath, noPaths, edbPaths);
+
+    // If either path ends in index.html, remove the filename because we
+    // just want the path. In this case, we should also add file:/// on
+    // non-Windows platforms.
+    if (pgHelpPath.EndsWith(wxT("index.html")))
+    {
+        pgHelpPath = pgHelpPath.Left(pgHelpPath.Length() - 10);
+#ifndef __WXMSW__
+        pgHelpPath = wxT("file:///") + pgHelpPath;
+#endif
+    }
+
+    if (edbHelpPath.EndsWith(wxT("index.html")))
+    {
+        edbHelpPath = edbHelpPath.Left(edbHelpPath.Length() - 10);
+#ifndef __WXMSW__
+        edbHelpPath = wxT("file:///") + edbHelpPath;
+#endif
+    }
 
     // Last resorts - if we still have no help by now, use the websites!
     if (pgHelpPath.IsEmpty())
