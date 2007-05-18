@@ -398,7 +398,11 @@ void frmMain::CreateMenus()
     new edbHelpFactory(menuFactories, helpMenu, toolBar, true);
     new slonyHelpFactory(menuFactories, helpMenu, toolBar, true);
     
+    // Don't include this seperator on Mac, because the only option
+    // under it will be moved to the application menu.
+#ifndef __WXMAC__
     helpMenu->AppendSeparator();
+#endif
 
     actionFactory *abFact=new aboutFactory(menuFactories, helpMenu, 0);
     
