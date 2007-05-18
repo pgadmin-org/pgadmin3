@@ -772,6 +772,9 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
 {
     if (editorCell->IsSet())
     {
+        if (sqlGrid->GetTable()->IsColBoolean(sqlGrid->GetGridCursorCol()))
+            return;
+
         wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
         if (text->GetInsertionPoint() <= text->GetLastPosition())
         {
@@ -1949,7 +1952,12 @@ bool ctlSQLEditGrid::IsColText(int col)
 
 bool sqlTable::IsColText(int col)
 {
-    return !columns[col].numeric;
+    return !columns[col].numeric && !(columns[col].type == PGOID_TYPE_BOOL);
+}
+
+bool sqlTable::IsColBoolean(int col)
+{
+    return (columns[col].type == PGOID_TYPE_BOOL);
 }
 
 wxString sqlTable::GetColLabelValue(int col)

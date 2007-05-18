@@ -134,6 +134,7 @@ public:
     bool DeleteRows(size_t pos, size_t rows);
     int  LastRow() { return lastRow; }
     bool IsColText(int col);
+    bool IsColBoolean(int col);
 
     bool CheckInCache(int row);
     bool IsLineSaved(int row) { return GetLine(row)->stored; }
