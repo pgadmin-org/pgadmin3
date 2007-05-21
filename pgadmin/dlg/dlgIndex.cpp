@@ -102,11 +102,14 @@ int dlgIndexBase::Go(bool modal)
         // create mode
     }
 
-    txtFillFactor->SetValidator(numericValidator);
-    if (connection->BackendMinimumVersion(8, 2))
-        txtFillFactor->Enable();
-    else
-        txtFillFactor->Disable();
+    if (txtFillFactor)
+    {
+        txtFillFactor->SetValidator(numericValidator);
+        if (connection->BackendMinimumVersion(8, 2))
+            txtFillFactor->Enable();
+        else
+            txtFillFactor->Disable();
+    }
 
     btnAddCol->Disable();
     btnRemoveCol->Disable();
