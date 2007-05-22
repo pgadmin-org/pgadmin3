@@ -165,6 +165,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/slsubscriptions.xpm \
 	$(srcdir)/include/images/sortfilter.xpm \
 	$(srcdir)/include/images/splash.xpm \
+	$(srcdir)/include/images/sql.ico \
 	$(srcdir)/include/images/sql.xpm \
 	$(srcdir)/include/images/statistics.xpm \
 	$(srcdir)/include/images/step.xpm \
