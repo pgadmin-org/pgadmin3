@@ -429,8 +429,9 @@ bool dlgDirectDbg::activateDebugger( )
 	
 	try
 	{
+        // Debug the initialiser.
 		if( chkPkgInit->GetValue())
-			setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getPkgOid());
+			setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getPkgInitOid());
 
 		setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getOid());
 	}

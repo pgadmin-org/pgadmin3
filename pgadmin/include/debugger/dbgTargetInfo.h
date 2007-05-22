@@ -81,6 +81,7 @@ public:
 	const wxString &getReturnType()    { return( m_returnType ); }
 	long	getOid()           { return( m_oid ); }
 	long	getPkgOid()        { return( m_pkgOid ); }
+	long	getPkgInitOid()    { return( m_pkgInitOid ); }
 	bool	getIsFunction()    { return( m_isFunction ); } 
 	bool	getReturnsSet()    { return( m_returnsSet ); } 
 
@@ -102,6 +103,7 @@ private:
 	int	m_argInOutCount; // Number of INOUT arguments	
 	long	m_oid;		 // Target function/procedure OID
 	long	m_pkgOid;	 // Package in which target defined (if non-zero)
+    long    m_pkgInitOid; // OID of the package initializer function.
 	wsArgInfoArray	m_argInfo;
 
 };

@@ -51,6 +51,9 @@ dbgPgConn::dbgPgConn(frmDebugger *frame, const dbgConnProp & props, bool startTh
 void dbgPgConn::Init( const wxString &server, const wxString &database, const wxString &username, const wxString &password, const wxString &port, int sslmode, bool startThread )
 {
 	m_pgConn       = NULL;
+    majorVersion = 0;
+    minorVersion = 0;
+    isEdb = false;
 
 	if( startThread )
 		m_workerThread = new dbgPgThread( *this );
@@ -260,4 +263,47 @@ void dbgPgConn::Cancel()
         PQcancel(cancel, errbuf, sizeof(errbuf));
         PQfreeCancel(cancel);
     }
+}
+
+bool dbgPgConn::BackendMinimumVersion(int major, int minor)
+{
+    if (!majorVersion)
+    {
+        wxString version=GetVersionString();
+	    sscanf(version.ToAscii(), "%*s %d.%d", &majorVersion, &minorVersion);
+        isEdb = version.Upper().Matches(wxT("ENTERPRISEDB*"));
+    }
+	return majorVersion > major || (majorVersion == major && minorVersion >= minor);
+}
+
+
+bool dbgPgConn::EdbMinimumVersion(int major, int minor)
+{
+    return BackendMinimumVersion(major, minor) && GetIsEdb();
+}
+
+wxString dbgPgConn::GetVersionString()
+{
+    PGresult *res;
+    wxString result;
+
+    res = waitForCommand( wxT( "SELECT version();" ));
+
+    if (PQresultStatus(res) == PGRES_TUPLES_OK)
+    {
+	    // Retrieve the query result and return it.
+        result=wxString(PQgetvalue(res, 0, 0), wxConvUTF8);
+
+        // Cleanup & exit
+        PQclear(res);
+    }
+
+    return result;
+}
+
+bool dbgPgConn::GetIsEdb()
+{
+    // to retrieve edb flag
+    BackendMinimumVersion(0,0);
+    return isEdb; 
 }

@@ -46,6 +46,10 @@ class dbgPgConn
 
 	~dbgPgConn();
 
+    bool BackendMinimumVersion(int major, int minor);
+    bool EdbMinimumVersion(int major, int minor);
+    bool GetIsEdb();
+    wxString GetVersionString();
 	bool	isConnected() const;	        // Returns true if the connection attempt succeeded
 	const wxString  getName() const;	    // Returns human-friendly name for this connection
 	const wxString  getHost() const;	    // Returns the host-name (or IP address) for this connection
@@ -65,6 +69,8 @@ class dbgPgConn
 	PGconn	*m_pgConn;			// libpq connection handler
 	dbgPgThread	*m_workerThread;	// Worker thread (this thread interacts with the server)
 	frmDebugger *m_frame;
+    int minorVersion, majorVersion;
+    bool isEdb;
 };
 
 #endif

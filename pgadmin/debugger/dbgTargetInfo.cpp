@@ -126,6 +126,29 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn * conn, char ta
 
 		m_argInfo.Add( argInfo );
 	}
+
+    // Get the package initializer function OID. On 8.1 or below, this is
+    // assumed to be the same as the package OID. On 8.2, we have an API :-)
+    if (conn->EdbMinimumVersion(8, 2))
+    {
+        PGresult *res;
+
+        m_pkgInitOid = 0;
+        res = conn->waitForCommand( wxT( "SELECT pldbg_get_pkg_cons(") + NumToStr(m_pkgOid) + wxT(");"));
+
+        if (PQresultStatus(res) == PGRES_TUPLES_OK)
+        {
+	        // Retrieve the query result and return it.
+            m_pkgInitOid = StrToLong(wxString(PQgetvalue(res, 0, 0), wxConvUTF8));
+
+            // Cleanup & exit
+            PQclear(res);
+        }
+    }
+    else if (conn->GetIsEdb())
+        m_pkgInitOid = m_pkgOid;
+    else
+        m_pkgInitOid = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
