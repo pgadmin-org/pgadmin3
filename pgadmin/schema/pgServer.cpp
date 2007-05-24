@@ -1063,6 +1063,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         server->iSetDbRestriction(dbRestriction);
         server->iSetServerIndex(loop);
         browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+	browser->SortChildren(obj->GetId());
 
 
 #ifdef WIN32
@@ -1112,6 +1113,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 			    server->iSetDiscovered(true);
 			    server->iSetServiceID(svcName);
 			    browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+			    browser->SortChildren(obj->GetId());
             }
 			// Get the next one...
 			flag = pgKey->GetNextKey(svcName, cookie);
@@ -1197,6 +1199,7 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
                 wxLogInfo(wxT("pgServer object initialised as required."));
                 browser->AppendItem(form->GetServerCollection()->GetId(), server->GetFullName(), 
                     icon, -1, server);
+		browser->SortChildren(form->GetServerCollection()->GetId());
 
                 browser->Expand(form->GetServerCollection()->GetId());
                 wxString label;
