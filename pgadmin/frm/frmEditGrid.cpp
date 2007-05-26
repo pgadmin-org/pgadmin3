@@ -1185,8 +1185,7 @@ void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* ev
                                wxDefaultPosition, wxDefaultSize, flags
                               );
 
-    if (textlen > 0)
-        Text()->SetMaxLength(textlen);
+    Text()->SetMaxLength(textlen);
 
     wxGridCellEditor::Create(parent, id, evtHandler);
 }
