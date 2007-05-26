@@ -80,7 +80,7 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
                 break;
 
             case EDB_PACKAGEFUNCTION:
-                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && obj->GetDatabase()->CanDebugEdbspl())
+                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && obj->GetDatabase()->CanDebugEdbspl() && obj->GetName() != wxT("cons"))
                     return true;
                 break;
 
@@ -157,7 +157,7 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
                 break;
 
             case EDB_PACKAGEFUNCTION:
-                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && obj->GetDatabase()->CanDebugPlpgsql())
+                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && obj->GetDatabase()->CanDebugEdbspl() && obj->GetName() != wxT("cons"))
                     return true;
                 break;
 

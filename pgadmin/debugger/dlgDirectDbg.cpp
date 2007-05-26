@@ -432,11 +432,10 @@ bool dlgDirectDbg::activateDebugger( )
         // Debug the initialiser. We can only do so once, so unset, and disable
         // the option after setting the breakpoint
         if( chkPkgInit->GetValue())
-        {
 			setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getPkgInitOid());
-            chkPkgInit->SetValue(false);
-           	chkPkgInit->Disable();
-        }
+
+        chkPkgInit->SetValue(false);
+       	chkPkgInit->Disable();
 
 		setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getOid());
 	}

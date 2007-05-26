@@ -71,7 +71,6 @@ class edbPackageProcedureFactory : public edbPackageFunctionFactory
 {
 public:
     edbPackageProcedureFactory();
-//    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
 extern edbPackageProcedureFactory packageProcedureFactory;
