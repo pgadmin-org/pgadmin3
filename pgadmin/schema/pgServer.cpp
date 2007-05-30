@@ -37,7 +37,7 @@
 pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, bool _restore, int _ssl)
 : pgObject(serverFactory, newName)
 {  
-	description = newDescription;
+    description = newDescription;
     database = newDatabase;
     username = newUsername;
     port = newPort;
@@ -50,7 +50,7 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     conn = NULL;
     passwordValid=true;
     storePwd=_storePwd;
-	restore=_restore;
+    restore=_restore;
     superUser=false;
     createPrivilege=false;
 #ifdef WIN32
@@ -61,8 +61,8 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
 
 pgServer::~pgServer()
 {
-	if (conn)
-		delete conn;
+    if (conn)
+        delete conn;
 
 #ifdef WIN32
     if (serviceHandle)
@@ -283,8 +283,8 @@ bool pgServer::StartService()
         }
     }
 #else
-	wxString res = ExecProcess(serviceId + wxT(" start"));
-	done = (res.Find(wxT("tarting")) > 0);
+    wxString res = ExecProcess(serviceId + wxT(" start"));
+    done = (res.Find(wxT("tarting")) > 0);
 #endif
     return done;
 }
@@ -345,8 +345,8 @@ bool pgServer::StopService()
         }
     }
 #else
-	wxString res = ExecProcess(serviceId + wxT(" stop"));
-	done = (res.Find(wxT("stopped")) > 0);
+    wxString res = ExecProcess(serviceId + wxT(" stop"));
+    done = (res.Find(wxT("stopped")) > 0);
 #endif
     return done;
 }
@@ -382,8 +382,8 @@ bool pgServer::GetServerRunning()
     }
 #else
 
-	wxString res = ExecProcess(serviceId + wxT(" status"));
-	done = (res.Find(wxT("PID: ")) > 0);
+    wxString res = ExecProcess(serviceId + wxT(" status"));
+    done = (res.Find(wxT("PID: ")) > 0);
 
 #endif
     return done;
@@ -417,7 +417,7 @@ bool pgServer::GetServerControllable()
 
 wxString pgServer::passwordFilename()
 {
-	wxString fname = sysSettings::GetConfigFile(sysSettings::PGPASS);
+    wxString fname = sysSettings::GetConfigFile(sysSettings::PGPASS);
 
     wxLogInfo(wxT("Using password file %s"), fname.c_str());
     return fname;
@@ -469,22 +469,19 @@ void pgServer::StorePassword()
 {
     wxString fname=passwordFilename();
 
-
     wxUtfFile file;
     if (!wxFile::Exists(fname))
     {
-        int fd=creat(fname.ToAscii(), S_IREAD | S_IWRITE);
-        if (fd > 0)
-            close(fd);
+		file.Create(fname, false, S_IREAD | S_IWRITE);
     }
 
-	// Don't try to read and write in one OP - it doesn't work well
-	wxString before;
-	file.Open(fname, wxFile::read, wxFONTENCODING_SYSTEM);
-	file.Read(before);
-	file.Close();
+    // Don't try to read and write in one OP - it doesn't work well
+    wxString before;
+    file.Open(fname, wxFile::read, wxFONTENCODING_SYSTEM);
+    file.Read(before);
+    file.Close();
 
-	file.Open(fname, wxFile::write, wxFONTENCODING_SYSTEM);
+    file.Open(fname, wxFile::write, wxFONTENCODING_SYSTEM);
 
     if (file.IsOpened())
     {
@@ -638,19 +635,19 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
                 delete set;
             }
 
-			if (conn->BackendMinimumVersion(8, 1))
-			{
-				set=ExecuteSet(wxT("SELECT rolcreaterole, rolcreatedb FROM pg_roles WHERE rolname = current_user;"));
-	
-				if (set)
-				{
-					iSetCreatePrivilege(set->GetBool(wxT("rolcreatedb")));
-					iSetCreateRole(set->GetBool(wxT("rolcreaterole")));
-					delete set;
-				}
-			}
-			else
-				iSetCreateRole(false);
+            if (conn->BackendMinimumVersion(8, 1))
+            {
+                set=ExecuteSet(wxT("SELECT rolcreaterole, rolcreatedb FROM pg_roles WHERE rolname = current_user;"));
+    
+                if (set)
+                {
+                    iSetCreatePrivilege(set->GetBool(wxT("rolcreatedb")));
+                    iSetCreateRole(set->GetBool(wxT("rolcreaterole")));
+                    delete set;
+                }
+            }
+            else
+                iSetCreateRole(false);
 
             wxString version, allVersions;
             version.Printf(wxT("%d.%d"), conn->GetMajorVersion(), conn->GetMinorVersion());
@@ -801,37 +798,37 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
             
             wxLogInfo(wxT("Adding child object to server ") + GetIdentifier());
     
-			if (settings->GetDisplayOption(wxT("Databases")))
-				browser->AppendCollection(this, databaseFactory);
+            if (settings->GetDisplayOption(wxT("Databases")))
+                browser->AppendCollection(this, databaseFactory);
 
             if (conn->BackendMinimumVersion(8, 0) && settings->GetDisplayOption(wxT("Tablespaces")))
                 browser->AppendCollection(this, tablespaceFactory);
 
             // Jobs
             // We only add the Jobs node if the appropriate objects are the initial DB.
-			if (settings->GetDisplayOption(wxT("pgAgent jobs")))
-			{
-				wxString exists = conn->ExecuteScalar(
-					wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
-					wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
+            if (settings->GetDisplayOption(wxT("pgAgent jobs")))
+            {
+                wxString exists = conn->ExecuteScalar(
+                    wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
+                    wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
 
-				if (!exists.IsNull())
-					browser->AppendCollection(this, jobFactory);
-			}
+                if (!exists.IsNull())
+                    browser->AppendCollection(this, jobFactory);
+            }
 
             if (conn->BackendMinimumVersion(8, 1))
             {
-				if (settings->GetDisplayOption(wxT("Groups/group roles")))
-					browser->AppendCollection(this, groupRoleFactory);
-				if (settings->GetDisplayOption(wxT("Users/login roles")))
+                if (settings->GetDisplayOption(wxT("Groups/group roles")))
+                    browser->AppendCollection(this, groupRoleFactory);
+                if (settings->GetDisplayOption(wxT("Users/login roles")))
                 browser->AppendCollection(this, loginRoleFactory);
             }
             else
             {
-				if (settings->GetDisplayOption(wxT("Groups/group roles")))
-					browser->AppendCollection(this, groupFactory);
-				if (settings->GetDisplayOption(wxT("Users/login roles")))
-					browser->AppendCollection(this, userFactory);
+                if (settings->GetDisplayOption(wxT("Groups/group roles")))
+                    browser->AppendCollection(this, groupFactory);
+                if (settings->GetDisplayOption(wxT("Users/login roles")))
+                    browser->AppendCollection(this, userFactory);
             }
         }
 
@@ -893,7 +890,7 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
         properties->AppendItem(_("Maintenance database"), GetDatabaseName());
         properties->AppendItem(_("Username"), GetUsername());
         properties->AppendItem(_("Store password?"), GetStorePwd());
-		properties->AppendItem(_("Restore environment?"), GetRestore());
+        properties->AppendItem(_("Restore environment?"), GetRestore());
         if (GetConnected())
         {
             properties->AppendItem(_("Version string"), GetVersionString());
@@ -1007,14 +1004,14 @@ bool pgServerObjCollection::CanCreate()
     if (server->GetMetaType() == PGM_DATABASE)
         return (GetServer()->GetCreatePrivilege() || GetServer()->GetSuperUser());
     else
-	{
-		if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_ROLE)
-			return (server->GetCreateRole() || server->GetSuperUser());
-		else if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_DATABASE)
-			return (server->GetCreatePrivilege() || server->GetSuperUser());
-		else
-			return server->GetSuperUser();
-	}
+    {
+        if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_ROLE)
+            return (server->GetCreateRole() || server->GetSuperUser());
+        else if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_DATABASE)
+            return (server->GetCreatePrivilege() || server->GetSuperUser());
+        else
+            return server->GetSuperUser();
+    }
 }
 
 
@@ -1028,9 +1025,9 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
     wxArrayString servicedServers;
 
-	// Get the hostname for later...
-	char buf[255];
-	gethostname(buf, 255); 
+    // Get the hostname for later...
+    char buf[255];
+    gethostname(buf, 255); 
     wxString hostname = wxString(buf, wxConvUTF8);
 
     for (loop = 1; loop <= numServers; ++loop)
@@ -1041,7 +1038,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         settings->Read(key + wxT("ServiceID"), &serviceID, wxEmptyString);
         settings->Read(key + wxT("Description"), &description, wxEmptyString);
         settings->Read(key + wxT("StorePwd"), &storePwd, wxEmptyString);
-	    settings->Read(key + wxT("Restore"), &restore, wxT("true"));
+        settings->Read(key + wxT("Restore"), &restore, wxT("true"));
         settings->Read(key + wxT("Port"), &port, 0);
         settings->Read(key + wxT("Database"), &database, wxEmptyString);
         settings->Read(key + wxT("Username"), &username, wxEmptyString);
@@ -1059,11 +1056,11 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);
         server->iSetServiceID(serviceID);
-		server->iSetDiscovered(false);
+        server->iSetDiscovered(false);
         server->iSetDbRestriction(dbRestriction);
         server->iSetServerIndex(loop);
         browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
-	browser->SortChildren(obj->GetId());
+    browser->SortChildren(obj->GetId());
 
 
 #ifdef WIN32
@@ -1081,44 +1078,44 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
 #ifdef WIN32
 
-	// Add local servers. Will currently only work on Win32 with >= BETA3 
-	// of the Win32 PostgreSQL installer.
-	wxRegKey *pgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services"));
+    // Add local servers. Will currently only work on Win32 with >= BETA3 
+    // of the Win32 PostgreSQL installer.
+    wxRegKey *pgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services"));
 
-	if (pgKey->Exists())
-	{
+    if (pgKey->Exists())
+    {
 
-		wxString svcName, temp;
-		long cookie = 0;
-		long *tmpport = 0;
-		bool flag = false;
+        wxString svcName, temp;
+        long cookie = 0;
+        long *tmpport = 0;
+        bool flag = false;
 
-		flag = pgKey->GetFirstKey(svcName, cookie);
+        flag = pgKey->GetFirstKey(svcName, cookie);
 
-		while (flag != false)
-		{
+        while (flag != false)
+        {
             if (servicedServers.Index(svcName, false) < 0)
             {
-			    key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
-			    wxRegKey *svcKey = new wxRegKey(key);
+                key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
+                wxRegKey *svcKey = new wxRegKey(key);
 
                 servername = wxT("localhost");
                 database = wxEmptyString;
-			    svcKey->QueryValue(wxT("Display Name"), description);
-			    svcKey->QueryValue(wxT("Database Superuser"), username);
+                svcKey->QueryValue(wxT("Display Name"), description);
+                svcKey->QueryValue(wxT("Database Superuser"), username);
                 svcKey->QueryValue(wxT("Port"), &port);
 
-			    // Add the Server node
-			    server = new pgServer(servername, description, database, username, port, false, 0);
-			    server->iSetDiscovered(true);
-			    server->iSetServiceID(svcName);
-			    browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
-			    browser->SortChildren(obj->GetId());
+                // Add the Server node
+                server = new pgServer(servername, description, database, username, port, false, 0);
+                server->iSetDiscovered(true);
+                server->iSetServiceID(svcName);
+                browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+                browser->SortChildren(obj->GetId());
             }
-			// Get the next one...
-			flag = pgKey->GetNextKey(svcName, cookie);
-		}
-	}
+            // Get the next one...
+            flag = pgKey->GetNextKey(svcName, cookie);
+        }
+    }
 #endif //WIN32
 
     return server;
@@ -1199,7 +1196,7 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
                 wxLogInfo(wxT("pgServer object initialised as required."));
                 browser->AppendItem(form->GetServerCollection()->GetId(), server->GetFullName(), 
                     icon, -1, server);
-		browser->SortChildren(form->GetServerCollection()->GetId());
+        browser->SortChildren(form->GetServerCollection()->GetId());
 
                 browser->Expand(form->GetServerCollection()->GetId());
                 wxString label;
@@ -1271,7 +1268,7 @@ stopServiceFactory::stopServiceFactory(menuFactoryList *list, wxMenu *mnu, wxToo
 wxWindow *stopServiceFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     pgServer *server= (pgServer*)obj;
-	wxMessageDialog msg(form, _("Are you sure you wish to shutdown this server?"),
+    wxMessageDialog msg(form, _("Are you sure you wish to shutdown this server?"),
             _("Stop Service"), wxYES_NO | wxICON_QUESTION);
     if (msg.ShowModal() == wxID_YES)
     {
@@ -1280,13 +1277,13 @@ wxWindow *stopServiceFactory::StartDialog(frmMain *form, pgObject *obj)
         bool done=server->StopService();
 
         if (done)
-	    {
+        {
             if (server->Disconnect(form))
             {
                 form->GetBrowser()->DeleteChildren(server->GetId());
                 form->execSelChange(server->GetId(), true);
             }
-	    }
+        }
         form->EndMsg(done);
     }
     return 0;

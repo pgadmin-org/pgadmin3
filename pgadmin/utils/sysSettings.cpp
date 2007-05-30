@@ -99,8 +99,8 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     {
         
 #ifdef __WXMSW__
-        deflog = wxString::FromAscii(homedrive);
-        deflog += wxString::FromAscii(homedir);
+	    wxStandardPaths paths;
+	    deflog = paths.GetDocumentsDir();
         deflog += wxT("\\pgadmin.log");
 #else
         deflog = wxString::FromAscii(homedir);
@@ -646,18 +646,19 @@ void sysSettings::SetDoubleClickProperties(const bool newval)
 //////////////////////////////////////////////////////////////////////////
 wxString sysSettings::GetConfigFile(configFileName cfgname)
 {
-	if (cfgname == PGPASS || cfgname == PGAFAVOURITES)
-	{
-	    wxStandardPaths stdp;
-	    wxString fname=stdp.GetUserConfigDir()
+    if (cfgname == PGPASS || cfgname == PGAFAVOURITES)
+    {
+        wxStandardPaths stdp;
+        wxString fname=stdp.GetUserConfigDir();
 #ifdef WIN32
-	        + wxT("\\postgresql"); 
-	    mkdir(fname.ToAscii());
-		fname += (cfgname==PGPASS)?wxT("\\pgpass.conf"):wxT("\\pgadmin_favourites.xml");
+        fname += wxT("\\postgresql");
+        if (!wxDirExists(fname))
+            wxMkdir(fname);
+        fname += (cfgname==PGPASS)?wxT("\\pgpass.conf"):wxT("\\pgadmin_favourites.xml");
 #else
-			+ ((cfgname==PGPASS)?wxT("/.pgpass"):wxT("/.pgadminfavourites"));
+        fname += ((cfgname==PGPASS)?wxT("/.pgpass"):wxT("/.pgadminfavourites"));
 #endif
-		return fname;
-	}
-	return wxT("");
+        return fname;
+    }
+    return wxT("");
 }
