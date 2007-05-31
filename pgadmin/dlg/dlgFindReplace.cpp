@@ -285,3 +285,4 @@ void dlgFindReplace::FindNext()
         OnFind(ev);
     }
 }
+

@@ -307,3 +307,4 @@ bool dbgPgConn::GetIsEdb()
     BackendMinimumVersion(0,0);
     return isEdb; 
 }
+
