@@ -248,32 +248,32 @@ wxString pgTable::GetSql(ctlTree *browser)
         if (!prevComment.IsEmpty())
 			sql += wxT(" -- ") + firstLineOnly(prevComment);
 
-        sql += wxT("\n)\n");
+        sql += wxT("\n)");
         if (GetInheritedTableCount())
         {
-            sql += wxT("INHERITS (") + GetQuotedInheritedTables() + wxT(")\n");
+            sql += wxT("\nINHERITS (") + GetQuotedInheritedTables() + wxT(")");
         }
 
         if (GetConnection()->BackendMinimumVersion(8, 2))
         {
-            sql += wxT("WITH (");
+            sql += wxT("\nWITH (");
             if (GetFillFactor().Length() > 0)
                 sql += wxT("FILLFACTOR=") + GetFillFactor() + wxT(", ");
             if (GetHasOids())
                 sql +=  wxT("OIDS=TRUE");
             else
                 sql +=  wxT("OIDS=FALSE");
-            sql += wxT(")\n");
+            sql += wxT(")");
         }
         else
         {
             if (GetHasOids())
-                sql +=  wxT("WITH OIDS\n");
+                sql +=  wxT("\nWITH OIDS");
             else
-                sql +=  wxT("WITHOUT OIDS\n");
+                sql +=  wxT("\nWITHOUT OIDS");
         }
 
-        AppendIfFilled(sql, wxT(" TABLESPACE "), qtIdent(tablespace));
+        AppendIfFilled(sql, wxT("\nTABLESPACE "), qtIdent(tablespace));
 
         sql += wxT(";\n")
             + GetOwnerSql(7, 3);
