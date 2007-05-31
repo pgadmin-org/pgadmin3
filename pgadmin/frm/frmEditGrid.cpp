@@ -953,6 +953,13 @@ void frmEditGrid::Go()
     toolBar->EnableTool(MNU_OPTIONS, false);
     viewMenu->Enable(MNU_OPTIONS, false);
 
+    // Stash the column sizes so we can reset them
+    wxArrayInt colWidths;
+    for (int col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
+    {
+        colWidths.Add(sqlGrid->GetColumnWidth(col));
+    }
+
     wxString qry=wxT("SELECT ");
     if (hasOids)
         qry += wxT("oid, ");
@@ -1014,6 +1021,14 @@ void frmEditGrid::Go()
     sqlGrid->SetSize(10,10);
 
     sqlGrid->SetTable(new sqlTable(connection, thread, tableName, relid, hasOids, primaryKeyColNumbers, relkind), true);
+
+    // Reset the column widths
+    for (int col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
+    {
+        if ((col + 1) <= (int)colWidths.Count())
+            sqlGrid->SetColumnWidth(col, colWidths[col]);
+    }
+
     sqlGrid->EndBatch();
 
     toolBar->EnableTool(MNU_REFRESH, true);
