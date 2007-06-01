@@ -33,6 +33,8 @@ private:
     pgSchema *schema;
     pgAggregate *aggregate;
 
+    virtual wxString GetDisplayName() { return GetName() + wxT("(") + GetInputTypesList() + wxT(")"); };
+
     void OnChangeType(wxCommandEvent &ev);
     void OnChangeTypeBase(wxCommandEvent &ev);
     void OnChangeTypeState(wxCommandEvent &ev);

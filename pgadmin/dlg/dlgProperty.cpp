@@ -484,9 +484,9 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
         if (data)
         {
 
-            wxString nodeName = this->GetName();
+            wxString nodeName = this->GetDisplayName();
             if (nodeName.IsEmpty())
-                nodeName = data->GetName();
+                nodeName = data->GetDisplayName();
 
             size_t pos=0;
             wxTreeItemId newItem;

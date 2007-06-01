@@ -37,6 +37,7 @@ public:
     void InitDialog(frmMain *frame, pgObject *node);
 
     wxString GetName();
+    virtual wxString GetDisplayName() { return GetName(); };
 
     virtual wxString GetSql() =0;
     virtual pgObject *CreateObject(pgCollection *collection) =0;

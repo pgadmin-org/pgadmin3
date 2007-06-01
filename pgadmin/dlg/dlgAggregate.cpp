@@ -215,6 +215,7 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
             wxT("  JOIN pg_type t ON t.oid=p.prorettype\n")
             wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
             wxT(" WHERE prorettype = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
+            wxT("\n   AND proisagg = FALSE")
             wxT("\n   AND proargtypes = '") + GetTypeOid(cbStateType->GetGuessedSelection()+1) + wxT(" ") + GetInputTypesOidList() + wxT("'"));
 
         if (set)
@@ -238,9 +239,8 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
             wxT("  FROM pg_proc p\n")
             wxT("  JOIN pg_type t ON t.oid=p.prorettype\n")
             wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
-            wxT(" WHERE COALESCE(proargtypes[2],0) = 0\n")
-            wxT("     AND proargtypes[0] = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
-            wxT("\n   AND COALESCE(proargtypes[1],0)= 0"));
+            wxT(" WHERE proisagg = FALSE")
+            wxT("\n   AND proargtypes = '") + GetTypeOid(cbStateType->GetGuessedSelection()+1) + wxT("'"));
 
         if (set)
         {
