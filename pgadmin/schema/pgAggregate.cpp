@@ -29,7 +29,7 @@ pgAggregate::~pgAggregate()
 
 bool pgAggregate::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql=wxT("DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(")");
+    wxString sql=wxT("DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputTypesList() + wxT(")");
     if (cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);
@@ -40,11 +40,21 @@ wxString pgAggregate::GetSql(ctlTree *browser)
     if (sql.IsNull())
     {
         sql = wxT("-- Aggregate: ") + GetQuotedFullIdentifier() + wxT("\n\n")
-            + wxT("-- DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputType() + wxT(");")
-            + wxT("\n\nCREATE AGGREGATE ") + GetQuotedFullIdentifier() 
-            + wxT("(\n  BASETYPE=") + GetInputType()
-            + wxT(",\n  SFUNC=") + GetStateFunction()
-            + wxT(",\n  STYPE=") + GetStateType();
+            + wxT("-- DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputTypesList() + wxT(");");
+
+        if (GetDatabase()->BackendMinimumVersion(8, 2))
+        {
+            sql += wxT("\n\nCREATE AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputTypesList() + wxT(") (");
+        }
+        else
+        {
+            sql += wxT("\n\nCREATE AGGREGATE ") + GetQuotedFullIdentifier()
+                + wxT("(\n  BASETYPE=") + GetInputTypesList() + wxT(",");
+        }
+            
+        sql += wxT("\n  SFUNC=") + GetStateFunction()
+             + wxT(",\n  STYPE=") + GetStateType();
+
         AppendIfFilled(sql, wxT(",\n  FINALFUNC="), qtIdent(GetFinalFunction()));
         if (GetInitialCondition().length() > 0)
           sql += wxT(",\n  INITCOND=") + qtDbString(GetInitialCondition());
@@ -52,13 +62,13 @@ wxString pgAggregate::GetSql(ctlTree *browser)
 
         sql += wxT("\n);\n")
             + GetOwnerSql(8, 0, wxT("AGGREGATE ") + GetQuotedFullIdentifier() 
-                + wxT("(") + qtIdent(GetInputType())
+                + wxT("(") + GetInputTypesList()
                 + wxT(")"));
 
         if (!GetComment().IsNull())
         {
             sql += wxT("COMMENT ON AGGREGATE ") + GetQuotedFullIdentifier() 
-                + wxT("(") + qtIdent(GetInputType())
+                + wxT("(") + GetInputTypesList()
                 + wxT(") IS ") + qtDbString(GetComment()) + wxT(";\n");
         }
     }
@@ -69,10 +79,23 @@ wxString pgAggregate::GetSql(ctlTree *browser)
 
 wxString pgAggregate::GetFullName()
 {
-    return GetName() + wxT("(") + GetInputType() + wxT(")");
+    return GetName() + wxT("(") + GetInputTypesList() + wxT(")");
 }
 
+// Return the list of input types
+wxString pgAggregate::GetInputTypesList()
+{
+    wxString types;
 
+    for (unsigned int i=0; i < inputTypes.Count(); i++)
+    {
+        if (i > 0)
+            types += wxT(", ");
+
+        types += inputTypes.Item(i);
+    }
+    return types;
+}
 
 void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
@@ -81,7 +104,7 @@ void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("Input type"), GetInputType());
+        properties->AppendItem(_("Input types"), GetInputTypesList());
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("State type"), GetStateType());
@@ -117,9 +140,7 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
     pgAggregate *aggregate=0;
     wxString sql=
         wxT("SELECT aggfnoid::oid, proname AS aggname, pg_get_userbyid(proowner) AS aggowner, aggtransfn,\n")
-        wxT(        "aggfinalfn, proargtypes[0] AS aggbasetype, ")
-        wxT(        "CASE WHEN (ti.typlen = -1 AND ti.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = ti.typelem) || '[]' ELSE ti.typname END as inputname, ")
-        wxT(        "aggtranstype, ")
+        wxT(        "aggfinalfn, proargtypes, aggtranstype, ")
         wxT(        "CASE WHEN (tt.typlen = -1 AND tt.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tt.typelem) || '[]' ELSE tt.typname END as transname, ")
         wxT(        "prorettype AS aggfinaltype, ")
         wxT(        "CASE WHEN (tf.typlen = -1 AND tf.typelem != 0) THEN (SELECT at.typname FROM pg_type at WHERE at.oid = tf.typelem) || '[]' ELSE tf.typname END as finalname, ")
@@ -138,13 +159,24 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 
     pgSet *aggregates= collection->GetDatabase()->ExecuteSet(sql +
         wxT("  JOIN pg_proc pr ON pr.oid = ag.aggfnoid\n")
-        wxT("  JOIN pg_type ti on ti.oid=proargtypes[0]\n")
         wxT("  JOIN pg_type tt on tt.oid=aggtranstype\n")
         wxT("  JOIN pg_type tf on tf.oid=prorettype\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=aggfnoid::oid\n")
         wxT(" WHERE pronamespace = ") + collection->GetSchema()->GetOidStr()
         + restriction
         + wxT("\n ORDER BY aggname"));
+
+    // Build a cache of data types
+    pgSet *types = collection->GetDatabase()->ExecuteSet(wxT(
+                    "SELECT oid, format_type(oid, typtypmod) AS typname FROM pg_type"));
+
+    typeMap map;
+
+    while(!types->Eof())
+    {
+        map[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
+        types->MoveNext();
+    }
 
     if (aggregates)
     {
@@ -154,10 +186,37 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
 
             aggregate->iSetOid(aggregates->GetOid(wxT("aggfnoid")));
             aggregate->iSetOwner(aggregates->GetVal(wxT("aggowner")));
-            if (aggregates->GetVal(wxT("inputname")) == wxT("any"))
-                aggregate->iSetInputType(wxT("\"any\""));
+
+            // Get the input type names. From 8.2 onwards there might be
+            // multiple types in the array. In any case, we must properly
+            // quote "any"
+
+            // Tokenize the arguments
+            wxStringTokenizer argTypes(wxEmptyString);
+            
+            if (aggregates->GetVal(wxT("proargtypes")) == wxEmptyString)
+            {
+                if (collection->GetDatabase()->BackendMinimumVersion(8, 2))
+                    aggregate->iAddInputType(wxT("*"));
+                else
+                    aggregate->iAddInputType(wxT("\"any\""));
+            }
             else
-                aggregate->iSetInputType(aggregates->GetVal(wxT("inputname")));
+            {
+                argTypes.SetString(aggregates->GetVal(wxT("proargtypes")));
+
+                while (argTypes.HasMoreTokens())
+                {
+                    // Add the arg type. This is a type oid, so 
+                    // look it up in the hashmap
+                    wxString type = argTypes.GetNextToken();
+                    if (map[type] == wxT("any"))
+                        aggregate->iAddInputType(wxT("\"any\""));
+                    else
+                        aggregate->iAddInputType(qtTypeIdent(map[type]));
+                }
+            }
+
             aggregate->iSetStateType(aggregates->GetVal(wxT("transname")));
             aggregate->iSetStateFunction(aggregates->GetVal(wxT("aggtransfn")));
             aggregate->iSetFinalType(aggregates->GetVal(wxT("finalname")));

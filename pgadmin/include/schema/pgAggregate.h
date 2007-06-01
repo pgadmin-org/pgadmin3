@@ -35,8 +35,11 @@ public:
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     wxString GetFullName();
-    wxString GetInputType() const { return inputType; }
-    void iSetInputType(const wxString& s) { inputType=s; }
+
+    wxArrayString &GetInputTypesArray() { return inputTypes; }
+    void iAddInputType(const wxString &s) { inputTypes.Add(s); }
+    wxString GetInputTypesList();
+
     wxString GetStateType() { return stateType; }
     void iSetStateType(const wxString& s) { stateType=s; }
     wxString GetFinalType() { return finalType; }
@@ -61,7 +64,8 @@ public:
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
-    wxString inputType, stateType, finalType, sortOp, quotedSortOp,
+    wxArrayString inputTypes;
+    wxString stateType, finalType, sortOp, quotedSortOp,
              stateFunction, finalFunction, initialCondition;
 };
 

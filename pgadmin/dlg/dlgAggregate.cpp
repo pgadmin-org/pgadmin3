@@ -26,23 +26,27 @@
 
 
 // pointer to controls
-#define cbBaseType          CTRL_COMBOBOX2("cbBaseType")
+#define cbInputType         CTRL_COMBOBOX2("cbInputType")
+#define lstInputTypes       CTRL_LISTCTRL("lstInputTypes")
 #define cbStateType         CTRL_COMBOBOX2("cbStateType")
 #define cbStateFunc         CTRL_COMBOBOX("cbStateFunc")
 #define cbFinalFunc         CTRL_COMBOBOX("cbFinalFunc")
 #define cbSortOp            CTRL_COMBOBOX("cbSortOp")
 #define txtInitial          CTRL_TEXT("txtInitial")
-
+#define btnAddType          CTRL_BUTTON("btnAddType")
+#define btnRemoveType       CTRL_BUTTON("btnRemoveType")
 
 
 BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
-    EVT_TEXT(XRCID("cbBaseType"),                   dlgAggregate::OnChangeTypeBase)
-    EVT_COMBOBOX(XRCID("cbBaseType"),               dlgAggregate::OnChangeType)
+    EVT_TEXT(XRCID("cbInputType"),                  dlgAggregate::OnChangeTypeBase)
     EVT_TEXT(XRCID("cbStateType"),                  dlgAggregate::OnChangeTypeState)
     EVT_COMBOBOX(XRCID("cbStateType"),              dlgAggregate::OnChangeType)
     EVT_COMBOBOX(XRCID("cbStateFunc"),              dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbSortOp"),                 dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbStateFunc"),                  dlgProperty::OnChange)
+    EVT_BUTTON(XRCID("btnAddType"),                 dlgAggregate::OnAddInputType)
+    EVT_BUTTON(XRCID("btnRemoveType"),              dlgAggregate::OnRemoveInputType)
+    EVT_LIST_ITEM_SELECTED(XRCID("lstInputTypes"),  dlgAggregate::OnSelectInputType)
 END_EVENT_TABLE();
 
 
@@ -69,18 +73,23 @@ pgObject *dlgAggregate::GetObject()
 
 int dlgAggregate::Go(bool modal)
 {
-    if (!connection->BackendMinimumVersion(7, 5))
+    if (!connection->BackendMinimumVersion(8, 0))
         cbOwner->Disable();
 
     if (!connection->BackendMinimumVersion(8, 1))
         cbSortOp->Disable();
 
+    lstInputTypes->InsertColumn(0, _("Input types"), wxLIST_FORMAT_LEFT, lstInputTypes->GetSize().x - 10);
+
     if (aggregate)
     {
         // edit mode
-        cbBaseType->Append(aggregate->GetInputType());
-        cbBaseType->SetSelection(0);
-        AddType(wxT(" "), 0, aggregate->GetInputType());
+        for (unsigned int x = 0; x < aggregate->GetInputTypesArray().Count(); x++ )
+        {
+            lstInputTypes->InsertItem(x, aggregate->GetInputTypesArray()[x]);
+            AddType(wxT(" "), 0, aggregate->GetInputTypesArray()[x]);
+        }
+
         cbStateType->Append(aggregate->GetStateType());
         cbStateType->SetSelection(0);
 
@@ -96,7 +105,11 @@ int dlgAggregate::Go(bool modal)
 
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
-        cbBaseType->Disable();
+
+        cbInputType->Disable();
+        btnAddType->Disable();
+        btnRemoveType->Disable();
+        cbStateFunc->Disable();
         cbStateType->Disable();
         cbFinalFunc->Disable();
         cbSortOp->Disable();
@@ -106,8 +119,10 @@ int dlgAggregate::Go(bool modal)
     {
         // create mode
         AddType(wxT(" "), PGOID_TYPE_ANY, wxT("\"any\""));
-        cbBaseType->Append(wxT("ANY"));
-        FillDatatype(cbBaseType, cbStateType, false);
+        cbInputType->Append(wxT("ANY"));
+
+        FillDatatype(cbInputType, cbStateType, false);
+        btnRemoveType->Disable();
     }
 
     return dlgProperty::Go(modal);
@@ -134,10 +149,30 @@ void dlgAggregate::CheckChange()
     }
     else
     {
+        // For pre 8.2 servers, we can only have one input type.
+        if (!connection->BackendMinimumVersion(8, 2))
+        {
+            if (lstInputTypes->GetItemCount() >= 1)
+                btnAddType->Disable();
+            else
+                btnAddType->Enable();
+        }
+
+        // Multi parameter aggregates cannot have sort ops.
+        if (connection->BackendMinimumVersion(8, 2))
+        {
+            if (lstInputTypes->GetItemCount() > 1)
+            {
+                cbSortOp->SetValue(wxEmptyString);
+                cbSortOp->Disable();
+            }
+            else
+                cbSortOp->Enable();
+        }
+
         wxString name=GetName();
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, cbBaseType->GetGuessedSelection() >=0, _("Please select base datatype."));
         CheckValid(enable, cbStateType->GetGuessedSelection() >=0, _("Please select state datatype."));
         CheckValid(enable, cbStateFunc->GetCurrentSelection() >= 0, _("Please specify state function."));
 
@@ -148,7 +183,7 @@ void dlgAggregate::CheckChange()
 
 void dlgAggregate::OnChangeTypeBase(wxCommandEvent &ev)
 {
-    cbBaseType->GuessSelection(ev);
+    cbInputType->GuessSelection(ev);
     OnChangeType(ev);
 }
 
@@ -158,27 +193,29 @@ void dlgAggregate::OnChangeTypeState(wxCommandEvent &ev)
     OnChangeType(ev);
 }
 
+
 void dlgAggregate::OnChangeType(wxCommandEvent &ev)
 {
     cbStateFunc->Clear();
     cbFinalFunc->Clear();
     cbSortOp->Clear();
 
-    if (cbBaseType->GetGuessedSelection() >= 0 && cbStateType->GetGuessedSelection() >= 0)
+    pgSet *set;
+    wxString qry;
+
+    // Get the possible state functions. They must return the state type, and take
+    // input_types + 1 parameters, the first of which is of the state type.
+    // If there are no input_types specified, assume "ANY" for a count(*) style aggregate.
+
+    if (lstInputTypes->GetItemCount() > 0 && cbStateType->GetGuessedSelection() >= 0)
     {
-        wxString qry=
+        set=connection->ExecuteSet(
             wxT("SELECT proname, nspname, prorettype\n")
             wxT("  FROM pg_proc p\n")
             wxT("  JOIN pg_type t ON t.oid=p.prorettype\n")
             wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
-            wxT(" WHERE COALESCE(proargtypes[2],0) = 0");
-
-
-        pgSet *set=connection->ExecuteSet(qry +
-            wxT("\n   AND prorettype = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
-            wxT("\n   AND proargtypes[0] = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
-            wxT("\n   AND (COALESCE(proargtypes[1],0) = 0 OR proargtypes[1]= ") 
-            + GetTypeOid(cbBaseType->GetGuessedSelection()) + wxT(")"));
+            wxT(" WHERE prorettype = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
+            wxT("\n   AND proargtypes = '") + GetTypeOid(cbStateType->GetGuessedSelection()+1) + wxT(" ") + GetInputTypesOidList() + wxT("'"));
 
         if (set)
         {
@@ -192,11 +229,17 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
             delete set;
         }
 
-
+        // Get the possible final_func options. This may be nothing, or a 
+        // function taking an argument of state_type
         cbFinalFunc->Append(wxT(" "));
 
-        set=connection->ExecuteSet(qry +
-            wxT("\n   AND proargtypes[0] = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
+        set=connection->ExecuteSet(
+            wxT("SELECT proname, nspname, prorettype\n")
+            wxT("  FROM pg_proc p\n")
+            wxT("  JOIN pg_type t ON t.oid=p.prorettype\n")
+            wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+            wxT(" WHERE COALESCE(proargtypes[2],0) = 0\n")
+            wxT("     AND proargtypes[0] = ") + GetTypeOid(cbStateType->GetGuessedSelection()+1) +
             wxT("\n   AND COALESCE(proargtypes[1],0)= 0"));
 
         if (set)
@@ -211,14 +254,15 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
             delete set;
         }
 
+        // Get the sort operators. This is only valid for a single arguement operator.
         cbSortOp->Append(wxT(" "), wxEmptyString);
 
         set=connection->ExecuteSet(
             wxT("SELECT oprname, nspname\n")
             wxT("  FROM pg_operator op\n")
             wxT("  JOIN pg_namespace nsp on nsp.oid=oprnamespace\n")
-            wxT(" WHERE oprleft = ") + GetTypeOid(cbBaseType->GetGuessedSelection()) + wxT("\n")
-            wxT("   AND oprright = ") + GetTypeOid(cbBaseType->GetGuessedSelection()) + wxT("\n"));
+            wxT(" WHERE oprleft = ") + NumToStr(GetInputTypeOid(0)) + wxT("\n")
+            wxT("   AND oprright = ") + NumToStr(GetInputTypeOid(0)) + wxT("\n"));
 
         if (set)
         {
@@ -236,7 +280,6 @@ void dlgAggregate::OnChangeType(wxCommandEvent &ev)
     CheckChange();
 }
 
-
 wxString dlgAggregate::GetSql()
 {
     wxString sql, name;
@@ -245,18 +288,27 @@ wxString dlgAggregate::GetSql()
     {
         // edit mode
         AppendNameChange(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(aggregate->GetName()) + 
-							   wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection()) + wxT(")"));
+							   wxT("(") + GetInputTypesList() + wxT(")"));
         AppendOwnerChange(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(GetName()) + 
-							   wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection()) + wxT(")"));
+							   wxT("(") + GetInputTypesList() + wxT(")"));
     }
     else
     {
         // create mode
         name=GetName();
-        sql = wxT("CREATE AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
-            + wxT("(\n   BASETYPE=") + GetQuotedTypename(cbBaseType->GetGuessedSelection())
-            + wxT(",\n   SFUNC=") + cbStateFunc->GetStringKey()
-            + wxT(", STYPE=") + GetQuotedTypename(cbStateType->GetGuessedSelection() +1); // skip "any" type
+        if (connection->BackendMinimumVersion(8, 2))
+        {
+            sql = wxT("CREATE AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
+                + wxT("(") + GetInputTypesList() + wxT(") (\n");
+        }
+        else
+        {
+            sql = wxT("CREATE AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)
+                + wxT("(\n   BASETYPE=") + GetInputTypesList() + wxT(",\n");
+        }
+
+        sql += wxT("   SFUNC=") + cbStateFunc->GetStringKey()
+             + wxT(", STYPE=") + GetQuotedTypename(cbStateType->GetGuessedSelection() +1); // skip "any" type
 
         if (cbFinalFunc->GetCurrentSelection() > 0)
         {
@@ -271,14 +323,106 @@ wxString dlgAggregate::GetSql()
         if (!opr.IsEmpty())
             sql += wxT(",\n   SORTOP=") + opr;
 
-        sql += wxT(");\n");
+        sql += wxT("\n);\n");
 
         AppendOwnerNew(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(name)+ 
-			                wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection()) + wxT(")"));
+			                wxT("(") + GetInputTypesList() + wxT(")"));
     }
     AppendComment(sql, wxT("AGGREGATE ") + schema->GetQuotedPrefix() + qtIdent(GetName())
-                  + wxT("(") + GetQuotedTypename(cbBaseType->GetGuessedSelection())
+                  + wxT("(") + GetInputTypesList()
                   + wxT(")"), aggregate);
 
     return sql;
+}
+
+// Return the list of input types
+wxString dlgAggregate::GetInputTypesList()
+{
+    wxString types;
+
+    for (int i=0; i < lstInputTypes->GetItemCount(); i++)
+    {
+        if (i > 0)
+            types += wxT(", ");
+
+        if (lstInputTypes->GetItemText(i) == wxT("ANY") || lstInputTypes->GetItemText(i) == wxT("*"))
+            return wxT("*");
+        else
+            types += qtTypeIdent(lstInputTypes->GetItemText(i));
+    }
+    return types;
+}
+
+void dlgAggregate::OnAddInputType(wxCommandEvent &ev)
+{
+    if (cbInputType->GetValue() != wxEmptyString)
+    {
+        if (cbInputType->GetValue() == wxT("ANY") && lstInputTypes->GetItemCount() > 0)
+        {
+            wxLogError(_("The ANY pseudo-datatype cannot be used in multi parameter aggregates."));
+            return;
+        }
+
+        wxListItem itm;
+        itm.SetMask(wxLIST_MASK_DATA | wxLIST_MASK_TEXT);
+
+        itm.SetData(StrToLong(GetTypeOid(cbInputType->GetGuessedSelection())));
+        itm.SetText(cbInputType->GetValue());
+
+        lstInputTypes->InsertItem(itm);
+        
+        if (cbInputType->GetValue() == wxT("ANY"))
+            btnAddType->Disable();
+        
+        OnChangeType(ev);
+    }
+}
+
+void dlgAggregate::OnRemoveInputType(wxCommandEvent &ev)
+{
+    long pos=lstInputTypes->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);;
+    if (pos >= 0)
+    {
+        lstInputTypes->DeleteItem(pos);
+
+        OnChangeType(ev);
+        btnRemoveType->Disable();
+
+        // Re-enable the Add button, in case it was disabled because 
+        // ANY was specified.
+        btnAddType->Enable();
+    }
+}
+
+void dlgAggregate::OnSelectInputType(wxListEvent &ev)
+{
+    if (!aggregate)
+        btnRemoveType->Enable();
+}
+
+// Returnt the datatype OID for the given parameter number
+long dlgAggregate::GetInputTypeOid(int param)
+{
+    wxListItem itm;
+    itm.SetMask(wxLIST_MASK_DATA | wxLIST_MASK_TEXT);
+    itm.SetId(param);
+
+    lstInputTypes->GetItem(itm); 
+    
+    return itm.GetData();
+}
+
+// Return the list of datatype OIDs
+wxString dlgAggregate::GetInputTypesOidList()
+{
+    wxString types;
+
+    for (int i=0; i < lstInputTypes->GetItemCount(); i++)
+    {
+        if (i > 0)
+            types += wxT(" ");
+
+        types += NumToStr(GetInputTypeOid(i));
+    }
+    return types;
 }

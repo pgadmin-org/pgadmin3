@@ -37,6 +37,14 @@ private:
     void OnChangeTypeBase(wxCommandEvent &ev);
     void OnChangeTypeState(wxCommandEvent &ev);
 
+    void OnAddInputType(wxCommandEvent &ev);
+    void OnRemoveInputType(wxCommandEvent &ev);
+    void OnSelectInputType(wxListEvent &ev);
+
+    long GetInputTypeOid(int param);
+    wxString GetInputTypesList();
+    wxString GetInputTypesOidList();
+
     DECLARE_EVENT_TABLE()
 };
 
