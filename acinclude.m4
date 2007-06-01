@@ -139,6 +139,27 @@ AC_DEFUN([LOCATE_WXWIDGETS],
 	])
 ])
 
+###########################
+# Check wxWidgets version #
+###########################
+AC_DEFUN([CHECK_WXWIDGETS],
+[
+        AC_MSG_CHECKING(wxWidgets version)
+        TMP_WX_VERSION=`${WX_CONFIG} --version`
+        changequote(<<. >>)dnl
+        WX_MAJOR=`expr ${TMP_WX_VERSION} : '\([0-9]*\)'`
+        WX_MINOR=`expr ${TMP_WX_VERSION} : '[0-9]*\.\([0-9]*\)'`
+        changequote([, ])dnl
+        if test "$WX_MAJOR" -lt 2; then
+                AC_MSG_ERROR([wxWidgets 2.8.0 or newer is require to build pgAdmin])
+        fi
+        if test "$WX_MAJOR" -eq 2 && test "$WX_MINOR" -lt 8; then
+                AC_MSG_ERROR([wxWidgets 2.8.0 or newer is require to build pgAdmin])
+        fi
+        AC_MSG_RESULT(ok)
+])
+
+
 #####################
 # Locate libxml	#
 #####################
