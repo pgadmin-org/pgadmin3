@@ -145,7 +145,12 @@ AC_DEFUN([LOCATE_WXWIDGETS],
 AC_DEFUN([CHECK_WXWIDGETS],
 [
         AC_MSG_CHECKING(wxWidgets version)
-        TMP_WX_VERSION=`${WX_CONFIG} --version`
+        TMP_WX_VERSION=`${WX_CONFIG} --version=${WX_VERSION} --version 2> /dev/null`
+        if test "$TMP_WX_VERSION" = ""
+        then
+                 AC_MSG_RESULT(failed)
+                 AC_MSG_ERROR([The version of wxWidgets required (${WX_VERSION}) is not supported by the installations in ${WX_HOME}.])
+        fi
         changequote(<<. >>)dnl
         WX_MAJOR=`expr ${TMP_WX_VERSION} : '\([0-9]*\)'`
         WX_MINOR=`expr ${TMP_WX_VERSION} : '[0-9]*\.\([0-9]*\)'`
@@ -335,9 +340,9 @@ AC_DEFUN([ENABLE_STATIC],
 	])
 ])
 
-##########################################################
-# Build a Mac App Bundle. This will force a static build #
-##########################################################
+##########################
+# Build a Mac App Bundle #
+##########################
 AC_DEFUN([ENABLE_APPBUNDLE],
 [
 	AC_ARG_ENABLE(appbundle, [  --enable-appbundle   Build a Mac OS X appbundle],
