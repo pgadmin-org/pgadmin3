@@ -301,16 +301,34 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 	}
 	else if (m_autoIndent && event.GetKeyCode() == WXK_RETURN)
     {
-        wxString indent = wxT("\n"), line;
+        wxString indent, line;
         line = GetLine(GetCurrentLine());
 
         int x = 0;
         while (line[x] == '\t' || line[x] == ' ')
             indent += line[x++];
 
+        // If the current line *just* contains an indent, select it
+        // so it will get removed
+        int offset =  0;
+        if (line.EndsWith(wxT("\n")))
+            offset = 1;
+        if (indent.Length() != 0 && 
+            GetText().SubString(GetCurrentPos() - indent.Length(), GetCurrentPos() - 1) == indent && 
+            GetSelectedText() == wxEmptyString)
+            SetSelection(GetLineEndPosition(GetCurrentLine()) - line.Length() + offset, GetLineEndPosition(GetCurrentLine()) - line.Length() + indent.Length() + offset);
+
+        // Lost any selected text.
         ReplaceSelection(wxEmptyString);
-        InsertText(GetCurrentPos(), indent);
-        SetCurrentPos(GetCurrentPos() + indent.Length());
+
+        // Only insert the indent if the text at the insert point
+        // doesn't already seem to start with an indent.
+        if (GetText().SubString(GetCurrentPos(), GetCurrentPos() + indent.Length() - 1) != indent)
+            InsertText(GetCurrentPos(), wxT("\n") + indent);
+        else
+            InsertText(GetCurrentPos(), wxT("\n"));
+
+        SetCurrentPos(GetCurrentPos() + indent.Length() + 1);
         SetSelection(GetCurrentPos(), GetCurrentPos());
     }
     else if (m_dlgFindReplace && event.GetKeyCode() == WXK_F3)
