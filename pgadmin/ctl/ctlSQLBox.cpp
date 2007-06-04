@@ -308,6 +308,7 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
         while (line[x] == '\t' || line[x] == ' ')
             indent += line[x++];
 
+        ReplaceSelection(wxEmptyString);
         InsertText(GetCurrentPos(), indent);
         SetCurrentPos(GetCurrentPos() + indent.Length());
         SetSelection(GetCurrentPos(), GetCurrentPos());
