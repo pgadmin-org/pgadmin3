@@ -186,7 +186,7 @@ bool pgAdmin3::OnInit()
 		{wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool"), wxCMD_LINE_VAL_NONE},
 		{wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
-        {wxCMD_LINE_OPTION, wxT("f"), wxT("file"), _("file to load into the qury tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
+        {wxCMD_LINE_OPTION, wxT("f"), wxT("file"), _("file to load into the query tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
 		{wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
 		{wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
         {wxCMD_LINE_OPTION, wxT("cp"), NULL, _("edit pgpass configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
