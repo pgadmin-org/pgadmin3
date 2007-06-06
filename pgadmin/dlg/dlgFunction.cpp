@@ -541,7 +541,7 @@ wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
                 args += qtIdent(lstArguments->GetText(i, 2)) + wxT(" ");
 
             if (lstArguments->GetText(i, 1) != wxEmptyString)
-                args += lstArguments->GetText(i, 1) + wxT(" ") + 
+                args += lstArguments->GetText(i, 1) + wxT(" ");
                 
             args += lstArguments->GetText(i, 0);
         }
