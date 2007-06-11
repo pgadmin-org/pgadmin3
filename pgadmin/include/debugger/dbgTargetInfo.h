@@ -24,12 +24,13 @@
 class wsArgInfo
 {
 public:
-	wsArgInfo( const wxString &argName, const wxString &argType, const wxString &argMode );
+	wsArgInfo( const wxString &argName, const wxString &argType, const wxString &argMode, const wxString &argTypeOid );
 
-	const wxString &getName()    { return( m_name ); }
-	const wxString &getType()    { return( m_type ); }
-	const wxString &getMode()    { return( m_mode ); }
-  	wxString & getValue()   { return( m_value ); } // NOTE: non-const, caller may modifiy value
+	const wxString &getName()    { return m_name; }
+	const wxString &getType()    { return m_type; }
+	const wxString &getMode()    { return m_mode; }
+    const Oid getTypeOid()       { return m_typeOid; }
+  	wxString & getValue()   { return m_value; } // NOTE: non-const, caller may modifiy value
 	const wxString   quoteValue();
 	void  setValue( const wxString &newValue ) { m_value = newValue; }
 
@@ -38,6 +39,7 @@ private:
 	wxString	m_type;
 	wxString	m_mode;
 	wxString	m_value;
+    Oid         m_typeOid;
 };
 
 WX_DECLARE_OBJARRAY(wsArgInfo, wsArgInfoArray);
@@ -94,6 +96,7 @@ private:
 	wxString	m_argNames;	 // Argument names
 	wxString	m_argModes;	 // Argument modes
 	wxString	m_argTypes;	 // Argument types
+	wxString	m_argTypeOids; // Argument type OIDs
 	wxString	m_fqName;	 // Fully-qualified name (schema.package.func or package.func)
     wxString    m_returnType;// Return type
 	bool	m_isFunction;	 // true->target is a function, false->target is a procedure

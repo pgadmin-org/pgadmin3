@@ -208,11 +208,11 @@ PGconn * dbgPgConn::getConnection()
 // 	The GUI thread invokes startCommand() when the user asks us to execute a
 //	command.  We pass off the real work to the worker thread.
 
-void dbgPgConn::startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType )
+void dbgPgConn::startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType, dbgPgParams *params )
 {
 	wxLogInfo( command );
 
-	m_workerThread->startCommand( command, caller, eventType );
+	m_workerThread->startCommand( command, caller, eventType, params );
 }
 
 PGresult * dbgPgConn::waitForCommand( const wxString &command )

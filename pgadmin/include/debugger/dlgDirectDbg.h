@@ -83,6 +83,12 @@ private:
 	void loadSettings();
 	void setBreakpoint( long pkgOid, long funcOid );
 	void invokeTarget();
+	void invokeTargetCallable();
+	void invokeTargetStatement();
+
+#ifdef __WXMSW__
+    void InitLibpq();
+#endif
 
     DECLARE_EVENT_TABLE()
 

@@ -69,6 +69,41 @@ extern wxString docPath;               // Where docs are stored
 extern wxString uiPath;                // Where ui data is stored
 extern wxString i18nPath;              // Where i18n data is stored
 
+// 
+// Support for additional functions included in the EnterpriseDB
+// version of libpq. These are enable via runtime loading of the
+// functions on Windows, and a configure time macro on other 
+// platforms (EDB_LIBPQ).
+//
+// Currently, these are only use to support EDB callable statements
+// so the debugger can grab OUT/INOUT parameters from EDB stored
+// procedures.
+//
+#ifdef __WXMSW__
+// Dynamically loaded PQgetOutResult
+typedef PGresult* (*PQGETOUTRESULT)(PGconn*);
+extern PQGETOUTRESULT PQiGetOutResult;
+#define PQiGetOutResult (PQiGetOutResult)
+
+// Dynamically loaded PQprepareOut
+typedef PGresult* (*PQPREPAREOUT)(PGconn*, const char*, const char*, int, const Oid*, const int*);
+extern PQPREPAREOUT PQiPrepareOut;
+#define PQiPrepareOut (PQiPrepareOut)
+
+// Dynamically loaded PQsendQueryPreparedOut
+typedef int (*PQSENDQUERYPREPAREDOUT)(PGconn*, const char*, int, const char *const *, const int *, const int *, int);
+extern PQSENDQUERYPREPAREDOUT PQiSendQueryPreparedOut;
+#define PQiSendQueryPreparedOut (PQiSendQueryPreparedOut)
+
+#else
+#ifdef EDB_LIBPQ
+#define PQiGetOutResult PQgetOutResult
+#define PQiPrepareOut PQprepareOut
+#define PQiSendQueryPreparedOut PQsendQueryPreparedOut
+#endif
+#endif
+
+// Simple hash map used as an ad-hoc data type cache
 WX_DECLARE_STRING_HASH_MAP(wxString, typeMap);
 
 // Class declarations
@@ -96,7 +131,6 @@ protected:
     void InitLogger();
     void InitNetwork();
     void InitXml();
-
 };
 
 class pgAppearanceFactory

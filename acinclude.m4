@@ -386,45 +386,93 @@ AC_DEFUN([SETUP_POSTGRESQL],
 				;;
 		esac
 
+		PG_LIB=`${PG_CONFIG} --libdir`
+
+                if test "$BUILD_STATIC" = "yes"
+                then
+                        AC_MSG_CHECKING(for PQexec in libpq.a)
+                        if test "$(nm ${PG_LIB}/libpq.a | grep -c PQgetOutResult)" -gt 0
+                        then
+                                AC_MSG_RESULT(present)
+                                PG_LIBPQ="yes" 
+                        else    
+                                AC_MSG_RESULT(not present)
+                                PG_LIBPQ="no"
+                        fi              
+                else                            
+                        AC_LANG_SAVE    
+                        AC_LANG_C               
+                        AC_CHECK_LIB(pq, PQexec, [PG_LIBPQ=yes], [PG_LIBPQ=no])
+                        AC_LANG_RESTORE         
+                fi
+
+
 		AC_LANG_SAVE
 		AC_LANG_C
-		AC_CHECK_LIB(pq, PQexec, [PG_LIBPQ=yes], [PG_LIBPQ=no])
 
-		if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
-		then
-			echo -n "checking if libpq links against libssl: "
-			if test "$(otool -L ${PG_HOME}/lib/libpq.?.dylib | grep -c libssl)" -gt 0
-			then
-				PG_SSL="yes"
-			else
-				PG_SSL="no"
-			fi
-			echo $PG_SSL
-		else
-			AC_CHECK_LIB(pq, SSL_connect, [PG_SSL=yes], [PG_SSL=no])
-		fi
+                # Check for SSL support
+                if test "$BUILD_STATIC" = "yes"
+                then
+                        AC_MSG_CHECKING(for SSL_connect in libpq.a)
+                        if test "$(nm ${PG_LIB}/libpq.a | grep -c SSL_connect)" -gt 0
+                        then
+                                AC_MSG_RESULT(present)
+                                PG_SSL="yes"
+                        else   
+                                AC_MSG_RESULT(not present)
+                                PG_SSL="no"
+                        fi
+                else
+		        if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
+        		then
+                                AC_MSG_CHECKING(for SSL_connect in -lpq)
+		        	if test "$(otool -L ${PG_LIB}/libpq.?.dylib | grep -c libssl)" -gt 0
+			        then
+                                        AC_MSG_RESULT(present)
+        				PG_SSL="yes"
+	        		else
+                                        AC_MSG_RESULT(not present)
+	        			PG_SSL="no"
+		        	fi
+        		else
+	        		AC_CHECK_LIB(pq, SSL_connect, [PG_SSL=yes], [PG_SSL=no])
+	        	fi
+                fi
 
-		if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
-		then
-			echo -n "checking if libpq links against libkrb5: "
-			if test "$(otool -L ${PG_HOME}/lib/libpq.?.dylib | grep -c libkrb5)" -gt 0
-			then
-				PG_KRB5="yes"
-			else
-				PG_KRB5="no"
-			fi
-			echo $PG_KRB5
-		else
-			AC_CHECK_LIB(pq, krb5_free_principal, [PG_KRB5=yes], [PG_KRB5=no])
-		fi
+                # Check for Kerberos support
+                if test "$BUILD_STATIC" = "yes"
+                then
+                        AC_MSG_CHECKING(for krb5_free_principal in libpq.a)
+                        if test "$(nm ${PG_LIB}/libpq.a | grep -c krb5_free_principal)" -gt 0
+                        then
+                                AC_MSG_RESULT(present)
+                                PG_KRB5="yes"
+                        else
+                                AC_MSG_RESULT(not present)
+                                PG_KRB5="no"
+                        fi
+                else
+		        if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
+		        then
+                                AC_MSG_CHECKING(for krb5_free_principle in -lpq)
+			        if test "$(otool -L ${PG_LIB}/libpq.?.dylib | grep -c libkrb5)" -gt 0
+			        then
+                                        AC_MSG_RESULT(present)
+				        PG_KRB5="yes"
+			        else
+                                        AC_MSG_RESULT(not present)
+				        PG_KRB5="no"
+			        fi
+		        else
+			        AC_CHECK_LIB(pq, krb5_free_principal, [PG_KRB5=yes], [PG_KRB5=no])
+		        fi
+                fi
 
 		AC_LANG_RESTORE
 
 		PG_INCLUDE=`${PG_CONFIG} --includedir` 
 		CPPFLAGS="$CPPFLAGS -I${PG_INCLUDE}"
 	
-		PG_LIB=`${PG_CONFIG} --libdir`
-
 		PG_VERSION=`${PG_CONFIG} --version`
 
 		if test "$build_os" = "mingw32"
@@ -487,6 +535,31 @@ AC_DEFUN([SETUP_POSTGRESQL],
 	fi
 ])
 AC_SUBST(PG_CONFIG)
+
+#######################################################
+# Check for extended libpq functions in EnterpriseDB  #
+#######################################################
+AC_DEFUN([CHECK_EDB_LIBPQ],
+[
+        if test "$BUILD_STATIC" = "yes"
+        then
+                AC_MSG_CHECKING(for PQgetOutResult in libpq.a)
+                if test "$(nm ${PG_LIB}/libpq.a | grep -c PQgetOutResult)" -gt 0
+                then
+                        AC_MSG_RESULT(present)
+                        EDB_LIBPQ="yes"
+                else
+                        AC_MSG_RESULT(not present)
+                        EDB_LIBPQ="no"
+                fi
+        else
+                AC_LANG_SAVE
+                AC_LANG_C
+                AC_CHECK_LIB(pq, PQgetOutResult, [EDB_LIBPQ=yes], [EDB_LIBPQ=no])
+                AC_LANG_RESTORE
+        fi
+])
+AC_SUBST(EDB_LIBPQ)
 
 ################################################
 # Check for wxWidgets libraries and headers	#

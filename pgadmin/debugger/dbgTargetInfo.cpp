@@ -31,10 +31,11 @@ WX_DEFINE_OBJARRAY( wsArgInfoArray );
 #define COL_ARG_NAMES		"argnames"
 #define COL_ARG_MODES		"argmodes"
 #define COL_ARG_TYPES		"argtypes"
+#define COL_ARG_TYPEOIDS	"argtypeoids"
 #define COL_IS_FUNCTION		"isfunc"
 #define COL_TARGET_OID		"target"
 #define COL_PACKAGE_OID		"pkg"
-#define COL_FQ_NAME		"fqname"		/* Fully qualified name	*/
+#define COL_FQ_NAME		    "fqname"		/* Fully qualified name	*/
 #define COL_RETURNS_SET		"proretset"
 #define COL_RETURN_TYPE		"rettype"
 
@@ -63,7 +64,7 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn * conn, char ta
 	wxString query = 
 		wxT("select")
 		wxT("  t.target, t.pkg, t.targetname, t.argnames, t.argmodes, t.isfunc, t.fqname,")
-		wxT("  pg_catalog.oidvectortypes( t.argtypes ) as argtypes,")
+		wxT("  pg_catalog.oidvectortypes( t.argtypes ) as argtypes, t.argtypes as argtypeoids,")
 		wxT("  l.lanname, n.nspname, p.proretset, y.typname AS rettype")
 		wxT(" from")
 		wxT("  pldbg_get_target_info( '%s', '%c' ) t , pg_namespace n, pg_language l, pg_proc p, pg_type y")
@@ -84,6 +85,7 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn * conn, char ta
 	m_argNames 	 = result->getString( wxString( COL_ARG_NAMES, wxConvUTF8 ));
 	m_argModes 	 = result->getString( wxString( COL_ARG_MODES, wxConvUTF8 ));
 	m_argTypes 	 = result->getString( wxString( COL_ARG_TYPES, wxConvUTF8 ));
+	m_argTypeOids = result->getString( wxString( COL_ARG_TYPEOIDS, wxConvUTF8 ));
 	m_isFunction = result->getBool( wxString( COL_IS_FUNCTION, wxConvUTF8 ));
 	m_oid      	 = result->getLong( wxString( COL_TARGET_OID, wxConvUTF8 ));
 	m_pkgOid	 = result->getLong( wxString( COL_PACKAGE_OID, wxConvUTF8 ));
@@ -99,6 +101,7 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn * conn, char ta
 
 	wxStringTokenizer names( m_argNames, wxT( ",{}" ), wxTOKEN_STRTOK );
 	wxStringTokenizer types( m_argTypes, wxT( ",{}" ), wxTOKEN_STRTOK );
+	wxStringTokenizer typeOids( m_argTypeOids, wxT( ",{}" ), wxTOKEN_STRTOK );
 	wxStringTokenizer modes( m_argModes, wxT( ",{}" ), wxTOKEN_STRTOK );
 
 	// Create one wsArgInfo for each target argument
@@ -115,7 +118,7 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn * conn, char ta
 		if( argName.IsEmpty())
 			argName.Printf( wxT( "$%d" ), argCount );
 
-		wsArgInfo	argInfo( argName, types.GetNextToken(), modes.GetNextToken());
+		wsArgInfo	argInfo( argName, types.GetNextToken(), modes.GetNextToken(), typeOids.GetNextToken());
 
 		if( argInfo.getMode() == wxT( "i" ))
 			m_argInCount++;
@@ -172,12 +175,15 @@ wsArgInfo & dbgTargetInfo::operator[]( int index )
 //	Once the user has had a chance to enter values for each of the IN and INOUT
 //	arguments, we store those values inside of the corresponding wsArgInfo objects
 
-wsArgInfo::wsArgInfo( const wxString &argName, const wxString &argType, const wxString &argMode )
+wsArgInfo::wsArgInfo( const wxString &argName, const wxString &argType, const wxString &argMode, const wxString &argTypeOid)
 	: m_name( argName.Strip( wxString::both )),
 	  m_type( argType.Strip( wxString::both )),
 	  m_mode( argMode == wxT( "" ) ? wxT( "i" ) : argMode.Strip( wxString::both )),
 	  m_value()
 {
+    long oid;
+    argTypeOid.ToLong(&oid);
+    m_typeOid = (Oid)oid;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
