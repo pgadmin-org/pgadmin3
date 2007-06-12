@@ -101,7 +101,13 @@ bool wxUtfFile::Write(const wxString& str)
         return true;
 
     if (m_conversion)
+    {
+        wxWX2MBbuf buf = str.mb_str(*m_conversion);
+        if (!buf)
+            return false;
+
         return wxFile::Write(str, *m_conversion);
+    }
     else
         return wxFile::Write(str.c_str(), len*sizeof(wxChar)) == len*sizeof(wxChar);
 }
