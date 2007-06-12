@@ -35,13 +35,14 @@ WX_DEFINE_LIST( ThreadCommandList );
 //  (and thus the user interface) responsive while we're waiting for the server.
 
 dbgPgThread::dbgPgThread( dbgPgConn & owner )
-    : wxThread( ),
+    : wxThread(wxTHREAD_JOINABLE),
     m_owner( owner ),
     m_queueCounter(),
     m_queueMutex(),
     m_commandQueue(),
     m_currentCommand( NULL ),
-    run( 0 )
+    run( 0 ),
+    die( false )
 {
     conv = &wxConvLibc;
 }
@@ -64,9 +65,23 @@ void dbgPgThread::startCommand( const wxString &command, wxEvtHandler * caller, 
     m_queueMutex.Lock();
     m_commandQueue.Append( new dbgPgThreadCommand( command, caller, eventType, params ));
 
-    ::wxLogDebug( _( "Queueing: %s" ), command.c_str());
+    wxLogDebug( _( "Queueing: %s" ), command.c_str());
 
     m_queueMutex.Unlock();
+
+    m_queueCounter.Post();
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Die()
+//
+//    Instruct the thread to kill itself.
+
+void dbgPgThread::Die()
+{
+    wxLogDebug( _( "Telling the query thread to die..." ));
+    die = true;
 
     m_queueCounter.Post();
 }
@@ -89,7 +104,7 @@ void * dbgPgThread::Entry( void )
     // When m_condition is signaled, we wake up, send a command
     // to the PostgreSQL server, and wait for a result.
 
-    while( m_queueCounter.Wait() == wxSEMA_NO_ERROR )
+    while( m_queueCounter.Wait() == wxSEMA_NO_ERROR && !die )
     {
         m_owner.setNoticeHandler( noticeHandler, this );
 
@@ -124,7 +139,7 @@ void * dbgPgThread::Entry( void )
             {
                 wxLogError(wxT( "Could not prepare the callable statement: %s, error: %s" ), stmt.c_str(), wxString(PQresultErrorMessage(res), *conv).c_str());
                 PQclear(res);
-                this->Exit();
+                return this;
             }
 
             int ret = PQiSendQueryPreparedOut(m_owner.getConnection(), 
@@ -138,7 +153,7 @@ void * dbgPgThread::Entry( void )
             {
                 wxLogError(wxT( "Couldn't execute the callable statement: %s" ), stmt.c_str());
                 PQclear(res);
-                this->Exit();
+                return this;
             }
 
             // We need to call PQgetResult before we can call PQgetOutResult
@@ -159,8 +174,8 @@ void * dbgPgThread::Entry( void )
 
         if(!result)
         {
-            wxLogError(wxT( "NULL PGresult - user abort?" ));
-            this->Exit();
+            wxLogDebug(wxT( "NULL PGresult - user abort?" ));
+            return this;
         }
 
         wxLogDebug(_( "Complete: %s" ), wxString(PQresStatus(PQresultStatus(result)), *conv).c_str());
@@ -175,7 +190,7 @@ void * dbgPgThread::Entry( void )
             else
                 wxLogError(wxT( "Error executing the query: %s" ), wxString(PQresultErrorMessage(result), *conv).c_str());
             PQclear(result);
-            this->Exit();
+            return this;
         }
 
         // Notify the GUI thread that a result set is ready for display

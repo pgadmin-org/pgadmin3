@@ -102,7 +102,7 @@ dlgDirectDbg::dlgDirectDbg( frmDebugger *parent, wxWindowID id, const dbgConnPro
 void dlgDirectDbg::setupParamWindow( )
 {
     // Add three columns to the grid control:
-    //    (Parameter) Name, Type, and Valu
+    //    (Parameter) Name, Type, and Value
     grdParams->CreateGrid( 0, 3 );
     grdParams->SetColLabelValue( COL_NAME,  _( "Name" ));
     grdParams->SetColLabelValue( COL_TYPE,  _( "Type" ));
@@ -385,6 +385,13 @@ void dlgDirectDbg::OnCancel( wxCommandEvent & event )
 
 void dlgDirectDbg::OnClose( wxCloseEvent & event )
 {
+    // Destroy the grid - required as it seems to create threads in some cases
+    if (grdParams)
+    {
+        grdParams->Destroy();
+        delete grdParams;
+    }
+
     // Close the debugger (proxy) connection
     if (m_conn)
         m_conn->Close();

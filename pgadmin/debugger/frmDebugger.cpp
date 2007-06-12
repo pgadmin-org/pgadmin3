@@ -326,7 +326,10 @@ wxMenuBar *frmDebugger::setupMenuBar(void)
 void frmDebugger::OnClose( wxCloseEvent & event )
 {
     if (m_standaloneDebugger)
+    {
         m_standaloneDebugger->OnClose( event );
+        delete m_standaloneDebugger;
+    }
 
     if (!event.GetVeto())
     {

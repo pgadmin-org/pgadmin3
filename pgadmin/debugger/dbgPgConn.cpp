@@ -247,7 +247,13 @@ void dbgPgConn::Close()
     // Attempt to cancel any ongoing query
     Cancel();
 
-	if(m_pgConn)
+    if (m_workerThread)
+    {
+        m_workerThread->Die();
+        m_workerThread->Wait();
+    }
+
+	if (m_pgConn)
 		PQfinish(m_pgConn);
 
 	m_pgConn = NULL;

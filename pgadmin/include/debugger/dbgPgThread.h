@@ -59,23 +59,25 @@ class dbgPgThread : public wxThread
 public:
     dbgPgThread(dbgPgConn &owner);
 
-    virtual void   * Entry();
-    void    startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL, dbgPgParams *params = NULL );
+    virtual void * Entry();
+    void startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL, dbgPgParams *params = NULL );
+    void Die();
 
 private:
 
-    static void    noticeHandler( void * arg, const char * message );
+    static void noticeHandler( void * arg, const char * message );
 
     dbgPgThreadCommand * getNextCommand();    // Grab next command from queue 
 
-    dbgPgConn    &m_owner;        // Connection to the PostgreSQL server
-    wxSemaphore    m_queueCounter;        // Number of entries in queue (thread synchronizer)
-    wxMutex        m_queueMutex;        // Mutex to serialize access to m_commandQueue
-    ThreadCommandList    m_commandQueue;        // Queue of pending commands
+    dbgPgConn &m_owner;        // Connection to the PostgreSQL server
+    wxSemaphore m_queueCounter;        // Number of entries in queue (thread synchronizer)
+    wxMutex m_queueMutex;        // Mutex to serialize access to m_commandQueue
+    ThreadCommandList m_commandQueue;        // Queue of pending commands
 
     dbgPgThreadCommand *m_currentCommand;    // Currently executing command
     wxMBConv *conv;
     long run;
+    bool die;
 };
 
 #endif
