@@ -2,7 +2,6 @@
 <resource>
   <object class="wxDialog" name="dlgDirectDbg">
     <title>View Data Options</title>
-    <size>220,240d</size>
     <object class="wxNotebook" name="nbOptions">
       <pos>2,2d</pos>
       <size>216,216d</size>
@@ -10,54 +9,35 @@
         <label>Parameters</label>
         <object class="wxPanel" name="pnlParams">
           <object class="wxFlexGridSizer">
-            <cols>2</cols>
-            <rows>2</rows>
-            <object class="spacer">
-              <size>3,3d</size>
-            </object>
-            <object class="spacer"/>
-            <object class="spacer"/>
+            <cols>1</cols>
+            <rows>3</rows>
+            <vgap>5</vgap>
+            <hgap>10</hgap>
+            <growablecols>0</growablecols>
             <object class="sizeritem">
-              <object class="wxFlexGridSizer">
-                <cols>1</cols>
-                <growablecols>0</growablecols>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="lblMessage">
-                    <label>Enter the required values for each parameter:</label>
-                    <pos>5,5d</pos>
-                  </object>
-                </object>
-                <object class="spacer">
-                  <size>2,2d</size>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxGrid" name="grdParams">
-                    <pos>5,15d</pos>
-                    <tooltip>Set the function/procedure parameter values.</tooltip>
-                  </object>
-                  <flag>wxGROW</flag>
-                </object>
-                <object class="spacer">
-                  <size>5,5d</size>
-                </object>
-                <growablerows>2</growablerows>
-                <object class="sizeritem">
-                  <object class="wxCheckBox" name="chkPkgInit">
-                    <label>Debug package initializer?</label>
-                  </object>
-                </object>
-                <object class="spacer">
-                  <size>5,5d</size>
-                </object>
+              <object class="wxStaticText" name="lblMessage">
+                <label>Enter the required values for each parameter:</label>
+                <pos>5,5d</pos>
               </object>
-              <flag>wxGROW</flag>
+              <flag>wxALL</flag>
+              <border>5</border>
             </object>
-            <object class="spacer">
-              <size>2,2d</size>
+            <object class="sizeritem">
+              <object class="wxGrid" name="grdParams">
+                <pos>5,15d</pos>
+                <tooltip>Set the function/procedure parameter values.</tooltip>
+              </object>
+              <flag>wxLEFT|wxRIGHT|wxGROW</flag>
+              <border>5</border>
             </object>
-            <growablecols>1</growablecols>
+            <object class="sizeritem">
+              <object class="wxCheckBox" name="chkPkgInit">
+                <label>Debug package initializer?</label>
+              </object>
+              <flag>wxALL</flag>
+              <border>5</border>
+            </object>
             <growablerows>1</growablerows>
-            <object class="spacer"/>
           </object>
         </object>
       </object>
@@ -72,5 +52,6 @@
       <pos>116,222d</pos>
       <tooltip>Accept the current options and close the dialogue.</tooltip>
     </object>
+    <size>220,239d</size>
   </object>
 </resource>

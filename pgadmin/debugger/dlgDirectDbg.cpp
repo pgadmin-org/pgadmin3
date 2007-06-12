@@ -102,13 +102,13 @@ dlgDirectDbg::dlgDirectDbg( frmDebugger *parent, wxWindowID id, const dbgConnPro
 void dlgDirectDbg::setupParamWindow( )
 {
     // Add three columns to the grid control:
-    //    (Parameter) Name, Type, and Value
+    //   (Parameter) Name, Type, and Value
     grdParams->CreateGrid( 0, 3 );
     grdParams->SetColLabelValue( COL_NAME,  _( "Name" ));
     grdParams->SetColLabelValue( COL_TYPE,  _( "Type" ));
     grdParams->SetColLabelValue( COL_VALUE, _( "Value" ));
     grdParams->SetRowLabelSize( 25 );
-    grdParams->SetColSize( 0, 80 );
+    grdParams->SetColSize( 0, 75 );
     grdParams->SetColSize( 1, 100 );
     grdParams->SetColSize( 2, grdParams->GetClientSize().x - 210 );
     grdParams->SetColLabelSize( 18 );
