@@ -46,6 +46,7 @@ private:
     pgObject *object;
     pgServer *server;
     bool viewRunning, filenameValid;
+    wxString processedFile;
 
     DECLARE_EVENT_TABLE()
 };

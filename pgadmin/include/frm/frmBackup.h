@@ -40,6 +40,8 @@ private:
     pgObject *object;
 
     bool canBlob;
+    wxString processedFile;
+
     DECLARE_EVENT_TABLE()
 };
 

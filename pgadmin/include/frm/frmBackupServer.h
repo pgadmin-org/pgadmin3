@@ -37,6 +37,7 @@ private:
     void OnOK(wxCommandEvent &ev);
 
     pgObject *object;
+    wxString processedFile;
 
     DECLARE_EVENT_TABLE()
 };

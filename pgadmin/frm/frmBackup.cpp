@@ -309,6 +309,17 @@ void frmBackup::Go()
 
 void frmBackup::OnOK(wxCommandEvent &ev)
 {
+    if (!done)
+    {
+        if (processedFile == txtFilename->GetValue())
+        {
+            if (wxMessageBox(_("Are you sure you wish to run a backup to this file again?"), _("Repeat backup?"), wxICON_QUESTION | wxYES_NO) == wxNO)
+                return;
+        }
+
+        processedFile = txtFilename->GetValue();
+    }
+
     settings->Write(wxT("frmBackup/LastFile"), txtFilename->GetValue());
     ExternProcessDialog::OnOK(ev);
 }

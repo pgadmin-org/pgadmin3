@@ -368,8 +368,18 @@ void frmRestore::OnView(wxCommandEvent &ev)
 
 void frmRestore::OnOK(wxCommandEvent &ev)
 {
-    settings->Write(wxT("frmRestore/LastFile"), txtFilename->GetValue());
+    if (!done)
+    {
+        if (processedFile == txtFilename->GetValue())
+        {
+            if (wxMessageBox(_("Are you sure you wish to run a restore from this file again?"), _("Repeat restore?"), wxICON_QUESTION | wxYES_NO) == wxNO)
+                return;
+        }
 
+        processedFile = txtFilename->GetValue();
+    }
+
+    settings->Write(wxT("frmRestore/LastFile"), txtFilename->GetValue());
     viewRunning = false;
     btnView->Disable();
 
