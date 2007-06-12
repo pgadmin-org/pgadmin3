@@ -56,7 +56,7 @@ endif
 if EDB_LIBPQ
   __EDB_LIBPQ=-DEDB_LIBPQ
 else
-  __EDB_LIBPQ=""
+  __EDB_LIBPQ=
 endif
 
 if !APPBUNDLE

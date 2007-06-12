@@ -391,7 +391,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
                 if test "$BUILD_STATIC" = "yes"
                 then
                         AC_MSG_CHECKING(for PQexec in libpq.a)
-                        if test "$(nm ${PG_LIB}/libpq.a | grep -c PQgetOutResult)" -gt 0
+                        if test "$(nm ${PG_LIB}/libpq.a | grep -c PQexec)" -gt 0
                         then
                                 AC_MSG_RESULT(present)
                                 PG_LIBPQ="yes" 
