@@ -51,7 +51,7 @@
 const float SERVER_MIN_VERSION = 7.3f;
 
 // Some redefines for modern Microsoft compilers
-#if defined(_MSC_VER) && (_MSC_VER >= 1400) 
+#if defined(_MSC_VER) 
 #define creat _creat
 #define close _close
 #define mkdir _mkdir
