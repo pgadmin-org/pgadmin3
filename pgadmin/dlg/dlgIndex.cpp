@@ -95,7 +95,10 @@ int dlgIndexBase::Go(bool modal)
             lstColumns->InsertItem(pos++, str, columnFactory.GetIconId());
         }
 
-        txtFillFactor->SetValue(index->GetFillFactor());
+        if (txtFillFactor)
+        {
+            txtFillFactor->SetValue(index->GetFillFactor());
+        }
     }
     else
     {
@@ -219,9 +222,16 @@ dlgIndex::dlgIndex(pgaFactory *f, frmMain *frame, pgIndex *index, pgTable *paren
 
 void dlgIndex::CheckChange()
 {
+    bool fill=false;
+
     if (index)
     {
-        EnableOK(txtFillFactor->GetValue() != index->GetFillFactor() || txtComment->GetValue() != index->GetComment() || chkClustered->GetValue() != index->GetIsClustered());
+        if (txtFillFactor)
+        {
+            fill = txtFillFactor->GetValue() != index->GetFillFactor();
+        }
+
+        EnableOK(fill || txtComment->GetValue() != index->GetComment() || chkClustered->GetValue() != index->GetIsClustered());
     }
     else
     {
@@ -306,8 +316,11 @@ wxString dlgIndex::GetSql()
 
             AppendIfFilled(sql, wxT("\n       TABLESPACE "), qtIdent(cbTablespace->GetValue()));
 
-            if (connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
-                sql += wxT("\n  WITH (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(")");
+            if (txtFillFactor)
+            {
+                if (connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
+                    sql += wxT("\n  WITH (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(")");
+            }
 
             AppendIfFilled(sql, wxT(" WHERE "), txtWhere->GetValue());
             sql +=  wxT(";\n");
