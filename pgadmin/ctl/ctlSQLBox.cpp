@@ -304,30 +304,35 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
         wxString indent, line;
         line = GetLine(GetCurrentLine());
 
-        int x = 0;
-        while (line[x] == '\t' || line[x] == ' ')
-            indent += line[x++];
-
-        // If the current line *just* contains an indent, select it
-        // so it will get removed
+        // Get the offset for the current line - basically, whether
+        // or not it ends with a \n
         int offset =  0;
         if (line.EndsWith(wxT("\n")))
             offset = 1;
+
+        // Get the indent. This is every leading space or tab on the
+        // line, up until the current cursor position.
+        int x = 0;
+        int max = line.Length() - (GetLineEndPosition(GetCurrentLine()) - GetCurrentPos()) - offset;
+        while (line[x] == '\t' || line[x] == ' ' && x < max)
+            indent += line[x++];
+
+        // Select any indent in front of the cursor to be removed. If
+        // the cursor is positioned after any non-indent characters, 
+        // we don't remove anything. If there is already some selected,
+        // don't select anything new at all.
         if (indent.Length() != 0 && 
-            GetText().SubString(GetCurrentPos() - indent.Length(), GetCurrentPos() - 1) == indent && 
+            (unsigned int)GetCurrentPos() <= ((GetLineEndPosition(GetCurrentLine()) - line.Length()) + indent.Length() + offset) && 
             GetSelectedText() == wxEmptyString)
             SetSelection(GetLineEndPosition(GetCurrentLine()) - line.Length() + offset, GetLineEndPosition(GetCurrentLine()) - line.Length() + indent.Length() + offset);
 
-        // Lost any selected text.
+        // Lose any selected text.
         ReplaceSelection(wxEmptyString);
 
-        // Only insert the indent if the text at the insert point
-        // doesn't already seem to start with an indent.
-        if (GetText().SubString(GetCurrentPos(), GetCurrentPos() + indent.Length() - 1) != indent)
-            InsertText(GetCurrentPos(), wxT("\n") + indent);
-        else
-            InsertText(GetCurrentPos(), wxT("\n"));
+        // Insert a replacement \n, and the indent at the insertion point.
+        InsertText(GetCurrentPos(), wxT("\n") + indent);
 
+        // Now, reset the position, and clear the selection
         SetCurrentPos(GetCurrentPos() + indent.Length() + 1);
         SetSelection(GetCurrentPos(), GetCurrentPos());
     }
