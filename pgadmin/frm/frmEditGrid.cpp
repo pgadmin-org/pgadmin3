@@ -924,6 +924,7 @@ void frmEditGrid::ShowForm(bool filter)
 
 void frmEditGrid::Go()
 {
+    int col;
     long templong;
 
     if (cbLimit->GetValue() != wxT("") &&
@@ -955,7 +956,7 @@ void frmEditGrid::Go()
 
     // Stash the column sizes so we can reset them
     wxArrayInt colWidths;
-    for (int col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
+    for (col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
     {
         colWidths.Add(sqlGrid->GetColumnWidth(col));
     }
@@ -1023,7 +1024,7 @@ void frmEditGrid::Go()
     sqlGrid->SetTable(new sqlTable(connection, thread, tableName, relid, hasOids, primaryKeyColNumbers, relkind), true);
 
     // Reset the column widths
-    for (int col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
+    for (col = 0 ; col < sqlGrid->GetNumberCols() ; col++)
     {
         if ((col + 1) <= (int)colWidths.Count())
             sqlGrid->SetColumnWidth(col, colWidths[col]);
