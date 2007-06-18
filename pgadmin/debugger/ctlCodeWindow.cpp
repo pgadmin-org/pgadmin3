@@ -841,7 +841,7 @@ void ctlCodeWindow::popupError( dbgResultset & resultSet, wxString title )
 {
 	wxMessageBox( resultSet.getErrorMessage(), title );
 
-	// Now close the entire application since we can't continue debugger
+	// Now close the entire application since we can't continue debugging
 	m_timer.Stop();
 	m_parent->Close();
 
@@ -870,8 +870,6 @@ void ctlCodeWindow::closeConnection()
 
 	// And force the toolbar to refresh itself (to disable the debugger-related tools)
 	setTools(false);
-
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1333,9 +1331,9 @@ void ctlCodeWindow::ResultTargetReady(  wxCommandEvent & event )
 {
 	dbgResultset  result((PGresult *)event.GetClientData()); 
 
-	if( m_progressBar )
+	if(m_progressBar)
 	{
-		m_progressBar->Close();
+        m_progressBar->Close();
 		delete m_progressBar;
 		m_progressBar = NULL;
 	}
@@ -1439,13 +1437,22 @@ void ctlCodeWindow::OnTimer( wxTimerEvent & event )
 	{
         if( m_progressBar->Pulse() == false )
 		{
-			m_timer.Stop();
+            closeConnection();
             m_targetAborted = true;
 			m_parent->Close();
 		}
 	}
     else
-        m_timer.Stop();
+    {
+        // If we're indirect debugging from the query tool, the query thread
+        // might be preventing Idle events being fired, so we do it
+        // manually here.
+        if (!m_parent->m_standaloneDirectDbg)
+        {
+            wxIdleEvent evt;
+            OnIdle(evt);
+        }
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

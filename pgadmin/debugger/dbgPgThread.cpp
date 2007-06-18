@@ -160,7 +160,10 @@ void * dbgPgThread::Entry( void )
             PGresult *dummy;
             dummy = PQgetResult(m_owner.getConnection());
 
-            result = PQiGetOutResult(m_owner.getConnection());
+            if((PQresultStatus(dummy) == PGRES_NONFATAL_ERROR) || (PQresultStatus(dummy) == PGRES_FATAL_ERROR))
+                result = dummy;
+            else
+                result = PQiGetOutResult(m_owner.getConnection());
         }
         else
         {
@@ -179,19 +182,6 @@ void * dbgPgThread::Entry( void )
         }
 
         wxLogDebug(_( "Complete: %s" ), wxString(PQresStatus(PQresultStatus(result)), *conv).c_str());
-
-        if(PQresultStatus(result) == PGRES_FATAL_ERROR)
-        {
-            // If we got an 08006 SQL state (CONNECTION FAILURE), the user may well have
-            // hit the cancel button someplace
-            char *state = PQresultErrorField(result,PG_DIAG_SQLSTATE);
-            if (strcmp(state, "08006") == 0)
-                wxLogDebug(wxT( "Error executing the query: %s" ), wxString(PQresultErrorMessage(result), *conv).c_str());
-            else
-                wxLogError(wxT( "Error executing the query: %s" ), wxString(PQresultErrorMessage(result), *conv).c_str());
-            PQclear(result);
-            return this;
-        }
 
         // Notify the GUI thread that a result set is ready for display
 

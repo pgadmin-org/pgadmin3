@@ -677,8 +677,7 @@ void dlgDirectDbg::OnResultReady( wxCommandEvent & event )
     // Extract the result set handle from the event and log the status info
 
     PGresult *result = (PGresult *)event.GetClientData();
-
-    ::wxLogDebug( wxT( "%s\n" ), PQresStatus( PQresultStatus( result )));
+    wxLogDebug( wxT( "%s\n" ), wxString(PQresStatus( PQresultStatus( result )), wxConvUTF8).c_str());
 
     // If the query failed, write the error message to the status line, otherwise, copy the result set into the grid
 
@@ -690,7 +689,7 @@ void dlgDirectDbg::OnResultReady( wxCommandEvent & event )
         message.Replace( wxT( "\n" ), wxT( " " ));
 
         m_parent->getStatusBar()->SetStatusText( message, 1 );
-        wxLogDebug( wxT( "%s\n" ), PQerrorMessage( m_conn->getConnection()));
+        wxLogError( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
     }
     else
     {
@@ -746,7 +745,7 @@ void dlgDirectDbg::OnTargetComplete( wxCommandEvent & event )
         message.Replace( wxT( "\n" ), wxT( " " ));
 
         m_parent->getStatusBar()->SetStatusText( message, 1 );
-        wxLogDebug( wxT( "%s\n" ), PQerrorMessage( m_conn->getConnection()));
+        wxLogError( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
     }
     else
     {
