@@ -1014,7 +1014,7 @@ void pgAdmin3::InitHelp()
     if (pgHelpPath.IsEmpty())
         pgHelpPath = wxT("http://www.postgresql.org/docs/current/static/");
     if (edbHelpPath.IsEmpty())
-        edbHelpPath = wxT("http://www.enterprisedb.com/documentation/");
+        edbHelpPath = wxT("http://www.enterprisedb.com/documentation/8.2/");
     if (slonyHelpPath.IsEmpty())
         slonyHelpPath = wxT("http://www.slony.info/documentation/");
 
