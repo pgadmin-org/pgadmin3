@@ -45,7 +45,7 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
     cp.m_userName = obj->GetServer()->GetUsername();
 
     // Setup the debugging session
-	dlgDirectDbg *directDebugger = NULL;
+    dlgDirectDbg *directDebugger = NULL;
     directDebugger = debugger->addDirectDbg(cp);
 
     dbgBreakPointList &breakpoints = directDebugger->getBreakpointList();
@@ -122,7 +122,7 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
     cp.m_userName = obj->GetServer()->GetUsername();
 
     // Setup the debugging session
-	ctlCodeWindow *globalDebugger = NULL;
+    ctlCodeWindow *globalDebugger = NULL;
     globalDebugger = debugger->addDebug(cp);
 
     dbgBreakPointList &breakpoints = globalDebugger->getBreakpointList();

@@ -72,7 +72,6 @@ void dbgPgThread::startCommand( const wxString &command, wxEvtHandler * caller, 
     m_queueCounter.Post();
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // Die()
 //
@@ -104,7 +103,7 @@ void * dbgPgThread::Entry( void )
     // When m_condition is signaled, we wake up, send a command
     // to the PostgreSQL server, and wait for a result.
 
-    while( m_queueCounter.Wait() == wxSEMA_NO_ERROR && !die )
+    while( m_queueCounter.Wait() == wxSEMA_NO_ERROR && !die && !TestDestroy() )
     {
         m_owner.setNoticeHandler( noticeHandler, this );
 
@@ -127,6 +126,7 @@ void * dbgPgThread::Entry( void )
         if (PQiGetOutResult && PQiPrepareOut && PQiSendQueryPreparedOut && params)
 #endif
         {
+            wxLogInfo(_("Using an EnterpriseDB callable statement"));
             wxString stmt = wxString::Format(wxT("DebugStmt-%d-%d"), this->GetId(), ++run);
             PGresult *res = PQiPrepareOut(m_owner.getConnection(), 
                                             stmt.mb_str(wxConvUTF8), 
@@ -157,20 +157,87 @@ void * dbgPgThread::Entry( void )
             }
 
             // We need to call PQgetResult before we can call PQgetOutResult
-            PGresult *dummy;
-            dummy = PQgetResult(m_owner.getConnection());
+        	// Note that this is all async code as far as libpq is concerned to
+        	// ensure we can always bail out when required, without leaving threads
+        	// hanging around.
+        	PGresult *dummy, *part;
+        	while(true)
+        	{
+        		if (die || TestDestroy())
+        		{
+        		    PQrequestCancel(m_owner.getConnection());
+        		    return this;
+        	    }
+        			
+        	    PQconsumeInput(m_owner.getConnection());
+        		
+        		if (PQisBusy(m_owner.getConnection()))
+        		{
+        		    Yield();
+        			wxMilliSleep(10);
+        			continue;
+        		}
+        		
+        	    dummy = PQgetResult(m_owner.getConnection());
+        		
+        		// There should be 2 results - the first is the dummy, the second
+        		// contains our out params.
+        		if (dummy)
+        		    break;
+        	}
 
             if((PQresultStatus(dummy) == PGRES_NONFATAL_ERROR) || (PQresultStatus(dummy) == PGRES_FATAL_ERROR))
                 result = dummy;
             else
+        	{
+        	    PQclear(dummy);
                 result = PQiGetOutResult(m_owner.getConnection());
+        	}
         }
         else
         {
-#endif
+#endif        	
             // This is the normal case for a pl/pgsql function, or if we don't
             // have access to PQgetOutResult.
-            result = PQexec(m_owner.getConnection(), command.mb_str(wxConvUTF8));
+        	// Note that this is all async code as far as libpq is concerned to
+        	// ensure we can always bail out when required, without leaving threads
+        	// hanging around.
+            int ret = PQsendQuery(m_owner.getConnection(), command.mb_str(wxConvUTF8));
+        	
+            if (ret != 1)
+            {
+                wxLogError(wxT( "Couldn't execute the query (%s): %s" ), command.c_str(), wxString(PQerrorMessage(m_owner.getConnection()), *conv).c_str());
+                return this;
+            }
+        	
+        	PGresult *part;
+        	while(true)
+        	{
+        		if (die || TestDestroy())
+        		{
+        		    PQrequestCancel(m_owner.getConnection());
+        		    return this;
+        	    }
+        			
+        	    PQconsumeInput(m_owner.getConnection());
+        		
+        		if (PQisBusy(m_owner.getConnection()))
+        		{
+        		    Yield();
+        			wxMilliSleep(10);
+        			continue;
+        		}
+        		
+        		// In theory we should only get one result here, but we'll loop
+        		// anyway until we get the last one.
+        	    part = PQgetResult(m_owner.getConnection());
+        		
+        		if (!part)
+        		    break;
+        			
+                result = part;
+        	}
+        	
 #if defined (__WXMSW__) || (EDB_LIBPQ)
         }
 #endif

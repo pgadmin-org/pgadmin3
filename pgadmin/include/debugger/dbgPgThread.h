@@ -62,7 +62,7 @@ public:
     virtual void * Entry();
     void startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType = wxEVT_NULL, dbgPgParams *params = NULL );
     void Die();
-
+	
 private:
 
     static void noticeHandler( void * arg, const char * message );
@@ -77,7 +77,7 @@ private:
     dbgPgThreadCommand *m_currentCommand;    // Currently executing command
     wxMBConv *conv;
     long run;
-    bool die;
+	bool die;
 };
 
 #endif

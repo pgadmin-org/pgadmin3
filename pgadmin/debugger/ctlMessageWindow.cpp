@@ -26,7 +26,7 @@ IMPLEMENT_CLASS( ctlMessageWindow, wxTextCtrl )
 //
 
 ctlMessageWindow::ctlMessageWindow( wxWindow * parent, wxWindowID id )
-	: wxTextCtrl( parent, wxID_ANY, _T(""), wxPoint(0, 0), wxSize(0, 0),
+    : wxTextCtrl( parent, wxID_ANY, _T(""), wxPoint(0, 0), wxSize(0, 0),
                                wxTE_MULTILINE | wxTE_READONLY)
 {
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -35,27 +35,27 @@ ctlMessageWindow::ctlMessageWindow( wxWindow * parent, wxWindowID id )
 ////////////////////////////////////////////////////////////////////////////////
 // addMessage()
 //
-//	Adds the message in the 'DBMS Messages' window.  
+//    Adds the message in the 'DBMS Messages' window.  
 //
 
 void ctlMessageWindow::addMessage( wxString message )
 {
-	AppendText(message + wxT("\n"));
+    AppendText(message + wxT("\n"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // delMessage()
 //
-//	Removes the given message from the 'DBMS Messages' window.
+//    Removes the given message from the 'DBMS Messages' window.
 //
 
 void ctlMessageWindow::delMessage( const char * name )
 {
-	SetValue(wxT(""));
+    SetValue(wxT(""));
 }
 
 
 wxString ctlMessageWindow::getMessage( int row )
 {
-	return( GetValue());
+    return( GetValue());
 }

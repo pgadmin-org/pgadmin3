@@ -35,25 +35,25 @@ ctlStackWindow::ctlStackWindow(wxWindow *parent, wxWindowID id, const wxPoint & 
 ////////////////////////////////////////////////////////////////////////////////
 // clear()
 //
-//	Remove all stack frames from the display
+//    Remove all stack frames from the display
 //
 
 void ctlStackWindow::clear( )
 {
-	Set( 0, NULL );
+    Set( 0, NULL );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // setStack()
 //
-//	Add an array of stack frames to the display
+//    Add an array of stack frames to the display
 //
 
 
 void ctlStackWindow::setStack( const wxArrayString & stack )
 {
-	for( size_t i = 0; i < stack.GetCount(); ++i )
-	{
-		Append( stack[i] );
-	}
+    for( size_t i = 0; i < stack.GetCount(); ++i )
+    {
+        Append( stack[i] );
+    }
 }

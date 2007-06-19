@@ -43,7 +43,7 @@ BEGIN_EVENT_TABLE( frmDebugger, pgFrame  )
     EVT_MENU_RANGE(MENU_ID_TOGGLE_BREAK, MENU_ID_STOP, frmDebugger::OnDebugCommand)
     EVT_CLOSE(frmDebugger::OnClose)
     EVT_SIZE(frmDebugger::OnSize)
-	EVT_ERASE_BACKGROUND(frmDebugger::OnEraseBackground)
+    EVT_ERASE_BACKGROUND(frmDebugger::OnEraseBackground)
 
     EVT_STC_MARGINCLICK(wxID_ANY,        frmDebugger::OnMarginClick)
     EVT_STC_UPDATEUI(wxID_ANY,           frmDebugger::OnPositionStc)
@@ -226,21 +226,21 @@ wxToolBar * frmDebugger::setupToolBar( void )
 
     m_toolBar->SetToolBitmapSize( wxSize( 16, 16 ));
  
-    m_toolBar->AddTool( MENU_ID_STEP_INTO,		 _( "Step into" ),    		 wxBitmap(stepInto_xpm));
-    m_toolBar->AddTool( MENU_ID_STEP_OVER,		 _( "Step over" ),    		 wxBitmap(stepOver_xpm));
-    m_toolBar->AddTool( MENU_ID_CONTINUE,		 _( "Continue" ),    		 wxBitmap(continue_xpm));
+    m_toolBar->AddTool( MENU_ID_STEP_INTO,    	 _( "Step into" ),    		 wxBitmap(stepInto_xpm));
+    m_toolBar->AddTool( MENU_ID_STEP_OVER,    	 _( "Step over" ),    		 wxBitmap(stepOver_xpm));
+    m_toolBar->AddTool( MENU_ID_CONTINUE,    	 _( "Continue" ),    		 wxBitmap(continue_xpm));
     m_toolBar->AddSeparator();
-    m_toolBar->AddTool( MENU_ID_TOGGLE_BREAK,	 _( "Toggle breakpoint" ),   wxBitmap(setBreak_xpm));
+    m_toolBar->AddTool( MENU_ID_TOGGLE_BREAK,     _( "Toggle breakpoint" ),   wxBitmap(setBreak_xpm));
     m_toolBar->AddTool( MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints" ), wxBitmap(clearAll_xpm));
     m_toolBar->AddSeparator();
-    m_toolBar->AddTool( MENU_ID_STOP,      		 _( "Stop debugging" ),    	 wxBitmap(stop_xpm));
+    m_toolBar->AddTool( MENU_ID_STOP,          	 _( "Stop debugging" ),    	 wxBitmap(stop_xpm));
 
-    m_toolBar->EnableTool(MENU_ID_STEP_INTO,   	    false);
-    m_toolBar->EnableTool(MENU_ID_STEP_OVER,   	    false);
-    m_toolBar->EnableTool(MENU_ID_CONTINUE,    	    false);
-    m_toolBar->EnableTool(MENU_ID_TOGGLE_BREAK,   	false);
+    m_toolBar->EnableTool(MENU_ID_STEP_INTO,           false);
+    m_toolBar->EnableTool(MENU_ID_STEP_OVER,           false);
+    m_toolBar->EnableTool(MENU_ID_CONTINUE,            false);
+    m_toolBar->EnableTool(MENU_ID_TOGGLE_BREAK,       false);
     m_toolBar->EnableTool(MENU_ID_CLEAR_ALL_BREAK,  false);
-    m_toolBar->EnableTool(MENU_ID_STOP,			    false);
+    m_toolBar->EnableTool(MENU_ID_STOP,    		    false);
 
     m_toolBar->Realize();
 
@@ -256,7 +256,7 @@ wxToolBar * frmDebugger::setupToolBar( void )
 wxStatusBar * frmDebugger::setupStatusBar( void )
 {
     wxStatusBar * bar = CreateStatusBar( 3, wxST_SIZEGRIP );
-    int			  widths[] = { 0, -1, 130 };
+    int    		  widths[] = { 0, -1, 130 };
 
     bar->SetStatusWidths(3, widths);
     bar->SetStatusText(_( "Initializing..."), 1);
@@ -290,12 +290,12 @@ wxMenuBar *frmDebugger::setupMenuBar(void)
     m_debugMenu->Append(MENU_ID_CLEAR_ALL_BREAK,    _( "Clear all breakpoints\tCtrl+Shift+F9" ));
     m_debugMenu->AppendSeparator();
     m_debugMenu->Append(MENU_ID_STOP,               _( "Stop debugging\tF8" ));
-	m_debugMenu->Enable(MENU_ID_STEP_INTO,   	    false);
-	m_debugMenu->Enable(MENU_ID_STEP_OVER,   	    false);
-	m_debugMenu->Enable(MENU_ID_CONTINUE,    	    false);
-	m_debugMenu->Enable(MENU_ID_TOGGLE_BREAK,   	false);
-	m_debugMenu->Enable(MENU_ID_CLEAR_ALL_BREAK,    false);
-	m_debugMenu->Enable(MENU_ID_STOP,			    false);
+    m_debugMenu->Enable(MENU_ID_STEP_INTO,   	    false);
+    m_debugMenu->Enable(MENU_ID_STEP_OVER,   	    false);
+    m_debugMenu->Enable(MENU_ID_CONTINUE,    	    false);
+    m_debugMenu->Enable(MENU_ID_TOGGLE_BREAK,   	false);
+    m_debugMenu->Enable(MENU_ID_CLEAR_ALL_BREAK,    false);
+    m_debugMenu->Enable(MENU_ID_STOP,			    false);
     m_menuBar->Append(m_debugMenu, _("&Debug"));
 
     m_viewMenu = new wxMenu;
@@ -304,8 +304,8 @@ wxMenuBar *frmDebugger::setupMenuBar(void)
     m_viewMenu->Append(MENU_ID_VIEW_TOOLBAR, _("&Tool bar"),       _("Show or hide the tool bar."), wxITEM_CHECK);
     m_viewMenu->AppendSeparator();
     m_viewMenu->Append(MENU_ID_VIEW_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
-	m_viewMenu->Enable(MENU_ID_VIEW_OUTPUTPANE,    false);
-	m_viewMenu->Enable(MENU_ID_VIEW_STACKPANE,	   false);
+    m_viewMenu->Enable(MENU_ID_VIEW_OUTPUTPANE,    false);
+    m_viewMenu->Enable(MENU_ID_VIEW_STACKPANE,	   false);
     m_menuBar->Append(m_viewMenu, _("&View"));
 
     wxMenu *helpMenu=new wxMenu();
