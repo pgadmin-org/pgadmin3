@@ -50,7 +50,6 @@ BEGIN_EVENT_TABLE( dlgDirectDbg, pgDialog )
     EVT_BUTTON( MENU_ID_NOTICE_RECEIVED, dlgDirectDbg::OnNoticeReceived )
 
     EVT_MENU( RESULT_ID_DIRECT_TARGET_COMPLETE, dlgDirectDbg::OnTargetComplete )
-    EVT_MENU( RESULT_ID_RESULT_SET_READY,       dlgDirectDbg::OnResultReady )
 
     EVT_CLOSE( dlgDirectDbg::OnClose )
 
@@ -658,63 +657,6 @@ void dlgDirectDbg::invokeTargetStatement()
     m_conn->startCommand( query, GetEventHandler(), RESULT_ID_DIRECT_TARGET_COMPLETE );
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// OnResultReady()
-//
-//    This event handler is called when the target function/procedure completes
-//  and a result set (or error) has been returned by the server.  The event
-//  object contains a pointer to the result set.
-//
-//  For now, we display an error message (if an error occurred) or write the
-//  command status to the status bar (if the target completed without error).
-//
-//  We should really display the complete result set somewhere too.
-
-void dlgDirectDbg::OnResultReady( wxCommandEvent & event )
-{
-    ::wxLogDebug( _( "OnResultReady() called\n" ));
-
-    // Extract the result set handle from the event and log the status info
-
-    PGresult *result = (PGresult *)event.GetClientData();
-    wxLogDebug( wxT( "%s\n" ), wxString(PQresStatus( PQresultStatus( result )), wxConvUTF8).c_str());
-
-    // If the query failed, write the error message to the status line, otherwise, copy the result set into the grid
-
-    if(( PQresultStatus( result ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( result ) == PGRES_FATAL_ERROR ))
-    {
-        wxString message( PQresultErrorMessage( result ), wxConvUTF8 ) ;
-
-        message.Replace( wxT( "\r" ), wxT( "" ));
-        message.Replace( wxT( "\n" ), wxT( " " ));
-
-        m_parent->getStatusBar()->SetStatusText( message, 1 );
-        wxLogError( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
-    }
-    else
-    {
-        wxString message( PQcmdStatus( result ), wxConvUTF8 );
-
-        message.Replace( wxT( "\r" ), wxT( "" ));
-        message.Replace( wxT( "\n" ), wxT( " " ));
-
-        m_parent->getStatusBar()->SetStatusText( message, 1 );
-
-        // If this result set has any columns, add a result grid to the code window so
-        // we can show the results to the user
-
-        if( m_codeWindow && PQnfields( result ))
-            m_codeWindow->OnResultSet( result );
-    }
-
-    if (m_codeWindow)
-    {
-        m_codeWindow->m_targetComplete = true;
-        m_codeWindow->disableTools( );
-    }
-    this->Show( true );
-    this->SetFocus();
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // OnTargetComplete()
@@ -745,7 +687,13 @@ void dlgDirectDbg::OnTargetComplete( wxCommandEvent & event )
         message.Replace( wxT( "\n" ), wxT( " " ));
 
         m_parent->getStatusBar()->SetStatusText( message, 1 );
-        wxLogError( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
+        char *state = PQresultErrorField(result,PG_DIAG_SQLSTATE);
+
+        // Don't bother telling the user that he aborted - he already knows!
+        if (strcmp(state, "57014"))
+            wxLogError( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
+        else
+            wxLogDebug( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
     }
     else
     {

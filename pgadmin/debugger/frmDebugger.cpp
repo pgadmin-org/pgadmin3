@@ -107,11 +107,11 @@ frmDebugger::frmDebugger(frmMain *parent, const wxString &title)
 
 frmDebugger::~frmDebugger()
 {
-    if (m_parent)
-        m_parent->RemoveFrame(this);
-
     settings->Write(wxT("Debugger/frmDebugger/Perspective-") + VerFromRev(FRMDEBUGGER_PERPSECTIVE_VER), manager.SavePerspective());
     manager.UnInit();
+
+    if (m_parent)
+        m_parent->RemoveFrame(this);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

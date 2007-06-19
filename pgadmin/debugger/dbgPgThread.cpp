@@ -160,7 +160,7 @@ void * dbgPgThread::Entry( void )
         	// Note that this is all async code as far as libpq is concerned to
         	// ensure we can always bail out when required, without leaving threads
         	// hanging around.
-        	PGresult *dummy, *part;
+        	PGresult *dummy;
         	while(true)
         	{
         		if (die || TestDestroy())
@@ -254,18 +254,14 @@ void * dbgPgThread::Entry( void )
 
         if( m_currentCommand->getEventType() == wxEVT_NULL )
         {
-            wxCommandEvent resultEvent( wxEVT_COMMAND_MENU_SELECTED, RESULT_ID_RESULT_SET_READY );
-
+            wxCommandEvent resultEvent( wxEVT_COMMAND_MENU_SELECTED, RESULT_ID_DIRECT_TARGET_COMPLETE );
             resultEvent.SetClientData( result );
-
             m_currentCommand->getCaller()->AddPendingEvent( resultEvent );
         }
         else
         {
             wxCommandEvent resultEvent( wxEVT_COMMAND_MENU_SELECTED, m_currentCommand->getEventType());
-
             resultEvent.SetClientData( result );
-
             m_currentCommand->getCaller()->AddPendingEvent( resultEvent );
         }
     }

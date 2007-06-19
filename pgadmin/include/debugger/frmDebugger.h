@@ -68,8 +68,6 @@ enum
     MENU_ID_VIEW_OUTPUTPANE,
     MENU_ID_VIEW_DEFAULTVIEW,
 
-    RESULT_ID_RESULT_SET_READY,    // Generic - result set received from server
-
     RESULT_ID_ATTACH_TO_PORT,    // Debugger - attach to port completed
     RESULT_ID_BREAKPOINT,        // Debugger - breakpoint reached
     RESULT_ID_GET_VARS,        // Debugger - variable list complete

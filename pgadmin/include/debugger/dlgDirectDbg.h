@@ -73,7 +73,6 @@ private:
 	void OnOk( wxCommandEvent & event );
 	void OnCancel( wxCommandEvent & event );
 	void OnClose( wxCloseEvent & event );
-	void OnResultReady( wxCommandEvent & event );
 	void OnTargetComplete( wxCommandEvent & event );
 	void OnDebug( wxCommandEvent & event );
 	void OnNoticeReceived( wxCommandEvent & event );
