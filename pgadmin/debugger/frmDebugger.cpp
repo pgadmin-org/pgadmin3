@@ -28,13 +28,6 @@
 #include "images/stepInto.xpm"
 #include "images/stop.xpm"
 
-// Copyright text(pgadmin)
-#include "../../pgadmin/include/copyright.h"
-#include "../../pgadmin/include/version.h"
-#include "../../pgadmin/include/svnversion.h"
-
-#define VERSION_WITH_DATE_AND_SVN       wxT("Version ") VERSION_STR wxT(" (") __TDATE__ wxT(", rev: ") wxT(VERSION_SVN) wxT(")")
-
 IMPLEMENT_CLASS( frmDebugger, pgFrame  )
 
 BEGIN_EVENT_TABLE( frmDebugger, pgFrame  )
@@ -328,15 +321,12 @@ void frmDebugger::OnClose( wxCloseEvent & event )
     if (m_standaloneDebugger)
     {
         m_standaloneDebugger->OnClose( event );
-        if (!event.GetVeto())
-            delete m_standaloneDebugger;
-    }
+        if (event.GetVeto())
+            return;
 
-    if (!event.GetVeto())
-    {
-        Hide();
-        Destroy();
+        delete m_standaloneDebugger;
     }
+    event.Skip();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

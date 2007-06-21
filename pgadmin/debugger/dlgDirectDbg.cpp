@@ -409,9 +409,9 @@ void dlgDirectDbg::OnClose( wxCloseEvent & event )
 //
 //    This function is called after the user has filled in any parameter values
 //  and clicked the Ok button.  activateDebugger() extracts the paramter values
-//  from the grid control and copies those values into our wsTargeInfo object
+//  from the grid control and copies those values into our dbgTargetInfo object
 //  (m_targetInfo).  Next, we set a breakpoint at the target, and, finally, 
-//    we invoke the target function/procedure
+//  we invoke the target function/procedure
 
 bool dlgDirectDbg::activateDebugger( )
 {

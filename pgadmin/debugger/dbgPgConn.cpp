@@ -51,9 +51,9 @@ dbgPgConn::dbgPgConn(frmDebugger *frame, const dbgConnProp & props, bool startTh
 void dbgPgConn::Init( const wxString &server, const wxString &database, const wxString &username, const wxString &password, const wxString &port, int sslmode, bool startThread )
 {
     m_pgConn       = NULL;
-    majorVersion = 0;
-    minorVersion = 0;
-    isEdb = false;
+    m_majorVersion = 0;
+    m_minorVersion = 0;
+    m_isEdb = false;
 
     if( startThread )
     	m_workerThread = new dbgPgThread( *this );
@@ -251,6 +251,9 @@ void dbgPgConn::Close()
     {
     	m_workerThread->Die();
         m_workerThread->Wait();
+
+        delete m_workerThread;
+        m_workerThread = NULL;
     }
 
     if (m_pgConn)
@@ -273,13 +276,13 @@ void dbgPgConn::Cancel()
 
 bool dbgPgConn::BackendMinimumVersion(int major, int minor)
 {
-    if (!majorVersion)
+    if (!m_majorVersion)
     {
         wxString version=GetVersionString();
-        sscanf(version.ToAscii(), "%*s %d.%d", &majorVersion, &minorVersion);
-        isEdb = version.Upper().Matches(wxT("ENTERPRISEDB*"));
+        sscanf(version.ToAscii(), "%*s %d.%d", &m_majorVersion, &m_minorVersion);
+        m_isEdb = version.Upper().Matches(wxT("ENTERPRISEDB*"));
     }
-    return majorVersion > major || (majorVersion == major && minorVersion >= minor);
+    return m_majorVersion > major || (m_majorVersion == major && m_minorVersion >= minor);
 }
 
 
@@ -311,6 +314,6 @@ bool dbgPgConn::GetIsEdb()
 {
     // to retrieve edb flag
     BackendMinimumVersion(0,0);
-    return isEdb; 
+    return m_isEdb; 
 }
 

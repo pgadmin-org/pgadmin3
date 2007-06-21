@@ -251,6 +251,8 @@ void ctlCodeWindow::OnClose(wxCloseEvent& event)
 
     closeConnection();
     m_timer.Stop();
+
+    event.Skip();
 }
 
 ////////////////////////////////////////////////////////////////////////////////      
@@ -1132,7 +1134,7 @@ void ctlCodeWindow::OnCommand( wxCommandEvent & event )
             // single-stepping through the code).  Unhilite all 
             // variables and tell the debugger server to continue.
             m_dbgConn->startCommand( wxString::Format( m_commandContinue, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );        
-            m_parent->getStatusBar()->SetStatusText( _( "waiting for target (continue)" ), 1 );
+            m_parent->getStatusBar()->SetStatusText( _( "Waiting for target (continue)..." ), 1 );
             unhilightCurrentLine();
             disableTools();
             break;
@@ -1144,7 +1146,7 @@ void ctlCodeWindow::OnCommand( wxCommandEvent & event )
             // just single-step). Unhilite all variables and tell the
             // debugger server to step-over
             m_dbgConn->startCommand( wxString::Format( m_commandStepOver, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );        
-            m_parent->getStatusBar()->SetStatusText( _( "waiting for target (step over)" ), 1 );
+            m_parent->getStatusBar()->SetStatusText( _( "Waiting for target (step over)..." ), 1 );
             unhilightCurrentLine();
             disableTools();
             break;
@@ -1156,7 +1158,7 @@ void ctlCodeWindow::OnCommand( wxCommandEvent & event )
             // just single-step). Unhilite all variables and tell the
             // debugger server to step-into
             m_dbgConn->startCommand( wxString::Format( m_commandStepInto, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_BREAKPOINT );        
-            m_parent->getStatusBar()->SetStatusText( _( "waiting for target (step into)" ), 1 );
+            m_parent->getStatusBar()->SetStatusText( _( "Waiting for target (step into)..." ), 1 );
             unhilightCurrentLine();
             disableTools();
             break;
