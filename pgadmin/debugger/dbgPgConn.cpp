@@ -217,11 +217,11 @@ void dbgPgConn::startCommand( const wxString &command, wxEvtHandler * caller, wx
 
 PGresult * dbgPgConn::waitForCommand( const wxString &command )
 {
-    ::wxLogDebug( _( "waiting for %s" ), command.c_str());
+    wxLogDebug( _( "waiting for %s" ), command.c_str());
 
     PGresult * result = PQexec( m_pgConn, command.mb_str( wxConvUTF8 ));
 
-    ::wxLogDebug( _( "complete" ));
+    wxLogDebug( _( "complete" ));
 
     return( result );
 }

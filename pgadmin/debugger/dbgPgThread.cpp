@@ -343,7 +343,7 @@ dbgPgThreadCommand * dbgPgThread::getNextCommand()
 
     m_queueMutex.Lock();
 
-    ::wxLogDebug( _( "%d commands in queue" ), m_commandQueue.GetCount());
+    wxLogDebug( _( "%d commands in queue" ), m_commandQueue.GetCount());
 
     ThreadCommandList::Node * node = m_commandQueue.GetFirst();
         
