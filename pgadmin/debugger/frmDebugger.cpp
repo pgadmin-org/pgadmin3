@@ -100,7 +100,13 @@ frmDebugger::frmDebugger(frmMain *parent, const wxString &title)
 
 frmDebugger::~frmDebugger()
 {
-    settings->Write(wxT("Debugger/frmDebugger/Perspective-") + VerFromRev(FRMDEBUGGER_PERPSECTIVE_VER), manager.SavePerspective());
+    // Only save the settings if the window was completely setup
+    // This may not be the case if the params dialog was displayed, 
+    // and the user hit cancel before the main form opened.
+    wxAuiPaneInfo& pane = manager.GetPane(wxT("sourcePane"));
+    if (pane.IsOk())
+        settings->Write(wxT("Debugger/frmDebugger/Perspective-") + VerFromRev(FRMDEBUGGER_PERPSECTIVE_VER), manager.SavePerspective());
+
     manager.UnInit();
 
     if (m_parent)
