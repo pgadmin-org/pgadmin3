@@ -8,6 +8,7 @@
 ##############################################################################
 
 EXTRA_DIST = \
+    $(srcdir)/Installer.vcproj \
     $(srcdir)/Make.bat \
     $(srcdir)/README.txt \
     $(srcdir)/upgrade.bat \

@@ -9,6 +9,7 @@ SET APPNAME=pgAdmin III
 SET APPKEYWORDS=PostgreSQL, pgAdmin
 SET APPCOMMENTS=PostgreSQL Tools
 SET APPDESCRIPTION=Management and administration tools for the PostgreSQL DBMS
+SET WIXDIR="%ProgramFiles%\Windows Installer XML v3\bin"
 
 SET BUILDTREE="../.."
 
@@ -55,10 +56,10 @@ GOTO EXIT
 echo.
 echo Building %APPNAME% Installer...
 
-candle -nologo -dPGDIR="%PGDIR%" -dPGBUILD="%PGBUILD%" -dBUILDTREE="%BUILDTREE%" -dBRANDED=%BRANDED% -dBRANDINGDIR="%BRANDINGDIR%" -dAPPVENDOR="%APPVENDOR%" -dAPPNAME="%APPNAME%" -dAPPKEYWORDS="%APPKEYWORDS%" -dAPPCOMMENTS="%APPCOMMENTS%" -dAPPDESCRIPTION="%APPDESCRIPTION%" -dAPPVERSION="%1" -dSYSTEM32DIR="%SystemRoot%\System32" -dPFILESDIR="%ProgramFiles%" src/pgadmin3.wxs
+%WIXDIR%\candle -nologo -dPGDIR="%PGDIR%" -dPGBUILD="%PGBUILD%" -dBUILDTREE="%BUILDTREE%" -dBRANDED=%BRANDED% -dBRANDINGDIR="%BRANDINGDIR%" -dAPPVENDOR="%APPVENDOR%" -dAPPNAME="%APPNAME%" -dAPPKEYWORDS="%APPKEYWORDS%" -dAPPCOMMENTS="%APPCOMMENTS%" -dAPPDESCRIPTION="%APPDESCRIPTION%" -dAPPVERSION="%1" -dSYSTEM32DIR="%SystemRoot%\System32" -dPFILESDIR="%ProgramFiles%" src/pgadmin3.wxs
 IF ERRORLEVEL 1 GOTO ERR_HANDLER
 
-light -nologo -ext WixUIExtension -cultures:en-us pgadmin3.wixobj
+%WIXDIR%\light -nologo -ext WixUIExtension -cultures:en-us pgadmin3.wixobj
 IF ERRORLEVEL 1 GOTO ERR_HANDLER
 
 echo.
