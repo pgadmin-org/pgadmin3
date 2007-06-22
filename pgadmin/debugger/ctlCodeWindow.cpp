@@ -60,40 +60,40 @@
 IMPLEMENT_CLASS(ctlCodeWindow,  pgFrame)
 
 BEGIN_EVENT_TABLE(ctlCodeWindow , pgFrame)
-  EVT_MENU(MENU_ID_TOGGLE_BREAK,         ctlCodeWindow::OnCommand)
-  EVT_MENU(MENU_ID_CLEAR_ALL_BREAK,        ctlCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_TOGGLE_BREAK,            ctlCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_CLEAR_ALL_BREAK,         ctlCodeWindow::OnCommand)
 
-  EVT_MENU(MENU_ID_CONTINUE,             ctlCodeWindow::OnCommand)
-  EVT_MENU(MENU_ID_STEP_OVER,             ctlCodeWindow::OnCommand)
-  EVT_MENU(MENU_ID_STEP_INTO,             ctlCodeWindow::OnCommand)
-  EVT_MENU(MENU_ID_STOP,                 ctlCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_CONTINUE,                ctlCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_STEP_OVER,               ctlCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_STEP_INTO,               ctlCodeWindow::OnCommand)
+  EVT_MENU(MENU_ID_STOP,                    ctlCodeWindow::OnCommand)
 
   EVT_IDLE(ctlCodeWindow::OnIdle)
 
-  EVT_BUTTON(MENU_ID_NOTICE_RECEIVED,  ctlCodeWindow::OnNoticeReceived)
+  EVT_BUTTON(MENU_ID_NOTICE_RECEIVED,       ctlCodeWindow::OnNoticeReceived)
 
-  EVT_LISTBOX(wxID_ANY,                ctlCodeWindow::OnSelectFrame)
-  EVT_GRID_CELL_CHANGE(                ctlCodeWindow::OnVarChange)
-  EVT_STC_MARGINCLICK(wxID_ANY,        ctlCodeWindow::OnMarginClick)
-  EVT_STC_UPDATEUI(wxID_ANY,           ctlCodeWindow::OnPositionStc)
+  EVT_LISTBOX(wxID_ANY,                     ctlCodeWindow::OnSelectFrame)
+  EVT_GRID_CELL_CHANGE(                     ctlCodeWindow::OnVarChange)
+  EVT_STC_MARGINCLICK(wxID_ANY,             ctlCodeWindow::OnMarginClick)
+  EVT_STC_UPDATEUI(wxID_ANY,                ctlCodeWindow::OnPositionStc)
 
-  EVT_MENU(RESULT_ID_ATTACH_TO_PORT,     ctlCodeWindow::ResultPortAttach)
-  EVT_MENU(RESULT_ID_BREAKPOINT,        ctlCodeWindow::ResultBreakpoint)
-  EVT_MENU(RESULT_ID_GET_VARS,            ctlCodeWindow::ResultVarList)
-  EVT_MENU(RESULT_ID_GET_STACK,            ctlCodeWindow::ResultStack)
-  EVT_MENU(RESULT_ID_GET_BREAKPOINTS,    ctlCodeWindow::ResultBreakpoints)
-  EVT_MENU(RESULT_ID_GET_SOURCE,        ctlCodeWindow::ResultSource)
-  EVT_MENU(RESULT_ID_NEW_BREAKPOINT,    ctlCodeWindow::ResultNewBreakpoint)
-  EVT_MENU(RESULT_ID_NEW_BREAKPOINT_WAIT,    ctlCodeWindow::ResultNewBreakpointWait)
-  EVT_MENU(RESULT_ID_DEL_BREAKPOINT,    ctlCodeWindow::ResultDeletedBreakpoint)
-  EVT_MENU(RESULT_ID_DEPOSIT_VALUE,        ctlCodeWindow::ResultDepositValue)
-  EVT_MENU(RESULT_ID_ABORT_TARGET,        ctlCodeWindow::ResultAbortTarget)
-  EVT_MENU(RESULT_ID_ADD_BREAKPOINT,       ctlCodeWindow::ResultAddBreakpoint)
-  EVT_MENU(RESULT_ID_LAST_BREAKPOINT,      ctlCodeWindow::ResultLastBreakpoint)
-  EVT_MENU(RESULT_ID_LISTENER_CREATED,     ctlCodeWindow::ResultListenerCreated)
-  EVT_MENU(RESULT_ID_TARGET_READY,         ctlCodeWindow::ResultTargetReady)
+  EVT_MENU(RESULT_ID_ATTACH_TO_PORT,        ctlCodeWindow::ResultPortAttach)
+  EVT_MENU(RESULT_ID_BREAKPOINT,            ctlCodeWindow::ResultBreakpoint)
+  EVT_MENU(RESULT_ID_GET_VARS,              ctlCodeWindow::ResultVarList)
+  EVT_MENU(RESULT_ID_GET_STACK,             ctlCodeWindow::ResultStack)
+  EVT_MENU(RESULT_ID_GET_BREAKPOINTS,       ctlCodeWindow::ResultBreakpoints)
+  EVT_MENU(RESULT_ID_GET_SOURCE,            ctlCodeWindow::ResultSource)
+  EVT_MENU(RESULT_ID_NEW_BREAKPOINT,        ctlCodeWindow::ResultNewBreakpoint)
+  EVT_MENU(RESULT_ID_NEW_BREAKPOINT_WAIT,   ctlCodeWindow::ResultNewBreakpointWait)
+  EVT_MENU(RESULT_ID_DEL_BREAKPOINT,        ctlCodeWindow::ResultDeletedBreakpoint)
+  EVT_MENU(RESULT_ID_DEPOSIT_VALUE,         ctlCodeWindow::ResultDepositValue)
+  EVT_MENU(RESULT_ID_ABORT_TARGET,          ctlCodeWindow::ResultAbortTarget)
+  EVT_MENU(RESULT_ID_ADD_BREAKPOINT,        ctlCodeWindow::ResultAddBreakpoint)
+  EVT_MENU(RESULT_ID_LAST_BREAKPOINT,       ctlCodeWindow::ResultLastBreakpoint)
+  EVT_MENU(RESULT_ID_LISTENER_CREATED,      ctlCodeWindow::ResultListenerCreated)
+  EVT_MENU(RESULT_ID_TARGET_READY,          ctlCodeWindow::ResultTargetReady)
 
-  EVT_TIMER(wxID_ANY,                   ctlCodeWindow::OnTimer)
+  EVT_TIMER(wxID_ANY,                       ctlCodeWindow::OnTimer)
 END_EVENT_TABLE()
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -770,7 +770,7 @@ void ctlCodeWindow::ResultDepositValue( wxCommandEvent & event )
         }
         else
         {
-            // FIXME: display error message here...
+            wxLogError(wxT( "Could not deposit the new value." ));
         }
     }
 }

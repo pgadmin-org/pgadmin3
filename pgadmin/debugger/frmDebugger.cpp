@@ -41,6 +41,7 @@ BEGIN_EVENT_TABLE( frmDebugger, pgFrame  )
     EVT_STC_MARGINCLICK(wxID_ANY,        frmDebugger::OnMarginClick)
     EVT_STC_UPDATEUI(wxID_ANY,           frmDebugger::OnPositionStc)
     EVT_LISTBOX(wxID_ANY,                frmDebugger::OnSelectFrame)
+    EVT_GRID_CELL_CHANGE(                frmDebugger::OnVarChange)
 
     EVT_MENU(MENU_ID_VIEW_TOOLBAR,       frmDebugger::OnToggleToolBar)
     EVT_MENU(MENU_ID_VIEW_STACKPANE,     frmDebugger::OnToggleStackPane)
@@ -196,6 +197,18 @@ void frmDebugger::OnPositionStc( wxStyledTextEvent & event )
 {
     if (m_standaloneDebugger)
         m_standaloneDebugger->OnPositionStc( event );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// OnVarChange()
+//
+//     This event handler is invoked when the user edits a variable value
+//  - we simply forward the event to the debugger window.
+
+void frmDebugger::OnVarChange( wxGridEvent & event )
+{
+    if (m_standaloneDebugger)
+        m_standaloneDebugger->OnVarChange( event );
 }
 
 ////////////////////////////////////////////////////////////////////////////////

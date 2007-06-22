@@ -132,6 +132,7 @@ class frmDebugger : public pgFrame
     void OnSelectFrame( wxCommandEvent & event );
     void OnMarginClick( wxStyledTextEvent & event );    // Set/clear breakpoint on margin click
     void OnPositionStc( wxStyledTextEvent & event ); 
+    void OnVarChange( wxGridEvent & event ); 
     void OnClose( wxCloseEvent & event );
     void OnExit( wxCommandEvent & event );
 	void OnSize( wxSizeEvent & event );

@@ -80,6 +80,7 @@ class ctlCodeWindow : public pgFrame
     void OnSelectFrame( wxCommandEvent & event );	    // Select a different stack frame
     void OnMarginClick( wxStyledTextEvent & event );    // Set/clear breakpoint on margin click
     void OnPositionStc( wxStyledTextEvent & event );    // update the status bar text
+    void OnVarChange( wxGridEvent & event );		    // User changed a variable
 	void processResult( wxString & result );		    // Handle a message from the debugger server
 	void OnNoticeReceived( wxCommandEvent & event );    // NOTICE received from server
 	void OnResultSet( PGresult * result );			    // Result set received from server
@@ -100,16 +101,15 @@ class ctlCodeWindow : public pgFrame
 	void clearBreakpoint( int lineNumber, bool requestUpdate );
 	void setBreakpoint( int lineNumber );
 
-	ctlStackWindow   * getStackWindow()   { return( m_stackWindow ); }
-	ctlMessageWindow * getMessageWindow() { return( m_tabWindow->getMessageWindow()); }
+	ctlStackWindow   *getStackWindow()   { return( m_stackWindow ); }
+	ctlMessageWindow *getMessageWindow() { return( m_tabWindow->getMessageWindow()); }
 
-	ctlVarWindow     * getVarWindow( bool create )     { return( m_tabWindow->getVarWindow( create )); }
-	ctlVarWindow     * getParamWindow( bool create )   { return( m_tabWindow->getParamWindow( create )); }
-	ctlVarWindow		* getPkgVarWindow( bool create )  { return( m_tabWindow->getPkgVarWindow( create )); } 
-	ctlResultGrid    * getResultWindow()               { return( m_tabWindow->getResultWindow()); }
+	ctlVarWindow     *getVarWindow( bool create )     { return( m_tabWindow->getVarWindow( create )); }
+	ctlVarWindow     *getParamWindow( bool create )   { return( m_tabWindow->getParamWindow( create )); }
+	ctlVarWindow	 *getPkgVarWindow( bool create )  { return( m_tabWindow->getPkgVarWindow( create )); } 
+	ctlResultGrid    *getResultWindow()               { return( m_tabWindow->getResultWindow()); }
 
 	void	setTools(bool enable);		            // Enable/disable debugger options
-	void    OnVarChange( wxGridEvent & event );		// User changed a variable
 	void	OnIdle( wxIdleEvent & event );			// Idle processor
 	void	OnTimer( wxTimerEvent & event );		// Clock tick
 
