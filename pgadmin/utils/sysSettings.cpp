@@ -172,6 +172,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
         exportRowSeparator = wxT("\r\n");
     else
         exportRowSeparator = wxT("\n");
+
     Read(wxT("Export/ColSeparator"), &exportColSeparator, wxT(";"));
     Read(wxT("Export/QuoteChar"), &exportQuoteChar, wxT("\""));
     Read(wxT("Export/Quote"), &val, wxT("Strings"));
@@ -181,8 +182,9 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
         exportQuoting = 1;
     else
         exportQuoting = 0;
+
 	Read(wxT("Copy/ColSeparator"), &copyColSeparator, wxT(";"));
-	Read(wxT("Copy(QuoteChar"), &copyQuoteChar, wxT("\""));
+	Read(wxT("Copy/QuoteChar"), &copyQuoteChar, wxT("\""));
 	Read(wxT("Copy/Quote"), &val, wxT("Strings"));
 	if (val == wxT("All"))
 		copyQuoting = 2;
