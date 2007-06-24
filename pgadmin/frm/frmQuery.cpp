@@ -763,16 +763,16 @@ void frmQuery::OnHelp(wxCommandEvent& event)
         if (query.IsSameAs(wxT("PREPARE"), false))
         {
             if (tokens.GetNextToken().IsSameAs(wxT("TRANSACTION"), false))
-                page = wxT("pg/sql-prepare-transaction");
+                page = wxT("sql-prepare-transaction");
             else
-                page = wxT("pg/sql-prepare");
+                page = wxT("sql-prepare");
         }
         else if (query.IsSameAs(wxT("ROLLBACK"), false))
         {
             if (tokens.GetNextToken().IsSameAs(wxT("PREPARED"), false))
-                page = wxT("pg/sql-rollback-prepared");
+                page = wxT("sql-rollback-prepared");
             else
-                page = wxT("pg/sql-rollback");
+                page = wxT("sql-rollback");
         }
         else
         {
@@ -784,7 +784,7 @@ void frmQuery::OnHelp(wxCommandEvent& event)
                     if (sth->page)
                         page = sth->page;
                     else
-                        page = wxT("pg/sql-") + query.Lower();
+                        page = wxT("sql-") + query.Lower();
 
                     if (sth->type)
                     {
@@ -805,7 +805,7 @@ void frmQuery::OnHelp(wxCommandEvent& event)
                             sth++;
                         }
                         if (!sth->token)
-                            page=wxT("pg/sql-commands");
+                            page=wxT("sql-commands");
                     }
                     break;
                 }
@@ -814,9 +814,12 @@ void frmQuery::OnHelp(wxCommandEvent& event)
         }
     }
     if (page.IsEmpty())
-        page=wxT("pg/sql-commands");
+        page=wxT("sql-commands");
 
-    DisplayHelp(page, HELP_POSTGRESQL);
+    if (conn->GetIsEdb())
+        DisplayHelp(page, HELP_ENTERPRISEDB);
+    else
+        DisplayHelp(page, HELP_POSTGRESQL);
 }
 
 

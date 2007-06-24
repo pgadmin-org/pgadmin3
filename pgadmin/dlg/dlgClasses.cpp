@@ -392,7 +392,14 @@ void DialogWithHelp::OnHelp(wxCommandEvent& ev)
     wxString page=GetHelpPage();
 
     if (!page.IsEmpty())
-        DisplayHelp(page, HELP_POSTGRESQL);
+    {
+        if (page.StartsWith(wxT("pg/")))
+            DisplayHelp(page.Mid(3), HELP_POSTGRESQL);
+        else if (page.StartsWith(wxT("slony/")))
+            DisplayHelp(page.Mid(6), HELP_SLONY);
+        else
+            DisplayHelp(page, HELP_PGADMIN);
+    }
 }
 
 
