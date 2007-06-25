@@ -311,11 +311,11 @@ wxMenuBar *frmDebugger::setupMenuBar(void)
     m_menuBar->Append(m_debugMenu, _("&Debug"));
 
     m_viewMenu = new wxMenu;
-    m_viewMenu->Append(MENU_ID_VIEW_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
-    m_viewMenu->Append(MENU_ID_VIEW_STACKPANE, _("&Stack pane"),   _("Show or hide the stack pane."), wxITEM_CHECK);
-    m_viewMenu->Append(MENU_ID_VIEW_TOOLBAR, _("&Tool bar"),       _("Show or hide the tool bar."), wxITEM_CHECK);
+    m_viewMenu->Append(MENU_ID_VIEW_OUTPUTPANE, _("&Output pane\tCtrl-Alt-O"), _("Show or hide the output pane."), wxITEM_CHECK);
+    m_viewMenu->Append(MENU_ID_VIEW_STACKPANE, _("&Stack pane\tCtrl-Alt-S"),   _("Show or hide the stack pane."), wxITEM_CHECK);
+    m_viewMenu->Append(MENU_ID_VIEW_TOOLBAR, _("&Tool bar\tCtrl-Alt-T"),       _("Show or hide the tool bar."), wxITEM_CHECK);
     m_viewMenu->AppendSeparator();
-    m_viewMenu->Append(MENU_ID_VIEW_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
+    m_viewMenu->Append(MENU_ID_VIEW_DEFAULTVIEW, _("&Default view\tCtrl-Alt-V"),     _("Restore the default view."));
     m_viewMenu->Enable(MENU_ID_VIEW_OUTPUTPANE,    false);
     m_viewMenu->Enable(MENU_ID_VIEW_STACKPANE,	   false);
     m_menuBar->Append(m_viewMenu, _("&View"));
