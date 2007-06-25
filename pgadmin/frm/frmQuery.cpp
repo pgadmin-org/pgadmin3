@@ -1827,6 +1827,14 @@ bool frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
     if (!IsActive())
         RequestUserAttention();
+
+    if (!viewMenu->IsChecked(MNU_OUTPUTPANE))
+    {
+        viewMenu->Check(MNU_OUTPUTPANE, true);
+        manager.GetPane(wxT("outputPane")).Show(true);
+        manager.Update();
+    }
+
     return done;
 }
 
