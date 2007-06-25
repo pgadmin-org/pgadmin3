@@ -244,7 +244,6 @@ void frmMain::CreateMenus()
     helpMenu = new wxMenu();
     newContextMenu = new wxMenu();
 
-
     toolBar = new wxToolBar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER );
     toolBar->SetToolBitmapSize(wxSize(32, 32));
     menuFactories = new menuFactoryList();
@@ -254,11 +253,11 @@ void frmMain::CreateMenus()
     fileMenu->AppendSeparator();
     new addServerFactory(menuFactories, fileMenu, toolBar);
 
-    viewMenu->Append(MNU_OBJECTBROWSER, _("&Object browser"),     _("Show or hide the object browser."), wxITEM_CHECK);
-    viewMenu->Append(MNU_SQLPANE, _("&SQL pane"),     _("Show or hide the SQL pane."), wxITEM_CHECK);
-    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"),     _("Show or hide the tool bar."), wxITEM_CHECK);
+    viewMenu->Append(MNU_OBJECTBROWSER, _("&Object browser\tCtrl-Alt-O"),     _("Show or hide the object browser."), wxITEM_CHECK);
+    viewMenu->Append(MNU_SQLPANE, _("&SQL pane\tCtrl-Alt-S"),     _("Show or hide the SQL pane."), wxITEM_CHECK);
+    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar\tCtrl-Alt-T"),     _("Show or hide the tool bar."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
+    viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view\tCtrl-Alt-V"),     _("Restore the default view."));
     viewMenu->AppendSeparator();
     actionFactory *refFact=new refreshFactory(menuFactories, viewMenu, toolBar);
     new countRowsFactory(menuFactories, viewMenu, 0);

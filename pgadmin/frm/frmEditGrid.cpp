@@ -173,11 +173,11 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_OPTIONS, _("&Sort/filter..."),_("Sort/filter options."));
     viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_LIMITBAR, _("&Limit bar"), _("Show or hide the row limit options bar."), wxITEM_CHECK);
-    viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad"), _("Show or hide the scratch pad."), wxITEM_CHECK);
-    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"), _("Show or hide the tool bar."), wxITEM_CHECK);
+    viewMenu->Append(MNU_LIMITBAR, _("&Limit bar\tCtrl-Alt-L"), _("Show or hide the row limit options bar."), wxITEM_CHECK);
+    viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad\tCtrl-Alt-S"), _("Show or hide the scratch pad."), wxITEM_CHECK);
+    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar\tCtrl-Alt-T"), _("Show or hide the tool bar."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
+    viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view\tCtrl-Alt-V"),     _("Restore the default view."));
 
     // Help menu
     helpMenu = new wxMenu();

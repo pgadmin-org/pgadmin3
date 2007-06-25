@@ -199,16 +199,17 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // View menu
     viewMenu = new wxMenu();
-    viewMenu->Append(MNU_DATABASEBAR, _("&Database bar"), _("Show or hide the database selection bar."), wxITEM_CHECK);
-    viewMenu->Append(MNU_OUTPUTPANE, _("&Output pane"), _("Show or hide the output pane."), wxITEM_CHECK);
-    viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad"), _("Show or hide the scratch pad."), wxITEM_CHECK);
-    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar"), _("Show or hide the tool bar."), wxITEM_CHECK);
+    viewMenu->Append(MNU_DATABASEBAR, _("&Database bar\tCtrl-Alt-D"), _("Show or hide the database selection bar."), wxITEM_CHECK);
+    viewMenu->Append(MNU_OUTPUTPANE, _("&Output pane\tCtrl-Alt-O"), _("Show or hide the output pane."), wxITEM_CHECK);
+    viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad\tCtrl-Alt-S"), _("Show or hide the scratch pad."), wxITEM_CHECK);
+    viewMenu->Append(MNU_TOOLBAR, _("&Tool bar\tCtrl-Alt-T"), _("Show or hide the tool bar."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_SHOWINDENTGUIDES, _("&Indent guides"), _("Enable or disable display of indent guides"), wxITEM_CHECK);
     viewMenu->Append(MNU_SHOWLINEENDS, _("&Line ends"), _("Enable or disable display of line ends"), wxITEM_CHECK);
     viewMenu->Append(MNU_SHOWWHITESPACE, _("&Whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
     viewMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
-
+    viewMenu->AppendSeparator();
+    viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view\tCtrl-Alt-V"),     _("Restore the default view."));
 
     menuBar->Append(viewMenu, _("&View"));
 
@@ -332,8 +333,6 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
     viewMenu->Check(MNU_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
     viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
-    viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view"),     _("Restore the default view."));
 
     // tell the manager to "commit" all the changes just made
     manager.Update();
