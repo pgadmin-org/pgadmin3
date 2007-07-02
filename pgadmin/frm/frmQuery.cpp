@@ -33,6 +33,7 @@
 #include "dlg/dlgSelectConnection.h"
 #include "dlg/dlgAddFavourite.h"
 #include "dlg/dlgManageFavourites.h"
+#include "dlg/dlgManageMacros.h"
 #include "utils/favourites.h"
 #include "utils/utffile.h"
 #include "frm/frmReport.h"
@@ -99,6 +100,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_SHOWLINEENDS,      frmQuery::OnShowLineEnds)
     EVT_MENU(MNU_FAVOURITES_ADD,    frmQuery::OnAddFavourite)
     EVT_MENU(MNU_FAVOURITES_MANAGE, frmQuery::OnManageFavourites)
+	EVT_MENU(MNU_MACROS_MANAGE,		frmQuery::OnMacroManage)
     EVT_MENU(MNU_DATABASEBAR,       frmQuery::OnToggleDatabaseBar)
     EVT_MENU(MNU_TOOLBAR,           frmQuery::OnToggleToolBar)
     EVT_MENU(MNU_SCRATCHPAD,        frmQuery::OnToggleScratchPad)
@@ -108,6 +110,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
     EVT_MENU(MNU_CRLF,              frmQuery::OnSetEOLMode)
     EVT_MENU(MNU_CR,                frmQuery::OnSetEOLMode)
     EVT_MENU_RANGE(MNU_FAVOURITES_MANAGE+1, MNU_FAVOURITES_MANAGE+999, frmQuery::OnSelectFavourite)
+    EVT_MENU_RANGE(MNU_MACROS_MANAGE+1, MNU_MACROS_MANAGE+99, frmQuery::OnMacroInvoke)
     EVT_ACTIVATE(                   frmQuery::OnActivate)
     EVT_STC_MODIFIED(CTL_SQLQUERY,  frmQuery::OnChangeStc)
     EVT_STC_UPDATEUI(CTL_SQLQUERY,  frmQuery::OnPositionStc)
@@ -196,6 +199,13 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     favourites = queryFavouriteFileProvider::LoadFavourites(true);
     UpdateFavouritesList();
     menuBar->Append(favouritesMenu, _("Fav&ourites"));
+
+	macrosMenu = new wxMenu();
+	macrosMenu->Append(MNU_MACROS_MANAGE, _("Manage macros..."), _("Edit and delete macros"));
+	macrosMenu->AppendSeparator();
+	macros = queryMacroFileProvider::LoadMacros(true);
+	UpdateMacrosList();
+	menuBar->Append(macrosMenu, _("&Macros"));
 
     // View menu
     viewMenu = new wxMenu();
@@ -1056,6 +1066,16 @@ void frmQuery::UpdateFavouritesList()
     favourites->AppendAllToMenu(favouritesMenu, MNU_FAVOURITES_MANAGE+1);
 }
 
+void frmQuery::UpdateMacrosList()
+{
+	while (macrosMenu->GetMenuItemCount() > 2)
+	{
+		macrosMenu->Destroy(macrosMenu->GetMenuItems()[2]);
+	}
+
+	macros->AppendAllToMenu(macrosMenu, MNU_MACROS_MANAGE+1);
+}
+
 void frmQuery::OnAddFavourite(wxCommandEvent &event)
 {
     if (sqlQuery->GetText().Trim().IsEmpty())
@@ -1555,6 +1575,50 @@ void frmQuery::OnExecFile(wxCommandEvent &event)
     sqlQuery->SetFocus();
 }
 
+void frmQuery::OnMacroManage(wxCommandEvent &event)
+{
+	int r = dlgManageMacros(this,mainForm,macros).ManageMacros();
+    if (r == 1)
+    {
+        /* Changed something, so save */
+        queryMacroFileProvider::SaveMacros(macros);
+        UpdateMacrosList();
+    }
+    else if (r == -1)
+    {
+        /* Changed something requiring rollback */
+        delete macros;
+        macros = queryMacroFileProvider::LoadMacros(true);
+        UpdateMacrosList();
+    }
+
+}
+
+void frmQuery::OnMacroInvoke(wxCommandEvent &event)
+{
+    queryMacroItem *mac;
+
+    mac = macros->FindMacro(event.GetId());
+    if (!mac)
+        return;
+
+	wxString query = mac->GetQuery();
+	if (query.IsEmpty())
+		return;	// do not execute empty query
+
+	if (query.Find(wxT("$SELECTION$")) != wxNOT_FOUND)
+	{
+		wxString selection = sqlQuery->GetSelectedText();
+		if (selection.IsEmpty())
+		{
+			showMessage(_("This macro requires includes a text substitution. Please select some text in the SQL pane and re-run the macro."), _("Execute macro"), wxICON_EXCLAMATION);
+			return;
+		}
+		query.Replace(wxT("$SELECTION$"), selection);
+	}
+    execQuery(query);
+    sqlQuery->SetFocus();
+}
 
 void frmQuery::setTools(const bool running)
 {

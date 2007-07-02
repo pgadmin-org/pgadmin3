@@ -15,6 +15,7 @@
 #include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 #include "utils/favourites.h"
+#include "utils/macros.h"
 
 // wxAUI
 #include <wx/aui/aui.h>
@@ -120,14 +121,19 @@ private:
     void SetLineEndingStyle();
     int GetLineEndingStyle();
     void OnSetEOLMode(wxCommandEvent& event);
+	void OnMacroInvoke(wxCommandEvent& event);
+	void OnMacroManage(wxCommandEvent& event);
+	void UpdateMacrosList();
     wxWindow *currentControl();
     wxMenu *queryMenu;
     wxMenu *favouritesMenu;
+	wxMenu *macrosMenu;
     wxMenu *lineEndMenu;
     wxString title;
     wxString lastFilename, lastDir;
 
     queryFavouriteFolder *favourites;
+	queryMacroList *macros;
 
     bool aborted;
     bool lastFileFormat;

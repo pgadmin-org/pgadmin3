@@ -648,7 +648,7 @@ void sysSettings::SetDoubleClickProperties(const bool newval)
 //////////////////////////////////////////////////////////////////////////
 wxString sysSettings::GetConfigFile(configFileName cfgname)
 {
-    if (cfgname == PGPASS || cfgname == PGAFAVOURITES)
+    if (cfgname == PGPASS || cfgname == PGAFAVOURITES || cfgname == PGAMACROS)
     {
         wxStandardPaths stdp;
         wxString fname=stdp.GetUserConfigDir();
@@ -656,9 +656,31 @@ wxString sysSettings::GetConfigFile(configFileName cfgname)
         fname += wxT("\\postgresql");
         if (!wxDirExists(fname))
             wxMkdir(fname);
-        fname += (cfgname==PGPASS)?wxT("\\pgpass.conf"):wxT("\\pgadmin_favourites.xml");
+		switch(cfgname)
+		{
+		case PGPASS:
+			fname += wxT("\\pgpass.conf");
+			break;
+		case PGAFAVOURITES:
+			fname += wxT("\\pgadmin_favourites.xml");
+			break;
+		case PGAMACROS:
+			fname += wxT("\\pgadmin_macros.xml");
+			break;
+		}
 #else
-        fname += ((cfgname==PGPASS)?wxT("/.pgpass"):wxT("/.pgadminfavourites"));
+		switch(cfgname)
+		{
+		case PGPASS:
+			fname += wxT("/.pgpass");
+			break;
+		case PGAFAVOURITES:
+			fname += wxT("/.pgadminfavourites");
+			break;
+		case PGAMACROS:
+			fname += wxT("/.pgadminmacros");
+			break;
+		}
 #endif
         return fname;
     }

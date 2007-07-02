@@ -35,6 +35,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgLanguage.xrc \
 	$(srcdir)/ui/dlgMainConfig.xrc \
 	$(srcdir)/ui/dlgManageFavourites.xrc \
+	$(srcdir)/ui/dlgManageMacros.xrc \
 	$(srcdir)/ui/dlgOperator.xrc \
 	$(srcdir)/ui/dlgPackage.xrc \
 	$(srcdir)/ui/dlgPgpassConfig.xrc \

@@ -20,7 +20,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/utils/sysLogger.h \
 	$(srcdir)/include/utils/sysProcess.h \
 	$(srcdir)/include/utils/sysSettings.h \
-	$(srcdir)/include/utils/utffile.h
+	$(srcdir)/include/utils/utffile.h \
+	$(srcdir)/include/utils/macros.h
 
 EXTRA_DIST += \
         $(srcdir)/include/utils/module.mk

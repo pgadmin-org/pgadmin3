@@ -82,6 +82,7 @@
 #include "dlg/dlgLanguage.h"
 #include "dlg/dlgMainConfig.h"
 #include "dlg/dlgManageFavourites.h"
+#include "dlg/dlgManageMacros.h"
 #include "dlg/dlgOperator.h"
 #include "dlg/dlgPackage.h"
 #include "dlg/dlgPgpassConfig.h"
@@ -159,6 +160,7 @@
 
 #include "utils/factory.h"
 #include "utils/favourites.h"
+#include "utils/macros.h"
 #include "utils/md5.h"
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
