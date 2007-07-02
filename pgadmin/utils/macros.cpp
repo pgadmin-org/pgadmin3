@@ -13,6 +13,7 @@
 
 #include "pgAdmin3.h"
 #include "utils/favourites.h"
+#include "utils/macros.h"
 #include "utils/sysSettings.h"
 
 #include <wx/file.h>
