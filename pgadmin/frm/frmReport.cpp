@@ -55,6 +55,7 @@
 #define rbXmlLink         CTRL_RADIOBUTTON("rbXmlLink")
 #define rbXmlProcess      CTRL_RADIOBUTTON("rbXmlProcess")
 #define chkSql            CTRL_CHECKBOX("chkSql")
+#define chkBrowser        CTRL_CHECKBOX("chkBrowser")
 
 BEGIN_EVENT_TABLE(frmReport, pgDialog)
     EVT_RADIOBUTTON(XRCID("rbHtml"),        frmReport::OnChange)
@@ -166,6 +167,9 @@ frmReport::frmReport(wxWindow *p)
     settings->Read(wxT("Reports/IncludeSQL"), &bVal, true);
     chkSql->SetValue(bVal);
     chkSql->Disable();
+
+    settings->Read(wxT("Reports/OpenInBrowser"), &bVal, true);
+    chkBrowser->SetValue(bVal);
 
     wxCommandEvent ev;
     OnChange(ev);
@@ -366,6 +370,9 @@ void frmReport::OnOK(wxCommandEvent &ev)
     file.Write(report, wxConvUTF8);
     file.Close();
 
+    // Open the file in the default browser if required
+    if (chkBrowser->GetValue())
+        wxLaunchDefaultBrowser(filename);
 
     // Save the settings for next time round
     settings->Write(wxT("Reports/LastNotes"), txtNotes->GetValue());
@@ -397,6 +404,8 @@ void frmReport::OnOK(wxCommandEvent &ev)
     settings->Write(wxT("Reports/LastXmlFile"), txtXmlFile->GetValue());
 
     settings->Write(wxT("Reports/IncludeSQL"), chkSql->GetValue());
+
+    settings->Write(wxT("Reports/OpenInBrowser"), chkBrowser->GetValue());
 
     // Now go away
     if (IsModal())
