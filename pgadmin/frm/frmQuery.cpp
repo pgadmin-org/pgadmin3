@@ -1611,7 +1611,7 @@ void frmQuery::OnMacroInvoke(wxCommandEvent &event)
 		wxString selection = sqlQuery->GetSelectedText();
 		if (selection.IsEmpty())
 		{
-			showMessage(_("This macro requires includes a text substitution. Please select some text in the SQL pane and re-run the macro."), _("Execute macro"), wxICON_EXCLAMATION);
+			wxMessageBox(_("This macro requires includes a text substitution. Please select some text in the SQL pane and re-run the macro."), _("Execute macro"), wxICON_EXCLAMATION);
 			return;
 		}
 		query.Replace(wxT("$SELECTION$"), selection);
