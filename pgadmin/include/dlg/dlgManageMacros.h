@@ -47,3 +47,4 @@ private:
 };
 
 #endif /*dlgManageMacros_H*/
+
