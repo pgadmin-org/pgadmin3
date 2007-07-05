@@ -32,6 +32,7 @@
 #include "dlgAddFavourite.h"
 #include "dlgManageFavourites.h"
 #include "favourites.h"
+#include "utffile.h"
 #include "frmReport.h"
 
 #include <wx/clipbrd.h>
@@ -1069,7 +1070,7 @@ void frmQuery::OnSelectFavourite(wxCommandEvent &event)
     sqlQuery->AddText(fav->GetContents());
 }
 
-
+ 
 bool frmQuery::CheckChanged(bool canVeto)
 {
     if (changed && settings->GetAskSaveConfirmation())
@@ -1158,7 +1159,13 @@ void frmQuery::OnPositionStc(wxStyledTextEvent& event)
 
 void frmQuery::OpenLastFile()
 {
-    wxString str=FileRead(lastPath);
+    wxString str;
+    bool modeUnicode = settings->GetUnicodeFile();
+    wxUtfFile file(lastPath, wxFile::read, modeUnicode ? wxFONTENCODING_UTF8:wxFONTENCODING_DEFAULT);
+
+    if (file.IsOpened())
+        file.Read(str);
+
     if (!str.IsEmpty())
     {
         sqlQuery->SetText(str);
@@ -1196,14 +1203,19 @@ void frmQuery::OnOpen(wxCommandEvent& event)
 
 void frmQuery::OnSave(wxCommandEvent& event)
 {
+    bool modeUnicode = settings->GetUnicodeFile();
+
     if (lastPath.IsNull())
     {
         OnSaveAs(event);
         return;
     }
 
-    if (FileWrite(lastPath, sqlQuery->GetText(), -1))
-    {
+    wxUtfFile file(lastPath, wxFile::write, modeUnicode ? wxFONTENCODING_UTF8:wxFONTENCODING_DEFAULT);
+    if (file.IsOpened())
+     {
+        file.Write(sqlQuery->GetText());
+        file.Close();
         changed=false;
         setExtendedTitle();
         UpdateRecentFiles();
@@ -1227,26 +1239,28 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
         switch (dlg->GetFilterIndex())
         {
             case 0: 
-                lastFileFormat = false;
 #ifdef __WXMAC__
         if (!lastPath.Contains(wxT(".")))
             lastPath += wxT(".sql");
 #endif
                 break;
             case 1:
-                lastFileFormat = true;
 #ifdef __WXMAC__
                 if (!lastPath.Contains(wxT(".")))
                         lastPath += wxT(".sql");
 #endif
                 break;
             default:
-                lastFileFormat = settings->GetUnicodeFile();
                 break;
         }
 
-        if (FileWrite(lastPath, sqlQuery->GetText(), lastFileFormat ? 1 : 0))
+        lastFileFormat = settings->GetUnicodeFile();
+
+        wxUtfFile file(lastPath, wxFile::write, lastFileFormat ? wxFONTENCODING_UTF8:wxFONTENCODING_DEFAULT);
+        if (file.IsOpened())
         {
+            file.Write(sqlQuery->GetText());
+            file.Close();
             changed=false;
             setExtendedTitle();
             UpdateRecentFiles();
