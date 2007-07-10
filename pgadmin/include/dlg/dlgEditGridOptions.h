@@ -44,6 +44,7 @@ public:
 private:
 
 	void OnCancel(wxCommandEvent &ev);
+    void OnClose(wxCloseEvent &ev);
 	void OnOK(wxCommandEvent &ev);
 	void OnRemove(wxCommandEvent &ev);
 	void OnAsc(wxCommandEvent &ev);

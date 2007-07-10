@@ -46,6 +46,7 @@
 #define filter                      CTRL_SQLBOX("sqlFilter")
 
 BEGIN_EVENT_TABLE(dlgEditGridOptions, pgDialog)
+    EVT_CLOSE(                                      dlgEditGridOptions::OnClose)
     EVT_BUTTON               (wxID_OK,              dlgEditGridOptions::OnOK)
     EVT_BUTTON               (wxID_CANCEL,          dlgEditGridOptions::OnCancel)
     EVT_BUTTON               (wxID_REMOVE,          dlgEditGridOptions::OnRemove)
@@ -242,6 +243,12 @@ void dlgEditGridOptions::OnLstSortColsChange(wxListEvent &ev)
 }
 
 void dlgEditGridOptions::OnCancel(wxCommandEvent &ev)
+{
+    EndModal(false);
+}
+
+
+void dlgEditGridOptions::OnClose(wxCloseEvent &ev)
 {
     EndModal(false);
 }
