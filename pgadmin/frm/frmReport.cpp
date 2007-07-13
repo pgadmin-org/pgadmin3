@@ -277,11 +277,14 @@ void frmReport::OnOK(wxCommandEvent &ev)
     else
         filename = txtXmlFile->GetValue();
 
+    wxFileName fn(filename);
+    fn.MakeAbsolute();
+
     // Check if the file exsits, and if so, whether to overwrite it
-    if (wxFileExists(filename))
+    if (wxFileExists(fn.GetFullPath()))
     {
         wxString msg;
-        msg.Printf(_("The file: \n\n%s\n\nalready exists. Do you want to overwrite it?"), filename.c_str());
+        msg.Printf(_("The file: \n\n%s\n\nalready exists. Do you want to overwrite it?"), fn.GetFullPath().c_str());
 
         if (wxMessageBox(msg, _("Overwrite file?"), wxYES_NO | wxICON_QUESTION) == wxNO)
         {
@@ -361,10 +364,10 @@ void frmReport::OnOK(wxCommandEvent &ev)
         return;
 
     // Save it to disk
-    wxFile file(filename, wxFile::write);
+    wxFile file(fn.GetFullPath(), wxFile::write);
     if (!file.IsOpened())
     {
-        wxLogError(_("Failed to open file %s."), filename.c_str());
+        wxLogError(_("Failed to open file %s."), fn.GetFullPath().c_str());
         return;
     }
     file.Write(report, wxConvUTF8);
@@ -372,7 +375,7 @@ void frmReport::OnOK(wxCommandEvent &ev)
 
     // Open the file in the default browser if required
     if (chkBrowser->GetValue())
-        wxLaunchDefaultBrowser(filename);
+        wxLaunchDefaultBrowser(wxT("file://") + fn.GetFullPath());
 
     // Save the settings for next time round
     settings->Write(wxT("Reports/LastNotes"), txtNotes->GetValue());
