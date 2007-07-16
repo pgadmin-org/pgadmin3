@@ -626,7 +626,8 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
             if (event.ControlDown())
             {
                 wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
-                text->WriteText(wxT("\t"));
+                if (text)
+                    text->WriteText(wxT("\t"));
                 return;
             }
 
