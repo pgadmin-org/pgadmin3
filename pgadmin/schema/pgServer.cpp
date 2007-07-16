@@ -88,20 +88,20 @@ wxMenu *pgServer::GetNewMenu()
     if (connected && (GetSuperUser() || GetCreateRole()))
     {
         menu=new wxMenu();
-        if (settings->GetDisplayOption(wxT("Tablespaces")))
+        if (settings->GetDisplayOption(_("Tablespaces")))
             tablespaceFactory.AppendMenu(menu);
         if (GetConnection()->BackendMinimumVersion(8, 1))
         {
-            if (settings->GetDisplayOption(wxT("Groups/group roles")))
+            if (settings->GetDisplayOption(_("Groups/group roles")))
                 groupRoleFactory.AppendMenu(menu);
-            if (settings->GetDisplayOption(wxT("Users/login roles")))
+            if (settings->GetDisplayOption(_("Users/login roles")))
                 loginRoleFactory.AppendMenu(menu);
         }
         else
         {
-            if (settings->GetDisplayOption(wxT("Groups/group roles")))
+            if (settings->GetDisplayOption(_("Groups/group roles")))
                 groupFactory.AppendMenu(menu);
-            if (settings->GetDisplayOption(wxT("Users/login roles")))
+            if (settings->GetDisplayOption(_("Users/login roles")))
                 userFactory.AppendMenu(menu);
         }
     }
@@ -798,15 +798,15 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
             
             wxLogInfo(wxT("Adding child object to server ") + GetIdentifier());
     
-            if (settings->GetDisplayOption(wxT("Databases")))
+            if (settings->GetDisplayOption(_("Databases")))
                 browser->AppendCollection(this, databaseFactory);
 
-            if (conn->BackendMinimumVersion(8, 0) && settings->GetDisplayOption(wxT("Tablespaces")))
+            if (conn->BackendMinimumVersion(8, 0) && settings->GetDisplayOption(_("Tablespaces")))
                 browser->AppendCollection(this, tablespaceFactory);
 
             // Jobs
             // We only add the Jobs node if the appropriate objects are the initial DB.
-            if (settings->GetDisplayOption(wxT("pgAgent jobs")))
+            if (settings->GetDisplayOption(_("pgAgent jobs")))
             {
                 wxString exists = conn->ExecuteScalar(
                     wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
@@ -818,16 +818,16 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 
             if (conn->BackendMinimumVersion(8, 1))
             {
-                if (settings->GetDisplayOption(wxT("Groups/group roles")))
+                if (settings->GetDisplayOption(_("Groups/group roles")))
                     browser->AppendCollection(this, groupRoleFactory);
-                if (settings->GetDisplayOption(wxT("Users/login roles")))
+                if (settings->GetDisplayOption(_("Users/login roles")))
                 browser->AppendCollection(this, loginRoleFactory);
             }
             else
             {
-                if (settings->GetDisplayOption(wxT("Groups/group roles")))
+                if (settings->GetDisplayOption(_("Groups/group roles")))
                     browser->AppendCollection(this, groupFactory);
-                if (settings->GetDisplayOption(wxT("Users/login roles")))
+                if (settings->GetDisplayOption(_("Users/login roles")))
                     browser->AppendCollection(this, userFactory);
             }
         }

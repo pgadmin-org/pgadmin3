@@ -318,7 +318,7 @@ bool sysSettings::GetDisplayOption(const wxString &objtype, bool GetDefault)
         return def;
  
     // Otherwise get the reg value.
-	Read(wxT("Display/") + objtype, &retval, def);
+	Read(wxT("Display/") + engtype, &retval, def);
 	return retval;
 }
 

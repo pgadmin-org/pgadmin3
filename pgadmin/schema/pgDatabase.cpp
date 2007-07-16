@@ -58,15 +58,15 @@ wxMenu *pgDatabase::GetNewMenu()
 
     if (GetCreatePrivilege())
     {
-        if (settings->GetDisplayOption(wxT("Casts")))
+        if (settings->GetDisplayOption(_("Casts")))
             castFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Languages")))
+        if (settings->GetDisplayOption(_("Languages")))
             languageFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Public synonyms")) && GetConnection()->EdbMinimumVersion(8, 0))
+        if (settings->GetDisplayOption(_("Public synonyms")) && GetConnection()->EdbMinimumVersion(8, 0))
                 synonymFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Schemas")))
+        if (settings->GetDisplayOption(_("Schemas")))
             schemaFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Slony")))
+        if (settings->GetDisplayOption(_("Slony")))
             slClusterFactory.AppendMenu(menu);
     }
     return menu;
@@ -389,17 +389,17 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         {
             wxLogInfo(wxT("Adding child object to database ") + GetIdentifier());
 
-			if (settings->GetDisplayOption(wxT("Catalogs")))
+			if (settings->GetDisplayOption(_("Catalogs")))
 				browser->AppendCollection(this, catalogFactory);
-			if (settings->GetDisplayOption(wxT("Casts")))
+			if (settings->GetDisplayOption(_("Casts")))
 				browser->AppendCollection(this, castFactory);
-			if (settings->GetDisplayOption(wxT("Languages")))
+			if (settings->GetDisplayOption(_("Languages")))
 				browser->AppendCollection(this, languageFactory);
-			if (settings->GetDisplayOption(wxT("Public synonyms")) && connection()->EdbMinimumVersion(8,0))
+			if (settings->GetDisplayOption(_("Public synonyms")) && connection()->EdbMinimumVersion(8,0))
 				browser->AppendCollection(this, synonymFactory);
-			if (settings->GetDisplayOption(wxT("Schemas")))
+			if (settings->GetDisplayOption(_("Schemas")))
 				browser->AppendCollection(this, schemaFactory);
-			if (settings->GetDisplayOption(wxT("Slony clusters")))
+			if (settings->GetDisplayOption(_("Slony clusters")))
 				browser->AppendCollection(this, slClusterFactory);
             
             missingFKs = StrToLong(connection()->ExecuteScalar(

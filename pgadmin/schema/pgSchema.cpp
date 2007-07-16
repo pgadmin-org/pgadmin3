@@ -73,35 +73,35 @@ wxMenu *pgSchemaBase::GetNewMenu()
 
     if (GetCreatePrivilege())
     {
-        if (settings->GetDisplayOption(wxT("Aggregates")))
+        if (settings->GetDisplayOption(_("Aggregates")))
             aggregateFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Conversions")))
+        if (settings->GetDisplayOption(_("Conversions")))
             conversionFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Domains")))
+        if (settings->GetDisplayOption(_("Domains")))
             domainFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Functions")))
+        if (settings->GetDisplayOption(_("Functions")))
             functionFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Packages")))
+        if (settings->GetDisplayOption(_("Packages")))
         {
             if (GetConnection()->EdbMinimumVersion(8, 0))
                 packageFactory.AppendMenu(menu);
         }
-        if (settings->GetDisplayOption(wxT("Procedures")))
+        if (settings->GetDisplayOption(_("Procedures")))
         {
             if (GetConnection()->EdbMinimumVersion(8, 0))
                 procedureFactory.AppendMenu(menu);
         }
-        if (settings->GetDisplayOption(wxT("Operators")))
+        if (settings->GetDisplayOption(_("Operators")))
             operatorFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Sequences")))
+        if (settings->GetDisplayOption(_("Sequences")))
             sequenceFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Tables")))
+        if (settings->GetDisplayOption(_("Tables")))
             tableFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Trigger functions")))
+        if (settings->GetDisplayOption(_("Trigger functions")))
             triggerFunctionFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Types")))
+        if (settings->GetDisplayOption(_("Types")))
             typeFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(wxT("Views")))
+        if (settings->GetDisplayOption(_("Views")))
             viewFactory.AppendMenu(menu);
     }
     return menu;
@@ -154,44 +154,44 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 
         if (!(GetMetaType() == PGM_CATALOG && (GetFullName() == wxT("dbo") || GetFullName() == wxT("sys") || GetFullName() == wxT("information_schema"))))
         {
-            if (settings->GetDisplayOption(wxT("Aggregates")))
+            if (settings->GetDisplayOption(_("Aggregates")))
 			    browser->AppendCollection(this, aggregateFactory);
-		    if (settings->GetDisplayOption(wxT("Conversions")))
+		    if (settings->GetDisplayOption(_("Conversions")))
 			    browser->AppendCollection(this, conversionFactory);
-		    if (settings->GetDisplayOption(wxT("Domains")))
+		    if (settings->GetDisplayOption(_("Domains")))
 			    browser->AppendCollection(this, domainFactory);
-		    if (settings->GetDisplayOption(wxT("Functions")))
+		    if (settings->GetDisplayOption(_("Functions")))
 			    browser->AppendCollection(this, functionFactory);
 
-		    if (settings->GetDisplayOption(wxT("Operators")))
+		    if (settings->GetDisplayOption(_("Operators")))
 			    browser->AppendCollection(this, operatorFactory);
-		    if (settings->GetDisplayOption(wxT("Operator classes")))
+		    if (settings->GetDisplayOption(_("Operator classes")))
 			    browser->AppendCollection(this, operatorClassFactory);
 
-		    if (settings->GetDisplayOption(wxT("Operator families")))
+		    if (settings->GetDisplayOption(_("Operator families")))
 		    {
 			    if (GetConnection()->BackendMinimumVersion(8, 3))
 				    browser->AppendCollection(this, operatorFamilyFactory);
 		    }
 
-		    if (settings->GetDisplayOption(wxT("Packages")) && GetConnection()->EdbMinimumVersion(8,1))
+		    if (settings->GetDisplayOption(_("Packages")) && GetConnection()->EdbMinimumVersion(8,1))
 			    browser->AppendCollection(this, packageFactory);
 
-		    if (settings->GetDisplayOption(wxT("Procedures")))
+		    if (settings->GetDisplayOption(_("Procedures")))
 		    {
 			    if (GetConnection()->EdbMinimumVersion(8, 0))
 				    browser->AppendCollection(this, procedureFactory);
 		    }
 
-		    if (settings->GetDisplayOption(wxT("Sequences")))
+		    if (settings->GetDisplayOption(_("Sequences")))
 			    browser->AppendCollection(this, sequenceFactory);
-		    if (settings->GetDisplayOption(wxT("Tables")))
+		    if (settings->GetDisplayOption(_("Tables")))
 			    browser->AppendCollection(this, tableFactory);
-            if (settings->GetDisplayOption(wxT("Trigger functions")))
+            if (settings->GetDisplayOption(_("Trigger functions")))
 		        browser->AppendCollection(this, triggerFunctionFactory);
-		    if (settings->GetDisplayOption(wxT("Types")))
+		    if (settings->GetDisplayOption(_("Types")))
 			    browser->AppendCollection(this, typeFactory);
-		    if (settings->GetDisplayOption(wxT("Views")))
+		    if (settings->GetDisplayOption(_("Views")))
 			    browser->AppendCollection(this, viewFactory);
         }
         else
