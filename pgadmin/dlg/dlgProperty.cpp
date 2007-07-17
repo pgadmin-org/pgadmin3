@@ -63,9 +63,11 @@
 class replClientData : public wxClientData
 {
 public:
-    replClientData(const wxString &c, long s) { cluster=c; setId=s; }
+    replClientData(const wxString &c, long s, long ma, long mi) { cluster=c; setId=s; majorVer=ma; minorVer=mi; }
     wxString cluster;
     long setId;
+    long majorVer;
+    long minorVer;
 };
 
 
@@ -228,7 +230,7 @@ int dlgProperty::Go(bool modal)
             {
                 wxString cluster=wxT("_") + clusters.Item(i);
                 pgSetIterator sets(connection, 
-                    wxT("SELECT set_id\n")
+                    wxT("SELECT set_id, ") + qtIdent(cluster) + wxT(".slonyversionmajor(), ") + qtIdent(cluster) + wxT(".slonyversionminor()\n")
                     wxT("  FROM ") + qtIdent(cluster) + wxT(".sl_set\n")
                     wxT(" WHERE set_origin = ") + qtIdent(cluster) + 
                     wxT(".getlocalnodeid(") + qtDbString(cluster) + wxT(");"));
@@ -237,8 +239,10 @@ int dlgProperty::Go(bool modal)
                 {
                     wxString str;
                     long setId=sets.GetLong(wxT("set_id"));
+                    long majorVer=sets.GetLong(wxT("slonyversionmajor"));
+                    long minorVer=sets.GetLong(wxT("slonyversionminor"));
                     str.Printf(_("Cluster \"%s\", set %ld"), clusters.Item(i).c_str(), setId);
-                    cbClusterSet->Append(str, new replClientData(cluster, setId));
+                    cbClusterSet->Append(str, new replClientData(cluster, setId, majorVer, minorVer));
                 }
             }
         }
@@ -584,9 +588,20 @@ bool dlgProperty::apply(const wxString &sql)
         {
             replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
 
-            tmp = wxT("SELECT ") + qtIdent(data->cluster)
-                + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
-                + qtDbString(sql) + wxT(", 0);\n");
+            if (data->majorVer > 1 || (data->majorVer == 1 && data->minorVer >= 2))
+            {
+                tmp = wxT("SELECT ") + qtIdent(data->cluster)
+                    + wxT(".ddlscript_prepare(") + NumToStr(data->setId) + wxT(", 0);\n")
+                    + wxT("SELECT ") + qtIdent(data->cluster)
+                    + wxT(".ddlscript_complete(") + NumToStr(data->setId) + wxT(", ")
+                    + qtDbString(sql) + wxT(", 0);\n");
+            }
+            else
+            {
+                tmp = wxT("SELECT ") + qtIdent(data->cluster)
+                    + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
+                    + qtDbString(sql) + wxT(", 0);\n");
+            }
         }
         else
             tmp = sql;
