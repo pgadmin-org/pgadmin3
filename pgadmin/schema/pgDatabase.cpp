@@ -399,7 +399,7 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 				browser->AppendCollection(this, synonymFactory);
 			if (settings->GetDisplayOption(_("Schemas")))
 				browser->AppendCollection(this, schemaFactory);
-			if (settings->GetDisplayOption(_("Slony clusters")))
+			if (settings->GetDisplayOption(_("Slony-I clusters")))
 				browser->AppendCollection(this, slClusterFactory);
             
             missingFKs = StrToLong(connection()->ExecuteScalar(
