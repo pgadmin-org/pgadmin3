@@ -164,7 +164,10 @@ int pgQueryThread::execute()
         if (*s)
             rowsInserted = atol(s);
     }
-
+    else if (rc == PGRES_FATAL_ERROR)
+    {
+        appendMessage(conn->GetLastError() + wxT("\n"));
+    }
     return(1);
 }
 

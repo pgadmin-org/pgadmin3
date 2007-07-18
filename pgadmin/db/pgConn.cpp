@@ -718,7 +718,12 @@ void pgConn::SetLastResultError(PGresult *res)
     lastResultError.source_line = wxString(PQresultErrorField(res, PG_DIAG_SOURCE_LINE), *conv);
     lastResultError.source_function = wxString(PQresultErrorField(res, PG_DIAG_SOURCE_FUNCTION), *conv);
 
-    wxString errMsg = lastResultError.severity + wxT(": ") + lastResultError.msg_primary;
+    wxString errMsg;
+
+    if (lastResultError.severity != wxEmptyString && lastResultError.msg_primary != wxEmptyString)
+        errMsg = lastResultError.severity + wxT(": ") + lastResultError.msg_primary;
+    else if (lastResultError.msg_primary != wxEmptyString)
+        errMsg = lastResultError.msg_primary;
 
     if (!lastResultError.sql_state.IsEmpty())
     {
