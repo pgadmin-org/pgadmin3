@@ -983,7 +983,7 @@ bool executePgstattupleFactory::CheckChecked(pgObject *obj)
 
 disableAllTriggersFactory::disableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("Disable triggers"), _("Disable all triggers on selected the table."));
+    mnu->Append(id, _("Disable triggers"), _("Disable all triggers on the selected table."));
 }
 
 
@@ -1010,7 +1010,7 @@ bool disableAllTriggersFactory::CheckEnable(pgObject *obj)
 
 enableAllTriggersFactory::enableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("Enable triggers"), _("Enable all triggers on selected the table."));
+    mnu->Append(id, _("Enable triggers"), _("Enable all triggers on the selected table."));
 }
 
 
