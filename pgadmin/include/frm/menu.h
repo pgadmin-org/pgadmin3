@@ -96,7 +96,9 @@ enum
 	MNU_FAVOURITES_MANAGE,
 
 	MNU_MACROS_MANAGE=MNU_FAVOURITES_MANAGE+1000, //leave space for favourites
-	// please leave me 100 numbers
+
+    // This is used by the Query Tool - the event is fired when the query completes
+    QUERY_COMPLETE=MNU_MACROS_MANAGE+100
 };
 
 #endif

@@ -17,7 +17,7 @@ class pgSet;
 class pgQueryThread : public wxThread
 {
 public:
-    pgQueryThread(pgConn *_conn, const wxString &qry, int resultToRetrieve=-1);
+    pgQueryThread(pgConn *_conn, const wxString &qry, int resultToRetrieve=-1, wxWindow *_caller=0, long eventId=0, void *_data=0);
     ~pgQueryThread();
 
     virtual void *Entry();
@@ -29,7 +29,7 @@ public:
     wxString GetMessagesAndClear();
     void appendMessage(const wxString &str);
 
-protected:
+private:
     int rc;
     int resultToRetrieve;
     long rowsInserted;
@@ -42,7 +42,12 @@ protected:
     pgSet *dataSet;
     wxCriticalSection criticalSection;
 
+    void *data;
+    wxWindow *caller;
+    long eventId;
+
     int execute();
+    int raiseEvent(int retval=0);
 };
 
 #endif

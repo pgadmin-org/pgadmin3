@@ -19,6 +19,7 @@
 
 // wxAUI
 #include <wx/aui/aui.h>
+#include <wx/timer.h>
 
 #define FRMQUERY_PERPSECTIVE_VER wxT("$Rev$")
 
@@ -34,6 +35,16 @@
 
 class ExplainCanvas;
 class ctlSQLResult;
+
+class QueryExecInfo
+{
+public:
+    int queryOffset;
+    bool toFile;
+    bool singleResult;
+    bool explain;
+    bool verbose;
+};
 
 class frmQuery : public pgFrame
 {
@@ -53,8 +64,12 @@ private:
     ctlComboBoxFix *cbConnection;
     wxTextCtrl *scratchPad;
 
+    // Query timing/status update
+    wxTimer timer;
+    wxLongLong elapsedQuery, startTimeQuery;
+
+    // Our connection
     pgConn *conn;
-    wxLongLong elapsedQuery, elapsedRetrieve;
 
 	// These status flags are required to work round some wierdness on wxGTK,
 	// particularly on Solaris.
@@ -110,10 +125,14 @@ private:
     void OnAuiUpdate(wxAuiManagerEvent& event);
     void OnDefaultView(wxCommandEvent& event);
 
+	void OnTimer(wxTimerEvent & event);
+
     bool CheckChanged(bool canVeto);
     void OpenLastFile();
     void updateMenu(wxObject *obj=0);
-    bool execQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0, bool toFile=false);
+    void execQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0, bool toFile=false, bool explain=false, bool verbose=false);
+    void OnQueryComplete(wxCommandEvent &ev);
+    void completeQuery(bool done, bool explain, bool verbose);
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();

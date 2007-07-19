@@ -28,7 +28,7 @@ public:
     ~ctlSQLResult();
 
 
-    int Execute(const wxString &query, int resultToDisplay=0); // > 0: resultset to display, <=0: last result
+    int Execute(const wxString &query, int resultToDisplay=0, wxWindow *caller=0, long eventId=0, void *data=0); // > 0: resultset to display, <=0: last result
     void SetConnection(pgConn *conn);
     long NumRows() const;
     long InsertedCount() const;

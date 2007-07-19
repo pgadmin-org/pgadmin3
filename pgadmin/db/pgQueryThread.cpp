@@ -31,7 +31,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
     ((pgQueryThread*)arg)->appendMessage(str);
 }
 
-pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &qry, int _resultToRetrieve) 
+pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &qry, int _resultToRetrieve, wxWindow *_caller, long _eventId, void *_data) 
 : wxThread(wxTHREAD_JOINABLE)
 {
     query = qry;
@@ -41,6 +41,9 @@ pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &qry, int _resultToRe
     resultToRetrieve=_resultToRetrieve;
     rc=-1;
     insertedOid = (OID)-1;
+    caller=_caller;
+    eventId=_eventId;
+    data=_data;
 
     wxLogSql(wxT("Thread Query %s"), qry.c_str());
 
@@ -83,12 +86,12 @@ int pgQueryThread::execute()
     rowsInserted = -1L;
 
     if (!conn->conn)
-        return(0);
+        return(raiseEvent(0));
 
     if (!PQsendQuery(conn->conn, query.mb_str(*conn->conv)))
     {
         conn->IsAlive();
-        return(0);
+        return(raiseEvent(0));
     }
     int resultsRetrieved=0;
     PGresult *lastResult=0;
@@ -99,17 +102,17 @@ int pgQueryThread::execute()
             if (rc != -3)
             {
                 if (!PQrequestCancel(conn->conn)) // could not abort; abort failed.
-                    return(-1);
+                    return(raiseEvent(-1));
 
                 rc = -3;
             }
         }
         if (!PQconsumeInput(conn->conn))
-            return(0);
+            return(raiseEvent(0));
         if (PQisBusy(conn->conn))
         {
             Yield();
-            wxMilliSleep(10);
+            this->Sleep(10);
             continue;
         }
 
@@ -168,8 +171,21 @@ int pgQueryThread::execute()
     {
         appendMessage(conn->GetLastError() + wxT("\n"));
     }
-    return(1);
+    return(raiseEvent(1));
 }
+
+
+int pgQueryThread::raiseEvent(int retval)
+{
+    if (caller)
+    {
+        wxCommandEvent resultEvent(wxEVT_COMMAND_MENU_SELECTED, eventId);
+        resultEvent.SetClientData(data);
+        caller->AddPendingEvent(resultEvent);
+    }
+    return retval;
+}
+
 
 void *pgQueryThread::Entry()
 {

@@ -86,7 +86,7 @@ bool ctlSQLResult::IsColText(int col)
 }
 
 
-int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
+int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve, wxWindow *caller, long eventId, void *data)
 {
     colSizes.Empty();
     colHeaders.Empty();
@@ -111,7 +111,7 @@ int ctlSQLResult::Execute(const wxString &query, int resultToRetrieve)
     colTypes.Empty();
     colTypClasses.Empty();
 
-    thread = new pgQueryThread(conn, query, resultToRetrieve);
+    thread = new pgQueryThread(conn, query, resultToRetrieve, caller, eventId, data);
 
     if (thread->Create() != wxTHREAD_NO_ERROR)
     {
