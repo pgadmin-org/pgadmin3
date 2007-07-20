@@ -83,49 +83,65 @@ wxString pgFunction::GetSql(ctlTree *browser)
             + wxT("-- DROP FUNCTION ") + qtSig + wxT(";")
             + wxT("\n\nCREATE OR REPLACE FUNCTION ") + qtName;
 
-        if (!GetIsProcedure())
+        // Use Oracle style syntax for edb-spl functions
+        if (GetLanguage() == wxT("edbspl"))
+        {
+            sql += wxT("\nRETURN ");
+            sql += GetReturnType();
+
+            sql += wxT(" AS");
+            if (GetSource().StartsWith(wxT("\n")))
+                sql += GetSource(); 
+            else
+                sql += wxT("\n") + GetSource();
+        }
+        else
         {
             sql += wxT("\n  RETURNS ");
             if (GetReturnAsSet())
                 sql += wxT("SETOF ");
             sql += GetReturnType();
-        }
-        else if (GetReturnAsSet())
-        {
-            sql += wxT("\n  RETURNS SETOF ");
-            sql += GetReturnType();
-        }
-
-        sql += wxT(" AS\n");
-        
-        if (GetLanguage().IsSameAs(wxT("C"), false))
-        {
-            sql += qtDbString(GetBin()) + wxT(", ") + qtDbString(GetSource());
-        }
-        else
-        {
-            if (GetConnection()->BackendMinimumVersion(7, 5))
-                sql += qtDbStringDollar(GetSource());
-            else
-                sql += qtDbString(GetSource());
-        }
-        sql += wxT("\n  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
-
-        if (GetIsStrict())
-            sql += wxT(" STRICT");
-        if (GetSecureDefiner())
-            sql += wxT(" SECURITY DEFINER");
-
-        // PostgreSQL 8.3+ cost/row estimations
-        if (GetConnection()->BackendMinimumVersion(8, 3))
-        {
-            sql += wxT("\n  COST ") + NumToStr(GetCost());
 
             if (GetReturnAsSet())
-                sql += wxT("\n  ROWS ") + NumToStr(GetRows());
+            {
+                sql += wxT("\n  RETURNS SETOF ");
+                sql += GetReturnType();
+            }
+
+            sql += wxT(" AS\n");
+            
+            if (GetLanguage().IsSameAs(wxT("C"), false))
+            {
+                sql += qtDbString(GetBin()) + wxT(", ") + qtDbString(GetSource());
+            }
+            else
+            {
+                if (GetConnection()->BackendMinimumVersion(7, 5))
+                    sql += qtDbStringDollar(GetSource());
+                else
+                    sql += qtDbString(GetSource());
+            }
+            sql += wxT("\n  LANGUAGE '") + GetLanguage() + wxT("' ") + GetVolatility();
+
+            if (GetIsStrict())
+                sql += wxT(" STRICT");
+            if (GetSecureDefiner())
+                sql += wxT(" SECURITY DEFINER");
+
+            // PostgreSQL 8.3+ cost/row estimations
+            if (GetConnection()->BackendMinimumVersion(8, 3))
+            {
+                sql += wxT("\n  COST ") + NumToStr(GetCost());
+
+                if (GetReturnAsSet())
+                    sql += wxT("\n  ROWS ") + NumToStr(GetRows());
+            }
         }
 
-        sql += wxT(";\n")
+        if (!sql.EndsWith(wxT(";")))
+            sql += wxT(";");
+
+        sql += wxT("\n")
             +  GetOwnerSql(8, 0, wxT("FUNCTION ") + qtSig)
             +  GetGrant(wxT("X"), wxT("FUNCTION ") + qtSig);
 
