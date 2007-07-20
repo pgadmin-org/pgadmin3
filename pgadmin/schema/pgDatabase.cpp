@@ -246,7 +246,7 @@ void pgDatabase::UpdateDefaultSchema()
                     set->Locate(row);
                     defaultSchema = set->GetVal(wxT("nspname"));
                     if (str == defaultSchema || 
-                            (str == wxT("$user") && set->GetBool(wxT("isuser"))))
+                            ((str == wxT("$user") || str == wxT("\"$user\"")) && set->GetBool(wxT("isuser"))))
                     {
                         delete set;
                         return;
