@@ -86,6 +86,18 @@ pgObject *pgCatalogObjectFactory::CreateObjects(pgCollection *collection, ctlTre
     {
         while (!catalogs->Eof())
         {
+            // On EnterpriseDB we need to ignore some objects in the sys 
+            // catalog, namely, _*, dual and type_object_source.
+            if (!settings->GetShowSystemObjects() &&
+                collection->GetSchema()->GetName() == wxT("sys") &&
+                (catalogs->GetVal(wxT("relname")).StartsWith(wxT("_")) ||
+                 catalogs->GetVal(wxT("relname")) == wxT("dual") ||
+                 catalogs->GetVal(wxT("relname")) == wxT("type_object_source")))
+            {
+                catalogs->MoveNext();
+                continue;
+            }
+
             catalog = new pgCatalogObject(collection->GetSchema(), catalogs->GetVal(wxT("relname")));
             catalog->iSetOid(catalogs->GetLong(wxT("oid")));
             catalog->iSetOwner(catalogs->GetVal(wxT("owner")));
