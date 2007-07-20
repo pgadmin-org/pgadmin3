@@ -39,6 +39,7 @@ void pgCatalogObject::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
     {
         expandedKids=true;
 
+        browser->AppendCollection(this, columnFactory);
     }
 
     if (properties)
