@@ -152,6 +152,7 @@ int dlgRole::Go(bool modal)
             chkCanLogin->Disable();
             chkCreateDB->Disable();
             chkCreateRole->Disable();
+            chkSuperuser->Disable();
             chkInherits->Disable();
             chkUpdateCat->Disable();
             datValidUntil->Disable();
