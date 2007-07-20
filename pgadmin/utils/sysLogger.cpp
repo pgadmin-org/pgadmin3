@@ -173,8 +173,8 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     }
 
     // Display a messagebox if required.
-	if (icon != 0) wxMessageBox(preamble + wxGetTranslation(msg), appearanceFactory->GetLongAppName(), 
-		wxOK | wxCENTRE | icon);
+	if (icon != 0 && !SilenceMessage(msg)) 
+        wxMessageBox(preamble + wxGetTranslation(msg), appearanceFactory->GetLongAppName(), wxOK | wxCENTRE | icon);
 }
 
 
@@ -200,3 +200,15 @@ void sysLogger::WriteLog(const wxString& msg)
    file.Close();
 }
 
+// Check to see if a message should be silenced (because it's meaningless
+// and cannot be silenced at source
+bool sysLogger::SilenceMessage(const wxString &msg)
+{
+#ifdef __WXMAC__
+    // This one crops up on the Mac and originates from the logging code
+    // for no obviously apparent reason.
+    if (msg.Contains(_("can't flush file descriptor")))
+        return true;
+#endif
+    return false;
+}

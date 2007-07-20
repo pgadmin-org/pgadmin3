@@ -36,6 +36,7 @@ public:
 
 private:
     void WriteLog(const wxString& msg);
+    bool SilenceMessage(const wxString &msg);
 };
 
 #define wxLOG_Notice (wxLOG_User+1)
