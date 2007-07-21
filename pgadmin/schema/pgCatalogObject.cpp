@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "schema/pgCatalogObject.h"
+#include "schema/pgColumn.h"
 
 
 pgCatalogObject::pgCatalogObject(pgSchema *newSchema, const wxString& newName)
