@@ -661,9 +661,10 @@ wxString dlgFunction::GetSql()
             // PostgreSQL 8.3+ cost/row estimations
             if (connection->BackendMinimumVersion(8, 3))
             {
-                sql += wxT("\nCOST ") + txtCost->GetValue();
+                if (txtCost->GetValue().Length() > 0)
+                    sql += wxT("\nCOST ") + txtCost->GetValue();
 
-                if (chkSetof->GetValue())
+                if (chkSetof->GetValue() && txtRows->GetValue().Length() > 0)
                     sql += wxT("\nROWS ") + txtRows->GetValue();
             }
 
