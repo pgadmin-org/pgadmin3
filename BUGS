@@ -27,29 +27,20 @@ wxWidgets
 
 [GTK] Crash with some themes; probably gtk issue.
 
-[MAC] wxComboBox::GetInsertionPoint() always returns 0 which prevents auto
-      complete working correctly in combo boxes such as the data type 
-      selectors. wxWidgets bug ref 1584384, applies to wx2.6.3 and 2.7.0.
-        
-[MAC] wxProcess::IsInputAvailable()/IsErrorAvailable() crash in wx2.7.0, 
-      which prevents messages from pg_dump/pg_restore being displayed.
-      To avoid the crash, on Mac the streams aren't checked until the 
-      process ends. See ExternProcessDialog::Execute().
-      wxWidgets bug ref 1584387.
-        
-[STC] On wxMSW 2.6.3 with Num Lock turned off, the control functions 
+[STC] On wxMSW 2.6.3 with Num Lock turned off, the control functions
       (arrows, insert/delete etc) of the numeric keypad do not work.
       wxWidgets bug ref 1529525.
-        
+
 [AUI] If a pane with a minimum size set is docked next to the center pane, it
-      is possible to drag either side such that the panes size is less than 
+      is possible to drag either side such that the panes size is less than
       the minimum. In addition, the minimum size doesn't appear to be honoured
       at all by the center pane. wxWidgets bug ref: 1578958
       
-[MSW] In 2.7/2.7.1 on wxMSW, it seems that the return key is acting like tab 
+[MSW] In 2.7+ on wxMSW, it seems that the return key is acting like tab
       normally does in dialogues - ie. where the control doesn't catch the 
-      keypress, the focus moves to the next control in the tab order. Default 
+      keypress, the focus moves to the next control in the tab order. Default
       buttons on the dialogue don't get activated. wxWidgets bug ref: 1582051.
+      This will not be fixed in wxWidgets.
       
 [MAC] wxWindow::SetFont() is broken on wxMac - changing the applicaiton font 
       has no effect. wxWidgets bug ref: 1584926
@@ -57,11 +48,7 @@ wxWidgets
 [MAC] An About menu item is automatically added to frmQuery and frmEditGrid
       by wxWidgets(?). Currently this does nothing - add supporting code to
       display the About box?
-      
-[AUI] Managed windows (the main form, edit grid and query tool) are limited
-      in size to the size of the primary display on a multihead system. 
-      wxWidgets bug ref: 1600299
-      
+
 [FRM] Opening a modal dialogue from one query tool window blocks shortcut
       keys in another which is currently focused.
 
@@ -69,7 +56,7 @@ wxWidgets
       tricky than it sounds because key events don't propagate from controls
       to the parent window.
 
-[STC] The GetCurrentPos() function returns byte positions, not character 
+[STC] The GetCurrentPos() function returns byte positions, not character
       positions. This means that the 'ch' value show in the status bar of the
       Query Tool may show incorrect values if there are any multibyte 
       characters prior to the current position. See wxWidgets bug ref: 1598444
@@ -79,4 +66,14 @@ wxWidgets
 
 [AUI] Keyboard navigation between panes does not appear to be possible. See 
       wxWidgets bug ref: 1754646
+
+MS Windows
+----------
+
+[GRD] When in edit mode in a text column in the edit grid, selecting all text
+      and then copying (from the context menu, or CTRL-C) results in some RTF
+      code being added to the end of the string which, when pasted into an RTF
+      aware text control becomes a new line. This is repeatable entirely in MS
+      Wordpad, or in combination with it, thus is believed to be a Microsoft
+      bug.
 
