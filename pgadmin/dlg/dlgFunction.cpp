@@ -338,7 +338,7 @@ void dlgFunction::CheckChange()
     if (!isProcedure)
         CheckValid(enable, cbReturntype->GetGuessedSelection() >= 0, _("Please select return type."));
 
-    if (!isProcedure || !connection->EdbMinimumVersion(8, 0))
+    if (!(isProcedure && connection->GetIsEdb()))
         CheckValid(enable, cbLanguage->GetCurrentSelection() >= 0, _("Please select language."));
 
     if (isC)
