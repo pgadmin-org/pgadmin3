@@ -574,7 +574,7 @@ bool pgDatabase::CanDebugPlpgsql()
     else if (canDebugPlpgsql == 2)
         return true;
 
-    if (ExecuteVoid(wxT("SELECT * FROM pldbg_get_target_info('version', 'f');"), false) == false)
+    if (ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE proname = 'pldbg_get_target_info';")) == wxT("0"))
     {
         canDebugPlpgsql = 1;
         return false;
@@ -612,7 +612,7 @@ bool pgDatabase::CanDebugEdbspl()
     else if (canDebugEdbspl == 2)
         return true;
 
-    if (ExecuteVoid(wxT("SELECT * FROM pldbg_get_target_info('version', 'f');"), false) == false)
+    if (ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE proname = 'pldbg_get_target_info';")) == wxT("0"))
     {
         canDebugEdbspl = 1;
         return false;
