@@ -31,7 +31,7 @@ noinst_HEADERS = \
 if SUN_CXX
   __CXXFLAGS=""
 else
-  __CXXFLAGS=-Wall -Wno-non-virtual-dtor
+  __CXXFLAGS=-Wall -Wno-non-virtual-dtor -fno-strict-aliasing
 endif
 
 if !APPBUNDLE

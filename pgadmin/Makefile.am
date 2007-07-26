@@ -50,7 +50,7 @@ endif
 if SUN_CXX
   __CXXFLAGS=""
 else
-  __CXXFLAGS=-Wall -Wno-non-virtual-dtor
+  __CXXFLAGS=-Wall -Wno-non-virtual-dtor -fno-strict-aliasing
 endif
 
 if EDB_LIBPQ
