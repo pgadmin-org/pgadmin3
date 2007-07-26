@@ -296,7 +296,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
         systemRestriction = wxT("\n   AND attnum > 0");
         
     wxString sql=
-        wxT("SELECT att.*, def.*, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, format_type(ty.oid,NULL) AS typname, tn.nspname as typnspname, et.typname as elemtypname,\n")
+        wxT("SELECT att.*, def.*, pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS defval, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, format_type(ty.oid,NULL) AS typname, tn.nspname as typnspname, et.typname as elemtypname,\n")
         wxT("  cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
         wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey");
 
@@ -341,7 +341,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
                 column->iSetIsFK(columns->GetBool(wxT("isfk")));
 
             if (columns->GetBool(wxT("atthasdef")))
-                column->iSetDefault(columns->GetVal(wxT("adsrc")));
+                column->iSetDefault(columns->GetVal(wxT("defval")));
             column->iSetStatistics(columns->GetLong(wxT("attstattarget")));
 
             wxString storage=columns->GetVal(wxT("attstorage"));
