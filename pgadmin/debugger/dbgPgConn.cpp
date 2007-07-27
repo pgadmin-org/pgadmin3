@@ -16,6 +16,7 @@
 
 // App headers
 #include "debugger/dbgPgConn.h"
+#include "utils/sysLogger.h"
 
 #include <stdexcept>
 
