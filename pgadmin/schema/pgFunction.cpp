@@ -102,12 +102,6 @@ wxString pgFunction::GetSql(ctlTree *browser)
                 sql += wxT("SETOF ");
             sql += GetReturnType();
 
-            if (GetReturnAsSet())
-            {
-                sql += wxT("\n  RETURNS SETOF ");
-                sql += GetReturnType();
-            }
-
             sql += wxT(" AS\n");
             
             if (GetLanguage().IsSameAs(wxT("C"), false))
