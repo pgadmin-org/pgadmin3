@@ -1664,22 +1664,25 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
     qi->explain = explain;
     qi->verbose = verbose;
 
+    // We must do this lot before the query starts, otherwise
+    // it might not happen once the main thread gets busy with
+    // other stuff.
+    SetStatusText(wxT(""), STATUSPOS_SECS);
+    SetStatusText(_("Query is running."), STATUSPOS_MSGS);
+    SetStatusText(wxT(""), STATUSPOS_ROWS);
+    msgResult->Clear();
+
+    msgHistory->AppendText(_("-- Executing query:\n"));
+    msgHistory->AppendText(query);
+    msgHistory->AppendText(wxT("\n"));
+    Update();
+    wxTheApp->Yield(true);
+
+    startTimeQuery=wxGetLocalTimeMillis();
+    timer.Start(10);
+
     if (sqlResult->Execute(query, resultToRetrieve, this, QUERY_COMPLETE, qi) >= 0)
     {
-        SetStatusText(wxT(""), STATUSPOS_SECS);
-        SetStatusText(_("Query is running."), STATUSPOS_MSGS);
-        SetStatusText(wxT(""), STATUSPOS_ROWS);
-        msgResult->Clear();
-
-        msgHistory->AppendText(_("-- Executing query:\n"));
-        msgHistory->AppendText(query);
-        msgHistory->AppendText(wxT("\n"));
-        Update();
-        wxTheApp->Yield(true);
-
-        startTimeQuery=wxGetLocalTimeMillis();
-        timer.Start(10);
-
         // Return and wait for the result
         return;
     }
@@ -1744,6 +1747,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
             long errPos;
             err.statement_pos.ToLong(&errPos);
             
+            showMessage(wxString::Format(wxT("********** %s **********\n"), _("Error")));
             showMessage(errMsg);
 
             if (errPos > 0)
@@ -1935,7 +1939,7 @@ void frmQuery::OnTimer(wxTimerEvent & event)
     }
 
     // Increase the granularity for longer running queries
-    if (elapsedQuery > 200 && timer.GetInterval() == 10)
+    if (elapsedQuery > 200 && timer.GetInterval() == 10 && timer.IsRunning())
     {
         timer.Stop();
         timer.Start(100);
