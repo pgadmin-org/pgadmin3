@@ -29,7 +29,7 @@ ctlMessageWindow::ctlMessageWindow( wxWindow * parent, wxWindowID id )
     : wxTextCtrl( parent, wxID_ANY, _T(""), wxPoint(0, 0), wxSize(0, 0),
                                wxTE_MULTILINE | wxTE_READONLY)
 {
-    wxWindowBase::SetFont(settings->GetSystemFont());
+    SetFont(settings->GetSQLFont());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
