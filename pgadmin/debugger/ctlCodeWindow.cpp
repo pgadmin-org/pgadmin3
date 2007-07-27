@@ -1276,8 +1276,11 @@ void ctlCodeWindow::stopDebugging()
 
 void ctlCodeWindow::OnSelectFrame( wxCommandEvent & event )
 {
-    if (!m_targetComplete && !m_targetAborted)
-        m_dbgConn->startCommand( wxString::Format( m_commandSelectFrame, m_sessionHandle.c_str(), event.GetSelection()), GetEventHandler(), RESULT_ID_BREAKPOINT );        
+	if( event.GetSelection() != -1 )
+	{
+        if (!m_targetComplete && !m_targetAborted)
+            m_dbgConn->startCommand( wxString::Format( m_commandSelectFrame, m_sessionHandle.c_str(), event.GetSelection()), GetEventHandler(), RESULT_ID_BREAKPOINT );        
+    }
 }
 
 void ctlCodeWindow::OnVarChange( wxGridEvent & event )
