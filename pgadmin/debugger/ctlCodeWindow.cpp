@@ -99,24 +99,28 @@ END_EVENT_TABLE()
 ////////////////////////////////////////////////////////////////////////////////
 // Static data members 
 ////////////////////////////////////////////////////////////////////////////////
-wxString ctlCodeWindow::m_commandAttach( wxT( "SELECT * FROM pldbg_attach_to_port(%s)" ));
-wxString ctlCodeWindow::m_commandWaitForBreakpoint( wxT( "SELECT * FROM pldbg_wait_for_breakpoint(%s)" ));
-wxString ctlCodeWindow::m_commandGetVars( wxT( "SELECT name, varClass, value, pg_catalog.format_type( dtype, NULL ) as dtype, isconst FROM pldbg_get_variables(%s)" ));
-wxString ctlCodeWindow::m_commandGetStack( wxT( "SELECT targetName, args, (linenumber + 1) AS linenumber FROM pldbg_get_stack(%s) ORDER BY level" ));
-wxString ctlCodeWindow::m_commandGetBreakpoints( wxT( "SELECT * FROM pldbg_get_breakpoints(%s)" ));
-wxString ctlCodeWindow::m_commandGetSource( wxT( "SELECT %s AS pkg, %s AS func, pldbg_get_source(%s,%s,%s) AS source, targetName, args FROM pldbg_get_stack(%s) ORDER BY level LIMIT 1" ));
-wxString ctlCodeWindow::m_commandStepOver( wxT( "SELECT * FROM pldbg_step_over(%s)" ));
-wxString ctlCodeWindow::m_commandStepInto( wxT( "SELECT * FROM pldbg_step_into(%s)" ));
-wxString ctlCodeWindow::m_commandContinue( wxT( "SELECT * FROM pldbg_continue(%s)" ));
-wxString ctlCodeWindow::m_commandSetBreakpoint( wxT( "SELECT * FROM pldbg_set_breakpoint(%s,%s,%s,%d)" ));
-wxString ctlCodeWindow::m_commandClearBreakpoint( wxT( "SELECT * FROM pldbg_drop_breakpoint(%s,%s,%s,%d)" ));
-wxString ctlCodeWindow::m_commandSelectFrame( wxT( "SELECT * FROM pldbg_select_frame(%s,%d)" ));
-wxString ctlCodeWindow::m_commandDepositValue( wxT( "SELECT * FROM pldbg_deposit_value(%s,'%s',%d,'%s')" ));               
-wxString ctlCodeWindow::m_commandAbortTarget( wxT( "SELECT * FROM pldbg_abort_target(%s)" ));
-wxString ctlCodeWindow::m_commandAddBreakpoint( wxT( "SELECT * FROM pldbg_set_global_breakpoint(%s, %s, %s, %s, %s)" ));
-wxString ctlCodeWindow::m_commandGetTargetInfo( wxT( "SELECT *, %s as pid FROM pldbg_get_target_info('%s', '%c')" ));
-wxString ctlCodeWindow::m_commandCreateListener( wxT( "SELECT * from pldbg_create_listener()" ));
-wxString ctlCodeWindow::m_commandWaitForTarget( wxT( "SELECT * FROM pldbg_wait_for_target(%s)" ));
+wxString ctlCodeWindow::m_commandAttach(wxT("SELECT * FROM pldbg_attach_to_port(%s)"));
+wxString ctlCodeWindow::m_commandWaitForBreakpoint( wxT( "SELECT * FROM pldbg_wait_for_breakpoint(%s)"));
+wxString ctlCodeWindow::m_commandGetVars(wxT("SELECT name, varClass, value, pg_catalog.format_type( dtype, NULL ) as dtype, isconst FROM pldbg_get_variables(%s)"));
+wxString ctlCodeWindow::m_commandGetStack(wxT("SELECT targetName, args, linenumber FROM pldbg_get_stack(%s) ORDER BY level"));
+wxString ctlCodeWindow::m_commandGetBreakpoints(wxT("SELECT * FROM pldbg_get_breakpoints(%s)"));
+wxString ctlCodeWindow::m_commandGetSourceV1(wxT("SELECT %s AS pkg, %s AS func, pldbg_get_source(%s,%s,%s) AS source, targetName, args FROM pldbg_get_stack(%s) ORDER BY level LIMIT 1"));
+wxString ctlCodeWindow::m_commandGetSourceV2(wxT("SELECT %s AS func, pldbg_get_source(%s,%s) AS source, targetName, args FROM pldbg_get_stack(%s) ORDER BY level LIMIT 1"));
+wxString ctlCodeWindow::m_commandStepOver(wxT("SELECT * FROM pldbg_step_over(%s)"));
+wxString ctlCodeWindow::m_commandStepInto(wxT("SELECT * FROM pldbg_step_into(%s)"));
+wxString ctlCodeWindow::m_commandContinue(wxT("SELECT * FROM pldbg_continue(%s)"));
+wxString ctlCodeWindow::m_commandSetBreakpointV1(wxT("SELECT * FROM pldbg_set_breakpoint(%s,%s,%s,%d)"));
+wxString ctlCodeWindow::m_commandSetBreakpointV2(wxT("SELECT * FROM pldbg_set_breakpoint(%s,%s,%d)"));
+wxString ctlCodeWindow::m_commandClearBreakpointV1(wxT("SELECT * FROM pldbg_drop_breakpoint(%s,%s,%s,%d)"));
+wxString ctlCodeWindow::m_commandClearBreakpointV2(wxT("SELECT * FROM pldbg_drop_breakpoint(%s,%s,%d)"));
+wxString ctlCodeWindow::m_commandSelectFrame(wxT("SELECT * FROM pldbg_select_frame(%s,%d)"));
+wxString ctlCodeWindow::m_commandDepositValue(wxT("SELECT * FROM pldbg_deposit_value(%s,'%s',%d,'%s')"));               
+wxString ctlCodeWindow::m_commandAbortTarget(wxT("SELECT * FROM pldbg_abort_target(%s)"));
+wxString ctlCodeWindow::m_commandAddBreakpointEDB(wxT("SELECT * FROM pldbg_set_global_breakpoint(%s, %s, %s, %s, %s)"));
+wxString ctlCodeWindow::m_commandAddBreakpointPG(wxT("SELECT * FROM pldbg_set_global_breakpoint(%s, %s, %s, %s)"));
+wxString ctlCodeWindow::m_commandGetTargetInfo(wxT("SELECT *, %s as pid FROM pldbg_get_target_info('%s', '%c')"));
+wxString ctlCodeWindow::m_commandCreateListener(wxT("SELECT * from pldbg_create_listener()"));
+wxString ctlCodeWindow::m_commandWaitForTarget(wxT("SELECT * FROM pldbg_wait_for_target(%s)"));
 
 ////////////////////////////////////////////////////////////////////////////////
 // ctlCodeWindow constructor
@@ -289,7 +293,7 @@ void ctlCodeWindow::OnMarginClick( wxStyledTextEvent& event )
 void ctlCodeWindow::OnPositionStc( wxStyledTextEvent& event )      
 {      
     wxString pos; 
-    pos.Printf(_("Ln %d Col %d Ch %d"), m_view->LineFromPosition(m_view->GetCurrentPos()) + 1, m_view->GetColumn(m_view->GetCurrentPos()) + 1, m_view->GetCurrentPos() + 1);
+    pos.Printf(_("Ln %d Col %d Ch %d"), m_view->LineFromPosition(m_view->GetCurrentPos()), m_view->GetColumn(m_view->GetCurrentPos()) + 1, m_view->GetCurrentPos() + 1);
     m_parent->getStatusBar()->SetStatusText(pos, 2);  
 }
 
@@ -485,31 +489,35 @@ void ctlCodeWindow::ResultBreakpoint( wxCommandEvent & event )
         if( result.getCommandStatus() == PGRES_TUPLES_OK )
         {
             // Change our focus
-            m_focusPackageOid = result.getString( wxT( "pkg" ));
-            m_focusFuncOid    = result.getString( wxT( "func" ));
+            if (result.columnExists(wxT("pkg")))
+                m_focusPackageOid = result.getString(wxT( "pkg"));
+            else
+                m_focusPackageOid = wxT("0");
+
+            m_focusFuncOid    = result.getString(wxT("func"));
 
             // The result set contains one tuple: 
             //    packageOID, functionOID, linenumber
-            m_parent->getStatusBar()->SetStatusText( wxString::Format( _( "Paused at line %s" ), result.getString( wxT( "linenumber" )).c_str()), 1 );    
-            updateUI( result );
+            m_parent->getStatusBar()->SetStatusText(wxString::Format(_( "Paused at line %d"), atoi(result.getString(wxT("linenumber")).ToAscii()) - 1), 1);    
+            updateUI(result);
 
             /* break point markup line number */
             unhilightCurrentLine();
 
-            int current_line = atoi(result.getString( wxT( "linenumber" )).ToAscii());
-            if ( current_line < 1) 
+            int current_line = atoi(result.getString( wxT("linenumber")).ToAscii()) - 1;
+            if ( current_line < 0) 
                 current_line = 1;
             m_currentLineNumber = current_line;
 
-            m_view->SetAnchor( m_view->PositionFromLine(current_line -1 ));
-            m_view->SetCurrentPos( m_view->PositionFromLine( current_line -1 ));
-            m_view->MarkerAdd( current_line -1, MARKER_CURRENT );
-            m_view->MarkerAdd( current_line -1, MARKER_CURRENT_BG );
+            m_view->SetAnchor(m_view->PositionFromLine(!current_line ? 0 : current_line -1));
+            m_view->SetCurrentPos(m_view->PositionFromLine(!current_line ? 0 : current_line -1));
+            m_view->MarkerAdd(current_line -1, MARKER_CURRENT);
+            m_view->MarkerAdd(current_line -1, MARKER_CURRENT_BG);
             m_view->EnsureCaretVisible();
             enableTools();
 
         }
-        else if( result.getCommandStatus() == PGRES_FATAL_ERROR )
+        else if(result.getCommandStatus() == PGRES_FATAL_ERROR)
         {
             if (!m_targetAborted)
             { 
@@ -520,10 +528,10 @@ void ctlCodeWindow::ResultBreakpoint( wxCommandEvent & event )
 
                 if( m_breakpoints.GetCount())
                 {
-                    m_dbgConn->startCommand( wxString::Format( m_commandWaitForTarget, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_TARGET_READY );        
+                    m_dbgConn->startCommand( wxString::Format(m_commandWaitForTarget, m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_TARGET_READY);        
 
-                    m_parent->getStatusBar()->SetStatusText( _( "Waiting for a target" ), 1 );
-                    m_parent->getStatusBar()->SetStatusText( wxT( "" ), 2 );
+                    m_parent->getStatusBar()->SetStatusText(_("Waiting for a target"), 1 );
+                    m_parent->getStatusBar()->SetStatusText(wxT(""), 2 );
 
                     launchWaitingDialog();
                 }
@@ -618,8 +626,8 @@ void ctlCodeWindow::ResultStack( wxCommandEvent & event )
         
             wxArrayString    stack;
 
-            for( int row = 0; row < result.getRowCount(); ++row )
-                stack.Add( wxString::Format( wxT( "%s(%s)@%s" ), result.getString( wxT( "targetName" ), row ).c_str(), result.getString( wxT( "args" ), row ).c_str(), result.getString( wxT( "linenumber" ), row ).c_str()));
+            for(int row = 0; row < result.getRowCount(); ++row)
+                stack.Add(wxString::Format(wxT( "%s(%s)@%s" ), result.getString(wxT("targetName"), row ).c_str(), result.getString(wxT("args"), row).c_str(), result.getString(wxT("linenumber"), row).c_str()));
         
             getStackWindow()->clear();
             getStackWindow()->setStack( stack );
@@ -676,12 +684,16 @@ void ctlCodeWindow::ResultSource(wxCommandEvent & event)
 {
     dbgResultset  result((PGresult *)event.GetClientData()); 
 
-    if( connectionLost(result))
+    if(connectionLost(result))
         closeConnection();
     else
     {
-        cacheSource(result.getString(wxT("pkg")), result.getString( wxT("func")), result.getString(wxT("source")), wxString::Format(wxT( "%s(%s)"), result.getString(wxT("targetName")).c_str(), result.getString(wxT("args")).c_str()));
-        displaySource(result.getString(wxT("pkg")), result.getString( wxT("func")));
+        wxString pkg = wxT("0");
+        if (result.columnExists(wxT("pkg")))
+            pkg = result.getString(wxT("pkg"));
+
+        cacheSource(pkg, result.getString(wxT("func")), result.getString(wxT("source")), wxString::Format(wxT("%s(%s)"), result.getString(wxT("targetName")).c_str(), result.getString(wxT("args")).c_str()));
+        displaySource(pkg, result.getString(wxT("func")));
     }
 }
 
@@ -889,15 +901,21 @@ void ctlCodeWindow::closeConnection()
 //    result set arrives). If we have the required source code (in the cache), we
 //  display the code in the source window (if not already displayed).
 
-void ctlCodeWindow::updateSourceCode( dbgResultset & breakpoint )
+void ctlCodeWindow::updateSourceCode(dbgResultset &breakpoint)
 {
-    wxString    packageOID( breakpoint.getString( wxT( "pkg" )));
-    wxString    funcOID( breakpoint.getString( wxT( "func" )));
-    wxString    lineNumber( breakpoint.getString( wxT( "linenumber" )));
+    wxString packageOID, funcOID, lineNumber;
+
+    if (breakpoint.columnExists(wxT("pkg")))
+        packageOID = breakpoint.getString( wxT("pkg"));
+    else
+        packageOID = wxT("0");
+
+    funcOID = breakpoint.getString(wxT("func"));
+    lineNumber = breakpoint.getString(wxT("linenumber"));
 
     m_currentLineNumber = atoi((const char *)lineNumber.c_str());
 
-    if( !findSourceInCache(packageOID, funcOID))
+    if(!findSourceInCache(packageOID, funcOID))
     {
         getSource(packageOID, funcOID);
     }
@@ -999,7 +1017,10 @@ void ctlCodeWindow::cacheSource(const wxString &packageOID, const wxString &func
 
 void ctlCodeWindow::getSource(const wxString &packageOID, const wxString &funcOID)
 {
-    m_dbgConn->startCommand(wxString::Format( m_commandGetSource, packageOID.c_str(), funcOID.c_str(), m_sessionHandle.c_str(), packageOID.c_str(), funcOID.c_str(), m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_GET_SOURCE);
+    if (m_dbgConn->DebuggerApiVersion() == DEBUGGER_V1_API)
+        m_dbgConn->startCommand(wxString::Format(m_commandGetSourceV1, packageOID.c_str(), funcOID.c_str(), m_sessionHandle.c_str(), packageOID.c_str(), funcOID.c_str(), m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_GET_SOURCE);
+    else
+        m_dbgConn->startCommand(wxString::Format(m_commandGetSourceV2, funcOID.c_str(), m_sessionHandle.c_str(), funcOID.c_str(), m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_GET_SOURCE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1009,7 +1030,7 @@ void ctlCodeWindow::getSource(const wxString &packageOID, const wxString &funcOI
 //  If the requested function is already loaded, we just return without doing
 //  any extra work.
 
-void ctlCodeWindow::displaySource( const wxString &packageOID, const wxString &funcOID )
+void ctlCodeWindow::displaySource(const wxString &packageOID, const wxString &funcOID)
 {
 
     // We're about to display the source code for the target, give the keyboard
@@ -1040,14 +1061,13 @@ void ctlCodeWindow::displaySource( const wxString &packageOID, const wxString &f
         // Now erase any old code and write out the new listing
         m_view->SetReadOnly( false );
 
-        // If the first line appears to be empty, prepend the function sig
-        // to make it look more complete. If not, prepend it anyway, other
-        // wise our line tracking will be 1 line out!!
+        // Strip the leading blank line from the source as it looks ugly
         wxString src = codeCache.getSource();
-        if (src.StartsWith(wxT("\n")) || src.StartsWith(wxT("\r")))
-            src = codeCache.getSignature() + src;
-        else
-            src = codeCache.getSignature() + wxT("\n") + src;
+ 
+        if (src.StartsWith(wxT("\n")))
+            src = src.AfterFirst('\n');
+        else if (src.StartsWith(wxT("\r")))
+            src = src.AfterFirst('\r'); 
 
         m_view->SetText(src);
 
@@ -1196,11 +1216,14 @@ void ctlCodeWindow::OnResultSet( PGresult * result )
 //  sends a request to the debugger server to create the breakpoint - the server
 //  will send back a reply if everything worked).
 
-void ctlCodeWindow::setBreakpoint( int lineNumber )
+void ctlCodeWindow::setBreakpoint(int lineNumber)
 {
-    m_dbgConn->startCommand( wxString::Format( m_commandSetBreakpoint, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber ), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT );
-    m_updateBreakpoints = true;
+    if (m_dbgConn->DebuggerApiVersion() == DEBUGGER_V1_API)
+        m_dbgConn->startCommand(wxString::Format(m_commandSetBreakpointV1, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
+    else
+        m_dbgConn->startCommand(wxString::Format(m_commandSetBreakpointV2, m_sessionHandle.c_str(), m_displayedFuncOid.c_str(), lineNumber), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
 
+    m_updateBreakpoints = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1211,11 +1234,13 @@ void ctlCodeWindow::setBreakpoint( int lineNumber )
 
 void ctlCodeWindow::clearBreakpoint( int lineNumber, bool requestUpdate )
 {
-    m_dbgConn->startCommand( wxString::Format( m_commandClearBreakpoint, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber ), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT );
+    if (m_dbgConn->DebuggerApiVersion() == DEBUGGER_V1_API)
+        m_dbgConn->startCommand(wxString::Format(m_commandClearBreakpointV1, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
+    else
+        m_dbgConn->startCommand(wxString::Format(m_commandClearBreakpointV2, m_sessionHandle.c_str(), m_displayedFuncOid.c_str(), lineNumber), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
 
-    if( requestUpdate )
-        m_updateBreakpoints = true;
-        
+    if (requestUpdate)
+        m_updateBreakpoints = true;   
 }
 
 void ctlCodeWindow::clearAllBreakpoints()
@@ -1281,7 +1306,7 @@ void ctlCodeWindow::startGlobalDebugging( )
 {
     m_sessionType = SESSION_TYPE_INCONTEXT;
 
-      m_dbgConn->startCommand( m_commandCreateListener, GetEventHandler(), RESULT_ID_LISTENER_CREATED );
+    m_dbgConn->startCommand(m_commandCreateListener, GetEventHandler(), RESULT_ID_LISTENER_CREATED);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1380,7 +1405,10 @@ void ctlCodeWindow::ResultAddBreakpoint( wxCommandEvent & event )
         popupError( result, _( "Error" ));
     else
     {
-        m_dbgConn->startCommand( wxString::Format( m_commandAddBreakpoint, m_sessionHandle.c_str(), result.getString( wxT( "pkg" )).c_str(), result.getString( wxT( "target" )).c_str(), wxT( "NULL" ), result.getString( wxT( "pid" )).c_str()), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT );
+        if (m_dbgConn->GetIsEdb())
+            m_dbgConn->startCommand(wxString::Format(m_commandAddBreakpointEDB, m_sessionHandle.c_str(), result.getString(wxT("pkg")).c_str(), result.getString(wxT("target")).c_str(), wxT("NULL"), result.getString(wxT( "pid")).c_str()), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
+        else
+            m_dbgConn->startCommand(wxString::Format(m_commandAddBreakpointPG, m_sessionHandle.c_str(), result.getString(wxT("target")).c_str(), wxT("NULL"), result.getString(wxT( "pid")).c_str()), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
 
         if( m_targetName.IsEmpty() == false )
             m_targetName.Append( wxT( ", " ));
@@ -1399,7 +1427,10 @@ void ctlCodeWindow::ResultLastBreakpoint( wxCommandEvent & event )
         popupError( result, _( "Error" ));
     else
     {
-        m_dbgConn->startCommand( wxString::Format( m_commandAddBreakpoint, m_sessionHandle.c_str(), result.getString( wxT( "pkg" )).c_str(), result.getString( wxT( "target" )).c_str(), wxT( "NULL" ), result.getString( wxT( "pid" )).c_str()), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT_WAIT );
+        if (m_dbgConn->GetIsEdb())
+            m_dbgConn->startCommand(wxString::Format(m_commandAddBreakpointEDB, m_sessionHandle.c_str(), result.getString(wxT("pkg")).c_str(), result.getString(wxT("target")).c_str(), wxT("NULL"), result.getString(wxT("pid")).c_str()), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT_WAIT);
+        else
+            m_dbgConn->startCommand(wxString::Format(m_commandAddBreakpointPG, m_sessionHandle.c_str(), result.getString(wxT("target")).c_str(), wxT("NULL"), result.getString(wxT("pid")).c_str()), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT_WAIT);
 
         if( m_targetName.IsEmpty() == false )
             m_targetName.Append( wxT( ", " ));

@@ -195,17 +195,21 @@ class ctlCodeWindow : public pgFrame
 	static wxString m_commandGetVars;
 	static wxString m_commandGetStack;
 	static wxString m_commandGetBreakpoints;
-	static wxString m_commandGetSource;
+	static wxString m_commandGetSourceV1;
+    static wxString m_commandGetSourceV2;
 	static wxString m_commandStepOver;
 	static wxString m_commandStepInto;
 	static wxString m_commandContinue;
-	static wxString m_commandSetBreakpoint;
-	static wxString m_commandClearBreakpoint;
+	static wxString m_commandSetBreakpointV1;
+	static wxString m_commandSetBreakpointV2;
+	static wxString m_commandClearBreakpointV1;
+    static wxString m_commandClearBreakpointV2;
 	static wxString m_commandSelectFrame;
 	static wxString m_commandDepositValue;
 	static wxString m_commandAbortTarget;
 	static wxString m_commandGetTargetInfo;
-	static wxString m_commandAddBreakpoint;
+	static wxString m_commandAddBreakpointEDB;
+    static wxString m_commandAddBreakpointPG;
 	static wxString m_commandCreateListener;
 	static wxString m_commandWaitForTarget;
 

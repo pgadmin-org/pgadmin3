@@ -489,14 +489,24 @@ bool dlgDirectDbg::activateDebugger( )
 //  the OID of the target.  Later, we'll change this function to use the 
 //  new CREATE BREAKPOINT command.
 
-void dlgDirectDbg::setBreakpoint( long pkgOid, long funcOid )
+void dlgDirectDbg::setBreakpoint(long pkgOid, long funcOid)
 {
     dbgResultset * result;
 
-    if( m_targetInfo->getLanguage() == wxT( "edbspl" ))
-        result = new dbgResultset( m_conn->waitForCommand( wxString::Format( wxT( "select edb_oid_debug( %ld, %ld );" ), pkgOid, funcOid )));
+    if (m_conn->DebuggerApiVersion() == DEBUGGER_V1_API)
+    {
+        if( m_targetInfo->getLanguage() == wxT( "edbspl" ))
+            result = new dbgResultset(m_conn->waitForCommand(wxString::Format(wxT("select edb_oid_debug( %ld, %ld );"), pkgOid, funcOid)));
+        else
+            result = new dbgResultset(m_conn->waitForCommand(wxString::Format(wxT("select plpgsql_oid_debug( %ld, %ld );"),  pkgOid, funcOid)));
+    }
     else
-        result = new dbgResultset( m_conn->waitForCommand( wxString::Format( wxT( "select plpgsql_oid_debug( %ld, %ld );" ),  pkgOid, funcOid )));
+    {
+        if( m_targetInfo->getLanguage() == wxT( "edbspl" ))
+            result = new dbgResultset(m_conn->waitForCommand(wxString::Format(wxT("select edb_oid_debug(%ld);"), funcOid)));
+        else
+            result = new dbgResultset(m_conn->waitForCommand(wxString::Format(wxT("select plpgsql_oid_debug(%ld);"), funcOid)));
+    }
 
     if( result->getCommandStatus() != PGRES_TUPLES_OK )
         throw( std::runtime_error( result->getRawErrorMessage()));

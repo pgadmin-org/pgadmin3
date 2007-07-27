@@ -30,7 +30,7 @@ WX_DEFINE_OBJARRAY( wsArgInfoArray );
 #define COL_LANGUAGE_NAME    "lanname"
 #define COL_ARG_NAMES    	"argnames"
 #define COL_ARG_MODES    	"argmodes"
-#define COL_ARG_TYPES    	"argtypes"
+#define COL_ARG_TYPES    	"argtypenames"
 #define COL_ARG_TYPEOIDS    "argtypeoids"
 #define COL_IS_FUNCTION    	"isfunc"
 #define COL_TARGET_OID    	"target"
@@ -62,9 +62,8 @@ WX_DEFINE_OBJARRAY( wsArgInfoArray );
 dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn * conn, char targetType )
 {
     wxString query = 
-    	wxT("select")
-    	wxT("  t.target, t.pkg, t.targetname, t.argnames, t.argmodes, t.isfunc, t.fqname,")
-    	wxT("  pg_catalog.oidvectortypes( t.argtypes ) as argtypes, t.argtypes as argtypeoids,")
+    	wxT("select t.*, ")
+    	wxT("  pg_catalog.oidvectortypes( t.argtypes ) as argtypenames, t.argtypes as argtypeoids,")
     	wxT("  l.lanname, n.nspname, p.proretset, y.typname AS rettype")
     	wxT(" from")
     	wxT("  pldbg_get_target_info( '%s', '%c' ) t , pg_namespace n, pg_language l, pg_proc p, pg_type y")
@@ -74,24 +73,34 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn * conn, char ta
         wxT("  p.oid = t.target and ")
         wxT("  y.oid = t.returntype");
  
-    dbgResultset * result = new dbgResultset( conn->waitForCommand( wxString::Format( query, target.c_str(), targetType )));
+    dbgResultset *result = new dbgResultset(conn->waitForCommand(wxString::Format(query, target.c_str(), targetType)));
 
-    if( result->getCommandStatus() != PGRES_TUPLES_OK )
+    if(result->getCommandStatus() != PGRES_TUPLES_OK)
     	throw( std::runtime_error( result->getRawErrorMessage()));
 
-    m_name     	 = result->getString( wxString( COL_TARGET_NAME, wxConvUTF8 ));
-    m_schema   	 = result->getString( wxString( COL_SCHEMA_NAME, wxConvUTF8 ));
-    m_language 	 = result->getString( wxString( COL_LANGUAGE_NAME, wxConvUTF8 ));
-    m_argNames 	 = result->getString( wxString( COL_ARG_NAMES, wxConvUTF8 ));
-    m_argModes 	 = result->getString( wxString( COL_ARG_MODES, wxConvUTF8 ));
-    m_argTypes 	 = result->getString( wxString( COL_ARG_TYPES, wxConvUTF8 ));
-    m_argTypeOids = result->getString( wxString( COL_ARG_TYPEOIDS, wxConvUTF8 ));
-    m_isFunction = result->getBool( wxString( COL_IS_FUNCTION, wxConvUTF8 ));
-    m_oid      	 = result->getLong( wxString( COL_TARGET_OID, wxConvUTF8 ));
-    m_pkgOid	 = result->getLong( wxString( COL_PACKAGE_OID, wxConvUTF8 ));
-    m_fqName	 = result->getString( wxString( COL_FQ_NAME, wxConvUTF8 ));
-    m_returnsSet = result->getBool( wxString( COL_RETURNS_SET, wxConvUTF8 ));
-    m_returnType = result->getString( wxString( COL_RETURN_TYPE, wxConvUTF8 ));
+    m_name     	 = result->getString( wxString(COL_TARGET_NAME, wxConvUTF8));
+    m_schema   	 = result->getString( wxString(COL_SCHEMA_NAME, wxConvUTF8));
+    m_language 	 = result->getString( wxString(COL_LANGUAGE_NAME, wxConvUTF8));
+    m_argNames 	 = result->getString( wxString(COL_ARG_NAMES, wxConvUTF8));
+    m_argModes 	 = result->getString( wxString(COL_ARG_MODES, wxConvUTF8));
+    m_argTypes 	 = result->getString( wxString(COL_ARG_TYPES, wxConvUTF8));
+    m_argTypeOids = result->getString( wxString(COL_ARG_TYPEOIDS, wxConvUTF8));
+
+    if (result->columnExists(wxString(COL_PACKAGE_OID, wxConvUTF8)))
+        m_isFunction = result->getBool( wxString(COL_IS_FUNCTION, wxConvUTF8));
+    else
+        m_isFunction = true;
+
+    m_oid      	 = result->getLong( wxString(COL_TARGET_OID, wxConvUTF8));
+
+    if (result->columnExists(wxString(COL_PACKAGE_OID, wxConvUTF8)))
+        m_pkgOid = result->getLong( wxString(COL_PACKAGE_OID, wxConvUTF8));
+    else
+        m_pkgOid = 0;
+
+    m_fqName	 = result->getString( wxString(COL_FQ_NAME, wxConvUTF8));
+    m_returnsSet = result->getBool( wxString(COL_RETURNS_SET, wxConvUTF8));
+    m_returnType = result->getString( wxString(COL_RETURN_TYPE, wxConvUTF8));
 
     // Parse out the argument types, names, and modes
   
@@ -99,10 +108,10 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn * conn, char ta
     // that contains ",{}", we can parse out PostgreSQL array strings like:
     //	 {int, varchar, numeric}
 
-    wxStringTokenizer names( m_argNames, wxT( ",{}" ), wxTOKEN_STRTOK );
-    wxStringTokenizer types( m_argTypes, wxT( ",{}" ), wxTOKEN_STRTOK );
-    wxStringTokenizer typeOids( m_argTypeOids, wxT( ",{}" ), wxTOKEN_STRTOK );
-    wxStringTokenizer modes( m_argModes, wxT( ",{}" ), wxTOKEN_STRTOK );
+    wxStringTokenizer names(m_argNames, wxT( ",{}" ), wxTOKEN_STRTOK);
+    wxStringTokenizer types(m_argTypes, wxT( ",{}" ), wxTOKEN_STRTOK);
+    wxStringTokenizer typeOids(m_argTypeOids, wxT( ",{}" ), wxTOKEN_STRTOK);
+    wxStringTokenizer modes(m_argModes, wxT( ",{}" ), wxTOKEN_STRTOK);
 
     // Create one wsArgInfo for each target argument
 

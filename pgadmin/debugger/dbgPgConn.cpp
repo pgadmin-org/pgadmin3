@@ -210,9 +210,9 @@ PGconn * dbgPgConn::getConnection()
 
 void dbgPgConn::startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType, dbgPgParams *params )
 {
-    wxLogInfo( command );
+    wxLogSql(command);
 
-    m_workerThread->startCommand( command, caller, eventType, params );
+    m_workerThread->startCommand(command, caller, eventType, params);
 }
 
 PGresult * dbgPgConn::waitForCommand( const wxString &command )
@@ -239,13 +239,17 @@ PGresult * dbgPgConn::waitForCommand( const wxString &command )
 void dbgPgConn::setNoticeHandler( PQnoticeProcessor handler, void * arg )
 {
     PQnoticeProcessor p=NULL;
-        p = PQsetNoticeProcessor( m_pgConn, handler, arg );
+    p = PQsetNoticeProcessor( m_pgConn, handler, arg );
 }
 
 void dbgPgConn::Close()
 {
     // Attempt to cancel any ongoing query
     Cancel();
+
+    // Wait a tenth of a second or so for things to sort themselves out.
+    // Otherwise on Windows things can get funky here ...
+    wxMilliSleep(100);
 
     if (m_workerThread)
     {
@@ -274,6 +278,7 @@ void dbgPgConn::Cancel()
     }
 }
 
+// Check the backend version
 bool dbgPgConn::BackendMinimumVersion(int major, int minor)
 {
     if (!m_majorVersion)
@@ -285,11 +290,23 @@ bool dbgPgConn::BackendMinimumVersion(int major, int minor)
     return m_majorVersion > major || (m_majorVersion == major && m_minorVersion >= minor);
 }
 
-
+// Check the EDB backend version
 bool dbgPgConn::EdbMinimumVersion(int major, int minor)
 {
     return BackendMinimumVersion(major, minor) && GetIsEdb();
 }
+
+
+DebuggerApiVersion dbgPgConn::DebuggerApiVersion()
+{
+    // EDB < 8.3 uses the original API
+    if (GetIsEdb() && !EdbMinimumVersion(8, 3))
+        return DEBUGGER_V1_API;
+
+    // Everything else uses the newer API
+    return DEBUGGER_V2_API;
+}
+
 
 wxString dbgPgConn::GetVersionString()
 {

@@ -131,7 +131,7 @@ const wxString dbgResultset::getErrorMessage()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// getRaErrorMessage()
+// getRawErrorMessage()
 //
 //    This function returns the error message (if any) contained in the result set
 //
@@ -141,4 +141,17 @@ const wxString dbgResultset::getErrorMessage()
 const char * dbgResultset::getRawErrorMessage()
 {
     return( PQresultErrorMessage( m_handle ));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// columnExists()
+//
+//    Check if a column exists in the resultset
+
+bool dbgResultset::columnExists(const wxString &columnName)
+{
+    if(PQfnumber(m_handle, columnName.mb_str(wxConvUTF8)) != -1)
+        return(true);
+    else
+		return(false);
 }

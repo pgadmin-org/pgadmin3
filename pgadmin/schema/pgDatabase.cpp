@@ -590,7 +590,7 @@ bool pgDatabase::CanDebugPlpgsql()
 
     // On EDBAS82 and PostgreSQL, we need to check to make sure that
     // the debugger library is also available.
-    if (ExecuteVoid(wxT("LOAD '$libdir/plugins/plugin_debugger';"), false) == false)
+    if (ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE proname = 'plpgsql_oid_debug';")) == wxT("0"))
     {
         canDebugPlpgsql = 1;
         return false;
@@ -628,7 +628,7 @@ bool pgDatabase::CanDebugEdbspl()
 
     // On EDBAS82 and PostgreSQL, we need to check to make sure that
     // the debugger library is also available.
-    if (ExecuteVoid(wxT("LOAD '$libdir/plugins/plugin_spl_debugger';"), false) == false)
+    if (ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE proname = 'edb_oid_debug';")) == wxT("0"))
     {
         canDebugEdbspl = 1;
         return false;
