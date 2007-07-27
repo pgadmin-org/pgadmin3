@@ -40,7 +40,6 @@
 #include "utils/misc.h"
 #include "utils/md5.h"
 #include "db/pgSet.h"
-#include "utils/sysLogger.h"
 
 double pgConn::libpqVersion=8.0;
 
