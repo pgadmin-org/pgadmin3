@@ -298,7 +298,7 @@ bool dbgPgConn::EdbMinimumVersion(int major, int minor)
 }
 
 
-DebuggerApiVersion dbgPgConn::DebuggerApiVersion()
+DebuggerApiVersions dbgPgConn::DebuggerApiVersion()
 {
     // EDB < 8.3 uses the original API
     if (GetIsEdb() && !EdbMinimumVersion(8, 3))

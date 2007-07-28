@@ -34,7 +34,7 @@ typedef enum
 {
     DEBUGGER_V1_API = 1,
     DEBUGGER_V2_API
-} DebuggerApiVersion;
+} DebuggerApiVersions;
 
 class dbgPgParams 
 {
@@ -64,7 +64,7 @@ class dbgPgConn
     bool BackendMinimumVersion(int major, int minor);
     bool EdbMinimumVersion(int major, int minor);
     bool GetIsEdb();
-    DebuggerApiVersion DebuggerApiVersion();
+    DebuggerApiVersions DebuggerApiVersion();
     wxString GetVersionString();
     bool isConnected() const;               // Returns true if the connection attempt succeeded
     const wxString  getName() const;        // Returns human-friendly name for this connection
