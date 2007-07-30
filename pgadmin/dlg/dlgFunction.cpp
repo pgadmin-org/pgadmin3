@@ -30,7 +30,7 @@
 #define stReturntype        CTRL_STATIC("stReturntype")
 #define cbReturntype        CTRL_COMBOBOX2("cbReturntype")
 #define stLanguage          CTRL_STATIC("stLanguage")
-#define cbLanguage          CTRL_COMBOBOX("cbLanguage")
+#define cbLanguage          CTRL_COMBOBOX2("cbLanguage")
 #define chkSetof            CTRL_CHECKBOX("chkSetof")
 #define stVolatility        CTRL_STATIC("stVolatility")
 #define cbVolatility        CTRL_COMBOBOX("cbVolatility")
@@ -339,7 +339,7 @@ void dlgFunction::CheckChange()
         CheckValid(enable, cbReturntype->GetGuessedSelection() >= 0, _("Please select return type."));
 
     if (!(isProcedure && connection->GetIsEdb()))
-        CheckValid(enable, cbLanguage->GetCurrentSelection() >= 0, _("Please select language."));
+        CheckValid(enable, cbLanguage->GetGuessedSelection() >= 0, _("Please select language."));
 
     if (isC)
     {
