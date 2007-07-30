@@ -54,6 +54,7 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
     m_pgConn       = NULL;
     m_majorVersion = 0;
     m_minorVersion = 0;
+    m_debuggerApiVersion = (DebuggerApiVersions)0;
     m_isEdb = false;
 
     if( startThread )
@@ -218,11 +219,9 @@ void dbgPgConn::startCommand( const wxString &command, wxEvtHandler * caller, wx
 
 PGresult * dbgPgConn::waitForCommand( const wxString &command )
 {
-    wxLogDebug( _( "waiting for %s" ), command.c_str());
+    wxLogSql(command);
 
     PGresult * result = PQexec( m_pgConn, command.mb_str( wxConvUTF8 ));
-
-    wxLogDebug( _( "complete" ));
 
     return( result );
 }
@@ -297,15 +296,41 @@ bool dbgPgConn::EdbMinimumVersion(int major, int minor)
     return BackendMinimumVersion(major, minor) && GetIsEdb();
 }
 
-
+// Get the debugger API version
 DebuggerApiVersions dbgPgConn::DebuggerApiVersion()
 {
-    // EDB < 8.3 uses the original API
-    if (GetIsEdb() && !EdbMinimumVersion(8, 3))
-        return DEBUGGER_V1_API;
+    if (m_debuggerApiVersion > 0)
+        return m_debuggerApiVersion;
 
-    // Everything else uses the newer API
-    return DEBUGGER_V2_API;
+    // The v1 protocol didn't have pldbg_get_proxy_info()
+    wxString result;
+
+    PGresult *res = waitForCommand(wxT( "SELECT count(*) FROM pg_proc WHERE proname = 'pldbg_get_proxy_info';"));
+
+    if (PQresultStatus(res) == PGRES_TUPLES_OK)
+    {
+        // Retrieve the query result and return it.
+        if (wxString(PQgetvalue(res, 0, 0), wxConvUTF8) == wxT("0"))
+        {
+            PQclear(res);
+            m_debuggerApiVersion = DEBUGGER_V1_API;
+            return DEBUGGER_V1_API;
+        }
+
+        PQclear(res);
+    }
+
+    // We have pldbg_get_proxy_info, so use it to get the API version
+    res = waitForCommand(wxT( "SELECT proxyapiver FROM pldbg_get_proxy_info();"));
+
+    if (PQresultStatus(res) == PGRES_TUPLES_OK)
+    {
+        // Retrieve the query result and return it.
+        m_debuggerApiVersion = (DebuggerApiVersions)atoi(wxString(PQgetvalue(res, 0, 0), wxConvUTF8).ToAscii());
+        PQclear(res);
+    }
+
+    return m_debuggerApiVersion;
 }
 
 
@@ -314,7 +339,7 @@ wxString dbgPgConn::GetVersionString()
     PGresult *res;
     wxString result;
 
-    res = waitForCommand( wxT( "SELECT version();" ));
+    res = waitForCommand(wxT( "SELECT version();"));
 
     if (PQresultStatus(res) == PGRES_TUPLES_OK)
     {

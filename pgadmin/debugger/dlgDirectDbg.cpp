@@ -148,8 +148,8 @@ void dlgDirectDbg::startDebugging( void )
     switch( breakpoint->getTargetType())
     {
         case dbgBreakPoint::TRIGGER:     targetType = 't'; break;
-        case dbgBreakPoint::FUNCTION:     targetType = 'f'; break;
-        case dbgBreakPoint::PROCEDURE:     targetType = 'p'; break;
+        case dbgBreakPoint::FUNCTION:    targetType = 'f'; break;
+        case dbgBreakPoint::PROCEDURE:   targetType = 'p'; break;
         case dbgBreakPoint::OID:         targetType = 'o'; break;
         default:
         {
@@ -454,7 +454,7 @@ bool dlgDirectDbg::activateDebugger( )
             setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getPkgInitOid());
 
         chkPkgInit->SetValue(false);
-           chkPkgInit->Disable();
+        chkPkgInit->Disable();
 
         setBreakpoint( m_targetInfo->getPkgOid(), m_targetInfo->getOid());
     }
@@ -493,7 +493,7 @@ void dlgDirectDbg::setBreakpoint(long pkgOid, long funcOid)
 {
     dbgResultset * result;
 
-    if (m_conn->DebuggerApiVersion() == DEBUGGER_V1_API)
+    if (m_conn->DebuggerApiVersion() <= DEBUGGER_V2_API)
     {
         if( m_targetInfo->getLanguage() == wxT( "edbspl" ))
             result = new dbgResultset(m_conn->waitForCommand(wxString::Format(wxT("select edb_oid_debug( %ld, %ld );"), pkgOid, funcOid)));

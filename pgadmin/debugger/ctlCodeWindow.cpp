@@ -1017,7 +1017,7 @@ void ctlCodeWindow::cacheSource(const wxString &packageOID, const wxString &func
 
 void ctlCodeWindow::getSource(const wxString &packageOID, const wxString &funcOID)
 {
-    if (m_dbgConn->DebuggerApiVersion() == DEBUGGER_V1_API)
+    if (m_dbgConn->DebuggerApiVersion() <= DEBUGGER_V2_API)
         m_dbgConn->startCommand(wxString::Format(m_commandGetSourceV1, packageOID.c_str(), funcOID.c_str(), m_sessionHandle.c_str(), packageOID.c_str(), funcOID.c_str(), m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_GET_SOURCE);
     else
         m_dbgConn->startCommand(wxString::Format(m_commandGetSourceV2, funcOID.c_str(), m_sessionHandle.c_str(), funcOID.c_str(), m_sessionHandle.c_str()), GetEventHandler(), RESULT_ID_GET_SOURCE);
@@ -1215,7 +1215,7 @@ void ctlCodeWindow::OnResultSet( PGresult * result )
 
 void ctlCodeWindow::setBreakpoint(int lineNumber)
 {
-    if (m_dbgConn->DebuggerApiVersion() == DEBUGGER_V1_API)
+    if (m_dbgConn->DebuggerApiVersion() <= DEBUGGER_V2_API)
         m_dbgConn->startCommand(wxString::Format(m_commandSetBreakpointV1, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber + 1), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
     else
         m_dbgConn->startCommand(wxString::Format(m_commandSetBreakpointV2, m_sessionHandle.c_str(), m_displayedFuncOid.c_str(), lineNumber + 1), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
@@ -1231,7 +1231,7 @@ void ctlCodeWindow::setBreakpoint(int lineNumber)
 
 void ctlCodeWindow::clearBreakpoint( int lineNumber, bool requestUpdate )
 {
-    if (m_dbgConn->DebuggerApiVersion() == DEBUGGER_V1_API)
+    if (m_dbgConn->DebuggerApiVersion() <= DEBUGGER_V2_API)
         m_dbgConn->startCommand(wxString::Format(m_commandClearBreakpointV1, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber + 1), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
     else
         m_dbgConn->startCommand(wxString::Format(m_commandClearBreakpointV2, m_sessionHandle.c_str(), m_displayedFuncOid.c_str(), lineNumber + 1), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);

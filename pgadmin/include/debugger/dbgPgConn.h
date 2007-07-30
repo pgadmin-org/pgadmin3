@@ -30,11 +30,12 @@
 #include "debugger/dbgPgThread.h"
 #include "debugger/dbgConnProp.h"
 
-typedef enum
+enum DebuggerApiVersions
 {
     DEBUGGER_V1_API = 1,
-    DEBUGGER_V2_API
-} DebuggerApiVersions;
+    DEBUGGER_V2_API = 2,
+    DEBUGGER_V3_API = 3
+};
 
 class dbgPgParams 
 {
@@ -87,6 +88,7 @@ class dbgPgConn
     frmDebugger *m_frame;
     int m_minorVersion, m_majorVersion;
     bool m_isEdb;
+    DebuggerApiVersions m_debuggerApiVersion;
 };
 
 #endif
