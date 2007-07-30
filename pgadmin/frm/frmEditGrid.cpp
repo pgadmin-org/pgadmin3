@@ -577,6 +577,7 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
             return;
         }
         case WXK_RETURN:
+        case WXK_NUMPAD_ENTER:
             // check for shift etc.
             if (event.ControlDown() || event.ShiftDown())
             {
