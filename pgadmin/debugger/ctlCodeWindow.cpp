@@ -271,7 +271,7 @@ void ctlCodeWindow::OnClose(wxCloseEvent& event)
       
 void ctlCodeWindow::OnMarginClick( wxStyledTextEvent& event )      
 {      
-    int lineNumber = m_view->LineFromPosition( event.GetPosition());      
+    int lineNumber = m_view->LineFromPosition(event.GetPosition());      
       
     if (!lineNumber)
         return;
@@ -279,10 +279,10 @@ void ctlCodeWindow::OnMarginClick( wxStyledTextEvent& event )
     // If we already have a breakpoint at the clickpoint, disable it, otherwise      
     // create a new breakpoint.      
       
-    if( m_view->MarkerGet( lineNumber ) & MARKERINDEX_TO_MARKERMASK( MARKER_BREAKPOINT ))      
-        clearBreakpoint( lineNumber, true );      
+    if(m_view->MarkerGet(lineNumber) &MARKERINDEX_TO_MARKERMASK(MARKER_BREAKPOINT))      
+        clearBreakpoint(lineNumber, true);      
     else      
-        setBreakpoint( lineNumber );      
+        setBreakpoint(lineNumber);      
 }
 
 ////////////////////////////////////////////////////////////////////////////////      
@@ -647,24 +647,24 @@ void ctlCodeWindow::ResultStack( wxCommandEvent & event )
 //    We clear out the old breakpoint markers and then display a new marker
 //    for each breakpoint defined in the current function.
 
-void ctlCodeWindow::ResultBreakpoints( wxCommandEvent & event )
+void ctlCodeWindow::ResultBreakpoints(wxCommandEvent & event)
 {
     dbgResultset  result((PGresult *)event.GetClientData()); 
 
-    if( connectionLost( result ))
+    if( connectionLost(result))
         closeConnection();
     else
     {
-        if( result.getCommandStatus() == PGRES_TUPLES_OK )
+        if(result.getCommandStatus() == PGRES_TUPLES_OK)
         {
             clearBreakpointMarkers();
 
             // The result set contains one tuple per breakpoint:
             //        packageOID, functionOID, linenumber
 
-            for( int row = 0; row < result.getRowCount(); ++row )
+            for(int row = 0; row < result.getRowCount(); ++row)
             {
-                m_view->MarkerAdd( result.getLong( wxT( "linenumber" ), row ), MARKER_BREAKPOINT );
+                m_view->MarkerAdd(result.getLong(wxT("linenumber"), row) - 1, MARKER_BREAKPOINT);
             }
         }
     }
@@ -1063,11 +1063,10 @@ void ctlCodeWindow::displaySource(const wxString &packageOID, const wxString &fu
 
         // Strip the leading blank line from the source as it looks ugly
         wxString src = codeCache.getSource();
+        src.Replace(wxT("\r"), wxT(""));
  
         if (src.StartsWith(wxT("\n")))
             src = src.AfterFirst('\n');
-        else if (src.StartsWith(wxT("\r")))
-            src = src.AfterFirst('\r'); 
 
         m_view->SetText(src);
 
@@ -1076,32 +1075,30 @@ void ctlCodeWindow::displaySource(const wxString &packageOID, const wxString &fu
     }
 
     // Clear the current-line indicator 
-    int    lineNo = m_view->MarkerNext( 0, MARKERINDEX_TO_MARKERMASK( MARKER_CURRENT ));
+    int lineNo = m_view->MarkerNext(0, MARKERINDEX_TO_MARKERMASK( MARKER_CURRENT));
     int current_line = m_currentLineNumber;
 
-
-    if ( lineNo != -1 )
+    if (lineNo != -1)
     {
-        m_view->MarkerDelete( lineNo, MARKER_CURRENT );
-        m_view->MarkerDelete( lineNo, MARKER_CURRENT_BG );
+        m_view->MarkerDelete(lineNo, MARKER_CURRENT);
+        m_view->MarkerDelete(lineNo, MARKER_CURRENT_BG);
     }
 
     // Adjustment of the next position
-    if ( current_line > 1 ) 
+    if (current_line > 1) 
         current_line--;
 
     // Add the current-line indicator to the current line of code
-    m_view->MarkerAdd( current_line , MARKER_CURRENT );
-    m_view->MarkerAdd( current_line , MARKER_CURRENT_BG );
+    m_view->MarkerAdd(current_line, MARKER_CURRENT);
+    m_view->MarkerAdd(current_line, MARKER_CURRENT_BG);
 
     // Scroll the source code listing (if required) to make sure
     // that this line of code is visible 
     //
     // (note: we set the anchor and the caret to the same position to avoid
     // creating a selection region)
-
-    m_view->SetAnchor( m_view->PositionFromLine( current_line ));
-    m_view->SetCurrentPos( m_view->PositionFromLine( current_line ));
+    m_view->SetAnchor(m_view->PositionFromLine(current_line));
+    m_view->SetCurrentPos(m_view->PositionFromLine(current_line));
     m_view->EnsureCaretVisible();
 
     // Update the next lazy part of the user interface (the variable list)
@@ -1116,7 +1113,7 @@ void ctlCodeWindow::displaySource(const wxString &packageOID, const wxString &fu
 
 int ctlCodeWindow::getLineNo( )
 {
-    return( m_view->LineFromPosition( m_view->GetCurrentPos( )));
+    return(m_view->LineFromPosition( m_view->GetCurrentPos( )));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1219,9 +1216,9 @@ void ctlCodeWindow::OnResultSet( PGresult * result )
 void ctlCodeWindow::setBreakpoint(int lineNumber)
 {
     if (m_dbgConn->DebuggerApiVersion() == DEBUGGER_V1_API)
-        m_dbgConn->startCommand(wxString::Format(m_commandSetBreakpointV1, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
+        m_dbgConn->startCommand(wxString::Format(m_commandSetBreakpointV1, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber + 1), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
     else
-        m_dbgConn->startCommand(wxString::Format(m_commandSetBreakpointV2, m_sessionHandle.c_str(), m_displayedFuncOid.c_str(), lineNumber), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
+        m_dbgConn->startCommand(wxString::Format(m_commandSetBreakpointV2, m_sessionHandle.c_str(), m_displayedFuncOid.c_str(), lineNumber + 1), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
 
     m_updateBreakpoints = true;
 }
@@ -1235,9 +1232,9 @@ void ctlCodeWindow::setBreakpoint(int lineNumber)
 void ctlCodeWindow::clearBreakpoint( int lineNumber, bool requestUpdate )
 {
     if (m_dbgConn->DebuggerApiVersion() == DEBUGGER_V1_API)
-        m_dbgConn->startCommand(wxString::Format(m_commandClearBreakpointV1, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
+        m_dbgConn->startCommand(wxString::Format(m_commandClearBreakpointV1, m_sessionHandle.c_str(), m_displayedPackageOid.c_str(), m_displayedFuncOid.c_str(), lineNumber + 1), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
     else
-        m_dbgConn->startCommand(wxString::Format(m_commandClearBreakpointV2, m_sessionHandle.c_str(), m_displayedFuncOid.c_str(), lineNumber), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
+        m_dbgConn->startCommand(wxString::Format(m_commandClearBreakpointV2, m_sessionHandle.c_str(), m_displayedFuncOid.c_str(), lineNumber + 1), GetEventHandler(), RESULT_ID_NEW_BREAKPOINT);
 
     if (requestUpdate)
         m_updateBreakpoints = true;   
