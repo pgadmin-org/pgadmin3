@@ -264,7 +264,7 @@ int dlgProperty::Go(bool modal)
         if (txtName)
             txtName->SetValue(GetObject()->GetName());
         if (txtOid)
-            txtOid->SetValue(NumToStr((long)GetObject()->GetOid()));
+            txtOid->SetValue(NumToStr((unsigned long)GetObject()->GetOid()));
         if (cbOwner)
             cbOwner->SetValue(GetObject()->GetOwner());
         if (txtComment)
