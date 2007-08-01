@@ -131,7 +131,14 @@ AC_DEFUN([LOCATE_WXWIDGETS],
 				WX_HOME=/usr
 				if test ! -f "${WX_HOME}/bin/wx-config"
 				then
-					AC_MSG_ERROR([Could not find your wxWidgets installation. You might need to use the --with-wx=DIR configure option])
+                    # Search the path
+				    AC_PATH_PROGS(WX_CONFIG, wx-config)
+                    if test ! -f "${WX_CONFIG}"
+				    then
+                        AC_MSG_ERROR([Could not find your wxWidgets installation. You might need to use the --with-wx=DIR configure option])
+                    else
+					   WX_HOME=`${WX_CONFIG} --prefix`
+                    fi
 				fi
 			fi
 		fi
@@ -193,7 +200,14 @@ AC_DEFUN([LOCATE_LIBXML2],
 			  XML2_HOME=/mingw
 			  if test ! -f "${XML2_HOME}/bin/xml2-config"
 			  then
-				  AC_MSG_ERROR([Could not find your libxml2 installation. You might need to use the --with-libxml2=DIR configure option])
+                  # Search the path
+				  AC_PATH_PROGS(XML2_CONFIG, xml2-config)
+                  if test ! -f "${XML2_CONFIG}"
+				  then
+                      AC_MSG_ERROR([Could not find your libxml2 installation. You might need to use the --with-libxml2=DIR configure option])
+                  else
+					  XML2_HOME=`${XML2_CONFIG} --prefix`
+                  fi
 			  fi
 		  fi
 	  fi
@@ -254,7 +268,14 @@ AC_DEFUN([LOCATE_LIBXSLT],
 			  XSLT_HOME=/mingw
 			  if test ! -f "${XSLT_HOME}/bin/xslt-config"
 			  then
-				  AC_MSG_ERROR([Could not find your libxslt installation. You might need to use the --with-libxslt=DIR configure option])
+                  # Search the path
+				  AC_PATH_PROGS(XSLT_CONFIG, xslt-config)
+                  if test ! -f "${XSLT_CONFIG}"
+				  then
+                      AC_MSG_ERROR([Could not find your libxslt installation. You might need to use the --with-libxslt=DIR configure option])
+                  else
+					  XSLT_HOME=`${XSLT_CONFIG} --prefix`
+                  fi
 			  fi
 		  fi
 	  fi
@@ -290,7 +311,14 @@ AC_DEFUN([LOCATE_POSTGRESQL],
 				PG_HOME=/usr
 				if test ! -f "${PG_HOME}/bin/pg_config"
 				then
-					AC_MSG_ERROR([Could not find your PostgreSQL installation. You might need to use the --with-pgsql=DIR configure option])
+				    # Search the path
+					AC_PATH_PROGS(PG_CONFIG, pg_config)
+				    if test ! -f "${PG_CONFIG}"
+				    then
+					    AC_MSG_ERROR([Could not find your PostgreSQL installation. You might need to use the --with-pgsql=DIR configure option])
+					else
+					    PG_HOME=`${PG_CONFIG} --bindir | sed "s/\/bin$//"`
+					fi
 				fi
 			fi
 		fi
@@ -373,20 +401,22 @@ AC_DEFUN([SETUP_POSTGRESQL],
 [
 	if test -n "${PG_HOME}"
 	then
+	    PG_LIB=`${PG_CONFIG} --libdir`
+		
 		PGSQL_OLD_LDFLAGS="$LDFLAGS"
 		PGSQL_OLD_CPPFLAGS="$CPPFLAGS"
 
 		# Solaris needs -lssl for this test
 		case "${host}" in
 			*solaris*)
-				LDFLAGS="$LDFLAGS -L${PG_HOME}/lib -lssl"
+				LDFLAGS="$LDFLAGS -L${PG_LIB} -lssl"
 				;;
 			*)
-				LDFLAGS="$LDFLAGS -L${PG_HOME}/lib"
+				LDFLAGS="$LDFLAGS -L${PG_LIB}"
 				;;
 		esac
 
-		PG_LIB=`${PG_CONFIG} --libdir`
+		
 
                 if test "$BUILD_STATIC" = "yes"
                 then
@@ -704,6 +734,14 @@ AC_DEFUN([SUMMARY],
 	echo "wxWidgets directory:			$WX_HOME"
 	echo "wxWidgets wx-config binary:		$WX_CONFIG"
 	echo "wxWidgets version:			wxWidgets "`$WX_CONFIG --version --version=$WX_VERSION`
+	echo
+	echo "libxml2 directory:			$XML2_HOME"
+	echo "libxml2 xml2-config binary:		$XML2_CONFIG"
+	echo "libxml2 version:			libxml2 "`$XML2_CONFIG --version`
+	echo
+	echo "libxslt directory:			$XSLT_HOME"
+	echo "libxslt xslt-config binary:		$XSLT_CONFIG"
+	echo "libxslt version:			libxslt "`$XSLT_CONFIG --version`
 	echo
 	if test "$BUILD_DEBUG" = yes
 	then
