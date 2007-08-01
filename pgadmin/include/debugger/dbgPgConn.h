@@ -32,6 +32,7 @@
 
 enum DebuggerApiVersions
 {
+    DEBUGGER_UNKNOWN_API = 0,
     DEBUGGER_V1_API = 1,
     DEBUGGER_V2_API = 2,
     DEBUGGER_V3_API = 3

@@ -54,7 +54,7 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
     m_pgConn       = NULL;
     m_majorVersion = 0;
     m_minorVersion = 0;
-    m_debuggerApiVersion = (DebuggerApiVersions)0;
+    m_debuggerApiVersion = DEBUGGER_UNKNOWN_API;
     m_isEdb = false;
 
     if( startThread )
@@ -319,6 +319,11 @@ DebuggerApiVersions dbgPgConn::DebuggerApiVersion()
 
         PQclear(res);
     }
+    else
+    {
+        wxLogError(wxString(PQerrorMessage(m_pgConn), wxConvUTF8));
+        return DEBUGGER_UNKNOWN_API;
+    }
 
     // We have pldbg_get_proxy_info, so use it to get the API version
     res = waitForCommand(wxT( "SELECT proxyapiver FROM pldbg_get_proxy_info();"));
@@ -328,6 +333,11 @@ DebuggerApiVersions dbgPgConn::DebuggerApiVersion()
         // Retrieve the query result and return it.
         m_debuggerApiVersion = (DebuggerApiVersions)atoi(wxString(PQgetvalue(res, 0, 0), wxConvUTF8).ToAscii());
         PQclear(res);
+    }
+    else
+    {
+        wxLogError(wxString(PQerrorMessage(m_pgConn), wxConvUTF8));
+        return DEBUGGER_UNKNOWN_API;
     }
 
     return m_debuggerApiVersion;
