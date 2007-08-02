@@ -94,6 +94,7 @@ wxString pgTablespace::GetSql(ctlTree *browser)
                 +  wxT("\n  OWNER ") + qtIdent(GetOwner())
                 +  wxT("\n  LOCATION ") + qtDbString(location)
                 +  wxT(";\n");
+        sql += GetCommentSql();
 
     }
     return sql;
