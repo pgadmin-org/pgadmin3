@@ -1043,7 +1043,11 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
 {
 	wxArrayString output;
 
-	wxExecute(cmd + wxT(" --version"), output, 0);
+	if (wxExecute(cmd + wxT(" --version"), output, 0) != 0)
+    {
+        wxLogError(_("Failed to execute: %s --version"), cmd);
+        return false;
+    }
 
 	wxString version = output[0].AfterLast(' ');
 	long actualMajor = 0, actualMinor = 0;
@@ -1085,7 +1089,11 @@ bool isPgApp(const wxString &app)
 
 	wxArrayString output;
 
-	wxExecute(app + wxT(" --version"), output, 0);
+	if (wxExecute(app + wxT(" --version"), output, 0) != 0)
+    {
+        wxLogError(_("Failed to execute: %s --version"), app);
+        return false;
+    }
 
     if (output[0].Contains(wxT("PostgreSQL")))
         return true;
@@ -1100,7 +1108,11 @@ bool isEdbApp(const wxString &app)
 
 	wxArrayString output;
 
-	wxExecute(app + wxT(" --version"), output, 0);
+	if (wxExecute(app + wxT(" --version"), output, 0) != 0)
+    {
+        wxLogError(_("Failed to execute: %s --version"), app);
+        return false;
+    }
 
     if (output[0].Contains(wxT("EnterpriseDB")))
         return true;
