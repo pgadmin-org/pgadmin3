@@ -793,7 +793,10 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
 				else
 					EndMsg(true);
 			}
-			GetMenuFactories()->CheckMenu(server, GetMenuBar(), GetToolBar());
+            if (item)
+                GetMenuFactories()->CheckMenu((pgObject *)browser->GetItemData(item), GetMenuBar(), GetToolBar());
+            else
+                GetMenuFactories()->CheckMenu(server, GetMenuBar(), GetToolBar());
             return res;
         }
         case PGCONN_DNSERR:
