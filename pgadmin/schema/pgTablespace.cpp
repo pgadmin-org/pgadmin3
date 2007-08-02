@@ -172,7 +172,7 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
 
 
     pgSet *tablespaces = collection->GetServer()->ExecuteSet(
-        wxT("SELECT ts.oid, spcname, spclocation, pg_get_userbyid(spcowner) as spcuser, spcacl pg_catalog.shobj_description(oid, 'pg_tablespace') AS description FROM pg_tablespace ts\n")
+        wxT("SELECT ts.oid, spcname, spclocation, pg_get_userbyid(spcowner) as spcuser, spcacl, pg_catalog.shobj_description(oid, 'pg_tablespace') AS description FROM pg_tablespace ts\n")
         + restriction + wxT(" ORDER BY spcname"));
 
     if (tablespaces)
