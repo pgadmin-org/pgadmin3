@@ -118,6 +118,7 @@ void pgTablespace::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("Location"), GetLocation());
         properties->AppendItem(_("ACL"), GetAcl());
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 
@@ -171,7 +172,7 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
 
 
     pgSet *tablespaces = collection->GetServer()->ExecuteSet(
-        wxT("SELECT ts.oid, spcname, spclocation, pg_get_userbyid(spcowner) as spcuser, spcacl FROM pg_tablespace ts\n")
+        wxT("SELECT ts.oid, spcname, spclocation, pg_get_userbyid(spcowner) as spcuser, spcacl pg_catalog.shobj_description(oid, 'pg_tablespace') AS description FROM pg_tablespace ts\n")
         + restriction + wxT(" ORDER BY spcname"));
 
     if (tablespaces)
@@ -185,7 +186,7 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
             tablespace->iSetOwner(tablespaces->GetVal(wxT("spcuser")));
             tablespace->iSetLocation(tablespaces->GetVal(wxT("spclocation")));
             tablespace->iSetAcl(tablespaces->GetVal(wxT("spcacl")));
-
+            tablespace->iSetComment(tablespaces->GetVal(wxT("description")));
 
             if (browser)
             {

@@ -58,13 +58,13 @@ int dlgTablespace::Go(bool modal)
         cbOwner->Append(wxEmptyString);
     AddGroups();
     AddUsers(cbOwner);
-    txtComment->Disable();
 
     if (tablespace)
     {
         // Edit Mode
         txtName->SetValue(tablespace->GetIdentifier());
         txtLocation->SetValue(tablespace->GetLocation());
+        txtComment->SetValue(tablespace->GetComment());
 
         txtLocation->Disable();
     }
@@ -127,6 +127,8 @@ wxString dlgTablespace::GetSql()
             +  wxT(";\n");
     }
     sql += GetGrant(wxT("C"), wxT("TABLESPACE ") + qtIdent(name));
+    AppendComment(sql, wxT("TABLESPACE"), 0, tablespace);
+
     return sql;
 }
 
