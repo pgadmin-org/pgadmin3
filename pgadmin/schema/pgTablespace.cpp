@@ -170,9 +170,14 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
 
     wxString tabname;
 
-
-    pgSet *tablespaces = collection->GetServer()->ExecuteSet(
+    pgSet *tablespaces;
+    if (collection->GetConnection()->BackendMinimumVersion(8, 2))
+        tablespaces = collection->GetServer()->ExecuteSet(
         wxT("SELECT ts.oid, spcname, spclocation, pg_get_userbyid(spcowner) as spcuser, spcacl, pg_catalog.shobj_description(oid, 'pg_tablespace') AS description FROM pg_tablespace ts\n")
+        + restriction + wxT(" ORDER BY spcname"));
+    else
+        tablespaces = collection->GetServer()->ExecuteSet(
+        wxT("SELECT ts.oid, spcname, spclocation, pg_get_userbyid(spcowner) as spcuser, spcacl FROM pg_tablespace ts\n")
         + restriction + wxT(" ORDER BY spcname"));
 
     if (tablespaces)
@@ -186,7 +191,8 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
             tablespace->iSetOwner(tablespaces->GetVal(wxT("spcuser")));
             tablespace->iSetLocation(tablespaces->GetVal(wxT("spclocation")));
             tablespace->iSetAcl(tablespaces->GetVal(wxT("spcacl")));
-            tablespace->iSetComment(tablespaces->GetVal(wxT("description")));
+            if (collection->GetConnection()->BackendMinimumVersion(8, 2))
+                tablespace->iSetComment(tablespaces->GetVal(wxT("description")));
 
             if (browser)
             {
