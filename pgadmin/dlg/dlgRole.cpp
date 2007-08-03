@@ -137,6 +137,7 @@ int dlgRole::Go(bool modal)
         chkCanLogin->SetValue(role->GetCanLogin());
         datValidUntil->SetValue(role->GetAccountExpires());
         timValidUntil->SetTime(role->GetAccountExpires());
+        txtComment->SetValue(role->GetComment());
 
         size_t index;
         for (index = 0 ; index < role->GetConfigList().GetCount() ; index++)
@@ -679,6 +680,7 @@ wxString dlgRole::GetSql()
         }
     }
 
+    AppendComment(sql, wxT("ROLE"), 0, role);
 
     return sql;
 }

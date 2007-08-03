@@ -117,6 +117,7 @@ wxString pgRole::GetSql(ctlTree *browser)
 
             sql += wxT(";\n");
         }
+        sql += GetCommentSql();
     }
     return sql;
 }
@@ -213,7 +214,8 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         expandedKids=true;
 
         pgSetIterator roles(GetConnection(),
-            wxT("SELECT rolname, admin_option\n")
+            wxT("SELECT rolname, admin_option,\n")
+            wxT("  pg_catalog.shobj_description(r.oid, 'pg_authid') AS description\n")
             wxT("  FROM pg_roles r\n")
             wxT("  JOIN pg_auth_members ON r.oid=roleid\n")
             wxT(" WHERE member=") + GetOidStr() + wxT("\n")
@@ -243,6 +245,7 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         properties->AppendItem(_("Create roles?"), BoolToYesNo(GetCreateRole()));
         properties->AppendItem(_("Update catalogs?"), BoolToYesNo(GetUpdateCatalog()));
         properties->AppendItem(_("Inherits?"), BoolToYesNo(GetInherits()));
+        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 
         wxString roleList;
 
@@ -289,7 +292,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
         tabname=wxT("pg_roles");
 
     pgSet *roles = collection->GetServer()->ExecuteSet(wxT(
-        "SELECT oid, * FROM ") + tabname + restriction + wxT(" ORDER BY rolname"));
+        "SELECT oid, *, pg_catalog.shobj_description(oid, 'pg_authid') AS description FROM ") + tabname + restriction + wxT(" ORDER BY rolname"));
 
     if (roles)
     {
@@ -309,6 +312,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             role->iSetUpdateCatalog(roles->GetBool(wxT("rolcatupdate")));
             role->iSetAccountExpires(roles->GetDateTime(wxT("rolvaliduntil")));
             role->iSetPassword(roles->GetVal(wxT("rolpassword")));
+            role->iSetComment(roles->GetVal(wxT("description")));
 
             wxString cfg=roles->GetVal(wxT("rolconfig"));
             if (!cfg.IsEmpty())
