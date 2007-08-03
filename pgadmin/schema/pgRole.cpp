@@ -117,7 +117,13 @@ wxString pgRole::GetSql(ctlTree *browser)
 
             sql += wxT(";\n");
         }
-        sql += GetCommentSql();
+
+        if (!GetComment().IsNull())
+        {
+            sql += wxT("COMMENT ON ROLE ") + GetQuotedFullIdentifier() + wxT(" IS ")
+                +  qtDbString(GetComment()) + wxT(";\n");
+        }
+
     }
     return sql;
 }
