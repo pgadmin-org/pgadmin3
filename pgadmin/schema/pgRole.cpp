@@ -218,14 +218,20 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
     if (!expandedKids)
     {
         expandedKids=true;
+        wxString rolesquery;
 
-        pgSetIterator roles(GetConnection(),
-            wxT("SELECT rolname, admin_option,\n")
-            wxT("  pg_catalog.shobj_description(r.oid, 'pg_authid') AS description\n")
-            wxT("  FROM pg_roles r\n")
-            wxT("  JOIN pg_auth_members ON r.oid=roleid\n")
-            wxT(" WHERE member=") + GetOidStr() + wxT("\n")
-            wxT(" ORDER BY rolname"));
+        if (GetConnection()->BackendMinimumVersion(8, 2))
+            rolesquery = wxT("SELECT rolname, admin_option,\n") 
+                         wxT(" pg_catalog.shobj_description(r.oid, 'pg_authid') AS description\n");
+        else
+            rolesquery = wxT("SELECT rolname, admin_option\n"); 
+
+        rolesquery += wxT("  FROM pg_roles r\n") 
+                      wxT("  JOIN pg_auth_members ON r.oid=roleid\n") 
+                      wxT(" WHERE member=") + GetOidStr() + wxT("\n") 
+                      wxT(" ORDER BY rolname");
+
+        pgSetIterator roles(GetConnection(), rolesquery);
 
         while (roles.RowsLeft())
         {
@@ -289,6 +295,7 @@ pgObject *pgRole::Refresh(ctlTree *browser, const wxTreeItemId item)
 pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     pgRole *role=0;
+    pgSet *roles=0;
 
     wxString tabname;
 
@@ -297,8 +304,12 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     else
         tabname=wxT("pg_roles");
 
-    pgSet *roles = collection->GetServer()->ExecuteSet(wxT(
-        "SELECT oid, *, pg_catalog.shobj_description(oid, 'pg_authid') AS description FROM ") + tabname + restriction + wxT(" ORDER BY rolname"));
+    if (collection->GetServer()->GetConnection()->BackendMinimumVersion(8, 2))
+        roles = collection->GetServer()->ExecuteSet(wxT("    SELECT oid, *, pg_catalog.shobj_description(oid, 'pg_authid') AS description FROM ") 
+              + tabname + restriction + wxT(" ORDER BY rolname"));
+    else
+        roles = collection->GetServer()->ExecuteSet(wxT("    SELECT oid, *, '' AS description FROM ") 
+             + tabname + restriction + wxT(" ORDER BY rolname"));
 
     if (roles)
     {
