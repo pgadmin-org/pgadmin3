@@ -375,7 +375,11 @@ void frmReport::OnOK(wxCommandEvent &ev)
 
     // Open the file in the default browser if required
     if (chkBrowser->GetValue())
+#ifdef __WXMSW__
+        wxLaunchDefaultBrowser(fn.GetFullPath());
+#else
         wxLaunchDefaultBrowser(wxT("file://") + fn.GetFullPath());
+#endif
 
     // Save the settings for next time round
     settings->Write(wxT("Reports/LastNotes"), txtNotes->GetValue());
