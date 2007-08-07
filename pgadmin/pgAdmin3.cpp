@@ -70,8 +70,6 @@
 #define I18N_DIR     wxT("/i18n")
 #define BRANDING_DIR wxT("/branding")
 
-#define HELPER_DIR  wxT("/helper")
-
 // Globals
 frmMain *winMain=0;
 wxThread *updateThread=0;
@@ -747,8 +745,8 @@ void pgAdmin3::InitPaths()
 #else
 #ifdef __WXMAC__
 
-            if (wxDir::Exists(dataDir + HELPER_DIR))
-            path.Add(dataDir + HELPER_DIR) ;
+            if (wxDir::Exists(dataDir))
+            path.Add(dataDir) ;
 
 #endif
 #endif
