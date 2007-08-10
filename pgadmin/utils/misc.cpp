@@ -1045,7 +1045,7 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
 
 	if (wxExecute(cmd + wxT(" --version"), output, 0) != 0)
     {
-        wxLogError(_("Failed to execute: %s --version"), cmd);
+        wxLogError(_("Failed to execute: %s --version"), cmd.c_str());
         return false;
     }
 
@@ -1091,7 +1091,7 @@ bool isPgApp(const wxString &app)
 
 	if (wxExecute(app + wxT(" --version"), output, 0) != 0)
     {
-        wxLogError(_("Failed to execute: %s --version"), app);
+        wxLogError(_("Failed to execute: %s --version"), app.c_str());
         return false;
     }
 
@@ -1110,7 +1110,7 @@ bool isEdbApp(const wxString &app)
 
 	if (wxExecute(app + wxT(" --version"), output, 0) != 0)
     {
-        wxLogError(_("Failed to execute: %s --version"), app);
+        wxLogError(_("Failed to execute: %s --version"), app.c_str());
         return false;
     }
 
