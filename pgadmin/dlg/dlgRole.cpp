@@ -359,9 +359,14 @@ void dlgRole::OnVarnameSelChange(wxCommandEvent &ev)
 {
     int sel=cbVarname->GuessSelection(ev);
 
-    if (sel >= 0)
+    SetupVarEditor(sel);
+}
+
+void dlgRole::SetupVarEditor(int var)
+{
+    if (var >= 0)
     {
-        wxStringTokenizer vals(varInfo.Item(sel));
+        wxStringTokenizer vals(varInfo.Item(var));
         wxString typ=vals.GetNextToken();
 
         if (typ == wxT("bool"))
@@ -381,7 +386,6 @@ void dlgRole::OnVarnameSelChange(wxCommandEvent &ev)
     }
 }
 
-
 void dlgRole::OnVarSelChange(wxListEvent &ev)
 {
     long pos=lstVariables->GetSelection();
@@ -389,8 +393,12 @@ void dlgRole::OnVarSelChange(wxListEvent &ev)
     {
         wxString value=lstVariables->GetText(pos, 1);
         cbVarname->SetValue(lstVariables->GetText(pos));
-        wxNotifyEvent nullev;
-        OnVarnameSelChange(nullev);
+
+
+        // We used to raise an OnVarnameSelChange() event here, but
+        // at this point the combo box hasn't necessarily updated.
+        int sel = cbVarname->FindString(lstVariables->GetText(pos));
+        SetupVarEditor(sel);
 
         txtValue->SetValue(value);
         chkValue->SetValue(value == wxT("on"));

@@ -98,7 +98,7 @@ int dlgDatabase::Go(bool modal)
     AddUsers(cbOwner);
 
 
-    if (connection->BackendMinimumVersion(7, 5))
+    if (connection->BackendMinimumVersion(8, 0))
     {
         stPath->SetLabel(_("Tablespace"));
         txtPath->Hide();
@@ -117,7 +117,7 @@ int dlgDatabase::Go(bool modal)
         // if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
 
-        if (!connection->BackendMinimumVersion(7, 5))
+        if (!connection->BackendMinimumVersion(8, 0))
             cbOwner->Disable();
 
         readOnly = !database->GetServer()->GetCreatePrivilege();
@@ -289,9 +289,14 @@ void dlgDatabase::OnVarnameSelChange(wxCommandEvent &ev)
 {
     int sel=cbVarname->GuessSelection(ev);
 
-    if (sel >= 0)
+    SetupVarEditor(sel);
+}
+
+void dlgDatabase::SetupVarEditor(int var)
+{
+    if (var >= 0)
     {
-        wxStringTokenizer vals(varInfo.Item(sel));
+        wxStringTokenizer vals(varInfo.Item(var));
         wxString typ=vals.GetNextToken();
 
         if (typ == wxT("bool"))
@@ -311,7 +316,6 @@ void dlgDatabase::OnVarnameSelChange(wxCommandEvent &ev)
     }
 }
 
-
 void dlgDatabase::OnVarSelChange(wxListEvent &ev)
 {
     long pos=lstVariables->GetSelection();
@@ -319,8 +323,11 @@ void dlgDatabase::OnVarSelChange(wxListEvent &ev)
     {
         wxString value=lstVariables->GetText(pos, 1);
         cbVarname->SetValue(lstVariables->GetText(pos));
-        wxNotifyEvent nullev;
-        OnVarnameSelChange(nullev);
+
+        // We used to raise an OnVarnameSelChange() event here, but
+        // at this point the combo box hasn't necessarily updated.
+        int sel = cbVarname->FindString(lstVariables->GetText(pos));
+        SetupVarEditor(sel);
 
         txtValue->SetValue(value);
         chkValue->SetValue(value == wxT("on"));

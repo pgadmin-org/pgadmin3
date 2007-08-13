@@ -45,6 +45,8 @@ private:
     void OnVarnameSelChange(wxCommandEvent &ev);
     void OnOK(wxCommandEvent &ev);
 
+    void SetupVarEditor(int var);
+
 	bool dirtyVars;
 
     DECLARE_EVENT_TABLE()

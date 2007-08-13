@@ -50,6 +50,8 @@ private:
     void OnVarnameSelChange(wxCommandEvent &ev);
     void OnChangePasswd(wxCommandEvent &ev);
 
+    void SetupVarEditor(int var);
+
     wxArrayString groupsIn;
 
     DECLARE_EVENT_TABLE()
