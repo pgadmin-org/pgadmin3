@@ -65,8 +65,6 @@ void slPath::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for path ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Server name"), GetName().BeforeFirst('\n'));

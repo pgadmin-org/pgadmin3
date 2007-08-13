@@ -67,8 +67,6 @@ void slListen::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for listen ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Origin"), GetOriginName());

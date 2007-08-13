@@ -111,8 +111,6 @@ void pgTablespace::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
     }
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for Tablespace ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());

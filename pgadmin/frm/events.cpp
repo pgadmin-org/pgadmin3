@@ -296,13 +296,10 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
     {
         if (factory == &serverFactory)
         {
-            StartMsg(_("Retrieving server properties"));
-
             server = (pgServer *)data;
 
             data->ShowTree(this, browser, props, sqlbox);
             showTree=false;
-            EndMsg();
         }
         else
             showTree=true;

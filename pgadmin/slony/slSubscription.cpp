@@ -112,8 +112,6 @@ void slSubscription::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for subscription ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Provider ID"), GetProviderId());

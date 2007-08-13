@@ -185,8 +185,6 @@ void slSet::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *propert
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for set ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());

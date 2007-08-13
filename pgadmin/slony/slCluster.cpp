@@ -280,8 +280,6 @@ void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for cluster ") + GetName());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());

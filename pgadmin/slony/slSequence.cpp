@@ -62,8 +62,6 @@ void slSequence::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for sequence ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());

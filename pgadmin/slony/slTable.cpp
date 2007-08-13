@@ -79,8 +79,6 @@ void slTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for replicated table ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());

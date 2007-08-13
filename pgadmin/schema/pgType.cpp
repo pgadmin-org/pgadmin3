@@ -153,8 +153,6 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for type %s"), GetIdentifier().c_str());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());

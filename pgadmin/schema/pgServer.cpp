@@ -830,22 +830,20 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                 if (settings->GetDisplayOption(_("Users/login roles")))
                     browser->AppendCollection(this, userFactory);
             }
+
+            autovacuumRunning=true;
+            pgSetIterator set(conn, 
+                wxT("SELECT setting FROM pg_settings\n")
+                wxT(" WHERE name IN ('autovacuum', 'stats_start_collector', 'stats_row_level')"));
+
+            while (autovacuumRunning && set.RowsLeft())
+                autovacuumRunning = set.GetBool(wxT("setting"));
         }
-
-        autovacuumRunning=true;
-        pgSetIterator set(conn, 
-            wxT("SELECT setting FROM pg_settings\n")
-            wxT(" WHERE name IN ('autovacuum', 'stats_start_collector', 'stats_row_level')"));
-
-        while (autovacuumRunning && set.RowsLeft())
-            autovacuumRunning = set.GetBool(wxT("setting"));
     }
 
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for server ") + GetIdentifier());
-
         // Add the properties view columns
         CreateListColumns(properties);
 

@@ -244,8 +244,6 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
     }
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for Role ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());

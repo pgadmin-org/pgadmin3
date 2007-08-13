@@ -79,8 +79,6 @@ void pgGroup::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for Group ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());

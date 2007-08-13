@@ -45,8 +45,6 @@ void pgCatalogObject::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
 
     if (properties)
     {
-        wxLogInfo(wxT("Displaying properties for Catalog ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());

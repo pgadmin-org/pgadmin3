@@ -201,11 +201,6 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 
     if (properties)
     {
-		if (GetMetaType() == PGM_CATALOG)
-			wxLogInfo(wxT("Displaying properties for schema ") + GetIdentifier());
-		else
-			wxLogInfo(wxT("Displaying properties for catalog ") + GetIdentifier());
-
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
