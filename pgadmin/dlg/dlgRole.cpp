@@ -200,6 +200,10 @@ int dlgRole::Go(bool modal)
         timValidUntil->Disable();
     }
 
+    // Role comments are only appropriate in 8.2+
+    if (!connection->BackendMinimumVersion(8, 2))
+        txtComment->Disable();
+
     if (!settings->GetShowUsersForPrivileges())
     {
         if (role)
