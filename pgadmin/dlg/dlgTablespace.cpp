@@ -72,6 +72,10 @@ int dlgTablespace::Go(bool modal)
     {
     }
 
+    // Tablespace comments are only appropriate in 8.2+
+    if (!connection->BackendMinimumVersion(8, 2))
+        txtComment->Disable();
+
     return dlgSecurityProperty::Go(modal);
 }
 

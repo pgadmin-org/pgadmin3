@@ -90,7 +90,8 @@ wxString pgTablespace::GetSql(ctlTree *browser)
         if (location.IsEmpty())
             sql += wxT("-- System Tablespace\n");
         else
-            sql += wxT("\n\nCREATE TABLESPACE ") + GetQuotedIdentifier()
+            sql += wxT("-- DROP TABLESPACE ") + GetQuotedIdentifier()
+                +  wxT("\n\nCREATE TABLESPACE ") + GetQuotedIdentifier()
                 +  wxT("\n  OWNER ") + qtIdent(GetOwner())
                 +  wxT("\n  LOCATION ") + qtDbString(location)
                 +  wxT(";\n");
