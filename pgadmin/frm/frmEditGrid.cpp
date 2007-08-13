@@ -237,7 +237,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
         relkind = 'r';
         hasOids = table->GetHasOids();
-        tableName = table->GetQuotedFullIdentifier();
+        tableName = table->GetSchema()->GetQuotedFullIdentifier() + wxT(".") + table->GetQuotedIdentifier();
         primaryKeyColNumbers = table->GetPrimaryKeyColNumbers();
         orderBy = table->GetQuotedPrimaryKey();
         if (orderBy.IsEmpty() && hasOids)
@@ -251,7 +251,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
         relkind = 'v';
         hasOids=false;
-        tableName=view->GetQuotedFullIdentifier();
+        tableName = view->GetSchema()->GetQuotedFullIdentifier() + wxT(".") + view->GetQuotedIdentifier();
     }
     else if (obj->GetMetaType() == PGM_CATALOGOBJECT)
     {
@@ -259,7 +259,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
         relkind = 'v';
         hasOids=false;
-        tableName=catobj->GetQuotedFullIdentifier();
+        tableName = catobj->GetSchema()->GetQuotedFullIdentifier() + wxT(".") + catobj->GetQuotedIdentifier();
     }
 }
 
