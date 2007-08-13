@@ -297,7 +297,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     toolBar->Realize();
 
     // Add the database selection bar
-    cbConnection = new ctlComboBoxFix(this, CTRLID_CONNECTION, wxDefaultPosition, wxSize(GetCharWidth()*30, -1), wxCB_READONLY|wxCB_DROPDOWN);
+    cbConnection = new ctlComboBoxFix(this, CTRLID_CONNECTION, wxDefaultPosition, wxSize(-1, -1), wxCB_READONLY|wxCB_DROPDOWN);
     cbConnection->Append(conn->GetName(), (void*)conn);
     cbConnection->Append(_("<new connection>"), (void*)0);
 
