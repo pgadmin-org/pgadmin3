@@ -6,6 +6,13 @@ pgAdmin III
 
 [DLG] Working with property dialog after the corresponding node is 
       refreshed crashes
+      
+[DLG] Working with objects in the default schema with the same names as ones in
+      pg_catalog is unlikely to work well. To fix this, we need a test in 
+      pgDatabase::GetSchemaPrefix to check whether the object in question fits
+      into this class. This is likely to be an expensive test in an oft-used
+      function, and will be invasive to fix as we'd need to pass the object 
+      name and type to the function from every call site.
 
 [FRM] Editing very large columns freezes (might be restricted to bytea) the
       edit grid
