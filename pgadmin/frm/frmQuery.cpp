@@ -1878,7 +1878,9 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
     }
 
     msgResult->AppendText(wxT("\n"));
+    msgResult->ShowPosition(0);
     msgHistory->AppendText(wxT("\n"));
+    msgHistory->ShowPosition(0);
 
     // If the transaction aborted for some reason, issue a rollback to cleanup.
     if (conn->GetTxStatus() == PGCONN_TXSTATUS_INERROR)
