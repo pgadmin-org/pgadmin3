@@ -92,7 +92,7 @@ wxString pgRole::GetSql(ctlTree *browser)
         sql +=wxT(";\n");
 
         if (GetUpdateCatalog())
-            sql += wxT("UPDATE pg_authid SET rolcatupdate=true WHERE OID=") + GetOidStr() + wxT(";\n");
+            sql += wxT("UPDATE pg_authid SET rolcatupdate=true WHERE rolname=") + qtDbString(GetIdentifier()) + wxT(";\n");
 
         size_t index;
         for (index=0 ; index < configList.GetCount() ; index++)
