@@ -1208,7 +1208,9 @@ void frmQuery::OnClose(wxCloseEvent& event)
 
 void frmQuery::OnChangeStc(wxStyledTextEvent& event)
 {
-    if (!changed)
+	// The STC seems to fire this event even if it loses focus. Fortunately,
+	// that seems to be m_modificationType == 512.
+    if (!changed && event.m_modificationType != 512)
     {
         changed=true;
         setExtendedTitle();
