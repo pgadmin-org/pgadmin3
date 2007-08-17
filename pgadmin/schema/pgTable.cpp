@@ -931,11 +931,15 @@ countRowsFactory::countRowsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar
 
 wxWindow *countRowsFactory::StartDialog(frmMain *form, pgObject *obj)
 {
+    form->StartMsg(_("Counting rows"));
+
     ((pgTable*)obj)->UpdateRows();
     
     wxTreeItemId item=form->GetBrowser()->GetSelection();
     if (obj == form->GetBrowser()->GetObject(item))
         obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+
+    form->EndMsg();
 
     return 0;
 }
