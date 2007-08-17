@@ -679,8 +679,8 @@ wxString dlgRole::GetSql()
         }
         sql += wxT(";\n");
 
-        if (chkUpdateCat->GetValue())
-            sql += wxT("UPDATE pg_authid SET rolcatupdate=true WHERE rolname=") + qtDbString(name) + wxT(";\n");
+        if (superuser && !chkUpdateCat->GetValue())
+            sql += wxT("UPDATE pg_authid SET rolcatupdate=false WHERE rolname=") + qtDbString(name) + wxT(";\n");
 
         cnt=lstVariables->GetItemCount();
         for (pos=0 ; pos < cnt ; pos++)

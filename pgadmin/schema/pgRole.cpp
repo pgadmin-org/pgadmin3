@@ -91,8 +91,8 @@ wxString pgRole::GetSql(ctlTree *browser)
         AppendIfFilled(sql, wxT(" VALID UNTIL "), qtDbString(DateToAnsiStr(GetAccountExpires())));
         sql +=wxT(";\n");
 
-        if (GetUpdateCatalog())
-            sql += wxT("UPDATE pg_authid SET rolcatupdate=true WHERE rolname=") + qtDbString(GetIdentifier()) + wxT(";\n");
+        if (this->GetSuperuser() && !GetUpdateCatalog())
+            sql += wxT("UPDATE pg_authid SET rolcatupdate=false WHERE rolname=") + qtDbString(GetIdentifier()) + wxT(";\n");
 
         size_t index;
         for (index=0 ; index < configList.GetCount() ; index++)
