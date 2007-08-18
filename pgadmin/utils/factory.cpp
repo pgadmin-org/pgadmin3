@@ -317,7 +317,7 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 					if (!menuItem->IsSubMenu())
 					{
 						lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
-						if (menuItem->IsChecked())
+						if (menuItem->IsCheckable() && menuItem->IsChecked())
 							treeContextMenu->FindItem(id)->Check();
 					}
 					else
@@ -335,7 +335,7 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 							if (oldMenuItem->IsEnabled())
 							{
 								newSubMenu->Append(oldMenuItem->GetId(), oldMenuItem->GetLabel(), oldMenuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
-								if (oldMenuItem->IsChecked())
+								if (oldMenuItem->IsCheckable() && oldMenuItem->IsChecked())
 									newSubMenu->FindItem(oldMenuItem->GetId())->Check();
 
 								itemCount++;
@@ -350,7 +350,7 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 							if (itemCount)
 							{
 								lastItem = treeContextMenu->Append(singleMenuItem->GetId(), singleMenuItem->GetLabel(), singleMenuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
-								if (singleMenuItem->IsChecked())
+								if (singleMenuItem->IsCheckable() && singleMenuItem->IsChecked())
 									treeContextMenu->FindItem(singleMenuItem->GetId())->Check();
 							}
 						}
