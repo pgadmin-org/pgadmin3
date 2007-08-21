@@ -150,8 +150,11 @@ void frmGrantWizard::AddObjects(pgCollection *collection)
                 AddObjects((pgCollection*)obj);
             else
             {
-                objectArray.Add(obj);
-                chkList->Append(obj->GetTypeName() + wxT(" ") + obj->GetFullIdentifier()); // no translation!
+				if (obj->CanEdit())
+				{
+					objectArray.Add(obj);
+					chkList->Append(obj->GetTypeName() + wxT(" ") + obj->GetFullIdentifier()); // no translation!
+				}
             }
         }
         item=mainForm->GetBrowser()->GetNextChild(collection->GetId(), cookie);
@@ -292,12 +295,16 @@ bool grantWizardFactory::CheckEnable(pgObject *obj)
     {
         switch (obj->GetMetaType())
         {
-            case PGM_SCHEMA:
             case PGM_TABLE:
             case PGM_FUNCTION:
             case PGM_SEQUENCE:
             case PGM_VIEW:
-                return obj->CanEdit();
+				if (obj->IsCollection() && obj->GetSchema()->GetMetaType() != PGM_CATALOG)
+					return obj->GetSchema()->CanEdit();
+				break;
+
+			case PGM_SCHEMA:
+					return obj->CanEdit();
             default:
                 break;
         }
