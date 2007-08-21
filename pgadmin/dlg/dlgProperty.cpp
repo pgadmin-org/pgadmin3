@@ -94,6 +94,8 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
     database=0;
     connection=0;
     factory=f;
+    item = NULL;
+    tblitem = NULL;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(frame, resName);
 
@@ -564,7 +566,7 @@ void dlgProperty::ShowObject()
             mainForm->GetSqlPane()->SetReadOnly(true);
         }
     }
-    else
+    else if (item)
     {
         wxTreeItemId collectionItem=item;
 
@@ -576,6 +578,21 @@ void dlgProperty::ShowObject()
             collectionItem=mainForm->GetBrowser()->GetItemParent(collectionItem);
         }
     }
+    else if (tblitem)
+    {
+        pgObject *obj = mainForm->GetBrowser()->GetObject(tblitem); 
+
+        if (obj) 
+            mainForm->Refresh(obj);
+    }
+    else // Brute force update the current item
+    {
+        pgObject *obj = mainForm->GetBrowser()->GetObject(mainForm->GetBrowser()->GetSelection()); 
+
+        if (obj) 
+            mainForm->Refresh(obj);
+    }
+
 }
 
 
@@ -721,6 +738,9 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
     }
     else
         item=node->GetId();
+
+    if (!item && (node->GetMetaType() == PGM_TABLE || node->GetMetaType() == PGM_VIEW))
+        tblitem=node->GetId();
 }
 
 
