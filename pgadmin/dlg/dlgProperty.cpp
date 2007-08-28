@@ -578,16 +578,18 @@ void dlgProperty::ShowObject()
             collectionItem=mainForm->GetBrowser()->GetItemParent(collectionItem);
         }
     }
-    else if (tblitem)
+    else // Brute force update the current item
     {
-        pgObject *obj = mainForm->GetBrowser()->GetObject(tblitem); 
+        pgObject *obj = mainForm->GetBrowser()->GetObject(mainForm->GetBrowser()->GetSelection()); 
 
         if (obj) 
             mainForm->Refresh(obj);
     }
-    else // Brute force update the current item
+
+    // We might have a table to refresh as well:
+    if (tblitem)
     {
-        pgObject *obj = mainForm->GetBrowser()->GetObject(mainForm->GetBrowser()->GetSelection()); 
+        pgObject *obj = mainForm->GetBrowser()->GetObject(tblitem); 
 
         if (obj) 
             mainForm->Refresh(obj);
@@ -739,8 +741,16 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
     else
         item=node->GetId();
 
+    // Additional hacks to get the table to refresh when modifying sub-objects
     if (!item && (node->GetMetaType() == PGM_TABLE || node->GetMetaType() == PGM_VIEW))
         tblitem=node->GetId();
+
+    if (node->GetMetaType() == PGM_COLUMN || 
+        node->GetMetaType() == PGM_CONSTRAINT ||
+        node->GetMetaType() == PGM_FOREIGNKEY ||
+        node->GetMetaType() == PGM_INDEX ||
+        node->GetMetaType() == PGM_TRIGGER)
+        tblitem=node->GetTable()->GetId();
 }
 
 
