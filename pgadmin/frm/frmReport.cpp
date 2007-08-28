@@ -468,7 +468,7 @@ void frmReport::OnBrowseFile(wxCommandEvent &ev)
     if (rbHtml->GetValue())
     {
         wxFileDialog file(this, _("Select output filename"), wxGetHomeDir(), txtHtmlFile->GetValue(),
-            _("HTML files (*.html)|*.html|All files (*.*)|*.*"), wxFD_SAVE && wxFD_OVERWRITE_PROMPT);
+            _("HTML files (*.html)|*.html|All files (*.*)|*.*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
         if (file.ShowModal() == wxID_OK)
         {
@@ -479,7 +479,7 @@ void frmReport::OnBrowseFile(wxCommandEvent &ev)
     else
     {
         wxFileDialog file(this, _("Select output filename"), wxGetHomeDir(), txtXmlFile->GetValue(),
-            _("XML files (*.xml)|*.xml|All files (*.*)|*.*"), wxFD_SAVE && wxFD_OVERWRITE_PROMPT);
+            _("XML files (*.xml)|*.xml|All files (*.*)|*.*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
         if (file.ShowModal() == wxID_OK)
         {
