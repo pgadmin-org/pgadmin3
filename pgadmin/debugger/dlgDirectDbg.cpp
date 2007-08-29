@@ -287,7 +287,7 @@ void dlgDirectDbg::populateParamGrid( )
         activateDebugger();
     }
     else
-        this->Show(true);
+        this->ShowModal();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
