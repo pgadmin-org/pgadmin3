@@ -535,18 +535,6 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
 
     switch (keycode)
     {
-#if 0
-        // the control will catch these :-(
-        case WXK_UP:
-            OnSave(ev);
-            if (currow)
-                sqlGrid->SetGridCursor(currow-1, curcol);
-            return;
-        case WXK_DOWN:
-            OnSave(ev);
-            sqlGrid->SetGridCursor(currow+1, curcol);
-            return;
-#endif
         case WXK_DELETE:
         {
 			if (editorCell->IsSet() || !toolBar->GetToolEnabled(MNU_DELETE))
@@ -772,6 +760,13 @@ int ArrayCmp(T *a, T *b)
 
 void frmEditGrid::OnDelete(wxCommandEvent& event)
 {
+    // Don't bugger about with keypresses to the scratch pad.
+    if (FindFocus() == scratchPad)
+	{
+	    event.Skip();
+		return;
+	}
+	
     if (editorCell->IsSet())
     {
         if (sqlGrid->GetTable()->IsColBoolean(sqlGrid->GetGridCursorCol()))
