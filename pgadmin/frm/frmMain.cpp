@@ -454,10 +454,16 @@ void frmMain::Refresh(pgObject *data)
     browser->Freeze();
 
     wxTreeItemId currentItem=data->GetId();
+
+    // Scan the child nodes and make a list of those that are expanded
+    // This is not an exact science as node names may change etc.
+    wxArrayString expandedNodes;
+    GetExpandedChildNodes(currentItem, expandedNodes);
+
+
     browser->DeleteChildren(currentItem);
 
 	// refresh information about the object
-
     data->SetDirty();
     
     pgObject *newData = data->Refresh(browser, currentItem);
@@ -490,11 +496,65 @@ void frmMain::Refresh(pgObject *data)
         }
     }
     if (currentItem)
+    {
         execSelChange(currentItem, currentItem == browser->GetSelection());
+
+        // Attempt to expand any child nodes that were previously expanded
+        ExpandChildNodes(currentItem, expandedNodes);
+    }
+
     browser->Thaw();
     EndMsg(done);
 }
 
+void frmMain::GetExpandedChildNodes(wxTreeItemId node, wxArrayString &expandedNodes)
+{
+    wxTreeItemIdValue cookie;
+    wxTreeItemId child = browser->GetFirstChild(node, cookie);
+
+    while (child.IsOk())
+    {
+        if (browser->IsExpanded(child))
+        {
+            GetExpandedChildNodes(child, expandedNodes);
+            expandedNodes.Add(GetNodePath(child));
+        }
+
+        child = browser->GetNextChild(node, cookie);
+    }
+}
+
+void frmMain::ExpandChildNodes(wxTreeItemId node, wxArrayString &expandedNodes)
+{
+    wxTreeItemIdValue cookie;
+    wxTreeItemId child = browser->GetFirstChild(node, cookie);
+
+    while (child.IsOk())
+    {
+        if (expandedNodes.Index(GetNodePath(child)) != wxNOT_FOUND)
+        {
+            browser->Expand(child);
+            ExpandChildNodes(child, expandedNodes);
+        }
+
+        child = browser->GetNextChild(node, cookie);
+    }
+}
+
+wxString frmMain::GetNodePath(wxTreeItemId node)
+{
+    wxString path;
+    path = browser->GetItemText(node).BeforeFirst('(');
+
+    wxTreeItemId parent = browser->GetItemParent(node);
+    while (parent.IsOk())
+    {
+        path = browser->GetItemText(parent).BeforeFirst('(') + wxT("/") + path;
+        parent = browser->GetItemParent(parent);
+    }
+
+    return path;
+}
 
 void frmMain::ShowObjStatistics(pgObject *data, int sel)
 {

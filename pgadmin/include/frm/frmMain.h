@@ -153,6 +153,10 @@ private:
     bool reportError(const wxString &error, const wxString &msgToIdentify, const wxString &hint);
     wxTreeItemId RestoreEnvironment(pgServer *server);
 
+    void GetExpandedChildNodes(wxTreeItemId node, wxArrayString &expandedNodes);
+    void ExpandChildNodes(wxTreeItemId node, wxArrayString &expandedNodes);
+    wxString GetNodePath(wxTreeItemId node);
+
     DECLARE_EVENT_TABLE()
 };
 
