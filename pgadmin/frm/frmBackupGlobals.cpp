@@ -222,7 +222,7 @@ bool backupGlobalsFactory::CheckEnable(pgObject *obj)
 		if (!((pgServer *)obj)->GetConnected())
 			return false;
 
-    if (obj->GetConnection()->EdbMinimumVersion(8, 0))
+    if (obj->GetConnection() && obj->GetConnection()->EdbMinimumVersion(8, 0))
         return obj->CanBackupGlobals() && !edbBackupExecutable.IsEmpty() && pgAppMinimumVersion(edbBackupExecutable, 8, 3);
     else
         return obj->CanBackupGlobals() && !pgBackupExecutable.IsEmpty() && pgAppMinimumVersion(pgBackupExecutable, 8, 3);

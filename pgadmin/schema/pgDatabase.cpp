@@ -56,7 +56,7 @@ wxMenu *pgDatabase::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();
 
-    if (GetCreatePrivilege())
+    if (GetConnection() && GetCreatePrivilege())
     {
         if (settings->GetDisplayOption(_("Casts")))
             castFactory.AppendMenu(menu);

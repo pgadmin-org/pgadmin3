@@ -490,7 +490,7 @@ bool restoreFactory::CheckEnable(pgObject *obj)
     if (!obj)
         return false;
 
-    if (obj->GetServer() && obj->GetServer()->GetConnected() && obj->GetConnection()->EdbMinimumVersion(8, 0))
+    if (obj->GetConnection() && obj->GetConnection()->EdbMinimumVersion(8, 0))
         return obj->CanCreate() && obj->CanRestore() && !edbRestoreExecutable.IsEmpty();
     else
         return obj->CanCreate() && obj->CanRestore() && !pgRestoreExecutable.IsEmpty();

@@ -1504,7 +1504,7 @@ wxWindow *propertyFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool propertyFactory::CheckEnable(pgObject *obj)
 {
-    return obj && obj->CanEdit();
+    return obj && ((obj->GetMetaType() == PGM_DATABASE) ? (bool)obj->GetConnection() : true) && obj->CanEdit();
 }
 
 
