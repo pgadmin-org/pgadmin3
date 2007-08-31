@@ -539,6 +539,15 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 
 void dlgProperty::ShowObject()
 {
+    // We might have a table refresh as well:
+    if (tblitem)
+    {
+        pgObject *obj = mainForm->GetBrowser()->GetObject(tblitem); 
+
+        if (obj) 
+            mainForm->Refresh(obj);
+    }
+
     pgObject *data=GetObject();
     if (data)
     {
@@ -585,16 +594,6 @@ void dlgProperty::ShowObject()
         if (obj) 
             mainForm->Refresh(obj);
     }
-
-    // We might have a table to refresh as well:
-    if (tblitem)
-    {
-        pgObject *obj = mainForm->GetBrowser()->GetObject(tblitem); 
-
-        if (obj) 
-            mainForm->Refresh(obj);
-    }
-
 }
 
 
@@ -749,7 +748,9 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
         node->GetMetaType() == PGM_CONSTRAINT ||
         node->GetMetaType() == PGM_FOREIGNKEY ||
         node->GetMetaType() == PGM_INDEX ||
-        node->GetMetaType() == PGM_TRIGGER)
+        node->GetMetaType() == PGM_TRIGGER ||
+        node->GetMetaType() == PGM_PRIMARYKEY ||
+        node->GetMetaType() == PGM_CHECK)
         tblitem=node->GetTable()->GetId();
 }
 

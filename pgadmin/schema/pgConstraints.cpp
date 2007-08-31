@@ -70,6 +70,7 @@ void pgConstraintCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctl
 pgConstraintFactory::pgConstraintFactory() 
 : pgTableObjFactory(__("Constraint"), 0, 0, 0)
 {
+    metaType = PGM_CONSTRAINT;
 }
 
 pgCollection *pgConstraintFactory::CreateCollection(pgObject *obj)
