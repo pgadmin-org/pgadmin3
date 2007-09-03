@@ -155,7 +155,7 @@ void pgTable::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
 
 wxString pgTable::GetSql(ctlTree *browser)
 {
-	wxString colDetails;
+	wxString colDetails, conDetails;
     wxString prevComment;
 
     if (sql.IsNull())
@@ -229,6 +229,10 @@ wxString pgTable::GetSql(ctlTree *browser)
                     + wxT(" ") ;
 
                 prevComment = data->GetComment();
+                if (!data->GetComment().IsEmpty())
+                    conDetails += wxT("COMMENT ON CONSTRAINT ") + data->GetQuotedIdentifier() + 
+                                  wxT(" ON ") + GetQuotedFullIdentifier() + 
+                                  wxT(" IS ") + qtDbString(data->GetComment()) + wxT(";\n");
             
                 switch (data->GetMetaType())
                 {
@@ -285,8 +289,12 @@ wxString pgTable::GetSql(ctlTree *browser)
 
         sql += GetCommentSql();
 
-		// Column comments
-		sql += colDetails + wxT("\n");
+		// Column/constraint comments
+        if (!colDetails.IsEmpty())
+		    sql += colDetails + wxT("\n");
+
+        if (!conDetails.IsEmpty())
+            sql += conDetails + wxT("\n");
 
         AppendStuff(sql, browser, indexFactory);
         AppendStuff(sql, browser, ruleFactory);
