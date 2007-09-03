@@ -352,7 +352,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
                     wxT("  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n");
     }
     query = wxT("SELECT DISTINCT ON(cls.relname) cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
-        wxT("       ") + proname + wxT("tab.relname as tabname, indclass, con.oid AS conoid, CASE contype WHEN 'p' THEN desp.description ELSE des.description END AS description,\n")
+        wxT("       ") + proname + wxT("tab.relname as tabname, indclass, con.oid AS conoid, CASE contype WHEN 'p' THEN desp.description WHEN 'u' THEN desp.description ELSE des.description END AS description,\n")
         wxT("       pg_get_expr(indpred, indrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as indconstraint, contype, condeferrable, condeferred, amname\n");
     if (collection->GetConnection()->BackendMinimumVersion(8, 2))
         query += wxT(", substring(array_to_string(cls.reloptions, ',') from 'fillfactor=([0-9]*)') AS fillfactor \n");
