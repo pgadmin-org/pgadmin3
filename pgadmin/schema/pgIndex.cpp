@@ -453,6 +453,7 @@ pgObject *pgIndexFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 pgIndexFactory::pgIndexFactory()
 : pgIndexBaseFactory(__("Index"), __("New Index..."), __("Create a new Index."), index_xpm)
 {
+    metaType = PGM_INDEX;
 }
 
 

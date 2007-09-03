@@ -517,6 +517,19 @@ void frmMain::ExecDrop(bool cascaded)
     wxTreeItemId item=browser->GetSelection();
     pgCollection *collection = (pgCollection*)browser->GetObject(item);
 
+    // Get any table object for later update
+    wxTreeItemId tblitem;
+    pgObject *node = (pgObject*)browser->GetObject(item);
+
+    if (node->GetMetaType() == PGM_COLUMN || 
+        node->GetMetaType() == PGM_CONSTRAINT ||
+        node->GetMetaType() == PGM_FOREIGNKEY ||
+        node->GetMetaType() == PGM_INDEX ||
+        node->GetMetaType() == PGM_TRIGGER ||
+        node->GetMetaType() == PGM_PRIMARYKEY ||
+        node->GetMetaType() == PGM_CHECK)
+        tblitem=node->GetTable()->GetId();
+
     if (collection == currentObject)
         dropSingleObject(currentObject, true, cascaded);
     else
@@ -588,6 +601,10 @@ void frmMain::ExecDrop(bool cascaded)
             }
         }
     }
+
+    // If the collection has a table, refresh that as well.
+    if (tblitem)
+        Refresh(browser->GetObject(tblitem));
 }
 
 
