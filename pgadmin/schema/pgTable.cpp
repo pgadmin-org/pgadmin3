@@ -135,10 +135,12 @@ bool pgTable::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 
 void pgTable::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
 {
+    wxString tmp;
+
     pgCollection *collection=browser->FindCollection(factory, GetId());
     if (collection)
     {
-		sql += wxT("\n");
+		tmp += wxT("\n");
         collection->ShowTreeDetail(browser);
 
         treeObjectIterator idxIt(browser, collection);
@@ -147,9 +149,12 @@ void pgTable::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
         {
             obj->ShowTreeDetail(browser);
 
-            sql += obj->GetSql(browser) + wxT("\n");
+            tmp += obj->GetSql(browser) + wxT("\n");
         }
     }
+
+    if (!tmp.IsEmpty() && tmp != wxT("\n"))
+        sql += tmp;
 }
 
 
