@@ -185,7 +185,7 @@ void dlgForeignKey::CheckChange()
     else
     {
         bool enable=true;
-        txtComment->Enable(name.IsEmpty());
+        txtComment->Enable(!name.IsEmpty());
         CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
         CheckValid(enable, !chkAutoIndex->GetValue() || !txtIndexName->GetValue().IsEmpty(),
             _("Please specify FK index name."));

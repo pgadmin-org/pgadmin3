@@ -539,15 +539,6 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 
 void dlgProperty::ShowObject()
 {
-    // We might have a table refresh as well:
-    if (tblitem)
-    {
-        pgObject *obj = mainForm->GetBrowser()->GetObject(tblitem); 
-
-        if (obj) 
-            mainForm->Refresh(obj);
-    }
-
     pgObject *data=GetObject();
     if (data)
     {
@@ -589,10 +580,19 @@ void dlgProperty::ShowObject()
     }
     else // Brute force update the current item
     {
-        pgObject *obj = mainForm->GetBrowser()->GetObject(mainForm->GetBrowser()->GetSelection()); 
+        pgObject *currobj = mainForm->GetBrowser()->GetObject(mainForm->GetBrowser()->GetSelection()); 
 
-        if (obj) 
-            mainForm->Refresh(obj);
+        if (currobj) 
+            mainForm->Refresh(currobj);
+    }
+
+    // We might have a table refresh as well:
+    if (tblitem)
+    {
+        pgObject *tblobj = mainForm->GetBrowser()->GetObject(tblitem); 
+
+        if (tblobj) 
+            mainForm->Refresh(tblobj);
     }
 }
 
