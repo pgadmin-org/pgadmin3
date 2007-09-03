@@ -159,14 +159,14 @@ wxString dlgTrigger::GetSql()
     }
 
     if (!trigger ||
-        txtBody->GetText() != trigger->GetSource() ||
+        (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")) && txtBody->GetText() != trigger->GetSource()) ||
         chkRow->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_ROW) ||
         chkInsert->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_INSERT ? true : false) ||
         chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||
         chkDelete->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_DELETE ? true : false) ||
         rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1))
     {
-        if (trigger || cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
+        if (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
             sql += wxT("CREATE OR REPLACE TRIGGER ") + qtIdent(name);
         else
             sql += wxT("CREATE TRIGGER ") + qtIdent(name);
