@@ -426,8 +426,11 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("ACL"), GetAcl());
         if (!GetPath().IsEmpty())
             properties->AppendItem(_("Path"), GetPath());
-        if (!tablespace.IsEmpty())
+        if (GetConnection()->BackendMinimumVersion(8, 0))
+        {
             properties->AppendItem(_("Tablespace"), GetTablespace());
+            properties->AppendItem(_("Default tablespace"), GetDefaultTablespace());
+        }
         properties->AppendItem(_("Encoding"), GetEncoding());
 
         if (!defaultSchema.IsEmpty())
@@ -487,8 +490,9 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     if (collection->GetConnection()->BackendMinimumVersion(7, 5))
         databases = collection->GetServer()->ExecuteSet(
            wxT("SELECT db.oid, datname, spcname, datallowconn, datconfig, datacl, ")
-                  wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
-                  wxT("has_database_privilege(db.oid, 'CREATE') as cancreate\n")
+           wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
+           wxT("has_database_privilege(db.oid, 'CREATE') as cancreate, \n")
+           wxT("(select setting AS default_tablespace from pg_show_all_settings() x(name text, setting text, unit text, category text, short_desc text, extra_desc text, context text, vartype text, source text, min_val text, max_val text) where name = 'default_tablespace') AS default_tablespace\n")
            wxT("  FROM pg_database db\n")
            wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
            + restr +
@@ -519,8 +523,14 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
                 FillArray(database->GetVariables(), str.Mid(1, str.Length()-2));
             database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));
 
-            if (collection->GetConnection()->BackendMinimumVersion(7, 5))
+            if (collection->GetConnection()->BackendMinimumVersion(8, 0))
+            {
                 database->iSetTablespace(databases->GetVal(wxT("spcname")));
+                if (databases->GetVal(wxT("default_tablespace")) == wxEmptyString)
+                    database->iSetDefaultTablespace(databases->GetVal(wxT("spcname")));
+                else
+                    database->iSetDefaultTablespace(databases->GetVal(wxT("default_tablespace")));
+            }
             else
                 database->iSetPath(databases->GetVal(wxT("datpath")));
 

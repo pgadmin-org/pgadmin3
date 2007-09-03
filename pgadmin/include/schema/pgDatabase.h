@@ -59,6 +59,8 @@ public:
     void iSetPath(const wxString& newVal) { path = newVal; }
     wxString GetTablespace() const { return tablespace; };
     void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
+    wxString GetDefaultTablespace() const { return defaultTablespace; };
+    void iSetDefaultTablespace(const wxString& newVal) { defaultTablespace = newVal; }
     wxString GetEncoding() const { return encoding; }
     void iSetEncoding(const wxString& newVal) { encoding = newVal; }
     wxString GetSchemaRestriction() { return schemaRestriction; }
@@ -107,7 +109,7 @@ private:
     pgConn *conn;
     bool connected;
     bool useServerConnection;
-    wxString searchPath, path, tablespace, encoding;
+    wxString searchPath, path, tablespace, defaultTablespace, encoding;
     wxString prettyOption, defaultSchema;
     bool allowConnections, createPrivilege;
     long missingFKs;

@@ -439,19 +439,17 @@ void dlgProperty::PrepareTablespace(ctlComboBoxFix *cb, const wxChar *current)
 {
     wxASSERT(cb != 0);
 
-    if (connection->BackendMinimumVersion(7, 5))
+    if (connection->BackendMinimumVersion(8, 0))
     {
         if (current)
         {
-            cb->Append(current);
-            cb->SetSelection(0);
-            cb->Disable();
+            FillCombobox(wxT("SELECT spcname FROM pg_tablespace WHERE spcname <> 'pg_global' ORDER BY spcname"), cb);
+            cb->SetSelection(cb->FindString(current));
         }
         else
         {
-            cb->Append(wxEmptyString);
-            FillCombobox(wxT("SELECT spcname FROM pg_tablespace WHERE spcname <> 'global' ORDER BY spcname"), cb);
-            cb->SetSelection(0);
+            FillCombobox(wxT("SELECT spcname FROM pg_tablespace WHERE spcname <> 'pg_global' ORDER BY spcname"), cb);
+            cb->SetSelection(cb->FindString(database->GetDefaultTablespace()));
         }
     }
     else

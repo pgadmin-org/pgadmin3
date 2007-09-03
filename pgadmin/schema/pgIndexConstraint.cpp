@@ -93,6 +93,8 @@ void pgIndexConstraint::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListV
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetConstraintOid());
         properties->AppendItem(_("Index OID"), GetOid());
+        if (GetConnection()->BackendMinimumVersion(8, 0))
+            properties->AppendItem(_("Tablespace"), GetTablespace());
         if (GetProcName().IsNull())
             properties->AppendItem(_("Columns"), GetColumns());
         else

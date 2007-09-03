@@ -179,7 +179,8 @@ void dlgIndexBase::CheckChange()
 {
     if (index)
     {
-        EnableOK(txtComment->GetValue() != index->GetComment());
+        EnableOK(txtComment->GetValue() != index->GetComment() ||
+                 cbTablespace->GetValue() != index->GetTablespace());
     }
     else
     {
@@ -231,7 +232,10 @@ void dlgIndex::CheckChange()
             fill = txtFillFactor->GetValue() != index->GetFillFactor();
         }
 
-        EnableOK(fill || txtComment->GetValue() != index->GetComment() || chkClustered->GetValue() != index->GetIsClustered());
+        EnableOK(fill || 
+                 txtComment->GetValue() != index->GetComment() || 
+                 chkClustered->GetValue() != index->GetIsClustered() ||
+                 cbTablespace->GetValue() != index->GetTablespace());
     }
     else
     {
@@ -324,6 +328,13 @@ wxString dlgIndex::GetSql()
 
             AppendIfFilled(sql, wxT(" WHERE "), txtWhere->GetValue());
             sql +=  wxT(";\n");
+        }
+        else
+        {
+            if (cbTablespace->GetValue() != index->GetTablespace())
+                sql += wxT("ALTER INDEX ") + index->GetQuotedSchemaPrefix(index->GetSchema()->GetName()) + qtIdent(name) 
+                    +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+                    + wxT(";\n");
         }
         if (connection->BackendMinimumVersion(7, 4))
         {

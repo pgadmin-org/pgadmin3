@@ -596,12 +596,9 @@ wxString dlgTable::GetSql()
                 +  wxT(" SET WITHOUT OIDS;\n");
         }
         if (cbTablespace->GetValue() != table->GetTablespace())
-        {
-            if (cbTablespace->GetCurrentSelection() > 0)
-                sql += wxT("ALTER TABLE ") + tabname 
-                    +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
-                    + wxT(";\n");
-        }
+            sql += wxT("ALTER TABLE ") + tabname 
+                +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+                + wxT(";\n");
 
         if (connection->BackendMinimumVersion(8,1))
         {

@@ -122,6 +122,22 @@ wxString dlgIndexConstraint::GetSql()
 
         sql +=wxT(" ") + wxString(factory->GetTypeName()).Upper() + wxT(" ") + GetDefinition()
             + wxT(";\n");
+
+        if (cbTablespace->GetValue() != table->GetDatabase()->GetDefaultTablespace())
+        {
+            sql += wxT("ALTER INDEX ") + index->GetQuotedSchemaPrefix(table->GetSchema()->GetName()) + qtIdent(name) 
+                +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+                + wxT(";\n");
+        }
+    }
+    else
+    {
+        if (cbTablespace->GetValue() != index->GetTablespace())
+        {
+            sql += wxT("ALTER INDEX ") + index->GetQuotedSchemaPrefix(index->GetSchema()->GetName()) + qtIdent(name) 
+                +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+                + wxT(";\n");
+        }
     }
 
     if (!name.IsEmpty())

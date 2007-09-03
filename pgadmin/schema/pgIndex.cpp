@@ -209,7 +209,7 @@ void pgIndexBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
-        if (!tablespace.IsEmpty())
+        if (GetConnection()->BackendMinimumVersion(8, 0))
             properties->AppendItem(_("Tablespace"), tablespace);
         if (!GetProcName().IsNull())
             properties->AppendItem(_("Procedure "), GetSchemaPrefix(GetProcNamespace())+GetProcName()+wxT("(")+GetTypedColumns()+wxT(")"));
@@ -405,8 +405,14 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
             if (collection->GetConnection()->BackendMinimumVersion(7, 4))
             {
                 index->iSetColumnCount(indexes->GetLong(wxT("indnatts")));
-                if (collection->GetConnection()->BackendMinimumVersion(7, 5))
-                    index->iSetTablespace(indexes->GetVal(wxT("spcname")));
+                if (collection->GetConnection()->BackendMinimumVersion(8, 0))
+                {
+                    if (indexes->GetVal(wxT("spcname")) == wxEmptyString)
+                        index->iSetTablespace(collection->GetDatabase()->GetTablespace());
+                    else
+                        index->iSetTablespace(indexes->GetVal(wxT("spcname")));
+                }
+
             }
             else
             {

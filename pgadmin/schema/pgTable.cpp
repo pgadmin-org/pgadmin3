@@ -554,7 +554,7 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
-        if (!tablespace.IsEmpty())
+        if (GetConnection()->BackendMinimumVersion(8, 0))
             properties->AppendItem(_("Tablespace"), tablespace);
         properties->AppendItem(_("ACL"), GetAcl());
         if (GetPrimaryKey().IsNull())
@@ -867,8 +867,13 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             table->iSetOid(tables->GetOid(wxT("oid")));
             table->iSetOwner(tables->GetVal(wxT("relowner")));
             table->iSetAcl(tables->GetVal(wxT("relacl")));
-            if (collection->GetConnection()->BackendMinimumVersion(7, 5))
-                table->iSetTablespace(tables->GetVal(wxT("spcname")));
+            if (collection->GetConnection()->BackendMinimumVersion(8, 0))
+            {
+                if (tables->GetVal(wxT("spcname")) == wxEmptyString)
+                    table->iSetTablespace(collection->GetDatabase()->GetTablespace());
+                else
+                    table->iSetTablespace(tables->GetVal(wxT("spcname")));
+            }
             table->iSetComment(tables->GetVal(wxT("description")));
             table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
             table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")));
