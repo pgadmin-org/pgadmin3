@@ -492,7 +492,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
            wxT("SELECT db.oid, datname, spcname, datallowconn, datconfig, datacl, ")
            wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
            wxT("has_database_privilege(db.oid, 'CREATE') as cancreate, \n")
-           wxT("(select setting AS default_tablespace from pg_show_all_settings() x(name text, setting text, unit text, category text, short_desc text, extra_desc text, context text, vartype text, source text, min_val text, max_val text) where name = 'default_tablespace') AS default_tablespace\n")
+           wxT("current_setting('default_tablespace') AS default_tablespace\n")
            wxT("  FROM pg_database db\n")
            wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
            + restr +
