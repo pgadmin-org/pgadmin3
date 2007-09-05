@@ -262,7 +262,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     queryMenu->Enable(MNU_CANCEL, false);
 
-    int iWidths[6] = {0, -1, 40, 130, 80, 80};
+    int iWidths[6] = {0, -1, 40, 150, 80, 80};
     statusBar=CreateStatusBar(6);
     SetStatusBarPane(-1);
     SetStatusWidths(6, iWidths);
@@ -1221,7 +1221,8 @@ void frmQuery::OnChangeStc(wxStyledTextEvent& event)
 void frmQuery::OnPositionStc(wxStyledTextEvent& event)
 {
     wxString pos;
-    pos.Printf(_("Ln %d Col %d Ch %d"), sqlQuery->LineFromPosition(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetColumn(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetCurrentPos() + 1);
+    pos.Printf(_("Ln %d Col %d Ch %d"), sqlQuery->LineFromPosition(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetColumn(sqlQuery->GetCurrentPos()) + 1, 
+          sqlQuery->GetText().SubString(0, sqlQuery->GetCurrentPos()).Length());
     SetStatusText(pos, STATUSPOS_POS);
 }
 
