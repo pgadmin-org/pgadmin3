@@ -1222,7 +1222,7 @@ void frmQuery::OnPositionStc(wxStyledTextEvent& event)
 {
     wxString pos;
     pos.Printf(_("Ln %d Col %d Ch %d"), sqlQuery->LineFromPosition(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetColumn(sqlQuery->GetCurrentPos()) + 1, 
-          sqlQuery->GetText().SubString(0, sqlQuery->GetCurrentPos()).Length());
+          sqlQuery->GetColumn(sqlQuery->GetCurrentPos()));
     SetStatusText(pos, STATUSPOS_POS);
 }
 
