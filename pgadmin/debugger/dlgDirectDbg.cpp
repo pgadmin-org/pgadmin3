@@ -271,7 +271,7 @@ void dlgDirectDbg::populateParamGrid( )
     // a package), there's no good reason to wait for the user to hit the Ok
     // button before we invoke the target...
 
-    if(( m_targetInfo->getArgCount() == 0 ) && ( m_targetInfo->getPkgOid() == 0 ))
+    if((m_targetInfo->getArgInCount() + m_targetInfo->getArgInOutCount() == 0 ) && ( m_targetInfo->getPkgOid() == 0))
     {
         grdParams->AppendRows( 1 );
         grdParams->SetReadOnly( i, COL_NAME,  true );
@@ -651,7 +651,7 @@ void dlgDirectDbg::invokeTargetStatement()
         query = query.Left(query.Length() - 1);
 
     // And terminate the argument list
-    if( m_targetInfo->getArgCount() == 0 )
+    if( m_targetInfo->getArgInCount() + m_targetInfo->getArgInOutCount() == 0 )
     {
         if( m_targetInfo->getIsFunction())
             query.Append( wxT( "()" ));
