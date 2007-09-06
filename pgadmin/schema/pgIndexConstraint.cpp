@@ -23,7 +23,7 @@
 bool pgIndexConstraint::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(wxT(
-        "ALTER TABLE ") + GetQuotedSchemaPrefix(GetIdxSchema()) + qtIdent(GetIdxTable())
+        "ALTER TABLE ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
             + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() + wxT(";"));
 }
 

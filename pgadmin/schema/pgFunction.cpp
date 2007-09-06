@@ -52,7 +52,7 @@ bool pgFunction::IsUpToDate()
 
 bool pgFunction::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql=wxT("DROP FUNCTION ") + GetQuotedFullIdentifier()  + wxT("(") + GetArgSigList() + wxT(")");
+    wxString sql=wxT("DROP FUNCTION ")  + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier() + wxT("(") + GetArgSigList() + wxT(")");
     if (cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);
@@ -237,7 +237,7 @@ bool pgProcedure::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
     if (!GetConnection()->EdbMinimumVersion(8, 0))
         return pgFunction::DropObject(frame, browser, cascaded);
 
-    wxString sql=wxT("DROP PROCEDURE ") + GetQuotedFullIdentifier();
+    wxString sql=wxT("DROP PROCEDURE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
     return GetDatabase()->ExecuteVoid(sql);
 }
 

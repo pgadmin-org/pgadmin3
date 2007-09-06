@@ -29,7 +29,7 @@ pgAggregate::~pgAggregate()
 
 bool pgAggregate::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql=wxT("DROP AGGREGATE ") + GetQuotedFullIdentifier() + wxT("(") + GetInputTypesList() + wxT(")");
+    wxString sql=wxT("DROP AGGREGATE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier() + wxT("(") + GetInputTypesList() + wxT(")");
     if (cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);

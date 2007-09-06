@@ -38,7 +38,7 @@ int pgSequence::GetIconId()
 
 bool pgSequence::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql = wxT("DROP SEQUENCE ") + GetQuotedFullIdentifier();
+    wxString sql = wxT("DROP SEQUENCE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
     if (cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);

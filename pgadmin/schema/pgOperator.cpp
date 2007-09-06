@@ -29,7 +29,7 @@ pgOperator::~pgOperator()
 
 bool pgOperator::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql = wxT("DROP OPERATOR ") + GetFullIdentifier();
+    wxString sql = wxT("DROP OPERATOR ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetIdentifier();
     
     if (GetLeftType().Length() > 0)
         sql += wxT(" (") + qtTypeIdent(GetLeftType());

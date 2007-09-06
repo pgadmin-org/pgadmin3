@@ -126,7 +126,7 @@ wxString pgTable::GetHelpPage(bool forCreate) const
 
 bool pgTable::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql = wxT("DROP TABLE ") + GetQuotedFullIdentifier();
+    wxString sql = wxT("DROP TABLE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
     if (cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);

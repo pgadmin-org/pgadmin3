@@ -29,7 +29,7 @@ pgConversion::~pgConversion()
 
 bool pgConversion::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql=wxT("DROP CONVERSION ") + GetQuotedFullIdentifier();
+    wxString sql=wxT("DROP CONVERSION ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
     if (cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);

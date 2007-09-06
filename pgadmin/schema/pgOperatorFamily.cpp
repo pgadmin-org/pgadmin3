@@ -30,7 +30,7 @@ pgOperatorFamily::~pgOperatorFamily()
 
 bool pgOperatorFamily::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql=wxT("DROP OPERATOR FAMILY ") + GetQuotedFullIdentifier() + wxT(" USING ") + GetAccessMethod();
+    wxString sql=wxT("DROP OPERATOR FAMILY ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier() + wxT(" USING ") + GetAccessMethod();
     if (cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);

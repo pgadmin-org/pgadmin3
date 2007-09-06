@@ -30,7 +30,7 @@ pgIndexBase::pgIndexBase(pgTable *newTable, pgaFactory &factory, const wxString&
 
 bool pgIndexBase::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    wxString sql=wxT("DROP INDEX ") + GetQuotedFullIdentifier();
+    wxString sql=wxT("DROP INDEX ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
     if (cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);
