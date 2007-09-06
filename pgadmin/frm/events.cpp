@@ -509,7 +509,8 @@ void frmMain::OnSelRightClick(wxTreeEvent& event)
 
 void frmMain::OnDelete(wxCommandEvent &ev)
 {
-    ExecDrop(false);
+    if (currentObject->CanDrop())
+        ExecDrop(false);
 }
 
 
