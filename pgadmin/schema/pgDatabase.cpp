@@ -526,7 +526,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             if (collection->GetConnection()->BackendMinimumVersion(8, 0))
             {
                 database->iSetTablespace(databases->GetVal(wxT("spcname")));
-                if (databases->GetVal(wxT("default_tablespace")) == wxEmptyString)
+                if (databases->GetVal(wxT("default_tablespace")) == wxEmptyString || databases->GetVal(wxT("default_tablespace")) == wxT("unset"))
                     database->iSetDefaultTablespace(databases->GetVal(wxT("spcname")));
                 else
                     database->iSetDefaultTablespace(databases->GetVal(wxT("default_tablespace")));
