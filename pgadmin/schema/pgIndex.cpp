@@ -59,7 +59,9 @@ wxString pgIndexBase::GetCreate()
     }
 
     str += wxT(")");
-    AppendIfFilled(str, wxT("\n  TABLESPACE "), qtIdent(tablespace));
+
+    if (tablespace != GetDatabase()->GetDefaultTablespace())
+        str += wxT("\nTABLESPACE ") + qtIdent(tablespace);
 
     if (GetConnection()->BackendMinimumVersion(8, 2) && GetFillFactor().Length() > 0)
         str += wxT("\n  WITH (FILLFACTOR=") + GetFillFactor() + wxT(")");

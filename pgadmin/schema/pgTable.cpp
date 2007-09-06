@@ -282,7 +282,8 @@ wxString pgTable::GetSql(ctlTree *browser)
                 sql +=  wxT("\nWITHOUT OIDS");
         }
 
-        AppendIfFilled(sql, wxT("\nTABLESPACE "), qtIdent(tablespace));
+        if (tablespace != GetDatabase()->GetDefaultTablespace())
+            sql += wxT("\nTABLESPACE ") + qtIdent(tablespace);
 
         sql += wxT(";\n")
             + GetOwnerSql(7, 3);
