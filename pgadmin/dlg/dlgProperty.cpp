@@ -750,15 +750,22 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
     if (!item && (node->GetMetaType() == PGM_TABLE || node->GetMetaType() == PGM_VIEW))
         tblitem=node->GetId();
 
-    if (node->GetMetaType() == PGM_COLUMN || 
+    if (node->GetMetaType() == PGM_CHECK ||
+        node->GetMetaType() == PGM_COLUMN || 
         node->GetMetaType() == PGM_CONSTRAINT ||
         node->GetMetaType() == PGM_FOREIGNKEY ||
         node->GetMetaType() == PGM_INDEX ||
-        node->GetMetaType() == PGM_TRIGGER ||
         node->GetMetaType() == PGM_PRIMARYKEY ||
-        node->GetMetaType() == PGM_CHECK ||
+        node->GetMetaType() == PGM_TRIGGER ||
         node->GetMetaType() == PGM_UNIQUE)
         tblitem=node->GetTable()->GetId();
+    else if (node->GetMetaType() == PGM_RULE) // Rules are technically table objects! Yeuch
+    {
+        if (node->IsCollection()) // This is the Rules node
+            tblitem = frame->GetBrowser()->GetParentObject(node->GetId())->GetId();
+        else
+            tblitem = frame->GetBrowser()->GetParentObject(frame->GetBrowser()->GetParentObject(node->GetId())->GetId())->GetId();
+    }
 }
 
 

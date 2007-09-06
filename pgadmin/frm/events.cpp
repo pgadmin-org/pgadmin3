@@ -522,15 +522,22 @@ void frmMain::ExecDrop(bool cascaded)
     wxTreeItemId tblitem;
     pgObject *node = (pgObject*)browser->GetObject(item);
 
-    if (node->GetMetaType() == PGM_COLUMN || 
+    if (node->GetMetaType() == PGM_CHECK ||
+        node->GetMetaType() == PGM_COLUMN || 
         node->GetMetaType() == PGM_CONSTRAINT ||
         node->GetMetaType() == PGM_FOREIGNKEY ||
         node->GetMetaType() == PGM_INDEX ||
-        node->GetMetaType() == PGM_TRIGGER ||
         node->GetMetaType() == PGM_PRIMARYKEY ||
-        node->GetMetaType() == PGM_CHECK ||
+        node->GetMetaType() == PGM_TRIGGER ||
         node->GetMetaType() == PGM_UNIQUE)
         tblitem=node->GetTable()->GetId();
+    else if (node->GetMetaType() == PGM_RULE) // Rules are technically table objects! Yeuch
+    {
+        if (node->IsCollection()) // This is the Rules node
+            tblitem = browser->GetParentObject(node->GetId())->GetId();
+        else
+            tblitem = browser->GetParentObject(browser->GetParentObject(node->GetId())->GetId())->GetId();
+    }
 
     if (collection == currentObject)
         dropSingleObject(currentObject, true, cascaded);

@@ -170,6 +170,7 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 pgRuleFactory::pgRuleFactory() 
 : pgSchemaObjFactory(__("Rule"), __("New Rule..."), __("Create a new Rule."), rule_xpm)
 {
+    metaType = PGM_RULE;
 }
 
 
