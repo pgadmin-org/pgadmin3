@@ -528,7 +528,8 @@ void frmMain::ExecDrop(bool cascaded)
         node->GetMetaType() == PGM_INDEX ||
         node->GetMetaType() == PGM_TRIGGER ||
         node->GetMetaType() == PGM_PRIMARYKEY ||
-        node->GetMetaType() == PGM_CHECK)
+        node->GetMetaType() == PGM_CHECK ||
+        node->GetMetaType() == PGM_UNIQUE)
         tblitem=node->GetTable()->GetId();
 
     if (collection == currentObject)
