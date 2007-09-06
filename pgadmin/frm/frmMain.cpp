@@ -460,7 +460,6 @@ void frmMain::Refresh(pgObject *data)
     wxArrayString expandedNodes;
     GetExpandedChildNodes(currentItem, expandedNodes);
 
-
     browser->DeleteChildren(currentItem);
 
 	// refresh information about the object
@@ -495,6 +494,7 @@ void frmMain::Refresh(pgObject *data)
             browser->Delete(delItem);
         }
     }
+
     if (currentItem)
     {
         execSelChange(currentItem, currentItem == browser->GetSelection());
@@ -554,6 +554,35 @@ wxString frmMain::GetNodePath(wxTreeItemId node)
     }
 
     return path;
+}
+
+// Return the path for the current node
+wxString frmMain::GetCurrentNodePath()
+{
+    return GetNodePath(currentObject->GetId());
+}
+
+// Attempt to reselect the node with the given path
+bool frmMain::SetCurrentNode(wxTreeItemId node, const wxString &path)
+{
+    wxTreeItemIdValue cookie;
+    wxTreeItemId child = browser->GetFirstChild(node, cookie);
+
+    while (child.IsOk())
+    {
+        if (GetNodePath(child) == path)
+        {
+            browser->SelectItem(child, true);
+            return true;
+        }
+        else
+            if (SetCurrentNode(child, path))
+                return true;
+
+        child = browser->GetNextChild(node, cookie);
+    }
+
+    return false;
 }
 
 void frmMain::ShowObjStatistics(pgObject *data, int sel)

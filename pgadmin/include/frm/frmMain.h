@@ -84,6 +84,9 @@ public:
     pgServerCollection *GetServerCollection() { return serversObj; }
 	pgServer *ConnectToServer(const wxString& servername, bool restore = false);
 
+    wxString GetCurrentNodePath();
+    bool SetCurrentNode(wxTreeItemId node, const wxString &path);
+
 private:
     wxAuiManager manager;
     ctlTree *browser;

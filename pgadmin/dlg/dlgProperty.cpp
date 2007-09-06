@@ -595,10 +595,16 @@ void dlgProperty::ShowObject()
     // We might have a table refresh as well:
     if (tblitem)
     {
+        // Stash the selected items path
+        wxString currentPath = mainForm->GetCurrentNodePath();
+
         pgObject *tblobj = mainForm->GetBrowser()->GetObject(tblitem); 
 
         if (tblobj) 
             mainForm->Refresh(tblobj);
+
+        // Restore the previous selection
+        mainForm->SetCurrentNode(mainForm->GetBrowser()->GetRootItem(), currentPath);
     }
 }
 
