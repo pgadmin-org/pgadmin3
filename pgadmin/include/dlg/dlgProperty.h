@@ -105,7 +105,7 @@ protected:
     ctlComboBox *cbClusterSet;
 
     int width, height;
-    wxTreeItemId item, tblitem;
+    wxTreeItemId item, owneritem;
     bool readOnly;
     bool processing;
     pgaFactory *factory;

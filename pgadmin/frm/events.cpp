@@ -520,25 +520,41 @@ void frmMain::ExecDrop(bool cascaded)
     pgCollection *collection = (pgCollection*)browser->GetObject(item);
 
     // Get any table object for later update
-    wxTreeItemId tblitem;
+    wxTreeItemId owneritem;
     pgObject *node = (pgObject*)browser->GetObject(item);
 
-    if (node->GetMetaType() == PGM_CHECK ||
-        node->GetMetaType() == PGM_COLUMN || 
-        node->GetMetaType() == PGM_CONSTRAINT ||
-        node->GetMetaType() == PGM_FOREIGNKEY ||
-        node->GetMetaType() == PGM_INDEX ||
-        node->GetMetaType() == PGM_PRIMARYKEY ||
-        node->GetMetaType() == PGM_TRIGGER ||
-        node->GetMetaType() == PGM_UNIQUE)
-        tblitem=node->GetTable()->GetId();
-    else if (node->GetMetaType() == PGM_RULE) // Rules are technically table objects! Yeuch
-    {
-        if (node->IsCollection()) // This is the Rules node
-            tblitem = browser->GetParentObject(node->GetId())->GetId();
-        else
-            tblitem = browser->GetParentObject(browser->GetParentObject(node->GetId())->GetId())->GetId();
-    }
+	int metatype = node->GetMetaType();
+
+	switch (metatype)
+	{
+		case PGM_CHECK:
+		case PGM_COLUMN: 
+		case PGM_CONSTRAINT:
+		case PGM_FOREIGNKEY:
+		case PGM_INDEX:
+		case PGM_PRIMARYKEY:
+		case PGM_TRIGGER:
+		case PGM_UNIQUE:
+			owneritem=node->GetTable()->GetId();
+			break;
+
+		case PGM_RULE: // Rules are technically table objects! Yeuch
+		case EDB_PACKAGEFUNCTION:
+		case EDB_PACKAGEVARIABLE: 
+		case PGM_SCHEDULE:
+		case PGM_STEP:
+			if (node->IsCollection())
+				owneritem = browser->GetParentObject(node->GetId())->GetId();
+			else
+				owneritem = browser->GetParentObject(browser->GetParentObject(node->GetId())->GetId())->GetId();
+			break;
+
+		default:
+			break;
+	}
+
+	// Grab the parent item to re-focus on.
+	wxTreeItemId parentitem = browser->GetItemParent(item);
 
     if (collection == currentObject)
         dropSingleObject(currentObject, true, cascaded);
@@ -613,8 +629,12 @@ void frmMain::ExecDrop(bool cascaded)
     }
 
     // If the collection has a table, refresh that as well.
-    if (tblitem)
-        Refresh(browser->GetObject(tblitem));
+    if (owneritem)
+        Refresh(browser->GetObject(owneritem));
+
+	// Now re-focus on the parent of the deleted node
+	if (parentitem)
+		browser->SelectItem(parentitem);
 }
 
 

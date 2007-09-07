@@ -95,7 +95,7 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
     connection=0;
     factory=f;
     item = NULL;
-    tblitem = NULL;
+    owneritem = NULL;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(frame, resName);
 
@@ -546,7 +546,23 @@ bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 void dlgProperty::ShowObject()
 {
     pgObject *data=GetObject();
-    if (data)
+
+    // We might have a parent to refresh. If so, the children will
+	// inherently get refreshed as well. Yay :-)
+    if (owneritem)
+    {
+        // Stash the selected items path
+        wxString currentPath = mainForm->GetCurrentNodePath();
+
+        pgObject *tblobj = mainForm->GetBrowser()->GetObject(owneritem); 
+
+        if (tblobj) 
+            mainForm->Refresh(tblobj);
+
+        // Restore the previous selection...
+		mainForm->SetCurrentNode(mainForm->GetBrowser()->GetRootItem(), currentPath);
+    }
+	else if (data)
     {
         pgObject *newData=data->Refresh(mainForm->GetBrowser(), item);
         if (newData && newData != data)
@@ -590,21 +606,6 @@ void dlgProperty::ShowObject()
 
         if (currobj) 
             mainForm->Refresh(currobj);
-    }
-
-    // We might have a table refresh as well:
-    if (tblitem)
-    {
-        // Stash the selected items path
-        wxString currentPath = mainForm->GetCurrentNodePath();
-
-        pgObject *tblobj = mainForm->GetBrowser()->GetObject(tblitem); 
-
-        if (tblobj) 
-            mainForm->Refresh(tblobj);
-
-        // Restore the previous selection
-        mainForm->SetCurrentNode(mainForm->GetBrowser()->GetRootItem(), currentPath);
     }
 }
 
@@ -754,24 +755,37 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
 
     // Additional hacks to get the table to refresh when modifying sub-objects
     if (!item && (node->GetMetaType() == PGM_TABLE || node->GetMetaType() == PGM_VIEW))
-        tblitem=node->GetId();
+        owneritem=node->GetId();
 
-    if (node->GetMetaType() == PGM_CHECK ||
-        node->GetMetaType() == PGM_COLUMN || 
-        node->GetMetaType() == PGM_CONSTRAINT ||
-        node->GetMetaType() == PGM_FOREIGNKEY ||
-        node->GetMetaType() == PGM_INDEX ||
-        node->GetMetaType() == PGM_PRIMARYKEY ||
-        node->GetMetaType() == PGM_TRIGGER ||
-        node->GetMetaType() == PGM_UNIQUE)
-        tblitem=node->GetTable()->GetId();
-    else if (node->GetMetaType() == PGM_RULE) // Rules are technically table objects! Yeuch
-    {
-        if (node->IsCollection()) // This is the Rules node
-            tblitem = frame->GetBrowser()->GetParentObject(node->GetId())->GetId();
-        else
-            tblitem = frame->GetBrowser()->GetParentObject(frame->GetBrowser()->GetParentObject(node->GetId())->GetId())->GetId();
-    }
+	int metatype = node->GetMetaType();
+
+	switch (metatype)
+	{
+		case PGM_CHECK:
+		case PGM_COLUMN: 
+		case PGM_CONSTRAINT:
+		case PGM_FOREIGNKEY:
+		case PGM_INDEX:
+		case PGM_PRIMARYKEY:
+		case PGM_TRIGGER:
+		case PGM_UNIQUE:
+			owneritem=node->GetTable()->GetId();
+			break;
+
+		case PGM_RULE: // Rules are technically table objects! Yeuch
+		case EDB_PACKAGEFUNCTION:
+		case EDB_PACKAGEVARIABLE: 
+		case PGM_SCHEDULE:
+		case PGM_STEP:
+			if (node->IsCollection())
+				owneritem = frame->GetBrowser()->GetParentObject(node->GetId())->GetId();
+			else
+				owneritem = frame->GetBrowser()->GetParentObject(frame->GetBrowser()->GetParentObject(node->GetId())->GetId())->GetId();
+			break;
+
+		default:
+			break;
+	}
 }
 
 

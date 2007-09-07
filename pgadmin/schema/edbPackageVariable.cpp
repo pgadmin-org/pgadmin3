@@ -127,6 +127,7 @@ pgObject *edbPackageVariableFactory::CreateObjects(pgCollection *collection, ctl
 edbPackageVariableFactory::edbPackageVariableFactory() 
 : edbPackageObjFactory(__("Variable"), __("New Variable..."), __("Create a new Variable."), variable_xpm)
 {
+    metaType = EDB_PACKAGEVARIABLE;
 }
 
 edbPackageVariableFactory packageVariableFactory;
