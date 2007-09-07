@@ -74,9 +74,6 @@ void pgCheck::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Definition"), GetDefinition());
-        properties->AppendItem(_("Deferrable?"), BoolToYesNo(GetDeferrable()));
-        properties->AppendItem(_("Initially?"), 
-            GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
@@ -100,7 +97,7 @@ pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, co
     pgTableObjCollection *collection=(pgTableObjCollection*)coll;
     pgCheck *check=0;
     pgSet *checks= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT c.oid, conname, condeferrable, condeferred, relname, nspname, description,\n")
+        wxT("SELECT c.oid, conname, relname, nspname, description,\n")
         wxT("       pg_get_expr(conbin, conrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as consrc\n")
         wxT("  FROM pg_constraint c\n")
         wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
@@ -120,8 +117,6 @@ pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, co
             check->iSetDefinition(checks->GetVal(wxT("consrc")));
             check->iSetFkTable(checks->GetVal(wxT("relname")));
             check->iSetFkSchema(checks->GetVal(wxT("nspname")));
-            check->iSetDeferrable(checks->GetBool(wxT("condeferrable")));
-            check->iSetDeferred(checks->GetBool(wxT("condeferred")));
             check->iSetComment(checks->GetVal(wxT("description")));
 
             if (browser)

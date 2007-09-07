@@ -25,15 +25,6 @@
 
 
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
-#define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
-#define chkDeferred     CTRL_CHECKBOX("chkDeferred")
-#define stDeferred      CTRL_STATIC("stDeferred")
-
-
-
-BEGIN_EVENT_TABLE(dlgIndexConstraint, dlgIndexBase)
-    EVT_CHECKBOX(XRCID("chkDeferrable"),        dlgIndexConstraint::OnCheckDeferrable)
-END_EVENT_TABLE();
 
 
 dlgIndexConstraint::dlgIndexConstraint(pgaFactory *f, frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode)
@@ -50,20 +41,15 @@ dlgIndexConstraint::dlgIndexConstraint(pgaFactory *f, frmMain *frame, const wxSt
 
 int dlgIndexConstraint::Go(bool modal)
 {
-    wxNotifyEvent event;
     PrepareTablespace(cbTablespace);
 
     if (index)
     {
         pgIndexConstraint *idc=(pgIndexConstraint*)index;
 
-        chkDeferrable->SetValue(idc->GetDeferrable());
-        chkDeferred->SetValue(idc->GetDeferred());
-        chkDeferrable->Disable();
-        chkDeferred->Disable();
         if (!idc->GetTablespace().IsEmpty())
             cbTablespace->SetValue(idc->GetTablespace());
-        cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
+        cbTablespace->Enable(connection->BackendMinimumVersion(8, 0));
     }
     else
     {
@@ -74,8 +60,6 @@ int dlgIndexConstraint::Go(bool modal)
             cbClusterSet = 0;
         }
     }
-
-    OnCheckDeferrable(event);
 
     return dlgIndexBase::Go(modal);
 }
@@ -90,25 +74,7 @@ wxString dlgIndexConstraint::GetDefinition()
     if (cbTablespace->GetValue() != table->GetDatabase()->GetDefaultTablespace())
         sql += wxT(" USING INDEX TABLESPACE ") + qtIdent(cbTablespace->GetValue());
 
-    if (chkDeferrable->GetValue())
-    {
-        sql += wxT(" DEFERRABLE INITIALLY ");
-        if (chkDeferred->Enable())
-            sql += wxT("DEFERRED");
-        else
-            sql += wxT("IMMEDIATE");
-    }
     return sql;
-}
-
-
-void dlgIndexConstraint::OnCheckDeferrable(wxCommandEvent &ev)
-{
-    bool canDef=chkDeferrable->GetValue();
-    stDeferred->Enable(canDef);
-    if (!canDef)
-        chkDeferred->SetValue(false);
-    chkDeferred->Enable(canDef);
 }
 
 

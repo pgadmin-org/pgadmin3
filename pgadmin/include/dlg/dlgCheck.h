@@ -14,7 +14,6 @@
 
 #include "dlg/dlgProperty.h"
 
-
 class pgCheck;
 class pgTable;
 
@@ -35,7 +34,6 @@ public:
 private:
     pgCheck *check;
     pgTable *table;
-    void OnCheckDeferrable(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE()
 };

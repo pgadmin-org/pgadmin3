@@ -20,16 +20,11 @@
 #include "schema/pgCheck.h"
 #include "dlg/dlgCheck.h"
 
-
-#define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
-#define chkDeferred     CTRL_CHECKBOX("chkDeferred")
-#define stDeferred      CTRL_STATIC("stDeferred")
 #define txtWhere        CTRL_TEXT("txtWhere")
 
 
 BEGIN_EVENT_TABLE(dlgCheck, dlgProperty)
     EVT_TEXT(XRCID("txtWhere"),                 dlgProperty::OnChange)
-    EVT_CHECKBOX(XRCID("chkDeferrable"),        dlgCheck::OnCheckDeferrable)
 END_EVENT_TABLE();
 
 
@@ -45,17 +40,6 @@ dlgCheck::dlgCheck(pgaFactory *f, frmMain *frame, pgCheck *node, pgTable *parent
     check=node;
     table=parentNode;
 }
-
-
-void dlgCheck::OnCheckDeferrable(wxCommandEvent &ev)
-{
-    bool canDef=chkDeferrable->GetValue();
-    stDeferred->Enable(canDef);
-    if (!canDef)
-        chkDeferred->SetValue(false);
-    chkDeferred->Enable(canDef);
-}
-
 
 void dlgCheck::CheckChange()
 {
@@ -102,11 +86,6 @@ int dlgCheck::Go(bool modal)
 
         txtWhere->SetValue(check->GetDefinition());
         txtWhere->Disable();
-
-        chkDeferrable->SetValue(check->GetDeferrable());
-        chkDeferred->SetValue(check->GetDeferred());
-        chkDeferrable->Disable();
-        chkDeferred->Disable();
     }
     else
     {

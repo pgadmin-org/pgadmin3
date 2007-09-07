@@ -37,9 +37,6 @@ public:
     wxString GetSql();
     wxString GetHelpPage() const { return wxT("pg/sql-altertable"); }
 
-private:
-    void OnCheckDeferrable(wxCommandEvent &ev);
-    DECLARE_EVENT_TABLE()
 };
 
 
