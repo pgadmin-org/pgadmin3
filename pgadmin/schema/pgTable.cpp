@@ -827,7 +827,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
     pgSet *tables;
     if (collection->GetConnection()->BackendMinimumVersion(8, 0))
     {
-        query= wxT("SELECT rel.oid, relname, spcname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
+        query= wxT("SELECT rel.oid, relname, rel.reltablespace AS spcoid, spcname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
                     wxT("relhassubclass, reltuples, description, conname, conkey,\n")
             wxT("       EXISTS(select 1 FROM pg_trigger\n")
             wxT("                       JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'\n")
@@ -870,6 +870,11 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             table->iSetAcl(tables->GetVal(wxT("relacl")));
             if (collection->GetConnection()->BackendMinimumVersion(8, 0))
             {
+				if (tables->GetOid(wxT("spcoid")) == 0)
+					table->iSetTablespaceOid(collection->GetDatabase()->GetTablespaceOid());
+				else
+					table->iSetTablespaceOid(tables->GetOid(wxT("spcoid")));
+
                 if (tables->GetVal(wxT("spcname")) == wxEmptyString)
                     table->iSetTablespace(collection->GetDatabase()->GetTablespace());
                 else

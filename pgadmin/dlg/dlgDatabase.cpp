@@ -129,7 +129,8 @@ int dlgDatabase::Go(bool modal)
             lstVariables->AppendItem(0, item.BeforeFirst('='), item.AfterFirst('='));
         }
 
-        PrepareTablespace(cbTablespace, database->GetTablespace());
+        PrepareTablespace(cbTablespace, database->GetTablespaceOid());
+		cbTablespace->Disable();
         txtPath->SetValue(database->GetPath());
         txtPath->Disable();
 

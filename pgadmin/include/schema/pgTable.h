@@ -66,6 +66,8 @@ public:
     void iSetEstimatedRows(const double d) { estimatedRows=d; }
     wxString GetTablespace() const { return tablespace; };
     void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
+    OID GetTablespaceOid() const { return tablespaceOid; };
+    void iSetTablespaceOid(const OID newVal) { tablespaceOid = newVal; }
     wxULongLong GetRows() const { return rows; }
     long GetInheritedTableCount() { if (inheritedTableCount < 0) UpdateInheritance(); return inheritedTableCount; }
     wxString GetInheritedTables() { GetInheritedTableCount(); return inheritedTables; }
@@ -122,6 +124,7 @@ private:
         primaryKeyName, primaryKeyColNumbers, tablespace;
     wxArrayString quotedInheritedTablesList;
     slSet *replicationSet;
+	OID tablespaceOid;
 };
 
 

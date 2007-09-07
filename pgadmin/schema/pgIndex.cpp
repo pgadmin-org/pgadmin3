@@ -343,7 +343,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
         proname = wxT("indnatts, ");
         if (collection->GetConnection()->BackendMinimumVersion(7, 5))
         {
-            proname += wxT("spcname, ");
+            proname += wxT("cls.reltablespace AS spcoid, spcname, ");
             projoin = wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=cls.reltablespace\n");
         }
     }
@@ -409,6 +409,11 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
                 index->iSetColumnCount(indexes->GetLong(wxT("indnatts")));
                 if (collection->GetConnection()->BackendMinimumVersion(8, 0))
                 {
+					if (indexes->GetOid(wxT("spcoid")) == 0)
+						index->iSetTablespaceOid(collection->GetDatabase()->GetTablespaceOid());
+					else
+						index->iSetTablespaceOid(indexes->GetOid(wxT("spcoid")));
+
                     if (indexes->GetVal(wxT("spcname")) == wxEmptyString)
                         index->iSetTablespace(collection->GetDatabase()->GetTablespace());
                     else

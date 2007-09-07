@@ -57,6 +57,8 @@ public:
     void iSetRelTableOid(const OID d) { relTableOid=d; }
     wxString GetTablespace() const { return tablespace; };
     void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
+    OID GetTablespaceOid() const { return tablespaceOid; };
+    void iSetTablespaceOid(const OID newVal) { tablespaceOid = newVal; }
     wxString GetFillFactor() { return fillFactor; }
     void iSetFillFactor(const wxString& s) { fillFactor = s; }
 
@@ -96,7 +98,7 @@ private:
     long columnCount;
     bool isUnique, isPrimary, isClustered;
     bool deferrable, deferred, showExtendedStatistics;
-    OID relTableOid;
+    OID relTableOid, tablespaceOid;
     wxString fillFactor;
 };
 

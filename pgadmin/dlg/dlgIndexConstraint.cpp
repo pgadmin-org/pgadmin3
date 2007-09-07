@@ -47,8 +47,8 @@ int dlgIndexConstraint::Go(bool modal)
     {
         pgIndexConstraint *idc=(pgIndexConstraint*)index;
 
-        if (!idc->GetTablespace().IsEmpty())
-            cbTablespace->SetValue(idc->GetTablespace());
+        if (idc->GetTablespaceOid() != 0)
+            cbTablespace->SetKey(idc->GetTablespaceOid());
         cbTablespace->Enable(connection->BackendMinimumVersion(8, 0));
     }
     else
@@ -94,7 +94,7 @@ wxString dlgIndexConstraint::GetSql()
     }
     else
     {
-        if (cbTablespace->GetValue() != index->GetTablespace())
+        if (cbTablespace->GetOIDKey() != index->GetTablespaceOid())
         {
             sql += wxT("ALTER INDEX ") + index->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(name) 
                 +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())

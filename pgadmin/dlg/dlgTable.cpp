@@ -154,8 +154,8 @@ int dlgTable::Go(bool modal)
         // edit mode
         chkHasOids->SetValue(table->GetHasOids());
 
-        if (!table->GetTablespace().IsEmpty())
-            cbTablespace->SetValue(table->GetTablespace());
+        if (table->GetTablespaceOid() != 0)
+            cbTablespace->SetKey(table->GetTablespaceOid());
 
         wxArrayString qitl=table->GetQuotedInheritedTablesList();
         size_t i;
@@ -595,7 +595,7 @@ wxString dlgTable::GetSql()
             sql += wxT("ALTER TABLE ") + tabname 
                 +  wxT(" SET WITHOUT OIDS;\n");
         }
-        if (cbTablespace->GetValue() != table->GetTablespace())
+        if (cbTablespace->GetOIDKey() != table->GetTablespaceOid())
             sql += wxT("ALTER TABLE ") + tabname 
                 +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
                 + wxT(";\n");

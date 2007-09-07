@@ -489,7 +489,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     
     if (collection->GetConnection()->BackendMinimumVersion(7, 5))
         databases = collection->GetServer()->ExecuteSet(
-           wxT("SELECT db.oid, datname, spcname, datallowconn, datconfig, datacl, ")
+           wxT("SELECT db.oid, datname, db.dattablespace AS spcoid, spcname, datallowconn, datconfig, datacl, ")
            wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
            wxT("has_database_privilege(db.oid, 'CREATE') as cancreate, \n")
            wxT("current_setting('default_tablespace') AS default_tablespace\n")
@@ -526,6 +526,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             if (collection->GetConnection()->BackendMinimumVersion(8, 0))
             {
                 database->iSetTablespace(databases->GetVal(wxT("spcname")));
+				database->iSetTablespaceOid(databases->GetOid(wxT("spcoid")));
                 if (databases->GetVal(wxT("default_tablespace")) == wxEmptyString || databases->GetVal(wxT("default_tablespace")) == wxT("unset"))
                     database->iSetDefaultTablespace(databases->GetVal(wxT("spcname")));
                 else

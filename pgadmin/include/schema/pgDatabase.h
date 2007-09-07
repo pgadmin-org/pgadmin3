@@ -59,6 +59,8 @@ public:
     void iSetPath(const wxString& newVal) { path = newVal; }
     wxString GetTablespace() const { return tablespace; };
     void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
+    OID GetTablespaceOid() const { return tablespaceOid; };
+    void iSetTablespaceOid(const OID newVal) { tablespaceOid = newVal; }
     wxString GetDefaultTablespace() const { return defaultTablespace; };
     void iSetDefaultTablespace(const wxString& newVal) { defaultTablespace = newVal; }
     wxString GetEncoding() const { return encoding; }
@@ -119,6 +121,8 @@ private:
     wxString schemaRestriction;
 
     int canDebugPlpgsql, canDebugEdbspl;
+
+	OID tablespaceOid;
 };
 
 class pgDatabaseCollection : public pgServerObjCollection

@@ -180,7 +180,7 @@ void dlgIndexBase::CheckChange()
     if (index)
     {
         EnableOK(txtComment->GetValue() != index->GetComment() ||
-                 cbTablespace->GetValue() != index->GetTablespace());
+                 cbTablespace->GetOIDKey() != index->GetTablespaceOid());
     }
     else
     {
@@ -235,7 +235,7 @@ void dlgIndex::CheckChange()
         EnableOK(fill || 
                  txtComment->GetValue() != index->GetComment() || 
                  chkClustered->GetValue() != index->GetIsClustered() ||
-                 cbTablespace->GetValue() != index->GetTablespace());
+                 cbTablespace->GetOIDKey() != index->GetTablespaceOid());
     }
     else
     {
@@ -267,7 +267,7 @@ int dlgIndex::Go(bool modal)
         txtWhere->Disable();
         chkUnique->Disable();
         chkConcurrent->Disable();
-        PrepareTablespace(cbTablespace, index->GetTablespace());
+        PrepareTablespace(cbTablespace, index->GetTablespaceOid());
     }
     else
     {
@@ -331,8 +331,8 @@ wxString dlgIndex::GetSql()
         }
         else
         {
-            if (cbTablespace->GetValue() != index->GetTablespace())
-                sql += wxT("ALTER INDEX ") + index->GetQuotedSchemaPrefix(index->GetSchema()->GetName()) + qtIdent(name) 
+            if (cbTablespace->GetOIDKey() != index->GetTablespaceOid())
+                sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".") + qtIdent(name) 
                     +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
                     + wxT(";\n");
         }

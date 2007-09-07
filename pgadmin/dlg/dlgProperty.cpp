@@ -435,28 +435,27 @@ void dlgProperty::AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2)
 }
 
 
-void dlgProperty::PrepareTablespace(ctlComboBoxFix *cb, const wxChar *current)
+void dlgProperty::PrepareTablespace(ctlComboBoxFix *cb, const OID current)
 {
     wxASSERT(cb != 0);
 
     if (connection->BackendMinimumVersion(8, 0))
     {
+		// Populate the combo
+		cb->FillOidKey(connection, wxT("SELECT oid, spcname FROM pg_tablespace WHERE spcname <> 'pg_global' ORDER BY spcname"));
+
         if (current)
-        {
-            FillCombobox(wxT("SELECT spcname FROM pg_tablespace WHERE spcname <> 'pg_global' ORDER BY spcname"), cb);
-            cb->SetSelection(cb->FindString(current));
-        }
+			cb->SetKey(current);
         else
         {
-            FillCombobox(wxT("SELECT spcname FROM pg_tablespace WHERE spcname <> 'pg_global' ORDER BY spcname"), cb);
             if (database)
-                cb->SetSelection(cb->FindString(database->GetDefaultTablespace()));
+                cb->SetValue(database->GetDefaultTablespace());
             else
             {
                 wxString def = connection->ExecuteScalar(wxT("SELECT current_setting('default_tablespace');"));
                 if (def == wxEmptyString || def == wxT("unset"))
                     def = wxT("pg_default");
-                cb->SetSelection(cb->FindString(def));
+                cb->SetValue(def);
             }
         }
     }
