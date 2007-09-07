@@ -31,7 +31,7 @@ pgForeignKey::~pgForeignKey()
 bool pgForeignKey::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(wxT(
-        "ALTER TABLE ") + this->GetSchema()->GetQuotedIdentifier() + qtIdent(fkTable)
+        "ALTER TABLE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(fkTable)
         + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier());
 }
 

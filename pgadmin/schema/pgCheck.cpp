@@ -31,7 +31,7 @@ pgCheck::~pgCheck()
 bool pgCheck::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
-        wxT("ALTER TABLE ") + qtIdent(fkSchema) + qtIdent(fkTable)
+        wxT("ALTER TABLE ") + qtIdent(fkSchema) + wxT(".") + qtIdent(fkTable)
         + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier());
     
 }
