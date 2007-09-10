@@ -554,7 +554,7 @@ void frmMain::ExecDrop(bool cascaded)
 	}
 
 	// Grab the parent item to re-focus on.
-	wxTreeItemId parentitem = browser->GetItemParent(item);
+	wxString parent = GetNodePath(item).BeforeLast('/');
 
     if (collection == currentObject)
         dropSingleObject(currentObject, true, cascaded);
@@ -633,8 +633,8 @@ void frmMain::ExecDrop(bool cascaded)
         Refresh(browser->GetObject(owneritem));
 
 	// Now re-focus on the parent of the deleted node
-	if (parentitem)
-		browser->SelectItem(parentitem);
+	if (!parent.IsEmpty())
+		SetCurrentNode(browser->GetRootItem(), parent);
 }
 
 
