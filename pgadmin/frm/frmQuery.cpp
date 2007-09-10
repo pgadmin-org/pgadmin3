@@ -1926,9 +1926,9 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
             explainCanvas->SetExplainString(str);
             outputPane->SetSelection(1);
         }
-
-        sqlQuery->SetFocus();
     }
+
+    sqlQuery->SetFocus();
 }
 
 void frmQuery::OnTimer(wxTimerEvent & event)
