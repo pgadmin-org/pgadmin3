@@ -556,8 +556,9 @@ void frmMain::ExecDrop(bool cascaded)
 	// Grab the parent item to re-focus on.
 	wxString parent = GetNodePath(item).BeforeLast('/');
 
+    bool success = false;
     if (collection == currentObject)
-        dropSingleObject(currentObject, true, cascaded);
+        success = dropSingleObject(currentObject, true, cascaded);
     else
     {
         if (collection && collection->IsCollection())
@@ -573,7 +574,7 @@ void frmMain::ExecDrop(bool cascaded)
 
                 if (properties->GetSelectedItemCount() == 1)
                 {
-                    dropSingleObject(data, true, cascaded);
+                    success = dropSingleObject(data, true, cascaded);
                 }
                 else
                 {
@@ -620,21 +621,25 @@ void frmMain::ExecDrop(bool cascaded)
 
                             if (index >= 0)
                                 data=collection->FindChild(browser, index);
+
+                            success = true;
                         }
                     }
                 }
-                Refresh(collection);
             }
         }
     }
 
-    // If the collection has a table, refresh that as well.
-    if (owneritem)
-        Refresh(browser->GetObject(owneritem));
+    if (success)
+    {
+        // If the collection has a table, refresh that as well.
+        if (owneritem)
+            Refresh(browser->GetObject(owneritem));
 
-	// Now re-focus on the parent of the deleted node
-	if (!parent.IsEmpty())
-		SetCurrentNode(browser->GetRootItem(), parent);
+	    // Now re-focus on the parent of the deleted node
+	    if (!parent.IsEmpty())
+	    	SetCurrentNode(browser->GetRootItem(), parent);
+    }
 }
 
 
