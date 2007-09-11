@@ -312,7 +312,9 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     sqlResult = new ctlSQLResult(outputPane, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
     explainCanvas = new ExplainCanvas(outputPane);
     msgResult = new wxTextCtrl(outputPane, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
+    msgResult->SetFont(settings->GetSQLFont());
     msgHistory = new wxTextCtrl(outputPane, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
+    msgHistory->SetFont(settings->GetSQLFont());
     outputPane->AddPage(sqlResult, _("Data Output"));
     outputPane->AddPage(explainCanvas, _("Explain"));
     outputPane->AddPage(msgResult, _("Messages"));
