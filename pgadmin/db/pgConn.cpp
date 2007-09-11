@@ -726,35 +726,40 @@ void pgConn::SetLastResultError(PGresult *res)
 
     if (!lastResultError.sql_state.IsEmpty())
     {
-        errMsg += wxT("\n");
+        if (!errMsg.EndsWith(wxT("\n")))
+            errMsg += wxT("\n");
         errMsg += _("SQL state: ");
         errMsg += lastResultError.sql_state;
     }
 
     if (!lastResultError.msg_detail.IsEmpty())
     {
-        errMsg += wxT("\n");
+        if (!errMsg.EndsWith(wxT("\n")))
+            errMsg += wxT("\n");
         errMsg += _("Detail: ");
         errMsg += lastResultError.msg_detail;
     }
 
     if (!lastResultError.msg_hint.IsEmpty())
     {
-        errMsg += wxT("\n");
+        if (!errMsg.EndsWith(wxT("\n")))
+            errMsg += wxT("\n");
         errMsg += _("Hint: ");
         errMsg += lastResultError.msg_hint;
     }
 
     if (!lastResultError.statement_pos.IsEmpty())
     {
-        errMsg += wxT("\n");
+        if (!errMsg.EndsWith(wxT("\n")))
+            errMsg += wxT("\n");
         errMsg += _("Character: ");
         errMsg += lastResultError.statement_pos;
     }
 
     if (!lastResultError.context.IsEmpty())
     {
-        errMsg += wxT("\n");
+        if (!errMsg.EndsWith(wxT("\n")))
+            errMsg += wxT("\n");
         errMsg += _("Context: ");
         errMsg += lastResultError.context;
     }
