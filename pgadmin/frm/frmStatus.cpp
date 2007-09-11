@@ -376,7 +376,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 					}
 
                     if (connection->BackendMinimumVersion(8, 3))
-					    statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("txn_start")));
+					    statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("xact_start")));
 
     				statusList->SetItem(row, colpos, qry.Left(250));
 					row++;
