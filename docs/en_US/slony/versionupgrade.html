@@ -4,17 +4,16 @@
 <title>21. Using Slony-I for PostgreSQL Upgrades</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="slonyupgrade.html" title="20.  Slony-I Upgrade">
 <link rel="next" href="testbed.html" title="22.  Slony-I Test Bed Framework">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="versionupgrade"></a>21. Using <span class="productname">Slony-I</span> for <span class="productname">PostgreSQL</span> Upgrades</h2></div></div></div>
-<a name="id2576657"></a><p> A number of people have found
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="versionupgrade">21. Using <span class="productname">Slony-I</span> for <span class="productname">PostgreSQL</span> Upgrades</h2></div></div></div>
+<a name="id2595945"></a><p> A number of people have found
 <span class="productname">Slony-I</span> useful for helping perform upgrades
 between major <span class="productname">PostgreSQL</span> releases
 (<span class="emphasis"><em> e.g.</em></span> which mandates running
@@ -49,8 +48,8 @@ procedure is rather less time consuming:
 <div class="itemizedlist"><ul type="disc">
 <li><p> Stop all applications that might modify the data</p></li>
 <li><p> Lock the set against client application updates using
-<a href="stmtlockset.html" title="LOCK SET"><span class="refentrytitle">LOCK SET</span></a></p></li>
-<li><p> Submit the Slonik command <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> to shift the origin from the old database to
+<a class="xref" href="stmtlockset.html" title="LOCK SET"><span class="refentrytitle">LOCK SET</span></a></p></li>
+<li><p> Submit the Slonik command <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> to shift the origin from the old database to
 the new one</p></li>
 <li><p> Point the applications at the new database</p></li>
 </ul></div>
@@ -62,7 +61,7 @@ minutes is likely.</p>
 <p> Note that after the origin has been shifted, updates now flow
 into the <span class="emphasis"><em>old</em></span> database.  If you discover that due
 to some unforeseen, untested condition, your application is somehow
-unhappy connecting to the new database, you could easily use <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> again to shift the origin back to the old
+unhappy connecting to the new database, you could easily use <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> again to shift the origin back to the old
 database.</p>
 <p> If you consider it particularly vital to be able to shift back
 to the old database in its state at the time of the changeover, so as
@@ -91,12 +90,12 @@ all applications that might modify the data</p></li>
 <code class="command">stop</code> the <span class="application">slon</span> daemon
 that has been feeding the subscriber running the old version of
 <span class="productname">PostgreSQL</span></p>
-<p> You may want to use <a href="stmtuninstallnode.html" title="UNINSTALL NODE"><span class="refentrytitle">UNINSTALL NODE</span></a> to
+<p> You may want to use <a class="xref" href="stmtuninstallnode.html" title="UNINSTALL NODE"><span class="refentrytitle">UNINSTALL NODE</span></a> to
 decommission this node, making it into a standalone database, or
 merely kill the <span class="application">slon</span>, depending on how
 permanent you want this all to be.</p>
 </li>
-<li><p> Then use <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> to shift the
+<li><p> Then use <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> to shift the
 origin, as before.</p></li>
 </ul></div>
 <p> Supposing a &#8220;<span class="quote">small</span>&#8221; disaster strikes, you might

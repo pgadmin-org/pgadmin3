@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.115.  storepath( integer, integer, text, integer )</title>
+<title>1.116.  storepath( integer, integer, text, integer )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.storenode-int-integer-text-boolean.html" title="1.114.  storenode_int( integer, text, boolean )">
-<link rel="next" href="function.storepath-int-integer-integer-text-integer.html" title="1.116.  storepath_int( integer, integer, text, integer )">
+<link rel="prev" href="function.storenode-int-integer-text-boolean.html" title="1.115.  storenode_int( integer, text, boolean )">
+<link rel="next" href="function.storepath-int-integer-integer-text-integer.html" title="1.117.  storepath_int( integer, integer, text, integer )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.storepath-integer-integer-text-integer"></a>1.115.        storepath( integer, integer, text, integer )
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="function.storepath-integer-integer-text-integer">1.116.        storepath( integer, integer, text, integer )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -41,7 +40,8 @@ begin
 	perform storePath_int(p_pa_server, p_pa_client,
 			p_pa_conninfo, p_pa_connretry);
 	return  createEvent('_schemadoc', 'STORE_PATH', 
-			p_pa_server, p_pa_client, p_pa_conninfo, p_pa_connretry);
+			p_pa_server::text, p_pa_client::text, 
+			p_pa_conninfo::text, p_pa_connretry::text);
 end;</pre>
 <p>
       </p>

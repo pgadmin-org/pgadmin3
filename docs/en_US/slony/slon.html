@@ -4,8 +4,8 @@
 <title>slon</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="commandreference.html" title="Part I. Core Slony-I Programs">
 <link rel="prev" href="commandreference.html" title="Part I. Core Slony-I Programs">
 <link rel="next" href="runtime-config.html" title="Run-time Configuration">
@@ -18,12 +18,12 @@
 <p><span class="application">slon</span> &#8212;    <span class="productname">Slony-I</span> daemon
   </p>
 </div>
-<a name="id2586780"></a><div class="refsynopsisdiv">
+<a name="id2606316"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">slon</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>clustername</code></em>] [<em class="replaceable"><code>conninfo</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2586828"></a><h2>Description</h2>
+<a name="id2606364"></a><h2>Description</h2>
 <p>   <span class="application">slon</span> is the daemon application that
    &#8220;<span class="quote">runs</span>&#8221; <span class="productname">Slony-I</span> replication.  A
    <span class="application">slon</span> instance must be run for each node
@@ -65,7 +65,7 @@
 <p>      The <code class="envar">sync_interval</code>, measured in milliseconds,
       indicates how often <span class="application">slon</span> should check
       to see if a <code class="command">SYNC</code> should be introduced.
-      Default is 10000 ms.  The main loop in
+      Default is 2000 ms.  The main loop in
       <code class="function">sync_Thread_main()</code> sleeps for intervals of
       <code class="envar">sync_interval</code> milliseconds between iterations.
      </p>
@@ -87,13 +87,42 @@
 <dd>
 <p>      At the end of each <code class="envar">sync_interval_timeout</code> timeout
       period, a <code class="command">SYNC</code> will be generated on the
-      &#8220;<span class="quote">local</span>&#8221; node even if there has been no replicatable
-      data updated that would have pushed out a
-      <code class="command">SYNC</code>.
-     </p>
-<p>      Default, and maximum, is 60000 ms, so that you can expect each
-      node to &#8220;<span class="quote">report in</span>&#8221; with a <code class="command">SYNC</code>
-      once each minute.
+      &#8220;<span class="quote">local</span>&#8221; node even if there has been no replicable
+      data updated that would have caused a
+      <code class="command">SYNC</code> to be generated. </p>
+<p> If application activity ceases, whether because the
+     application is shut down, or because human users have gone home
+     and stopped introducing updates, the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will iterate away,
+     waking up every <code class="envar">sync_interval</code> milliseconds, and,
+     as no updates are being made, no <code class="command">SYNC</code> events
+     would be generated.  Without this timeout parameter,
+     <span class="emphasis"><em>no</em></span> <code class="command">SYNC</code> events would be
+     generated, and it would appear that replication was falling
+     behind. </p>
+<p> The <code class="envar">sync_interval_timeout</code> value will lead
+     to eventually generating a <code class="command">SYNC</code>, even though
+     there was no real replication work to be done.  The lower that
+     this parameter is set, the more frequently <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will generate
+     <code class="command">SYNC</code> events when the application is not
+     generating replicable activity; this will have two effects:</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> The system will do more replication work.</p>
+<p> (Of course, since there is no application load on the
+      database, and no data to replicate, this load will be very easy
+      to handle.  </p>
+</li>
+<li>
+<p> Replication will appear to be kept more
+      &#8220;<span class="quote">up to date.</span>&#8221;</p>
+<p> (Of course, since there is no replicable activity going
+      on, being &#8220;<span class="quote">more up to date</span>&#8221; is something of a
+      mirage.) </p>
+</li>
+</ul></div>
+<p>      Default is 10000 ms and maximum is 120000 ms. By default, you
+      can expect each node to &#8220;<span class="quote">report in</span>&#8221; with a
+      <code class="command">SYNC</code> every 10 seconds.
      </p>
 <p>      Note that <code class="command">SYNC</code> events are also generated on
       subscriber nodes.  Since they are not actually generating any
@@ -228,7 +257,7 @@
 <dd>
 <p>      File from which to read <span class="application">slon</span> configuration.
      </p>
-<p> This configuration is  discussed  further  in <a href="runtime-config.html" title="Run-time Configuration">Slon  Run-time Configuration</a>. If there are to be a complex set of
+<p> This configuration is  discussed  further  in <a class="link" href="runtime-config.html" title="Run-time Configuration">Slon  Run-time Configuration</a>. If there are to be a complex set of
      configuration parameters, or if there are parameters you do not
      wish to be visible in the process environment variables (such as
      passwords), it may be convenient to draw many or all parameters
@@ -241,14 +270,14 @@
 <dt><span class="term"><code class="option">-a</code><em class="replaceable"><code> archive directory</code></em></span></dt>
 <dd><p>      <code class="envar">archive_dir</code> indicates a directory in which to
       place a sequence of <code class="command">SYNC</code> archive files for
-      use in <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">log shipping</a> mode.
+      use in <a class="link" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">log shipping</a> mode.
      </p></dd>
 <dt><span class="term"><code class="option">-x</code><em class="replaceable"><code> command to run on log archive</code></em></span></dt>
 <dd>
 <p>      <code class="envar">command_on_logarchive</code> indicates a command to be run 
       each time a SYNC file is successfully generated.
      </p>
-<p> See more details on <a href="slon-archive-logging.html#slon-config-command-on-logarchive">slon_conf_command_on_log_archive</a>.</p>
+<p> See more details on <a class="xref" href="slon-archive-logging.html#slon-config-command-on-logarchive">slon_conf_command_on_log_archive</a>.</p>
 </dd>
 <dt><span class="term"><code class="option">-q</code><em class="replaceable"><code> quit based on SYNC provider </code></em></span></dt>
 <dd>
@@ -279,16 +308,16 @@
 <h3 class="title">Warning</h3>
 <p> There is a concommittant downside to this lag;
      events that require all nodes to synchronize, as typically
-     happens with <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> and <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>, will have to wait for this lagging
+     happens with <a class="xref" href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> and <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>, will have to wait for this lagging
      node. </p>
 <p> That might not be ideal behaviour at failover time, or at
-     the time when you want to run <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>. </p>
+     the time when you want to run <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>. </p>
 </div>
 </dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2587768"></a><h2>Exit Status</h2>
+<a name="id2607391"></a><h2>Exit Status</h2>
 <p>   <span class="application">slon</span> returns 0 to the shell if it
    finished normally.  It returns via <code class="function">exit(-1)</code>
    (which will likely provide a return value of either 127 or 255,

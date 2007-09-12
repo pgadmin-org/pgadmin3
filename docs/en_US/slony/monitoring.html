@@ -4,23 +4,21 @@
 <title>5. Monitoring</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="subscribenodes.html" title="4. Subscribing Nodes">
 <link rel="next" href="maintenance.html" title="6. Slony-I Maintenance">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring"></a>5. Monitoring</h2></div></div></div>
-<a name="id2567059"></a><div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2567070"></a>5.1.  <span class="productname">Nagios</span> Replication Checks </h3></div></div></div>
-<a name="id2567079"></a><p> The script in the <code class="filename">tools</code> directory called
-<code class="command"> pgsql_replication_check.pl </code> represents some of the
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="monitoring">5. Monitoring</h2></div></div></div>
+<a name="id2586121"></a><div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2586131">5.1.  <span class="productname">Nagios</span> Replication Checks </h3></div></div></div>
+<a name="id2586141"></a><p> The script in the <code class="filename">tools</code> directory called
+<code class="command"> psql_replication_check.pl </code> represents some of the
 best answers arrived at in attempts to build replication tests to plug
-into the <a href="http://www.nagios.org/" target="_top"> <span class="productname">Nagios</span> </a> system
+into the <a class="ulink" href="http://www.nagios.org/" target="_top"> <span class="productname">Nagios</span> </a> system
 monitoring tool.</p>
 <p> A former script, <code class="filename">test_slony_replication.pl</code>, took a &#8220;<span class="quote">clever</span>&#8221;
 approach where a &#8220;<span class="quote">test script</span>&#8221; is periodically run, which
@@ -37,7 +35,7 @@ approach has been fragile to numerous error conditions.</p></li>
 You need to set up a <span class="productname">Nagios</span> monitoring rule for each and every node
 being monitored.  </p></li>
 </ul></div>
-<p> The new script, <code class="command">pgsql_replication_check.pl</code>,
+<p> The new script, <code class="command">psql_replication_check.pl</code>,
 takes the minimalist approach of assuming that the system is an online
 system that sees regular &#8220;<span class="quote">traffic,</span>&#8221; so that you can
 define a view specifically for the replication test called
@@ -55,10 +53,9 @@ most recently created domain.</p></li>
 that is to be monitored; that is the way <span class="productname">Nagios</span> works. </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="slonymrtg"></a>5.2.  Monitoring <span class="productname">Slony-I</span> using MRTG </h3></div></div></div>
-<a name="id2567236"></a><p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
-<a href="http://people.ee.ethz.ch/~oetiker/webtools/mrtg/" target="_top"><span class="application"> mrtg - Multi Router Traffic Grapher </span></a> to monitor <span class="productname">Slony-I</span> replication.</p>
+<div class="titlepage"><div><div><h3 class="title" id="slonymrtg">5.2.  Monitoring <span class="productname">Slony-I</span> using MRTG </h3></div></div></div>
+<a name="id2586297"></a><p> One user reported on the <span class="productname">Slony-I</span> mailing list how to configure
+<a class="ulink" href="http://people.ee.ethz.ch/~oetiker/webtools/mrtg/" target="_top"><span class="application"> mrtg - Multi Router Traffic Grapher </span></a> to monitor <span class="productname">Slony-I</span> replication.</p>
 <p> ... Since I use <span class="application">mrtg</span> to graph data
 from multiple servers I use snmp (<span class="application">net-snmp</span>
 to be exact).  On database server, I added the following line to
@@ -77,9 +74,8 @@ PageTop[db_replication_lagtime]: &lt;H1&gt;db: replication lag time&lt;/H1&gt;
 Options[db_replication_lagtime]: gauge,nopercent,growright</pre>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="testslonystate"></a>5.3.  test_slony_state</h3></div></div></div>
-<a name="id2567334"></a><p> This script does various sorts of analysis of the state of a
+<div class="titlepage"><div><div><h3 class="title" id="testslonystate">5.3.  test_slony_state</h3></div></div></div>
+<a name="id2586395"></a><p> This script does various sorts of analysis of the state of a
 <span class="productname">Slony-I</span> cluster.</p>
 <p> You specify arguments including <code class="option">database</code>,
 <code class="option">host</code>, <code class="option">user</code>,
@@ -93,7 +89,7 @@ via the environment variables used by
 <span class="application">libpq</span>, <span class="emphasis"><em>e.g.</em></span> - using
 <code class="envar">PGPORT</code>, <code class="envar">PGDATABASE</code>,
 <code class="envar">PGUSER</code>, <code class="envar">PGSERVICE</code>, and such.</p>
-<p> The script then rummages through <a href="table.sl-path.html" title="1.9.  Table: sl_path">sl_path</a>
+<p> The script then rummages through <a class="xref" href="table.sl-path.html" title="1.10.  Table: sl_path">sl_path</a>
 to find all of the nodes in the cluster, and the DSNs to allow it to,
 in turn, connect to each of them.</p>
 <p> For each node, the script examines the state of things,
@@ -101,7 +97,7 @@ including such things as:
 
 </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p> Checking <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a> for some
+<li><p> Checking <a class="xref" href="table.sl-listen.html" title="1.5.  Table: sl_listen">sl_listen</a> for some
 &#8220;<span class="quote">analytically determinable</span>&#8221; problems.  It lists paths
 that are not covered.</p></li>
 <li>
@@ -110,9 +106,9 @@ that are not covered.</p></li>
 suggests a problem.</p>
 </li>
 <li>
-<p> Summarizes the &#8220;<span class="quote">aging</span>&#8221; of table <a href="table.sl-confirm.html" title="1.2.  Table: sl_confirm">sl_confirm</a> </p>
+<p> Summarizes the &#8220;<span class="quote">aging</span>&#8221; of table <a class="xref" href="table.sl-confirm.html" title="1.3.  Table: sl_confirm">sl_confirm</a> </p>
 <p> If one or another of the nodes in the cluster hasn't reported
-back recently, that tends to lead to cleanups of tables like <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a> and <a href="table.sl-seqlog.html" title="1.12.  Table: sl_seqlog">sl_seqlog</a> not
+back recently, that tends to lead to cleanups of tables like <a class="xref" href="table.sl-log-1.html" title="1.6.  Table: sl_log_1">sl_log_1</a> and <a class="xref" href="table.sl-seqlog.html" title="1.13.  Table: sl_seqlog">sl_seqlog</a> not
 taking place.</p>
 </li>
 <li>
@@ -124,7 +120,7 @@ configured to collect command strings, as controlled by the option
 <p> If you have broken applications that hold connections open,
 this will find them.</p>
 <p> If you have broken applications that hold connections open,
-that has several unsalutory effects as <a href="faq.html#longtxnsareevil" title="Question"> described in the
+that has several unsalutory effects as <a class="link" href="faq.html#longtxnsareevil" title="Question"> described in the
 FAQ</a>.</p>
 </li>
 </ul></div>
@@ -132,11 +128,10 @@ FAQ</a>.</p>
 script; if you don't like the values, pick your favorites!</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="search-logs"></a>5.4.  <code class="command">search-logs.sh</code> </h3></div></div></div>
-<p> This script is constructed to search for <span class="productname">Slony-I</span> log files at
+<div class="titlepage"><div><div><h3 class="title" id="search-logs">5.4.  <code class="command">search-logs.sh</code> </h3></div></div></div>
+<a name="id2586598"></a><p> This script is constructed to search for <span class="productname">Slony-I</span> log files at
 a given path (<code class="envar">LOGHOME</code>), based both on the naming
-conventions used by the <a href="adminscripts.html#launchclusters" title="19.3.  launch_clusters.sh">Section 19.3, &#8220; launch_clusters.sh &#8221;</a> and <a href="adminscripts.html#slonwatchdog" title="19.1.20. slon_watchdog">Section 19.1.20, &#8220;slon_watchdog&#8221;</a> systems used for launching <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> 
+conventions used by the <a class="xref" href="adminscripts.html#launchclusters" title="19.3.  launch_clusters.sh">Section 19.3, &#8220; launch_clusters.sh &#8221;</a> and <a class="xref" href="adminscripts.html#slonwatchdog" title="19.1.20. slon_watchdog">Section 19.1.20, &#8220;slon_watchdog&#8221;</a> systems used for launching <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> 
 processes.</p>
 <p> Errors, if found, are listed, by log file, and emailed to the
 specified user (<code class="envar">LOGRECIPIENT</code>); if no email address is
@@ -147,11 +142,10 @@ evaluate (rather than the last hour). </p>
 for replication problems. </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="wikigen"></a>5.5.  Building MediaWiki Cluster Summary </h3></div></div></div>
-<p> The script <code class="filename">mkmediawiki.pl </code>, in
+<div class="titlepage"><div><div><h3 class="title" id="wikigen">5.5.  Building MediaWiki Cluster Summary </h3></div></div></div>
+<a name="id2586670"></a><p> The script <code class="filename">mkmediawiki.pl </code>, in
 <code class="filename">tools</code>, may be used to generate a cluster summary
-compatible with the popular <a href="http://www.mediawiki.org/" target="_top">MediaWiki </a> software. </p>
+compatible with the popular <a class="ulink" href="http://www.mediawiki.org/" target="_top">MediaWiki </a> software. </p>
 <p> The gentle user might use the script as follows: </p>
 <pre class="screen">~/logtail.en&gt;         mvs login -d mywiki.example.info -u "Chris Browne" -p `cat ~/.wikipass` -w wiki/index.php                     
 Doing login with host: logtail and lang: en
@@ -159,7 +153,7 @@ Doing login with host: logtail and lang: en
 ~/logtail.en&gt; mvs commit -m "More sophisticated generated Slony-I cluster docs" Slony_replication.wiki
 Doing commit Slony_replication.wiki with host: logtail and lang: en</pre>
 <p> Note that <code class="command">mvs</code> is a client written in Perl;
-on <a href="http://www.debian.org/" target="_top"> Debian GNU/Linux</a>, the
+on <a class="ulink" href="http://www.debian.org/" target="_top"> Debian GNU/Linux</a>, the
 relevant package is called
 <span class="application">libwww-mediawiki-client-perl</span>; other systems
 may have a packaged version of this under some similar name. </p>

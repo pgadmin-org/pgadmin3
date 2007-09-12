@@ -4,8 +4,8 @@
 <title>SET ADD TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtmergeset.html" title="MERGE SET">
 <link rel="next" href="stmtsetaddsequence.html" title="SET ADD SEQUENCE">
@@ -23,10 +23,10 @@
 <div class="cmdsynopsis"><p><code class="command">SET ADD TABLE (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591992"></a><h2>Description</h2>
+<a name="id2611619"></a><h2>Description</h2>
 <p> Add an existing usep table to a replication set. The set
     cannot currently be subscribed by any other node - that
-    functionality is supported by the <a href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
+    functionality is supported by the <a class="xref" href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
      SET</span></a>
     command.
      
@@ -42,7 +42,7 @@
 <p> Unique ID of the table. These ID's are not
 	 only used to uniquely identify the individual table within the
 	 replication system. The numeric value of this ID also
-	 determines the order in which the tables are locked in a <a href="stmtlockset.html" title="LOCK SET"><span class="refentrytitle">LOCK SET</span></a> command for example. So
+	 determines the order in which the tables are locked in a <a class="xref" href="stmtlockset.html" title="LOCK SET"><span class="refentrytitle">LOCK SET</span></a> command for example. So
 	 these numbers should represent any applicable table hierarchy
 	 to make sure the <span class="application">slonik</span> command
 	 scripts do not deadlock at any critical
@@ -53,13 +53,13 @@
 </dd>
 <dt><span class="term"><code class="literal"> FULLY QUALIFIED NAME = 'string' </code></span></dt>
 <dd><p> The full table name as described in
-	 <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>.</p></dd>
+	 <a class="xref" href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>.</p></dd>
 <dt><span class="term"><code class="literal"> KEY = { 'string' | SERIAL }
 	</code></span></dt>
 <dd><p>	 <span class="emphasis"><em>(Optional)</em></span> The index name that covers the
 	 unique and not null set of columns to be used as the row identifier
 	 for replication purposes. Or the keyword SERIAL to use the
-	 special column added with a previous <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a> command. Default
+	 special column added with a previous <a class="xref" href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a> command. Default
 	 is to use the table's primary key.  The index name is <span class="emphasis"><em>	  not </em></span> fully qualified; you must omit the
 	 namespace.</p></dd>
 <dt><span class="term"><code class="literal"> COMMENT = 'string' </code></span></dt>
@@ -67,10 +67,10 @@
 </dl></div>
 <p>
     </p>
-<p> This uses <a href="function.setaddtable-integer-integer-text-name-text.html" title="1.94.  setaddtable( integer, integer, text, name, text )">schemadocsetaddtable( integer, integer, text, name, text )</a>. </p>
+<p> This uses <a class="xref" href="function.setaddtable-integer-integer-text-name-text.html" title="1.95.  setaddtable( integer, integer, text, name, text )">schemadocsetaddtable( integer, integer, text, name, text )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2592138"></a><h2>Example</h2>
+<a name="id2611765"></a><h2>Example</h2>
 <pre class="programlisting">SET ADD TABLE (
     SET ID = 1,
     ORIGIN = 1,
@@ -81,7 +81,7 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2592148"></a><h2> Error Messages </h2>
+<a name="id2611775"></a><h2> Error Messages </h2>
 <p> Here are some of the error messages you may encounter if
     adding tables incorrectly: </p>
 <div class="variablelist"><dl>
@@ -128,7 +128,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2592309"></a><h2> Locking Behaviour </h2>
+<a name="id2611936"></a><h2> Locking Behaviour </h2>
 <p> On the origin node, this operation requires a brief
     exclusive lock on the table in order to alter it to add the
     replication trigger.  On subscriber nodes, corresponding locking
@@ -136,7 +136,7 @@
     event.  </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2592325"></a><h2> Version Information </h2>
+<a name="id2611952"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

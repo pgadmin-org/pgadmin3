@@ -4,21 +4,19 @@
 <title>23. Log Analysis</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="testbed.html" title="22.  Slony-I Test Bed Framework">
 <link rel="next" href="help.html" title="24. More Slony-I Help">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="loganalysis"></a>23. Log Analysis</h2></div></div></div>
-<a name="id2577658"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="loganalysis">23. Log Analysis</h2></div></div></div>
+<a name="id2597034"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
 and explanations of what they mean.</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2577674"></a>23.1. CONFIG notices</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2597049">23.1. CONFIG notices</h3></div></div></div>
 <p>These entries are pretty straightforward. They are informative
 messages about your configuration.</p>
 <p>Here are some typical entries that you will probably run into in
@@ -34,8 +32,7 @@ CONFIG storeSet: set_id=1 set_origin=1 set_comment='Set 1'
 CONFIG main: configuration complete - starting threads</pre>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2577696"></a>23.2. DEBUG Notices</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2597072">23.2. DEBUG Notices</h3></div></div></div>
 <p>Debug notices are always prefaced by the name of the thread that
 the notice originates from. You will see messages from the following
 threads:
@@ -62,15 +59,14 @@ and deleting old data.</p></dd>
 events.</p></dd>
 </dl></div>
 <p> How much information they display is controlled by
-the <code class="envar">log_level</code> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> parameter;
+the <code class="envar">log_level</code> <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> parameter;
 ERROR/WARN/CONFIG/INFO messages will always be displayed, while
 choosing increasing values from 1 to 4 will lead to additional DEBUG
 level messages being displayed. </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2577763"></a>23.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
-<a name="id2577772"></a><p> Note that as far as slon is concerned, there is no
+<div class="titlepage"><div><div><h3 class="title" id="id2597139">23.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
+<a name="id2597148"></a><p> Note that as far as slon is concerned, there is no
 &#8220;<span class="quote">master</span>&#8221; or &#8220;<span class="quote">slave.</span>&#8221; They are just
 nodes. </p>
 <p>What you can expect, initially, is to see, on both nodes, some
@@ -93,19 +89,19 @@ but recognize <span class="emphasis"><em>nothing</em></span> about what is going
 other nodes.</p>
 </li>
 <li>
-<p> Do the <a href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
+<p> Do the <a class="xref" href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
      PATH</span></a> to set up
 communications paths.  That will allow the nodes to start to become
 aware of one another.</p>
 <p> The slon logs should now start to receive events from
 &#8220;<span class="quote">foreign</span>&#8221; nodes.</p>
-<p> In version 1.0, <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a> is not set up
+<p> In version 1.0, <a class="xref" href="table.sl-listen.html" title="1.5.  Table: sl_listen">sl_listen</a> is not set up
 automatically, so things still remain quiet until you explicitly
 submit <code class="command">STORE LISTEN</code> requests. In version 1.1, the
 &#8220;<span class="quote">listen paths</span>&#8221; are set up automatically, which will much
 more quickly get the communications network up and running.  </p>
-<p> If you look at the contents of the tables <a href="table.sl-node.html" title="1.7.  Table: sl_node">sl_node</a> and <a href="table.sl-path.html" title="1.9.  Table: sl_path">sl_path</a> and <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a>, on each node, that should give a good idea
-as to where things stand.  Until the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> starts,
+<p> If you look at the contents of the tables <a class="xref" href="table.sl-node.html" title="1.8.  Table: sl_node">sl_node</a> and <a class="xref" href="table.sl-path.html" title="1.10.  Table: sl_path">sl_path</a> and <a class="xref" href="table.sl-listen.html" title="1.5.  Table: sl_listen">sl_listen</a>, on each node, that should give a good idea
+as to where things stand.  Until the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> starts,
 each node may only be partly configured.  If there are two nodes,
 there should be two entries in all three of these tables once the
 communications configuration is set up properly.  If there are fewer
@@ -114,25 +110,25 @@ missing.</p>
 </li>
 <li>
 <p> If needed (<span class="emphasis"><em>e.g.</em></span> - before version
-1.1), submit <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> requests to indicate how
+1.1), submit <a class="xref" href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> requests to indicate how
 the nodes will use the communications paths. </p>
 <p> Once this has been done, the nodes' logs should show a greater
 level of activity, with events periodically being initiated on one
 node or the other, and propagating to the other. </p>
 </li>
 <li><p> You'll set up the set
-(<a href="stmtcreateset.html" title="CREATE SET"><span class="refentrytitle">CREATE SET</span></a>), add tables
-(<a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a>), and sequences
-(<a href="stmtsetaddsequence.html" title="SET ADD SEQUENCE"><span class="refentrytitle">SET ADD SEQUENCE</span></a>), and will see relevant
-events <a href="loganalysis.html#logaddobjects" title="23.4.7.  Log Entries - Adding Objects to Sets">Section 23.4.7, &#8220; Log Entries - Adding Objects to Sets  &#8221;</a> only in the logs for the origin
+(<a class="xref" href="stmtcreateset.html" title="CREATE SET"><span class="refentrytitle">CREATE SET</span></a>), add tables
+(<a class="xref" href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a>), and sequences
+(<a class="xref" href="stmtsetaddsequence.html" title="SET ADD SEQUENCE"><span class="refentrytitle">SET ADD SEQUENCE</span></a>), and will see relevant
+events <a class="xref" href="loganalysis.html#logaddobjects" title="23.4.7.  Log Entries - Adding Objects to Sets">Section 23.4.7, &#8220; Log Entries - Adding Objects to Sets  &#8221;</a> only in the logs for the origin
 node for the set. </p></li>
 <li>
-<p> Then, when you submit the <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> request, the event should go to both
+<p> Then, when you submit the <a class="xref" href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> request, the event should go to both
 nodes. </p>
 <p> The origin node has little more to do, after that...  The
 subscriber will then have a <code class="command">COPY_SET</code> event, which
 will lead to logging information about adding each table and copying
-its data.  See <a href="loganalysis.html#logsubtime" title="23.4.4.  Log Entries At Subscription Time">Section 23.4.4, &#8220; Log Entries At Subscription Time &#8221;</a> for more
+its data.  See <a class="xref" href="loganalysis.html#logsubtime" title="23.4.4.  Log Entries At Subscription Time">Section 23.4.4, &#8220; Log Entries At Subscription Time &#8221;</a> for more
 details.</p>
 </li>
 </ul></div>
@@ -141,7 +137,7 @@ details.</p>
 <li><p> On the origin, there won't be too terribly much
 logged, just indication that some <code class="command">SYNC</code> events are
 being generated and confirmed by other nodes.
-See <a href="loganalysis.html#lognormalsync" title="23.4.6.  Log Entries Associated With Normal SYNC activity">Section 23.4.6, &#8220; Log Entries Associated With Normal SYNC activity &#8221;</a> to see the sorts of log entries to
+See <a class="xref" href="loganalysis.html#lognormalsync" title="23.4.6.  Log Entries Associated With Normal SYNC activity">Section 23.4.6, &#8220; Log Entries Associated With Normal SYNC activity &#8221;</a> to see the sorts of log entries to
 expect.</p></li>
 <li><p> On the subscriber, there will be reports of
 <code class="command">SYNC</code> events, and that the subscriber pulls data
@@ -151,25 +147,23 @@ happen frequently when the origin sees heavy updates. </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2578018"></a>23.4.  Log Messages and Implications </h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2597393">23.4.  Log Messages and Implications </h3></div></div></div>
 <p> This section lists numerous of the error messages found in
 <span class="productname">Slony-I</span>, along with a brief explanation of implications.  It is a
 fairly well comprehensive list, leaving out mostly some of
 the <code class="command">DEBUG4</code> messages that are generally
 uninteresting.</p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="logshiplog"></a>23.4.1.  Log Messages Associated with Log Shipping </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="logshiplog">23.4.1.  Log Messages Associated with Log Shipping </h4></div></div></div>
 <p> Most of these represent errors that come up if
-the <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> functionality breaks.  You may expect
+the <a class="xref" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> functionality breaks.  You may expect
 things to break if the filesystem being used for log shipping fills,
 or if permissions on that directory are wrongly set. </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: remoteWorkerThread_%d: log archive failed %s - %s\n</code> </p>
 <p> This indicates that an error was encountered trying to write a
-log shipping file.  Normally the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will retry, and hopefully
+log shipping file.  Normally the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will retry, and hopefully
 succeed. </p>
 </li>
 <li>
@@ -178,7 +172,7 @@ succeed. </p>
 </li>
 <li>
 <p><code class="command">INFO: remoteWorkerThread_%d: Run Archive Command %s</code></p>
-<p> If <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> has been configured (<code class="option">-x</code>
+<p> If <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> has been configured (<code class="option">-x</code>
 aka <code class="envar">command_on_logarchive</code>) to run a command after
 generating each log shipping archive log, this reports when that
 process is spawned using <code class="function">system()</code>. </p>
@@ -195,12 +189,11 @@ COPY SET archive file %s - %s</code></p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="ddllogs"></a>23.4.2.  Log Messages -  DDL scripts </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="ddllogs">23.4.2.  Log Messages -  DDL scripts </h4></div></div></div>
 <p> The handling of DDL is somewhat fragile, as described
-in <a href="ddlchanges.html" title="15. Database Schema Changes (DDL)">Section 15, &#8220;Database Schema Changes (DDL)&#8221;</a>; here are both informational and error
+in <a class="xref" href="ddlchanges.html" title="15. Database Schema Changes (DDL)">Section 15, &#8220;Database Schema Changes (DDL)&#8221;</a>; here are both informational and error
 messages that may occur in the progress of
-an <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> request.</p>
+an <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> request.</p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: remoteWorkerThread_%d: DDL preparation
@@ -225,7 +218,7 @@ work...</p>
 failure in DDL_SCRIPT - could not allocate %d bytes of
 memory</code></p>
 <p> This should only occur if you submit some extraordinarily large
-DDL script that makes a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> run out of memory </p>
+DDL script that makes a <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> run out of memory </p>
 </li>
 <li>
 <p><code class="command">CONFIG: remoteWorkerThread_%d: DDL Statement %d: [%s]</code></p>
@@ -289,10 +282,9 @@ a <span class="emphasis"><em>second</em></span> time?  </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2578408"></a>23.4.3.  Threading Issues </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2597789">23.4.3.  Threading Issues </h4></div></div></div>
 <p> There should not be any &#8220;<span class="quote">user-serviceable</span>&#8221; aspects
-to the <span class="productname">Slony-I</span> threading model; each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> creates a quite
+to the <span class="productname">Slony-I</span> threading model; each <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> creates a quite
 well-specified set of helper threads to manage the various database
 connections that it requires.  The only way that anything should break
 on the threading side is if you have not compiled <span class="productname">PostgreSQL</span> libraries
@@ -305,7 +297,7 @@ unable to compile <span class="productname">Slony-I</span> in the first place. <
 </li>
 <li>
 <p><code class="command">DEBUG1 remoteWorkerThread_%d: helper thread for provider %d created</code></p>
-<p> This normally happens when the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> starts: a thread is created for each node to which the local node should be listening for events.</p>
+<p> This normally happens when the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> starts: a thread is created for each node to which the local node should be listening for events.</p>
 </li>
 <li>
 <p><code class="command">DEBUG1: remoteWorkerThread_%d: helper thread for provider %d terminated </code></p>
@@ -317,12 +309,12 @@ dropped. </p>
 <p><code class="command">DEBUG1: remoteWorkerThread_%d: disconnecting
 from data provider %d </code></p>
 <p> A no-longer-used data provider may be dropped; if connection
-information is changed, the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> needs to disconnect and
+information is changed, the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> needs to disconnect and
 reconnect. </p>
 </li>
 <li>
 <p><code class="command">DEBUG2: remoteWorkerThread_%d: ignore new events due to shutdown</code></p>
-<p> If the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is shutting down, it is futile to process more events</p>
+<p> If the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is shutting down, it is futile to process more events</p>
 </li>
 <li>
 <p><code class="command">DEBUG1: remoteWorkerThread_%d: node %d - no worker thread</code></p>
@@ -332,8 +324,7 @@ should already be one... </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="logsubtime"></a>23.4.4.  Log Entries At Subscription Time </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="logsubtime">23.4.4.  Log Entries At Subscription Time </h4></div></div></div>
 <p> Subscription time is quite a special time in <span class="productname">Slony-I</span>.  If you
 have a large amount of data to be copied to subscribers, this may take
 a considerable period of time.  <span class="productname">Slony-I</span> logs a fairly considerable
@@ -350,7 +341,7 @@ how it is progressing. </p>
 </li>
 <li>
 <p><code class="command">ERROR: remoteWorkerThread_%d: set %d not found in runtime configuration </code></p>
-<p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> tried starting up a subscription; it couldn't find conninfo for the data source.  Perhaps paths are not properly propagated?</p>
+<p> <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> tried starting up a subscription; it couldn't find conninfo for the data source.  Perhaps paths are not properly propagated?</p>
 </li>
 <li>
 <p><code class="command">ERROR: remoteWorkerThread_%d: node %d has no pa_conninfo </code></p>
@@ -359,7 +350,7 @@ was <span class="emphasis"><em>wrong</em></span>...</p>
 </li>
 <li>
 <p><code class="command">ERROR: copy set %d cannot connect to provider DB node %d </code></p>
-<p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> couldn't connect to the provider.  Is the conninfo
+<p> <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> couldn't connect to the provider.  Is the conninfo
 wrong?  Or perhaps authentication is misconfigured?  Or perhaps the
 database is down?</p>
 </li>
@@ -369,15 +360,15 @@ database is down?</p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: sequenceSetValue(): sequence % not found</code></p>
-<p> Curious; the sequence object is missing.  Could someone have dropped it from the schema by hand (<span class="emphasis"><em>e.g.</em></span> - not using <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>)?</p>
+<p> Curious; the sequence object is missing.  Could someone have dropped it from the schema by hand (<span class="emphasis"><em>e.g.</em></span> - not using <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>)?</p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: subscribeSet() must be called on provider</code></p>
-<p> This function should only get called on the provider node.  <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> normally handles this right, unless one had wrong DSNs in a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script...</p>
+<p> This function should only get called on the provider node.  <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> normally handles this right, unless one had wrong DSNs in a <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script...</p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: subscribeSet(): set % not found</code></p>
-<p> Hmm.  The provider node isn't aware of this set.  Wrong parms to a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script?</p>
+<p> Hmm.  The provider node isn't aware of this set.  Wrong parms to a <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script?</p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: subscribeSet(): set origin and receiver cannot be identical</code></p>
@@ -402,11 +393,11 @@ source.  </p>
 </li>
 <li>
 <p><code class="command">Slony-I: unsubscribeSet() must be called on receiver</code></p>
-<p> Seems obvious...  This probably indicates a bad <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> admin DSN...</p>
+<p> Seems obvious...  This probably indicates a bad <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> admin DSN...</p>
 </li>
 <li>
 <p><code class="command">Slony-I: Cannot unsubscribe set % while being provider</code></p>
-<p> This should seem obvious; <a href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET"><span class="refentrytitle">UNSUBSCRIBE SET</span></a> will fail if a node has dependent subscribers for which it is the provider </p>
+<p> This should seem obvious; <a class="xref" href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET"><span class="refentrytitle">UNSUBSCRIBE SET</span></a> will fail if a node has dependent subscribers for which it is the provider </p>
 </li>
 <li>
 <p><code class="command">Slony-I: cleanupEvent(): Single node - deleting events &lt; %</code></p>
@@ -439,11 +430,11 @@ earlier than XID %s are still in progress</code></p>
 </li>
 <li>
 <p><code class="command">DEBUG2: remoteWorkerThread_%d: prepare to copy table %s </code></p>
-<p> This indicates that <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is beginning preparations to set up subscription for a table.</p>
+<p> This indicates that <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is beginning preparations to set up subscription for a table.</p>
 </li>
 <li>
 <p><code class="command">DEBUG1: remoteWorkerThread_%d: table %s will require Slony-I serial key</code></p>
-<p> Evidently this is a table defined with <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a> where <span class="productname">Slony-I</span> has to add a surrogate primary key.</p>
+<p> Evidently this is a table defined with <a class="xref" href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a> where <span class="productname">Slony-I</span> has to add a surrogate primary key.</p>
 </li>
 <li>
 <p><code class="command">ERROR: remoteWorkerThread_%d: Could not lock table %s on subscriber</code></p>
@@ -462,7 +453,7 @@ need to intervene...</p>
 </li>
 <li>
 <p><code class="command">DEBUG2: remoteWorkerThread_%d: copy table %s</code></p>
-<p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is starting to copy a table... </p>
+<p> <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is starting to copy a table... </p>
 </li>
 <li>
 <p><code class="command">DEBUG3: remoteWorkerThread_%d: table %s Slony-I serial key added local</code></p>
@@ -479,12 +470,12 @@ need to intervene...</p>
 <li><p><code class="command">DEBUG3: remoteWorkerThread_%d: table %s Slony-I serial key added local</code></p></li>
 <li>
 <p><code class="command">DEBUG2: remoteWorkerThread_%d: Begin COPY of table %s</code></p>
-<p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is about to start the COPY on both sides to copy a table... </p>
+<p> <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is about to start the COPY on both sides to copy a table... </p>
 </li>
 <li>
 <p><code class="command">ERROR: remoteWorkerThread_%d: Could not generate copy_set request for %s - %s</code></p>
 <p> This indicates that the <code class="command">delete/copy</code> requests
-failed on the subscriber.  The <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will repeat
+failed on the subscriber.  The <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will repeat
 the <code class="command">COPY_SET</code> attempt; it will probably continue to
 fail.. </p>
 </li>
@@ -551,7 +542,7 @@ Perhaps disk filled up...  </p>
 </li>
 <li>
 <p><code class="command">DEBUG1: remoteWorkerThread_%d: disconnected from provider DB</code></p>
-<p> At the end of a subscribe set event, the subscriber's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
+<p> At the end of a subscribe set event, the subscriber's <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
 will disconnect from the provider, clearing out
 connections... </p>
 </li>
@@ -566,9 +557,8 @@ connections... </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="logmergeset"></a>23.4.5.  Log Entries Associated with MERGE SET</h4></div></div></div>
-<p> These various exceptions cause <a href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
+<div class="titlepage"><div><div><h4 class="title" id="logmergeset">23.4.5.  Log Entries Associated with MERGE SET</h4></div></div></div>
+<p> These various exceptions cause <a class="xref" href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
      SET</span></a> to
 be rejected; something ought to be corrected before submitting the request again. </p>
 <div class="itemizedlist"><ul type="disc">
@@ -582,7 +572,7 @@ be rejected; something ought to be corrected before submitting the request again
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: set % does not originate on local node</code></p>
-<p> The <a href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
+<p> The <a class="xref" href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
      SET</span></a> request must be submitted to
 the origin node for the sets that are to be merged. </p>
 </li>
@@ -593,20 +583,19 @@ lists.  </p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: set % has subscriptions in progress - cannot merge</code></p>
-<p> <a href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
+<p> <a class="xref" href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
      SET</span></a> cannot proceed until all
 subscriptions have completed processing.  If this message arises, that
 indicates that the subscriber lists <span class="emphasis"><em>are</em></span> the same,
 but that one or more of the nodes has not yet completed setting up its
 subscription.  It may be that waiting a short while will permit
-resubmitting the <a href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
+resubmitting the <a class="xref" href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
      SET</span></a> request.</p>
 </li>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="lognormalsync"></a>23.4.6.  Log Entries Associated With Normal SYNC activity </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="lognormalsync">23.4.6.  Log Entries Associated With Normal SYNC activity </h4></div></div></div>
 <p> Some of these messages indicate exceptions, but
 the &#8220;<span class="quote">normal</span>&#8221; stuff represents what you should expect to
 see most of the time when replication is just plain working.</p>
@@ -631,14 +620,14 @@ normally...</p>
 <p> This means that the listener thread
 (<code class="filename">src/slon/remote_listener.c</code>) timed out when
 trying to determine what events were outstanding for it.</p>
-<p> This could occur because network connections broke, in which case restarting the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> might help. </p>
-<p> Alternatively, this might occur because the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> for this
+<p> This could occur because network connections broke, in which case restarting the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> might help. </p>
+<p> Alternatively, this might occur because the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> for this
 node has been broken for a long time, and there are an enormous number
 of entries in <code class="envar">sl_event</code> on this or other nodes for the
-node to work through, and it is taking more than <a href="slon-config-interval.html#slon-config-remote-listen-timeout">slon_conf_remote_listen_timeout</a> seconds to run the query.
+node to work through, and it is taking more than <a class="xref" href="slon-config-interval.html#slon-config-remote-listen-timeout">slon_conf_remote_listen_timeout</a> seconds to run the query.
 In older versions of <span class="productname">Slony-I</span>, that configuration parameter did not
 exist; the timeout was fixed at 300 seconds.  In newer versions, you
-might increase that timeout in the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> config file to a larger
+might increase that timeout in the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> config file to a larger
 value so that it can continue to completion.  And then investigate why
 nobody was monitoring things such that replication broke for such a
 long time... </p>
@@ -650,7 +639,7 @@ information to connect to the data provider.</p>
 </li>
 <li>
 <p><code class="command">DEBUG1: remoteWorkerThread_%d: connected to data provider %d on 'dsn'</code></p>
-<p> Excellent; the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> has connected to the provider. </p>
+<p> Excellent; the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> has connected to the provider. </p>
 </li>
 <li>
 <p><code class="command">WARN: remoteWorkerThread_%d: don't know what ev_seqno node %d confirmed for ev_origin %d</code></p>
@@ -658,7 +647,7 @@ information to connect to the data provider.</p>
 </li>
 <li>
 <p><code class="command">DEBUG1: remoteWorkerThread_%d: data provider %d only confirmed up to ev_seqno %d for ev_origin %d </code></p>
-<p> The provider for this node is a subscriber, and apparently that subscriber is a bit behind.  The <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will need to wait for the provider to catch up until it has <span class="emphasis"><em> new</em></span> data. </p>
+<p> The provider for this node is a subscriber, and apparently that subscriber is a bit behind.  The <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will need to wait for the provider to catch up until it has <span class="emphasis"><em> new</em></span> data. </p>
 </li>
 <li>
 <p><code class="command">DEBUG2: remoteWorkerThread_%d: data provider %d confirmed up to ev_seqno %s for ev_origin %d - OK</code></p>
@@ -694,7 +683,7 @@ information to connect to the data provider.</p>
 </li>
 <li>
 <p><code class="command">ERROR: remoteWorkerThread_%d: replication query did not affect one row (cmdTuples = %s) - query was: %s qualification was: %s</code></p>
-<p> If <code class="envar"> SLON_CHECK_CMDTUPLES</code> is set, <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> applies
+<p> If <code class="envar"> SLON_CHECK_CMDTUPLES</code> is set, <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> applies
 changes one tuple at a time, and verifies that each change affects
 exactly one tuple.  Apparently that wasn't the case here, which
 suggests a corruption of replication.  That's a rather bad
@@ -702,7 +691,15 @@ thing...</p>
 </li>
 <li>
 <p><code class="command">ERROR: remoteWorkerThread_%d: SYNC aborted</code></p>
-<p> If any errors have been encountered that haven't already aborted the <code class="command">SYNC</code>, this catches and aborts it.</p>
+<p>The <code class="command">SYNC</code> has been aborted. The <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will
+likely retry this <code class="command">SYNC</code> some time soon.  If the
+<code class="command">SYNC</code> continues to fail, there is some continuing
+problem, and replication will likely never catch up without
+intervention.  It may be necessary to unsubscribe/resubscribe the
+affected slave set, or, if there is only one set on the slave node, it
+may be simpler to drop and recreate the slave node.  If application
+connections may be shifted over to the master during this time,
+application downtime may not be necessary.  </p>
 </li>
 <li>
 <p><code class="command">DEBUG2: remoteWorkerThread_%d: new sl_rowid_seq value: %s</code></p>
@@ -718,7 +715,7 @@ thing...</p>
 </li>
 <li>
 <p><code class="command">ERROR: remoteWorkerThread_%d_d: large log_cmddata for actionseq %s not found</code></p>
-<p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> could not find the data for one of the &#8220;<span class="quote">very large</span>&#8221; sl_log table tuples that are pulled individually.  This shouldn't happen.</p>
+<p> <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> could not find the data for one of the &#8220;<span class="quote">very large</span>&#8221; sl_log table tuples that are pulled individually.  This shouldn't happen.</p>
 </li>
 <li>
 <p><code class="command">DEBUG2: remoteWorkerThread_%d_d:%.3f seconds until close cursor </code></p>
@@ -739,8 +736,7 @@ thing...</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="logaddobjects"></a>23.4.7.  Log Entries - Adding Objects to Sets  </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="logaddobjects">23.4.7.  Log Entries - Adding Objects to Sets  </h4></div></div></div>
 <p> These entries will be seen on an origin node's logs at the time
 you are configuring a replication set; some of them will be seen on
 subscribers at subscription time.  </p>
@@ -793,7 +789,7 @@ where the column is NULL.</p>
 <li>
 <p><code class="command">ERROR: Slony-I setAddTable_int(): table id % has already been assigned!</code></p>
 <p> The table ID value needs to be assigned uniquely
-in <a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a>; apparently you requested a value
+in <a class="xref" href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a>; apparently you requested a value
 already in use.</p>
 </li>
 <li>
@@ -827,8 +823,7 @@ already in use.</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2580076"></a>23.4.8.  Logging When Moving Objects Between Sets  </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2599481">23.4.8.  Logging When Moving Objects Between Sets  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setMoveTable_int(): table % not found</code></p>
@@ -873,8 +868,7 @@ already in use.</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2580194"></a>23.4.9.  Issues with Dropping Objects  </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2599599">23.4.9.  Issues with Dropping Objects  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setDropTable(): table % not found</code></p>
@@ -886,7 +880,7 @@ already in use.</p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I setDropTable(): set % has remote origin</code></p>
-<p> The replication set doesn't originate on this node; you probably need to specify an <code class="command">EVENT NODE</code> in the <a href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a> command. </p>
+<p> The replication set doesn't originate on this node; you probably need to specify an <code class="command">EVENT NODE</code> in the <a class="xref" href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a> command. </p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I setDropSequence_int(): sequence % not found</code></p>
@@ -903,13 +897,12 @@ already in use.</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2580277"></a>23.4.10.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
-<p> Many of these errors will occur if you submit a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
+<div class="titlepage"><div><div><h4 class="title" id="id2599682">23.4.10.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
+<p> Many of these errors will occur if you submit a <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 script that describes a reconfiguration incompatible with your
 cluster's current configuration.  Those will lead to the
-feeling: &#8220;<span class="quote">Whew, I'm glad <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> caught that for me!</span>&#8221; </p>
-<p> Some of the others lead to a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> telling itself to fall
+feeling: &#8220;<span class="quote">Whew, I'm glad <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> caught that for me!</span>&#8221; </p>
+<p> Some of the others lead to a <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> telling itself to fall
 over; all <span class="emphasis"><em>should</em></span> be well when you restart it, as
 it will read in the revised, newly-correct configuration when it
 starts up.</p>
@@ -928,7 +921,7 @@ need to reshape subscriptions so no nodes are dependent on it first. </p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: Node % is still origin of one or more sets</code></p>
-<p> You can't drop a node if it is the origin for a set!  Use <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> or <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> first. </p>
+<p> You can't drop a node if it is the origin for a set!  Use <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> or <a class="xref" href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> first. </p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: cannot failover - node % has no path to the backup node</code></p>
@@ -962,19 +955,18 @@ forwarding turned on. </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2580452"></a>23.4.11.  Log Switching </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2599857">23.4.11.  Log Switching </h4></div></div></div>
 <p> These messages relate to the new-in-1.2 facility whereby
 <span class="productname">Slony-I</span> periodically switches back and forth between storing data
 in <code class="envar">sl_log_1</code> and <code class="envar">sl_log_2</code>.</p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">Slony-I: Logswitch to sl_log_2 initiated'</code></p>
-<p> Indicates that <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is in the process of switching over to this log table.</p>
+<p> Indicates that <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is in the process of switching over to this log table.</p>
 </li>
 <li>
 <p><code class="command">Slony-I: Logswitch to sl_log_1 initiated'</code></p>
-<p> Indicates that <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is in the process of switching over to this log table.</p>
+<p> Indicates that <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is in the process of switching over to this log table.</p>
 </li>
 <li>
 <p><code class="command">Previous logswitch still in progress</code></p>
@@ -995,14 +987,13 @@ to halt...</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2580556"></a>23.4.12.  Miscellanea </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2599961">23.4.12.  Miscellanea </h4></div></div></div>
 <p> Perhaps these messages should be categorized further; that
 remains a task for the documentors.</p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slonik version: @MODULEVERSION@ != Slony-I version in PG build %</code></p>
-<p> This is raised in <code class="function">checkmoduleversion()</code> if there is a mismatch between the version of <span class="productname">Slony-I</span> as reported by <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> versus what the <span class="productname">PostgreSQL</span> build has.</p>
+<p> This is raised in <code class="function">checkmoduleversion()</code> if there is a mismatch between the version of <span class="productname">Slony-I</span> as reported by <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> versus what the <span class="productname">PostgreSQL</span> build has.</p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: registry key % is not an int4 value</code></p>
@@ -1018,11 +1009,11 @@ remains a task for the documentors.</p>
 </li>
 <li>
 <p><code class="command">NOTICE: Slony-I: cleanup stale sl_nodelock entry for pid=%</code></p>
-<p> This will occur when a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> starts up after another has crashed; this is routine cleanup.</p>
+<p> This will occur when a <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> starts up after another has crashed; this is routine cleanup.</p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: This node is already initialized</code></p>
-<p> This would typically happen if you submit <a href="stmtstorenode.html" title="STORE NODE"><span class="refentrytitle">STORE NODE</span></a> gainst a node that has already been set up with the <span class="productname">Slony-I</span> schema. </p>
+<p> This would typically happen if you submit <a class="xref" href="stmtstorenode.html" title="STORE NODE"><span class="refentrytitle">STORE NODE</span></a> gainst a node that has already been set up with the <span class="productname">Slony-I</span> schema. </p>
 </li>
 <li>
 <p><code class="command">ERROR: Slony-I: node % not found</code></p>
@@ -1056,7 +1047,7 @@ comes in concurrently from two sources... </p>
 </li>
 <li>
 <p><code class="command">DEBUG2: remoteWorkerThread_%d: unknown node %d</code></p>
-<p> Happens if the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is unaware of this node; probably a sign
+<p> Happens if the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is unaware of this node; probably a sign
 of <code class="command">STORE_NODE</code> requests not
 propagating... </p>
 </li>

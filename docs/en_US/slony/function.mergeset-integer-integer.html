@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.77.  mergeset( integer, integer )</title>
+<title>1.78.  mergeset( integer, integer )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.logtrigger.html" title="1.76.  logtrigger( )">
-<link rel="next" href="function.mergeset-int-integer-integer.html" title="1.78.  mergeset_int( integer, integer )">
+<link rel="prev" href="function.logtrigger.html" title="1.77.  logtrigger( )">
+<link rel="next" href="function.mergeset-int-integer-integer.html" title="1.79.  mergeset_int( integer, integer )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.mergeset-integer-integer"></a>1.77.        mergeset( integer, integer )
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="function.mergeset-integer-integer">1.78.        mergeset( integer, integer )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -92,12 +91,27 @@ begin
 	end if;
 
 	-- ----
+	-- Check that all ENABLE_SUBSCRIPTION events for the set are confirmed
+	-- ----
+	if exists (select true from sl_event
+			where ev_type = 'ENABLE_SUBSCRIPTION'
+			and ev_data1 = p_add_id::text
+			and ev_seqno &gt; (select max(con_seqno) from sl_confirm
+					where con_origin = ev_origin
+					and con_received::text = ev_data3))
+	then
+		raise exception 'Slony-I: set % has subscriptions in progress - cannot merge',
+				p_add_id;
+	end if;
+			  
+
+	-- ----
 	-- Create a SYNC event, merge the sets, create a MERGE_SET event
 	-- ----
 	perform createEvent('_schemadoc', 'SYNC', NULL);
 	perform mergeSet_int(p_set_id, p_add_id);
 	return  createEvent('_schemadoc', 'MERGE_SET', 
-			p_set_id, p_add_id);
+			p_set_id::text, p_add_id::text);
 end;</pre>
 <p>
       </p>

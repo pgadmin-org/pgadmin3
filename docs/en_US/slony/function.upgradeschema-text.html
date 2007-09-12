@@ -1,18 +1,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.133.  upgradeschema( text )</title>
+<title>1.134.  upgradeschema( text )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.updatereloid-integer-integer.html" title="1.132.  updatereloid( integer, integer )">
+<link rel="prev" href="function.updatereloid-integer-integer.html" title="1.133.  updatereloid( integer, integer )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.upgradeschema-text"></a>1.133.        upgradeschema( text )
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="function.upgradeschema-text">1.134.        upgradeschema( text )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -100,7 +99,7 @@ begin
 	-- ----
 	-- Changes for 1.2
 	-- ----
-	if p_old IN ('1.0.2', '1.0.5', '1.0.6', '1.1.0', '1.1.1', '1.1.2', '1.1.3') then
+	if p_old IN ('1.0.2', '1.0.5', '1.0.6', '1.1.0', '1.1.1', '1.1.2', '1.1.3','1.1.5', '1.1.6', '1.1.7', '1.1.8', '1.1.9') then
 		-- Add new table sl_registry
 		execute 'create table sl_registry (
 						reg_key			text primary key,
@@ -112,12 +111,9 @@ begin
                 execute 'alter table sl_confirm set without oids;';
                 execute 'alter table sl_event set without oids;';
                 execute 'alter table sl_listen set without oids;';
-                execute 'alter table sl_log_1 set without oids;';
-                execute 'alter table sl_log_2 set without oids;';
                 execute 'alter table sl_node set without oids;';
                 execute 'alter table sl_nodelock set without oids;';
                 execute 'alter table sl_path set without oids;';
-                execute 'alter table sl_seqlog set without oids;';
                 execute 'alter table sl_sequence set without oids;';
                 execute 'alter table sl_set set without oids;';
                 execute 'alter table sl_setsync set without oids;';
@@ -126,6 +122,21 @@ begin
                 execute 'alter table sl_trigger set without oids;';
 	end if;
 
+	-- ----
+	-- Changes for 1.2.11
+	-- ----
+	if p_old IN ('1.0.2', '1.0.5', '1.0.6', '1.1.0', '1.1.1', '1.1.2', '1.1.3','1.1.5', '1.1.6', '1.1.7', '1.1.8', '1.1.9', '1.2.0', '1.2.1', '1.2.2', '1.2.3', '1.2.4', '1.2.5', '1.2.6', '1.2.7', '1.2.8', '1.2.9', '1.2.10') then
+		-- Add new table sl_archive_counter
+		execute 'create table sl_archive_counter (
+						ac_num			bigint,
+						ac_timestamp	timestamp
+					) without oids';
+		execute 'insert into sl_archive_counter
+					(ac_num, ac_timestamp) values (0, ''epoch''::timestamp)';
+	end if;
+
+	-- In any version, make sure that the xxidin() functions are defined STRICT
+	perform make_function_strict ('xxidin', '(cstring)');
 	return p_old;
 end;</pre>
 <p>

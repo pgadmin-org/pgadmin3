@@ -4,17 +4,16 @@
 <title>2. Replicating Your First Database</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="next" href="slonstart.html" title="3. Slon daemons">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="firstdb"></a>2. Replicating Your First Database</h2></div></div></div>
-<a name="id2565730"></a><p>In this example, we will be replicating a brand new
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="firstdb">2. Replicating Your First Database</h2></div></div></div>
+<a name="id2584810"></a><p>In this example, we will be replicating a brand new
 <span class="application">pgbench</span> database.  The mechanics of
 replicating an existing database are covered here, however we
 recommend that you learn how <span class="productname">Slony-I</span> functions by using a fresh new
@@ -76,13 +75,11 @@ in an error similar to the following:</p>
 <p><code class="command">ERROR  remoteListenThread_1: db_getLocalNodeId() returned 2 - wrong database?</code></p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2565982"></a>2.1. Creating the <span class="application">pgbench</span> user</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2585062">2.1. Creating the <span class="application">pgbench</span> user</h3></div></div></div>
 <p><code class="command">createuser -A -D $PGBENCHUSER</code></p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2565998"></a>2.2. Preparing the databases</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2585078">2.2. Preparing the databases</h3></div></div></div>
 <pre class="programlisting">createdb -O $PGBENCHUSER -h $MASTERHOST $MASTERDBNAME
 createdb -O $PGBENCHUSER -h $SLAVEHOST $SLAVEDBNAME
 pgbench -i -s 1 -U $PGBENCHUSER -h $MASTERHOST $MASTERDBNAME</pre>
@@ -115,16 +112,14 @@ each processing 1000 transactions against the <span class="application">pgbench<
 database running on localhost as the pgbench user.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2566108"></a>2.3. Configuring the Database for Replication.</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2585189">2.3. Configuring the Database for Replication.</h3></div></div></div>
 <p>Creating the configuration tables, stored procedures, triggers
-and configuration is all done through the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
+and configuration is all done through the <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 tool. It is a specialized scripting aid that mostly calls stored
 procedures in the master/slave (node) databases. </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2566124"></a>2.3.1. Using the altperl scripts</h4></div></div></div>
-<p>Using the <a href="adminscripts.html#altperl" title="19.1. altperl Scripts">Section 19.1, &#8220;altperl Scripts&#8221;</a> scripts is an easy way to get started.  The
+<div class="titlepage"><div><div><h4 class="title" id="id2585204">2.3.1. Using the altperl scripts</h4></div></div></div>
+<a name="id2585208"></a><p>Using the <a class="xref" href="adminscripts.html#altperl" title="19.1. altperl Scripts">Section 19.1, &#8220;altperl Scripts&#8221;</a> scripts is an easy way to get started.  The
 <code class="command">slonik_build_env</code> script will generate output providing
 details you need to  omplete building a <code class="filename">slon_tools.conf</code>. 
 An example <code class="filename">slon_tools.conf</code> is provided in the distribution
@@ -147,10 +142,9 @@ $ slonik_subscribe_set  2 | slonik</pre>
 of documentation if you'd like, which documents more of a &#8220;<span class="quote">bare-metal</span>&#8221; approach.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2566179"></a>2.3.2. Using slonik command directly</h4></div></div></div>
-<p>The traditional approach to administering slony is to craft slonik
-commands directly. An example of this given here. </p>
+<div class="titlepage"><div><div><h4 class="title" id="id2585265">2.3.2. Using slonik command directly</h4></div></div></div>
+<p>The traditional approach to administering slony is to craft
+slonik commands directly. An example of this given here. </p>
 <p> The script to create
 the initial configuration for the simple master-slave setup of our
 <span class="application">pgbench</span> database looks like this:</p>
@@ -224,11 +218,11 @@ replication daemons.</p>
 
 </p>
 <pre class="programlisting">slon $CLUSTERNAME "dbname=$SLAVEDBNAME user=$REPLICATIONUSER host=$SLAVEHOST"</pre>
-<p>Even though we have the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> running on both
+<p>Even though we have the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> running on both
 the master and slave, and they are both spitting out diagnostics and
 other messages, we aren't replicating any data yet.  The notices you
 are seeing is the synchronization of cluster configurations between
-the 2 <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes.</p>
+the 2 <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes.</p>
 <p>To start replicating the 4 <span class="application">pgbench</span>
 tables (set 1) from the master (node id 1) the the slave (node id 2),
 execute the following script.
@@ -313,7 +307,7 @@ fi</pre>
 the process in the <span class="productname">Slony-I</span> source code tree in a file called
 <code class="filename">slony-I-basic-mstr-slv.txt</code>.</p>
 <p>If this script returns <code class="command">FAILED</code> please contact the
-developers at <a href="http://slony.info/" target="_top">http://slony.info/</a></p>
+developers at <a class="ulink" href="http://slony.info/" target="_top">http://slony.info/</a></p>
 </div>
 </div>
 </div></body>

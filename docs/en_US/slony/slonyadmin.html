@@ -4,9 +4,9 @@
 <title>Slony-I Administration</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
-<link rel="up" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
+<link rel="up" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="prev" href="definingsets.html" title="7. Defining Slony-I Replication Sets">
 <link rel="next" href="firstdb.html" title="2. Replicating Your First Database">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
@@ -14,8 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" lang="en" id="slonyadmin">
 <div class="titlepage">
 <div>
-<div><h2 class="title">
-<a name="slonyadmin"></a> Slony-I Administration </h2></div>
+<div><h2 class="title"> Slony-I Administration </h2></div>
 <div><h3 class="corpauthor">The PostgreSQL Global Development Group</h3></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Christopher</span> <span class="surname">Browne</span>
@@ -29,15 +28,15 @@
 <dt><span class="sect1"><a href="slonyadmin.html#bestpractices">1.  <span class="productname">Slony-I</span> &#8220;<span class="quote">Best Practices</span>&#8221; </a></span></dt>
 <dt><span class="sect1"><a href="firstdb.html">2. Replicating Your First Database</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="firstdb.html#id2565982">2.1. Creating the <span class="application">pgbench</span> user</a></span></dt>
-<dt><span class="sect2"><a href="firstdb.html#id2565998">2.2. Preparing the databases</a></span></dt>
-<dt><span class="sect2"><a href="firstdb.html#id2566108">2.3. Configuring the Database for Replication.</a></span></dt>
+<dt><span class="sect2"><a href="firstdb.html#id2585062">2.1. Creating the <span class="application">pgbench</span> user</a></span></dt>
+<dt><span class="sect2"><a href="firstdb.html#id2585078">2.2. Preparing the databases</a></span></dt>
+<dt><span class="sect2"><a href="firstdb.html#id2585189">2.3. Configuring the Database for Replication.</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="slonstart.html">3. Slon daemons</a></span></dt>
 <dt><span class="sect1"><a href="subscribenodes.html">4. Subscribing Nodes</a></span></dt>
 <dt><span class="sect1"><a href="monitoring.html">5. Monitoring</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="monitoring.html#id2567070">5.1.  <span class="productname">Nagios</span> Replication Checks </a></span></dt>
+<dt><span class="sect2"><a href="monitoring.html#id2586131">5.1.  <span class="productname">Nagios</span> Replication Checks </a></span></dt>
 <dt><span class="sect2"><a href="monitoring.html#slonymrtg">5.2.  Monitoring <span class="productname">Slony-I</span> using MRTG </a></span></dt>
 <dt><span class="sect2"><a href="monitoring.html#testslonystate">5.3.  test_slony_state</a></span></dt>
 <dt><span class="sect2"><a href="monitoring.html#search-logs">5.4.  <code class="command">search-logs.sh</code> </a></span></dt>
@@ -45,60 +44,60 @@
 </dl></dd>
 <dt><span class="sect1"><a href="maintenance.html">6. <span class="productname">Slony-I</span> Maintenance</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="maintenance.html#id2567864">6.1.  Watchdogs: Keeping Slons Running</a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2586944">6.1.  Watchdogs: Keeping Slons Running</a></span></dt>
 <dt><span class="sect2"><a href="maintenance.html#gensync">6.2. Parallel to Watchdog: generate_syncs.sh</a></span></dt>
-<dt><span class="sect2"><a href="maintenance.html#id2568044">6.3. Testing <span class="productname">Slony-I</span> State </a></span></dt>
-<dt><span class="sect2"><a href="maintenance.html#id2568132">6.4. Replication Test Scripts </a></span></dt>
-<dt><span class="sect2"><a href="maintenance.html#id2568323">6.5.  Other Replication Tests </a></span></dt>
-<dt><span class="sect2"><a href="maintenance.html#id2568404">6.6.  Log Files</a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2587124">6.3. Testing <span class="productname">Slony-I</span> State </a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2587212">6.4. Replication Test Scripts </a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2587403">6.5.  Other Replication Tests </a></span></dt>
+<dt><span class="sect2"><a href="maintenance.html#id2587484">6.6.  Log Files</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="reshape.html">7. Reshaping a Cluster</a></span></dt>
 <dt><span class="sect1"><a href="failover.html">8. Doing switchover and failover with <span class="productname">Slony-I</span></a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="failover.html#id2568630">8.1. Foreword</a></span></dt>
-<dt><span class="sect2"><a href="failover.html#id2568690">8.2.  Controlled Switchover</a></span></dt>
-<dt><span class="sect2"><a href="failover.html#id2568806">8.3.  Failover</a></span></dt>
-<dt><span class="sect2"><a href="failover.html#id2569010">8.4.  Automating <code class="command"> FAIL OVER </code> </a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2587710">8.1. Foreword</a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2587770">8.2.  Controlled Switchover</a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2587886">8.3.  Failover</a></span></dt>
+<dt><span class="sect2"><a href="failover.html#id2588090">8.4.  Automating <code class="command"> FAIL OVER </code> </a></span></dt>
 <dt><span class="sect2"><a href="failover.html#rebuildnode1">8.5. After Failover, Reconfiguring
 Former Origin</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="listenpaths.html">9. <span class="productname">Slony-I</span> listen paths</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="listenpaths.html#id2569384">9.1. How listening can break</a></span></dt>
-<dt><span class="sect2"><a href="listenpaths.html#id2569462">9.2. How the listen configuration should look</a></span></dt>
+<dt><span class="sect2"><a href="listenpaths.html#id2588464">9.1. How listening can break</a></span></dt>
+<dt><span class="sect2"><a href="listenpaths.html#id2588548">9.2. How the listen configuration should look</a></span></dt>
 <dt><span class="sect2"><a href="listenpaths.html#autolisten">9.3. Automated Listen Path Generation</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="plainpaths.html">10.  <span class="productname">Slony-I</span> Path Communications</a></span></dt>
 <dt><span class="sect1"><a href="locking.html">11. Locking Issues</a></span></dt>
 <dt><span class="sect1"><a href="addthings.html">12. A Task-Oriented View of <span class="productname">Slony-I</span></a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="addthings.html#id2570760">12.1.  Adding a table to replication </a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2570900">12.2.  How to add columns to a replicated table </a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2571078">12.3.  How to remove replication for a node</a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2571233">12.4.  Adding A Node To Replication</a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2571417">12.5.  How do I reshape subscriptions?</a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2571448">12.6.  How do I use Log Shipping? </a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2571468">12.7.  How do I know replication is working?</a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2571539">12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2571560">12.9.  What happens when I fail over?</a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2571572">12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </a></span></dt>
-<dt><span class="sect2"><a href="addthings.html#id2571624">12.11.  How Do I Do A &#8220;<span class="quote">Full Sync</span>&#8221; On A Table? </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2589824">12.1.  Adding a table to replication </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2589971">12.2.  How to add columns to a replicated table </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2590155">12.3.  How to remove replication for a node</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2590310">12.4.  Adding A Node To Replication</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2590494">12.5.  How do I reshape subscriptions?</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2590525">12.6.  How do I use Log Shipping? </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2590545">12.7.  How do I know replication is working?</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2590616">12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2590637">12.9.  What happens when I fail over?</a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2590649">12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </a></span></dt>
+<dt><span class="sect2"><a href="addthings.html#id2590701">12.11.  How Do I Do A &#8220;<span class="quote">Full Sync</span>&#8221; On A Table? </a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="dropthings.html">13. Dropping things from <span class="productname">Slony-I</span> Replication</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="dropthings.html#id2571758">13.1. Dropping A Whole Node</a></span></dt>
-<dt><span class="sect2"><a href="dropthings.html#id2571843">13.2. Dropping An Entire Set</a></span></dt>
-<dt><span class="sect2"><a href="dropthings.html#id2571937">13.3. Unsubscribing One Node From One Set</a></span></dt>
-<dt><span class="sect2"><a href="dropthings.html#id2572009">13.4.  Dropping A Table From Replication</a></span></dt>
-<dt><span class="sect2"><a href="dropthings.html#id2572145">13.5. Dropping A Sequence From Replication</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2590835">13.1. Dropping A Whole Node</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2590920">13.2. Dropping An Entire Set</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2591014">13.3. Unsubscribing One Node From One Set</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2591086">13.4.  Dropping A Table From Replication</a></span></dt>
+<dt><span class="sect2"><a href="dropthings.html#id2591222">13.5. Dropping A Sequence From Replication</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="logshipping.html">14. Log Shipping - <span class="productname">Slony-I</span> with Files</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="logshipping.html#id2572803">14.1.  Usage Hints </a></span></dt></dl></dd>
+<dd><dl><dt><span class="sect2"><a href="logshipping.html#id2591879">14.1.  Usage Hints </a></span></dt></dl></dd>
 <dt><span class="sect1"><a href="ddlchanges.html">15. Database Schema Changes (DDL)</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ddlchanges.html#id2573523">15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
+<dt><span class="sect2"><a href="ddlchanges.html#id2592652">15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
 process using <code class="command">EXECUTE SCRIPT</code></a></span></dt>
-<dt><span class="sect2"><a href="ddlchanges.html#id2573700">15.2.  Testing DDL Changes </a></span></dt>
+<dt><span class="sect2"><a href="ddlchanges.html#id2592829">15.2.  Testing DDL Changes </a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="usingslonik.html">16. Using Slonik</a></span></dt>
 <dt><span class="sect1"><a href="slonikshell.html">17.  Embedding Slonik in Shell Scripts </a></span></dt>
@@ -110,7 +109,7 @@ Functions </a></span></dt>
 <dt><span class="sect2"><a href="adminscripts.html#mkslonconf">19.2. mkslonconf.sh</a></span></dt>
 <dt><span class="sect2"><a href="adminscripts.html#launchclusters">19.3.  launch_clusters.sh </a></span></dt>
 <dt><span class="sect2"><a href="adminscripts.html#extractschema">19.4.  <code class="filename"> slony1_extract_schema.sh </code> </a></span></dt>
-<dt><span class="sect2"><a href="adminscripts.html#id2575721">19.5.  slony-cluster-analysis </a></span></dt>
+<dt><span class="sect2"><a href="adminscripts.html#id2595011">19.5.  slony-cluster-analysis </a></span></dt>
 <dt><span class="sect2"><a href="adminscripts.html#configurereplication">19.6.  Generating slonik scripts
 using <code class="filename">configure-replication.sh</code> </a></span></dt>
 <dt><span class="sect2"><a href="adminscripts.html#bsd-ports-profile">19.7.  <code class="filename"> slon.in-profiles </code> </a></span></dt>
@@ -120,19 +119,18 @@ using <code class="filename">configure-replication.sh</code> </a></span></dt>
 <dt><span class="sect1"><a href="testbed.html">22.  <span class="productname">Slony-I</span> Test Bed Framework </a></span></dt>
 <dt><span class="sect1"><a href="loganalysis.html">23. Log Analysis</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="loganalysis.html#id2577674">23.1. CONFIG notices</a></span></dt>
-<dt><span class="sect2"><a href="loganalysis.html#id2577696">23.2. DEBUG Notices</a></span></dt>
-<dt><span class="sect2"><a href="loganalysis.html#id2577763">23.3.  How to read <span class="productname">Slony-I</span> logs </a></span></dt>
-<dt><span class="sect2"><a href="loganalysis.html#id2578018">23.4.  Log Messages and Implications </a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2597049">23.1. CONFIG notices</a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2597072">23.2. DEBUG Notices</a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2597139">23.3.  How to read <span class="productname">Slony-I</span> logs </a></span></dt>
+<dt><span class="sect2"><a href="loganalysis.html#id2597393">23.4.  Log Messages and Implications </a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="help.html">24. More <span class="productname">Slony-I</span> Help</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="help.html#id2580976">24.1.  Other Information Sources</a></span></dt></dl></dd>
+<dd><dl><dt><span class="sect2"><a href="help.html#id2600381">24.1.  Other Information Sources</a></span></dt></dl></dd>
 </dl>
 </div>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="bestpractices"></a>1.  <span class="productname">Slony-I</span> &#8220;<span class="quote">Best Practices</span>&#8221; </h2></div></div></div>
-<a name="id2563830"></a><p> It is common for managers to have a desire to operate systems
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="bestpractices">1.  <span class="productname">Slony-I</span> &#8220;<span class="quote">Best Practices</span>&#8221; </h2></div></div></div>
+<a name="id2582910"></a><p> It is common for managers to have a desire to operate systems
 using some available, documented set of &#8220;<span class="quote">best practices.</span>&#8221;
 Documenting that sort of thing is essential to ISO 9000, ISO 9001, and
 other sorts of organizational certifications. </p>
@@ -141,7 +139,7 @@ practices</span>&#8221; by mentioning that each organization that uses
 <span class="productname">Slony-I</span> is unique, and there may be a need for local policies to
 reflect unique local operating characteristics.  It is for that reason
 that <span class="productname">Slony-I</span> does <span class="emphasis"><em>not</em></span> impose its own policies
-for such things as <a href="failover.html" title="8. Doing switchover and failover with Slony-I"> failover </a>; those
+for such things as <a class="link" href="failover.html" title="8. Doing switchover and failover with Slony-I"> failover </a>; those
 will need to be determined based on the overall shape of your network,
 of your set of database servers, and of your usage patterns for those
 servers. </p>
@@ -170,12 +168,12 @@ of components that need to match. </p>
 <p> If a slonik script does not run as expected in a
 first attempt, it would be foolhardy to attempt to run it again until
 a problem has been found and resolved.  </p>
-<p> There are a very few slonik commands such as <a href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
+<p> There are a very few slonik commands such as <a class="xref" href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
      PATH</span></a> that behave in a nearly idempotent manner; if
-you run <a href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
+you run <a class="xref" href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
      PATH</span></a> again, that merely updates
 table <code class="envar">sl_path</code> with the same value.  </p>
-<p> In contrast <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> behaves in two
+<p> In contrast <a class="xref" href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> behaves in two
 <span class="emphasis"><em>very</em></span> different ways depending on whether the
 subscription has been activated yet or not; if initiating the
 subscription didn't work at a first attempt, submitting the request
@@ -184,7 +182,7 @@ again <span class="emphasis"><em>won't</em></span> help make it happen. </p>
 <li>
 <p> Principle: Use an unambiguous, stable time zone such
 as UTC or GMT.</p>
-<p> Users have run into problems with <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> functioning properly
+<p> Users have run into problems with <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> functioning properly
 when their system uses a time zone that <span class="productname">PostgreSQL</span> was unable to
 recognize such as CUT0 or WST.  It is necessary that you use a
 timezone that <span class="productname">PostgreSQL</span> can recognize correctly.  It is furthermore
@@ -195,11 +193,11 @@ Daylight Savings Time. </p>
 <code class="command"><code class="envar">TZ</code>=GMT</code>, and to make sure that
 systems are &#8220;<span class="quote">in sync</span>&#8221; by using NTP to synchronize clocks
 throughout the environment. </p>
-<p> See also <a href="requirements.html#times" title="3.4.  Time Synchronization">Section 3.4, &#8220; Time Synchronization&#8221;</a>.</p>
+<p> See also <a class="xref" href="requirements.html#times" title="3.4.  Time Synchronization">Section 3.4, &#8220; Time Synchronization&#8221;</a>.</p>
 </li>
 <li>
 <p> Principle: Long running transactions are Evil </p>
-<p> The FAQ has an entry on <a href="faq.html#pglistenerfull" title="Question"> growth
+<p> The FAQ has an entry on <a class="link" href="faq.html#pglistenerfull" title="Question"> growth
 of <code class="envar">pg_listener</code> </a> which discusses this in a fair bit of detail;
 the long and short is that long running transactions have numerous ill
 effects.  They are particularly troublesome on an
@@ -213,12 +211,12 @@ replication updates are relatively infrequent, which should mean that
 busy systems won't generate many dead tuples in that table</p></li>
 <li><p> The system will periodically rotate (using
 <code class="command">TRUNCATE</code> to clean out the old table) between the
-two log tables, <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a> and <a href="table.sl-log-2.html" title="1.6.  Table: sl_log_2">sl_log_2</a>, preventing unbounded growth of dead space
+two log tables, <a class="xref" href="table.sl-log-1.html" title="1.6.  Table: sl_log_1">sl_log_1</a> and <a class="xref" href="table.sl-log-2.html" title="1.7.  Table: sl_log_2">sl_log_2</a>, preventing unbounded growth of dead space
 there.  </p></li>
 </ul></div>
 </li>
 <li>
-<p> <a href="failover.html" title="8. Doing switchover and failover with Slony-I"> Failover </a> policies
+<p> <a class="link" href="failover.html" title="8. Doing switchover and failover with Slony-I"> Failover </a> policies
 should be planned for ahead of time.  </p>
 <p> This may simply involve thinking about what the priority lists
 should be of what should fail to what, as opposed to trying to
@@ -232,9 +230,9 @@ environment and the set of applications running there, so you would
 need to generate your own such documents.  This is one of the vital
 components of any disaster recovery preparations.</p>
 </li>
-<li><p> <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> should be used to allow
+<li><p> <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> should be used to allow
 preventative maintenance to prevent problems from becoming serious
-enough to require <a href="failover.html" title="8. Doing switchover and failover with Slony-I"> failover </a>. </p></li>
+enough to require <a class="link" href="failover.html" title="8. Doing switchover and failover with Slony-I"> failover </a>. </p></li>
 <li>
 <p> <code class="command">VACUUM</code> policy needs to be
 carefully defined.</p>
@@ -244,85 +242,85 @@ Evil.</span>&#8221; <code class="command">VACUUM</code>s are no exception in thi
 transaction with all the known ill effects.</p>
 </li>
 <li>
-<p> Running all of the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemons on a central
+<p> Running all of the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemons on a central
 server for each network has proven preferable. </p>
-<p> Each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> should run on a host on the same local network as
+<p> Each <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> should run on a host on the same local network as
 the node that it is servicing, as it does a <span class="emphasis"><em>lot</em></span>
 of communications with its database, and that connection needs to be
 as reliable as possible.  </p>
 <p> In theory, the &#8220;<span class="quote">best</span>&#8221; speed might be expected to
-come from running the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> on the database server that it is
+come from running the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> on the database server that it is
 servicing. </p>
-<p> In practice, strewing <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes and configuration
+<p> In practice, strewing <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes and configuration
 across a dozen servers turns out to be inconvenient to manage.</p>
 </li>
 <li>
-<p> <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes should run in the same
+<p> <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes should run in the same
 &#8220;<span class="quote">network context</span>&#8221; as the node that each is responsible
 for managing so that the connection to that node is a
 &#8220;<span class="quote">local</span>&#8221; one.  Do <span class="emphasis"><em>not</em></span> run such links
 across a WAN. </p>
 <p> A WAN outage can leave database connections
-&#8220;<span class="quote">zombied</span>&#8221;, and typical TCP/IP behaviour <a href="faq.html#multipleslonconnections" title="Question"> will allow those connections to
+&#8220;<span class="quote">zombied</span>&#8221;, and typical TCP/IP behaviour <a class="link" href="faq.html#multipleslonconnections" title="Question"> will allow those connections to
 persist, preventing a slon restart for around two hours. </a></p>
 <p> It is not difficult to remedy this; you need only <code class="command">kill
 SIGINT</code> the offending backend connection.  But by running the
-<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> locally, you will generally not be vulnerable to this
+<a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> locally, you will generally not be vulnerable to this
 condition. </p>
 </li>
 <li>
 <p> Before getting too excited about having fallen into
-some big problem, consider killing and restarting all the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
+some big problem, consider killing and restarting all the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
 processes.  Historically, this has frequently been able to
 resolve &#8220;<span class="quote">stickiness.</span>&#8221; </p>
 <p> With a very few exceptions, it is generally not a big deal to
-kill off and restart the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes.  Each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> connects to
+kill off and restart the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes.  Each <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> connects to
 one database for which it is the manager, and then connects to other
-databases as needed to draw in events.  If you kill off a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, all
+databases as needed to draw in events.  If you kill off a <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, all
 you do is to interrupt those connections.  If
 a <code class="command">SYNC</code> or other event is sitting there
 half-processed, there's no problem: the transaction will roll back,
-and when the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> restarts, it will restart that event from
+and when the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> restarts, it will restart that event from
 scratch.</p>
-<p> The exception, where it is undesirable to restart a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, is
+<p> The exception, where it is undesirable to restart a <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, is
 where a <code class="command">COPY_SET</code> is running on a large replication
-set, such that stopping the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> may discard several hours worth of
+set, such that stopping the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> may discard several hours worth of
 load work. </p>
 <p> In early versions of <span class="productname">Slony-I</span>, it was frequently the case that
 connections could get a bit &#8220;<span class="quote">deranged</span>&#8221; which restarting
-<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s would clean up.  This has become much more rare, but it has
-occasionally proven useful to restart the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>.  If there has been
+<a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s would clean up.  This has become much more rare, but it has
+occasionally proven useful to restart the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>.  If there has been
 any &#8220;<span class="quote">network derangement</span>&#8221;, this can clear up the issue of
 defunct database connections.  </p>
 </li>
-<li><p>The <a href="ddlchanges.html" title="15. Database Schema Changes (DDL)"> Database Schema Changes </a>
+<li><p>The <a class="link" href="ddlchanges.html" title="15. Database Schema Changes (DDL)"> Database Schema Changes </a>
 section outlines some practices that have been found useful for
 handling changes to database schemas. </p></li>
 <li>
 <p> Handling of Primary Keys </p>
-<p> Discussed in the section on <a href="definingsets.html" title="7. Defining Slony-I Replication Sets">Replication Sets, </a> it is <span class="emphasis"><em>ideal</em></span> if each
+<p> Discussed in the section on <a class="link" href="definingsets.html" title="7. Defining Slony-I Replication Sets">Replication Sets, </a> it is <span class="emphasis"><em>ideal</em></span> if each
 replicated table has a true primary key constraint; it is
 <span class="emphasis"><em>acceptable</em></span> to use a &#8220;<span class="quote">candidate primary
 key.</span>&#8221;</p>
 <p> It is <span class="emphasis"><em>not recommended</em></span> that a
-<span class="productname">Slony-I</span>-defined key (created via <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>) be
+<span class="productname">Slony-I</span>-defined key (created via <a class="xref" href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>) be
 used to introduce a candidate primary key, as this introduces the
 possibility that updates to this table can fail due to the introduced
 unique index, which means that <span class="productname">Slony-I</span> has introduced a new failure
 mode for your application.</p>
 </li>
-<li><p> <a href="definingsets.html#definesets" title="7.2. Grouping tables into sets"> Grouping tables into sets</a> suggests strategies for determining how to group tables and
+<li><p> <a class="link" href="definingsets.html#definesets" title="7.2. Grouping tables into sets"> Grouping tables into sets</a> suggests strategies for determining how to group tables and
 sequences into replication sets. </p></li>
 <li><p> It should be obvious that actions that can delete a
-lot of data should be taken with great care; the section on <a href="dropthings.html" title="13. Dropping things from Slony-I Replication"> Dropping things from <span class="productname">Slony-I</span> Replication</a>
+lot of data should be taken with great care; the section on <a class="link" href="dropthings.html" title="13. Dropping things from Slony-I Replication"> Dropping things from <span class="productname">Slony-I</span> Replication</a>
 discusses the different sorts of &#8220;<span class="quote">deletion</span>&#8221; that <span class="productname">Slony-I</span>
 supports.  </p></li>
 <li>
-<p> <a href="locking.html" title="11. Locking Issues"> Locking issues </a></p>
-<p> Certain <span class="productname">Slony-I</span> operations, notably <a href="stmtsetaddtable.html" title="SET ADD TABLE"> <code class="command">set add table</code> </a>,
-<a href="stmtmoveset.html" title="MOVE SET"> <code class="command"> move set</code> </a>,
-<a href="stmtlockset.html" title="LOCK SET"> <code class="command"> lock set </code> </a>,
-and <a href="stmtddlscript.html" title="EXECUTE SCRIPT"> <code class="command">execute script</code></a> require acquiring <span class="emphasis"><em>exclusive locks</em></span> on the
+<p> <a class="link" href="locking.html" title="11. Locking Issues"> Locking issues </a></p>
+<p> Certain <span class="productname">Slony-I</span> operations, notably <a class="link" href="stmtsetaddtable.html" title="SET ADD TABLE"> <code class="command">set add table</code> </a>,
+<a class="link" href="stmtmoveset.html" title="MOVE SET"> <code class="command"> move set</code> </a>,
+<a class="link" href="stmtlockset.html" title="LOCK SET"> <code class="command"> lock set </code> </a>,
+and <a class="link" href="stmtddlscript.html" title="EXECUTE SCRIPT"> <code class="command">execute script</code></a> require acquiring <span class="emphasis"><em>exclusive locks</em></span> on the
 tables being replicated. </p>
 <p> Depending on the kind of activity on the databases, this may or
 may not have the effect of requiring a (hopefully brief) database
@@ -341,7 +339,7 @@ competent system designers do not write self-modifying code, and
 database schemas that get modified by the application are an instance
 of this.  It does not try hard to make it convenient to modify
 database schemas. </p>
-<p> There will be cases where that is necessary, so the <a href="stmtddlscript.html" title="EXECUTE SCRIPT"> <code class="command">execute script</code> is provided
+<p> There will be cases where that is necessary, so the <a class="link" href="stmtddlscript.html" title="EXECUTE SCRIPT"> <code class="command">execute script</code> is provided
 which will apply DDL changes at the same location in the transaction
 stream on all servers.  </a> </p>
 <p> Unfortunately, this introduces a great deal of locking of
@@ -423,7 +421,7 @@ of problems while the subscription is in progress.</p>
 </li>
 <li>
 <p> Path configuration </p>
-<p> The section on <a href="plainpaths.html" title="10.  Slony-I Path Communications"> Path Communications</a> discusses the issues surrounding what network connections need
+<p> The section on <a class="link" href="plainpaths.html" title="10.  Slony-I Path Communications"> Path Communications</a> discusses the issues surrounding what network connections need
 to be in place in order for <span class="productname">Slony-I</span> to function.</p>
 </li>
 <li>
@@ -433,17 +431,17 @@ use superuser connections.</span>&#8221; It turns out that this is not
 entirely true, and and if there are particular concerns about
 excessive use of superuser accounts, it is possible to reduce this
 considerably. </p>
-<p> It is true to say that each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> <span class="emphasis"><em>must</em></span>
+<p> It is true to say that each <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> <span class="emphasis"><em>must</em></span>
 have a superuser connection in order to manage the node that it is
 assigned to.  It needs to be able to alter the system catalogue in
 order to set up subscriptions and to process alterations
-(<span class="emphasis"><em>e.g</em></span> - to run <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> and
+(<span class="emphasis"><em>e.g</em></span> - to run <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> and
 other events that may alter the role of replicated tables on the local
 node).  </p>
-<p> However, the connections that <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes open to other
+<p> However, the connections that <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes open to other
 nodes to access events and process subcriptions do not need to have
 nearly so much permission.  Indeed, one could set up a &#8220;<span class="quote">weak
-user</span>&#8221; assigned to all <a href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
+user</span>&#8221; assigned to all <a class="xref" href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
      PATH</span></a> requests.
 The minimal permissions that this user, let's call it
 <code class="command">weakuser</code>, requires are as follows:</p>
@@ -457,14 +455,14 @@ The minimal permissions that this user, let's call it
 </li>
 <li><p> There is some need for read access to tables in pg_catalog; it has not been verified how little access would be suitable. </p></li>
 </ul></div>
-<p> In version 1.3, the tests in the <a href="testbed.html" title="22.  Slony-I Test Bed Framework">Section 22, &#8220; <span class="productname">Slony-I</span> Test Bed Framework &#8221;</a>
+<p> In version 1.3, the tests in the <a class="xref" href="testbed.html" title="22.  Slony-I Test Bed Framework">Section 22, &#8220; <span class="productname">Slony-I</span> Test Bed Framework &#8221;</a>
 support using a <code class="envar">WEAKUSER</code> so that testing can regularly
 confirm the minimal set of permissions needed to support
 replication.</p>
 </li>
 <li>
-<p> The section on <a href="listenpaths.html" title="9. Slony-I listen paths"> listen
-paths </a> discusses the issues surrounding the table <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a>.</p>
+<p> The section on <a class="link" href="listenpaths.html" title="9. Slony-I listen paths"> listen
+paths </a> discusses the issues surrounding the table <a class="xref" href="table.sl-listen.html" title="1.5.  Table: sl_listen">sl_listen</a>.</p>
 <p> As of <span class="productname">Slony-I</span> 1.1, its contents are computed automatically
 based on the communications information available to <span class="productname">Slony-I</span> which
 should alleviate the problems found in earlier versions where this had
@@ -489,8 +487,8 @@ conditions that tend to indicate problems, including:
 tool can run through many of the possible problems for you. </p>
 </li>
 <li>
-<p> Configuring <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> </p>
-<p> As of version 1.1, <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> configuration may be
+<p> Configuring <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> </p>
+<p> As of version 1.1, <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> configuration may be
 drawn either from the command line or from configuration files.
 &#8220;<span class="quote">Best</span>&#8221; practices have yet to emerge from the two
 options:</p>
@@ -502,19 +500,19 @@ options:</p>
 <p> This approach has the merit that all the options that are
 active are visible in the process environment.  (And if there are a
 lot of them, they may be a nuisance to read.)</p>
-<p> Unfortunately, if you invoke <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> from the
+<p> Unfortunately, if you invoke <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> from the
 command line, you could <span class="emphasis"><em>forget</em></span> to include
-<a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">log shipping</a> configuration and thereby destroy the sequence of logs
+<a class="link" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">log shipping</a> configuration and thereby destroy the sequence of logs
 for a log shipping node. </p>
 </li>
 <li>
 <p> Unlike when command line options are used, the
 active options are <span class="emphasis"><em>not</em></span> visible.  They can only be
-inferred from the name and/or contents of the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
+inferred from the name and/or contents of the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
 configuration file, and will not reflect subsequent changes to the
 configuration file.  </p>
 <p> By putting the options in a file, you won't forget including
-any of them, so this is safer for <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files">log shipping</a>. </p>
+any of them, so this is safer for <a class="link" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">log shipping</a>. </p>
 </li>
 </ul></div>
 <div class="itemizedlist"><ul type="disc"><li>
@@ -543,9 +541,9 @@ set.</p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p> Managing use of slonik </p>
-<p> The notes on <a href="usingslonik.html" title="16. Using Slonik"> Using Slonik </a>
+<p> The notes on <a class="link" href="usingslonik.html" title="16. Using Slonik"> Using Slonik </a>
 describe some of the lessons learned from managing large numbers of
-<a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> scripts.</p>
+<a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> scripts.</p>
 <p> Notable principles that have fallen out of generating many
 slonik scripts are that:
 
@@ -592,7 +590,7 @@ second, that leads to the subscriber &#8220;<span class="quote">falling behind</
 around 90,000 <code class="command">SYNC</code>s per day, possibly for several
 days.  </p>
 <p> There will correspondingly be an <span class="emphasis"><em>enormous</em></span>
-growth of <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a> and <a href="table.sl-seqlog.html" title="1.12.  Table: sl_seqlog">sl_seqlog</a>.  Unfortunately, once the
+growth of <a class="xref" href="table.sl-log-1.html" title="1.6.  Table: sl_log_1">sl_log_1</a> and <a class="xref" href="table.sl-seqlog.html" title="1.13.  Table: sl_seqlog">sl_seqlog</a>.  Unfortunately, once the
 <code class="command">COPY_SET</code> completes, users have found that the
 queries against these tables wind up reverting to <code class="command">Seq
 Scans</code> so that even though a particular
@@ -601,7 +599,7 @@ number of those 90,000 <code class="command">SYNC</code> events, it still reads
 through the entire table.  In such a case, you may never see
 replication catch up.</p>
 <p> Several things can be done that will help, involving
-careful selection of <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> parameters:</p>
+careful selection of <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> parameters:</p>
 </li>
 </ul></div>
 <div class="itemizedlist"><ul type="disc">
@@ -614,22 +612,22 @@ the exact form that the index setup should take. </p>
 partial indexes by origin node number, which should be the optimal
 form for such an index to take.  </p>
 </li>
-<li><p> On the subscriber's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, increase
+<li><p> On the subscriber's <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, increase
 the number of <code class="command">SYNC</code> events processed together, with
-the <a href="slon-config-interval.html#slon-config-sync-group-maxsize">slon_conf_sync_group_maxsize</a> parameter to some
+the <a class="xref" href="slon-config-interval.html#slon-config-sync-group-maxsize">slon_conf_sync_group_maxsize</a> parameter to some
 value that allows it to process a significant portion of the
 outstanding <code class="command">SYNC</code> events. </p></li>
-<li><p> On the subscriber's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, set the
-<a href="slon-config-interval.html#slon-config-desired-sync-time">desired_sync_time</a> to 0, as the adaptive
+<li><p> On the subscriber's <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, set the
+<a class="xref" href="slon-config-interval.html#slon-config-desired-sync-time">desired_sync_time</a> to 0, as the adaptive
 <code class="command">SYNC</code> grouping system will start with small
 groupings that will, under these circumstances, perform
 poorly. </p></li>
-<li><p> Increase the <a href="slon-config-interval.html#slon-config-sync-interval">slon_conf_sync_interval</a> on the origin's <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> so that <code class="command">SYNC</code> events are generated
+<li><p> Increase the <a class="xref" href="slon-config-interval.html#slon-config-sync-interval">slon_conf_sync_interval</a> on the origin's <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> so that <code class="command">SYNC</code> events are generated
 less frequently.  If a <code class="command">SYNC</code> is only generated once
 per minute instead of once per second, that will cut down the number
 of events by a factor of 60. </p></li>
 </ul></div>
-<div class="itemizedlist"><ul type="disc"><li><p> It is likely to be worthwhile to use <a href="slon-config-interval.html#slon-config-vac-frequency">slon_conf_vac_frequency</a> to deactivate <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>-initiated vacuuming in favor of running your own
+<div class="itemizedlist"><ul type="disc"><li><p> It is likely to be worthwhile to use <a class="xref" href="slon-config-interval.html#slon-config-vac-frequency">slon_conf_vac_frequency</a> to deactivate <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>-initiated vacuuming in favor of running your own
 vacuum scripts, as there will be a buildup of unpurgeable data while
 the data is copied and the subscriber starts to catch up. </p></li></ul></div>
 </div>

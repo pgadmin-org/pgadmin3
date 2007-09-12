@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.63.  failoverset_int( integer, integer, integer )</title>
+<title>1.64.  failoverset_int( integer, integer, integer, bigint )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.failednode2-integer-integer-integer-bigint-bigint.html" title="1.62.  failednode2( integer, integer, integer, bigint, bigint )">
-<link rel="next" href="function.forwardconfirm-integer-integer-bigint-timestamp-without-time-zone.html" title="1.64.  forwardconfirm( integer, integer, bigint, timestamp without time zone )">
+<link rel="prev" href="function.failednode2-integer-integer-integer-bigint-bigint.html" title="1.63.  failednode2( integer, integer, integer, bigint, bigint )">
+<link rel="next" href="function.forwardconfirm-integer-integer-bigint-timestamp-without-time-zone.html" title="1.65.  forwardconfirm( integer, integer, bigint, timestamp without time zone )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.failoverset-int-integer-integer-integer"></a>1.63.        failoverset_int( integer, integer, integer )
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="function.failoverset-int-integer-integer-integer-bigint">1.64.        failoverset_int( integer, integer, integer, bigint )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -27,7 +26,7 @@
 </div>
 <p>
  
-       FUNCTION failoverSet_int (failed_node, backup_node, set_id)
+       FUNCTION failoverSet_int (failed_node, backup_node, set_id, wait_seqno)
 
 Finish failover for one set.
         </p>
@@ -35,6 +34,7 @@ Finish failover for one set.
 	p_failed_node		alias for $1;
 	p_backup_node		alias for $2;
 	p_set_id			alias for $3;
+	p_wait_seqno		alias for $4;
 	v_row				record;
 	v_last_sync			int8;
 begin
@@ -72,12 +72,13 @@ begin
 		insert into sl_event
 				(ev_origin, ev_seqno, ev_timestamp,
 				ev_minxid, ev_maxxid, ev_xip,
-				ev_type, ev_data1, ev_data2, ev_data3)
+				ev_type, ev_data1, ev_data2, ev_data3, ev_data4)
 				values
 				(p_backup_node, "pg_catalog".nextval('sl_event_seq'), CURRENT_TIMESTAMP,
 				'0', '0', '',
 				'ACCEPT_SET', p_set_id::text,
-				p_failed_node::text, p_backup_node::text);
+				p_failed_node::text, p_backup_node::text,
+				p_wait_seqno::text);
 	else
 		delete from sl_subscribe
 				where sub_set = p_set_id

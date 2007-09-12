@@ -4,22 +4,21 @@
 <title>4. Subscribing Nodes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="slonstart.html" title="3. Slon daemons">
 <link rel="next" href="monitoring.html" title="5. Monitoring">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="subscribenodes"></a>4. Subscribing Nodes</h2></div></div></div>
-<a name="id2566824"></a><p>Before you subscribe a node to a set, be sure that you have
-<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes running for both the provider and the
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="subscribenodes">4. Subscribing Nodes</h2></div></div></div>
+<a name="id2585885"></a><p>Before you subscribe a node to a set, be sure that you have
+<a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes running for both the provider and the
 new subscribing node. If you don't have slons running, nothing will
 happen, and you'll beat your head against a wall trying to figure out
 what is going on.</p>
-<p>Subscribing a node to a set is done by issuing the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a>. It may
+<p>Subscribing a node to a set is done by issuing the <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command <a class="xref" href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a>. It may
 seem tempting to try to subscribe several nodes to a set within a
 single try block like this:
 
@@ -37,7 +36,7 @@ single try block like this:
 sets in that fashion. The proper procedure is to subscribe one node at
 a time, and to check the logs and databases before you move onto
 subscribing the next node to the set. It is also worth noting that the
-&#8220;<span class="quote">success</span>&#8221; within the above <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> try
+&#8220;<span class="quote">success</span>&#8221; within the above <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> try
 block does not imply that nodes 2, 3, and 4 have all been successfully
 subscribed. It merely indicates that the slonik commands were
 successfully received by the <span class="application">slon</span> running
@@ -91,7 +90,7 @@ cursor for select log_origin, log_xid, log_tableid, log_actionseq,
 log_cmdtype, log_cmddata from "_T1".sl_log_1 where log_origin = 11 and
 ( order by log_actionseq; " PGRES_FATAL_ERROR ERROR: syntax error at
 or near "order" at character 162</pre>
-<p> The function <a href="function.subscribeset-integer-integer-integer-boolean.html" title="1.121.  subscribeset( integer, integer, integer, boolean )">schemadocsubscribeset( integer, integer, integer, boolean )</a> will
+<p> The function <a class="xref" href="function.subscribeset-integer-integer-integer-boolean.html" title="1.122.  subscribeset( integer, integer, integer, boolean )">schemadocsubscribeset( integer, integer, integer, boolean )</a> will
 generate a warning if given a replication set that lacks any tables to
 replicate, as shown in the following example.</p>
 <pre class="screen">cbbrowne@dba2:/tmp&gt; cat create_empty_set.slonik

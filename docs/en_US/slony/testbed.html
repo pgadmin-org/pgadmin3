@@ -4,22 +4,21 @@
 <title>22.  Slony-I Test Bed Framework</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="versionupgrade.html" title="21. Using Slony-I for PostgreSQL Upgrades">
 <link rel="next" href="loganalysis.html" title="23. Log Analysis">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="testbed"></a>22.  <span class="productname">Slony-I</span> Test Bed Framework </h2></div></div></div>
-<a name="id2577036"></a><p> As of version 1.1.5, <span class="productname">Slony-I</span> has a common test bed framework
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="testbed">22.  <span class="productname">Slony-I</span> Test Bed Framework </h2></div></div></div>
+<a name="id2596325"></a><p> As of version 1.1.5, <span class="productname">Slony-I</span> has a common test bed framework
 intended to better support running a comprehensive set of tests at
 least somewhat automatically.  Older tests
 used <span class="application">pgbench</span> (not
 a <span class="emphasis"><em>bad</em></span> thing) but were troublesome to automate
-because they were set up to spawn each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> in
+because they were set up to spawn each <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> in
 an <span class="application">xterm</span> for the user
 to <span class="emphasis"><em>watch</em></span>.</p>
 <p> The new test framework is mostly written in Bourne shell, and
@@ -88,7 +87,7 @@ to be a <span class="productname">PostgreSQL</span> &#8220;<span class="quote">s
 <dt> <code class="envar">WEAKUSER</code> </dt>
 <dd>
 <p> By default, the user <code class="filename">postgres</code> is
-used; this is taken as the default user ID to use for the <a href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
+used; this is taken as the default user ID to use for the <a class="xref" href="stmtstorepath.html" title="STORE PATH"><span class="refentrytitle">STORE
      PATH</span></a> connections to all of the
 databases. </p>
 <p> There are also variables <code class="envar">WEAKUSER1</code> thru
@@ -122,6 +121,20 @@ that tests can create UTF8 tables and test the multibyte capabilities.</p></dd>
 <span class="application">mktemp</span> that does not generate a full path
 to the location of the desired temporary file/directory, then set this
 value.  </p></dd>
+<dt><code class="envar">SLTOOLDIR</code></dt>
+<dd><p> Where to look for <span class="productname">Slony-I</span> tools such as
+<span class="application">slony1_dump.sh</span>.  </p></dd>
+<dt><code class="envar">ARCHIVE[n]</code></dt>
+<dd><p> If set to &#8220;<span class="quote">true</span>&#8221;, for a particular node,
+which will normally get configured out of human sight in the
+generic-to-a-particular-test file <code class="filename">settings.ik</code>,
+then this node will be used as a data source for <a class="xref" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a>, and this causes the test tools to set up a
+directory for the <a class="link" href="slon-archive-logging.html#slon-config-archive-dir">archive_dir</a> option.  </p></dd>
+<dt><code class="envar">LOGSHIP[n]</code></dt>
+<dd><p> If set to &#8220;<span class="quote">true</span>&#8221;, for a particular node,
+which will normally get configured out of human sight in
+<code class="filename">settings.ik</code> for a particular test, then this
+indicates that this node is being created via <a class="xref" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a>, and a <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> is not required for this node.</p></dd>
 </dl></div>
 <p> Within each test, you will find the following files: </p>
 <div class="itemizedlist"><ul type="disc">
@@ -136,15 +149,15 @@ to the reader when the test is invoked. </p>
 </li>
 <li>
 <p> <code class="filename">init_add_tables.ik</code> </p>
-<p>  This is a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script for adding the tables for the test to repliation. </p>
+<p>  This is a <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script for adding the tables for the test to repliation. </p>
 </li>
 <li>
 <p> <code class="filename">init_cluster.ik</code> </p>
-<p> <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> to initialize the cluster for the test.</p>
+<p> <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> to initialize the cluster for the test.</p>
 </li>
 <li>
 <p> <code class="filename">init_create_set.ik</code> </p>
-<p> <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> to initialize additional nodes to be used in the test. </p>
+<p> <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> to initialize additional nodes to be used in the test. </p>
 </li>
 <li>
 <p> <code class="filename">init_schema.sql</code> </p>
@@ -156,7 +169,7 @@ to the reader when the test is invoked. </p>
 </li>
 <li>
 <p> <code class="filename">init_subscribe_set.ik</code> </p>
-<p> A <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script to set up subscriptions.</p>
+<p> A <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script to set up subscriptions.</p>
 </li>
 <li>
 <p> <code class="filename">settings.ik</code> </p>
@@ -168,7 +181,7 @@ to the reader when the test is invoked. </p>
 </li>
 </ul></div>
 <p> If there are additional test steps, such as
-running <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>,
-additional <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> and SQL scripts may be necessary.</p>
+running <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>,
+additional <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> and SQL scripts may be necessary.</p>
 </div></body>
 </html>

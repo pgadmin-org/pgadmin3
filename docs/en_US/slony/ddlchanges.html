@@ -4,22 +4,21 @@
 <title>15. Database Schema Changes (DDL)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">
 <link rel="next" href="usingslonik.html" title="16. Using Slonik">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddlchanges"></a>15. Database Schema Changes (DDL)</h2></div></div></div>
-<a name="id2573008"></a><p>When changes are made to the database schema,
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddlchanges">15. Database Schema Changes (DDL)</h2></div></div></div>
+<a name="id2592138"></a><p>When changes are made to the database schema,
 <span class="emphasis"><em>e.g.</em></span> - adding fields to a table, it is necessary
 for this to be handled rather carefully, otherwise different nodes may
 get rather deranged because they disagree on how particular tables are
 built.</p>
-<p>If you pass the changes through <span class="productname">Slony-I</span> via <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> (slonik) / <a href="function.ddlscript-complete-integer-text-integer.html" title="1.36.  ddlscript_complete( integer, text, integer )">schemadocddlscript_complete( integer, text, integer )</a> (stored function),
+<p>If you pass the changes through <span class="productname">Slony-I</span> via <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> (slonik) / <a class="xref" href="function.ddlscript-complete-integer-text-integer.html" title="1.37.  ddlscript_complete( integer, text, integer )">schemadocddlscript_complete( integer, text, integer )</a> (stored function),
 this allows you to be certain that the changes take effect at the same
 point in the transaction streams on all of the nodes.  That may not be
 so important if you can take something of an outage to do schema
@@ -28,12 +27,12 @@ transactions are still winding their way through your systems, this is
 necessary.  </p>
 <p>It is essential to use <code class="command">EXECUTE SCRIPT</code> if you
 alter tables so as to change their schemas.  If you do not, then you
-may run into the problems <a href="faq.html#neededexecddl" title="Question"> described
+may run into the problems <a class="link" href="faq.html#neededexecddl" title="Question"> described
 here </a> where triggers on modified tables do not take account of
 the schema change.  This has the potential to corrupt data on
 subscriber nodes.</p>
 <p>It's worth making a couple of comments on &#8220;<span class="quote">special
-things</span>&#8221; about <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>:</p>
+things</span>&#8221; about <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>The script <span class="emphasis"><em>must not</em></span> contain
 transaction <code class="command">BEGIN</code> or <code class="command">END</code>
@@ -46,9 +45,9 @@ you do not control.</p></li>
 <li>
 <p>If there is <span class="emphasis"><em>anything</em></span> broken about
 the script, or about how it executes on a particular node, this will
-cause the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemon for that node to panic and
+cause the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemon for that node to panic and
 crash.  You may see various expected messages (positive and negative)
-in <a href="loganalysis.html#ddllogs" title="23.4.2.  Log Messages - DDL scripts">Section 23.4.2, &#8220; Log Messages -  DDL scripts &#8221;</a>.  If you restart the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, it will,
+in <a class="xref" href="loganalysis.html#ddllogs" title="23.4.2.  Log Messages - DDL scripts">Section 23.4.2, &#8220; Log Messages -  DDL scripts &#8221;</a>.  If you restart the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, it will,
 more likely than not, try to
 <span class="emphasis"><em>repeat</em></span> the DDL script, which will, almost
 certainly, fail the second time in the same way it did the first time.
@@ -61,19 +60,19 @@ fail.</p>
 haphazard way on one node or another.  The schemas must always stay in
 sync.</p>
 </li>
-<li><p> For <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> to, at that point, &#8220;<span class="quote">panic</span>&#8221;
+<li><p> For <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> to, at that point, &#8220;<span class="quote">panic</span>&#8221;
 is probably the
 <span class="emphasis"><em>correct</em></span> answer, as it allows the DBA to head over
 to the database node that is broken, and manually fix things before
 cleaning out the defective event and restarting
-<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>.  You can be certain that the updates
+<a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>.  You can be certain that the updates
 made <span class="emphasis"><em>after</em></span> the DDL change on the provider node
 are queued up, waiting to head to the subscriber.  You don't run the
 risk of there being updates made that depended on the DDL changes in
 order to be correct.</p></li>
 <li>
-<p> When you run <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>, this
-causes the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> to request, <span class="emphasis"><em>for each table in the
+<p> When you run <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>, this
+causes the <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> to request, <span class="emphasis"><em>for each table in the
 specified set</em></span>, an exclusive table lock.</p>
 <p> It starts by requesting the lock, altering the table to remove
 <span class="productname">Slony-I</span> triggers, and restoring any triggers that had been hidden:
@@ -104,7 +103,7 @@ engage all the required locks.  The locks may run into deadlocks.
 This points to two ways to address this:</p>
 </li>
 <li>
-<p> You may be able to <a href="definingsets.html#definesets" title="7.2. Grouping tables into sets"> define
+<p> You may be able to <a class="link" href="definingsets.html#definesets" title="7.2. Grouping tables into sets"> define
 replication sets </a> that consist of smaller sets of tables so
 that fewer locks need to be taken in order for the DDL script to make
 it into place.</p>
@@ -116,7 +115,7 @@ tables.</p>
 <p> Actually, as of version 1.1.5 and later, this
 is <span class="emphasis"><em>NOT TRUE.</em></span> The danger of someone making DDL
 changes that crosses replication sets seems sufficiently palpable that
-<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> has been changed to lock <span class="emphasis"><em>ALL</em></span> replicated
+<a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> has been changed to lock <span class="emphasis"><em>ALL</em></span> replicated
 tables, whether they are in the specified replication set or
 not. </p>
 </div>
@@ -153,7 +152,7 @@ state of things immediately before the query.  So, the
 <code class="command">UPDATE</code> is evaluated based on a table definition
 <span class="emphasis"><em>before</em></span> the new column was added. Oops. </p>
 <p>If you are running one of the earlier versions, the workaround
-is that you invoke a separate <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> request
+is that you invoke a separate <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> request
 with a separate script, cutting off to a new script each time a
 statement refers to something created in previous statements. </p>
 <p> In <span class="productname">Slony-I</span> version 1.2, there is a state machine that pulls
@@ -167,13 +166,12 @@ facility is somewhat fragile and fairly dangerous.  Making DDL changes
 must not be done in a sloppy or cavalier manner.  If your applications
 do not have fairly stable SQL schemas, then using <span class="productname">Slony-I</span> for
 replication is likely to be fraught with trouble and frustration.  See
-the section on <a href="locking.html" title="11. Locking Issues"> locking issues </a> for
+the section on <a class="link" href="locking.html" title="11. Locking Issues"> locking issues </a> for
 more discussion of related issues.</p>
 <p>There is an article on how to manage <span class="productname">Slony-I</span> schema changes
-here: <a href="http://www.varlena.com/varlena/GeneralBits/88.php" target="_top">Varlena General Bits</a></p>
+here: <a class="ulink" href="http://www.varlena.com/varlena/GeneralBits/88.php" target="_top">Varlena General Bits</a></p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2573523"></a>15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
+<div class="titlepage"><div><div><h3 class="title" id="id2592652">15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
 process using <code class="command">EXECUTE SCRIPT</code></h3></div></div></div>
 <p> While it is <span class="emphasis"><em> vitally necessary </em></span> to use
 <code class="command">EXECUTE SCRIPT</code> to propagate DDL modifications to
@@ -231,7 +229,7 @@ should catch up quickly enough once the index is
 created.</p>
 </li>
 <li><p> <span class="productname">Slony-I</span> stores the &#8220;<span class="quote">primary index</span>&#8221; name
-in <a href="table.sl-table.html" title="1.17.  Table: sl_table">sl_table</a>, and uses that name to control what
+in <a class="xref" href="table.sl-table.html" title="1.18.  Table: sl_table">sl_table</a>, and uses that name to control what
 columns are considered the &#8220;<span class="quote">key columns</span>&#8221; when the log
 trigger is attached.  It would be plausible to drop that index and
 replace it with another primary key candidate, but changing the name
@@ -239,9 +237,8 @@ of the primary key candidate would break things. </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2573700"></a>15.2.  Testing DDL Changes </h3></div></div></div>
-<p> A method for testing DDL changes has been pointed out as a
+<div class="titlepage"><div><div><h3 class="title" id="id2592829">15.2.  Testing DDL Changes </h3></div></div></div>
+<a name="id2592833"></a><p> A method for testing DDL changes has been pointed out as a
 likely &#8220;<span class="quote">best practice.</span>&#8221;</p>
 <p> You <span class="emphasis"><em>need</em></span> to test DDL scripts in a
 non-destructive manner.</p>
@@ -253,7 +250,7 @@ moment when you wanted it to <span class="emphasis"><em> work. </em></span></p>
 badly, by running them by hand, against each node, adding <code class="command">BEGIN; </code> at the beginning, and <code class="command"> ROLLBACK; </code>
 at the end, so that the would-be changes roll back.</p>
 <p> If this script works OK on all of the nodes, that suggests that
-it should work fine everywhere if executed via <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>.  If problems
+it should work fine everywhere if executed via <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>.  If problems
 are encountered on some nodes, that will hopefully allow you to fix
 the state of affairs on those nodes so that the script
 <span class="emphasis"><em>will</em></span> run without error.

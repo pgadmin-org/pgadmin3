@@ -4,17 +4,16 @@
 <title>17.  Embedding Slonik in Shell Scripts</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="usingslonik.html" title="16. Using Slonik">
 <link rel="next" href="noslonik.html" title="18.  Not Using Slonik - Bare Metal Slony-I Functions">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="slonikshell"></a>17.  Embedding Slonik in Shell Scripts </h2></div></div></div>
-<p> As mentioned earlier, there are numerous <span class="productname">Slony-I</span> test scripts
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="slonikshell">17.  Embedding Slonik in Shell Scripts </h2></div></div></div>
+<a name="id2593127"></a><p> As mentioned earlier, there are numerous <span class="productname">Slony-I</span> test scripts
 in <code class="filename">src/ducttape</code> that embed the generation of
 Slonik inside the shell script.</p>
 <p> They mostly <span class="emphasis"><em> don't </em></span> do this in a terribly
@@ -59,7 +58,7 @@ slonik &lt;&lt;_EOF_
 _EOF_</pre>
 <p> A more sophisticated approach might involve defining some
 common components, notably the &#8220;<span class="quote">preamble</span>&#8221; that consists
-of the <a href="clustername.html" title="CLUSTER NAME"><span class="refentrytitle">CLUSTER NAME</span></a> <a href="admconninfo.html" title="ADMIN CONNINFO"><span class="refentrytitle">ADMIN CONNINFO</span></a>
+of the <a class="xref" href="clustername.html" title="CLUSTER NAME"><span class="refentrytitle">CLUSTER NAME</span></a> <a class="xref" href="admconninfo.html" title="ADMIN CONNINFO"><span class="refentrytitle">ADMIN CONNINFO</span></a>
 commands that are common to every Slonik script, thus:
 
 </p>
@@ -72,7 +71,7 @@ node 2 admin conninfo = 'dbname=$DB2';
 "</pre>
 <p> The <code class="envar">PREAMBLE</code> value could then be reused over and
 over again if the shell script invokes <code class="command">slonik</code>
-multiple times.  You might also consider using <a href="stmtinclude.html" title="INCLUDE"><span class="refentrytitle">INCLUDE</span></a> and place the preamble in a file that is
+multiple times.  You might also consider using <a class="xref" href="stmtinclude.html" title="INCLUDE"><span class="refentrytitle">INCLUDE</span></a> and place the preamble in a file that is
 <code class="command">include</code>d.
  </p>
 <p> Shell variables provide a simple way to assign names to sets
@@ -163,7 +162,7 @@ times within a script</p></li>
 that common functionality can be shared across many
 scripts</p></li>
 </ul></div>
-<p> If you can depend on having <a href="http://www.gnu.org/software/bash/bash.html" target="_top"> Bash</a>, <a href="http://www.zsh.org/" target="_top"> zsh</a>, or <a href="http://www.kornshell.com/" target="_top"> Korn shell</a> available, well,
+<p> If you can depend on having <a class="ulink" href="http://www.gnu.org/software/bash/bash.html" target="_top"> Bash</a>, <a class="ulink" href="http://www.zsh.org/" target="_top"> zsh</a>, or <a class="ulink" href="http://www.kornshell.com/" target="_top"> Korn shell</a> available, well,
 those are all shells with extensions supporting reasonably
 sophisticated data structures and module systems.  On Linux, Bash is
 fairly ubiquitous; on commercial <span class="trademark">UNIX</span>&#8482;, Korn

@@ -4,17 +4,16 @@
 <title>11. Locking Issues</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="plainpaths.html" title="10.  Slony-I Path Communications">
 <link rel="next" href="addthings.html" title="12. A Task-Oriented View of Slony-I">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="locking"></a>11. Locking Issues</h2></div></div></div>
-<a name="id2570094"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="locking">11. Locking Issues</h2></div></div></div>
+<a name="id2589158"></a><p> One of the usual merits the use, by <span class="productname">PostgreSQL</span>, of
 Multi-Version Concurrency Control (<acronym class="acronym">MVCC</acronym>) is that
 this eliminates a whole host of reasons to need to lock database
 objects.  On some other database systems, you need to acquire a table
@@ -31,7 +30,7 @@ modifying <span class="productname">Slony-I</span> configuration can bring back 
 &#8220;<span class="quote">locking irritations.</span>&#8221;  In particular:</p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p><a href="stmtsetaddtable.html" title="SET ADD TABLE"> <code class="command">set add
+<p><a class="link" href="stmtsetaddtable.html" title="SET ADD TABLE"> <code class="command">set add
 table</code> </a></p>
 <p> A momentary exclusive table lock must be acquired on the
 &#8220;<span class="quote">origin</span>&#8221; node in order to add the trigger that collects
@@ -39,7 +38,7 @@ updates for that table.  It only needs to be acquired long enough to
 establish the new trigger.</p>
 </li>
 <li>
-<p><a href="stmtmoveset.html" title="MOVE SET"> <code class="command"> move
+<p><a class="link" href="stmtmoveset.html" title="MOVE SET"> <code class="command"> move
 set</code> </a></p>
 <p> When a set origin is shifted from one node to another,
 exclusive locks must be acquired on each replicated table on both the
@@ -47,12 +46,12 @@ old origin and the new origin in order to change the triggers on the
 tables.  </p>
 </li>
 <li>
-<p><a href="stmtlockset.html" title="LOCK SET"> <code class="command"> lock set</code> </a> </p>
+<p><a class="link" href="stmtlockset.html" title="LOCK SET"> <code class="command"> lock set</code> </a> </p>
 <p> This operation expressly requests locks on each of the tables in a
 given replication set on the origin node.</p>
 </li>
 <li>
-<p><a href="stmtddlscript.html" title="EXECUTE SCRIPT"> <code class="command">execute
+<p><a class="link" href="stmtddlscript.html" title="EXECUTE SCRIPT"> <code class="command">execute
 script</code> </a> </p>
 <p> This operation runs a set of SQL queries; in order for it to
 work, the <span class="productname">Slony-I</span> triggers must be removed, followed by the query
@@ -127,7 +126,7 @@ period where things were running slowly.  </p>
 </p>
 <div class="itemizedlist"><ul type="circle">
 <li><p> Modify <code class="filename">pg_hba.conf</code> so that only
-the <a href="slonyadmin.html#slonyuser"> <code class="command">slony</code> user </a>
+the <a class="link" href="slonyadmin.html#slonyuser"> <code class="command">slony</code> user </a>
 will have access to the database. </p></li>
 <li>
 <p> Issue a <code class="command">kill -SIGHUP</code> to the
@@ -143,7 +142,7 @@ safe to proceed with the <span class="productname">Slony-I</span> operation. </p
 <p> If some old query is lingering around, you may need
 to <code class="command">kill -SIGQUIT</code> one of the <span class="productname">PostgreSQL</span> processes.
 This will restart the backend and kill off any lingering queries.  You
-probably need to restart the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes that
+probably need to restart the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes that
 attach to the node. </p>
 <p> At that point, it will be safe to proceed with the <span class="productname">Slony-I</span>
 operation; there will be no competing processes.</p>
@@ -155,15 +154,15 @@ it reload the security configuration. </p></li>
 <p>
 </p>
 </li>
-<li><p> The section  <a href="ddlchanges.html" title="15. Database Schema Changes (DDL)">Section 15, &#8220;Database Schema Changes (DDL)&#8221;</a> suggests some additional
+<li><p> The section  <a class="xref" href="ddlchanges.html" title="15. Database Schema Changes (DDL)">Section 15, &#8220;Database Schema Changes (DDL)&#8221;</a> suggests some additional
 techniques that may be useful, such as moving tables between
 replication sets in such a way that you minimize the set of tables
 that need to be locked. </p></li>
 </ul></div>
 <p> Regrettably, there is no perfect answer to this.  If it is
-<span class="emphasis"><em>necessary</em></span> to submit a <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> request, then it is presumably
+<span class="emphasis"><em>necessary</em></span> to submit a <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> request, then it is presumably
 <span class="emphasis"><em>necessary</em></span> to accept the brief application outage.
-As <span class="productname">Slony-I</span>/<a href="help.html#pgpool"> pgpool </a> linkages improve,
+As <span class="productname">Slony-I</span>/<a class="link" href="help.html#pgpool"> pgpool </a> linkages improve,
 that may become a better way to handle this.</p>
 </div></body>
 </html>
