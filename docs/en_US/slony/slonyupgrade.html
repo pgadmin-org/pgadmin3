@@ -4,30 +4,29 @@
 <title>20.  Slony-I Upgrade</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="adminscripts.html" title="19. Slony-I Administration Scripts">
 <link rel="next" href="versionupgrade.html" title="21. Using Slony-I for PostgreSQL Upgrades">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="slonyupgrade"></a>20.  <span class="productname">Slony-I</span> Upgrade </h2></div></div></div>
-<a name="id2576330"></a><p> When upgrading <span class="productname">Slony-I</span>, the installation on all nodes in a
-cluster must be upgraded at once, using the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
-command <a href="stmtupdatefunctions.html" title="UPDATE FUNCTIONS"><span class="refentrytitle">UPDATE FUNCTIONS</span></a>.</p>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="slonyupgrade">20.  <span class="productname">Slony-I</span> Upgrade </h2></div></div></div>
+<a name="id2595619"></a><p> When upgrading <span class="productname">Slony-I</span>, the installation on all nodes in a
+cluster must be upgraded at once, using the <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
+command <a class="xref" href="stmtupdatefunctions.html" title="UPDATE FUNCTIONS"><span class="refentrytitle">UPDATE FUNCTIONS</span></a>.</p>
 <p> While this requires temporarily stopping replication, it does
 not forcibly require an outage for applications that submit
 updates. </p>
 <p>The proper upgrade procedure is thus:</p>
 <div class="itemizedlist"><ul type="disc">
-<li><p> Stop the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes on all nodes.
-(<span class="emphasis"><em>e.g.</em></span> - old version of <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>)</p></li>
-<li><p> Install the new version of <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> software on all
+<li><p> Stop the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes on all nodes.
+(<span class="emphasis"><em>e.g.</em></span> - old version of <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>)</p></li>
+<li><p> Install the new version of <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> software on all
 nodes.</p></li>
 <li>
-<p> Execute a <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script containing the
+<p> Execute a <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script containing the
 command <code class="command">update functions (id = [whatever]);</code> for
 each node in the cluster.</p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -39,7 +38,7 @@ slonik scripts must contain the proper preamble commands to function.</p>
 <li><p> Start all slons.  </p></li>
 </ul></div>
 <p> The overall operation is relatively safe: If there is any
-mismatch between component versions, the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will refuse to start
+mismatch between component versions, the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> will refuse to start
 up, which provides protection against corruption. </p>
 <p> You need to be sure that the C library containing SPI trigger
 functions has been copied into place in the <span class="productname">PostgreSQL</span> build.  There
@@ -63,9 +62,9 @@ are in use.</p>
 <p>If you build <span class="productname">Slony-I</span> on the same system on which it
 is to be deployed, and build from sources, overwriting the old with
 the new is as easy as <code class="command">make install</code>.  There is no
-need to restart a database backend; just to stop <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes,
+need to restart a database backend; just to stop <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes,
 run the <code class="command">UPDATE FUNCTIONS</code> script, and start new
-<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes.</p>
+<a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes.</p>
 <p> Unfortunately, this approach requires having a build
 environment on the same host as the deployment.  That may not be
 consistent with efforts to use common <span class="productname">PostgreSQL</span> and <span class="productname">Slony-I</span> binaries

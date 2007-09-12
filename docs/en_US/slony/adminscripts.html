@@ -4,23 +4,21 @@
 <title>19. Slony-I Administration Scripts</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="noslonik.html" title="18.  Not Using Slonik - Bare Metal Slony-I Functions">
 <link rel="next" href="slonyupgrade.html" title="20.  Slony-I Upgrade">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="adminscripts"></a>19. <span class="productname">Slony-I</span> Administration Scripts</h2></div></div></div>
-<a name="id2574544"></a><p> A number of tools have grown over the course of the history of
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="adminscripts">19. <span class="productname">Slony-I</span> Administration Scripts</h2></div></div></div>
+<a name="id2593834"></a><p> A number of tools have grown over the course of the history of
 <span class="productname">Slony-I</span> to help users manage their clusters.  This section along with
-the ones on <a href="monitoring.html" title="5. Monitoring">Section 5, &#8220;Monitoring&#8221;</a> and <a href="maintenance.html" title="6. Slony-I Maintenance">Section 6, &#8220;<span class="productname">Slony-I</span> Maintenance&#8221;</a> discusses them. </p>
+the ones on <a class="xref" href="monitoring.html" title="5. Monitoring">Section 5, &#8220;Monitoring&#8221;</a> and <a class="xref" href="maintenance.html" title="6. Slony-I Maintenance">Section 6, &#8220;<span class="productname">Slony-I</span> Maintenance&#8221;</a> discusses them. </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="altperl"></a>19.1. altperl Scripts</h3></div></div></div>
-<a name="id2574584"></a><p>There is a set of scripts to simplify administeration
+<div class="titlepage"><div><div><h3 class="title" id="altperl">19.1. altperl Scripts</h3></div></div></div>
+<a name="id2593874"></a><p>There is a set of scripts to simplify administeration
 of set of <span class="productname">Slony-I</span> instances. The scripts support having arbitrary numbers of
 nodes. They may be installed as part of the installation process:</p>
 <p><code class="command"> ./configure --with-perltools</code></p>
@@ -32,15 +30,14 @@ configuration. A documented sample of this file is provided in
 some command line help with the "--help" option, making them easier to
 learn and use.</p>
 <p>Most generate Slonik scripts that are printed to STDOUT. 
-At one time, the commands were passed directly to <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> for execution. 
+At one time, the commands were passed directly to <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> for execution. 
 Unfortunately, this turned out to be a pretty large calibre
 &#8220;<span class="quote">foot gun</span>&#8221;, as minor typos on the command line led, on a
 couple of occasions, to pretty calamitous actions. The savvy administrator should review the script
-<span class="emphasis"><em>before</em></span> piping it to <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>.</p>
+<span class="emphasis"><em>before</em></span> piping it to <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>.</p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574658"></a>19.1.1. Support for Multiple Clusters</h4></div></div></div>
-<a name="id2574662"></a><p>The UNIX environment variable <code class="envar">SLONYNODES</code> is used
+<div class="titlepage"><div><div><h4 class="title" id="id2593948">19.1.1. Support for Multiple Clusters</h4></div></div></div>
+<a name="id2593951"></a><p>The UNIX environment variable <code class="envar">SLONYNODES</code> is used
 to determine what Perl configuration file will be used to control the
 shape of the nodes in a <span class="productname">Slony-I</span> cluster. If it is not provided, a
 default <code class="filename">slon_tools.conf</code> location will be
@@ -80,21 +77,19 @@ using a set of calls to <code class="function">add_node()</code>.</p>
 );</pre>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574796"></a>19.1.2. Set configuration - cluster.set1, cluster.set2</h4></div></div></div>
-<a name="id2574800"></a><p>The UNIX environment variable <code class="envar">SLONYSET</code> is used to
+<div class="titlepage"><div><div><h4 class="title" id="id2594085">19.1.2. Set configuration - cluster.set1, cluster.set2</h4></div></div></div>
+<a name="id2594089"></a><p>The UNIX environment variable <code class="envar">SLONYSET</code> is used to
 determine what Perl configuration file will be used to determine what
 objects will be contained in a particular replication set.</p>
 <p>Unlike <code class="envar">SLONYNODES</code>, which is essential for
-<span class="emphasis"><em>all</em></span> of the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>-generating
+<span class="emphasis"><em>all</em></span> of the <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>-generating
 scripts, this only needs to be set when running
 <code class="filename">create_set</code>, as that is the only script used to
 control what tables will be in a particular replication set.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574839"></a>19.1.3. slonik_build_env</h4></div></div></div>
-<a name="id2574842"></a><p>Queries a database, generating output hopefully suitable for
+<div class="titlepage"><div><div><h4 class="title" id="id2594129">19.1.3. slonik_build_env</h4></div></div></div>
+<a name="id2594132"></a><p>Queries a database, generating output hopefully suitable for
 <code class="filename">slon_tools.conf</code> consisting of:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p> a set of <code class="function">add_node()</code> calls to configure the cluster</p></li>
@@ -103,16 +98,14 @@ control what tables will be in a particular replication set.</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574883"></a>19.1.4. slonik_print_preamble</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594172">19.1.4. slonik_print_preamble</h4></div></div></div>
 <p>This generates just the &#8220;<span class="quote">preamble</span>&#8221; that is required
 by all slonik scripts.  In effect, this provides a
 &#8220;<span class="quote">skeleton</span>&#8221; slonik script that does not do
 anything.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574898"></a>19.1.5. slonik_create_set</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594188">19.1.5. slonik_create_set</h4></div></div></div>
 <p>This requires <code class="envar">SLONYSET</code> to be set as well as
 <code class="envar">SLONYNODES</code>; it is used to generate the
 <code class="command">slonik</code> script to set up a replication set
@@ -120,97 +113,81 @@ consisting of a set of tables and sequences that are to be
 replicated.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574920"></a>19.1.6. slonik_drop_node</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594210">19.1.6. slonik_drop_node</h4></div></div></div>
 <p>Generates Slonik script to drop a node from a <span class="productname">Slony-I</span> cluster.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574933"></a>19.1.7. slonik_drop_set</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594222">19.1.7. slonik_drop_set</h4></div></div></div>
 <p>Generates Slonik script to drop a replication set
 (<span class="emphasis"><em>e.g.</em></span> - set of tables and sequences) from a
 <span class="productname">Slony-I</span> cluster.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="slonik-drop-table"></a>19.1.8. slonik_drop_table</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="slonik-drop-table">19.1.8. slonik_drop_table</h4></div></div></div>
 <p>Generates Slonik script to drop a table from replication.
 Requires, as input, the ID number of the table (available from table
 <code class="envar">sl_table</code>) that is to be dropped. </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574966"></a>19.1.9. slonik_execute_script</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594255">19.1.9. slonik_execute_script</h4></div></div></div>
 <p>Generates Slonik script to push DDL changes to a replication set.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574973"></a>19.1.10. slonik_failover</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594262">19.1.10. slonik_failover</h4></div></div></div>
 <p>Generates Slonik script to request failover from a dead node to some new origin</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574980"></a>19.1.11. slonik_init_cluster</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594270">19.1.11. slonik_init_cluster</h4></div></div></div>
 <p>Generates Slonik script to initialize a whole <span class="productname">Slony-I</span> cluster,
 including setting up the nodes, communications paths, and the listener
 routing.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2574994"></a>19.1.12. slonik_merge_sets</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594284">19.1.12. slonik_merge_sets</h4></div></div></div>
 <p>Generates Slonik script to merge two replication sets together.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575001"></a>19.1.13. slonik_move_set</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594290">19.1.13. slonik_move_set</h4></div></div></div>
 <p>Generates Slonik script to move the origin of a particular set to a different node.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575008"></a>19.1.14. replication_test</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594298">19.1.14. replication_test</h4></div></div></div>
 <p>Script to test whether <span class="productname">Slony-I</span> is successfully replicating
 data.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575021"></a>19.1.15. slonik_restart_node</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594310">19.1.15. slonik_restart_node</h4></div></div></div>
 <p>Generates Slonik script to request the restart of a node.  This was
 particularly useful pre-1.0.5 when nodes could get snarled up when
 slon daemons died.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575029"></a>19.1.16. slonik_restart_nodes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594319">19.1.16. slonik_restart_nodes</h4></div></div></div>
 <p>Generates Slonik script to restart all nodes in the cluster.  Not
 particularly useful.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575036"></a>19.1.17. slony_show_configuration</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594326">19.1.17. slony_show_configuration</h4></div></div></div>
 <p>Displays an overview of how the environment (e.g. - <code class="envar">SLONYNODES</code>) is set
 to configure things.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575048"></a>19.1.18. slon_kill</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594337">19.1.18. slon_kill</h4></div></div></div>
 <p>Kills slony watchdog and all slon daemons for the specified set.  It
 only works if those processes are running on the local host, of
 course!</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575056"></a>19.1.19. slon_start</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594345">19.1.19. slon_start</h4></div></div></div>
 <p>This starts a slon daemon for the specified cluster and node, and uses
 slon_watchdog to keep it running.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="slonwatchdog"></a>19.1.20. slon_watchdog</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="slonwatchdog">19.1.20. slon_watchdog</h4></div></div></div>
 <p>Used by <code class="command">slon_start</code>.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575078"></a>19.1.21. slon_watchdog2</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594368">19.1.21. slon_watchdog2</h4></div></div></div>
 <p>This is a somewhat smarter watchdog; it monitors a particular
 <span class="productname">Slony-I</span> node, and restarts the slon process if it hasn't seen updates
 go in in 20 minutes or more.</p>
@@ -218,46 +195,40 @@ go in in 20 minutes or more.</p>
 the slon sometimes stops working without becoming aware of it.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575097"></a>19.1.22. slonik_store_node</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594387">19.1.22. slonik_store_node</h4></div></div></div>
 <p>Adds a node to an existing cluster.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575103"></a>19.1.23. slonik_subscribe_set</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594393">19.1.23. slonik_subscribe_set</h4></div></div></div>
 <p>Generates Slonik script to subscribe a particular node to a particular replication set.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575111"></a>19.1.24. slonik_uninstall_nodes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594401">19.1.24. slonik_uninstall_nodes</h4></div></div></div>
 <p>This goes through and drops the <span class="productname">Slony-I</span> schema from each node;
 use this if you want to destroy replication throughout a cluster.
 This is a <span class="emphasis"><em>VERY</em></span> unsafe script!</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575129"></a>19.1.25. slonik_unsubscribe_set</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594419">19.1.25. slonik_unsubscribe_set</h4></div></div></div>
 <p>Generates Slonik script to unsubscribe a node from a replication set.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575136"></a>19.1.26. slonik_update_nodes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2594426">19.1.26. slonik_update_nodes</h4></div></div></div>
 <p>Generates Slonik script to tell all the nodes to update the
 <span class="productname">Slony-I</span> functions.  This will typically be needed when you upgrade
 from one version of <span class="productname">Slony-I</span> to another.</p>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="mkslonconf"></a>19.2. mkslonconf.sh</h3></div></div></div>
-<a name="id2575163"></a><p> This is a shell script designed to rummage through a <span class="productname">Slony-I</span>
+<div class="titlepage"><div><div><h3 class="title" id="mkslonconf">19.2. mkslonconf.sh</h3></div></div></div>
+<a name="id2594453"></a><p> This is a shell script designed to rummage through a <span class="productname">Slony-I</span>
 cluster and generate a set of <code class="filename">slon.conf</code> files
-that <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> accesses via the <code class="command"> slon -f slon.conf </code>
+that <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> accesses via the <code class="command"> slon -f slon.conf </code>
 option. </p>
 <p> With all of the configuration residing in a configuration file
-for each <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, they can be invoked with minimal muss and fuss, with
+for each <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, they can be invoked with minimal muss and fuss, with
 no risk of forgetting the <code class="command">-a</code> option and thereby
-breaking a <a href="logshipping.html" title="14. Log Shipping - Slony-I with Files"> log shipping </a>
+breaking a <a class="link" href="logshipping.html" title="14. Log Shipping - Slony-I with Files"> log shipping </a>
 node. </p>
 <p> Running it requires the following environment configuration: </p>
 <div class="itemizedlist"><ul type="disc">
@@ -278,9 +249,9 @@ following environment variables set:</p>
 <span class="productname">Slony-I</span> cluster to be &#8220;<span class="quote">rummaged</span>&#8221;.  </p></li>
 <li><p> <code class="envar">MKDESTINATION</code> - a directory for
 configuration to reside in; the script will create
-<code class="filename">MKDESTINATION/$SLONYCLUSTER/conf</code> for the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
+<code class="filename">MKDESTINATION/$SLONYCLUSTER/conf</code> for the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>
 configuration files, and
-<code class="filename">MKDESTINATION/$SLONYCLUSTER/pid</code> for <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> to
+<code class="filename">MKDESTINATION/$SLONYCLUSTER/pid</code> for <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> to
 store PID files in. </p></li>
 <li><p> <code class="envar">LOGHOME</code> - a directory for log files to
 reside in; a directory of the form
@@ -288,7 +259,7 @@ reside in; a directory of the form
 for each node. </p></li>
 </ul></div>
 <p> For any &#8220;<span class="quote">new</span>&#8221; nodes that it discovers, this script
-will create a new <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> conf file. </p>
+will create a new <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> conf file. </p>
 <div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p> It is fair to say that there are several conditions to
@@ -300,50 +271,49 @@ this.</p></li>
 <li><p> Various parameters are set to default values; you may
 wish to customize them by hand. </p></li>
 <li>
-<p> If you are running <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes on multiple
+<p> If you are running <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes on multiple
 nodes (<span class="emphasis"><em>e.g.</em></span> - as when running <span class="productname">Slony-I</span> across a
 WAN), this script will happily create fresh new config files for
-<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s you wanted to have run on another host.  </p>
+<a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s you wanted to have run on another host.  </p>
 <p> Be sure to check out what nodes it set up before restarting
-<a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s.  </p>
+<a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s.  </p>
 <p> This would usually only cause some minor inconvenience due to,
-for instance, a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> running at a non-preferred site, and either
+for instance, a <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> running at a non-preferred site, and either
 failing due to lack of network connectivity (in which no damage is
 done!) or running a bit less efficiently than it might have due to
 living at the wrong end of the network &#8220;<span class="quote">pipe.</span>&#8221; </p>
 <p> On the other hand, if you are running a log shipping node at
-the remote site, accidentally introducing a <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> that
+the remote site, accidentally introducing a <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> that
 <span class="emphasis"><em>isn't</em></span> collecting logs could ruin your whole
 week. </p>
 </li>
 </ul></div>
 </div>
 <p> The file layout set up by <code class="filename">mkslonconf.sh</code>
-was specifically set up to allow managing <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s across a
+was specifically set up to allow managing <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s across a
 multiplicity of clusters using the script in the following
 section... </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="launchclusters"></a>19.3.  launch_clusters.sh </h3></div></div></div>
-<a name="id2575446"></a><p> This is another shell script which uses the configuration as
+<div class="titlepage"><div><div><h3 class="title" id="launchclusters">19.3.  launch_clusters.sh </h3></div></div></div>
+<a name="id2594736"></a><p> This is another shell script which uses the configuration as
 set up by <code class="filename">mkslonconf.sh</code> and is intended to either
 be run at system boot time, as an addition to the
 <code class="filename">rc.d</code> processes, or regularly, as a cron process,
-to ensure that <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes are running.</p>
+to ensure that <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes are running.</p>
 <p> It uses the following environment variables:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p><code class="envar">PATH</code> which needs to contain, preferably
-at the beginning, a path to the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> binaries that should be
+at the beginning, a path to the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> binaries that should be
 run.</p></li>
 <li>
 <p><code class="envar">SLHOME</code> indicates the
-&#8220;<span class="quote">home</span>&#8221; directory for <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> configuration files; they
+&#8220;<span class="quote">home</span>&#8221; directory for <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> configuration files; they
 are expected to be arranged in subdirectories, one for each cluster,
 with filenames of the form <code class="filename">node1.conf</code>,
 <code class="filename">node2.conf</code>, and such </p>
 <p> The script uses the command <code class="command">find $SLHOME/$cluster/conf
--name "node[0-9]*.conf"</code> to find <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> configuration files.</p>
+-name "node[0-9]*.conf"</code> to find <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> configuration files.</p>
 <p> If you remove some of these files, or rename them so their
 names do not conform to the <code class="command">find</code> command, they
 won't be found; that is an easy way to drop nodes out of this system.</p>
@@ -360,12 +330,11 @@ rotation &#8220;<span class="quote">technology.</span>&#8221; </p>
 under management. </p></li>
 </ul></div>
 <p> In effect, you could run this every five minutes, and it would
-launch any missing <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes. </p>
+launch any missing <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> processes. </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="extractschema"></a>19.4.  <code class="filename"> slony1_extract_schema.sh </code> </h3></div></div></div>
-<a name="id2575614"></a><p> You may find that you wish to create a new node some time well
+<div class="titlepage"><div><div><h3 class="title" id="extractschema">19.4.  <code class="filename"> slony1_extract_schema.sh </code> </h3></div></div></div>
+<a name="id2594903"></a><p> You may find that you wish to create a new node some time well
 after creating a cluster.  The script <code class="filename">slony1_extract_schema.sh </code> will help you with this.</p>
 <p> A command line might look like the following:</p>
 <p><code class="command"> PGPORT=5881 PGHOST=master.int.example.info ./slony1_extract_schema.sh payroll payroll temppayroll </code> </p>
@@ -379,14 +348,13 @@ where the database resides. </p>
 </li>
 <li><p> This data is loaded into the freshly created temporary database, <code class="envar">temppayroll</code> </p></li>
 <li><p> The table and sequence OIDs in <span class="productname">Slony-I</span> tables are corrected   to point to the temporary database's configuration.  </p></li>
-<li><p>  A slonik script is run to perform <a href="stmtuninstallnode.html" title="UNINSTALL NODE"><span class="refentrytitle">UNINSTALL NODE</span></a> on the temporary database.   This eliminates all the special <span class="productname">Slony-I</span> tables, schema, and removes <span class="productname">Slony-I</span> triggers from replicated tables. </p></li>
+<li><p>  A slonik script is run to perform <a class="xref" href="stmtuninstallnode.html" title="UNINSTALL NODE"><span class="refentrytitle">UNINSTALL NODE</span></a> on the temporary database.   This eliminates all the special <span class="productname">Slony-I</span> tables, schema, and removes <span class="productname">Slony-I</span> triggers from replicated tables. </p></li>
 <li><p> Finally, <span class="application">pg_dump</span> is run against the temporary database, delivering a copy of the cleaned up schema to standard output. </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2575721"></a>19.5.  slony-cluster-analysis </h3></div></div></div>
-<a name="id2575725"></a><p> If you are running a lot of replicated databases, where there
+<div class="titlepage"><div><div><h3 class="title" id="id2595011">19.5.  slony-cluster-analysis </h3></div></div></div>
+<a name="id2595014"></a><p> If you are running a lot of replicated databases, where there
 are numerous <span class="productname">Slony-I</span> clusters, it can get painful to track and
 document this.  The following tools may be of some assistance in this.</p>
 <p> <span class="application">slony-cluster-analysis.sh</span> is a shell
@@ -417,13 +385,12 @@ changes. </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="configurereplication"></a>19.6.  Generating slonik scripts
+<div class="titlepage"><div><div><h3 class="title" id="configurereplication">19.6.  Generating slonik scripts
 using <code class="filename">configure-replication.sh</code> </h3></div></div></div>
-<a name="id2575885"></a><p> The <code class="filename">tools</code> script
+<a name="id2595175"></a><p> The <code class="filename">tools</code> script
 <code class="filename">configure-replication.sh</code> is intended to automate
 generating slonik scripts to configure replication.  This script is
-based on the configuration approach taken by the <a href="testbed.html" title="22.  Slony-I Test Bed Framework">Section 22, &#8220; <span class="productname">Slony-I</span> Test Bed Framework &#8221;</a>.</p>
+based on the configuration approach taken by the <a class="xref" href="testbed.html" title="22.  Slony-I Test Bed Framework">Section 22, &#8220; <span class="productname">Slony-I</span> Test Bed Framework &#8221;</a>.</p>
 <p> This script uses a number (possibly large, if your
 configuration needs to be particularly complex) of environment
 variables to determine the shape of the configuration of a cluster.
@@ -431,8 +398,7 @@ It uses default values extensively, and in many cases, relatively few
 environment values need to be set in order to get a viable
 configuration. </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2575922"></a>19.6.1. Global Values</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2595212">19.6.1. Global Values</h4></div></div></div>
 <p> There are some values that will be used universally across a
 cluster: </p>
 <div class="variablelist"><dl>
@@ -461,8 +427,7 @@ not correspond, of course, to any database you actually want to
 use...</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2576025"></a>19.6.2. Node-Specific Values</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2595315">19.6.2. Node-Specific Values</h4></div></div></div>
 <p>For each node, there are also four environment variables; for node 1: </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">  DB1 </code></span></dt>
@@ -485,8 +450,7 @@ don't get much benefit from the redundancy replication provides if all
 your databases are on the same server!</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2576108"></a>19.6.3. Resulting slonik scripts</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2595397">19.6.3. Resulting slonik scripts</h4></div></div></div>
 <p> slonik config files are generated in a temp directory under
 <code class="filename">/tmp</code>.  The usage is thus:</p>
 <div class="itemizedlist"><ul type="disc">
@@ -508,8 +472,8 @@ run.</p>
 </li>
 <li>
 <p><code class="filename">  store_paths.slonik</code></p>
-<p> This is the second script to run; it indicates how the <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s
-should intercommunicate.  It assumes that all <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s can talk to all
+<p> This is the second script to run; it indicates how the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s
+should intercommunicate.  It assumes that all <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>s can talk to all
 nodes, which may not be a valid assumption in a complexly-firewalled
 environment.  If that assumption is untrue, you will need to modify
 the script to fix the paths.</p>
@@ -537,7 +501,7 @@ invalidated by circumstances:</p>
      keys.</p>
 <p> Best practice is to always have and use true primary keys.
      If you have tables that require choosing a candidate primary key
-     or that require creating a surrogate key using <a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>, you will have to modify this script
+     or that require creating a surrogate key using <a class="xref" href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a>, you will have to modify this script
      by hand to accomodate that. </p>
 </li>
 </ul></div>
@@ -562,12 +526,11 @@ invalidated by circumstances:</p>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div>
-<div><h3 class="title">
-<a name="bsd-ports-profile"></a>19.7.  <code class="filename"> slon.in-profiles </code> </h3></div>
-<div><h4 class="subtitle"> Apache-Style profiles for FreeBSD <code class="filename">ports/databases/slony/*</code> </h4></div>
+<div><h3 class="title" id="bsd-ports-profile">19.7.  <code class="filename"> slon.in-profiles </code> </h3></div>
+<div><h4 class="subtitle" id="bsd-ports-profile"> Apache-Style profiles for FreeBSD <code class="filename">ports/databases/slony/*</code> </h4></div>
 </div></div>
 <p> In the tools area, <code class="filename">slon.in-profiles</code> is a
-script that might be used to start up <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> instances at the time of
+script that might be used to start up <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> instances at the time of
 system startup.  It is designed to interact with the FreeBSD Ports
 system.</p>
 </div>

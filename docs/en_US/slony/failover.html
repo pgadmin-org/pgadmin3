@@ -4,19 +4,17 @@
 <title>8. Doing switchover and failover with Slony-I</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="reshape.html" title="7. Reshaping a Cluster">
 <link rel="next" href="listenpaths.html" title="9. Slony-I listen paths">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="failover"></a>8. Doing switchover and failover with <span class="productname">Slony-I</span></h2></div></div></div>
-<a name="id2568622"></a><div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2568630"></a>8.1. Foreword</h3></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="failover">8. Doing switchover and failover with <span class="productname">Slony-I</span></h2></div></div></div>
+<a name="id2587702"></a><div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2587710">8.1. Foreword</h3></div></div></div>
 <p><span class="productname">Slony-I</span> is an asynchronous replication system.  Because of
 that, it is almost certain that at the moment the current origin of a
 set fails, the final transactions committed at the origin will have
@@ -34,17 +32,16 @@ downtime.</span>&#8221; To help support these requirements, <span class="product
 only offers failover capabilities, but also the notion of controlled
 origin transfer.</p>
 <p> It is assumed in this document that the reader is familiar with
-the <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> utility and knows at least how to set up a
+the <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> utility and knows at least how to set up a
 simple 2 node replication system with <span class="productname">Slony-I</span>.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2568690"></a>8.2.  Controlled Switchover</h3></div></div></div>
-<a name="id2568693"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
+<div class="titlepage"><div><div><h3 class="title" id="id2587770">8.2.  Controlled Switchover</h3></div></div></div>
+<a name="id2587773"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
 &#8220;<span class="quote">subscriber</span>&#8221; as node2 (<span class="emphasis"><em>e.g.</em></span> -
 slave).  A web application on a third server is accessing the database
 on node1.  Both databases are up and running and replication is more
-or less in sync.  We do controlled switchover using <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>.
+or less in sync.  We do controlled switchover using <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>.
 
 </p>
 <div class="itemizedlist"><ul type="disc">
@@ -54,7 +51,7 @@ order to avoid any complications, we simply shut down the web server.
 Users who use <span class="application">pg_pool</span> for the applications database
 connections merely have to shut down the pool.</p></li>
 <li>
-<p> A small <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script executes the
+<p> A small <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> script executes the
 following commands:
 
 </p>
@@ -70,7 +67,7 @@ switched roles completely.</p>
 </li>
 <li>
 <p> After reconfiguring the web application (or
-<span class="application"><a href="help.html#pgpool"> pgpool </a></span>) to
+<span class="application"><a class="link" href="help.html#pgpool"> pgpool </a></span>) to
 connect to the database on node2, the web server is restarted and
 resumes normal operation.</p>
 <p> Done in one shell script, that does the application shutdown,
@@ -80,7 +77,7 @@ seconds.</p>
 </li>
 </ul></div>
 <p> You may now simply shutdown the server hosting node1 and do
-whatever is required to maintain the server.  When <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> node1 is restarted later, it will start replicating
+whatever is required to maintain the server.  When <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> node1 is restarted later, it will start replicating
 again, and soon catch up.  At this point the procedure to switch
 origins is executed again to restore the original
 configuration.</p>
@@ -89,10 +86,9 @@ under control of the administrators, and there is no need for there to
 be any loss of data.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2568806"></a>8.3.  Failover</h3></div></div></div>
-<a name="id2568809"></a><p> If some more serious problem occurs on the
-&#8220;<span class="quote">origin</span>&#8221; server, it may be necessary to <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to a backup server.  This is a highly
+<div class="titlepage"><div><div><h3 class="title" id="id2587886">8.3.  Failover</h3></div></div></div>
+<a name="id2587889"></a><p> If some more serious problem occurs on the
+&#8220;<span class="quote">origin</span>&#8221; server, it may be necessary to <a class="xref" href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to a backup server.  This is a highly
 undesirable circumstance, as transactions &#8220;<span class="quote">committed</span>&#8221; on
 the origin, but not applied to the subscribers, will be lost.  You may
 have reported these transactions as &#8220;<span class="quote">successful</span>&#8221; to
@@ -109,7 +105,7 @@ monitoring system, well ... it's <span class="emphasis"><em>your</em></span> dat
 it's <span class="emphasis"><em>your</em></span> failover policy. </p>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p>The <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command
+<p>The <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> command
 </p>
 <pre class="programlisting">failover (id = 1, backup node = 2);</pre>
 <p> causes node2 to assume the ownership (origin) of all sets that
@@ -133,13 +129,13 @@ node2.</p></li>
 <li>
 <p> Purge out the abandoned node </p>
 <p> You will find, after the failover, that there are still a full
-set of references to node 1 in <a href="table.sl-node.html" title="1.7.  Table: sl_node">sl_node</a>, as well
-as in referring tables such as <a href="table.sl-confirm.html" title="1.2.  Table: sl_confirm">sl_confirm</a>;
-since data in <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a> is still present,
+set of references to node 1 in <a class="xref" href="table.sl-node.html" title="1.8.  Table: sl_node">sl_node</a>, as well
+as in referring tables such as <a class="xref" href="table.sl-confirm.html" title="1.3.  Table: sl_confirm">sl_confirm</a>;
+since data in <a class="xref" href="table.sl-log-1.html" title="1.6.  Table: sl_log_1">sl_log_1</a> is still present,
 <span class="productname">Slony-I</span> cannot immediately purge out the node. </p>
 <p> After the failover is complete and node2 accepts
 write operations against the tables, remove all remnants of node1's
-configuration information with the <a href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>
+configuration information with the <a class="xref" href="stmtdropnode.html" title="DROP NODE"><span class="refentrytitle">DROP NODE</span></a>
 command:
 
 </p>
@@ -150,16 +146,15 @@ of the hardware supporting node 1, there might be no
 &#8220;<span class="quote">total</span>&#8221;, as might be the case if the node had to be
 abandoned due to a network communications failure, you will find that
 node 1 still &#8220;<span class="quote">imagines</span>&#8221; itself to be as it was before the
-failure.  See <a href="failover.html#rebuildnode1" title="8.5. After Failover, Reconfiguring Former Origin">Section 8.5, &#8220;After Failover, Reconfiguring
+failure.  See <a class="xref" href="failover.html#rebuildnode1" title="8.5. After Failover, Reconfiguring Former Origin">Section 8.5, &#8220;After Failover, Reconfiguring
 Former Origin&#8221;</a> for more details on the
 implications.</p>
 </li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2569010"></a>8.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
-<a name="id2569019"></a><p> If you do choose to automate <code class="command">FAIL OVER </code>, it
+<div class="titlepage"><div><div><h3 class="title" id="id2588090">8.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
+<a name="id2588099"></a><p> If you do choose to automate <code class="command">FAIL OVER </code>, it
 is important to do so <span class="emphasis"><em>carefully.</em></span> You need to have
 good assurance that the failed node is well and truly failed, and you
 need to be able to assure that the failed node will not accidentally
@@ -203,10 +198,9 @@ would remain accessible to system administrators.  </p>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="rebuildnode1"></a>8.5. After Failover, Reconfiguring
+<div class="titlepage"><div><div><h3 class="title" id="rebuildnode1">8.5. After Failover, Reconfiguring
 Former Origin</h3></div></div></div>
-<a name="id2569135"></a><p> What happens to the failed node will depend somewhat on the
+<a name="id2588215"></a><p> What happens to the failed node will depend somewhat on the
 nature of the catastrophe that lead to needing to fail over to another
 node.  If the node had to be abandoned because of physical destruction
 of its disk storage, there will likely not be anything of interest

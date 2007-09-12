@@ -4,19 +4,18 @@
 <title>14. Log Shipping - Slony-I with Files</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="dropthings.html" title="13. Dropping things from Slony-I Replication">
 <link rel="next" href="ddlchanges.html" title="15. Database Schema Changes (DDL)">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="logshipping"></a>14. Log Shipping - <span class="productname">Slony-I</span> with Files</h2></div></div></div>
-<a name="id2572226"></a><p> One of the new features for 1.1 is the ability to serialize the
-updates to go out into log files that can be kept in a spool
-directory.</p>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="logshipping">14. Log Shipping - <span class="productname">Slony-I</span> with Files</h2></div></div></div>
+<a name="id2591304"></a><p> One of the new features for 1.1, that only really stabilized as
+of 1.2.11, is the ability to serialize the updates to go out into log
+files that can be kept in a spool directory.</p>
 <p> The spool files could then be transferred via whatever means
 was desired to a &#8220;<span class="quote">slave system,</span>&#8221; whether that be via FTP,
 rsync, or perhaps even by pushing them onto a 1GB &#8220;<span class="quote">USB
@@ -38,7 +37,8 @@ in this form, including:
 <p> If some disaster strikes, you can look at the logs
   of queries in detail</p>
 <p> This makes log shipping potentially useful even though you
-  might not intend to actually create a log-shipped node.</p>
+  might not intend to actually create a log-shipped
+  node.</p>
 </li>
 <li><p> This is a really slick scheme for building load for
   doing tests</p></li>
@@ -51,23 +51,23 @@ in this form, including:
   database and turn it into a &#8220;<span class="quote">temporal</span>&#8221; one by use of
   triggers that implement the techniques described in
   [<span class="citation">Developing Time-Oriented Database Applications in SQL
-  </span>] by <a href="http://www.cs.arizona.edu/people/rts/" target="_top">  Richard T. Snodgrass</a>.</p>
+  </span>] by <a class="ulink" href="http://www.cs.arizona.edu/people/rts/" target="_top">  Richard T. Snodgrass</a>.</p>
 </li>
 </ul></div>
 <div class="qandaset">
 <dl>
-<dt>14.1. <a href="logshipping.html#id2572335"> Where are the &#8220;spool files&#8221; for a
+<dt>14.1. <a href="logshipping.html#id2591413"> Where are the &#8220;spool files&#8221; for a
 subscription set generated?</a>
 </dt>
-<dt>14.2. <a href="logshipping.html#id2572363"> What takes place when a FAILOVER/ MOVE SET takes
+<dt>14.2. <a href="logshipping.html#id2591441"> What takes place when a FAILOVER/ MOVE SET takes
 place?</a>
 </dt>
-<dt>14.3. <a href="logshipping.html#id2572385"> What if we run out of &#8220;spool
+<dt>14.3. <a href="logshipping.html#id2591469"> What if we run out of &#8220;spool
 space&#8221;?  </a>
 </dt>
-<dt>14.4. <a href="logshipping.html#id2572404"> How do we set up a subscription?  </a>
+<dt>14.4. <a href="logshipping.html#id2591488"> How do we set up a subscription?  </a>
 </dt>
-<dt>14.5. <a href="logshipping.html#id2572471"> What are the limitations of log
+<dt>14.5. <a href="logshipping.html#id2591555"> What are the limitations of log
 shipping? </a>
 </dt>
 </dl>
@@ -76,7 +76,7 @@ shipping? </a>
 <tbody>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2572335"></a><a name="id2572336"></a><b>14.1.</b>
+<a name="id2591413"></a><a name="id2591414"></a><p><b>14.1.</b></p>
 </td>
 <td align="left" valign="top"><p> Where are the &#8220;<span class="quote">spool files</span>&#8221; for a
 subscription set generated?</p></td>
@@ -84,7 +84,7 @@ subscription set generated?</p></td>
 <tr class="answer">
 <td align="left" valign="top"></td>
 <td align="left" valign="top">
-<p> Any <a href="slon.html" title="slon"> slon </a> subscriber node
+<p> Any <a class="link" href="slon.html" title="slon"> slon </a> subscriber node
 can generate them by adding the <code class="option">-a</code> option.</p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -95,9 +95,9 @@ shipping, you must have at least one subscriber node. </p>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2572363"></a><a name="id2572364"></a><b>14.2.</b>
+<a name="id2591441"></a><a name="id2591442"></a><p><b>14.2.</b></p>
 </td>
-<td align="left" valign="top"><p> What takes place when a <a href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a>/ <a href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> takes
+<td align="left" valign="top"><p> What takes place when a <a class="xref" href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a>/ <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> takes
 place?</p></td>
 </tr>
 <tr class="answer">
@@ -105,9 +105,17 @@ place?</p></td>
 <td align="left" valign="top"><p> Nothing special.  So long as the archiving node remains
 a subscriber, it will continue to generate logs.</p></td>
 </tr>
+<tr class="answer">
+<td align="left" valign="top"></td>
+<td align="left" valign="top"><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p>If the archiving node becomes the origin, on
+the other hand, it will continue to generate logs.</p>
+</div></td>
+</tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2572385"></a><a name="id2572386"></a><b>14.3.</b>
+<a name="id2591469"></a><a name="id2591470"></a><p><b>14.3.</b></p>
 </td>
 <td align="left" valign="top"><p> What if we run out of &#8220;<span class="quote">spool
 space</span>&#8221;?  </p></td>
@@ -120,7 +128,7 @@ will also fall behind.  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2572404"></a><a name="id2572406"></a><b>14.4.</b>
+<a name="id2591488"></a><a name="id2591489"></a><p><b>14.4.</b></p>
 </td>
 <td align="left" valign="top"><p> How do we set up a subscription?  </p></td>
 </tr>
@@ -130,7 +138,7 @@ will also fall behind.  </p></td>
 <p> The script in <code class="filename">tools</code> called
 <span class="application">slony1_dump.sh</span> is a shell script that dumps
 the &#8220;<span class="quote">present</span>&#8221; state of the subscriber node.</p>
-<p> You need to start the <span class="application"><a href="slon.html" title="slon"> slon</a></span> for the subscriber node with logging turned on.
+<p> You need to start the <span class="application"><a class="link" href="slon.html" title="slon"> slon</a></span> for the subscriber node with logging turned on.
 At any point after that, you can run
 <span class="application">slony1_dump.sh</span>, which will pull the state
 of that subscriber as of some <code class="command">SYNC</code> event.  Once the
@@ -141,7 +149,7 @@ dump in order to get a &#8220;<span class="quote">log shipping subscriber.</span
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2572471"></a><a name="id2572472"></a><b>14.5.</b>
+<a name="id2591555"></a><a name="id2591556"></a><p><b>14.5.</b></p>
 </td>
 <td align="left" valign="top"><p> What are the limitations of log
 shipping? </p></td>
@@ -207,11 +215,8 @@ subscribing to a particular set via a particular provider.  <span class="emphasi
 <code class="command">ENABLE_SUBSCRIPTION</code>, which is an event that is
 raised on the local node, not in the same sequence as the other events
 coming from other nodes (notably the data provider). </p>
-<p> Unfortunately, the upshot of this is that when a node newly
-subscribes to a set, the log that actually contains the data is in a
-separate sequencing from the sequencing of the normal
-<code class="command">SYNC</code> logs.  Blindly loading these logs will throw
-things off :-(. </p>
+<p> With revisions in sequencing of logs that took place in 1.2.11,
+this now presents no problem for the user.</p>
 </li>
 <li><p> The various events involved in node configuration are
 irrelevant to log shipping:
@@ -254,8 +259,7 @@ necessarily be all that simple)... </p>
 </table>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2572803"></a>14.1.  Usage Hints </h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2591879">14.1.  Usage Hints </h3></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p> Here are some more-or-less disorganized notes about how
@@ -323,7 +327,41 @@ represent the time you will wish to have apply to all of the data in
 the given log shipping transaction log. </p>
 </li>
 <li><p> You may find information on how relevant activity is
-logged in <a href="loganalysis.html#logshiplog" title="23.4.1.  Log Messages Associated with Log Shipping">Section 23.4.1, &#8220; Log Messages Associated with Log Shipping &#8221;</a>. </p></li>
+logged in <a class="xref" href="loganalysis.html#logshiplog" title="23.4.1.  Log Messages Associated with Log Shipping">Section 23.4.1, &#8220; Log Messages Associated with Log Shipping &#8221;</a>. </p></li>
+</ul></div>
+<p> As of 1.2.11, there is an <span class="emphasis"><em>even better idea</em></span>
+for application of logs, as the sequencing of their names becomes more
+predictable.</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> The table, on the log shipped node, tracks which log
+it most recently applied in table
+<code class="envar">sl_archive_tracking</code>. </p>
+<p> Thus, you may predict the ID number of the next file by taking
+the latest counter from this table and adding 1.</p>
+</li>
+<li>
+<p> There is still variation as to the filename,
+depending on what the overall set of nodes in the cluster are.  All
+nodes periodically generate <code class="command">SYNC</code> events, even if
+they are not an origin node, and the log shipping system does generate
+logs for such events. </p>
+<p> As a result, when searching for the next file, it is necessary
+to search for files in a manner similar to the following:
+
+</p>
+<pre class="programlisting">ARCHIVEDIR=/var/spool/slony/archivelogs/node4
+SLONYCLUSTER=mycluster
+PGDATABASE=logshipdb
+PGHOST=logshiphost
+NEXTQUERY="select at_counter+1 from \"_${SLONYCLUSTER}\".sl_archive_tracking;"
+nextseq=`psql -d ${PGDATABASE} -h ${PGHOST} -A -t -c "${NEXTQUERY}"
+filespec=`printf "slony1_log_*_%20d.sql"
+for file in `find $ARCHIVEDIR -name "${filespec}"; do
+   psql -d ${PGDATABASE} -h ${PGHOST} -f ${file}
+done</pre>
+</li>
+<li><p> </p></li>
 </ul></div>
 </div>
 </div></body>

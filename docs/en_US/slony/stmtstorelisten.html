@@ -4,8 +4,8 @@
 <title>STORE LISTEN</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtdroppath.html" title="DROP PATH">
 <link rel="next" href="stmtdroplisten.html" title="DROP LISTEN">
@@ -23,7 +23,7 @@
 <div class="cmdsynopsis"><p><code class="command">STORE LISTEN (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591037"></a><h2>Description</h2>
+<a name="id2610659"></a><h2>Description</h2>
 <p> A &#8220;<span class="quote">listen</span>&#8221; entry causes a node (receiver) to query an
      event provider for events that originate from a specific node, as
      well as confirmations from every existing node. It requires a
@@ -31,7 +31,7 @@
      to the provider (as server).</p>
 <p> Every node in the system must listen for events from every
     other node in the system. As a general rule of thumb, a subscriber
-    (see <a href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a>) should listen for events
+    (see <a class="xref" href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a>) should listen for events
     of the set's origin on the same provider, where it receives the
     data from. In turn, the origin of the data set should listen for
     events from the origin in the opposite direction. A node can
@@ -51,20 +51,20 @@
 <dt><span class="term"><code class="literal"> RECEIVER = ival </code></span></dt>
 <dd><p> The ID of the node receiving the events.</p></dd>
 </dl></div>
-<p> This uses <a href="function.storelisten-integer-integer-integer.html" title="1.111.  storelisten( integer, integer, integer )">schemadocstorelisten( integer, integer, integer )</a>. </p>
-<p> For more details, see <a href="listenpaths.html" title="9. Slony-I listen paths">Section 9, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a>.</p>
+<p> This uses <a class="xref" href="function.storelisten-integer-integer-integer.html" title="1.112.  storelisten( integer, integer, integer )">schemadocstorelisten( integer, integer, integer )</a>. </p>
+<p> For more details, see <a class="xref" href="listenpaths.html" title="9. Slony-I listen paths">Section 9, &#8220;<span class="productname">Slony-I</span> listen paths&#8221;</a>.</p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591132"></a><h2>Example</h2>
+<a name="id2610754"></a><h2>Example</h2>
 <pre class="programlisting">     STORE LISTEN ( ORIGIN = 1, RECEIVER = 2, PROVIDER = 3 );
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591141"></a><h2> Locking Behaviour </h2>
+<a name="id2610763"></a><h2> Locking Behaviour </h2>
 <p> No application-visible locking should take place. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2591148"></a><h2> Version Information </h2>
+<a name="id2610770"></a><h2> Version Information </h2>
 <p> This command
    was introduced in <span class="productname">Slony-I</span> 1.0.  As of version 1.1, you <span class="emphasis"><em>should</em></span> no
    longer need to use this command, as listen paths are generated automatically. </p>

@@ -4,23 +4,22 @@
 <title>4. Slony-I Installation</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="requirements.html" title="3. System Requirements">
 <link rel="next" href="concepts.html" title="5. Slony-I Concepts">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="installation"></a>4. <span class="productname">Slony-I</span> Installation</h2></div></div></div>
-<a name="id2514470"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="installation">4. <span class="productname">Slony-I</span> Installation</h2></div></div></div>
+<a name="id2533560"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>For <span class="trademark">Windows</span>&#8482; users: Unless you are planning on hacking
 the <span class="productname">Slony-I</span> code, it is highly recommended that you download and
 install a prebuilt binary distribution and jump straight to the
 configuration section below.  There are likely to be links and/or
-binaries at <a href="http://pgfoundry.org/projects/slony1/" target="_top">pgFoundry <span class="productname">Slony-I</span> site </a> for official releases, the first of
+binaries at <a class="ulink" href="http://pgfoundry.org/projects/slony1/" target="_top">pgFoundry <span class="productname">Slony-I</span> site </a> for official releases, the first of
 which is expected to be <span class="productname">Slony-I</span> version 1.2.0.  </p>
 <p> There are also RPM binaries available at that site for recent
 versions of <span class="productname">Slony-I</span> for recent versions of <span class="productname">PostgreSQL</span>.</p>
@@ -41,17 +40,15 @@ tar xf slony.tar</pre>
 the <span class="productname">Slony-I</span> sources.  Head into that that directory for the rest of
 the installation procedure.</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2514587"></a>4.1. Short Version</h3></div></div></div>
-<pre class="screen">PGMAIN=/usr/local/pgsql746-freebsd-2005-04-01 \
+<div class="titlepage"><div><div><h3 class="title" id="id2533677">4.1. Short Version</h3></div></div></div>
+<a name="id2533681"></a><pre class="screen">PGMAIN=/usr/local/pgsql746-freebsd-2005-04-01 \
 ./configure \
     --with-pgconfigdir=$PGMAIN/bin
 gmake all; gmake install</pre>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2514598"></a>4.2. Configuration</h3></div></div></div>
-<a name="id2514602"></a><p> <span class="productname">Slony-I</span> normally needs to be built and installed by the
+<div class="titlepage"><div><div><h3 class="title" id="id2533694">4.2. Configuration</h3></div></div></div>
+<a name="id2533698"></a><p> <span class="productname">Slony-I</span> normally needs to be built and installed by the
 <span class="productname">PostgreSQL</span> Unix user.  The installation target must be identical to
 the existing <span class="productname">PostgreSQL</span> installation particularly in view of the fact
 that several <span class="productname">Slony-I</span> components represent libraries and SQL scripts
@@ -94,8 +91,7 @@ compile.</p>
 right places for all of the components. </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2562135"></a>4.3. Example</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2581194">4.3. Example</h3></div></div></div>
 <p> After determining that the <span class="productname">PostgreSQL</span> instance to be used is
 installed in
 <code class="filename">/opt/dbs/pgsql746-aix-2005-04-01</code>:</p>
@@ -107,15 +103,14 @@ number of tests to guess values for various dependent variables and
 try to detect some quirks of your system.  <span class="productname">Slony-I</span> is known to need a
 modified version of <span class="application">libpq</span> on specific
 platforms such as Solaris2.X on SPARC.  The patch for libpq version
-7.4.2 can be found at <a name="threadpatch" href="http://developer.postgresql.org/~wieck/slony1/download/threadsafe-libpq-742.diff.gz" target="_top">http://developer.postgresql.org/~wieck/slony1/download/threadsafe-libpq-742.diff.gz</a> Similar patches may need to be constructed for other
-versions; see the FAQ entry on <a href="faq.html#threadsafety" title="Question"> thread
+7.4.2 can be found at <a class="ulink" name="threadpatch" href="http://developer.postgresql.org/~wieck/slony1/download/threadsafe-libpq-742.diff.gz" target="_top">http://developer.postgresql.org/~wieck/slony1/download/threadsafe-libpq-742.diff.gz</a> Similar patches may need to be constructed for other
+versions; see the FAQ entry on <a class="link" href="faq.html#threadsafety" title="Question"> thread
 safety </a>. </p>
 <p> For a full listing of configuration options, run the command
 <code class="command">./configure --help</code>.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2562215"></a>4.4. Build</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2581274">4.4. Build</h3></div></div></div>
 <p>To start the build process, type
 
 </p>
@@ -133,8 +128,7 @@ be</p>
 install.  </code></p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2562270"></a>4.5.  Installing <span class="productname">Slony-I</span> Once Built;</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2581329">4.5.  Installing <span class="productname">Slony-I</span> Once Built;</h3></div></div></div>
 <p> To install <span class="productname">Slony-I</span>, enter
 
 <code class="command">gmake install</code></p>
@@ -158,9 +152,11 @@ Commonly you need to do this either as root or as the postgres user.</p>
 <li><p><code class="filename"> $datadir/slony1_funcs.v74.sql</code></p></li>
 <li><p><code class="filename"> $datadir/slony1_funcs.v80.sql</code></p></li>
 </ul></div>
+<p> (Note that as things change, the list of version-specific files
+may grow...) </p>
 <p>The <code class="filename">.sql</code> files are not fully substituted
 yet.  And yes, both the 7.3, 7.4 and the 8.0 files get installed on every
-system, irrespective of its version.  The <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
+system, irrespective of its version.  The <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 admin utility does namespace/cluster substitutions within these files,
 and loads the files when creating replication nodes.  At that point in
 time, the database being initialized may be remote and may run a
@@ -171,9 +167,8 @@ computer that is supposed to become a <span class="productname">Slony-I</span> n
 may be able to be loaded remotely from other hosts.) </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2562450"></a>4.6.  Building Documentation: Admin Guide </h3></div></div></div>
-<p> The document you are reading now is a fairly extensive
+<div class="titlepage"><div><div><h3 class="title" id="id2581513">4.6.  Building Documentation: Admin Guide </h3></div></div></div>
+<a name="id2581517"></a><p> The document you are reading now is a fairly extensive
 &#8220;<span class="quote">Administrator's Guide</span>&#8221; containing what wisdom has been
 discovered and written down about the care and feeding of <span class="productname">Slony-I</span>.</p>
 <p> This is only built if you specify <code class="command">--with-docs</code></p>
@@ -186,9 +181,9 @@ indicates that there is intent to address the issue by bumping up the
 value of NAMELEN in some future release of Red Hat Enterprise Linux,
 but that won't likely help you in 2005.  Fedora Core 4 should have the
 issue addressed somewhat sooner. </p>
-<p><a href="https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=36058" target="_top"> Bug
+<p><a class="ulink" href="https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=36058" target="_top"> Bug
 36058 </a> </p>
-<p><a href="https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=159382" target="_top"> Bug
+<p><a class="ulink" href="https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=159382" target="_top"> Bug
 159382 (For RHEL) </a> </p>
 <p>A pre-built copy of the "admin guide" should be readily available,
 either in the form of a separate tarball nearby, or in the directory
@@ -197,13 +192,12 @@ either in the form of a separate tarball nearby, or in the directory
 Fedora...</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2562523"></a>4.7.  Installing <span class="productname">Slony-I</span> from RPMs</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2581597">4.7.  Installing <span class="productname">Slony-I</span> from RPMs</h3></div></div></div>
 <p> Even though <span class="productname">Slony-I</span> can be compiled and run on most Linux
 distributions, it is also possible to install <span class="productname">Slony-I</span> using binary
 packages. Slony Global Development Team provides official RPMs and
 SRPMs for many versions or Red Hat ana Fedora Core.</p>
-<p>The RPMs are available at <a href="http://pgfoundry.org/projects/slony1/" target="_top"> <span class="productname">Slony-I</span> at pgFoundry.org</a>. Please read <code class="command"> CURRENT_MAINTAINER</code> file for
+<p>The RPMs are available at <a class="ulink" href="http://pgfoundry.org/projects/slony1/" target="_top"> <span class="productname">Slony-I</span> at pgFoundry.org</a>. Please read <code class="command"> CURRENT_MAINTAINER</code> file for
 the details of the RPMs. Please note that the RPMs will look for RPM
 installation of <span class="productname">PostgreSQL</span>, so if you install <span class="productname">PostgreSQL</span> from source,
 you should manually ignore the RPM dependencies related to
@@ -222,9 +216,8 @@ docs are installed in
 <code class="filename">/usr/share/doc/postgresql-slony1-engine</code>.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2562647"></a>4.8.  Installing the <span class="productname">Slony-I</span> service on <span class="trademark">Windows</span>&#8482;</h3></div></div></div>
-<a name="id2562661"></a><p> On <span class="trademark">Windows</span>&#8482; systems, instead of running one <a href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemon per node, a single slon service is installed
+<div class="titlepage"><div><div><h3 class="title" id="id2581721">4.8.  Installing the <span class="productname">Slony-I</span> service on <span class="trademark">Windows</span>&#8482;</h3></div></div></div>
+<a name="id2581736"></a><p> On <span class="trademark">Windows</span>&#8482; systems, instead of running one <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemon per node, a single slon service is installed
 which can then be controlled through the <code class="command">Services</code>
 control panel applet, or from a command prompt using the
 <code class="command">net</code> command.</p>
@@ -246,9 +239,9 @@ Engine added.</pre>
 <p> For further information about the <span class="trademark">Windows</span>&#8482; port, you may want
 to see the following URLs: </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p> <a href="http://developer.pgadmin.org/~hiroshi/Slony-I/" target="_top"> Slony-I Windows
+<li><p> <a class="ulink" href="http://developer.pgadmin.org/~hiroshi/Slony-I/" target="_top"> Slony-I Windows
 installer sample </a> </p></li>
-<li><p> <a href="http://people.planetpostgresql.org/xzilla/index.php?/archives/200-Alpha-testing-Slony-on-win32-Crib-Notes.html" target="_top">xzilla's Alpha testing Slony on win32 Crib Notes </a> </p></li>
+<li><p> <a class="ulink" href="http://people.planetpostgresql.org/xzilla/index.php?/archives/200-Alpha-testing-Slony-on-win32-Crib-Notes.html" target="_top">xzilla's Alpha testing Slony on win32 Crib Notes </a> </p></li>
 </ul></div>
 </div>
 </div></body>

@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.36.  ddlscript_complete( integer, text, integer )</title>
+<title>1.37.  ddlscript_complete( integer, text, integer )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.createevent-name-text-text-text-text-text-text-text-text-text.html" title="1.35.  createevent( name, text, text, text, text, text, text, text, text, text )">
-<link rel="next" href="function.ddlscript-complete-int-integer-integer.html" title="1.37.  ddlscript_complete_int( integer, integer )">
+<link rel="prev" href="function.createevent-name-text-text-text-text-text-text-text-text-text.html" title="1.36.  createevent( name, text, text, text, text, text, text, text, text, text )">
+<link rel="next" href="function.ddlscript-complete-int-integer-integer.html" title="1.38.  ddlscript_complete_int( integer, integer )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.ddlscript-complete-integer-text-integer"></a>1.36.        ddlscript_complete( integer, text, integer )
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="function.ddlscript-complete-integer-text-integer">1.37.        ddlscript_complete( integer, text, integer )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -40,8 +39,15 @@ replicated slaves.
 	v_set_origin		int4;
 begin
 	perform updateRelname(p_set_id, p_only_on_node);
-	return  createEvent('_schemadoc', 'DDL_SCRIPT', 
-			p_set_id, p_script, p_only_on_node);
+	if p_only_on_node = -1 then
+		perform alterTableForReplication(tab_id) from sl_table where tab_set in (select set_id from sl_set where set_origin = getLocalNodeId('_schemadoc'));
+
+		return  createEvent('_schemadoc', 'DDL_SCRIPT', 
+			p_set_id::text, p_script::text, p_only_on_node::text);
+	else
+		perform alterTableForReplication(tab_id) from sl_table;
+	end if;
+	return NULL;
 end;</pre>
 <p>
       </p>

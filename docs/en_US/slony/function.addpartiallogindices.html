@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.20.  addpartiallogindices( )</title>
+<title>1.21.  addpartiallogindices( )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.add-missing-table-field-text-text-text-text.html" title="1.19.  add_missing_table_field( text, text, text, text )">
-<link rel="next" href="function.altertableforreplication-integer.html" title="1.21.  altertableforreplication( integer )">
+<link rel="prev" href="function.add-missing-table-field-text-text-text-text.html" title="1.20.  add_missing_table_field( text, text, text, text )">
+<link rel="next" href="function.altertableforreplication-integer.html" title="1.22.  altertableforreplication( integer )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.addpartiallogindices"></a>1.20.        addpartiallogindices(  )
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="function.addpartiallogindices">1.21.        addpartiallogindices(  )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -38,8 +37,10 @@ system switches between sl_log_1 and sl_log_2.
 	v_current_status	int4;
 	v_log			int4;
 	v_dummy		record;
+	v_dummy2	record;
 	idef 		text;
 	v_count		int4;
+        v_iname         text;
 BEGIN
 	v_count := 0;
 	select last_value into v_current_status from sl_log_status;
@@ -54,26 +55,32 @@ BEGIN
 	else
 		v_log := 1;
 	end if;
-
+--                                       PartInd_test_db_sl_log_2-node-1
 	-- Add missing indices...
-	for v_dummy in select distinct set_origin from sl_set
-		where not exists 
-                     (select * from pg_catalog.pg_indexes where schemaname = 'schemadoc'
-                      and tablename = 'sl_log_' || v_log and 
-                      indexname = 'PartInd_schemadoc_sl_log_' || v_log || '-node-' || set_origin) loop	   
+	for v_dummy in select distinct set_origin from sl_set loop
+            v_iname := 'PartInd_schemadoc_sl_log_' || v_log || '-node-' || v_dummy.set_origin;
+	    -- raise notice 'Consider adding partial index % on sl_log_%', v_iname, v_log;
+	    -- raise notice 'schema: [_schemadoc] tablename:[sl_log_%]', v_log;
+            select * into v_dummy2 from pg_catalog.pg_indexes where tablename = 'sl_log_' || v_log and  indexname = v_iname;
+            if not found then
+		-- raise notice 'index was not found - add it!';
 		idef := 'create index "PartInd_schemadoc_sl_log_' || v_log || '-node-' || v_dummy.set_origin ||
                         '" on sl_log_' || v_log || ' USING btree(log_xid xxid_ops) where (log_origin = ' || v_dummy.set_origin || ');';
 		execute idef;
 		v_count := v_count + 1;
+            else
+                -- raise notice 'Index % already present - skipping', v_iname;
+            end if;
 	end loop;
 
 	-- Remove unneeded indices...
-	for v_dummy in select indexname from pg_catalog.pg_indexes i where i.schemaname = '@NAMESPACE'
-                       and i.tablename = 'sl_log_' || v_log and
+	for v_dummy in select indexname from pg_catalog.pg_indexes i where i.tablename = 'sl_log_' || v_log and
+                       i.indexname like ('PartInd_schemadoc_sl_log_' || v_log || '-node-%') and
                        not exists (select 1 from sl_set where
 				i.indexname = 'PartInd_schemadoc_sl_log_' || v_log || '-node-' || set_origin)
 	loop
-		idef := 'drop index "schemadoc"."' || v_dummy.indexname || '";';
+		-- raise notice 'Dropping obsolete index %d', v_dummy.indexname;
+		idef := 'drop index "' || v_dummy.indexname || '";';
 		execute idef;
 		v_count := v_count - 1;
 	end loop;

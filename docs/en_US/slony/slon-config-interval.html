@@ -4,16 +4,15 @@
 <title>4. Event Tuning</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="runtime-config.html" title="Run-time Configuration">
 <link rel="prev" href="slon-archive-logging.html" title="3.  Archive Logging Options">
 <link rel="next" href="slonik.html" title="slonik">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="slon-config-interval"></a>4. Event Tuning</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="slon-config-interval">4. Event Tuning</h2></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="slon-config-sync-interval"></a><span class="term"><code class="varname">sync_interval</code> (<code class="type">integer</code>)</span>
@@ -52,7 +51,7 @@
           <code class="option">-g60</code> will apply just that one. As soon as a
           subscriber catches up, it will apply every single
           <code class="command">SYNC</code> by itself.  Range: [0,10000], default:
-          6
+          20
         </p></dd>
 <dt>
 <a name="slon-config-vac-frequency"></a><span class="term"><code class="varname">vac_frequency</code> (<code class="type">integer</code>)</span>
@@ -79,7 +78,7 @@
 <a name="slon-config-quit-sync-provider"></a><span class="term"><code class="varname">quit_sync_provider</code>  (<code class="type">integer</code>)</span>
 </dt>
 <dd>
-<p> This must be used in conjunction with <a href="slon-config-interval.html#slon-config-quit-sync-finalsync">quit_sync_finalsync</a>, and indicates
+<p> This must be used in conjunction with <a class="xref" href="slon-config-interval.html#slon-config-quit-sync-finalsync">quit_sync_finalsync</a>, and indicates
         which provider node's worker thread should be watched to see
         if the slon should terminate due to reaching some desired
         &#8220;<span class="quote">final</span>&#8221; event number.</p>
@@ -90,7 +89,7 @@
 </dt>
 <dd>
 <p>Final event number to process.  This must be used in
-        conjunction with <a href="slon-config-interval.html#slon-config-quit-sync-finalsync">quit_sync_finalsync</a>, and
+        conjunction with <a class="xref" href="slon-config-interval.html#slon-config-quit-sync-finalsync">quit_sync_finalsync</a>, and
         allows the <span class="application">slon</span> to terminate itself
         once it reaches a certain event for the specified
         provider. </p>

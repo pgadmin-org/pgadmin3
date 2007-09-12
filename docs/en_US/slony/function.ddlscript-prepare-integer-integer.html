@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>1.38.  ddlscript_prepare( integer, integer )</title>
+<title>1.39.  ddlscript_prepare( integer, integer )</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
-<link rel="prev" href="function.ddlscript-complete-int-integer-integer.html" title="1.37.  ddlscript_complete_int( integer, integer )">
-<link rel="next" href="function.ddlscript-prepare-int-integer-integer.html" title="1.39.  ddlscript_prepare_int( integer, integer )">
+<link rel="prev" href="function.ddlscript-complete-int-integer-integer.html" title="1.38.  ddlscript_complete_int( integer, integer )">
+<link rel="next" href="function.ddlscript-prepare-int-integer-integer.html" title="1.40.  ddlscript_prepare_int( integer, integer )">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="function.ddlscript-prepare-integer-integer"></a>1.38.        ddlscript_prepare( integer, integer )
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="function.ddlscript-prepare-integer-integer">1.39.        ddlscript_prepare( integer, integer )
       </h2></div></div></div>
 <p>       </p>
 <div class="segmentedlist">
@@ -39,8 +38,11 @@ begin
 	-- ----
 	lock table sl_config_lock;
 
+	
 	-- ----
 	-- Check that the set exists and originates here
+	-- unless only_on_node was specified (then it can be applied to
+	-- that node because that is what the user wanted)
 	-- ----
 	select set_origin into v_set_origin
 			from sl_set
@@ -49,15 +51,23 @@ begin
 	if not found then
 		raise exception 'Slony-I: set % not found', p_set_id;
 	end if;
-	if v_set_origin &lt;&gt; getLocalNodeId('_schemadoc') then
-		raise exception 'Slony-I: set % does not originate on local node',
-				p_set_id;
-	end if;
 
-	-- ----
-	-- Create a SYNC event, run the script and generate the DDL_SCRIPT event
-	-- ----
-	perform createEvent('_schemadoc', 'SYNC', NULL);
+	if p_only_on_node = -1 then
+		if v_set_origin &lt;&gt; getLocalNodeId('_schemadoc') then
+			raise exception 'Slony-I: set % does not originate on local node',
+				p_set_id;
+		end if;
+		-- ----
+		-- Create a SYNC event, run the script and generate the DDL_SCRIPT event
+		-- ----
+		perform createEvent('_schemadoc', 'SYNC', NULL);
+		perform alterTableRestore(tab_id) from sl_table where tab_set in (select set_id from sl_set where set_origin = getLocalNodeId('_schemadoc'));
+	else
+		-- ----
+		-- If doing "only on one node" - restore ALL tables irrespective of set
+		-- ----
+		perform alterTableRestore(tab_id) from sl_table;
+	end if;
 	return 1;
 end;</pre>
 <p>

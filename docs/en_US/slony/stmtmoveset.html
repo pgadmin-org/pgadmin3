@@ -4,8 +4,8 @@
 <title>MOVE SET</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtunlockset.html" title="UNLOCK SET">
 <link rel="next" href="stmtfailover.html" title="FAILOVER">
@@ -23,7 +23,7 @@
 <div class="cmdsynopsis"><p><code class="command">MOVE SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2594139"></a><h2>Description</h2>
+<a name="id2613760"></a><h2>Description</h2>
 <p> Changes the origin of a set from one node to another. The
     new origin must be a current subscriber of the set. The set must
     currently be locked on the old origin. </p>
@@ -42,8 +42,9 @@
      origin).  You would probably prefer to <code class="command">MOVE SET</code>
      instead of <code class="command">FAILOVER</code>, if at all possible, as
      <code class="command">FAILOVER</code> winds up discarding the old origin
-     node as being corrupted.</p>
-<p> Note that this is a <a href="locking.html" title="11. Locking Issues"> locking </a> operation, which means that
+     node as being corrupted. Before <code class="command">MOVE SET</code> will
+     function a <code class="command">LOCK SET</code> is needed.</p>
+<p> Note that this is a <a class="link" href="locking.html" title="11. Locking Issues"> locking </a> operation, which means that
     it can get stuck behind other database activity.
      
      </p>
@@ -57,11 +58,15 @@
 </dl></div>
 <p>
     </p>
-<p> This uses <a href="function.moveset-integer-integer.html" title="1.79.  moveset( integer, integer )">schemadocmoveset( integer, integer )</a>. </p>
+<p> This uses <a class="xref" href="function.moveset-integer-integer.html" title="1.80.  moveset( integer, integer )">schemadocmoveset( integer, integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2594245"></a><h2>Example</h2>
-<pre class="programlisting">MOVE SET (
+<a name="id2613878"></a><h2>Example</h2>
+<pre class="programlisting">LOCK SET (
+   ID = 1,
+   ORIGIN = 1
+);
+MOVE SET (
    ID = 1,
    OLD ORIGIN = 1,
    NEW ORIGIN = 3
@@ -69,7 +74,7 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2594254"></a><h2> Locking Behaviour </h2>
+<a name="id2613888"></a><h2> Locking Behaviour </h2>
 <p> Exclusive locks on each replicated table will be taken out
     on both the old origin node and the new origin node, as
     replication triggers are changed on both nodes: on the former
@@ -79,7 +84,7 @@
     added. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2594267"></a><h2> Version Information </h2>
+<a name="id2613901"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

@@ -4,17 +4,16 @@
 <title>7. Defining Slony-I Replication Sets</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyintro.html" title="Slony-I Introduction">
 <link rel="prev" href="cluster.html" title="6. Defining Slony-I Clusters">
 <link rel="next" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="definingsets"></a>7. Defining <span class="productname">Slony-I</span> Replication Sets</h2></div></div></div>
-<a name="id2563338"></a><p>Defining the nodes indicated the shape of the cluster of
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="definingsets">7. Defining <span class="productname">Slony-I</span> Replication Sets</h2></div></div></div>
+<a name="id2582412"></a><p>Defining the nodes indicated the shape of the cluster of
 database servers; it is now time to determine what data is to be
 copied between them.  The groups of data that are copied are defined
 as &#8220;<span class="quote">replication sets.</span>&#8221;</p>
@@ -26,9 +25,8 @@ suitable primary key</p></li>
 <li><p>Sequences that are to be replicated</p></li>
 </ul></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2563368"></a>7.1. Primary Keys</h3></div></div></div>
-<a name="id2563372"></a><p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
+<div class="titlepage"><div><div><h3 class="title" id="id2582442">7.1. Primary Keys</h3></div></div></div>
+<a name="id2582446"></a><p><span class="productname">Slony-I</span> <span class="emphasis"><em>needs</em></span> to have a primary key or
 candidate thereof on each table that is replicated.  PK values are
 used as the primary identifier for each tuple that is modified in the
 source system.  Note that they can be composite keys composed of
@@ -37,7 +35,7 @@ fields.  There are three ways that you can get <span class="productname">Slony-I
 primary key:</p>
 <div class="itemizedlist"><ul type="disc">
 <li><p> If the table has a formally identified primary key,
-<a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> can be used without any need to
+<a class="xref" href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> can be used without any need to
 reference the primary key.  <span class="productname">Slony-I</span> can automatically pick up that
 there is a primary key, and use it.</p></li>
 <li>
@@ -64,8 +62,8 @@ key, as it infers the namespace from the table.</p>
 </li>
 <li><p> If the table hasn't even got a candidate primary key,
 you can ask <span class="productname">Slony-I</span> to provide one.  This is done by first using
-<a href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a> to add a column populated using a
-<span class="productname">Slony-I</span> sequence, and then having the <a href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> include the directive
+<a class="xref" href="stmttableaddkey.html" title="TABLE ADD KEY"><span class="refentrytitle">TABLE ADD KEY</span></a> to add a column populated using a
+<span class="productname">Slony-I</span> sequence, and then having the <a class="xref" href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> include the directive
 <code class="option">key=serial</code>, to indicate that <span class="productname">Slony-I</span>'s own column
 should be used.</p></li>
 </ul></div>
@@ -80,9 +78,8 @@ application, and this also implies that you had a way to enter confusing
 data into the database.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="definesets"></a>7.2. Grouping tables into sets</h3></div></div></div>
-<p> It will be vital to group tables together into a single set if
+<div class="titlepage"><div><div><h3 class="title" id="definesets">7.2. Grouping tables into sets</h3></div></div></div>
+<a name="id2582618"></a><p> It will be vital to group tables together into a single set if
 those tables are related via foreign key constraints.  If tables that
 are thus related are <span class="emphasis"><em>not</em></span> replicated together,
 you'll find yourself in trouble if you switch the &#8220;<span class="quote">master
@@ -97,8 +94,8 @@ replication set:
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p> The initial <code class="command">COPY_SET</code> event for a
-large set leads to a <a href="faq.html#longtxnsareevil" title="Question"> long running
-transaction </a> on the provider node.  The <a href="faq.html" title="Slony-I FAQ">FAQ </a> outlines a number of problems that result from long
+large set leads to a <a class="link" href="faq.html#longtxnsareevil" title="Question"> long running
+transaction </a> on the provider node.  The <a class="link" href="faq.html" title="Slony-I FAQ">FAQ </a> outlines a number of problems that result from long
 running transactions that will injure system performance.</p>
 <p> If you can split such a large set into several smaller pieces,
 that will shorten the length of each of the transactions, lessening
@@ -110,33 +107,32 @@ initial data copy.  For relatively small databases, this shouldn't be
 a material factor.</p>
 </li>
 <li>
-<p> Any time you invoke <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>,
+<p> Any time you invoke <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>,
 this requests a lock on <span class="emphasis"><em> every single table in the
 replication set, first, on the origin node, and then, as the event
 propagates to other nodes, to each subscriber node. </em></span></p>
 <p> There have been reports &#8220;<span class="quote">in the field</span>&#8221; of this
-leading to deadlocks such that the <a href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>
+leading to deadlocks such that the <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>
 request had to be submitted many times in order for it to actually
 complete successfully.</p>
 <p> The more tables you have in a set, the more tables need to be
 locked, and the greater the chances of deadlocks. </p>
 <p> By the same token, if a particular DDL script only needs to
-affect a couple of tables, you might use <a href="stmtsetmovetable.html" title="SET MOVE TABLE"><span class="refentrytitle">SET MOVE
+affect a couple of tables, you might use <a class="xref" href="stmtsetmovetable.html" title="SET MOVE TABLE"><span class="refentrytitle">SET MOVE
      TABLE</span></a> to move them temporarily to a new
 replication set.  By diminishing the number of locks needed, this
 should ease the ability to get the DDL change into place.</p>
-<p> There is a further <a href="locking.html" title="11. Locking Issues"> discussion of
+<p> There is a further <a class="link" href="locking.html" title="11. Locking Issues"> discussion of
 locking </a> which outlines where <span class="productname">Slony-I</span> requires locks likely to
 intrude on your applications.</p>
 </li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2563682"></a>7.3.  The Pathology of Sequences </h3></div></div></div>
-<a name="id2563686"></a><p> Each time a SYNC is processed, values are recorded for
+<div class="titlepage"><div><div><h3 class="title" id="id2582761">7.3.  The Pathology of Sequences </h3></div></div></div>
+<a name="id2582765"></a><p> Each time a SYNC is processed, values are recorded for
 <span class="emphasis"><em>all</em></span> of the sequences in the set.  If there are a
-lot of sequences, this can cause <a href="table.sl-seqlog.html" title="1.12.  Table: sl_seqlog">sl_seqlog</a> to
+lot of sequences, this can cause <a class="xref" href="table.sl-seqlog.html" title="1.13.  Table: sl_seqlog">sl_seqlog</a> to
 grow rather large.</p>
 <p> This points to an important difference between tables and
 sequences: if you add additional tables that do not see much/any
@@ -151,25 +147,25 @@ the effects:
 <p> A replicated table that is never updated does not
 introduce much work to the system.</p>
 <p> If it is not updated, the trigger on the table on the origin
-never fires, and no entries are added to <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a>.  The table never appears in any of the
+never fires, and no entries are added to <a class="xref" href="table.sl-log-1.html" title="1.6.  Table: sl_log_1">sl_log_1</a>.  The table never appears in any of the
 further replication queries (<span class="emphasis"><em>e.g.</em></span> in the
 <code class="command">FETCH 100 FROM LOG</code> queries used to find
 replicatable data) as they only look for tables for which there are
-entries in <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a>.</p>
+entries in <a class="xref" href="table.sl-log-1.html" title="1.6.  Table: sl_log_1">sl_log_1</a>.</p>
 </li>
 <li>
 <p> In contrast, a fixed amount of work is introduced to
 each SYNC by each sequence that is replicated.</p>
-<p> Replicate 300 sequence and 300 rows need to be added to <a href="table.sl-seqlog.html" title="1.12.  Table: sl_seqlog">sl_seqlog</a> on a regular basis.</p>
+<p> Replicate 300 sequence and 300 rows need to be added to <a class="xref" href="table.sl-seqlog.html" title="1.13.  Table: sl_seqlog">sl_seqlog</a> on a regular basis.</p>
 <p> It is more than likely that if the value of a particular
 sequence hasn't changed since it was last checked, perhaps the same
 value need not be stored over and over; some thought needs to go into
 how to do that safely.</p>
 </li>
 <li>
-<p> <a href="http://gborg.postgresql.org/project/slony1/bugs/bugupdate.php?1226" target="_top">Bug #1226 </a> indicates an error condition that can come up if
+<p> <a class="ulink" href="http://gborg.postgresql.org/project/slony1/bugs/bugupdate.php?1226" target="_top">Bug #1226 </a> indicates an error condition that can come up if
 you have a replication set that consists solely of sequences. </p>
-<p> This is documented more in the <a href="faq.html#sequenceset" title="Question"> FAQ
+<p> This is documented more in the <a class="link" href="faq.html#sequenceset" title="Question"> FAQ
 here;</a> the long and short is that having a replication set
 consisting only of sequences is not a particularly good
 idea.</p>

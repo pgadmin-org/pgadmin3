@@ -4,30 +4,29 @@
 <title>9. Slony-I listen paths</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="failover.html" title="8. Doing switchover and failover with Slony-I">
 <link rel="next" href="plainpaths.html" title="10.  Slony-I Path Communications">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="listenpaths"></a>9. <span class="productname">Slony-I</span> listen paths</h2></div></div></div>
-<a name="id2569285"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="listenpaths">9. <span class="productname">Slony-I</span> listen paths</h2></div></div></div>
+<a name="id2588365"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p> If you are running version
-<span class="productname">Slony-I</span> 1.1 or later it should be
-<span class="emphasis"><em>completely unnecessary</em></span> to read this section as it
-introduces a way to automatically manage this part of its
-configuration.  For earlier versions, however, it is needful.</p>
+<p> If you are running version <span class="productname">Slony-I</span> 1.2 or later it
+should be <span class="emphasis"><em>completely unnecessary</em></span> to read this
+section as it introduces a way to automatically manage this part of
+its configuration.  For earlier versions, however, it is
+needful.</p>
 </div>
 <p>If you have more than two or three nodes, and any degree of
 usage of cascaded subscribers (<span class="emphasis"><em>e.g.</em></span> - subscribers
 that are subscribing through a subscriber node), you will have to be
 fairly careful about the configuration of &#8220;<span class="quote">listen paths</span>&#8221;
-via the Slonik <a href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> and <a href="stmtdroplisten.html" title="DROP LISTEN"><span class="refentrytitle">DROP LISTEN</span></a> statements that control the contents of the
-table <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a>.</p>
+via the Slonik <a class="xref" href="stmtstorelisten.html" title="STORE LISTEN"><span class="refentrytitle">STORE LISTEN</span></a> and <a class="xref" href="stmtdroplisten.html" title="DROP LISTEN"><span class="refentrytitle">DROP LISTEN</span></a> statements that control the contents of the
+table <a class="xref" href="table.sl-listen.html" title="1.5.  Table: sl_listen">sl_listen</a>.</p>
 <p>The &#8220;<span class="quote">listener</span>&#8221; entries in this table control where
 each node expects to listen in order to get events propagated from
 other nodes.  You might think that nodes only need to listen to the
@@ -35,17 +34,16 @@ other nodes.  You might think that nodes only need to listen to the
 reality, they need to be able to receive messages from
 <span class="emphasis"><em>all</em></span> nodes in order to be able to conclude that
 <code class="command">sync</code>s have been received everywhere, and that,
-therefore, entries in <a href="table.sl-log-1.html" title="1.5.  Table: sl_log_1">sl_log_1</a> and <a href="table.sl-log-2.html" title="1.6.  Table: sl_log_2">sl_log_2</a> have been applied everywhere, and can
+therefore, entries in <a class="xref" href="table.sl-log-1.html" title="1.6.  Table: sl_log_1">sl_log_1</a> and <a class="xref" href="table.sl-log-2.html" title="1.7.  Table: sl_log_2">sl_log_2</a> have been applied everywhere, and can
 therefore be purged.  this extra communication is needful so
 <span class="productname">Slony-I</span> is able to shift origins to other
 locations.</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2569384"></a>9.1. How listening can break</h3></div></div></div>
-<p>On one occasion, I had a need to drop a subscriber node (#2) and
+<div class="titlepage"><div><div><h3 class="title" id="id2588464">9.1. How listening can break</h3></div></div></div>
+<a name="id2588468"></a><p>On one occasion, I had a need to drop a subscriber node (#2) and
 recreate it.  That node was the data provider for another subscriber
 (#3) that was, in effect, a &#8220;<span class="quote">cascaded slave.</span>&#8221; Dropping
-the subscriber node initially didn't work, as <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
+the subscriber node initially didn't work, as <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 informed me that there was a dependant node.  I repointed the
 dependant node to the &#8220;<span class="quote">master</span>&#8221; node for the subscription
 set, which, for a while, replicated without difficulties.</p>
@@ -65,8 +63,7 @@ moment, &#8220;<span class="quote">as if by magic</span>&#8221;, node #3 started
 it discovered a place to get <code class="command">sync</code> events.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2569462"></a>9.2. How the listen configuration should look</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2588548">9.2. How the listen configuration should look</h3></div></div></div>
 <p>The simple cases tend to be simple to cope with.  We need to
 instead look at a more complex node configuration.</p>
 <p>Consider a set of nodes, 1 thru 6, where 1 is the origin, 
@@ -129,18 +126,18 @@ node to provide events coming from the &#8220;<span class="quote">origin</span>&
 <p>The tool <code class="filename">init_cluster</code> in the
 <code class="filename">altperl</code> scripts produces optimized listener
 networks in both the tabular form shown above as well as in the form
-of <a href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> statements.</p>
+of <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a> statements.</p>
 <p>There are three &#8220;<span class="quote">thorns</span>&#8221; in this set of roses:
 
 </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p> If you change the shape of the node set, so that the
-nodes subscribe differently to things, you need to drop <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a> entries and create new ones to indicate the
+nodes subscribe differently to things, you need to drop <a class="xref" href="table.sl-listen.html" title="1.5.  Table: sl_listen">sl_listen</a> entries and create new ones to indicate the
 new preferred paths between nodes.  Until <span class="productname">Slony-I</span>, there is no
 automated way at this point to do this
 &#8220;<span class="quote">reshaping</span>&#8221;.</p></li>
 <li><p> If you <span class="emphasis"><em>don't</em></span> change the
-<a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a> entries, events will likely continue to propagate so long as
+<a class="xref" href="table.sl-listen.html" title="1.5.  Table: sl_listen">sl_listen</a> entries, events will likely continue to propagate so long as
 all of the nodes continue to run well.  the problem will only be
 noticed when a node is taken down, &#8220;<span class="quote">orphaning</span>&#8221; any nodes
 that are listening through it.</p></li>
@@ -148,9 +145,9 @@ that are listening through it.</p></li>
 <span class="emphasis"><em>different</em></span> shapes for their respective trees of
 subscribers.  there won't be a single &#8220;<span class="quote">best</span>&#8221; listener
 configuration in that case.</p></li>
-<li><p> In order for there to be an <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a> path, there <span class="emphasis"><em>must</em></span> be a
-series of <a href="table.sl-path.html" title="1.9.  Table: sl_path">sl_path</a> entries connecting the origin
-to the receiver.  this means that if the contents of <a href="table.sl-path.html" title="1.9.  Table: sl_path">sl_path</a> do not express a &#8220;<span class="quote">connected</span>&#8221;
+<li><p> In order for there to be an <a class="xref" href="table.sl-listen.html" title="1.5.  Table: sl_listen">sl_listen</a> path, there <span class="emphasis"><em>must</em></span> be a
+series of <a class="xref" href="table.sl-path.html" title="1.10.  Table: sl_path">sl_path</a> entries connecting the origin
+to the receiver.  this means that if the contents of <a class="xref" href="table.sl-path.html" title="1.10.  Table: sl_path">sl_path</a> do not express a &#8220;<span class="quote">connected</span>&#8221;
 network of nodes, then some nodes will not be reachable.  this would
 typically happen, in practice, when you have two sets of nodes, one in
 one subnet, and another in another subnet, where there are only a
@@ -160,28 +157,27 @@ communicating.</p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="autolisten"></a>9.3. Automated Listen Path Generation</h3></div></div></div>
-<p> In <span class="productname">Slony-I</span> version 1.1, a heuristic scheme is introduced to
+<div class="titlepage"><div><div><h3 class="title" id="autolisten">9.3. Automated Listen Path Generation</h3></div></div></div>
+<a name="id2588782"></a><p> In <span class="productname">Slony-I</span> version 1.1, a heuristic scheme is introduced to
 automatically generate <code class="envar">sl_listen</code> entries.  This
 happens, in order, based on three data sources:
 
 </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p> <a href="table.sl-subscribe.html" title="1.16.  Table: sl_subscribe">sl_subscribe</a> entries are the
+<li><p> <a class="xref" href="table.sl-subscribe.html" title="1.17.  Table: sl_subscribe">sl_subscribe</a> entries are the
 first, most vital control as to what listens to what; we
 <span class="emphasis"><em>know</em></span> there must be a direct path between each
 subscriber node and its provider.</p></li>
-<li><p> <a href="table.sl-path.html" title="1.9.  Table: sl_path">sl_path</a> entries are the second
-indicator; if <a href="table.sl-subscribe.html" title="1.16.  Table: sl_subscribe">sl_subscribe</a> has not already
+<li><p> <a class="xref" href="table.sl-path.html" title="1.10.  Table: sl_path">sl_path</a> entries are the second
+indicator; if <a class="xref" href="table.sl-subscribe.html" title="1.17.  Table: sl_subscribe">sl_subscribe</a> has not already
 indicated &#8220;<span class="quote">how to listen,</span>&#8221; then a node may listen
-directly to the event's origin if there is a suitable <a href="table.sl-path.html" title="1.9.  Table: sl_path">sl_path</a> entry.</p></li>
+directly to the event's origin if there is a suitable <a class="xref" href="table.sl-path.html" title="1.10.  Table: sl_path">sl_path</a> entry.</p></li>
 <li><p> Lastly, if there has been no guidance thus far based
 on the above data sources, then nodes can listen indirectly via every
 node that is either a provider for the receiver, or that is using the
 receiver as a provider.</p></li>
 </ul></div>
-<p> Any time <a href="table.sl-subscribe.html" title="1.16.  Table: sl_subscribe">sl_subscribe</a> or <a href="table.sl-path.html" title="1.9.  Table: sl_path">sl_path</a> are modified,
+<p> Any time <a class="xref" href="table.sl-subscribe.html" title="1.17.  Table: sl_subscribe">sl_subscribe</a> or <a class="xref" href="table.sl-path.html" title="1.10.  Table: sl_path">sl_path</a> are modified,
 <code class="function">RebuildListenEntries()</code> will be called to revise
 the listener paths.</p>
 </div>

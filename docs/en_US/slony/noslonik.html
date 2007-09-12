@@ -4,18 +4,17 @@
 <title>18.  Not Using Slonik - Bare Metal Slony-I Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="Slony-I 1.2.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="slonikshell.html" title="17.  Embedding Slonik in Shell Scripts">
 <link rel="next" href="adminscripts.html" title="19. Slony-I Administration Scripts">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="noslonik"></a>18.  Not Using Slonik - Bare Metal <span class="productname">Slony-I</span>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="noslonik">18.  Not Using Slonik - Bare Metal <span class="productname">Slony-I</span>
 Functions </h2></div></div></div>
-<p> There are cases where it may make sense to directly use the
+<a name="id2532560"></a><p> There are cases where it may make sense to directly use the
 stored functions that implement the various pieces of <span class="productname">Slony-I</span>.
 Slonik doesn't do terribly much &#8220;<span class="quote">magic;</span>&#8221; it is common for
 Slonik commands to simply involve deciding on a node at which to apply
@@ -30,7 +29,7 @@ is suggested that you examine how the stored procedures are used in
 of the functions.</p>
 <p> When debugging problems in &#8220;<span class="quote">troubled</span>&#8221; <span class="productname">Slony-I</span>
 clusters, it has also occasionally proven useful to use the stored
-functions.  This has been particularly useful for cases where <a href="table.sl-listen.html" title="1.4.  Table: sl_listen">sl_listen</a> configuration has been broken, and events
+functions.  This has been particularly useful for cases where <a class="xref" href="table.sl-listen.html" title="1.5.  Table: sl_listen">sl_listen</a> configuration has been broken, and events
 have not been propagating properly.  The &#8220;<span class="quote">easiest</span>&#8221; fix
 was to:</p>
 <p> <code class="command"> select
@@ -54,7 +53,7 @@ _slonycluster.sl_listen;</code></p>
 pa_server, pa_client) from _slonycluster.sl_path;</code></p>
 <p> If you are planning to add <span class="productname">Slony-I</span> support to other tools
 (<span class="emphasis"><em>e.g.</em></span> - adding replication support to something
-like <a href="http://www.pgadmin.org/" target="_top"> <span class="productname">pgAdmin
+like <a class="ulink" href="http://www.pgadmin.org/" target="_top"> <span class="productname">pgAdmin
 III</span> </a>), you need to be clear on where various
 functions need to be called.  The normal &#8220;<span class="quote">protocol</span>&#8221; is
 thus:
@@ -67,15 +66,15 @@ thus:
 suffix) is called on a &#8220;<span class="quote">relevant</span>&#8221; node in the <span class="productname">Slony-I</span>
 cluster.</p>
 <p> In some cases, the function may be called on any node, and it
-can satisfactorily propagate to other nodes.  That is true for <a href="function.storelisten-integer-integer-integer.html" title="1.111.  storelisten( integer, integer, integer )">schemadocstorelisten( integer, integer, integer )</a>, for instance.
+can satisfactorily propagate to other nodes.  That is true for <a class="xref" href="function.storelisten-integer-integer-integer.html" title="1.112.  storelisten( integer, integer, integer )">schemadocstorelisten( integer, integer, integer )</a>, for instance.
 In other cases, the function needs to be called on some particular
 node because that is the only place where data may be reasonably
-validated.  For instance, <a href="function.subscribeset-integer-integer-integer-boolean.html" title="1.121.  subscribeset( integer, integer, integer, boolean )">schemadocsubscribeset( integer, integer, integer, boolean )</a> must
+validated.  For instance, <a class="xref" href="function.subscribeset-integer-integer-integer-boolean.html" title="1.122.  subscribeset( integer, integer, integer, boolean )">schemadocsubscribeset( integer, integer, integer, boolean )</a> must
 be called on the receivernode.</p>
 </li>
 <li><p> If that &#8220;<span class="quote">main</span>&#8221; function succeeds, then
 the configuration change is performed on the local node, and an event
-is created using <a href="function.createevent-name-text.html" title="1.27.  createevent( name, text )">schemadoccreateevent( name, text )</a> to
+is created using <a class="xref" href="function.createevent-name-text.html" title="1.28.  createevent( name, text )">schemadoccreateevent( name, text )</a> to
 cause the configuration change to propagate to all of the other nodes
 in the <span class="productname">Slony-I</span> cluster.</p></li>
 <li>
