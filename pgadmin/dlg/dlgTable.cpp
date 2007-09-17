@@ -302,6 +302,14 @@ int dlgTable::Go(bool modal)
             }
             delete set;
         }
+
+        // Add the default tablespace (note the hack to 
+        // avoid a string change close to release - this 
+        // can be removed from SVN-Trunk at some point)
+        wxString dt = wxString::Format(wxT("<%s>"), _("Default tablespace"));
+        dt.LowerCase();
+        cbTablespace->Insert(dt, 0, (void *)0);
+        cbTablespace->SetSelection(0);
     }
 
     FillConstraint();
@@ -752,7 +760,7 @@ wxString dlgTable::GetSql()
             sql += (chkHasOids->GetValue() ? wxT("\nWITH OIDS") : wxT("\nWITHOUT OIDS"));
         }
 
-        if (cbTablespace->GetCurrentSelection() > 0)
+        if (cbTablespace->GetCurrentSelection() > 0 && cbTablespace->GetOIDKey() > 0)
             sql += wxT("\nTABLESPACE ") + qtIdent(cbTablespace->GetValue());
 
         sql += wxT(";\n");

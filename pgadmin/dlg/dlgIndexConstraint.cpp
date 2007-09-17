@@ -59,6 +59,14 @@ int dlgIndexConstraint::Go(bool modal)
             cbClusterSet->Disable();
             cbClusterSet = 0;
         }
+
+        // Add the default tablespace (note the hack to 
+        // avoid a string change close to release - this 
+        // can be removed from SVN-Trunk at some point)
+        wxString dt = wxString::Format(wxT("<%s>"), _("Default tablespace"));
+        dt.LowerCase();
+        cbTablespace->Insert(dt, 0, (void *)0);
+        cbTablespace->SetSelection(0);
     }
 
     return dlgIndexBase::Go(modal);
@@ -71,7 +79,7 @@ wxString dlgIndexConstraint::GetDefinition()
 
     sql = wxT("(") + GetColumns() + wxT(")");
 
-    if (cbTablespace->GetValue() != table->GetDatabase()->GetDefaultTablespace())
+    if (cbTablespace->GetOIDKey() > 0)
         sql += wxT(" USING INDEX TABLESPACE ") + qtIdent(cbTablespace->GetValue());
 
     return sql;
