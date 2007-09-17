@@ -206,7 +206,7 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
         if (useRegexps)
         {
             CharacterRange cr = RegexFindText(GetSelectionStart(), GetSelectionEnd(), find);
-            if (GetSelectionStart() == cr.cpMin && GetSelectionEnd())
+            if (GetSelectionStart() == cr.cpMin && GetSelectionEnd() == cr.cpMax)
             {
                 ReplaceSelection(replace);
                 SetSelection(startPos, startPos + replace.Length());
