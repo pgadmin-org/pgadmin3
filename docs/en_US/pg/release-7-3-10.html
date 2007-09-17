@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.52. Release 7.3.10</title>
+<title>E.56. Release 7.3.10</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-3-11.html" title="E.51. Release 7.3.11">
-<link rel="next" href="release-7-3-9.html" title="E.53. Release 7.3.9">
+<link rel="prev" href="release-7-3-11.html" title="E.55. Release 7.3.11">
+<link rel="next" href="release-7-3-9.html" title="E.57. Release 7.3.9">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-7-3-10"></a>E.52. Release 7.3.10</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-3-10">E.56. Release 7.3.10</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2005-05-09</p>
@@ -22,8 +21,7 @@
     security-related issues.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2851602"></a>E.52.1. Migration to version 7.3.10</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2871033">E.56.1. Migration to version 7.3.10</h3></div></div></div>
 <p>     A dump/restore is not required for those running 7.3.X.  However,
      it is one possible way of handling a significant security problem
      that has been found in the initial contents of 7.3.X system
@@ -40,7 +38,7 @@
      It is strongly recommended that all installations repair this error,
      either by initdb or by following the manual repair procedure given
      below.  The error at least allows unprivileged database users to crash
-     their server process, and may allow unprivileged users to gain the
+     their server process, and might allow unprivileged users to gain the
      privileges of a database superuser.
     </p>
 <p>     If you wish not to do an initdb, perform the following procedure instead.
@@ -62,12 +60,12 @@ COMMIT;</pre>
      template databases then any subsequently created databases will contain
      the same error.  <code class="literal">template1</code> can be fixed in the same way
      as any other database, but fixing <code class="literal">template0</code> requires
-     additional steps.  First, from any database issue
+     additional steps.  First, from any database issue:
 </p>
 <pre class="programlisting">UPDATE pg_database SET datallowconn = true WHERE datname = 'template0';</pre>
 <p>
       Next connect to <code class="literal">template0</code> and perform the above repair
-      procedure.  Finally, do
+      procedure.  Finally, do:
 </p>
 <pre class="programlisting">-- re-freeze template0:
 VACUUM FREEZE;
@@ -77,8 +75,7 @@ UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</pre>
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2851717"></a>E.52.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2871148">E.56.2. Changes</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Change encoding function signature to prevent
 misuse</p></li>

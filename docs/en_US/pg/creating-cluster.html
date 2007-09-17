@@ -4,17 +4,16 @@
 <title>16.2. Creating a Database Cluster</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="next" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="creating-cluster"></a>16.2. Creating a Database Cluster</h2></div></div></div>
-<a name="id2629376"></a><a name="id2629381"></a><p>   Before you can do anything, you must initialize a database storage
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="creating-cluster">16.2. Creating a Database Cluster</h2></div></div></div>
+<a name="id2648338"></a><a name="id2648343"></a><p>   Before you can do anything, you must initialize a database storage
    area on disk. We call this a <em class="firstterm">database cluster</em>.
    (<acronym class="acronym">SQL</acronym> uses the term catalog cluster.) A
    database cluster is a collection of databases that is managed by a
@@ -27,7 +26,7 @@
    during initialization is called
    <code class="literal">template1</code>.  As the name suggests, this will be used
    as a template for subsequently created databases; it should not be
-   used for actual work.  (See <a href="managing-databases.html" title="Chapter 19. Managing Databases">Chapter 19, <i>Managing Databases</i></a> for
+   used for actual work.  (See <a class="xref" href="managing-databases.html" title="Chapter 19. Managing Databases">Chapter 19, <i>Managing Databases</i></a> for
    information about creating new databases within a cluster.)
   </p>
 <p>   In file system terms, a database cluster will be a single directory
@@ -37,7 +36,7 @@
    default, although locations such as
    <code class="filename">/usr/local/pgsql/data</code> or
    <code class="filename">/var/lib/pgsql/data</code> are popular. To initialize a
-   database cluster, use the command <a href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>,<a name="id2629473"></a> which is
+   database cluster, use the command <a class="xref" href="app-initdb.html" title="initdb"><span class="refentrytitle"><a name="app-initdb-title"></a>initdb</span></a>,<a name="id2648434"></a> which is
    installed with <span class="productname">PostgreSQL</span>. The desired
    file system location of your database cluster is indicated by the
    <code class="option">-D</code> option, for example
@@ -52,7 +51,7 @@
 <h3 class="title">Tip</h3>
 <p>    As an alternative to the <code class="option">-D</code> option, you can set
     the environment variable <code class="envar">PGDATA</code>.
-    <a name="id2629526"></a>
+    <a name="id2648488"></a>
    </p>
 </div>
 <p>   <code class="command">initdb</code> will attempt to create the directory you
@@ -83,20 +82,20 @@ postgres$ <strong class="userinput"><code>initdb -D /usr/local/pgsql/data</code>
    trust other local users, we recommend you use one of
    <code class="command">initdb</code>'s <code class="option">-W</code>, <code class="option">--pwprompt</code>
    or <code class="option">--pwfile</code> options to assign a password to the
-   database superuser.<a name="id2629634"></a>  Also, specify <code class="option">-A md5</code> or
+   database superuser.<a name="id2648596"></a>  Also, specify <code class="option">-A md5</code> or
    <code class="option">-A password</code> so that the default <code class="literal">trust</code> authentication
    mode is not used; or modify the generated <code class="filename">pg_hba.conf</code>
    file after running <code class="command">initdb</code>,
    <span class="emphasis"><em>before</em></span> you start the server for the first time. (Other
    reasonable approaches include using <code class="literal">ident</code> authentication
-   or file system permissions to restrict connections. See <a href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a> for more information.)
+   or file system permissions to restrict connections. See <a class="xref" href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a> for more information.)
   </p>
 <p>   <code class="command">initdb</code> also initializes the default
-   locale<a name="id2629700"></a> for the database cluster.
+   locale<a name="id2648661"></a> for the database cluster.
    Normally, it will just take the locale settings in the environment
    and apply them to the initialized database.  It is possible to
    specify a different locale for the database; more information about
-   that can be found in <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a>.  The sort order used
+   that can be found in <a class="xref" href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a>.  The sort order used
    within a particular database cluster is set by
    <code class="command">initdb</code> and cannot be changed later, short of
    dumping all data, rerunning <code class="command">initdb</code>, and reloading
@@ -106,7 +105,7 @@ postgres$ <strong class="userinput"><code>initdb -D /usr/local/pgsql/data</code>
   </p>
 <p>   <code class="command">initdb</code> also sets the default character set encoding
    for the database cluster.  Normally this should be chosen to match the
-   locale setting.  For details see <a href="multibyte.html" title="21.2. Character Set Support">Section 21.2, &#8220;Character Set Support&#8221;</a>.
+   locale setting.  For details see <a class="xref" href="multibyte.html" title="21.2. Character Set Support">Section 21.2, &#8220;Character Set Support&#8221;</a>.
   </p>
 </div></body>
 </html>

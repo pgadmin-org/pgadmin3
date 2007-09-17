@@ -4,27 +4,26 @@
 <title>42.33. pg_type</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
 <link rel="prev" href="catalog-pg-trigger.html" title="42.32. pg_trigger">
 <link rel="next" href="views-overview.html" title="42.34. System Views">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-type"></a>42.33. <code class="structname">pg_type</code></h2></div></div></div>
-<a name="id2797436"></a><p>   The catalog <code class="structname">pg_type</code> stores information about data
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalog-pg-type">42.33. <code class="structname">pg_type</code></h2></div></div></div>
+<a name="id2816415"></a><p>   The catalog <code class="structname">pg_type</code> stores information about data
    types.  Base types (scalar types) are created with
-   <a href="sql-createtype.html" title="CREATE TYPE">CREATE TYPE</a>, and
+   <a class="xref" href="sql-createtype.html" title="CREATE TYPE">CREATE TYPE</a>, and
    domains with
-   <a href="sql-createdomain.html" title="CREATE DOMAIN">CREATE DOMAIN</a>.
+   <a class="xref" href="sql-createdomain.html" title="CREATE DOMAIN">CREATE DOMAIN</a>.
    A composite type is automatically created for each table in the database, to
    represent the row structure of the table.  It is also possible to create
    composite types with <code class="command">CREATE TYPE AS</code>.
   </p>
 <div class="table">
-<a name="id2797482"></a><p class="title"><b>Table 42.33. <code class="structname">pg_type</code> Columns</b></p>
+<a name="id2816461"></a><p class="title"><b>Table 42.33. <code class="structname">pg_type</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_type Columns" border="1">
 <colgroup>
 <col>
@@ -48,14 +47,14 @@
 <tr>
 <td><code class="structfield">typnamespace</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-namespace.html" title="42.23. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-namespace.html" title="42.23. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
 <td>       The OID of the namespace that contains this type
       </td>
 </tr>
 <tr>
 <td><code class="structfield">typowner</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a>.oid</code></td>
 <td>Owner of the type</td>
 </tr>
 <tr>
@@ -117,7 +116,7 @@
 <tr>
 <td><code class="structfield">typrelid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>       If this is a composite type (see
        <code class="structfield">typtype</code>), then this column points to
        the <code class="structname">pg_class</code> entry that defines the
@@ -131,7 +130,7 @@
 <tr>
 <td><code class="structfield">typelem</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>       If <code class="structfield">typelem</code> is not 0 then it
        identifies another row in <code class="structname">pg_type</code>.
        The current type can then be subscripted like an array yielding
@@ -151,31 +150,31 @@
 <tr>
 <td><code class="structfield">typinput</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Input conversion function (text format)</td>
 </tr>
 <tr>
 <td><code class="structfield">typoutput</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Output conversion function (text format)</td>
 </tr>
 <tr>
 <td><code class="structfield">typreceive</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Input conversion function (binary format), or 0 if none</td>
 </tr>
 <tr>
 <td><code class="structfield">typsend</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Output conversion function (binary format), or 0 if none</td>
 </tr>
 <tr>
 <td><code class="structfield">typanalyze</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Custom ANALYZE function, or 0 to use the standard function</td>
 </tr>
 <tr>
@@ -252,7 +251,7 @@
 <tr>
 <td><code class="structfield">typbasetype</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td><p>       If this is a domain (see <code class="structfield">typtype</code>),
        then <code class="structfield">typbasetype</code> identifies
        the type that this one is based on.  Zero if not a domain.

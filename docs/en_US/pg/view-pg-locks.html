@@ -4,19 +4,18 @@
 <title>42.37. pg_locks</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
 <link rel="prev" href="view-pg-indexes.html" title="42.36. pg_indexes">
 <link rel="next" href="view-pg-prepared-xacts.html" title="42.38. pg_prepared_xacts">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="view-pg-locks"></a>42.37. <code class="structname">pg_locks</code></h2></div></div></div>
-<a name="id2798828"></a><p>   The view <code class="structname">pg_locks</code> provides access to
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="view-pg-locks">42.37. <code class="structname">pg_locks</code></h2></div></div></div>
+<a name="id2817807"></a><p>   The view <code class="structname">pg_locks</code> provides access to
    information about the locks held by open transactions within the
-   database server.  See <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> for more discussion
+   database server.  See <a class="xref" href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> for more discussion
    of locking.
   </p>
 <p>   <code class="structname">pg_locks</code> contains one row per active lockable
@@ -36,7 +35,7 @@
    relation is represented as a separate lockable object.
   </p>
 <div class="table">
-<a name="id2798877"></a><p class="title"><b>Table 42.37. <code class="structname">pg_locks</code> Columns</b></p>
+<a name="id2817857"></a><p class="title"><b>Table 42.37. <code class="structname">pg_locks</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_locks Columns" border="1">
 <colgroup>
 <col>
@@ -68,7 +67,7 @@
 <tr>
 <td><code class="structfield">database</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-database.html" title="42.15. pg_database"><code class="structname">pg_database</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-database.html" title="42.15. pg_database"><code class="structname">pg_database</code></a>.oid</code></td>
 <td>       OID of the database in which the object exists, or
        zero if the object is a shared object, or
        NULL if the object is a transaction ID
@@ -77,7 +76,7 @@
 <tr>
 <td><code class="structfield">relation</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>       OID of the relation, or NULL if the object is not
        a relation or part of a relation
       </td>
@@ -107,7 +106,7 @@
 <tr>
 <td><code class="structfield">classid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>       OID of the system catalog containing the object, or NULL if the
        object is not a general database object
       </td>
@@ -149,7 +148,7 @@
 <td><code class="structfield">mode</code></td>
 <td><code class="type">text</code></td>
 <td> </td>
-<td>name of the lock mode held or desired by this process (see <a href="explicit-locking.html#locking-tables" title="12.3.1. Table-Level Locks">Section 12.3.1, &#8220;Table-Level Locks&#8221;</a>)</td>
+<td>name of the lock mode held or desired by this process (see <a class="xref" href="explicit-locking.html#locking-tables" title="12.3.1. Table-Level Locks">Section 12.3.1, &#8220;Table-Level Locks&#8221;</a>)</td>
 </tr>
 <tr>
 <td><code class="structfield">granted</code></td>

@@ -4,16 +4,15 @@
 <title>Chapter 42. System Catalogs</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="executor.html" title="41.6. Executor">
 <link rel="next" href="catalog-pg-aggregate.html" title="42.2. pg_aggregate">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="catalogs">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="catalogs"></a>Chapter 42. System Catalogs</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 42. System Catalogs</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -79,9 +78,8 @@
    particularly esoteric operations, such as adding index access methods.
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalogs-overview"></a>42.1. Overview</h2></div></div></div>
-<p>   <a href="catalogs.html#catalog-table" title="Table 42.1. System Catalogs">Table 42.1, &#8220;System Catalogs&#8221;</a> lists the system catalogs.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalogs-overview">42.1. Overview</h2></div></div></div>
+<p>   <a class="xref" href="catalogs.html#catalog-table" title="Table 42.1. System Catalogs">Table 42.1, &#8220;System Catalogs&#8221;</a> lists the system catalogs.
    More detailed documentation of each catalog follows below.
   </p>
 <p>   Most system catalogs are copied from the template database during
@@ -102,131 +100,131 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><a href="catalog-pg-aggregate.html" title="42.2. pg_aggregate"><code class="structname">pg_aggregate</code></a></td>
+<td><a class="link" href="catalog-pg-aggregate.html" title="42.2. pg_aggregate"><code class="structname">pg_aggregate</code></a></td>
 <td>aggregate functions</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-am.html" title="42.3. pg_am"><code class="structname">pg_am</code></a></td>
+<td><a class="link" href="catalog-pg-am.html" title="42.3. pg_am"><code class="structname">pg_am</code></a></td>
 <td>index access methods</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-amop.html" title="42.4. pg_amop"><code class="structname">pg_amop</code></a></td>
+<td><a class="link" href="catalog-pg-amop.html" title="42.4. pg_amop"><code class="structname">pg_amop</code></a></td>
 <td>access method operators</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-amproc.html" title="42.5. pg_amproc"><code class="structname">pg_amproc</code></a></td>
+<td><a class="link" href="catalog-pg-amproc.html" title="42.5. pg_amproc"><code class="structname">pg_amproc</code></a></td>
 <td>access method support procedures</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-attrdef.html" title="42.6. pg_attrdef"><code class="structname">pg_attrdef</code></a></td>
+<td><a class="link" href="catalog-pg-attrdef.html" title="42.6. pg_attrdef"><code class="structname">pg_attrdef</code></a></td>
 <td>column default values</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-attribute.html" title="42.7. pg_attribute"><code class="structname">pg_attribute</code></a></td>
+<td><a class="link" href="catalog-pg-attribute.html" title="42.7. pg_attribute"><code class="structname">pg_attribute</code></a></td>
 <td>table columns (&#8220;<span class="quote">attributes</span>&#8221;)</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a></td>
+<td><a class="link" href="catalog-pg-authid.html" title="42.8. pg_authid"><code class="structname">pg_authid</code></a></td>
 <td>authorization identifiers (roles)</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-auth-members.html" title="42.9. pg_auth_members"><code class="structname">pg_auth_members</code></a></td>
+<td><a class="link" href="catalog-pg-auth-members.html" title="42.9. pg_auth_members"><code class="structname">pg_auth_members</code></a></td>
 <td>authorization identifier membership relationships</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-autovacuum.html" title="42.10. pg_autovacuum"><code class="structname">pg_autovacuum</code></a></td>
+<td><a class="link" href="catalog-pg-autovacuum.html" title="42.10. pg_autovacuum"><code class="structname">pg_autovacuum</code></a></td>
 <td>per-relation autovacuum configuration parameters</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-cast.html" title="42.11. pg_cast"><code class="structname">pg_cast</code></a></td>
+<td><a class="link" href="catalog-pg-cast.html" title="42.11. pg_cast"><code class="structname">pg_cast</code></a></td>
 <td>casts (data type conversions)</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a></td>
+<td><a class="link" href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a></td>
 <td>tables, indexes, sequences, views (&#8220;<span class="quote">relations</span>&#8221;)</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-constraint.html" title="42.13. pg_constraint"><code class="structname">pg_constraint</code></a></td>
+<td><a class="link" href="catalog-pg-constraint.html" title="42.13. pg_constraint"><code class="structname">pg_constraint</code></a></td>
 <td>check constraints, unique constraints, primary key constraints, foreign key constraints</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-conversion.html" title="42.14. pg_conversion"><code class="structname">pg_conversion</code></a></td>
+<td><a class="link" href="catalog-pg-conversion.html" title="42.14. pg_conversion"><code class="structname">pg_conversion</code></a></td>
 <td>encoding conversion information</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-database.html" title="42.15. pg_database"><code class="structname">pg_database</code></a></td>
+<td><a class="link" href="catalog-pg-database.html" title="42.15. pg_database"><code class="structname">pg_database</code></a></td>
 <td>databases within this database cluster</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-depend.html" title="42.16. pg_depend"><code class="structname">pg_depend</code></a></td>
+<td><a class="link" href="catalog-pg-depend.html" title="42.16. pg_depend"><code class="structname">pg_depend</code></a></td>
 <td>dependencies between database objects</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-description.html" title="42.17. pg_description"><code class="structname">pg_description</code></a></td>
+<td><a class="link" href="catalog-pg-description.html" title="42.17. pg_description"><code class="structname">pg_description</code></a></td>
 <td>descriptions or comments on database objects</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-index.html" title="42.18. pg_index"><code class="structname">pg_index</code></a></td>
+<td><a class="link" href="catalog-pg-index.html" title="42.18. pg_index"><code class="structname">pg_index</code></a></td>
 <td>additional index information</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-inherits.html" title="42.19. pg_inherits"><code class="structname">pg_inherits</code></a></td>
+<td><a class="link" href="catalog-pg-inherits.html" title="42.19. pg_inherits"><code class="structname">pg_inherits</code></a></td>
 <td>table inheritance hierarchy</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-language.html" title="42.20. pg_language"><code class="structname">pg_language</code></a></td>
+<td><a class="link" href="catalog-pg-language.html" title="42.20. pg_language"><code class="structname">pg_language</code></a></td>
 <td>languages for writing functions</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-largeobject.html" title="42.21. pg_largeobject"><code class="structname">pg_largeobject</code></a></td>
+<td><a class="link" href="catalog-pg-largeobject.html" title="42.21. pg_largeobject"><code class="structname">pg_largeobject</code></a></td>
 <td>large objects</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-listener.html" title="42.22. pg_listener"><code class="structname">pg_listener</code></a></td>
+<td><a class="link" href="catalog-pg-listener.html" title="42.22. pg_listener"><code class="structname">pg_listener</code></a></td>
 <td>asynchronous notification support</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-namespace.html" title="42.23. pg_namespace"><code class="structname">pg_namespace</code></a></td>
+<td><a class="link" href="catalog-pg-namespace.html" title="42.23. pg_namespace"><code class="structname">pg_namespace</code></a></td>
 <td>schemas</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-opclass.html" title="42.24. pg_opclass"><code class="structname">pg_opclass</code></a></td>
+<td><a class="link" href="catalog-pg-opclass.html" title="42.24. pg_opclass"><code class="structname">pg_opclass</code></a></td>
 <td>index access method operator classes</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-operator.html" title="42.25. pg_operator"><code class="structname">pg_operator</code></a></td>
+<td><a class="link" href="catalog-pg-operator.html" title="42.25. pg_operator"><code class="structname">pg_operator</code></a></td>
 <td>operators</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-pltemplate.html" title="42.26. pg_pltemplate"><code class="structname">pg_pltemplate</code></a></td>
+<td><a class="link" href="catalog-pg-pltemplate.html" title="42.26. pg_pltemplate"><code class="structname">pg_pltemplate</code></a></td>
 <td>template data for procedural languages</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a></td>
+<td><a class="link" href="catalog-pg-proc.html" title="42.27. pg_proc"><code class="structname">pg_proc</code></a></td>
 <td>functions and procedures</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-rewrite.html" title="42.28. pg_rewrite"><code class="structname">pg_rewrite</code></a></td>
+<td><a class="link" href="catalog-pg-rewrite.html" title="42.28. pg_rewrite"><code class="structname">pg_rewrite</code></a></td>
 <td>query rewrite rules</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-shdepend.html" title="42.29. pg_shdepend"><code class="structname">pg_shdepend</code></a></td>
+<td><a class="link" href="catalog-pg-shdepend.html" title="42.29. pg_shdepend"><code class="structname">pg_shdepend</code></a></td>
 <td>dependencies on shared objects</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-statistic.html" title="42.30. pg_statistic"><code class="structname">pg_statistic</code></a></td>
+<td><a class="link" href="catalog-pg-statistic.html" title="42.30. pg_statistic"><code class="structname">pg_statistic</code></a></td>
 <td>planner statistics</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-tablespace.html" title="42.31. pg_tablespace"><code class="structname">pg_tablespace</code></a></td>
+<td><a class="link" href="catalog-pg-tablespace.html" title="42.31. pg_tablespace"><code class="structname">pg_tablespace</code></a></td>
 <td>tablespaces within this database cluster</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-trigger.html" title="42.32. pg_trigger"><code class="structname">pg_trigger</code></a></td>
+<td><a class="link" href="catalog-pg-trigger.html" title="42.32. pg_trigger"><code class="structname">pg_trigger</code></a></td>
 <td>triggers</td>
 </tr>
 <tr>
-<td><a href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a></td>
+<td><a class="link" href="catalog-pg-type.html" title="42.33. pg_type"><code class="structname">pg_type</code></a></td>
 <td>data types</td>
 </tr>
 </tbody>

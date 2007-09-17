@@ -4,17 +4,16 @@
 <title>11.7. Partial Indexes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes-expressional.html" title="11.6. Indexes on Expressions">
 <link rel="next" href="indexes-opclass.html" title="11.8. Operator Classes">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="indexes-partial"></a>11.7. Partial Indexes</h2></div></div></div>
-<a name="id2618738"></a><p>   A <em class="firstterm">partial index</em> is an index built over a
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="indexes-partial">11.7. Partial Indexes</h2></div></div></div>
+<a name="id2637709"></a><p>   A <em class="firstterm">partial index</em> is an index built over a
    subset of a table; the subset is defined by a conditional
    expression (called the <em class="firstterm">predicate</em> of the
    partial index).  The index contains entries for only those table
@@ -28,7 +27,7 @@
    index at all.  This reduces the size of the index, which will speed
    up queries that do use the index.  It will also speed up many table
    update operations because the index does not need to be
-   updated in all cases.  <a href="indexes-partial.html#indexes-partial-ex1" title="Example 11.1. Setting up a Partial Index to Exclude Common Values">Example 11.1, &#8220;Setting up a Partial Index to Exclude Common Values&#8221;</a> shows a
+   updated in all cases.  <a class="xref" href="indexes-partial.html#indexes-partial-ex1" title="Example 11.1. Setting up a Partial Index to Exclude Common Values">Example 11.1, &#8220;Setting up a Partial Index to Exclude Common Values&#8221;</a> shows a
    possible application of this idea.
   </p>
 <div class="example">
@@ -77,7 +76,7 @@
 </div>
 <br class="example-break"><p>   Another possible use for a partial index is to exclude values from the
    index that the
-   typical query workload is not interested in; this is shown in <a href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a>.  This results in the same
+   typical query workload is not interested in; this is shown in <a class="xref" href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a>.  This results in the same
    advantages as listed above, but it prevents the
    &#8220;<span class="quote">uninteresting</span>&#8221; values from being accessed via that
    index at all, even if an index scan might be profitable in that
@@ -121,7 +120,7 @@
    </p>
 </div>
 </div>
-<br class="example-break"><p>   <a href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a> also illustrates that the
+<br class="example-break"><p>   <a class="xref" href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a> also illustrates that the
    indexed column and the column used in the predicate do not need to
    match.  <span class="productname">PostgreSQL</span> supports partial
    indexes with arbitrary predicates, so long as only columns of the
@@ -144,7 +143,7 @@
   </p>
 <p>   A third possible use for partial indexes does not require the
    index to be used in queries at all.  The idea here is to create
-   a unique index over a subset of a table, as in <a href="indexes-partial.html#indexes-partial-ex3" title="Example 11.3. Setting up a Partial Unique Index">Example 11.3, &#8220;Setting up a Partial Unique Index&#8221;</a>.  This enforces uniqueness
+   a unique index over a subset of a table, as in <a class="xref" href="indexes-partial.html#indexes-partial-ex3" title="Example 11.3. Setting up a Partial Unique Index">Example 11.3, &#8220;Setting up a Partial Unique Index&#8221;</a>.  This enforces uniqueness
    among the rows that satisfy the index predicate, without constraining
    those that do not.
   </p>
@@ -189,7 +188,7 @@ CREATE UNIQUE INDEX tests_success_constraint ON tests (subject, target)
    <span class="productname">PostgreSQL</span> work.  In most cases, the advantage of a
    partial index over a regular index will not be much.
   </p>
-<p>   More information about partial indexes can be found in <a href="biblio.html#ston89b" title="???TITLE???">[ston89b]</a>, <a href="biblio.html#olson93" title="Partial indexing in POSTGRES: research project">[olson93]</a>, and <a href="biblio.html#seshadri95" title="???TITLE???">[seshadri95]</a>.
+<p>   More information about partial indexes can be found in <a class="xref" href="biblio.html#ston89b" title="???TITLE???">[ston89b]</a>, <a class="xref" href="biblio.html#olson93" title="Partial indexing in POSTGRES: research project">[olson93]</a>, and <a class="xref" href="biblio.html#seshadri95" title="???TITLE???">[seshadri95]</a>.
   </p>
 </div></body>
 </html>

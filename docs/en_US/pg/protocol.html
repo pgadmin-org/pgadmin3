@@ -4,16 +4,15 @@
 <title>Chapter 43. Frontend/Backend Protocol</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="view-pg-views.html" title="42.46. pg_views">
 <link rel="next" href="protocol-flow.html" title="43.2. Message Flow">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="protocol">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="protocol"></a>Chapter 43. Frontend/Backend Protocol</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 43. Frontend/Backend Protocol</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -25,15 +24,15 @@
 </dl></dd>
 <dt><span class="sect1"><a href="protocol-flow.html">43.2. Message Flow</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="protocol-flow.html#id2801436">43.2.1. Start-Up</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2801664">43.2.2. Simple Query</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2801902">43.2.3. Extended Query</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2802256">43.2.4. Function Call</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2820417">43.2.1. Start-Up</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2820645">43.2.2. Simple Query</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2820889">43.2.3. Extended Query</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2821244">43.2.4. Function Call</a></span></dt>
 <dt><span class="sect2"><a href="protocol-flow.html#protocol-copy">43.2.5. COPY Operations</a></span></dt>
 <dt><span class="sect2"><a href="protocol-flow.html#protocol-async">43.2.6. Asynchronous Operations</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2802668">43.2.7. Cancelling Requests in Progress</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2802730">43.2.8. Termination</a></span></dt>
-<dt><span class="sect2"><a href="protocol-flow.html#id2802786">43.2.9. <acronym class="acronym">SSL</acronym> Session Encryption</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2821662">43.2.7. Cancelling Requests in Progress</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2821734">43.2.8. Termination</a></span></dt>
+<dt><span class="sect2"><a href="protocol-flow.html#id2821790">43.2.9. <acronym class="acronym">SSL</acronym> Session Encryption</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="protocol-message-types.html">43.3. Message Data Types</a></span></dt>
 <dt><span class="sect1"><a href="protocol-message-formats.html">43.4. Message Formats</a></span></dt>
@@ -71,8 +70,7 @@
    are interchangeable.
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="protocol-overview"></a>43.1. Overview</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="protocol-overview">43.1. Overview</h2></div></div></div>
 <p>   The protocol has separate phases for startup and normal operation.
    In the startup phase, the frontend opens a connection to the server
    and authenticates itself to the satisfaction of the server.  (This might
@@ -106,8 +104,7 @@
    such as <code class="command">COPY</code>.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="protocol-message-concepts"></a>43.1.1. Messaging Overview</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="protocol-message-concepts">43.1.1. Messaging Overview</h3></div></div></div>
 <p>   All communication is through a stream of messages.  The first byte of a
    message identifies the message type, and the next four bytes specify the
    length of the rest of the message (this length count includes itself, but
@@ -133,8 +130,7 @@
   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="protocol-query-concepts"></a>43.1.2. Extended Query Overview</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="protocol-query-concepts">43.1.2. Extended Query Overview</h3></div></div></div>
 <p>    In the extended-query protocol, execution of SQL commands is divided
     into multiple steps.  The state retained between steps is represented
     by two types of objects: <em class="firstterm">prepared statements</em> and
@@ -169,8 +165,7 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="protocol-format-codes"></a>43.1.3. Formats and Format Codes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="protocol-format-codes">43.1.3. Formats and Format Codes</h3></div></div></div>
 <p>    Data of a particular data type might be transmitted in any of several
     different <em class="firstterm">formats</em>.  As of <span class="productname">PostgreSQL</span> 7.4
     the only supported formats are &#8220;<span class="quote">text</span>&#8221; and &#8220;<span class="quote">binary</span>&#8221;,

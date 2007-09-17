@@ -4,8 +4,8 @@
 <title>CREATE SEQUENCE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createschema.html" title="CREATE SCHEMA">
 <link rel="next" href="sql-createtable.html" title="CREATE TABLE">
@@ -17,14 +17,14 @@
 <h2>Name</h2>
 <p>CREATE SEQUENCE &#8212; define a new sequence generator</p>
 </div>
-<a name="id2739476"></a><div class="refsynopsisdiv">
+<a name="id2758477"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ TEMPORARY | TEMP ] SEQUENCE <em class="replaceable"><code>name</code></em> [ INCREMENT [ BY ] <em class="replaceable"><code>increment</code></em> ]
     [ MINVALUE <em class="replaceable"><code>minvalue</code></em> | NO MINVALUE ] [ MAXVALUE <em class="replaceable"><code>maxvalue</code></em> | NO MAXVALUE ]
     [ START [ WITH ] <em class="replaceable"><code>start</code></em> ] [ CACHE <em class="replaceable"><code>cache</code></em> ] [ [ NO ] CYCLE ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2739529"></a><h2>Description</h2>
+<a name="id2758530"></a><h2>Description</h2>
 <p>   <code class="command">CREATE SEQUENCE</code> creates a new sequence number
    generator.  This involves creating and initializing a new special
    single-row table with the name <em class="replaceable"><code>name</code></em>.  The generator will be
@@ -42,7 +42,7 @@
    <code class="function">currval</code>, and
    <code class="function">setval</code>
    to operate on the sequence.  These functions are documented in
-   <a href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">Section 9.12, &#8220;Sequence Manipulation Functions&#8221;</a>.
+   <a class="xref" href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">Section 9.12, &#8220;Sequence Manipulation Functions&#8221;</a>.
   </p>
 <p>   Although you cannot update a sequence directly, you can use a query like
 
@@ -58,7 +58,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2739616"></a><h2>Parameters</h2>
+<a name="id2758617"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd><p>      If specified, the sequence object is created only for this
@@ -128,7 +128,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2739900"></a><h2>Notes</h2>
+<a name="id2758901"></a><h2>Notes</h2>
 <p>   Use <code class="command">DROP SEQUENCE</code> to remove a sequence.
   </p>
 <p>   Sequences are based on <code class="type">bigint</code> arithmetic, so the range
@@ -173,7 +173,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2740051"></a><h2>Examples</h2>
+<a name="id2759052"></a><h2>Examples</h2>
 <p>   Create an ascending sequence called <code class="literal">serial</code>, starting at 101:
 </p>
 <pre class="programlisting">CREATE SEQUENCE serial START 101;</pre>
@@ -203,7 +203,7 @@ END;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2740112"></a><h2>Compatibility</h2>
+<a name="id2759113"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE SEQUENCE</code> conforms to the <acronym class="acronym">SQL</acronym>
    standard, with the following exceptions:
    </p>

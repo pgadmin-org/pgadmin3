@@ -1,25 +1,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.79. Release 7.0</title>
+<title>E.83. Release 7.0</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-0-1.html" title="E.78. Release 7.0.1">
-<link rel="next" href="release-6-5-3.html" title="E.80. Release 6.5.3">
+<link rel="prev" href="release-7-0-1.html" title="E.82. Release 7.0.1">
+<link rel="next" href="release-6-5-3.html" title="E.84. Release 6.5.3">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-7-0"></a>E.79. Release 7.0</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-0">E.83. Release 7.0</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2000-05-08</p>
 </div>
-<p> 
-    This release contains improvements in many areas, demonstrating
+<p>    This release contains improvements in many areas, demonstrating
     the continued growth of <span class="productname">PostgreSQL</span>.
     There are more improvements and fixes in 7.0 than in any previous
     release. The developers have confidence that this is the best
@@ -56,12 +54,11 @@
       </p></dd>
 </dl></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2857875"></a>E.79.1. Migration to version 7.0</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2877293">E.83.1. Migration to version 7.0</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span>
      is required for those wishing to migrate data from any
      previous release of <span class="productname">PostgreSQL</span>.
-     For those upgrading from 6.5.*, you may instead use 
+     For those upgrading from 6.5.*, you can instead use
      <span class="application">pg_upgrade</span> to upgrade to this
      release; however, a full dump/reload installation is always the
      most robust method for upgrades.
@@ -77,7 +74,7 @@
        ease the transition by allowing
        <span class="productname">PostgreSQL</span> to recognize
        the deprecated type names and translate them to the new type
-       names, this mechanism may not be completely transparent to
+       names, this mechanism cannot be completely transparent to
        your existing application.
       </p></li>
 <li><p>       The optimizer has been substantially improved in the area of
@@ -85,8 +82,8 @@
        decreased query times as the optimizer makes a better choice
        for the preferred plan. However, in a small number of cases,
        usually involving pathological distributions of data, your
-       query times may go up. If you are dealing with large amounts
-       of data, you may want to check your queries to verify
+       query times might go up. If you are dealing with large amounts
+       of data, you might want to check your queries to verify
        performance.
       </p></li>
 <li><p>       The <acronym class="acronym">JDBC</acronym> and <acronym class="acronym">ODBC</acronym>
@@ -101,8 +98,7 @@
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2857987"></a>E.79.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2877405">E.83.2. Changes</h3></div></div></div>
 <p>     </p>
 <pre class="programlisting">Bug Fixes
 ---------
@@ -185,7 +181,7 @@ Enhancements
 ------------
 New CLI interface include file sqlcli.h, based on SQL3/SQL98
 Remove all limits on query length, row length limit still exists (Tom)
-Update jdbc protocol to 2.0 (Jens Glaser <code class="email">&lt;<a href="mailto:jens@jens.de">jens@jens.de</a>&gt;</code>)
+Update jdbc protocol to 2.0 (Jens Glaser <code class="email">&lt;<a class="email" href="mailto:jens@jens.de">jens@jens.de</a>&gt;</code>)
 Add TRUNCATE command to quickly truncate relation (Mike Mascari)
 Fix to give super user and createdb user proper update catalog rights (Peter E)
 Allow ecpg bool variables to have NULL values (Christof)
@@ -206,7 +202,7 @@ Allow WHERE restriction on ctid (physical heap location) (Hiroshi)
 Move pginterface from contrib to interface directory, rename to pgeasy (Bruce)
 Change pgeasy connectdb() parameter ordering (Bruce)
 Require SELECT DISTINCT target list to have all ORDER BY columns (Tom)
-Add Oracle's COMMENT ON command (Mike Mascari <code class="email">&lt;<a href="mailto:mascarim@yahoo.com">mascarim@yahoo.com</a>&gt;</code>)
+Add Oracle's COMMENT ON command (Mike Mascari <code class="email">&lt;<a class="email" href="mailto:mascarim@yahoo.com">mascarim@yahoo.com</a>&gt;</code>)
 libpq's PQsetNoticeProcessor function now returns previous hook(Peter E)
 Prevent PQsetNoticeProcessor from being set to NULL (Peter E)
 Make USING in COPY optional (Bruce)
@@ -218,8 +214,8 @@ Force permissions on PGDATA directory to be secure, even if it exists (Tom)
 Added psql LASTOID variable to return last inserted oid (Peter E)
 Allow concurrent vacuum and remove pg_vlock vacuum lock file (Tom)
 Add privilege check for vacuum (Peter E)
-New libpq functions to allow asynchronous connections: PQconnectStart(), 
-   PQconnectPoll(), PQresetStart(), PQresetPoll(), PQsetenvStart(), 
+New libpq functions to allow asynchronous connections: PQconnectStart(),
+   PQconnectPoll(), PQresetStart(), PQresetPoll(), PQsetenvStart(),
    PQsetenvPoll(), PQsetenvAbort (Ewan Mellor)
 New libpq PQsetenv() function (Ewan Mellor)
 create/alter user extension (Peter E)
@@ -237,7 +233,7 @@ Add CREATE/ALTER/DROP GROUP (Peter E)
 All administration scripts now support --long options (Peter E, Karel)
 Vacuumdb script now supports --all option (Peter E)
 ecpg new portable FETCH syntax
-Add ecpg EXEC SQL IFDEF, EXEC SQL IFNDEF, EXEC SQL ELSE, EXEC SQL ELIF 
+Add ecpg EXEC SQL IFDEF, EXEC SQL IFNDEF, EXEC SQL ELSE, EXEC SQL ELIF
         and EXEC SQL ENDIF directives
 Add pg_ctl script to control backend start-up (Tatsuo)
 Add postmaster.opts.default file to store start-up flags (Tatsuo)
@@ -312,8 +308,8 @@ Cleanups for int8 inputs, range checking, and type conversion (Tom)
 Fix for SELECT timespan('21:11:26'::time) (Tom)
 netmask('x.x.x.x/0') is 255.255.255.255 instead of 0.0.0.0 (Oleg Sharoiko)
 Add btree index on NUMERIC (Jan)
-Perl fix for large objects containing NUL characters (Douglas Thomson) 
-ODBC fix for for large objects (free)
+Perl fix for large objects containing NUL characters (Douglas Thomson)
+ODBC fix for large objects (free)
 Fix indexing of cidr data type
 Fix for Ethernet MAC addresses (macaddr type) comparisons
 Fix for date/time types when overflows happened in computations (Tom)
@@ -400,7 +396,7 @@ Add scripts for checking includes (Bruce)
 Remove un-needed #include's from *.c files (Bruce)
 Change #include's to use &lt;&gt; and "" as appropriate (Bruce)
 Enable Windows compilation of libpq
-Alpha spinlock fix from Uncle George <code class="email">&lt;<a href="mailto:gatgul@voicenet.com">gatgul@voicenet.com</a>&gt;</code>
+Alpha spinlock fix from Uncle George <code class="email">&lt;<a class="email" href="mailto:gatgul@voicenet.com">gatgul@voicenet.com</a>&gt;</code>
 Overhaul of optimizer data structures (Tom)
 Fix to cygipc library (Yutaka Tanida)
 Allow pgsql to work on newer Cygwin snapshots (Dan)
@@ -418,7 +414,7 @@ Fix for plpgsql on BSD/OS
 Add SQL_ASCII test case to the regression test (Tatsuo)
 configure --with-mb now deprecated (Tatsuo)
 NT fixes
-NetBSD fixes (Johnny C. Lam <code class="email">&lt;<a href="mailto:lamj@stat.cmu.edu">lamj@stat.cmu.edu</a>&gt;</code>)
+NetBSD fixes (Johnny C. Lam <code class="email">&lt;<a class="email" href="mailto:lamj@stat.cmu.edu">lamj@stat.cmu.edu</a>&gt;</code>)
 Fixes for Alpha compiles
 New multibyte encodings
      </pre>

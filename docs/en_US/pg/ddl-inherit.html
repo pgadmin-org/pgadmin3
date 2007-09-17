@@ -4,17 +4,16 @@
 <title>5.8. Inheritance</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-schemas.html" title="5.7. Schemas">
 <link rel="next" href="ddl-partitioning.html" title="5.9. Partitioning">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-inherit"></a>5.8. Inheritance</h2></div></div></div>
-<a name="id2572232"></a><a name="id2572238"></a><p>   <span class="productname">PostgreSQL</span> implements table inheritance
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddl-inherit">5.8. Inheritance</h2></div></div></div>
+<a name="id2591196"></a><a name="id2591201"></a><p>   <span class="productname">PostgreSQL</span> implements table inheritance
    which can be a useful tool for database designers.  (SQL:1999 and
    later define a type inheritance feature, which differs in many
    respects from the features described here.)
@@ -62,7 +61,7 @@ CREATE TABLE capitals (
 <p>
 
    Given the sample data from the <span class="productname">PostgreSQL</span>
-   tutorial (see <a href="tutorial-sql.html#tutorial-sql-intro" title="2.1. Introduction">Section 2.1, &#8220;Introduction&#8221;</a>), this returns:
+   tutorial (see <a class="xref" href="tutorial-sql.html#tutorial-sql-intro" title="2.1. Introduction">Section 2.1, &#8220;Introduction&#8221;</a>), this returns:
 
 </p>
 <pre class="programlisting">   name    | altitude
@@ -147,7 +146,7 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    <code class="structname">capitals</code> table, but this does not happen:
    <code class="command">INSERT</code> always inserts into exactly the table
    specified.  In some cases it is possible to redirect the insertion
-   using a rule (see <a href="rules.html" title="Chapter 34. The Rule System">Chapter 34, <i>The Rule System</i></a>).  However that does not
+   using a rule (see <a class="xref" href="rules.html" title="Chapter 34. The Rule System">Chapter 34, <i>The Rule System</i></a>).  However that does not
    help for the above case because the <code class="structname">cities</code> table
    does not contain the column <code class="structfield">state</code>, and so the
    command will be rejected before the rule can be applied.
@@ -167,7 +166,7 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    merged column will have copies of all the check constraints coming from
    any one of the column definitions it came from.
   </p>
-<p>   Table inheritance can currently only be defined using the <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>
+<p>   Table inheritance can currently only be defined using the <a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>
    statement.  The related statement <code class="command">CREATE TABLE AS</code> does
    not allow inheritance to be specified. There
    is no way to add an inheritance link to make an existing table into
@@ -178,7 +177,7 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    all of its descendants, one easy way is to drop the parent table with
    the <code class="literal">CASCADE</code> option.
   </p>
-<p>   <a href="sql-altertable.html" title="ALTER TABLE">ALTER TABLE</a> will
+<p>   <a class="xref" href="sql-altertable.html" title="ALTER TABLE">ALTER TABLE</a> will
    propagate any changes in column data definitions and check
    constraints down the inheritance hierarchy.  Again, dropping
    columns or constraints on parent tables is only possible when using
@@ -187,8 +186,7 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    and rejection that apply during <code class="command">CREATE TABLE</code>.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-inherit-caveats"></a>5.8.1. Caveats</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="ddl-inherit-caveats">5.8.1. Caveats</h3></div></div></div>
 <p>   Table access permissions are not automatically inherited.  Therefore,
    a user attempting to access a parent table must either have permissions
    to do the operation on all its child tables as well, or must use the
@@ -248,7 +246,7 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
      beginning in version 7.1, the default behavior for an undecorated
      table name is to scan its child tables too, whereas before the
      default was not to do so.  To get the old default behavior,
-     disable the <a href="runtime-config-compatible.html#guc-sql-inheritance">sql_inheritance</a> configuration
+     disable the <a class="xref" href="runtime-config-compatible.html#guc-sql-inheritance">sql_inheritance</a> configuration
      option.
    </p>
 </div>

@@ -4,17 +4,16 @@
 <title>9.2. Comparison Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="next" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-comparison"></a>9.2. Comparison Operators</h2></div></div></div>
-<a name="id2587194"></a><p>    The usual comparison operators are available, shown in <a href="functions-comparison.html#functions-comparison-table" title="Table 9.1. Comparison Operators">Table 9.1, &#8220;Comparison Operators&#8221;</a>.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="functions-comparison">9.2. Comparison Operators</h2></div></div></div>
+<a name="id2606157"></a><p>    The usual comparison operators are available, shown in <a class="xref" href="functions-comparison.html#functions-comparison-table" title="Table 9.1. Comparison Operators">Table 9.1, &#8220;Comparison Operators&#8221;</a>.
    </p>
 <div class="table">
 <a name="functions-comparison-table"></a><p class="title"><b>Table 9.1. Comparison Operators</b></p>
@@ -70,7 +69,7 @@
     no <code class="literal">&lt;</code> operator to compare a Boolean value with
     <code class="literal">3</code>).
    </p>
-<p>    <a name="id2587370"></a>
+<p>    <a name="id2606333"></a>
     In addition to the comparison operators, the special
     <code class="token">BETWEEN</code> construct is available.
 </p>
@@ -91,15 +90,15 @@
     There is no difference between the two respective forms apart from
     the <acronym class="acronym">CPU</acronym> cycles required to rewrite the first one
     into the second one internally.
-    <a name="id2587451"></a>
+    <a name="id2606414"></a>
     <code class="token">BETWEEN SYMMETRIC</code> is the same as <code class="literal">BETWEEN</code>
     except there is no requirement that the argument to the left of <code class="literal">AND</code> be less than
     or equal to the argument on the right;  the proper range is automatically determined.
    </p>
-<p>    <a name="id2587479"></a>
-    <a name="id2587486"></a>
-    <a name="id2587492"></a>
-    <a name="id2587499"></a>
+<p>    <a name="id2606442"></a>
+    <a name="id2606449"></a>
+    <a name="id2606455"></a>
+    <a name="id2606462"></a>
     To check whether a value is or is not null, use the constructs
 </p>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS NULL
@@ -110,7 +109,7 @@
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> ISNULL
 <em class="replaceable"><code>expression</code></em> NOTNULL</pre>
 <p>
-    <a name="id2587533"></a>
+    <a name="id2606496"></a>
    </p>
 <p>    Do <span class="emphasis"><em>not</em></span> write
     <code class="literal"><em class="replaceable"><code>expression</code></em> = NULL</code>
@@ -126,7 +125,7 @@
     returns true if <em class="replaceable"><code>expression</code></em> evaluates to
     the null value.  It is highly recommended that these applications
     be modified to comply with the SQL standard. However, if that
-    cannot be done the <a href="runtime-config-compatible.html#guc-transform-null-equals">transform_null_equals</a>
+    cannot be done the <a class="xref" href="runtime-config-compatible.html#guc-transform-null-equals">transform_null_equals</a>
     configuration variable is available. If it is enabled,
     <span class="productname">PostgreSQL</span> will convert <code class="literal">x =
     NULL</code> clauses to <code class="literal">x IS NULL</code>.  This was
@@ -134,7 +133,7 @@
     releases 6.5 through 7.1.
    </p>
 </div>
-<p>    <a name="id2587630"></a>
+<p>    <a name="id2606593"></a>
     The ordinary comparison operators yield null (signifying &#8220;<span class="quote">unknown</span>&#8221;)
     when either input is null.  Another way to do comparisons is with the
     <code class="literal">IS DISTINCT FROM</code> construct:
@@ -146,12 +145,12 @@
     one input is null it will return true.  Thus it effectively acts as though
     null were a normal data value, rather than &#8220;<span class="quote">unknown</span>&#8221;.
    </p>
-<p>    <a name="id2587676"></a>
-    <a name="id2587683"></a>
-    <a name="id2587690"></a>
-    <a name="id2587697"></a>
-    <a name="id2587704"></a>
-    <a name="id2587710"></a>
+<p>    <a name="id2606639"></a>
+    <a name="id2606646"></a>
+    <a name="id2606653"></a>
+    <a name="id2606660"></a>
+    <a name="id2606667"></a>
+    <a name="id2606673"></a>
     Boolean values can also be tested using the constructs
 </p>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> IS TRUE

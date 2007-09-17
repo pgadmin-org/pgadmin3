@@ -4,8 +4,8 @@
 <title>PREPARE TRANSACTION</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-prepare.html" title="PREPARE">
 <link rel="next" href="sql-reindex.html" title="REINDEX">
@@ -17,12 +17,12 @@
 <h2>Name</h2>
 <p>PREPARE TRANSACTION &#8212; prepare the current transaction for two-phase commit</p>
 </div>
-<a name="id2756052"></a><div class="refsynopsisdiv">
+<a name="id2775042"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">PREPARE TRANSACTION <em class="replaceable"><code>transaction_id</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756072"></a><h2>Description</h2>
+<a name="id2775063"></a><h2>Description</h2>
 <p>   <code class="command">PREPARE TRANSACTION</code> prepares the current transaction
    for two-phase commit. After this command, the transaction is no longer 
    associated with the current session; instead, its state is fully stored on
@@ -48,7 +48,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756142"></a><h2>Parameters</h2>
+<a name="id2775133"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>transaction_id</code></em></span></dt>
 <dd><p>      An arbitrary identifier that later identifies this transaction for
@@ -60,7 +60,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756174"></a><h2>Notes</h2>
+<a name="id2775164"></a><h2>Notes</h2>
 <p>   This command must be used inside a transaction block. Use
    <code class="command">BEGIN</code> to start one.
   </p>
@@ -89,10 +89,10 @@
    has verified that other databases are also prepared to commit.
   </p>
 <p>   If you make any serious use of prepared transactions, you will probably
-   want to increase the value of <a href="runtime-config-resource.html#guc-max-prepared-transactions">max_prepared_transactions</a>, as the default setting is
+   want to increase the value of <a class="xref" href="runtime-config-resource.html#guc-max-prepared-transactions">max_prepared_transactions</a>, as the default setting is
    quite small (to avoid wasting resources for those who don't use it).
    It is recommendable to make it at least equal to
-   <a href="runtime-config-connection.html#guc-max-connections">max_connections</a>, so that every session can have
+   <a class="xref" href="runtime-config-connection.html#guc-max-connections">max_connections</a>, so that every session can have
    a prepared transaction pending.
   </p>
 </div>
@@ -107,8 +107,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756324"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>, <a href="sql-rollback-prepared.html" title="ROLLBACK PREPARED">ROLLBACK PREPARED</a></span>
+<a name="id2775315"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>, <a class="xref" href="sql-rollback-prepared.html" title="ROLLBACK PREPARED">ROLLBACK PREPARED</a></span>
 </div>
 </div></body>
 </html>

@@ -4,17 +4,16 @@
 <title>5.11. Dependency Tracking</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-others.html" title="5.10. Other Database Objects">
 <link rel="next" href="dml.html" title="Chapter 6. Data Manipulation">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-depend"></a>5.11. Dependency Tracking</h2></div></div></div>
-<a name="id2573670"></a><a name="id2573683"></a><p>   When you create complex database structures involving many tables
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddl-depend">5.11. Dependency Tracking</h2></div></div></div>
+<a name="id2592633"></a><a name="id2592647"></a><p>   When you create complex database structures involving many tables
    with foreign key constraints, views, triggers, functions, etc. you
    will implicitly create a net of dependencies between the objects.
    For instance, a table with a foreign key constraint depends on the
@@ -23,7 +22,7 @@
 <p>   To ensure the integrity of the entire database structure,
    <span class="productname">PostgreSQL</span> makes sure that you cannot
    drop objects that other objects still depend on.  For example,
-   attempting to drop the products table we had considered in <a href="ddl-constraints.html#ddl-constraints-fk" title="5.3.5. Foreign Keys">Section 5.3.5, &#8220;Foreign Keys&#8221;</a>, with the orders table depending on
+   attempting to drop the products table we had considered in <a class="xref" href="ddl-constraints.html#ddl-constraints-fk" title="5.3.5. Foreign Keys">Section 5.3.5, &#8220;Foreign Keys&#8221;</a>, with the orders table depending on
    it, would result in an error message such as this:
 </p>
 <pre class="screen">DROP TABLE products;

@@ -4,23 +4,21 @@
 <title>5.9. Partitioning</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-inherit.html" title="5.8. Inheritance">
 <link rel="next" href="ddl-others.html" title="5.10. Other Database Objects">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-partitioning"></a>5.9. Partitioning</h2></div></div></div>
-<a name="id2572799"></a><a name="id2572805"></a><p>    <span class="productname">PostgreSQL</span> supports basic table
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddl-partitioning">5.9. Partitioning</h2></div></div></div>
+<a name="id2591763"></a><a name="id2591768"></a><p>    <span class="productname">PostgreSQL</span> supports basic table
     partitioning. This section describes why and how you can implement
     partitioning as part of your database design.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-partitioning-overview"></a>5.9.1. Overview</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="ddl-partitioning-overview">5.9.1. Overview</h3></div></div></div>
 <p>    Partitioning refers to splitting what is logically one large table
     into smaller physical pieces.
     Partitioning can provide several benefits:
@@ -55,7 +53,7 @@
     via table inheritance.  Each partition must be created as a child
     table of a single parent table.  The parent table itself is normally
     empty; it exists just to represent the entire data set.  You should be
-    familiar with inheritance (see <a href="ddl-inherit.html" title="5.8. Inheritance">Section 5.8, &#8220;Inheritance&#8221;</a>) before
+    familiar with inheritance (see <a class="xref" href="ddl-inherit.html" title="5.8. Inheritance">Section 5.8, &#8220;Inheritance&#8221;</a>) before
     attempting to implement partitioning.
    </p>
 <p>    The following forms of partitioning can be implemented in
@@ -81,8 +79,7 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-partitioning-implementation"></a>5.9.2. Implementing Partitioning</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="ddl-partitioning-implementation">5.9.2. Implementing Partitioning</h3></div></div></div>
 <p>     To set up a partitioned table, do the following:
      </p>
 <div class="orderedlist"><ol type="1" compact>
@@ -140,7 +137,7 @@ CHECK ( outletID BETWEEN 200 AND 300 )</pre>
 <li><p>        Optionally, define a rule or trigger to redirect modifications
         of the master table to the appropriate partition.
        </p></li>
-<li><p>        Ensure that the <a href="runtime-config-query.html#guc-constraint-exclusion">constraint_exclusion</a>
+<li><p>        Ensure that the <a class="xref" href="runtime-config-query.html#guc-constraint-exclusion">constraint_exclusion</a>
         configuration
         parameter is enabled in <code class="filename">postgresql.conf</code>.  Without
         this, queries will not be optimized as desired.
@@ -339,9 +336,8 @@ UNION ALL SELECT * FROM measurement_yy06mm01;</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="ddl-partitioning-constraint-exclusion"></a>5.9.3. Partitioning and Constraint Exclusion</h3></div></div></div>
-<a name="id2573361"></a><p>    <em class="firstterm">Constraint exclusion</em> is a query optimization technique
+<div class="titlepage"><div><div><h3 class="title" id="ddl-partitioning-constraint-exclusion">5.9.3. Partitioning and Constraint Exclusion</h3></div></div></div>
+<a name="id2592325"></a><p>    <em class="firstterm">Constraint exclusion</em> is a query optimization technique
     that improves performance for partitioned tables defined in the
     fashion described above.  As an example:
 

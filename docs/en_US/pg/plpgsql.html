@@ -4,16 +4,15 @@
 <title>Chapter 36. PL/pgSQL - SQL Procedural Language</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="xplang.html" title="Chapter 35. Procedural Languages">
 <link rel="next" href="plpgsql-development-tips.html" title="36.2. Tips for Developing in PL/pgSQL">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="plpgsql">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="plpgsql"></a>Chapter 36. <span class="application">PL/pgSQL</span> - <acronym class="acronym">SQL</acronym> Procedural Language</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 36. <span class="application">PL/pgSQL</span> - <acronym class="acronym">SQL</acronym> Procedural Language</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -61,13 +60,13 @@
 <dt><span class="sect1"><a href="plpgsql-trigger.html">36.10. Trigger Procedures</a></span></dt>
 <dt><span class="sect1"><a href="plpgsql-porting.html">36.11. Porting from <span class="productname">Oracle</span> PL/SQL</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="plpgsql-porting.html#id2709200">36.11.1. Porting Examples</a></span></dt>
+<dt><span class="sect2"><a href="plpgsql-porting.html#id2728183">36.11.1. Porting Examples</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-porting.html#plpgsql-porting-other">36.11.2. Other Things to Watch For</a></span></dt>
 <dt><span class="sect2"><a href="plpgsql-porting.html#plpgsql-porting-appendix">36.11.3. Appendix</a></span></dt>
 </dl></dd>
 </dl>
 </div>
-<a name="id2702309"></a><p>  <span class="application">PL/pgSQL</span> is a loadable procedural
+<a name="id2721288"></a><p>  <span class="application">PL/pgSQL</span> is a loadable procedural
   language for the <span class="productname">PostgreSQL</span> database
   system.  The design goals of <span class="application">PL/pgSQL</span> were to create
   a loadable procedural language that
@@ -97,8 +96,7 @@
     them to define operators or use them in index expressions.
    </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-overview"></a>36.1. Overview</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpgsql-overview">36.1. Overview</h2></div></div></div>
 <p>    The <span class="application">PL/pgSQL</span> call handler parses the function's source text and
     produces an internal binary instruction tree the first time the
     function is called (within each session).  The instruction tree
@@ -112,7 +110,7 @@
     creates a prepared execution plan (using the
     <acronym class="acronym">SPI</acronym> manager's <code class="function">SPI_prepare</code>
     and <code class="function">SPI_saveplan</code>
-    functions).<a name="id2702449"></a> Subsequent visits to that expression or command
+    functions).<a name="id2721428"></a> Subsequent visits to that expression or command
     reuse the prepared plan.  Thus, a function with conditional code
     that contains many statements for which execution plans might be
     required will only prepare and save those plans that are really
@@ -166,7 +164,7 @@ $$ LANGUAGE plpgsql;</pre>
 <h3 class="title">Note</h3>
 <p>         The <span class="application">PL/pgSQL</span>
          <code class="command">EXECUTE</code> statement is not related to the
-         <a href="sql-execute.html" title="EXECUTE">EXECUTE</a> SQL
+         <a class="xref" href="sql-execute.html" title="EXECUTE">EXECUTE</a> SQL
          statement supported by the
          <span class="productname">PostgreSQL</span> server. The server's
          <code class="command">EXECUTE</code> statement cannot be used within
@@ -174,8 +172,7 @@ $$ LANGUAGE plpgsql;</pre>
         </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-advantages"></a>36.1.1. Advantages of Using <span class="application">PL/pgSQL</span></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-advantages">36.1.1. Advantages of Using <span class="application">PL/pgSQL</span></h3></div></div></div>
 <p>     <acronym class="acronym">SQL</acronym> is the language <span class="productname">PostgreSQL</span>
      and most other relational databases use as query language. It's
      portable and easy to learn. But every <acronym class="acronym">SQL</acronym>
@@ -212,8 +209,7 @@ $$ LANGUAGE plpgsql;</pre>
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-args-results"></a>36.1.2. Supported Argument and Result Data Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-args-results">36.1.2. Supported Argument and Result Data Types</h3></div></div></div>
 <p>     Functions written in <span class="application">PL/pgSQL</span> can accept
      as arguments any scalar or array data type supported by the server,
      and they can return a result of any of these types.  They can also
@@ -221,14 +217,14 @@ $$ LANGUAGE plpgsql;</pre>
      It is also possible to declare a <span class="application">PL/pgSQL</span>
      function as returning <code class="type">record</code>, which means that the result
      is a row type whose columns are determined by specification in the
-     calling query, as discussed in <a href="queries-table-expressions.html#queries-tablefunctions" title="7.2.1.4. Table Functions">Section 7.2.1.4, &#8220;Table Functions&#8221;</a>.
+     calling query, as discussed in <a class="xref" href="queries-table-expressions.html#queries-tablefunctions" title="7.2.1.4. Table Functions">Section 7.2.1.4, &#8220;Table Functions&#8221;</a>.
     </p>
 <p>     <span class="application">PL/pgSQL</span> functions may also be declared to accept
      and return the polymorphic types
      <code class="type">anyelement</code> and <code class="type">anyarray</code>.  The actual
      data types handled by a polymorphic function can vary from call to
-     call, as discussed in <a href="extend-type-system.html#extend-types-polymorphic" title="32.2.5. Polymorphic Types">Section 32.2.5, &#8220;Polymorphic Types&#8221;</a>.
-     An example is shown in <a href="plpgsql-declarations.html#plpgsql-declaration-aliases" title="36.4.1. Aliases for Function Parameters">Section 36.4.1, &#8220;Aliases for Function Parameters&#8221;</a>.
+     call, as discussed in <a class="xref" href="extend-type-system.html#extend-types-polymorphic" title="32.2.5. Polymorphic Types">Section 32.2.5, &#8220;Polymorphic Types&#8221;</a>.
+     An example is shown in <a class="xref" href="plpgsql-declarations.html#plpgsql-declaration-aliases" title="36.4.1. Aliases for Function Parameters">Section 36.4.1, &#8220;Aliases for Function Parameters&#8221;</a>.
     </p>
 <p>     <span class="application">PL/pgSQL</span> functions can also be declared to return
      a &#8220;<span class="quote">set</span>&#8221;, or table, of any data type they can return a single
@@ -254,8 +250,8 @@ $$ LANGUAGE plpgsql;</pre>
      it is often convenient, especially for returning multiple values.
     </p>
 <p>     Specific examples appear in
-     <a href="plpgsql-declarations.html#plpgsql-declaration-aliases" title="36.4.1. Aliases for Function Parameters">Section 36.4.1, &#8220;Aliases for Function Parameters&#8221;</a> and
-     <a href="plpgsql-control-structures.html#plpgsql-statements-returning" title="36.7.1. Returning From a Function">Section 36.7.1, &#8220;Returning From a Function&#8221;</a>.
+     <a class="xref" href="plpgsql-declarations.html#plpgsql-declaration-aliases" title="36.4.1. Aliases for Function Parameters">Section 36.4.1, &#8220;Aliases for Function Parameters&#8221;</a> and
+     <a class="xref" href="plpgsql-control-structures.html#plpgsql-statements-returning" title="36.7.1. Returning From a Function">Section 36.7.1, &#8220;Returning From a Function&#8221;</a>.
     </p>
 </div>
 </div>

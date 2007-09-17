@@ -4,17 +4,16 @@
 <title>32.9. C-Language Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="extend.html" title="Chapter 32. Extending SQL">
 <link rel="prev" href="xfunc-internal.html" title="32.8. Internal Functions">
 <link rel="next" href="xaggr.html" title="32.10. User-Defined Aggregates">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xfunc-c"></a>32.9. C-Language Functions</h2></div></div></div>
-<a name="id2689083"></a><p>    User-defined functions can be written in C (or a language that can
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="xfunc-c">32.9. C-Language Functions</h2></div></div></div>
+<a name="id2708124"></a><p>    User-defined functions can be written in C (or a language that can
     be made compatible with C, such as C++).  Such functions are
     compiled into dynamically loadable objects (also called shared
     libraries) and are loaded by the server on demand.  The dynamic
@@ -34,9 +33,8 @@
     are still supported for compatibility reasons.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="xfunc-c-dynload"></a>32.9.1. Dynamic Loading</h3></div></div></div>
-<a name="id2689159"></a><p>    The first time a user-defined function in a particular
+<div class="titlepage"><div><div><h3 class="title" id="xfunc-c-dynload">32.9.1. Dynamic Loading</h3></div></div></div>
+<a name="id2708199"></a><p>    The first time a user-defined function in a particular
     loadable object file is called in a session,
     the dynamic loader loads that object file into memory so that the
     function can be called.  The <code class="command">CREATE FUNCTION</code>
@@ -57,11 +55,11 @@
 <li><p>       If the name starts with the string <code class="literal">$libdir</code>,
        that part is replaced by the <span class="productname">PostgreSQL</span> package
         library directory
-       name, which is determined at build time.<a name="id2689225"></a>
+       name, which is determined at build time.<a name="id2708265"></a>
       </p></li>
 <li><p>       If the name does not contain a directory part, the file is
        searched for in the path specified by the configuration variable
-       <a href="runtime-config-client.html#guc-dynamic-library-path">dynamic_library_path</a>.<a name="id2689245"></a>
+       <a class="xref" href="runtime-config-client.html#guc-dynamic-library-path">dynamic_library_path</a>.<a name="id2708285"></a>
       </p></li>
 <li><p>       Otherwise (the file was not found in the path, or it contains a
        non-absolute directory part), the dynamic loader will try to
@@ -92,7 +90,7 @@
 <p>     <span class="productname">PostgreSQL</span> will not compile a C function
      automatically.  The object file must be compiled before it is referenced
      in a <code class="command">CREATE
-     FUNCTION</code> command.  See <a href="xfunc-c.html#dfunc" title="32.9.6. Compiling and Linking Dynamically-Loaded Functions">Section 32.9.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a> for additional
+     FUNCTION</code> command.  See <a class="xref" href="xfunc-c.html#dfunc" title="32.9.6. Compiling and Linking Dynamically-Loaded Functions">Section 32.9.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a> for additional
      information.
     </p>
 </div>
@@ -100,7 +98,7 @@
     file is retained in memory.  Future calls in the same session to
     the function(s) in that file will only incur the small overhead of
     a symbol table lookup.  If you need to force a reload of an object
-    file, for example after recompiling it, use the <a href="sql-load.html" title="LOAD">LOAD</a> command or begin a
+    file, for example after recompiling it, use the <a class="xref" href="sql-load.html" title="LOAD">LOAD</a> command or begin a
     fresh session.
    </p>
 <p>    It is recommended to locate shared libraries either relative to
@@ -120,9 +118,8 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="xfunc-c-basetype"></a>32.9.2. Base Types in C-Language Functions</h3></div></div></div>
-<a name="id2689398"></a><p>     To know how to write C-language functions, you need to know how
+<div class="titlepage"><div><div><h3 class="title" id="xfunc-c-basetype">32.9.2. Base Types in C-Language Functions</h3></div></div></div>
+<a name="id2708438"></a><p>     To know how to write C-language functions, you need to know how
      <span class="productname">PostgreSQL</span> internally represents base
      data types and how they can be passed to and from functions.
      Internally, <span class="productname">PostgreSQL</span> regards a base
@@ -199,7 +196,7 @@ typedef struct
       value.  If you do so you are likely to corrupt on-disk data, since
       the pointer you are given may well point directly into a disk buffer.
       The sole exception to this rule is explained in
-      <a href="xaggr.html" title="32.10. User-Defined Aggregates">Section 32.10, &#8220;User-Defined Aggregates&#8221;</a>.
+      <a class="xref" href="xaggr.html" title="32.10. User-Defined Aggregates">Section 32.10, &#8220;User-Defined Aggregates&#8221;</a>.
      </p>
 </div>
 <p>     As an example, we can define the type <code class="type">text</code> as
@@ -241,7 +238,7 @@ memcpy(destination-&gt;data, buffer, 40);
      it's considered good style to use the macro <code class="literal">VARHDRSZ</code>
      to refer to the size of the overhead for a variable-length type.
     </p>
-<p>     <a href="xfunc-c.html#xfunc-c-type-table" title="Table 32.1. Equivalent C Types for Built-In SQL Types">Table 32.1, &#8220;Equivalent C Types for Built-In SQL Types&#8221;</a> specifies which C type
+<p>     <a class="xref" href="xfunc-c.html#xfunc-c-type-table" title="Table 32.1. Equivalent C Types for Built-In SQL Types">Table 32.1, &#8220;Equivalent C Types for Built-In SQL Types&#8221;</a> specifies which C type
      corresponds to which SQL type when writing a C-language function
      that uses a built-in type of <span class="productname">PostgreSQL</span>.
      The &#8220;<span class="quote">Defined In</span>&#8221; column gives the header file that
@@ -436,8 +433,7 @@ memcpy(destination-&gt;data, buffer, 40);
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2690140"></a>32.9.3. Calling Conventions Version 0 for C-Language Functions</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2709180">32.9.3. Calling Conventions Version 0 for C-Language Functions</h3></div></div></div>
 <p>     We present the &#8220;<span class="quote">old style</span>&#8221; calling convention first [mdash ] although
      this approach is now deprecated, it's easier to get a handle on
      initially.  In the version-0 method, the arguments and result
@@ -572,8 +568,7 @@ CREATE FUNCTION concat_text(text, text) RETURNS text
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2690338"></a>32.9.4. Calling Conventions Version 1 for C-Language Functions</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2709388">32.9.4. Calling Conventions Version 1 for C-Language Functions</h3></div></div></div>
 <p>     The version-1 calling convention relies on macros to suppress most
      of the complexity of passing arguments and results.  The C declaration
      of a version-1 function is always
@@ -743,9 +738,9 @@ concat_text(PG_FUNCTION_ARGS)
      or <code class="literal">main</code>.)
     </p>
 <p>     Finally, the version-1 function call conventions make it possible
-     to return set results (<a href="xfunc-c.html#xfunc-c-return-set" title="32.9.10. Returning Sets from C-Language Functions">Section 32.9.10, &#8220;Returning Sets from C-Language Functions&#8221;</a>) and
-     implement trigger functions (<a href="triggers.html" title="Chapter 33. Triggers">Chapter 33, <i>Triggers</i></a>) and
-     procedural-language call handlers (<a href="plhandler.html" title="Chapter 46. Writing A Procedural Language Handler">Chapter 46, <i>Writing A Procedural Language Handler</i></a>).  Version-1 code is also more
+     to return set results (<a class="xref" href="xfunc-c.html#xfunc-c-return-set" title="32.9.10. Returning Sets from C-Language Functions">Section 32.9.10, &#8220;Returning Sets from C-Language Functions&#8221;</a>) and
+     implement trigger functions (<a class="xref" href="triggers.html" title="Chapter 33. Triggers">Chapter 33, <i>Triggers</i></a>) and
+     procedural-language call handlers (<a class="xref" href="plhandler.html" title="Chapter 46. Writing A Procedural Language Handler">Chapter 46, <i>Writing A Procedural Language Handler</i></a>).  Version-1 code is also more
      portable than version-0, because it does not break restrictions
      on function call protocol in the C standard.  For more details
      see <code class="filename">src/backend/utils/fmgr/README</code> in the
@@ -753,8 +748,7 @@ concat_text(PG_FUNCTION_ARGS)
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2690750"></a>32.9.5. Writing Code</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2709799">32.9.5. Writing Code</h3></div></div></div>
 <p>     Before we turn to the more advanced topics, we should discuss
      some coding rules for <span class="productname">PostgreSQL</span>
      C-language functions.  While it may be possible to load functions
@@ -772,7 +766,7 @@ concat_text(PG_FUNCTION_ARGS)
      </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Use <code class="literal">pg_config
-        --includedir-server</code><a name="id2690791"></a>
+        --includedir-server</code><a name="id2709840"></a>
         to find out where the <span class="productname">PostgreSQL</span> server header
         files are installed on your system (or the system that your
         users will be running on).  This option is new with
@@ -787,7 +781,7 @@ concat_text(PG_FUNCTION_ARGS)
        </p></li>
 <li><p>        When allocating memory, use the
         <span class="productname">PostgreSQL</span> functions
-        <code class="function">palloc</code><a name="id2690852"></a> and <code class="function">pfree</code><a name="id2690864"></a>
+        <code class="function">palloc</code><a name="id2709901"></a> and <code class="function">pfree</code><a name="id2709913"></a>
         instead of the corresponding C library functions
         <code class="function">malloc</code> and <code class="function">free</code>.
         The memory allocated by <code class="function">palloc</code> will be
@@ -822,7 +816,7 @@ concat_text(PG_FUNCTION_ARGS)
        </p></li>
 <li><p>        Compiling and linking your code so that it can be dynamically
         loaded into <span class="productname">PostgreSQL</span> always
-        requires special flags.  See <a href="xfunc-c.html#dfunc" title="32.9.6. Compiling and Linking Dynamically-Loaded Functions">Section 32.9.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a> for a
+        requires special flags.  See <a class="xref" href="xfunc-c.html#dfunc" title="32.9.6. Compiling and Linking Dynamically-Loaded Functions">Section 32.9.6, &#8220;Compiling and Linking Dynamically-Loaded Functions&#8221;</a> for a
         detailed explanation of how to do it for your particular
         operating system.
        </p></li>
@@ -831,14 +825,13 @@ concat_text(PG_FUNCTION_ARGS)
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="dfunc"></a>32.9.6. Compiling and Linking Dynamically-Loaded Functions</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="dfunc">32.9.6. Compiling and Linking Dynamically-Loaded Functions</h3></div></div></div>
 <p>  Before you are able to use your
   <span class="productname">PostgreSQL</span> extension functions written in
   C, they must be compiled and linked in a special way to produce a
   file that can be dynamically loaded by the server.  To be precise, a
   <em class="firstterm">shared library</em> needs to be
-  created.<a name="id2691027"></a>
+  created.<a name="id2710076"></a>
 
  </p>
 <p>  For information beyond what is contained in this section
@@ -855,7 +848,7 @@ concat_text(PG_FUNCTION_ARGS)
   executables: first the source files are compiled into object files,
   then the object files are linked together.  The object files need to
   be created as <em class="firstterm">position-independent code</em>
-  (<acronym class="acronym">PIC</acronym>),<a name="id2691085"></a> which
+  (<acronym class="acronym">PIC</acronym>),<a name="id2710135"></a> which
   conceptually means that they can be placed at an arbitrary location
   in memory when they are loaded by the executable.  (Object files
   intended for executables are usually not compiled that way.)  The
@@ -1032,7 +1025,7 @@ gcc -shared -o foo.so foo.o</pre>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>   If this is too complicated for you, you should consider using   
-   <a href="http://www.gnu.org/software/libtool/" target="_top">   <span class="productname">GNU Libtool</span></a>,
+   <a class="ulink" href="http://www.gnu.org/software/libtool/" target="_top">   <span class="productname">GNU Libtool</span></a>,
    which hides the platform differences behind a uniform interface.
   </p>
 </div>
@@ -1045,14 +1038,13 @@ gcc -shared -o foo.so foo.o</pre>
   the <code class="command">CREATE FUNCTION</code> command, and normally should
   be omitted for best portability.
  </p>
-<p>  Refer back to <a href="xfunc-c.html#xfunc-c-dynload" title="32.9.1. Dynamic Loading">Section 32.9.1, &#8220;Dynamic Loading&#8221;</a> about where the
+<p>  Refer back to <a class="xref" href="xfunc-c.html#xfunc-c-dynload" title="32.9.1. Dynamic Loading">Section 32.9.1, &#8220;Dynamic Loading&#8221;</a> about where the
   server expects to find the shared library files.
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="xfunc-c-pgxs"></a>32.9.7. Extension Building Infrastructure</h3></div></div></div>
-<a name="id2691755"></a><p>    If you are thinking about distributing your
+<div class="titlepage"><div><div><h3 class="title" id="xfunc-c-pgxs">32.9.7. Extension Building Infrastructure</h3></div></div></div>
+<a name="id2710805"></a><p>    If you are thinking about distributing your
     <span class="productname">PostgreSQL</span> extension modules, setting up a
     portable build system for them can be fairly difficult.  Therefore
     the <span class="productname">PostgreSQL</span> installation provides a build
@@ -1161,8 +1153,7 @@ include $(PGXS)</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2692062"></a>32.9.8. Composite-Type Arguments in C-Language Functions</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2711111">32.9.8. Composite-Type Arguments in C-Language Functions</h3></div></div></div>
 <p>     Composite types do not have a fixed layout like C structures.
      Instances of a composite type may contain null fields.  In
      addition, composite types that are part of an inheritance
@@ -1256,8 +1247,7 @@ c_overpaid(PG_FUNCTION_ARGS)
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2692215"></a>32.9.9. Returning Rows (Composite Types) from C-Language Functions</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2711264">32.9.9. Returning Rows (Composite Types) from C-Language Functions</h3></div></div></div>
 <p>     To return a row or composite-type value from a C-language
      function, you can use a special API that provides macros and
      functions to hide most of the complexity of building composite
@@ -1386,8 +1376,7 @@ c_overpaid(PG_FUNCTION_ARGS)
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="xfunc-c-return-set"></a>32.9.10. Returning Sets from C-Language Functions</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="xfunc-c-return-set">32.9.10. Returning Sets from C-Language Functions</h3></div></div></div>
 <p>     There is also a special API that provides support for returning
      sets (multiple rows) from a C-language function.  A set-returning
      function must follow the version-1 calling conventions.  Also,
@@ -1679,12 +1668,11 @@ CREATE OR REPLACE FUNCTION retcomposite(integer, integer)
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2693042"></a>32.9.11. Polymorphic Arguments and Return Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2712012">32.9.11. Polymorphic Arguments and Return Types</h3></div></div></div>
 <p>     C-language functions may be declared to accept and
      return the polymorphic types
      <code class="type">anyelement</code> and <code class="type">anyarray</code>.
-     See <a href="extend-type-system.html#extend-types-polymorphic" title="32.2.5. Polymorphic Types">Section 32.2.5, &#8220;Polymorphic Types&#8221;</a> for a more detailed explanation
+     See <a class="xref" href="extend-type-system.html#extend-types-polymorphic" title="32.2.5. Polymorphic Types">Section 32.2.5, &#8220;Polymorphic Types&#8221;</a> for a more detailed explanation
      of polymorphic functions. When function arguments or return types
      are defined as polymorphic types, the function author cannot know
      in advance what data type it will be called with, or

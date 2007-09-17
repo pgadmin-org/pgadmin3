@@ -4,24 +4,22 @@
 <title>8.10. Arrays</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-bit.html" title="8.9. Bit String Types">
 <link rel="next" href="rowtypes.html" title="8.11. Composite Types">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="arrays"></a>8.10. Arrays</h2></div></div></div>
-<a name="id2584459"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="arrays">8.10. Arrays</h2></div></div></div>
+<a name="id2603439"></a><p>  <span class="productname">PostgreSQL</span> allows columns of a table to be
   defined as variable-length multidimensional arrays. Arrays of any
   built-in or user-defined base type can be created.  (Arrays of
   composite types or domains are not yet supported, however.)
  </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584477"></a>8.10.1. Declaration of Array Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2603456">8.10.1. Declaration of Array Types</h3></div></div></div>
 <p>  To illustrate the use of array types, we create this table:
 </p>
 <pre class="programlisting">CREATE TABLE sal_emp (
@@ -74,9 +72,8 @@
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584584"></a>8.10.2. Array Value Input</h3></div></div></div>
-<a name="id2584588"></a><p>   To write an array value as a literal constant, enclose the element
+<div class="titlepage"><div><div><h3 class="title" id="id2603564">8.10.2. Array Value Input</h3></div></div></div>
+<a name="id2603568"></a><p>   To write an array value as a literal constant, enclose the element
    values within curly braces and separate them by commas.  (If you
    know C, this is not unlike the C syntax for initializing
    structures.)  You may put double quotes around any element value,
@@ -101,7 +98,7 @@
    three subarrays of integers.
   </p>
 <p>   (These kinds of array constants are actually only a special case of
-   the generic type constants discussed in <a href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a>.  The constant is initially
+   the generic type constants discussed in <a class="xref" href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a>.  The constant is initially
    treated as a string and passed to the array input conversion
    routine.  An explicit type specification might be necessary.)
   </p>
@@ -161,12 +158,11 @@ INSERT INTO sal_emp
   expressions; for instance, string literals are single quoted, instead of
   double quoted as they would be in an array literal.  The <code class="literal">ARRAY</code>
   constructor syntax is discussed in more detail in
-  <a href="sql-expressions.html#sql-syntax-array-constructors" title="4.2.10. Array Constructors">Section 4.2.10, &#8220;Array Constructors&#8221;</a>.
+  <a class="xref" href="sql-expressions.html#sql-syntax-array-constructors" title="4.2.10. Array Constructors">Section 4.2.10, &#8220;Array Constructors&#8221;</a>.
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584777"></a>8.10.3. Accessing Arrays</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2603757">8.10.3. Accessing Arrays</h3></div></div></div>
 <p>  Now, we can run some queries on the table.
   First, we show how to access a single element of an array at a time.
   This query retrieves the names of the employees whose pay changed in
@@ -252,7 +248,7 @@ INSERT INTO sal_emp
 
  array_dims
 ------------
- [1:2][1:1]
+ [1:2][1:2]
 (1 row)</pre>
 <p>
 
@@ -274,8 +270,7 @@ INSERT INTO sal_emp
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584967"></a>8.10.4. Modifying Arrays</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2603947">8.10.4. Modifying Arrays</h3></div></div></div>
 <p>  An array value can be replaced completely:
 
 </p>
@@ -431,8 +426,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2585192"></a>8.10.5. Searching in Arrays</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2604165">8.10.5. Searching in Arrays</h3></div></div></div>
 <p>  To search for a value in an array, you must check each value of the
   array. This can be done by hand, if you know the size of the array.
   For example:
@@ -446,7 +440,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 
   However, this quickly becomes tedious for large arrays, and is not
   helpful if the size of the array is uncertain. An alternative method is
-  described in <a href="functions-comparisons.html" title="9.17. Row and Array Comparisons">Section 9.17, &#8220;Row and Array Comparisons&#8221;</a>. The above
+  described in <a class="xref" href="functions-comparisons.html" title="9.17. Row and Array Comparisons">Section 9.17, &#8220;Row and Array Comparisons&#8221;</a>. The above
   query could be replaced by:
 
 </p>
@@ -472,8 +466,7 @@ SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2585248"></a>8.10.6. Array Input and Output Syntax</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2604217">8.10.6. Array Input and Output Syntax</h3></div></div></div>
 <p>   The external text representation of an array value consists of items that
    are interpreted according to the I/O conversion rules for the array's
    element type, plus decoration that indicates the array structure.
@@ -566,14 +559,14 @@ SELECT ARRAY[1,2] || ARRAY[[3,4]] AS array;
    with a data type whose input routine also treated backslashes specially,
    <code class="type">bytea</code> for example, we might need as many as eight backslashes
    in the command to get one backslash into the stored array element.)
-   Dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) may be
+   Dollar quoting (see <a class="xref" href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) may be
    used to avoid the need to double backslashes.
   </p>
 </div>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>   The <code class="literal">ARRAY</code> constructor syntax (see
-   <a href="sql-expressions.html#sql-syntax-array-constructors" title="4.2.10. Array Constructors">Section 4.2.10, &#8220;Array Constructors&#8221;</a>) is often easier to work
+   <a class="xref" href="sql-expressions.html#sql-syntax-array-constructors" title="4.2.10. Array Constructors">Section 4.2.10, &#8220;Array Constructors&#8221;</a>) is often easier to work
    with than the array-literal syntax when writing array values in SQL
    commands. In <code class="literal">ARRAY</code>, individual element values are written the
    same way they would be written when not members of an array.

@@ -4,24 +4,23 @@
 <title>11.2. Index Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="next" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="indexes-types"></a>11.2. Index Types</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="indexes-types">11.2. Index Types</h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span> provides several index types:
    B-tree, R-tree, Hash, and GiST.  Each index type uses a different
    algorithm that is best suited to different types of queries.
    By default, the <code class="command">CREATE INDEX</code> command will create a
    B-tree index, which fits the most common situations.
   </p>
-<p>   <a name="id2617695"></a>
-   <a name="id2617704"></a>
+<p>   <a name="id2636658"></a>
+   <a name="id2636667"></a>
    B-trees can handle equality and range queries on data that can be sorted
    into some ordering.
    In particular, the <span class="productname">PostgreSQL</span> query planner
@@ -51,14 +50,14 @@
    <code class="literal">col LIKE '%bar'</code>. However, if your server does not
    use the C locale you will need to create the index with a special
    operator class to support indexing of pattern-matching queries. See
-   <a href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> below. It is also possible to use
+   <a class="xref" href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> below. It is also possible to use
    B-tree indexes for <code class="literal">ILIKE</code> and
    <code class="literal">~*</code>, but only if the pattern starts with
    non-alphabetic characters, i.e. characters that are not affected by
    upper/lower case conversion.
   </p>
-<p>   <a name="id2617849"></a>
-   <a name="id2617859"></a>
+<p>   <a name="id2636812"></a>
+   <a name="id2636821"></a>
    R-tree indexes are suited for queries on two-dimensional spatial data.
    To create an R-tree index, use a command of the form
 </p>
@@ -85,11 +84,11 @@
 </table>
 <p>
 
-   (See <a href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a> for the meaning of
+   (See <a class="xref" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a> for the meaning of
    these operators.)
   </p>
-<p>   <a name="id2617977"></a>
-   <a name="id2617986"></a>
+<p>   <a name="id2636940"></a>
+   <a name="id2636949"></a>
    Hash indexes can only handle simple equality comparisons.
    The query planner will consider using a hash index whenever an
    indexed column is involved in a comparison using the
@@ -107,7 +106,7 @@
    <span class="productname">PostgreSQL</span> includes GiST operator classes
    equivalent to the R-tree operator classes, and many other GiST operator
    classes are available in the <code class="literal">contrib</code> collection or as separate
-   projects.  For more information see <a href="gist.html" title="Chapter 49. GiST Indexes">Chapter 49, <i>GiST Indexes</i></a>.
+   projects.  For more information see <a class="xref" href="gist.html" title="Chapter 49. GiST Indexes">Chapter 49, <i>GiST Indexes</i></a>.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>

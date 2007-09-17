@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.75. Release 7.1</title>
+<title>E.79. Release 7.1</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-1-1.html" title="E.74. Release 7.1.1">
-<link rel="next" href="release-7-0-3.html" title="E.76. Release 7.0.3">
+<link rel="prev" href="release-7-1-1.html" title="E.78. Release 7.1.1">
+<link rel="next" href="release-7-0-3.html" title="E.80. Release 7.0.3">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-7-1"></a>E.75. Release 7.1</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-1">E.79. Release 7.1</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2001-04-13</p>
@@ -31,7 +30,7 @@ previous releases of <span class="productname">PostgreSQL</span> have forced
 all data modifications to disk before each transaction commit.  With
 WAL, only one log file must be flushed to disk, greatly improving
 performance.  If you have been using -F in previous releases to
-disable disk flushes, you may want to consider discontinuing its use.
+disable disk flushes, you might want to consider discontinuing its use.
       </p></dd>
 <dt><span class="term">       TOAST
      </span></dt>
@@ -51,7 +50,7 @@ outer join syntax.
 <dd><p>The previous C function manager did not
 handle null values properly, nor did it support 64-bit <acronym class="acronym">CPU</acronym>'s (Alpha).  The new
 function manager does.  You can continue using your old custom
-functions, but you may want to rewrite them in the future to use the new
+functions, but you might want to rewrite them in the future to use the new
 function manager call interface.
       </p></dd>
 <dt><span class="term">       Complex Queries
@@ -59,20 +58,18 @@ function manager call interface.
 <dd><p>A large number of complex queries that were
 unsupported in previous releases now work.  Many combinations of views,
 aggregates, UNION, LIMIT, cursors, subqueries, and inherited tables
-now work properly. Inherited tables are now accessed by default. 
+now work properly. Inherited tables are now accessed by default.
 Subqueries in FROM are now supported.
       </p></dd>
 </dl></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2857307"></a>E.75.1. Migration to version 7.1</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2876738">E.79.1. Migration to version 7.1</h3></div></div></div>
 <p>        A dump/restore using pg_dump is required for those wishing to migrate
         data from any previous release.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2857315"></a>E.75.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2876746">E.79.2. Changes</h3></div></div></div>
 <p>     </p>
 <pre class="programlisting">Bug Fixes
 ---------
@@ -82,7 +79,7 @@ Kerberos V fixes (David Wragg)
 Fix for INSERT INTO...SELECT where targetlist has subqueries (Tom)
 Prompt username/password on standard error (Bruce)
 Large objects inv_read/inv_write fixes (Tom)
-Fixes for to_char(), to_date(), to_ascii(), and to_timestamp() (Karel, 
+Fixes for to_char(), to_date(), to_ascii(), and to_timestamp() (Karel,
     Daniel Baldoni)
 Prevent query expressions from leaking memory (Tom)
 Allow UPDATE of arrays elements (Tom)
@@ -98,7 +95,7 @@ Disallow DROP RULE, CREATE INDEX, TRUNCATE on views (Mark Hollomon)
 Allow PL/pgSQL accept non-ASCII identifiers (Tatsuo)
 Allow views to proper handle GROUP BY, aggregates, DISTINCT (Tom)
 Fix rare failure with TRUNCATE command (Tom)
-Allow UNION/INTERSECT/EXCEPT to be used with ALL, subqueries, views, 
+Allow UNION/INTERSECT/EXCEPT to be used with ALL, subqueries, views,
     DISTINCT, ORDER BY, SELECT...INTO (Tom)
 Fix parser failures during aborted transactions (Tom)
 Allow temporary relations to properly clean up indexes (Bruce)
@@ -134,14 +131,14 @@ Improve ps status display for more platforms (Peter E, Marc)
 Improve CREATE FUNCTION failure message (Ross)
 JDBC improvements (Peter, Travis Bauer, Christopher Cain, William Webber,
     Gunnar)
-Grand Unified Configuration scheme/GUC.  Many options can now be set in 
+Grand Unified Configuration scheme/GUC.  Many options can now be set in
     data/postgresql.conf, postmaster/postgres flags, or SET commands (Peter E)
 Improved handling of file descriptor cache (Tom)
 New warning code about auto-created table alias entries (Bruce)
 Overhaul initdb process (Tom, Peter E)
 Overhaul of inherited tables; inherited tables now accessed by default;
    new ONLY key word prevents it (Chris Bitmead, Tom)
-ODBC cleanups/improvements (Nick Gorham, Stephan Szabo, Zoltan Kovacs, 
+ODBC cleanups/improvements (Nick Gorham, Stephan Szabo, Zoltan Kovacs,
     Michael Fork)
 Allow renaming of temp tables (Tom)
 Overhaul memory manager contexts (Tom)
@@ -212,7 +209,7 @@ New CIDR abbrev() function (Tom)
 
 Performance
 -----------
-Write-Ahead Log (WAL) to provide crash recovery with less performance 
+Write-Ahead Log (WAL) to provide crash recovery with less performance
     overhead (Vadim)
 ANALYZE stage of VACUUM no longer exclusively locks table (Bruce)
 Reduced file seeks (Denis Perchine)

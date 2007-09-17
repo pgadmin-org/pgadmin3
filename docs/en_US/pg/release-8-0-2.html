@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.22. Release 8.0.2</title>
+<title>E.24. Release 8.0.2</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-0-3.html" title="E.21. Release 8.0.3">
-<link rel="next" href="release-8-0-1.html" title="E.23. Release 8.0.1">
+<link rel="prev" href="release-8-0-3.html" title="E.23. Release 8.0.3">
+<link rel="next" href="release-8-0-1.html" title="E.25. Release 8.0.1">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-8-0-2"></a>E.22. Release 8.0.2</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-0-2">E.24. Release 8.0.2</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2005-04-07</p>
@@ -21,8 +20,7 @@
 <p>    This release contains a variety of fixes from 8.0.1.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2839757"></a>E.22.1. Migration to version 8.0.2</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2859025">E.24.1. Migration to version 8.0.2</h3></div></div></div>
 <p>     A dump/restore is not required for those running 8.0.*.
      This release updates the major version number of the
      <span class="productname">PostgreSQL</span> libraries, so it might be
@@ -31,15 +29,14 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2839773"></a>E.22.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2859042">E.24.2. Changes</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p>Increment the major version number of all interface 
+<p>Increment the major version number of all interface
  libraries (Bruce)</p>
-<p> This should have been done in 8.0.0.  It is required so 7.4.X versions 
+<p> This should have been done in 8.0.0.  It is required so 7.4.X versions
  of PostgreSQL client applications, like <span class="application">psql</span>,
- can be used on the same machine as 8.0.X applications.  This might require 
+ can be used on the same machine as 8.0.X applications.  This might require
  re-linking user applications that use these libraries.</p>
 </li>
 <li>
@@ -53,19 +50,19 @@
 </li>
 <li>
 <p>Enable the <code class="varname">wal_sync_method</code> setting of
- <code class="option">open_datasync</code> on Windows, and make it the default for that 
+ <code class="option">open_datasync</code> on Windows, and make it the default for that
   platform (Magnus, Bruce)</p>
 <p> Because the default is no longer <code class="option">fsync_writethrough</code>,
  data loss is possible during a power failure if the disk drive has
- write caching enabled. To turn off the write cache on Windows, 
- from the <span class="application">Device Manager</span>, choose the drive properties, 
+ write caching enabled. To turn off the write cache on Windows,
+ from the <span class="application">Device Manager</span>, choose the drive properties,
  then <code class="literal">Policies</code>.</p>
 </li>
 <li>
-<p>New cache management algorithm <acronym class="acronym">2Q</acronym> replaces 
+<p>New cache management algorithm <acronym class="acronym">2Q</acronym> replaces
  <acronym class="acronym">ARC</acronym> (Tom)</p>
-<p> This was done to avoid a pending US patent on <acronym class="acronym">ARC</acronym>.  The 
- <acronym class="acronym">2Q</acronym> code might be a few percentage points slower than 
+<p> This was done to avoid a pending US patent on <acronym class="acronym">ARC</acronym>.  The
+ <acronym class="acronym">2Q</acronym> code might be a few percentage points slower than
  <acronym class="acronym">ARC</acronym> for some work loads.  A better cache management algorithm
  will appear in 8.1.</p>
 </li>
@@ -87,9 +84,9 @@ in plpython function bodies (Michael Fuhr)</p>
 </li>
 <li><p>Allow SPI cursors to handle utility commands that return rows,
 such as <code class="command">EXPLAIN</code> (Tom)</p></li>
-<li><p>Fix <code class="command">CLUSTER</code> failure after <code class="command">ALTER TABLE 
+<li><p>Fix <code class="command">CLUSTER</code> failure after <code class="command">ALTER TABLE
  SET WITHOUT OIDS</code> (Tom)</p></li>
-<li><p>Reduce memory usage of <code class="command">ALTER TABLE ADD COLUMN</code> 
+<li><p>Reduce memory usage of <code class="command">ALTER TABLE ADD COLUMN</code>
  (Neil)</p></li>
 <li><p>Fix <code class="command">ALTER LANGUAGE RENAME</code> (Tom)</p></li>
 <li><p>Document the Windows-only <code class="literal">register</code> and
@@ -109,7 +106,7 @@ statistics collector</p>
  Windows event logger rather than standard error.</p>
 </li>
 <li><p>Make Kerberos authentication work on Windows (Magnus)</p></li>
-<li><p>Allow <code class="command">ALTER DATABASE RENAME</code> by superusers 
+<li><p>Allow <code class="command">ALTER DATABASE RENAME</code> by superusers
  who aren't flagged as having CREATEDB privilege (Tom)</p></li>
 <li>
 <p>Modify WAL log entries for <code class="command">CREATE</code> and
@@ -118,32 +115,32 @@ statistics collector</p>
  different database location.  Note that <code class="command">CREATE TABLESPACE</code> still
  poses a hazard in such situations.</p>
 </li>
-<li><p>Fix crash from a backend exiting with an open transaction 
+<li><p>Fix crash from a backend exiting with an open transaction
  that created a table and opened a cursor on it (Tom)</p></li>
-<li><p>Fix <code class="function">array_map()</code> so it can call PL functions 
+<li><p>Fix <code class="function">array_map()</code> so it can call PL functions
  (Tom)</p></li>
 <li><p>Several <code class="filename">contrib/tsearch2</code> and
 <code class="filename">contrib/btree_gist</code> fixes (Teodor)
  </p></li>
-<li><p>Fix crash of some <code class="filename">contrib/pgcrypto</code> 
+<li><p>Fix crash of some <code class="filename">contrib/pgcrypto</code>
  functions on some platforms (Marko Kreen)</p></li>
-<li><p>Fix <code class="filename">contrib/intagg</code> for 64-bit platforms 
+<li><p>Fix <code class="filename">contrib/intagg</code> for 64-bit platforms
  (Tom)</p></li>
-<li><p>Fix ecpg bugs in parsing of <code class="command">CREATE</code> statement 
+<li><p>Fix ecpg bugs in parsing of <code class="command">CREATE</code> statement
  (Michael)</p></li>
-<li><p>Work around gcc bug on powerpc and amd64 causing problems in 
+<li><p>Work around gcc bug on powerpc and amd64 causing problems in
  ecpg (Christof Petig)</p></li>
 <li>
-<p>Do not use locale-aware versions of <code class="function">upper()</code>, 
+<p>Do not use locale-aware versions of <code class="function">upper()</code>,
  <code class="function">lower()</code>, and <code class="function">initcap()</code> when the locale is
  <code class="literal">C</code> (Bruce)</p>
 <p>  This allows these functions to work on platforms that generate errors
   for non-7-bit data when the locale is <code class="literal">C</code>.</p>
 </li>
 <li><p>Fix <code class="function">quote_ident()</code> to quote names that match keywords (Tom)</p></li>
-<li><p>Fix <code class="function">to_date()</code> to behave reasonably when 
+<li><p>Fix <code class="function">to_date()</code> to behave reasonably when
  <code class="literal">CC</code> and <code class="literal">YY</code> fields are both used (Karel)</p></li>
-<li><p>Prevent <code class="function">to_char(interval)</code> from failing 
+<li><p>Prevent <code class="function">to_char(interval)</code> from failing
  when given a zero-month interval (Tom)</p></li>
 <li>
 <p>Fix wrong week returned by <code class="function">date_trunc('week')</code>

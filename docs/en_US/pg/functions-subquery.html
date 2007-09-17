@@ -4,24 +4,22 @@
 <title>9.16. Subquery Expressions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-aggregate.html" title="9.15. Aggregate Functions">
 <link rel="next" href="functions-comparisons.html" title="9.17. Row and Array Comparisons">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-subquery"></a>9.16. Subquery Expressions</h2></div></div></div>
-<a name="id2610381"></a><a name="id2610387"></a><a name="id2610392"></a><a name="id2610398"></a><a name="id2610404"></a><a name="id2610409"></a><a name="id2610415"></a><p>   This section describes the <acronym class="acronym">SQL</acronym>-compliant subquery
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="functions-subquery">9.16. Subquery Expressions</h2></div></div></div>
+<a name="id2629344"></a><a name="id2629350"></a><a name="id2629355"></a><a name="id2629361"></a><a name="id2629366"></a><a name="id2629372"></a><a name="id2629378"></a><p>   This section describes the <acronym class="acronym">SQL</acronym>-compliant subquery
    expressions available in <span class="productname">PostgreSQL</span>.
    All of the expression forms documented in this section return
    Boolean (true/false) results.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2610435"></a>9.16.1. <code class="literal">EXISTS</code></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2629398">9.16.1. <code class="literal">EXISTS</code></h3></div></div></div>
 <pre class="synopsis">EXISTS (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The argument of <code class="token">EXISTS</code> is an arbitrary <code class="command">SELECT</code> statement,
    or <em class="firstterm">subquery</em>.  The
@@ -56,8 +54,7 @@
   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2610549"></a>9.16.2. <code class="literal">IN</code></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2629512">9.16.2. <code class="literal">IN</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> IN (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
@@ -77,7 +74,7 @@
   </p>
 <pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> IN (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The left-hand side of this form of <code class="token">IN</code> is a row constructor,
-   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
+   as described in <a class="xref" href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand row.  The left-hand expressions are
@@ -96,8 +93,7 @@
   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2610665"></a>9.16.3. <code class="literal">NOT IN</code></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2629628">9.16.3. <code class="literal">NOT IN</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> NOT IN (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
@@ -117,7 +113,7 @@
   </p>
 <pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> NOT IN (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The left-hand side of this form of <code class="token">NOT IN</code> is a row constructor,
-   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
+   as described in <a class="xref" href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand row.  The left-hand expressions are
@@ -136,8 +132,7 @@
   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2610776"></a>9.16.4. <code class="literal">ANY</code>/<code class="literal">SOME</code></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2629738">9.16.4. <code class="literal">ANY</code>/<code class="literal">SOME</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> ANY (<em class="replaceable"><code>subquery</code></em>)
 <em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> SOME (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
@@ -164,7 +159,7 @@
 <pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> ANY (<em class="replaceable"><code>subquery</code></em>)
 <em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> SOME (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The left-hand side of this form of <code class="token">ANY</code> is a row constructor,
-   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
+   as described in <a class="xref" href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand row.  The left-hand expressions are
@@ -187,8 +182,7 @@
   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2610961"></a>9.16.5. <code class="literal">ALL</code></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2629924">9.16.5. <code class="literal">ALL</code></h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>expression</code></em> <em class="replaceable"><code>operator</code></em> ALL (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The right-hand side is a parenthesized
    subquery, which must return exactly one column.  The left-hand expression
@@ -212,7 +206,7 @@
   </p>
 <pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> ALL (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The left-hand side of this form of <code class="token">ALL</code> is a row constructor,
-   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
+   as described in <a class="xref" href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized
    subquery, which must return exactly as many columns as there are
    expressions in the left-hand row.  The left-hand expressions are
@@ -236,11 +230,10 @@
   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2611113"></a>9.16.6. Row-wise Comparison</h3></div></div></div>
-<a name="id2611117"></a><pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> (<em class="replaceable"><code>subquery</code></em>)</pre>
+<div class="titlepage"><div><div><h3 class="title" id="id2630076">9.16.6. Row-wise Comparison</h3></div></div></div>
+<a name="id2630080"></a><pre class="synopsis"><em class="replaceable"><code>row_constructor</code></em> <em class="replaceable"><code>operator</code></em> (<em class="replaceable"><code>subquery</code></em>)</pre>
 <p>   The left-hand side is a row constructor,
-   as described in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
+   as described in <a class="xref" href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
    The right-hand side is a parenthesized subquery, which must return exactly
    as many columns as there are expressions in the left-hand row. Furthermore,
    the subquery cannot return more than one row.  (If it returns zero rows,

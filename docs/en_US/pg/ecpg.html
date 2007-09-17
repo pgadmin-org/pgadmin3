@@ -4,16 +4,15 @@
 <title>Chapter 30. ECPG - Embedded SQL in C</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="client-interfaces.html" title="Part IV. Client Interfaces">
 <link rel="prev" href="lo-examplesect.html" title="29.5. Example Program">
 <link rel="next" href="ecpg-connect.html" title="30.2. Connecting to the Database Server">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="ecpg">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="ecpg"></a>Chapter 30. <span class="application">ECPG</span> - Embedded <acronym class="acronym">SQL</acronym> in C</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 30. <span class="application">ECPG</span> - Embedded <acronym class="acronym">SQL</acronym> in C</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -24,18 +23,18 @@
 <dt><span class="sect1"><a href="ecpg-set-connection.html">30.5. Choosing a Connection</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-variables.html">30.6. Using Host Variables</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2674392">30.6.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2674431">30.6.2. Declare Sections</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2674514">30.6.3. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2674617">30.6.4. Indicators</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2693423">30.6.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2693462">30.6.2. Declare Sections</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2693545">30.6.3. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2693648">30.6.4. Indicators</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-dynamic.html">30.7. Dynamic SQL</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-descriptors.html">30.8. Using SQL Descriptor Areas</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-errors.html">30.9. Error Handling</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2675121">30.9.1. Setting Callbacks</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2675392">30.9.2. sqlca</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2675638">30.9.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2694159">30.9.1. Setting Callbacks</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2694431">30.9.2. sqlca</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2694677">30.9.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-include.html">30.10. Including Files</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-process.html">30.11. Processing Embedded SQL Programs</a></span></dt>
@@ -43,10 +42,10 @@
 <dt><span class="sect1"><a href="ecpg-develop.html">30.13. Internals</a></span></dt>
 </dl>
 </div>
-<a name="id2673686"></a><a name="id2673699"></a><a name="id2673708"></a><p>  This chapter describes the embedded <acronym class="acronym">SQL</acronym> package
+<a name="id2692717"></a><a name="id2692730"></a><a name="id2692739"></a><p>  This chapter describes the embedded <acronym class="acronym">SQL</acronym> package
   for <span class="productname">PostgreSQL</span>. It was written by
-  Linus Tolke (<code class="email">&lt;<a href="mailto:linus@epact.se">linus@epact.se</a>&gt;</code>) and Michael Meskes
-  (<code class="email">&lt;<a href="mailto:meskes@postgresql.org">meskes@postgresql.org</a>&gt;</code>). Originally it was written to work with
+  Linus Tolke (<code class="email">&lt;<a class="email" href="mailto:linus@epact.se">linus@epact.se</a>&gt;</code>) and Michael Meskes
+  (<code class="email">&lt;<a class="email" href="mailto:meskes@postgresql.org">meskes@postgresql.org</a>&gt;</code>). Originally it was written to work with
   <acronym class="acronym">C</acronym>. It also works with <acronym class="acronym">C++</acronym>, but
   it does not recognize all <acronym class="acronym">C++</acronym> constructs yet. 
  </p>
@@ -55,8 +54,7 @@
   many resources about SQL.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ecpg-concept"></a>30.1. The Concept</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ecpg-concept">30.1. The Concept</h2></div></div></div>
 <p>   An embedded SQL program consists of code written in an ordinary
    programming language, in this case C, mixed with SQL commands in
    specially marked sections.  To build the program, the source code

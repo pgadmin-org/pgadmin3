@@ -4,19 +4,17 @@
 <title>17.4. Resource Consumption</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-connection.html" title="17.3. Connections and Authentication">
 <link rel="next" href="runtime-config-wal.html" title="17.5. Write Ahead Log">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="runtime-config-resource"></a>17.4. Resource Consumption</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="runtime-config-resource">17.4. Resource Consumption</h2></div></div></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource-memory"></a>17.4.1. Memory</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource-memory">17.4.1. Memory</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-shared-buffers"></a><span class="term"><code class="varname">shared_buffers</code> (<code class="type">integer</code>)</span>
@@ -28,7 +26,7 @@
         <span class="application">initdb</span>).  Each buffer is 8192 bytes, unless a
         different value of <code class="symbol">BLCKSZ</code> was chosen when building
         the server.  This setting must be at least 16, as well as at
-        least twice the value of <a href="runtime-config-connection.html#guc-max-connections">max_connections</a>;
+        least twice the value of <a class="xref" href="runtime-config-connection.html#guc-max-connections">max_connections</a>;
         however, settings significantly higher than the minimum are
         usually needed for good performance.  Values of a few thousand
         are recommended for production installations.  This option can
@@ -37,7 +35,7 @@
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
         to request more <span class="systemitem">System V</span> shared
         memory than your operating system's default configuration
-        allows. See <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
+        allows. See <a class="xref" href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
         adjust those parameters, if necessary.
        </p>
 </dd>
@@ -66,7 +64,7 @@
 </dt>
 <dd>
 <p>        Sets the maximum number of transactions that can be in the
-        &#8220;<span class="quote">prepared</span>&#8221; state simultaneously (see <a href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a>).
+        &#8220;<span class="quote">prepared</span>&#8221; state simultaneously (see <a class="xref" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a>).
         Setting this parameter to zero disables the prepared-transaction
         feature.
         The default is 5.
@@ -75,13 +73,13 @@
 <p>        If you are not using prepared transactions, this parameter may as
         well be set to zero.  If you are using them, you will probably
         want <code class="varname">max_prepared_transactions</code> to be at least
-        as large as <a href="runtime-config-connection.html#guc-max-connections">max_connections</a>, to avoid unwanted
+        as large as <a class="xref" href="runtime-config-connection.html#guc-max-connections">max_connections</a>, to avoid unwanted
         failures at the prepare step.
        </p>
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
         to request more <span class="systemitem">System V</span> shared
         memory than your operating system's default configuration
-        allows. See <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
+        allows. See <a class="xref" href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
         adjust those parameters, if necessary.
        </p>
 </dd>
@@ -136,9 +134,8 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource-fsm"></a>17.4.2. Free Space Map</h3></div></div></div>
-<a name="id2635414"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource-fsm">17.4.2. Free Space Map</h3></div></div></div>
+<a name="id2654383"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
       map</em>, which tracks the locations of unused space in the database.
       An undersized free space map may cause the database to consume
       increasing amounts of disk space over time, because free space that
@@ -153,7 +150,7 @@
 <p>      Increasing these parameters may cause <span class="productname">PostgreSQL</span>
       to request more <span class="systemitem">System V</span> shared
       memory than your operating system's default configuration
-      allows. See <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
+      allows. See <a class="xref" href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
       adjust those parameters, if necessary.
      </p>
 <div class="variablelist"><dl>
@@ -178,8 +175,7 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource-kernel"></a>17.4.3. Kernel Resource Usage</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource-kernel">17.4.3. Kernel Resource Usage</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-max-files-per-process"></a><span class="term"><code class="varname">max_files_per_process</code> (<code class="type">integer</code>)</span>
@@ -228,10 +224,9 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource-vacuum-cost"></a>17.4.4.        Cost-Based Vacuum Delay
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource-vacuum-cost">17.4.4.        Cost-Based Vacuum Delay
      </h3></div></div></div>
-<p>      During the execution of <a href="sql-vacuum.html" title="VACUUM">VACUUM</a> and <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a> commands, the system maintains an
+<p>      During the execution of <a class="xref" href="sql-vacuum.html" title="VACUUM">VACUUM</a> and <a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a> commands, the system maintains an
       internal counter that keeps track of the estimated cost of the
       various I/O operations that are performed.  When the accumulated
       cost reaches a limit (specified by
@@ -314,8 +309,7 @@
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource-background-writer"></a>17.4.5. Background Writer</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource-background-writer">17.4.5. Background Writer</h3></div></div></div>
 <p>      Beginning in <span class="productname">PostgreSQL</span> 8.0, there is a separate server
       process called the <em class="firstterm">background writer</em>, whose sole function
       is to issue writes of &#8220;<span class="quote">dirty</span>&#8221; shared buffers.  The intent is

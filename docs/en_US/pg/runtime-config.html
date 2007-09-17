@@ -4,16 +4,15 @@
 <title>Chapter 17. Server Configuration</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="ssh-tunnels.html" title="16.8. Secure TCP/IP Connections with SSH Tunnels">
 <link rel="next" href="runtime-config-file-locations.html" title="17.2. File Locations">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="runtime-config">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="runtime-config"></a>Chapter 17. Server Configuration</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 17. Server Configuration</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -77,14 +76,13 @@
 <dt><span class="sect1"><a href="runtime-config-short.html">17.16. Short Options</a></span></dt>
 </dl>
 </div>
-<a name="id2633289"></a><p>   There are many configuration parameters that affect the behavior of
+<a name="id2652262"></a><p>   There are many configuration parameters that affect the behavior of
    the database system. In the first section of this chapter, we
    describe how to set configuration parameters. The subsequent sections
    discuss each parameter in detail.
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="config-setting"></a>17.1. Setting Parameters</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="config-setting">17.1. Setting Parameters</h2></div></div></div>
 <p>    All parameter names are case-insensitive. Every parameter takes a
     value of one of four types: Boolean, integer, floating point,
     or string. Boolean values may be written as <code class="literal">ON</code>,
@@ -94,7 +92,7 @@
     (all case-insensitive) or any unambiguous prefix of these.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <code class="filename">postgresql.conf</code><a name="id2633371"></a>,
+    <code class="filename">postgresql.conf</code><a name="id2652344"></a>,
     which is normally kept in the data directory. (<code class="command">initdb</code>
     installs a default copy there.) An example of what this file might look
     like is:
@@ -111,7 +109,7 @@ search_path = '$user, public'</pre>
     numbers must be single-quoted.  To embed a single quote in a parameter
     value, write either two quotes (preferred) or backslash-quote.
   </p>
-<p>    <a name="id2633408"></a>
+<p>    <a name="id2652381"></a>
     The configuration file is reread whenever the
     <code class="command">postmaster</code> process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
@@ -149,8 +147,8 @@ search_path = '$user, public'</pre>
 <p>    Furthermore, it is possible to assign a set of option settings to
     a user or a database.  Whenever a session is started, the default
     settings for the user and database involved are loaded.  The
-    commands <a href="sql-alteruser.html" title="ALTER USER">ALTER USER</a>
-    and <a href="sql-alterdatabase.html" title="ALTER DATABASE">ALTER DATABASE</a>,
+    commands <a class="xref" href="sql-alteruser.html" title="ALTER USER">ALTER USER</a>
+    and <a class="xref" href="sql-alterdatabase.html" title="ALTER DATABASE">ALTER DATABASE</a>,
     respectively, are used to configure these settings.  Per-database
     settings override anything received from the
     <code class="command">postmaster</code> command-line or the configuration
@@ -158,7 +156,7 @@ search_path = '$user, public'</pre>
     overridden by per-session options.
    </p>
 <p>    Some parameters can be changed in individual <acronym class="acronym">SQL</acronym>
-    sessions with the <a href="sql-set.html" title="SET">SET</a>
+    sessions with the <a class="xref" href="sql-set.html" title="SET">SET</a>
     command, for example:
 </p>
 <pre class="screen">SET ENABLE_SEQSCAN TO OFF;</pre>
@@ -171,11 +169,11 @@ search_path = '$user, public'</pre>
     be modified via <code class="command">SET</code> or <code class="command">ALTER</code> by superusers,
     but not by ordinary users.
    </p>
-<p>    The <a href="sql-show.html" title="SHOW">SHOW</a>
+<p>    The <a class="xref" href="sql-show.html" title="SHOW">SHOW</a>
     command allows inspection of the current values of all parameters.
    </p>
 <p>    The virtual table <code class="structname">pg_settings</code>
-    (described in <a href="view-pg-settings.html" title="42.41. pg_settings">Section 42.41, &#8220;<code class="structname">pg_settings</code>&#8221;</a>) also allows
+    (described in <a class="xref" href="view-pg-settings.html" title="42.41. pg_settings">Section 42.41, &#8220;<code class="structname">pg_settings</code>&#8221;</a>) also allows
     displaying and updating session run-time parameters.  It is equivalent
     to <code class="command">SHOW</code> and <code class="command">SET</code>, but can be more convenient
     to use because it can be joined with other tables, or selected from using

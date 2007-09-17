@@ -4,17 +4,16 @@
 <title>42.30. pg_statistic</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 42. System Catalogs">
 <link rel="prev" href="catalog-pg-shdepend.html" title="42.29. pg_shdepend">
 <link rel="next" href="catalog-pg-tablespace.html" title="42.31. pg_tablespace">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-statistic"></a>42.30. <code class="structname">pg_statistic</code></h2></div></div></div>
-<a name="id2796705"></a><p>   The catalog <code class="structname">pg_statistic</code> stores statistical data
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalog-pg-statistic">42.30. <code class="structname">pg_statistic</code></h2></div></div></div>
+<a name="id2815684"></a><p>   The catalog <code class="structname">pg_statistic</code> stores statistical data
    about the contents of the database.  Entries are created by
    <code class="command">ANALYZE</code> and subsequently used by the query planner.
    There is one entry for each table column that has been analyzed.
@@ -42,13 +41,13 @@
    public, since even statistical information about a table's contents
    may be considered sensitive.  (Example: minimum and maximum values
    of a salary column might be quite interesting.)
-   <a href="view-pg-stats.html" title="42.43. pg_stats"><code class="structname">pg_stats</code></a>
+   <a class="link" href="view-pg-stats.html" title="42.43. pg_stats"><code class="structname">pg_stats</code></a>
    is a publicly readable view on
    <code class="structname">pg_statistic</code> that only exposes information
    about those tables that are readable by the current user.
   </p>
 <div class="table">
-<a name="id2796798"></a><p class="title"><b>Table 42.30. <code class="structname">pg_statistic</code> Columns</b></p>
+<a name="id2815777"></a><p class="title"><b>Table 42.30. <code class="structname">pg_statistic</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_statistic Columns" border="1">
 <colgroup>
 <col>
@@ -66,13 +65,13 @@
 <tr>
 <td><code class="structfield">starelid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-class.html" title="42.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>The table or index that the described column belongs to</td>
 </tr>
 <tr>
 <td><code class="structfield">staattnum</code></td>
 <td><code class="type">int2</code></td>
-<td><code class="literal"><a href="catalog-pg-attribute.html" title="42.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-attribute.html" title="42.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
 <td>The number of the described column</td>
 </tr>
 <tr>
@@ -111,7 +110,7 @@
 <tr>
 <td><code class="structfield">staop<em class="replaceable"><code>N</code></em></code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-operator.html" title="42.25. pg_operator"><code class="structname">pg_operator</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-operator.html" title="42.25. pg_operator"><code class="structname">pg_operator</code></a>.oid</code></td>
 <td>       An operator used to derive the statistics stored in the
        <em class="replaceable"><code>N</code></em>th &#8220;<span class="quote">slot</span>&#8221;.  For example, a
        histogram slot would show the <code class="literal">&lt;</code> operator

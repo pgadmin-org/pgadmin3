@@ -4,16 +4,15 @@
 <title>Chapter 39. PL/Python - Python Procedural Language</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="plperl-missing.html" title="38.7. Limitations and Missing Features">
 <link rel="next" href="plpython-trigger.html" title="39.2. Trigger Functions">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="plpython">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="plpython"></a>Chapter 39. PL/Python - Python Procedural Language</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 39. PL/Python - Python Procedural Language</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -22,9 +21,9 @@
 <dt><span class="sect1"><a href="plpython-database.html">39.3. Database Access</a></span></dt>
 </dl>
 </div>
-<a name="id2713658"></a><a name="id2713667"></a><p>  The <span class="application">PL/Python</span> procedural language allows
+<a name="id2732631"></a><a name="id2732640"></a><p>  The <span class="application">PL/Python</span> procedural language allows
   <span class="productname">PostgreSQL</span> functions to be written in the
-  <a href="http://www.python.org" target="_top">Python language</a>.
+  <a class="ulink" href="http://www.python.org" target="_top">Python language</a>.
  </p>
 <p>  To install PL/Python in a particular database, use
   <code class="literal">createlang plpythonu <em class="replaceable"><code>dbname</code></em></code>.
@@ -51,9 +50,8 @@
   </p>
 </div>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plpython-funcs"></a>39.1. PL/Python Functions</h2></div></div></div>
-<p>   Functions in PL/Python are declared via the usual <a href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpython-funcs">39.1. PL/Python Functions</h2></div></div></div>
+<p>   Functions in PL/Python are declared via the usual <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
    syntax. For example:
 </p>
 <pre class="programlisting">CREATE FUNCTION myfunc(text) RETURNS text
@@ -76,7 +74,7 @@
 <p>   If you do not provide a return value, Python returns the default
    <code class="symbol">None</code>. <span class="application">PL/Python</span> translates
    Python's <code class="symbol">None</code> into the SQL null
-   value.<a name="id2713818"></a>
+   value.<a name="id2732791"></a>
   </p>
 <p>   The <span class="productname">PostgreSQL</span> function parameters are available in
    the global <code class="varname">args</code> list.  In the
@@ -90,7 +88,7 @@
    data between function calls.  This variable is private static data.
    The global dictionary <code class="varname">GD</code> is public data,
    available to all Python functions within a session.  Use with
-   care.<a name="id2713887"></a>
+   care.<a name="id2732861"></a>
   </p>
 <p>   Each function gets its own execution environment in the
    Python interpreter, so that global data and function arguments from

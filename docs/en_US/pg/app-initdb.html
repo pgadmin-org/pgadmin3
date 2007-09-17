@@ -4,8 +4,8 @@
 <title>initdb</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="prev" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="next" href="app-ipcclean.html" title="ipcclean">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>initdb &#8212; create a new <span class="productname">PostgreSQL</span> database cluster</p>
 </div>
-<a name="id2782260"></a><div class="refsynopsisdiv">
+<a name="id2801244"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">initdb</code> [<em class="replaceable"><code>option</code></em>...]  [--pgdata ] |  [-D ]<em class="replaceable"><code>directory</code></em> </p></div>
 </div>
@@ -65,18 +65,18 @@
    running <code class="command">initdb</code>. The remaining locale categories
    can be changed later when the server is started. All server locale
    values (<code class="literal">lc_*</code>) can be displayed via <code class="command">SHOW ALL</code>.
-   More details can be found in <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a>.
+   More details can be found in <a class="xref" href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a>.
   </p>
 <p>   The character set encoding can be set separately for a database when
    it is created. <code class="command">initdb</code> determines the encoding for
    the <code class="literal">template1</code> database, which will serve as the
    default for all other databases. To alter the default encoding use
    the <code class="option">--encoding</code> option. More details can be found in
-   <a href="multibyte.html" title="21.2. Character Set Support">Section 21.2, &#8220;Character Set Support&#8221;</a>.
+   <a class="xref" href="multibyte.html" title="21.2. Character Set Support">Section 21.2, &#8220;Character Set Support&#8221;</a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2782518"></a><h2>Options</h2>
+<a name="id2801503"></a><h2>Options</h2>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt>
@@ -106,13 +106,13 @@
         unless you override it there.  The default is derived from the locale, or
         <code class="literal">SQL_ASCII</code> if that does not work. The character sets supported by
         the <span class="productname">PostgreSQL</span> server are described
-        in <a href="multibyte.html#multibyte-charset-supported" title="21.2.1. Supported Character Sets">Section 21.2.1, &#8220;Supported Character Sets&#8221;</a>.
+        in <a class="xref" href="multibyte.html#multibyte-charset-supported" title="21.2.1. Supported Character Sets">Section 21.2.1, &#8220;Supported Character Sets&#8221;</a>.
        </p></dd>
 <dt><span class="term"><code class="option">--locale=<em class="replaceable"><code>locale</code></em></code></span></dt>
 <dd><p>        Sets the default locale for the database cluster.  If this
         option is not specified, the locale is inherited from the
         environment that <code class="command">initdb</code> runs in. Locale
-        support is described in <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a>.
+        support is described in <a class="xref" href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a>.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--lc-collate=<em class="replaceable"><code>locale</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--lc-ctype=<em class="replaceable"><code>locale</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--lc-messages=<em class="replaceable"><code>locale</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--lc-monetary=<em class="replaceable"><code>locale</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--lc-numeric=<em class="replaceable"><code>locale</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--lc-time=<em class="replaceable"><code>locale</code></em></code></span>
@@ -179,7 +179,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2782872"></a><h2>Environment</h2>
+<a name="id2801857"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PGDATA</code></span></dt>
 <dd><p>      Specifies the directory where the database cluster is to be
@@ -188,8 +188,8 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2782890"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-postgres.html" title="postgres"><span class="refentrytitle"><a name="app-postgres-title"></a><span class="application">postgres</span></span></a>, <a href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a></span>
+<a name="id2801875"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="app-postgres.html" title="postgres"><span class="refentrytitle"><a name="app-postgres-title"></a><span class="application">postgres</span></span></a>, <a class="xref" href="app-postmaster.html" title="postmaster"><span class="refentrytitle"><a name="app-postmaster-title"></a><span class="application">postmaster</span></span></a></span>
 </div>
 </div></body>
 </html>

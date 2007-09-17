@@ -4,17 +4,16 @@
 <title>13.3. Controlling the Planner with Explicit JOIN Clauses</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
 <link rel="prev" href="planner-stats.html" title="13.2. Statistics Used by the Planner">
 <link rel="next" href="populate.html" title="13.4. Populating a Database">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="explicit-joins"></a>13.3. Controlling the Planner with Explicit <code class="literal">JOIN</code> Clauses</h2></div></div></div>
-<a name="id2622652"></a><p>   It is possible
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="explicit-joins">13.3. Controlling the Planner with Explicit <code class="literal">JOIN</code> Clauses</h2></div></div></div>
+<a name="id2641621"></a><p>   It is possible
    to control the query planner to some extent by using the explicit <code class="literal">JOIN</code>
    syntax.  To see why this matters, we first need some background.
   </p>
@@ -48,7 +47,7 @@
    <span class="productname">PostgreSQL</span> planner will switch from exhaustive
    search to a <em class="firstterm">genetic</em> probabilistic search
    through a limited number of possibilities.  (The switch-over threshold is
-   set by the <a href="runtime-config-query.html#guc-geqo-threshold">geqo_threshold</a> run-time
+   set by the <a class="xref" href="runtime-config-query.html#guc-geqo-threshold">geqo_threshold</a> run-time
    parameter.)
    The genetic search takes less time, but it won't
    necessarily find the best possible plan.
@@ -83,7 +82,7 @@ SELECT * FROM a JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);</pre>
    lifesaver with many tables.
   </p>
 <p>   To force the planner to follow the <code class="literal">JOIN</code> order for inner joins,
-   set the <a href="runtime-config-query.html#guc-join-collapse-limit">join_collapse_limit</a> run-time parameter to 1.
+   set the <a class="xref" href="runtime-config-query.html#guc-join-collapse-limit">join_collapse_limit</a> run-time parameter to 1.
    (Other possible values are discussed below.)
   </p>
 <p>   You do not need to constrain the join order completely in order to
@@ -132,7 +131,7 @@ WHERE somethingelse;</pre>
    query.  You can trade off planning time against quality of plan by
    adjusting this run-time parameter up or down.
   </p>
-<p>   <a href="runtime-config-query.html#guc-from-collapse-limit">from_collapse_limit</a> and <a href="runtime-config-query.html#guc-join-collapse-limit">join_collapse_limit</a>
+<p>   <a class="xref" href="runtime-config-query.html#guc-from-collapse-limit">from_collapse_limit</a> and <a class="xref" href="runtime-config-query.html#guc-join-collapse-limit">join_collapse_limit</a>
    are similarly named because they do almost the same thing: one controls
    when the planner will &#8220;<span class="quote">flatten out</span>&#8221; subselects, and the
    other controls when it will flatten out explicit inner joins.  Typically

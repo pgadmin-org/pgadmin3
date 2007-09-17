@@ -4,16 +4,15 @@
 <title>36.7. Control Structures</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 36. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-statements.html" title="36.6. Basic Statements">
 <link rel="next" href="plpgsql-cursors.html" title="36.8. Cursors">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-control-structures"></a>36.7. Control Structures</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpgsql-control-structures">36.7. Control Structures</h2></div></div></div>
 <p>    Control structures are probably the most useful (and
     important) part of <span class="application">PL/pgSQL</span>. With
     <span class="application">PL/pgSQL</span>'s control structures,
@@ -21,15 +20,13 @@
     flexible and powerful way. 
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-statements-returning"></a>36.7.1. Returning From a Function</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-returning">36.7.1. Returning From a Function</h3></div></div></div>
 <p>     There are two commands available that allow you to return data
      from a function: <code class="command">RETURN</code> and <code class="command">RETURN
      NEXT</code>.
     </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2705675"></a>36.7.1.1. <code class="command">RETURN</code></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2724655">36.7.1.1. <code class="command">RETURN</code></h4></div></div></div>
 <pre class="synopsis">RETURN <em class="replaceable"><code>expression</code></em>;</pre>
 <p>      <code class="command">RETURN</code> with an expression terminates the
       function and returns the value of
@@ -62,8 +59,7 @@
      </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2705777"></a>36.7.1.2. <code class="command">RETURN NEXT</code></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2724756">36.7.1.2. <code class="command">RETURN NEXT</code></h4></div></div></div>
 <pre class="synopsis">RETURN NEXT <em class="replaceable"><code>expression</code></em>;</pre>
 <p>      When a <span class="application">PL/pgSQL</span> function is declared to return
       <code class="literal">SETOF <em class="replaceable"><code>sometype</code></em></code>, the procedure
@@ -117,7 +113,7 @@
        allow users to define set-returning functions
        that do not have this limitation.  Currently, the point at
        which data begins being written to disk is controlled by the
-       <a href="runtime-config-resource.html#guc-work-mem">work_mem</a>
+       <a class="xref" href="runtime-config-resource.html#guc-work-mem">work_mem</a>
        configuration variable.  Administrators who have sufficient
        memory to store larger result sets in memory should consider
        increasing this parameter.
@@ -126,8 +122,7 @@
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-conditionals"></a>36.7.2. Conditionals</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-conditionals">36.7.2. Conditionals</h3></div></div></div>
 <p>     <code class="literal">IF</code> statements let you execute commands based on
      certain conditions.  <span class="application">PL/pgSQL</span> has five forms of
      <code class="literal">IF</code>:
@@ -142,8 +137,7 @@
 <p>
     </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2706043"></a>36.7.2.1. <code class="literal">IF-THEN</code></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2725022">36.7.2.1. <code class="literal">IF-THEN</code></h4></div></div></div>
 <pre class="synopsis">IF <em class="replaceable"><code>boolean-expression</code></em> THEN
     <em class="replaceable"><code>statements</code></em>
 END IF;</pre>
@@ -162,8 +156,7 @@ END IF;</pre>
        </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2706102"></a>36.7.2.2. <code class="literal">IF-THEN-ELSE</code></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2725082">36.7.2.2. <code class="literal">IF-THEN-ELSE</code></h4></div></div></div>
 <pre class="synopsis">IF <em class="replaceable"><code>boolean-expression</code></em> THEN
     <em class="replaceable"><code>statements</code></em>
 ELSE
@@ -195,8 +188,7 @@ END IF;</pre>
      </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2706163"></a>36.7.2.3. <code class="literal">IF-THEN-ELSE IF</code></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2725142">36.7.2.3. <code class="literal">IF-THEN-ELSE IF</code></h4></div></div></div>
 <p>        <code class="literal">IF</code> statements can be nested, as in the
         following example:
 
@@ -221,8 +213,7 @@ END IF;</pre>
        </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2706229"></a>36.7.2.4. <code class="literal">IF-THEN-ELSIF-ELSE</code></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2725208">36.7.2.4. <code class="literal">IF-THEN-ELSIF-ELSE</code></h4></div></div></div>
 <pre class="synopsis">IF <em class="replaceable"><code>boolean-expression</code></em> THEN
     <em class="replaceable"><code>statements</code></em>
 [<span class="optional"> ELSIF <em class="replaceable"><code>boolean-expression</code></em> THEN
@@ -256,23 +247,20 @@ END IF;</pre>
        </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2706316"></a>36.7.2.5. <code class="literal">IF-THEN-ELSEIF-ELSE</code></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2725295">36.7.2.5. <code class="literal">IF-THEN-ELSEIF-ELSE</code></h4></div></div></div>
 <p>       <code class="literal">ELSEIF</code> is an alias for <code class="literal">ELSIF</code>.
       </p>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-control-structures-loops"></a>36.7.3. Simple Loops</h3></div></div></div>
-<a name="id2706345"></a><p>     With the <code class="literal">LOOP</code>, <code class="literal">EXIT</code>,
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-control-structures-loops">36.7.3. Simple Loops</h3></div></div></div>
+<a name="id2725325"></a><p>     With the <code class="literal">LOOP</code>, <code class="literal">EXIT</code>,
      <code class="literal">CONTINUE</code>, <code class="literal">WHILE</code>, and <code class="literal">FOR</code>
      statements, you can arrange for your <span class="application">PL/pgSQL</span>
      function to repeat a series of commands.
     </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2706398"></a>36.7.3.1. <code class="literal">LOOP</code></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2725377">36.7.3.1. <code class="literal">LOOP</code></h4></div></div></div>
 <pre class="synopsis">[<span class="optional"> &lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt; </span>]
 LOOP
     <em class="replaceable"><code>statements</code></em>
@@ -286,9 +274,8 @@ END LOOP [<span class="optional"> <em class="replaceable"><code>label</code></em
      </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2706464"></a>36.7.3.2. <code class="literal">EXIT</code></h4></div></div></div>
-<a name="id2706471"></a><pre class="synopsis">EXIT [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>] [<span class="optional"> WHEN <em class="replaceable"><code>expression</code></em> </span>];</pre>
+<div class="titlepage"><div><div><h4 class="title" id="id2725443">36.7.3.2. <code class="literal">EXIT</code></h4></div></div></div>
+<a name="id2725450"></a><pre class="synopsis">EXIT [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>] [<span class="optional"> WHEN <em class="replaceable"><code>expression</code></em> </span>];</pre>
 <p>        If no <em class="replaceable"><code>label</code></em> is given, the innermost
         loop is terminated and the statement following <code class="literal">END
         LOOP</code> is executed next.  If <em class="replaceable"><code>label</code></em>
@@ -330,9 +317,8 @@ END;</pre>
        </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2706583"></a>36.7.3.3. <code class="literal">CONTINUE</code></h4></div></div></div>
-<a name="id2706590"></a><pre class="synopsis">CONTINUE [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>] [<span class="optional"> WHEN <em class="replaceable"><code>expression</code></em> </span>];</pre>
+<div class="titlepage"><div><div><h4 class="title" id="id2725562">36.7.3.3. <code class="literal">CONTINUE</code></h4></div></div></div>
+<a name="id2725569"></a><pre class="synopsis">CONTINUE [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>] [<span class="optional"> WHEN <em class="replaceable"><code>expression</code></em> </span>];</pre>
 <p>        If no <em class="replaceable"><code>label</code></em> is given, the next iteration of
         the innermost loop is begun. That is, control is passed back
         to the loop control expression (if any), and the body of the
@@ -360,9 +346,8 @@ END LOOP;</pre>
        </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2706675"></a>36.7.3.4. <code class="literal">WHILE</code></h4></div></div></div>
-<a name="id2706682"></a><pre class="synopsis">[<span class="optional"> &lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt; </span>]
+<div class="titlepage"><div><div><h4 class="title" id="id2725654">36.7.3.4. <code class="literal">WHILE</code></h4></div></div></div>
+<a name="id2725661"></a><pre class="synopsis">[<span class="optional"> &lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt; </span>]
 WHILE <em class="replaceable"><code>expression</code></em> LOOP
     <em class="replaceable"><code>statements</code></em>
 END LOOP [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>];</pre>
@@ -384,8 +369,7 @@ END LOOP;</pre>
        </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2706744"></a>36.7.3.5. <code class="literal">FOR</code> (integer variant)</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2725723">36.7.3.5. <code class="literal">FOR</code> (integer variant)</h4></div></div></div>
 <pre class="synopsis">[<span class="optional"> &lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt; </span>]
 FOR <em class="replaceable"><code>name</code></em> IN [<span class="optional"> REVERSE </span>] <em class="replaceable"><code>expression</code></em> .. <em class="replaceable"><code>expression</code></em> LOOP
     <em class="replaceable"><code>statements</code></em>
@@ -417,8 +401,7 @@ END LOOP;</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-records-iterating"></a>36.7.4. Looping Through Query Results</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-records-iterating">36.7.4. Looping Through Query Results</h3></div></div></div>
 <p>     Using a different type of <code class="literal">FOR</code> loop, you can iterate through
      the results of a query and manipulate that data
      accordingly. The syntax is:
@@ -486,9 +469,8 @@ END LOOP [<span class="optional"> <em class="replaceable"><code>label</code></em
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-error-trapping"></a>36.7.5. Trapping Errors</h3></div></div></div>
-<a name="id2707055"></a><p>     By default, any error occurring in a <span class="application">PL/pgSQL</span>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-error-trapping">36.7.5. Trapping Errors</h3></div></div></div>
+<a name="id2726034"></a><p>     By default, any error occurring in a <span class="application">PL/pgSQL</span>
      function aborts execution of the function, and indeed of the
      surrounding transaction as well.  You can trap errors and recover
      from them by using a <code class="command">BEGIN</code> block with an
@@ -527,7 +509,7 @@ END;</pre>
      of the function.
     </p>
 <p>     The <em class="replaceable"><code>condition</code></em> names can be any of
-     those shown in <a href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">Appendix A, <i><span class="productname">PostgreSQL</span> Error Codes</i></a>.  A category
+     those shown in <a class="xref" href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">Appendix A, <i><span class="productname">PostgreSQL</span> Error Codes</i></a>.  A category
      name matches any error within its category.  The special
      condition name <code class="literal">OTHERS</code> matches every error type except
      <code class="literal">QUERY_CANCELED</code>.  (It is possible, but often unwise,
@@ -576,7 +558,7 @@ END;</pre>
 </div>
 <p>     Within an exception handler, the <code class="varname">SQLSTATE</code>
      variable contains the error code that corresponds to the
-     exception that was raised (refer to <a href="errcodes-appendix.html#errcodes-table" title="Table A.1. PostgreSQL Error Codes">Table A.1, &#8220;<span class="productname">PostgreSQL</span> Error Codes&#8221;</a> for a list of possible error
+     exception that was raised (refer to <a class="xref" href="errcodes-appendix.html#errcodes-table" title="Table A.1. PostgreSQL Error Codes">Table A.1, &#8220;<span class="productname">PostgreSQL</span> Error Codes&#8221;</a> for a list of possible error
      codes). The <code class="varname">SQLERRM</code> variable contains the
      error message associated with the exception. These variables are
      undefined outside exception handlers.

@@ -4,17 +4,16 @@
 <title>23.3. On-line backup and point-in-time recovery (PITR)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="backup-file.html" title="23.2. File system level backup">
 <link rel="next" href="migration.html" title="23.4. Migration Between Releases">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="backup-online"></a>23.3. On-line backup and point-in-time recovery (PITR)</h2></div></div></div>
-<a name="id2655669"></a><a name="id2655678"></a><a name="id2655687"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="backup-online">23.3. On-line backup and point-in-time recovery (PITR)</h2></div></div></div>
+<a name="id2674718"></a><a name="id2674727"></a><a name="id2674736"></a><p>   At all times, <span class="productname">PostgreSQL</span> maintains a
    <em class="firstterm">write ahead log</em> (WAL) in the <code class="filename">pg_xlog/</code>
    subdirectory of the cluster's data directory. The log describes
    every change made to the database's data files.  This log exists
@@ -72,8 +71,7 @@
    archiving WAL files.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="backup-archiving-wal"></a>23.3.1. Setting up WAL archiving</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="backup-archiving-wal">23.3.1. Setting up WAL archiving</h3></div></div></div>
 <p>    In an abstract sense, a running <span class="productname">PostgreSQL</span> system
     produces an indefinitely long sequence of WAL records.  The system
     physically divides this sequence into WAL <em class="firstterm">segment
@@ -103,7 +101,7 @@
     as simple as a <span class="application">cp</span>, or it could invoke a complex shell
     script [mdash ] it's all up to you.
    </p>
-<p>    The shell command to use is specified by the <a href="runtime-config-wal.html#guc-archive-command">archive_command</a> configuration parameter, which in practice
+<p>    The shell command to use is specified by the <a class="xref" href="runtime-config-wal.html#guc-archive-command">archive_command</a> configuration parameter, which in practice
     will always be placed in the <code class="filename">postgresql.conf</code> file.
     In this string,
     any <code class="literal">%p</code> is replaced by the path name of the file to
@@ -185,9 +183,9 @@
     segment will be enough to ensure you can always restore to within a
     minute of current time.  This behavior is not presently built into
     <span class="productname">PostgreSQL</span> because we did not want to complicate the
-    definition of the <a href="runtime-config-wal.html#guc-archive-command">archive_command</a> by requiring it
+    definition of the <a class="xref" href="runtime-config-wal.html#guc-archive-command">archive_command</a> by requiring it
     to keep track of successively archived, but different, copies of the
-    same WAL file.  The <a href="runtime-config-wal.html#guc-archive-command">archive_command</a> is only
+    same WAL file.  The <a class="xref" href="runtime-config-wal.html#guc-archive-command">archive_command</a> is only
     invoked on completed WAL segments. Except in the case of retrying a
     failure, it will be called only once for any given file name.
    </p>
@@ -205,13 +203,12 @@
     than through SQL operations.
     You may wish to keep the configuration files in a location that will
     be backed up by your regular file system backup procedures.  See
-    <a href="runtime-config-file-locations.html" title="17.2. File Locations">Section 17.2, &#8220;File Locations&#8221;</a> for how to relocate the
+    <a class="xref" href="runtime-config-file-locations.html" title="17.2. File Locations">Section 17.2, &#8220;File Locations&#8221;</a> for how to relocate the
     configuration files.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="backup-base-backup"></a>23.3.2. Making a Base Backup</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="backup-base-backup">23.3.2. Making a Base Backup</h3></div></div></div>
 <p>    The procedure for making a base backup is relatively simple:
   </p>
 <div class="orderedlist"><ol type="1">
@@ -347,8 +344,7 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="backup-pitr-recovery"></a>23.3.3. Recovering with an On-line Backup</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="backup-pitr-recovery">23.3.3. Recovering with an On-line Backup</h3></div></div></div>
 <p>    Okay, the worst has happened and you need to recover from your backup.
     Here is the procedure:
   </p>
@@ -385,7 +381,7 @@
      problem occurs and you have to start over.)
     </p></li>
 <li><p>     Create a recovery command file <code class="filename">recovery.conf</code> in the cluster
-     data directory (see <a href="backup-online.html#recovery-config-settings" title="23.3.3.1. Recovery Settings">Recovery Settings</a>). You may 
+     data directory (see <a class="xref" href="backup-online.html#recovery-config-settings" title="23.3.3.1. Recovery Settings">Recovery Settings</a>). You may 
      also want to temporarily modify <code class="filename">pg_hba.conf</code> to prevent 
      ordinary users from connecting until you are sure the recovery has worked.
     </p></li>
@@ -462,8 +458,7 @@
      </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="recovery-config-settings"></a>23.3.3.1. Recovery Settings</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="recovery-config-settings">23.3.3.1. Recovery Settings</h4></div></div></div>
 <p>      These settings can only be made in the <code class="filename">recovery.conf</code>
       file, and apply only for the duration of the recovery. They must be
       reset for any subsequent recovery you wish to perform. They cannot be
@@ -503,10 +498,10 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <dd><p>        This parameter specifies the time stamp up to which recovery
         will proceed.
         At most one of <code class="varname">recovery_target_time</code> and
-        <a href="backup-online.html#recovery-target-xid">recovery_target_xid</a> can be specified.
+        <a class="xref" href="backup-online.html#recovery-target-xid">recovery_target_xid</a> can be specified.
         The default is to recover to the end of the WAL log.
         The precise stopping point is also influenced by 
-        <a href="backup-online.html#recovery-target-inclusive">recovery_target_inclusive</a>.
+        <a class="xref" href="backup-online.html#recovery-target-inclusive">recovery_target_inclusive</a>.
        </p></dd>
 <dt>
 <a name="recovery-target-xid"></a><span class="term"><code class="varname">recovery_target_xid</code> (<code class="type">string</code>)</span>
@@ -518,10 +513,10 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
         The transactions that will be recovered are those that committed
         before (and optionally including) the specified one.
         At most one of <code class="varname">recovery_target_xid</code> and
-        <a href="backup-online.html#recovery-target-time">recovery_target_time</a> can be specified.
+        <a class="xref" href="backup-online.html#recovery-target-time">recovery_target_time</a> can be specified.
         The default is to recover to the end of the WAL log.
         The precise stopping point is also influenced by 
-        <a href="backup-online.html#recovery-target-inclusive">recovery_target_inclusive</a>.
+        <a class="xref" href="backup-online.html#recovery-target-inclusive">recovery_target_inclusive</a>.
        </p></dd>
 <dt>
 <a name="recovery-target-inclusive"></a><span class="term"><code class="varname">recovery_target_inclusive</code> 
@@ -531,8 +526,8 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
 <dd><p>        Specifies whether we stop just after the specified recovery target
         (<code class="literal">true</code>), or just before the recovery target 
         (<code class="literal">false</code>).
-        Applies to both <a href="backup-online.html#recovery-target-time">recovery_target_time</a>
-        and <a href="backup-online.html#recovery-target-xid">recovery_target_xid</a>, whichever one is
+        Applies to both <a class="xref" href="backup-online.html#recovery-target-time">recovery_target_time</a>
+        and <a class="xref" href="backup-online.html#recovery-target-xid">recovery_target_xid</a>, whichever one is
         specified for this recovery.  This indicates whether transactions
         having exactly the target commit time or ID, respectively, will
         be included in the recovery.  Default is <code class="literal">true</code>.
@@ -547,15 +542,14 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
         base backup was taken.  You would only need to set this parameter
         in complex re-recovery situations, where you need to return to
         a state that itself was reached after a point-in-time recovery.
-        See <a href="backup-online.html#backup-timelines" title="23.3.4. Timelines">Section 23.3.4, &#8220;Timelines&#8221;</a> for discussion.
+        See <a class="xref" href="backup-online.html#backup-timelines" title="23.3.4. Timelines">Section 23.3.4, &#8220;Timelines&#8221;</a> for discussion.
        </p></dd>
 </dl></div>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="backup-timelines"></a>23.3.4. Timelines</h3></div></div></div>
-<a name="id2657106"></a><p>    The ability to restore the database to a previous point in time creates
+<div class="titlepage"><div><div><h3 class="title" id="backup-timelines">23.3.4. Timelines</h3></div></div></div>
+<a name="id2676155"></a><p>    The ability to restore the database to a previous point in time creates
     some complexities that are akin to science-fiction stories about time
     travel and parallel universes.  In the original history of the database,
     perhaps you dropped a critical table at 5:15PM on Tuesday evening.
@@ -609,8 +603,7 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="backup-online-caveats"></a>23.3.5. Caveats</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="backup-online-caveats">23.3.5. Caveats</h3></div></div></div>
 <p>    At this writing, there are several limitations of the on-line backup
     technique.  These will probably be fixed in future releases:
 
@@ -648,9 +641,9 @@ restore_command = 'copy /mnt/server/archivedir/%f "%p"'  # Windows</pre>
     on your system hardware and software, the risk of partial writes may
     be small enough to ignore, in which case you can significantly reduce
     the total volume of archived logs by turning off page snapshots 
-    using the <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a> parameter.
+    using the <a class="xref" href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a> parameter.
     (Read the notes and warnings in 
-    <a href="wal.html" title="Chapter 26. Reliability and the Write-Ahead Log">Chapter 26, <i>Reliability and the Write-Ahead Log</i></a> before you do so.)
+    <a class="xref" href="wal.html" title="Chapter 26. Reliability and the Write-Ahead Log">Chapter 26, <i>Reliability and the Write-Ahead Log</i></a> before you do so.)
     Turning off page snapshots does not prevent use of the logs for PITR
     operations.
     An area for future development is to compress archived WAL data by

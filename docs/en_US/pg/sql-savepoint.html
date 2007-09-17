@@ -4,8 +4,8 @@
 <title>SAVEPOINT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-rollback-to.html" title="ROLLBACK TO SAVEPOINT">
 <link rel="next" href="sql-select.html" title="SELECT">
@@ -17,12 +17,12 @@
 <h2>Name</h2>
 <p>SAVEPOINT &#8212; define a new savepoint within the current transaction</p>
 </div>
-<a name="id2758583"></a><a name="id2758592"></a><div class="refsynopsisdiv">
+<a name="id2777573"></a><a name="id2777582"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">SAVEPOINT <em class="replaceable"><code>savepoint_name</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758611"></a><h2>Description</h2>
+<a name="id2777602"></a><h2>Description</h2>
 <p>   <code class="command">SAVEPOINT</code> establishes a new savepoint within
    the current transaction.
   </p>
@@ -32,7 +32,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758630"></a><h2>Parameters</h2>
+<a name="id2777620"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>savepoint_name</code></em></span></dt>
 <dd><p>      The name to give to the new savepoint.
@@ -40,9 +40,9 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758643"></a><h2>Notes</h2>
-<p>   Use <a href="sql-rollback-to.html" title="ROLLBACK TO SAVEPOINT">ROLLBACK TO SAVEPOINT</a> to
-   rollback to a savepoint.  Use <a href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">RELEASE SAVEPOINT</a> to destroy a savepoint, keeping
+<a name="id2777634"></a><h2>Notes</h2>
+<p>   Use <a class="xref" href="sql-rollback-to.html" title="ROLLBACK TO SAVEPOINT">ROLLBACK TO SAVEPOINT</a> to
+   rollback to a savepoint.  Use <a class="xref" href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">RELEASE SAVEPOINT</a> to destroy a savepoint, keeping
    the effects of commands executed after it was established.
   </p>
 <p>   Savepoints can only be established when inside a transaction block.
@@ -50,7 +50,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758676"></a><h2>Examples</h2>
+<a name="id2777666"></a><h2>Examples</h2>
 <p>   To establish a savepoint and later undo the effects of all commands executed
    after it was established:
 </p>
@@ -77,7 +77,7 @@ COMMIT;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758706"></a><h2>Compatibility</h2>
+<a name="id2777696"></a><h2>Compatibility</h2>
 <p>   SQL requires a savepoint to be destroyed automatically when another
    savepoint with the same name is established.  In
    <span class="productname">PostgreSQL</span>, the old savepoint is kept, though only the more
@@ -88,8 +88,8 @@ COMMIT;</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758741"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-begin.html" title="BEGIN">BEGIN</a>, <a href="sql-commit.html" title="COMMIT">COMMIT</a>, <a href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">RELEASE SAVEPOINT</a>, <a href="sql-rollback.html" title="ROLLBACK">ROLLBACK</a>, <a href="sql-rollback-to.html" title="ROLLBACK TO SAVEPOINT">ROLLBACK TO SAVEPOINT</a></span>
+<a name="id2777732"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-begin.html" title="BEGIN">BEGIN</a>, <a class="xref" href="sql-commit.html" title="COMMIT">COMMIT</a>, <a class="xref" href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">RELEASE SAVEPOINT</a>, <a class="xref" href="sql-rollback.html" title="ROLLBACK">ROLLBACK</a>, <a class="xref" href="sql-rollback-to.html" title="ROLLBACK TO SAVEPOINT">ROLLBACK TO SAVEPOINT</a></span>
 </div>
 </div></body>
 </html>

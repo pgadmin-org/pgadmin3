@@ -1,26 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.10. Release 8.1</title>
+<title>E.11. Release 8.1</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-1-1.html" title="E.9. Release 8.1.1">
-<link rel="next" href="release-8-0-13.html" title="E.11. Release 8.0.13">
+<link rel="prev" href="release-8-1-1.html" title="E.10. Release 8.1.1">
+<link rel="next" href="release-8-0-14.html" title="E.12. Release 8.0.14">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-8-1"></a>E.10. Release 8.1</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1">E.11. Release 8.1</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2005-11-08</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2833975"></a>E.10.1. Overview</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2853123">E.11.1. Overview</h3></div></div></div>
 <p>     Major changes in this release:
     </p>
 <div class="variablelist"><dl>
@@ -63,7 +61,7 @@
         <code class="command">COMMIT/ROLLBACK PREPARED</code>. A new system view
         <code class="literal">pg_prepared_xacts</code> has also been added.
        </p></dd>
-<dt><span class="term">       Create a new role system that replaces users and groups 
+<dt><span class="term">       Create a new role system that replaces users and groups
        (Stephen Frost)
       </span></dt>
 <dd>
@@ -87,8 +85,8 @@
         <code class="command">SET ROLE</code> to switch to other roles she is a member of.
         This feature is a generalization of the SQL standard's concept of
         roles.
-        This change also replaces <code class="structname">pg_shadow</code> and 
-        <code class="structname">pg_group</code> by new role-capable catalogs 
+        This change also replaces <code class="structname">pg_shadow</code> and
+        <code class="structname">pg_group</code> by new role-capable catalogs
         <code class="structname">pg_authid</code> and <code class="structname">pg_auth_members</code>. The old
         tables are redefined as read-only views on the new role tables.
        </p>
@@ -145,8 +143,7 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2834306"></a>E.10.2. Migration to version 8.1</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2853448">E.11.2. Migration to version 8.1</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span> is required
      for those wishing to migrate data from any previous release.
     </p>
@@ -165,7 +162,7 @@
        without a <code class="literal">FROM</code> reference.  The old behavior is still
        available, but the parameter must be set to 'true' to obtain it.
       </p>
-<p>       It may be necessary to set <code class="varname">add_missing_from</code> to true
+<p>       It might be necessary to set <code class="varname">add_missing_from</code> to true
        in order to load an existing dump file, if the dump contains any
        views or rules created using the implicit-<code class="literal">FROM</code> syntax.
        This should be a one-time annoyance, because
@@ -344,7 +341,7 @@ WHERE   n.oid = c.relnamespace AND
        consistent with the box "over" operators (Tom)
       </p></li>
 <li>
-<p>       <code class="command">CREATE LANGUAGE</code> may ignore the provided arguments
+<p>       <code class="command">CREATE LANGUAGE</code> can ignore the provided arguments
        in favor of information from <code class="structname">pg_pltemplate</code>
        (Tom)
       </p>
@@ -380,15 +377,13 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2835001"></a>E.10.3. Additional Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2854143">E.11.3. Additional Changes</h3></div></div></div>
 <p>     Below you will find a detailed account of the additional changes
      between <span class="productname">PostgreSQL</span> 8.1 and the
      previous major release.
     </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2835015"></a>E.10.3.1. Performance Improvements</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2854157">E.11.3.1. Performance Improvements</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Improve GiST and R-tree index performance (Neil)
        </p></li>
@@ -464,8 +459,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2835207"></a>E.10.3.2. Server Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2854348">E.11.3.2. Server Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Prevent problems due to transaction ID (XID) wraparound (Tom)
@@ -558,10 +552,9 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2835440"></a>E.10.3.3. Query Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2854582">E.11.3.3. Query Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
-<li><p>        Add temporary views (Koju Iijima, Neil) 
+<li><p>        Add temporary views (Koju Iijima, Neil)
        </p></li>
 <li>
 <p>        Fix <code class="command">HAVING</code> without any aggregate functions or
@@ -613,8 +606,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2835621"></a>E.10.3.4. Object Manipulation Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2854763">E.11.3.4. Object Manipulation Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Track dependencies of shared objects (Alvaro)
@@ -629,7 +621,7 @@ WHERE   n.oid = c.relnamespace AND
        </p>
 </li>
 <li>
-<p>        Allow limited <code class="command">ALTER OWNER</code> commands to be performed 
+<p>        Allow limited <code class="command">ALTER OWNER</code> commands to be performed
         by the object owner (Stephen Frost)
        </p>
 <p>        Prior releases allowed only superusers to change object owners.
@@ -653,8 +645,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2835697"></a>E.10.3.5. Utility Command Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2854838">E.11.3.5. Utility Command Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Allow <code class="command">TRUNCATE</code> to truncate multiple tables in a
@@ -738,8 +729,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2835952"></a>E.10.3.6. Data Type and Function Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2855094">E.11.3.6. Data Type and Function Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add <code class="function">MAX()</code> and <code class="function">MIN()</code> aggregates for
         array types (Koju Iijima)
@@ -928,8 +918,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2836481"></a>E.10.3.7. Encoding and Locale Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2855623">E.11.3.7. Encoding and Locale Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Rename some encodings to be more consistent and to follow
@@ -968,15 +957,14 @@ WHERE   n.oid = c.relnamespace AND
 <li>
 <p>        Allow the UTF8 encoding to work on Windows (Magnus)
        </p>
-<p>        This is done by mapping UTF8 to the Windows-native UTF16 
+<p>        This is done by mapping UTF8 to the Windows-native UTF16
         implementation.
        </p>
 </li>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2836614"></a>E.10.3.8. General Server-Side Language Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2855756">E.11.3.8. General Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Fix <code class="command">ALTER LANGUAGE RENAME</code> (Sergey Yatskevich)
        </p></li>
@@ -1011,8 +999,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2836719"></a>E.10.3.9. PL/PgSQL Server-Side Language Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2855861">E.11.3.9. PL/PgSQL Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Overhaul the memory management of PL/PgSQL functions (Neil)
@@ -1066,8 +1053,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2836895"></a>E.10.3.10. PL/Perl Server-Side Language Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2856036">E.11.3.10. PL/Perl Server-Side Language Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Allow large result sets to be returned efficiently (Abhijit
@@ -1111,8 +1097,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2836996"></a>E.10.3.11. <span class="application">psql</span> Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2856138">E.11.3.11. <span class="application">psql</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Add <code class="command">\set ON_ERROR_ROLLBACK</code> to allow statements in
@@ -1185,31 +1170,30 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2837202"></a>E.10.3.12. <span class="application">pg_dump</span> Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2856344">E.11.3.12. <span class="application">pg_dump</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p>        Add <code class="option">-n</code> / <code class="option">--schema</code> switch to 
+<p>        Add <code class="option">-n</code> / <code class="option">--schema</code> switch to
         <span class="application">pg_restore</span> (Richard van den Berg)
        </p>
 <p>        This allows just the objects in a specified schema to be restored.
        </p>
 </li>
 <li>
-<p>        Allow <span class="application">pg_dump</span> to dump large objects even in 
+<p>        Allow <span class="application">pg_dump</span> to dump large objects even in
         text mode (Tom)
        </p>
 <p>        With this change, large objects are now always dumped; the former
         <code class="option">-b</code> switch is a no-op.
        </p>
 </li>
-<li><p>        Allow <span class="application">pg_dump</span> to dump a consistent snapshot of 
+<li><p>        Allow <span class="application">pg_dump</span> to dump a consistent snapshot of
         large objects (Tom)
        </p></li>
 <li><p>        Dump comments for large objects (Tom)
        </p></li>
 <li>
-<p>        Add <code class="option">--encoding</code> to <span class="application">pg_dump</span> 
+<p>        Add <code class="option">--encoding</code> to <span class="application">pg_dump</span>
         (Magnus Hagander)
        </p>
 <p>        This allows a database to be dumped in an encoding that is
@@ -1231,8 +1215,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2837324"></a>E.10.3.13. <span class="application">libpq</span> Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2856465">E.11.3.13. <span class="application">libpq</span> Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Add a <code class="envar">PGPASSFILE</code> environment variable to specify the
         password file's filename (Andrew)
@@ -1248,8 +1231,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2837376"></a>E.10.3.14. Source Code Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2856517">E.11.3.14. Source Code Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Fix <span class="application">pgxs</span> to support building against a relocated
         installation
@@ -1326,8 +1308,7 @@ WHERE   n.oid = c.relnamespace AND
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2837581"></a>E.10.3.15. Contrib Changes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2856722">E.11.3.15. Contrib Changes</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>        Add <code class="filename">/contrib/pg_buffercache</code> contrib module (Mark

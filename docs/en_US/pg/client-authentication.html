@@ -4,16 +4,15 @@
 <title>Chapter 20. Client Authentication</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="manage-ag-tablespaces.html" title="19.6. Tablespaces">
 <link rel="next" href="auth-methods.html" title="20.2. Authentication methods">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="client-authentication">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="client-authentication"></a>Chapter 20. Client Authentication</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 20. Client Authentication</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -29,17 +28,17 @@
 <dt><span class="sect1"><a href="client-authentication-problems.html">20.3. Authentication problems</a></span></dt>
 </dl>
 </div>
-<a name="id2647255"></a><p>  When a client application connects to the database server, it
+<a name="id2666250"></a><p>  When a client application connects to the database server, it
   specifies which <span class="productname">PostgreSQL</span> database user name it
   wants to connect as, much the same way one logs into a Unix computer
   as a particular user. Within the SQL environment the active database
   user name determines access privileges to database objects [mdash ] see
-  <a href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a> for more information. Therefore, it is
+  <a class="xref" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a> for more information. Therefore, it is
   essential to restrict which database users can connect.
  </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>   As explained in <a href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a>,
+<p>   As explained in <a class="xref" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a>,
    <span class="productname">PostgreSQL</span> actually does privilege
    management in terms of &#8220;<span class="quote">roles</span>&#8221;.  In this chapter, we
    consistently use <em class="firstterm">database user</em> to mean &#8220;<span class="quote">role with the
@@ -67,9 +66,8 @@
   database user names and OS user names.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="auth-pg-hba-conf"></a>20.1. The <code class="filename">pg_hba.conf</code> file</h2></div></div></div>
-<a name="id2647380"></a><p>   Client authentication is controlled by a configuration file,
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="auth-pg-hba-conf">20.1. The <code class="filename">pg_hba.conf</code> file</h2></div></div></div>
+<a name="id2666374"></a><p>   Client authentication is controlled by a configuration file,
    which traditionally is named
    <code class="filename">pg_hba.conf</code> and is stored in the database
    cluster's data directory.
@@ -77,7 +75,7 @@
    <code class="filename">pg_hba.conf</code> file is installed when the data
    directory is initialized by <code class="command">initdb</code>.  It is
    possible to place the authentication configuration file elsewhere,
-   however; see the <a href="runtime-config-file-locations.html#guc-hba-file">hba_file</a> configuration parameter.
+   however; see the <a class="xref" href="runtime-config-file-locations.html#guc-hba-file">hba_file</a> configuration parameter.
   </p>
 <p>   The general format of the <code class="filename">pg_hba.conf</code> file is
    a set of records, one per line. Blank lines are ignored, as is any
@@ -126,7 +124,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
 <h3 class="title">Note</h3>
 <p>       Remote TCP/IP connections will not be possible unless
        the server is started with an appropriate value for the
-       <a href="runtime-config-connection.html#guc-listen-addresses">listen_addresses</a> configuration parameter,
+       <a class="xref" href="runtime-config-connection.html#guc-listen-addresses">listen_addresses</a> configuration parameter,
        since the default behavior is to listen for TCP/IP connections
        only on the local loopback address <code class="literal">localhost</code>.
       </p>
@@ -141,8 +139,8 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
 <p>       To make use of this option the server must be built with
        <acronym class="acronym">SSL</acronym> support. Furthermore,
        <acronym class="acronym">SSL</acronym> must be enabled at server start time
-       by setting the <a href="runtime-config-connection.html#guc-ssl">ssl</a> configuration parameter (see
-       <a href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a> for more information).
+       by setting the <a class="xref" href="runtime-config-connection.html#guc-ssl">ssl</a> configuration parameter (see
+       <a class="xref" href="ssl-tcp.html" title="16.7. Secure TCP/IP Connections with SSL">Section 16.7, &#8220;Secure TCP/IP Connections with SSL&#8221;</a> for more information).
       </p>
 </dd>
 <dt><span class="term"><code class="literal">hostnossl</code></span></dt>
@@ -228,7 +226,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
 <dd>
 <p>       Specifies the authentication method to use when connecting via
        this record. The possible choices are summarized here; details
-       are in <a href="auth-methods.html" title="20.2. Authentication methods">Section 20.2, &#8220;Authentication methods&#8221;</a>.
+       are in <a class="xref" href="auth-methods.html" title="20.2. Authentication methods">Section 20.2, &#8220;Authentication methods&#8221;</a>.
 
        </p>
 <div class="variablelist"><dl>
@@ -237,7 +235,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
           allows anyone that can connect to the
           <span class="productname">PostgreSQL</span> database server to login as
           any <span class="productname">PostgreSQL</span> user they like,
-          without the need for a password.  See <a href="auth-methods.html#auth-trust" title="20.2.1. Trust authentication">Section 20.2.1, &#8220;Trust authentication&#8221;</a> for details.
+          without the need for a password.  See <a class="xref" href="auth-methods.html#auth-trust" title="20.2.1. Trust authentication">Section 20.2.1, &#8220;Trust authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><code class="literal">reject</code></span></dt>
 <dd><p>          Reject the connection unconditionally. This is useful for
@@ -246,7 +244,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
 <dt><span class="term"><code class="literal">md5</code></span></dt>
 <dd><p>          Require the client to supply an MD5-encrypted password for
           authentication.
-          See <a href="auth-methods.html#auth-password" title="20.2.2. Password authentication">Section 20.2.2, &#8220;Password authentication&#8221;</a> for details.
+          See <a class="xref" href="auth-methods.html#auth-password" title="20.2.2. Password authentication">Section 20.2.2, &#8220;Password authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><code class="literal">crypt</code></span></dt>
 <dd>
@@ -259,7 +257,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
 <p>          Require the client to supply a <code class="function">crypt()</code>-encrypted
           password for authentication.
           <code class="literal">md5</code> is now recommended over <code class="literal">crypt</code>.
-          See <a href="auth-methods.html#auth-password" title="20.2.2. Password authentication">Section 20.2.2, &#8220;Password authentication&#8221;</a> for details.
+          See <a class="xref" href="auth-methods.html#auth-password" title="20.2.2. Password authentication">Section 20.2.2, &#8220;Password authentication&#8221;</a> for details.
          </p>
 </dd>
 <dt><span class="term"><code class="literal">password</code></span></dt>
@@ -268,11 +266,11 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
           Since the password is sent in clear text over the
           network, this should not be used on untrusted networks.
           It also does not usually work with threaded client applications.
-          See <a href="auth-methods.html#auth-password" title="20.2.2. Password authentication">Section 20.2.2, &#8220;Password authentication&#8221;</a> for details.
+          See <a class="xref" href="auth-methods.html#auth-password" title="20.2.2. Password authentication">Section 20.2.2, &#8220;Password authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><code class="literal">krb5</code></span></dt>
 <dd><p>          Use Kerberos V5 to authenticate the user. This is only
-          available for TCP/IP connections.  See <a href="auth-methods.html#kerberos-auth" title="20.2.3. Kerberos authentication">Section 20.2.3, &#8220;Kerberos authentication&#8221;</a> for details.
+          available for TCP/IP connections.  See <a class="xref" href="auth-methods.html#kerberos-auth" title="20.2.3. Kerberos authentication">Section 20.2.3, &#8220;Kerberos authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><code class="literal">ident</code></span></dt>
 <dd><p>          Obtain the operating system user name of the client (for
@@ -281,11 +279,11 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
           operating system) and check if the user is allowed to
           connect as the requested database user by consulting the map
           specified after the <code class="literal">ident</code> key word.
-          See <a href="auth-methods.html#auth-ident" title="20.2.4. Ident-based authentication">Section 20.2.4, &#8220;Ident-based authentication&#8221;</a> for details.
+          See <a class="xref" href="auth-methods.html#auth-ident" title="20.2.4. Ident-based authentication">Section 20.2.4, &#8220;Ident-based authentication&#8221;</a> for details.
          </p></dd>
 <dt><span class="term"><code class="literal">pam</code></span></dt>
 <dd><p>          Authenticate using the Pluggable Authentication Modules
-          (PAM) service provided by the operating system.  See <a href="auth-methods.html#auth-pam" title="20.2.5. PAM authentication">Section 20.2.5, &#8220;PAM authentication&#8221;</a> for details.
+          (PAM) service provided by the operating system.  See <a class="xref" href="auth-methods.html#auth-pam" title="20.2.5. PAM authentication">Section 20.2.5, &#8220;PAM authentication&#8221;</a> for details.
          </p></dd>
 </dl></div>
 <p>
@@ -321,14 +319,14 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
   </p>
 <p>   The <code class="filename">pg_hba.conf</code> file is read on start-up and when
    the main server process (<code class="command">postmaster</code>) receives a
-   <span class="systemitem">SIGHUP</span><a name="id2648304"></a>
+   <span class="systemitem">SIGHUP</span><a name="id2667299"></a>
    signal. If you edit the file on an
    active system, you will need to signal the <code class="command">postmaster</code>
    (using <code class="literal">pg_ctl reload</code> or <code class="literal">kill -HUP</code>) to make it
    re-read the file.
   </p>
 <p>   Some examples of <code class="filename">pg_hba.conf</code> entries are shown in
-   <a href="client-authentication.html#example-pg-hba.conf" title="Example 20.1. Example pg_hba.conf entries">Example 20.1, &#8220;Example <code class="filename">pg_hba.conf</code> entries&#8221;</a>. See the next section for details on the
+   <a class="xref" href="client-authentication.html#example-pg-hba.conf" title="Example 20.1. Example pg_hba.conf entries">Example 20.1, &#8220;Example <code class="filename">pg_hba.conf</code> entries&#8221;</a>. See the next section for details on the
    different authentication methods.
   </p>
 <div class="example">

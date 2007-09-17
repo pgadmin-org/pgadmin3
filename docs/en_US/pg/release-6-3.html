@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.89. Release 6.3</title>
+<title>E.93. Release 6.3</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-6-3-1.html" title="E.88. Release 6.3.1">
-<link rel="next" href="release-6-2-1.html" title="E.90. Release 6.2.1">
+<link rel="prev" href="release-6-3-1.html" title="E.92. Release 6.3.1">
+<link rel="next" href="release-6-2-1.html" title="E.94. Release 6.2.1">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-6-3"></a>E.89. Release 6.3</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-6-3">E.93. Release 6.3</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1998-03-01</p>
@@ -30,7 +29,7 @@
 <li><p>       Support for client-side environment variables to specify time zone and date style.
       </p></li>
 <li><p>       Socket interface for client/server connection. This is the default now
-       so you may need to start <span class="application">postmaster</span> with the
+       so you might need to start <span class="application">postmaster</span> with the
        <code class="option">-i</code> flag.
       </p></li>
 <li><p>       Better password authorization mechanisms. Default table privileges have changed.
@@ -54,9 +53,9 @@
     mention that without subselects, SQL is a very limited language.
     Subselects are a major feature, and you should review your code for
     places where subselects provide a better solution for your queries.  I
-    think you will find that there are more uses for subselects than you may
+    think you will find that there are more uses for subselects than you might
     think.  Vadim has put us on the big SQL map with subselects, and fully
-    functional ones too.  The only thing you can't do with subselects is to
+    functional ones too.  The only thing you cannot do with subselects is to
     use them in the target list.
    </p>
 <p>    Second, 6.3 uses Unix domain sockets rather than TCP/IP by default.  To
@@ -67,7 +66,7 @@
 <p>    Third, <code class="type">char()</code> fields will now allow faster access than <code class="type">varchar()</code> or
     <code class="type">text</code>. Specifically, the <code class="type">text</code> and <code class="type">varchar()</code> have a penalty for access to
     any columns after the first column of this type.  <code class="type">char()</code> used to also
-    have this access penalty, but it no longer does.  This may suggest that
+    have this access penalty, but it no longer does.  This might suggest that
     you redesign some of your tables, especially if you have short character
     columns that you have defined as <code class="type">varchar()</code> or <code class="type">text</code>.  This and other
     changes make 6.3 even faster than earlier releases.
@@ -83,7 +82,7 @@
    </p>
 <p>    User-created tables now no longer have SELECT privilege to PUBLIC by
     default.  This was done because the ANSI standard requires it.  You can
-    of course GRANT any privileges you want after the table is created. 
+    of course GRANT any privileges you want after the table is created.
     System tables continue to be SELECT-able by PUBLIC.
    </p>
 <p>    We also have real deadlock detection code.  No more sixty-second
@@ -107,17 +106,15 @@
     are no longer needed.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2860217"></a>E.89.1. Migration to version 6.3</h3></div></div></div>
-<p>     A dump/restore using <span class="application">pg_dump</span> 
+<div class="titlepage"><div><div><h3 class="title" id="id2879571">E.93.1. Migration to version 6.3</h3></div></div></div>
+<p>     A dump/restore using <span class="application">pg_dump</span>
      or <span class="application">pg_dumpall</span>
      is required for those wishing to migrate data from any
      previous release of <span class="productname">PostgreSQL</span>.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2860243"></a>E.89.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2879597">E.93.2. Changes</h3></div></div></div>
 <p>     </p>
 <pre class="programlisting">Bug Fixes
 ---------
@@ -161,7 +158,7 @@ Subselects with EXISTS, IN, ALL, ANY key words (Vadim, Bruce, Thomas)
 New User Manual(Thomas, others)
 Speedup by inlining some frequently-called functions
 Real deadlock detection, no more timeouts(Bruce)
-Add SQL92 "constants" CURRENT_DATE, CURRENT_TIME, CURRENT_TIMESTAMP, 
+Add SQL92 "constants" CURRENT_DATE, CURRENT_TIME, CURRENT_TIMESTAMP,
         CURRENT_USER(Thomas)
 Modify constraint syntax to be SQL92-compliant(Thomas)
 Implement SQL92 PRIMARY KEY and UNIQUE clauses using indexes(Thomas)
@@ -241,7 +238,7 @@ Reduce system column overhead(Vadmin)
 Remove pg_time table(Vadim)
 Add pg_type attribute to identify types that need length (bpchar, varchar)
 Add report of offending line when COPY command fails
-Allow VIEW privileges to be set separately from the underlying tables. 
+Allow VIEW privileges to be set separately from the underlying tables.
         For security, use GRANT/REVOKE on views as appropriate(Jan)
 Tables now have no default GRANT SELECT TO PUBLIC.  You must
         explicitly grant such privileges.

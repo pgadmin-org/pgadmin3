@@ -4,16 +4,15 @@
 <title>Chapter 18. Database Roles and Privileges</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.9 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="runtime-config-short.html" title="17.16. Short Options">
 <link rel="next" href="role-attributes.html" title="18.2. Role Attributes">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="user-manag">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="user-manag"></a>Chapter 18. Database Roles and Privileges</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 18. Database Roles and Privileges</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -42,16 +41,15 @@
 <p>  This chapter describes how to create and manage roles and introduces
   the privilege system.  More information about the various types of
   database objects and the effects of privileges can be found in
-  <a href="ddl.html" title="Chapter 5. Data Definition">Chapter 5, <i>Data Definition</i></a>.
+  <a class="xref" href="ddl.html" title="Chapter 5. Data Definition">Chapter 5, <i>Data Definition</i></a>.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="database-roles"></a>18.1. Database Roles</h2></div></div></div>
-<a name="id2644580"></a><a name="id2644590"></a><a name="id2644599"></a><a name="id2644605"></a><p>   Database roles are conceptually completely separate from
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="database-roles">18.1. Database Roles</h2></div></div></div>
+<a name="id2663566"></a><a name="id2663575"></a><a name="id2663585"></a><a name="id2663590"></a><p>   Database roles are conceptually completely separate from
    operating system users. In practice it might be convenient to
    maintain a correspondence, but this is not required. Database roles
    are global across a database cluster installation (and not
-   per individual database). To create a role use the <a href="sql-createrole.html" title="CREATE ROLE">CREATE ROLE</a> SQL command:
+   per individual database). To create a role use the <a class="xref" href="sql-createrole.html" title="CREATE ROLE">CREATE ROLE</a> SQL command:
 </p>
 <pre class="synopsis">CREATE ROLE <em class="replaceable"><code>name</code></em>;</pre>
 <p>
@@ -60,13 +58,13 @@
    double-quoted.  (In practice, you will usually want to add additional
    options, such as <code class="literal">LOGIN</code>, to the command.  More details appear
    below.)  To remove an existing role, use the analogous
-   <a href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a> command:
+   <a class="xref" href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a> command:
 </p>
 <pre class="synopsis">DROP ROLE <em class="replaceable"><code>name</code></em>;</pre>
 <p>
   </p>
-<a name="id2644675"></a><a name="id2644681"></a><p>   For convenience, the programs <a href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a>
-   and <a href="app-dropuser.html" title="dropuser"><span class="refentrytitle"><a name="app-dropuser-title"></a><span class="application">dropuser</span></span></a> are provided as wrappers
+<a name="id2663661"></a><a name="id2663666"></a><p>   For convenience, the programs <a class="xref" href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a>
+   and <a class="xref" href="app-dropuser.html" title="dropuser"><span class="refentrytitle"><a name="app-dropuser-title"></a><span class="application">dropuser</span></span></a> are provided as wrappers
    around these SQL commands that can be called from the shell command
    line:
 </p>
@@ -79,7 +77,7 @@ dropuser <em class="replaceable"><code>name</code></em></pre>
 </p>
 <pre class="synopsis">SELECT rolname FROM pg_roles;</pre>
 <p>
-   The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <code class="literal">\du</code> meta-command
+   The <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <code class="literal">\du</code> meta-command
    is also useful for listing the existing roles.
   </p>
 <p>   In order to bootstrap the database system, a freshly initialized
@@ -107,7 +105,7 @@ dropuser <em class="replaceable"><code>name</code></em></pre>
   </p>
 <p>   The set of database roles a given client connection may connect as
    is determined by the client authentication setup, as explained in
-   <a href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a>. (Thus, a client is not
+   <a class="xref" href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a>. (Thus, a client is not
    necessarily limited to connect as the role with the same name as
    its operating system user, just as a person's login name 
    need not match her real name.)  Since the role
