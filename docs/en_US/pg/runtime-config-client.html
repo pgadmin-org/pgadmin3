@@ -4,19 +4,17 @@
 <title>17.10. Client Connection Defaults</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-autovacuum.html" title="17.9. Automatic Vacuuming">
 <link rel="next" href="runtime-config-locks.html" title="17.11. Lock Management">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="runtime-config-client"></a>17.10. Client Connection Defaults</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="runtime-config-client">17.10. Client Connection Defaults</h2></div></div></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-client-statement"></a>17.10.1. Statement Behavior</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-client-statement">17.10.1. Statement Behavior</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-search-path"></a><span class="term"><code class="varname">search_path</code> (<code class="type">string</code>)</span>
@@ -72,7 +70,7 @@
         <code class="function">current_schemas()</code> shows how the requests
         appearing in <code class="varname">search_path</code> were resolved.
        </p>
-<p>        For more information on schema handling, see <a href="ddl-schemas.html" title="5.7. Schemas">Section 5.7, &#8220;Schemas&#8221;</a>.
+<p>        For more information on schema handling, see <a class="xref" href="ddl-schemas.html" title="5.7. Schemas">Section 5.7, &#8220;Schemas&#8221;</a>.
        </p>
 </dd>
 <dt>
@@ -90,14 +88,14 @@
         tablespace of the current database.
        </p>
 <p>        For more information on tablespaces,
-        see <a href="manage-ag-tablespaces.html" title="19.6. Tablespaces">Section 19.6, &#8220;Tablespaces&#8221;</a>.
+        see <a class="xref" href="manage-ag-tablespaces.html" title="19.6. Tablespaces">Section 19.6, &#8220;Tablespaces&#8221;</a>.
        </p>
 </dd>
 <dt>
 <a name="guc-check-function-bodies"></a><span class="term"><code class="varname">check_function_bodies</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        This parameter is normally on. When set to <code class="literal">off</code>, it
-        disables validation of the function body string during <a href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>. Disabling validation is
+        disables validation of the function body string during <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>. Disabling validation is
         occasionally useful to avoid problems such as forward references
         when restoring function definitions from a dump.
        </p></dd>
@@ -112,7 +110,7 @@
         default isolation level of each new transaction. The default
         is &#8220;<span class="quote">read committed</span>&#8221;.
        </p>
-<p>        Consult <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> and <a href="sql-set-transaction.html" title="SET TRANSACTION">SET TRANSACTION</a> for more information.
+<p>        Consult <a class="xref" href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> and <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION">SET TRANSACTION</a> for more information.
        </p>
 </dd>
 <dt>
@@ -123,7 +121,7 @@
         This parameter controls the default read-only status of each new
         transaction. The default is <code class="literal">off</code> (read/write).
        </p>
-<p>        Consult <a href="sql-set-transaction.html" title="SET TRANSACTION">SET TRANSACTION</a> for more information.
+<p>        Consult <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION">SET TRANSACTION</a> for more information.
        </p>
 </dd>
 <dt>
@@ -145,15 +143,14 @@
         The default is 100 million transactions.  Although
         users can set this value anywhere from zero to one billion,
         <code class="command">VACUUM</code> will silently limit the effective value to half
-        the value of <a href="runtime-config-autovacuum.html#guc-autovacuum-freeze-max-age">autovacuum_freeze_max_age</a>, so
+        the value of <a class="xref" href="runtime-config-autovacuum.html#guc-autovacuum-freeze-max-age">autovacuum_freeze_max_age</a>, so
         that there is not an unreasonably short time between forced
-        autovacuums.  For more information see <a href="maintenance.html#vacuum-for-wraparound" title="22.1.3. Preventing transaction ID wraparound failures">Section 22.1.3, &#8220;Preventing transaction ID wraparound failures&#8221;</a>.
+        autovacuums.  For more information see <a class="xref" href="maintenance.html#vacuum-for-wraparound" title="22.1.3. Preventing transaction ID wraparound failures">Section 22.1.3, &#8220;Preventing transaction ID wraparound failures&#8221;</a>.
        </p></dd>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-client-format"></a>17.10.2. Locale and Formatting</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-client-format">17.10.2. Locale and Formatting</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-datestyle"></a><span class="term"><code class="varname">DateStyle</code> (<code class="type">string</code>)</span>
@@ -169,7 +166,7 @@
         and <code class="literal">European</code> are synonyms for <code class="literal">DMY</code>; the
         keywords <code class="literal">US</code>, <code class="literal">NonEuro</code>, and
         <code class="literal">NonEuropean</code> are synonyms for <code class="literal">MDY</code>. See
-        <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information. The
+        <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information. The
         built-in default is <code class="literal">ISO, MDY</code>, but
         <span class="application">initdb</span> will initialize the
         configuration file with a setting that corresponds to the
@@ -180,7 +177,7 @@
 </dt>
 <dd><p>        Sets the time zone for displaying and interpreting time stamps.
         The default is <code class="literal">'unknown'</code>, which means to use whatever
-        the system environment specifies as the time zone.  See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more
+        the system environment specifies as the time zone.  See <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more
         information.
        </p></dd>
 <dt>
@@ -190,7 +187,7 @@
         by the server for datetime input.  The default is <code class="literal">'Default'</code>,
         which is a collection that works in most of the world; there are
         also 'Australia' and 'India', and other collections can be defined
-        for a particular installation.  See <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for more information.
+        for a particular installation.  See <a class="xref" href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for more information.
        </p></dd>
 <dt>
 <a name="guc-extra-float-digits"></a><span class="term"><code class="varname">extra_float_digits</code> (<code class="type">integer</code>)</span>
@@ -215,7 +212,7 @@
 </dt>
 <dd>
 <p>        Sets the language in which messages are displayed.  Acceptable
-        values are system-dependent; see <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for
+        values are system-dependent; see <a class="xref" href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for
         more information.  If this variable is set to the empty string
         (which is the default) then the value is inherited from the
         execution environment of the server in a system-dependent way.
@@ -235,7 +232,7 @@
 </dt>
 <dd><p>        Sets the locale to use for formatting monetary amounts, for
         example with the <code class="function">to_char</code> family of
-        functions.  Acceptable values are system-dependent; see <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
+        functions.  Acceptable values are system-dependent; see <a class="xref" href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
         set to the empty string (which is the default) then the value
         is inherited from the execution environment of the server in a
         system-dependent way.
@@ -245,7 +242,7 @@
 </dt>
 <dd><p>        Sets the locale to use for formatting numbers, for example
         with the <code class="function">to_char</code> family of
-        functions. Acceptable values are system-dependent; see <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
+        functions. Acceptable values are system-dependent; see <a class="xref" href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
         set to the empty string (which is the default) then the value
         is inherited from the execution environment of the server in a
         system-dependent way.
@@ -255,7 +252,7 @@
 </dt>
 <dd><p>        Sets the locale to use for formatting date and time values.
         (Currently, this setting does nothing, but it may in the
-        future.)  Acceptable values are system-dependent; see <a href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
+        future.)  Acceptable values are system-dependent; see <a class="xref" href="charset.html#locale" title="21.1. Locale Support">Section 21.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
         set to the empty string (which is the default) then the value
         is inherited from the execution environment of the server in a
         system-dependent way.
@@ -263,8 +260,7 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-client-other"></a>17.10.3. Other Defaults</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-client-other">17.10.3. Other Defaults</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-explain-pretty-print"></a><span class="term"><code class="varname">explain_pretty_print</code> (<code class="type">boolean</code>)</span>
@@ -318,7 +314,7 @@
 <a name="guc-gin-fuzzy-search-limit"></a><span class="term"><code class="varname">gin_fuzzy_search_limit</code> (<code class="type">integer</code>)</span>
 </dt>
 <dd><p>        Soft upper limit of the size of the set returned by GIN index. For more
-        information see <a href="gin-tips.html" title="51.4. GIN tips and tricks">Section 51.4, &#8220;GIN tips and tricks&#8221;</a>.
+        information see <a class="xref" href="gin-tips.html" title="51.4. GIN tips and tricks">Section 51.4, &#8220;GIN tips and tricks&#8221;</a>.
        </p></dd>
 <dt>
 <a name="guc-local-preload-libraries"></a><span class="term"><code class="varname">local_preload_libraries</code> (<code class="type">string</code>)</span>

@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.7. Release 8.1.10</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-2.html" title="E.6. Release 8.2">
+<link rel="next" href="release-8-1-9.html" title="E.8. Release 8.1.9">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1-10">E.7. Release 8.1.10</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2007-09-17</p>
+</div>
+<p>    This release contains a variety of fixes from 8.1.9.
+   </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2880280">E.7.1. Migration to version 8.1.10</h3></div></div></div>
+<p>     A dump/restore is not required for those running 8.1.X.
+     However, if you are upgrading from a version earlier than 8.1.2,
+     see the release notes for 8.1.2.
+    </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2880289">E.7.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>       Prevent index corruption when a transaction inserts rows and
+       then aborts close to the end of a concurrent <code class="command">VACUUM</code>
+       on the same table (Tom)
+      </p></li>
+<li><p>       Make <code class="command">CREATE DOMAIN ... DEFAULT NULL</code> work properly (Tom)
+      </p></li>
+<li><p>       Allow the <code class="type">interval</code> data type to accept input consisting only of
+       milliseconds or microseconds (Neil)
+      </p></li>
+<li><p>       Speed up rtree index insertion (Teodor)
+      </p></li>
+<li><p>       Fix excessive logging of <acronym class="acronym">SSL</acronym> error messages (Tom)
+      </p></li>
+<li><p>       Fix logging so that log messages are never interleaved when using
+       the syslogger process (Andrew)
+      </p></li>
+<li><p>       Fix crash when <code class="varname">log_min_error_statement</code> logging runs out
+       of memory (Tom)
+      </p></li>
+<li><p>       Fix incorrect handling of some foreign-key corner cases (Tom)
+      </p></li>
+<li><p>       Prevent <code class="command">REINDEX</code> and <code class="command">CLUSTER</code> from failing
+       due to attempting to process temporary tables of other sessions (Alvaro)
+      </p></li>
+<li><p>       Update the time zone database rules, particularly New Zealand's upcoming changes (Tom)
+      </p></li>
+<li><p>       Windows socket improvements (Magnus)
+      </p></li>
+<li><p>       Suppress timezone name (<code class="literal">%Z</code>) in log timestamps on Windows
+       because of possible encoding mismatches (Tom)
+      </p></li>
+<li><p>       Require non-superusers who use <code class="filename">/contrib/dblink</code> to use only
+       password authentication, as a security measure (Joe)
+      </p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

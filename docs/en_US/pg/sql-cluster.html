@@ -4,8 +4,8 @@
 <title>CLUSTER</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-close.html" title="CLOSE">
 <link rel="next" href="sql-comment.html" title="COMMENT">
@@ -17,14 +17,14 @@
 <h2>Name</h2>
 <p>CLUSTER &#8212; cluster a table according to an index</p>
 </div>
-<a name="id2747922"></a><div class="refsynopsisdiv">
+<a name="id2766971"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CLUSTER <em class="replaceable"><code>indexname</code></em> ON <em class="replaceable"><code>tablename</code></em>
 CLUSTER <em class="replaceable"><code>tablename</code></em>
 CLUSTER</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2747954"></a><h2>Description</h2>
+<a name="id2767004"></a><h2>Description</h2>
 <p>   <code class="command">CLUSTER</code> instructs <span class="productname">PostgreSQL</span> 
    to cluster the table specified
    by <em class="replaceable"><code>tablename</code></em>
@@ -59,7 +59,7 @@ CLUSTER</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2748058"></a><h2>Parameters</h2>
+<a name="id2767107"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>indexname</code></em></span></dt>
 <dd><p>      The name of an index.
@@ -70,7 +70,16 @@ CLUSTER</pre>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2748084"></a><h2>Notes</h2>
+<a name="id2767133"></a><h2>Notes</h2>
+<p>    <code class="command">CLUSTER</code> loses all visibility information of tuples,
+    which makes the table look empty to any snapshot that was taken
+    before the <code class="command">CLUSTER</code> command finished. That makes
+    <code class="command">CLUSTER</code> unsuitable for applications where
+    transactions that access the table being clustered are run concurrently
+    with <code class="command">CLUSTER</code>. This is most visible with serializable
+    transactions, because they take only one snapshot at the beginning of the
+    transaction, but read-committed transactions are also affected.
+   </p>
 <p>    In cases where you are accessing single rows randomly
     within a table, the actual order of the data in the
     table is unimportant. However, if you tend to access some
@@ -95,7 +104,7 @@ CLUSTER</pre>
     are periodically reclustered.
    </p>
 <p>    Because the planner records statistics about the ordering of
-    tables, it is advisable to run <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a> on the newly clustered table.
+    tables, it is advisable to run <a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a> on the newly clustered table.
     Otherwise, the planner may make poor choices of query plans.
    </p>
 <p>    There is another way to cluster data. The
@@ -129,7 +138,7 @@ CLUSTER</pre>
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2727296"></a><h2>Examples</h2>
+<a name="id2746299"></a><h2>Examples</h2>
 <p>   Cluster the table <code class="literal">employees</code> on the basis of
    its index <code class="literal">emp_ind</code>:
 </p>
@@ -149,13 +158,13 @@ CLUSTER</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2748277"></a><h2>Compatibility</h2>
+<a name="id2767360"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">CLUSTER</code> statement in the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2748290"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-clusterdb.html" title="clusterdb"><span class="application">clusterdb</span></a></span>
+<a name="id2767372"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="app-clusterdb.html" title="clusterdb"><span class="application">clusterdb</span></a></span>
 </div>
 </div></body>
 </html>

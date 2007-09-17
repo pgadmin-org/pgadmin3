@@ -4,8 +4,8 @@
 <title>Chapter 46. Native Language Support</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="error-style-guide.html" title="45.3. Error Message Style Guide">
 <link rel="next" href="nls-programmer.html" title="46.2. For the Programmer">
@@ -13,8 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="nls">
 <div class="titlepage"><div>
-<div><h2 class="title">
-<a name="nls"></a>Chapter 46. Native Language Support</h2></div>
+<div><h2 class="title">Chapter 46. Native Language Support</h2></div>
 <div><div class="author"><h3 class="author">
 <span class="firstname">Peter</span> <span class="surname">Eisentraut</span>
 </h3></div></div>
@@ -24,10 +23,10 @@
 <dl>
 <dt><span class="sect1"><a href="nls.html#nls-translator">46.1. For the Translator</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="nls.html#id2832050">46.1.1. Requirements</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id2832117">46.1.2. Concepts</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id2832244">46.1.3. Creating and maintaining message catalogs</a></span></dt>
-<dt><span class="sect2"><a href="nls.html#id2832423">46.1.4. Editing the PO files</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2851218">46.1.1. Requirements</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2851286">46.1.2. Concepts</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2851412">46.1.3. Creating and maintaining message catalogs</a></span></dt>
+<dt><span class="sect2"><a href="nls.html#id2851591">46.1.4. Editing the PO files</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="nls-programmer.html">46.2. For the Programmer</a></span></dt>
 <dd><dl>
@@ -37,8 +36,7 @@
 </dl>
 </div>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="nls-translator"></a>46.1. For the Translator</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="nls-translator">46.1. For the Translator</h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span>
    programs (server and client) can issue their messages in
    your favorite language &#8212; if the messages have been translated.
@@ -49,8 +47,7 @@
    to do this.  This section explains how to help.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2832050"></a>46.1.1. Requirements</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2851218">46.1.1. Requirements</h3></div></div></div>
 <p>    We won't judge your language skills &#8212; this section is about
     software tools.  Theoretically, you only need a text editor.  But
     this is only in the unlikely event that you do not want to try out
@@ -76,8 +73,7 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2832117"></a>46.1.2. Concepts</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2851286">46.1.2. Concepts</h3></div></div></div>
 <p>    The pairs of original (English) messages and their (possibly)
     translated equivalents are kept in <em class="firstterm">message
     catalogs</em>, one for each program (although related
@@ -148,8 +144,7 @@ msgstr "another translated"
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2832244"></a>46.1.3. Creating and maintaining message catalogs</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2851412">46.1.3. Creating and maintaining message catalogs</h3></div></div></div>
 <p>    OK, so how does one create a &#8220;<span class="quote">blank</span>&#8221; message
     catalog?  First, go into the directory that contains the program
     whose messages you want to translate.  If there is a file
@@ -160,13 +155,13 @@ msgstr "another translated"
     someone has already done some translation work.  The files are
     named <code class="filename"><em class="replaceable"><code>language</code></em>.po</code>,
     where <em class="replaceable"><code>language</code></em> is the 
-    <a href="http://lcweb.loc.gov/standards/iso639-2/englangn.html" target="_top">    ISO 639-1 two-letter language code (in lower case)</a>, e.g.,
+    <a class="ulink" href="http://lcweb.loc.gov/standards/iso639-2/englangn.html" target="_top">    ISO 639-1 two-letter language code (in lower case)</a>, e.g.,
     <code class="filename">fr.po</code> for French.  If there is really a need
     for more than one translation effort per language then the files
     may also be named
     <code class="filename"><em class="replaceable"><code>language</code></em>_<em class="replaceable"><code>region</code></em>.po</code>
     where <em class="replaceable"><code>region</code></em> is the
-    <a href="http://www.din.de/gremien/nas/nabd/iso3166ma/codlstp1/en_listp1.html" target="_top">    ISO 3166-1 two-letter country code (in upper case)</a>,
+    <a class="ulink" href="http://www.din.de/gremien/nas/nabd/iso3166ma/codlstp1/en_listp1.html" target="_top">    ISO 3166-1 two-letter country code (in upper case)</a>,
     e.g.,
     <code class="filename">pt_BR.po</code> for Portuguese in Brazil.  If you
     find the language you wanted you can just start working on that
@@ -207,8 +202,7 @@ msgstr "another translated"
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2832423"></a>46.1.4. Editing the PO files</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2851591">46.1.4. Editing the PO files</h3></div></div></div>
 <p>    The PO files can be edited with a regular text editor.  The
     translator should only change the area between the quotes after
     the msgstr directive, may add comments and alter the fuzzy flag.
@@ -264,7 +258,7 @@ msgstr "another translated"
        open file %s</code>) should probably not start with a
        capital letter (if your language distinguishes letter case) or
        end with a period (if your language uses punctuation marks).
-       It may help to read <a href="error-style-guide.html" title="45.3. Error Message Style Guide">Section 45.3, &#8220;Error Message Style Guide&#8221;</a>.
+       It may help to read <a class="xref" href="error-style-guide.html" title="45.3. Error Message Style Guide">Section 45.3, &#8220;Error Message Style Guide&#8221;</a>.
       </p></li>
 <li><p>       If you don't know what a message means, or if it is ambiguous,
        ask on the developers' mailing list.  Chances are that English

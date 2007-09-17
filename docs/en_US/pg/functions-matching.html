@@ -4,17 +4,16 @@
 <title>9.7. Pattern Matching</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">
 <link rel="next" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-matching"></a>9.7. Pattern Matching</h2></div></div></div>
-<a name="id2596980"></a><p>    There are three separate approaches to pattern matching provided
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="functions-matching">9.7. Pattern Matching</h2></div></div></div>
+<a name="id2615950"></a><p>    There are three separate approaches to pattern matching provided
     by <span class="productname">PostgreSQL</span>: the traditional
     <acronym class="acronym">SQL</acronym> <code class="function">LIKE</code> operator, the
     more recent <code class="function">SIMILAR TO</code> operator (added in
@@ -32,9 +31,8 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="functions-like"></a>9.7.1. <code class="function">LIKE</code></h3></div></div></div>
-<a name="id2597050"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
+<div class="titlepage"><div><div><h3 class="title" id="functions-like">9.7.1. <code class="function">LIKE</code></h3></div></div></div>
+<a name="id2616020"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
 <em class="replaceable"><code>string</code></em> NOT LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]</pre>
 <p>     Every <em class="replaceable"><code>pattern</code></em> defines a set of strings.
      The <code class="function">LIKE</code> expression returns true if the
@@ -104,9 +102,8 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="functions-similarto-regexp"></a>9.7.2. <code class="function">SIMILAR TO</code> Regular Expressions</h3></div></div></div>
-<a name="id2597344"></a><a name="id2597350"></a><a name="id2597356"></a><a name="id2597362"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
+<div class="titlepage"><div><div><h3 class="title" id="functions-similarto-regexp">9.7.2. <code class="function">SIMILAR TO</code> Regular Expressions</h3></div></div></div>
+<a name="id2616315"></a><a name="id2616320"></a><a name="id2616326"></a><a name="id2616332"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
 <em class="replaceable"><code>string</code></em> NOT SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]</pre>
 <p>     The <code class="function">SIMILAR TO</code> operator returns true or
      false depending on whether its pattern matches the given string.
@@ -187,9 +184,8 @@ substring('foobar' from '#"o_b#"%' for '#')    <em class="lineannotation"><span 
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="functions-posix-regexp"></a>9.7.3. <acronym class="acronym">POSIX</acronym> Regular Expressions</h3></div></div></div>
-<a name="id2597679"></a><p>    <a href="functions-matching.html#functions-posix-table" title="Table 9.11. Regular Expression Match Operators">Table 9.11, &#8220;Regular Expression Match Operators&#8221;</a> lists the available
+<div class="titlepage"><div><div><h3 class="title" id="functions-posix-regexp">9.7.3. <acronym class="acronym">POSIX</acronym> Regular Expressions</h3></div></div></div>
+<a name="id2616649"></a><p>    <a class="xref" href="functions-matching.html#functions-posix-table" title="Table 9.11. Regular Expression Match Operators">Table 9.11, &#8220;Regular Expression Match Operators&#8221;</a> lists the available
     operators for pattern matching using POSIX regular expressions.
    </p>
 <div class="table">
@@ -320,8 +316,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     manual entry.
    </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="posix-syntax-details"></a>9.7.3.1. Regular Expression Details</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="posix-syntax-details">9.7.3.1. Regular Expression Details</h4></div></div></div>
 <p>    Regular expressions (<acronym class="acronym">RE</acronym>s), as defined in
     <acronym class="acronym">POSIX</acronym> 1003.2, come in two forms:
     <em class="firstterm">extended</em> <acronym class="acronym">RE</acronym>s or <acronym class="acronym">ERE</acronym>s
@@ -343,7 +338,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     The form of regular expressions accepted by
-     <span class="productname">PostgreSQL</span> can be chosen by setting the <a href="runtime-config-compatible.html#guc-regex-flavor">regex_flavor</a> run-time parameter.  The usual
+     <span class="productname">PostgreSQL</span> can be chosen by setting the <a class="xref" href="runtime-config-compatible.html#guc-regex-flavor">regex_flavor</a> run-time parameter.  The usual
      setting is <code class="literal">advanced</code>, but one might choose
      <code class="literal">extended</code> for maximum backwards compatibility with
      pre-7.4 releases of <span class="productname">PostgreSQL</span>.
@@ -364,15 +359,15 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     Without a quantifier, it matches a match for the atom.
     With a quantifier, it can match some number of matches of the atom.
     An <em class="firstterm">atom</em> can be any of the possibilities
-    shown in <a href="functions-matching.html#posix-atoms-table" title="Table 9.12. Regular Expression Atoms">Table 9.12, &#8220;Regular Expression Atoms&#8221;</a>.
+    shown in <a class="xref" href="functions-matching.html#posix-atoms-table" title="Table 9.12. Regular Expression Atoms">Table 9.12, &#8220;Regular Expression Atoms&#8221;</a>.
     The possible quantifiers and their meanings are shown in
-    <a href="functions-matching.html#posix-quantifiers-table" title="Table 9.13. Regular Expression Quantifiers">Table 9.13, &#8220;Regular Expression Quantifiers&#8221;</a>.
+    <a class="xref" href="functions-matching.html#posix-quantifiers-table" title="Table 9.13. Regular Expression Quantifiers">Table 9.13, &#8220;Regular Expression Quantifiers&#8221;</a>.
    </p>
 <p>    A <em class="firstterm">constraint</em> matches an empty string, but matches only when
     specific conditions are met.  A constraint can be used where an atom
     could be used, except it may not be followed by a quantifier.
     The simple constraints are shown in
-    <a href="functions-matching.html#posix-constraints-table" title="Table 9.14. Regular Expression Constraints">Table 9.14, &#8220;Regular Expression Constraints&#8221;</a>;
+    <a class="xref" href="functions-matching.html#posix-constraints-table" title="Table 9.14. Regular Expression Constraints">Table 9.14, &#8220;Regular Expression Constraints&#8221;</a>;
     some more constraints are described later.
    </p>
 <div class="table">
@@ -407,7 +402,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 <td> <code class="literal">[</code><em class="replaceable"><code>chars</code></em><code class="literal">]</code> </td>
 <td> a <em class="firstterm">bracket expression</em>,
        matching any one of the <em class="replaceable"><code>chars</code></em> (see
-       <a href="functions-matching.html#posix-bracket-expressions" title="9.7.3.2. Bracket Expressions">Section 9.7.3.2, &#8220;Bracket Expressions&#8221;</a> for more detail) </td>
+       <a class="xref" href="functions-matching.html#posix-bracket-expressions" title="9.7.3.2. Bracket Expressions">Section 9.7.3.2, &#8220;Bracket Expressions&#8221;</a> for more detail) </td>
 </tr>
 <tr>
 <td> <code class="literal">\</code><em class="replaceable"><code>k</code></em> </td>
@@ -419,7 +414,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 <td> <code class="literal">\</code><em class="replaceable"><code>c</code></em> </td>
 <td> where <em class="replaceable"><code>c</code></em> is alphanumeric
        (possibly followed by other characters)
-       is an <em class="firstterm">escape</em>, see <a href="functions-matching.html#posix-escape-sequences" title="9.7.3.3. Regular Expression Escapes">Section 9.7.3.3, &#8220;Regular Expression Escapes&#8221;</a>
+       is an <em class="firstterm">escape</em>, see <a class="xref" href="functions-matching.html#posix-escape-sequences" title="9.7.3.3. Regular Expression Escapes">Section 9.7.3.3, &#8220;Regular Expression Escapes&#8221;</a>
        (AREs only; in EREs and BREs, this matches <em class="replaceable"><code>c</code></em>) </td>
 </tr>
 <tr>
@@ -522,7 +517,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
      same possibilities as their corresponding normal (<em class="firstterm">greedy</em>)
      counterparts, but prefer the smallest number rather than the largest
      number of matches.
-     See <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a> for more detail.
+     See <a class="xref" href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a> for more detail.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -568,13 +563,12 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 </table></div>
 </div>
 <br class="table-break"><p>    Lookahead constraints may not contain <em class="firstterm">back references</em>
-    (see <a href="functions-matching.html#posix-escape-sequences" title="9.7.3.3. Regular Expression Escapes">Section 9.7.3.3, &#8220;Regular Expression Escapes&#8221;</a>),
+    (see <a class="xref" href="functions-matching.html#posix-escape-sequences" title="9.7.3.3. Regular Expression Escapes">Section 9.7.3.3, &#8220;Regular Expression Escapes&#8221;</a>),
     and all parentheses within them are considered non-capturing.
    </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="posix-bracket-expressions"></a>9.7.3.2. Bracket Expressions</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="posix-bracket-expressions">9.7.3.2. Bracket Expressions</h4></div></div></div>
 <p>    A <em class="firstterm">bracket expression</em> is a list of
     characters enclosed in <code class="literal">[]</code>.  It normally matches
     any single character from the list (but see below).  If the list
@@ -666,8 +660,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
    </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="posix-escape-sequences"></a>9.7.3.3. Regular Expression Escapes</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="posix-escape-sequences">9.7.3.3. Regular Expression Escapes</h4></div></div></div>
 <p>    <em class="firstterm">Escapes</em> are special sequences beginning with <code class="literal">\</code>
     followed by an alphanumeric character. Escapes come in several varieties:
     character entry, class shorthands, constraint escapes, and back references.
@@ -681,21 +674,21 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
    </p>
 <p>    <em class="firstterm">Character-entry escapes</em> exist to make it easier to specify
     non-printing and otherwise inconvenient characters in REs.  They are
-    shown in <a href="functions-matching.html#posix-character-entry-escapes-table" title="Table 9.15. Regular Expression Character-Entry Escapes">Table 9.15, &#8220;Regular Expression Character-Entry Escapes&#8221;</a>.
+    shown in <a class="xref" href="functions-matching.html#posix-character-entry-escapes-table" title="Table 9.15. Regular Expression Character-Entry Escapes">Table 9.15, &#8220;Regular Expression Character-Entry Escapes&#8221;</a>.
    </p>
 <p>    <em class="firstterm">Class-shorthand escapes</em> provide shorthands for certain
     commonly-used character classes.  They are
-    shown in <a href="functions-matching.html#posix-class-shorthand-escapes-table" title="Table 9.16. Regular Expression Class-Shorthand Escapes">Table 9.16, &#8220;Regular Expression Class-Shorthand Escapes&#8221;</a>.
+    shown in <a class="xref" href="functions-matching.html#posix-class-shorthand-escapes-table" title="Table 9.16. Regular Expression Class-Shorthand Escapes">Table 9.16, &#8220;Regular Expression Class-Shorthand Escapes&#8221;</a>.
    </p>
 <p>    A <em class="firstterm">constraint escape</em> is a constraint,
     matching the empty string if specific conditions are met,
     written as an escape.  They are
-    shown in <a href="functions-matching.html#posix-constraint-escapes-table" title="Table 9.17. Regular Expression Constraint Escapes">Table 9.17, &#8220;Regular Expression Constraint Escapes&#8221;</a>.
+    shown in <a class="xref" href="functions-matching.html#posix-constraint-escapes-table" title="Table 9.17. Regular Expression Constraint Escapes">Table 9.17, &#8220;Regular Expression Constraint Escapes&#8221;</a>.
    </p>
 <p>    A <em class="firstterm">back reference</em> (<code class="literal">\</code><em class="replaceable"><code>n</code></em>) matches the
     same string matched by the previous parenthesized subexpression specified
     by the number <em class="replaceable"><code>n</code></em>
-    (see <a href="functions-matching.html#posix-constraint-backref-table" title="Table 9.18. Regular Expression Back References">Table 9.18, &#8220;Regular Expression Back References&#8221;</a>).  For example,
+    (see <a class="xref" href="functions-matching.html#posix-constraint-backref-table" title="Table 9.18. Regular Expression Back References">Table 9.18, &#8220;Regular Expression Back References&#8221;</a>).  For example,
     <code class="literal">([bc])\1</code> matches <code class="literal">bb</code> or <code class="literal">cc</code>
     but not <code class="literal">bc</code> or <code class="literal">cb</code>.
     The subexpression must entirely precede the back reference in the RE.
@@ -883,7 +876,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 <tr>
 <td> <code class="literal">\A</code> </td>
 <td> matches only at the beginning of the string
-       (see <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a> for how this differs from
+       (see <a class="xref" href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a> for how this differs from
        <code class="literal">^</code>) </td>
 </tr>
 <tr>
@@ -906,7 +899,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 <tr>
 <td> <code class="literal">\Z</code> </td>
 <td> matches only at the end of the string
-       (see <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a> for how this differs from
+       (see <a class="xref" href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a> for how this differs from
        <code class="literal">$</code>) </td>
 </tr>
 </tbody>
@@ -960,8 +953,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 </div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="posix-metasyntax"></a>9.7.3.4. Regular Expression Metasyntax</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="posix-metasyntax">9.7.3.4. Regular Expression Metasyntax</h4></div></div></div>
 <p>    In addition to the main syntax described above, there are some special
     forms and miscellaneous syntactic facilities available.
    </p>
@@ -982,7 +974,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     These options override any previously determined options (including
     both the RE flavor and case sensitivity).
     The available option letters are
-    shown in <a href="functions-matching.html#posix-embedded-options-table" title="Table 9.19. ARE Embedded-Option Letters">Table 9.19, &#8220;ARE Embedded-Option Letters&#8221;</a>.
+    shown in <a class="xref" href="functions-matching.html#posix-embedded-options-table" title="Table 9.19. ARE Embedded-Option Letters">Table 9.19, &#8220;ARE Embedded-Option Letters&#8221;</a>.
    </p>
 <div class="table">
 <a name="posix-embedded-options-table"></a><p class="title"><b>Table 9.19. ARE Embedded-Option Letters</b></p>
@@ -1011,7 +1003,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 <tr>
 <td> <code class="literal">i</code> </td>
 <td> case-insensitive matching (see
-       <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) (overrides operator type) </td>
+       <a class="xref" href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) (overrides operator type) </td>
 </tr>
 <tr>
 <td> <code class="literal">m</code> </td>
@@ -1020,12 +1012,12 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 <tr>
 <td> <code class="literal">n</code> </td>
 <td> newline-sensitive matching (see
-       <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) </td>
+       <a class="xref" href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) </td>
 </tr>
 <tr>
 <td> <code class="literal">p</code> </td>
 <td> partial newline-sensitive matching (see
-       <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) </td>
+       <a class="xref" href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) </td>
 </tr>
 <tr>
 <td> <code class="literal">q</code> </td>
@@ -1043,7 +1035,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 <tr>
 <td> <code class="literal">w</code> </td>
 <td> inverse partial newline-sensitive (&#8220;<span class="quote">weird</span>&#8221;) matching
-       (see <a href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) </td>
+       (see <a class="xref" href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) </td>
 </tr>
 <tr>
 <td> <code class="literal">x</code> </td>
@@ -1098,8 +1090,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
    </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="posix-matching-rules"></a>9.7.3.5. Regular Expression Matching Rules</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="posix-matching-rules">9.7.3.5. Regular Expression Matching Rules</h4></div></div></div>
 <p>    In the event that an RE could match more than one substring of a given
     string, the RE matches the one starting earliest in the string.
     If the RE could match more than one substring starting at that point,
@@ -1230,8 +1221,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
    </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="posix-limits-compatibility"></a>9.7.3.6. Limits and Compatibility</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="posix-limits-compatibility">9.7.3.6. Limits and Compatibility</h4></div></div></div>
 <p>    No particular limit is imposed on the length of REs in this
     implementation.  However,
     programs intended to be highly portable should not employ REs longer
@@ -1280,8 +1270,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
    </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="posix-basic-regexes"></a>9.7.3.7. Basic Regular Expressions</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="posix-basic-regexes">9.7.3.7. Basic Regular Expressions</h4></div></div></div>
 <p>    BREs differ from EREs in several respects.
     <code class="literal">|</code>, <code class="literal">+</code>, and <code class="literal">?</code>
     are ordinary characters and there is no equivalent

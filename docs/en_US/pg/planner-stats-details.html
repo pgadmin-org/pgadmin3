@@ -4,22 +4,21 @@
 <title>Chapter 54. How the Planner Uses Statistics</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="bki-example.html" title="53.4. Example">
 <link rel="next" href="appendixes.html" title="Part VIII. Appendixes">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="planner-stats-details">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="planner-stats-details"></a>Chapter 54. How the Planner Uses Statistics</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 54. How the Planner Uses Statistics</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl><dt><span class="sect1"><a href="planner-stats-details.html#row-estimation-examples">54.1. Row Estimation Examples</a></span></dt></dl>
 </div>
-<p>   This chapter builds on the material covered in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>
-   and <a href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>, and shows how the planner uses the 
+<p>   This chapter builds on the material covered in <a class="xref" href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>
+   and <a class="xref" href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>, and shows how the planner uses the 
    system statistics to estimate the number of rows each stage in a query might
    return. This is a significant part of the planning / optimizing process,
    providing much of the raw material for cost calculation.
@@ -34,9 +33,8 @@
    The behavior of earlier (or later) versions may vary.
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="row-estimation-examples"></a>54.1. Row Estimation Examples</h2></div></div></div>
-<a name="id2838912"></a><p>   Using examples drawn from the regression test database, let's start with a 
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="row-estimation-examples">54.1. Row Estimation Examples</h2></div></div></div>
+<a name="id2858077"></a><p>   Using examples drawn from the regression test database, let's start with a 
    very simple query:
 </p>
 <pre class="programlisting">EXPLAIN SELECT * FROM tenk1;
@@ -47,7 +45,7 @@
 <p>
    
    How the planner determines the cardinality of <code class="classname">tenk1</code>
-   is covered in <a href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>, but is repeated here for
+   is covered in <a class="xref" href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a>, but is repeated here for
    completeness. The number of rows is looked up from 
    <code class="classname">pg_class</code>:
 

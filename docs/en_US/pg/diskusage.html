@@ -4,16 +4,15 @@
 <title>Chapter 26. Monitoring Disk Usage</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="dynamic-trace.html" title="25.4. Dynamic Tracing">
 <link rel="next" href="disk-full.html" title="26.2. Disk Full Failure">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="diskusage">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="diskusage"></a>Chapter 26. Monitoring Disk Usage</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 26. Monitoring Disk Usage</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -25,20 +24,19 @@
   <span class="productname">PostgreSQL</span> database system.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="disk-usage"></a>26.1. Determining Disk Usage</h2></div></div></div>
-<a name="id2667359"></a><p>   Each table has a primary heap disk file where most of the data is
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="disk-usage">26.1. Determining Disk Usage</h2></div></div></div>
+<a name="id2686387"></a><p>   Each table has a primary heap disk file where most of the data is
    stored. If the table has any columns with potentially-wide values,
    there is also a <acronym class="acronym">TOAST</acronym> file associated with the table,
    which is used to store values too wide to fit comfortably in the main
-   table (see <a href="storage-toast.html" title="52.2. TOAST">Section 52.2, &#8220;TOAST&#8221;</a>).  There will be one index on the
+   table (see <a class="xref" href="storage-toast.html" title="52.2. TOAST">Section 52.2, &#8220;TOAST&#8221;</a>).  There will be one index on the
    <acronym class="acronym">TOAST</acronym> table, if present. There may also be indexes associated
    with the base table.  Each table and index is stored in a separate disk
    file &#8212; possibly more than one file, if the file would exceed one
-   gigabyte.  Naming conventions for these files are described in <a href="storage.html#storage-file-layout" title="52.1. Database File Layout">Section 52.1, &#8220;Database File Layout&#8221;</a>.
+   gigabyte.  Naming conventions for these files are described in <a class="xref" href="storage.html#storage-file-layout" title="52.1. Database File Layout">Section 52.1, &#8220;Database File Layout&#8221;</a>.
   </p>
 <p>   You can monitor disk space from three ways:  using
-   SQL functions listed in <a href="functions-admin.html#functions-admin-dbsize" title="Table 9.48. Database Object Size Functions">Table 9.48, &#8220;Database Object Size Functions&#8221;</a>,
+   SQL functions listed in <a class="xref" href="functions-admin.html#functions-admin-dbsize" title="Table 9.48. Database Object Size Functions">Table 9.48, &#8220;Database Object Size Functions&#8221;</a>,
    using <code class="command">VACUUM</code> information, and from the command line 
    using the tools in <code class="filename">contrib/oid2name</code>.  The SQL functions
    are the easiest to use and report information about tables, tables with

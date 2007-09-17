@@ -4,27 +4,25 @@
 <title>37.6. Basic Statements</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-expressions.html" title="37.5. Expressions">
 <link rel="next" href="plpgsql-control-structures.html" title="37.7. Control Structures">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-statements"></a>37.6. Basic Statements</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpgsql-statements">37.6. Basic Statements</h2></div></div></div>
 <p>    In this section and the following ones, we describe all the statement
     types that are explicitly understood by
     <span class="application">PL/pgSQL</span>.
     Anything not recognized as one of these statement types is presumed
     to be an SQL command and is sent to the main database engine to execute,
-    as described in <a href="plpgsql-statements.html#plpgsql-statements-sql-noresult" title="37.6.2. Executing a Query With No Result">Section 37.6.2, &#8220;Executing a Query With No Result&#8221;</a>
-    and <a href="plpgsql-statements.html#plpgsql-statements-sql-onerow" title="37.6.3. Executing a Query with a Single-Row Result">Section 37.6.3, &#8220;Executing a Query with a Single-Row Result&#8221;</a>.
+    as described in <a class="xref" href="plpgsql-statements.html#plpgsql-statements-sql-noresult" title="37.6.2. Executing a Query With No Result">Section 37.6.2, &#8220;Executing a Query With No Result&#8221;</a>
+    and <a class="xref" href="plpgsql-statements.html#plpgsql-statements-sql-onerow" title="37.6.3. Executing a Query with a Single-Row Result">Section 37.6.3, &#8220;Executing a Query with a Single-Row Result&#8221;</a>.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-statements-assignment"></a>37.6.1. Assignment</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-assignment">37.6.1. Assignment</h3></div></div></div>
 <p>     An assignment of a value to a <span class="application">PL/pgSQL</span>
      variable or row/record field is written as:
 </p>
@@ -51,8 +49,7 @@ tax := subtotal * 0.06;</pre>
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-statements-sql-noresult"></a>37.6.2. Executing a Query With No Result</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-sql-noresult">37.6.2. Executing a Query With No Result</h3></div></div></div>
 <p>     For any SQL query that does not return rows, for example
      <code class="command">INSERT</code> without a <code class="literal">RETURNING</code> clause, you can
      execute the query within a <span class="application">PL/pgSQL</span> function
@@ -137,9 +134,8 @@ BEGIN
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-statements-sql-onerow"></a>37.6.3. Executing a Query with a Single-Row Result</h3></div></div></div>
-<a name="id2722935"></a><a name="id2722947"></a><p>     The result of a SQL command yielding a single row (possibly of multiple
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-sql-onerow">37.6.3. Executing a Query with a Single-Row Result</h3></div></div></div>
+<a name="id2741939"></a><a name="id2741951"></a><p>     The result of a SQL command yielding a single row (possibly of multiple
      columns) can be assigned to a record variable, row-type variable, or list
      of scalar variables.  This is done by writing the base SQL command and
      adding an <code class="literal">INTO</code> clause.  For example,
@@ -195,7 +191,7 @@ DELETE ... RETURNING <em class="replaceable"><code>expressions</code></em> INTO 
      well-defined unless you've used <code class="literal">ORDER BY</code>.)  Any result rows
      after the first row are discarded.
      You can check the special <code class="literal">FOUND</code> variable (see
-     <a href="plpgsql-statements.html#plpgsql-statements-diagnostics" title="37.6.6. Obtaining the Result Status">Section 37.6.6, &#8220;Obtaining the Result Status&#8221;</a>) to
+     <a class="xref" href="plpgsql-statements.html#plpgsql-statements-diagnostics" title="37.6.6. Obtaining the Result Status">Section 37.6.6, &#8220;Obtaining the Result Status&#8221;</a>) to
      determine whether a row was returned:
 
 </p>
@@ -212,7 +208,7 @@ END IF;</pre>
      to catch the error, for example:
 
 </p>
-<pre class="programlisting">BEGIN;
+<pre class="programlisting">BEGIN
     SELECT * INTO STRICT myrec FROM emp WHERE empname = myname;
     EXCEPTION
         WHEN NO_DATA_FOUND THEN
@@ -238,12 +234,11 @@ END;</pre>
      </p>
 </div>
 <p>     To handle cases where you need to process multiple result rows
-     from a SQL query, see <a href="plpgsql-control-structures.html#plpgsql-records-iterating" title="37.7.4. Looping Through Query Results">Section 37.7.4, &#8220;Looping Through Query Results&#8221;</a>.
+     from a SQL query, see <a class="xref" href="plpgsql-control-structures.html#plpgsql-records-iterating" title="37.7.4. Looping Through Query Results">Section 37.7.4, &#8220;Looping Through Query Results&#8221;</a>.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-statements-null"></a>37.6.4. Doing Nothing At All</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-null">37.6.4. Doing Nothing At All</h3></div></div></div>
 <p>     Sometimes a placeholder statement that does nothing is useful.
      For example, it can indicate that one arm of an if/then/else
      chain is deliberately empty.  For this purpose, use the
@@ -282,8 +277,7 @@ END;</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-statements-executing-dyn"></a>37.6.5. Executing Dynamic Commands</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-executing-dyn">37.6.5. Executing Dynamic Commands</h3></div></div></div>
 <p>     Oftentimes you will want to generate dynamic commands inside your
      <span class="application">PL/pgSQL</span> functions, that is, commands
      that will involve different tables or different data types each
@@ -334,7 +328,7 @@ END;</pre>
      of single quotes.  The recommended method for quoting fixed text in your
      function body is dollar quoting.  (If you have legacy code that does
      not use dollar quoting, please refer to the
-     overview in <a href="plpgsql-development-tips.html#plpgsql-quote-tips" title="37.2.1. Handling of Quotation Marks">Section 37.2.1, &#8220;Handling of Quotation Marks&#8221;</a>, which can save you
+     overview in <a class="xref" href="plpgsql-development-tips.html#plpgsql-quote-tips" title="37.2.1. Handling of Quotation Marks">Section 37.2.1, &#8220;Handling of Quotation Marks&#8221;</a>, which can save you
      some effort when translating said code to a more reasonable scheme.)
     </p>
 <p>     Dynamic values that are to be inserted into the constructed
@@ -351,7 +345,7 @@ END;</pre>
         || quote_literal(keyvalue);</pre>
 <p>
     </p>
-<a name="id2723608"></a><a name="id2723616"></a><p>     This example demonstrates the use of the
+<a name="id2742612"></a><a name="id2742620"></a><p>     This example demonstrates the use of the
      <code class="function">quote_ident</code> and
      <code class="function">quote_literal</code> functions.  For safety,
      expressions containing column and table identifiers should be
@@ -379,13 +373,12 @@ END;</pre>
      <span class="emphasis"><em>must</em></span> use <code class="function">quote_literal</code>.
     </p>
 <p>     A much larger example of a dynamic command and
-     <code class="command">EXECUTE</code> can be seen in <a href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 37.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 37.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a>, which builds and executes a
+     <code class="command">EXECUTE</code> can be seen in <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 37.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 37.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a>, which builds and executes a
      <code class="command">CREATE FUNCTION</code> command to define a new function.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-statements-diagnostics"></a>37.6.6. Obtaining the Result Status</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-diagnostics">37.6.6. Obtaining the Result Status</h3></div></div></div>
 <p>     There are several ways to determine the effect of a command. The
      first method is to use the <code class="command">GET DIAGNOSTICS</code>
      command, which has the form:

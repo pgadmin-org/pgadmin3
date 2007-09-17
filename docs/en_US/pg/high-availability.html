@@ -4,17 +4,16 @@
 <title>Chapter 24. High Availability and Load Balancing</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="migration.html" title="23.5. Migration Between Releases">
 <link rel="next" href="monitoring.html" title="Chapter 25. Monitoring Database Activity">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="high-availability">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="high-availability"></a>Chapter 24. High Availability and Load Balancing</h2></div></div></div>
-<a name="id2664858"></a><a name="id2664864"></a><a name="id2664869"></a><a name="id2664875"></a><a name="id2664881"></a><a name="id2664887"></a><p>  Database servers can work together to allow a second server to
+<div class="titlepage"><div><div><h2 class="title">Chapter 24. High Availability and Load Balancing</h2></div></div></div>
+<a name="id2683851"></a><a name="id2683856"></a><a name="id2683862"></a><a name="id2683868"></a><a name="id2683874"></a><a name="id2683879"></a><p>  Database servers can work together to allow a second server to
   take over quickly if the primary server fails (high
   availability), or to allow several computers to serve the same
   data (load balancing).  Ideally, database servers could work
@@ -95,7 +94,7 @@
    </p>
 </dd>
 <dt><span class="term">Warm Standby Using Point-In-Time Recovery</span></dt>
-<dd><p>    A warm standby server (see <a href="warm-standby.html" title="23.4. Warm Standby Servers for High Availability">Section 23.4, &#8220;Warm Standby Servers for High Availability&#8221;</a>) can
+<dd><p>    A warm standby server (see <a class="xref" href="warm-standby.html" title="23.4. Warm Standby Servers for High Availability">Section 23.4, &#8220;Warm Standby Servers for High Availability&#8221;</a>) can
     be kept current by reading a stream of write-ahead log (WAL)
     records.  If the main server fails, the warm standby contains
     almost all of the data of the main server, and can be quickly
@@ -133,7 +132,7 @@
     must query such values from a single server and then use those
     values in write queries.  Also, care must be taken that all
     transactions either commit or abort on all servers, perhaps
-    using two-phase commit (<a href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a> and <a href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>.
+    using two-phase commit (<a class="xref" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a> and <a class="xref" href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>.
     Pgpool and Sequoia are an example of this type of replication.
    </p>
 </dd>
@@ -155,7 +154,7 @@
     functions like <code class="function">random()</code>.
    </p>
 <p>    <span class="productname">PostgreSQL</span> does not offer this type of replication,
-    though <span class="productname">PostgreSQL</span> two-phase commit (<a href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a> and <a href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>)
+    though <span class="productname">PostgreSQL</span> two-phase commit (<a class="xref" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a> and <a class="xref" href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>)
     can be used to implement this in application code or middleware.
    </p>
 </dd>

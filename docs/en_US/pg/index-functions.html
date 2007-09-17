@@ -4,16 +4,15 @@
 <title>49.2. Index Access Method Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">
 <link rel="prev" href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">
 <link rel="next" href="index-scanning.html" title="49.3. Index Scanning">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="index-functions"></a>49.2. Index Access Method Functions</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="index-functions">49.2. Index Access Method Functions</h2></div></div></div>
 <p>   The index construction and maintenance functions that an index access
    method must provide are:
   </p>
@@ -47,7 +46,7 @@ aminsert (Relation indexRelation,
    <code class="literal">check_uniqueness</code> may be true, in which case the access method
    must verify that there is no conflicting row; this is the only situation in
    which the access method normally needs the <code class="literal">heapRelation</code>
-   parameter.  See <a href="index-unique-checks.html" title="49.5. Index Uniqueness Checks">Section 49.5, &#8220;Index Uniqueness Checks&#8221;</a> for details.
+   parameter.  See <a class="xref" href="index-unique-checks.html" title="49.5. Index Uniqueness Checks">Section 49.5, &#8220;Index Uniqueness Checks&#8221;</a> for details.
    The result is TRUE if an index entry was inserted, FALSE if not. (A FALSE
    result does not denote an error condition, but is used for cases such
    as an index AM refusing to index a NULL.)
@@ -106,7 +105,7 @@ amcostestimate (PlannerInfo *root,
                 double *indexCorrelation);</pre>
 <p>
    Estimate the costs of an index scan.  This function is described fully
-   in <a href="index-cost-estimation.html" title="49.6. Index Cost Estimation Functions">Section 49.6, &#8220;Index Cost Estimation Functions&#8221;</a>, below.
+   in <a class="xref" href="index-cost-estimation.html" title="49.6. Index Cost Estimation Functions">Section 49.6, &#8220;Index Cost Estimation Functions&#8221;</a>, below.
   </p>
 <pre class="programlisting">bytea *
 amoptions (ArrayType *reloptions,
@@ -133,7 +132,7 @@ amoptions (ArrayType *reloptions,
 <p>   The purpose of an index, of course, is to support scans for tuples matching
    an indexable <code class="literal">WHERE</code> condition, often called a
    <em class="firstterm">qualifier</em> or <em class="firstterm">scan key</em>.  The semantics of
-   index scanning are described more fully in <a href="index-scanning.html" title="49.3. Index Scanning">Section 49.3, &#8220;Index Scanning&#8221;</a>,
+   index scanning are described more fully in <a class="xref" href="index-scanning.html" title="49.3. Index Scanning">Section 49.3, &#8220;Index Scanning&#8221;</a>,
    below.  The scan-related functions that an index access method must provide
    are:
   </p>
@@ -179,7 +178,7 @@ amgetmulti (IndexScanDesc scan,
    for example index page boundaries.)  <code class="function">amgetmulti</code> and
    <code class="function">amgettuple</code> cannot be used in the same index scan; there
    are other restrictions too when using <code class="function">amgetmulti</code>, as explained
-   in <a href="index-scanning.html" title="49.3. Index Scanning">Section 49.3, &#8220;Index Scanning&#8221;</a>.
+   in <a class="xref" href="index-scanning.html" title="49.3. Index Scanning">Section 49.3, &#8220;Index Scanning&#8221;</a>.
   </p>
 <pre class="programlisting">void
 amrescan (IndexScanDesc scan,

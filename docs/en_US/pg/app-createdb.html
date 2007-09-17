@@ -4,8 +4,8 @@
 <title>createdb</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
 <link rel="prev" href="app-clusterdb.html" title="clusterdb">
 <link rel="next" href="app-createlang.html" title="createlang">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>createdb &#8212; create a new <span class="productname">PostgreSQL</span> database</p>
 </div>
-<a name="id2790764"></a><div class="refsynopsisdiv">
+<a name="id2809916"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">createdb</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>dbname</code></em>] [<em class="replaceable"><code>description</code></em>]</p></div>
 </div>
@@ -33,13 +33,13 @@
    option, if the executing user has appropriate privileges.
   </p>
 <p>   <span class="application">createdb</span> is a wrapper around the
-   <acronym class="acronym">SQL</acronym> command <a href="sql-createdatabase.html" title="CREATE DATABASE">CREATE DATABASE</a>.
+   <acronym class="acronym">SQL</acronym> command <a class="xref" href="sql-createdatabase.html" title="CREATE DATABASE">CREATE DATABASE</a>.
    There is no effective difference between creating databases via
    this utility and via other methods for accessing the server.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2790861"></a><h2>Options</h2>
+<a name="id2810013"></a><h2>Options</h2>
 <p>   <span class="application">createdb</span> accepts the following command-line arguments:
 
     </p>
@@ -71,7 +71,7 @@
 <dd><p>        Specifies the character encoding scheme to be used in this
         database. The character sets supported by the
         <span class="productname">PostgreSQL</span> server are described in
-        <a href="multibyte.html#multibyte-charset-supported" title="21.2.1. Supported Character Sets">Section 21.2.1, &#8220;Supported Character Sets&#8221;</a>.
+        <a class="xref" href="multibyte.html#multibyte-charset-supported" title="21.2.1. Supported Character Sets">Section 21.2.1, &#8220;Supported Character Sets&#8221;</a>.
        </p></dd>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">-O <em class="replaceable"><code>owner</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--owner <em class="replaceable"><code>owner</code></em></code></span>
@@ -94,7 +94,7 @@
 <p>    The options <code class="option">-D</code>, <code class="option">-E</code>,
     <code class="option">-O</code>, and
     <code class="option">-T</code> correspond to options of the underlying
-    SQL command <a href="sql-createdatabase.html" title="CREATE DATABASE">CREATE DATABASE</a>; see there for more information
+    SQL command <a class="xref" href="sql-createdatabase.html" title="CREATE DATABASE">CREATE DATABASE</a>; see there for more information
     about them.
    </p>
 <p>    <span class="application">createdb</span> also accepts the following
@@ -130,7 +130,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2791157"></a><h2>Environment</h2>
+<a name="id2810309"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PGDATABASE</code></span></dt>
 <dd><p>      If set, the name of the database to create, unless overridden on
@@ -146,12 +146,12 @@
 </dl></div>
 <p>   This utility, like most other <span class="productname">PostgreSQL</span> utilities,
    also uses the environment variables supported by <span class="application">libpq</span>
-   (see <a href="libpq-envars.html" title="29.12. Environment Variables">Section 29.12, &#8220;Environment Variables&#8221;</a>).
+   (see <a class="xref" href="libpq-envars.html" title="29.12. Environment Variables">Section 29.12, &#8220;Environment Variables&#8221;</a>).
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2791217"></a><h2>Diagnostics</h2>
-<p>   In case of difficulty, see <a href="sql-createdatabase.html" title="CREATE DATABASE">CREATE DATABASE</a> and <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
+<a name="id2810369"></a><h2>Diagnostics</h2>
+<p>   In case of difficulty, see <a class="xref" href="sql-createdatabase.html" title="CREATE DATABASE">CREATE DATABASE</a> and <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
    discussions of potential problems and error messages.
    The database server must be running at the
    targeted host.  Also, any default connection settings and environment
@@ -160,7 +160,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2791248"></a><h2>Examples</h2>
+<a name="id2810400"></a><h2>Examples</h2>
 <p>    To create the database <code class="literal">demo</code> using the default
     database server:
 </p>
@@ -182,8 +182,8 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2791339"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-dropdb.html" title="dropdb"><span class="refentrytitle"><a name="app-dropdb-title"></a><span class="application">dropdb</span></span></a>, <a href="sql-createdatabase.html" title="CREATE DATABASE">CREATE DATABASE</a></span>
+<a name="id2810492"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="app-dropdb.html" title="dropdb"><span class="refentrytitle"><a name="app-dropdb-title"></a><span class="application">dropdb</span></span></a>, <a class="xref" href="sql-createdatabase.html" title="CREATE DATABASE">CREATE DATABASE</a></span>
 </div>
 </div></body>
 </html>

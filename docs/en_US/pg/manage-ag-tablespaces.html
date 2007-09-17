@@ -4,17 +4,16 @@
 <title>19.6. Tablespaces</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="managing-databases.html" title="Chapter 19. Managing Databases">
 <link rel="prev" href="manage-ag-dropdb.html" title="19.5. Destroying a Database">
 <link rel="next" href="client-authentication.html" title="Chapter 20. Client Authentication">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="manage-ag-tablespaces"></a>19.6. Tablespaces</h2></div></div></div>
-<a name="id2653141"></a><p>    Tablespaces in <span class="productname">PostgreSQL</span> allow database administrators to
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="manage-ag-tablespaces">19.6. Tablespaces</h2></div></div></div>
+<a name="id2672128"></a><p>    Tablespaces in <span class="productname">PostgreSQL</span> allow database administrators to
     define locations in the file system where the files representing
     database objects can be stored. Once created, a tablespace can be referred
     to by name when creating database objects.
@@ -34,8 +33,8 @@
     rarely used or not performance critical could be stored on a less
     expensive, slower disk system.
    </p>
-<p>    To define a tablespace, use the <a href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a>
-    command, for example:<a name="id2653202"></a>
+<p>    To define a tablespace, use the <a class="xref" href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a>
+    command, for example:<a name="id2672189"></a>
 </p>
 <pre class="programlisting">CREATE TABLESPACE fastspace LOCATION '/mnt/sda1/postgresql/data';</pre>
 <p>
@@ -67,7 +66,7 @@
 <pre class="programlisting">CREATE TABLE foo(i int) TABLESPACE space1;</pre>
 <p>
    </p>
-<p>    Alternatively, use the <a href="runtime-config-client.html#guc-default-tablespace">default_tablespace</a> parameter:
+<p>    Alternatively, use the <a class="xref" href="runtime-config-client.html#guc-default-tablespace">default_tablespace</a> parameter:
 </p>
 <pre class="programlisting">SET default_tablespace = space1;
 CREATE TABLE foo(i int);</pre>
@@ -99,7 +98,7 @@ CREATE TABLE foo(i int);</pre>
     cannot be dropped until all objects in all databases using the tablespace
     have been removed.
    </p>
-<p>    To remove an empty tablespace, use the <a href="sql-droptablespace.html" title="DROP TABLESPACE">DROP TABLESPACE</a>
+<p>    To remove an empty tablespace, use the <a class="xref" href="sql-droptablespace.html" title="DROP TABLESPACE">DROP TABLESPACE</a>
     command.
    </p>
 <p>    To determine the set of existing tablespaces, examine the
@@ -107,7 +106,7 @@ CREATE TABLE foo(i int);</pre>
 </p>
 <pre class="synopsis">SELECT spcname FROM pg_tablespace;</pre>
 <p>
-    The <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <code class="literal">\db</code> meta-command
+    The <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> program's <code class="literal">\db</code> meta-command
     is also useful for listing the existing tablespaces.
    </p>
 <p>    <span class="productname">PostgreSQL</span> makes extensive use of symbolic links

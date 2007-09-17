@@ -4,22 +4,20 @@
 <title>17.5. Write Ahead Log</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-resource.html" title="17.4. Resource Consumption">
 <link rel="next" href="runtime-config-query.html" title="17.6. Query Planning">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="runtime-config-wal"></a>17.5. Write Ahead Log</h2></div></div></div>
-<p>    See also <a href="wal-configuration.html" title="27.3. WAL Configuration">Section 27.3, &#8220;<acronym class="acronym">WAL</acronym> Configuration&#8221;</a> for details on WAL
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="runtime-config-wal">17.5. Write Ahead Log</h2></div></div></div>
+<p>    See also <a class="xref" href="wal-configuration.html" title="27.3. WAL Configuration">Section 27.3, &#8220;<acronym class="acronym">WAL</acronym> Configuration&#8221;</a> for details on WAL
     tuning.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-wal-settings"></a>17.5.1. Settings</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-wal-settings">17.5.1. Settings</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-fsync"></a><span class="term"><code class="varname">fsync</code> (<code class="type">boolean</code>)</span>
@@ -28,7 +26,7 @@
 <p>        If this parameter is on, the <span class="productname">PostgreSQL</span> server
         will try to make sure that updates are physically written to
         disk, by issuing <code class="function">fsync()</code> system calls or various
-        equivalent methods (see <a href="runtime-config-wal.html#guc-wal-sync-method">wal_sync_method</a>).
+        equivalent methods (see <a class="xref" href="runtime-config-wal.html#guc-wal-sync-method">wal_sync_method</a>).
         This ensures that the database cluster can recover to a
         consistent state after an operating system or hardware crash.
        </p>
@@ -60,7 +58,7 @@
 <p>        This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
         If you turn this parameter off, also consider turning off 
-        <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a>.
+        <a class="xref" href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a>.
        </p>
 </dd>
 <dt>
@@ -122,7 +120,7 @@
        </p>
 <p>        Turning off this parameter does not affect use of
         WAL archiving for point-in-time recovery (PITR)
-        (see <a href="continuous-archiving.html" title="23.3. Continuous Archiving and Point-In-Time Recovery (PITR)">Section 23.3, &#8220;Continuous Archiving and Point-In-Time Recovery (PITR)&#8221;</a>).
+        (see <a class="xref" href="continuous-archiving.html" title="23.3. Continuous Archiving and Point-In-Time Recovery (PITR)">Section 23.3, &#8220;Continuous Archiving and Point-In-Time Recovery (PITR)&#8221;</a>).
        </p>
 <p>        This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
@@ -143,7 +141,7 @@
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
         to request more <span class="systemitem">System V</span> shared
         memory than your operating system's default configuration
-        allows. See <a href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
+        allows. See <a class="xref" href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
         adjust those parameters, if necessary.
        </p>
 </dd>
@@ -174,8 +172,7 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-wal-checkpoints"></a>17.5.2. Checkpoints</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-wal-checkpoints">17.5.2. Checkpoints</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-checkpoint-segments"></a><span class="term"><code class="varname">checkpoint_segments</code> (<code class="type">integer</code>)</span>
@@ -208,8 +205,7 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-wal-archiving"></a>17.5.3. Archiving</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-wal-archiving">17.5.3. Archiving</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-archive-command"></a><span class="term"><code class="varname">archive_command</code> (<code class="type">string</code>)</span>
@@ -223,7 +219,7 @@
         (The path name is relative to the working directory of the server,
         i.e., the cluster's data directory.)
         Use <code class="literal">%%</code> to embed an actual <code class="literal">%</code> character in the
-        command. For more information see <a href="continuous-archiving.html#backup-archiving-wal" title="23.3.1. Setting up WAL archiving">Section 23.3.1, &#8220;Setting up WAL archiving&#8221;</a>.
+        command. For more information see <a class="xref" href="continuous-archiving.html#backup-archiving-wal" title="23.3.1. Setting up WAL archiving">Section 23.3.1, &#8220;Setting up WAL archiving&#8221;</a>.
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
        </p>
@@ -238,7 +234,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <dt>
 <a name="guc-archive-timeout"></a><span class="term"><code class="varname">archive_timeout</code> (<code class="type">integer</code>)</span>
 </dt>
-<dd><p>        The <a href="runtime-config-wal.html#guc-archive-command">archive_command</a> is only invoked on
+<dd><p>        The <a class="xref" href="runtime-config-wal.html#guc-archive-command">archive_command</a> is only invoked on
         completed WAL segments. Hence, if your server generates little WAL
         traffic (or has slack periods where it does so), there could be a
         long delay between the completion of a transaction and its safe

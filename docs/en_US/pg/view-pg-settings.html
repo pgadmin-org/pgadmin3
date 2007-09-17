@@ -4,17 +4,16 @@
 <title>43.44. pg_settings</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="view-pg-rules.html" title="43.43. pg_rules">
 <link rel="next" href="view-pg-shadow.html" title="43.45. pg_shadow">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="view-pg-settings"></a>43.44. <code class="structname">pg_settings</code></h2></div></div></div>
-<a name="id2824758"></a><p>   The view <code class="structname">pg_settings</code> provides access to
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="view-pg-settings">43.44. <code class="structname">pg_settings</code></h2></div></div></div>
+<a name="id2843915"></a><p>   The view <code class="structname">pg_settings</code> provides access to
    run-time parameters of the server.  It is essentially an alternative
    interface to the <code class="command">SHOW</code> and <code class="command">SET</code> commands.
    It also provides access to some facts about each parameter that are
@@ -22,7 +21,7 @@
    maximum values.
   </p>
 <div class="table">
-<a name="id2824794"></a><p class="title"><b>Table 43.44. <code class="structname">pg_settings</code> Columns</b></p>
+<a name="id2843951"></a><p class="title"><b>Table 43.44. <code class="structname">pg_settings</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_settings Columns" border="1">
 <colgroup>
 <col>
@@ -113,7 +112,7 @@
 <br class="table-break"><p>   The <code class="structname">pg_settings</code> view cannot be inserted into or
    deleted from, but it can be updated.  An <code class="command">UPDATE</code> applied
    to a row of <code class="structname">pg_settings</code> is equivalent to executing
-   the <a href="sql-set.html" title="SET">SET</a> command on that named
+   the <a class="xref" href="sql-set.html" title="SET">SET</a> command on that named
    parameter. The change only affects the value used by the current
    session. If an <code class="command">UPDATE</code> is issued within a transaction
    that is later aborted, the effects of the <code class="command">UPDATE</code> command

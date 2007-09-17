@@ -4,17 +4,16 @@
 <title>39.5. Trusted and Untrusted PL/Perl</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="plperl.html" title="Chapter 39. PL/Perl - Perl Procedural Language">
 <link rel="prev" href="plperl-global.html" title="39.4. Global Values in PL/Perl">
 <link rel="next" href="plperl-triggers.html" title="39.6. PL/Perl Triggers">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plperl-trusted"></a>39.5. Trusted and Untrusted PL/Perl</h2></div></div></div>
-<a name="id2731911"></a><p>   Normally, PL/Perl is installed as a &#8220;<span class="quote">trusted</span>&#8221; programming
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plperl-trusted">39.5. Trusted and Untrusted PL/Perl</h2></div></div></div>
+<a name="id2750922"></a><p>   Normally, PL/Perl is installed as a &#8220;<span class="quote">trusted</span>&#8221; programming
    language named <code class="literal">plperl</code>.  In this setup, certain Perl
    operations are disabled to preserve security.  In general, the
    operations that are restricted are those that interact with the
@@ -39,13 +38,13 @@
 $$ LANGUAGE plperl;</pre>
 <p>
     The creation of this function will fail as its use of a forbidden
-    operation will be be caught by the validator.
+    operation will be caught by the validator.
   </p>
 <p>   Sometimes it is desirable to write Perl functions that are not
    restricted.  For example, one might want a Perl function that sends
    mail.  To handle these cases, PL/Perl can also be installed as an
    &#8220;<span class="quote">untrusted</span>&#8221; language (usually called
-   <span class="application">PL/PerlU</span><a name="id2731998"></a>).
+   <span class="application">PL/PerlU</span><a name="id2751009"></a>).
    In this case the full Perl language is available.  If the
    <code class="command">createlang</code> program is used to install the
    language, the language name <code class="literal">plperlu</code> will select

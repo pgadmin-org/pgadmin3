@@ -4,16 +4,15 @@
 <title>51.4. GIN tips and tricks</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="gin.html" title="Chapter 51. GIN Indexes">
 <link rel="prev" href="gin-implementation.html" title="51.3. Implementation">
 <link rel="next" href="gin-limit.html" title="51.5. Limitations">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="gin-tips"></a>51.4. GIN tips and tricks</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="gin-tips">51.4. GIN tips and tricks</h2></div></div></div>
 <div class="variablelist"><dl>
 <dt><span class="term">Create vs insert</span></dt>
 <dd><p>     In most cases, insertion into a <acronym class="acronym">GIN</acronym> index is slow
@@ -21,7 +20,7 @@
      So, for bulk insertions into a table it is advisable to drop the GIN
      index and recreate it after finishing bulk insertion.
     </p></dd>
-<dt><span class="term"><a href="runtime-config-client.html#guc-gin-fuzzy-search-limit">gin_fuzzy_search_limit</a></span></dt>
+<dt><span class="term"><a class="xref" href="runtime-config-client.html#guc-gin-fuzzy-search-limit">gin_fuzzy_search_limit</a></span></dt>
 <dd>
 <p>     The primary goal of developing <acronym class="acronym">GIN</acronym> indexes was
      to create support for highly scalable, full-text search in

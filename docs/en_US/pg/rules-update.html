@@ -4,17 +4,16 @@
 <title>35.3. Rules on INSERT, UPDATE, and DELETE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="rules.html" title="Chapter 35. The Rule System">
 <link rel="prev" href="rules-views.html" title="35.2. Views and the Rule System">
 <link rel="next" href="rules-privileges.html" title="35.4. Rules and Privileges">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="rules-update"></a>35.3. Rules on <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and <code class="command">DELETE</code></h2></div></div></div>
-<a name="id2717604"></a><a name="id2717619"></a><a name="id2717633"></a><p>    Rules that are defined on <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="rules-update">35.3. Rules on <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and <code class="command">DELETE</code></h2></div></div></div>
+<a name="id2736589"></a><a name="id2736604"></a><a name="id2736618"></a><p>    Rules that are defined on <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
     and <code class="command">DELETE</code> are significantly different from the view rules
     described in the previous section. First, their <code class="command">CREATE
     RULE</code> command allows more:
@@ -38,8 +37,7 @@
     create zero or more new query trees and can throw away the
     original one.</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2717724"></a>35.3.1. How Update Rules Work</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2736709">35.3.1. How Update Rules Work</h3></div></div></div>
 <p>    Keep the syntax
 
 </p>
@@ -123,8 +121,7 @@
     produced query tree(s).  Views cannot insert new update actions so
     there is no need to apply update rules to the output of view rewriting.</p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2718035"></a>35.3.1.1. A First Rule Step by Step</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2737020">35.3.1.1. A First Rule Step by Step</h4></div></div></div>
 <p>    Say we want to trace changes to the <code class="literal">sl_avail</code> column in the
     <code class="literal">shoelace_data</code> relation. So we set up a log table
     and a rule that conditionally writes a log entry when an
@@ -205,7 +202,7 @@ CREATE RULE log_shoelace AS ON UPDATE TO shoelace_data
        *NEW*.sl_name, *NEW*.sl_avail,
        current_user, current_timestamp )
   FROM shoelace_data *NEW*, shoelace_data *OLD*,
-       <span><strong class="emphasis">shoelace_data shoelace_data</strong></span>;</pre>
+       <span class="emphasis"><strong>shoelace_data shoelace_data</strong></span>;</pre>
 <p>
 
     In step 2, the rule qualification is added to it, so the result set
@@ -217,7 +214,7 @@ CREATE RULE log_shoelace AS ON UPDATE TO shoelace_data
        current_user, current_timestamp )
   FROM shoelace_data *NEW*, shoelace_data *OLD*,
        shoelace_data shoelace_data
- <span><strong class="emphasis">WHERE *NEW*.sl_avail &lt;&gt; *OLD*.sl_avail</strong></span>;</pre>
+ <span class="emphasis"><strong>WHERE *NEW*.sl_avail &lt;&gt; *OLD*.sl_avail</strong></span>;</pre>
 <p>
 
     (This looks even stranger, since <code class="literal">INSERT ... VALUES</code> doesn't have
@@ -236,7 +233,7 @@ CREATE RULE log_shoelace AS ON UPDATE TO shoelace_data
   FROM shoelace_data *NEW*, shoelace_data *OLD*,
        shoelace_data shoelace_data
  WHERE *NEW*.sl_avail &lt;&gt; *OLD*.sl_avail
-   <span><strong class="emphasis">AND shoelace_data.sl_name = 'sl7'</strong></span>;</pre>
+   <span class="emphasis"><strong>AND shoelace_data.sl_name = 'sl7'</strong></span>;</pre>
 <p>
    </p>
 <p>    Step 4 replaces references to <code class="literal">NEW</code> by the target list entries from the
@@ -245,11 +242,11 @@ CREATE RULE log_shoelace AS ON UPDATE TO shoelace_data
 
 </p>
 <pre class="programlisting">INSERT INTO shoelace_log VALUES (
-       <span><strong class="emphasis">shoelace_data.sl_name</strong></span>, <span><strong class="emphasis">6</strong></span>,
+       <span class="emphasis"><strong>shoelace_data.sl_name</strong></span>, <span class="emphasis"><strong>6</strong></span>,
        current_user, current_timestamp )
   FROM shoelace_data *NEW*, shoelace_data *OLD*,
        shoelace_data shoelace_data
- WHERE <span><strong class="emphasis">6</strong></span> &lt;&gt; *OLD*.sl_avail
+ WHERE <span class="emphasis"><strong>6</strong></span> &lt;&gt; *OLD*.sl_avail
    AND shoelace_data.sl_name = 'sl7';</pre>
 <p>
 
@@ -262,7 +259,7 @@ CREATE RULE log_shoelace AS ON UPDATE TO shoelace_data
        current_user, current_timestamp )
   FROM shoelace_data *NEW*, shoelace_data *OLD*,
        shoelace_data shoelace_data
- WHERE 6 &lt;&gt; <span><strong class="emphasis">shoelace_data.sl_avail</strong></span>
+ WHERE 6 &lt;&gt; <span class="emphasis"><strong>shoelace_data.sl_avail</strong></span>
    AND shoelace_data.sl_name = 'sl7';</pre>
 <p>
    </p>
@@ -301,10 +298,10 @@ UPDATE shoelace_data SET sl_avail = 6
 
 </p>
 <pre class="programlisting">INSERT INTO shoelace_log VALUES (
-       shoelace_data.sl_name, <span><strong class="emphasis">shoelace_data.sl_avail</strong></span>,
+       shoelace_data.sl_name, <span class="emphasis"><strong>shoelace_data.sl_avail</strong></span>,
        current_user, current_timestamp )
   FROM shoelace_data
- WHERE <span><strong class="emphasis">shoelace_data.sl_avail</strong></span> &lt;&gt; shoelace_data.sl_avail
+ WHERE <span class="emphasis"><strong>shoelace_data.sl_avail</strong></span> &lt;&gt; shoelace_data.sl_avail
    AND shoelace_data.sl_name = 'sl7';</pre>
 <p>
 
@@ -329,7 +326,7 @@ SELECT shoelace_data.sl_name, 0,
        current_user, current_timestamp
   FROM shoelace_data
  WHERE 0 &lt;&gt; shoelace_data.sl_avail
-   AND <span><strong class="emphasis">shoelace_data.sl_color = 'black'</strong></span>;</pre>
+   AND <span class="emphasis"><strong>shoelace_data.sl_color = 'black'</strong></span>;</pre>
 <p>
 
     being generated by the rule.  This query tree will surely insert
@@ -342,9 +339,8 @@ SELECT shoelace_data.sl_name, 0,
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="rules-update-views"></a>35.3.2. Cooperation with Views</h3></div></div></div>
-<a name="id2718498"></a><p>    A simple way to protect view relations from the mentioned
+<div class="titlepage"><div><div><h3 class="title" id="rules-update-views">35.3.2. Cooperation with Views</h3></div></div></div>
+<a name="id2737483"></a><p>    A simple way to protect view relations from the mentioned
     possibility that someone can try to run <code class="command">INSERT</code>,
     <code class="command">UPDATE</code>, or <code class="command">DELETE</code> on them is
     to let those query trees get thrown away.  So we could create the rules

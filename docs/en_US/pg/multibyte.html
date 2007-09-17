@@ -4,17 +4,16 @@
 <title>21.2. Character Set Support</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="charset.html" title="Chapter 21. Localization">
 <link rel="prev" href="charset.html" title="Chapter 21. Localization">
 <link rel="next" href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="multibyte"></a>21.2. Character Set Support</h2></div></div></div>
-<a name="id2656826"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="multibyte">21.2. Character Set Support</h2></div></div></div>
+<a name="id2675818"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
    allows you to store text in a variety of character sets, including
    single-byte character sets such as the ISO 8859 series and
    multiple-byte character sets such as <acronym class="acronym">EUC</acronym> (Extended Unix
@@ -28,9 +27,8 @@
    databases each with a different character set.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="multibyte-charset-supported"></a>21.2.1. Supported Character Sets</h3></div></div></div>
-<p>     <a href="multibyte.html#charset-table" title="Table 21.1. PostgreSQL Character Sets">Table 21.1, &#8220;<span class="productname">PostgreSQL</span> Character Sets&#8221;</a> shows the character sets available
+<div class="titlepage"><div><div><h3 class="title" id="multibyte-charset-supported">21.2.1. Supported Character Sets</h3></div></div></div>
+<p>     <a class="xref" href="multibyte.html#charset-table" title="Table 21.1. PostgreSQL Character Sets">Table 21.1, &#8220;<span class="productname">PostgreSQL</span> Character Sets&#8221;</a> shows the character sets available
      for use in <span class="productname">PostgreSQL</span>.
     </p>
 <div class="table">
@@ -399,8 +397,7 @@
      </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2657856"></a>21.2.2. Setting the Character Set</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2676849">21.2.2. Setting the Character Set</h3></div></div></div>
 <p>     <code class="command">initdb</code> defines the default character set
      for a <span class="productname">PostgreSQL</span> cluster. For example,
 
@@ -475,13 +472,12 @@
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2658046"></a>21.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2677039">21.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div></div>
 <p>     <span class="productname">PostgreSQL</span> supports automatic
      character set conversion between server and client for certain
      character set combinations. The conversion information is stored in the
      <code class="literal">pg_conversion</code> system catalog.  <span class="productname">PostgreSQL</span>
-     comes with some predefined conversions, as shown in <a href="multibyte.html#multibyte-translation-table" title="Table 21.2. Client/Server Character Set Conversions">Table 21.2, &#8220;Client/Server Character Set Conversions&#8221;</a>. You can create a new
+     comes with some predefined conversions, as shown in <a class="xref" href="multibyte.html#multibyte-translation-table" title="Table 21.2. Client/Server Character Set Conversions">Table 21.2, &#8220;Client/Server Character Set Conversions&#8221;</a>. You can create a new
      conversion using the SQL command <code class="command">CREATE CONVERSION</code>.
     </p>
 <div class="table">
@@ -888,7 +884,7 @@
         subsequently be overridden using any of the other methods
         mentioned above.)
        </p></li>
-<li><p>       Using the configuration variable <a href="runtime-config-client.html#guc-client-encoding">client_encoding</a>. If the
+<li><p>       Using the configuration variable <a class="xref" href="runtime-config-client.html#guc-client-encoding">client_encoding</a>. If the
        <code class="varname">client_encoding</code> variable is set, that client
        encoding is automatically selected when a connection to the
        server is made.  (This can subsequently be overridden using any
@@ -910,23 +906,22 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2659248"></a>21.2.4. Further Reading</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2678241">21.2.4. Further Reading</h3></div></div></div>
 <p>     These are good sources to start learning about various kinds of encoding
      systems.
 
      </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><a href="http://www.i18ngurus.com/docs/984813247.html" target="_top">http://www.i18ngurus.com/docs/984813247.html</a></span></dt>
+<dt><span class="term"><a class="ulink" href="http://www.i18ngurus.com/docs/984813247.html" target="_top">http://www.i18ngurus.com/docs/984813247.html</a></span></dt>
 <dd><p>         An extensive collection of documents about character sets, encodings,
          and code pages.
         </p></dd>
-<dt><span class="term"><a href="ftp://ftp.ora.com/pub/examples/nutshell/ujip/doc/cjk.inf" target="_top">ftp://ftp.ora.com/pub/examples/nutshell/ujip/doc/cjk.inf</a></span></dt>
+<dt><span class="term"><a class="ulink" href="ftp://ftp.ora.com/pub/examples/nutshell/ujip/doc/cjk.inf" target="_top">ftp://ftp.ora.com/pub/examples/nutshell/ujip/doc/cjk.inf</a></span></dt>
 <dd><p>         Detailed explanations of <code class="literal">EUC_JP</code>,
          <code class="literal">EUC_CN</code>, <code class="literal">EUC_KR</code>,
          <code class="literal">EUC_TW</code> appear in section 3.2.
         </p></dd>
-<dt><span class="term"><a href="http://www.unicode.org/" target="_top">http://www.unicode.org/</a></span></dt>
+<dt><span class="term"><a class="ulink" href="http://www.unicode.org/" target="_top">http://www.unicode.org/</a></span></dt>
 <dd><p>         The web site of the Unicode Consortium
         </p></dd>
 <dt><span class="term">RFC 2044</span></dt>

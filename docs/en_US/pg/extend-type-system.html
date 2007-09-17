@@ -4,22 +4,20 @@
 <title>33.2. The PostgreSQL Type System</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="extend.html" title="Chapter 33. Extending SQL">
 <link rel="prev" href="extend.html" title="Chapter 33. Extending SQL">
 <link rel="next" href="xfunc.html" title="33.3. User-Defined Functions">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="extend-type-system"></a>33.2. The <span class="productname">PostgreSQL</span> Type System</h2></div></div></div>
-<a name="id2704570"></a><a name="id2704580"></a><a name="id2704592"></a><a name="id2704601"></a><p>    <span class="productname">PostgreSQL</span> data types are divided into base
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="extend-type-system">33.2. The <span class="productname">PostgreSQL</span> Type System</h2></div></div></div>
+<a name="id2723570"></a><a name="id2723581"></a><a name="id2723592"></a><a name="id2723601"></a><p>    <span class="productname">PostgreSQL</span> data types are divided into base
     types, composite types, domains, and pseudo-types.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2704623"></a>33.2.1. Base Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2723623">33.2.1. Base Types</h3></div></div></div>
 <p>     Base types are those, like <code class="type">int4</code>, that are
      implemented below the level of the <acronym class="acronym">SQL</acronym> language
      (typically in a low-level language such as C).  They generally
@@ -34,46 +32,42 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2704651"></a>33.2.2. Composite Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2723652">33.2.2. Composite Types</h3></div></div></div>
 <p>     Composite types, or row types, are created whenever the user
-     creates a table. It is also possible to use <a href="sql-createtype.html" title="CREATE TYPE">CREATE TYPE</a> to
+     creates a table. It is also possible to use <a class="xref" href="sql-createtype.html" title="CREATE TYPE">CREATE TYPE</a> to
      define a &#8220;<span class="quote">stand-alone</span>&#8221; composite type with no associated
      table.  A composite type is simply a list of types with
      associated field names.  A value of a composite type is a row or
      record of field values.  The user can access the component fields
-     from <acronym class="acronym">SQL</acronym> queries. Refer to <a href="rowtypes.html" title="8.11. Composite Types">Section 8.11, &#8220;Composite Types&#8221;</a>
+     from <acronym class="acronym">SQL</acronym> queries. Refer to <a class="xref" href="rowtypes.html" title="8.11. Composite Types">Section 8.11, &#8220;Composite Types&#8221;</a>
      for more information on composite types.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2704687"></a>33.2.3. Domains</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2723688">33.2.3. Domains</h3></div></div></div>
 <p>     A domain is based on a particular base type and for many purposes
      is interchangeable with its base type.  However, a domain may
      have constraints that restrict its valid values to a subset of
      what the underlying base type would allow.
     </p>
 <p>     Domains can be created using the <acronym class="acronym">SQL</acronym> command
-     <a href="sql-createdomain.html" title="CREATE DOMAIN">CREATE DOMAIN</a>.
+     <a class="xref" href="sql-createdomain.html" title="CREATE DOMAIN">CREATE DOMAIN</a>.
      Their creation and use is not discussed in this chapter.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2704718"></a>33.2.4. Pseudo-Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2723718">33.2.4. Pseudo-Types</h3></div></div></div>
 <p>     There are a few &#8220;<span class="quote">pseudo-types</span>&#8221; for special purposes.
      Pseudo-types cannot appear as columns of tables or attributes of
      composite types, but they can be used to declare the argument and
      result types of functions.  This provides a mechanism within the
-     type system to identify special classes of functions.  <a href="datatype-pseudo.html#datatype-pseudotypes-table" title="Table 8.20. Pseudo-Types">Table 8.20, &#8220;Pseudo-Types&#8221;</a> lists the existing
+     type system to identify special classes of functions.  <a class="xref" href="datatype-pseudo.html#datatype-pseudotypes-table" title="Table 8.20. Pseudo-Types">Table 8.20, &#8220;Pseudo-Types&#8221;</a> lists the existing
      pseudo-types.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="extend-types-polymorphic"></a>33.2.5. Polymorphic Types</h3></div></div></div>
-<a name="id2704747"></a><a name="id2704756"></a><a name="id2704765"></a><a name="id2704778"></a><p>     Two pseudo-types of special interest are <code class="type">anyelement</code> and
+<div class="titlepage"><div><div><h3 class="title" id="extend-types-polymorphic">33.2.5. Polymorphic Types</h3></div></div></div>
+<a name="id2723747"></a><a name="id2723756"></a><a name="id2723766"></a><a name="id2723778"></a><p>     Two pseudo-types of special interest are <code class="type">anyelement</code> and
      <code class="type">anyarray</code>, which are collectively called <em class="firstterm">polymorphic
      types</em>.  Any function declared using these types is said to be
      a <em class="firstterm">polymorphic function</em>.  A polymorphic function can

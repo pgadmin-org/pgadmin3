@@ -4,16 +4,15 @@
 <title>9.4. String Functions and Operators</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-math.html" title="9.3. Mathematical Functions and Operators">
 <link rel="next" href="functions-binarystring.html" title="9.5. Binary String Functions and Operators">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-string"></a>9.4. String Functions and Operators</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="functions-string">9.4. String Functions and Operators</h2></div></div></div>
 <p>    This section describes functions and operators for examining and
     manipulating string values.  Strings in this context include values
     of all the types <code class="type">character</code>, <code class="type">character
@@ -27,11 +26,11 @@
    </p>
 <p>    <acronym class="acronym">SQL</acronym> defines some string functions with a special syntax where
     certain key words rather than commas are used to separate the
-    arguments.  Details are in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<acronym class="acronym">SQL</acronym> String Functions and Operators&#8221;</a>.
+    arguments.  Details are in <a class="xref" href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<acronym class="acronym">SQL</acronym> String Functions and Operators&#8221;</a>.
     These functions are also implemented using the regular syntax for
-    function invocation.  (See <a href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.)
+    function invocation.  (See <a class="xref" href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.)
    </p>
-<a name="id2591082"></a><a name="id2591088"></a><a name="id2591094"></a><a name="id2591100"></a><a name="id2591105"></a><a name="id2591111"></a><a name="id2591117"></a><a name="id2591123"></a><a name="id2591128"></a><a name="id2591134"></a><div class="table">
+<a name="id2610053"></a><a name="id2610059"></a><a name="id2610064"></a><a name="id2610070"></a><a name="id2610076"></a><a name="id2610082"></a><a name="id2610087"></a><a name="id2610093"></a><a name="id2610099"></a><a name="id2610105"></a><div class="table">
 <a name="functions-string-sql"></a><p class="title"><b>Table 9.5. <acronym class="acronym">SQL</acronym> String Functions and Operators</b></p>
 <div class="table-contents"><table summary="SQL String Functions and Operators" border="1">
 <colgroup>
@@ -54,7 +53,7 @@
         <em class="parameter"><code>string</code></em></code></td>
 <td> <code class="type">text</code> </td>
 <td>        String concatenation
-        <a name="id2591198"></a>
+        <a name="id2610169"></a>
        </td>
 <td><code class="literal">'Post' || 'greSQL'</code></td>
 <td><code class="literal">PostgreSQL</code></td>
@@ -72,8 +71,8 @@
 </td>
 <td><code class="type">int</code></td>
 <td>        Number of characters in string
-        <a name="id2591292"></a>
-        <a name="id2591302"></a>
+        <a name="id2610263"></a>
+        <a name="id2610272"></a>
        </td>
 <td><code class="literal">char_length('jose')</code></td>
 <td><code class="literal">4</code></td>
@@ -84,7 +83,7 @@
 <td><code class="type">text</code></td>
 <td>        Change encoding using specified conversion name.  Conversions
         can be defined by <code class="command">CREATE CONVERSION</code>.  Also
-        there are some pre-defined conversion names. See <a href="functions-string.html#conversion-names" title="Table 9.7. Built-in Conversions">Table 9.7, &#8220;Built-in Conversions&#8221;</a> for available conversion
+        there are some pre-defined conversion names. See <a class="xref" href="functions-string.html#conversion-names" title="Table 9.7. Built-in Conversions">Table 9.7, &#8220;Built-in Conversions&#8221;</a> for available conversion
         names.
        </td>
 <td><code class="literal">convert('PostgreSQL' using iso_8859_1_to_utf8)</code></td>
@@ -132,7 +131,7 @@
 <td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em>)</code></td>
 <td><code class="type">text</code></td>
 <td>        Extract substring matching POSIX regular expression. See
-        <a href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a> for more information on pattern
+        <a class="xref" href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a> for more information on pattern
         matching.
        </td>
 <td><code class="literal">substring('Thomas' from '...$')</code></td>
@@ -142,7 +141,7 @@
 <td><code class="literal"><code class="function">substring</code>(<em class="parameter"><code>string</code></em> from <em class="replaceable"><code>pattern</code></em> for <em class="replaceable"><code>escape</code></em>)</code></td>
 <td><code class="type">text</code></td>
 <td>        Extract substring matching <acronym class="acronym">SQL</acronym> regular expression.
-        See <a href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a> for more information on
+        See <a class="xref" href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a> for more information on
         pattern matching.
        </td>
 <td><code class="literal">substring('Thomas' from '%#"o_a#"_' for '#')</code></td>
@@ -172,10 +171,10 @@
 </table></div>
 </div>
 <br class="table-break"><p>    Additional string manipulation functions are available and are
-    listed in <a href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.  Some of them are used internally to implement the
-    <acronym class="acronym">SQL</acronym>-standard string functions listed in <a href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<acronym class="acronym">SQL</acronym> String Functions and Operators&#8221;</a>.
+    listed in <a class="xref" href="functions-string.html#functions-string-other" title="Table 9.6. Other String Functions">Table 9.6, &#8220;Other String Functions&#8221;</a>.  Some of them are used internally to implement the
+    <acronym class="acronym">SQL</acronym>-standard string functions listed in <a class="xref" href="functions-string.html#functions-string-sql" title="Table 9.5. SQL String Functions and Operators">Table 9.5, &#8220;<acronym class="acronym">SQL</acronym> String Functions and Operators&#8221;</a>.
    </p>
-<a name="id2591810"></a><a name="id2591816"></a><a name="id2591821"></a><a name="id2591827"></a><a name="id2591833"></a><a name="id2591838"></a><a name="id2591844"></a><a name="id2591850"></a><a name="id2591856"></a><a name="id2591861"></a><a name="id2591867"></a><a name="id2591873"></a><a name="id2591879"></a><a name="id2591885"></a><a name="id2591890"></a><a name="id2591896"></a><a name="id2591902"></a><a name="id2591908"></a><a name="id2591913"></a><a name="id2591919"></a><a name="id2591925"></a><a name="id2591930"></a><div class="table">
+<a name="id2610780"></a><a name="id2610786"></a><a name="id2610792"></a><a name="id2610797"></a><a name="id2610803"></a><a name="id2610809"></a><a name="id2610814"></a><a name="id2610820"></a><a name="id2610826"></a><a name="id2610832"></a><a name="id2610838"></a><a name="id2610843"></a><a name="id2610849"></a><a name="id2610855"></a><a name="id2610861"></a><a name="id2610866"></a><a name="id2610872"></a><a name="id2610878"></a><a name="id2610884"></a><a name="id2610889"></a><a name="id2610895"></a><a name="id2610901"></a><div class="table">
 <a name="functions-string-other"></a><p class="title"><b>Table 9.6. Other String Functions</b></p>
 <div class="table-contents"><table summary="Other String Functions" border="1">
 <colgroup>
@@ -349,7 +348,7 @@
 <td><code class="literal"><code class="function">regexp_replace</code>(<em class="parameter"><code>string</code></em> <code class="type">text</code>, <em class="parameter"><code>pattern</code></em> <code class="type">text</code>, <em class="parameter"><code>replacement</code></em> <code class="type">text</code> [,<em class="parameter"><code>flags</code></em> <code class="type">text</code>])</code></td>
 <td><code class="type">text</code></td>
 <td>        Replace substring matching POSIX regular expression. See
-        <a href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a> for more information on pattern
+        <a class="xref" href="functions-matching.html" title="9.7. Pattern Matching">Section 9.7, &#8220;Pattern Matching&#8221;</a> for more information on pattern
         matching.
        </td>
 <td><code class="literal">regexp_replace('Thomas', '.[mN]a.', 'M')</code></td>
@@ -481,7 +480,7 @@
 </colgroup>
 <thead><tr>
 <th>Conversion Name
-        <sup>[<a name="id2593512" href="#ftn.id2593512">a</a>]</sup>
+        <sup>[<a name="id2612483" href="#ftn.id2612483" class="footnote">a</a>]</sup>
        </th>
 <th>Source Encoding</th>
 <th>Destination Encoding</th>
@@ -1088,7 +1087,7 @@
 <td><code class="literal">UTF8</code></td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id2593512" href="#id2593512">a</a>] </sup>          The conversion names follow a standard naming scheme: The
+<tbody class="footnotes"><tr><td colspan="3"><div class="footnote"><p><sup>[<a name="ftn.id2612483" href="#id2612483" class="para">a</a>] </sup>          The conversion names follow a standard naming scheme: The
           official name of the source encoding with all
           non-alphanumeric characters replaced by underscores followed
           by <code class="literal">_to_</code> followed by the equally processed

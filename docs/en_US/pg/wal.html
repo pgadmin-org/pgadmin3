@@ -4,16 +4,15 @@
 <title>Chapter 27. Reliability and the Write-Ahead Log</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="disk-full.html" title="26.2. Disk Full Failure">
 <link rel="next" href="wal-intro.html" title="27.2. Write-Ahead Logging (WAL)">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="wal">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="wal"></a>Chapter 27. Reliability and the Write-Ahead Log</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 27. Reliability and the Write-Ahead Log</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -27,8 +26,7 @@
   efficient, reliable operation.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="wal-reliability"></a>27.1. Reliability</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="wal-reliability">27.1. Reliability</h2></div></div></div>
 <p>   Reliability is an important property of any serious database
    system, and <span class="productname">PostgreSQL</span> does everything possible to
    guarantee reliable operation. One aspect of reliable operation is
@@ -50,7 +48,7 @@
    frequently requested disk blocks and combines disk writes. Fortunately,
    all operating systems give applications a way to force writes from
    the buffer cache to disk, and <span class="productname">PostgreSQL</span> uses those
-   features.  (See the <a href="runtime-config-wal.html#guc-wal-sync-method">wal_sync_method</a> parameter
+   features.  (See the <a class="xref" href="runtime-config-wal.html#guc-wal-sync-method">wal_sync_method</a> parameter
    to adjust how this is done.)
   </p>
 <p>   Next, there may be a cache in the disk drive controller; this is
@@ -94,7 +92,7 @@
    restore partially-written pages.  If you have a battery-backed disk
    controller or file-system software that prevents partial page writes
    (e.g., ReiserFS 4),  you can turn off this page imaging by using the 
-   <a href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a> parameter.
+   <a class="xref" href="runtime-config-wal.html#guc-full-page-writes">full_page_writes</a> parameter.
   </p>
 </div>
 </div></body>

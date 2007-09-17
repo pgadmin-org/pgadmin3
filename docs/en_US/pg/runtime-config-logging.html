@@ -4,20 +4,18 @@
 <title>17.7. Error Reporting and Logging</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-query.html" title="17.6. Query Planning">
 <link rel="next" href="runtime-config-statistics.html" title="17.8. Run-Time Statistics">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="runtime-config-logging"></a>17.7. Error Reporting and Logging</h2></div></div></div>
-<a name="id2643822"></a><div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-logging-where"></a>17.7.1. Where To Log</h3></div></div></div>
-<a name="id2643841"></a><div class="variablelist"><dl>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="runtime-config-logging">17.7. Error Reporting and Logging</h2></div></div></div>
+<a name="id2662788"></a><div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-logging-where">17.7.1. Where To Log</h3></div></div></div>
+<a name="id2662808"></a><div class="variablelist"><dl>
 <dt>
 <a name="guc-log-destination"></a><span class="term"><code class="varname">log_destination</code> (<code class="type">string</code>)</span>
 </dt>
@@ -157,8 +155,7 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-logging-when"></a>17.7.2. When To Log</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-logging-when">17.7.2. When To Log</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-client-min-messages"></a><span class="term"><code class="varname">client_min_messages</code> (<code class="type">string</code>)</span>
@@ -237,13 +234,13 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>         When using this option together with
-         <a href="runtime-config-logging.html#guc-log-statement">log_statement</a>,
+         <a class="xref" href="runtime-config-logging.html#guc-log-statement">log_statement</a>,
          the text of statements that are logged because of
          <code class="varname">log_statement</code> will not be repeated in the
          duration log message.
          If you are not using <span class="application">syslog</span>, it is recommended 
          that you log the PID or session ID using
-         <a href="runtime-config-logging.html#guc-log-line-prefix">log_line_prefix</a>
+         <a class="xref" href="runtime-config-logging.html#guc-log-line-prefix">log_line_prefix</a>
          so that you can link the statement message to the later
          duration message using the process ID or session ID.
         </p>
@@ -301,8 +298,7 @@
        </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-logging-what"></a>17.7.3. What To Log</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-logging-what">17.7.3. What To Log</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_parse</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_rewritten</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_plan</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="varname">debug_pretty_print</code> (<code class="type">boolean</code>)</span>
@@ -354,7 +350,7 @@
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>         The difference between setting this option and setting
-         <a href="runtime-config-logging.html#guc-log-min-duration-statement">log_min_duration_statement</a> to zero is that
+         <a class="xref" href="runtime-config-logging.html#guc-log-min-duration-statement">log_min_duration_statement</a> to zero is that
          exceeding <code class="varname">log_min_duration_statement</code> forces the text of
          the query to be logged, but this option doesn't.  Thus, if
          <code class="varname">log_duration</code> is <code class="literal">on</code> and

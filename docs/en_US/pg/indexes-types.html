@@ -4,24 +4,23 @@
 <title>11.2. Index Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="next" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="indexes-types"></a>11.2. Index Types</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="indexes-types">11.2. Index Types</h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span> provides several index types:
    B-tree, Hash, GiST and GIN.  Each index type uses a different
    algorithm that is best suited to different types of queries.
    By default, the <code class="command">CREATE INDEX</code> command will create a
    B-tree index, which fits the most common situations.
   </p>
-<p>   <a name="id2621965"></a>
-   <a name="id2621974"></a>
+<p>   <a name="id2640936"></a>
+   <a name="id2640945"></a>
    B-trees can handle equality and range queries on data that can be sorted
    into some ordering.
    In particular, the <span class="productname">PostgreSQL</span> query planner
@@ -51,14 +50,14 @@
    <code class="literal">col LIKE '%bar'</code>. However, if your server does not
    use the C locale you will need to create the index with a special
    operator class to support indexing of pattern-matching queries. See
-   <a href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> below. It is also possible to use
+   <a class="xref" href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> below. It is also possible to use
    B-tree indexes for <code class="literal">ILIKE</code> and
    <code class="literal">~*</code>, but only if the pattern starts with
    non-alphabetic characters, i.e. characters that are not affected by
    upper/lower case conversion.
   </p>
-<p>   <a name="id2622119"></a>
-   <a name="id2622128"></a>
+<p>   <a name="id2641090"></a>
+   <a name="id2641099"></a>
    Hash indexes can only handle simple equality comparisons.
    The query planner will consider using a hash index whenever an
    indexed column is involved in a comparison using the
@@ -79,8 +78,8 @@
     For these reasons, hash index use is presently discouraged.
    </p>
 </div>
-<p>   <a name="id2622187"></a>
-   <a name="id2622196"></a>
+<p>   <a name="id2641158"></a>
+   <a name="id2641167"></a>
    GiST indexes are not a single kind of index, but rather an infrastructure
    within which many different indexing strategies can be implemented.
    Accordingly, the particular operators with which a GiST index can be
@@ -107,14 +106,14 @@
 </table>
 <p>
 
-   (See <a href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a> for the meaning of
+   (See <a class="xref" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a> for the meaning of
    these operators.)
    Many other GiST operator
    classes are available in the <code class="literal">contrib</code> collection or as separate
-   projects.  For more information see <a href="gist.html" title="Chapter 50. GiST Indexes">Chapter 50, <i>GiST Indexes</i></a>.
+   projects.  For more information see <a class="xref" href="gist.html" title="Chapter 50. GiST Indexes">Chapter 50, <i>GiST Indexes</i></a>.
   </p>
-<p>   <a name="id2622319"></a>
-   <a name="id2622329"></a>
+<p>   <a name="id2641290"></a>
+   <a name="id2641300"></a>
    GIN indexes are inverted indexes which can handle values that contain more
    than one key, arrays for example. Like GiST, GIN can support
    many different user-defined indexing strategies and the particular 
@@ -134,11 +133,11 @@
 </table>
 <p>
 
-   (See <a href="functions-array.html" title="9.14. Array Functions and Operators">Section 9.14, &#8220;Array Functions and Operators&#8221;</a> for the meaning of
+   (See <a class="xref" href="functions-array.html" title="9.14. Array Functions and Operators">Section 9.14, &#8220;Array Functions and Operators&#8221;</a> for the meaning of
    these operators.)
    Other GIN operator classes are available in the <code class="literal">contrib</code>
    <code class="literal">tsearch2</code> and <code class="literal">intarray</code> modules.
-   For more information see <a href="gin.html" title="Chapter 51. GIN Indexes">Chapter 51, <i>GIN Indexes</i></a>.
+   For more information see <a class="xref" href="gin.html" title="Chapter 51. GIN Indexes">Chapter 51, <i>GIN Indexes</i></a>.
   </p>
 </div></body>
 </html>

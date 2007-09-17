@@ -4,16 +4,15 @@
 <title>31.8. pgtypes library</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 31. ECPG - Embedded SQL in C">
 <link rel="prev" href="ecpg-dynamic.html" title="31.7. Dynamic SQL">
 <link rel="next" href="ecpg-informix-compat.html" title="31.9. Informix compatibility mode">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ecpg-pgtypes"></a>31.8. pgtypes library</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ecpg-pgtypes">31.8. pgtypes library</h2></div></div></div>
 <p>   The pgtypes library maps <span class="productname">PostgreSQL</span> database
    types to C equivalents that can be used in C programs. It also offers
    functions to do basic calculations with those types within C, i.e. without
@@ -36,10 +35,9 @@ free(out);</pre>
 <p>
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2683801"></a>31.8.1. The numeric type</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2702803">31.8.1. The numeric type</h3></div></div></div>
 <p>    The numeric type offers to do calculations with arbitrary precision. See
-    <a href="datatype.html#datatype-numeric" title="8.1. Numeric Types">Section 8.1, &#8220;Numeric Types&#8221;</a> for the equivalent type in the
+    <a class="xref" href="datatype.html#datatype-numeric" title="8.1. Numeric Types">Section 8.1, &#8220;Numeric Types&#8221;</a> for the equivalent type in the
     <span class="productname">PostgreSQL</span> server. Because of the arbitrary precision this
     variable needs to be able to expand and shrink dynamically. That's why you
     can only create variables on the heap by means of the
@@ -281,10 +279,9 @@ free(out);</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2684549"></a>31.8.2. The date type</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2703552">31.8.2. The date type</h3></div></div></div>
 <p>    The date type in C enables your programs to deal with data of the SQL type
-    date. See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for the equivalent type in the
+    date. See <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for the equivalent type in the
     <span class="productname">PostgreSQL</span> server.
    </p>
 <p>    The following functions can be used to work with the date type:
@@ -322,7 +319,7 @@ free(out);</pre>
 <p>        The following input formats are allowed:
         </p>
 <div class="table">
-<a name="id2684656"></a><p class="title"><b>Table 31.1. Valid input formats for <code class="function">PGTYPESdate_from_asc</code></b></p>
+<a name="id2703659"></a><p class="title"><b>Table 31.1. Valid input formats for <code class="function">PGTYPESdate_from_asc</code></b></p>
 <div class="table-contents"><table summary="Valid input formats for PGTYPESdate_from_asc" border="1">
 <colgroup>
 <col>
@@ -533,7 +530,7 @@ free(out);</pre>
 	the same date: November, 23rd, 1959.
         </p>
 <div class="table">
-<a name="id2685230"></a><p class="title"><b>Table 31.2. Valid input formats for <code class="function">PGTYPESdate_fmt_asc</code></b></p>
+<a name="id2704232"></a><p class="title"><b>Table 31.2. Valid input formats for <code class="function">PGTYPESdate_fmt_asc</code></b></p>
 <div class="table-contents"><table summary="Valid input formats for PGTYPESdate_fmt_asc" border="1">
 <colgroup>
 <col>
@@ -624,7 +621,7 @@ free(out);</pre>
 	you an idea of how to use this function.
         </p>
 <div class="table">
-<a name="id2685478"></a><p class="title"><b>Table 31.3. Valid input formats for <code class="function">rdefmtdate</code></b></p>
+<a name="id2704480"></a><p class="title"><b>Table 31.3. Valid input formats for <code class="function">rdefmtdate</code></b></p>
 <div class="table-contents"><table summary="Valid input formats for rdefmtdate" border="1">
 <colgroup>
 <col>
@@ -712,10 +709,9 @@ free(out);</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2685741"></a>31.8.3. The timestamp type</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2704743">31.8.3. The timestamp type</h3></div></div></div>
 <p>    The timestamp type in C enables your programs to deal with data of the SQL
-    type timestamp. See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for the equivalent
+    type timestamp. See <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for the equivalent
     type in the <span class="productname">PostgreSQL</span> server.
    </p>
 <p>    The following functions can be used to work with the timestamp type:
@@ -739,7 +735,7 @@ free(out);</pre>
        </p>
 <p>	The function returns the parsed timestamp on success. On error,
 	<code class="literal">PGTYPESInvalidTimestamp</code> is returned and errno is
-	set to <code class="literal">PGTYPES_TS_BAD_TIMESTAMP</code>. See <a href="ecpg-pgtypes.html#pgtypesinvalidtimestamp"><code class="literal">PGTYPESInvalidTimestamp</code></a> for important notes on this value.
+	set to <code class="literal">PGTYPES_TS_BAD_TIMESTAMP</code>. See <a class="xref" href="ecpg-pgtypes.html#pgtypesinvalidtimestamp"><code class="literal">PGTYPESInvalidTimestamp</code></a> for important notes on this value.
 	
        </p>
 <p>	In general, the input string can contain any combination of an allowed
@@ -752,7 +748,7 @@ free(out);</pre>
 <p>        The following table contains a few examples for input strings:
         </p>
 <div class="table">
-<a name="id2685859"></a><p class="title"><b>Table 31.4. Valid input formats for <code class="function">PGTYPEStimestamp_from_asc</code></b></p>
+<a name="id2704861"></a><p class="title"><b>Table 31.4. Valid input formats for <code class="function">PGTYPEStimestamp_from_asc</code></b></p>
 <div class="table-contents"><table summary="Valid input formats for PGTYPEStimestamp_from_asc" border="1">
 <colgroup>
 <col>
@@ -1037,7 +1033,7 @@ free(out);</pre>
 	back to the default formatting mask which is <code class="literal">%Y-%m-%d
 	%H:%M:%S</code>.
        </p>
-<p>	This is the reverse function to <a href="ecpg-pgtypes.html#pgtypestimestampfmtasc"><code class="function">PGTYPEStimestamp_fmt_asc</code></a>.  See the documentation there in
+<p>	This is the reverse function to <a class="xref" href="ecpg-pgtypes.html#pgtypestimestampfmtasc"><code class="function">PGTYPEStimestamp_fmt_asc</code></a>.  See the documentation there in
 	order to find out about the possible formatting mask entries.
        </p>
 </dd>
@@ -1080,10 +1076,9 @@ free(out);</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2686942"></a>31.8.4. The interval type</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2705945">31.8.4. The interval type</h3></div></div></div>
 <p>    The interval type in C enables your programs to deal with data of the SQL
-    type interval. See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for the equivalent
+    type interval. See <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for the equivalent
     type in the <span class="productname">PostgreSQL</span> server.
    </p>
 <p>    The following functions can be used to work with the interval type:
@@ -1157,15 +1152,14 @@ free(out);</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2687132"></a>31.8.5. The decimal type</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2706134">31.8.5. The decimal type</h3></div></div></div>
 <p>     The decimal type is similar to the numeric type. However it is limited to
      a maximal precision of 30 significant digits. In contrast to the numeric
      type which can be created on the heap only, the decimal type can be
      created either on the stack or on the heap (by means of the functions
      PGTYPESdecimal_new() and PGTYPESdecimal_free(). There are a lot of other
      functions that deal with the decimal type in the <span class="productname">Informix</span> compatibility
-     mode described in <a href="ecpg-informix-compat.html" title="31.9. Informix compatibility mode">Section 31.9, &#8220;<span class="productname">Informix</span> compatibility mode&#8221;</a>.
+     mode described in <a class="xref" href="ecpg-informix-compat.html" title="31.9. Informix compatibility mode">Section 31.9, &#8220;<span class="productname">Informix</span> compatibility mode&#8221;</a>.
    </p>
 <p>    The following functions can be used to work with the decimal type and are
     not only contained in the <code class="literal">libcompat</code> library.
@@ -1192,8 +1186,7 @@ free(out);</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2687214"></a>31.8.6. errno values of pgtypeslib </h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2706209">31.8.6. errno values of pgtypeslib </h3></div></div></div>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">PGTYPES_NUM_BAD_NUMERIC</code></span></dt>
@@ -1242,8 +1235,7 @@ free(out);</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2687355"></a>31.8.7. Special constants of pgtypeslib </h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2706350">31.8.7. Special constants of pgtypeslib </h3></div></div></div>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt>

@@ -4,26 +4,25 @@
 <title>Part IV. Client Interfaces</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
-<link rel="up" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
+<link rel="up" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="prev" href="regress-variant.html" title="28.3. Variant Comparison Files">
 <link rel="next" href="libpq.html" title="Chapter 29. libpq - C Library">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" lang="en" id="client-interfaces">
-<div class="titlepage"><div><div><h1 class="title">
-<a name="client-interfaces"></a>Part IV. Client Interfaces</h1></div></div></div>
-<div class="partintro" lang="en" id="id2669378">
+<div class="titlepage"><div><div><h1 class="title">Part IV. Client Interfaces</h1></div></div></div>
+<div class="partintro" lang="en" id="id2688398">
 <div></div>
 <p>    This part describes the client programming interfaces distributed
     with <span class="productname">PostgreSQL</span>.  Each of these chapters can be
     read independently.  Note that there are many other programming
     interfaces for client programs that are distributed separately and
-    contain their own documentation (<a href="external-projects.html" title="Appendix H. External Projects">Appendix H, <i>External Projects</i></a>
+    contain their own documentation (<a class="xref" href="external-projects.html" title="Appendix H. External Projects">Appendix H, <i>External Projects</i></a>
     lists some of the more popular ones).  Readers of this part should be
     familiar with using <acronym class="acronym">SQL</acronym> commands to manipulate
-    and query the database (see <a href="sql.html" title="Part II. The SQL Language">Part II, &#8220;The SQL Language&#8221;</a>) and of course
+    and query the database (see <a class="xref" href="sql.html" title="Part II. The SQL Language">Part II, &#8220;The SQL Language&#8221;</a>) and of course
     with the programming language that the interface uses.
    </p>
 <div class="toc">
@@ -69,16 +68,16 @@
 <dt><span class="sect1"><a href="lo-implementation.html">30.2. Implementation Features</a></span></dt>
 <dt><span class="sect1"><a href="lo-interfaces.html">30.3. Client Interfaces</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2681574">30.3.1. Creating a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2681731">30.3.2. Importing a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2681767">30.3.3. Exporting a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2681804">30.3.4. Opening an Existing Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2681968">30.3.5. Writing Data to a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2682021">30.3.6. Reading Data from a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2682074">30.3.7. Seeking in a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2682129">30.3.8. Obtaining the Seek Position of a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2682151">30.3.9. Closing a Large Object Descriptor</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2682195">30.3.10. Removing a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2700576">30.3.1. Creating a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2700733">30.3.2. Importing a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2700769">30.3.3. Exporting a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2700806">30.3.4. Opening an Existing Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2700971">30.3.5. Writing Data to a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2701024">30.3.6. Reading Data from a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2701076">30.3.7. Seeking in a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2701131">30.3.8. Obtaining the Seek Position of a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2701153">30.3.9. Closing a Large Object Descriptor</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2701197">30.3.10. Removing a Large Object</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="lo-funcs.html">30.4. Server-Side Functions</a></span></dt>
 <dt><span class="sect1"><a href="lo-examplesect.html">30.5. Example Program</a></span></dt>
@@ -92,41 +91,41 @@
 <dt><span class="sect1"><a href="ecpg-set-connection.html">31.5. Choosing a Connection</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-variables.html">31.6. Using Host Variables</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2683243">31.6.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2683277">31.6.2. Declare Sections</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2683343">31.6.3. Different types of host variables</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2683499">31.6.4. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2683602">31.6.5. Indicators</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2702246">31.6.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2702280">31.6.2. Declare Sections</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2702345">31.6.3. Different types of host variables</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2702501">31.6.4. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2702604">31.6.5. Indicators</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-dynamic.html">31.7. Dynamic SQL</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-pgtypes.html">31.8. pgtypes library</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2683801">31.8.1. The numeric type</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2684549">31.8.2. The date type</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2685741">31.8.3. The timestamp type</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2686942">31.8.4. The interval type</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2687132">31.8.5. The decimal type</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2687214">31.8.6. errno values of pgtypeslib </a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2687355">31.8.7. Special constants of pgtypeslib </a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2702803">31.8.1. The numeric type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2703552">31.8.2. The date type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2704743">31.8.3. The timestamp type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2705945">31.8.4. The interval type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2706134">31.8.5. The decimal type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2706209">31.8.6. errno values of pgtypeslib </a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2706350">31.8.7. Special constants of pgtypeslib </a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-informix-compat.html">31.9. <span class="productname">Informix</span> compatibility mode</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2687544">31.9.1. Additional embedded SQL statements</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2687578">31.9.2. Additional functions</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2689823">31.9.3. Additional constants</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2706540">31.9.1. Additional embedded SQL statements</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2706573">31.9.2. Additional functions</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2708818">31.9.3. Additional constants</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-descriptors.html">31.10. Using SQL Descriptor Areas</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-errors.html">31.11. Error Handling</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2690453">31.11.1. Setting Callbacks</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2690724">31.11.2. sqlca</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2690970">31.11.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2709453">31.11.1. Setting Callbacks</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2709724">31.11.2. sqlca</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2709971">31.11.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-preproc.html">31.12. Preprocessor directives</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-preproc.html#id2691548">31.12.1. Including files</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-preproc.html#id2691613">31.12.2. The #define and #undef directives</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-preproc.html#id2691720">31.12.3. ifdef, ifndef, else, elif and endif directives</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-preproc.html#id2710549">31.12.1. Including files</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-preproc.html#id2710614">31.12.2. The #define and #undef directives</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-preproc.html#id2710720">31.12.3. ifdef, ifndef, else, elif and endif directives</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-process.html">31.13. Processing Embedded SQL Programs</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-library.html">31.14. Library Functions</a></span></dt>

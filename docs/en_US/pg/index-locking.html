@@ -4,16 +4,15 @@
 <title>49.4. Index Locking Considerations</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">
 <link rel="prev" href="index-scanning.html" title="49.3. Index Scanning">
 <link rel="next" href="index-unique-checks.html" title="49.5. Index Uniqueness Checks">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="index-locking"></a>49.4. Index Locking Considerations</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="index-locking">49.4. Index Locking Considerations</h2></div></div></div>
 <p>   Index access methods must handle concurrent updates
    of the index by multiple processes.
    The core <span class="productname">PostgreSQL</span> system obtains
@@ -44,7 +43,7 @@
 <li><p>       A new heap entry is made before making its index entries.  (Therefore
        a concurrent index scan is likely to fail to see the heap entry.
        This is okay because the index reader would be uninterested in an
-       uncommitted row anyway.  But see <a href="index-unique-checks.html" title="49.5. Index Uniqueness Checks">Section 49.5, &#8220;Index Uniqueness Checks&#8221;</a>.)
+       uncommitted row anyway.  But see <a class="xref" href="index-unique-checks.html" title="49.5. Index Uniqueness Checks">Section 49.5, &#8220;Index Uniqueness Checks&#8221;</a>.)
       </p></li>
 <li><p>       When a heap entry is to be deleted (by <code class="command">VACUUM</code>), all its
        index entries must be removed first.

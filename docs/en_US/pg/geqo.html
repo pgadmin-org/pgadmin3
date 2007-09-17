@@ -4,8 +4,8 @@
 <title>Chapter 48. Genetic Query Optimizer</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="plhandler.html" title="Chapter 47. Writing A Procedural Language Handler">
 <link rel="next" href="geqo-intro2.html" title="48.2. Genetic Algorithms">
@@ -13,8 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="geqo">
 <div class="titlepage"><div>
-<div><h2 class="title">
-<a name="geqo"></a>Chapter 48. Genetic Query Optimizer</h2></div>
+<div><h2 class="title">Chapter 48. Genetic Query Optimizer</h2></div>
 <div><div class="author">
 <h3 class="author">
 <span class="firstname">Martin</span> <span class="surname">Utesch</span>
@@ -44,15 +43,14 @@
 <p>   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Author</h3>
-<p>     Written by Martin Utesch (<code class="email">&lt;<a href="mailto:utesch@aut.tu-freiberg.de">utesch@aut.tu-freiberg.de</a>&gt;</code>)
+<p>     Written by Martin Utesch (<code class="email">&lt;<a class="email" href="mailto:utesch@aut.tu-freiberg.de">utesch@aut.tu-freiberg.de</a>&gt;</code>)
      for the Institute of Automatic Control at the University of Mining and Technology in Freiberg, Germany.
     </p>
 </div>
 <p>
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="geqo-intro"></a>48.1. Query Handling as a Complex Optimization Problem</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="geqo-intro">48.1. Query Handling as a Complex Optimization Problem</h2></div></div></div>
 <p>    Among all relational operators the most difficult one to process
     and optimize is the <em class="firstterm">join</em>. The number of
     possible query plans grows exponentially with the

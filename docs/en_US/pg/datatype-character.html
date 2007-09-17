@@ -4,17 +4,16 @@
 <title>8.3. Character Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-money.html" title="8.2. Monetary Types">
 <link rel="next" href="datatype-binary.html" title="8.4. Binary Data Types">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="datatype-character"></a>8.3. Character Types</h2></div></div></div>
-<a name="id2580117"></a><a name="id2580129"></a><a name="id2580137"></a><a name="id2580147"></a><a name="id2580156"></a><a name="id2580165"></a><a name="id2580175"></a><div class="table">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="datatype-character">8.3. Character Types</h2></div></div></div>
+<a name="id2599076"></a><a name="id2599088"></a><a name="id2599096"></a><a name="id2599106"></a><a name="id2599115"></a><a name="id2599124"></a><a name="id2599133"></a><div class="table">
 <a name="datatype-character-table"></a><p class="title"><b>Table 8.4. Character Types</b></p>
 <div class="table-contents"><table summary="Character Types" border="1">
 <colgroup>
@@ -45,7 +44,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><p>    <a href="datatype-character.html#datatype-character-table" title="Table 8.4. Character Types">Table 8.4, &#8220;Character Types&#8221;</a> shows the
+<br class="table-break"><p>    <a class="xref" href="datatype-character.html#datatype-character-table" title="Table 8.4. Character Types">Table 8.4, &#8220;Character Types&#8221;</a> shows the
     general-purpose character types available in
     <span class="productname">PostgreSQL</span>.
    </p>
@@ -122,15 +121,15 @@
      instead.
     </p>
 </div>
-<p>    Refer to <a href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a> for information about
-    the syntax of string literals, and to <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>
+<p>    Refer to <a class="xref" href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a> for information about
+    the syntax of string literals, and to <a class="xref" href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>
     for information about available operators and functions. The
     database character set determines the character set used to store
     textual values; for more information on character set support,
-    refer to <a href="multibyte.html" title="21.2. Character Set Support">Section 21.2, &#8220;Character Set Support&#8221;</a>.
+    refer to <a class="xref" href="multibyte.html" title="21.2. Character Set Support">Section 21.2, &#8220;Character Set Support&#8221;</a>.
    </p>
 <div class="example">
-<a name="id2580525"></a><p class="title"><b>Example 8.1. Using the character types</b></p>
+<a name="id2599484"></a><p class="title"><b>Example 8.1. Using the character types</b></p>
 <div class="example-contents">
 <pre class="programlisting">CREATE TABLE test1 (a character(4));
 INSERT INTO test1 VALUES ('ok');
@@ -152,16 +151,15 @@ SELECT b, char_length(b) FROM test2;
  good  |           5
  too l |           5</code></pre>
 <div class="calloutlist"><table border="0" summary="Callout list"><tr>
-<td width="5%" valign="top" align="left">
-<a href="#co.datatype-char">(1)</a> </td>
+<td width="5%" valign="top" align="left"><p><a href="#co.datatype-char">(1)</a> </p></td>
 <td valign="top" align="left"><p>       The <code class="function">char_length</code> function is discussed in
-       <a href="functions-string.html" title="9.4. String Functions and Operators">Section 9.4, &#8220;String Functions and Operators&#8221;</a>.
+       <a class="xref" href="functions-string.html" title="9.4. String Functions and Operators">Section 9.4, &#8220;String Functions and Operators&#8221;</a>.
       </p></td>
 </tr></table></div>
 </div>
 </div>
 <br class="example-break"><p>    There are two other fixed-length character types in
-    <span class="productname">PostgreSQL</span>, shown in <a href="datatype-character.html#datatype-character-special-table" title="Table 8.5. Special Character Types">Table 8.5, &#8220;Special Character Types&#8221;</a>. The <code class="type">name</code>
+    <span class="productname">PostgreSQL</span>, shown in <a class="xref" href="datatype-character.html#datatype-character-special-table" title="Table 8.5. Special Character Types">Table 8.5, &#8220;Special Character Types&#8221;</a>. The <code class="type">name</code>
     type exists <span class="emphasis"><em>only</em></span> for storage of identifiers
     in the internal system catalogs and is not intended for use by the general user. Its
     length is currently defined as 64 bytes (63 usable characters plus

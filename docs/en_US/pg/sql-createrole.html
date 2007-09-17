@@ -4,8 +4,8 @@
 <title>CREATE ROLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createopclass.html" title="CREATE OPERATOR CLASS">
 <link rel="next" href="sql-createrule.html" title="CREATE RULE">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE ROLE &#8212; define a new database role</p>
 </div>
-<a name="id2758264"></a><div class="refsynopsisdiv">
+<a name="id2777397"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE ROLE <em class="replaceable"><code>name</code></em> [ [ WITH ] <em class="replaceable"><code>option</code></em> [ ... ] ]
 
@@ -40,13 +40,13 @@ where <em class="replaceable"><code>option</code></em> can be:
     | SYSID <em class="replaceable"><code>uid</code></em> </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758357"></a><h2>Description</h2>
+<a name="id2777490"></a><h2>Description</h2>
 <p>   <code class="command">CREATE ROLE</code> adds a new role to a
    <span class="productname">PostgreSQL</span> database cluster.  A role is
    an entity that can own database objects and have database privileges;
    a role can be considered a &#8220;<span class="quote">user</span>&#8221;, a &#8220;<span class="quote">group</span>&#8221;, or both
    depending on how it is used.  Refer to
-   <a href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a> and <a href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a> for information about managing
+   <a class="xref" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a> and <a class="xref" href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a> for information about managing
    users and authentication.  You must have <code class="literal">CREATEROLE</code>
    privilege or be a database superuser to use this command.
   </p>
@@ -55,7 +55,7 @@ where <em class="replaceable"><code>option</code></em> can be:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758410"></a><h2>Parameters</h2>
+<a name="id2777542"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of the new role.
@@ -148,7 +148,7 @@ where <em class="replaceable"><code>option</code></em> can be:
 <p>        These key words control whether the password is stored
         encrypted in the system catalogs.  (If neither is specified,
         the default behavior is determined by the configuration
-        parameter <a href="runtime-config-connection.html#guc-password-encryption">password_encryption</a>.)  If the
+        parameter <a class="xref" href="runtime-config-connection.html#guc-password-encryption">password_encryption</a>.)  If the
         presented password string is already in MD5-encrypted format,
         then it is stored encrypted as-is, regardless of whether
         <code class="literal">ENCRYPTED</code> or <code class="literal">UNENCRYPTED</code> is specified
@@ -198,16 +198,16 @@ where <em class="replaceable"><code>option</code></em> can be:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2758984"></a><h2>Notes</h2>
-<p>   Use <a href="sql-alterrole.html" title="ALTER ROLE">ALTER ROLE</a> to
-   change the attributes of a role, and <a href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a> to remove a role.  All the attributes
+<a name="id2778111"></a><h2>Notes</h2>
+<p>   Use <a class="xref" href="sql-alterrole.html" title="ALTER ROLE">ALTER ROLE</a> to
+   change the attributes of a role, and <a class="xref" href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a> to remove a role.  All the attributes
    specified by <code class="command">CREATE ROLE</code> can be modified by later
    <code class="command">ALTER ROLE</code> commands.
   </p>
 <p>   The preferred way to add and remove members of roles that are being
    used as groups is to use
-   <a href="sql-grant.html" title="GRANT">GRANT</a> and
-   <a href="sql-revoke.html" title="REVOKE">REVOKE</a>.
+   <a class="xref" href="sql-grant.html" title="GRANT">GRANT</a> and
+   <a class="xref" href="sql-revoke.html" title="REVOKE">REVOKE</a>.
   </p>
 <p>   The <code class="literal">VALID UNTIL</code> clause defines an expiration time for a
    password only, not for the role <span class="foreignphrase"><em class="foreignphrase">per se</em></span>.  In
@@ -221,7 +221,7 @@ where <em class="replaceable"><code>option</code></em> can be:
    a member of a role with <code class="literal">CREATEDB</code> privilege does not immediately
    grant the ability to create databases, even if <code class="literal">INHERIT</code> is set;
    it would be necessary to become that role via
-   <a href="sql-set-role.html" title="SET ROLE">SET ROLE</a> before
+   <a class="xref" href="sql-set-role.html" title="SET ROLE">SET ROLE</a> before
    creating a database.
   </p>
 <p>   The <code class="literal">INHERIT</code> attribute is the default for reasons of backwards
@@ -241,7 +241,7 @@ where <em class="replaceable"><code>option</code></em> can be:
    privilege. Therefore, regard roles that have the <code class="literal">CREATEROLE</code>
    privilege as almost-superuser-roles.
   </p>
-<p>   <span class="productname">PostgreSQL</span> includes a program <a href="app-createuser.html" title="createuser"><span class="application">createuser</span></a> that has
+<p>   <span class="productname">PostgreSQL</span> includes a program <a class="xref" href="app-createuser.html" title="createuser"><span class="application">createuser</span></a> that has
    the same functionality as <code class="command">CREATE ROLE</code> (in fact,
    it calls this command) but can be run from the command shell.
   </p>
@@ -253,14 +253,14 @@ where <em class="replaceable"><code>option</code></em> can be:
 <p>   Caution must be exercised when specifying an unencrypted password
    with this command.  The password will be transmitted to the server
    in cleartext, and it might also be logged in the client's command
-   history or the server log.  The command <a href="app-createuser.html" title="createuser"><span class="application">createuser</span></a>, however, transmits
-   the password encrypted.  Also, <a href="app-psql.html" title="psql"><span class="application">psql</span></a> contains a command
+   history or the server log.  The command <a class="xref" href="app-createuser.html" title="createuser"><span class="application">createuser</span></a>, however, transmits
+   the password encrypted.  Also, <a class="xref" href="app-psql.html" title="psql"><span class="application">psql</span></a> contains a command
    <code class="command">\password</code> that can be used to safely change the
    password later.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2759259"></a><h2>Examples</h2>
+<a name="id2778386"></a><h2>Examples</h2>
 <p>   Create a role that can log in, but don't give it a password:
 </p>
 <pre class="programlisting">CREATE ROLE jonathan LOGIN;</pre>
@@ -289,7 +289,7 @@ where <em class="replaceable"><code>option</code></em> can be:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2759321"></a><h2>Compatibility</h2>
+<a name="id2778448"></a><h2>Compatibility</h2>
 <p>   The <code class="command">CREATE ROLE</code> statement is in the SQL standard,
    but the standard only requires the syntax
 </p>
@@ -312,8 +312,8 @@ where <em class="replaceable"><code>option</code></em> can be:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2759396"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-set-role.html" title="SET ROLE">SET ROLE</a>, <a href="sql-alterrole.html" title="ALTER ROLE">ALTER ROLE</a>, <a href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a>, <a href="sql-grant.html" title="GRANT">GRANT</a>, <a href="sql-revoke.html" title="REVOKE">REVOKE</a>, <a href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a></span>
+<a name="id2778523"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-set-role.html" title="SET ROLE">SET ROLE</a>, <a class="xref" href="sql-alterrole.html" title="ALTER ROLE">ALTER ROLE</a>, <a class="xref" href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a>, <a class="xref" href="sql-grant.html" title="GRANT">GRANT</a>, <a class="xref" href="sql-revoke.html" title="REVOKE">REVOKE</a>, <a class="xref" href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a></span>
 </div>
 </div></body>
 </html>

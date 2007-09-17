@@ -4,17 +4,16 @@
 <title>43.13. pg_constraint</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-class.html" title="43.12. pg_class">
 <link rel="next" href="catalog-pg-conversion.html" title="43.14. pg_conversion">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-constraint"></a>43.13. <code class="structname">pg_constraint</code></h2></div></div></div>
-<a name="id2816734"></a><p>   The catalog <code class="structname">pg_constraint</code> stores check, primary key, unique, and foreign
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalog-pg-constraint">43.13. <code class="structname">pg_constraint</code></h2></div></div></div>
+<a name="id2835891"></a><p>   The catalog <code class="structname">pg_constraint</code> stores check, primary key, unique, and foreign
    key constraints on tables.  (Column constraints are not treated
    specially.  Every column constraint is equivalent to some table
    constraint.)  Not-null constraints are represented in the
@@ -23,7 +22,7 @@
 <p>   Check constraints on domains are stored here, too.
   </p>
 <div class="table">
-<a name="id2816761"></a><p class="title"><b>Table 43.13. <code class="structname">pg_constraint</code> Columns</b></p>
+<a name="id2835918"></a><p class="title"><b>Table 43.13. <code class="structname">pg_constraint</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_constraint Columns" border="1">
 <colgroup>
 <col>
@@ -47,7 +46,7 @@
 <tr>
 <td><code class="structfield">connamespace</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-namespace.html" title="43.23. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-namespace.html" title="43.23. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
 <td>       The OID of the namespace that contains this constraint
       </td>
 </tr>
@@ -76,19 +75,19 @@
 <tr>
 <td><code class="structfield">conrelid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>The table this constraint is on; 0 if not a table constraint</td>
 </tr>
 <tr>
 <td><code class="structfield">contypid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="43.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-type.html" title="43.34. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>The domain this constraint is on; 0 if not a domain constraint</td>
 </tr>
 <tr>
 <td><code class="structfield">confrelid</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>If a foreign key, the referenced table; else 0</td>
 </tr>
 <tr>
@@ -112,13 +111,13 @@
 <tr>
 <td><code class="structfield">conkey</code></td>
 <td><code class="type">int2[]</code></td>
-<td><code class="literal"><a href="catalog-pg-attribute.html" title="43.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-attribute.html" title="43.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
 <td>If a table constraint, list of columns which the constraint constrains</td>
 </tr>
 <tr>
 <td><code class="structfield">confkey</code></td>
 <td><code class="type">int2[]</code></td>
-<td><code class="literal"><a href="catalog-pg-attribute.html" title="43.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-attribute.html" title="43.7. pg_attribute"><code class="structname">pg_attribute</code></a>.attnum</code></td>
 <td>If a foreign key, list of the referenced columns</td>
 </tr>
 <tr>

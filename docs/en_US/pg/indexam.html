@@ -4,16 +4,15 @@
 <title>Chapter 49. Index Access Method Interface Definition</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="internals.html" title="Part VII. Internals">
 <link rel="prev" href="geqo-biblio.html" title="48.4. Further Reading">
 <link rel="next" href="index-functions.html" title="49.2. Index Access Method Functions">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="indexam">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="indexam"></a>Chapter 49. Index Access Method Interface Definition</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 49. Index Access Method Interface Definition</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -40,13 +39,13 @@
    practice, all index access methods divide indexes into standard-size
    pages so that they can use the regular storage manager and buffer manager
    to access the index contents.  (All the existing index access methods
-   furthermore use the standard page layout described in <a href="storage-page-layout.html" title="52.3. Database Page Layout">Section 52.3, &#8220;Database Page Layout&#8221;</a>, and they all use the same format for index
+   furthermore use the standard page layout described in <a class="xref" href="storage-page-layout.html" title="52.3. Database Page Layout">Section 52.3, &#8220;Database Page Layout&#8221;</a>, and they all use the same format for index
    tuple headers; but these decisions are not forced on an access method.)
   </p>
 <p>   An index is effectively a mapping from some data key values to
    <em class="firstterm">tuple identifiers</em>, or <acronym class="acronym">TIDs</acronym>, of row versions
    (tuples) in the index's parent table.  A TID consists of a
-   block number and an item number within that block (see <a href="storage-page-layout.html" title="52.3. Database Page Layout">Section 52.3, &#8220;Database Page Layout&#8221;</a>).  This is sufficient
+   block number and an item number within that block (see <a class="xref" href="storage-page-layout.html" title="52.3. Database Page Layout">Section 52.3, &#8220;Database Page Layout&#8221;</a>).  This is sufficient
    information to fetch a particular row version from the table.
    Indexes are not directly aware that under MVCC, there may be multiple
    extant versions of the same logical row; to an index, each tuple is
@@ -56,13 +55,12 @@
    reclaimed (by vacuuming) when the dead tuples themselves are reclaimed.
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="index-catalog"></a>49.1. Catalog Entries for Indexes</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="index-catalog">49.1. Catalog Entries for Indexes</h2></div></div></div>
 <p>   Each index access method is described by a row in the
    <code class="structname">pg_am</code> system catalog (see
-   <a href="catalog-pg-am.html" title="43.3. pg_am">Section 43.3, &#8220;<code class="structname">pg_am</code>&#8221;</a>).  The principal contents of a
+   <a class="xref" href="catalog-pg-am.html" title="43.3. pg_am">Section 43.3, &#8220;<code class="structname">pg_am</code>&#8221;</a>).  The principal contents of a
    <code class="structname">pg_am</code> row are references to
-   <a href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>
+   <a class="link" href="catalog-pg-proc.html" title="43.27. pg_proc"><code class="structname">pg_proc</code></a>
    entries that identify the index access
    functions supplied by the access method.  The APIs for these functions
    are defined later in this chapter.  In addition, the
@@ -75,19 +73,19 @@
   </p>
 <p>   To be useful, an index access method must also have one or more
    <em class="firstterm">operator classes</em> defined in
-   <a href="catalog-pg-opclass.html" title="43.24. pg_opclass"><code class="structname">pg_opclass</code></a>,
-   <a href="catalog-pg-amop.html" title="43.4. pg_amop"><code class="structname">pg_amop</code></a>, and
-   <a href="catalog-pg-amproc.html" title="43.5. pg_amproc"><code class="structname">pg_amproc</code></a>.
+   <a class="link" href="catalog-pg-opclass.html" title="43.24. pg_opclass"><code class="structname">pg_opclass</code></a>,
+   <a class="link" href="catalog-pg-amop.html" title="43.4. pg_amop"><code class="structname">pg_amop</code></a>, and
+   <a class="link" href="catalog-pg-amproc.html" title="43.5. pg_amproc"><code class="structname">pg_amproc</code></a>.
    These entries allow the planner
    to determine what kinds of query qualifications can be used with
    indexes of this access method.  Operator classes are described
-   in <a href="xindex.html" title="33.14. Interfacing Extensions To Indexes">Section 33.14, &#8220;Interfacing Extensions To Indexes&#8221;</a>, which is prerequisite material for reading
+   in <a class="xref" href="xindex.html" title="33.14. Interfacing Extensions To Indexes">Section 33.14, &#8220;Interfacing Extensions To Indexes&#8221;</a>, which is prerequisite material for reading
    this chapter.
   </p>
 <p>   An individual index is defined by a 
-   <a href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>
+   <a class="link" href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>
    entry that describes it as a physical relation, plus a
-   <a href="catalog-pg-index.html" title="43.18. pg_index"><code class="structname">pg_index</code></a>
+   <a class="link" href="catalog-pg-index.html" title="43.18. pg_index"><code class="structname">pg_index</code></a>
    entry that shows the logical content of the index &#8212; that is, the set
    of index columns it has and the semantics of those columns, as captured by
    the associated operator classes.  The index columns (key values) can be
@@ -101,7 +99,7 @@
   </p>
 <p>   Some of the flag columns of <code class="structname">pg_am</code> have nonobvious
    implications.  The requirements of <code class="structfield">amcanunique</code>
-   are discussed in <a href="index-unique-checks.html" title="49.5. Index Uniqueness Checks">Section 49.5, &#8220;Index Uniqueness Checks&#8221;</a>.
+   are discussed in <a class="xref" href="index-unique-checks.html" title="49.5. Index Uniqueness Checks">Section 49.5, &#8220;Index Uniqueness Checks&#8221;</a>.
    The <code class="structfield">amcanmulticol</code> flag asserts that the
    access method supports multicolumn indexes, while
    <code class="structfield">amoptionalkey</code> asserts that it allows scans

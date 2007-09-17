@@ -4,8 +4,8 @@
 <title>pg_dump</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
 <link rel="prev" href="app-pgconfig.html" title="pg_config">
 <link rel="next" href="app-pg-dumpall.html" title="pg_dumpall">
@@ -18,7 +18,7 @@
 <p>pg_dump &#8212;    extract a <span class="productname">PostgreSQL</span> database into a script file or other archive file
   </p>
 </div>
-<a name="id2795023"></a><div class="refsynopsisdiv">
+<a name="id2814175"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">pg_dump</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>dbname</code></em>]</p></div>
 </div>
@@ -34,13 +34,13 @@
 <p>   Dumps can be output in script or archive file formats. Script
    dumps are plain-text files containing the SQL commands required
    to reconstruct the database to the state it was in at the time it was
-   saved. To restore from such a script, feed it to <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>. Script files
+   saved. To restore from such a script, feed it to <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>. Script files
    can be used to reconstruct the database even on other machines and
    other architectures; with some modifications even on other SQL
    database products.
   </p>
 <p>   The alternative archive file formats must be used with
-   <a href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a> to rebuild the database.  They
+   <a class="xref" href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a> to rebuild the database.  They
    allow <span class="application">pg_restore</span> to be selective about
    what is restored, or even to reorder the items prior to being
    restored.
@@ -231,7 +231,7 @@
         selected by writing multiple <code class="option">-n</code> switches.  Also, the
         <em class="replaceable"><code>schema</code></em> parameter is
         interpreted as a pattern according to the same rules used by
-        <span class="application">psql</span>'s <code class="literal">\d</code> commands (see <a href="app-psql.html#app-psql-patterns" title="Patterns">Patterns</a>),
+        <span class="application">psql</span>'s <code class="literal">\d</code> commands (see <a class="xref" href="app-psql.html#app-psql-patterns" title="Patterns">Patterns</a>),
         so multiple schemas can also be selected by writing wildcard characters
         in the pattern.  When using wildcards, be careful to quote the pattern
         if needed to prevent the shell from expanding the wildcards.
@@ -326,7 +326,7 @@
         selected by writing multiple <code class="option">-t</code> switches.  Also, the
         <em class="replaceable"><code>table</code></em> parameter is
         interpreted as a pattern according to the same rules used by
-        <span class="application">psql</span>'s <code class="literal">\d</code> commands (see <a href="app-psql.html#app-psql-patterns" title="Patterns">Patterns</a>),
+        <span class="application">psql</span>'s <code class="literal">\d</code> commands (see <a class="xref" href="app-psql.html#app-psql-patterns" title="Patterns">Patterns</a>),
         so multiple tables can also be selected by writing wildcard characters
         in the pattern.  When using wildcards, be careful to quote the pattern
         if needed to prevent the shell from expanding the wildcards.
@@ -462,7 +462,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2796368"></a><h2>Environment</h2>
+<a name="id2815520"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGDATABASE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGHOST</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGPORT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="envar">PGUSER</code></span>
@@ -472,7 +472,7 @@
 </dl></div>
 <p>   This utility, like most other <span class="productname">PostgreSQL</span> utilities,
    also uses the environment variables supported by <span class="application">libpq</span>
-   (see <a href="libpq-envars.html" title="29.12. Environment Variables">Section 29.12, &#8220;Environment Variables&#8221;</a>).
+   (see <a class="xref" href="libpq-envars.html" title="29.12. Environment Variables">Section 29.12, &#8220;Environment Variables&#8221;</a>).
   </p>
 </div>
 <div class="refsect1" lang="en">
@@ -480,7 +480,7 @@
 <p>   <span class="application">pg_dump</span> internally executes
    <code class="command">SELECT</code> statements. If you have problems running
    <span class="application">pg_dump</span>, make sure you are able to
-   select information from the database using, for example, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>.  Also, any default connection settings and environment
+   select information from the database using, for example, <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>.  Also, any default connection settings and environment
    variables used by the <span class="application">libpq</span> front-end
    library will apply.
   </p>
@@ -597,7 +597,7 @@
   </p>
 <p>   To specify an upper-case or mixed-case name in <code class="option">-t</code> and related
    switches, you need to double-quote the name; else it will be folded to
-   lower case (see <a href="app-psql.html#app-psql-patterns" title="Patterns">Patterns</a>).  But
+   lower case (see <a class="xref" href="app-psql.html#app-psql-patterns" title="Patterns">Patterns</a>).  But
    double quotes are special to the shell, so in turn they must be quoted.
    Thus, to dump a single table with a mixed-case name, you need something
    like
@@ -608,7 +608,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2796886"></a><h2>History</h2>
+<a name="id2816038"></a><h2>History</h2>
 <p>   The <span class="application">pg_dump</span> utility first appeared in
    <span class="application">Postgres95</span> release 0.02.  The
    non-plain-text output formats were introduced in
@@ -616,8 +616,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2796911"></a><h2>See Also</h2>
-<span class="simplelist"><a href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a>, <a href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a>, <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a></span>
+<a name="id2816063"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a>, <a class="xref" href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a>, <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a></span>
 </div>
 </div></body>
 </html>

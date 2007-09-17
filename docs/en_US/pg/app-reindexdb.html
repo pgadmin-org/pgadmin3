@@ -4,8 +4,8 @@
 <title>reindexdb</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="reference-client.html" title="PostgreSQL Client Applications">
 <link rel="prev" href="app-psql.html" title="psql">
 <link rel="next" href="app-vacuumdb.html" title="vacuumdb">
@@ -17,23 +17,23 @@
 <h2>Name</h2>
 <p>reindexdb &#8212; reindex a <span class="productname">PostgreSQL</span> database</p>
 </div>
-<a name="id2805787"></a><div class="refsynopsisdiv">
+<a name="id2824939"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">reindexdb</code> [<em class="replaceable"><code>connection-option</code></em>...] [--table | -t <em class="replaceable"><code>table</code></em> ] [--index | -i <em class="replaceable"><code>index</code></em> ] [<em class="replaceable"><code>dbname</code></em>]<br><code class="command">reindexdb</code> [<em class="replaceable"><code>connection-option</code></em>...] [--all | -a]<br><code class="command">reindexdb</code> [<em class="replaceable"><code>connection-option</code></em>...] [--system | -s] [<em class="replaceable"><code>dbname</code></em>]</p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2805890"></a><h2>Description</h2>
+<a name="id2825042"></a><h2>Description</h2>
 <p>   <span class="application">reindexdb</span> is a utility for rebuilding indexes
    in a <span class="productname">PostgreSQL</span> database.
   </p>
 <p>   <span class="application">reindexdb</span> is a wrapper around the SQL
-   command <a href="sql-reindex.html" title="REINDEX">REINDEX</a>.
+   command <a class="xref" href="sql-reindex.html" title="REINDEX">REINDEX</a>.
    There is no effective difference between reindexing databases via
    this utility and via other methods for accessing the server.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2805929"></a><h2>Options</h2>
+<a name="id2825081"></a><h2>Options</h2>
 <p>    <span class="application">reindexdb</span> accepts the following command-line arguments:
     
     </p>
@@ -116,7 +116,7 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2806180"></a><h2>Environment</h2>
+<a name="id2825331"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGDATABASE</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGHOST</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="envar">PGPORT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="envar">PGUSER</code></span>
@@ -126,12 +126,12 @@
 </dl></div>
 <p>   This utility, like most other <span class="productname">PostgreSQL</span> utilities,
    also uses the environment variables supported by <span class="application">libpq</span>
-   (see <a href="libpq-envars.html" title="29.12. Environment Variables">Section 29.12, &#8220;Environment Variables&#8221;</a>).
+   (see <a class="xref" href="libpq-envars.html" title="29.12. Environment Variables">Section 29.12, &#8220;Environment Variables&#8221;</a>).
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2806225"></a><h2>Diagnostics</h2>
-<p>   In case of difficulty, see <a href="sql-reindex.html" title="REINDEX">REINDEX</a> and <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
+<a name="id2825377"></a><h2>Diagnostics</h2>
+<p>   In case of difficulty, see <a class="xref" href="sql-reindex.html" title="REINDEX">REINDEX</a> and <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a> for
    discussions of potential problems and error messages.
    The database server must be running at the
    targeted host.  Also, any default connection settings and environment
@@ -140,15 +140,15 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2806256"></a><h2>Notes</h2>
+<a name="id2825407"></a><h2>Notes</h2>
 <p>   <span class="application">reindexdb</span> might need to connect several
    times to the <span class="productname">PostgreSQL</span> server, asking
    for a password each time. It is convenient to have a
-   <code class="filename">~/.pgpass</code> file in such cases. See <a href="libpq-pgpass.html" title="29.13. The Password File">Section 29.13, &#8220;The Password File&#8221;</a> for more information.
+   <code class="filename">~/.pgpass</code> file in such cases. See <a class="xref" href="libpq-pgpass.html" title="29.13. The Password File">Section 29.13, &#8220;The Password File&#8221;</a> for more information.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2806288"></a><h2>Examples</h2>
+<a name="id2825439"></a><h2>Examples</h2>
 <p>    To reindex the database <code class="literal">test</code>:
 </p>
 <pre class="screen"><code class="prompt">$ </code><strong class="userinput"><code>reindexdb test</code></strong></pre>
@@ -162,8 +162,8 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2806347"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-reindex.html" title="REINDEX">REINDEX</a></span>
+<a name="id2825499"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-reindex.html" title="REINDEX">REINDEX</a></span>
 </div>
 </div></body>
 </html>

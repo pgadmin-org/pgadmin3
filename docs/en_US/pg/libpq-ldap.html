@@ -4,24 +4,23 @@
 <title>29.15. LDAP Lookup of Connection Parameters</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 29. libpq - C Library">
 <link rel="prev" href="libpq-pgservice.html" title="29.14. The Connection Service File">
 <link rel="next" href="libpq-ssl.html" title="29.16. SSL Support">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="libpq-ldap"></a>29.15. LDAP Lookup of Connection Parameters</h2></div></div></div>
-<a name="id2680132"></a><p>If <span class="application">libpq</span> has been compiled with LDAP support (option
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="libpq-ldap">29.15. LDAP Lookup of Connection Parameters</h2></div></div></div>
+<a name="id2699146"></a><p>If <span class="application">libpq</span> has been compiled with LDAP support (option
 <code class="literal"><code class="option">--with-ldap</code></code> for <code class="command">configure</code>)
 it is possible to retrieve connection options like <code class="literal">host</code>
 or <code class="literal">dbname</code> via LDAP from a central server.
 The advantage is that if the connection parameters for a database change,
 the connection information doesn't have to be updated on all client machines.</p>
 <p>LDAP connection parameter lookup uses the connection service file
-<code class="filename">pg_service.conf</code> (see <a href="libpq-pgservice.html" title="29.14. The Connection Service File">Section 29.14, &#8220;The Connection Service File&#8221;</a>).
+<code class="filename">pg_service.conf</code> (see <a class="xref" href="libpq-pgservice.html" title="29.14. The Connection Service File">Section 29.14, &#8220;The Connection Service File&#8221;</a>).
 A line in a <code class="filename">pg_service.conf</code> stanza that starts with
 <code class="literal">ldap://</code> will be recognized as an LDAP URL and an LDAP
 query will be performed. The result must be a list of <code class="literal">keyword =

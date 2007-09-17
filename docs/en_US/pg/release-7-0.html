@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.84. Release 7.0</title>
+<title>E.89. Release 7.0</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-0-1.html" title="E.83. Release 7.0.1">
-<link rel="next" href="release-6-5-3.html" title="E.85. Release 6.5.3">
+<link rel="prev" href="release-7-0-1.html" title="E.88. Release 7.0.1">
+<link rel="next" href="release-6-5-3.html" title="E.90. Release 6.5.3">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-7-0"></a>E.84. Release 7.0</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-0">E.89. Release 7.0</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2000-05-08</p>
@@ -55,8 +54,7 @@
       </p></dd>
 </dl></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2886673"></a>E.84.1. Migration to version 7.0</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2906446">E.89.1. Migration to version 7.0</h3></div></div></div>
 <p>     A dump/restore using <span class="application">pg_dump</span>
      is required for those wishing to migrate data from any
      previous release of <span class="productname">PostgreSQL</span>.
@@ -100,8 +98,7 @@
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2886784"></a>E.84.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2906558">E.89.2. Changes</h3></div></div></div>
 <p>     </p>
 <pre class="programlisting">Bug Fixes
 ---------
@@ -184,7 +181,7 @@ Enhancements
 ------------
 New CLI interface include file sqlcli.h, based on SQL3/SQL98
 Remove all limits on query length, row length limit still exists (Tom)
-Update jdbc protocol to 2.0 (Jens Glaser <code class="email">&lt;<a href="mailto:jens@jens.de">jens@jens.de</a>&gt;</code>)
+Update jdbc protocol to 2.0 (Jens Glaser <code class="email">&lt;<a class="email" href="mailto:jens@jens.de">jens@jens.de</a>&gt;</code>)
 Add TRUNCATE command to quickly truncate relation (Mike Mascari)
 Fix to give super user and createdb user proper update catalog rights (Peter E)
 Allow ecpg bool variables to have NULL values (Christof)
@@ -205,7 +202,7 @@ Allow WHERE restriction on ctid (physical heap location) (Hiroshi)
 Move pginterface from contrib to interface directory, rename to pgeasy (Bruce)
 Change pgeasy connectdb() parameter ordering (Bruce)
 Require SELECT DISTINCT target list to have all ORDER BY columns (Tom)
-Add Oracle's COMMENT ON command (Mike Mascari <code class="email">&lt;<a href="mailto:mascarim@yahoo.com">mascarim@yahoo.com</a>&gt;</code>)
+Add Oracle's COMMENT ON command (Mike Mascari <code class="email">&lt;<a class="email" href="mailto:mascarim@yahoo.com">mascarim@yahoo.com</a>&gt;</code>)
 libpq's PQsetNoticeProcessor function now returns previous hook(Peter E)
 Prevent PQsetNoticeProcessor from being set to NULL (Peter E)
 Make USING in COPY optional (Bruce)
@@ -312,7 +309,7 @@ Fix for SELECT timespan('21:11:26'::time) (Tom)
 netmask('x.x.x.x/0') is 255.255.255.255 instead of 0.0.0.0 (Oleg Sharoiko)
 Add btree index on NUMERIC (Jan)
 Perl fix for large objects containing NUL characters (Douglas Thomson)
-ODBC fix for for large objects (free)
+ODBC fix for large objects (free)
 Fix indexing of cidr data type
 Fix for Ethernet MAC addresses (macaddr type) comparisons
 Fix for date/time types when overflows happened in computations (Tom)
@@ -399,7 +396,7 @@ Add scripts for checking includes (Bruce)
 Remove un-needed #include's from *.c files (Bruce)
 Change #include's to use &lt;&gt; and "" as appropriate (Bruce)
 Enable Windows compilation of libpq
-Alpha spinlock fix from Uncle George <code class="email">&lt;<a href="mailto:gatgul@voicenet.com">gatgul@voicenet.com</a>&gt;</code>
+Alpha spinlock fix from Uncle George <code class="email">&lt;<a class="email" href="mailto:gatgul@voicenet.com">gatgul@voicenet.com</a>&gt;</code>
 Overhaul of optimizer data structures (Tom)
 Fix to cygipc library (Yutaka Tanida)
 Allow pgsql to work on newer Cygwin snapshots (Dan)
@@ -417,7 +414,7 @@ Fix for plpgsql on BSD/OS
 Add SQL_ASCII test case to the regression test (Tatsuo)
 configure --with-mb now deprecated (Tatsuo)
 NT fixes
-NetBSD fixes (Johnny C. Lam <code class="email">&lt;<a href="mailto:lamj@stat.cmu.edu">lamj@stat.cmu.edu</a>&gt;</code>)
+NetBSD fixes (Johnny C. Lam <code class="email">&lt;<a class="email" href="mailto:lamj@stat.cmu.edu">lamj@stat.cmu.edu</a>&gt;</code>)
 Fixes for Alpha compiles
 New multibyte encodings
      </pre>

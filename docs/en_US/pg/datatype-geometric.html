@@ -4,18 +4,17 @@
 <title>8.7. Geometric Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-boolean.html" title="8.6. Boolean Type">
 <link rel="next" href="datatype-net-types.html" title="8.8. Network Address Types">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="datatype-geometric"></a>8.7. Geometric Types</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="datatype-geometric">8.7. Geometric Types</h2></div></div></div>
 <p>    Geometric data types represent two-dimensional spatial
-    objects. <a href="datatype-geometric.html#datatype-geo-table" title="Table 8.16. Geometric Types">Table 8.16, &#8220;Geometric Types&#8221;</a> shows the geometric
+    objects. <a class="xref" href="datatype-geometric.html#datatype-geo-table" title="Table 8.16. Geometric Types">Table 8.16, &#8220;Geometric Types&#8221;</a> shows the geometric
     types available in <span class="productname">PostgreSQL</span>.  The
     most fundamental type, the point, forms the basis for all of the
     other types.
@@ -89,12 +88,11 @@
 </div>
 <br class="table-break"><p>    A rich set of functions and operators is available to perform various geometric
     operations such as scaling, translation, rotation, and determining 
-    intersections.  They are explained in <a href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a>.
+    intersections.  They are explained in <a class="xref" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a>.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584181"></a>8.7.1. Points</h3></div></div></div>
-<a name="id2584184"></a><p>     Points are the fundamental two-dimensional building block for geometric types.
+<div class="titlepage"><div><div><h3 class="title" id="id2603151">8.7.1. Points</h3></div></div></div>
+<a name="id2603155"></a><p>     Points are the fundamental two-dimensional building block for geometric types.
      Values of type <code class="type">point</code> are specified using the following syntax:
 
 </p>
@@ -107,9 +105,8 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584224"></a>8.7.2. Line Segments</h3></div></div></div>
-<a name="id2584228"></a><a name="id2584234"></a><p>     Line segments (<code class="type">lseg</code>) are represented by pairs of points.
+<div class="titlepage"><div><div><h3 class="title" id="id2603195">8.7.2. Line Segments</h3></div></div></div>
+<a name="id2603199"></a><a name="id2603204"></a><p>     Line segments (<code class="type">lseg</code>) are represented by pairs of points.
      Values of type <code class="type">lseg</code> are specified using the following syntax:
 
 </p>
@@ -126,9 +123,8 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584322"></a>8.7.3. Boxes</h3></div></div></div>
-<a name="id2584326"></a><a name="id2584332"></a><p>     Boxes are represented by pairs of points that are opposite
+<div class="titlepage"><div><div><h3 class="title" id="id2603293">8.7.3. Boxes</h3></div></div></div>
+<a name="id2603296"></a><a name="id2603302"></a><p>     Boxes are represented by pairs of points that are opposite
      corners of the box.
      Values of type <code class="type">box</code> are specified using the following syntax:
 
@@ -152,9 +148,8 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584423"></a>8.7.4. Paths</h3></div></div></div>
-<a name="id2584426"></a><p>     Paths are represented by lists of connected points. Paths can be
+<div class="titlepage"><div><div><h3 class="title" id="id2603394">8.7.4. Paths</h3></div></div></div>
+<a name="id2603397"></a><p>     Paths are represented by lists of connected points. Paths can be
      <em class="firstterm">open</em>, where
      the first and last points in the list are not considered connected, or
      <em class="firstterm">closed</em>,
@@ -179,9 +174,8 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584544"></a>8.7.5. Polygons</h3></div></div></div>
-<a name="id2584548"></a><p>     Polygons are represented by lists of points (the vertexes of the
+<div class="titlepage"><div><div><h3 class="title" id="id2603515">8.7.5. Polygons</h3></div></div></div>
+<a name="id2603518"></a><p>     Polygons are represented by lists of points (the vertexes of the
      polygon). Polygons should probably be
      considered equivalent to closed paths, but are stored differently 
      and have their own set of support routines.
@@ -202,9 +196,8 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584631"></a>8.7.6. Circles</h3></div></div></div>
-<a name="id2584635"></a><p>     Circles are represented by a center point and a radius.
+<div class="titlepage"><div><div><h3 class="title" id="id2603602">8.7.6. Circles</h3></div></div></div>
+<a name="id2603605"></a><p>     Circles are represented by a center point and a radius.
      Values of type <code class="type">circle</code> are specified using the following syntax:
 
 </p>

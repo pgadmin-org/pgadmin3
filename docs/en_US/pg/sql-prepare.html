@@ -4,8 +4,8 @@
 <title>PREPARE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-notify.html" title="NOTIFY">
 <link rel="next" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">
@@ -17,12 +17,12 @@
 <h2>Name</h2>
 <p>PREPARE &#8212; prepare a statement for execution</p>
 </div>
-<a name="id2778029"></a><a name="id2778038"></a><div class="refsynopsisdiv">
+<a name="id2797183"></a><a name="id2797191"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">PREPARE <em class="replaceable"><code>name</code></em> [ (<em class="replaceable"><code>datatype</code></em> [, ...] ) ] AS <em class="replaceable"><code>statement</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2778072"></a><h2>Description</h2>
+<a name="id2797225"></a><h2>Description</h2>
 <p>   <code class="command">PREPARE</code> creates a prepared statement. A prepared
    statement is a server-side object that can be used to optimize
    performance. When the <code class="command">PREPARE</code> statement is
@@ -41,7 +41,7 @@
    <code class="literal">unknown</code>, the type is inferred from the context
    in which the parameter is used (if possible). When executing the
    statement, specify the actual values for these parameters in the
-   <code class="command">EXECUTE</code> statement.  Refer to <a href="sql-execute.html" title="EXECUTE">EXECUTE</a> for more
+   <code class="command">EXECUTE</code> statement.  Refer to <a class="xref" href="sql-execute.html" title="EXECUTE">EXECUTE</a> for more
    information about that.
   </p>
 <p>   Prepared statements only last for the duration of the current
@@ -50,7 +50,7 @@
    also means that a single  prepared statement cannot be used by
    multiple simultaneous database clients; however, each client can create
    their own prepared statement to use.  The prepared statement can be
-   manually cleaned up using the <a href="sql-deallocate.html" title="DEALLOCATE">DEALLOCATE</a> command.
+   manually cleaned up using the <a class="xref" href="sql-deallocate.html" title="DEALLOCATE">DEALLOCATE</a> command.
   </p>
 <p>   Prepared statements have the largest performance advantage when a
    single session is being used to execute a large number of similar
@@ -63,7 +63,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2778178"></a><h2>Parameters</h2>
+<a name="id2797331"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      An arbitrary name given to this particular prepared
@@ -86,7 +86,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2778268"></a><h2>Notes</h2>
+<a name="id2797421"></a><h2>Notes</h2>
 <p>   In some situations, the query plan produced for a prepared
    statement will be inferior to the query plan that would have been
    chosen if the statement had been submitted and executed
@@ -100,15 +100,15 @@
    when planning prepared statements with parameters, the chosen plan
    may be suboptimal. To examine the query plan
    <span class="productname">PostgreSQL</span> has chosen for a prepared
-   statement, use <a href="sql-explain.html" title="EXPLAIN">EXPLAIN</a>.
+   statement, use <a class="xref" href="sql-explain.html" title="EXPLAIN">EXPLAIN</a>.
   </p>
 <p>   For more information on query planning and the statistics collected
    by <span class="productname">PostgreSQL</span> for that purpose, see
-   the <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a>
+   the <a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a>
    documentation.
   </p>
 <p>   You can see all available prepared statements of a session by querying the
-   <a href="view-pg-prepared-statements.html" title="43.40. pg_prepared_statements"><code class="structname">pg_prepared_statements</code></a>
+   <a class="link" href="view-pg-prepared-statements.html" title="43.40. pg_prepared_statements"><code class="structname">pg_prepared_statements</code></a>
    system view.
   </p>
 </div>
@@ -136,7 +136,7 @@ EXECUTE usrrptplan(1, current_date);</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2778396"></a><h2>Compatibility</h2>
+<a name="id2797549"></a><h2>Compatibility</h2>
 <p>   The SQL standard includes a <code class="command">PREPARE</code> statement,
    but it is only for use in embedded SQL. This version of the
    <code class="command">PREPARE</code> statement also uses a somewhat different
@@ -144,8 +144,8 @@ EXECUTE usrrptplan(1, current_date);</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2778416"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-deallocate.html" title="DEALLOCATE">DEALLOCATE</a>, <a href="sql-execute.html" title="EXECUTE">EXECUTE</a></span>
+<a name="id2797570"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-deallocate.html" title="DEALLOCATE">DEALLOCATE</a>, <a class="xref" href="sql-execute.html" title="EXECUTE">EXECUTE</a></span>
 </div>
 </div></body>
 </html>

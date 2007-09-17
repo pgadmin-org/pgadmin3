@@ -4,16 +4,15 @@
 <title>Chapter 10. Type Conversion</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="sql.html" title="Part II. The SQL Language">
 <link rel="prev" href="functions-admin.html" title="9.20. System Administration Functions">
 <link rel="next" href="typeconv-oper.html" title="10.2. Operators">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="typeconv">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="typeconv"></a>Chapter 10. Type Conversion</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 10. Type Conversion</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -24,7 +23,7 @@
 <dt><span class="sect1"><a href="typeconv-union-case.html">10.5. <code class="literal">UNION</code>, <code class="literal">CASE</code>, and Related Constructs</a></span></dt>
 </dl>
 </div>
-<a name="id2620151"></a><p><acronym class="acronym">SQL</acronym> statements can, intentionally or not, require
+<a name="id2639127"></a><p><acronym class="acronym">SQL</acronym> statements can, intentionally or not, require
 mixing of different data types in the same expression. 
 <span class="productname">PostgreSQL</span> has extensive facilities for
 evaluating mixed-type expressions.</p>
@@ -35,12 +34,11 @@ can affect the results of a query.  When necessary, these results
 can be tailored by using <span class="emphasis"><em>explicit</em></span> type conversion.</p>
 <p>This chapter introduces the <span class="productname">PostgreSQL</span>
 type conversion mechanisms and conventions.
-Refer to the relevant sections in <a href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a> and <a href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>
+Refer to the relevant sections in <a class="xref" href="datatype.html" title="Chapter 8. Data Types">Chapter 8, <i>Data Types</i></a> and <a class="xref" href="functions.html" title="Chapter 9. Functions and Operators">Chapter 9, <i>Functions and Operators</i></a>
 for more information on specific data types and allowed functions and
 operators.</p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="typeconv-overview"></a>10.1. Overview</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="typeconv-overview">10.1. Overview</h2></div></div></div>
 <p><acronym class="acronym">SQL</acronym> is a strongly typed language. That is, every data item
 has an associated data type which determines its behavior and allowed usage.
 <span class="productname">PostgreSQL</span> has an extensible type system that is
@@ -109,7 +107,7 @@ with the <code class="command">CREATE CAST</code> command.  (This is usually
 done in conjunction with defining new data types.  The set of casts
 between the built-in types has been carefully crafted and is best not
 altered.)</p>
-<a name="id2620458"></a><p>An additional heuristic is provided in the parser to allow better guesses
+<a name="id2639434"></a><p>An additional heuristic is provided in the parser to allow better guesses
 at proper behavior for <acronym class="acronym">SQL</acronym> standard types. There are
 several basic <em class="firstterm">type categories</em> defined: <code class="type">boolean</code>,
 <code class="type">numeric</code>, <code class="type">string</code>, <code class="type">bitstring</code>, <code class="type">datetime</code>, <code class="type">timespan</code>, <code class="type">geometric</code>, <code class="type">network</code>,

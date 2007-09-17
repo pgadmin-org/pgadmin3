@@ -4,17 +4,16 @@
 <title>11.4. Combining Multiple Indexes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
 <link rel="next" href="indexes-unique.html" title="11.5. Unique Indexes">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="indexes-bitmap-scans"></a>11.4. Combining Multiple Indexes</h2></div></div></div>
-<a name="id2622614"></a><a name="id2622626"></a><p>   A single index scan can only use query clauses that use the index's
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="indexes-bitmap-scans">11.4. Combining Multiple Indexes</h2></div></div></div>
+<a name="id2641584"></a><a name="id2641597"></a><p>   A single index scan can only use query clauses that use the index's
    columns with operators of its operator class and are joined with
    <code class="literal">AND</code>.  For example, given an index on <code class="literal">(a, b)</code>
    a query condition like <code class="literal">WHERE a = 5 AND b = 6</code> could
@@ -60,7 +59,7 @@
    process the queries that use both columns.  You could also create a
    multicolumn index on <code class="literal">(x, y)</code>.  This index would typically be
    more efficient than index combination for queries involving both
-   columns, but as discussed in <a href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">Section 11.3, &#8220;Multicolumn Indexes&#8221;</a>, it
+   columns, but as discussed in <a class="xref" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">Section 11.3, &#8220;Multicolumn Indexes&#8221;</a>, it
    would be almost useless for queries involving only <code class="literal">y</code>, so it
    could not be the only index.  A combination of the multicolumn index
    and a separate index on <code class="literal">y</code> would serve reasonably well.  For

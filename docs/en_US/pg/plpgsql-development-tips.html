@@ -4,16 +4,15 @@
 <title>37.2. Tips for Developing in PL/pgSQL</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
 <link rel="next" href="plpgsql-structure.html" title="37.3. Structure of PL/pgSQL">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-development-tips"></a>37.2. Tips for Developing in <span class="application">PL/pgSQL</span></h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpgsql-development-tips">37.2. Tips for Developing in <span class="application">PL/pgSQL</span></h2></div></div></div>
 <p>    One good way to develop in
     <span class="application">PL/pgSQL</span> is to use the text editor of your
     choice to create your functions, and in another window, use
@@ -43,8 +42,7 @@ $$ LANGUAGE plpgsql;</pre>
     making it easier to recreate and debug functions.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-quote-tips"></a>37.2.1. Handling of Quotation Marks</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-quote-tips">37.2.1. Handling of Quotation Marks</h3></div></div></div>
 <p>    The code of a <span class="application">PL/pgSQL</span> function is specified in
     <code class="command">CREATE FUNCTION</code> as a string literal.  If you
     write the string literal in the ordinary way with surrounding
@@ -55,7 +53,7 @@ $$ LANGUAGE plpgsql;</pre>
     the code can become downright incomprehensible, because you can
     easily find yourself needing half a dozen or more adjacent quote marks.
     It's recommended that you instead write the function body as a
-    &#8220;<span class="quote">dollar-quoted</span>&#8221; string literal (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>).  In the dollar-quoting
+    &#8220;<span class="quote">dollar-quoted</span>&#8221; string literal (see <a class="xref" href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>).  In the dollar-quoting
     approach, you never double any quote marks, but instead take care to
     choose a different dollar-quoting delimiter for each level of
     nesting you need.  For example, you might write the <code class="command">CREATE
@@ -143,7 +141,7 @@ SELECT * FROM users WHERE f_name='foobar';</pre>
       accounts for 8 quotation marks) and this is adjacent to the end of that
       string constant (2 more).  You will probably only need that if
       you are writing a function that generates other functions, as in
-      <a href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 37.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 37.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a>.
+      <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 37.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 37.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a>.
       For example:
 </p>
 <pre class="programlisting">a_output := a_output || '' if v_'' || 

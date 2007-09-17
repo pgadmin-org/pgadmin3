@@ -4,21 +4,20 @@
 <title>19.2. Creating a Database</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="managing-databases.html" title="Chapter 19. Managing Databases">
 <link rel="prev" href="managing-databases.html" title="Chapter 19. Managing Databases">
 <link rel="next" href="manage-ag-templatedbs.html" title="19.3. Template Databases">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="manage-ag-createdb"></a>19.2. Creating a Database</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="manage-ag-createdb">19.2. Creating a Database</h2></div></div></div>
 <p>   In order to create a database, the <span class="productname">PostgreSQL</span>
-   server must be up and running (see <a href="server-start.html" title="16.3. Starting the Database Server">Section 16.3, &#8220;Starting the Database Server&#8221;</a>).
+   server must be up and running (see <a class="xref" href="server-start.html" title="16.3. Starting the Database Server">Section 16.3, &#8220;Starting the Database Server&#8221;</a>).
   </p>
 <p>   Databases are created with the SQL command
-   <a href="sql-createdatabase.html" title="CREATE DATABASE">CREATE DATABASE</a>:<a name="id2652327"></a>
+   <a class="xref" href="sql-createdatabase.html" title="CREATE DATABASE">CREATE DATABASE</a>:<a name="id2671314"></a>
 </p>
 <pre class="synopsis">CREATE DATABASE <em class="replaceable"><code>name</code></em>;</pre>
 <p>
@@ -28,21 +27,21 @@
    owner of a database to remove it later on (which also removes all
    the objects in it, even if they have a different owner).
   </p>
-<p>   The creation of databases is a restricted operation. See <a href="role-attributes.html" title="18.2. Role Attributes">Section 18.2, &#8220;Role Attributes&#8221;</a> for how to grant permission.
+<p>   The creation of databases is a restricted operation. See <a class="xref" href="role-attributes.html" title="18.2. Role Attributes">Section 18.2, &#8220;Role Attributes&#8221;</a> for how to grant permission.
   </p>
 <p>   Since you need to be connected to the database server in order to
    execute the <code class="command">CREATE DATABASE</code> command, the
    question remains how the <span class="emphasis"><em>first</em></span> database at any given
    site can be created. The first database is always created by the
    <code class="command">initdb</code> command when the data storage area is
-   initialized. (See <a href="creating-cluster.html" title="16.2. Creating a Database Cluster">Section 16.2, &#8220;Creating a Database Cluster&#8221;</a>.)  This
+   initialized. (See <a class="xref" href="creating-cluster.html" title="16.2. Creating a Database Cluster">Section 16.2, &#8220;Creating a Database Cluster&#8221;</a>.)  This
    database is called
-   <code class="literal">postgres</code>.<a name="id2652401"></a> So to
+   <code class="literal">postgres</code>.<a name="id2671388"></a> So to
    create the first &#8220;<span class="quote">ordinary</span>&#8221; database you can connect to
    <code class="literal">postgres</code>.
   </p>
 <p>   A second database,
-   <code class="literal">template1</code>,<a name="id2652427"></a>
+   <code class="literal">template1</code>,<a name="id2671414"></a>
    is also created by
    <code class="command">initdb</code>.  Whenever a new database is created within the
    cluster, <code class="literal">template1</code> is essentially cloned.
@@ -50,11 +49,11 @@
    propagated to all subsequently created databases. Therefore it is
    unwise to use <code class="literal">template1</code> for real work, but when
    used judiciously this feature can be convenient.  More details
-   appear in <a href="manage-ag-templatedbs.html" title="19.3. Template Databases">Section 19.3, &#8220;Template Databases&#8221;</a>.
+   appear in <a class="xref" href="manage-ag-templatedbs.html" title="19.3. Template Databases">Section 19.3, &#8220;Template Databases&#8221;</a>.
   </p>
 <p>   As a convenience, there is a program that you can
    execute from the shell to create new databases,
-   <code class="command">createdb</code>.<a name="id2652481"></a>
+   <code class="command">createdb</code>.<a name="id2671467"></a>
 
 </p>
 <pre class="synopsis">createdb <em class="replaceable"><code>dbname</code></em></pre>
@@ -63,14 +62,14 @@
    <code class="command">createdb</code> does no magic. It connects to the <code class="literal">postgres</code>
    database and issues the <code class="command">CREATE DATABASE</code> command,
    exactly as described above.
-   The <a href="app-createdb.html" title="createdb"><span class="refentrytitle"><a name="app-createdb-title"></a><span class="application">createdb</span></span></a> reference page contains the invocation
+   The <a class="xref" href="app-createdb.html" title="createdb"><span class="refentrytitle"><a name="app-createdb-title"></a><span class="application">createdb</span></span></a> reference page contains the invocation
    details. Note that <code class="command">createdb</code> without any arguments will create
    a database with the current user name, which may or may not be what
    you want.
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>    <a href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a> contains information about
+<p>    <a class="xref" href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a> contains information about
     how to restrict who can connect to a given database.
    </p>
 </div>

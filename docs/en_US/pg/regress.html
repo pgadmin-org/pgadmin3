@@ -4,41 +4,39 @@
 <title>Chapter 28. Regression Tests</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="wal-internals.html" title="27.4. WAL Internals">
 <link rel="next" href="regress-evaluation.html" title="28.2. Test Evaluation">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="regress">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="regress"></a>Chapter 28. Regression Tests</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 28. Regression Tests</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
 <dt><span class="sect1"><a href="regress.html#regress-run">28.1. Running the Tests</a></span></dt>
 <dt><span class="sect1"><a href="regress-evaluation.html">28.2. Test Evaluation</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2668845">28.2.1. Error message differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2668867">28.2.2. Locale differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2668880">28.2.3. Date and time differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2668907">28.2.4. Floating-point differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2668978">28.2.5. Row ordering differences</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2669049">28.2.6. Insufficient stack depth</a></span></dt>
-<dt><span class="sect2"><a href="regress-evaluation.html#id2669089">28.2.7. The &#8220;<span class="quote">random</span>&#8221; test</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2687864">28.2.1. Error message differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2687887">28.2.2. Locale differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2687899">28.2.3. Date and time differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2687927">28.2.4. Floating-point differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2687997">28.2.5. Row ordering differences</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2688069">28.2.6. Insufficient stack depth</a></span></dt>
+<dt><span class="sect2"><a href="regress-evaluation.html#id2688108">28.2.7. The &#8220;<span class="quote">random</span>&#8221; test</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="regress-variant.html">28.3. Variant Comparison Files</a></span></dt>
 </dl>
 </div>
-<a name="id2668394"></a><a name="id2668403"></a><p>   The regression tests are a comprehensive set of tests for the SQL
+<a name="id2687413"></a><a name="id2687422"></a><p>   The regression tests are a comprehensive set of tests for the SQL
    implementation in <span class="productname">PostgreSQL</span>.  They test
    standard SQL operations as well as the extended capabilities of
    <span class="productname">PostgreSQL</span>.
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="regress-run"></a>28.1. Running the Tests</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="regress-run">28.1. Running the Tests</h2></div></div></div>
 <p>   The regression tests can be run against an already installed and
    running server, or using a temporary installation within the build
    tree.  Furthermore, there is a &#8220;<span class="quote">parallel</span>&#8221; and a
@@ -66,7 +64,7 @@
  All 100 tests passed.
 ======================</code></pre>
 <p>
-   or otherwise a note about which tests failed.  See <a href="regress-evaluation.html" title="28.2. Test Evaluation">Section 28.2, &#8220;Test Evaluation&#8221;</a> below before assuming that a
+   or otherwise a note about which tests failed.  See <a class="xref" href="regress-evaluation.html" title="28.2. Test Evaluation">Section 28.2, &#8220;Test Evaluation&#8221;</a> below before assuming that a
    &#8220;<span class="quote">failure</span>&#8221; represents a serious problem.
   </p>
 <p>    Because this test method runs a temporary server, it will not work
@@ -113,9 +111,9 @@
 <p>
     runs no more than ten tests concurrently.
    </p>
-<p>   To run the tests after installation (see <a href="installation.html" title="Chapter 14.  Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>),
+<p>   To run the tests after installation (see <a class="xref" href="installation.html" title="Chapter 14.  Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>),
    initialize a data area and start the
-   server, as explained in <a href="runtime.html" title="Chapter 16. Operating System Environment">Chapter 16, <i>Operating System Environment</i></a>,  then type
+   server, as explained in <a class="xref" href="runtime.html" title="Chapter 16. Operating System Environment">Chapter 16, <i>Operating System Environment</i></a>,  then type
 </p>
 <pre class="screen">gmake installcheck</pre>
 <p>

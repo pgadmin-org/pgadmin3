@@ -4,8 +4,8 @@
 <title>CREATE INDEX</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-creategroup.html" title="CREATE GROUP">
 <link rel="next" href="sql-createlanguage.html" title="CREATE LANGUAGE">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE INDEX &#8212; define a new index</p>
 </div>
-<a name="id2755906"></a><div class="refsynopsisdiv">
+<a name="id2775038"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ UNIQUE ] INDEX [ CONCURRENTLY ] <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> [ USING <em class="replaceable"><code>method</code></em> ]
     ( { <em class="replaceable"><code>column</code></em> | ( <em class="replaceable"><code>expression</code></em> ) } [ <em class="replaceable"><code>opclass</code></em> ] [, ...] )
@@ -26,7 +26,7 @@
     [ WHERE <em class="replaceable"><code>predicate</code></em> ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2755982"></a><h2>Description</h2>
+<a name="id2775114"></a><h2>Description</h2>
 <p>   <code class="command">CREATE INDEX</code> constructs an index <em class="replaceable"><code>index_name</code></em> on the specified table.
    Indexes are primarily used to enhance database performance (though
    inappropriate use can result in slower performance).
@@ -57,7 +57,7 @@
     can improve performance by creating an index on just that portion.
     Another possible application is to use <code class="literal">WHERE</code> with
     <code class="literal">UNIQUE</code> to enforce uniqueness over a subset of a
-    table.  See <a href="indexes-partial.html" title="11.7. Partial Indexes">Section 11.7, &#8220;Partial Indexes&#8221;</a> for more discussion.
+    table.  See <a class="xref" href="indexes-partial.html" title="11.7. Partial Indexes">Section 11.7, &#8220;Partial Indexes&#8221;</a> for more discussion.
   </p>
 <p>    The expression used in the <code class="literal">WHERE</code> clause may refer
     only to columns of the underlying table, but it can use all columns,
@@ -75,7 +75,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756117"></a><h2>Parameters</h2>
+<a name="id2775245"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">UNIQUE</code></span></dt>
 <dd><p>        Causes the system to check for
@@ -90,7 +90,7 @@
         updates, or deletes on the table; whereas a standard index build
         locks out writes (but not reads) on the table until it's done.
         There are several caveats to be aware of when using this option
-        &#8212; see <a href="sql-createindex.html#sql-createindex-concurrently" title="Building Indexes Concurrently">Building Indexes Concurrently</a>.
+        &#8212; see <a class="xref" href="sql-createindex.html#sql-createindex-concurrently" title="Building Indexes Concurrently">Building Indexes Concurrently</a>.
        </p></dd>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of the index to be created.  No schema name can be included
@@ -124,7 +124,7 @@
        </p></dd>
 <dt><span class="term"><em class="replaceable"><code>tablespace</code></em></span></dt>
 <dd><p>        The tablespace in which to create the index.  If not specified,
-        <a href="runtime-config-client.html#guc-default-tablespace">default_tablespace</a> is used, or the database's
+        <a class="xref" href="runtime-config-client.html#guc-default-tablespace">default_tablespace</a> is used, or the database's
         default tablespace if <code class="varname">default_tablespace</code> is an empty
         string.
        </p></dd>
@@ -157,7 +157,7 @@
 </div>
 <div class="refsect2" lang="en">
 <a name="sql-createindex-concurrently"></a><h3>Building Indexes Concurrently</h3>
-<a name="id2756379"></a><p>    Creating an index can interfere with regular operation of a database.
+<a name="id2775512"></a><p>    Creating an index can interfere with regular operation of a database.
     Normally <span class="productname">PostgreSQL</span> locks the table to be indexed against
     writes and performs the entire index build with a single scan of the
     table. Other transactions can still read the table, but if they try to
@@ -212,8 +212,8 @@
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756517"></a><h2>Notes</h2>
-<p>   See <a href="indexes.html" title="Chapter 11. Indexes">Chapter 11, <i>Indexes</i></a> for information about when indexes can
+<a name="id2775650"></a><h2>Notes</h2>
+<p>   See <a class="xref" href="indexes.html" title="Chapter 11. Indexes">Chapter 11, <i>Indexes</i></a> for information about when indexes can
    be used, when they are not used, and in which particular situations
    they can be useful.
   </p>
@@ -235,9 +235,9 @@
    type either by absolute value or by real part. We could do this by
    defining two operator classes for the data type and then selecting
    the proper class when making an index.  More information about
-   operator classes is in <a href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> and in <a href="xindex.html" title="33.14. Interfacing Extensions To Indexes">Section 33.14, &#8220;Interfacing Extensions To Indexes&#8221;</a>.
+   operator classes is in <a class="xref" href="indexes-opclass.html" title="11.8. Operator Classes">Section 11.8, &#8220;Operator Classes&#8221;</a> and in <a class="xref" href="xindex.html" title="33.14. Interfacing Extensions To Indexes">Section 33.14, &#8220;Interfacing Extensions To Indexes&#8221;</a>.
   </p>
-<p>   Use <a href="sql-dropindex.html" title="DROP INDEX">DROP INDEX</a>
+<p>   Use <a class="xref" href="sql-dropindex.html" title="DROP INDEX">DROP INDEX</a>
    to remove an index.
   </p>
 <p>   Indexes are not used for <code class="literal">IS NULL</code> clauses by default.
@@ -253,7 +253,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756622"></a><h2>Examples</h2>
+<a name="id2775755"></a><h2>Examples</h2>
 <p>   To create a B-tree index on the column <code class="literal">title</code> in
    the table <code class="literal">films</code>:
 </p>
@@ -285,15 +285,15 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756705"></a><h2>Compatibility</h2>
+<a name="id2775838"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE INDEX</code> is a
    <span class="productname">PostgreSQL</span> language extension.  There
    are no provisions for indexes in the SQL standard.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2756723"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alterindex.html" title="ALTER INDEX">ALTER INDEX</a>, <a href="sql-dropindex.html" title="DROP INDEX">DROP INDEX</a></span>
+<a name="id2775856"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-alterindex.html" title="ALTER INDEX">ALTER INDEX</a>, <a class="xref" href="sql-dropindex.html" title="DROP INDEX">DROP INDEX</a></span>
 </div>
 </div></body>
 </html>

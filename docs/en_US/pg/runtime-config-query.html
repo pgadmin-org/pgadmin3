@@ -4,19 +4,17 @@
 <title>17.6. Query Planning</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.4 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-wal.html" title="17.5. Write Ahead Log">
 <link rel="next" href="runtime-config-logging.html" title="17.7. Error Reporting and Logging">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="runtime-config-query"></a>17.6. Query Planning</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="runtime-config-query">17.6. Query Planning</h2></div></div></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-query-enable"></a>17.6.1. Planner Method Configuration</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-query-enable">17.6.1. Planner Method Configuration</h3></div></div></div>
 <p>       These configuration parameters provide a crude method of
        influencing the query plans chosen by the query optimizer. If
        the default plan chosen by the optimizer for a particular query
@@ -25,9 +23,9 @@
        choose a different plan.  Turning one of these settings off
        permanently is seldom a good idea, however.
        Better ways to improve the quality of the
-       plans chosen by the optimizer include adjusting the <a href="runtime-config-query.html#runtime-config-query-constants" title="17.6.2.  Planner Cost Constants">      Planner Cost Constants
-     </a>, running <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a> more
-       frequently, increasing the value of the <a href="runtime-config-query.html#guc-default-statistics-target">default_statistics_target</a> configuration parameter,
+       plans chosen by the optimizer include adjusting the <a class="xref" href="runtime-config-query.html#runtime-config-query-constants" title="17.6.2.  Planner Cost Constants">      Planner Cost Constants
+     </a>, running <a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a> more
+       frequently, increasing the value of the <a class="xref" href="runtime-config-query.html#guc-default-statistics-target">default_statistics_target</a> configuration parameter,
        and increasing the amount of statistics collected for
        specific columns using <code class="command">ALTER TABLE SET
        STATISTICS</code>.
@@ -99,8 +97,7 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-query-constants"></a>17.6.2.       Planner Cost Constants
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-query-constants">17.6.2.       Planner Cost Constants
      </h3></div></div></div>
 <p>     The <em class="firstterm">cost</em> variables described in this section are measured
      on an arbitrary scale.  Only their relative values matter, hence
@@ -197,8 +194,7 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-query-geqo"></a>17.6.3. Genetic Query Optimizer</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-query-geqo">17.6.3. Genetic Query Optimizer</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-geqo"></a><span class="term"><code class="varname">geqo</code> (<code class="type">boolean</code>)</span>
@@ -268,8 +264,7 @@
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-query-other"></a>17.6.4. Other Planner Options</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-query-other">17.6.4. Other Planner Options</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-default-statistics-target"></a><span class="term"><code class="varname">default_statistics_target</code> (<code class="type">integer</code>)</span>
@@ -280,7 +275,7 @@
         do <code class="command">ANALYZE</code>, but may improve the quality of the
         planner's estimates. The default is 10. For more information
         on the use of statistics by the <span class="productname">PostgreSQL</span>
-        query planner, refer to <a href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>.
+        query planner, refer to <a class="xref" href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>.
        </p></dd>
 <dt>
 <a name="guc-constraint-exclusion"></a><span class="term"><code class="varname">constraint_exclusion</code> (<code class="type">boolean</code>)</span>
@@ -320,7 +315,7 @@ SELECT * FROM parent WHERE key = 2400;</pre>
         using partitioned tables designed to take advantage of the
         feature.
        </p>
-<p>        Refer to <a href="ddl-partitioning.html" title="5.9. Partitioning">Section 5.9, &#8220;Partitioning&#8221;</a> for more information
+<p>        Refer to <a class="xref" href="ddl-partitioning.html" title="5.9. Partitioning">Section 5.9, &#8220;Partitioning&#8221;</a> for more information
         on using constraint exclusion and partitioning.
        </p>
 </dd>
@@ -331,8 +326,8 @@ SELECT * FROM parent WHERE key = 2400;</pre>
         resulting <code class="literal">FROM</code> list would have no more than
         this many items.  Smaller values reduce planning time but may
         yield inferior query plans.  The default is eight.  It is usually
-        wise to keep this less than <a href="runtime-config-query.html#guc-geqo-threshold">geqo_threshold</a>.
-        For more information see <a href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">Section 13.3, &#8220;Controlling the Planner with Explicit <code class="literal">JOIN</code> Clauses&#8221;</a>.
+        wise to keep this less than <a class="xref" href="runtime-config-query.html#guc-geqo-threshold">geqo_threshold</a>.
+        For more information see <a class="xref" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">Section 13.3, &#8220;Controlling the Planner with Explicit <code class="literal">JOIN</code> Clauses&#8221;</a>.
        </p></dd>
 <dt>
 <a name="guc-join-collapse-limit"></a><span class="term"><code class="varname">join_collapse_limit</code> (<code class="type">integer</code>)</span>
@@ -353,7 +348,7 @@ SELECT * FROM parent WHERE key = 2400;</pre>
         the optimal join order; advanced users may elect to
         temporarily set this variable to 1, and then specify the join
         order they desire explicitly.
-        For more information see <a href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">Section 13.3, &#8220;Controlling the Planner with Explicit <code class="literal">JOIN</code> Clauses&#8221;</a>.
+        For more information see <a class="xref" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">Section 13.3, &#8220;Controlling the Planner with Explicit <code class="literal">JOIN</code> Clauses&#8221;</a>.
        </p>
 </dd>
 </dl></div>
