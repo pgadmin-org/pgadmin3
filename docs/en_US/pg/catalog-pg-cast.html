@@ -4,21 +4,20 @@
 <title>41.8. pg_cast</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
 <link rel="prev" href="catalog-pg-attribute.html" title="41.7. pg_attribute">
 <link rel="next" href="catalog-pg-class.html" title="41.9. pg_class">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-cast"></a>41.8. <code class="structname">pg_cast</code></h2></div></div></div>
-<a name="id2774420"></a><p>   The catalog <code class="structname">pg_cast</code> stores data type conversion paths,
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalog-pg-cast">41.8. <code class="structname">pg_cast</code></h2></div></div></div>
+<a name="id2793456"></a><p>   The catalog <code class="structname">pg_cast</code> stores data type conversion paths,
    both built-in paths and those defined with <code class="command">CREATE CAST</code>.
   </p>
 <div class="table">
-<a name="id2774442"></a><p class="title"><b>Table 41.8. <code class="structfield">pg_cast</code> Columns</b></p>
+<a name="id2793478"></a><p class="title"><b>Table 41.8. <code class="structfield">pg_cast</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_cast Columns" border="1">
 <colgroup>
 <col>
@@ -36,19 +35,19 @@
 <tr>
 <td><code class="structfield">castsource</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>OID of the source data type</td>
 </tr>
 <tr>
 <td><code class="structfield">casttarget</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>OID of the target data type</td>
 </tr>
 <tr>
 <td><code class="structfield">castfunc</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>       The OID of the function to use to perform this cast.  Zero is
        stored if the data types are binary compatible (that is, no
        run-time operation is needed to perform the cast).

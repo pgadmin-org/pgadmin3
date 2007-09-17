@@ -4,17 +4,16 @@
 <title>Part II. The SQL Language</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
-<link rel="up" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
+<link rel="up" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="prev" href="tutorial-conclusion.html" title="3.6. Conclusion">
 <link rel="next" href="sql-syntax.html" title="Chapter 4. SQL Syntax">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" lang="en" id="sql">
-<div class="titlepage"><div><div><h1 class="title">
-<a name="sql"></a>Part II. The SQL Language</h1></div></div></div>
-<div class="partintro" lang="en" id="id2565462">
+<div class="titlepage"><div><div><h1 class="title">Part II. The SQL Language</h1></div></div></div>
+<div class="partintro" lang="en" id="id2584426">
 <div></div>
 <p>    This part describes the use of the <acronym class="acronym">SQL</acronym> language
     in <span class="productname">PostgreSQL</span>.  We start with
@@ -33,12 +32,12 @@
     chapters individually as they choose.  The information in this
     part is presented in a narrative fashion in topical units.
     Readers looking for a complete description of a particular command
-    should look into <a href="reference.html" title="Part VI. Reference">Part VI, &#8220;Reference&#8221;</a>.
+    should look into <a class="xref" href="reference.html" title="Part VI. Reference">Part VI, &#8220;Reference&#8221;</a>.
    </p>
 <p>    Readers of this part should know how to connect to a
     <span class="productname">PostgreSQL</span> database and issue
     <acronym class="acronym">SQL</acronym> commands.  Readers that are unfamiliar with
-    these issues are encouraged to read <a href="tutorial.html" title="Part I. Tutorial">Part I, &#8220;Tutorial&#8221;</a>
+    these issues are encouraged to read <a class="xref" href="tutorial.html" title="Part I. Tutorial">Part I, &#8220;Tutorial&#8221;</a>
     first.  <acronym class="acronym">SQL</acronym> commands are typically entered
     using the <span class="productname">PostgreSQL</span> interactive terminal
     <span class="application">psql</span>, but other programs that have
@@ -54,18 +53,18 @@
 <dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-identifiers">4.1.1. Identifiers and Key Words</a></span></dt>
 <dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-constants">4.1.2. Constants</a></span></dt>
 <dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-operators">4.1.3. Operators</a></span></dt>
-<dt><span class="sect2"><a href="sql-syntax.html#id2566917">4.1.4. Special Characters</a></span></dt>
+<dt><span class="sect2"><a href="sql-syntax.html#id2585881">4.1.4. Special Characters</a></span></dt>
 <dt><span class="sect2"><a href="sql-syntax.html#sql-syntax-comments">4.1.5. Comments</a></span></dt>
 <dt><span class="sect2"><a href="sql-syntax.html#sql-precedence">4.1.6. Lexical Precedence</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="sql-expressions.html">4.2. Value Expressions</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="sql-expressions.html#id2567676">4.2.1. Column References</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id2567747">4.2.2. Positional Parameters</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id2567805">4.2.3. Subscripts</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id2567887">4.2.4. Field Selection</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id2567929">4.2.5. Operator Invocations</a></span></dt>
-<dt><span class="sect2"><a href="sql-expressions.html#id2568033">4.2.6. Function Calls</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2586639">4.2.1. Column References</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2586711">4.2.2. Positional Parameters</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2586769">4.2.3. Subscripts</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2586851">4.2.4. Field Selection</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2586893">4.2.5. Operator Invocations</a></span></dt>
+<dt><span class="sect2"><a href="sql-expressions.html#id2586996">4.2.6. Function Calls</a></span></dt>
 <dt><span class="sect2"><a href="sql-expressions.html#syntax-aggregates">4.2.7. Aggregate Expressions</a></span></dt>
 <dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-type-casts">4.2.8. Type Casts</a></span></dt>
 <dt><span class="sect2"><a href="sql-expressions.html#sql-syntax-scalar-subqueries">4.2.9. Scalar Subqueries</a></span></dt>
@@ -80,24 +79,24 @@
 <dt><span class="sect1"><a href="ddl-default.html">5.2. Default Values</a></span></dt>
 <dt><span class="sect1"><a href="ddl-constraints.html">5.3. Constraints</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2569415">5.3.1. Check Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2569616">5.3.2. Not-Null Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2569746">5.3.3. Unique Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2569849">5.3.4. Primary Keys</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2588379">5.3.1. Check Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2588580">5.3.2. Not-Null Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2588710">5.3.3. Unique Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2588813">5.3.4. Primary Keys</a></span></dt>
 <dt><span class="sect2"><a href="ddl-constraints.html#ddl-constraints-fk">5.3.5. Foreign Keys</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ddl-system-columns.html">5.4. System Columns</a></span></dt>
 <dt><span class="sect1"><a href="ddl-inherit.html">5.5. Inheritance</a></span></dt>
 <dt><span class="sect1"><a href="ddl-alter.html">5.6. Modifying Tables</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ddl-alter.html#id2570977">5.6.1. Adding a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2571035">5.6.2. Removing a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2571088">5.6.3. Adding a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2571130">5.6.4. Removing a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2571202">5.6.5. Changing a Column's Default Value</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2571246">5.6.6. Changing a Column's Data Type</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2571298">5.6.7. Renaming a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2571320">5.6.8. Renaming a Table</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2589941">5.6.1. Adding a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2589999">5.6.2. Removing a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2590052">5.6.3. Adding a Constraint</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2590094">5.6.4. Removing a Constraint</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2590166">5.6.5. Changing a Column's Default Value</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2590210">5.6.6. Changing a Column's Data Type</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2590263">5.6.7. Renaming a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2590284">5.6.8. Renaming a Table</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ddl-priv.html">5.7. Privileges</a></span></dt>
 <dt><span class="sect1"><a href="ddl-schemas.html">5.8. Schemas</a></span></dt>
@@ -160,12 +159,12 @@
 <dt><span class="sect1"><a href="datatype-boolean.html">8.6. Boolean Type</a></span></dt>
 <dt><span class="sect1"><a href="datatype-geometric.html">8.7. Geometric Types</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2581961">8.7.1. Points</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2582005">8.7.2. Line Segments</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2582103">8.7.3. Boxes</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2582203">8.7.4. Paths</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2582324">8.7.5. Polygons</a></span></dt>
-<dt><span class="sect2"><a href="datatype-geometric.html#id2582412">8.7.6. Circles</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2600926">8.7.1. Points</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2600969">8.7.2. Line Segments</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2601067">8.7.3. Boxes</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2601168">8.7.4. Paths</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2601289">8.7.5. Polygons</a></span></dt>
+<dt><span class="sect2"><a href="datatype-geometric.html#id2601376">8.7.6. Circles</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="datatype-net-types.html">8.8. Network Address Types</a></span></dt>
 <dd><dl>
@@ -177,20 +176,20 @@
 <dt><span class="sect1"><a href="datatype-bit.html">8.9. Bit String Types</a></span></dt>
 <dt><span class="sect1"><a href="arrays.html">8.10. Arrays</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="arrays.html#id2583275">8.10.1. Declaration of Array Types</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2583383">8.10.2. Array Value Input</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2583575">8.10.3. Accessing Arrays</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2583765">8.10.4. Modifying Arrays</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2583984">8.10.5. Searching in Arrays</a></span></dt>
-<dt><span class="sect2"><a href="arrays.html#id2584035">8.10.6. Array Input and Output Syntax</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2602239">8.10.1. Declaration of Array Types</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2602347">8.10.2. Array Value Input</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2602540">8.10.3. Accessing Arrays</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2602730">8.10.4. Modifying Arrays</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2602948">8.10.5. Searching in Arrays</a></span></dt>
+<dt><span class="sect2"><a href="arrays.html#id2603000">8.10.6. Array Input and Output Syntax</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="rowtypes.html">8.11. Composite Types</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="rowtypes.html#id2584306">8.11.1. Declaration of Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2584404">8.11.2. Composite Value Input</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2584522">8.11.3. Accessing Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2584595">8.11.4. Modifying Composite Types</a></span></dt>
-<dt><span class="sect2"><a href="rowtypes.html#id2584655">8.11.5. Composite Type Input and Output Syntax</a></span></dt>
+<dt><span class="sect2"><a href="rowtypes.html#id2603271">8.11.1. Declaration of Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="rowtypes.html#id2603368">8.11.2. Composite Value Input</a></span></dt>
+<dt><span class="sect2"><a href="rowtypes.html#id2603487">8.11.3. Accessing Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="rowtypes.html#id2603559">8.11.4. Modifying Composite Types</a></span></dt>
+<dt><span class="sect2"><a href="rowtypes.html#id2603620">8.11.5. Composite Type Input and Output Syntax</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="datatype-oid.html">8.12. Object Identifier Types</a></span></dt>
 <dt><span class="sect1"><a href="datatype-pseudo.html">8.13. Pseudo-Types</a></span></dt>
@@ -222,28 +221,28 @@
 <dt><span class="sect1"><a href="functions-sequence.html">9.12. Sequence Manipulation Functions</a></span></dt>
 <dt><span class="sect1"><a href="functions-conditional.html">9.13. Conditional Expressions</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="functions-conditional.html#id2605979">9.13.1. <code class="literal">CASE</code></a></span></dt>
-<dt><span class="sect2"><a href="functions-conditional.html#id2606190">9.13.2. <code class="literal">COALESCE</code></a></span></dt>
-<dt><span class="sect2"><a href="functions-conditional.html#id2606253">9.13.3. <code class="literal">NULLIF</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-conditional.html#id2624944">9.13.1. <code class="literal">CASE</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-conditional.html#id2625155">9.13.2. <code class="literal">COALESCE</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-conditional.html#id2625217">9.13.3. <code class="literal">NULLIF</code></a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="functions-array.html">9.14. Array Functions and Operators</a></span></dt>
 <dt><span class="sect1"><a href="functions-aggregate.html">9.15. Aggregate Functions</a></span></dt>
 <dt><span class="sect1"><a href="functions-subquery.html">9.16. Subquery Expressions</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="functions-subquery.html#id2607890">9.16.1. <code class="literal">EXISTS</code></a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2608003">9.16.2. <code class="literal">IN</code></a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2608112">9.16.3. <code class="literal">NOT IN</code></a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2608223">9.16.4. <code class="literal">ANY</code>/<code class="literal">SOME</code></a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2608408">9.16.5. <code class="literal">ALL</code></a></span></dt>
-<dt><span class="sect2"><a href="functions-subquery.html#id2608561">9.16.6. Row-wise Comparison</a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2626854">9.16.1. <code class="literal">EXISTS</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2626968">9.16.2. <code class="literal">IN</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2627077">9.16.3. <code class="literal">NOT IN</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2627187">9.16.4. <code class="literal">ANY</code>/<code class="literal">SOME</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2627373">9.16.5. <code class="literal">ALL</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-subquery.html#id2627525">9.16.6. Row-wise Comparison</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="functions-comparisons.html">9.17. Row and Array Comparisons</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2608711">9.17.1. <code class="literal">IN</code></a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2608770">9.17.2. <code class="literal">NOT IN</code></a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2608856">9.17.3. <code class="literal">ANY</code>/<code class="literal">SOME</code> (array)</a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2608927">9.17.4. <code class="literal">ALL</code> (array)</a></span></dt>
-<dt><span class="sect2"><a href="functions-comparisons.html#id2608972">9.17.5. Row-wise Comparison</a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2627676">9.17.1. <code class="literal">IN</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2627735">9.17.2. <code class="literal">NOT IN</code></a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2627820">9.17.3. <code class="literal">ANY</code>/<code class="literal">SOME</code> (array)</a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2627892">9.17.4. <code class="literal">ALL</code> (array)</a></span></dt>
+<dt><span class="sect2"><a href="functions-comparisons.html#id2627937">9.17.5. Row-wise Comparison</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="functions-srf.html">9.18. Set Returning Functions</a></span></dt>
 <dt><span class="sect1"><a href="functions-info.html">9.19. System Information Functions</a></span></dt>

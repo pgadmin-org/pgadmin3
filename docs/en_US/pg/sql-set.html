@@ -4,8 +4,8 @@
 <title>SET</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-selectinto.html" title="SELECT INTO">
 <link rel="next" href="sql-set-constraints.html" title="SET CONSTRAINTS">
@@ -17,16 +17,16 @@
 <h2>Name</h2>
 <p>SET &#8212; change a run-time parameter</p>
 </div>
-<a name="id2748129"></a><div class="refsynopsisdiv">
+<a name="id2767156"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">SET [ SESSION | LOCAL ] <em class="replaceable"><code>name</code></em> { TO | = } { <em class="replaceable"><code>value</code></em> | '<em class="replaceable"><code>value</code></em>' | DEFAULT }
 SET [ SESSION | LOCAL ] TIME ZONE { <em class="replaceable"><code>timezone</code></em> | LOCAL | DEFAULT }</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2748163"></a><h2>Description</h2>
+<a name="id2767190"></a><h2>Description</h2>
 <p>   The <code class="command">SET</code> command changes run-time configuration
    parameters.  Many of the run-time parameters listed in
-   <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> can be changed on-the-fly with
+   <a class="xref" href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> can be changed on-the-fly with
    <code class="command">SET</code>.
    (But some require superuser privileges to change, and others cannot
    be changed after server or session start.)
@@ -52,7 +52,7 @@ SET [ SESSION | LOCAL ] TIME ZONE { <em class="replaceable"><code>timezone</code
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2748268"></a><h2>Parameters</h2>
+<a name="id2767294"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">SESSION</code></span></dt>
 <dd><p>      Specifies that the command takes effect for the current session.
@@ -69,7 +69,7 @@ SET [ SESSION | LOCAL ] TIME ZONE { <em class="replaceable"><code>timezone</code
      </p></dd>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      Name of a settable run-time parameter.  Available parameters are
-      documented in <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> and below.
+      documented in <a class="xref" href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> and below.
      </p></dd>
 <dt><span class="term"><em class="replaceable"><code>value</code></em></span></dt>
 <dd><p>      New value of parameter.  Values can be specified as string
@@ -78,7 +78,7 @@ SET [ SESSION | LOCAL ] TIME ZONE { <em class="replaceable"><code>timezone</code
       resetting the parameter to its default value.
      </p></dd>
 </dl></div>
-<p>   Besides the configuration parameters documented in <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>, there are a few that can only be
+<p>   Besides the configuration parameters documented in <a class="xref" href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>, there are a few that can only be
    adjusted using the <code class="command">SET</code> command or that have a
    special syntax:
 
@@ -135,8 +135,8 @@ SET [ SESSION | LOCAL ] TIME ZONE { <em class="replaceable"><code>timezone</code
 </dl></div>
 <p>
 
-       See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information
-       about time zones.  Also, <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a>
+       See <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information
+       about time zones.  Also, <a class="xref" href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a>
        has a list of the recognized names for time zones.
       </p>
 </dd>
@@ -145,13 +145,13 @@ SET [ SESSION | LOCAL ] TIME ZONE { <em class="replaceable"><code>timezone</code
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2748548"></a><h2>Notes</h2>
+<a name="id2767574"></a><h2>Notes</h2>
 <p>   The function <code class="function">set_config</code> provides equivalent
-   functionality. See <a href="functions-admin.html" title="9.20. System Administration Functions">Section 9.20, &#8220;System Administration Functions&#8221;</a>.
+   functionality. See <a class="xref" href="functions-admin.html" title="9.20. System Administration Functions">Section 9.20, &#8220;System Administration Functions&#8221;</a>.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2748563"></a><h2>Examples</h2>
+<a name="id2767590"></a><h2>Examples</h2>
 <p>   Set the schema search path:
 </p>
 <pre class="programlisting">SET search_path TO my_schema, public;</pre>
@@ -176,7 +176,7 @@ SET [ SESSION | LOCAL ] TIME ZONE { <em class="replaceable"><code>timezone</code
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2748610"></a><h2>Compatibility</h2>
+<a name="id2767636"></a><h2>Compatibility</h2>
 <p>   <code class="literal">SET TIME ZONE</code> extends syntax defined in the SQL
    standard.  The standard allows only numeric time zone offsets while
    <span class="productname">PostgreSQL</span> allows more flexible
@@ -185,8 +185,8 @@ SET [ SESSION | LOCAL ] TIME ZONE { <em class="replaceable"><code>timezone</code
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2748639"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-reset.html" title="RESET">RESET</a>, <a href="sql-show.html" title="SHOW">SHOW</a></span>
+<a name="id2767665"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-reset.html" title="RESET">RESET</a>, <a class="xref" href="sql-show.html" title="SHOW">SHOW</a></span>
 </div>
 </div></body>
 </html>

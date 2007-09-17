@@ -4,34 +4,33 @@
 <title>17.2. User Attributes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="user-manag.html" title="Chapter 17. Database Users and Privileges">
 <link rel="prev" href="user-manag.html" title="Chapter 17. Database Users and Privileges">
 <link rel="next" href="groups.html" title="17.3. Groups">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="user-attributes"></a>17.2. User Attributes</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="user-attributes">17.2. User Attributes</h2></div></div></div>
 <p>    A database user may have a number of attributes that define its
     privileges and interact with the client authentication system.
 
     </p>
 <div class="variablelist"><dl>
-<dt><span class="term">superuser<a name="id2637974"></a></span></dt>
+<dt><span class="term">superuser<a name="id2656942"></a></span></dt>
 <dd><p>        A database superuser bypasses all permission checks. Also,
         only a superuser can create new users. To create a database
         superuser, use <code class="literal">CREATE USER <em class="replaceable"><code>name</code></em>
         CREATEUSER</code>.
        </p></dd>
-<dt><span class="term">database creation<a name="id2637999"></a></span></dt>
+<dt><span class="term">database creation<a name="id2656968"></a></span></dt>
 <dd><p>        A user must be explicitly given permission to create databases
         (except for superusers, since those bypass all permission
         checks). To create such a user, use <code class="literal">CREATE USER
         <em class="replaceable"><code>name</code></em> CREATEDB</code>.
        </p></dd>
-<dt><span class="term">password<a name="id2638027"></a></span></dt>
+<dt><span class="term">password<a name="id2656996"></a></span></dt>
 <dd><p>        A password is only significant if the client authentication
         method requires the user to supply a password when connecting
         to the database. The <code class="option">password</code>,
@@ -45,11 +44,11 @@
 <p>
 
     A user's attributes can be modified after creation with
-    <code class="command">ALTER USER</code>.<a name="id2638074"></a>
-    See the reference pages for the <a href="sql-createuser.html" title="CREATE USER">CREATE USER</a> and <a href="sql-alteruser.html" title="ALTER USER">ALTER USER</a> commands for details.
+    <code class="command">ALTER USER</code>.<a name="id2657043"></a>
+    See the reference pages for the <a class="xref" href="sql-createuser.html" title="CREATE USER">CREATE USER</a> and <a class="xref" href="sql-alteruser.html" title="ALTER USER">ALTER USER</a> commands for details.
    </p>
 <p>   A user can also set personal defaults for many of the run-time
-   configuration settings described in <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>.  For example, if for some reason you
+   configuration settings described in <a class="xref" href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>.  For example, if for some reason you
    want to disable index scans (hint: not a good idea) anytime you
    connect, you can use
 </p>

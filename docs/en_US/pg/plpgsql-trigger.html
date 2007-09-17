@@ -4,17 +4,16 @@
 <title>35.10. Trigger Procedures</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-errors-and-messages.html" title="35.9. Errors and Messages">
 <link rel="next" href="plpgsql-porting.html" title="35.11. Porting from Oracle PL/SQL">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-trigger"></a>35.10. Trigger Procedures</h2></div></div></div>
-<a name="id2698301"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpgsql-trigger">35.10. Trigger Procedures</h2></div></div></div>
+<a name="id2717286"></a><p>        <span class="application">PL/pgSQL</span> can be used to define trigger
         procedures. A trigger procedure is created with the
         <code class="command">CREATE FUNCTION</code> command, declaring it as a function with
         no arguments and a return type of <code class="type">trigger</code>.  Note that
@@ -102,7 +101,7 @@
     always ignored; it may as well be null. However, any of these types of
     triggers can still abort the entire operation by raising an error.
    </p>
-<p>    <a href="plpgsql-trigger.html#plpgsql-trigger-example" title="Example 35.2. A PL/pgSQL Trigger Procedure">Example 35.2, &#8220;A <span class="application">PL/pgSQL</span> Trigger Procedure&#8221;</a> shows an example of a
+<p>    <a class="xref" href="plpgsql-trigger.html#plpgsql-trigger-example" title="Example 35.2. A PL/pgSQL Trigger Procedure">Example 35.2, &#8220;A <span class="application">PL/pgSQL</span> Trigger Procedure&#8221;</a> shows an example of a
     trigger procedure in <span class="application">PL/pgSQL</span>.
    </p>
 <div class="example">
@@ -149,7 +148,7 @@ CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
 <br class="example-break"><p>    Another way to log changes to a table involves creating a new table that
     holds a row for each insert, update, or delete that occurs. This approach
     can be thought of as auditing changes to a table.
-    <a href="plpgsql-trigger.html#plpgsql-trigger-audit-example" title="Example 35.3. A PL/pgSQL Trigger Procedure For Auditing">Example 35.3, &#8220;A <span class="application">PL/pgSQL</span> Trigger Procedure For Auditing&#8221;</a> shows an example of an
+    <a class="xref" href="plpgsql-trigger.html#plpgsql-trigger-audit-example" title="Example 35.3. A PL/pgSQL Trigger Procedure For Auditing">Example 35.3, &#8220;A <span class="application">PL/pgSQL</span> Trigger Procedure For Auditing&#8221;</a> shows an example of an
     audit trigger procedure in <span class="application">PL/pgSQL</span>.
    </p>
 <div class="example">
@@ -204,7 +203,7 @@ AFTER INSERT OR UPDATE OR DELETE ON emp
     times.
     This technique is commonly used in Data Warehousing, where the tables
     of measured or observed data (called fact tables) can be extremely large.
-    <a href="plpgsql-trigger.html#plpgsql-trigger-summary-example" title="Example 35.4. A PL/pgSQL Trigger Procedure For Maintaining A Summary Table">Example 35.4, &#8220;A <span class="application">PL/pgSQL</span> Trigger Procedure For Maintaining A Summary Table&#8221;</a> shows an example of a
+    <a class="xref" href="plpgsql-trigger.html#plpgsql-trigger-summary-example" title="Example 35.4. A PL/pgSQL Trigger Procedure For Maintaining A Summary Table">Example 35.4, &#8220;A <span class="application">PL/pgSQL</span> Trigger Procedure For Maintaining A Summary Table&#8221;</a> shows an example of a
     trigger procedure in <span class="application">PL/pgSQL</span> that maintains
     a summary table for a fact table in a data warehouse.
    </p>

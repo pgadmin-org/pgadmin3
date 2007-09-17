@@ -4,16 +4,15 @@
 <title>40.5. Planner/Optimizer</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="overview.html" title="Chapter 40. Overview of PostgreSQL Internals">
 <link rel="prev" href="rule-system.html" title="40.4. The PostgreSQL Rule System">
 <link rel="next" href="executor.html" title="40.6. Executor">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="planner-optimizer"></a>40.5. Planner/Optimizer</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="planner-optimizer">40.5. Planner/Optimizer</h2></div></div></div>
 <p>    The task of the <em class="firstterm">planner/optimizer</em> is to
     create an optimal execution plan. A given SQL query (and hence, a
     query tree) can be actually executed in a wide variety of
@@ -29,7 +28,7 @@
      space. In particular, this occurs when executing queries
      involving large numbers of join operations. In order to determine
      a reasonable (not optimal) query plan in a reasonable amount of
-     time, <span class="productname">PostgreSQL</span> uses a <a href="geqo.html" title="Chapter 46. Genetic Query Optimizer">Genetic Query Optimizer</a>.
+     time, <span class="productname">PostgreSQL</span> uses a <a class="xref" href="geqo.html" title="Chapter 46. Genetic Query Optimizer">Genetic Query Optimizer</a>.
     </p>
 </div>
 <p>    The planner's search procedure actually works with data structures
@@ -42,8 +41,7 @@
     and plans.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2772060"></a>40.5.1. Generating Possible Plans</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2791089">40.5.1. Generating Possible Plans</h3></div></div></div>
 <p>     The planner/optimizer starts by generating plans for scanning each
      individual relation (table) used in the query.  The possible plans
      are determined by the available indexes on each relation.

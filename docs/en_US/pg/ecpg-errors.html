@@ -4,23 +4,21 @@
 <title>29.9. Error Handling</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 29. ECPG - Embedded SQL in C">
 <link rel="prev" href="ecpg-descriptors.html" title="29.8. Using SQL Descriptor Areas">
 <link rel="next" href="ecpg-include.html" title="29.10. Including Files">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ecpg-errors"></a>29.9. Error Handling</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ecpg-errors">29.9. Error Handling</h2></div></div></div>
 <p>   This section describes how you can handle exceptional conditions
    and warnings in an embedded SQL program.  There are several
    nonexclusive facilities for this.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2666098"></a>29.9.1. Setting Callbacks</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2685077">29.9.1. Setting Callbacks</h3></div></div></div>
 <p>    One simple method to catch errors and warnings is to set a
     specific action to be executed whenever a particular condition
     occurs.  In general:
@@ -141,8 +139,7 @@ static void set_error_handler(void)
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2666370"></a>29.9.2. sqlca</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2685349">29.9.2. sqlca</h3></div></div></div>
 <p>    For more powerful error handling, the embedded SQL interface
     provides a global variable with the name <code class="varname">sqlca</code>
     that has the following structure:
@@ -225,8 +222,7 @@ static void set_error_handler(void)
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2666616"></a>29.9.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2685595">29.9.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></h3></div></div></div>
 <p>    The fields <code class="literal">sqlca.sqlstate</code> and
     <code class="literal">sqlca.sqlcode</code> are two different schemes that
     provide error codes.  Both are specified in the SQL standard, but
@@ -248,7 +244,7 @@ static void set_error_handler(void)
     <code class="literal">SQLSTATE</code> error codes; therefore a high degree
     of consistency can be achieved by using this error code scheme
     throughout all applications.  For further information see
-    <a href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">Appendix A, <i><span class="productname">PostgreSQL</span> Error Codes</i></a>.
+    <a class="xref" href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">Appendix A, <i><span class="productname">PostgreSQL</span> Error Codes</i></a>.
    </p>
 <p>    <code class="literal">SQLCODE</code>, the deprecated error code scheme, is a
     simple integer.  A value of 0 indicates success, a positive value
@@ -267,7 +263,7 @@ static void set_error_handler(void)
     <code class="literal">SQLSTATE</code> is also listed.  There is, however, no
     one-to-one or one-to-many mapping between the two schemes (indeed
     it is many-to-many), so you should consult the global
-    <code class="literal">SQLSTATE</code> listing in <a href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">Appendix A, <i><span class="productname">PostgreSQL</span> Error Codes</i></a>
+    <code class="literal">SQLSTATE</code> listing in <a class="xref" href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">Appendix A, <i><span class="productname">PostgreSQL</span> Error Codes</i></a>
     in each case.
    </p>
 <p>    These are the assigned <code class="literal">SQLCODE</code> values:

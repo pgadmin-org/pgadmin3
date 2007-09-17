@@ -4,8 +4,8 @@
 <title>CREATE DATABASE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createconversion.html" title="CREATE CONVERSION">
 <link rel="next" href="sql-createdomain.html" title="CREATE DOMAIN">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE DATABASE &#8212; create a new database</p>
 </div>
-<a name="id2720754"></a><div class="refsynopsisdiv">
+<a name="id2739779"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE DATABASE <em class="replaceable"><code>name</code></em>
     [ [ WITH ] [ OWNER [=] <em class="replaceable"><code>dbowner</code></em> ]
@@ -26,13 +26,13 @@
            [ TABLESPACE [=] <em class="replaceable"><code>tablespace</code></em> ] ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2720800"></a><h2>Description</h2>
+<a name="id2739826"></a><h2>Description</h2>
 <p>   <code class="command">CREATE DATABASE</code> creates a new
    <span class="productname">PostgreSQL</span> database.
   </p>
 <p>   To create a database, you must be a superuser or have the special
    <code class="literal">CREATEDB</code> privilege.
-   See <a href="sql-createuser.html" title="CREATE USER">CREATE USER</a>.
+   See <a class="xref" href="sql-createuser.html" title="CREATE USER">CREATE USER</a>.
   </p>
 <p>   Normally, the creator becomes the owner of the new database.
    Superusers can create databases owned by other users using the
@@ -53,7 +53,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2720900"></a><h2>Parameters</h2>
+<a name="id2739926"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of a database to create.
@@ -74,7 +74,7 @@
         or an integer encoding number, or <code class="literal">DEFAULT</code>
         to use the default encoding. The character sets supported by the
         <span class="productname">PostgreSQL</span> server are described in
-        <a href="multibyte.html#multibyte-charset-supported" title="20.2.1. Supported Character Sets">Section 20.2.1, &#8220;Supported Character Sets&#8221;</a>.
+        <a class="xref" href="multibyte.html#multibyte-charset-supported" title="20.2.1. Supported Character Sets">Section 20.2.1, &#8220;Supported Character Sets&#8221;</a>.
        </p></dd>
 <dt><span class="term"><em class="replaceable"><code>tablespace</code></em></span></dt>
 <dd><p>        The name of the tablespace that will be associated with the
@@ -82,7 +82,7 @@
         template database's tablespace. This
         tablespace will be the default tablespace used for objects
         created in this database. See
-        <a href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a>
+        <a class="xref" href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a>
         for more information.
        </p></dd>
 </dl></div>
@@ -91,7 +91,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2721032"></a><h2>Notes</h2>
+<a name="id2740057"></a><h2>Notes</h2>
 <p>    <code class="command">CREATE DATABASE</code> cannot be executed inside a transaction
     block.
    </p>
@@ -99,20 +99,20 @@
     are most likely related to insufficient permissions on the data
     directory, a full disk, or other file system problems.
    </p>
-<p>    Use <a href="sql-dropdatabase.html" title="DROP DATABASE">DROP DATABASE</a> to remove a database.
+<p>    Use <a class="xref" href="sql-dropdatabase.html" title="DROP DATABASE">DROP DATABASE</a> to remove a database.
    </p>
-<p>    The program <a href="app-createdb.html" title="createdb"><span class="application">createdb</span></a> is a
+<p>    The program <a class="xref" href="app-createdb.html" title="createdb"><span class="application">createdb</span></a> is a
     wrapper program around this command, provided for convenience.
    </p>
 <p>   Although it is possible to copy a database other than <code class="literal">template1</code>
    by specifying its name as the template, this is not (yet) intended as
    a general-purpose &#8220;<span class="quote"><code class="command">COPY DATABASE</code></span>&#8221; facility.
    We recommend that databases used as templates be treated as read-only.
-   See <a href="manage-ag-templatedbs.html" title="18.3. Template Databases">Section 18.3, &#8220;Template Databases&#8221;</a> for more information.
+   See <a class="xref" href="manage-ag-templatedbs.html" title="18.3. Template Databases">Section 18.3, &#8220;Template Databases&#8221;</a> for more information.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2721105"></a><h2>Examples</h2>
+<a name="id2740131"></a><h2>Examples</h2>
 <p>   To create a new database:
 
 </p>
@@ -135,7 +135,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2721161"></a><h2>Compatibility</h2>
+<a name="id2740187"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">CREATE DATABASE</code> statement in the SQL
    standard.  Databases are equivalent to catalogs, whose creation is
    implementation-defined.

@@ -4,8 +4,8 @@
 <title>CREATE LANGUAGE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createindex.html" title="CREATE INDEX">
 <link rel="next" href="sql-createoperator.html" title="CREATE OPERATOR">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>CREATE LANGUAGE &#8212; define a new procedural language</p>
 </div>
-<a name="id2723320"></a><div class="refsynopsisdiv">
+<a name="id2742362"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ TRUSTED ] [ PROCEDURAL ] LANGUAGE <em class="replaceable"><code>name</code></em>
     HANDLER <em class="replaceable"><code>call_handler</code></em> [ VALIDATOR <em class="replaceable"><code>valfunction</code></em> ]</pre>
@@ -34,7 +34,7 @@
   </p>
 <p>   <code class="command">CREATE LANGUAGE</code> effectively associates the
    language name with a call handler that is responsible for executing
-   functions written in the language.  Refer to <a href="xplang.html" title="Chapter 34. Procedural Languages">Chapter 34, <i>Procedural Languages</i></a>
+   functions written in the language.  Refer to <a class="xref" href="xplang.html" title="Chapter 34. Procedural Languages">Chapter 34, <i>Procedural Languages</i></a>
    for more information about language call handlers.
   </p>
 <p>   Note that procedural languages are local to individual databases.
@@ -105,7 +105,7 @@
 <a name="sql-createlanguage-notes"></a><h2>Notes</h2>
 <p>   This command normally should not be executed directly by users.
    For the procedural languages supplied in the
-   <span class="productname">PostgreSQL</span> distribution, the <a href="app-createlang.html" title="createlang"><span class="refentrytitle"><a name="app-createlang-title"></a><span class="application">createlang</span></span></a> program should be used, which will also
+   <span class="productname">PostgreSQL</span> distribution, the <a class="xref" href="app-createlang.html" title="createlang"><span class="refentrytitle"><a name="app-createlang-title"></a><span class="application">createlang</span></span></a> program should be used, which will also
    install the correct call handler.  (<code class="command">createlang</code>
    will call <code class="command">CREATE LANGUAGE</code> internally.)
   </p>
@@ -117,12 +117,12 @@
    declared as returning <code class="type">opaque</code>, but it will issue a notice and
    change the function's declared return type to <code class="type">language_handler</code>.
   </p>
-<p>   Use the <a href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a> command to create a new
+<p>   Use the <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a> command to create a new
    function.
   </p>
-<p>   Use <a href="sql-droplanguage.html" title="DROP LANGUAGE">DROP LANGUAGE</a>, or better yet the <a href="app-droplang.html" title="droplang"><span class="refentrytitle"><a name="app-droplang-title"></a><span class="application">droplang</span></span></a> program, to drop procedural languages.
+<p>   Use <a class="xref" href="sql-droplanguage.html" title="DROP LANGUAGE">DROP LANGUAGE</a>, or better yet the <a class="xref" href="app-droplang.html" title="droplang"><span class="refentrytitle"><a name="app-droplang-title"></a><span class="application">droplang</span></span></a> program, to drop procedural languages.
   </p>
-<p>   The system catalog <code class="classname">pg_language</code> (see <a href="catalog-pg-language.html" title="41.18. pg_language">Section 41.18, &#8220;<code class="structname">pg_language</code>&#8221;</a>) records information about the
+<p>   The system catalog <code class="classname">pg_language</code> (see <a class="xref" href="catalog-pg-language.html" title="41.18. pg_language">Section 41.18, &#8220;<code class="structname">pg_language</code>&#8221;</a>) records information about the
    currently installed languages.  Also <code class="command">createlang</code>
    has an option to list the installed languages.
   </p>
@@ -152,8 +152,8 @@ CREATE LANGUAGE plsample
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2723760"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-alterlanguage.html" title="ALTER LANGUAGE">ALTER LANGUAGE</a>, <a href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>, <a href="sql-droplanguage.html" title="DROP LANGUAGE">DROP LANGUAGE</a>, <a href="sql-grant.html" title="GRANT">GRANT</a>, <a href="sql-revoke.html" title="REVOKE">REVOKE</a>, <a href="app-createlang.html" title="createlang"><span class="application">createlang</span></a>, <a href="app-droplang.html" title="droplang"><span class="application">droplang</span></a></span>
+<a name="id2742802"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-alterlanguage.html" title="ALTER LANGUAGE">ALTER LANGUAGE</a>, <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>, <a class="xref" href="sql-droplanguage.html" title="DROP LANGUAGE">DROP LANGUAGE</a>, <a class="xref" href="sql-grant.html" title="GRANT">GRANT</a>, <a class="xref" href="sql-revoke.html" title="REVOKE">REVOKE</a>, <a class="xref" href="app-createlang.html" title="createlang"><span class="application">createlang</span></a>, <a class="xref" href="app-droplang.html" title="droplang"><span class="application">droplang</span></a></span>
 </div>
 </div></body>
 </html>

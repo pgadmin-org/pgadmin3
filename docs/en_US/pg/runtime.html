@@ -4,16 +4,15 @@
 <title>Chapter 16. Server Run-time Environment</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="install-win32.html" title="Chapter 15. Client-Only Installation on Windows">
 <link rel="next" href="creating-cluster.html" title="16.2. Creating a Database Cluster">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="runtime">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="runtime"></a>Chapter 16. Server Run-time Environment</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 16. Server Run-time Environment</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -44,8 +43,8 @@
 <dt><span class="sect1"><a href="kernel-resources.html">16.5. Managing Kernel Resources</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="kernel-resources.html#sysvipc">16.5.1. Shared Memory and Semaphores</a></span></dt>
-<dt><span class="sect2"><a href="kernel-resources.html#id2636544">16.5.2. Resource Limits</a></span></dt>
-<dt><span class="sect2"><a href="kernel-resources.html#id2636724">16.5.3. Linux Memory Overcommit</a></span></dt>
+<dt><span class="sect2"><a href="kernel-resources.html#id2655512">16.5.2. Resource Limits</a></span></dt>
+<dt><span class="sect2"><a href="kernel-resources.html#id2655692">16.5.3. Linux Memory Overcommit</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="postmaster-shutdown.html">16.6. Shutting Down the Server</a></span></dt>
 <dt><span class="sect1"><a href="encryption-options.html">16.7. Encryption Options</a></span></dt>
@@ -57,9 +56,8 @@
   and its interactions with the operating system.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="postgres-user"></a>16.1. The <span class="productname">PostgreSQL</span> User Account</h2></div></div></div>
-<a name="id2624568"></a><p>   As with any other server daemon that is accessible to the outside world,
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="postgres-user">16.1. The <span class="productname">PostgreSQL</span> User Account</h2></div></div></div>
+<a name="id2643532"></a><p>   As with any other server daemon that is accessible to the outside world,
    it is advisable to run <span class="productname">PostgreSQL</span> under a
    separate user account. This user account should only own the data
    that is managed by the server, and should not be shared with other

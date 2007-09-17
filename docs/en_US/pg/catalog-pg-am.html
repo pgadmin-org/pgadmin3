@@ -4,22 +4,21 @@
 <title>41.3. pg_am</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
 <link rel="prev" href="catalog-pg-aggregate.html" title="41.2. pg_aggregate">
 <link rel="next" href="catalog-pg-amop.html" title="41.4. pg_amop">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-am"></a>41.3. <code class="structname">pg_am</code></h2></div></div></div>
-<a name="id2773096"></a><p>   The catalog <code class="structname">pg_am</code> stores information about index access
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalog-pg-am">41.3. <code class="structname">pg_am</code></h2></div></div></div>
+<a name="id2792132"></a><p>   The catalog <code class="structname">pg_am</code> stores information about index access
    methods.  There is one row for each index access method supported by
    the system.
   </p>
 <div class="table">
-<a name="id2773113"></a><p class="title"><b>Table 41.3. <code class="structname">pg_am</code> Columns</b></p>
+<a name="id2792150"></a><p class="title"><b>Table 41.3. <code class="structname">pg_am</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_am Columns" border="1">
 <colgroup>
 <col>
@@ -43,7 +42,7 @@
 <tr>
 <td><code class="structfield">amowner</code></td>
 <td><code class="type">int4</code></td>
-<td><code class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><code class="structname">pg_shadow</code></a>.usesysid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-shadow.html" title="41.26. pg_shadow"><code class="structname">pg_shadow</code></a>.usesysid</code></td>
 <td>User ID of the owner (currently not used)</td>
 </tr>
 <tr>
@@ -92,67 +91,67 @@
 <tr>
 <td><code class="structfield">amgettuple</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>&#8220;<span class="quote">Next valid tuple</span>&#8221; function</td>
 </tr>
 <tr>
 <td><code class="structfield">aminsert</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>&#8220;<span class="quote">Insert this tuple</span>&#8221; function</td>
 </tr>
 <tr>
 <td><code class="structfield">ambeginscan</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>&#8220;<span class="quote">Start new scan</span>&#8221; function</td>
 </tr>
 <tr>
 <td><code class="structfield">amrescan</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>&#8220;<span class="quote">Restart this scan</span>&#8221; function</td>
 </tr>
 <tr>
 <td><code class="structfield">amendscan</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>&#8220;<span class="quote">End this scan</span>&#8221; function</td>
 </tr>
 <tr>
 <td><code class="structfield">ammarkpos</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>&#8220;<span class="quote">Mark current scan position</span>&#8221; function</td>
 </tr>
 <tr>
 <td><code class="structfield">amrestrpos</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>&#8220;<span class="quote">Restore marked scan position</span>&#8221; function</td>
 </tr>
 <tr>
 <td><code class="structfield">ambuild</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>&#8220;<span class="quote">Build new index</span>&#8221; function</td>
 </tr>
 <tr>
 <td><code class="structfield">ambulkdelete</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Bulk-delete function</td>
 </tr>
 <tr>
 <td><code class="structfield">amvacuumcleanup</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Post-<code class="command">VACUUM</code> cleanup function</td>
 </tr>
 <tr>
 <td><code class="structfield">amcostestimate</code></td>
 <td><code class="type">regproc</code></td>
-<td><code class="literal"><a href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-proc.html" title="41.24. pg_proc"><code class="structname">pg_proc</code></a>.oid</code></td>
 <td>Function to estimate cost of an index scan</td>
 </tr>
 </tbody>

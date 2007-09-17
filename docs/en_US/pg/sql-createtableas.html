@@ -4,8 +4,8 @@
 <title>CREATE TABLE AS</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createtable.html" title="CREATE TABLE">
 <link rel="next" href="sql-createtablespace.html" title="CREATE TABLESPACE">
@@ -17,13 +17,13 @@
 <h2>Name</h2>
 <p>CREATE TABLE AS &#8212; define a new table from the results of a query</p>
 </div>
-<a name="id2728614"></a><div class="refsynopsisdiv">
+<a name="id2747659"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em> [ (<em class="replaceable"><code>column_name</code></em> [, ...] ) ] [ [ WITH | WITHOUT ] OIDS ]
     AS <em class="replaceable"><code>query</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2728641"></a><h2>Description</h2>
+<a name="id2747686"></a><h2>Description</h2>
 <p>   <code class="command">CREATE TABLE AS</code> creates a table and fills it
    with data computed by a <code class="command">SELECT</code> command or an
    <code class="command">EXECUTE</code> that runs a prepared
@@ -42,17 +42,17 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2728701"></a><h2>Parameters</h2>
+<a name="id2747746"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">GLOBAL</code> or <code class="literal">LOCAL</code></span></dt>
-<dd><p>      Ignored for compatibility. Refer to <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for
+<dd><p>      Ignored for compatibility. Refer to <a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for
       details.
      </p></dd>
 </dl></div>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd><p>      If specified, the table is created as a temporary table.
-      Refer to <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for details.
+      Refer to <a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for details.
      </p></dd>
 <dt><span class="term"><em class="replaceable"><code>table_name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of the table to be created.
@@ -70,20 +70,20 @@
 <dd><p>       This optional clause specifies whether the table created by
        <code class="command">CREATE TABLE AS</code> should include OIDs. If
        neither form of this clause is specified, the value of the
-       <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a> configuration parameter is
+       <a class="xref" href="runtime-config.html#guc-default-with-oids">default_with_oids</a> configuration parameter is
        used.
       </p></dd>
 <dt><span class="term"><em class="replaceable"><code>query</code></em></span></dt>
 <dd><p>      A query statement (that is, a <code class="command">SELECT</code> command
       or an <code class="command">EXECUTE</code> command that runs a prepared
-      <code class="command">SELECT</code> command).  Refer to <a href="sql-select.html" title="SELECT">SELECT</a> or <a href="sql-execute.html" title="EXECUTE">EXECUTE</a>,
+      <code class="command">SELECT</code> command).  Refer to <a class="xref" href="sql-select.html" title="SELECT">SELECT</a> or <a class="xref" href="sql-execute.html" title="EXECUTE">EXECUTE</a>,
       respectively, for a description of the allowed syntax.
      </p></dd>
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2728869"></a><h2>Notes</h2>
-<p>   This command is functionally similar to <a href="sql-selectinto.html" title="SELECT INTO">SELECT INTO</a>, but it is
+<a name="id2747914"></a><h2>Notes</h2>
+<p>   This command is functionally similar to <a class="xref" href="sql-selectinto.html" title="SELECT INTO">SELECT INTO</a>, but it is
    preferred since it is less likely to be confused with other uses of
    the <code class="command">SELECT INTO</code> syntax. Furthermore, <code class="command">CREATE
    TABLE AS</code> offers a superset of the functionality offered
@@ -95,7 +95,7 @@
    the <code class="command">CREATE TABLE AS</code> command allows the user to
    explicitly specify whether OIDs should be included. If the
    presence of OIDs is not explicitly specified,
-   the <a href="runtime-config.html#guc-default-with-oids">default_with_oids</a> configuration variable is
+   the <a class="xref" href="runtime-config.html#guc-default-with-oids">default_with_oids</a> configuration variable is
    used. While this variable currently defaults to true, the default
    value may be changed in the future. Therefore, applications that
    require OIDs in the table created by <code class="command">CREATE TABLE
@@ -105,7 +105,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2728967"></a><h2>Examples</h2>
+<a name="id2748012"></a><h2>Examples</h2>
 <p>   Create a new table <code class="literal">films_recent</code> consisting of only
    recent entries from the table <code class="literal">films</code>:
 
@@ -116,7 +116,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2728994"></a><h2>Compatibility</h2>
+<a name="id2748039"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE TABLE AS</code> is specified by the SQL:2003
    standard. There are some small differences between the definition
    of the command in SQL:2003 and its implementation in
@@ -139,8 +139,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2729063"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>, <a href="sql-execute.html" title="EXECUTE">EXECUTE</a>, <a href="sql-select.html" title="SELECT">SELECT</a>, <a href="sql-selectinto.html" title="SELECT INTO">SELECT INTO</a></span>
+<a name="id2748108"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>, <a class="xref" href="sql-execute.html" title="EXECUTE">EXECUTE</a>, <a class="xref" href="sql-select.html" title="SELECT">SELECT</a>, <a class="xref" href="sql-selectinto.html" title="SELECT INTO">SELECT INTO</a></span>
 </div>
 </div></body>
 </html>

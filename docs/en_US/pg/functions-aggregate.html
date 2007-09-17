@@ -4,21 +4,20 @@
 <title>9.15. Aggregate Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-array.html" title="9.14. Array Functions and Operators">
 <link rel="next" href="functions-subquery.html" title="9.16. Subquery Expressions">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-aggregate"></a>9.15. Aggregate Functions</h2></div></div></div>
-<a name="id2606974"></a><p>   <em class="firstterm">Aggregate functions</em> compute a single result
-   value from a set of input values.  <a href="functions-aggregate.html#functions-aggregate-table" title="Table 9.37. Aggregate Functions">Table 9.37, &#8220;Aggregate Functions&#8221;</a> shows the built-in aggregate
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="functions-aggregate">9.15. Aggregate Functions</h2></div></div></div>
+<a name="id2625938"></a><p>   <em class="firstterm">Aggregate functions</em> compute a single result
+   value from a set of input values.  <a class="xref" href="functions-aggregate.html#functions-aggregate-table" title="Table 9.37. Aggregate Functions">Table 9.37, &#8220;Aggregate Functions&#8221;</a> shows the built-in aggregate
    functions.  The special syntax considerations for aggregate
-   functions are explained in <a href="sql-expressions.html#syntax-aggregates" title="4.2.7. Aggregate Expressions">Section 4.2.7, &#8220;Aggregate Expressions&#8221;</a>.
-   Consult <a href="tutorial-agg.html" title="2.7. Aggregate Functions">Section 2.7, &#8220;Aggregate Functions&#8221;</a> for additional introductory
+   functions are explained in <a class="xref" href="sql-expressions.html#syntax-aggregates" title="4.2.7. Aggregate Expressions">Section 4.2.7, &#8220;Aggregate Expressions&#8221;</a>.
+   Consult <a class="xref" href="tutorial-agg.html" title="2.7. Aggregate Functions">Section 2.7, &#8220;Aggregate Functions&#8221;</a> for additional introductory
    information.
   </p>
 <div class="table">
@@ -38,7 +37,7 @@
 </tr></thead>
 <tbody>
 <tr>
-<td>       <a name="id2607041"></a>
+<td>       <a name="id2626006"></a>
        <code class="function">avg(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">integer</code>,
@@ -52,7 +51,7 @@
 <td>the average (arithmetic mean) of all input values</td>
 </tr>
 <tr>
-<td>       <a name="id2607104"></a>
+<td>       <a name="id2626068"></a>
        <code class="function">bit_and(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">integer</code>, <code class="type">bigint</code>, or
@@ -63,7 +62,7 @@
 <td>the bitwise AND of all non-null input values, or null if none</td>
 </tr>
 <tr>
-<td>       <a name="id2607148"></a>
+<td>       <a name="id2626112"></a>
        <code class="function">bit_or(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">integer</code>, <code class="type">bigint</code>, or
@@ -74,7 +73,7 @@
 <td>the bitwise OR of all non-null input values, or null if none</td>
 </tr>
 <tr>
-<td>       <a name="id2607192"></a>
+<td>       <a name="id2626156"></a>
        <code class="function">bool_and(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">bool</code>
@@ -84,7 +83,7 @@
 <td>true if all input values are true, otherwise false</td>
 </tr>
 <tr>
-<td>       <a name="id2607227"></a>
+<td>       <a name="id2626192"></a>
        <code class="function">bool_or(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">bool</code>
@@ -107,7 +106,7 @@
       </td>
 </tr>
 <tr>
-<td>       <a name="id2607305"></a>
+<td>       <a name="id2626269"></a>
        <code class="function">every(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">bool</code>
@@ -134,7 +133,7 @@
       </td>
 </tr>
 <tr>
-<td>       <a name="id2607399"></a>
+<td>       <a name="id2626364"></a>
        <code class="function">stddev(<em class="replaceable"><code>expression</code></em>)</code>
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">integer</code>,
@@ -162,7 +161,7 @@
 <td>sum of <em class="replaceable"><code>expression</code></em> across all input values</td>
 </tr>
 <tr>
-<td>       <a name="id2607533"></a>
+<td>       <a name="id2626497"></a>
        <code class="function">variance</code>(<em class="replaceable"><code>expression</code></em>)
       </td>
 <td>       <code class="type">smallint</code>, <code class="type">integer</code>,
@@ -185,7 +184,7 @@
   </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<a name="id2607614"></a><a name="id2607619"></a><p>      Boolean aggregates <code class="function">bool_and</code> and 
+<a name="id2626578"></a><a name="id2626584"></a><p>      Boolean aggregates <code class="function">bool_and</code> and 
       <code class="function">bool_or</code> correspond to standard SQL aggregates
       <code class="function">every</code> and <code class="function">any</code> or
       <code class="function">some</code>. 

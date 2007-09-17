@@ -4,17 +4,16 @@
 <title>9.13. Conditional Expressions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">
 <link rel="next" href="functions-array.html" title="9.14. Array Functions and Operators">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="functions-conditional"></a>9.13. Conditional Expressions</h2></div></div></div>
-<a name="id2605948"></a><a name="id2605954"></a><p>   This section describes the <acronym class="acronym">SQL</acronym>-compliant conditional expressions
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="functions-conditional">9.13. Conditional Expressions</h2></div></div></div>
+<a name="id2624913"></a><a name="id2624919"></a><p>   This section describes the <acronym class="acronym">SQL</acronym>-compliant conditional expressions
    available in <span class="productname">PostgreSQL</span>.
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -25,8 +24,7 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2605979"></a>9.13.1. <code class="literal">CASE</code></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2624944">9.13.1. <code class="literal">CASE</code></h3></div></div></div>
 <p>   The <acronym class="acronym">SQL</acronym> <code class="token">CASE</code> expression is a
    generic conditional expression, similar to if/else statements in
    other languages:
@@ -77,7 +75,7 @@ SELECT a,
    </p>
 <p>   The data types of all the <em class="replaceable"><code>result</code></em>
    expressions must be convertible to a single output type.
-   See <a href="typeconv-union-case.html" title="10.5. UNION, CASE, and ARRAY Constructs">Section 10.5, &#8220;<code class="literal">UNION</code>, <code class="literal">CASE</code>, and <code class="literal">ARRAY</code> Constructs&#8221;</a> for more detail.
+   See <a class="xref" href="typeconv-union-case.html" title="10.5. UNION, CASE, and ARRAY Constructs">Section 10.5, &#8220;<code class="literal">UNION</code>, <code class="literal">CASE</code>, and <code class="literal">ARRAY</code> Constructs&#8221;</a> for more detail.
   </p>
 <p>   The following &#8220;<span class="quote">simple</span>&#8221; <code class="token">CASE</code> expression is a
    specialized variant of the general form above:
@@ -124,9 +122,8 @@ END</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2606190"></a>9.13.2. <code class="literal">COALESCE</code></h3></div></div></div>
-<a name="id2606197"></a><pre class="synopsis"><code class="function">COALESCE</code>(<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
+<div class="titlepage"><div><div><h3 class="title" id="id2625155">9.13.2. <code class="literal">COALESCE</code></h3></div></div></div>
+<a name="id2625162"></a><pre class="synopsis"><code class="function">COALESCE</code>(<em class="replaceable"><code>value</code></em> [<span class="optional">, ...</span>])</pre>
 <p>   The <code class="function">COALESCE</code> function returns the first of its
    arguments that is not null.  Null is returned only if all arguments
    are null.  This is often useful to substitute a
@@ -143,9 +140,8 @@ END</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2606253"></a>9.13.3. <code class="literal">NULLIF</code></h3></div></div></div>
-<a name="id2606260"></a><pre class="synopsis"><code class="function">NULLIF</code>(<em class="replaceable"><code>value1</code></em>, <em class="replaceable"><code>value2</code></em>)</pre>
+<div class="titlepage"><div><div><h3 class="title" id="id2625217">9.13.3. <code class="literal">NULLIF</code></h3></div></div></div>
+<a name="id2625224"></a><pre class="synopsis"><code class="function">NULLIF</code>(<em class="replaceable"><code>value1</code></em>, <em class="replaceable"><code>value2</code></em>)</pre>
 <p>   The <code class="function">NULLIF</code> function returns a null value if and only
    if <em class="replaceable"><code>value1</code></em> and
    <em class="replaceable"><code>value2</code></em> are equal.  Otherwise it returns

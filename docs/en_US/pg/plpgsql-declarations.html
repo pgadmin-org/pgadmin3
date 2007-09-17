@@ -4,16 +4,15 @@
 <title>35.4. Declarations</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 35. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-structure.html" title="35.3. Structure of PL/pgSQL">
 <link rel="next" href="plpgsql-expressions.html" title="35.5. Expressions">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plpgsql-declarations"></a>35.4. Declarations</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpgsql-declarations">35.4. Declarations</h2></div></div></div>
 <p>     All variables used in a block must be declared in the
      declarations section of the block. 
      (The only exception is that the loop variable of a <code class="literal">FOR</code> loop
@@ -63,8 +62,7 @@ user_id CONSTANT integer := 10;</pre>
 <p>
      </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-declaration-aliases"></a>35.4.1. Aliases for Function Parameters</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-declaration-aliases">35.4.1. Aliases for Function Parameters</h3></div></div></div>
 <p>      Parameters passed to functions are named with the identifiers
       <code class="literal">$1</code>, <code class="literal">$2</code>,
       etc.  Optionally, aliases can be declared for
@@ -123,9 +121,9 @@ $$ LANGUAGE plpgsql;</pre>
       function is declared as a polymorphic type (<code class="type">anyelement</code>
       or <code class="type">anyarray</code>), a special parameter <code class="literal">$0</code>
       is created.  Its data type is the actual return type of the function,
-      as deduced from the actual input types (see <a href="extend-type-system.html#extend-types-polymorphic" title="31.2.5. Polymorphic Types">Section 31.2.5, &#8220;Polymorphic Types&#8221;</a>).
+      as deduced from the actual input types (see <a class="xref" href="extend-type-system.html#extend-types-polymorphic" title="31.2.5. Polymorphic Types">Section 31.2.5, &#8220;Polymorphic Types&#8221;</a>).
       This allows the function to access its actual return type
-      as shown in <a href="plpgsql-declarations.html#plpgsql-declaration-type" title="35.4.2. Copying Types">Section 35.4.2, &#8220;Copying Types&#8221;</a>.
+      as shown in <a class="xref" href="plpgsql-declarations.html#plpgsql-declaration-type" title="35.4.2. Copying Types">Section 35.4.2, &#8220;Copying Types&#8221;</a>.
       <code class="literal">$0</code> is initialized to null and can be modified by
       the function, so it can be used to hold the return value if desired,
       though that is not required.  <code class="literal">$0</code> can also be
@@ -145,8 +143,7 @@ $$ LANGUAGE plpgsql;</pre>
      </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-declaration-type"></a>35.4.2. Copying Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-declaration-type">35.4.2. Copying Types</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>variable</code></em>%TYPE</pre>
 <p>    <code class="literal">%TYPE</code> provides the data type of a variable or
     table column. You can use this to declare variables that will hold
@@ -173,8 +170,7 @@ $$ LANGUAGE plpgsql;</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-declaration-rowtypes"></a>35.4.3. Row Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-declaration-rowtypes">35.4.3. Row Types</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>name</code></em> <em class="replaceable"><code>table_name</code></em><code class="literal">%ROWTYPE</code>;
 <em class="replaceable"><code>name</code></em> <em class="replaceable"><code>composite_type_name</code></em>;</pre>
 <p>    A variable of a composite type is called a <em class="firstterm">row</em>
@@ -222,8 +218,7 @@ SELECT merge_fields(t.*) FROM tablename t WHERE ... ;</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-declaration-records"></a>35.4.4. Record Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-declaration-records">35.4.4. Record Types</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>name</code></em> RECORD;</pre>
 <p>    Record variables are similar to row-type variables, but they have no
     predefined structure.  They take on the actual row structure of the
@@ -245,8 +240,7 @@ SELECT merge_fields(t.*) FROM tablename t WHERE ... ;</pre>
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="plpgsql-declaration-renaming-vars"></a>35.4.5. <code class="literal">RENAME</code></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="plpgsql-declaration-renaming-vars">35.4.5. <code class="literal">RENAME</code></h3></div></div></div>
 <pre class="synopsis">RENAME <em class="replaceable"><code>oldname</code></em> TO <em class="replaceable"><code>newname</code></em>;</pre>
 <p>    Using the <code class="literal">RENAME</code> declaration you can change the
     name of a variable, record or row. This is primarily useful if

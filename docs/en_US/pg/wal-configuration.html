@@ -4,22 +4,21 @@
 <title>25.2. WAL Configuration</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="wal.html" title="Chapter 25. Write-Ahead Logging (WAL)">
 <link rel="prev" href="wal.html" title="Chapter 25. Write-Ahead Logging (WAL)">
 <link rel="next" href="wal-internals.html" title="25.3. Internals">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="wal-configuration"></a>25.2. <acronym class="acronym">WAL</acronym> Configuration</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="wal-configuration">25.2. <acronym class="acronym">WAL</acronym> Configuration</h2></div></div></div>
 <p>   There are several <acronym class="acronym">WAL</acronym>-related configuration parameters that
    affect database performance. This section explains their use.
-   Consult <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for general information about
+   Consult <a class="xref" href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for general information about
    setting server configuration parameters.
   </p>
-<p>   <em class="firstterm">Checkpoints</em><a name="id2651160"></a>
+<p>   <em class="firstterm">Checkpoints</em><a name="id2670139"></a>
    are points in the sequence of transactions at which it is guaranteed
    that the data files have been updated with all information logged before
    the checkpoint.  At checkpoint time, all dirty data pages are flushed to
@@ -33,7 +32,7 @@
    log segments must be archived before being recycled or removed.)
   </p>
 <p>   The server's background writer process will automatically perform
-   a checkpoint every so often.  A checkpoint is created every <a href="runtime-config.html#guc-checkpoint-segments">checkpoint_segments</a> log segments, or every <a href="runtime-config.html#guc-checkpoint-timeout">checkpoint_timeout</a> seconds, whichever comes first.
+   a checkpoint every so often.  A checkpoint is created every <a class="xref" href="runtime-config.html#guc-checkpoint-segments">checkpoint_segments</a> log segments, or every <a class="xref" href="runtime-config.html#guc-checkpoint-timeout">checkpoint_timeout</a> seconds, whichever comes first.
    The default settings are 3 segments and 300 seconds respectively.
    It is also possible to force a checkpoint by using the SQL command
    <code class="command">CHECKPOINT</code>.
@@ -54,7 +53,7 @@
    extra subsequent WAL traffic as discussed above.  It is therefore
    wise to set the checkpointing parameters high enough that checkpoints
    don't happen too often.  As a simple sanity check on your checkpointing
-   parameters, you can set the <a href="runtime-config.html#guc-checkpoint-warning">checkpoint_warning</a>
+   parameters, you can set the <a class="xref" href="runtime-config.html#guc-checkpoint-warning">checkpoint_warning</a>
    parameter.  If checkpoints happen closer together than
    <code class="varname">checkpoint_warning</code> seconds, 
    a message will be output to the server log recommending increasing 
@@ -94,20 +93,20 @@
    not occur often enough to prevent <code class="function">LogInsert</code>
    from having to do writes.  On such systems
    one should increase the number of <acronym class="acronym">WAL</acronym> buffers by
-   modifying the configuration parameter <a href="runtime-config.html#guc-wal-buffers">wal_buffers</a>.  The default number of <acronym class="acronym">WAL</acronym>
+   modifying the configuration parameter <a class="xref" href="runtime-config.html#guc-wal-buffers">wal_buffers</a>.  The default number of <acronym class="acronym">WAL</acronym>
    buffers is 8.  Increasing this value will
    correspondingly increase shared memory usage.  (It should be noted
    that there is presently little evidence to suggest that increasing
    <code class="varname">wal_buffers</code> beyond the default is worthwhile.)
   </p>
-<p>   The <a href="runtime-config.html#guc-commit-delay">commit_delay</a> parameter defines for how many
+<p>   The <a class="xref" href="runtime-config.html#guc-commit-delay">commit_delay</a> parameter defines for how many
    microseconds the server process will sleep after writing a commit
    record to the log with <code class="function">LogInsert</code> but before
    performing a <code class="function">LogFlush</code>. This delay allows other
    server processes to add their commit records to the log so as to have all
    of them flushed with a single log sync. No sleep will occur if
-   <a href="runtime-config.html#guc-fsync">fsync</a>
-   is not enabled, nor if fewer than <a href="runtime-config.html#guc-commit-siblings">commit_siblings</a>
+   <a class="xref" href="runtime-config.html#guc-fsync">fsync</a>
+   is not enabled, nor if fewer than <a class="xref" href="runtime-config.html#guc-commit-siblings">commit_siblings</a>
    other sessions are currently in active transactions; this avoids
    sleeping when it's unlikely that any other session will commit soon.
    Note that on most platforms, the resolution of a sleep request is
@@ -116,7 +115,7 @@
    Good values for these parameters are not yet clear; experimentation
    is encouraged.
   </p>
-<p>   The <a href="runtime-config.html#guc-wal-sync-method">wal_sync_method</a> parameter determines how
+<p>   The <a class="xref" href="runtime-config.html#guc-wal-sync-method">wal_sync_method</a> parameter determines how
    <span class="productname">PostgreSQL</span> will ask the kernel to force
     <acronym class="acronym">WAL</acronym> updates out to disk. 
    All the options should be the same as far as reliability goes,
@@ -124,7 +123,7 @@
    Note that this parameter is irrelevant if <code class="varname">fsync</code>
    has been turned off.
   </p>
-<p>   Enabling the <a href="runtime-config.html#guc-wal-debug">wal_debug</a> configuration parameter
+<p>   Enabling the <a class="xref" href="runtime-config.html#guc-wal-debug">wal_debug</a> configuration parameter
    (provided that <span class="productname">PostgreSQL</span> has been
    compiled with support for it) will result in each
    <code class="function">LogInsert</code> and <code class="function">LogFlush</code>

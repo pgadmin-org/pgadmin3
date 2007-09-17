@@ -4,24 +4,23 @@
 <title>11.2. Index Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="next" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="indexes-types"></a>11.2. Index Types</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="indexes-types">11.2. Index Types</h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span> provides several index types:
    B-tree, R-tree, Hash, and GiST.  Each index type uses a different
    algorithm that is best suited to different types of queries.
    By default, the <code class="command">CREATE INDEX</code> command will create a
    B-tree index, which fits the most common situations.
   </p>
-<p>   <a name="id2614066"></a>
-   <a name="id2614075"></a>
+<p>   <a name="id2633030"></a>
+   <a name="id2633040"></a>
    B-trees can handle equality and range queries on data that can be sorted
    into some ordering.
    In particular, the <span class="productname">PostgreSQL</span> query planner
@@ -52,10 +51,10 @@
    <code class="literal">col LIKE '%bar'</code>.  However, if your server does
    not use the C locale you will need to create the index with a
    special operator class to support indexing of pattern-matching queries.
-   See <a href="indexes-opclass.html" title="11.6. Operator Classes">Section 11.6, &#8220;Operator Classes&#8221;</a> below.
+   See <a class="xref" href="indexes-opclass.html" title="11.6. Operator Classes">Section 11.6, &#8220;Operator Classes&#8221;</a> below.
   </p>
-<p>   <a name="id2614216"></a>
-   <a name="id2614226"></a>
+<p>   <a name="id2633181"></a>
+   <a name="id2633190"></a>
    R-tree indexes are suited for queries on spatial data.  To create
    an R-tree index, use a command of the form
 </p>
@@ -77,11 +76,11 @@
 </table>
 <p>
 
-   (See <a href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a> for the meaning of
+   (See <a class="xref" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a> for the meaning of
    these operators.)
   </p>
-<p>   <a name="id2614315"></a>
-   <a name="id2614324"></a>
+<p>   <a name="id2633280"></a>
+   <a name="id2633289"></a>
    Hash indexes can only handle simple equality comparisons.
    The query planner will consider using a hash index whenever an
    indexed column is involved in a comparison using the
@@ -105,7 +104,7 @@
    within which many different indexing strategies can be implemented.
    Accordingly, the particular operators with which a GiST index can be
    used vary depending on the indexing strategy (the <em class="firstterm">operator
-   class</em>).  For more information see <a href="gist.html" title="Chapter 48. GiST Indexes">Chapter 48, <i>GiST Indexes</i></a>.
+   class</em>).  For more information see <a class="xref" href="gist.html" title="Chapter 48. GiST Indexes">Chapter 48, <i>GiST Indexes</i></a>.
   </p>
 <p>   The B-tree index method is an implementation of Lehman-Yao
    high-concurrency B-trees.  The R-tree index method implements

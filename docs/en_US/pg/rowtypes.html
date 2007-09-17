@@ -4,25 +4,23 @@
 <title>8.11. Composite Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="arrays.html" title="8.10. Arrays">
 <link rel="next" href="datatype-oid.html" title="8.12. Object Identifier Types">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="rowtypes"></a>8.11. Composite Types</h2></div></div></div>
-<a name="id2584278"></a><a name="id2584284"></a><p>  A <em class="firstterm">composite type</em> describes the structure of a row or record;
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="rowtypes">8.11. Composite Types</h2></div></div></div>
+<a name="id2603242"></a><a name="id2603248"></a><p>  A <em class="firstterm">composite type</em> describes the structure of a row or record;
   it is in essence just a list of field names and their data types.
   <span class="productname">PostgreSQL</span> allows values of composite types to be
   used in many of the same ways that simple types can be used.  For example, a
   column of a table can be declared to be of a composite type.
  </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584306"></a>8.11.1. Declaration of Composite Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2603271">8.11.1. Declaration of Composite Types</h3></div></div></div>
 <p>  Here are two simple examples of defining composite types:
 </p>
 <pre class="programlisting">CREATE TYPE complex AS (
@@ -85,9 +83,8 @@ SELECT price_extension(item, 10) FROM on_hand;</pre>
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584404"></a>8.11.2. Composite Value Input</h3></div></div></div>
-<a name="id2584408"></a><p>   To write a composite value as a literal constant, enclose the field
+<div class="titlepage"><div><div><h3 class="title" id="id2603368">8.11.2. Composite Value Input</h3></div></div></div>
+<a name="id2603372"></a><p>   To write a composite value as a literal constant, enclose the field
    values within parentheses and separate them by commas.  You may put double
    quotes around any field value, and must do so if it contains commas or
    parentheses.  (More details appear below.)  Thus, the general format of a
@@ -113,7 +110,7 @@ SELECT price_extension(item, 10) FROM on_hand;</pre>
    Here the first field is a non-NULL empty string, the third is NULL.
   </p>
 <p>   (These constants are actually only a special case of
-   the generic type constants discussed in <a href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a>.  The constant is initially
+   the generic type constants discussed in <a class="xref" href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a>.  The constant is initially
    treated as a string and passed to the composite-type input conversion
    routine.  An explicit type specification might be necessary.)
   </p>
@@ -132,12 +129,11 @@ ROW('', 42, NULL)</pre>
 <pre class="programlisting">('fuzzy dice', 42, 1.99)
 ('', 42, NULL)</pre>
 <p>
-  The <code class="literal">ROW</code> expression syntax is discussed in more detail in <a href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
+  The <code class="literal">ROW</code> expression syntax is discussed in more detail in <a class="xref" href="sql-expressions.html#sql-syntax-row-constructors" title="4.2.11. Row Constructors">Section 4.2.11, &#8220;Row Constructors&#8221;</a>.
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584522"></a>8.11.3. Accessing Composite Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2603487">8.11.3. Accessing Composite Types</h3></div></div></div>
 <p>  To access a field of a composite column, one writes a dot and the field
   name, much like selecting a field from a table name.  In fact, it's so
   much like selecting from a table name that you often have to use parentheses
@@ -178,8 +174,7 @@ ROW('', 42, NULL)</pre>
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584595"></a>8.11.4. Modifying Composite Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2603559">8.11.4. Modifying Composite Types</h3></div></div></div>
 <p>  Here are some examples of the proper syntax for inserting and updating
   composite columns.
   First, inserting or updating a whole column:
@@ -215,8 +210,7 @@ UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2584655"></a>8.11.5. Composite Type Input and Output Syntax</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2603620">8.11.5. Composite Type Input and Output Syntax</h3></div></div></div>
 <p>   The external text representation of a composite value consists of items that
    are interpreted according to the I/O conversion rules for the individual
    field types, plus decoration that indicates the composite structure.
@@ -272,7 +266,7 @@ UPDATE mytab SET complex_col = ROW(1.1,2.2) WHERE ...;</pre>
    with a data type whose input routine also treated backslashes specially,
    <code class="type">bytea</code> for example, we might need as many as eight backslashes
    in the command to get one backslash into the stored composite field.)
-   Dollar quoting (see <a href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) may be
+   Dollar quoting (see <a class="xref" href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) may be
    used to avoid the need to double backslashes.
   </p>
 </div>

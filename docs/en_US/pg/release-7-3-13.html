@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.39. Release 7.3.13</title>
+<title>E.42. Release 7.3.13</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-3-14.html" title="E.38. Release 7.3.14">
-<link rel="next" href="release-7-3-12.html" title="E.40. Release 7.3.12">
+<link rel="prev" href="release-7-3-14.html" title="E.41. Release 7.3.14">
+<link rel="next" href="release-7-3-12.html" title="E.43. Release 7.3.12">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-7-3-13"></a>E.39. Release 7.3.13</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-3-13">E.42. Release 7.3.13</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2006-01-09</p>
@@ -21,8 +20,7 @@
 <p>    This release contains a variety of fixes from 7.3.12.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2823951"></a>E.39.1. Migration to version 7.3.13</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2843283">E.42.1. Migration to version 7.3.13</h3></div></div></div>
 <p>     A dump/restore is not required for those running 7.3.X.  However,
      if you are upgrading from a version earlier than 7.3.10, see the release
      notes for 7.3.10.
@@ -32,8 +30,7 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2823974"></a>E.39.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2843306">E.42.2. Changes</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p>Fix character string comparison for locales that consider
@@ -47,7 +44,7 @@ to ensure that <span class="application">plperl</span> won't change the locale l
 <p>This fixes a problem that occurred if the <span class="application">postmaster</span> was
 started with environment variables specifying a different locale than what
 <span class="application">initdb</span> had been told.  Under these conditions, any use of
-<span class="application">plperl</span> was likely to lead to corrupt indexes.  You may need
+<span class="application">plperl</span> was likely to lead to corrupt indexes.  You might need
 <code class="command">REINDEX</code> to fix existing indexes on
 textual columns if this has happened to you.</p>
 </li>

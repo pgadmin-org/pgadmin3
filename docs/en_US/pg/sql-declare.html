@@ -4,8 +4,8 @@
 <title>DECLARE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-deallocate.html" title="DEALLOCATE">
 <link rel="next" href="sql-delete.html" title="DELETE">
@@ -17,19 +17,19 @@
 <h2>Name</h2>
 <p>DECLARE &#8212; define a cursor</p>
 </div>
-<a name="id2732229"></a><a name="id2732238"></a><div class="refsynopsisdiv">
+<a name="id2751263"></a><a name="id2751272"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">DECLARE <em class="replaceable"><code>name</code></em> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ]
     CURSOR [ { WITH | WITHOUT } HOLD ] FOR <em class="replaceable"><code>query</code></em>
     [ FOR { READ ONLY | UPDATE [ OF <em class="replaceable"><code>column</code></em> [, ...] ] } ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2732275"></a><h2>Description</h2>
+<a name="id2751309"></a><h2>Description</h2>
 <p>   <code class="command">DECLARE</code> allows a user to create cursors, which
    can be used to retrieve
    a small number of rows at a time out of a larger query. Cursors can
    return data either in text or in binary format using
-   <a href="sql-fetch.html" title="FETCH">FETCH</a>.
+   <a class="xref" href="sql-fetch.html" title="FETCH">FETCH</a>.
   </p>
 <p>   Normal cursors return data in text format, the same as a
    <code class="command">SELECT</code> would produce.  Since data is stored natively in
@@ -66,7 +66,7 @@
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2732362"></a><h2>Parameters</h2>
+<a name="id2751396"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of the cursor to be created.
@@ -105,7 +105,7 @@
      </p></dd>
 <dt><span class="term"><em class="replaceable"><code>query</code></em></span></dt>
 <dd><p>      A <code class="command">SELECT</code> command that will provide the rows to be
-      returned by the cursor.  Refer to <a href="sql-select.html" title="SELECT">SELECT</a> for further information about valid
+      returned by the cursor.  Refer to <a class="xref" href="sql-select.html" title="SELECT">SELECT</a> for further information about valid
       queries.
      </p></dd>
 <dt>
@@ -132,7 +132,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2732623"></a><h2>Notes</h2>
+<a name="id2751657"></a><h2>Notes</h2>
 <p>    Unless <code class="literal">WITH HOLD</code> is specified, the cursor
     created by this command can only be used within the current
     transaction.  Thus, <code class="command">DECLARE</code> without <code class="literal">WITH
@@ -141,10 +141,10 @@
     <span class="productname">PostgreSQL</span> reports an error if this
     command is used outside a transaction block.
     Use
-    <a href="sql-begin.html" title="BEGIN">BEGIN</a>,
-    <a href="sql-commit.html" title="COMMIT">COMMIT</a>
+    <a class="xref" href="sql-begin.html" title="BEGIN">BEGIN</a>,
+    <a class="xref" href="sql-commit.html" title="COMMIT">COMMIT</a>
     and
-    <a href="sql-rollback.html" title="ROLLBACK">ROLLBACK</a>
+    <a class="xref" href="sql-rollback.html" title="ROLLBACK">ROLLBACK</a>
     to define a transaction block.
    </p>
 <p>    If <code class="literal">WITH HOLD</code> is specified and the transaction
@@ -180,17 +180,17 @@
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2732803"></a><h2>Examples</h2>
+<a name="id2751837"></a><h2>Examples</h2>
 <p>   To declare a cursor:
 </p>
 <pre class="programlisting">DECLARE liahona CURSOR FOR SELECT * FROM films;</pre>
 <p>
-   See <a href="sql-fetch.html" title="FETCH">FETCH</a> for more
+   See <a class="xref" href="sql-fetch.html" title="FETCH">FETCH</a> for more
    examples of cursor usage.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2732826"></a><h2>Compatibility</h2>
+<a name="id2751860"></a><h2>Compatibility</h2>
 <p>   The SQL standard allows cursors only in embedded
    <acronym class="acronym">SQL</acronym> and in modules. <span class="productname">PostgreSQL</span>
    permits cursors to be used interactively.
@@ -203,8 +203,8 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2732861"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-close.html" title="CLOSE">CLOSE</a>, <a href="sql-fetch.html" title="FETCH">FETCH</a>, <a href="sql-move.html" title="MOVE">MOVE</a></span>
+<a name="id2751895"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-close.html" title="CLOSE">CLOSE</a>, <a class="xref" href="sql-fetch.html" title="FETCH">FETCH</a>, <a class="xref" href="sql-move.html" title="MOVE">MOVE</a></span>
 </div>
 </div></body>
 </html>

@@ -4,17 +4,16 @@
 <title>16.4. Run-time Configuration</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="prev" href="postmaster-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="kernel-resources.html" title="16.5. Managing Kernel Resources">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="runtime-config"></a>16.4. Run-time Configuration</h2></div></div></div>
-<a name="id2625746"></a><p>    There are a lot of configuration parameters that affect the
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="runtime-config">16.4. Run-time Configuration</h2></div></div></div>
+<a name="id2644710"></a><p>    There are a lot of configuration parameters that affect the
     behavior of the database system. In this subsection, we describe
     how to set configuration parameters; the following subsections
     discuss each parameter in detail.
@@ -28,7 +27,7 @@
     (all case-insensitive) or any unambiguous prefix of these.
    </p>
 <p>    One way to set these parameters is to edit the file
-    <code class="filename">postgresql.conf</code><a name="id2625820"></a>,
+    <code class="filename">postgresql.conf</code><a name="id2644784"></a>,
     which is normally kept in the data directory. (<code class="command">initdb</code>
     installs a default copy there.) An example of what this file might look
     like is:
@@ -44,7 +43,7 @@ search_path = '$user, public'</pre>
     anywhere.  Parameter values that are not simple identifiers or
     numbers must be single-quoted.
    </p>
-<p>    <a name="id2625856"></a>
+<p>    <a name="id2644820"></a>
     The configuration file is reread whenever the
     <code class="command">postmaster</code> process receives a
     <span class="systemitem">SIGHUP</span> signal (which is most easily sent by means
@@ -82,8 +81,8 @@ search_path = '$user, public'</pre>
 <p>    Furthermore, it is possible to assign a set of option settings to
     a user or a database.  Whenever a session is started, the default
     settings for the user and database involved are loaded.  The
-    commands <a href="sql-alteruser.html" title="ALTER USER">ALTER USER</a>
-    and <a href="sql-alterdatabase.html" title="ALTER DATABASE">ALTER DATABASE</a>,
+    commands <a class="xref" href="sql-alteruser.html" title="ALTER USER">ALTER USER</a>
+    and <a class="xref" href="sql-alterdatabase.html" title="ALTER DATABASE">ALTER DATABASE</a>,
     respectively, are used to configure these settings.  Per-database
     settings override anything received from the
     <code class="command">postmaster</code> command-line or the configuration
@@ -91,7 +90,7 @@ search_path = '$user, public'</pre>
     overridden by per-session options.
    </p>
 <p>    Some parameters can be changed in individual <acronym class="acronym">SQL</acronym>
-    sessions with the <a href="sql-set.html" title="SET">SET</a>
+    sessions with the <a class="xref" href="sql-set.html" title="SET">SET</a>
     command, for example:
 </p>
 <pre class="screen">SET ENABLE_SEQSCAN TO OFF;</pre>
@@ -104,23 +103,22 @@ search_path = '$user, public'</pre>
     be modified via <code class="command">SET</code> or <code class="command">ALTER</code> by superusers,
     but not by ordinary users.
    </p>
-<p>    The <a href="sql-show.html" title="SHOW">SHOW</a>
+<p>    The <a class="xref" href="sql-show.html" title="SHOW">SHOW</a>
     command allows inspection of the current values of all parameters.
    </p>
 <p>    The virtual table <code class="structname">pg_settings</code>
-    (described in <a href="view-pg-settings.html" title="41.35. pg_settings">Section 41.35, &#8220;<code class="structname">pg_settings</code>&#8221;</a>) also allows
+    (described in <a class="xref" href="view-pg-settings.html" title="41.35. pg_settings">Section 41.35, &#8220;<code class="structname">pg_settings</code>&#8221;</a>) also allows
     displaying and updating session run-time parameters.  It is equivalent
     to <code class="command">SHOW</code> and <code class="command">SET</code>, but can be more convenient
     to use because it can be joined with other tables, or selected from using
     any desired selection condition.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-file-locations"></a>16.4.1. File Locations</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-file-locations">16.4.1. File Locations</h3></div></div></div>
 <p>      In addition to the <code class="filename">postgresql.conf</code> file
       already mentioned, <span class="productname">PostgreSQL</span> uses
       two other manually-edited configuration files, which control
-      client authentication (their use is discussed in <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a>).
+      client authentication (their use is discussed in <a class="xref" href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a>).
       By default, all three configuration files are stored
       in the database cluster's data directory.  The options described
       in this subsection allow the configuration files to be placed elsewhere.
@@ -199,11 +197,9 @@ search_path = '$user, public'</pre>
      </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-connection"></a>16.4.2. Connections and Authentication</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-connection">16.4.2. Connections and Authentication</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-connection-settings"></a>16.4.2.1. Connection Settings</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-connection-settings">16.4.2.1. Connection Settings</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-listen-addresses"></a><span class="term"><code class="varname">listen_addresses</code> (<code class="type">string</code>)</span>
@@ -240,7 +236,7 @@ search_path = '$user, public'</pre>
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
         to request more <span class="systemitem">System V</span> shared
         memory or semaphores than your operating system's default configuration
-        allows. See <a href="kernel-resources.html#sysvipc" title="16.5.1. Shared Memory and Semaphores">Section 16.5.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
+        allows. See <a class="xref" href="kernel-resources.html#sysvipc" title="16.5.1. Shared Memory and Semaphores">Section 16.5.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
         adjust those parameters, if necessary.
        </p>
 </dd>
@@ -251,7 +247,7 @@ search_path = '$user, public'</pre>
 <dd>
 <p>        Determines the number of connection &#8220;<span class="quote">slots</span>&#8221; that
         are reserved for connections by <span class="productname">PostgreSQL</span>
-        superusers.  At most <a href="runtime-config.html#guc-max-connections">max_connections</a>
+        superusers.  At most <a class="xref" href="runtime-config.html#guc-max-connections">max_connections</a>
         connections can ever be active simultaneously.  Whenever the
         number of active concurrent connections is at least
         <code class="varname">max_connections</code> minus
@@ -305,7 +301,7 @@ search_path = '$user, public'</pre>
         read or execute permissions.)
        </p>
 <p>        This access control mechanism is independent of the one
-        described in <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a>.
+        described in <a class="xref" href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a>.
        </p>
 <p>        This option can only be set at server start.
        </p>
@@ -322,8 +318,7 @@ search_path = '$user, public'</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-connection-security"></a>16.4.2.2. Security and Authentication</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-connection-security">16.4.2.2. Security and Authentication</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-authentication-timeout"></a><span class="term"><code class="varname">authentication_timeout</code> (<code class="type">integer</code>)</span>
@@ -339,14 +334,14 @@ search_path = '$user, public'</pre>
 <a name="guc-ssl"></a><span class="term"><code class="varname">ssl</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        Enables <acronym class="acronym">SSL</acronym> connections. Please read
-        <a href="ssl-tcp.html" title="16.8. Secure TCP/IP Connections with SSL">Section 16.8, &#8220;Secure TCP/IP Connections with SSL&#8221;</a> before using this. The default
+        <a class="xref" href="ssl-tcp.html" title="16.8. Secure TCP/IP Connections with SSL">Section 16.8, &#8220;Secure TCP/IP Connections with SSL&#8221;</a> before using this. The default
         is off.  This parameter can only be set at server start.
        </p></dd>
 <dt>
 <a name="guc-password-encryption"></a><span class="term"><code class="varname">password_encryption</code> (<code class="type">boolean</code>)</span>
 </dt>
-<dd><p>        When a password is specified in <a href="sql-createuser.html" title="CREATE USER">CREATE USER</a> or
-        <a href="sql-alteruser.html" title="ALTER USER">ALTER USER</a>
+<dd><p>        When a password is specified in <a class="xref" href="sql-createuser.html" title="CREATE USER">CREATE USER</a> or
+        <a class="xref" href="sql-alteruser.html" title="ALTER USER">ALTER USER</a>
         without writing either <code class="literal">ENCRYPTED</code> or
         <code class="literal">UNENCRYPTED</code>, this option determines whether the
         password is to be encrypted. The default is on (encrypt the
@@ -356,7 +351,7 @@ search_path = '$user, public'</pre>
 <a name="guc-krb-server-keyfile"></a><span class="term"><code class="varname">krb_server_keyfile</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Sets the location of the Kerberos server key file. See
-        <a href="auth-methods.html#kerberos-auth" title="19.2.3. Kerberos authentication">Section 19.2.3, &#8220;Kerberos authentication&#8221;</a> for details.
+        <a class="xref" href="auth-methods.html#kerberos-auth" title="19.2.3. Kerberos authentication">Section 19.2.3, &#8220;Kerberos authentication&#8221;</a> for details.
        </p></dd>
 <dt>
 <a name="guc-db-user-namespace"></a><span class="term"><code class="varname">db_user_namespace</code> (<code class="type">boolean</code>)</span>
@@ -389,11 +384,9 @@ search_path = '$user, public'</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-resource"></a>16.4.3. Resource Consumption</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource">16.4.3. Resource Consumption</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-resource-memory"></a>16.4.3.1. Memory</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-resource-memory">16.4.3.1. Memory</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-shared-buffers"></a><span class="term"><code class="varname">shared_buffers</code> (<code class="type">integer</code>)</span>
@@ -405,7 +398,7 @@ search_path = '$user, public'</pre>
         <span class="application">initdb</span>).  Each buffer is 8192 bytes, unless a
         different value of <code class="symbol">BLCKSZ</code> was chosen when building
         the server.  This setting must be at least 16, as well as at
-        least twice the value of <a href="runtime-config.html#guc-max-connections">max_connections</a>;
+        least twice the value of <a class="xref" href="runtime-config.html#guc-max-connections">max_connections</a>;
         however, settings significantly higher than the minimum are
         usually needed for good performance.  Values of a few thousand
         are recommended for production installations.  This option can
@@ -414,7 +407,7 @@ search_path = '$user, public'</pre>
 <p>        Increasing this parameter may cause <span class="productname">PostgreSQL</span>
         to request more <span class="systemitem">System V</span> shared
         memory than your operating system's default configuration
-        allows. See <a href="kernel-resources.html#sysvipc" title="16.5.1. Shared Memory and Semaphores">Section 16.5.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
+        allows. See <a class="xref" href="kernel-resources.html#sysvipc" title="16.5.1. Shared Memory and Semaphores">Section 16.5.1, &#8220;Shared Memory and Semaphores&#8221;</a> for information on how to
         adjust those parameters, if necessary.
        </p>
 </dd>
@@ -469,8 +462,7 @@ search_path = '$user, public'</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-resource-fsm"></a>16.4.3.2. Free Space Map</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-resource-fsm">16.4.3.2. Free Space Map</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-max-fsm-pages"></a><span class="term"><code class="varname">max_fsm_pages</code> (<code class="type">integer</code>)</span>
@@ -493,8 +485,7 @@ search_path = '$user, public'</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-resource-kernel"></a>16.4.3.3. Kernel Resource Usage</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-resource-kernel">16.4.3.3. Kernel Resource Usage</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-max-files-per-process"></a><span class="term"><code class="varname">max_files_per_process</code> (<code class="type">integer</code>)</span>
@@ -543,9 +534,8 @@ search_path = '$user, public'</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-resource-vacuum-cost"></a>16.4.3.4. Cost-Based Vacuum Delay</h4></div></div></div>
-<p>      During the execution of <a href="sql-vacuum.html" title="VACUUM">VACUUM</a> and <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a> commands, the system maintains an
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-resource-vacuum-cost">16.4.3.4. Cost-Based Vacuum Delay</h4></div></div></div>
+<p>      During the execution of <a class="xref" href="sql-vacuum.html" title="VACUUM">VACUUM</a> and <a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a> commands, the system maintains an
       internal counter that keeps track of the estimated cost of the
       various I/O operations that are performed.  When the accumulated
       cost reaches a limit (specified by
@@ -628,8 +618,7 @@ search_path = '$user, public'</pre>
 </div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-resource-background-writer"></a>16.4.3.5. Background Writer</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-resource-background-writer">16.4.3.5. Background Writer</h4></div></div></div>
 <p>      Beginning in <span class="productname">PostgreSQL</span> 8.0, there is a separate server
       process called the <em class="firstterm">background writer</em>, whose sole function
       is to issue writes of &#8220;<span class="quote">dirty</span>&#8221; shared buffers.  The intent is
@@ -694,14 +683,12 @@ search_path = '$user, public'</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-wal"></a>16.4.4. Write Ahead Log</h3></div></div></div>
-<p>    See also <a href="wal-configuration.html" title="25.2. WAL Configuration">Section 25.2, &#8220;<acronym class="acronym">WAL</acronym> Configuration&#8221;</a> for details on WAL
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-wal">16.4.4. Write Ahead Log</h3></div></div></div>
+<p>    See also <a class="xref" href="wal-configuration.html" title="25.2. WAL Configuration">Section 25.2, &#8220;<acronym class="acronym">WAL</acronym> Configuration&#8221;</a> for details on WAL
     tuning.
    </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-wal-settings"></a>16.4.4.1. Settings</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-wal-settings">16.4.4.1. Settings</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-fsync"></a><span class="term"><code class="varname">fsync</code> (<code class="type">boolean</code>)</span>
@@ -792,8 +779,7 @@ search_path = '$user, public'</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-wal-checkpoints"></a>16.4.4.2. Checkpoints</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-wal-checkpoints">16.4.4.2. Checkpoints</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-checkpoint-segments"></a><span class="term"><code class="varname">checkpoint_segments</code> (<code class="type">integer</code>)</span>
@@ -822,8 +808,7 @@ search_path = '$user, public'</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-wal-archiving"></a>16.4.4.3. Archiving</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-wal-archiving">16.4.4.3. Archiving</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-archive-command"></a><span class="term"><code class="varname">archive_command</code> (<code class="type">string</code>)</span>
@@ -835,7 +820,7 @@ search_path = '$user, public'</pre>
         replaced by the absolute path of the file to archive, and any
         <code class="literal">%f</code> is replaced by the file name only. Use
         <code class="literal">%%</code> to embed an actual <code class="literal">%</code> character in the
-        command. For more information see <a href="backup-online.html#backup-archiving-wal" title="22.3.1. Setting up WAL archiving">Section 22.3.1, &#8220;Setting up WAL archiving&#8221;</a>. This option can only be set at
+        command. For more information see <a class="xref" href="backup-online.html#backup-archiving-wal" title="22.3.1. Setting up WAL archiving">Section 22.3.1, &#8220;Setting up WAL archiving&#8221;</a>. This option can only be set at
         server start or in the <code class="filename">postgresql.conf</code>
         file.
        </p>
@@ -851,11 +836,9 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-query"></a>16.4.5. Query Planning</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-query">16.4.5. Query Planning</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-query-enable"></a>16.4.5.1. Planner Method Configuration</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-query-enable">16.4.5.1. Planner Method Configuration</h4></div></div></div>
 <p>       These configuration parameters provide a crude method of
        influencing the query plans chosen by the query optimizer. If
        the default plan chosen by the optimizer for a particular query
@@ -864,9 +847,9 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
        choose a different plan.  Turning one of these settings off
        permanently is seldom a good idea, however.
        Better ways to improve the quality of the
-       plans chosen by the optimizer include adjusting the <a href="runtime-config.html#runtime-config-query-constants" title="16.4.5.2.  Planner Cost Constants">      Planner Cost Constants
-     </a>, running <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a> more
-       frequently, increasing the value of the <a href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a> configuration parameter,
+       plans chosen by the optimizer include adjusting the <a class="xref" href="runtime-config.html#runtime-config-query-constants" title="16.4.5.2.  Planner Cost Constants">      Planner Cost Constants
+     </a>, running <a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a> more
+       frequently, increasing the value of the <a class="xref" href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a> configuration parameter,
        and increasing the amount of statistics collected for
        specific columns using <code class="command">ALTER TABLE SET
        STATISTICS</code>.
@@ -932,8 +915,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-query-constants"></a>16.4.5.2.       Planner Cost Constants
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-query-constants">16.4.5.2.       Planner Cost Constants
      </h4></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
@@ -999,8 +981,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-query-geqo"></a>16.4.5.3. Genetic Query Optimizer</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-query-geqo">16.4.5.3. Genetic Query Optimizer</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-geqo"></a><span class="term"><code class="varname">geqo</code> (<code class="type">boolean</code>)</span>
@@ -1070,8 +1051,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-query-other"></a>16.4.5.4. Other Planner Options</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-query-other">16.4.5.4. Other Planner Options</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-default-statistics-target"></a><span class="term"><code class="varname">default_statistics_target</code> (<code class="type">integer</code>)</span>
@@ -1082,7 +1062,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         do <code class="command">ANALYZE</code>, but may improve the quality of the
         planner's estimates. The default is 10. For more information
         on the use of statistics by the <span class="productname">PostgreSQL</span>
-        query planner, refer to <a href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>.
+        query planner, refer to <a class="xref" href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>.
        </p></dd>
 <dt>
 <a name="guc-from-collapse-limit"></a><span class="term"><code class="varname">from_collapse_limit</code> (<code class="type">integer</code>)</span>
@@ -1091,7 +1071,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         resulting <code class="literal">FROM</code> list would have no more than
         this many items.  Smaller values reduce planning time but may
         yield inferior query plans.  The default is 8.  It is usually
-        wise to keep this less than <a href="runtime-config.html#guc-geqo-threshold">geqo_threshold</a>.
+        wise to keep this less than <a class="xref" href="runtime-config.html#guc-geqo-threshold">geqo_threshold</a>.
        </p></dd>
 <dt>
 <a name="guc-join-collapse-limit"></a><span class="term"><code class="varname">join_collapse_limit</code> (<code class="type">integer</code>)</span>
@@ -1143,12 +1123,10 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-logging"></a>16.4.6. Error Reporting and Logging</h3></div></div></div>
-<a name="id2629774"></a><div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-logging-where"></a>16.4.6.1. Where to log</h4></div></div></div>
-<a name="id2629794"></a><div class="variablelist"><dl>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-logging">16.4.6. Error Reporting and Logging</h3></div></div></div>
+<a name="id2648739"></a><div class="sect3" lang="en">
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-logging-where">16.4.6.1. Where to log</h4></div></div></div>
+<a name="id2648758"></a><div class="variablelist"><dl>
 <dt>
 <a name="guc-log-destination"></a><span class="term"><code class="varname">log_destination</code> (<code class="type">string</code>)</span>
 </dt>
@@ -1286,8 +1264,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-logging-when"></a>16.4.6.2. When To Log</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-logging-when">16.4.6.2. When To Log</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-client-min-messages"></a><span class="term"><code class="varname">client_min_messages</code> (<code class="type">string</code>)</span>
@@ -1412,8 +1389,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
        </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-logging-what"></a>16.4.6.3. What To Log</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-logging-what">16.4.6.3. What To Log</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_parse</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_rewritten</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">debug_print_plan</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="varname">debug_pretty_print</code> (<code class="type">boolean</code>)</span>
@@ -1607,11 +1583,9 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-statistics"></a>16.4.7. Runtime Statistics</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-statistics">16.4.7. Runtime Statistics</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-statistics-monitor"></a>16.4.7.1. Statistics Monitoring</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-statistics-monitor">16.4.7.1. Statistics Monitoring</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_statement_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_parser_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="varname">log_planner_stats</code> (<code xmlns="" class="type">boolean</code>)</span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="varname">log_executor_stats</code> (<code class="type">boolean</code>)</span>
@@ -1627,8 +1601,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-statistics-collector"></a>16.4.7.2. Query and Index Statistics Collector</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-statistics-collector">16.4.7.2. Query and Index Statistics Collector</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-stats-start-collector"></a><span class="term"><code class="varname">stats_start_collector</code> (<code class="type">boolean</code>)</span>
@@ -1650,7 +1623,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         the session being reported on; so it should not represent a
         security risk. This data can be accessed via the
         <code class="structname">pg_stat_activity</code> system view; refer
-        to <a href="monitoring.html" title="Chapter 23. Monitoring Database Activity">Chapter 23, <i>Monitoring Database Activity</i></a> for more information.
+        to <a class="xref" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">Chapter 23, <i>Monitoring Database Activity</i></a> for more information.
        </p></dd>
 <dt>
 <a name="guc-stats-block-level"></a><span class="term"><code class="varname">stats_block_level</code> (<code class="type">boolean</code>)</span>
@@ -1660,7 +1633,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         is enabled, the data that is produced can be accessed via the
         <code class="structname">pg_stat</code> and
         <code class="structname">pg_statio</code> family of system views;
-        refer to <a href="monitoring.html" title="Chapter 23. Monitoring Database Activity">Chapter 23, <i>Monitoring Database Activity</i></a> for more information.
+        refer to <a class="xref" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">Chapter 23, <i>Monitoring Database Activity</i></a> for more information.
        </p></dd>
 <dt>
 <a name="guc-stats-row-level"></a><span class="term"><code class="varname">stats_row_level</code> (<code class="type">boolean</code>)</span>
@@ -1670,7 +1643,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         is enabled, the data that is produced can be accessed via the
         <code class="structname">pg_stat</code> and
         <code class="structname">pg_statio</code> family of system views;
-        refer to <a href="monitoring.html" title="Chapter 23. Monitoring Database Activity">Chapter 23, <i>Monitoring Database Activity</i></a> for more information.
+        refer to <a class="xref" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">Chapter 23, <i>Monitoring Database Activity</i></a> for more information.
        </p></dd>
 <dt>
 <a name="guc-stats-reset-on-server-start"></a><span class="term"><code class="varname">stats_reset_on_server_start</code> (<code class="type">boolean</code>)</span>
@@ -1684,11 +1657,9 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-client"></a>16.4.8. Client Connection Defaults</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-client">16.4.8. Client Connection Defaults</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-client-statement"></a>16.4.8.1. Statement Behavior</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-client-statement">16.4.8.1. Statement Behavior</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-search-path"></a><span class="term"><code class="varname">search_path</code> (<code class="type">string</code>)</span>
@@ -1744,7 +1715,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         <code class="function">current_schemas()</code> shows how the requests
         appearing in <code class="varname">search_path</code> were resolved.
        </p>
-<p>        For more information on schema handling, see <a href="ddl-schemas.html" title="5.8. Schemas">Section 5.8, &#8220;Schemas&#8221;</a>.
+<p>        For more information on schema handling, see <a class="xref" href="ddl-schemas.html" title="5.8. Schemas">Section 5.8, &#8220;Schemas&#8221;</a>.
        </p>
 </dd>
 <dt>
@@ -1762,14 +1733,14 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         tablespace of the current database.
        </p>
 <p>        For more information on tablespaces,
-        see <a href="manage-ag-tablespaces.html" title="18.6. Tablespaces">Section 18.6, &#8220;Tablespaces&#8221;</a>.
+        see <a class="xref" href="manage-ag-tablespaces.html" title="18.6. Tablespaces">Section 18.6, &#8220;Tablespaces&#8221;</a>.
        </p>
 </dd>
 <dt>
 <a name="guc-check-function-bodies"></a><span class="term"><code class="varname">check_function_bodies</code> (<code class="type">boolean</code>)</span>
 </dt>
 <dd><p>        This parameter is normally true.  When set to false, it disables
-        validation of the function body string during <a href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>.  Disabling validation is
+        validation of the function body string during <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>.  Disabling validation is
         occasionally useful to avoid problems such as forward
         references when restoring function definitions from a dump.
        </p></dd>
@@ -1784,7 +1755,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         default isolation level of each new transaction. The default
         is &#8220;<span class="quote">read committed</span>&#8221;.
        </p>
-<p>        Consult <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> and <a href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle"><a name="sql-set-transaction-title"></a>SET TRANSACTION</span></a> for more
+<p>        Consult <a class="xref" href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a> and <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle"><a name="sql-set-transaction-title"></a>SET TRANSACTION</span></a> for more
         information.
        </p>
 </dd>
@@ -1796,7 +1767,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         This parameter controls the default read-only status of each new
         transaction. The default is false (read/write).
        </p>
-<p>        Consult <a href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle"><a name="sql-set-transaction-title"></a>SET TRANSACTION</span></a> for more information.
+<p>        Consult <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle"><a name="sql-set-transaction-title"></a>SET TRANSACTION</span></a> for more information.
        </p>
 </dd>
 <dt>
@@ -1808,8 +1779,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-client-format"></a>16.4.8.2. Locale and Formatting</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-client-format">16.4.8.2. Locale and Formatting</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-datestyle"></a><span class="term"><code class="varname">DateStyle</code> (<code class="type">string</code>)</span>
@@ -1825,7 +1795,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         and <code class="literal">European</code> are synonyms for <code class="literal">DMY</code>; the
         keywords <code class="literal">US</code>, <code class="literal">NonEuro</code>, and
         <code class="literal">NonEuropean</code> are synonyms for <code class="literal">MDY</code>. See
-        <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information. The
+        <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information. The
         default is <code class="literal">ISO, MDY</code>.
        </p></dd>
 <dt>
@@ -1833,7 +1803,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dt>
 <dd><p>        Sets the time zone for displaying and interpreting time
         stamps.  The default is 'unknown', which means to use whatever 
-        the system environment specifies as the time zone.  See <a href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
+        the system environment specifies as the time zone.  See <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for more information.
        </p></dd>
 <dt>
 <a name="guc-australian-timezones"></a><span class="term"><code class="varname">australian_timezones</code> (<code class="type">boolean</code>)</span>
@@ -1867,7 +1837,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dt>
 <dd>
 <p>        Sets the language in which messages are displayed.  Acceptable
-        values are system-dependent; see <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for
+        values are system-dependent; see <a class="xref" href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for
         more information.  If this variable is set to the empty string
         (which is the default) then the value is inherited from the
         execution environment of the server in a system-dependent way.
@@ -1884,7 +1854,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dt>
 <dd><p>        Sets the locale to use for formatting monetary amounts, for
         example with the <code class="function">to_char</code> family of
-        functions.  Acceptable values are system-dependent; see <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
+        functions.  Acceptable values are system-dependent; see <a class="xref" href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
         set to the empty string (which is the default) then the value
         is inherited from the execution environment of the server in a
         system-dependent way.
@@ -1894,7 +1864,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dt>
 <dd><p>        Sets the locale to use for formatting numbers, for example
         with the <code class="function">to_char</code> family of
-        functions. Acceptable values are system-dependent; see <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
+        functions. Acceptable values are system-dependent; see <a class="xref" href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
         set to the empty string (which is the default) then the value
         is inherited from the execution environment of the server in a
         system-dependent way.
@@ -1904,7 +1874,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dt>
 <dd><p>        Sets the locale to use for formatting date and time values.
         (Currently, this setting does nothing, but it may in the
-        future.)  Acceptable values are system-dependent; see <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
+        future.)  Acceptable values are system-dependent; see <a class="xref" href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.  If this variable is
         set to the empty string (which is the default) then the value
         is inherited from the execution environment of the server in a
         system-dependent way.
@@ -1912,8 +1882,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-client-other"></a>16.4.8.3. Other Defaults</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-client-other">16.4.8.3. Other Defaults</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-explain-pretty-print"></a><span class="term"><code class="varname">explain_pretty_print</code> (<code class="type">boolean</code>)</span>
@@ -1967,8 +1936,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-locks"></a>16.4.9. Lock Management</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-locks">16.4.9. Lock Management</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-deadlock-timeout"></a><span class="term"><code class="varname">deadlock_timeout</code> (<code class="type">integer</code>)</span>
@@ -2005,11 +1973,9 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-compatible"></a>16.4.10. Version and Platform Compatibility</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-compatible">16.4.10. Version and Platform Compatibility</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-compatible-version"></a>16.4.10.1. Previous PostgreSQL Versions</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-compatible-version">16.4.10.1. Previous PostgreSQL Versions</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-add-missing-from"></a><span class="term"><code class="varname">add_missing_from</code> (<code class="type">boolean</code>)</span>
@@ -2055,7 +2021,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         nor <code class="literal">WITHOUT OIDS</code> is specified. It also
         determines whether OIDs will be included in tables created by
         <code class="command">SELECT INTO</code>. In
-        <span class="productname">PostgreSQL</span> 8.0.13
+        <span class="productname">PostgreSQL</span> 8.0.14
         <code class="varname">default_with_oids</code> defaults to true. This is
         also the behavior of previous versions of
         <span class="productname">PostgreSQL</span>. However, assuming that
@@ -2079,7 +2045,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         The default is <code class="literal">advanced</code>.  The <code class="literal">extended</code>
         setting may be useful for exact backwards compatibility with
         pre-7.4 releases of <span class="productname">PostgreSQL</span>.  See
-        <a href="functions-matching.html#posix-syntax-details" title="9.7.3.1. Regular Expression Details">Section 9.7.3.1, &#8220;Regular Expression Details&#8221;</a> for details.
+        <a class="xref" href="functions-matching.html#posix-syntax-details" title="9.7.3.1. Regular Expression Details">Section 9.7.3.1, &#8220;Regular Expression Details&#8221;</a> for details.
        </p></dd>
 <dt>
 <a name="guc-sql-inheritance"></a><span class="term"><code class="varname">sql_inheritance</code> (<code class="type">boolean</code>)</span>
@@ -2090,13 +2056,12 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         behavior you can set this variable to off, but in the long run
         you are encouraged to change your applications to use the
         <code class="literal">ONLY</code> key word to exclude subtables. See
-        <a href="ddl-inherit.html" title="5.5. Inheritance">Section 5.5, &#8220;Inheritance&#8221;</a> for more information about inheritance.
+        <a class="xref" href="ddl-inherit.html" title="5.5. Inheritance">Section 5.5, &#8220;Inheritance&#8221;</a> for more information about inheritance.
        </p></dd>
 </dl></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="runtime-config-compatible-clients"></a>16.4.10.2. Platform and Client Compatibility</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="runtime-config-compatible-clients">16.4.10.2. Platform and Client Compatibility</h4></div></div></div>
 <div class="variablelist"><dl>
 <dt>
 <a name="guc-transform-null-equals"></a><span class="term"><code class="varname">transform_null_equals</code> (<code class="type">boolean</code>)</span>
@@ -2129,15 +2094,14 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
         involving the equals operator (such as <code class="literal">IN</code>).
         Thus, this option is not a general fix for bad programming.
        </p>
-<p>        Refer to <a href="functions-comparison.html" title="9.2. Comparison Operators">Section 9.2, &#8220;Comparison Operators&#8221;</a> for related information.
+<p>        Refer to <a class="xref" href="functions-comparison.html" title="9.2. Comparison Operators">Section 9.2, &#8220;Comparison Operators&#8221;</a> for related information.
        </p>
 </dd>
 </dl></div>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-preset"></a>16.4.11. Preset Options</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-preset">16.4.11. Preset Options</h3></div></div></div>
 <p>     The following &#8220;<span class="quote">parameters</span>&#8221; are read-only, and are determined
      when <span class="productname">PostgreSQL</span> is compiled or when it is
      installed. As such, they have been excluded from the sample
@@ -2153,8 +2117,8 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <dd><p>        Shows the size of a disk block.  It is determined by the value
         of <code class="literal">BLCKSZ</code> when building the server. The default
         value is 8192 bytes.  The meaning of some configuration
-        variables (such as <a href="runtime-config.html#guc-shared-buffers">shared_buffers</a>) is
-        influenced by <code class="varname">block_size</code>. See <a href="runtime-config.html#runtime-config-resource" title="16.4.3. Resource Consumption">Section 16.4.3, &#8220;Resource Consumption&#8221;</a> for information.
+        variables (such as <a class="xref" href="runtime-config.html#guc-shared-buffers">shared_buffers</a>) is
+        influenced by <code class="varname">block_size</code>. See <a class="xref" href="runtime-config.html#runtime-config-resource" title="16.4.3. Resource Consumption">Section 16.4.3, &#8220;Resource Consumption&#8221;</a> for information.
        </p></dd>
 <dt>
 <a name="guc-integer-datetimes"></a><span class="term"><code class="varname">integer_datetimes</code> (<code class="type">boolean</code>)</span>
@@ -2169,14 +2133,14 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 <a name="guc-lc-collate"></a><span class="term"><code class="varname">lc_collate</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Shows the locale in which sorting of textual data is done.
-        See <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.
+        See <a class="xref" href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.
         The value is determined when the database cluster is initialized.
        </p></dd>
 <dt>
 <a name="guc-lc-ctype"></a><span class="term"><code class="varname">lc_ctype</code> (<code class="type">string</code>)</span>
 </dt>
 <dd><p>        Shows the locale that determines character classifications.
-        See <a href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.
+        See <a class="xref" href="charset.html#locale" title="20.1. Locale Support">Section 20.1, &#8220;Locale Support&#8221;</a> for more information.
         The value is determined when the database cluster is initialized.
         Ordinarily this will be the same as <code class="varname">lc_collate</code>,
         but for special applications it might be set differently.
@@ -2209,7 +2173,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dt>
 <dd><p>        Shows the database encoding (character set).
         It is determined when the database is created.  Ordinarily,
-        clients need only be concerned with the value of <a href="runtime-config.html#guc-client-encoding">client_encoding</a>.
+        clients need only be concerned with the value of <a class="xref" href="runtime-config.html#guc-client-encoding">client_encoding</a>.
        </p></dd>
 <dt>
 <a name="guc-server-version"></a><span class="term"><code class="varname">server_version</code> (<code class="type">string</code>)</span>
@@ -2220,8 +2184,7 @@ archive_command = 'copy "%p" /mnt/server/archivedir/"%f"'  # Windows</pre>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-custom"></a>16.4.12. Customized Options</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-custom">16.4.12. Customized Options</h3></div></div></div>
 <p>     This feature was designed to allow options not normally known to
      <span class="productname">PostgreSQL</span> to be added by add-on modules
      (such as procedural languages).  This allows add-on modules to be
@@ -2267,8 +2230,7 @@ plruby.bar = true        # generates error, unknown class name</pre>
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-developer"></a>16.4.13. Developer Options</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-developer">16.4.13. Developer Options</h3></div></div></div>
 <p>     The following options are intended for work on the
      <span class="productname">PostgreSQL</span> source, and in some cases
      to assist with recovery of severely damaged databases.  There
@@ -2313,8 +2275,8 @@ plruby.bar = true        # generates error, unknown class name</pre>
 </dt>
 <dd><p>        Generates a great amount of debugging output for the
         <code class="command">LISTEN</code> and <code class="command">NOTIFY</code>
-        commands.  <a href="runtime-config.html#guc-client-min-messages">client_min_messages</a> or
-        <a href="runtime-config.html#guc-log-min-messages">log_min_messages</a> must be
+        commands.  <a class="xref" href="runtime-config.html#guc-client-min-messages">client_min_messages</a> or
+        <a class="xref" href="runtime-config.html#guc-log-min-messages">log_min_messages</a> must be
         <code class="literal">DEBUG1</code> or lower to send this output to the
         client or server log, respectively.
        </p></dd>
@@ -2350,10 +2312,9 @@ plruby.bar = true        # generates error, unknown class name</pre>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="runtime-config-short"></a>16.4.14. Short Options</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="runtime-config-short">16.4.14. Short Options</h3></div></div></div>
 <p>    For convenience there are also single letter command-line option switches
-    available for some parameters. They are described in <a href="runtime-config.html#runtime-config-short-table" title="Table 16.1. Short option key">Table 16.1, &#8220;Short option key&#8221;</a>.
+    available for some parameters. They are described in <a class="xref" href="runtime-config.html#runtime-config-short-table" title="Table 16.1. Short option key">Table 16.1, &#8220;Short option key&#8221;</a>.
    </p>
 <div class="table">
 <a name="runtime-config-short-table"></a><p class="title"><b>Table 16.1. Short option key</b></p>
@@ -2406,7 +2367,7 @@ plruby.bar = true        # generates error, unknown class name</pre>
 <tr>
 <td>          <code class="option">-fi</code>, <code class="option">-fh</code>,
           <code class="option">-fm</code>, <code class="option">-fn</code>,
-          <code class="option">-fs</code>, <code class="option">-ft</code><sup>[<a name="fn.runtime-config-short" href="#ftn.fn.runtime-config-short">a</a>]</sup>
+          <code class="option">-fs</code>, <code class="option">-ft</code><sup>[<a name="fn.runtime-config-short" href="#ftn.fn.runtime-config-short" class="footnote">a</a>]</sup>
          </td>
 <td>          <code class="literal">enable_indexscan = off</code>,
           <code class="literal">enable_hashjoin = off</code>,
@@ -2418,19 +2379,19 @@ plruby.bar = true        # generates error, unknown class name</pre>
 </tr>
 <tr>
 <td>
-<code class="option">-s</code><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
+<code class="option">-s</code><sup>[<a href="runtime-config.html#ftn.fn.runtime-config-short" class="footnoteref">a</a>]</sup>
 </td>
 <td><code class="literal">log_statement_stats = on</code></td>
 </tr>
 <tr>
 <td>
-<code class="option">-S <em class="replaceable"><code>x</code></em></code><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
+<code class="option">-S <em class="replaceable"><code>x</code></em></code><sup>[<a href="runtime-config.html#ftn.fn.runtime-config-short" class="footnoteref">a</a>]</sup>
         </td>
 <td><code class="literal">work_mem = <em class="replaceable"><code>x</code></em></code></td>
 </tr>
 <tr>
 <td>
-<code class="option">-tpa</code>, <code class="option">-tpl</code>, <code class="option">-te</code><sup>[<a href="#ftn.fn.runtime-config-short">a</a>]</sup>
+<code class="option">-tpa</code>, <code class="option">-tpl</code>, <code class="option">-te</code><sup>[<a href="runtime-config.html#ftn.fn.runtime-config-short" class="footnoteref">a</a>]</sup>
 </td>
 <td>
 <code class="literal">log_parser_stats = on</code>,
@@ -2439,7 +2400,7 @@ plruby.bar = true        # generates error, unknown class name</pre>
 </td>
 </tr>
 </tbody>
-<tbody class="footnotes"><tr><td colspan="2"><div class="footnote"><p><sup>[<a name="ftn.fn.runtime-config-short" href="#fn.runtime-config-short">a</a>] </sup>            For historical reasons, these options must be passed to
+<tbody class="footnotes"><tr><td colspan="2"><div class="footnote"><p><sup>[<a name="ftn.fn.runtime-config-short" href="#fn.runtime-config-short" class="para">a</a>] </sup>            For historical reasons, these options must be passed to
             the individual server process via the <code class="option">-o</code>
             <code class="command">postmaster</code> option, for example,
 <pre class="screen">$ <strong class="userinput"><code>postmaster -o '-S 1024 -s'</code></strong></pre>

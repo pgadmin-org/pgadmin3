@@ -4,8 +4,8 @@
 <title>ALTER TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-altersequence.html" title="ALTER SEQUENCE">
 <link rel="next" href="sql-altertablespace.html" title="ALTER TABLESPACE">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>ALTER TABLE &#8212; change the definition of a table</p>
 </div>
-<a name="id2712977"></a><div class="refsynopsisdiv">
+<a name="id2731967"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER TABLE [ ONLY ] <em class="replaceable"><code>name</code></em> [ * ]
     <em class="replaceable"><code>action</code></em> [, ... ]
@@ -45,7 +45,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
     SET TABLESPACE <em class="replaceable"><code>tablespace_name</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2713160"></a><h2>Description</h2>
+<a name="id2732150"></a><h2>Description</h2>
 <p>   <code class="command">ALTER TABLE</code> changes the definition of an existing table.
    There are several subforms:
 
@@ -53,7 +53,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">ADD COLUMN</code></span></dt>
 <dd><p>      This form adds a new column to the table using the same syntax as
-      <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>.
+      <a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>.
      </p></dd>
 <dt><span class="term"><code class="literal">DROP COLUMN</code></span></dt>
 <dd><p>      This form drops a column from a table.  Indexes and
@@ -89,13 +89,13 @@ where <em class="replaceable"><code>action</code></em> is one of:
 <dt><span class="term"><code class="literal">SET STATISTICS</code></span></dt>
 <dd><p>      This form
       sets the per-column statistics-gathering target for subsequent
-      <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a> operations.
+      <a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a> operations.
       The target can be set in the range 0 to 1000; alternatively, set it
       to -1 to revert to using the system default statistics
-      target (<a href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a>).
+      target (<a class="xref" href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a>).
       For more information on the use of statistics by the
       <span class="productname">PostgreSQL</span> query planner, refer to
-      <a href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>.
+      <a class="xref" href="planner-stats.html" title="13.2. Statistics Used by the Planner">Section 13.2, &#8220;Statistics Used by the Planner&#8221;</a>.
      </p></dd>
 <dt><span class="term"><code class="literal">SET STORAGE</code></span></dt>
 <dd><p>      This form sets the storage mode for a column. This controls whether this
@@ -112,11 +112,11 @@ where <em class="replaceable"><code>action</code></em> is one of:
       columns faster, at the penalty of increased storage space.  Note that
       <code class="literal">SET STORAGE</code> doesn't itself change anything in the table,
       it just sets the strategy to be pursued during future table updates.
-      See <a href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a> for more information.
+      See <a class="xref" href="storage-toast.html" title="49.2. TOAST">Section 49.2, &#8220;TOAST&#8221;</a> for more information.
      </p></dd>
 <dt><span class="term"><code class="literal">ADD <em class="replaceable"><code>table_constraint</code></em></code></span></dt>
 <dd><p>      This form adds a new constraint to a table using the same syntax as
-      <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>. 
+      <a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>. 
      </p></dd>
 <dt><span class="term"><code class="literal">DROP CONSTRAINT</code></span></dt>
 <dd><p>      This form drops constraints on a table.
@@ -126,12 +126,12 @@ where <em class="replaceable"><code>action</code></em> is one of:
      </p></dd>
 <dt><span class="term"><code class="literal">CLUSTER</code></span></dt>
 <dd><p>      This form selects the default index for future 
-      <a href="sql-cluster.html" title="CLUSTER">CLUSTER</a>
+      <a class="xref" href="sql-cluster.html" title="CLUSTER">CLUSTER</a>
       operations.  It does not actually re-cluster the table.
      </p></dd>
 <dt><span class="term"><code class="literal">SET WITHOUT CLUSTER</code></span></dt>
 <dd><p>      This form removes the most recently used
-      <a href="sql-cluster.html" title="CLUSTER">CLUSTER</a>
+      <a class="xref" href="sql-cluster.html" title="CLUSTER">CLUSTER</a>
       index specification from the table.  This affects
       future cluster operations that don't specify an index.
      </p></dd>
@@ -158,7 +158,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
       Indexes on the table, if any, are not moved; but they can be moved
       separately with additional <code class="literal">SET TABLESPACE</code> commands.
       See also 
-      <a href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a>.
+      <a class="xref" href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a>.
      </p></dd>
 <dt><span class="term"><code class="literal">RENAME</code></span></dt>
 <dd><p>      The <code class="literal">RENAME</code> forms change the name of a table
@@ -179,7 +179,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2713669"></a><h2>Parameters</h2>
+<a name="id2732658"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name (possibly schema-qualified) of an existing table to
@@ -190,7 +190,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
         to be altered, but in the current version, this is the default
         behavior.  (In releases before 7.1, <code class="literal">ONLY</code> was the
         default behavior.  The default can be altered by changing the
-        configuration parameter <a href="runtime-config.html#guc-sql-inheritance">sql_inheritance</a>.)
+        configuration parameter <a class="xref" href="runtime-config.html#guc-sql-inheritance">sql_inheritance</a>.)
        </p></dd>
 <dt><span class="term"><em class="replaceable"><code>column</code></em></span></dt>
 <dd><p>        Name of a new or existing column.
@@ -231,7 +231,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2713848"></a><h2>Notes</h2>
+<a name="id2732837"></a><h2>Notes</h2>
 <p>    The key word <code class="literal">COLUMN</code> is noise and can be omitted.
    </p>
 <p>    When a column is added with <code class="literal">ADD COLUMN</code>, all existing
@@ -302,13 +302,13 @@ where <em class="replaceable"><code>action</code></em> is one of:
    </p>
 <p>    Changing any part of a system catalog table is not permitted.
    </p>
-<p>    Refer to <a href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for a further description of valid
-    parameters. <a href="ddl.html" title="Chapter 5. Data Definition">Chapter 5, <i>Data Definition</i></a> has further information on
+<p>    Refer to <a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for a further description of valid
+    parameters. <a class="xref" href="ddl.html" title="Chapter 5. Data Definition">Chapter 5, <i>Data Definition</i></a> has further information on
     inheritance.
    </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2714093"></a><h2>Examples</h2>
+<a name="id2733082"></a><h2>Examples</h2>
 <p>   To add a column of type <code class="type">varchar</code> to a table:
 </p>
 <pre class="programlisting">ALTER TABLE distributors ADD COLUMN address varchar(30);</pre>
@@ -393,7 +393,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2714249"></a><h2>Compatibility</h2>
+<a name="id2733238"></a><h2>Compatibility</h2>
 <p>   The <code class="literal">ADD</code>, <code class="literal">DROP</code>, and <code class="literal">SET DEFAULT</code>
    forms conform with the SQL standard.  The other forms are
    <span class="productname">PostgreSQL</span> extensions of the SQL standard.

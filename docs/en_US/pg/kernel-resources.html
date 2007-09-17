@@ -4,16 +4,15 @@
 <title>16.5. Managing Kernel Resources</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="prev" href="runtime-config.html" title="16.4. Run-time Configuration">
 <link rel="next" href="postmaster-shutdown.html" title="16.6. Shutting Down the Server">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="kernel-resources"></a>16.5. Managing Kernel Resources</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="kernel-resources">16.5. Managing Kernel Resources</h2></div></div></div>
 <p>   A large <span class="productname">PostgreSQL</span> installation can quickly exhaust
    various operating system resource limits. (On some systems, the
    factory defaults are so low that you don't even need a really
@@ -21,9 +20,8 @@
    problem, keep reading.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="sysvipc"></a>16.5.1. Shared Memory and Semaphores</h3></div></div></div>
-<a name="id2635288"></a><a name="id2635297"></a><p>    Shared memory and semaphores are collectively referred to as
+<div class="titlepage"><div><div><h3 class="title" id="sysvipc">16.5.1. Shared Memory and Semaphores</h3></div></div></div>
+<a name="id2654256"></a><a name="id2654265"></a><p>    Shared memory and semaphores are collectively referred to as
     &#8220;<span class="quote"><span class="systemitem">System V</span>
     <acronym class="acronym">IPC</acronym></span>&#8221; (together with message queues, which are not
     relevant for <span class="productname">PostgreSQL</span>). Almost all modern
@@ -41,8 +39,8 @@
 <p>    When <span class="productname">PostgreSQL</span> exceeds one of the various hard
     <acronym class="acronym">IPC</acronym> limits, the server will refuse to start and
     should leave an instructive error message describing the problem
-    encountered and what to do about it. (See also <a href="postmaster-start.html#postmaster-start-failures" title="16.3.1. Server Start-up Failures">Section 16.3.1, &#8220;Server Start-up Failures&#8221;</a>.) The relevant kernel
-    parameters are named consistently across different systems; <a href="kernel-resources.html#sysvipc-parameters" title="Table 16.2. System V IPC parameters">Table 16.2, &#8220;<span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters&#8221;</a> gives an overview. The methods to set
+    encountered and what to do about it. (See also <a class="xref" href="postmaster-start.html#postmaster-start-failures" title="16.3.1. Server Start-up Failures">Section 16.3.1, &#8220;Server Start-up Failures&#8221;</a>.) The relevant kernel
+    parameters are named consistently across different systems; <a class="xref" href="kernel-resources.html#sysvipc-parameters" title="Table 16.2. System V IPC parameters">Table 16.2, &#8220;<span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters&#8221;</a> gives an overview. The methods to set
     them, however, vary. Suggestions for some platforms are given below.
     Be warned that it is often necessary to reboot your machine, and
     possibly even recompile the kernel, to change these settings.
@@ -64,8 +62,8 @@
 <tr>
 <td><code class="varname">SHMMAX</code></td>
 <td>Maximum size of shared memory segment (bytes)</td>
-<td>250 kB + 8.2 kB * <a href="runtime-config.html#guc-shared-buffers">shared_buffers</a> +
-       14.2 kB * <a href="runtime-config.html#guc-max-connections">max_connections</a> up to infinity</td>
+<td>250 kB + 8.2 kB * <a class="xref" href="runtime-config.html#guc-shared-buffers">shared_buffers</a> +
+       14.2 kB * <a class="xref" href="runtime-config.html#guc-max-connections">max_connections</a> up to infinity</td>
 </tr>
 <tr>
 <td><code class="varname">SHMMIN</code></td>
@@ -118,7 +116,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><p>    <a name="id2635575"></a> The most important
+<br class="table-break"><p>    <a name="id2654544"></a> The most important
     shared memory parameter is <code class="varname">SHMMAX</code>, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
     <code class="function">shmget</code> like <span class="errorname">Invalid argument</span>, it is
@@ -128,7 +126,7 @@
     (<code class="option">-N</code> option), although the former is the most significant.
     (You can, as a temporary solution, lower these settings to eliminate
     the failure.) As a rough approximation, you can estimate the
-    required segment size as suggested in <a href="kernel-resources.html#sysvipc-parameters" title="Table 16.2. System V IPC parameters">Table 16.2, &#8220;<span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters&#8221;</a>.  Any error message you might get will
+    required segment size as suggested in <a class="xref" href="kernel-resources.html#sysvipc-parameters" title="Table 16.2. System V IPC parameters">Table 16.2, &#8220;<span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters&#8221;</a>.  Any error message you might get will
     contain the size of the failed allocation request.
    </p>
 <p>    Some systems also have a limit on the total amount of shared memory in
@@ -151,7 +149,7 @@
     other applications. The maximum number of semaphores in the system
     is set by <code class="varname">SEMMNS</code>, which consequently must be at least
     as high as <code class="varname">max_connections</code> plus one extra for each 16
-    allowed connections (see the formula in <a href="kernel-resources.html#sysvipc-parameters" title="Table 16.2. System V IPC parameters">Table 16.2, &#8220;<span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters&#8221;</a>).  The parameter <code class="varname">SEMMNI</code>
+    allowed connections (see the formula in <a class="xref" href="kernel-resources.html#sysvipc-parameters" title="Table 16.2. System V IPC parameters">Table 16.2, &#8220;<span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters&#8221;</a>).  The parameter <code class="varname">SEMMNI</code>
     determines the limit on the number of semaphore sets that can
     exist on the system at one time.  Hence this parameter must be at
     least <code class="literal">ceil(max_connections / 16)</code>. Lowering the number
@@ -374,7 +372,7 @@ set semsys:seminfo_semmsl=32</pre>
 <p>
         You need to reboot for the changes to take effect.
        </p>
-<p>        See also <a href="http://sunsite.uakom.sk/sunworldonline/swol-09-1997/swol-09-insidesolaris.html" target="_top">http://sunsite.uakom.sk/sunworldonline/swol-09-1997/swol-09-insidesolaris.html</a>
+<p>        See also <a class="ulink" href="http://sunsite.uakom.sk/sunworldonline/swol-09-1997/swol-09-insidesolaris.html" target="_top">http://sunsite.uakom.sk/sunworldonline/swol-09-1997/swol-09-insidesolaris.html</a>
         for information on shared memory under
         <span class="productname">Solaris</span>.
        </p>
@@ -406,8 +404,7 @@ set semsys:seminfo_semmsl=32</pre>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2636544"></a>16.5.2. Resource Limits</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2655512">16.5.2. Resource Limits</h3></div></div></div>
 <p>    Unix-like operating systems enforce various kinds of resource limits
     that might interfere with the operation of your
     <span class="productname">PostgreSQL</span> server. Of particular
@@ -469,13 +466,12 @@ set semsys:seminfo_semmsl=32</pre>
     processes to open large numbers of files; if more than a few
     processes do so then the system-wide limit can easily be exceeded.
     If you find this happening, and you do not want to alter the
-    system-wide limit, you can set <span class="productname">PostgreSQL</span>'s <a href="runtime-config.html#guc-max-files-per-process">max_files_per_process</a> configuration parameter to
+    system-wide limit, you can set <span class="productname">PostgreSQL</span>'s <a class="xref" href="runtime-config.html#guc-max-files-per-process">max_files_per_process</a> configuration parameter to
     limit the consumption of open files.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2636724"></a>16.5.3. Linux Memory Overcommit</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2655692">16.5.3. Linux Memory Overcommit</h3></div></div></div>
 <p>    In Linux 2.4 and later, the default virtual memory behavior is not
     optimal for <span class="productname">PostgreSQL</span>. Because of the
     way that the kernel implements memory overcommit, the kernel may

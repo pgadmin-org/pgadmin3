@@ -4,17 +4,16 @@
 <title>31.6. Function Volatility Categories</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="extend.html" title="Chapter 31. Extending SQL">
 <link rel="prev" href="xfunc-overload.html" title="31.5. Function Overloading">
 <link rel="next" href="xfunc-pl.html" title="31.7. Procedural Language Functions">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="xfunc-volatility"></a>31.6. Function Volatility Categories</h2></div></div></div>
-<a name="id2679337"></a><a name="id2679350"></a><a name="id2679359"></a><a name="id2679368"></a><p>    Every function has a <em class="firstterm">volatility</em> classification, with
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="xfunc-volatility">31.6. Function Volatility Categories</h2></div></div></div>
+<a name="id2698322"></a><a name="id2698335"></a><a name="id2698344"></a><a name="id2698353"></a><p>    Every function has a <em class="firstterm">volatility</em> classification, with
     the possibilities being <code class="literal">VOLATILE</code>, <code class="literal">STABLE</code>, or
     <code class="literal">IMMUTABLE</code>.  <code class="literal">VOLATILE</code> is the default if the
     <code class="command">CREATE FUNCTION</code> command does not specify a category.
@@ -72,7 +71,7 @@
     using function languages that cache plans (such as
     <span class="application">PL/pgSQL</span>).
    </p>
-<p>    Because of the snapshotting behavior of MVCC (see <a href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a>)
+<p>    Because of the snapshotting behavior of MVCC (see <a class="xref" href="mvcc.html" title="Chapter 12. Concurrency Control">Chapter 12, <i>Concurrency Control</i></a>)
     a function containing only <code class="command">SELECT</code> commands can safely be
     marked <code class="literal">STABLE</code>, even if it selects from tables that might be
     undergoing modifications by concurrent queries.
@@ -93,7 +92,7 @@
 <p>    A common error is to label a function <code class="literal">IMMUTABLE</code> when its
     results depend on a configuration parameter.  For example, a function
     that manipulates timestamps might well have results that depend on the
-    <a href="runtime-config.html#guc-timezone">timezone</a> setting.  For safety, such functions should
+    <a class="xref" href="runtime-config.html#guc-timezone">timezone</a> setting.  For safety, such functions should
     be labeled <code class="literal">STABLE</code> instead.
    </p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">

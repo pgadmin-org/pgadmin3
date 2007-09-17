@@ -4,17 +4,16 @@
 <title>23.2. The Statistics Collector</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">
 <link rel="prev" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">
 <link rel="next" href="monitoring-locks.html" title="23.3. Viewing Locks">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-stats"></a>23.2. The Statistics Collector</h2></div></div></div>
-<a name="id2649557"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="monitoring-stats">23.2. The Statistics Collector</h2></div></div></div>
+<a name="id2668536"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
    is a subsystem that supports collection and reporting of information about
    server activity.  Presently, the collector can count accesses to tables
    and indexes in both disk-block and individual-row terms.  It also supports
@@ -22,15 +21,14 @@
    processes.
   </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="monitoring-stats-setup"></a>23.2.1. Statistics Collection Configuration</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="monitoring-stats-setup">23.2.1. Statistics Collection Configuration</h3></div></div></div>
 <p>   Since collection of statistics adds some overhead to query execution,
    the system can be configured to collect or not collect information.
    This is controlled by configuration parameters that are normally set in
-   <code class="filename">postgresql.conf</code>.  (See <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for
+   <code class="filename">postgresql.conf</code>.  (See <a class="xref" href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a> for
    details about setting configuration parameters.)
   </p>
-<p>   The parameter <a href="runtime-config.html#guc-stats-start-collector">stats_start_collector</a> must be
+<p>   The parameter <a class="xref" href="runtime-config.html#guc-stats-start-collector">stats_start_collector</a> must be
    set to <code class="literal">true</code> for the statistics collector to be launched
    at all.  This is the default and recommended setting, but it may be
    turned off if you have no interest in statistics and want to
@@ -38,15 +36,15 @@
    be small, however.)  Note that this option cannot be changed while
    the server is running.
   </p>
-<p>   The parameters <a href="runtime-config.html#guc-stats-command-string">stats_command_string</a>,
-   <a href="runtime-config.html#guc-stats-block-level">stats_block_level</a>, and <a href="runtime-config.html#guc-stats-row-level">stats_row_level</a> control how much information is
+<p>   The parameters <a class="xref" href="runtime-config.html#guc-stats-command-string">stats_command_string</a>,
+   <a class="xref" href="runtime-config.html#guc-stats-block-level">stats_block_level</a>, and <a class="xref" href="runtime-config.html#guc-stats-row-level">stats_row_level</a> control how much information is
    actually sent to the collector and thus determine how much run-time
    overhead occurs.  These respectively determine whether a server
    process sends its current command string, disk-block-level access
    statistics, and row-level access statistics to the collector.
    Normally these parameters are set in <code class="filename">postgresql.conf</code>
    so that they apply to all server processes, but it is possible to
-   turn them on or off in individual sessions using the <a href="sql-set.html" title="SET">SET</a> command.  (To prevent
+   turn them on or off in individual sessions using the <a class="xref" href="sql-set.html" title="SET">SET</a> command.  (To prevent
    ordinary users from hiding their activity from the administrator,
    only superusers are allowed to change these parameters with
    <code class="command">SET</code>.)
@@ -65,9 +63,8 @@
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="monitoring-stats-views"></a>23.2.2. Viewing Collected Statistics</h3></div></div></div>
-<p>   Several predefined views, listed in <a href="monitoring-stats.html#monitoring-stats-views-table" title="Table 23.1. Standard Statistics Views">Table 23.1, &#8220;Standard Statistics Views&#8221;</a>, are available to show the results
+<div class="titlepage"><div><div><h3 class="title" id="monitoring-stats-views">23.2.2. Viewing Collected Statistics</h3></div></div></div>
+<p>   Several predefined views, listed in <a class="xref" href="monitoring-stats.html#monitoring-stats-views-table" title="Table 23.1. Standard Statistics Views">Table 23.1, &#8220;Standard Statistics Views&#8221;</a>, are available to show the results
    of statistics collection.  Alternatively, one can
    build custom views using the underlying statistics functions.
   </p>
@@ -238,7 +235,7 @@
   </p>
 <p>   Other ways of looking at the statistics can be set up by writing
    queries that use the same underlying statistics access functions as
-   these standard views do.  These functions are listed in <a href="monitoring-stats.html#monitoring-stats-funcs-table" title="Table 23.2. Statistics Access Functions">Table 23.2, &#8220;Statistics Access Functions&#8221;</a>.  The per-database access
+   these standard views do.  These functions are listed in <a class="xref" href="monitoring-stats.html#monitoring-stats-funcs-table" title="Table 23.2. Statistics Access Functions">Table 23.2, &#8220;Statistics Access Functions&#8221;</a>.  The per-database access
    functions take a database OID as argument to identify which
    database to report on.  The per-table and per-index functions take
    a table or index OID.  (Note that only tables and indexes in the

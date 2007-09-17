@@ -4,17 +4,16 @@
 <title>13.2. Statistics Used by the Planner</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="performance-tips.html" title="Chapter 13. Performance Tips">
 <link rel="prev" href="performance-tips.html" title="Chapter 13. Performance Tips">
 <link rel="next" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="planner-stats"></a>13.2. Statistics Used by the Planner</h2></div></div></div>
-<a name="id2618142"></a><p>   As we saw in the previous section, the query planner needs to estimate
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="planner-stats">13.2. Statistics Used by the Planner</h2></div></div></div>
+<a name="id2637106"></a><p>   As we saw in the previous section, the query planner needs to estimate
    the number of rows retrieved by a query in order to make good choices
    of query plans.  This section provides a quick look at the statistics
    that the system uses for these estimates.
@@ -54,7 +53,7 @@
    to match the current physical table size, thus obtaining a closer
    approximation.
   </p>
-<a name="id2618250"></a><p>   Most queries retrieve only a fraction of the rows in a table, due
+<a name="id2637215"></a><p>   Most queries retrieve only a fraction of the rows in a table, due
    to having <code class="literal">WHERE</code> clauses that restrict the rows to be examined.
    The planner thus needs to make an estimate of the
    <em class="firstterm">selectivity</em> of <code class="literal">WHERE</code> clauses, that is, the fraction of
@@ -64,7 +63,7 @@
    updated by <code class="command">ANALYZE</code> and <code class="command">VACUUM ANALYZE</code> commands
    and are always approximate even when freshly updated.
   </p>
-<a name="id2618307"></a><p>   Rather than look at <code class="structname">pg_statistic</code> directly,
+<a name="id2637271"></a><p>   Rather than look at <code class="structname">pg_statistic</code> directly,
    it's better to look at its view <code class="structname">pg_stats</code>
    when examining the statistics manually.  <code class="structname">pg_stats</code>
    is designed to be more easily readable.  Furthermore,
@@ -87,7 +86,7 @@
 <p>
   </p>
 <p>   <code class="structname">pg_stats</code> is described in detail in
-   <a href="view-pg-stats.html" title="41.36. pg_stats">Section 41.36, &#8220;<code class="structname">pg_stats</code>&#8221;</a>.
+   <a class="xref" href="view-pg-stats.html" title="41.36. pg_stats">Section 41.36, &#8220;<code class="structname">pg_stats</code>&#8221;</a>.
   </p>
 <p>   The amount of information stored in <code class="structname">pg_statistic</code>,
    in particular the maximum number of entries in the
@@ -95,7 +94,7 @@
    arrays for each column, can be set on a
    column-by-column basis using the <code class="command">ALTER TABLE SET STATISTICS</code>
    command, or globally by setting the
-   <a href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a> configuration variable.
+   <a class="xref" href="runtime-config.html#guc-default-statistics-target">default_statistics_target</a> configuration variable.
    The default limit is presently 10 entries.  Raising the limit
    may allow more accurate planner estimates to be made, particularly for
    columns with irregular data distributions, at the price of consuming

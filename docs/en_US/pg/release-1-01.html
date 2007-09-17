@@ -1,44 +1,42 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.87. Release 1.01</title>
+<title>E.90. Release 1.01</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-1-02.html" title="E.86. Release 1.02">
-<link rel="next" href="release-1-0.html" title="E.88. Release 1.0">
+<link rel="prev" href="release-1-02.html" title="E.89. Release 1.02">
+<link rel="next" href="release-1-0.html" title="E.91. Release 1.0">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-1-01"></a>E.87. Release 1.01</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-1-01">E.90. Release 1.01</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1996-02-23</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2834167"></a>E.87.1. Migration from version 1.0 to version 1.01</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2853598">E.90.1. Migration from version 1.0 to version 1.01</h3></div></div></div>
 <p>The following notes are for the benefit of users who want to migrate
-databases from <span class="productname">Postgres95</span> 1.0 to <span class="productname">Postgres95</span> 1.01.  </p>
+databases from <span class="productname">Postgres95</span> 1.0 to <span class="productname">Postgres95</span> 1.01.</p>
 <p>If you are starting afresh with <span class="productname">Postgres95</span> 1.01 and do not need
 to migrate old databases, you do not need to read any further.</p>
 <p>In order to <span class="productname">Postgres95</span> version 1.01 with databases created with
-<span class="productname">Postgres95</span> version 1.0, the following steps are required:  </p>
+<span class="productname">Postgres95</span> version 1.0, the following steps are required:</p>
 <div class="procedure"><ol type="1">
 <li><p>Set the definition of <code class="symbol">NAMEDATALEN</code> in <code class="filename">src/Makefile.global</code> to 16
    and <code class="symbol">OIDNAMELEN</code> to 20.</p></li>
 <li>
-<p>Decide whether you want to use Host based authentication.  </p>
+<p>Decide whether you want to use Host based authentication.</p>
 <ol type="a">
 <li><p>If you do, you must create a file name <code class="literal">pg_hba</code> in your top-level data
    directory (typically the value of your <code class="envar">$PGDATA</code>).  <code class="filename">src/libpq/pg_hba</code>
    shows an example syntax.</p></li>
 <li>
 <p>If you do not want host-based authentication, you can comment out
-   the line
+   the line:
 </p>
 <pre class="programlisting">        HBA = 1</pre>
 <p>
@@ -51,7 +49,7 @@ to migrate old databases, you do not need to read any further.</p>
 </li>
 <li><p>Compile and install 1.01, but DO NOT do the <code class="command">initdb</code> step.</p></li>
 <li><p>Before doing anything else, terminate your 1.0 postmaster, and
-   backup your existing <code class="envar">$PGDATA</code> directory.   </p></li>
+   backup your existing <code class="envar">$PGDATA</code> directory.</p></li>
 <li><p>Set your <code class="envar">PGDATA</code> environment variable to your 1.0 databases, but set up
    path up so that 1.01 binaries are being used.</p></li>
 <li><p>Modify the file <code class="filename"><code class="envar">$PGDATA</code>/PG_VERSION</code> from 5.0 to 5.1</p></li>
@@ -59,7 +57,7 @@ to migrate old databases, you do not need to read any further.</p>
 <li>
 <p>Add the new built-in functions and operators of 1.01 to 1.0
    databases.  This is done by running the new 1.01 server against
-   your own 1.0 database and applying the queries attached and saving 
+   your own 1.0 database and applying the queries attached and saving
    in the file 1.0_to_1.01.sql.   This can be done easily through <code class="command">psql</code>.
    If your 1.0 database is name <code class="literal">testdb</code>:
 
@@ -115,8 +113,7 @@ create operator !~* (leftarg = text, rightarg = text, procedure = texticregexne)
 </ol></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2834450"></a>E.87.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2853846">E.90.2. Changes</h3></div></div></div>
 <pre class="programlisting">Incompatibilities:
  * 1.01 is backwards compatible with 1.0 database provided the user
    follow the steps outlined in the MIGRATION_from_1.0_to_1.01 file.
@@ -139,12 +136,12 @@ Enhancements:
    is not desired, comment out HBA=1 in src/Makefile.global.
  * changed regex handling to be uniform use of Henry Spencer's regex code
    regardless of platform.  The regex code is included in the distribution
- * added functions and operators for case-insensitive regular expressions. 
+ * added functions and operators for case-insensitive regular expressions.
    The operators are ~* and !~*.
  * pg_dump uses COPY instead of SELECT loop for better performance
 
 Bug fixes:
- * fixed an optimizer bug that was causing core dumps when 
+ * fixed an optimizer bug that was causing core dumps when
    functions calls were used in comparisons in the WHERE clause
  * changed all uses of getuid to geteuid so that effective uids are used
  * psql now returns non-zero status on errors when using -c

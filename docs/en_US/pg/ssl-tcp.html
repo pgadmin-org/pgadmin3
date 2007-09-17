@@ -4,27 +4,26 @@
 <title>16.8. Secure TCP/IP Connections with SSL</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Server Run-time Environment">
 <link rel="prev" href="encryption-options.html" title="16.7. Encryption Options">
 <link rel="next" href="ssh-tunnels.html" title="16.9. Secure TCP/IP Connections with SSH Tunnels">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ssl-tcp"></a>16.8. Secure TCP/IP Connections with SSL</h2></div></div></div>
-<a name="id2637318"></a><p>   <span class="productname">PostgreSQL</span> has native support for using
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ssl-tcp">16.8. Secure TCP/IP Connections with SSL</h2></div></div></div>
+<a name="id2656286"></a><p>   <span class="productname">PostgreSQL</span> has native support for using
    <acronym class="acronym">SSL</acronym> connections to encrypt client/server communications
    for increased security. This requires that
    <span class="productname">OpenSSL</span> is installed on both client and
    server systems and that support in <span class="productname">PostgreSQL</span> is
-   enabled at build time (see <a href="installation.html" title="Chapter 14.  Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>).
+   enabled at build time (see <a class="xref" href="installation.html" title="Chapter 14.  Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>).
   </p>
 <p>   With <acronym class="acronym">SSL</acronym> support compiled in, the
    <span class="productname">PostgreSQL</span> server can be started with
    <acronym class="acronym">SSL</acronym> enabled by setting the parameter
-   <a href="runtime-config.html#guc-ssl">ssl</a> to <code class="literal">on</code> in
+   <a class="xref" href="runtime-config.html#guc-ssl">ssl</a> to <code class="literal">on</code> in
    <code class="filename">postgresql.conf</code>. When
    starting in <acronym class="acronym">SSL</acronym> mode, the server will look for the
    files <code class="filename">server.key</code> and <code class="filename">server.crt</code> in the
@@ -37,7 +36,7 @@
 <p>   The server will listen for both standard and <acronym class="acronym">SSL</acronym>
    connections on the same TCP port, and will negotiate with any
    connecting client on whether to use <acronym class="acronym">SSL</acronym>.  By default,
-   this is at the client's option; see <a href="client-authentication.html#auth-pg-hba-conf" title="19.1. The pg_hba.conf file">Section 19.1, &#8220;The <code class="filename">pg_hba.conf</code> file&#8221;</a> about how to set up the server to
+   this is at the client's option; see <a class="xref" href="client-authentication.html#auth-pg-hba-conf" title="19.1. The pg_hba.conf file">Section 19.1, &#8220;The <code class="filename">pg_hba.conf</code> file&#8221;</a> about how to set up the server to
    require use of <acronym class="acronym">SSL</acronym> for some or all connections.
   </p>
 <p>   For details on how to create your server private key and certificate,

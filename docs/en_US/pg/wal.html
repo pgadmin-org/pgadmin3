@@ -4,16 +4,15 @@
 <title>Chapter 25. Write-Ahead Logging (WAL)</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="disk-full.html" title="24.2. Disk Full Failure">
 <link rel="next" href="wal-configuration.html" title="25.2. WAL Configuration">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="wal">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="wal"></a>Chapter 25. Write-Ahead Logging (<acronym class="acronym">WAL</acronym>)</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 25. Write-Ahead Logging (<acronym class="acronym">WAL</acronym>)</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -22,7 +21,7 @@
 <dt><span class="sect1"><a href="wal-internals.html">25.3. Internals</a></span></dt>
 </dl>
 </div>
-<a name="id2650970"></a><a name="id2650979"></a><p>   <em class="firstterm">Write-Ahead Logging</em> (<acronym class="acronym">WAL</acronym>)
+<a name="id2669949"></a><a name="id2669958"></a><p>   <em class="firstterm">Write-Ahead Logging</em> (<acronym class="acronym">WAL</acronym>)
    is a standard approach to transaction logging.  Its detailed
    description may be found in most (if not all) books about
    transaction processing. Briefly, <acronym class="acronym">WAL</acronym>'s central
@@ -37,9 +36,8 @@
    roll-forward recovery, also known as REDO.)
   </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="wal-benefits"></a>25.1. Benefits of <acronym class="acronym">WAL</acronym></h2></div></div></div>
-<a name="id2651022"></a><p>    The first major benefit of using <acronym class="acronym">WAL</acronym> is a
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="wal-benefits">25.1. Benefits of <acronym class="acronym">WAL</acronym></h2></div></div></div>
+<a name="id2670001"></a><p>    The first major benefit of using <acronym class="acronym">WAL</acronym> is a
     significantly reduced number of disk writes, because only the log
     file needs to be flushed to disk at the time of transaction
     commit, rather than every data file changed by the transaction.
@@ -74,7 +72,7 @@
     consistency for after-crash recovery.
    </p>
 <p>    Finally, <acronym class="acronym">WAL</acronym> makes it possible to support on-line
-    backup and point-in-time recovery, as described in <a href="backup-online.html" title="22.3. On-line backup and point-in-time recovery (PITR)">Section 22.3, &#8220;On-line backup and point-in-time recovery (PITR)&#8221;</a>.  By archiving the WAL data we can support
+    backup and point-in-time recovery, as described in <a class="xref" href="backup-online.html" title="22.3. On-line backup and point-in-time recovery (PITR)">Section 22.3, &#8220;On-line backup and point-in-time recovery (PITR)&#8221;</a>.  By archiving the WAL data we can support
     reverting to any time instant covered by the available WAL data:
     we simply install a prior physical backup of the database, and
     replay the WAL log just as far as the desired time.  What's more,

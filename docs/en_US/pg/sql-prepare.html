@@ -4,8 +4,8 @@
 <title>PREPARE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-notify.html" title="NOTIFY">
 <link rel="next" href="sql-reindex.html" title="REINDEX">
@@ -17,12 +17,12 @@
 <h2>Name</h2>
 <p>PREPARE &#8212; prepare a statement for execution</p>
 </div>
-<a name="id2741295"></a><a name="id2741303"></a><div class="refsynopsisdiv">
+<a name="id2760321"></a><a name="id2760330"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">PREPARE <em class="replaceable"><code>plan_name</code></em> [ (<em class="replaceable"><code>datatype</code></em> [, ...] ) ] AS <em class="replaceable"><code>statement</code></em></pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2741337"></a><h2>Description</h2>
+<a name="id2760364"></a><h2>Description</h2>
 <p>   <code class="command">PREPARE</code> creates a prepared statement. A prepared
    statement is a server-side object that can be used to optimize
    performance. When the <code class="command">PREPARE</code> statement is
@@ -39,7 +39,7 @@
    be prepared itself, refer to the parameters by position using
    <code class="literal">$1</code>, <code class="literal">$2</code>, etc. When executing
    the statement, specify the actual values for these parameters in
-   the <code class="command">EXECUTE</code> statement.  Refer to <a href="sql-execute.html" title="EXECUTE">EXECUTE</a> for more
+   the <code class="command">EXECUTE</code> statement.  Refer to <a class="xref" href="sql-execute.html" title="EXECUTE">EXECUTE</a> for more
    information about that.
   </p>
 <p>   Prepared statements only last for the duration of the current
@@ -61,7 +61,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2741437"></a><h2>Parameters</h2>
+<a name="id2760464"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>plan_name</code></em></span></dt>
 <dd><p>      An arbitrary name given to this particular prepared
@@ -81,7 +81,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2741513"></a><h2>Notes</h2>
+<a name="id2760540"></a><h2>Notes</h2>
 <p>   In some situations, the query plan produced for a prepared
    statement will be inferior to the query plan that would have been
    chosen if the statement had been submitted and executed
@@ -95,11 +95,11 @@
    when planning prepared statements with parameters, the chosen plan
    may be suboptimal. To examine the query plan
    <span class="productname">PostgreSQL</span> has chosen for a prepared
-   statement, use <a href="sql-explain.html" title="EXPLAIN">EXPLAIN</a>.
+   statement, use <a class="xref" href="sql-explain.html" title="EXPLAIN">EXPLAIN</a>.
   </p>
 <p>   For more information on query planning and the statistics collected
    by <span class="productname">PostgreSQL</span> for that purpose, see
-   the <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a>
+   the <a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a>
    documentation.
   </p>
 </div>
@@ -124,7 +124,7 @@ EXECUTE usrrptplan(1, current_date);</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2741619"></a><h2>Compatibility</h2>
+<a name="id2760646"></a><h2>Compatibility</h2>
 <p>   The SQL standard includes a <code class="command">PREPARE</code> statement,
    but it is only for use in embedded SQL. This version of the
    <code class="command">PREPARE</code> statement also uses a somewhat different
@@ -132,8 +132,8 @@ EXECUTE usrrptplan(1, current_date);</pre>
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2741640"></a><h2>See Also</h2>
-<span class="simplelist"><a href="sql-deallocate.html" title="DEALLOCATE">DEALLOCATE</a>, <a href="sql-execute.html" title="EXECUTE">EXECUTE</a></span>
+<a name="id2760666"></a><h2>See Also</h2>
+<span class="simplelist"><a class="xref" href="sql-deallocate.html" title="DEALLOCATE">DEALLOCATE</a>, <a class="xref" href="sql-execute.html" title="EXECUTE">EXECUTE</a></span>
 </div>
 </div></body>
 </html>

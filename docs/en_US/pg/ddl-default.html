@@ -4,24 +4,23 @@
 <title>5.2. Default Values</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="next" href="ddl-constraints.html" title="5.3. Constraints">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-default"></a>5.2. Default Values</h2></div></div></div>
-<a name="id2569237"></a><p>   A column can be assigned a default value.  When a new row is
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddl-default">5.2. Default Values</h2></div></div></div>
+<a name="id2588201"></a><p>   A column can be assigned a default value.  When a new row is
    created and no values are specified for some of the columns, the
    columns will be filled with their respective default values.  A
    data manipulation command can also request explicitly that a column
    be set to its default value, without having to know what that value is.
-   (Details about data manipulation commands are in <a href="dml.html" title="Chapter 6. Data Manipulation">Chapter 6, <i>Data Manipulation</i></a>.)
+   (Details about data manipulation commands are in <a class="xref" href="dml.html" title="Chapter 6. Data Manipulation">Chapter 6, <i>Data Manipulation</i></a>.)
   </p>
-<p>   <a name="id2569270"></a>
+<p>   <a name="id2588234"></a>
    If no default value is declared explicitly, the default value is the
    null value.  This usually makes sense because a null value can
    be considered to represent unknown data.
@@ -32,7 +31,7 @@
 <pre class="programlisting">CREATE TABLE products (
     product_no integer,
     name text,
-    price numeric <span><strong class="emphasis">DEFAULT 9.99</strong></span>
+    price numeric <span class="emphasis"><strong>DEFAULT 9.99</strong></span>
 );</pre>
 <p>
   </p>
@@ -46,20 +45,20 @@
    something like
 </p>
 <pre class="programlisting">CREATE TABLE products (
-    product_no integer <span><strong class="emphasis">DEFAULT nextval('products_product_no_seq')</strong></span>,
+    product_no integer <span class="emphasis"><strong>DEFAULT nextval('products_product_no_seq')</strong></span>,
     ...
 );</pre>
 <p>
    where the <code class="literal">nextval()</code> function supplies successive values
-   from a <em class="firstterm">sequence object</em> (see <a href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">Section 9.12, &#8220;Sequence Manipulation Functions&#8221;</a>). This arrangement is sufficiently common
+   from a <em class="firstterm">sequence object</em> (see <a class="xref" href="functions-sequence.html" title="9.12. Sequence Manipulation Functions">Section 9.12, &#8220;Sequence Manipulation Functions&#8221;</a>). This arrangement is sufficiently common
    that there's a special shorthand for it:
 </p>
 <pre class="programlisting">CREATE TABLE products (
-    product_no <span><strong class="emphasis">SERIAL</strong></span>,
+    product_no <span class="emphasis"><strong>SERIAL</strong></span>,
     ...
 );</pre>
 <p>
-   The <code class="literal">SERIAL</code> shorthand is discussed further in <a href="datatype.html#datatype-serial" title="8.1.4. Serial Types">Section 8.1.4, &#8220;Serial Types&#8221;</a>.
+   The <code class="literal">SERIAL</code> shorthand is discussed further in <a class="xref" href="datatype.html#datatype-serial" title="8.1.4. Serial Types">Section 8.1.4, &#8220;Serial Types&#8221;</a>.
   </p>
 </div></body>
 </html>

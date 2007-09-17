@@ -4,37 +4,36 @@
 <title>27.5. Cancelling Queries in Progress</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
 <link rel="prev" href="libpq-async.html" title="27.4. Asynchronous Command Processing">
 <link rel="next" href="libpq-fastpath.html" title="27.6. The Fast-Path Interface">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="libpq-cancel"></a>27.5. Cancelling Queries in Progress</h2></div></div></div>
-<a name="id2659322"></a><p>A client application can request cancellation of
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="libpq-cancel">27.5. Cancelling Queries in Progress</h2></div></div></div>
+<a name="id2678300"></a><p>A client application can request cancellation of
 a command that is still being processed by the
 server, using the functions described in this section.
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQgetCancel</code><a name="id2659346"></a></span></dt>
+<dt><span class="term"><code class="function">PQgetCancel</code><a name="id2678325"></a></span></dt>
 <dd>
 <p>          Creates a data structure containing the information needed to cancel
           a command issued through a particular database connection.
 </p>
 <pre class="synopsis">PGcancel *PQgetCancel(PGconn *conn);</pre>
 <p><code class="function">PQgetCancel</code> creates a 
-<code class="structname">PGcancel</code><a name="id2659372"></a> object given
+<code class="structname">PGcancel</code><a name="id2678351"></a> object given
 a <code class="structname">PGconn</code> connection object.  It will return NULL if the
 given <em class="parameter"><code>conn</code></em> is NULL or an invalid connection.  The
 <code class="structname">PGcancel</code> object is an opaque structure that is not meant
 to be accessed directly by the application; it can only be passed to
 <code class="function">PQcancel</code> or <code class="function">PQfreeCancel</code>.</p>
 </dd>
-<dt><span class="term"><code class="function">PQfreeCancel</code><a name="id2659415"></a></span></dt>
+<dt><span class="term"><code class="function">PQfreeCancel</code><a name="id2678394"></a></span></dt>
 <dd>
 <p>          Frees a data structure created by <code class="function">PQgetCancel</code>.
 </p>
@@ -42,7 +41,7 @@ to be accessed directly by the application; it can only be passed to
 <p><code class="function">PQfreeCancel</code> frees a data object previously created
 by <code class="function">PQgetCancel</code>.</p>
 </dd>
-<dt><span class="term"><code class="function">PQcancel</code><a name="id2659456"></a></span></dt>
+<dt><span class="term"><code class="function">PQcancel</code><a name="id2678435"></a></span></dt>
 <dd>
 <p>          Requests that the server abandon
           processing of the current command.
@@ -69,7 +68,7 @@ object.</p>
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQrequestCancel</code><a name="id2659543"></a></span></dt>
+<dt><span class="term"><code class="function">PQrequestCancel</code><a name="id2678522"></a></span></dt>
 <dd>
 <p>          Requests that the server abandon
           processing of the current command.

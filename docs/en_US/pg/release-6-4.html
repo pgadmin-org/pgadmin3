@@ -1,19 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.76. Release 6.4</title>
+<title>E.79. Release 6.4</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-6-4-1.html" title="E.75. Release 6.4.1">
-<link rel="next" href="release-6-3-2.html" title="E.77. Release 6.3.2">
+<link rel="prev" href="release-6-4-1.html" title="E.78. Release 6.4.1">
+<link rel="next" href="release-6-3-2.html" title="E.80. Release 6.3.2">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="release-6-4"></a>E.76. Release 6.4</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-6-4">E.79. Release 6.4</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1998-10-30</p>
@@ -25,7 +24,7 @@ Here is a brief, incomplete summary:
 
 </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>Views and rules are now functional thanks to extensive new code in the 
+<li><p>Views and rules are now functional thanks to extensive new code in the
 rewrite rules system from Jan Wieck. He also wrote a chapter on it
 for the <em class="citetitle">Programmer's Guide</em>.</p></li>
 <li><p>Jan also contributed a second procedural language, <span class="application">PL/pgSQL</span>, to go with the
@@ -40,7 +39,7 @@ with target columns. This uses a generic mechanism which supports
 the type extensibility features of <span class="productname">PostgreSQL</span>.
 There is a new chapter in the <em class="citetitle">User's Guide</em>
 which covers this topic.</p></li>
-<li><p>Three new data types have been added. 
+<li><p>Three new data types have been added.
 Two types, <code class="type">inet</code> and <code class="type">cidr</code>, support various forms
 of IP network, subnet, and machine addressing. There is now an 8-byte integer
 type available on some platforms. See the chapter on data types
@@ -54,16 +53,14 @@ attention, and should be more robust for more platforms than it has ever
 been.</p></li>
 </ul></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2832155"></a>E.76.1. Migration to version 6.4</h3></div></div></div>
-<p>A dump/restore using <span class="application">pg_dump</span> 
+<div class="titlepage"><div><div><h3 class="title" id="id2851620">E.79.1. Migration to version 6.4</h3></div></div></div>
+<p>A dump/restore using <span class="application">pg_dump</span>
 or <span class="application">pg_dumpall</span>
 is required for those wishing to migrate data from any
 previous release of <span class="productname">PostgreSQL</span>.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2832180"></a>E.76.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2851645">E.79.2. Changes</h3></div></div></div>
 <p>     </p>
 <pre class="programlisting">Bug Fixes
 ---------
@@ -123,7 +120,7 @@ Readline cleanups(Tom)
 Allow psql  \f \ to make spaces as delimiter(Bruce)
 Pass pg_attribute.atttypmod to the frontend for column field lengths(Tom,Bruce)
 Msql compatibility library in /contrib(Aldrin)
-Remove the requirement that ORDER/GROUP BY clause identifiers be 
+Remove the requirement that ORDER/GROUP BY clause identifiers be
 included in the target list(David)
 Convert columns to match columns in UNION clauses(Thomas)
 Remove fork()/exec() and only do fork()(Bruce)
@@ -131,7 +128,7 @@ Jdbc cleanups(Peter)
 Show backend status on ps command line(only works on some platforms)(Bruce)
 Pg_hba.conf now has a sameuser option in the database field
 Make lo_unlink take oid param, not int4
-New DISABLE_COMPLEX_MACRO for compilers that can't handle our macros(Bruce)
+New DISABLE_COMPLEX_MACRO for compilers that cannot handle our macros(Bruce)
 Libpgtcl now handles NOTIFY as a Tcl event, need not send dummy queries(Tom)
 libpgtcl cleanups(Tom)
 Add -error option to libpgtcl's pg_result command(Tom)
@@ -207,7 +204,7 @@ New UNLISTEN command(Massimo)
 psql and libpq now compile under Windows using win32.mak(Magnus)
 Lo_read no longer stores trailing NULL(Bruce)
 Identifiers are now truncated to 31 characters internally(Bruce)
-Createuser options now availble on the command line
+Createuser options now available on the command line
 Code for 64-bit integer supported added, configure tested, int8 type(Thomas)
 Prevent file descriptor leaf from failed COPY(Bruce)
 New pg_upgrade command(Bruce)
@@ -218,7 +215,7 @@ New DECLARE and FETCH feature(Thomas)
 libpq's internal structures now not exported(Tom)
 Allow up to 8 key indexes(Bruce)
 Remove ARCHIVE key word, that is no longer used(Thomas)
-pg_dump -n flag to supress quotes around indentifiers
+pg_dump -n flag to suppress quotes around indentifiers
 disable system columns for views(Jan)
 new INET and CIDR types for network addresses(TomH, Paul)
 no more double quotes in psql output
@@ -247,7 +244,7 @@ NS32K platform fixes(Phil Nelson, John Buller)
 SCO 7/UnixWare 2.x fixes(Billy,others)
 Sparc/Solaris 2.5 fixes(Ryan)
 Pgbuiltin.3 is obsolete, move to doc files(Thomas)
-Even more documention(Thomas)
+Even more documentation(Thomas)
 Nextstep support(Jacek)
 Aix support(David)
 pginterface manual page(Bruce)

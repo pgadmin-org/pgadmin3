@@ -4,17 +4,16 @@
 <title>33.2. Views and the Rule System</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="rules.html" title="Chapter 33. The Rule System">
 <link rel="prev" href="rules.html" title="Chapter 33. The Rule System">
 <link rel="next" href="rules-update.html" title="33.3. Rules on INSERT, UPDATE, and DELETE">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="rules-views"></a>33.2. Views and the Rule System</h2></div></div></div>
-<a name="id2688846"></a><a name="id2688858"></a><p>    Views in <span class="productname">PostgreSQL</span> are implemented
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="rules-views">33.2. Views and the Rule System</h2></div></div></div>
+<a name="id2707831"></a><a name="id2707843"></a><p>    Views in <span class="productname">PostgreSQL</span> are implemented
     using the rule system. In fact, there is essentially no difference
     between
 
@@ -38,9 +37,8 @@ CREATE RULE "_RETURN" AS ON SELECT TO myview DO INSTEAD
     absolutely no difference between a table and a view. They are the
     same thing: relations.</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="rules-select"></a>33.2.1. How <code class="command">SELECT</code> Rules Work</h3></div></div></div>
-<a name="id2688931"></a><p>    Rules <code class="literal">ON SELECT</code> are applied to all queries as the last step, even
+<div class="titlepage"><div><div><h3 class="title" id="rules-select">33.2.1. How <code class="command">SELECT</code> Rules Work</h3></div></div></div>
+<a name="id2707916"></a><p>    Rules <code class="literal">ON SELECT</code> are applied to all queries as the last step, even
     if the command given is an <code class="command">INSERT</code>,
     <code class="command">UPDATE</code> or <code class="command">DELETE</code>. And they
     have different semantics from rules on the other command types in that they modify the
@@ -357,8 +355,7 @@ SELECT * FROM shoelace;
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2689598"></a>33.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2708583">33.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</h3></div></div></div>
 <p>    Two details of the query tree aren't touched in the description of
     view rules above. These are the command type and the result relation.
     In fact, view rules don't need this information.</p>
@@ -424,7 +421,7 @@ UPDATE t1 SET b = t2.b WHERE t1.a = t2.a;</pre>
 <p>    To resolve this problem, another entry is added to the target list
     in <code class="command">UPDATE</code> (and also in
     <code class="command">DELETE</code>) statements: the current tuple ID
-    (<acronym class="acronym">CTID</acronym>).<a name="id2689817"></a>  This is a system column containing the
+    (<acronym class="acronym">CTID</acronym>).<a name="id2708802"></a>  This is a system column containing the
     file block number and position in the block for the row. Knowing
     the table, the <acronym class="acronym">CTID</acronym> can be used to retrieve the
     original row of <code class="literal">t1</code> to be updated.  After adding the <acronym class="acronym">CTID</acronym>
@@ -448,8 +445,7 @@ UPDATE t1 SET b = t2.b WHERE t1.a = t2.a;</pre>
     the same way to any command. There is no difference.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="id2689897"></a>33.2.3. The Power of Views in <span class="productname">PostgreSQL</span></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2708882">33.2.3. The Power of Views in <span class="productname">PostgreSQL</span></h3></div></div></div>
 <p>    The above demonstrates how the rule system incorporates view
     definitions into the original query tree. In the second example, a
     simple <code class="command">SELECT</code> from one view created a final
@@ -471,8 +467,7 @@ UPDATE t1 SET b = t2.b WHERE t1.a = t2.a;</pre>
     up to that point.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="rules-views-update"></a>33.2.4. Updating a View</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="rules-views-update">33.2.4. Updating a View</h3></div></div></div>
 <p>    What happens if a view is named as the target relation for an
     <code class="command">INSERT</code>, <code class="command">UPDATE</code>, or
     <code class="command">DELETE</code>?  After doing the substitutions

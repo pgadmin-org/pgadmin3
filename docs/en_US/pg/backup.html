@@ -4,16 +4,15 @@
 <title>Chapter 22. Backup and Restore</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="logfile-maintenance.html" title="21.3. Log File Maintenance">
 <link rel="next" href="backup-file.html" title="22.2. File system level backup">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="backup">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="backup"></a>Chapter 22. Backup and Restore</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title">Chapter 22. Backup and Restore</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
@@ -36,7 +35,7 @@
 <dt><span class="sect1"><a href="migration.html">22.4. Migration Between Releases</a></span></dt>
 </dl>
 </div>
-<a name="id2646386"></a><p>  As with everything that contains valuable data, <span class="productname">PostgreSQL</span>
+<a name="id2665354"></a><p>  As with everything that contains valuable data, <span class="productname">PostgreSQL</span>
   databases should be backed up regularly. While the procedure is
   essentially simple, it is important to have a basic understanding of
   the underlying techniques and assumptions.
@@ -53,13 +52,12 @@
   Each has its own strengths and weaknesses.
  </p>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="backup-dump"></a>22.1. <acronym class="acronym">SQL</acronym> Dump</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="backup-dump">22.1. <acronym class="acronym">SQL</acronym> Dump</h2></div></div></div>
 <p>   The idea behind the SQL-dump method is to generate a text file with SQL
    commands that, when fed back to the server, will recreate the
    database in the same state as it was at the time of the dump.
    <span class="productname">PostgreSQL</span> provides the utility program
-   <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> for this purpose. The basic usage of this
+   <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> for this purpose. The basic usage of this
    command is:
 </p>
 <pre class="synopsis">pg_dump <em class="replaceable"><code>dbname</code></em> &gt; <em class="replaceable"><code>outfile</code></em></pre>
@@ -91,7 +89,7 @@
    this, either specify the <code class="option">-U</code> option or set the
    environment variable <code class="envar">PGUSER</code>. Remember that
    <span class="application">pg_dump</span> connections are subject to the normal
-   client authentication mechanisms (which are described in <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a>).
+   client authentication mechanisms (which are described in <a class="xref" href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a>).
   </p>
 <p>   Dumps created by <span class="application">pg_dump</span> are internally consistent,
    that is, updates to the database while <span class="application">pg_dump</span> is
@@ -106,13 +104,12 @@
     keys) you must instruct <span class="application">pg_dump</span> to dump the OIDs
     as well. To do this, use the <code class="option">-o</code> command line
     option.  &#8220;<span class="quote">Large objects</span>&#8221; are not dumped by default,
-    either.  See <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a>'s reference page if you
+    either.  See <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a>'s reference page if you
     use large objects.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="backup-dump-restore"></a>22.1.1. Restoring the dump</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="backup-dump-restore">22.1.1. Restoring the dump</h3></div></div></div>
 <p>    The text files created by <span class="application">pg_dump</span> are intended to
     be read in by the <span class="application">psql</span> program. The
     general command form to restore a dump is
@@ -127,7 +124,7 @@
     <em class="replaceable"><code>dbname</code></em></code>).
     <span class="application">psql</span> supports options similar to <span class="application">pg_dump</span> 
     for controlling the database server location and the user name. See
-    <a href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s reference page for more information.
+    <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s reference page for more information.
    </p>
 <p>    Not only must the target database already exist before starting to
     run the restore, but so must all the users who own objects in the
@@ -136,7 +133,7 @@
     original ownership and/or permissions.  (Sometimes this is what you want,
     but usually it is not.)
    </p>
-<p>    Once restored, it is wise to run <a href="sql-analyze.html" title="ANALYZE">ANALYZE</a> on each database so the optimizer has
+<p>    Once restored, it is wise to run <a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a> on each database so the optimizer has
     useful statistics. An easy way to do this is to run
     <code class="command">vacuumdb -a -z</code> to
     <code class="command">VACUUM ANALYZE</code> all databases; this is equivalent to
@@ -161,14 +158,13 @@
     </p>
 </div>
 <p>    For advice on how to load large amounts of data into
-    <span class="productname">PostgreSQL</span> efficiently, refer to <a href="populate.html" title="13.4. Populating a Database">Section 13.4, &#8220;Populating a Database&#8221;</a>.
+    <span class="productname">PostgreSQL</span> efficiently, refer to <a class="xref" href="populate.html" title="13.4. Populating a Database">Section 13.4, &#8220;Populating a Database&#8221;</a>.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="backup-dump-all"></a>22.1.2. Using <span class="application">pg_dumpall</span></h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="backup-dump-all">22.1.2. Using <span class="application">pg_dumpall</span></h3></div></div></div>
 <p>    The above mechanism is cumbersome and inappropriate when backing
-    up an entire database cluster. For this reason the <a href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a> program is provided.
+    up an entire database cluster. For this reason the <a class="xref" href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><a name="app-pg-dumpall-title"></a><span class="application">pg_dumpall</span></span></a> program is provided.
     <span class="application">pg_dumpall</span> backs up each database in a given
     cluster, and also preserves cluster-wide data such as users and
     groups. The basic usage of this command is:
@@ -187,8 +183,7 @@
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="backup-dump-large"></a>22.1.3. Handling large databases</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="backup-dump-large">22.1.3. Handling large databases</h3></div></div></div>
 <p>    Since <span class="productname">PostgreSQL</span> allows tables larger
     than the maximum file size on your system, it can be problematic
     to dump such a table to a file, since the resulting file will likely
@@ -245,23 +240,22 @@ cat <em class="replaceable"><code>filename</code></em>* | psql <em class="replac
 
      A custom-format dump is not a script for <span class="application">psql</span>, but
      instead must be restored with <span class="application">pg_restore</span>.
-     See the <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> and <a href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a> reference pages for details.
+     See the <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> and <a class="xref" href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle">pg_restore</span></a> reference pages for details.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="backup-dump-caveats"></a>22.1.4. Caveats</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="backup-dump-caveats">22.1.4. Caveats</h3></div></div></div>
 <p>    For reasons of backward compatibility, <span class="application">pg_dump</span>
-    does not dump large objects by default.<a name="id2647214"></a> To dump
+    does not dump large objects by default.<a name="id2666183"></a> To dump
     large objects you must use either the custom or the tar output
     format, and use the <code class="option">-b</code> option in
-    <span class="application">pg_dump</span>. See the <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> reference
+    <span class="application">pg_dump</span>. See the <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a> reference
     page for details.  The
     directory <code class="filename">contrib/pg_dumplo</code> of the
     <span class="productname">PostgreSQL</span> source tree also contains a program
     that can dump large objects.
    </p>
-<p>    Please familiarize yourself with the <a href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a>
+<p>    Please familiarize yourself with the <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle">pg_dump</span></a>
     reference page.
    </p>
 </div>

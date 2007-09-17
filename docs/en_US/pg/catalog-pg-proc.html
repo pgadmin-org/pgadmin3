@@ -4,26 +4,25 @@
 <title>41.24. pg_proc</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 41. System Catalogs">
 <link rel="prev" href="catalog-pg-operator.html" title="41.23. pg_operator">
 <link rel="next" href="catalog-pg-rewrite.html" title="41.25. pg_rewrite">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="catalog-pg-proc"></a>41.24. <code class="structname">pg_proc</code></h2></div></div></div>
-<a name="id2778403"></a><p>   The catalog <code class="structname">pg_proc</code> stores information about functions (or procedures).
-   See <a href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
-   and <a href="xfunc.html" title="31.3. User-Defined Functions">Section 31.3, &#8220;User-Defined Functions&#8221;</a> for more information.
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalog-pg-proc">41.24. <code class="structname">pg_proc</code></h2></div></div></div>
+<a name="id2797440"></a><p>   The catalog <code class="structname">pg_proc</code> stores information about functions (or procedures).
+   See <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
+   and <a class="xref" href="xfunc.html" title="31.3. User-Defined Functions">Section 31.3, &#8220;User-Defined Functions&#8221;</a> for more information.
   </p>
 <p>   The table contains data for aggregate functions as well as plain functions.
    If <code class="structfield">proisagg</code> is true, there should be a matching
    row in <code class="structfield">pg_aggregate</code>.
   </p>
 <div class="table">
-<a name="id2778447"></a><p class="title"><b>Table 41.24. <code class="structname">pg_proc</code> Columns</b></p>
+<a name="id2797483"></a><p class="title"><b>Table 41.24. <code class="structname">pg_proc</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_proc Columns" border="1">
 <colgroup>
 <col>
@@ -47,20 +46,20 @@
 <tr>
 <td><code class="structfield">pronamespace</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-namespace.html" title="41.21. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-namespace.html" title="41.21. pg_namespace"><code class="structname">pg_namespace</code></a>.oid</code></td>
 <td>       The OID of the namespace that contains this function
       </td>
 </tr>
 <tr>
 <td><code class="structfield">proowner</code></td>
 <td><code class="type">int4</code></td>
-<td><code class="literal"><a href="catalog-pg-shadow.html" title="41.26. pg_shadow"><code class="structname">pg_shadow</code></a>.usesysid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-shadow.html" title="41.26. pg_shadow"><code class="structname">pg_shadow</code></a>.usesysid</code></td>
 <td>Owner of the function</td>
 </tr>
 <tr>
 <td><code class="structfield">prolang</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-language.html" title="41.18. pg_language"><code class="structname">pg_language</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-language.html" title="41.18. pg_language"><code class="structname">pg_language</code></a>.oid</code></td>
 <td>Implementation language or call interface of this function</td>
 </tr>
 <tr>
@@ -119,13 +118,13 @@
 <tr>
 <td><code class="structfield">prorettype</code></td>
 <td><code class="type">oid</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>Data type of the return value</td>
 </tr>
 <tr>
 <td><code class="structfield">proargtypes</code></td>
 <td><code class="type">oidvector</code></td>
-<td><code class="literal"><a href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
+<td><code class="literal"><a class="link" href="catalog-pg-type.html" title="41.30. pg_type"><code class="structname">pg_type</code></a>.oid</code></td>
 <td>An array with the data types of the function arguments</td>
 </tr>
 <tr>
@@ -160,8 +159,8 @@
 <td><code class="type">aclitem[]</code></td>
 <td> </td>
 <td>       Access privileges; see
-       <a href="sql-grant.html" title="GRANT">GRANT</a> and
-       <a href="sql-revoke.html" title="REVOKE">REVOKE</a>
+       <a class="xref" href="sql-grant.html" title="GRANT">GRANT</a> and
+       <a class="xref" href="sql-revoke.html" title="REVOKE">REVOKE</a>
        for details.
       </td>
 </tr>

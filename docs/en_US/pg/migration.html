@@ -4,20 +4,19 @@
 <title>22.4. Migration Between Releases</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="backup.html" title="Chapter 22. Backup and Restore">
 <link rel="prev" href="backup-online.html" title="22.3. On-line backup and point-in-time recovery (PITR)">
 <link rel="next" href="monitoring.html" title="Chapter 23. Monitoring Database Activity">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="migration"></a>22.4. Migration Between Releases</h2></div></div></div>
-<a name="id2649072"></a><a name="id2649081"></a><p>   This section discusses how to migrate your database data from one
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="migration">22.4. Migration Between Releases</h2></div></div></div>
+<a name="id2668051"></a><a name="id2668059"></a><p>   This section discusses how to migrate your database data from one
    <span class="productname">PostgreSQL</span> release to a newer one.
    The software installation procedure <span class="foreignphrase"><em class="foreignphrase">per se</em></span> is not the
-   subject of this section; those details are in <a href="installation.html" title="Chapter 14.  Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>.
+   subject of this section; those details are in <a class="xref" href="installation.html" title="Chapter 14.  Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>.
   </p>
 <p>   As a general rule, the internal data storage format is subject to
    change between major releases of <span class="productname">PostgreSQL</span> (where
@@ -53,7 +52,7 @@
    Then you can shut down the old server and start the new server at
    the port the old one was running at. You should make sure that the
    old database is not updated after you run <span class="application">pg_dumpall</span>,
-   otherwise you will obviously lose that data. See <a href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a> for information on how to prohibit
+   otherwise you will obviously lose that data. See <a class="xref" href="client-authentication.html" title="Chapter 19. Client Authentication">Chapter 19, <i>Client Authentication</i></a> for information on how to prohibit
    access.
   </p>
 <p>   In practice you probably want to test your client
@@ -70,14 +69,14 @@
 <pre class="programlisting">pg_dumpall &gt; backup
 pg_ctl stop
 mv /usr/local/pgsql /usr/local/pgsql.old
-cd ~/postgresql-8.0.13
+cd ~/postgresql-8.0.14
 gmake install
 initdb -D /usr/local/pgsql/data
 postmaster -D /usr/local/pgsql/data
 psql -f backup template1</pre>
 <p>
 
-   See <a href="runtime.html" title="Chapter 16. Server Run-time Environment">Chapter 16, <i>Server Run-time Environment</i></a> about ways to start and stop the
+   See <a class="xref" href="runtime.html" title="Chapter 16. Server Run-time Environment">Chapter 16, <i>Server Run-time Environment</i></a> about ways to start and stop the
    server and other details. The installation instructions will advise
    you of strategic places to perform these steps.
   </p>

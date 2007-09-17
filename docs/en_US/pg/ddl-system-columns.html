@@ -4,16 +4,15 @@
 <title>5.4. System Columns</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-constraints.html" title="5.3. Constraints">
 <link rel="next" href="ddl-inherit.html" title="5.5. Inheritance">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="ddl-system-columns"></a>5.4. System Columns</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddl-system-columns">5.4. System Columns</h2></div></div></div>
 <p>   Every table has several <em class="firstterm">system columns</em> that are
    implicitly defined by the system.  Therefore, these names cannot be
    used as names of user-defined columns.  (Note that these
@@ -22,19 +21,19 @@
    restrictions.)  You do not really need to be concerned about these
    columns, just know they exist.
   </p>
-<a name="id2570273"></a><div class="variablelist"><dl>
+<a name="id2589237"></a><div class="variablelist"><dl>
 <dt><span class="term"><code class="structfield">oid</code></span></dt>
-<dd><p>      <a name="id2570290"></a>
+<dd><p>      <a name="id2589254"></a>
       The object identifier (object ID) of a row.  This is a serial
       number that is automatically added by
       <span class="productname">PostgreSQL</span> to all table rows (unless
       the table was created using <code class="literal">WITHOUT OIDS</code>, in which
       case this column is not present).  This column is of type
-      <code class="type">oid</code> (same name as the column); see <a href="datatype-oid.html" title="8.12. Object Identifier Types">Section 8.12, &#8220;Object Identifier Types&#8221;</a> for more information about the type.
+      <code class="type">oid</code> (same name as the column); see <a class="xref" href="datatype-oid.html" title="8.12. Object Identifier Types">Section 8.12, &#8220;Object Identifier Types&#8221;</a> for more information about the type.
      </p></dd>
 <dt><span class="term"><code class="structfield">tableoid</code></span></dt>
 <dd>
-<a name="id2570333"></a><p>      The OID of the table containing this row.  This column is
+<a name="id2589297"></a><p>      The OID of the table containing this row.  This column is
       particularly handy for queries that select from inheritance
       hierarchies, since without it, it's difficult to tell which
       individual table a row came from.  The
@@ -45,7 +44,7 @@
 </dd>
 <dt><span class="term"><code class="structfield">xmin</code></span></dt>
 <dd>
-<a name="id2570362"></a><p>      The identity (transaction ID) of the inserting transaction for
+<a name="id2589326"></a><p>      The identity (transaction ID) of the inserting transaction for
       this row version.  (A row version is an individual state of a
       row; each update of a row creates a new row version for the same
       logical row.)
@@ -53,13 +52,13 @@
 </dd>
 <dt><span class="term"><code class="structfield">cmin</code></span></dt>
 <dd>
-<a name="id2570379"></a><p>      The command identifier (starting at zero) within the inserting
+<a name="id2589344"></a><p>      The command identifier (starting at zero) within the inserting
       transaction.
      </p>
 </dd>
 <dt><span class="term"><code class="structfield">xmax</code></span></dt>
 <dd>
-<a name="id2570394"></a><p>      The identity (transaction ID) of the deleting transaction, or
+<a name="id2589359"></a><p>      The identity (transaction ID) of the deleting transaction, or
       zero for an undeleted row version.  It is possible for this column to
       be nonzero in a visible row version. That usually indicates that the
       deleting transaction hasn't committed yet, or that an attempted
@@ -68,12 +67,12 @@
 </dd>
 <dt><span class="term"><code class="structfield">cmax</code></span></dt>
 <dd>
-<a name="id2570414"></a><p>      The command identifier within the deleting transaction, or zero.
+<a name="id2589378"></a><p>      The command identifier within the deleting transaction, or zero.
      </p>
 </dd>
 <dt><span class="term"><code class="structfield">ctid</code></span></dt>
 <dd>
-<a name="id2570428"></a><p>      The physical location of the row version within its table.  Note that
+<a name="id2589393"></a><p>      The physical location of the row version within its table.  Note that
       although the <code class="structfield">ctid</code> can be used to
       locate the row version very quickly, a row's
       <code class="structfield">ctid</code> will change each time it is
@@ -113,7 +112,7 @@
 <p>    Transaction identifiers are also 32-bit quantities.  In a
     long-lived database it is possible for transaction IDs to wrap
     around.  This is not a fatal problem given appropriate maintenance
-    procedures; see <a href="maintenance.html" title="Chapter 21. Routine Database Maintenance Tasks">Chapter 21, <i>Routine Database Maintenance Tasks</i></a> for details.  It is
+    procedures; see <a class="xref" href="maintenance.html" title="Chapter 21. Routine Database Maintenance Tasks">Chapter 21, <i>Routine Database Maintenance Tasks</i></a> for details.  It is
     unwise, however, to depend on the uniqueness of transaction IDs
     over the long term (more than one billion transactions).
    </p>

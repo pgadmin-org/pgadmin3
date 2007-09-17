@@ -4,20 +4,19 @@
 <title>8.5. Date/Time Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.72.0">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-binary.html" title="8.4. Binary Data Types">
 <link rel="next" href="datatype-boolean.html" title="8.6. Boolean Type">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="datatype-datetime"></a>8.5. Date/Time Types</h2></div></div></div>
-<a name="id2579251"></a><a name="id2579261"></a><a name="id2579271"></a><a name="id2579280"></a><a name="id2579289"></a><a name="id2579299"></a><a name="id2579308"></a><a name="id2579318"></a><a name="id2579327"></a><p>    <span class="productname">PostgreSQL</span> supports the full set of
-    <acronym class="acronym">SQL</acronym> date and time types, shown in <a href="datatype-datetime.html#datatype-datetime-table" title="Table 8.9. Date/Time Types">Table 8.9, &#8220;Date/Time Types&#8221;</a>.  The operations available
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="datatype-datetime">8.5. Date/Time Types</h2></div></div></div>
+<a name="id2598215"></a><a name="id2598226"></a><a name="id2598235"></a><a name="id2598244"></a><a name="id2598253"></a><a name="id2598263"></a><a name="id2598272"></a><a name="id2598282"></a><a name="id2598291"></a><p>    <span class="productname">PostgreSQL</span> supports the full set of
+    <acronym class="acronym">SQL</acronym> date and time types, shown in <a class="xref" href="datatype-datetime.html#datatype-datetime-table" title="Table 8.9. Date/Time Types">Table 8.9, &#8220;Date/Time Types&#8221;</a>.  The operations available
     on these data types are described in
-    <a href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">Section 9.9, &#8220;Date/Time Functions and Operators&#8221;</a>.
+    <a class="xref" href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">Section 9.9, &#8220;Date/Time Functions and Operators&#8221;</a>.
    </p>
 <div class="table">
 <a name="datatype-datetime-table"></a><p class="title"><b>Table 8.9. Date/Time Types</b></p>
@@ -143,14 +142,13 @@
     might disappear in a future release.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="datatype-datetime-input"></a>8.5.1. Date/Time Input</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="datatype-datetime-input">8.5.1. Date/Time Input</h3></div></div></div>
 <p>     Date and time input is accepted in almost any reasonable format, including
      ISO 8601, <acronym class="acronym">SQL</acronym>-compatible, 
      traditional <span class="productname">POSTGRES</span>, and others.
      For some formats, ordering of month, day, and year in date input is
      ambiguous and there is support for specifying the expected
-     ordering of these fields.  Set the <a href="runtime-config.html#guc-datestyle">DateStyle</a> parameter
+     ordering of these fields.  Set the <a class="xref" href="runtime-config.html#guc-datestyle">DateStyle</a> parameter
      to <code class="literal">MDY</code> to select month-day-year interpretation,
      <code class="literal">DMY</code> to select day-month-year interpretation, or
      <code class="literal">YMD</code> to select year-month-day interpretation.
@@ -158,14 +156,14 @@
 <p>     <span class="productname">PostgreSQL</span> is more flexible in
      handling date/time input than the
      <acronym class="acronym">SQL</acronym> standard requires.
-     See <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a>
+     See <a class="xref" href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a>
      for the exact parsing rules of date/time input and for the
      recognized text fields including months, days of the week, and
      time zones. 
     </p>
 <p>     Remember that any date or time literal input needs to be enclosed
      in single quotes, like text strings.  Refer to 
-     <a href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a> for more
+     <a class="xref" href="sql-syntax.html#sql-syntax-constants-generic" title="4.1.2.5. Constants of Other Types">Section 4.1.2.5, &#8220;Constants of Other Types&#8221;</a> for more
      information.
      <acronym class="acronym">SQL</acronym> requires the following syntax
 </p>
@@ -180,9 +178,8 @@
      it defaults to the precision of the literal value.
     </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2579777"></a>8.5.1.1. Dates</h4></div></div></div>
-<a name="id2579780"></a><p>     <a href="datatype-datetime.html#datatype-datetime-date-table" title="Table 8.10. Date Input">Table 8.10, &#8220;Date Input&#8221;</a> shows some possible
+<div class="titlepage"><div><div><h4 class="title" id="id2598741">8.5.1.1. Dates</h4></div></div></div>
+<a name="id2598745"></a><p>     <a class="xref" href="datatype-datetime.html#datatype-datetime-date-table" title="Table 8.10. Date Input">Table 8.10, &#8220;Date Input&#8221;</a> shows some possible
      inputs for the <code class="type">date</code> type.
     </p>
 <div class="table">
@@ -273,17 +270,16 @@
 <br class="table-break">
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2579976"></a>8.5.1.2. Times</h4></div></div></div>
-<a name="id2579979"></a><a name="id2579985"></a><a name="id2579991"></a><p>      The time-of-day types are <code class="type">time [
+<div class="titlepage"><div><div><h4 class="title" id="id2598940">8.5.1.2. Times</h4></div></div></div>
+<a name="id2598944"></a><a name="id2598949"></a><a name="id2598955"></a><p>      The time-of-day types are <code class="type">time [
       (<em class="replaceable"><code>p</code></em>) ] without time zone</code> and
       <code class="type">time [ (<em class="replaceable"><code>p</code></em>) ] with time
       zone</code>.  Writing just <code class="type">time</code> is equivalent to
       <code class="type">time without time zone</code>.
      </p>
 <p>      Valid input for these types consists of a time of day followed
-      by an optional time zone. (See <a href="datatype-datetime.html#datatype-datetime-time-table" title="Table 8.11. Time Input">Table 8.11, &#8220;Time Input&#8221;</a> 
-      and <a href="datatype-datetime.html#datatype-timezone-table" title="Table 8.12. Time Zone Input">Table 8.12, &#8220;Time Zone Input&#8221;</a>.)  If a time zone is
+      by an optional time zone. (See <a class="xref" href="datatype-datetime.html#datatype-datetime-time-table" title="Table 8.11. Time Input">Table 8.11, &#8220;Time Input&#8221;</a> 
+      and <a class="xref" href="datatype-datetime.html#datatype-timezone-table" title="Table 8.12. Time Zone Input">Table 8.12, &#8220;Time Zone Input&#8221;</a>.)  If a time zone is
       specified in the input for <code class="type">time without time zone</code>,
       it is silently ignored.
      </p>
@@ -386,14 +382,13 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><p>     Refer to <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for a list of
+<br class="table-break"><p>     Refer to <a class="xref" href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for a list of
      time zone names that are recognized for input.
     </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2580259"></a>8.5.1.3. Time Stamps</h4></div></div></div>
-<a name="id2580263"></a><a name="id2580269"></a><a name="id2580275"></a><p>      Valid input for the time stamp types consists of a concatenation
+<div class="titlepage"><div><div><h4 class="title" id="id2599224">8.5.1.3. Time Stamps</h4></div></div></div>
+<a name="id2599227"></a><a name="id2599233"></a><a name="id2599239"></a><p>      Valid input for the time stamp types consists of a concatenation
       of a date and a time, followed by an optional time zone,
       followed by an optional <code class="literal">AD</code> or <code class="literal">BC</code>.
       (Alternatively, <code class="literal">AD</code>/<code class="literal">BC</code> can appear
@@ -445,7 +440,7 @@
       time zone specified is converted to UTC using the appropriate offset
       for that time zone.  If no time zone is stated in the input string,
       then it is assumed to be in the time zone indicated by the system's
-      <a href="runtime-config.html#guc-timezone">timezone</a> parameter, and is converted to UTC using the
+      <a class="xref" href="runtime-config.html#guc-timezone">timezone</a> parameter, and is converted to UTC using the
       offset for the <code class="varname">timezone</code> zone.
      </p>
 <p>      When a <code class="type">timestamp with time
@@ -453,7 +448,7 @@
       current <code class="varname">timezone</code> zone, and displayed as local time in that
       zone.  To see the time in another time zone, either change
       <code class="varname">timezone</code> or use the <code class="literal">AT TIME ZONE</code> construct
-      (see <a href="functions-datetime.html#functions-datetime-zoneconvert" title="9.9.3. AT TIME ZONE">Section 9.9.3, &#8220;<code class="literal">AT TIME ZONE</code>&#8221;</a>).
+      (see <a class="xref" href="functions-datetime.html#functions-datetime-zoneconvert" title="9.9.3. AT TIME ZONE">Section 9.9.3, &#8220;<code class="literal">AT TIME ZONE</code>&#8221;</a>).
      </p>
 <p>      Conversions between <code class="type">timestamp without time zone</code> and
       <code class="type">timestamp with time zone</code> normally assume that the
@@ -463,9 +458,8 @@
      </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2580491"></a>8.5.1.4. Intervals</h4></div></div></div>
-<a name="id2580494"></a><p>       <code class="type">interval</code> values can be written with the following syntax:
+<div class="titlepage"><div><div><h4 class="title" id="id2599455">8.5.1.4. Intervals</h4></div></div></div>
+<a name="id2599459"></a><p>       <code class="type">interval</code> values can be written with the following syntax:
 
 </p>
 <pre class="programlisting">[<span class="optional">@</span>] <em class="replaceable"><code>quantity</code></em> <em class="replaceable"><code>unit</code></em> [<span class="optional"><em class="replaceable"><code>quantity</code></em> <em class="replaceable"><code>unit</code></em>...</span>] [<span class="optional"><em class="replaceable"><code>direction</code></em></span>]</pre>
@@ -492,10 +486,9 @@
      </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title">
-<a name="id2580643"></a>8.5.1.5. Special Values</h4></div></div></div>
-<a name="id2580647"></a><a name="id2580655"></a><p>      <span class="productname">PostgreSQL</span> supports several
-      special date/time input values for convenience, as shown in <a href="datatype-datetime.html#datatype-datetime-special-table" title="Table 8.13. Special Date/Time Inputs">Table 8.13, &#8220;Special Date/Time Inputs&#8221;</a>.  The values
+<div class="titlepage"><div><div><h4 class="title" id="id2599608">8.5.1.5. Special Values</h4></div></div></div>
+<a name="id2599611"></a><a name="id2599620"></a><p>      <span class="productname">PostgreSQL</span> supports several
+      special date/time input values for convenience, as shown in <a class="xref" href="datatype-datetime.html#datatype-datetime-special-table" title="Table 8.13. Special Date/Time Inputs">Table 8.13, &#8220;Special Date/Time Inputs&#8221;</a>.  The values
       <code class="literal">infinity</code> and <code class="literal">-infinity</code>
       are specially represented inside the system and will be displayed
       the same way; but the others are simply notational shorthands
@@ -577,22 +570,21 @@
       <code class="literal">CURRENT_DATE</code>, <code class="literal">CURRENT_TIME</code>, 
       <code class="literal">CURRENT_TIMESTAMP</code>, <code class="literal">LOCALTIME</code>, 
       <code class="literal">LOCALTIMESTAMP</code>.  The latter four accept an 
-      optional precision specification.  (See <a href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>.)  Note however that these are
+      optional precision specification.  (See <a class="xref" href="functions-datetime.html#functions-datetime-current" title="9.9.4. Current Date/Time">Section 9.9.4, &#8220;Current Date/Time&#8221;</a>.)  Note however that these are
       SQL functions and are <span class="emphasis"><em>not</em></span> recognized as data input strings.
      </p>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="datatype-datetime-output"></a>8.5.2. Date/Time Output</h3></div></div></div>
-<a name="id2580911"></a><a name="id2580922"></a><p>     The output format of the date/time types can be set to one of the four
+<div class="titlepage"><div><div><h3 class="title" id="datatype-datetime-output">8.5.2. Date/Time Output</h3></div></div></div>
+<a name="id2599875"></a><a name="id2599886"></a><p>     The output format of the date/time types can be set to one of the four
      styles ISO 8601,
      <acronym class="acronym">SQL</acronym> (Ingres), traditional POSTGRES, and
      German, using the command <code class="literal">SET datestyle</code>.  The default
      is the <acronym class="acronym">ISO</acronym> format.  (The
      <acronym class="acronym">SQL</acronym> standard requires the use of the ISO 8601
      format.  The name of the &#8220;<span class="quote">SQL</span>&#8221; output format is a
-     historical accident.)  <a href="datatype-datetime.html#datatype-datetime-output-table" title="Table 8.14. Date/Time Output Styles">Table 8.14, &#8220;Date/Time Output Styles&#8221;</a> shows examples of each
+     historical accident.)  <a class="xref" href="datatype-datetime.html#datatype-datetime-output-table" title="Table 8.14. Date/Time Output Styles">Table 8.14, &#8220;Date/Time Output Styles&#8221;</a> shows examples of each
      output style.  The output of the <code class="type">date</code> and
      <code class="type">time</code> types is of course only the date or time part
      in accordance with the given examples.
@@ -637,9 +629,9 @@
 <br class="table-break"><p>     In the <acronym class="acronym">SQL</acronym> and POSTGRES styles, day appears before
      month if DMY field ordering has been specified, otherwise month appears
      before day.
-     (See <a href="datatype-datetime.html#datatype-datetime-input" title="8.5.1. Date/Time Input">Section 8.5.1, &#8220;Date/Time Input&#8221;</a>
+     (See <a class="xref" href="datatype-datetime.html#datatype-datetime-input" title="8.5.1. Date/Time Input">Section 8.5.1, &#8220;Date/Time Input&#8221;</a>
      for how this setting also affects interpretation of input values.)
-     <a href="datatype-datetime.html#datatype-datetime-output2-table" title="Table 8.15. Date Order Conventions">Table 8.15, &#8220;Date Order Conventions&#8221;</a> shows an
+     <a class="xref" href="datatype-datetime.html#datatype-datetime-output2-table" title="Table 8.15. Date Order Conventions">Table 8.15, &#8220;Date Order Conventions&#8221;</a> shows an
      example.
     </p>
 <div class="table">
@@ -692,18 +684,17 @@
 <p>
     </p>
 <p>     The date/time styles can be selected by the user using the
-     <code class="command">SET datestyle</code> command, the <a href="runtime-config.html#guc-datestyle">DateStyle</a> parameter in the
+     <code class="command">SET datestyle</code> command, the <a class="xref" href="runtime-config.html#guc-datestyle">DateStyle</a> parameter in the
      <code class="filename">postgresql.conf</code> configuration file, or the
      <code class="envar">PGDATESTYLE</code> environment variable on the server or
      client.  The formatting function <code class="function">to_char</code>
-     (see <a href="functions-formatting.html" title="9.8. Data Type Formatting Functions">Section 9.8, &#8220;Data Type Formatting Functions&#8221;</a>) is also available as
+     (see <a class="xref" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">Section 9.8, &#8220;Data Type Formatting Functions&#8221;</a>) is also available as
      a more flexible way to format the date/time output.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="datatype-timezones"></a>8.5.3. Time Zones</h3></div></div></div>
-<a name="id2581253"></a><p>    Time zones, and time-zone conventions, are influenced by
+<div class="titlepage"><div><div><h3 class="title" id="datatype-timezones">8.5.3. Time Zones</h3></div></div></div>
+<a name="id2600217"></a><p>    Time zones, and time-zone conventions, are influenced by
     political decisions, not just earth geometry. Time zones around the
     world became somewhat standardized during the 1900's,
     but continue to be prone to arbitrary changes, particularly with
@@ -748,12 +739,12 @@
     </p>
 <p>     All timezone-aware dates and times are stored internally in
      <acronym class="acronym">UTC</acronym>.  They are converted to local time
-     in the zone specified by the <a href="runtime-config.html#guc-timezone">timezone</a> configuration
+     in the zone specified by the <a class="xref" href="runtime-config.html#guc-timezone">timezone</a> configuration
      parameter before being displayed to the client.
     </p>
-<p>     The <a href="runtime-config.html#guc-timezone">timezone</a> configuration parameter can
+<p>     The <a class="xref" href="runtime-config.html#guc-timezone">timezone</a> configuration parameter can
      be set in the file <code class="filename">postgresql.conf</code>, or in any of the
-     other standard ways described in <a href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>.
+     other standard ways described in <a class="xref" href="runtime-config.html" title="16.4. Run-time Configuration">Section 16.4, &#8220;Run-time Configuration&#8221;</a>.
      There are also several special ways to set it:
 
      </p>
@@ -781,13 +772,12 @@
 </ul></div>
 <p>
     </p>
-<p>    Refer to <a href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for a list of
+<p>    Refer to <a class="xref" href="datetime-appendix.html" title="Appendix B. Date/Time Support">Appendix B, <i>Date/Time Support</i></a> for a list of
     available time zones.
    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="datatype-datetime-internals"></a>8.5.4. Internals</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="datatype-datetime-internals">8.5.4. Internals</h3></div></div></div>
 <p>     <span class="productname">PostgreSQL</span> uses Julian dates
      for all date/time calculations. They have the nice property of correctly
      predicting/calculating any date more recent than 4713 BC
