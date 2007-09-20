@@ -208,9 +208,23 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
             CharacterRange cr = RegexFindText(GetSelectionStart(), GetSelectionEnd(), find);
             if (GetSelectionStart() == cr.cpMin && GetSelectionEnd() == cr.cpMax)
             {
-                ReplaceSelection(replace);
-                SetSelection(startPos, startPos + replace.Length());
-                SetCurrentPos(startPos + replace.Length());
+                if (cr.cpMin == cr.cpMax) // Must be finding a special char, such as $ (line end)
+                {
+                    InsertText(cr.cpMax, replace);
+                    SetSelection(cr.cpMax, cr.cpMax + replace.Length());
+                    SetCurrentPos(cr.cpMax + replace.Length());
+
+                    // Stop if we've got to the end. This is important for the $
+                    // case where it'll just keep finding the end of the line!!
+                    if (cr.cpMin + replace.Length() == GetLength())
+                        return false;
+                }
+                else
+                {
+                    ReplaceSelection(replace);
+                    SetSelection(startPos, startPos + replace.Length());
+                    SetCurrentPos(startPos + replace.Length());
+                }
             }
         }
         else if ((matchCase && current == find) || (!matchCase && current.Upper() == find.Upper()))
