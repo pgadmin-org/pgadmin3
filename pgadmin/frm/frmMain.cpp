@@ -129,7 +129,7 @@ frmMain::frmMain(const wxString& title)
     // wxGTK needs this deferred
     pgaFactory::RealizeImages();
 
-	CreateMenus();
+    CreateMenus();
     
     // Setup the object browser
     browser = new ctlTree(this, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
@@ -138,9 +138,9 @@ frmMain::frmMain(const wxString& title)
     // Setup the listview
     listViews = new wxNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize);
     properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-    statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-    dependencies = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-    dependents = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+    statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
+    dependencies = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
+    dependents = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
 
     listViews->AddPage(properties, _("Properties"));        // NBP_PROPERTIES
     listViews->AddPage(statistics, _("Statistics"));        // NBP_STATISTICS
@@ -224,20 +224,20 @@ frmMain::~frmMain()
 
 void frmMain::CreateMenus()
 {
-	// to add a new menu or context menu to the main window, i.e. define a possible
-	// action on a pgObject, everything has to go into this method. Doing menu related
-	// stuff elsewhere is plain wrong!
-	// Create a proper actionFactory  (or contextActionFactory) for each of your new actions 
-	// in the new frmXXX.cpp and register it here.
+    // to add a new menu or context menu to the main window, i.e. define a possible
+    // action on a pgObject, everything has to go into this method. Doing menu related
+    // stuff elsewhere is plain wrong!
+    // Create a proper actionFactory  (or contextActionFactory) for each of your new actions 
+    // in the new frmXXX.cpp and register it here.
 
     fileMenu = new wxMenu();
     viewMenu = new wxMenu();
-	editMenu = new wxMenu();
+    editMenu = new wxMenu();
     newMenu=new wxMenu();
-	toolsMenu = new wxMenu();
+    toolsMenu = new wxMenu();
     slonyMenu=new wxMenu();
-	scriptingMenu=new wxMenu();
-	viewDataMenu = new wxMenu();
+    scriptingMenu=new wxMenu();
+    viewDataMenu = new wxMenu();
     debuggingMenu=new wxMenu();
     reportMenu=new wxMenu();
     wxMenu *cfgMenu=new wxMenu();
@@ -248,7 +248,7 @@ void frmMain::CreateMenus()
     toolBar->SetToolBitmapSize(wxSize(32, 32));
     menuFactories = new menuFactoryList();
 
-	//--------------------------
+    //--------------------------
     fileMenu->Append(MNU_SAVEDEFINITION, _("&Save Definition..."),_("Save the SQL definition of the selected object."));
     fileMenu->AppendSeparator();
     new addServerFactory(menuFactories, fileMenu, toolBar);
@@ -267,7 +267,7 @@ void frmMain::CreateMenus()
     new disableAllTriggersFactory(menuFactories, toolsMenu, 0);
     new enableAllTriggersFactory(menuFactories, toolsMenu, 0);
 
-	//--------------------------
+    //--------------------------
     new separatorFactory(menuFactories);
 
     toolBar->AddSeparator();
@@ -278,7 +278,7 @@ void frmMain::CreateMenus()
     fileMenu->AppendSeparator();
     new mainConfigFileFactory(menuFactories, fileMenu, 0);
     new hbaConfigFileFactory(menuFactories, fileMenu, 0);
-	new pgpassConfigFileFactory(menuFactories, fileMenu, 0);
+    new pgpassConfigFileFactory(menuFactories, fileMenu, 0);
 
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));
@@ -296,14 +296,14 @@ void frmMain::CreateMenus()
     new separatorFactory(menuFactories);
 
 
-	// -------------------------
+    // -------------------------
 
     editMenu->Append(MNU_COPY, _("&Copy\tCtrl-C"),                _("Copy selected text to clipboard"));
-	editMenu->AppendSeparator();
+    editMenu->AppendSeparator();
 
-	// -------------------------
+    // -------------------------
 
-	//--------------------------
+    //--------------------------
     
     newMenuFactory = new submenuFactory(menuFactories);     // placeholder where "New objects" submenu will be inserted
     editMenu->Append(newMenuFactory->GetId(), _("New &Object"), newMenu,    _("Create a new object."));
@@ -330,24 +330,24 @@ void frmMain::CreateMenus()
     debuggingMenuFactory = new submenuFactory(menuFactories);     // placeholder where "Debugging" submenu will be inserted
     toolsMenu->Append(debuggingMenuFactory->GetId(), _("&Debugging"), debuggingMenu,    _("Debugging options for the selected item."));
     new debuggerFactory(menuFactories, debuggingMenu, 0);
-	new breakpointFactory(menuFactories, debuggingMenu, 0);
+    new breakpointFactory(menuFactories, debuggingMenu, 0);
 
-	new queryToolFactory(menuFactories, toolsMenu, toolBar);
+    new queryToolFactory(menuFactories, toolsMenu, toolBar);
     scriptingMenuFactory = new submenuFactory(menuFactories);    // placeholder where "Query Template" submenu will be inserted
-	toolsMenu->Append(scriptingMenuFactory->GetId(), _("Scripts"), scriptingMenu, _("Start Query Tool with scripted query."));
-	new queryToolSqlFactory(menuFactories, scriptingMenu, 0);
-	new queryToolSelectFactory(menuFactories, scriptingMenu, 0);
-	new queryToolInsertFactory(menuFactories, scriptingMenu, 0);
-	new queryToolUpdateFactory(menuFactories, scriptingMenu, 0);
+    toolsMenu->Append(scriptingMenuFactory->GetId(), _("Scripts"), scriptingMenu, _("Start Query Tool with scripted query."));
+    new queryToolSqlFactory(menuFactories, scriptingMenu, 0);
+    new queryToolSelectFactory(menuFactories, scriptingMenu, 0);
+    new queryToolInsertFactory(menuFactories, scriptingMenu, 0);
+    new queryToolUpdateFactory(menuFactories, scriptingMenu, 0);
 
     viewdataMenuFactory = new submenuFactory(menuFactories);     // placeholder where "View data" submenu will be inserted
-	toolsMenu->Append(viewdataMenuFactory->GetId(), _("View &Data"), viewDataMenu, _("View data."));
+    toolsMenu->Append(viewdataMenuFactory->GetId(), _("View &Data"), viewDataMenu, _("View data."));
 
     reportMenuFactory = new submenuFactory(menuFactories);     // placeholder where "Reports" submenu will be inserted
     toolsMenu->Append(reportMenuFactory->GetId(), _("&Reports"), reportMenu,    _("Create reports about the selected item."));
     new reportObjectPropertiesFactory(menuFactories, reportMenu, 0);
-	new reportObjectDdlFactory(menuFactories, reportMenu, 0);
-	new reportObjectDataDictionaryFactory(menuFactories, reportMenu, 0);
+    new reportObjectDdlFactory(menuFactories, reportMenu, 0);
+    new reportObjectDataDictionaryFactory(menuFactories, reportMenu, 0);
     new reportObjectStatisticsFactory(menuFactories, reportMenu, 0);
     new reportObjectDependenciesFactory(menuFactories, reportMenu, 0);
     new reportObjectDependentsFactory(menuFactories, reportMenu, 0);
@@ -356,15 +356,15 @@ void frmMain::CreateMenus()
 
     toolsMenu->AppendSeparator();
 
-	new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100);
+    new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100);
     new editGridFactory(menuFactories, viewDataMenu, toolBar);
     new editGridFilteredFactory(menuFactories, viewDataMenu, toolBar);
 
-	new maintenanceFactory(menuFactories, toolsMenu, toolBar);
+    new maintenanceFactory(menuFactories, toolsMenu, toolBar);
 
     new backupFactory(menuFactories, toolsMenu, 0);
-	new backupGlobalsFactory(menuFactories, toolsMenu, 0);
-	new backupServerFactory(menuFactories, toolsMenu, 0);
+    new backupGlobalsFactory(menuFactories, toolsMenu, 0);
+    new backupServerFactory(menuFactories, toolsMenu, 0);
     new restoreFactory(menuFactories, toolsMenu, 0);
 
     new grantWizardFactory(menuFactories, toolsMenu, 0);
@@ -382,7 +382,7 @@ void frmMain::CreateMenus()
     new serverStatusFactory(menuFactories, toolsMenu, 0);
 
 
-	//--------------------------
+    //--------------------------
     toolBar->AddSeparator();
 
     actionFactory *helpFact=new contentsFactory(menuFactories, helpMenu, 0);
@@ -410,8 +410,8 @@ void frmMain::CreateMenus()
     wxApp::s_macExitMenuItemId = MNU_EXIT;
     wxApp::s_macAboutMenuItemId = abFact->GetId();
 #else
-	(void)optFact;
-	(void)abFact;
+    (void)optFact;
+    (void)abFact;
 #endif 
 
 
@@ -462,13 +462,13 @@ void frmMain::Refresh(pgObject *data)
 
     browser->DeleteChildren(currentItem);
 
-	// refresh information about the object
+    // refresh information about the object
     data->SetDirty();
     
     pgObject *newData = data->Refresh(browser, currentItem);
 
     bool done = !data->GetConnection() || data->GetConnection()->GetStatus() == PGCONN_OK;
-
+    
     if (newData != data)
     {
         wxLogInfo(wxT("Deleting ") + data->GetTypeName() + wxT(" ") 
@@ -488,6 +488,15 @@ void frmMain::Refresh(pgObject *data)
         else
         {
             wxLogInfo(wxT("No object to replace: vanished after refresh."));
+            
+            // If the connection is dead, just return here
+            if (data->GetConnection()->GetStatus() != PGCONN_OK)
+            {
+                CheckAlive();
+                browser->Thaw();
+                return;
+            }
+    
             wxTreeItemId delItem=currentItem;
             currentItem=browser->GetItemParent(currentItem);
             browser->SelectItem(currentItem);
@@ -716,7 +725,7 @@ bool frmMain::CheckAlive()
                                         if (closeIt)
                                         {
                                             db->Disconnect();
-
+                                            
                                             browser->DeleteChildren(db->GetId());
                                             db->UpdateIcon(browser);
                                         }
@@ -849,39 +858,39 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
     {
         case PGCONN_OK:
         {
-	        if (restore && server->GetRestore())
-			    StartMsg(_("Restoring previous environment"));
-			else
+            if (restore && server->GetRestore())
+                StartMsg(_("Restoring previous environment"));
+            else
                 StartMsg(_("Establishing connection"));
 
-			wxLogInfo(wxT("pgServer object initialised as required."));
+            wxLogInfo(wxT("pgServer object initialised as required."));
 
-			server->ShowTreeDetail(browser);
+            server->ShowTreeDetail(browser);
 
-			if (restore && server->GetRestore())
-			{
-				browser->Freeze();
-				item=RestoreEnvironment(server);
-				browser->Thaw();
-			}
+            if (restore && server->GetRestore())
+            {
+                browser->Freeze();
+                item=RestoreEnvironment(server);
+                browser->Thaw();
+            }
 
-			if (item)
-			{
-				browser->SelectItem(item);
+            if (item)
+            {
+                browser->SelectItem(item);
 
-				wxSafeYield();
-				browser->Expand(item);
-				browser->EnsureVisible(item);
-			}
-			if (item)
-				EndMsg(true);
-			else
-			{
-				if (restore && server->GetRestore())
-					EndMsg(false);
-				else
-					EndMsg(true);
-			}
+                wxSafeYield();
+                browser->Expand(item);
+                browser->EnsureVisible(item);
+            }
+            if (item)
+                EndMsg(true);
+            else
+            {
+                if (restore && server->GetRestore())
+                    EndMsg(false);
+                else
+                    EndMsg(true);
+            }
             if (item)
                 GetMenuFactories()->CheckMenu((pgObject *)browser->GetItemData(item), GetMenuBar(), GetToolBar());
             else
@@ -960,9 +969,9 @@ void frmMain::StoreServers()
     pgServer *server;
     int numServers = 0;
 
-	// Get the hostname for later...
-	char buf[255];
-	gethostname(buf, 255); 
+    // Get the hostname for later...
+    char buf[255];
+    gethostname(buf, 255); 
     wxString hostname = wxString(buf, wxConvUTF8);
 
     // Write the individual servers
@@ -974,21 +983,21 @@ void frmMain::StoreServers()
         if (server->IsCreatedBy(serverFactory))
         {
             wxString key;
-			++numServers;
+            ++numServers;
 
             key.Printf(wxT("Servers/%d/"), numServers);
-		    settings->Write(key + wxT("Server"), server->GetName());
-	        settings->Write(key + wxT("Description"), server->GetDescription());
-	        settings->Write(key + wxT("ServiceID"), server->GetServiceID());
-		    settings->Write(key + wxT("Port"), server->GetPort());
-	        settings->Write(key + wxT("StorePwd"), server->GetStorePwd());
-		    settings->Write(key + wxT("Restore"), server->GetRestore());
-	        settings->Write(key + wxT("Database"), server->GetDatabaseName());
-	        settings->Write(key + wxT("Username"), server->GetUsername());
-			settings->Write(key + wxT("LastDatabase"), server->GetLastDatabase());
-			settings->Write(key + wxT("LastSchema"), server->GetLastSchema());
+            settings->Write(key + wxT("Server"), server->GetName());
+            settings->Write(key + wxT("Description"), server->GetDescription());
+            settings->Write(key + wxT("ServiceID"), server->GetServiceID());
+            settings->Write(key + wxT("Port"), server->GetPort());
+            settings->Write(key + wxT("StorePwd"), server->GetStorePwd());
+            settings->Write(key + wxT("Restore"), server->GetRestore());
+            settings->Write(key + wxT("Database"), server->GetDatabaseName());
+            settings->Write(key + wxT("Username"), server->GetUsername());
+            settings->Write(key + wxT("LastDatabase"), server->GetLastDatabase());
+            settings->Write(key + wxT("LastSchema"), server->GetLastSchema());
             settings->Write(key + wxT("DbRestriction"), server->GetDbRestriction());
-			settings->Write(key + wxT("SSL"), server->GetSSL());
+            settings->Write(key + wxT("SSL"), server->GetSSL());
 
             pgCollection *coll=browser->FindCollection(databaseFactory, server->GetId());
             if (coll)
@@ -999,7 +1008,7 @@ void frmMain::StoreServers()
                 while ((db=(pgDatabase*)dbs.GetNextObject()) != 0)
                     settings->Write(key + wxT("Databases/") + db->GetName() + wxT("/SchemaRestriction"), db->GetSchemaRestriction());
             }
-		}
+        }
     }
 
     // Write the server count
@@ -1022,21 +1031,21 @@ void frmMain::RetrieveServers()
 
 pgServer *frmMain::ConnectToServer(const wxString& servername, bool restore)
 {
-	for (int i = 0; ; i++)
-	{
-		pgObject *o = serversObj->FindChild(browser, i);
-		if (!o)
-			return NULL;
-		if (o->IsCreatedBy(serverFactory))
-		{
-			pgServer *s = (pgServer *)o;
-			if (s->GetDescription() == servername)
-			{
-				ReconnectServer(s, restore);
-				return s;
-			}
-		}
-	}
+    for (int i = 0; ; i++)
+    {
+        pgObject *o = serversObj->FindChild(browser, i);
+        if (!o)
+            return NULL;
+        if (o->IsCreatedBy(serverFactory))
+        {
+            pgServer *s = (pgServer *)o;
+            if (s->GetDescription() == servername)
+            {
+                ReconnectServer(s, restore);
+                return s;
+            }
+        }
+    }
 }
 
 void frmMain::StartMsg(const wxString& msg)
