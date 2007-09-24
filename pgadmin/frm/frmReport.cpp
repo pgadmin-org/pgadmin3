@@ -1093,7 +1093,7 @@ wxString frmReport::XslProcessReport(const wxString &xml, const wxString &xsl)
     if (!resDoc)
     {
         wxEndBusyCursor();
-        wxLogError(_("Failed to to apply the XSL stylesheet to the XML document!"));
+        wxLogError(_("Failed to apply the XSL stylesheet to the XML document!"));
         goto cleanup;
     }
 
@@ -1102,7 +1102,7 @@ wxString frmReport::XslProcessReport(const wxString &xml, const wxString &xsl)
     if (!resDoc)
     {
         wxEndBusyCursor();
-        wxLogError(_("Failed to to read the processed document!"));
+        wxLogError(_("Failed to read the processed document!"));
         goto cleanup;
     }
 
