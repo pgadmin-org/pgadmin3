@@ -182,6 +182,14 @@ wxString dlgSequence::GetSql()
                 +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
         }
 
+		// Change the current value before any of the other params. This allows the user
+		// to change the min or max values and ensure the current value is in the required
+		// range in one operation.
+        if (txtStart->GetValue() != sequence->GetLastValue().ToString())
+            sql += wxT("SELECT setval('") + qtIdent(schema->GetName()) + wxT(".") + qtIdent(name)
+                +  wxT("', ") + txtStart->GetValue()
+                +  wxT(", true);\n");
+
         if (connection->BackendMinimumVersion(7, 4))
         {
             wxString tmp;
@@ -220,11 +228,6 @@ wxString dlgSequence::GetSql()
                     +  tmp + wxT(";\n");
             }
         }
-
-        if (txtStart->GetValue() != sequence->GetLastValue().ToString())
-            sql += wxT("SELECT setval('") + qtIdent(schema->GetName()) + wxT(".") + qtIdent(name)
-                +  wxT("', ") + txtStart->GetValue()
-                +  wxT(", true);\n");
     }
     else
     {
