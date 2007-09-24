@@ -111,6 +111,28 @@ int dlgRole::Go(bool modal)
         wxT("SELECT rolname\n")
         wxT("  FROM pg_roles r\n");
 
+        varInfo.Add(wxT("role"));
+        cbVarname->Append(wxT("role"));
+
+        pgSet *set;
+        set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
+                wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
+
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                cbVarname->Append(set->GetVal(0));
+                varInfo.Add(set->GetVal(wxT("vartype")) + wxT(" ") + 
+                            set->GetVal(wxT("min_val")) + wxT(" ") +
+                            set->GetVal(wxT("max_val")));
+                set->MoveNext();
+            }
+            delete set;
+
+            cbVarname->SetSelection(0);
+        }
+
     if (role)
     {
         wxArrayString roles=role->GetRolesIn();
@@ -166,30 +188,6 @@ int dlgRole::Go(bool modal)
             txtValue->Disable();
             btnAdd->Disable();
             btnRemove->Disable();
-        }
-        else
-        {
-            varInfo.Add(wxT("role"));
-            cbVarname->Append(wxT("role"));
-
-            pgSet *set;
-            set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
-                    wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
-
-            if (set)
-            {
-                while (!set->Eof())
-                {
-                    cbVarname->Append(set->GetVal(0));
-                    varInfo.Add(set->GetVal(wxT("vartype")) + wxT(" ") + 
-                                set->GetVal(wxT("min_val")) + wxT(" ") +
-                                set->GetVal(wxT("max_val")));
-                    set->MoveNext();
-                }
-                delete set;
-
-                cbVarname->SetSelection(0);
-            }
         }
     }
     else
@@ -523,51 +521,6 @@ wxString dlgRole::GetSql()
         if (!options.IsNull())
             sql += wxT("ALTER Role ") + qtIdent(name) + options + wxT(";\n");
 
-
-
-        wxArrayString vars;
-        size_t index;
-        for (index = 0 ; index < role->GetConfigList().GetCount() ; index++)
-            vars.Add(role->GetConfigList().Item(index));
-
-        int cnt=lstVariables->GetItemCount();
-        int pos;
-
-        // check for changed or added vars
-        for (pos=0 ; pos < cnt ; pos++)
-        {
-            wxString newVar=lstVariables->GetText(pos);
-            wxString newVal=lstVariables->GetText(pos, 1);
-
-            wxString oldVal;
-
-            for (index=0 ; index < vars.GetCount() ; index++)
-            {
-                wxString var=vars.Item(index);
-                if (var.BeforeFirst('=').IsSameAs(newVar, false))
-                {
-                    oldVal = var.Mid(newVar.Length()+1);
-                    vars.RemoveAt(index);
-                    break;
-                }
-            }
-            if (oldVal != newVal)
-            {
-                sql += wxT("ALTER ROLE ") + qtIdent(name)
-                    +  wxT(" SET ") + newVar
-                    +  wxT("=") + newVal
-                    +  wxT(";\n");
-            }
-        }
-        
-        // check for removed vars
-        for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
-        {
-            sql += wxT("ALTER Role ") + qtIdent(name)
-                +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
-                + wxT(";\n");
-        }
-
         if (chkUpdateCat->GetValue() != role->GetUpdateCatalog())
         {
             if (!connection->HasPrivilege(wxT("Table"), wxT("pg_authid"), wxT("update")))
@@ -577,11 +530,11 @@ wxString dlgRole::GetSql()
             sql += wxT("UPDATE pg_authid SET rolcatupdate=") + BoolToStr(chkUpdateCat->GetValue())
                     + wxT(" WHERE OID=") + role->GetOidStr() + wxT(";\n");
         }
-        cnt=lbRolesIn->GetCount();
+        int cnt=lbRolesIn->GetCount();
         wxArrayString tmpRoles=role->GetRolesIn();
 
         // check for added roles
-        for (pos=0 ; pos < cnt ; pos++)
+        for (int pos=0 ; pos < cnt ; pos++)
         {
             wxString roleName=lbRolesIn->GetString(pos);
 
@@ -631,7 +584,7 @@ wxString dlgRole::GetSql()
         }
         
         // check for removed roles
-        for (pos=0 ; pos < (int)tmpRoles.GetCount() ; pos++)
+        for (int pos=0 ; pos < (int)tmpRoles.GetCount() ; pos++)
         {
             sql += wxT("REVOKE ") + qtIdent(tmpRoles.Item(pos))
                 +  wxT(" FROM ") + qtIdent(name) + wxT(";\n");
@@ -681,15 +634,53 @@ wxString dlgRole::GetSql()
 
         if (superuser && !chkUpdateCat->GetValue())
             sql += wxT("UPDATE pg_authid SET rolcatupdate=false WHERE rolname=") + qtDbString(name) + wxT(";\n");
+    }
 
-        cnt=lstVariables->GetItemCount();
-        for (pos=0 ; pos < cnt ; pos++)
+    wxArrayString vars;
+    size_t index;
+
+    if (role)
+    {
+        for (index = 0 ; index < role->GetConfigList().GetCount() ; index++)
+            vars.Add(role->GetConfigList().Item(index));
+    }
+
+    int cnt=lstVariables->GetItemCount();
+    int pos;
+
+    // check for changed or added vars
+    for (pos=0 ; pos < cnt ; pos++)
+    {
+        wxString newVar=lstVariables->GetText(pos);
+        wxString newVal=lstVariables->GetText(pos, 1);
+
+        wxString oldVal;
+
+        for (index=0 ; index < vars.GetCount() ; index++)
         {
-            sql += wxT("ALTER ROLE ") + qtIdent(name) 
-                +  wxT(" SET ") + lstVariables->GetText(pos)
-                +  wxT("=") + lstVariables->GetText(pos, 1)
+            wxString var=vars.Item(index);
+            if (var.BeforeFirst('=').IsSameAs(newVar, false))
+            {
+                oldVal = var.Mid(newVar.Length()+1);
+                vars.RemoveAt(index);
+                break;
+            }
+        }
+        if (oldVal != newVal)
+        {
+            sql += wxT("ALTER ROLE ") + qtIdent(name)
+                +  wxT(" SET ") + newVar
+                +  wxT("=") + newVal
                 +  wxT(";\n");
         }
+    }
+    
+    // check for removed vars
+    for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
+    {
+        sql += wxT("ALTER Role ") + qtIdent(name)
+            +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
+            + wxT(";\n");
     }
 
     AppendComment(sql, wxT("ROLE"), 0, role);

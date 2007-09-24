@@ -75,6 +75,7 @@ public:
     void iSetSecureDefiner(bool b) { secureDefiner = b; }
     bool GetIsStrict() const { return isStrict; }
     void iSetIsStrict(bool b) { isStrict = b; }
+    wxArrayString& GetConfigList() { return configList; }
 
     bool CanRestore() { return true; }
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
@@ -99,6 +100,7 @@ private:
     wxArrayString argNamesArray, argTypesArray, argModesArray;
     bool returnAsSet, secureDefiner, isStrict;
     long argCount, cost, rows;
+    wxArrayString configList;
 };
 
 

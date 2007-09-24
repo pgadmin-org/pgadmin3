@@ -57,6 +57,13 @@
 #define txtLinkSymbol       CTRL_TEXT("txtLinkSymbol")
 #define txtSqlBox           CTRL_SQLBOX("txtSqlBox")
 
+#define lstVariables        CTRL_LISTVIEW("lstVariables")
+#define btnAddVar           CTRL_BUTTON("btnAddVar")
+#define btnRemoveVar        CTRL_BUTTON("btnRemoveVar")
+#define cbVarname           CTRL_COMBOBOX2("cbVarname")
+#define txtValue            CTRL_TEXT("txtValue")
+#define chkValue            CTRL_CHECKBOX("chkValue")
+
 #define TXTOBJ_LIB  wxT("$libdir/")
 
 BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
@@ -82,6 +89,12 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_BUTTON(wxID_ADD,                            dlgFunction::OnAddArg)
     EVT_BUTTON(XRCID("wxID_CHANGE"),                dlgFunction::OnChangeArg)
     EVT_BUTTON(wxID_REMOVE,                         dlgFunction::OnRemoveArg)
+
+    EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgFunction::OnVarSelChange)
+    EVT_BUTTON(XRCID("btnAddVar"),                  dlgFunction::OnVarAdd)
+    EVT_BUTTON(XRCID("btnRemoveVar"),               dlgFunction::OnVarRemove)
+    EVT_TEXT(XRCID("cbVarname"),                    dlgFunction::OnVarnameSelChange)
+    EVT_COMBOBOX(XRCID("cbVarname"),                dlgFunction::OnVarnameSelChange)
 END_EVENT_TABLE();
 
 
@@ -106,8 +119,6 @@ dlgFunction::dlgFunction(pgaFactory *f, frmMain *frame, pgFunction *node, pgSche
     isProcedure = false;
 
     txtArguments->Disable();
-    btnAdd->Disable();
-    btnRemove->Disable();
 
     txtSqlBox->SetMarginType(1, wxSTC_MARGIN_NUMBER);
     txtSqlBox->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
@@ -115,6 +126,9 @@ dlgFunction::dlgFunction(pgaFactory *f, frmMain *frame, pgFunction *node, pgSche
     btnAdd->Disable();
     btnRemove->Disable();
     btnChange->Disable();
+
+    lstVariables->CreateColumns(0, _("Variable"), _("Value"), -1);
+    chkValue->Hide();
 }
 
 
@@ -208,6 +222,43 @@ int dlgFunction::Go(bool modal)
         delete lang;
     }
 
+    if (connection->BackendMinimumVersion(8, 3))
+    {
+        txtCost->SetValue(NumToStr(function->GetCost()));
+        if (function->GetReturnAsSet())
+        {
+            txtRows->SetValue(NumToStr(function->GetRows()));
+            txtRows->Enable();
+        }
+        else
+            txtRows->Disable();
+
+        pgSet *set;
+        set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
+                wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                cbVarname->Append(set->GetVal(0));
+                varInfo.Add(set->GetVal(wxT("vartype")) + wxT(" ") + 
+                            set->GetVal(wxT("min_val")) + wxT(" ") +
+                            set->GetVal(wxT("max_val")));
+                set->MoveNext();
+            }
+            delete set;
+
+            cbVarname->SetSelection(0);
+        }
+
+    }
+    else
+    {
+        cbVarname->Disable();
+        txtValue->Disable();
+        chkValue->Disable();
+    }
+
     if (function)
     {
         // edit mode
@@ -235,18 +286,6 @@ int dlgFunction::Go(bool modal)
         chkStrict->SetValue(function->GetIsStrict());
         chkSecureDefiner->SetValue(function->GetSecureDefiner());
 
-        if (connection->BackendMinimumVersion(8, 3))
-        {
-            txtCost->SetValue(NumToStr(function->GetCost()));
-            if (function->GetReturnAsSet())
-            {
-                txtRows->SetValue(NumToStr(function->GetRows()));
-                txtRows->Enable();
-            }
-            else
-                txtRows->Disable();
-        }
-
         if (function->GetLanguage().IsSameAs(wxT("C"), false))
         {
             txtObjectFile->SetValue(function->GetBin());
@@ -257,6 +296,13 @@ int dlgFunction::Go(bool modal)
 
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
+
+        size_t index;
+        for (index = 0 ; index < function->GetConfigList().GetCount() ; index++)
+        {
+            wxString item=function->GetConfigList().Item(index);
+            lstVariables->AppendItem(0, item.BeforeFirst('='), item.AfterFirst('='));
+        }
 
         cbReturntype->Disable();
         chkSetof->Disable();
@@ -311,6 +357,90 @@ int dlgFunction::Go(bool modal)
     return dlgSecurityProperty::Go(modal);
 }
 
+void dlgFunction::OnVarnameSelChange(wxCommandEvent &ev)
+{
+    int sel=cbVarname->GuessSelection(ev);
+
+    SetupVarEditor(sel);
+}
+
+void dlgFunction::SetupVarEditor(int var)
+{
+    if (var >= 0)
+    {
+        wxStringTokenizer vals(varInfo.Item(var));
+        wxString typ=vals.GetNextToken();
+
+        if (typ == wxT("bool"))
+        {
+            txtValue->Hide();
+            chkValue->Show();
+        }
+        else
+        {
+            chkValue->Hide();
+            txtValue->Show();
+            if (typ == wxT("string"))
+                txtValue->SetValidator(wxTextValidator());
+            else
+                txtValue->SetValidator(numericValidator);
+        }
+    }
+}
+
+void dlgFunction::OnVarSelChange(wxListEvent &ev)
+{
+    long pos=lstVariables->GetSelection();
+    if (pos >= 0)
+    {
+        wxString value=lstVariables->GetText(pos, 1);
+        cbVarname->SetValue(lstVariables->GetText(pos));
+
+
+        // We used to raise an OnVarnameSelChange() event here, but
+        // at this point the combo box hasn't necessarily updated.
+        int sel = cbVarname->FindString(lstVariables->GetText(pos));
+        SetupVarEditor(sel);
+
+        txtValue->SetValue(value);
+        chkValue->SetValue(value == wxT("on"));
+    }
+}
+
+
+
+void dlgFunction::OnVarAdd(wxCommandEvent &ev)
+{
+    wxString name=cbVarname->GetValue();
+    wxString value;
+    if (chkValue->IsShown())
+        value = chkValue->GetValue() ? wxT("on") : wxT("off");
+    else
+        value = txtValue->GetValue().Strip(wxString::both);
+
+    if (value.IsEmpty())
+        value = wxT("DEFAULT");
+
+    if (!name.IsEmpty())
+    {
+        long pos=lstVariables->FindItem(-1, name);
+        if (pos < 0)
+        {
+            pos = lstVariables->GetItemCount();
+            lstVariables->InsertItem(pos, name, 0);
+        }
+        lstVariables->SetItem(pos, 1, value);
+    }
+    CheckChange();
+}
+
+
+void dlgFunction::OnVarRemove(wxCommandEvent &ev)
+{
+    lstVariables->DeleteCurrentItem();
+    CheckChange();
+}
+
 
 pgObject *dlgFunction::CreateObject(pgCollection *collection)
 {
@@ -351,28 +481,14 @@ void dlgFunction::CheckChange()
         CheckValid(enable, !txtSqlBox->GetText().IsEmpty(), _("Please enter function source code."));
     }
 
-    if (function)
+    if (function && enable)
     {
-        didChange = (txtComment->GetValue() != function->GetComment()
-              || name != function->GetName()
-              || cbVolatility->GetValue() != function->GetVolatility()
-              || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
-              || chkStrict->GetValue() != function->GetIsStrict()
-              || cbLanguage->GetValue() != function->GetLanguage()
-              || cbOwner->GetValue() != function->GetOwner()
-              || GetArgs() != function->GetArgListWithNames()
-              || (isC && (txtObjectFile->GetValue() != function->GetBin() || txtLinkSymbol->GetValue() != function->GetSource()))
-              || (!isC && txtSqlBox->GetText() != function->GetSource()));
-
-        if (connection->BackendMinimumVersion(8, 3))
-        {
-            didChange = (didChange ||
-                txtCost->GetValue() != NumToStr(function->GetCost()) ||
-                (chkSetof->GetValue() && txtRows->GetValue() != NumToStr(function->GetRows())));
-        }
+        EnableOK(!GetSql().IsEmpty());
     }
-
-    EnableOK(enable && didChange);
+    else
+    {
+        EnableOK(enable && didChange);
+    }
 }
 
 bool dlgFunction::IsUpToDate()
@@ -681,6 +797,51 @@ wxString dlgFunction::GetSql()
             sql += wxT("ALTER FUNCTION ") + name
                 +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
                 + wxT(";\n");
+
+        wxArrayString vars;
+        size_t index;
+        for (index = 0 ; index < function->GetConfigList().GetCount() ; index++)
+            vars.Add(function->GetConfigList().Item(index));
+
+        int cnt=lstVariables->GetItemCount();
+        int pos;
+
+        // check for changed or added vars
+        for (pos=0 ; pos < cnt ; pos++)
+        {
+            wxString newVar=lstVariables->GetText(pos);
+            wxString newVal=lstVariables->GetText(pos, 1);
+
+            wxString oldVal;
+
+            for (index=0 ; index < vars.GetCount() ; index++)
+            {
+                wxString var=vars.Item(index);
+                if (var.BeforeFirst('=').IsSameAs(newVar, false))
+                {
+                    oldVal = var.Mid(newVar.Length()+1);
+                    vars.RemoveAt(index);
+                    break;
+                }
+            }
+            if (oldVal != newVal)
+            {
+                sql += wxT("ALTER FUNCTION ") + name
+                    +  wxT(" SET ") + newVar
+                    +  wxT("=") + newVal
+                    +  wxT(";\n");
+            }
+        }
+        
+        // check for removed vars
+        for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
+        {
+            sql += wxT("ALTER FUNCTION ") + name
+                +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
+                + wxT(";\n");
+        }
+
+    
     }
     else
     {

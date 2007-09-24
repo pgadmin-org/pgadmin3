@@ -135,6 +135,11 @@ wxString pgFunction::GetSql(ctlTree *browser)
         if (!sql.EndsWith(wxT(";")))
             sql += wxT(";");
 
+        size_t i;
+        for (i=0 ; i < configList.GetCount() ; i++)
+            sql += wxT("\nALTER FUNCTION ") + qtSig
+                +  wxT(" SET ") + configList.Item(i) + wxT(";");
+
         sql += wxT("\n")
             +  GetOwnerSql(8, 0, wxT("FUNCTION ") + qtSig)
             +  GetGrant(wxT("X"), wxT("FUNCTION ") + qtSig);
@@ -184,6 +189,14 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Volatility"), GetVolatility());
         properties->AppendItem(_("Security of definer?"), GetSecureDefiner());
         properties->AppendItem(_("Strict?"), GetIsStrict());
+
+        size_t i;
+        for (i=0 ; i < configList.GetCount() ; i++)
+        {
+            wxString item=configList.Item(i);
+            properties->AppendItem(item.BeforeFirst('='), item.AfterFirst('='));
+        }
+
         properties->AppendItem(_("ACL"), GetAcl());
         properties->AppendItem(_("System function?"), GetSystemObject());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
@@ -306,12 +319,14 @@ wxString pgFunction::GetArgSigList()
 pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, ctlTree *browser, const wxString &restriction)
 {
     pgFunction *function=0;
-    wxString argNamesCol;
+    wxString argNamesCol, proConfigCol;
     if (obj->GetConnection()->BackendMinimumVersion(8, 0))
         argNamesCol = wxT("proargnames, ");
+    if (obj->GetConnection()->BackendMinimumVersion(8, 3))
+        proConfigCol = wxT("proconfig, ");
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(
-            wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") + argNamesCol + 
+            wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") + argNamesCol  + proConfigCol + 
             wxT("       pg_get_userbyid(proowner) as funcowner, description\n")
             wxT("  FROM pg_proc pr\n")
             wxT("  JOIN pg_type typ ON typ.oid=prorettype\n")
@@ -455,6 +470,9 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             {
                 function->iSetCost(functions->GetLong(wxT("procost")));
                 function->iSetRows(functions->GetLong(wxT("prorows")));
+                wxString cfg=functions->GetVal(wxT("proconfig"));
+                if (!cfg.IsEmpty())
+                    FillArray(function->GetConfigList(), cfg.Mid(1, cfg.Length()-2));
             }
 
             if (browser)

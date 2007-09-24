@@ -108,6 +108,27 @@ int dlgDatabase::Go(bool modal)
         cbTablespace->Hide();
     }
 
+    pgSet *set;
+    if (connection->BackendMinimumVersion(7, 4))
+        set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
+                wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
+    else
+        set=connection->ExecuteSet(wxT("SELECT name, 'string' as vartype, '' as min_val, '' as max_val FROM pg_settings"));
+    if (set)
+    {
+        while (!set->Eof())
+        {
+            cbVarname->Append(set->GetVal(0));
+            varInfo.Add(set->GetVal(wxT("vartype")) + wxT(" ") + 
+                        set->GetVal(wxT("min_val")) + wxT(" ") +
+                        set->GetVal(wxT("max_val")));
+            set->MoveNext();
+        }
+        delete set;
+
+        cbVarname->SetSelection(0);
+    }
+
     if (database)
     {
         // edit mode
@@ -121,6 +142,14 @@ int dlgDatabase::Go(bool modal)
             cbOwner->Disable();
 
         readOnly = !database->GetServer()->GetCreatePrivilege();
+
+        if (readOnly)
+        {
+            cbVarname->Disable();
+            txtValue->Disable();
+            btnAdd->Disable();
+            btnRemove->Disable();
+        }
 
         size_t i;
         for (i=0 ; i < database->GetVariables().GetCount() ; i++)
@@ -141,46 +170,12 @@ int dlgDatabase::Go(bool modal)
         cbEncoding->Disable();
 
         txtSchemaRestr->SetValue(database->GetSchemaRestriction());
-
-        if (readOnly)
-        {
-            cbVarname->Disable();
-            txtValue->Disable();
-            btnAdd->Disable();
-            btnRemove->Disable();
-        }
-        else
-        {
-            pgSet *set;
-            if (database->BackendMinimumVersion(7, 4))
-                set=database->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
-                        wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
-            else
-                set=database->ExecuteSet(wxT("SELECT name, 'string' as vartype, '' as min_val, '' as max_val FROM pg_settings"));
-            if (set)
-            {
-                while (!set->Eof())
-                {
-                    cbVarname->Append(set->GetVal(0));
-                    varInfo.Add(set->GetVal(wxT("vartype")) + wxT(" ") + 
-                                set->GetVal(wxT("min_val")) + wxT(" ") +
-                                set->GetVal(wxT("max_val")));
-                    set->MoveNext();
-                }
-                delete set;
-
-                cbVarname->SetSelection(0);
-            }
-        }
     }
     else
     {
         // create mode
         if (!connection->BackendMinimumVersion(8, 2))
             txtComment->Disable();
-
-        cbVarname->Disable();
-        txtValue->Disable();
 
         PrepareTablespace(cbTablespace);
 
@@ -383,50 +378,6 @@ wxString dlgDatabase::GetSql()
         AppendNameChange(sql);
         AppendOwnerChange(sql, wxT("DATABASE ") + qtIdent(name));
 
-        wxArrayString vars;
-
-        size_t index;
-        for (index = 0 ; index < database->GetVariables().GetCount() ; index++)
-            vars.Add(database->GetVariables().Item(index));
-
-        int cnt=lstVariables->GetItemCount();
-        int pos;
-
-        // check for changed or added vars
-        for (pos=0 ; pos < cnt ; pos++)
-        {
-            wxString newVar=lstVariables->GetText(pos);
-            wxString newVal=lstVariables->GetText(pos, 1);
-
-            wxString oldVal;
-
-            for (index=0 ; index < vars.GetCount() ; index++)
-            {
-                wxString var=vars.Item(index);
-                if (var.BeforeFirst('=').IsSameAs(newVar, false))
-                {
-                    oldVal = var.Mid(newVar.Length()+1);
-                    vars.RemoveAt(index);
-                    break;
-                }
-            }
-            if (oldVal != newVal)
-            {
-                sql += wxT("ALTER DATABASE ") + qtIdent(name)
-                    +  wxT(" SET ") + newVar
-                    +  wxT("=") + newVal
-                    +  wxT(";\n");
-            }
-        }
-        
-        // check for removed vars
-        for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
-        {
-            sql += wxT("ALTER DATABASE ") + qtIdent(name)
-                +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
-                + wxT(";\n");
-        }
-
         AppendComment(sql, wxT("DATABASE"), 0, database);
     }
     else
@@ -451,6 +402,54 @@ wxString dlgDatabase::GetSql()
         sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
     else
         sql += GetGrant(wxT("CTc"), wxT("DATABASE ") + qtIdent(name));
+
+    wxArrayString vars;
+
+    size_t index;
+
+    if (database)
+    {
+        for (index = 0 ; index < database->GetVariables().GetCount() ; index++)
+            vars.Add(database->GetVariables().Item(index));
+    }
+
+    int cnt=lstVariables->GetItemCount();
+    int pos;
+
+    // check for changed or added vars
+    for (pos=0 ; pos < cnt ; pos++)
+    {
+        wxString newVar=lstVariables->GetText(pos);
+        wxString newVal=lstVariables->GetText(pos, 1);
+
+        wxString oldVal;
+
+        for (index=0 ; index < vars.GetCount() ; index++)
+        {
+            wxString var=vars.Item(index);
+            if (var.BeforeFirst('=').IsSameAs(newVar, false))
+            {
+                oldVal = var.Mid(newVar.Length()+1);
+                vars.RemoveAt(index);
+                break;
+            }
+        }
+        if (oldVal != newVal)
+        {
+            sql += wxT("ALTER DATABASE ") + qtIdent(name)
+                +  wxT(" SET ") + newVar
+                +  wxT("=") + newVal
+                +  wxT(";\n");
+        }
+    }
+    
+    // check for removed vars
+    for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
+    {
+        sql += wxT("ALTER DATABASE ") + qtIdent(name)
+            +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
+            + wxT(";\n");
+    }
 
     return sql;
 }

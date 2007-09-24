@@ -107,6 +107,26 @@ int dlgUser::Go(bool modal)
         delete set;
     }
 
+    if (connection->BackendMinimumVersion(7, 4))
+        set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
+                wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
+    else
+        set=connection->ExecuteSet(wxT("SELECT name, 'string' as vartype, '' as min_val, '' as max_val FROM pg_settings"));
+    if (set)
+    {
+        while (!set->Eof())
+        {
+            cbVarname->Append(set->GetVal(0));
+            varInfo.Add(set->GetVal(wxT("vartype")) + wxT(" ") + 
+                        set->GetVal(wxT("min_val")) + wxT(" ") +
+                        set->GetVal(wxT("max_val")));
+            set->MoveNext();
+        }
+        delete set;
+
+        cbVarname->SetSelection(0);
+    }
+
     if (user)
     {
         // Edit Mode
@@ -144,29 +164,6 @@ int dlgUser::Go(bool modal)
             txtValue->Disable();
             btnAdd->Disable();
             btnRemove->Disable();
-        }
-        else
-        {
-            pgSet *set;
-            if (connection->BackendMinimumVersion(7, 4))
-                set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
-                        wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
-            else
-                set=connection->ExecuteSet(wxT("SELECT name, 'string' as vartype, '' as min_val, '' as max_val FROM pg_settings"));
-            if (set)
-            {
-                while (!set->Eof())
-                {
-                    cbVarname->Append(set->GetVal(0));
-                    varInfo.Add(set->GetVal(wxT("vartype")) + wxT(" ") + 
-                                set->GetVal(wxT("min_val")) + wxT(" ") +
-                                set->GetVal(wxT("max_val")));
-                    set->MoveNext();
-                }
-                delete set;
-
-                cbVarname->SetSelection(0);
-            }
         }
     }
     else
@@ -434,58 +431,12 @@ wxString dlgUser::GetSql()
 
         if (!options.IsNull())
             sql += wxT("ALTER USER ") + qtIdent(name) + options + wxT(";\n");
-
-
-
-        wxArrayString vars;
-        size_t index;
-        for (index = 0 ; index < user->GetConfigList().GetCount() ; index++)
-            vars.Add(user->GetConfigList().Item(index));
-
-        int cnt=lstVariables->GetItemCount();
-        int pos;
-
-        // check for changed or added vars
-        for (pos=0 ; pos < cnt ; pos++)
-        {
-            wxString newVar=lstVariables->GetText(pos);
-            wxString newVal=lstVariables->GetText(pos, 1);
-
-            wxString oldVal;
-
-            for (index=0 ; index < vars.GetCount() ; index++)
-            {
-                wxString var=vars.Item(index);
-                if (var.BeforeFirst('=').IsSameAs(newVar, false))
-                {
-                    oldVal = var.Mid(newVar.Length()+1);
-                    vars.RemoveAt(index);
-                    break;
-                }
-            }
-            if (oldVal != newVal)
-            {
-                sql += wxT("ALTER USER ") + qtIdent(name)
-                    +  wxT(" SET ") + newVar
-                    +  wxT("=") + newVal
-                    +  wxT(";\n");
-            }
-        }
-        
-        // check for removed vars
-        for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
-        {
-            sql += wxT("ALTER USER ") + qtIdent(name)
-                +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
-                + wxT(";\n");
-        }
-
     
-        cnt=lbGroupsIn->GetCount();
+        int cnt=lbGroupsIn->GetCount();
         wxArrayString tmpGroups=user->GetGroupsIn();
 
         // check for added groups
-        for (pos=0 ; pos < cnt ; pos++)
+        for (int pos=0 ; pos < cnt ; pos++)
         {
             wxString groupName=lbGroupsIn->GetString(pos);
 
@@ -498,7 +449,7 @@ wxString dlgUser::GetSql()
         }
         
         // check for removed groups
-        for (pos=0 ; pos < (int)tmpGroups.GetCount() ; pos++)
+        for (int pos=0 ; pos < (int)tmpGroups.GetCount() ; pos++)
         {
             sql += wxT("ALTER GROUP ") + qtIdent(tmpGroups.Item(pos))
                 +  wxT(" DROP USER ") + qtIdent(name) + wxT(";\n");
@@ -529,21 +480,59 @@ wxString dlgUser::GetSql()
             sql += wxT("\n   VALID UNTIL 'infinity'");
         sql += wxT(";\n");
 
-        int cnt=lstVariables->GetItemCount();
-        int pos;
-        for (pos=0 ; pos < cnt ; pos++)
-        {
-            sql += wxT("ALTER USER ") + qtIdent(name) 
-                +  wxT(" SET ") + lstVariables->GetText(pos)
-                +  wxT("=") + lstVariables->GetText(pos, 1)
-                +  wxT(";\n");
-        }
-
-        cnt = lbGroupsIn->GetCount();
-        for (pos=0 ; pos < cnt ; pos++)
+        int cnt = lbGroupsIn->GetCount();
+        for (int pos=0 ; pos < cnt ; pos++)
             sql += wxT("ALTER GROUP ") + qtIdent(lbGroupsIn->GetString(pos))
                 +  wxT(" ADD USER ") + qtIdent(name) + wxT(";\n");
     }
+
+    wxArrayString vars;
+    size_t index;
+
+    if (user)
+    {
+        for (index = 0 ; index < user->GetConfigList().GetCount() ; index++)
+            vars.Add(user->GetConfigList().Item(index));
+    }
+
+    int cnt=lstVariables->GetItemCount();
+    int pos;
+
+    // check for changed or added vars
+    for (pos=0 ; pos < cnt ; pos++)
+    {
+        wxString newVar=lstVariables->GetText(pos);
+        wxString newVal=lstVariables->GetText(pos, 1);
+
+        wxString oldVal;
+
+        for (index=0 ; index < vars.GetCount() ; index++)
+        {
+            wxString var=vars.Item(index);
+            if (var.BeforeFirst('=').IsSameAs(newVar, false))
+            {
+                oldVal = var.Mid(newVar.Length()+1);
+                vars.RemoveAt(index);
+                break;
+            }
+        }
+        if (oldVal != newVal)
+        {
+            sql += wxT("ALTER USER ") + qtIdent(name)
+                +  wxT(" SET ") + newVar
+                +  wxT("=") + newVal
+                +  wxT(";\n");
+        }
+    }
+    
+    // check for removed vars
+    for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
+    {
+        sql += wxT("ALTER USER ") + qtIdent(name)
+            +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
+            + wxT(";\n");
+    }
+
     return sql;
 }
 

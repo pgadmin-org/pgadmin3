@@ -33,6 +33,7 @@ public:
 private:
     pgSchema *schema;
     pgFunction *function;
+    wxArrayString varInfo;
 
     void OnChangeArgName(wxCommandEvent &ev);
     void OnChangeReturn(wxCommandEvent &ev);
@@ -43,6 +44,12 @@ private:
     void OnAddArg(wxCommandEvent &ev);
     void OnChangeArg(wxCommandEvent &ev);
     void OnRemoveArg(wxCommandEvent &ev);
+
+    void OnVarAdd(wxCommandEvent &ev);
+    void OnVarRemove(wxCommandEvent &ev);
+    void OnVarSelChange(wxListEvent &ev);
+    void OnVarnameSelChange(wxCommandEvent &ev);
+    void SetupVarEditor(int var);
 
     wxString GetSelectedDirection();
     wxString GetArgs(const bool withNames = true, const bool inOnly = false);
