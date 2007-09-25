@@ -27,12 +27,9 @@
 
 // pointer to controls
 #define txtArguments        CTRL_TEXT("txtArguments")
-#define stReturntype        CTRL_STATIC("stReturntype")
 #define cbReturntype        CTRL_COMBOBOX2("cbReturntype")
-#define stLanguage          CTRL_STATIC("stLanguage")
 #define cbLanguage          CTRL_COMBOBOX2("cbLanguage")
 #define chkSetof            CTRL_CHECKBOX("chkSetof")
-#define stVolatility        CTRL_STATIC("stVolatility")
 #define cbVolatility        CTRL_COMBOBOX("cbVolatility")
 #define chkStrict           CTRL_CHECKBOX("chkStrict")
 #define chkSecureDefiner    CTRL_CHECKBOX("chkSecureDefiner")
@@ -186,14 +183,11 @@ int dlgFunction::Go(bool modal)
             txtName->Disable();
         cbOwner->Disable();
         txtComment->Disable();
-        stLanguage->Disable();
         cbLanguage->Disable();
         chkStrict->Disable();
         chkSecureDefiner->Disable();
         chkSetof->Disable();
-        stVolatility->Disable();
         cbVolatility->Disable();
-        stReturntype->Disable();
         cbReturntype->Disable();
         txtCost->Disable();
         txtRows->Disable();
@@ -224,15 +218,6 @@ int dlgFunction::Go(bool modal)
 
     if (connection->BackendMinimumVersion(8, 3))
     {
-        txtCost->SetValue(NumToStr(function->GetCost()));
-        if (function->GetReturnAsSet())
-        {
-            txtRows->SetValue(NumToStr(function->GetRows()));
-            txtRows->Enable();
-        }
-        else
-            txtRows->Disable();
-
         pgSet *set;
         set=connection->ExecuteSet(wxT("SELECT name, vartype, min_val, max_val\n")
                 wxT("  FROM pg_settings WHERE context in ('user', 'superuser')"));
@@ -297,6 +282,18 @@ int dlgFunction::Go(bool modal)
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
 
+        if (connection->BackendMinimumVersion(8, 3))
+        {
+            txtCost->SetValue(NumToStr(function->GetCost()));
+            if (function->GetReturnAsSet())
+            {
+                txtRows->SetValue(NumToStr(function->GetRows()));
+                txtRows->Enable();
+            }
+            else
+                txtRows->Disable();
+        }
+
         size_t index;
         for (index = 0 ; index < function->GetConfigList().GetCount() ; index++)
         {
@@ -354,6 +351,7 @@ int dlgFunction::Go(bool modal)
     wxNotifyEvent event;
     OnSelChangeLanguage(event);
 
+    SetupVarEditor(1);
     return dlgSecurityProperty::Go(modal);
 }
 
@@ -366,7 +364,7 @@ void dlgFunction::OnVarnameSelChange(wxCommandEvent &ev)
 
 void dlgFunction::SetupVarEditor(int var)
 {
-    if (var >= 0)
+    if (var >= 0 && varInfo.Count() > 0)
     {
         wxStringTokenizer vals(varInfo.Item(var));
         wxString typ=vals.GetNextToken();
@@ -796,12 +794,26 @@ wxString dlgFunction::GetSql()
         if (cbOwner->GetValue() != function->GetOwner())
             sql += wxT("ALTER FUNCTION ") + name
                 +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue())
-                + wxT(";\n");
+                + wxT(";\n");    
+    }
+    else
+    {
+        if (cbOwner->GetGuessedSelection() > 0)
+            AppendOwnerNew(sql,wxT("FUNCTION ") + name);
+    }
 
+    if (isProcedure)
+        sql += GetGrant(wxT("X"), wxT("PROCEDURE ") + name);
+    else
+    {
         wxArrayString vars;
         size_t index;
-        for (index = 0 ; index < function->GetConfigList().GetCount() ; index++)
-            vars.Add(function->GetConfigList().Item(index));
+
+        if (function)
+        {
+            for (index = 0 ; index < function->GetConfigList().GetCount() ; index++)
+                vars.Add(function->GetConfigList().Item(index));
+        }
 
         int cnt=lstVariables->GetItemCount();
         int pos;
@@ -841,18 +853,8 @@ wxString dlgFunction::GetSql()
                 + wxT(";\n");
         }
 
-    
-    }
-    else
-    {
-        if (cbOwner->GetGuessedSelection() > 0)
-            AppendOwnerNew(sql,wxT("FUNCTION ") + name);
-    }
-
-    if (isProcedure)
-        sql += GetGrant(wxT("X"), wxT("PROCEDURE ") + name);
-    else
         sql += GetGrant(wxT("X"), wxT("FUNCTION ") + name);
+    }
 
     AppendComment(sql, wxT("FUNCTION ") + name, function);
 

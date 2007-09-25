@@ -174,6 +174,7 @@ int dlgUser::Go(bool modal)
         timValidUntil->Disable();
     }
 
+    SetupVarEditor(1);
     return dlgProperty::Go(modal);
 }
 
@@ -298,7 +299,7 @@ void dlgUser::OnVarnameSelChange(wxCommandEvent &ev)
 
 void dlgUser::SetupVarEditor(int var)
 {
-    if (var >= 0)
+    if (var >= 0 && varInfo.Count() > 0)
     {
         wxStringTokenizer vals(varInfo.Item(var));
         wxString typ=vals.GetNextToken();

@@ -362,7 +362,7 @@ void dlgRole::OnVarnameSelChange(wxCommandEvent &ev)
 
 void dlgRole::SetupVarEditor(int var)
 {
-    if (var >= 0)
+    if (var >= 0 && varInfo.Count() > 0)
     {
         wxStringTokenizer vals(varInfo.Item(var));
         wxString typ=vals.GetNextToken();
