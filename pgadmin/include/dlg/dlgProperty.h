@@ -40,6 +40,7 @@ public:
     virtual wxString GetDisplayName() { return GetName(); };
 
     virtual wxString GetSql() =0;
+    virtual wxString GetSql2() { return wxEmptyString; };
     virtual pgObject *CreateObject(pgCollection *collection) =0;
     virtual pgObject *GetObject() =0;
     virtual void SetObject(pgObject *obj) {} // only necessary if apply is implemented
@@ -112,7 +113,7 @@ protected:
 
 private:
     bool tryUpdate(wxTreeItemId collectionItem);
-    bool apply(const wxString &sql);
+    bool apply(const wxString &sql, const wxString &sql2);
 
     DECLARE_EVENT_TABLE()
 };

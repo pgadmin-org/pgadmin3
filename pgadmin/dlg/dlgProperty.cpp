@@ -609,7 +609,7 @@ void dlgProperty::ShowObject()
 }
 
 
-bool dlgProperty::apply(const wxString &sql)
+bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
 {
     if (!sql.IsEmpty())
     {
@@ -646,6 +646,49 @@ bool dlgProperty::apply(const wxString &sql)
             database->AppendSchemaChange(tmp);
     }
 
+    // Process the second SQL statement. This is primarily only used by
+    // CREATE DATABASE which cannot be run in a multi-statement query in 
+    // PostgreSQL 8.3+
+    if (!sql2.IsEmpty())
+    {
+        wxString tmp;
+        if (cbClusterSet && cbClusterSet->GetSelection() > 0)
+        {
+            replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+
+            if (data->majorVer > 1 || (data->majorVer == 1 && data->minorVer >= 2))
+            {
+                tmp = wxT("SELECT ") + qtIdent(data->cluster)
+                    + wxT(".ddlscript_prepare(") + NumToStr(data->setId) + wxT(", 0);\n")
+                    + wxT("SELECT ") + qtIdent(data->cluster)
+                    + wxT(".ddlscript_complete(") + NumToStr(data->setId) + wxT(", ")
+                    + qtDbString(sql2) + wxT(", 0);\n");
+            }
+            else
+            {
+                tmp = wxT("SELECT ") + qtIdent(data->cluster)
+                    + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
+                    + qtDbString(sql2) + wxT(", 0);\n");
+            }
+        }
+        else
+            tmp = sql2;
+
+        if (!connection->ExecuteVoid(tmp))
+        {
+            // error message is displayed inside ExecuteVoid
+            // Warn the user about partially applied changes, but don't bail out. 
+            // Carry on as if everything was successful (because the most important
+            // change was!!
+            wxMessageBox(_("An error occured executing the second stage SQL statement.\n\nChanges may have been partially applied."), _("Warning"), wxICON_EXCLAMATION | wxOK, this);
+        }
+        else // Only apend schema changes if there was no error.
+        {
+            if (database)
+                database->AppendSchemaChange(tmp);
+        }
+    }
+
     ShowObject();
 
     return true;
@@ -663,8 +706,9 @@ void dlgProperty::OnApply(wxCommandEvent &ev)
     EnableOK(false);
 
     wxString sql=GetSql();
+    wxString sql2=GetSql2();
 
-    if (!apply(sql))
+    if (!apply(sql, sql2))
         return;
 
     if (statusBar)
@@ -689,8 +733,9 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
     }
 
     wxString sql=GetSql();
+    wxString sql2=GetSql2();
 
-    if (!apply(sql))
+    if (!apply(sql, sql2))
     {
         EnableOK(true);
         return;
@@ -713,7 +758,7 @@ void dlgProperty::OnPageSelect(wxNotebookEvent& event)
                 replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
                 tmp.Printf(_("-- Execute replicated using cluster \"%s\", set %ld\n"), data->cluster.c_str(), data->setId);
             }
-            sqlPane->SetText(tmp + GetSql());
+            sqlPane->SetText(tmp + GetSql() + GetSql2());
         }
         else
         {

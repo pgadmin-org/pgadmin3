@@ -218,6 +218,7 @@ int dlgDatabase::Go(bool modal)
             wxLogError(_("Failed to disable the CONNECT privilege checkbox!"));
     }
 
+    SetupVarEditor(1);
     return dlgSecurityProperty::Go(modal);
 }
 
@@ -290,7 +291,7 @@ void dlgDatabase::OnVarnameSelChange(wxCommandEvent &ev)
 
 void dlgDatabase::SetupVarEditor(int var)
 {
-    if (var >= 0)
+    if (var >= 0 && varInfo.Count() > 0)
     {
         wxStringTokenizer vals(varInfo.Item(var));
         wxString typ=vals.GetNextToken();
@@ -366,6 +367,10 @@ void dlgDatabase::OnVarRemove(wxCommandEvent &ev)
 }
 
 
+// Note: CREATE DATABASE cannot be part of a multi-statement query as of 
+//       PG83, and never actually would have been transaction-safe prior
+//       to then. Therefore, when creating a new database, only the CREATE
+//       statement comes from GetSql(), subsequent ALTERs come from GetSql2()
 wxString dlgDatabase::GetSql()
 {
     wxString sql, name;
@@ -379,6 +384,56 @@ wxString dlgDatabase::GetSql()
         AppendOwnerChange(sql, wxT("DATABASE ") + qtIdent(name));
 
         AppendComment(sql, wxT("DATABASE"), 0, database);
+
+        if (!connection->BackendMinimumVersion(8, 2))
+            sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
+        else
+            sql += GetGrant(wxT("CTc"), wxT("DATABASE ") + qtIdent(name));
+
+        wxArrayString vars;
+
+        size_t index;
+
+        for (index = 0 ; index < database->GetVariables().GetCount() ; index++)
+            vars.Add(database->GetVariables().Item(index));
+
+        int cnt=lstVariables->GetItemCount();
+        int pos;
+
+        // check for changed or added vars
+        for (pos=0 ; pos < cnt ; pos++)
+        {
+            wxString newVar=lstVariables->GetText(pos);
+            wxString newVal=lstVariables->GetText(pos, 1);
+
+            wxString oldVal;
+
+            for (index=0 ; index < vars.GetCount() ; index++)
+            {
+                wxString var=vars.Item(index);
+                if (var.BeforeFirst('=').IsSameAs(newVar, false))
+                {
+                    oldVal = var.Mid(newVar.Length()+1);
+                    vars.RemoveAt(index);
+                    break;
+                }
+            }
+            if (oldVal != newVal)
+            {
+                sql += wxT("ALTER DATABASE ") + qtIdent(name)
+                    +  wxT(" SET ") + newVar
+                    +  wxT("=") + newVal
+                    +  wxT(";\n");
+            }
+        }
+        
+        // check for removed vars
+        for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
+        {
+            sql += wxT("ALTER DATABASE ") + qtIdent(name)
+                +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
+                + wxT(";\n");
+        }
     }
     else
     {
@@ -392,63 +447,38 @@ wxString dlgDatabase::GetSql()
         AppendIfFilled(sql, wxT("\n       TABLESPACE="), qtIdent(cbTablespace->GetValue()));
 
         sql += wxT(";\n");
+    }
 
+    return sql;
+}
+
+wxString dlgDatabase::GetSql2()
+{
+    wxString sql, name;
+    name=GetName();
+
+    // We only use GetSql2() in the CREATE case
+    if (!database)
+    {
         if (connection->BackendMinimumVersion(8, 2))
             AppendComment(sql, wxT("DATABASE"), 0, database);
-    }
 
+        if (!connection->BackendMinimumVersion(8, 2))
+            sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
+        else
+            sql += GetGrant(wxT("CTc"), wxT("DATABASE ") + qtIdent(name));
 
-    if (!connection->BackendMinimumVersion(8, 2))
-        sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
-    else
-        sql += GetGrant(wxT("CTc"), wxT("DATABASE ") + qtIdent(name));
+        int cnt=lstVariables->GetItemCount();
+        int pos;
 
-    wxArrayString vars;
-
-    size_t index;
-
-    if (database)
-    {
-        for (index = 0 ; index < database->GetVariables().GetCount() ; index++)
-            vars.Add(database->GetVariables().Item(index));
-    }
-
-    int cnt=lstVariables->GetItemCount();
-    int pos;
-
-    // check for changed or added vars
-    for (pos=0 ; pos < cnt ; pos++)
-    {
-        wxString newVar=lstVariables->GetText(pos);
-        wxString newVal=lstVariables->GetText(pos, 1);
-
-        wxString oldVal;
-
-        for (index=0 ; index < vars.GetCount() ; index++)
-        {
-            wxString var=vars.Item(index);
-            if (var.BeforeFirst('=').IsSameAs(newVar, false))
-            {
-                oldVal = var.Mid(newVar.Length()+1);
-                vars.RemoveAt(index);
-                break;
-            }
-        }
-        if (oldVal != newVal)
+        // check for changed or added vars
+        for (pos=0 ; pos < cnt ; pos++)
         {
             sql += wxT("ALTER DATABASE ") + qtIdent(name)
-                +  wxT(" SET ") + newVar
-                +  wxT("=") + newVal
+                +  wxT(" SET ") + lstVariables->GetText(pos)
+                +  wxT("=") + lstVariables->GetText(pos, 1)
                 +  wxT(";\n");
         }
-    }
-    
-    // check for removed vars
-    for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
-    {
-        sql += wxT("ALTER DATABASE ") + qtIdent(name)
-            +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
-            + wxT(";\n");
     }
 
     return sql;
