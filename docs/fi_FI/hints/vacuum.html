@@ -1,0 +1,24 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Gurun neuvot</title>
+</head>
+
+<body>
+
+<h3>VACUUM-komennon ajaminen on suositeltavaa</h3>
+<p>
+Taulun &quot;<INFO>&quot; arvioitu rivimäärä poikkeaa merkittävästi todellisesta rivimäärästä. Sinun tulisi ajaa VACUUM ANALYZE tälle taululle.
+</p><p>
+Sen sijaan että ajat käsin VACUUM ANALYZE-komennon tälle taululle (voit tehdä sen pgAdmin III huolto-valikosta), kannattaa harkita VACUUM ANALYZEn ajamisen automatisointia, esimerkiksi ajastinohjelmalla. PostgreSQL tarjoaa myös pg_autovacuum-daemonin, joka seuraa tietokantaan tehtyjä muutoksia ja ajaa VACUUM-komennon aina tarvittaessa. Useimmissa tapauksissa pg_autovacuum on paras vaihtoehto.
+</p><p><br><br></p>
+<b>Mihin VACUUMia tarvitaan?</b>
+<p>
+PostgreSQL:n optimoija tekee päätöksensä arvioituihin rivimääriin perustuen. Jos arvioitu rivimäärä poikkeaa liian paljon todellisuudesta, optimoija voi tehdä huonon päätöksen, joka johtaa huonoon saantipolkuun ja sitä kautta huonoon suorituskykyyn.
+</p><p>
+PostgreSQL tarvitsee VACUUMia tauluijen transaktio-ID-numeroiden kiinnittämiseksi. VACUUM myös siivoaa rivien poistamisessa ja päivittämisessä syntyviä vanhoja riviversioita, vapauttaen niiden viemän tilan käyttämisen uudelleen. Online-dokumentaatiosssa on paljon yksityiskohtaista tietoa aiheesta; paina vain "Apua"-nappia.
+</p>
+</body>
+</html>
