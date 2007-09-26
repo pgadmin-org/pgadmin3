@@ -41,6 +41,8 @@ BEGIN_EVENT_TABLE(frmStatus, pgDialog)
 	EVT_LIST_ITEM_DESELECTED(XRCID("lstStatus"),	frmStatus::OnSelStatusItem)
 	EVT_LIST_ITEM_SELECTED(XRCID("lstLocks"),		frmStatus::OnSelLockItem)
 	EVT_LIST_ITEM_DESELECTED(XRCID("lstLocks"),		frmStatus::OnSelLockItem)
+	EVT_LIST_ITEM_SELECTED(XRCID("lstXacts"),		frmStatus::OnSelXactItem)
+	EVT_LIST_ITEM_DESELECTED(XRCID("lstXacts"),		frmStatus::OnSelXactItem)
     EVT_COMBOBOX(XRCID("cbLogfiles"),               frmStatus::OnLoadLogfile)
     EVT_BUTTON(XRCID("btnRotateLog"),               frmStatus::OnRotateLogfile)
 END_EVENT_TABLE();
@@ -97,6 +99,8 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     btnCancelLk = CTRL_BUTTON("btnCancelLk");
     btnTerminateSt = CTRL_BUTTON("btnTerminateSt");
     btnTerminateLk = CTRL_BUTTON("btnTerminateLk");
+    btnCommit = CTRL_BUTTON("btnCommit");
+    btnRollback = CTRL_BUTTON("btnRollback");
     ChangeButtonId(btnCancelSt, wxID_CANCEL, _("Cancel"));
     ChangeButtonId(btnCancelLk, wxID_CANCEL, _("Cancel"));
     ChangeButtonId(btnTerminateSt, wxID_STOP, _("Terminate"));
@@ -207,6 +211,8 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 	btnTerminateSt->Enable(false);
 	btnCancelLk->Enable(false);
 	btnTerminateLk->Enable(false);
+	btnCommit->Enable(false);
+	btnRollback->Enable(false);
 
 	loaded = true;
 }
@@ -268,6 +274,8 @@ void frmStatus::OnNotebookPageChanged(wxNotebookEvent& event)
 	btnTerminateSt->Enable(false);
 	btnCancelLk->Enable(false);
 	btnTerminateLk->Enable(false);
+	btnCommit->Enable(false);
+	btnRollback->Enable(false);
 }
 
 
@@ -930,6 +938,11 @@ void frmStatus::OnCancelBtn(wxCommandEvent &event)
 
 	wxMessageBox(_("A cancel signal was sent to the selected server process(es)."), _("Cancel query"), wxOK | wxICON_INFORMATION);
 	OnRefresh(event);
+    wxListEvent ev;
+    if (nbStatus->GetSelection() == 0)
+        OnSelStatusItem(ev);
+    else
+        OnSelLockItem(ev);
 }
 
 
@@ -965,6 +978,11 @@ void frmStatus::OnTerminateBtn(wxCommandEvent &event)
 
 	wxMessageBox(_("A terminate signal was sent to the selected server process(es)."), _("Terminate process"), wxOK | wxICON_INFORMATION);
 	OnRefresh(event);
+    wxListEvent ev;
+    if (nbStatus->GetSelection() == 0)
+        OnSelStatusItem(ev);
+    else
+        OnSelLockItem(ev);
 }
 
 
@@ -981,12 +999,39 @@ void frmStatus::OnCommit(wxCommandEvent &event)
     {
 		wxString xid = xactList->GetText(item, 1);
 		wxString sql = wxT("COMMIT PREPARED ") + connection->qtDbString(xid);
-		connection->ExecuteScalar(sql);
+
+        // On 8.3 and above, we must execute this in the database in which the
+        // prepared transation originated.
+        if (connection->BackendMinimumVersion(8, 3) && connection->GetDbname() != xactList->GetText(item, 4))
+        {
+            pgConn *tmpConn=new pgConn(connection->GetHost(), 
+                                       xactList->GetText(item, 4), 
+                                       connection->GetUser(), 
+                                       connection->GetPassword(), 
+                                       connection->GetPort(), 
+                                       connection->GetSslMode());
+            if (tmpConn)
+	        {
+		        if (tmpConn->GetStatus() != PGCONN_OK)
+		        {
+		        	wxMessageBox(wxT("Connection failed: ") + tmpConn->GetLastError());
+			        return ;
+		        }
+                tmpConn->ExecuteScalar(sql);
+
+                tmpConn->Close();
+                delete tmpConn;
+            }
+        }
+        else
+		    connection->ExecuteScalar(sql);
 
         item = xactList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
 
 	OnRefresh(event);
+    wxListEvent ev;
+    OnSelXactItem(ev);
 }
 
 
@@ -1003,21 +1048,48 @@ void frmStatus::OnRollback(wxCommandEvent &event)
     {
 		wxString xid = xactList->GetText(item, 1);
 		wxString sql = wxT("ROLLBACK PREPARED ") + connection->qtDbString(xid);
-		connection->ExecuteScalar(sql);
+
+        // On 8.3 and above, we must execute this in the database in which the
+        // prepared transation originated.
+        if (connection->BackendMinimumVersion(8, 3) && connection->GetDbname() != xactList->GetText(item, 4))
+        {
+            pgConn *tmpConn=new pgConn(connection->GetHost(), 
+                                       xactList->GetText(item, 4), 
+                                       connection->GetUser(), 
+                                       connection->GetPassword(), 
+                                       connection->GetPort(), 
+                                       connection->GetSslMode());
+            if (tmpConn)
+	        {
+		        if (tmpConn->GetStatus() != PGCONN_OK)
+		        {
+		        	wxMessageBox(wxT("Connection failed: ") + tmpConn->GetLastError());
+			        return ;
+		        }
+                tmpConn->ExecuteScalar(sql);
+
+                tmpConn->Close();
+                delete tmpConn;
+            }
+        }
+        else
+		    connection->ExecuteScalar(sql);
 
         item = xactList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	}
 
 	OnRefresh(event);
+    wxListEvent ev;
+    OnSelXactItem(ev);
 }
 
 
 
 void frmStatus::OnSelStatusItem(wxListEvent &event)
 {
-	if (connection->BackendMinimumVersion(7, 5))
+	if (connection->BackendMinimumVersion(8, 0))
 	{
-		if(statusList->GetSelectedItemCount() >= 0) 
+		if(statusList->GetSelectedItemCount() > 0) 
 		{
 			btnCancelSt->Enable(true);
             if (connection->HasFeature(FEATURE_TERMINATE_BACKEND))
@@ -1033,9 +1105,9 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
 
 void frmStatus::OnSelLockItem(wxListEvent &event)
 {
-	if (connection->BackendMinimumVersion(7, 5))
+	if (connection->BackendMinimumVersion(8, 0))
 	{
-		if(lockList->GetSelectedItemCount() >= 0) 
+		if(lockList->GetSelectedItemCount() > 0) 
 		{
 			btnCancelLk->Enable(true);
             if (connection->HasFeature(FEATURE_TERMINATE_BACKEND))
@@ -1049,6 +1121,19 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
 	}
 }
 
+void frmStatus::OnSelXactItem(wxListEvent &event)
+{
+    if(xactList->GetSelectedItemCount() > 0) 
+	{
+		btnCommit->Enable(true);
+        btnRollback->Enable(true);
+	} 
+	else 
+	{
+		btnCommit->Enable(false);
+        btnRollback->Enable(false);
+	}
+}
 
 serverStatusFactory::serverStatusFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
 {

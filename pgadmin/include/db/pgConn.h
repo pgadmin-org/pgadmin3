@@ -112,6 +112,7 @@ public:
     int GetPort() const { return atoi(PQport(conn)); };
     wxString GetTTY() const { return wxString(PQtty(conn), *conv); }
     wxString GetOptions() const { return wxString(PQoptions(conn), *conv); }
+    int GetSslMode() const { return save_sslmode; }
     int GetBackendPID() const { return PQbackendPID(conn); }
     int GetStatus() const;
     int GetLastResultStatus() const { return lastResultStatus; }

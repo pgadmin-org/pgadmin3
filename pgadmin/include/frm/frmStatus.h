@@ -45,6 +45,7 @@ private:
     void OnCancelBtn(wxCommandEvent &event);
 	void OnSelStatusItem(wxListEvent &event);
 	void OnSelLockItem(wxListEvent &event);
+    void OnSelXactItem(wxListEvent &event);
 	void OnLoadLogfile(wxCommandEvent &event);
     void OnRotateLogfile(wxCommandEvent &event);
     void OnCommit(wxCommandEvent &event);
@@ -60,7 +61,7 @@ private:
 	void checkConnection();
     
     frmMain *mainForm;
-    wxButton *btnCancelSt, *btnTerminateSt,*btnCancelLk, *btnTerminateLk;
+    wxButton *btnCancelSt, *btnTerminateSt,*btnCancelLk, *btnTerminateLk, *btnCommit, *btnRollback;
 
     wxString logFormat;
     bool logHasTimestamp, logFormatKnown;
