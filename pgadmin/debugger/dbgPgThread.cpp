@@ -65,7 +65,7 @@ void dbgPgThread::startCommand( const wxString &command, wxEvtHandler * caller, 
     m_queueMutex.Lock();
     m_commandQueue.Append( new dbgPgThreadCommand( command, caller, eventType, params ));
 
-    wxLogDebug( _( "Queueing: %s" ), command.c_str());
+    wxLogDebug( wxT( "Queueing: %s" ), command.c_str());
 
     m_queueMutex.Unlock();
 
@@ -79,7 +79,7 @@ void dbgPgThread::startCommand( const wxString &command, wxEvtHandler * caller, 
 
 void dbgPgThread::Die()
 {
-    wxLogDebug( _( "Telling the query thread to die..." ));
+    wxLogDebug( wxT( "Telling the query thread to die..." ));
     die = true;
 
     m_queueCounter.Post();
@@ -97,7 +97,7 @@ void dbgPgThread::Die()
 void * dbgPgThread::Entry( void )
 {
 
-    wxLogDebug( _( "worker thread waiting for some work to do..." ));
+    wxLogDebug( wxT( "worker thread waiting for some work to do..." ));
 
     // This thread should hang at the call to m_condition.Wait()
     // When m_condition is signaled, we wake up, send a command
@@ -110,7 +110,7 @@ void * dbgPgThread::Entry( void )
         m_currentCommand = getNextCommand();
         wxString command = m_currentCommand->getCommand();
 
-        wxLogDebug( _( "Executing: %s" ), command.c_str());
+        wxLogDebug( wxT( "Executing: %s" ), command.c_str());
 
         // This call to PQexec() will hang until we've received
         // a complete result set from the server.
@@ -248,7 +248,7 @@ void * dbgPgThread::Entry( void )
             return this;
         }
 
-        wxLogDebug(_( "Complete: %s" ), wxString(PQresStatus(PQresultStatus(result)), *conv).c_str());
+        wxLogDebug(wxT( "Complete: %s" ), wxString(PQresStatus(PQresultStatus(result)), *conv).c_str());
 
         // Notify the GUI thread that a result set is ready for display
 
@@ -345,7 +345,7 @@ dbgPgThreadCommand * dbgPgThread::getNextCommand()
 
     m_queueMutex.Lock();
 
-    wxLogDebug( _( "%d commands in queue" ), m_commandQueue.GetCount());
+    wxLogDebug( wxT( "%d commands in queue" ), m_commandQueue.GetCount());
 
     ThreadCommandList::Node * node = m_commandQueue.GetFirst();
         

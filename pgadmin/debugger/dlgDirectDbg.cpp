@@ -686,7 +686,7 @@ void dlgDirectDbg::OnTargetComplete( wxCommandEvent & event )
 
     PGresult   * result = (PGresult *)event.GetClientData();
 
-    wxLogDebug( _( "OnTargetComplete() called\n" ));
+    wxLogDebug( wxT( "OnTargetComplete() called\n" ));
     wxLogDebug( wxT( "%s\n" ), wxString(PQresStatus( PQresultStatus( result )), wxConvUTF8).c_str());
 
     // If the query failed, write the error message to the status line, otherwise, copy the result set into the grid

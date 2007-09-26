@@ -512,7 +512,7 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
                 txtMessages->AppendText(thread->GetMessagesAndClear());
 
             if (thread->DataSet() != NULL)
-                wxLogDebug(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()));
+                wxLogDebug(wxString::Format(wxT("%d rows."), thread->DataSet()->NumRows()));
 
             if (isOk)
             {
