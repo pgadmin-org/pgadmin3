@@ -46,6 +46,7 @@ private:
     void OnDefault(wxCommandEvent &ev);
     void OnSuppressHints(wxCommandEvent &ev);
     void OnResetHints(wxCommandEvent &ev);
+	void OnChangeCopyQuote(wxCommandEvent &ev);
     DECLARE_EVENT_TABLE()
 };
 

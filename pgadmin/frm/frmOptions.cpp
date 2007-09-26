@@ -89,6 +89,7 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_BUTTON (wxID_OK,                      frmOptions::OnOK)
     EVT_BUTTON (wxID_HELP,                    frmOptions::OnHelp)
     EVT_BUTTON (wxID_CANCEL,                  frmOptions::OnCancel)
+    EVT_COMBOBOX(XRCID("cbCopyQuote"),		  frmOptions::OnChangeCopyQuote)
 END_EVENT_TABLE()
 
 frmOptions::frmOptions(frmMain *parent)
@@ -206,6 +207,9 @@ frmOptions::frmOptions(frmMain *parent)
 		lstDisplay->Check(x, settings->GetDisplayOption(lstDisplay->GetString(x)));
 
     chkSystemObjects->SetValue(settings->GetShowSystemObjects());
+
+	wxCommandEvent e;
+	OnChangeCopyQuote(e);
 }
 
 
@@ -525,4 +529,13 @@ wxWindow *optionsFactory::StartDialog(frmMain *form, pgObject *obj)
     frmOptions *frm=new frmOptions(form);
     frm->Show();
     return 0;
+}
+
+// Enable/disable the copy quote option as required.
+void frmOptions::OnChangeCopyQuote(wxCommandEvent& WXUNUSED(ev))
+{
+	if (cbCopyQuote->GetValue() == _("None"))
+		cbCopyQuoteChar->Disable();
+	else
+		cbCopyQuoteChar->Enable();
 }
