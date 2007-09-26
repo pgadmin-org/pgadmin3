@@ -1000,9 +1000,8 @@ void frmStatus::OnCommit(wxCommandEvent &event)
 		wxString xid = xactList->GetText(item, 1);
 		wxString sql = wxT("COMMIT PREPARED ") + connection->qtDbString(xid);
 
-        // On 8.3 and above, we must execute this in the database in which the
-        // prepared transation originated.
-        if (connection->BackendMinimumVersion(8, 3) && connection->GetDbname() != xactList->GetText(item, 4))
+        // We must execute this in the database in which the prepared transation originated.
+        if (connection->GetDbname() != xactList->GetText(item, 4))
         {
             pgConn *tmpConn=new pgConn(connection->GetHost(), 
                                        xactList->GetText(item, 4), 
@@ -1049,9 +1048,8 @@ void frmStatus::OnRollback(wxCommandEvent &event)
 		wxString xid = xactList->GetText(item, 1);
 		wxString sql = wxT("ROLLBACK PREPARED ") + connection->qtDbString(xid);
 
-        // On 8.3 and above, we must execute this in the database in which the
-        // prepared transation originated.
-        if (connection->BackendMinimumVersion(8, 3) && connection->GetDbname() != xactList->GetText(item, 4))
+        // We must execute this in the database in which the prepared transation originated.
+        if (connection->GetDbname() != xactList->GetText(item, 4))
         {
             pgConn *tmpConn=new pgConn(connection->GetHost(), 
                                        xactList->GetText(item, 4), 
