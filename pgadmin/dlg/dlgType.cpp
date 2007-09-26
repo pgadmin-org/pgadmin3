@@ -228,8 +228,8 @@ int dlgType::Go(bool modal)
                 cbOutput->Append(pn);
                 if (hasSendRcv)
                 {
-                    cbOutput->Append(pn);
-                    cbOutput->Append(pn);
+                    cbReceive->Append(pn);
+                    cbSend->Append(pn);
                 }
                 set->MoveNext();
             }
