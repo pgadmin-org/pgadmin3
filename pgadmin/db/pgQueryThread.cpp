@@ -159,7 +159,6 @@ int pgQueryThread::execute()
     {
         dataSet = new pgSet(result, conn, *conn->conv, conn->needColQuoting);
         dataSet->MoveFirst();
-        dataSet->GetVal(0);
     }
     else if (rc == PGRES_COMMAND_OK)
     {
