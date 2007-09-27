@@ -40,4 +40,14 @@ xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/utils/*.h
 xgettext -k_ -k__ -j -s -o pgadmin3.pot xtra/pgagent/*.cpp
 xgettext -k_ -k__ -j -s -o pgadmin3.pot xtra/pgagent/include/*.h
 
-wxrc -g pgadmin/ui/*.xrc | xgettext -k_ -k__ -L C -j -s -o pgadmin3.pot -
+TMPDIR=`mktemp -d` || exit 1
+echo "$TMPDIR"
+
+mkdir $TMPDIR/pgadmin
+mkdir $TMPDIR/pgadmin/ui
+
+ls pgadmin/ui/*.xrc | xargs -I filename wxrc -g filename -o $TMPDIR/filename
+
+ls pgadmin/ui/*.xrc | xargs xgettext  -k_ -k__ -L C -j -s -o pgadmin3.pot -D $TMPDIR/ 
+
+rm -rf $TMPDIR
