@@ -137,7 +137,7 @@ void dlgDirectDbg::startDebugging( void )
 
     dbgBreakPointList::Node * node = m_breakpoints.GetFirst(); 
 
-    wxASSERT_MSG( node != NULL, _( "Expected to find at least one target on the command line" ));
+    wxASSERT_MSG( node != NULL, wxT( "Expected to find at least one target on the command line" ));
 
     dbgBreakPoint * breakpoint = node->GetData();
 
@@ -153,7 +153,7 @@ void dlgDirectDbg::startDebugging( void )
         case dbgBreakPoint::OID:         targetType = 'o'; break;
         default:
         {
-            wxASSERT_MSG( false, _( "Unexpected target type" ));
+            wxASSERT_MSG( false, wxT( "Unexpected target type" ));
             break;
         }
     }

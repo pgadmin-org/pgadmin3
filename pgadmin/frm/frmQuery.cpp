@@ -1352,7 +1352,7 @@ void frmQuery::SetLineEndingStyle()
             break;
 
         default:
-            wxLogError(_("Someone created a new line ending style! Run, run for your lives!!"));
+            wxLogError(wxT("Someone created a new line ending style! Run, run for your lives!!"));
     }
 
     delete reCRLF;
@@ -1396,7 +1396,7 @@ void frmQuery::OnSetEOLMode(wxCommandEvent& event)
             break;
 
         default:
-            wxLogError(_("Someone created a new line ending style! Run, run for your lives!!"));
+            wxLogError(wxT("Someone created a new line ending style! Run, run for your lives!!"));
     }
 
     if (!changed)
