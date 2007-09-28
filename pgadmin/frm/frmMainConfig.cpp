@@ -490,7 +490,7 @@ void frmMainConfig::DisplayFile(const wxString &str)
     FillList(wxT("log_connections"));           // Reporting and Logging / What to Log
     FillList(wxT("client_min_messages"));       // Reporting and Logging / When to Log
     FillList(wxT("log_destination"));           // Reporting and Logging / Where to Log
-    FillList(wxT("stats_command_string"));      // Statistics / Query and Index Statistics Collector
+    FillList(wxT("stats_command_string"), wxT("track_activities"));      // Statistics / Query and Index Statistics Collector
     FillList(wxT("log_executor_stats"));        // Statistics / Monitoring
     FillList(wxT("fsync"));                     // Write-Ahead Log / Settings
     FillList(wxT("checkpoint_segments"));       // Write-Ahead Log / Checkpoints
@@ -511,16 +511,20 @@ void frmMainConfig::DisplayFile(const wxString &str)
 }
 
 
-void frmMainConfig::FillList(const wxString &categoryMember)
+void frmMainConfig::FillList(const wxString &categoryMember, const wxString &altCategoryMember)
 {
     pgSettingItem *categoryItem = options[categoryMember];
-    wxASSERT_MSG(categoryItem, categoryMember.c_str());
+
+    if (!categoryItem && !altCategoryMember.IsEmpty())
+        categoryItem = options[altCategoryMember];
+
+    wxASSERT_MSG(categoryItem, wxString::Format(wxT("%s/%s"), categoryMember.c_str(), altCategoryMember.c_str()));
 
     if (categoryItem)
     {
         FillList(categories[categoryItem->category]);
         categories.erase(categoryItem->category);
-    }
+    }    
 }
 
 

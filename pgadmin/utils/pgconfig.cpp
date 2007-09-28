@@ -253,21 +253,21 @@ pgSettingItem *pgSettingFileReader::GetNextItem()
             // format error
             return 0;
         }
-        if (column == wxT("name"))
+        if (column == wxT("name") || column == wxT("\"name\""))
             item->name = value;
-        else if (column == wxT("category"))
+        else if (column == wxT("category") || column == wxT("\"category\""))
             item->category = value;
-        else if (column == wxT("short_desc"))
+        else if (column == wxT("short_desc") || column == wxT("\"short_desc\""))
             item->short_desc = value;
-        else if (column == wxT("extra_desc"))
+        else if (column == wxT("extra_desc") || column == wxT("\"extra_desc\""))
             item->extra_desc = value;
-        else if (column == wxT("min_val"))
+        else if (column == wxT("min_val") || column == wxT("\"min_val\""))
             item->min_val = value;
-        else if (column == wxT("max_val"))
+        else if (column == wxT("max_val") || column == wxT("\"max_val\""))
             item->max_val = value;
-        else if (column == wxT("context"))
+        else if (column == wxT("context") || column == wxT("\"context\""))
             item->SetContext(value);
-        else if (column == wxT("vartype"))
+        else if (column == wxT("vartype") || column == wxT("\"vartype\""))
             item->SetType(value);
 
         column = tk.GetNextToken();

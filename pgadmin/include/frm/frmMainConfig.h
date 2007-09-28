@@ -41,7 +41,7 @@ private:
     void Init(pgSettingReader *reader);
     void InitForm();
 
-    void FillList(const wxString &categoryMember);
+    void FillList(const wxString &categoryMember, const wxString &altCategoryMember = wxEmptyString);
     void FillList(wxArrayString *category);
 
     void OnContents(wxCommandEvent& event);
