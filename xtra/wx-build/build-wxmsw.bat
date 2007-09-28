@@ -7,7 +7,7 @@ set WXBASE=adv aui base core html net wxexpat wxjpeg wxpng wxregex wxtiff wxzlib
 set WXCONTRIB=ogl stc
 
 REM Location of wxWidgets source
-set WX=%PGBUILD%\wxWidgets
+set WX=%WXWIN%
 set HERE=%CD%
 
 if not exist %WX%\build\msw\wx.dsw goto no_wx
