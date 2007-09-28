@@ -598,7 +598,10 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
             else 
             {
                 logDirectory = wxT("-");
-                logList->AppendItem(-1, _("redirect_stderr not enabled or log_filename misconfigured"));
+                if (connection->BackendMinimumVersion(8, 3))
+                    logList->AppendItem(-1, _("redirect_stderr not enabled or log_filename misconfigured"));
+                else
+                    logList->AppendItem(-1, _("logging_collector not enabled or log_filename misconfigured"));
                 cbLogfiles->Disable();
                 btnRotateLog->Disable();
             }

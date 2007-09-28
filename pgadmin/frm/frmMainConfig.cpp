@@ -570,7 +570,7 @@ enum
 const wxChar *hintString[]=
 {
     _("The PostgreSQL server engine is currently configured to listen for local connections only.\nYou might want to check \"listen_addresses\" to enable accessing the server over the network too."),
-    _("The autovacuum backend process is not running.\nIt is recommended to enable it by setting 'stats_start_collector', 'stats_row_level' and 'autovacuum' to 'on'.")
+    _("The autovacuum backend process is not running.\nIt is recommended to enable it by setting 'track_counts' and 'autovacuum' to 'on' in PostgreSQL 8.3 and above or 'stats_start_collector', 'stats_row_level' and 'autovacuum' to 'on' in earlier versions.")
 };
 
 
@@ -604,6 +604,12 @@ wxString frmMainConfig::GetHintString()
             {
                 if (StrToBool(value))
                     autovacuum++;
+            }
+            else if (name == wxT("track_counts"))
+            {
+                // Double increment, because track_counts in 8.3 is worth both previous options.
+                if (StrToBool(value))
+                    autovacuum=autovacuum+2;
             }
         }
     }

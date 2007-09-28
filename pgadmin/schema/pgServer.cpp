@@ -832,9 +832,14 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
             }
 
             autovacuumRunning=true;
-            pgSetIterator set(conn, 
-                wxT("SELECT setting FROM pg_settings\n")
-                wxT(" WHERE name IN ('autovacuum', 'stats_start_collector', 'stats_row_level')"));
+
+            wxString qry;
+            if (conn->BackendMinimumVersion(8, 3))
+                qry = wxT("SELECT setting FROM pg_settings WHERE name IN ('autovacuum', 'track_counts')");
+            else
+                qry = wxT("SELECT setting FROM pg_settings WHERE name IN ('autovacuum', 'stats_start_collector', 'stats_row_level')");
+
+            pgSetIterator set(conn, qry);
 
             while (autovacuumRunning && set.RowsLeft())
                 autovacuumRunning = set.GetBool(wxT("setting"));
