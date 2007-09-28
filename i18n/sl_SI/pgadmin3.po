@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgAdmin3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-26 10:28+0100\n"
+"POT-Creation-Date: 2007-09-28 15:36+0100\n"
 "PO-Revision-Date: 2005-12-07 00:45+0100\n"
 "Last-Translator: \n"
 "Language-Team: pgAdmin Developers <pgadmin-hackers@postgresql.org>\n"
@@ -134,7 +134,7 @@ msgid " [options] <connect-string>\n"
 msgstr " [možnosti] <niz-za-povezavo>\n"
 
 #: src/frm/frmStatus.cpp:783 src/frm/frmStatus.cpp:787
-#: src/frm/frmStatus.cpp:835 pgadmin/frm/frmStatus.cpp:839
+#: src/frm/frmStatus.cpp:835 pgadmin/frm/frmStatus.cpp:850
 msgid " current"
 msgstr ""
 
@@ -160,7 +160,8 @@ msgid " statistics"
 msgstr "Statistike"
 
 # standard
-#: standard input:737 input:794 input:881 input:862 input:948
+#: standard input:737 input:794 input:881 pgadmin/ui/frmExport.xrc:10
+#: pgadmin/ui/frmOptions.xrc:39
 msgid "\""
 msgstr "\""
 
@@ -204,8 +205,8 @@ msgid "%d rows."
 msgstr "Vrstic: %d."
 
 #: src/frm/frmStatus.cpp:197 src/frm/frmStatus.cpp:247
-#: src/frm/frmStatus.cpp:291 pgadmin/frm/frmStatus.cpp:199
-#: pgadmin/frm/frmStatus.cpp:248 pgadmin/frm/frmStatus.cpp:292
+#: src/frm/frmStatus.cpp:291 pgadmin/frm/frmStatus.cpp:203
+#: pgadmin/frm/frmStatus.cpp:254 pgadmin/frm/frmStatus.cpp:300
 #, fuzzy, c-format
 msgid "%d seconds"
 msgstr "%.2f sekund(e)"
@@ -304,7 +305,7 @@ msgid "&About..."
 msgstr "O progr&amu..."
 
 # standard
-#: standard input:15
+#: pgadmin/ui/dlgAggregate.xrc:10
 msgid "&Add"
 msgstr "Dod&aj"
 
@@ -313,14 +314,15 @@ msgid "&Add %s to query"
 msgstr "Dod&aj %s k stavku"
 
 #: src/dlg/dlgServer.cpp:316 src/dlg/dlgServer.cpp:323
-#: pgadmin/schema/pgServer.cpp:1153
+#: pgadmin/schema/pgServer.cpp:1158
 msgid "&Add Server..."
 msgstr "Dod&aj strežnik..."
 
 msgid "&Add Table/View..."
 msgstr "Dod&aj Tabelo/Pogled..."
 
-#: standard input:376 input:729 input:806
+#: pgadmin/ui/dlgPackage.xrc:10 pgadmin/ui/dlgTrigger.xrc:18
+#: pgadmin/ui/dlgView.xrc:9
 #, fuzzy
 msgid "&Apply"
 msgstr "Uveljavi"
@@ -362,16 +364,38 @@ msgstr "Poročilo o &napaki"
 #: standard input:57 input:518 input:727 input:751 input:758 input:766
 #: input:773 input:791 input:837 input:845 input:861 input:884 input:62
 #: input:132 input:574 input:784 input:808 input:815 input:823 input:830
-#: input:848 input:907 input:915 input:953 input:969 input:993 input:5
-#: input:23 input:35 input:43 input:63 input:76 input:93 input:99 input:117
-#: input:135 input:199 input:239 input:251 input:262 input:279 input:290
-#: input:313 input:324 input:330 input:336 input:343 input:366 input:378
-#: input:389 input:400 input:410 input:417 input:423 input:430 input:437
-#: input:444 input:451 input:458 input:466 input:475 input:504 input:520
-#: input:594 input:603 input:610 input:625 input:641 input:658 input:669
-#: input:703 input:711 input:731 input:774 input:797 input:832 input:842
-#: input:852 input:876 input:883 input:891 input:909 input:979 input:987
-#: input:1026 input:1042
+#: input:848 input:907 input:915 input:953 input:969 input:993
+#: pgadmin/ui/dlgAddFavourite.xrc:5 pgadmin/ui/dlgAggregate.xrc:18
+#: pgadmin/ui/dlgCast.xrc:12 pgadmin/ui/dlgCheck.xrc:8
+#: pgadmin/ui/dlgColumn.xrc:14 pgadmin/ui/dlgConnect.xrc:6
+#: pgadmin/ui/dlgConversion.xrc:13 pgadmin/ui/dlgDatabase.xrc:17
+#: pgadmin/ui/dlgDirectDbg.xrc:6 pgadmin/ui/dlgDomain.xrc:15
+#: pgadmin/ui/dlgEditGridOptions.xrc:18 pgadmin/ui/dlgForeignKey.xrc:31
+#: pgadmin/ui/dlgFunction.xrc:40 pgadmin/ui/dlgGroup.xrc:12
+#: pgadmin/ui/dlgHbaConfig.xrc:11 pgadmin/ui/dlgIndex.xrc:17
+#: pgadmin/ui/dlgIndexConstraint.xrc:11 pgadmin/ui/dlgJob.xrc:23
+#: pgadmin/ui/dlgLanguage.xrc:11 pgadmin/ui/dlgMainConfig.xrc:6
+#: pgadmin/ui/dlgManageFavourites.xrc:6 pgadmin/ui/dlgManageMacros.xrc:7
+#: pgadmin/ui/dlgOperator.xrc:23 pgadmin/ui/dlgPackage.xrc:12
+#: pgadmin/ui/dlgPgpassConfig.xrc:11 pgadmin/ui/dlgRepCluster.xrc:11
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:10 pgadmin/ui/dlgRepListen.xrc:7
+#: pgadmin/ui/dlgRepNode.xrc:6 pgadmin/ui/dlgRepPath.xrc:7
+#: pgadmin/ui/dlgRepSequence.xrc:7 pgadmin/ui/dlgRepSet.xrc:7
+#: pgadmin/ui/dlgRepSetMerge.xrc:7 pgadmin/ui/dlgRepSetMove.xrc:7
+#: pgadmin/ui/dlgRepSubscription.xrc:8 pgadmin/ui/dlgRepTable.xrc:9
+#: pgadmin/ui/dlgRole.xrc:29 pgadmin/ui/dlgRule.xrc:16
+#: pgadmin/ui/dlgSchedule.xrc:74 pgadmin/ui/dlgSchema.xrc:9
+#: pgadmin/ui/dlgSelectConnection.xrc:7 pgadmin/ui/dlgSequence.xrc:15
+#: pgadmin/ui/dlgServer.xrc:16 pgadmin/ui/dlgStep.xrc:17
+#: pgadmin/ui/dlgSynonym.xrc:11 pgadmin/ui/dlgTable.xrc:34
+#: pgadmin/ui/dlgTablespace.xrc:8 pgadmin/ui/dlgTrigger.xrc:20
+#: pgadmin/ui/dlgType.xrc:43 pgadmin/ui/dlgUser.xrc:23
+#: pgadmin/ui/dlgView.xrc:11 pgadmin/ui/frmBackup.xrc:24
+#: pgadmin/ui/frmBackupGlobals.xrc:10 pgadmin/ui/frmBackupServer.xrc:10
+#: pgadmin/ui/frmExport.xrc:24 pgadmin/ui/frmGrantWizard.xrc:7
+#: pgadmin/ui/frmHint.xrc:8 pgadmin/ui/frmMaintenance.xrc:18
+#: pgadmin/ui/frmOptions.xrc:70 pgadmin/ui/frmPassword.xrc:7
+#: pgadmin/ui/frmReport.xrc:39 pgadmin/ui/frmRestore.xrc:16
 msgid "&Cancel"
 msgstr "P&rekliči"
 
@@ -382,7 +406,7 @@ msgstr "&Prekliči\tAlt-Break"
 
 # standard
 #: standard input:698 src/frm/frmEditGrid.cpp:155 input:755
-#: pgadmin/frm/frmEditGrid.cpp:156 input:140
+#: pgadmin/frm/frmEditGrid.cpp:156 pgadmin/ui/dlgFindReplace.xrc:2
 msgid "&Close"
 msgstr "&Zapri"
 
@@ -395,7 +419,7 @@ msgid "&Configuration Help\tF1"
 msgstr "P&omoč pri nastavitvah\tF1"
 
 #: src/dlg/dlgServer.cpp:466 src/dlg/dlgServer.cpp:473
-#: pgadmin/schema/pgServer.cpp:1304
+#: pgadmin/schema/pgServer.cpp:1309
 msgid "&Connect"
 msgstr "&Poveži"
 
@@ -452,7 +476,7 @@ msgid "&Debug"
 msgstr ""
 
 # standard
-#: standard input:831 input:901 input:969
+#: standard input:831 input:901 pgadmin/ui/frmOptions.xrc:60
 msgid "&Debug (not recommended for normal use)"
 msgstr "&Odkrivanje napak (ni priporočljivo za normalno uporabo)"
 
@@ -461,7 +485,7 @@ msgid "&Debugging"
 msgstr ""
 
 # standard
-#: standard input:974
+#: pgadmin/ui/frmOptions.xrc:65
 #, fuzzy
 msgid "&Default"
 msgstr "Privzeto"
@@ -526,7 +550,7 @@ msgstr "P&rekini povezavo"
 msgid "&Display"
 msgstr "P&rikaži"
 
-#: standard input:935 input:1007
+#: standard input:935 pgadmin/ui/frmReport.xrc:20
 msgid "&Do not use a stylesheet"
 msgstr ""
 
@@ -542,11 +566,11 @@ msgstr "&Uredi"
 msgid "&Edit grid help"
 msgstr ""
 
-#: standard input:931 input:1003
+#: standard input:931 pgadmin/ui/frmReport.xrc:16
 msgid "&Embed an external stylesheet (specified file must exist)"
 msgstr ""
 
-#: standard input:929 input:1001
+#: standard input:929 pgadmin/ui/frmReport.xrc:14
 msgid "&Embed the default stylesheet"
 msgstr ""
 
@@ -555,7 +579,7 @@ msgid "&EnterpriseDB Help"
 msgstr ""
 
 # standard
-#: standard input:828 input:898 input:966
+#: standard input:828 input:898 pgadmin/ui/frmOptions.xrc:57
 msgid "&Errors only"
 msgstr "Samo napak&e"
 
@@ -603,7 +627,7 @@ msgstr ""
 msgid "&File"
 msgstr "&Datoteka"
 
-#: standard input:134 input:142
+#: standard input:134 pgadmin/ui/dlgFindReplace.xrc:4
 #, fuzzy
 msgid "&Find"
 msgstr "Najdi"
@@ -617,7 +641,7 @@ msgstr "&Najdi\tCtrl-F"
 msgid "&Find and Replace\tCtrl-F"
 msgstr "Poišči in zamenjaj besedilo"
 
-#: standard input:762 input:819 input:887
+#: standard input:762 input:819 pgadmin/ui/frmHint.xrc:4
 msgid "&Fix it!"
 msgstr "P&opravi!"
 
@@ -638,14 +662,31 @@ msgstr "&Grant čarovnik"
 #: pgadmin/debugger/frmDebugger.cpp:324 pgadmin/debugger/frmDebugger.cpp:326
 #: pgadmin/frm/frmConfig.cpp:141 pgadmin/frm/frmConfig.cpp:154
 #: pgadmin/frm/frmEditGrid.cpp:191 pgadmin/frm/frmMain.cpp:423
-#: pgadmin/frm/frmQuery.cpp:234 pgadmin/frm/frmQuery.cpp:236 input:61
-#: input:260 input:277 input:288 input:311 input:322 input:328 input:341
-#: input:364 input:375 input:387 input:398 input:408 input:415 input:421
-#: input:428 input:435 input:442 input:449 input:456 input:464 input:473
-#: input:502 input:518 input:592 input:601 input:608 input:623 input:639
-#: input:656 input:667 input:701 input:709 input:728 input:772 input:795
-#: input:805 input:830 input:840 input:850 input:874 input:881 input:886
-#: input:907 input:975 input:985 input:1024 input:1039
+#: pgadmin/frm/frmQuery.cpp:234 pgadmin/frm/frmQuery.cpp:236
+#: pgadmin/ui/dlgConnect.xrc:4 pgadmin/ui/dlgHbaConfig.xrc:9
+#: pgadmin/ui/dlgIndex.xrc:15 pgadmin/ui/dlgIndexConstraint.xrc:9
+#: pgadmin/ui/dlgJob.xrc:21 pgadmin/ui/dlgLanguage.xrc:9
+#: pgadmin/ui/dlgMainConfig.xrc:4 pgadmin/ui/dlgManageMacros.xrc:5
+#: pgadmin/ui/dlgOperator.xrc:21 pgadmin/ui/dlgPackage.xrc:9
+#: pgadmin/ui/dlgPgpassConfig.xrc:9 pgadmin/ui/dlgRepCluster.xrc:9
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:8 pgadmin/ui/dlgRepListen.xrc:5
+#: pgadmin/ui/dlgRepNode.xrc:4 pgadmin/ui/dlgRepPath.xrc:5
+#: pgadmin/ui/dlgRepSequence.xrc:5 pgadmin/ui/dlgRepSet.xrc:5
+#: pgadmin/ui/dlgRepSetMerge.xrc:5 pgadmin/ui/dlgRepSetMove.xrc:5
+#: pgadmin/ui/dlgRepSubscription.xrc:6 pgadmin/ui/dlgRepTable.xrc:7
+#: pgadmin/ui/dlgRole.xrc:27 pgadmin/ui/dlgRule.xrc:14
+#: pgadmin/ui/dlgSchedule.xrc:72 pgadmin/ui/dlgSchema.xrc:7
+#: pgadmin/ui/dlgSelectConnection.xrc:5 pgadmin/ui/dlgSequence.xrc:13
+#: pgadmin/ui/dlgServer.xrc:14 pgadmin/ui/dlgStep.xrc:15
+#: pgadmin/ui/dlgSynonym.xrc:9 pgadmin/ui/dlgTable.xrc:32
+#: pgadmin/ui/dlgTablespace.xrc:6 pgadmin/ui/dlgTrigger.xrc:17
+#: pgadmin/ui/dlgType.xrc:41 pgadmin/ui/dlgUser.xrc:21
+#: pgadmin/ui/dlgView.xrc:8 pgadmin/ui/frmBackup.xrc:22
+#: pgadmin/ui/frmBackupGlobals.xrc:8 pgadmin/ui/frmBackupServer.xrc:8
+#: pgadmin/ui/frmExport.xrc:22 pgadmin/ui/frmGrantWizard.xrc:5
+#: pgadmin/ui/frmHint.xrc:3 pgadmin/ui/frmMaintenance.xrc:16
+#: pgadmin/ui/frmOptions.xrc:66 pgadmin/ui/frmPassword.xrc:5
+#: pgadmin/ui/frmReport.xrc:37 pgadmin/ui/frmRestore.xrc:13
 msgid "&Help"
 msgstr "&Pomoč"
 
@@ -678,7 +719,8 @@ msgstr ""
 msgid "&Line ends"
 msgstr ""
 
-#: standard input:933 input:937 input:1005 input:1009
+#: standard input:933 input:937 pgadmin/ui/frmReport.xrc:18
+#: pgadmin/ui/frmReport.xrc:22
 msgid "&Link to an external stylesheet"
 msgstr ""
 
@@ -702,12 +744,12 @@ msgstr "V&zdrževanje"
 msgid "&New window\tCtrl-N"
 msgstr "&Razveljavi\tCtrl-Z"
 
-#: standard input:764 input:821 input:889
+#: standard input:764 input:821 pgadmin/ui/frmHint.xrc:6
 msgid "&No"
 msgstr "&Ne"
 
 # standard
-#: standard input:827 input:897 input:965
+#: standard input:827 input:897 pgadmin/ui/frmOptions.xrc:56
 msgid "&No logging"
 msgstr "Brez beleže&nja"
 
@@ -716,15 +758,37 @@ msgstr "Brez beleže&nja"
 #: input:765 input:772 input:790 input:835 input:844 input:860 input:883
 #: input:61 input:573 input:756 input:783 input:807 input:814 input:822
 #: input:829 input:847 input:905 input:914 input:952 input:968 input:992
-#: input:4 input:22 input:34 input:42 input:62 input:75 input:92 input:101
-#: input:116 input:137 input:198 input:238 input:250 input:261 input:278
-#: input:289 input:312 input:323 input:329 input:335 input:342 input:365
-#: input:377 input:388 input:399 input:409 input:416 input:422 input:429
-#: input:436 input:443 input:450 input:457 input:465 input:474 input:503
-#: input:519 input:593 input:602 input:609 input:624 input:640 input:657
-#: input:668 input:702 input:710 input:730 input:773 input:796 input:831
-#: input:841 input:851 input:875 input:882 input:890 input:908 input:977
-#: input:986 input:1025 input:1041
+#: pgadmin/ui/dlgAddFavourite.xrc:4 pgadmin/ui/dlgAggregate.xrc:17
+#: pgadmin/ui/dlgCast.xrc:11 pgadmin/ui/dlgCheck.xrc:7
+#: pgadmin/ui/dlgColumn.xrc:13 pgadmin/ui/dlgConnect.xrc:5
+#: pgadmin/ui/dlgConversion.xrc:12 pgadmin/ui/dlgDatabase.xrc:16
+#: pgadmin/ui/dlgDirectDbg.xrc:8 pgadmin/ui/dlgDomain.xrc:14
+#: pgadmin/ui/dlgEditGridOptions.xrc:20 pgadmin/ui/dlgForeignKey.xrc:30
+#: pgadmin/ui/dlgFunction.xrc:39 pgadmin/ui/dlgGroup.xrc:11
+#: pgadmin/ui/dlgHbaConfig.xrc:10 pgadmin/ui/dlgIndex.xrc:16
+#: pgadmin/ui/dlgIndexConstraint.xrc:10 pgadmin/ui/dlgJob.xrc:22
+#: pgadmin/ui/dlgLanguage.xrc:10 pgadmin/ui/dlgMainConfig.xrc:5
+#: pgadmin/ui/dlgManageFavourites.xrc:5 pgadmin/ui/dlgManageMacros.xrc:6
+#: pgadmin/ui/dlgOperator.xrc:22 pgadmin/ui/dlgPackage.xrc:11
+#: pgadmin/ui/dlgPgpassConfig.xrc:10 pgadmin/ui/dlgRepCluster.xrc:10
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:9 pgadmin/ui/dlgRepListen.xrc:6
+#: pgadmin/ui/dlgRepNode.xrc:5 pgadmin/ui/dlgRepPath.xrc:6
+#: pgadmin/ui/dlgRepSequence.xrc:6 pgadmin/ui/dlgRepSet.xrc:6
+#: pgadmin/ui/dlgRepSetMerge.xrc:6 pgadmin/ui/dlgRepSetMove.xrc:6
+#: pgadmin/ui/dlgRepSubscription.xrc:7 pgadmin/ui/dlgRepTable.xrc:8
+#: pgadmin/ui/dlgRole.xrc:28 pgadmin/ui/dlgRule.xrc:15
+#: pgadmin/ui/dlgSchedule.xrc:73 pgadmin/ui/dlgSchema.xrc:8
+#: pgadmin/ui/dlgSelectConnection.xrc:6 pgadmin/ui/dlgSequence.xrc:14
+#: pgadmin/ui/dlgServer.xrc:15 pgadmin/ui/dlgStep.xrc:16
+#: pgadmin/ui/dlgSynonym.xrc:10 pgadmin/ui/dlgTable.xrc:33
+#: pgadmin/ui/dlgTablespace.xrc:7 pgadmin/ui/dlgTrigger.xrc:19
+#: pgadmin/ui/dlgType.xrc:42 pgadmin/ui/dlgUser.xrc:22
+#: pgadmin/ui/dlgView.xrc:10 pgadmin/ui/frmBackup.xrc:23
+#: pgadmin/ui/frmBackupGlobals.xrc:9 pgadmin/ui/frmBackupServer.xrc:9
+#: pgadmin/ui/frmExport.xrc:23 pgadmin/ui/frmGrantWizard.xrc:6
+#: pgadmin/ui/frmHint.xrc:7 pgadmin/ui/frmMaintenance.xrc:17
+#: pgadmin/ui/frmOptions.xrc:68 pgadmin/ui/frmPassword.xrc:6
+#: pgadmin/ui/frmReport.xrc:38 pgadmin/ui/frmRestore.xrc:15
 msgid "&OK"
 msgstr "&V redu"
 
@@ -840,12 +904,12 @@ msgid "&Refresh\tF5"
 msgstr "Os&veži\tF5"
 
 # standard
-#: standard input:14
+#: pgadmin/ui/dlgAggregate.xrc:9
 #, fuzzy
 msgid "&Remove"
 msgstr "Odstrani"
 
-#: standard input:136 input:144
+#: standard input:136 pgadmin/ui/dlgFindReplace.xrc:6
 #, fuzzy
 msgid "&Replace"
 msgstr "Zamenjaj besedilo"
@@ -906,7 +970,7 @@ msgid "&Save definition..."
 msgstr "&Shrani definicijo..."
 
 #: src/frm/frmStatus.cpp:999 src/frm/frmStatus.cpp:1003
-#: src/frm/frmStatus.cpp:1051 pgadmin/frm/frmStatus.cpp:1055
+#: src/frm/frmStatus.cpp:1051 pgadmin/frm/frmStatus.cpp:1141
 msgid "&Server Status"
 msgstr "&Stanje strežnika"
 
@@ -989,7 +1053,7 @@ msgstr "&Razveljavi\tCtrl-Z"
 #: standard input:859 src/frm/frmEditGrid.cpp:189 src/frm/frmMain.cpp:396
 #: src/frm/frmQuery.cpp:166 input:967 pgadmin/debugger/frmDebugger.cpp:321
 #: pgadmin/frm/frmEditGrid.cpp:190 pgadmin/frm/frmMain.cpp:421
-#: pgadmin/frm/frmQuery.cpp:231 input:1040
+#: pgadmin/frm/frmQuery.cpp:231 pgadmin/ui/frmRestore.xrc:14
 msgid "&View"
 msgstr "&Poglej"
 
@@ -1002,24 +1066,25 @@ msgstr "Zamenjaj besedilo"
 msgid "&Word wrap"
 msgstr ""
 
-#: standard input:924 input:996
+#: standard input:924 pgadmin/ui/frmReport.xrc:9
 msgid "&XHTML 1.0 Transitional"
 msgstr ""
 
-#: standard input:926 input:998
+#: standard input:926 pgadmin/ui/frmReport.xrc:11
 msgid "&XML"
 msgstr ""
 
-#: standard input:939 input:1011
+#: standard input:939 pgadmin/ui/frmReport.xrc:24
 msgid "&XSLT Process the XML data"
 msgstr ""
 
-#: standard input:763 input:820 input:888
+#: standard input:763 input:820 pgadmin/ui/frmHint.xrc:5
 msgid "&Yes"
 msgstr "&Da"
 
 # standard
-#: standard input:738 input:795 input:882 input:863 input:949
+#: standard input:738 input:795 input:882 pgadmin/ui/frmExport.xrc:11
+#: pgadmin/ui/frmOptions.xrc:40
 msgid "'"
 msgstr "'"
 
@@ -1045,7 +1110,8 @@ msgid "* Inherited columns from %s."
 msgstr "Podedovano od tabele %s"
 
 # standard
-#: standard input:734 input:791 input:885 input:859 input:952
+#: standard input:734 input:791 input:885 pgadmin/ui/frmExport.xrc:7
+#: pgadmin/ui/frmOptions.xrc:43
 msgid ","
 msgstr ","
 
@@ -1119,9 +1185,13 @@ msgstr "-u <uporabnik ali DOMENA\\uporabnik>\n"
 # standard
 #: standard input:707 input:748 input:800 input:803 input:813 input:824
 #: input:849 input:764 input:805 input:857 input:860 input:870 input:894
-#: input:944 input:949 input:957 input:812 input:836 input:846 input:873
-#: input:919 input:921 input:923 input:926 input:936 input:962 input:1016
-#: input:1021 input:1030
+#: input:944 input:949 input:957 pgadmin/ui/frmBackup.xrc:4
+#: pgadmin/ui/frmBackupGlobals.xrc:4 pgadmin/ui/frmBackupServer.xrc:4
+#: pgadmin/ui/frmExport.xrc:21 pgadmin/ui/frmOptions.xrc:10
+#: pgadmin/ui/frmOptions.xrc:12 pgadmin/ui/frmOptions.xrc:14
+#: pgadmin/ui/frmOptions.xrc:17 pgadmin/ui/frmOptions.xrc:27
+#: pgadmin/ui/frmOptions.xrc:53 pgadmin/ui/frmReport.xrc:29
+#: pgadmin/ui/frmReport.xrc:34 pgadmin/ui/frmRestore.xrc:4
 msgid "..."
 msgstr "..."
 
@@ -1130,8 +1200,8 @@ msgid "0 Secs"
 msgstr "0 sekund"
 
 #: src/frm/frmStatus.cpp:194 src/frm/frmStatus.cpp:244
-#: src/frm/frmStatus.cpp:288 pgadmin/frm/frmStatus.cpp:196
-#: pgadmin/frm/frmStatus.cpp:245 pgadmin/frm/frmStatus.cpp:289
+#: src/frm/frmStatus.cpp:288 pgadmin/frm/frmStatus.cpp:200
+#: pgadmin/frm/frmStatus.cpp:251 pgadmin/frm/frmStatus.cpp:297
 msgid "1 second"
 msgstr ""
 
@@ -1145,107 +1215,107 @@ msgstr "Vrstic: %d."
 msgid "1000 rows"
 msgstr "Vrstic: %d."
 
-#: standard input:456 input:511 input:547
+#: standard input:456 input:511 pgadmin/ui/dlgSchedule.xrc:27
 msgid "10th"
 msgstr "10. - deseti"
 
-#: standard input:457 input:512 input:548
+#: standard input:457 input:512 pgadmin/ui/dlgSchedule.xrc:28
 msgid "11th"
 msgstr "11. - enajsti"
 
-#: standard input:458 input:513 input:549
+#: standard input:458 input:513 pgadmin/ui/dlgSchedule.xrc:29
 msgid "12th"
 msgstr "12. - dvanajsti"
 
-#: standard input:459 input:514 input:550
+#: standard input:459 input:514 pgadmin/ui/dlgSchedule.xrc:30
 msgid "13th"
 msgstr "13. - trinajsti"
 
-#: standard input:460 input:515 input:551
+#: standard input:460 input:515 pgadmin/ui/dlgSchedule.xrc:31
 msgid "14th"
 msgstr "14. - štirinajsti"
 
-#: standard input:461 input:516 input:552
+#: standard input:461 input:516 pgadmin/ui/dlgSchedule.xrc:32
 msgid "15th"
 msgstr "15. - petnajsti"
 
-#: standard input:462 input:517 input:553
+#: standard input:462 input:517 pgadmin/ui/dlgSchedule.xrc:33
 msgid "16th"
 msgstr "16. - šestnajsti"
 
-#: standard input:463 input:518 input:554
+#: standard input:463 input:518 pgadmin/ui/dlgSchedule.xrc:34
 msgid "17th"
 msgstr "17. - sedemnajsti"
 
-#: standard input:464 input:519 input:555
+#: standard input:464 input:519 pgadmin/ui/dlgSchedule.xrc:35
 msgid "18th"
 msgstr "18. - osemnajsti"
 
-#: standard input:465 input:520 input:556
+#: standard input:465 input:520 pgadmin/ui/dlgSchedule.xrc:36
 msgid "19th"
 msgstr "19. - devetnajsti"
 
-#: standard input:447 input:502 input:538
+#: standard input:447 input:502 pgadmin/ui/dlgSchedule.xrc:18
 msgid "1st"
 msgstr "1. - prvi"
 
-#: standard input:466 input:521 input:557
+#: standard input:466 input:521 pgadmin/ui/dlgSchedule.xrc:37
 msgid "20th"
 msgstr "20. - dvajseti"
 
-#: standard input:467 input:522 input:558
+#: standard input:467 input:522 pgadmin/ui/dlgSchedule.xrc:38
 msgid "21st"
 msgstr "21. - enaindvajseti"
 
-#: standard input:468 input:523 input:559
+#: standard input:468 input:523 pgadmin/ui/dlgSchedule.xrc:39
 msgid "22nd"
 msgstr "22. - dvaindvajseti"
 
-#: standard input:469 input:524 input:560
+#: standard input:469 input:524 pgadmin/ui/dlgSchedule.xrc:40
 msgid "23rd"
 msgstr "23. - triindvajseti"
 
-#: standard input:470 input:525 input:561
+#: standard input:470 input:525 pgadmin/ui/dlgSchedule.xrc:41
 msgid "24th"
 msgstr "24. - štiriindvajseti"
 
-#: standard input:471 input:526 input:562
+#: standard input:471 input:526 pgadmin/ui/dlgSchedule.xrc:42
 msgid "25th"
 msgstr "25. - petindvajseti"
 
-#: standard input:472 input:527 input:563
+#: standard input:472 input:527 pgadmin/ui/dlgSchedule.xrc:43
 msgid "26th"
 msgstr "26. - šestindvajseti"
 
-#: standard input:473 input:528 input:564
+#: standard input:473 input:528 pgadmin/ui/dlgSchedule.xrc:44
 msgid "27th"
 msgstr "27. - sedemindvajseti"
 
-#: standard input:474 input:529 input:565
+#: standard input:474 input:529 pgadmin/ui/dlgSchedule.xrc:45
 msgid "28th"
 msgstr "28. - osemindvajseti"
 
-#: standard input:475 input:530 input:566
+#: standard input:475 input:530 pgadmin/ui/dlgSchedule.xrc:46
 msgid "29th"
 msgstr "29. - devetindvajseti"
 
-#: standard input:448 input:503 input:539
+#: standard input:448 input:503 pgadmin/ui/dlgSchedule.xrc:19
 msgid "2nd"
 msgstr "2. - drugi"
 
-#: standard input:476 input:531 input:567
+#: standard input:476 input:531 pgadmin/ui/dlgSchedule.xrc:47
 msgid "30th"
 msgstr "30. - trideseti"
 
-#: standard input:477 input:532 input:568
+#: standard input:477 input:532 pgadmin/ui/dlgSchedule.xrc:48
 msgid "31st"
 msgstr "31. - enaintrideseti"
 
-#: standard input:449 input:504 input:540
+#: standard input:449 input:504 pgadmin/ui/dlgSchedule.xrc:20
 msgid "3rd"
 msgstr "3. - tretji"
 
-#: standard input:450 input:505 input:541
+#: standard input:450 input:505 pgadmin/ui/dlgSchedule.xrc:21
 msgid "4th"
 msgstr "4. - četrti"
 
@@ -1254,23 +1324,23 @@ msgstr "4. - četrti"
 msgid "500 rows"
 msgstr "Vrstic: %d."
 
-#: standard input:451 input:506 input:542
+#: standard input:451 input:506 pgadmin/ui/dlgSchedule.xrc:22
 msgid "5th"
 msgstr "5. - peti"
 
-#: standard input:452 input:507 input:543
+#: standard input:452 input:507 pgadmin/ui/dlgSchedule.xrc:23
 msgid "6th"
 msgstr "6. - šesti"
 
-#: standard input:453 input:508 input:544
+#: standard input:453 input:508 pgadmin/ui/dlgSchedule.xrc:24
 msgid "7th"
 msgstr "7. - sedmi"
 
-#: standard input:454 input:509 input:545
+#: standard input:454 input:509 pgadmin/ui/dlgSchedule.xrc:25
 msgid "8th"
 msgstr "8. - osmi"
 
-#: standard input:455 input:510 input:546
+#: standard input:455 input:510 pgadmin/ui/dlgSchedule.xrc:26
 msgid "9th"
 msgstr "9. - deveti"
 
@@ -1287,18 +1357,20 @@ msgstr ""
 "Pripravi se za sesutje!"
 
 # standard
-#: standard input:733 input:790 input:884 input:858 input:951
+#: standard input:733 input:790 input:884 pgadmin/ui/frmExport.xrc:6
+#: pgadmin/ui/frmOptions.xrc:42
 msgid ";"
 msgstr ";"
 
 # standard
-#: standard input:293 input:337 input:360
+#: standard input:293 input:337 pgadmin/ui/dlgOperator.xrc:17
 msgid "< operator"
 msgstr "< operator"
 
 # standard
 #: standard input:192 input:402 input:674 input:229 input:457 input:731
-#: input:246 input:493 input:787
+#: pgadmin/ui/dlgGroup.xrc:7 pgadmin/ui/dlgRole.xrc:18
+#: pgadmin/ui/dlgUser.xrc:13
 msgid "<<"
 msgstr "<<"
 
@@ -1352,13 +1424,14 @@ msgid "<none>"
 msgstr "<prazno>"
 
 # standard
-#: standard input:294 input:338 input:361
+#: standard input:294 input:338 pgadmin/ui/dlgOperator.xrc:18
 msgid "> operator"
 msgstr "> operator"
 
 # standard
 #: standard input:191 input:401 input:673 input:228 input:456 input:730
-#: input:245 input:492 input:786
+#: pgadmin/ui/dlgGroup.xrc:6 pgadmin/ui/dlgRole.xrc:17
+#: pgadmin/ui/dlgUser.xrc:12
 msgid ">>"
 msgstr ">>"
 
@@ -1367,7 +1440,7 @@ msgid "@@@pgAdmin internal: Translated string count"
 msgstr "@@@pgAdmin internal: Števec prevedenih nizov"
 
 #: src/frm/frmStatus.cpp:875 src/frm/frmStatus.cpp:879
-#: src/frm/frmStatus.cpp:927 pgadmin/frm/frmStatus.cpp:931
+#: src/frm/frmStatus.cpp:927 pgadmin/frm/frmStatus.cpp:942
 msgid "A cancel signal was sent to the selected server process(es)."
 msgstr "Izbranemu(-im) procesu(-om) strežnika je bil poslan signal za preklic."
 
@@ -1403,7 +1476,7 @@ msgid "A query is running. Do you wish to cancel it?"
 msgstr "Stavek se izvaja. Naj ga prekinem?"
 
 #: src/frm/frmStatus.cpp:910 src/frm/frmStatus.cpp:914
-#: src/frm/frmStatus.cpp:962 pgadmin/frm/frmStatus.cpp:966
+#: src/frm/frmStatus.cpp:962 pgadmin/frm/frmStatus.cpp:982
 msgid "A terminate signal was sent to the selected server process(es)."
 msgstr "Izbranim procesom strežnika je bil poslan signal za terminacijo."
 
@@ -1423,20 +1496,21 @@ msgid "ACL"
 msgstr "ACL"
 
 # standard
-#: standard input:613 input:670 input:720
+#: standard input:613 input:670 pgadmin/ui/dlgTrigger.xrc:9
 msgid "AFTER"
 msgstr "AFTER"
 
 # standard
-#: standard input:778 input:783 input:835 input:840 input:896 input:901
+#: standard input:778 input:783 input:835 input:840
+#: pgadmin/ui/frmMaintenance.xrc:5 pgadmin/ui/frmMaintenance.xrc:10
 msgid "ANALYZE"
 msgstr "ANALYZE"
 
-#: standard input:589 input:646 input:694
+#: standard input:589 input:646 pgadmin/ui/dlgTable.xrc:25
 msgid "ANALYZE base threshold"
 msgstr ""
 
-#: standard input:591 input:648 input:696
+#: standard input:591 input:648 pgadmin/ui/dlgTable.xrc:27
 msgid "ANALYZE scale factor"
 msgstr ""
 
@@ -1451,12 +1525,14 @@ msgid "Aborted"
 msgstr "Opuščeno"
 
 # standard
-#: standard input:123 input:128 input:102 input:138
+#: standard input:123 input:128 pgadmin/ui/dlgDirectDbg.xrc:9
+#: pgadmin/ui/dlgEditGridOptions.xrc:21
 msgid "Accept the current options and close the dialogue."
 msgstr "Sprejmi trenutne nastavitve in zapri okno."
 
 # standard
-#: standard input:834 input:836 input:904 input:906 input:976 input:978
+#: standard input:834 input:836 input:904 input:906
+#: pgadmin/ui/frmOptions.xrc:67 pgadmin/ui/frmOptions.xrc:69
 msgid "Accept the current settings and close the dialogue."
 msgstr "Sprejmi trenutne nastavitve in zapri okno."
 
@@ -1466,13 +1542,14 @@ msgstr "Sprejmi trenutne nastavitve in zapri okno."
 #: src/schema/pgIndex.cpp:218 input:249 pgadmin/schema/pgIndex.cpp:225
 #: pgadmin/schema/pgIndexConstraint.cpp:108
 #: pgadmin/schema/pgOperatorClass.cpp:198
-#: pgadmin/schema/pgOperatorFamily.cpp:63 input:266
+#: pgadmin/schema/pgOperatorFamily.cpp:63 pgadmin/ui/dlgIndex.xrc:4
 msgid "Access method"
 msgstr "Način dostopa"
 
 #: src/schema/pgRole.cpp:245 src/schema/pgUser.cpp:208 standard input:392
 #: input:667 input:447 input:724 pgadmin/schema/pgRole.cpp:251
-#: pgadmin/schema/pgUser.cpp:198 input:482 input:780
+#: pgadmin/schema/pgUser.cpp:198 pgadmin/ui/dlgRole.xrc:7
+#: pgadmin/ui/dlgUser.xrc:6
 msgid "Account expires"
 msgstr "Račun poteče"
 
@@ -1482,7 +1559,8 @@ msgid "Acks outstanding"
 msgstr ""
 
 # standard
-#: src/schema/pgRule.cpp:67 standard input:139 input:176 input:184
+#: src/schema/pgRule.cpp:67 standard input:139 input:176
+#: pgadmin/ui/dlgForeignKey.xrc:16
 msgid "Action"
 msgstr "Akcija"
 
@@ -1497,14 +1575,18 @@ msgstr "Aktivno"
 # standard
 #: standard input:137 input:174 input:219 input:232 input:251 input:255
 #: input:499 input:574 input:579 input:582 input:211 input:257 input:270
-#: input:289 input:293 input:554 input:631 input:636 input:639 input:182
-#: input:226 input:275 input:286 input:305 input:309 input:590 input:679
-#: input:684 input:687 input:770
+#: input:289 input:293 input:554 input:631 input:636 input:639
+#: pgadmin/ui/dlgForeignKey.xrc:14 pgadmin/ui/dlgFunction.xrc:27
+#: pgadmin/ui/dlgIndex.xrc:13 pgadmin/ui/dlgIndexConstraint.xrc:7
+#: pgadmin/ui/dlgJob.xrc:15 pgadmin/ui/dlgJob.xrc:19
+#: pgadmin/ui/dlgSchedule.xrc:70 pgadmin/ui/dlgTable.xrc:10
+#: pgadmin/ui/dlgTable.xrc:15 pgadmin/ui/dlgTable.xrc:18
+#: pgadmin/ui/dlgType.xrc:39
 msgid "Add"
 msgstr "Dodaj"
 
 #: src/dlg/dlgServer.cpp:317 src/dlg/dlgServer.cpp:324
-#: pgadmin/schema/pgServer.cpp:1154
+#: pgadmin/schema/pgServer.cpp:1159
 msgid "Add Server"
 msgstr "Dodaj strežnik"
 
@@ -1515,7 +1597,7 @@ msgstr "Dodaj tabele/poglede"
 
 #: src/dlg/dlgServer.cpp:316 src/dlg/dlgServer.cpp:317
 #: src/dlg/dlgServer.cpp:323 src/dlg/dlgServer.cpp:324
-#: pgadmin/schema/pgServer.cpp:1153 pgadmin/schema/pgServer.cpp:1154
+#: pgadmin/schema/pgServer.cpp:1158 pgadmin/schema/pgServer.cpp:1159
 msgid "Add a connection to a server."
 msgstr "Dodaj povezavo na strežnik."
 
@@ -1556,7 +1638,7 @@ msgstr ""
 msgid "Add exception"
 msgstr "Dodaj izjemo"
 
-#: standard input:1
+#: standard input:1 pgadmin/ui/dlgAddFavourite.xrc:1
 msgid "Add favourite"
 msgstr ""
 
@@ -1570,19 +1652,20 @@ msgstr "Dod&aj strežnik..."
 msgid "Add server"
 msgstr "Dodaj strežnik"
 
-#: standard input:110 input:115 input:125
+#: standard input:110 input:115 pgadmin/ui/dlgEditGridOptions.xrc:8
 msgid "Add the select column for ascending sort."
 msgstr "Dodaj izbrani stolpec za naraščajoče razvrščanje."
 
-#: standard input:112 input:117 input:127
+#: standard input:112 input:117 pgadmin/ui/dlgEditGridOptions.xrc:10
 msgid "Add the select column for descending sort."
 msgstr "Dodaj izbrani stolpec za padajoče razvrščanje."
 
 # standard
 #: src/ctl/ctlSecurityPanel.cpp:83 standard input:81 input:407 input:657
 #: input:678 src/ctl/ctlSecurityPanel.cpp:82 input:86 input:462 input:714
-#: input:735 pgadmin/ctl/ctlSecurityPanel.cpp:82 input:87 input:232 input:498
-#: input:767 input:791
+#: input:735 pgadmin/ctl/ctlSecurityPanel.cpp:82 pgadmin/ui/dlgDatabase.xrc:11
+#: pgadmin/ui/dlgFunction.xrc:33 pgadmin/ui/dlgRole.xrc:23
+#: pgadmin/ui/dlgType.xrc:36 pgadmin/ui/dlgUser.xrc:17
 msgid "Add/Change"
 msgstr "Dodaj/Uredi"
 
@@ -1591,7 +1674,7 @@ msgstr "Dodaj/Uredi"
 msgid "Address"
 msgstr "Naslov"
 
-#: standard input:306 input:361 input:396
+#: standard input:306 input:361 pgadmin/ui/dlgRepCluster.xrc:7
 msgid "Admin Node"
 msgstr "Admin vozlišče"
 
@@ -1625,11 +1708,11 @@ msgstr "Alias"
 
 # standard
 #: src/schema/pgType.cpp:136 standard input:642 src/schema/pgType.cpp:137
-#: input:699 pgadmin/schema/pgType.cpp:172 input:752
+#: input:699 pgadmin/schema/pgType.cpp:172 pgadmin/ui/dlgType.xrc:21
 msgid "Alignment"
 msgstr "Poravnava"
 
-#: standard input:879 input:946
+#: standard input:879 pgadmin/ui/frmOptions.xrc:37
 msgid "All"
 msgstr ""
 
@@ -1720,7 +1803,8 @@ msgstr "Analiziraj"
 msgid "Any day of the week"
 msgstr "Katerikoli dan v tednu"
 
-#: standard input:183 input:693 input:220 input:750 input:237
+#: standard input:183 input:693 input:220 input:750
+#: pgadmin/ui/dlgFunction.xrc:38
 msgid "Apply"
 msgstr "Uveljavi"
 
@@ -1731,12 +1815,12 @@ msgid "Apply a filter and view the data in the selected object."
 msgstr "Priredi filter in poglej podatke v izbranem objektu."
 
 #: src/agent/pgaSchedule.cpp:373 standard input:483 input:538
-#: pgadmin/agent/pgaSchedule.cpp:366 input:574
+#: pgadmin/agent/pgaSchedule.cpp:366 pgadmin/ui/dlgSchedule.xrc:54
 msgid "April"
 msgstr "April"
 
 #: src/frm/frmStatus.cpp:840 src/frm/frmStatus.cpp:844
-#: src/frm/frmStatus.cpp:892 pgadmin/frm/frmStatus.cpp:896
+#: src/frm/frmStatus.cpp:892 pgadmin/frm/frmStatus.cpp:907
 msgid "Are you sure the logfile should be rotated?"
 msgstr "Ali naj dnevniška datoteka res rotira?"
 
@@ -1760,12 +1844,12 @@ msgid ""
 msgstr ""
 
 #: src/frm/frmStatus.cpp:863 src/frm/frmStatus.cpp:867
-#: src/frm/frmStatus.cpp:915 pgadmin/frm/frmStatus.cpp:919
+#: src/frm/frmStatus.cpp:915 pgadmin/frm/frmStatus.cpp:930
 msgid "Are you sure you wish to cancel the selected query(s)?"
 msgstr "Res želiš preklicati izbrani stavek?"
 
 #: src/frm/frmStatus.cpp:921 src/frm/frmStatus.cpp:925
-#: src/frm/frmStatus.cpp:973 pgadmin/frm/frmStatus.cpp:977
+#: src/frm/frmStatus.cpp:973 pgadmin/frm/frmStatus.cpp:998
 msgid "Are you sure you wish to commit the selected prepared transactions?"
 msgstr "Res želiš potrditi izbrane pripravljene transakcije?"
 
@@ -1833,7 +1917,7 @@ msgid "Are you sure you wish to remove the selected table?"
 msgstr "Res želiš odstraniti izbrano tabelo?"
 
 #: src/frm/frmStatus.cpp:943 src/frm/frmStatus.cpp:947
-#: src/frm/frmStatus.cpp:995 pgadmin/frm/frmStatus.cpp:999
+#: src/frm/frmStatus.cpp:995 pgadmin/frm/frmStatus.cpp:1046
 msgid "Are you sure you wish to rollback the selected prepared transactions?"
 msgstr "Res želiš povrniti izbrane pripravljene transakcije?"
 
@@ -1849,12 +1933,12 @@ msgid "Are you sure you wish to run a restore from this file again?"
 msgstr "Res želiš odstraniti izbrano tabelo?"
 
 #: src/dlg/dlgServer.cpp:431 src/dlg/dlgServer.cpp:438
-#: pgadmin/schema/pgServer.cpp:1269
+#: pgadmin/schema/pgServer.cpp:1274
 msgid "Are you sure you wish to shutdown this server?"
 msgstr "Res želiš zaustaviti ta strežnik?"
 
 #: src/frm/frmStatus.cpp:898 src/frm/frmStatus.cpp:902
-#: src/frm/frmStatus.cpp:950 pgadmin/frm/frmStatus.cpp:954
+#: src/frm/frmStatus.cpp:950 pgadmin/frm/frmStatus.cpp:970
 msgid "Are you sure you wish to terminate the selected server process(es)?"
 msgstr "Res želiš ukiniti izbrani(-e) sistemski(-e) proces(-e)?"
 
@@ -1863,7 +1947,7 @@ msgstr "Res želiš ukiniti izbrani(-e) sistemski(-e) proces(-e)?"
 msgid "Argument count"
 msgstr "Število argumentov"
 
-#: standard input:224
+#: pgadmin/ui/dlgFunction.xrc:25
 #, fuzzy
 msgid "Argument name"
 msgstr "Število argumentov"
@@ -1872,7 +1956,7 @@ msgstr "Število argumentov"
 #: src/schema/pgFunction.cpp:124 standard input:158 input:172 input:610
 #: src/schema/pgFunction.cpp:140 input:195 input:209 input:667
 #: pgadmin/schema/edbPackageFunction.cpp:141 pgadmin/schema/pgFunction.cpp:168
-#: input:203 input:717
+#: pgadmin/ui/dlgFunction.xrc:4 pgadmin/ui/dlgTrigger.xrc:6
 msgid "Arguments"
 msgstr "Argumenti"
 
@@ -1881,16 +1965,16 @@ msgstr "Argumenti"
 #: src/dlg/dlgEditGridOptions.cpp:195 input:114
 #: pgadmin/dlg/dlgEditGridOptions.cpp:123
 #: pgadmin/dlg/dlgEditGridOptions.cpp:145
-#: pgadmin/dlg/dlgEditGridOptions.cpp:194 input:124
+#: pgadmin/dlg/dlgEditGridOptions.cpp:194 pgadmin/ui/dlgEditGridOptions.xrc:7
 msgid "Ascending"
 msgstr "Naraščajoče"
 
 #: src/agent/pgaSchedule.cpp:389 standard input:487 input:542
-#: pgadmin/agent/pgaSchedule.cpp:382 input:578
+#: pgadmin/agent/pgaSchedule.cpp:382 pgadmin/ui/dlgSchedule.xrc:58
 msgid "August"
 msgstr "Avgust"
 
-#: standard input:130 input:167 input:175
+#: standard input:130 input:167 pgadmin/ui/dlgForeignKey.xrc:7
 msgid "Auto FK index"
 msgstr "Samodejni FK indeks"
 
@@ -1899,7 +1983,7 @@ msgid "Automatically indent text to the same level as the preceding line"
 msgstr ""
 
 # standard
-#: standard input:107 input:112 input:122
+#: standard input:107 input:112 pgadmin/ui/dlgEditGridOptions.xrc:5
 msgid "Available Columns"
 msgstr "Stolpci na voljo"
 
@@ -1914,7 +1998,7 @@ msgid "Average Width"
 msgstr "Povprečna"
 
 # standard
-#: standard input:612 input:669 input:719
+#: standard input:612 input:669 pgadmin/ui/dlgTrigger.xrc:8
 msgid "BEFORE"
 msgstr "BEFORE"
 
@@ -1948,7 +2032,7 @@ msgid "Backend Configuration Hints"
 msgstr "Urejevalnik nastavitev strežnika"
 
 #: src/schema/pgServer.cpp:883 src/schema/pgServer.cpp:903
-#: src/schema/pgServer.cpp:931 pgadmin/schema/pgServer.cpp:936
+#: src/schema/pgServer.cpp:931 pgadmin/schema/pgServer.cpp:941
 msgid "Backend start"
 msgstr ""
 
@@ -1957,7 +2041,7 @@ msgstr ""
 msgid "Backends"
 msgstr ""
 
-#: standard input:704 input:761 input:809
+#: standard input:704 input:761 pgadmin/ui/frmBackup.xrc:1
 msgid "Backup"
 msgstr ""
 
@@ -1966,13 +2050,13 @@ msgstr ""
 msgid "Backup %s %s"
 msgstr "Varnostna kopija: %s %s"
 
-#: standard input:833
+#: pgadmin/ui/frmBackupGlobals.xrc:1
 #, fuzzy
 msgid "Backup Globals"
 msgstr "Varnostna kopija: %s %s"
 
 # standard
-#: standard input:843
+#: pgadmin/ui/frmBackupServer.xrc:1
 #, fuzzy
 msgid "Backup Server"
 msgstr "Strežnik"
@@ -1987,33 +2071,33 @@ msgstr "Varnostne kopije (*.backup)|*.backup|Vse datoteke (*.*)|*.*"
 msgid "Backup globals %s %s"
 msgstr "Varnostna kopija: %s %s"
 
-#: standard input:152 input:160
+#: standard input:152 pgadmin/ui/dlgFindReplace.xrc:22
 #, fuzzy
 msgid "Backwards"
 msgstr "Nazaj"
 
 # standard
 #: src/schema/pgDomain.cpp:98 standard input:92 input:97
-#: pgadmin/schema/pgDomain.cpp:98 input:107
+#: pgadmin/schema/pgDomain.cpp:98 pgadmin/ui/dlgDomain.xrc:5
 msgid "Base type"
 msgstr "Osnovni tip"
 
 # standard
 #: src/agent/pgaStep.cpp:107 standard input:555 src/agent/pgaStep.cpp:116
-#: input:612 pgadmin/agent/pgaStep.cpp:110 input:648
+#: input:612 pgadmin/agent/pgaStep.cpp:110 pgadmin/ui/dlgStep.xrc:7
 msgid "Batch"
 msgstr ""
 
-#: standard input:146 input:154
+#: standard input:146 pgadmin/ui/dlgFindReplace.xrc:16
 msgid "Begin searching at the current cursor position"
 msgstr ""
 
-#: standard input:148 input:156
+#: standard input:148 pgadmin/ui/dlgFindReplace.xrc:18
 msgid "Begin searching at the top of the text"
 msgstr ""
 
 # standard
-#: standard input:712 input:769 input:817
+#: standard input:712 input:769 pgadmin/ui/frmBackup.xrc:9
 msgid "Blobs"
 msgstr "Blob-i"
 
@@ -2027,7 +2111,8 @@ msgstr ""
 msgid "Blocks Read"
 msgstr ""
 
-#: pgadmin/schema/edbPackage.cpp:132 standard input:374 input:727
+#: pgadmin/schema/edbPackage.cpp:132 pgadmin/ui/dlgPackage.xrc:8
+#: pgadmin/ui/dlgTrigger.xrc:16
 #, fuzzy
 msgid "Body"
 msgstr "Ponedeljek"
@@ -2037,7 +2122,7 @@ msgid "Breakpoint dropped"
 msgstr ""
 
 # standard
-#: standard input:825 input:895 input:963
+#: standard input:825 input:895 pgadmin/ui/frmOptions.xrc:54
 msgid "Browse for a logfile."
 msgstr "Poišči dnevnik."
 
@@ -2056,16 +2141,17 @@ msgid "C&lear window"
 msgstr "Počisti zas&lon"
 
 # standard
-#: standard input:143 input:149 input:180 input:186 input:188 input:194
+#: standard input:143 input:149 input:180 input:186
+#: pgadmin/ui/dlgForeignKey.xrc:20 pgadmin/ui/dlgForeignKey.xrc:26
 msgid "CASCADE"
 msgstr "CASCADE"
 
-#: standard input:709 input:766 input:814
+#: standard input:709 input:766 pgadmin/ui/frmBackup.xrc:6
 msgid "COMPRESS"
 msgstr "COMPRESS"
 
 # standard
-#: standard input:731 input:788 input:856
+#: standard input:731 input:788 pgadmin/ui/frmExport.xrc:4
 msgid "CR/LF"
 msgstr "CR/LF"
 
@@ -2088,7 +2174,7 @@ msgstr ""
 # standard
 #: src/schema/pgSequence.cpp:106 standard input:527
 #: src/schema/pgSequence.cpp:111 input:583 pgadmin/schema/pgSequence.cpp:112
-#: input:619
+#: pgadmin/ui/dlgSequence.xrc:9
 msgid "Cache"
 msgstr "Zaloga"
 
@@ -2098,20 +2184,20 @@ msgid "Called?"
 msgstr "Preklicano"
 
 # standard
-#: standard input:396 input:451 input:486
+#: standard input:396 input:451 pgadmin/ui/dlgRole.xrc:11
 msgid "Can create database objects"
 msgstr "Lahko ustvarja objekte na bazi"
 
 # standard
-#: standard input:397 input:452 input:487
+#: standard input:397 input:452 pgadmin/ui/dlgRole.xrc:12
 msgid "Can create roles"
 msgstr "Lahko ustvarja vloge"
 
-#: standard input:373 input:428 input:463
+#: standard input:373 input:428 pgadmin/ui/dlgRepSubscription.xrc:5
 msgid "Can forward"
 msgstr "Lahko posreduje naprej"
 
-#: standard input:389 input:444 input:479
+#: standard input:389 input:444 pgadmin/ui/dlgRole.xrc:4
 msgid "Can login"
 msgstr "Se lahko prijavi"
 
@@ -2119,7 +2205,7 @@ msgstr "Se lahko prijavi"
 msgid "Can login?"
 msgstr "Se lahko prijavi?"
 
-#: standard input:398 input:453 input:488
+#: standard input:398 input:453 pgadmin/ui/dlgRole.xrc:13
 msgid "Can modify catalog directly"
 msgstr "Lahko neposredno spreminja katalog"
 
@@ -2162,26 +2248,28 @@ msgstr "Omejitev"
 #: input:388 input:395 input:402 input:409 input:416 input:423 input:431
 #: input:440 input:468 input:484 input:558 input:567 input:589 input:605
 #: input:653 input:679 input:718 input:741 input:752 input:972 input:975
-#: pgadmin/frm/frmQuery.cpp:293 pgadmin/frm/frmStatus.cpp:100
-#: pgadmin/frm/frmStatus.cpp:101 input:1045 input:1048
+#: pgadmin/frm/frmQuery.cpp:293 pgadmin/frm/frmStatus.cpp:104
+#: pgadmin/frm/frmStatus.cpp:105 pgadmin/ui/frmStatus.xrc:3
+#: pgadmin/ui/frmStatus.xrc:6
 msgid "Cancel"
 msgstr "Prekliči"
 
 # standard
-#: standard input:121 input:838 input:126 input:908 input:100 input:136
-#: input:980
+#: standard input:121 input:838 input:126 input:908
+#: pgadmin/ui/dlgDirectDbg.xrc:7 pgadmin/ui/dlgEditGridOptions.xrc:19
+#: pgadmin/ui/frmOptions.xrc:71
 msgid "Cancel any changes and close the dialogue."
 msgstr "Prekliči vse spremembe in zapri okno."
 
 #: src/frm/frmQuery.cpp:145 src/frm/frmQuery.cpp:209 src/frm/frmStatus.cpp:875
 #: src/frm/frmStatus.cpp:879 src/frm/frmQuery.cpp:182 src/frm/frmQuery.cpp:253
 #: src/frm/frmStatus.cpp:927 pgadmin/frm/frmQuery.cpp:199
-#: pgadmin/frm/frmQuery.cpp:293 pgadmin/frm/frmStatus.cpp:931
+#: pgadmin/frm/frmQuery.cpp:293 pgadmin/frm/frmStatus.cpp:942
 msgid "Cancel query"
 msgstr "Prekliči stavek"
 
 #: src/frm/frmStatus.cpp:863 src/frm/frmStatus.cpp:867
-#: src/frm/frmStatus.cpp:915 pgadmin/frm/frmStatus.cpp:919
+#: src/frm/frmStatus.cpp:915 pgadmin/frm/frmStatus.cpp:930
 msgid "Cancel query?"
 msgstr "Preklic stavka?"
 
@@ -2218,7 +2306,7 @@ msgstr "Ne morem odstraniti sistema %s"
 msgid "Cannot drop system %s %s."
 msgstr "Ne morem odstraniti sistema %s %s."
 
-#: src/base/appbase.cpp:204 src/base/appbase.cpp:207 pgadmin/pgAdmin3.cpp:1092
+#: src/base/appbase.cpp:204 src/base/appbase.cpp:207 pgadmin/pgAdmin3.cpp:1100
 msgid "Cannot initialise the networking subsystem!"
 msgstr "Ne morem inicializirati omrežnega podsistema!"
 
@@ -2269,13 +2357,14 @@ msgstr "Kategorija"
 
 # standard
 #: standard input:173 input:250 input:254 input:498 input:578 input:210
-#: input:288 input:292 input:553 input:635 input:227 input:304 input:308
-#: input:589 input:683
+#: input:288 input:292 input:553 input:635 pgadmin/ui/dlgFunction.xrc:28
+#: pgadmin/ui/dlgJob.xrc:14 pgadmin/ui/dlgJob.xrc:18
+#: pgadmin/ui/dlgSchedule.xrc:69 pgadmin/ui/dlgTable.xrc:14
 msgid "Change"
 msgstr "Spremeni"
 
 # standard
-#: standard input:839 input:909 input:981
+#: standard input:839 input:909 pgadmin/ui/frmPassword.xrc:1
 msgid "Change Password"
 msgstr "Spremeni geslo"
 
@@ -2286,7 +2375,7 @@ msgstr "Spremeni svoje geslo."
 
 # standard
 #: src/agent/pgaJob.cpp:91 standard input:244 input:282
-#: pgadmin/agent/pgaJob.cpp:85 input:298
+#: pgadmin/agent/pgaJob.cpp:85 pgadmin/ui/dlgJob.xrc:8
 msgid "Changed"
 msgstr "Spremenjeno"
 
@@ -2323,8 +2412,8 @@ msgstr "Parameter"
 #: src/schema/pgCheck.cpp:147 src/schema/pgDomain.cpp:102 standard input:32
 #: input:94 src/dlg/dlgTable.cpp:701 src/frm/frmReport.cpp:1367 input:37
 #: input:99 pgadmin/dlg/dlgTable.cpp:815 pgadmin/frm/frmReport.cpp:1351
-#: pgadmin/schema/pgCheck.cpp:142 pgadmin/schema/pgDomain.cpp:102 input:38
-#: input:109
+#: pgadmin/schema/pgCheck.cpp:142 pgadmin/schema/pgDomain.cpp:102
+#: pgadmin/ui/dlgCheck.xrc:3 pgadmin/ui/dlgDomain.xrc:7
 msgid "Check"
 msgstr "Preverjanje"
 
@@ -2334,7 +2423,8 @@ msgid "Check Foreign Key indexes on %s %s"
 msgstr "Preveri indekse tujih ključev na %s %s"
 
 # standard
-#: standard input:754 input:769 input:811 input:826 input:879
+#: standard input:754 input:769 input:811 input:826
+#: pgadmin/ui/frmGrantWizard.xrc:3
 msgid "Check all"
 msgstr "Označi vse"
 
@@ -2368,7 +2458,7 @@ msgstr "Podstolpci"
 msgid "Choose the operator for comparison."
 msgstr "Izberi operator za primerjavo."
 
-#: standard input:339
+#: pgadmin/ui/dlgManageMacros.xrc:3
 #, fuzzy
 msgid "Clear"
 msgstr "Gruča"
@@ -2419,12 +2509,13 @@ msgstr "Čistim zombije"
 # standard
 #: src/frm/frmStatus.cpp:113 src/schema/pgServer.cpp:884
 #: src/schema/pgServer.cpp:904 src/frm/frmStatus.cpp:114
-#: src/schema/pgServer.cpp:932 pgadmin/frm/frmStatus.cpp:113
-#: pgadmin/schema/pgServer.cpp:937
+#: src/schema/pgServer.cpp:932 pgadmin/frm/frmStatus.cpp:117
+#: pgadmin/schema/pgServer.cpp:942
 msgid "Client"
 msgstr "Klient"
 
-#: standard input:198 input:235 input:344 input:252 input:379
+#: standard input:198 input:235 input:344 pgadmin/ui/dlgHbaConfig.xrc:1
+#: pgadmin/ui/dlgPgpassConfig.xrc:1
 msgid "Client Access Configuration"
 msgstr ""
 
@@ -2435,13 +2526,13 @@ msgid "Client Access Configuration Editor"
 msgstr "Urejevalnik dovoljenj dostopov do strežnika"
 
 # standard
-#: src/frm/frmStatus.cpp:115 pgadmin/frm/frmStatus.cpp:114
+#: src/frm/frmStatus.cpp:115 pgadmin/frm/frmStatus.cpp:118
 #, fuzzy
 msgid "Client start"
 msgstr "Klient"
 
 # standard
-#: standard input:876 input:985 input:1058
+#: standard input:876 input:985 pgadmin/ui/frmStatus.xrc:16
 msgid "Close"
 msgstr "Zapri"
 
@@ -2467,7 +2558,7 @@ msgstr ""
 "Zaprem brskalnik po strežniku? V primeru preklica brskalnik po objektih ne "
 "bo prikazoval točnih podatkov."
 
-#: standard input:133 input:141
+#: standard input:133 pgadmin/ui/dlgFindReplace.xrc:3
 #, fuzzy
 msgid "Close the dialog"
 msgstr "Zapri to okno."
@@ -2480,7 +2571,7 @@ msgstr "Zapri to okno."
 msgid "Close this window."
 msgstr "Zapri to okno."
 
-#: standard input:316 input:371 input:406
+#: standard input:316 input:371 pgadmin/ui/dlgRepClusterUpgrade.xrc:6
 msgid "Cluster"
 msgstr "Gruča"
 
@@ -2491,11 +2582,11 @@ msgstr "Gruča"
 msgid "Cluster \"%s\", set %ld"
 msgstr "Gruča \"%s\", niz %ld"
 
-#: standard input:304 input:359 input:394
+#: standard input:304 input:359 pgadmin/ui/dlgRepCluster.xrc:5
 msgid "Cluster name"
 msgstr "Ime gruče"
 
-#: standard input:214 input:251 input:269
+#: standard input:214 input:251 pgadmin/ui/dlgIndex.xrc:7
 msgid "Clustered"
 msgstr "V gruči"
 
@@ -2532,7 +2623,7 @@ msgid "Column name"
 msgstr "Ime stolpca"
 
 # standard
-#: standard input:739 input:796 input:864
+#: standard input:739 input:796 pgadmin/ui/frmExport.xrc:12
 msgid "Column names"
 msgstr "Imena stolpcev"
 
@@ -2545,7 +2636,7 @@ msgid "Column not found in pgSetBase: "
 msgstr "Stolpec ni najden v pgSetBase:"
 
 # standard
-#: standard input:732 input:789 input:857
+#: standard input:732 input:789 pgadmin/ui/frmExport.xrc:5
 msgid "Column separator"
 msgstr "Ločilo stolpcev"
 
@@ -2563,7 +2654,8 @@ msgstr "Statistike"
 #: input:269 input:634 pgadmin/dlg/dlgIndex.cpp:61 pgadmin/dlg/dlgIndex.cpp:70
 #: pgadmin/frm/frmReport.cpp:1276 pgadmin/schema/pgColumn.cpp:404
 #: pgadmin/schema/pgIndex.cpp:219 pgadmin/schema/pgIndexConstraint.cpp:99
-#: input:179 input:274 input:285 input:682
+#: pgadmin/ui/dlgForeignKey.xrc:11 pgadmin/ui/dlgIndex.xrc:12
+#: pgadmin/ui/dlgIndexConstraint.xrc:6 pgadmin/ui/dlgTable.xrc:13
 msgid "Columns"
 msgstr "Stolpci"
 
@@ -2624,27 +2716,39 @@ msgstr "Ukaz"
 #: pgadmin/schema/pgType.cpp:191 pgadmin/schema/pgView.cpp:227
 #: pgadmin/slony/slCluster.cpp:305 pgadmin/slony/slNode.cpp:234
 #: pgadmin/slony/slSet.cpp:84 pgadmin/slony/slSet.cpp:201
-#: pgadmin/slony/slTable.cpp:88 input:10 input:31 input:39 input:53 input:72
-#: input:85 input:113 input:177 input:272 input:283 input:302 input:320
-#: input:327 input:371 input:397 input:420 input:434 input:441 input:471
-#: input:489 input:515 input:527 input:599 input:621 input:654 input:665
-#: input:680 input:708 input:725 input:740 input:802
+#: pgadmin/slony/slTable.cpp:88 pgadmin/ui/dlgAggregate.xrc:5
+#: pgadmin/ui/dlgCast.xrc:8 pgadmin/ui/dlgCheck.xrc:4
+#: pgadmin/ui/dlgColumn.xrc:10 pgadmin/ui/dlgConversion.xrc:9
+#: pgadmin/ui/dlgDatabase.xrc:9 pgadmin/ui/dlgDomain.xrc:11
+#: pgadmin/ui/dlgForeignKey.xrc:9 pgadmin/ui/dlgFunction.xrc:17
+#: pgadmin/ui/dlgIndex.xrc:10 pgadmin/ui/dlgIndexConstraint.xrc:4
+#: pgadmin/ui/dlgJob.xrc:12 pgadmin/ui/dlgLanguage.xrc:7
+#: pgadmin/ui/dlgMainConfig.xrc:3 pgadmin/ui/dlgOperator.xrc:8
+#: pgadmin/ui/dlgPackage.xrc:5 pgadmin/ui/dlgRepCluster.xrc:8
+#: pgadmin/ui/dlgRepNode.xrc:3 pgadmin/ui/dlgRepSequence.xrc:4
+#: pgadmin/ui/dlgRepSet.xrc:4 pgadmin/ui/dlgRepTable.xrc:5
+#: pgadmin/ui/dlgRole.xrc:14 pgadmin/ui/dlgRule.xrc:11
+#: pgadmin/ui/dlgSchedule.xrc:7 pgadmin/ui/dlgSchema.xrc:5
+#: pgadmin/ui/dlgSequence.xrc:11 pgadmin/ui/dlgStep.xrc:13
+#: pgadmin/ui/dlgSynonym.xrc:7 pgadmin/ui/dlgTable.xrc:11
+#: pgadmin/ui/dlgTablespace.xrc:5 pgadmin/ui/dlgTrigger.xrc:14
+#: pgadmin/ui/dlgType.xrc:9 pgadmin/ui/dlgView.xrc:5
 msgid "Comment"
 msgstr "Komentar"
 
 # standard
-#: standard input:870 input:978 input:1051
+#: standard input:870 input:978 pgadmin/ui/frmStatus.xrc:9
 msgid "Commit"
 msgstr "Potrdi"
 
 #: src/frm/frmStatus.cpp:921 src/frm/frmStatus.cpp:925
-#: src/frm/frmStatus.cpp:973 pgadmin/frm/frmStatus.cpp:977
+#: src/frm/frmStatus.cpp:973 pgadmin/frm/frmStatus.cpp:998
 msgid "Commit transaction?"
 msgstr "Potrdim transakcijo?"
 
 # standard
 #: src/schema/pgOperator.cpp:126 standard input:289 input:333
-#: pgadmin/schema/pgOperator.cpp:129 input:356
+#: pgadmin/schema/pgOperator.cpp:129 pgadmin/ui/dlgOperator.xrc:13
 msgid "Commutator"
 msgstr "Komutator"
 
@@ -2654,25 +2758,25 @@ msgid "Completed job: %s"
 msgstr "Končano opravilo: %s"
 
 # standard
-#: standard input:628 input:685 input:737
+#: standard input:628 input:685 pgadmin/ui/dlgType.xrc:6
 msgid "Composite"
 msgstr "Kompozit"
 
-#: standard input:252 input:270
+#: standard input:252 pgadmin/ui/dlgIndex.xrc:8
 #, fuzzy
 msgid "Concurrent build?"
 msgstr "Trenutna vrednost"
 
 # standard
 #: src/schema/pgRule.cpp:65 standard input:423 input:478
-#: pgadmin/schema/pgRule.cpp:77 input:514
+#: pgadmin/schema/pgRule.cpp:77 pgadmin/ui/dlgRule.xrc:10
 msgid "Condition"
 msgstr "Pogoj"
 
 #: src/frm/frmConfig.cpp:254 src/frm/frmConfig.cpp:287
 #: src/frm/frmConfig.cpp:263 src/frm/frmConfig.cpp:296
 #: pgadmin/frm/frmConfig.cpp:262 pgadmin/frm/frmConfig.cpp:295
-#: pgadmin/frm/frmMainConfig.cpp:631
+#: pgadmin/frm/frmMainConfig.cpp:641
 msgid "Configuration files (*.conf)|*.conf|All files (*.*)|*.*"
 msgstr "Nastavitvene datoteke (*.conf)|*.conf|Vse datoteke (*.*)|*.*"
 
@@ -2682,7 +2786,7 @@ msgid "Configuration setting \"%s\""
 msgstr "Nastavitev \"%s\""
 
 # standard
-#: standard input:842 input:912 input:984
+#: standard input:842 input:912 pgadmin/ui/frmPassword.xrc:4
 msgid "Confirm Password"
 msgstr "Potrdi geslo"
 
@@ -2692,7 +2796,7 @@ msgid "Confirm delete"
 msgstr "Ob izbrisu"
 
 # standard
-#: standard input:806 input:863 input:929
+#: standard input:806 input:863 pgadmin/ui/frmOptions.xrc:20
 msgid "Confirm object deletion?"
 msgstr "Potrdi izbris objekta?"
 
@@ -2708,21 +2812,22 @@ msgstr ""
 msgid "Confirm superuser deletion"
 msgstr "Potrdi izbris superuporabnika"
 
-#: standard input:337 input:392 input:427
+#: standard input:337 input:392 pgadmin/ui/dlgRepPath.xrc:4
 msgid "Conn retry"
 msgstr ""
 
 #: src/slony/slPath.cpp:81 standard input:336 input:391
-#: pgadmin/slony/slPath.cpp:72 input:426
+#: pgadmin/slony/slPath.cpp:72 pgadmin/ui/dlgRepPath.xrc:3
 msgid "Connect info"
 msgstr ""
 
-#: standard input:545 input:602 input:638
+#: standard input:545 input:602 pgadmin/ui/dlgServer.xrc:13
 msgid "Connect now"
 msgstr "Poveži takoj"
 
 # standard
-#: standard input:52 input:513 input:57 input:568 input:58 input:604
+#: standard input:52 input:513 input:57 input:568 pgadmin/ui/dlgConnect.xrc:1
+#: pgadmin/ui/dlgSelectConnection.xrc:1
 msgid "Connect to Server"
 msgstr "Poveži s strežnikom"
 
@@ -2731,7 +2836,7 @@ msgid "Connect to a Server"
 msgstr "Poveži s strežnikom"
 
 #: src/dlg/dlgServer.cpp:466 src/dlg/dlgServer.cpp:473
-#: pgadmin/schema/pgServer.cpp:1304
+#: pgadmin/schema/pgServer.cpp:1309
 msgid "Connect to the selected server."
 msgstr "Poveži z izbranim strežnikom."
 
@@ -2753,7 +2858,7 @@ msgstr "Poveži s strežnikom"
 #: src/schema/pgDatabase.cpp:417 src/schema/pgServer.cpp:846
 #: src/schema/pgServer.cpp:866 src/schema/pgDatabase.cpp:433
 #: src/schema/pgServer.cpp:894 pgadmin/schema/pgDatabase.cpp:446
-#: pgadmin/schema/pgServer.cpp:898
+#: pgadmin/schema/pgServer.cpp:903
 msgid "Connected?"
 msgstr "Povezan?"
 
@@ -2786,7 +2891,7 @@ msgstr "Povezujem z bazo"
 
 #: src/dlg/dlgServer.cpp:339 src/frm/frmMain.cpp:636 src/dlg/dlgServer.cpp:346
 #: src/frm/frmMain.cpp:730 pgadmin/frm/frmMain.cpp:850
-#: pgadmin/schema/pgServer.cpp:1176
+#: pgadmin/schema/pgServer.cpp:1181
 #, c-format
 msgid "Connecting to server %s (%s:%d)"
 msgstr "Povezujem na strežnik %s (%s:%d)"
@@ -2797,7 +2902,7 @@ msgid "Connection Error"
 msgstr "Povezava prekinjena."
 
 #: src/frm/frmStatus.cpp:616 src/frm/frmStatus.cpp:620
-#: src/frm/frmStatus.cpp:668 pgadmin/frm/frmStatus.cpp:672
+#: src/frm/frmStatus.cpp:668 pgadmin/frm/frmStatus.cpp:683
 msgid "Connection broken."
 msgstr "Povezava prekinjena."
 
@@ -2826,7 +2931,7 @@ msgstr "Povezava na strežnik %s je izgubljena."
 #: src/schema/pgIndexConstraint.cpp:106 standard input:215
 #: src/schema/pgIndex.cpp:219 input:253 pgadmin/schema/pgConstraints.cpp:71
 #: pgadmin/schema/pgIndex.cpp:226 pgadmin/schema/pgIndexConstraint.cpp:109
-#: input:271
+#: pgadmin/ui/dlgIndex.xrc:9
 msgid "Constraint"
 msgstr "Omejitev"
 
@@ -2839,11 +2944,11 @@ msgstr "Ime omejitve"
 #: src/schema/pgConstraints.cpp:68 src/schema/pgConstraints.cpp:89 standard
 #: input:581 src/frm/frmReport.cpp:1346 input:638
 #: pgadmin/frm/frmReport.cpp:1330 pgadmin/schema/pgConstraints.cpp:61
-#: pgadmin/schema/pgConstraints.cpp:83 input:686
+#: pgadmin/schema/pgConstraints.cpp:83 pgadmin/ui/dlgTable.xrc:17
 msgid "Constraints"
 msgstr "Omejitve"
 
-#: standard input:856 input:964 input:1037
+#: standard input:856 input:964 pgadmin/ui/frmRestore.xrc:11
 msgid "Contents"
 msgstr "Vsebina"
 
@@ -2891,7 +2996,7 @@ msgid "Copy"
 msgstr "Kopiraj"
 
 # standard
-#: standard input:819 input:889 input:956
+#: standard input:819 input:889 pgadmin/ui/frmOptions.xrc:47
 msgid "Copy SQL from main form to SQL dialogue"
 msgstr "Kopiraj SQL iz glavnega obrazca v SQL dialog"
 
@@ -2996,11 +3101,11 @@ msgstr "Ne morem ustvariti začasnega direktorija: %s"
 msgid "Couldn't create temporary script file: %s"
 msgstr "Ne morem ustvariti začasne skriptne datoteke: %s"
 
-#: src/pgAdmin3.cpp:399 src/pgAdmin3.cpp:475 pgadmin/pgAdmin3.cpp:512
+#: src/pgAdmin3.cpp:399 src/pgAdmin3.cpp:475 pgadmin/pgAdmin3.cpp:520
 msgid "Couldn't create the main window!"
 msgstr "Ne morem ustvariti glavnega okna!"
 
-#: src/pgAdmin3.cpp:311 src/pgAdmin3.cpp:331 pgadmin/pgAdmin3.cpp:336
+#: src/pgAdmin3.cpp:311 src/pgAdmin3.cpp:331 pgadmin/pgAdmin3.cpp:344
 msgid "Couldn't create the splash screen!"
 msgstr "Ne morem ustvariti 'Splash' okna!"
 
@@ -3065,7 +3170,7 @@ msgid "Couldn't write to temporary script file: %s"
 msgstr "Ne morem pisati v začasno skriptno datoteko: %s"
 
 # standard
-#: standard input:817 input:874 input:940
+#: standard input:817 input:874 pgadmin/ui/frmOptions.xrc:31
 msgid "Count rows if estimated less than"
 msgstr "Preštej vrstice, če je ocena manjša od"
 
@@ -3089,7 +3194,7 @@ msgstr ""
 msgid "Create"
 msgstr "Ustvari"
 
-#: standard input:721 input:778 input:826
+#: standard input:721 input:778 pgadmin/ui/frmBackup.xrc:18
 msgid "Create DB"
 msgstr "Ustvari bazo"
 
@@ -3243,7 +3348,7 @@ msgid "Create a new Server connection."
 msgstr "Ustvari novo povezavo s strežnikom."
 
 #: src/schema/pgServer.cpp:1052 src/schema/pgServer.cpp:1072
-#: src/schema/pgServer.cpp:1124 pgadmin/schema/pgServer.cpp:1130
+#: src/schema/pgServer.cpp:1124 pgadmin/schema/pgServer.cpp:1135
 msgid "Create a new Server registration."
 msgstr ""
 
@@ -3344,16 +3449,16 @@ msgstr "Preštej vrstice v izbranem objektu."
 msgid "Create roles?"
 msgstr ""
 
-#: standard input:925 input:997
+#: standard input:925 pgadmin/ui/frmReport.xrc:10
 msgid "Create the report in XHTML 1.0 Transitional format"
 msgstr ""
 
-#: standard input:927 input:999
+#: standard input:927 pgadmin/ui/frmReport.xrc:12
 msgid "Create the report in XML format"
 msgstr ""
 
 #: src/agent/pgaJob.cpp:90 standard input:243 input:281
-#: pgadmin/agent/pgaJob.cpp:84 input:297
+#: pgadmin/agent/pgaJob.cpp:84 pgadmin/ui/dlgJob.xrc:7
 msgid "Created"
 msgstr "Ustvarjeno"
 
@@ -3400,12 +3505,12 @@ msgid "Cu&t\tCtrl-X"
 msgstr "&Izreži\tCtrl-X"
 
 # standard
-#: standard input:840 input:910 input:982
+#: standard input:840 input:910 pgadmin/ui/frmPassword.xrc:2
 msgid "Current Password"
 msgstr "Trenutno geslo"
 
 #: src/schema/pgServer.cpp:886 src/schema/pgServer.cpp:906
-#: src/schema/pgServer.cpp:934 pgadmin/schema/pgServer.cpp:939
+#: src/schema/pgServer.cpp:934 pgadmin/schema/pgServer.cpp:944
 msgid "Current Query"
 msgstr "Trenutni stavek"
 
@@ -3414,15 +3519,15 @@ msgstr "Trenutni stavek"
 #: input:587 src/frm/frmMainConfig.cpp:143 src/schema/pgSequence.cpp:107
 #: input:644 pgadmin/dlg/dlgMainConfig.cpp:119 pgadmin/dlg/dlgSequence.cpp:82
 #: pgadmin/frm/frmMainConfig.cpp:178 pgadmin/schema/pgSequence.cpp:108
-#: input:692
+#: pgadmin/ui/dlgTable.xrc:23
 msgid "Current value"
 msgstr "Trenutna vrednost"
 
-#: standard input:313 input:368 input:403
+#: standard input:313 input:368 pgadmin/ui/dlgRepClusterUpgrade.xrc:3
 msgid "Current version"
 msgstr "Trenutna različica"
 
-#: standard input:585 input:642 input:690
+#: standard input:585 input:642 pgadmin/ui/dlgTable.xrc:21
 msgid "Custom autovacuum"
 msgstr "Samodejno čiščenje po meri"
 
@@ -3442,7 +3547,7 @@ msgstr "Izreži izbrani tekst v odložišče"
 
 # standard
 #: src/schema/pgSequence.cpp:107 standard input:528
-#: src/schema/pgSequence.cpp:112 input:584 input:620
+#: src/schema/pgSequence.cpp:112 input:584 pgadmin/ui/dlgSequence.xrc:10
 msgid "Cycled"
 msgstr "Ciklično"
 
@@ -3460,7 +3565,7 @@ msgstr "Omejitev baze"
 # standard
 #: src/schema/pgServer.cpp:857 src/schema/pgServer.cpp:877
 #: src/schema/pgServer.cpp:905 standard input:600
-#: pgadmin/schema/pgServer.cpp:910 input:636
+#: pgadmin/schema/pgServer.cpp:915 pgadmin/ui/dlgServer.xrc:11
 msgid "DB restriction"
 msgstr "Omejitev baze"
 
@@ -3482,7 +3587,8 @@ msgid "DEBUG: %s\n"
 msgstr "DEBUG: %s\n"
 
 # standard
-#: standard input:421 input:617 input:476 input:674 input:512 input:724
+#: standard input:421 input:617 input:476 input:674 pgadmin/ui/dlgRule.xrc:8
+#: pgadmin/ui/dlgTrigger.xrc:13
 msgid "DELETE"
 msgstr "DELETE"
 
@@ -3502,7 +3608,7 @@ msgstr "Podatki"
 msgid "Data Output"
 msgstr "Vrnjeni podatki"
 
-#: standard input:104 input:109 input:119
+#: standard input:104 input:109 pgadmin/ui/dlgEditGridOptions.xrc:2
 msgid "Data Sorting"
 msgstr "Razvrščanje podatkov"
 
@@ -3548,7 +3654,7 @@ msgstr "Čas dobivanja podatkov: "
 #: input:654 src/frm/frmReport.cpp:1294 src/schema/pgColumn.cpp:216 input:45
 #: input:711 pgadmin/dlg/dlgType.cpp:89 pgadmin/frm/frmReport.cpp:1278
 #: pgadmin/schema/edbPackageVariable.cpp:44 pgadmin/schema/pgColumn.cpp:234
-#: input:46 input:764
+#: pgadmin/ui/dlgColumn.xrc:3 pgadmin/ui/dlgType.xrc:33
 msgid "Data type"
 msgstr "Vrsta podatkov"
 
@@ -3572,19 +3678,21 @@ msgstr "Podatki zapisani v datoteko."
 #: src/schema/pgServer.cpp:928 input:238 input:348 input:358 input:370
 #: input:570 input:610 pgadmin/agent/pgaStep.cpp:61
 #: pgadmin/frm/frmHbaConfig.cpp:104 pgadmin/frm/frmPgpassConfig.cpp:90
-#: pgadmin/frm/frmReport.cpp:589 pgadmin/frm/frmStatus.cpp:109
-#: pgadmin/frm/frmStatus.cpp:126 pgadmin/frm/frmStatus.cpp:143
+#: pgadmin/frm/frmReport.cpp:589 pgadmin/frm/frmStatus.cpp:113
+#: pgadmin/frm/frmStatus.cpp:130 pgadmin/frm/frmStatus.cpp:147
 #: pgadmin/schema/pgDatabase.cpp:679 pgadmin/schema/pgDatabase.cpp:752
 #: pgadmin/schema/pgRole.cpp:139 pgadmin/schema/pgRole.cpp:165
-#: pgadmin/schema/pgServer.cpp:933 pgadmin/schema/pgTablespace.cpp:36
+#: pgadmin/schema/pgServer.cpp:938 pgadmin/schema/pgTablespace.cpp:36
 #: pgadmin/schema/pgTablespace.cpp:55 pgadmin/schema/pgUser.cpp:85
-#: pgadmin/schema/pgUser.cpp:117 input:255 input:383 input:393 input:405
-#: input:606 input:646
+#: pgadmin/schema/pgUser.cpp:117 pgadmin/ui/dlgHbaConfig.xrc:4
+#: pgadmin/ui/dlgPgpassConfig.xrc:5 pgadmin/ui/dlgRepCluster.xrc:4
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:5 pgadmin/ui/dlgSelectConnection.xrc:3
+#: pgadmin/ui/dlgStep.xrc:5
 msgid "Database"
 msgstr "Baza"
 
 # standard
-#: standard input:862 input:970 input:1043
+#: standard input:862 input:970 pgadmin/ui/frmStatus.xrc:1
 msgid "Database Status"
 msgstr "Stanje baze"
 
@@ -3616,17 +3724,17 @@ msgid "Databases"
 msgstr "Baze"
 
 # standard
-#: standard input:219
+#: pgadmin/ui/dlgFunction.xrc:20
 #, fuzzy
 msgid "Datatype"
 msgstr "Vrsta podatkov"
 
 #: src/agent/dlgSchedule.cpp:74 standard input:497 input:552
-#: pgadmin/agent/dlgSchedule.cpp:74 input:588
+#: pgadmin/agent/dlgSchedule.cpp:74 pgadmin/ui/dlgSchedule.xrc:68
 msgid "Date"
 msgstr "Datum"
 
-#: standard input:437 input:492 input:528
+#: standard input:437 input:492 pgadmin/ui/dlgSchedule.xrc:8
 msgid "Days"
 msgstr "Dnevi"
 
@@ -3642,7 +3750,7 @@ msgstr ""
 msgid "Dead Tuple Percent"
 msgstr ""
 
-#: standard input:98
+#: pgadmin/ui/dlgDirectDbg.xrc:5
 msgid "Debug package initializer?"
 msgstr ""
 
@@ -3666,7 +3774,7 @@ msgid "Debugging options for the selected item."
 msgstr "Preštej vrstice v izbranem objektu."
 
 #: src/agent/pgaSchedule.cpp:405 standard input:491 input:546
-#: pgadmin/agent/pgaSchedule.cpp:398 input:582
+#: pgadmin/agent/pgaSchedule.cpp:398 pgadmin/ui/dlgSchedule.xrc:62
 msgid "December"
 msgstr "December"
 
@@ -3677,7 +3785,8 @@ msgstr "December"
 #: src/schema/pgColumn.cpp:217 src/schema/pgType.cpp:139 input:67 input:98
 #: input:696 pgadmin/frm/frmOptions.cpp:153 pgadmin/frm/frmReport.cpp:1278
 #: pgadmin/schema/pgColumn.cpp:237 pgadmin/schema/pgDomain.cpp:101
-#: pgadmin/schema/pgType.cpp:174 input:68 input:108 input:749
+#: pgadmin/schema/pgType.cpp:174 pgadmin/ui/dlgConversion.xrc:5
+#: pgadmin/ui/dlgDomain.xrc:6 pgadmin/ui/dlgType.xrc:18
 msgid "Default"
 msgstr "Privzeto"
 
@@ -3695,7 +3804,7 @@ msgid "Default tablespace"
 msgstr "Privzeta vrednost"
 
 # standard
-#: standard input:43 input:48 input:49
+#: standard input:43 input:48 pgadmin/ui/dlgColumn.xrc:6
 msgid "Default value"
 msgstr "Privzeta vrednost"
 
@@ -3706,7 +3815,7 @@ msgstr "Privzeto?"
 
 # standard
 #: standard input:30 input:127 input:227 input:35 input:164 input:265
-#: input:172
+#: pgadmin/ui/dlgForeignKey.xrc:4
 msgid "Deferrable"
 msgstr "Zakasnitev"
 
@@ -3717,7 +3826,7 @@ msgstr "Zakasnitev"
 
 # standard
 #: standard input:31 input:128 input:228 input:36 input:165 input:266
-#: input:173
+#: pgadmin/ui/dlgForeignKey.xrc:5
 msgid "Deferred"
 msgstr "Zakasnjen"
 
@@ -3730,14 +3839,17 @@ msgstr "Zakasnjen"
 #: input:619 input:689 input:748 pgadmin/dlg/dlgTable.cpp:121
 #: pgadmin/dlg/dlgTable.cpp:132 pgadmin/frm/frmReport.cpp:1331
 #: pgadmin/schema/pgCheck.cpp:76 pgadmin/schema/pgRule.cpp:79
-#: pgadmin/schema/pgView.cpp:225 input:12 input:228 input:517 input:655
-#: input:742 input:804
+#: pgadmin/schema/pgView.cpp:225 pgadmin/ui/dlgAggregate.xrc:7
+#: pgadmin/ui/dlgFunction.xrc:29 pgadmin/ui/dlgRule.xrc:13
+#: pgadmin/ui/dlgStep.xrc:14 pgadmin/ui/dlgType.xrc:11
+#: pgadmin/ui/dlgView.xrc:7
 msgid "Definition"
 msgstr "Definicija"
 
 #: src/frm/frmEditGrid.cpp:106 src/frm/frmConfig.cpp:137
 #: src/frm/frmEditGrid.cpp:122 standard input:317
-#: pgadmin/frm/frmConfig.cpp:136 pgadmin/frm/frmEditGrid.cpp:123 input:333
+#: pgadmin/frm/frmConfig.cpp:136 pgadmin/frm/frmEditGrid.cpp:123
+#: pgadmin/ui/dlgManageFavourites.xrc:3
 msgid "Delete"
 msgstr "Izbriši"
 
@@ -3788,7 +3900,7 @@ msgstr ""
 
 # standard
 #: src/schema/pgType.cpp:143 standard input:641 src/schema/pgType.cpp:144
-#: input:698 pgadmin/schema/pgType.cpp:179 input:751
+#: input:698 pgadmin/schema/pgType.cpp:179 pgadmin/ui/dlgType.xrc:20
 msgid "Delimiter"
 msgstr "Separator"
 
@@ -3817,13 +3929,13 @@ msgstr "Odvisno od"
 #: src/dlg/dlgEditGridOptions.cpp:209 input:116
 #: pgadmin/dlg/dlgEditGridOptions.cpp:120
 #: pgadmin/dlg/dlgEditGridOptions.cpp:140
-#: pgadmin/dlg/dlgEditGridOptions.cpp:208 input:126
+#: pgadmin/dlg/dlgEditGridOptions.cpp:208 pgadmin/ui/dlgEditGridOptions.xrc:9
 msgid "Descending"
 msgstr "Padajoče"
 
 # standard
 #: src/schema/pgServer.cpp:801 src/schema/pgServer.cpp:821 standard input:536
-#: src/schema/pgServer.cpp:848 pgadmin/schema/pgServer.cpp:852
+#: src/schema/pgServer.cpp:848 pgadmin/schema/pgServer.cpp:857
 msgid "Description"
 msgstr "Opis"
 
@@ -3844,17 +3956,19 @@ msgid "Dimensions"
 msgstr "Dimenzije"
 
 # standard
-#: standard input:149 pgadmin/dlg/dlgFunction.cpp:166 input:157
+#: standard input:149 pgadmin/dlg/dlgFunction.cpp:166
+#: pgadmin/ui/dlgFindReplace.xrc:19
 #, fuzzy
 msgid "Direction"
 msgstr "Trajanje"
 
 #: src/frm/frmBackup.cpp:81 standard input:715 input:772
-#: pgadmin/frm/frmBackup.cpp:85 input:820
+#: pgadmin/frm/frmBackup.cpp:85 pgadmin/ui/frmBackup.xrc:12
 msgid "Disable $$ quoting"
 msgstr "Onemogoči navajanje $$"
 
-#: standard input:723 input:854 input:780 input:962 input:828 input:1035
+#: standard input:723 input:854 input:780 input:962
+#: pgadmin/ui/frmBackup.xrc:20 pgadmin/ui/frmRestore.xrc:9
 msgid "Disable Trigger"
 msgstr "Onemogoči prožilec"
 
@@ -3869,16 +3983,16 @@ msgid "Disable triggers"
 msgstr "Onemogoči prožilec"
 
 #: src/dlg/dlgServer.cpp:489 src/dlg/dlgServer.cpp:496
-#: pgadmin/schema/pgServer.cpp:1327
+#: pgadmin/schema/pgServer.cpp:1332
 msgid "Disconnec&t"
 msgstr "P&rekini"
 
 #: src/dlg/dlgServer.cpp:489 src/dlg/dlgServer.cpp:496
-#: pgadmin/schema/pgServer.cpp:1327
+#: pgadmin/schema/pgServer.cpp:1332
 msgid "Disconnect from the selected server."
 msgstr "Prekini povezavo s strežnikom."
 
-#: standard input:971
+#: pgadmin/ui/frmOptions.xrc:62
 #, fuzzy
 msgid "Display"
 msgstr "P&rikaži"
@@ -3935,7 +4049,7 @@ msgstr "Prikaži nasvete za trenutni objekt."
 msgid "Display options"
 msgstr "M&ožnosti razlage"
 
-#: standard input:973
+#: pgadmin/ui/frmOptions.xrc:64
 #, fuzzy
 msgid "Display the following database objects:"
 msgstr "Prikaže trenutno stanje baze."
@@ -3951,7 +4065,7 @@ msgid "Display/edit the properties of the selected object."
 msgstr "Pokaži/uredi lastnosti izbranega objekta."
 
 #: src/frm/frmStatus.cpp:999 src/frm/frmStatus.cpp:1003
-#: src/frm/frmStatus.cpp:1051 pgadmin/frm/frmStatus.cpp:1055
+#: src/frm/frmStatus.cpp:1051 pgadmin/frm/frmStatus.cpp:1141
 msgid "Displays the current database status."
 msgstr "Prikaže trenutno stanje baze."
 
@@ -3961,7 +4075,7 @@ msgid "Distinct Values"
 msgstr "Različne vrednosti"
 
 # standard
-#: standard input:422 input:477 input:513
+#: standard input:422 input:477 pgadmin/ui/dlgRule.xrc:9
 msgid "Do instead"
 msgstr "Naredi namesto"
 
@@ -3970,19 +4084,19 @@ msgid "Do instead?"
 msgstr "Naredi namesto?"
 
 # standard
-#: standard input:805 input:862 input:928
+#: standard input:805 input:862 pgadmin/ui/frmOptions.xrc:19
 msgid "Do not prompt for unsaved files on exit"
 msgstr "Ne vprašaj za neshranjene datoteke ob izhodu"
 
-#: standard input:809 input:866 input:932
+#: standard input:809 input:866 pgadmin/ui/frmOptions.xrc:23
 msgid "Do not show guru hints; I'm one myself"
 msgstr "Ne prikazuj guru nasvetov; sam sem guru"
 
-#: standard input:760 input:817 input:885
+#: standard input:760 input:817 pgadmin/ui/frmHint.xrc:2
 msgid "Do not show this hint again"
 msgstr "Ne prikaži več tega nasveta"
 
-#: standard input:936 input:1008
+#: standard input:936 pgadmin/ui/frmReport.xrc:21
 msgid "Do not use a stylesheet"
 msgstr ""
 
@@ -4011,9 +4125,9 @@ msgstr "Narejeno"
 #: src/frm/frmStatus.cpp:508 src/frm/frmStatus.cpp:565
 #: src/frm/frmStatus.cpp:569 src/frm/frmStatus.cpp:388
 #: src/frm/frmStatus.cpp:494 src/frm/frmStatus.cpp:556
-#: src/frm/frmStatus.cpp:617 pgadmin/frm/frmStatus.cpp:392
-#: pgadmin/frm/frmStatus.cpp:498 pgadmin/frm/frmStatus.cpp:560
-#: pgadmin/frm/frmStatus.cpp:621
+#: src/frm/frmStatus.cpp:617 pgadmin/frm/frmStatus.cpp:400
+#: pgadmin/frm/frmStatus.cpp:506 pgadmin/frm/frmStatus.cpp:568
+#: pgadmin/frm/frmStatus.cpp:632
 msgid "Done."
 msgstr "Narejeno."
 
@@ -4044,7 +4158,7 @@ msgstr "%s: odstrani?"
 msgid "Drop Cascaded"
 msgstr "Odstrani s soodvisnostmi"
 
-#: standard input:722 input:779 input:827
+#: standard input:722 input:779 pgadmin/ui/frmBackup.xrc:19
 msgid "Drop DB"
 msgstr "Odstrani bazo"
 
@@ -4100,11 +4214,11 @@ msgstr "&Razloži"
 msgid "E&xplain\tF7"
 msgstr "&Razloži\tF7"
 
-#: standard input:922
+#: pgadmin/ui/frmOptions.xrc:13
 msgid "EDB bin path"
 msgstr ""
 
-#: standard input:915
+#: pgadmin/ui/frmOptions.xrc:6
 msgid "EDB help path"
 msgstr ""
 
@@ -4126,12 +4240,12 @@ msgid "ERROR: Syntax error at character %d!"
 msgstr "NAPAKA: Napaka v sintaksi pri znaku %d!"
 
 # standard
-#: standard input:650 input:707 input:760
+#: standard input:650 input:707 pgadmin/ui/dlgType.xrc:29
 msgid "EXTENDED"
 msgstr "EXTENDED"
 
 # standard
-#: standard input:649 input:706 input:759
+#: standard input:649 input:706 pgadmin/ui/dlgType.xrc:28
 msgid "EXTERNAL"
 msgstr "EXTERNAL"
 
@@ -4144,7 +4258,7 @@ msgid "Edit and delete macros"
 msgstr ""
 
 #: src/frm/frmMainConfig.cpp:607 src/frm/frmMainConfig.cpp:618
-#: pgadmin/frm/frmMainConfig.cpp:646
+#: pgadmin/frm/frmMainConfig.cpp:656
 msgid "Edit general server configuration file."
 msgstr "Uredi datoteko s splošnimi nastavitvami strežnika."
 
@@ -4163,15 +4277,15 @@ msgstr ""
 
 # standard
 #: src/schema/pgType.cpp:142 standard input:640 src/schema/pgType.cpp:143
-#: input:697 pgadmin/schema/pgType.cpp:178 input:750
+#: input:697 pgadmin/schema/pgType.cpp:178 pgadmin/ui/dlgType.xrc:19
 msgid "Element"
 msgstr "Element"
 
-#: standard input:932 input:1004
+#: standard input:932 pgadmin/ui/frmReport.xrc:17
 msgid "Embed an external stylesheet into the report"
 msgstr ""
 
-#: standard input:930 input:1002
+#: standard input:930 pgadmin/ui/frmReport.xrc:15
 msgid "Embed pgAdmin's default stylesheet into the report."
 msgstr ""
 
@@ -4215,8 +4329,11 @@ msgstr "Onemogoči prožilec"
 #: src/agent/pgaStep.cpp:57 standard input:199 input:240 input:271 input:433
 #: input:552 input:586 src/agent/pgaStep.cpp:65 input:236 input:278 input:309
 #: input:345 input:488 input:609 input:643 pgadmin/agent/pgaJob.cpp:81
-#: pgadmin/agent/pgaSchedule.cpp:52 pgadmin/agent/pgaStep.cpp:59 input:253
-#: input:294 input:325 input:380 input:524 input:645 input:691
+#: pgadmin/agent/pgaSchedule.cpp:52 pgadmin/agent/pgaStep.cpp:59
+#: pgadmin/ui/dlgHbaConfig.xrc:2 pgadmin/ui/dlgJob.xrc:4
+#: pgadmin/ui/dlgMainConfig.xrc:1 pgadmin/ui/dlgPgpassConfig.xrc:2
+#: pgadmin/ui/dlgSchedule.xrc:4 pgadmin/ui/dlgStep.xrc:4
+#: pgadmin/ui/dlgTable.xrc:22
 msgid "Enabled"
 msgstr "Omogočeno"
 
@@ -4232,16 +4349,17 @@ msgstr "Priporočljivo je samodejno čiščenje"
 # standard
 #: src/schema/pgDatabase.cpp:405 standard input:75 input:740
 #: src/schema/pgDatabase.cpp:421 input:80 input:797
-#: pgadmin/schema/pgDatabase.cpp:434 input:81 input:865
+#: pgadmin/schema/pgDatabase.cpp:434 pgadmin/ui/dlgDatabase.xrc:5
+#: pgadmin/ui/frmExport.xrc:13
 msgid "Encoding"
 msgstr "Enkodiranje"
 
 #: src/schema/pgServer.cpp:814 src/schema/pgServer.cpp:834
-#: src/schema/pgServer.cpp:861 pgadmin/schema/pgServer.cpp:865
+#: src/schema/pgServer.cpp:861 pgadmin/schema/pgServer.cpp:870
 msgid "Encryption"
 msgstr "Enkripcija"
 
-#: standard input:435 input:490 input:526
+#: standard input:435 input:490 pgadmin/ui/dlgSchedule.xrc:6
 msgid "End"
 msgstr "Konec"
 
@@ -4261,15 +4379,15 @@ msgid "Enter a description of this database connection."
 msgstr "Vnesi opis za to povezavo na bazo."
 
 # standard
-#: standard input:823 input:893 input:961
+#: standard input:823 input:893 pgadmin/ui/frmOptions.xrc:52
 msgid "Enter a filename to write application logs to."
 msgstr "Vpiši ime datoteke za zapis dnevnika aplikacije."
 
-#: standard input:918 input:990
+#: standard input:918 pgadmin/ui/frmReport.xrc:3
 msgid "Enter a title for the report"
 msgstr ""
 
-#: standard input:920 input:992
+#: standard input:920 pgadmin/ui/frmReport.xrc:5
 msgid "Enter any additional notes to include on the report"
 msgstr ""
 
@@ -4283,7 +4401,7 @@ msgstr ""
 msgid "Enter new name"
 msgstr "Ime strežnika"
 
-#: standard input:117 input:122 input:132
+#: standard input:117 input:122 pgadmin/ui/dlgEditGridOptions.xrc:15
 msgid ""
 "Enter the filter string to apply to the data. SQL syntax should be used as "
 "the string will be used as a 'WHERE' clause."
@@ -4304,12 +4422,12 @@ msgstr ""
 "to template1."
 
 # standard
-#: standard input:54 input:59 input:60
+#: standard input:54 input:59 pgadmin/ui/dlgConnect.xrc:3
 msgid "Enter the password to use when connecting to the server."
 msgstr "Vnesi geslo za povezavo na strežnik."
 
 # standard
-#: standard input:796 input:853 input:914
+#: standard input:796 input:853 pgadmin/ui/frmOptions.xrc:5
 msgid "Enter the path or URL to the PostgreSQL documentation"
 msgstr "Vnesi pot ali URL do PostgreSQL dokumentacije."
 
@@ -4317,15 +4435,15 @@ msgstr "Vnesi pot ali URL do PostgreSQL dokumentacije."
 msgid "Enter the port number that the server is listening on."
 msgstr "Vnesi številko vrat, na katerih posluša strežnik."
 
-#: standard input:143 input:151
+#: standard input:143 pgadmin/ui/dlgFindReplace.xrc:13
 msgid "Enter the replacement text"
 msgstr ""
 
-#: standard input:96
+#: pgadmin/ui/dlgDirectDbg.xrc:3
 msgid "Enter the required values for each parameter:"
 msgstr ""
 
-#: standard input:141 input:149
+#: standard input:141 pgadmin/ui/dlgFindReplace.xrc:11
 msgid "Enter the string to search for"
 msgstr ""
 
@@ -4334,7 +4452,7 @@ msgid "Enter the username to use when connecting to the server."
 msgstr "Vnesi uporabniško ime za povezavo na strežnik."
 
 # standard
-#: standard input:738
+#: pgadmin/ui/dlgType.xrc:7
 #, fuzzy
 msgid "Enumeration"
 msgstr "Trajanje"
@@ -4364,12 +4482,12 @@ msgid "Error: No table or no column"
 msgstr "Napaka: Ni tabele ali ni stolpca"
 
 # standard
-#: standard input:829 input:899 input:967
+#: standard input:829 input:899 pgadmin/ui/frmOptions.xrc:58
 msgid "Errors and N&otices"
 msgstr "Napake in &obvestila"
 
 # standard
-#: standard input:830 input:900 input:968
+#: standard input:830 input:900 pgadmin/ui/frmOptions.xrc:59
 msgid "Errors, Notices, &SQL"
 msgstr "Napake, obvestila, &SQL"
 
@@ -4378,18 +4496,18 @@ msgstr "Napake, obvestila, &SQL"
 msgid "Establishing connection"
 msgstr "Čistim vse povezave"
 
-#: pgadmin/schema/pgFunction.cpp:184 standard input:214
+#: pgadmin/schema/pgFunction.cpp:184 pgadmin/ui/dlgFunction.xrc:15
 msgid "Estimated cost"
 msgstr ""
 
-#: pgadmin/schema/pgFunction.cpp:186 standard input:215
+#: pgadmin/schema/pgFunction.cpp:186 pgadmin/ui/dlgFunction.xrc:16
 msgid "Estimated rows"
 msgstr ""
 
 # standard
 #: src/schema/pgRule.cpp:64 src/schema/pgTrigger.cpp:144 standard input:417
 #: input:472 pgadmin/schema/pgRule.cpp:76 pgadmin/schema/pgTrigger.cpp:182
-#: input:508
+#: pgadmin/ui/dlgRule.xrc:4
 msgid "Event"
 msgstr "Dogodek"
 
@@ -4399,7 +4517,7 @@ msgid "Event No"
 msgstr "Št. dogodka"
 
 # standard
-#: standard input:614 input:671 input:721
+#: standard input:614 input:671 pgadmin/ui/dlgTrigger.xrc:10
 msgid "Events"
 msgstr "Dogodki"
 
@@ -4427,7 +4545,7 @@ msgstr "Vsak mesec"
 
 # standard
 #: src/agent/pgaSchedule.cpp:68 standard input:495 input:550
-#: pgadmin/agent/pgaSchedule.cpp:61 input:586
+#: pgadmin/agent/pgaSchedule.cpp:61 pgadmin/ui/dlgSchedule.xrc:66
 msgid "Exceptions"
 msgstr "Izjeme"
 
@@ -4500,10 +4618,6 @@ msgstr "Izhod iz okna s stavkom"
 msgid "Exit query window"
 msgstr "Izhod iz okna s stavkom"
 
-#: pgadmin/debugger/dlgDirectDbg.cpp:140
-msgid "Expected to find at least one target on the command line"
-msgstr ""
-
 #: src/frm/frmQuery.cpp:208 src/frm/frmQuery.cpp:228 src/frm/frmQuery.cpp:252
 #: src/frm/frmQuery.cpp:276 pgadmin/frm/frmQuery.cpp:292
 #: pgadmin/frm/frmQuery.cpp:319
@@ -4548,7 +4662,7 @@ msgstr "Izvozi podatke v datoteko"
 
 # standard
 #: src/frm/frmQuery.cpp:112 standard input:728 src/frm/frmQuery.cpp:136
-#: input:785 pgadmin/frm/frmQuery.cpp:157 input:853
+#: input:785 pgadmin/frm/frmQuery.cpp:157 pgadmin/ui/frmExport.xrc:1
 msgid "Export data to file"
 msgstr "Izvozi podatke v datoteko"
 
@@ -4559,7 +4673,7 @@ msgid "Expression Error"
 msgstr "Napaka v izrazu"
 
 # standard
-#: standard input:629 input:686 input:739
+#: standard input:629 input:686 pgadmin/ui/dlgType.xrc:8
 msgid "External"
 msgstr "Zunanji"
 
@@ -4568,30 +4682,30 @@ msgid "FATAL"
 msgstr "FATAL"
 
 # standard
-#: standard input:131 input:168 input:176
+#: standard input:131 input:168 pgadmin/ui/dlgForeignKey.xrc:8
 msgid "FK index name"
 msgstr "Ime FK indeksa"
 
 # standard
-#: standard input:785 input:842 input:903
+#: standard input:785 input:842 pgadmin/ui/frmMaintenance.xrc:12
 msgid "FORCE"
 msgstr "FORCE"
 
 # standard
-#: standard input:782 input:839 input:900
+#: standard input:782 input:839 pgadmin/ui/frmMaintenance.xrc:9
 msgid "FREEZE"
 msgstr "FREEZE"
 
-#: standard input:700
+#: pgadmin/ui/dlgTable.xrc:31
 msgid "FREEZE maximum age"
 msgstr ""
 
-#: standard input:699
+#: pgadmin/ui/dlgTable.xrc:30
 msgid "FREEZE minimum age"
 msgstr ""
 
 # standard
-#: standard input:781 input:838 input:899
+#: standard input:781 input:838 pgadmin/ui/frmMaintenance.xrc:8
 msgid "FULL"
 msgstr "FULL"
 
@@ -4600,7 +4714,7 @@ msgid "FULL JOIN"
 msgstr "FULL JOIN"
 
 #: src/agent/pgaStep.cpp:118 standard input:558 src/agent/pgaStep.cpp:127
-#: input:615 pgadmin/agent/pgaStep.cpp:121 input:651
+#: input:615 pgadmin/agent/pgaStep.cpp:121 pgadmin/ui/dlgStep.xrc:10
 msgid "Fail"
 msgstr ""
 
@@ -4783,7 +4897,7 @@ msgid "Favourites"
 msgstr ""
 
 #: src/agent/pgaSchedule.cpp:365 standard input:481 input:536
-#: pgadmin/agent/pgaSchedule.cpp:358 input:572
+#: pgadmin/agent/pgaSchedule.cpp:358 pgadmin/ui/dlgSchedule.xrc:52
 msgid "February"
 msgstr "Februar"
 
@@ -4796,11 +4910,13 @@ msgstr ""
 
 # standard
 #: standard input:706 input:747 input:848 input:763 input:804 input:941
-#: input:956 input:811 input:835 input:845 input:872 input:1013 input:1029
+#: input:956 pgadmin/ui/frmBackup.xrc:3 pgadmin/ui/frmBackupGlobals.xrc:3
+#: pgadmin/ui/frmBackupServer.xrc:3 pgadmin/ui/frmExport.xrc:20
+#: pgadmin/ui/frmReport.xrc:26 pgadmin/ui/frmRestore.xrc:3
 msgid "Filename"
 msgstr "Ime datoteke"
 
-#: standard input:267 input:675
+#: pgadmin/ui/dlgIndex.xrc:5 pgadmin/ui/dlgTable.xrc:6
 msgid "Fill Factor"
 msgstr ""
 
@@ -4810,11 +4926,11 @@ msgstr ""
 msgid "Fill factor"
 msgstr "Končna funkcija"
 
-#: standard input:115 input:120 input:130
+#: standard input:115 input:120 pgadmin/ui/dlgEditGridOptions.xrc:13
 msgid "Filter"
 msgstr "Filter"
 
-#: standard input:116 input:121 input:131
+#: standard input:116 input:121 pgadmin/ui/dlgEditGridOptions.xrc:14
 msgid "Filter String (eg. oid > 10 AND oid < 50)"
 msgstr "Niz za filter (npr. oid > 10 AND oid < 50)"
 
@@ -4825,7 +4941,7 @@ msgstr "Preverjanje sintakse niza za filter je uspelo!"
 
 # standard
 #: src/schema/pgAggregate.cpp:90 standard input:8 input:13
-#: pgadmin/schema/pgAggregate.cpp:113 input:18
+#: pgadmin/schema/pgAggregate.cpp:113 pgadmin/ui/dlgAggregate.xrc:13
 msgid "Final function"
 msgstr "Končna funkcija"
 
@@ -4838,7 +4954,7 @@ msgstr "Končni tip"
 msgid "Find"
 msgstr "Najdi"
 
-#: standard input:129 input:139
+#: standard input:129 pgadmin/ui/dlgFindReplace.xrc:1
 #, fuzzy
 msgid "Find and Replace"
 msgstr "Poišči in zamenjaj besedilo"
@@ -4847,7 +4963,7 @@ msgstr "Poišči in zamenjaj besedilo"
 msgid "Find and Replace text"
 msgstr "Poišči in zamenjaj besedilo"
 
-#: standard input:139 input:147
+#: standard input:139 pgadmin/ui/dlgFindReplace.xrc:9
 #, fuzzy
 msgid "Find and replace all occurrences of the specified text"
 msgstr "Poišči in zamenjaj besedilo"
@@ -4858,7 +4974,7 @@ msgstr "Poišči in zamenjaj besedilo"
 msgid "Find and replace text"
 msgstr "Poišči in zamenjaj besedilo"
 
-#: standard input:137 input:145
+#: standard input:137 pgadmin/ui/dlgFindReplace.xrc:7
 #, fuzzy
 msgid "Find and replace the specified text"
 msgstr "Poišči in zamenjaj besedilo"
@@ -4870,24 +4986,25 @@ msgstr "Poišči in zamenjaj besedilo"
 msgid "Find text"
 msgstr "Najdi besedilo"
 
-#: standard input:135 input:143
+#: standard input:135 pgadmin/ui/dlgFindReplace.xrc:5
 #, fuzzy
 msgid "Find the specified text"
 msgstr "Poišči in zamenjaj besedilo"
 
-#: standard input:140 input:148
+#: standard input:140 pgadmin/ui/dlgFindReplace.xrc:10
 #, fuzzy
 msgid "Find what:"
 msgstr "Najdi besedilo"
 
 # standard
 #: src/schema/pgTrigger.cpp:143 standard input:611 input:668
-#: pgadmin/schema/pgTrigger.cpp:181 input:718
+#: pgadmin/schema/pgTrigger.cpp:181 pgadmin/ui/dlgTrigger.xrc:7
 msgid "Fires"
 msgstr "Sproži"
 
 # standard
-#: standard input:802 input:812 input:859 input:869 input:925 input:935
+#: standard input:802 input:812 input:859 input:869
+#: pgadmin/ui/frmOptions.xrc:16 pgadmin/ui/frmOptions.xrc:26
 msgid "Font"
 msgstr "Pisava"
 
@@ -4919,7 +5036,7 @@ msgstr "Tuji ključ?"
 msgid "Foreign key?"
 msgstr "Tuji ključ?"
 
-#: standard input:708 input:765 input:813
+#: standard input:708 input:765 pgadmin/ui/frmBackup.xrc:5
 msgid "Format"
 msgstr "Oblika"
 
@@ -4931,7 +5048,7 @@ msgstr "Naprej"
 msgid "Forward to next page."
 msgstr "Na naslednjo stran."
 
-#: standard input:150 input:158
+#: standard input:150 pgadmin/ui/dlgFindReplace.xrc:20
 #, fuzzy
 msgid "Forwards"
 msgstr "Naprej"
@@ -4954,7 +5071,7 @@ msgid "Frequently asked questions."
 msgstr "Pogosto zastavljena vprašanja o pgAdminu III."
 
 #: src/agent/pgaSchedule.cpp:276 standard input:444 input:499
-#: pgadmin/agent/pgaSchedule.cpp:269 input:535
+#: pgadmin/agent/pgaSchedule.cpp:269 pgadmin/ui/dlgSchedule.xrc:15
 msgid "Friday"
 msgstr "Petek"
 
@@ -4962,11 +5079,11 @@ msgstr "Petek"
 msgid "From"
 msgstr "Od"
 
-#: standard input:145 input:153
+#: standard input:145 pgadmin/ui/dlgFindReplace.xrc:15
 msgid "From the cursor"
 msgstr ""
 
-#: standard input:147 input:155
+#: standard input:147 pgadmin/ui/dlgFindReplace.xrc:17
 msgid "From the top"
 msgstr ""
 
@@ -4979,8 +5096,8 @@ msgstr ""
 #: pgadmin/frm/frmRestore.cpp:225 pgadmin/frm/frmRestore.cpp:327
 #: pgadmin/schema/edbPackageFunction.cpp:355 pgadmin/schema/pgCast.cpp:69
 #: pgadmin/schema/pgCast.cpp:71 pgadmin/schema/pgConversion.cpp:69
-#: pgadmin/schema/pgFunction.cpp:558 pgadmin/schema/pgTrigger.cpp:185 input:29
-#: input:71
+#: pgadmin/schema/pgFunction.cpp:558 pgadmin/schema/pgTrigger.cpp:185
+#: pgadmin/ui/dlgCast.xrc:6 pgadmin/ui/dlgConversion.xrc:8
 msgid "Function"
 msgstr "Funkcija"
 
@@ -4993,7 +5110,7 @@ msgid "Functions"
 msgstr "Funkcije"
 
 # standard
-#: standard input:793 input:850 input:911
+#: standard input:793 input:850 pgadmin/ui/frmOptions.xrc:2
 msgid "General"
 msgstr "Splošno"
 
@@ -5019,7 +5136,7 @@ msgstr "Pokaži/uredi lastnosti izbranega objekta."
 msgid "Generate a properties report for this object."
 msgstr "Pokaži/uredi lastnosti izbranega objekta."
 
-#: standard input:916 input:988
+#: standard input:916 pgadmin/ui/frmReport.xrc:1
 msgid "Generate a report"
 msgstr ""
 
@@ -5047,16 +5164,16 @@ msgid "Get extended statistics via pgstattuple for the selected object."
 msgstr ""
 
 #: src/frm/frmStatus.cpp:135 src/frm/frmStatus.cpp:138
-#: pgadmin/frm/frmStatus.cpp:140
+#: pgadmin/frm/frmStatus.cpp:144
 msgid "Global ID"
 msgstr "Globalni ID"
 
-#: standard input:752 input:809 input:877
+#: standard input:752 input:809 pgadmin/ui/frmGrantWizard.xrc:1
 msgid "Grant Wizard"
 msgstr "Grant čarovnik"
 
 #: src/frm/frmStatus.cpp:126 src/frm/frmStatus.cpp:129
-#: pgadmin/frm/frmStatus.cpp:131
+#: pgadmin/frm/frmStatus.cpp:135
 msgid "Granted"
 msgstr "Odobreno"
 
@@ -5076,7 +5193,7 @@ msgid "Group"
 msgstr "Skupina"
 
 #: src/schema/pgGroup.cpp:93 standard input:188 input:225
-#: pgadmin/schema/pgGroup.cpp:85 input:242
+#: pgadmin/schema/pgGroup.cpp:85 pgadmin/ui/dlgGroup.xrc:3
 msgid "Group ID"
 msgstr "ID skupine"
 
@@ -5097,13 +5214,13 @@ msgstr ""
 msgid "Group/User"
 msgstr "Skupina/uporabnik"
 
-#: standard input:187 input:224 input:241
+#: standard input:187 input:224 pgadmin/ui/dlgGroup.xrc:2
 msgid "Groupname"
 msgstr "Ime skupine"
 
 # standard
 #: src/schema/pgGroup.cpp:156 standard input:672 input:729
-#: pgadmin/schema/pgGroup.cpp:148 input:785
+#: pgadmin/schema/pgGroup.cpp:148 pgadmin/ui/dlgUser.xrc:11
 msgid "Groups"
 msgstr "Skupine"
 
@@ -5143,7 +5260,7 @@ msgstr "HTTP proksi"
 # standard
 #: src/schema/pgLanguage.cpp:67 standard input:264
 #: src/schema/pgLanguage.cpp:74 input:302 pgadmin/schema/pgLanguage.cpp:68
-#: input:318
+#: pgadmin/ui/dlgLanguage.xrc:5
 msgid "Handler"
 msgstr "Upravljalec"
 
@@ -5152,7 +5269,7 @@ msgid "Hanging event"
 msgstr ""
 
 # standard
-#: standard input:571 input:628 input:676
+#: standard input:571 input:628 pgadmin/ui/dlgTable.xrc:7
 msgid "Has OIDs"
 msgstr "Ima OID"
 
@@ -5162,7 +5279,7 @@ msgid "Has OIDs?"
 msgstr "Ima OID?"
 
 # standard
-#: pgadmin/schema/edbPackage.cpp:131 standard input:373
+#: pgadmin/schema/edbPackage.cpp:131 pgadmin/ui/dlgPackage.xrc:7
 #, fuzzy
 msgid "Header"
 msgstr "Upravljalec"
@@ -5192,8 +5309,12 @@ msgstr ""
 #: input:400 input:407 input:414 input:421 input:429 input:438 input:466
 #: input:482 input:556 input:565 input:587 input:603 input:651 input:677
 #: input:716 input:739 input:749 pgadmin/frm/frmConfig.cpp:175
-#: pgadmin/frm/frmQuery.cpp:296 input:21 input:33 input:41 input:55 input:74
-#: input:91 input:115 input:197 input:236 input:249
+#: pgadmin/frm/frmQuery.cpp:296 pgadmin/ui/dlgAggregate.xrc:16
+#: pgadmin/ui/dlgCast.xrc:10 pgadmin/ui/dlgCheck.xrc:6
+#: pgadmin/ui/dlgColumn.xrc:12 pgadmin/ui/dlgConversion.xrc:11
+#: pgadmin/ui/dlgDatabase.xrc:15 pgadmin/ui/dlgDomain.xrc:13
+#: pgadmin/ui/dlgForeignKey.xrc:29 pgadmin/ui/dlgFunction.xrc:37
+#: pgadmin/ui/dlgGroup.xrc:10
 msgid "Help"
 msgstr "Pomoč"
 
@@ -5227,20 +5348,21 @@ msgid "History"
 msgstr "Zgodovina"
 
 #: src/frm/frmPgpassConfig.cpp:88 standard input:592
-#: pgadmin/frm/frmPgpassConfig.cpp:88 input:628
+#: pgadmin/frm/frmPgpassConfig.cpp:88 pgadmin/ui/dlgServer.xrc:3
 #, fuzzy
 msgid "Host"
 msgstr "Ure"
 
 #: src/agent/pgaJob.cpp:88 standard input:242 input:280
-#: pgadmin/agent/pgaJob.cpp:82 input:296
+#: pgadmin/agent/pgaJob.cpp:82 pgadmin/ui/dlgJob.xrc:6
 msgid "Host agent"
 msgstr ""
 
 #: src/schema/pgServer.cpp:804 src/schema/pgServer.cpp:809
 #: src/schema/pgServer.cpp:824 src/schema/pgServer.cpp:829
 #: src/schema/pgServer.cpp:851 src/schema/pgServer.cpp:856 standard input:346
-#: pgadmin/schema/pgServer.cpp:855 pgadmin/schema/pgServer.cpp:860 input:381
+#: pgadmin/schema/pgServer.cpp:860 pgadmin/schema/pgServer.cpp:865
+#: pgadmin/ui/dlgPgpassConfig.xrc:3
 msgid "Hostname"
 msgstr "Ime strežnika"
 
@@ -5249,7 +5371,7 @@ msgid "Hostname/IP Address"
 msgstr "Ime strežnika/IP naslov"
 
 #: src/agent/pgaSchedule.cpp:64 standard input:493 input:548
-#: pgadmin/agent/pgaSchedule.cpp:57 input:584
+#: pgadmin/agent/pgaSchedule.cpp:57 pgadmin/ui/dlgSchedule.xrc:64
 msgid "Hours"
 msgstr "Ure"
 
@@ -5270,22 +5392,25 @@ msgstr "Huh?"
 #: pgadmin/agent/pgaJob.cpp:80 pgadmin/agent/pgaSchedule.cpp:51
 #: pgadmin/agent/pgaStep.cpp:58 pgadmin/slony/slNode.cpp:227
 #: pgadmin/slony/slSequence.cpp:68 pgadmin/slony/slSet.cpp:191
-#: pgadmin/slony/slTable.cpp:85 input:293 input:433 input:440 input:454
-#: input:469 input:523 input:644
+#: pgadmin/slony/slTable.cpp:85 pgadmin/ui/dlgJob.xrc:3
+#: pgadmin/ui/dlgRepNode.xrc:2 pgadmin/ui/dlgRepSequence.xrc:3
+#: pgadmin/ui/dlgRepSet.xrc:3 pgadmin/ui/dlgRepSetMove.xrc:3
+#: pgadmin/ui/dlgRepTable.xrc:3 pgadmin/ui/dlgSchedule.xrc:3
+#: pgadmin/ui/dlgStep.xrc:3
 msgid "ID"
 msgstr "ID"
 
 # standard
-#: standard input:165 input:202 input:210
+#: standard input:165 input:202 pgadmin/ui/dlgFunction.xrc:11
 msgid "IMMUTABLE"
 msgstr "IMMUTABLE"
 
 # standard
-#: standard input:176 input:213 input:221
+#: standard input:176 input:213 pgadmin/ui/dlgFunction.xrc:22
 msgid "IN"
 msgstr "IN"
 
-#: standard input:223
+#: pgadmin/ui/dlgFunction.xrc:24
 #, fuzzy
 msgid "IN OUT"
 msgstr "INOUT"
@@ -5299,7 +5424,8 @@ msgid "INOUT"
 msgstr "INOUT"
 
 # standard
-#: standard input:419 input:615 input:474 input:672 input:510 input:722
+#: standard input:419 input:615 input:474 input:672 pgadmin/ui/dlgRule.xrc:6
+#: pgadmin/ui/dlgTrigger.xrc:11
 msgid "INSERT"
 msgstr "INSERT"
 
@@ -5310,7 +5436,7 @@ msgid "INSERT script"
 msgstr "INSERT"
 
 # standard
-#: standard input:203 input:240 input:257
+#: standard input:203 input:240 pgadmin/ui/dlgHbaConfig.xrc:6
 msgid "IP Address"
 msgstr "IP naslov"
 
@@ -5336,7 +5462,7 @@ msgstr ""
 "Ali so nastavitve zagotovo pravilne?"
 
 #: src/agent/pgaStep.cpp:119 standard input:560 src/agent/pgaStep.cpp:128
-#: input:617 pgadmin/agent/pgaStep.cpp:122 input:653
+#: input:617 pgadmin/agent/pgaStep.cpp:122 pgadmin/ui/dlgStep.xrc:12
 msgid "Ignore"
 msgstr "Prezri"
 
@@ -5346,28 +5472,28 @@ msgid "Ignored"
 msgstr "Prezrto"
 
 # standard
-#: standard input:286 input:330 input:353
+#: standard input:286 input:330 pgadmin/ui/dlgOperator.xrc:10
 msgid "Implementation"
 msgstr "Implementacija"
 
 # standard
-#: standard input:22 input:27 input:30
+#: standard input:22 input:27 pgadmin/ui/dlgCast.xrc:7
 msgid "Implicit"
 msgstr "Implicitno"
 
-#: standard input:934 input:1006
+#: standard input:934 pgadmin/ui/frmReport.xrc:19
 msgid "Include a link to an external stylesheet in the report."
 msgstr ""
 
-#: standard input:938 input:1010
+#: standard input:938 pgadmin/ui/frmReport.xrc:23
 msgid "Include a link to the specified stylesheet in the XML file"
 msgstr ""
 
-#: standard input:922 input:994
+#: standard input:922 pgadmin/ui/frmReport.xrc:7
 msgid "Include the SQL from the object or query in the report?"
 msgstr ""
 
-#: standard input:921 input:993
+#: standard input:921 pgadmin/ui/frmReport.xrc:6
 msgid "Include the SQL in the report?"
 msgstr ""
 
@@ -5379,17 +5505,17 @@ msgstr "Napačno geslo!"
 # standard
 #: src/schema/pgSequence.cpp:105 standard input:523
 #: src/schema/pgSequence.cpp:110 input:579 pgadmin/schema/pgSequence.cpp:111
-#: input:615
+#: pgadmin/ui/dlgSequence.xrc:5
 msgid "Increment"
 msgstr "Inkrement"
 
 # standard input:816
-#: standard input:818 input:875 input:941
+#: standard input:818 input:875 pgadmin/ui/frmOptions.xrc:32
 msgid "Indent characters"
 msgstr ""
 
 #: src/schema/pgIndex.cpp:361 standard input:380 src/schema/pgIndex.cpp:371
-#: input:435 pgadmin/schema/pgIndex.cpp:467 input:470
+#: input:435 pgadmin/schema/pgIndex.cpp:467 pgadmin/ui/dlgRepTable.xrc:4
 msgid "Index"
 msgstr "Indeks"
 
@@ -5473,12 +5599,12 @@ msgid "Inherited tables count"
 msgstr "Število podedovanih tabel"
 
 # standard
-#: standard input:572 input:629 input:677
+#: standard input:572 input:629 pgadmin/ui/dlgTable.xrc:8
 msgid "Inherits from tables"
 msgstr "Deduje iz tabel"
 
 # standard
-#: standard input:394 input:449 input:484
+#: standard input:394 input:449 pgadmin/ui/dlgRole.xrc:9
 msgid "Inherits rights from parent roles"
 msgstr "Deduje pravice iz starševskih vlog"
 
@@ -5500,7 +5626,7 @@ msgstr "Začetna baza"
 
 # standard
 #: src/schema/pgAggregate.cpp:93 standard input:10 input:15
-#: pgadmin/schema/pgAggregate.cpp:116 input:20
+#: pgadmin/schema/pgAggregate.cpp:116 pgadmin/ui/dlgAggregate.xrc:15
 msgid "Initial condition"
 msgstr "Začetni pogoj"
 
@@ -5532,7 +5658,7 @@ msgstr ""
 
 # standard
 #: src/schema/pgType.cpp:145 standard input:633 src/schema/pgType.cpp:146
-#: input:690 pgadmin/schema/pgType.cpp:181 input:743
+#: input:690 pgadmin/schema/pgType.cpp:181 pgadmin/ui/dlgType.xrc:12
 msgid "Input function"
 msgstr "Vhodna funkcija"
 
@@ -5542,13 +5668,13 @@ msgid "Input type"
 msgstr "Vhodni tip"
 
 # standard
-#: pgadmin/dlg/dlgAggregate.cpp:82 pgadmin/schema/pgAggregate.cpp:107 standard
-#: input:13
+#: pgadmin/dlg/dlgAggregate.cpp:82 pgadmin/schema/pgAggregate.cpp:107
+#: pgadmin/ui/dlgAggregate.xrc:8
 #, fuzzy
 msgid "Input types"
 msgstr "Vhodni tip"
 
-#: standard input:714 input:771 input:819
+#: standard input:714 input:771 pgadmin/ui/frmBackup.xrc:11
 msgid "Insert commands"
 msgstr "Insert ukazi"
 
@@ -5564,7 +5690,7 @@ msgstr "Interna dolžina"
 
 # standard
 #: src/schema/pgType.cpp:137 standard input:637 src/schema/pgType.cpp:138
-#: input:694 pgadmin/schema/pgType.cpp:173 input:747
+#: input:694 pgadmin/schema/pgType.cpp:173 pgadmin/ui/dlgType.xrc:16
 msgid "Internal length"
 msgstr "Interna dolžina"
 
@@ -5590,7 +5716,7 @@ msgid "Is forwarded"
 msgstr "Je posredovano naprej"
 
 #: src/agent/pgaSchedule.cpp:361 standard input:480 input:535
-#: pgadmin/agent/pgaSchedule.cpp:354 input:571
+#: pgadmin/agent/pgaSchedule.cpp:354 pgadmin/ui/dlgSchedule.xrc:51
 msgid "January"
 msgstr "Januar"
 
@@ -5599,7 +5725,7 @@ msgid "Job"
 msgstr "Opravilo"
 
 #: src/agent/pgaJob.cpp:89 standard input:241 input:279
-#: pgadmin/agent/pgaJob.cpp:83 input:295
+#: pgadmin/agent/pgaJob.cpp:83 pgadmin/ui/dlgJob.xrc:5
 msgid "Job class"
 msgstr "Razred opravila"
 
@@ -5615,23 +5741,23 @@ msgstr "Združi"
 msgid "Join Type"
 msgstr "Združi tip"
 
-#: standard input:301 input:356 input:391
+#: standard input:301 input:356 pgadmin/ui/dlgRepCluster.xrc:2
 msgid "Join existing cluster"
 msgstr "Spoji obstoječo gručo"
 
 # standard
 #: src/schema/pgOperator.cpp:128 standard input:288 input:332
-#: pgadmin/schema/pgOperator.cpp:131 input:355
+#: pgadmin/schema/pgOperator.cpp:131 pgadmin/ui/dlgOperator.xrc:12
 msgid "Join function"
 msgstr "Združi finkcijo"
 
 #: src/agent/pgaSchedule.cpp:385 standard input:486 input:541
-#: pgadmin/agent/pgaSchedule.cpp:378 input:577
+#: pgadmin/agent/pgaSchedule.cpp:378 pgadmin/ui/dlgSchedule.xrc:57
 msgid "July"
 msgstr "Julij"
 
 #: src/agent/pgaSchedule.cpp:381 standard input:485 input:540
-#: pgadmin/agent/pgaSchedule.cpp:374 input:576
+#: pgadmin/agent/pgaSchedule.cpp:374 pgadmin/ui/dlgSchedule.xrc:56
 msgid "June"
 msgstr "Junij"
 
@@ -5641,7 +5767,7 @@ msgstr ""
 
 #: src/agent/pgaStep.cpp:58 src/schema/pgOperator.cpp:119 standard input:556
 #: src/agent/pgaStep.cpp:66 input:613 pgadmin/agent/pgaStep.cpp:60
-#: pgadmin/schema/pgOperator.cpp:122 input:649
+#: pgadmin/schema/pgOperator.cpp:122 pgadmin/ui/dlgStep.xrc:8
 msgid "Kind"
 msgstr "Vrsta"
 
@@ -5650,12 +5776,12 @@ msgid "LEFT JOIN"
 msgstr "LEFT JOIN"
 
 # standard
-#: standard input:730 input:787 input:855
+#: standard input:730 input:787 pgadmin/ui/frmExport.xrc:3
 msgid "LF"
 msgstr "LF"
 
 # standard
-#: pgadmin/dlg/dlgType.cpp:90 standard input:769
+#: pgadmin/dlg/dlgType.cpp:90 pgadmin/ui/dlgType.xrc:38
 #, fuzzy
 msgid "Label"
 msgstr "Nivo"
@@ -5670,7 +5796,7 @@ msgstr "Tabele"
 #: src/schema/pgFunction.cpp:127 src/schema/pgLanguage.cpp:140 standard
 #: input:161 src/schema/pgFunction.cpp:143 src/schema/pgLanguage.cpp:147
 #: input:198 pgadmin/schema/pgFunction.cpp:172
-#: pgadmin/schema/pgLanguage.cpp:141 input:206
+#: pgadmin/schema/pgLanguage.cpp:141 pgadmin/ui/dlgFunction.xrc:7
 msgid "Language"
 msgstr "Jezik"
 
@@ -5690,7 +5816,7 @@ msgid "Last acknowledged"
 msgstr ""
 
 #: src/agent/pgaSchedule.cpp:325 standard input:478 input:533
-#: pgadmin/agent/pgaSchedule.cpp:318 input:569
+#: pgadmin/agent/pgaSchedule.cpp:318 pgadmin/ui/dlgSchedule.xrc:49
 msgid "Last day"
 msgstr "Zadnji dan"
 
@@ -5708,18 +5834,18 @@ msgid "Last response time"
 msgstr "Čas zadnjega odziva"
 
 #: src/agent/pgaJob.cpp:94 standard input:247 input:285
-#: pgadmin/agent/pgaJob.cpp:88 input:301
+#: pgadmin/agent/pgaJob.cpp:88 pgadmin/ui/dlgJob.xrc:11
 msgid "Last result"
 msgstr "Zadnji rezultat"
 
 #: src/agent/pgaJob.cpp:93 standard input:246 input:284
-#: pgadmin/agent/pgaJob.cpp:87 input:300
+#: pgadmin/agent/pgaJob.cpp:87 pgadmin/ui/dlgJob.xrc:10
 msgid "Last run"
 msgstr "Zadnje izvajanje"
 
 # standard
 #: src/schema/pgServer.cpp:844 src/schema/pgServer.cpp:864
-#: src/schema/pgServer.cpp:892 pgadmin/schema/pgServer.cpp:896
+#: src/schema/pgServer.cpp:892 pgadmin/schema/pgServer.cpp:901
 msgid "Last system OID"
 msgstr "Zadnji sistemski OID"
 
@@ -5743,19 +5869,20 @@ msgid "Left Table Columns"
 msgstr "Stolpci leve tabele"
 
 # standard
-#: standard input:291 input:335 input:358
+#: standard input:291 input:335 pgadmin/ui/dlgOperator.xrc:15
 msgid "Left sort op"
 msgstr "Levi operator razvrščanja"
 
 # standard
 #: src/schema/pgOperator.cpp:121 standard input:281 input:325
-#: pgadmin/schema/pgOperator.cpp:124 input:348
+#: pgadmin/schema/pgOperator.cpp:124 pgadmin/ui/dlgOperator.xrc:5
 msgid "Left type"
 msgstr "Levi tip"
 
 # standard
-#: standard input:41 input:95 input:655 input:46 input:100 input:712 input:47
-#: input:110 input:765
+#: standard input:41 input:95 input:655 input:46 input:100 input:712
+#: pgadmin/ui/dlgColumn.xrc:4 pgadmin/ui/dlgDomain.xrc:8
+#: pgadmin/ui/dlgType.xrc:34
 msgid "Length"
 msgstr "Dolžina"
 
@@ -5765,7 +5892,7 @@ msgstr "Operator 'manjše od'"
 
 # standard
 #: src/frm/frmStatus.cpp:165 src/frm/frmStatus.cpp:168
-#: pgadmin/frm/frmStatus.cpp:170
+#: pgadmin/frm/frmStatus.cpp:174
 msgid "Level"
 msgstr "Nivo"
 
@@ -5782,7 +5909,7 @@ msgstr "Omejitev presežena"
 # standard
 #: src/schema/pgFunction.cpp:132 standard input:181
 #: src/schema/pgFunction.cpp:148 input:218 pgadmin/schema/pgFunction.cpp:177
-#: input:230
+#: pgadmin/ui/dlgFunction.xrc:31
 msgid "Link symbol"
 msgstr "Simbol za povezavo"
 
@@ -5790,7 +5917,7 @@ msgstr "Simbol za povezavo"
 msgid "Listen"
 msgstr "Poslušaj"
 
-#: standard input:106 input:111 input:121
+#: standard input:106 input:111 pgadmin/ui/dlgEditGridOptions.xrc:4
 msgid "Lists the columns that the data will be sorted by."
 msgstr "Navedi stolpce, po katerih bodo podatki razvrščeni."
 
@@ -5809,7 +5936,7 @@ msgstr "Vrst %d Stol %d"
 msgid "Local"
 msgstr "Lokalno"
 
-#: standard input:305 input:360 input:395
+#: standard input:305 input:360 pgadmin/ui/dlgRepCluster.xrc:6
 msgid "Local Node"
 msgstr "Lokalno vozlišče"
 
@@ -5820,12 +5947,12 @@ msgid "Local Variables"
 msgstr "Spremenljivke"
 
 # standard
-#: standard input:741 input:798 input:866
+#: standard input:741 input:798 pgadmin/ui/frmExport.xrc:14
 msgid "Local charset"
 msgstr "Lokalni nabor znakov"
 
 # standard
-#: standard input:135 input:172 input:180
+#: standard input:135 input:172 pgadmin/ui/dlgForeignKey.xrc:12
 msgid "Local column"
 msgstr "Lokalni stolpec"
 
@@ -5840,7 +5967,8 @@ msgstr "ID lokalnega vozlišča"
 
 # standard
 #: src/schema/pgTablespace.cpp:126 standard input:599 input:3 input:656
-#: pgadmin/schema/pgTablespace.cpp:119 input:706
+#: pgadmin/schema/pgTablespace.cpp:119 pgadmin/ui/dlgAddFavourite.xrc:3
+#: pgadmin/ui/dlgTablespace.xrc:3
 msgid "Location"
 msgstr "Lokacija"
 
@@ -5863,17 +5991,17 @@ msgstr "Zakleni replikacijski niz pred posodobitvami."
 msgid "Lock set"
 msgstr "Zakleni niz"
 
-#: standard input:866 input:974 input:1047
+#: standard input:866 input:974 pgadmin/ui/frmStatus.xrc:5
 msgid "Locks"
 msgstr ""
 
 # standard
-#: standard input:826 input:896 input:964
+#: standard input:826 input:896 pgadmin/ui/frmOptions.xrc:55
 msgid "Log Level"
 msgstr "Podrobnosti dnevnika"
 
 #: src/frm/frmStatus.cpp:167 src/frm/frmStatus.cpp:170
-#: pgadmin/frm/frmStatus.cpp:172
+#: pgadmin/frm/frmStatus.cpp:176
 msgid "Log entry"
 msgstr "Zapis v dnevnik"
 
@@ -5887,22 +6015,22 @@ msgstr "Dnevniki (*.log)|*.log|Vse datoteke (*.*)|*.*"
 msgid "Log spooler"
 msgstr ""
 
-#: standard input:872 input:980 input:1053
+#: standard input:872 input:980 pgadmin/ui/frmStatus.xrc:11
 msgid "Logfile"
 msgstr "Dnevniška datoteka"
 
 # standard
-#: standard input:821 input:891 input:959
+#: standard input:821 input:891 pgadmin/ui/frmOptions.xrc:50
 msgid "Logfile (%ID will be replaced with the Process ID)"
 msgstr "Dnevnik (%ID bo nadomeščen z ID-jem procesa)"
 
 #: src/frm/frmStatus.cpp:840 src/frm/frmStatus.cpp:844
-#: src/frm/frmStatus.cpp:892 pgadmin/frm/frmStatus.cpp:896
+#: src/frm/frmStatus.cpp:892 pgadmin/frm/frmStatus.cpp:907
 msgid "Logfile rotation"
 msgstr "Rotacija dnevniške datoteke"
 
 # standard
-#: standard input:820 input:890 input:958
+#: standard input:820 input:890 pgadmin/ui/frmOptions.xrc:49
 msgid "Logging"
 msgstr "Zapisovanje v dnevnik"
 
@@ -5917,7 +6045,7 @@ msgid "Login Roles"
 msgstr ""
 
 # standard
-#: standard input:651 input:708 input:761
+#: standard input:651 input:708 pgadmin/ui/dlgType.xrc:30
 msgid "MAIN"
 msgstr "MAIN"
 
@@ -5945,18 +6073,18 @@ msgstr "Vzdrževanje trenutne baze ali tabele."
 # standard
 #: src/frm/frmMaintenance.cpp:188 standard input:774
 #: src/frm/frmMaintenance.cpp:195 input:831 pgadmin/frm/frmMaintenance.cpp:188
-#: input:892
+#: pgadmin/ui/frmMaintenance.xrc:1
 msgid "Maintenance"
 msgstr "Vzdrževanje"
 
 # standard
-#: standard input:540 input:595 input:631
+#: standard input:540 input:595 pgadmin/ui/dlgServer.xrc:6
 msgid "Maintenance DB"
 msgstr "Vzdrževalna baza"
 
 # standard
 #: src/schema/pgServer.cpp:837 src/schema/pgServer.cpp:857
-#: src/schema/pgServer.cpp:884 pgadmin/schema/pgServer.cpp:888
+#: src/schema/pgServer.cpp:884 pgadmin/schema/pgServer.cpp:893
 msgid "Maintenance database"
 msgstr "Vzdrževalna baza"
 
@@ -5967,15 +6095,15 @@ msgid "Maintenance database can't be dropped."
 msgstr "Vzdrževalne baze ni možno odstraniti."
 
 # standard
-#: standard input:776 input:833 input:894
+#: standard input:776 input:833 pgadmin/ui/frmMaintenance.xrc:3
 msgid "Maintenance operation"
 msgstr "Operacija vzdrževanja"
 
-#: standard input:337
+#: pgadmin/ui/dlgManageMacros.xrc:1
 msgid "Manage Macros"
 msgstr ""
 
-#: standard input:315 input:331
+#: standard input:315 pgadmin/ui/dlgManageFavourites.xrc:1
 msgid "Manage favourites"
 msgstr ""
 
@@ -5989,24 +6117,24 @@ msgstr ""
 
 # standard
 #: src/agent/pgaSchedule.cpp:369 standard input:482 input:537
-#: pgadmin/agent/pgaSchedule.cpp:362 input:573
+#: pgadmin/agent/pgaSchedule.cpp:362 pgadmin/ui/dlgSchedule.xrc:53
 msgid "March"
 msgstr "Marec"
 
-#: standard input:157 input:165
+#: standard input:157 pgadmin/ui/dlgFindReplace.xrc:27
 #, fuzzy
 msgid "Match case"
 msgstr "Dnevi meseca"
 
-#: standard input:129 input:166 input:174
+#: standard input:129 input:166 pgadmin/ui/dlgForeignKey.xrc:6
 msgid "Match full"
 msgstr "Polno ujemanje"
 
-#: standard input:156 input:164
+#: standard input:156 pgadmin/ui/dlgFindReplace.xrc:26
 msgid "Match on whole words"
 msgstr ""
 
-#: standard input:158 input:166
+#: standard input:158 pgadmin/ui/dlgFindReplace.xrc:28
 #, fuzzy
 msgid "Match the case of the text"
 msgstr "Prispel na konec dokumenta"
@@ -6021,30 +6149,30 @@ msgid "Max response time"
 msgstr ""
 
 # standard
-#: standard input:816 input:873 input:939
+#: standard input:816 input:873 pgadmin/ui/frmOptions.xrc:30
 msgid "Max. characters per column"
 msgstr "Največje št. znakov v stolpcu"
 
 # standard
 #: src/schema/pgSequence.cpp:104 standard input:526
 #: src/schema/pgSequence.cpp:109 input:582 pgadmin/schema/pgSequence.cpp:110
-#: input:618
+#: pgadmin/ui/dlgSequence.xrc:8
 msgid "Maximum"
 msgstr "Maksimum"
 
 # standard
-#: standard input:814 input:871 input:937
+#: standard input:814 input:871 pgadmin/ui/frmOptions.xrc:28
 msgid "Maximum rows to retrieve"
 msgstr "Največ vrstic za vrnitev"
 
 # standard
-#: standard input:815 input:872 input:938
+#: standard input:815 input:872 pgadmin/ui/frmOptions.xrc:29
 msgid "Maximums rows to retrieve into output window; 0 = unlimited"
 msgstr ""
 "Največje število vrstic, ki naj se vrnejo v izhodno okno; 0 = neomejeno"
 
 #: src/agent/pgaSchedule.cpp:377 standard input:484 input:539
-#: pgadmin/agent/pgaSchedule.cpp:370 input:575
+#: pgadmin/agent/pgaSchedule.cpp:370 pgadmin/ui/dlgSchedule.xrc:55
 msgid "May"
 msgstr "Maj"
 
@@ -6062,7 +6190,7 @@ msgid "Member count"
 msgstr "Število članov"
 
 # standard
-#: standard input:653 input:710 input:763
+#: standard input:653 input:710 pgadmin/ui/dlgType.xrc:32
 msgid "Member name"
 msgstr "Ime člana"
 
@@ -6074,7 +6202,7 @@ msgstr "Član"
 # standard
 #: src/schema/pgGroup.cpp:95 src/schema/pgType.cpp:132 standard input:190
 #: src/schema/pgType.cpp:133 input:227 pgadmin/schema/pgGroup.cpp:87
-#: pgadmin/schema/pgType.cpp:164 input:244
+#: pgadmin/schema/pgType.cpp:164 pgadmin/ui/dlgGroup.xrc:5
 msgid "Members"
 msgstr "Člani"
 
@@ -6089,7 +6217,7 @@ msgstr "Spoji niz"
 msgid "Merge set"
 msgstr "Spoji niz"
 
-#: standard input:355 input:410 input:445
+#: standard input:355 input:410 pgadmin/ui/dlgRepSetMerge.xrc:1
 msgid "Merge set into another set"
 msgstr "Združi niz v drug niz"
 
@@ -6103,25 +6231,27 @@ msgstr "Spoji dva replikacijska niza."
 #: src/frm/frmQuery.cpp:229 standard input:724 input:788 input:857
 #: src/frm/frmGrantWizard.cpp:195 src/frm/frmQuery.cpp:277 input:781 input:845
 #: input:965 pgadmin/frm/frmGrantWizard.cpp:195 pgadmin/frm/frmQuery.cpp:320
-#: input:829 input:839 input:849 input:906 input:1038
+#: pgadmin/ui/frmBackup.xrc:21 pgadmin/ui/frmBackupGlobals.xrc:7
+#: pgadmin/ui/frmBackupServer.xrc:7 pgadmin/ui/frmMaintenance.xrc:15
+#: pgadmin/ui/frmRestore.xrc:12
 msgid "Messages"
 msgstr "Sporočila"
 
 #: src/frm/frmHbaConfig.cpp:105 standard input:204
 #: src/frm/frmHbaConfig.cpp:107 input:241 pgadmin/frm/frmHbaConfig.cpp:107
-#: input:258
+#: pgadmin/ui/dlgHbaConfig.xrc:7
 msgid "Method"
 msgstr "Način"
 
 # standard
 #: src/schema/pgSequence.cpp:103 standard input:525
 #: src/schema/pgSequence.cpp:108 input:581 pgadmin/schema/pgSequence.cpp:109
-#: input:617
+#: pgadmin/ui/dlgSequence.xrc:7
 msgid "Minimum"
 msgstr "Minimum"
 
 #: src/agent/pgaSchedule.cpp:63 standard input:494 input:549
-#: pgadmin/agent/pgaSchedule.cpp:56 input:585
+#: pgadmin/agent/pgaSchedule.cpp:56 pgadmin/ui/dlgSchedule.xrc:65
 msgid "Minutes"
 msgstr "Minute"
 
@@ -6131,16 +6261,16 @@ msgid "Missing information"
 msgstr "Manjkajoči podatki"
 
 #: src/frm/frmStatus.cpp:125 src/frm/frmStatus.cpp:128
-#: pgadmin/frm/frmStatus.cpp:130 standard input:220
+#: pgadmin/frm/frmStatus.cpp:134 pgadmin/ui/dlgFunction.xrc:21
 msgid "Mode"
 msgstr "Način"
 
 #: src/agent/pgaSchedule.cpp:260 standard input:440 input:495
-#: pgadmin/agent/pgaSchedule.cpp:253 input:531
+#: pgadmin/agent/pgaSchedule.cpp:253 pgadmin/ui/dlgSchedule.xrc:11
 msgid "Monday"
 msgstr "Ponedeljek"
 
-#: standard input:446 input:501 input:537
+#: standard input:446 input:501 pgadmin/ui/dlgSchedule.xrc:17
 msgid "Month Days"
 msgstr "Dnevi meseca"
 
@@ -6149,7 +6279,7 @@ msgid "Monthdays"
 msgstr "Dnevi v mesecu"
 
 #: src/agent/pgaSchedule.cpp:67 standard input:479 input:534
-#: pgadmin/agent/pgaSchedule.cpp:60 input:570
+#: pgadmin/agent/pgaSchedule.cpp:60 pgadmin/ui/dlgSchedule.xrc:50
 msgid "Months"
 msgstr "Meseci"
 
@@ -6176,7 +6306,7 @@ msgstr "Premakni replikacijski niz na drugo vozlišče"
 msgid "Move set"
 msgstr "Premakni niz"
 
-#: standard input:362 input:417 input:452
+#: standard input:362 input:417 pgadmin/ui/dlgRepSetMove.xrc:1
 msgid "Move set to other node"
 msgstr "Premakni niz v drugo vozlišče"
 
@@ -6193,7 +6323,8 @@ msgstr "Združitve več stolpcev"
 msgid "Multiple clusters"
 msgstr "Več gruč"
 
-#: standard input:141 input:147 input:178 input:184 input:186 input:192
+#: standard input:141 input:147 input:178 input:184
+#: pgadmin/ui/dlgForeignKey.xrc:18 pgadmin/ui/dlgForeignKey.xrc:24
 msgid "NO ACTION"
 msgstr "NO ACTION"
 
@@ -6251,18 +6382,28 @@ msgstr "NO ACTION"
 #: pgadmin/schema/pgOperatorFamily.cpp:60 pgadmin/schema/pgRole.cpp:140
 #: pgadmin/schema/pgRole.cpp:249 pgadmin/schema/pgRule.cpp:74
 #: pgadmin/schema/pgSchema.cpp:206 pgadmin/schema/pgSequence.cpp:104
-#: pgadmin/schema/pgServer.cpp:974 pgadmin/schema/pgServer.cpp:983
+#: pgadmin/schema/pgServer.cpp:979 pgadmin/schema/pgServer.cpp:988
 #: pgadmin/schema/pgTable.cpp:555 pgadmin/schema/pgTablespace.cpp:37
 #: pgadmin/schema/pgTablespace.cpp:116 pgadmin/schema/pgTrigger.cpp:179
 #: pgadmin/schema/pgType.cpp:158 pgadmin/schema/pgUser.cpp:86
 #: pgadmin/schema/pgUser.cpp:196 pgadmin/schema/pgView.cpp:221
 #: pgadmin/slony/slCluster.cpp:285 pgadmin/slony/slNode.cpp:226
 #: pgadmin/slony/slSequence.cpp:67 pgadmin/slony/slSet.cpp:83
-#: pgadmin/slony/slSet.cpp:190 pgadmin/slony/slTable.cpp:84 input:25 input:37
-#: input:45 input:65 input:78 input:104 input:170 input:201 input:264
-#: input:281 input:292 input:315 input:338 input:345 input:368 input:506
-#: input:522 input:596 input:612 input:627 input:643 input:660 input:671
-#: input:705 input:713 input:733 input:799
+#: pgadmin/slony/slSet.cpp:190 pgadmin/slony/slTable.cpp:84
+#: pgadmin/ui/dlgAggregate.xrc:2 pgadmin/ui/dlgCast.xrc:2
+#: pgadmin/ui/dlgCheck.xrc:2 pgadmin/ui/dlgColumn.xrc:2
+#: pgadmin/ui/dlgConversion.xrc:2 pgadmin/ui/dlgDatabase.xrc:2
+#: pgadmin/ui/dlgDomain.xrc:2 pgadmin/ui/dlgForeignKey.xrc:2
+#: pgadmin/ui/dlgFunction.xrc:2 pgadmin/ui/dlgIndex.xrc:2
+#: pgadmin/ui/dlgIndexConstraint.xrc:2 pgadmin/ui/dlgJob.xrc:2
+#: pgadmin/ui/dlgLanguage.xrc:2 pgadmin/ui/dlgManageMacros.xrc:2
+#: pgadmin/ui/dlgOperator.xrc:2 pgadmin/ui/dlgPackage.xrc:2
+#: pgadmin/ui/dlgRule.xrc:2 pgadmin/ui/dlgSchedule.xrc:2
+#: pgadmin/ui/dlgSchema.xrc:2 pgadmin/ui/dlgSequence.xrc:2
+#: pgadmin/ui/dlgServer.xrc:2 pgadmin/ui/dlgStep.xrc:2
+#: pgadmin/ui/dlgSynonym.xrc:2 pgadmin/ui/dlgTable.xrc:2
+#: pgadmin/ui/dlgTablespace.xrc:2 pgadmin/ui/dlgTrigger.xrc:2
+#: pgadmin/ui/dlgType.xrc:2 pgadmin/ui/dlgView.xrc:2
 msgid "Name"
 msgstr "Ime"
 
@@ -6280,7 +6421,7 @@ msgstr "Zahteva geslo?"
 
 # standard
 #: src/schema/pgOperator.cpp:127 standard input:290 input:334
-#: pgadmin/schema/pgOperator.cpp:130 input:357
+#: pgadmin/schema/pgOperator.cpp:130 pgadmin/ui/dlgOperator.xrc:14
 msgid "Negator"
 msgstr "Negator"
 
@@ -6475,7 +6616,7 @@ msgid "New Package..."
 msgstr "Nov jezik"
 
 # standard
-#: standard input:841 input:911 input:983
+#: standard input:841 input:911 pgadmin/ui/frmPassword.xrc:3
 msgid "New Password"
 msgstr "Novo geslo"
 
@@ -6548,7 +6689,7 @@ msgid "New Server"
 msgstr "Nov strežnik"
 
 #: src/schema/pgServer.cpp:1052 src/schema/pgServer.cpp:1072
-#: src/schema/pgServer.cpp:1124 pgadmin/schema/pgServer.cpp:1130
+#: src/schema/pgServer.cpp:1124 pgadmin/schema/pgServer.cpp:1135
 msgid "New Server Registration"
 msgstr "Dodajanje novega strežnika na seznam"
 
@@ -6656,7 +6797,7 @@ msgstr "Nov pogled"
 msgid "New View..."
 msgstr "Nov pogled"
 
-#: standard input:318 input:334
+#: standard input:318 pgadmin/ui/dlgManageFavourites.xrc:4
 #, fuzzy
 msgid "New folder"
 msgstr "Novo vozlišče"
@@ -6682,12 +6823,12 @@ msgid "New window"
 msgstr "Počisti okno"
 
 #: src/agent/pgaJob.cpp:92 standard input:245 input:283
-#: pgadmin/agent/pgaJob.cpp:86 input:299
+#: pgadmin/agent/pgaJob.cpp:86 pgadmin/ui/dlgJob.xrc:9
 msgid "Next run"
 msgstr "Naslednje izvajanje"
 
 #: src/base/base.cpp:47 src/frm/frmStatus.cpp:417 src/frm/frmStatus.cpp:421
-#: src/frm/frmStatus.cpp:469 pgadmin/frm/frmStatus.cpp:473
+#: src/frm/frmStatus.cpp:469 pgadmin/frm/frmStatus.cpp:481
 #: pgadmin/utils/misc.cpp:73
 msgid "No"
 msgstr "Ne"
@@ -6732,7 +6873,8 @@ msgstr ""
 msgid "No node available to move this set to."
 msgstr "Na voljo ni nobenega vozlišča, kamor bi bilo možno premakniti ta niz."
 
-#: standard input:720 input:853 input:777 input:961 input:825 input:1034
+#: standard input:720 input:853 input:777 input:961
+#: pgadmin/ui/frmBackup.xrc:17 pgadmin/ui/frmRestore.xrc:8
 msgid "No owner"
 msgstr "Ni lastnika"
 
@@ -6789,12 +6931,14 @@ msgstr "ID vozlišča je že v uporabi."
 msgid "Nodes"
 msgstr "Vozlišča"
 
-#: standard input:877 pgadmin/frm/frmOptions.cpp:537 input:944
+#: standard input:877 pgadmin/frm/frmOptions.cpp:537
+#: pgadmin/ui/frmOptions.xrc:35
 msgid "None"
 msgstr "Brez"
 
 # standard
-#: standard input:45 input:97 input:50 input:102 input:51 input:112
+#: standard input:45 input:97 input:50 input:102 pgadmin/ui/dlgColumn.xrc:8
+#: pgadmin/ui/dlgDomain.xrc:10
 msgid "Not NULL"
 msgstr "Ni NULL"
 
@@ -6822,13 +6966,13 @@ msgstr "Ni implementirano"
 msgid "Not implemented."
 msgstr "Ni implementirano."
 
-#: standard input:837
+#: pgadmin/ui/frmBackupGlobals.xrc:5
 msgid ""
 "Note: Only objects global to the entire database cluster will be backed\n"
 "up. The backup format will be PLAIN."
 msgstr ""
 
-#: standard input:847
+#: pgadmin/ui/frmBackupServer.xrc:5
 msgid "Note: The backup format will be PLAIN."
 msgstr ""
 
@@ -6847,7 +6991,7 @@ msgid "Nothing"
 msgstr "Nič"
 
 #: src/agent/pgaSchedule.cpp:401 standard input:490 input:545
-#: pgadmin/agent/pgaSchedule.cpp:394 input:581
+#: pgadmin/agent/pgaSchedule.cpp:394 pgadmin/ui/dlgSchedule.xrc:61
 msgid "November"
 msgstr "November"
 
@@ -6889,10 +7033,16 @@ msgstr ""
 #: pgadmin/schema/pgRule.cpp:75 pgadmin/schema/pgSchema.cpp:207
 #: pgadmin/schema/pgSequence.cpp:105 pgadmin/schema/pgTable.cpp:556
 #: pgadmin/schema/pgTablespace.cpp:117 pgadmin/schema/pgTrigger.cpp:180
-#: pgadmin/schema/pgType.cpp:159 pgadmin/schema/pgView.cpp:222 input:26
-#: input:66 input:79 input:105 input:204 input:316 input:346 input:370
-#: input:478 input:507 input:597 input:613 input:672 input:714 input:734
-#: input:800
+#: pgadmin/schema/pgType.cpp:159 pgadmin/schema/pgView.cpp:222
+#: pgadmin/ui/dlgAggregate.xrc:3 pgadmin/ui/dlgCast.xrc:3
+#: pgadmin/ui/dlgConversion.xrc:3 pgadmin/ui/dlgDatabase.xrc:3
+#: pgadmin/ui/dlgDomain.xrc:3 pgadmin/ui/dlgFunction.xrc:5
+#: pgadmin/ui/dlgLanguage.xrc:3 pgadmin/ui/dlgOperator.xrc:3
+#: pgadmin/ui/dlgPackage.xrc:4 pgadmin/ui/dlgRole.xrc:3
+#: pgadmin/ui/dlgRule.xrc:3 pgadmin/ui/dlgSchema.xrc:3
+#: pgadmin/ui/dlgSequence.xrc:3 pgadmin/ui/dlgTable.xrc:3
+#: pgadmin/ui/dlgTrigger.xrc:3 pgadmin/ui/dlgType.xrc:3
+#: pgadmin/ui/dlgView.xrc:3
 msgid "OID"
 msgstr "OID"
 
@@ -6925,7 +7075,7 @@ msgstr "V redu."
 msgid "OR"
 msgstr "OR"
 
-#: standard input:177 input:214 input:222
+#: standard input:177 input:214 pgadmin/ui/dlgFunction.xrc:23
 msgid "OUT"
 msgstr "OUT"
 
@@ -6940,12 +7090,12 @@ msgstr "Objektna datoteka"
 # standard
 #: src/schema/pgFunction.cpp:131 standard input:180
 #: src/schema/pgFunction.cpp:147 input:217 pgadmin/schema/pgFunction.cpp:176
-#: input:229
+#: pgadmin/ui/dlgFunction.xrc:30
 msgid "Object file"
 msgstr "Objektna datoteka"
 
 #: src/agent/pgaSchedule.cpp:397 standard input:489 input:544
-#: pgadmin/agent/pgaSchedule.cpp:390 input:580
+#: pgadmin/agent/pgaSchedule.cpp:390 pgadmin/ui/dlgSchedule.xrc:60
 msgid "October"
 msgstr "Oktober"
 
@@ -6959,12 +7109,12 @@ msgid "Oldest outstanding"
 msgstr ""
 
 # standard
-#: standard input:146 input:183 input:191
+#: standard input:146 input:183 pgadmin/ui/dlgForeignKey.xrc:23
 msgid "On Delete"
 msgstr "Ob izbrisu"
 
 # standard
-#: standard input:140 input:177 input:185
+#: standard input:140 input:177 pgadmin/ui/dlgForeignKey.xrc:17
 msgid "On Update"
 msgstr "Ob spremembi"
 
@@ -6974,7 +7124,7 @@ msgstr "Ob izbrisu"
 
 # standard
 #: src/agent/pgaStep.cpp:61 standard input:557 src/agent/pgaStep.cpp:69
-#: input:614 pgadmin/agent/pgaStep.cpp:63 input:650
+#: input:614 pgadmin/agent/pgaStep.cpp:63 pgadmin/ui/dlgStep.xrc:9
 msgid "On error"
 msgstr "Ob napaki"
 
@@ -7001,11 +7151,13 @@ msgstr ""
 msgid "Online Update"
 msgstr "Spletna posodobitev"
 
-#: standard input:718 input:850 input:775 input:958 input:823 input:1031
+#: standard input:718 input:850 input:775 input:958
+#: pgadmin/ui/frmBackup.xrc:15 pgadmin/ui/frmRestore.xrc:5
 msgid "Only data"
 msgstr "Samo podatki"
 
-#: standard input:719 input:851 input:776 input:959 input:824 input:1032
+#: standard input:719 input:851 input:776 input:959
+#: pgadmin/ui/frmBackup.xrc:16 pgadmin/ui/frmRestore.xrc:6
 msgid "Only schema"
 msgstr "Samo shema"
 
@@ -7046,12 +7198,12 @@ msgid "Open configuration editor with pgpass.conf."
 msgstr "Odpri urejevalnik nastavitev s pg_hba.conf."
 
 #: src/frm/frmMainConfig.cpp:641 src/frm/frmMainConfig.cpp:652
-#: pgadmin/frm/frmMainConfig.cpp:680
+#: pgadmin/frm/frmMainConfig.cpp:690
 msgid "Open configuration editor with postgresql.conf."
 msgstr "Odpri urejevalnik nastavitev s postgresql.conf."
 
 #: src/frm/frmConfig.cpp:253 src/frm/frmConfig.cpp:262
-#: pgadmin/frm/frmConfig.cpp:261 pgadmin/frm/frmMainConfig.cpp:630
+#: pgadmin/frm/frmConfig.cpp:261 pgadmin/frm/frmMainConfig.cpp:640
 msgid "Open configuration file"
 msgstr "Odpri datoteko z nastavitvami"
 
@@ -7079,7 +7231,7 @@ msgstr "Odpri pg_hba.conf"
 msgid "Open postgresql.conf"
 msgstr "Odpri postgresql.conf"
 
-#: src/frm/frmMainConfig.cpp:652 pgadmin/frm/frmMainConfig.cpp:680
+#: src/frm/frmMainConfig.cpp:652 pgadmin/frm/frmMainConfig.cpp:690
 #, fuzzy
 msgid "Open postgresql.conf..."
 msgstr "Odpri postgresql.conf"
@@ -7096,7 +7248,7 @@ msgstr "Odpri datoteko s stavki"
 msgid "Open the helpfile."
 msgstr "Odpri datoteko s pomočjo za pgAdmin III."
 
-#: standard input:1023
+#: pgadmin/ui/frmReport.xrc:36
 msgid "Open the output file in the default browser?"
 msgstr ""
 
@@ -7146,7 +7298,7 @@ msgstr "Razredi operatorjev"
 
 # standard
 #: src/schema/pgOperator.cpp:125 standard input:283 input:327
-#: pgadmin/schema/pgOperator.cpp:128 input:350
+#: pgadmin/schema/pgOperator.cpp:128 pgadmin/ui/dlgOperator.xrc:7
 msgid "Operator function"
 msgstr "Operatorska funkcija"
 
@@ -7160,15 +7312,18 @@ msgstr "Operatorji"
 # standard
 #: src/frm/frmHbaConfig.cpp:106 standard input:205
 #: src/frm/frmHbaConfig.cpp:108 input:242 pgadmin/frm/frmHbaConfig.cpp:108
-#: input:259
+#: pgadmin/ui/dlgHbaConfig.xrc:8
 msgid "Option"
 msgstr "Možnosti"
 
 # standard
 #: src/frm/frmEditGrid.cpp:108 standard input:705 input:775 input:792
 #: input:847 src/frm/frmEditGrid.cpp:125 input:154 input:762 input:832
-#: input:849 input:955 pgadmin/frm/frmEditGrid.cpp:126 input:162 input:810
-#: input:834 input:844 input:893 input:910 input:1028
+#: input:849 input:955 pgadmin/frm/frmEditGrid.cpp:126
+#: pgadmin/ui/dlgFindReplace.xrc:24 pgadmin/ui/frmBackup.xrc:2
+#: pgadmin/ui/frmBackupGlobals.xrc:2 pgadmin/ui/frmBackupServer.xrc:2
+#: pgadmin/ui/frmMaintenance.xrc:2 pgadmin/ui/frmOptions.xrc:1
+#: pgadmin/ui/frmRestore.xrc:2
 msgid "Options"
 msgstr "Možnosti"
 
@@ -7181,8 +7336,9 @@ msgid "Or"
 msgstr "Ali"
 
 #: src/slony/slListen.cpp:81 standard input:322 input:349 input:370 input:144
-#: input:377 input:404 input:425 pgadmin/slony/slListen.cpp:72 input:152
-#: input:412 input:439 input:460
+#: input:377 input:404 input:425 pgadmin/slony/slListen.cpp:72
+#: pgadmin/ui/dlgFindReplace.xrc:14 pgadmin/ui/dlgRepListen.xrc:2
+#: pgadmin/ui/dlgRepSet.xrc:2 pgadmin/ui/dlgRepSubscription.xrc:2
 msgid "Origin"
 msgstr "Izvor"
 
@@ -7206,20 +7362,20 @@ msgstr "Premalo pomnilnika za cacheLinePool"
 msgid "Output"
 msgstr "Izpis"
 
-#: standard input:946 input:1018
+#: standard input:946 pgadmin/ui/frmReport.xrc:31
 #, fuzzy
 msgid "Output file"
 msgstr "Izpis"
 
 # standard
-#: standard input:923 input:995
+#: standard input:923 pgadmin/ui/frmReport.xrc:8
 #, fuzzy
 msgid "Output format"
 msgstr "Izhodna funkcija"
 
 # standard
 #: src/schema/pgType.cpp:146 standard input:634 src/schema/pgType.cpp:147
-#: input:691 pgadmin/schema/pgType.cpp:182 input:744
+#: input:691 pgadmin/schema/pgType.cpp:182 pgadmin/ui/dlgType.xrc:13
 msgid "Output function"
 msgstr "Izhodna funkcija"
 
@@ -7265,7 +7421,7 @@ msgstr "Shrani trenutno datoteko"
 #: src/schema/pgSequence.cpp:105 src/schema/pgTable.cpp:513
 #: src/schema/pgView.cpp:189 input:9 input:66 input:79 input:96 input:194
 #: input:324 input:562 input:578 input:657 input:683 input:745
-#: pgadmin/frm/frmStatus.cpp:142 pgadmin/schema/edbPackage.cpp:130
+#: pgadmin/frm/frmStatus.cpp:146 pgadmin/schema/edbPackage.cpp:130
 #: pgadmin/schema/edbSynonym.cpp:57 pgadmin/schema/pgAggregate.cpp:109
 #: pgadmin/schema/pgCatalogObject.cpp:52 pgadmin/schema/pgConversion.cpp:66
 #: pgadmin/schema/pgDatabase.cpp:425 pgadmin/schema/pgDomain.cpp:97
@@ -7274,17 +7430,22 @@ msgstr "Shrani trenutno datoteko"
 #: pgadmin/schema/pgOperatorFamily.cpp:62 pgadmin/schema/pgSchema.cpp:208
 #: pgadmin/schema/pgSequence.cpp:106 pgadmin/schema/pgTable.cpp:557
 #: pgadmin/schema/pgTablespace.cpp:118 pgadmin/schema/pgType.cpp:160
-#: pgadmin/schema/pgView.cpp:223 pgadmin/slony/slCluster.cpp:304 input:67
-#: input:80 input:106 input:202 input:347 input:369 input:598 input:614
-#: input:661 input:673 input:707 input:735 input:801
+#: pgadmin/schema/pgView.cpp:223 pgadmin/slony/slCluster.cpp:304
+#: pgadmin/ui/dlgAggregate.xrc:4 pgadmin/ui/dlgConversion.xrc:4
+#: pgadmin/ui/dlgDatabase.xrc:4 pgadmin/ui/dlgDomain.xrc:4
+#: pgadmin/ui/dlgFunction.xrc:3 pgadmin/ui/dlgOperator.xrc:4
+#: pgadmin/ui/dlgPackage.xrc:3 pgadmin/ui/dlgSchema.xrc:4
+#: pgadmin/ui/dlgSequence.xrc:4 pgadmin/ui/dlgSynonym.xrc:3
+#: pgadmin/ui/dlgTable.xrc:4 pgadmin/ui/dlgTablespace.xrc:4
+#: pgadmin/ui/dlgType.xrc:4 pgadmin/ui/dlgView.xrc:4
 msgid "Owner"
 msgstr "Lastnik"
 
-#: standard input:920
+#: pgadmin/ui/frmOptions.xrc:11
 msgid "PG bin path"
 msgstr ""
 
-#: standard input:913
+#: pgadmin/ui/frmOptions.xrc:4
 msgid "PG help path"
 msgstr ""
 
@@ -7292,12 +7453,13 @@ msgid "PID"
 msgstr "PID"
 
 # standard
-#: standard input:648 input:711 input:705 input:768 input:758 input:816
+#: standard input:648 input:711 input:705 input:768 pgadmin/ui/dlgType.xrc:27
+#: pgadmin/ui/frmBackup.xrc:8
 msgid "PLAIN"
 msgstr "PLAIN"
 
 # standard
-#: standard input:717 input:774 input:822
+#: standard input:717 input:774 pgadmin/ui/frmBackup.xrc:14
 msgid "PLAIN options"
 msgstr "PLAIN možnosti"
 
@@ -7323,7 +7485,8 @@ msgid "Parameter"
 msgstr "Parameter"
 
 # standard
-#: pgadmin/debugger/ctlTabWindow.cpp:135 standard input:95 input:218
+#: pgadmin/debugger/ctlTabWindow.cpp:135 pgadmin/ui/dlgDirectDbg.xrc:2
+#: pgadmin/ui/dlgFunction.xrc:19
 #, fuzzy
 msgid "Parameters"
 msgstr "Parameter"
@@ -7334,20 +7497,22 @@ msgid "Passed by Value?"
 msgstr "Preneseno po vrednosti?"
 
 # standard
-#: standard input:652 input:709 input:762
+#: standard input:652 input:709 pgadmin/ui/dlgType.xrc:31
 msgid "Passed by value"
 msgstr "Preneseno po vrednosti"
 
 # standard
 #: standard input:390 input:543 input:665 src/frm/frmPgpassConfig.cpp:92
 #: input:350 input:445 input:597 input:722 pgadmin/frm/frmPgpassConfig.cpp:92
-#: input:385 input:480 input:633 input:778
+#: pgadmin/ui/dlgPgpassConfig.xrc:7 pgadmin/ui/dlgRole.xrc:5
+#: pgadmin/ui/dlgServer.xrc:8 pgadmin/ui/dlgUser.xrc:4
 msgid "Password"
 msgstr "Geslo"
 
 # standard
-#: standard input:391 input:666 input:351 input:446 input:723 input:386
-#: input:481 input:779
+#: standard input:391 input:666 input:351 input:446 input:723
+#: pgadmin/ui/dlgPgpassConfig.xrc:8 pgadmin/ui/dlgRole.xrc:6
+#: pgadmin/ui/dlgUser.xrc:5
 msgid "Password (again)"
 msgstr "Geslo (znova)"
 
@@ -7388,7 +7553,7 @@ msgstr "Prilepi izbrano besedilo iz odložišča"
 # standard
 #: src/schema/pgDatabase.cpp:402 src/slony/slPath.cpp:150 standard input:77
 #: src/schema/pgDatabase.cpp:418 input:82 pgadmin/schema/pgDatabase.cpp:428
-#: pgadmin/slony/slPath.cpp:141 input:83
+#: pgadmin/slony/slPath.cpp:141 pgadmin/ui/dlgDatabase.xrc:7
 msgid "Path"
 msgstr "Pot"
 
@@ -7722,8 +7887,9 @@ msgstr "Prosim, navedi veljavno numerično natančnost (0.."
 #: src/schema/pgServer.cpp:825 src/schema/pgServer.cpp:830 standard input:538
 #: src/frm/frmPgpassConfig.cpp:89 src/schema/pgServer.cpp:852
 #: src/schema/pgServer.cpp:857 input:347 input:593
-#: pgadmin/frm/frmPgpassConfig.cpp:89 pgadmin/schema/pgServer.cpp:856
-#: pgadmin/schema/pgServer.cpp:861 input:382 input:629
+#: pgadmin/frm/frmPgpassConfig.cpp:89 pgadmin/schema/pgServer.cpp:861
+#: pgadmin/schema/pgServer.cpp:866 pgadmin/ui/dlgPgpassConfig.xrc:4
+#: pgadmin/ui/dlgServer.xrc:4
 msgid "Port"
 msgstr "Vrata"
 
@@ -7749,13 +7915,14 @@ msgid "Postmaster - set on server start"
 msgstr ""
 
 # standard
-#: standard input:42 input:96 input:656 input:47 input:101 input:713 input:48
-#: input:111 input:766
+#: standard input:42 input:96 input:656 input:47 input:101 input:713
+#: pgadmin/ui/dlgColumn.xrc:5 pgadmin/ui/dlgDomain.xrc:9
+#: pgadmin/ui/dlgType.xrc:35
 msgid "Precision"
 msgstr "Natančnost"
 
 # standard
-#: standard input:801 input:858 input:924
+#: standard input:801 input:858 pgadmin/ui/frmOptions.xrc:15
 msgid "Preferences"
 msgstr "Nastavitve"
 
@@ -7848,7 +8015,7 @@ msgstr "Procedure"
 msgid "Process returned exit code %d."
 msgstr "Proces je vrnil izhodno kodo %d."
 
-#: standard input:940 input:1012
+#: standard input:940 pgadmin/ui/frmReport.xrc:25
 msgid "Process the XML data using the specified stylesheet"
 msgstr ""
 
@@ -7868,12 +8035,27 @@ msgstr ""
 #: input:441 input:469 input:485 input:559 input:575 input:590 input:606
 #: input:654 input:680 input:719 input:742 pgadmin/dlg/dlgProperty.cpp:1571
 #: pgadmin/frm/events.cpp:260 pgadmin/frm/frmMain.cpp:145
-#: pgadmin/frm/frmMain.cpp:155 input:24 input:36 input:44 input:64 input:77
-#: input:103 input:169 input:200 input:240 input:263 input:280 input:291
-#: input:314 input:344 input:390 input:402 input:431 input:438 input:446
-#: input:453 input:459 input:467 input:476 input:505 input:521 input:595
-#: input:611 input:626 input:642 input:659 input:670 input:704 input:712
-#: input:732 input:775 input:798
+#: pgadmin/frm/frmMain.cpp:155 pgadmin/ui/dlgAggregate.xrc:1
+#: pgadmin/ui/dlgCast.xrc:1 pgadmin/ui/dlgCheck.xrc:1
+#: pgadmin/ui/dlgColumn.xrc:1 pgadmin/ui/dlgConversion.xrc:1
+#: pgadmin/ui/dlgDatabase.xrc:1 pgadmin/ui/dlgDomain.xrc:1
+#: pgadmin/ui/dlgForeignKey.xrc:1 pgadmin/ui/dlgFunction.xrc:1
+#: pgadmin/ui/dlgGroup.xrc:1 pgadmin/ui/dlgIndex.xrc:1
+#: pgadmin/ui/dlgIndexConstraint.xrc:1 pgadmin/ui/dlgJob.xrc:1
+#: pgadmin/ui/dlgLanguage.xrc:1 pgadmin/ui/dlgOperator.xrc:1
+#: pgadmin/ui/dlgPackage.xrc:1 pgadmin/ui/dlgRepCluster.xrc:1
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:2 pgadmin/ui/dlgRepListen.xrc:1
+#: pgadmin/ui/dlgRepNode.xrc:1 pgadmin/ui/dlgRepPath.xrc:1
+#: pgadmin/ui/dlgRepSequence.xrc:1 pgadmin/ui/dlgRepSet.xrc:1
+#: pgadmin/ui/dlgRepSetMerge.xrc:2 pgadmin/ui/dlgRepSetMove.xrc:2
+#: pgadmin/ui/dlgRepSubscription.xrc:1 pgadmin/ui/dlgRepTable.xrc:1
+#: pgadmin/ui/dlgRole.xrc:1 pgadmin/ui/dlgRule.xrc:1
+#: pgadmin/ui/dlgSchedule.xrc:1 pgadmin/ui/dlgSchema.xrc:1
+#: pgadmin/ui/dlgSequence.xrc:1 pgadmin/ui/dlgServer.xrc:1
+#: pgadmin/ui/dlgStep.xrc:1 pgadmin/ui/dlgSynonym.xrc:1
+#: pgadmin/ui/dlgTable.xrc:1 pgadmin/ui/dlgTablespace.xrc:1
+#: pgadmin/ui/dlgTrigger.xrc:1 pgadmin/ui/dlgType.xrc:1
+#: pgadmin/ui/dlgUser.xrc:1 pgadmin/ui/dlgView.xrc:1
 msgid "Properties"
 msgstr "Lastnosti"
 
@@ -7885,7 +8067,7 @@ msgstr "Lastnost"
 #: src/slony/dlgRepSubscription.cpp:79 src/slony/slListen.cpp:83 standard
 #: input:324 input:372 input:379 input:427
 #: pgadmin/slony/dlgRepSubscription.cpp:79 pgadmin/slony/slListen.cpp:74
-#: input:414 input:462
+#: pgadmin/ui/dlgRepListen.xrc:4 pgadmin/ui/dlgRepSubscription.xrc:4
 msgid "Provider"
 msgstr "Ponudnik"
 
@@ -7930,7 +8112,8 @@ msgstr ""
 #: src/frm/frmStatus.cpp:118 src/frm/frmStatus.cpp:130 standard input:811
 #: src/frm/frmStatus.cpp:121 src/frm/frmStatus.cpp:133 input:868
 #: pgadmin/frm/frmQuery.cpp:1150 pgadmin/frm/frmQuery.cpp:1179
-#: pgadmin/frm/frmStatus.cpp:123 pgadmin/frm/frmStatus.cpp:135 input:934
+#: pgadmin/frm/frmStatus.cpp:127 pgadmin/frm/frmStatus.cpp:139
+#: pgadmin/ui/frmOptions.xrc:25
 msgid "Query"
 msgstr "Stavek"
 
@@ -8012,7 +8195,7 @@ msgid ""
 msgstr ""
 "Stavek uspešno izvršen: vstavljena ena vrstica z OID %d, čas izvajanja %s ms."
 
-#: src/frm/frmStatus.cpp:119 pgadmin/frm/frmStatus.cpp:118
+#: src/frm/frmStatus.cpp:119 pgadmin/frm/frmStatus.cpp:122
 #, fuzzy
 msgid "Query start"
 msgstr "Orodje za stavke"
@@ -8036,32 +8219,33 @@ msgid "Quit this program."
 msgstr "Izhod iz programa."
 
 # standard
-#: standard input:736 input:793 input:861
+#: standard input:736 input:793 pgadmin/ui/frmExport.xrc:9
 msgid "Quote char"
 msgstr "Znak navedbe"
 
 # standard
-#: standard input:743 input:800 input:868
+#: standard input:743 input:800 pgadmin/ui/frmExport.xrc:16
 msgid "Quoting"
 msgstr "Navajanje"
 
 # standard
-#: standard input:786 input:843 input:904
+#: standard input:786 input:843 pgadmin/ui/frmMaintenance.xrc:13
 msgid "RECREATE"
 msgstr "RECREATE"
 
 # standard
-#: standard input:779 input:836 input:897
+#: standard input:779 input:836 pgadmin/ui/frmMaintenance.xrc:6
 msgid "REINDEX"
 msgstr "REINDEX"
 
 # standard
-#: standard input:784 input:841 input:902
+#: standard input:784 input:841 pgadmin/ui/frmMaintenance.xrc:11
 msgid "REINDEX options"
 msgstr "REINDEX možnosti"
 
 # standard
-#: standard input:142 input:148 input:179 input:185 input:187 input:193
+#: standard input:142 input:148 input:179 input:185
+#: pgadmin/ui/dlgForeignKey.xrc:19 pgadmin/ui/dlgForeignKey.xrc:25
 msgid "RESTRICT"
 msgstr "RESTRICT"
 
@@ -8089,7 +8273,7 @@ msgid "Reached the end of the document"
 msgstr "Prispel na konec dokumenta"
 
 # standard
-#: standard input:804 input:861 input:927
+#: standard input:804 input:861 pgadmin/ui/frmOptions.xrc:18
 msgid "Read and write Unicode UTF-8 files"
 msgstr "Beri in piši Unicode UTF-8 datoteke"
 
@@ -8099,12 +8283,13 @@ msgstr "Pripravljen."
 
 # standard
 #: src/schema/pgType.cpp:149 standard input:635 src/schema/pgType.cpp:150
-#: input:692 pgadmin/schema/pgType.cpp:185 input:745
+#: input:692 pgadmin/schema/pgType.cpp:185 pgadmin/ui/dlgType.xrc:14
 msgid "Receive function"
 msgstr "Sprejemna funkcija"
 
 #: src/slony/dlgRepSubscription.cpp:78 standard input:323 input:371 input:378
-#: input:426 pgadmin/slony/dlgRepSubscription.cpp:78 input:413 input:461
+#: input:426 pgadmin/slony/dlgRepSubscription.cpp:78
+#: pgadmin/ui/dlgRepListen.xrc:3 pgadmin/ui/dlgRepSubscription.xrc:3
 msgid "Receiver"
 msgstr "Prejemnik"
 
@@ -8139,19 +8324,20 @@ msgstr "Referenciran"
 
 # standard
 #: src/schema/pgForeignKey.cpp:155 standard input:126 input:163
-#: pgadmin/schema/pgForeignKey.cpp:155 input:171
+#: pgadmin/schema/pgForeignKey.cpp:155 pgadmin/ui/dlgForeignKey.xrc:3
 msgid "References"
 msgstr "Reference"
 
 # standard
-#: standard input:136 input:173 input:181
+#: standard input:136 input:173 pgadmin/ui/dlgForeignKey.xrc:13
 msgid "Referencing"
 msgstr "Sklic na"
 
 # standard
 #: src/dlg/dlgProperty.cpp:1415 src/frm/frmEditGrid.cpp:101 standard input:875
 #: src/dlg/dlgProperty.cpp:1513 src/frm/frmEditGrid.cpp:115 input:984
-#: pgadmin/dlg/dlgProperty.cpp:1661 pgadmin/frm/frmEditGrid.cpp:116 input:1057
+#: pgadmin/dlg/dlgProperty.cpp:1661 pgadmin/frm/frmEditGrid.cpp:116
+#: pgadmin/ui/frmStatus.xrc:15
 msgid "Refresh"
 msgstr "Osveži"
 
@@ -8161,7 +8347,7 @@ msgid "Refresh rate (seconds)"
 msgstr "Osveževanje (sekunde)"
 
 # standard
-#: standard input:982 input:1055
+#: standard input:982 pgadmin/ui/frmStatus.xrc:13
 #, fuzzy
 msgid "Refresh rate:"
 msgstr "Osveži"
@@ -8201,19 +8387,19 @@ msgstr "Osvežujem podatke, malo počakaj."
 #: src/frm/frmStatus.cpp:470 src/frm/frmStatus.cpp:563
 #: src/frm/frmStatus.cpp:567 src/frm/frmStatus.cpp:332
 #: src/frm/frmStatus.cpp:434 src/frm/frmStatus.cpp:518
-#: src/frm/frmStatus.cpp:615 pgadmin/frm/frmStatus.cpp:333
-#: pgadmin/frm/frmStatus.cpp:438 pgadmin/frm/frmStatus.cpp:522
-#: pgadmin/frm/frmStatus.cpp:619
+#: src/frm/frmStatus.cpp:615 pgadmin/frm/frmStatus.cpp:341
+#: pgadmin/frm/frmStatus.cpp:446 pgadmin/frm/frmStatus.cpp:530
+#: pgadmin/frm/frmStatus.cpp:630
 msgid "Refreshing."
 msgstr "Osvežujem."
 
-#: standard input:159 input:167
+#: standard input:159 pgadmin/ui/dlgFindReplace.xrc:29
 #, fuzzy
 msgid "Regular expressions"
 msgstr "Izraz"
 
 #: src/frm/frmStatus.cpp:122 src/frm/frmStatus.cpp:125
-#: pgadmin/frm/frmStatus.cpp:127
+#: pgadmin/frm/frmStatus.cpp:131
 msgid "Relation"
 msgstr "Relacija"
 
@@ -8251,10 +8437,16 @@ msgstr "Osveži nastavitve strežnika"
 #: input:573 input:580 input:583 input:658 input:679
 #: src/ctl/ctlSecurityPanel.cpp:101 input:87 input:118 input:212 input:258
 #: input:271 input:290 input:294 input:463 input:555 input:630 input:637
-#: input:640 input:715 input:736 pgadmin/ctl/ctlSecurityPanel.cpp:101 input:88
-#: input:128 input:183 input:225 input:276 input:287 input:306 input:310
-#: input:499 input:591 input:678 input:685 input:688 input:768 input:771
-#: input:792
+#: input:640 input:715 input:736 pgadmin/ctl/ctlSecurityPanel.cpp:101
+#: pgadmin/ui/dlgDatabase.xrc:12 pgadmin/ui/dlgEditGridOptions.xrc:11
+#: pgadmin/ui/dlgForeignKey.xrc:15 pgadmin/ui/dlgFunction.xrc:26
+#: pgadmin/ui/dlgFunction.xrc:34 pgadmin/ui/dlgIndex.xrc:14
+#: pgadmin/ui/dlgIndexConstraint.xrc:8 pgadmin/ui/dlgJob.xrc:16
+#: pgadmin/ui/dlgJob.xrc:20 pgadmin/ui/dlgRole.xrc:24
+#: pgadmin/ui/dlgSchedule.xrc:71 pgadmin/ui/dlgTable.xrc:9
+#: pgadmin/ui/dlgTable.xrc:16 pgadmin/ui/dlgTable.xrc:19
+#: pgadmin/ui/dlgType.xrc:37 pgadmin/ui/dlgType.xrc:40
+#: pgadmin/ui/dlgUser.xrc:18
 msgid "Remove"
 msgstr "Odstrani"
 
@@ -8274,12 +8466,12 @@ msgstr "Odstranim omejitev?"
 msgid "Remove table?"
 msgstr "Odstranim tabelo?"
 
-#: standard input:114 input:119 input:129
+#: standard input:114 input:119 pgadmin/ui/dlgEditGridOptions.xrc:12
 msgid "Remove the selected sort column."
 msgstr "Odstrani izbrani stolpec za razvrščanje."
 
 # standard
-#: standard input:316 input:332
+#: standard input:316 pgadmin/ui/dlgManageFavourites.xrc:2
 #, fuzzy
 msgid "Rename"
 msgstr "Ime vloge"
@@ -8304,7 +8496,7 @@ msgid "Repeat restore?"
 msgstr "Povrni"
 
 # standard
-#: standard input:138 input:146
+#: standard input:138 pgadmin/ui/dlgFindReplace.xrc:8
 #, fuzzy
 msgid "Replace &All"
 msgstr "Ozn&ači vse"
@@ -8324,7 +8516,7 @@ msgstr "Osveži trenutno stran."
 msgid "Replace text"
 msgstr "Zamenjaj besedilo"
 
-#: standard input:142 input:150
+#: standard input:142 pgadmin/ui/dlgFindReplace.xrc:12
 #, fuzzy
 msgid "Replace with:"
 msgstr "Zamenjaj besedilo"
@@ -8344,11 +8536,11 @@ msgstr "Replikacija"
 msgid "Replication Sets"
 msgstr "Replikacijski nizi"
 
-#: standard input:919 input:991
+#: standard input:919 pgadmin/ui/frmReport.xrc:4
 msgid "Report Notes"
 msgstr ""
 
-#: standard input:917 input:989
+#: standard input:917 pgadmin/ui/frmReport.xrc:2
 msgid "Report Title"
 msgstr ""
 
@@ -8361,7 +8553,7 @@ msgstr "Referenciran"
 msgid "Reschedule the job to run now."
 msgstr ""
 
-#: standard input:810 input:867 input:933
+#: standard input:810 input:867 pgadmin/ui/frmOptions.xrc:24
 msgid "Reset guru hints"
 msgstr "Ponastavi guru nasvete"
 
@@ -8390,7 +8582,7 @@ msgid "Restart node."
 msgstr "Ponovno zaženi vozlišče."
 
 # standard
-#: standard input:846 input:954 input:1027
+#: standard input:846 input:954 pgadmin/ui/frmRestore.xrc:1
 msgid "Restore"
 msgstr "Povrni"
 
@@ -8400,12 +8592,12 @@ msgid "Restore %s %s"
 msgstr "Povrni %s %s"
 
 # standard
-#: standard input:599 input:635
+#: standard input:599 pgadmin/ui/dlgServer.xrc:10
 #, fuzzy
 msgid "Restore env?"
 msgstr "Povrni"
 
-#: src/schema/pgServer.cpp:887 pgadmin/schema/pgServer.cpp:891
+#: src/schema/pgServer.cpp:887 pgadmin/schema/pgServer.cpp:896
 #, fuzzy
 msgid "Restore environment?"
 msgstr "Nastavljam prejšnje okolje"
@@ -8427,15 +8619,15 @@ msgstr "Nastavljam prejšnje okolje"
 
 # standard
 #: src/schema/pgOperator.cpp:129 standard input:287 input:331
-#: pgadmin/schema/pgOperator.cpp:132 input:354
+#: pgadmin/schema/pgOperator.cpp:132 pgadmin/ui/dlgOperator.xrc:11
 msgid "Restrict function"
 msgstr "Omeji funkcijo"
 
 # standard
 #: src/schema/pgObject.cpp:180 src/schema/pgObject.cpp:182
 #: src/schema/pgServer.cpp:970 src/schema/pgServer.cpp:979
-#: pgadmin/schema/pgObject.cpp:182 pgadmin/schema/pgServer.cpp:975
-#: pgadmin/schema/pgServer.cpp:984
+#: pgadmin/schema/pgObject.cpp:182 pgadmin/schema/pgServer.cpp:980
+#: pgadmin/schema/pgServer.cpp:989
 msgid "Restriction"
 msgstr "Omejitev"
 
@@ -8452,17 +8644,17 @@ msgid "Result"
 msgstr "Rezultat"
 
 # standard
-#: standard input:883 input:950
+#: standard input:883 pgadmin/ui/frmOptions.xrc:41
 #, fuzzy
 msgid "Result copy field separator"
 msgstr "Ločilo vrstic"
 
-#: standard input:880 input:947
+#: standard input:880 pgadmin/ui/frmOptions.xrc:38
 msgid "Result copy quote character"
 msgstr ""
 
 # standard
-#: standard input:876 input:943
+#: standard input:876 pgadmin/ui/frmOptions.xrc:34
 #, fuzzy
 msgid "Result copy quoting"
 msgstr "brez navednic"
@@ -8501,7 +8693,7 @@ msgstr "Poskusi znova"
 #: src/schema/pgFunction.cpp:126 standard input:160
 #: src/schema/pgFunction.cpp:142 input:197
 #: pgadmin/schema/edbPackageFunction.cpp:144 pgadmin/schema/pgFunction.cpp:171
-#: input:205
+#: pgadmin/ui/dlgFunction.xrc:6
 msgid "Return type"
 msgstr "Vrni tip"
 
@@ -8516,7 +8708,7 @@ msgid "Returns a set?"
 msgstr "Vrne set?"
 
 # standard
-#: standard input:166 input:203 input:211
+#: standard input:166 input:203 pgadmin/ui/dlgFunction.xrc:12
 msgid "Returns set"
 msgstr "Vrne set"
 
@@ -8529,13 +8721,13 @@ msgid "Right Table Columns"
 msgstr "Stolpci desne tabele"
 
 # standard
-#: standard input:292 input:336 input:359
+#: standard input:292 input:336 pgadmin/ui/dlgOperator.xrc:16
 msgid "Right sort op"
 msgstr "Desni operator razvrščanja"
 
 # standard
 #: src/schema/pgOperator.cpp:123 standard input:282 input:326
-#: pgadmin/schema/pgOperator.cpp:126 input:349
+#: pgadmin/schema/pgOperator.cpp:126 pgadmin/ui/dlgOperator.xrc:6
 msgid "Right type"
 msgstr "Desni tip"
 
@@ -8544,26 +8736,26 @@ msgstr "Desni tip"
 msgid "Role"
 msgstr "Vloga"
 
-#: standard input:393 input:448 input:483
+#: standard input:393 input:448 pgadmin/ui/dlgRole.xrc:8
 msgid "Role Privileges"
 msgstr "Pravice vloge"
 
 # standard
-#: standard input:400 input:455 input:491
+#: standard input:400 input:455 pgadmin/ui/dlgRole.xrc:16
 msgid "Role membership"
 msgstr "Članstvo vlog"
 
 # standard
-#: standard input:387 input:442 input:477
+#: standard input:387 input:442 pgadmin/ui/dlgRole.xrc:2
 msgid "Role name"
 msgstr "Ime vloge"
 
-#: standard input:871 input:979 input:1052
+#: standard input:871 input:979 pgadmin/ui/frmStatus.xrc:10
 msgid "Rollback"
 msgstr "Povrni"
 
 #: src/frm/frmStatus.cpp:943 src/frm/frmStatus.cpp:947
-#: src/frm/frmStatus.cpp:995 pgadmin/frm/frmStatus.cpp:999
+#: src/frm/frmStatus.cpp:995 pgadmin/frm/frmStatus.cpp:1046
 msgid "Rollback transaction?"
 msgstr "Povrnem transakcijo?"
 
@@ -8571,7 +8763,7 @@ msgstr "Povrnem transakcijo?"
 msgid "Root Block No"
 msgstr ""
 
-#: standard input:873 input:981 input:1054
+#: standard input:873 input:981 pgadmin/ui/frmStatus.xrc:12
 msgid "Rotate"
 msgstr "Rotiraj"
 
@@ -8584,12 +8776,12 @@ msgid "Row"
 msgstr "Vrstica"
 
 # standard
-#: standard input:729 input:786 input:854
+#: standard input:729 input:786 pgadmin/ui/frmExport.xrc:2
 msgid "Row separator"
 msgstr "Ločilo vrstic"
 
 # standard
-#: standard input:608 input:665 input:715
+#: standard input:608 input:665 pgadmin/ui/dlgTrigger.xrc:4
 msgid "Row trigger"
 msgstr "Prožilec za vrstico"
 
@@ -8646,7 +8838,7 @@ msgid "Running at"
 msgstr ""
 
 #: src/schema/pgServer.cpp:854 src/schema/pgServer.cpp:874
-#: src/schema/pgServer.cpp:902 pgadmin/schema/pgServer.cpp:907
+#: src/schema/pgServer.cpp:902 pgadmin/schema/pgServer.cpp:912
 msgid "Running?"
 msgstr "Se izvaja?"
 
@@ -8659,7 +8851,7 @@ msgid "S&cratch pad\tCtrl-Alt-S"
 msgstr ""
 
 # standard
-#: standard input:418 input:473 input:509
+#: standard input:418 input:473 pgadmin/ui/dlgRule.xrc:5
 msgid "SELECT"
 msgstr "SELECT"
 
@@ -8670,12 +8862,14 @@ msgid "SELECT script"
 msgstr "SELECT"
 
 # standard
-#: standard input:145 input:151 input:182 input:188 input:190 input:196
+#: standard input:145 input:151 input:182 input:188
+#: pgadmin/ui/dlgForeignKey.xrc:22 pgadmin/ui/dlgForeignKey.xrc:28
 msgid "SET DEFAULT"
 msgstr "SET DEFAULT"
 
 # standard
-#: standard input:144 input:150 input:181 input:187 input:189 input:195
+#: standard input:144 input:150 input:181 input:187
+#: pgadmin/ui/dlgForeignKey.xrc:21 pgadmin/ui/dlgForeignKey.xrc:27
 msgid "SET NULL"
 msgstr "SET NULL"
 
@@ -8683,7 +8877,7 @@ msgstr "SET NULL"
 msgid "SIGHUP - reloaded on SIGHUP signal"
 msgstr "SIGHUP - ponovno naloženo ob SIGHUP signalu"
 
-#: standard input:554 input:611 input:647
+#: standard input:554 input:611 pgadmin/ui/dlgStep.xrc:6
 msgid "SQL"
 msgstr "SQL"
 
@@ -8721,27 +8915,27 @@ msgid "SQL state: "
 msgstr ""
 
 # standard
-#: standard input:539 input:594 input:630
+#: standard input:539 input:594 pgadmin/ui/dlgServer.xrc:5
 msgid "SSL"
 msgstr "SSL"
 
 #: src/schema/pgServer.cpp:829 src/schema/pgServer.cpp:849
-#: src/schema/pgServer.cpp:876 pgadmin/schema/pgServer.cpp:880
+#: src/schema/pgServer.cpp:876 pgadmin/schema/pgServer.cpp:885
 msgid "SSL Mode"
 msgstr "SSL način"
 
 #: src/schema/pgServer.cpp:815 src/schema/pgServer.cpp:835
-#: src/schema/pgServer.cpp:862 pgadmin/schema/pgServer.cpp:866
+#: src/schema/pgServer.cpp:862 pgadmin/schema/pgServer.cpp:871
 msgid "SSL encrypted"
 msgstr "SSL kriptirano"
 
 # standard
-#: standard input:164 input:201 input:209
+#: standard input:164 input:201 pgadmin/ui/dlgFunction.xrc:10
 msgid "STABLE"
 msgstr "STABLE"
 
 #: src/agent/pgaSchedule.cpp:280 standard input:445 input:500
-#: pgadmin/agent/pgaSchedule.cpp:273 input:536
+#: pgadmin/agent/pgaSchedule.cpp:273 pgadmin/ui/dlgSchedule.xrc:16
 msgid "Saturday"
 msgstr "Sobota"
 
@@ -8749,7 +8943,7 @@ msgstr "Sobota"
 #: src/frm/frmQuery.cpp:189 src/frm/frmConfig.cpp:115
 #: src/frm/frmEditGrid.cpp:113 src/frm/frmQuery.cpp:237
 #: pgadmin/frm/frmConfig.cpp:114 pgadmin/frm/frmEditGrid.cpp:114
-#: pgadmin/frm/frmQuery.cpp:277 standard input:340
+#: pgadmin/frm/frmQuery.cpp:277 pgadmin/ui/dlgManageMacros.xrc:4
 msgid "Save"
 msgstr "Shrani"
 
@@ -8825,7 +9019,7 @@ msgstr "Urnik"
 
 #: src/agent/pgaSchedule.cpp:496 standard input:253
 #: src/agent/pgaSchedule.cpp:497 input:291 pgadmin/agent/pgaSchedule.cpp:490
-#: input:307
+#: pgadmin/ui/dlgJob.xrc:17
 msgid "Schedules"
 msgstr "Urniki"
 
@@ -8838,7 +9032,7 @@ msgstr "Shema"
 # standard
 #: src/schema/pgDatabase.cpp:422 standard input:78
 #: src/schema/pgDatabase.cpp:438 input:83 pgadmin/schema/pgDatabase.cpp:451
-#: input:84
+#: pgadmin/ui/dlgDatabase.xrc:8
 msgid "Schema restriction"
 msgstr "Omejitev sheme"
 
@@ -8863,11 +9057,11 @@ msgstr ""
 msgid "Scripts"
 msgstr "Varnost"
 
-#: standard input:153 input:161
+#: standard input:153 pgadmin/ui/dlgFindReplace.xrc:23
 msgid "Search backwards through the text"
 msgstr ""
 
-#: standard input:151 input:159
+#: standard input:151 pgadmin/ui/dlgFindReplace.xrc:21
 msgid "Search forwards through the text"
 msgstr ""
 
@@ -8875,7 +9069,7 @@ msgid "Security"
 msgstr "Varnost"
 
 # standard
-#: standard input:168 input:205 input:213
+#: standard input:168 input:205 pgadmin/ui/dlgFunction.xrc:14
 msgid "Security of definer"
 msgstr "Zaščita tistega, ki definira"
 
@@ -8894,7 +9088,7 @@ msgstr "Ozn&ači vse"
 msgid "Select Slony-I cluster."
 msgstr "Izberi Slony-I gručo."
 
-#: standard input:108 input:113 input:123
+#: standard input:108 input:113 pgadmin/ui/dlgEditGridOptions.xrc:6
 msgid "Select a column to add to the sort list."
 msgstr "Izberi stolpec, ki naj se doda na seznam za razvrščanje."
 
@@ -8956,22 +9150,24 @@ msgstr "Izberi strežnik z nameščeno Slony-I gručo."
 msgid "Select stylesheet filename"
 msgstr "Izberi ime datoteke za izvoz"
 
-#: standard input:947 input:948 input:950 input:1019 input:1020 input:1022
+#: standard input:947 input:948 input:950 pgadmin/ui/frmReport.xrc:32
+#: pgadmin/ui/frmReport.xrc:33 pgadmin/ui/frmReport.xrc:35
 #, fuzzy
 msgid "Select the file to write the report to."
 msgstr "Izberi stolpec, ki naj se doda na seznam za razvrščanje."
 
 # standard
-#: standard input:832 input:902 input:970
+#: standard input:832 input:902 pgadmin/ui/frmOptions.xrc:61
 msgid "Select the level of detail to record in the logfile."
 msgstr "Izberi nivo podrobnosti, ki naj se zapisujejo v dnevnik."
 
-#: standard input:942 input:943 input:945 input:1014 input:1015 input:1017
+#: standard input:942 input:943 input:945 pgadmin/ui/frmReport.xrc:27
+#: pgadmin/ui/frmReport.xrc:28 pgadmin/ui/frmReport.xrc:30
 msgid "Select the stylesheet to use."
 msgstr ""
 
 # standard
-#: standard input:105 input:110 input:120
+#: standard input:105 input:110 pgadmin/ui/dlgEditGridOptions.xrc:3
 msgid "Selected Columns"
 msgstr "Izbrani stolpci"
 
@@ -8981,12 +9177,13 @@ msgid "Selected cluster doesn't contain newer software."
 msgstr "Izbrana gruča ne vsebuje novejšega programja."
 
 # standard
-#: standard input:753 input:768 input:810 input:825 input:878
+#: standard input:753 input:768 input:810 input:825
+#: pgadmin/ui/frmGrantWizard.xrc:2
 msgid "Selection"
 msgstr "Izbor"
 
 # standard
-#: standard input:636 input:693 input:746
+#: standard input:636 input:693 pgadmin/ui/dlgType.xrc:15
 msgid "Send Function"
 msgstr "Pošlji funkcijo"
 
@@ -8997,7 +9194,7 @@ msgstr "Pošlji funkcijo"
 
 # standard
 #: src/agent/pgaSchedule.cpp:393 standard input:488 input:543
-#: pgadmin/agent/pgaSchedule.cpp:386 input:579
+#: pgadmin/agent/pgaSchedule.cpp:386 pgadmin/ui/dlgSchedule.xrc:59
 msgid "September"
 msgstr "September"
 
@@ -9007,8 +9204,8 @@ msgstr "September"
 #: input:49 input:397 pgadmin/dlg/dlgSynonym.cpp:51
 #: pgadmin/dlg/dlgSynonym.cpp:167 pgadmin/schema/edbSynonym.cpp:89
 #: pgadmin/schema/pgColumn.cpp:240 pgadmin/schema/pgSequence.cpp:201
-#: pgadmin/slony/slSequence.cpp:136 pgadmin/slony/slSet.cpp:117 input:50
-#: input:432
+#: pgadmin/slony/slSequence.cpp:136 pgadmin/slony/slSet.cpp:117
+#: pgadmin/ui/dlgColumn.xrc:7 pgadmin/ui/dlgRepSequence.xrc:2
 msgid "Sequence"
 msgstr "Zaporedje"
 
@@ -9034,8 +9231,9 @@ msgstr ""
 #: src/schema/pgServer.cpp:1052 src/schema/pgServer.cpp:1072 standard
 #: input:302 input:314 input:335 input:514 src/frm/frmReport.cpp:569
 #: src/schema/pgServer.cpp:1124 input:357 input:369 input:390 input:569
-#: pgadmin/frm/frmReport.cpp:583 pgadmin/schema/pgServer.cpp:1130 input:392
-#: input:404 input:425 input:605
+#: pgadmin/frm/frmReport.cpp:583 pgadmin/schema/pgServer.cpp:1135
+#: pgadmin/ui/dlgRepCluster.xrc:3 pgadmin/ui/dlgRepClusterUpgrade.xrc:4
+#: pgadmin/ui/dlgRepPath.xrc:2 pgadmin/ui/dlgSelectConnection.xrc:2
 msgid "Server"
 msgstr "Strežnik"
 
@@ -9049,7 +9247,7 @@ msgstr "Nastavitev strežnika"
 msgid "Server ID"
 msgstr "ID strežnika"
 
-#: pgadmin/frm/frmStatus.cpp:1067
+#: pgadmin/frm/frmStatus.cpp:1153
 #, fuzzy
 msgid "Server Status - "
 msgstr "&Stanje strežnika"
@@ -9081,21 +9279,21 @@ msgid "Server settings"
 msgstr "&Stanje strežnika"
 
 #: src/schema/pgServer.cpp:1070 src/schema/pgServer.cpp:1090
-#: src/schema/pgServer.cpp:1142 pgadmin/schema/pgServer.cpp:1148
+#: src/schema/pgServer.cpp:1142 pgadmin/schema/pgServer.cpp:1153
 msgid "Servers"
 msgstr "Strežniki"
 
 #: src/dlg/dlgServer.cpp:363 src/frm/frmMain.cpp:796 src/dlg/dlgServer.cpp:370
 #: src/frm/frmMain.cpp:904 pgadmin/frm/frmMain.cpp:1028
-#: pgadmin/schema/pgServer.cpp:1201
+#: pgadmin/schema/pgServer.cpp:1206
 #, c-format
 msgid "Servers (%d)"
 msgstr "Strežniki (%d)"
 
 # standard
 #: src/schema/pgServer.cpp:835 src/schema/pgServer.cpp:855 standard input:537
-#: src/schema/pgServer.cpp:882 input:601 pgadmin/schema/pgServer.cpp:886
-#: input:637
+#: src/schema/pgServer.cpp:882 input:601 pgadmin/schema/pgServer.cpp:891
+#: pgadmin/ui/dlgServer.xrc:12
 msgid "Service"
 msgstr "Storitev"
 
@@ -9149,12 +9347,12 @@ msgstr ""
 msgid "Set on command line"
 msgstr ""
 
-#: standard input:97
+#: pgadmin/ui/dlgDirectDbg.xrc:4
 msgid "Set the function/procedure parameter values."
 msgstr ""
 
 # standard
-#: standard input:357 input:412 input:447
+#: standard input:357 input:412 pgadmin/ui/dlgRepSetMerge.xrc:3
 msgid "Set to merge"
 msgstr ""
 
@@ -9167,11 +9365,11 @@ msgstr ""
 msgid "Setting name"
 msgstr "Ime nastavitve"
 
-#: standard input:957
+#: pgadmin/ui/frmOptions.xrc:48
 msgid "Show NULL values as <NULL>?"
 msgstr ""
 
-#: standard input:972
+#: pgadmin/ui/frmOptions.xrc:63
 #, fuzzy
 msgid "Show System Objects in the treeview?"
 msgstr "Pokaži sistemske objekte"
@@ -9185,7 +9383,7 @@ msgid "Show about dialog."
 msgstr "Pokaži dialog o programu."
 
 # standard
-#: standard input:808 input:865 input:931
+#: standard input:808 input:865 pgadmin/ui/frmOptions.xrc:22
 msgid "Show object properties on double click in treeview?"
 msgstr "Pokaži lastnosti objekta ob dvojnem kliku v drevesnem pogledu?"
 
@@ -9248,7 +9446,7 @@ msgid "Show system objects"
 msgstr "Pokaži sistemske objekte"
 
 # standard
-#: standard input:807 input:864 input:930
+#: standard input:807 input:864 pgadmin/ui/frmOptions.xrc:21
 msgid "Show users for privileges?"
 msgstr "Prikaži uporabnike pri dodeljevanju privilegijev?"
 
@@ -9256,7 +9454,7 @@ msgstr "Prikaži uporabnike pri dodeljevanju privilegijev?"
 msgid "Signature arguments"
 msgstr ""
 
-#: standard input:852 input:960 input:1033
+#: standard input:852 input:960 pgadmin/ui/frmRestore.xrc:7
 msgid "Single object"
 msgstr "Posamezen objekt"
 
@@ -9281,7 +9479,7 @@ msgstr "Na vozlišču teče Slon proces; pred nadgradnjo ga je potrebno ustaviti
 msgid "Slony"
 msgstr "SQL pomoč"
 
-#: standard input:916
+#: pgadmin/ui/frmOptions.xrc:7
 #, fuzzy
 msgid "Slony help path"
 msgstr "Slony-I pot"
@@ -9305,15 +9503,11 @@ msgstr "Slony-I gruča"
 msgid "Slony-I creation scripts not available; only joining possible."
 msgstr ""
 
-#: standard input:799 input:856 input:918
+#: standard input:799 input:856 pgadmin/ui/frmOptions.xrc:9
 msgid "Slony-I path"
 msgstr "Slony-I pot"
 
-#: pgadmin/frm/frmQuery.cpp:1355 pgadmin/frm/frmQuery.cpp:1399
-msgid "Someone created a new line ending style! Run, run for your lives!!"
-msgstr ""
-
-#: standard input:9 input:14 input:19
+#: standard input:9 input:14 pgadmin/ui/dlgAggregate.xrc:14
 msgid "Sort Operator"
 msgstr "Operator razvrščanja"
 
@@ -9337,7 +9531,7 @@ msgid "Source"
 msgstr "Vir"
 
 # standard
-#: standard input:63 input:68 input:69
+#: standard input:63 input:68 pgadmin/ui/dlgConversion.xrc:6
 msgid "Source encoding"
 msgstr "Kodiranje vira"
 
@@ -9350,7 +9544,7 @@ msgstr "Tip vira"
 
 # standard
 #: src/schema/pgCast.cpp:66 standard input:19 input:24
-#: pgadmin/schema/pgCast.cpp:66 input:27
+#: pgadmin/schema/pgCast.cpp:66 pgadmin/ui/dlgCast.xrc:4
 msgid "Source type"
 msgstr "Tip vira"
 
@@ -9368,13 +9562,14 @@ msgstr "SQL pomoč"
 # standard
 #: src/frm/frmStatus.cpp:116 src/frm/frmStatus.cpp:128 standard input:434
 #: input:524 src/frm/frmStatus.cpp:131 input:489 input:580
-#: pgadmin/frm/frmStatus.cpp:133 input:525 input:616
+#: pgadmin/frm/frmStatus.cpp:137 pgadmin/ui/dlgSchedule.xrc:5
+#: pgadmin/ui/dlgSequence.xrc:6
 msgid "Start"
 msgstr "Zaženi"
 
 # standard
 #: src/dlg/dlgServer.cpp:395 src/dlg/dlgServer.cpp:402
-#: pgadmin/schema/pgServer.cpp:1233
+#: pgadmin/schema/pgServer.cpp:1238
 msgid "Start PostgreSQL Service"
 msgstr "Zaženi PostgreSQL storitev"
 
@@ -9386,7 +9581,7 @@ msgstr ""
 msgid "Start Query tool with CREATE script."
 msgstr ""
 
-#: src/dlg/dlgServer.cpp:402 pgadmin/schema/pgServer.cpp:1233
+#: src/dlg/dlgServer.cpp:402 pgadmin/schema/pgServer.cpp:1238
 #, fuzzy
 msgid "Start Service"
 msgstr "Zaženi storitev"
@@ -9426,7 +9621,7 @@ msgstr "Zaženi graditelja stavkov."
 msgid "Start time"
 msgstr "Začetni čas"
 
-#: src/dlg/dlgServer.cpp:409 pgadmin/schema/pgServer.cpp:1240
+#: src/dlg/dlgServer.cpp:409 pgadmin/schema/pgServer.cpp:1245
 #, fuzzy
 msgid "Starting Service"
 msgstr "Zaganjam storitev"
@@ -9442,13 +9637,13 @@ msgstr "Zaganjam storitev"
 
 # standard
 #: src/schema/pgAggregate.cpp:88 standard input:7 input:12
-#: pgadmin/schema/pgAggregate.cpp:111 input:17
+#: pgadmin/schema/pgAggregate.cpp:111 pgadmin/ui/dlgAggregate.xrc:12
 msgid "State function"
 msgstr "Funkcija stanja"
 
 # standard
 #: src/schema/pgAggregate.cpp:87 standard input:6 input:11
-#: pgadmin/schema/pgAggregate.cpp:110 input:16
+#: pgadmin/schema/pgAggregate.cpp:110 pgadmin/ui/dlgAggregate.xrc:11
 msgid "State type"
 msgstr "Tip stanja"
 
@@ -9463,14 +9658,15 @@ msgstr "Statistika"
 #: src/frm/frmMain.cpp:286 src/frm/frmMain.cpp:403 src/schema/pgColumn.cpp:217
 #: standard input:46 src/frm/frmMain.cpp:142 src/frm/frmMain.cpp:485
 #: src/schema/pgColumn.cpp:224 input:51 pgadmin/frm/frmMain.cpp:146
-#: pgadmin/frm/frmMain.cpp:605 pgadmin/schema/pgColumn.cpp:247 input:52
+#: pgadmin/frm/frmMain.cpp:605 pgadmin/schema/pgColumn.cpp:247
+#: pgadmin/ui/dlgColumn.xrc:9
 msgid "Statistics"
 msgstr "Statistike"
 
 # standard
 #: src/agent/pgaJob.cpp:199 src/agent/pgaStep.cpp:166 standard input:863
 #: src/agent/pgaStep.cpp:175 input:971 pgadmin/agent/pgaJob.cpp:193
-#: pgadmin/agent/pgaStep.cpp:169 input:1044
+#: pgadmin/agent/pgaStep.cpp:169 pgadmin/ui/frmStatus.xrc:2
 msgid "Status"
 msgstr "Stanje"
 
@@ -9502,18 +9698,18 @@ msgid "Step over\tF10"
 msgstr "Strežnik"
 
 #: src/agent/pgaStep.cpp:223 standard input:249 src/agent/pgaStep.cpp:233
-#: input:287 pgadmin/agent/pgaStep.cpp:227 input:303
+#: input:287 pgadmin/agent/pgaStep.cpp:227 pgadmin/ui/dlgJob.xrc:13
 msgid "Steps"
 msgstr "Koraki"
 
 # standard
 #: src/dlg/dlgServer.cpp:424 src/dlg/dlgServer.cpp:431
-#: pgadmin/schema/pgServer.cpp:1262
+#: pgadmin/schema/pgServer.cpp:1267
 msgid "Stop PostgreSQL Service"
 msgstr "Ustavi PostgreSQL storitev"
 
 #: src/dlg/dlgServer.cpp:431 src/dlg/dlgServer.cpp:439
-#: pgadmin/schema/pgServer.cpp:1262 pgadmin/schema/pgServer.cpp:1270
+#: pgadmin/schema/pgServer.cpp:1267 pgadmin/schema/pgServer.cpp:1275
 #, fuzzy
 msgid "Stop Service"
 msgstr "Ugasni storitev"
@@ -9533,14 +9729,15 @@ msgid "Stop service"
 msgstr "Ugasni storitev"
 
 #: src/frm/frmStatus.cpp:191 src/frm/frmStatus.cpp:241
-#: src/frm/frmStatus.cpp:285 standard input:983 pgadmin/frm/frmStatus.cpp:193
-#: pgadmin/frm/frmStatus.cpp:242 pgadmin/frm/frmStatus.cpp:286 input:1056
+#: src/frm/frmStatus.cpp:285 standard input:983 pgadmin/frm/frmStatus.cpp:197
+#: pgadmin/frm/frmStatus.cpp:248 pgadmin/frm/frmStatus.cpp:294
+#: pgadmin/ui/frmStatus.xrc:14
 #, fuzzy
 msgid "Stopped"
 msgstr "Kopirano"
 
 #: src/dlg/dlgServer.cpp:435 src/dlg/dlgServer.cpp:442
-#: pgadmin/schema/pgServer.cpp:1273
+#: pgadmin/schema/pgServer.cpp:1278
 msgid "Stopping service"
 msgstr "Ugašam storitev"
 
@@ -9549,23 +9746,24 @@ msgstr "Ugašam storitev"
 #: src/schema/pgType.cpp:152 standard input:647 src/schema/pgColumn.cpp:222
 #: src/schema/pgType.cpp:153 input:704 pgadmin/schema/pgColumn.cpp:245
 #: pgadmin/schema/pgOperatorClass.cpp:203 pgadmin/schema/pgType.cpp:188
-#: input:757
+#: pgadmin/ui/dlgType.xrc:26
 msgid "Storage"
 msgstr "Hranjenje"
 
 # standard
-#: standard input:53 input:58 input:598 input:59 input:634
+#: standard input:53 input:58 input:598 pgadmin/ui/dlgConnect.xrc:2
+#: pgadmin/ui/dlgServer.xrc:9
 msgid "Store password"
 msgstr "Shrani geslo"
 
 # standard
 #: src/schema/pgServer.cpp:839 src/schema/pgServer.cpp:859
-#: src/schema/pgServer.cpp:886 pgadmin/schema/pgServer.cpp:890
+#: src/schema/pgServer.cpp:886 pgadmin/schema/pgServer.cpp:895
 msgid "Store password?"
 msgstr "Shrani geslo?"
 
 # standard
-#: standard input:167 input:204 input:212
+#: standard input:167 input:204 pgadmin/ui/dlgFunction.xrc:13
 msgid "Strict"
 msgstr "Strogo"
 
@@ -9575,12 +9773,12 @@ msgid "Strict?"
 msgstr "Strogo?"
 
 # standard
-#: standard input:878 input:945
+#: standard input:878 pgadmin/ui/frmOptions.xrc:36
 #, fuzzy
 msgid "Strings"
 msgstr "samo nizi"
 
-#: standard input:928 input:1000
+#: standard input:928 pgadmin/ui/frmReport.xrc:13
 msgid "Stylesheet"
 msgstr ""
 
@@ -9598,7 +9796,7 @@ msgid "Subscriptions"
 msgstr ""
 
 #: src/agent/pgaStep.cpp:117 standard input:559 src/agent/pgaStep.cpp:126
-#: input:616 pgadmin/agent/pgaStep.cpp:120 input:652
+#: input:616 pgadmin/agent/pgaStep.cpp:120 pgadmin/ui/dlgStep.xrc:11
 msgid "Succeed"
 msgstr ""
 
@@ -9609,16 +9807,16 @@ msgid "Successful"
 msgstr "Uspešno"
 
 #: src/agent/pgaSchedule.cpp:256 standard input:439 input:494
-#: pgadmin/agent/pgaSchedule.cpp:249 input:530
+#: pgadmin/agent/pgaSchedule.cpp:249 pgadmin/ui/dlgSchedule.xrc:10
 msgid "Sunday"
 msgstr "Nedelja"
 
-#: standard input:395 input:450 input:485
+#: standard input:395 input:450 pgadmin/ui/dlgRole.xrc:10
 msgid "Superuser"
 msgstr "Superuporabnik"
 
 # standard
-#: standard input:670 input:727 input:783
+#: standard input:670 input:727 pgadmin/ui/dlgUser.xrc:9
 msgid "Superuser (can create users)"
 msgstr "Superuporabnik (lahko ustvarja uporabnike)"
 
@@ -9628,7 +9826,7 @@ msgid "Superuser?"
 msgstr "Superuporabnik?"
 
 # standard
-#: standard input:295 input:339 input:362
+#: standard input:295 input:339 pgadmin/ui/dlgOperator.xrc:19
 msgid "Supports hash"
 msgstr "Podpira hash"
 
@@ -9637,7 +9835,7 @@ msgid "Supports hash?"
 msgstr "Podpira hash?"
 
 # standard
-#: standard input:296 input:340 input:363
+#: standard input:296 input:340 pgadmin/ui/dlgOperator.xrc:20
 msgid "Supports merge"
 msgstr "Podpira spajanje"
 
@@ -9754,7 +9952,7 @@ msgstr "Sistemsko pravilo?"
 msgid "System schema?"
 msgstr "Sistemska shema?"
 
-#: standard input:798 input:855 input:917
+#: standard input:798 input:855 pgadmin/ui/frmOptions.xrc:8
 msgid "System schemas"
 msgstr "Sistemske sheme"
 
@@ -9787,22 +9985,22 @@ msgstr "Sistemski tip?"
 msgid "System view?"
 msgstr "Sistemski pogled?"
 
-#: standard input:710 input:767 input:815
+#: standard input:710 input:767 pgadmin/ui/frmBackup.xrc:7
 msgid "TAR"
 msgstr "TAR"
 
 #: src/frm/frmStatus.cpp:124 src/frm/frmStatus.cpp:127
-#: pgadmin/frm/frmStatus.cpp:129
+#: pgadmin/frm/frmStatus.cpp:133
 msgid "TX"
 msgstr "TX"
 
-#: pgadmin/frm/frmStatus.cpp:121
+#: pgadmin/frm/frmStatus.cpp:125
 #, fuzzy
 msgid "TX start"
 msgstr "Orodje za stavke"
 
 #: standard input:887 pgadmin/frm/frmOptions.cpp:134
-#: pgadmin/frm/frmOptions.cpp:365 input:954
+#: pgadmin/frm/frmOptions.cpp:365 pgadmin/ui/frmOptions.xrc:45
 #, fuzzy
 msgid "Tab"
 msgstr "Tabela"
@@ -9816,7 +10014,7 @@ msgstr "Tabela"
 #: pgadmin/frm/frmRestore.cpp:226 pgadmin/frm/frmRestore.cpp:329
 #: pgadmin/schema/edbSynonym.cpp:87 pgadmin/schema/pgTable.cpp:724
 #: pgadmin/schema/pgTable.cpp:926 pgadmin/slony/slSet.cpp:118
-#: pgadmin/slony/slTable.cpp:166 input:468
+#: pgadmin/slony/slTable.cpp:166 pgadmin/ui/dlgRepTable.xrc:2
 msgid "Table"
 msgstr "Tabela"
 
@@ -9851,7 +10049,8 @@ msgstr "Tabele/Pogledi"
 #: pgadmin/schema/pgIndex.cpp:215 pgadmin/schema/pgIndexConstraint.cpp:97
 #: pgadmin/schema/pgRole.cpp:168 pgadmin/schema/pgTable.cpp:559
 #: pgadmin/schema/pgTablespace.cpp:226 pgadmin/schema/pgTablespace.cpp:255
-#: pgadmin/schema/pgUser.cpp:120 input:265 input:282 input:674
+#: pgadmin/schema/pgUser.cpp:120 pgadmin/ui/dlgIndex.xrc:3
+#: pgadmin/ui/dlgIndexConstraint.xrc:3 pgadmin/ui/dlgTable.xrc:5
 msgid "Tablespace"
 msgstr "Podatkovni prostor"
 
@@ -9868,58 +10067,59 @@ msgid "Tablespaces"
 msgstr "Podatkovni prostori"
 
 # standard
-#: standard input:365 input:420 input:455
+#: standard input:365 input:420 pgadmin/ui/dlgRepSetMove.xrc:4
 msgid "Target Node"
 msgstr "Ciljno vozlišče"
 
 # standard
-#: standard input:64 input:69 input:70
+#: standard input:64 input:69 pgadmin/ui/dlgConversion.xrc:7
 msgid "Target encoding"
 msgstr "Enkodiranje cilja"
 
 # standard
-#: pgadmin/schema/edbSynonym.cpp:60 standard input:664
+#: pgadmin/schema/edbSynonym.cpp:60 pgadmin/ui/dlgSynonym.xrc:6
 #, fuzzy
 msgid "Target object"
 msgstr "Ciljno vozlišče"
 
 # standard
-#: standard input:358 input:413 input:448
+#: standard input:358 input:413 pgadmin/ui/dlgRepSetMerge.xrc:4
 msgid "Target of merge"
 msgstr "Cilj spajanja"
 
 # standard
-#: pgadmin/schema/edbSynonym.cpp:59 standard input:663
+#: pgadmin/schema/edbSynonym.cpp:59 pgadmin/ui/dlgSynonym.xrc:5
 #, fuzzy
 msgid "Target schema"
 msgstr "Privzeta shema"
 
 # standard
 #: src/schema/pgCast.cpp:67 standard input:20 input:25
-#: pgadmin/schema/edbSynonym.cpp:58 pgadmin/schema/pgCast.cpp:67 input:28
-#: input:662
+#: pgadmin/schema/edbSynonym.cpp:58 pgadmin/schema/pgCast.cpp:67
+#: pgadmin/ui/dlgCast.xrc:5 pgadmin/ui/dlgSynonym.xrc:4
 msgid "Target type"
 msgstr "Ciljni tip"
 
 # standard
-#: standard input:76 input:81 input:82
+#: standard input:76 input:81 pgadmin/ui/dlgDatabase.xrc:6
 msgid "Template"
 msgstr "Predloga"
 
 # standard
 #: src/frm/frmStatus.cpp:103 src/frm/frmStatus.cpp:104 standard input:865
-#: input:868 input:973 input:976 pgadmin/frm/frmStatus.cpp:102
-#: pgadmin/frm/frmStatus.cpp:103 input:1046 input:1049
+#: input:868 input:973 input:976 pgadmin/frm/frmStatus.cpp:106
+#: pgadmin/frm/frmStatus.cpp:107 pgadmin/ui/frmStatus.xrc:4
+#: pgadmin/ui/frmStatus.xrc:7
 msgid "Terminate"
 msgstr "Ukini"
 
 #: src/frm/frmStatus.cpp:910 src/frm/frmStatus.cpp:914
-#: src/frm/frmStatus.cpp:962 pgadmin/frm/frmStatus.cpp:966
+#: src/frm/frmStatus.cpp:962 pgadmin/frm/frmStatus.cpp:982
 msgid "Terminate process"
 msgstr "Ukini proces"
 
 #: src/frm/frmStatus.cpp:898 src/frm/frmStatus.cpp:902
-#: src/frm/frmStatus.cpp:950 pgadmin/frm/frmStatus.cpp:954
+#: src/frm/frmStatus.cpp:950 pgadmin/frm/frmStatus.cpp:970
 msgid "Terminate process?"
 msgstr "Ukini proces?"
 
@@ -9944,7 +10144,7 @@ msgid ""
 msgstr ""
 
 #: src/frm/frmMainConfig.cpp:551 src/frm/frmMainConfig.cpp:562
-#: pgadmin/frm/frmMainConfig.cpp:572
+#: pgadmin/frm/frmMainConfig.cpp:576
 msgid ""
 "The PostgreSQL server engine is currently configured to listen for local "
 "connections only.\n"
@@ -9970,11 +10170,22 @@ msgid "The PostgreSQL version number."
 msgstr "PostgreSQL verzija."
 
 #: src/frm/frmMainConfig.cpp:552 src/frm/frmMainConfig.cpp:563
-#: pgadmin/frm/frmMainConfig.cpp:573
 msgid ""
 "The autovacuum backend process is not running.\n"
 "It is recommended to enable it by setting 'stats_start_collector', "
 "'stats_row_level' and 'autovacuum' to 'on'."
+msgstr ""
+"Proces autovacuum ni zagnan.\n"
+"Priporočljivo ga je omogočiti tako, da nastavite vrednosti "
+"'stats_start_collector', 'stats_row_level' in 'autovacuum' na 'on'."
+
+#: pgadmin/frm/frmMainConfig.cpp:577
+#, fuzzy
+msgid ""
+"The autovacuum backend process is not running.\n"
+"It is recommended to enable it by setting 'track_counts' and 'autovacuum' to "
+"'on' in PostgreSQL 8.3 and above or 'stats_start_collector', "
+"'stats_row_level' and 'autovacuum' to 'on' in earlier versions."
 msgstr ""
 "Proces autovacuum ni zagnan.\n"
 "Priporočljivo ga je omogočiti tako, da nastavite vrednosti "
@@ -10179,29 +10390,29 @@ msgid ""
 msgstr ""
 
 #: src/agent/pgaSchedule.cpp:272 standard input:443 input:498
-#: pgadmin/agent/pgaSchedule.cpp:265 input:534
+#: pgadmin/agent/pgaSchedule.cpp:265 pgadmin/ui/dlgSchedule.xrc:14
 msgid "Thursday"
 msgstr "Četrtek"
 
 #: src/agent/dlgSchedule.cpp:74 src/frm/frmStatus.cpp:136 standard input:496
 #: src/frm/frmStatus.cpp:139 input:551 pgadmin/agent/dlgSchedule.cpp:74
-#: pgadmin/frm/frmStatus.cpp:141 input:587
+#: pgadmin/frm/frmStatus.cpp:145 pgadmin/ui/dlgSchedule.xrc:67
 msgid "Time"
 msgstr "Čas"
 
 msgid "Time offset"
 msgstr ""
 
-#: standard input:492 input:547 input:583
+#: standard input:492 input:547 pgadmin/ui/dlgSchedule.xrc:63
 msgid "Times"
 msgstr "Časi"
 
 #: src/frm/frmStatus.cpp:161 src/frm/frmStatus.cpp:164
-#: pgadmin/frm/frmStatus.cpp:166
+#: pgadmin/frm/frmStatus.cpp:170
 msgid "Timestamp"
 msgstr "Časovni žig"
 
-#: standard input:2
+#: standard input:2 pgadmin/ui/dlgAddFavourite.xrc:2
 #, fuzzy
 msgid "Title"
 msgstr "Čas"
@@ -10274,7 +10485,7 @@ msgstr "Skupno %ld vrstic.\n"
 msgid "Total query runtime: "
 msgstr "Skupni čas vršitve stavka: "
 
-#: standard input:869 input:977 input:1050
+#: standard input:869 input:977 pgadmin/ui/frmStatus.xrc:8
 msgid "Transactions"
 msgstr "Transakcije"
 
@@ -10302,7 +10513,7 @@ msgid "Tree Level"
 msgstr "Nivo"
 
 #: src/schema/pgTrigger.cpp:247 standard input:382 input:437
-#: pgadmin/schema/pgTrigger.cpp:306 input:472
+#: pgadmin/schema/pgTrigger.cpp:306 pgadmin/ui/dlgRepTable.xrc:6
 msgid "Trigger"
 msgstr "Prožilec"
 
@@ -10322,7 +10533,7 @@ msgid "Trigger enabled?"
 msgstr "Prožilec"
 
 # standard
-#: standard input:609 input:666 input:716
+#: standard input:609 input:666 pgadmin/ui/dlgTrigger.xrc:5
 msgid "Trigger function"
 msgstr "Funkcija prožilca"
 
@@ -10341,7 +10552,7 @@ msgid "Triggers"
 msgstr "Prožilci"
 
 # standard
-#: standard input:263 input:301 input:317
+#: standard input:263 input:301 pgadmin/ui/dlgLanguage.xrc:4
 msgid "Trusted"
 msgstr "Brez gesla"
 
@@ -10364,7 +10575,7 @@ msgid "Trying to drop system object"
 msgstr "Poskušam odstraniti sistemski objekt"
 
 #: src/agent/pgaSchedule.cpp:264 standard input:441 input:496
-#: pgadmin/agent/pgaSchedule.cpp:257 input:532
+#: pgadmin/agent/pgaSchedule.cpp:257 pgadmin/ui/dlgSchedule.xrc:12
 msgid "Tuesday"
 msgstr "Torek"
 
@@ -10443,9 +10654,10 @@ msgstr "Zapisi posodobljeni"
 #: pgadmin/dlg/dlgFunction.cpp:165 pgadmin/frm/frmHbaConfig.cpp:103
 #: pgadmin/frm/frmReport.cpp:1331 pgadmin/frm/frmRestore.cpp:399
 #: pgadmin/schema/pgObject.cpp:180 pgadmin/schema/pgRole.cpp:138
-#: pgadmin/schema/pgServer.cpp:973 pgadmin/schema/pgServer.cpp:982
+#: pgadmin/schema/pgServer.cpp:978 pgadmin/schema/pgServer.cpp:987
 #: pgadmin/schema/pgTablespace.cpp:35 pgadmin/schema/pgType.cpp:298
-#: pgadmin/schema/pgUser.cpp:84 pgadmin/slony/slSet.cpp:82 input:254 input:736
+#: pgadmin/schema/pgUser.cpp:84 pgadmin/slony/slSet.cpp:82
+#: pgadmin/ui/dlgHbaConfig.xrc:3 pgadmin/ui/dlgType.xrc:5
 msgid "Type"
 msgstr "Tip"
 
@@ -10457,7 +10669,8 @@ msgid "Types"
 msgstr "Tipi"
 
 # standard
-#: standard input:420 input:616 input:475 input:673 input:511 input:723
+#: standard input:420 input:616 input:475 input:673 pgadmin/ui/dlgRule.xrc:7
+#: pgadmin/ui/dlgTrigger.xrc:12
 msgid "UPDATE"
 msgstr "UPDATE"
 
@@ -10467,7 +10680,8 @@ msgstr "UPDATE"
 msgid "UPDATE script"
 msgstr "UPDATE"
 
-#: standard input:755 input:770 input:812 input:827 input:880
+#: standard input:755 input:770 input:812 input:827
+#: pgadmin/ui/frmGrantWizard.xrc:4
 msgid "Uncheck all"
 msgstr "Počisti vse"
 
@@ -10498,13 +10712,8 @@ msgstr "Razveljavi zadnji ukaz"
 msgid "Unexpected empty cache line: dataSet already closed."
 msgstr "Nepričakovano prazen 'cache': dataSet je že zaprt."
 
-#: pgadmin/debugger/dlgDirectDbg.cpp:156
-#, fuzzy
-msgid "Unexpected target type"
-msgstr "Izberi ciljni tip podatkov."
-
 # standard
-#: standard input:742 input:799 input:867
+#: standard input:742 input:799 pgadmin/ui/frmExport.xrc:15
 msgid "Unicode UTF-8"
 msgstr "Unicode UTF-8"
 
@@ -10513,7 +10722,7 @@ msgstr "Unicode UTF-8"
 #: src/schema/pgIndexConstraint.cpp:141 standard input:213
 #: src/dlg/dlgTable.cpp:700 src/frm/frmReport.cpp:1359 input:250
 #: pgadmin/dlg/dlgTable.cpp:814 pgadmin/frm/frmReport.cpp:1343
-#: pgadmin/schema/pgIndexConstraint.cpp:162 input:268
+#: pgadmin/schema/pgIndexConstraint.cpp:162 pgadmin/ui/dlgIndex.xrc:6
 msgid "Unique"
 msgstr "Unikat"
 
@@ -10544,7 +10753,7 @@ msgstr ""
 msgid "Unknown"
 msgstr "Neznano"
 
-#: src/pgAdmin3.cpp:448 pgadmin/pgAdmin3.cpp:468
+#: src/pgAdmin3.cpp:448 pgadmin/pgAdmin3.cpp:476
 msgid "Unknown SSL mode: "
 msgstr ""
 
@@ -10557,7 +10766,7 @@ msgstr "Neznan dogodek na dialogu za iskanje!"
 msgid "Unknown option"
 msgstr "Neznana možnost"
 
-#: src/pgAdmin3.cpp:453 pgadmin/pgAdmin3.cpp:473
+#: src/pgAdmin3.cpp:453 pgadmin/pgAdmin3.cpp:481
 msgid "Unknown token in connection string: "
 msgstr ""
 
@@ -10581,7 +10790,7 @@ msgid "Unsaved data"
 msgstr "Neshranjeni podatki"
 
 #: src/schema/pgServer.cpp:850 src/schema/pgServer.cpp:870
-#: src/schema/pgServer.cpp:898 pgadmin/schema/pgServer.cpp:902
+#: src/schema/pgServer.cpp:898 pgadmin/schema/pgServer.cpp:907
 msgid "Up since"
 msgstr "Pokonci od"
 
@@ -10595,7 +10804,7 @@ msgstr "Posodobitev katalogov?"
 msgid "Upgrade Node"
 msgstr "Nadgradi vozlišče"
 
-#: standard input:311 input:366 input:401
+#: standard input:311 input:366 pgadmin/ui/dlgRepClusterUpgrade.xrc:1
 msgid "Upgrade cluster software"
 msgstr "Nadgradi programje gruče"
 
@@ -10621,7 +10830,7 @@ msgstr ""
 msgid "Use Mac style line endings"
 msgstr ""
 
-#: standard input:888 input:955
+#: standard input:888 pgadmin/ui/frmOptions.xrc:46
 msgid "Use TAB character for autocompletion"
 msgstr ""
 
@@ -10633,7 +10842,7 @@ msgstr ""
 msgid "Use current text Explain result and display it graphically"
 msgstr ""
 
-#: standard input:160 input:168
+#: standard input:160 pgadmin/ui/dlgFindReplace.xrc:30
 msgid "Use regular expressions when searching"
 msgstr ""
 
@@ -10643,14 +10852,22 @@ msgstr ""
 #: input:690 input:17 input:29 input:39 input:53 input:72 input:104 input:207
 #: input:226 input:255 input:268 input:305 input:329 input:454 input:480
 #: input:564 input:586 input:633 input:676 input:688 input:728 input:747
-#: input:11 input:32 input:40 input:54 input:73 input:114 input:178 input:243
-#: input:273 input:284 input:321 input:352 input:372 input:490 input:516
-#: input:600 input:622 input:666 input:681 input:726 input:741 input:784
-#: input:803
+#: pgadmin/ui/dlgAggregate.xrc:6 pgadmin/ui/dlgCast.xrc:9
+#: pgadmin/ui/dlgCheck.xrc:5 pgadmin/ui/dlgColumn.xrc:11
+#: pgadmin/ui/dlgConversion.xrc:10 pgadmin/ui/dlgDomain.xrc:12
+#: pgadmin/ui/dlgForeignKey.xrc:10 pgadmin/ui/dlgFunction.xrc:18
+#: pgadmin/ui/dlgGroup.xrc:4 pgadmin/ui/dlgIndex.xrc:11
+#: pgadmin/ui/dlgIndexConstraint.xrc:5 pgadmin/ui/dlgLanguage.xrc:8
+#: pgadmin/ui/dlgOperator.xrc:9 pgadmin/ui/dlgPackage.xrc:6
+#: pgadmin/ui/dlgRole.xrc:15 pgadmin/ui/dlgRule.xrc:12
+#: pgadmin/ui/dlgSchema.xrc:6 pgadmin/ui/dlgSequence.xrc:12
+#: pgadmin/ui/dlgSynonym.xrc:8 pgadmin/ui/dlgTable.xrc:12
+#: pgadmin/ui/dlgTrigger.xrc:15 pgadmin/ui/dlgType.xrc:10
+#: pgadmin/ui/dlgUser.xrc:10 pgadmin/ui/dlgView.xrc:6
 msgid "Use replication"
 msgstr "Uporabi replikacijo"
 
-#: standard input:942
+#: pgadmin/ui/frmOptions.xrc:33
 msgid "Use spaces instead of tabs"
 msgstr ""
 
@@ -10659,24 +10876,25 @@ msgstr ""
 #: src/schema/pgServer.cpp:899 src/schema/pgUser.cpp:297 standard input:202
 #: src/frm/frmHbaConfig.cpp:105 src/frm/frmStatus.cpp:126
 #: src/schema/pgServer.cpp:927 input:239 pgadmin/frm/frmHbaConfig.cpp:105
-#: pgadmin/frm/frmStatus.cpp:110 pgadmin/frm/frmStatus.cpp:128
-#: pgadmin/schema/pgServer.cpp:932 pgadmin/schema/pgUser.cpp:287 input:256
+#: pgadmin/frm/frmStatus.cpp:114 pgadmin/frm/frmStatus.cpp:132
+#: pgadmin/schema/pgServer.cpp:937 pgadmin/schema/pgUser.cpp:287
+#: pgadmin/ui/dlgHbaConfig.xrc:5
 msgid "User"
 msgstr "Uporabnik"
 
 # standard
 #: src/schema/pgUser.cpp:207 standard input:664 input:721
-#: pgadmin/schema/pgUser.cpp:197 input:777
+#: pgadmin/schema/pgUser.cpp:197 pgadmin/ui/dlgUser.xrc:3
 msgid "User ID"
 msgstr "ID uporabnika"
 
 # standard
-#: standard input:668 input:725 input:781
+#: standard input:668 input:725 pgadmin/ui/dlgUser.xrc:7
 msgid "User Privileges"
 msgstr "Pravice uporabnika"
 
 # standard
-#: standard input:669 input:726 input:782
+#: standard input:669 input:726 pgadmin/ui/dlgUser.xrc:8
 msgid "User can create databases"
 msgstr "Uporabnik lahko ustvarja baze"
 
@@ -10685,7 +10903,7 @@ msgid "User can create users"
 msgstr "Uporabnik lahko ustvarja uporabnike"
 
 # standard
-#: standard input:794 input:851 input:912
+#: standard input:794 input:851 pgadmin/ui/frmOptions.xrc:3
 msgid "User language"
 msgstr "Jezik"
 
@@ -10702,7 +10920,9 @@ msgstr ""
 #: src/schema/pgServer.cpp:838 src/schema/pgServer.cpp:858 standard input:542
 #: input:663 src/frm/frmPgpassConfig.cpp:91 src/schema/pgServer.cpp:885
 #: input:349 input:571 input:596 input:720 pgadmin/frm/frmPgpassConfig.cpp:91
-#: pgadmin/schema/pgServer.cpp:889 input:384 input:607 input:632 input:776
+#: pgadmin/schema/pgServer.cpp:894 pgadmin/ui/dlgPgpassConfig.xrc:6
+#: pgadmin/ui/dlgSelectConnection.xrc:4 pgadmin/ui/dlgServer.xrc:7
+#: pgadmin/ui/dlgUser.xrc:2
 msgid "Username"
 msgstr "Uporabniško ime"
 
@@ -10725,57 +10945,57 @@ msgstr ""
 msgid "Using an EnterpriseDB callable statement"
 msgstr ""
 
-#: pgadmin/pgAdmin3.cpp:1062
+#: pgadmin/pgAdmin3.cpp:1070
 msgid "Using embedded XRC data."
 msgstr ""
 
-#: pgadmin/pgAdmin3.cpp:1069
+#: pgadmin/pgAdmin3.cpp:1077
 msgid "Using external XRC files."
 msgstr ""
 
 # standard
 #: src/frm/frmHint.cpp:83 standard input:777 input:834
-#: pgadmin/frm/frmHint.cpp:83 input:895
+#: pgadmin/frm/frmHint.cpp:83 pgadmin/ui/frmMaintenance.xrc:4
 msgid "VACUUM"
 msgstr "VACUUM"
 
-#: standard input:588 input:645 input:693
+#: standard input:588 input:645 pgadmin/ui/dlgTable.xrc:24
 msgid "VACUUM base threshold"
 msgstr ""
 
-#: standard input:592 input:649 input:697
+#: standard input:592 input:649 pgadmin/ui/dlgTable.xrc:28
 msgid "VACUUM cost delay"
 msgstr ""
 
 # standard
-#: standard input:593 input:650 input:698
+#: standard input:593 input:650 pgadmin/ui/dlgTable.xrc:29
 msgid "VACUUM cost limit"
 msgstr "VACUUM cost omejitev"
 
 # standard
-#: standard input:780 input:837 input:898
+#: standard input:780 input:837 pgadmin/ui/frmMaintenance.xrc:7
 msgid "VACUUM options"
 msgstr "VACUUM možnosti"
 
-#: standard input:590 input:647 input:695
+#: standard input:590 input:647 pgadmin/ui/dlgTable.xrc:26
 msgid "VACUUM scale factor"
 msgstr ""
 
 # standard
-#: standard input:163 input:200 input:208
+#: standard input:163 input:200 pgadmin/ui/dlgFunction.xrc:9
 msgid "VOLATILE"
 msgstr "VOLATILE"
 
-#: standard input:584 input:641 input:689
+#: standard input:584 input:641 pgadmin/ui/dlgTable.xrc:20
 msgid "Vacuum settings"
 msgstr "Nastavitve čiščenja"
 
 # standard
-#: standard input:118 input:123 input:133
+#: standard input:118 input:123 pgadmin/ui/dlgEditGridOptions.xrc:16
 msgid "Validate"
 msgstr "Preveri"
 
-#: standard input:119 input:124 input:134
+#: standard input:119 input:124 pgadmin/ui/dlgEditGridOptions.xrc:17
 msgid "Validate the syntax of the filter string."
 msgstr "Preveri sintakso niza za filtriranje."
 
@@ -10787,7 +11007,7 @@ msgstr "Preverjam niz za filtriranje"
 # standard
 #: src/schema/pgLanguage.cpp:68 standard input:265
 #: src/schema/pgLanguage.cpp:75 input:303 pgadmin/schema/pgLanguage.cpp:69
-#: input:319
+#: pgadmin/ui/dlgLanguage.xrc:6
 msgid "Validator"
 msgstr "Validator"
 
@@ -10803,7 +11023,7 @@ msgstr "Validator"
 #: pgadmin/frm/frmMainConfig.cpp:176 pgadmin/schema/pgObject.cpp:826
 #: pgadmin/schema/pgSequence.cpp:127 pgadmin/schema/pgTablespace.cpp:135
 #: pgadmin/slony/slNode.cpp:120 pgadmin/include/schema/pgObject.h:137
-#: input:326
+#: pgadmin/ui/dlgMainConfig.xrc:2
 msgid "Value"
 msgstr "Vrednost"
 
@@ -10818,19 +11038,21 @@ msgstr "Spremenjeno"
 #: standard input:638 input:695 pgadmin/dlg/dlgDatabase.cpp:71
 #: pgadmin/dlg/dlgFunction.cpp:127 pgadmin/dlg/dlgRole.cpp:94
 #: pgadmin/dlg/dlgUser.cpp:80 pgadmin/schema/edbPackageVariable.cpp:128
-#: input:748
+#: pgadmin/ui/dlgType.xrc:17
 msgid "Variable"
 msgstr "Spremenljivka"
 
 # standard
-#: standard input:83 input:409 input:680 input:88 input:464 input:737 input:89
-#: input:234 input:500 input:793
+#: standard input:83 input:409 input:680 input:88 input:464 input:737
+#: pgadmin/ui/dlgDatabase.xrc:13 pgadmin/ui/dlgFunction.xrc:35
+#: pgadmin/ui/dlgRole.xrc:25 pgadmin/ui/dlgUser.xrc:19
 msgid "Variable Name"
 msgstr "Ime spremenljivke"
 
 # standard
-#: standard input:84 input:410 input:681 input:89 input:465 input:738 input:90
-#: input:235 input:501 input:794
+#: standard input:84 input:410 input:681 input:89 input:465 input:738
+#: pgadmin/ui/dlgDatabase.xrc:14 pgadmin/ui/dlgFunction.xrc:36
+#: pgadmin/ui/dlgRole.xrc:26 pgadmin/ui/dlgUser.xrc:20
 msgid "Variable Value"
 msgstr "Vrednost spr."
 
@@ -10840,8 +11062,9 @@ msgstr "Spremenljivka ima še vedno svojo začetno privzeto vrednost"
 
 # standard
 #: standard input:80 input:406 input:677 input:85 input:461 input:734
-#: pgadmin/schema/edbPackageVariable.cpp:134 input:86 input:231 input:497
-#: input:790
+#: pgadmin/schema/edbPackageVariable.cpp:134 pgadmin/ui/dlgDatabase.xrc:10
+#: pgadmin/ui/dlgFunction.xrc:32 pgadmin/ui/dlgRole.xrc:22
+#: pgadmin/ui/dlgUser.xrc:16
 msgid "Variables"
 msgstr "Spremenljivke"
 
@@ -10852,22 +11075,25 @@ msgstr "Obširno"
 
 # standard
 #: standard input:716 input:787 input:855 input:773 input:844 input:963
-#: input:821 input:838 input:848 input:905 input:1036
+#: pgadmin/ui/frmBackup.xrc:13 pgadmin/ui/frmBackupGlobals.xrc:6
+#: pgadmin/ui/frmBackupServer.xrc:6 pgadmin/ui/frmMaintenance.xrc:14
+#: pgadmin/ui/frmRestore.xrc:10
 msgid "Verbose messages"
 msgstr "Obširna sporočila"
 
 #: src/slony/slCluster.cpp:311 standard input:317 input:372
-#: pgadmin/schema/pgIndex.cpp:252 pgadmin/slony/slCluster.cpp:303 input:407
+#: pgadmin/schema/pgIndex.cpp:252 pgadmin/slony/slCluster.cpp:303
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:7
 msgid "Version"
 msgstr "Verzija"
 
 #: src/schema/pgServer.cpp:843 src/schema/pgServer.cpp:863
-#: src/schema/pgServer.cpp:891 pgadmin/schema/pgServer.cpp:895
+#: src/schema/pgServer.cpp:891 pgadmin/schema/pgServer.cpp:900
 msgid "Version number"
 msgstr "Številka verzije"
 
 #: src/schema/pgServer.cpp:842 src/schema/pgServer.cpp:862
-#: src/schema/pgServer.cpp:890 pgadmin/schema/pgServer.cpp:894
+#: src/schema/pgServer.cpp:890 pgadmin/schema/pgServer.cpp:899
 msgid "Version string"
 msgstr "Tekst verzije"
 
@@ -10894,7 +11120,8 @@ msgstr ""
 msgid "View Data"
 msgstr "Poglej podatke"
 
-#: standard input:103 input:108 input:94 input:118
+#: standard input:103 input:108 pgadmin/ui/dlgDirectDbg.xrc:1
+#: pgadmin/ui/dlgEditGridOptions.xrc:1
 msgid "View Data Options"
 msgstr ""
 
@@ -10963,7 +11190,7 @@ msgstr ""
 # standard
 #: src/schema/pgFunction.cpp:137 standard input:162
 #: src/schema/pgFunction.cpp:153 input:199 pgadmin/schema/pgFunction.cpp:189
-#: input:207
+#: pgadmin/ui/dlgFunction.xrc:8
 msgid "Volatility"
 msgstr "Hlapljivost"
 
@@ -10978,7 +11205,7 @@ msgstr "WARNING: %s\n"
 msgid "WARNING: %s\n"
 msgstr "WARNING: %s\n"
 
-#: standard input:405 input:460 input:496
+#: standard input:405 input:460 pgadmin/ui/dlgRole.xrc:21
 msgid "WITH ADMIN OPTION"
 msgstr "WITH ADMIN OPTION"
 
@@ -11033,11 +11260,11 @@ msgstr ""
 "\n"
 
 #: src/agent/pgaSchedule.cpp:268 standard input:442 input:497
-#: pgadmin/agent/pgaSchedule.cpp:261 input:533
+#: pgadmin/agent/pgaSchedule.cpp:261 pgadmin/ui/dlgSchedule.xrc:13
 msgid "Wednesday"
 msgstr "Sreda"
 
-#: standard input:438 input:493 input:529
+#: standard input:438 input:493 pgadmin/ui/dlgSchedule.xrc:9
 msgid "Week Days"
 msgstr "Dnevi tedna"
 
@@ -11045,11 +11272,11 @@ msgstr "Dnevi tedna"
 msgid "Weekdays"
 msgstr "Dnevi tedna"
 
-#: standard input:155 input:163
+#: standard input:155 pgadmin/ui/dlgFindReplace.xrc:25
 msgid "Whole word"
 msgstr ""
 
-#: standard input:713 input:770 input:818
+#: standard input:713 input:770 pgadmin/ui/frmBackup.xrc:10
 msgid "With OIDs"
 msgstr "Z OID"
 
@@ -11084,7 +11311,7 @@ msgid "Xact Rolled Back"
 msgstr ""
 
 #: src/base/base.cpp:47 src/frm/frmStatus.cpp:415 src/frm/frmStatus.cpp:419
-#: src/frm/frmStatus.cpp:467 pgadmin/frm/frmStatus.cpp:471
+#: src/frm/frmStatus.cpp:467 pgadmin/frm/frmStatus.cpp:479
 #: pgadmin/utils/misc.cpp:73
 msgid "Yes"
 msgstr "Da"
@@ -11143,18 +11370,18 @@ msgid "administrative node"
 msgstr "nadzorno vozlišče"
 
 # standard
-#: standard input:746 input:803 input:871
+#: standard input:746 input:803 pgadmin/ui/frmExport.xrc:19
 msgid "all columns"
 msgstr "vsi stolpci"
 
 #: src/dlg/dlgServer.cpp:200 src/schema/pgServer.cpp:826
 #: src/schema/pgServer.cpp:846 src/dlg/dlgServer.cpp:205
 #: src/schema/pgServer.cpp:873 pgadmin/dlg/dlgServer.cpp:214
-#: pgadmin/schema/pgServer.cpp:877
+#: pgadmin/schema/pgServer.cpp:882
 msgid "allow"
 msgstr "dovoli"
 
-#: src/pgAdmin3.cpp:183 pgadmin/pgAdmin3.cpp:184
+#: src/pgAdmin3.cpp:183 pgadmin/pgAdmin3.cpp:192
 #, fuzzy
 msgid "auto-connect to specified server"
 msgstr "Poveži z izbranim strežnikom."
@@ -11164,11 +11391,11 @@ msgid "can't flush file descriptor"
 msgstr ""
 
 # standard
-#: standard input:643 input:700 input:753
+#: standard input:643 input:700 pgadmin/ui/dlgType.xrc:22
 msgid "char"
 msgstr "zlog"
 
-#: src/pgAdmin3.cpp:185 pgadmin/pgAdmin3.cpp:186
+#: src/pgAdmin3.cpp:185 pgadmin/pgAdmin3.cpp:194
 #, fuzzy
 msgid "connect query tool to database"
 msgstr "Ni povezave na bazo."
@@ -11176,38 +11403,38 @@ msgstr "Ni povezave na bazo."
 msgid "daily"
 msgstr "dnevno"
 
-#: src/pgAdmin3.cpp:189 pgadmin/pgAdmin3.cpp:192
+#: src/pgAdmin3.cpp:189 pgadmin/pgAdmin3.cpp:200
 msgid "dialog translation test mode"
 msgstr ""
 
 #: src/dlg/dlgServer.cpp:201 src/schema/pgServer.cpp:827
 #: src/schema/pgServer.cpp:847 src/dlg/dlgServer.cpp:206
 #: src/schema/pgServer.cpp:874 pgadmin/dlg/dlgServer.cpp:215
-#: pgadmin/schema/pgServer.cpp:878
+#: pgadmin/schema/pgServer.cpp:883
 msgid "disable"
 msgstr "onemogoči"
 
 # standard
-#: standard input:646 input:703 input:756
+#: standard input:646 input:703 pgadmin/ui/dlgType.xrc:25
 msgid "double"
 msgstr "double"
 
-#: src/pgAdmin3.cpp:187 pgadmin/pgAdmin3.cpp:189
+#: src/pgAdmin3.cpp:187 pgadmin/pgAdmin3.cpp:197
 #, fuzzy
 msgid "edit HBA configuration file"
 msgstr "Odpri datoteko z nastavitvami"
 
-#: src/pgAdmin3.cpp:188 pgadmin/pgAdmin3.cpp:191
+#: src/pgAdmin3.cpp:188 pgadmin/pgAdmin3.cpp:199
 #, fuzzy
 msgid "edit configuration files in cluster directory"
 msgstr "Zapisujem nastavitveno datoteko na strežnik"
 
-#: src/pgAdmin3.cpp:186 pgadmin/pgAdmin3.cpp:188
+#: src/pgAdmin3.cpp:186 pgadmin/pgAdmin3.cpp:196
 #, fuzzy
 msgid "edit main configuration file"
 msgstr "Odpri datoteko z nastavitvami"
 
-#: pgadmin/pgAdmin3.cpp:190
+#: pgadmin/pgAdmin3.cpp:198
 #, fuzzy
 msgid "edit pgpass configuration file"
 msgstr "Odpri datoteko z nastavitvami"
@@ -11216,7 +11443,7 @@ msgstr "Odpri datoteko z nastavitvami"
 msgid "favourite"
 msgstr ""
 
-#: pgadmin/pgAdmin3.cpp:187
+#: pgadmin/pgAdmin3.cpp:195
 msgid "file to load into the query tool in -q or -qc mode"
 msgstr ""
 
@@ -11226,12 +11453,12 @@ msgid "folder"
 msgstr "Vloga"
 
 # standard
-#: standard input:644 input:701 input:754
+#: standard input:644 input:701 pgadmin/ui/dlgType.xrc:23
 msgid "int2"
 msgstr "int2"
 
 # standard
-#: standard input:645 input:702 input:755
+#: standard input:645 input:702 pgadmin/ui/dlgType.xrc:24
 msgid "int4"
 msgstr "int4"
 
@@ -11242,18 +11469,24 @@ msgstr "posluša"
 
 #: src/frm/frmStatus.cpp:318 src/schema/pgServer.cpp:903
 #: src/schema/pgServer.cpp:923 src/frm/frmStatus.cpp:364
-#: src/schema/pgServer.cpp:951 pgadmin/frm/frmStatus.cpp:365
-#: pgadmin/schema/pgServer.cpp:956
+#: src/schema/pgServer.cpp:951 pgadmin/frm/frmStatus.cpp:373
+#: pgadmin/schema/pgServer.cpp:961
 msgid "local pipe"
 msgstr ""
 
+#: pgadmin/frm/frmStatus.cpp:604
+#, fuzzy
+msgid "logging_collector not enabled or log_filename misconfigured"
+msgstr "redirect_stderr ni omogočen ali pa log_filename ni pravilno nastavljen"
+
 # standard
-#: standard input:194 input:676 input:231 input:733 input:248 input:789
+#: standard input:194 input:676 input:231 input:733 pgadmin/ui/dlgGroup.xrc:9
+#: pgadmin/ui/dlgUser.xrc:15
 msgid "member"
 msgstr "član"
 
 # standard
-#: standard input:404 input:459 input:495
+#: standard input:404 input:459 pgadmin/ui/dlgRole.xrc:20
 msgid "member in"
 msgstr "član v"
 
@@ -11265,7 +11498,7 @@ msgid "need password"
 msgstr "zahteva geslo"
 
 # standard
-#: standard input:744 input:801 input:869
+#: standard input:744 input:801 pgadmin/ui/frmExport.xrc:17
 msgid "no quoting"
 msgstr "brez navednic"
 
@@ -11285,34 +11518,35 @@ msgid "not counted"
 msgstr ""
 
 #: src/schema/pgServer.cpp:815 src/schema/pgServer.cpp:835
-#: src/schema/pgServer.cpp:862 pgadmin/schema/pgServer.cpp:866
+#: src/schema/pgServer.cpp:862 pgadmin/schema/pgServer.cpp:871
 msgid "not encrypted"
 msgstr "ni enkriptiran"
 
 # standard
-#: standard input:193 input:675 input:230 input:732 input:247 input:788
+#: standard input:193 input:675 input:230 input:732 pgadmin/ui/dlgGroup.xrc:8
+#: pgadmin/ui/dlgUser.xrc:14
 msgid "not member"
 msgstr "ni član"
 
 # standard
-#: standard input:403 input:458 input:494
+#: standard input:403 input:458 pgadmin/ui/dlgRole.xrc:19
 msgid "not member in"
 msgstr "ni član v"
 
 # standard
 #: src/schema/pgServer.cpp:851 src/schema/pgServer.cpp:871
 #: src/slony/slCluster.cpp:309 src/slony/slNode.cpp:254
-#: src/schema/pgServer.cpp:899 pgadmin/schema/pgServer.cpp:904
+#: src/schema/pgServer.cpp:899 pgadmin/schema/pgServer.cpp:909
 #: pgadmin/slony/slNode.cpp:245
 msgid "not running"
 msgstr "se ne izvaja"
 
 # standard
-#: standard input:745 input:802 input:870
+#: standard input:745 input:802 pgadmin/ui/frmExport.xrc:18
 msgid "only strings"
 msgstr "samo nizi"
 
-#: src/pgAdmin3.cpp:184 pgadmin/pgAdmin3.cpp:185
+#: src/pgAdmin3.cpp:184 pgadmin/pgAdmin3.cpp:193
 #, fuzzy
 msgid "open query tool"
 msgstr "Odpri datoteko s stavki"
@@ -11323,7 +11557,7 @@ msgstr "Odpri datoteko s stavki"
 msgid "options:\n"
 msgstr "možnosti:\n"
 
-#: standard input:759 input:816 input:884
+#: standard input:759 input:816 pgadmin/ui/frmHint.xrc:1
 msgid "pgAdmin Guru Hint"
 msgstr "pgAdmin guru nasvet"
 
@@ -11371,24 +11605,24 @@ msgid "pgAgent jobs"
 msgstr "pgAgent opravilo"
 
 #: src/dlg/dlgServer.cpp:383 src/dlg/dlgServer.cpp:390
-#: pgadmin/schema/pgServer.cpp:1221
+#: pgadmin/schema/pgServer.cpp:1226
 msgid "pgServer object didn't initialise because the user aborted."
 msgstr "pgServer objekt ni inicializiran zaradi preklica uporabnika."
 
 # standard
-#: standard input:822 input:892 input:960
+#: standard input:822 input:892 pgadmin/ui/frmOptions.xrc:51
 msgid "pgadmin3&%ID.log"
 msgstr "pgadmin3&%ID.log"
 
 #: src/frm/frmStatus.cpp:594 src/frm/frmStatus.cpp:598
-#: src/frm/frmStatus.cpp:646 pgadmin/frm/frmStatus.cpp:650
+#: src/frm/frmStatus.cpp:646 pgadmin/frm/frmStatus.cpp:661
 msgid "pgadmin:Logfile rotated."
 msgstr "pgadmin:Dnevniška datoteka zamenjana."
 
 #: src/dlg/dlgServer.cpp:196 src/schema/pgServer.cpp:825
 #: src/schema/pgServer.cpp:845 src/dlg/dlgServer.cpp:201
 #: src/schema/pgServer.cpp:872 pgadmin/dlg/dlgServer.cpp:210
-#: pgadmin/schema/pgServer.cpp:876
+#: pgadmin/schema/pgServer.cpp:881
 msgid "prefer"
 msgstr "željeno"
 
@@ -11398,7 +11632,7 @@ msgid "ready"
 msgstr "pripravljen"
 
 #: src/frm/frmStatus.cpp:537 src/frm/frmStatus.cpp:541
-#: src/frm/frmStatus.cpp:589 pgadmin/frm/frmStatus.cpp:593
+#: src/frm/frmStatus.cpp:589 pgadmin/frm/frmStatus.cpp:602
 msgid "redirect_stderr not enabled or log_filename misconfigured"
 msgstr "redirect_stderr ni omogočen ali pa log_filename ni pravilno nastavljen"
 
@@ -11408,12 +11642,12 @@ msgstr "ponovi"
 #: src/dlg/dlgServer.cpp:195 src/schema/pgServer.cpp:824
 #: src/schema/pgServer.cpp:844 src/dlg/dlgServer.cpp:200
 #: src/schema/pgServer.cpp:871 pgadmin/dlg/dlgServer.cpp:209
-#: pgadmin/schema/pgServer.cpp:875
+#: pgadmin/schema/pgServer.cpp:880
 msgid "require"
 msgstr "zahtevaj"
 
 #: src/schema/pgServer.cpp:851 src/schema/pgServer.cpp:871
-#: src/schema/pgServer.cpp:899 pgadmin/schema/pgServer.cpp:904
+#: src/schema/pgServer.cpp:899 pgadmin/schema/pgServer.cpp:909
 msgid "running"
 msgstr "teče"
 
@@ -11421,7 +11655,7 @@ msgstr "teče"
 msgid "set by Override"
 msgstr ""
 
-#: src/pgAdmin3.cpp:182 pgadmin/pgAdmin3.cpp:183
+#: src/pgAdmin3.cpp:182 pgadmin/pgAdmin3.cpp:191
 msgid "show this help message"
 msgstr ""
 
@@ -11454,9 +11688,14 @@ msgid "yearly"
 msgstr "letno"
 
 # standard
-#: standard input:735 input:792 input:886 input:860 input:953
+#: standard input:735 input:792 input:886 pgadmin/ui/frmExport.xrc:8
+#: pgadmin/ui/frmOptions.xrc:44
 msgid "|"
 msgstr "|"
+
+#, fuzzy
+#~ msgid "Unexpected target type"
+#~ msgstr "Izberi ciljni tip podatkov."
 
 #, fuzzy
 #~ msgid "%d commands in queue"

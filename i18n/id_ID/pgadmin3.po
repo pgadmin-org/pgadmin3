@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgAdmin3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-26 10:28+0100\n"
+"POT-Creation-Date: 2007-09-28 15:36+0100\n"
 "PO-Revision-Date: 2004-10-08 11:05+0700\n"
 "Last-Translator: Erwien Samantha Y <erwiensamantha@sederhana.or.id>\n"
 "Language-Team: pgAdmin Developers <pgadmin-hackers@postgresql.org>\n"
@@ -134,7 +134,7 @@ msgid " [options] <connect-string>\n"
 msgstr ""
 
 #: src/frm/frmStatus.cpp:783 src/frm/frmStatus.cpp:787
-#: src/frm/frmStatus.cpp:835 pgadmin/frm/frmStatus.cpp:839
+#: src/frm/frmStatus.cpp:835 pgadmin/frm/frmStatus.cpp:850
 msgid " current"
 msgstr " saat ini"
 
@@ -189,7 +189,8 @@ msgid " statistics"
 msgstr "Statistik"
 
 # standard
-#: standard input:737 input:794 input:881 input:862 input:948
+#: standard input:737 input:794 input:881 pgadmin/ui/frmExport.xrc:10
+#: pgadmin/ui/frmOptions.xrc:39
 msgid "\""
 msgstr "\""
 
@@ -233,8 +234,8 @@ msgid "%d rows."
 msgstr "%d baris."
 
 #: src/frm/frmStatus.cpp:197 src/frm/frmStatus.cpp:247
-#: src/frm/frmStatus.cpp:291 pgadmin/frm/frmStatus.cpp:199
-#: pgadmin/frm/frmStatus.cpp:248 pgadmin/frm/frmStatus.cpp:292
+#: src/frm/frmStatus.cpp:291 pgadmin/frm/frmStatus.cpp:203
+#: pgadmin/frm/frmStatus.cpp:254 pgadmin/frm/frmStatus.cpp:300
 #, fuzzy, c-format
 msgid "%d seconds"
 msgstr "%.2f detik"
@@ -338,7 +339,7 @@ msgstr "&Tentang..."
 # standard input:426
 # standard input:14
 # standard
-#: standard input:15
+#: pgadmin/ui/dlgAggregate.xrc:10
 msgid "&Add"
 msgstr "&Tambah"
 
@@ -347,7 +348,7 @@ msgid "&Add %s to query"
 msgstr "&Tambahkan %s ke query"
 
 #: src/dlg/dlgServer.cpp:316 src/dlg/dlgServer.cpp:323
-#: pgadmin/schema/pgServer.cpp:1153
+#: pgadmin/schema/pgServer.cpp:1158
 msgid "&Add Server..."
 msgstr "Tambah &Server..."
 
@@ -355,7 +356,8 @@ msgid "&Add Table/View..."
 msgstr "&Tambah Tabel/Tampilan"
 
 # standard
-#: standard input:376 input:729 input:806
+#: pgadmin/ui/dlgPackage.xrc:10 pgadmin/ui/dlgTrigger.xrc:18
+#: pgadmin/ui/dlgView.xrc:9
 #, fuzzy
 msgid "&Apply"
 msgstr "Apply"
@@ -406,16 +408,38 @@ msgstr "&Bugreport"
 #: standard input:57 input:518 input:727 input:751 input:758 input:766
 #: input:773 input:791 input:837 input:845 input:861 input:884 input:62
 #: input:132 input:574 input:784 input:808 input:815 input:823 input:830
-#: input:848 input:907 input:915 input:953 input:969 input:993 input:5
-#: input:23 input:35 input:43 input:63 input:76 input:93 input:99 input:117
-#: input:135 input:199 input:239 input:251 input:262 input:279 input:290
-#: input:313 input:324 input:330 input:336 input:343 input:366 input:378
-#: input:389 input:400 input:410 input:417 input:423 input:430 input:437
-#: input:444 input:451 input:458 input:466 input:475 input:504 input:520
-#: input:594 input:603 input:610 input:625 input:641 input:658 input:669
-#: input:703 input:711 input:731 input:774 input:797 input:832 input:842
-#: input:852 input:876 input:883 input:891 input:909 input:979 input:987
-#: input:1026 input:1042
+#: input:848 input:907 input:915 input:953 input:969 input:993
+#: pgadmin/ui/dlgAddFavourite.xrc:5 pgadmin/ui/dlgAggregate.xrc:18
+#: pgadmin/ui/dlgCast.xrc:12 pgadmin/ui/dlgCheck.xrc:8
+#: pgadmin/ui/dlgColumn.xrc:14 pgadmin/ui/dlgConnect.xrc:6
+#: pgadmin/ui/dlgConversion.xrc:13 pgadmin/ui/dlgDatabase.xrc:17
+#: pgadmin/ui/dlgDirectDbg.xrc:6 pgadmin/ui/dlgDomain.xrc:15
+#: pgadmin/ui/dlgEditGridOptions.xrc:18 pgadmin/ui/dlgForeignKey.xrc:31
+#: pgadmin/ui/dlgFunction.xrc:40 pgadmin/ui/dlgGroup.xrc:12
+#: pgadmin/ui/dlgHbaConfig.xrc:11 pgadmin/ui/dlgIndex.xrc:17
+#: pgadmin/ui/dlgIndexConstraint.xrc:11 pgadmin/ui/dlgJob.xrc:23
+#: pgadmin/ui/dlgLanguage.xrc:11 pgadmin/ui/dlgMainConfig.xrc:6
+#: pgadmin/ui/dlgManageFavourites.xrc:6 pgadmin/ui/dlgManageMacros.xrc:7
+#: pgadmin/ui/dlgOperator.xrc:23 pgadmin/ui/dlgPackage.xrc:12
+#: pgadmin/ui/dlgPgpassConfig.xrc:11 pgadmin/ui/dlgRepCluster.xrc:11
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:10 pgadmin/ui/dlgRepListen.xrc:7
+#: pgadmin/ui/dlgRepNode.xrc:6 pgadmin/ui/dlgRepPath.xrc:7
+#: pgadmin/ui/dlgRepSequence.xrc:7 pgadmin/ui/dlgRepSet.xrc:7
+#: pgadmin/ui/dlgRepSetMerge.xrc:7 pgadmin/ui/dlgRepSetMove.xrc:7
+#: pgadmin/ui/dlgRepSubscription.xrc:8 pgadmin/ui/dlgRepTable.xrc:9
+#: pgadmin/ui/dlgRole.xrc:29 pgadmin/ui/dlgRule.xrc:16
+#: pgadmin/ui/dlgSchedule.xrc:74 pgadmin/ui/dlgSchema.xrc:9
+#: pgadmin/ui/dlgSelectConnection.xrc:7 pgadmin/ui/dlgSequence.xrc:15
+#: pgadmin/ui/dlgServer.xrc:16 pgadmin/ui/dlgStep.xrc:17
+#: pgadmin/ui/dlgSynonym.xrc:11 pgadmin/ui/dlgTable.xrc:34
+#: pgadmin/ui/dlgTablespace.xrc:8 pgadmin/ui/dlgTrigger.xrc:20
+#: pgadmin/ui/dlgType.xrc:43 pgadmin/ui/dlgUser.xrc:23
+#: pgadmin/ui/dlgView.xrc:11 pgadmin/ui/frmBackup.xrc:24
+#: pgadmin/ui/frmBackupGlobals.xrc:10 pgadmin/ui/frmBackupServer.xrc:10
+#: pgadmin/ui/frmExport.xrc:24 pgadmin/ui/frmGrantWizard.xrc:7
+#: pgadmin/ui/frmHint.xrc:8 pgadmin/ui/frmMaintenance.xrc:18
+#: pgadmin/ui/frmOptions.xrc:70 pgadmin/ui/frmPassword.xrc:7
+#: pgadmin/ui/frmReport.xrc:39 pgadmin/ui/frmRestore.xrc:16
 msgid "&Cancel"
 msgstr "&Batal"
 
@@ -428,7 +452,7 @@ msgstr "&Cancel\tAlt-Break"
 # standard input:3
 # standard
 #: standard input:698 src/frm/frmEditGrid.cpp:155 input:755
-#: pgadmin/frm/frmEditGrid.cpp:156 input:140
+#: pgadmin/frm/frmEditGrid.cpp:156 pgadmin/ui/dlgFindReplace.xrc:2
 msgid "&Close"
 msgstr "&Tutup"
 
@@ -441,7 +465,7 @@ msgid "&Configuration Help\tF1"
 msgstr ""
 
 #: src/dlg/dlgServer.cpp:466 src/dlg/dlgServer.cpp:473
-#: pgadmin/schema/pgServer.cpp:1304
+#: pgadmin/schema/pgServer.cpp:1309
 msgid "&Connect"
 msgstr "&Koneksi"
 
@@ -502,7 +526,7 @@ msgstr ""
 # standard input:401
 # standard input:27
 # standard
-#: standard input:831 input:901 input:969
+#: standard input:831 input:901 pgadmin/ui/frmOptions.xrc:60
 msgid "&Debug (not recommended for normal use)"
 msgstr "&Debug (user biasa tidak direkomendasi)"
 
@@ -516,7 +540,7 @@ msgstr ""
 # src/ui/frmOptions.cpp:81 standard input:6
 # src/ui/frmOptions.cpp:81 standard input:13
 # standard
-#: standard input:974
+#: pgadmin/ui/frmOptions.xrc:65
 #, fuzzy
 msgid "&Default"
 msgstr "Default"
@@ -591,7 +615,7 @@ msgstr "&Diskoneksi"
 msgid "&Display"
 msgstr "&Tampilkan"
 
-#: standard input:935 input:1007
+#: standard input:935 pgadmin/ui/frmReport.xrc:20
 msgid "&Do not use a stylesheet"
 msgstr ""
 
@@ -607,11 +631,11 @@ msgstr "&Edit"
 msgid "&Edit grid help"
 msgstr ""
 
-#: standard input:931 input:1003
+#: standard input:931 pgadmin/ui/frmReport.xrc:16
 msgid "&Embed an external stylesheet (specified file must exist)"
 msgstr ""
 
-#: standard input:929 input:1001
+#: standard input:929 pgadmin/ui/frmReport.xrc:14
 msgid "&Embed the default stylesheet"
 msgstr ""
 
@@ -622,7 +646,7 @@ msgstr ""
 # standard input:399
 # standard input:25
 # standard
-#: standard input:828 input:898 input:966
+#: standard input:828 input:898 pgadmin/ui/frmOptions.xrc:57
 msgid "&Errors only"
 msgstr "Hanya Ke&salahan"
 
@@ -672,7 +696,7 @@ msgstr ""
 msgid "&File"
 msgstr "&Berkas"
 
-#: standard input:134 input:142
+#: standard input:134 pgadmin/ui/dlgFindReplace.xrc:4
 #, fuzzy
 msgid "&Find"
 msgstr "Cari"
@@ -686,7 +710,7 @@ msgstr "&Find\tCtrl-F"
 msgid "&Find and Replace\tCtrl-F"
 msgstr "&Find\tCtrl-F"
 
-#: standard input:762 input:819 input:887
+#: standard input:762 input:819 pgadmin/ui/frmHint.xrc:4
 #, fuzzy
 msgid "&Fix it!"
 msgstr "&Keluar"
@@ -708,14 +732,31 @@ msgstr "&Grant Wizard"
 #: pgadmin/debugger/frmDebugger.cpp:324 pgadmin/debugger/frmDebugger.cpp:326
 #: pgadmin/frm/frmConfig.cpp:141 pgadmin/frm/frmConfig.cpp:154
 #: pgadmin/frm/frmEditGrid.cpp:191 pgadmin/frm/frmMain.cpp:423
-#: pgadmin/frm/frmQuery.cpp:234 pgadmin/frm/frmQuery.cpp:236 input:61
-#: input:260 input:277 input:288 input:311 input:322 input:328 input:341
-#: input:364 input:375 input:387 input:398 input:408 input:415 input:421
-#: input:428 input:435 input:442 input:449 input:456 input:464 input:473
-#: input:502 input:518 input:592 input:601 input:608 input:623 input:639
-#: input:656 input:667 input:701 input:709 input:728 input:772 input:795
-#: input:805 input:830 input:840 input:850 input:874 input:881 input:886
-#: input:907 input:975 input:985 input:1024 input:1039
+#: pgadmin/frm/frmQuery.cpp:234 pgadmin/frm/frmQuery.cpp:236
+#: pgadmin/ui/dlgConnect.xrc:4 pgadmin/ui/dlgHbaConfig.xrc:9
+#: pgadmin/ui/dlgIndex.xrc:15 pgadmin/ui/dlgIndexConstraint.xrc:9
+#: pgadmin/ui/dlgJob.xrc:21 pgadmin/ui/dlgLanguage.xrc:9
+#: pgadmin/ui/dlgMainConfig.xrc:4 pgadmin/ui/dlgManageMacros.xrc:5
+#: pgadmin/ui/dlgOperator.xrc:21 pgadmin/ui/dlgPackage.xrc:9
+#: pgadmin/ui/dlgPgpassConfig.xrc:9 pgadmin/ui/dlgRepCluster.xrc:9
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:8 pgadmin/ui/dlgRepListen.xrc:5
+#: pgadmin/ui/dlgRepNode.xrc:4 pgadmin/ui/dlgRepPath.xrc:5
+#: pgadmin/ui/dlgRepSequence.xrc:5 pgadmin/ui/dlgRepSet.xrc:5
+#: pgadmin/ui/dlgRepSetMerge.xrc:5 pgadmin/ui/dlgRepSetMove.xrc:5
+#: pgadmin/ui/dlgRepSubscription.xrc:6 pgadmin/ui/dlgRepTable.xrc:7
+#: pgadmin/ui/dlgRole.xrc:27 pgadmin/ui/dlgRule.xrc:14
+#: pgadmin/ui/dlgSchedule.xrc:72 pgadmin/ui/dlgSchema.xrc:7
+#: pgadmin/ui/dlgSelectConnection.xrc:5 pgadmin/ui/dlgSequence.xrc:13
+#: pgadmin/ui/dlgServer.xrc:14 pgadmin/ui/dlgStep.xrc:15
+#: pgadmin/ui/dlgSynonym.xrc:9 pgadmin/ui/dlgTable.xrc:32
+#: pgadmin/ui/dlgTablespace.xrc:6 pgadmin/ui/dlgTrigger.xrc:17
+#: pgadmin/ui/dlgType.xrc:41 pgadmin/ui/dlgUser.xrc:21
+#: pgadmin/ui/dlgView.xrc:8 pgadmin/ui/frmBackup.xrc:22
+#: pgadmin/ui/frmBackupGlobals.xrc:8 pgadmin/ui/frmBackupServer.xrc:8
+#: pgadmin/ui/frmExport.xrc:22 pgadmin/ui/frmGrantWizard.xrc:5
+#: pgadmin/ui/frmHint.xrc:3 pgadmin/ui/frmMaintenance.xrc:16
+#: pgadmin/ui/frmOptions.xrc:66 pgadmin/ui/frmPassword.xrc:5
+#: pgadmin/ui/frmReport.xrc:37 pgadmin/ui/frmRestore.xrc:13
 msgid "&Help"
 msgstr "B&antuan"
 
@@ -749,7 +790,8 @@ msgstr ""
 msgid "&Line ends"
 msgstr ""
 
-#: standard input:933 input:937 input:1005 input:1009
+#: standard input:933 input:937 pgadmin/ui/frmReport.xrc:18
+#: pgadmin/ui/frmReport.xrc:22
 msgid "&Link to an external stylesheet"
 msgstr ""
 
@@ -775,7 +817,7 @@ msgstr "&Maintenance"
 msgid "&New window\tCtrl-N"
 msgstr "&Undo\tCtrl-Z"
 
-#: standard input:764 input:821 input:889
+#: standard input:764 input:821 pgadmin/ui/frmHint.xrc:6
 #, fuzzy
 msgid "&No"
 msgstr "Tidak"
@@ -783,7 +825,7 @@ msgstr "Tidak"
 # standard input:398
 # standard input:24
 # standard
-#: standard input:827 input:897 input:965
+#: standard input:827 input:897 pgadmin/ui/frmOptions.xrc:56
 msgid "&No logging"
 msgstr "Tidak &Ada pencatatan"
 
@@ -800,15 +842,37 @@ msgstr "Tidak &Ada pencatatan"
 #: input:765 input:772 input:790 input:835 input:844 input:860 input:883
 #: input:61 input:573 input:756 input:783 input:807 input:814 input:822
 #: input:829 input:847 input:905 input:914 input:952 input:968 input:992
-#: input:4 input:22 input:34 input:42 input:62 input:75 input:92 input:101
-#: input:116 input:137 input:198 input:238 input:250 input:261 input:278
-#: input:289 input:312 input:323 input:329 input:335 input:342 input:365
-#: input:377 input:388 input:399 input:409 input:416 input:422 input:429
-#: input:436 input:443 input:450 input:457 input:465 input:474 input:503
-#: input:519 input:593 input:602 input:609 input:624 input:640 input:657
-#: input:668 input:702 input:710 input:730 input:773 input:796 input:831
-#: input:841 input:851 input:875 input:882 input:890 input:908 input:977
-#: input:986 input:1025 input:1041
+#: pgadmin/ui/dlgAddFavourite.xrc:4 pgadmin/ui/dlgAggregate.xrc:17
+#: pgadmin/ui/dlgCast.xrc:11 pgadmin/ui/dlgCheck.xrc:7
+#: pgadmin/ui/dlgColumn.xrc:13 pgadmin/ui/dlgConnect.xrc:5
+#: pgadmin/ui/dlgConversion.xrc:12 pgadmin/ui/dlgDatabase.xrc:16
+#: pgadmin/ui/dlgDirectDbg.xrc:8 pgadmin/ui/dlgDomain.xrc:14
+#: pgadmin/ui/dlgEditGridOptions.xrc:20 pgadmin/ui/dlgForeignKey.xrc:30
+#: pgadmin/ui/dlgFunction.xrc:39 pgadmin/ui/dlgGroup.xrc:11
+#: pgadmin/ui/dlgHbaConfig.xrc:10 pgadmin/ui/dlgIndex.xrc:16
+#: pgadmin/ui/dlgIndexConstraint.xrc:10 pgadmin/ui/dlgJob.xrc:22
+#: pgadmin/ui/dlgLanguage.xrc:10 pgadmin/ui/dlgMainConfig.xrc:5
+#: pgadmin/ui/dlgManageFavourites.xrc:5 pgadmin/ui/dlgManageMacros.xrc:6
+#: pgadmin/ui/dlgOperator.xrc:22 pgadmin/ui/dlgPackage.xrc:11
+#: pgadmin/ui/dlgPgpassConfig.xrc:10 pgadmin/ui/dlgRepCluster.xrc:10
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:9 pgadmin/ui/dlgRepListen.xrc:6
+#: pgadmin/ui/dlgRepNode.xrc:5 pgadmin/ui/dlgRepPath.xrc:6
+#: pgadmin/ui/dlgRepSequence.xrc:6 pgadmin/ui/dlgRepSet.xrc:6
+#: pgadmin/ui/dlgRepSetMerge.xrc:6 pgadmin/ui/dlgRepSetMove.xrc:6
+#: pgadmin/ui/dlgRepSubscription.xrc:7 pgadmin/ui/dlgRepTable.xrc:8
+#: pgadmin/ui/dlgRole.xrc:28 pgadmin/ui/dlgRule.xrc:15
+#: pgadmin/ui/dlgSchedule.xrc:73 pgadmin/ui/dlgSchema.xrc:8
+#: pgadmin/ui/dlgSelectConnection.xrc:6 pgadmin/ui/dlgSequence.xrc:14
+#: pgadmin/ui/dlgServer.xrc:15 pgadmin/ui/dlgStep.xrc:16
+#: pgadmin/ui/dlgSynonym.xrc:10 pgadmin/ui/dlgTable.xrc:33
+#: pgadmin/ui/dlgTablespace.xrc:7 pgadmin/ui/dlgTrigger.xrc:19
+#: pgadmin/ui/dlgType.xrc:42 pgadmin/ui/dlgUser.xrc:22
+#: pgadmin/ui/dlgView.xrc:10 pgadmin/ui/frmBackup.xrc:23
+#: pgadmin/ui/frmBackupGlobals.xrc:9 pgadmin/ui/frmBackupServer.xrc:9
+#: pgadmin/ui/frmExport.xrc:23 pgadmin/ui/frmGrantWizard.xrc:6
+#: pgadmin/ui/frmHint.xrc:7 pgadmin/ui/frmMaintenance.xrc:17
+#: pgadmin/ui/frmOptions.xrc:68 pgadmin/ui/frmPassword.xrc:6
+#: pgadmin/ui/frmReport.xrc:38 pgadmin/ui/frmRestore.xrc:15
 msgid "&OK"
 msgstr "&OK"
 
@@ -946,12 +1010,12 @@ msgstr "Re&fresh\tF5"
 # src/ui/dlgProperty.cpp:854 standard input:33
 # src/ui/dlgProperty.cpp:854 standard input:15
 # standard
-#: standard input:14
+#: pgadmin/ui/dlgAggregate.xrc:9
 #, fuzzy
 msgid "&Remove"
 msgstr "Menghapus"
 
-#: standard input:136 input:144
+#: standard input:136 pgadmin/ui/dlgFindReplace.xrc:6
 #, fuzzy
 msgid "&Replace"
 msgstr "Relasi"
@@ -1013,7 +1077,7 @@ msgid "&Save definition..."
 msgstr "&Difinisi Penyimpanan ..."
 
 #: src/frm/frmStatus.cpp:999 src/frm/frmStatus.cpp:1003
-#: src/frm/frmStatus.cpp:1051 pgadmin/frm/frmStatus.cpp:1055
+#: src/frm/frmStatus.cpp:1051 pgadmin/frm/frmStatus.cpp:1141
 msgid "&Server Status"
 msgstr "Status &Server"
 
@@ -1098,7 +1162,7 @@ msgstr "&Undo\tCtrl-Z"
 #: standard input:859 src/frm/frmEditGrid.cpp:189 src/frm/frmMain.cpp:396
 #: src/frm/frmQuery.cpp:166 input:967 pgadmin/debugger/frmDebugger.cpp:321
 #: pgadmin/frm/frmEditGrid.cpp:190 pgadmin/frm/frmMain.cpp:421
-#: pgadmin/frm/frmQuery.cpp:231 input:1040
+#: pgadmin/frm/frmQuery.cpp:231 pgadmin/ui/frmRestore.xrc:14
 msgid "&View"
 msgstr "&Tampilan"
 
@@ -1111,25 +1175,26 @@ msgstr "Relasi"
 msgid "&Word wrap"
 msgstr ""
 
-#: standard input:924 input:996
+#: standard input:924 pgadmin/ui/frmReport.xrc:9
 msgid "&XHTML 1.0 Transitional"
 msgstr ""
 
-#: standard input:926 input:998
+#: standard input:926 pgadmin/ui/frmReport.xrc:11
 msgid "&XML"
 msgstr ""
 
-#: standard input:939 input:1011
+#: standard input:939 pgadmin/ui/frmReport.xrc:24
 msgid "&XSLT Process the XML data"
 msgstr ""
 
-#: standard input:763 input:820 input:888
+#: standard input:763 input:820 pgadmin/ui/frmHint.xrc:5
 #, fuzzy
 msgid "&Yes"
 msgstr "Ya"
 
 # standard
-#: standard input:738 input:795 input:882 input:863 input:949
+#: standard input:738 input:795 input:882 pgadmin/ui/frmExport.xrc:11
+#: pgadmin/ui/frmOptions.xrc:40
 msgid "'"
 msgstr "'"
 
@@ -1155,7 +1220,8 @@ msgid "* Inherited columns from %s."
 msgstr "Inherit dari tabel %s"
 
 # standard
-#: standard input:734 input:791 input:885 input:859 input:952
+#: standard input:734 input:791 input:885 pgadmin/ui/frmExport.xrc:7
+#: pgadmin/ui/frmOptions.xrc:43
 msgid ","
 msgstr ","
 
@@ -1231,9 +1297,13 @@ msgstr ""
 # standard
 #: standard input:707 input:748 input:800 input:803 input:813 input:824
 #: input:849 input:764 input:805 input:857 input:860 input:870 input:894
-#: input:944 input:949 input:957 input:812 input:836 input:846 input:873
-#: input:919 input:921 input:923 input:926 input:936 input:962 input:1016
-#: input:1021 input:1030
+#: input:944 input:949 input:957 pgadmin/ui/frmBackup.xrc:4
+#: pgadmin/ui/frmBackupGlobals.xrc:4 pgadmin/ui/frmBackupServer.xrc:4
+#: pgadmin/ui/frmExport.xrc:21 pgadmin/ui/frmOptions.xrc:10
+#: pgadmin/ui/frmOptions.xrc:12 pgadmin/ui/frmOptions.xrc:14
+#: pgadmin/ui/frmOptions.xrc:17 pgadmin/ui/frmOptions.xrc:27
+#: pgadmin/ui/frmOptions.xrc:53 pgadmin/ui/frmReport.xrc:29
+#: pgadmin/ui/frmReport.xrc:34 pgadmin/ui/frmRestore.xrc:4
 msgid "..."
 msgstr "..."
 
@@ -1242,8 +1312,8 @@ msgid "0 Secs"
 msgstr "0 Detik"
 
 #: src/frm/frmStatus.cpp:194 src/frm/frmStatus.cpp:244
-#: src/frm/frmStatus.cpp:288 pgadmin/frm/frmStatus.cpp:196
-#: pgadmin/frm/frmStatus.cpp:245 pgadmin/frm/frmStatus.cpp:289
+#: src/frm/frmStatus.cpp:288 pgadmin/frm/frmStatus.cpp:200
+#: pgadmin/frm/frmStatus.cpp:251 pgadmin/frm/frmStatus.cpp:297
 msgid "1 second"
 msgstr ""
 
@@ -1257,109 +1327,109 @@ msgstr "%d baris."
 msgid "1000 rows"
 msgstr "%d baris."
 
-#: standard input:456 input:511 input:547
+#: standard input:456 input:511 pgadmin/ui/dlgSchedule.xrc:27
 msgid "10th"
 msgstr ""
 
-#: standard input:457 input:512 input:548
+#: standard input:457 input:512 pgadmin/ui/dlgSchedule.xrc:28
 msgid "11th"
 msgstr ""
 
-#: standard input:458 input:513 input:549
+#: standard input:458 input:513 pgadmin/ui/dlgSchedule.xrc:29
 msgid "12th"
 msgstr ""
 
-#: standard input:459 input:514 input:550
+#: standard input:459 input:514 pgadmin/ui/dlgSchedule.xrc:30
 msgid "13th"
 msgstr ""
 
-#: standard input:460 input:515 input:551
+#: standard input:460 input:515 pgadmin/ui/dlgSchedule.xrc:31
 msgid "14th"
 msgstr ""
 
-#: standard input:461 input:516 input:552
+#: standard input:461 input:516 pgadmin/ui/dlgSchedule.xrc:32
 msgid "15th"
 msgstr ""
 
-#: standard input:462 input:517 input:553
+#: standard input:462 input:517 pgadmin/ui/dlgSchedule.xrc:33
 msgid "16th"
 msgstr ""
 
-#: standard input:463 input:518 input:554
+#: standard input:463 input:518 pgadmin/ui/dlgSchedule.xrc:34
 msgid "17th"
 msgstr ""
 
-#: standard input:464 input:519 input:555
+#: standard input:464 input:519 pgadmin/ui/dlgSchedule.xrc:35
 msgid "18th"
 msgstr ""
 
-#: standard input:465 input:520 input:556
+#: standard input:465 input:520 pgadmin/ui/dlgSchedule.xrc:36
 msgid "19th"
 msgstr ""
 
-#: standard input:447 input:502 input:538
+#: standard input:447 input:502 pgadmin/ui/dlgSchedule.xrc:18
 msgid "1st"
 msgstr ""
 
-#: standard input:466 input:521 input:557
+#: standard input:466 input:521 pgadmin/ui/dlgSchedule.xrc:37
 msgid "20th"
 msgstr ""
 
-#: standard input:467 input:522 input:558
+#: standard input:467 input:522 pgadmin/ui/dlgSchedule.xrc:38
 msgid "21st"
 msgstr ""
 
-#: standard input:468 input:523 input:559
+#: standard input:468 input:523 pgadmin/ui/dlgSchedule.xrc:39
 msgid "22nd"
 msgstr ""
 
-#: standard input:469 input:524 input:560
+#: standard input:469 input:524 pgadmin/ui/dlgSchedule.xrc:40
 msgid "23rd"
 msgstr ""
 
-#: standard input:470 input:525 input:561
+#: standard input:470 input:525 pgadmin/ui/dlgSchedule.xrc:41
 msgid "24th"
 msgstr ""
 
-#: standard input:471 input:526 input:562
+#: standard input:471 input:526 pgadmin/ui/dlgSchedule.xrc:42
 msgid "25th"
 msgstr ""
 
-#: standard input:472 input:527 input:563
+#: standard input:472 input:527 pgadmin/ui/dlgSchedule.xrc:43
 msgid "26th"
 msgstr ""
 
-#: standard input:473 input:528 input:564
+#: standard input:473 input:528 pgadmin/ui/dlgSchedule.xrc:44
 msgid "27th"
 msgstr ""
 
-#: standard input:474 input:529 input:565
+#: standard input:474 input:529 pgadmin/ui/dlgSchedule.xrc:45
 msgid "28th"
 msgstr ""
 
-#: standard input:475 input:530 input:566
+#: standard input:475 input:530 pgadmin/ui/dlgSchedule.xrc:46
 msgid "29th"
 msgstr ""
 
 # standard
-#: standard input:448 input:503 input:539
+#: standard input:448 input:503 pgadmin/ui/dlgSchedule.xrc:19
 #, fuzzy
 msgid "2nd"
 msgstr "End"
 
-#: standard input:476 input:531 input:567
+#: standard input:476 input:531 pgadmin/ui/dlgSchedule.xrc:47
 msgid "30th"
 msgstr ""
 
-#: standard input:477 input:532 input:568
+#: standard input:477 input:532 pgadmin/ui/dlgSchedule.xrc:48
 msgid "31st"
 msgstr ""
 
-#: standard input:449 input:504 input:540
+#: standard input:449 input:504 pgadmin/ui/dlgSchedule.xrc:20
 msgid "3rd"
 msgstr ""
 
-#: standard input:450 input:505 input:541
+#: standard input:450 input:505 pgadmin/ui/dlgSchedule.xrc:21
 msgid "4th"
 msgstr ""
 
@@ -1368,23 +1438,23 @@ msgstr ""
 msgid "500 rows"
 msgstr "%d baris."
 
-#: standard input:451 input:506 input:542
+#: standard input:451 input:506 pgadmin/ui/dlgSchedule.xrc:22
 msgid "5th"
 msgstr ""
 
-#: standard input:452 input:507 input:543
+#: standard input:452 input:507 pgadmin/ui/dlgSchedule.xrc:23
 msgid "6th"
 msgstr ""
 
-#: standard input:453 input:508 input:544
+#: standard input:453 input:508 pgadmin/ui/dlgSchedule.xrc:24
 msgid "7th"
 msgstr ""
 
-#: standard input:454 input:509 input:545
+#: standard input:454 input:509 pgadmin/ui/dlgSchedule.xrc:25
 msgid "8th"
 msgstr ""
 
-#: standard input:455 input:510 input:546
+#: standard input:455 input:510 pgadmin/ui/dlgSchedule.xrc:26
 msgid "9th"
 msgstr ""
 
@@ -1401,14 +1471,15 @@ msgstr ""
 "Siap0siap untuk crash!"
 
 # standard
-#: standard input:733 input:790 input:884 input:858 input:951
+#: standard input:733 input:790 input:884 pgadmin/ui/frmExport.xrc:6
+#: pgadmin/ui/frmOptions.xrc:42
 msgid ";"
 msgstr ";"
 
 # standard input:196
 # standard input:16
 # standard
-#: standard input:293 input:337 input:360
+#: standard input:293 input:337 pgadmin/ui/dlgOperator.xrc:17
 msgid "< operator"
 msgstr "< operator"
 
@@ -1417,7 +1488,8 @@ msgstr "< operator"
 # standard input:10
 # standard
 #: standard input:192 input:402 input:674 input:229 input:457 input:731
-#: input:246 input:493 input:787
+#: pgadmin/ui/dlgGroup.xrc:7 pgadmin/ui/dlgRole.xrc:18
+#: pgadmin/ui/dlgUser.xrc:13
 msgid "<<"
 msgstr "<<"
 
@@ -1477,7 +1549,7 @@ msgstr "<kosong>"
 # standard input:197
 # standard input:17
 # standard
-#: standard input:294 input:338 input:361
+#: standard input:294 input:338 pgadmin/ui/dlgOperator.xrc:18
 msgid "> operator"
 msgstr ">operator"
 
@@ -1486,7 +1558,8 @@ msgstr ">operator"
 # standard input:9
 # standard
 #: standard input:191 input:401 input:673 input:228 input:456 input:730
-#: input:245 input:492 input:786
+#: pgadmin/ui/dlgGroup.xrc:6 pgadmin/ui/dlgRole.xrc:17
+#: pgadmin/ui/dlgUser.xrc:12
 msgid ">>"
 msgstr ">>"
 
@@ -1495,7 +1568,7 @@ msgid "@@@pgAdmin internal: Translated string count"
 msgstr ""
 
 #: src/frm/frmStatus.cpp:875 src/frm/frmStatus.cpp:879
-#: src/frm/frmStatus.cpp:927 pgadmin/frm/frmStatus.cpp:931
+#: src/frm/frmStatus.cpp:927 pgadmin/frm/frmStatus.cpp:942
 msgid "A cancel signal was sent to the selected server process(es)."
 msgstr ""
 "Signal untuk membatalkan telah di kirim pada proses server yang telah di "
@@ -1532,7 +1605,7 @@ msgid "A query is running. Do you wish to cancel it?"
 msgstr ""
 
 #: src/frm/frmStatus.cpp:910 src/frm/frmStatus.cpp:914
-#: src/frm/frmStatus.cpp:962 pgadmin/frm/frmStatus.cpp:966
+#: src/frm/frmStatus.cpp:962 pgadmin/frm/frmStatus.cpp:982
 msgid "A terminate signal was sent to the selected server process(es)."
 msgstr "A terminate signal was sent to the selected server process(es)."
 
@@ -1554,20 +1627,21 @@ msgstr "ACL"
 # standard input:258
 # standard input:9
 # standard
-#: standard input:613 input:670 input:720
+#: standard input:613 input:670 pgadmin/ui/dlgTrigger.xrc:9
 msgid "AFTER"
 msgstr "AFTER"
 
 # standard
-#: standard input:778 input:783 input:835 input:840 input:896 input:901
+#: standard input:778 input:783 input:835 input:840
+#: pgadmin/ui/frmMaintenance.xrc:5 pgadmin/ui/frmMaintenance.xrc:10
 msgid "ANALYZE"
 msgstr "ANALYZE"
 
-#: standard input:589 input:646 input:694
+#: standard input:589 input:646 pgadmin/ui/dlgTable.xrc:25
 msgid "ANALYZE base threshold"
 msgstr ""
 
-#: standard input:591 input:648 input:696
+#: standard input:591 input:648 pgadmin/ui/dlgTable.xrc:27
 msgid "ANALYZE scale factor"
 msgstr ""
 
@@ -1587,7 +1661,8 @@ msgstr ""
 # standard input:30
 # standard input:18
 # standard
-#: standard input:123 input:128 input:102 input:138
+#: standard input:123 input:128 pgadmin/ui/dlgDirectDbg.xrc:9
+#: pgadmin/ui/dlgEditGridOptions.xrc:21
 msgid "Accept the current options and close the dialogue."
 msgstr "Terima opsi saat ini dan tutup kotak dialog."
 
@@ -1595,7 +1670,8 @@ msgstr "Terima opsi saat ini dan tutup kotak dialog."
 # standard input:30
 # standard input:18
 # standard
-#: standard input:834 input:836 input:904 input:906 input:976 input:978
+#: standard input:834 input:836 input:904 input:906
+#: pgadmin/ui/frmOptions.xrc:67 pgadmin/ui/frmOptions.xrc:69
 msgid "Accept the current settings and close the dialogue."
 msgstr "Terima setting yang sekarang dan tutup dialognya."
 
@@ -1605,14 +1681,15 @@ msgstr "Terima setting yang sekarang dan tutup dialognya."
 #: src/schema/pgIndex.cpp:218 input:249 pgadmin/schema/pgIndex.cpp:225
 #: pgadmin/schema/pgIndexConstraint.cpp:108
 #: pgadmin/schema/pgOperatorClass.cpp:198
-#: pgadmin/schema/pgOperatorFamily.cpp:63 input:266
+#: pgadmin/schema/pgOperatorFamily.cpp:63 pgadmin/ui/dlgIndex.xrc:4
 msgid "Access method"
 msgstr "Metoda akses"
 
 # standard
 #: src/schema/pgRole.cpp:245 src/schema/pgUser.cpp:208 standard input:392
 #: input:667 input:447 input:724 pgadmin/schema/pgRole.cpp:251
-#: pgadmin/schema/pgUser.cpp:198 input:482 input:780
+#: pgadmin/schema/pgUser.cpp:198 pgadmin/ui/dlgRole.xrc:7
+#: pgadmin/ui/dlgUser.xrc:6
 msgid "Account expires"
 msgstr "Account sudah Kadaluarsa"
 
@@ -1624,7 +1701,8 @@ msgstr ""
 # src/schema/pgRule.cpp:77 standard input:105
 # src/schema/pgRule.cpp:77 standard input:12
 # standard
-#: src/schema/pgRule.cpp:67 standard input:139 input:176 input:184
+#: src/schema/pgRule.cpp:67 standard input:139 input:176
+#: pgadmin/ui/dlgForeignKey.xrc:16
 msgid "Action"
 msgstr "Aksi"
 
@@ -1649,14 +1727,18 @@ msgstr "Aksi"
 # standard
 #: standard input:137 input:174 input:219 input:232 input:251 input:255
 #: input:499 input:574 input:579 input:582 input:211 input:257 input:270
-#: input:289 input:293 input:554 input:631 input:636 input:639 input:182
-#: input:226 input:275 input:286 input:305 input:309 input:590 input:679
-#: input:684 input:687 input:770
+#: input:289 input:293 input:554 input:631 input:636 input:639
+#: pgadmin/ui/dlgForeignKey.xrc:14 pgadmin/ui/dlgFunction.xrc:27
+#: pgadmin/ui/dlgIndex.xrc:13 pgadmin/ui/dlgIndexConstraint.xrc:7
+#: pgadmin/ui/dlgJob.xrc:15 pgadmin/ui/dlgJob.xrc:19
+#: pgadmin/ui/dlgSchedule.xrc:70 pgadmin/ui/dlgTable.xrc:10
+#: pgadmin/ui/dlgTable.xrc:15 pgadmin/ui/dlgTable.xrc:18
+#: pgadmin/ui/dlgType.xrc:39
 msgid "Add"
 msgstr "Tambah"
 
 #: src/dlg/dlgServer.cpp:317 src/dlg/dlgServer.cpp:324
-#: pgadmin/schema/pgServer.cpp:1154
+#: pgadmin/schema/pgServer.cpp:1159
 msgid "Add Server"
 msgstr "Tambah Server..."
 
@@ -1669,7 +1751,7 @@ msgstr "Tambah Tabel/Lihat"
 
 #: src/dlg/dlgServer.cpp:316 src/dlg/dlgServer.cpp:317
 #: src/dlg/dlgServer.cpp:323 src/dlg/dlgServer.cpp:324
-#: pgadmin/schema/pgServer.cpp:1153 pgadmin/schema/pgServer.cpp:1154
+#: pgadmin/schema/pgServer.cpp:1158 pgadmin/schema/pgServer.cpp:1159
 msgid "Add a connection to a server."
 msgstr "Tambah koneksi ke server"
 
@@ -1713,7 +1795,7 @@ msgstr ""
 msgid "Add exception"
 msgstr "Aksi"
 
-#: standard input:1
+#: standard input:1 pgadmin/ui/dlgAddFavourite.xrc:1
 msgid "Add favourite"
 msgstr ""
 
@@ -1728,12 +1810,12 @@ msgid "Add server"
 msgstr "Tambah Server"
 
 # standard
-#: standard input:110 input:115 input:125
+#: standard input:110 input:115 pgadmin/ui/dlgEditGridOptions.xrc:8
 msgid "Add the select column for ascending sort."
 msgstr "Add the select column for ascending sort."
 
 # standard
-#: standard input:112 input:117 input:127
+#: standard input:112 input:117 pgadmin/ui/dlgEditGridOptions.xrc:10
 msgid "Add the select column for descending sort."
 msgstr "Add the select column for descending sort."
 
@@ -1745,8 +1827,9 @@ msgstr "Add the select column for descending sort."
 # standard
 #: src/ctl/ctlSecurityPanel.cpp:83 standard input:81 input:407 input:657
 #: input:678 src/ctl/ctlSecurityPanel.cpp:82 input:86 input:462 input:714
-#: input:735 pgadmin/ctl/ctlSecurityPanel.cpp:82 input:87 input:232 input:498
-#: input:767 input:791
+#: input:735 pgadmin/ctl/ctlSecurityPanel.cpp:82 pgadmin/ui/dlgDatabase.xrc:11
+#: pgadmin/ui/dlgFunction.xrc:33 pgadmin/ui/dlgRole.xrc:23
+#: pgadmin/ui/dlgType.xrc:36 pgadmin/ui/dlgUser.xrc:17
 msgid "Add/Change"
 msgstr "Tambah/Ubah"
 
@@ -1762,7 +1845,7 @@ msgstr "Tambah/Ubah"
 msgid "Address"
 msgstr "Alamat"
 
-#: standard input:306 input:361 input:396
+#: standard input:306 input:361 pgadmin/ui/dlgRepCluster.xrc:7
 msgid "Admin Node"
 msgstr ""
 
@@ -1799,11 +1882,11 @@ msgstr "Alias"
 # src/schema/pgType.cpp:133 standard input:17
 # standard
 #: src/schema/pgType.cpp:136 standard input:642 src/schema/pgType.cpp:137
-#: input:699 pgadmin/schema/pgType.cpp:172 input:752
+#: input:699 pgadmin/schema/pgType.cpp:172 pgadmin/ui/dlgType.xrc:21
 msgid "Alignment"
 msgstr "Tabulasi"
 
-#: standard input:879 input:946
+#: standard input:879 pgadmin/ui/frmOptions.xrc:37
 msgid "All"
 msgstr ""
 
@@ -1898,7 +1981,8 @@ msgid "Any day of the week"
 msgstr ""
 
 # standard
-#: standard input:183 input:693 input:220 input:750 input:237
+#: standard input:183 input:693 input:220 input:750
+#: pgadmin/ui/dlgFunction.xrc:38
 msgid "Apply"
 msgstr "Apply"
 
@@ -1910,13 +1994,13 @@ msgstr "Jalankan filter dan lihat data pada obyek yang telah dipilih"
 
 # standard
 #: src/agent/pgaSchedule.cpp:373 standard input:483 input:538
-#: pgadmin/agent/pgaSchedule.cpp:366 input:574
+#: pgadmin/agent/pgaSchedule.cpp:366 pgadmin/ui/dlgSchedule.xrc:54
 #, fuzzy
 msgid "April"
 msgstr "Apply"
 
 #: src/frm/frmStatus.cpp:840 src/frm/frmStatus.cpp:844
-#: src/frm/frmStatus.cpp:892 pgadmin/frm/frmStatus.cpp:896
+#: src/frm/frmStatus.cpp:892 pgadmin/frm/frmStatus.cpp:907
 msgid "Are you sure the logfile should be rotated?"
 msgstr "Kamu yakin logfile harus di rotate?"
 
@@ -1941,12 +2025,12 @@ msgid ""
 msgstr ""
 
 #: src/frm/frmStatus.cpp:863 src/frm/frmStatus.cpp:867
-#: src/frm/frmStatus.cpp:915 pgadmin/frm/frmStatus.cpp:919
+#: src/frm/frmStatus.cpp:915 pgadmin/frm/frmStatus.cpp:930
 msgid "Are you sure you wish to cancel the selected query(s)?"
 msgstr "Are you sure you wish to cancel the selected query(s)?"
 
 #: src/frm/frmStatus.cpp:921 src/frm/frmStatus.cpp:925
-#: src/frm/frmStatus.cpp:973 pgadmin/frm/frmStatus.cpp:977
+#: src/frm/frmStatus.cpp:973 pgadmin/frm/frmStatus.cpp:998
 #, fuzzy
 msgid "Are you sure you wish to commit the selected prepared transactions?"
 msgstr "Are you sure you wish to terminate the selected server process(es)?"
@@ -2017,7 +2101,7 @@ msgid "Are you sure you wish to remove the selected table?"
 msgstr "Are you sure you wish to cancel the selected query(s)?"
 
 #: src/frm/frmStatus.cpp:943 src/frm/frmStatus.cpp:947
-#: src/frm/frmStatus.cpp:995 pgadmin/frm/frmStatus.cpp:999
+#: src/frm/frmStatus.cpp:995 pgadmin/frm/frmStatus.cpp:1046
 #, fuzzy
 msgid "Are you sure you wish to rollback the selected prepared transactions?"
 msgstr "Are you sure you wish to cancel the selected query(s)?"
@@ -2034,13 +2118,13 @@ msgid "Are you sure you wish to run a restore from this file again?"
 msgstr "Are you sure you wish to cancel the selected query(s)?"
 
 #: src/dlg/dlgServer.cpp:431 src/dlg/dlgServer.cpp:438
-#: pgadmin/schema/pgServer.cpp:1269
+#: pgadmin/schema/pgServer.cpp:1274
 #, fuzzy
 msgid "Are you sure you wish to shutdown this server?"
 msgstr "Anda yakin  akan mematikan server ini ?"
 
 #: src/frm/frmStatus.cpp:898 src/frm/frmStatus.cpp:902
-#: src/frm/frmStatus.cpp:950 pgadmin/frm/frmStatus.cpp:954
+#: src/frm/frmStatus.cpp:950 pgadmin/frm/frmStatus.cpp:970
 msgid "Are you sure you wish to terminate the selected server process(es)?"
 msgstr "Are you sure you wish to terminate the selected server process(es)?"
 
@@ -2049,7 +2133,7 @@ msgstr "Are you sure you wish to terminate the selected server process(es)?"
 msgid "Argument count"
 msgstr "Hintungan Argumen"
 
-#: standard input:224
+#: pgadmin/ui/dlgFunction.xrc:25
 #, fuzzy
 msgid "Argument name"
 msgstr "Hintungan Argumen"
@@ -2062,7 +2146,7 @@ msgstr "Hintungan Argumen"
 #: src/schema/pgFunction.cpp:124 standard input:158 input:172 input:610
 #: src/schema/pgFunction.cpp:140 input:195 input:209 input:667
 #: pgadmin/schema/edbPackageFunction.cpp:141 pgadmin/schema/pgFunction.cpp:168
-#: input:203 input:717
+#: pgadmin/ui/dlgFunction.xrc:4 pgadmin/ui/dlgTrigger.xrc:6
 msgid "Arguments"
 msgstr "Argumentasi"
 
@@ -2072,17 +2156,17 @@ msgstr "Argumentasi"
 #: src/dlg/dlgEditGridOptions.cpp:195 input:114
 #: pgadmin/dlg/dlgEditGridOptions.cpp:123
 #: pgadmin/dlg/dlgEditGridOptions.cpp:145
-#: pgadmin/dlg/dlgEditGridOptions.cpp:194 input:124
+#: pgadmin/dlg/dlgEditGridOptions.cpp:194 pgadmin/ui/dlgEditGridOptions.xrc:7
 msgid "Ascending"
 msgstr "Ascending"
 
 #: src/agent/pgaSchedule.cpp:389 standard input:487 input:542
-#: pgadmin/agent/pgaSchedule.cpp:382 input:578
+#: pgadmin/agent/pgaSchedule.cpp:382 pgadmin/ui/dlgSchedule.xrc:58
 msgid "August"
 msgstr ""
 
 # standard
-#: standard input:130 input:167 input:175
+#: standard input:130 input:167 pgadmin/ui/dlgForeignKey.xrc:7
 msgid "Auto FK index"
 msgstr "Auto FK index"
 
@@ -2093,7 +2177,7 @@ msgstr ""
 # standard input:417
 # standard input:5
 # standard
-#: standard input:107 input:112 input:122
+#: standard input:107 input:112 pgadmin/ui/dlgEditGridOptions.xrc:5
 msgid "Available Columns"
 msgstr "Kolom yang tersedia"
 
@@ -2110,7 +2194,7 @@ msgstr "Average Width"
 # standard input:257
 # standard input:8
 # standard
-#: standard input:612 input:669 input:719
+#: standard input:612 input:669 pgadmin/ui/dlgTrigger.xrc:8
 msgid "BEFORE"
 msgstr "BEFORE"
 
@@ -2146,7 +2230,7 @@ msgid "Backend Configuration Hints"
 msgstr "Buka berkas query"
 
 #: src/schema/pgServer.cpp:883 src/schema/pgServer.cpp:903
-#: src/schema/pgServer.cpp:931 pgadmin/schema/pgServer.cpp:936
+#: src/schema/pgServer.cpp:931 pgadmin/schema/pgServer.cpp:941
 #, fuzzy
 msgid "Backend start"
 msgstr "Backends"
@@ -2157,7 +2241,7 @@ msgid "Backends"
 msgstr "Backends"
 
 # standard
-#: standard input:704 input:761 input:809
+#: standard input:704 input:761 pgadmin/ui/frmBackup.xrc:1
 msgid "Backup"
 msgstr "Backup"
 
@@ -2166,13 +2250,13 @@ msgstr "Backup"
 msgid "Backup %s %s"
 msgstr "Backup %s %s"
 
-#: standard input:833
+#: pgadmin/ui/frmBackupGlobals.xrc:1
 #, fuzzy
 msgid "Backup Globals"
 msgstr "Backup %s %s"
 
 # standard
-#: standard input:843
+#: pgadmin/ui/frmBackupServer.xrc:1
 #, fuzzy
 msgid "Backup Server"
 msgstr "Backup"
@@ -2187,7 +2271,7 @@ msgstr "Backup berkas (*.backup)|*.backup|Semua berkas (*.*)|*.*"
 msgid "Backup globals %s %s"
 msgstr "Backup %s %s"
 
-#: standard input:152 input:160
+#: standard input:152 pgadmin/ui/dlgFindReplace.xrc:22
 #, fuzzy
 msgid "Backwards"
 msgstr "Backends"
@@ -2197,7 +2281,7 @@ msgstr "Backends"
 # standard input:5
 # standard
 #: src/schema/pgDomain.cpp:98 standard input:92 input:97
-#: pgadmin/schema/pgDomain.cpp:98 input:107
+#: pgadmin/schema/pgDomain.cpp:98 pgadmin/ui/dlgDomain.xrc:5
 msgid "Base type"
 msgstr "Tipe dasar"
 
@@ -2205,22 +2289,22 @@ msgstr "Tipe dasar"
 # standard input:22
 # standard
 #: src/agent/pgaStep.cpp:107 standard input:555 src/agent/pgaStep.cpp:116
-#: input:612 pgadmin/agent/pgaStep.cpp:110 input:648
+#: input:612 pgadmin/agent/pgaStep.cpp:110 pgadmin/ui/dlgStep.xrc:7
 msgid "Batch"
 msgstr "Batch"
 
-#: standard input:146 input:154
+#: standard input:146 pgadmin/ui/dlgFindReplace.xrc:16
 msgid "Begin searching at the current cursor position"
 msgstr ""
 
-#: standard input:148 input:156
+#: standard input:148 pgadmin/ui/dlgFindReplace.xrc:18
 msgid "Begin searching at the top of the text"
 msgstr ""
 
 # standard input:454
 # standard input:4
 # standard
-#: standard input:712 input:769 input:817
+#: standard input:712 input:769 pgadmin/ui/frmBackup.xrc:9
 msgid "Blobs"
 msgstr "Blobs"
 
@@ -2234,7 +2318,8 @@ msgstr "Blocks Hit"
 msgid "Blocks Read"
 msgstr "Blocks Read"
 
-#: pgadmin/schema/edbPackage.cpp:132 standard input:374 input:727
+#: pgadmin/schema/edbPackage.cpp:132 pgadmin/ui/dlgPackage.xrc:8
+#: pgadmin/ui/dlgTrigger.xrc:16
 #, fuzzy
 msgid "Body"
 msgstr "Mode "
@@ -2246,7 +2331,7 @@ msgstr ""
 # standard input:396
 # standard input:22
 # standard
-#: standard input:825 input:895 input:963
+#: standard input:825 input:895 pgadmin/ui/frmOptions.xrc:54
 msgid "Browse for a logfile."
 msgstr "Jelajahi logfile."
 
@@ -2267,17 +2352,18 @@ msgstr "B&ersihkan window"
 # standard input:108 standard input:113
 # standard input:15 standard input:20
 # standard
-#: standard input:143 input:149 input:180 input:186 input:188 input:194
+#: standard input:143 input:149 input:180 input:186
+#: pgadmin/ui/dlgForeignKey.xrc:20 pgadmin/ui/dlgForeignKey.xrc:26
 msgid "CASCADE"
 msgstr "CASCADE"
 
 # standard
-#: standard input:709 input:766 input:814
+#: standard input:709 input:766 pgadmin/ui/frmBackup.xrc:6
 msgid "COMPRESS"
 msgstr "COMPRESS"
 
 # standard
-#: standard input:731 input:788 input:856
+#: standard input:731 input:788 pgadmin/ui/frmExport.xrc:4
 msgid "CR/LF"
 msgstr "CR/LF"
 
@@ -2303,7 +2389,7 @@ msgstr ""
 # standard
 #: src/schema/pgSequence.cpp:106 standard input:527
 #: src/schema/pgSequence.cpp:111 input:583 pgadmin/schema/pgSequence.cpp:112
-#: input:619
+#: pgadmin/ui/dlgSequence.xrc:9
 msgid "Cache"
 msgstr "Cache"
 
@@ -2315,24 +2401,24 @@ msgstr "Dibatalkan"
 # standard input:306
 # standard input:6
 # standard
-#: standard input:396 input:451 input:486
+#: standard input:396 input:451 pgadmin/ui/dlgRole.xrc:11
 #, fuzzy
 msgid "Can create database objects"
 msgstr "User bisa membuat basisdata"
 
 # standard input:307
 # standard input:7
-#: standard input:397 input:452 input:487
+#: standard input:397 input:452 pgadmin/ui/dlgRole.xrc:12
 #, fuzzy
 msgid "Can create roles"
 msgstr "User bisa membuat user"
 
-#: standard input:373 input:428 input:463
+#: standard input:373 input:428 pgadmin/ui/dlgRepSubscription.xrc:5
 #, fuzzy
 msgid "Can forward"
 msgstr "Teruskan"
 
-#: standard input:389 input:444 input:479
+#: standard input:389 input:444 pgadmin/ui/dlgRole.xrc:4
 #, fuzzy
 msgid "Can login"
 msgstr "Pembatalan."
@@ -2341,7 +2427,7 @@ msgstr "Pembatalan."
 msgid "Can login?"
 msgstr ""
 
-#: standard input:398 input:453 input:488
+#: standard input:398 input:453 pgadmin/ui/dlgRole.xrc:13
 msgid "Can modify catalog directly"
 msgstr ""
 
@@ -2415,8 +2501,9 @@ msgstr "Constraint"
 #: input:388 input:395 input:402 input:409 input:416 input:423 input:431
 #: input:440 input:468 input:484 input:558 input:567 input:589 input:605
 #: input:653 input:679 input:718 input:741 input:752 input:972 input:975
-#: pgadmin/frm/frmQuery.cpp:293 pgadmin/frm/frmStatus.cpp:100
-#: pgadmin/frm/frmStatus.cpp:101 input:1045 input:1048
+#: pgadmin/frm/frmQuery.cpp:293 pgadmin/frm/frmStatus.cpp:104
+#: pgadmin/frm/frmStatus.cpp:105 pgadmin/ui/frmStatus.xrc:3
+#: pgadmin/ui/frmStatus.xrc:6
 msgid "Cancel"
 msgstr "Batal"
 
@@ -2424,20 +2511,21 @@ msgstr "Batal"
 # standard input:32
 # standard input:20
 # standard
-#: standard input:121 input:838 input:126 input:908 input:100 input:136
-#: input:980
+#: standard input:121 input:838 input:126 input:908
+#: pgadmin/ui/dlgDirectDbg.xrc:7 pgadmin/ui/dlgEditGridOptions.xrc:19
+#: pgadmin/ui/frmOptions.xrc:71
 msgid "Cancel any changes and close the dialogue."
 msgstr "Batalkan perubahan apa saja dan tutup dialognya."
 
 #: src/frm/frmQuery.cpp:145 src/frm/frmQuery.cpp:209 src/frm/frmStatus.cpp:875
 #: src/frm/frmStatus.cpp:879 src/frm/frmQuery.cpp:182 src/frm/frmQuery.cpp:253
 #: src/frm/frmStatus.cpp:927 pgadmin/frm/frmQuery.cpp:199
-#: pgadmin/frm/frmQuery.cpp:293 pgadmin/frm/frmStatus.cpp:931
+#: pgadmin/frm/frmQuery.cpp:293 pgadmin/frm/frmStatus.cpp:942
 msgid "Cancel query"
 msgstr "Batalkan query"
 
 #: src/frm/frmStatus.cpp:863 src/frm/frmStatus.cpp:867
-#: src/frm/frmStatus.cpp:915 pgadmin/frm/frmStatus.cpp:919
+#: src/frm/frmStatus.cpp:915 pgadmin/frm/frmStatus.cpp:930
 msgid "Cancel query?"
 msgstr "Batalkan query?"
 
@@ -2475,7 +2563,7 @@ msgstr "System %s tidak bisa di drop."
 msgid "Cannot drop system %s %s."
 msgstr "System %s %s tidak bisa di drop."
 
-#: src/base/appbase.cpp:204 src/base/appbase.cpp:207 pgadmin/pgAdmin3.cpp:1092
+#: src/base/appbase.cpp:204 src/base/appbase.cpp:207 pgadmin/pgAdmin3.cpp:1100
 msgid "Cannot initialise the networking subsystem!"
 msgstr "Subsistem jaringan tidak bisa di inialisasi!"
 
@@ -2528,15 +2616,16 @@ msgstr ""
 # standard input:8
 # standard
 #: standard input:173 input:250 input:254 input:498 input:578 input:210
-#: input:288 input:292 input:553 input:635 input:227 input:304 input:308
-#: input:589 input:683
+#: input:288 input:292 input:553 input:635 pgadmin/ui/dlgFunction.xrc:28
+#: pgadmin/ui/dlgJob.xrc:14 pgadmin/ui/dlgJob.xrc:18
+#: pgadmin/ui/dlgSchedule.xrc:69 pgadmin/ui/dlgTable.xrc:14
 msgid "Change"
 msgstr "Rubah"
 
 # standard input:407
 # standard input:1
 # standard
-#: standard input:839 input:909 input:981
+#: standard input:839 input:909 pgadmin/ui/frmPassword.xrc:1
 msgid "Change Password"
 msgstr "Rubah Password"
 
@@ -2549,7 +2638,7 @@ msgstr "Rubah passwordmu."
 # standard input:8
 # standard
 #: src/agent/pgaJob.cpp:91 standard input:244 input:282
-#: pgadmin/agent/pgaJob.cpp:85 input:298
+#: pgadmin/agent/pgaJob.cpp:85 pgadmin/ui/dlgJob.xrc:8
 msgid "Changed"
 msgstr "Berubah"
 
@@ -2590,8 +2679,8 @@ msgstr "Parameter"
 #: src/schema/pgCheck.cpp:147 src/schema/pgDomain.cpp:102 standard input:32
 #: input:94 src/dlg/dlgTable.cpp:701 src/frm/frmReport.cpp:1367 input:37
 #: input:99 pgadmin/dlg/dlgTable.cpp:815 pgadmin/frm/frmReport.cpp:1351
-#: pgadmin/schema/pgCheck.cpp:142 pgadmin/schema/pgDomain.cpp:102 input:38
-#: input:109
+#: pgadmin/schema/pgCheck.cpp:142 pgadmin/schema/pgDomain.cpp:102
+#: pgadmin/ui/dlgCheck.xrc:3 pgadmin/ui/dlgDomain.xrc:7
 msgid "Check"
 msgstr "Periksa"
 
@@ -2603,7 +2692,8 @@ msgstr "Periksa Foreign Ker indexes pada %s %s"
 # src/schema/pgObject.cpp:55 src/ui/dlgTable.cpp:363 standard input:27
 # src/schema/pgObject.cpp:55 src/ui/dlgTable.cpp:363 standard input:5
 # standard
-#: standard input:754 input:769 input:811 input:826 input:879
+#: standard input:754 input:769 input:811 input:826
+#: pgadmin/ui/frmGrantWizard.xrc:3
 msgid "Check all"
 msgstr "Periksa semua"
 
@@ -2642,7 +2732,7 @@ msgid "Choose the operator for comparison."
 msgstr "Pilih operator untuk pembanding."
 
 # standard
-#: standard input:339
+#: pgadmin/ui/dlgManageMacros.xrc:3
 #, fuzzy
 msgid "Clear"
 msgstr "Pengklusteran"
@@ -2700,13 +2790,14 @@ msgstr "Covering index"
 # standard
 #: src/frm/frmStatus.cpp:113 src/schema/pgServer.cpp:884
 #: src/schema/pgServer.cpp:904 src/frm/frmStatus.cpp:114
-#: src/schema/pgServer.cpp:932 pgadmin/frm/frmStatus.cpp:113
-#: pgadmin/schema/pgServer.cpp:937
+#: src/schema/pgServer.cpp:932 pgadmin/frm/frmStatus.cpp:117
+#: pgadmin/schema/pgServer.cpp:942
 #, fuzzy
 msgid "Client"
 msgstr "Tabulasi"
 
-#: standard input:198 input:235 input:344 input:252 input:379
+#: standard input:198 input:235 input:344 pgadmin/ui/dlgHbaConfig.xrc:1
+#: pgadmin/ui/dlgPgpassConfig.xrc:1
 msgid "Client Access Configuration"
 msgstr ""
 
@@ -2719,7 +2810,7 @@ msgstr "Buka berkas query"
 # src/schema/pgType.cpp:133 standard input:282
 # src/schema/pgType.cpp:133 standard input:17
 # standard
-#: src/frm/frmStatus.cpp:115 pgadmin/frm/frmStatus.cpp:114
+#: src/frm/frmStatus.cpp:115 pgadmin/frm/frmStatus.cpp:118
 #, fuzzy
 msgid "Client start"
 msgstr "Tabulasi"
@@ -2727,7 +2818,7 @@ msgstr "Tabulasi"
 # standard input:454
 # standard input:4
 # standard
-#: standard input:876 input:985 input:1058
+#: standard input:876 input:985 pgadmin/ui/frmStatus.xrc:16
 msgid "Close"
 msgstr "Tutup"
 
@@ -2755,7 +2846,7 @@ msgstr ""
 "Tutup browser server?Jika ingin membatalkan, browser dari obyek akan "
 "terlihat tidak akurat."
 
-#: standard input:133 input:141
+#: standard input:133 pgadmin/ui/dlgFindReplace.xrc:3
 #, fuzzy
 msgid "Close the dialog"
 msgstr "Tutup window ini."
@@ -2769,7 +2860,7 @@ msgid "Close this window."
 msgstr "Tutup window ini."
 
 # standard
-#: standard input:316 input:371 input:406
+#: standard input:316 input:371 pgadmin/ui/dlgRepClusterUpgrade.xrc:6
 #, fuzzy
 msgid "Cluster"
 msgstr "Pengklusteran"
@@ -2783,13 +2874,13 @@ msgid "Cluster \"%s\", set %ld"
 msgstr "Pengklusteran"
 
 # standard
-#: standard input:304 input:359 input:394
+#: standard input:304 input:359 pgadmin/ui/dlgRepCluster.xrc:5
 #, fuzzy
 msgid "Cluster name"
 msgstr "Pengklusteran"
 
 # standard
-#: standard input:214 input:251 input:269
+#: standard input:214 input:251 pgadmin/ui/dlgIndex.xrc:7
 msgid "Clustered"
 msgstr "Pengklusteran"
 
@@ -2829,7 +2920,7 @@ msgid "Column name"
 msgstr "Nama Kolom"
 
 # standard
-#: standard input:739 input:796 input:864
+#: standard input:739 input:796 pgadmin/ui/frmExport.xrc:12
 msgid "Column names"
 msgstr "Nama Kolom"
 
@@ -2848,7 +2939,7 @@ msgstr "Kolom tidak ditemukan di pgSet."
 # src/ui/dlgIndex.cpp:51 src/ui/dlgIndex.cpp:61 standard input:6
 # src/ui/dlgIndex.cpp:51 src/ui/dlgIndex.cpp:61 standard input:7
 # standard
-#: standard input:732 input:789 input:857
+#: standard input:732 input:789 pgadmin/ui/frmExport.xrc:5
 msgid "Column separator"
 msgstr "Pemisah kolom"
 
@@ -2872,7 +2963,8 @@ msgstr "Statistik"
 #: input:269 input:634 pgadmin/dlg/dlgIndex.cpp:61 pgadmin/dlg/dlgIndex.cpp:70
 #: pgadmin/frm/frmReport.cpp:1276 pgadmin/schema/pgColumn.cpp:404
 #: pgadmin/schema/pgIndex.cpp:219 pgadmin/schema/pgIndexConstraint.cpp:99
-#: input:179 input:274 input:285 input:682
+#: pgadmin/ui/dlgForeignKey.xrc:11 pgadmin/ui/dlgIndex.xrc:12
+#: pgadmin/ui/dlgIndexConstraint.xrc:6 pgadmin/ui/dlgTable.xrc:13
 msgid "Columns"
 msgstr "Kolom"
 
@@ -2984,11 +3076,23 @@ msgstr "Komentar"
 #: pgadmin/schema/pgType.cpp:191 pgadmin/schema/pgView.cpp:227
 #: pgadmin/slony/slCluster.cpp:305 pgadmin/slony/slNode.cpp:234
 #: pgadmin/slony/slSet.cpp:84 pgadmin/slony/slSet.cpp:201
-#: pgadmin/slony/slTable.cpp:88 input:10 input:31 input:39 input:53 input:72
-#: input:85 input:113 input:177 input:272 input:283 input:302 input:320
-#: input:327 input:371 input:397 input:420 input:434 input:441 input:471
-#: input:489 input:515 input:527 input:599 input:621 input:654 input:665
-#: input:680 input:708 input:725 input:740 input:802
+#: pgadmin/slony/slTable.cpp:88 pgadmin/ui/dlgAggregate.xrc:5
+#: pgadmin/ui/dlgCast.xrc:8 pgadmin/ui/dlgCheck.xrc:4
+#: pgadmin/ui/dlgColumn.xrc:10 pgadmin/ui/dlgConversion.xrc:9
+#: pgadmin/ui/dlgDatabase.xrc:9 pgadmin/ui/dlgDomain.xrc:11
+#: pgadmin/ui/dlgForeignKey.xrc:9 pgadmin/ui/dlgFunction.xrc:17
+#: pgadmin/ui/dlgIndex.xrc:10 pgadmin/ui/dlgIndexConstraint.xrc:4
+#: pgadmin/ui/dlgJob.xrc:12 pgadmin/ui/dlgLanguage.xrc:7
+#: pgadmin/ui/dlgMainConfig.xrc:3 pgadmin/ui/dlgOperator.xrc:8
+#: pgadmin/ui/dlgPackage.xrc:5 pgadmin/ui/dlgRepCluster.xrc:8
+#: pgadmin/ui/dlgRepNode.xrc:3 pgadmin/ui/dlgRepSequence.xrc:4
+#: pgadmin/ui/dlgRepSet.xrc:4 pgadmin/ui/dlgRepTable.xrc:5
+#: pgadmin/ui/dlgRole.xrc:14 pgadmin/ui/dlgRule.xrc:11
+#: pgadmin/ui/dlgSchedule.xrc:7 pgadmin/ui/dlgSchema.xrc:5
+#: pgadmin/ui/dlgSequence.xrc:11 pgadmin/ui/dlgStep.xrc:13
+#: pgadmin/ui/dlgSynonym.xrc:7 pgadmin/ui/dlgTable.xrc:11
+#: pgadmin/ui/dlgTablespace.xrc:5 pgadmin/ui/dlgTrigger.xrc:14
+#: pgadmin/ui/dlgType.xrc:9 pgadmin/ui/dlgView.xrc:5
 msgid "Comment"
 msgstr "Komentar"
 
@@ -3018,13 +3122,13 @@ msgstr "Komentar"
 # src/schema/pgtrigger.cpp:147 standard input:7
 # src/schema/pgtrigger.cpp:147 standard input:4
 # standard
-#: standard input:870 input:978 input:1051
+#: standard input:870 input:978 pgadmin/ui/frmStatus.xrc:9
 #, fuzzy
 msgid "Commit"
 msgstr "Komentar"
 
 #: src/frm/frmStatus.cpp:921 src/frm/frmStatus.cpp:925
-#: src/frm/frmStatus.cpp:973 pgadmin/frm/frmStatus.cpp:977
+#: src/frm/frmStatus.cpp:973 pgadmin/frm/frmStatus.cpp:998
 msgid "Commit transaction?"
 msgstr ""
 
@@ -3032,7 +3136,7 @@ msgstr ""
 # src/schema/pgOperator.cpp:109 standard input:12
 # standard
 #: src/schema/pgOperator.cpp:126 standard input:289 input:333
-#: pgadmin/schema/pgOperator.cpp:129 input:356
+#: pgadmin/schema/pgOperator.cpp:129 pgadmin/ui/dlgOperator.xrc:13
 msgid "Commutator"
 msgstr "Commutator"
 
@@ -3044,13 +3148,13 @@ msgstr ""
 # standard input:270
 # standard input:5
 # standard
-#: standard input:628 input:685 input:737
+#: standard input:628 input:685 pgadmin/ui/dlgType.xrc:6
 msgid "Composite"
 msgstr "Gabungan"
 
 # standard input:408
 # standard input:2
-#: standard input:252 input:270
+#: standard input:252 pgadmin/ui/dlgIndex.xrc:8
 #, fuzzy
 msgid "Concurrent build?"
 msgstr "Nilai sekarang"
@@ -3059,14 +3163,14 @@ msgstr "Nilai sekarang"
 # src/schema/pgRule.cpp:75 src/ui/frmQueryBuilder.cpp:217 standard input:10
 # standard
 #: src/schema/pgRule.cpp:65 standard input:423 input:478
-#: pgadmin/schema/pgRule.cpp:77 input:514
+#: pgadmin/schema/pgRule.cpp:77 pgadmin/ui/dlgRule.xrc:10
 msgid "Condition"
 msgstr "Kondisi"
 
 #: src/frm/frmConfig.cpp:254 src/frm/frmConfig.cpp:287
 #: src/frm/frmConfig.cpp:263 src/frm/frmConfig.cpp:296
 #: pgadmin/frm/frmConfig.cpp:262 pgadmin/frm/frmConfig.cpp:295
-#: pgadmin/frm/frmMainConfig.cpp:631
+#: pgadmin/frm/frmMainConfig.cpp:641
 #, fuzzy
 msgid "Configuration files (*.conf)|*.conf|All files (*.*)|*.*"
 msgstr "Berkas Log (*.log)|*.log|Semua berkas (*.*)|*.*"
@@ -3079,7 +3183,7 @@ msgstr ""
 # standard input:410
 # standard input:4
 # standard
-#: standard input:842 input:912 input:984
+#: standard input:842 input:912 pgadmin/ui/frmPassword.xrc:4
 msgid "Confirm Password"
 msgstr "Konfirmasi Password"
 
@@ -3093,7 +3197,7 @@ msgstr "On Delete"
 # standard input:382
 # standard input:8
 # standard
-#: standard input:806 input:863 input:929
+#: standard input:806 input:863 pgadmin/ui/frmOptions.xrc:20
 msgid "Confirm object deletion?"
 msgstr "Konfirmasi pendelegasian obyek?"
 
@@ -3110,18 +3214,18 @@ msgstr ""
 msgid "Confirm superuser deletion"
 msgstr "Konfirmasi penghapusan superuser"
 
-#: standard input:337 input:392 input:427
+#: standard input:337 input:392 pgadmin/ui/dlgRepPath.xrc:4
 #, fuzzy
 msgid "Conn retry"
 msgstr "&Koneksi"
 
 #: src/slony/slPath.cpp:81 standard input:336 input:391
-#: pgadmin/slony/slPath.cpp:72 input:426
+#: pgadmin/slony/slPath.cpp:72 pgadmin/ui/dlgRepPath.xrc:3
 #, fuzzy
 msgid "Connect info"
 msgstr "&Koneksi"
 
-#: standard input:545 input:602 input:638
+#: standard input:545 input:602 pgadmin/ui/dlgServer.xrc:13
 #, fuzzy
 msgid "Connect now"
 msgstr "&Koneksi"
@@ -3129,7 +3233,8 @@ msgstr "&Koneksi"
 # standard input:335
 # standard input:1
 # standard
-#: standard input:52 input:513 input:57 input:568 input:58 input:604
+#: standard input:52 input:513 input:57 input:568 pgadmin/ui/dlgConnect.xrc:1
+#: pgadmin/ui/dlgSelectConnection.xrc:1
 msgid "Connect to Server"
 msgstr "Koneksi ke Server"
 
@@ -3139,7 +3244,7 @@ msgid "Connect to a Server"
 msgstr "Terkoneksi ke Server"
 
 #: src/dlg/dlgServer.cpp:466 src/dlg/dlgServer.cpp:473
-#: pgadmin/schema/pgServer.cpp:1304
+#: pgadmin/schema/pgServer.cpp:1309
 msgid "Connect to the selected server."
 msgstr "Terkoneksi ke server pilihan."
 
@@ -3164,7 +3269,7 @@ msgstr "Koneksi ke Server"
 #: src/schema/pgDatabase.cpp:417 src/schema/pgServer.cpp:846
 #: src/schema/pgServer.cpp:866 src/schema/pgDatabase.cpp:433
 #: src/schema/pgServer.cpp:894 pgadmin/schema/pgDatabase.cpp:446
-#: pgadmin/schema/pgServer.cpp:898
+#: pgadmin/schema/pgServer.cpp:903
 msgid "Connected?"
 msgstr "Terkonesi?"
 
@@ -3201,7 +3306,7 @@ msgstr "Terkoneksi ke basisdata"
 
 #: src/dlg/dlgServer.cpp:339 src/frm/frmMain.cpp:636 src/dlg/dlgServer.cpp:346
 #: src/frm/frmMain.cpp:730 pgadmin/frm/frmMain.cpp:850
-#: pgadmin/schema/pgServer.cpp:1176
+#: pgadmin/schema/pgServer.cpp:1181
 #, fuzzy, c-format
 msgid "Connecting to server %s (%s:%d)"
 msgstr "Connection to server %s lost."
@@ -3212,7 +3317,7 @@ msgid "Connection Error"
 msgstr "Koneksi terputus."
 
 #: src/frm/frmStatus.cpp:616 src/frm/frmStatus.cpp:620
-#: src/frm/frmStatus.cpp:668 pgadmin/frm/frmStatus.cpp:672
+#: src/frm/frmStatus.cpp:668 pgadmin/frm/frmStatus.cpp:683
 msgid "Connection broken."
 msgstr "Koneksi terputus."
 
@@ -3243,7 +3348,7 @@ msgstr "Connection to server %s lost."
 #: src/schema/pgIndexConstraint.cpp:106 standard input:215
 #: src/schema/pgIndex.cpp:219 input:253 pgadmin/schema/pgConstraints.cpp:71
 #: pgadmin/schema/pgIndex.cpp:226 pgadmin/schema/pgIndexConstraint.cpp:109
-#: input:271
+#: pgadmin/ui/dlgIndex.xrc:9
 msgid "Constraint"
 msgstr "Constraint"
 
@@ -3258,12 +3363,12 @@ msgstr "Nama constraint"
 #: src/schema/pgConstraints.cpp:68 src/schema/pgConstraints.cpp:89 standard
 #: input:581 src/frm/frmReport.cpp:1346 input:638
 #: pgadmin/frm/frmReport.cpp:1330 pgadmin/schema/pgConstraints.cpp:61
-#: pgadmin/schema/pgConstraints.cpp:83 input:686
+#: pgadmin/schema/pgConstraints.cpp:83 pgadmin/ui/dlgTable.xrc:17
 msgid "Constraints"
 msgstr "Constraints"
 
 # standard
-#: standard input:856 input:964 input:1037
+#: standard input:856 input:964 pgadmin/ui/frmRestore.xrc:11
 msgid "Contents"
 msgstr "Isi-isi"
 
@@ -3313,7 +3418,7 @@ msgstr "Salin"
 # standard input:390
 # standard input:16
 # standard
-#: standard input:819 input:889 input:956
+#: standard input:819 input:889 pgadmin/ui/frmOptions.xrc:47
 msgid "Copy SQL from main form to SQL dialogue"
 msgstr "Salin SQL dari form utama ke dialog SQL"
 
@@ -3415,11 +3520,11 @@ msgstr "Tidak bisa membuat main window!"
 msgid "Couldn't create temporary script file: %s"
 msgstr "Tidak bisa membuat layar splash!"
 
-#: src/pgAdmin3.cpp:399 src/pgAdmin3.cpp:475 pgadmin/pgAdmin3.cpp:512
+#: src/pgAdmin3.cpp:399 src/pgAdmin3.cpp:475 pgadmin/pgAdmin3.cpp:520
 msgid "Couldn't create the main window!"
 msgstr "Tidak bisa membuat main window!"
 
-#: src/pgAdmin3.cpp:311 src/pgAdmin3.cpp:331 pgadmin/pgAdmin3.cpp:336
+#: src/pgAdmin3.cpp:311 src/pgAdmin3.cpp:331 pgadmin/pgAdmin3.cpp:344
 msgid "Couldn't create the splash screen!"
 msgstr "Tidak bisa membuat layar splash!"
 
@@ -3489,7 +3594,7 @@ msgstr "Gagal menulis output dari berkas: %s"
 # standard input:389
 # standard input:15
 # standard
-#: standard input:817 input:874 input:940
+#: standard input:817 input:874 pgadmin/ui/frmOptions.xrc:31
 msgid "Count rows if estimated less than"
 msgstr "Hitung baris jika estimasi kurang dari"
 
@@ -3515,7 +3620,7 @@ msgid "Create"
 msgstr "Buat"
 
 # standard
-#: standard input:721 input:778 input:826
+#: standard input:721 input:778 pgadmin/ui/frmBackup.xrc:18
 msgid "Create DB"
 msgstr "Buat DB"
 
@@ -3683,7 +3788,7 @@ msgid "Create a new Server connection."
 msgstr "Buat koneksi Server baru."
 
 #: src/schema/pgServer.cpp:1052 src/schema/pgServer.cpp:1072
-#: src/schema/pgServer.cpp:1124 pgadmin/schema/pgServer.cpp:1130
+#: src/schema/pgServer.cpp:1124 pgadmin/schema/pgServer.cpp:1135
 #, fuzzy
 msgid "Create a new Server registration."
 msgstr "Buat koneksi Server baru."
@@ -3790,17 +3895,17 @@ msgstr "Hitung baris pada obyek yang dipilih"
 msgid "Create roles?"
 msgstr "Buat Basisdata?"
 
-#: standard input:925 input:997
+#: standard input:925 pgadmin/ui/frmReport.xrc:10
 msgid "Create the report in XHTML 1.0 Transitional format"
 msgstr ""
 
-#: standard input:927 input:999
+#: standard input:927 pgadmin/ui/frmReport.xrc:12
 msgid "Create the report in XML format"
 msgstr ""
 
 # standard
 #: src/agent/pgaJob.cpp:90 standard input:243 input:281
-#: pgadmin/agent/pgaJob.cpp:84 input:297
+#: pgadmin/agent/pgaJob.cpp:84 pgadmin/ui/dlgJob.xrc:7
 msgid "Created"
 msgstr "Telah dibuat"
 
@@ -3850,14 +3955,14 @@ msgstr "Cu&t\tCtrl-X"
 # standard input:408
 # standard input:2
 # standard
-#: standard input:840 input:910 input:982
+#: standard input:840 input:910 pgadmin/ui/frmPassword.xrc:2
 msgid "Current Password"
 msgstr "Password yang sekarang"
 
 # standard input:408
 # standard input:2
 #: src/schema/pgServer.cpp:886 src/schema/pgServer.cpp:906
-#: src/schema/pgServer.cpp:934 pgadmin/schema/pgServer.cpp:939
+#: src/schema/pgServer.cpp:934 pgadmin/schema/pgServer.cpp:944
 msgid "Current Query"
 msgstr "Query saat ini"
 
@@ -3868,16 +3973,16 @@ msgstr "Query saat ini"
 #: input:587 src/frm/frmMainConfig.cpp:143 src/schema/pgSequence.cpp:107
 #: input:644 pgadmin/dlg/dlgMainConfig.cpp:119 pgadmin/dlg/dlgSequence.cpp:82
 #: pgadmin/frm/frmMainConfig.cpp:178 pgadmin/schema/pgSequence.cpp:108
-#: input:692
+#: pgadmin/ui/dlgTable.xrc:23
 msgid "Current value"
 msgstr "Nilai sekarang"
 
-#: standard input:313 input:368 input:403
+#: standard input:313 input:368 pgadmin/ui/dlgRepClusterUpgrade.xrc:3
 #, fuzzy
 msgid "Current version"
 msgstr "Konversi"
 
-#: standard input:585 input:642 input:690
+#: standard input:585 input:642 pgadmin/ui/dlgTable.xrc:21
 msgid "Custom autovacuum"
 msgstr ""
 
@@ -3900,7 +4005,7 @@ msgstr "Ambil text yang di pilih ke clipboard"
 # src/schema/pgSequence.cpp:96 standard input:9
 # standard
 #: src/schema/pgSequence.cpp:107 standard input:528
-#: src/schema/pgSequence.cpp:112 input:584 input:620
+#: src/schema/pgSequence.cpp:112 input:584 pgadmin/ui/dlgSequence.xrc:10
 msgid "Cycled"
 msgstr "Diulangi"
 
@@ -3919,7 +4024,7 @@ msgstr "Ristriksi"
 
 #: src/schema/pgServer.cpp:857 src/schema/pgServer.cpp:877
 #: src/schema/pgServer.cpp:905 standard input:600
-#: pgadmin/schema/pgServer.cpp:910 input:636
+#: pgadmin/schema/pgServer.cpp:915 pgadmin/ui/dlgServer.xrc:11
 #, fuzzy
 msgid "DB restriction"
 msgstr "Ristriksi"
@@ -3944,7 +4049,8 @@ msgstr ""
 # standard input:8
 # standard input:13
 # standard
-#: standard input:421 input:617 input:476 input:674 input:512 input:724
+#: standard input:421 input:617 input:476 input:674 pgadmin/ui/dlgRule.xrc:8
+#: pgadmin/ui/dlgTrigger.xrc:13
 msgid "DELETE"
 msgstr "DELETE"
 
@@ -3965,7 +4071,7 @@ msgid "Data Output"
 msgstr "Output Data"
 
 # standard
-#: standard input:104 input:109 input:119
+#: standard input:104 input:109 pgadmin/ui/dlgEditGridOptions.xrc:2
 msgid "Data Sorting"
 msgstr "Pengurutan Data"
 
@@ -4015,7 +4121,7 @@ msgstr "Pengambilan data rutinitas: "
 #: input:654 src/frm/frmReport.cpp:1294 src/schema/pgColumn.cpp:216 input:45
 #: input:711 pgadmin/dlg/dlgType.cpp:89 pgadmin/frm/frmReport.cpp:1278
 #: pgadmin/schema/edbPackageVariable.cpp:44 pgadmin/schema/pgColumn.cpp:234
-#: input:46 input:764
+#: pgadmin/ui/dlgColumn.xrc:3 pgadmin/ui/dlgType.xrc:33
 msgid "Data type"
 msgstr "Tipe Data"
 
@@ -4040,21 +4146,23 @@ msgstr "Data ditulis dalam berkas."
 #: src/schema/pgServer.cpp:928 input:238 input:348 input:358 input:370
 #: input:570 input:610 pgadmin/agent/pgaStep.cpp:61
 #: pgadmin/frm/frmHbaConfig.cpp:104 pgadmin/frm/frmPgpassConfig.cpp:90
-#: pgadmin/frm/frmReport.cpp:589 pgadmin/frm/frmStatus.cpp:109
-#: pgadmin/frm/frmStatus.cpp:126 pgadmin/frm/frmStatus.cpp:143
+#: pgadmin/frm/frmReport.cpp:589 pgadmin/frm/frmStatus.cpp:113
+#: pgadmin/frm/frmStatus.cpp:130 pgadmin/frm/frmStatus.cpp:147
 #: pgadmin/schema/pgDatabase.cpp:679 pgadmin/schema/pgDatabase.cpp:752
 #: pgadmin/schema/pgRole.cpp:139 pgadmin/schema/pgRole.cpp:165
-#: pgadmin/schema/pgServer.cpp:933 pgadmin/schema/pgTablespace.cpp:36
+#: pgadmin/schema/pgServer.cpp:938 pgadmin/schema/pgTablespace.cpp:36
 #: pgadmin/schema/pgTablespace.cpp:55 pgadmin/schema/pgUser.cpp:85
-#: pgadmin/schema/pgUser.cpp:117 input:255 input:383 input:393 input:405
-#: input:606 input:646
+#: pgadmin/schema/pgUser.cpp:117 pgadmin/ui/dlgHbaConfig.xrc:4
+#: pgadmin/ui/dlgPgpassConfig.xrc:5 pgadmin/ui/dlgRepCluster.xrc:4
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:5 pgadmin/ui/dlgSelectConnection.xrc:3
+#: pgadmin/ui/dlgStep.xrc:5
 msgid "Database"
 msgstr "Basisdata"
 
 # standard input:451
 # standard input:1
 # standard
-#: standard input:862 input:970 input:1043
+#: standard input:862 input:970 pgadmin/ui/frmStatus.xrc:1
 msgid "Database Status"
 msgstr "Status Basisdata"
 
@@ -4093,18 +4201,18 @@ msgstr "Basisdata"
 # src/ui/dlgType.cpp:70 src/ui/dlgtype.cpp:70 standard input:3
 # src/ui/dlgType.cpp:70 src/ui/dlgtype.cpp:70 standard input:29
 # standard
-#: standard input:219
+#: pgadmin/ui/dlgFunction.xrc:20
 #, fuzzy
 msgid "Datatype"
 msgstr "Tipe Data"
 
 #: src/agent/dlgSchedule.cpp:74 standard input:497 input:552
-#: pgadmin/agent/dlgSchedule.cpp:74 input:588
+#: pgadmin/agent/dlgSchedule.cpp:74 pgadmin/ui/dlgSchedule.xrc:68
 #, fuzzy
 msgid "Date"
 msgstr "Data"
 
-#: standard input:437 input:492 input:528
+#: standard input:437 input:492 pgadmin/ui/dlgSchedule.xrc:8
 msgid "Days"
 msgstr ""
 
@@ -4120,7 +4228,7 @@ msgstr ""
 msgid "Dead Tuple Percent"
 msgstr ""
 
-#: standard input:98
+#: pgadmin/ui/dlgDirectDbg.xrc:5
 msgid "Debug package initializer?"
 msgstr ""
 
@@ -4144,7 +4252,7 @@ msgid "Debugging options for the selected item."
 msgstr "Hitung baris pada obyek yang dipilih"
 
 #: src/agent/pgaSchedule.cpp:405 standard input:491 input:546
-#: pgadmin/agent/pgaSchedule.cpp:398 input:582
+#: pgadmin/agent/pgaSchedule.cpp:398 pgadmin/ui/dlgSchedule.xrc:62
 #, fuzzy
 msgid "December"
 msgstr "Anggota"
@@ -4161,7 +4269,8 @@ msgstr "Anggota"
 #: src/schema/pgColumn.cpp:217 src/schema/pgType.cpp:139 input:67 input:98
 #: input:696 pgadmin/frm/frmOptions.cpp:153 pgadmin/frm/frmReport.cpp:1278
 #: pgadmin/schema/pgColumn.cpp:237 pgadmin/schema/pgDomain.cpp:101
-#: pgadmin/schema/pgType.cpp:174 input:68 input:108 input:749
+#: pgadmin/schema/pgType.cpp:174 pgadmin/ui/dlgConversion.xrc:5
+#: pgadmin/ui/dlgDomain.xrc:6 pgadmin/ui/dlgType.xrc:18
 msgid "Default"
 msgstr "Default"
 
@@ -4184,7 +4293,7 @@ msgstr "Nilai default"
 # standard input:36
 # standard input:6
 # standard
-#: standard input:43 input:48 input:49
+#: standard input:43 input:48 pgadmin/ui/dlgColumn.xrc:6
 msgid "Default value"
 msgstr "Nilai default"
 
@@ -4199,7 +4308,7 @@ msgstr "Default?"
 # standard input:3
 # standard
 #: standard input:30 input:127 input:227 input:35 input:164 input:265
-#: input:172
+#: pgadmin/ui/dlgForeignKey.xrc:4
 msgid "Deferrable"
 msgstr "Deferrable"
 
@@ -4214,7 +4323,7 @@ msgstr "Deferrable?"
 # standard input:4
 # standard
 #: standard input:31 input:128 input:228 input:36 input:165 input:266
-#: input:173
+#: pgadmin/ui/dlgForeignKey.xrc:5
 msgid "Deferred"
 msgstr "Deferred"
 
@@ -4232,8 +4341,10 @@ msgstr "Deferred"
 #: input:619 input:689 input:748 pgadmin/dlg/dlgTable.cpp:121
 #: pgadmin/dlg/dlgTable.cpp:132 pgadmin/frm/frmReport.cpp:1331
 #: pgadmin/schema/pgCheck.cpp:76 pgadmin/schema/pgRule.cpp:79
-#: pgadmin/schema/pgView.cpp:225 input:12 input:228 input:517 input:655
-#: input:742 input:804
+#: pgadmin/schema/pgView.cpp:225 pgadmin/ui/dlgAggregate.xrc:7
+#: pgadmin/ui/dlgFunction.xrc:29 pgadmin/ui/dlgRule.xrc:13
+#: pgadmin/ui/dlgStep.xrc:14 pgadmin/ui/dlgType.xrc:11
+#: pgadmin/ui/dlgView.xrc:7
 msgid "Definition"
 msgstr "Difinisi"
 
@@ -4241,7 +4352,8 @@ msgstr "Difinisi"
 # src/ui/frmEditGrid.cpp:63 standard input:16
 #: src/frm/frmEditGrid.cpp:106 src/frm/frmConfig.cpp:137
 #: src/frm/frmEditGrid.cpp:122 standard input:317
-#: pgadmin/frm/frmConfig.cpp:136 pgadmin/frm/frmEditGrid.cpp:123 input:333
+#: pgadmin/frm/frmConfig.cpp:136 pgadmin/frm/frmEditGrid.cpp:123
+#: pgadmin/ui/dlgManageFavourites.xrc:3
 msgid "Delete"
 msgstr "&Hapus"
 
@@ -4301,7 +4413,7 @@ msgstr ""
 # src/schema/pgType.cpp:140 standard input:15
 # standard
 #: src/schema/pgType.cpp:143 standard input:641 src/schema/pgType.cpp:144
-#: input:698 pgadmin/schema/pgType.cpp:179 input:751
+#: input:698 pgadmin/schema/pgType.cpp:179 pgadmin/ui/dlgType.xrc:20
 msgid "Delimiter"
 msgstr "Delimiter"
 
@@ -4332,7 +4444,7 @@ msgstr "Tergantung pada"
 #: src/dlg/dlgEditGridOptions.cpp:209 input:116
 #: pgadmin/dlg/dlgEditGridOptions.cpp:120
 #: pgadmin/dlg/dlgEditGridOptions.cpp:140
-#: pgadmin/dlg/dlgEditGridOptions.cpp:208 input:126
+#: pgadmin/dlg/dlgEditGridOptions.cpp:208 pgadmin/ui/dlgEditGridOptions.xrc:9
 msgid "Descending"
 msgstr "Descending"
 
@@ -4340,7 +4452,7 @@ msgstr "Descending"
 # src/schema/pgServer.cpp:268 src/schema/pgServer.cpp:280 standard input:2
 # standard
 #: src/schema/pgServer.cpp:801 src/schema/pgServer.cpp:821 standard input:536
-#: src/schema/pgServer.cpp:848 pgadmin/schema/pgServer.cpp:852
+#: src/schema/pgServer.cpp:848 pgadmin/schema/pgServer.cpp:857
 msgid "Description"
 msgstr "Diskripsi"
 
@@ -4360,19 +4472,21 @@ msgstr ""
 msgid "Dimensions"
 msgstr "Dimensi"
 
-#: standard input:149 pgadmin/dlg/dlgFunction.cpp:166 input:157
+#: standard input:149 pgadmin/dlg/dlgFunction.cpp:166
+#: pgadmin/ui/dlgFindReplace.xrc:19
 #, fuzzy
 msgid "Direction"
 msgstr "Null Fraction"
 
 # standard
 #: src/frm/frmBackup.cpp:81 standard input:715 input:772
-#: pgadmin/frm/frmBackup.cpp:85 input:820
+#: pgadmin/frm/frmBackup.cpp:85 pgadmin/ui/frmBackup.xrc:12
 msgid "Disable $$ quoting"
 msgstr "Disable $$ quoting"
 
 # standard
-#: standard input:723 input:854 input:780 input:962 input:828 input:1035
+#: standard input:723 input:854 input:780 input:962
+#: pgadmin/ui/frmBackup.xrc:20 pgadmin/ui/frmRestore.xrc:9
 msgid "Disable Trigger"
 msgstr "Triger tidak difungsikan"
 
@@ -4388,16 +4502,16 @@ msgid "Disable triggers"
 msgstr "Triger tidak difungsikan"
 
 #: src/dlg/dlgServer.cpp:489 src/dlg/dlgServer.cpp:496
-#: pgadmin/schema/pgServer.cpp:1327
+#: pgadmin/schema/pgServer.cpp:1332
 msgid "Disconnec&t"
 msgstr "Disconnec&t"
 
 #: src/dlg/dlgServer.cpp:489 src/dlg/dlgServer.cpp:496
-#: pgadmin/schema/pgServer.cpp:1327
+#: pgadmin/schema/pgServer.cpp:1332
 msgid "Disconnect from the selected server."
 msgstr "Diskonek dari server ini."
 
-#: standard input:971
+#: pgadmin/ui/frmOptions.xrc:62
 #, fuzzy
 msgid "Display"
 msgstr "&Tampilkan"
@@ -4455,7 +4569,7 @@ msgstr ""
 msgid "Display options"
 msgstr "Explain &options"
 
-#: standard input:973
+#: pgadmin/ui/frmOptions.xrc:64
 #, fuzzy
 msgid "Display the following database objects:"
 msgstr "Tampilkan status basisdata saat ini."
@@ -4471,7 +4585,7 @@ msgid "Display/edit the properties of the selected object."
 msgstr "Tampilkan/edit properti dari obyek yang di pilih."
 
 #: src/frm/frmStatus.cpp:999 src/frm/frmStatus.cpp:1003
-#: src/frm/frmStatus.cpp:1051 pgadmin/frm/frmStatus.cpp:1055
+#: src/frm/frmStatus.cpp:1051 pgadmin/frm/frmStatus.cpp:1141
 msgid "Displays the current database status."
 msgstr "Tampilkan status basisdata saat ini."
 
@@ -4483,7 +4597,7 @@ msgstr "Distinct Values"
 # standard input:210
 # standard input:9
 # standard
-#: standard input:422 input:477 input:513
+#: standard input:422 input:477 pgadmin/ui/dlgRule.xrc:9
 msgid "Do instead"
 msgstr "Kerjakan"
 
@@ -4496,19 +4610,19 @@ msgstr "Kerjakan?"
 # standard input:381
 # standard input:7
 # standard
-#: standard input:805 input:862 input:928
+#: standard input:805 input:862 pgadmin/ui/frmOptions.xrc:19
 msgid "Do not prompt for unsaved files on exit"
 msgstr "Keluar tanpa notifikasi saat berkas tak tersimpan"
 
-#: standard input:809 input:866 input:932
+#: standard input:809 input:866 pgadmin/ui/frmOptions.xrc:23
 msgid "Do not show guru hints; I'm one myself"
 msgstr ""
 
-#: standard input:760 input:817 input:885
+#: standard input:760 input:817 pgadmin/ui/frmHint.xrc:2
 msgid "Do not show this hint again"
 msgstr ""
 
-#: standard input:936 input:1008
+#: standard input:936 pgadmin/ui/frmReport.xrc:21
 msgid "Do not use a stylesheet"
 msgstr ""
 
@@ -4537,9 +4651,9 @@ msgstr "Selesai"
 #: src/frm/frmStatus.cpp:508 src/frm/frmStatus.cpp:565
 #: src/frm/frmStatus.cpp:569 src/frm/frmStatus.cpp:388
 #: src/frm/frmStatus.cpp:494 src/frm/frmStatus.cpp:556
-#: src/frm/frmStatus.cpp:617 pgadmin/frm/frmStatus.cpp:392
-#: pgadmin/frm/frmStatus.cpp:498 pgadmin/frm/frmStatus.cpp:560
-#: pgadmin/frm/frmStatus.cpp:621
+#: src/frm/frmStatus.cpp:617 pgadmin/frm/frmStatus.cpp:400
+#: pgadmin/frm/frmStatus.cpp:506 pgadmin/frm/frmStatus.cpp:568
+#: pgadmin/frm/frmStatus.cpp:632
 msgid "Done."
 msgstr "Selesai."
 
@@ -4572,7 +4686,7 @@ msgid "Drop Cascaded"
 msgstr "Drop %s?"
 
 # standard
-#: standard input:722 input:779 input:827
+#: standard input:722 input:779 pgadmin/ui/frmBackup.xrc:19
 msgid "Drop DB"
 msgstr "Drop DB"
 
@@ -4629,11 +4743,11 @@ msgstr "Te&rangkan"
 msgid "E&xplain\tF7"
 msgstr "E&xplain\tF7"
 
-#: standard input:922
+#: pgadmin/ui/frmOptions.xrc:13
 msgid "EDB bin path"
 msgstr ""
 
-#: standard input:915
+#: pgadmin/ui/frmOptions.xrc:6
 msgid "EDB help path"
 msgstr ""
 
@@ -4656,14 +4770,14 @@ msgstr "ERROR: kesalah sintaks pada character %d!"
 # standard input:290
 # standard input:25
 # standard
-#: standard input:650 input:707 input:760
+#: standard input:650 input:707 pgadmin/ui/dlgType.xrc:29
 msgid "EXTENDED"
 msgstr "EXTENDED"
 
 # standard input:289
 # standard input:24
 # standard
-#: standard input:649 input:706 input:759
+#: standard input:649 input:706 pgadmin/ui/dlgType.xrc:28
 msgid "EXTERNAL"
 msgstr "EXTERNAL"
 
@@ -4676,7 +4790,7 @@ msgid "Edit and delete macros"
 msgstr ""
 
 #: src/frm/frmMainConfig.cpp:607 src/frm/frmMainConfig.cpp:618
-#: pgadmin/frm/frmMainConfig.cpp:646
+#: pgadmin/frm/frmMainConfig.cpp:656
 msgid "Edit general server configuration file."
 msgstr ""
 
@@ -4697,15 +4811,15 @@ msgstr ""
 # src/schema/pgType.cpp:139 standard input:14
 # standard
 #: src/schema/pgType.cpp:142 standard input:640 src/schema/pgType.cpp:143
-#: input:697 pgadmin/schema/pgType.cpp:178 input:750
+#: input:697 pgadmin/schema/pgType.cpp:178 pgadmin/ui/dlgType.xrc:19
 msgid "Element"
 msgstr "Elemen"
 
-#: standard input:932 input:1004
+#: standard input:932 pgadmin/ui/frmReport.xrc:17
 msgid "Embed an external stylesheet into the report"
 msgstr ""
 
-#: standard input:930 input:1002
+#: standard input:930 pgadmin/ui/frmReport.xrc:15
 msgid "Embed pgAdmin's default stylesheet into the report."
 msgstr ""
 
@@ -4751,8 +4865,11 @@ msgstr "Triger tidak difungsikan"
 #: src/agent/pgaStep.cpp:57 standard input:199 input:240 input:271 input:433
 #: input:552 input:586 src/agent/pgaStep.cpp:65 input:236 input:278 input:309
 #: input:345 input:488 input:609 input:643 pgadmin/agent/pgaJob.cpp:81
-#: pgadmin/agent/pgaSchedule.cpp:52 pgadmin/agent/pgaStep.cpp:59 input:253
-#: input:294 input:325 input:380 input:524 input:645 input:691
+#: pgadmin/agent/pgaSchedule.cpp:52 pgadmin/agent/pgaStep.cpp:59
+#: pgadmin/ui/dlgHbaConfig.xrc:2 pgadmin/ui/dlgJob.xrc:4
+#: pgadmin/ui/dlgMainConfig.xrc:1 pgadmin/ui/dlgPgpassConfig.xrc:2
+#: pgadmin/ui/dlgSchedule.xrc:4 pgadmin/ui/dlgStep.xrc:4
+#: pgadmin/ui/dlgTable.xrc:22
 msgid "Enabled"
 msgstr "Difungsikan"
 
@@ -4770,7 +4887,8 @@ msgstr ""
 # standard
 #: src/schema/pgDatabase.cpp:405 standard input:75 input:740
 #: src/schema/pgDatabase.cpp:421 input:80 input:797
-#: pgadmin/schema/pgDatabase.cpp:434 input:81 input:865
+#: pgadmin/schema/pgDatabase.cpp:434 pgadmin/ui/dlgDatabase.xrc:5
+#: pgadmin/ui/frmExport.xrc:13
 msgid "Encoding"
 msgstr "Encoding"
 
@@ -4779,12 +4897,12 @@ msgstr "Encoding"
 # standard input:6
 # standard input:8
 #: src/schema/pgServer.cpp:814 src/schema/pgServer.cpp:834
-#: src/schema/pgServer.cpp:861 pgadmin/schema/pgServer.cpp:865
+#: src/schema/pgServer.cpp:861 pgadmin/schema/pgServer.cpp:870
 msgid "Encryption"
 msgstr "Enkripsi"
 
 # standard
-#: standard input:435 input:490 input:526
+#: standard input:435 input:490 pgadmin/ui/dlgSchedule.xrc:6
 msgid "End"
 msgstr "End"
 
@@ -4810,15 +4928,15 @@ msgstr "Masukan diskripsi dari koneksi basisdata ini."
 # standard input:394
 # standard input:20
 # standard
-#: standard input:823 input:893 input:961
+#: standard input:823 input:893 pgadmin/ui/frmOptions.xrc:52
 msgid "Enter a filename to write application logs to."
 msgstr "Masukan nama berkas untuk kemana applikasi lognya akan ditulis"
 
-#: standard input:918 input:990
+#: standard input:918 pgadmin/ui/frmReport.xrc:3
 msgid "Enter a title for the report"
 msgstr ""
 
-#: standard input:920 input:992
+#: standard input:920 pgadmin/ui/frmReport.xrc:5
 msgid "Enter any additional notes to include on the report"
 msgstr ""
 
@@ -4835,7 +4953,7 @@ msgid "Enter new name"
 msgstr "Nama Anggota"
 
 # standard
-#: standard input:117 input:122 input:132
+#: standard input:117 input:122 pgadmin/ui/dlgEditGridOptions.xrc:15
 msgid ""
 "Enter the filter string to apply to the data. SQL syntax should be used as "
 "the string will be used as a 'WHERE' clause."
@@ -4860,14 +4978,14 @@ msgstr ""
 # standard input:349
 # standard input:15
 # standard
-#: standard input:54 input:59 input:60
+#: standard input:54 input:59 pgadmin/ui/dlgConnect.xrc:3
 msgid "Enter the password to use when connecting to the server."
 msgstr "Masukan password saat melakukan koneksi ke server."
 
 # standard input:379
 # standard input:5
 # standard
-#: standard input:796 input:853 input:914
+#: standard input:796 input:853 pgadmin/ui/frmOptions.xrc:5
 msgid "Enter the path or URL to the PostgreSQL documentation"
 msgstr "Masukan path atau URL di dokumentasi PostgreSQL"
 
@@ -4876,15 +4994,15 @@ msgstr "Masukan path atau URL di dokumentasi PostgreSQL"
 msgid "Enter the port number that the server is listening on."
 msgstr "Masukan nomer port yang listen di server."
 
-#: standard input:143 input:151
+#: standard input:143 pgadmin/ui/dlgFindReplace.xrc:13
 msgid "Enter the replacement text"
 msgstr ""
 
-#: standard input:96
+#: pgadmin/ui/dlgDirectDbg.xrc:3
 msgid "Enter the required values for each parameter:"
 msgstr ""
 
-#: standard input:141 input:149
+#: standard input:141 pgadmin/ui/dlgFindReplace.xrc:11
 msgid "Enter the string to search for"
 msgstr ""
 
@@ -4893,7 +5011,7 @@ msgstr ""
 msgid "Enter the username to use when connecting to the server."
 msgstr "Masukan username yang dipakai ketika konek ke server."
 
-#: standard input:738
+#: pgadmin/ui/dlgType.xrc:7
 #, fuzzy
 msgid "Enumeration"
 msgstr "Null Fraction"
@@ -4925,14 +5043,14 @@ msgstr "Kesalahan. Tidak ada tabel atau kolom"
 # standard input:400
 # standard input:26
 # standard
-#: standard input:829 input:899 input:967
+#: standard input:829 input:899 pgadmin/ui/frmOptions.xrc:58
 msgid "Errors and N&otices"
 msgstr "Error dan N&otis"
 
 # standard input:400
 # standard input:26
 # standard
-#: standard input:830 input:900 input:968
+#: standard input:830 input:900 pgadmin/ui/frmOptions.xrc:59
 msgid "Errors, Notices, &SQL"
 msgstr "Error. Notis dan &SQL"
 
@@ -4941,11 +5059,11 @@ msgstr "Error. Notis dan &SQL"
 msgid "Establishing connection"
 msgstr "Perbolehkan Koneksi?"
 
-#: pgadmin/schema/pgFunction.cpp:184 standard input:214
+#: pgadmin/schema/pgFunction.cpp:184 pgadmin/ui/dlgFunction.xrc:15
 msgid "Estimated cost"
 msgstr ""
 
-#: pgadmin/schema/pgFunction.cpp:186 standard input:215
+#: pgadmin/schema/pgFunction.cpp:186 pgadmin/ui/dlgFunction.xrc:16
 msgid "Estimated rows"
 msgstr ""
 
@@ -4954,7 +5072,7 @@ msgstr ""
 # standard
 #: src/schema/pgRule.cpp:64 src/schema/pgTrigger.cpp:144 standard input:417
 #: input:472 pgadmin/schema/pgRule.cpp:76 pgadmin/schema/pgTrigger.cpp:182
-#: input:508
+#: pgadmin/ui/dlgRule.xrc:4
 msgid "Event"
 msgstr "Event"
 
@@ -4969,7 +5087,7 @@ msgstr "Event"
 # standard input:259
 # standard input:10
 # standard
-#: standard input:614 input:671 input:721
+#: standard input:614 input:671 pgadmin/ui/dlgTrigger.xrc:10
 msgid "Events"
 msgstr "Event"
 
@@ -5007,7 +5125,7 @@ msgstr "Event"
 # standard input:1
 # standard
 #: src/agent/pgaSchedule.cpp:68 standard input:495 input:550
-#: pgadmin/agent/pgaSchedule.cpp:61 input:586
+#: pgadmin/agent/pgaSchedule.cpp:61 pgadmin/ui/dlgSchedule.xrc:66
 #, fuzzy
 msgid "Exceptions"
 msgstr "Opsi"
@@ -5081,10 +5199,6 @@ msgstr "Keluar dari window query"
 msgid "Exit query window"
 msgstr "Keluar dari window query"
 
-#: pgadmin/debugger/dlgDirectDbg.cpp:140
-msgid "Expected to find at least one target on the command line"
-msgstr ""
-
 #: src/frm/frmQuery.cpp:208 src/frm/frmQuery.cpp:228 src/frm/frmQuery.cpp:252
 #: src/frm/frmQuery.cpp:276 pgadmin/frm/frmQuery.cpp:292
 #: pgadmin/frm/frmQuery.cpp:319
@@ -5131,7 +5245,7 @@ msgstr "Export data ke berkas"
 # src/ui/frmQuery.cpp:93 standard input:352
 # standard
 #: src/frm/frmQuery.cpp:112 standard input:728 src/frm/frmQuery.cpp:136
-#: input:785 pgadmin/frm/frmQuery.cpp:157 input:853
+#: input:785 pgadmin/frm/frmQuery.cpp:157 pgadmin/ui/frmExport.xrc:1
 msgid "Export data to file"
 msgstr "Export data ke berkas"
 
@@ -5144,7 +5258,7 @@ msgstr "Kesalahan Ekspresi"
 # standard input:271
 # standard input:6
 # standard
-#: standard input:629 input:686 input:739
+#: standard input:629 input:686 pgadmin/ui/dlgType.xrc:8
 msgid "External"
 msgstr "Eksternal"
 
@@ -5153,34 +5267,34 @@ msgid "FATAL"
 msgstr "FATAL"
 
 # standard
-#: standard input:131 input:168 input:176
+#: standard input:131 input:168 pgadmin/ui/dlgForeignKey.xrc:8
 msgid "FK index name"
 msgstr "Nama FK index"
 
 # standard input:257
 # standard input:8
 # standard
-#: standard input:785 input:842 input:903
+#: standard input:785 input:842 pgadmin/ui/frmMaintenance.xrc:12
 msgid "FORCE"
 msgstr "FORCE"
 
 # standard
-#: standard input:782 input:839 input:900
+#: standard input:782 input:839 pgadmin/ui/frmMaintenance.xrc:9
 msgid "FREEZE"
 msgstr "FREEZE"
 
-#: standard input:700
+#: pgadmin/ui/dlgTable.xrc:31
 msgid "FREEZE maximum age"
 msgstr ""
 
-#: standard input:699
+#: pgadmin/ui/dlgTable.xrc:30
 msgid "FREEZE minimum age"
 msgstr ""
 
 # standard input:423
 # standard input:11
 # standard
-#: standard input:781 input:838 input:899
+#: standard input:781 input:838 pgadmin/ui/frmMaintenance.xrc:8
 msgid "FULL"
 msgstr "FULL"
 
@@ -5192,7 +5306,7 @@ msgstr "FULL JOIN"
 
 # standard
 #: src/agent/pgaStep.cpp:118 standard input:558 src/agent/pgaStep.cpp:127
-#: input:615 pgadmin/agent/pgaStep.cpp:121 input:651
+#: input:615 pgadmin/agent/pgaStep.cpp:121 pgadmin/ui/dlgStep.xrc:10
 msgid "Fail"
 msgstr "Gagal"
 
@@ -5381,7 +5495,7 @@ msgid "Favourites"
 msgstr ""
 
 #: src/agent/pgaSchedule.cpp:365 standard input:481 input:536
-#: pgadmin/agent/pgaSchedule.cpp:358 input:572
+#: pgadmin/agent/pgaSchedule.cpp:358 pgadmin/ui/dlgSchedule.xrc:52
 msgid "February"
 msgstr ""
 
@@ -5394,11 +5508,13 @@ msgstr ""
 
 # standard
 #: standard input:706 input:747 input:848 input:763 input:804 input:941
-#: input:956 input:811 input:835 input:845 input:872 input:1013 input:1029
+#: input:956 pgadmin/ui/frmBackup.xrc:3 pgadmin/ui/frmBackupGlobals.xrc:3
+#: pgadmin/ui/frmBackupServer.xrc:3 pgadmin/ui/frmExport.xrc:20
+#: pgadmin/ui/frmReport.xrc:26 pgadmin/ui/frmRestore.xrc:3
 msgid "Filename"
 msgstr "Nama Berkas"
 
-#: standard input:267 input:675
+#: pgadmin/ui/dlgIndex.xrc:5 pgadmin/ui/dlgTable.xrc:6
 #, fuzzy
 msgid "Fill Factor"
 msgstr "Null Fraction"
@@ -5412,12 +5528,12 @@ msgid "Fill factor"
 msgstr "Fungsi Final"
 
 # standard
-#: standard input:115 input:120 input:130
+#: standard input:115 input:120 pgadmin/ui/dlgEditGridOptions.xrc:13
 msgid "Filter"
 msgstr "Filter"
 
 # standard
-#: standard input:116 input:121 input:131
+#: standard input:116 input:121 pgadmin/ui/dlgEditGridOptions.xrc:14
 msgid "Filter String (eg. oid > 10 AND oid < 50)"
 msgstr "Filter String (eg. oid > 10 AND oid < 50)"
 
@@ -5430,7 +5546,7 @@ msgstr "Filter string syntax validates OK!"
 # standard input:8
 # standard
 #: src/schema/pgAggregate.cpp:90 standard input:8 input:13
-#: pgadmin/schema/pgAggregate.cpp:113 input:18
+#: pgadmin/schema/pgAggregate.cpp:113 pgadmin/ui/dlgAggregate.xrc:13
 msgid "Final function"
 msgstr "Fungsi Final"
 
@@ -5443,7 +5559,7 @@ msgstr "Tipe Terakhir"
 msgid "Find"
 msgstr "Cari"
 
-#: standard input:129 input:139
+#: standard input:129 pgadmin/ui/dlgFindReplace.xrc:1
 msgid "Find and Replace"
 msgstr ""
 
@@ -5452,7 +5568,7 @@ msgstr ""
 msgid "Find and Replace text"
 msgstr "Pencarian Kata"
 
-#: standard input:139 input:147
+#: standard input:139 pgadmin/ui/dlgFindReplace.xrc:9
 msgid "Find and replace all occurrences of the specified text"
 msgstr ""
 
@@ -5462,7 +5578,7 @@ msgstr ""
 msgid "Find and replace text"
 msgstr "Pencarian Kata"
 
-#: standard input:137 input:145
+#: standard input:137 pgadmin/ui/dlgFindReplace.xrc:7
 msgid "Find and replace the specified text"
 msgstr ""
 
@@ -5473,11 +5589,11 @@ msgstr ""
 msgid "Find text"
 msgstr "Pencarian Kata"
 
-#: standard input:135 input:143
+#: standard input:135 pgadmin/ui/dlgFindReplace.xrc:5
 msgid "Find the specified text"
 msgstr ""
 
-#: standard input:140 input:148
+#: standard input:140 pgadmin/ui/dlgFindReplace.xrc:10
 #, fuzzy
 msgid "Find what:"
 msgstr "Pencarian Kata"
@@ -5486,13 +5602,14 @@ msgstr "Pencarian Kata"
 # src/schema/pgTrigger.cpp:141 src/schema/pgtrigger.cpp:141 standard input:7
 # standard
 #: src/schema/pgTrigger.cpp:143 standard input:611 input:668
-#: pgadmin/schema/pgTrigger.cpp:181 input:718
+#: pgadmin/schema/pgTrigger.cpp:181 pgadmin/ui/dlgTrigger.xrc:7
 msgid "Fires"
 msgstr "Fires"
 
 # standard input:12
 # standard
-#: standard input:802 input:812 input:859 input:869 input:925 input:935
+#: standard input:802 input:812 input:859 input:869
+#: pgadmin/ui/frmOptions.xrc:16 pgadmin/ui/frmOptions.xrc:26
 msgid "Font"
 msgstr "Font"
 
@@ -5526,7 +5643,7 @@ msgid "Foreign key?"
 msgstr "Foreign Key"
 
 # standard
-#: standard input:708 input:765 input:813
+#: standard input:708 input:765 pgadmin/ui/frmBackup.xrc:5
 msgid "Format"
 msgstr "Format"
 
@@ -5538,7 +5655,7 @@ msgstr "Teruskan"
 msgid "Forward to next page."
 msgstr "Teruskan ke halaman berikutnya."
 
-#: standard input:150 input:158
+#: standard input:150 pgadmin/ui/dlgFindReplace.xrc:20
 #, fuzzy
 msgid "Forwards"
 msgstr "Teruskan"
@@ -5561,7 +5678,7 @@ msgid "Frequently asked questions."
 msgstr "Pertanyaan yang sering di tanyakan tentang pgAdmin III."
 
 #: src/agent/pgaSchedule.cpp:276 standard input:444 input:499
-#: pgadmin/agent/pgaSchedule.cpp:269 input:535
+#: pgadmin/agent/pgaSchedule.cpp:269 pgadmin/ui/dlgSchedule.xrc:15
 #, fuzzy
 msgid "Friday"
 msgstr "Cari"
@@ -5570,11 +5687,11 @@ msgstr "Cari"
 msgid "From"
 msgstr "Dari"
 
-#: standard input:145 input:153
+#: standard input:145 pgadmin/ui/dlgFindReplace.xrc:15
 msgid "From the cursor"
 msgstr ""
 
-#: standard input:147 input:155
+#: standard input:147 pgadmin/ui/dlgFindReplace.xrc:17
 msgid "From the top"
 msgstr ""
 
@@ -5591,8 +5708,8 @@ msgstr ""
 #: pgadmin/frm/frmRestore.cpp:225 pgadmin/frm/frmRestore.cpp:327
 #: pgadmin/schema/edbPackageFunction.cpp:355 pgadmin/schema/pgCast.cpp:69
 #: pgadmin/schema/pgCast.cpp:71 pgadmin/schema/pgConversion.cpp:69
-#: pgadmin/schema/pgFunction.cpp:558 pgadmin/schema/pgTrigger.cpp:185 input:29
-#: input:71
+#: pgadmin/schema/pgFunction.cpp:558 pgadmin/schema/pgTrigger.cpp:185
+#: pgadmin/ui/dlgCast.xrc:6 pgadmin/ui/dlgConversion.xrc:8
 msgid "Function"
 msgstr "Fungsi"
 
@@ -5607,7 +5724,7 @@ msgstr "Fungsi"
 # standard input:376
 # standard input:2
 # standard
-#: standard input:793 input:850 input:911
+#: standard input:793 input:850 pgadmin/ui/frmOptions.xrc:2
 msgid "General"
 msgstr "Umum"
 
@@ -5633,7 +5750,7 @@ msgstr "Tampilkan/edit properti dari obyek yang di pilih."
 msgid "Generate a properties report for this object."
 msgstr "Tampilkan/edit properti dari obyek yang di pilih."
 
-#: standard input:916 input:988
+#: standard input:916 pgadmin/ui/frmReport.xrc:1
 msgid "Generate a report"
 msgstr ""
 
@@ -5663,17 +5780,17 @@ msgid "Get extended statistics via pgstattuple for the selected object."
 msgstr ""
 
 #: src/frm/frmStatus.cpp:135 src/frm/frmStatus.cpp:138
-#: pgadmin/frm/frmStatus.cpp:140
+#: pgadmin/frm/frmStatus.cpp:144
 msgid "Global ID"
 msgstr ""
 
 # standard
-#: standard input:752 input:809 input:877
+#: standard input:752 input:809 pgadmin/ui/frmGrantWizard.xrc:1
 msgid "Grant Wizard"
 msgstr "Grant Wizard"
 
 #: src/frm/frmStatus.cpp:126 src/frm/frmStatus.cpp:129
-#: pgadmin/frm/frmStatus.cpp:131
+#: pgadmin/frm/frmStatus.cpp:135
 msgid "Granted"
 msgstr "Granted"
 
@@ -5694,7 +5811,7 @@ msgstr "Group"
 
 # standard
 #: src/schema/pgGroup.cpp:93 standard input:188 input:225
-#: pgadmin/schema/pgGroup.cpp:85 input:242
+#: pgadmin/schema/pgGroup.cpp:85 pgadmin/ui/dlgGroup.xrc:3
 msgid "Group ID"
 msgstr "Group ID"
 
@@ -5723,7 +5840,7 @@ msgid "Group/User"
 msgstr "Group/User"
 
 # standard
-#: standard input:187 input:224 input:241
+#: standard input:187 input:224 pgadmin/ui/dlgGroup.xrc:2
 msgid "Groupname"
 msgstr "NamaGroup"
 
@@ -5731,7 +5848,7 @@ msgstr "NamaGroup"
 # src/schema/pgObject.cpp:32 standard input:8
 # standard
 #: src/schema/pgGroup.cpp:156 standard input:672 input:729
-#: pgadmin/schema/pgGroup.cpp:148 input:785
+#: pgadmin/schema/pgGroup.cpp:148 pgadmin/ui/dlgUser.xrc:11
 msgid "Groups"
 msgstr "Group"
 
@@ -5779,7 +5896,7 @@ msgstr "Proxy HTTP"
 # standard
 #: src/schema/pgLanguage.cpp:67 standard input:264
 #: src/schema/pgLanguage.cpp:74 input:302 pgadmin/schema/pgLanguage.cpp:68
-#: input:318
+#: pgadmin/ui/dlgLanguage.xrc:5
 msgid "Handler"
 msgstr "Penanganan"
 
@@ -5792,7 +5909,7 @@ msgstr "Last run"
 # standard input:239
 # standard input:5
 # standard
-#: standard input:571 input:628 input:676
+#: standard input:571 input:628 pgadmin/ui/dlgTable.xrc:7
 msgid "Has OIDs"
 msgstr "Punya OID"
 
@@ -5804,7 +5921,7 @@ msgstr "Punya OID?"
 # src/schema/pgLanguage.cpp:66 standard input:177
 # src/schema/pgLanguage.cpp:66 standard input:6
 # standard
-#: pgadmin/schema/edbPackage.cpp:131 standard input:373
+#: pgadmin/schema/edbPackage.cpp:131 pgadmin/ui/dlgPackage.xrc:7
 #, fuzzy
 msgid "Header"
 msgstr "Penanganan"
@@ -5834,8 +5951,12 @@ msgstr "Heap Blocks Read"
 #: input:400 input:407 input:414 input:421 input:429 input:438 input:466
 #: input:482 input:556 input:565 input:587 input:603 input:651 input:677
 #: input:716 input:739 input:749 pgadmin/frm/frmConfig.cpp:175
-#: pgadmin/frm/frmQuery.cpp:296 input:21 input:33 input:41 input:55 input:74
-#: input:91 input:115 input:197 input:236 input:249
+#: pgadmin/frm/frmQuery.cpp:296 pgadmin/ui/dlgAggregate.xrc:16
+#: pgadmin/ui/dlgCast.xrc:10 pgadmin/ui/dlgCheck.xrc:6
+#: pgadmin/ui/dlgColumn.xrc:12 pgadmin/ui/dlgConversion.xrc:11
+#: pgadmin/ui/dlgDatabase.xrc:15 pgadmin/ui/dlgDomain.xrc:13
+#: pgadmin/ui/dlgForeignKey.xrc:29 pgadmin/ui/dlgFunction.xrc:37
+#: pgadmin/ui/dlgGroup.xrc:10
 msgid "Help"
 msgstr "B&antuan"
 
@@ -5874,13 +5995,13 @@ msgid "History"
 msgstr "History"
 
 #: src/frm/frmPgpassConfig.cpp:88 standard input:592
-#: pgadmin/frm/frmPgpassConfig.cpp:88 input:628
+#: pgadmin/frm/frmPgpassConfig.cpp:88 pgadmin/ui/dlgServer.xrc:3
 #, fuzzy
 msgid "Host"
 msgstr "Hostname"
 
 #: src/agent/pgaJob.cpp:88 standard input:242 input:280
-#: pgadmin/agent/pgaJob.cpp:82 input:296
+#: pgadmin/agent/pgaJob.cpp:82 pgadmin/ui/dlgJob.xrc:6
 #, fuzzy
 msgid "Host agent"
 msgstr "Hostname"
@@ -5888,7 +6009,8 @@ msgstr "Hostname"
 #: src/schema/pgServer.cpp:804 src/schema/pgServer.cpp:809
 #: src/schema/pgServer.cpp:824 src/schema/pgServer.cpp:829
 #: src/schema/pgServer.cpp:851 src/schema/pgServer.cpp:856 standard input:346
-#: pgadmin/schema/pgServer.cpp:855 pgadmin/schema/pgServer.cpp:860 input:381
+#: pgadmin/schema/pgServer.cpp:860 pgadmin/schema/pgServer.cpp:865
+#: pgadmin/ui/dlgPgpassConfig.xrc:3
 msgid "Hostname"
 msgstr "Hostname"
 
@@ -5898,7 +6020,7 @@ msgid "Hostname/IP Address"
 msgstr "Hostname/Alamat IP"
 
 #: src/agent/pgaSchedule.cpp:64 standard input:493 input:548
-#: pgadmin/agent/pgaSchedule.cpp:57 input:584
+#: pgadmin/agent/pgaSchedule.cpp:57 pgadmin/ui/dlgSchedule.xrc:64
 msgid "Hours"
 msgstr ""
 
@@ -5939,8 +6061,11 @@ msgstr "Huh?"
 #: pgadmin/agent/pgaJob.cpp:80 pgadmin/agent/pgaSchedule.cpp:51
 #: pgadmin/agent/pgaStep.cpp:58 pgadmin/slony/slNode.cpp:227
 #: pgadmin/slony/slSequence.cpp:68 pgadmin/slony/slSet.cpp:191
-#: pgadmin/slony/slTable.cpp:85 input:293 input:433 input:440 input:454
-#: input:469 input:523 input:644
+#: pgadmin/slony/slTable.cpp:85 pgadmin/ui/dlgJob.xrc:3
+#: pgadmin/ui/dlgRepNode.xrc:2 pgadmin/ui/dlgRepSequence.xrc:3
+#: pgadmin/ui/dlgRepSet.xrc:3 pgadmin/ui/dlgRepSetMove.xrc:3
+#: pgadmin/ui/dlgRepTable.xrc:3 pgadmin/ui/dlgSchedule.xrc:3
+#: pgadmin/ui/dlgStep.xrc:3
 #, fuzzy
 msgid "ID"
 msgstr "OID"
@@ -5948,19 +6073,19 @@ msgstr "OID"
 # standard input:127
 # standard input:10
 # standard
-#: standard input:165 input:202 input:210
+#: standard input:165 input:202 pgadmin/ui/dlgFunction.xrc:11
 msgid "IMMUTABLE"
 msgstr "IMMUTABLE"
 
 # standard input:291
 # standard input:26
 # standard
-#: standard input:176 input:213 input:221
+#: standard input:176 input:213 pgadmin/ui/dlgFunction.xrc:22
 #, fuzzy
 msgid "IN"
 msgstr "MAIN"
 
-#: standard input:223
+#: pgadmin/ui/dlgFunction.xrc:24
 msgid "IN OUT"
 msgstr ""
 
@@ -5978,7 +6103,8 @@ msgstr ""
 # standard input:6
 # standard input:11
 # standard
-#: standard input:419 input:615 input:474 input:672 input:510 input:722
+#: standard input:419 input:615 input:474 input:672 pgadmin/ui/dlgRule.xrc:6
+#: pgadmin/ui/dlgTrigger.xrc:11
 msgid "INSERT"
 msgstr "INSERT"
 
@@ -5999,7 +6125,7 @@ msgstr "INSERT"
 # standard input:7
 # standard input:9 standard input:12
 # standard
-#: standard input:203 input:240 input:257
+#: standard input:203 input:240 pgadmin/ui/dlgHbaConfig.xrc:6
 #, fuzzy
 msgid "IP Address"
 msgstr "Alamat"
@@ -6032,7 +6158,7 @@ msgstr ""
 
 # standard
 #: src/agent/pgaStep.cpp:119 standard input:560 src/agent/pgaStep.cpp:128
-#: input:617 pgadmin/agent/pgaStep.cpp:122 input:653
+#: input:617 pgadmin/agent/pgaStep.cpp:122 pgadmin/ui/dlgStep.xrc:12
 msgid "Ignore"
 msgstr "Ignore"
 
@@ -6044,30 +6170,30 @@ msgid "Ignored"
 msgstr "Ignore"
 
 # standard
-#: standard input:286 input:330 input:353
+#: standard input:286 input:330 pgadmin/ui/dlgOperator.xrc:10
 msgid "Implementation"
 msgstr "Implementasi"
 
 # standard input:19
 # standard input:7
 # standard
-#: standard input:22 input:27 input:30
+#: standard input:22 input:27 pgadmin/ui/dlgCast.xrc:7
 msgid "Implicit"
 msgstr "Impisit"
 
-#: standard input:934 input:1006
+#: standard input:934 pgadmin/ui/frmReport.xrc:19
 msgid "Include a link to an external stylesheet in the report."
 msgstr ""
 
-#: standard input:938 input:1010
+#: standard input:938 pgadmin/ui/frmReport.xrc:23
 msgid "Include a link to the specified stylesheet in the XML file"
 msgstr ""
 
-#: standard input:922 input:994
+#: standard input:922 pgadmin/ui/frmReport.xrc:7
 msgid "Include the SQL from the object or query in the report?"
 msgstr ""
 
-#: standard input:921 input:993
+#: standard input:921 pgadmin/ui/frmReport.xrc:6
 msgid "Include the SQL in the report?"
 msgstr ""
 
@@ -6081,17 +6207,17 @@ msgstr "Password salah !"
 # standard
 #: src/schema/pgSequence.cpp:105 standard input:523
 #: src/schema/pgSequence.cpp:110 input:579 pgadmin/schema/pgSequence.cpp:111
-#: input:615
+#: pgadmin/ui/dlgSequence.xrc:5
 msgid "Increment"
 msgstr "Penambahan"
 
 # standard input:816
-#: standard input:818 input:875 input:941
+#: standard input:818 input:875 pgadmin/ui/frmOptions.xrc:32
 msgid "Indent characters"
 msgstr ""
 
 #: src/schema/pgIndex.cpp:361 standard input:380 src/schema/pgIndex.cpp:371
-#: input:435 pgadmin/schema/pgIndex.cpp:467 input:470
+#: input:435 pgadmin/schema/pgIndex.cpp:467 pgadmin/ui/dlgRepTable.xrc:4
 msgid "Index"
 msgstr "Index"
 
@@ -6177,12 +6303,12 @@ msgid "Inherited tables count"
 msgstr "Penghitungan Tabel Inherit"
 
 # standard
-#: standard input:572 input:629 input:677
+#: standard input:572 input:629 pgadmin/ui/dlgTable.xrc:8
 msgid "Inherits from tables"
 msgstr "Inherit dari tabel"
 
 # standard
-#: standard input:394 input:449 input:484
+#: standard input:394 input:449 pgadmin/ui/dlgRole.xrc:9
 #, fuzzy
 msgid "Inherits rights from parent roles"
 msgstr "Inherit dari tabel"
@@ -6210,7 +6336,7 @@ msgstr "Basisdata Inisial"
 # standard input:9
 # standard
 #: src/schema/pgAggregate.cpp:93 standard input:10 input:15
-#: pgadmin/schema/pgAggregate.cpp:116 input:20
+#: pgadmin/schema/pgAggregate.cpp:116 pgadmin/ui/dlgAggregate.xrc:15
 msgid "Initial condition"
 msgstr "Kondisi Inisial"
 
@@ -6248,7 +6374,7 @@ msgstr ""
 # standard input:9
 # standard
 #: src/schema/pgType.cpp:145 standard input:633 src/schema/pgType.cpp:146
-#: input:690 pgadmin/schema/pgType.cpp:181 input:743
+#: input:690 pgadmin/schema/pgType.cpp:181 pgadmin/ui/dlgType.xrc:12
 msgid "Input function"
 msgstr "Fungsi Masukan"
 
@@ -6258,14 +6384,14 @@ msgid "Input type"
 msgstr "Tipe Masukan"
 
 # standard
-#: pgadmin/dlg/dlgAggregate.cpp:82 pgadmin/schema/pgAggregate.cpp:107 standard
-#: input:13
+#: pgadmin/dlg/dlgAggregate.cpp:82 pgadmin/schema/pgAggregate.cpp:107
+#: pgadmin/ui/dlgAggregate.xrc:8
 #, fuzzy
 msgid "Input types"
 msgstr "Tipe Masukan"
 
 # standard
-#: standard input:714 input:771 input:819
+#: standard input:714 input:771 pgadmin/ui/frmBackup.xrc:11
 msgid "Insert commands"
 msgstr "Masukan perintah"
 
@@ -6285,7 +6411,7 @@ msgstr "Panjang Internal"
 # standard input:11
 # standard
 #: src/schema/pgType.cpp:137 standard input:637 src/schema/pgType.cpp:138
-#: input:694 pgadmin/schema/pgType.cpp:173 input:747
+#: input:694 pgadmin/schema/pgType.cpp:173 pgadmin/ui/dlgType.xrc:16
 msgid "Internal length"
 msgstr "Panjang Internal"
 
@@ -6314,7 +6440,7 @@ msgid "Is forwarded"
 msgstr "Teruskan"
 
 #: src/agent/pgaSchedule.cpp:361 standard input:480 input:535
-#: pgadmin/agent/pgaSchedule.cpp:354 input:571
+#: pgadmin/agent/pgaSchedule.cpp:354 pgadmin/ui/dlgSchedule.xrc:51
 msgid "January"
 msgstr ""
 
@@ -6324,7 +6450,7 @@ msgstr "Job"
 
 # standard
 #: src/agent/pgaJob.cpp:89 standard input:241 input:279
-#: pgadmin/agent/pgaJob.cpp:83 input:295
+#: pgadmin/agent/pgaJob.cpp:83 pgadmin/ui/dlgJob.xrc:5
 msgid "Job class"
 msgstr "Job class"
 
@@ -6345,23 +6471,23 @@ msgstr "Gabung"
 msgid "Join Type"
 msgstr "Type Gabung"
 
-#: standard input:301 input:356 input:391
+#: standard input:301 input:356 pgadmin/ui/dlgRepCluster.xrc:2
 msgid "Join existing cluster"
 msgstr ""
 
 # standard
 #: src/schema/pgOperator.cpp:128 standard input:288 input:332
-#: pgadmin/schema/pgOperator.cpp:131 input:355
+#: pgadmin/schema/pgOperator.cpp:131 pgadmin/ui/dlgOperator.xrc:12
 msgid "Join function"
 msgstr "Fungsi Gabung"
 
 #: src/agent/pgaSchedule.cpp:385 standard input:486 input:541
-#: pgadmin/agent/pgaSchedule.cpp:378 input:577
+#: pgadmin/agent/pgaSchedule.cpp:378 pgadmin/ui/dlgSchedule.xrc:57
 msgid "July"
 msgstr ""
 
 #: src/agent/pgaSchedule.cpp:381 standard input:485 input:540
-#: pgadmin/agent/pgaSchedule.cpp:374 input:576
+#: pgadmin/agent/pgaSchedule.cpp:374 pgadmin/ui/dlgSchedule.xrc:56
 msgid "June"
 msgstr ""
 
@@ -6372,7 +6498,7 @@ msgstr ""
 # standard
 #: src/agent/pgaStep.cpp:58 src/schema/pgOperator.cpp:119 standard input:556
 #: src/agent/pgaStep.cpp:66 input:613 pgadmin/agent/pgaStep.cpp:60
-#: pgadmin/schema/pgOperator.cpp:122 input:649
+#: pgadmin/schema/pgOperator.cpp:122 pgadmin/ui/dlgStep.xrc:8
 msgid "Kind"
 msgstr "Kind"
 
@@ -6383,13 +6509,13 @@ msgid "LEFT JOIN"
 msgstr "LEFT JOIN"
 
 # standard
-#: standard input:730 input:787 input:855
+#: standard input:730 input:787 pgadmin/ui/frmExport.xrc:3
 msgid "LF"
 msgstr "LF"
 
 # standard input:397
 # standard input:23
-#: pgadmin/dlg/dlgType.cpp:90 standard input:769
+#: pgadmin/dlg/dlgType.cpp:90 pgadmin/ui/dlgType.xrc:38
 #, fuzzy
 msgid "Label"
 msgstr "Tingkatan "
@@ -6408,7 +6534,7 @@ msgstr "Tabel"
 #: src/schema/pgFunction.cpp:127 src/schema/pgLanguage.cpp:140 standard
 #: input:161 src/schema/pgFunction.cpp:143 src/schema/pgLanguage.cpp:147
 #: input:198 pgadmin/schema/pgFunction.cpp:172
-#: pgadmin/schema/pgLanguage.cpp:141 input:206
+#: pgadmin/schema/pgLanguage.cpp:141 pgadmin/ui/dlgFunction.xrc:7
 msgid "Language"
 msgstr "Bahasa"
 
@@ -6429,7 +6555,7 @@ msgstr ""
 
 # standard
 #: src/agent/pgaSchedule.cpp:325 standard input:478 input:533
-#: pgadmin/agent/pgaSchedule.cpp:318 input:569
+#: pgadmin/agent/pgaSchedule.cpp:318 pgadmin/ui/dlgSchedule.xrc:49
 #, fuzzy
 msgid "Last day"
 msgstr "Last run"
@@ -6453,20 +6579,20 @@ msgstr "Last result"
 
 # standard
 #: src/agent/pgaJob.cpp:94 standard input:247 input:285
-#: pgadmin/agent/pgaJob.cpp:88 input:301
+#: pgadmin/agent/pgaJob.cpp:88 pgadmin/ui/dlgJob.xrc:11
 msgid "Last result"
 msgstr "Last result"
 
 # standard
 #: src/agent/pgaJob.cpp:93 standard input:246 input:284
-#: pgadmin/agent/pgaJob.cpp:87 input:300
+#: pgadmin/agent/pgaJob.cpp:87 pgadmin/ui/dlgJob.xrc:10
 msgid "Last run"
 msgstr "Last run"
 
 # standard input:441
 # standard input:11
 #: src/schema/pgServer.cpp:844 src/schema/pgServer.cpp:864
-#: src/schema/pgServer.cpp:892 pgadmin/schema/pgServer.cpp:896
+#: src/schema/pgServer.cpp:892 pgadmin/schema/pgServer.cpp:901
 msgid "Last system OID"
 msgstr "OID Sistem Terkahir"
 
@@ -6494,7 +6620,7 @@ msgstr "Kolom Left Table "
 # standard input:194
 # standard input:14
 # standard
-#: standard input:291 input:335 input:358
+#: standard input:291 input:335 pgadmin/ui/dlgOperator.xrc:15
 msgid "Left sort op"
 msgstr "Left sort op"
 
@@ -6502,7 +6628,7 @@ msgstr "Left sort op"
 # standard input:5
 # standard
 #: src/schema/pgOperator.cpp:121 standard input:281 input:325
-#: pgadmin/schema/pgOperator.cpp:124 input:348
+#: pgadmin/schema/pgOperator.cpp:124 pgadmin/ui/dlgOperator.xrc:5
 msgid "Left type"
 msgstr "Left type"
 
@@ -6511,8 +6637,9 @@ msgstr "Left type"
 # standard input:7
 # standard input:30
 # standard
-#: standard input:41 input:95 input:655 input:46 input:100 input:712 input:47
-#: input:110 input:765
+#: standard input:41 input:95 input:655 input:46 input:100 input:712
+#: pgadmin/ui/dlgColumn.xrc:4 pgadmin/ui/dlgDomain.xrc:8
+#: pgadmin/ui/dlgType.xrc:34
 msgid "Length"
 msgstr "Panjang"
 
@@ -6523,7 +6650,7 @@ msgstr "Kurang dari Operator"
 # standard input:397
 # standard input:23
 #: src/frm/frmStatus.cpp:165 src/frm/frmStatus.cpp:168
-#: pgadmin/frm/frmStatus.cpp:170
+#: pgadmin/frm/frmStatus.cpp:174
 msgid "Level"
 msgstr "Tingkatan "
 
@@ -6542,7 +6669,7 @@ msgstr "Batas limit sudah tercapai"
 # standard
 #: src/schema/pgFunction.cpp:132 standard input:181
 #: src/schema/pgFunction.cpp:148 input:218 pgadmin/schema/pgFunction.cpp:177
-#: input:230
+#: pgadmin/ui/dlgFunction.xrc:31
 msgid "Link symbol"
 msgstr "Simbol  Link"
 
@@ -6551,7 +6678,7 @@ msgid "Listen"
 msgstr ""
 
 # standard
-#: standard input:106 input:111 input:121
+#: standard input:106 input:111 pgadmin/ui/dlgEditGridOptions.xrc:4
 msgid "Lists the columns that the data will be sorted by."
 msgstr "Daftarkan kolom yang datanya akan di urutkan."
 
@@ -6570,7 +6697,7 @@ msgstr ""
 msgid "Local"
 msgstr "Lokal"
 
-#: standard input:305 input:360 input:395
+#: standard input:305 input:360 pgadmin/ui/dlgRepCluster.xrc:6
 #, fuzzy
 msgid "Local Node"
 msgstr "Lokal"
@@ -6585,14 +6712,14 @@ msgid "Local Variables"
 msgstr "Variabel-variabel"
 
 # standard
-#: standard input:741 input:798 input:866
+#: standard input:741 input:798 pgadmin/ui/frmExport.xrc:14
 msgid "Local charset"
 msgstr "Charset Lokal"
 
 # standard input:101
 # standard input:8
 # standard
-#: standard input:135 input:172 input:180
+#: standard input:135 input:172 pgadmin/ui/dlgForeignKey.xrc:12
 msgid "Local column"
 msgstr "Kolom Lokal"
 
@@ -6610,7 +6737,8 @@ msgstr ""
 # src/schema/pgRule.cpp:77 standard input:12
 # standard
 #: src/schema/pgTablespace.cpp:126 standard input:599 input:3 input:656
-#: pgadmin/schema/pgTablespace.cpp:119 input:706
+#: pgadmin/schema/pgTablespace.cpp:119 pgadmin/ui/dlgAddFavourite.xrc:3
+#: pgadmin/ui/dlgTablespace.xrc:3
 msgid "Location"
 msgstr "Lokasi"
 
@@ -6635,19 +6763,19 @@ msgid "Lock set"
 msgstr "Kunci"
 
 # standard
-#: standard input:866 input:974 input:1047
+#: standard input:866 input:974 pgadmin/ui/frmStatus.xrc:5
 msgid "Locks"
 msgstr "Kunci"
 
 # standard input:397
 # standard input:23
 # standard
-#: standard input:826 input:896 input:964
+#: standard input:826 input:896 pgadmin/ui/frmOptions.xrc:55
 msgid "Log Level"
 msgstr "Tingkatan Log"
 
 #: src/frm/frmStatus.cpp:167 src/frm/frmStatus.cpp:170
-#: pgadmin/frm/frmStatus.cpp:172
+#: pgadmin/frm/frmStatus.cpp:176
 msgid "Log entry"
 msgstr "Log entry"
 
@@ -6663,26 +6791,26 @@ msgid "Log spooler"
 msgstr "Log entry"
 
 # standard
-#: standard input:872 input:980 input:1053
+#: standard input:872 input:980 pgadmin/ui/frmStatus.xrc:11
 msgid "Logfile"
 msgstr "Logfile"
 
 # standard input:392
 # standard input:18
 # standard
-#: standard input:821 input:891 input:959
+#: standard input:821 input:891 pgadmin/ui/frmOptions.xrc:50
 msgid "Logfile (%ID will be replaced with the Process ID)"
 msgstr "Berkas log (%ID akan diganti dengan ID Proses)"
 
 #: src/frm/frmStatus.cpp:840 src/frm/frmStatus.cpp:844
-#: src/frm/frmStatus.cpp:892 pgadmin/frm/frmStatus.cpp:896
+#: src/frm/frmStatus.cpp:892 pgadmin/frm/frmStatus.cpp:907
 msgid "Logfile rotation"
 msgstr "Logfile rotation"
 
 # standard input:391
 # standard input:17
 # standard
-#: standard input:820 input:890 input:958
+#: standard input:820 input:890 pgadmin/ui/frmOptions.xrc:49
 msgid "Logging"
 msgstr "Pencatatan"
 
@@ -6703,7 +6831,7 @@ msgstr "Logfile"
 # standard input:291
 # standard input:26
 # standard
-#: standard input:651 input:708 input:761
+#: standard input:651 input:708 pgadmin/ui/dlgType.xrc:30
 msgid "MAIN"
 msgstr "MAIN"
 
@@ -6733,19 +6861,19 @@ msgstr "Maintain basisdata atau table yang sekarang."
 # standard
 #: src/frm/frmMaintenance.cpp:188 standard input:774
 #: src/frm/frmMaintenance.cpp:195 input:831 pgadmin/frm/frmMaintenance.cpp:188
-#: input:892
+#: pgadmin/ui/frmMaintenance.xrc:1
 msgid "Maintenance"
 msgstr "Maintenance"
 
 # standard
-#: standard input:540 input:595 input:631
+#: standard input:540 input:595 pgadmin/ui/dlgServer.xrc:6
 #, fuzzy
 msgid "Maintenance DB"
 msgstr "Maintenance"
 
 # standard
 #: src/schema/pgServer.cpp:837 src/schema/pgServer.cpp:857
-#: src/schema/pgServer.cpp:884 pgadmin/schema/pgServer.cpp:888
+#: src/schema/pgServer.cpp:884 pgadmin/schema/pgServer.cpp:893
 #, fuzzy
 msgid "Maintenance database"
 msgstr "Maintenance"
@@ -6759,15 +6887,15 @@ msgid "Maintenance database can't be dropped."
 msgstr "Inisialisasi basisdara tidak bisa di drop."
 
 # standard
-#: standard input:776 input:833 input:894
+#: standard input:776 input:833 pgadmin/ui/frmMaintenance.xrc:3
 msgid "Maintenance operation"
 msgstr "Operasi perawatan"
 
-#: standard input:337
+#: pgadmin/ui/dlgManageMacros.xrc:1
 msgid "Manage Macros"
 msgstr ""
 
-#: standard input:315 input:331
+#: standard input:315 pgadmin/ui/dlgManageFavourites.xrc:1
 msgid "Manage favourites"
 msgstr ""
 
@@ -6783,7 +6911,7 @@ msgstr ""
 # src/schema/pgSequence.cpp:95 standard input:8
 # standard
 #: src/agent/pgaSchedule.cpp:369 standard input:482 input:537
-#: pgadmin/agent/pgaSchedule.cpp:362 input:573
+#: pgadmin/agent/pgaSchedule.cpp:362 pgadmin/ui/dlgSchedule.xrc:53
 #, fuzzy
 msgid "March"
 msgstr "Cache"
@@ -6792,20 +6920,20 @@ msgstr "Cache"
 # src/ui/dlgType.cpp:70 src/ui/dlgtype.cpp:70 standard input:3
 # src/ui/dlgType.cpp:70 src/ui/dlgtype.cpp:70 standard input:29
 # standard
-#: standard input:157 input:165
+#: standard input:157 pgadmin/ui/dlgFindReplace.xrc:27
 #, fuzzy
 msgid "Match case"
 msgstr "Tipe Data"
 
-#: standard input:129 input:166 input:174
+#: standard input:129 input:166 pgadmin/ui/dlgForeignKey.xrc:6
 msgid "Match full"
 msgstr ""
 
-#: standard input:156 input:164
+#: standard input:156 pgadmin/ui/dlgFindReplace.xrc:26
 msgid "Match on whole words"
 msgstr ""
 
-#: standard input:158 input:166
+#: standard input:158 pgadmin/ui/dlgFindReplace.xrc:28
 #, fuzzy
 msgid "Match the case of the text"
 msgstr "Sampai pada dokumen yang paling akhir"
@@ -6826,7 +6954,7 @@ msgstr ""
 # standard input:388
 # standard input:14
 # standard
-#: standard input:816 input:873 input:939
+#: standard input:816 input:873 pgadmin/ui/frmOptions.xrc:30
 msgid "Max. characters per column"
 msgstr "Max. karakter per kolom"
 
@@ -6835,26 +6963,26 @@ msgstr "Max. karakter per kolom"
 # standard
 #: src/schema/pgSequence.cpp:104 standard input:526
 #: src/schema/pgSequence.cpp:109 input:582 pgadmin/schema/pgSequence.cpp:110
-#: input:618
+#: pgadmin/ui/dlgSequence.xrc:8
 msgid "Maximum"
 msgstr "Maksimal"
 
 # standard input:386
 # standard input:12
 # standard
-#: standard input:814 input:871 input:937
+#: standard input:814 input:871 pgadmin/ui/frmOptions.xrc:28
 msgid "Maximum rows to retrieve"
 msgstr "Maksimal baris yang bisa di ambil"
 
 # standard input:387
 # standard input:13
 # standard
-#: standard input:815 input:872 input:938
+#: standard input:815 input:872 pgadmin/ui/frmOptions.xrc:29
 msgid "Maximums rows to retrieve into output window; 0 = unlimited"
 msgstr "Maksimal baris untuk diambil ke ouput dari window, 0 = tak terbatas"
 
 #: src/agent/pgaSchedule.cpp:377 standard input:484 input:539
-#: pgadmin/agent/pgaSchedule.cpp:370 input:575
+#: pgadmin/agent/pgaSchedule.cpp:370 pgadmin/ui/dlgSchedule.xrc:55
 msgid "May"
 msgstr ""
 
@@ -6875,7 +7003,7 @@ msgstr "Jumlah Anggota"
 # standard input:293
 # standard input:28
 # standard
-#: standard input:653 input:710 input:763
+#: standard input:653 input:710 pgadmin/ui/dlgType.xrc:32
 msgid "Member name"
 msgstr "Nama Anggota"
 
@@ -6889,7 +7017,7 @@ msgstr "Anggota dari"
 # standard
 #: src/schema/pgGroup.cpp:95 src/schema/pgType.cpp:132 standard input:190
 #: src/schema/pgType.cpp:133 input:227 pgadmin/schema/pgGroup.cpp:87
-#: pgadmin/schema/pgType.cpp:164 input:244
+#: pgadmin/schema/pgType.cpp:164 pgadmin/ui/dlgGroup.xrc:5
 msgid "Members"
 msgstr "Anggota"
 
@@ -6909,7 +7037,7 @@ msgstr "Returns set"
 msgid "Merge set"
 msgstr "Returns set"
 
-#: standard input:355 input:410 input:445
+#: standard input:355 input:410 pgadmin/ui/dlgRepSetMerge.xrc:1
 msgid "Merge set into another set"
 msgstr ""
 
@@ -6926,13 +7054,15 @@ msgstr "Masukan nama berkas untuk kemana applikasi lognya akan ditulis"
 #: src/frm/frmQuery.cpp:229 standard input:724 input:788 input:857
 #: src/frm/frmGrantWizard.cpp:195 src/frm/frmQuery.cpp:277 input:781 input:845
 #: input:965 pgadmin/frm/frmGrantWizard.cpp:195 pgadmin/frm/frmQuery.cpp:320
-#: input:829 input:839 input:849 input:906 input:1038
+#: pgadmin/ui/frmBackup.xrc:21 pgadmin/ui/frmBackupGlobals.xrc:7
+#: pgadmin/ui/frmBackupServer.xrc:7 pgadmin/ui/frmMaintenance.xrc:15
+#: pgadmin/ui/frmRestore.xrc:12
 msgid "Messages"
 msgstr "Pesan"
 
 #: src/frm/frmHbaConfig.cpp:105 standard input:204
 #: src/frm/frmHbaConfig.cpp:107 input:241 pgadmin/frm/frmHbaConfig.cpp:107
-#: input:258
+#: pgadmin/ui/dlgHbaConfig.xrc:7
 #, fuzzy
 msgid "Method"
 msgstr "Mode "
@@ -6942,12 +7072,12 @@ msgstr "Mode "
 # standard
 #: src/schema/pgSequence.cpp:103 standard input:525
 #: src/schema/pgSequence.cpp:108 input:581 pgadmin/schema/pgSequence.cpp:109
-#: input:617
+#: pgadmin/ui/dlgSequence.xrc:7
 msgid "Minimum"
 msgstr "Minimal"
 
 #: src/agent/pgaSchedule.cpp:63 standard input:494 input:549
-#: pgadmin/agent/pgaSchedule.cpp:56 input:585
+#: pgadmin/agent/pgaSchedule.cpp:56 pgadmin/ui/dlgSchedule.xrc:65
 msgid "Minutes"
 msgstr ""
 
@@ -6957,17 +7087,17 @@ msgid "Missing information"
 msgstr ""
 
 #: src/frm/frmStatus.cpp:125 src/frm/frmStatus.cpp:128
-#: pgadmin/frm/frmStatus.cpp:130 standard input:220
+#: pgadmin/frm/frmStatus.cpp:134 pgadmin/ui/dlgFunction.xrc:21
 msgid "Mode"
 msgstr "Mode "
 
 #: src/agent/pgaSchedule.cpp:260 standard input:440 input:495
-#: pgadmin/agent/pgaSchedule.cpp:253 input:531
+#: pgadmin/agent/pgaSchedule.cpp:253 pgadmin/ui/dlgSchedule.xrc:11
 #, fuzzy
 msgid "Monday"
 msgstr "Mode "
 
-#: standard input:446 input:501 input:537
+#: standard input:446 input:501 pgadmin/ui/dlgSchedule.xrc:17
 msgid "Month Days"
 msgstr ""
 
@@ -6979,7 +7109,7 @@ msgstr "bulanan"
 
 # standard
 #: src/agent/pgaSchedule.cpp:67 standard input:479 input:534
-#: pgadmin/agent/pgaSchedule.cpp:60 input:570
+#: pgadmin/agent/pgaSchedule.cpp:60 pgadmin/ui/dlgSchedule.xrc:50
 #, fuzzy
 msgid "Months"
 msgstr "bulanan"
@@ -7008,7 +7138,7 @@ msgstr ""
 msgid "Move set"
 msgstr "Terpindahkan"
 
-#: standard input:362 input:417 input:452
+#: standard input:362 input:417 pgadmin/ui/dlgRepSetMove.xrc:1
 msgid "Move set to other node"
 msgstr ""
 
@@ -7030,7 +7160,8 @@ msgstr "Multiple Column Joins"
 msgid "Multiple clusters"
 msgstr "Multiple Column Joins"
 
-#: standard input:141 input:147 input:178 input:184 input:186 input:192
+#: standard input:141 input:147 input:178 input:184
+#: pgadmin/ui/dlgForeignKey.xrc:18 pgadmin/ui/dlgForeignKey.xrc:24
 msgid "NO ACTION"
 msgstr "NO ACTION"
 
@@ -7114,18 +7245,28 @@ msgstr "NO ACTION"
 #: pgadmin/schema/pgOperatorFamily.cpp:60 pgadmin/schema/pgRole.cpp:140
 #: pgadmin/schema/pgRole.cpp:249 pgadmin/schema/pgRule.cpp:74
 #: pgadmin/schema/pgSchema.cpp:206 pgadmin/schema/pgSequence.cpp:104
-#: pgadmin/schema/pgServer.cpp:974 pgadmin/schema/pgServer.cpp:983
+#: pgadmin/schema/pgServer.cpp:979 pgadmin/schema/pgServer.cpp:988
 #: pgadmin/schema/pgTable.cpp:555 pgadmin/schema/pgTablespace.cpp:37
 #: pgadmin/schema/pgTablespace.cpp:116 pgadmin/schema/pgTrigger.cpp:179
 #: pgadmin/schema/pgType.cpp:158 pgadmin/schema/pgUser.cpp:86
 #: pgadmin/schema/pgUser.cpp:196 pgadmin/schema/pgView.cpp:221
 #: pgadmin/slony/slCluster.cpp:285 pgadmin/slony/slNode.cpp:226
 #: pgadmin/slony/slSequence.cpp:67 pgadmin/slony/slSet.cpp:83
-#: pgadmin/slony/slSet.cpp:190 pgadmin/slony/slTable.cpp:84 input:25 input:37
-#: input:45 input:65 input:78 input:104 input:170 input:201 input:264
-#: input:281 input:292 input:315 input:338 input:345 input:368 input:506
-#: input:522 input:596 input:612 input:627 input:643 input:660 input:671
-#: input:705 input:713 input:733 input:799
+#: pgadmin/slony/slSet.cpp:190 pgadmin/slony/slTable.cpp:84
+#: pgadmin/ui/dlgAggregate.xrc:2 pgadmin/ui/dlgCast.xrc:2
+#: pgadmin/ui/dlgCheck.xrc:2 pgadmin/ui/dlgColumn.xrc:2
+#: pgadmin/ui/dlgConversion.xrc:2 pgadmin/ui/dlgDatabase.xrc:2
+#: pgadmin/ui/dlgDomain.xrc:2 pgadmin/ui/dlgForeignKey.xrc:2
+#: pgadmin/ui/dlgFunction.xrc:2 pgadmin/ui/dlgIndex.xrc:2
+#: pgadmin/ui/dlgIndexConstraint.xrc:2 pgadmin/ui/dlgJob.xrc:2
+#: pgadmin/ui/dlgLanguage.xrc:2 pgadmin/ui/dlgManageMacros.xrc:2
+#: pgadmin/ui/dlgOperator.xrc:2 pgadmin/ui/dlgPackage.xrc:2
+#: pgadmin/ui/dlgRule.xrc:2 pgadmin/ui/dlgSchedule.xrc:2
+#: pgadmin/ui/dlgSchema.xrc:2 pgadmin/ui/dlgSequence.xrc:2
+#: pgadmin/ui/dlgServer.xrc:2 pgadmin/ui/dlgStep.xrc:2
+#: pgadmin/ui/dlgSynonym.xrc:2 pgadmin/ui/dlgTable.xrc:2
+#: pgadmin/ui/dlgTablespace.xrc:2 pgadmin/ui/dlgTrigger.xrc:2
+#: pgadmin/ui/dlgType.xrc:2 pgadmin/ui/dlgView.xrc:2
 msgid "Name"
 msgstr "Nama"
 
@@ -7148,7 +7289,7 @@ msgstr "Memerlukan password?"
 # src/schema/pgOperator.cpp:110 standard input:13
 # standard
 #: src/schema/pgOperator.cpp:127 standard input:290 input:334
-#: pgadmin/schema/pgOperator.cpp:130 input:357
+#: pgadmin/schema/pgOperator.cpp:130 pgadmin/ui/dlgOperator.xrc:14
 msgid "Negator"
 msgstr "Negator"
 
@@ -7355,7 +7496,7 @@ msgstr "Bahasa Baru"
 # standard input:409
 # standard input:3
 # standard
-#: standard input:841 input:911 input:983
+#: standard input:841 input:911 pgadmin/ui/frmPassword.xrc:3
 msgid "New Password"
 msgstr "Password Baru"
 
@@ -7430,7 +7571,7 @@ msgid "New Server"
 msgstr "Server Baru"
 
 #: src/schema/pgServer.cpp:1052 src/schema/pgServer.cpp:1072
-#: src/schema/pgServer.cpp:1124 pgadmin/schema/pgServer.cpp:1130
+#: src/schema/pgServer.cpp:1124 pgadmin/schema/pgServer.cpp:1135
 #, fuzzy
 msgid "New Server Registration"
 msgstr "Server Baru"
@@ -7542,7 +7683,7 @@ msgstr "Tampilan Baru"
 msgid "New View..."
 msgstr "Tampilan Baru"
 
-#: standard input:318 input:334
+#: standard input:318 pgadmin/ui/dlgManageFavourites.xrc:4
 #, fuzzy
 msgid "New folder"
 msgstr "Index baru"
@@ -7570,12 +7711,12 @@ msgstr "Bersihkan window"
 
 # standard
 #: src/agent/pgaJob.cpp:92 standard input:245 input:283
-#: pgadmin/agent/pgaJob.cpp:86 input:299
+#: pgadmin/agent/pgaJob.cpp:86 pgadmin/ui/dlgJob.xrc:9
 msgid "Next run"
 msgstr "Next run"
 
 #: src/base/base.cpp:47 src/frm/frmStatus.cpp:417 src/frm/frmStatus.cpp:421
-#: src/frm/frmStatus.cpp:469 pgadmin/frm/frmStatus.cpp:473
+#: src/frm/frmStatus.cpp:469 pgadmin/frm/frmStatus.cpp:481
 #: pgadmin/utils/misc.cpp:73
 msgid "No"
 msgstr "Tidak"
@@ -7622,7 +7763,8 @@ msgid "No node available to move this set to."
 msgstr ""
 
 # standard
-#: standard input:720 input:853 input:777 input:961 input:825 input:1034
+#: standard input:720 input:853 input:777 input:961
+#: pgadmin/ui/frmBackup.xrc:17 pgadmin/ui/frmRestore.xrc:8
 msgid "No owner"
 msgstr "Tidak ada pemilik"
 
@@ -7682,7 +7824,8 @@ msgstr ""
 msgid "Nodes"
 msgstr "Tidak Ada"
 
-#: standard input:877 pgadmin/frm/frmOptions.cpp:537 input:944
+#: standard input:877 pgadmin/frm/frmOptions.cpp:537
+#: pgadmin/ui/frmOptions.xrc:35
 msgid "None"
 msgstr "Tidak Ada"
 
@@ -7690,7 +7833,8 @@ msgstr "Tidak Ada"
 # standard input:7
 # standard input:9
 # standard
-#: standard input:45 input:97 input:50 input:102 input:51 input:112
+#: standard input:45 input:97 input:50 input:102 pgadmin/ui/dlgColumn.xrc:8
+#: pgadmin/ui/dlgDomain.xrc:10
 msgid "Not NULL"
 msgstr "Not NULL"
 
@@ -7724,13 +7868,13 @@ msgstr "Belum diimplementasikan"
 msgid "Not implemented."
 msgstr "Belum diimplementasikan."
 
-#: standard input:837
+#: pgadmin/ui/frmBackupGlobals.xrc:5
 msgid ""
 "Note: Only objects global to the entire database cluster will be backed\n"
 "up. The backup format will be PLAIN."
 msgstr ""
 
-#: standard input:847
+#: pgadmin/ui/frmBackupServer.xrc:5
 msgid "Note: The backup format will be PLAIN."
 msgstr ""
 
@@ -7749,7 +7893,7 @@ msgid "Nothing"
 msgstr "Tidak terjadi apa-apa."
 
 #: src/agent/pgaSchedule.cpp:401 standard input:490 input:545
-#: pgadmin/agent/pgaSchedule.cpp:394 input:581
+#: pgadmin/agent/pgaSchedule.cpp:394 pgadmin/ui/dlgSchedule.xrc:61
 #, fuzzy
 msgid "November"
 msgstr "Anggota"
@@ -7812,10 +7956,16 @@ msgstr "Null Fraction"
 #: pgadmin/schema/pgRule.cpp:75 pgadmin/schema/pgSchema.cpp:207
 #: pgadmin/schema/pgSequence.cpp:105 pgadmin/schema/pgTable.cpp:556
 #: pgadmin/schema/pgTablespace.cpp:117 pgadmin/schema/pgTrigger.cpp:180
-#: pgadmin/schema/pgType.cpp:159 pgadmin/schema/pgView.cpp:222 input:26
-#: input:66 input:79 input:105 input:204 input:316 input:346 input:370
-#: input:478 input:507 input:597 input:613 input:672 input:714 input:734
-#: input:800
+#: pgadmin/schema/pgType.cpp:159 pgadmin/schema/pgView.cpp:222
+#: pgadmin/ui/dlgAggregate.xrc:3 pgadmin/ui/dlgCast.xrc:3
+#: pgadmin/ui/dlgConversion.xrc:3 pgadmin/ui/dlgDatabase.xrc:3
+#: pgadmin/ui/dlgDomain.xrc:3 pgadmin/ui/dlgFunction.xrc:5
+#: pgadmin/ui/dlgLanguage.xrc:3 pgadmin/ui/dlgOperator.xrc:3
+#: pgadmin/ui/dlgPackage.xrc:4 pgadmin/ui/dlgRole.xrc:3
+#: pgadmin/ui/dlgRule.xrc:3 pgadmin/ui/dlgSchema.xrc:3
+#: pgadmin/ui/dlgSequence.xrc:3 pgadmin/ui/dlgTable.xrc:3
+#: pgadmin/ui/dlgTrigger.xrc:3 pgadmin/ui/dlgType.xrc:3
+#: pgadmin/ui/dlgView.xrc:3
 msgid "OID"
 msgstr "OID"
 
@@ -7878,7 +8028,7 @@ msgstr "OK."
 msgid "OR"
 msgstr "OR"
 
-#: standard input:177 input:214 input:222
+#: standard input:177 input:214 pgadmin/ui/dlgFunction.xrc:23
 msgid "OUT"
 msgstr ""
 
@@ -7897,12 +8047,12 @@ msgstr "Berkas Obyek"
 # standard
 #: src/schema/pgFunction.cpp:131 standard input:180
 #: src/schema/pgFunction.cpp:147 input:217 pgadmin/schema/pgFunction.cpp:176
-#: input:229
+#: pgadmin/ui/dlgFunction.xrc:30
 msgid "Object file"
 msgstr "Berkas Obyek"
 
 #: src/agent/pgaSchedule.cpp:397 standard input:489 input:544
-#: pgadmin/agent/pgaSchedule.cpp:390 input:580
+#: pgadmin/agent/pgaSchedule.cpp:390 pgadmin/ui/dlgSchedule.xrc:60
 msgid "October"
 msgstr ""
 
@@ -7918,14 +8068,14 @@ msgstr ""
 # src/schema/pgForeignKey.cpp:145 standard input:111
 # standard input:18
 # standard
-#: standard input:146 input:183 input:191
+#: standard input:146 input:183 pgadmin/ui/dlgForeignKey.xrc:23
 msgid "On Delete"
 msgstr "On Delete"
 
 # src/schema/pgForeignKey.cpp:144 standard input:106
 # standard input:13
 # standard
-#: standard input:140 input:177 input:185
+#: standard input:140 input:177 pgadmin/ui/dlgForeignKey.xrc:17
 msgid "On Update"
 msgstr "On Update"
 
@@ -7939,7 +8089,7 @@ msgstr "On Delete"
 # src/schema/pgObject.cpp:42 standard input:4
 # standard
 #: src/agent/pgaStep.cpp:61 standard input:557 src/agent/pgaStep.cpp:69
-#: input:614 pgadmin/agent/pgaStep.cpp:63 input:650
+#: input:614 pgadmin/agent/pgaStep.cpp:63 pgadmin/ui/dlgStep.xrc:9
 msgid "On error"
 msgstr "Pada kesalahan"
 
@@ -7972,12 +8122,14 @@ msgstr "On Update"
 # src/schema/pgForeignKey.cpp:144 standard input:106
 # standard input:13
 # standard
-#: standard input:718 input:850 input:775 input:958 input:823 input:1031
+#: standard input:718 input:850 input:775 input:958
+#: pgadmin/ui/frmBackup.xrc:15 pgadmin/ui/frmRestore.xrc:5
 msgid "Only data"
 msgstr "Hanya data"
 
 # standard
-#: standard input:719 input:851 input:776 input:959 input:824 input:1032
+#: standard input:719 input:851 input:776 input:959
+#: pgadmin/ui/frmBackup.xrc:16 pgadmin/ui/frmRestore.xrc:6
 msgid "Only schema"
 msgstr "Hanya skema"
 
@@ -8018,12 +8170,12 @@ msgid "Open configuration editor with pgpass.conf."
 msgstr "Buka berkas query"
 
 #: src/frm/frmMainConfig.cpp:641 src/frm/frmMainConfig.cpp:652
-#: pgadmin/frm/frmMainConfig.cpp:680
+#: pgadmin/frm/frmMainConfig.cpp:690
 msgid "Open configuration editor with postgresql.conf."
 msgstr ""
 
 #: src/frm/frmConfig.cpp:253 src/frm/frmConfig.cpp:262
-#: pgadmin/frm/frmConfig.cpp:261 pgadmin/frm/frmMainConfig.cpp:630
+#: pgadmin/frm/frmConfig.cpp:261 pgadmin/frm/frmMainConfig.cpp:640
 #, fuzzy
 msgid "Open configuration file"
 msgstr "Buka berkas query"
@@ -8050,7 +8202,7 @@ msgstr ""
 msgid "Open postgresql.conf"
 msgstr ""
 
-#: src/frm/frmMainConfig.cpp:652 pgadmin/frm/frmMainConfig.cpp:680
+#: src/frm/frmMainConfig.cpp:652 pgadmin/frm/frmMainConfig.cpp:690
 msgid "Open postgresql.conf..."
 msgstr ""
 
@@ -8066,7 +8218,7 @@ msgstr "Buka berkas query"
 msgid "Open the helpfile."
 msgstr "Buka berkas bantuan pgAdmin III"
 
-#: standard input:1023
+#: pgadmin/ui/frmReport.xrc:36
 msgid "Open the output file in the default browser?"
 msgstr ""
 
@@ -8120,7 +8272,7 @@ msgstr "Kelas Operator"
 
 # standard
 #: src/schema/pgOperator.cpp:125 standard input:283 input:327
-#: pgadmin/schema/pgOperator.cpp:128 input:350
+#: pgadmin/schema/pgOperator.cpp:128 pgadmin/ui/dlgOperator.xrc:7
 msgid "Operator function"
 msgstr "Fungsi Operator"
 
@@ -8136,7 +8288,7 @@ msgstr "Operator"
 # standard
 #: src/frm/frmHbaConfig.cpp:106 standard input:205
 #: src/frm/frmHbaConfig.cpp:108 input:242 pgadmin/frm/frmHbaConfig.cpp:108
-#: input:259
+#: pgadmin/ui/dlgHbaConfig.xrc:8
 #, fuzzy
 msgid "Option"
 msgstr "Opsi"
@@ -8146,8 +8298,11 @@ msgstr "Opsi"
 # standard
 #: src/frm/frmEditGrid.cpp:108 standard input:705 input:775 input:792
 #: input:847 src/frm/frmEditGrid.cpp:125 input:154 input:762 input:832
-#: input:849 input:955 pgadmin/frm/frmEditGrid.cpp:126 input:162 input:810
-#: input:834 input:844 input:893 input:910 input:1028
+#: input:849 input:955 pgadmin/frm/frmEditGrid.cpp:126
+#: pgadmin/ui/dlgFindReplace.xrc:24 pgadmin/ui/frmBackup.xrc:2
+#: pgadmin/ui/frmBackupGlobals.xrc:2 pgadmin/ui/frmBackupServer.xrc:2
+#: pgadmin/ui/frmMaintenance.xrc:2 pgadmin/ui/frmOptions.xrc:1
+#: pgadmin/ui/frmRestore.xrc:2
 msgid "Options"
 msgstr "Opsi"
 
@@ -8160,8 +8315,9 @@ msgid "Or"
 msgstr "Atau"
 
 #: src/slony/slListen.cpp:81 standard input:322 input:349 input:370 input:144
-#: input:377 input:404 input:425 pgadmin/slony/slListen.cpp:72 input:152
-#: input:412 input:439 input:460
+#: input:377 input:404 input:425 pgadmin/slony/slListen.cpp:72
+#: pgadmin/ui/dlgFindReplace.xrc:14 pgadmin/ui/dlgRepListen.xrc:2
+#: pgadmin/ui/dlgRepSet.xrc:2 pgadmin/ui/dlgRepSubscription.xrc:2
 msgid "Origin"
 msgstr ""
 
@@ -8185,7 +8341,7 @@ msgstr "Out of Memory for cacheLinePool"
 msgid "Output"
 msgstr "Output"
 
-#: standard input:946 input:1018
+#: standard input:946 pgadmin/ui/frmReport.xrc:31
 #, fuzzy
 msgid "Output file"
 msgstr "Output"
@@ -8193,7 +8349,7 @@ msgstr "Output"
 # standard input:275
 # standard input:10
 # standard
-#: standard input:923 input:995
+#: standard input:923 pgadmin/ui/frmReport.xrc:8
 #, fuzzy
 msgid "Output format"
 msgstr "Fungsi Output"
@@ -8202,7 +8358,7 @@ msgstr "Fungsi Output"
 # standard input:10
 # standard
 #: src/schema/pgType.cpp:146 standard input:634 src/schema/pgType.cpp:147
-#: input:691 pgadmin/schema/pgType.cpp:182 input:744
+#: input:691 pgadmin/schema/pgType.cpp:182 pgadmin/ui/dlgType.xrc:13
 msgid "Output function"
 msgstr "Fungsi Output"
 
@@ -8258,7 +8414,7 @@ msgstr "Simapn berkas ini"
 #: src/schema/pgSequence.cpp:105 src/schema/pgTable.cpp:513
 #: src/schema/pgView.cpp:189 input:9 input:66 input:79 input:96 input:194
 #: input:324 input:562 input:578 input:657 input:683 input:745
-#: pgadmin/frm/frmStatus.cpp:142 pgadmin/schema/edbPackage.cpp:130
+#: pgadmin/frm/frmStatus.cpp:146 pgadmin/schema/edbPackage.cpp:130
 #: pgadmin/schema/edbSynonym.cpp:57 pgadmin/schema/pgAggregate.cpp:109
 #: pgadmin/schema/pgCatalogObject.cpp:52 pgadmin/schema/pgConversion.cpp:66
 #: pgadmin/schema/pgDatabase.cpp:425 pgadmin/schema/pgDomain.cpp:97
@@ -8267,17 +8423,22 @@ msgstr "Simapn berkas ini"
 #: pgadmin/schema/pgOperatorFamily.cpp:62 pgadmin/schema/pgSchema.cpp:208
 #: pgadmin/schema/pgSequence.cpp:106 pgadmin/schema/pgTable.cpp:557
 #: pgadmin/schema/pgTablespace.cpp:118 pgadmin/schema/pgType.cpp:160
-#: pgadmin/schema/pgView.cpp:223 pgadmin/slony/slCluster.cpp:304 input:67
-#: input:80 input:106 input:202 input:347 input:369 input:598 input:614
-#: input:661 input:673 input:707 input:735 input:801
+#: pgadmin/schema/pgView.cpp:223 pgadmin/slony/slCluster.cpp:304
+#: pgadmin/ui/dlgAggregate.xrc:4 pgadmin/ui/dlgConversion.xrc:4
+#: pgadmin/ui/dlgDatabase.xrc:4 pgadmin/ui/dlgDomain.xrc:4
+#: pgadmin/ui/dlgFunction.xrc:3 pgadmin/ui/dlgOperator.xrc:4
+#: pgadmin/ui/dlgPackage.xrc:3 pgadmin/ui/dlgSchema.xrc:4
+#: pgadmin/ui/dlgSequence.xrc:4 pgadmin/ui/dlgSynonym.xrc:3
+#: pgadmin/ui/dlgTable.xrc:4 pgadmin/ui/dlgTablespace.xrc:4
+#: pgadmin/ui/dlgType.xrc:4 pgadmin/ui/dlgView.xrc:4
 msgid "Owner"
 msgstr "Pemilik"
 
-#: standard input:920
+#: pgadmin/ui/frmOptions.xrc:11
 msgid "PG bin path"
 msgstr ""
 
-#: standard input:913
+#: pgadmin/ui/frmOptions.xrc:4
 msgid "PG help path"
 msgstr ""
 
@@ -8287,12 +8448,13 @@ msgstr "PID"
 # standard input:288
 # standard input:23
 # standard
-#: standard input:648 input:711 input:705 input:768 input:758 input:816
+#: standard input:648 input:711 input:705 input:768 pgadmin/ui/dlgType.xrc:27
+#: pgadmin/ui/frmBackup.xrc:8
 msgid "PLAIN"
 msgstr "PLAIN"
 
 # standard
-#: standard input:717 input:774 input:822
+#: standard input:717 input:774 pgadmin/ui/frmBackup.xrc:14
 msgid "PLAIN options"
 msgstr "opsi PLAIN"
 
@@ -8326,7 +8488,8 @@ msgstr "Parameter"
 # standard input:132
 # standard input:15
 # standard
-#: pgadmin/debugger/ctlTabWindow.cpp:135 standard input:95 input:218
+#: pgadmin/debugger/ctlTabWindow.cpp:135 pgadmin/ui/dlgDirectDbg.xrc:2
+#: pgadmin/ui/dlgFunction.xrc:19
 #, fuzzy
 msgid "Parameters"
 msgstr "Parameter"
@@ -8339,7 +8502,7 @@ msgstr "Melewati batas Nilai?"
 # standard input:281
 # standard input:16
 # standard
-#: standard input:652 input:709 input:762
+#: standard input:652 input:709 pgadmin/ui/dlgType.xrc:31
 msgid "Passed by value"
 msgstr "Melewati batas nilai"
 
@@ -8349,7 +8512,8 @@ msgstr "Melewati batas nilai"
 # standard
 #: standard input:390 input:543 input:665 src/frm/frmPgpassConfig.cpp:92
 #: input:350 input:445 input:597 input:722 pgadmin/frm/frmPgpassConfig.cpp:92
-#: input:385 input:480 input:633 input:778
+#: pgadmin/ui/dlgPgpassConfig.xrc:7 pgadmin/ui/dlgRole.xrc:5
+#: pgadmin/ui/dlgServer.xrc:8 pgadmin/ui/dlgUser.xrc:4
 msgid "Password"
 msgstr "Password"
 
@@ -8357,8 +8521,9 @@ msgstr "Password"
 # standard input:4
 # standard input:14
 # standard
-#: standard input:391 input:666 input:351 input:446 input:723 input:386
-#: input:481 input:779
+#: standard input:391 input:666 input:351 input:446 input:723
+#: pgadmin/ui/dlgPgpassConfig.xrc:8 pgadmin/ui/dlgRole.xrc:6
+#: pgadmin/ui/dlgUser.xrc:5
 #, fuzzy
 msgid "Password (again)"
 msgstr "Password"
@@ -8402,7 +8567,7 @@ msgstr "Paste teks dari clipboard yang terpilih"
 # standard
 #: src/schema/pgDatabase.cpp:402 src/slony/slPath.cpp:150 standard input:77
 #: src/schema/pgDatabase.cpp:418 input:82 pgadmin/schema/pgDatabase.cpp:428
-#: pgadmin/slony/slPath.cpp:141 input:83
+#: pgadmin/slony/slPath.cpp:141 pgadmin/ui/dlgDatabase.xrc:7
 msgid "Path"
 msgstr "Path"
 
@@ -8757,8 +8922,9 @@ msgstr "Silakan spesifikasikan presisi numeric yang valid (0.."
 #: src/schema/pgServer.cpp:825 src/schema/pgServer.cpp:830 standard input:538
 #: src/frm/frmPgpassConfig.cpp:89 src/schema/pgServer.cpp:852
 #: src/schema/pgServer.cpp:857 input:347 input:593
-#: pgadmin/frm/frmPgpassConfig.cpp:89 pgadmin/schema/pgServer.cpp:856
-#: pgadmin/schema/pgServer.cpp:861 input:382 input:629
+#: pgadmin/frm/frmPgpassConfig.cpp:89 pgadmin/schema/pgServer.cpp:861
+#: pgadmin/schema/pgServer.cpp:866 pgadmin/ui/dlgPgpassConfig.xrc:4
+#: pgadmin/ui/dlgServer.xrc:4
 msgid "Port"
 msgstr "Port"
 
@@ -8790,15 +8956,16 @@ msgstr ""
 # standard input:8
 # standard input:31
 # standard
-#: standard input:42 input:96 input:656 input:47 input:101 input:713 input:48
-#: input:111 input:766
+#: standard input:42 input:96 input:656 input:47 input:101 input:713
+#: pgadmin/ui/dlgColumn.xrc:5 pgadmin/ui/dlgDomain.xrc:9
+#: pgadmin/ui/dlgType.xrc:35
 msgid "Precision"
 msgstr "Presisi"
 
 # src/schema/pgForeignKey.cpp:141 standard input:96
 # standard input:3
 # standard
-#: standard input:801 input:858 input:924
+#: standard input:801 input:858 pgadmin/ui/frmOptions.xrc:15
 msgid "Preferences"
 msgstr "Preferences"
 
@@ -8893,7 +9060,7 @@ msgstr "Procedure"
 msgid "Process returned exit code %d."
 msgstr "Process returned exit code %d."
 
-#: standard input:940 input:1012
+#: standard input:940 pgadmin/ui/frmReport.xrc:25
 msgid "Process the XML data using the specified stylesheet"
 msgstr ""
 
@@ -8941,12 +9108,27 @@ msgstr ""
 #: input:441 input:469 input:485 input:559 input:575 input:590 input:606
 #: input:654 input:680 input:719 input:742 pgadmin/dlg/dlgProperty.cpp:1571
 #: pgadmin/frm/events.cpp:260 pgadmin/frm/frmMain.cpp:145
-#: pgadmin/frm/frmMain.cpp:155 input:24 input:36 input:44 input:64 input:77
-#: input:103 input:169 input:200 input:240 input:263 input:280 input:291
-#: input:314 input:344 input:390 input:402 input:431 input:438 input:446
-#: input:453 input:459 input:467 input:476 input:505 input:521 input:595
-#: input:611 input:626 input:642 input:659 input:670 input:704 input:712
-#: input:732 input:775 input:798
+#: pgadmin/frm/frmMain.cpp:155 pgadmin/ui/dlgAggregate.xrc:1
+#: pgadmin/ui/dlgCast.xrc:1 pgadmin/ui/dlgCheck.xrc:1
+#: pgadmin/ui/dlgColumn.xrc:1 pgadmin/ui/dlgConversion.xrc:1
+#: pgadmin/ui/dlgDatabase.xrc:1 pgadmin/ui/dlgDomain.xrc:1
+#: pgadmin/ui/dlgForeignKey.xrc:1 pgadmin/ui/dlgFunction.xrc:1
+#: pgadmin/ui/dlgGroup.xrc:1 pgadmin/ui/dlgIndex.xrc:1
+#: pgadmin/ui/dlgIndexConstraint.xrc:1 pgadmin/ui/dlgJob.xrc:1
+#: pgadmin/ui/dlgLanguage.xrc:1 pgadmin/ui/dlgOperator.xrc:1
+#: pgadmin/ui/dlgPackage.xrc:1 pgadmin/ui/dlgRepCluster.xrc:1
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:2 pgadmin/ui/dlgRepListen.xrc:1
+#: pgadmin/ui/dlgRepNode.xrc:1 pgadmin/ui/dlgRepPath.xrc:1
+#: pgadmin/ui/dlgRepSequence.xrc:1 pgadmin/ui/dlgRepSet.xrc:1
+#: pgadmin/ui/dlgRepSetMerge.xrc:2 pgadmin/ui/dlgRepSetMove.xrc:2
+#: pgadmin/ui/dlgRepSubscription.xrc:1 pgadmin/ui/dlgRepTable.xrc:1
+#: pgadmin/ui/dlgRole.xrc:1 pgadmin/ui/dlgRule.xrc:1
+#: pgadmin/ui/dlgSchedule.xrc:1 pgadmin/ui/dlgSchema.xrc:1
+#: pgadmin/ui/dlgSequence.xrc:1 pgadmin/ui/dlgServer.xrc:1
+#: pgadmin/ui/dlgStep.xrc:1 pgadmin/ui/dlgSynonym.xrc:1
+#: pgadmin/ui/dlgTable.xrc:1 pgadmin/ui/dlgTablespace.xrc:1
+#: pgadmin/ui/dlgTrigger.xrc:1 pgadmin/ui/dlgType.xrc:1
+#: pgadmin/ui/dlgUser.xrc:1 pgadmin/ui/dlgView.xrc:1
 msgid "Properties"
 msgstr "Properti"
 
@@ -8958,7 +9140,7 @@ msgstr "Properti"
 #: src/slony/dlgRepSubscription.cpp:79 src/slony/slListen.cpp:83 standard
 #: input:324 input:372 input:379 input:427
 #: pgadmin/slony/dlgRepSubscription.cpp:79 pgadmin/slony/slListen.cpp:74
-#: input:414 input:462
+#: pgadmin/ui/dlgRepListen.xrc:4 pgadmin/ui/dlgRepSubscription.xrc:4
 #, fuzzy
 msgid "Provider"
 msgstr "Properti"
@@ -9010,7 +9192,8 @@ msgstr ""
 #: src/frm/frmStatus.cpp:118 src/frm/frmStatus.cpp:130 standard input:811
 #: src/frm/frmStatus.cpp:121 src/frm/frmStatus.cpp:133 input:868
 #: pgadmin/frm/frmQuery.cpp:1150 pgadmin/frm/frmQuery.cpp:1179
-#: pgadmin/frm/frmStatus.cpp:123 pgadmin/frm/frmStatus.cpp:135 input:934
+#: pgadmin/frm/frmStatus.cpp:127 pgadmin/frm/frmStatus.cpp:139
+#: pgadmin/ui/frmOptions.xrc:25
 msgid "Query"
 msgstr "Query"
 
@@ -9097,7 +9280,7 @@ msgstr ""
 
 # src/ui/frmQueryBuilder.cpp:1194 src/ui/frmStatus.cpp:58 standard input:385
 # src/ui/frmStatus.cpp:58 standard input:11
-#: src/frm/frmStatus.cpp:119 pgadmin/frm/frmStatus.cpp:118
+#: src/frm/frmStatus.cpp:119 pgadmin/frm/frmStatus.cpp:122
 #, fuzzy
 msgid "Query start"
 msgstr "Tool Query"
@@ -9123,34 +9306,35 @@ msgid "Quit this program."
 msgstr "Keluar dari program ini."
 
 # standard
-#: standard input:736 input:793 input:861
+#: standard input:736 input:793 pgadmin/ui/frmExport.xrc:9
 msgid "Quote char"
 msgstr "Quote char"
 
 # standard
-#: standard input:743 input:800 input:868
+#: standard input:743 input:800 pgadmin/ui/frmExport.xrc:16
 msgid "Quoting"
 msgstr "Quoting"
 
 # standard
-#: standard input:786 input:843 input:904
+#: standard input:786 input:843 pgadmin/ui/frmMaintenance.xrc:13
 msgid "RECREATE"
 msgstr "RECREATE"
 
 # standard
-#: standard input:779 input:836 input:897
+#: standard input:779 input:836 pgadmin/ui/frmMaintenance.xrc:6
 msgid "REINDEX"
 msgstr "REINDEX"
 
 # standard
-#: standard input:784 input:841 input:902
+#: standard input:784 input:841 pgadmin/ui/frmMaintenance.xrc:11
 msgid "REINDEX options"
 msgstr "Pilihan REINDEX"
 
 # standard input:107 standard input:112
 # standard input:14 standard input:19
 # standard
-#: standard input:142 input:148 input:179 input:185 input:187 input:193
+#: standard input:142 input:148 input:179 input:185
+#: pgadmin/ui/dlgForeignKey.xrc:19 pgadmin/ui/dlgForeignKey.xrc:25
 msgid "RESTRICT"
 msgstr "RESTRICT"
 
@@ -9184,7 +9368,7 @@ msgstr "Sampai pada dokumen yang paling akhir"
 # standard input:380
 # standard input:6
 # standard
-#: standard input:804 input:861 input:927
+#: standard input:804 input:861 pgadmin/ui/frmOptions.xrc:18
 msgid "Read and write Unicode UTF-8 files"
 msgstr "Baca dan Menulis berkas Unicode UTF-8 "
 
@@ -9196,12 +9380,13 @@ msgstr "Siap."
 # standard input:5
 # standard
 #: src/schema/pgType.cpp:149 standard input:635 src/schema/pgType.cpp:150
-#: input:692 pgadmin/schema/pgType.cpp:185 input:745
+#: input:692 pgadmin/schema/pgType.cpp:185 pgadmin/ui/dlgType.xrc:14
 msgid "Receive function"
 msgstr "Receive function"
 
 #: src/slony/dlgRepSubscription.cpp:78 standard input:323 input:371 input:378
-#: input:426 pgadmin/slony/dlgRepSubscription.cpp:78 input:413 input:461
+#: input:426 pgadmin/slony/dlgRepSubscription.cpp:78
+#: pgadmin/ui/dlgRepListen.xrc:3 pgadmin/ui/dlgRepSubscription.xrc:3
 msgid "Receiver"
 msgstr ""
 
@@ -9238,14 +9423,14 @@ msgstr "Referenced by"
 # standard input:3
 # standard
 #: src/schema/pgForeignKey.cpp:155 standard input:126 input:163
-#: pgadmin/schema/pgForeignKey.cpp:155 input:171
+#: pgadmin/schema/pgForeignKey.cpp:155 pgadmin/ui/dlgForeignKey.xrc:3
 msgid "References"
 msgstr "References"
 
 # standard input:102
 # standard input:9
 # standard
-#: standard input:136 input:173 input:181
+#: standard input:136 input:173 pgadmin/ui/dlgForeignKey.xrc:13
 msgid "Referencing"
 msgstr "Referencing"
 
@@ -9254,7 +9439,8 @@ msgstr "Referencing"
 # standard
 #: src/dlg/dlgProperty.cpp:1415 src/frm/frmEditGrid.cpp:101 standard input:875
 #: src/dlg/dlgProperty.cpp:1513 src/frm/frmEditGrid.cpp:115 input:984
-#: pgadmin/dlg/dlgProperty.cpp:1661 pgadmin/frm/frmEditGrid.cpp:116 input:1057
+#: pgadmin/dlg/dlgProperty.cpp:1661 pgadmin/frm/frmEditGrid.cpp:116
+#: pgadmin/ui/frmStatus.xrc:15
 msgid "Refresh"
 msgstr "Refresh"
 
@@ -9268,7 +9454,7 @@ msgstr "rata2 refresh (detik)"
 # src/ui/frmMain.cpp:230 standard input:453
 # src/ui/frmMain.cpp:230 standard input:3
 # standard
-#: standard input:982 input:1055
+#: standard input:982 pgadmin/ui/frmStatus.xrc:13
 #, fuzzy
 msgid "Refresh rate:"
 msgstr "Refresh"
@@ -9310,19 +9496,19 @@ msgstr "Data direfresh, tunggu."
 #: src/frm/frmStatus.cpp:470 src/frm/frmStatus.cpp:563
 #: src/frm/frmStatus.cpp:567 src/frm/frmStatus.cpp:332
 #: src/frm/frmStatus.cpp:434 src/frm/frmStatus.cpp:518
-#: src/frm/frmStatus.cpp:615 pgadmin/frm/frmStatus.cpp:333
-#: pgadmin/frm/frmStatus.cpp:438 pgadmin/frm/frmStatus.cpp:522
-#: pgadmin/frm/frmStatus.cpp:619
+#: src/frm/frmStatus.cpp:615 pgadmin/frm/frmStatus.cpp:341
+#: pgadmin/frm/frmStatus.cpp:446 pgadmin/frm/frmStatus.cpp:530
+#: pgadmin/frm/frmStatus.cpp:630
 msgid "Refreshing."
 msgstr "Refreshing."
 
-#: standard input:159 input:167
+#: standard input:159 pgadmin/ui/dlgFindReplace.xrc:29
 #, fuzzy
 msgid "Regular expressions"
 msgstr "Ekspresi"
 
 #: src/frm/frmStatus.cpp:122 src/frm/frmStatus.cpp:125
-#: pgadmin/frm/frmStatus.cpp:127
+#: pgadmin/frm/frmStatus.cpp:131
 msgid "Relation"
 msgstr "Relasi"
 
@@ -9372,10 +9558,16 @@ msgstr ""
 #: input:573 input:580 input:583 input:658 input:679
 #: src/ctl/ctlSecurityPanel.cpp:101 input:87 input:118 input:212 input:258
 #: input:271 input:290 input:294 input:463 input:555 input:630 input:637
-#: input:640 input:715 input:736 pgadmin/ctl/ctlSecurityPanel.cpp:101 input:88
-#: input:128 input:183 input:225 input:276 input:287 input:306 input:310
-#: input:499 input:591 input:678 input:685 input:688 input:768 input:771
-#: input:792
+#: input:640 input:715 input:736 pgadmin/ctl/ctlSecurityPanel.cpp:101
+#: pgadmin/ui/dlgDatabase.xrc:12 pgadmin/ui/dlgEditGridOptions.xrc:11
+#: pgadmin/ui/dlgForeignKey.xrc:15 pgadmin/ui/dlgFunction.xrc:26
+#: pgadmin/ui/dlgFunction.xrc:34 pgadmin/ui/dlgIndex.xrc:14
+#: pgadmin/ui/dlgIndexConstraint.xrc:8 pgadmin/ui/dlgJob.xrc:16
+#: pgadmin/ui/dlgJob.xrc:20 pgadmin/ui/dlgRole.xrc:24
+#: pgadmin/ui/dlgSchedule.xrc:71 pgadmin/ui/dlgTable.xrc:9
+#: pgadmin/ui/dlgTable.xrc:16 pgadmin/ui/dlgTable.xrc:19
+#: pgadmin/ui/dlgType.xrc:37 pgadmin/ui/dlgType.xrc:40
+#: pgadmin/ui/dlgUser.xrc:18
 msgid "Remove"
 msgstr "Menghapus"
 
@@ -9401,12 +9593,12 @@ msgid "Remove table?"
 msgstr "Tabel dari Sistem?"
 
 # standard
-#: standard input:114 input:119 input:129
+#: standard input:114 input:119 pgadmin/ui/dlgEditGridOptions.xrc:12
 msgid "Remove the selected sort column."
 msgstr "Hapus kolom yang telah dipilih urut."
 
 # standard
-#: standard input:316 input:332
+#: standard input:316 pgadmin/ui/dlgManageFavourites.xrc:2
 #, fuzzy
 msgid "Rename"
 msgstr "Nama Berkas"
@@ -9444,7 +9636,7 @@ msgstr "Restore"
 # standard input:333
 # standard input:7
 # standard
-#: standard input:138 input:146
+#: standard input:138 pgadmin/ui/dlgFindReplace.xrc:8
 #, fuzzy
 msgid "Replace &All"
 msgstr "Pilih &Semua"
@@ -9468,7 +9660,7 @@ msgstr "Reload halaman saat ini."
 msgid "Replace text"
 msgstr "Relasi"
 
-#: standard input:142 input:150
+#: standard input:142 pgadmin/ui/dlgFindReplace.xrc:12
 msgid "Replace with:"
 msgstr ""
 
@@ -9490,11 +9682,11 @@ msgstr "Relasi"
 msgid "Replication Sets"
 msgstr "Relasi"
 
-#: standard input:919 input:991
+#: standard input:919 pgadmin/ui/frmReport.xrc:4
 msgid "Report Notes"
 msgstr ""
 
-#: standard input:917 input:989
+#: standard input:917 pgadmin/ui/frmReport.xrc:2
 msgid "Report Title"
 msgstr ""
 
@@ -9507,7 +9699,7 @@ msgstr "Referenced by"
 msgid "Reschedule the job to run now."
 msgstr ""
 
-#: standard input:810 input:867 input:933
+#: standard input:810 input:867 pgadmin/ui/frmOptions.xrc:24
 msgid "Reset guru hints"
 msgstr ""
 
@@ -9571,7 +9763,7 @@ msgstr "Ristriksi Fungsi"
 # src/ui/dlgProperty.cpp:854 standard input:33
 # src/ui/dlgProperty.cpp:854 standard input:15
 # standard
-#: standard input:846 input:954 input:1027
+#: standard input:846 input:954 pgadmin/ui/frmRestore.xrc:1
 msgid "Restore"
 msgstr "Restore"
 
@@ -9592,12 +9784,12 @@ msgstr "Restore %s %s"
 # src/ui/dlgProperty.cpp:854 standard input:33
 # src/ui/dlgProperty.cpp:854 standard input:15
 # standard
-#: standard input:599 input:635
+#: standard input:599 pgadmin/ui/dlgServer.xrc:10
 #, fuzzy
 msgid "Restore env?"
 msgstr "Restore"
 
-#: src/schema/pgServer.cpp:887 pgadmin/schema/pgServer.cpp:891
+#: src/schema/pgServer.cpp:887 pgadmin/schema/pgServer.cpp:896
 #, fuzzy
 msgid "Restore environment?"
 msgstr "Menrestore enviroment ke awal"
@@ -9619,14 +9811,14 @@ msgstr "Menrestore enviroment ke awal"
 
 # standard
 #: src/schema/pgOperator.cpp:129 standard input:287 input:331
-#: pgadmin/schema/pgOperator.cpp:132 input:354
+#: pgadmin/schema/pgOperator.cpp:132 pgadmin/ui/dlgOperator.xrc:11
 msgid "Restrict function"
 msgstr "Ristriksi Fungsi"
 
 #: src/schema/pgObject.cpp:180 src/schema/pgObject.cpp:182
 #: src/schema/pgServer.cpp:970 src/schema/pgServer.cpp:979
-#: pgadmin/schema/pgObject.cpp:182 pgadmin/schema/pgServer.cpp:975
-#: pgadmin/schema/pgServer.cpp:984
+#: pgadmin/schema/pgObject.cpp:182 pgadmin/schema/pgServer.cpp:980
+#: pgadmin/schema/pgServer.cpp:989
 msgid "Restriction"
 msgstr "Ristriksi"
 
@@ -9644,17 +9836,17 @@ msgid "Result"
 msgstr "Tipe Hasilnya"
 
 # standard
-#: standard input:883 input:950
+#: standard input:883 pgadmin/ui/frmOptions.xrc:41
 #, fuzzy
 msgid "Result copy field separator"
 msgstr "Pembatas baris"
 
-#: standard input:880 input:947
+#: standard input:880 pgadmin/ui/frmOptions.xrc:38
 msgid "Result copy quote character"
 msgstr ""
 
 # standard
-#: standard input:876 input:943
+#: standard input:876 pgadmin/ui/frmOptions.xrc:34
 #, fuzzy
 msgid "Result copy quoting"
 msgstr "no quoting"
@@ -9707,7 +9899,7 @@ msgstr "Restore"
 #: src/schema/pgFunction.cpp:126 standard input:160
 #: src/schema/pgFunction.cpp:142 input:197
 #: pgadmin/schema/edbPackageFunction.cpp:144 pgadmin/schema/pgFunction.cpp:171
-#: input:205
+#: pgadmin/ui/dlgFunction.xrc:6
 msgid "Return type"
 msgstr "Tipe kembaliannya"
 
@@ -9724,7 +9916,7 @@ msgstr "Returns a Set?"
 # standard input:128
 # standard input:11
 # standard
-#: standard input:166 input:203 input:211
+#: standard input:166 input:203 pgadmin/ui/dlgFunction.xrc:12
 msgid "Returns set"
 msgstr "Returns set"
 
@@ -9741,7 +9933,7 @@ msgstr "Kolom Tabel Right"
 # standard input:195
 # standard input:15
 # standard
-#: standard input:292 input:336 input:359
+#: standard input:292 input:336 pgadmin/ui/dlgOperator.xrc:16
 msgid "Right sort op"
 msgstr "Right sort op"
 
@@ -9749,7 +9941,7 @@ msgstr "Right sort op"
 # standard input:6
 # standard
 #: src/schema/pgOperator.cpp:123 standard input:282 input:326
-#: pgadmin/schema/pgOperator.cpp:126 input:349
+#: pgadmin/schema/pgOperator.cpp:126 pgadmin/ui/dlgOperator.xrc:6
 msgid "Right type"
 msgstr "Tipe Right"
 
@@ -9759,7 +9951,7 @@ msgstr "Tipe Right"
 msgid "Role"
 msgstr "Rule"
 
-#: standard input:393 input:448 input:483
+#: standard input:393 input:448 pgadmin/ui/dlgRole.xrc:8
 #, fuzzy
 msgid "Role Privileges"
 msgstr "Hak Akses"
@@ -9768,23 +9960,23 @@ msgstr "Hak Akses"
 # standard input:7
 # standard input:11
 # standard
-#: standard input:400 input:455 input:491
+#: standard input:400 input:455 pgadmin/ui/dlgRole.xrc:16
 #, fuzzy
 msgid "Role membership"
 msgstr "not member"
 
 # standard
-#: standard input:387 input:442 input:477
+#: standard input:387 input:442 pgadmin/ui/dlgRole.xrc:2
 #, fuzzy
 msgid "Role name"
 msgstr "Nama Berkas"
 
-#: standard input:871 input:979 input:1052
+#: standard input:871 input:979 pgadmin/ui/frmStatus.xrc:10
 msgid "Rollback"
 msgstr ""
 
 #: src/frm/frmStatus.cpp:943 src/frm/frmStatus.cpp:947
-#: src/frm/frmStatus.cpp:995 pgadmin/frm/frmStatus.cpp:999
+#: src/frm/frmStatus.cpp:995 pgadmin/frm/frmStatus.cpp:1046
 msgid "Rollback transaction?"
 msgstr ""
 
@@ -9794,7 +9986,7 @@ msgid "Root Block No"
 msgstr "Toast Blocks Hit"
 
 # standard
-#: standard input:873 input:981 input:1054
+#: standard input:873 input:981 pgadmin/ui/frmStatus.xrc:12
 msgid "Rotate"
 msgstr "Rotate"
 
@@ -9807,14 +9999,14 @@ msgid "Row"
 msgstr "Baris"
 
 # standard
-#: standard input:729 input:786 input:854
+#: standard input:729 input:786 pgadmin/ui/frmExport.xrc:2
 msgid "Row separator"
 msgstr "Pembatas baris"
 
 # standard input:253
 # standard input:4
 # standard
-#: standard input:608 input:665 input:715
+#: standard input:608 input:665 pgadmin/ui/dlgTrigger.xrc:4
 msgid "Row trigger"
 msgstr "Triger baris"
 
@@ -9874,7 +10066,7 @@ msgid "Running at"
 msgstr "Sedang jalan?"
 
 #: src/schema/pgServer.cpp:854 src/schema/pgServer.cpp:874
-#: src/schema/pgServer.cpp:902 pgadmin/schema/pgServer.cpp:907
+#: src/schema/pgServer.cpp:902 pgadmin/schema/pgServer.cpp:912
 msgid "Running?"
 msgstr "Sedang jalan?"
 
@@ -9889,7 +10081,7 @@ msgstr ""
 # standard input:206
 # standard input:5
 # standard
-#: standard input:418 input:473 input:509
+#: standard input:418 input:473 pgadmin/ui/dlgRule.xrc:5
 msgid "SELECT"
 msgstr "SELECT"
 
@@ -9904,14 +10096,16 @@ msgstr "SELECT"
 # standard input:110 standard input:115
 # standard input:17 standard input:22
 # standard
-#: standard input:145 input:151 input:182 input:188 input:190 input:196
+#: standard input:145 input:151 input:182 input:188
+#: pgadmin/ui/dlgForeignKey.xrc:22 pgadmin/ui/dlgForeignKey.xrc:28
 msgid "SET DEFAULT"
 msgstr "SET DEFAULT"
 
 # standard input:109 standard input:114
 # standard input:16 standard input:21
 # standard
-#: standard input:144 input:150 input:181 input:187 input:189 input:195
+#: standard input:144 input:150 input:181 input:187
+#: pgadmin/ui/dlgForeignKey.xrc:21 pgadmin/ui/dlgForeignKey.xrc:27
 msgid "SET NULL"
 msgstr "SET NULL"
 
@@ -9920,7 +10114,7 @@ msgid "SIGHUP - reloaded on SIGHUP signal"
 msgstr ""
 
 # standard
-#: standard input:554 input:611 input:647
+#: standard input:554 input:611 pgadmin/ui/dlgStep.xrc:6
 msgid "SQL"
 msgstr "SQL"
 
@@ -9962,29 +10156,29 @@ msgid "SQL state: "
 msgstr ""
 
 # standard
-#: standard input:539 input:594 input:630
+#: standard input:539 input:594 pgadmin/ui/dlgServer.xrc:5
 msgid "SSL"
 msgstr "SSL"
 
 #: src/schema/pgServer.cpp:829 src/schema/pgServer.cpp:849
-#: src/schema/pgServer.cpp:876 pgadmin/schema/pgServer.cpp:880
+#: src/schema/pgServer.cpp:876 pgadmin/schema/pgServer.cpp:885
 msgid "SSL Mode"
 msgstr "Mode SSL"
 
 #: src/schema/pgServer.cpp:815 src/schema/pgServer.cpp:835
-#: src/schema/pgServer.cpp:862 pgadmin/schema/pgServer.cpp:866
+#: src/schema/pgServer.cpp:862 pgadmin/schema/pgServer.cpp:871
 msgid "SSL encrypted"
 msgstr "Enkripsi SSL"
 
 # standard input:126
 # standard input:9
 # standard
-#: standard input:164 input:201 input:209
+#: standard input:164 input:201 pgadmin/ui/dlgFunction.xrc:10
 msgid "STABLE"
 msgstr "STABLE"
 
 #: src/agent/pgaSchedule.cpp:280 standard input:445 input:500
-#: pgadmin/agent/pgaSchedule.cpp:273 input:536
+#: pgadmin/agent/pgaSchedule.cpp:273 pgadmin/ui/dlgSchedule.xrc:16
 msgid "Saturday"
 msgstr ""
 
@@ -9992,7 +10186,7 @@ msgstr ""
 #: src/frm/frmQuery.cpp:189 src/frm/frmConfig.cpp:115
 #: src/frm/frmEditGrid.cpp:113 src/frm/frmQuery.cpp:237
 #: pgadmin/frm/frmConfig.cpp:114 pgadmin/frm/frmEditGrid.cpp:114
-#: pgadmin/frm/frmQuery.cpp:277 standard input:340
+#: pgadmin/frm/frmQuery.cpp:277 pgadmin/ui/dlgManageMacros.xrc:4
 msgid "Save"
 msgstr "Simpan"
 
@@ -10073,7 +10267,7 @@ msgstr "Schedule"
 # standard
 #: src/agent/pgaSchedule.cpp:496 standard input:253
 #: src/agent/pgaSchedule.cpp:497 input:291 pgadmin/agent/pgaSchedule.cpp:490
-#: input:307
+#: pgadmin/ui/dlgJob.xrc:17
 msgid "Schedules"
 msgstr "Skedul"
 
@@ -10085,7 +10279,7 @@ msgstr "Skema"
 
 #: src/schema/pgDatabase.cpp:422 standard input:78
 #: src/schema/pgDatabase.cpp:438 input:83 pgadmin/schema/pgDatabase.cpp:451
-#: input:84
+#: pgadmin/ui/dlgDatabase.xrc:8
 #, fuzzy
 msgid "Schema restriction"
 msgstr "Ristriksi"
@@ -10114,11 +10308,11 @@ msgstr ""
 msgid "Scripts"
 msgstr "Diskripsi"
 
-#: standard input:153 input:161
+#: standard input:153 pgadmin/ui/dlgFindReplace.xrc:23
 msgid "Search backwards through the text"
 msgstr ""
 
-#: standard input:151 input:159
+#: standard input:151 pgadmin/ui/dlgFindReplace.xrc:21
 msgid "Search forwards through the text"
 msgstr ""
 
@@ -10126,7 +10320,7 @@ msgid "Security"
 msgstr "Kemanan"
 
 # standard
-#: standard input:168 input:205 input:213
+#: standard input:168 input:205 pgadmin/ui/dlgFunction.xrc:14
 msgid "Security of definer"
 msgstr "Pendifinisian Keamanan?"
 
@@ -10149,7 +10343,7 @@ msgid "Select Slony-I cluster."
 msgstr "Pilih berkas log"
 
 # standard
-#: standard input:108 input:113 input:123
+#: standard input:108 input:113 pgadmin/ui/dlgEditGridOptions.xrc:6
 msgid "Select a column to add to the sort list."
 msgstr "Pilih kolom untuk menambahkan daftar dalam urutan."
 
@@ -10210,7 +10404,8 @@ msgid "Select stylesheet filename"
 msgstr "Pilih berkas yang di ekpor"
 
 # standard
-#: standard input:947 input:948 input:950 input:1019 input:1020 input:1022
+#: standard input:947 input:948 input:950 pgadmin/ui/frmReport.xrc:32
+#: pgadmin/ui/frmReport.xrc:33 pgadmin/ui/frmReport.xrc:35
 #, fuzzy
 msgid "Select the file to write the report to."
 msgstr "Pilih kolom untuk menambahkan daftar dalam urutan."
@@ -10218,18 +10413,19 @@ msgstr "Pilih kolom untuk menambahkan daftar dalam urutan."
 # standard input:402
 # standard input:28
 # standard
-#: standard input:832 input:902 input:970
+#: standard input:832 input:902 pgadmin/ui/frmOptions.xrc:61
 msgid "Select the level of detail to record in the logfile."
 msgstr "Pilih detail dari level untuk di rekam di logfile."
 
-#: standard input:942 input:943 input:945 input:1014 input:1015 input:1017
+#: standard input:942 input:943 input:945 pgadmin/ui/frmReport.xrc:27
+#: pgadmin/ui/frmReport.xrc:28 pgadmin/ui/frmReport.xrc:30
 msgid "Select the stylesheet to use."
 msgstr ""
 
 # standard input:414
 # standard input:2
 # standard
-#: standard input:105 input:110 input:120
+#: standard input:105 input:110 pgadmin/ui/dlgEditGridOptions.xrc:3
 msgid "Selected Columns"
 msgstr "Kolon yang telah dipilih"
 
@@ -10241,12 +10437,13 @@ msgstr ""
 # src/schema/pgRule.cpp:77 standard input:105
 # src/schema/pgRule.cpp:77 standard input:12
 # standard
-#: standard input:753 input:768 input:810 input:825 input:878
+#: standard input:753 input:768 input:810 input:825
+#: pgadmin/ui/frmGrantWizard.xrc:2
 msgid "Selection"
 msgstr "Seleksi"
 
 # standard
-#: standard input:636 input:693 input:746
+#: standard input:636 input:693 pgadmin/ui/dlgType.xrc:15
 msgid "Send Function"
 msgstr "Fungi Pengiriman"
 
@@ -10262,7 +10459,7 @@ msgstr "Fungsi kirim"
 # standard input:12
 # standard
 #: src/agent/pgaSchedule.cpp:393 standard input:488 input:543
-#: pgadmin/agent/pgaSchedule.cpp:386 input:579
+#: pgadmin/agent/pgaSchedule.cpp:386 pgadmin/ui/dlgSchedule.xrc:59
 #, fuzzy
 msgid "September"
 msgstr "member"
@@ -10274,8 +10471,8 @@ msgstr "member"
 #: input:49 input:397 pgadmin/dlg/dlgSynonym.cpp:51
 #: pgadmin/dlg/dlgSynonym.cpp:167 pgadmin/schema/edbSynonym.cpp:89
 #: pgadmin/schema/pgColumn.cpp:240 pgadmin/schema/pgSequence.cpp:201
-#: pgadmin/slony/slSequence.cpp:136 pgadmin/slony/slSet.cpp:117 input:50
-#: input:432
+#: pgadmin/slony/slSequence.cpp:136 pgadmin/slony/slSet.cpp:117
+#: pgadmin/ui/dlgColumn.xrc:7 pgadmin/ui/dlgRepSequence.xrc:2
 msgid "Sequence"
 msgstr "Urutan "
 
@@ -10303,8 +10500,9 @@ msgstr "Sequential Tuples Read"
 #: src/schema/pgServer.cpp:1052 src/schema/pgServer.cpp:1072 standard
 #: input:302 input:314 input:335 input:514 src/frm/frmReport.cpp:569
 #: src/schema/pgServer.cpp:1124 input:357 input:369 input:390 input:569
-#: pgadmin/frm/frmReport.cpp:583 pgadmin/schema/pgServer.cpp:1130 input:392
-#: input:404 input:425 input:605
+#: pgadmin/frm/frmReport.cpp:583 pgadmin/schema/pgServer.cpp:1135
+#: pgadmin/ui/dlgRepCluster.xrc:3 pgadmin/ui/dlgRepClusterUpgrade.xrc:4
+#: pgadmin/ui/dlgRepPath.xrc:2 pgadmin/ui/dlgSelectConnection.xrc:2
 msgid "Server"
 msgstr "Server"
 
@@ -10321,7 +10519,7 @@ msgstr "Simpan Berkas query sebagai"
 msgid "Server ID"
 msgstr "Server"
 
-#: pgadmin/frm/frmStatus.cpp:1067
+#: pgadmin/frm/frmStatus.cpp:1153
 #, fuzzy
 msgid "Server Status - "
 msgstr "Status &Server"
@@ -10356,13 +10554,13 @@ msgid "Server settings"
 msgstr "Status &Server"
 
 #: src/schema/pgServer.cpp:1070 src/schema/pgServer.cpp:1090
-#: src/schema/pgServer.cpp:1142 pgadmin/schema/pgServer.cpp:1148
+#: src/schema/pgServer.cpp:1142 pgadmin/schema/pgServer.cpp:1153
 msgid "Servers"
 msgstr "Server-server"
 
 #: src/dlg/dlgServer.cpp:363 src/frm/frmMain.cpp:796 src/dlg/dlgServer.cpp:370
 #: src/frm/frmMain.cpp:904 pgadmin/frm/frmMain.cpp:1028
-#: pgadmin/schema/pgServer.cpp:1201
+#: pgadmin/schema/pgServer.cpp:1206
 #, c-format
 msgid "Servers (%d)"
 msgstr "Server (%d)"
@@ -10372,8 +10570,8 @@ msgstr "Server (%d)"
 # src/schema/pgObject.cpp:30 standard input:1
 # standard
 #: src/schema/pgServer.cpp:835 src/schema/pgServer.cpp:855 standard input:537
-#: src/schema/pgServer.cpp:882 input:601 pgadmin/schema/pgServer.cpp:886
-#: input:637
+#: src/schema/pgServer.cpp:882 input:601 pgadmin/schema/pgServer.cpp:891
+#: pgadmin/ui/dlgServer.xrc:12
 msgid "Service"
 msgstr "Service"
 
@@ -10427,14 +10625,14 @@ msgstr ""
 msgid "Set on command line"
 msgstr ""
 
-#: standard input:97
+#: pgadmin/ui/dlgDirectDbg.xrc:4
 msgid "Set the function/procedure parameter values."
 msgstr ""
 
 # standard input:287
 # src/schema/pgoperatorclass.cpp:164 standard input:22
 # standard
-#: standard input:357 input:412 input:447
+#: standard input:357 input:412 pgadmin/ui/dlgRepSetMerge.xrc:3
 #, fuzzy
 msgid "Set to merge"
 msgstr "Storage"
@@ -10448,11 +10646,11 @@ msgstr ""
 msgid "Setting name"
 msgstr ""
 
-#: standard input:957
+#: pgadmin/ui/frmOptions.xrc:48
 msgid "Show NULL values as <NULL>?"
 msgstr ""
 
-#: standard input:972
+#: pgadmin/ui/frmOptions.xrc:63
 #, fuzzy
 msgid "Show System Objects in the treeview?"
 msgstr "Perlihatkan obyek dari sistem"
@@ -10468,7 +10666,7 @@ msgstr "Tunjukan dialod tentang"
 # standard input:384
 # standard input:10
 # standard
-#: standard input:808 input:865 input:931
+#: standard input:808 input:865 pgadmin/ui/frmOptions.xrc:22
 msgid "Show object properties on double click in treeview?"
 msgstr "Tunjukan properti dari obyek saat klik 2 kali di treeview?"
 
@@ -10533,7 +10731,7 @@ msgstr "Perlihatkan obyek dari sistem"
 # standard input:383
 # standard input:9
 # standard
-#: standard input:807 input:864 input:930
+#: standard input:807 input:864 pgadmin/ui/frmOptions.xrc:21
 msgid "Show users for privileges?"
 msgstr "Tunjukan hak akses dari user?"
 
@@ -10542,7 +10740,7 @@ msgid "Signature arguments"
 msgstr ""
 
 # standard
-#: standard input:852 input:960 input:1033
+#: standard input:852 input:960 pgadmin/ui/frmRestore.xrc:7
 msgid "Single object"
 msgstr "Obyek tunggal"
 
@@ -10567,7 +10765,7 @@ msgstr ""
 msgid "Slony"
 msgstr "SQL Help"
 
-#: standard input:916
+#: pgadmin/ui/frmOptions.xrc:7
 msgid "Slony help path"
 msgstr ""
 
@@ -10590,15 +10788,11 @@ msgstr "Pilih berkas log"
 msgid "Slony-I creation scripts not available; only joining possible."
 msgstr ""
 
-#: standard input:799 input:856 input:918
+#: standard input:799 input:856 pgadmin/ui/frmOptions.xrc:9
 msgid "Slony-I path"
 msgstr ""
 
-#: pgadmin/frm/frmQuery.cpp:1355 pgadmin/frm/frmQuery.cpp:1399
-msgid "Someone created a new line ending style! Run, run for your lives!!"
-msgstr ""
-
-#: standard input:9 input:14 input:19
+#: standard input:9 input:14 pgadmin/ui/dlgAggregate.xrc:14
 #, fuzzy
 msgid "Sort Operator"
 msgstr "Operator Left Sort "
@@ -10626,7 +10820,7 @@ msgstr "Source"
 # standard input:46
 # standard input:6
 # standard
-#: standard input:63 input:68 input:69
+#: standard input:63 input:68 pgadmin/ui/dlgConversion.xrc:6
 msgid "Source encoding"
 msgstr "encoding source"
 
@@ -10643,7 +10837,7 @@ msgstr "Tipe source"
 # standard input:4
 # standard
 #: src/schema/pgCast.cpp:66 standard input:19 input:24
-#: pgadmin/schema/pgCast.cpp:66 input:27
+#: pgadmin/schema/pgCast.cpp:66 pgadmin/ui/dlgCast.xrc:4
 msgid "Source type"
 msgstr "Tipe source"
 
@@ -10663,14 +10857,15 @@ msgstr "SQL Help"
 # standard
 #: src/frm/frmStatus.cpp:116 src/frm/frmStatus.cpp:128 standard input:434
 #: input:524 src/frm/frmStatus.cpp:131 input:489 input:580
-#: pgadmin/frm/frmStatus.cpp:133 input:525 input:616
+#: pgadmin/frm/frmStatus.cpp:137 pgadmin/ui/dlgSchedule.xrc:5
+#: pgadmin/ui/dlgSequence.xrc:6
 msgid "Start"
 msgstr "Mulai"
 
 # standard input:443
 # standard input:13
 #: src/dlg/dlgServer.cpp:395 src/dlg/dlgServer.cpp:402
-#: pgadmin/schema/pgServer.cpp:1233
+#: pgadmin/schema/pgServer.cpp:1238
 msgid "Start PostgreSQL Service"
 msgstr "Jalankan Servis PostgreSQL"
 
@@ -10682,7 +10877,7 @@ msgstr ""
 msgid "Start Query tool with CREATE script."
 msgstr ""
 
-#: src/dlg/dlgServer.cpp:402 pgadmin/schema/pgServer.cpp:1233
+#: src/dlg/dlgServer.cpp:402 pgadmin/schema/pgServer.cpp:1238
 #, fuzzy
 msgid "Start Service"
 msgstr "Jalankan servis"
@@ -10728,7 +10923,7 @@ msgstr "Mulai pembuatan query"
 msgid "Start time"
 msgstr "Tipe keadaan"
 
-#: src/dlg/dlgServer.cpp:409 pgadmin/schema/pgServer.cpp:1240
+#: src/dlg/dlgServer.cpp:409 pgadmin/schema/pgServer.cpp:1245
 #, fuzzy
 msgid "Starting Service"
 msgstr "Servis sedang berjalan"
@@ -10746,7 +10941,7 @@ msgstr "Servis sedang berjalan"
 # standard input:7
 # standard
 #: src/schema/pgAggregate.cpp:88 standard input:7 input:12
-#: pgadmin/schema/pgAggregate.cpp:111 input:17
+#: pgadmin/schema/pgAggregate.cpp:111 pgadmin/ui/dlgAggregate.xrc:12
 msgid "State function"
 msgstr "Fungsi Keadaan "
 
@@ -10754,7 +10949,7 @@ msgstr "Fungsi Keadaan "
 # standard input:6
 # standard
 #: src/schema/pgAggregate.cpp:87 standard input:6 input:11
-#: pgadmin/schema/pgAggregate.cpp:110 input:16
+#: pgadmin/schema/pgAggregate.cpp:110 pgadmin/ui/dlgAggregate.xrc:11
 msgid "State type"
 msgstr "Tipe keadaan"
 
@@ -10770,7 +10965,8 @@ msgstr "Statistik"
 #: src/frm/frmMain.cpp:286 src/frm/frmMain.cpp:403 src/schema/pgColumn.cpp:217
 #: standard input:46 src/frm/frmMain.cpp:142 src/frm/frmMain.cpp:485
 #: src/schema/pgColumn.cpp:224 input:51 pgadmin/frm/frmMain.cpp:146
-#: pgadmin/frm/frmMain.cpp:605 pgadmin/schema/pgColumn.cpp:247 input:52
+#: pgadmin/frm/frmMain.cpp:605 pgadmin/schema/pgColumn.cpp:247
+#: pgadmin/ui/dlgColumn.xrc:9
 msgid "Statistics"
 msgstr "Statistik"
 
@@ -10779,7 +10975,7 @@ msgstr "Statistik"
 # standard
 #: src/agent/pgaJob.cpp:199 src/agent/pgaStep.cpp:166 standard input:863
 #: src/agent/pgaStep.cpp:175 input:971 pgadmin/agent/pgaJob.cpp:193
-#: pgadmin/agent/pgaStep.cpp:169 input:1044
+#: pgadmin/agent/pgaStep.cpp:169 pgadmin/ui/frmStatus.xrc:2
 msgid "Status"
 msgstr "Status"
 
@@ -10816,19 +11012,19 @@ msgstr "Server"
 
 # standard
 #: src/agent/pgaStep.cpp:223 standard input:249 src/agent/pgaStep.cpp:233
-#: input:287 pgadmin/agent/pgaStep.cpp:227 input:303
+#: input:287 pgadmin/agent/pgaStep.cpp:227 pgadmin/ui/dlgJob.xrc:13
 msgid "Steps"
 msgstr "Steps"
 
 # standard input:443
 # standard input:13
 #: src/dlg/dlgServer.cpp:424 src/dlg/dlgServer.cpp:431
-#: pgadmin/schema/pgServer.cpp:1262
+#: pgadmin/schema/pgServer.cpp:1267
 msgid "Stop PostgreSQL Service"
 msgstr "Hentikan Servis PostgreSQL"
 
 #: src/dlg/dlgServer.cpp:431 src/dlg/dlgServer.cpp:439
-#: pgadmin/schema/pgServer.cpp:1262 pgadmin/schema/pgServer.cpp:1270
+#: pgadmin/schema/pgServer.cpp:1267 pgadmin/schema/pgServer.cpp:1275
 #, fuzzy
 msgid "Stop Service"
 msgstr "Hentikan servis"
@@ -10859,14 +11055,15 @@ msgid "Stop service"
 msgstr "Hentikan servis"
 
 #: src/frm/frmStatus.cpp:191 src/frm/frmStatus.cpp:241
-#: src/frm/frmStatus.cpp:285 standard input:983 pgadmin/frm/frmStatus.cpp:193
-#: pgadmin/frm/frmStatus.cpp:242 pgadmin/frm/frmStatus.cpp:286 input:1056
+#: src/frm/frmStatus.cpp:285 standard input:983 pgadmin/frm/frmStatus.cpp:197
+#: pgadmin/frm/frmStatus.cpp:248 pgadmin/frm/frmStatus.cpp:294
+#: pgadmin/ui/frmStatus.xrc:14
 #, fuzzy
 msgid "Stopped"
 msgstr "Tersalin"
 
 #: src/dlg/dlgServer.cpp:435 src/dlg/dlgServer.cpp:442
-#: pgadmin/schema/pgServer.cpp:1273
+#: pgadmin/schema/pgServer.cpp:1278
 msgid "Stopping service"
 msgstr "Servis berhenti"
 
@@ -10877,14 +11074,15 @@ msgstr "Servis berhenti"
 #: src/schema/pgType.cpp:152 standard input:647 src/schema/pgColumn.cpp:222
 #: src/schema/pgType.cpp:153 input:704 pgadmin/schema/pgColumn.cpp:245
 #: pgadmin/schema/pgOperatorClass.cpp:203 pgadmin/schema/pgType.cpp:188
-#: input:757
+#: pgadmin/ui/dlgType.xrc:26
 msgid "Storage"
 msgstr "Storage"
 
 # standard input:409
 # standard input:3
 # standard
-#: standard input:53 input:58 input:598 input:59 input:634
+#: standard input:53 input:58 input:598 pgadmin/ui/dlgConnect.xrc:2
+#: pgadmin/ui/dlgServer.xrc:9
 #, fuzzy
 msgid "Store password"
 msgstr "Membutuhkan password"
@@ -10892,7 +11090,7 @@ msgstr "Membutuhkan password"
 # standard input:409
 # standard input:3
 #: src/schema/pgServer.cpp:839 src/schema/pgServer.cpp:859
-#: src/schema/pgServer.cpp:886 pgadmin/schema/pgServer.cpp:890
+#: src/schema/pgServer.cpp:886 pgadmin/schema/pgServer.cpp:895
 #, fuzzy
 msgid "Store password?"
 msgstr "Memerlukan password?"
@@ -10900,7 +11098,7 @@ msgstr "Memerlukan password?"
 # standard input:129
 # standard input:12
 # standard
-#: standard input:167 input:204 input:212
+#: standard input:167 input:204 pgadmin/ui/dlgFunction.xrc:13
 msgid "Strict"
 msgstr "Strict"
 
@@ -10912,12 +11110,12 @@ msgstr "Strict?"
 # src/schema/pgObject.cpp:52 standard input:245
 # src/schema/pgObject.cpp:52 standard input:11
 # standard
-#: standard input:878 input:945
+#: standard input:878 pgadmin/ui/frmOptions.xrc:36
 #, fuzzy
 msgid "Strings"
 msgstr "only strings"
 
-#: standard input:928 input:1000
+#: standard input:928 pgadmin/ui/frmReport.xrc:13
 msgid "Stylesheet"
 msgstr ""
 
@@ -10942,7 +11140,7 @@ msgstr "Diskripsi"
 
 # standard
 #: src/agent/pgaStep.cpp:117 standard input:559 src/agent/pgaStep.cpp:126
-#: input:616 pgadmin/agent/pgaStep.cpp:120 input:652
+#: input:616 pgadmin/agent/pgaStep.cpp:120 pgadmin/ui/dlgStep.xrc:11
 msgid "Succeed"
 msgstr "Berhasil"
 
@@ -10953,11 +11151,11 @@ msgid "Successful"
 msgstr ""
 
 #: src/agent/pgaSchedule.cpp:256 standard input:439 input:494
-#: pgadmin/agent/pgaSchedule.cpp:249 input:530
+#: pgadmin/agent/pgaSchedule.cpp:249 pgadmin/ui/dlgSchedule.xrc:10
 msgid "Sunday"
 msgstr ""
 
-#: standard input:395 input:450 input:485
+#: standard input:395 input:450 pgadmin/ui/dlgRole.xrc:10
 #, fuzzy
 msgid "Superuser"
 msgstr "Superuser?"
@@ -10965,7 +11163,7 @@ msgstr "Superuser?"
 # standard input:307
 # standard input:7
 # standard
-#: standard input:670 input:727 input:783
+#: standard input:670 input:727 pgadmin/ui/dlgUser.xrc:9
 msgid "Superuser (can create users)"
 msgstr "Superuser (bisa membuat users)"
 
@@ -10977,7 +11175,7 @@ msgstr "Superuser?"
 # standard input:198
 # standard input:18
 # standard
-#: standard input:295 input:339 input:362
+#: standard input:295 input:339 pgadmin/ui/dlgOperator.xrc:19
 msgid "Supports hash"
 msgstr "Mendukung hash"
 
@@ -10990,7 +11188,7 @@ msgstr "Mendukung hash"
 # standard input:199
 # standard input:19
 # standard
-#: standard input:296 input:340 input:363
+#: standard input:296 input:340 pgadmin/ui/dlgOperator.xrc:20
 msgid "Supports merge"
 msgstr "Mendukung merge"
 
@@ -11112,7 +11310,7 @@ msgstr "Aturan sistem?"
 msgid "System schema?"
 msgstr "Skema Sistem?"
 
-#: standard input:798 input:855 input:917
+#: standard input:798 input:855 pgadmin/ui/frmOptions.xrc:8
 #, fuzzy
 msgid "System schemas"
 msgstr "Skema Sistem?"
@@ -11147,24 +11345,24 @@ msgid "System view?"
 msgstr "Lihat Data"
 
 # standard
-#: standard input:710 input:767 input:815
+#: standard input:710 input:767 pgadmin/ui/frmBackup.xrc:7
 msgid "TAR"
 msgstr "TAR"
 
 #: src/frm/frmStatus.cpp:124 src/frm/frmStatus.cpp:127
-#: pgadmin/frm/frmStatus.cpp:129
+#: pgadmin/frm/frmStatus.cpp:133
 msgid "TX"
 msgstr "TX"
 
 # src/ui/frmQueryBuilder.cpp:1194 src/ui/frmStatus.cpp:58 standard input:385
 # src/ui/frmStatus.cpp:58 standard input:11
-#: pgadmin/frm/frmStatus.cpp:121
+#: pgadmin/frm/frmStatus.cpp:125
 #, fuzzy
 msgid "TX start"
 msgstr "Tool Query"
 
 #: standard input:887 pgadmin/frm/frmOptions.cpp:134
-#: pgadmin/frm/frmOptions.cpp:365 input:954
+#: pgadmin/frm/frmOptions.cpp:365 pgadmin/ui/frmOptions.xrc:45
 #, fuzzy
 msgid "Tab"
 msgstr "Table"
@@ -11178,7 +11376,7 @@ msgstr "Table"
 #: pgadmin/frm/frmRestore.cpp:226 pgadmin/frm/frmRestore.cpp:329
 #: pgadmin/schema/edbSynonym.cpp:87 pgadmin/schema/pgTable.cpp:724
 #: pgadmin/schema/pgTable.cpp:926 pgadmin/slony/slSet.cpp:118
-#: pgadmin/slony/slTable.cpp:166 input:468
+#: pgadmin/slony/slTable.cpp:166 pgadmin/ui/dlgRepTable.xrc:2
 msgid "Table"
 msgstr "Table"
 
@@ -11219,7 +11417,8 @@ msgstr "Tabel/Tampilan"
 #: pgadmin/schema/pgIndex.cpp:215 pgadmin/schema/pgIndexConstraint.cpp:97
 #: pgadmin/schema/pgRole.cpp:168 pgadmin/schema/pgTable.cpp:559
 #: pgadmin/schema/pgTablespace.cpp:226 pgadmin/schema/pgTablespace.cpp:255
-#: pgadmin/schema/pgUser.cpp:120 input:265 input:282 input:674
+#: pgadmin/schema/pgUser.cpp:120 pgadmin/ui/dlgIndex.xrc:3
+#: pgadmin/ui/dlgIndexConstraint.xrc:3 pgadmin/ui/dlgTable.xrc:5
 msgid "Tablespace"
 msgstr "Tabelspace"
 
@@ -11239,7 +11438,7 @@ msgstr "Tablespaces"
 # standard input:17
 # standard input:5
 # standard
-#: standard input:365 input:420 input:455
+#: standard input:365 input:420 pgadmin/ui/dlgRepSetMove.xrc:4
 #, fuzzy
 msgid "Target Node"
 msgstr "Tipe dari target"
@@ -11247,14 +11446,14 @@ msgstr "Tipe dari target"
 # standard input:47
 # standard input:7
 # standard
-#: standard input:64 input:69 input:70
+#: standard input:64 input:69 pgadmin/ui/dlgConversion.xrc:7
 msgid "Target encoding"
 msgstr "encoding dari target"
 
 # standard input:17
 # standard input:5
 # standard
-#: pgadmin/schema/edbSynonym.cpp:60 standard input:664
+#: pgadmin/schema/edbSynonym.cpp:60 pgadmin/ui/dlgSynonym.xrc:6
 #, fuzzy
 msgid "Target object"
 msgstr "Tipe dari target"
@@ -11262,14 +11461,14 @@ msgstr "Tipe dari target"
 # standard input:17
 # standard input:5
 # standard
-#: standard input:358 input:413 input:448
+#: standard input:358 input:413 pgadmin/ui/dlgRepSetMerge.xrc:4
 #, fuzzy
 msgid "Target of merge"
 msgstr "Tipe dari target"
 
 # standard input:36
 # standard input:6
-#: pgadmin/schema/edbSynonym.cpp:59 standard input:663
+#: pgadmin/schema/edbSynonym.cpp:59 pgadmin/ui/dlgSynonym.xrc:5
 #, fuzzy
 msgid "Target schema"
 msgstr "Skema acuan"
@@ -11278,15 +11477,15 @@ msgstr "Skema acuan"
 # standard input:5
 # standard
 #: src/schema/pgCast.cpp:67 standard input:20 input:25
-#: pgadmin/schema/edbSynonym.cpp:58 pgadmin/schema/pgCast.cpp:67 input:28
-#: input:662
+#: pgadmin/schema/edbSynonym.cpp:58 pgadmin/schema/pgCast.cpp:67
+#: pgadmin/ui/dlgCast.xrc:5 pgadmin/ui/dlgSynonym.xrc:4
 msgid "Target type"
 msgstr "Tipe dari target"
 
 # standard input:72
 # standard input:21
 # standard
-#: standard input:76 input:81 input:82
+#: standard input:76 input:81 pgadmin/ui/dlgDatabase.xrc:6
 msgid "Template"
 msgstr "Template"
 
@@ -11294,18 +11493,19 @@ msgstr "Template"
 # standard input:21
 # standard
 #: src/frm/frmStatus.cpp:103 src/frm/frmStatus.cpp:104 standard input:865
-#: input:868 input:973 input:976 pgadmin/frm/frmStatus.cpp:102
-#: pgadmin/frm/frmStatus.cpp:103 input:1046 input:1049
+#: input:868 input:973 input:976 pgadmin/frm/frmStatus.cpp:106
+#: pgadmin/frm/frmStatus.cpp:107 pgadmin/ui/frmStatus.xrc:4
+#: pgadmin/ui/frmStatus.xrc:7
 msgid "Terminate"
 msgstr "Terminate"
 
 #: src/frm/frmStatus.cpp:910 src/frm/frmStatus.cpp:914
-#: src/frm/frmStatus.cpp:962 pgadmin/frm/frmStatus.cpp:966
+#: src/frm/frmStatus.cpp:962 pgadmin/frm/frmStatus.cpp:982
 msgid "Terminate process"
 msgstr "Matikan proses"
 
 #: src/frm/frmStatus.cpp:898 src/frm/frmStatus.cpp:902
-#: src/frm/frmStatus.cpp:950 pgadmin/frm/frmStatus.cpp:954
+#: src/frm/frmStatus.cpp:950 pgadmin/frm/frmStatus.cpp:970
 msgid "Terminate process?"
 msgstr "Matikan proses?"
 
@@ -11330,7 +11530,7 @@ msgid ""
 msgstr ""
 
 #: src/frm/frmMainConfig.cpp:551 src/frm/frmMainConfig.cpp:562
-#: pgadmin/frm/frmMainConfig.cpp:572
+#: pgadmin/frm/frmMainConfig.cpp:576
 msgid ""
 "The PostgreSQL server engine is currently configured to listen for local "
 "connections only.\n"
@@ -11355,11 +11555,18 @@ msgid "The PostgreSQL version number."
 msgstr "Nomer versi dari PostgreSQL."
 
 #: src/frm/frmMainConfig.cpp:552 src/frm/frmMainConfig.cpp:563
-#: pgadmin/frm/frmMainConfig.cpp:573
 msgid ""
 "The autovacuum backend process is not running.\n"
 "It is recommended to enable it by setting 'stats_start_collector', "
 "'stats_row_level' and 'autovacuum' to 'on'."
+msgstr ""
+
+#: pgadmin/frm/frmMainConfig.cpp:577
+msgid ""
+"The autovacuum backend process is not running.\n"
+"It is recommended to enable it by setting 'track_counts' and 'autovacuum' to "
+"'on' in PostgreSQL 8.3 and above or 'stats_start_collector', "
+"'stats_row_level' and 'autovacuum' to 'on' in earlier versions."
 msgstr ""
 
 #: src/frm/frmConfig.cpp:332 src/frm/frmConfig.cpp:339
@@ -11557,13 +11764,13 @@ msgid ""
 msgstr ""
 
 #: src/agent/pgaSchedule.cpp:272 standard input:443 input:498
-#: pgadmin/agent/pgaSchedule.cpp:265 input:534
+#: pgadmin/agent/pgaSchedule.cpp:265 pgadmin/ui/dlgSchedule.xrc:14
 msgid "Thursday"
 msgstr ""
 
 #: src/agent/dlgSchedule.cpp:74 src/frm/frmStatus.cpp:136 standard input:496
 #: src/frm/frmStatus.cpp:139 input:551 pgadmin/agent/dlgSchedule.cpp:74
-#: pgadmin/frm/frmStatus.cpp:141 input:587
+#: pgadmin/frm/frmStatus.cpp:145 pgadmin/ui/dlgSchedule.xrc:67
 #, fuzzy
 msgid "Time"
 msgstr "Timestamp"
@@ -11572,17 +11779,17 @@ msgstr "Timestamp"
 msgid "Time offset"
 msgstr "Time offset"
 
-#: standard input:492 input:547 input:583
+#: standard input:492 input:547 pgadmin/ui/dlgSchedule.xrc:63
 #, fuzzy
 msgid "Times"
 msgstr "Timestamp"
 
 #: src/frm/frmStatus.cpp:161 src/frm/frmStatus.cpp:164
-#: pgadmin/frm/frmStatus.cpp:166
+#: pgadmin/frm/frmStatus.cpp:170
 msgid "Timestamp"
 msgstr "Timestamp"
 
-#: standard input:2
+#: standard input:2 pgadmin/ui/dlgAddFavourite.xrc:2
 #, fuzzy
 msgid "Title"
 msgstr "Timestamp"
@@ -11660,7 +11867,7 @@ msgstr "Totak baris %ld.\n"
 msgid "Total query runtime: "
 msgstr "Total runtime dari query: "
 
-#: standard input:869 input:977 input:1050
+#: standard input:869 input:977 pgadmin/ui/frmStatus.xrc:8
 #, fuzzy
 msgid "Transactions"
 msgstr "Fungsi"
@@ -11690,7 +11897,7 @@ msgid "Tree Level"
 msgstr "Tingkatan "
 
 #: src/schema/pgTrigger.cpp:247 standard input:382 input:437
-#: pgadmin/schema/pgTrigger.cpp:306 input:472
+#: pgadmin/schema/pgTrigger.cpp:306 pgadmin/ui/dlgRepTable.xrc:6
 msgid "Trigger"
 msgstr "Triger"
 
@@ -11712,7 +11919,7 @@ msgstr "Triger"
 # standard input:254
 # standard input:5
 # standard
-#: standard input:609 input:666 input:716
+#: standard input:609 input:666 pgadmin/ui/dlgTrigger.xrc:5
 msgid "Trigger function"
 msgstr "Trigger function"
 
@@ -11736,7 +11943,7 @@ msgstr "Triger"
 # standard input:4 standard input:5
 # standard input:13
 # standard
-#: standard input:263 input:301 input:317
+#: standard input:263 input:301 pgadmin/ui/dlgLanguage.xrc:4
 msgid "Trusted"
 msgstr "Trusted"
 
@@ -11759,7 +11966,7 @@ msgid "Trying to drop system object"
 msgstr "Mencoba untuk mendrop obyek dari sistem"
 
 #: src/agent/pgaSchedule.cpp:264 standard input:441 input:496
-#: pgadmin/agent/pgaSchedule.cpp:257 input:532
+#: pgadmin/agent/pgaSchedule.cpp:257 pgadmin/ui/dlgSchedule.xrc:12
 msgid "Tuesday"
 msgstr ""
 
@@ -11853,9 +12060,10 @@ msgstr "Tuples updated"
 #: pgadmin/dlg/dlgFunction.cpp:165 pgadmin/frm/frmHbaConfig.cpp:103
 #: pgadmin/frm/frmReport.cpp:1331 pgadmin/frm/frmRestore.cpp:399
 #: pgadmin/schema/pgObject.cpp:180 pgadmin/schema/pgRole.cpp:138
-#: pgadmin/schema/pgServer.cpp:973 pgadmin/schema/pgServer.cpp:982
+#: pgadmin/schema/pgServer.cpp:978 pgadmin/schema/pgServer.cpp:987
 #: pgadmin/schema/pgTablespace.cpp:35 pgadmin/schema/pgType.cpp:298
-#: pgadmin/schema/pgUser.cpp:84 pgadmin/slony/slSet.cpp:82 input:254 input:736
+#: pgadmin/schema/pgUser.cpp:84 pgadmin/slony/slSet.cpp:82
+#: pgadmin/ui/dlgHbaConfig.xrc:3 pgadmin/ui/dlgType.xrc:5
 msgid "Type"
 msgstr "Type"
 
@@ -11870,7 +12078,8 @@ msgstr "Tipe"
 # standard input:7
 # standard input:12
 # standard
-#: standard input:420 input:616 input:475 input:673 input:511 input:723
+#: standard input:420 input:616 input:475 input:673 pgadmin/ui/dlgRule.xrc:7
+#: pgadmin/ui/dlgTrigger.xrc:12
 msgid "UPDATE"
 msgstr "UPDATE"
 
@@ -11884,7 +12093,8 @@ msgid "UPDATE script"
 msgstr "UPDATE"
 
 # standard
-#: standard input:755 input:770 input:812 input:827 input:880
+#: standard input:755 input:770 input:812 input:827
+#: pgadmin/ui/frmGrantWizard.xrc:4
 msgid "Uncheck all"
 msgstr "Uncheck all"
 
@@ -11915,13 +12125,8 @@ msgstr "Undo Kejadian terkahir"
 msgid "Unexpected empty cache line: dataSet already closed."
 msgstr "baris cache kosong yang tidak diharapkan: dataSet sudah ditutup."
 
-#: pgadmin/debugger/dlgDirectDbg.cpp:156
-#, fuzzy
-msgid "Unexpected target type"
-msgstr "Silakan pilih tipe data targetnya."
-
 # standard
-#: standard input:742 input:799 input:867
+#: standard input:742 input:799 pgadmin/ui/frmExport.xrc:15
 msgid "Unicode UTF-8"
 msgstr "Unicode UTF-8"
 
@@ -11932,7 +12137,7 @@ msgstr "Unicode UTF-8"
 #: src/schema/pgIndexConstraint.cpp:141 standard input:213
 #: src/dlg/dlgTable.cpp:700 src/frm/frmReport.cpp:1359 input:250
 #: pgadmin/dlg/dlgTable.cpp:814 pgadmin/frm/frmReport.cpp:1343
-#: pgadmin/schema/pgIndexConstraint.cpp:162 input:268
+#: pgadmin/schema/pgIndexConstraint.cpp:162 pgadmin/ui/dlgIndex.xrc:6
 msgid "Unique"
 msgstr "Unique"
 
@@ -11965,7 +12170,7 @@ msgstr ""
 msgid "Unknown"
 msgstr "Tidak Dikenal"
 
-#: src/pgAdmin3.cpp:448 pgadmin/pgAdmin3.cpp:468
+#: src/pgAdmin3.cpp:448 pgadmin/pgAdmin3.cpp:476
 msgid "Unknown SSL mode: "
 msgstr ""
 
@@ -11979,7 +12184,7 @@ msgstr "Even dialog mencari yang tidak di kenal!"
 msgid "Unknown option"
 msgstr "Tidak Dikenal"
 
-#: src/pgAdmin3.cpp:453 pgadmin/pgAdmin3.cpp:473
+#: src/pgAdmin3.cpp:453 pgadmin/pgAdmin3.cpp:481
 msgid "Unknown token in connection string: "
 msgstr ""
 
@@ -12004,7 +12209,7 @@ msgid "Unsaved data"
 msgstr "Data taktersimpan"
 
 #: src/schema/pgServer.cpp:850 src/schema/pgServer.cpp:870
-#: src/schema/pgServer.cpp:898 pgadmin/schema/pgServer.cpp:902
+#: src/schema/pgServer.cpp:898 pgadmin/schema/pgServer.cpp:907
 msgid "Up since"
 msgstr "Mulai dari "
 
@@ -12021,7 +12226,7 @@ msgstr "Mengupdate katalog?"
 msgid "Upgrade Node"
 msgstr "Tipe dari target"
 
-#: standard input:311 input:366 input:401
+#: standard input:311 input:366 pgadmin/ui/dlgRepClusterUpgrade.xrc:1
 msgid "Upgrade cluster software"
 msgstr ""
 
@@ -12047,7 +12252,7 @@ msgstr ""
 msgid "Use Mac style line endings"
 msgstr ""
 
-#: standard input:888 input:955
+#: standard input:888 pgadmin/ui/frmOptions.xrc:46
 msgid "Use TAB character for autocompletion"
 msgstr ""
 
@@ -12059,7 +12264,7 @@ msgstr ""
 msgid "Use current text Explain result and display it graphically"
 msgstr ""
 
-#: standard input:160 input:168
+#: standard input:160 pgadmin/ui/dlgFindReplace.xrc:30
 msgid "Use regular expressions when searching"
 msgstr ""
 
@@ -12069,15 +12274,23 @@ msgstr ""
 #: input:690 input:17 input:29 input:39 input:53 input:72 input:104 input:207
 #: input:226 input:255 input:268 input:305 input:329 input:454 input:480
 #: input:564 input:586 input:633 input:676 input:688 input:728 input:747
-#: input:11 input:32 input:40 input:54 input:73 input:114 input:178 input:243
-#: input:273 input:284 input:321 input:352 input:372 input:490 input:516
-#: input:600 input:622 input:666 input:681 input:726 input:741 input:784
-#: input:803
+#: pgadmin/ui/dlgAggregate.xrc:6 pgadmin/ui/dlgCast.xrc:9
+#: pgadmin/ui/dlgCheck.xrc:5 pgadmin/ui/dlgColumn.xrc:11
+#: pgadmin/ui/dlgConversion.xrc:10 pgadmin/ui/dlgDomain.xrc:12
+#: pgadmin/ui/dlgForeignKey.xrc:10 pgadmin/ui/dlgFunction.xrc:18
+#: pgadmin/ui/dlgGroup.xrc:4 pgadmin/ui/dlgIndex.xrc:11
+#: pgadmin/ui/dlgIndexConstraint.xrc:5 pgadmin/ui/dlgLanguage.xrc:8
+#: pgadmin/ui/dlgOperator.xrc:9 pgadmin/ui/dlgPackage.xrc:6
+#: pgadmin/ui/dlgRole.xrc:15 pgadmin/ui/dlgRule.xrc:12
+#: pgadmin/ui/dlgSchema.xrc:6 pgadmin/ui/dlgSequence.xrc:12
+#: pgadmin/ui/dlgSynonym.xrc:8 pgadmin/ui/dlgTable.xrc:12
+#: pgadmin/ui/dlgTrigger.xrc:15 pgadmin/ui/dlgType.xrc:10
+#: pgadmin/ui/dlgUser.xrc:10 pgadmin/ui/dlgView.xrc:6
 #, fuzzy
 msgid "Use replication"
 msgstr "Relasi"
 
-#: standard input:942
+#: pgadmin/ui/frmOptions.xrc:33
 msgid "Use spaces instead of tabs"
 msgstr ""
 
@@ -12086,8 +12299,9 @@ msgstr ""
 #: src/schema/pgServer.cpp:899 src/schema/pgUser.cpp:297 standard input:202
 #: src/frm/frmHbaConfig.cpp:105 src/frm/frmStatus.cpp:126
 #: src/schema/pgServer.cpp:927 input:239 pgadmin/frm/frmHbaConfig.cpp:105
-#: pgadmin/frm/frmStatus.cpp:110 pgadmin/frm/frmStatus.cpp:128
-#: pgadmin/schema/pgServer.cpp:932 pgadmin/schema/pgUser.cpp:287 input:256
+#: pgadmin/frm/frmStatus.cpp:114 pgadmin/frm/frmStatus.cpp:132
+#: pgadmin/schema/pgServer.cpp:937 pgadmin/schema/pgUser.cpp:287
+#: pgadmin/ui/dlgHbaConfig.xrc:5
 msgid "User"
 msgstr "User"
 
@@ -12096,21 +12310,21 @@ msgstr "User"
 # src/schema/pgUser.cpp:115 standard input:3
 # standard
 #: src/schema/pgUser.cpp:207 standard input:664 input:721
-#: pgadmin/schema/pgUser.cpp:197 input:777
+#: pgadmin/schema/pgUser.cpp:197 pgadmin/ui/dlgUser.xrc:3
 msgid "User ID"
 msgstr "User ID"
 
 # standard input:305
 # standard input:5
 # standard
-#: standard input:668 input:725 input:781
+#: standard input:668 input:725 pgadmin/ui/dlgUser.xrc:7
 msgid "User Privileges"
 msgstr "Hak Akses User"
 
 # standard input:306
 # standard input:6
 # standard
-#: standard input:669 input:726 input:782
+#: standard input:669 input:726 pgadmin/ui/dlgUser.xrc:8
 msgid "User can create databases"
 msgstr "User bisa membuat basisdata"
 
@@ -12122,7 +12336,7 @@ msgstr "User bisa membuat user"
 # src/pgAdmin3.cpp:158 standard input:377
 # src/pgAdmin3.cpp:158 standard input:3
 # standard
-#: standard input:794 input:851 input:912
+#: standard input:794 input:851 pgadmin/ui/frmOptions.xrc:3
 msgid "User language"
 msgstr "Bahasa User"
 
@@ -12145,7 +12359,9 @@ msgstr ""
 #: src/schema/pgServer.cpp:838 src/schema/pgServer.cpp:858 standard input:542
 #: input:663 src/frm/frmPgpassConfig.cpp:91 src/schema/pgServer.cpp:885
 #: input:349 input:571 input:596 input:720 pgadmin/frm/frmPgpassConfig.cpp:91
-#: pgadmin/schema/pgServer.cpp:889 input:384 input:607 input:632 input:776
+#: pgadmin/schema/pgServer.cpp:894 pgadmin/ui/dlgPgpassConfig.xrc:6
+#: pgadmin/ui/dlgSelectConnection.xrc:4 pgadmin/ui/dlgServer.xrc:7
+#: pgadmin/ui/dlgUser.xrc:2
 msgid "Username"
 msgstr "Nama User"
 
@@ -12170,66 +12386,66 @@ msgstr ""
 msgid "Using an EnterpriseDB callable statement"
 msgstr ""
 
-#: pgadmin/pgAdmin3.cpp:1062
+#: pgadmin/pgAdmin3.cpp:1070
 msgid "Using embedded XRC data."
 msgstr ""
 
-#: pgadmin/pgAdmin3.cpp:1069
+#: pgadmin/pgAdmin3.cpp:1077
 msgid "Using external XRC files."
 msgstr ""
 
 # standard input:456
 # standard
 #: src/frm/frmHint.cpp:83 standard input:777 input:834
-#: pgadmin/frm/frmHint.cpp:83 input:895
+#: pgadmin/frm/frmHint.cpp:83 pgadmin/ui/frmMaintenance.xrc:4
 msgid "VACUUM"
 msgstr "VACUUM"
 
-#: standard input:588 input:645 input:693
+#: standard input:588 input:645 pgadmin/ui/dlgTable.xrc:24
 msgid "VACUUM base threshold"
 msgstr ""
 
-#: standard input:592 input:649 input:697
+#: standard input:592 input:649 pgadmin/ui/dlgTable.xrc:28
 msgid "VACUUM cost delay"
 msgstr ""
 
 # standard input:456
 # standard
-#: standard input:593 input:650 input:698
+#: standard input:593 input:650 pgadmin/ui/dlgTable.xrc:29
 #, fuzzy
 msgid "VACUUM cost limit"
 msgstr "opsi VACUUM"
 
 # standard input:456
 # standard
-#: standard input:780 input:837 input:898
+#: standard input:780 input:837 pgadmin/ui/frmMaintenance.xrc:7
 msgid "VACUUM options"
 msgstr "opsi VACUUM"
 
-#: standard input:590 input:647 input:695
+#: standard input:590 input:647 pgadmin/ui/dlgTable.xrc:26
 msgid "VACUUM scale factor"
 msgstr ""
 
 # standard input:125
 # standard input:8
 # standard
-#: standard input:163 input:200 input:208
+#: standard input:163 input:200 pgadmin/ui/dlgFunction.xrc:9
 msgid "VOLATILE"
 msgstr "VOLATILE"
 
-#: standard input:584 input:641 input:689
+#: standard input:584 input:641 pgadmin/ui/dlgTable.xrc:20
 msgid "Vacuum settings"
 msgstr ""
 
 # src/schema/pgLanguage.cpp:67 standard input:178
 # src/schema/pgLanguage.cpp:67 standard input:7
 # standard
-#: standard input:118 input:123 input:133
+#: standard input:118 input:123 pgadmin/ui/dlgEditGridOptions.xrc:16
 msgid "Validate"
 msgstr "Validate"
 
 # standard
-#: standard input:119 input:124 input:134
+#: standard input:119 input:124 pgadmin/ui/dlgEditGridOptions.xrc:17
 msgid "Validate the syntax of the filter string."
 msgstr "Validasi sintaks dari string filter."
 
@@ -12243,7 +12459,7 @@ msgstr "Pemvalidasian string filter"
 # standard
 #: src/schema/pgLanguage.cpp:68 standard input:265
 #: src/schema/pgLanguage.cpp:75 input:303 pgadmin/schema/pgLanguage.cpp:69
-#: input:319
+#: pgadmin/ui/dlgLanguage.xrc:6
 msgid "Validator"
 msgstr "Validator"
 
@@ -12259,7 +12475,7 @@ msgstr "Validator"
 #: pgadmin/frm/frmMainConfig.cpp:176 pgadmin/schema/pgObject.cpp:826
 #: pgadmin/schema/pgSequence.cpp:127 pgadmin/schema/pgTablespace.cpp:135
 #: pgadmin/slony/slNode.cpp:120 pgadmin/include/schema/pgObject.h:137
-#: input:326
+#: pgadmin/ui/dlgMainConfig.xrc:2
 msgid "Value"
 msgstr "Nilai"
 
@@ -12278,7 +12494,7 @@ msgstr "Berubah"
 #: standard input:638 input:695 pgadmin/dlg/dlgDatabase.cpp:71
 #: pgadmin/dlg/dlgFunction.cpp:127 pgadmin/dlg/dlgRole.cpp:94
 #: pgadmin/dlg/dlgUser.cpp:80 pgadmin/schema/edbPackageVariable.cpp:128
-#: input:748
+#: pgadmin/ui/dlgType.xrc:17
 msgid "Variable"
 msgstr "Variabel"
 
@@ -12286,8 +12502,9 @@ msgstr "Variabel"
 # standard input:27
 # standard input:16
 # standard
-#: standard input:83 input:409 input:680 input:88 input:464 input:737 input:89
-#: input:234 input:500 input:793
+#: standard input:83 input:409 input:680 input:88 input:464 input:737
+#: pgadmin/ui/dlgDatabase.xrc:13 pgadmin/ui/dlgFunction.xrc:35
+#: pgadmin/ui/dlgRole.xrc:25 pgadmin/ui/dlgUser.xrc:19
 msgid "Variable Name"
 msgstr "Nama Variabel"
 
@@ -12295,8 +12512,9 @@ msgstr "Nama Variabel"
 # standard input:28
 # standard input:17
 # standard
-#: standard input:84 input:410 input:681 input:89 input:465 input:738 input:90
-#: input:235 input:501 input:794
+#: standard input:84 input:410 input:681 input:89 input:465 input:738
+#: pgadmin/ui/dlgDatabase.xrc:14 pgadmin/ui/dlgFunction.xrc:36
+#: pgadmin/ui/dlgRole.xrc:26 pgadmin/ui/dlgUser.xrc:20
 msgid "Variable Value"
 msgstr "Nilai Variabel"
 
@@ -12309,8 +12527,9 @@ msgstr ""
 # standard input:13
 # standard
 #: standard input:80 input:406 input:677 input:85 input:461 input:734
-#: pgadmin/schema/edbPackageVariable.cpp:134 input:86 input:231 input:497
-#: input:790
+#: pgadmin/schema/edbPackageVariable.cpp:134 pgadmin/ui/dlgDatabase.xrc:10
+#: pgadmin/ui/dlgFunction.xrc:32 pgadmin/ui/dlgRole.xrc:22
+#: pgadmin/ui/dlgUser.xrc:16
 msgid "Variables"
 msgstr "Variabel-variabel"
 
@@ -12321,23 +12540,26 @@ msgstr "Verbose"
 
 # standard
 #: standard input:716 input:787 input:855 input:773 input:844 input:963
-#: input:821 input:838 input:848 input:905 input:1036
+#: pgadmin/ui/frmBackup.xrc:13 pgadmin/ui/frmBackupGlobals.xrc:6
+#: pgadmin/ui/frmBackupServer.xrc:6 pgadmin/ui/frmMaintenance.xrc:14
+#: pgadmin/ui/frmRestore.xrc:10
 msgid "Verbose messages"
 msgstr "Verbose pesan"
 
 #: src/slony/slCluster.cpp:311 standard input:317 input:372
-#: pgadmin/schema/pgIndex.cpp:252 pgadmin/slony/slCluster.cpp:303 input:407
+#: pgadmin/schema/pgIndex.cpp:252 pgadmin/slony/slCluster.cpp:303
+#: pgadmin/ui/dlgRepClusterUpgrade.xrc:7
 #, fuzzy
 msgid "Version"
 msgstr "Konversi"
 
 #: src/schema/pgServer.cpp:843 src/schema/pgServer.cpp:863
-#: src/schema/pgServer.cpp:891 pgadmin/schema/pgServer.cpp:895
+#: src/schema/pgServer.cpp:891 pgadmin/schema/pgServer.cpp:900
 msgid "Version number"
 msgstr "Nomer Versi"
 
 #: src/schema/pgServer.cpp:842 src/schema/pgServer.cpp:862
-#: src/schema/pgServer.cpp:890 pgadmin/schema/pgServer.cpp:894
+#: src/schema/pgServer.cpp:890 pgadmin/schema/pgServer.cpp:899
 msgid "Version string"
 msgstr "String Versi"
 
@@ -12365,7 +12587,8 @@ msgid "View Data"
 msgstr "Lihat Data"
 
 # standard
-#: standard input:103 input:108 input:94 input:118
+#: standard input:103 input:108 pgadmin/ui/dlgDirectDbg.xrc:1
+#: pgadmin/ui/dlgEditGridOptions.xrc:1
 msgid "View Data Options"
 msgstr "Perlihatkan Opsi Data"
 
@@ -12438,7 +12661,7 @@ msgstr ""
 # standard
 #: src/schema/pgFunction.cpp:137 standard input:162
 #: src/schema/pgFunction.cpp:153 input:199 pgadmin/schema/pgFunction.cpp:189
-#: input:207
+#: pgadmin/ui/dlgFunction.xrc:8
 msgid "Volatility"
 msgstr "Volatility"
 
@@ -12452,7 +12675,7 @@ msgstr ""
 msgid "WARNING: %s\n"
 msgstr ""
 
-#: standard input:405 input:460 input:496
+#: standard input:405 input:460 pgadmin/ui/dlgRole.xrc:21
 msgid "WITH ADMIN OPTION"
 msgstr ""
 
@@ -12507,11 +12730,11 @@ msgstr ""
 "\n"
 
 #: src/agent/pgaSchedule.cpp:268 standard input:442 input:497
-#: pgadmin/agent/pgaSchedule.cpp:261 input:533
+#: pgadmin/agent/pgaSchedule.cpp:261 pgadmin/ui/dlgSchedule.xrc:13
 msgid "Wednesday"
 msgstr ""
 
-#: standard input:438 input:493 input:529
+#: standard input:438 input:493 pgadmin/ui/dlgSchedule.xrc:9
 msgid "Week Days"
 msgstr ""
 
@@ -12519,12 +12742,12 @@ msgstr ""
 msgid "Weekdays"
 msgstr ""
 
-#: standard input:155 input:163
+#: standard input:155 pgadmin/ui/dlgFindReplace.xrc:25
 msgid "Whole word"
 msgstr ""
 
 # standard
-#: standard input:713 input:770 input:818
+#: standard input:713 input:770 pgadmin/ui/frmBackup.xrc:10
 msgid "With OIDs"
 msgstr "With OIDs"
 
@@ -12559,7 +12782,7 @@ msgid "Xact Rolled Back"
 msgstr "Xact Rolled Back"
 
 #: src/base/base.cpp:47 src/frm/frmStatus.cpp:415 src/frm/frmStatus.cpp:419
-#: src/frm/frmStatus.cpp:467 pgadmin/frm/frmStatus.cpp:471
+#: src/frm/frmStatus.cpp:467 pgadmin/frm/frmStatus.cpp:479
 #: pgadmin/utils/misc.cpp:73
 msgid "Yes"
 msgstr "Ya"
@@ -12622,18 +12845,18 @@ msgstr ""
 # standard input:101
 # standard input:8
 # standard
-#: standard input:746 input:803 input:871
+#: standard input:746 input:803 pgadmin/ui/frmExport.xrc:19
 msgid "all columns"
 msgstr "all columns"
 
 #: src/dlg/dlgServer.cpp:200 src/schema/pgServer.cpp:826
 #: src/schema/pgServer.cpp:846 src/dlg/dlgServer.cpp:205
 #: src/schema/pgServer.cpp:873 pgadmin/dlg/dlgServer.cpp:214
-#: pgadmin/schema/pgServer.cpp:877
+#: pgadmin/schema/pgServer.cpp:882
 msgid "allow"
 msgstr "diperbolehkan"
 
-#: src/pgAdmin3.cpp:183 pgadmin/pgAdmin3.cpp:184
+#: src/pgAdmin3.cpp:183 pgadmin/pgAdmin3.cpp:192
 #, fuzzy
 msgid "auto-connect to specified server"
 msgstr "Terkoneksi ke server pilihan."
@@ -12645,11 +12868,11 @@ msgstr ""
 # standard input:283
 # standard input:18
 # standard
-#: standard input:643 input:700 input:753
+#: standard input:643 input:700 pgadmin/ui/dlgType.xrc:22
 msgid "char"
 msgstr "char"
 
-#: src/pgAdmin3.cpp:185 pgadmin/pgAdmin3.cpp:186
+#: src/pgAdmin3.cpp:185 pgadmin/pgAdmin3.cpp:194
 #, fuzzy
 msgid "connect query tool to database"
 msgstr "Tidak ada koneksi ke basisdata"
@@ -12658,7 +12881,7 @@ msgstr "Tidak ada koneksi ke basisdata"
 msgid "daily"
 msgstr "harian"
 
-#: src/pgAdmin3.cpp:189 pgadmin/pgAdmin3.cpp:192
+#: src/pgAdmin3.cpp:189 pgadmin/pgAdmin3.cpp:200
 msgid "dialog translation test mode"
 msgstr ""
 
@@ -12667,33 +12890,33 @@ msgstr ""
 #: src/dlg/dlgServer.cpp:201 src/schema/pgServer.cpp:827
 #: src/schema/pgServer.cpp:847 src/dlg/dlgServer.cpp:206
 #: src/schema/pgServer.cpp:874 pgadmin/dlg/dlgServer.cpp:215
-#: pgadmin/schema/pgServer.cpp:878
+#: pgadmin/schema/pgServer.cpp:883
 msgid "disable"
 msgstr "disable"
 
 # standard input:286
 # standard input:21
 # standard
-#: standard input:646 input:703 input:756
+#: standard input:646 input:703 pgadmin/ui/dlgType.xrc:25
 msgid "double"
 msgstr "double"
 
-#: src/pgAdmin3.cpp:187 pgadmin/pgAdmin3.cpp:189
+#: src/pgAdmin3.cpp:187 pgadmin/pgAdmin3.cpp:197
 #, fuzzy
 msgid "edit HBA configuration file"
 msgstr "Buka berkas query"
 
-#: src/pgAdmin3.cpp:188 pgadmin/pgAdmin3.cpp:191
+#: src/pgAdmin3.cpp:188 pgadmin/pgAdmin3.cpp:199
 #, fuzzy
 msgid "edit configuration files in cluster directory"
 msgstr "Simpan Berkas query sebagai"
 
-#: src/pgAdmin3.cpp:186 pgadmin/pgAdmin3.cpp:188
+#: src/pgAdmin3.cpp:186 pgadmin/pgAdmin3.cpp:196
 #, fuzzy
 msgid "edit main configuration file"
 msgstr "Buka berkas query"
 
-#: pgadmin/pgAdmin3.cpp:190
+#: pgadmin/pgAdmin3.cpp:198
 #, fuzzy
 msgid "edit pgpass configuration file"
 msgstr "Buka berkas query"
@@ -12702,7 +12925,7 @@ msgstr "Buka berkas query"
 msgid "favourite"
 msgstr ""
 
-#: pgadmin/pgAdmin3.cpp:187
+#: pgadmin/pgAdmin3.cpp:195
 msgid "file to load into the query tool in -q or -qc mode"
 msgstr ""
 
@@ -12714,14 +12937,14 @@ msgstr "Rule"
 # standard input:284
 # standard input:19
 # standard
-#: standard input:644 input:701 input:754
+#: standard input:644 input:701 pgadmin/ui/dlgType.xrc:23
 msgid "int2"
 msgstr "int2"
 
 # standard input:285
 # standard input:20
 # standard
-#: standard input:645 input:702 input:755
+#: standard input:645 input:702 pgadmin/ui/dlgType.xrc:24
 msgid "int4"
 msgstr "int4"
 
@@ -12735,17 +12958,23 @@ msgstr "Tabulasi"
 
 #: src/frm/frmStatus.cpp:318 src/schema/pgServer.cpp:903
 #: src/schema/pgServer.cpp:923 src/frm/frmStatus.cpp:364
-#: src/schema/pgServer.cpp:951 pgadmin/frm/frmStatus.cpp:365
-#: pgadmin/schema/pgServer.cpp:956
+#: src/schema/pgServer.cpp:951 pgadmin/frm/frmStatus.cpp:373
+#: pgadmin/schema/pgServer.cpp:961
 #, fuzzy
 msgid "local pipe"
 msgstr "Lokal"
+
+#: pgadmin/frm/frmStatus.cpp:604
+#, fuzzy
+msgid "logging_collector not enabled or log_filename misconfigured"
+msgstr "redirect_stderr tidak diaktifkan atau log_filename salah konfigurasi"
 
 # standard input:148 standard input:312
 # standard input:8
 # standard input:12
 # standard
-#: standard input:194 input:676 input:231 input:733 input:248 input:789
+#: standard input:194 input:676 input:231 input:733 pgadmin/ui/dlgGroup.xrc:9
+#: pgadmin/ui/dlgUser.xrc:15
 msgid "member"
 msgstr "member"
 
@@ -12753,7 +12982,7 @@ msgstr "member"
 # standard input:8
 # standard input:12
 # standard
-#: standard input:404 input:459 input:495
+#: standard input:404 input:459 pgadmin/ui/dlgRole.xrc:20
 #, fuzzy
 msgid "member in"
 msgstr "member"
@@ -12769,7 +12998,7 @@ msgid "need password"
 msgstr "Membutuhkan password"
 
 # standard
-#: standard input:744 input:801 input:869
+#: standard input:744 input:801 pgadmin/ui/frmExport.xrc:17
 msgid "no quoting"
 msgstr "no quoting"
 
@@ -12790,7 +13019,7 @@ msgid "not counted"
 msgstr "tidak dihitung"
 
 #: src/schema/pgServer.cpp:815 src/schema/pgServer.cpp:835
-#: src/schema/pgServer.cpp:862 pgadmin/schema/pgServer.cpp:866
+#: src/schema/pgServer.cpp:862 pgadmin/schema/pgServer.cpp:871
 msgid "not encrypted"
 msgstr "tidak terenkripsi"
 
@@ -12798,7 +13027,8 @@ msgstr "tidak terenkripsi"
 # standard input:7
 # standard input:11
 # standard
-#: standard input:193 input:675 input:230 input:732 input:247 input:788
+#: standard input:193 input:675 input:230 input:732 pgadmin/ui/dlgGroup.xrc:8
+#: pgadmin/ui/dlgUser.xrc:14
 msgid "not member"
 msgstr "not member"
 
@@ -12806,7 +13036,7 @@ msgstr "not member"
 # standard input:7
 # standard input:11
 # standard
-#: standard input:403 input:458 input:494
+#: standard input:403 input:458 pgadmin/ui/dlgRole.xrc:19
 #, fuzzy
 msgid "not member in"
 msgstr "not member"
@@ -12814,7 +13044,7 @@ msgstr "not member"
 # standard
 #: src/schema/pgServer.cpp:851 src/schema/pgServer.cpp:871
 #: src/slony/slCluster.cpp:309 src/slony/slNode.cpp:254
-#: src/schema/pgServer.cpp:899 pgadmin/schema/pgServer.cpp:904
+#: src/schema/pgServer.cpp:899 pgadmin/schema/pgServer.cpp:909
 #: pgadmin/slony/slNode.cpp:245
 #, fuzzy
 msgid "not running"
@@ -12823,11 +13053,11 @@ msgstr "no quoting"
 # src/schema/pgObject.cpp:52 standard input:245
 # src/schema/pgObject.cpp:52 standard input:11
 # standard
-#: standard input:745 input:802 input:870
+#: standard input:745 input:802 pgadmin/ui/frmExport.xrc:18
 msgid "only strings"
 msgstr "only strings"
 
-#: src/pgAdmin3.cpp:184 pgadmin/pgAdmin3.cpp:185
+#: src/pgAdmin3.cpp:184 pgadmin/pgAdmin3.cpp:193
 #, fuzzy
 msgid "open query tool"
 msgstr "Buka berkas query"
@@ -12841,7 +13071,7 @@ msgstr "Buka berkas query"
 msgid "options:\n"
 msgstr "Opsi"
 
-#: standard input:759 input:816 input:884
+#: standard input:759 input:816 pgadmin/ui/frmHint.xrc:1
 msgid "pgAdmin Guru Hint"
 msgstr ""
 
@@ -12898,26 +13128,26 @@ msgid "pgAgent jobs"
 msgstr "Agent"
 
 #: src/dlg/dlgServer.cpp:383 src/dlg/dlgServer.cpp:390
-#: pgadmin/schema/pgServer.cpp:1221
+#: pgadmin/schema/pgServer.cpp:1226
 msgid "pgServer object didn't initialise because the user aborted."
 msgstr "obyek pgServer tidak terinisialisasi karena dibatalkan user."
 
 # standard input:393
 # standard input:19
 # standard
-#: standard input:822 input:892 input:960
+#: standard input:822 input:892 pgadmin/ui/frmOptions.xrc:51
 msgid "pgadmin3&%ID.log"
 msgstr "pgadmin3&%ID.log"
 
 #: src/frm/frmStatus.cpp:594 src/frm/frmStatus.cpp:598
-#: src/frm/frmStatus.cpp:646 pgadmin/frm/frmStatus.cpp:650
+#: src/frm/frmStatus.cpp:646 pgadmin/frm/frmStatus.cpp:661
 msgid "pgadmin:Logfile rotated."
 msgstr "pgadmin:Logfile rotated."
 
 #: src/dlg/dlgServer.cpp:196 src/schema/pgServer.cpp:825
 #: src/schema/pgServer.cpp:845 src/dlg/dlgServer.cpp:201
 #: src/schema/pgServer.cpp:872 pgadmin/dlg/dlgServer.cpp:210
-#: pgadmin/schema/pgServer.cpp:876
+#: pgadmin/schema/pgServer.cpp:881
 msgid "prefer"
 msgstr "disarankan"
 
@@ -12927,7 +13157,7 @@ msgid "ready"
 msgstr "siap"
 
 #: src/frm/frmStatus.cpp:537 src/frm/frmStatus.cpp:541
-#: src/frm/frmStatus.cpp:589 pgadmin/frm/frmStatus.cpp:593
+#: src/frm/frmStatus.cpp:589 pgadmin/frm/frmStatus.cpp:602
 msgid "redirect_stderr not enabled or log_filename misconfigured"
 msgstr "redirect_stderr tidak diaktifkan atau log_filename salah konfigurasi"
 
@@ -12938,12 +13168,12 @@ msgstr "ulang"
 #: src/dlg/dlgServer.cpp:195 src/schema/pgServer.cpp:824
 #: src/schema/pgServer.cpp:844 src/dlg/dlgServer.cpp:200
 #: src/schema/pgServer.cpp:871 pgadmin/dlg/dlgServer.cpp:209
-#: pgadmin/schema/pgServer.cpp:875
+#: pgadmin/schema/pgServer.cpp:880
 msgid "require"
 msgstr "dubutuhkan"
 
 #: src/schema/pgServer.cpp:851 src/schema/pgServer.cpp:871
-#: src/schema/pgServer.cpp:899 pgadmin/schema/pgServer.cpp:904
+#: src/schema/pgServer.cpp:899 pgadmin/schema/pgServer.cpp:909
 #, fuzzy
 msgid "running"
 msgstr "Sedang jalan?"
@@ -12952,7 +13182,7 @@ msgstr "Sedang jalan?"
 msgid "set by Override"
 msgstr ""
 
-#: src/pgAdmin3.cpp:182 pgadmin/pgAdmin3.cpp:183
+#: src/pgAdmin3.cpp:182 pgadmin/pgAdmin3.cpp:191
 msgid "show this help message"
 msgstr ""
 
@@ -12995,9 +13225,14 @@ msgid "yearly"
 msgstr "Tahunan"
 
 # standard
-#: standard input:735 input:792 input:886 input:860 input:953
+#: standard input:735 input:792 input:886 pgadmin/ui/frmExport.xrc:8
+#: pgadmin/ui/frmOptions.xrc:44
 msgid "|"
 msgstr "|"
+
+#, fuzzy
+#~ msgid "Unexpected target type"
+#~ msgstr "Silakan pilih tipe data targetnya."
 
 #, fuzzy
 #~ msgid "Executing: %s"
