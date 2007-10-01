@@ -39,11 +39,11 @@ public:
     bool CanDropCascaded() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
 
     void UpdateValues();
-    wxULongLong GetLastValue() const { return lastValue; }
-    wxULongLong GetMinValue() const { return minValue; }
-    wxULongLong GetMaxValue() const { return maxValue; }
-    wxULongLong GetCacheValue() const { return cacheValue; }
-    wxULongLong GetIncrement() const { return increment; }
+    wxLongLong GetLastValue() const { return lastValue; }
+    wxLongLong GetMinValue() const { return minValue; }
+    wxLongLong GetMaxValue() const { return maxValue; }
+    wxLongLong GetCacheValue() const { return cacheValue; }
+    wxLongLong GetIncrement() const { return increment; }
     bool GetCycled() const { return cycled; }
     bool GetCalled() const { return called; }
 
@@ -56,7 +56,7 @@ public:
     bool HasReferences() { return true; }
 
 private:
-    wxULongLong lastValue, minValue, maxValue, cacheValue, increment;
+    wxLongLong lastValue, minValue, maxValue, cacheValue, increment;
     bool cycled, called, isReplicated;
 };
 
