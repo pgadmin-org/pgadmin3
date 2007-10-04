@@ -112,8 +112,7 @@ pgObject *dlgTablespace::CreateObject(pgCollection *collection)
 wxString dlgTablespace::GetSql()
 {
     wxString sql;
-    wxString name=GetName();
-    
+    wxString name=GetName();    
 
     if (tablespace)
     {
@@ -121,6 +120,9 @@ wxString dlgTablespace::GetSql()
 
         AppendNameChange(sql);
         AppendOwnerChange(sql, wxT("TABLESPACE ") + qtIdent(name));
+
+        sql += GetGrant(wxT("C"), wxT("TABLESPACE ") + qtIdent(name));
+        AppendComment(sql, wxT("TABLESPACE"), 0, tablespace);
     }
     else
     {
@@ -130,9 +132,21 @@ wxString dlgTablespace::GetSql()
         sql += wxT(" LOCATION ") + qtDbString(txtLocation->GetValue())
             +  wxT(";\n");
     }
-    sql += GetGrant(wxT("C"), wxT("TABLESPACE ") + qtIdent(name));
-    AppendComment(sql, wxT("TABLESPACE"), 0, tablespace);
+
 
     return sql;
 }
 
+wxString dlgTablespace::GetSql2()
+{
+    wxString sql;
+    wxString name=GetName();
+
+    if (!tablespace)
+    {
+        sql += GetGrant(wxT("C"), wxT("TABLESPACE ") + qtIdent(name));
+        AppendComment(sql, wxT("TABLESPACE"), 0, tablespace);
+    }
+
+    return sql;
+}
