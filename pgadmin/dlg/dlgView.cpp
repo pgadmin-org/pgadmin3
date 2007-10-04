@@ -87,12 +87,17 @@ pgObject *dlgView::CreateObject(pgCollection *collection)
 void dlgView::CheckChange()
 {
     wxString name=GetName();
-    if (view)
+    if (name) 
     {
-        EnableOK(txtComment->GetValue() != view->GetComment()
+        if (view)
+             EnableOK(txtComment->GetValue() != view->GetComment()
               || txtSqlBox->GetText() != oldDefinition
               || cbOwner->GetValue() != view->GetOwner()
               || name != view->GetName());
+         else
+	     EnableOK(!txtComment->GetValue().IsEmpty()
+              || !txtSqlBox->GetText().IsEmpty()
+              || !cbOwner->GetValue().IsEmpty());
     }
     else
     {
