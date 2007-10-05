@@ -356,8 +356,7 @@ wxString dlgIndex::GetSql()
         }
         if (index && connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
             sql += wxT("ALTER INDEX ") + qtIdent(name)
-                +  wxT(" SET (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(");\n")
-                +  wxT("REINDEX INDEX ") + qtIdent(name) + wxT(";\n");
+                +  wxT(" SET (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(");\n");
         AppendComment(sql, wxT("INDEX"), table->GetSchema(), index);
     }
     return sql;
