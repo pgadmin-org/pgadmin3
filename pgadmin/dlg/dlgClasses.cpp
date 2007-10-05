@@ -274,13 +274,14 @@ void pgFrame::OnHelp(wxCommandEvent& WXUNUSED(event))
 void pgFrame::OnRecent(wxCommandEvent& event)
 {
     int fileNo=event.GetId() - MNU_RECENT;
-    lastPath = settings->Read(recentKey + wxString::Format(wxT("/%d"), fileNo), wxT(""));
+    wxString newPath = settings->Read(recentKey + wxString::Format(wxT("/%d"), fileNo), wxT(""));
 
-    if (!lastPath.IsNull())
+    if (!newPath.IsNull())
     {
         if (CheckChanged(true))
             return;
 
+        lastPath = newPath;
         int dirsep;
         dirsep = lastPath.Find(wxFILE_SEP_PATH, true);
         lastDir = lastPath.Mid(0, dirsep);
