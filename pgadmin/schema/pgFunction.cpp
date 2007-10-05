@@ -260,7 +260,7 @@ wxString pgFunction::GetArgListWithNames()
 
     for (unsigned int i=0; i < argTypesArray.Count(); i++)
     {
-        if (i > 0)
+        if (args.Length() > 0)
             args += wxT(", ");
 
         wxString arg;
@@ -307,7 +307,7 @@ wxString pgFunction::GetArgSigList()
         // OUT parameters are not considered part of the signature
         if (argModesArray.Item(i) != wxT("OUT"))
         {
-            if (i > 0)
+            if (args.Length() > 0)
                 args += wxT(", ");
 
             args += argTypesArray.Item(i);
