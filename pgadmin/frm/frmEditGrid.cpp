@@ -1703,7 +1703,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
 
 
     dataPool=0;
-    addPool = new cacheLinePool(100);       // arbitrary initial size
+    addPool = new cacheLinePool(500);       // arbitrary initial size
     lastRow=-1;
     int i;
     lineIndex = 0;
