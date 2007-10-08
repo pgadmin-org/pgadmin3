@@ -33,6 +33,7 @@
 // Windows headers
 #ifdef __WXMSW__
   #include <winsock.h>
+#endif
 
 // Linux headers
 #ifdef __LINUX__
