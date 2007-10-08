@@ -34,15 +34,6 @@
 #ifdef __WXMSW__
   #include <winsock.h>
 
-// We need to include OpenSSL's applink code with OpenSSL 0.9.8+
-#ifdef SSL
-  #include <openssl/opensslv.h>
-  #if (OPENSSL_VERSION_NUMBER >= 0x00908000L)
-    #include <openssl/applink.c>  
-  #endif
-#endif
-#endif
-
 // Linux headers
 #ifdef __LINUX__
 #include <signal.h>
