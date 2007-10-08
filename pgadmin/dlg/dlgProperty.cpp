@@ -94,8 +94,8 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
     database=0;
     connection=0;
     factory=f;
-    item = NULL;
-    owneritem = NULL;
+    item = (void *)NULL;
+    owneritem = (void *)NULL;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(frame, resName);
 
