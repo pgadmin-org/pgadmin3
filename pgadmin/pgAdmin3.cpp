@@ -176,7 +176,9 @@ void frmDlgTest::OnSelect(wxCommandEvent &ev)
 bool pgAdmin3::OnInit()
 {
     // Setup wxWidgets runtime options
+#ifdef __WXMAC__
     wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
 
     // Force logging off until we're ready
     wxLog *seLog=new wxLogStderr();
