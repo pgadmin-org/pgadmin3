@@ -29,6 +29,7 @@
 #include <wx/socket.h>
 #include <wx/stdpaths.h>
 #include <wx/clipbrd.h>
+#include <wx/sysopt.h>
 
 // Windows headers
 #ifdef __WXMSW__
@@ -173,7 +174,10 @@ void frmDlgTest::OnSelect(wxCommandEvent &ev)
 
 // The Application!
 bool pgAdmin3::OnInit()
-{	
+{
+    // Setup wxWidgets runtime options
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+
     // Force logging off until we're ready
     wxLog *seLog=new wxLogStderr();
     wxLog::SetActiveTarget(seLog);
