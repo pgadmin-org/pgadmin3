@@ -115,13 +115,15 @@ pgObject *pgaJobFactory::CreateObjects(pgCollection *collection, ctlTree *browse
     pgaJob *job=0;
 
     pgSet *jobs= collection->GetConnection()->ExecuteSet(
-       wxT("SELECT *, ")
-	   wxT("(SELECT jlgstatus FROM pgagent.pga_joblog jl WHERE jl.jlgjobid = j.jobid ORDER BY jlgid DESC LIMIT 1) AS joblastresult ")
-	   wxT("FROM pgagent.pga_job j\n")
-       wxT("  JOIN pgagent.pga_jobclass cl ON cl.jclid=jobjclid\n")
-       wxT("  LEFT OUTER JOIN pgagent.pga_jobagent ag ON ag.jagpid=jobagentid\n")
+       wxT("SELECT j.*, cl.*, ag.*, sub.jlgstatus ")
+       wxT("  FROM pgagent.pga_job j JOIN")
+       wxT("  pgagent.pga_jobclass cl ON cl.jclid=jobjclid LEFT OUTER JOIN")
+       wxT("  pgagent.pga_jobagent ag ON ag.jagpid=jobagentid JOIN")
+       wxT("  (SELECT DISTINCT ON (jlgjobid) jlgstatus, jlgjobid")
+       wxT("   FROM pgagent.pga_joblog")
+       wxT("  ORDER BY jlgjobid, jlgid desc) sub ON sub.jlgjobid = j.jobid ")
        + restriction +
-       wxT(" ORDER BY jobname"));
+       wxT("ORDER BY jobname;"));
 
     if (jobs)
     {
