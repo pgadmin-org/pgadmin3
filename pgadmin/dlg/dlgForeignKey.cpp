@@ -352,12 +352,14 @@ int dlgForeignKey::Go(bool modal)
         wxStringTokenizer refs(foreignKey->GetRefColumns(), wxT(","));
         while (cols.HasMoreTokens())
         {
-            wxString col=cols.GetNextToken();
-            wxString ref=refs.GetNextToken();
+            wxString col=cols.GetNextToken().Trim(false).Trim(true);
+            wxString ref=refs.GetNextToken().Trim(false).Trim(true);
             if (pos++)
             {
-                col.RemoveLast();       // there's a space
-                ref.RemoveLast();
+                if (col.Last() == ',')
+                    col.RemoveLast();
+                if (ref.Last() == ',')
+                    ref.RemoveLast();
             }
             lstColumns->AppendItem(columnFactory.GetIconId(), col, ref);
         }
