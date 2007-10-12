@@ -282,7 +282,7 @@ wxString pgTable::GetSql(ctlTree *browser)
                 sql +=  wxT("\nWITHOUT OIDS");
         }
 
-        if (tablespace != GetDatabase()->GetDefaultTablespace())
+        if (GetConnection()->BackendMinimumVersion(8, 0) && tablespace != GetDatabase()->GetDefaultTablespace())
             sql += wxT("\nTABLESPACE ") + qtIdent(tablespace);
 
         sql += wxT(";\n")

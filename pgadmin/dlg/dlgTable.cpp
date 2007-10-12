@@ -603,7 +603,7 @@ wxString dlgTable::GetSql()
             sql += wxT("ALTER TABLE ") + tabname 
                 +  wxT(" SET WITHOUT OIDS;\n");
         }
-        if (cbTablespace->GetOIDKey() != table->GetTablespaceOid())
+        if (connection->BackendMinimumVersion(8, 0) && cbTablespace->GetOIDKey() != table->GetTablespaceOid())
             sql += wxT("ALTER TABLE ") + tabname 
                 +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
                 + wxT(";\n");
