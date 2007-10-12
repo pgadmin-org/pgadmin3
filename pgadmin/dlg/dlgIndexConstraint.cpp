@@ -102,7 +102,7 @@ wxString dlgIndexConstraint::GetSql()
     }
     else
     {
-        if (cbTablespace->GetOIDKey() != index->GetTablespaceOid())
+        if (connection->BackendMinimumVersion(8, 0) && cbTablespace->GetOIDKey() != index->GetTablespaceOid())
         {
             sql += wxT("ALTER INDEX ") + index->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(name) 
                 +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
