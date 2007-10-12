@@ -426,7 +426,9 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("ACL"), GetAcl());
         if (!GetPath().IsEmpty())
             properties->AppendItem(_("Path"), GetPath());
-        if (GetConnection()->BackendMinimumVersion(8, 0))
+
+        // We may not actually be connected...
+        if (GetConnection() && GetConnection()->BackendMinimumVersion(8, 0))
         {
             properties->AppendItem(_("Tablespace"), GetTablespace());
             properties->AppendItem(_("Default tablespace"), GetDefaultTablespace());
