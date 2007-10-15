@@ -483,3 +483,4 @@ wxString dlgDatabase::GetSql2()
 
     return sql;
 }
+

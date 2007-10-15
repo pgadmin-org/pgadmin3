@@ -234,3 +234,4 @@ wxString dlgManageMacros::GetHelpPage() const
 {
 	return wxT("macros");
 }
+

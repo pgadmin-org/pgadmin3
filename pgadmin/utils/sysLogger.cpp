@@ -212,3 +212,4 @@ bool sysLogger::SilenceMessage(const wxString &msg)
 #endif
     return false;
 }
+

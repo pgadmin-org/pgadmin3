@@ -40,11 +40,6 @@ typedef struct SchemaQuery
 } SchemaQuery;
 
 
-/* Store maximum number of records we want from database queries
- * (implemented via SELECT ... LIMIT xx).
- */
-static int	completion_max_records;
-
 /*
  * Communication variables set by COMPLETE_WITH_FOO macros and then used by
  * the completion callback functions.  Ugly but there is no better way.
@@ -52,7 +47,6 @@ static int	completion_max_records;
 static const char *completion_charp;	/* to pass a string */
 static const char *const * completion_charpp;	/* to pass a list of strings */
 static const char *completion_info_charp;		/* to pass a second string */
-static const SchemaQuery *completion_squery;	/* to pass a SchemaQuery */
 
 /*
  * Assembly instructions for schema queries

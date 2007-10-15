@@ -426,3 +426,4 @@ wxString dlgAggregate::GetInputTypesOidList()
     }
     return types;
 }
+

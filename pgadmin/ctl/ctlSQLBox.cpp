@@ -216,7 +216,7 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
 
                     // Stop if we've got to the end. This is important for the $
                     // case where it'll just keep finding the end of the line!!
-                    if (cr.cpMin + replace.Length() == GetLength())
+                    if ((int)(cr.cpMin + replace.Length()) == GetLength())
                         return false;
                 }
                 else

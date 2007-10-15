@@ -150,3 +150,4 @@ wxString dlgTablespace::GetSql2()
 
     return sql;
 }
+
