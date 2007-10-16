@@ -635,7 +635,7 @@ BEGIN
     END IF;
 END;
 ' LANGUAGE 'plpgsql' VOLATILE;
-COMMENT ON FUNCTION pgagent.pga_schedule_trigger() IS 'Update the job''s next run time whenever an exception changes';
+COMMENT ON FUNCTION pgagent.pga_exception_trigger() IS 'Update the job''s next run time whenever an exception changes';
 
 
 
