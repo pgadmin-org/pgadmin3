@@ -556,7 +556,7 @@ COMMENT ON FUNCTION pgagent.pga_is_leap_year(int2) IS 'Returns TRUE is $1 is a l
 
 CREATE OR REPLACE FUNCTION pgagent.pga_job_trigger()
   RETURNS "trigger" AS
-$BODY$
+'
 BEGIN
     IF NEW.jobenabled THEN
         IF NEW.jobnextrun IS NULL THEN
@@ -570,7 +570,7 @@ BEGIN
     END IF;
     RETURN NEW;
 END;
-$BODY$
+'
   LANGUAGE 'plpgsql' VOLATILE;
 COMMENT ON FUNCTION pgagent.pga_job_trigger() IS 'Update the job''s next run time.';
 
