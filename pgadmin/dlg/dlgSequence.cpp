@@ -182,36 +182,56 @@ wxString dlgSequence::GetSql()
                 +  wxT(" OWNER TO ") + qtIdent(cbOwner->GetValue()) + wxT(";\n");
         }
 
-		// Change the current value before any of the other params. This allows the user
-		// to change the min or max values and ensure the current value is in the required
-		// range in one operation.
+        // This is where things get hairy. Per some thought by Horvath Gabor, 
+        // we need to adjust the min/max sequence values, and the the current 
+        // value per the rules:
+        //
+        // 1 Any ALTER SEQUENCE MIN/MAXVALUE statements that widen the range
+        // 2 SETVAL
+        // 3 Any ALTER SEQUENCE MIN/MAXVALUE statements that narrow the range.
+        //
+        // We'll change any other options at the end.
+        wxString tmp;
+
+        // MIN/MAX changes that widen the range.
+        if (connection->BackendMinimumVersion(7, 4))
+        {
+            tmp = wxEmptyString;
+            if (txtMin->GetValue().IsEmpty())
+                tmp += wxT("\n   NO MINVALUE");
+            else if (StrToLongLong(txtMin->GetValue()) < sequence->GetMinValue())
+                    tmp += wxT("\n   MINVALUE ") + txtMin->GetValue();
+
+            if (txtMax->GetValue().IsEmpty())
+                tmp += wxT("\n   NO MAXVALUE");
+            else if (StrToLongLong(txtMax->GetValue()) > sequence->GetMaxValue())
+                tmp += wxT("\n   MAXVALUE ") + txtMax->GetValue();
+
+            if (!tmp.IsEmpty())
+            {
+                sql += wxT("ALTER SEQUENCE ") + schema->GetQuotedPrefix() + qtIdent(name)
+                    +  tmp + wxT(";\n");
+            }
+        }
+
+        // The new sequence value
         if (txtStart->GetValue() != sequence->GetLastValue().ToString())
             sql += wxT("SELECT setval('") + qtIdent(schema->GetName()) + wxT(".") + qtIdent(name)
                 +  wxT("', ") + txtStart->GetValue()
                 +  wxT(", true);\n");
 
+        // Min/Max changes that narrow the ranges, as well as other changes.
         if (connection->BackendMinimumVersion(7, 4))
         {
-            wxString tmp;
-
+            tmp = wxEmptyString;
             if (txtIncrement->GetValue() != sequence->GetIncrement().ToString())
                 tmp += wxT("\n   INCREMENT ") + txtIncrement->GetValue();
+                    
+            if ((!txtMin->GetValue().IsEmpty()) && StrToLongLong(txtMin->GetValue()) > sequence->GetMinValue())
+                tmp += wxT("\n   MINVALUE ") + txtMin->GetValue();
 
-            if (txtMin->GetValue() != sequence->GetMinValue().ToString())
-            {
-                if (txtMin->GetValue().IsEmpty())
-                    tmp += wxT("\n   NO MINVALUE");
-                else
-                    tmp += wxT("\n   MINVALUE ") + txtMin->GetValue();
-            }
-
-            if (txtMax->GetValue() != sequence->GetMaxValue().ToString())
-            {
-                if (txtMax->GetValue().IsEmpty())
-                    tmp += wxT("\n   NO MAXVALUE");
-                else
+            if ((!txtMax->GetValue().IsEmpty()) && StrToLongLong(txtMax->GetValue()) < sequence->GetMaxValue())
                     tmp += wxT("\n   MAXVALUE ") + txtMax->GetValue();
-            }
 
             if (txtCache->GetValue() != sequence->GetCacheValue().ToString())
                 tmp += wxT("\n   CACHE ") + txtCache->GetValue();
