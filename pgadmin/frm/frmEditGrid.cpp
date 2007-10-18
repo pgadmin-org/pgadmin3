@@ -968,7 +968,7 @@ void frmEditGrid::Go()
     }
     if (!orderBy.IsEmpty())
     {
-        qry += wxT(" ORDER BY ") + orderBy;
+        qry += wxT("\n ORDER BY ") + orderBy;
     }
 	if (limit > 0)
 		qry += wxT(" LIMIT ") + wxString::Format(wxT("%i"), limit);
