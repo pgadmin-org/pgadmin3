@@ -24,7 +24,7 @@ you need to create the database yourself. The database
 must have the pl/pgsql procedural language installed - PostgreSQL's 
 'createlang' program can do this if required.</P>
 
-<P>Once created, connect to the new database, and open the SQL tool.
+<P>Connect to the "postgres" database (once created if needed), and open the SQL tool.
 Select the File -> Open option from the menu and find the 'pgagent.sql' 
 script installed with pgAdmin. The installation location for this file 
 varies from operating system to operating system, however it will normally 
@@ -73,8 +73,8 @@ include an additional parameter to tell the service what to do:</P>
 
 <PRE>
 Usage:
-  "C:\Program Files\pgAdmin III\pgAgent" REMOVE &lt;serviceName&gt;
-  "C:\Program Files\pgAdmin III\pgAgent" INSTALL &lt;serviceName> [options] &lt;connect-string&gt;
+  pgAgent REMOVE &lt;serviceName&gt;
+  pgAgent INSTALL &lt;serviceName> [options] &lt;connect-string&gt;
   
   options:
     -u &lt;user or DOMAIN\user&gt;
@@ -85,7 +85,8 @@ Usage:
     -l &lt;logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default 0)&gt;
 </PRE>
 
-<P>The service may be quite simply installed from the command line as follows:</P>
+<P>The service may be quite simply installed from the command line as follows 
+(adjusting the path as required):</P>
 
 <PRE>
 "C:\Program Files\pgAdmin III\pgAgent" INSTALL pgAgent -u postgres -p secret hostaddr=127.0.0.1 dbname=pgadmin user=postgres
