@@ -46,6 +46,7 @@ TMP_docs = \
 	$(top_srcdir)/docs/fr_FR/*.html \
 	$(top_srcdir)/docs/fr_FR/tips.txt \
 	$(top_srcdir)/docs/fr_FR/hints/*.html \
+	$(top_srcdir)/docs/it_IT/tips.txt \
 	$(top_srcdir)/docs/sl_SI/tips.txt \
 	$(top_srcdir)/docs/sl_SI/hints/*.html \
 	$(top_srcdir)/docs/zh_CN/tips.txt \
