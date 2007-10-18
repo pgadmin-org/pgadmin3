@@ -314,11 +314,13 @@ static bool needsQuoting(wxString& value, bool forTypes)
     {
 		// certain types should not be quoted even though it contains a space. Evilness.
 		wxString valNoArray;
-		if (value.Right(2) == wxT("[]"))
+		if (forTypes && value.Right(2) == wxT("[]"))
 			valNoArray = value.Mid(0, value.Len()-2);
 		else
 			valNoArray = value;
-		if (!valNoArray.CmpNoCase(wxT("character varying")) ||
+
+		if (forTypes &&
+            !valNoArray.CmpNoCase(wxT("character varying")) ||
             !valNoArray.CmpNoCase(wxT("\"char\"")) ||
 			!valNoArray.CmpNoCase(wxT("bit varying")) ||
 			!valNoArray.CmpNoCase(wxT("double precision")) ||
@@ -329,6 +331,7 @@ static bool needsQuoting(wxString& value, bool forTypes)
             !valNoArray.CmpNoCase(wxT("\"trigger\"")) ||
             !valNoArray.CmpNoCase(wxT("\"unknown\"")))
 			return false;
+
         int pos = 0;
         while (pos < (int)valNoArray.length())
         {
