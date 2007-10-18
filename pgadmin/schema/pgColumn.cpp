@@ -143,19 +143,28 @@ wxString pgColumn::GetCommentSql()
 wxString pgColumn::GetDefinition()
 {
     wxString sql = GetQuotedTypename();
-    wxString seqDefault;
+    wxString seqDefault1, seqDefault2;
 
     if (GetDatabase()->BackendMinimumVersion(8, 1))
-        seqDefault = wxT("nextval('") + schema->GetPrefix() + GetTableName()
-				   + wxT("_") + GetName() + wxT("_seq'::regclass)");
+    {
+        seqDefault1 = wxT("nextval('") + schema->GetPrefix() + GetTableName()
+				    + wxT("_") + GetName() + wxT("_seq'::regclass)");
+        seqDefault2 = wxT("nextval('\"") + schema->GetPrefix() + GetTableName()
+				    + wxT("_") + GetName() + wxT("_seq\"'::regclass)");
+    }
     else
-        seqDefault = wxT("nextval('") 
-                   + schema->GetName() + wxT(".") + GetTableName()
-                   + wxT("_") + GetName() + wxT("_seq'::text)");
+    {
+        seqDefault1 = wxT("nextval('") 
+                    + schema->GetName() + wxT(".") + GetTableName()
+                    + wxT("_") + GetName() + wxT("_seq'::text)");
+        seqDefault2 = wxT("nextval('\"") 
+                    + schema->GetName() + wxT(".") + GetTableName()
+                    + wxT("_") + GetName() + wxT("_seq\"'::text)");
+    }
 
     if ((sql == wxT("integer") || sql == wxT("bigint") || 
          sql == wxT("pg_catalog.integer") || sql == wxT("pg_catalog.bigint"))
-        && GetDefault() == seqDefault)
+        && (GetDefault() == seqDefault1 || GetDefault() == seqDefault2))
     {
         if (sql.Right(6) == wxT("bigint"))
             sql = wxT("bigserial");
