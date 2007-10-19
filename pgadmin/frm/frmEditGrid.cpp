@@ -433,7 +433,7 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
                 wxTheClipboard->Close();
             }
         }
-		else
+		else if(sqlGrid->GetNumberRows() > 0)
 		{
 		    int copied;
             copied = sqlGrid->Copy();
@@ -482,7 +482,7 @@ void frmEditGrid::OnPaste(wxCommandEvent &ev)
             wxTheClipboard->Close();
         }
     }
-    else
+    else if(sqlGrid->GetNumberRows() > 0)
     {
         if (toolBar->GetToolEnabled(MNU_SAVE))
         {
