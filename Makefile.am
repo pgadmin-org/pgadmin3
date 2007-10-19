@@ -14,6 +14,7 @@ SUBDIRS = i18n src pkg xtra
 EXTRA_DIST = \
 	$(top_srcdir)/BUGS \
 	$(top_srcdir)/CHANGELOG \
+	$(top_srcdir)/INSTALL \
 	$(top_srcdir)/LICENSE \
 	$(top_srcdir)/README \
 	$(top_srcdir)/TODO \
