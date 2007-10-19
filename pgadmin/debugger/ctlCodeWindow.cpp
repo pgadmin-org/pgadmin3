@@ -163,7 +163,6 @@ ctlCodeWindow::ctlCodeWindow( frmDebugger *parent, wxWindowID id, const dbgConnP
     m_view->MarkerDefine( MARKER_BREAKPOINT, wxSTC_MARK_CIRCLEPLUS, *wxRED, *wxRED );
 
     m_view->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
-    m_view->SetMarginType(1, wxSTC_MARGIN_NUMBER);
 
     // Make sure that the text control tells us when the user clicks in the left margin
     m_view->SetMarginSensitive( 0, true );
@@ -293,8 +292,8 @@ void ctlCodeWindow::OnMarginClick( wxStyledTextEvent& event )
       
 void ctlCodeWindow::OnPositionStc( wxStyledTextEvent& event )      
 {      
-    wxString pos; 
-    pos.Printf(_("Ln %d Col %d Ch %d"), m_view->LineFromPosition(m_view->GetCurrentPos()), m_view->GetColumn(m_view->GetCurrentPos()) + 1, m_view->GetCurrentPos() + 1);
+    wxString pos;
+    pos.Printf(_("Ln %d Col %d Ch %d"), m_view->LineFromPosition(m_view->GetCurrentPos()) + 1, m_view->GetColumn(m_view->GetCurrentPos()) + 1, m_view->GetCurrentPos() + 1);
     m_parent->getStatusBar()->SetStatusText(pos, 2);  
 }
 
