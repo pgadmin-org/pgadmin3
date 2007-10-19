@@ -25,6 +25,9 @@
 
 wxString ctlSQLBox::sqlKeywords;
 
+// Additional pl/pgsql keywords we should highlight
+wxString plpgsqlKeywords = wxT(" elsif exception exit loop raise record return text");
+
 
 BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
     EVT_KEY_DOWN(ctlSQLBox::OnKeyDown)
@@ -107,7 +110,7 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     if (sqlKeywords.IsEmpty())
         FillKeywords(sqlKeywords);
     SetLexer(wxSTC_LEX_SQL);
-    SetKeyWords(0, sqlKeywords);
+    SetKeyWords(0, sqlKeywords + plpgsqlKeywords);
 
     wxAcceleratorEntry entries[2];
     entries[0].Set(wxACCEL_CTRL, (int)'F', MNU_FIND);
