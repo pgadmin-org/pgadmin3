@@ -13,11 +13,11 @@
 #define VERSION_H
 
 // Application Versions
-#define VERSION_STR     wxT("1.8.0 RC1")
-#define VERSION_NUM     1,8,0,90
-#define VERSION_PACKAGE 1.8.0-rc1
+#define VERSION_STR     wxT("1.8.0")
+#define VERSION_NUM     1,8,0,99
+#define VERSION_PACKAGE 1.8.0
 
-#define PRERELEASE 1
+#define PRERELEASE 0
 // #define BUILD "..."
 
 #ifdef RC_INVOKED
