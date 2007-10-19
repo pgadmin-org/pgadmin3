@@ -12,6 +12,7 @@ SUBDIRS = i18n src pkg xtra
 EXTRA_DIST = \
 	$(top_srcdir)/README.txt \
 	$(top_srcdir)/BUGS.txt \
+	$(top_srcdir)/INSTALL.txt \
 	$(top_srcdir)/LICENCE.txt
 
 TMP_docs = \
