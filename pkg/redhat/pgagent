@@ -1,0 +1,92 @@
+#!/bin/bash
+#
+# pgagent        Starts pgagent.
+#
+#
+# chkconfig: 2345 12 88
+# description: PgAgent is a service for runing scheduled pgadmin III  \
+# tasks.
+### BEGIN INIT INFO
+# Provides: $pgagent
+### END INIT INFO
+
+# Source function library.
+. /etc/init.d/functions
+
+#[ -f /bin/usr/pgagent ] || exit 0
+
+RETVAL=0
+CSTRING="dbname=postgres user=postgres"
+
+PGDATA=/var/lib/pgsql
+if [ ! -d $PGDATA ]
+then
+	failure "PGHOME dir /var/lib/pgsql does not exist"
+fi
+LOG=$PGDATA/pgagent.log
+
+# For SELinux we need to use 'runuser' not 'su'
+if [ -x /sbin/runuser ]
+then
+    SU=runuser
+else
+    SU=su
+fi
+
+umask 077
+
+start() {
+	#
+	if [ ! -e "$LOG" -a ! -h "$LOG" ]
+	then
+		touch "$LOG" || exit 1
+		chown postgres:postgres "$LOG"
+		chmod go-rwx "$LOG"
+	fi
+	
+ 	echo -n $"Starting agent: "
+	$SU -l postgres -c "pgagent -l 1 -s $LOG '$CSTRING'"
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/pgagent
+	return $RETVAL
+}	
+stop() {
+	echo -n $"Shutting down agent: "
+	killproc pgagent
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/pgagent
+	return $RETVAL
+}
+rhstatus() {
+	status pgagent
+}
+restart() {
+	stop
+	start
+}	
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  status)
+  	rhstatus
+	;;
+  restart|reload)
+  	restart
+	;;
+  condrestart)
+  	[ -f /var/lock/subsys/pgagent ] && restart || :
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|status|restart|condrestart}"
+	exit 1
+esac
+
+exit $RETVAL
+

@@ -1,0 +1,93 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Slony-I administration with pgAdmin III: installation</title>
+</head>
+
+<body>
+<A name="node"></a>
+<h3>Slony-I administration with pgAdmin III: installation</h3>
+<BR>
+<H4>Prerequisites</H4>
+<p>
+As a prerequisite to running Slony-I on PostgreSQL, the slony modules 
+xxid and slony1_funcs must be present on all servers that have are to run a
+Slony-I replication node. This is usually done by the Slony-I installation routine. 
+</p>
+
+<A name="overview"></a>
+<H4>Overview</H4>
+<p>
+Setting up Slony-I for the first time can be a daunting task. The following sections of
+the pgAdmin helpfile will help guide you through creation of your first cluster.
+<p>
+<ul>
+<li><a href="#create">Step 1</a>: Create the cluster on the master node.<br />&nbsp;</li>
+<li><a href="#join">Step 2</a>: Add slave nodes to the cluster.<br />&nbsp;</li>
+<li><a href="slony-path.html#path">Step 3</a>: Setup paths on each node to all other nodes.<br />&nbsp;</li>
+<li><a href="slony-path.html#listen">Step 4</a>: Setup listens on each node to all other nodes
+(<b>Note</b>: Not required with Slony-I v1.1 or later).<br />&nbsp;</li>
+<li><a href="slony-set.html#set">Step 5</a>: Create a replication set.<br />&nbsp;</li>
+<li><a href="slony-set.html#table">Step 6</a>: Add tables and sequences to the set.<br />&nbsp;</li>
+<li><a href="slony-set.html#subscription">Step 7</a>: Subscribe the slaves to the set.</li>
+</ul>
+<p>
+<b>Note</b>: At this point, the slon daemons (service engines on Windows) should be started.
+</p>
+<br />
+
+<A name="create"></a>
+<H4>Create cluster and first node</H4>
+<BR>
+<center><img src="images/slony-create.png"></center>
+
+<p>
+To install a Slony-I cluster on the first database, the "New Slony-I Cluster" dialog is 
+used. It executes the official Slony-I cluster creation SQL scripts, which are located in the 
+directory configured in the <A HREF="options-tab1.html">options</A> dialog. 
+</p>
+<p>
+pgAdmin III needs to store information how to contact each individual node in the cluster.
+To achieve this, pgAdmin III uses the concept of "Administrative nodes".
+
+</p>
+
+<A name="join"></a>
+<H4>Join additional nodes to cluster</H4>
+<BR>
+<center><img src="images/slony-join.png"></center>
+<p>
+After the first node in the Slony-I replication cluster has been successfully created,
+all subsequent nodes take their configuration and procedures from the first nodes.
+This process is called "Joining a cluster" in pgAdmin III. Usually, you should also select
+an existing node as admin node, to insure later accessibility from pgAdmin III.
+<p>
+</p>
+After you added a new node to the Slony-I cluster, you need to set up 
+<A href='"slony-path.html'>replication paths</A> between the nodes, to enable communication
+between the nodes.
+</p>
+
+<A name="upgrade"></a>
+<H4>Upgrade node to new cluster software</H4>
+<BR>
+<center><img src="images/slony-upgrade.png"></center>
+<p>
+When a cluster is to be upgraded to a new version of the Slony-I clustering software, 
+the upgrade process has to be run on all nodes of the cluster. For each node, the slon 
+daemon needs to be stopped, then the upgrade dialog is started and a node with 
+the new software is selected (pgAdmin III will extract all software from that node),
+and finally the slon daemon is started again.
+</p>
+<p>
+Currently, pgAdmin III does <B>not</B> support upgrading from slony creation scripts.
+Instead, create an intermediate cluster from the creation scripts, use it as a source
+for the upgrade dialog, and drop the cluster after usage. You may also use the slonik
+tool to upgrade the first node, and then use it as source for subsequent node upgrades.
+</p>
+<p>
+</p>
+</body>
+</html>

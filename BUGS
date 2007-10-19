@@ -1,0 +1,105 @@
+Known issues
+============
+ 
+pgAdmin III
+-----------
+
+[DLG] Working with property dialog after the corresponding node is 
+      refreshed crashes
+      
+[DLG] Working with objects in the default schema with the same names as ones in
+      pg_catalog is unlikely to work well. To fix this, we need a test in 
+      pgDatabase::GetSchemaPrefix to check whether the object in question fits
+      into this class. This is likely to be an expensive test in an oft-used
+      function, and will be invasive to fix as we'd need to pass the object 
+      name and type to the function from every call site.
+
+[FRM] Editing very large columns freezes (might be restricted to bytea) the
+      edit grid
+      
+[MAC] Using the context menu on the properties list view results in random 
+      selection of rows and dialogues being opened behind the main window.
+
+wxWidgets
+---------
+
+[STC] ASSERT when typing a multibyte char [wx patch 1072408]
+
+[GTK] Scrollbar doesn't scroll page by page in the browser tree.
+
+[STC] Lexer doesn't know about escaping quotes
+
+[GTK] FindFocus reports bogus controls. Symptom: select a menu or toolbar, 
+      but nothing happens.
+
+[GTK] combobox positioning when height is not specified; current workaround: 
+      fixed 12d height
+
+[GTK] Crash with some themes; probably gtk issue.
+
+[STC] On wxMSW 2.6.3 with Num Lock turned off, the control functions
+      (arrows, insert/delete etc) of the numeric keypad do not work.
+      wxWidgets bug ref 1529525.
+
+[AUI] If a pane with a minimum size set is docked next to the center pane, it
+      is possible to drag either side such that the panes size is less than
+      the minimum. In addition, the minimum size doesn't appear to be honoured
+      at all by the center pane. wxWidgets bug ref: 1578958
+      
+[MSW] In 2.7+ on wxMSW, it seems that the return key is acting like tab
+      normally does in dialogues - ie. where the control doesn't catch the 
+      keypress, the focus moves to the next control in the tab order. Default
+      buttons on the dialogue don't get activated. wxWidgets bug ref: 1582051.
+      This will not be fixed in wxWidgets.
+      
+[MAC] wxWindow::SetFont() is broken on wxMac - changing the applicaiton font 
+      has no effect. wxWidgets bug ref: 1584926
+
+[MAC] An About menu item is automatically added to frmQuery and frmEditGrid
+      by wxWidgets(?). Currently this does nothing - add supporting code to
+      display the About box?
+
+[FRM] Opening a modal dialogue from one query tool window blocks shortcut
+      keys in another which is currently focused.
+
+[MAC] Command-W doesn't close dialogs as expected on Mac. This is more 
+      tricky than it sounds because key events don't propagate from controls
+      to the parent window.
+
+[STC] The GetCurrentPos() function returns byte positions, not character
+      positions. This means that the 'ch' value show in the status bar of the
+      Query Tool may show incorrect values if there are any multibyte 
+      characters prior to the current position. See wxWidgets bug ref: 1598444
+
+[FRM] MS Context menu key doesn't work in Windows on the treeview. The key
+      doesn't seem to get caught by the key events either.
+
+[AUI] Keyboard navigation between panes does not appear to be possible. See 
+      wxWidgets bug ref: 1754646
+
+[STC] The numeric keypad doesn't work with the styled text control under wxMac.
+      wxWidgets bug ref: 1776244
+	  
+[MAC] Explicitly adding text objects to the clipboard (as Copy on the edit grid 
+      does) crashes with multibyte text. 
+      wxWidgets bug ref: 1801114
+
+[MAC] The AutoComplete menu opens with the first item selected. Pressing the 
+      down arrow results in the second items being selected as well. Further
+      items cannot be selected. Works fine with the mouse.
+      wxWidgets bug ref: 1805515
+      
+[STC] The STC cannot render long lines (10's of thosands of characters) 
+      properly
+      wxWidgets bug ref: 1809461
+
+MS Windows
+----------
+
+[GRD] When in edit mode in a text column in the edit grid, selecting all text
+      and then copying (from the context menu, or CTRL-C) results in some RTF
+      code being added to the end of the string which, when pasted into an RTF
+      aware text control becomes a new line. This is repeatable entirely in MS
+      Wordpad, or in combination with it, thus is believed to be a Microsoft
+      bug.
+

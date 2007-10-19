@@ -1,0 +1,37 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>存取資料庫被拒絕</h3>
+<p>
+伺 服 器 不 允 許 訪 問 資 料 庫： 伺 服 器 報 告
+</p>
+<p>
+<b><tt class="command"><info></info></tt></b>
+</p>
+<p>
+
+訪 問 PostgreSQL 資 料 庫， 首 先 必 須 允 許 客 戶 端 能 夠 連 接 主 機 （基 於 主 機 的 認 證），
+然 後 在 所 有 SQL 訪 問 權 限 被 驗 證 之 前， PostgreSQL 將 檢 查 pg_hba.conf 文 件 查 看 是 否 有 與 客 戶 端 的 地址 / 用戶名 / 資料庫 相 符 合 的 方 案 存 在 並 且 是 允 許 訪 問 的。
+</p>
+<p>
+為了避免由系統引起的不必要的安全漏洞，pg_hba.conf中的初始設置十分嚴格，可以像下面這樣增加設置：
+</p>
+<p>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p>
+這 個 例 子 允 許 私 有 網 絡 192.168.0.0/24 使 用 MD5 加 密 的 密 碼 連 接 到 所 有 用 戶 和 所 有 資 料 庫。
+</p>
+<p>
+利 用 整 合 進 pgAdmin III 的 pg_hba.conf 編 輯 器 可 以 修 改 pg_hba.conf 配 置 文 件，
+修 改 完 畢 以 後， 需 要 使 用 pg_ctl 通 知 資 料 庫 重 新 讀 入 配 置 或 者 重 新 啟 動 資 料 庫。
+</body>
+</html>

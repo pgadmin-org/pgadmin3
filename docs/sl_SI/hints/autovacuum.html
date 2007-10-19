@@ -1,0 +1,30 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru nasveti</title>
+</head>
+
+<body>
+
+<h3>Priporo&#269;ljiva je uporaba pg_autovacuum</h3>
+<p align="justify">
+Proces pg_autovacuum, poprej dodatna storitev, je od PostgreSQL-a 8.1 dalje 
+vklju&#269;en v osnovni paket. Samodejno bo zagnal VACUUM, ko pride do sprememb 
+dolo&#269;ene koli&#269;ine podatkov.
+</p>
+<p align="justify">
+Redna uporaba VACUUM-a je na PostgreSQL stre&#382;nikih pogoj za konsistentnost podatkov ter 
+ohranitev velike zmogljivosti stre&#382;nika. Za za&#269;etek je priporo&#269;ljivo omogo&#269;iti pg_autovacuum 
+prikriti proces, in sicer z nastavitvijo mo&#382;nosti 'autovacuum', 'stats_start_collector' in 'stats_row_level', 
+nahajajo se v datoteki postgresql.conf, na vrednost 'on'. Ob zanemarljivih vplivih na delovanje zaradi 
+sledenja sprememb podatkov pridobite samodejno izvajanje VACUUM-a.
+</p>
+<p align="justify">
+Za prilagoditev delovanja procesa pg_autovacuum je potrebno nastaviti njegove parametre v datoteki 
+postgresql.conf. Nastavitve so lahko ali globalne ali prirejene posameznim tabelam; ve&#269; informacij je na voljo 
+v dokumentaciji.
+</p>
+</body>
+</html>

@@ -1,0 +1,55 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]
+then
+  echo "usage: $0 <wxMAC Source directory>"
+  exit 1
+fi
+
+cd $1
+
+cd contrib
+
+make clean
+cd ..
+make clean
+./configure --with-mac --enable-universal_binary --enable-unicode --enable-mimetype=no --enable-shared --enable-debug
+make all
+make install
+cd contrib
+make all
+make install
+
+
+make clean
+cd .. 
+make clean
+./configure --with-mac --enable-universal_binary --enable-unicode --enable-mimetype=no --enable-shared --disable-debug
+make all
+make install
+cd contrib
+make all
+make install
+
+
+make clean
+cd ..
+make clean
+./configure --with-mac --enable-universal_binary --enable-unicode --enable-mimetype=no --disable-shared --enable-debug
+make all
+make install
+cd contrib
+make all
+make install
+
+
+make clean
+cd ..
+make clean
+./configure --with-mac --enable-universal_binary --enable-unicode --enable-mimetype=no --disable-shared --disable-debug
+make all
+make install
+cd contrib
+make all
+make install
+

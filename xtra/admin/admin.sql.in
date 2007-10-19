@@ -1,0 +1,63 @@
+/* **********************************
+ * Administrative functions
+ * ********************************* */
+
+/* generic file access functions (genfile.c) */
+
+CREATE FUNCTION pg_file_stat(text) RETURNS record
+   AS 'MODULE_PATHNAME', 'pg_file_stat'
+	LANGUAGE C VOLATILE STRICT;
+
+CREATE FUNCTION pg_file_length(text) RETURNS bigint
+   AS 'SELECT len FROM pg_file_stat($1) AS s(len int8, c timestamp, a timestamp, m timestamp, i bool)'
+	LANGUAGE SQL VOLATILE STRICT;
+
+CREATE FUNCTION pg_file_read(text, bigint, bigint) RETURNS text
+   AS 'MODULE_PATHNAME', 'pg_file_read'
+	LANGUAGE C VOLATILE STRICT;
+
+CREATE FUNCTION pg_file_write(text, text, bool) RETURNS bigint
+   AS 'MODULE_PATHNAME', 'pg_file_write'
+	LANGUAGE C VOLATILE STRICT;
+
+CREATE FUNCTION pg_file_rename(text, text, text) RETURNS bool
+   AS 'MODULE_PATHNAME', 'pg_file_rename'
+	LANGUAGE C VOLATILE;
+
+CREATE FUNCTION pg_file_unlink(text) RETURNS bool
+   AS 'MODULE_PATHNAME', 'pg_file_unlink'
+	LANGUAGE C VOLATILE STRICT;
+
+CREATE FUNCTION pg_file_rename(text, text) RETURNS bool
+   AS 'SELECT pg_file_rename($1, $2, NULL); '
+	LANGUAGE SQL VOLATILE STRICT;
+
+CREATE FUNCTION pg_dir_ls(text, bool) RETURNS setof text
+   AS 'MODULE_PATHNAME', 'pg_dir_ls'
+	LANGUAGE C VOLATILE STRICT;
+
+
+/* Miscellaneous functions (misc.c) */
+
+CREATE FUNCTION pg_reload_conf() RETURNS int4
+   AS 'MODULE_PATHNAME', 'pg_reload_conf'
+	LANGUAGE C STABLE STRICT;
+
+/*
+CREATE FUNCTION pg_logfile_rotate() RETURNS bool
+   AS 'MODULE_PATHNAME', 'pg_logfile_rotate'
+	LANGUAGE C STABLE STRICT;
+*/
+
+CREATE FUNCTION pg_postmaster_starttime() RETURNS timestamp
+   AS 'MODULE_PATHNAME', 'pg_postmaster_starttime'
+	LANGUAGE C VOLATILE STRICT;
+
+CREATE FUNCTION pg_logdir_ls() RETURNS setof record
+   AS 'MODULE_PATHNAME', 'pg_logdir_ls'
+	LANGUAGE C VOLATILE STRICT;
+
+CREATE VIEW pg_logdir_ls AS
+	SELECT *
+	FROM pg_logdir_ls() AS A
+	(filetime timestamp, filename text);

@@ -1,0 +1,41 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Slony-I tasks</title>
+</head>
+
+<body>
+<h3>Slony-I tasks</h3>
+<p>
+In the appropriate context, pgAdmin III can trigger several maintenance tasks.
+<UL>
+    <LI><P>
+    <b id="restart">Restart node</b> - Under some conditions, it may be necessary
+    to restart a slon process on a node, initialize as if freshly started and make it reload 
+    its configuration. This can be triggered remotely with the restart node function.
+    </P>
+    <LI><P>
+    <b id="lock">Lock set</b> - Disables updates to a set to be replicated. This is 
+    necessary for clean switch over the source of a replication from one node to another.
+    </P>
+    <LI><P>
+    <b id="unlock">Unlock set</b> - Re-enables updates to a set to be replicated
+    after a previous lock.
+    </P>
+    <LI><P>
+    <b id="merge">Merge set</b> - Joins two sets, originating from the same node
+    and subscribed by the same nodes, into one. This can be used as a workaround to
+    the fact that a subscribed set can't be extended.
+    </P>
+    <LI><P>
+    <b id="move">Move set</b> - Moves a replication set from one node to another,
+    i.e. making the target node the new source. The old node will become subscriber
+    to the new provider node. This is the normal way how to switch over gracefully
+    the master role from one node to another.
+    </P>
+</UL>
+</p>
+</body>
+</html>

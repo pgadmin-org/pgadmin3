@@ -1,0 +1,66 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Extended features</title>
+</head>
+
+<body>
+
+<h3>Extended features</h3>
+
+<p>pgAdmin III's functionality can be further enhanced using the <I>adminpack</I> contrib
+module for PostgreSQL. This is a library of additional functions that may be installed 
+on your server which allows pgAdmin to offer additional features, such as:</p>
+
+<ul>
+
+<li>The sizes on disk of tablespaces, databases, tables and indexes are
+displayed on the Statistics tab in the <a href="main.html">main window</a>.<br>&nbsp;</li>
+
+<li>The <a href="status.html">Status dialogue</A> will have the logfile
+tab and can display the server logfiles (if logging is appropriately configured).<br>&nbsp;</li>
+
+<li>Running queries from other users may be cancelled from the 
+<a href="status.html">Status dialogue</A>.<br>&nbsp;</li>
+
+<li>The server's configuration files postgresql.conf and pg_hba.conf
+may be editted, and reloaded remotely.<br>&nbsp;</li>
+
+</ul>
+
+<p>The adminpack is installed and activated by default if you are running the 
+'official' pgInstaller distribution of PostgreSQL for Windows, however, if you are running
+any other version of PostgreSQL you will need to manually install it. To do so,
+simply copy the <i>/xtra/admin</i> or <i>/xtra/admin81</i> (for PostgreSQL 8.1 and above) directory 
+from the pgAdmin source distribution to the /contrib directory of your pre-configured PostgreSQL 
+source tree. If you don't have the pgAdmin source code, you can download the adminpacks
+<a href="http://www.pgadmin.org/download/adminpacks.php">here</a>.</p>
+
+<p>Run the following commands (substituting <i>admin</i> for <i>admin81</i> 
+if required):</p>
+
+<pre>
+    # cd $PGSRC/contrib/admin
+    # make all
+    # make install
+</pre>
+
+<p>The module should now be built, and installed into your existing PostgreSQL installation.
+to be used, you must now install the module into the database you use as pgAdmin's <I>Maintenance
+DB</I> (normally <i>postgres</i>, though you may wish to use a different database). To do so, 
+locate the <i>admin.sql</i> or <i>admin81.sql</i> file installed in the previous step - normally 
+this may be found in /usr/local/pgsql/share/contrib/ and run it against your database. You will 
+normally need to do this as the PostgreSQL superuser:</p>
+
+<pre>
+    $ psql postgres < /usr/local/pgsql/share/contrib/admin.sql
+</pre>
+
+<p>The next time you connect to the server with pgAdmin, it will detect the presence of the adminpack
+and offer full functionality.</p>
+
+</body>
+
+</html>

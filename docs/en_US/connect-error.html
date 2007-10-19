@@ -1,0 +1,66 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Connection errors</title>
+</head>
+
+<body>
+
+<H3>Connect errors</H3>
+
+<p>
+When connecting to a PostgreSQL server, you might get error messages that need
+some more explanations. If you encounter them, please read the following information
+carefully, we're sure they will help you.
+<br>
+<ul>
+<li><a href="hints/conn-listen.html">could not connect to Server: Connection refused</a>
+<li><a href="hints/conn-hba.html">FATAL: no pg_hba.conf entry</a>
+</ul>
+<br>
+</p>
+<H3 id="notrunning">could not connect to Server: Connection refused</H3>
+<center><img src="images/not-running.png"></center>
+<p>
+If this message appears, there are two possible reasons for this: either the server isn't 
+running at all. Simply start it.
+</p>
+<p>
+The other non-trivial cause for this message is that the server isn't configured 
+to accept TCP/IP requests on the address shown.
+</p>
+<p>
+For security reasons, a PostgreSQL server &quot;out of the box&quot; doesn't listen on TCP/IP ports.
+Instead, it has to be enabled to listen for TCP/IP requests. This can be done by 
+adding <b>tcpip = true</b> to the postgresql.conf file for Versions 7.3.x and 7.4.x, or 
+<b>listen_addresses='*'</b> for Version 8.0.x and above; this will make the server
+accept connections on any IP interface.
+</p>
+<p>
+For further information, please refer to the PostgreSQL documentation about
+<a href="pg/runtime-config.html">runtime configuration</a>.<br>
+</p>
+<br>
+<H3 id="no-hba">FATAL: no pg_hba.conf entry</H3>
+<center><img src="images/no-hba.png"></center>
+<p>
+If this message appears, your server can be contacted correctly over the network,
+but isn't configured to accept your connection. Your client isn't detected 
+as a legal user for the database.
+</p>
+<p>
+You will have to add an entry in the form
+<br>&nbsp;&nbsp;&nbsp;<b>host template1 postgres 192.168.0.0/24 md5</b>
+<br>for IPV4 or 
+<br>&nbsp;&nbsp;&nbsp;<b>host template1 postgres ::ffff:192.168.0.0/120 md5</b>
+<br>for IPV6 networks to the 
+pg_hba.conf file.
+</p>
+<p>
+For further information, please refer to the PostgreSQL documentation about 
+<a href="pg/client-authentication.html">client authentication</a>.<br>
+</p>
+</BODY>
+</HTML>

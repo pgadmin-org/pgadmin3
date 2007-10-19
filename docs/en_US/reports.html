@@ -1,0 +1,65 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Report Tool</title>
+</head>
+
+<body>
+
+<H3>Report Tool</H3>
+
+<P>
+pgAdmin includes a simple reporting engine which allows you to quickly
+generate reports from the queries you write in the <a href="query.html">
+Query Tool</a>, or from objects or collections of objects in the main
+application Window - for example, you can create a report of the properties
+of any object, or a list of functions in a schema. To create a report,
+select a node in the browser treeview, and select the report to create from
+the context menu, or from the Reports submenu of the Tools menu. To create
+a report in the Query Tool, select the Quick Report option from the File menu.
+</P>
+
+<center><img src="images/reporttool-html.png"></center>
+
+<P>Each report contains a title and optional notes that can be modified before
+the report is produced. In addition, you may select whether or not to include
+any SQL that may be relevant to the report you have select.
+</P>
+
+<P>Reports are generated internally in XML, however pgAdmin can apply an XML
+stylesheet to the report at processing time to format the output as required. A
+default stylesheet is built-in which produces HTML output. With the HTML output
+option selected, you can opt to embed the default CSS stylesheet (which will 
+render the report in the same colors as the pgAdmin website), to embed an external
+stylesheet into the report, or to link to an external stylesheet. The following 
+class/object ID's are used:</P>
+
+<ul>
+  <li><b>#ReportHeader</b>: This div contains the report header.</li>
+  <li><b>#ReportNotes</b>: This div contains the option report notes.</li>
+  <li><b>#ReportDetails</b>: This div contains the main body of the report.</li>
+  <li><b>#ReportFooter</b>: This div contains the report footer.</li>
+  <li><b>.ReportSQL</b>: This class is used by the &lt;PRE&gt;&lt;/PRE&gt; blocks containing SQL.</li>
+  <li><b>.ReportDetailsOddDataRow</b>: This class is applied to the odd numbered rows of tables.</li>
+  <li><b>.ReportDetailsEvenDataRow</b>: This class is applied to the even numbered rows of tables.</li>
+  <li><b>.ReportTableHeaderCell</b>: This class is applied to table header cells.</li>
+  <li><b>.ReportTableValueCell</b>: This class is applied to table data cells.</li>
+  <li><b>.ReportTableInfo</b>: This class is applied to table footnotes.</li>
+</ul>
+
+<center><img src="images/reporttool-xml.png"></center>
+
+<P>When generating reports in XML format, you can opt to output plain XML,
+XML linked to an external XSL stylesheet, or to process the XML using an 
+external stylesheet and save the resulting output. This allows complete 
+flexibility to format reports in any way.</P>
+
+<p>The default <a href="default-xsl.html">XSL stylesheet</a> used to render 
+XHTML output can be used as a starting point for your own, and sample 
+<a href="sample-xml.html">XML data</a> may also be reviewed if required.
+</p>
+
+</BODY>
+</HTML>

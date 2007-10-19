@@ -1,0 +1,37 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GB2312">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>访问数据库被拒绝</h3>
+<p>
+服 务 器 不 允 许 访 问 数 据 库： 服 务 器 报 告
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+访 问 PostgreSQL 数 据 库， 首 先 必 须 允 许 客 户 端 能 够 连 接 主 机 （基 于 主 机 的 认 证），
+然 后 在 所 有 SQL 访 问 权 限 被 验 证 之 前， PostgreSQL 将 检 查 pg_hba.conf 文 件 查 看 是 否 有 与 客 户 端 的 地址 / 用户名 / 数据库 相 符 合 的 方 案 存 在 并 且 是 允 许 访 问 的。
+</p>
+<p>
+为了避免由系统引起的不必要的安全漏洞，pg_hba.conf中的初始设置十分严格，可以像下面这样增加设置：
+</p>
+<p>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p>
+这 个 例 子 允 许 私 有 网 络 192.168.0.0/24 使 用 MD5 加 密 的 密 码 连 接 到 所 有 用 户 和 所 有 数 据 库。
+</p>
+<p>
+利 用 整 合 进 pgAdmin III 的 pg_hba.conf 编 辑 器 可 以 修 改 pg_hba.conf 配 置 文 件，
+修 改 完 毕 以 后， 需 要 使 用 pg_ctl 通 知 数 据 库 重 新 读 入 配 置 或 者 重 新 启 动 数 据 库。
+</p>
+</body>
+</html>

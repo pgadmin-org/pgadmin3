@@ -1,0 +1,32 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Conseil d'expert</title>
+</head>
+
+<body>
+
+<h3>Utiliser pg_autovacuum est recommandé</h3>
+<p>
+À partir de PostgreSQL 8.1, le processus pg_autovacuum qui était anciennement
+implémenté en tant que processus externe est maintenant complètement intégré
+dans le moteur. Il lancera VACUUM automatiquement si un nombre configurable de
+données a été modifiée.
+</p>
+<p>
+Exécuter VACUUM est nécessaire sur un serveur PostgreSQL pour conserver la
+cohérence des données ainsi que les performances du serveur. Pour commencer, il
+est recommandé d'activer le démon pg_autovacuum en initialisant les paramètres
+'autovacuum', 'stats_start_collector' et 'stats_row_level' du fichier
+postgresql.conf à la valeur 'on'. Avec une pénalité habituellement négligeable
+sur les performances, vous gagnerez avec l'exécution automatique des VACUUM.
+</p>
+<p>
+Pour ajuster les performances de pg_autovacuum à vos besoins personnels, vous
+pouvez avoir besoin de configurer plus finement les paramètres globaux ou les
+paramètres inhérents à chaque table. Voir la documentation.
+</p>
+</body>
+</html>
