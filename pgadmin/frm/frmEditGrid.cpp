@@ -2730,8 +2730,8 @@ wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filte
 
 editGridFactory::editGridFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : editGridFactoryBase(list)
 {
-    mnu->Append(id, _("View &All Rows"), _("View the data in the selected object."));
-    toolbar->AddTool(id, _("View All Rows"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
+    mnu->Append(id, _("View &All Rows\tCtrl-D"), _("View the data in the selected object."));
+    toolbar->AddTool(id, _("View All Rows\tCtrl-D"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
 	context = false;
 }
 
@@ -2745,8 +2745,8 @@ wxWindow *editGridFactory::StartDialog(frmMain *form, pgObject *obj)
 #include "images/viewfiltereddata.xpm"
 editGridFilteredFactory::editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : editGridFactoryBase(list)
 {
-    mnu->Append(id, _("View F&iltered Rows..."), _("Apply a filter and view the data in the selected object."));
-    toolbar->AddTool(id, _("View Filtered Rows"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
+    mnu->Append(id, _("View F&iltered Rows...\tCtrl-G"), _("Apply a filter and view the data in the selected object."));
+    toolbar->AddTool(id, _("View Filtered Rows\tCtrl-G"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
 	context = false;
 }
 

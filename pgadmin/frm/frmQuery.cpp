@@ -1985,8 +1985,8 @@ bool queryToolDataFactory::CheckEnable(pgObject *obj)
 
 queryToolFactory::queryToolFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolBaseFactory(list)
 {
-    mnu->Append(id, _("&Query tool"), _("Execute arbitrary SQL queries."));
-    toolbar->AddTool(id, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+    mnu->Append(id, _("&Query tool\tCtrl-E"), _("Execute arbitrary SQL queries."));
+    toolbar->AddTool(id, _("Query tool\tCtrl-E"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
 }
 
 
