@@ -124,6 +124,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     if (connection->BackendMinimumVersion(8, 3))
         statusList->AddColumn(_("TX start"), 50);
 
+	statusList->AddColumn(_("Blocked by"), 35);
     statusList->AddColumn(_("Query"), 500);
 
     lockList->AddColumn(wxT("PID"), 50);
@@ -340,7 +341,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
     {
         // Status
 		long row=0;
-		pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT * FROM pg_stat_activity ORDER BY procpid"));
+		pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT *,(SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND relation IN (SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)) AS blockedby FROM pg_stat_activity ORDER BY procpid"));
 		if (dataSet1)
 		{
             statusList->Freeze();
@@ -392,6 +393,7 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                     if (connection->BackendMinimumVersion(8, 3))
 					    statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("xact_start")));
 
+					statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("blockedby")));
     				statusList->SetItem(row, colpos, qry.Left(250));
 					row++;
 				}
