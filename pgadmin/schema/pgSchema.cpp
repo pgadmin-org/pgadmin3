@@ -283,13 +283,13 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
 	{
 		if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
 		{
-			sql = wxT("SELECT CASE WHEN nspname LIKE E'pg\\_temp\\_%%' THEN 1\n")
-			      wxT("            WHEN (nspname LIKE E'pg\\_%') THEN 0\n");
+			sql = wxT("SELECT CASE WHEN nspname LIKE E'pg\\\\_temp\\\\_%%' THEN 1\n")
+			      wxT("            WHEN (nspname LIKE E'pg\\\\_%') THEN 0\n");
 		}
 		else
 		{
-			sql = wxT("SELECT CASE WHEN nspname LIKE 'pg\\_temp\\_%%' THEN 1\n")
-				  wxT("            WHEN (nspname LIKE 'pg\\_%') THEN 0\n");
+			sql = wxT("SELECT CASE WHEN nspname LIKE 'pg\\\\_temp\\\\_%%' THEN 1\n")
+				  wxT("            WHEN (nspname LIKE 'pg\\\\_%') THEN 0\n");
 		}
 		sql += wxT("            ELSE 3 END AS nsptyp,\n")
 			   wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
