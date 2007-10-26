@@ -409,13 +409,14 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 type = argTypesTkz.GetNextToken();
                 function->iAddArgType(map[type]);
 
-                // Now add the name, stripping the quotes if
+                // Now add the name, stripping the quotes and \" if
                 // necessary. 
                 name = argNamesTkz.GetNextToken();
                 if (!name.IsEmpty())
                 {
                     if (name[0] == '"')
                         name = name.Mid(1, name.Length()-2);
+                    name.Replace(wxT("\\\""), wxT("\""));
                     function->iAddArgName(name);
                 }
                 else
