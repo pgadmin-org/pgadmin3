@@ -211,8 +211,11 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 	btnTerminateSt->Enable(false);
 	btnCancelLk->Enable(false);
 	btnTerminateLk->Enable(false);
-	btnCommit->Enable(false);
-	btnRollback->Enable(false);
+    if (connection->BackendMinimumVersion(8, 1))
+    {
+	    btnCommit->Enable(false);
+	    btnRollback->Enable(false);
+    }
 
 	loaded = true;
 }
@@ -274,8 +277,11 @@ void frmStatus::OnNotebookPageChanged(wxNotebookEvent& event)
 	btnTerminateSt->Enable(false);
 	btnCancelLk->Enable(false);
 	btnTerminateLk->Enable(false);
-	btnCommit->Enable(false);
-	btnRollback->Enable(false);
+    if (connection->BackendMinimumVersion(8, 1))
+    {
+    	btnCommit->Enable(false);
+	    btnRollback->Enable(false);
+    }
 }
 
 
