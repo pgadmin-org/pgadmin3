@@ -241,7 +241,7 @@ wxString dlgStep::GetUpdateSql()
             wxString onerror = wxT("fsi")[rbxOnError->GetSelection()];
             if (!vars.IsEmpty())
                 vars.Append(wxT(", "));
-            vars.Append(wxT("jstname=") + qtDbString(name));
+            vars.Append(wxT("jstonerror='") + onerror + wxT("'"));
         }
         if (txtComment->GetValue() != step->GetComment())
         {
