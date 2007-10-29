@@ -127,10 +127,12 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
 	statusList->AddColumn(_("Blocked by"), 35);
     statusList->AddColumn(_("Query"), 500);
 
-    lockList->AddColumn(wxT("PID"), 50);
+    lockList->AddColumn(wxT("PID"), 35);
     lockList->AddColumn(_("Database"), 50);
     lockList->AddColumn(_("Relation"), 50);
     lockList->AddColumn(_("User"), 50);
+    if (connection->BackendMinimumVersion(8, 3))
+        lockList->AddColumn(_("XID"), 50);
     lockList->AddColumn(_("TX"), 50);
     lockList->AddColumn(_("Mode"), 50);
     lockList->AddColumn(_("Granted"), 50);
@@ -425,7 +427,21 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 		// Locks
 		long row=0;
 		wxString sql;
-		if (connection->BackendMinimumVersion(7, 4)) {
+		if (connection->BackendMinimumVersion(8, 3)) 
+        {
+            sql = wxT("SELECT ")
+                  wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
+                  wxT("pgl.relation::regclass AS class, ")
+                  wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
+                  wxT("pgl.virtualxid, pgl.virtualtransaction AS transaction, pg_stat_get_backend_pid(svrid) AS pid, pgl.mode, pgl.granted, ")
+                  wxT("pg_stat_get_backend_activity(svrid) AS current_query, ")
+                  wxT("pg_stat_get_backend_activity_start(svrid) AS query_start ")
+                  wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
+                  wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
+                  wxT("ORDER BY pid;");
+		} 
+        else if (connection->BackendMinimumVersion(7, 4)) 
+        {
             sql = wxT("SELECT ")
                   wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
                   wxT("pgl.relation::regclass AS class, ")
@@ -436,7 +452,9 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
                   wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
                   wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
                   wxT("ORDER BY pid;");
-		} else {
+		} 
+        else 
+        {
             sql = wxT("SELECT ")
                   wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
                   wxT("pgl.relation::regclass AS class, ")
@@ -480,6 +498,8 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 					lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("dbname")));
 					lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("class")));
 					lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("user")));
+		            if (connection->BackendMinimumVersion(8, 3)) 
+                        lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("virtualxid")));
 					lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("transaction")));
 					lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("mode")));
 					
