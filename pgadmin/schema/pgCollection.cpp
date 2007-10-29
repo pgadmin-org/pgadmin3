@@ -77,7 +77,7 @@ void pgCollection::ShowList(const wxString& name, ctlTree *browser, ctlListView 
             if (IsCollectionFor(data))
             {
                 properties->InsertItem(pos, data->GetFullName(), data->GetIconId());
-                properties->SetItem(pos, 1, data->GetComment());
+                properties->SetItem(pos, 1, firstLineOnly(data->GetComment()));
                 pos++;
             }
             // Get the next item
