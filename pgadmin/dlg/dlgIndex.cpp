@@ -326,14 +326,14 @@ wxString dlgIndex::GetSql()
             sql += wxT(" (") + GetColumns()
                 + wxT(")");
 
-            if (cbTablespace->GetOIDKey() > 0)
-                AppendIfFilled(sql, wxT("\n       TABLESPACE "), qtIdent(cbTablespace->GetValue()));
-
             if (txtFillFactor)
             {
                 if (connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
                     sql += wxT("\n  WITH (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(")");
             }
+
+            if (cbTablespace->GetOIDKey() > 0)
+                AppendIfFilled(sql, wxT("\n  TABLESPACE "), qtIdent(cbTablespace->GetValue()));
 
             AppendIfFilled(sql, wxT(" WHERE "), txtWhere->GetValue());
             sql +=  wxT(";\n");
@@ -372,4 +372,5 @@ pgObject *dlgIndex::CreateObject(pgCollection *collection)
         "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;
 }
+
 
