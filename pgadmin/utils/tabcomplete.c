@@ -231,25 +231,27 @@ static char *_complete_from_query(const char *text, const char *query, const Sch
 {
 	int string_length = strlen(text);
 	char *e_text;
-	char *e_addon = NULL;
 	char *complete_query = NULL;
 	char *t;
 
 	e_text = malloc(string_length*2+1);
 	PQescapeString(e_text, text, string_length);
 
-	if (addon) 
-	{
-		e_addon = malloc(strlen(addon)*2+1);
-		PQescapeString(e_addon, addon, strlen(addon));
-	}
-	else 
-		e_addon = strdup("");
-
 	if (query != NULL)
 	{
 		/* Normal query */
 		int bufsize = 1024;
+		char *e_addon;
+
+		/* Normal query needs escaped string */
+		if (addon)
+		{
+			e_addon = malloc(strlen(addon)*2+1);
+			PQescapeString(e_addon, addon, strlen(addon));
+		}
+		else
+			e_addon = strdup("");
+
 		while (1)
 		{
 			int r;
@@ -264,6 +266,7 @@ static char *_complete_from_query(const char *text, const char *query, const Sch
 			else
 				break;
 		}
+		free(e_addon);
 	}
 	else
 	{
@@ -338,7 +341,7 @@ static char *_complete_from_query(const char *text, const char *query, const Sch
 				e_text,
 				string_length,
 				e_text,
-				e_addon);
+				addon?addon:"");
 			
 			if (r < 0 || r >= bufsize)
 				bufsize *= 2;
@@ -354,7 +357,6 @@ static char *_complete_from_query(const char *text, const char *query, const Sch
 	t = pg_query_to_single_ordered_string(complete_query, dbptr);
 	if (complete_query)
 		free(complete_query);
-	free(e_addon);
 	free(e_text);
 	return t;
 }
