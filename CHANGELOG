@@ -36,6 +36,10 @@ Changes
 
 Date       Dev Ver    Change details
 ---------- --- -----  --------------
+2007-11-07 DP  1.8.1  Use popen() when testing the versions of helper apps on
+                      non-windows platforms to avoid an obscure bug on PPC Macs
+                      that could leave wxExecute hanging indefinitely whilst
+                      waiting on a zombie process.
 2007-10-30 DP  1.8.1  When creating a new index and specifying both tablespace
                       and fill factor, make sure the SQL is formulated 
                       correctly, per Stefan Wolf

@@ -161,6 +161,7 @@ void DisplayExternalHelp(const wxString &helpTopic, const wxString &docPath, wxH
 
 #ifndef WIN32
 wxString ExecProcess(const wxString &cmd);
+int ExecProcess(const wxString &command, wxArrayString &result);
 #endif
 
 wxString GetHtmlEntity(const wxChar ch);

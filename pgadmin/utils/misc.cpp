@@ -1003,6 +1003,25 @@ wxString ExecProcess(const wxString &cmd)
 	}
 	return res;
 }
+
+int ExecProcess(const wxString &command, wxArrayString &result)
+{
+    FILE *fp_command;
+    char buf[4098];
+
+    fp_command = popen(command.mb_str(wxConvUTF8), "r");
+
+    if (!fp_command)
+	    return -1;
+
+    while(!feof(fp_command))
+    {
+        if (fgets(buf, 4096, fp_command) != NULL)
+	        result.Add(wxString::FromAscii(buf));
+	}
+
+    return pclose(fp_command);
+}
 #endif
 
 #ifdef WIN32
@@ -1046,7 +1065,11 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
 {
 	wxArrayString output;
 
-	if (wxExecute(cmd + wxT(" --version"), output, 0) != 0)
+#ifdef __WXMSW__
+ 	if (wxExecute(cmd + wxT(" --version"), output, 0) != 0)
+#else
+	if (ExecProcess(cmd + wxT(" --version"), output) != 0)
+#endif
     {
         wxLogError(_("Failed to execute: %s --version"), cmd.c_str());
         return false;
@@ -1092,7 +1115,11 @@ bool isPgApp(const wxString &app)
 
 	wxArrayString output;
 
-	if (wxExecute(app + wxT(" --version"), output, 0) != 0)
+#ifdef __WXMSW__
+ 	if (wxExecute(app + wxT(" --version"), output, 0) != 0)
+#else
+	if (ExecProcess(app + wxT(" --version"), output) != 0)
+#endif
     {
         wxLogError(_("Failed to execute: %s --version"), app.c_str());
         return false;
@@ -1111,7 +1138,11 @@ bool isEdbApp(const wxString &app)
 
 	wxArrayString output;
 
-	if (wxExecute(app + wxT(" --version"), output, 0) != 0)
+#ifdef __WXMSW__
+ 	if (wxExecute(app + wxT(" --version"), output, 0) != 0)
+#else
+	if (ExecProcess(app + wxT(" --version"), output) != 0)
+#endif
     {
         wxLogError(_("Failed to execute: %s --version"), app.c_str());
         return false;
