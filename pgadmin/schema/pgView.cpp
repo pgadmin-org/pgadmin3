@@ -64,7 +64,7 @@ wxString pgView::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- View: \"") + GetQuotedFullIdentifier() + wxT("\"\n\n")
+        sql = wxT("-- View: ") + GetQuotedFullIdentifier() + wxT("\n\n")
             + wxT("-- DROP VIEW ") + GetQuotedFullIdentifier() + wxT(";")
             + wxT("\n\nCREATE OR REPLACE VIEW ") + GetQuotedFullIdentifier() + wxT(" AS \n")
             + GetFormattedDefinition()
