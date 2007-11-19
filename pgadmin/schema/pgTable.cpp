@@ -783,6 +783,15 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
              wxT(", toast_blks_hit AS ") + qtIdent(_("Toast Blocks Hit")) +
              wxT(", tidx_blks_read AS ") + qtIdent(_("Toast Index Blocks Read")) +
              wxT(", tidx_blks_hit AS ") + qtIdent(_("Toast Index Blocks Hit"));
+
+    if (GetConnection()->BackendMinimumVersion(8, 2))
+    {
+		sql +=
+             wxT(", last_vacuum AS ") + qtIdent(_("Last Vacuum")) +
+             wxT(", last_autovacuum AS ") + qtIdent(_("Last Autovacuum")) +
+			 wxT(", last_analyze AS ") + qtIdent(_("Last Analyze")) +
+			 wxT(", last_autoanalyze AS ") + qtIdent(_("Last Autoanalyze"));
+	}
     
     if (GetConnection()->HasFeature(FEATURE_SIZE))
     {
