@@ -8,21 +8,27 @@
 
 <body>
 
-<h3>Running pg_autovacuum recommended</h3>
+<h3>Running autovacuum recommended</h3>
 <p>
-Introduced in PostgreSQL 8.1, the pg_autovacuum process which was previously 
+Introduced in PostgreSQL 8.1, the autovacuum process which was previously 
 implemented as an external service process is now integrated into the backend. It will
 run VACUUM automatically if a configurable amount of data has changed.
 </p>
 <p>
 Running VACUUM is mandatory on a PostgreSQL server to keep data consistent 
-and the server performant. As a start, it is recommended to enable the pg_autovacuum 
+and the server performant. As a start, it is recommended to enable the autovacuum 
 daemon by setting 'autovacuum', 'stats_start_collector' and 'stats_row_level' 
-in postgresql.conf to 'on'. With a usually neglectable performance penalty from the
-data change tracking, you will gain automatic performing VACUUM runs.
+in postgresql.conf to 'on'.
+<p>
+In PostgreSQL 8.3 and newer, autovacuum is enabled by default unless you 
+turn off 'track_activities' or 'track_counts'.
 </p>
 <p>
-To adjust pg_autovacuum performance for individual needs, you might need to tune
+With a usually neglible performance penalty from the
+data change tracking, you will gain automatic VACUUM runs.
+</p>
+<p>
+To adjust autovacuum performance for individual needs, you might need to tune
 its settings using global parameters in postgresql.conf, or individually on each table; see
 the documentation.
 </p>
