@@ -321,6 +321,8 @@ void frmMain::CreateMenus()
     new createFactory(menuFactories, editMenu, toolBar);
     new dropFactory(menuFactories, editMenu, toolBar);
     new dropCascadedFactory(menuFactories, editMenu, 0);
+    new truncateFactory(menuFactories, editMenu, 0);
+    new truncateCascadedFactory(menuFactories, editMenu, 0);
 
     new separatorFactory(menuFactories);
 

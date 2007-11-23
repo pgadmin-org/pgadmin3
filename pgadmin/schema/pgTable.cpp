@@ -133,6 +133,15 @@ bool pgTable::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
+bool pgTable::Truncate(bool cascaded)
+{
+    wxString sql = wxT("TRUNCATE TABLE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
+    if (cascaded)
+        sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
+}
+
+
 void pgTable::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
 {
     wxString tmp;
@@ -1070,5 +1079,58 @@ bool enableAllTriggersFactory::CheckEnable(pgObject *obj)
     return obj && obj->IsCreatedBy(tableFactory) && obj->CanEdit()
                && (obj->GetOwner() == obj->GetConnection()->GetUser() || obj->GetServer()->GetSuperUser())
                && ((pgTable*)obj)->GetConnection()->BackendMinimumVersion(8, 1);
+}
+
+truncateFactory::truncateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("&Truncate"),  _("Truncate the selected table."));
+}
+
+
+wxWindow *truncateFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (wxMessageBox(_("Are you sure you wish to truncate this table?\n\nWARNING: This action will delete ALL data in the table!"), _("Truncate table"), wxYES_NO) == wxNO)
+        return 0;
+
+    ((pgTable*)obj)->Truncate(false);
+    ((pgTable*)obj)->UpdateRows();
+    wxTreeItemId item=form->GetBrowser()->GetSelection();
+    if (obj == form->GetBrowser()->GetObject(item))
+        obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+
+    return 0;
+}
+
+
+bool truncateFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(tableFactory);
+}
+
+
+truncateCascadedFactory::truncateCascadedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Truncate Cascaded"), _("Truncate the selected table and all referencing tables."));
+}
+
+
+wxWindow *truncateCascadedFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (wxMessageBox(_("Are you sure you wish to truncate this table and all tables that have foreign key references to this table?\n\nWARNING: This action will delete ALL data in the table!"), _("Truncate table cascaded"), wxYES_NO) == wxNO)
+        return 0;
+
+    ((pgTable*)obj)->Truncate(true);
+    ((pgTable*)obj)->UpdateRows();
+    wxTreeItemId item=form->GetBrowser()->GetSelection();
+    if (obj == form->GetBrowser()->GetObject(item))
+        obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+
+    return 0;
+}
+
+
+bool truncateCascadedFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(tableFactory) && ((pgTable*)obj)->GetConnection()->BackendMinimumVersion(8, 2);
 }
 

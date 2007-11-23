@@ -83,6 +83,7 @@ public:
     bool EnableTriggers(const bool b);
     void UpdateRows();
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    bool Truncate(bool cascaded);
     bool CanView() { return true; }
     bool CanMaintenance() { return true; }
     bool CanBackup() { return true; }
@@ -199,6 +200,23 @@ class enableAllTriggersFactory : public contextActionFactory
 {
 public:
     enableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+class truncateFactory : public contextActionFactory
+{
+public:
+    truncateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+
+class truncateCascadedFactory : public contextActionFactory
+{
+public:
+    truncateCascadedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
