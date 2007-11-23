@@ -662,6 +662,13 @@ void pgAdmin3::InitPaths()
 
     dataDir = wxString::FromAscii(DATA_DIR);
 #endif
+  
+    // On unix systems, the search path is as follows:
+    //
+    // 1) DATADIR/xxx              - DATADIR being defined by configure
+    // 2) ./../share/pgadmin3/xxx  - The default 'make install' layout, but allowing for relocation
+    // 3) ./xxx                    - Windows-style standalone install
+    // 4) ./../xxx                 - Unix-style standalone install (with binaries in a bin directory)
 
     if (wxDir::Exists(dataDir + I18N_DIR))
         i18nPath = dataDir + I18N_DIR;
@@ -677,28 +684,36 @@ void pgAdmin3::InitPaths()
 
     if (i18nPath.IsEmpty())
     {
-        if (wxDir::Exists(loadPath + I18N_DIR))
+        if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") I18N_DIR))
+            i18nPath = loadPath + wxT("/../share/pgadmin3") I18N_DIR;
+        else if (wxDir::Exists(loadPath + I18N_DIR))
             i18nPath = loadPath + I18N_DIR;
         else
             i18nPath = loadPath + wxT("/..") I18N_DIR;
     }
     if (uiPath.IsEmpty())
     {
-        if (wxDir::Exists(loadPath + UI_DIR))
+        if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") UI_DIR))
+            uiPath = loadPath + wxT("/../share/pgadmin3") UI_DIR;
+        else if (wxDir::Exists(loadPath + UI_DIR))
             uiPath = loadPath + UI_DIR;
         else 
             uiPath = loadPath + wxT("/..") UI_DIR;
     }
     if (docPath.IsEmpty())
     {
-        if (wxDir::Exists(loadPath + DOC_DIR))
+        if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") DOC_DIR))
+            docPath = loadPath + wxT("/../share/pgadmin3") DOC_DIR;
+        else if (wxDir::Exists(loadPath + DOC_DIR))
             docPath = loadPath + DOC_DIR ;
         else
             docPath = loadPath + wxT("/..") DOC_DIR ;
     }
     if (brandingPath.IsEmpty())
     {
-        if (wxDir::Exists(loadPath + BRANDING_DIR))
+        if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") BRANDING_DIR))
+            brandingPath = loadPath + wxT("/../share/pgadmin3") BRANDING_DIR;
+        else if (wxDir::Exists(loadPath + BRANDING_DIR))
             brandingPath = loadPath + BRANDING_DIR ;
         else
             brandingPath = loadPath + wxT("/..") BRANDING_DIR ;
