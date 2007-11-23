@@ -67,6 +67,7 @@
 #include "schema/pgTable.h"
 #include "schema/pgIndex.h"
 #include "schema/pgTrigger.h"
+#include "schema/pgRule.h"
 #include "schema/pgServer.h"
 #include "slony/slCluster.h"
 #include "slony/slSet.h"
@@ -263,9 +264,11 @@ void frmMain::CreateMenus()
     new countRowsFactory(menuFactories, viewMenu, 0);
     new executePgstattupleFactory(menuFactories, viewMenu, 0);
     new executePgstatindexFactory(menuFactories, viewMenu, 0);
+    new enabledisableRuleFactory(menuFactories, toolsMenu, 0);
     new enabledisableTriggerFactory(menuFactories, toolsMenu, 0);
     new disableAllTriggersFactory(menuFactories, toolsMenu, 0);
     new enableAllTriggersFactory(menuFactories, toolsMenu, 0);
+    toolsMenu->AppendSeparator();
 
     //--------------------------
     new separatorFactory(menuFactories);
@@ -323,6 +326,7 @@ void frmMain::CreateMenus()
     new dropCascadedFactory(menuFactories, editMenu, 0);
     new truncateFactory(menuFactories, editMenu, 0);
     new truncateCascadedFactory(menuFactories, editMenu, 0);
+    editMenu->AppendSeparator();
 
     new separatorFactory(menuFactories);
 

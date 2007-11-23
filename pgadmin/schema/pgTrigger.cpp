@@ -57,7 +57,7 @@ bool pgTrigger::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
-void pgTrigger::iSetEnabled(const bool b)
+void pgTrigger::SetEnabled(const bool b)
 {
     if (GetQuotedFullTable().Len() > 0 && ((enabled && !b) || (!enabled && b)))
     {
@@ -320,7 +320,7 @@ enabledisableTriggerFactory::enabledisableTriggerFactory(menuFactoryList *list, 
 
 wxWindow *enabledisableTriggerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    ((pgTrigger*)obj)->iSetEnabled(!((pgTrigger*)obj)->GetEnabled());
+    ((pgTrigger*)obj)->SetEnabled(!((pgTrigger*)obj)->GetEnabled());
 
     wxTreeItemId item=form->GetBrowser()->GetSelection();
     if (obj == form->GetBrowser()->GetObject(item))

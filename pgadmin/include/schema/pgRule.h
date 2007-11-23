@@ -61,9 +61,12 @@ public:
     bool GetDoInstead() const { return doInstead; }
     void iSetDoInstead(const bool b) { doInstead=b; }
     bool GetEnabled() const { return enabled; }
+    void SetEnabled(const bool b);
     void iSetEnabled(const bool b) { enabled=b; }
     wxString GetQuotedFullTable() const { return quotedFullTable; }
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
+    void iSetParentIsTable(const bool b) { parentistable=b; }
+    bool GetParentIsTable() { return parentistable; }
 
     bool GetSystemObject() const { return GetName() == wxT("_RETURN"); }
     bool CanDrop() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
@@ -76,7 +79,16 @@ public:
     bool HasReferences() { return true; }
 private:
     wxString event, condition, action, quotedFullTable;
-    bool doInstead, enabled;
+    bool doInstead, enabled, parentistable;
+};
+
+class enabledisableRuleFactory : public contextActionFactory
+{
+public:
+    enabledisableRuleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+    bool CheckChecked(pgObject *obj);
 };
 
 #endif

@@ -49,7 +49,8 @@ public:
     long GetTriggerType() const {return triggerType; }
     void iSetTriggerType(const long l) { triggerType=l; }
     bool GetEnabled() const { return enabled; }
-    void iSetEnabled(const bool b);
+    void SetEnabled(const bool b);
+    void iSetEnabled(const bool b) { enabled=b; }
     void iSetTriggerFunction(pgFunction *fkt) { triggerFunction=fkt; }
     wxString GetQuotedFullTable() const { return quotedFullTable; }
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }

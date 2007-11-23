@@ -14,6 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "frm/frmMain.h"
 #include "utils/misc.h"
 #include "schema/pgRule.h"
 
@@ -34,6 +35,23 @@ bool pgRule::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
         sql += wxT(" CASCADE");
     return GetDatabase()->ExecuteVoid(sql);
 }
+
+
+void pgRule::SetEnabled(const bool b)
+  	 {
+  	     if (GetQuotedFullTable().Len() > 0 && ((enabled && !b) || (!enabled && b)))
+  	     {
+  	         wxString sql = wxT("ALTER TABLE ") + GetQuotedFullTable() + wxT(" ");
+  	         if (enabled && !b)
+  	             sql += wxT("DISABLE");
+  	         else if (!enabled && b)
+  	             sql += wxT("ENABLE");
+  	         sql += wxT(" RULE ") + GetQuotedIdentifier();
+  	         GetDatabase()->ExecuteVoid(sql);
+  	     }
+  	 
+  	     enabled=b;
+  	 }
 
 
 wxString pgRule::GetSql(ctlTree *browser)
@@ -102,7 +120,7 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
     pgRule *rule=0;
 
     pgSet *rules= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT rw.oid, rw.*, relname, nspname, description,\n")
+        wxT("SELECT rw.oid, rw.*, relname, CASE WHEN relkind = 'r' THEN TRUE ELSE FALSE END AS parentistable, nspname, description,\n")
         wxT("       pg_get_ruledef(rw.oid") + collection->GetDatabase()->GetPrettyOption() + wxT(") AS definition\n")
         wxT("  FROM pg_rewrite rw\n")
         wxT("  JOIN pg_class cl ON cl.oid=rw.ev_class\n")
@@ -129,6 +147,7 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
                     rule->iSetEnabled(false);
             }
 
+            rule->iSetParentIsTable(rules->GetBool(wxT("parentistable")));
             rule->iSetDoInstead(rules->GetBool(wxT("is_instead")));
             rule->iSetAction(rules->GetVal(wxT("ev_action")));
             wxString definition=rules->GetVal(wxT("definition"));
@@ -176,3 +195,35 @@ pgRuleFactory::pgRuleFactory()
 
 pgRuleFactory ruleFactory;
 static pgaCollectionFactory cf(&ruleFactory, __("Rules"), rules_xpm);
+
+
+enabledisableRuleFactory::enabledisableRuleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Rule enabled?"), _("Enable or disable selected rule."), wxITEM_CHECK);
+}
+
+
+wxWindow *enabledisableRuleFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    ((pgRule*)obj)->SetEnabled(!((pgRule*)obj)->GetEnabled());
+
+    wxTreeItemId item=form->GetBrowser()->GetSelection();
+    if (obj == form->GetBrowser()->GetObject(item))
+        obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
+    form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), form->GetToolBar());
+
+    return 0;
+}
+
+
+bool enabledisableRuleFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(ruleFactory)
+        && ((pgRule*)obj)->GetConnection()->BackendMinimumVersion(8, 3)
+        && ((pgRule*)obj)->GetParentIsTable();
+}
+
+bool enabledisableRuleFactory::CheckChecked(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(ruleFactory) && ((pgRule*)obj)->GetEnabled();
+}
