@@ -123,12 +123,12 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
     connectParams.Trim( true );
     connectParams.Trim( false );
 
-    m_frame->getStatusBar()->SetStatusText( wxString(_( "Connecting to " )) + msg, 1 );	
+    m_frame->getStatusBar()->SetStatusText( wxString::Format(_( "Connecting to %s" ), msg.c_str()), 1 );	
     m_pgConn = PQconnectdb( connectParams.ToAscii());
 
     if( PQstatus( m_pgConn ) == CONNECTION_OK )
     {
-    	m_frame->getStatusBar()->SetStatusText( wxString(_( "Connected to " )) + msg, 1 );	
+    	m_frame->getStatusBar()->SetStatusText( wxString::Format(_( "Connected to %s" ), msg.c_str()), 1 );
 
     	PQsetClientEncoding( m_pgConn, "UNICODE" );
     }

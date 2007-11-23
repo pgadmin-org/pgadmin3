@@ -149,6 +149,8 @@ void dlgManageFavourites::OnRename(wxCommandEvent &ev)
 
 void dlgManageFavourites::OnDelete(wxCommandEvent &ev)
 {
+	wxString msg;
+
 	if (!trLocation->GetSelection().IsOk() ||
 		trLocation->GetSelection() == trLocation->GetRootItem())
 		return;
@@ -157,7 +159,11 @@ void dlgManageFavourites::OnDelete(wxCommandEvent &ev)
 	if (!item)
 		return;
 
-	if (wxMessageDialog(this, wxString(_("Are you sure you want to delete the ")) + ((item->GetId()!=-2)?_("favourite"):_("folder")) + wxT(" '") + item->GetTitle() + wxT("'?"), _("Confirm delete"), wxYES_NO | wxICON_QUESTION).ShowModal() != wxID_YES)
+	if (item->GetId() != -2)
+		msg = wxString::Format(_("Are you sure you want to delete the favourite '%s'?"), item->GetTitle().c_str());
+	else
+		msg = wxString::Format(_("Are you sure you want to delete the folder '%s'?"), item->GetTitle().c_str());
+	if (wxMessageDialog(this, msg, _("Confirm delete"), wxYES_NO | wxICON_QUESTION).ShowModal() != wxID_YES)
 		return;
 
 	if (favourites->DeleteTreeItem(trLocation->GetSelection()))

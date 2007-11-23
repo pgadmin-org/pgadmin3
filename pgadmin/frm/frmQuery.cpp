@@ -1146,8 +1146,10 @@ bool frmQuery::CheckChanged(bool canVeto)
     {
         wxString fn;
         if (!lastPath.IsNull())
-            fn = wxT(" in file ") + lastPath;
-        wxMessageDialog msg(this, wxString::Format(_("The text %s has changed.\nDo you want to save changes?"), fn.c_str()), _("Query"), 
+			fn = wxString::Format(_("The text in file %s has changed.\nDo you want to save changes?"), lastPath.c_str());
+		else
+			fn = _("The text has changed.\nDo you want to save changes?");
+        wxMessageDialog msg(this, fn, _("Query"), 
                     wxYES_NO|wxICON_EXCLAMATION|
                     (canVeto ? wxCANCEL : 0));
 
