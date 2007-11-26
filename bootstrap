@@ -8,7 +8,42 @@
 #
 #######################################################################
 
+# Check for aclocal 1.9/1.10
+echo "Checking aclocal..."
+RET=`type aclocal-1.10 2&>1 /dev/null || echo fail`
+if [ ! $RET ];
+then
+  ACLOCAL=aclocal-1.10
+else
+  RET=`type aclocal-1.9 2&>1 /dev/null || echo fail` 
+  if [ ! $RET ];
+  then
+    ACLOCAL=aclocal-1.9
+  else
+    echo "ERROR: this script requires aclocal-1.9 or aclocal-1.10"
+    exit 1
+  fi
+fi
+
+# Check for automake 1.9/1.10
+echo "Checking automake..."
+RET=`type automake-1.10 2&>1 /dev/null || echo fail`
+if [ ! $RET ];
+then
+  AUTOMAKE=automake-1.10
+else
+  RET=`type automake-1.9 2&>1 /dev/null || echo fail`
+  if [ ! $RET ];
+  then
+    AUTOMAKE=automake-1.9
+  else
+    echo "ERROR: this script requires automake-1.9 or automake-1.10"
+    exit 1
+  fi
+fi
+
 # Insert the version number wherever it's needed
+echo "Stamping the version number..."
 LONG_VER=`grep '#define VERSION_PACKAGE' pgadmin/include/version.h | awk '{print $3}'`
 SHORT_VER=`echo $LONG_VER | cut -d . -f1,2`
 
@@ -21,11 +56,16 @@ sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VE
 sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/src/build-tarball.in > pkg/src/build-tarball
 sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/suse/pgadmin3.spec.in > pkg/suse/pgadmin3.spec
 
-set -x
+echo "Configuring the build system..."
+
 if ! ([ -x config ]); then 
+  set -x
   mkdir config
 fi
-aclocal-1.9 && \
+
+set -x
+
+$ACLOCAL && \
 autoheader && \
-automake-1.9 --foreign --add-missing --copy && \
+$AUTOMAKE --foreign --add-missing --copy && \
 autoconf
