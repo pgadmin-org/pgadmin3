@@ -121,7 +121,6 @@ private:
     void OnExit(wxCommandEvent& event);
     void ViewData(bool filter = false);
     void OnSaveDefinition(wxCommandEvent& event);
-    void OnShowSystemObjects(wxCommandEvent& event);
     void OnToggleSqlPane(wxCommandEvent& event);
     void OnToggleObjectBrowser(wxCommandEvent& event);
     void OnToggleToolBar(wxCommandEvent& event);
