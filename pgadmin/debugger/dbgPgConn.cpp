@@ -291,10 +291,23 @@ bool dbgPgConn::BackendMinimumVersion(int major, int minor)
         // catalogs. This is expected to change either before GA, but in the meantime we
         // need to check the catalogue version in more detail, and if we don't see what looks
         // like a 8.3 catalog, force the version number back to 8.2. Yuck.
-        if (isEdb && majorVersion == 8 && minorVersion == 3)
+        if (m_isEdb && m_majorVersion == 8 && m_minorVersion == 3)
         {
-            if (ExecuteScalar(wxT("SELECT count(*) FROM pg_attribute WHERE attname = 'proconfig' AND attrelid = 'pg_proc'::regclass")) == wxT("0"))
-                minorVersion = 2; 
+            PGresult *res;
+            wxString result;
+
+            res = waitForCommand(wxT( "SELECT count(*) FROM pg_attribute WHERE attname = 'proconfig' AND attrelid = 'pg_proc'::regclass"));
+
+            if (PQresultStatus(res) == PGRES_TUPLES_OK)
+            {
+                // Retrieve the query result and return it.
+                result=wxString(PQgetvalue(res, 0, 0), wxConvUTF8);
+
+                // Cleanup & exit
+                PQclear(res);
+            }
+            if (result == wxT("0"))
+                m_minorVersion = 2; 
         }
     }
 
