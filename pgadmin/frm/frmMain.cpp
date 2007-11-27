@@ -1138,11 +1138,7 @@ pgsqlHelpFactory::pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar
 
 wxWindow *pgsqlHelpFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    if (obj && obj->GetConnection() && obj->GetConnection()->GetIsEdb())
-        DisplayHelp(wxT("index"), HELP_ENTERPRISEDB);
-    else
-        DisplayHelp(wxT("index"), HELP_POSTGRESQL);
-
+    DisplayHelp(wxT("index"), HELP_POSTGRESQL);
     return 0;
 }
 
