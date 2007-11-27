@@ -311,7 +311,18 @@ bool pgConn::BackendMinimumVersion(int major, int minor)
         wxString version=GetVersionString();
 	    sscanf(version.ToAscii(), "%*s %d.%d", &majorVersion, &minorVersion);
         isEdb = version.Upper().Matches(wxT("ENTERPRISEDB*"));
+
+        // EnterpriseDB 8.3 beta 1 & 2 and possibly later actually have PostgreSQL 8.2 style
+        // catalogs. This is expected to change either before GA, but in the meantime we
+        // need to check the catalogue version in more detail, and if we don't see what looks
+        // like a 8.3 catalog, force the version number back to 8.2. Yuck.
+        if (isEdb && majorVersion == 8 && minorVersion == 3)
+        {
+            if (ExecuteScalar(wxT("SELECT count(*) FROM pg_attribute WHERE attname = 'proconfig' AND attrelid = 'pg_proc'::regclass")) == wxT("0"))
+                minorVersion = 2; 
+        }
     }
+
 	return majorVersion > major || (majorVersion == major && minorVersion >= minor);
 }
 
