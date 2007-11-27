@@ -34,7 +34,7 @@ public:
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
-    bool GetSystemObject() const { return GetOid() <= GetConnection()->GetLastSystemOID(); }
+    bool GetSystemObject() const { return false; }
     wxString GetTargetType() const { return targetType; }
     void iSetTargetType(const wxString& s) { targetType=s; }
     wxString GetTargetSchema() const { return targetSchema; }
