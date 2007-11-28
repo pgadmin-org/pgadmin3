@@ -208,10 +208,14 @@ wsArgInfo::wsArgInfo( const wxString &argName, const wxString &argType, const wx
 
 const wxString wsArgInfo::quoteValue()
 {
-    if( m_value.CmpNoCase( wxT( "NULL" )) == 0 )
-    	return( m_value );
-    else if( m_value[0] == '\'' )
-    	return( m_value );
+    if (m_value == wxT(""))
+    	return (wxT("NULL"));
+    else if (m_value == wxT("''"))
+        return (wxT("''"));
+    else if (m_value == wxT("\\'\\'"))
+        return (wxT("'\\'\\''"));
+    else if (m_value[0] == '\'' )
+    	return(m_value);
     else
-    	return( wxString( wxT( "'" ) + m_value + wxT( "'" )));
+    	return(wxString(wxT("'") + m_value + wxT("'")));
 }
