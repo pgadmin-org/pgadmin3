@@ -69,9 +69,10 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
     dbRestrictionOk=true;
 
     cbDatabase->Append(wxT("postgres"));
+    cbDatabase->Append(wxT("edb"));
     cbDatabase->Append(wxT("template1"));
     wxString lastDB = settings->GetLastDatabase();
-    if (lastDB != wxT("postgres") && lastDB != wxT("template1"))
+    if (lastDB != wxT("postgres")&& lastDB != wxT("edb") && lastDB != wxT("template1"))
         cbDatabase->Append(lastDB);
     cbDatabase->SetSelection(0);
 
