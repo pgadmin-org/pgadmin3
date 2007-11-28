@@ -80,7 +80,10 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
                 break;
 
             case EDB_PACKAGEFUNCTION:
-                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && obj->GetDatabase()->CanDebugEdbspl() && obj->GetName() != wxT("cons"))
+                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && 
+                    obj->GetDatabase()->CanDebugEdbspl() && 
+                    obj->GetName() != wxT("cons") &&
+                    ((edbPackageFunction *)obj)->GetSource() != wxEmptyString)
                     return true;
                 break;
 
@@ -157,7 +160,10 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
                 break;
 
             case EDB_PACKAGEFUNCTION:
-                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && obj->GetDatabase()->CanDebugEdbspl() && obj->GetName() != wxT("cons"))
+                if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && 
+                    obj->GetDatabase()->CanDebugEdbspl() && 
+                    obj->GetName() != wxT("cons") &&
+                    ((edbPackageFunction *)obj)->GetSource() != wxEmptyString)
                     return true;
                 break;
 
@@ -179,4 +185,5 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
     }
     return false;
 }
+
 
