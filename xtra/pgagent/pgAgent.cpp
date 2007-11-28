@@ -88,7 +88,7 @@ int MainRestartLoop(DBconn *serviceConn)
             wxT(" WHERE jobenabled ")
             wxT("   AND jobagentid IS NULL ")
             wxT("   AND jobnextrun <= now() ")
-            wxT("   AND jobhostagent = '' OR jobhostagent = '") + hostname + wxT("'")
+            wxT("   AND (jobhostagent = '' OR jobhostagent = '") + hostname + wxT("')")
             wxT(" ORDER BY jobnextrun"));
 
         if (res)
