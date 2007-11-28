@@ -429,12 +429,9 @@ bool dlgDirectDbg::activateDebugger( )
         // Populate the ArgInfo object's IN or INOUT variables only, OUT
         // variables will be assigned NULL later on.
 
-        if( arg.getMode() != wxT( "o" ))
+        if(arg.getMode() != wxT("o"))
         {
-            if( grdParams->GetCellValue( i, COL_VALUE ) == wxT( "" ))
-                arg.setValue( wxT( "NULL" ));
-            else
-                arg.setValue( grdParams->GetCellValue( i, COL_VALUE ));
+            arg.setValue( grdParams->GetCellValue(i, COL_VALUE));
             i++;
         }    
     }
@@ -587,7 +584,14 @@ void dlgDirectDbg::invokeTargetCallable()
             int len = arg.getValue().Length() + 1;
             char *tmp = new char[len];
             snprintf(tmp, len, "%s", (const char *)arg.getValue().mb_str(wxConvUTF8));
-            params->paramValues[i] = tmp;
+            if (strcmp(tmp, "") == 0)
+                params->paramValues[i] = 0;
+            else if (strcmp(tmp, "''") == 0)
+                params->paramValues[i] = "";
+            else if (strcmp(tmp, "\\'\\'") == 0)
+                params->paramValues[i] = "''";
+            else
+                params->paramValues[i] = tmp;
         }
         else // IN
         {
@@ -596,7 +600,14 @@ void dlgDirectDbg::invokeTargetCallable()
             int len = arg.getValue().Length() + 1;
             char *tmp = new char[len];
             snprintf(tmp, len, "%s", (const char *)arg.getValue().mb_str(wxConvUTF8));
-            params->paramValues[i] = tmp;
+            if (strcmp(tmp, "") == 0)
+                params->paramValues[i] = 0;
+            else if (strcmp(tmp, "''") == 0)
+                params->paramValues[i] = "";
+            else if (strcmp(tmp, "\\'\\'") == 0)
+                params->paramValues[i] = "''";
+            else
+                params->paramValues[i] = tmp;
         }
 
             if (i)
