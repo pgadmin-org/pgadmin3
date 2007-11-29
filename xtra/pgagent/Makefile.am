@@ -20,7 +20,8 @@ EXTRA_DIST = \
 		$(srcdir)/win32.cpp \
 		$(srcdir)/pgAgent.rc \
 		$(srcdir)/pgagent.sql \
-		$(srcdir)/pgAgent.vcproj
+		$(srcdir)/pgAgent.vcproj \
+		$(srcdir)/precomp.cpp
 
 noinst_HEADERS = \
 		$(srcdir)/include/connection.h \
