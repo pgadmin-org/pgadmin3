@@ -21,6 +21,7 @@
 #include "debugger/frmDebugger.h"
 #include "schema/pgFunction.h"
 #include "schema/pgTrigger.h"
+#include "schema/edbPackageFunction.h"
 
 ///////////////////////////////////////////////////
 // Debugger factory
