@@ -216,7 +216,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
 
     // View menu
     viewMenu = new wxMenu();
-    viewMenu->Append(MNU_DATABASEBAR, _("&Database bar\tCtrl-Alt-D"), _("Show or hide the database selection bar."), wxITEM_CHECK);
+    viewMenu->Append(MNU_DATABASEBAR, _("&Database bar\tCtrl-Alt-B"), _("Show or hide the database selection bar."), wxITEM_CHECK);
     viewMenu->Append(MNU_OUTPUTPANE, _("&Output pane\tCtrl-Alt-O"), _("Show or hide the output pane."), wxITEM_CHECK);
     viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad\tCtrl-Alt-S"), _("Show or hide the scratch pad."), wxITEM_CHECK);
     viewMenu->Append(MNU_TOOLBAR, _("&Tool bar\tCtrl-Alt-T"), _("Show or hide the tool bar."), wxITEM_CHECK);
