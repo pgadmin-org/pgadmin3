@@ -18,7 +18,8 @@ pgadmin3_SOURCES = \
 EXTRA_DIST = \
 	$(srcdir)/pgAdmin3.vcproj \
 	$(srcdir)/precomp.cpp \
-	$(srcdir)/pgAdmin3.rc
+	$(srcdir)/pgAdmin3.rc \
+	$(srcdir)/ver_svn.bat
 
 # Generate svnversion.h every time, but only if repo version has changed.
 .PHONY: $(srcdir)/include/svnversion.cpp
