@@ -14,6 +14,7 @@ EXTRA_DIST = \
     $(srcdir)/upgrade.bat \
     $(srcdir)/resources/background.bmp \
     $(srcdir)/resources/banner.bmp \
+    $(srcdir)/resources/help.ico \
     $(srcdir)/resources/licence.rtf \
     $(srcdir)/src/i18ndata.wxs \
     $(srcdir)/src/i18nrefs.wxs \
