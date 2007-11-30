@@ -130,10 +130,12 @@ void dlgSynonym::ProcessTypeChange()
     if (cbTargetType->GetValue() != _("Public synonym"))
     {
         pgSet *schemas;
-        if (connection->BackendMinimumVersion(8, 1))
-            schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE E'pg\\_%' OR nspname = 'pg_catalog' ORDER BY nspname;"));
+        if (connection->BackendMinimumVersion(8, 2))
+            schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspparent = 0 AND nspname NOT LIKE E'pg\\_%' AND nspname NOT IN ('pg_catalog', 'sys', 'dbo', 'pgagent', 'information_schema') ORDER BY nspname;"));
+        else if (connection->BackendMinimumVersion(8, 1))
+            schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE E'pg\\_%' ORDER BY nspname;"));
         else
-            schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE 'pg\\_%' OR nspname = 'pg_catalog' ORDER BY nspname;"));
+            schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE 'pg\\_%' ORDER BY nspname;"));
 
         for (int x = 0; x < schemas->NumRows(); x++)
         {
