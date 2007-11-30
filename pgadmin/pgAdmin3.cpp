@@ -834,6 +834,7 @@ void pgAdmin3::InitPaths()
 
         wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
+        path.Add(wxT("/opt/EnterpriseDB/8.3/dbserver/bin"));
         path.Add(wxT("/usr/local/enterpriseDB/bin"));
         path.Add(wxT("/usr/local/enterprisedb/bin"));
         path.Add(wxT("/usr/local/edb/bin"));
