@@ -60,9 +60,11 @@ void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
     if (properties)
     {
         CreateListColumns(properties);
-        
+
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
+        if (GetConnection()->BackendMinimumVersion(8, 3))
+            properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("ACL"), GetAcl());
         properties->AppendItem(_("Trusted?"), GetTrusted());
         properties->AppendItem(_("Handler"), GetHandlerProc());
@@ -89,17 +91,20 @@ pgObject *pgLanguage::Refresh(ctlTree *browser, const wxTreeItemId item)
 
 pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
+    wxString sql;
     pgLanguage *language=0;
 
-    pgSet *languages= collection->GetDatabase()->ExecuteSet(
-        wxT("SELECT lan.oid, lan.lanname, lanpltrusted, lanacl, hp.proname as lanproc, vp.proname as lanval, description\n")
-        wxT("  FROM pg_language lan\n")
+    sql = wxT("SELECT lan.oid, lan.lanname, lanpltrusted, lanacl, hp.proname as lanproc, vp.proname as lanval, description");
+    if (collection->GetConnection()->BackendMinimumVersion(8, 3))
+        sql += wxT(", pg_get_userbyid(lan.lanowner) as languageowner\n");
+    sql += wxT("  FROM pg_language lan\n")
         wxT("  JOIN pg_proc hp on hp.oid=lanplcallfoid\n")
         wxT("  LEFT OUTER JOIN pg_proc vp on vp.oid=lanvalidator\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=lan.oid AND des.objsubid=0\n")
         wxT(" WHERE lanispl IS TRUE")
         + restriction + wxT("\n")
-        wxT(" ORDER BY lanname"));
+        wxT(" ORDER BY lanname");
+    pgSet *languages= collection->GetDatabase()->ExecuteSet(sql);
 
     if (languages)
     {
@@ -109,6 +114,8 @@ pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *br
             language = new pgLanguage(languages->GetVal(wxT("lanname")));
             language->iSetDatabase(collection->GetDatabase());
             language->iSetOid(languages->GetOid(wxT("oid")));
+            if (collection->GetConnection()->BackendMinimumVersion(8, 3))
+                language->iSetOwner(languages->GetVal(wxT("languageowner")));
             language->iSetAcl(languages->GetVal(wxT("lanacl")));
             language->iSetComment(languages->GetVal(wxT("description")));
             language->iSetHandlerProc(languages->GetVal(wxT("lanproc")));

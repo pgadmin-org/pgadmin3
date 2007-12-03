@@ -61,7 +61,9 @@ int dlgLanguage::Go(bool modal)
         txtComment->Disable();
 
     AddGroups();
-    AddUsers();
+    AddUsers(cbOwner);
+    if (!connection->BackendMinimumVersion(8, 3))
+        cbOwner->Disable();
     if (language)
     {
         // edit mode
@@ -153,10 +155,14 @@ void dlgLanguage::OnChangeName(wxCommandEvent &ev)
 
 void dlgLanguage::CheckChange()
 {
+    bool didChange=true;
     wxString name=cbName->wxComboBox::GetValue();
     if (language)
     {
-        EnableOK(name != language->GetName() || txtComment->GetValue() != language->GetComment());
+        didChange = name != language->GetName()
+          || txtComment->GetValue() != language->GetComment()
+          || (connection->BackendMinimumVersion(8, 3) && cbOwner->GetValue() != language->GetOwner());
+        EnableOK(didChange);
     }
     else
     {
@@ -183,6 +189,8 @@ wxString dlgLanguage::GetSql()
         if (name != language->GetName())
             sql += wxT("ALTER LANGUAGE ") + qtIdent(language->GetName()) 
                 +  wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+        if (connection->BackendMinimumVersion(8, 3))
+            AppendOwnerChange(sql, wxT("LANGUAGE ") + qtIdent(name));
     }
     else
     {
@@ -200,6 +208,8 @@ wxString dlgLanguage::GetSql()
             AppendIfFilled(sql, wxT("\n   VALIDATOR "), qtIdent(cbValidator->GetValue()));
             sql += wxT(";\n");
         }
+        if (connection->BackendMinimumVersion(8, 3))
+            AppendOwnerNew(sql, wxT("LANGUAGE ") + qtIdent(name));
     }
 
     sql += GetGrant(wxT("X"), wxT("LANGUAGE ") + qtIdent(name));
