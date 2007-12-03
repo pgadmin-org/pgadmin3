@@ -46,10 +46,10 @@ wxString pgLanguage::GetSql(ctlTree *browser)
 
         if (!GetValidatorProc().IsEmpty())
             sql += wxT("\n  VALIDATOR ") + GetValidatorProc();
-        
-        sql += wxT(";\n")
-            +  GetGrant(wxT("X"), wxT("LANGUAGE ") + GetQuotedFullIdentifier());
 
+        sql += wxT(";\n")
+            +  GetOwnerSql(8, 3, wxT("LANGUAGE ") + GetName())
+            +  GetGrant(wxT("X"), wxT("LANGUAGE ") + GetQuotedFullIdentifier());
     }
     return sql;
 }
