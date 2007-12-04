@@ -38,7 +38,7 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 
     // Setup the connection properties to be used by the debugger
     dbgConnProp cp;
-    cp.m_database = obj->GetDatabase()->GetQuotedIdentifier();
+    cp.m_database = obj->GetDatabase()->GetIdentifier();
     cp.m_host = obj->GetServer()->GetName();
     cp.m_password = obj->GetDatabase()->GetServer()->GetPassword();
     cp.m_port = NumToStr((long)obj->GetServer()->GetPort());
@@ -118,7 +118,7 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
 
     // Setup the connection properties to be used by the debugger
     dbgConnProp cp;
-    cp.m_database = obj->GetDatabase()->GetQuotedIdentifier();
+    cp.m_database = obj->GetDatabase()->GetIdentifier();
     cp.m_host = obj->GetServer()->GetName();
     cp.m_password = obj->GetDatabase()->GetServer()->GetPassword();
     cp.m_port = NumToStr((long)obj->GetServer()->GetPort());
