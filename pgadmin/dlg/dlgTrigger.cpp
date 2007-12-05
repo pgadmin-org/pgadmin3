@@ -123,8 +123,8 @@ int dlgTrigger::Go(bool modal)
 
         pgSet *set=connection->ExecuteSet(
             wxT("SELECT quote_ident(nspname) || '.' || quote_ident(proname)\n")
-            wxT("  FROM pg_proc, pg_namespace\n")
-            wxT(" WHERE pg_proc.pronamespace = pg_namespace.oid AND prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + sysRestr);
+            wxT("  FROM pg_proc p, pg_namespace n, pg_language l\n")
+            wxT(" WHERE p.pronamespace = n.oid AND p.prolang = l.oid AND l.lanname != 'edbspl' AND prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + sysRestr);
         if (set)
         {
             while (!set->Eof())
