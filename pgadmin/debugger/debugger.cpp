@@ -66,7 +66,7 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
             case PGM_FUNCTION:
                 {
                     pgFunction *func = (pgFunction *)obj;
-                    if (func->GetReturnType() != wxT("trigger"))
+                    if (func->GetReturnType() != wxT("trigger") && func->GetReturnType() != wxT("\"trigger\""))
                     {
                         if (func->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
                             return true;
@@ -146,15 +146,10 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
             case PGM_FUNCTION:
                 {
                     pgFunction *func = (pgFunction *)obj;
-                    if (func->GetReturnType() != wxT("trigger"))
-                    {
-                        if (func->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
-                            return true;
-                        else if (func->GetLanguage() == wxT("edbspl") && obj->GetDatabase()->CanDebugEdbspl())
-                            return true;
-                        else
-                            return false;
-                    }
+                    if (func->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
+                        return true;
+                    else if (func->GetLanguage() == wxT("edbspl") && obj->GetDatabase()->CanDebugEdbspl())
+                        return true;
                     else
                         return false;
                 }
