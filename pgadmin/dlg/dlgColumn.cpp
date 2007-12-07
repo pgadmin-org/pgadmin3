@@ -80,8 +80,11 @@ int dlgColumn::Go(bool modal)
         chkNotNull->SetValue(column->GetNotNull());
         txtAttstattarget->SetValue(NumToStr(column->GetAttstattarget()));
 
-        cbDatatype->Append(column->GetRawTypename());
-        AddType(wxT("?"), column->GetAttTypId(), column->GetRawTypename());
+		wxString fullType = column->GetRawTypename();
+		if (column->GetIsArray())
+			fullType += wxT("[]");
+        cbDatatype->Append(fullType);
+        AddType(wxT("?"), column->GetAttTypId(), fullType);
 
         if (!column->IsReferenced())
         {
