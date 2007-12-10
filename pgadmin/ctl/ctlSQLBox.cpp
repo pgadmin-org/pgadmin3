@@ -26,7 +26,7 @@
 wxString ctlSQLBox::sqlKeywords;
 
 // Additional pl/pgsql keywords we should highlight
-wxString plpgsqlKeywords = wxT(" elsif exception exit loop raise record return text");
+wxString plpgsqlKeywords = wxT(" elsif exception exit loop raise record return text while");
 
 
 BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
