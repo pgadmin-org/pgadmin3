@@ -77,58 +77,126 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
     	m_workerThread->Create();
     	m_workerThread->Run();
     }
+    
+    // Figure out the hostname/IP address
+    struct hostent *host;
+    unsigned long addr;
+    wxString hostip, hostname;
+
+#ifdef __WXMSW__
+    struct in_addr ipaddr;
+#else
+    unsigned long ipaddr;
+#endif
+    
+#ifndef __WXMSW__
+    if (!(server.IsEmpty() || server.StartsWith(wxT("/"))))
+    {
+#endif
+        addr = inet_addr(server.ToAscii());
+        if (addr == INADDR_NONE) // szServer is not an IP address
+        {
+            host = gethostbyname(server.ToAscii());
+            if (host == NULL)
+            {
+                wxLogError(__("Could not resolve hostname %s"), server.c_str());
+                return;
+            }
+
+        	memcpy(&(ipaddr),host->h_addr,host->h_length); 
+	    	hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
+            hostname = server;
+        }
+    	else
+        {
+    	    hostip = server;
+            hostname = server;
+        }
+#ifndef __WXMSW__
+    }
+    else
+        hostname = server;
+#endif
 
     // Build up a connection string
     wxString connectParams;
 
-    if( server.Length()) 
+    if(hostname.Length())
     {
-    	connectParams.Append( wxT( "host=" ));
-    	connectParams.Append( server );
+    	connectParams.Append(wxT( "host="));
+    	connectParams.Append(hostname);
 
-    	msg += delimiter + server; delimiter = _( ":" );
+    	msg += delimiter + server; delimiter = _(":");
+    }
+
+    if (hostip.Length()) 
+    {
+      connectParams.Append(wxT(" hostaddr="));
+      connectParams.Append(hostip);
     }
 
     if( port.Length()) 
     {
-    	connectParams += wxT( " port=" );
+    	connectParams += wxT(" port=");
     	connectParams += port;
 
-    	msg += delimiter + port; delimiter = _( ":" );
+    	msg += delimiter + port; delimiter = _(":");
     }
 
 
     if( database.Length()) 
     {
-    	connectParams.Append( wxT( " dbname=" ));
-    	connectParams.Append( database );
+    	connectParams.Append(wxT(" dbname="));
+    	connectParams.Append(qtConnString(database));
 
-    	msg += delimiter + database; delimiter = _( ":" );
+    	msg += delimiter + database; delimiter = _(":");
     }
 
-    if( username.Length()) 
+    if(username.Length())
     {
-    	connectParams.Append( wxT( " user=" ));
-    	connectParams.Append( username );
+    	connectParams.Append(wxT(" user="));
+    	connectParams.Append(username );
 
-    	msg += delimiter + username; delimiter =  _( ":" );
+    	msg += delimiter + username; delimiter =  _(":");
     }
 
-    if( password.Length()) 
+    if(password.Length()) 
     {
-    	connectParams.Append( wxT( " password=" ));
-    	connectParams.Append( password );
+    	connectParams.Append(wxT(" password="));
+    	connectParams.Append(password);
+    }
+
+    switch (sslmode)
+    {
+        case 1: 
+            connectParams.Append(wxT(" sslmode=require"));   
+            break;
+
+        case 2: 
+            connectParams.Append(wxT(" sslmode=prefer"));
+            break;
+
+        case 3: 
+            connectParams.Append(wxT(" sslmode=allow"));
+            break;
+
+        case 4: 
+            connectParams.Append(wxT(" sslmode=disable"));
+            break;
+
+        default:
+            break;
     }
 
     connectParams.Trim( true );
     connectParams.Trim( false );
 
-    m_frame->getStatusBar()->SetStatusText( wxString(_( "Connecting to " )) + msg, 1 );	
+    m_frame->getStatusBar()->SetStatusText( wxString(_( "Connecting to " )) + msg, 1 );
     m_pgConn = PQconnectdb( connectParams.ToAscii());
 
     if( PQstatus( m_pgConn ) == CONNECTION_OK )
     {
-    	m_frame->getStatusBar()->SetStatusText( wxString(_( "Connected to " )) + msg, 1 );	
+    	m_frame->getStatusBar()->SetStatusText( wxString(_( "Connected to " )) + msg, 1 );
 
     	PQsetClientEncoding( m_pgConn, "UNICODE" );
     }
