@@ -395,7 +395,10 @@ wxString qtTypeIdent(const wxString& value)
     wxString result = value;
 
     if (needsQuoting(result, true))
+    {
+        result.Replace(wxT("\""), wxT("\"\""));
         return wxT("\"") + result + wxT("\"");
+    }
     else
         return result;
 }
@@ -409,7 +412,10 @@ wxString qtIdent(const wxString& value)
     wxString result = value;
 
     if (needsQuoting(result, false))
+    {
+        result.Replace(wxT("\""), wxT("\"\""));
         return wxT("\"") + result + wxT("\"");
+    }
     else
         return result;
 }
