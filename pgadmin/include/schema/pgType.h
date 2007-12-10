@@ -50,6 +50,10 @@ public:
     void iSetReceiveFunction(const wxString& s) { receiveFunction=s; }
     wxString GetSendFunction() const { return sendFunction; }
     void iSetSendFunction(const wxString& s) { sendFunction=s; }
+    wxString GetTypmodinFunction() const { return typmodinFunction; }
+    void iSetTypmodinFunction(const wxString& s) { typmodinFunction=s; }
+    wxString GetTypmodoutFunction() const { return typmodoutFunction; }
+    void iSetTypmodoutFunction(const wxString& s) { typmodoutFunction=s; }
     wxString GetDefault() const { return defaultVal; }
     void iSetDefault(const wxString& s) { defaultVal=s; }
     wxString GetElement()  { return element; }
@@ -87,7 +91,8 @@ public:
 
 private:
     wxString alias, inputFunction, outputFunction, defaultVal, element, delimiter, alignment, storage,
-        typesList, quotedTypesList, labelList, quotedLabelList, sendFunction, receiveFunction;
+        typesList, quotedTypesList, labelList, quotedLabelList, sendFunction, receiveFunction,
+        typmodinFunction, typmodoutFunction;
 	wxArrayString typesArray, labelArray;
     long internalLength;
     int typeClass;

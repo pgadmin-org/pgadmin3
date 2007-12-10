@@ -30,6 +30,8 @@
 #define cbOutput                CTRL_COMBOBOX("cbOutput")
 #define cbReceive               CTRL_COMBOBOX("cbReceive")
 #define cbSend                  CTRL_COMBOBOX("cbSend")
+#define cbTypmodin              CTRL_COMBOBOX("cbTypmodin")
+#define cbTypmodout             CTRL_COMBOBOX("cbTypmodout")
 #define chkVariable             CTRL_CHECKBOX("chkVariable")
 #define txtIntLength            CTRL_TEXT("txtIntLength")
 #define txtDefault              CTRL_TEXT("txtDefault")
@@ -137,6 +139,8 @@ pgObject *dlgType::GetObject()
 
 int dlgType::Go(bool modal)
 {
+    pgSet *set;
+
     if (type)
     {
         // Edit Mode
@@ -150,6 +154,8 @@ int dlgType::Go(bool modal)
         cbOutput->Append(type->GetOutputFunction()); cbOutput->SetSelection(0); cbOutput->Disable();
         cbReceive->Append(type->GetReceiveFunction()); cbReceive->SetSelection(0); cbReceive->Disable();
         cbSend->Append(type->GetSendFunction()); cbSend->SetSelection(0); cbSend->Disable();
+        cbTypmodin->Append(type->GetTypmodinFunction()); cbTypmodin->SetSelection(0); cbTypmodin->Disable();
+        cbTypmodout->Append(type->GetTypmodoutFunction()); cbTypmodout->SetSelection(0); cbTypmodout->Disable();
 
         chkVariable->SetValue(type->GetInternalLength() < 0); chkVariable->Disable();
         if (type->GetInternalLength() > 0)
@@ -193,6 +199,7 @@ int dlgType::Go(bool modal)
         cbOwner->Disable();
 
         bool hasSendRcv = connection->BackendMinimumVersion(7, 4);
+        bool hasTypmod = connection->BackendMinimumVersion(8, 3);
 
         if (hasSendRcv)
         {
@@ -205,10 +212,21 @@ int dlgType::Go(bool modal)
             cbSend->Disable();
         }
 
+        if (hasTypmod)
+        {
+            cbTypmodin->Append(wxEmptyString);
+            cbTypmodout->Append(wxEmptyString);
+        }
+        else
+        {
+            cbTypmodin->Disable();
+            cbTypmodout->Disable();
+        }
+
         if (!connection->BackendMinimumVersion(8, 3))
             rdbType->Enable(TYPE_ENUM, false);
 
-        pgSet *set=connection->ExecuteSet(
+        set = connection->ExecuteSet(
             wxT("SELECT proname, nspname\n")
             wxT("  FROM (\n")
             wxT("        SELECT proname, nspname, max(proargtypes[0]) AS arg0, max(proargtypes[1]) AS arg1\n")
@@ -231,10 +249,61 @@ int dlgType::Go(bool modal)
                     cbReceive->Append(pn);
                     cbSend->Append(pn);
                 }
+                if (hasTypmod)
+                {
+                    cbTypmodin->Append(pn);
+                    cbTypmodout->Append(pn);
+                }
                 set->MoveNext();
             }
             delete set;
         }
+
+        if (hasTypmod)
+        {
+            set = connection->ExecuteSet(
+                wxT("SELECT proname, nspname\n")
+                wxT("  FROM pg_proc p\n")
+                wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+                wxT("  WHERE prorettype=(SELECT oid FROM pg_type WHERE typname='int4')")
+                wxT("    AND proargtypes[0]=(SELECT oid FROM pg_type WHERE typname='_cstring')")
+                wxT("    AND proargtypes[1] IS NULL")
+                wxT("  ORDER BY nspname, proname"));
+
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    wxString pn = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+
+                    cbTypmodin->Append(pn);
+                    set->MoveNext();
+                }
+                delete set;
+            }
+
+            set = connection->ExecuteSet(
+                wxT("SELECT proname, nspname\n")
+                wxT("  FROM pg_proc p\n")
+                wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+                wxT("  WHERE prorettype=(SELECT oid FROM pg_type WHERE typname='cstring')")
+                wxT("    AND proargtypes[0]=(SELECT oid FROM pg_type WHERE typname='int4')")
+                wxT("    AND proargtypes[1] IS NULL")
+                wxT("  ORDER BY nspname, proname"));
+
+            if (set)
+            {
+                while (!set->Eof())
+                {
+                    wxString pn = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+
+                    cbTypmodout->Append(pn);
+                    set->MoveNext();
+                }
+                delete set;
+            }
+        }
+
         FillDatatype(cbDatatype, cbElement);
         txtLength->SetValidator(numericValidator);
     }
@@ -486,6 +555,28 @@ wxString dlgType::GetSql()
                 }
 
             }
+            if (connection->BackendMinimumVersion(8, 3))
+            {
+                if (cbTypmodin->GetCurrentSelection() > 0 || cbTypmodout->GetCurrentSelection() > 0)
+                {
+                    if (cbTypmodin->GetCurrentSelection() > 0)
+                    {
+                        sql += wxT(",\n   TYPMOD_IN=");
+                        AppendQuoted(sql, cbTypmodin->GetValue());
+                        if (cbTypmodout->GetCurrentSelection() > 0)
+                        {
+                            sql += wxT(", TYPMOD_OUT=");
+                            AppendQuoted(sql, cbTypmodout->GetValue());
+                        }
+                    }
+                    else
+                    {
+                        sql += wxT(",\n   TYPMOD_OUT=");
+                        AppendQuoted(sql, cbTypmodout->GetValue());
+                    }
+                }
+
+            }
             sql += wxT(",\n    INTERNALLENGTH=");
             if (chkVariable->GetValue())
                 sql += wxT("VARIABLE");
@@ -510,4 +601,5 @@ wxString dlgType::GetSql()
 
     return sql;
 }
+
 

@@ -66,6 +66,18 @@ wxString pgType::GetSql(ctlTree *browser)
             sql +=wxT(",\n       INTERNALLENGTH=") + NumToStr(GetInternalLength())
                 + wxT(", ALIGNMENT=" + GetAlignment()
                 + wxT(", STORAGE=") + GetStorage());
+            if (GetConnection()->BackendMinimumVersion(8, 3))
+            {
+                if (GetTypmodinFunction() != wxEmptyString && GetTypmodoutFunction() != wxEmptyString)
+                {
+                    sql +=wxT(",\n       TYPMOD_IN=") + GetTypmodinFunction()
+                         +wxT(", TYPMOD_OUT=") + GetTypmodoutFunction();
+                }
+                else if (GetTypmodinFunction() != wxEmptyString)
+                    sql +=wxT(",\n       TYPMOD_IN=") + GetTypmodinFunction();
+                else if (GetTypmodoutFunction() != wxEmptyString)
+                    sql +=wxT(",\n       TYPMOD_OUT=") + GetTypmodoutFunction();
+            }
         }
         sql += wxT(");\n")
             + GetOwnerSql(8, 0)
@@ -185,6 +197,13 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
             properties->AppendItem(_("Receive function"), GetReceiveFunction());
             properties->AppendItem(_("Send function"), GetSendFunction());
             }
+            if (GetConnection()->BackendMinimumVersion(8, 3))
+            {
+                if (GetTypmodinFunction().Length() > 0)
+                    properties->AppendItem(_("Typmod in function"), GetTypmodinFunction());
+                if (GetTypmodoutFunction().Length() > 0)
+                    properties->AppendItem(_("Typmod out function"), GetTypmodoutFunction());
+            }
             properties->AppendItem(_("Storage"), GetStorage());
         }
         properties->AppendItem(_("System type?"), GetSystemObject());
@@ -261,6 +280,13 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
             {
                 type->iSetReceiveFunction(types->GetVal(wxT("typreceive")));
                 type->iSetSendFunction(types->GetVal(wxT("typsend")));
+            }
+            if (collection->GetConnection()->BackendMinimumVersion(8, 3))
+            {
+                if (types->GetVal(wxT("typmodin")) != wxT("-"))
+                    type->iSetTypmodinFunction(types->GetVal(wxT("typmodin")));
+                if (types->GetVal(wxT("typmodout")) != wxT("-"))
+                    type->iSetTypmodoutFunction(types->GetVal(wxT("typmodout")));
             }
             wxString align=types->GetVal(wxT("typalign"));
             type->iSetAlignment( 
