@@ -48,7 +48,7 @@ public:
 	dlgDirectDbg( frmDebugger *parent, wxWindowID id, const dbgConnProp & connProp );
 	dbgBreakPointList & getBreakpointList();
     void setupParamWindow();
-	void startDebugging();
+	bool startDebugging();
 
 private:
 
@@ -68,7 +68,7 @@ private:
 	dbgBreakPointList m_breakpoints;		// List of initial breakpoints to create
 	frmDebugger		 *m_parent;
 
-	void loadTargetInfo( const wxString &target, const dbgConnProp & connProp, char targetType );
+	bool loadTargetInfo( const wxString &target, const dbgConnProp & connProp, char targetType );
 	void populateParamGrid();
 	void OnOk( wxCommandEvent & event );
 	void OnCancel( wxCommandEvent & event );

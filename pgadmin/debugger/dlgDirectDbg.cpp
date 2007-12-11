@@ -125,7 +125,7 @@ void dlgDirectDbg::setupParamWindow( )
 //  you construct a dlgDirectDbg (obviously) when you're ready to display the
 //  prompt dialog to the user.
 
-void dlgDirectDbg::startDebugging( void )
+bool dlgDirectDbg::startDebugging( void )
 {
     // First, figure out what kind of target we are going to debug.
     // The caller filled in our m_breakpoint list with the name and
@@ -158,8 +158,11 @@ void dlgDirectDbg::startDebugging( void )
         }
     }
 
-    loadTargetInfo( m_target, m_connProp, targetType );
+    if (!loadTargetInfo( m_target, m_connProp, targetType ))
+        return false;
+
     populateParamGrid();
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -173,7 +176,7 @@ void dlgDirectDbg::startDebugging( void )
 //  information required to connect to the server (like the hostname, port number,
 //  and user name).
 
-void dlgDirectDbg::loadTargetInfo( const wxString &target, const dbgConnProp & connProp, char targetType )
+bool dlgDirectDbg::loadTargetInfo( const wxString &target, const dbgConnProp & connProp, char targetType )
 {
     // Connect to the server using the connection properties contained in connProp
 
@@ -201,15 +204,17 @@ void dlgDirectDbg::loadTargetInfo( const wxString &target, const dbgConnProp & c
         {
             m_targetInfo = new dbgTargetInfo( target, m_conn, targetType );
         }
-        catch( std::runtime_error & e )
+        catch( const std::runtime_error & error )
         {
+            wxLogError(wxString(error.what(), wxConvUTF8));
             m_conn->Close();
-
-            throw( e );
+            return false;
         }
 
         this->SetTitle(m_targetInfo->getName());
     }
+
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
