@@ -154,6 +154,10 @@ wxString dlgProperty::GetHelpPage() const
     // There is no create column page...
     if (page == wxT("pg/sql-createcolumn"))
         page = wxT("pg/sql-createtable");
+		
+	// EDB Public Synonyms don't follow the PG naming conventions :-(
+    else if (page == wxT("pg/sql-createsynonym"))
+        page = wxT("pg/sql-createpubsynonym");	
 
     return page;
 }
