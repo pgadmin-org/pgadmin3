@@ -33,6 +33,23 @@ debuggerFactory::debuggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *
 
 wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
+    // Check here to make sure the function still exists before proceeding.
+    // There is still a very small window in which it might be dropped, but
+    // that will be handled by a cache lookup failure error in the database
+    if (obj->GetConnection()->ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE oid = ") + NumToStr((long)obj->GetOid())) != wxT("1"))
+    {
+        wxLogError(_("The selected function could not be found."));
+        ctlTree *browser = form->GetBrowser();
+        wxTreeItemId item=browser->GetSelection();
+        if (obj == browser->GetObject(item))
+        {
+            pgCollection *coll=browser->GetParentCollection(obj->GetId());
+            browser->DeleteChildren(coll->GetId());
+            coll->ShowTreeDetail(browser);
+        }
+        return 0;
+    }
+
     // Setup the debugger frame
     frmDebugger *debugger = new frmDebugger(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier().c_str()));
 
@@ -51,7 +68,18 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 
     dbgBreakPointList &breakpoints = directDebugger->getBreakpointList();
     breakpoints.Append(new dbgBreakPoint(dbgBreakPoint::OID, NumToStr((long)obj->GetOid()), wxT("'NULL'")));
-    directDebugger->startDebugging();
+    if (!directDebugger->startDebugging())
+    {
+        ctlTree *browser = form->GetBrowser();
+        wxTreeItemId item=browser->GetSelection();
+        if (obj == browser->GetObject(item))
+        {
+            pgCollection *coll=browser->GetParentCollection(obj->GetId());
+            browser->DeleteChildren(coll->GetId());
+            coll->ShowTreeDetail(browser);
+        }
+        return 0;
+    }
 
     // Return the debugger window to frmMain.
     return debugger;
@@ -111,6 +139,24 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
     else
         dbgOid = NumToStr((long)obj->GetOid());
 
+    // Check here to make sure the function still exists before proceeding.
+    // There is still a very small window in which it might be dropped, but
+    // we should be able to handle most cases here without having to do this 
+    // deep down in query threads.
+    if (obj->GetConnection()->ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE oid = ") + dbgOid) != wxT("1"))
+    {
+        wxLogError(_("The selected function could not be found."));
+        ctlTree *browser = form->GetBrowser();
+        wxTreeItemId item=browser->GetSelection();
+        if (obj == browser->GetObject(item))
+        {
+            pgCollection *coll=browser->GetParentCollection(obj->GetId());
+            browser->DeleteChildren(coll->GetId());
+            coll->ShowTreeDetail(browser);
+        }
+        return 0;
+    }
+
     // Setup the debugger frame
     frmDebugger *debugger = new frmDebugger(form, wxString::Format(_("Debugger - %s"), obj->GetFullIdentifier().c_str()));
     debugger->Show(true);
@@ -131,6 +177,7 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
 
     dbgBreakPointList &breakpoints = globalDebugger->getBreakpointList();
     breakpoints.Append(new dbgBreakPoint(dbgBreakPoint::OID, dbgOid, wxT("'NULL'")));
+
     globalDebugger->startGlobalDebugging();
 
     // Return the debugger window to frmMain.
@@ -181,5 +228,6 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
     }
     return false;
 }
+
 
 
