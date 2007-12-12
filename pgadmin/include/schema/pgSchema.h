@@ -145,7 +145,7 @@ class pgSchemaObjCollection : public pgCollection
 {
 public:
     pgSchemaObjCollection(pgaFactory *factory, pgSchema *sch);
-    bool CanCreate();
+    virtual bool CanCreate();
 };
 
 

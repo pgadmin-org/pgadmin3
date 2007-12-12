@@ -57,7 +57,6 @@ public:
     bool IsUpToDate();
 
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/packages-create"); }
-
 private:
     wxString GetInner(const wxString &def);
 
@@ -100,6 +99,8 @@ public:
     edbPackageObjCollection(pgaFactory *factory, edbPackage *_package)
     : pgSchemaObjCollection(factory, _package->GetSchema()) { iSetOid(_package->GetOid()); package=_package; }
     virtual edbPackage *GetPackage() const { return package; }
+
+    virtual bool CanCreate() { return false; }
 
 protected:
     edbPackage *package;
