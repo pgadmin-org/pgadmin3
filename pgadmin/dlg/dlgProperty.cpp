@@ -147,18 +147,15 @@ wxString dlgProperty::GetHelpPage() const
         page=obj->GetHelpPage(false);
     else
     {
-        page=wxT("pg/sql-create");
-        page += wxString(factory->GetTypeName()).Lower();
+        // Attempt to get he page from the dialogue, otherwise, take a shot at it!
+        page=this->GetHelpPage(true);
+        if (page.Length() == 0)
+        {
+            page=wxT("pg/sql-create");
+            page += wxString(factory->GetTypeName()).Lower();
+        }
     }
-    
-    // There is no create column page...
-    if (page == wxT("pg/sql-createcolumn"))
-        page = wxT("pg/sql-createtable");
-		
-	// EDB Public Synonyms don't follow the PG naming conventions :-(
-    else if (page == wxT("pg/sql-createsynonym"))
-        page = wxT("pg/sql-createpubsynonym");	
-
+			
     return page;
 }
 

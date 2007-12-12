@@ -29,6 +29,8 @@ public:
     pgObject *GetObject();
     void SetObject(pgObject *obj) { package = (edbPackage*)obj; }
 
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/packages-create"); }
+
 private:
     edbPackage *package;
     pgSchema *schema;

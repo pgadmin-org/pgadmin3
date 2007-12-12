@@ -30,6 +30,8 @@ public:
     pgObject *GetObject();
     void SetObject(pgObject *obj) { function = (pgFunction*)obj; }
 
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createfunction"); }
+
 private:
     pgSchema *schema;
     pgFunction *function;
@@ -74,6 +76,8 @@ class dlgProcedure : public dlgFunction
 {
 public:
     dlgProcedure(pgaFactory *factory, frmMain *frame, pgFunction *node, pgSchema *sch);
+
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createprocedure"); }
 };
 
 

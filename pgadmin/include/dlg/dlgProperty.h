@@ -47,6 +47,7 @@ public:
 
     virtual void CreateAdditionalPages();
     virtual wxString GetHelpPage() const;
+    virtual wxString GetHelpPage(bool forCreate) const { return wxEmptyString; }
     void SetConnection(pgConn *conn) { connection=conn; }
     void SetDatabase(pgDatabase *db);
     virtual int Go(bool modal=false);

@@ -142,6 +142,8 @@ public:
 
     wxString GetSql(ctlTree *browser);
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createprocedure"); }
 };
 
 #endif

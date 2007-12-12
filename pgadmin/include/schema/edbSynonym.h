@@ -50,6 +50,8 @@ public:
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
 
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createpubsynonym"); }
+
 private:
     wxString targetType, targetSchema, targetObject;
 };

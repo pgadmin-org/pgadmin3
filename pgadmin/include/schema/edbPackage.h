@@ -56,6 +56,8 @@ public:
 
     bool IsUpToDate();
 
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/packages-create"); }
+
 private:
     wxString GetInner(const wxString &def);
 
