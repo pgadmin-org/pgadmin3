@@ -1650,7 +1650,7 @@ wxWindow *dropCascadedFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool dropCascadedFactory::CheckEnable(pgObject *obj)
 {
-    return obj && obj->CanDropCascaded();
+    return obj && obj->CanDrop() && obj->CanDropCascaded();
 }
 
 
