@@ -28,6 +28,8 @@ public:
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createpubsynonym"); }
+
 private:
     void OnChangeTargetType(wxCommandEvent &ev) { ProcessTypeChange(); };
     void OnChangeTargetSchema(wxCommandEvent &ev) { ProcessSchemaChange(); };

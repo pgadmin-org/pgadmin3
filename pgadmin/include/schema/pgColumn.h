@@ -90,7 +90,7 @@ public:
     bool GetSystemObject() const { return colNumber < 0; }
     wxString GetSql(ctlTree *browser);
 	wxString GetCommentSql();
-    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtable"); }
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
 
     virtual bool CanDrop() { return inheritedCount == 0 && pgSchemaObject::CanDrop() && GetSchema()->GetMetaType() != PGM_CATALOG && GetTable()->GetMetaType() != PGM_VIEW; }
     virtual bool CanCreate() { return GetTable()->GetMetaType() != PGM_VIEW && GetSchema()->GetMetaType() != PGM_CATALOG; }

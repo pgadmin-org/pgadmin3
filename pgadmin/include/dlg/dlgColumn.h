@@ -34,6 +34,7 @@ public:
 
     int Go(bool modal);
 
+    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtable"); }
 
 private:
     pgColumn *column;
