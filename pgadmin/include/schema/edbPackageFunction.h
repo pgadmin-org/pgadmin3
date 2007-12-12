@@ -61,6 +61,8 @@ public:
     long GetArgCount() const { return argCount; }
     void iSetArgCount(long ac) { argCount = ac; }
 
+    bool CanCreate() { return false; }
+
 private:
     long argCount;
     wxArrayString argNamesArray, argTypesArray, argModesArray;

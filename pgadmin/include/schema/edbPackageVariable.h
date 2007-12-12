@@ -43,6 +43,8 @@ public:
     wxString GetVisibility() const { return visibility; }
     void iSetVisibility(const wxString& s) { visibility = s; }
 
+    bool CanCreate() { return false; }
+
 private:
     wxString dataType, visibility;
 };
