@@ -87,7 +87,14 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool debuggerFactory::CheckEnable(pgObject *obj)
 {
-    if (obj && !obj->IsCollection())
+    if (!obj)
+        return false;
+
+    // Must be a super user to create breakpoints of any kind.
+    if (!obj->GetServer() || !obj->GetServer()->GetSuperUser())
+        return false;
+
+    if (!obj->IsCollection())
     {
         switch (obj->GetMetaType())
         {
@@ -186,7 +193,14 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool breakpointFactory::CheckEnable(pgObject *obj)
 {
-    if (obj && !obj->IsCollection())
+    if (!obj)
+        return false;
+
+    // Must be a super user to create breakpoints of any kind.
+    if (!obj->GetServer() || !obj->GetServer()->GetSuperUser())
+        return false;
+
+    if (!obj->IsCollection())
     {
         switch (obj->GetMetaType())
         {
