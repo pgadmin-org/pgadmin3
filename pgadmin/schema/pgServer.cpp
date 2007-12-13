@@ -159,6 +159,9 @@ bool pgServer::Disconnect(frmMain *form)
         conn=0;
         connected=false;
         expandedKids=false;
+        ver = wxT("");
+        versionNum = wxT("");
+        lastSystemOID = 0;
     }
     UpdateIcon(form->GetBrowser());
     return true;
