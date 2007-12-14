@@ -170,7 +170,7 @@ void dlgForeignKey::CheckChange()
         if (chkAutoIndex->GetValue())
         {
             CheckValid(enable, !txtIndexName->GetValue().IsEmpty(),
-                _("Please specify FK index name."));
+                _("Please specify covering index name."));
         }
         else
             enable = txtComment->GetValue() != foreignKey->GetComment();
@@ -182,7 +182,7 @@ void dlgForeignKey::CheckChange()
         txtComment->Enable(!name.IsEmpty());
         CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
         CheckValid(enable, !chkAutoIndex->GetValue() || !txtIndexName->GetValue().IsEmpty(),
-            _("Please specify FK index name."));
+            _("Please specify covering index name."));
         EnableOK(enable);
     }
 
