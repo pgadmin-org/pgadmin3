@@ -40,7 +40,6 @@ private:
 
     wxString DefaultIndexName(const wxString &name);
 
-    void OnCheckDeferrable(wxCommandEvent &ev);
     void OnSelChangeCol(wxListEvent &ev);
     void OnSelChangeRef(wxCommandEvent &ev);
     void OnSelChangeRefCol(wxCommandEvent &ev);

@@ -25,13 +25,10 @@
 
 #define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
 #define chkDeferred     CTRL_CHECKBOX("chkDeferred")
-#define stDeferred      CTRL_STATIC("stDeferred")
 #define cbReferences    CTRL_COMBOBOX("cbReferences")
 #define chkMatchFull    CTRL_CHECKBOX("chkMatchFull")
 
-#define stAutoIndex     CTRL_STATIC("stAutoIndex")
 #define chkAutoIndex    CTRL_CHECKBOX("chkAutoIndex")
-#define stIndexName     CTRL_STATIC("stIndexName")
 #define txtIndexName    CTRL_TEXT("txtIndexName")
 
 #define cbRefColumns    CTRL_COMBOBOX("cbRefColumns")
@@ -43,7 +40,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgForeignKey, dlgProperty)
-    EVT_CHECKBOX(XRCID("chkDeferrable"),        dlgForeignKey::OnCheckDeferrable)
+    EVT_CHECKBOX(XRCID("chkDeferrable"),        dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkAutoIndex") ,        dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtIndexName"),             dlgProperty::OnChange)
 
@@ -77,16 +74,6 @@ dlgForeignKey::dlgForeignKey(pgaFactory *f, frmMain *frame, ctlListView *colList
 : dlgCollistProperty(f, frame, wxT("dlgForeignKey"), colList)
 {
     foreignKey=0;
-}
-
-
-void dlgForeignKey::OnCheckDeferrable(wxCommandEvent &ev)
-{
-    bool canDef=chkDeferrable->GetValue();
-    stDeferred->Enable(canDef);
-    if (!canDef)
-        chkDeferred->SetValue(false);
-    chkDeferred->Enable(canDef);
 }
 
 
@@ -129,6 +116,12 @@ void dlgForeignKey::CheckChange()
         cols += qtIdent(lstColumns->GetText(pos));
     }
 
+    bool canDef=chkDeferrable->GetValue();
+    if (!canDef)
+        chkDeferred->SetValue(false);
+    chkDeferred->Enable(canDef);
+
+    txtIndexName->Enable(chkAutoIndex->GetValue());
 
     wxString coveringIndex;
     if (table)
@@ -139,11 +132,12 @@ void dlgForeignKey::CheckChange()
         if (!chkAutoIndex->IsEnabled())
         {
             chkAutoIndex->Enable();
+            chkAutoIndex->SetValue(true);
             txtIndexName->Enable();
             txtIndexName->SetValue(savedIndexName);
         }
 
-        wxString idxName=txtIndexName->GetValue().Strip(wxString::both);
+        wxString idxName = txtIndexName->GetValue().Strip(wxString::both);
 
         if (name != savedFKName || idxName == savedIndexName)
         {
@@ -158,7 +152,7 @@ void dlgForeignKey::CheckChange()
     else
     {
         if (chkAutoIndex->IsEnabled())
-            savedIndexName=txtIndexName->GetValue();
+            savedIndexName = txtIndexName->GetValue();
 
         txtIndexName->SetValue(coveringIndex);
         chkAutoIndex->SetValue(false);
@@ -191,6 +185,7 @@ void dlgForeignKey::CheckChange()
             _("Please specify FK index name."));
         EnableOK(enable);
     }
+
 }
 
 
