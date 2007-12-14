@@ -1085,7 +1085,7 @@ void ctlCodeWindow::displaySource(const wxString &packageOID, const wxString &fu
     }
 
     // Adjustment of the next position
-    if (current_line > 1) 
+    if (current_line >= 1) 
         current_line--;
 
     // Add the current-line indicator to the current line of code
@@ -1498,4 +1498,5 @@ wsCodeCache::wsCodeCache(const wxString &packageOID, const wxString &funcOID, co
   : m_packageOID(packageOID), m_funcOID(funcOID), m_sourceCode(source), m_signature(signature)
 {
 }
+
 
