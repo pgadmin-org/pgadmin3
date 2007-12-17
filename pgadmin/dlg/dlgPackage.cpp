@@ -86,9 +86,14 @@ int dlgPackage::Go(bool modal)
 
 pgObject *dlgPackage::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=packageFactory.CreateObjects(collection, 0,
-         wxT(" WHERE pkgname = '") + GetName() + wxT("'")
-         wxT("\n   AND pkgnamespace=") + schema->GetOidStr());
+    pgObject *obj;
+    
+    if (collection->GetConnection()->EdbMinimumVersion(8, 2))
+        obj=packageFactory.CreateObjects(collection, 0,
+            wxT("   AND nspname = '") + GetName() + wxT("'"));
+    else
+        obj=packageFactory.CreateObjects(collection, 0,
+            wxT("   AND pkgname = '") + GetName() + wxT("'"));
 
     return obj;
 }
