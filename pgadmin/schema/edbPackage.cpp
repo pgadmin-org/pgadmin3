@@ -161,7 +161,7 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
     wxString sql;
     
-    if (collection->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2))
+    if (collection->GetConnection()->EdbMinimumVersion(8, 2))
     {
         sql = wxT("SELECT oid, xmin, nspname AS pkgname, nspbodysrc AS pkgbodysrc, nspheadsrc AS pkgheadsrc,\n")
               wxT("       nspacl AS pkgacl, pg_get_userbyid(nspowner) AS owner\n") 
