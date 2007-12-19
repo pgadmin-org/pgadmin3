@@ -406,7 +406,17 @@ bool pgSchemaObjCollection::CanCreate()
 	if(IsCollectionForType(PGM_OPCLASS) || IsCollectionForType(PGM_OPFAMILY))
 		return false;
 
-    return GetSchema()->GetCreatePrivilege();
+    // TODO
+    // OK, this is a hack. Rules and Views are both derived from pgRuleObject, which
+    // is derived from pgSchemaObject. In order that they attached to the treeview 
+    // under the relevant node however, the Schema object is actually the table or
+    // View (yeah, I know - I didn't write it :-p ). This works fine *except* for
+    // Get CreatePrivilege() which doesn't exist in these classes so must be fixed
+    // up at this level. This needs a major rethink in the longer term
+    if (GetSchema()->GetMetaType() == PGM_TABLE || GetSchema()->GetMetaType() == PGM_VIEW)
+        return GetSchema()->GetSchema()->GetCreatePrivilege();
+    else
+        return GetSchema()->GetCreatePrivilege();
 }
 
 
