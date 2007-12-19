@@ -91,7 +91,7 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
         return false;
 
     // Can't debug catalog objects.
-    if (obj->GetSchema()->GetMetaType() == PGM_CATALOG)
+    if (obj->GetSchema() && obj->GetSchema()->GetMetaType() == PGM_CATALOG)
         return false;
 
     // Must be a super user to create breakpoints of any kind.
@@ -201,7 +201,7 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
         return false;
 
     // Can't debug catalog objects.
-    if (obj->GetSchema()->GetMetaType() == PGM_CATALOG)
+    if (obj->GetSchema() && obj->GetSchema()->GetMetaType() == PGM_CATALOG)
         return false;
 
     // Must be a super user to create breakpoints of any kind.
