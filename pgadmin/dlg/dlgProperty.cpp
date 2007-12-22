@@ -432,7 +432,14 @@ void dlgProperty::FillCombobox(const wxString &query, ctlComboBoxFix *cb1, ctlCo
 
 void dlgProperty::AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2)
 {
-    FillCombobox(wxT("SELECT usename FROM pg_user ORDER BY usename"), cb1, cb2);
+    if (connection->BackendMinimumVersion(8, 1))
+    {
+        FillCombobox(wxT("SELECT rolname FROM pg_roles ORDER BY 1"), cb1, cb2);
+    }
+    else
+    {
+        FillCombobox(wxT("SELECT usename FROM pg_user ORDER BY 1"), cb1, cb2);
+    }
 }
 
 
