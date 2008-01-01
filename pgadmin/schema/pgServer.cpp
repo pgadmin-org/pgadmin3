@@ -813,10 +813,15 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
             {
                 wxString exists = conn->ExecuteScalar(
                     wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
-                    wxT(" WHERE relname='pga_job' AND nspname='pgagent' AND has_schema_privilege('pgagent', 'USAGE')"));
+                    wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
 
                 if (!exists.IsNull())
-                    browser->AppendCollection(this, jobFactory);
+                {
+                    exists = conn->ExecuteScalar(wxT("SELECT has_schema_privilege('pgagent', 'USAGE')"));
+
+                    if (exists == wxT("t"))
+                        browser->AppendCollection(this, jobFactory);
+                }
             }
 
             if (conn->BackendMinimumVersion(8, 1))
