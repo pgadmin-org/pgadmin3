@@ -112,20 +112,48 @@ void pgIndexBase::ReadColumnDetails()
                     quotedColumns += wxT(", ");
                 }
 
-                wxString str=ExecuteScalar(
-                    wxT("SELECT\n")
+                wxString options, coldef;
+                if (GetConnection()->BackendMinimumVersion(8, 3))
+                    options = wxT("  i.indoption[") + NumToStr((long)(i-1)) + wxT("] AS options,\n");
+
+                pgSet *res = ExecuteSet(
+                    wxT("SELECT\n") + options +
                     wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
                     wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
                     wxT("  ELSE\n") +
                     wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
-                    wxT("  END\n") +
+                    wxT("  END AS coldef\n") +
                     wxT("FROM pg_index i\n") +
                     wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
                     wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i-1)) + wxT("])\n") +
                     wxT("WHERE i.indexrelid = ") + GetOidStr());
 
-                columns += str;
-                quotedColumns += str;
+                if (res->NumRows() > 0)
+                {
+                    coldef = res->GetVal(wxT("coldef"));
+
+                    // Get the column options
+                    if (GetConnection()->BackendMinimumVersion(8, 3))
+                    {
+                        long opt = res->GetLong(wxT("options"));
+                        
+                        if (opt && (opt & 0x0001)) // Descending...
+                        {
+                            coldef += wxT(" DESC");
+                            // NULLS FIRST is the default for descending
+                            if (!(opt && (opt & 0x0002)))
+                                coldef += wxT(" NULLS LAST");
+                        }
+                        else // Ascending...
+                        {
+                            if ((opt && (opt & 0x0002)))
+                                coldef += wxT(" NULLS FIRST");
+                        }
+                    }
+                }
+
+                columns += coldef;
+                quotedColumns += coldef;
             }
         }
         else
