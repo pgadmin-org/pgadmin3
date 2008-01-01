@@ -813,7 +813,7 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
             {
                 wxString exists = conn->ExecuteScalar(
                     wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
-                    wxT(" WHERE relname='pga_job' AND nspname='pgagent'"));
+                    wxT(" WHERE relname='pga_job' AND nspname='pgagent' AND has_schema_privilege('pgagent', 'USAGE')"));
 
                 if (!exists.IsNull())
                     browser->AppendCollection(this, jobFactory);
