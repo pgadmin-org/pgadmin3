@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: factory.cpp 6044 2007-03-12 20:38:50Z dpage $
-// Copyright (C) 2002 - 2007, The pgAdmin Development Team
+// Copyright (C) 2002 - 2008, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // debugger.cpp - Debugger factories

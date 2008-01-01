@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: pgpackage.cpp 5828 2007-01-04 16:41:08Z dpage $
-// Copyright (C) 2002 - 2007, The pgAdmin Development Team
+// Copyright (C) 2002 - 2008, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // edbPackage.cpp - EnterpriseDB Package class

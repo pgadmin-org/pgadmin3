@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: dbgConnProp.h 6207 2007-04-18 15:14:25Z dpage $
-// Copyright (C) 2002 - 2007, The pgAdmin Development Team
+// Copyright (C) 2002 - 2008, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // dbgConnProp.h - debugger 
