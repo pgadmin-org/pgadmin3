@@ -477,17 +477,16 @@ void frmMain::Refresh(pgObject *data)
     
     if (newData != data)
     {
-        wxLogInfo(wxT("Deleting ") + data->GetTypeName() + wxT(" ") 
-            + data->GetQuotedFullIdentifier() + wxT(" for Refresh"));
+        wxLogInfo(wxT("Deleting %s %s for refresh"), data->GetTypeName().c_str(), data->GetQuotedFullIdentifier().c_str());
 
         if (data == currentObject)
             currentObject = newData;
 
         if (newData)
         {
-            wxLogInfo(wxT("Replacing with new Node ") + newData->GetTypeName() + wxT(" ") 
-                + newData->GetQuotedFullIdentifier() + wxT(" for Refresh"));
-            newData->SetId(currentItem);    // not done automatically
+            wxLogInfo(wxT("Replacing with new node %s %s for refresh"), newData->GetTypeName().c_str(), newData->GetQuotedFullIdentifier().c_str());
+
+			newData->SetId(currentItem);    // not done automatically
             browser->SetItemData(currentItem, newData);
             delete data;
         }

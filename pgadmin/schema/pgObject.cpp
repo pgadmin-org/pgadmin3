@@ -444,12 +444,8 @@ void pgObject::ShowTree(frmMain *form, ctlTree *browser, ctlListView *properties
         }
     }
 
-    // If the object is called '%', we need to special case it so
-    // wxLogInfo doesn't think it's a printf placeholder.
-    if (GetIdentifier() == wxT("%"))
-        wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" %%"));
-    else
-        wxLogInfo(wxT("Displaying properties for ") + GetTypeName() + wxT(" ")+GetIdentifier());
+    wxLogInfo(wxT("Displaying properties for %s %s"), GetTypeName().c_str(), GetIdentifier().c_str());
+
     if (form)
     {
         form->StartMsg(wxString::Format(_("Retrieving %s details"), GetTranslatedTypeName().c_str()));
