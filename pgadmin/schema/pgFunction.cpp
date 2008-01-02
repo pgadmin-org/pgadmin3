@@ -341,11 +341,14 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
     typeMap map;
 
-    while(!types->Eof())
-    {
-        map[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
-        types->MoveNext();
-    }
+	if (types)
+	{
+        while(!types->Eof())
+        {
+            map[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
+            types->MoveNext();
+        }
+	}
 
     if (functions)
     {
