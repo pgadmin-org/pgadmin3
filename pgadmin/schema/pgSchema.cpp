@@ -150,7 +150,7 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
         browser->RemoveDummyChild(this);
 
         // Log
-        wxLogInfo(wxT("Adding child object to schema ") + GetIdentifier());
+        wxLogInfo(wxT("Adding child object to schema %s"), GetIdentifier().c_str());
 
         if (!(GetMetaType() == PGM_CATALOG && (GetFullName() == wxT("dbo") || GetFullName() == wxT("sys") || GetFullName() == wxT("information_schema"))))
         {

@@ -509,8 +509,7 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         browser->RemoveDummyChild(this);
 
         // Log
-        wxLogInfo(wxT("Adding child object to table ") + GetIdentifier());
-
+        wxLogInfo(wxT("Adding child object to table %s"), GetIdentifier().c_str());
 
         browser->AppendCollection(this, columnFactory);
         browser->AppendCollection(this, constraintFactory);
