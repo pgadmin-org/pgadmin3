@@ -609,7 +609,7 @@ void frmQuery::OnShowLineEnds(wxCommandEvent& event)
 
 void frmQuery::OnActivate(wxActivateEvent& event)
 {
-    if (event.GetActive() && !closing)
+    if (event.GetActive())
         updateMenu();
     event.Skip();
 }
@@ -1025,6 +1025,10 @@ void frmQuery::updateMenu(wxObject *obj)
     wxAuiFloatingFrame *fp = wxDynamicCastThis(wxAuiFloatingFrame);
     if (fp)
         return;
+
+    if (closing)
+        return;
+
 
     if (!obj || obj == sqlQuery)
     {
