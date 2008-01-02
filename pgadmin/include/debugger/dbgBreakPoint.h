@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: dbgBreakPoint.h 6136 2007-03-29 10:38:10Z hiroshi $
-// Copyright (C) 2002 - 2007, The pgAdmin Development Team
+// Copyright (C) 2002 - 2008, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // dbgBreakPoint.h - debugger 

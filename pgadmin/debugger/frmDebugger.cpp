@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: frmDebugger.cpp 6219 2007-04-19 19:46:35Z dpage $
-// Copyright (C) 2002 - 2007, The pgAdmin Development Team
+// Copyright (C) 2002 - 2008, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // frmDebugger.cpp - debugger

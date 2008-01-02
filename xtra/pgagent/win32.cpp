@@ -2,7 +2,7 @@
 //
 // pgAgent - PostgreSQL Tools
 // $Id: win32.cpp 5013 2006-02-21 09:39:15Z dpage $
-// Copyright (C) 2002 - 2006 The pgAdmin Development Team
+// Copyright (C) 2002 - 2008 The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // win32.cpp - pgAgent win32 specific functions
