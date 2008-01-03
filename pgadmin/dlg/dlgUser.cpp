@@ -228,14 +228,7 @@ void dlgUser::OnChangeSuperuser(wxCommandEvent &ev)
 
 void dlgUser::OnChangePasswd(wxCommandEvent &ev)
 {
-	wxString passwd=txtPasswd->GetValue();
-	wxString repasswd=txtRePasswd->GetValue();
-	if ((!repasswd.IsEmpty())||(!repasswd.IsEmpty()))
-	{
-           bool enable=true;
-           CheckValid(enable, !passwd.compare(repasswd), _("The passwords entered do not match!"));
-           EnableOK(enable);
-	}
+	CheckChange();
 }
 
 void dlgUser::CheckChange()
@@ -244,6 +237,15 @@ void dlgUser::CheckChange()
     timValidUntil->Enable(timEn);
     if (!timEn)
         timValidUntil->SetTime(wxDefaultDateTime);
+
+	// Check the passwords match
+	if (txtPasswd->GetValue() != txtRePasswd->GetValue())
+	{
+           bool enable=true;
+           CheckValid(enable, false, _("The passwords entered do not match!"));
+           EnableOK(enable);
+		   return;
+	}
 
     if (!user)
     {
@@ -536,4 +538,5 @@ wxString dlgUser::GetSql()
 
     return sql;
 }
+
 

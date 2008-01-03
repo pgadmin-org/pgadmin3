@@ -281,14 +281,7 @@ void dlgRole::OnChangeSuperuser(wxCommandEvent &ev)
 
 void dlgRole::OnChangePasswd(wxCommandEvent &ev)
 {
-	wxString passwd=txtPasswd->GetValue();
-	wxString repasswd=txtRePasswd->GetValue();
-	if ((!repasswd.IsEmpty())||(!repasswd.IsEmpty()))
-	{
-           bool enable=true;
-           CheckValid(enable, !passwd.compare(repasswd), _("The passwords entered do not match!"));
-           EnableOK(enable);
-	}
+	CheckChange();
 }
 
 void dlgRole::CheckChange()
@@ -300,6 +293,15 @@ void dlgRole::CheckChange()
 
     if (!readOnly)
         chkUpdateCat->Enable(chkSuperuser->GetValue());
+
+	// Check the passwords match
+	if (txtPasswd->GetValue() != txtRePasswd->GetValue())
+	{
+           bool enable=true;
+           CheckValid(enable, false, _("The passwords entered do not match!"));
+           EnableOK(enable);
+		   return;
+	}
 
     if (!role)
     {
@@ -687,4 +689,5 @@ wxString dlgRole::GetSql()
 
     return sql;
 }
+
 
