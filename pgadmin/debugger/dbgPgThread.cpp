@@ -114,7 +114,7 @@ void * dbgPgThread::Entry( void )
 
         // This call to PQexec() will hang until we've received
         // a complete result set from the server.
-        PGresult *result;
+        PGresult *result=0;
 
 #if defined (__WXMSW__) || (EDB_LIBPQ)
         // If we have a set of params, and we have the required functions...
