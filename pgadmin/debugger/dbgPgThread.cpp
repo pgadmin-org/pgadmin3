@@ -126,7 +126,7 @@ void * dbgPgThread::Entry( void )
         if (PQiGetOutResult && PQiPrepareOut && PQiSendQueryPreparedOut && params)
 #endif
         {
-            wxLogInfo(_("Using an EnterpriseDB callable statement"));
+            wxLogInfo(wxT("Using an EnterpriseDB callable statement"));
             wxString stmt = wxString::Format(wxT("DebugStmt-%d-%d"), this->GetId(), ++run);
             PGresult *res = PQiPrepareOut(m_owner.getConnection(), 
                                             stmt.mb_str(wxConvUTF8), 
@@ -137,7 +137,7 @@ void * dbgPgThread::Entry( void )
 
             if( PQresultStatus(res) != PGRES_COMMAND_OK)
             {
-                wxLogError(wxT( "Could not prepare the callable statement: %s, error: %s" ), stmt.c_str(), wxString(PQresultErrorMessage(res), *conv).c_str());
+                wxLogError(_( "Could not prepare the callable statement: %s, error: %s" ), stmt.c_str(), wxString(PQresultErrorMessage(res), *conv).c_str());
                 PQclear(res);
                 return this;
             }
@@ -151,7 +151,7 @@ void * dbgPgThread::Entry( void )
                                                 1);
             if (ret != 1)
             {
-                wxLogError(wxT( "Couldn't execute the callable statement: %s" ), stmt.c_str());
+                wxLogError(_( "Couldn't execute the callable statement: %s" ), stmt.c_str());
                 PQclear(res);
                 return this;
             }
@@ -206,7 +206,7 @@ void * dbgPgThread::Entry( void )
         	
             if (ret != 1)
             {
-                wxLogError(wxT( "Couldn't execute the query (%s): %s" ), command.c_str(), wxString(PQerrorMessage(m_owner.getConnection()), *conv).c_str());
+                wxLogError(_( "Couldn't execute the query (%s): %s" ), command.c_str(), wxString(PQerrorMessage(m_owner.getConnection()), *conv).c_str());
                 return this;
             }
         	
