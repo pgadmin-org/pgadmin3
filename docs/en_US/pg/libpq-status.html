@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.15 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 27. libpq - C Library">
 <link rel="prev" href="libpq.html" title="Chapter 27. libpq - C Library">
 <link rel="next" href="libpq-exec.html" title="27.3. Command Execution Functions">
@@ -18,8 +18,8 @@
   </p>
 <div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
-<p><a name="id2673252"></a>
-<a name="id2673259"></a>
+<p><a name="id2673490"></a>
+<a name="id2673497"></a>
 <span class="application">libpq</span> application programmers should be careful to
 maintain the <code class="structname">PGconn</code> abstraction.  Use the accessor
 functions described below to get
@@ -36,37 +36,37 @@ These values are fixed for the life of the <code class="structname">PGconn</code
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQdb</code><a name="id2673335"></a></span></dt>
+<dt><span class="term"><code class="function">PQdb</code><a name="id2673573"></a></span></dt>
 <dd>
 <p>         Returns the database name of the connection.
 </p>
 <pre class="synopsis">char *PQdb(const PGconn *conn);</pre>
 </dd>
-<dt><span class="term"><code class="function">PQuser</code><a name="id2673356"></a></span></dt>
+<dt><span class="term"><code class="function">PQuser</code><a name="id2673594"></a></span></dt>
 <dd>
 <p>         Returns the user name of the connection.
 </p>
 <pre class="synopsis">char *PQuser(const PGconn *conn);</pre>
 </dd>
-<dt><span class="term"><code class="function">PQpass</code><a name="id2673378"></a></span></dt>
+<dt><span class="term"><code class="function">PQpass</code><a name="id2673616"></a></span></dt>
 <dd>
 <p>         Returns the password of the connection.
 </p>
 <pre class="synopsis">char *PQpass(const PGconn *conn);</pre>
 </dd>
-<dt><span class="term"><code class="function">PQhost</code><a name="id2673400"></a></span></dt>
+<dt><span class="term"><code class="function">PQhost</code><a name="id2673638"></a></span></dt>
 <dd>
 <p>         Returns the server host name of the connection.
 </p>
 <pre class="synopsis">char *PQhost(const PGconn *conn);</pre>
 </dd>
-<dt><span class="term"><code class="function">PQport</code><a name="id2673422"></a></span></dt>
+<dt><span class="term"><code class="function">PQport</code><a name="id2673660"></a></span></dt>
 <dd>
 <p>         Returns the port of the connection.
 </p>
 <pre class="synopsis">char *PQport(const PGconn *conn);</pre>
 </dd>
-<dt><span class="term"><code class="function">PQtty</code><a name="id2673444"></a></span></dt>
+<dt><span class="term"><code class="function">PQtty</code><a name="id2673682"></a></span></dt>
 <dd>
 <p>         Returns the debug <acronym class="acronym">TTY</acronym> of the connection.
          (This is obsolete, since the server no longer pays attention
@@ -75,7 +75,7 @@ These values are fixed for the life of the <code class="structname">PGconn</code
 </p>
 <pre class="synopsis">char *PQtty(const PGconn *conn);</pre>
 </dd>
-<dt><span class="term"><code class="function">PQoptions</code><a name="id2673475"></a></span></dt>
+<dt><span class="term"><code class="function">PQoptions</code><a name="id2673713"></a></span></dt>
 <dd>
 <p>       Returns the command-line options passed in the connection request.
 </p>
@@ -87,7 +87,7 @@ are executed on the <code class="structname">PGconn</code> object.
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQstatus</code><a name="id2673506"></a></span></dt>
+<dt><span class="term"><code class="function">PQstatus</code><a name="id2673744"></a></span></dt>
 <dd>
 <p>         Returns the status of the connection. 
 </p>
@@ -113,7 +113,7 @@ are executed on the <code class="structname">PGconn</code> object.
        that might be seen.
       </p>
 </dd>
-<dt><span class="term"><code class="function">PQtransactionStatus</code><a name="id2673598"></a></span></dt>
+<dt><span class="term"><code class="function">PQtransactionStatus</code><a name="id2673836"></a></span></dt>
 <dd>
 <p>         Returns the current in-transaction status of the server.
 </p>
@@ -135,7 +135,7 @@ set to off.  The server-side autocommit feature has been
 deprecated and does not exist in later server versions.</p>
 </div>
 </dd>
-<dt><span class="term"><code class="function">PQparameterStatus</code><a name="id2673685"></a></span></dt>
+<dt><span class="term"><code class="function">PQparameterStatus</code><a name="id2673923"></a></span></dt>
 <dd>
 <p>         Looks up a current parameter setting of the server.
 </p>
@@ -178,7 +178,7 @@ in a numeric form that is much easier to compare against.</p>
 points to mutable storage associated with the <code class="literal">PGconn</code> structure.
 It is unwise to assume the pointer will remain valid across queries.</p>
 </dd>
-<dt><span class="term"><code class="function">PQprotocolVersion</code><a name="id2673894"></a></span></dt>
+<dt><span class="term"><code class="function">PQprotocolVersion</code><a name="id2674132"></a></span></dt>
 <dd>
 <p>         Interrogates the frontend/backend protocol being used.
 </p>
@@ -193,7 +193,7 @@ reset.  The 3.0 protocol will normally be used when communicating with
 <span class="productname">PostgreSQL</span> 7.4 or later servers; pre-7.4 servers support
 only protocol 2.0.  (Protocol 1.0 is obsolete and not supported by <span class="application">libpq</span>.)</p>
 </dd>
-<dt><span class="term"><code class="function">PQserverVersion</code><a name="id2673944"></a></span></dt>
+<dt><span class="term"><code class="function">PQserverVersion</code><a name="id2674176"></a></span></dt>
 <dd>
 <p>         Returns an integer representing the backend version.
 </p>
@@ -206,9 +206,9 @@ together. For example, version 7.4.2 will be returned as 70402, and version
 8.1 will be returned as 80100 (leading zeroes are not shown).  Zero is
 returned if the connection is bad.</p>
 </dd>
-<dt><span class="term"><code class="function">PQerrorMessage</code><a name="id2673974"></a></span></dt>
+<dt><span class="term"><code class="function">PQerrorMessage</code><a name="id2674206"></a></span></dt>
 <dd>
-<p>       <a name="id2673983"></a>
+<p>       <a name="id2674215"></a>
        Returns the error message most recently generated by
        an operation on the connection.
 </p>
@@ -226,7 +226,7 @@ returned if the connection is bad.</p>
        <code class="literal">PGconn</code> structure.
       </p>
 </dd>
-<dt><span class="term"><code class="function">PQsocket</code><a name="id2674054"></a></span></dt>
+<dt><span class="term"><code class="function">PQsocket</code><a name="id2674285"></a></span></dt>
 <dd>
 <p>       Obtains the file descriptor number of the connection socket to
        the server.  A valid descriptor will be greater than or equal
@@ -238,10 +238,10 @@ returned if the connection is bad.</p>
 <p>
       </p>
 </dd>
-<dt><span class="term"><code class="function">PQbackendPID</code><a name="id2674082"></a></span></dt>
+<dt><span class="term"><code class="function">PQbackendPID</code><a name="id2674313"></a></span></dt>
 <dd>
 <p>       Returns the process <acronym class="acronym">ID</acronym>
-       (PID)<a name="id2674095"></a> of the backend server
+       (PID)<a name="id2674326"></a> of the backend server
        process handling this connection.
 </p>
 <pre class="synopsis">int PQbackendPID(const PGconn *conn);</pre>
@@ -253,9 +253,9 @@ returned if the connection is bad.</p>
        database server host, not the local host!
       </p>
 </dd>
-<dt><span class="term"><code class="function">PQgetssl</code><a name="id2674143"></a></span></dt>
+<dt><span class="term"><code class="function">PQgetssl</code><a name="id2674374"></a></span></dt>
 <dd>
-<p>       <a name="id2674152"></a>
+<p>       <a name="id2674383"></a>
        Returns the SSL structure used in the connection, or null
        if SSL is not in use. 
 </p>

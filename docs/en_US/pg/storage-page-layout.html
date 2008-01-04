@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.15 Documentation">
 <link rel="up" href="storage.html" title="Chapter 49. Database Physical Storage">
 <link rel="prev" href="storage-toast.html" title="49.2. TOAST">
 <link rel="next" href="bki.html" title="Chapter 50. BKI Backend Interface">
@@ -14,7 +14,7 @@
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="storage-page-layout">49.3. Database Page Layout</h2></div></div></div>
 <p>This section provides an overview of the page format used within
-<span class="productname">PostgreSQL</span> tables and indexes.<sup>[<a name="id2810664" href="#ftn.id2810664" class="footnote">8</a>]</sup>
+<span class="productname">PostgreSQL</span> tables and indexes.<sup>[<a name="id2810889" href="#ftn.id2810889" class="footnote">8</a>]</sup>
 Sequences and <acronym class="acronym">TOAST</acronym> tables are formatted just like a regular table.</p>
 <p>In the following explanation, a
 <em class="firstterm">byte</em>
@@ -49,7 +49,7 @@ There are five parts to each page.</p>
 free space pointers.</td>
 </tr>
 <tr>
-<td>ItemPointerData</td>
+<td>ItemIdData</td>
 <td>Array of (offset,length) pairs pointing to the actual items.
 4 bytes per item.</td>
 </tr>
@@ -314,7 +314,7 @@ data. Empty in ordinary tables.</td>
  </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2810664" href="#id2810664" class="para">8</a>] </sup>    Actually, index access methods need not use this page format.
+<div class="footnote"><p><sup>[<a name="ftn.id2810889" href="#id2810889" class="para">8</a>] </sup>    Actually, index access methods need not use this page format.
     All the existing index methods do use this basic format,
     but the data kept on index metapages usually doesn't follow
     the item layout rules.

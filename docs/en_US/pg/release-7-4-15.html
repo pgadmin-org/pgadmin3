@@ -1,63 +1,63 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.19. Release 7.4.15</title>
+<title>E.21. Release 7.4.15</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.15 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-4-16.html" title="E.18. Release 7.4.16">
-<link rel="next" href="release-7-4-14.html" title="E.20. Release 7.4.14">
+<link rel="prev" href="release-7-4-16.html" title="E.20. Release 7.4.16">
+<link rel="next" href="release-7-4-14.html" title="E.22. Release 7.4.14">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-15">E.19. Release 7.4.15</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-15">E.21. Release 7.4.15</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2007-01-08</p>
 </div>
-<p>    This release contains a variety of fixes from 7.4.14.
-   </p>
+<p>   This release contains a variety of fixes from 7.4.14.
+  </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2836342">E.19.1. Migration to version 7.4.15</h3></div></div></div>
-<p>     A dump/restore is not required for those running 7.4.X.  However,
-     if you are upgrading from a version earlier than 7.4.11, see the release
-     notes for 7.4.11.
-    </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2837202">E.21.1. Migration to Version 7.4.15</h3></div></div></div>
+<p>    A dump/restore is not required for those running 7.4.X.  However,
+    if you are upgrading from a version earlier than 7.4.11, see the release
+    notes for 7.4.11.
+   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2836350">E.19.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2837211">E.21.2. Changes</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p>       Improve handling of <code class="function">getaddrinfo()</code> on AIX (Tom)
-      </p>
-<p>       This fixes a problem with starting the statistics collector,
-       among other things.
-      </p>
+<p>      Improve handling of <code class="function">getaddrinfo()</code> on AIX (Tom)
+     </p>
+<p>      This fixes a problem with starting the statistics collector,
+      among other things.
+     </p>
 </li>
-<li><p>        Fix &#8220;<span class="quote">failed to re-find parent key</span>&#8221; errors in
-        <code class="command">VACUUM</code> (Tom)
-       </p></li>
-<li><p>        Fix bugs affecting multi-gigabyte hash indexes (Tom)
-       </p></li>
-<li><p>       Fix error when constructing an <code class="literal">ARRAY[]</code> made up of multiple
-       empty elements (Tom)
+<li><p>       Fix &#8220;<span class="quote">failed to re-find parent key</span>&#8221; errors in
+       <code class="command">VACUUM</code> (Tom)
       </p></li>
+<li><p>       Fix bugs affecting multi-gigabyte hash indexes (Tom)
+      </p></li>
+<li><p>      Fix error when constructing an <code class="literal">ARRAY[]</code> made up of multiple
+      empty elements (Tom)
+     </p></li>
 <li>
-<p>       <code class="function">to_number()</code> and <code class="function">to_char(numeric)</code>
-       are now <code class="literal">STABLE</code>, not <code class="literal">IMMUTABLE</code>, for
-       new <span class="application">initdb</span> installs (Tom)
-      </p>
-<p>       This is because <code class="varname">lc_numeric</code> can potentially
-       change the output of these functions.
-      </p>
+<p>      <code class="function">to_number()</code> and <code class="function">to_char(numeric)</code>
+      are now <code class="literal">STABLE</code>, not <code class="literal">IMMUTABLE</code>, for
+      new <span class="application">initdb</span> installs (Tom)
+     </p>
+<p>      This is because <code class="varname">lc_numeric</code> can potentially
+      change the output of these functions.
+     </p>
 </li>
 <li>
-<p>       Improve index usage of regular expressions that use parentheses (Tom)
-      </p>
-<p>       This improves <span class="application">psql</span> <code class="literal">\d</code> performance also.
-      </p>
+<p>      Improve index usage of regular expressions that use parentheses (Tom)
+     </p>
+<p>      This improves <span class="application">psql</span> <code class="literal">\d</code> performance also.
+     </p>
 </li>
 </ul></div>
 </div>

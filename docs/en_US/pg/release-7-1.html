@@ -1,76 +1,76 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.68. Release 7.1</title>
+<title>E.71. Release 7.1</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.15 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-1-1.html" title="E.67. Release 7.1.1">
-<link rel="next" href="release-7-0-3.html" title="E.69. Release 7.0.3">
+<link rel="prev" href="release-7-1-1.html" title="E.70. Release 7.1.1">
+<link rel="next" href="release-7-0-3.html" title="E.72. Release 7.0.3">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-1">E.68. Release 7.1</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-1">E.71. Release 7.1</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2001-04-13</p>
 </div>
-<p>        This release focuses on removing limitations that have existed in the
-        <span class="productname">PostgreSQL</span> code for many years.
-   </p>
-<p>    Major changes in this release:
-   </p>
+<p>       This release focuses on removing limitations that have existed in the
+       <span class="productname">PostgreSQL</span> code for many years.
+  </p>
+<p>   Major changes in this release:
+  </p>
 <div class="variablelist"><dl>
-<dt><span class="term">       Write-ahead Log (WAL)
-     </span></dt>
+<dt><span class="term">      Write-ahead Log (WAL)
+    </span></dt>
 <dd><p>To maintain database consistency in case of an operating system crash,
 previous releases of <span class="productname">PostgreSQL</span> have forced
 all data modifications to disk before each transaction commit.  With
 WAL, only one log file must be flushed to disk, greatly improving
 performance.  If you have been using -F in previous releases to
 disable disk flushes, you might want to consider discontinuing its use.
-      </p></dd>
-<dt><span class="term">       TOAST
-     </span></dt>
-<dd><p>       TOAST - Previous releases had a compiled-in row length limit,
+     </p></dd>
+<dt><span class="term">      TOAST
+    </span></dt>
+<dd><p>      TOAST - Previous releases had a compiled-in row length limit,
 typically 8k - 32k. This limit made storage of long text fields
 difficult.  With TOAST, long rows of any length can be stored with good
 performance.
-      </p></dd>
-<dt><span class="term">       Outer Joins
-     </span></dt>
+     </p></dd>
+<dt><span class="term">      Outer Joins
+    </span></dt>
 <dd><p>We now support outer joins.  The UNION/NOT IN
 workaround for outer joins is no longer required.  We use the SQL92
 outer join syntax.
-      </p></dd>
-<dt><span class="term">       Function Manager
-     </span></dt>
+     </p></dd>
+<dt><span class="term">      Function Manager
+    </span></dt>
 <dd><p>The previous C function manager did not
 handle null values properly, nor did it support 64-bit <acronym class="acronym">CPU</acronym>'s (Alpha).  The new
 function manager does.  You can continue using your old custom
 functions, but you might want to rewrite them in the future to use the new
 function manager call interface.
-      </p></dd>
-<dt><span class="term">       Complex Queries
-     </span></dt>
+     </p></dd>
+<dt><span class="term">      Complex Queries
+    </span></dt>
 <dd><p>A large number of complex queries that were
 unsupported in previous releases now work.  Many combinations of views,
 aggregates, UNION, LIMIT, cursors, subqueries, and inherited tables
 now work properly. Inherited tables are now accessed by default.
 Subqueries in FROM are now supported.
-      </p></dd>
+     </p></dd>
 </dl></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2849292">E.68.1. Migration to version 7.1</h3></div></div></div>
-<p>        A dump/restore using pg_dump is required for those wishing to migrate
-        data from any previous release.
-    </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2850357">E.71.1. Migration to Version 7.1</h3></div></div></div>
+<p>       A dump/restore using pg_dump is required for those wishing to migrate
+       data from any previous release.
+   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2849300">E.68.2. Changes</h3></div></div></div>
-<p>     </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2850365">E.71.2. Changes</h3></div></div></div>
+<p>    </p>
 <pre class="programlisting">Bug Fixes
 ---------
 Many multibyte/Unicode/locale fixes (Tatsuo and others)
@@ -80,7 +80,7 @@ Fix for INSERT INTO...SELECT where targetlist has subqueries (Tom)
 Prompt username/password on standard error (Bruce)
 Large objects inv_read/inv_write fixes (Tom)
 Fixes for to_char(), to_date(), to_ascii(), and to_timestamp() (Karel,
-    Daniel Baldoni)
+   Daniel Baldoni)
 Prevent query expressions from leaking memory (Tom)
 Allow UPDATE of arrays elements (Tom)
 Wake up lock waiters during cancel (Hiroshi)
@@ -96,7 +96,7 @@ Allow PL/pgSQL accept non-ASCII identifiers (Tatsuo)
 Allow views to proper handle GROUP BY, aggregates, DISTINCT (Tom)
 Fix rare failure with TRUNCATE command (Tom)
 Allow UNION/INTERSECT/EXCEPT to be used with ALL, subqueries, views,
-    DISTINCT, ORDER BY, SELECT...INTO (Tom)
+   DISTINCT, ORDER BY, SELECT...INTO (Tom)
 Fix parser failures during aborted transactions (Tom)
 Allow temporary relations to properly clean up indexes (Bruce)
 Fix VACUUM problem with moving rows in same page (Tom)
@@ -130,16 +130,16 @@ Improve CLUSTER (Tom)
 Improve ps status display for more platforms (Peter E, Marc)
 Improve CREATE FUNCTION failure message (Ross)
 JDBC improvements (Peter, Travis Bauer, Christopher Cain, William Webber,
-    Gunnar)
+   Gunnar)
 Grand Unified Configuration scheme/GUC.  Many options can now be set in
-    data/postgresql.conf, postmaster/postgres flags, or SET commands (Peter E)
+   data/postgresql.conf, postmaster/postgres flags, or SET commands (Peter E)
 Improved handling of file descriptor cache (Tom)
 New warning code about auto-created table alias entries (Bruce)
 Overhaul initdb process (Tom, Peter E)
 Overhaul of inherited tables; inherited tables now accessed by default;
-   new ONLY key word prevents it (Chris Bitmead, Tom)
+  new ONLY key word prevents it (Chris Bitmead, Tom)
 ODBC cleanups/improvements (Nick Gorham, Stephan Szabo, Zoltan Kovacs,
-    Michael Fork)
+   Michael Fork)
 Allow renaming of temp tables (Tom)
 Overhaul memory manager contexts (Tom)
 pg_dumpall uses CREATE USER or CREATE GROUP rather using COPY (Peter E)
@@ -164,7 +164,7 @@ Allow functional indexes to use binary-compatible type (Tom)
 Allow SQL functions to be used in more contexts (Tom)
 New pg_config utility (Peter E)
 New PL/pgSQL EXECUTE command which allows dynamic SQL and utility statements
-    (Jan)
+   (Jan)
 New PL/pgSQL GET DIAGNOSTICS statement for SPI value access (Jan)
 New quote_identifiers() and quote_literal() functions (Jan)
 New ALTER TABLE table OWNER TO user command (Mark Hollomon)
@@ -183,7 +183,7 @@ New AT TIME ZONE syntax (Thomas)
 Allow location of Unix domain socket to be configurable (David J. MacKenzie)
 Allow postmaster to listen on a specific IP address (David J. MacKenzie)
 Allow socket path name to be specified in hostname by using leading slash
-    (David J. MacKenzie)
+   (David J. MacKenzie)
 Allow CREATE DATABASE to specify template database (Tom)
 New utility to convert MySQL schema dumps to SQL92 and PostgreSQL (Thomas)
 New /contrib/rserv replication toolkit (Vadim)
@@ -210,7 +210,7 @@ New CIDR abbrev() function (Tom)
 Performance
 -----------
 Write-Ahead Log (WAL) to provide crash recovery with less performance
-    overhead (Vadim)
+   overhead (Vadim)
 ANALYZE stage of VACUUM no longer exclusively locks table (Bruce)
 Reduced file seeks (Denis Perchine)
 Improve BTREE code for duplicate keys (Tom)
@@ -256,9 +256,9 @@ New contrib/pg_logger
 New --template option to createdb
 New contrib/pg_control utility (Oliver)
 New FreeBSD tools ipc_check, start-scripts/freebsd
-     </pre>
+    </pre>
 <p>
-    </p>
+   </p>
 </div>
 </div></body>
 </html>

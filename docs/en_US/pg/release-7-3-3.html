@@ -1,32 +1,32 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.52. Release 7.3.3</title>
+<title>E.55. Release 7.3.3</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.15 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-3-4.html" title="E.51. Release 7.3.4">
-<link rel="next" href="release-7-3-2.html" title="E.53. Release 7.3.2">
+<link rel="prev" href="release-7-3-4.html" title="E.54. Release 7.3.4">
+<link rel="next" href="release-7-3-2.html" title="E.56. Release 7.3.2">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-3-3">E.52. Release 7.3.3</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-3-3">E.55. Release 7.3.3</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2003-05-22</p>
 </div>
-<p>   This release contains a variety of fixes for version 7.3.2.
-  </p>
+<p>  This release contains a variety of fixes for version 7.3.2.
+ </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2844358">E.52.1. Migration to version 7.3.3</h3></div></div></div>
-<p>    A dump/restore is <span class="emphasis"><em>not</em></span> required for those
-    running version 7.3.*.
-   </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2845427">E.55.1. Migration to Version 7.3.3</h3></div></div></div>
+<p>   A dump/restore is <span class="emphasis"><em>not</em></span> required for those
+   running version 7.3.*.
+  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2844368">E.52.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2845438">E.55.2. Changes</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Repair sometimes-incorrect computation of StartUpID after a crash</p></li>
 <li><p>Avoid slowness with lots of deferred triggers in one transaction (Stephan)</p></li>
@@ -41,21 +41,21 @@
 <li><p>Issue notice, not error, if <code class="type">TIMESTAMP</code>,
 <code class="type"> TIME</code>, or <code class="type">INTERVAL</code> precision too large</p></li>
 <li><p>Fix <code class="function">abstime-to-time</code> cast function (fix is
-       not applied unless you <span class="application">initdb</span>)</p></li>
+      not applied unless you <span class="application">initdb</span>)</p></li>
 <li><p>Fix <span class="application">pg_proc</span> entry for
-      <code class="type">timestampt_izone</code> (fix is not applied unless you
-        <span class="application">initdb</span>)</p></li>
+     <code class="type">timestampt_izone</code> (fix is not applied unless you
+       <span class="application">initdb</span>)</p></li>
 <li><p>Make <code class="function">EXTRACT(EPOCH FROM timestamp without time zone)</code> treat input as local time</p></li>
 <li><p><code class="command">'now'::timestamptz</code> gave wrong answer if timezone changed earlier in transaction</p></li>
 <li><p><code class="envar">HAVE_INT64_TIMESTAMP</code> code for time with timezone overwrote its input</p></li>
 <li><p>Accept <code class="command">GLOBAL TEMP/TEMPORARY</code> as a
-       synonym for <code class="command">TEMPORARY</code></p></li>
+      synonym for <code class="command">TEMPORARY</code></p></li>
 <li><p>Avoid improper schema-privilege-check failure in foreign-key triggers</p></li>
 <li><p>Fix bugs in foreign-key triggers for <code class="command">SET DEFAULT</code> action</p></li>
 <li><p>Fix incorrect time-qual check in row fetch for
-       <code class="command">UPDATE</code> and <code class="command">DELETE</code> triggers</p></li>
+      <code class="command">UPDATE</code> and <code class="command">DELETE</code> triggers</p></li>
 <li><p>Foreign-key clauses were parsed but ignored in
-       <code class="command">ALTER TABLE ADD COLUMN</code></p></li>
+      <code class="command">ALTER TABLE ADD COLUMN</code></p></li>
 <li><p>Fix createlang script breakage for case where handler function already exists</p></li>
 <li><p>Fix misbehavior on zero-column tables in <span class="application">pg_dump</span>, COPY, ANALYZE, other places</p></li>
 <li><p>Fix misbehavior of <code class="function">func_error()</code> on type names containing '%'</p></li>
@@ -89,13 +89,13 @@
 <li><p>Fix replace_vars_with_subplan_refs failure in complex views</p></li>
 <li><p>Fix regexp slowness in single-byte encodings (Tatsuo)</p></li>
 <li><p>Allow qualified type names in <code class="command">CREATE CAST</code>
-       and <code class="command"> DROP CAST</code></p></li>
+      and <code class="command"> DROP CAST</code></p></li>
 <li><p>Accept <code class="function">SETOF type[]</code>, which formerly had to
-       be written <code class="function">SETOF _type</code></p></li>
+      be written <code class="function">SETOF _type</code></p></li>
 <li><p>Fix <span class="application">pg_dump</span> core dump in some cases with procedural languages</p></li>
 <li><p>Force ISO datestyle in <span class="application">pg_dump</span> output, for portability (Oliver)</p></li>
 <li><p><span class="application">pg_dump</span> failed to handle error return
-       from <code class="function">lo_read</code> (Oleg Drokin)</p></li>
+      from <code class="function">lo_read</code> (Oleg Drokin)</p></li>
 <li><p><span class="application">pg_dumpall</span> failed with groups having no members (Nick Eskelinen)</p></li>
 <li><p><span class="application">pg_dumpall</span> failed to recognize --globals-only switch</p></li>
 <li><p>pg_restore failed to restore blobs if -X disable-triggers is specified</p></li>

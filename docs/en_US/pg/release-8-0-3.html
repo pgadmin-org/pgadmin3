@@ -1,60 +1,60 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.12. Release 8.0.3</title>
+<title>E.13. Release 8.0.3</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.15 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-0-4.html" title="E.11. Release 8.0.4">
-<link rel="next" href="release-8-0-2.html" title="E.13. Release 8.0.2">
+<link rel="prev" href="release-8-0-4.html" title="E.12. Release 8.0.4">
+<link rel="next" href="release-8-0-2.html" title="E.14. Release 8.0.2">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-0-3">E.12. Release 8.0.3</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-0-3">E.13. Release 8.0.3</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2005-05-09</p>
 </div>
-<p>    This release contains a variety of fixes from 8.0.2, including several
-    security-related issues.
-   </p>
+<p>   This release contains a variety of fixes from 8.0.2, including several
+   security-related issues.
+  </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2831300">E.12.1. Migration to version 8.0.3</h3></div></div></div>
-<p>     A dump/restore is not required for those running 8.0.X.  However,
-     it is one possible way of handling two significant security problems
-     that have been found in the initial contents of 8.0.X system
-     catalogs.  A dump/initdb/reload sequence using 8.0.3's initdb will
-     automatically correct these problems.
-    </p>
-<p>     The larger security problem is that the built-in character set encoding
-     conversion functions can be invoked from SQL commands by unprivileged
-     users, but the functions were not designed for such use and are not
-     secure against malicious choices of arguments.  The fix involves changing
-     the declared parameter list of these functions so that they can no longer
-     be invoked from SQL commands.  (This does not affect their normal use
-     by the encoding conversion machinery.)
-    </p>
-<p>     The lesser problem is that the <code class="filename">contrib/tsearch2</code> module
-     creates several functions that are improperly declared to return
-     <code class="type">internal</code> when they do not accept <code class="type">internal</code> arguments.
-     This breaks type safety for all functions using <code class="type">internal</code>
-     arguments.
-    </p>
-<p>     It is strongly recommended that all installations repair these errors,
-     either by initdb or by following the manual repair procedure given
-     below.  The errors at least allow unprivileged database users to crash
-     their server process, and might allow unprivileged users to gain the
-     privileges of a database superuser.
-    </p>
-<p>     If you wish not to do an initdb, perform the same manual repair
-     procedures shown in the <a class="link" href="release-7-4-8.html" title="E.26. Release 7.4.8">7.4.8 release
-     notes</a>.
-    </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2831904">E.13.1. Migration to Version 8.0.3</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.0.X.  However,
+    it is one possible way of handling two significant security problems
+    that have been found in the initial contents of 8.0.X system
+    catalogs.  A dump/initdb/reload sequence using 8.0.3's initdb will
+    automatically correct these problems.
+   </p>
+<p>    The larger security problem is that the built-in character set encoding
+    conversion functions can be invoked from SQL commands by unprivileged
+    users, but the functions were not designed for such use and are not
+    secure against malicious choices of arguments.  The fix involves changing
+    the declared parameter list of these functions so that they can no longer
+    be invoked from SQL commands.  (This does not affect their normal use
+    by the encoding conversion machinery.)
+   </p>
+<p>    The lesser problem is that the <code class="filename">contrib/tsearch2</code> module
+    creates several functions that are improperly declared to return
+    <code class="type">internal</code> when they do not accept <code class="type">internal</code> arguments.
+    This breaks type safety for all functions using <code class="type">internal</code>
+    arguments.
+   </p>
+<p>    It is strongly recommended that all installations repair these errors,
+    either by initdb or by following the manual repair procedure given
+    below.  The errors at least allow unprivileged database users to crash
+    their server process, and might allow unprivileged users to gain the
+    privileges of a database superuser.
+   </p>
+<p>    If you wish not to do an initdb, perform the same manual repair
+    procedures shown in the <a class="link" href="release-7-4-8.html" title="E.28. Release 7.4.8">7.4.8 release
+    notes</a>.
+   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2831367">E.12.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2831970">E.13.2. Changes</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Change encoding function signature to prevent
 misuse</p></li>

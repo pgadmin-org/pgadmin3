@@ -1,18 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.79. Release 6.4</title>
+<title>E.82. Release 6.4</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.0.14 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.0.15 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-6-4-1.html" title="E.78. Release 6.4.1">
-<link rel="next" href="release-6-3-2.html" title="E.80. Release 6.3.2">
+<link rel="prev" href="release-6-4-1.html" title="E.81. Release 6.4.1">
+<link rel="next" href="release-6-3-2.html" title="E.83. Release 6.3.2">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-6-4">E.79. Release 6.4</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-6-4">E.82. Release 6.4</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1998-10-30</p>
@@ -53,15 +53,15 @@ attention, and should be more robust for more platforms than it has ever
 been.</p></li>
 </ul></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2851620">E.79.1. Migration to version 6.4</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2852634">E.82.1. Migration to Version 6.4</h3></div></div></div>
 <p>A dump/restore using <span class="application">pg_dump</span>
 or <span class="application">pg_dumpall</span>
 is required for those wishing to migrate data from any
 previous release of <span class="productname">PostgreSQL</span>.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2851645">E.79.2. Changes</h3></div></div></div>
-<p>     </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2852660">E.82.2. Changes</h3></div></div></div>
+<p>    </p>
 <pre class="programlisting">Bug Fixes
 ---------
 Fix for a tiny memory leak in PQsetdb/PQfinish(Bryan)
@@ -174,22 +174,22 @@ Indexes for restriction clauses containing a constant(Thomas)
 New ISBN/ISSN code in /contrib/isbn_issn
 Allow NOT LIKE, IN, NOT IN, BETWEEN, and NOT BETWEEN constraint(Thomas)
 New rewrite system fixes many problems with rules and views(Jan)
-        * Rules on relations work
-        * Event qualifications on insert/update/delete work
-        * New OLD variable to reference CURRENT, CURRENT will be remove in future
-        * Update rules can reference NEW and OLD in rule qualifications/actions
-        * Insert/update/delete rules on views work
-        * Multiple rule actions are now supported, surrounded by parentheses
-        * Regular users can create views/rules on tables they have RULE permits
-        * Rules and views inherit the privileges of the creator
-        * No rules at the column level
-        * No UPDATE NEW/OLD rules
-        * New pg_tables, pg_indexes, pg_rules and pg_views system views
-        * Only a single action on SELECT rules
-        * Total rewrite overhaul, perhaps for 6.5
-        * handle subselects
-        * handle aggregates on views
-        * handle insert into select from view works
+       * Rules on relations work
+       * Event qualifications on insert/update/delete work
+       * New OLD variable to reference CURRENT, CURRENT will be remove in future
+       * Update rules can reference NEW and OLD in rule qualifications/actions
+       * Insert/update/delete rules on views work
+       * Multiple rule actions are now supported, surrounded by parentheses
+       * Regular users can create views/rules on tables they have RULE permits
+       * Rules and views inherit the privileges of the creator
+       * No rules at the column level
+       * No UPDATE NEW/OLD rules
+       * New pg_tables, pg_indexes, pg_rules and pg_views system views
+       * Only a single action on SELECT rules
+       * Total rewrite overhaul, perhaps for 6.5
+       * handle subselects
+       * handle aggregates on views
+       * handle insert into select from view works
 System indexes are now multikey(Bruce)
 Oidint2, oidint4, and oidname types are removed(Bruce)
 Use system cache for more system table lookups(Bruce)
