@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.12 Documentation">
 <link rel="up" href="cmds.html" title="Configuration and Action commmands">
 <link rel="prev" href="stmtunsubscribeset.html" title="UNSUBSCRIBE SET">
 <link rel="next" href="stmtunlockset.html" title="UNLOCK SET">
@@ -24,7 +24,7 @@
 <div class="cmdsynopsis"><p><code class="command">LOCK SET (options);</code></p></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2613516"></a><h2>Description</h2>
+<a name="id2614131"></a><h2>Description</h2>
 <p> Guards a replication set against client application updates
     in preparation for a <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a> command.
     </p>
@@ -58,7 +58,7 @@
 <p> This uses <a class="xref" href="function.lockset-integer.html" title="1.73.  lockset( integer )">schemadoclockset( integer )</a>. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2613598"></a><h2>Example</h2>
+<a name="id2614213"></a><h2>Example</h2>
 <pre class="programlisting">LOCK SET (
    ID = 1,
    ORIGIN = 3
@@ -66,13 +66,13 @@
     </pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2613607"></a><h2> Locking Behaviour </h2>
+<a name="id2614222"></a><h2> Locking Behaviour </h2>
 <p> Exclusive locks on each replicated table will be taken out
     on the origin node, and triggers are added to each such table that
     reject table updates. </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2613615"></a><h2> Version Information </h2>
+<a name="id2614230"></a><h2> Version Information </h2>
 <p> This command was introduced in <span class="productname">Slony-I</span> 1.0 </p>
 </div>
 </div></body>

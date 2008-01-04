@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.12 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">
 <link rel="next" href="usingslonik.html" title="16. Using Slonik">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddlchanges">15. Database Schema Changes (DDL)</h2></div></div></div>
-<a name="id2592138"></a><p>When changes are made to the database schema,
+<a name="id2592472"></a><p>When changes are made to the database schema,
 <span class="emphasis"><em>e.g.</em></span> - adding fields to a table, it is necessary
 for this to be handled rather carefully, otherwise different nodes may
 get rather deranged because they disagree on how particular tables are
@@ -47,7 +47,7 @@ you do not control.</p></li>
 the script, or about how it executes on a particular node, this will
 cause the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> daemon for that node to panic and
 crash.  You may see various expected messages (positive and negative)
-in <a class="xref" href="loganalysis.html#ddllogs" title="23.4.2.  Log Messages - DDL scripts">Section 23.4.2, &#8220; Log Messages -  DDL scripts &#8221;</a>.  If you restart the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, it will,
+in <a class="xref" href="loganalysis.html#ddllogs" title="24.4.2.  Log Messages - DDL scripts">Section 24.4.2, &#8220; Log Messages -  DDL scripts &#8221;</a>.  If you restart the <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a>, it will,
 more likely than not, try to
 <span class="emphasis"><em>repeat</em></span> the DDL script, which will, almost
 certainly, fail the second time in the same way it did the first time.
@@ -171,7 +171,7 @@ more discussion of related issues.</p>
 <p>There is an article on how to manage <span class="productname">Slony-I</span> schema changes
 here: <a class="ulink" href="http://www.varlena.com/varlena/GeneralBits/88.php" target="_top">Varlena General Bits</a></p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2592652">15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
+<div class="titlepage"><div><div><h3 class="title" id="id2593123">15.1.  Changes that you might <span class="emphasis"><em>not</em></span> want to
 process using <code class="command">EXECUTE SCRIPT</code></h3></div></div></div>
 <p> While it is <span class="emphasis"><em> vitally necessary </em></span> to use
 <code class="command">EXECUTE SCRIPT</code> to propagate DDL modifications to
@@ -237,8 +237,8 @@ of the primary key candidate would break things. </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2592829">15.2.  Testing DDL Changes </h3></div></div></div>
-<a name="id2592833"></a><p> A method for testing DDL changes has been pointed out as a
+<div class="titlepage"><div><div><h3 class="title" id="id2593299">15.2.  Testing DDL Changes </h3></div></div></div>
+<a name="id2593303"></a><p> A method for testing DDL changes has been pointed out as a
 likely &#8220;<span class="quote">best practice.</span>&#8221;</p>
 <p> You <span class="emphasis"><em>need</em></span> to test DDL scripts in a
 non-destructive manner.</p>

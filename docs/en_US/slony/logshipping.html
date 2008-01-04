@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.12 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="dropthings.html" title="13. Dropping things from Slony-I Replication">
 <link rel="next" href="ddlchanges.html" title="15. Database Schema Changes (DDL)">
@@ -128,7 +128,7 @@ will also fall behind.  </p></td>
 </tr>
 <tr class="question">
 <td align="left" valign="top">
-<a name="id2591488"></a><a name="id2591489"></a><p><b>14.4.</b></p>
+<a name="id2591488"></a><a name="id2591490"></a><p><b>14.4.</b></p>
 </td>
 <td align="left" valign="top"><p> How do we set up a subscription?  </p></td>
 </tr>
@@ -327,7 +327,7 @@ represent the time you will wish to have apply to all of the data in
 the given log shipping transaction log. </p>
 </li>
 <li><p> You may find information on how relevant activity is
-logged in <a class="xref" href="loganalysis.html#logshiplog" title="23.4.1.  Log Messages Associated with Log Shipping">Section 23.4.1, &#8220; Log Messages Associated with Log Shipping &#8221;</a>. </p></li>
+logged in <a class="xref" href="loganalysis.html#logshiplog" title="24.4.1.  Log Messages Associated with Log Shipping">Section 24.4.1, &#8220; Log Messages Associated with Log Shipping &#8221;</a>. </p></li>
 </ul></div>
 <p> As of 1.2.11, there is an <span class="emphasis"><em>even better idea</em></span>
 for application of logs, as the sequencing of their names becomes more
@@ -363,6 +363,129 @@ done</pre>
 </li>
 <li><p> </p></li>
 </ul></div>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2592131">14.2.  <span class="application">slony_logshipper </span> Tool </h3></div></div></div>
+<p> As of version 1.2.12, <span class="productname">Slony-I</span> has a tool designed to help
+apply logs, called <span class="application">slony_logshipper</span>.  It is
+run with three sorts of parameters:</p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> Options, chosen from the following: </p>
+<div class="itemizedlist"><ul type="circle">
+<li>
+<p><code class="option">h</code> </p>
+<p>    display this help text and exit </p>
+</li>
+<li>
+<p><code class="option">v</code> </p>
+<p>    display program version and exit </p>
+</li>
+<li>
+<p><code class="option">q</code> </p>
+<p>    quiet mode </p>
+</li>
+<li>
+<p><code class="option">l</code> </p>
+<p>    cause running daemon to reopen its logfile </p>
+</li>
+<li>
+<p><code class="option">r</code> </p>
+<p>    cause running daemon to resume after error </p>
+</li>
+<li>
+<p><code class="option">t</code> </p>
+<p>    cause running daemon to enter smart shutdown mode </p>
+</li>
+<li>
+<p><code class="option">T</code> </p>
+<p>    cause running daemon to enter immediate shutdown mode </p>
+</li>
+<li>
+<p><code class="option">c</code> </p>
+<p>    destroy existing semaphore set and message queue            (use with caution) </p>
+</li>
+<li>
+<p><code class="option">f</code> </p>
+<p>    stay in foreground (don't daemonize) </p>
+</li>
+<li>
+<p><code class="option">w</code> </p>
+<p>    enter smart shutdown mode immediately </p>
+</li>
+</ul></div>
+</li>
+<li>
+<p> A specified log shipper configuration file </p>
+<p> This configuration file consists of the following specifications:</p>
+<div class="itemizedlist"><ul type="circle">
+<li>
+<p> <code class="command">logfile = './offline_logs/logshipper.log';</code></p>
+<p> Where the log shipper will leave messages.</p>
+</li>
+<li>
+<p> <code class="command">cluster name = 'T1';</code></p>
+<p> Cluster name </p>
+</li>
+<li>
+<p> <code class="command">destination database	= 'dbname=slony_test3';</code></p>
+<p> Optional conninfo for the destination database.  If given, the log shipper will connect to thisdatabase, and apply logs to it. </p>
+</li>
+<li>
+<p> <code class="command">archive dir = './offline_logs';</code></p>
+<p>The archive directory is required when running in &#8220;<span class="quote">database-connected</span>&#8221; mode to have a place to scan for missing (unapplied) archives. </p>
+</li>
+<li>
+<p> <code class="command">destination dir = './offline_result';</code></p>
+<p> If specified, the log shipper will write the results of data massaging into result logfiles in this directory.</p>
+</li>
+<li>
+<p> <code class="command">max archives = 3600;</code></p>
+<p> This fights eventual resource leakage; the daemon will enter &#8220;<span class="quote">smart shutdown</span>&#8221; mode automatically after processing this many archives. </p>
+</li>
+<li>
+<p> <code class="command">ignore table "public"."history";</code></p>
+<p> One may filter out single tables  from log shipped replication </p>
+</li>
+<li>
+<p> <code class="command">ignore namespace "public";</code></p>
+<p> One may filter out entire namespaces  from log shipped replication </p>
+</li>
+<li>
+<p> <code class="command">rename namespace "public"."history" to "site_001"."history";</code></p>
+<p> One may rename specific tables.</p>
+</li>
+<li>
+<p> <code class="command">rename namespace "public" to "site_001";</code></p>
+<p> One may rename entire namespaces.</p>
+</li>
+<li>
+<p> <code class="command">post processing command = 'gzip -9 $inarchive';</code></p>
+<p> Pre- and post-processign commands are executed via <code class="function">system(3)</code>. </p>
+</li>
+</ul></div>
+<p> An &#8220;<span class="quote">@</span>&#8221; as the first character causes the exit code to be ignored.  Otherwise, a nonzero exit code is treated as an error and causes processing to abort. </p>
+<p> Pre- and post-processing commands have two further special variables defined: </p>
+<div class="itemizedlist"><ul type="circle">
+<li><p> <code class="envar">$inarchive</code>  - indicating incoming archive filename </p></li>
+<li><p> <code class="envar">$outnarchive</code>  - indicating outgoing archive filename </p></li>
+</ul></div>
+</li>
+<li>
+<p> <code class="command">error command = ' ( echo
+"archive=$inarchive" echo "error messages:" echo "$errortext" ) | mail
+-s "Slony log shipping failed" postgres@localhost ';</code></p>
+<p>  The error command indicates a command to execute upon encountering an error.  All logging since the last successful completion of an archive is available in the <code class="envar">$errortext</code> variable. </p>
+<p> In the example shown, this sends an email to the DBAs upon
+encountering an error.</p>
+</li>
+</ul></div>
+<div class="itemizedlist"><ul type="disc"><li>
+<p> Archive File Names</p>
+<p> Each filename is added to the SystemV Message queue for
+processing by a <span class="application">slony_logshipper</span>
+process. </p>
+</li></ul></div>
 </div>
 </div></body>
 </html>

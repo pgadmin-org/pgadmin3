@@ -1,105 +1,105 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.83. Release 7.0</title>
+<title>E.87. Release 7.0</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.11 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-0-1.html" title="E.82. Release 7.0.1">
-<link rel="next" href="release-6-5-3.html" title="E.84. Release 6.5.3">
+<link rel="prev" href="release-7-0-1.html" title="E.86. Release 7.0.1">
+<link rel="next" href="release-6-5-3.html" title="E.88. Release 6.5.3">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-0">E.83. Release 7.0</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-0">E.87. Release 7.0</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2000-05-08</p>
 </div>
-<p>    This release contains improvements in many areas, demonstrating
-    the continued growth of <span class="productname">PostgreSQL</span>.
-    There are more improvements and fixes in 7.0 than in any previous
-    release. The developers have confidence that this is the best
-    release yet; we do our best to put out only solid releases, and
-    this one is no exception.
-   </p>
-<p>    Major changes in this release:
-   </p>
+<p>   This release contains improvements in many areas, demonstrating
+   the continued growth of <span class="productname">PostgreSQL</span>.
+   There are more improvements and fixes in 7.0 than in any previous
+   release. The developers have confidence that this is the best
+   release yet; we do our best to put out only solid releases, and
+   this one is no exception.
+  </p>
+<p>   Major changes in this release:
+  </p>
 <div class="variablelist"><dl>
-<dt><span class="term">      Foreign Keys
-     </span></dt>
-<dd><p>       Foreign keys are now implemented, with the exception of PARTIAL MATCH
-       foreign keys. Many users have been asking for this feature, and we are
-       pleased to offer it.
-      </p></dd>
-<dt><span class="term">      Optimizer Overhaul
-     </span></dt>
-<dd><p>       Continuing on work started a year ago, the optimizer has been
-       improved, allowing better query plan selection and faster performance
-       with less memory usage.
-      </p></dd>
-<dt><span class="term">      Updated <span class="application">psql</span>
-     </span></dt>
-<dd><p>       <span class="application">psql</span>, our interactive terminal monitor, has been
-       updated with a variety of new features. See the <span class="application">psql</span> manual page for details.
-      </p></dd>
-<dt><span class="term">      Join Syntax
-     </span></dt>
-<dd><p>       SQL92 join syntax is now supported, though only as
-       <code class="literal">INNER JOIN</code> for this release. <code class="literal">JOIN</code>,
-       <code class="literal">NATURAL JOIN</code>, <code class="literal">JOIN</code>/<code class="literal">USING</code>,
-       and <code class="literal">JOIN</code>/<code class="literal">ON</code> are available, as are
-       column correlation names.
-      </p></dd>
+<dt><span class="term">     Foreign Keys
+    </span></dt>
+<dd><p>      Foreign keys are now implemented, with the exception of PARTIAL MATCH
+      foreign keys. Many users have been asking for this feature, and we are
+      pleased to offer it.
+     </p></dd>
+<dt><span class="term">     Optimizer Overhaul
+    </span></dt>
+<dd><p>      Continuing on work started a year ago, the optimizer has been
+      improved, allowing better query plan selection and faster performance
+      with less memory usage.
+     </p></dd>
+<dt><span class="term">     Updated <span class="application">psql</span>
+    </span></dt>
+<dd><p>      <span class="application">psql</span>, our interactive terminal monitor, has been
+      updated with a variety of new features. See the <span class="application">psql</span> manual page for details.
+     </p></dd>
+<dt><span class="term">     Join Syntax
+    </span></dt>
+<dd><p>      SQL92 join syntax is now supported, though only as
+      <code class="literal">INNER JOIN</code> for this release. <code class="literal">JOIN</code>,
+      <code class="literal">NATURAL JOIN</code>, <code class="literal">JOIN</code>/<code class="literal">USING</code>,
+      and <code class="literal">JOIN</code>/<code class="literal">ON</code> are available, as are
+      column correlation names.
+     </p></dd>
 </dl></div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2877293">E.83.1. Migration to version 7.0</h3></div></div></div>
-<p>     A dump/restore using <span class="application">pg_dump</span>
-     is required for those wishing to migrate data from any
-     previous release of <span class="productname">PostgreSQL</span>.
-     For those upgrading from 6.5.*, you can instead use
-     <span class="application">pg_upgrade</span> to upgrade to this
-     release; however, a full dump/reload installation is always the
-     most robust method for upgrades.
-    </p>
-<p>     Interface and compatibility issues to consider for the new
-     release include:
-    </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2878586">E.87.1. Migration to Version 7.0</h3></div></div></div>
+<p>    A dump/restore using <span class="application">pg_dump</span>
+    is required for those wishing to migrate data from any
+    previous release of <span class="productname">PostgreSQL</span>.
+    For those upgrading from 6.5.*, you can instead use
+    <span class="application">pg_upgrade</span> to upgrade to this
+    release; however, a full dump/reload installation is always the
+    most robust method for upgrades.
+   </p>
+<p>    Interface and compatibility issues to consider for the new
+    release include:
+   </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>       The date/time types <code class="type">datetime</code> and
-       <code class="type">timespan</code> have been superseded by the
-       SQL92-defined types <code class="type">timestamp</code> and
-       <code class="type">interval</code>. Although there has been some effort to
-       ease the transition by allowing
-       <span class="productname">PostgreSQL</span> to recognize
-       the deprecated type names and translate them to the new type
-       names, this mechanism cannot be completely transparent to
-       your existing application.
-      </p></li>
-<li><p>       The optimizer has been substantially improved in the area of
-       query cost estimation. In some cases, this will result in
-       decreased query times as the optimizer makes a better choice
-       for the preferred plan. However, in a small number of cases,
-       usually involving pathological distributions of data, your
-       query times might go up. If you are dealing with large amounts
-       of data, you might want to check your queries to verify
-       performance.
-      </p></li>
-<li><p>       The <acronym class="acronym">JDBC</acronym> and <acronym class="acronym">ODBC</acronym>
-       interfaces have been upgraded and extended.
-      </p></li>
-<li><p>       The string function <code class="function">CHAR_LENGTH</code> is now a
-       native function. Previous versions translated this into a call
-       to <code class="function">LENGTH</code>, which could result in
-       ambiguity with other types implementing
-       <code class="function">LENGTH</code> such as the geometric types.
-      </p></li>
+<li><p>      The date/time types <code class="type">datetime</code> and
+      <code class="type">timespan</code> have been superseded by the
+      SQL92-defined types <code class="type">timestamp</code> and
+      <code class="type">interval</code>. Although there has been some effort to
+      ease the transition by allowing
+      <span class="productname">PostgreSQL</span> to recognize
+      the deprecated type names and translate them to the new type
+      names, this mechanism cannot be completely transparent to
+      your existing application.
+     </p></li>
+<li><p>      The optimizer has been substantially improved in the area of
+      query cost estimation. In some cases, this will result in
+      decreased query times as the optimizer makes a better choice
+      for the preferred plan. However, in a small number of cases,
+      usually involving pathological distributions of data, your
+      query times might go up. If you are dealing with large amounts
+      of data, you might want to check your queries to verify
+      performance.
+     </p></li>
+<li><p>      The <acronym class="acronym">JDBC</acronym> and <acronym class="acronym">ODBC</acronym>
+      interfaces have been upgraded and extended.
+     </p></li>
+<li><p>      The string function <code class="function">CHAR_LENGTH</code> is now a
+      native function. Previous versions translated this into a call
+      to <code class="function">LENGTH</code>, which could result in
+      ambiguity with other types implementing
+      <code class="function">LENGTH</code> such as the geometric types.
+     </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2877405">E.83.2. Changes</h3></div></div></div>
-<p>     </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2878697">E.87.2. Changes</h3></div></div></div>
+<p>    </p>
 <pre class="programlisting">Bug Fixes
 ---------
 Prevent function calls exceeding maximum number of arguments (Tom)
@@ -215,8 +215,8 @@ Added psql LASTOID variable to return last inserted oid (Peter E)
 Allow concurrent vacuum and remove pg_vlock vacuum lock file (Tom)
 Add privilege check for vacuum (Peter E)
 New libpq functions to allow asynchronous connections: PQconnectStart(),
-   PQconnectPoll(), PQresetStart(), PQresetPoll(), PQsetenvStart(),
-   PQsetenvPoll(), PQsetenvAbort (Ewan Mellor)
+  PQconnectPoll(), PQresetStart(), PQresetPoll(), PQsetenvStart(),
+  PQsetenvPoll(), PQsetenvAbort (Ewan Mellor)
 New libpq PQsetenv() function (Ewan Mellor)
 create/alter user extension (Peter E)
 New postmaster.pid and postmaster.opts under $PGDATA (Tatsuo)
@@ -234,7 +234,7 @@ All administration scripts now support --long options (Peter E, Karel)
 Vacuumdb script now supports --all option (Peter E)
 ecpg new portable FETCH syntax
 Add ecpg EXEC SQL IFDEF, EXEC SQL IFNDEF, EXEC SQL ELSE, EXEC SQL ELIF
-        and EXEC SQL ENDIF directives
+       and EXEC SQL ENDIF directives
 Add pg_ctl script to control backend start-up (Tatsuo)
 Add postmaster.opts.default file to store start-up flags (Tatsuo)
 Allow --with-mb=SQL_ASCII
@@ -256,7 +256,7 @@ Allow COPY IN to read file that do not end with a newline (Tom)
 Indicate when long identifiers are truncated (Tom)
 Allow aggregates to use type equivalency (Peter E)
 Add Oracle's to_char(), to_date(), to_datetime(), to_timestamp(), to_number()
-        conversion functions (Karel Zak &lt;zakkr@zf.jcu.cz&gt;)
+       conversion functions (Karel Zak &lt;zakkr@zf.jcu.cz&gt;)
 Add SELECT DISTINCT ON (expr [, expr ...]) targetlist ... (Tom)
 Check to be sure ORDER BY is compatible with the DISTINCT operation (Tom)
 Add NUMERIC and int8 types to ODBC
@@ -417,9 +417,9 @@ NT fixes
 NetBSD fixes (Johnny C. Lam <code class="email">&lt;<a class="email" href="mailto:lamj@stat.cmu.edu">lamj@stat.cmu.edu</a>&gt;</code>)
 Fixes for Alpha compiles
 New multibyte encodings
-     </pre>
+    </pre>
 <p>
-    </p>
+   </p>
 </div>
 </div></body>
 </html>

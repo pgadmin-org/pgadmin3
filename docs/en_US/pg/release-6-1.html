@@ -1,61 +1,61 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.97. Release 6.1</title>
+<title>E.101. Release 6.1</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.11 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-6-1-1.html" title="E.96. Release 6.1.1">
-<link rel="next" href="release-6-0.html" title="E.98. Release 6.0">
+<link rel="prev" href="release-6-1-1.html" title="E.100. Release 6.1.1">
+<link rel="next" href="release-6-0.html" title="E.102. Release 6.0">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-6-1">E.97. Release 6.1</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-6-1">E.101. Release 6.1</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1997-06-08</p>
 </div>
-<p>  The regression tests have been adapted and extensively modified for the
-  6.1 release of <span class="productname">PostgreSQL</span>.</p>
-<p>  Three new data types (<code class="type">datetime</code>, <code class="type">timespan</code>, and <code class="type">circle</code>) have been added to
-  the native set of <span class="productname">PostgreSQL</span> types. Points, boxes, paths, and polygons
-  have had their output formats made consistent across the data types.
-  The polygon output in misc.out has only been spot-checked for correctness
-  relative to the original regression output.</p>
-<p>  <span class="productname">PostgreSQL</span> 6.1 introduces a new, alternate
+<p> The regression tests have been adapted and extensively modified for the
+ 6.1 release of <span class="productname">PostgreSQL</span>.</p>
+<p> Three new data types (<code class="type">datetime</code>, <code class="type">timespan</code>, and <code class="type">circle</code>) have been added to
+ the native set of <span class="productname">PostgreSQL</span> types. Points, boxes, paths, and polygons
+ have had their output formats made consistent across the data types.
+ The polygon output in misc.out has only been spot-checked for correctness
+ relative to the original regression output.</p>
+<p> <span class="productname">PostgreSQL</span> 6.1 introduces a new, alternate
 optimizer which uses <em class="firstterm">genetic</em>
-  algorithms. These algorithms introduce a random behavior in the ordering
-  of query results when the query contains multiple qualifiers or multiple
-  tables (giving the optimizer a choice on order of evaluation). Several
-  regression tests have been modified to explicitly order the results, and
-  hence are insensitive to optimizer choices. A few regression tests are
-  for data types which are inherently unordered (e.g. points and time
-  intervals) and tests involving those types are explicitly bracketed with
-  <code class="command">set geqo to 'off'</code> and <code class="command">reset geqo</code>.</p>
-<p>  The interpretation of array specifiers (the curly braces around atomic
-  values) appears to have changed sometime after the original regression
-  tests were generated. The current <code class="filename">./expected/*.out</code> files reflect this
-  new interpretation, which might not be correct!</p>
-<p>  The float8 regression test fails on at least some platforms. This is due
-  to differences in implementations of <code class="function">pow()</code> and <code class="function">exp()</code> and the signaling
-  mechanisms used for overflow and underflow conditions.</p>
-<p>  The &#8220;<span class="quote">random</span>&#8221; results in the random test should cause the
-  &#8220;<span class="quote">random</span>&#8221; test to be &#8220;<span class="quote">failed</span>&#8221;, since the
-  regression tests are evaluated using a simple diff. However,
-  &#8220;<span class="quote">random</span>&#8221; does not seem to produce random results on my test
-  machine (Linux/<span class="application">gcc</span>/i686).</p>
+ algorithms. These algorithms introduce a random behavior in the ordering
+ of query results when the query contains multiple qualifiers or multiple
+ tables (giving the optimizer a choice on order of evaluation). Several
+ regression tests have been modified to explicitly order the results, and
+ hence are insensitive to optimizer choices. A few regression tests are
+ for data types which are inherently unordered (e.g. points and time
+ intervals) and tests involving those types are explicitly bracketed with
+ <code class="command">set geqo to 'off'</code> and <code class="command">reset geqo</code>.</p>
+<p> The interpretation of array specifiers (the curly braces around atomic
+ values) appears to have changed sometime after the original regression
+ tests were generated. The current <code class="filename">./expected/*.out</code> files reflect this
+ new interpretation, which might not be correct!</p>
+<p> The float8 regression test fails on at least some platforms. This is due
+ to differences in implementations of <code class="function">pow()</code> and <code class="function">exp()</code> and the signaling
+ mechanisms used for overflow and underflow conditions.</p>
+<p> The &#8220;<span class="quote">random</span>&#8221; results in the random test should cause the
+ &#8220;<span class="quote">random</span>&#8221; test to be &#8220;<span class="quote">failed</span>&#8221;, since the
+ regression tests are evaluated using a simple diff. However,
+ &#8220;<span class="quote">random</span>&#8221; does not seem to produce random results on my test
+ machine (Linux/<span class="application">gcc</span>/i686).</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2880322">E.97.1. Migration to version 6.1</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2881855">E.101.1. Migration to Version 6.1</h3></div></div></div>
 <p>This migration requires a complete dump of the 6.0 database and a
 restore of the database in 6.1.</p>
 <p>Those migrating from earlier 1.* releases should first upgrade to 1.09
 because the COPY output format was improved from the 1.02 release.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2880334">E.97.2. Changes</h3></div></div></div>
-<p>     </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2881868">E.101.2. Changes</h3></div></div></div>
+<p>    </p>
 <pre class="programlisting">Bug Fixes
 ---------
 packet length checking in library routines

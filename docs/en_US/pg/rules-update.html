@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.11 Documentation">
 <link rel="up" href="rules.html" title="Chapter 34. The Rule System">
 <link rel="prev" href="rules-views.html" title="34.2. Views and the Rule System">
 <link rel="next" href="rules-privileges.html" title="34.4. Rules and Privileges">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="rules-update">34.3. Rules on <code class="command">INSERT</code>, <code class="command">UPDATE</code>, and <code class="command">DELETE</code></h2></div></div></div>
-<a name="id2718494"></a><a name="id2718509"></a><a name="id2718523"></a><p>    Rules that are defined on <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+<a name="id2718533"></a><a name="id2718548"></a><a name="id2718562"></a><p>    Rules that are defined on <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
     and <code class="command">DELETE</code> are significantly different from the view rules
     described in the previous section. First, their <code class="command">CREATE
     RULE</code> command allows more:
@@ -37,7 +37,7 @@
     create zero or more new query trees and can throw away the
     original one.</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2718614">34.3.1. How Update Rules Work</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2718653">34.3.1. How Update Rules Work</h3></div></div></div>
 <p>    Keep the syntax
 
 </p>
@@ -123,7 +123,7 @@
     produced query tree(s).  Views cannot insert new update actions so
     there is no need to apply update rules to the output of view rewriting.</p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2718932">34.3.1.1. A First Rule Step by Step</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2718979">34.3.1.1. A First Rule Step by Step</h4></div></div></div>
 <p>    Say we want to trace changes to the <code class="literal">sl_avail</code> column in the
     <code class="literal">shoelace_data</code> relation. So we set up a log table
     and a rule that conditionally writes a log entry when an
@@ -342,7 +342,7 @@ SELECT shoelace_data.sl_name, 0,
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="rules-update-views">34.3.2. Cooperation with Views</h3></div></div></div>
-<a name="id2719395"></a><p>    A simple way to protect view relations from the mentioned
+<a name="id2719441"></a><p>    A simple way to protect view relations from the mentioned
     possibility that someone can try to run <code class="command">INSERT</code>,
     <code class="command">UPDATE</code>, or <code class="command">DELETE</code> on them is
     to let those query trees get thrown away.  So we create the rules

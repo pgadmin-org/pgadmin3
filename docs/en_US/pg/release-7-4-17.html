@@ -1,55 +1,55 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.28. Release 7.4.17</title>
+<title>E.31. Release 7.4.17</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.11 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-4-18.html" title="E.27. Release 7.4.18">
-<link rel="next" href="release-7-4-16.html" title="E.29. Release 7.4.16">
+<link rel="prev" href="release-7-4-18.html" title="E.30. Release 7.4.18">
+<link rel="next" href="release-7-4-16.html" title="E.32. Release 7.4.16">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-17">E.28. Release 7.4.17</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-17">E.31. Release 7.4.17</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2007-04-23</p>
 </div>
-<p>    This release contains fixes from 7.4.16,
-    including a security fix.
-   </p>
+<p>   This release contains fixes from 7.4.16,
+   including a security fix.
+  </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2863624">E.28.1. Migration to version 7.4.17</h3></div></div></div>
-<p>     A dump/restore is not required for those running 7.4.X.  However,
-     if you are upgrading from a version earlier than 7.4.11, see the release
-     notes for 7.4.11.
-    </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2864745">E.31.1. Migration to Version 7.4.17</h3></div></div></div>
+<p>    A dump/restore is not required for those running 7.4.X.  However,
+    if you are upgrading from a version earlier than 7.4.11, see the release
+    notes for 7.4.11.
+   </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2863633">E.28.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2864754">E.31.2. Changes</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
-<p>      Support explicit placement of the temporary-table schema within
-      <code class="varname">search_path</code>, and disable searching it for functions
-      and operators (Tom)
-     </p>
-<p>      This is needed to allow a security-definer function to set a
-      truly secure value of <code class="varname">search_path</code>.  Without it,
-      an unprivileged SQL user can use temporary objects to execute code
-      with the privileges of the security-definer function (CVE-2007-2138).
-      See <code class="command">CREATE FUNCTION</code> for more information.
-     </p>
+<p>     Support explicit placement of the temporary-table schema within
+     <code class="varname">search_path</code>, and disable searching it for functions
+     and operators (Tom)
+    </p>
+<p>     This is needed to allow a security-definer function to set a
+     truly secure value of <code class="varname">search_path</code>.  Without it,
+     an unprivileged SQL user can use temporary objects to execute code
+     with the privileges of the security-definer function (CVE-2007-2138).
+     See <code class="command">CREATE FUNCTION</code> for more information.
+    </p>
 </li>
-<li><p>      <code class="filename">/contrib/tsearch2</code> crash fixes (Teodor)
-     </p></li>
-<li><p>      Fix potential-data-corruption bug in how <code class="command">VACUUM FULL</code> handles
-      <code class="command">UPDATE</code> chains (Tom, Pavan Deolasee)
-     </p></li>
-<li><p>      Fix PANIC during enlargement of a hash index (bug introduced in 7.4.15)
-      (Tom)
-     </p></li>
+<li><p>     <code class="filename">/contrib/tsearch2</code> crash fixes (Teodor)
+    </p></li>
+<li><p>     Fix potential-data-corruption bug in how <code class="command">VACUUM FULL</code> handles
+     <code class="command">UPDATE</code> chains (Tom, Pavan Deolasee)
+    </p></li>
+<li><p>     Fix PANIC during enlargement of a hash index (bug introduced in 7.4.15)
+     (Tom)
+    </p></li>
 </ul></div>
 </div>
 </div></body>

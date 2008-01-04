@@ -1,142 +1,142 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.66. Release 7.3</title>
+<title>E.70. Release 7.3</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.11 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-3-1.html" title="E.65. Release 7.3.1">
-<link rel="next" href="release-7-2-8.html" title="E.67. Release 7.2.8">
+<link rel="prev" href="release-7-3-1.html" title="E.69. Release 7.3.1">
+<link rel="next" href="release-7-2-8.html" title="E.71. Release 7.2.8">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-3">E.66. Release 7.3</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-3">E.70. Release 7.3</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2002-11-27</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2872686">E.66.1. Overview</h3></div></div></div>
-<p>    Major changes in this release:
-   </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2873993">E.70.1. Overview</h3></div></div></div>
+<p>   Major changes in this release:
+  </p>
 <div class="variablelist"><dl>
 <dt><span class="term">Schemas</span></dt>
-<dd><p>       Schemas allow users to create objects in separate namespaces,
-       so two people or applications can have tables with the same
-       name. There is also a public schema for shared tables.
-       Table/index creation can be restricted by removing privileges
-       on the public schema.
-      </p></dd>
+<dd><p>      Schemas allow users to create objects in separate namespaces,
+      so two people or applications can have tables with the same
+      name. There is also a public schema for shared tables.
+      Table/index creation can be restricted by removing privileges
+      on the public schema.
+     </p></dd>
 <dt><span class="term">Drop Column</span></dt>
-<dd><p>       <span class="productname">PostgreSQL</span> now supports the
-       <code class="literal">ALTER TABLE ... DROP COLUMN</code> functionality.
-      </p></dd>
+<dd><p>      <span class="productname">PostgreSQL</span> now supports the
+      <code class="literal">ALTER TABLE ... DROP COLUMN</code> functionality.
+     </p></dd>
 <dt><span class="term">Table Functions</span></dt>
-<dd><p>       Functions returning multiple rows and/or multiple columns are
-       now much easier to use than before.  You can call such a
-       &#8220;<span class="quote">table function</span>&#8221; in the <code class="literal">SELECT</code>
-       <code class="literal">FROM</code> clause, treating its output like a
-       table. Also, <span class="application">PL/pgSQL</span> functions can
-       now return sets.
-      </p></dd>
+<dd><p>      Functions returning multiple rows and/or multiple columns are
+      now much easier to use than before.  You can call such a
+      &#8220;<span class="quote">table function</span>&#8221; in the <code class="literal">SELECT</code>
+      <code class="literal">FROM</code> clause, treating its output like a
+      table. Also, <span class="application">PL/pgSQL</span> functions can
+      now return sets.
+     </p></dd>
 <dt><span class="term">Prepared Queries</span></dt>
-<dd><p>       <span class="productname">PostgreSQL</span> now supports prepared
-       queries, for improved performance.
-      </p></dd>
+<dd><p>      <span class="productname">PostgreSQL</span> now supports prepared
+      queries, for improved performance.
+     </p></dd>
 <dt><span class="term">Dependency Tracking</span></dt>
-<dd><p>       <span class="productname">PostgreSQL</span> now records object
-       dependencies, which allows improvements in many areas.
-       <code class="command">DROP</code> statements now take either
-       <code class="literal">CASCADE</code> or <code class="literal">RESTRICT</code> to control whether
-       dependent objects are also dropped.
-      </p></dd>
+<dd><p>      <span class="productname">PostgreSQL</span> now records object
+      dependencies, which allows improvements in many areas.
+      <code class="command">DROP</code> statements now take either
+      <code class="literal">CASCADE</code> or <code class="literal">RESTRICT</code> to control whether
+      dependent objects are also dropped.
+     </p></dd>
 <dt><span class="term">Privileges</span></dt>
-<dd><p>       Functions and procedural languages now have privileges, and
-       functions can be defined to run with the privileges of their
-       creator.
-      </p></dd>
+<dd><p>      Functions and procedural languages now have privileges, and
+      functions can be defined to run with the privileges of their
+      creator.
+     </p></dd>
 <dt><span class="term">Internationalization</span></dt>
-<dd><p>       Both multibyte and locale support are now always enabled.
-      </p></dd>
+<dd><p>      Both multibyte and locale support are now always enabled.
+     </p></dd>
 <dt><span class="term">Logging</span></dt>
-<dd><p>       A variety of logging options have been enhanced.
-      </p></dd>
+<dd><p>      A variety of logging options have been enhanced.
+     </p></dd>
 <dt><span class="term">Interfaces</span></dt>
-<dd><p>       A large number of interfaces have been moved to <a class="ulink" href="http://gborg.postgresql.org" target="_top">http://gborg.postgresql.org</a>
-       where they can be developed and released independently.
-      </p></dd>
+<dd><p>      A large number of interfaces have been moved to <a class="ulink" href="http://gborg.postgresql.org" target="_top">http://gborg.postgresql.org</a>
+      where they can be developed and released independently.
+     </p></dd>
 <dt><span class="term">Functions/Identifiers</span></dt>
-<dd><p>       By default, functions can now take up to 32 parameters, and
-       identifiers can be up to 63 bytes long.  Also, <code class="literal">OPAQUE</code>
-       is now deprecated: there are specific &#8220;<span class="quote">pseudo-datatypes</span>&#8221;
-       to represent each of the former meanings of <code class="literal">OPAQUE</code>
-       in function argument and result types.
-      </p></dd>
+<dd><p>      By default, functions can now take up to 32 parameters, and
+      identifiers can be up to 63 bytes long.  Also, <code class="literal">OPAQUE</code>
+      is now deprecated: there are specific &#8220;<span class="quote">pseudo-datatypes</span>&#8221;
+      to represent each of the former meanings of <code class="literal">OPAQUE</code>
+      in function argument and result types.
+     </p></dd>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2872873">E.66.2. Migration to version 7.3</h3></div></div></div>
-<p>    A dump/restore using <span class="application">pg_dump</span> is required for those
-    wishing to migrate data from any previous release. If your
-    application examines the system catalogs, additional changes will
-    be required due to the introduction of schemas in 7.3; for more
-    information, see: <a class="ulink" href="http://developer.postgresql.org/~momjian/upgrade_tips_7.3" target="_top">http://developer.postgresql.org/~momjian/upgrade_tips_7.3</a>.
-   </p>
-<p>    Observe the following incompatibilities:
-   </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2874179">E.70.2. Migration to Version 7.3</h3></div></div></div>
+<p>   A dump/restore using <span class="application">pg_dump</span> is required for those
+   wishing to migrate data from any previous release. If your
+   application examines the system catalogs, additional changes will
+   be required due to the introduction of schemas in 7.3; for more
+   information, see: <a class="ulink" href="http://developer.postgresql.org/~momjian/upgrade_tips_7.3" target="_top">http://developer.postgresql.org/~momjian/upgrade_tips_7.3</a>.
+  </p>
+<p>   Observe the following incompatibilities:
+  </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>      Pre-6.3 clients are no longer supported.
-     </p></li>
-<li><p>      <code class="filename">pg_hba.conf</code> now has a column for the user
-      name and additional features.  Existing files need to be
-      adjusted.
-     </p></li>
-<li><p>      Several <code class="filename">postgresql.conf</code> logging parameters
-      have been renamed.
-     </p></li>
-<li><p>      <code class="literal">LIMIT #,#</code> has been disabled; use
-      <code class="literal">LIMIT # OFFSET #</code>.
-     </p></li>
-<li><p>      <code class="command">INSERT</code> statements with column lists must
-      specify a value for each specified column. For example,
-      <code class="literal">INSERT INTO tab (col1, col2) VALUES ('val1')</code>
-      is now invalid.  It's still allowed to supply fewer columns than
-      expected if the <code class="command">INSERT</code> does not have a column list.
-     </p></li>
-<li><p>      <code class="type">serial</code> columns are no longer automatically
-      <code class="literal">UNIQUE</code>; thus, an index will not automatically be
-      created.
-     </p></li>
-<li><p>      A <code class="command">SET</code> command inside an aborted transaction
-      is now rolled back.
-     </p></li>
-<li><p>      <code class="command">COPY</code> no longer considers missing trailing
-      columns to be null.  All columns need to be specified.
-      (However, one can achieve a similar effect by specifying a
-      column list in the <code class="command">COPY</code> command.)
-     </p></li>
-<li><p>      The data type <code class="type">timestamp</code> is now equivalent to
-      <code class="type">timestamp without time zone</code>, instead of
-      <code class="type">timestamp with time zone</code>.
-     </p></li>
-<li><p>      Pre-7.3 databases loaded into 7.3 will not have the new object
-      dependencies for <code class="type">serial</code> columns, unique
-      constraints, and foreign keys. See the directory
-      <code class="filename">contrib/adddepend/</code> for a detailed
-      description and a script that will add such dependencies.
-     </p></li>
-<li><p>      An empty string (<code class="literal">''</code>) is no longer allowed as
-      the input into an integer field.  Formerly, it was silently
-      interpreted as 0.
-     </p></li>
+<li><p>     Pre-6.3 clients are no longer supported.
+    </p></li>
+<li><p>     <code class="filename">pg_hba.conf</code> now has a column for the user
+     name and additional features.  Existing files need to be
+     adjusted.
+    </p></li>
+<li><p>     Several <code class="filename">postgresql.conf</code> logging parameters
+     have been renamed.
+    </p></li>
+<li><p>     <code class="literal">LIMIT #,#</code> has been disabled; use
+     <code class="literal">LIMIT # OFFSET #</code>.
+    </p></li>
+<li><p>     <code class="command">INSERT</code> statements with column lists must
+     specify a value for each specified column. For example,
+     <code class="literal">INSERT INTO tab (col1, col2) VALUES ('val1')</code>
+     is now invalid.  It's still allowed to supply fewer columns than
+     expected if the <code class="command">INSERT</code> does not have a column list.
+    </p></li>
+<li><p>     <code class="type">serial</code> columns are no longer automatically
+     <code class="literal">UNIQUE</code>; thus, an index will not automatically be
+     created.
+    </p></li>
+<li><p>     A <code class="command">SET</code> command inside an aborted transaction
+     is now rolled back.
+    </p></li>
+<li><p>     <code class="command">COPY</code> no longer considers missing trailing
+     columns to be null.  All columns need to be specified.
+     (However, one can achieve a similar effect by specifying a
+     column list in the <code class="command">COPY</code> command.)
+    </p></li>
+<li><p>     The data type <code class="type">timestamp</code> is now equivalent to
+     <code class="type">timestamp without time zone</code>, instead of
+     <code class="type">timestamp with time zone</code>.
+    </p></li>
+<li><p>     Pre-7.3 databases loaded into 7.3 will not have the new object
+     dependencies for <code class="type">serial</code> columns, unique
+     constraints, and foreign keys. See the directory
+     <code class="filename">contrib/adddepend/</code> for a detailed
+     description and a script that will add such dependencies.
+    </p></li>
+<li><p>     An empty string (<code class="literal">''</code>) is no longer allowed as
+     the input into an integer field.  Formerly, it was silently
+     interpreted as 0.
+    </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2873053">E.66.3. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2874358">E.70.3. Changes</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873057">E.66.3.1. Server Operation</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2874362">E.70.3.1. Server Operation</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Add pg_locks view to show locks (Neil)</p></li>
 <li><p>Security fixes for password negotiation memory allocation (Neil)</p></li>
@@ -145,7 +145,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873086">E.66.3.2. Performance</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2874391">E.70.3.2. Performance</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Improve startup by calling localtime() only once (Tom)</p></li>
 <li><p>Cache system catalog information in flat files for faster startup (Tom)</p></li>
@@ -168,7 +168,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873168">E.66.3.3. Privileges</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2874472">E.70.3.3. Privileges</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Add privileges on functions and procedural languages (Peter)</p></li>
 <li><p>Add OWNER to CREATE DATABASE so superusers can create databases on behalf of unprivileged users (Gavin Sherry, Tom)</p></li>
@@ -178,7 +178,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873195">E.66.3.4. Server Configuration</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2874500">E.70.3.4. Server Configuration</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Server log messages now tagged with LOG, not DEBUG (Bruce)</p></li>
 <li><p>Add user column to pg_hba.conf (Bruce)</p></li>
@@ -199,7 +199,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873272">E.66.3.5. Queries</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2874577">E.70.3.5. Queries</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Make cursors insensitive, meaning their contents do not change (Tom)</p></li>
 <li><p>Disable LIMIT #,# syntax; now only LIMIT # OFFSET # supported (Bruce)</p></li>
@@ -222,7 +222,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873355">E.66.3.6. Object Manipulation</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2874660">E.70.3.6. Object Manipulation</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Make equals signs optional in CREATE DATABASE (Gavin Sherry)</p></li>
 <li><p>Make ALTER TABLE OWNER change index ownership too (Neil)</p></li>
@@ -258,7 +258,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873493">E.66.3.7. Utility Commands</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2874798">E.70.3.7. Utility Commands</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Have COPY TO output embedded carriage returns and newlines as \r and \n (Tom)</p></li>
 <li><p>Allow DELIMITER in COPY FROM to be 8-bit clean (Tatsuo)</p></li>
@@ -297,7 +297,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873669">E.66.3.8. Data Types and Functions</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2874974">E.70.3.8. Data Types and Functions</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Fix factorial(0) to return 1 (Bruce)</p></li>
 <li><p>Date/time/timezone improvements (Thomas)</p></li>
@@ -342,7 +342,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873848">E.66.3.9. Internationalization</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2875153">E.70.3.9. Internationalization</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Add additional encodings: Korean (JOHAB), Thai (WIN874), Vietnamese (TCVN), Arabic (WIN1256), Simplified Chinese (GBK), Korean (UHC) (Eiji Tokuya)</p></li>
 <li><p>Enable locale support by default (Peter)</p></li>
@@ -359,7 +359,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873906">E.66.3.10. Server-side Languages</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2875211">E.70.3.10. Server-side Languages</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Allow recursive SQL function (Peter)</p></li>
 <li><p>Change PL/Tcl build to use configured compiler and Makefile.shlib (Peter)</p></li>
@@ -371,7 +371,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873941">E.66.3.11. psql</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2875246">E.70.3.11. psql</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Don't lowercase psql \connect database name for 7.2.0 compatibility (Tom)</p></li>
 <li><p>Add psql \timing to time user queries (Greg Sabino Mullane)</p></li>
@@ -387,7 +387,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2873991">E.66.3.12. libpq</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2875296">E.70.3.12. libpq</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Add ~/.pgpass to store host/user password combinations (Alvaro Herrera)</p></li>
 <li><p>Add PQunescapeBytea() function to libpq (Patrick Welche)</p></li>
@@ -400,7 +400,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2874030">E.66.3.13. JDBC</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2875335">E.70.3.13. JDBC</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Allow JDBC to compile with JDK 1.4 (Dave)</p></li>
 <li><p>Add JDBC 3 support (Barry)</p></li>
@@ -415,7 +415,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2874076">E.66.3.14. Miscellaneous Interfaces</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2875381">E.70.3.14. Miscellaneous Interfaces</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Fixed ECPG bug concerning octal numbers in single quotes (Michael)</p></li>
 <li><p>Move src/interfaces/libpgeasy to http://gborg.postgresql.org (Marc, Bruce)</p></li>
@@ -430,7 +430,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2874126">E.66.3.15. Source Code</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2875431">E.70.3.15. Source Code</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Fix for parallel make (Peter)</p></li>
 <li><p>AIX fixes for linking Tcl (Andreas Zeugswetter)</p></li>
@@ -484,7 +484,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2874337">E.66.3.16. Contrib</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2875642">E.70.3.16. Contrib</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Allow inet arrays in /contrib/array (Neil)</p></li>
 <li><p>GiST fixes (Teodor Sigaev, Neil)</p></li>

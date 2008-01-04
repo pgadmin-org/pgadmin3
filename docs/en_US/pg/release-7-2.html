@@ -1,106 +1,106 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.75. Release 7.2</title>
+<title>E.79. Release 7.2</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.11 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-2-1.html" title="E.74. Release 7.2.1">
-<link rel="next" href="release-7-1-3.html" title="E.76. Release 7.1.3">
+<link rel="prev" href="release-7-2-1.html" title="E.78. Release 7.2.1">
+<link rel="next" href="release-7-1-3.html" title="E.80. Release 7.1.3">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-2">E.75. Release 7.2</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-2">E.79. Release 7.2</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2002-02-04</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2875099">E.75.1. Overview</h3></div></div></div>
-<p>    This release improves <span class="productname">PostgreSQL</span> for use in
-    high-volume applications.
-   </p>
-<p>    Major changes in this release:
-   </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2876404">E.79.1. Overview</h3></div></div></div>
+<p>   This release improves <span class="productname">PostgreSQL</span> for use in
+   high-volume applications.
+  </p>
+<p>   Major changes in this release:
+  </p>
 <div class="variablelist"><dl>
 <dt><span class="term">VACUUM</span></dt>
-<dd><p>       Vacuuming no longer locks tables, thus allowing normal user
-       access during the vacuum.  A new <code class="command">VACUUM FULL</code>
-       command does old-style vacuum by locking the table and
-       shrinking the on-disk copy of the table.
-      </p></dd>
+<dd><p>      Vacuuming no longer locks tables, thus allowing normal user
+      access during the vacuum.  A new <code class="command">VACUUM FULL</code>
+      command does old-style vacuum by locking the table and
+      shrinking the on-disk copy of the table.
+     </p></dd>
 <dt><span class="term">Transactions</span></dt>
-<dd><p>       There is no longer a problem with installations that exceed
-       four billion transactions.
-      </p></dd>
+<dd><p>      There is no longer a problem with installations that exceed
+      four billion transactions.
+     </p></dd>
 <dt><span class="term">OIDs</span></dt>
-<dd><p>       OIDs are now optional.  Users can now create tables without
-       OIDs for cases where OID usage is excessive.
-      </p></dd>
+<dd><p>      OIDs are now optional.  Users can now create tables without
+      OIDs for cases where OID usage is excessive.
+     </p></dd>
 <dt><span class="term">Optimizer</span></dt>
-<dd><p>       The system now computes histogram column statistics during
-       <code class="command">ANALYZE</code>, allowing much better optimizer choices.
-      </p></dd>
+<dd><p>      The system now computes histogram column statistics during
+      <code class="command">ANALYZE</code>, allowing much better optimizer choices.
+     </p></dd>
 <dt><span class="term">Security</span></dt>
-<dd><p>       A new MD5 encryption option allows more secure storage and
-       transfer of passwords.  A new Unix-domain socket
-       authentication option is available on Linux and BSD systems.
-      </p></dd>
+<dd><p>      A new MD5 encryption option allows more secure storage and
+      transfer of passwords.  A new Unix-domain socket
+      authentication option is available on Linux and BSD systems.
+     </p></dd>
 <dt><span class="term">Statistics</span></dt>
-<dd><p>       Administrators can use the new table access statistics module
-       to get fine-grained information about table and index usage.
-      </p></dd>
+<dd><p>      Administrators can use the new table access statistics module
+      to get fine-grained information about table and index usage.
+     </p></dd>
 <dt><span class="term">Internationalization</span></dt>
-<dd><p>       Program and library messages can now be displayed in several
-       languages.
-      </p></dd>
+<dd><p>      Program and library messages can now be displayed in several
+      languages.
+     </p></dd>
 </dl></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2875192">E.75.2. Migration to version 7.2</h3></div></div></div>
-<p>    A dump/restore using <code class="command">pg_dump</code> is required for
-    those wishing to migrate data from any previous release.
-   </p>
-<p>    Observe the following incompatibilities:
-   </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2876496">E.79.2. Migration to Version 7.2</h3></div></div></div>
+<p>   A dump/restore using <code class="command">pg_dump</code> is required for
+   those wishing to migrate data from any previous release.
+  </p>
+<p>   Observe the following incompatibilities:
+  </p>
 <div class="itemizedlist"><ul type="disc">
-<li><p>      The semantics of the <code class="command">VACUUM</code> command have
-      changed in this release.  You might wish to update your
-      maintenance procedures accordingly.
-     </p></li>
-<li><p>      In this release, comparisons using <code class="literal">= NULL</code>
-      will always return false (or NULL, more precisely).  Previous
-      releases automatically transformed this syntax to <code class="literal">IS
-      NULL</code>.  The old behavior can be re-enabled using a
-      <code class="filename">postgresql.conf</code> parameter.
-     </p></li>
-<li><p>      The <code class="filename">pg_hba.conf</code> and <code class="filename">pg_ident.conf</code>
-      configuration is now only reloaded after receiving a
-      <span class="systemitem">SIGHUP</span> signal, not with each connection.
-     </p></li>
-<li><p>      The function <code class="filename">octet_length()</code> now returns the uncompressed data length.
-     </p></li>
-<li><p>      The date/time value <code class="literal">'current'</code> is no longer
-      available.  You will need to rewrite your applications.
-     </p></li>
-<li><p>      The <code class="literal">timestamp()</code>, <code class="literal">time()</code>,
-      and <code class="literal">interval()</code> functions are no longer
-      available.  Instead of <code class="literal">timestamp()</code>, use
-      <code class="literal">timestamp 'string'</code> or <code class="literal">CAST</code>.
-     </p></li>
+<li><p>     The semantics of the <code class="command">VACUUM</code> command have
+     changed in this release.  You might wish to update your
+     maintenance procedures accordingly.
+    </p></li>
+<li><p>     In this release, comparisons using <code class="literal">= NULL</code>
+     will always return false (or NULL, more precisely).  Previous
+     releases automatically transformed this syntax to <code class="literal">IS
+     NULL</code>.  The old behavior can be re-enabled using a
+     <code class="filename">postgresql.conf</code> parameter.
+    </p></li>
+<li><p>     The <code class="filename">pg_hba.conf</code> and <code class="filename">pg_ident.conf</code>
+     configuration is now only reloaded after receiving a
+     <span class="systemitem">SIGHUP</span> signal, not with each connection.
+    </p></li>
+<li><p>     The function <code class="filename">octet_length()</code> now returns the uncompressed data length.
+    </p></li>
+<li><p>     The date/time value <code class="literal">'current'</code> is no longer
+     available.  You will need to rewrite your applications.
+    </p></li>
+<li><p>     The <code class="literal">timestamp()</code>, <code class="literal">time()</code>,
+     and <code class="literal">interval()</code> functions are no longer
+     available.  Instead of <code class="literal">timestamp()</code>, use
+     <code class="literal">timestamp 'string'</code> or <code class="literal">CAST</code>.
+    </p></li>
 </ul></div>
-<p>    The <code class="literal">SELECT ... LIMIT #,#</code> syntax will be removed
-    in the next release. You should change your queries to use
-    separate LIMIT and OFFSET clauses, e.g. <code class="literal">LIMIT 10 OFFSET
-    20</code>.
-   </p>
+<p>   The <code class="literal">SELECT ... LIMIT #,#</code> syntax will be removed
+   in the next release. You should change your queries to use
+   separate LIMIT and OFFSET clauses, e.g. <code class="literal">LIMIT 10 OFFSET
+   20</code>.
+  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2875349">E.75.3. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2876652">E.79.3. Changes</h3></div></div></div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875352">E.75.3.1. Server Operation</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2876656">E.79.3.1. Server Operation</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Create temporary files in a separate directory (Bruce)</p></li>
 <li><p>Delete orphaned temporary files on postmaster startup (Bruce)</p></li>
@@ -125,7 +125,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875440">E.75.3.2. Performance</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2876743">E.79.3.2. Performance</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Optimizer improvements (Tom)</p></li>
 <li><p>New histogram column statistics for optimizer (Tom)</p></li>
@@ -140,7 +140,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875486">E.75.3.3. Privileges</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2876789">E.79.3.3. Privileges</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Change UPDATE, DELETE privileges to be distinct (Peter E)</p></li>
 <li><p>New REFERENCES, TRIGGER privileges (Peter E)</p></li>
@@ -153,7 +153,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875524">E.75.3.4. Client Authentication</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2876828">E.79.3.4. Client Authentication</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Fork postmaster before doing authentication to prevent hangs (Peter E)</p></li>
 <li><p>Add ident authentication over Unix domain sockets on Linux, *BSD (Helge Bahmann, Oliver Elphick, Teodor Sigaev, Bruce)</p></li>
@@ -164,7 +164,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875556">E.75.3.5. Server Configuration</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2876860">E.79.3.5. Server Configuration</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Interpretation of some time zone abbreviations as Australian rather than North American now settable at run time (Bruce)</p></li>
 <li><p>New parameter to set default transaction isolation level (Peter E)</p></li>
@@ -175,7 +175,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875589">E.75.3.6. Queries</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2876892">E.79.3.6. Queries</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Statements added by INSERT rules now execute after the INSERT (Jan)</p></li>
 <li><p>Prevent unadorned relation names in target list (Bruce)</p></li>
@@ -189,7 +189,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875631">E.75.3.7. Schema Manipulation</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2876935">E.79.3.7. Schema Manipulation</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Fix SERIAL in temporary tables (Bruce)</p></li>
 <li><p>Allow temporary sequences (Bruce)</p></li>
@@ -211,7 +211,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875711">E.75.3.8. Utility Commands</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877014">E.79.3.8. Utility Commands</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Add RESET ALL, SHOW ALL (Marko Kreen)</p></li>
 <li><p>CREATE/ALTER USER/GROUP now allow options in any order (Vince)</p></li>
@@ -226,7 +226,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875759">E.75.3.9. Data Types and Functions</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877062">E.79.3.9. Data Types and Functions</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>SUM(), AVG(), COUNT() now uses int8 internally for speed (Tom)</p></li>
 <li><p>Add convert(), convert2() (Tatsuo)</p></li>
@@ -268,7 +268,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875925">E.75.3.10. Internationalization</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877228">E.79.3.10. Internationalization</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>National language support in psql, <span class="application">pg_dump</span>, libpq, and server (Peter E)</p></li>
 <li><p>Message translations in Chinese (simplified, traditional), Czech, French, German, Hungarian, Russian, Swedish (Peter E, Serguei A. Mokhov, Karel Zak, Weiping He, Zhenbang Wei, Kovacs Zoltan)</p></li>
@@ -281,7 +281,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2875972">E.75.3.11. <span class="application">PL/pgSQL</span></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877275">E.79.3.11. <span class="application">PL/pgSQL</span></h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Now uses portals for SELECT loops, allowing huge result sets (Jan)</p></li>
 <li><p>CURSOR and REFCURSOR support (Jan)</p></li>
@@ -297,25 +297,25 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876025">E.75.3.12. PL/Perl</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877328">E.79.3.12. PL/Perl</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>New untrusted PL/Perl (Alex Pilosov)</p></li>
 <li><p>PL/Perl is now built on some platforms even if libperl is not shared (Peter E)</p></li>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876038">E.75.3.13. PL/Tcl</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877341">E.79.3.13. PL/Tcl</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Now reports errorInfo (Vsevolod Lobko)</p></li>
 <li><p>Add spi_lastoid function (bob@redivi.com)</p></li>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876050">E.75.3.14. PL/Python</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877354">E.79.3.14. PL/Python</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc"><li><p>...is new (Andrew Bosma)</p></li></ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876059">E.75.3.15. <span class="application">psql</span></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877362">E.79.3.15. <span class="application">psql</span></h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>\d displays indexes in unique, primary groupings (Christopher Kings-Lynne)</p></li>
 <li><p>Allow trailing semicolons in backslash commands (Greg Sabino Mullane)</p></li>
@@ -325,14 +325,14 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876088">E.75.3.16. <span class="application">libpq</span></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877392">E.79.3.16. <span class="application">libpq</span></h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>New function PQescapeString() to escape quotes in command strings (Florian Weimer)</p></li>
 <li><p>New function PQescapeBytea() escapes binary strings for use as SQL string literals</p></li>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876106">E.75.3.17. JDBC</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877409">E.79.3.17. JDBC</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Return OID of INSERT (Ken K)</p></li>
 <li><p>Handle more data types (Ken K)</p></li>
@@ -369,7 +369,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876240">E.75.3.18. ODBC</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877543">E.79.3.18. ODBC</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Remove query size limit (Hiroshi)</p></li>
 <li><p>Remove text field size limit (Hiroshi)</p></li>
@@ -384,7 +384,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876285">E.75.3.19. <span class="application">ECPG</span></h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877589">E.79.3.19. <span class="application">ECPG</span></h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>EXECUTE ... INTO implemented (Christof Petig)</p></li>
 <li><p>Multiple row descriptor support (e.g. CARDINALITY) (Christof Petig)</p></li>
@@ -399,7 +399,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876334">E.75.3.20. Misc. Interfaces</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877638">E.79.3.20. Misc. Interfaces</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Python fix fetchone() (Gerhard Haring)</p></li>
 <li><p>Use UTF, Unicode in Tcl where appropriate (Vsevolod Lobko, Reinhard Max)</p></li>
@@ -409,7 +409,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876365">E.75.3.21. Build and Install</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877668">E.79.3.21. Build and Install</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Configure, dynamic loader, and shared library fixes (Peter E)</p></li>
 <li><p>Fixes in QNX 4 port (Bernd Tegge)</p></li>
@@ -426,7 +426,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876420">E.75.3.22. Source Code</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877724">E.79.3.22. Source Code</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>Remove SEP_CHAR (Bruce)</p></li>
 <li><p>New GUC hooks (Tom)</p></li>
@@ -442,7 +442,7 @@
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2876469">E.75.3.23. Contrib</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2877772">E.79.3.23. Contrib</h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p>New contrib/rtree_gist (Oleg Bartunov, Teodor Sigaev)</p></li>
 <li><p>New contrib/tsearch full-text indexing (Oleg, Teodor Sigaev)</p></li>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.11 Documentation">
 <link rel="up" href="spi.html#spi-interface" title="40.1. Interface Functions">
 <link rel="prev" href="spi-spi-getargtypeid.html" title="SPI_getargtypeid">
 <link rel="next" href="spi-spi-execute-plan.html" title="SPI_execute_plan">
@@ -19,12 +19,12 @@
   prepared by <code class="function">SPI_prepare</code> can be used with
   <code class="function">SPI_cursor_open</code></p>
 </div>
-<a name="id2735249"></a><div class="refsynopsisdiv">
+<a name="id2735262"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">bool SPI_is_cursor_plan(void * <em class="parameter"><code>plan</code></em>)</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2735267"></a><h2>Description</h2>
+<a name="id2735280"></a><h2>Description</h2>
 <p>   <code class="function">SPI_is_cursor_plan</code> returns <code class="symbol">true</code>
    if a plan prepared by <code class="function">SPI_prepare</code> can be passed
    as an argument to <code class="function">SPI_cursor_open</code> and <code class="symbol">   false</code> if that is not the case. The criteria are that the
@@ -34,7 +34,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2735319"></a><h2>Arguments</h2>
+<a name="id2735332"></a><h2>Arguments</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">void * <em class="parameter"><code>plan</code></em></code></span></dt>
 <dd><p>      execution plan (returned by <code class="function">SPI_prepare</code>)
@@ -42,7 +42,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2735345"></a><h2>Return Value</h2>
+<a name="id2735358"></a><h2>Return Value</h2>
 <p>    <code class="symbol">true</code> or <code class="symbol">false</code> to indicate if the
     <em class="parameter"><code>plan</code></em> can produce a cursor or not, or
     <code class="symbol">SPI_ERROR_ARGUMENT</code> if the <em class="parameter"><code>plan</code></em>

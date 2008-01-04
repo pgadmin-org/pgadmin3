@@ -5,10 +5,10 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.1.10 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.1.11 Documentation">
 <link rel="up" href="appendixes.html" title="Part VIII. Appendixes">
 <link rel="prev" href="unsupported-features-sql-standard.html" title="D.2. Unsupported Features">
-<link rel="next" href="release-8-1-9.html" title="E.2. Release 8.1.9">
+<link rel="next" href="release-8-1-10.html" title="E.2. Release 8.1.10">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="appendix" lang="en" id="release">
@@ -16,571 +16,684 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="release.html#release-8-1-10">E.1. Release 8.1.10</a></span></dt>
+<dt><span class="sect1"><a href="release.html#release-8-1-11">E.1. Release 8.1.11</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release.html#id2851135">E.1.1. Migration to version 8.1.10</a></span></dt>
-<dt><span class="sect2"><a href="release.html#id2851144">E.1.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release.html#id2851236">E.1.1. Migration to Version 8.1.11</a></span></dt>
+<dt><span class="sect2"><a href="release.html#id2851244">E.1.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-1-9.html">E.2. Release 8.1.9</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1-10.html">E.2. Release 8.1.10</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-1-9.html#id2851276">E.2.1. Migration to version 8.1.9</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1-9.html#id2851285">E.2.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-10.html#id2851653">E.2.1. Migration to Version 8.1.10</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-10.html#id2851662">E.2.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-1-8.html">E.3. Release 8.1.8</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1-9.html">E.3. Release 8.1.9</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-1-8.html#id2851385">E.3.1. Migration to version 8.1.8</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1-8.html#id2851394">E.3.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-9.html#id2851793">E.3.1. Migration to Version 8.1.9</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-9.html#id2851802">E.3.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-1-7.html">E.4. Release 8.1.7</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1-8.html">E.4. Release 8.1.8</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-1-7.html#id2851421">E.4.1. Migration to version 8.1.7</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1-7.html#id2851430">E.4.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-8.html#id2851901">E.4.1. Migration to Version 8.1.8</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-8.html#id2851910">E.4.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-1-6.html">E.5. Release 8.1.6</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1-7.html">E.5. Release 8.1.7</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-1-6.html#id2851519">E.5.1. Migration to version 8.1.6</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1-6.html#id2851528">E.5.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-7.html#id2851937">E.5.1. Migration to Version 8.1.7</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-7.html#id2851946">E.5.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-1-5.html">E.6. Release 8.1.5</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1-6.html">E.6. Release 8.1.6</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-1-5.html#id2851716">E.6.1. Migration to version 8.1.5</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1-5.html#id2851725">E.6.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-6.html#id2852034">E.6.1. Migration to Version 8.1.6</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-6.html#id2852043">E.6.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-1-4.html">E.7. Release 8.1.4</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1-5.html">E.7. Release 8.1.5</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-1-4.html#id2851954">E.7.1. Migration to version 8.1.4</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1-4.html#id2851990">E.7.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-5.html#id2852230">E.7.1. Migration to Version 8.1.5</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-5.html#id2852238">E.7.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-1-3.html">E.8. Release 8.1.3</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1-4.html">E.8. Release 8.1.4</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-1-3.html#id2852349">E.8.1. Migration to version 8.1.3</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1-3.html#id2852358">E.8.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-4.html#id2852468">E.8.1. Migration to Version 8.1.4</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-4.html#id2852503">E.8.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-1-2.html">E.9. Release 8.1.2</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1-3.html">E.9. Release 8.1.3</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-1-2.html#id2852685">E.9.1. Migration to version 8.1.2</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1-2.html#id2852707">E.9.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-3.html#id2852863">E.9.1. Migration to Version 8.1.3</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-3.html#id2852871">E.9.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-1-1.html">E.10. Release 8.1.1</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1-2.html">E.10. Release 8.1.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-1-1.html#id2852921">E.10.1. Migration to version 8.1.1</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1-1.html#id2852928">E.10.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-2.html#id2853198">E.10.1. Migration to Version 8.1.2</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-2.html#id2853220">E.10.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-1.html">E.11. Release 8.1</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1-1.html">E.11. Release 8.1.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-1.html#id2853123">E.11.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1.html#id2853448">E.11.2. Migration to version 8.1</a></span></dt>
-<dt><span class="sect2"><a href="release-8-1.html#id2854143">E.11.3. Additional Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-1.html#id2853434">E.11.1. Migration to Version 8.1.1</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1-1.html#id2853441">E.11.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-14.html">E.12. Release 8.0.14</a></span></dt>
+<dt><span class="sect1"><a href="release-8-1.html">E.12. Release 8.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-14.html#id2856921">E.12.1. Migration to version 8.0.14</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-14.html#id2856930">E.12.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1.html#id2853636">E.12.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1.html#id2853959">E.12.2. Migration to Version 8.1</a></span></dt>
+<dt><span class="sect2"><a href="release-8-1.html#id2854649">E.12.3. Additional Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-13.html">E.13. Release 8.0.13</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-15.html">E.13. Release 8.0.15</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-13.html#id2857043">E.13.1. Migration to version 8.0.13</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-13.html#id2857052">E.13.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-15.html#id2857432">E.13.1. Migration to Version 8.0.15</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-15.html#id2857441">E.13.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-12.html">E.14. Release 8.0.12</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-14.html">E.14. Release 8.0.14</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-12.html#id2857135">E.14.1. Migration to version 8.0.12</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-12.html#id2857144">E.14.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-14.html#id2857796">E.14.1. Migration to Version 8.0.14</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-14.html#id2857805">E.14.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-11.html">E.15. Release 8.0.11</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-13.html">E.15. Release 8.0.13</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-11.html#id2857171">E.15.1. Migration to version 8.0.11</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-11.html#id2857180">E.15.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-13.html#id2857917">E.15.1. Migration to Version 8.0.13</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-13.html#id2857926">E.15.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-10.html">E.16. Release 8.0.10</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-12.html">E.16. Release 8.0.12</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-10.html#id2857237">E.16.1. Migration to version 8.0.10</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-10.html#id2857246">E.16.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-12.html#id2858008">E.16.1. Migration to Version 8.0.12</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-12.html#id2858017">E.16.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-9.html">E.17. Release 8.0.9</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-11.html">E.17. Release 8.0.11</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-9.html#id2857399">E.17.1. Migration to version 8.0.9</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-9.html#id2857408">E.17.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-11.html#id2858044">E.17.1. Migration to Version 8.0.11</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-11.html#id2858053">E.17.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-8.html">E.18. Release 8.0.8</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-10.html">E.18. Release 8.0.10</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-8.html#id2857546">E.18.1. Migration to version 8.0.8</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-8.html#id2857582">E.18.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-10.html#id2858110">E.18.1. Migration to Version 8.0.10</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-10.html#id2858118">E.18.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-7.html">E.19. Release 8.0.7</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-9.html">E.19. Release 8.0.9</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-7.html#id2857825">E.19.1. Migration to version 8.0.7</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-7.html#id2857834">E.19.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-9.html#id2858270">E.19.1. Migration to Version 8.0.9</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-9.html#id2858279">E.19.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-6.html">E.20. Release 8.0.6</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-8.html">E.20. Release 8.0.8</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-6.html#id2858078">E.20.1. Migration to version 8.0.6</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-6.html#id2858101">E.20.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-8.html#id2858418">E.20.1. Migration to Version 8.0.8</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-8.html#id2858453">E.20.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-5.html">E.21. Release 8.0.5</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-7.html">E.21. Release 8.0.7</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-5.html#id2858254">E.21.1. Migration to version 8.0.5</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-5.html#id2858263">E.21.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-7.html#id2858696">E.21.1. Migration to Version 8.0.7</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-7.html#id2858705">E.21.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-4.html">E.22. Release 8.0.4</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-6.html">E.22. Release 8.0.6</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-4.html#id2858402">E.22.1. Migration to version 8.0.4</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-4.html#id2858411">E.22.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-6.html#id2858948">E.22.1. Migration to Version 8.0.6</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-6.html#id2858971">E.22.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-3.html">E.23. Release 8.0.3</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-5.html">E.23. Release 8.0.5</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-3.html#id2858731">E.23.1. Migration to version 8.0.3</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-3.html#id2858803">E.23.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-5.html#id2859124">E.23.1. Migration to Version 8.0.5</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-5.html#id2859133">E.23.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-2.html">E.24. Release 8.0.2</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-4.html">E.24. Release 8.0.4</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-2.html#id2859025">E.24.1. Migration to version 8.0.2</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-2.html#id2859042">E.24.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-4.html#id2859272">E.24.1. Migration to Version 8.0.4</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-4.html#id2859281">E.24.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0-1.html">E.25. Release 8.0.1</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-3.html">E.25. Release 8.0.3</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0-1.html#id2859551">E.25.1. Migration to version 8.0.1</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0-1.html#id2859558">E.25.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-3.html#id2859601">E.25.1. Migration to Version 8.0.3</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-3.html#id2859667">E.25.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-8-0.html">E.26. Release 8.0</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-2.html">E.26. Release 8.0.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-8-0.html#id2859676">E.26.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0.html#id2859920">E.26.2. Migration to version 8.0</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0.html#id2860354">E.26.3. Deprecated Features</a></span></dt>
-<dt><span class="sect2"><a href="release-8-0.html#id2860442">E.26.4. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-2.html#id2859889">E.26.1. Migration to Version 8.0.2</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-2.html#id2859905">E.26.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-18.html">E.27. Release 7.4.18</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0-1.html">E.27. Release 8.0.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-18.html#id2863532">E.27.1. Migration to version 7.4.18</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-18.html#id2863541">E.27.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-1.html#id2860412">E.27.1. Migration to Version 8.0.1</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0-1.html#id2860420">E.27.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-17.html">E.28. Release 7.4.17</a></span></dt>
+<dt><span class="sect1"><a href="release-8-0.html">E.28. Release 8.0</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-17.html#id2863624">E.28.1. Migration to version 7.4.17</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-17.html#id2863633">E.28.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0.html#id2860538">E.28.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0.html#id2860781">E.28.2. Migration to Version 8.0</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0.html#id2861218">E.28.3. Deprecated Features</a></span></dt>
+<dt><span class="sect2"><a href="release-8-0.html#id2861306">E.28.4. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-16.html">E.29. Release 7.4.16</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-19.html">E.29. Release 7.4.19</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-16.html#id2863712">E.29.1. Migration to version 7.4.16</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-16.html#id2863721">E.29.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-19.html#id2864381">E.29.1. Migration to Version 7.4.19</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-19.html#id2864390">E.29.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-15.html">E.30. Release 7.4.15</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-18.html">E.30. Release 7.4.18</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-15.html#id2863778">E.30.1. Migration to version 7.4.15</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-15.html#id2863787">E.30.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-18.html#id2864654">E.30.1. Migration to Version 7.4.18</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-18.html#id2864663">E.30.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-14.html">E.31. Release 7.4.14</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-17.html">E.31. Release 7.4.17</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-14.html#id2863912">E.31.1. Migration to version 7.4.14</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-14.html#id2863921">E.31.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-17.html#id2864745">E.31.1. Migration to Version 7.4.17</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-17.html#id2864754">E.31.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-13.html">E.32. Release 7.4.13</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-16.html">E.32. Release 7.4.16</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-13.html#id2863995">E.32.1. Migration to version 7.4.13</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-13.html#id2864031">E.32.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-16.html#id2864833">E.32.1. Migration to Version 7.4.16</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-16.html#id2864842">E.32.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-12.html">E.33. Release 7.4.12</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-15.html">E.33. Release 7.4.15</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-12.html#id2864253">E.33.1. Migration to version 7.4.12</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-12.html#id2864262">E.33.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-15.html#id2864898">E.33.1. Migration to Version 7.4.15</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-15.html#id2864907">E.33.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-11.html">E.34. Release 7.4.11</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-14.html">E.34. Release 7.4.14</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-11.html#id2864354">E.34.1. Migration to version 7.4.11</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-11.html#id2864377">E.34.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-14.html#id2865032">E.34.1. Migration to Version 7.4.14</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-14.html#id2865041">E.34.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-10.html">E.35. Release 7.4.10</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-13.html">E.35. Release 7.4.13</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-10.html#id2864492">E.35.1. Migration to version 7.4.10</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-10.html#id2864501">E.35.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-13.html#id2865114">E.35.1. Migration to Version 7.4.13</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-13.html#id2865150">E.35.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-9.html">E.36. Release 7.4.9</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-12.html">E.36. Release 7.4.12</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-9.html#id2864570">E.36.1. Migration to version 7.4.9</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-9.html#id2864579">E.36.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-12.html#id2865371">E.36.1. Migration to Version 7.4.12</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-12.html#id2865380">E.36.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-8.html">E.37. Release 7.4.8</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-11.html">E.37. Release 7.4.11</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-8.html#id2864765">E.37.1. Migration to version 7.4.8</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-8.html#id2864923">E.37.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-11.html#id2865473">E.37.1. Migration to Version 7.4.11</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-11.html#id2865496">E.37.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-7.html">E.38. Release 7.4.7</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-10.html">E.38. Release 7.4.10</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-7.html#id2865186">E.38.1. Migration to version 7.4.7</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-7.html#id2865193">E.38.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-10.html#id2865611">E.38.1. Migration to Version 7.4.10</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-10.html#id2865620">E.38.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-6.html">E.39. Release 7.4.6</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-9.html">E.39. Release 7.4.9</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-6.html#id2865280">E.39.1. Migration to version 7.4.6</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-6.html#id2865287">E.39.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-9.html#id2865688">E.39.1. Migration to Version 7.4.9</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-9.html#id2865697">E.39.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-5.html">E.40. Release 7.4.5</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-8.html">E.40. Release 7.4.8</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-5.html#id2865427">E.40.1. Migration to version 7.4.5</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-5.html#id2865434">E.40.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-8.html#id2865883">E.40.1. Migration to Version 7.4.8</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-8.html#id2866040">E.40.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-4.html">E.41. Release 7.4.4</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-7.html">E.41. Release 7.4.7</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-4.html#id2865466">E.41.1. Migration to version 7.4.4</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-4.html#id2865473">E.41.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-7.html#id2866303">E.41.1. Migration to Version 7.4.7</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-7.html#id2866310">E.41.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-3.html">E.42. Release 7.4.3</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-6.html">E.42. Release 7.4.6</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-3.html#id2865567">E.42.1. Migration to version 7.4.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-3.html#id2865574">E.42.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-6.html#id2866397">E.42.1. Migration to Version 7.4.6</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-6.html#id2866404">E.42.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-2.html">E.43. Release 7.4.2</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-5.html">E.43. Release 7.4.5</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-2.html#id2865698">E.43.1. Migration to version 7.4.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-2.html#id2865871">E.43.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-5.html#id2866544">E.43.1. Migration to Version 7.4.5</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-5.html#id2866551">E.43.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4-1.html">E.44. Release 7.4.1</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-4.html">E.44. Release 7.4.4</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4-1.html#id2866035">E.44.1. Migration to version 7.4.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4-1.html#id2866079">E.44.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-4.html#id2866583">E.44.1. Migration to Version 7.4.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-4.html#id2866590">E.44.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-4.html">E.45. Release 7.4</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-3.html">E.45. Release 7.4.3</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-4.html#id2866346">E.45.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4.html#id2866687">E.45.2. Migration to version 7.4</a></span></dt>
-<dt><span class="sect2"><a href="release-7-4.html#id2866993">E.45.3. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-3.html#id2866684">E.45.1. Migration to Version 7.4.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-3.html#id2866691">E.45.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-20.html">E.46. Release 7.3.20</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-2.html">E.46. Release 7.4.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-20.html#id2870044">E.46.1. Migration to version 7.3.20</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-20.html#id2870053">E.46.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-2.html#id2866814">E.46.1. Migration to Version 7.4.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-2.html#id2866987">E.46.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-19.html">E.47. Release 7.3.19</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4-1.html">E.47. Release 7.4.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-19.html#id2870117">E.47.1. Migration to version 7.3.19</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-19.html#id2870126">E.47.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-1.html#id2867150">E.47.1. Migration to Version 7.4.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4-1.html#id2867195">E.47.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-18.html">E.48. Release 7.3.18</a></span></dt>
+<dt><span class="sect1"><a href="release-7-4.html">E.48. Release 7.4</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-18.html#id2870190">E.48.1. Migration to version 7.3.18</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-18.html#id2870199">E.48.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4.html#id2867461">E.48.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4.html#id2867800">E.48.2. Migration to Version 7.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-4.html#id2868104">E.48.3. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-17.html">E.49. Release 7.3.17</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-21.html">E.49. Release 7.3.21</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-17.html#id2870244">E.49.1. Migration to version 7.3.17</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-17.html#id2870253">E.49.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-21.html#id2871156">E.49.1. Migration to Version 7.3.21</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-21.html#id2871164">E.49.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-16.html">E.50. Release 7.3.16</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-20.html">E.50. Release 7.3.20</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-16.html#id2870335">E.50.1. Migration to version 7.3.16</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-16.html#id2870344">E.50.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-20.html#id2871369">E.50.1. Migration to Version 7.3.20</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-20.html#id2871378">E.50.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-15.html">E.51. Release 7.3.15</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-19.html">E.51. Release 7.3.19</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-15.html#id2870404">E.51.1. Migration to version 7.3.15</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-15.html#id2870440">E.51.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-19.html#id2871441">E.51.1. Migration to Version 7.3.19</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-19.html#id2871450">E.51.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-14.html">E.52. Release 7.3.14</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-18.html">E.52. Release 7.3.18</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-14.html#id2870629">E.52.1. Migration to version 7.3.14</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-14.html#id2870638">E.52.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-18.html#id2871514">E.52.1. Migration to Version 7.3.18</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-18.html#id2871523">E.52.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-13.html">E.53. Release 7.3.13</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-17.html">E.53. Release 7.3.17</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-13.html#id2870714">E.53.1. Migration to version 7.3.13</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-13.html#id2870738">E.53.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-17.html#id2871567">E.53.1. Migration to Version 7.3.17</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-17.html#id2871576">E.53.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-12.html">E.54. Release 7.3.12</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-16.html">E.54. Release 7.3.16</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-12.html#id2870848">E.54.1. Migration to version 7.3.12</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-12.html#id2870856">E.54.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-16.html#id2871658">E.54.1. Migration to Version 7.3.16</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-16.html#id2871667">E.54.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-11.html">E.55. Release 7.3.11</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-15.html">E.55. Release 7.3.15</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-11.html#id2870916">E.55.1. Migration to version 7.3.11</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-11.html#id2870925">E.55.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-15.html#id2871727">E.55.1. Migration to Version 7.3.15</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-15.html#id2871762">E.55.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-10.html">E.56. Release 7.3.10</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-14.html">E.56. Release 7.3.14</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-10.html#id2871033">E.56.1. Migration to version 7.3.10</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-10.html#id2871148">E.56.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-14.html#id2871951">E.56.1. Migration to Version 7.3.14</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-14.html#id2871960">E.56.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-9.html">E.57. Release 7.3.9</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-13.html">E.57. Release 7.3.13</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-9.html#id2871305">E.57.1. Migration to version 7.3.9</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-9.html#id2871312">E.57.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-13.html#id2872037">E.57.1. Migration to Version 7.3.13</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-13.html#id2872060">E.57.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-8.html">E.58. Release 7.3.8</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-12.html">E.58. Release 7.3.12</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-8.html#id2871395">E.58.1. Migration to version 7.3.8</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-8.html#id2871402">E.58.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-12.html#id2872170">E.58.1. Migration to Version 7.3.12</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-12.html#id2872179">E.58.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-7.html">E.59. Release 7.3.7</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-11.html">E.59. Release 7.3.11</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-7.html#id2871461">E.59.1. Migration to version 7.3.7</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-7.html#id2871468">E.59.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-11.html#id2872239">E.59.1. Migration to Version 7.3.11</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-11.html#id2872248">E.59.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-6.html">E.60. Release 7.3.6</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-10.html">E.60. Release 7.3.10</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-6.html#id2871516">E.60.1. Migration to version 7.3.6</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-6.html#id2871527">E.60.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-10.html#id2872355">E.60.1. Migration to Version 7.3.10</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-10.html#id2872455">E.60.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-5.html">E.61. Release 7.3.5</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-9.html">E.61. Release 7.3.9</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-5.html#id2871613">E.61.1. Migration to version 7.3.5</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-5.html#id2871624">E.61.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-9.html#id2872612">E.61.1. Migration to Version 7.3.9</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-9.html#id2872620">E.61.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-4.html">E.62. Release 7.3.4</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-8.html">E.62. Release 7.3.8</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-4.html#id2871732">E.62.1. Migration to version 7.3.4</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-4.html#id2871743">E.62.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-8.html#id2872703">E.62.1. Migration to Version 7.3.8</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-8.html#id2872710">E.62.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-3.html">E.63. Release 7.3.3</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-7.html">E.63. Release 7.3.7</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-3.html#id2871803">E.63.1. Migration to version 7.3.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-3.html#id2871813">E.63.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-7.html#id2872769">E.63.1. Migration to Version 7.3.7</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-7.html#id2872776">E.63.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-2.html">E.64. Release 7.3.2</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-6.html">E.64. Release 7.3.6</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-2.html#id2872405">E.64.1. Migration to version 7.3.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-2.html#id2872416">E.64.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-6.html#id2872823">E.64.1. Migration to Version 7.3.6</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-6.html#id2872834">E.64.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3-1.html">E.65. Release 7.3.1</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-5.html">E.65. Release 7.3.5</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3-1.html#id2872577">E.65.1. Migration to version 7.3.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3-1.html#id2872597">E.65.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-5.html#id2872921">E.65.1. Migration to Version 7.3.5</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-5.html#id2872931">E.65.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-3.html">E.66. Release 7.3</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-4.html">E.66. Release 7.3.4</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-3.html#id2872686">E.66.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3.html#id2872873">E.66.2. Migration to version 7.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-3.html#id2873053">E.66.3. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-4.html#id2873039">E.66.1. Migration to Version 7.3.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-4.html#id2873050">E.66.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-2-8.html">E.67. Release 7.2.8</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-3.html">E.67. Release 7.3.3</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-2-8.html#id2874446">E.67.1. Migration to version 7.2.8</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-8.html#id2874454">E.67.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-3.html#id2873110">E.67.1. Migration to Version 7.3.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-3.html#id2873120">E.67.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-2-7.html">E.68. Release 7.2.7</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-2.html">E.68. Release 7.3.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-2-7.html#id2874544">E.68.1. Migration to version 7.2.7</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-7.html#id2874551">E.68.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-2.html#id2873712">E.68.1. Migration to Version 7.3.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-2.html#id2873722">E.68.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-2-6.html">E.69. Release 7.2.6</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3-1.html">E.69. Release 7.3.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-2-6.html#id2874618">E.69.1. Migration to version 7.2.6</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-6.html#id2874625">E.69.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-1.html#id2873884">E.69.1. Migration to Version 7.3.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3-1.html#id2873904">E.69.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-2-5.html">E.70. Release 7.2.5</a></span></dt>
+<dt><span class="sect1"><a href="release-7-3.html">E.70. Release 7.3</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-2-5.html#id2874687">E.70.1. Migration to version 7.2.5</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-5.html#id2874694">E.70.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3.html#id2873993">E.70.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3.html#id2874179">E.70.2. Migration to Version 7.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-3.html#id2874358">E.70.3. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-2-4.html">E.71. Release 7.2.4</a></span></dt>
+<dt><span class="sect1"><a href="release-7-2-8.html">E.71. Release 7.2.8</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-2-4.html#id2874777">E.71.1. Migration to version 7.2.4</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-4.html#id2874787">E.71.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-8.html#id2875751">E.71.1. Migration to Version 7.2.8</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-8.html#id2875758">E.71.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-2-3.html">E.72. Release 7.2.3</a></span></dt>
+<dt><span class="sect1"><a href="release-7-2-7.html">E.72. Release 7.2.7</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-2-3.html#id2874845">E.72.1. Migration to version 7.2.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-3.html#id2874856">E.72.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-7.html#id2875849">E.72.1. Migration to Version 7.2.7</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-7.html#id2875856">E.72.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-2-2.html">E.73. Release 7.2.2</a></span></dt>
+<dt><span class="sect1"><a href="release-7-2-6.html">E.73. Release 7.2.6</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-2-2.html#id2874909">E.73.1. Migration to version 7.2.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-2.html#id2874920">E.73.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-6.html#id2875922">E.73.1. Migration to Version 7.2.6</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-6.html#id2875929">E.73.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-2-1.html">E.74. Release 7.2.1</a></span></dt>
+<dt><span class="sect1"><a href="release-7-2-5.html">E.74. Release 7.2.5</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-2-1.html#id2875002">E.74.1. Migration to version 7.2.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2-1.html#id2875013">E.74.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-5.html#id2875992">E.74.1. Migration to Version 7.2.5</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-5.html#id2875999">E.74.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-2.html">E.75. Release 7.2</a></span></dt>
+<dt><span class="sect1"><a href="release-7-2-4.html">E.75. Release 7.2.4</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-2.html#id2875099">E.75.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2.html#id2875192">E.75.2. Migration to version 7.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-2.html#id2875349">E.75.3. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-4.html#id2876081">E.75.1. Migration to Version 7.2.4</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-4.html#id2876092">E.75.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-1-3.html">E.76. Release 7.1.3</a></span></dt>
+<dt><span class="sect1"><a href="release-7-2-3.html">E.76. Release 7.2.3</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-1-3.html#id2876530">E.76.1. Migration to version 7.1.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-1-3.html#id2876540">E.76.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-3.html#id2876150">E.76.1. Migration to Version 7.2.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-3.html#id2876160">E.76.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-1-2.html">E.77. Release 7.1.2</a></span></dt>
+<dt><span class="sect1"><a href="release-7-2-2.html">E.77. Release 7.2.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-1-2.html#id2876574">E.77.1. Migration to version 7.1.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-1-2.html#id2876585">E.77.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-2.html#id2876214">E.77.1. Migration to Version 7.2.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-2.html#id2876224">E.77.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-1-1.html">E.78. Release 7.1.1</a></span></dt>
+<dt><span class="sect1"><a href="release-7-2-1.html">E.78. Release 7.2.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-1-1.html#id2876615">E.78.1. Migration to version 7.1.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-1-1.html#id2876625">E.78.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-1.html#id2876307">E.78.1. Migration to Version 7.2.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2-1.html#id2876317">E.78.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-1.html">E.79. Release 7.1</a></span></dt>
+<dt><span class="sect1"><a href="release-7-2.html">E.79. Release 7.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-1.html#id2876738">E.79.1. Migration to version 7.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-1.html#id2876746">E.79.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2.html#id2876404">E.79.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2.html#id2876496">E.79.2. Migration to Version 7.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-2.html#id2876652">E.79.3. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-0-3.html">E.80. Release 7.0.3</a></span></dt>
+<dt><span class="sect1"><a href="release-7-1-3.html">E.80. Release 7.1.3</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-0-3.html#id2876966">E.80.1. Migration to version 7.0.3</a></span></dt>
-<dt><span class="sect2"><a href="release-7-0-3.html#id2876976">E.80.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-3.html#id2877833">E.80.1. Migration to Version 7.1.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-3.html#id2877844">E.80.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-0-2.html">E.81. Release 7.0.2</a></span></dt>
+<dt><span class="sect1"><a href="release-7-1-2.html">E.81. Release 7.1.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-0-2.html#id2877066">E.81.1. Migration to version 7.0.2</a></span></dt>
-<dt><span class="sect2"><a href="release-7-0-2.html#id2877076">E.81.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-2.html#id2877877">E.81.1. Migration to Version 7.1.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-2.html#id2877888">E.81.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-0-1.html">E.82. Release 7.0.1</a></span></dt>
+<dt><span class="sect1"><a href="release-7-1-1.html">E.82. Release 7.1.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-0-1.html#id2877105">E.82.1. Migration to version 7.0.1</a></span></dt>
-<dt><span class="sect2"><a href="release-7-0-1.html#id2877116">E.82.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-1.html#id2877918">E.82.1. Migration to Version 7.1.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1-1.html#id2877928">E.82.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-7-0.html">E.83. Release 7.0</a></span></dt>
+<dt><span class="sect1"><a href="release-7-1.html">E.83. Release 7.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-7-0.html#id2877293">E.83.1. Migration to version 7.0</a></span></dt>
-<dt><span class="sect2"><a href="release-7-0.html#id2877405">E.83.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1.html#id2878048">E.83.1. Migration to Version 7.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-1.html#id2878056">E.83.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-5-3.html">E.84. Release 6.5.3</a></span></dt>
+<dt><span class="sect1"><a href="release-7-0-3.html">E.84. Release 7.0.3</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-5-3.html#id2878004">E.84.1. Migration to version 6.5.3</a></span></dt>
-<dt><span class="sect2"><a href="release-6-5-3.html#id2878015">E.84.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-3.html#id2878259">E.84.1. Migration to Version 7.0.3</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-3.html#id2878270">E.84.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-5-2.html">E.85. Release 6.5.2</a></span></dt>
+<dt><span class="sect1"><a href="release-7-0-2.html">E.85. Release 7.0.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-5-2.html#id2878045">E.85.1. Migration to version 6.5.2</a></span></dt>
-<dt><span class="sect2"><a href="release-6-5-2.html#id2878056">E.85.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-2.html#id2878359">E.85.1. Migration to Version 7.0.2</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-2.html#id2878370">E.85.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-5-1.html">E.86. Release 6.5.1</a></span></dt>
+<dt><span class="sect1"><a href="release-7-0-1.html">E.86. Release 7.0.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-5-1.html#id2878116">E.86.1. Migration to version 6.5.1</a></span></dt>
-<dt><span class="sect2"><a href="release-6-5-1.html#id2878126">E.86.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-1.html#id2878398">E.86.1. Migration to Version 7.0.1</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0-1.html#id2878409">E.86.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-5.html">E.87. Release 6.5</a></span></dt>
+<dt><span class="sect1"><a href="release-7-0.html">E.87. Release 7.0</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-5.html#id2878390">E.87.1. Migration to version 6.5</a></span></dt>
-<dt><span class="sect2"><a href="release-6-5.html#id2878533">E.87.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0.html#id2878586">E.87.1. Migration to Version 7.0</a></span></dt>
+<dt><span class="sect2"><a href="release-7-0.html#id2878697">E.87.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-4-2.html">E.88. Release 6.4.2</a></span></dt>
+<dt><span class="sect1"><a href="release-6-5-3.html">E.88. Release 6.5.3</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-4-2.html#id2878695">E.88.1. Migration to version 6.4.2</a></span></dt>
-<dt><span class="sect2"><a href="release-6-4-2.html#id2878706">E.88.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-3.html#id2879283">E.88.1. Migration to Version 6.5.3</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-3.html#id2879293">E.88.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-4-1.html">E.89. Release 6.4.1</a></span></dt>
+<dt><span class="sect1"><a href="release-6-5-2.html">E.89. Release 6.5.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-4-1.html#id2878733">E.89.1. Migration to version 6.4.1</a></span></dt>
-<dt><span class="sect2"><a href="release-6-4-1.html#id2878743">E.89.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-2.html#id2879324">E.89.1. Migration to Version 6.5.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-2.html#id2879334">E.89.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-4.html">E.90. Release 6.4</a></span></dt>
+<dt><span class="sect1"><a href="release-6-5-1.html">E.90. Release 6.5.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-4.html#id2878897">E.90.1. Migration to version 6.4</a></span></dt>
-<dt><span class="sect2"><a href="release-6-4.html#id2878923">E.90.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-1.html#id2879394">E.90.1. Migration to Version 6.5.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5-1.html#id2879405">E.90.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-3-2.html">E.91. Release 6.3.2</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="release-6-3-2.html#id2879233">E.91.1. Changes</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="release-6-3-1.html">E.92. Release 6.3.1</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="release-6-3-1.html#id2879323">E.92.1. Changes</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="release-6-3.html">E.93. Release 6.3</a></span></dt>
+<dt><span class="sect1"><a href="release-6-5.html">E.91. Release 6.5</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-3.html#id2879571">E.93.1. Migration to version 6.3</a></span></dt>
-<dt><span class="sect2"><a href="release-6-3.html#id2879597">E.93.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5.html#id2879683">E.91.1. Migration to Version 6.5</a></span></dt>
+<dt><span class="sect2"><a href="release-6-5.html#id2879825">E.91.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-2-1.html">E.94. Release 6.2.1</a></span></dt>
+<dt><span class="sect1"><a href="release-6-4-2.html">E.92. Release 6.4.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-2-1.html#id2879887">E.94.1. Migration from version 6.2 to version 6.2.1</a></span></dt>
-<dt><span class="sect2"><a href="release-6-2-1.html#id2879920">E.94.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4-2.html#id2880239">E.92.1. Migration to Version 6.4.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4-2.html#id2880249">E.92.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-2.html">E.95. Release 6.2</a></span></dt>
+<dt><span class="sect1"><a href="release-6-4-1.html">E.93. Release 6.4.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-2.html#id2879965">E.95.1. Migration from version 6.1 to version 6.2</a></span></dt>
-<dt><span class="sect2"><a href="release-6-2.html#id2879988">E.95.2. Migration from version 1.<em class="replaceable"><code>x</code></em> to version 6.2</a></span></dt>
-<dt><span class="sect2"><a href="release-6-2.html#id2880000">E.95.3. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4-1.html#id2880277">E.93.1. Migration to Version 6.4.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4-1.html#id2880287">E.93.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-1-1.html">E.96. Release 6.1.1</a></span></dt>
+<dt><span class="sect1"><a href="release-6-4.html">E.94. Release 6.4</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-1-1.html#id2880151">E.96.1. Migration from version 6.1 to version 6.1.1</a></span></dt>
-<dt><span class="sect2"><a href="release-6-1-1.html#id2880160">E.96.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4.html#id2880441">E.94.1. Migration to Version 6.4</a></span></dt>
+<dt><span class="sect2"><a href="release-6-4.html#id2880466">E.94.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-1.html">E.97. Release 6.1</a></span></dt>
+<dt><span class="sect1"><a href="release-6-3-2.html">E.95. Release 6.3.2</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-6-3-2.html#id2880769">E.95.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-6-3-1.html">E.96. Release 6.3.1</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-6-3-1.html#id2880860">E.96.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-6-3.html">E.97. Release 6.3</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-1.html#id2880322">E.97.1. Migration to version 6.1</a></span></dt>
-<dt><span class="sect2"><a href="release-6-1.html#id2880334">E.97.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-3.html#id2881106">E.97.1. Migration to Version 6.3</a></span></dt>
+<dt><span class="sect2"><a href="release-6-3.html#id2881131">E.97.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-6-0.html">E.98. Release 6.0</a></span></dt>
+<dt><span class="sect1"><a href="release-6-2-1.html">E.98. Release 6.2.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-6-0.html#id2880451">E.98.1. Migration from version 1.09 to version 6.0</a></span></dt>
-<dt><span class="sect2"><a href="release-6-0.html#id2880458">E.98.2. Migration from pre-1.09 to version 6.0</a></span></dt>
-<dt><span class="sect2"><a href="release-6-0.html#id2880467">E.98.3. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2-1.html#id2881421">E.98.1. Migration from version 6.2 to version 6.2.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2-1.html#id2881455">E.98.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-1-09.html">E.99. Release 1.09</a></span></dt>
-<dt><span class="sect1"><a href="release-1-02.html">E.100. Release 1.02</a></span></dt>
+<dt><span class="sect1"><a href="release-6-2.html">E.99. Release 6.2</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-1-02.html#id2880701">E.100.1. Migration from version 1.02 to version 1.02.1</a></span></dt>
-<dt><span class="sect2"><a href="release-1-02.html#id2880796">E.100.2. Dump/Reload Procedure</a></span></dt>
-<dt><span class="sect2"><a href="release-1-02.html#id2880849">E.100.3. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2.html#id2881499">E.99.1. Migration from version 6.1 to version 6.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2.html#id2881522">E.99.2. Migration from version 1.<em class="replaceable"><code>x</code></em> to version 6.2</a></span></dt>
+<dt><span class="sect2"><a href="release-6-2.html#id2881534">E.99.3. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-1-01.html">E.101. Release 1.01</a></span></dt>
+<dt><span class="sect1"><a href="release-6-1-1.html">E.100. Release 6.1.1</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="release-1-01.html#id2880885">E.101.1. Migration from version 1.0 to version 1.01</a></span></dt>
-<dt><span class="sect2"><a href="release-1-01.html#id2881168">E.101.2. Changes</a></span></dt>
+<dt><span class="sect2"><a href="release-6-1-1.html#id2881685">E.100.1. Migration from version 6.1 to version 6.1.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-1-1.html#id2881694">E.100.2. Changes</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="release-1-0.html">E.102. Release 1.0</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="release-1-0.html#id2881219">E.102.1. Changes</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="release-0-03.html">E.103. <span class="productname">Postgres95</span> Release 0.03</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="release-0-03.html#id2881305">E.103.1. Changes</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="release-0-02.html">E.104. <span class="productname">Postgres95</span> Release 0.02</a></span></dt>
-<dd><dl><dt><span class="sect2"><a href="release-0-02.html#id2881509">E.104.1. Changes</a></span></dt></dl></dd>
-<dt><span class="sect1"><a href="release-0-01.html">E.105. <span class="productname">Postgres95</span> Release 0.01</a></span></dt>
+<dt><span class="sect1"><a href="release-6-1.html">E.101. Release 6.1</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-1.html#id2881855">E.101.1. Migration to Version 6.1</a></span></dt>
+<dt><span class="sect2"><a href="release-6-1.html#id2881868">E.101.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-6-0.html">E.102. Release 6.0</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-6-0.html#id2881982">E.102.1. Migration from version 1.09 to version 6.0</a></span></dt>
+<dt><span class="sect2"><a href="release-6-0.html#id2881990">E.102.2. Migration from pre-1.09 to version 6.0</a></span></dt>
+<dt><span class="sect2"><a href="release-6-0.html#id2881999">E.102.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-1-09.html">E.103. Release 1.09</a></span></dt>
+<dt><span class="sect1"><a href="release-1-02.html">E.104. Release 1.02</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-1-02.html#id2882233">E.104.1. Migration from version 1.02 to version 1.02.1</a></span></dt>
+<dt><span class="sect2"><a href="release-1-02.html#id2882328">E.104.2. Dump/Reload Procedure</a></span></dt>
+<dt><span class="sect2"><a href="release-1-02.html#id2882380">E.104.3. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-1-01.html">E.105. Release 1.01</a></span></dt>
+<dd><dl>
+<dt><span class="sect2"><a href="release-1-01.html#id2882417">E.105.1. Migration from version 1.0 to version 1.01</a></span></dt>
+<dt><span class="sect2"><a href="release-1-01.html#id2882700">E.105.2. Changes</a></span></dt>
+</dl></dd>
+<dt><span class="sect1"><a href="release-1-0.html">E.106. Release 1.0</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-1-0.html#id2882750">E.106.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-0-03.html">E.107. <span class="productname">Postgres95</span> Release 0.03</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-0-03.html#id2882836">E.107.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-0-02.html">E.108. <span class="productname">Postgres95</span> Release 0.02</a></span></dt>
+<dd><dl><dt><span class="sect2"><a href="release-0-02.html#id2883042">E.108.1. Changes</a></span></dt></dl></dd>
+<dt><span class="sect1"><a href="release-0-01.html">E.109. <span class="productname">Postgres95</span> Release 0.01</a></span></dt>
 </dl>
 </div>
 <div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1-10">E.1. Release 8.1.10</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1-11">E.1. Release 8.1.11</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
-<p>2007-09-17</p>
+<p>2008-01-07</p>
 </div>
-<p>    This release contains a variety of fixes from 8.1.9.
+<p>   This release contains a variety of fixes from 8.1.10,
+   including fixes for significant security issues.
+  </p>
+<p>   This is the last 8.1.X release for which the <span class="productname">PostgreSQL</span>
+   community will produce binary packages for <span class="productname">Windows</span>.
+   Windows users are encouraged to move to 8.2.X or later,
+   since there are Windows-specific fixes in 8.2.X that
+   are impractical to back-port.  8.1.X will continue to
+   be supported on other platforms.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2851236">E.1.1. Migration to Version 8.1.11</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.1.X.
+    However, if you are upgrading from a version earlier than 8.1.2,
+    see the release notes for 8.1.2.
    </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2851135">E.1.1. Migration to version 8.1.10</h3></div></div></div>
-<p>     A dump/restore is not required for those running 8.1.X.
-     However, if you are upgrading from a version earlier than 8.1.2,
-     see the release notes for 8.1.2.
-    </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2851144">E.1.2. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2851244">E.1.2. Changes</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
-<li><p>       Prevent index corruption when a transaction inserts rows and
-       then aborts close to the end of a concurrent <code class="command">VACUUM</code>
-       on the same table (Tom)
-      </p></li>
-<li><p>       Make <code class="command">CREATE DOMAIN ... DEFAULT NULL</code> work properly (Tom)
-      </p></li>
-<li><p>       Allow the <code class="type">interval</code> data type to accept input consisting only of
-       milliseconds or microseconds (Neil)
-      </p></li>
-<li><p>       Speed up rtree index insertion (Teodor)
-      </p></li>
-<li><p>       Fix excessive logging of <acronym class="acronym">SSL</acronym> error messages (Tom)
-      </p></li>
-<li><p>       Fix logging so that log messages are never interleaved when using
-       the syslogger process (Andrew)
-      </p></li>
-<li><p>       Fix crash when <code class="varname">log_min_error_statement</code> logging runs out
-       of memory (Tom)
-      </p></li>
-<li><p>       Fix incorrect handling of some foreign-key corner cases (Tom)
-      </p></li>
-<li><p>       Prevent <code class="command">REINDEX</code> and <code class="command">CLUSTER</code> from failing
-       due to attempting to process temporary tables of other sessions (Alvaro)
-      </p></li>
-<li><p>       Update the time zone database rules, particularly New Zealand's upcoming changes (Tom)
-      </p></li>
-<li><p>       Windows socket improvements (Magnus)
-      </p></li>
-<li><p>       Suppress timezone name (<code class="literal">%Z</code>) in log timestamps on Windows
-       because of possible encoding mismatches (Tom)
-      </p></li>
-<li><p>       Require non-superusers who use <code class="filename">/contrib/dblink</code> to use only
-       password authentication, as a security measure (Joe)
-      </p></li>
+<li>
+<p>      Prevent functions in indexes from executing with the privileges of
+      the user running <code class="command">VACUUM</code>, <code class="command">ANALYZE</code>, etc (Tom)
+     </p>
+<p>      Functions used in index expressions and partial-index
+      predicates are evaluated whenever a new table entry is made.  It has
+      long been understood that this poses a risk of trojan-horse code
+      execution if one modifies a table owned by an untrustworthy user.
+      (Note that triggers, defaults, check constraints, etc. pose the
+      same type of risk.)  But functions in indexes pose extra danger
+      because they will be executed by routine maintenance operations
+      such as <code class="command">VACUUM FULL</code>, which are commonly performed
+      automatically under a superuser account.  For example, a nefarious user
+      can execute code with superuser privileges by setting up a
+      trojan-horse index definition and waiting for the next routine vacuum.
+      The fix arranges for standard maintenance operations
+      (including <code class="command">VACUUM</code>, <code class="command">ANALYZE</code>, <code class="command">REINDEX</code>,
+      and <code class="command">CLUSTER</code>) to execute as the table owner rather than
+      the calling user, using the same privilege-switching mechanism already
+      used for <code class="literal">SECURITY DEFINER</code> functions.  To prevent bypassing
+      this security measure, execution of <code class="command">SET SESSION
+      AUTHORIZATION</code> and <code class="command">SET ROLE</code> is now forbidden within a
+      <code class="literal">SECURITY DEFINER</code> context.  (CVE-2007-6600)
+     </p>
+</li>
+<li>
+<p>      Repair assorted bugs in the regular-expression package (Tom, Will Drewry)
+     </p>
+<p>      Suitably crafted regular-expression patterns could cause crashes,
+      infinite or near-infinite looping, and/or massive memory consumption,
+      all of which pose denial-of-service hazards for applications that
+      accept regex search patterns from untrustworthy sources.
+      (CVE-2007-4769, CVE-2007-4772, CVE-2007-6067)
+     </p>
+</li>
+<li>
+<p>      Require non-superusers who use <code class="filename">/contrib/dblink</code> to use only
+      password authentication, as a security measure (Joe)
+     </p>
+<p>      The fix that appeared for this in 8.1.10 was incomplete, as it plugged
+      the hole for only some <code class="filename">dblink</code> functions.  (CVE-2007-6601,
+      CVE-2007-3278)
+     </p>
+</li>
+<li><p>      Update time zone data files to <span class="application">tzdata</span> release 2007k
+      (in particular, recent Argentina changes) (Tom)
+     </p></li>
+<li><p>      Improve planner's handling of LIKE/regex estimation in non-C locales
+      (Tom)
+     </p></li>
+<li><p>      Fix planner failure in some cases of <code class="literal">WHERE false AND var IN
+      (SELECT ...)</code> (Tom)
+     </p></li>
+<li><p>      Preserve the tablespace of indexes that are
+      rebuilt by <code class="command">ALTER TABLE ... ALTER COLUMN TYPE</code> (Tom)
+     </p></li>
+<li>
+<p>      Make archive recovery always start a new WAL timeline, rather than only
+      when a recovery stop time was used (Simon)
+     </p>
+<p>      This avoids a corner-case risk of trying to overwrite an existing
+      archived copy of the last WAL segment, and seems simpler and cleaner
+      than the original definition.
+     </p>
+</li>
+<li><p>      Make <code class="command">VACUUM</code> not use all of <code class="varname">maintenance_work_mem</code>
+      when the table is too small for it to be useful (Alvaro)
+     </p></li>
+<li><p>      Fix potential crash in <code class="function">translate()</code> when using a multibyte
+      database encoding (Tom)
+     </p></li>
+<li><p>      Fix overflow in <code class="literal">extract(epoch from interval)</code> for intervals
+      exceeding 68 years (Tom)
+     </p></li>
+<li><p>      Fix PL/Perl to not fail when a UTF-8 regular expression is used
+      in a trusted function (Andrew)
+     </p></li>
+<li>
+<p>      Fix PL/Perl to cope when platform's Perl defines type <code class="literal">bool</code>
+      as <code class="literal">int</code> rather than <code class="literal">char</code> (Tom)
+     </p>
+<p>      While this could theoretically happen anywhere, no standard build of
+      Perl did things this way ... until <span class="productname">Mac OS X</span> 10.5.
+     </p>
+</li>
+<li><p>      Fix PL/Python to not crash on long exception messages (Alvaro)
+     </p></li>
+<li><p>      Fix <span class="application">pg_dump</span> to correctly handle inheritance child tables
+      that have default expressions different from their parent's (Tom)
+     </p></li>
+<li><p>      Fix <span class="application">libpq</span> crash when <code class="varname">PGPASSFILE</code> refers
+      to a file that is not a plain file (Martin Pitt)
+     </p></li>
+<li><p>      <span class="application">ecpg</span> parser fixes (Michael)
+     </p></li>
+<li><p>      Make <code class="filename">contrib/pgcrypto</code> defend against
+      <span class="application">OpenSSL</span> libraries that fail on keys longer than 128
+      bits; which is the case at least on some Solaris versions (Marko Kreen)
+     </p></li>
+<li><p>      Make <code class="filename">contrib/tablefunc</code>'s <code class="function">crosstab()</code> handle
+      NULL rowid as a category in its own right, rather than crashing (Joe)
+     </p></li>
+<li><p>      Fix <code class="type">tsvector</code> and <code class="type">tsquery</code> output routines to
+      escape backslashes correctly (Teodor, Bruce)
+     </p></li>
+<li><p>      Fix crash of <code class="function">to_tsvector()</code> on huge input strings (Teodor)
+     </p></li>
+<li>
+<p>      Require a specific version of <span class="productname">Autoconf</span> to be used
+      when re-generating the <code class="command">configure</code> script (Peter)
+     </p>
+<p>      This affects developers and packagers only.  The change was made
+      to prevent accidental use of untested combinations of
+      <span class="productname">Autoconf</span> and <span class="productname">PostgreSQL</span> versions.
+      You can remove the version check if you really want to use a
+      different <span class="productname">Autoconf</span> version, but it's
+      your responsibility whether the result works or not.
+     </p>
+</li>
 </ul></div>
 </div>
 </div>
