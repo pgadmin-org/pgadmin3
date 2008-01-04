@@ -1,0 +1,110 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.36. Release 7.4.19</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.6 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-0.html" title="E.35. Release 8.0">
+<link rel="next" href="release-7-4-18.html" title="E.37. Release 7.4.18">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-19">E.36. Release 7.4.19</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2008-01-07</p>
+</div>
+<p>   This release contains a variety of fixes from 7.4.18,
+   including fixes for significant security issues.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2894172">E.36.1. Migration to Version 7.4.19</h3></div></div></div>
+<p>    A dump/restore is not required for those running 7.4.X.  However,
+    if you are upgrading from a version earlier than 7.4.11, see the release
+    notes for 7.4.11.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2894181">E.36.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      Prevent functions in indexes from executing with the privileges of
+      the user running <code class="command">VACUUM</code>, <code class="command">ANALYZE</code>, etc (Tom)
+     </p>
+<p>      Functions used in index expressions and partial-index
+      predicates are evaluated whenever a new table entry is made.  It has
+      long been understood that this poses a risk of trojan-horse code
+      execution if one modifies a table owned by an untrustworthy user.
+      (Note that triggers, defaults, check constraints, etc. pose the
+      same type of risk.)  But functions in indexes pose extra danger
+      because they will be executed by routine maintenance operations
+      such as <code class="command">VACUUM FULL</code>, which are commonly performed
+      automatically under a superuser account.  For example, a nefarious user
+      can execute code with superuser privileges by setting up a
+      trojan-horse index definition and waiting for the next routine vacuum.
+      The fix arranges for standard maintenance operations
+      (including <code class="command">VACUUM</code>, <code class="command">ANALYZE</code>, <code class="command">REINDEX</code>,
+      and <code class="command">CLUSTER</code>) to execute as the table owner rather than
+      the calling user, using the same privilege-switching mechanism already
+      used for <code class="literal">SECURITY DEFINER</code> functions.  To prevent bypassing
+      this security measure, execution of <code class="command">SET SESSION
+      AUTHORIZATION</code> and <code class="command">SET ROLE</code> is now forbidden within a
+      <code class="literal">SECURITY DEFINER</code> context.  (CVE-2007-6600)
+     </p>
+</li>
+<li>
+<p>      Repair assorted bugs in the regular-expression package (Tom, Will Drewry)
+     </p>
+<p>      Suitably crafted regular-expression patterns could cause crashes,
+      infinite or near-infinite looping, and/or massive memory consumption,
+      all of which pose denial-of-service hazards for applications that
+      accept regex search patterns from untrustworthy sources.
+      (CVE-2007-4769, CVE-2007-4772, CVE-2007-6067)
+     </p>
+</li>
+<li>
+<p>      Require non-superusers who use <code class="filename">/contrib/dblink</code> to use only
+      password authentication, as a security measure (Joe)
+     </p>
+<p>      The fix that appeared for this in 7.4.18 was incomplete, as it plugged
+      the hole for only some <code class="filename">dblink</code> functions.  (CVE-2007-6601,
+      CVE-2007-3278)
+     </p>
+</li>
+<li><p>      Fix planner failure in some cases of <code class="literal">WHERE false AND var IN
+      (SELECT ...)</code> (Tom)
+     </p></li>
+<li><p>      Fix potential crash in <code class="function">translate()</code> when using a multibyte
+      database encoding (Tom)
+     </p></li>
+<li><p>      Fix PL/Python to not crash on long exception messages (Alvaro)
+     </p></li>
+<li><p>      <span class="application">ecpg</span> parser fixes (Michael)
+     </p></li>
+<li><p>      Make <code class="filename">contrib/tablefunc</code>'s <code class="function">crosstab()</code> handle
+      NULL rowid as a category in its own right, rather than crashing (Joe)
+     </p></li>
+<li><p>      Fix <code class="type">tsvector</code> and <code class="type">tsquery</code> output routines to
+      escape backslashes correctly (Teodor, Bruce)
+     </p></li>
+<li><p>      Fix crash of <code class="function">to_tsvector()</code> on huge input strings (Teodor)
+     </p></li>
+<li>
+<p>      Require a specific version of <span class="productname">Autoconf</span> to be used
+      when re-generating the <code class="command">configure</code> script (Peter)
+     </p>
+<p>      This affects developers and packagers only.  The change was made
+      to prevent accidental use of untested combinations of
+      <span class="productname">Autoconf</span> and <span class="productname">PostgreSQL</span> versions.
+      You can remove the version check if you really want to use a
+      different <span class="productname">Autoconf</span> version, but it's
+      your responsibility whether the result works or not.
+     </p>
+</li>
+</ul></div>
+</div>
+</div></body>
+</html>

@@ -1,0 +1,103 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>20. Partitioning Support</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.12 Documentation">
+<link rel="up" href="slonyadmin.html" title="Slony-I Administration">
+<link rel="prev" href="adminscripts.html" title="19. Slony-I Administration Scripts">
+<link rel="next" href="slonyupgrade.html" title="21.  Slony-I Upgrade">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="partitioning">20. Partitioning Support </h2></div></div></div>
+<a name="id2595949"></a><p> <span class="productname">Slony-I</span> does not directly provide support for the <span class="productname">PostgreSQL</span>
+methodology of partitioning via inheritance, but it does not, by the
+same token, prevent the Gentle User from using that sort of
+replication scheme, and then replicating the underlying
+tables. </p>
+<p> One of the tests in the <a class="xref" href="testbed.html" title="23.  Slony-I Test Bed Framework">Section 23, &#8220; <span class="productname">Slony-I</span> Test Bed Framework &#8221;</a>, called
+<code class="filename">testinherit</code>, tests that <span class="productname">Slony-I</span> behaves as
+expected to replicate data across partitions.  This test creates a
+master <code class="envar">sales_data</code> table, from which various children
+inherit: </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> <code class="envar">us_east</code></p></li>
+<li><p> <code class="envar">us_west</code></p></li>
+<li><p> <code class="envar">canada</code></p></li>
+</ul></div>
+<p> The example is somewhat simplistic as it only provides rules to
+handle initial insertion into the respective partitions; it does not
+then support allowing tuples to migrate from partition to partition if
+they are altered via an <code class="command">UPDATE</code> statement.  On the
+other hand, unlike with many partitioning cases, this one permits the
+&#8220;<span class="quote">parent</span>&#8221; table to contain tuples. </p>
+<p> Things worth observing include:</p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Each partition table must be added to replication individually. </p></li>
+<li><p> <span class="productname">Slony-I</span> is not aware of the relationship between partitions; it simply regards them as a series of individual tables. </p></li>
+</ul></div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2596052">20.1.  Support for Dynamic Partition Addition</h3></div></div></div>
+<p> One common &#8220;<span class="quote">use case</span>&#8221; of replication is to
+partition large data sets based on time period, whether weekly,
+monthly, quarterly, or annually, where there is therefore a need to
+periodically add a new partition. </p>
+<p> The traditional approach taken to this in <span class="productname">Slony-I</span> would be the
+following: </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a> to add the new partition(s) on each node </p></li>
+<li><p> <a class="xref" href="stmtcreateset.html" title="CREATE SET"><span class="refentrytitle">CREATE SET</span></a> to create a temporary replication set </p></li>
+<li><p> <a class="xref" href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a> to add the table(s) to that set </p></li>
+<li><p> <a class="xref" href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a>, once for each subscriber node, to set up replication of the table on each node </p></li>
+<li><p> <a class="xref" href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
+     SET</span></a>, once subscriptions are running, to eliminate the temporary set </p></li>
+</ul></div>
+<p> In view of the fact that we can be certain that a
+thus-far-unused partition will be empty, we offer an alternative
+mechanism which evades the need to create extra replication sets and
+the need to submit multiple <a class="xref" href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a>
+requests.  The alternative is as follows; we use <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>, extending the DDL script thus: </p>
+<div class="itemizedlist"><ul type="disc">
+<li><p> Add the new partition(s) on each node </p></li>
+<li>
+<p> Run a <span class="productname">Slony-I</span> stored function to mark the new partition as being a replicated table </p>
+<p> On the origin node, if the table is found to have tuples in it,
+the DDL script will be aborted, as the precondition that it be empty
+has been violated. </p>
+<p> On subscriber nodes, we may safely <code class="command">TRUNCATE</code> the new table. </p>
+</li>
+</ul></div>
+<p> There are several stored functions provided to support this;
+the Gentle User may use whichever seems preferable.  The &#8220;<span class="quote">base
+function</span>&#8221; is <code class="function">add_empty_table_to_replication()</code>; the others
+provide additional structure and validation of the arguments </p>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p> <code class="function"> add_empty_table_to_replication (set_id, tab_id, nspname, tabname, idxname, comment);</code> </p>
+<p> This is the &#8220;<span class="quote">base</span>&#8221; function; you must specify the
+set ID, table ID, namespace name, table name, index name, and a
+comment, and this table will be added to replication. </p>
+<p> Note that the index name is optional; if NULL, the function
+will look up the primary key for the table, assuming one exists, and
+fail if it does not exist. </p>
+</li>
+<li>
+<p> <code class="function"> replicate_partition(tab_id, nspname, tabname, idxname, comment); </code> </p>
+<p> If it is known that the table to be replicated inherits from a
+replicated parent table, then this function can draw set and origin
+information from that parent table.  </p>
+</li>
+</ul></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p> As has been observed previously, <span class="productname">Slony-I</span> is unaware that
+tables are partitioned.  Therefore, this approach may also be used
+with confidence to add any table to replication that is known to be
+empty. </p>
+</div>
+</div>
+</div></body>
+</html>

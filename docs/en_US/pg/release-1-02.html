@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.106. Release 1.02</title>
+<title>E.111. Release 1.02</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.6 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-1-09.html" title="E.105. Release 1.09">
-<link rel="next" href="release-1-01.html" title="E.107. Release 1.01">
+<link rel="prev" href="release-1-09.html" title="E.110. Release 1.09">
+<link rel="next" href="release-1-01.html" title="E.112. Release 1.01">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-1-02">E.106. Release 1.02</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-1-02">E.111. Release 1.02</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1996-08-01</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2910073">E.106.1. Migration from version 1.02 to version 1.02.1</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2911988">E.111.1. Migration from version 1.02 to version 1.02.1</h3></div></div></div>
 <p>Here is a new migration file for 1.02.1.  It includes the 'copy' change
 and a script to convert old <acronym class="acronym">ASCII</acronym> files.</p>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
@@ -34,13 +34,13 @@ version 1.02.1, the following steps are required:</p>
 <li><p>Start up a new 1.02.1 postmaster</p></li>
 <li>
 <p>Add the new built-in functions and operators of 1.02.1 to 1.01 or 1.02
-   databases.  This is done by running the new 1.02.1 server against
-   your own 1.01 or 1.02 database and applying the queries attached at
-   the end of the file.   This can be done easily through <code class="command">psql</code>.  If your
-   1.01 or 1.02 database is named <code class="literal">testdb</code> and you have cut the commands
-   from the end of this file and saved them in <code class="filename">addfunc.sql</code>:
+  databases.  This is done by running the new 1.02.1 server against
+  your own 1.01 or 1.02 database and applying the queries attached at
+  the end of the file.   This can be done easily through <code class="command">psql</code>.  If your
+  1.01 or 1.02 database is named <code class="literal">testdb</code> and you have cut the commands
+  from the end of this file and saved them in <code class="filename">addfunc.sql</code>:
 </p>
-<pre class="programlisting">        % psql testdb -f addfunc.sql</pre>
+<pre class="programlisting">       % psql testdb -f addfunc.sql</pre>
 <p>
 
 Those upgrading 1.02 databases will get a warning when executing the
@@ -50,7 +50,7 @@ not a cause for concern.</p>
 </ol></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2910168">E.106.2. Dump/Reload Procedure</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2912083">E.111.2. Dump/Reload Procedure</h3></div></div></div>
 <p>If you are trying to reload a pg_dump or text-mode, <code class="literal">copy tablename to
 stdout</code> generated with a previous version, you will need to run the
 attached <code class="command">sed</code> script on the ASCII file before loading it into the
@@ -59,7 +59,7 @@ end-of-data marker.  Also, empty strings are now loaded in as '' rather
 than NULL. See the copy manual page for full details.
 
 </p>
-<pre class="programlisting">        sed 's/^\.$/\\./g' &lt;in_file &gt;out_file</pre>
+<pre class="programlisting">       sed 's/^\.$/\\./g' &lt;in_file &gt;out_file</pre>
 <p>If you are loading an older binary copy or non-<span class="systemitem">stdout</span> copy, there is no
 end-of-data character, and hence no conversion necessary.
 
@@ -72,7 +72,7 @@ create operator ~* (leftarg = varchar, rightarg = text, procedure = texticregexe
 create operator !~* (leftarg = varchar, rightarg = text, procedure = texticregexne);</pre>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2910220">E.106.3. Changes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2912135">E.111.3. Changes</h3></div></div></div>
 <pre class="programlisting">Source code maintenance and development
  * worldwide team of volunteers
  * the source tree now in CVS at ftp.ki.net

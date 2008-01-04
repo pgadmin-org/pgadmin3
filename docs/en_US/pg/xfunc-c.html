@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.6 Documentation">
 <link rel="up" href="extend.html" title="Chapter 33. Extending SQL">
 <link rel="prev" href="xfunc-internal.html" title="33.8. Internal Functions">
 <link rel="next" href="xaggr.html" title="33.10. User-Defined Aggregates">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="xfunc-c">33.9. C-Language Functions</h2></div></div></div>
-<a name="id2725848"></a><p>    User-defined functions can be written in C (or a language that can
+<a name="id2726103"></a><p>    User-defined functions can be written in C (or a language that can
     be made compatible with C, such as C++).  Such functions are
     compiled into dynamically loadable objects (also called shared
     libraries) and are loaded by the server on demand.  The dynamic
@@ -34,7 +34,7 @@
    </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="xfunc-c-dynload">33.9.1. Dynamic Loading</h3></div></div></div>
-<a name="id2725923"></a><p>    The first time a user-defined function in a particular
+<a name="id2726178"></a><p>    The first time a user-defined function in a particular
     loadable object file is called in a session,
     the dynamic loader loads that object file into memory so that the
     function can be called.  The <code class="command">CREATE FUNCTION</code>
@@ -55,11 +55,11 @@
 <li><p>       If the name starts with the string <code class="literal">$libdir</code>,
        that part is replaced by the <span class="productname">PostgreSQL</span> package
         library directory
-       name, which is determined at build time.<a name="id2725990"></a>
+       name, which is determined at build time.<a name="id2726244"></a>
       </p></li>
 <li><p>       If the name does not contain a directory part, the file is
        searched for in the path specified by the configuration variable
-       <a class="xref" href="runtime-config-client.html#guc-dynamic-library-path">dynamic_library_path</a>.<a name="id2726010"></a>
+       <a class="xref" href="runtime-config-client.html#guc-dynamic-library-path">dynamic_library_path</a>.<a name="id2726264"></a>
       </p></li>
 <li><p>       Otherwise (the file was not found in the path, or it contains a
        non-absolute directory part), the dynamic loader will try to
@@ -101,7 +101,7 @@
      information.
     </p>
 </div>
-<a name="id2726114"></a><p>    To ensure that a dynamically loaded object file is not loaded into an
+<a name="id2726369"></a><p>    To ensure that a dynamically loaded object file is not loaded into an
     incompatible server, <span class="productname">PostgreSQL</span> checks that the
     file contains a &#8220;<span class="quote">magic block</span>&#8221; with the appropriate contents.
     This allows the server to detect obvious incompatibilities, such as code
@@ -128,7 +128,7 @@ PG_MODULE_MAGIC;
     file, for example after recompiling it, use the <a class="xref" href="sql-load.html" title="LOAD">LOAD</a> command or begin a
     fresh session.
    </p>
-<a name="id2726201"></a><a name="id2726210"></a><a name="id2726219"></a><a name="id2726229"></a><p>    Optionally, a dynamically loaded file can contain initialization and
+<a name="id2726455"></a><a name="id2726465"></a><a name="id2726474"></a><a name="id2726484"></a><p>    Optionally, a dynamically loaded file can contain initialization and
     finalization functions.  If the file includes a function named
     <code class="function">_PG_init</code>, that function will be called immediately after
     loading the file.  The function receives no parameters and should
@@ -143,7 +143,7 @@ PG_MODULE_MAGIC;
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="xfunc-c-basetype">33.9.2. Base Types in C-Language Functions</h3></div></div></div>
-<a name="id2726284"></a><p>     To know how to write C-language functions, you need to know how
+<a name="id2726538"></a><p>     To know how to write C-language functions, you need to know how
      <span class="productname">PostgreSQL</span> internally represents base
      data types and how they can be passed to and from functions.
      Internally, <span class="productname">PostgreSQL</span> regards a base
@@ -457,7 +457,7 @@ memcpy(destination-&gt;data, buffer, 40);
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2727025">33.9.3. Version 0 Calling Conventions</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2727280">33.9.3. Version 0 Calling Conventions</h3></div></div></div>
 <p>     We present the &#8220;<span class="quote">old style</span>&#8221; calling convention first &#8212; although
      this approach is now deprecated, it's easier to get a handle on
      initially.  In the version-0 method, the arguments and result
@@ -592,7 +592,7 @@ CREATE FUNCTION concat_text(text, text) RETURNS text
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2727233">33.9.4. Version 1 Calling Conventions</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2727488">33.9.4. Version 1 Calling Conventions</h3></div></div></div>
 <p>     The version-1 calling convention relies on macros to suppress most
      of the complexity of passing arguments and results.  The C declaration
      of a version-1 function is always
@@ -772,7 +772,7 @@ concat_text(PG_FUNCTION_ARGS)
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2727644">33.9.5. Writing Code</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2727898">33.9.5. Writing Code</h3></div></div></div>
 <p>     Before we turn to the more advanced topics, we should discuss
      some coding rules for <span class="productname">PostgreSQL</span>
      C-language functions.  While it may be possible to load functions
@@ -790,7 +790,7 @@ concat_text(PG_FUNCTION_ARGS)
      </p>
 <div class="itemizedlist"><ul type="disc">
 <li><p>        Use <code class="literal">pg_config
-        --includedir-server</code><a name="id2727685"></a>
+        --includedir-server</code><a name="id2727940"></a>
         to find out where the <span class="productname">PostgreSQL</span> server header
         files are installed on your system (or the system that your
         users will be running on).
@@ -806,7 +806,7 @@ concat_text(PG_FUNCTION_ARGS)
        </p></li>
 <li><p>        When allocating memory, use the
         <span class="productname">PostgreSQL</span> functions
-        <code class="function">palloc</code><a name="id2727751"></a> and <code class="function">pfree</code><a name="id2727762"></a>
+        <code class="function">palloc</code><a name="id2728006"></a> and <code class="function">pfree</code><a name="id2728017"></a>
         instead of the corresponding C library functions
         <code class="function">malloc</code> and <code class="function">free</code>.
         The memory allocated by <code class="function">palloc</code> will be
@@ -850,7 +850,7 @@ concat_text(PG_FUNCTION_ARGS)
   C, they must be compiled and linked in a special way to produce a
   file that can be dynamically loaded by the server.  To be precise, a
   <em class="firstterm">shared library</em> needs to be
-  created.<a name="id2727907"></a>
+  created.<a name="id2728162"></a>
 
  </p>
 <p>  For information beyond what is contained in this section
@@ -867,7 +867,7 @@ concat_text(PG_FUNCTION_ARGS)
   executables: first the source files are compiled into object files,
   then the object files are linked together.  The object files need to
   be created as <em class="firstterm">position-independent code</em>
-  (<acronym class="acronym">PIC</acronym>),<a name="id2727966"></a> which
+  (<acronym class="acronym">PIC</acronym>),<a name="id2728220"></a> which
   conceptually means that they can be placed at an arbitrary location
   in memory when they are loaded by the executable.  (Object files
   intended for executables are usually not compiled that way.)  The
@@ -1063,7 +1063,7 @@ gcc -shared -o foo.so foo.o</pre>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="xfunc-c-pgxs">33.9.7. Extension Building Infrastructure</h3></div></div></div>
-<a name="id2728636"></a><p>    If you are thinking about distributing your
+<a name="id2728890"></a><p>    If you are thinking about distributing your
     <span class="productname">PostgreSQL</span> extension modules, setting up a
     portable build system for them can be fairly difficult.  Therefore
     the <span class="productname">PostgreSQL</span> installation provides a build
@@ -1198,7 +1198,7 @@ include $(PGXS)</pre>
 </div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2729042">33.9.8. Composite-Type Arguments</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2729297">33.9.8. Composite-Type Arguments</h3></div></div></div>
 <p>     Composite types do not have a fixed layout like C structures.
      Instances of a composite type may contain null fields.  In
      addition, composite types that are part of an inheritance
@@ -1292,7 +1292,7 @@ c_overpaid(PG_FUNCTION_ARGS)
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2729195">33.9.9. Returning Rows (Composite Types)</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2729450">33.9.9. Returning Rows (Composite Types)</h3></div></div></div>
 <p>     To return a row or composite-type value from a C-language
      function, you can use a special API that provides macros and
      functions to hide most of the complexity of building composite
@@ -1713,7 +1713,7 @@ CREATE OR REPLACE FUNCTION retcomposite(integer, integer)
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2729942">33.9.11. Polymorphic Arguments and Return Types</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2730198">33.9.11. Polymorphic Arguments and Return Types</h3></div></div></div>
 <p>     C-language functions may be declared to accept and
      return the polymorphic types
      <code class="type">anyelement</code> and <code class="type">anyarray</code>.
@@ -1791,11 +1791,11 @@ make_array(PG_FUNCTION_ARGS)
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2730094">33.9.12. Shared Memory and LWLocks</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2730349">33.9.12. Shared Memory and LWLocks</h3></div></div></div>
 <p>     Add-ins may reserve LWLocks and an allocation of shared memory on server
      startup.  The add-in's shared library must be preloaded by specifying
      it in 
-     <a class="xref" href="runtime-config-resource.html#guc-shared-preload-libraries">shared_preload_libraries</a><a name="id2730109"></a>.
+     <a class="xref" href="runtime-config-resource.html#guc-shared-preload-libraries">shared_preload_libraries</a><a name="id2730364"></a>.
      Shared memory is reserved by calling:
 </p>
 <pre class="programlisting">void RequestAddinShmemSpace(int size)</pre>

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.6 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="server-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="server-shutdown.html" title="16.5. Shutting Down the Server">
@@ -126,7 +126,7 @@
     <span class="productname">PostgreSQL</span>'s shared memory usage&#8221;</a>.
     You can, as a temporary solution, lower some of those settings to
     avoid the failure.  As a rough approximation, you can estimate the
-    required segment size as 500 kB plus the variable amounts shown in
+    required segment size as 700 kB plus the variable amounts shown in
     the table.  (Any error message you might get will include the exact
     size of the failed allocation request.)  While it is possible to get
     <span class="productname">PostgreSQL</span> to run with <code class="varname">SHMMAX</code> as small as
@@ -480,12 +480,12 @@ set semsys:seminfo_semmsl=32</pre>
 <tbody>
 <tr>
 <td><a class="xref" href="runtime-config-connection.html#guc-max-connections">max_connections</a></td>
-<td>400 + 270 * <a class="xref" href="runtime-config-locks.html#guc-max-locks-per-transaction">max_locks_per_transaction</a>
+<td>1800 + 270 * <a class="xref" href="runtime-config-locks.html#guc-max-locks-per-transaction">max_locks_per_transaction</a>
 </td>
 </tr>
 <tr>
 <td><a class="xref" href="runtime-config-resource.html#guc-max-prepared-transactions">max_prepared_transactions</a></td>
-<td>600 + 270 * <a class="xref" href="runtime-config-locks.html#guc-max-locks-per-transaction">max_locks_per_transaction</a>
+<td>700 + 270 * <a class="xref" href="runtime-config-locks.html#guc-max-locks-per-transaction">max_locks_per_transaction</a>
 </td>
 </tr>
 <tr>

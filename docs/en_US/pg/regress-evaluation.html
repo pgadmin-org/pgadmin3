@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.6 Documentation">
 <link rel="up" href="regress.html" title="Chapter 28. Regression Tests">
 <link rel="prev" href="regress.html" title="Chapter 28. Regression Tests">
 <link rel="next" href="regress-variant.html" title="28.3. Variant Comparison Files">
@@ -43,7 +43,7 @@
     <a class="xref" href="regress-variant.html" title="28.3. Variant Comparison Files">Section 28.3, &#8220;Variant Comparison Files&#8221;</a> for details.
    </p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2687864">28.2.1. Error message differences</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2688100">28.2.1. Error message differences</h3></div></div></div>
 <p>     Some of the regression tests involve intentional invalid input
      values.  Error messages can come from either the
      <span class="productname">PostgreSQL</span> code or from the host
@@ -55,7 +55,7 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2687887">28.2.2. Locale differences</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2688122">28.2.2. Locale differences</h3></div></div></div>
 <p>     If you run the tests against an already-installed server that was
      initialized with a collation-order locale other than C, then
      there may be differences due to sort order and follow-up
@@ -65,7 +65,7 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2687899">28.2.3. Date and time differences</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2688134">28.2.3. Date and time differences</h3></div></div></div>
 <p>     Most of the date and time results are dependent on the time zone
      environment.  The reference files are generated for time zone
      <code class="literal">PST8PDT</code> (Berkeley, California), and there will be
@@ -76,7 +76,7 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2687927">28.2.4. Floating-point differences</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2688162">28.2.4. Floating-point differences</h3></div></div></div>
 <p>     Some of the tests involve computing 64-bit floating-point numbers (<code class="type">double
      precision</code>) from table columns. Differences in
      results involving mathematical functions of <code class="type">double
@@ -97,7 +97,7 @@
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2687997">28.2.5. Row ordering differences</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2688233">28.2.5. Row ordering differences</h3></div></div></div>
 <p>You might see differences in which the same rows are output in a
 different order than what appears in the expected file.  In most cases
 this is not, strictly speaking, a bug.  Most of the regression test
@@ -126,7 +126,7 @@ exclusion of those that don't.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2688069">28.2.6. Insufficient stack depth</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2688309">28.2.6. Insufficient stack depth</h3></div></div></div>
 <p>     If the <code class="literal">errors</code> test results in a server crash
      at the <code class="literal">select infinite_recurse()</code> command, it means that
      the platform's limit on process stack size is smaller than the
@@ -140,7 +140,7 @@ exclusion of those that don't.
     </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2688108">28.2.7. The &#8220;<span class="quote">random</span>&#8221; test</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2688348">28.2.7. The &#8220;<span class="quote">random</span>&#8221; test</h3></div></div></div>
 <p>     The <code class="literal">random</code> test script is intended to produce 
      random results.   In rare cases, this causes the random regression
      test to fail.  Typing

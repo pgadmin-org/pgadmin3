@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.12 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="failover.html" title="8. Doing switchover and failover with Slony-I">
 <link rel="next" href="plainpaths.html" title="10.  Slony-I Path Communications">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="listenpaths">9. <span class="productname">Slony-I</span> listen paths</h2></div></div></div>
-<a name="id2588365"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<a name="id2588366"></a><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p> If you are running version <span class="productname">Slony-I</span> 1.2 or later it
 should be <span class="emphasis"><em>completely unnecessary</em></span> to read this
@@ -39,8 +39,8 @@ therefore be purged.  this extra communication is needful so
 <span class="productname">Slony-I</span> is able to shift origins to other
 locations.</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2588464">9.1. How listening can break</h3></div></div></div>
-<a name="id2588468"></a><p>On one occasion, I had a need to drop a subscriber node (#2) and
+<div class="titlepage"><div><div><h3 class="title" id="id2588465">9.1. How listening can break</h3></div></div></div>
+<a name="id2588469"></a><p>On one occasion, I had a need to drop a subscriber node (#2) and
 recreate it.  That node was the data provider for another subscriber
 (#3) that was, in effect, a &#8220;<span class="quote">cascaded slave.</span>&#8221; Dropping
 the subscriber node initially didn't work, as <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
@@ -63,7 +63,7 @@ moment, &#8220;<span class="quote">as if by magic</span>&#8221;, node #3 started
 it discovered a place to get <code class="command">sync</code> events.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2588548">9.2. How the listen configuration should look</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2588549">9.2. How the listen configuration should look</h3></div></div></div>
 <p>The simple cases tend to be simple to cope with.  We need to
 instead look at a more complex node configuration.</p>
 <p>Consider a set of nodes, 1 thru 6, where 1 is the origin, 
@@ -158,7 +158,7 @@ communicating.</p></li>
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="autolisten">9.3. Automated Listen Path Generation</h3></div></div></div>
-<a name="id2588782"></a><p> In <span class="productname">Slony-I</span> version 1.1, a heuristic scheme is introduced to
+<a name="id2588783"></a><p> In <span class="productname">Slony-I</span> version 1.1, a heuristic scheme is introduced to
 automatically generate <code class="envar">sl_listen</code> entries.  This
 happens, in order, based on three data sources:
 

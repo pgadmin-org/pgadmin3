@@ -1,22 +1,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>23. Log Analysis</title>
+<title>24. Log Analysis</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.12 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
-<link rel="prev" href="testbed.html" title="22.  Slony-I Test Bed Framework">
-<link rel="next" href="help.html" title="24. More Slony-I Help">
+<link rel="prev" href="testbed.html" title="23.  Slony-I Test Bed Framework">
+<link rel="next" href="help.html" title="25. More Slony-I Help">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="loganalysis">23. Log Analysis</h2></div></div></div>
-<a name="id2597034"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="loganalysis">24. Log Analysis</h2></div></div></div>
+<a name="id2597668"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
 and explanations of what they mean.</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2597049">23.1. CONFIG notices</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2597683">24.1. CONFIG notices</h3></div></div></div>
 <p>These entries are pretty straightforward. They are informative
 messages about your configuration.</p>
 <p>Here are some typical entries that you will probably run into in
@@ -32,7 +32,7 @@ CONFIG storeSet: set_id=1 set_origin=1 set_comment='Set 1'
 CONFIG main: configuration complete - starting threads</pre>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2597072">23.2. DEBUG Notices</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2597706">24.2. DEBUG Notices</h3></div></div></div>
 <p>Debug notices are always prefaced by the name of the thread that
 the notice originates from. You will see messages from the following
 threads:
@@ -65,8 +65,8 @@ choosing increasing values from 1 to 4 will lead to additional DEBUG
 level messages being displayed. </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2597139">23.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
-<a name="id2597148"></a><p> Note that as far as slon is concerned, there is no
+<div class="titlepage"><div><div><h3 class="title" id="id2597773">24.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
+<a name="id2597782"></a><p> Note that as far as slon is concerned, there is no
 &#8220;<span class="quote">master</span>&#8221; or &#8220;<span class="quote">slave.</span>&#8221; They are just
 nodes. </p>
 <p>What you can expect, initially, is to see, on both nodes, some
@@ -120,7 +120,7 @@ node or the other, and propagating to the other. </p>
 (<a class="xref" href="stmtcreateset.html" title="CREATE SET"><span class="refentrytitle">CREATE SET</span></a>), add tables
 (<a class="xref" href="stmtsetaddtable.html" title="SET ADD TABLE"><span class="refentrytitle">SET ADD TABLE</span></a>), and sequences
 (<a class="xref" href="stmtsetaddsequence.html" title="SET ADD SEQUENCE"><span class="refentrytitle">SET ADD SEQUENCE</span></a>), and will see relevant
-events <a class="xref" href="loganalysis.html#logaddobjects" title="23.4.7.  Log Entries - Adding Objects to Sets">Section 23.4.7, &#8220; Log Entries - Adding Objects to Sets  &#8221;</a> only in the logs for the origin
+events <a class="xref" href="loganalysis.html#logaddobjects" title="24.4.7.  Log Entries - Adding Objects to Sets">Section 24.4.7, &#8220; Log Entries - Adding Objects to Sets  &#8221;</a> only in the logs for the origin
 node for the set. </p></li>
 <li>
 <p> Then, when you submit the <a class="xref" href="stmtsubscribeset.html" title="SUBSCRIBE SET"><span class="refentrytitle">SUBSCRIBE SET</span></a> request, the event should go to both
@@ -128,7 +128,7 @@ nodes. </p>
 <p> The origin node has little more to do, after that...  The
 subscriber will then have a <code class="command">COPY_SET</code> event, which
 will lead to logging information about adding each table and copying
-its data.  See <a class="xref" href="loganalysis.html#logsubtime" title="23.4.4.  Log Entries At Subscription Time">Section 23.4.4, &#8220; Log Entries At Subscription Time &#8221;</a> for more
+its data.  See <a class="xref" href="loganalysis.html#logsubtime" title="24.4.4.  Log Entries At Subscription Time">Section 24.4.4, &#8220; Log Entries At Subscription Time &#8221;</a> for more
 details.</p>
 </li>
 </ul></div>
@@ -137,7 +137,7 @@ details.</p>
 <li><p> On the origin, there won't be too terribly much
 logged, just indication that some <code class="command">SYNC</code> events are
 being generated and confirmed by other nodes.
-See <a class="xref" href="loganalysis.html#lognormalsync" title="23.4.6.  Log Entries Associated With Normal SYNC activity">Section 23.4.6, &#8220; Log Entries Associated With Normal SYNC activity &#8221;</a> to see the sorts of log entries to
+See <a class="xref" href="loganalysis.html#lognormalsync" title="24.4.6.  Log Entries Associated With Normal SYNC activity">Section 24.4.6, &#8220; Log Entries Associated With Normal SYNC activity &#8221;</a> to see the sorts of log entries to
 expect.</p></li>
 <li><p> On the subscriber, there will be reports of
 <code class="command">SYNC</code> events, and that the subscriber pulls data
@@ -147,14 +147,14 @@ happen frequently when the origin sees heavy updates. </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2597393">23.4.  Log Messages and Implications </h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2598033">24.4.  Log Messages and Implications </h3></div></div></div>
 <p> This section lists numerous of the error messages found in
 <span class="productname">Slony-I</span>, along with a brief explanation of implications.  It is a
 fairly well comprehensive list, leaving out mostly some of
 the <code class="command">DEBUG4</code> messages that are generally
 uninteresting.</p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="logshiplog">23.4.1.  Log Messages Associated with Log Shipping </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="logshiplog">24.4.1.  Log Messages Associated with Log Shipping </h4></div></div></div>
 <p> Most of these represent errors that come up if
 the <a class="xref" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> functionality breaks.  You may expect
 things to break if the filesystem being used for log shipping fills,
@@ -186,10 +186,18 @@ COPY SET archive file %s - %s</code></p>
 <p><code class="command">ERROR: remoteWorkerThread_%d: Could not generate COPY SET archive header %s - %s</code></p>
 <p> Probably means that we just filled up a filesystem... </p>
 </li>
+<li>
+<p> <code class="command">ERROR  remoteWorkerThread_%d: "update "_slony_regress1".sl_archive_counter     set ac_num = ac_num + 1,         ac_timestamp = CURRENT_TIMESTAMP; select ac_num, ac_timestamp from "_slony_regress1".sl_archive_counter; " PGRES_FATAL_ERROR ERROR:  could not serialize access due to concurrent update</code> </p>
+<p> This may occasionally occur when using logshipping; this will
+typically happen if there are 3 or more nodes, and there is an attempt
+to concurrently process events sourced from different nodes.  This
+does not represent any serious problem; <span class="productname">Slony-I</span> will retry the event
+which failed without the need for administrative intervention. </p>
+</li>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="ddllogs">23.4.2.  Log Messages -  DDL scripts </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="ddllogs">24.4.2.  Log Messages -  DDL scripts </h4></div></div></div>
 <p> The handling of DDL is somewhat fragile, as described
 in <a class="xref" href="ddlchanges.html" title="15. Database Schema Changes (DDL)">Section 15, &#8220;Database Schema Changes (DDL)&#8221;</a>; here are both informational and error
 messages that may occur in the progress of
@@ -282,7 +290,7 @@ a <span class="emphasis"><em>second</em></span> time?  </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2597789">23.4.3.  Threading Issues </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2598450">24.4.3.  Threading Issues </h4></div></div></div>
 <p> There should not be any &#8220;<span class="quote">user-serviceable</span>&#8221; aspects
 to the <span class="productname">Slony-I</span> threading model; each <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> creates a quite
 well-specified set of helper threads to manage the various database
@@ -324,7 +332,7 @@ should already be one... </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="logsubtime">23.4.4.  Log Entries At Subscription Time </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="logsubtime">24.4.4.  Log Entries At Subscription Time </h4></div></div></div>
 <p> Subscription time is quite a special time in <span class="productname">Slony-I</span>.  If you
 have a large amount of data to be copied to subscribers, this may take
 a considerable period of time.  <span class="productname">Slony-I</span> logs a fairly considerable
@@ -557,7 +565,7 @@ connections... </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="logmergeset">23.4.5.  Log Entries Associated with MERGE SET</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="logmergeset">24.4.5.  Log Entries Associated with MERGE SET</h4></div></div></div>
 <p> These various exceptions cause <a class="xref" href="stmtmergeset.html" title="MERGE SET"><span class="refentrytitle">MERGE
      SET</span></a> to
 be rejected; something ought to be corrected before submitting the request again. </p>
@@ -595,7 +603,7 @@ resubmitting the <a class="xref" href="stmtmergeset.html" title="MERGE SET"><spa
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="lognormalsync">23.4.6.  Log Entries Associated With Normal SYNC activity </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="lognormalsync">24.4.6.  Log Entries Associated With Normal SYNC activity </h4></div></div></div>
 <p> Some of these messages indicate exceptions, but
 the &#8220;<span class="quote">normal</span>&#8221; stuff represents what you should expect to
 see most of the time when replication is just plain working.</p>
@@ -736,7 +744,7 @@ application downtime may not be necessary.  </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="logaddobjects">23.4.7.  Log Entries - Adding Objects to Sets  </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="logaddobjects">24.4.7.  Log Entries - Adding Objects to Sets  </h4></div></div></div>
 <p> These entries will be seen on an origin node's logs at the time
 you are configuring a replication set; some of them will be seen on
 subscribers at subscription time.  </p>
@@ -823,7 +831,7 @@ already in use.</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2599481">23.4.8.  Logging When Moving Objects Between Sets  </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2600142">24.4.8.  Logging When Moving Objects Between Sets  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setMoveTable_int(): table % not found</code></p>
@@ -868,7 +876,7 @@ already in use.</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2599599">23.4.9.  Issues with Dropping Objects  </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2600260">24.4.9.  Issues with Dropping Objects  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setDropTable(): table % not found</code></p>
@@ -897,7 +905,7 @@ already in use.</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2599682">23.4.10.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2600343">24.4.10.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
 <p> Many of these errors will occur if you submit a <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 script that describes a reconfiguration incompatible with your
 cluster's current configuration.  Those will lead to the
@@ -955,7 +963,7 @@ forwarding turned on. </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2599857">23.4.11.  Log Switching </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2600518">24.4.11.  Log Switching </h4></div></div></div>
 <p> These messages relate to the new-in-1.2 facility whereby
 <span class="productname">Slony-I</span> periodically switches back and forth between storing data
 in <code class="envar">sl_log_1</code> and <code class="envar">sl_log_2</code>.</p>
@@ -987,7 +995,7 @@ to halt...</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2599961">23.4.12.  Miscellanea </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2600622">24.4.12.  Miscellanea </h4></div></div></div>
 <p> Perhaps these messages should be categorized further; that
 remains a task for the documentors.</p>
 <div class="itemizedlist"><ul type="disc">

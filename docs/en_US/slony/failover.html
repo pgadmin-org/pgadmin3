@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.11 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.12 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="reshape.html" title="7. Reshaping a Cluster">
 <link rel="next" href="listenpaths.html" title="9. Slony-I listen paths">
@@ -13,8 +13,8 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="failover">8. Doing switchover and failover with <span class="productname">Slony-I</span></h2></div></div></div>
-<a name="id2587702"></a><div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2587710">8.1. Foreword</h3></div></div></div>
+<a name="id2587703"></a><div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2587711">8.1. Foreword</h3></div></div></div>
 <p><span class="productname">Slony-I</span> is an asynchronous replication system.  Because of
 that, it is almost certain that at the moment the current origin of a
 set fails, the final transactions committed at the origin will have
@@ -36,8 +36,8 @@ the <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle
 simple 2 node replication system with <span class="productname">Slony-I</span>.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2587770">8.2.  Controlled Switchover</h3></div></div></div>
-<a name="id2587773"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
+<div class="titlepage"><div><div><h3 class="title" id="id2587771">8.2.  Controlled Switchover</h3></div></div></div>
+<a name="id2587775"></a><p> We assume a current &#8220;<span class="quote">origin</span>&#8221; as node1 with one
 &#8220;<span class="quote">subscriber</span>&#8221; as node2 (<span class="emphasis"><em>e.g.</em></span> -
 slave).  A web application on a third server is accessing the database
 on node1.  Both databases are up and running and replication is more
@@ -86,8 +86,8 @@ under control of the administrators, and there is no need for there to
 be any loss of data.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2587886">8.3.  Failover</h3></div></div></div>
-<a name="id2587889"></a><p> If some more serious problem occurs on the
+<div class="titlepage"><div><div><h3 class="title" id="id2587887">8.3.  Failover</h3></div></div></div>
+<a name="id2587890"></a><p> If some more serious problem occurs on the
 &#8220;<span class="quote">origin</span>&#8221; server, it may be necessary to <a class="xref" href="stmtfailover.html" title="FAILOVER"><span class="refentrytitle">FAILOVER</span></a> to a backup server.  This is a highly
 undesirable circumstance, as transactions &#8220;<span class="quote">committed</span>&#8221; on
 the origin, but not applied to the subscribers, will be lost.  You may
@@ -153,8 +153,8 @@ implications.</p>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2588090">8.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
-<a name="id2588099"></a><p> If you do choose to automate <code class="command">FAIL OVER </code>, it
+<div class="titlepage"><div><div><h3 class="title" id="id2588091">8.4.  Automating <code class="command"> FAIL OVER </code> </h3></div></div></div>
+<a name="id2588100"></a><p> If you do choose to automate <code class="command">FAIL OVER </code>, it
 is important to do so <span class="emphasis"><em>carefully.</em></span> You need to have
 good assurance that the failed node is well and truly failed, and you
 need to be able to assure that the failed node will not accidentally
@@ -200,7 +200,7 @@ would remain accessible to system administrators.  </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="rebuildnode1">8.5. After Failover, Reconfiguring
 Former Origin</h3></div></div></div>
-<a name="id2588215"></a><p> What happens to the failed node will depend somewhat on the
+<a name="id2588216"></a><p> What happens to the failed node will depend somewhat on the
 nature of the catastrophe that lead to needing to fail over to another
 node.  If the node had to be abandoned because of physical destruction
 of its disk storage, there will likely not be anything of interest

@@ -1,18 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.100. Release 6.2.1</title>
+<title>E.105. Release 6.2.1</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.5 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.6 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-6-3.html" title="E.99. Release 6.3">
-<link rel="next" href="release-6-2.html" title="E.101. Release 6.2">
+<link rel="prev" href="release-6-3.html" title="E.104. Release 6.3">
+<link rel="next" href="release-6-2.html" title="E.106. Release 6.2">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-6-2-1">E.100. Release 6.2.1</h2></div></div></div>
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-6-2-1">E.105. Release 6.2.1</h2></div></div></div>
 <div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1997-10-17</p>
@@ -29,7 +29,7 @@
 For upgrades from pre-6.2 systems, a full dump/reload is required.
 Refer to the 6.2 release notes for instructions.</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2909233">E.100.1. Migration from version 6.2 to version 6.2.1</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2911149">E.105.1. Migration from version 6.2 to version 6.2.1</h3></div></div></div>
 <p>This is a minor bug-fix release. A dump/reload is not required from version 6.2,
 but is required from any release prior to 6.2.</p>
 <p>In upgrading from version 6.2, if you choose to dump/reload you will find that
@@ -39,13 +39,13 @@ upon updating the executables.</p>
 from <code class="command">psql</code> to update the existing system table:
 
 </p>
-<pre class="programlisting">  update pg_aggregate set aggfinalfn = 'cash_div_flt8'
-   where aggname = 'avg' and aggbasetype = 790;</pre>
+<pre class="programlisting"> update pg_aggregate set aggfinalfn = 'cash_div_flt8'
+  where aggname = 'avg' and aggbasetype = 790;</pre>
 <p>This will need to be done to every existing database, including template1.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2909266">E.100.2. Changes</h3></div></div></div>
-<p>     </p>
+<div class="titlepage"><div><div><h3 class="title" id="id2911182">E.105.2. Changes</h3></div></div></div>
+<p>    </p>
 <pre class="programlisting">Allow TIME and TYPE column names(Thomas)
 Allow larger range of true/false as boolean values(Thomas)
 Support output of "now" and "current"(Thomas)
@@ -57,9 +57,9 @@ Fix avg(cash) computation(Thomas)
 Fix for specifying a column twice in ORDER/GROUP BY(Vadim)
 Documented new libpq function to return affected rows, PQcmdTuples(Bruce)
 Trigger function for inserting user names for INSERT/UPDATE(Brook Milligan)
-     </pre>
+    </pre>
 <p>
-    </p>
+   </p>
 </div>
 </div></body>
 </html>
