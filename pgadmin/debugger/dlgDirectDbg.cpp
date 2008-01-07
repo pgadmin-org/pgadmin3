@@ -648,13 +648,13 @@ void dlgDirectDbg::invokeTargetStatement()
     // Now append the argument list
     query.Append(wxT("("));
 
-    for( int i = 0; i < m_targetInfo->getArgCount(); ++i )
+    for(int i = 0; i < m_targetInfo->getArgCount(); ++i)
     {
         wsArgInfo & arg = (*m_targetInfo)[i];
 
-        if( arg.getMode() == wxT("o"))
+        if(arg.getMode() == wxT("o"))
         {
-            if (!m_targetInfo->getIsFunction())
+            if (!m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() == wxT("edbspl"))
                 query.Append( wxT("NULL::") + arg.getType() + wxT(", "));
         }
         else
