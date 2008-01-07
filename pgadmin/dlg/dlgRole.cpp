@@ -450,6 +450,7 @@ pgObject *dlgRole::CreateObject(pgCollection *collection)
 
 wxString dlgRole::GetSql()
 {
+    int pos;
     wxString sql;
     wxString name=GetName();
     
@@ -586,7 +587,7 @@ wxString dlgRole::GetSql()
         }
         
         // check for removed roles
-        for (int pos=0 ; pos < (int)tmpRoles.GetCount() ; pos++)
+        for (pos=0 ; pos < (int)tmpRoles.GetCount() ; pos++)
         {
             sql += wxT("REVOKE ") + qtIdent(tmpRoles.Item(pos))
                 +  wxT(" FROM ") + qtIdent(name) + wxT(";\n");
@@ -620,7 +621,6 @@ wxString dlgRole::GetSql()
             sql += wxT("\n   VALID UNTIL 'infinity'");
         
         int cnt = lbRolesIn->GetCount();
-        int pos;
 
         if (cnt)
         {
@@ -648,7 +648,6 @@ wxString dlgRole::GetSql()
     }
 
     int cnt=lstVariables->GetItemCount();
-    int pos;
 
     // check for changed or added vars
     for (pos=0 ; pos < cnt ; pos++)

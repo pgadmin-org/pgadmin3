@@ -388,6 +388,7 @@ pgObject *dlgUser::CreateObject(pgCollection *collection)
 
 wxString dlgUser::GetSql()
 {
+    int pos;
     wxString sql;
     wxString name=GetName();
     
@@ -439,7 +440,7 @@ wxString dlgUser::GetSql()
         wxArrayString tmpGroups=user->GetGroupsIn();
 
         // check for added groups
-        for (int pos=0 ; pos < cnt ; pos++)
+        for (pos=0 ; pos < cnt ; pos++)
         {
             wxString groupName=lbGroupsIn->GetString(pos);
 
@@ -452,7 +453,7 @@ wxString dlgUser::GetSql()
         }
         
         // check for removed groups
-        for (int pos=0 ; pos < (int)tmpGroups.GetCount() ; pos++)
+        for (pos=0 ; pos < (int)tmpGroups.GetCount() ; pos++)
         {
             sql += wxT("ALTER GROUP ") + qtIdent(tmpGroups.Item(pos))
                 +  wxT(" DROP USER ") + qtIdent(name) + wxT(";\n");
@@ -484,7 +485,7 @@ wxString dlgUser::GetSql()
         sql += wxT(";\n");
 
         int cnt = lbGroupsIn->GetCount();
-        for (int pos=0 ; pos < cnt ; pos++)
+        for (pos=0 ; pos < cnt ; pos++)
             sql += wxT("ALTER GROUP ") + qtIdent(lbGroupsIn->GetString(pos))
                 +  wxT(" ADD USER ") + qtIdent(name) + wxT(";\n");
     }
@@ -499,8 +500,7 @@ wxString dlgUser::GetSql()
     }
 
     int cnt=lstVariables->GetItemCount();
-    int pos;
-
+  
     // check for changed or added vars
     for (pos=0 ; pos < cnt ; pos++)
     {
