@@ -101,7 +101,7 @@ wxString pgTrigger::GetSql(ctlTree *browser)
             + wxT("\n  FOR EACH ") + GetForEach();
         
         if (GetLanguage() == wxT("edbspl"))
-            sql += GetSource();
+            sql += wxT("\n") + GetSource() + wxT("\n");
         else
         {
             sql += wxT("\n  EXECUTE PROCEDURE ") + triggerFunction->GetQuotedFullIdentifier() 
