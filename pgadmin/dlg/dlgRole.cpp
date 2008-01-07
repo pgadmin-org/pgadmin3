@@ -537,7 +537,7 @@ wxString dlgRole::GetSql()
         wxArrayString tmpRoles=role->GetRolesIn();
 
         // check for added roles
-        for (int pos=0 ; pos < cnt ; pos++)
+        for (pos=0 ; pos < cnt ; pos++)
         {
             wxString roleName=lbRolesIn->GetString(pos);
 
