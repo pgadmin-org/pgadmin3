@@ -160,9 +160,9 @@ DatatypeReader::DatatypeReader(pgDatabase *db, bool withDomains)
 {
     wxString condition=wxT("typisdefined AND typtype ");
     if (withDomains)
-        condition += wxT("IN ('b', 'c', 'd')");
+        condition += wxT("IN ('b', 'c', 'd', 'e')");
     else
-        condition += wxT("IN ('b', 'c')");
+        condition += wxT("IN ('b', 'c', 'e')");
 
     condition += wxT("AND typname NOT IN (SELECT relname FROM pg_class WHERE relnamespace = typnamespace AND relkind != 'c') ");
 
