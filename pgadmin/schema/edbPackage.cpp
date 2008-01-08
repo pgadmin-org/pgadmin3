@@ -49,7 +49,7 @@ wxString edbPackage::GetSql(ctlTree *browser)
         sql = wxT("-- Package: ") + qtName + wxT("\n\n")
               wxT("-- DROP PACKAGE ") + qtName;
 
-        sql += wxT("\n\n");
+        sql += wxT(";\n\n");
         sql += GetHeader();
         sql += wxT("\n\n");
         sql += GetBody();
@@ -193,8 +193,21 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
             package->iSetXid(packages->GetOid(wxT("xmin")));
             package->iSetDatabase(collection->GetDatabase());
             package->iSetOwner(packages->GetVal(wxT("owner")));
-            package->iSetHeader(packages->GetVal(wxT("pkgheadsrc")));
-            package->iSetBody(packages->GetVal(wxT("pkgbodysrc")));
+
+            // EnterpriseDB's CVS code has some new parser code
+            // which is stricter about the formatting of body & 
+            // header code and leaves off trailing ;'s
+            wxString tmp = packages->GetVal(wxT("pkgheadsrc")).Strip(wxString::both);
+            if (!tmp.EndsWith(wxT(";")))
+                package->iSetHeader(tmp + wxT(";"));
+            else
+                package->iSetHeader(tmp);
+
+            tmp = packages->GetVal(wxT("pkgbodysrc")).Strip(wxString::both);
+            if (!tmp.EndsWith(wxT(";")))
+                package->iSetBody(tmp + wxT(";"));
+            else
+                package->iSetBody(tmp);
 
             package->iSetAcl(packages->GetVal(wxT("pkgacl")));
 
