@@ -318,7 +318,19 @@ void dlgProperty::CreateAdditionalPages()
 wxString dlgProperty::GetName()
 {
     if (txtName)
-        return txtName->GetValue().Strip(wxString::both);
+    {
+        if (GetObject())
+        {
+            // If there is an existing object name with a leading or trailing
+            // space, don't try to remove it.
+            if (GetObject()->GetName() == txtName->GetValue())
+                return txtName->GetValue();
+            else
+                return txtName->GetValue().Strip(wxString::both);
+        }
+        else
+            return txtName->GetValue().Strip(wxString::both);
+    }
     return wxEmptyString;
 }
 
