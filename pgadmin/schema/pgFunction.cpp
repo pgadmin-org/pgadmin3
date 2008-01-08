@@ -132,7 +132,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
             }
         }
 
-        if (!sql.EndsWith(wxT(";")))
+        if (!sql.Strip(wxString::both).EndsWith(wxT(";")))
             sql += wxT(";");
 
         size_t i;
@@ -304,13 +304,23 @@ wxString pgFunction::GetArgSigList()
 
     for (unsigned int i=0; i < argTypesArray.Count(); i++)
     {
-        // OUT parameters are not considered part of the signature
+        // OUT parameters are not considered part of the signature, except for EDB-SPL
         if (argModesArray.Item(i) != wxT("OUT"))
         {
             if (args.Length() > 0)
                 args += wxT(", ");
 
             args += argTypesArray.Item(i);
+        }
+        else
+        {
+            if (GetLanguage() == wxT("edbspl"))
+            {
+                if (args.Length() > 0)
+                    args += wxT(", ");
+
+                args += argTypesArray.Item(i);
+            }
         }
     }
     return args;
