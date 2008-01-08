@@ -640,10 +640,11 @@ wxString dlgFunction::GetSelectedDirection()
 wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
 {
     wxString args;
+    bool isEdbspl = cbLanguage->GetValue() == wxT("edbspl");
  
     for (int i=0; i < lstArguments->GetItemCount(); i++)
     {
-        if (inOnly && lstArguments->GetText(i, 1) == wxT("OUT"))
+        if (!isEdbspl && inOnly && lstArguments->GetText(i, 1) == wxT("OUT"))
             continue;
 
         if (i && !args.EndsWith(wxT(", ")))
@@ -654,15 +655,23 @@ wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
             if (withNames && lstArguments->GetText(i, 2) != wxEmptyString)
                 args += qtIdent(lstArguments->GetText(i, 2)) + wxT(" ");
 
-            if (lstArguments->GetText(i, 1) != wxEmptyString)
-                args += lstArguments->GetText(i, 1) + wxT(" ");
+            // edbspl functions should list OUT params, but only by type.
+            if (!inOnly || !isEdbspl || lstArguments->GetText(i, 1) != wxT("OUT"))
+            {
+                if (lstArguments->GetText(i, 1) != wxEmptyString)
+                    args += lstArguments->GetText(i, 1) + wxT(" ");
+            }
                 
             args += lstArguments->GetText(i, 0);
         }
         else
         {
-            if (connection->BackendMinimumVersion(8, 1) && lstArguments->GetText(i, 1) != wxEmptyString)
-                args += lstArguments->GetText(i, 1) + wxT(" ");
+            // edbspl functions should list OUT params, but only by type.
+            if (!inOnly || !isEdbspl || lstArguments->GetText(i, 1) != wxT("OUT"))
+            {
+                if (connection->BackendMinimumVersion(8, 1) && lstArguments->GetText(i, 1) != wxEmptyString)
+                    args += lstArguments->GetText(i, 1) + wxT(" ");
+            }
 
             if (connection->BackendMinimumVersion(8, 0) && withNames && lstArguments->GetText(i, 2) != wxEmptyString)
                 args += qtIdent(lstArguments->GetText(i, 2)) + wxT(" ");
@@ -860,5 +869,6 @@ wxString dlgFunction::GetSql()
 
     return sql;
 }
+
 
 
