@@ -1289,7 +1289,8 @@ void frmQuery::OnSave(wxCommandEvent& event)
     wxUtfFile file(lastPath, wxFile::write, modeUnicode ? wxFONTENCODING_UTF8:wxFONTENCODING_DEFAULT);
     if (file.IsOpened())
      {
-        file.Write(sqlQuery->GetText());
+        if ((file.Write(sqlQuery->GetText()) == 0) && (!modeUnicode))
+            wxMessageBox(_("Query text incomplete.\nQuery contained characters that could not be converted to the local charset.\nPlease correct the data or try using UTF8 instead."));
         file.Close();
         changed=false;
         setExtendedTitle();
@@ -1411,7 +1412,7 @@ void frmQuery::OnSetEOLMode(wxCommandEvent& event)
 void frmQuery::OnSaveAs(wxCommandEvent& event)
 {
     wxFileDialog *dlg=new wxFileDialog(this, _("Save query file as"), lastDir, lastFilename, 
-        _("Query files (*.sql)|*.sql|UTF-8 query files (*.sql)|*.sql|All files (*.*)|*.*"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+        _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
     if (dlg->ShowModal() == wxID_OK)
     {
         lastFilename=dlg->GetFilename();
@@ -1440,7 +1441,8 @@ void frmQuery::OnSaveAs(wxCommandEvent& event)
         wxUtfFile file(lastPath, wxFile::write, lastFileFormat ? wxFONTENCODING_UTF8:wxFONTENCODING_DEFAULT);
         if (file.IsOpened())
         {
-            file.Write(sqlQuery->GetText());
+            if ((file.Write(sqlQuery->GetText()) == 0) && (!lastFileFormat))
+                wxMessageBox(_("Query text incomplete.\nQuery contained characters that could not be converted to the local charset.\nPlease correct the data or try using UTF8 instead."));
             file.Close();
             changed=false;
             setExtendedTitle();
