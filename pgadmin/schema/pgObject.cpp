@@ -871,6 +871,37 @@ void pgSchemaObject::UpdateSchema(ctlTree *browser, OID schemaOid)
                 return;
             }
         }
+
+        // If we get this far, it's possible the schema is actually a catalog
+        // in this case. We need to find the catalogs node and then search that.
+        pgObject *db=browser->GetObject(browser->GetItemParent(schemas->GetId()));
+        
+        wxASSERT(db);
+        treeObjectIterator catsIt(browser, db);
+        pgObject *catalogs;
+
+        while ((catalogs=(pgObject*)catsIt.GetNextObject()) != 0)
+        {
+            if (catalogs->GetMetaType() == PGM_CATALOG)
+                break;
+        }
+
+        // Assuming we got the catalogs node, now get the catalog
+        if (catalogs)
+        {
+            treeObjectIterator catIt(browser, catalogs);
+            pgCatalog *cat;
+
+            while ((cat=(pgCatalog*)catIt.GetNextObject()) != 0)
+            {
+                if (cat->GetOid() == schemaOid)
+                {
+                    SetSchema((pgSchema*)cat);
+                    return;
+                }
+            }
+        }
+
         wxMessageBox(_("The schema oid can't be located, please refresh all schemas!"), 
             _("Missing information"), wxICON_EXCLAMATION | wxOK, browser);
     }
