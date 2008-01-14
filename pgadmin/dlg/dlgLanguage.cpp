@@ -202,7 +202,7 @@ wxString dlgLanguage::GetSql()
         }
     }
 
-    sql += GetGrant(wxT("X"), wxT("LANGUAGE ") + qtIdent(name));
+    sql += GetGrant(wxT("U"), wxT("LANGUAGE ") + qtIdent(name));
     AppendComment(sql, wxT("LANGUAGE ") + qtIdent(name), 0, language);
 
     return sql;
