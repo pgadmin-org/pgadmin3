@@ -58,6 +58,8 @@ wxString pgCatalog::GetDisplayName()
 		return wxT("pgAgent (pgagent)");
 	else if (GetFullName() == wxT("information_schema"))
 		return wxT("ANSI (information_schema)");
+	else if (GetFullName().StartsWith(wxT("_")))
+		return wxT("Slony cluster (") + GetFullName().AfterFirst('_') + wxT(")");
 	else if (GetFullName() == wxT("dbo"))
 		return wxT("Redmond (dbo)");
 	else if (GetFullName() == wxT("sys"))
@@ -244,22 +246,17 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
     else
         restr += wxT("   AND ");
 
-    if (GetMetaType() == PGM_CATALOG)
+    if (GetMetaType() != PGM_CATALOG)
 	{
-        restr += wxT("((nspname = 'pg_catalog' and (SELECT count(*) FROM pg_class WHERE relname = 'pg_class' AND relnamespace = nsp.oid) > 0) OR\n");
-        restr += wxT("(nspname = 'pgagent' and (SELECT count(*) FROM pg_class WHERE relname = 'pga_job' AND relnamespace = nsp.oid) > 0) OR\n");
-        restr += wxT("(nspname = 'information_schema' and (SELECT count(*) FROM pg_class WHERE relname = 'tables' AND relnamespace = nsp.oid) > 0) OR\n");
-        restr += wxT("(nspname = 'dbo' and (SELECT count(*) FROM pg_class WHERE relname = 'systables' AND relnamespace = nsp.oid) > 0) OR\n");
-        restr += wxT("(nspname = 'sys' and (SELECT count(*) FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid) > 0))\n");
-    }
-    else
-    {
-        restr += wxT("NOT ((nspname = 'pg_catalog' and (SELECT count(*) FROM pg_class WHERE relname = 'pg_class' AND relnamespace = nsp.oid) > 0) OR\n");
-        restr += wxT("(nspname = 'pgagent' and (SELECT count(*) FROM pg_class WHERE relname = 'pga_job' AND relnamespace = nsp.oid) > 0) OR\n");
-        restr += wxT("(nspname = 'information_schema' and (SELECT count(*) FROM pg_class WHERE relname = 'tables' AND relnamespace = nsp.oid) > 0) OR\n");
-        restr += wxT("(nspname = 'dbo' and (SELECT count(*) FROM pg_class WHERE relname = 'systables' AND relnamespace = nsp.oid) > 0) OR\n");
-        restr += wxT("(nspname = 'sys' and (SELECT count(*) FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid) > 0))\n");
-    }
+		restr += wxT("NOT ");
+	}
+
+	restr += wxT("((nspname = 'pg_catalog' and (SELECT count(*) FROM pg_class WHERE relname = 'pg_class' AND relnamespace = nsp.oid) > 0) OR\n");
+	restr += wxT("(nspname = 'pgagent' and (SELECT count(*) FROM pg_class WHERE relname = 'pga_job' AND relnamespace = nsp.oid) > 0) OR\n");
+	restr += wxT("(nspname = 'information_schema' and (SELECT count(*) FROM pg_class WHERE relname = 'tables' AND relnamespace = nsp.oid) > 0) OR\n");
+	restr += wxT("(nspname LIKE '_%' and (SELECT count(*) FROM pg_proc WHERE proname='slonyversion' AND pronamespace = nsp.oid) > 0) OR\n");
+	restr += wxT("(nspname = 'dbo' and (SELECT count(*) FROM pg_class WHERE relname = 'systables' AND relnamespace = nsp.oid) > 0) OR\n");
+	restr += wxT("(nspname = 'sys' and (SELECT count(*) FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid) > 0))\n");
 
     if (collection->GetConnection()->EdbMinimumVersion(8, 2))
         restr += wxT("  AND nsp.nspparent = 0\n");
