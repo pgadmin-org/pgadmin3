@@ -235,7 +235,13 @@ pgObject *pgView::Refresh(ctlTree *browser, const wxTreeItemId item)
     pgObject *view=0;
     pgCollection *coll=browser->GetParentCollection(item);
     if (coll)
-        view = viewFactory.CreateObjects(coll, 0, wxT("\n   AND c.oid=") + GetOidStr());
+    {
+        // OIDs may change in EDB which allows the returned column set to be changed.
+        if (GetConnection()->EdbMinimumVersion(8, 0))
+            view = viewFactory.CreateObjects(coll, 0, wxT("\n   AND c.relname=") + GetConnection()->qtDbString(GetName()));
+        else
+            view = viewFactory.CreateObjects(coll, 0, wxT("\n   AND c.oid=") + GetOidStr());
+    }
 
     return view;
 }
