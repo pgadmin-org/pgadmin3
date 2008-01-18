@@ -766,31 +766,29 @@ wxString dlgTable::GetSql()
         sql += wxT(";\n");
 
         AppendOwnerNew(sql, wxT("TABLE ") + tabname);
-    }
 
-    // Extra column info
-    int pos;
+		// Extra column info
 
-    // Statistics
-    for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
-    {
-        if (!lstColumns->GetText(pos, 4).IsEmpty())
-            sql += wxT("ALTER TABLE ") + tabname
-                + wxT(" ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
-                + wxT(" SET STATISTICS ") + lstColumns->GetText(pos, 4)
-                + wxT(";\n");
-    }
+		// Statistics
+		for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
+		{
+			if (!lstColumns->GetText(pos, 4).IsEmpty())
+				sql += wxT("ALTER TABLE ") + tabname
+					+ wxT(" ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
+					+ wxT(" SET STATISTICS ") + lstColumns->GetText(pos, 4)
+					+ wxT(";\n");
+		}
 
-    // Comments
-    for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
-    {
-        if (!lstColumns->GetText(pos, 5).IsEmpty())
-            sql += wxT("COMMENT ON COLUMN ") + tabname
-                + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
-                + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
-                + wxT(";\n");
-    }
-
+		// Comments
+		for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
+		{
+			if (!lstColumns->GetText(pos, 5).IsEmpty())
+				sql += wxT("COMMENT ON COLUMN ") + tabname
+					+ wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
+					+ wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
+					+ wxT(";\n");
+		}
+	}
 
     AppendComment(sql, wxT("TABLE"), schema, table);
 
