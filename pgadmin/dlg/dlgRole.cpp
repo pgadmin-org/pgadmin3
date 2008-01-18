@@ -621,18 +621,32 @@ wxString dlgRole::GetSql()
             sql += wxT("\n   VALID UNTIL 'infinity'");
         
         int cnt = lbRolesIn->GetCount();
+		wxString grants;
 
         if (cnt)
         {
-            sql += wxT("\n   IN ROLE ");
+			wxString roleName;
+
             for (pos=0 ; pos < cnt ; pos++)
             {
-                if (pos)
-                    sql += wxT(", ");
-                sql += qtIdent(lbRolesIn->GetString(pos));
+                bool admin = false;    
+				roleName = lbRolesIn->GetString(pos);
+				if (roleName.Right(PGROLE_ADMINOPTION_LEN) == PGROLE_ADMINOPTION)
+				{
+					roleName=roleName.Left(roleName.Length()-PGROLE_ADMINOPTION_LEN);
+					admin = true;
+
+				}
+				grants += wxT("GRANT ") + qtIdent(roleName)
+					   +  wxT(" TO ") + qtIdent(name);
+
+				if (admin)
+			        grants += wxT(" WITH ADMIN OPTION;\n");
+				else
+					grants += wxT(";\n");
             }
         }
-        sql += wxT(";\n");
+        sql += wxT(";\n") + grants;
 
         if (superuser && !chkUpdateCat->GetValue())
             sql += wxT("UPDATE pg_authid SET rolcatupdate=false WHERE rolname=") + qtDbString(name) + wxT(";\n");
