@@ -179,12 +179,8 @@ int dlgDatabase::Go(bool modal)
 
         PrepareTablespace(cbTablespace);
 
-        // Add the default tablespace (note the hack to 
-        // avoid a string change close to release - this 
-        // can be removed from SVN-Trunk at some point)
-        wxString dt = wxString::Format(wxT("<%s>"), _("Default tablespace"));
-        dt.LowerCase();
-        cbTablespace->Insert(dt, 0, (void *)0);
+        // Add the default tablespace 
+        cbTablespace->Insert(_("<default tablespace>"), 0, (void *)0);
         cbTablespace->SetSelection(0);
 
         cbTemplate->Append(wxEmptyString);

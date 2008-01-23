@@ -289,12 +289,8 @@ int dlgIndex::Go(bool modal)
         if (!this->database->BackendMinimumVersion(8, 2))
             chkConcurrent->Disable();
 
-        // Add the default tablespace (note the hack to 
-        // avoid a string change close to release - this 
-        // can be removed from SVN-Trunk at some point)
-        wxString dt = wxString::Format(wxT("<%s>"), _("Default tablespace"));
-        dt.LowerCase();
-        cbTablespace->Insert(dt, 0, (void *)0);
+        // Add the default tablespace 
+        cbTablespace->Insert(_("<default tablespace>"), 0, (void *)0);
         cbTablespace->SetSelection(0);
     }
     return dlgIndexBase::Go(modal);
