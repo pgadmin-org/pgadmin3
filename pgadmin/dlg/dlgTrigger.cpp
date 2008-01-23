@@ -210,6 +210,9 @@ wxString dlgTrigger::GetSql()
         else
         {
             sql += wxT("\n") + txtBody->GetText();
+            if (!sql.Trim().EndsWith(wxT(";")))
+                sql = sql.Trim() + wxT(";");
+            sql += wxT("\n");
         }
     }
     AppendComment(sql, wxT("TRIGGER ") + qtIdent(GetName()) 
