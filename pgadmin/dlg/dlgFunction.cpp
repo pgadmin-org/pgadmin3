@@ -647,7 +647,7 @@ wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
         if (!isEdbspl && inOnly && lstArguments->GetText(i, 1) == wxT("OUT"))
             continue;
 
-        if (i && !args.EndsWith(wxT(", ")))
+        if (i && !args.IsEmpty() && !args.EndsWith(wxT(", ")))
             args += wxT(", ");
 
         if (isProcedure)
@@ -869,5 +869,6 @@ wxString dlgFunction::GetSql()
 
     return sql;
 }
+
 
 
