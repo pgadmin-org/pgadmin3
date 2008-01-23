@@ -179,6 +179,14 @@ int dlgDatabase::Go(bool modal)
 
         PrepareTablespace(cbTablespace);
 
+        // Add the default tablespace (note the hack to 
+        // avoid a string change close to release - this 
+        // can be removed from SVN-Trunk at some point)
+        wxString dt = wxString::Format(wxT("<%s>"), _("Default tablespace"));
+        dt.LowerCase();
+        cbTablespace->Insert(dt, 0, (void *)0);
+        cbTablespace->SetSelection(0);
+
         cbTemplate->Append(wxEmptyString);
         FillCombobox(wxT("SELECT datname FROM pg_database ORDER BY datname"), cbTemplate);
 
@@ -444,7 +452,8 @@ wxString dlgDatabase::GetSql()
         AppendIfFilled(sql, wxT("\n       OWNER="), qtIdent(cbOwner->GetValue()));
         AppendIfFilled(sql, wxT("\n       TEMPLATE="), qtIdent(cbTemplate->GetValue()));
         AppendIfFilled(sql, wxT("\n       LOCATION="), txtPath->GetValue());
-        AppendIfFilled(sql, wxT("\n       TABLESPACE="), qtIdent(cbTablespace->GetValue()));
+        if (cbTablespace->GetCurrentSelection() > 0 && cbTablespace->GetOIDKey() > 0)
+            sql += wxT("\n       TABLESPACE=") + qtIdent(cbTablespace->GetValue());
 
         sql += wxT(";\n");
     }
