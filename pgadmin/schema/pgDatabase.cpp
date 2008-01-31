@@ -387,7 +387,7 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
             // Add child nodes if necessary
         if (browser->GetChildrenCount(GetId(), false) == 0)
         {
-            wxLogInfo(wxT("Adding child object to database %s"), GetIdentifier());
+            wxLogInfo(wxT("Adding child object to database %s"), GetIdentifier().c_str());
 
 			if (settings->GetDisplayOption(_("Catalogs")))
 				browser->AppendCollection(this, catalogFactory);
