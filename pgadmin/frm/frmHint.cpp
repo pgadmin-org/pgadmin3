@@ -24,6 +24,7 @@
 #include "frm/frmHint.h"
 #include "frm/frmMain.h"
 #include "schema/pgObject.h"
+#include "utils/misc.h"
 #include "utils/utffile.h"
 
 // Icons
@@ -222,7 +223,7 @@ void frmHint::SetHint(const wxString &info)
         SetTitle(_("Guru Hint") + wxString(wxT(" - ")) + wxGetTranslation(hintArray[currentHint].hintCaption));
 
         wxString page=GetPage(hintArray[currentHint].hintPage);
-        page.Replace(wxT("<INFO>"), info);
+        page.Replace(wxT("<INFO>"), HtmlEntities(info));
 
         htmlHint->SetPage(page);
     }
