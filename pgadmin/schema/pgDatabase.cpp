@@ -482,9 +482,9 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     if (!collection->GetServer()->GetDbRestriction().IsEmpty())
     {
         if (restr.IsEmpty())
-            restr = wxT(" WHERE (");
+            restr = wxT(" WHERE datname NOT IN (");
         else
-            restr = wxT("   AND (");
+            restr = wxT("   AND datname NOT IN (");
 
         restr += collection->GetServer()->GetDbRestriction() + wxT(")\n");
     }
