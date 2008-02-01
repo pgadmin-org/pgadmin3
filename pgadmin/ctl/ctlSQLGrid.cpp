@@ -38,8 +38,9 @@ ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     fntLabel.SetWeight(wxBOLD);
     SetLabelFont(fntLabel);
     SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
-	SetRowLabelSize(50);
-	SetDefaultCellOverflow(false);
+    SetRowLabelSize(50);
+    SetColLabelSize(fntLabel.GetPointSize() *4);
+    SetDefaultCellOverflow(false);
 
     wxAcceleratorEntry entries[1];
     entries[0].Set(wxACCEL_CTRL,                (int)'C',      MNU_COPY);
