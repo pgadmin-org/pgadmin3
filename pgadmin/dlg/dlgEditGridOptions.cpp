@@ -325,7 +325,7 @@ bool dlgEditGridOptions::Validate()
         long errPos=0;
         errMsg.Mid(chp+atChar.Length()).ToLong(&errPos);
         errPos -= queryOffset;  // do not count EXPLAIN or similar
-        wxLogError(wxString::Format(_("ERROR: Syntax error at character %d!"), errPos));
+        wxLogError(wxT("%s"), _("ERROR: Syntax error at character %d!"), errPos);
 
         int line=0, maxLine = filter->GetLineCount();
         while (line < maxLine && filter->GetLineEndPosition(line) < errPos + selStart+1)
@@ -337,7 +337,7 @@ bool dlgEditGridOptions::Validate()
         }
     } else {
 		errMsg.Replace(wxT("%"), wxT("%%")); 
-        wxLogError(errMsg.BeforeFirst('\n'));
+        wxLogError(wxT("%s"), errMsg.BeforeFirst('\n'));
     }
 
     // Cleanup

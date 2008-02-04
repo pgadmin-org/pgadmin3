@@ -280,14 +280,14 @@ PGconn * dbgPgConn::getConnection()
 
 void dbgPgConn::startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType, dbgPgParams *params )
 {
-    wxLogSql(command);
+    wxLogSql(wxT("%s"), command);
 
     m_workerThread->startCommand(command, caller, eventType, params);
 }
 
 PGresult * dbgPgConn::waitForCommand( const wxString &command )
 {
-    wxLogSql(command);
+    wxLogSql(wxT("%s"), command);
 
     PGresult * result = PQexec( m_pgConn, command.mb_str( wxConvUTF8 ));
 
@@ -413,7 +413,7 @@ DebuggerApiVersions dbgPgConn::DebuggerApiVersion()
     }
     else
     {
-        wxLogError(wxString(PQerrorMessage(m_pgConn), wxConvUTF8));
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(m_pgConn), wxConvUTF8));
         return DEBUGGER_UNKNOWN_API;
     }
 
@@ -428,7 +428,7 @@ DebuggerApiVersions dbgPgConn::DebuggerApiVersion()
     }
     else
     {
-        wxLogError(wxString(PQerrorMessage(m_pgConn), wxConvUTF8));
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(m_pgConn), wxConvUTF8));
         return DEBUGGER_UNKNOWN_API;
     }
 
@@ -461,5 +461,6 @@ bool dbgPgConn::GetIsEdb()
     BackendMinimumVersion(0,0);
     return m_isEdb; 
 }
+
 
 

@@ -280,12 +280,11 @@ void dbgPgThread::noticeHandler( void * arg, const char * message )
 {
     // Remove the last char from the message as it'll be a \n
     wxString msg = wxString(message, wxConvUTF8);
-    wxLogDebug(msg);
 
     if (msg.EndsWith(wxT("\n")))
         msg.RemoveLast();
 
-    wxLogDebug(msg);
+    wxLogDebug(wxT("%s"), msg);
 
     dbgPgThread   * thread = (dbgPgThread *)arg;
     wxEvtHandler * caller = thread->m_currentCommand->getCaller();

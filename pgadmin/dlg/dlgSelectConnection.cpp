@@ -97,7 +97,7 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
             remoteServer->Connect(mainForm, remoteServer->GetStorePwd());
             if (!remoteServer->GetConnected())
             {
-                wxLogError(remoteServer->GetLastError());
+                wxLogError(wxT("%s"), remoteServer->GetLastError());
                 return;
             }
         }
@@ -266,4 +266,5 @@ int dlgSelectConnection::Go(pgConn *conn, ctlComboBoxFix *cb)
 
     return ShowModal();
 }
+
 
