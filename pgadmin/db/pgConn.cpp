@@ -668,7 +668,7 @@ bool pgConn::IsAlive()
         lastResultError.severity = wxString(wxT("FATAL"));
         lastResultError.msg_primary = wxString(PQerrorMessage(conn), *conv);
         lastResultError.formatted_msg = lastResultError.severity + wxT(": ") + lastResultError.msg_primary;
-        wxLogError(wxT("%s"), lastResultError.msg_primary);
+        wxLogError(wxT("%s"), lastResultError.msg_primary.c_str());
         return false;
     }
 

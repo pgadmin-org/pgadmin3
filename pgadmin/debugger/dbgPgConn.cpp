@@ -280,14 +280,14 @@ PGconn * dbgPgConn::getConnection()
 
 void dbgPgConn::startCommand( const wxString &command, wxEvtHandler * caller, wxEventType eventType, dbgPgParams *params )
 {
-    wxLogSql(wxT("%s"), command);
+    wxLogSql(wxT("%s"), command.c_str());
 
     m_workerThread->startCommand(command, caller, eventType, params);
 }
 
 PGresult * dbgPgConn::waitForCommand( const wxString &command )
 {
-    wxLogSql(wxT("%s"), command);
+    wxLogSql(wxT("%s"), command.c_str());
 
     PGresult * result = PQexec( m_pgConn, command.mb_str( wxConvUTF8 ));
 
@@ -413,7 +413,7 @@ DebuggerApiVersions dbgPgConn::DebuggerApiVersion()
     }
     else
     {
-        wxLogError(wxT("%s"), wxString(PQerrorMessage(m_pgConn), wxConvUTF8));
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(m_pgConn), wxConvUTF8).c_str());
         return DEBUGGER_UNKNOWN_API;
     }
 
@@ -428,7 +428,7 @@ DebuggerApiVersions dbgPgConn::DebuggerApiVersion()
     }
     else
     {
-        wxLogError(wxT("%s"), wxString(PQerrorMessage(m_pgConn), wxConvUTF8));
+        wxLogError(wxT("%s"), wxString(PQerrorMessage(m_pgConn), wxConvUTF8).c_str());
         return DEBUGGER_UNKNOWN_API;
     }
 
