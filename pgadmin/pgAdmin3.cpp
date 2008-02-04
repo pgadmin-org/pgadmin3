@@ -247,7 +247,7 @@ bool pgAdmin3::OnInit()
     wxString msg;
     msg << wxT("# ") << appearanceFactory->GetLongAppName() << wxT(" Version ") << VERSION_STR << wxT(" Startup");
     wxLogInfo(wxT("##############################################################"));
-    wxLogInfo(msg);
+    wxLogInfo(wxT("%s"), msg);
     wxLogInfo(wxT("##############################################################"));
 
 #ifdef SSL
