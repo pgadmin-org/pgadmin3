@@ -94,8 +94,8 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
     if (obj->GetSchema() && obj->GetSchema()->GetMetaType() == PGM_CATALOG)
         return false;
 
-    // Must be a super user to create breakpoints of any kind.
-    if (!obj->GetServer() || !obj->GetServer()->GetSuperUser())
+    // Must be a super user or object owner to create breakpoints of any kind.
+    if (!obj->GetServer() || !(obj->GetServer()->GetSuperUser() || obj->GetServer()->GetUsername() == obj->GetOwner()))
         return false;
 
     if (!obj->IsCollection())
@@ -250,6 +250,7 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
     }
     return false;
 }
+
 
 
 
