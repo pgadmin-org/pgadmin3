@@ -406,10 +406,26 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		PGSQL_OLD_LDFLAGS="$LDFLAGS"
 		PGSQL_OLD_CPPFLAGS="$CPPFLAGS"
 
+		AC_LANG_SAVE    
+		AC_LANG_C               
+		AC_CHECK_LIB(ssl, SSL_library_init, [LIB_SSL=yes], [LIB_SSL=no])
+		AC_LANG_RESTORE         
+
+		AC_LANG_SAVE    
+		AC_LANG_C               
+		AC_CHECK_LIB(krb5, krb5_sendauth, [LIB_KRB5=yes], [LIB_KRB5=no])
+		AC_LANG_RESTORE         
+
+
 		# Solaris needs -lssl for this test
 		case "${host}" in
 			*solaris*)
-				LDFLAGS="$LDFLAGS -L${PG_LIB} -lssl"
+                if test "$LIB_SSL" = "yes"
+				then
+					LDFLAGS="$LDFLAGS -L${PG_LIB} -lssl"
+				else
+					LDFLAGS="$LDFLAGS -L${PG_LIB}"
+				fi
 				;;
 			*)
 				LDFLAGS="$LDFLAGS -L${PG_LIB}"
@@ -440,6 +456,8 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		AC_LANG_SAVE
 		AC_LANG_C
 
+		if test "$LIB_SSL" = "yes"
+		then
                 # Check for SSL support
                 if test "$BUILD_STATIC" = "yes"
                 then
@@ -468,8 +486,16 @@ AC_DEFUN([SETUP_POSTGRESQL],
 	        		AC_CHECK_LIB(pq, SSL_connect, [PG_SSL=yes], [PG_SSL=no])
 	        	fi
                 fi
+		else
+			PG_SSL="no"
+		fi
 
+		if test "$LIB_KRB5" = "yes"
+		then
                 # Check for Kerberos support
+
+				LDFLAGS="$LDFLAGS -lkrb5"
+
                 if test "$BUILD_STATIC" = "yes"
                 then
                         AC_MSG_CHECKING(for krb5_free_principal in libpq.a)
@@ -497,6 +523,9 @@ AC_DEFUN([SETUP_POSTGRESQL],
 			        AC_CHECK_LIB(pq, krb5_free_principal, [PG_KRB5=yes], [PG_KRB5=no])
 		        fi
                 fi
+		else
+			PG_KRB5="no"
+		fi
 
 		AC_LANG_RESTORE
 
