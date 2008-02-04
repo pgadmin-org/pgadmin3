@@ -97,7 +97,7 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
             remoteServer->Connect(mainForm, remoteServer->GetStorePwd());
             if (!remoteServer->GetConnected())
             {
-                wxLogError(wxT("%s"), remoteServer->GetLastError());
+                wxLogError(wxT("%s"), remoteServer->GetLastError().c_str());
                 return;
             }
         }

@@ -206,7 +206,7 @@ bool dlgDirectDbg::loadTargetInfo( const wxString &target, const dbgConnProp & c
         }
         catch( const std::runtime_error & error )
         {
-            wxLogError(wxT("%s"), wxString(error.what(), wxConvUTF8));
+            wxLogError(wxT("%s"), wxString(error.what(), wxConvUTF8).c_str());
             m_conn->Close();
             return false;
         }
