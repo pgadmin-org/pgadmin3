@@ -146,6 +146,9 @@ int dlgColumn::Go(bool modal)
             cbClusterSet->Disable();
             cbClusterSet = 0;
         }
+
+        txtAttstattarget->Disable();
+        txtComment->Disable();
     }
     return dlgTypeProperty::Go(modal);
 }
@@ -374,6 +377,7 @@ void dlgColumn::CheckChange()
         EnableOK(enable);
     }
 }
+
 
 
 
