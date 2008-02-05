@@ -276,8 +276,7 @@ wxString frmRestore::getCmdPart1()
     else
         cmd=pgRestoreExecutable;
 
-    cmd += wxT(" -i")
-           wxT(" -h ") + server->GetName()
+    cmd += wxT(" -h ") + server->GetName()
          + wxT(" -p ") + NumToStr((long)server->GetPort())
          + wxT(" -U ") + qtIdent(server->GetUsername())
          + wxT(" -d ") + qtIdent(object->GetDatabase()->GetName());
