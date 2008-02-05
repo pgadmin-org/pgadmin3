@@ -1154,7 +1154,7 @@ wxString dlgTypeProperty::GetQuotedTypename(int sel)
                 {
                     wxString varprec=txtPrecision->GetValue();
                     if (!varprec.IsEmpty())
-                        sql += wxT(", ") + varprec;
+                        sql += wxT(",") + varprec;
                 }
                 sql += wxT(")");
             }
