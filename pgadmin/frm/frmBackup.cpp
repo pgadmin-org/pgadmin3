@@ -192,8 +192,7 @@ wxString frmBackup::getCmdPart1()
     else
         cmd=pgBackupExecutable;
 
-    cmd +=  wxT(" -i")
-            wxT(" -h ") + server->GetName()
+    cmd +=  wxT(" -h ") + server->GetName()
          +  wxT(" -p ") + NumToStr((long)server->GetPort())
          +  wxT(" -U ") + server->GetUsername();
     return cmd;
