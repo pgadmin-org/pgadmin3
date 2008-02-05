@@ -178,7 +178,7 @@ wxString dlgColumn::GetSql()
 
             if (connection->BackendMinimumVersion(7, 5))
             {
-                if (cbDatatype->GetValue() != column->GetVarTypename() || 
+                if (cbDatatype->GetValue() != column->GetRawTypename() || 
                     (isVarLen && txtLength->IsEnabled() && StrToLong(len) != column->GetLength()) ||
                     (isVarPrec && txtPrecision->IsEnabled() && StrToLong(prec) != column->GetPrecision()))
                 {
@@ -374,6 +374,7 @@ void dlgColumn::CheckChange()
         EnableOK(enable);
     }
 }
+
 
 
 
