@@ -187,6 +187,7 @@ void dlgEditGridOptions::OnRemove(wxCommandEvent &ev)
     OnLstSortColsChange(nullLstEvent);
 }
 
+
 void dlgEditGridOptions::OnAsc(wxCommandEvent &ev)
 {
     long itm = lstSortCols->GetItemCount();

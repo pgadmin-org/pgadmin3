@@ -122,6 +122,7 @@ public:
     int GetNumberStoredRows();
     int GetNumberCols();
     wxString GetColLabelValue(int col);
+    wxString GetColLabelValueUnformatted(int col);
     wxString GetRowLabelValue(int row);
     wxGridCellAttr* GetAttr(int row, int col, wxGridCellAttr::wxAttrKind kind);
 
@@ -214,9 +215,16 @@ private:
     void OnEditorHidden(wxGridEvent& event);
     void OnKey(wxKeyEvent& event);
     void OnCopy(wxCommandEvent& event);
+    void OnIncludeFilter(wxCommandEvent& event);
+    void OnExcludeFilter(wxCommandEvent& event);
+    void OnRemoveFilters(wxCommandEvent& event);
+    void OnAscSort(wxCommandEvent& event);
+    void OnDescSort(wxCommandEvent& event);
+    void OnRemoveSort(wxCommandEvent& event);
     void OnPaste(wxCommandEvent& event);
     void OnLabelDoubleClick(wxGridEvent& event);
     void OnLabelRightClick(wxGridEvent& event);
+    void OnCellRightClick(wxGridEvent& event);
     void Abort();
     void OnToggleScratchPad(wxCommandEvent& event);
     void OnToggleLimitBar(wxCommandEvent& event);
@@ -230,7 +238,7 @@ private:
     frmMain *mainForm;
     pgConn *connection;
     pgQueryThread *thread;
-    wxMenu *fileMenu, *editMenu, *viewMenu, *helpMenu;
+    wxMenu *fileMenu, *editMenu, *viewMenu, *toolsMenu, *helpMenu;
     wxToolBar *toolBar;
     ctlComboBoxFix *cbLimit;
     wxTextCtrl *scratchPad;
@@ -285,4 +293,5 @@ public:
 };
 
 #endif
+
 

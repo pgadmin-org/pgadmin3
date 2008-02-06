@@ -59,6 +59,12 @@ BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
     EVT_MENU(MNU_REFRESH,       frmEditGrid::OnRefresh)
     EVT_MENU(MNU_DELETE,        frmEditGrid::OnDelete)
     EVT_MENU(MNU_SAVE,          frmEditGrid::OnSave)
+    EVT_MENU(MNU_INCLUDEFILTER, frmEditGrid::OnIncludeFilter)
+    EVT_MENU(MNU_EXCLUDEFILTER, frmEditGrid::OnExcludeFilter)
+    EVT_MENU(MNU_REMOVEFILTERS, frmEditGrid::OnRemoveFilters)
+    EVT_MENU(MNU_ASCSORT,       frmEditGrid::OnAscSort)
+    EVT_MENU(MNU_DESCSORT,      frmEditGrid::OnDescSort)
+    EVT_MENU(MNU_REMOVESORT,    frmEditGrid::OnRemoveSort)
     EVT_MENU(MNU_UNDO,          frmEditGrid::OnUndo)
     EVT_MENU(MNU_OPTIONS,       frmEditGrid::OnOptions)
     EVT_MENU(MNU_HELP,          frmEditGrid::OnHelp)
@@ -76,6 +82,7 @@ BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
     EVT_GRID_SELECT_CELL(       frmEditGrid::OnCellChange)
     EVT_GRID_EDITOR_SHOWN(      frmEditGrid::OnEditorShown)
     EVT_GRID_EDITOR_HIDDEN(     frmEditGrid::OnEditorHidden)
+    EVT_GRID_CELL_RIGHT_CLICK(  frmEditGrid::OnCellRightClick)
     EVT_GRID_LABEL_RIGHT_CLICK( frmEditGrid::OnLabelRightClick)
     EVT_AUI_PANE_BUTTON(        frmEditGrid::OnAuiUpdate)
 END_EVENT_TABLE()
@@ -171,14 +178,25 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     viewMenu = new wxMenu();
     viewMenu->Append(MNU_REFRESH, _("&Refresh\tF5"),_("Refresh."));
     viewMenu->AppendSeparator();
-    viewMenu->Append(MNU_OPTIONS, _("&Sort/filter..."),_("Sort/filter options."));
-    viewMenu->AppendSeparator();
     viewMenu->Append(MNU_LIMITBAR, _("&Limit bar\tCtrl-Alt-L"), _("Show or hide the row limit options bar."), wxITEM_CHECK);
     viewMenu->Append(MNU_SCRATCHPAD, _("S&cratch pad\tCtrl-Alt-S"), _("Show or hide the scratch pad."), wxITEM_CHECK);
     viewMenu->Append(MNU_TOOLBAR, _("&Tool bar\tCtrl-Alt-T"), _("Show or hide the tool bar."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view\tCtrl-Alt-V"),     _("Restore the default view."));
 
+	
+    // Tools menu
+    toolsMenu = new wxMenu();
+    toolsMenu->Append(MNU_OPTIONS, _("&Sort / Filter ..."),_("Sort / Filter options."));
+    toolsMenu->AppendSeparator();
+    toolsMenu->Append(MNU_INCLUDEFILTER, _("Filter By &Selection"),_("Display only those rows that have this value in this column."));
+	toolsMenu->Append(MNU_EXCLUDEFILTER, _("Filter E&xcluding Selection"),_("Display only those rows that do not have this value in this column."));
+	toolsMenu->Append(MNU_REMOVEFILTERS, _("&Remove Filter"),_("Remove all filters on this table"));
+	toolsMenu->AppendSeparator();
+	toolsMenu->Append(MNU_ASCSORT, _("Sort &Ascending"),_("Append an ASCENDING sort condition based on this column"));
+	toolsMenu->Append(MNU_DESCSORT, _("Sort &Descending"),_("Append a DESCENDING sort condition based on this column"));
+	toolsMenu->Append(MNU_REMOVESORT, _("&Remove Sort"),_("Remove all sort conditions"));
+	
     // Help menu
     helpMenu = new wxMenu();
     helpMenu->Append(MNU_CONTENTS, _("&Help contents"),_("Open the helpfile."));
@@ -188,6 +206,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     menuBar->Append(fileMenu, _("&File"));
     menuBar->Append(editMenu, _("&Edit"));
     menuBar->Append(viewMenu, _("&View"));
+    menuBar->Append(toolsMenu,_("&Tools"));
     menuBar->Append(helpMenu, _("&Help"));
     SetMenuBar(menuBar);
 
@@ -388,6 +407,37 @@ void frmEditGrid::OnLabelRightClick(wxGridEvent& event)
 }
 
 
+void frmEditGrid::OnCellRightClick(wxGridEvent& event)
+{
+	wxMenu *xmenu = new wxMenu();
+	
+	if (thread->IsRunning()) {
+		
+		// We have a thread running. This right-click should not be processed
+		return;
+	}
+	
+	sqlGrid->SetGridCursor(event.GetRow(), event.GetCol());
+	
+	xmenu->Append(MNU_INCLUDEFILTER, _("Filter By &Selection"),_("Display only those rows that have this value in this column."));
+	xmenu->Append(MNU_EXCLUDEFILTER, _("Filter E&xcluding Selection"),_("Display only those rows that do not have this value in this column."));
+	xmenu->Append(MNU_REMOVEFILTERS, _("&Remove Filter"),_("Remove all filters on this table"));
+	xmenu->InsertSeparator(3);
+	xmenu->Append(MNU_ASCSORT, _("Sort &Ascending"),_("Append an ASCENDING sort condition based on this column"));
+	xmenu->Append(MNU_DESCSORT, _("Sort &Descending"),_("Append a DESCENDING sort condition based on this column"));
+	xmenu->Append(MNU_REMOVESORT, _("&Remove Sort"),_("Remove all sort conditions"));
+	
+	xmenu->Enable(MNU_INCLUDEFILTER, true);
+	xmenu->Enable(MNU_EXCLUDEFILTER, true);
+	xmenu->Enable(MNU_REMOVEFILTERS, true);
+	xmenu->Enable(MNU_ASCSORT, true);
+	xmenu->Enable(MNU_DESCSORT, true);
+	xmenu->Enable(MNU_REMOVESORT, true);
+	
+	sqlGrid->PopupMenu(xmenu);
+}
+
+
 void frmEditGrid::OnCellChange(wxGridEvent& event)
 {
     sqlTable *table=sqlGrid->GetTable();
@@ -413,6 +463,149 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
 
     if (doSkip)
         event.Skip();
+}
+
+
+void frmEditGrid::OnIncludeFilter(wxCommandEvent &event)
+{
+	int curcol=sqlGrid->GetGridCursorCol();
+	int currow=sqlGrid->GetGridCursorRow();
+	
+	sqlTable *table=sqlGrid->GetTable();
+	wxString column_label = table->GetColLabelValueUnformatted(curcol);
+	wxString new_filter_string;
+	
+	size_t old_filter_string_length = GetFilter().Trim().Len();
+	
+	if (old_filter_string_length > 0) {
+		new_filter_string = GetFilter().Trim() + wxT(" \n    AND ");
+	}
+		
+	if (table->IsColText(curcol)) {
+
+		if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
+			new_filter_string += column_label + wxT(" IS NULL ");
+		} else {
+			
+			if (sqlGrid->GetCellValue(currow, curcol) == wxT("\'\'")) {
+				new_filter_string += column_label + wxT(" = ''");
+			} else {
+				new_filter_string += column_label + wxT(" = '") + sqlGrid->GetCellValue(currow, curcol) + wxT("' ");
+			}
+		}
+	} else {
+		
+		if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
+			new_filter_string += column_label + wxT(" IS NULL ");
+		} else {
+			new_filter_string += column_label + wxT(" = ") + sqlGrid->GetCellValue(currow, curcol);
+		}
+	}
+	
+	SetFilter(new_filter_string);
+	
+	Go();
+}
+
+
+void frmEditGrid::OnExcludeFilter(wxCommandEvent &event)
+{
+	int curcol=sqlGrid->GetGridCursorCol();
+	int currow=sqlGrid->GetGridCursorRow();
+	
+	sqlTable *table=sqlGrid->GetTable();
+	wxString column_label = table->GetColLabelValueUnformatted(curcol);
+	wxString new_filter_string;
+	
+	size_t old_filter_string_length = GetFilter().Trim().Len();
+	
+	if (old_filter_string_length > 0) {
+		new_filter_string = GetFilter().Trim() + wxT(" \n    AND ");
+	}
+	
+	if (table->IsColText(curcol)) {
+		if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
+			new_filter_string += column_label + wxT(" IS NOT NULL ");
+		} else {
+			
+			if (sqlGrid->GetCellValue(currow, curcol) == wxT("\'\'")) {
+				new_filter_string += column_label + wxString::Format(_(" <> '' ")) ;
+			} else {
+				new_filter_string += column_label + wxT(" <> '") + sqlGrid->GetCellValue(currow, curcol) + wxT("' ");
+			}
+		}
+	} else {
+		
+		if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
+			new_filter_string += column_label + wxT(" IS NOT NULL ") ;
+		} else {
+			new_filter_string += column_label + wxT(" <> ") + sqlGrid->GetCellValue(currow, curcol);
+		}
+	}
+
+	SetFilter(new_filter_string);
+	
+	Go();
+}
+
+
+void frmEditGrid::OnRemoveFilters(wxCommandEvent &event)
+{
+	SetFilter(wxT(""));
+	
+	Go();
+}
+
+
+void frmEditGrid::OnAscSort(wxCommandEvent &ev)
+{
+	int curcol=sqlGrid->GetGridCursorCol();
+	
+	sqlTable *table=sqlGrid->GetTable();
+	wxString column_label = table->GetColLabelValueUnformatted(curcol);
+	wxString new_sort_string;
+	
+	size_t old_sort_string_length = GetSortCols().Trim().Len();
+	
+	if (old_sort_string_length > 0) {
+		new_sort_string = GetSortCols().Trim() + wxT(" , ");
+	}
+	
+	new_sort_string += column_label + wxT(" ASC ");
+	
+	SetSortCols(new_sort_string);
+	
+	Go();
+}
+
+
+void frmEditGrid::OnDescSort(wxCommandEvent &ev)
+{
+	int curcol=sqlGrid->GetGridCursorCol();
+	
+	sqlTable *table=sqlGrid->GetTable();
+	wxString column_label = table->GetColLabelValueUnformatted(curcol);
+	wxString new_sort_string;
+	
+	size_t old_sort_string_length = GetSortCols().Trim().Len();
+	
+	if (old_sort_string_length > 0) {
+		new_sort_string = GetSortCols().Trim() + wxT(" , ");
+	}
+	
+	new_sort_string += column_label + wxT(" DESC ");
+	
+	SetSortCols(new_sort_string);
+	
+	Go();
+}
+
+
+void frmEditGrid::OnRemoveSort(wxCommandEvent &ev)
+{
+	SetSortCols(wxT(""));
+	
+	Go();
 }
 
 
@@ -746,6 +939,7 @@ void frmEditGrid::OnOptions(wxCommandEvent& event)
 	if (optionsChanged) Go();
 }
 
+
 template < class T >
 int ArrayCmp(T *a, T *b)
 {
@@ -949,7 +1143,13 @@ void frmEditGrid::Go()
     toolBar->EnableTool(MNU_REFRESH, false);
     viewMenu->Enable(MNU_REFRESH, false);
     toolBar->EnableTool(MNU_OPTIONS, false);
-    viewMenu->Enable(MNU_OPTIONS, false);
+    toolsMenu->Enable(MNU_OPTIONS, false);
+    toolsMenu->Enable(MNU_INCLUDEFILTER, false);
+    toolsMenu->Enable(MNU_EXCLUDEFILTER, false);
+    toolsMenu->Enable(MNU_REMOVEFILTERS, false);
+    toolsMenu->Enable(MNU_ASCSORT, false);
+    toolsMenu->Enable(MNU_DESCSORT, false);
+	toolsMenu->Enable(MNU_REMOVESORT, false);
 
     // Stash the column sizes so we can reset them
     wxArrayInt colWidths;
@@ -980,8 +1180,15 @@ void frmEditGrid::Go()
         toolBar->EnableTool(MNU_REFRESH, true);
         viewMenu->Enable(MNU_REFRESH, true);
         toolBar->EnableTool(MNU_OPTIONS, true);
-        viewMenu->Enable(MNU_OPTIONS, true);
-        return;
+        toolsMenu->Enable(MNU_OPTIONS, true);
+        toolsMenu->Enable(MNU_INCLUDEFILTER, true);
+		toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
+		toolsMenu->Enable(MNU_REMOVEFILTERS, true);
+		toolsMenu->Enable(MNU_ASCSORT, true);
+		toolsMenu->Enable(MNU_DESCSORT, true);
+		toolsMenu->Enable(MNU_REMOVESORT, true);
+
+		return;
     }
 
     thread->Run();
@@ -991,12 +1198,19 @@ void frmEditGrid::Go()
         wxTheApp->Yield(true);
         wxMilliSleep(10);
     }
+	
     if (!thread)
     {
         toolBar->EnableTool(MNU_REFRESH, true);
         viewMenu->Enable(MNU_REFRESH, true);
         toolBar->EnableTool(MNU_OPTIONS, true);
-        viewMenu->Enable(MNU_OPTIONS, true);
+        toolsMenu->Enable(MNU_OPTIONS, true);
+		toolsMenu->Enable(MNU_INCLUDEFILTER, true);
+		toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
+		toolsMenu->Enable(MNU_REMOVEFILTERS, true);
+		toolsMenu->Enable(MNU_ASCSORT, true);
+		toolsMenu->Enable(MNU_DESCSORT, true);
+		toolsMenu->Enable(MNU_REMOVESORT, true);
         return;
     }
 
@@ -1006,7 +1220,13 @@ void frmEditGrid::Go()
         toolBar->EnableTool(MNU_REFRESH, true);
         viewMenu->Enable(MNU_REFRESH, true);
         toolBar->EnableTool(MNU_OPTIONS, true);
-        viewMenu->Enable(MNU_OPTIONS, true);
+        toolsMenu->Enable(MNU_OPTIONS, true);
+		toolsMenu->Enable(MNU_INCLUDEFILTER, true);
+		toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
+		toolsMenu->Enable(MNU_REMOVEFILTERS, true);
+		toolsMenu->Enable(MNU_ASCSORT, true);
+		toolsMenu->Enable(MNU_DESCSORT, true);
+		toolsMenu->Enable(MNU_REMOVESORT, true);
         return;
     }
     SetStatusText(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()), 0);
@@ -1032,8 +1252,14 @@ void frmEditGrid::Go()
     toolBar->EnableTool(MNU_REFRESH, true);
     viewMenu->Enable(MNU_REFRESH, true);
     toolBar->EnableTool(MNU_OPTIONS, true);
-    viewMenu->Enable(MNU_OPTIONS, true);
-
+    toolsMenu->Enable(MNU_OPTIONS, true);
+	toolsMenu->Enable(MNU_INCLUDEFILTER, true);
+	toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
+	toolsMenu->Enable(MNU_REMOVEFILTERS, true);
+	toolsMenu->Enable(MNU_ASCSORT, true);
+	toolsMenu->Enable(MNU_DESCSORT, true);
+	toolsMenu->Enable(MNU_REMOVESORT, true);
+	
     manager.Update();
 
     if (!hasOids && primaryKeyColNumbers.IsEmpty() && relkind == 'r')
@@ -1991,6 +2217,12 @@ wxString sqlTable::GetColLabelValue(int col)
             break;
     }
     return label;
+}
+
+
+wxString sqlTable::GetColLabelValueUnformatted(int col)
+{
+    return columns[col].name;
 }
 
 
