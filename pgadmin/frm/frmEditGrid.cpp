@@ -472,7 +472,7 @@ void frmEditGrid::OnIncludeFilter(wxCommandEvent &event)
 	int currow=sqlGrid->GetGridCursorRow();
 	
 	sqlTable *table=sqlGrid->GetTable();
-	wxString column_label = table->GetColLabelValueUnformatted(curcol);
+	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
 	wxString new_filter_string;
 	
 	size_t old_filter_string_length = GetFilter().Trim().Len();
@@ -490,7 +490,7 @@ void frmEditGrid::OnIncludeFilter(wxCommandEvent &event)
 			if (sqlGrid->GetCellValue(currow, curcol) == wxT("\'\'")) {
 				new_filter_string += column_label + wxT(" = ''");
 			} else {
-				new_filter_string += column_label + wxT(" = '") + sqlGrid->GetCellValue(currow, curcol) + wxT("' ");
+				new_filter_string += column_label + wxT(" = ") + connection->qtDbString(sqlGrid->GetCellValue(currow, curcol)) + wxT(" ");
 			}
 		}
 	} else {
@@ -514,7 +514,7 @@ void frmEditGrid::OnExcludeFilter(wxCommandEvent &event)
 	int currow=sqlGrid->GetGridCursorRow();
 	
 	sqlTable *table=sqlGrid->GetTable();
-	wxString column_label = table->GetColLabelValueUnformatted(curcol);
+	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
 	wxString new_filter_string;
 	
 	size_t old_filter_string_length = GetFilter().Trim().Len();
@@ -531,7 +531,7 @@ void frmEditGrid::OnExcludeFilter(wxCommandEvent &event)
 			if (sqlGrid->GetCellValue(currow, curcol) == wxT("\'\'")) {
 				new_filter_string += column_label + wxString::Format(_(" <> '' ")) ;
 			} else {
-				new_filter_string += column_label + wxT(" <> '") + sqlGrid->GetCellValue(currow, curcol) + wxT("' ");
+				new_filter_string += column_label + wxT(" <> ") + connection->qtDbString(sqlGrid->GetCellValue(currow, curcol)) + wxT(" ");
 			}
 		}
 	} else {
@@ -562,7 +562,7 @@ void frmEditGrid::OnAscSort(wxCommandEvent &ev)
 	int curcol=sqlGrid->GetGridCursorCol();
 	
 	sqlTable *table=sqlGrid->GetTable();
-	wxString column_label = table->GetColLabelValueUnformatted(curcol);
+	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
 	wxString new_sort_string;
 	
 	size_t old_sort_string_length = GetSortCols().Trim().Len();
@@ -584,7 +584,7 @@ void frmEditGrid::OnDescSort(wxCommandEvent &ev)
 	int curcol=sqlGrid->GetGridCursorCol();
 	
 	sqlTable *table=sqlGrid->GetTable();
-	wxString column_label = table->GetColLabelValueUnformatted(curcol);
+	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
 	wxString new_sort_string;
 	
 	size_t old_sort_string_length = GetSortCols().Trim().Len();
