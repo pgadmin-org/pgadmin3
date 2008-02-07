@@ -11,12 +11,15 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/choicdlg.h>
 
 // App headers
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "schema/pgRole.h"
 #include "frm/frmMain.h"
+#include "dlg/dlgReassignDropOwned.h"
+#include "dlg/dlgSelectConnection.h"
 #include "utils/pgDefs.h"
 #include "schema/pgDatabase.h"
 #include "schema/pgTablespace.h"
@@ -51,7 +54,7 @@ int pgRole::GetIconId()
 
 bool pgRole::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    if (GetUpdateCatalog())
+	if (GetUpdateCatalog())
     {
         wxMessageDialog dlg(frame, 
             _("Deleting a superuser might result in unwanted behaviour (e.g. when restoring the database).\nAre you sure?"),
@@ -276,6 +279,45 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
     }
 }
 
+void pgRole::ReassignDropOwnedTo(frmMain *form)
+{
+	wxString query;
+	
+	dlgReassignDropOwned rdo(form, GetConnection(), this, GetServer()->GetDbRestriction());
+	if (rdo.ShowModal() != wxID_CANCEL)
+	{
+		pgConn *conn;
+		conn = new pgConn(GetConnection()->GetHost(),
+    	             rdo.GetDatabase(),
+    	             GetConnection()->GetUser(),
+    	             GetConnection()->GetPassword(),
+    	             GetConnection()->GetPort(),
+    	             GetConnection()->GetSslMode());
+    	             
+		if (conn->GetStatus() == PGCONN_OK)
+    	{
+    	    if (rdo.IsReassign())
+    	    {
+			    if (wxMessageBox(_("Are you sure you wish to reassign all objects owned by the selected role?"), _("Reassign objects"), wxYES_NO) == wxNO)
+				    return;
+
+    	        query = wxT("REASSIGN OWNED BY ") + GetQuotedFullIdentifier() + wxT(" TO ") + rdo.GetRole();
+            }
+            else
+            {
+			    if (wxMessageBox(_("Are you sure you wish to drop all objects owned by the selected role?"), _("Drop objects"), wxYES_NO) == wxNO)
+				    return;
+
+			    query = wxT("DROP OWNED BY ") + GetQuotedFullIdentifier();
+            }
+            conn->ExecuteVoid(query);
+    	}
+    	else
+    	{
+    	    wxMessageBox(wxT("Connection failed: ") + conn->GetLastError());
+        }
+	}
+}
 
 
 pgObject *pgRole::Refresh(ctlTree *browser, const wxTreeItemId item)
@@ -394,3 +436,22 @@ pgGroupRoleFactory::pgGroupRoleFactory()
 
 pgGroupRoleFactory groupRoleFactory;
 static pgaCollectionFactory gcf(&groupRoleFactory, __("Group Roles"), roles_xpm);
+
+
+reassignDropOwnedFactory::reassignDropOwnedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Reassign/Drop Owned..."), _("Reassigned or drop objects owned by the selected role."));
+}
+
+
+wxWindow *reassignDropOwnedFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    ((pgRole*)obj)->ReassignDropOwnedTo(form);
+	
+    return 0;
+}
+
+bool reassignDropOwnedFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(loginRoleFactory) && ((pgRole*)obj)->GetConnection()->BackendMinimumVersion(8, 2);
+}

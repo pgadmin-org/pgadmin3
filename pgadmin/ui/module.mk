@@ -39,6 +39,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgOperator.xrc \
 	$(srcdir)/ui/dlgPackage.xrc \
 	$(srcdir)/ui/dlgPgpassConfig.xrc \
+	$(srcdir)/ui/dlgReassignDropOwned.xrc \
 	$(srcdir)/ui/dlgRepCluster.xrc \
 	$(srcdir)/ui/dlgRepClusterUpgrade.xrc \
 	$(srcdir)/ui/dlgRepListen.xrc \

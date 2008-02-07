@@ -76,6 +76,7 @@ public:
     wxArrayString& GetRolesIn() { return rolesIn; }
     wxArrayString& GetConfigList() { return configList; }
 
+    void ReassignDropOwnedTo(frmMain *form);
 
     // Tree object creation
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
@@ -112,6 +113,14 @@ public:
     pgGroupRole(const wxString& newName = wxT(""));
 };
 
+
+class reassignDropOwnedFactory : public contextActionFactory
+{
+public:
+    reassignDropOwnedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
 
 
 #endif
