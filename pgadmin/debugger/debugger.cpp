@@ -36,7 +36,16 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
     // Check here to make sure the function still exists before proceeding.
     // There is still a very small window in which it might be dropped, but
     // that will be handled by a cache lookup failure error in the database
-    if (obj->GetConnection()->ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE oid = ") + NumToStr((long)obj->GetOid())) != wxT("1"))
+    // We also make sure the function name doesn't contain a : as that will
+    // sent the debugger API nuts.
+    pgSet *res = obj->GetConnection()->ExecuteSet(wxT("SELECT count(*) AS count, proname FROM pg_proc WHERE oid = ") + NumToStr((long)obj->GetOid()) + wxT(" GROUP BY proname"));
+    if (res->GetVal(wxT("proname")).Contains(wxT(":")))
+    {
+        wxLogError(_("Functions with a colon in the name cannot be debugged."));
+        return 0;
+    }
+
+    if (res->GetLong(wxT("count")) != 1)
     {
         wxLogError(_("The selected function could not be found."));
         ctlTree *browser = form->GetBrowser();
@@ -154,7 +163,16 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
     // There is still a very small window in which it might be dropped, but
     // we should be able to handle most cases here without having to do this 
     // deep down in query threads.
-    if (obj->GetConnection()->ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE oid = ") + dbgOid) != wxT("1"))
+    // We also make sure the function name doesn't contain a : as that will
+    // sent the debugger API nuts.
+    pgSet *res = obj->GetConnection()->ExecuteSet(wxT("SELECT count(*) AS count, proname FROM pg_proc WHERE oid = ") + dbgOid + wxT(" GROUP BY proname"));
+    if (res->GetVal(wxT("proname")).Contains(wxT(":")))
+    {
+        wxLogError(_("Functions with a colon in the name cannot be debugged."));
+        return 0;
+    }
+
+    if (res->GetLong(wxT("count")) != 1)
     {
         wxLogError(_("The selected function could not be found."));
         ctlTree *browser = form->GetBrowser();
