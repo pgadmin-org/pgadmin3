@@ -1127,13 +1127,43 @@ wxString dlgTypeProperty::GetTypeOid(int sel)
 
 wxString dlgTypeProperty::GetQuotedTypename(int sel)
 {
-    wxString sql;
+    wxString sql, suffix;
     bool isArray = false;
 
     if (sel >= 0)
     {
         sql = types.Item(sel).AfterFirst(':');
-		if (sql.Right(2) == wxT("[]"))
+
+        // Deal with time/timestamp first as they're special cases
+        if (sql.Left(19) == wxT("time with time zone"))
+        {
+            if (sql.Right(2) == wxT("[]"))
+                isArray = true;
+            sql = wxT("time");
+            suffix = wxT("with time zone");
+        }
+        else if (sql.Left(21) == wxT("time without time zone"))
+        {
+            if (sql.Right(2) == wxT("[]"))
+                isArray = true;
+            sql = wxT("time");
+            suffix = wxT("without time zone");
+        }
+        else if (sql.Left(24) == wxT("timestamp with time zone"))
+        {
+            if (sql.Right(2) == wxT("[]"))
+                isArray = true;
+            sql = wxT("timestamp");
+            suffix = wxT("with time zone");
+        }
+        else if (sql.Left(27) == wxT("timestamp without time zone"))
+        {
+            if (sql.Right(2) == wxT("[]"))
+                isArray = true;
+            sql = wxT("timestamp");
+            suffix = wxT("without time zone");
+        }
+        else if (sql.Right(2) == wxT("[]"))
 		{
 			sql = sql.SubString(0,sql.Len()-3);
 			isArray = true;
@@ -1144,6 +1174,7 @@ wxString dlgTypeProperty::GetQuotedTypename(int sel)
 			isArray = true;
 		}
 
+        // Stick the length on
         if (isVarLen && txtLength)
         {
             wxString varlen=txtLength->GetValue();
@@ -1161,7 +1192,14 @@ wxString dlgTypeProperty::GetQuotedTypename(int sel)
         }
     }
 
-    if (isArray) sql += wxT("[]");
+    // Append any post-length suffix
+    if (suffix.length())
+        sql += wxT(" ") + suffix;
+
+    // Append any array decoration
+    if (isArray) 
+        sql += wxT("[]");
+
     return sql;
 }
 
