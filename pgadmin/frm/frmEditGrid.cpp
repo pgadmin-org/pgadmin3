@@ -529,9 +529,9 @@ void frmEditGrid::OnExcludeFilter(wxCommandEvent &event)
 		} else {
 			
 			if (sqlGrid->GetCellValue(currow, curcol) == wxT("\'\'")) {
-				new_filter_string += column_label + wxString::Format(_(" <> '' ")) ;
+				new_filter_string += column_label + wxString::Format(_(" IS DISTINCT FROM '' ")) ;
 			} else {
-				new_filter_string += column_label + wxT(" <> ") + connection->qtDbString(sqlGrid->GetCellValue(currow, curcol)) + wxT(" ");
+				new_filter_string += column_label + wxT(" IS DISTINCT FROM ") + connection->qtDbString(sqlGrid->GetCellValue(currow, curcol)) + wxT(" ");
 			}
 		}
 	} else {
@@ -539,7 +539,7 @@ void frmEditGrid::OnExcludeFilter(wxCommandEvent &event)
 		if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
 			new_filter_string += column_label + wxT(" IS NOT NULL ") ;
 		} else {
-			new_filter_string += column_label + wxT(" <> ") + sqlGrid->GetCellValue(currow, curcol);
+			new_filter_string += column_label + wxT(" IS DISTINCT FROM ") + sqlGrid->GetCellValue(currow, curcol);
 		}
 	}
 
