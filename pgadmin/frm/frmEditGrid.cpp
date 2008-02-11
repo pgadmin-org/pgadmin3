@@ -563,16 +563,31 @@ void frmEditGrid::OnAscSort(wxCommandEvent &ev)
 	
 	sqlTable *table=sqlGrid->GetTable();
 	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
+	wxString old_sort_string = GetSortCols().Trim();
 	wxString new_sort_string;
 	
-	size_t old_sort_string_length = GetSortCols().Trim().Len();
-	
-	if (old_sort_string_length > 0) {
-		new_sort_string = GetSortCols().Trim() + wxT(" , ");
+	if (old_sort_string.Find(column_label) == wxNOT_FOUND)
+	{
+		if (old_sort_string.Len() > 0)
+			new_sort_string = old_sort_string + wxT(" , ");
+
+		new_sort_string += column_label + wxT(" ASC ");
+	} 
+	else
+	{
+		if (old_sort_string.Find(column_label + wxT(" ASC")) == wxNOT_FOUND)
+		{
+			// Previous occurrence was for DESCENDING sort
+			new_sort_string = old_sort_string;
+			new_sort_string.Replace(column_label + wxT(" DESC"), column_label + wxT(" ASC"));
+		}
+		else
+		{
+			// Previous occurrence was for ASCENDING sort. Nothing to do
+			new_sort_string = old_sort_string;
+		}
 	}
-	
-	new_sort_string += column_label + wxT(" ASC ");
-	
+
 	SetSortCols(new_sort_string);
 	
 	Go();
@@ -585,18 +600,33 @@ void frmEditGrid::OnDescSort(wxCommandEvent &ev)
 	
 	sqlTable *table=sqlGrid->GetTable();
 	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
+	wxString old_sort_string = GetSortCols().Trim();
 	wxString new_sort_string;
 	
-	size_t old_sort_string_length = GetSortCols().Trim().Len();
-	
-	if (old_sort_string_length > 0) {
-		new_sort_string = GetSortCols().Trim() + wxT(" , ");
+	if (old_sort_string.Find(column_label) == wxNOT_FOUND)
+	{
+		if (old_sort_string.Len() > 0)
+			new_sort_string = old_sort_string + wxT(" , ");
+		
+		new_sort_string += column_label + wxT(" DESC ");
+	} 
+	else
+	{
+		if (old_sort_string.Find(column_label + wxT(" DESC")) == wxNOT_FOUND)
+		{
+			// Previous occurrence was for ASCENDING sort
+			new_sort_string = old_sort_string;
+			new_sort_string.Replace(column_label + wxT(" ASC"), column_label + wxT(" DESC"));
+		}
+		else
+		{
+			// Previous occurrence was for DESCENDING sort. Nothing to do
+			new_sort_string = old_sort_string;
+		}
 	}
-	
-	new_sort_string += column_label + wxT(" DESC ");
-	
+
 	SetSortCols(new_sort_string);
-	
+
 	Go();
 }
 
