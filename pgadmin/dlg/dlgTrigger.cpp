@@ -124,7 +124,8 @@ int dlgTrigger::Go(bool modal)
         pgSet *set=connection->ExecuteSet(
             wxT("SELECT quote_ident(nspname) || '.' || quote_ident(proname)\n")
             wxT("  FROM pg_proc p, pg_namespace n, pg_language l\n")
-            wxT(" WHERE p.pronamespace = n.oid AND p.prolang = l.oid AND l.lanname != 'edbspl' AND prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + sysRestr);
+            wxT(" WHERE p.pronamespace = n.oid AND p.prolang = l.oid AND l.lanname != 'edbspl' AND prorettype=") + NumToStr(PGOID_TYPE_TRIGGER) + sysRestr + 
+            wxT(" ORDER BY nspname ASC, proname ASC "));
         if (set)
         {
             while (!set->Eof())
@@ -288,5 +289,6 @@ bool dlgTrigger::IsUpToDate()
 	else
 		return true;
 }
+
 
 
