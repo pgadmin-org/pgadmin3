@@ -164,7 +164,7 @@ DatatypeReader::DatatypeReader(pgDatabase *db, bool withDomains)
     else
         condition += wxT("IN ('b', 'c', 'e')");
 
-    condition += wxT("AND typname NOT IN (SELECT relname FROM pg_class WHERE relnamespace = typnamespace AND relkind != 'c') ");
+    condition += wxT("AND typname NOT IN (SELECT relname FROM pg_class WHERE relnamespace = typnamespace AND relkind != 'c' UNION SELECT '_' || relname FROM pg_class WHERE relnamespace = typnamespace AND relkind != 'c') ");
 
     if (!settings->GetShowSystemObjects())
         condition += wxT(" AND nsp.nspname NOT LIKE 'information_schema'");
