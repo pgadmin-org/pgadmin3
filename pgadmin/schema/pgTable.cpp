@@ -171,22 +171,45 @@ wxString pgTable::GetSql(ctlTree *browser)
             + wxT("-- DROP TABLE ") + GetQuotedFullIdentifier() + wxT(";")
             + wxT("\n\nCREATE TABLE ") + GetQuotedFullIdentifier() + wxT("\n(\n");
 
+        // Get a count of the constraints.
+        int consCount=0;
+        pgCollection *constraints=browser->FindCollection(primaryKeyFactory, GetId());
+        if (constraints)
+            consCount = browser->GetChildrenCount(constraints->GetId());
+
+        // Get the columns
         pgCollection *columns=browser->FindCollection(columnFactory, GetId());
         if (columns)
         {
             columns->ShowTreeDetail(browser);
-            treeObjectIterator colIt(browser, columns);
+            treeObjectIterator colIt1(browser, columns);
+            treeObjectIterator colIt2(browser, columns);
 
-            int colCount=0;
+            int lastRealCol=0;
+            int currentCol=0;
             pgColumn *column;
-            while ((column = (pgColumn*)colIt.GetNextObject()) != 0)
+
+            // Iterate the columns to find the last 'real' one
+            while ((column = (pgColumn*)colIt1.GetNextObject()) != 0)
+             {
+                currentCol++;
+
+                if (column->GetInheritedCount() == 0)
+                    lastRealCol = currentCol;
+            }
+
+            // Now build the actual column list
+            int colCount=0;
+            while ((column = (pgColumn*)colIt2.GetNextObject()) != 0)
             {
                 column->ShowTreeDetail(browser);
                 if (column->GetColNumber() > 0)
                 {
                     if (colCount)
                     {
-                        sql += wxT(",");
+                        // Only add a comma if this isn't the last 'real' column, or if there are constraints
+                        if (colCount != lastRealCol || consCount)
+                            sql += wxT(",");
                         if (!prevComment.IsEmpty())
                             sql += wxT(" -- ") + firstLineOnly(prevComment);
 
@@ -212,7 +235,7 @@ wxString pgTable::GetSql(ctlTree *browser)
             }
         }
 
-        pgCollection *constraints=browser->FindCollection(primaryKeyFactory, GetId());
+        // Now iterate the constraints
         if (constraints)
         {
             constraints->ShowTreeDetail(browser);
