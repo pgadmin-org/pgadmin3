@@ -370,6 +370,7 @@ static bool needsQuoting(wxString& value, bool forTypes)
                 case REAL:
                 case SET:
                 case SMALLINT:
+				case TEXT_P:
                 case TIME:
                 case TIMESTAMP:
                 case TRIGGER:
