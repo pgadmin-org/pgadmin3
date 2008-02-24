@@ -75,6 +75,8 @@ public:
     void iSetStorage(const wxString& s) { storage=s; }
     long GetInheritedCount() const { return inheritedCount; }
     void iSetInheritedCount(const long l) { inheritedCount=l; }
+    bool GetIsLocal() const { return isLocal; }
+    void iSetIsLocal(const bool b) { isLocal=b; }
     OID  GetAttTypId() const { return attTypId; }
     void iSetAttTypId(const OID o) { attTypId =o; }
     long GetAttstattarget() const { return attstattarget; }
@@ -105,7 +107,7 @@ private:
     wxString serialSequence, serialSchema, pkCols;
     long colNumber, length, precision, statistics, attstattarget;
     long typlen, typmod, inheritedCount;
-    bool isPK, isFK, notNull, isArray;
+    bool isPK, isFK, notNull, isArray, isLocal;
     OID attTypId;
     int isReferenced;
 };
