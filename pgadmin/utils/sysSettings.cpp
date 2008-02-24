@@ -152,7 +152,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 	Read(wxT("TabForCompletion"), &tabForCompletion, false);
     Read(wxT("StickySql"), &stickySql, false);
     Read(wxT("frmQuery/IndicateNull"), &indicateNull, false);
-    Read(wxT("DoubleClickProperties"), &doubleClickProperties, true);
+    Read(wxT("DoubleClickProperties"), &doubleClickProperties, false);
     Read(wxT("SuppressGuruHints"), &suppressGuruHints, false);
     Read(wxT("WriteUnicodeFile"), &unicodeFile, false);
     Read(wxT("SystemSchemas"), &systemSchemas, wxEmptyString);
