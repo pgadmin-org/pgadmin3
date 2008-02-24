@@ -1002,7 +1002,7 @@ bool countRowsFactory::CheckEnable(pgObject *obj)
 
 executePgstattupleFactory::executePgstattupleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("&Extended statistics"), _("Get extended statistics via pgstattuple for the selected object."), wxITEM_CHECK);
+    mnu->Append(id, _("&Extended table statistics"), _("Get extended statistics via pgstattuple for the selected object."), wxITEM_CHECK);
 }
 
 
