@@ -381,6 +381,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
                 + qtIdent(columns->GetVal(wxT("relname"))));
             column->iSetTableName(columns->GetVal(wxT("relname")));
             column->iSetInheritedCount(columns->GetLong(wxT("attinhcount")));
+			column->iSetIsLocal(columns->GetBool(wxT("attislocal")));
             column->iSetAttstattarget(columns->GetLong(wxT("attstattarget")));
 
             if (browser)
