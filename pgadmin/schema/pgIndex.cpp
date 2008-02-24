@@ -312,7 +312,7 @@ bool pgIndexBase::HasPgstatindex()
 
 executePgstatindexFactory::executePgstatindexFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("&Extended statistics"), _("Get extended statistics via pgstatindex for the selected object."), wxITEM_CHECK);
+    mnu->Append(id, _("&Extended index statistics"), _("Get extended statistics via pgstatindex for the selected object."), wxITEM_CHECK);
 }
 
 
