@@ -204,7 +204,7 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
                 package->iSetHeader(tmp);
 
             tmp = packages->GetVal(wxT("pkgbodysrc")).Strip(wxString::both);
-            if (!tmp.EndsWith(wxT(";")))
+            if (!tmp.EndsWith(wxT(";")) && !tmp.IsEmpty())
                 package->iSetBody(tmp + wxT(";"));
             else
                 package->iSetBody(tmp);
