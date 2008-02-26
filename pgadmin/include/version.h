@@ -13,9 +13,9 @@
 #define VERSION_H
 
 // Application Versions
-#define VERSION_STR     wxT("1.8.3 Pre-release")
+#define VERSION_STR     wxT("1.8.3-EDB")
 #define VERSION_NUM     1,8,3.50
-#define VERSION_PACKAGE 1.8.3-dev
+#define VERSION_PACKAGE 1.8.3-edb
 
 #define PRERELEASE 1
 // #define BUILD "..."
