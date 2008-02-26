@@ -1,0 +1,31 @@
+#######################################################################
+#
+# pgAdmin III - PostgreSQL Tools
+# Copyright (C) 2002 - 2008, The pgAdmin Development Team
+# This software is released under the Artistic Licence
+#
+# bootstrap - bootstrap the build system
+#
+#######################################################################
+
+# Insert the version number wherever it's needed
+LONG_VER=`grep '#define VERSION_PACKAGE' pgadmin/include/version.h | awk '{print $3}'`
+SHORT_VER=`echo $LONG_VER | cut -d . -f1,2`
+
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" configure.ac.in > configure.ac
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mac/pgadmin.Info.plist.in > pkg/mac/pgadmin.Info.plist
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mac/debug.pgadmin.Info.plist.in > pkg/mac/debug.pgadmin.Info.plist
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mandrake/pgadmin3.spec.in > pkg/mandrake/pgadmin3.spec
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/redhat/pgadmin3.spec.in > pkg/redhat/pgadmin3.spec
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/slackware/build-release.in > pkg/slackware/build-release
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/src/build-tarball.in > pkg/src/build-tarball
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/suse/pgadmin3.spec.in > pkg/suse/pgadmin3.spec
+
+set -x
+if ! ([ -x config ]); then 
+  mkdir config
+fi
+aclocal-1.9 && \
+autoheader && \
+automake-1.9 --foreign --add-missing --copy && \
+autoconf

@@ -1,0 +1,82 @@
+AC_PREREQ(2.57)
+AC_REVISION($Revision: 4719 $)
+AC_COPYRIGHT(Copyright 2002 - 2008 The pgAdmin Development Team)
+AC_INIT(pgadmin3, PGADMIN_LONG_VERSION, pgadmin-support@postgresql.org)
+AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_SRCDIR([pgadmin/pgAdmin3.cpp])
+AM_CONFIG_HEADER([config.h])
+AC_CANONICAL_HOST
+AM_INIT_AUTOMAKE([tar-ustar])
+AC_PREFIX_DEFAULT([/usr/local/pgadmin3])
+
+# Checks for programs.
+AC_PROG_CC
+AC_PROG_CXX
+CHECK_CPP_COMPILER
+CHECK_SUN_COMPILER
+AM_CONDITIONAL([SUN_CC], [test x$SUN_CC_COMPILER = xyes])
+AM_CONDITIONAL([SUN_CXX], [test x$SUN_CXX_COMPILER = xyes])
+CHECK_PRECOMP_HEADERS
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS([arpa/inet.h netdb.h netinet/in.h stdlib.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+
+# Checks for library functions.
+AC_FUNC_STRTOD
+AC_CHECK_FUNCS([gethostbyname inet_ntoa memmove memset strchr])
+
+# Custom checks
+ENABLE_DEBUG
+ENABLE_STATIC
+ENABLE_APPBUNDLE
+
+AM_CONDITIONAL([APPBUNDLE], [test x$BUILD_APPBUNDLE = xyes])
+AM_CONDITIONAL([BUILD_DEBUG], [test x$BUILD_DEBUG = xyes])
+AM_CONDITIONAL([INSTALL_DOCS], [test x$INSTALL_DOCS = xyes])
+
+LOCATE_POSTGRESQL
+SETUP_POSTGRESQL
+CHECK_EDB_LIBPQ
+AM_CONDITIONAL([EDB_LIBPQ], [test x$EDB_LIBPQ = xyes])
+
+SET_WX_VERSION
+LOCATE_WXWIDGETS
+CHECK_WXWIDGETS
+SETUP_WXWIDGETS
+
+LOCATE_LIBXML2
+SETUP_LIBXML2
+CHECK_LIBXML2
+
+LOCATE_LIBXSLT
+SETUP_LIBXSLT
+
+CLEANUP
+
+AC_CONFIG_FILES([Makefile
+		 branding/Makefile
+		 i18n/Makefile
+		 pgadmin/Makefile
+		 pkg/Makefile
+		 pkg/debian/Makefile
+		 pkg/mac/Makefile
+		 pkg/mandrake/Makefile
+		 pkg/redhat/Makefile
+		 pkg/slackware/Makefile
+		 pkg/src/Makefile
+		 pkg/suse/Makefile
+		 pkg/win32/Makefile
+		 xtra/Makefile
+		 xtra/pgaevent/Makefile
+		 xtra/pgagent/Makefile
+		 xtra/wx-build/Makefile])
+AC_OUTPUT
+
+SUMMARY

@@ -1,0 +1,62 @@
+#! /bin/sh
+
+#######################################################################
+#
+# pgAdmin III - PostgreSQL Tools
+# $Id: build-release 4300 2005-06-10 10:36:04Z dpage $
+# Copyright (C) 2002 - 2008, The pgAdmin Development Team
+# This software is released under the Artistic Licence
+#
+# build-release - Build a Slackware release
+#
+#######################################################################
+
+VERSION=PGADMIN_LONG_VERSION
+
+# Setup the build environment
+PATH=$PATH:/usr/local/bin
+PGDIR=/usr/local/pgsql
+WXDIR=/usr/local/
+export PATH PGDIR WXDIR
+
+# Configure for the local OS
+./configure --prefix=`pwd`/slackpack/usr \
+	--with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-release \
+	--datadir=/usr/share
+
+# Now make the binary build
+make all
+/usr/bin/strip pgadmin/pgadmin3
+/usr/bin/strip xtra/pgagent/pgagent
+
+# Build a clean distro
+if [ -x pgadmin/pgadmin3 ]; then
+
+	# Use the build system
+	make install
+	
+	# And tweak for Slackware
+	mkdir -p ./slackpack/opt/kde/share/applnk/Development
+	mkdir -p ./slackpack/usr/share
+	mkdir -p ./slackpack/install
+	mv /usr/share/pgadmin3 ./slackpack/usr/share/
+	cp ./pkg/pgadmin3.desktop ./slackpack/opt/kde/share/applnk/Development
+	cp ./pgadmin/include/images/elephant48.xpm ./slackpack/usr/share/pgadmin3/pgadmin3.xpm
+	echo "pgadmin3-$VERSION: pgAdmin III - PostgreSQL Tools" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$VERSION: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$VERSION: pgAdmin III is the most popular Open Source management tool for" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$VERSION: the PostgreSQL Object Relational Database Management System." >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$VERSION: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$VERSION: http://www.pgadmin.org/" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$VERSION: http://www.postgresql.org/" >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$VERSION: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$VERSION: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$VERSION: " >> ./slackpack/install/slack-desc
+	echo "pgadmin3-$VERSION: " >> ./slackpack/install/slack-desc
+
+	# Build the snapshot and file it.
+	cd slackpack
+	/sbin/makepkg --chown y pgadmin3-$VERSION.tgz 
+        cd ..
+        mv slackpack/pgadmin3-$VERSION.tgz .
+fi

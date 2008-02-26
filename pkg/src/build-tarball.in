@@ -1,0 +1,49 @@
+#! /bin/sh
+
+#######################################################################
+#
+# pgAdmin III - PostgreSQL Tools
+# $Id: build-tarball 4739 2005-11-11 21:25:05Z dpage $
+# Copyright (C) 2002 - 2008, The pgAdmin Development Team
+# This software is released under the Artistic Licence
+#
+# build-tarball - Build a source tarball 
+#
+#######################################################################
+
+# Setup the build environment
+PATH=$PATH:/usr/local/bin
+PGDIR=/usr/local/pgsql
+WXDIR=/usr/local/
+export PATH PGDIR WXDIR
+
+# Cleanup
+cd /usr/local/src/pgadmin3
+rm -rf ./slackpack
+rm -rf ./doc
+rm -rf ./i18n
+rm -rf ./pkg
+rm -rf ./pgadmin
+rm -rf ./xtra
+
+# SVN update
+/usr/local/bin/svn update
+
+# Touch the makefiles to ensure make dist doesn't get confused.
+touch Makefile.am
+touch pgadmin/Makefile.am
+
+# Get the version
+VERSION=PGADMIN_LONG_VERSION
+
+# Bootstrap
+/bin/sh bootstrap
+
+# Configure for the local OS
+./configure --with-pgsql=$PGDIR --with-wx=$WXDIR --enable-static --enable-debug
+
+# Make and store the source tarball
+make dist
+if [ -e pgadmin3-$VERSION.tar.gz ]; then
+	mv pgadmin3-$VERSION.tar.gz /var/www/developer.pgadmin.org/snapshots/src/pgadmin3-src-`/usr/bin/date +%Y%m%d`.tar.gz
+fi

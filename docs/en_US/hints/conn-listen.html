@@ -1,0 +1,45 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>Server doesn't listen</h3>
+<p>
+The server doesn't accept connections: the connection library reports
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+If you encounter this message, please check if the server you're trying to contact is actually
+running PostgreSQL on the given port. Test if you have network connectivity from your
+client to the server host using ping or equivalent tools. Is your network / VPN / SSH tunnel / 
+firewall configured correctly?
+</p>
+<p>
+For security reasons, PostgreSQL does <B>not</B> listen on all available IP addresses on the server machine initially. In order to access
+the server over the network, you need to enable listening on the address first.
+</p>
+<p>
+For PostgreSQL servers starting with version 8.0, this 
+is controlled using the &quot;listen_addresses&quot; parameter in the postgresql.conf file. Here, you can enter a list of IP addresses
+the server should listen on, or simply use '*' to listen on all available IP addresses. For earlier servers (Version 7.3 or 7.4), you'll need to 
+set the &quot;tcpip_socket&quot; parameter to 'true'. 
+</p>
+<p>
+You can use the postgresql.conf editor that is built into pgAdmin III to edit the postgresql.conf configuration file.
+After changing this file, you need to restart the server process to make the setting effective.
+</p>
+<p>
+If you double-checked your configuration but still get this error message, it's still unlikely 
+that you encounter a fatal PostgreSQL misbehaviour. You probably have some low level
+network connectivity problems (e.g. firewall configuration). Please check this thoroughly 
+before reporting a bug to the PostgreSQL community.
+</p>
+</body>
+</html>

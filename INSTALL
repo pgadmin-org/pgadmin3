@@ -1,0 +1,164 @@
+Installing pgAdmin from source
+==============================
+
+This document describes how to build pgAdmin from source on *nix, Mac and 
+Windows.
+
+Linux, FreeBSD, Solaris and other unix variants
+-----------------------------------------------
+
+You will need:
+
+- A modern development environment: 
+
+    - GTK 2.2 or above.
+    - GNU automake 1.9 or above.
+    - GNU autoconf 2.59 or above.
+    - GNU gcc 3.4 or above.
+
+- wxGTK 2.8.x from http://www.wxwidgets.org/
+- libxml2 2.6.18 or above from http://www.xmlsoft.org/
+- libxslt 1.1.x or above from http://www.xmlsoft.org/
+- PostgreSQL 8.1 or above from http://www.postgresql.org/
+
+Building:
+
+1) Install libxml2 and libxslt if they are not already present on your system, 
+   per the instructions included with them.
+   
+2) Install PostgreSQL per the instructions included. It is recommended that you
+   build with OpenSSL support, using the --with-openssl configure option.
+   
+3) Unpack the wxGTK tarball to a convenient location, and build and install it
+   as follows:
+   
+     cd /path/to/wxGTK/source/
+     ./configure --with-gtk --enable-gtk2 --enable-unicode
+     make
+     sudo make install
+
+     # Install wxWidgets contrib modules.
+     cd contrib/
+     make
+     sudo make install
+	
+   A script is included in the pgAdmin source tarball 
+   (xtra/wx-build/build-wxgtk) which will build and install wxWidgets in each 
+   combination of shared/static/debug/release builds for you.
+   
+4) Unpack the pgAdmin tarball to a convenient location, and build and install it 
+   as follows:
+   
+     sh bootstrap	# Required only if building from an SVN checkout
+     ./configure
+     make all
+     sudo make install
+	 
+   If any of the prerequisite components are installed in locations that the 
+   configure script cannot find, you may specify their locations on the command
+   line. See the configure help (./configure --help) for details.
+   
+Mac OS X
+--------
+
+You will need:
+
+- A modern development environment: 
+
+    - XCode 2.0 or above
+    - GNU automake 1.9 or above.
+    - GNU autoconf 2.59 or above.
+
+- wxMac 2.8.x from http://www.wxwidgets.org/
+- libxml2 2.6.18 or above from http://www.xmlsoft.org/
+- libxslt 1.1.x or above from http://www.xmlsoft.org/
+- PostgreSQL 8.1 or above from http://www.postgresql.org/
+
+Building:
+
+1) Install libxml2 and libxslt per the instructions included with them into a 
+   non-system location. The default versions included with OS X Panther and 
+   Tiger are too old and will not work correctly with pgAdmin.
+   
+2) Install PostgreSQL per the instructions included. It is recommended that you
+   build with OpenSSL support, using the --with-openssl configure option.
+   
+3) Unpack the wxMac tarball to a convenient location, and build and install it
+   as follows:
+   
+     cd /path/to/wxMac/source/
+     ./configure --with-mac --enable-gtk2 --enable-unicode
+     make
+     sudo make install
+
+     # Install wxWidgets contrib modules.
+     cd contrib/
+     make
+     sudo make install
+	
+   Note: You may also pass the --enable-universal_binary option to configure to
+   build a Universal binary. This will also require a Universal build of 
+   PostgreSQL's libpq library.
+   
+   A script is included in the pgAdmin source tarball 
+   (xtra/wx-build/build-wxmac) which will install a Universal build ofwxWidgets 
+   in each combination of shared/static/debug/release builds for you.
+   
+4) Unpack the pgAdmin tarball to a convenient location, and build and install it 
+   as follows:
+   
+     sh bootstrap	# Required only if building from an SVN checkout
+     ./configure --enable-appbundle
+     make all
+     make install
+	 
+   This final step will build an OSX appbundle called pgAdmin3.app in the root 
+   of your source tree. As this can take a minute or two, the 
+   pkg/mac/debug-bundle.sh script may be used to build a non-relocatable 'fake' 
+   appbundle using symbolic links directly to the executable files. This 
+   appbundle is called pgAdmin3-debug.app, and doesn't need to be rebuilt when 
+   pgAdmin is recompiled.
+   
+   If any of the prerequisite components are installed in locations that the 
+   configure script cannot find, you may specify their locations on the command
+   line. See the configure help (./configure --help) for details.
+   
+Windows
+-------
+
+You will need:
+
+- Windows 2000 or above.
+- Microsoft Visual C++ 2005.
+- The Windows 2003 R2 Platform SDK.
+- Windows Installer XML v3.
+- wxMSW 2.8.x from http://www.wxwidgets.org/
+- libxml2 2.6.18 or above from http://www.xmlsoft.org/
+- libxslt 1.1.x or above from http://www.xmlsoft.org/
+- iconv 1.9.x or above from http://gnuwin32.sourceforge.net/
+- PostgreSQL 8.1 or above from http://www.postgresql.org/
+
+Precompiled XML/XSLT and dependency packages for Windows can be found at 
+http://zlatkovic.com. You probably need zlib 1.2.x as well as libxml2 and 
+libxslt.
+
+Building:
+
+1) Unpack the wxMSW source code to a convenient location pointed to by the 
+   %WXWIN% environment variable.
+   
+2) Install PostgreSQL to a convenient location pointed to by the %PGDIR%
+   environment variable.
+   
+3) Unpack the pgAdmin source code to a convenient location.
+
+4) From a Visual Studio command prompt, run the wxWidgets build script included
+   in the pgAdmin source tree at xtra/wx-build/build-wxmsw.bat
+   
+5) Unpack the libxml2, libxslt and dependency binaries in a directory pointed to
+   by the %PGBUILD% environment variable.
+   
+6) Start Visual C++ and load the pgAdmin solution file. Build the required 
+   targets.
+
+

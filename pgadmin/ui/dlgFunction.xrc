@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<resource>
+  <object class="wxDialog" name="dlgFunction">
+    <title></title>
+    <size>218,240d</size>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <object class="sizeritem">
+        <object class="wxNotebook" name="nbNotebook">
+          <object class="notebookpage">
+            <label>Properties</label>
+            <object class="wxPanel" name="pnlProperties">
+              <object class="wxStaticText" name="stName">
+                <label>Name</label>
+                <pos>5,7d</pos>
+              </object>
+              <object class="wxTextCtrl" name="txtName">
+                <pos>70,5d</pos>
+                <size>135,-1d</size>
+              </object>
+              <object class="wxStaticText" name="stOwner">
+                <label>Owner</label>
+                <pos>5,22d</pos>
+              </object>
+              <object class="ctlComboBox" name="cbOwner">
+                <content/>
+                <pos>70,20d</pos>
+                <size>135,12d</size>
+              </object>
+              <object class="wxStaticText" name="stArguments">
+                <label>Arguments</label>
+                <pos>5,37d</pos>
+              </object>
+              <object class="wxTextCtrl" name="txtArguments">
+                <pos>70,35d</pos>
+                <size>135,-1d</size>
+                <style></style>
+              </object>
+              <object class="wxStaticText" name="stOID">
+                <label>OID</label>
+                <pos>5,52d</pos>
+              </object>
+              <object class="wxTextCtrl" name="txtOID">
+                <pos>70,50d</pos>
+                <size>135,-1d</size>
+              </object>
+              <object class="wxStaticText" name="stReturntype">
+                <label>Return type</label>
+                <pos>5,67d</pos>
+              </object>
+              <object class="ctlComboBox" name="cbReturntype">
+                <content/>
+                <pos>70,65d</pos>
+                <size>135,12d</size>
+                <style>wxCB_DROPDOWN</style>
+              </object>
+              <object class="wxStaticText" name="stLanguage">
+                <label>Language</label>
+                <pos>5,82d</pos>
+              </object>
+              <object class="ctlComboBox" name="cbLanguage">
+                <content/>
+                <pos>70,80d</pos>
+                <size>135,12d</size>
+                <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+              </object>
+              <object class="wxStaticText" name="stVolatility">
+                <label>Volatility</label>
+                <pos>5,97d</pos>
+              </object>
+              <object class="wxComboBox" name="cbVolatility">
+                <content>
+                  <item>VOLATILE</item>
+                  <item>STABLE</item>
+                  <item>IMMUTABLE</item>
+                </content>
+                <selection>0</selection>
+                <pos>70,95d</pos>
+                <size>135,12d</size>
+                <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+              </object>
+              <object class="wxCheckBox" name="chkSetof">
+                <label>Returns set</label>
+                <pos>70,110d</pos>
+                <size>135,12d</size>
+              </object>
+              <object class="wxCheckBox" name="chkStrict">
+                <label>Strict</label>
+                <pos>70,122d</pos>
+                <size>135,12d</size>
+              </object>
+              <object class="wxCheckBox" name="chkSecureDefiner">
+                <label>Security of definer</label>
+                <pos>70,134d</pos>
+                <size>135,12d</size>
+              </object>
+              <object class="wxStaticText" name="stCost">
+                <label>Estimated cost</label>
+                <pos>5,150d</pos>
+              </object>
+              <object class="wxTextCtrl" name="txtCost">
+                <pos>70,148d</pos>
+                <size>135,-1d</size>
+                <style></style>
+              </object>
+              <object class="wxStaticText" name="stRows">
+                <label>Estimated rows</label>
+                <pos>5,165d</pos>
+              </object>
+              <object class="wxTextCtrl" name="txtRows">
+                <pos>70,163d</pos>
+                <size>135,-1d</size>
+                <style></style>
+              </object>
+              <object class="wxStaticText" name="stComment">
+                <label>Comment</label>
+                <pos>5,180d</pos>
+              </object>
+              <object class="wxTextCtrl" name="txtComment">
+                <pos>70,178d</pos>
+                <size>135,22d</size>
+                <style>wxTE_MULTILINE</style>
+              </object>
+              <object class="wxStaticText" name="stClusterSet">
+                <label>Use replication</label>
+                <pos>5,205d</pos>
+              </object>
+              <object class="wxComboBox" name="cbClusterSet">
+                <content/>
+                <pos>70,203d</pos>
+                <size>135,12d</size>
+                <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+              </object>
+            </object>
+            <selected>1</selected>
+          </object>
+          <pos>2,2d</pos>
+          <size>214,235d</size>
+          <object class="notebookpage">
+            <label>Parameters</label>
+            <object class="wxPanel" name="pnlParameters">
+              <object class="wxFlexGridSizer">
+                <cols>1</cols>
+                <rows>3</rows>
+                <object class="sizeritem">
+                  <object class="wxListCtrl" name="lstArguments">
+                    <pos>70,15d</pos>
+                    <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+                  </object>
+                  <option>80</option>
+                  <flag>wxALL|wxEXPAND</flag>
+                  <border>5</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxFlexGridSizer">
+                    <object class="sizeritem">
+                      <object class="wxStaticText" name="stDatatype">
+                        <label>Datatype</label>
+                      </object>
+                      <flag>wxALIGN_CENTRE_VERTICAL</flag>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxComboBox" name="cbDatatype">
+                        <content/>
+                        <pos>70,80d</pos>
+                        <style>wxCB_DROPDOWN</style>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxStaticText" name="stMode">
+                        <label>Mode</label>
+                      </object>
+                      <flag>wxALIGN_CENTRE_VERTICAL</flag>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxGridSizer">
+                        <cols>3</cols>
+                        <rows>1</rows>
+                        <object class="sizeritem">
+                          <object class="wxRadioButton" name="rdbIn">
+                            <label>IN</label>
+                            <style>wxRB_GROUP</style>
+                          </object>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxRadioButton" name="rdbOut">
+                            <label>OUT</label>
+                          </object>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxRadioButton" name="rdbInOut">
+                            <label>IN OUT</label>
+                          </object>
+                        </object>
+                      </object>
+                      <flag>wxTOP|wxBOTTOM</flag>
+                      <border>5</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxStaticText" name="stArgName">
+                        <label>Argument name</label>
+                      </object>
+                      <flag>wxALIGN_CENTRE_VERTICAL</flag>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxTextCtrl" name="txtArgName"/>
+                      <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+                    </object>
+                    <cols>2</cols>
+                    <rows>3</rows>
+                    <vgap>5</vgap>
+                    <hgap>5</hgap>
+                    <growablecols>1</growablecols>
+                  </object>
+                  <flag>wxALL|wxEXPAND|wxALIGN_BOTTOM|wxALIGN_CENTRE_HORIZONTAL</flag>
+                  <border>5</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxFlexGridSizer">
+                    <object class="sizeritem">
+                      <object class="wxButton" name="wxID_REMOVE">
+                        <label>Remove</label>
+                        <pos>13,58d</pos>
+                      </object>
+                      <flag>wxALL|wxALIGN_RIGHT</flag>
+                      <border>2</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxButton" name="wxID_ADD">
+                        <label>Add</label>
+                        <pos>13,78d</pos>
+                      </object>
+                      <flag>wxALL|wxALIGN_RIGHT</flag>
+                      <border>2</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxButton" name="wxID_CHANGE">
+                        <label>Change</label>
+                        <pos>13,78d</pos>
+                      </object>
+                      <flag>wxALL|wxALIGN_RIGHT</flag>
+                      <border>2</border>
+                    </object>
+                    <cols>3</cols>
+                    <rows>1</rows>
+                  </object>
+                  <flag>wxALIGN_RIGHT</flag>
+                </object>
+                <growablerows>0</growablerows>
+                <growablecols>0</growablecols>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Definition</label>
+            <object class="wxPanel" name="pnlDefinition">
+              <object class="wxStaticText" name="stObjectFile">
+                <label>Object file</label>
+                <pos>5,7d</pos>
+              </object>
+              <object class="wxTextCtrl" name="txtObjectFile">
+                <pos>70,5d</pos>
+                <size>135,-1d</size>
+              </object>
+              <object class="wxStaticText" name="stLinkSymbol">
+                <label>Link symbol</label>
+                <pos>5,22d</pos>
+              </object>
+              <object class="wxTextCtrl" name="txtLinkSymbol">
+                <pos>70,20d</pos>
+                <size>135,-1d</size>
+              </object>
+              <object class="wxFlexGridSizer">
+                <object class="sizeritem">
+                  <object class="ctlSQLBox" name="txtSqlBox">
+                    <style>wxTE_MULTILINE|wxSUNKEN_BORDER|wxTE_RICH2</style>
+                  </object>
+                  <flag>wxALL|wxEXPAND</flag>
+                  <border>5</border>
+                </object>
+                <cols>1</cols>
+                <rows>1</rows>
+                <growablerows>0</growablerows>
+                <growablecols>0</growablecols>
+              </object>
+            </object>
+          </object>
+	  <object class="notebookpage">
+		  <label>Variables</label>
+		  <object class="wxPanel" name="pnlVariables">
+			  <object class="wxBoxSizer">
+				  <orient>wxHORIZONTAL</orient>
+				  <object class="spacer">
+					  
+					  
+					  <size>5,5d</size>
+				  </object>
+				  <object class="sizeritem">
+					  <object class="wxFlexGridSizer">
+						  <cols>1</cols>
+						  <growablecols>0</growablecols>
+						  <object class="spacer">
+							  
+							  
+							  <size>3,3d</size>
+						  </object>
+						  <object class="sizeritem">
+							  <object class="wxListCtrl" name="lstVariables">
+								  
+								  
+								  <pos>5,6d</pos>
+								  
+								  
+								  <size>193,125d</size>
+								  
+								  
+								  <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+							  </object>
+						  </object>
+						  <object class="spacer">
+							  
+							  
+							  <size>5,5d</size>
+						  </object>
+						  <object class="sizeritem">
+							  <object class="wxFlexGridSizer">
+								  <cols>4</cols>
+								  <object class="spacer">
+									  
+									  
+									  <size>0,0</size>
+									  
+									  
+									  <flag>wxGROW</flag>
+								  </object>
+								  <object class="sizeritem">
+									  <object class="wxButton" name="btnAddVar">
+										
+										
+										<label>Add/Change</label>
+										
+										
+										<pos>90,132d</pos>
+									</object>
+								</object>
+								<object class="spacer">
+									
+									
+									<size>3,3d</size>
+								</object>
+								<object class="sizeritem">
+									<object class="wxButton" name="btnRemoveVar">
+										
+										
+										<label>Remove</label>
+										
+										
+										<pos>150,132d</pos>
+									</object>
+								</object>
+								<growablecols>0</growablecols>
+							</object>
+							
+							
+							<flag>wxGROW</flag>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="wxStaticText" name="stVarname">
+				
+				
+				<label>Variable Name</label>
+				
+				
+				<pos>5,155d</pos>
+			</object>
+			<object class="ctlComboBox" name="cbVarname">
+				
+				
+				<content/>
+				
+				
+				<pos>73,153d</pos>
+				
+				
+				<size>126,-1d</size>
+				
+				
+				<style>wxCB_DROPDOWN</style>
+			</object>
+			<object class="wxStaticText" name="stValue">
+				
+				
+				<label>Variable Value</label>
+				
+				
+				<pos>5,171d</pos>
+			</object>
+			<object class="wxTextCtrl" name="txtValue">
+				
+				
+				<pos>73,169d</pos>
+				
+				
+				<size>126,12d</size>
+			</object>
+			<object class="wxCheckBox" name="chkValue">
+				
+				
+				<label></label>
+				
+				
+				<pos>73,169d</pos>
+				
+				
+				<size>13,12d</size>
+			</object>
+		</object>
+	</object>
+        </object>
+        <flag>wxALL|wxGROW|wxALIGN_CENTRE</flag>
+        <border>3</border>
+      </object>
+      <growablecols>0</growablecols>
+      <growablerows>0</growablerows>
+      <object class="spacer">
+        <size>2,2d</size>
+      </object>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>9</cols>
+          <object class="spacer">
+            <size>3,3d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_HELP">
+              <label>Help</label>
+              <pos>135,220d</pos>
+            </object>
+          </object>
+          <object class="spacer">
+            <size>3,3d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_APPLY">
+              <label>Apply</label>
+            </object>
+          </object>
+          <object class="spacer">
+            <size>3,3d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_OK">
+              <label>&amp;OK</label>
+              <default>1</default>
+              <pos>135,220d</pos>
+            </object>
+          </object>
+          <object class="spacer">
+            <size>3,3d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_CANCEL">
+              <label>&amp;Cancel</label>
+              <pos>176,220d</pos>
+            </object>
+          </object>
+          <object class="spacer">
+            <size>3,3d</size>
+          </object>
+          <growablecols>2</growablecols>
+        </object>
+        <flag>wxTOP|wxLEFT|wxRIGHT|wxGROW</flag>
+      </object>
+      <object class="spacer">
+        <size>3,3d</size>
+      </object>
+      <object class="sizeritem">
+        <object class="unknown" name="unkStatusBar">
+          <size>-1,15d</size>
+        </object>
+        <flag>wxGROW|wxALIGN_CENTRE</flag>
+        <border>3</border>
+      </object>
+    </object>
+  </object>
+</resource>

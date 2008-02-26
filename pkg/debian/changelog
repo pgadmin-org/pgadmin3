@@ -1,0 +1,364 @@
+pgadmin3 (1.6.0-0.beta2.1) experimental; urgency=low
+
+  * New upstream release. Beta 2.
+  * Removed libwxgtk2.6-dev from build-deps and re-added embedded wxWidgets
+    building stuff to link statically until Ron can provide a useable
+    wxWidgets 2.7 package. [debian/control]
+  * Added libxslt1-dev and libxml-dev to build-deps. [debian/control]
+  * Fixed ref to BUGS, README and TODO. [debian/pgadmin3.docs]
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Fri,  6 Oct 2006 22:56:02 +0200
+
+pgadmin3 (1.4.3-2) unstable; urgency=low
+
+  * Patched frmBackup.cpp to ensure the schema is specified when backing up
+    individual tables. (Closes: #387256)
+    [src/frm/frmBackup.cpp]
+  * Cleaned up and updated description of the package. (Closes: #379188)
+    [debian/control]
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Fri,  6 Oct 2006 21:06:48 +0200
+
+pgadmin3 (1.4.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * Re-added (bis) patch concerning double link on libssl and libcrytpo as
+    upstream does not want to include it (more information in #341117).
+    [debian/acinclude.m4]
+  * Previous patch included in 1.4.2-2 is now part of the upstream release.
+  * Moved to policy version 3.7.2. [debian/control]
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Wed, 19 Jul 2006 20:02:37 +0000
+
+pgadmin3 (1.4.2-2) unstable; urgency=low
+
+  * Re-built on current libwxgtk2.6. (Closes: #366195)
+  * Package split. pgagent is now distributed as a separated package so that
+    people can benefit from it on PostgreSQL servers without installing all
+    the pgAdmin III stuff.
+    [debian/control,debian/{pgadmin3,pgagent}.install]
+    [debian/{pgadmin3,pgagent}.manpages]
+  * Now pgadmin3 package recommends pgagent. [debian/control]
+  * Applied patch from Dave Page to solve crash issue when decrementing server
+    status refresh rate. Svn rev 5236 from REL-1_4_0_PATCHES.
+    (Closes: #373638)
+    [src/frm/frmStatus.cpp,src/include/base/{base,frmStatus}.h,
+     src/ui/frmStatus.xrc,src/ui/xrcDialogs.cpp]
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Fri, 14 Jul 2006 21:02:11 +0000
+
+pgadmin3 (1.4.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * Upstream includes a fix for GCC 4.1 build problems. (Closes: #358298)
+  * Re-added patch concerning double link on libssl and libcrytpo as I wasn't
+    able to get it included upstream in time (more information in #341117).
+    [debian/acinclude.m4]
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Tue,  4 Apr 2006 19:59:58 +0000
+
+pgadmin3 (1.4.1-1) unstable; urgency=low
+
+  * New upstream release.
+  * Merged patch from 1.2.2-1.1 by Loic Minier and added its changelog entry.
+    (Closes: #341117)
+  * Removed libssl-dev from build-dep as libpq-dev already depends on it.
+    [debian/control]
+  * Removed circular dependency between pgadmin3 and pgadmin3-data:
+    - Replaced "Depends" with "Enhances" for pgadmin3-data. [debian/control]
+    - Made a real doc directory for pgadmin3-data because we break the
+      circular dependency: removed debian/pgadmin3-data.links.
+      (Closes: #339900)
+  * Added pgagent manpage. [debian/pgadmin3.manpages]
+  * dh_installdocs is back to debian/rules as we need a separate copyright
+    directory for pgadmin3-data since we broke the circular dependency.
+    - Also renamed debian/copyright to debian/pgadmin3.copyright and added
+      debian/pgadmin3-data.copyright.
+    - Also enabled dh_installchangelogs in binary-indep target.
+      [debian/rules]
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Thu, 19 Jan 2006 20:06:49 +0000
+
+pgadmin3 (1.4.0-0.2.beta1) unstable; urgency=low
+
+  * Final merge between Tomasz Rybak work and official 1.2.2 packaging stuff
+    we should be ready to build 1.4.0 beta1...
+    - removed "hints" entry from menu file as done in 1.2.2-1
+    [debian/pgadmin3.menu]
+    - moved to policy version 3.6.2 instead of 3.6.1 as done 1.2.2-1.
+    [debian/control]
+    - kept ui to i18n relocation from Tomasz. [debian/rules]
+    [debian/pgadmin3.install]
+    - backed out CPPFLAGS hack from Tomasz and reverted to what was done in
+    1.2.2. That old "-I ./include" should definitely be rechecked.
+    [debian/rules]
+    - kept pgagent installation although there is currently no manpage for it.
+    [debian/pgadmin3.install]
+    - corrected package version number (used something lower than 1).
+    [debian/changelog]
+  * Thanks Tomasz for your help.
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Wed,  5 Oct 2005 18:21:03 +0200
+
+pgadmin3 (1.4.0-0.1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Tomasz Rybak <bogomips@post.pl>  Thu,  04 Oct 2005 21:07:20 +0100
+
+pgadmin3 (1.2.2-1.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Patch the configure macros to not link against libssl and libcrypto since
+    SSL support is provided by libpq, not libssl, and this dependency
+    shouldn't be hardcoded; re-run autoconf. (Closes: #341117)
+    [acinclude.m4, configure]
+
+ -- Loic Minier <lool@dooz.org>  Tue, 29 Nov 2005 15:21:56 +0100
+
+pgadmin3 (1.2.2-1) unstable; urgency=low
+
+  * New upstream release (closes: #288171, #278644, #278855, #250991).
+  * Backed out configure part of the NMU from Loic Minier as it has been
+    reworked upstream to support wxWidgets 2.6.x.
+  * Rechecked that Loic reffered to libwxgtk2.6-dev and not libwxgtk2.4-dev as
+    mentioned in NMU (it was ok...). [debian/control]
+    (closes: #327089, #327478)
+  * Kept libpq-dev and libssl-dev build-dep from NMU. Thanks Loic for your
+    work. [debian/control]
+  * Use pg_config to determine include path. Taken from the Ubuntu patch
+    (1.2.0-2ubuntu1 version) by Martin Pitt <martin.pitt@ubuntu.com>.
+  * Moved to policy version 3.6.2 instead of 3.6.1. [debian/control]
+  * Added full path to pgadmin3 in the menu file to take care of a linda
+    warning. [debian/pgadmin3.menu]
+  * Removed hints entry from menu file until a useful entry appears for it
+    into other PostgreSQL related packages. [debian/pgadmin3.menu]
+  * Passed --disable-dependency-tracking option to configure as suggested
+    during last release by Peter Eisentraut. [debian/rules]
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Mon, 12 Sep 2005 19:33:35 +0200
+
+pgadmin3 (1.2.0-2.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Rebuild with a newer wxWidgets. (Closes: #310398, #311050)
+    - Build-depend on libwxgtk2.4-dev instead of libwxgtk2.5-dev.
+      [debian/control]
+    - Let the CHECK_WXWINDOWS macro check for wxWidgets 2.6 instead of 2.4 and
+      re-run autoconf. [aclocal.m4, configure]
+  * Build-depend on libpq-dev instead of postgresql-dev. [debian/control]
+  * Add missing libssl-dev build-dep. [debian/control]
+
+ -- Loic Minier <lool@dooz.org>  Thu,  8 Sep 2005 10:48:21 +0200
+
+pgadmin3 (1.2.0-2) unstable; urgency=low
+
+  * Renamed debian/NEWS.Debian to debian/pgadmin3.NEWS so that it is correctly
+    installed as /usr/share/doc/pgadmin3/NEWS.Debian.gz (closes: #286786)
+  * Replaced that ugly stuff with *.substvars from debian/rules by something
+    cleaner: ${Source-Version} in depends fields of debian/control.
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Thu,  6 Jan 2005 20:56:50 +0100
+
+pgadmin3 (1.2.0-1) unstable; urgency=low
+
+  * New upstream version (closes: #239226, #257263).
+  * Renamed README.Debian to NEWS.Debian (as suggested by Peter Eisentraut)
+  * Fixed a typo in NEWS.Debian (correction by Dave Page).
+  * Fixed a typo and email address in debian/pgadmin3.1 as reported by Peter
+    Eisentraut (I'll refer to him as PE in the rest of the changelog).
+  * Fixed a typo in debian/control (as suggested by PE).
+  * Renamed debian/dirs to debian/pgadmin3.dirs (as suggested by PE).
+  * Used the original orig.tar.gz instead of a generated one (PE).
+  * Removed orig target from debian/rules as it is not needed anymore and
+    removed old commented out strings.
+  * Added a README file to pkg/debian so that people ignore files in this
+    directory (unsynced files from pgAdmin III CVS repository)
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Tue, 14 Dec 2004 23:46:39 +0100
+
+pgadmin3 (1.2.0-0.2) unstable; urgency=low
+
+  * Removed wxWidgets copyright from debian/copyright as we don't distribute
+    this source in our tarball anymore (we now link dynamically).
+  * Added libwxgt2.5-dev to build dependencies.
+  * Created a new debian/README.Debian to reflect current situation of the
+    product.
+  * Partially backed out patch from Thiemo Seufer as it is not needed anymore
+    due to dynamic linking (thanks Thiemo for checking it so rapidly!).
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Sat, 11 Dec 2004 22:11:11 +0100
+
+pgadmin3 (1.2.0-0.1) unstable; urgency=low
+
+  * Removed all embedded wxWidgets stuff from debian/rules as we now
+    dynamically link to Debian offical wxWidgets packages
+  * Cleaned debian/control from wxWidgets build dependencies (not needed
+    anymore as explained above)
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Tue,  7 Dec 2004 19:03:40 +0000
+
+pgadmin3 (1.0.2-7) unstable; urgency=low
+
+  * Applied patch from Thiemo Seufer to debian/rules to take care of build
+    issue on mips/mispel arch. The patch also enables optimizations and warning
+    to the C++ part of the build (closes: #274090).
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Sun,  3 Oct 2004 12:12:15 +0200
+
+pgadmin3 (1.0.2-6) unstable; urgency=medium
+
+  * Changed dependencies from libtiff3g-dev to libtiff4-dev in debian/control
+    (closes: #262830)
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Mon,  2 Aug 2004 09:51:35 +0200
+
+pgadmin3 (1.0.2-5) unstable; urgency=low
+
+  * Added the full text of the PostgreSQL licence to take care of copyright
+    issue regarding the PostgreSQL documentation distributed in pgadmin3-data
+    (closes: #245310)
+  * Corrected title in debian/pgadmin3.menu to be compliant with pgAdmin III
+    advocacy (closes: #245302)
+  * Applied patch from Hirosh Saito to src/ui/ctlSQLBox.cpp to fix SQL syntax
+    highlight (CVS revision 1.17.2.1)
+  * Added copyright informations concerning the wxWidgets source included in
+    this debian source package
+  * Wrapped debian/copyright file to less than 80 char width as suggested by
+    Peter Eisenstraut.
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Wed, 12 May 2004 19:45:12 +0200
+
+pgadmin3 (1.0.2-4) unstable; urgency=low
+
+  * REALLY moved to policy version 3.6.1 instead of 3.6.0 (debian/control)
+    as it was not corrected in previous version of the package...
+  * Corrected debhelper dependencies in debian/control (>=4.1.0) to handle
+    --list-missing parameter to dh_install
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Sat, 10 Apr 2004 08:18:38 +0000
+
+pgadmin3 (1.0.2-3) unstable; urgency=low
+
+  * Moved to policy version 3.6.1 instead of 3.6.0
+  * Corrected debian/control to make pgadmin3 and pgadmin3-data depend
+    on the really same version (i.e. 1.0.2-3 for this particular upload)
+    Used [pkgname].substvars to get rid of this
+  * Added Conflicts/Replaces conditions to pgadmin3-data in debian/control
+    so that users of old unofficial pgadmin3 package can upgrade "smoothly"
+    to official one.
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Thu,  1 Apr 2004 08:10:34 +0000
+
+pgadmin3 (1.0.2-2) unstable; urgency=low
+
+  * Patched src/ui/frmMain.cpp with CVS version 1.70.2.1 to fix segfault when
+    refreshing dropped object (patch from Andreas Pflug) (closes: #240828)
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Mon, 29 Mar 2004 22:40:45 +0000
+
+pgadmin3 (1.0.2-1) unstable; urgency=low
+
+  * Initial upload to debian (closes: #199822).
+  * Patched src/db/pgConn.cpp with CVS version 1.36.2.5 to fix error messages
+    when connecting to a database in MULE_INTERNAL (patches from Andreas Pflug).
+  * Patched src/ui/frmOptions.cpp with CVS version 1.35 to fix wxAsserts while
+    in options box. Suppressed the line concerning systemfonts which fails to
+    build as is.
+  * Commented dh_installexamples in "indep" target so that the doc directory
+    for pgadmin3-data is really a symlink to pgadmin3
+  * Really removed ${misc:Depends} from debian/control as it was still there.
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Thu,  4 Mar 2004 23:23:27 +0000
+
+pgadmin3 (1.0.2-0.12) unstable; urgency=low
+
+  * Make pgadmin3-data "Depends" from pgadmin3 and made pgadmin3-data
+    doc directory a symlink to pgadmin3
+  * Inserted quotes for icon entry in menu file
+  * Removed ${misc:Depends} from debian/control because it is not
+    necessary and just causes dpkg-gencontrol to throw a warning
+
+ -- Andreas Tille <tille@debian.org>  Thu,  4 Mar 2004 07:41:39 +0100
+
+pgadmin3 (1.0.2-0.11) unstable; urgency=low
+
+  * Kept Andreas Tille's idea to remove wxWidgets at the end of the build but
+    invoked $(doPgA3Wx)-clean target instead of using "rm -r" on an hardcoded
+    directory
+  * Fixed a typo concerning locales installation in /usr/share/locale and added
+    LC_MESSAGES directory to the install destination
+  * Moved back "doc" files to /usr/share/pgadmin3/docs as they are required by
+    pgadmin3 in order to run properly (debian-policy 12.3.)
+  * Cleaned binary-indep / binary-arch build process so that packages are not
+    generated twice. (Passed DH_OPTIONS=-i to indep and -a to arch).
+  * Added patch from Andreas Pflug to wxWidgets to prevent pgAdmin3 help system
+    crash (AP patch posted to wx patches as 854137)
+  * Renamed pgadmin3-doc to pgadmin3-data as this is not a pure documentation
+    package
+  * Changed the way the install is done: install all in debian/tmp then use
+    dh_install
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Wed,  3 Mar 2004 18:13:20 +0000
+
+pgadmin3 (1.0.2-0.10) unstable; urgency=low
+
+  * Short description must not repeat package name (developers-reference 6.2.2.)
+    -> changed short description
+  * Mentioned Homepage in the form developers-reference 6.2.4. is suggesting.
+  * Removed tar, gcc and g++ from Build-Depends because these are in
+    build-essential (developers-reference 5.10.1).
+  * Reffering to /usr/share/common-licenses/Artistic instead of mentioning
+    the complete license in debian/copyright.
+  * Split into binary and doc package
+  * Remove wxWidgets build directory at the end of the binary-arch target
+    to save some disk space on the build machine (for those who forget to
+    make clean after the build process ...)
+
+ -- Andreas Tille <tille@debian.org>  Wed, 25 Feb 2004 09:30:00 +0100
+
+pgadmin3 (1.0.2-0.9) unstable; urgency=low
+
+  * Backported configure script from pgAdmin3 1.1.0 snapshots to fix SSL support
+  * Fix src/Makefile.in to fix error with postgresql includes at build stage
+  * Added a manpage for pgadmin3 command
+  * Renamed wxWindows to wxWidgets as this product has just been renamed
+
+ -- Raphael Enrici <blacknoz@club-internet.fr>  Tue, 24 Feb 2004 19:55:00 +0000
+
+pgadmin3 (0.9.2-0.0) unstable; urgency=low
+
+  * New upstream version
+  * Added menu files for a better desktop integration
+
+ -- Raphael Enrici <pgadmin-hackers@postgresql.org>  Tue,  2 Sep 2003 17:22:25 +0000
+
+pgadmin3 (0.9.0-0.2) unstable; urgency=low
+
+  * New upstream version
+  * Changed Architecture from i386 to any in control file. Thanks to
+    Giuseppe Sacco who reported a successfull build on powerpc.
+
+ -- Raphael Enrici <pgadmin-hackers@postgresql.org>  Mon, 11 Aug 2003 22:35:33 +0000
+
+pgadmin3 (0.9.0-0.1) unstable; urgency=low
+
+  * First pgAdmin3 beta release!
+  * Fixed debian version scheme (package minor number should be <1 as it is not
+    in official debian)
+
+ -- Raphael Enrici <pgadmin-hackers@postgresql.org>  Thu,  7 Aug 2003 00:50:06 +0000
+
+pgadmin3 (0.1.1-20030701.0) unstable; urgency=low
+
+  * Corrected maintainer name / email so it points to pgadmin-hackers@postgresql.org
+  * Added some kind of README.Debian
+
+ -- Raphael Enrici <pgadmin-hackers@postgresql.org>  Mon, 30 Jun 2003 23:25:38 +0200
+
+pgadmin3 (0.1.1-20030613.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Raphael Enrici <pgadmin-hackers@postgresql.org>  Sun, 22 Jun 2003 23:08:10 +0200
+

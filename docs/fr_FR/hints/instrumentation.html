@@ -1,0 +1,41 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Conseil d'expert</title>
+</head>
+
+<body>
+
+<h3>Outils serveur</h3>
+<p>
+Il manque des outils au serveur.
+</p>
+<p>
+pgAdmin III utilise certaines fonctions de support qui ne sont pas disponibles
+par défaut dans toutes les versions de PostgreSQL. Elles activent certaines
+tâches qui rendent la vie plsu facile lors du traitement des journaux de trace
+et des fichiers de configuration.
+</p>
+<p>
+Lorsque vous avez installé PostgreSQL 8.0 ou supérieur en utilisant l'installeur
+Windows, vous avez besoin d'activer l'option admin.
+</p>
+<p>
+Lors de la compilation à partir des sources, les fichiers nécessaires sont
+disponibles dans le sous-répertoire xtra du répertoire des sources de pgAdmin.
+Pour PostgreSQL 8.0, copiez le répertoire admin sous le répertoire des sources
+des contributions PostgreSQL et lancez <quote>make</quote> puis <quote>make
+install</quote> à partir de là. Pour PostgreSQL 8.1,  utilisez le répertoire
+admin81 pour cela. Après l'installation du module, vous aurez besoin de créer
+les fonctions outils dans votre base de données de maintenance en utilisant le
+script admin.sql (admin81.sql pour PostgreSQL 8.1), situé dans le répertoire share
+de PostgreSQL (par exemple /usr/local/pgsql/share).
+</p>
+<p>
+Les outils serveur étendus ne sont pas supportés pour les versions 7.3 et 7.4 de
+PostgreSQL.
+</p>
+</body>
+</html>

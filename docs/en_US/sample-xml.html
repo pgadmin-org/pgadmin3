@@ -1,0 +1,75 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Sample XML report data</title>
+</head>
+
+<body>
+
+<H3>Sample XML report data</H3>
+
+<P>
+The sample report below demonstrates the XML format that the pgAdmin 
+<a href="reports.html">Report Tool</a> will produce.
+</p>
+
+<pre style="background-color: #dddddd;">
+&#60;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&#62;
+&#60;?xml-stylesheet type=&#34;text/xsl&#34; href=&#34;C:\stylesheet.xsl&#34; ?&#62;
+
+&#60;report&#62;
+
+  &#60;header&#62;
+
+    &#60;!-- All the values in the header section are optional, apart from the title. --&#62;
+
+    &#60;title&#62;Sample XML file&#60;/title&#62;
+    &#60;notes&#62;This is a sample XML file.&#60;/notes&#62;
+    &#60;generated&#62;10/05/2006 11:21:23&#60;/generated&#62;
+    &#60;server&#62;localhost:5432&#60;/database&#62;
+    &#60;database&#62;postgres&#60;/database&#62;
+    &#60;schema&#62;public&#60;/schema&#62;
+    &#60;table&#62;pg_ts_cfg&#60;/table&#62;
+    &#60;job&#62;&#60;/job&#62;
+  &#60;/header&#62;
+
+  &#60;!-- Multiple report sections may be present, and must have a name --&#62;
+
+  &#60;section id=&#34;s1&#34; number=&#34;1&#34; name=&#34;Query results&#34;&#62;
+  
+    &#60;!-- A table is optional within a section. If present, the number --&#62;
+    &#60;!-- of columns should be appropriate for the attributes specified --&#62;
+    &#60;!-- in each row. A row needn't specify every value however. --&#62;
+
+    &#60;table&#62;
+      &#60;columns&#62;
+        &#60;column id=&#34;c1&#34; number=&#34;1&#34; name=&#34;oid&#34; /&#62;
+        &#60;column id=&#34;c2&#34; number=&#34;2&#34; name=&#34;ts_name&#34; /&#62;
+        &#60;column id=&#34;c3&#34; number=&#34;3&#34; name=&#34;prs_name&#34; /&#62;
+        &#60;column id=&#34;c4&#34; number=&#34;4&#34; name=&#34;locale&#34; /&#62;
+      &#60;/columns&#62;
+      &#60;rows&#62;
+        &#60;row id=&#34;r1&#34; number=&#34;1&#34; c1=&#34;17108&#34; c2=&#34;default&#34; c3=&#34;default&#34; c4=&#34;C&#34; /&#62;
+        &#60;row id=&#34;r2&#34; number=&#34;2&#34; c1=&#34;17109&#34; c2=&#34;default_russian&#34; c3=&#34;default&#34; c4=&#34;ru_RU.KOI8-R&#34; /&#62;
+        &#60;row id=&#34;r3&#34; number=&#34;3&#34; c1=&#34;17110&#34; c2=&#34;simple&#34; c3=&#34;default&#34; c4=&#34;&#34; /&#62;
+      &#60;/rows&#62;
+      
+      &#60;!-- Additional section specific info may be supplied. --&#62;
+
+      &#60;info&#62;3 rows with 4 columns retrieved.&#60;/info&#62;
+
+    &#60;/table&#62;
+    
+    &#60;!-- Each section may also contain some related SQL. --&#62;
+
+    &#60;sql&#62;SELECT oid, * FROM pg_ts_cfg&#60;/sql&#62;
+
+  &#60;/section&#62;
+
+&#60;/report&#62;
+</pre>
+
+</body>
+</html>

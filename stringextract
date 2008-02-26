@@ -1,0 +1,53 @@
+#!/bin/sh
+
+#######################################################################
+#
+# pgAdmin III - PostgreSQL Tools
+# Copyright (C) 2002 - 2008, The pgAdmin Development Team
+# This software is released under the Artistic Licence
+#
+# stringextract - extract strings from sources 
+# and create gettext template file
+#
+#######################################################################
+
+cp pgadmin3-release.pot pgadmin3.pot
+
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/agent/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/ctl/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/db/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/debugger/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/dlg/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/frm/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/schema/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/slony/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/ui/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/utils/*.cpp
+
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/agent/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/ctl/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/db/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/debugger/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/dlg/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/frm/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/parser/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/schema/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/slony/*.h
+xgettext -k_ -k__ -j -s -o pgadmin3.pot pgadmin/include/utils/*.h
+
+xgettext -k_ -k__ -j -s -o pgadmin3.pot xtra/pgagent/*.cpp
+xgettext -k_ -k__ -j -s -o pgadmin3.pot xtra/pgagent/include/*.h
+
+TMPDIR=`mktemp -d` || exit 1
+echo "$TMPDIR"
+
+mkdir $TMPDIR/pgadmin
+mkdir $TMPDIR/pgadmin/ui
+
+ls pgadmin/ui/*.xrc | xargs -I filename wxrc -g filename -o $TMPDIR/filename
+
+ls pgadmin/ui/*.xrc | xargs xgettext  -k_ -k__ -L C -j -s -o pgadmin3.pot -D $TMPDIR/ 
+
+rm -rf $TMPDIR
