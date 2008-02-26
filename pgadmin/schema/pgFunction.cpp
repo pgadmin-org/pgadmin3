@@ -382,7 +382,8 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
             
             // Tokenize the arguments
-            wxStringTokenizer argNamesTkz(wxEmptyString), argTypesTkz(wxEmptyString), argModesTkz(wxEmptyString);
+            wxStringTokenizer argTypesTkz(wxEmptyString), argModesTkz(wxEmptyString);
+            queryTokenizer argNamesTkz(wxEmptyString, (wxChar)',');
             wxString tmp;
 
             // We always have types
