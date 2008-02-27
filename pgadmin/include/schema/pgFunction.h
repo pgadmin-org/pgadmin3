@@ -52,6 +52,8 @@ public:
     void iAddArgType(const wxString &s) { argTypesArray.Add(s); }
     wxArrayString &GetArgModesArray() { return argModesArray; }
     void iAddArgMode(const wxString &s) { argModesArray.Add(s); }
+    wxArrayString &GetArgDefsArray() { return argDefsArray; }
+    void iAddArgDef(const wxString &s) { argDefsArray.Add(s); }
 
     wxString GetReturnType() const { return returnType; }
     void iSetReturnType(const wxString& s) { returnType = s; }
@@ -97,7 +99,7 @@ protected:
 
 private:
     wxString returnType, language, volatility, source, bin;
-    wxArrayString argNamesArray, argTypesArray, argModesArray;
+    wxArrayString argNamesArray, argTypesArray, argModesArray, argDefsArray;
     bool returnAsSet, secureDefiner, isStrict;
     long argCount, cost, rows;
     wxArrayString configList;

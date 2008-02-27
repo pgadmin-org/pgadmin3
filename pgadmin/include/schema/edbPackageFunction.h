@@ -46,12 +46,16 @@ public:
     wxString GetFullName();
     wxString GetArgListWithNames();
     wxString GetArgSigList();
+
     wxArrayString &GetArgNamesArray() { return argNamesArray; }
     void iAddArgName(const wxString &s) { argNamesArray.Add(s); }
     wxArrayString &GetArgTypesArray() { return argTypesArray; }
     void iAddArgType(const wxString &s) { argTypesArray.Add(s); }
     wxArrayString &GetArgModesArray() { return argModesArray; }
     void iAddArgMode(const wxString &s) { argModesArray.Add(s); }
+    wxArrayString &GetArgDefsArray() { return argDefsArray; }
+    void iAddArgDef(const wxString &s) { argDefsArray.Add(s); }
+
     wxString GetReturnType() const { return returnType; }
     void iSetReturnType(const wxString& s) { returnType = s; }
     wxString GetSource() const { return source; }
@@ -65,7 +69,7 @@ public:
 
 private:
     long argCount;
-    wxArrayString argNamesArray, argTypesArray, argModesArray;
+    wxArrayString argNamesArray, argTypesArray, argModesArray, argDefsArray;
     wxString returnType, source, visibility;
 };
 
