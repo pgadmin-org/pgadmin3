@@ -37,7 +37,6 @@ END_EVENT_TABLE()
 #define chkFreeze               CTRL_CHECKBOX("chkFreeze")
 #define chkAnalyze              CTRL_CHECKBOX("chkAnalyze")
 #define sbxReindexOptions       CTRL_STATICBOX("sbxReindexOptions")
-#define chkForce                CTRL_CHECKBOX("chkForce")
 #define chkRecreate             CTRL_CHECKBOX("chkRecreate")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
 
@@ -102,7 +101,6 @@ void frmMaintenance::OnAction(wxCommandEvent& ev)
 
     bool isReindex = (rbxAction->GetSelection() == 2);
     sbxReindexOptions->Enable(isReindex && object->GetMetaType() == PGM_DATABASE || object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_PRIMARYKEY || object->GetMetaType() == PGM_UNIQUE);
-    chkForce->Enable(isReindex && object->GetMetaType() == PGM_DATABASE);
     chkRecreate->Enable(isReindex && object->GetMetaType() == PGM_INDEX);
 }
 
@@ -161,8 +159,6 @@ wxString frmMaintenance::GetSql()
                 {
                     sql = wxT("REINDEX ") + object->GetTypeName().Upper()
                         + wxT(" ") + object->GetQuotedFullIdentifier();
-                    if (chkForce->GetValue())
-                        sql += wxT(" FORCE");
                 }
             }
             break;
