@@ -1034,8 +1034,20 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
 
     // don't care a lot about optimizing here; doing it line by line
     // just as sqlTable::DeleteRows does
-	while (i--)
-		sqlGrid->DeleteRows(delrows.Item(i), 1);
+    bool show_continue_message = true;
+    while (i--)
+    {
+        if (!sqlGrid->DeleteRows(delrows.Item(i), 1) &&
+            i > 0 &&
+            show_continue_message)
+        {
+        	wxMessageDialog msg(this, wxString::Format(_("There was an error deleting the previous record.\nAre you sure you wish to delete the remaining %d rows ?"), i), _("Delete more records ?"), wxYES_NO | wxICON_QUESTION);
+        	if (msg.ShowModal() != wxID_YES)
+            	break;
+            else
+                show_continue_message = false;
+        }
+    }
 
 
     sqlGrid->EndBatch();
