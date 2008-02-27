@@ -14,6 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "utils/pgfeatures.h"
 #include "schema/edbPackageFunction.h"
 
 
@@ -405,4 +406,5 @@ edbPackageProcedureFactory::edbPackageProcedureFactory()
 
 edbPackageProcedureFactory packageProcedureFactory;
 static pgaCollectionFactory cfp(&packageProcedureFactory, __("Procedures"), procedures_xpm);
+
 
