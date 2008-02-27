@@ -70,7 +70,7 @@ pgObject *edbSynonym::Refresh(ctlTree *browser, const wxTreeItemId item)
 
     pgCollection *coll=browser->GetParentCollection(item);
     if (coll)
-        synonym = synonymFactory.CreateObjects(coll, 0, wxT(" WHERE synname='") + GetName() + wxT("'"));
+        synonym = synonymFactory.CreateObjects(coll, 0, wxT(" WHERE synname=") + qtDbString(GetName()));
 
     return synonym;
 }
