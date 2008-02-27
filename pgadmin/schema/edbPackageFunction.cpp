@@ -84,6 +84,13 @@ wxString edbPackageFunction::GetArgListWithNames()
         else
             arg += argTypesArray.Item(i);
 
+        // Parameter default value
+        if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+        {
+            if (!argDefsArray.Item(i).IsEmpty())
+                arg += wxT(" DEFAULT ") + argDefsArray.Item(i);
+        }
+
         args += arg;
     }
     return args;
@@ -170,17 +177,19 @@ pgObject *edbPackageFunction::Refresh(ctlTree *browser, const wxTreeItemId item)
 edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, edbPackage *package, ctlTree *browser, const wxString &restriction)
 {
     edbPackageFunction *packageFunction=0;
-
 	pgSet *packageFunctions;
 
-	
+    // Caches
+    cacheMap typeCache, exprCache;
+    wxString sql, argDefsCol;
 
-    wxString sql;
+    if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+        argDefsCol = wxT("proargdefvals, ");
 
     if (obj->GetConnection()->EdbMinimumVersion(8, 2))
     {
 		sql = wxT("SELECT pg_proc.oid, proname AS eltname, prorettype AS eltdatatype, pronargs AS nargs, proaccess AS visibility,\n")
-              wxT("       proallargtypes AS allargtypes, proargtypes AS argtypes, proargnames AS argnames, proargmodes AS argmodes,\n")
+            wxT("       proallargtypes AS allargtypes, proargtypes AS argtypes, proargnames AS argnames, proargmodes AS argmodes,") + argDefsCol + wxT("\n")
               wxT("       CASE WHEN format_type(prorettype, NULL) = 'void' THEN 'P' ELSE 'F' END AS eltclass\n")
               wxT("  FROM pg_proc, pg_namespace\n")
               + restriction + wxT("\n")
@@ -201,11 +210,9 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
     pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
                     "SELECT oid, format_type(oid, typtypmod) AS typname FROM pg_type"));
 
-    typeMap map;
-
     while(!types->Eof())
     {
-        map[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
+        typeCache[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
         types->MoveNext();
     }
 
@@ -219,7 +226,8 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
                 packageFunction = new edbPackageProcedure(package, packageFunctions->GetVal(wxT("eltname")));
 
             // Tokenize the arguments
-            wxStringTokenizer argNamesTkz(wxEmptyString), argTypesTkz(wxEmptyString), argModesTkz(wxEmptyString);
+            wxStringTokenizer argTypesTkz(wxEmptyString), argModesTkz(wxEmptyString);
+            queryTokenizer argNamesTkz(wxEmptyString, (wxChar)','),  argDefsTkz(wxEmptyString, (wxChar)',');
             wxString tmp;
 
             // Types
@@ -243,15 +251,23 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
             if (!tmp.IsEmpty())
                 argModesTkz.SetString(tmp.Mid(1, tmp.Length()-2), wxT(","));
 
+            // Function defaults
+            if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+            {
+                tmp = packageFunctions->GetVal(wxT("proargdefvals"));
+                if (!tmp.IsEmpty())
+                    argDefsTkz.SetString(tmp.Mid(1, tmp.Length()-2), wxT(","));
+            }
+
             // Now iterate the arguments and build the arrays
-            wxString type, name, mode;
+            wxString type, name, mode, def;
             
             while (argTypesTkz.HasMoreTokens())
             {
                 // Add the arg type. This is a type oid, so 
                 // look it up in the hashmap
                 type = argTypesTkz.GetNextToken();
-                packageFunction->iAddArgType(map[type]);
+                packageFunction->iAddArgType(typeCache[type]);
 
                 // Now add the name, stripping the quotes if
                 // necessary. 
@@ -285,11 +301,30 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
                 }
                 else
                     packageFunction->iAddArgMode(wxEmptyString);
+
+                // Finally the defaults, as we got them. 
+                def = argDefsTkz.GetNextToken();
+                if (!def.IsEmpty() && !def.IsSameAs(wxT("-")))
+                {
+                    if (def[0] == '"')
+                        def = def.Mid(1, def.Length()-2);
+
+                    // Check the cache first - if we don't have a value, get it and cache for next time
+                    wxString val = exprCache[def];
+                    if (val == wxEmptyString)
+                    {
+                        val = obj->GetDatabase()->ExecuteScalar(wxT("SELECT pg_get_expr('") + def + wxT("', 'pg_catalog.pg_class'::regclass)"));
+                        exprCache[def] = val;
+                    }
+                    packageFunction->iAddArgDef(val);
+                }
+                else
+                    packageFunction->iAddArgDef(wxEmptyString);
             }
 
             packageFunction->iSetOid(packageFunctions->GetOid(wxT("oid")));
             packageFunction->iSetArgCount(packageFunctions->GetOid(wxT("nargs")));
-            packageFunction->iSetReturnType(map[packageFunctions->GetVal(wxT("eltdatatype"))]);
+            packageFunction->iSetReturnType(typeCache[packageFunctions->GetVal(wxT("eltdatatype"))]);
 
             if (packageFunctions->GetVal(wxT("visibility")) == wxT("+"))
                 packageFunction->iSetVisibility(_("Public"));
@@ -370,4 +405,5 @@ edbPackageProcedureFactory::edbPackageProcedureFactory()
 
 edbPackageProcedureFactory packageProcedureFactory;
 static pgaCollectionFactory cfp(&packageProcedureFactory, __("Procedures"), procedures_xpm);
+
 

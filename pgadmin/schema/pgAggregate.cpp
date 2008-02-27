@@ -170,7 +170,7 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
     pgSet *types = collection->GetDatabase()->ExecuteSet(wxT(
                     "SELECT oid, format_type(oid, typtypmod) AS typname FROM pg_type"));
 
-    typeMap map;
+    cacheMap map;
 
     while(!types->Eof())
     {

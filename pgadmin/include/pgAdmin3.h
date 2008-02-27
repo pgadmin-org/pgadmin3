@@ -103,8 +103,8 @@ extern PQSENDQUERYPREPAREDOUT PQiSendQueryPreparedOut;
 #endif
 #endif
 
-// Simple hash map used as an ad-hoc data type cache
-WX_DECLARE_STRING_HASH_MAP(wxString, typeMap);
+// Simple hash map used as an ad-hoc data cache
+WX_DECLARE_STRING_HASH_MAP(wxString, cacheMap);
 
 // Class declarations
 class pgAdmin3 : public wxApp

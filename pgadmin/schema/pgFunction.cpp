@@ -293,6 +293,13 @@ wxString pgFunction::GetArgListWithNames()
         else
             arg += argTypesArray.Item(i);
 
+        // Parameter default value
+        if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+        {
+            if (!argDefsArray.Item(i).IsEmpty())
+                arg += wxT(" DEFAULT ") + argDefsArray.Item(i);
+        }
+
         args += arg;
     }
     return args;
@@ -328,15 +335,20 @@ wxString pgFunction::GetArgSigList()
 
 pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, ctlTree *browser, const wxString &restriction)
 {
+    // Caches
+    cacheMap typeCache, exprCache;
+
     pgFunction *function=0;
-    wxString argNamesCol, proConfigCol;
+    wxString argNamesCol, argDefsCol, proConfigCol;
     if (obj->GetConnection()->BackendMinimumVersion(8, 0))
         argNamesCol = wxT("proargnames, ");
+    if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+        argDefsCol = wxT("proargdefvals, ");
     if (obj->GetConnection()->BackendMinimumVersion(8, 3))
         proConfigCol = wxT("proconfig, ");
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(
-            wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") + argNamesCol  + proConfigCol + 
+            wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") + argNamesCol  + argDefsCol + proConfigCol + 
             wxT("       pg_get_userbyid(proowner) as funcowner, description\n")
             wxT("  FROM pg_proc pr\n")
             wxT("  JOIN pg_type typ ON typ.oid=prorettype\n")
@@ -349,13 +361,11 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
     pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
                     "SELECT oid, format_type(oid, typtypmod) AS typname FROM pg_type"));
 
-    typeMap map;
-
 	if (types)
 	{
         while(!types->Eof())
         {
-            map[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
+            typeCache[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
             types->MoveNext();
         }
 	}
@@ -383,7 +393,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             
             // Tokenize the arguments
             wxStringTokenizer argTypesTkz(wxEmptyString), argModesTkz(wxEmptyString);
-            queryTokenizer argNamesTkz(wxEmptyString, (wxChar)',');
+            queryTokenizer argNamesTkz(wxEmptyString, (wxChar)','),  argDefsTkz(wxEmptyString, (wxChar)',');
             wxString tmp;
 
             // We always have types
@@ -413,15 +423,23 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                     argModesTkz.SetString(tmp.Mid(1, tmp.Length()-2), wxT(","));
             }
 
+            // Function defaults
+            if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+            {
+                tmp = functions->GetVal(wxT("proargdefvals"));
+                if (!tmp.IsEmpty())
+                    argDefsTkz.SetString(tmp.Mid(1, tmp.Length()-2), wxT(","));
+            }
+
             // Now iterate the arguments and build the arrays
-            wxString type, name, mode;
+            wxString type, name, mode, def;
             
             while (argTypesTkz.HasMoreTokens())
             {
                 // Add the arg type. This is a type oid, so 
                 // look it up in the hashmap
                 type = argTypesTkz.GetNextToken();
-                function->iAddArgType(map[type]);
+                function->iAddArgType(typeCache[type]);
 
                 // Now add the name, stripping the quotes and \" if
                 // necessary. 
@@ -456,6 +474,25 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 }
                 else
                     function->iAddArgMode(wxEmptyString);
+
+                // Finally the defaults, as we got them. 
+                def = argDefsTkz.GetNextToken();
+                if (!def.IsEmpty() && !def.IsSameAs(wxT("-")))
+                {
+                    if (def[0] == '"')
+                        def = def.Mid(1, def.Length()-2);
+
+                    // Check the cache first - if we don't have a value, get it and cache for next time
+                    wxString val = exprCache[def];
+                    if (val == wxEmptyString)
+                    {
+                        val = obj->GetDatabase()->ExecuteScalar(wxT("SELECT pg_get_expr('") + def + wxT("', 'pg_catalog.pg_class'::regclass)"));
+                        exprCache[def] = val;
+                    }
+                    function->iAddArgDef(val);
+                }
+                else
+                    function->iAddArgDef(wxEmptyString);
             }
 
             function->iSetOid(functions->GetOid(wxT("oid")));
