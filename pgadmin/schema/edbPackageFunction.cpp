@@ -14,6 +14,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "utils/pgfeatures.h"
 #include "schema/edbPackageFunction.h"
 
 
