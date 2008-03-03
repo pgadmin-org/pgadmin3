@@ -28,6 +28,7 @@
 #include "frm/frmMain.h"
 #include "frm/frmOptions.h"
 #include "ctl/ctlSQLBox.h"
+#include "ctl/ctlMenuToolbar.h"
 #include "db/pgConn.h"
 #include "schema/pgDatabase.h"
 #include "db/pgSet.h"
@@ -84,7 +85,6 @@ void frmMain::OnSize(wxSizeEvent& event)
 {
     event.Skip();
 }
-
 
 // unfortunately, under GTK we won't get the original wxKeyEvent
 // to reset m_metaDown

@@ -196,7 +196,7 @@ void frmBackupGlobals::OnOK(wxCommandEvent &ev)
     ExternProcessDialog::OnOK(ev);
 }
 
-backupGlobalsFactory::backupGlobalsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+backupGlobalsFactory::backupGlobalsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Backup globals..."), _("Creates a backup of the global database objects"));
 }

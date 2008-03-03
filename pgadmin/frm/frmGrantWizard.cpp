@@ -275,7 +275,7 @@ wxString frmGrantWizard::GetSql()
 }
 
 
-grantWizardFactory::grantWizardFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+grantWizardFactory::grantWizardFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Grant Wizard"), _("Grants rights to multiple objects"));
 }

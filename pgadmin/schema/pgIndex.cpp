@@ -310,7 +310,7 @@ bool pgIndexBase::HasPgstatindex()
     return GetConnection()->HasFeature(FEATURE_PGSTATINDEX);
 }
 
-executePgstatindexFactory::executePgstatindexFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+executePgstatindexFactory::executePgstatindexFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Extended index statistics"), _("Get extended statistics via pgstatindex for the selected object."), wxITEM_CHECK);
 }
@@ -328,7 +328,7 @@ wxWindow *executePgstatindexFactory::StartDialog(frmMain *form, pgObject *obj)
 	else
 		((pgIndexBase*)obj)->iSetShowExtendedStatistics(false);
 
-	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), form->GetToolBar());
+	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), (ctlMenuToolbar *)form->GetToolBar());
 
     return 0;
 }

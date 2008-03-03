@@ -30,6 +30,7 @@
 #include <wx/clipbrd.h>
 
 #include "frm/frmEditGrid.h"
+#include "ctl/ctlMenuToolbar.h"
 #include "dlg/dlgEditGridOptions.h"
 #include "frm/frmHint.h"
 #include "schema/pgCatalogObject.h"
@@ -115,7 +116,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     sqlGrid = new ctlSQLEditGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
 
     // Set up toolbar
-    toolBar = new wxToolBar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
+    toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
     toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(storedata_xpm), _("Saved the changed row."), wxITEM_NORMAL);
@@ -2369,7 +2370,7 @@ void sqlTable::UndoLine(int row)
             int i;
             for (i=0 ; i < nCols ; i++)
                 line->cols[i] = savedLine.cols[i];
-            wxToolBar *tb=((wxFrame*)GetView()->GetParent())->GetToolBar();
+            ctlMenuToolbar *tb=(ctlMenuToolbar *)((wxFrame*)GetView()->GetParent())->GetToolBar();
             if (tb)
             {
                 tb->EnableTool(MNU_SAVE, false);
@@ -2532,7 +2533,7 @@ void sqlTable::SetValue(int row, int col, const wxString &value)
             savedLine.cols[i] = line->cols[i];
         lastRow = row;
     }
-    wxToolBar *tb=((wxFrame*)GetView()->GetParent())->GetToolBar();
+    ctlMenuToolbar *tb=(ctlMenuToolbar *)((wxFrame*)GetView()->GetParent())->GetToolBar();
     if (tb)
     {
         tb->EnableTool(MNU_SAVE, true);
@@ -3002,7 +3003,7 @@ wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filte
 }
 
 
-editGridFactory::editGridFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : editGridFactoryBase(list)
+editGridFactory::editGridFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : editGridFactoryBase(list)
 {
     mnu->Append(id, _("View &All Rows\tCtrl-D"), _("View the data in the selected object."));
     toolbar->AddTool(id, _("View All Rows\tCtrl-D"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
@@ -3017,7 +3018,7 @@ wxWindow *editGridFactory::StartDialog(frmMain *form, pgObject *obj)
 
 
 #include "images/viewfiltereddata.xpm"
-editGridFilteredFactory::editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : editGridFactoryBase(list)
+editGridFilteredFactory::editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : editGridFactoryBase(list)
 {
     mnu->Append(id, _("View F&iltered Rows...\tCtrl-G"), _("Apply a filter and view the data in the selected object."));
     toolbar->AddTool(id, _("View Filtered Rows\tCtrl-G"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
@@ -3030,7 +3031,7 @@ wxWindow *editGridFilteredFactory::StartDialog(frmMain *form, pgObject *obj)
     return ViewData(form, obj, true);
 }
 
-editGridLimitedFactory::editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, int limit) : editGridFactoryBase(list)
+editGridLimitedFactory::editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, int limit) : editGridFactoryBase(list)
 {
 	mnu->Append(id, wxString::Format(_("View Top %i Rows"), limit), _("View a limited number of rows in the selected object."));
 	rowlimit = limit;

@@ -55,7 +55,7 @@ private:
 class pgpassConfigFileFactory : public actionFactory
 {
 public:
-    pgpassConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    pgpassConfigFileFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 

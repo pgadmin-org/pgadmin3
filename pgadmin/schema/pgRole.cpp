@@ -438,7 +438,7 @@ pgGroupRoleFactory groupRoleFactory;
 static pgaCollectionFactory gcf(&groupRoleFactory, __("Group Roles"), roles_xpm);
 
 
-reassignDropOwnedFactory::reassignDropOwnedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+reassignDropOwnedFactory::reassignDropOwnedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Reassign/Drop Owned..."), _("Reassigned or drop objects owned by the selected role."));
 }

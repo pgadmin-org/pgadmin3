@@ -55,7 +55,7 @@ private:
 class restoreFactory : public contextActionFactory
 {
 public:
-    restoreFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    restoreFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

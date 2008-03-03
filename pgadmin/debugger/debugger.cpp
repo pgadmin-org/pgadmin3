@@ -26,7 +26,7 @@
 ///////////////////////////////////////////////////
 // Debugger factory
 ///////////////////////////////////////////////////
-debuggerFactory::debuggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+debuggerFactory::debuggerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Debug"), _("Debug the selected object"));
 }
@@ -146,7 +146,7 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
 ///////////////////////////////////////////////////
 // Breakpoint factory
 ///////////////////////////////////////////////////
-breakpointFactory::breakpointFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+breakpointFactory::breakpointFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Set breakpoint"), _("Set a breakpoint on the selected object"));
 }
@@ -268,6 +268,7 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
     }
     return false;
 }
+
 
 
 

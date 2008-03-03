@@ -1176,7 +1176,7 @@ wxWindow *reportBaseFactory::StartDialog(frmMain *form, pgObject *obj)
 ///////////////////////////////////////////////////////
 // Properties report
 ///////////////////////////////////////////////////////
-reportObjectPropertiesFactory::reportObjectPropertiesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+reportObjectPropertiesFactory::reportObjectPropertiesFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 : reportBaseFactory(list)
 {
     mnu->Append(id, _("&Properties report"), _("Generate a properties report for this object."));
@@ -1213,7 +1213,7 @@ void reportObjectPropertiesFactory::GenerateReport(frmReport *report, pgObject *
 ///////////////////////////////////////////////////////
 // DDL report
 ///////////////////////////////////////////////////////
-reportObjectDdlFactory::reportObjectDdlFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+reportObjectDdlFactory::reportObjectDdlFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 : reportBaseFactory(list)
 {
     mnu->Append(id, _("&DDL report"), _("Generate a DDL report for this object."));
@@ -1245,7 +1245,7 @@ void reportObjectDdlFactory::GenerateReport(frmReport *report, pgObject *object)
 ///////////////////////////////////////////////////////
 // Data dictionary report
 ///////////////////////////////////////////////////////
-reportObjectDataDictionaryFactory::reportObjectDataDictionaryFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+reportObjectDataDictionaryFactory::reportObjectDataDictionaryFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 : reportBaseFactory(list)
 {
     mnu->Append(id, _("&Data dictionary report"), _("Generate a data dictionary report for this object."));
@@ -1367,7 +1367,7 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
 ///////////////////////////////////////////////////////
 // Statistics report
 ///////////////////////////////////////////////////////
-reportObjectStatisticsFactory::reportObjectStatisticsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+reportObjectStatisticsFactory::reportObjectStatisticsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 : reportBaseFactory(list)
 {
     mnu->Append(id, _("&Statistics report"), _("Generate a statistics report for this object."));
@@ -1427,7 +1427,7 @@ void reportObjectStatisticsFactory::GenerateReport(frmReport *report, pgObject *
 ///////////////////////////////////////////////////////
 // Dependencies report
 ///////////////////////////////////////////////////////
-reportObjectDependenciesFactory::reportObjectDependenciesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+reportObjectDependenciesFactory::reportObjectDependenciesFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 : reportBaseFactory(list)
 {
     mnu->Append(id, _("&Dependencies report"), _("Generate a dependencies report for this object."));
@@ -1461,7 +1461,7 @@ void reportObjectDependenciesFactory::GenerateReport(frmReport *report, pgObject
 ///////////////////////////////////////////////////////
 // Dependents report
 ///////////////////////////////////////////////////////
-reportObjectDependentsFactory::reportObjectDependentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+reportObjectDependentsFactory::reportObjectDependentsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 : reportBaseFactory(list)
 {
     mnu->Append(id, _("&Dependents report"), _("Generate a dependents report for this object."));
@@ -1496,7 +1496,7 @@ void reportObjectDependentsFactory::GenerateReport(frmReport *report, pgObject *
 ///////////////////////////////////////////////////////
 // Object list report
 ///////////////////////////////////////////////////////
-reportObjectListFactory::reportObjectListFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar)
+reportObjectListFactory::reportObjectListFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar)
 : reportBaseFactory(list)
 {
     mnu->Append(id, _("&Object list report"), _("Generate an object list report for this collection."));
@@ -1540,4 +1540,5 @@ void reportObjectListFactory::GenerateReport(frmReport *report, pgObject *object
 
     report->XmlAddSectionTableFromListView(section, list);
 }
+
 

@@ -85,7 +85,7 @@ private:
 class enabledisableRuleFactory : public contextActionFactory
 {
 public:
-    enabledisableRuleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    enabledisableRuleFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
     bool CheckChecked(pgObject *obj);

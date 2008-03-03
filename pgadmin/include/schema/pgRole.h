@@ -117,7 +117,7 @@ public:
 class reassignDropOwnedFactory : public contextActionFactory
 {
 public:
-    reassignDropOwnedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    reassignDropOwnedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

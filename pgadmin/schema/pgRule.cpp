@@ -197,7 +197,7 @@ pgRuleFactory ruleFactory;
 static pgaCollectionFactory cf(&ruleFactory, __("Rules"), rules_xpm);
 
 
-enabledisableRuleFactory::enabledisableRuleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+enabledisableRuleFactory::enabledisableRuleFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Rule enabled?"), _("Enable or disable selected rule."), wxITEM_CHECK);
 }
@@ -210,7 +210,7 @@ wxWindow *enabledisableRuleFactory::StartDialog(frmMain *form, pgObject *obj)
     wxTreeItemId item=form->GetBrowser()->GetSelection();
     if (obj == form->GetBrowser()->GetObject(item))
         obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
-    form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), form->GetToolBar());
+    form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), (ctlMenuToolbar *)form->GetToolBar());
 
     return 0;
 }

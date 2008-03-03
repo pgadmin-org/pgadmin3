@@ -21,7 +21,7 @@
 class debuggerFactory : public actionFactory
 {
 public:
-    debuggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    debuggerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -32,10 +32,11 @@ public:
 class breakpointFactory : public actionFactory
 {
 public:
-    breakpointFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    breakpointFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 
 #endif
+
 

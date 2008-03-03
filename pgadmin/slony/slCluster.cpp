@@ -407,7 +407,7 @@ bool clusterActionFactory::CheckEnable(pgObject *obj)
 }
 
 
-slonyRestartFactory::slonyRestartFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : clusterActionFactory(list)
+slonyRestartFactory::slonyRestartFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : clusterActionFactory(list)
 {
     mnu->Append(id, _("Restart Node"), _("Restart node."));
 }
@@ -445,7 +445,7 @@ wxWindow *slonyRestartFactory::StartDialog(frmMain *form, pgObject *obj)
 }
 
 
-slonyUpgradeFactory::slonyUpgradeFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : clusterActionFactory(list)
+slonyUpgradeFactory::slonyUpgradeFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : clusterActionFactory(list)
 {
     mnu->Append(id, _("Upgrade Node"), _("Upgrade node to newest replication software version."));
 }
@@ -462,7 +462,7 @@ wxWindow *slonyUpgradeFactory::StartDialog(frmMain *form, pgObject *obj)
 }
 
 
-slonyFailoverFactory::slonyFailoverFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : clusterActionFactory(list)
+slonyFailoverFactory::slonyFailoverFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : clusterActionFactory(list)
 {
     mnu->Append(id, _("Failover"), _("Failover to backup node."));
 }

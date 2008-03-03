@@ -85,7 +85,7 @@ public:
 class reportObjectPropertiesFactory : public reportBaseFactory
 {
 public:
-    reportObjectPropertiesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    reportObjectPropertiesFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     bool CheckEnable(pgObject *obj);
     void GenerateReport(frmReport *report, pgObject *object);
 };
@@ -96,7 +96,7 @@ public:
 class reportObjectDdlFactory : public reportBaseFactory
 {
 public:
-    reportObjectDdlFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    reportObjectDdlFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     bool CheckEnable(pgObject *obj);
     void GenerateReport(frmReport *report, pgObject *object);
 };
@@ -107,7 +107,7 @@ public:
 class reportObjectDataDictionaryFactory : public reportBaseFactory
 {
 public:
-    reportObjectDataDictionaryFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    reportObjectDataDictionaryFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     bool CheckEnable(pgObject *obj);
     void GenerateReport(frmReport *report, pgObject *object);
 };
@@ -118,7 +118,7 @@ public:
 class reportObjectStatisticsFactory : public reportBaseFactory
 {
 public:
-    reportObjectStatisticsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    reportObjectStatisticsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     bool CheckEnable(pgObject *obj);
     void GenerateReport(frmReport *report, pgObject *object);
 };
@@ -129,7 +129,7 @@ public:
 class reportObjectDependenciesFactory : public reportBaseFactory
 {
 public:
-    reportObjectDependenciesFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    reportObjectDependenciesFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     bool CheckEnable(pgObject *obj);
     void GenerateReport(frmReport *report, pgObject *object);
 };
@@ -140,7 +140,7 @@ public:
 class reportObjectDependentsFactory : public reportBaseFactory
 {
 public:
-    reportObjectDependentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    reportObjectDependentsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     bool CheckEnable(pgObject *obj);
     void GenerateReport(frmReport *report, pgObject *object);
 };
@@ -151,7 +151,7 @@ public:
 class reportObjectListFactory : public reportBaseFactory
 {
 public:
-    reportObjectListFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    reportObjectListFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     bool CheckEnable(pgObject *obj);
     void GenerateReport(frmReport *report, pgObject *object);
 };

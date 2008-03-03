@@ -173,7 +173,7 @@ public:
 class countRowsFactory : public contextActionFactory
 {
 public:
-    countRowsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    countRowsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -182,7 +182,7 @@ public:
 class executePgstattupleFactory : public contextActionFactory
 {
 public:
-    executePgstattupleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    executePgstattupleFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 	bool CheckChecked(pgObject *obj);
@@ -191,7 +191,7 @@ public:
 class disableAllTriggersFactory : public contextActionFactory
 {
 public:
-    disableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    disableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -199,7 +199,7 @@ public:
 class enableAllTriggersFactory : public contextActionFactory
 {
 public:
-    enableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    enableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -207,7 +207,7 @@ public:
 class truncateFactory : public contextActionFactory
 {
 public:
-    truncateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    truncateFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -216,7 +216,7 @@ public:
 class truncateCascadedFactory : public contextActionFactory
 {
 public:
-    truncateCascadedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    truncateCascadedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

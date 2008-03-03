@@ -27,12 +27,12 @@
 #define FRMMAIN_PERPSECTIVE_VER wxT("$Rev$")
 
 #ifdef __WXMAC__
-#define FRMMAIN_DEFAULT_PERSPECTIVE wxT("layout2|name=objectBrowser;caption=Object browser;state=16779260;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=200;besth=450;minw=100;minh=200;maxw=-1;maxh=-1;floatx=236;floaty=222;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=465;besth=39;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=18|dock_size(3,0,0)=228|dock_size(1,10,0)=41|dock_size(4,1,0)=233|")
+#define FRMMAIN_DEFAULT_PERSPECTIVE wxT("layout2|name=objectBrowser;caption=Object browser;state=16779260;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=200;besth=450;minw=100;minh=200;maxw=-1;maxh=-1;floatx=236;floaty=222;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=520;besth=39;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=18|dock_size(3,0,0)=228|dock_size(1,10,0)=41|dock_size(4,1,0)=233|")
 #else
 #ifdef __WXGTK__
-#define FRMMAIN_DEFAULT_PERSPECTIVE wxT("layout2|name=objectBrowser;caption=Object browser;state=16779260;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=200;besth=450;minw=100;minh=200;maxw=-1;maxh=-1;floatx=236;floaty=222;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=525;besth=44;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=18|dock_size(3,0,0)=228|dock_size(1,10,0)=41|dock_size(4,1,0)=233|")
+#define FRMMAIN_DEFAULT_PERSPECTIVE wxT("layout2|name=objectBrowser;caption=Object browser;state=16779260;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=200;besth=450;minw=100;minh=200;maxw=-1;maxh=-1;floatx=236;floaty=222;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=579;besth=44;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=18|dock_size(3,0,0)=228|dock_size(1,10,0)=41|dock_size(4,1,0)=233|")
 #else
-#define FRMMAIN_DEFAULT_PERSPECTIVE wxT("layout2|name=objectBrowser;caption=Object browser;state=16779260;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=200;besth=450;minw=100;minh=200;maxw=-1;maxh=-1;floatx=236;floaty=222;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=453;besth=39;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=18|dock_size(3,0,0)=228|dock_size(1,10,0)=41|dock_size(4,1,0)=233|")
+#define FRMMAIN_DEFAULT_PERSPECTIVE wxT("layout2|name=objectBrowser;caption=Object browser;state=16779260;dir=4;layer=1;row=0;pos=0;prop=100000;bestw=200;besth=450;minw=100;minh=200;maxw=-1;maxh=-1;floatx=236;floaty=222;floatw=-1;floath=-1|name=listViews;caption=Info pane;state=1020;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlPane;caption=SQL pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=400;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=506;besth=39;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=18|dock_size(3,0,0)=228|dock_size(1,10,0)=41|dock_size(4,1,0)=233|")
 
 #endif
 #endif
@@ -44,6 +44,18 @@ class dlgProperty;
 class serverCollection;
 
 class propertyFactory;
+class pluginUtilityFactory;
+class ctlMenuButton;
+
+// A plugin utility
+typedef struct PluginUtility {
+    wxString title;
+    wxString command;
+    wxString description;
+    bool database;
+    wxArrayString applies_to;
+    bool set_password;
+} PluginUtility;
 
 // Class declarations
 class frmMain : public pgFrame
@@ -84,6 +96,10 @@ public:
     pgServerCollection *GetServerCollection() { return serversObj; }
 	pgServer *ConnectToServer(const wxString& servername, bool restore = false);
 
+    void SetLastPluginUtility(pluginUtilityFactory *pluginFactory) { lastPluginUtility = pluginFactory; }
+    pluginUtilityFactory *GetLastPluginUtility() { return lastPluginUtility; }
+    wxMenu *GetPluginsMenu() { return pluginsMenu; }
+
     wxString GetCurrentNodePath();
     bool SetCurrentNode(wxTreeItemId node, const wxString &path);
 
@@ -95,9 +111,12 @@ private:
     ctlListView *dependents, *dependencies;
     wxNotebook *listViews;
     ctlSQLBox *sqlPane;
-    wxMenu *newMenu, *debuggingMenu, *reportMenu, *toolsMenu, *viewMenu, 
+    wxMenu *newMenu, *debuggingMenu, *reportMenu, *toolsMenu, *pluginsMenu, *viewMenu, 
           *treeContextMenu, *newContextMenu, *slonyMenu, *scriptingMenu, *viewDataMenu;
     pgServerCollection *serversObj;
+
+    pluginUtilityFactory *lastPluginUtility;
+    int pluginUtilityCount;
 
     propertyFactory *propFactory;
     actionFactory *newMenuFactory;
@@ -159,6 +178,13 @@ private:
     void ExpandChildNodes(wxTreeItemId node, wxArrayString &expandedNodes);
     wxString GetNodePath(wxTreeItemId node);
 
+    void PopulatePluginButtonMenu(wxCommandEvent& event); 
+
+    // In plugins.cpp
+    void LoadPluginUtilities();
+    void CreatePluginUtility(PluginUtility *util);
+    void ClearPluginUtility(PluginUtility *util);
+
     DECLARE_EVENT_TABLE()
 };
 
@@ -176,7 +202,7 @@ enum
 class contentsFactory : public actionFactory
 {
 public:
-    contentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    contentsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
@@ -184,7 +210,7 @@ public:
 class pgsqlHelpFactory : public actionFactory
 {
 public:
-    pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool);
+    pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigTool);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
@@ -192,14 +218,14 @@ public:
 class edbHelpFactory : public actionFactory
 {
 public:
-    edbHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool);
+    edbHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigTool);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 class slonyHelpFactory : public actionFactory
 {
 public:
-    slonyHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool);
+    slonyHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigTool);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
@@ -207,7 +233,7 @@ public:
 class faqFactory : public actionFactory
 {
 public:
-    faqFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    faqFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
@@ -215,9 +241,35 @@ public:
 class bugReportFactory : public actionFactory
 {
 public:
-    bugReportFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    bugReportFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
+class pluginUtilityFactory : public actionFactory
+{
+public:
+    pluginUtilityFactory(menuFactoryList *list, wxMenu *menu, PluginUtility *util);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+
+private:
+    bool HaveDatabase(pgObject *obj);
+
+    wxString title, command, description;
+    bool database, set_password;
+    wxArrayString applies_to;
+};
+
+class pluginButtonMenuFactory : public actionFactory
+{
+public:
+    pluginButtonMenuFactory(menuFactoryList *list, wxMenu *popupmenu, ctlMenuToolbar *toolbar, int pluginCount);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+
+private:
+    ctlMenuButton *pulldownButton;
+    bool enableButton;
+};
 
 #endif

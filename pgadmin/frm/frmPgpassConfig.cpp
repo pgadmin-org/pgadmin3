@@ -18,6 +18,7 @@
 
 #include <wx/imaglist.h>
 
+#include "ctl/ctlMenuToolbar.h"
 #include "frm/frmPgpassConfig.h"
 #include "dlg/dlgPgpassConfig.h"
 #include "frm/frmMain.h"
@@ -316,7 +317,7 @@ void frmPgpassConfig::OnEditSetting(wxListEvent& event)
 }
 
 
-pgpassConfigFileFactory::pgpassConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+pgpassConfigFileFactory::pgpassConfigFileFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
 #ifdef WIN32
     mnu->Append(id, _("Open pgpass.conf"), _("Open configuration editor with pgpass.conf."));

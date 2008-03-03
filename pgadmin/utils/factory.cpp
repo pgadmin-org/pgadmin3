@@ -12,6 +12,7 @@
 // App headers
 #include "pgAdmin3.h"
 
+#include "ctl/ctlMenuToolbar.h"
 #include "schema/pgCollection.h"
 #include "frm/menu.h"
 
@@ -245,7 +246,7 @@ void menuFactoryList::RegisterMenu(wxWindow *w, wxObjectEventFunction func)
 }
 
 
-void menuFactoryList::CheckMenu(pgObject *obj, wxMenuBar *menubar, wxToolBar *toolbar)
+void menuFactoryList::CheckMenu(pgObject *obj, wxMenuBar *menubar, ctlMenuToolbar *toolbar)
 {
     size_t id;
     for (id=MNU_ACTION ; id < GetCount()+MNU_ACTION ; id++)
@@ -388,5 +389,6 @@ actionFactory::actionFactory(menuFactoryList *list) : menuFactory(list)
         id=0;
     context=false;
 }
+
 
 

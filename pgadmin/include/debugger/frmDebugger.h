@@ -108,7 +108,7 @@ class frmDebugger : public pgFrame
     wxStatusBar   *getStatusBar() { return( m_statusBar ); }            // Returns pointer to the status bar
 
     wxMenuBar     *m_menuBar;       // Menu bar
-    wxToolBar     *m_toolBar;       // Frames' toolbar
+    ctlMenuToolbar     *m_toolBar;       // Frames' toolbar
     wxMenu        *m_viewMenu;      // View menu (can be modified by wxCodeWindow)
     wxMenu        *m_debugMenu;     // Debug menu (can be modified by wxCodeWindow)
 
@@ -120,7 +120,7 @@ class frmDebugger : public pgFrame
     wxStatusBar    *m_statusBar;    // Frame's status bar
 
     wxMenuBar    *setupMenuBar( void );
-    wxToolBar    *setupToolBar( void );
+    ctlMenuToolbar    *setupToolBar( void );
     wxStatusBar  *setupStatusBar( void );
 
     frmMain *m_parent;

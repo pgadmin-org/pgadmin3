@@ -55,7 +55,7 @@ private:
 class hbaConfigFactory : public actionFactory
 {
 public:
-    hbaConfigFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    hbaConfigFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -64,7 +64,7 @@ public:
 class hbaConfigFileFactory : public actionFactory
 {
 public:
-    hbaConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    hbaConfigFileFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 

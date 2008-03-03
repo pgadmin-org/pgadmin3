@@ -1164,7 +1164,7 @@ void frmStatus::OnSelXactItem(wxListEvent &event)
 	}
 }
 
-serverStatusFactory::serverStatusFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+serverStatusFactory::serverStatusFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Server Status"), _("Displays the current database status."));
 }

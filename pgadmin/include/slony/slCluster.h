@@ -129,7 +129,7 @@ public:
 class slonyRestartFactory : public clusterActionFactory
 {
 public:
-    slonyRestartFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    slonyRestartFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
@@ -137,7 +137,7 @@ public:
 class slonyUpgradeFactory : public clusterActionFactory
 {
 public:
-    slonyUpgradeFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    slonyUpgradeFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
@@ -145,11 +145,12 @@ public:
 class slonyFailoverFactory : public clusterActionFactory
 {
 public:
-    slonyFailoverFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    slonyFailoverFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
 
 
 #endif
+
 

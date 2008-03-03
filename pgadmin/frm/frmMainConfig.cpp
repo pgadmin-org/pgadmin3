@@ -18,6 +18,7 @@
 
 #include <wx/imaglist.h>
 
+#include "ctl/ctlMenuToolbar.h"
 #include "frm/frmMainConfig.h"
 #include "frm/frmMain.h"
 #include "dlg/dlgMainConfig.h"
@@ -651,7 +652,7 @@ void frmMainConfig::OnOpen(wxCommandEvent& event)
     }
 }
 
-mainConfigFactory::mainConfigFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+mainConfigFactory::mainConfigFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, wxT("postgresql.conf"), _("Edit general server configuration file."));
 }
@@ -685,7 +686,7 @@ bool mainConfigFactory::CheckEnable(pgObject *obj)
 }
 
 
-mainConfigFileFactory::mainConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+mainConfigFileFactory::mainConfigFileFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("Open postgresql.conf..."), _("Open configuration editor with postgresql.conf."));
 }

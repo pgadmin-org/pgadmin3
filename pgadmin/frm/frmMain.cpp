@@ -37,6 +37,7 @@
 #include "utils/pgfeatures.h"
 #include "debugger/debugger.h"
 #include "frm/frmMain.h"
+#include "ctl/ctlMenuToolbar.h"
 #include "ctl/ctlSQLBox.h"
 #include "db/pgConn.h"
 #include "db/pgSet.h"
@@ -91,6 +92,8 @@ frmMain::frmMain(const wxString& title)
 : pgFrame((wxFrame *)NULL, title)
 {
     msgLevel=0;
+    lastPluginUtility=NULL;
+    pluginUtilityCount = 0;
 
     dlgName = wxT("frmMain");
     SetMinSize(wxSize(400,300));
@@ -233,6 +236,7 @@ void frmMain::CreateMenus()
     // in the new frmXXX.cpp and register it here.
 
     fileMenu = new wxMenu();
+    pluginsMenu = new wxMenu();
     viewMenu = new wxMenu();
     editMenu = new wxMenu();
     newMenu=new wxMenu();
@@ -246,9 +250,12 @@ void frmMain::CreateMenus()
     helpMenu = new wxMenu();
     newContextMenu = new wxMenu();
 
-    toolBar = new wxToolBar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER );
+    toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER );
     toolBar->SetToolBitmapSize(wxSize(32, 32));
     menuFactories = new menuFactoryList();
+
+    // Load plugins - must do this after creating the menus and the factories
+    LoadPluginUtilities();
 
     //--------------------------
     fileMenu->Append(MNU_SAVEDEFINITION, _("&Save Definition..."),_("Save the SQL definition of the selected object."));
@@ -389,6 +396,8 @@ void frmMain::CreateMenus()
     new propertyFactory(menuFactories, editMenu, 0);
     new serverStatusFactory(menuFactories, toolsMenu, 0);
 
+    // Add the plugin toolbar button/menu
+    new pluginButtonMenuFactory(menuFactories, pluginsMenu, toolBar, pluginUtilityCount);
 
     //--------------------------
     toolBar->AddSeparator();
@@ -426,10 +435,16 @@ void frmMain::CreateMenus()
     menuBar = new wxMenuBar();
     menuBar->Append(fileMenu, _("&File"));
     menuBar->Append(editMenu, _("&Edit"));
+    // Changing the caption of the plugins menu also needs a similar change below
+    menuBar->Append(pluginsMenu, _("&Plugins"));
     menuBar->Append(viewMenu, _("&View"));
     menuBar->Append(toolsMenu, _("&Tools"));
     menuBar->Append(helpMenu, _("&Help"));
     SetMenuBar(menuBar);
+
+    // Disable the plugins menu if there aren't any.
+    if (!pluginUtilityCount)
+        menuBar->EnableTop(menuBar->FindMenu(_("&Plugins")), false);
 
     treeContextMenu = 0;
 
@@ -899,9 +914,9 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
                     EndMsg(true);
             }
             if (item)
-                GetMenuFactories()->CheckMenu((pgObject *)browser->GetItemData(item), GetMenuBar(), GetToolBar());
+                GetMenuFactories()->CheckMenu((pgObject *)browser->GetItemData(item), GetMenuBar(), (ctlMenuToolbar *)GetToolBar());
             else
-                GetMenuFactories()->CheckMenu(server, GetMenuBar(), GetToolBar());
+                GetMenuFactories()->CheckMenu(server, GetMenuBar(), (ctlMenuToolbar *)GetToolBar());
             return res;
         }
         case PGCONN_DNSERR:
@@ -1102,7 +1117,7 @@ void frmMain::SetStatusText(const wxString &msg)
 /////////////////////////////////////////
 
 
-contentsFactory::contentsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+contentsFactory::contentsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Help contents"), _("Open the helpfile."));
 }
@@ -1115,7 +1130,7 @@ wxWindow *contentsFactory::StartDialog(frmMain *form, pgObject *obj)
 }
 
 
-faqFactory::faqFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+faqFactory::faqFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&FAQ"), _("Frequently asked questions."));
 }
@@ -1130,7 +1145,7 @@ wxWindow *faqFactory::StartDialog(frmMain *form, pgObject *obj)
 
 #include "images/help.xpm"
 #include "images/help2.xpm"
-pgsqlHelpFactory::pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigIcon) : actionFactory(list)
+pgsqlHelpFactory::pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigIcon) : actionFactory(list)
 {
     mnu->Append(id, _("&PostgreSQL Help"), _("Display help on the PostgreSQL database system."));
     if (toolbar)
@@ -1149,7 +1164,7 @@ wxWindow *pgsqlHelpFactory::StartDialog(frmMain *form, pgObject *obj)
     return 0;
 }
 
-edbHelpFactory::edbHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigIcon) : actionFactory(list)
+edbHelpFactory::edbHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigIcon) : actionFactory(list)
 {
     mnu->Append(id, _("&EnterpriseDB Help"), _("Display help on the EnterpriseDB database system."));
 }
@@ -1161,7 +1176,7 @@ wxWindow *edbHelpFactory::StartDialog(frmMain *form, pgObject *obj)
     return 0;
 }
 
-slonyHelpFactory::slonyHelpFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigIcon) : actionFactory(list)
+slonyHelpFactory::slonyHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigIcon) : actionFactory(list)
 {
     mnu->Append(id, _("&Slony Help"), _("Display help on the Slony replication system."));
 }
@@ -1173,7 +1188,7 @@ wxWindow *slonyHelpFactory::StartDialog(frmMain *form, pgObject *obj)
     return 0;
 }
 
-bugReportFactory::bugReportFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+bugReportFactory::bugReportFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Bug Report"), _("How to send a bugreport to the pgAdmin Development Team."));
 }

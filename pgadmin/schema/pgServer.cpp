@@ -16,6 +16,7 @@
 #include <wx/busyinfo.h>
 
 // App headers
+#include "ctl/ctlMenuToolbar.h"
 #include "frm/menu.h"
 #include "utils/misc.h"
 #include "frm/frmMain.h"
@@ -1161,7 +1162,7 @@ pgServerFactory serverFactory;
 static pgaCollectionFactory cf(&serverFactory, __("Servers"), servers_xpm);
 
 #include "images/connect.xpm"
-addServerFactory::addServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+addServerFactory::addServerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Add Server..."), _("Add a connection to a server."));
     toolbar->AddTool(id, _("Add Server"), wxBitmap(connect_xpm), _("Add a connection to a server."), wxITEM_NORMAL);
@@ -1241,7 +1242,7 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
 }
 
 
-startServiceFactory::startServiceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+startServiceFactory::startServiceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Start Service"), _("Start PostgreSQL Service"));
 }
@@ -1270,7 +1271,7 @@ bool startServiceFactory::CheckEnable(pgObject *obj)
 }
 
 
-stopServiceFactory::stopServiceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+stopServiceFactory::stopServiceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Stop Service"), _("Stop PostgreSQL Service"));
 }
@@ -1312,7 +1313,7 @@ bool stopServiceFactory::CheckEnable(pgObject *obj)
 }
 
 
-connectServerFactory::connectServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+connectServerFactory::connectServerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Connect"), _("Connect to the selected server."));
 }
@@ -1335,7 +1336,7 @@ bool connectServerFactory::CheckEnable(pgObject *obj)
 }
 
 
-disconnectServerFactory::disconnectServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+disconnectServerFactory::disconnectServerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Disconnec&t"), _("Disconnect from the selected server."));
 }

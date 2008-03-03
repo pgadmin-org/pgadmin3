@@ -467,7 +467,7 @@ void frmRestore::Go()
 
 
 
-restoreFactory::restoreFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+restoreFactory::restoreFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Restore..."), _("Restores a backup from a local file"));
 }

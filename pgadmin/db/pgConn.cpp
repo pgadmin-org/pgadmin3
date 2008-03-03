@@ -182,6 +182,8 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     }
 
     dbHost = server;
+    dbHostName = hostname;
+    dbHostAddress = hostip;
 
     // Set client encoding to Unicode/Ascii
     if (PQstatus(conn) == CONNECTION_OK)

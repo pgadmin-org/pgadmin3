@@ -50,7 +50,7 @@ private:
 class grantWizardFactory : public contextActionFactory
 {
 public:
-    grantWizardFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    grantWizardFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

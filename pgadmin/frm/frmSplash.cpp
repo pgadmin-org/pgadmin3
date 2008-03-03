@@ -31,7 +31,11 @@ BEGIN_EVENT_TABLE(frmSplash, wxFrame)
 END_EVENT_TABLE()
 
 frmSplash::frmSplash(wxFrame *parent)
+#ifndef __WXDEBUG__
 : wxFrame((wxFrame *)NULL, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 100), 0 | wxFRAME_SHAPED | wxSIMPLE_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP)
+#else
+: wxFrame((wxFrame *)NULL, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 100), 0 | wxFRAME_SHAPED | wxSIMPLE_BORDER | wxFRAME_NO_TASKBAR)
+#endif
 {
     appearanceFactory->SetIcons(this);
     splash = appearanceFactory->GetSplashImage();
