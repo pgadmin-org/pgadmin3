@@ -231,7 +231,7 @@ private:
     pgConn *connection;
     pgQueryThread *thread;
     wxMenu *fileMenu, *editMenu, *viewMenu, *helpMenu;
-    wxToolBar *toolBar;
+    ctlMenuToolbar *toolBar;
     ctlComboBoxFix *cbLimit;
     wxTextCtrl *scratchPad;
 
@@ -265,7 +265,7 @@ protected:
 class editGridFactory : public editGridFactoryBase
 {
 public:
-    editGridFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    editGridFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
@@ -273,14 +273,14 @@ public:
 class editGridFilteredFactory : public editGridFactoryBase
 {
 public:
-    editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 class editGridLimitedFactory : public editGridFactoryBase
 {
 public:
-	editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, int limit);
+	editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, int limit);
 	wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 

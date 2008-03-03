@@ -19,6 +19,7 @@
 #include "debugger/ctlCodeWindow.h"
 #include "debugger/dbgPgConn.h"
 #include "debugger/dlgDirectDbg.h"
+#include "ctl/ctlMenuToolbar.h"
 
 #include "images/debugger.xpm"
 #include "images/clearAll.xpm"
@@ -232,9 +233,9 @@ void frmDebugger::OnEraseBackground(wxEraseEvent& event)
 //
 //    This function creates the standard toolbar
 
-wxToolBar * frmDebugger::setupToolBar( void )
+ctlMenuToolbar * frmDebugger::setupToolBar( void )
 {
-    m_toolBar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
+    m_toolBar = new ctlMenuToolbar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 
     m_toolBar->SetToolBitmapSize( wxSize( 16, 16 ));
  

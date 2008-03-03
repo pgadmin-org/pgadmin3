@@ -15,6 +15,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "ctl/ctlMenuToolbar.h"
 #include "ctl/ctlSQLBox.h"
 #include "schema/pgCollection.h"
 #include "schema/pgDatatype.h"
@@ -1619,7 +1620,7 @@ void dlgAgentProperty::OnOK(wxCommandEvent &ev)
 }
 
 
-propertyFactory::propertyFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+propertyFactory::propertyFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     if (mnu)
         mnu->Append(id, _("&Properties..."), _("Display/edit the properties of the selected object."));
@@ -1646,7 +1647,7 @@ bool propertyFactory::CheckEnable(pgObject *obj)
 
 
 #include "images/create.xpm"
-createFactory::createFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+createFactory::createFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Create..."),  _("Create a new object of the same type as the selected object."));
     toolbar->AddTool(id, _("Create"), wxBitmap(create_xpm), _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
@@ -1669,7 +1670,7 @@ bool createFactory::CheckEnable(pgObject *obj)
 
 
 #include "images/drop.xpm"
-dropFactory::dropFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+dropFactory::dropFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Delete/Drop\tDel"),  _("Delete/Drop the selected object."));
     toolbar->AddTool(id, _("Drop"), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
@@ -1689,7 +1690,7 @@ bool dropFactory::CheckEnable(pgObject *obj)
 }
 
 
-dropCascadedFactory::dropCascadedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+dropCascadedFactory::dropCascadedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Drop Cascaded"), _("Drop the selected object and all objects dependent on it."));
 }
@@ -1709,7 +1710,7 @@ bool dropCascadedFactory::CheckEnable(pgObject *obj)
 
 
 #include "images/refresh.xpm"
-refreshFactory::refreshFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+refreshFactory::refreshFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     if (mnu)
         mnu->Append(id, _("Re&fresh\tF5"), _("Refresh the selected object."));

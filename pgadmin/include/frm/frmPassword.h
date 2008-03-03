@@ -35,7 +35,7 @@ private:
 class passwordFactory : public actionFactory
 {
 public:
-    passwordFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    passwordFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

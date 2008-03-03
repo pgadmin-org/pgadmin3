@@ -49,7 +49,7 @@ private:
 class backupFactory : public contextActionFactory
 {
 public:
-    backupFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    backupFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

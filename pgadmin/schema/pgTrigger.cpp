@@ -317,7 +317,7 @@ pgTriggerFactory::pgTriggerFactory()
 pgTriggerFactory triggerFactory;
 static pgaCollectionFactory cf(&triggerFactory, __("Triggers"), triggers_xpm);
 
-enabledisableTriggerFactory::enabledisableTriggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+enabledisableTriggerFactory::enabledisableTriggerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Trigger enabled?"), _("Enable or disable selected trigger."), wxITEM_CHECK);
 }
@@ -330,7 +330,7 @@ wxWindow *enabledisableTriggerFactory::StartDialog(frmMain *form, pgObject *obj)
     wxTreeItemId item=form->GetBrowser()->GetSelection();
     if (obj == form->GetBrowser()->GetObject(item))
         obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
-    form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), form->GetToolBar());
+    form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), (ctlMenuToolbar *)form->GetToolBar());
 
     return 0;
 }

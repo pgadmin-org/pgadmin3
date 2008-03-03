@@ -205,7 +205,7 @@ public:
 class queryToolFactory : public queryToolBaseFactory
 {
 public:
-    queryToolFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    queryToolFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
@@ -213,7 +213,7 @@ public:
 class queryToolSqlFactory : public queryToolBaseFactory
 {
 public:
-    queryToolSqlFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    queryToolSqlFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -223,14 +223,14 @@ class queryToolSelectFactory : public queryToolDataFactory
 
 {
 public:
-    queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 class queryToolInsertFactory : public queryToolDataFactory
 {
 public:
-    queryToolInsertFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    queryToolInsertFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -238,7 +238,7 @@ public:
 class queryToolUpdateFactory : public queryToolDataFactory
 {
 public:
-    queryToolUpdateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    queryToolUpdateFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

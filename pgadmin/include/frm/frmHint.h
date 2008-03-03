@@ -67,7 +67,7 @@ private:
 class hintFactory : public actionFactory
 {
 public:
-    hintFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool);
+    hintFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigTool);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -76,7 +76,7 @@ public:
 class tipOfDayFactory : public actionFactory
 {
 public:
-    tipOfDayFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    tipOfDayFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 

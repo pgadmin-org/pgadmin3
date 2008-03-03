@@ -10,14 +10,15 @@
 #######################################################################
 
 EXTRA_DIST = \
-	$(srcdir)/branding.ini
+	$(srcdir)/utilities.ini
 
 if !APPBUNDLE
-brandingdir = $(pkgdatadir)/branding
+utilitiesdir = $(pkgdatadir)/plugins
 else
-brandingdir = $(datadir)/branding
+utilitiesdir = $(datadir)/plugins
 endif
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(brandingdir)
-	$(install_sh) -c -m 644 branding.ini $(DESTDIR)$(brandingdir)
+	$(mkinstalldirs) $(DESTDIR)$(utilitiesdir)
+	$(install_sh) -c -m 644 utilities.ini $(DESTDIR)$(utilitiesdir)
+

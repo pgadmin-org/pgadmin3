@@ -23,7 +23,6 @@
 #include <wx/imagjpeg.h>
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
-#include <wx/dir.h>
 #include <wx/fs_zip.h>
 #include <wx/ogl/ogl.h>
 #include <wx/socket.h>
@@ -70,6 +69,7 @@
 #define UI_DIR       wxT("/ui")
 #define I18N_DIR     wxT("/i18n")
 #define BRANDING_DIR wxT("/branding")
+#define UTILITIES_INI wxT("/plugins/utilities.ini")
 
 // Globals
 frmMain *winMain=0;
@@ -94,6 +94,8 @@ wxString docPath;               // Where docs are stored
 wxString uiPath;                // Where ui data is stored
 wxString i18nPath;              // Where i18n data is stored
 wxString brandingPath;			// Where branding data is stored
+wxString utilitiesIni;           // The utilities.ini file
+
 wxLog *logger;
 
 bool dialogTestMode=false;
@@ -641,6 +643,14 @@ void pgAdmin3::InitPaths()
         brandingPath = loadPath + wxT("/../pgAdmin III") + BRANDING_DIR;
     else 
         brandingPath = loadPath + wxT("/../..") + BRANDING_DIR;
+
+    // utilities.ini
+    if (wxFile::Exists(loadPath + UTILITIES_INI))
+        utilitiesIni = loadPath + UTILITIES_INI;
+    else if (wxFile::Exists(loadPath + wxT("/../pgAdmin III") + UTILITIES_INI))
+        utilitiesIni = loadPath + wxT("/../pgAdmin III") + UTILITIES_INI;
+    else if (wxFile::Exists(loadPath + wxT("/../..") + UTILITIES_INI))
+        utilitiesIni = loadPath + wxT("/../..") + UTILITIES_INI;
 #else
 
     wxString dataDir;
@@ -682,6 +692,9 @@ void pgAdmin3::InitPaths()
     if (wxDir::Exists(dataDir + BRANDING_DIR))
         brandingPath = dataDir + BRANDING_DIR ;
 
+    if (wxFile::Exists(dataDir + UTILITIES_INI))
+        utilitiesIni = dataDir + UTILITIES_INI;
+
     if (i18nPath.IsEmpty())
     {
         if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") I18N_DIR))
@@ -717,6 +730,17 @@ void pgAdmin3::InitPaths()
             brandingPath = loadPath + BRANDING_DIR ;
         else
             brandingPath = loadPath + wxT("/..") BRANDING_DIR ;
+    }
+
+    // utilities.ini
+    if (utilitiesIni.IsEmpty())
+    {
+        if (wxFile::Exists(loadPath + wxT("/../share/pgadmin3") UTILITIES_INI))
+            utilitiesIni = loadPath + wxT("/../share/pgadmin3") UTILITIES_INI;
+        else if (wxFile::Exists(loadPath + UTILITIES_INI))
+            utilitiesIni = loadPath + UTILITIES_INI;
+        else if (wxFile::Exists(loadPath + wxT("/..") UTILITIES_INI))
+            utilitiesIni = loadPath + wxT("/..") UTILITIES_INI;
     }
 #endif
 

@@ -518,7 +518,7 @@ void frmOptions::OnBrowseLogFile(wxCommandEvent &ev)
 }
 
 
-optionsFactory::optionsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+optionsFactory::optionsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Options..."), _("Show options dialog."));
 }

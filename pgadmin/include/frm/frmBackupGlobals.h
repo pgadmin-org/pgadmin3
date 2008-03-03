@@ -46,7 +46,7 @@ private:
 class backupGlobalsFactory : public contextActionFactory
 {
 public:
-    backupGlobalsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    backupGlobalsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

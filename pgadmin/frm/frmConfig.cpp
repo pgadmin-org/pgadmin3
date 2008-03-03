@@ -18,6 +18,7 @@
 
 #include <wx/imaglist.h>
 
+#include "ctl/ctlMenuToolbar.h"
 #include "frm/frmConfig.h"
 #include "frm/frmHint.h"
 #include "frm/frmMainConfig.h"
@@ -99,7 +100,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
 
     wxWindowBase::SetFont(settings->GetSystemFont());
 
-    toolBar=CreateToolBar();
+    toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
     fileMenu = new wxMenu();

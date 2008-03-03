@@ -54,7 +54,7 @@ private:
 class optionsFactory : public actionFactory
 {
 public:
-    optionsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    optionsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 

@@ -112,7 +112,7 @@ public:
 class runNowFactory : public contextActionFactory
 {
 public:
-    runNowFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    runNowFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

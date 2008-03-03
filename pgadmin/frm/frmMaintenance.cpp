@@ -17,6 +17,7 @@
 
 // App headers
 #include "pgAdmin3.h"
+#include "ctl/ctlMenuToolbar.h"
 #include "frm/frmMaintenance.h"
 #include "frm/frmMain.h"
 #include "utils/sysLogger.h"
@@ -182,7 +183,7 @@ void frmMaintenance::Go()
 
 
 
-maintenanceFactory::maintenanceFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+maintenanceFactory::maintenanceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Maintenance..."), _("Maintain the current database or table."));
     toolbar->AddTool(id, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);

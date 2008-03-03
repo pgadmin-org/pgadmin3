@@ -213,7 +213,7 @@ protected:
 class propertyFactory : public contextActionFactory
 {
 public:
-    propertyFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    propertyFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -222,7 +222,7 @@ public:
 class createFactory : public actionFactory
 {
 public:
-    createFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    createFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -230,7 +230,7 @@ public:
 class dropFactory : public contextActionFactory
 {
 public:
-    dropFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    dropFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -239,7 +239,7 @@ public:
 class dropCascadedFactory : public contextActionFactory
 {
 public:
-    dropCascadedFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    dropCascadedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -247,7 +247,7 @@ public:
 class refreshFactory : public contextActionFactory
 {
 public:
-    refreshFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    refreshFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

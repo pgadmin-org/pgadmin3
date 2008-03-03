@@ -25,6 +25,7 @@
 #include "debugger/dbgPgConn.h"
 #include "debugger/dbgResultset.h"
 #include "debugger/dbgBreakPoint.h"
+#include "ctl/ctlMenuToolbar.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // NOTES:
@@ -369,7 +370,7 @@ void ctlCodeWindow::setTools(bool enable)
     if( enable == false )
         activateDebug = false;
 
-    wxToolBar *t = m_parent->m_toolBar;
+    ctlMenuToolbar *t = m_parent->m_toolBar;
     wxMenu *m = m_parent->m_debugMenu;
 
     // We may find that our toolbar has disappeared during application shutdown -

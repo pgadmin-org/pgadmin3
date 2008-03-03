@@ -119,6 +119,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/operatorfamilies.xpm \
 	$(srcdir)/include/images/package.xpm \
 	$(srcdir)/include/images/packages.xpm \
+	$(srcdir)/include/images/plugins.xpm \
 	$(srcdir)/include/images/pgAdmin3.xpm \
 	$(srcdir)/include/images/primarykey.xpm \
 	$(srcdir)/include/images/procedures.xpm \

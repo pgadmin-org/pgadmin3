@@ -85,7 +85,7 @@ private:
 class serverStatusFactory : public actionFactory
 {
 public:
-    serverStatusFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    serverStatusFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

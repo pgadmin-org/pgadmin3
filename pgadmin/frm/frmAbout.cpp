@@ -94,7 +94,7 @@ void frmAbout::OnWindowCreate(wxWindowCreateEvent& WXUNUSED(evt))
     SetWindowShape();
 }
 
-aboutFactory::aboutFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+aboutFactory::aboutFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&About"), _("Show about dialog."));
 }

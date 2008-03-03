@@ -285,7 +285,7 @@ pgaJobFactory::pgaJobFactory()
 pgaJobFactory jobFactory;
 static pgaCollectionFactory cf(&jobFactory, __("Jobs"), jobs_xpm);
 
-runNowFactory::runNowFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+runNowFactory::runNowFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Run now"), _("Reschedule the job to run now."));
 }

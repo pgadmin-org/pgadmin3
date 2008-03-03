@@ -19,6 +19,7 @@
 
 #include <wx/imaglist.h>
 
+#include "ctl/ctlMenuToolbar.h"
 #include "frm/frmHbaConfig.h"
 #include "dlg/dlgHbaConfig.h"
 #include "frm/frmMain.h"
@@ -344,7 +345,7 @@ void frmHbaConfig::OnEditSetting(wxListEvent& event)
 }
 
 
-hbaConfigFactory::hbaConfigFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+hbaConfigFactory::hbaConfigFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, wxT("pg_hba.conf"), _("Edit server access configuration file."));
 }
@@ -378,7 +379,7 @@ bool hbaConfigFactory::CheckEnable(pgObject *obj)
 }
 
 
-hbaConfigFileFactory::hbaConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+hbaConfigFileFactory::hbaConfigFileFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("Open pg_hba.conf..."), _("Open configuration editor with pg_hba.conf."));
 }

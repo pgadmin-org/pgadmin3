@@ -13,6 +13,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/ctl/calbox.cpp \
         $(srcdir)/ctl/ctlComboBox.cpp \
         $(srcdir)/ctl/ctlListView.cpp \
+        $(srcdir)/ctl/ctlMenuToolbar.cpp \
         $(srcdir)/ctl/ctlSQLBox.cpp \
         $(srcdir)/ctl/ctlSQLGrid.cpp \
         $(srcdir)/ctl/ctlSQLResult.cpp \

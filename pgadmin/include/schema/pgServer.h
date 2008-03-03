@@ -210,7 +210,7 @@ public:
 class addServerFactory : public actionFactory
 {
 public:
-    addServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    addServerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
@@ -218,7 +218,7 @@ public:
 class startServiceFactory : public contextActionFactory
 {
 public:
-    startServiceFactory (menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    startServiceFactory (menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -226,7 +226,7 @@ public:
 class stopServiceFactory : public contextActionFactory
 {
 public:
-    stopServiceFactory (menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    stopServiceFactory (menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -235,7 +235,7 @@ public:
 class connectServerFactory : public contextActionFactory
 {
 public:
-    connectServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    connectServerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -244,7 +244,7 @@ public:
 class disconnectServerFactory : public contextActionFactory
 {
 public:
-    disconnectServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    disconnectServerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

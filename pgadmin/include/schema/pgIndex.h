@@ -130,7 +130,7 @@ extern pgIndexFactory indexFactory;
 class executePgstatindexFactory : public contextActionFactory
 {
 public:
-    executePgstatindexFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    executePgstatindexFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 	bool CheckChecked(pgObject *obj);

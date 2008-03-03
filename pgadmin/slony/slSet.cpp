@@ -345,7 +345,7 @@ static pgaCollectionFactory cf(&setFactory, __("Replication Sets"), slsets_xpm);
 
 ////////////////////////////////////////////////////////////
 
-slonyMergeSetFactory::slonyMergeSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+slonyMergeSetFactory::slonyMergeSetFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Merge Set"), _("Merge two replication sets."));
 }
@@ -375,7 +375,7 @@ bool slonyMergeSetFactory::CheckEnable(pgObject *obj)
 
 /////////////////////////////
 
-slonyLockSetFactory::slonyLockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+slonyLockSetFactory::slonyLockSetFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Lock Set"), _("Lock a replication set against updates."));
 }
@@ -407,7 +407,7 @@ bool slonyLockSetFactory::CheckEnable(pgObject *obj)
 
 /////////////////////////////
 
-slonyUnlockSetFactory::slonyUnlockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+slonyUnlockSetFactory::slonyUnlockSetFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Unlock Set"), _("Unlock a replication set and re-allow updates."));
 }
@@ -440,7 +440,7 @@ bool slonyUnlockSetFactory::CheckEnable(pgObject *obj)
 ////////////////////////////////
 
 
-slonyMoveSetFactory::slonyMoveSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+slonyMoveSetFactory::slonyMoveSetFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Move Set"), _("Move replication set to different node"));
 }

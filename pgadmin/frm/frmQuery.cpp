@@ -27,6 +27,7 @@
 #include "ctl/explainCanvas.h"
 #include "db/pgConn.h"
 
+#include "ctl/ctlMenuToolbar.h"
 #include "ctl/ctlSQLResult.h"
 #include "schema/pgDatabase.h"
 #include "schema/pgTable.h"
@@ -268,7 +269,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     SetStatusWidths(6, iWidths);
     SetStatusText(_("ready"), STATUSPOS_MSGS);
 
-    toolBar = new wxToolBar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
+    toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
@@ -1987,7 +1988,7 @@ bool queryToolDataFactory::CheckEnable(pgObject *obj)
 
 
 
-queryToolFactory::queryToolFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolBaseFactory(list)
+queryToolFactory::queryToolFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolBaseFactory(list)
 {
     mnu->Append(id, _("&Query tool"), _("Execute arbitrary SQL queries."));
     toolbar->AddTool(id, _("Query tool"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
@@ -2003,7 +2004,7 @@ wxWindow *queryToolFactory::StartDialog(frmMain *form, pgObject *obj)
 }
 
 
-queryToolSqlFactory::queryToolSqlFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolBaseFactory(list)
+queryToolSqlFactory::queryToolSqlFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolBaseFactory(list)
 {
     mnu->Append(id, _("CREATE script"), _("Start Query tool with CREATE script."));
     if (toolbar)
@@ -2022,7 +2023,7 @@ bool queryToolSqlFactory::CheckEnable(pgObject *obj)
 }
 
 
-queryToolSelectFactory::queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolDataFactory(list)
+queryToolSelectFactory::queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
 {
     mnu->Append(id, _("SELECT script"), _("Start query tool with SELECT script."));
 }
@@ -2044,7 +2045,7 @@ wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
 }
 
 
-queryToolUpdateFactory::queryToolUpdateFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolDataFactory(list)
+queryToolUpdateFactory::queryToolUpdateFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
 {
     mnu->Append(id, _("UPDATE script"), _("Start query tool with UPDATE script."));
 }
@@ -2078,7 +2079,7 @@ bool queryToolUpdateFactory::CheckEnable(pgObject *obj)
 
 
 
-queryToolInsertFactory::queryToolInsertFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : queryToolDataFactory(list)
+queryToolInsertFactory::queryToolInsertFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
 {
     mnu->Append(id, _("INSERT script"), _("Start query tool with INSERT script."));
 }

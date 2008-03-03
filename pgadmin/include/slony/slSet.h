@@ -109,7 +109,7 @@ public:
 class slonyMoveSetFactory : public contextActionFactory
 {
 public:
-    slonyMoveSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    slonyMoveSetFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -118,7 +118,7 @@ public:
 class slonyMergeSetFactory : public contextActionFactory
 {
 public:
-    slonyMergeSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    slonyMergeSetFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -127,7 +127,7 @@ public:
 class slonyLockSetFactory : public contextActionFactory
 {
 public:
-    slonyLockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    slonyLockSetFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -136,7 +136,7 @@ public:
 class slonyUnlockSetFactory : public contextActionFactory
 {
 public:
-    slonyUnlockSetFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    slonyUnlockSetFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

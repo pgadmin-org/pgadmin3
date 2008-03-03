@@ -972,7 +972,7 @@ pgCollection *pgTableObjFactory::CreateCollection(pgObject *obj)
 }
 
 
-countRowsFactory::countRowsFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+countRowsFactory::countRowsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Count"), _("Count rows in the selected object."));
 }
@@ -1000,7 +1000,7 @@ bool countRowsFactory::CheckEnable(pgObject *obj)
 }
 
 
-executePgstattupleFactory::executePgstattupleFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+executePgstattupleFactory::executePgstattupleFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Extended table statistics"), _("Get extended statistics via pgstattuple for the selected object."), wxITEM_CHECK);
 }
@@ -1018,7 +1018,7 @@ wxWindow *executePgstattupleFactory::StartDialog(frmMain *form, pgObject *obj)
 	else
 		((pgTable*)obj)->iSetShowExtendedStatistics(false);
 
-	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), form->GetToolBar());
+	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), (ctlMenuToolbar *)form->GetToolBar());
 
     return 0;
 }
@@ -1034,7 +1034,7 @@ bool executePgstattupleFactory::CheckChecked(pgObject *obj)
     return obj && ((pgTable*)obj)->GetShowExtendedStatistics();
 }
 
-disableAllTriggersFactory::disableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+disableAllTriggersFactory::disableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Disable triggers"), _("Disable all triggers on the selected table."));
 }
@@ -1061,7 +1061,7 @@ bool disableAllTriggersFactory::CheckEnable(pgObject *obj)
                && ((pgTable*)obj)->GetConnection()->BackendMinimumVersion(8, 1);
 }
 
-enableAllTriggersFactory::enableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+enableAllTriggersFactory::enableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("Enable triggers"), _("Enable all triggers on the selected table."));
 }

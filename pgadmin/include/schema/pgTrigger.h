@@ -80,7 +80,7 @@ private:
 class enabledisableTriggerFactory : public contextActionFactory
 {
 public:
-    enabledisableTriggerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    enabledisableTriggerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
     bool CheckChecked(pgObject *obj);

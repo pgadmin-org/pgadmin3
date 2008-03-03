@@ -33,7 +33,7 @@ private:
 class aboutFactory : public actionFactory
 {
 public:
-    aboutFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    aboutFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 

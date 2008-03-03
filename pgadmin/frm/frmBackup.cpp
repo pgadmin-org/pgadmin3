@@ -323,7 +323,7 @@ void frmBackup::OnOK(wxCommandEvent &ev)
     ExternProcessDialog::OnOK(ev);
 }
 
-backupFactory::backupFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+backupFactory::backupFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Backup..."), _("Creates a backup of the current database to a local file"));
 }

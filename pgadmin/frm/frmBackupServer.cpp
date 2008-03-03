@@ -182,7 +182,7 @@ void frmBackupServer::OnOK(wxCommandEvent &ev)
     ExternProcessDialog::OnOK(ev);
 }
 
-backupServerFactory::backupServerFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : contextActionFactory(list)
+backupServerFactory::backupServerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     mnu->Append(id, _("&Backup server..."), _("Creates a backup of the entire server"));
 }

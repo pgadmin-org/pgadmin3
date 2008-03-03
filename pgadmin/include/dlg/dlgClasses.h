@@ -24,6 +24,7 @@ WX_DECLARE_LIST(wxWindow, windowList);
 class frmMain;
 class pgObject;
 class pgQueryThread;
+class ctlMenuToolbar;
 
 class pgDialog : public wxDialog
 {
@@ -81,7 +82,7 @@ protected:
     wxMenu *fileMenu, *editMenu, *viewMenu, *recentFileMenu, *helpMenu;
     wxStatusBar *statusBar;
     wxMenuBar *menuBar;
-    wxToolBar *toolBar;
+    ctlMenuToolbar *toolBar;
     bool changed;
 
     DECLARE_EVENT_TABLE()

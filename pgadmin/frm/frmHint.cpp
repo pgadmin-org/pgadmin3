@@ -21,6 +21,7 @@
 
 // App headers
 #include "copyright.h"
+#include "ctl/ctlMenuToolbar.h"
 #include "frm/frmHint.h"
 #include "frm/frmMain.h"
 #include "schema/pgObject.h"
@@ -451,7 +452,7 @@ void frmHint::OnFix(wxCommandEvent &ev)
 
 
 
-hintFactory::hintFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar, bool bigTool) : actionFactory(list)
+hintFactory::hintFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigTool) : actionFactory(list)
 {
     mnu->Append(id, _("Hints"), _("Display helpful hints on current object."));
     if (toolbar)
@@ -475,7 +476,7 @@ bool hintFactory::CheckEnable(pgObject *obj)
 }
 
 
-tipOfDayFactory::tipOfDayFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar) : actionFactory(list)
+tipOfDayFactory::tipOfDayFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     if (mnu)
         mnu->Append(id, _("&Tip of the Day"), _("Show a tip of the day."));

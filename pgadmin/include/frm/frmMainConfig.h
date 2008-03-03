@@ -67,7 +67,7 @@ private:
 class mainConfigFactory : public actionFactory
 {
 public:
-    mainConfigFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    mainConfigFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
@@ -76,7 +76,7 @@ public:
 class mainConfigFileFactory : public actionFactory
 {
 public:
-    mainConfigFileFactory(menuFactoryList *list, wxMenu *mnu, wxToolBar *toolbar);
+    mainConfigFileFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
