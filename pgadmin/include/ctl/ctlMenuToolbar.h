@@ -23,23 +23,7 @@ DECLARE_EVENT_TYPE(wxEVT_FILL_MENU, -1)
 // * ctlMenuButton - Can be used wherever you can use a standard wxBitmapButton
 // *
 // * Implements a small pull-down triangle (v), which, when clicked, will display
-// * a pop-up menu. The menu can be filled by responding to the wxEVT_FILL_MENU event,
-// * as in:
-//
-//    EVT_COMMAND(MY_BUTTON_ID, wxEVT_FILL_MENU, MyClass::MyFillRoutine)
-//
-// The MyClass::MyFillRoutine() should look something like this:
-//
-// void MyClass::MyFillRoutine(wxCommandEvent& event) {
-//   wxMenu *menu = (wxMenu *)event.GetClientData();
-//   if(menu->GetMenuItemCount() <= 0) {
-//     menu->Append(MY_ID1, wxT("My Menu Item 1"));
-//     menu->AppendSeparator();
-//     menu->Append(MY_ID2, wxT("My Menu Item 2"));
-//     // etc.
-//   }
-// }
-
+// * a pop-up menu. 
 
 class ctlMenuButton : public wxBitmapButton
 {
