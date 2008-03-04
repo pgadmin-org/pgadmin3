@@ -19,25 +19,24 @@
 
 DECLARE_EVENT_TYPE(wxEVT_FILL_MENU, -1)
 
-// *
-// * ctlMenuButton - Can be used wherever you can use a standard wxBitmapButton
-// *
-// * Implements a small pull-down triangle (v), which, when clicked, will display
-// * a pop-up menu. 
+// ctlMenuButton - Can be used wherever you can use a standard wxBitmapButton
+//
+// Implements a small pull-down triangle (v), which, when clicked, will display
+// a pop-up menu. 
 
 class ctlMenuButton : public wxBitmapButton
 {
 public:
-  ctlMenuButton(wxToolBar *toolBar, int ID, wxMenu *menu=NULL)  { Create(toolBar, toolBar, ID, menu); }
-  void DoProcessLeftClick(wxMouseEvent& event);
+    ctlMenuButton(wxToolBar *toolBar, int ID, wxMenu *menu)  { Create(toolBar, toolBar, ID, menu); }
+    void DoProcessLeftClick(wxMouseEvent& event);
 
-  wxMenu *m_menu;
+    wxMenu *m_menu;
 
-  void FillMenu();
+    void FillMenu();
 
 private:
-  void Create(wxWindow *window, wxToolBar *toolBar, int ID, wxMenu *menu=NULL);
-  wxToolBar *m_toolBar;
+    void Create(wxWindow *window, wxToolBar *toolBar, int ID, wxMenu *menu);
+    wxToolBar *m_toolBar;
 };
 
 
@@ -47,13 +46,12 @@ private:
 
 class ctlMenuTool {
 public:
-  ctlMenuTool(wxToolBarToolBase *new_tool, int toolId);
-  ~ctlMenuTool();
+    ctlMenuTool(wxToolBarToolBase *new_tool, int toolId);
 
-  wxToolBarToolBase *m_tool;
-  int m_toolId;
-  ctlMenuButton *m_button;
-  wxMenu *m_menu;
+    wxToolBarToolBase *m_tool;
+    int m_toolId;
+    ctlMenuButton *m_button;
+    wxMenu *m_menu;
 };
 
 WX_DECLARE_LIST(ctlMenuTool, ctlMenuToolList);
@@ -70,52 +68,27 @@ WX_DECLARE_LIST(ctlMenuTool, ctlMenuToolList);
 // actions (for example, previous web pages visited).
 //
 // All menus can be filled by responding to the wxEVT_FILL_MENU event, as in:
-//
-//    EVT_COMMAND(MY_BUTTON_ID, wxEVT_FILL_MENU, MyClass::MyFillRoutine)
-//
-// The MyClass::MyFillRoutine() should look something like this:
-//
-// void MyClass::MyFillRoutine(wxCommandEvent& event) {
-//   wxMenu *menu = (wxMenu *)event.GetClientData();
-//   if(menu->GetMenuItemCount() <= 0) {
-//     menu->Append(MY_ID1, wxT("My Menu Item 1"));
-//     menu->AppendSeparator();
-//     menu->Append(MY_ID2, wxT("My Menu Item 2"));
-//     // etc.
-//   }
-// }
 
 class ctlMenuToolbar : public wxToolBar
 {
 public:
-  ctlMenuToolbar();
-  ctlMenuToolbar(wxFrame* parent, 
-          wxWindowID id, 
-          const wxPoint& pos = wxDefaultPosition, 
-          const wxSize& size = wxDefaultSize, 
-          long style = wxTB_HORIZONTAL | wxNO_BORDER, 
-          const wxString& name = wxPanelNameStr);
-  ~ctlMenuToolbar();
+    ctlMenuToolbar();
+    ctlMenuToolbar(wxFrame* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTB_HORIZONTAL | wxNO_BORDER, const wxString& name = wxPanelNameStr);
+    ~ctlMenuToolbar();
 
-  // NOTE:  label, shortHelpString, are not implemented on Macintosh (they work on MSW)
-  void AddMenuButtonTool(int toolId, 
-                         const wxString& label, 
-                         const wxBitmap& bitmap1, 
-                         const wxString& shortHelpString = wxEmptyString);
+    // NOTE:  label, shortHelpString, are not implemented on Macintosh (they work on MSW)
+    void AddMenuButtonTool(int toolId, const wxString& label, const wxBitmap& bitmap1, const wxString& shortHelpString = wxEmptyString);
 
-  // NOTE:  label, shortHelpString, are not implemented on all platforms and are only 
-  //        included for possible future upgrades
-  ctlMenuButton *AddMenuPulldownTool(int toolId, 
-                         const wxString& label, 
-                         const wxString& shortHelpString = wxEmptyString,
-                         wxMenu *popupmenu=0);
+    // NOTE:  label, shortHelpString, are not implemented on all platforms and are only 
+    //        included for possible future upgrades
+    ctlMenuButton *AddMenuPulldownTool(int toolId, const wxString& label, const wxString& shortHelpString = wxEmptyString, wxMenu *popupmenu=0);
 
-  void NewMenuTool(ctlMenuTool *menu_tool);
+    void NewMenuTool(ctlMenuTool *menu_tool);
 
-  void DoProcessLeftClick(wxMouseEvent& event);
+    void DoProcessLeftClick(wxMouseEvent& event);
 
-  wxFrame *m_frame;
-  ctlMenuToolList *m_menuTools;
+    wxFrame *m_frame;
+    ctlMenuToolList *m_menuTools;
 };
 
 
@@ -124,9 +97,8 @@ public:
 // replace MenuButton Tools with bitmap buttons
 class ctlMacMenuTool : public wxBitmapButton
 {
-  public:
-    ctlMacMenuTool(ctlMenuToolbar* parent, wxWindowID id, const wxBitmap &bmp, const wxPoint& pos = wxDefaultPosition, 
-      const wxSize& size = wxDefaultSize, long style = wxTB_HORIZONTAL | wxNO_BORDER);
+public:
+    ctlMacMenuTool(ctlMenuToolbar* parent, wxWindowID id, const wxBitmap &bmp, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTB_HORIZONTAL | wxNO_BORDER);
     ~ctlMacMenuTool();
 
     void DoProcessLeftClick(wxMouseEvent& event);
