@@ -444,7 +444,10 @@ void frmMain::CreateMenus()
 
     // Disable the plugins menu if there aren't any.
     if (!pluginUtilityCount)
-        menuBar->EnableTop(menuBar->FindMenu(_("&Plugins")), false);
+    {
+        wxMenuItem *item = pluginsMenu->Append(0, _("No plugins installed"));
+        pluginsMenu->Enable(0, false);
+    }
 
     treeContextMenu = 0;
 
