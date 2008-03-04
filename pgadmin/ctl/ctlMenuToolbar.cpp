@@ -66,8 +66,12 @@ ctlMenuButton::Create(wxWindow *window, wxToolBar *toolBar, int ID, wxMenu *menu
 
 #ifdef __WXMSW__
   pulldownSize.Set(12,15);
-#elif defined(__WXMAC__)
+#else
+#ifdef __WXGTK__
+  pulldownSize.Set(18,15);
+#else
   pulldownSize.Set(16,15);
+#endif
 #endif
 
   m_toolBar = toolBar;
@@ -86,11 +90,6 @@ ctlMenuButton::DoProcessLeftClick(wxMouseEvent& event)
 {
   wxPoint menu_pos;
 
-  // *** Give others the opportunity to create and/or change the menu
-  wxCommandEvent eventFill( wxEVT_FILL_MENU, GetId() );
-  eventFill.SetClientData( m_menu );
-  GetEventHandler()->ProcessEvent( eventFill );
-
   if(m_toolBar) {
     wxSize tool_size = m_toolBar->GetToolSize();
     wxSize button_size = GetSize();
@@ -100,15 +99,14 @@ ctlMenuButton::DoProcessLeftClick(wxMouseEvent& event)
     menu_pos.x = - tool_size.GetWidth();
     menu_pos.y =  button_size.GetHeight()/2 + tool_size.GetHeight()/2;
 
-#if defined(__WXMAC__)
-	wxSize tbar_size = m_toolBar->GetSize();
+#ifdef __WXMAC__
+    wxSize tbar_size = m_toolBar->GetSize();
     wxPoint button_pos = GetPosition();
-	int iToolSep = m_toolBar->GetToolSeparation();
-	if(iToolSep == 0) iToolSep = 5;
+    int iToolSep = m_toolBar->GetToolSeparation();
+    if(iToolSep == 0) iToolSep = 5;
 
     menu_pos.x += - iToolSep;
     menu_pos.y = tbar_size.GetHeight() - button_pos.y/2;
-
 #endif
   }
   else {
@@ -193,11 +191,11 @@ ctlMenuToolbar::AddMenuButtonTool(int toolId,
                          const wxBitmap& bitmap1, 
                          const wxString& shortHelpString)
 {
-#ifdef __WXMSW__
+#ifndef __WXMAC__
   wxToolBarToolBase *tb_base;
   tb_base = AddTool(toolId, label, bitmap1, shortHelpString, wxITEM_NORMAL);
   NewMenuTool(new ctlMenuTool(tb_base, toolId));
-#elif defined(__WXMAC__)
+#else
   wxSize tool_size = GetToolSize();
   ctlMacMenuTool *menu_button = new ctlMacMenuTool((ctlMenuToolbar *)this, toolId, bitmap1, 
                        wxDefaultPosition, tool_size, (long int)wxNO_BORDER);
