@@ -145,34 +145,6 @@ ctlMenuToolbar::~ctlMenuToolbar()
 	    delete m_menuTools;
 }
 
-
-// Adding Tools 
-void ctlMenuToolbar::NewMenuTool(ctlMenuTool *menu_tool)
-{
-    if(m_menuTools == NULL) 
-	{
-        m_menuTools = new ctlMenuToolList();
-        m_menuTools->DeleteContents(true);
-    }
-
-    m_menuTools->Append(menu_tool);
-}
-
-
-void ctlMenuToolbar::AddMenuButtonTool(int toolId, const wxString& label, const wxBitmap& bitmap1, const wxString& shortHelpString)
-{
-#ifndef __WXMAC__
-    wxToolBarToolBase *tb_base;
-    tb_base = AddTool(toolId, label, bitmap1, shortHelpString, wxITEM_NORMAL);
-    NewMenuTool(new ctlMenuTool(tb_base, toolId));
-#else
-    wxSize tool_size = GetToolSize();
-    ctlMacMenuTool *menu_button = new ctlMacMenuTool((ctlMenuToolbar *)this, toolId, bitmap1,  wxDefaultPosition, tool_size, (long int)wxNO_BORDER);
-    AddControl(menu_button);
-#endif
-}
-
-
 ctlMenuButton *ctlMenuToolbar::AddMenuPulldownTool(int toolId, const wxString& label, const wxString& shortHelpString, wxMenu *popupmenu)
 {
     ctlMenuButton *menu_button = new ctlMenuButton(this, toolId, popupmenu);
@@ -217,39 +189,3 @@ void ctlMenuToolbar::DoProcessLeftClick(wxMouseEvent& event)
 
     PopupMenu(menu_tool->m_menu, menu_pos);
 }
-
-
-#ifdef __WXMAC__
-
-//
-// *** Macintosh Implementation
-//
-
-ctlMacMenuTool::ctlMacMenuTool(ctlMenuToolbar* parent, wxWindowID id, const wxBitmap &bmp, const wxPoint& pos, const wxSize& size, long style)
-: wxBitmapButton(parent, id, bmp, pos, size, style)
-{
-    m_toolBar = parent;
-    m_menu = NULL;
-    Connect(id, wxEVT_LEFT_DOWN, wxMouseEventHandler(ctlMacMenuTool::DoProcessLeftClick) );
-}
-
-ctlMacMenuTool::~ctlMacMenuTool()
-{
-    if(m_menu) 
-	    delete m_menu;
-}
-
-void ctlMacMenuTool::DoProcessLeftClick(wxMouseEvent& event)
-{
-    wxPoint menu_pos;
-
-    wxSize tool_size = m_toolBar->GetToolSize();
-    wxSize tbar_size = m_toolBar->GetSize();
-
-    menu_pos.x = event.m_x - 20;  // Just move it back a nice amount from the mouse click position
-    menu_pos.y =  tbar_size.GetHeight() - 1;
-
-    PopupMenu(m_menu, menu_pos);
-}
-
-#endif
