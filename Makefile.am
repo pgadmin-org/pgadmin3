@@ -57,6 +57,12 @@ TMP_docs = \
 
 if !APPBUNDLE
 nobase_dist_pkgdata_DATA = $(TMP_docs)
+help_cache = $(pkgdatadir)/docs/en_US/pgadmin3.hhp.cached
 else
 nobase_dist_data_DATA = $(TMP_docs)
+help_cache = $(datadir)/docs/en_US/pgadmin3.hhp.cached
 endif
+
+# We need to ensure the help cache is world writeable
+install-data-hook:
+	chmod 0666 $(help_cache)
