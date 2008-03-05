@@ -112,8 +112,7 @@ pgObject *edbSynonymFactory::CreateObjects(pgCollection *collection, ctlTree *br
             synonym->iSetDatabase(collection->GetDatabase());
             synonym->iSetOwner(synonyms->GetVal(wxT("owner")));
             synonym->iSetTargetType(synonyms->GetVal(wxT("targettype")));
-            if (synonym->GetTargetType() != _("Public synonym"))
-                synonym->iSetTargetSchema(synonyms->GetVal(wxT("synobjschema")));
+            synonym->iSetTargetSchema(synonyms->GetVal(wxT("synobjschema")));
             synonym->iSetTargetObject(synonyms->GetVal(wxT("synobjname")));
 
             if (browser)
