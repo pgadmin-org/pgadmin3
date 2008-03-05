@@ -267,6 +267,7 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("UI path      : %s"), uiPath.c_str());
     wxLogInfo(wxT("Doc path     : %s"), docPath.c_str());
     wxLogInfo(wxT("Branding path: %s"), brandingPath.c_str());
+    wxLogInfo(wxT("Utilities INI: %s"), utilitiesIni.c_str());
 
     wxLogInfo(wxT("PG pg_dump    : %s"), pgBackupExecutable.c_str());
     wxLogInfo(wxT("PG pg_dumpall : %s"), pgBackupAllExecutable.c_str());
@@ -911,6 +912,51 @@ void pgAdmin3::InitPaths()
         edbBackupAllExecutable = wxEmptyString;
     if (!isEdbApp(edbRestoreExecutable))
         edbRestoreExecutable = wxEmptyString;
+
+    // Now sanitize all the paths
+    wxFileName thePath;
+    if (loadPath.Length())
+    {
+        thePath = wxFileName::DirName(loadPath);
+        thePath.Normalize();
+        loadPath = thePath.GetLongPath();
+    }
+
+    if (docPath.Length())
+    {
+        thePath = wxFileName::DirName(docPath);
+        thePath.Normalize();
+        docPath = thePath.GetLongPath();
+    }
+
+    if (uiPath.Length())
+    {
+        thePath = wxFileName::DirName(uiPath);
+        thePath.Normalize();
+        uiPath = thePath.GetLongPath();
+    }
+
+    if (i18nPath.Length())
+    {
+        thePath = wxFileName::DirName(i18nPath);
+        thePath.Normalize();
+        i18nPath = thePath.GetLongPath();
+    }
+
+    if (brandingPath.Length())
+    {
+        thePath = wxFileName::DirName(brandingPath);
+        thePath.Normalize();
+        brandingPath = thePath.GetLongPath();
+    }
+
+    if (utilitiesIni.Length())
+    {
+        thePath = wxFileName::FileName(utilitiesIni);
+        thePath.Normalize();
+        utilitiesIni = thePath.GetLongPath();
+    }
+
 }
 
 void pgAdmin3::InitHelp()
