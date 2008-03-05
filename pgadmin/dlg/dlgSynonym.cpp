@@ -96,7 +96,7 @@ int dlgSynonym::Go(bool modal)
 pgObject *dlgSynonym::CreateObject(pgCollection *collection)
 {
     pgObject *obj=synonymFactory.CreateObjects(collection, 0,
-         wxT(" WHERE synname = '") + GetName() + wxT("'"));
+         wxT(" WHERE synname = ") + qtDbString(GetName()));
 
     return obj;
 }
