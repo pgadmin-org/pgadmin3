@@ -60,3 +60,7 @@ nobase_dist_pkgdata_DATA = $(TMP_docs)
 else
 nobase_dist_data_DATA = $(TMP_docs)
 endif
+
+# We need to ensure the help cache is world writeable
+install-data-hook:
+	chmod 0666 $(datadir)/docs/en_US/pgadmin3.hhp.cached
