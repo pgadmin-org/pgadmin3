@@ -201,7 +201,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 			wxString db = database;
 			db.Replace(wxT("\\"), wxT("\\\\"));
 			db.Replace(wxT("'"), wxT("''"));
-            sql += wxT("datname='") + database + wxT("'");
+            sql += wxT("datname=") + qtString(database);
 		}
 		
 
@@ -775,4 +775,17 @@ void pgConn::SetLastResultError(PGresult *res)
         errMsg += lastResultError.context;
     }
     lastResultError.formatted_msg = errMsg;
+}
+
+// String quoting - only for use during the connection phase!!
+wxString pgConn::qtString(const wxString& value)
+{
+    wxString result = value;	
+
+    result.Replace(wxT("\\"), wxT("\\\\"));
+    result.Replace(wxT("'"), wxT("\\'"));
+    result.Append(wxT("'"));
+    result.Prepend(wxT("'"));
+	
+    return result;
 }

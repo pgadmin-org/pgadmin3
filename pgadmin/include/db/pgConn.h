@@ -155,6 +155,8 @@ protected:
     friend class pgQueryThread;
 
 private:
+    wxString qtString(const wxString& value);
+    
     bool features[32];
     int minorVersion, majorVersion;
     bool isEdb;
