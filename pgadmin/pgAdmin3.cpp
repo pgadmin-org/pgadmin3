@@ -887,6 +887,43 @@ void pgAdmin3::InitPaths()
         edbBackupAllExecutable = wxEmptyString;
     if (!isEdbApp(edbRestoreExecutable))
         edbRestoreExecutable = wxEmptyString;
+
+    // Now sanitize all the paths
+    wxFileName thePath;
+    if (loadPath.Length())
+    {
+        thePath = wxFileName::DirName(loadPath);
+        thePath.Normalize();
+        loadPath = thePath.GetLongPath();
+    }
+
+    if (docPath.Length())
+    {
+        thePath = wxFileName::DirName(docPath);
+        thePath.Normalize();
+        docPath = thePath.GetLongPath();
+    }
+
+    if (uiPath.Length())
+    {
+        thePath = wxFileName::DirName(uiPath);
+        thePath.Normalize();
+        uiPath = thePath.GetLongPath();
+    }
+
+    if (i18nPath.Length())
+    {
+        thePath = wxFileName::DirName(i18nPath);
+        thePath.Normalize();
+        i18nPath = thePath.GetLongPath();
+    }
+
+    if (brandingPath.Length())
+    {
+        thePath = wxFileName::DirName(brandingPath);
+        thePath.Normalize();
+        brandingPath = thePath.GetLongPath();
+    }
 }
 
 void pgAdmin3::InitHelp()
