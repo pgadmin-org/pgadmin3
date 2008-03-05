@@ -88,7 +88,6 @@ private:
     void OnExecute(wxCommandEvent& event);
     void OnExecFile(wxCommandEvent& event);
     void OnExplain(wxCommandEvent& event);
-    void OnExplainText(wxCommandEvent& event);
     void OnNew(wxCommandEvent& event);
     void OnOpen(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
