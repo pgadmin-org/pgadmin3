@@ -64,7 +64,9 @@ void ctlMenuButton::Create(wxWindow *window, wxToolBar *toolBar, int ID, wxMenu 
 #ifdef __WXGTK__
     pulldownSize.Set(18,15);
 #else
-    pulldownSize.Set(16,15);
+//    pulldownSize.Set(16,15);
+// The pulldown doesn't currently work on wxMac.
+    pulldownSize.Set(0,0);
 #endif
 #endif
 
@@ -148,6 +150,7 @@ ctlMenuToolbar::~ctlMenuToolbar()
 ctlMenuButton *ctlMenuToolbar::AddMenuPulldownTool(int toolId, const wxString& label, const wxString& shortHelpString, wxMenu *popupmenu)
 {
     ctlMenuButton *menu_button = new ctlMenuButton(this, toolId, popupmenu);
+
     AddControl(menu_button);
 
     return menu_button;
