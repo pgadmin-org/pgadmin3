@@ -75,7 +75,6 @@ void ctlMenuButton::Create(wxWindow *window, wxToolBar *toolBar, int ID, wxMenu 
 
     ((wxBitmapButton *)this)->Create(window, ID, bmpPulldown, wxDefaultPosition, pulldownSize, wxNO_BORDER);
     Connect(ID, wxEVT_LEFT_DOWN, wxMouseEventHandler(ctlMenuButton::DoProcessLeftClick) );
-	SetOwnBackgroundColour(*wxBLUE);
 }
 
 
