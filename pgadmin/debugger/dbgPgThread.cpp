@@ -284,7 +284,7 @@ void dbgPgThread::noticeHandler( void * arg, const char * message )
     if (msg.EndsWith(wxT("\n")))
         msg.RemoveLast();
 
-    wxLogDebug(wxT("%s"), msg);
+    wxLogDebug(wxT("%s"), msg.c_str());
 
     dbgPgThread   * thread = (dbgPgThread *)arg;
     wxEvtHandler * caller = thread->m_currentCommand->getCaller();
