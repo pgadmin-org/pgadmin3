@@ -198,6 +198,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
         toolBar->EnableTool(MNU_EXECUTE, false);
     }
 
+    SetToolBar(toolBar);
     statusBar = CreateStatusBar();
 }
 
