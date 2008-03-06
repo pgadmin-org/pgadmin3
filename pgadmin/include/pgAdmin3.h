@@ -48,6 +48,12 @@
 #error wxWidgets must be compiled with Unicode support to build pgAdmin.
 #endif
 
+#ifdef __WXMAC__
+#if (wxMAC_USE_NATIVE_TOOLBAR == 1)
+#warning *** wxMAC_USE_NATIVE_TOOLBAR is enabled in wxWidgets. Toolbar pulldown menus will be disabled in this build.
+#endif
+#endif
+
 const float SERVER_MIN_VERSION = 7.3f;
 
 // Some redefines for modern Microsoft compilers
