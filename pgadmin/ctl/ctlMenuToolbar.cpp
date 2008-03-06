@@ -24,8 +24,7 @@ WX_DEFINE_LIST(ctlMenuToolList);
 
 /* XPM */
 static char *pulldown_xpm[] = {
-/* columns rows colors chars-per-pixel */
-"16 15 2 1",
+"16 16 2 1",
 ". c Black",
 "  c None",
 /* pixels */
@@ -35,6 +34,7 @@ static char *pulldown_xpm[] = {
 "                ",
 "                ",
 "                ",
+"     .......    ",
 "      .....     ",
 "       ...      ",
 "        .       ",
@@ -59,14 +59,19 @@ void ctlMenuButton::Create(wxWindow *window, wxToolBar *toolBar, int ID, wxMenu 
     wxSize pulldownSize;
 
 #ifdef __WXMSW__
-    pulldownSize.Set(12,15);
+    pulldownSize.Set(12,16);
 #else
 #ifdef __WXGTK__
-    pulldownSize.Set(18,15);
+    pulldownSize.Set(18,16);
 #else
-//    pulldownSize.Set(16,15);
-// The pulldown doesn't currently work on wxMac.
+// The pulldown doesn't currently work on wxMac under AUI with native toolbars.
+// This should be revisited when the long-awaited wxAuiToolbar arrives. See
+// wxWidgets bug no. 1742682
+#if (wxMAC_USE_NATIVE_TOOLBAR == 0)
+    pulldownSize.Set(10,16);
+#else
     pulldownSize.Set(0,0);
+#endif
 #endif
 #endif
 
