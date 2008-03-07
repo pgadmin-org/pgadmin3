@@ -64,14 +64,7 @@ void ctlMenuButton::Create(wxWindow *window, wxToolBar *toolBar, int ID, wxMenu 
 #ifdef __WXGTK__
     pulldownSize.Set(18,16);
 #else
-// The pulldown doesn't currently work on wxMac under AUI with native toolbars.
-// This should be revisited when the long-awaited wxAuiToolbar arrives. See
-// wxWidgets bug no. 1742682
-#if (wxMAC_USE_NATIVE_TOOLBAR == 0)
     pulldownSize.Set(10,16);
-#else
-    pulldownSize.Set(0,0);
-#endif
 #endif
 #endif
 
