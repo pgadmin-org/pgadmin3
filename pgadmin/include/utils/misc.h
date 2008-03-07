@@ -227,3 +227,6 @@ enum        // depends on pgaFactory::addImage order!
 };
 
 #endif
+
+// File/directory name cleanup
+wxString sanitizePath(const wxString &path);

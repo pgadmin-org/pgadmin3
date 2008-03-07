@@ -1160,3 +1160,15 @@ bool isEdbApp(const wxString &app)
 
 	return false;
 }
+
+wxString sanitizePath(const wxString &path)
+{
+    if (path.Length())
+    {
+        wxFileName fn = path;
+        fn.Normalize();
+        return fn.GetLongPath();
+    }
+
+	return wxEmptyString;
+}
