@@ -306,32 +306,17 @@ pluginButtonMenuFactory::pluginButtonMenuFactory(menuFactoryList *list, wxMenu *
 
     if (toolbar)
     {
-        // The pulldown doesn't currently work on wxMac under AUI with native toolbars.
-        // This should be revisited when the long-awaited wxAuiToolbar arrives. See
-        // wxWidgets bug no. 1742682
-        // In the Mac case, use appropriately modified text for the button.
-#if defined(__WXMAC__) && (wxMAC_USE_NATIVE_TOOLBAR == 1)
-        toolbar->AddTool(id, _("Execute Plugin"), wxBitmap(plugins_xpm), _("Select a plugin."));
-        pulldownButton = toolbar->AddMenuPulldownTool(MNU_PLUGINBUTTONLIST, wxT("Execute Plugin"), wxT("Select a plugin."), popupmenu); 
-#else
         toolbar->AddTool(id, _("Plugins"), wxBitmap(plugins_xpm), _("Execute the last used plugin."));
         pulldownButton = toolbar->AddMenuPulldownTool(MNU_PLUGINBUTTONLIST, wxT("Execute Plugin"), wxT("Select a plugin."), popupmenu); 
-#endif
     }
 }
 
 // Call the last plugin used, or popup the menu if this is the first time
 wxWindow *pluginButtonMenuFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    // The pulldown doesn't currently work on wxMac under AUI with native toolbars.
-    // This should be revisited when the long-awaited wxAuiToolbar arrives. See
-    // wxWidgets bug no. 1742682
-    // In the Mac case we always popup the menu.
-#if !(defined(__WXMAC__) && (wxMAC_USE_NATIVE_TOOLBAR == 1))
     if (form->GetLastPluginUtility())
         return form->GetLastPluginUtility()->StartDialog(form, obj);
     else
-#endif
     {
         wxMouseEvent evt;
         pulldownButton->DoProcessLeftClick(evt);

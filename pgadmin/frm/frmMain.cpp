@@ -445,8 +445,8 @@ void frmMain::CreateMenus()
     // Disable the plugins menu if there aren't any.
     if (!pluginUtilityCount)
     {
-        pluginsMenu->Append(0, _("No plugins installed"));
-        pluginsMenu->Enable(0, false);
+        pluginsMenu->Append(MNU_DUMMY, _("No plugins installed"));
+        pluginsMenu->Enable(MNU_DUMMY, false);
     }
 
     treeContextMenu = 0;

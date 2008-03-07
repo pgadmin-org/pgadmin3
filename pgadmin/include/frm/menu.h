@@ -33,8 +33,8 @@ enum
     MNU_REFRESH,
 
     MNU_ADDCOLUMN,
-	MNU_CLOSE,
-	MNU_MIN,
+    MNU_CLOSE,
+    MNU_MIN,
     MNU_RECORD,
     MNU_STOP,
     MNU_APPEND,
@@ -68,7 +68,7 @@ enum
     MNU_CLEARHISTORY,
     MNU_SAVEHISTORY,
     MNU_CHECKALIVE,
-	MNU_SELECTALL,
+    MNU_SELECTALL,
 
     MNU_CONTENTS,
     MNU_HELP,
@@ -79,11 +79,11 @@ enum
 
     MNU_ONLINEUPDATE_NEWDATA,
 
-	MNU_AUTOCOMPLETE,
-	MNU_AUTOINDENT,
+    MNU_AUTOCOMPLETE,
+    MNU_AUTOINDENT,
     MNU_WORDWRAP,
-	MNU_SHOWWHITESPACE,
-	MNU_SHOWLINEENDS,
+    MNU_SHOWWHITESPACE,
+    MNU_SHOWLINEENDS,
     MNU_SHOWINDENTGUIDES,
     MNU_QUICKREPORT,
 
@@ -99,13 +99,16 @@ enum
 
     MNU_ACTION=MNU_NEW+1000, // leave space for objects
 
-	MNU_FAVOURITES_ADD=MNU_ACTION+1000, // leave space for actions
-	MNU_FAVOURITES_MANAGE,
+    MNU_FAVOURITES_ADD=MNU_ACTION+1000, // leave space for actions
+    MNU_FAVOURITES_MANAGE,
 
-	MNU_MACROS_MANAGE=MNU_FAVOURITES_MANAGE+1000, //leave space for favourites
+    MNU_MACROS_MANAGE=MNU_FAVOURITES_MANAGE+1000, //leave space for favourites
 
     // This is used by the Query Tool - the event is fired when the query completes
-    QUERY_COMPLETE=MNU_MACROS_MANAGE+100
+    QUERY_COMPLETE=MNU_MACROS_MANAGE+100,
+
+    // This is a dummy menu item
+    MNU_DUMMY=QUERY_COMPLETE+1000
 };
 
 #endif
