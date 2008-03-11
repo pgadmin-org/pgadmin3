@@ -36,7 +36,11 @@ Changes
 
 Date       Dev Ver    Change details
 ---------- --- -----  --------------
-2008-03-04 DP  1.8.3  Properly quote the maintenance database name when 
+2008-03-11 DP  1.8.3  Construct SQL used to add columns such that the entire
+                      operation happens in one statement to ensure default
+                      values and NOT NULL can be set together. Per report from
+                      Laurent ROCHE.
+2008-03-04 DP  1.8.3  Properly quote the maintenance database name when
                       creating a new connection.
 2008-03-04 DP  1.8.3  Show the schema correctly for EDB public synonyms that
                       point to other synonyms.

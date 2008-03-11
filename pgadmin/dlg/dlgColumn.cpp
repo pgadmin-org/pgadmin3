@@ -254,19 +254,15 @@ wxString dlgColumn::GetSql()
         {
             sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                 + wxT("\n   ADD COLUMN ") + qtIdent(name)
-                + wxT(" ") + GetQuotedTypename(cbDatatype->GetGuessedSelection())
-                + wxT(";\n");
+                + wxT(" ") + GetQuotedTypename(cbDatatype->GetGuessedSelection());
 
             if (chkNotNull->GetValue())
-                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    + wxT("\n   ALTER COLUMN ") + qtIdent(name)
-                    + wxT(" SET NOT NULL;\n");
+                sql += wxT(" NOT NULL");
         
             if (!isSerial && !txtDefault->GetValue().IsEmpty())
-                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    + wxT("\n   ALTER COLUMN ") + qtIdent(name)
-                    + wxT(" SET DEFAULT ") + txtDefault->GetValue() 
-                    + wxT(";\n");
+                sql += wxT(" DEFAULT ") + txtDefault->GetValue(); 
+            
+            sql += wxT(";\n");
 
             if (!txtAttstattarget->GetValue().IsEmpty())
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
@@ -274,7 +270,6 @@ wxString dlgColumn::GetSql()
                     + wxT(" SET STATISTICS ") + txtAttstattarget->GetValue()
                     + wxT(";\n");
         }
-
 
         AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier() 
                 + wxT(".") + qtIdent(name), column);
