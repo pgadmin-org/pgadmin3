@@ -113,7 +113,7 @@ void edbPackage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         browser->RemoveDummyChild(this);
 
         // Log
-        wxLogInfo(wxT("Adding child object to package ") + GetIdentifier());
+        wxLogInfo(wxT("Adding child object to package %s"), GetIdentifier());
 
         browser->AppendCollection(this, packageFunctionFactory);
         browser->AppendCollection(this, packageProcedureFactory);
@@ -145,9 +145,9 @@ pgObject *edbPackage::Refresh(ctlTree *browser, const wxTreeItemId item)
     if (coll)
     {
         if (coll->GetConnection()->EdbMinimumVersion(8, 2))
-            package = packageFactory.CreateObjects(coll, 0, wxT(" AND nspname='") + GetName() + wxT("'"));
+            package = packageFactory.CreateObjects(coll, 0, wxT(" AND nspname=") + qtDbString(GetName()));
         else
-            package = packageFactory.CreateObjects(coll, 0, wxT(" AND pkgname='") + GetName() + wxT("'"));
+            package = packageFactory.CreateObjects(coll, 0, wxT(" AND pkgname=") + qtDbString(GetName()));
     }
 
     return package;
