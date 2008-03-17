@@ -279,7 +279,7 @@ wxString frmRestore::getCmdPart1()
     cmd += wxT(" -h ") + server->GetName()
          + wxT(" -p ") + NumToStr((long)server->GetPort())
          + wxT(" -U ") + qtIdent(server->GetUsername())
-         + wxT(" -d ") + qtIdent(object->GetDatabase()->GetName());
+         + wxT(" -d ") + commandLineCleanOption(object->GetDatabase()->GetQuotedIdentifier());
     return cmd;
 }
 

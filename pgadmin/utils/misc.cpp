@@ -1160,3 +1160,37 @@ bool isEdbApp(const wxString &app)
 
 	return false;
 }
+
+// Fixup a (quoted) string for use on the command line
+wxString commandLineCleanOption(const wxString &option)
+{
+    wxString tmp;
+    bool wasQuoted = false;
+
+    if (option.StartsWith(wxT("\"")) && option.EndsWith(wxT("\"")))
+    {
+        tmp = option.AfterFirst((wxChar)'"').BeforeLast((wxChar)'"');
+        wasQuoted = true;
+    }
+    else
+        tmp = option;
+
+#ifdef __WXMSW__
+    if (wasQuoted)
+        tmp.Replace(wxT("\"\""), wxT("\"\"\""));
+    else
+    {
+        tmp.Replace(wxT("\""), wxT("\"\""));
+        tmp.Replace(wxT("\\"), wxT("\\\\"));
+    }
+#else
+    tmp.Replace(wxT("\\"), wxT("\\\\"));
+    tmp.Replace(wxT("\"\""), wxT("\\\""));
+#endif
+
+    if (wasQuoted)
+        tmp = wxT("\"") + tmp + wxT("\"");
+
+    return tmp;
+}
+

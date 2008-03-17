@@ -175,6 +175,8 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
 bool isPgApp(const wxString &app);
 bool isEdbApp(const wxString &app);
 
+wxString commandLineCleanOption(const wxString &option);
+
 enum 
 {
     EDB_PACKAGE,
