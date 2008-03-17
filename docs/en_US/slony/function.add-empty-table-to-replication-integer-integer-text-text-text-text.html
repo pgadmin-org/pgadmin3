@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.20.  add_empty_table_to_replication( integer, integer, text, text, text, text )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.13 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="table.sl-trigger.html" title="1.19.  Table: sl_trigger">
+<link rel="next" href="function.add-missing-table-field-text-text-text-text.html" title="1.21.  add_missing_table_field( text, text, text, text )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="function.add-empty-table-to-replication-integer-integer-text-text-text-text">1.20.        add_empty_table_to_replication( integer, integer, text, text, text, text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       Verify that a table is empty, and add it to replication.  
+tab_idxname is optional - if NULL, then we use the primary key.
+        </p>
+<pre class="programlisting">declare
+  p_set_id alias for $1;
+  p_tab_id alias for $2;
+  p_nspname alias for $3;
+  p_tabname alias for $4;
+  p_idxname alias for $5;
+  p_comment alias for $6;
+
+  prec record;
+  v_origin int4;
+  v_isorigin boolean;
+  v_fqname text;
+  v_query text;
+  v_rows integer;
+  v_idxname text;
+
+begin
+-- Need to validate that the set exists; the set will tell us if this is the origin
+  select set_origin into v_origin from sl_set where set_id = p_set_id;
+  if not found then
+	raise exception 'add_empty_table_to_replication: set % not found!', p_set_id;
+  end if;
+
+-- Need to be aware of whether or not this node is origin for the set
+   v_isorigin := ( v_origin = getLocalNodeId('_schemadoc') );
+
+   v_fqname := '"' || p_nspname || '"."' || p_tabname || '"';
+-- Take out a lock on the table
+   v_query := 'lock ' || v_fqname || ';';
+   execute v_query;
+
+   if v_isorigin then
+	-- On the origin, verify that the table is empty, failing if it has any tuples
+        v_query := 'select 1 as tuple from ' || v_fqname || ' limit 1;';
+	execute v_query into prec;
+        GET DIAGNOSTICS v_rows = ROW_COUNT;
+	if v_rows = 0 then
+		raise notice 'add_empty_table_to_replication: table % empty on origin - OK', v_fqname;
+	else
+		raise exception 'add_empty_table_to_replication: table % contained tuples on origin node %', v_fqname, v_origin;
+	end if;
+   else
+	-- On other nodes, TRUNCATE the table
+        v_query := 'truncate ' || v_fqname || ';';
+	execute v_query;
+   end if;
+-- If p_idxname is NULL, then look up the PK index, and RAISE EXCEPTION if one does not exist
+   if p_idxname is NULL then
+	select c2.relname into prec from pg_catalog.pg_index i, pg_catalog.pg_class c1, pg_catalog.pg_class c2, pg_catalog.pg_namespace n where i.indrelid = c1.oid and i.indexrelid = c2.oid and c1.relname = p_tabname and i.indisprimary and n.nspname = p_nspname and n.oid = c1.relnamespace;
+	if not found then
+		raise exception 'add_empty_table_to_replication: table % has no primary key and no candidate specified!', v_fqname;
+	else
+		v_idxname := prec.relname;
+	end if;
+   else
+	v_idxname := p_idxname;
+   end if;
+   perform setAddTable_int(p_set_id, p_tab_id, v_fqname, v_idxname, p_comment);
+   return alterTableRestore(p_tab_id);
+end</pre>
+<p>
+      </p>
+</div></body>
+</html>

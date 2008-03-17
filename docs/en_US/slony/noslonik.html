@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.12 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.13 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="slonikshell.html" title="17.  Embedding Slonik in Shell Scripts">
 <link rel="next" href="adminscripts.html" title="19. Slony-I Administration Scripts">
@@ -66,15 +66,15 @@ thus:
 suffix) is called on a &#8220;<span class="quote">relevant</span>&#8221; node in the <span class="productname">Slony-I</span>
 cluster.</p>
 <p> In some cases, the function may be called on any node, and it
-can satisfactorily propagate to other nodes.  That is true for <a class="xref" href="function.storelisten-integer-integer-integer.html" title="1.112.  storelisten( integer, integer, integer )">schemadocstorelisten( integer, integer, integer )</a>, for instance.
+can satisfactorily propagate to other nodes.  That is true for <a class="xref" href="function.storelisten-integer-integer-integer.html" title="1.114.  storelisten( integer, integer, integer )">schemadocstorelisten( integer, integer, integer )</a>, for instance.
 In other cases, the function needs to be called on some particular
 node because that is the only place where data may be reasonably
-validated.  For instance, <a class="xref" href="function.subscribeset-integer-integer-integer-boolean.html" title="1.122.  subscribeset( integer, integer, integer, boolean )">schemadocsubscribeset( integer, integer, integer, boolean )</a> must
+validated.  For instance, <a class="xref" href="function.subscribeset-integer-integer-integer-boolean.html" title="1.124.  subscribeset( integer, integer, integer, boolean )">schemadocsubscribeset( integer, integer, integer, boolean )</a> must
 be called on the receivernode.</p>
 </li>
 <li><p> If that &#8220;<span class="quote">main</span>&#8221; function succeeds, then
 the configuration change is performed on the local node, and an event
-is created using <a class="xref" href="function.createevent-name-text.html" title="1.28.  createevent( name, text )">schemadoccreateevent( name, text )</a> to
+is created using <a class="xref" href="function.createevent-name-text.html" title="1.29.  createevent( name, text )">schemadoccreateevent( name, text )</a> to
 cause the configuration change to propagate to all of the other nodes
 in the <span class="productname">Slony-I</span> cluster.</p></li>
 <li>

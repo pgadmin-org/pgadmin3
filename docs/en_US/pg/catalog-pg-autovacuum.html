@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.6 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.7 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-auth-members.html" title="43.9. pg_auth_members">
 <link rel="next" href="catalog-pg-cast.html" title="43.11. pg_cast">
@@ -13,15 +13,22 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalog-pg-autovacuum">43.10. <code class="structname">pg_autovacuum</code></h2></div></div></div>
-<a name="id2834923"></a><a name="id2834933"></a><p>   The catalog <code class="structname">pg_autovacuum</code> stores optional
+<a name="id2834934"></a><a name="id2834944"></a><p>   The catalog <code class="structname">pg_autovacuum</code> stores optional
    per-relation configuration parameters for the autovacuum daemon.
    If there is an entry here for a particular relation, the given
    parameters will be used for autovacuuming that table.  If no entry
    is present, the system-wide defaults will be used. For more information
    about the autovacuum daemon, see <a class="xref" href="maintenance.html#autovacuum" title="22.1.4. The auto-vacuum daemon">Section 22.1.4, &#8220;The auto-vacuum daemon&#8221;</a>.
   </p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>    It is likely that <code class="structname">pg_autovacuum</code> will disappear
+    in a future release, with the information instead being kept in
+    <code class="structname">pg_class</code>.<code class="structfield">reloptions</code> entries.
+   </p>
+</div>
 <div class="table">
-<a name="id2834962"></a><p class="title"><b>Table 43.10. <code class="structname">pg_autovacuum</code> Columns</b></p>
+<a name="id2834989"></a><p class="title"><b>Table 43.10. <code class="structname">pg_autovacuum</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_autovacuum Columns" border="1">
 <colgroup>
 <col>
@@ -46,7 +53,8 @@
 <td><code class="structfield">enabled</code></td>
 <td><code class="type">bool</code></td>
 <td> </td>
-<td>If false, this table is never autovacuumed</td>
+<td>If false, this table will not be autovacuumed, except
+       to prevent transaction ID wraparound</td>
 </tr>
 <tr>
 <td><code class="structfield">vac_base_thresh</code></td>
@@ -118,7 +126,9 @@
    to prevent transaction ID wraparound if the table's
    <code class="structname">pg_class</code>.<code class="structfield">relfrozenxid</code> field attains an age
    of more than <code class="structfield">freeze_max_age</code> transactions, whether the table
-   has been changed or not.  The system will launch autovacuum to perform
+   has been changed or not, even if
+   <code class="structname">pg_autovacuum</code>.<code class="structfield">enabled</code> is set to
+   <code class="literal">false</code> for it.  The system will launch autovacuum to perform
    such <code class="command">VACUUM</code>s even if autovacuum is otherwise disabled.
    See <a class="xref" href="maintenance.html#vacuum-for-wraparound" title="22.1.3. Preventing transaction ID wraparound failures">Section 22.1.3, &#8220;Preventing transaction ID wraparound failures&#8221;</a> for more about wraparound
    prevention.
@@ -128,12 +138,14 @@
    be used for this particular value.  Observe that the
    <code class="structfield">vac_cost_delay</code> variable inherits its default value from the
    <a class="xref" href="runtime-config-autovacuum.html#guc-autovacuum-vacuum-cost-delay">autovacuum_vacuum_cost_delay</a> configuration parameter,
-   or from <code class="varname">vacuum_cost_delay</code> if the former is set to a negative
-   value.  The same applies to <code class="structfield">vac_cost_limit</code>.
+   or from <a class="xref" href="runtime-config-resource.html#guc-vacuum-cost-delay">vacuum_cost_delay</a> if the former is set to a
+   negative value.  The same applies to <code class="structfield">vac_cost_limit</code>.
    Also, autovacuum will ignore attempts to set a per-table
-   <code class="structfield">freeze_max_age</code> larger than the system-wide setting (it can only be set
-   smaller), and the <code class="structfield">freeze_min_age value</code> will be limited to half the
-   system-wide <a class="xref" href="runtime-config-autovacuum.html#guc-autovacuum-freeze-max-age">autovacuum_freeze_max_age</a> setting.
+   <code class="structfield">freeze_max_age</code> larger than the system-wide setting (it can
+   only be set smaller), and the <code class="structfield">freeze_min_age</code> value will be
+   limited to half the system-wide <a class="xref" href="runtime-config-autovacuum.html#guc-autovacuum-freeze-max-age">autovacuum_freeze_max_age</a> setting.  Note that while you
+   can set <code class="structfield">freeze_max_age</code> very small, or even zero, this
+   is usually unwise since it will force frequent vacuuming.
   </p>
 </div></body>
 </html>

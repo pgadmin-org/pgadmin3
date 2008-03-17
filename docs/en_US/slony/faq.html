@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.12 Documentation">
-<link rel="up" href="index.html" title="Slony-I 1.2.12 Documentation">
+<link rel="start" href="index.html" title="Slony-I 1.2.13 Documentation">
+<link rel="up" href="index.html" title="Slony-I 1.2.13 Documentation">
 <link rel="prev" href="help.html" title="25. More Slony-I Help">
 <link rel="next" href="commandreference.html" title="Part I. Core Slony-I Programs">
 <link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
@@ -2101,7 +2101,7 @@ replicate these are thus:
 <pre class="programlisting">delete from _oxrsorg.sl_seqlog where seql_seqid in (93, 59);
 delete from _oxrsorg.sl_sequence where seq_id in (93,59);</pre>
 <p>Those two queries could be submitted to all of the nodes via
-<a class="xref" href="function.ddlscript-complete-integer-text-integer.html" title="1.37.  ddlscript_complete( integer, text, integer )">schemadocddlscript_complete( integer, text, integer )</a> / <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>, thus eliminating the sequence everywhere
+<a class="xref" href="function.ddlscript-complete-integer-text-integer.html" title="1.38.  ddlscript_complete( integer, text, integer )">schemadocddlscript_complete( integer, text, integer )</a> / <a class="xref" href="stmtddlscript.html" title="EXECUTE SCRIPT"><span class="refentrytitle">EXECUTE SCRIPT</span></a>, thus eliminating the sequence everywhere
 &#8220;<span class="quote">at once.</span>&#8221; Or they may be applied by hand to each of the
 nodes.</p>
 <p>Similarly to <a class="xref" href="stmtsetdroptable.html" title="SET DROP TABLE"><span class="refentrytitle">SET DROP TABLE</span></a>, this is
@@ -2468,12 +2468,12 @@ other nodes is repeatedly failing with the error message:</a>
 <td align="left" valign="top">
 <p> Firstly, let's look at how it is handled
 <span class="emphasis"><em>absent</em></span> of the special handling of the <a class="xref" href="stmtstoretrigger.html" title="STORE TRIGGER"><span class="refentrytitle">STORE TRIGGER</span></a> Slonik command.  </p>
-<p> The function <a class="xref" href="function.altertableforreplication-integer.html" title="1.22.  altertableforreplication( integer )">schemadocaltertableforreplication( integer )</a> prepares each
+<p> The function <a class="xref" href="function.altertableforreplication-integer.html" title="1.23.  altertableforreplication( integer )">schemadocaltertableforreplication( integer )</a> prepares each
 table for replication.</p>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p> On the origin node, this involves adding a trigger
-that uses the <a class="xref" href="function.logtrigger.html" title="1.77.  logtrigger( )">schemadoclogtrigger(  )</a> function to the
+that uses the <a class="xref" href="function.logtrigger.html" title="1.78.  logtrigger( )">schemadoc.logtrigger(  )</a> function to the
 table.</p>
 <p> That trigger initiates the action of logging all updates to the
 table to <span class="productname">Slony-I</span> <a class="xref" href="table.sl-log-1.html" title="1.6.  Table: sl_log_1">sl_log_1</a>

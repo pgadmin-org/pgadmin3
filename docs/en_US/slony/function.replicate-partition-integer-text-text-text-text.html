@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>1.92.  replicate_partition( integer, text, text, text, text )</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
+<link rel="start" href="index.html" title="Slony-I 1.2.13 Documentation">
+<link rel="up" href="schema.html" title="Chapter 1. Schema schemadoc">
+<link rel="prev" href="function.registry-set-timestamp-text-timestamp-without-time-zone.html" title="1.91.  registry_set_timestamp( text, timestamp without time zone )">
+<link rel="next" href="function.sequencelastvalue-text.html" title="1.93.  sequencelastvalue( text )">
+<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="section" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="function.replicate-partition-integer-text-text-text-text">1.92.        replicate_partition( integer, text, text, text, text )
+      </h2></div></div></div>
+<p>       </p>
+<div class="segmentedlist">
+<div class="title"><strong><span class="title">Function Properties</span></strong></div>
+<div class="seglistitem">
+<div class="seg">
+<strong><span class="segtitle">Language: </span></strong>PLPGSQL</div>
+<div class="seg">
+<strong><span class="segtitle">Return Type: </span></strong>bigint</div>
+</div>
+</div>
+<p>
+ 
+       Add a partition table to replication.
+tab_idxname is optional - if NULL, then we use the primary key.
+This function looks up replication configuration via the parent table.
+        </p>
+<pre class="programlisting">declare
+  p_tab_id alias for $1;
+  p_nspname alias for $2;
+  p_tabname alias for $3;
+  p_idxname alias for $4;
+  p_comment alias for $5;
+
+  prec record;
+  prec2 record;
+  v_set_id int4;
+
+begin
+-- Look up the parent table; fail if it does not exist
+   select c1.oid into prec from pg_catalog.pg_class c1, pg_catalog.pg_class c2, pg_catalog.pg_inherits i, pg_catalog.pg_namespace n where c1.oid = i.inhparent  and c2.oid = i.inhrelid and n.oid = c2.relnamespace and n.nspname = p_nspname and c2.relname = p_tabname;
+   if not found then
+	raise exception 'replicate_partition: No parent table found for %.%!', p_nspname, p_tabname;
+   end if;
+
+-- The parent table tells us what replication set to use
+   select tab_set into prec2 from sl_table where tab_reloid = prec.oid;
+   if not found then
+	raise exception 'replicate_partition: Parent table % for new partition %.% is not replicated!', prec.oid, p_nspname, p_tabname;
+   end if;
+
+   v_set_id := prec2.tab_set;
+
+-- Now, we have all the parameters necessary to run add_empty_table_to_replication...
+   return add_empty_table_to_replication(v_set_id, p_tab_id, p_nspname, p_tabname, p_idxname, p_comment);
+end</pre>
+<p>
+      </p>
+</div></body>
+</html>

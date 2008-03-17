@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.6 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.7 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-vacuum.html" title="VACUUM">
 <link rel="next" href="reference-client.html" title="PostgreSQL Client Applications">
@@ -17,7 +17,7 @@
 <h2>Name</h2>
 <p>VALUES &#8212; compute a set of rows</p>
 </div>
-<a name="id2809029"></a><div class="refsynopsisdiv">
+<a name="id2809035"></a><div class="refsynopsisdiv">
 <h2>Synopsis</h2>
 <pre class="synopsis">VALUES ( <em class="replaceable"><code>expression</code></em> [, ...] ) [, ...]
     [ ORDER BY <em class="replaceable"><code>sort_expression</code></em> [ ASC | DESC | USING <em class="replaceable"><code>operator</code></em> ] [, ...] ]
@@ -25,7 +25,7 @@
     [ OFFSET <em class="replaceable"><code>start</code></em> ]</pre>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2809074"></a><h2>Description</h2>
+<a name="id2809080"></a><h2>Description</h2>
 <p>   <code class="command">VALUES</code> computes a row value or set of row values
    specified by value expressions.  It is most commonly used to generate
    a &#8220;<span class="quote">constant table</span>&#8221; within a larger command, but it can be
@@ -45,7 +45,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2809156"></a><h2>Parameters</h2>
+<a name="id2809162"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>expression</code></em></span></dt>
 <dd><p>      A constant or expression to compute and insert at the indicated place
@@ -79,7 +79,7 @@
 </dl></div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2809313"></a><h2>Notes</h2>
+<a name="id2809319"></a><h2>Notes</h2>
 <p>   <code class="command">VALUES</code> lists with very large numbers of rows should be avoided,
    as you may encounter out-of-memory failures or poor performance.
    <code class="command">VALUES</code> appearing within <code class="command">INSERT</code> is a special case
@@ -89,7 +89,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2809354"></a><h2>Examples</h2>
+<a name="id2809360"></a><h2>Examples</h2>
 <p>   A bare <code class="command">VALUES</code> command:
 
 </p>
@@ -168,14 +168,14 @@ WHERE ip_address IN (VALUES('192.168.0.1'::inet), ('192.168.0.10'), ('192.168.1.
 </div>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2809582"></a><h2>Compatibility</h2>
+<a name="id2809588"></a><h2>Compatibility</h2>
 <p>   <code class="command">VALUES</code> conforms to the SQL standard, except that
    <code class="literal">LIMIT</code> and <code class="literal">OFFSET</code> are
    <span class="productname">PostgreSQL</span> extensions.
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2809612"></a><h2>See Also</h2>
+<a name="id2809618"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-insert.html" title="INSERT">INSERT</a>, <a class="xref" href="sql-select.html" title="SELECT">SELECT</a></span>
 </div>
 </div></body>

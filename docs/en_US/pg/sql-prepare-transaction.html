@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.6 Documentation">
+<link rel="start" href="index.html" title="PostgreSQL 8.2.7 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-prepare.html" title="PREPARE">
 <link rel="next" href="sql-reassign-owned.html" title="REASSIGN OWNED">
@@ -64,8 +64,10 @@
 <p>   This command must be used inside a transaction block. Use <a class="xref" href="sql-begin.html" title="BEGIN">BEGIN</a> to start one.
   </p>
 <p>   It is not currently allowed to <code class="command">PREPARE</code> a transaction that
-   has executed any operations involving temporary tables or
-   created any cursors <code class="literal">WITH HOLD</code>.  Those features are too tightly
+   has executed any operations involving temporary tables,
+   created any cursors <code class="literal">WITH HOLD</code>, or executed
+   <code class="command">LISTEN</code> or <code class="command">UNLISTEN</code>.
+   Those features are too tightly
    tied to the current session to be useful in a transaction to be prepared.
   </p>
 <p>   If the transaction modified any run-time parameters with <code class="command">SET</code>,
@@ -107,7 +109,7 @@
   </p>
 </div>
 <div class="refsect1" lang="en">
-<a name="id2798163"></a><h2>See Also</h2>
+<a name="id2798175"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-commit-prepared.html" title="COMMIT PREPARED">COMMIT PREPARED</a>, <a class="xref" href="sql-rollback-prepared.html" title="ROLLBACK PREPARED">ROLLBACK PREPARED</a></span>
 </div>
 </div></body>
