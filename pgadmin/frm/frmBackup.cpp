@@ -294,7 +294,7 @@ wxString frmBackup::getCmdPart2()
 		}
     }
 
-    cmd.Append(wxT(" ") + object->GetDatabase()->GetQuotedIdentifier());
+    cmd.Append(wxT(" ") + commandLineCleanOption(object->GetDatabase()->GetQuotedIdentifier()));
 
     return cmd;
 }
