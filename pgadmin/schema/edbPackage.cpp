@@ -113,7 +113,7 @@ void edbPackage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         browser->RemoveDummyChild(this);
 
         // Log
-        wxLogInfo(wxT("Adding child object to package %s"), GetIdentifier());
+        wxLogInfo(wxT("Adding child object to package %s"), GetIdentifier().c_str());
 
         browser->AppendCollection(this, packageFunctionFactory);
         browser->AppendCollection(this, packageProcedureFactory);
