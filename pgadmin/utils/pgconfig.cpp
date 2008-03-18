@@ -254,7 +254,7 @@ pgSettingItem *pgSettingFileReader::GetNextItem()
             return 0;
         }
         if (column == wxT("name") || column == wxT("\"name\""))
-            item->name = value;
+            item->name = value.Lower();
         else if (column == wxT("category") || column == wxT("\"category\""))
             item->category = value;
         else if (column == wxT("short_desc") || column == wxT("\"short_desc\""))
@@ -313,7 +313,7 @@ pgSettingItem *pgSettingDbReader::GetNextItem()
     
     pgSettingItem *item=new pgSettingItem;
 
-    item->name = set->GetVal(wxT("name"));
+    item->name = set->GetVal(wxT("name")).Lower();
     item->category = set->GetVal(wxT("category"));
     item->short_desc = set->GetVal(wxT("short_desc"));
     item->extra_desc = set->GetVal(wxT("extra_desc"));
