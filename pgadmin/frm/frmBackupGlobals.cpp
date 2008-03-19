@@ -148,9 +148,10 @@ wxString frmBackupGlobals::getCmdPart1()
     else
         cmd=pgBackupAllExecutable;
 
-    cmd +=  wxT(" -i")
-            wxT(" -h ") + server->GetName()
-         +  wxT(" -p ") + NumToStr((long)server->GetPort())
+    if (!server->GetName().IsEmpty())
+        cmd += wxT(" -h ") + server->GetName();
+
+    cmd +=  wxT(" -p ") + NumToStr((long)server->GetPort())
          +  wxT(" -U ") + server->GetUsername();
     return cmd;
 }
