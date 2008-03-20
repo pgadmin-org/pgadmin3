@@ -2032,6 +2032,30 @@ wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
     return 0;
 }
 
+queryToolDeleteFactory::queryToolDeleteFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
+{
+    mnu->Append(id, _("DELETE script"), _("Start query tool with DELETE script."));
+}
+
+bool queryToolDeleteFactory::CheckEnable(pgObject *obj)
+{
+    if (!queryToolDataFactory::CheckEnable(obj))
+        return false;
+    if (obj->IsCreatedBy(tableFactory))
+        return true;
+    return false;
+}
+
+wxWindow *queryToolDeleteFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (obj->IsCreatedBy(tableFactory))
+    {
+        pgTable *table = (pgTable*)obj;
+        return StartDialogSql(form, obj, table->GetDeleteSql(form->GetBrowser()));
+    }
+    return 0;
+}
+
 
 queryToolUpdateFactory::queryToolUpdateFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
 {

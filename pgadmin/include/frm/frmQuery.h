@@ -226,6 +226,14 @@ public:
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
+class queryToolDeleteFactory : public queryToolDataFactory
+{
+public:
+    queryToolDeleteFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
 class queryToolInsertFactory : public queryToolDataFactory
 {
 public:

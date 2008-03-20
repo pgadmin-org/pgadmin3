@@ -106,6 +106,7 @@ public:
     wxString GetSelectSql(ctlTree *browser);
     wxString GetInsertSql(ctlTree *browser);
     wxString GetUpdateSql(ctlTree *browser);
+    wxString GetDeleteSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const;
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 	void iSetTriggersEnabled(ctlTree *browser, bool enable);

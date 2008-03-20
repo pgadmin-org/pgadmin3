@@ -472,6 +472,14 @@ wxString pgTable::GetUpdateSql(ctlTree *browser)
 	return sql;
 }
 
+wxString pgTable::GetDeleteSql(ctlTree *browser)
+{
+	wxString qms;
+	wxString sql = 
+		wxT("DELETE FROM ") + GetQuotedFullIdentifier() + wxT("\n")
+		wxT(" WHERE <condition>;\n");
+	return sql;
+}
 
 bool pgTable::EnableTriggers(const bool b)
 {
