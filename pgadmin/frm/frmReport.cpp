@@ -173,6 +173,8 @@ frmReport::frmReport(wxWindow *p)
 
     wxCommandEvent ev;
     OnChange(ev);
+
+    txtTitle->SetFocus();
 }
 
 
