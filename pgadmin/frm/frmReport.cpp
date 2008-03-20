@@ -173,6 +173,8 @@ frmReport::frmReport(wxWindow *p)
 
     wxCommandEvent ev;
     OnChange(ev);
+
+    txtTitle->SetFocus();
 }
 
 
@@ -1540,4 +1542,5 @@ void reportObjectListFactory::GenerateReport(frmReport *report, pgObject *object
 
     report->XmlAddSectionTableFromListView(section, list);
 }
+
 
