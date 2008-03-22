@@ -175,7 +175,7 @@ void dlgSynonym::ProcessSchemaChange()
 
     wxString sql = wxT("SELECT relname FROM pg_class c, pg_namespace n\n")
         wxT("  WHERE c.relnamespace = n.oid AND\n")
-        wxT("        n.nspname = '") + cbTargetSchema->GetValue() + wxT("' AND\n")
+        wxT("        n.nspname = ") + qtDbString(cbTargetSchema->GetValue()) + wxT(" AND\n")
         wxT("        c.relkind = '") + restriction + wxT("' ORDER BY relname;");
 
     pgSet *objects = connection->ExecuteSet(sql);
