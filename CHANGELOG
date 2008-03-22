@@ -40,6 +40,9 @@ Changes
 
 Date       Dev Ver    Change details
 ---------- --- ------  --------------
+2008-03-22 DP  1.8.3  If stopping the server service fails after stopping
+                      dependent services, wait 5 seconds and try again up to 10
+                      times to allow the dependents time to shutdown fully.
 2008-03-19 DP  1.8.3  Don't include the -h option when calling pg_dump or
                       pg_restore if there is no hostname to specify.
 2008-03-18 DP  1.8.3  Convert setting names to lower case so we don't end up

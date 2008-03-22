@@ -338,7 +338,19 @@ bool pgServer::StopService()
                             done=false;
                     }
                     if (done)
+                    {
                         done = (::ControlService(serviceHandle, SERVICE_CONTROL_STOP, &st) != 0);
+
+                        int retries = 10;
+                        while (!done && retries > 0)
+                        {
+                            done = (::ControlService(serviceHandle, SERVICE_CONTROL_STOP, &st) != 0);
+                            retries--;
+
+                            wxSleep(5);
+                        }
+
+                    }
                 }
             }
             // report error
