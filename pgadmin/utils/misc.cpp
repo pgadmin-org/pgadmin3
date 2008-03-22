@@ -1071,6 +1071,7 @@ wxString firstLineOnly(const wxString &str)
 bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int minorVer)
 {
 	wxArrayString output;
+    bool isEnterpriseDB = false;
 
 #ifdef __WXMSW__
  	if (wxExecute(cmd + wxT(" --version"), output, 0) != 0)
@@ -1081,6 +1082,10 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
         wxLogError(_("Failed to execute: %s --version"), cmd.c_str());
         return false;
     }
+
+    // Is this an EDB utility?
+    if (output[0].Contains(wxT("EnterpriseDB")))
+        isEnterpriseDB = true;
 
 	wxString version = output[0].AfterLast(' ');
 	long actualMajor = 0, actualMinor = 0;
@@ -1105,6 +1110,11 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
     }
 
     tmp.ToLong(&actualMinor);
+
+    // EnterpriseDB's 8.3R1 utilties are based on PG8.2, so correct the version number here. 
+    // This will need more work when 8.3R2 is released :-(
+    if (isEnterpriseDB && actualMajor == 8 && actualMinor == 3)
+        actualMinor = 2;
 
 	if (actualMajor > majorVer)
 		return true;
