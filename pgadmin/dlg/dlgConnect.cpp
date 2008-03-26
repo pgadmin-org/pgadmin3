@@ -62,7 +62,7 @@ dlgConnect::~dlgConnect()
 
 wxString dlgConnect::GetHelpPage() const
 {
-    return wxT("pg/server-connect");
+    return wxT("connect");
 }
 
 
