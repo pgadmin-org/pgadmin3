@@ -57,8 +57,8 @@ options:
 </PRE>
 
 <P>The connect string required is a standard PostgreSQL libpq connection
-string (see the <a href="pg/libpq.html#libpq-connect">PostgreSQL 
-documentation</a> for further details). For example, the following 
+string (see the <a href="http://www.postgresql.org/docs/current/static/libpq.html#libpq-connect">PostgreSQL
+documentation</a> for further details). For example, the following
 command lilne will run pgAgent against a server listening on the localhost,
 using a database called 'pgadmin', connecting as the user 'postgres':</P>
 
@@ -75,7 +75,7 @@ include an additional parameter to tell the service what to do:</P>
 Usage:
   pgAgent REMOVE &lt;serviceName&gt;
   pgAgent INSTALL &lt;serviceName> [options] &lt;connect-string&gt;
-  
+
   options:
     -u &lt;user or DOMAIN\user&gt;
     -p &lt;password&gt;
@@ -85,14 +85,14 @@ Usage:
     -l &lt;logging verbosity (ERROR=0, WARNING=1, DEBUG=2, default 0)&gt;
 </PRE>
 
-<P>The service may be quite simply installed from the command line as follows 
+<P>The service may be quite simply installed from the command line as follows
 (adjusting the path as required):</P>
 
 <PRE>
 "C:\Program Files\pgAdmin III\pgAgent" INSTALL pgAgent -u postgres -p secret hostaddr=127.0.0.1 dbname=pgadmin user=postgres
 </PRE>
 
-<P>The service may then be started from the command line using <I>net start pgAgent</I>, 
+<P>The service may then be started from the command line using <I>net start pgAgent</I>,
 or from the <I>Services</I> control panel applet. Any logging output or errors will be
 reported in the Application event log.</P>
 
@@ -102,17 +102,17 @@ that you should be aware of:</P>
 
 <P><B>Database password</B> - <I>DO NOT</I> be tempted to include a password in
 the pgAgent connection string - on *nix systems it may be visible to all users
-in 'ps' output, and on Windows systems it will be stored in the registry in 
-plain text. Instead, use a libpq <I>~/.pgpass</I> file to store the passwords for 
+in 'ps' output, and on Windows systems it will be stored in the registry in
+plain text. Instead, use a libpq <I>~/.pgpass</I> file to store the passwords for
 every database that pgAgent must access. Details of this technique may be
-found in the <a href="pg/libpq-pgpass.html">PostgreSQL documentation</a>.</P>
+found in the <a href="http://www.postgresql.org/docs/current/static/libpq-pgpass.html">PostgreSQL documentation</a>.</P>
 
 <P><B>System/database access</B> - all jobs run by pgAgent will run with the
 security privileges of the pgAgent user. SQL steps will run as the user that
-pgAgent connects to the database as, and batch/shell scripts will run as the 
-operating system user that the pgAgent service or daemon is running under. 
-Because of this, it is essential to maintain control over the users that are 
-able to create and modify jobs. By default, only the user that created the 
+pgAgent connects to the database as, and batch/shell scripts will run as the
+operating system user that the pgAgent service or daemon is running under.
+Because of this, it is essential to maintain control over the users that are
+able to create and modify jobs. By default, only the user that created the
 pgAgent database objects will be able to do this - this will normally be the
 PostgreSQL superuser.</P>
 
