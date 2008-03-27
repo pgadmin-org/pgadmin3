@@ -347,7 +347,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             wxT(" ORDER BY proname"));
 
     pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
-                    "SELECT oid, format_type(oid, typtypmod) AS typname FROM pg_type"));
+                    "SELECT oid, format_type(oid, NULL) AS typname FROM pg_type"));
 
     typeMap map;
 
