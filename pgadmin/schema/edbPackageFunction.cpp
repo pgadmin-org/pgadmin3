@@ -209,7 +209,7 @@ edbPackageFunction *edbPackageFunctionFactory::AppendFunctions(pgObject *obj, ed
     packageFunctions = obj->GetDatabase()->ExecuteSet(sql);
 
     pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
-                    "SELECT oid, format_type(oid, typtypmod) AS typname FROM pg_type"));
+                    "SELECT oid, format_type(oid, NULL) AS typname FROM pg_type"));
 
     while(!types->Eof())
     {
@@ -406,5 +406,6 @@ edbPackageProcedureFactory::edbPackageProcedureFactory()
 
 edbPackageProcedureFactory packageProcedureFactory;
 static pgaCollectionFactory cfp(&packageProcedureFactory, __("Procedures"), procedures_xpm);
+
 
 
