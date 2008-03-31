@@ -335,10 +335,8 @@ bool dlgEditGridOptions::Validate()
             filter->MarkerAdd(line, 0);
             filter->EnsureVisible(line);
         }
-    } else {
-		errMsg.Replace(wxT("%"), wxT("%%")); 
+    } else
         wxLogError(wxT("%s"), errMsg.BeforeFirst('\n').c_str());
-    }
 
     // Cleanup
     PQclear(qryRes);

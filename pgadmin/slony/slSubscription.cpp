@@ -100,7 +100,7 @@ void slSubscription::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
                 slSet *set=(slSet*)browser->GetObject(id);
                 if (set && set->IsCreatedBy(setFactory))
                 {
-                    wxLogInfo(wxT("Adding child object to subscription ") + GetIdentifier());
+                    wxLogInfo(wxT("Adding child object to subscription %s"), GetIdentifier().c_str());
 
                     browser->AppendCollection(this, slSequenceFactory);
                     browser->AppendCollection(this, slTableFactory);

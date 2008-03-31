@@ -811,7 +811,7 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
             expandedKids=true;
             // Log
             
-            wxLogInfo(wxT("Adding child object to server ") + GetIdentifier());
+            wxLogInfo(wxT("Adding child object to server %s"), GetIdentifier().c_str());
     
             if (settings->GetDisplayOption(_("Databases")))
                 browser->AppendCollection(this, databaseFactory);
@@ -949,7 +949,7 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     if (conn)
     {
-        wxLogInfo(wxT("Displaying statistics for server ") + GetIdentifier());
+        wxLogInfo(wxT("Displaying statistics for server %s"), GetIdentifier().c_str());
 
         // Add the statistics view columns
         statistics->ClearAll();

@@ -212,7 +212,7 @@ void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
         browser->RemoveDummyChild(this);
         // Log
-        wxLogInfo(wxT("Adding child object to node ") + GetIdentifier());
+        wxLogInfo(wxT("Adding child object to node %s"), GetIdentifier().c_str());
 
         browser->AppendCollection(this, pathFactory);
         browser->AppendCollection(this, listenFactory);
@@ -305,7 +305,7 @@ pgObject *slNodeFactory::CreateObjects(pgCollection *coll, ctlTree *browser, con
 
 void slNodeCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    wxLogInfo(wxT("Displaying statistics for nodes on Cluster ")+ GetCluster()->GetIdentifier());
+    wxLogInfo(wxT("Displaying statistics for nodes on Cluster %s"), GetCluster()->GetIdentifier().c_str());
 
     // Add the statistics view columns
     statistics->ClearAll();

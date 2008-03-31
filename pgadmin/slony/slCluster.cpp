@@ -271,7 +271,7 @@ void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
             delete set;
         }
 
-        wxLogInfo(wxT("Adding child object to cluster ") + GetIdentifier());
+        wxLogInfo(wxT("Adding child object to cluster %s"), GetIdentifier().c_str());
 
         browser->AppendCollection(this, nodeFactory);
         browser->AppendCollection(this, setFactory);

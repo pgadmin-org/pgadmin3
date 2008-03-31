@@ -740,7 +740,7 @@ pgTableCollection::pgTableCollection(pgaFactory *factory, pgSchema *sch)
     
 void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    wxLogInfo(wxT("Displaying statistics for tables on ")+ GetSchema()->GetIdentifier());
+    wxLogInfo(wxT("Displaying statistics for tables on %s"), GetSchema()->GetIdentifier().c_str());
 
     bool hasSize=GetConnection()->HasFeature(FEATURE_SIZE);
 
@@ -1087,4 +1087,5 @@ bool enableAllTriggersFactory::CheckEnable(pgObject *obj)
                && (obj->GetOwner() == obj->GetConnection()->GetUser() || obj->GetServer()->GetSuperUser())
                && ((pgTable*)obj)->GetConnection()->BackendMinimumVersion(8, 1);
 }
+
 
