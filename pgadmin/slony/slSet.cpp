@@ -172,7 +172,7 @@ void slSet::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *propert
 
         browser->RemoveDummyChild(this);
         // Log
-        wxLogInfo(wxT("Adding child object to set ") + GetIdentifier());
+        wxLogInfo(wxT("Adding child object to set %s"), GetIdentifier().c_str());
 
         if (GetOriginId() == GetCluster()->GetLocalNodeID())
         {
@@ -466,5 +466,6 @@ bool slonyMoveSetFactory::CheckEnable(pgObject *obj)
 
     return set->GetOriginId() == set->GetCluster()->GetLocalNodeID()  && !set->GetLockXXID().IsEmpty();
 }
+
 
 
