@@ -222,9 +222,9 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 					wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n");
 
 	if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
-		sql += wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE E'\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
+		sql += wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE E'\\\\_%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
 	else
-		sql += wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE '\\\\_%%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
+		sql += wxT(" WHERE t.typtype != 'd' AND t.typname NOT LIKE '\\\\_%' AND t.typnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
 
 	sql += restriction + systemRestriction +
 			wxT(" ORDER BY t.typname");

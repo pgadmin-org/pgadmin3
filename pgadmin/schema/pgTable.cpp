@@ -740,7 +740,7 @@ pgTableCollection::pgTableCollection(pgaFactory *factory, pgSchema *sch)
     
 void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    wxLogInfo(wxT("Displaying statistics for tables on ")+ GetSchema()->GetIdentifier());
+    wxLogInfo(wxT("Displaying statistics for tables on %s"), GetSchema()->GetIdentifier().c_str());
 
     bool hasSize=GetConnection()->HasFeature(FEATURE_SIZE);
 
