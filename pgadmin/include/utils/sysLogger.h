@@ -41,9 +41,10 @@ private:
 
 #define wxLOG_Notice (wxLOG_User+1)
 #define wxLOG_Sql (wxLOG_User+2)
+#define wxLOG_QuietError (wxLOG_User+3)
 
 DECLARE_LOG_FUNCTION(Notice);
 DECLARE_LOG_FUNCTION(Sql);
-
+DECLARE_LOG_FUNCTION(QuietError);
 
 #endif
