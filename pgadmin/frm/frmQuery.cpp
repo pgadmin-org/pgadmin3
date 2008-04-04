@@ -1736,6 +1736,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
         {
             pgError err = sqlResult->GetResultError();
             wxString errMsg = err.formatted_msg;
+            wxLogQuietError(conn->GetLastError().Trim().c_str());
 
             long errPos;
             err.statement_pos.ToLong(&errPos);

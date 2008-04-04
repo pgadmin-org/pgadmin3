@@ -27,7 +27,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
 {
     wxString str(message, wxConvUTF8);
     
-    wxLogNotice(wxT("%s"), str.c_str());
+    wxLogNotice(wxT("%s"), str.Trim().c_str());
     ((pgQueryThread*)arg)->appendMessage(str);
 }
 
@@ -45,7 +45,7 @@ pgQueryThread::pgQueryThread(pgConn *_conn, const wxString &qry, int _resultToRe
     eventId=_eventId;
     data=_data;
 
-    wxLogSql(wxT("Thread Query %s"), qry.c_str());
+    wxLogSql(wxT("Thread query (%s:%d): %s"), conn->GetHost().c_str(), conn->GetPort(), qry.c_str());
 
     conn->RegisterNoticeProcessor(pgNoticeProcessor, this);
     if (conn->conn)
