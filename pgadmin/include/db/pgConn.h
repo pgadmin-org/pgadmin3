@@ -127,7 +127,7 @@ public:
     void RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg);
     wxMBConv *GetConv() { return conv; };
 
-    void LogError();
+    void LogError(const bool quiet=false);
 
     bool IsSSLconnected();
     PGconn *connection() { return conn; }

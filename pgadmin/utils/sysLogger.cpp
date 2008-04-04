@@ -25,6 +25,27 @@ wxLogLevel sysLogger::logLevel=LOG_ERRORS;
 wxString sysLogger::logFile=wxT("debug.log");
 
 // IMPLEMENT_LOG_FUNCTION(Sql) from wx../common/log.c
+void wxVLogQuietError(const wxChar *szFormat, va_list argptr)
+{
+    static wxChar s_szBuf[1024];
+
+    if (sysLogger::logLevel >= LOG_ERRORS)
+    {
+        wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
+        wxLog::OnLog(wxLOG_QuietError, s_szBuf, time(NULL));
+
+    }
+}
+
+void wxLogQuietError(const wxChar *szFormat, ...)
+{
+    va_list argptr;
+    va_start(argptr, szFormat);
+    wxVLogQuietError(szFormat, argptr);
+    va_end(argptr);
+}
+
+
 void wxVLogSql(const wxChar *szFormat, va_list argptr)
 {
     static wxChar s_szBuf[1024];
@@ -54,8 +75,7 @@ void wxVLogNotice(const wxChar *szFormat, va_list argptr)
     if (sysLogger::logLevel >= LOG_NOTICE)
     {
         wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
-        wxLog::OnLog(wxLOG_Sql, s_szBuf, time(NULL));
-
+        wxLog::OnLog(wxLOG_Notice, s_szBuf, time(NULL));
     }
 }
 
@@ -83,6 +103,10 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
             msgtype = wxT("ERROR  ");
             preamble = _("An error has occurred:\n\n");
             icon = wxICON_ERROR;
+            break;
+
+        case wxLOG_QuietError:
+            msgtype = wxT("ERROR  ");
             break;
 
         case wxLOG_Warning:
@@ -146,13 +170,15 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 
         case LOG_ERRORS:
             if (level == wxLOG_FatalError || 
-                level == wxLOG_Error)
+                level == wxLOG_Error ||
+                level == wxLOG_QuietError)
                 WriteLog(fullmsg);
             break;
 
         case LOG_NOTICE:
             if (level == wxLOG_FatalError || 
                 level == wxLOG_Error ||
+                level == wxLOG_QuietError ||
                 level == wxLOG_Notice)
                 WriteLog(fullmsg);
             break;
@@ -160,6 +186,7 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
         case LOG_SQL:
             if (level == wxLOG_FatalError ||
                 level == wxLOG_Error ||
+                level == wxLOG_QuietError ||
                 level == wxLOG_Message ||
                 level == wxLOG_Status ||
                 level == wxLOG_Notice ||

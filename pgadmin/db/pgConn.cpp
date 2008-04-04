@@ -489,11 +489,13 @@ void pgConn::RegisterNoticeProcessor(PQnoticeProcessor proc, void *arg)
 
 void pgConn::Notice(const char *msg)
 {
-    wxString str(msg, *conv);
-    wxLogNotice(wxT("%s"), str.c_str());
-
     if (noticeArg && noticeProc)
         (*noticeProc)(noticeArg, msg);
+    else
+    {
+        wxString str(msg, *conv);
+        wxLogNotice(wxT("%s"), str.Trim().c_str());
+    }
 }
 
 
@@ -539,8 +541,7 @@ bool pgConn::ExecuteVoid(const wxString& sql, bool reportError)
     if (lastResultStatus != PGRES_TUPLES_OK &&
         lastResultStatus != PGRES_COMMAND_OK)
     {
-        if (reportError)
-            LogError();
+        LogError(!reportError);
         return false;
     }
 
@@ -649,22 +650,19 @@ wxString pgConn::GetLastError() const
 
 
 
-void pgConn::LogError()
+void pgConn::LogError(const bool quiet)
 {
     if (conn)
     {
-        wxLogError(wxT("%s"), GetLastError().c_str());
-
-        IsAlive();
-#if 0
-        ConnStatusType status = PQstatus(conn);
-        if (status == CONNECTION_BAD)
+        if (quiet)
         {
-            PQfinish(conn);
-            conn=0;
-            connStatus = PGCONN_BROKEN;
+            wxLogQuietError(wxT("%s"), GetLastError().Trim().c_str());
         }
-#endif
+        else
+        {
+            wxLogError(wxT("%s"), GetLastError().Trim().c_str());
+            IsAlive();
+        }
     }
 }
 
