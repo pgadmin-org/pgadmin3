@@ -36,6 +36,7 @@
 #include "dlg/dlgManageFavourites.h"
 #include "dlg/dlgManageMacros.h"
 #include "utils/favourites.h"
+#include "utils/sysLogger.h"
 #include "utils/utffile.h"
 #include "frm/frmReport.h"
 
