@@ -71,6 +71,14 @@ int dlgView::Go(bool modal)
         // create mode
     }
 
+    // Find, and disable the RULE ACL option if we're 8.2
+    if (connection->BackendMinimumVersion(8, 2))
+    {
+        // Disable the checkbox
+        if (!DisablePrivilege(wxT("RULE")))
+            wxLogError(_("Failed to disable the RULE privilege checkbox!"));
+    }
+
     return dlgSecurityProperty::Go(modal);
 }
 
