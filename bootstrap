@@ -10,12 +10,12 @@
 
 # Check for aclocal 1.9/1.10
 echo "Checking aclocal..."
-RET=`type aclocal-1.10 2&>1 /dev/null || echo fail`
+RET=`type aclocal-1.10 > /dev/null 2>&1 || echo fail`
 if [ ! $RET ];
 then
   ACLOCAL=aclocal-1.10
 else
-  RET=`type aclocal-1.9 2&>1 /dev/null || echo fail` 
+  RET=`type aclocal-1.9 > /dev/null 2>&1 || echo fail` 
   if [ ! $RET ];
   then
     ACLOCAL=aclocal-1.9
@@ -27,12 +27,12 @@ fi
 
 # Check for automake 1.9/1.10
 echo "Checking automake..."
-RET=`type automake-1.10 2&>1 /dev/null || echo fail`
+RET=`type automake-1.10 > /dev/null 2>&1 || echo fail`
 if [ ! $RET ];
 then
   AUTOMAKE=automake-1.10
 else
-  RET=`type automake-1.9 2&>1 /dev/null || echo fail`
+  RET=`type automake-1.9 > /dev/null 2>&1 || echo fail`
   if [ ! $RET ];
   then
     AUTOMAKE=automake-1.9
