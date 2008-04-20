@@ -230,22 +230,22 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
         execCmd.Replace(wxT("$$OBJECTTYPE"), wxEmptyString);
 
     // Schema
-    if (obj && obj->GetSchema())
+    if (obj)
     {
         if (obj->GetMetaType() == PGM_SCHEMA)
             execCmd.Replace(wxT("$$SCHEMA"), obj->GetName());
-        else
+        else if (obj->GetSchema())
             execCmd.Replace(wxT("$$SCHEMA"), obj->GetSchema()->GetName());
     }
     else
         execCmd.Replace(wxT("$$SCHEMA"), wxEmptyString);
 
     // Table
-    if (obj && obj->GetTable())
+    if (obj)
     {
         if (obj->GetMetaType() == PGM_TABLE)
             execCmd.Replace(wxT("$$TABLE"), obj->GetName());
-        else
+        else if (obj->GetTable())
             execCmd.Replace(wxT("$$TABLE"), obj->GetTable()->GetName());
     }
     else
