@@ -164,6 +164,10 @@ void dlgIndexBase::OnSelectComboCol(wxCommandEvent &ev)
 
 void dlgIndexBase::OnSelectCol()
 {
+	// Can't change the columns on an existing index.
+	if (index)
+		return;
+
     if (lstColumns->GetSelection() != wxNOT_FOUND)
         btnRemoveCol->Enable(true);
     else
