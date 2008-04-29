@@ -132,7 +132,11 @@ wxString frmRestore::GetHelpPage() const
 
 void frmRestore::OnSelectFilename(wxCommandEvent &ev)
 {
-    wxFileDialog file(this, _("Select backup filename"), ::wxPathOnly(txtFilename->GetValue()), txtFilename->GetValue(), 
+    
+    wxString FilenameOnly;    
+    wxFileName::SplitPath(txtFilename->GetValue(), NULL, NULL, &FilenameOnly, NULL);
+    
+    wxFileDialog file(this, _("Select backup filename"), ::wxPathOnly(txtFilename->GetValue()), FilenameOnly, 
         _("Backup files (*.backup)|*.backup|All files (*.*)|*.*"));
 
     if (file.ShowModal() == wxID_OK)
