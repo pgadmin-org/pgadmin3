@@ -112,7 +112,7 @@ wxString frmBackup::GetHelpPage() const
 
 void frmBackup::OnSelectFilename(wxCommandEvent &ev)
 {
-    wxString title, prompt;
+    wxString title, prompt, FilenameOnly;
 
     if (rbxFormat->GetSelection() == 2) // plain
     {
@@ -125,8 +125,8 @@ void frmBackup::OnSelectFilename(wxCommandEvent &ev)
         prompt = _("Backup files (*.backup)|*.backup|All files (*.*)|*.*");
     }
 
-    
-    wxFileDialog file(this, title, ::wxPathOnly(txtFilename->GetValue()), txtFilename->GetValue(), prompt, wxFD_SAVE);
+    wxFileName::SplitPath(txtFilename->GetValue(), NULL, NULL, &FilenameOnly, NULL);
+    wxFileDialog file(this, title, ::wxPathOnly(txtFilename->GetValue()), FilenameOnly, prompt, wxFD_SAVE);
 
     if (file.ShowModal() == wxID_OK)
     {

@@ -86,13 +86,14 @@ wxString frmBackupServer::GetHelpPage() const
 
 void frmBackupServer::OnSelectFilename(wxCommandEvent &ev)
 {
-    wxString title, prompt;
+    wxString title, prompt, FilenameOnly;
 
     title  = _("Select output file");
     prompt = _("Query files (*.sql)|*.sql|All files (*.*)|*.*");
     
-    wxFileDialog file(this, title, ::wxPathOnly(txtFilename->GetValue()), txtFilename->GetValue(), prompt, wxFD_SAVE);
-
+    wxFileName::SplitPath(txtFilename->GetValue(), NULL, NULL, &FilenameOnly, NULL);
+    wxFileDialog file(this, title, ::wxPathOnly(txtFilename->GetValue()), FilenameOnly, prompt, wxFD_SAVE);
+    
     if (file.ShowModal() == wxID_OK)
     {
         txtFilename->SetValue(file.GetPath());
