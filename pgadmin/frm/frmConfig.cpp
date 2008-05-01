@@ -227,7 +227,7 @@ void frmConfig::OnClose(wxCloseEvent& event)
 
 void frmConfig::OnHelp(wxCommandEvent& event)
 {
-	DisplayHelp(GetHelpPage(), HELP_PGADMIN);
+	DisplayHelp(GetHelpPage(), HELP_POSTGRESQL);
 }
 
 void frmConfig::OnHint(wxCommandEvent& event)
