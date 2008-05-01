@@ -616,9 +616,19 @@ wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFo
             else
             {
                 if (user.Left(6) == wxT("group "))
-                    user = wxT("GROUP ") + qtIdent(user.Mid(6));
+				{
+					if (user.Mid(6).StartsWith(wxT("\\\"")) && user.Mid(6).EndsWith(wxT("\\\"")))
+                        user = wxT("GROUP ") + qtIdent(user.Mid(8, user.Length() - 10));
+					else
+						user = wxT("GROUP ") + qtIdent(user.Mid(6));
+				}
                 else
-                    user = qtIdent(user);
+				{
+					if (user.StartsWith(wxT("\\\"")) && user.EndsWith(wxT("\\\"")))
+                        user = qtIdent(user.Mid(2, user.Length() - 4));
+					else
+						user = qtIdent(user);
+				}
             }
 
             grant += GetPrivileges(allPattern, str, grantFor, user);
