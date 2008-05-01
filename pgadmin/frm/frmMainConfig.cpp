@@ -227,7 +227,7 @@ wxString frmMainConfig::GetHelpPage() const
 {
     wxString page;
     if (page.IsEmpty())
-    	page=wxT("pg/runtime-config");
+    	page=wxT("runtime-config");
 
     return page;
 }

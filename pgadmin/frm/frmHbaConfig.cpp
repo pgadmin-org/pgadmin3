@@ -223,7 +223,7 @@ wxString frmHbaConfig::GetHintString()
 
 wxString frmHbaConfig::GetHelpPage() const
 {
-    wxString page= wxT("pg/client-authentication");
+    wxString page= wxT("client-authentication");
 ;
     return page;
 }
