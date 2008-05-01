@@ -1379,6 +1379,9 @@ void dlgSecurityProperty::AddGroups(ctlComboBox *comboBox)
     if (!((securityPage && securityPage->cbGroups) || comboBox))
         return;
 
+	if (connection->BackendMinimumVersion(8, 1))
+		return;
+
     pgSet *set=connection->ExecuteSet(wxT("SELECT groname FROM pg_group ORDER BY groname"));
 
     if (set)
