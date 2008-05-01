@@ -424,7 +424,7 @@ bool pgSchemaObjCollection::CanCreate()
 #include "images/catalog-sm.xpm"
 #include "images/catalogs.xpm"
 
-pgSchemaBaseFactory::pgSchemaBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **imgSm) 
+pgSchemaBaseFactory::pgSchemaBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img, const char **imgSm) 
 : pgDatabaseObjFactory(tn, ns, nls, img, imgSm)
 {
 

@@ -39,7 +39,7 @@ class ctlSecurityPanel : public wxPanel
 
 public:
 
-    ctlSecurityPanel(wxNotebook *nb, const wxString &privList, char *privChars, wxImageList *imgList);
+    ctlSecurityPanel(wxNotebook *nb, const wxString &privList, const char *privChars, wxImageList *imgList);
     ~ctlSecurityPanel();
 
     ctlListView *lbPrivileges;
@@ -54,7 +54,7 @@ protected:
 
     wxButton *btnAddPriv, *btnDelPriv;
     int privilegeCount;
-    char *privilegeChars;
+    const char *privilegeChars;
     wxCheckBox **privCheckboxes;
     wxCheckBox *allPrivileges, *allPrivilegesGrant;
 

@@ -167,7 +167,7 @@ void frmGrantWizard::Go()
     chkList->SetFocus();
 
     wxString privList = wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER");
-    char *privChar="arwdRxt";
+    const char *privChar="arwdRxt";
     
     switch (object->GetMetaType())
     {

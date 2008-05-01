@@ -104,7 +104,7 @@ private:
 class slNodeObjFactory : public slObjFactory
 {
 public:
-    slNodeObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) : slObjFactory(tn, ns, nls, img) {}
+    slNodeObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img) : slObjFactory(tn, ns, nls, img) {}
     virtual pgCollection *CreateCollection(pgObject *obj);
 };
 

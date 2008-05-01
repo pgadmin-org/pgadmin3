@@ -356,7 +356,7 @@ void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
     Write(wxT("Display/") + engtype, display);
 }
 
-bool sysSettings::moveStringValue(wxChar *oldKey, wxChar *newKey, int index)
+bool sysSettings::moveStringValue(const wxChar *oldKey, const wxChar *newKey, int index)
 {
     wxString k1, k2;
     if (index >= 0)
@@ -384,7 +384,7 @@ bool sysSettings::moveStringValue(wxChar *oldKey, wxChar *newKey, int index)
 
 
 
-bool sysSettings::moveLongValue(wxChar *oldKey, wxChar *newKey, int index)
+bool sysSettings::moveLongValue(const wxChar *oldKey, const wxChar *newKey, int index)
 {
     wxString k1, k2;
     if (index >= 0)

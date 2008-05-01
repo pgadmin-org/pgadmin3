@@ -159,7 +159,7 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
             rule->iSetDefinition(definition);
             rule->iSetQuotedFullTable(collection->GetDatabase()->GetSchemaPrefix(rules->GetVal(wxT("nspname"))) 
                 + qtIdent(rules->GetVal(wxT("relname"))));
-            wxChar *evts[] = {0, wxT("SELECT"), wxT("UPDATE"), wxT("INSERT"), wxT("DELETE")};
+            const wxChar *evts[] = {0, wxT("SELECT"), wxT("UPDATE"), wxT("INSERT"), wxT("DELETE")};
             int evno=StrToLong(rules->GetVal(wxT("ev_type")));
             if (evno > 0 && evno < 5)
                 rule->iSetEvent(evts[evno]);

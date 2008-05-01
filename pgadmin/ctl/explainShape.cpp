@@ -45,7 +45,7 @@
 
 #define BMP_BORDER 3
 
-ExplainShape::ExplainShape(char *bmp[], const wxString &description, long tokenNo, long detailNo)
+ExplainShape::ExplainShape(const char *bmp[], const wxString &description, long tokenNo, long detailNo)
 {
     SetBitmap(wxBitmap(bmp));
     SetLabel(description, tokenNo, detailNo);

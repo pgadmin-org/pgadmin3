@@ -512,7 +512,7 @@ wxString pgObject::GetOwnerSql(int major, int minor, wxString objname)
 }
 
 
-void pgObject::AppendRight(wxString &rights, const wxString& acl, wxChar c, wxChar *rightName)
+void pgObject::AppendRight(wxString &rights, const wxString& acl, wxChar c, const wxChar *rightName)
 {
     if (acl.Find(c) >= 0)
     {
@@ -975,7 +975,7 @@ enum tokentype
 
 typedef struct __tokenaction
 {
-    wxChar *keyword, *replaceKeyword;
+    const wxChar *keyword, *replaceKeyword;
     int actionBefore, actionAfter;
     tokentype special;
     bool doBreak;

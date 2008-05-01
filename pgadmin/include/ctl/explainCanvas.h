@@ -44,7 +44,7 @@ private:
 class ExplainShape : public wxBitmapShape
 {
 public:
-    ExplainShape(char *bmp[], const wxString &description, long tokenNo=-1, long detailNo=-1);
+    ExplainShape(const char *bmp[], const wxString &description, long tokenNo=-1, long detailNo=-1);
     static ExplainShape *Create(long level, ExplainShape *last, const wxString &str); 
 
     void SetCondition(const wxString &str) { condition = str; }

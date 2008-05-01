@@ -375,7 +375,7 @@ void dlgOperator::OnChangeJoin(wxCommandEvent &ev)
 
 
 
-void dlgOperator::AppendFilledOperator(wxString &sql, wxChar *txt, ctlComboBoxFix *cb)
+void dlgOperator::AppendFilledOperator(wxString &sql, const wxChar *txt, ctlComboBoxFix *cb)
 {
     wxString op=cb->GetValue().Trim();
     if (!op.IsNull())

@@ -189,8 +189,8 @@ public:
 
 private:
 
-    bool moveStringValue(wxChar *oldKey, wxChar *newKey, int index=-1);
-    bool moveLongValue(wxChar *oldKey, wxChar *newKey, int index=-1);
+    bool moveStringValue(const wxChar *oldKey, const wxChar *newKey, int index=-1);
+    bool moveLongValue(const wxChar *oldKey, const wxChar *newKey, int index=-1);
 
     wxFont systemFont, sqlFont; 
 

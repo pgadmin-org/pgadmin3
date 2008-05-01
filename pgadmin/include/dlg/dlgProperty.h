@@ -166,7 +166,7 @@ protected:
 class dlgSecurityProperty : public dlgProperty
 {
 protected:
-    dlgSecurityProperty(pgaFactory *factory, frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, char *privilegeChar);
+    dlgSecurityProperty(pgaFactory *factory, frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privilegeList, const char *privilegeChar);
     ~dlgSecurityProperty();
     void AddGroups(ctlComboBox *comboBox=0);
     void AddUsers(ctlComboBox *comboBox=0);

@@ -635,8 +635,8 @@ void frmQuery::Go()
 
 typedef struct __sqltokenhelp
 {
-    wxChar *token;
-    wxChar *page;
+    const wxChar *token;
+    const wxChar *page;
     int type;
 } SqlTokenHelp;
 

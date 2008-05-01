@@ -20,7 +20,7 @@ class edbPackageFunction;
 class edbPackageFunctionFactory : public edbPackageObjFactory
 {
 public:
-    edbPackageFunctionFactory(const wxChar *tn=0, const wxChar *ns=0, const wxChar *nls=0, char **img=0);
+    edbPackageFunctionFactory(const wxChar *tn=0, const wxChar *ns=0, const wxChar *nls=0, const char **img=0);
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent) { return 0; };
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 

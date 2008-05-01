@@ -382,7 +382,7 @@ pgObject *edbPackageProcedureFactory::CreateObjects(pgCollection *collection, ct
 #include "images/function.xpm"
 #include "images/functions.xpm"
 
-edbPackageFunctionFactory::edbPackageFunctionFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) 
+edbPackageFunctionFactory::edbPackageFunctionFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img) 
 : edbPackageObjFactory(tn, ns, nls, img)
 {
     metaType = EDB_PACKAGEFUNCTION;

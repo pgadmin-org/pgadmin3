@@ -23,7 +23,7 @@ wxArrayPtrVoid *factoryArray=0;
 
 #define FACTORY_OFFSET 100
 
-pgaFactory::pgaFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **smImg)
+pgaFactory::pgaFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img, const char **smImg)
 {
     if (!factoryArray)
         factoryArray = new wxArrayPtrVoid;
@@ -113,7 +113,7 @@ pgaFactory *pgaFactory::GetFactoryByMetaType(const int type)
 
 wxArrayPtrVoid *deferredImagesArray=0;
 
-int pgaFactory::addIcon(char **img)
+int pgaFactory::addIcon(const char **img)
 {
     if (!imageList)
     {
@@ -181,7 +181,7 @@ int pgaFactory::GetMetaType()
 }
 
 
-pgaCollectionFactory::pgaCollectionFactory(pgaFactory *f, wxChar *tn, char **img, char **imgSm) 
+pgaCollectionFactory::pgaCollectionFactory(pgaFactory *f, const wxChar *tn, const char **img, const char **imgSm) 
 : pgaFactory(tn, f->GetNewString(), f->GetNewLongString())
 {
     itemFactory=f;

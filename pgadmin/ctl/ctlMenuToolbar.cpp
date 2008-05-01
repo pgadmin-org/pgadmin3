@@ -23,7 +23,7 @@
 WX_DEFINE_LIST(ctlMenuToolList);
 
 /* XPM */
-static char *pulldown_xpm[] = {
+static const char *pulldown_xpm[] = {
 "16 16 2 1",
 ". c Black",
 "  c None",

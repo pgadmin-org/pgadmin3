@@ -114,7 +114,7 @@ private:
 class slObjFactory : public pgDatabaseObjFactory
 {
 public:
-    slObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **smImg=0) : pgDatabaseObjFactory(tn, ns, nls, img, smImg) {}
+    slObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img, const char **smImg=0) : pgDatabaseObjFactory(tn, ns, nls, img, smImg) {}
     virtual pgCollection *CreateCollection(pgObject *obj);
 };
 

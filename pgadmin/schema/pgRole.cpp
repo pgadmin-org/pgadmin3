@@ -414,7 +414,7 @@ pgObject *pgGroupRoleFactory::CreateObjects(pgCollection *collection, ctlTree *b
 #include "images/loginroles.xpm"
 
 
-pgRoleBaseFactory::pgRoleBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) 
+pgRoleBaseFactory::pgRoleBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img) 
 : pgServerObjFactory(tn, ns, nls, img)
 {
 	metaType = PGM_ROLE;

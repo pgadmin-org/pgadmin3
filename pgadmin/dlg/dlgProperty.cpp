@@ -1301,7 +1301,7 @@ BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
 END_EVENT_TABLE();
 
 
-dlgSecurityProperty::dlgSecurityProperty(pgaFactory *f, frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privList, char *privChar)
+dlgSecurityProperty::dlgSecurityProperty(pgaFactory *f, frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privList, const char *privChar)
         : dlgProperty(f, frame, resName)
 {
     securityChanged=false;

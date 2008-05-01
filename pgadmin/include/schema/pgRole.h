@@ -22,7 +22,7 @@
 class pgRoleBaseFactory : public pgServerObjFactory
 {
 public:
-    pgRoleBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img);
+    pgRoleBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img);
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr);
 };
 

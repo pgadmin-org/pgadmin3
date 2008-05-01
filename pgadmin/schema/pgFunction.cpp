@@ -602,7 +602,7 @@ pgObject *pgProcedureFactory::CreateObjects(pgCollection *collection, ctlTree *b
 #include "images/function.xpm"
 #include "images/functions.xpm"
 
-pgFunctionFactory::pgFunctionFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img) 
+pgFunctionFactory::pgFunctionFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img) 
 : pgSchemaObjFactory(tn, ns, nls, img)
 {
     metaType = PGM_FUNCTION;

@@ -46,7 +46,7 @@ END_EVENT_TABLE();
 
 DEFINE_EVENT_TYPE(EVT_SECURITYPANEL_CHANGE)
 
-ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, char *privChars, wxImageList *imgList)
+ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, const char *privChars, wxImageList *imgList)
 : wxPanel(nb, -1, wxDefaultPosition, wxDefaultSize)
 {
     nbNotebook = nb;

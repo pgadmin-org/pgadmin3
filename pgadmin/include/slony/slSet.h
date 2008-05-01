@@ -102,7 +102,7 @@ private:
 class slSetObjFactory : public slObjFactory
 {
 public:
-    slSetObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, char **img, char **smImg=0) : slObjFactory(tn, ns, nls, img, smImg) {}
+    slSetObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img, const char **smImg=0) : slObjFactory(tn, ns, nls, img, smImg) {}
     virtual pgCollection *CreateCollection(pgObject *obj);
 };
 
