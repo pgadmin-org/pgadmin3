@@ -198,7 +198,7 @@ wxString frmPgpassConfig::GetHintString()
 
 wxString frmPgpassConfig::GetHelpPage() const
 {
-    wxString page= wxT("pg/libpq-pgpass");
+    wxString page= wxT("libpq-pgpass");
 ;
     return page;
 }
