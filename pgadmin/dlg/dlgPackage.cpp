@@ -105,7 +105,6 @@ void dlgPackage::CheckChange()
 
     CheckValid(enable, !txtName->GetValue().IsEmpty(), _("Please specify name."));
     CheckValid(enable, !txtHeader->GetText().IsEmpty(), _("Please specify package header."));
-    CheckValid(enable, !txtBody->GetText().IsEmpty(), _("Please specify package body."));
 
     if (package)
     {
@@ -141,13 +140,21 @@ wxString dlgPackage::GetSql()
         sql += wxT("\nEND ") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
     }
 
-    if (!package || (package && txtBody->GetText() != package->GetBodyInner())
-                 || (package && txtHeader->GetText() != package->GetHeaderInner()))
-    {
-        sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nAS\n");
-        sql += txtBody->GetText();
-        sql += wxT("\nEND ") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
-    }
+	if (!package || (package && txtBody->GetText() != package->GetBodyInner())
+				 || (package && txtHeader->GetText() != package->GetHeaderInner()))
+	{
+		if (!txtBody->GetText().IsEmpty())
+	    {
+			sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nAS\n");
+			sql += txtBody->GetText();
+			sql += wxT("\nEND ") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
+		}
+		else
+		{
+			if (package)
+				sql = wxT("DROP PACKAGE BODY ") + qtName + wxT(";\n\n");
+		}
+	}
 
     sql += GetGrant(wxT("X"), wxT("PACKAGE ") + qtName);
 
