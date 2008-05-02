@@ -1933,8 +1933,8 @@ void frmQuery::OnTimer(wxTimerEvent & event)
     wxString str=sqlResult->GetMessagesAndClear();
     if (!str.IsEmpty())
     {
-        msgResult->AppendText(str);
-        msgHistory->AppendText(str);
+        msgResult->AppendText(str + wxT("\n"));
+        msgHistory->AppendText(str + wxT("\n"));
     }
 
     // Increase the granularity for longer running queries
