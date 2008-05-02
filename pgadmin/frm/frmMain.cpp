@@ -482,6 +482,11 @@ void frmMain::Refresh(pgObject *data)
 
             newData->SetId(currentItem);    // not done automatically
             browser->SetItemData(currentItem, newData);
+
+			// Update the node text if this is an object, as it may have been renamed
+			if (!newData->IsCollection())
+				browser->SetItemText(currentItem, newData->GetDisplayName());
+
             delete data;
         }
         else
