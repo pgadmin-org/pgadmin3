@@ -360,7 +360,6 @@ void frmEditGrid::SetSortCols(const wxString &cols)
 { 
 	if (orderBy != cols) { 
 		orderBy = cols; 
-		optionsChanged = true;
 	} 
 }
 
@@ -368,7 +367,6 @@ void frmEditGrid::SetFilter(const wxString &filter)
 { 
 	if (rowFilter != filter) { 
 		rowFilter = filter; 
-		optionsChanged = true;
 	} 
 }
 
@@ -997,11 +995,9 @@ void frmEditGrid::OnOptions(wxCommandEvent& event)
         }
     }
 
-	optionsChanged = false;
     dlgEditGridOptions *winOptions = new dlgEditGridOptions(this, connection, tableName, sqlGrid);
-    winOptions->ShowModal();
-
-	if (optionsChanged) Go();
+    if (winOptions->ShowModal())
+	    Go();
 }
 
 
