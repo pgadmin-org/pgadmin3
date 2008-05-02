@@ -724,8 +724,7 @@ void frmEditGrid::OnPaste(wxCommandEvent &ev)
                     break;
 
                 case wxID_NO:
-                    sqlGrid->GetTable()->UndoLine(sqlGrid->GetGridCursorRow());
-                    sqlGrid->ForceRefresh();
+                    CancelChange();
                     break;
             }
         }
@@ -961,8 +960,43 @@ bool frmEditGrid::DoSave()
     return true;
 }
 
+void frmEditGrid::CancelChange()
+{
+    sqlGrid->HideCellEditControl();
+    sqlGrid->SaveEditControlValue();
+    sqlGrid->DisableCellEditControl();
+
+    toolBar->EnableTool(MNU_SAVE, false);
+    toolBar->EnableTool(MNU_UNDO, false);
+    fileMenu->Enable(MNU_SAVE, false);
+    editMenu->Enable(MNU_UNDO, false);
+
+    sqlGrid->GetTable()->UndoLine(sqlGrid->GetGridCursorRow());
+    sqlGrid->ForceRefresh();  
+}
+
+
 void frmEditGrid::OnOptions(wxCommandEvent& event)
 {
+    if (toolBar->GetToolEnabled(MNU_SAVE))
+    {
+        wxMessageDialog msg(this, _("There is unsaved data in a row.\nDo you want to store to the database?"), _("Unsaved data"),
+            wxYES_NO | wxICON_QUESTION | wxCANCEL);
+        switch (msg.ShowModal())
+        {
+            case wxID_YES:
+            {
+                if (!DoSave())
+                    return;
+                break;
+            }
+            case wxID_CANCEL:
+                return;
+            case wxID_NO:
+                CancelChange();
+        }
+    }
+
 	optionsChanged = false;
     dlgEditGridOptions *winOptions = new dlgEditGridOptions(this, connection, tableName, sqlGrid);
     winOptions->ShowModal();
