@@ -207,6 +207,7 @@ private:
     void OnOptions(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
     bool DoSave();
+	void CancelChange();
     void OnUndo(wxCommandEvent& event);
     void OnCellChange(wxGridEvent& event);
     void OnGridSelectCells(wxGridRangeSelectEvent& event);
@@ -285,4 +286,5 @@ public:
 };
 
 #endif
+
 
