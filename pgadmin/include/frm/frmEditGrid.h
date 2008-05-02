@@ -239,7 +239,6 @@ private:
     char relkind;
     OID relid;
     bool hasOids;
-	bool optionsChanged;
     wxString tableName;
     wxString primaryKeyColNumbers;
     wxString orderBy;
