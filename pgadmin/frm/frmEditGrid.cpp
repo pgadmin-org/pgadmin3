@@ -451,7 +451,7 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
                 doSkip = DoSave();
             }
         }
-        else if (sqlGrid->GetGridCursorRow() != event.GetRow() || table->IsLineSaved(sqlGrid->GetGridCursorRow()))
+        else if (sqlGrid->GetGridCursorRow() != event.GetRow())
         {
             toolBar->EnableTool(MNU_SAVE, false);
             toolBar->EnableTool(MNU_UNDO, false);
