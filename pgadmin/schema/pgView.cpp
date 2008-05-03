@@ -69,10 +69,15 @@ wxString pgView::GetSql(ctlTree *browser)
             + wxT("\n\nCREATE OR REPLACE VIEW ") + GetQuotedFullIdentifier() + wxT(" AS \n")
             + GetFormattedDefinition()
             + wxT("\n\n") 
-            + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier())
-            + GetGrant(wxT("arwdRxt"), wxT("TABLE ") + GetQuotedFullIdentifier())
-            + GetCommentSql()
-            + wxT("\n");
+            + GetOwnerSql(7, 3, wxT("TABLE ") + GetQuotedFullIdentifier());
+
+        if (GetConnection()->BackendMinimumVersion(8, 2))
+            sql += GetGrant(wxT("arwdxt"), wxT("TABLE ") + GetQuotedFullIdentifier());
+        else
+            sql += GetGrant(wxT("arwdRxt"), wxT("TABLE ") + GetQuotedFullIdentifier());
+
+        sql += GetCommentSql()
+             + wxT("\n");
 
         pgCollection *columns=browser->FindCollection(columnFactory, GetId());
         if (columns)
