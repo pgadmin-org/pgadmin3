@@ -119,7 +119,7 @@ class ctlCodeWindow : public pgFrame
 	void	updateSourceCode( dbgResultset & breakpoint );	// Update the source code window
 	bool	connectionLost( dbgResultset & resultSet );	    // Returns true if proxy lost it's connection
 	bool	gotFatalError( dbgResultset & resultSet );	    // Returns true if result set indicates a fatal error has occurred
-	void 	popupError( dbgResultset & resultSet, wxString title);
+	void 	popupError(dbgResultset &resultSet);
 	void	addBreakpoint( dbgBreakPoint * breakpoint, wxEventType nextStep );
 
 	void	ResultPortAttach( wxCommandEvent & event );			// Attach to debugger port complete
