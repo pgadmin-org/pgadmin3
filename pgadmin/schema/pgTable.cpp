@@ -768,10 +768,27 @@ void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
     statistics->AddColumn(_("Tuples inserted"), 50);
     statistics->AddColumn(_("Tuples updated"), 50);
     statistics->AddColumn(_("Tuples deleted"), 50);
+    if (GetConnection()->BackendMinimumVersion(8, 3))
+    {
+        statistics->AddColumn(_("Tuples HOT updated"), 50);
+        statistics->AddColumn(_("Live tuples"), 50);
+        statistics->AddColumn(_("Dead tuples"), 50);
+    }
+    if (GetConnection()->BackendMinimumVersion(8, 2))
+    {
+        statistics->AddColumn(_("Last vacuum"), 50);
+        statistics->AddColumn(_("Last autovacuum"), 50);
+        statistics->AddColumn(_("Last analyze"), 50);
+        statistics->AddColumn(_("Last autoanalyze"), 50);
+    }
     if (hasSize)
         statistics->AddColumn(_("Size"), 60);
 
     wxString sql=wxT("SELECT st.relname, n_tup_ins, n_tup_upd, n_tup_del");
+    if (GetConnection()->BackendMinimumVersion(8, 3))
+        sql += wxT(", n_tup_hot_upd, n_live_tup, n_dead_tup");
+    if (GetConnection()->BackendMinimumVersion(8, 2))
+        sql += wxT(", last_vacuum, last_autovacuum, last_analyze, last_autoanalyze");
     if (hasSize)
         sql += wxT(", pg_size_pretty(pg_relation_size(st.relid)")
                wxT(" + CASE WHEN cl.reltoastrelid = 0 THEN 0 ELSE pg_relation_size(cl.reltoastrelid) + COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=cl.reltoastrelid)::int8, 0) END")
@@ -781,20 +798,35 @@ void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
            wxT("  JOIN pg_class cl on cl.oid=st.relid\n")
 	       wxT(" WHERE schemaname = ") + qtDbString(GetSchema()->GetName())
 	    +  wxT("\n ORDER BY relname");
-
+	    
     pgSet *stats = GetDatabase()->ExecuteSet(sql);
 
     if (stats)
     {
         long pos=0;
+        int i;
         while (!stats->Eof())
         {
+            i = 4;
             statistics->InsertItem(pos, stats->GetVal(wxT("relname")), PGICON_STATISTICS);
             statistics->SetItem(pos, 1, stats->GetVal(wxT("n_tup_ins")));
             statistics->SetItem(pos, 2, stats->GetVal(wxT("n_tup_upd")));
             statistics->SetItem(pos, 3, stats->GetVal(wxT("n_tup_del")));
+            if (GetConnection()->BackendMinimumVersion(8, 3))
+            {
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("n_tup_hot_upd")));
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("n_live_tup")));
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("n_dead_tup")));
+            }
+            if (GetConnection()->BackendMinimumVersion(8, 2))
+            {
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("last_vacuum")));
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("last_autovacuum")));
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("last_analyze")));
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("last_autoanalyze")));
+            }
             if (hasSize)
-                statistics->SetItem(pos, 4, stats->GetVal(wxT("size")));
+                statistics->SetItem(pos, i, stats->GetVal(wxT("size")));
             stats->MoveNext();
             pos++;
         }
@@ -816,9 +848,18 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
              wxT(", idx_scan AS ") + qtIdent(_("Index Scans")) +
              wxT(", idx_tup_fetch AS ") + qtIdent(_("Index Tuples Fetched"))+
              wxT(", n_tup_ins AS ") + qtIdent(_("Tuples Inserted"))+
-             wxT(", n_tup_upd AS ") + qtIdent(_("Tuples Updated")) +
-             wxT(", n_tup_del AS ") + qtIdent(_("Tuples Deleted")) +
-             wxT(", heap_blks_read AS ") + qtIdent(_("Heap Blocks Read")) +
+             wxT(", n_tup_upd AS ") + qtIdent(_("Tuples Updated"))+
+             wxT(", n_tup_del AS ") + qtIdent(_("Tuples Deleted"));
+             
+    if (GetConnection()->BackendMinimumVersion(8, 3))
+    {
+        sql +=
+             wxT(", n_tup_hot_upd AS ") + qtIdent(_("Tuples HOT Updated"))+
+             wxT(", n_live_tup AS ") + qtIdent(_("Live Tuples"))+
+             wxT(", n_dead_tup AS ") + qtIdent(_("Dead Tuples"));
+    }
+    
+    sql +=   wxT(", heap_blks_read AS ") + qtIdent(_("Heap Blocks Read")) +
              wxT(", heap_blks_hit AS ") + qtIdent(_("Heap Blocks Hit")) +
              wxT(", idx_blks_read AS ") + qtIdent(_("Index Blocks Read")) +
              wxT(", idx_blks_hit AS ") + qtIdent(_("Index Blocks Hit")) +
