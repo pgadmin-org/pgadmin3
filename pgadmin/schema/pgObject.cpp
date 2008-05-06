@@ -310,6 +310,15 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
     }
 }
 
+void pgObject::CreateList3Columns(ctlListView *list, const wxString &left, const wxString &middle, const wxString &right)
+{
+    list->ClearAll();
+    list->AddColumn(left, 90);
+    list->AddColumn(middle, 50);
+    list->AddColumn(right, 400);
+}
+
+
 void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const wxString &right)
 {
     list->ClearAll();

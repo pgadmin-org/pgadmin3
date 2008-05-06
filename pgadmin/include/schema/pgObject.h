@@ -134,6 +134,7 @@ public:
 	wxString qtDbString(const wxString &str);
 
 protected:
+    void CreateList3Columns(ctlListView *properties, const wxString &left=_("Object"), const wxString &middle=_("Owner"), const wxString &right=_("Value"));
     void CreateListColumns(ctlListView *properties, const wxString &left=_("Property"), const wxString &right=_("Value"));
 
     void AppendMenu(wxMenu *menu, int type=-1);

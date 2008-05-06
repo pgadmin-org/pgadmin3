@@ -67,7 +67,7 @@ void pgCollection::ShowList(const wxString& name, ctlTree *browser, ctlListView 
         pgObject *data;
 
         // Setup listview
-        CreateListColumns(properties, wxGetTranslation(name), _("Comment"));
+        CreateList3Columns(properties, wxGetTranslation(name), _("Owner"), _("Comment"));
 
         wxTreeItemId item = browser->GetFirstChild(GetId(), cookie);
         long pos=0;
@@ -77,7 +77,8 @@ void pgCollection::ShowList(const wxString& name, ctlTree *browser, ctlListView 
             if (IsCollectionFor(data))
             {
                 properties->InsertItem(pos, data->GetFullName(), data->GetIconId());
-                properties->SetItem(pos, 1, firstLineOnly(data->GetComment()));
+                properties->SetItem(pos, 1, data->GetOwner());
+                properties->SetItem(pos, 2, firstLineOnly(data->GetComment()));
                 pos++;
             }
             // Get the next item
