@@ -133,7 +133,7 @@ jslid                serial               NOT NULL PRIMARY KEY,
 jsljlgid             int4                 NOT NULL REFERENCES pgagent.pga_joblog (jlgid) ON DELETE CASCADE ON UPDATE RESTRICT,
 jsljstid             int4                 NOT NULL REFERENCES pgagent.pga_jobstep (jstid) ON DELETE CASCADE ON UPDATE RESTRICT,
 jslstatus            char                 NOT NULL CHECK (jslstatus IN ('r', 's', 'i', 'f', 'd')) DEFAULT 'r', -- running, success, ignored, failed, aborted
-jslresult            int2                 NULL,
+jslresult            int4                 NULL,
 jslstart             timestamptz          NOT NULL DEFAULT current_timestamp,
 jslduration          interval             NULL,
 jsloutput            text
