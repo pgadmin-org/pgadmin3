@@ -737,7 +737,7 @@ void ctlCodeWindow::ResultNewBreakpoint( wxCommandEvent & event )
     if( connectionLost( result ))
         closeConnection();
     else if( gotFatalError( result ))
-        popupError( result, _( "Can't set breakpoint" ));
+        popupError(result);
     else
     {
     }
@@ -750,7 +750,7 @@ void ctlCodeWindow::ResultNewBreakpointWait( wxCommandEvent & event )
     if( connectionLost( result ))
         closeConnection();
     else if( gotFatalError( result ))
-        popupError( result, _( "Can't set breakpoint" ));
+        popupError(result);
     else
     {
         setTools(false);
@@ -851,14 +851,12 @@ bool ctlCodeWindow::gotFatalError( dbgResultset & resultSet )
         return( false );
 }
 
-void ctlCodeWindow::popupError( dbgResultset & resultSet, wxString title )
+void ctlCodeWindow::popupError( dbgResultset & resultSet )
 {
-    wxMessageBox( resultSet.getErrorMessage(), title );
-
-    // Now close the entire application since we can't continue debugging
-    m_timer.Stop();
-    m_parent->Close();
-
+	wxLogError(wxT("%s"), resultSet.getErrorMessage());
+	m_timer.Stop();
+	m_parent->getStatusBar()->SetStatusText(_( "Done." ), 1 );
+    setTools(false);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1402,7 +1400,7 @@ void ctlCodeWindow::ResultAddBreakpoint( wxCommandEvent & event )
     if( connectionLost( result ))
         closeConnection();
     else if( gotFatalError( result ))
-        popupError( result, _( "Error" ));
+        popupError(result);
     else
     {
         if (m_dbgConn->GetIsEdb())
@@ -1424,7 +1422,7 @@ void ctlCodeWindow::ResultLastBreakpoint( wxCommandEvent & event )
     if( connectionLost( result ))
         closeConnection();
     else if( gotFatalError( result ))
-        popupError( result, _( "Error" ));
+        popupError(result);
     else
     {
         if (m_dbgConn->GetIsEdb())
