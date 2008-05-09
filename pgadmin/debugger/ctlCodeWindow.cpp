@@ -853,9 +853,9 @@ bool ctlCodeWindow::gotFatalError( dbgResultset & resultSet )
 
 void ctlCodeWindow::popupError( dbgResultset & resultSet )
 {
-	wxLogError(wxT("%s"), resultSet.getErrorMessage());
-	m_timer.Stop();
-	m_parent->getStatusBar()->SetStatusText(_( "Done." ), 1 );
+    wxLogError(wxT("%s"), resultSet.getErrorMessage().c_str());
+    m_timer.Stop();
+    m_parent->getStatusBar()->SetStatusText(_( "Done." ), 1 );
     setTools(false);
 }
 
