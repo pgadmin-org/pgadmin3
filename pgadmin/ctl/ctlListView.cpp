@@ -45,7 +45,14 @@ wxString ctlListView::GetText(long row, long col)
 
 void ctlListView::AddColumn(const wxChar *text, int size, int format)
 {
-    InsertColumn(GetColumnCount(), text, format, ConvertDialogToPixels(wxPoint(size,0)).x);
+    if (size == wxLIST_AUTOSIZE || size == wxLIST_AUTOSIZE_USEHEADER)
+    {
+        InsertColumn(GetColumnCount(), text, format, size);
+    }
+    else
+    {
+        InsertColumn(GetColumnCount(), text, format, ConvertDialogToPixels(wxPoint(size,0)).x);
+    }
 }
 
 

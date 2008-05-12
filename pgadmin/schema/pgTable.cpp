@@ -764,25 +764,25 @@ void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 
     // Add the statistics view columns
     statistics->ClearAll();
-    statistics->AddColumn(_("Table"), 100);
-    statistics->AddColumn(_("Tuples inserted"), 50);
-    statistics->AddColumn(_("Tuples updated"), 50);
-    statistics->AddColumn(_("Tuples deleted"), 50);
+    statistics->AddColumn(_("Table Name"));
+    statistics->AddColumn(_("Tuples inserted"));
+    statistics->AddColumn(_("Tuples updated"));
+    statistics->AddColumn(_("Tuples deleted"));
     if (GetConnection()->BackendMinimumVersion(8, 3))
     {
-        statistics->AddColumn(_("Tuples HOT updated"), 50);
-        statistics->AddColumn(_("Live tuples"), 50);
-        statistics->AddColumn(_("Dead tuples"), 50);
+        statistics->AddColumn(_("Tuples HOT updated"));
+        statistics->AddColumn(_("Live tuples"));
+        statistics->AddColumn(_("Dead tuples"));
     }
     if (GetConnection()->BackendMinimumVersion(8, 2))
     {
-        statistics->AddColumn(_("Last vacuum"), 50);
-        statistics->AddColumn(_("Last autovacuum"), 50);
-        statistics->AddColumn(_("Last analyze"), 50);
-        statistics->AddColumn(_("Last autoanalyze"), 50);
+        statistics->AddColumn(_("Last vacuum"));
+        statistics->AddColumn(_("Last autovacuum"));
+        statistics->AddColumn(_("Last analyze"));
+        statistics->AddColumn(_("Last autoanalyze"));
     }
     if (hasSize)
-        statistics->AddColumn(_("Size"), 60);
+        statistics->AddColumn(_("Size"));
 
     wxString sql=wxT("SELECT st.relname, n_tup_ins, n_tup_upd, n_tup_del");
     if (GetConnection()->BackendMinimumVersion(8, 3))

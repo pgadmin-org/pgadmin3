@@ -28,7 +28,7 @@ public:
 
     void CreateColumns(wxImageList *images, const wxString &left, const wxString &right, int leftSize=60);
 
-    void AddColumn(const wxChar *text, int size=-1, int format=wxLIST_FORMAT_LEFT);
+    void AddColumn(const wxChar *text, int size=wxLIST_AUTOSIZE_USEHEADER, int format=wxLIST_FORMAT_LEFT);
 
     long AppendItem(int icon, const wxChar *val, const wxChar *val2=0, const wxChar *val3=0);
     long AppendItem(const wxChar *val, const wxChar *val2=0, const wxChar *val3=0)
