@@ -31,5 +31,6 @@ if APPBUNDLE
 	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_dump" "$(bundledir)/Contents/SharedSupport/pg_dump"
 	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_dumpall" "$(bundledir)/Contents/SharedSupport/pg_dumpall"
 	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/pg_restore" "$(bundledir)/Contents/SharedSupport/pg_restore"
+	$(install_sh_PROGRAM) "$$($(PG_CONFIG) --bindir)/psql" "$(bundledir)/Contents/SharedSupport/psql"
 	./complete-bundle.sh "$(bundledir)"
 endif
