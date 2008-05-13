@@ -71,7 +71,9 @@ public:
     void iSetDiscovered(const bool b) { discovered=b; }
     wxString GetServiceID() const { return serviceId; }
     void iSetServiceID(const wxString& s);
-
+    wxString GetDiscoveryID() const { return discoveryId; }
+    void iSetDiscoveryID(const wxString& s) { discoveryId=s; }
+	
     bool GetCreatePrivilege() const { return createPrivilege; }
     void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
     bool GetSuperUser() const { return superUser; }
@@ -140,7 +142,7 @@ private:
     long serverIndex;
     bool connected, passwordValid, autovacuumRunning;
     wxString database, username, password, ver, error;
-    wxString lastDatabase, lastSchema, description, serviceId;
+    wxString lastDatabase, lastSchema, description, serviceId, discoveryId;
     wxDateTime upSince;
     int port, ssl;
     bool storePwd, restore, discovered, createPrivilege, superUser, createRole;

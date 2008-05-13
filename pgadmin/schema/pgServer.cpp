@@ -14,6 +14,9 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/busyinfo.h>
+#include <wx/dir.h>
+#include <wx/fileconf.h>
+#include <wx/wfstream.h>
 
 // App headers
 #include "ctl/ctlMenuToolbar.h"
@@ -1044,15 +1047,17 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
     long loop, port, ssl=0;
-    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, restore, serviceID, dbRestriction;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, restore, serviceID, discoveryID, dbRestriction;
     pgServer *server=0;
 
-    wxArrayString servicedServers;
+    wxArrayString discoveredServers;
 
     // Get the hostname for later...
     char buf[255];
     gethostname(buf, 255); 
     wxString hostname = wxString(buf, wxConvUTF8);
+
+    wxLogInfo(wxT("Loading previously registered servers"));
 
     for (loop = 1; loop <= numServers; ++loop)
     {
@@ -1060,6 +1065,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         
         settings->Read(key + wxT("Server"), &servername, wxEmptyString);
         settings->Read(key + wxT("ServiceID"), &serviceID, wxEmptyString);
+		settings->Read(key + wxT("DiscoveryID"), &discoveryID, serviceID);
         settings->Read(key + wxT("Description"), &description, wxEmptyString);
         settings->Read(key + wxT("StorePwd"), &storePwd, wxEmptyString);
         settings->Read(key + wxT("Restore"), &restore, wxT("true"));
@@ -1080,23 +1086,17 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);
         server->iSetServiceID(serviceID);
+		server->iSetDiscoveryID(discoveryID);
         server->iSetDiscovered(false);
         server->iSetDbRestriction(dbRestriction);
         server->iSetServerIndex(loop);
         browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
-    browser->SortChildren(obj->GetId());
+        browser->SortChildren(obj->GetId());
 
 
-#ifdef WIN32
-        int bspos = serviceID.Find('\\');
-        if (bspos >= 0)
-        {
-            if (serviceID.Left(2) != wxT(".\\") && !serviceID.Matches(wxGetHostName() + wxT("\\*")))
-                serviceID = wxEmptyString;
-        }
-        if (!serviceID.IsEmpty())
-            servicedServers.Add(serviceID);
-#endif
+		// Note if we're reloading a discovered server
+        if (!discoveryID.IsEmpty())
+            discoveredServers.Add(discoveryID);
 
     }
 
@@ -1104,6 +1104,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
     // Add local servers. Will currently only work on Win32 with >= BETA3 
     // of the Win32 PostgreSQL installer.
+	wxLogInfo(wxT("Loading servers registered on the local machine"));
     wxRegKey *pgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services"));
 
     if (pgKey->Exists())
@@ -1118,7 +1119,9 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
         while (flag != false)
         {
-            if (servicedServers.Index(svcName, false) < 0)
+		    // On Windows, the discovery ID is always the service name. 
+			// Only load the server if we didn't load it with all the others.
+            if (discoveredServers.Index(svcName, false) < 0)
             {
                 key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
                 wxRegKey *svcKey = new wxRegKey(key);
@@ -1131,6 +1134,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
                 // Add the Server node
                 server = new pgServer(servername, description, database, username, port, false, 0);
+				server->iSetDiscoveryID(svcName);
                 server->iSetDiscovered(true);
                 server->iSetServiceID(svcName);
                 browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
@@ -1140,7 +1144,66 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
             flag = pgKey->GetNextKey(svcName, cookie);
         }
     }
-#endif //WIN32
+#endif // WIN32
+
+    // Add local PostgresPlus servers on non-Win32 platforms (on Win32, they will be picked up above)
+#ifndef WIN32
+
+	// On Unix/Mac, the discovery ID can be anything. We use the Postgres Plus 
+	// blade config filename if it's present, as that is the only thing vaguely 
+	// discoverable and unique to a given installation. We can do the same for
+	// other distros in the future if they drop a suitable file someplace. 
+	// Look for any files that match the basic postgresplus-X.Y.ini pattern.
+
+    wxDir dir(wxT("/etc/"));
+	wxLogInfo(wxT("Loading Postgres Plus servers"));
+	
+	if (dir.IsOpened())
+	{
+		wxString postgresPlusIni, filename;
+		
+		bool cont = dir.GetFirst(&filename, wxT("postgresplus-*.ini"), wxDIR_FILES);
+		postgresPlusIni = wxT("/etc/") + filename;
+		 
+		while (cont)
+		{
+			// Only load the server if we didn't load it with all the others.
+			if (discoveredServers.Index(postgresPlusIni, false) < 0)
+			{
+			    wxLogInfo(wxT("Checking file %s"), postgresPlusIni.c_str());
+				
+				wxFileStream fst(postgresPlusIni);
+				wxFileConfig *cnf = new wxFileConfig(fst);
+
+				wxString version;
+				if (cnf->Read(wxT("/Blades/Server"), &version))
+				{
+				    wxLogInfo(wxT("Loading server from %s"), postgresPlusIni.c_str());
+					
+					// Basic details
+					servername = wxT("localhost");
+					cnf->Read(wxT("/Server/Description"), &description, wxT("Postgres Plus ") + version);
+					cnf->Read(wxT("/Server/Username"), &username, wxT("postgres"));
+					cnf->Read(wxT("/Server/Port"), &port, 5432);
+
+					// We found a version number, so create the server
+					server = new pgServer(servername, description, wxT("postgres"), username, port, false, 0);
+					server->iSetDiscoveryID(postgresPlusIni);
+					server->iSetDiscovered(true);
+					browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+					browser->SortChildren(obj->GetId());
+				}
+				
+				delete cnf;
+			}
+			cont = dir.GetNext(&filename);
+			postgresPlusIni = wxT("/etc/") + filename;
+		}
+    }
+	else 
+	    wxLogError(wxT("Failed to open /etc"));
+
+#endif // !WIN32
 
     return server;
 }
