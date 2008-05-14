@@ -90,10 +90,10 @@ pgObject *dlgPackage::CreateObject(pgCollection *collection)
     
     if (collection->GetConnection()->EdbMinimumVersion(8, 2))
         obj=packageFactory.CreateObjects(collection, 0,
-            wxT("   AND nspname = '") + GetName() + wxT("'"));
+            wxT("   AND nspname = ") + qtDbString(GetName()));
     else
         obj=packageFactory.CreateObjects(collection, 0,
-            wxT("   AND pkgname = '") + GetName() + wxT("'"));
+            wxT("   AND pkgname = ") + qtDbString(GetName()));
 
     return obj;
 }
