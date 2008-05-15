@@ -9545,7 +9545,7 @@ static unsigned char xml_res_file_48[] = {
 62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,111,117,
 114,99,101,62,10};
 
-static size_t xml_res_size_49 = 7328;
+static size_t xml_res_size_49 = 7488;
 static unsigned char xml_res_file_49[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
@@ -9651,7 +9651,7 @@ static unsigned char xml_res_file_49[] = {
 116,70,105,114,101,115,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,
 32,32,32,60,108,97,98,101,108,62,70,105,114,101,115,60,47,108,97,98,101,
 108,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,112,111,115,
-62,53,44,56,54,100,60,47,112,111,115,62,10,32,32,32,32,32,32,32,32,32,32,
+62,53,44,56,55,100,60,47,112,111,115,62,10,32,32,32,32,32,32,32,32,32,32,
 32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,32,32,32,
 32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,119,
 120,82,97,100,105,111,66,111,120,34,32,110,97,109,101,61,34,114,100,98,
@@ -9665,7 +9665,7 @@ static unsigned char xml_res_file_49[] = {
 116,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,115,101,108,
 101,99,116,105,111,110,62,48,60,47,115,101,108,101,99,116,105,111,110,62,
 10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,112,111,115,62,55,
-48,44,55,55,100,60,47,112,111,115,62,10,32,32,32,32,32,32,32,32,32,32,32,
+48,44,55,56,100,60,47,112,111,115,62,10,32,32,32,32,32,32,32,32,32,32,32,
 32,32,32,32,32,60,115,105,122,101,62,49,51,53,44,45,49,100,60,47,115,105,
 122,101,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,100,105,
 109,101,110,115,105,111,110,62,49,60,47,100,105,109,101,110,115,105,111,
@@ -9686,7 +9686,7 @@ static unsigned char xml_res_file_49[] = {
 97,98,101,108,47,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
 60,112,111,115,62,55,48,44,49,48,50,100,60,47,112,111,115,62,10,32,32,32,
 32,32,32,32,32,32,32,32,32,32,32,32,32,60,115,105,122,101,62,49,51,53,44,
-52,54,100,60,47,115,105,122,101,62,10,32,32,32,32,32,32,32,32,32,32,32,
+53,56,100,60,47,115,105,122,101,62,10,32,32,32,32,32,32,32,32,32,32,32,
 32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,32,32,32,32,
 32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,119,120,
 67,104,101,99,107,66,111,120,34,32,110,97,109,101,61,34,99,104,107,73,110,
@@ -9710,109 +9710,116 @@ static unsigned char xml_res_file_49[] = {
 44,49,51,52,100,60,47,112,111,115,62,10,32,32,32,32,32,32,32,32,32,32,32,
 32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,32,32,32,32,
 32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,119,120,
-83,116,97,116,105,99,84,101,120,116,34,32,110,97,109,101,61,34,115,116,
-67,111,109,109,101,110,116,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,
-32,32,32,32,60,108,97,98,101,108,62,67,111,109,109,101,110,116,60,47,108,
-97,98,101,108,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,
-112,111,115,62,53,44,49,53,50,100,60,47,112,111,115,62,10,32,32,32,32,32,
-32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,
-32,32,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,
-115,61,34,119,120,84,101,120,116,67,116,114,108,34,32,110,97,109,101,61,
-34,116,120,116,67,111,109,109,101,110,116,34,62,10,32,32,32,32,32,32,32,
-32,32,32,32,32,32,32,32,32,60,112,111,115,62,55,48,44,49,53,48,100,60,47,
-112,111,115,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,115,
-105,122,101,62,49,51,53,44,52,55,100,60,47,115,105,122,101,62,10,32,32,
-32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,115,116,121,108,101,62,119,
-120,84,69,95,77,85,76,84,73,76,73,78,69,60,47,115,116,121,108,101,62,10,
-32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,
-10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,
-99,108,97,115,115,61,34,119,120,83,116,97,116,105,99,84,101,120,116,34,
-32,110,97,109,101,61,34,115,116,67,108,117,115,116,101,114,83,101,116,34,
-62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,108,97,98,101,
-108,62,85,115,101,32,114,101,112,108,105,99,97,116,105,111,110,60,47,108,
-97,98,101,108,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,
-112,111,115,62,53,44,50,48,50,100,60,47,112,111,115,62,10,32,32,32,32,32,
-32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,
-32,32,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,
-115,61,34,119,120,67,111,109,98,111,66,111,120,34,32,110,97,109,101,61,
-34,99,98,67,108,117,115,116,101,114,83,101,116,34,62,10,32,32,32,32,32,
-32,32,32,32,32,32,32,32,32,32,32,60,99,111,110,116,101,110,116,47,62,10,
-32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,112,111,115,62,55,48,
-44,50,48,48,100,60,47,112,111,115,62,10,32,32,32,32,32,32,32,32,32,32,32,
-32,32,32,32,32,60,115,105,122,101,62,49,51,53,44,49,50,100,60,47,115,105,
-122,101,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,115,116,
-121,108,101,62,119,120,67,66,95,82,69,65,68,79,78,76,89,124,119,120,67,
-66,95,68,82,79,80,68,79,87,78,60,47,115,116,121,108,101,62,10,32,32,32,
-32,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,
-32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,
-32,32,32,32,32,32,32,32,32,60,115,101,108,101,99,116,101,100,62,49,60,47,
-115,101,108,101,99,116,101,100,62,10,32,32,32,32,32,32,32,32,32,32,60,47,
-111,98,106,101,99,116,62,10,32,32,32,32,32,32,32,32,32,32,60,111,98,106,
-101,99,116,32,99,108,97,115,115,61,34,110,111,116,101,98,111,111,107,112,
-97,103,101,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,60,108,97,98,101,
-108,62,66,111,100,121,60,47,108,97,98,101,108,62,10,32,32,32,32,32,32,32,
-32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,119,
-120,80,97,110,101,108,34,32,110,97,109,101,61,34,112,110,108,66,111,100,
-121,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,111,98,106,101,
-99,116,32,99,108,97,115,115,61,34,119,120,70,108,101,120,71,114,105,100,
-83,105,122,101,114,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
-32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,115,105,122,101,
-114,105,116,101,109,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
-32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,99,116,
-108,83,81,76,66,111,120,34,32,110,97,109,101,61,34,116,120,116,66,111,100,
-121,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
-60,115,116,121,108,101,62,119,120,84,69,95,77,85,76,84,73,76,73,78,69,124,
-119,120,83,85,78,75,69,78,95,66,79,82,68,69,82,124,119,120,84,69,95,82,
-73,67,72,50,60,47,115,116,121,108,101,62,10,32,32,32,32,32,32,32,32,32,
-32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,
-32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,111,112,116,105,111,110,62,
-49,60,47,111,112,116,105,111,110,62,10,32,32,32,32,32,32,32,32,32,32,32,
-32,32,32,32,32,32,32,60,102,108,97,103,62,119,120,84,79,80,124,119,120,
-82,73,71,72,84,124,119,120,71,82,79,87,60,47,102,108,97,103,62,10,32,32,
-32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,98,111,114,100,101,114,
-62,53,60,47,98,111,114,100,101,114,62,10,32,32,32,32,32,32,32,32,32,32,
+67,104,101,99,107,66,111,120,34,32,110,97,109,101,61,34,99,104,107,84,114,
+117,110,99,97,116,101,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
+32,32,60,108,97,98,101,108,62,84,82,85,78,67,65,84,69,60,47,108,97,98,101,
+108,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,112,111,115,
+62,55,51,44,49,52,54,100,60,47,112,111,115,62,10,32,32,32,32,32,32,32,32,
 32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,32,
-32,32,32,32,32,32,32,32,32,60,99,111,108,115,62,49,60,47,99,111,108,115,
-62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,114,111,119,115,
-62,49,60,47,114,111,119,115,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,
-32,32,32,60,103,114,111,119,97,98,108,101,114,111,119,115,62,48,60,47,103,
-114,111,119,97,98,108,101,114,111,119,115,62,10,32,32,32,32,32,32,32,32,
-32,32,32,32,32,32,32,32,60,103,114,111,119,97,98,108,101,99,111,108,115,
-62,48,60,47,103,114,111,119,97,98,108,101,99,111,108,115,62,10,32,32,32,
+32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,
+119,120,83,116,97,116,105,99,84,101,120,116,34,32,110,97,109,101,61,34,
+115,116,67,111,109,109,101,110,116,34,62,10,32,32,32,32,32,32,32,32,32,
+32,32,32,32,32,32,32,60,108,97,98,101,108,62,67,111,109,109,101,110,116,
+60,47,108,97,98,101,108,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
+32,32,60,112,111,115,62,53,44,49,54,52,100,60,47,112,111,115,62,10,32,32,
+32,32,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,
+32,32,32,32,32,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,
+97,115,115,61,34,119,120,84,101,120,116,67,116,114,108,34,32,110,97,109,
+101,61,34,116,120,116,67,111,109,109,101,110,116,34,62,10,32,32,32,32,32,
+32,32,32,32,32,32,32,32,32,32,32,60,112,111,115,62,55,48,44,49,54,50,100,
+60,47,112,111,115,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
+60,115,105,122,101,62,49,51,53,44,51,53,100,60,47,115,105,122,101,62,10,
+32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,115,116,121,108,101,
+62,119,120,84,69,95,77,85,76,84,73,76,73,78,69,60,47,115,116,121,108,101,
+62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,
+116,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,111,98,106,101,99,
+116,32,99,108,97,115,115,61,34,119,120,83,116,97,116,105,99,84,101,120,
+116,34,32,110,97,109,101,61,34,115,116,67,108,117,115,116,101,114,83,101,
+116,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,108,97,
+98,101,108,62,85,115,101,32,114,101,112,108,105,99,97,116,105,111,110,60,
+47,108,97,98,101,108,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
+32,60,112,111,115,62,53,44,50,48,50,100,60,47,112,111,115,62,10,32,32,32,
 32,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,
+32,32,32,32,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,
+97,115,115,61,34,119,120,67,111,109,98,111,66,111,120,34,32,110,97,109,
+101,61,34,99,98,67,108,117,115,116,101,114,83,101,116,34,62,10,32,32,32,
+32,32,32,32,32,32,32,32,32,32,32,32,32,60,99,111,110,116,101,110,116,47,
+62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,112,111,115,62,
+55,48,44,50,48,48,100,60,47,112,111,115,62,10,32,32,32,32,32,32,32,32,32,
+32,32,32,32,32,32,32,60,115,105,122,101,62,49,51,53,44,49,50,100,60,47,
+115,105,122,101,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,
+115,116,121,108,101,62,119,120,67,66,95,82,69,65,68,79,78,76,89,124,119,
+120,67,66,95,68,82,79,80,68,79,87,78,60,47,115,116,121,108,101,62,10,32,
+32,32,32,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,
+32,32,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,
+32,32,32,32,32,32,32,32,32,32,32,60,115,101,108,101,99,116,101,100,62,49,
+60,47,115,101,108,101,99,116,101,100,62,10,32,32,32,32,32,32,32,32,32,32,
+60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,32,32,32,32,60,111,
+98,106,101,99,116,32,99,108,97,115,115,61,34,110,111,116,101,98,111,111,
+107,112,97,103,101,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,60,108,
+97,98,101,108,62,66,111,100,121,60,47,108,97,98,101,108,62,10,32,32,32,
+32,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,
+61,34,119,120,80,97,110,101,108,34,32,110,97,109,101,61,34,112,110,108,
+66,111,100,121,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,111,
+98,106,101,99,116,32,99,108,97,115,115,61,34,119,120,70,108,101,120,71,
+114,105,100,83,105,122,101,114,34,62,10,32,32,32,32,32,32,32,32,32,32,32,
+32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,115,
+105,122,101,114,105,116,101,109,34,62,10,32,32,32,32,32,32,32,32,32,32,
+32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,
+34,99,116,108,83,81,76,66,111,120,34,32,110,97,109,101,61,34,116,120,116,
+66,111,100,121,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
+32,32,32,32,60,115,116,121,108,101,62,119,120,84,69,95,77,85,76,84,73,76,
+73,78,69,124,119,120,83,85,78,75,69,78,95,66,79,82,68,69,82,124,119,120,
+84,69,95,82,73,67,72,50,60,47,115,116,121,108,101,62,10,32,32,32,32,32,
+32,32,32,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,
+32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,111,112,116,105,
+111,110,62,49,60,47,111,112,116,105,111,110,62,10,32,32,32,32,32,32,32,
+32,32,32,32,32,32,32,32,32,32,32,60,102,108,97,103,62,119,120,84,79,80,
+124,119,120,82,73,71,72,84,124,119,120,71,82,79,87,60,47,102,108,97,103,
+62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,98,111,114,
+100,101,114,62,53,60,47,98,111,114,100,101,114,62,10,32,32,32,32,32,32,
+32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,
+32,32,32,32,32,32,32,32,32,32,32,32,32,60,99,111,108,115,62,49,60,47,99,
+111,108,115,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,114,
+111,119,115,62,49,60,47,114,111,119,115,62,10,32,32,32,32,32,32,32,32,32,
+32,32,32,32,32,32,32,60,103,114,111,119,97,98,108,101,114,111,119,115,62,
+48,60,47,103,114,111,119,97,98,108,101,114,111,119,115,62,10,32,32,32,32,
+32,32,32,32,32,32,32,32,32,32,32,32,60,103,114,111,119,97,98,108,101,99,
+111,108,115,62,48,60,47,103,114,111,119,97,98,108,101,99,111,108,115,62,
+10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,
+62,10,32,32,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,
+10,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,
+32,32,32,32,32,32,32,32,60,112,111,115,62,50,44,50,100,60,47,112,111,115,
+62,10,32,32,32,32,32,32,32,32,32,32,60,115,105,122,101,62,50,49,52,44,50,
+51,53,100,60,47,115,105,122,101,62,10,32,32,32,32,32,32,32,32,60,47,111,
+98,106,101,99,116,62,10,32,32,32,32,32,32,32,32,60,102,108,97,103,62,119,
+120,65,76,76,124,119,120,71,82,79,87,124,119,120,65,76,73,71,78,95,67,69,
+78,84,82,69,60,47,102,108,97,103,62,10,32,32,32,32,32,32,32,32,60,98,111,
+114,100,101,114,62,51,60,47,98,111,114,100,101,114,62,10,32,32,32,32,32,
+32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,60,111,98,106,101,
+99,116,32,99,108,97,115,115,61,34,115,112,97,99,101,114,34,62,10,32,32,
+32,32,32,32,32,32,60,115,105,122,101,62,50,44,50,100,60,47,115,105,122,
+101,62,10,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,
+32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,115,105,122,
+101,114,105,116,101,109,34,62,10,32,32,32,32,32,32,32,32,60,111,98,106,
+101,99,116,32,99,108,97,115,115,61,34,119,120,70,108,101,120,71,114,105,
+100,83,105,122,101,114,34,62,10,32,32,32,32,32,32,32,32,32,32,60,99,111,
+108,115,62,57,60,47,99,111,108,115,62,10,32,32,32,32,32,32,32,32,32,32,
+60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,115,112,97,99,101,114,
+34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,60,115,105,122,101,62,51,44,
+51,100,60,47,115,105,122,101,62,10,32,32,32,32,32,32,32,32,32,32,60,47,
+111,98,106,101,99,116,62,10,32,32,32,32,32,32,32,32,32,32,60,111,98,106,
+101,99,116,32,99,108,97,115,115,61,34,115,105,122,101,114,105,116,101,109,
+34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,
+99,108,97,115,115,61,34,119,120,66,117,116,116,111,110,34,32,110,97,109,
+101,61,34,119,120,73,68,95,72,69,76,80,34,62,10,32,32,32,32,32,32,32,32,
+32,32,32,32,32,32,60,108,97,98,101,108,62,38,97,109,112,59,72,101,108,112,
+60,47,108,97,98,101,108,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,
+60,112,111,115,62,49,51,53,44,50,50,48,100,60,47,112,111,115,62,10,32,32,
 32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,
 32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,
-32,32,32,32,60,112,111,115,62,50,44,50,100,60,47,112,111,115,62,10,32,32,
-32,32,32,32,32,32,32,32,60,115,105,122,101,62,50,49,52,44,50,51,53,100,
-60,47,115,105,122,101,62,10,32,32,32,32,32,32,32,32,60,47,111,98,106,101,
-99,116,62,10,32,32,32,32,32,32,32,32,60,102,108,97,103,62,119,120,65,76,
-76,124,119,120,71,82,79,87,124,119,120,65,76,73,71,78,95,67,69,78,84,82,
-69,60,47,102,108,97,103,62,10,32,32,32,32,32,32,32,32,60,98,111,114,100,
-101,114,62,51,60,47,98,111,114,100,101,114,62,10,32,32,32,32,32,32,60,47,
-111,98,106,101,99,116,62,10,32,32,32,32,32,32,60,111,98,106,101,99,116,
-32,99,108,97,115,115,61,34,115,112,97,99,101,114,34,62,10,32,32,32,32,32,
-32,32,32,60,115,105,122,101,62,50,44,50,100,60,47,115,105,122,101,62,10,
-32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,60,
-111,98,106,101,99,116,32,99,108,97,115,115,61,34,115,105,122,101,114,105,
-116,101,109,34,62,10,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,
-99,108,97,115,115,61,34,119,120,70,108,101,120,71,114,105,100,83,105,122,
-101,114,34,62,10,32,32,32,32,32,32,32,32,32,32,60,99,111,108,115,62,57,
-60,47,99,111,108,115,62,10,32,32,32,32,32,32,32,32,32,32,60,111,98,106,
-101,99,116,32,99,108,97,115,115,61,34,115,112,97,99,101,114,34,62,10,32,
-32,32,32,32,32,32,32,32,32,32,32,60,115,105,122,101,62,51,44,51,100,60,
-47,115,105,122,101,62,10,32,32,32,32,32,32,32,32,32,32,60,47,111,98,106,
-101,99,116,62,10,32,32,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,
-32,99,108,97,115,115,61,34,115,105,122,101,114,105,116,101,109,34,62,10,
-32,32,32,32,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,
-97,115,115,61,34,119,120,66,117,116,116,111,110,34,32,110,97,109,101,61,
-34,119,120,73,68,95,72,69,76,80,34,62,10,32,32,32,32,32,32,32,32,32,32,
-32,32,32,32,60,108,97,98,101,108,62,38,97,109,112,59,72,101,108,112,60,
-47,108,97,98,101,108,62,10,32,32,32,32,32,32,32,32,32,32,32,32,32,32,60,
-112,111,115,62,49,51,53,44,50,50,48,100,60,47,112,111,115,62,10,32,32,32,
-32,32,32,32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,
-32,32,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,32,
-32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,115,112,97,
-99,101,114,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,60,115,105,122,
+32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,115,61,34,115,112,
+97,99,101,114,34,62,10,32,32,32,32,32,32,32,32,32,32,32,32,60,115,105,122,
 101,62,51,44,51,100,60,47,115,105,122,101,62,10,32,32,32,32,32,32,32,32,
 32,32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,32,32,32,32,60,
 111,98,106,101,99,116,32,99,108,97,115,115,61,34,115,105,122,101,114,105,
@@ -13802,134 +13809,134 @@ void InitXmlResource()
         else wxFileSystem::AddHandler(new wxMemoryFSHandler);
     }
 
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgAddFavourite.xrc"), xml_res_file_0, xml_res_size_0, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgAggregate.xrc"), xml_res_file_1, xml_res_size_1, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgCast.xrc"), xml_res_file_2, xml_res_size_2, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgCheck.xrc"), xml_res_file_3, xml_res_size_3, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgColumn.xrc"), xml_res_file_4, xml_res_size_4, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgConnect.xrc"), xml_res_file_5, xml_res_size_5, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgConversion.xrc"), xml_res_file_6, xml_res_size_6, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgDatabase.xrc"), xml_res_file_7, xml_res_size_7, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgDirectDbg.xrc"), xml_res_file_8, xml_res_size_8, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgDomain.xrc"), xml_res_file_9, xml_res_size_9, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgEditGridOptions.xrc"), xml_res_file_10, xml_res_size_10, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgFindReplace.xrc"), xml_res_file_11, xml_res_size_11, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgForeignKey.xrc"), xml_res_file_12, xml_res_size_12, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgFunction.xrc"), xml_res_file_13, xml_res_size_13, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgGroup.xrc"), xml_res_file_14, xml_res_size_14, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgHbaConfig.xrc"), xml_res_file_15, xml_res_size_15, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgIndex.xrc"), xml_res_file_16, xml_res_size_16, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgIndexConstraint.xrc"), xml_res_file_17, xml_res_size_17, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgJob.xrc"), xml_res_file_18, xml_res_size_18, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgLanguage.xrc"), xml_res_file_19, xml_res_size_19, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgMainConfig.xrc"), xml_res_file_20, xml_res_size_20, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgManageFavourites.xrc"), xml_res_file_21, xml_res_size_21, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgManageMacros.xrc"), xml_res_file_22, xml_res_size_22, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgOperator.xrc"), xml_res_file_23, xml_res_size_23, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgPackage.xrc"), xml_res_file_24, xml_res_size_24, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgPgpassConfig.xrc"), xml_res_file_25, xml_res_size_25, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgReassignDropOwned.xrc"), xml_res_file_26, xml_res_size_26, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepCluster.xrc"), xml_res_file_27, xml_res_size_27, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepClusterUpgrade.xrc"), xml_res_file_28, xml_res_size_28, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepListen.xrc"), xml_res_file_29, xml_res_size_29, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepNode.xrc"), xml_res_file_30, xml_res_size_30, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepPath.xrc"), xml_res_file_31, xml_res_size_31, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSequence.xrc"), xml_res_file_32, xml_res_size_32, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSet.xrc"), xml_res_file_33, xml_res_size_33, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSetMerge.xrc"), xml_res_file_34, xml_res_size_34, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSetMove.xrc"), xml_res_file_35, xml_res_size_35, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSubscription.xrc"), xml_res_file_36, xml_res_size_36, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepTable.xrc"), xml_res_file_37, xml_res_size_37, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRole.xrc"), xml_res_file_38, xml_res_size_38, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRule.xrc"), xml_res_file_39, xml_res_size_39, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgSchedule.xrc"), xml_res_file_40, xml_res_size_40, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgSchema.xrc"), xml_res_file_41, xml_res_size_41, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgSelectConnection.xrc"), xml_res_file_42, xml_res_size_42, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgSequence.xrc"), xml_res_file_43, xml_res_size_43, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgServer.xrc"), xml_res_file_44, xml_res_size_44, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgStep.xrc"), xml_res_file_45, xml_res_size_45, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgSynonym.xrc"), xml_res_file_46, xml_res_size_46, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgTable.xrc"), xml_res_file_47, xml_res_size_47, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgTablespace.xrc"), xml_res_file_48, xml_res_size_48, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgTrigger.xrc"), xml_res_file_49, xml_res_size_49, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgType.xrc"), xml_res_file_50, xml_res_size_50, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgUser.xrc"), xml_res_file_51, xml_res_size_51, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgView.xrc"), xml_res_file_52, xml_res_size_52, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmBackup.xrc"), xml_res_file_53, xml_res_size_53, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmBackupGlobals.xrc"), xml_res_file_54, xml_res_size_54, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmBackupServer.xrc"), xml_res_file_55, xml_res_size_55, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmExport.xrc"), xml_res_file_56, xml_res_size_56, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmGrantWizard.xrc"), xml_res_file_57, xml_res_size_57, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmHint.xrc"), xml_res_file_58, xml_res_size_58, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmMaintenance.xrc"), xml_res_file_59, xml_res_size_59, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmOptions.xrc"), xml_res_file_60, xml_res_size_60, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmPassword.xrc"), xml_res_file_61, xml_res_size_61, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmReport.xrc"), xml_res_file_62, xml_res_size_62, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmRestore.xrc"), xml_res_file_63, xml_res_size_63, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmStatus.xrc"), xml_res_file_64, xml_res_size_64, _T("text/xml"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgAddFavourite.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgAggregate.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgCast.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgCheck.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgColumn.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgConnect.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgConversion.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgDatabase.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgDirectDbg.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgDomain.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgEditGridOptions.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgFindReplace.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgForeignKey.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgFunction.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgGroup.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgHbaConfig.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgIndex.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgIndexConstraint.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgJob.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgLanguage.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgMainConfig.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgManageFavourites.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgManageMacros.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgOperator.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgPackage.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgPgpassConfig.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgReassignDropOwned.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepCluster.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepClusterUpgrade.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepListen.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepNode.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepPath.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepSequence.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepSet.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepSetMerge.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepSetMove.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepSubscription.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRepTable.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRole.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgRule.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgSchedule.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgSchema.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgSelectConnection.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgSequence.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgServer.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgStep.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgSynonym.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgTable.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgTablespace.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgTrigger.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgType.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgUser.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgView.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmBackup.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmBackupGlobals.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmBackupServer.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmExport.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmGrantWizard.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmHint.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmMaintenance.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmOptions.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmPassword.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmReport.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmRestore.xrc"));
-    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$frmStatus.xrc"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgAddFavourite.xrc"), xml_res_file_0, xml_res_size_0, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgAggregate.xrc"), xml_res_file_1, xml_res_size_1, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgCast.xrc"), xml_res_file_2, xml_res_size_2, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgCheck.xrc"), xml_res_file_3, xml_res_size_3, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgColumn.xrc"), xml_res_file_4, xml_res_size_4, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgConnect.xrc"), xml_res_file_5, xml_res_size_5, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgConversion.xrc"), xml_res_file_6, xml_res_size_6, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgDatabase.xrc"), xml_res_file_7, xml_res_size_7, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgDirectDbg.xrc"), xml_res_file_8, xml_res_size_8, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgDomain.xrc"), xml_res_file_9, xml_res_size_9, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgEditGridOptions.xrc"), xml_res_file_10, xml_res_size_10, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgFindReplace.xrc"), xml_res_file_11, xml_res_size_11, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgForeignKey.xrc"), xml_res_file_12, xml_res_size_12, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgFunction.xrc"), xml_res_file_13, xml_res_size_13, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgGroup.xrc"), xml_res_file_14, xml_res_size_14, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgHbaConfig.xrc"), xml_res_file_15, xml_res_size_15, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgIndex.xrc"), xml_res_file_16, xml_res_size_16, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgIndexConstraint.xrc"), xml_res_file_17, xml_res_size_17, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgJob.xrc"), xml_res_file_18, xml_res_size_18, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgLanguage.xrc"), xml_res_file_19, xml_res_size_19, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgMainConfig.xrc"), xml_res_file_20, xml_res_size_20, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgManageFavourites.xrc"), xml_res_file_21, xml_res_size_21, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgManageMacros.xrc"), xml_res_file_22, xml_res_size_22, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgOperator.xrc"), xml_res_file_23, xml_res_size_23, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgPackage.xrc"), xml_res_file_24, xml_res_size_24, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgPgpassConfig.xrc"), xml_res_file_25, xml_res_size_25, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgReassignDropOwned.xrc"), xml_res_file_26, xml_res_size_26, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepCluster.xrc"), xml_res_file_27, xml_res_size_27, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepClusterUpgrade.xrc"), xml_res_file_28, xml_res_size_28, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepListen.xrc"), xml_res_file_29, xml_res_size_29, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepNode.xrc"), xml_res_file_30, xml_res_size_30, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepPath.xrc"), xml_res_file_31, xml_res_size_31, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepSequence.xrc"), xml_res_file_32, xml_res_size_32, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepSet.xrc"), xml_res_file_33, xml_res_size_33, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepSetMerge.xrc"), xml_res_file_34, xml_res_size_34, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepSetMove.xrc"), xml_res_file_35, xml_res_size_35, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepSubscription.xrc"), xml_res_file_36, xml_res_size_36, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRepTable.xrc"), xml_res_file_37, xml_res_size_37, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRole.xrc"), xml_res_file_38, xml_res_size_38, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgRule.xrc"), xml_res_file_39, xml_res_size_39, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgSchedule.xrc"), xml_res_file_40, xml_res_size_40, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgSchema.xrc"), xml_res_file_41, xml_res_size_41, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgSelectConnection.xrc"), xml_res_file_42, xml_res_size_42, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgSequence.xrc"), xml_res_file_43, xml_res_size_43, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgServer.xrc"), xml_res_file_44, xml_res_size_44, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgStep.xrc"), xml_res_file_45, xml_res_size_45, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgSynonym.xrc"), xml_res_file_46, xml_res_size_46, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgTable.xrc"), xml_res_file_47, xml_res_size_47, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgTablespace.xrc"), xml_res_file_48, xml_res_size_48, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgTrigger.xrc"), xml_res_file_49, xml_res_size_49, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgType.xrc"), xml_res_file_50, xml_res_size_50, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgUser.xrc"), xml_res_file_51, xml_res_size_51, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._dlgView.xrc"), xml_res_file_52, xml_res_size_52, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmBackup.xrc"), xml_res_file_53, xml_res_size_53, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmBackupGlobals.xrc"), xml_res_file_54, xml_res_size_54, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmBackupServer.xrc"), xml_res_file_55, xml_res_size_55, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmExport.xrc"), xml_res_file_56, xml_res_size_56, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmGrantWizard.xrc"), xml_res_file_57, xml_res_size_57, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmHint.xrc"), xml_res_file_58, xml_res_size_58, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmMaintenance.xrc"), xml_res_file_59, xml_res_size_59, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmOptions.xrc"), xml_res_file_60, xml_res_size_60, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmPassword.xrc"), xml_res_file_61, xml_res_size_61, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmReport.xrc"), xml_res_file_62, xml_res_size_62, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmRestore.xrc"), xml_res_file_63, xml_res_size_63, _T("text/xml"));
+    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$._frmStatus.xrc"), xml_res_file_64, xml_res_size_64, _T("text/xml"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgAddFavourite.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgAggregate.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgCast.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgCheck.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgColumn.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgConnect.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgConversion.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgDatabase.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgDirectDbg.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgDomain.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgEditGridOptions.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgFindReplace.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgForeignKey.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgFunction.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgGroup.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgHbaConfig.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgIndex.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgIndexConstraint.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgJob.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgLanguage.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgMainConfig.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgManageFavourites.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgManageMacros.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgOperator.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgPackage.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgPgpassConfig.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgReassignDropOwned.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepCluster.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepClusterUpgrade.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepListen.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepNode.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepPath.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepSequence.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepSet.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepSetMerge.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepSetMove.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepSubscription.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRepTable.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRole.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgRule.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgSchedule.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgSchema.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgSelectConnection.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgSequence.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgServer.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgStep.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgSynonym.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgTable.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgTablespace.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgTrigger.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgType.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgUser.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._dlgView.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmBackup.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmBackupGlobals.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmBackupServer.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmExport.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmGrantWizard.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmHint.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmMaintenance.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmOptions.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmPassword.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmReport.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmRestore.xrc"));
+    wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$._frmStatus.xrc"));
 }

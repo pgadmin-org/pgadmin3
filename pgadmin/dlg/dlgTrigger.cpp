@@ -32,6 +32,7 @@
 #define chkInsert       CTRL_CHECKBOX("chkInsert")
 #define chkUpdate       CTRL_CHECKBOX("chkUpdate")
 #define chkDelete       CTRL_CHECKBOX("chkDelete")
+#define chkTruncate     CTRL_CHECKBOX("chkTruncate")
 #define txtBody         CTRL_SQLBOX("txtBody")
 
 BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
@@ -40,6 +41,7 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
     EVT_CHECKBOX(XRCID("chkInsert"),                dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkUpdate"),                dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkTruncate"),              dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbFunction"),                   dlgTrigger::OnChangeFunc)
     EVT_COMBOBOX(XRCID("cbFunction"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtArguments"),                 dlgProperty::OnChange)
@@ -82,6 +84,7 @@ int dlgTrigger::Go(bool modal)
         chkInsert->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_INSERT) != 0);
         chkUpdate->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE) != 0);
         chkDelete->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_DELETE) != 0);
+		chkTruncate->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_TRUNCATE) != 0);
         rdbFires->SetSelection(trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1);
         txtArguments->SetValue(trigger->GetArguments());
         if (!connection->BackendMinimumVersion(7, 4))
@@ -109,6 +112,7 @@ int dlgTrigger::Go(bool modal)
             chkInsert->Disable();
             chkUpdate->Disable();
             chkDelete->Disable();
+		    chkTruncate->Disable();
         }
     }
     else
@@ -142,7 +146,12 @@ int dlgTrigger::Go(bool modal)
         }
         
         txtBody->Disable();
+
+		if (!connection->BackendMinimumVersion(8, 4))
+			chkTruncate->Disable();
+
     }
+
     return dlgProperty::Go(modal);
 }
 
@@ -165,6 +174,7 @@ wxString dlgTrigger::GetSql()
         chkInsert->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_INSERT ? true : false) ||
         chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||
         chkDelete->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_DELETE ? true : false) ||
+		chkTruncate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_TRUNCATE ? true : false) ||
         rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1))
     {
         if (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
@@ -194,6 +204,12 @@ wxString dlgTrigger::GetSql()
             if (actionCount++)
                 sql += wxT(" OR");
             sql += wxT(" DELETE");
+        }
+        if (chkTruncate->GetValue())
+        {
+            if (actionCount++)
+                sql += wxT(" OR");
+            sql += wxT(" TRUNCATE");
         }
         sql += wxT("\n   ON ") + table->GetQuotedFullIdentifier()
             + wxT(" FOR EACH ");
@@ -259,9 +275,21 @@ void dlgTrigger::CheckChange()
     wxString function=cbFunction->GetValue();
     wxString name=GetName();
 
+	// We can only have per-statement TRUNCATE triggers
+	if (connection->BackendMinimumVersion(8, 4))
+	{
+		if (chkRow->GetValue())
+		{
+			chkTruncate->Disable();
+			chkTruncate->SetValue(false);
+		}
+		else
+			chkTruncate->Enable();
+	}
+
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
     CheckValid(enable, !function.IsEmpty(), _("Please specify trigger function."));
-    CheckValid(enable, chkInsert->GetValue() || chkUpdate->GetValue() ||chkDelete->GetValue(),
+    CheckValid(enable, chkInsert->GetValue() || chkUpdate->GetValue() ||chkDelete->GetValue() ||chkTruncate->GetValue(),
         _("Please specify at least one action."));
 
     if (trigger)
@@ -274,6 +302,7 @@ void dlgTrigger::CheckChange()
                  chkInsert->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_INSERT ? true : false) ||
                  chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||
                  chkDelete->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_DELETE ? true : false) ||
+				 chkTruncate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_TRUNCATE ? true : false) ||
                  rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1)));
     }
     else

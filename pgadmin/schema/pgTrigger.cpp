@@ -146,6 +146,12 @@ wxString pgTrigger::GetEvent() const
             event += wxT(" OR ");
         event += wxT("DELETE");
     }
+    if (triggerType & TRIGGER_TYPE_TRUNCATE)
+    {
+        if (!event.IsNull())
+            event += wxT(" OR ");
+        event += wxT("TRUNCATE");
+    }
     return event;
 }
 
