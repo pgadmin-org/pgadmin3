@@ -70,6 +70,7 @@
 #define I18N_DIR     wxT("/i18n")
 #define BRANDING_DIR wxT("/branding")
 #define UTILITIES_INI wxT("/plugins/utilities.ini")
+#define SETTINGS_INI wxT("/settings.ini")
 
 // Globals
 frmMain *winMain=0;
@@ -94,7 +95,8 @@ wxString docPath;               // Where docs are stored
 wxString uiPath;                // Where ui data is stored
 wxString i18nPath;              // Where i18n data is stored
 wxString brandingPath;			// Where branding data is stored
-wxString utilitiesIni;           // The utilities.ini file
+wxString utilitiesIni;          // The utilities.ini file
+wxString settingsIni;           // The settings.ini file
 
 wxLog *logger;
 
@@ -201,6 +203,9 @@ bool pgAdmin3::OnInit()
 		{wxCMD_LINE_NONE}
 	};
 
+    // Setup the basic paths for the app installation. Required by settings!
+    InitAppPaths();
+
     // Load the Settings
 #ifdef __WXMSW__
     settings = new sysSettings(wxT("pgAdmin III"));
@@ -208,8 +213,8 @@ bool pgAdmin3::OnInit()
     settings = new sysSettings(wxT("pgadmin3"));
 #endif
 
-    // we are here
-    InitPaths();
+    // Setup additional helper paths etc. Requires settings!
+    InitXtraPaths();
 
     frmConfig::tryMode configMode=frmConfig::NONE;
 	wxString configFile;
@@ -268,6 +273,7 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("Doc path     : %s"), docPath.c_str());
     wxLogInfo(wxT("Branding path: %s"), brandingPath.c_str());
     wxLogInfo(wxT("Utilities INI: %s"), utilitiesIni.c_str());
+	wxLogInfo(wxT("Settings INI : %s"), settingsIni.c_str());
 
     wxLogInfo(wxT("PG pg_dump    : %s"), pgBackupExecutable.c_str());
     wxLogInfo(wxT("PG pg_dumpall : %s"), pgBackupAllExecutable.c_str());
@@ -602,149 +608,20 @@ void pgAdmin3::MacOpenFile(const wxString &fileName)
 }
 #endif
 
-void pgAdmin3::InitPaths()
+// Setup the paths for the application itself
+void pgAdmin3::InitAppPaths()
 {
-    loadPath=wxPathOnly(argv[0]);
-	if (loadPath.IsEmpty())
-		loadPath = wxT(".");
+	i18nPath = LocatePath(I18N_DIR, false);
+	docPath = LocatePath(DOC_DIR, false);
+	uiPath = LocatePath(UI_DIR, false);
+	brandingPath = LocatePath(BRANDING_DIR, false);
+	utilitiesIni = LocatePath(UTILITIES_INI, true);
+	settingsIni = LocatePath(SETTINGS_INI, true);
+}
 
-#ifdef __WXMSW__
-
-    // Search for the right paths. We check the following locations:
-    //
-    // 1) ./xxx               - Running as a standalone install
-    // 2) ../pgAdmin/xxx      - Running in a pgInstaller 8.1 installation 
-    //                          (with the .exe and dlls in the main bin dir)
-    // 3) ../../xxx or ../xxx - Running in a development environment
-    
-    if (wxDir::Exists(loadPath + I18N_DIR))
-        i18nPath = loadPath + I18N_DIR;
-    else if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") + I18N_DIR))
-        i18nPath = loadPath + wxT("/../pgAdmin III") + I18N_DIR;
-    else 
-        i18nPath = loadPath + wxT("/../..") + I18N_DIR;
-
-    if (wxDir::Exists(loadPath + DOC_DIR))
-        docPath = loadPath + DOC_DIR;
-    else if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") DOC_DIR))
-        docPath = loadPath + wxT("/../pgAdmin III") DOC_DIR;
-    else
-        docPath = loadPath + wxT("/../..") DOC_DIR;
-
-    if (wxDir::Exists(loadPath + UI_DIR))
-        uiPath = loadPath + UI_DIR;
-    if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") + UI_DIR))
-        uiPath = loadPath + wxT("/../pgAdmin III") + UI_DIR;
-    else
-        uiPath = loadPath + wxT("/..") UI_DIR;
-
-    if (wxDir::Exists(loadPath + BRANDING_DIR))
-        brandingPath = loadPath + BRANDING_DIR;
-    else if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") + BRANDING_DIR))
-        brandingPath = loadPath + wxT("/../pgAdmin III") + BRANDING_DIR;
-    else 
-        brandingPath = loadPath + wxT("/../..") + BRANDING_DIR;
-
-    // utilities.ini
-    if (wxFile::Exists(loadPath + UTILITIES_INI))
-        utilitiesIni = loadPath + UTILITIES_INI;
-    else if (wxFile::Exists(loadPath + wxT("/../pgAdmin III") + UTILITIES_INI))
-        utilitiesIni = loadPath + wxT("/../pgAdmin III") + UTILITIES_INI;
-    else if (wxFile::Exists(loadPath + wxT("/../..") + UTILITIES_INI))
-        utilitiesIni = loadPath + wxT("/../..") + UTILITIES_INI;
-#else
-
-    wxString dataDir;
-
-#ifdef __WXMAC__
-
-    // When using wxStandardPaths on OSX, wx default to the unix,
-    // not to the mac variants. Therefore, we request wxStandardPathsCF
-    // directly.
-    wxStandardPathsCF stdPaths ;
-    dataDir = stdPaths.GetDataDir() ;
-
-#else // other *ixes
-
-// Data path (defined by configure under Unix).
-#ifndef DATA_DIR
-#define DATA_DIR "./"
-#endif
-
-    dataDir = wxString::FromAscii(DATA_DIR);
-#endif
-  
-    // On unix systems, the search path is as follows:
-    //
-    // 1) DATADIR/xxx              - DATADIR being defined by configure
-    // 2) ./../share/pgadmin3/xxx  - The default 'make install' layout, but allowing for relocation
-    // 3) ./xxx                    - Windows-style standalone install
-    // 4) ./../xxx                 - Unix-style standalone install (with binaries in a bin directory)
-
-    if (wxDir::Exists(dataDir + I18N_DIR))
-        i18nPath = dataDir + I18N_DIR;
-    
-    if (wxDir::Exists(dataDir + UI_DIR))
-        uiPath = dataDir + UI_DIR;
-
-    if (wxDir::Exists(dataDir + DOC_DIR))
-        docPath = dataDir + DOC_DIR ;
-
-    if (wxDir::Exists(dataDir + BRANDING_DIR))
-        brandingPath = dataDir + BRANDING_DIR ;
-
-    if (wxFile::Exists(dataDir + UTILITIES_INI))
-        utilitiesIni = dataDir + UTILITIES_INI;
-
-    if (i18nPath.IsEmpty())
-    {
-        if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") I18N_DIR))
-            i18nPath = loadPath + wxT("/../share/pgadmin3") I18N_DIR;
-        else if (wxDir::Exists(loadPath + I18N_DIR))
-            i18nPath = loadPath + I18N_DIR;
-        else
-            i18nPath = loadPath + wxT("/..") I18N_DIR;
-    }
-    if (uiPath.IsEmpty())
-    {
-        if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") UI_DIR))
-            uiPath = loadPath + wxT("/../share/pgadmin3") UI_DIR;
-        else if (wxDir::Exists(loadPath + UI_DIR))
-            uiPath = loadPath + UI_DIR;
-        else 
-            uiPath = loadPath + wxT("/..") UI_DIR;
-    }
-    if (docPath.IsEmpty())
-    {
-        if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") DOC_DIR))
-            docPath = loadPath + wxT("/../share/pgadmin3") DOC_DIR;
-        else if (wxDir::Exists(loadPath + DOC_DIR))
-            docPath = loadPath + DOC_DIR ;
-        else
-            docPath = loadPath + wxT("/..") DOC_DIR ;
-    }
-    if (brandingPath.IsEmpty())
-    {
-        if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") BRANDING_DIR))
-            brandingPath = loadPath + wxT("/../share/pgadmin3") BRANDING_DIR;
-        else if (wxDir::Exists(loadPath + BRANDING_DIR))
-            brandingPath = loadPath + BRANDING_DIR ;
-        else
-            brandingPath = loadPath + wxT("/..") BRANDING_DIR ;
-    }
-
-    // utilities.ini
-    if (utilitiesIni.IsEmpty())
-    {
-        if (wxFile::Exists(loadPath + wxT("/../share/pgadmin3") UTILITIES_INI))
-            utilitiesIni = loadPath + wxT("/../share/pgadmin3") UTILITIES_INI;
-        else if (wxFile::Exists(loadPath + UTILITIES_INI))
-            utilitiesIni = loadPath + UTILITIES_INI;
-        else if (wxFile::Exists(loadPath + wxT("/..") UTILITIES_INI))
-            utilitiesIni = loadPath + wxT("/..") UTILITIES_INI;
-    }
-#endif
-
+// Setup the paths for the helper apps etc.
+void pgAdmin3::InitXtraPaths()
+{
     //////////////////////////////////
     // Now setup the app helper paths
     //////////////////////////////////
@@ -822,6 +699,9 @@ void pgAdmin3::InitPaths()
         wxPathList path;
 
 #ifdef __WXMSW__
+		path.Add(wxT("C:\\PostgresPlus\\8.4\\dbserver\\bin"));
+        path.Add(wxT("C:\\PostgresPlus\\8.3\\dbserver\\bin"));
+		path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.4\\bin"));
         path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.3\\bin"));
         path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.2\\bin"));
         path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.1\\bin"));
@@ -829,6 +709,14 @@ void pgAdmin3::InitPaths()
 
         wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
+        // Mac paths
+		path.Add(wxT("/Library/PostgresPlus/8.4/dbserver/bin"));
+		path.Add(wxT("/Library/PostgresPlus/8.3/bin"));
+
+		// Generic Unix paths
+		path.Add(wxT("/opt/PostgresPlus/8.4/dbserver/bin"));
+		path.Add(wxT("/opt/PostgresPlus/8.3/dbserver/bin"));
+		path.Add(wxT("/opt/PostgresPlus/8.3/bin"));
         path.Add(wxT("/usr/local/pgsql/bin"));
         path.Add(wxT("/usr/local/bin"));
         path.Add(wxT("/usr/bin"));
@@ -852,14 +740,21 @@ void pgAdmin3::InitPaths()
         wxPathList path;
 
 #ifdef __WXMSW__
-        path.Add(wxT("C:\\EnterpriseDB\\8.3\\dbserver\\bin"));
+		path.Add(wxT("C:\\PostgresPlus\\8.4AS\\dbserver\\bin"));
+        path.Add(wxT("C:\\PostgresPlus\\8.3AS\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.0\\dbserver\\bin"));
 
         wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
-        path.Add(wxT("/opt/EnterpriseDB/8.3/dbserver/bin"));
+        // Mac paths
+		path.Add(wxT("/Library/PostgresPlus/8.4AS/dbserver/bin"));
+		path.Add(wxT("/Library/PostgresPlus/8.3AS/dbserver/bin"));
+
+		// Generic Unix paths
+		path.Add(wxT("/opt/PostgresPlus/8.4AS/dbserver/bin"));
+		path.Add(wxT("/opt/PostgresPlus/8.3AS/dbserver/bin"));
         path.Add(wxT("/usr/local/enterpriseDB/bin"));
         path.Add(wxT("/usr/local/enterprisedb/bin"));
         path.Add(wxT("/usr/local/edb/bin"));
@@ -912,14 +807,109 @@ void pgAdmin3::InitPaths()
         edbBackupAllExecutable = wxEmptyString;
     if (!isEdbApp(edbRestoreExecutable))
         edbRestoreExecutable = wxEmptyString;
+}
 
-    // Now sanitize all the paths
-    loadPath = sanitizePath(loadPath);
-    docPath = sanitizePath(docPath);
-    uiPath = sanitizePath(uiPath);
-    i18nPath = sanitizePath(i18nPath);
-    brandingPath = sanitizePath(brandingPath);
-    utilitiesIni = sanitizePath(utilitiesIni);
+wxString pgAdmin3::LocatePath(const wxString &pathToFind, const bool isFile)
+{
+	loadPath = wxPathOnly(argv[0]);
+
+	if (loadPath.IsEmpty())
+		loadPath = wxT(".");
+
+	loadPath = sanitizePath(loadPath);
+
+#if defined(__WXMSW__)
+
+    // Search for the right paths. We check the following locations:
+    //
+    // 1) ./xxx               - Running as a standalone install
+    // 2) ../pgAdmin/xxx      - Running in a pgInstaller 8.1 installation 
+    //                          (with the .exe and dlls in the main bin dir)
+    // 3) ../xxx or ../../xxx - Running in a development environment
+    
+	if (!isFile)
+	{
+		if (wxDir::Exists(loadPath + pathToFind))
+			return sanitizePath(loadPath + pathToFind);
+		else if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") + pathToFind))
+			return sanitizePath(loadPath + wxT("/../pgAdmin III") + pathToFind);
+		else if (wxDir::Exists(loadPath + wxT("/..") + pathToFind))
+			return sanitizePath(loadPath + wxT("/..") + pathToFind);
+		else if (wxDir::Exists(loadPath + wxT("/../..") + pathToFind))
+			return sanitizePath(loadPath + wxT("/../..") + pathToFind);
+		else
+			return wxEmptyString;
+	}
+	else
+	{
+		if (wxFile::Exists(loadPath + pathToFind))
+			return sanitizePath(loadPath + pathToFind);
+		else if (wxFile::Exists(loadPath + wxT("/../pgAdmin III") + pathToFind))
+			return sanitizePath(loadPath + wxT("/../pgAdmin III") + pathToFind);
+		else if (wxFile::Exists(loadPath + wxT("/..") + pathToFind))
+			return sanitizePath(loadPath + wxT("/..") + pathToFind);
+		else if (wxFile::Exists(loadPath + wxT("/../..") + pathToFind))
+			return sanitizePath(loadPath + wxT("/../..") + pathToFind);
+		else 
+			return wxEmptyString;
+	}
+
+#else
+    wxString dataDir, thePath;
+
+#ifdef __WXMAC__
+
+    // When using wxStandardPaths on OSX, wx default to the unix,
+    // not to the mac variants. Therefore, we request wxStandardPathsCF
+    // directly.
+    wxStandardPathsCF stdPaths ;
+    dataDir = stdPaths.GetDataDir() ;
+
+#else // other *ixes
+
+// Data path (defined by configure under Unix).
+#ifndef DATA_DIR
+#define DATA_DIR "./"
+#endif
+
+    dataDir = wxString::FromAscii(DATA_DIR);
+#endif
+  
+    // On unix systems, the search path is as follows:
+    //
+    // 1) DATADIR/xxx              - DATADIR being defined by configure
+    // 2) ./../share/pgadmin3/xxx  - The default 'make install' layout, but allowing for relocation
+    // 3) ./xxx                    - Windows-style standalone install
+    // 4) ./../xxx                 - Unix-style standalone install (with binaries in a bin directory)
+
+	if (!isFile)
+	{
+	    if (wxDir::Exists(dataDir + pathToFind))
+            return sanitizePath(dataDir + pathToFind);
+		else if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") + pathToFind))
+            return sanitizePath(loadPath + wxT("/../share/pgadmin3") + pathToFind);
+        else if (wxDir::Exists(loadPath + pathToFind))
+            return sanitizePath(loadPath + pathToFind);
+        else if (wxFile::Exists(loadPath + wxT("/..") + pathToFind))
+            return sanitizePath(loadPath + wxT("/..") + pathToFind);
+		else 
+			return wxEmptyString;
+	}
+	else
+	{
+	    if (wxFile::Exists(dataDir + pathToFind))
+            return sanitizePath(dataDir + pathToFind);
+        else if (wxFile::Exists(loadPath + wxT("/../share/pgadmin3") + pathToFind))
+			return sanitizePath(loadPath + wxT("/../share/pgadmin3") + pathToFind);
+        else if (wxFile::Exists(loadPath + pathToFind))
+            return sanitizePath(loadPath + pathToFind);
+        else if (wxFile::Exists(loadPath + wxT("/..") + pathToFind))
+            return sanitizePath(loadPath + wxT("/..") pathToFind);
+		else 
+			return wxEmptyString;
+	}
+
+#endif
 }
 
 void pgAdmin3::InitHelp()

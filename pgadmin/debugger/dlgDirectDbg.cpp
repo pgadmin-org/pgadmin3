@@ -363,8 +363,6 @@ void dlgDirectDbg::saveSettings()
             settings->Write( wxString::Format( wxT( "Debugger/Proc/argValue%d" ),  count ), (arg.getValue() == wxT("NULL") ? wxEmptyString : arg.getValue().c_str()));
         }
     }
-
-    settings->Flush();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

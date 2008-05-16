@@ -19,20 +19,25 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/config.h>
+#include <wx/fileconf.h>
 #include <wx/url.h>
 #include <wx/stdpaths.h>
+#include <wx/wfstream.h>
 
 // App headers
 #include "utils/sysSettings.h"
 #include "utils/sysLogger.h"
 #include "utils/misc.h"
 
-extern wxString docPath;
-
-
-
 sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 {
+	// Open the default settings file
+	defaultSettings = NULL;
+	if (!settingsIni.IsEmpty())
+	{
+	    wxFileStream fst(settingsIni);
+        defaultSettings = new wxFileConfig(fst);
+	}	
 
     // Convert setting from pre-1.3
 #ifdef __WXMSW__
@@ -72,7 +77,6 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
             moveLongValue(wxT("Servers/SSL%d"), wxT("Servers/%d/SSL"), i);
         }
     }
-
         
     // Tip Of The Day
     Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, true); 
@@ -487,19 +491,129 @@ void sysSettings::Save()
         Write(wxT("Font"), fontName);
 }
 
+// Read a string value
+bool sysSettings::Read(const wxString& key, wxString* str, const wxString& defaultVal) const
+{ 
+	wxString actualDefault = defaultVal;
+
+	// Get the default from the defaults file, in preference 
+	// to the hardcoded value
+	if (defaultSettings)
+        defaultSettings->Read(key, &actualDefault, defaultVal);
+
+	return wxConfig::Read(key, str, actualDefault); 
+}
+
+// Return a string value
+wxString sysSettings::Read(const wxString& key, const wxString &defaultVal) const
+{ 
+	wxString actualDefault = defaultVal;
+
+	// Get the default from the defaults file, in preference 
+	// to the hardcoded value
+    if (defaultSettings)
+        defaultSettings->Read(key, &actualDefault, defaultVal);
+
+	return wxConfig::Read(key, actualDefault); 
+}
+
+// Read an int value
+bool sysSettings::Read(const wxString& key, int* i, int defaultVal) const
+{ 
+	int actualDefault = defaultVal;
+	
+	// Get the default from the defaults file, in preference 
+	// to the hardcoded value
+	if (defaultSettings)
+        defaultSettings->Read(key, &actualDefault, defaultVal);
+
+	return wxConfig::Read(key, i, actualDefault); 
+}
+
+// Read a long value
+bool sysSettings::Read(const wxString& key, long* l, long defaultVal) const
+{ 
+	long actualDefault = defaultVal;
+	
+	// Get the default from the defaults file, in preference 
+	// to the hardcoded value
+	if (defaultSettings)
+        defaultSettings->Read(key, &actualDefault, defaultVal);
+
+	return wxConfig::Read(key, l, actualDefault); 
+}
+
+
+// Return a long value
+long sysSettings::Read(const wxString& key, long defaultVal) const
+{ 
+	long actualDefault = defaultVal;
+	
+	// Get the default from the defaults file, in preference 
+	// to the hardcoded value
+	if (defaultSettings)
+        defaultSettings->Read(key, &actualDefault, defaultVal);
+
+	return wxConfig::Read(key, actualDefault); 
+}
+
+// Read a boolean value
 bool sysSettings::Read(const wxString& key, bool *val, bool defaultVal) const
 {
+	wxString actualDefault = BoolToStr(defaultVal);
     wxString str;
-    Read(key, &str, BoolToStr(defaultVal));
+
+	// Get the default from the defaults file, in preference 
+	// to the hardcoded value
+    if (defaultSettings)
+        defaultSettings->Read(key, &actualDefault, BoolToStr(defaultVal));
+
+    Read(key, &str, actualDefault);
     *val = StrToBool(str);
     return true;
 }
 
+// Read a point value
+wxPoint sysSettings::Read(const wxString& key, const wxPoint &defaultVal) const
+{
+	wxPoint actualDefault = defaultVal;
+
+	// Get the default from the defaults file, in preference 
+	// to the hardcoded value
+	if (defaultSettings)
+	{
+	    actualDefault.x = defaultSettings->Read(key + wxT("/Left"), defaultVal.x);
+        actualDefault.y = defaultSettings->Read(key + wxT("/Top"), defaultVal.y);
+	}
+
+    return wxPoint(wxConfig::Read(key + wxT("/Left"), actualDefault.x), 
+                   wxConfig::Read(key + wxT("/Top"), actualDefault.y));
+}
+
+// Read a size value
+wxSize sysSettings::Read(const wxString& key, const wxSize &defaultVal) const
+{
+	wxSize actualDefault = defaultVal;
+
+	// Get the default from the defaults file, in preference 
+	// to the hardcoded value
+	if (defaultSettings)
+	{
+        actualDefault.x = defaultSettings->Read(key + wxT("/Width"), defaultVal.x);
+        actualDefault.y = defaultSettings->Read(key + wxT("/Height"), defaultVal.y);
+	}
+
+    return wxSize(wxConfig::Read(key + wxT("/Width"), actualDefault.x), 
+                  wxConfig::Read(key + wxT("/Height"), actualDefault.y));
+}
+
+// Write a boolean value
 bool sysSettings::Write(const wxString &key, bool value)
 {
     return Write(key, BoolToStr(value));
 }
 
+// Write a point value
 bool sysSettings::Write(const wxString &key, const wxPoint &value)
 {
     bool rc=wxConfig::Write(key + wxT("/Left"), value.x);
@@ -508,27 +622,13 @@ bool sysSettings::Write(const wxString &key, const wxPoint &value)
     return rc;
 }
 
-
+// Write a size value
 bool sysSettings::Write(const wxString &key, const wxSize &value)
 {
     bool rc=wxConfig::Write(key + wxT("/Width"), value.x);
     if (rc)
         rc=wxConfig::Write(key + wxT("/Height"), value.y);
     return rc;
-}
-
-
-wxPoint sysSettings::Read(const wxString& key, const wxPoint &defaultVal) const
-{
-    return wxPoint(wxConfig::Read(key + wxT("/Left"), defaultVal.x), 
-                   wxConfig::Read(key + wxT("/Top"), defaultVal.y));
-}
-
-
-wxSize sysSettings::Read(const wxString& key, const wxSize &defaultVal) const
-{
-    return wxSize(wxConfig::Read(key + wxT("/Width"), defaultVal.x), 
-                  wxConfig::Read(key + wxT("/Height"), defaultVal.y));
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,8 +25,6 @@
 #include "schema/pgSchema.h"
 #include "schema/pgTable.h"
 
-extern wxString utilitiesIni;
-
 void frmMain::LoadPluginUtilities()
 {
     if (utilitiesIni.IsEmpty())

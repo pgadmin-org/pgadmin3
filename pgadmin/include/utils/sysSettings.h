@@ -15,7 +15,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/config.h>
-
+#include <wx/fileconf.h>
 
 // Class declarations
 class sysSettings : public wxConfig
@@ -142,17 +142,12 @@ public:
     bool Write(const wxString &key, const wxSize &size, const wxPoint &point)
         { Write(key, point); Write(key, size); return true;}
 
-    bool Read(const wxString& key, wxString* str, const wxString& defaultVal) const
-        { return wxConfig::Read(key, str, defaultVal); }
+    bool Read(const wxString& key, wxString* str, const wxString& defaultVal) const;
     bool Read(const wxString& key, bool* str, bool defaultVal) const;
-    bool Read(const wxString& key, int* i, int defaultVal) const
-        { return wxConfig::Read(key, i, defaultVal); }
-    bool Read(const wxString& key, long* l, long defaultVal) const
-        { return wxConfig::Read(key, l, defaultVal); }
-    wxString Read(const wxString& key, const wxString &defaultVal) const
-        { return wxConfig::Read(key, defaultVal); }
-    long Read(const wxString& key, long defaultVal) const
-        { return wxConfig::Read(key, defaultVal); }
+    bool Read(const wxString& key, int* i, int defaultVal) const;
+    bool Read(const wxString& key, long* l, long defaultVal) const;
+    wxString Read(const wxString& key, const wxString &defaultVal) const;
+    long Read(const wxString& key, long defaultVal) const;
     wxPoint Read(const wxString& key, const wxPoint &defaultVal) const;
     wxSize Read(const wxString& key, const wxSize &defaultVal) const;
 
@@ -191,6 +186,8 @@ private:
 
     bool moveStringValue(const wxChar *oldKey, const wxChar *newKey, int index=-1);
     bool moveLongValue(const wxChar *oldKey, const wxChar *newKey, int index=-1);
+
+	wxFileConfig *defaultSettings; 
 
     wxFont systemFont, sqlFont; 
 

@@ -21,7 +21,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgConnect.xrc \
 	$(srcdir)/ui/dlgConversion.xrc \
 	$(srcdir)/ui/dlgDatabase.xrc \
-        $(srcdir)/ui/dlgDirectDbg.xrc \
+    $(srcdir)/ui/dlgDirectDbg.xrc \
 	$(srcdir)/ui/dlgDomain.xrc \
 	$(srcdir)/ui/dlgEditGridOptions.xrc \
 	$(srcdir)/ui/dlgFindReplace.xrc \
@@ -80,7 +80,7 @@ TMP_ui += \
 	$(srcdir)/ui/frmStatus.xrc
 
 EXTRA_DIST += \
-        $(srcdir)/ui/module.mk \
+    $(srcdir)/ui/module.mk \
 	$(srcdir)/ui/embed-xrc \
 	$(srcdir)/ui/embed-xrc.bat
 

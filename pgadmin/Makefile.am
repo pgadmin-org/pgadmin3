@@ -20,6 +20,9 @@ EXTRA_DIST = \
 	$(srcdir)/precomp.cpp \
 	$(srcdir)/pgAdmin3.rc \
 	$(srcdir)/ver_svn.bat
+	
+nobase_dist_pkgdata_DATA = \
+    $(srcdir)/settings.ini
 
 # Generate svnversion.h every time, but only if repo version has changed.
 .PHONY: $(srcdir)/include/svnversion.cpp
@@ -63,7 +66,7 @@ endif
 if !APPBUNDLE
 
 if BUILD_DEBUG
-nobase_dist_pkgdata_DATA = $(TMP_ui)
+nobase_dist_pkgdata_DATA += $(TMP_ui)
 endif
 AM_CXXFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" $(__CXXFLAGS) -I$(top_srcdir)/pgadmin/include $(__EDB_LIBPQ)
 AM_CFLAGS = -DDATA_DIR=\"$(pkgdatadir)/\" $(__CFLAGS) -I$(top_srcdir)/pgadmin/include $(__EDB_LIBPQ)
@@ -75,7 +78,7 @@ install-exec-hook:
 else
 
 if BUILD_DEBUG
-nobase_dist_data_DATA = $(TMP_ui)
+nobase_dist_data_DATA += $(TMP_ui)
 endif
 AM_CXXFLAGS = $(__CXXFLAGS) -I$(top_srcdir)/pgadmin/include $(__EDB_LIBPQ)
 AM_CFLAGS = $(__CFLAGS) -I$(top_srcdir)/pgadmin/include $(__EDB_LIBPQ)
