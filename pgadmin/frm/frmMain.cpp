@@ -1055,6 +1055,7 @@ void frmMain::RetrieveServers()
     wxLogInfo(wxT("Reloading servers..."));
 
     serverFactory.CreateObjects(serversObj, browser);
+	
     // Reset the Servers node text
     wxString label;
     label.Printf(_("Servers (%d)"), browser->GetChildrenCount(serversObj->GetId(), false));

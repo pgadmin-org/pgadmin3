@@ -91,10 +91,11 @@ wxString edbBackupAllExecutable;
 wxString edbRestoreExecutable;
 
 wxString loadPath;              // Where the program is loaded from
+wxString dataDir;               // The program data directory
 wxString docPath;               // Where docs are stored
 wxString uiPath;                // Where ui data is stored
 wxString i18nPath;              // Where i18n data is stored
-wxString brandingPath;			// Where branding data is stored
+wxString brandingPath;          // Where branding data is stored
 wxString utilitiesIni;          // The utilities.ini file
 wxString settingsIni;           // The settings.ini file
 
@@ -111,12 +112,12 @@ IMPLEMENT_APP(pgAdmin3)
 class pgRendererNative : public wxDelegateRendererNative
 {
 public:
-	pgRendererNative() : wxDelegateRendererNative(wxRendererNative::GetDefault()) {}
+    pgRendererNative() : wxDelegateRendererNative(wxRendererNative::GetDefault()) {}
 
-	void DrawTreeItemButton(wxWindow* win,wxDC& dc, const wxRect& rect, int flags)
-	{
-		GetGeneric().DrawTreeItemButton(win, dc, rect, flags);
-	}
+    void DrawTreeItemButton(wxWindow* win,wxDC& dc, const wxRect& rect, int flags)
+    {
+        GetGeneric().DrawTreeItemButton(win, dc, rect, flags);
+    }
 };
 
 #endif
@@ -187,21 +188,21 @@ bool pgAdmin3::OnInit()
     // Force logging off until we're ready
     wxLog *seLog=new wxLogStderr();
     wxLog::SetActiveTarget(seLog);
-  	
-	static const wxCmdLineEntryDesc cmdLineDesc[] = 
-	{
-		{wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
-		{wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
-		{wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool"), wxCMD_LINE_VAL_NONE},
-		{wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
+      
+    static const wxCmdLineEntryDesc cmdLineDesc[] = 
+    {
+        {wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
+        {wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
+        {wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool"), wxCMD_LINE_VAL_NONE},
+        {wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
         {wxCMD_LINE_OPTION, wxT("f"), wxT("file"), _("file to load into the query tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
-		{wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
-		{wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+        {wxCMD_LINE_OPTION, wxT("cm"), NULL, _("edit main configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+        {wxCMD_LINE_OPTION, wxT("ch"), NULL, _("edit HBA configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
         {wxCMD_LINE_OPTION, wxT("cp"), NULL, _("edit pgpass configuration file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
-		{wxCMD_LINE_OPTION, wxT("c"), NULL, _("edit configuration files in cluster directory"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
-		{wxCMD_LINE_SWITCH, wxT("t"), NULL, _("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
-		{wxCMD_LINE_NONE}
-	};
+        {wxCMD_LINE_OPTION, wxT("c"), NULL, _("edit configuration files in cluster directory"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE},
+        {wxCMD_LINE_SWITCH, wxT("t"), NULL, _("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
+        {wxCMD_LINE_NONE}
+    };
 
     // Setup the basic paths for the app installation. Required by settings!
     InitAppPaths();
@@ -217,38 +218,38 @@ bool pgAdmin3::OnInit()
     InitXtraPaths();
 
     frmConfig::tryMode configMode=frmConfig::NONE;
-	wxString configFile;
+    wxString configFile;
 
-	wxCmdLineParser cmdParser(cmdLineDesc, argc, argv);
-	if (cmdParser.Parse() != 0) 
-		return false;
+    wxCmdLineParser cmdParser(cmdLineDesc, argc, argv);
+    if (cmdParser.Parse() != 0) 
+        return false;
 
-	if (cmdParser.Found(wxT("q")) && cmdParser.Found(wxT("qc")))
-	{
-		cmdParser.Usage();
-		return false;
-	}
+    if (cmdParser.Found(wxT("q")) && cmdParser.Found(wxT("qc")))
+    {
+        cmdParser.Usage();
+        return false;
+    }
 
-	if (cmdParser.Found(wxT("cm"), &configFile)) 
-		configMode = frmConfig::MAINFILE;
-	else if (cmdParser.Found(wxT("ch"), &configFile))
-		configMode = frmConfig::HBAFILE;
-	else if (cmdParser.Found(wxT("cp"), &configFile))
-		configMode = frmConfig::PGPASSFILE;
-	else if (cmdParser.Found(wxT("c"), &configFile))
-		configMode = frmConfig::ANYFILE;
+    if (cmdParser.Found(wxT("cm"), &configFile)) 
+        configMode = frmConfig::MAINFILE;
+    else if (cmdParser.Found(wxT("ch"), &configFile))
+        configMode = frmConfig::HBAFILE;
+    else if (cmdParser.Found(wxT("cp"), &configFile))
+        configMode = frmConfig::PGPASSFILE;
+    else if (cmdParser.Found(wxT("c"), &configFile))
+        configMode = frmConfig::ANYFILE;
 
-	if (cmdParser.Found(wxT("t")))
-		dialogTestMode = true;
+    if (cmdParser.Found(wxT("t")))
+        dialogTestMode = true;
 
-	// Setup the image handlers and appearance factory before we do any GUI or config stuff
+    // Setup the image handlers and appearance factory before we do any GUI or config stuff
     wxImage::AddHandler(new wxJPEGHandler());
     wxImage::AddHandler(new wxPNGHandler());
     wxImage::AddHandler(new wxGIFHandler());
 
-	appearanceFactory = new pgAppearanceFactory();
+    appearanceFactory = new pgAppearanceFactory();
 
-	// Setup logging
+    // Setup logging
     InitLogger();
 
     wxString msg;
@@ -273,7 +274,7 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("Doc path     : %s"), docPath.c_str());
     wxLogInfo(wxT("Branding path: %s"), brandingPath.c_str());
     wxLogInfo(wxT("Utilities INI: %s"), utilitiesIni.c_str());
-	wxLogInfo(wxT("Settings INI : %s"), settingsIni.c_str());
+    wxLogInfo(wxT("Settings INI : %s"), settingsIni.c_str());
 
     wxLogInfo(wxT("PG pg_dump    : %s"), pgBackupExecutable.c_str());
     wxLogInfo(wxT("PG pg_dumpall : %s"), pgBackupAllExecutable.c_str());
@@ -284,13 +285,13 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("EDB pg_restore: %s"), edbRestoreExecutable.c_str());
 
 #ifdef __WXGTK__
-	static pgRendererNative *renderer=new pgRendererNative();
-	wxRendererNative::Get();
-	wxRendererNative::Set(renderer);
+    static pgRendererNative *renderer=new pgRendererNative();
+    wxRendererNative::Get();
+    wxRendererNative::Set(renderer);
 #endif
 
 #ifdef __LINUX__
-	signal(SIGPIPE, SIG_IGN);
+    signal(SIGPIPE, SIG_IGN);
 #endif
 
     locale = new wxLocale();
@@ -353,10 +354,10 @@ bool pgAdmin3::OnInit()
     {
         SetTopWindow(winSplash);
         winSplash->Show();
-	    winSplash->Update();
+        winSplash->Update();
         wxTheApp->Yield(true);
     }
-	
+    
     // Startup the windows sockets if required
     InitNetwork();
 
@@ -390,17 +391,17 @@ bool pgAdmin3::OnInit()
 
     if (configMode)
     {
-		if (configMode == frmConfig::ANYFILE && wxDir::Exists(configFile))
-		{
-		    wxLogInfo(wxT("Starting in ANYFILE config editor mode, in directory: %s"), configFile.c_str());
-			frmConfig::Create(appearanceFactory->GetLongAppName(), configFile + wxT("/pg_hba.conf"), frmConfig::HBAFILE);
-			frmConfig::Create(appearanceFactory->GetLongAppName(), configFile + wxT("/postgresql.conf"), frmConfig::MAINFILE);
-		}
-		else
-		{
-		    wxLogInfo(wxT("Starting in config editor mode, file: %s"), configFile.c_str());
-			frmConfig::Create(appearanceFactory->GetLongAppName(), configFile, configMode);
-		}
+        if (configMode == frmConfig::ANYFILE && wxDir::Exists(configFile))
+        {
+            wxLogInfo(wxT("Starting in ANYFILE config editor mode, in directory: %s"), configFile.c_str());
+            frmConfig::Create(appearanceFactory->GetLongAppName(), configFile + wxT("/pg_hba.conf"), frmConfig::HBAFILE);
+            frmConfig::Create(appearanceFactory->GetLongAppName(), configFile + wxT("/postgresql.conf"), frmConfig::MAINFILE);
+        }
+        else
+        {
+            wxLogInfo(wxT("Starting in config editor mode, file: %s"), configFile.c_str());
+            frmConfig::Create(appearanceFactory->GetLongAppName(), configFile, configMode);
+        }
         if (winSplash)
         {
             winSplash->Close();
@@ -413,7 +414,7 @@ bool pgAdmin3::OnInit()
     {
         if (dialogTestMode)
         {
-		    wxLogInfo(wxT("Starting in dialog test mode."));
+            wxLogInfo(wxT("Starting in dialog test mode."));
             wxFrame *dtf=new frmDlgTest();
             dtf->Show();
             SetTopWindow(dtf);
@@ -421,105 +422,105 @@ bool pgAdmin3::OnInit()
 
 #ifdef __WXMAC__
         else if (((cmdParser.Found(wxT("q")) || cmdParser.Found(wxT("qc"))) && !cmdParser.Found(wxT("s"))) || !macFileToOpen.IsEmpty())
-#else		
+#else        
         else if ((cmdParser.Found(wxT("q")) || cmdParser.Found(wxT("qc"))) && !cmdParser.Found(wxT("s")))
 #endif
         {
-			// -q specified, but not -s. Open a query tool but do *not* open the main window
-			pgConn *conn = NULL;
-			wxString connstr;
+            // -q specified, but not -s. Open a query tool but do *not* open the main window
+            pgConn *conn = NULL;
+            wxString connstr;
 
 #ifdef __WXMAC__
-			if (cmdParser.Found(wxT("q")) || !macFileToOpen.IsEmpty())
+            if (cmdParser.Found(wxT("q")) || !macFileToOpen.IsEmpty())
 #else
-			if (cmdParser.Found(wxT("q")))
+            if (cmdParser.Found(wxT("q")))
 #endif
-			{
-			    wxLogInfo(wxT("Starting in query tool mode (-q)."), configFile.c_str());
+            {
+                wxLogInfo(wxT("Starting in query tool mode (-q)."), configFile.c_str());
 
-				winSplash->Show(false);
-				dlgSelectConnection dlg(NULL, NULL);
-				dlg.CenterOnParent();
-				
-		        int rc=dlg.Go(conn, NULL);
-				if (rc != wxID_OK)
-					return false;
-				conn = dlg.CreateConn();
-			}
-			else if (cmdParser.Found(wxT("qc"), &connstr))
-			{
-			    wxLogInfo(wxT("Starting in query tool connect mode (-qc)."), configFile.c_str());
-				wxString host, database, username, tmps;
-				int sslmode=0,port=0;
-				wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
-				while (tkn.HasMoreTokens())
-				{
-					wxString str = tkn.GetNextToken();
-					if (str.StartsWith(wxT("hostaddr="), &host))
-						continue;
-					if (str.StartsWith(wxT("host="), &host))
-						continue;
-					if (str.StartsWith(wxT("dbname="), &database))
-						continue;
-					if (str.StartsWith(wxT("user="), &username))
-						continue;
-					if (str.StartsWith(wxT("port="), &tmps))
-					{
-						port = StrToLong(tmps);
-						continue;
-					}
-					if (str.StartsWith(wxT("sslmode="), &tmps))
-					{
-						if (!tmps.Cmp(wxT("require")))
-							sslmode = 1;
-						else if (!tmps.Cmp(wxT("prefer")))
-							sslmode = 2;
-						else if (!tmps.Cmp(wxT("allow")))
-							sslmode = 3;
-						else if (!tmps.Cmp(wxT("disable")))
-							sslmode = 4;
-						else
-						{
-							wxMessageBox(_("Unknown SSL mode: ") + tmps);
-							return false;
-						}
-						continue;
-					}
-					wxMessageBox(_("Unknown token in connection string: ") + str);
-					return false;
-				}
-				winSplash->Show(false);
-				dlgSelectConnection dlg(NULL, NULL);
-				dlg.CenterOnParent();
-				conn = dlg.CreateConn(host, database, username, port, sslmode);
-			}
-			else
-			{
-				/* Can't happen.. */
-				return false;
-			}
-			if (!conn)
-				return false;
+                winSplash->Show(false);
+                dlgSelectConnection dlg(NULL, NULL);
+                dlg.CenterOnParent();
+                
+                int rc=dlg.Go(conn, NULL);
+                if (rc != wxID_OK)
+                    return false;
+                conn = dlg.CreateConn();
+            }
+            else if (cmdParser.Found(wxT("qc"), &connstr))
+            {
+                wxLogInfo(wxT("Starting in query tool connect mode (-qc)."), configFile.c_str());
+                wxString host, database, username, tmps;
+                int sslmode=0,port=0;
+                wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
+                while (tkn.HasMoreTokens())
+                {
+                    wxString str = tkn.GetNextToken();
+                    if (str.StartsWith(wxT("hostaddr="), &host))
+                        continue;
+                    if (str.StartsWith(wxT("host="), &host))
+                        continue;
+                    if (str.StartsWith(wxT("dbname="), &database))
+                        continue;
+                    if (str.StartsWith(wxT("user="), &username))
+                        continue;
+                    if (str.StartsWith(wxT("port="), &tmps))
+                    {
+                        port = StrToLong(tmps);
+                        continue;
+                    }
+                    if (str.StartsWith(wxT("sslmode="), &tmps))
+                    {
+                        if (!tmps.Cmp(wxT("require")))
+                            sslmode = 1;
+                        else if (!tmps.Cmp(wxT("prefer")))
+                            sslmode = 2;
+                        else if (!tmps.Cmp(wxT("allow")))
+                            sslmode = 3;
+                        else if (!tmps.Cmp(wxT("disable")))
+                            sslmode = 4;
+                        else
+                        {
+                            wxMessageBox(_("Unknown SSL mode: ") + tmps);
+                            return false;
+                        }
+                        continue;
+                    }
+                    wxMessageBox(_("Unknown token in connection string: ") + str);
+                    return false;
+                }
+                winSplash->Show(false);
+                dlgSelectConnection dlg(NULL, NULL);
+                dlg.CenterOnParent();
+                conn = dlg.CreateConn(host, database, username, port, sslmode);
+            }
+            else
+            {
+                /* Can't happen.. */
+                return false;
+            }
+            if (!conn)
+                return false;
 
             wxString fn;
 #ifdef __WXMAC__
             if (!macFileToOpen.IsEmpty())
-			{
-			    wxLogInfo(wxT("Mac file launch: %s."), macFileToOpen.c_str());
-			    fn = macFileToOpen;
-			}
-			else
-			    cmdParser.Found(wxT("f"), &fn);
+            {
+                wxLogInfo(wxT("Mac file launch: %s."), macFileToOpen.c_str());
+                fn = macFileToOpen;
+            }
+            else
+                cmdParser.Found(wxT("f"), &fn);
 #else
             cmdParser.Found(wxT("f"), &fn);
 #endif
-			if (!fn.IsEmpty())
-			    wxLogInfo(wxT("Auto-loading file: %s"), fn.c_str());
-			frmQuery *fq = new frmQuery(NULL, wxEmptyString, conn, wxEmptyString, fn);
-			fq->Go();
-		}
-		else
-		{
+            if (!fn.IsEmpty())
+                wxLogInfo(wxT("Auto-loading file: %s"), fn.c_str());
+            frmQuery *fq = new frmQuery(NULL, wxEmptyString, conn, wxEmptyString, fn);
+            fq->Go();
+        }
+        else
+        {
             // Create & show the main form
             winMain = new frmMain(appearanceFactory->GetLongAppName());
 
@@ -529,41 +530,41 @@ bool pgAdmin3::OnInit()
             winMain->Show();
             SetTopWindow(winMain);
 
-	        // Display a Tip if required.
-			extern sysSettings *settings;
-			wxCommandEvent evt = wxCommandEvent();
-			if (winMain && settings->GetShowTipOfTheDay())
-			{
+            // Display a Tip if required.
+            extern sysSettings *settings;
+            wxCommandEvent evt = wxCommandEvent();
+            if (winMain && settings->GetShowTipOfTheDay())
+            {
                 if (winSplash)
                 {
                     winSplash->Close();
                     delete winSplash;
                     winSplash = 0;
                 }
-				tipOfDayFactory tip(0, 0, 0);
-				tip.StartDialog(winMain, 0);
-			}
+                tipOfDayFactory tip(0, 0, 0);
+                tip.StartDialog(winMain, 0);
+            }
 
-			wxString str;
-			if (cmdParser.Found(wxT("s"), &str))
-			{
-				pgServer *srv = winMain->ConnectToServer(str, !cmdParser.Found(wxT("q")));
-				if (srv && cmdParser.Found(wxT("q")))
-				{
-					pgConn *conn;
-					conn = srv->CreateConn();
-					if (conn)
-					{
+            wxString str;
+            if (cmdParser.Found(wxT("s"), &str))
+            {
+                pgServer *srv = winMain->ConnectToServer(str, !cmdParser.Found(wxT("q")));
+                if (srv && cmdParser.Found(wxT("q")))
+                {
+                    pgConn *conn;
+                    conn = srv->CreateConn();
+                    if (conn)
+                    {
                         wxString fn;
                         cmdParser.Found(wxT("f"), &fn);
-						if (!fn.IsEmpty())
-						    wxLogInfo(wxT("Auto-loading file: %s"), fn.c_str());
-						frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxEmptyString, fn);
-						fq->Go();
-					}
-				}
-			}
-		}
+                        if (!fn.IsEmpty())
+                            wxLogInfo(wxT("Auto-loading file: %s"), fn.c_str());
+                        frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxEmptyString, fn);
+                        fq->Go();
+                    }
+                }
+            }
+        }
 
         SetExitOnFrameDelete(true);
 
@@ -604,19 +605,19 @@ int pgAdmin3::OnExit()
 #ifdef __WXMAC__
 void pgAdmin3::MacOpenFile(const wxString &fileName) 
 {
-	macFileToOpen = fileName;
+    macFileToOpen = fileName;
 }
 #endif
 
 // Setup the paths for the application itself
 void pgAdmin3::InitAppPaths()
 {
-	i18nPath = LocatePath(I18N_DIR, false);
-	docPath = LocatePath(DOC_DIR, false);
-	uiPath = LocatePath(UI_DIR, false);
-	brandingPath = LocatePath(BRANDING_DIR, false);
-	utilitiesIni = LocatePath(UTILITIES_INI, true);
-	settingsIni = LocatePath(SETTINGS_INI, true);
+    i18nPath = LocatePath(I18N_DIR, false);
+    docPath = LocatePath(DOC_DIR, false);
+    uiPath = LocatePath(UI_DIR, false);
+    brandingPath = LocatePath(BRANDING_DIR, false);
+    utilitiesIni = LocatePath(UTILITIES_INI, true);
+    settingsIni = LocatePath(SETTINGS_INI, true);
 }
 
 // Setup the paths for the helper apps etc.
@@ -668,8 +669,8 @@ void pgAdmin3::InitXtraPaths()
 #else
 #ifdef __WXMAC__
 
-            if (wxDir::Exists(dataDir))
-            path.Add(dataDir) ;
+        if (wxDir::Exists(dataDir))
+        path.Add(dataDir) ;
 
 #endif
 #endif
@@ -699,9 +700,9 @@ void pgAdmin3::InitXtraPaths()
         wxPathList path;
 
 #ifdef __WXMSW__
-		path.Add(wxT("C:\\PostgresPlus\\8.4\\dbserver\\bin"));
+        path.Add(wxT("C:\\PostgresPlus\\8.4\\dbserver\\bin"));
         path.Add(wxT("C:\\PostgresPlus\\8.3\\dbserver\\bin"));
-		path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.4\\bin"));
+        path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.4\\bin"));
         path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.3\\bin"));
         path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.2\\bin"));
         path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.1\\bin"));
@@ -710,13 +711,13 @@ void pgAdmin3::InitXtraPaths()
         wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
         // Mac paths
-		path.Add(wxT("/Library/PostgresPlus/8.4/dbserver/bin"));
-		path.Add(wxT("/Library/PostgresPlus/8.3/bin"));
+        path.Add(wxT("/Library/PostgresPlus/8.4/dbserver/bin"));
+        path.Add(wxT("/Library/PostgresPlus/8.3/bin"));
 
-		// Generic Unix paths
-		path.Add(wxT("/opt/PostgresPlus/8.4/dbserver/bin"));
-		path.Add(wxT("/opt/PostgresPlus/8.3/dbserver/bin"));
-		path.Add(wxT("/opt/PostgresPlus/8.3/bin"));
+        // Generic Unix paths
+        path.Add(wxT("/opt/PostgresPlus/8.4/dbserver/bin"));
+        path.Add(wxT("/opt/PostgresPlus/8.3/dbserver/bin"));
+        path.Add(wxT("/opt/PostgresPlus/8.3/bin"));
         path.Add(wxT("/usr/local/pgsql/bin"));
         path.Add(wxT("/usr/local/bin"));
         path.Add(wxT("/usr/bin"));
@@ -740,7 +741,7 @@ void pgAdmin3::InitXtraPaths()
         wxPathList path;
 
 #ifdef __WXMSW__
-		path.Add(wxT("C:\\PostgresPlus\\8.4AS\\dbserver\\bin"));
+        path.Add(wxT("C:\\PostgresPlus\\8.4AS\\dbserver\\bin"));
         path.Add(wxT("C:\\PostgresPlus\\8.3AS\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\bin"));
@@ -749,12 +750,12 @@ void pgAdmin3::InitXtraPaths()
         wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
         // Mac paths
-		path.Add(wxT("/Library/PostgresPlus/8.4AS/dbserver/bin"));
-		path.Add(wxT("/Library/PostgresPlus/8.3AS/dbserver/bin"));
+        path.Add(wxT("/Library/PostgresPlus/8.4AS/dbserver/bin"));
+        path.Add(wxT("/Library/PostgresPlus/8.3AS/dbserver/bin"));
 
-		// Generic Unix paths
-		path.Add(wxT("/opt/PostgresPlus/8.4AS/dbserver/bin"));
-		path.Add(wxT("/opt/PostgresPlus/8.3AS/dbserver/bin"));
+        // Generic Unix paths
+        path.Add(wxT("/opt/PostgresPlus/8.4AS/dbserver/bin"));
+        path.Add(wxT("/opt/PostgresPlus/8.3AS/dbserver/bin"));
         path.Add(wxT("/usr/local/enterpriseDB/bin"));
         path.Add(wxT("/usr/local/enterprisedb/bin"));
         path.Add(wxT("/usr/local/edb/bin"));
@@ -786,11 +787,11 @@ void pgAdmin3::InitXtraPaths()
     edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("\\pg_restore.exe");
 #else
     pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dump");
-	pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dumpall");
+    pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dumpall");
     pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("/pg_restore");
 
     edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dump");
-	edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dumpall");
+    edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dumpall");
     edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("/pg_restore");
 #endif
 
@@ -811,12 +812,12 @@ void pgAdmin3::InitXtraPaths()
 
 wxString pgAdmin3::LocatePath(const wxString &pathToFind, const bool isFile)
 {
-	loadPath = wxPathOnly(argv[0]);
+    loadPath = wxPathOnly(argv[0]);
 
-	if (loadPath.IsEmpty())
-		loadPath = wxT(".");
+    if (loadPath.IsEmpty())
+        loadPath = wxT(".");
 
-	loadPath = sanitizePath(loadPath);
+    loadPath = sanitizePath(loadPath);
 
 #if defined(__WXMSW__)
 
@@ -827,35 +828,34 @@ wxString pgAdmin3::LocatePath(const wxString &pathToFind, const bool isFile)
     //                          (with the .exe and dlls in the main bin dir)
     // 3) ../xxx or ../../xxx - Running in a development environment
     
-	if (!isFile)
-	{
-		if (wxDir::Exists(loadPath + pathToFind))
-			return sanitizePath(loadPath + pathToFind);
-		else if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") + pathToFind))
-			return sanitizePath(loadPath + wxT("/../pgAdmin III") + pathToFind);
-		else if (wxDir::Exists(loadPath + wxT("/..") + pathToFind))
-			return sanitizePath(loadPath + wxT("/..") + pathToFind);
-		else if (wxDir::Exists(loadPath + wxT("/../..") + pathToFind))
-			return sanitizePath(loadPath + wxT("/../..") + pathToFind);
-		else
-			return wxEmptyString;
-	}
-	else
-	{
-		if (wxFile::Exists(loadPath + pathToFind))
-			return sanitizePath(loadPath + pathToFind);
-		else if (wxFile::Exists(loadPath + wxT("/../pgAdmin III") + pathToFind))
-			return sanitizePath(loadPath + wxT("/../pgAdmin III") + pathToFind);
-		else if (wxFile::Exists(loadPath + wxT("/..") + pathToFind))
-			return sanitizePath(loadPath + wxT("/..") + pathToFind);
-		else if (wxFile::Exists(loadPath + wxT("/../..") + pathToFind))
-			return sanitizePath(loadPath + wxT("/../..") + pathToFind);
-		else 
-			return wxEmptyString;
-	}
+    if (!isFile)
+    {
+        if (wxDir::Exists(loadPath + pathToFind))
+            return sanitizePath(loadPath + pathToFind);
+        else if (wxDir::Exists(loadPath + wxT("/../pgAdmin III") + pathToFind))
+            return sanitizePath(loadPath + wxT("/../pgAdmin III") + pathToFind);
+        else if (wxDir::Exists(loadPath + wxT("/..") + pathToFind))
+            return sanitizePath(loadPath + wxT("/..") + pathToFind);
+        else if (wxDir::Exists(loadPath + wxT("/../..") + pathToFind))
+            return sanitizePath(loadPath + wxT("/../..") + pathToFind);
+        else
+            return wxEmptyString;
+    }
+    else
+    {
+        if (wxFile::Exists(loadPath + pathToFind))
+            return sanitizePath(loadPath + pathToFind);
+        else if (wxFile::Exists(loadPath + wxT("/../pgAdmin III") + pathToFind))
+            return sanitizePath(loadPath + wxT("/../pgAdmin III") + pathToFind);
+        else if (wxFile::Exists(loadPath + wxT("/..") + pathToFind))
+            return sanitizePath(loadPath + wxT("/..") + pathToFind);
+        else if (wxFile::Exists(loadPath + wxT("/../..") + pathToFind))
+            return sanitizePath(loadPath + wxT("/../..") + pathToFind);
+        else 
+            return wxEmptyString;
+    }
 
 #else
-    wxString dataDir, thePath;
 
 #ifdef __WXMAC__
 
@@ -882,32 +882,32 @@ wxString pgAdmin3::LocatePath(const wxString &pathToFind, const bool isFile)
     // 3) ./xxx                    - Windows-style standalone install
     // 4) ./../xxx                 - Unix-style standalone install (with binaries in a bin directory)
 
-	if (!isFile)
-	{
-	    if (wxDir::Exists(dataDir + pathToFind))
+    if (!isFile)
+    {
+        if (wxDir::Exists(dataDir + pathToFind))
             return sanitizePath(dataDir + pathToFind);
-		else if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") + pathToFind))
+        else if (wxDir::Exists(loadPath + wxT("/../share/pgadmin3") + pathToFind))
             return sanitizePath(loadPath + wxT("/../share/pgadmin3") + pathToFind);
         else if (wxDir::Exists(loadPath + pathToFind))
             return sanitizePath(loadPath + pathToFind);
         else if (wxFile::Exists(loadPath + wxT("/..") + pathToFind))
             return sanitizePath(loadPath + wxT("/..") + pathToFind);
-		else 
-			return wxEmptyString;
-	}
-	else
-	{
-	    if (wxFile::Exists(dataDir + pathToFind))
+        else 
+            return wxEmptyString;
+    }
+    else
+    {
+        if (wxFile::Exists(dataDir + pathToFind))
             return sanitizePath(dataDir + pathToFind);
         else if (wxFile::Exists(loadPath + wxT("/../share/pgadmin3") + pathToFind))
-			return sanitizePath(loadPath + wxT("/../share/pgadmin3") + pathToFind);
+            return sanitizePath(loadPath + wxT("/../share/pgadmin3") + pathToFind);
         else if (wxFile::Exists(loadPath + pathToFind))
             return sanitizePath(loadPath + pathToFind);
         else if (wxFile::Exists(loadPath + wxT("/..") + pathToFind))
-            return sanitizePath(loadPath + wxT("/..") pathToFind);
-		else 
-			return wxEmptyString;
-	}
+            return sanitizePath(loadPath + wxT("/..") + pathToFind);
+        else 
+            return wxEmptyString;
+    }
 
 #endif
 }
@@ -1105,7 +1105,7 @@ void pgAdmin3::InitXml()
 
 #ifdef EMBED_XRC
     wxLogInfo(__("Using embedded XRC data."));   
-	
+    
     // resources are loaded from memory
     extern void InitXmlResource();
     InitXmlResource();
@@ -1124,7 +1124,7 @@ void pgAdmin3::InitLogger()
 {
     logger = new sysLogger();
     wxLog::SetActiveTarget(logger);
-	wxLog::Resume();
+    wxLog::Resume();
 }
 
 
@@ -1148,147 +1148,147 @@ void pgAdmin3::InitNetwork()
 
 pgAppearanceFactory::pgAppearanceFactory()
 {
-	is_branded = false;
+    is_branded = false;
 
-	// Setup the default branding options
+    // Setup the default branding options
 #ifdef __WIN32__
-	splash_font_size = 8;
+    splash_font_size = 8;
 #else
 #ifdef __WXMAC__
-	splash_font_size = 11;
+    splash_font_size = 11;
 #else
-	splash_font_size = 9;
+    splash_font_size = 9;
 #endif
 #endif
 
-	splash_pos_x = 128;
-	splash_pos_y = 281;
-	splash_pos_offset = 15;
+    splash_pos_x = 128;
+    splash_pos_y = 281;
+    splash_pos_offset = 15;
 
-	large_icon = wxImage(elephant32_xpm);
-	small_icon = wxImage(pgAdmin3_xpm);
-	splash_image = wxImage(splash_xpm);
+    large_icon = wxImage(elephant32_xpm);
+    small_icon = wxImage(pgAdmin3_xpm);
+    splash_image = wxImage(splash_xpm);
 
-	splash_text_colour = wxColour(255, 255, 255);
-	report_key_colour = wxColour(0, 154, 206);
+    splash_text_colour = wxColour(255, 255, 255);
+    report_key_colour = wxColour(0, 154, 206);
 
-	long_appname = wxT("pgAdmin III");
-	short_appname = wxT("pgadmin3");
-	website_url = wxT("http://www.pgadmin.org/");
+    long_appname = wxT("pgAdmin III");
+    short_appname = wxT("pgadmin3");
+    website_url = wxT("http://www.pgadmin.org/");
 
-	// Attempt to overload branding information
-	wxFileName brIni(brandingPath + wxT("/branding.ini"));
-	if (brIni.FileExists())
-	{
-		wxString brCfg = FileRead(brIni.GetFullPath());
+    // Attempt to overload branding information
+    wxFileName brIni(brandingPath + wxT("/branding.ini"));
+    if (brIni.FileExists())
+    {
+        wxString brCfg = FileRead(brIni.GetFullPath());
 
-		wxStringTokenizer tkz(brCfg, wxT("\r\n"));
+        wxStringTokenizer tkz(brCfg, wxT("\r\n"));
 
-		while(tkz.HasMoreTokens())
-		{
-			wxString token = tkz.GetNextToken();
+        while(tkz.HasMoreTokens())
+        {
+            wxString token = tkz.GetNextToken();
 
-			if (token.Trim() == wxEmptyString || token.StartsWith(wxT(";")))
-				continue;
+            if (token.Trim() == wxEmptyString || token.StartsWith(wxT(";")))
+                continue;
 
-			if (token.Lower().StartsWith(wxT("largeicon=")))
-			{
-				large_icon = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
-				if (!large_icon.IsOk())
-					large_icon = wxImage(elephant32_xpm);
-				else
-					is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("smallicon=")))
-			{
-				small_icon = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
-				if (!small_icon.IsOk())
-					small_icon = wxImage(pgAdmin3_xpm);
-				else
-					is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("splashimage=")))
-			{
-				splash_image = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
-				if (!splash_image.IsOk())
-					splash_image = wxImage(splash_xpm);
-				else
-					is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("icon=")))
-			{
-				icon = token.AfterFirst('=').Trim();
-				is_branded = true;
-			}
+            if (token.Lower().StartsWith(wxT("largeicon=")))
+            {
+                large_icon = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
+                if (!large_icon.IsOk())
+                    large_icon = wxImage(elephant32_xpm);
+                else
+                    is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("smallicon=")))
+            {
+                small_icon = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
+                if (!small_icon.IsOk())
+                    small_icon = wxImage(pgAdmin3_xpm);
+                else
+                    is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("splashimage=")))
+            {
+                splash_image = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
+                if (!splash_image.IsOk())
+                    splash_image = wxImage(splash_xpm);
+                else
+                    is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("icon=")))
+            {
+                icon = token.AfterFirst('=').Trim();
+                is_branded = true;
+            }
 #ifdef __WIN32__
-			else if (token.Lower().StartsWith(wxT("splashfontsizewin=")))
+            else if (token.Lower().StartsWith(wxT("splashfontsizewin=")))
 #else
 #ifdef __WXMAC__
-			else if (token.Lower().StartsWith(wxT("splashfontsizemac=")))
+            else if (token.Lower().StartsWith(wxT("splashfontsizemac=")))
 #else
-			else if (token.Lower().StartsWith(wxT("splashfontsizegtk=")))
+            else if (token.Lower().StartsWith(wxT("splashfontsizegtk=")))
 #endif
 #endif
-			{
-				token.AfterFirst('=').Trim().ToLong(&splash_font_size);
-				is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("splashposx=")))
-			{
-				token.AfterFirst('=').Trim().ToLong(&splash_pos_x);
-				is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("splashposy=")))
-			{
-				token.AfterFirst('=').Trim().ToLong(&splash_pos_y);
-				is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("splashposoffset=")))
-			{
-				token.AfterFirst('=').Trim().ToLong(&splash_pos_offset);
-				is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("splashtextcolour=")))
-			{
-				splash_text_colour = wxColor(token.AfterFirst('=').Trim());
-				is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("shortappname=")))
-			{
-				short_appname = token.AfterFirst('=').Trim();
-				is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("longappname=")))
-			{
-				long_appname = token.AfterFirst('=').Trim();
-				is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("websiteurl=")))
-			{
-				website_url = token.AfterFirst('=').Trim();
-				is_branded = true;
-			}
-			else if (token.Lower().StartsWith(wxT("reportkeycolour=")))
-			{
-				report_key_colour = wxColor(token.AfterFirst('=').Trim());
-				is_branded = true;
-			}
-		}
-	}
+            {
+                token.AfterFirst('=').Trim().ToLong(&splash_font_size);
+                is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("splashposx=")))
+            {
+                token.AfterFirst('=').Trim().ToLong(&splash_pos_x);
+                is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("splashposy=")))
+            {
+                token.AfterFirst('=').Trim().ToLong(&splash_pos_y);
+                is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("splashposoffset=")))
+            {
+                token.AfterFirst('=').Trim().ToLong(&splash_pos_offset);
+                is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("splashtextcolour=")))
+            {
+                splash_text_colour = wxColor(token.AfterFirst('=').Trim());
+                is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("shortappname=")))
+            {
+                short_appname = token.AfterFirst('=').Trim();
+                is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("longappname=")))
+            {
+                long_appname = token.AfterFirst('=').Trim();
+                is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("websiteurl=")))
+            {
+                website_url = token.AfterFirst('=').Trim();
+                is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("reportkeycolour=")))
+            {
+                report_key_colour = wxColor(token.AfterFirst('=').Trim());
+                is_branded = true;
+            }
+        }
+    }
 
 #ifdef __WXMSW__
 
-	// Set the MUI cache value for the grouped task bar title, 
-	// otherwise we get the value from the resources which is 
-	// definitely not what we want in branded mode!
-	wxRegKey *pRegKey = new wxRegKey(wxT("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\ShellNoRoam\\MUICache"));
-	if(!pRegKey->Exists())
-		pRegKey->Create();
+    // Set the MUI cache value for the grouped task bar title, 
+    // otherwise we get the value from the resources which is 
+    // definitely not what we want in branded mode!
+    wxRegKey *pRegKey = new wxRegKey(wxT("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\ShellNoRoam\\MUICache"));
+    if(!pRegKey->Exists())
+        pRegKey->Create();
 
-	wxStandardPaths paths;
-	//wxString tmp;
-	//tmp.Printf(wxT("%s"), long_appname);
-	pRegKey->SetValue(paths.GetExecutablePath(), GetLongAppName());
+    wxStandardPaths paths;
+    //wxString tmp;
+    //tmp.Printf(wxT("%s"), long_appname);
+    pRegKey->SetValue(paths.GetExecutablePath(), GetLongAppName());
     delete pRegKey;
 
     // Reset the image for the task bar group. This can only by
@@ -1298,8 +1298,8 @@ pgAppearanceFactory::pgAppearanceFactory()
 
 
     pRegKey = new wxRegKey(wxT("HKEY_CURRENT_USER\\Software\\Classes\\Applications\\") + wxFileName(paths.GetExecutablePath()).GetFullName());
-	if(!pRegKey->Exists())
-		pRegKey->Create();
+    if(!pRegKey->Exists())
+        pRegKey->Create();
 
     if (wxFile::Exists(icon_path))
     {
@@ -1332,15 +1332,15 @@ void pgAppearanceFactory::SetIcons(wxTopLevelWindow *dlg)
 
 wxIcon pgAppearanceFactory::GetSmallIconImage()
 {
-	wxIcon icon;
-	icon.CopyFromBitmap(wxBitmap(small_icon));
+    wxIcon icon;
+    icon.CopyFromBitmap(wxBitmap(small_icon));
     return icon;
 }
 
 wxIcon pgAppearanceFactory::GetBigIconImage()
 {
-	wxIcon icon;
-	icon.CopyFromBitmap(wxBitmap(large_icon));
+    wxIcon icon;
+    icon.CopyFromBitmap(wxBitmap(large_icon));
     return icon;
 }
 
