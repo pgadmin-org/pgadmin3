@@ -29,30 +29,112 @@ public:
 	void SetDisplayOption(const wxString &objtype, bool display);
 
     // Tip Of The Day
-    int GetShowTipOfTheDay() const { return showTipOfTheDay; }
-    void SetShowTipOfTheDay(const bool newval);
-    int GetNextTipOfTheDay() const { return nextTipOfTheDay; }
-    void SetNextTipOfTheDay(const int newval);
+    bool GetShowTipOfTheDay() const { bool b; Read(wxT("ShowTipOfTheDay"), &b, true); return b; }
+	void SetShowTipOfTheDay(const bool newval) { Write(wxT("ShowTipOfTheDay"), newval); }
+    int GetNextTipOfTheDay() const { int i; Read(wxT("NextTipOfTheDay"), &i, true); return i; }
+    void SetNextTipOfTheDay(const int newval) { Write(wxT("NextTipOfTheDay"), newval); }
 
     // Log
-    wxString GetLogFile() const { return logFile; }
-    void SetLogFile(const wxString& newval);
-    int GetLogLevel() const { return logLevel; }
-    void SetLogLevel(const int newval);
+    wxString GetLogFile();
+	void SetLogFile(const wxString& newval) { Write(wxT("LogFile"), newval); sysLogger::logFile = newval; }
+    int GetLogLevel() const { int i; Read(wxT("LogLevel"), &i, LOG_ERRORS); return i; }
+	void SetLogLevel(const int newval) { Write(wxT("LogLevel"), newval); sysLogger::logLevel = newval; }
 
     // Last connection
-    wxString GetLastDescription() const { return lastDescription; }
-    void SetLastDescription(const wxString& newval);
-    wxString GetLastServer() const { return lastServer; }
-    void SetLastServer(const wxString& newval);
-    wxString GetLastDatabase() const { return lastDatabase; }
-    void SetLastDatabase(const wxString& newval);
-    wxString GetLastUsername() const { return lastUsername; }
-    void SetLastUsername(const wxString& newval);
-    int GetLastPort() const { return lastPort; }
-    void SetLastPort(const int newval);
-    int GetLastSSL() const { return lastSSL; }
-    void SetLastSSL(const int newval);
+    wxString GetLastDescription() const { wxString s; Read(wxT("LastDescription"), &s, wxT("PostgreSQL Server")); return s; }
+	void SetLastDescription(const wxString &newval) { Write(wxT("LastDescription"), newval); }
+    wxString GetLastServer() const { wxString s; Read(wxT("LastServer"), &s, wxT("localhost")); return s; }
+	void SetLastServer(const wxString &newval) { Write(wxT("LastServer"), newval); }
+    wxString GetLastDatabase() const { wxString s; Read(wxT("LastDatabase"), &s, wxT("postgres")); return s; }
+	void SetLastDatabase(const wxString &newval) { Write(wxT("LastDatabase"), newval); }
+    wxString GetLastUsername() const { wxString s; Read(wxT("LastUsername"), &s, wxT("postgres")); return s; }
+	void SetLastUsername(const wxString &newval) { Write(wxT("LastUsername"), newval); }
+    int GetLastPort() const { int i; Read(wxT("LastPort"), &i, 5432); return i; }
+	void SetLastPort(const int newval) { Write(wxT("LastPort"), newval); }
+    int GetLastSSL() const { int i; Read(wxT("LastSSL"), &i, 0); return i; }
+	void SetLastSSL(const int newval) { Write(wxT("LastSSL"), newval); }
+
+    // Helper paths
+    wxString GetSlonyPath() const { wxString s; Read(wxT("SlonyPath"), &s, wxEmptyString); return s; }
+	void SetSlonyPath(const wxString &newval) { Write(wxT("SlonyPath"), newval); }
+    wxString GetPostgresqlPath() const { wxString s; Read(wxT("PostgreSQLPath"), &s, wxEmptyString); return s; }
+	void SetPostgresqlPath(const wxString &newval) { Write(wxT("PostgreSQLPath"), newval); }
+    wxString GetEnterprisedbPath() const { wxString s; Read(wxT("EnterpriseDBPath"), &s, wxEmptyString); return s; }
+	void SetEnterprisedbPath(const wxString &newval) { Write(wxT("EnterpriseDBPath"), newval); }
+
+	// Help paths
+    wxString GetSlonyHelpPath();
+    void SetSlonyHelpPath(const wxString &newval) { Write(wxT("SlonyHelpPath"), newval); }
+    wxString GetPgHelpPath();
+    void SetPgHelpPath(const wxString &newval) { Write(wxT("PostgreSQLHelpPath"), newval); }
+    wxString GetEdbHelpPath();
+    void SetEdbHelpPath(const wxString &newval) { Write(wxT("EnterpriseDBHelpPath"), newval); }
+
+    // Copy options
+    wxString GetCopyQuoteChar() const { wxString s; Read(wxT("Copy/QuoteChar"), &s, wxT("\"")); return s; }
+	void SetCopyQuoteChar(const wxString &newval) { Write(wxT("Copy/QuoteChar"), newval); }
+    wxString GetCopyColSeparator() const { wxString s; Read(wxT("Copy/ColSeparator"), &s, wxT(";")); return s; }
+	void SetCopyColSeparator(const wxString &newval) { Write(wxT("Copy/ColSeparator"), newval); }
+	int GetCopyQuoting(); // 0=none 1=string 2=all
+	void SetCopyQuoting(const int i);
+    
+    // Export options
+    wxString GetExportQuoteChar() const { wxString s; Read(wxT("Export/QuoteChar"), &s, wxT("\"")); return s; }
+	void SetExportQuoteChar(const wxString &newval) { Write(wxT("Export/QuoteChar"), newval); }
+    wxString GetExportColSeparator() const { wxString s; Read(wxT("Export/ColSeparator"), &s, wxT(";")); return s; }
+	void SetExportColSeparator(const wxString &newval) { Write(wxT("Export/ColSeparator"), newval); }
+	wxString GetExportRowSeparator();
+    void SetExportRowSeparator(const wxString &s);
+	int GetExportQuoting();  // 0=none 1=string 2=all
+    void SetExportQuoting(const int i);
+    bool GetExportUnicode() const { bool b; Read(wxT("Export/Unicode"), &b, true); return b; }
+	void SetExportUnicode(const bool newval) { Write(wxT("Export/Unicode"), newval); }
+	
+    // Explain options
+    bool GetExplainVerbose() const { bool b; Read(wxT("frmQuery/ExplainVerbose"), &b, false); return b; }
+	void SetExplainVerbose(const bool newval) { Write(wxT("frmQuery/ExplainVerbose"), newval); }
+    bool GetExplainAnalyze() const { bool b; Read(wxT("frmQuery/ExplainAnalyze"), &b, false); return b; }
+	void SetExplainAnalyze(const bool newval) { Write(wxT("frmQuery/ExplainAnalyze"), newval); }
+
+
+    // TODO: rewrite the rest of these like those above!!
+
+    // Display options
+    void SetSystemSchemas(const wxString &s) { systemSchemas = s; }
+    wxString GetSystemSchemas() const { return systemSchemas; }
+    bool GetShowUsersForPrivileges() const { return showUsersForPrivileges; }
+    void SetShowUsersForPrivileges(const bool b) { showUsersForPrivileges=b; }
+    bool GetShowSystemObjects() const { return showSystemObjects; }
+    void SetShowSystemObjects(const bool newval);
+
+	// Editor options
+    bool GetSpacesForTabs() const { return spacesForTabs; }
+    void SetSpacesForTabs(const bool newval) { spacesForTabs = newval; }
+    long GetIndentSpaces() const { return indentSpaces; }
+    void SetIndentSpaces(long l) { indentSpaces=l; }
+	bool GetTabForCompletion() const { return tabForCompletion; }
+	void SetTabForCompletion(const bool newval) { tabForCompletion = newval; }
+    bool GetIndicateNull() const { return indicateNull; }
+    void SetIndicateNull(const bool newval);
+    bool GetUnicodeFile() const { return unicodeFile; }
+    void SetUnicodeFile(const bool b) {unicodeFile = b; }
+    wxFont GetSQLFont() const { return sqlFont; }
+    wxFont GetSystemFont() const { return systemFont; }
+    void SetFont(const wxFont &font) { systemFont = font; }
+    void SetSQLFont(const wxFont &font) { sqlFont = font; }
+
+
+    // Misc options
+    long GetAutoRowCountThreshold() const { return autoRowCountThreshold; }
+    void SetAutoRowCountThreshold(const long l) { autoRowCountThreshold=l; }
+    bool GetStickySql() const { return stickySql; }
+    void SetStickySql(const bool newval);
+    bool GetDoubleClickProperties() const { return doubleClickProperties; }
+    void SetDoubleClickProperties(const bool newval);
+    long GetMaxServerLogSize() const { return maxServerLogSize; }
+    void SetMaxServerLogSize(long l) { maxServerLogSize = l; }
+    bool GetSuppressGuruHints() const { return suppressGuruHints; }
+    void SetSuppressGuruHints(const bool b) { suppressGuruHints=b; }
     long GetMaxRows() const { return maxRows; }
     void SetMaxRows(const long l) { maxRows=l; }
     long GetMaxColSize() const { return maxColSize; }
@@ -62,86 +144,18 @@ public:
     bool GetConfirmDelete() const { return confirmDelete; }
     void SetConfirmDelete(const bool b) { confirmDelete=b; }
 
-    wxString GetSlonyPath() const { return slonyPath; }
-    void SetSlonyPath(const wxString &s) { slonyPath=s; }
-    wxString GetPostgresqlPath() const { return postgresqlPath; }
-    void SetPostgresqlPath(const wxString &s) { postgresqlPath=s; }
-    wxString GetEnterprisedbPath() const { return enterprisedbPath; }
-    void SetEnterprisedbPath(const wxString &s) { enterprisedbPath=s; }
-
-    wxString GetPgHelpPath() const { return pgHelpPath; }
-    void SetPgHelpPath(const wxString &s) { pgHelpPath = s; }
-    wxString GetEdbHelpPath() const { return edbHelpPath; }
-    void SetEdbHelpPath(const wxString &s) { edbHelpPath = s; }
-    wxString GetSlonyHelpPath() const { return slonyHelpPath; }
-    void SetSlonyHelpPath(const wxString &s) { slonyHelpPath = s; }
-    
-    void SetSystemSchemas(const wxString &s) { systemSchemas = s; }
-    wxString GetSystemSchemas() const { return systemSchemas; }
-
-    bool GetExplainVerbose() const { return explainVerbose; }
-    void SetExplainVerbose(const bool b) { explainVerbose=b; }
-    bool GetExplainAnalyze() const { return explainAnalyze; }
-    void SetExplainAnalyze(const bool b) { explainAnalyze=b; }
-
-    bool GetShowUsersForPrivileges() const { return showUsersForPrivileges; }
-    void SetShowUsersForPrivileges(const bool b) { showUsersForPrivileges=b; }
-
-    // Show System Objects
-    bool GetShowSystemObjects() const { return showSystemObjects; }
-    void SetShowSystemObjects(const bool newval);
-
-    // Auto Row Count
-    long GetAutoRowCountThreshold() const { return autoRowCountThreshold; }
-    void SetAutoRowCountThreshold(const long l) { autoRowCountThreshold=l; }
-
-    long GetIndentSpaces() const { return indentSpaces; }
-    void SetIndentSpaces(long l) { indentSpaces=l; }
-
-    bool GetSpacesForTabs() const { return spacesForTabs; }
-    void SetSpacesForTabs(const bool newval) { spacesForTabs = newval; }
-
-	// Tab for completion
-	bool GetTabForCompletion() const { return tabForCompletion; }
-	void SetTabForCompletion(const bool newval) { tabForCompletion = newval; }
-
-    // Sticky SQL
-    bool GetStickySql() const { return stickySql; }
-    void SetStickySql(const bool newval);
-
-    // Indicate Null
-    bool GetIndicateNull() const { return indicateNull; }
-    void SetIndicateNull(const bool newval);
-
-    // DoubleClick for Properties
-    bool GetDoubleClickProperties() const { return doubleClickProperties; }
-    void SetDoubleClickProperties(const bool newval);
-
-    // maximum size of server log to read
-    long GetMaxServerLogSize() const { return maxServerLogSize; }
-    void SetMaxServerLogSize(long l) { maxServerLogSize = l; }
-
-    bool GetUnicodeFile() const { return unicodeFile; }
-    void SetUnicodeFile(const bool b) {unicodeFile = b; }
-
-    bool GetSuppressGuruHints() const { return suppressGuruHints; }
-    void SetSuppressGuruHints(const bool b) { suppressGuruHints=b; }
-
-    wxFont GetSQLFont() const { return sqlFont; }
-    wxFont GetSystemFont() const { return systemFont; }
-    void SetFont(const wxFont &font) { systemFont = font; }
-    void SetSQLFont(const wxFont &font) { sqlFont = font; }
     wxString GetCanonicalLanguage() const { return canonicalLanguage; }
 
+    // Functions for storing settings
     bool Write(const wxString &key, const wxChar *value) { return wxConfig::Write(key, value); }
     bool Write(const wxString &key, long value) { return wxConfig::Write(key, value); }
     bool Write(const wxString &key, int value) { return wxConfig::Write(key, value); }
     bool Write(const wxString &key, bool value);
     bool Write(const wxString &key, const wxPoint &value);
     bool Write(const wxString &key, const wxSize &value);
-    bool Write(const wxString &key, const wxSize &size, const wxPoint &point)
-        { Write(key, point); Write(key, size); return true;}
+    bool Write(const wxString &key, const wxSize &size, const wxPoint &point) { Write(key, point); Write(key, size); return true;}
 
+	// Functions for reading settings
     bool Read(const wxString& key, wxString* str, const wxString& defaultVal) const;
     bool Read(const wxString& key, bool* str, bool defaultVal) const;
     bool Read(const wxString& key, int* i, int defaultVal) const;
@@ -150,26 +164,6 @@ public:
     long Read(const wxString& key, long defaultVal) const;
     wxPoint Read(const wxString& key, const wxPoint &defaultVal) const;
     wxSize Read(const wxString& key, const wxSize &defaultVal) const;
-
-    wxString GetExportQuoteChar() const { return exportQuoteChar; }
-    wxString GetExportRowSeparator() const { return exportRowSeparator; }
-    wxString GetExportColSeparator() const { return exportColSeparator; }
-    int GetExportQuoting() const { return exportQuoting; }  // 0=none 1=string 2=all
-    bool GetExportUnicode() const { return exportUnicode; }
-
-	wxString GetCopyQuoteChar() const { return copyQuoteChar; }
-	wxString GetCopyColSeparator() const { return copyColSeparator; }
-	int GetCopyQuoting() const { return copyQuoting; } // 0=none 1=string 2=all
-
-    void SetExportQuoteChar(const wxString &s) { exportQuoteChar=s; }
-    void SetExportRowSeparator(const wxString &s) { exportRowSeparator=s; }
-    void SetExportColSeparator(const wxString &s) { exportColSeparator=s; }
-    void SetExportQuoting(const int i) { exportQuoting = i; }
-    void SetExportUnicode(const bool b) { exportUnicode=b; }
-
-	void SetCopyQuoteChar(const wxString &s) { copyQuoteChar=s; }
-	void SetCopyColSeparator(const wxString &s) { copyColSeparator=s; }
-	void SetCopyQuoting(const int i) { copyQuoting = i; }
 
 	void Save();
 
@@ -191,28 +185,9 @@ private:
 
     wxFont systemFont, sqlFont; 
 
-    // Tip Of The Day
-    bool showTipOfTheDay;
-    int nextTipOfTheDay;
-
-    // Log
-    wxString logFile;
-    int logLevel;
-
-    // Last connection
-    wxString lastDescription;
-    wxString lastServer;
-    wxString lastDatabase;
-    wxString lastUsername;
-    int lastPort, lastSSL;
-
     // Show System Objects
     bool showSystemObjects;
 
-    bool explainVerbose, explainAnalyze;
-
-    wxString slonyPath, postgresqlPath, enterprisedbPath;
-    wxString pgHelpPath, edbHelpPath, slonyHelpPath;
     wxString canonicalLanguage;
     bool showUsersForPrivileges;
     bool askSaveConfirmation;
@@ -223,18 +198,6 @@ private:
     long maxServerLogSize;
 
     wxString searchPath, systemSchemas;
-
-    // export options
-    wxString exportRowSeparator;
-    wxString exportColSeparator;
-    wxString exportQuoteChar;
-    int exportQuoting;
-    bool exportUnicode;
-
-	// copy options
-	wxString copyColSeparator;
-	wxString copyQuoteChar;
-	int copyQuoting;
 };
 
 #endif

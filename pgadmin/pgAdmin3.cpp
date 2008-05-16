@@ -1122,6 +1122,9 @@ void pgAdmin3::InitXml()
 
 void pgAdmin3::InitLogger()
 {
+	sysLogger::logFile = settings->GetLogFile();
+    sysLogger::logLevel = settings->GetLogLevel();
+
     logger = new sysLogger();
     wxLog::SetActiveTarget(logger);
     wxLog::Resume();

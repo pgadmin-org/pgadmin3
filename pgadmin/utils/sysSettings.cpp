@@ -50,7 +50,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
         if (type == REG_DWORD)
         {
             long value;
-            Read(wxT("ShowTipOfTheDay"), &value, 0L);
+			wxConfig::Read(wxT("ShowTipOfTheDay"), &value, 0L);
 
             Write(wxT("ShowTipOfTheDay"), value != 0);
         }
@@ -77,76 +77,13 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
             moveLongValue(wxT("Servers/SSL%d"), wxT("Servers/%d/SSL"), i);
         }
     }
-        
-    // Tip Of The Day
-    Read(wxT("ShowTipOfTheDay"), &showTipOfTheDay, true); 
-    Read(wxT("NextTipOfTheDay"), &nextTipOfTheDay, 0); 
 
-    // Log. Try to get a vaguely usable default path.
-    char *homedir;
-#ifdef __WXMSW__
-    char *homedrive;
-#endif
-
-    wxString deflog;
-    
-#ifdef __WXMSW__
-    homedrive = getenv("HOMEDRIVE");
-    homedir = getenv("HOMEPATH");
-#else
-    homedir = getenv("HOME");
-#endif
-
-    if (!homedir)
-        deflog = wxT("pgadmin.log");
-    else 
-    {
-        
-#ifdef __WXMSW__
-        wxStandardPaths paths;
-        deflog = paths.GetDocumentsDir();
-        deflog += wxT("\\pgadmin.log");
-#else
-        deflog = wxString::FromAscii(homedir);
-        deflog += wxT("/pgadmin.log");
-#endif
-    }
-
-    Read(wxT("LogFile"), &logFile, deflog); 
-    Read(wxT("LogLevel"), &logLevel, LOG_ERRORS);
-    sysLogger::logFile = logFile;
-    sysLogger::logLevel = logLevel;
-
-    // Last Connection
-    Read(wxT("LastServer"), &lastServer, wxT("localhost")); 
-    Read(wxT("LastDatabase"), &lastDatabase, wxEmptyString); 
-    Read(wxT("LastDescription"), &lastDescription, wxT("PostgreSQL Server")); 
-    Read(wxT("LastUsername"), &lastUsername, wxT("postgres")); 
-    Read(wxT("LastPort"), &lastPort, 5432);
-    Read(wxT("LastSSL"), &lastSSL, 0);
 
     // Show System Objects
     Read(wxT("ShowSystemObjects"), &showSystemObjects, false); 
 
-    Read(wxT("PostgreSQLHelpPath"), &pgHelpPath, wxT(""));
-    pgHelpPath = CleanHelpPath(pgHelpPath);
-    if (!HelpPathValid(pgHelpPath))
-        pgHelpPath = wxEmptyString;
-
-    Read(wxT("EnterpriseDBHelpPath"), &edbHelpPath, wxT(""));
-    edbHelpPath = CleanHelpPath(edbHelpPath);
-    if (!HelpPathValid(edbHelpPath))
-        edbHelpPath = wxEmptyString;
-
-    Read(wxT("SlonyHelpPath"), &slonyHelpPath, wxT(""));
-    slonyHelpPath = CleanHelpPath(slonyHelpPath);
-    if (!HelpPathValid(slonyHelpPath))
-        slonyHelpPath = wxEmptyString;
-
     maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
     maxColSize=Read(wxT("frmQuery/MaxColSize"), 256L);
-    Read(wxT("frmQuery/ExplainVerbose"), &explainVerbose, false);
-    Read(wxT("frmQuery/ExplainAnalyze"), &explainAnalyze, false);
     askSaveConfirmation=StrToBool(Read(wxT("AskSaveConfirmation"), wxT("Yes")));
     confirmDelete=StrToBool(Read(wxT("ConfirmDelete"), wxT("Yes")));
     showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
@@ -161,43 +98,6 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
     Read(wxT("WriteUnicodeFile"), &unicodeFile, false);
     Read(wxT("SystemSchemas"), &systemSchemas, wxEmptyString);
     Read(wxT("MaxServerLogSize"), &maxServerLogSize, 100000L);
-    Read(wxT("Export/Unicode"), &exportUnicode, false);
-    Read(wxT("SlonyPath"), &slonyPath, wxEmptyString);
-    Read(wxT("PostgreSQLPath"), &postgresqlPath, wxEmptyString);
-    Read(wxT("EnterpriseDBPath"), &enterprisedbPath, wxEmptyString);
-
-    wxString val;
-#ifdef __WXMSW__
-    Read(wxT("Export/RowSeparator"), &val, wxT("CR/LF"));
-#else
-    Read(wxT("Export/RowSeparator"), &val, wxT("LF"));
-#endif
-    if (val == wxT("CRLF"))
-        exportRowSeparator = wxT("\r\n");
-    else
-        exportRowSeparator = wxT("\n");
-
-    Read(wxT("Export/ColSeparator"), &exportColSeparator, wxT(";"));
-    Read(wxT("Export/QuoteChar"), &exportQuoteChar, wxT("\""));
-    Read(wxT("Export/Quote"), &val, wxT("Strings"));
-    if (val == wxT("All"))
-        exportQuoting = 2;
-    else if (val == wxT("Strings"))
-        exportQuoting = 1;
-    else
-        exportQuoting = 0;
-
-    Read(wxT("Copy/ColSeparator"), &copyColSeparator, wxT(";"));
-    Read(wxT("Copy/QuoteChar"), &copyQuoteChar, wxT("\""));
-    Read(wxT("Copy/Quote"), &val, wxT("Strings"));
-    if (val == wxT("All"))
-        copyQuoting = 2;
-    else if (val == wxT("Strings"))
-        copyQuoting = 1;
-    else
-        copyQuoting = 0;
-
-
 
     const wxLanguageInfo *langInfo;
     langInfo = wxLocale::GetLanguageInfo(Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN));
@@ -416,72 +316,20 @@ bool sysSettings::moveLongValue(const wxChar *oldKey, const wxChar *newKey, int 
 
 void sysSettings::Save()
 {
-    Write(wxT("LogFile"), logFile);
-    Write(wxT("LogLevel"), logLevel);
-
     Write(wxT("frmQuery/MaxRows"), maxRows);
     Write(wxT("frmQuery/MaxColSize"), maxColSize);
-    Write(wxT("frmQuery/ExplainVerbose"), explainVerbose);
-    Write(wxT("frmQuery/ExplainAnalyze"), explainAnalyze);
     Write(wxT("frmQuery/Font"), sqlFont.GetNativeFontInfoDesc());
     Write(wxT("AskSaveConfirmation"), BoolToStr(askSaveConfirmation));
     Write(wxT("ConfirmDelete"), BoolToStr(confirmDelete));
     Write(wxT("ShowUsersForPrivileges"), BoolToStr(showUsersForPrivileges));
-    Write(wxT("PostgreSQLHelpPath"), pgHelpPath);
-    Write(wxT("EnterpriseDBHelpPath"), edbHelpPath);
-    Write(wxT("SlonyHelpPath"), slonyHelpPath);
     Write(wxT("AutoRowCount"), autoRowCountThreshold);
     Write(wxT("WriteUnicodeFile"), unicodeFile);
     Write(wxT("SystemSchemas"), systemSchemas);
     Write(wxT("MaxServerLogSize"), maxServerLogSize);
     Write(wxT("SuppressGuruHints"), suppressGuruHints);
-    Write(wxT("SlonyPath"), slonyPath);
-    Write(wxT("PostgreSQLPath"), postgresqlPath);
-    Write(wxT("EnterpriseDBPath"), enterprisedbPath);
     Write(wxT("IndentSpaces"), indentSpaces);
     Write(wxT("SpacesForTabs"), spacesForTabs);
     Write(wxT("TabForCompletion"), tabForCompletion);
-
-    Write(wxT("Export/Unicode"), exportUnicode);
-    Write(wxT("Export/QuoteChar"), exportQuoteChar);
-    Write(wxT("Export/ColSeparator"), exportColSeparator);
-    if (exportRowSeparator == wxT("\r\n"))
-        Write(wxT("Export/RowSeparator"), wxT("CR/LF"));
-    else
-        Write(wxT("Export/RowSeparator"), wxT("LF"));
-
-
-    switch(exportQuoting)
-    {
-        case 2:
-            Write(wxT("Export/Quote"), wxT("All"));
-            break;
-        case 1:
-            Write(wxT("Export/Quote"), wxT("Strings"));
-            break;
-        case 0:
-            Write(wxT("Export/Quote"), wxT("None"));
-            break;
-        default:
-            break;
-    }
-
-    Write(wxT("Copy/QuoteChar"), copyQuoteChar);
-    Write(wxT("Copy/ColSeparator"), copyColSeparator);
-    switch (copyQuoting)
-    {
-        case 2:
-            Write(wxT("Copy/Quote"), wxT("All"));
-            break;
-        case 1:
-            Write(wxT("Copy/Quote"), wxT("Strings"));
-            break;
-        case 0:
-            Write(wxT("Copy/Quote"), wxT("None"));
-            break;
-        default:
-            break;
-    }
 
     wxString fontName = systemFont.GetNativeFontInfoDesc();
 
@@ -632,75 +480,185 @@ bool sysSettings::Write(const wxString &key, const wxSize &value)
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Tip of the Day
-//////////////////////////////////////////////////////////////////////////
-
-void sysSettings::SetShowTipOfTheDay(const bool newval)
-{
-    showTipOfTheDay = newval;
-    Write(wxT("ShowTipOfTheDay"), showTipOfTheDay);
-}
-
-void sysSettings::SetNextTipOfTheDay(const int newval)
-{
-    nextTipOfTheDay = newval;
-    Write(wxT("NextTipOfTheDay"), nextTipOfTheDay);
-}
-
-//////////////////////////////////////////////////////////////////////////
 // Log
 //////////////////////////////////////////////////////////////////////////
 
-void sysSettings::SetLogFile(const wxString& newval)
+wxString sysSettings::GetLogFile()
 {
-    logFile = newval;
-    sysLogger::logFile = newval;
-}
+	wxString logFile;
 
-void sysSettings::SetLogLevel(const int newval)
-{
-    logLevel = newval;
-    sysLogger::logLevel = newval;
+	// Try to get a vaguely usable default path.
+    char *homedir;
+#ifdef __WXMSW__
+    char *homedrive;
+#endif
+
+    wxString deflog;
+    
+#ifdef __WXMSW__
+    homedrive = getenv("HOMEDRIVE");
+    homedir = getenv("HOMEPATH");
+#else
+    homedir = getenv("HOME");
+#endif
+
+    if (!homedir)
+        deflog = wxT("pgadmin.log");
+    else 
+    {
+        
+#ifdef __WXMSW__
+        wxStandardPaths paths;
+        deflog = paths.GetDocumentsDir();
+        deflog += wxT("\\pgadmin.log");
+#else
+        deflog = wxString::FromAscii(homedir);
+        deflog += wxT("/pgadmin.log");
+#endif
+    }
+
+    Read(wxT("LogFile"), &logFile, deflog);
+
+	return logFile;
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Last Connection
+// Help files
 //////////////////////////////////////////////////////////////////////////
 
-void sysSettings::SetLastServer(const wxString& newval)
+wxString sysSettings::GetSlonyHelpPath()
 {
-    lastServer = newval;
-    Write(wxT("LastServer"), lastServer);
+	wxString path;
+
+    Read(wxT("SlonyHelpPath"), &path, wxT(""));
+	path = CleanHelpPath(path);
+
+    if (!HelpPathValid(path))
+        path = wxEmptyString;
+
+	return path;
 }
 
-void sysSettings::SetLastDescription(const wxString& newval)
+wxString sysSettings::GetPgHelpPath()
 {
-    lastDescription = newval;
-    Write(wxT("LastDescription"), lastDescription);
+	wxString path;
+
+    Read(wxT("PostgreSQLHelpPath"), &path, wxT(""));
+	path = CleanHelpPath(path);
+
+    if (!HelpPathValid(path))
+        path = wxEmptyString;
+
+	return path;
 }
 
-void sysSettings::SetLastDatabase(const wxString& newval)
+wxString sysSettings::GetEdbHelpPath()
 {
-    lastDatabase = newval;
-    Write(wxT("LastDatabase"), lastDatabase);
+	wxString path;
+
+    Read(wxT("EnterpriseDBHelpPath"), &path, wxT(""));
+	path = CleanHelpPath(path);
+
+    if (!HelpPathValid(path))
+        path = wxEmptyString;
+
+	return path;
 }
 
-void sysSettings::SetLastUsername(const wxString& newval)
+//////////////////////////////////////////////////////////////////////////
+// Copy quoting
+//////////////////////////////////////////////////////////////////////////
+
+int sysSettings::GetCopyQuoting()
 {
-    lastUsername = newval;
-    Write(wxT("LastUsername"), lastUsername);
+    wxString val;
+
+    Read(wxT("Copy/Quote"), &val, wxT("Strings"));
+    if (val == wxT("All"))
+        return 2;
+    else if (val == wxT("Strings"))
+        return 1;
+    else
+        return 0;
 }
 
-void sysSettings::SetLastPort(const int newval)
+void sysSettings::SetCopyQuoting(const int i)
 {
-    lastPort = newval;
-    Write(wxT("LastPort"), lastPort);
+    switch (i)
+    {
+        case 2:
+            Write(wxT("Copy/Quote"), wxT("All"));
+            break;
+        case 1:
+            Write(wxT("Copy/Quote"), wxT("Strings"));
+            break;
+        case 0:
+            Write(wxT("Copy/Quote"), wxT("None"));
+            break;
+        default:
+            break;
+    }
 }
 
-void sysSettings::SetLastSSL(const int newval)
+//////////////////////////////////////////////////////////////////////////
+// Export quoting
+//////////////////////////////////////////////////////////////////////////
+
+int sysSettings::GetExportQuoting()
 {
-    lastSSL = newval;
-    Write(wxT("LastSSL"), lastSSL);
+	wxString val;
+
+    Read(wxT("Export/Quote"), &val, wxT("Strings"));
+    if (val == wxT("All"))
+        return 2;
+    else if (val == wxT("Strings"))
+        return 1;
+    else
+        return 0;
+}
+
+void sysSettings::SetExportQuoting(const int i)
+{
+    switch (i)
+    {
+        case 2:
+            Write(wxT("Export/Quote"), wxT("All"));
+            break;
+        case 1:
+            Write(wxT("Export/Quote"), wxT("Strings"));
+            break;
+        case 0:
+            Write(wxT("Export/Quote"), wxT("None"));
+            break;
+        default:
+            break;
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Export quoting
+//////////////////////////////////////////////////////////////////////////
+
+wxString sysSettings::GetExportRowSeparator()
+{
+    wxString val;
+#ifdef __WXMSW__
+    Read(wxT("Export/RowSeparator"), &val, wxT("CR/LF"));
+#else
+    Read(wxT("Export/RowSeparator"), &val, wxT("LF"));
+#endif
+    if (val == wxT("CR/LF"))
+        return wxT("\r\n");
+    else
+        return wxT("\n");
+}
+
+void sysSettings::SetExportRowSeparator(const wxString &s)
+{
+    if (s == wxT("\r\n"))
+        Write(wxT("Export/RowSeparator"), wxT("CR/LF"));
+    else
+        Write(wxT("Export/RowSeparator"), wxT("LF"));
 }
 
 //////////////////////////////////////////////////////////////////////////
