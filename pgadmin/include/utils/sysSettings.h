@@ -12,6 +12,8 @@
 #ifndef SYSSETTINGS_H
 #define SYSSETTINGS_H
 
+#include "utils/sysLogger.h"
+
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/config.h>
