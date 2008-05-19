@@ -179,7 +179,6 @@ wxString frmHint::GetPage(const wxChar *hintPage)
 {
     wxString page;
 
-    extern wxString docPath;
     wxString cn=settings->GetCanonicalLanguageName();
     if (cn.IsEmpty())
         cn=wxT("en_US");
@@ -485,9 +484,6 @@ tipOfDayFactory::tipOfDayFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuTool
 
 wxWindow *tipOfDayFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    extern wxString docPath;
-    extern wxLocale *locale;
-
     wxString file;
     
     file = docPath + wxT("/") + locale->GetCanonicalName() + wxT("/tips.txt");

@@ -23,8 +23,6 @@
 #include "agent/pgaStep.h"
 #include "agent/pgaSchedule.h"
 
-extern sysSettings *settings;
-
 pgaJob::pgaJob(const wxString& newName)
 : pgServerObject(jobFactory, newName)
 {

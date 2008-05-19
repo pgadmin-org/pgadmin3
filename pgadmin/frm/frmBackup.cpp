@@ -181,9 +181,6 @@ wxString frmBackup::GetDisplayCmd(int step)
 
 wxString frmBackup::getCmdPart1()
 {
-    extern wxString pgBackupExecutable;
-    extern wxString edbBackupExecutable;
-
     pgServer *server=object->GetDatabase()->GetServer();
 
     wxString cmd;
@@ -203,9 +200,6 @@ wxString frmBackup::getCmdPart1()
 
 wxString frmBackup::getCmdPart2()
 {
-    extern wxString pgBackupExecutable;
-    extern wxString edbBackupExecutable;
-
     wxString backupExecutable;
     if (object->GetConnection()->EdbMinimumVersion(8,0))
         backupExecutable=edbBackupExecutable;
@@ -341,9 +335,6 @@ wxWindow *backupFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool backupFactory::CheckEnable(pgObject *obj)
 {
-    extern wxString pgBackupExecutable;
-    extern wxString edbBackupExecutable;
-
     if (!obj)
         return false;
 

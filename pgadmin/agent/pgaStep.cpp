@@ -21,8 +21,6 @@
 #include "agent/pgaStep.h"
 #include "agent/pgaSchedule.h"
 
-extern sysSettings *settings;
-
 pgaStep::pgaStep(pgCollection *_collection, const wxString& newName)
 : pgaJobObject(_collection->GetJob(), stepFactory, newName)
 {

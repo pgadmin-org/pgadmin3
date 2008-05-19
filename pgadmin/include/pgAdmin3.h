@@ -63,22 +63,28 @@ const float SERVER_MIN_VERSION = 7.3f;
 #define strincmp _strincmp
 #endif
 
-extern wxPathList path;                // The search path
-extern wxString loadPath;              // Where the program is loaded from
-extern wxString docPath;               // Where docs are stored
-extern wxString uiPath;                // Where ui data is stored
-extern wxString i18nPath;              // Where i18n data is stored
-extern wxString utilitiesIni;          // The plugins ini
-extern wxString settingsIni;           // The default settings file
+extern wxPathList path;                 // The search path
+extern wxString loadPath;               // Where the program is loaded from
+extern wxString docPath;                // Where docs are stored
+extern wxString uiPath;                 // Where ui data is stored
+extern wxString i18nPath;               // Where i18n data is stored
+extern wxString utilitiesIni;           // The plugins ini
+extern wxString settingsIni;            // The default settings file
 
-extern wxLocale *locale;
-extern wxArrayInt existingLangs;
-extern wxArrayString existingLangNames;
+extern sysSettings *settings;			// The settings manager
 
+extern frmMain *winMain;				// The main app window
+
+extern wxLocale *locale;				// Application locale
+extern wxArrayInt existingLangs;		// Language IDs
+extern wxArrayString existingLangNames;	// Language Names
+
+// Helper app paths - PG
 extern wxString pgBackupExecutable;
 extern wxString pgBackupAllExecutable;
 extern wxString pgRestoreExecutable;
 
+// Helper app paths - EDB
 extern wxString edbBackupExecutable;
 extern wxString edbBackupAllExecutable;
 extern wxString edbRestoreExecutable;

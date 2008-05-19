@@ -134,9 +134,6 @@ wxString frmBackupGlobals::GetDisplayCmd(int step)
 
 wxString frmBackupGlobals::getCmdPart1()
 {
-    extern wxString pgBackupAllExecutable;
-    extern wxString edbBackupAllExecutable;
-
 	pgServer * server;
 	if (object->GetMetaType() == PGM_SERVER)
 		server = (pgServer *)object;
@@ -214,9 +211,6 @@ wxWindow *backupGlobalsFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool backupGlobalsFactory::CheckEnable(pgObject *obj)
 {
-    extern wxString pgBackupExecutable;
-    extern wxString edbBackupExecutable;
-
 	if (!obj)
 		return false;
 

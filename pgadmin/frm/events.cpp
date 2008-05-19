@@ -38,9 +38,6 @@
 #include "schema/pgTable.h"
 #include "dlg/dlgProperty.h"
 
-extern wxString loadPath;
-
-
 // Event table
 BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_ERASE_BACKGROUND(                   frmMain::OnEraseBackground)

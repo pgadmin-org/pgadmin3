@@ -531,7 +531,6 @@ bool pgAdmin3::OnInit()
             SetTopWindow(winMain);
 
             // Display a Tip if required.
-            extern sysSettings *settings;
             wxCommandEvent evt = wxCommandEvent();
             if (winMain && settings->GetShowTipOfTheDay())
             {

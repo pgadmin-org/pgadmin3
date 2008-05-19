@@ -126,9 +126,6 @@ wxString frmBackupServer::GetDisplayCmd(int step)
 
 wxString frmBackupServer::getCmdPart1()
 {
-    extern wxString pgBackupAllExecutable;
-    extern wxString edbBackupAllExecutable;
-
     pgServer *server = (pgServer *)object;
 
     wxString cmd;
@@ -200,9 +197,6 @@ wxWindow *backupServerFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool backupServerFactory::CheckEnable(pgObject *obj)
 {
-    extern wxString pgBackupExecutable;
-    extern wxString edbBackupExecutable;
-
     if (!obj)
         return false;
 

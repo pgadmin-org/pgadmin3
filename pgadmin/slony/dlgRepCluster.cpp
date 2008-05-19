@@ -26,10 +26,6 @@
 #include "schema/pgDatatype.h"
 #include "utils/sysProcess.h"
 
-
-extern wxString pgBackupExecutable;
-extern wxString edbBackupExecutable;
-
 #define cbServer            CTRL_COMBOBOX("cbServer")
 #define cbDatabase          CTRL_COMBOBOX("cbDatabase")
 #define cbClusterName       CTRL_COMBOBOX("cbClusterName")

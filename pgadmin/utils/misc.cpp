@@ -685,7 +685,6 @@ void DisplayHelp(const wxString &helpTopic, const HelpType helpType)
 
 void DisplayPgAdminHelp(const wxString &helpTopic)
 {
-    extern wxString docPath;
     static wxHelpControllerBase *helpCtl=0;
     static bool firstCall=true;
 

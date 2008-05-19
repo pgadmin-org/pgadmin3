@@ -270,9 +270,6 @@ wxString frmRestore::GetDisplayCmd(int step)
 
 wxString frmRestore::getCmdPart1()
 {
-    extern wxString pgRestoreExecutable;
-    extern wxString edbRestoreExecutable;
-
     wxString cmd;
 
     if (object->GetConnection()->EdbMinimumVersion(8,0))
@@ -489,9 +486,6 @@ wxWindow *restoreFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool restoreFactory::CheckEnable(pgObject *obj)
 {
-    extern wxString pgRestoreExecutable;
-    extern wxString edbRestoreExecutable;
-
     if (!obj)
         return false;
 
