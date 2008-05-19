@@ -919,7 +919,7 @@ void pgAdmin3::InitHelp()
     wxPathList stdPaths, noPaths, pgPaths, edbPaths, slonyPaths;
     wxString sep = wxFileName::GetPathSeparator();
 
-    stdPaths.Add(docPath + sep + settings->GetCanonicalLanguage());
+    stdPaths.Add(docPath + sep + settings->GetCanonicalLanguageName());
     stdPaths.Add(docPath + sep + wxT("en_US"));
     stdPaths.Add(docPath);
 

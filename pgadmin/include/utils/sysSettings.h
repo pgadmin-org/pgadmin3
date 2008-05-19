@@ -20,11 +20,10 @@
 #include <wx/fileconf.h>
 
 // Class declarations
-class sysSettings : public wxConfig
+class sysSettings : private wxConfig
 {
 public:
     sysSettings(const wxString& name);
-    ~sysSettings();
 
 	// Display options
 	bool GetDisplayOption(const wxString &objtype, bool GetDefault = false);
@@ -98,55 +97,52 @@ public:
     bool GetExplainAnalyze() const { bool b; Read(wxT("frmQuery/ExplainAnalyze"), &b, false); return b; }
 	void SetExplainAnalyze(const bool newval) { Write(wxT("frmQuery/ExplainAnalyze"), newval); }
 
-
-    // TODO: rewrite the rest of these like those above!!
-
     // Display options
-    void SetSystemSchemas(const wxString &s) { systemSchemas = s; }
-    wxString GetSystemSchemas() const { return systemSchemas; }
-    bool GetShowUsersForPrivileges() const { return showUsersForPrivileges; }
-    void SetShowUsersForPrivileges(const bool b) { showUsersForPrivileges=b; }
-    bool GetShowSystemObjects() const { return showSystemObjects; }
-    void SetShowSystemObjects(const bool newval);
+    wxString GetSystemSchemas() const { wxString s; Read(wxT("SystemSchemas"), &s, wxEmptyString); return s; }
+	void SetSystemSchemas(const wxString &newval) { Write(wxT("SystemSchemas"), newval); }
+    bool GetShowUsersForPrivileges() const { bool b; Read(wxT("ShowUsersForPrivileges"), &b, false); return b; }
+	void SetShowUsersForPrivileges(const bool newval) { Write(wxT("ShowUsersForPrivileges"), newval); }
+    bool GetShowSystemObjects() const { bool b; Read(wxT("ShowSystemObjects"), &b, false); return b; }
+	void SetShowSystemObjects(const bool newval) { Write(wxT("ShowSystemObjects"), newval); }
 
 	// Editor options
-    bool GetSpacesForTabs() const { return spacesForTabs; }
-    void SetSpacesForTabs(const bool newval) { spacesForTabs = newval; }
-    long GetIndentSpaces() const { return indentSpaces; }
-    void SetIndentSpaces(long l) { indentSpaces=l; }
-	bool GetTabForCompletion() const { return tabForCompletion; }
-	void SetTabForCompletion(const bool newval) { tabForCompletion = newval; }
-    bool GetIndicateNull() const { return indicateNull; }
-    void SetIndicateNull(const bool newval);
-    bool GetUnicodeFile() const { return unicodeFile; }
-    void SetUnicodeFile(const bool b) {unicodeFile = b; }
-    wxFont GetSQLFont() const { return sqlFont; }
-    wxFont GetSystemFont() const { return systemFont; }
-    void SetFont(const wxFont &font) { systemFont = font; }
-    void SetSQLFont(const wxFont &font) { sqlFont = font; }
-
+    bool GetSpacesForTabs() const { bool b; Read(wxT("SpacesForTabs"), &b, false); return b; }
+	void SetSpacesForTabs(const bool newval) { Write(wxT("SpacesForTabs"), newval); }
+    long GetIndentSpaces() const { long l; Read(wxT("IndentSpaces"), &l, 0L); return l; }
+	void SetIndentSpaces(const long newval) { Write(wxT("IndentSpaces"), newval); }
+    bool GetTabForCompletion() const { bool b; Read(wxT("TabForCompletion"), &b, false); return b; }
+	void SetTabForCompletion(const bool newval) { Write(wxT("TabForCompletion"), newval); }
+    bool GetIndicateNull() const { bool b; Read(wxT("frmQuery/IndicateNull"), &b, false); return b; }
+	void SetIndicateNull(const bool newval) { Write(wxT("frmQuery/IndicateNull"), newval); }
+    bool GetUnicodeFile() const { bool b; Read(wxT("WriteUnicodeFile"), &b, true); return b; }
+	void SetUnicodeFile(const bool newval) { Write(wxT("WriteUnicodeFile"), newval); }
+    wxFont GetSystemFont();
+	void SetSystemFont(const wxFont &font);
+	wxFont GetSQLFont();
+    void SetSQLFont(const wxFont &font);
 
     // Misc options
-    long GetAutoRowCountThreshold() const { return autoRowCountThreshold; }
-    void SetAutoRowCountThreshold(const long l) { autoRowCountThreshold=l; }
-    bool GetStickySql() const { return stickySql; }
-    void SetStickySql(const bool newval);
-    bool GetDoubleClickProperties() const { return doubleClickProperties; }
-    void SetDoubleClickProperties(const bool newval);
-    long GetMaxServerLogSize() const { return maxServerLogSize; }
-    void SetMaxServerLogSize(long l) { maxServerLogSize = l; }
-    bool GetSuppressGuruHints() const { return suppressGuruHints; }
-    void SetSuppressGuruHints(const bool b) { suppressGuruHints=b; }
-    long GetMaxRows() const { return maxRows; }
-    void SetMaxRows(const long l) { maxRows=l; }
-    long GetMaxColSize() const { return maxColSize; }
-    void SetMaxColSize(const long l) { maxColSize=l; }
-    bool GetAskSaveConfirmation() const { return askSaveConfirmation; }
-    void SetAskSaveConfirmation(const bool b) { askSaveConfirmation=b; }
-    bool GetConfirmDelete() const { return confirmDelete; }
-    void SetConfirmDelete(const bool b) { confirmDelete=b; }
-
-    wxString GetCanonicalLanguage() const { return canonicalLanguage; }
+    long GetAutoRowCountThreshold() const { long l; Read(wxT("AutoRowCount"), &l, 2000L); return l; }
+	void SetAutoRowCountThreshold(const long newval) { Write(wxT("AutoRowCount"), newval); }
+    bool GetStickySql() const { bool b; Read(wxT("StickySql"), &b, true); return b; }
+	void SetStickySql(const bool newval) { Write(wxT("StickySql"), newval); }
+    bool GetDoubleClickProperties() const { bool b; Read(wxT("DoubleClickProperties"), &b, false); return b; }
+	void SetDoubleClickProperties(const bool newval) { Write(wxT("DoubleClickProperties"), newval); }
+    long GetMaxServerLogSize() const { long l; Read(wxT("MaxServerLogSize"), &l, 100000L); return l; }
+	void SetMaxServerLogSize(const long newval) { Write(wxT("MaxServerLogSize"), newval); }
+    bool GetSuppressGuruHints() const { bool b; Read(wxT("SuppressGuruHints"), &b, false); return b; }
+	void SetSuppressGuruHints(const bool newval) { Write(wxT("SuppressGuruHints"), newval); }
+    long GetMaxRows() const { long l; Read(wxT("frmQuery/MaxRows"), &l, 100L); return l; }
+	void SetMaxRows(const long newval) { Write(wxT("frmQuery/MaxRows"), newval); }
+    long GetMaxColSize() const { long l; Read(wxT("frmQuery/MaxColSize"), &l, 256L); return l; }
+	void SetMaxColSize(const long newval) { Write(wxT("frmQuery/MaxColSize"), newval); }
+    bool GetAskSaveConfirmation() const { bool b; Read(wxT("AskSaveConfirmation"), &b, true); return b; }
+	void SetAskSaveConfirmation(const bool newval) { Write(wxT("AskSaveConfirmation"), newval); }
+    bool GetConfirmDelete() const { bool b; Read(wxT("ConfirmDelete"), &b, true); return b; }
+	void SetConfirmDelete(const bool newval) { Write(wxT("ConfirmDelete"), newval); }
+    wxString GetCanonicalLanguageName();
+	wxLanguage GetCanonicalLanguage() const { int i; Read(wxT("LanguageId"), &i, wxLANGUAGE_UNKNOWN); return (wxLanguage)i; }
+	void SetCanonicalLanguage(const wxLanguage &lang);
 
     // Functions for storing settings
     bool Write(const wxString &key, const wxChar *value) { return wxConfig::Write(key, value); }
@@ -167,9 +163,6 @@ public:
     wxPoint Read(const wxString& key, const wxPoint &defaultVal) const;
     wxSize Read(const wxString& key, const wxSize &defaultVal) const;
 
-	void Save();
-
-
 	enum configFileName
 	{
 		PGPASS,
@@ -185,21 +178,7 @@ private:
 
 	wxFileConfig *defaultSettings; 
 
-    wxFont systemFont, sqlFont; 
-
-    // Show System Objects
-    bool showSystemObjects;
-
     wxString canonicalLanguage;
-    bool showUsersForPrivileges;
-    bool askSaveConfirmation;
-    bool confirmDelete, suppressGuruHints;
-    long maxRows, maxColSize, autoRowCountThreshold, indentSpaces;
-    bool spacesForTabs, stickySql, indicateNull, unicodeFile, tabForCompletion;
-    bool doubleClickProperties;
-    long maxServerLogSize;
-
-    wxString searchPath, systemSchemas;
 };
 
 #endif

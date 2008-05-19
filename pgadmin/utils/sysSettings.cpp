@@ -77,59 +77,6 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
             moveLongValue(wxT("Servers/SSL%d"), wxT("Servers/%d/SSL"), i);
         }
     }
-
-
-    // Show System Objects
-    Read(wxT("ShowSystemObjects"), &showSystemObjects, false); 
-
-    maxRows=Read(wxT("frmQuery/MaxRows"), 100L);
-    maxColSize=Read(wxT("frmQuery/MaxColSize"), 256L);
-    askSaveConfirmation=StrToBool(Read(wxT("AskSaveConfirmation"), wxT("Yes")));
-    confirmDelete=StrToBool(Read(wxT("ConfirmDelete"), wxT("Yes")));
-    showUsersForPrivileges=StrToBool(Read(wxT("ShowUsersForPrivileges"), wxT("No")));
-    Read(wxT("AutoRowCount"), &autoRowCountThreshold, 2000L);
-    Read(wxT("IndentSpaces"), &indentSpaces, 0L);
-    Read(wxT("SpacesForTabs"), &spacesForTabs, false);
-    Read(wxT("TabForCompletion"), &tabForCompletion, false);
-    Read(wxT("StickySql"), &stickySql, false);
-    Read(wxT("frmQuery/IndicateNull"), &indicateNull, false);
-    Read(wxT("DoubleClickProperties"), &doubleClickProperties, false);
-    Read(wxT("SuppressGuruHints"), &suppressGuruHints, false);
-    Read(wxT("WriteUnicodeFile"), &unicodeFile, false);
-    Read(wxT("SystemSchemas"), &systemSchemas, wxEmptyString);
-    Read(wxT("MaxServerLogSize"), &maxServerLogSize, 100000L);
-
-    const wxLanguageInfo *langInfo;
-    langInfo = wxLocale::GetLanguageInfo(Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN));
-    if (langInfo)
-        canonicalLanguage=langInfo->CanonicalName;
-
-    wxString fontName;
-    Read(wxT("Font"), &fontName, wxEmptyString);
-
-    if (fontName.IsEmpty())
-        systemFont = wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
-    else
-        systemFont = wxFont(fontName);
-
-    Read(wxT("frmQuery/Font"), &fontName, wxEmptyString);
-
-    if (fontName.IsEmpty())
-    {
-#ifdef __WXMSW__
-        sqlFont = wxFont(9, wxTELETYPE, wxNORMAL, wxNORMAL);
-#else
-        sqlFont = wxFont(12, wxTELETYPE, wxNORMAL, wxNORMAL);
-#endif
-    }
-    else
-        sqlFont = wxFont(fontName);
-}
-
-
-sysSettings::~sysSettings()
-{
-    Save();
 }
 
 bool sysSettings::GetDisplayOption(const wxString &objtype, bool GetDefault)
@@ -312,31 +259,6 @@ bool sysSettings::moveLongValue(const wxChar *oldKey, const wxChar *newKey, int 
     }
 
     return false;
-}
-
-void sysSettings::Save()
-{
-    Write(wxT("frmQuery/MaxRows"), maxRows);
-    Write(wxT("frmQuery/MaxColSize"), maxColSize);
-    Write(wxT("frmQuery/Font"), sqlFont.GetNativeFontInfoDesc());
-    Write(wxT("AskSaveConfirmation"), BoolToStr(askSaveConfirmation));
-    Write(wxT("ConfirmDelete"), BoolToStr(confirmDelete));
-    Write(wxT("ShowUsersForPrivileges"), BoolToStr(showUsersForPrivileges));
-    Write(wxT("AutoRowCount"), autoRowCountThreshold);
-    Write(wxT("WriteUnicodeFile"), unicodeFile);
-    Write(wxT("SystemSchemas"), systemSchemas);
-    Write(wxT("MaxServerLogSize"), maxServerLogSize);
-    Write(wxT("SuppressGuruHints"), suppressGuruHints);
-    Write(wxT("IndentSpaces"), indentSpaces);
-    Write(wxT("SpacesForTabs"), spacesForTabs);
-    Write(wxT("TabForCompletion"), tabForCompletion);
-
-    wxString fontName = systemFont.GetNativeFontInfoDesc();
-
-    if (fontName == wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT).GetNativeFontInfoDesc())
-        Write(wxT("Font"), wxEmptyString);
-    else
-        Write(wxT("Font"), fontName);
 }
 
 // Read a string value
@@ -662,44 +584,94 @@ void sysSettings::SetExportRowSeparator(const wxString &s)
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Show System Objects
+// System Font
 //////////////////////////////////////////////////////////////////////////
 
-void sysSettings::SetShowSystemObjects(const bool newval)
+wxFont sysSettings::GetSystemFont()
 {
-    showSystemObjects = newval;
-    Write(wxT("ShowSystemObjects"), showSystemObjects);
+    wxString fontName;
+
+    Read(wxT("Font"), &fontName, wxEmptyString);
+
+    if (fontName.IsEmpty())
+        return wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT);
+    else
+        return wxFont(fontName);
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-// Sticky SQL
-//////////////////////////////////////////////////////////////////////////
-
-void sysSettings::SetStickySql(const bool newval)
+void sysSettings::SetSystemFont(const wxFont &font)
 {
-    stickySql = newval;
-    Write(wxT("StickySql"), stickySql);
-}
+    wxString fontName = font.GetNativeFontInfoDesc();
 
-//////////////////////////////////////////////////////////////////////////
-// IndicateNull
-//////////////////////////////////////////////////////////////////////////
-
-void sysSettings::SetIndicateNull(const bool newval)
-{
-    indicateNull = newval;
-    Write(wxT("frmQuery/IndicateNull"), indicateNull);
+    if (fontName == wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT).GetNativeFontInfoDesc())
+        Write(wxT("Font"), wxEmptyString);
+    else
+        Write(wxT("Font"), fontName);
 }
 
 //////////////////////////////////////////////////////////////////////////
-// Double click for properties
+// SQL Font
 //////////////////////////////////////////////////////////////////////////
 
-void sysSettings::SetDoubleClickProperties(const bool newval)
+wxFont sysSettings::GetSQLFont()
 {
-    doubleClickProperties = newval;
-    Write(wxT("DoubleClickProperties"), doubleClickProperties);
+    wxString fontName;
+
+    Read(wxT("frmQuery/Font"), &fontName, wxEmptyString);
+
+    if (fontName.IsEmpty())
+    {
+#ifdef __WXMSW__
+        return wxFont(9, wxTELETYPE, wxNORMAL, wxNORMAL);
+#else
+        return wxFont(12, wxTELETYPE, wxNORMAL, wxNORMAL);
+#endif
+    }
+    else
+        return wxFont(fontName);
+}
+
+void sysSettings::SetSQLFont(const wxFont &font)
+{
+    wxString fontName = font.GetNativeFontInfoDesc();
+
+    Write(wxT("frmQuery/Font"), fontName);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Language
+//////////////////////////////////////////////////////////////////////////
+
+wxString sysSettings::GetCanonicalLanguageName()
+{
+    const wxLanguageInfo *langInfo;
+
+    langInfo = wxLocale::GetLanguageInfo(Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN));
+    
+	if (langInfo)
+        return langInfo->CanonicalName;
+
+	return wxEmptyString;
+}
+
+void sysSettings::SetCanonicalLanguage(const wxLanguage &lang)
+{
+	if (wxLocale::GetLanguageName(lang) != GetCanonicalLanguageName())
+    {
+        delete locale;
+        locale = new wxLocale();
+        if (locale->Init(lang))
+        {
+#ifdef __LINUX__
+            {
+                wxLogNull noLog;
+                locale->AddCatalog(wxT("fileutils"));
+            }
+#endif
+            locale->AddCatalog(wxT("pgadmin3"));
+            settings->Write(wxT("LanguageId"), (long)lang);
+        }
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////

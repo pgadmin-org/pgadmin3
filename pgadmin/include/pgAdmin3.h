@@ -71,6 +71,18 @@ extern wxString i18nPath;              // Where i18n data is stored
 extern wxString utilitiesIni;          // The plugins ini
 extern wxString settingsIni;           // The default settings file
 
+extern wxLocale *locale;
+extern wxArrayInt existingLangs;
+extern wxArrayString existingLangNames;
+
+extern wxString pgBackupExecutable;
+extern wxString pgBackupAllExecutable;
+extern wxString pgRestoreExecutable;
+
+extern wxString edbBackupExecutable;
+extern wxString edbBackupAllExecutable;
+extern wxString edbRestoreExecutable;
+
 // 
 // Support for additional functions included in the EnterpriseDB
 // version of libpq. These are enable via runtime loading of the

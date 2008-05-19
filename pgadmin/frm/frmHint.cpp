@@ -180,7 +180,7 @@ wxString frmHint::GetPage(const wxChar *hintPage)
     wxString page;
 
     extern wxString docPath;
-    wxString cn=settings->GetCanonicalLanguage();
+    wxString cn=settings->GetCanonicalLanguageName();
     if (cn.IsEmpty())
         cn=wxT("en_US");
 

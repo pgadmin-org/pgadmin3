@@ -693,7 +693,7 @@ void DisplayPgAdminHelp(const wxString &helpTopic)
     if (firstCall)
     {
         firstCall=false;
-        wxString helpdir=docPath + wxT("/") + settings->GetCanonicalLanguage();
+        wxString helpdir=docPath + wxT("/") + settings->GetCanonicalLanguageName();
 
         if (!wxFile::Exists(helpdir + wxT("/pgadmin3.hhp")) &&
 #if defined(__WXMSW__) || wxUSE_LIBMSPACK

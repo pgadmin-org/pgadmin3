@@ -29,18 +29,6 @@
 
 #include "images/properties.xpm"
 
-extern wxLocale *locale;
-extern wxArrayInt existingLangs;
-extern wxArrayString existingLangNames;
-
-extern wxString pgBackupExecutable;
-extern wxString pgBackupAllExecutable;
-extern wxString pgRestoreExecutable;
-
-extern wxString edbBackupExecutable;
-extern wxString edbBackupAllExecutable;
-extern wxString edbRestoreExecutable;
-
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
 #define txtPgHelpPath               CTRL_TEXT("txtPgHelpPath")
 #define txtEdbHelpPath              CTRL_TEXT("txtEdbHelpPath")
@@ -109,7 +97,6 @@ frmOptions::frmOptions(frmMain *parent)
     wxAcceleratorTable accel(1, entries);
     SetAcceleratorTable(accel);
 
-
     wxTextValidator numval(wxFILTER_NUMERIC);
     txtMaxRows->SetValidator(numval);
     txtMaxColSize->SetValidator(numval);
@@ -152,7 +139,7 @@ frmOptions::frmOptions(frmMain *parent)
 
     cbLanguage->Append(_("Default"));
     int sel=0;
-    int langId=settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN);
+    wxLanguage langId=settings->GetCanonicalLanguage();
 
     int langCount=existingLangs.GetCount();
     if (langCount)
@@ -371,7 +358,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetIndicateNull(chkIndicateNull->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());
-    settings->SetFont(currentFont);
+    settings->SetSystemFont(currentFont);
     settings->SetSQLFont(currentSqlFont);
     settings->SetSuppressGuruHints(chkSuppressHints->GetValue());
     settings->SetSlonyPath(txtSlonyPath->GetValue());
@@ -421,36 +408,6 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 
     settings->SetSystemSchemas(txtSystemSchemas->GetValue());
 
-    int langNo=cbLanguage->GetCurrentSelection();
-    if (langNo >= 0)
-    {
-        wxLanguage langId;
-        if (langNo == 0)
-            langId = wxLANGUAGE_DEFAULT;
-        else
-        {
-            const wxLanguageInfo *langInfo=wxLocale::GetLanguageInfo(existingLangs.Item(langNo-1));
-            langId = (wxLanguage) langInfo->Language;
-        }
-        if (langId != (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_UNKNOWN))
-        {
-            delete locale;
-            locale = new wxLocale();
-            if (locale->Init(langId))
-            {
-#ifdef __LINUX__
-                {
-                    wxLogNull noLog;
-                    locale->AddCatalog(wxT("fileutils"));
-                }
-#endif
-                locale->AddCatalog(wxT("pgadmin3"));
-                settings->Write(wxT("LanguageId"), (long)langId);
-            }
-        }
-
-    }
-
 	// Save the display options
 	int changed = false;
 	for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
@@ -468,10 +425,28 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         settings->SetShowSystemObjects(chkSystemObjects->GetValue());
     }
 
+	// Change the language last, as it will affect our tests for changes
+	// in the display object types.
+    int langNo=cbLanguage->GetCurrentSelection();
+    if (langNo >= 0)
+    {
+        wxLanguage langId;
+        if (langNo == 0)
+            langId = wxLANGUAGE_DEFAULT;
+        else
+        {
+            const wxLanguageInfo *langInfo=wxLocale::GetLanguageInfo(existingLangs.Item(langNo-1));
+            langId = (wxLanguage) langInfo->Language;
+        }
+
+		settings->SetCanonicalLanguage(langId);
+    }
+
+	// Did any display options change? Display this message last, so it's
+	// in the selected language.
 	if (changed)
 		wxMessageBox(_("Changes to the display options may not be visible until the browser tree is refreshed."), _("Display options"), wxICON_INFORMATION);
 
-    settings->Save();
     Destroy();
 }
 
