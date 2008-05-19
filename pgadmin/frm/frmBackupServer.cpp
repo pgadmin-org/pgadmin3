@@ -58,7 +58,10 @@ frmBackupServer::frmBackupServer(frmMain *form, pgObject *obj) : ExternProcessDi
     if (!((pgServer *)object)->GetPasswordIsStored())
        environment.Add(wxT("PGPASSWORD=") + ((pgServer *)object)->GetPassword());
 
-    // Icon
+	// Pass the SSL mode via the environment
+	environment.Add(wxT("PGSSLMODE=") + ((pgServer *)object)->GetConnection()->GetSslModeName());
+
+	// Icon
     SetIcon(wxIcon(backup_xpm));
 
     txtMessages = CTRL_TEXT("txtMessages");
@@ -146,8 +149,6 @@ wxString frmBackupServer::getCmdPart1()
 wxString frmBackupServer::getCmdPart2()
 {
     wxString cmd;
-    // if (server->GetSSL())
-    // pg_dump doesn't support ssl
 
     if (chkVerbose->GetValue())
         cmd.Append(wxT(" -v"));

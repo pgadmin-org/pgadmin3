@@ -182,24 +182,17 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
         execCmd.Replace(wxT("$$HOSTNAME"), obj->GetConnection()->GetHostName());
         execCmd.Replace(wxT("$$HOSTADDR"), obj->GetConnection()->GetHostAddress());
         execCmd.Replace(wxT("$$PORT"), NumToStr((long)obj->GetConnection()->GetPort()));
-
-        switch (obj->GetConnection()->GetSslMode())
-        {
-            case 1: execCmd.Replace(wxT("$$SSLMODE"), wxT("require"));   break;
-            case 2: execCmd.Replace(wxT("$$SSLMODE"), wxT("prefer"));    break;
-            case 3: execCmd.Replace(wxT("$$SSLMODE"), wxT("allow"));     break;
-            case 4: execCmd.Replace(wxT("$$SSLMODE"), wxT("disable"));   break;
-            default: execCmd.Replace(wxT("$$SSLMODE"), wxT("prefer"));   break;
-        }
+        execCmd.Replace(wxT("$$SSLMODE"), obj->GetConnection()->GetSslModeName());
         execCmd.Replace(wxT("$$DATABASE"), obj->GetConnection()->GetDbname());
         execCmd.Replace(wxT("$$USERNAME"), obj->GetConnection()->GetUser());
         execCmd.Replace(wxT("$$PASSWORD"), obj->GetConnection()->GetPassword());
 
-
-
         // Set the PGPASSWORD variable if required.
         if (set_password && !obj->GetConnection()->GetPassword().IsEmpty())
-            wxSetEnv(wxT("PGPASSWORD="), obj->GetConnection()->GetPassword());
+            wxSetEnv(wxT("PGPASSWORD"), obj->GetConnection()->GetPassword());
+
+		// Pass the SSL mode via the environment
+		wxSetEnv(wxT("PGSSLMODE"), obj->GetConnection()->GetSslModeName());
     }
     else
     {

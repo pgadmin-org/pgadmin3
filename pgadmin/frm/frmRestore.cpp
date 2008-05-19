@@ -109,8 +109,12 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
     txtMessages->SetMaxLength(0L);
     btnOK->Disable();
     filenameValid=false;
+
     if (!server->GetPasswordIsStored())
         environment.Add(wxT("PGPASSWORD=") + server->GetPassword());
+
+	// Pass the SSL mode via the environment
+	environment.Add(wxT("PGSSLMODE=") + server->GetConnection()->GetSslModeName());
 
     wxCommandEvent ev;
     OnChangeName(ev);
@@ -295,8 +299,6 @@ wxString frmRestore::getCmdPart1()
 wxString frmRestore::getCmdPart2(int step)
 {
     wxString cmd;
-    // if (server->GetSSL())
-    // pg_dump doesn't support ssl
 
     if (step)
     {

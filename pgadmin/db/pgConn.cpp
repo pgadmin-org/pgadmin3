@@ -255,6 +255,29 @@ pgConn *pgConn::Duplicate()
 	return new pgConn(wxString(save_server), wxString(save_database), wxString(save_username), wxString(save_password), save_port, save_sslmode, save_oid);
 }
 
+// Return the SSL mode name
+wxString pgConn::GetSslModeName()
+{
+    switch (save_sslmode)
+    {
+        case 1: 
+			return wxT("require");   
+			break;
+        case 2: 
+			return wxT("prefer");    
+			break;
+        case 3: 
+			return wxT("allow");     
+			break;
+        case 4: 
+			return wxT("disable");   
+			break;
+        default: 
+			return wxT("prefer");   
+			break;
+    }
+}
+
 bool pgConn::GetIsEdb()
 {
     // to retrieve edb flag

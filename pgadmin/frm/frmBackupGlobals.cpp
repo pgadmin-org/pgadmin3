@@ -59,11 +59,18 @@ frmBackupGlobals::frmBackupGlobals(frmMain *form, pgObject *obj) : ExternProcess
 	{
 		if (!((pgServer *)object)->GetPasswordIsStored())
 			environment.Add(wxT("PGPASSWORD=") + ((pgServer *)object)->GetPassword());
+
+		// Pass the SSL mode via the environment
+		environment.Add(wxT("PGSSLMODE=") + ((pgServer *)object)->GetConnection()->GetSslModeName());
 	}
 	else
 	{
 		if (!object->GetDatabase()->GetServer()->GetPasswordIsStored())
-			environment.Add(wxT("PGPASSWORD=") + object->GetDatabase()->GetServer()->GetPassword());
+			environment.Add(wxT("PGPASSWORD=") + object->GetServer()->GetPassword());
+
+		// Pass the SSL mode via the environment
+		environment.Add(wxT("PGSSLMODE=") + object->GetServer()->GetConnection()->GetSslModeName());
+
 	}
 
     // Icon
@@ -158,8 +165,6 @@ wxString frmBackupGlobals::getCmdPart1()
 wxString frmBackupGlobals::getCmdPart2()
 {
     wxString cmd;
-    // if (server->GetSSL())
-    // pg_dump doesn't support ssl
 
     if (chkVerbose->GetValue())
         cmd.Append(wxT(" -v"));
