@@ -39,6 +39,7 @@
 #define chkSingleObject         CTRL_CHECKBOX("chkSingleObject")
 #define chkNoOwner              CTRL_CHECKBOX("chkNoOwner")
 #define chkDisableTrigger       CTRL_CHECKBOX("chkDisableTrigger")
+#define chkClean		        CTRL_CHECKBOX("chkClean")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
 #define stSingleObject          CTRL_STATIC("stSingleObject")
 
@@ -216,6 +217,9 @@ void frmRestore::OnChangeList(wxListEvent &ev)
 void frmRestore::OnChange(wxCommandEvent &ev)
 {
     bool singleValid = !chkSingleObject->GetValue();
+
+	stSingleObject->SetLabel(wxEmptyString);
+
     if (!singleValid)
     {
         switch(object->GetMetaType())
@@ -226,12 +230,13 @@ void frmRestore::OnChange(wxCommandEvent &ev)
                 if (sel >= 0)
                 {
                     wxString type=lstContents->GetText(sel, 0);
-                    if ((type == _("Function") && !chkOnlyData->GetValue()) || 
-                        (type == _("Table") && !chkOnlySchema->GetValue()))
+
+                    if ((type.Lower() == wxString(_("Function")).Lower() && !chkOnlyData->GetValue()) || 
+						(type.Lower() == wxString(_("Table")).Lower() && !chkOnlySchema->GetValue()))
                     {
-                        singleValid = true;
-                        stSingleObject->SetLabel(type + wxT(" ") + lstContents->GetText(sel, 1));
-                    }
+						singleValid = true;
+						stSingleObject->SetLabel(type + wxT(" ") + lstContents->GetText(sel, 1));
+					}
                 }
                 break;
             }
@@ -318,6 +323,8 @@ wxString frmRestore::getCmdPart2(int step)
             if (chkDisableTrigger->GetValue())
             cmd.Append(wxT(" --disable-triggers"));
         }
+        if (chkClean->GetValue())
+            cmd.Append(wxT(" --clean"));
 
         if (chkSingleObject->GetValue())
         {
@@ -326,9 +333,9 @@ wxString frmRestore::getCmdPart2(int step)
                 case PGM_DATABASE:
                 {
                     int sel=lstContents->GetSelection();
-                    if (lstContents->GetText(sel, 0) == _("Function"))
+                    if (lstContents->GetText(sel, 0).Lower() == wxString(_("Function")).Lower())
                         cmd.Append(wxT(" -P ") + qtIdent(lstContents->GetText(sel, 1).BeforeLast('(')));
-                    else if (lstContents->GetText(sel, 0) == _("Table"))
+                    else if (lstContents->GetText(sel, 0).Lower() == wxString(_("Table")).Lower())
                         cmd.Append(wxT(" -t ") + qtIdent(lstContents->GetText(sel, 1)));
                     else
                         return wxT("restore: internal pgadmin error.");   // shouldn't happen!
