@@ -201,7 +201,7 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
 
         // Set the PGPASSWORD variable if required.
         if (set_password && !obj->GetConnection()->GetPassword().IsEmpty())
-            wxSetEnv(wxT("PGPASSWORD="), obj->GetConnection()->GetPassword());
+            wxSetEnv(wxT("PGPASSWORD"), obj->GetConnection()->GetPassword());
     }
     else
     {
