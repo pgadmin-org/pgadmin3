@@ -700,8 +700,8 @@ void dlgDirectDbg::OnTargetComplete( wxCommandEvent & event )
 
     PGresult   * result = (PGresult *)event.GetClientData();
 
-    wxLogDebug( wxT( "OnTargetComplete() called\n" ));
-    wxLogDebug( wxT( "%s\n" ), wxString(PQresStatus( PQresultStatus( result )), wxConvUTF8).c_str());
+    wxLogInfo( wxT( "OnTargetComplete() called\n" ));
+    wxLogInfo( wxT( "%s\n" ), wxString(PQresStatus( PQresultStatus( result )), wxConvUTF8).c_str());
 
     // If the query failed, write the error message to the status line, otherwise, copy the result set into the grid
     if(( PQresultStatus( result ) == PGRES_NONFATAL_ERROR ) || ( PQresultStatus( result ) == PGRES_FATAL_ERROR ))
@@ -717,7 +717,7 @@ void dlgDirectDbg::OnTargetComplete( wxCommandEvent & event )
         if (strcmp(state, "57014"))
             wxLogError( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
         else
-            wxLogDebug( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
+            wxLogInfo( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
     }
     else
     {

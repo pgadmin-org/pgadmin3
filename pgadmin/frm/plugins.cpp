@@ -38,7 +38,7 @@ void frmMain::LoadPluginUtilities()
 	if (!utilIni.FileExists())
         return;
 
-    wxLogDebug(wxT("Loading plugin utilities from %s"), utilIni.GetFullPath().c_str());
+    wxLogInfo(wxT("Loading plugin utilities from %s"), utilIni.GetFullPath().c_str());
     wxString brCfg = FileRead(utilIni.GetFullPath());
 
 	wxStringTokenizer tkz(brCfg, wxT("\r\n"));
@@ -134,11 +134,11 @@ void frmMain::LoadPluginUtilities()
 // Create a new Plugin utility factory
 void frmMain::CreatePluginUtility(PluginUtility *util)
 {
-    wxLogDebug(wxT("Adding plugin utility: %s"), util->title.c_str());
-    wxLogDebug(wxT("              Command: %s"), util->command.c_str());
-    wxLogDebug(wxT("          Description: %s"), util->description.c_str());
-    wxLogDebug(wxT("            Database?: %s"), util->database ? wxT("Yes") : wxT("No"));
-    wxLogDebug(wxT("        Set Password?: %s"), util->set_password ? wxT("Yes") : wxT("No"));
+    wxLogInfo(wxT("Adding plugin utility: %s"), util->title.c_str());
+    wxLogInfo(wxT("              Command: %s"), util->command.c_str());
+    wxLogInfo(wxT("          Description: %s"), util->description.c_str());
+    wxLogInfo(wxT("            Database?: %s"), util->database ? wxT("Yes") : wxT("No"));
+    wxLogInfo(wxT("        Set Password?: %s"), util->set_password ? wxT("Yes") : wxT("No"));
 
     new pluginUtilityFactory(menuFactories, pluginsMenu, util);
 }
