@@ -26,7 +26,7 @@ class ctlTree : public wxTreeCtrl
 {
 public:
     ctlTree(wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTR_HAS_BUTTONS);
-    wxTreeItemId ctlTree::AppendItem(const wxTreeItemId& parent, const wxString& text, int image = -1, int selImage = -1, wxTreeItemData* data = NULL);
+    wxTreeItemId AppendItem(const wxTreeItemId& parent, const wxString& text, int image = -1, int selImage = -1, wxTreeItemData* data = NULL);
 	wxTreeItemId AppendObject(pgObject *parent, pgObject *object);
     void RemoveDummyChild(pgObject *obj);
     pgCollection *AppendCollection(pgObject *parent, pgaFactory &factory);
