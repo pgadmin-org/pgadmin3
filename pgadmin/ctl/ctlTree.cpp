@@ -18,6 +18,8 @@
 
 #include "schema/pgObject.h"
 #include "schema/pgCollection.h"
+#include "schema/pgServer.h"
+
 
 ctlTree::ctlTree(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
 : wxTreeCtrl(parent, id, pos, size, style)
@@ -53,6 +55,22 @@ pgCollection *ctlTree::GetParentCollection(wxTreeItemId id)
     return 0;
 }
 
+
+wxTreeItemId ctlTree::AppendItem(const wxTreeItemId& parent, const wxString& text, int image, int selImage, wxTreeItemData* data)
+{
+	wxTreeItemId itm = wxTreeCtrl::AppendItem(parent, text, image, selImage, data); 
+
+	// Set the item colour
+	if (data)
+	{
+		if (((pgObject *)data)->GetMetaType() == PGM_SERVER)
+			SetItemBackgroundColour(itm, ((pgServer *)data)->GetColour());
+		else if (((pgObject *)data)->GetServer())
+			SetItemBackgroundColour(itm, ((pgObject *)data)->GetServer()->GetColour());
+	}
+
+	return itm;
+}
 
 wxTreeItemId ctlTree::AppendObject(pgObject *parent, pgObject *object)
 {

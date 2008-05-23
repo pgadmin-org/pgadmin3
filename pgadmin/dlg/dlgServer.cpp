@@ -36,7 +36,7 @@
 #define stPassword      CTRL_STATIC("stPassword")
 #define txtPassword     CTRL_TEXT("txtPassword")
 #define txtDbRestriction CTRL_TEXT("txtDbRestriction")
-
+#define txtColour       CTRL_TEXT("txtColour")
 
 
 BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
@@ -52,6 +52,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_CHECKBOX(XRCID("chkStorePwd"),              dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkRestore"),               dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkTryConnect"),            dlgServer::OnChangeTryConnect)
+	EVT_TEXT(XRCID("txtColour"),                    dlgProperty::OnChange)
     EVT_BUTTON(wxID_OK,                             dlgServer::OnOK)
 END_EVENT_TABLE();
 
@@ -141,6 +142,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         server->iSetStorePwd(chkStorePwd->GetValue());
         server->iSetRestore(chkRestore->GetValue());
         server->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
+		server->iSetColour(txtColour->GetValue());
         mainForm->execSelChange(server->GetId(), true);
         mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
 
@@ -230,6 +232,7 @@ int dlgServer::Go(bool modal)
         chkStorePwd->SetValue(server->GetStorePwd());
         chkRestore->SetValue(server->GetRestore());
         txtDbRestriction->SetValue(server->GetDbRestriction());
+		txtColour->SetValue(server->GetColour().GetAsString(wxC2S_HTML_SYNTAX));
 
         stPassword->Disable();
         txtPassword->Disable();
@@ -271,7 +274,9 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
     wxString name=GetName();
 
     pgObject *obj=new pgServer(GetName(), txtDescription->GetValue(), cbDatabase->GetValue(), 
-        txtUsername->GetValue(), StrToLong(txtPort->GetValue()), chkTryConnect->GetValue() && chkStorePwd->GetValue(), chkRestore->GetValue(), cbSSL->GetCurrentSelection());
+        txtUsername->GetValue(), StrToLong(txtPort->GetValue()), 
+		chkTryConnect->GetValue() && chkStorePwd->GetValue(), 
+		chkRestore->GetValue(), cbSSL->GetCurrentSelection(), txtColour->GetValue());
 
     return obj;
 }
@@ -301,7 +306,8 @@ void dlgServer::CheckChange()
                || cbSSL->GetCurrentSelection() != server->GetSSL()
                || chkStorePwd->GetValue() != server->GetStorePwd()
                || chkRestore->GetValue() != server->GetRestore()
-               || txtDbRestriction->GetValue() != server->GetDbRestriction();
+               || txtDbRestriction->GetValue() != server->GetDbRestriction()
+			   || txtColour->GetValue() != server->GetColour().GetAsString(wxC2S_HTML_SYNTAX);
     }
 
 

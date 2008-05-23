@@ -38,7 +38,7 @@
 
 #define DEFAULT_PG_DATABASE wxT("postgres")
 
-pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, bool _restore, int _ssl)
+pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, bool _restore, int _ssl, const wxString &_colour)
 : pgObject(serverFactory, newName)
 {  
     description = newDescription;
@@ -46,6 +46,7 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     username = newUsername;
     port = newPort;
     ssl=_ssl;
+	colour = _colour.IsEmpty() ? wxT("#FFFFFF") : wxColour(_colour);
     serverIndex=0;
 
     connected = false;
@@ -1047,7 +1048,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
     long loop, port, ssl=0;
-    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, restore, serviceID, discoveryID, dbRestriction;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, restore, serviceID, discoveryID, dbRestriction, colour;
     pgServer *server=0;
 
     wxArrayString discoveredServers;
@@ -1075,6 +1076,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         settings->Read(key + wxT("LastDatabase"), &lastDatabase, wxEmptyString);
         settings->Read(key + wxT("LastSchema"), &lastSchema, wxEmptyString);
         settings->Read(key + wxT("DbRestriction"), &dbRestriction, wxEmptyString);
+		settings->Read(key + wxT("Colour"), &colour, wxT("#FFFFFF"));
 
         // SSL mode
 #ifdef SSL
@@ -1089,10 +1091,11 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 		server->iSetDiscoveryID(discoveryID);
         server->iSetDiscovered(false);
         server->iSetDbRestriction(dbRestriction);
+		server->iSetColour(colour);
         server->iSetServerIndex(loop);
-        browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+        wxTreeItemId itm = browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
         browser->SortChildren(obj->GetId());
-
+		browser->SetItemBackgroundColour(itm, server->GetColour());
 
 		// Note if we're reloading a discovered server
         if (!discoveryID.IsEmpty())
@@ -1281,9 +1284,8 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
                 else
                     icon = serverFactory.GetClosedIconId();
                 wxLogInfo(wxT("pgServer object initialised as required."));
-                browser->AppendItem(form->GetServerCollection()->GetId(), server->GetFullName(), 
-                    icon, -1, server);
-        browser->SortChildren(form->GetServerCollection()->GetId());
+                browser->AppendItem(form->GetServerCollection()->GetId(), server->GetFullName(), icon, -1, server);
+                browser->SortChildren(form->GetServerCollection()->GetId());
 
                 browser->Expand(form->GetServerCollection()->GetId());
                 wxString label;

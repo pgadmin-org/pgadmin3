@@ -1029,6 +1029,7 @@ void frmMain::StoreServers()
             settings->Write(key + wxT("LastDatabase"), server->GetLastDatabase());
             settings->Write(key + wxT("LastSchema"), server->GetLastSchema());
             settings->Write(key + wxT("DbRestriction"), server->GetDbRestriction());
+			settings->Write(key + wxT("Colour"), server->GetColour().GetAsString(wxC2S_HTML_SYNTAX));
             settings->Write(key + wxT("SSL"), server->GetSSL());
 
             pgCollection *coll=browser->FindCollection(databaseFactory, server->GetId());
