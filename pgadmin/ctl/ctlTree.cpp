@@ -56,20 +56,36 @@ pgCollection *ctlTree::GetParentCollection(wxTreeItemId id)
 }
 
 
+void ctlTree::SetItemImage(const wxTreeItemId& item, int image, wxTreeItemIcon which)
+{
+    wxTreeCtrl::SetItemImage(item, image, which);
+    
+    wxTreeItemData *data = GetItemData(item);
+
+    // Set the item colour
+    if (data)
+    {
+       if (((pgObject *)data)->GetMetaType() == PGM_SERVER)
+           SetItemBackgroundColour(item, ((pgServer *)data)->GetColour());
+       else if (((pgObject *)data)->GetServer())
+           SetItemBackgroundColour(item, ((pgObject *)data)->GetServer()->GetColour());
+    }
+}
+
 wxTreeItemId ctlTree::AppendItem(const wxTreeItemId& parent, const wxString& text, int image, int selImage, wxTreeItemData* data)
 {
-	wxTreeItemId itm = wxTreeCtrl::AppendItem(parent, text, image, selImage, data); 
+    wxTreeItemId itm = wxTreeCtrl::AppendItem(parent, text, image, selImage, data); 
 
-	// Set the item colour
-	if (data)
-	{
-		if (((pgObject *)data)->GetMetaType() == PGM_SERVER)
-			SetItemBackgroundColour(itm, ((pgServer *)data)->GetColour());
-		else if (((pgObject *)data)->GetServer())
-			SetItemBackgroundColour(itm, ((pgObject *)data)->GetServer()->GetColour());
-	}
+    // Set the item colour
+    if (data)
+    {
+        if (((pgObject *)data)->GetMetaType() == PGM_SERVER)
+            SetItemBackgroundColour(itm, ((pgServer *)data)->GetColour());
+        else if (((pgObject *)data)->GetServer())
+            SetItemBackgroundColour(itm, ((pgObject *)data)->GetServer()->GetColour());
+    }
 
-	return itm;
+    return itm;
 }
 
 wxTreeItemId ctlTree::AppendObject(pgObject *parent, pgObject *object)
@@ -87,7 +103,7 @@ wxTreeItemId ctlTree::AppendObject(pgObject *parent, pgObject *object)
     else if (object->WantDummyChild())
         AppendItem(object->GetId(), wxT("Dummy"));
 
-	return item;
+    return item;
 }
 
 
