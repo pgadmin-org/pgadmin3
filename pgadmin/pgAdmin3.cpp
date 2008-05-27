@@ -889,7 +889,7 @@ wxString pgAdmin3::LocatePath(const wxString &pathToFind, const bool isFile)
             return sanitizePath(loadPath + wxT("/../share/pgadmin3") + pathToFind);
         else if (wxDir::Exists(loadPath + pathToFind))
             return sanitizePath(loadPath + pathToFind);
-        else if (wxFile::Exists(loadPath + wxT("/..") + pathToFind))
+        else if (wxDir::Exists(loadPath + wxT("/..") + pathToFind))
             return sanitizePath(loadPath + wxT("/..") + pathToFind);
         else 
             return wxEmptyString;
