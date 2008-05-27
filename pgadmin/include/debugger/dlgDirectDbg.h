@@ -49,6 +49,7 @@ public:
 	dbgBreakPointList & getBreakpointList();
     void setupParamWindow();
 	bool startDebugging();
+    bool GetCancelled() { return m_cancelled; };
 
 private:
 
@@ -67,6 +68,7 @@ private:
 	ctlCodeWindow     *m_codeWindow;		// A pointer to the debugger window that we'll create
 	dbgBreakPointList m_breakpoints;		// List of initial breakpoints to create
 	frmDebugger		 *m_parent;
+    bool m_cancelled;
 
 	bool loadTargetInfo( const wxString &target, const dbgConnProp & connProp, char targetType );
 	void populateParamGrid();

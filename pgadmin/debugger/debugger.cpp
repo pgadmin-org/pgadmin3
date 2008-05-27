@@ -91,7 +91,10 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
     }
 
     // Return the debugger window to frmMain.
-    return debugger;
+    if (debugger && !directDebugger->GetCancelled())
+        return debugger;
+    else
+        return 0;
 }
 
 bool debuggerFactory::CheckEnable(pgObject *obj)

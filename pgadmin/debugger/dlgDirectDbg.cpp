@@ -74,7 +74,8 @@ dlgDirectDbg::dlgDirectDbg( frmDebugger *parent, wxWindowID id, const dbgConnPro
     m_targetInfo(NULL),
     m_conn(NULL),
     m_codeWindow(NULL),
-    m_parent (parent)
+    m_parent (parent),
+    m_cancelled (false)
 {
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(m_parent, wxT("dlgDirectDbg"));
@@ -377,6 +378,7 @@ void dlgDirectDbg::OnCancel( wxCommandEvent & event )
 {
     // This will raise close event which is handled by 
     // dlgDirectDbg::OnClose().
+    m_cancelled = true;
     Close();
 }
 
