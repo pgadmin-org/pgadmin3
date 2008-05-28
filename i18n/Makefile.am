@@ -43,3 +43,7 @@ install-data-local:
 	$(install_sh) -c -m 644 pgadmin3.lng $(DESTDIR)$(i18ndir)/$$DIR
 	$(install_sh) -c -m 644 pg_settings.csv $(DESTDIR)$(i18ndir)/$$DIR
 	$(install_sh) -c -m 644 wxstd.mo $(DESTDIR)$(i18ndir)/$$DIR
+
+# Remove the wildcard directory that automake will have added for us
+dist-hook:
+	rm -rf $(distdir)/\?\?_\?\?
