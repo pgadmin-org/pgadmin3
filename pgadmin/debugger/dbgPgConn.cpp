@@ -192,7 +192,7 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
     connectParams.Trim( false );
 
     m_frame->getStatusBar()->SetStatusText( wxString(_( "Connecting to " )) + msg, 1 );
-    m_pgConn = PQconnectdb( connectParams.ToAscii());
+    m_pgConn = PQconnectdb( connectParams.mb_str(wxConvUTF8));
 
     if( PQstatus( m_pgConn ) == CONNECTION_OK )
     {
