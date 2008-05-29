@@ -253,9 +253,18 @@ wxString frmGrantWizard::GetSql()
             {
                 case PGM_FUNCTION:
                 {
-                    tmp = securityPage->GetGrant(wxT("X"), wxT("FUNCTION ") 
-                        + obj->GetQuotedFullIdentifier() + wxT("(")
-                        + ((pgFunction*)obj)->GetArgSigList() + wxT(")"));
+					if (((pgFunction*)obj)->GetIsProcedure())
+					{
+						tmp = securityPage->GetGrant(wxT("X"), wxT("PROCEDURE ") 
+							+ obj->GetQuotedFullIdentifier() + wxT("(")
+							+ ((pgProcedure*)obj)->GetArgSigList() + wxT(")"));
+					}
+					else
+					{
+						tmp = securityPage->GetGrant(wxT("X"), wxT("FUNCTION ") 
+							+ obj->GetQuotedFullIdentifier() + wxT("(")
+							+ ((pgFunction*)obj)->GetArgSigList() + wxT(")"));
+					}
                     break;
                 }
                 case PGM_VIEW:
