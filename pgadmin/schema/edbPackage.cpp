@@ -132,6 +132,8 @@ void edbPackage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Body"), firstLineOnly(GetBody()));
         properties->AppendItem(_("ACL"), GetAcl());
         properties->AppendItem(_("System package?"), GetSystemObject());
+		if (GetConnection()->EdbMinimumVersion(8, 2))
+            properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
 
@@ -163,9 +165,10 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
     
     if (collection->GetConnection()->EdbMinimumVersion(8, 2))
     {
-        sql = wxT("SELECT oid, xmin, nspname AS pkgname, nspbodysrc AS pkgbodysrc, nspheadsrc AS pkgheadsrc,\n")
-              wxT("       nspacl AS pkgacl, pg_get_userbyid(nspowner) AS owner\n") 
-              wxT("  FROM pg_namespace")
+        sql = wxT("SELECT nsp.oid, nsp.xmin, nspname AS pkgname, nspbodysrc AS pkgbodysrc, nspheadsrc AS pkgheadsrc,\n")
+              wxT("       nspacl AS pkgacl, pg_get_userbyid(nspowner) AS owner, description\n") 
+              wxT("  FROM pg_namespace nsp")
+			  wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
               wxT("  WHERE nspparent = ") + NumToStr(collection->GetSchema()->GetOid()) + wxT("::oid\n")
               + restriction +
               wxT("  ORDER BY nspname;");
@@ -193,6 +196,8 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
             package->iSetXid(packages->GetOid(wxT("xmin")));
             package->iSetDatabase(collection->GetDatabase());
             package->iSetOwner(packages->GetVal(wxT("owner")));
+			if (collection->GetConnection()->EdbMinimumVersion(8, 2))
+			    package->iSetComment(packages->GetVal(wxT("description")));
 
             // EnterpriseDB's CVS code has some new parser code
             // which is stricter about the formatting of body & 
