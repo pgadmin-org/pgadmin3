@@ -60,7 +60,9 @@ pgObject *dlgPackage::GetObject()
 
 int dlgPackage::Go(bool modal)
 {
-    txtComment->Disable();
+	if (!connection->EdbMinimumVersion(8, 2))
+		txtComment->Disable();
+
     cbOwner->Disable();
 
     AddGroups();
@@ -111,6 +113,9 @@ void dlgPackage::CheckChange()
        if (!(txtBody->GetText() != package->GetBodyInner() ||
            txtHeader->GetText() != package->GetHeaderInner())) 
            enable = false;
+
+	   if (txtComment->GetValue() != package->GetComment())
+		   enable = true;
     }
 
     EnableOK(enable);
@@ -157,6 +162,8 @@ wxString dlgPackage::GetSql()
 	}
 
     sql += GetGrant(wxT("X"), wxT("PACKAGE ") + qtName);
+
+	AppendComment(sql, wxT("PACKAGE"), schema, package);
 
     return sql;
 }
