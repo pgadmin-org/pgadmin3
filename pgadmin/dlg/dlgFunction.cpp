@@ -182,7 +182,6 @@ int dlgFunction::Go(bool modal)
         if (function)
             txtName->Disable();
         cbOwner->Disable();
-        txtComment->Disable();
         cbLanguage->Disable();
         chkStrict->Disable();
         chkSecureDefiner->Disable();
@@ -865,7 +864,10 @@ wxString dlgFunction::GetSql()
         sql += GetGrant(wxT("X"), wxT("FUNCTION ") + name);
     }
 
-    AppendComment(sql, wxT("FUNCTION ") + name, function);
+	if (isProcedure)
+        AppendComment(sql, wxT("PROCEDURE ") + GetName(), function);
+	else
+        AppendComment(sql, wxT("FUNCTION ") + name, function);
 
     return sql;
 }
