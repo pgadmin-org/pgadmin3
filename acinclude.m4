@@ -471,7 +471,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
                                 PG_SSL="no"
                         fi
                 else
-		        if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
+		        if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i386-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
         		then
                                 AC_MSG_CHECKING(for SSL_connect in -lpq)
 		        	if test "$(otool -L ${PG_LIB}/libpq.?.dylib | grep -c libssl)" -gt 0
@@ -508,7 +508,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
                                 PG_KRB5="no"
                         fi
                 else
-		        if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
+		        if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i386-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
 		        then
                                 AC_MSG_CHECKING(for krb5_free_principle in -lpq)
 			        if test "$(otool -L ${PG_LIB}/libpq.?.dylib | grep -c libkrb5)" -gt 0
@@ -543,7 +543,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		
 		if test "$BUILD_STATIC" = "yes"
 		then
-			if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
+			if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i386-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
 			then
 				CRYPT_LIB=""
 			else
