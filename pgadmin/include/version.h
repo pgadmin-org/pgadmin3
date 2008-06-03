@@ -14,7 +14,7 @@
 
 // Application Versions
 #define VERSION_STR     wxT("1.8.4-EDB")
-#define VERSION_NUM     1,8,4.50
+#define VERSION_NUM     1,8,4,99
 #define VERSION_PACKAGE 1.8.4-edb
 
 #define PRERELEASE 1
