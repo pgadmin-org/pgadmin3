@@ -4,19 +4,19 @@
 <title>Chapter 20. Client Authentication</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.8 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="manage-ag-tablespaces.html" title="19.6. Tablespaces">
 <link rel="next" href="auth-methods.html" title="20.2. Authentication methods">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="client-authentication">
 <div class="titlepage"><div><div><h2 class="title">Chapter 20. Client Authentication</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="client-authentication.html#auth-pg-hba-conf">20.1. The <code class="filename">pg_hba.conf</code> file</a></span></dt>
+<dt><span class="sect1"><a href="client-authentication.html#auth-pg-hba-conf">20.1. The pg_hba.conf file</a></span></dt>
 <dt><span class="sect1"><a href="auth-methods.html">20.2. Authentication methods</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="auth-methods.html#auth-trust">20.2.1. Trust authentication</a></span></dt>
@@ -29,7 +29,7 @@
 <dt><span class="sect1"><a href="client-authentication-problems.html">20.3. Authentication problems</a></span></dt>
 </dl>
 </div>
-<a name="id2672473"></a><p>  When a client application connects to the database server, it
+<a name="id2673919"></a><p>  When a client application connects to the database server, it
   specifies which <span class="productname">PostgreSQL</span> database user name it
   wants to connect as, much the same way one logs into a Unix computer
   as a particular user. Within the SQL environment the active database
@@ -68,7 +68,7 @@
  </p>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="auth-pg-hba-conf">20.1. The <code class="filename">pg_hba.conf</code> file</h2></div></div></div>
-<a name="id2672588"></a><p>   Client authentication is controlled by a configuration file,
+<a name="id2674035"></a><p>   Client authentication is controlled by a configuration file,
    which traditionally is named
    <code class="filename">pg_hba.conf</code> and is stored in the database
    cluster's data directory.
@@ -324,7 +324,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
   </p>
 <p>   The <code class="filename">pg_hba.conf</code> file is read on start-up and when
    the main server process receives a
-   <span class="systemitem">SIGHUP</span><a name="id2673532"></a>
+   <span class="systemitem">SIGHUP</span><a name="id2674978"></a>
    signal. If you edit the file on an
    active system, you will need to signal the server
    (using <code class="literal">pg_ctl reload</code> or <code class="literal">kill -HUP</code>) to make it
@@ -341,7 +341,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
    </p>
 </div>
 <p>   Some examples of <code class="filename">pg_hba.conf</code> entries are shown in
-   <a class="xref" href="client-authentication.html#example-pg-hba.conf" title="Example 20.1. Example pg_hba.conf entries">Example 20.1, &#8220;Example <code class="filename">pg_hba.conf</code> entries&#8221;</a>. See the next section for details on the
+   <a class="xref" href="client-authentication.html#example-pg-hba.conf" title="Example 20.1. Example pg_hba.conf entries">Example 20.1, &#8220;Example pg_hba.conf entries&#8221;</a>. See the next section for details on the
    different authentication methods.
   </p>
 <div class="example">

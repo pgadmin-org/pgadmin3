@@ -4,12 +4,12 @@
 <title>Slony-I Introduction</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.13 Documentation">
-<link rel="up" href="index.html" title="Slony-I 1.2.13 Documentation">
-<link rel="prev" href="index.html" title="Slony-I 1.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="Slony-I 1.2.14 Documentation">
+<link rel="up" href="index.html" title="Slony-I 1.2.14 Documentation">
+<link rel="prev" href="index.html" title="Slony-I 1.2.14 Documentation">
 <link rel="next" href="slonylistenercosts.html" title="2.  Slony-I Communications Costs">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" lang="en" id="slonyintro">
 <div class="titlepage">
@@ -19,58 +19,58 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="slonyintro.html#introduction">1. Introduction to <span class="productname">Slony-I</span></a></span></dt>
+<dt><span class="sect1"><a href="slonyintro.html#introduction">1. Introduction to Slony-I</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="slonyintro.html#id2535855">1.1. What <span class="productname">Slony-I</span> is</a></span></dt>
-<dt><span class="sect2"><a href="slonyintro.html#id2536146">1.2. Why yet another replication system?</a></span></dt>
-<dt><span class="sect2"><a href="slonyintro.html#id2536166">1.3.  What <span class="productname">Slony-I</span> is not</a></span></dt>
-<dt><span class="sect2"><a href="slonyintro.html#id2536261">1.4.  Why doesn't <span class="productname">Slony-I</span> do automatic fail-over/promotion?</a></span></dt>
-<dt><span class="sect2"><a href="slonyintro.html#id2536344">1.5.  Current Limitations</a></span></dt>
-<dt><span class="sect2"><a href="slonyintro.html#id2536544">1.6. Replication Models</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2537313">1.1. What Slony-I is</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2537603">1.2. Why yet another replication system?</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2537623">1.3.  What Slony-I is not</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2537717">1.4.  Why doesn't Slony-I do automatic fail-over/promotion?</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2537800">1.5.  Current Limitations</a></span></dt>
+<dt><span class="sect2"><a href="slonyintro.html#id2538000">1.6. Replication Models</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="slonylistenercosts.html">2.  <span class="productname">Slony-I</span> Communications
+<dt><span class="sect1"><a href="slonylistenercosts.html">2.  Slony-I Communications
 Costs</a></span></dt>
 <dt><span class="sect1"><a href="requirements.html">3. System Requirements</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="requirements.html#id2532645">3.1.  <span class="productname">Slony-I</span> Software Dependancies</a></span></dt>
-<dt><span class="sect2"><a href="requirements.html#id2533025">3.2.  Getting <span class="productname">Slony-I</span> Source</a></span></dt>
+<dt><span class="sect2"><a href="requirements.html#id2534144">3.1.  Slony-I Software Dependancies</a></span></dt>
+<dt><span class="sect2"><a href="requirements.html#id2534524">3.2.  Getting Slony-I Source</a></span></dt>
 <dt><span class="sect2"><a href="requirements.html#encoding">3.3.  Database Encoding </a></span></dt>
 <dt><span class="sect2"><a href="requirements.html#times">3.4.  Time Synchronization</a></span></dt>
-<dt><span class="sect2"><a href="requirements.html#id2533354">3.5.  Network Connectivity</a></span></dt>
+<dt><span class="sect2"><a href="requirements.html#id2534853">3.5.  Network Connectivity</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="installation.html">4. <span class="productname">Slony-I</span> Installation</a></span></dt>
+<dt><span class="sect1"><a href="installation.html">4. Slony-I Installation</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="installation.html#id2533677">4.1. Short Version</a></span></dt>
-<dt><span class="sect2"><a href="installation.html#id2533694">4.2. Configuration</a></span></dt>
-<dt><span class="sect2"><a href="installation.html#id2581194">4.3. Example</a></span></dt>
-<dt><span class="sect2"><a href="installation.html#id2581274">4.4. Build</a></span></dt>
-<dt><span class="sect2"><a href="installation.html#id2581329">4.5.  Installing <span class="productname">Slony-I</span> Once Built;</a></span></dt>
-<dt><span class="sect2"><a href="installation.html#id2581513">4.6.  Building Documentation: Admin Guide </a></span></dt>
-<dt><span class="sect2"><a href="installation.html#id2581597">4.7.  Installing <span class="productname">Slony-I</span> from RPMs</a></span></dt>
-<dt><span class="sect2"><a href="installation.html#id2581721">4.8.  Installing the <span class="productname">Slony-I</span> service on <span class="trademark">Windows</span>&#8482;</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2535176">4.1. Short Version</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2535193">4.2. Configuration</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2582644">4.3. Example</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2582724">4.4. Build</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2582779">4.5.  Installing Slony-I Once Built;</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2582963">4.6.  Building Documentation: Admin Guide </a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2583047">4.7.  Installing Slony-I from RPMs</a></span></dt>
+<dt><span class="sect2"><a href="installation.html#id2583164">4.8.  Installing the Slony-I service on Windows</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="concepts.html">5. <span class="productname">Slony-I</span> Concepts</a></span></dt>
+<dt><span class="sect1"><a href="concepts.html">5. Slony-I Concepts</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="concepts.html#id2581961">5.1. Cluster</a></span></dt>
-<dt><span class="sect2"><a href="concepts.html#id2582014">5.2. Node</a></span></dt>
-<dt><span class="sect2"><a href="concepts.html#id2582088">5.3.  Replication Set</a></span></dt>
-<dt><span class="sect2"><a href="concepts.html#id2582115">5.4.  Origin, Providers and Subscribers</a></span></dt>
-<dt><span class="sect2"><a href="concepts.html#id2582175">5.5. slon Daemon</a></span></dt>
-<dt><span class="sect2"><a href="concepts.html#id2582237">5.6. slonik Configuration Processor</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2583405">5.1. Cluster</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2583458">5.2. Node</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2583532">5.3.  Replication Set</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2583559">5.4.  Origin, Providers and Subscribers</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2583618">5.5. slon Daemon</a></span></dt>
+<dt><span class="sect2"><a href="concepts.html#id2583680">5.6. slonik Configuration Processor</a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="cluster.html">6. Defining <span class="productname">Slony-I</span> Clusters</a></span></dt>
-<dt><span class="sect1"><a href="definingsets.html">7. Defining <span class="productname">Slony-I</span> Replication Sets</a></span></dt>
+<dt><span class="sect1"><a href="cluster.html">6. Defining Slony-I Clusters</a></span></dt>
+<dt><span class="sect1"><a href="definingsets.html">7. Defining Slony-I Replication Sets</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="definingsets.html#id2582442">7.1. Primary Keys</a></span></dt>
+<dt><span class="sect2"><a href="definingsets.html#id2583886">7.1. Primary Keys</a></span></dt>
 <dt><span class="sect2"><a href="definingsets.html#definesets">7.2. Grouping tables into sets</a></span></dt>
-<dt><span class="sect2"><a href="definingsets.html#id2582761">7.3.  The Pathology of Sequences </a></span></dt>
+<dt><span class="sect2"><a href="definingsets.html#id2584204">7.3.  The Pathology of Sequences </a></span></dt>
 </dl></dd>
 </dl>
 </div>
 <div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="introduction">1. Introduction to <span class="productname">Slony-I</span></h2></div></div></div>
-<a name="id2535843"></a><div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2535855">1.1. What <span class="productname">Slony-I</span> is</h3></div></div></div>
+<a name="id2537301"></a><div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2537313">1.1. What <span class="productname">Slony-I</span> is</h3></div></div></div>
 <p><span class="productname">Slony-I</span> is a &#8220;<span class="quote">master to multiple slaves</span>&#8221;
 replication system supporting cascading and slave promotion.  The big
 picture for the development of <span class="productname">Slony-I</span> is as a master-slave system
@@ -80,7 +80,7 @@ databases to a reasonably limited number of slave systems.
 servers.  If the number of servers grows beyond that, the cost of
 communications increases prohibitively, and the incremental benefits
 of having multiple servers will be falling off at that point.</p>
-<p> See also <a class="xref" href="slonylistenercosts.html" title="2.  Slony-I Communications Costs">Section 2, &#8220; <span class="productname">Slony-I</span> Communications
+<p> See also <a class="xref" href="slonylistenercosts.html" title="2.  Slony-I Communications Costs">Section 2, &#8220; Slony-I Communications
 Costs&#8221;</a> for a further
 analysis of costs associated with having many nodes.</p>
 <p> <span class="productname">Slony-I</span> is a system intended for data centers and backup
@@ -124,14 +124,14 @@ but they represent <span class="emphasis"><em>different</em></span> replication
 scenarios that <span class="productname">Slony-I</span> does not attempt to address.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2536146">1.2. Why yet another replication system?</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2537603">1.2. Why yet another replication system?</h3></div></div></div>
 <p><span class="productname">Slony-I</span> was born from an idea to create a replication system
 that was not tied to a specific version of <span class="productname">PostgreSQL</span>, which is
 allowed to be started and stopped on an existing database without the
 need for a dump/reload cycle.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2536166">1.3.  What <span class="productname">Slony-I</span> is not</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2537623">1.3.  What <span class="productname">Slony-I</span> is not</h3></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li><p><span class="productname">Slony-I</span> is not a network management system.</p></li>
 <li>
@@ -158,7 +158,7 @@ fashion than <span class="productname">Slony-I</span>, and expectations for <spa
 based on hopes for future projects.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2536261">1.4.  Why doesn't <span class="productname">Slony-I</span> do automatic fail-over/promotion?</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2537717">1.4.  Why doesn't <span class="productname">Slony-I</span> do automatic fail-over/promotion?</h3></div></div></div>
 <p>Determining whether a node has &#8220;<span class="quote">failed</span>&#8221; is properly
 the responsibility of network management software, not <span class="productname">Slony-I</span>.  The
 configuration, fail-over paths, and preferred policies will be
@@ -179,8 +179,8 @@ you, that might conflict with business requirements, thereby making
 replication services.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2536344">1.5.  Current Limitations</h3></div></div></div>
-<a name="id2536347"></a><p><span class="productname">Slony-I</span> does not automatically propagate schema changes, nor
+<div class="titlepage"><div><div><h3 class="title" id="id2537800">1.5.  Current Limitations</h3></div></div></div>
+<a name="id2537804"></a><p><span class="productname">Slony-I</span> does not automatically propagate schema changes, nor
 does it have any ability to replicate large objects.  There is a
 single common reason for these limitations, namely that <span class="productname">Slony-I</span>
 collects updates using triggers, and neither schema changes, large
@@ -225,8 +225,8 @@ server</span>&#8221; which cannot be used without it ceasing to be
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2536544">1.6. Replication Models</h3></div></div></div>
-<a name="id2536547"></a><p>There are a number of distinct models for database replication;
+<div class="titlepage"><div><div><h3 class="title" id="id2538000">1.6. Replication Models</h3></div></div></div>
+<a name="id2538004"></a><p>There are a number of distinct models for database replication;
 it is impossible for one replication system to be all things to all
 people.</p>
 <p> <span class="productname">Slony-I</span> implements a particular model, namely that of

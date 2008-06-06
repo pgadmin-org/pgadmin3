@@ -4,19 +4,19 @@
 <title>24. Log Analysis</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="Slony-I 1.2.14 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="testbed.html" title="23.  Slony-I Test Bed Framework">
 <link rel="next" href="help.html" title="25. More Slony-I Help">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="loganalysis">24. Log Analysis</h2></div></div></div>
-<a name="id2597668"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
+<a name="id2599174"></a><p>Here are some of things that you may find in your <span class="productname">Slony-I</span> logs,
 and explanations of what they mean.</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2597683">24.1. CONFIG notices</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2599189">24.1. CONFIG notices</h3></div></div></div>
 <p>These entries are pretty straightforward. They are informative
 messages about your configuration.</p>
 <p>Here are some typical entries that you will probably run into in
@@ -32,7 +32,7 @@ CONFIG storeSet: set_id=1 set_origin=1 set_comment='Set 1'
 CONFIG main: configuration complete - starting threads</pre>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2597706">24.2. DEBUG Notices</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2599212">24.2. DEBUG Notices</h3></div></div></div>
 <p>Debug notices are always prefaced by the name of the thread that
 the notice originates from. You will see messages from the following
 threads:
@@ -65,8 +65,8 @@ choosing increasing values from 1 to 4 will lead to additional DEBUG
 level messages being displayed. </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2597773">24.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
-<a name="id2597782"></a><p> Note that as far as slon is concerned, there is no
+<div class="titlepage"><div><div><h3 class="title" id="id2599278">24.3.  How to read <span class="productname">Slony-I</span> logs </h3></div></div></div>
+<a name="id2599288"></a><p> Note that as far as slon is concerned, there is no
 &#8220;<span class="quote">master</span>&#8221; or &#8220;<span class="quote">slave.</span>&#8221; They are just
 nodes. </p>
 <p>What you can expect, initially, is to see, on both nodes, some
@@ -147,7 +147,7 @@ happen frequently when the origin sees heavy updates. </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2598033">24.4.  Log Messages and Implications </h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2599533">24.4.  Log Messages and Implications </h3></div></div></div>
 <p> This section lists numerous of the error messages found in
 <span class="productname">Slony-I</span>, along with a brief explanation of implications.  It is a
 fairly well comprehensive list, leaving out mostly some of
@@ -156,7 +156,7 @@ uninteresting.</p>
 <div class="sect3" lang="en">
 <div class="titlepage"><div><div><h4 class="title" id="logshiplog">24.4.1.  Log Messages Associated with Log Shipping </h4></div></div></div>
 <p> Most of these represent errors that come up if
-the <a class="xref" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - <span class="productname">Slony-I</span> with Files&#8221;</a> functionality breaks.  You may expect
+the <a class="xref" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Section 14, &#8220;Log Shipping - Slony-I with Files&#8221;</a> functionality breaks.  You may expect
 things to break if the filesystem being used for log shipping fills,
 or if permissions on that directory are wrongly set. </p>
 <div class="itemizedlist"><ul type="disc">
@@ -290,7 +290,7 @@ a <span class="emphasis"><em>second</em></span> time?  </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2598450">24.4.3.  Threading Issues </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2599956">24.4.3.  Threading Issues </h4></div></div></div>
 <p> There should not be any &#8220;<span class="quote">user-serviceable</span>&#8221; aspects
 to the <span class="productname">Slony-I</span> threading model; each <a class="xref" href="slon.html" title="slon"><span class="refentrytitle"><a name="app-slon-title"></a><span class="application">slon</span></span></a> creates a quite
 well-specified set of helper threads to manage the various database
@@ -831,7 +831,7 @@ already in use.</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2600142">24.4.8.  Logging When Moving Objects Between Sets  </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2601648">24.4.8.  Logging When Moving Objects Between Sets  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setMoveTable_int(): table % not found</code></p>
@@ -876,7 +876,7 @@ already in use.</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2600260">24.4.9.  Issues with Dropping Objects  </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2601766">24.4.9.  Issues with Dropping Objects  </h4></div></div></div>
 <div class="itemizedlist"><ul type="disc">
 <li>
 <p><code class="command">ERROR: Slony-I setDropTable(): table % not found</code></p>
@@ -905,7 +905,7 @@ already in use.</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2600343">24.4.10.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2601849">24.4.10.  Issues with MOVE SET, FAILOVER, DROP NODE  </h4></div></div></div>
 <p> Many of these errors will occur if you submit a <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 script that describes a reconfiguration incompatible with your
 cluster's current configuration.  Those will lead to the
@@ -963,7 +963,7 @@ forwarding turned on. </p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2600518">24.4.11.  Log Switching </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2602024">24.4.11.  Log Switching </h4></div></div></div>
 <p> These messages relate to the new-in-1.2 facility whereby
 <span class="productname">Slony-I</span> periodically switches back and forth between storing data
 in <code class="envar">sl_log_1</code> and <code class="envar">sl_log_2</code>.</p>
@@ -995,7 +995,7 @@ to halt...</p>
 </ul></div>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2600622">24.4.12.  Miscellanea </h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2602128">24.4.12.  Miscellanea </h4></div></div></div>
 <p> Perhaps these messages should be categorized further; that
 remains a task for the documentors.</p>
 <div class="itemizedlist"><ul type="disc">

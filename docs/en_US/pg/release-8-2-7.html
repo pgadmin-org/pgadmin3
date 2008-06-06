@@ -1,0 +1,184 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.2. Release 8.2.7</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.8 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release.html" title="Appendix E. Release Notes">
+<link rel="next" href="release-8-2-6.html" title="E.3. Release 8.2.6">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-7">E.2. Release 8.2.7</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2008-03-17</p>
+</div>
+<p>   This release contains a variety of fixes from 8.2.6.
+   For information about new features in the 8.2 major release, see
+   <a class="xref" href="release-8-2.html" title="E.9. Release 8.2">Section E.9, &#8220;Release 8.2&#8221;</a>.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2876956">E.2.1. Migration to Version 8.2.7</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.2.X.
+    However, you might need to <code class="command">REINDEX</code> indexes on textual
+    columns after updating, if you are affected by the Windows locale
+    issue described below.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2876972">E.2.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      Fix character string comparison for Windows locales that consider
+      different character combinations as equal (Tom)
+     </p>
+<p>      This fix applies only on Windows and only when using UTF-8
+      database encoding.  The same fix was made for all other cases
+      over two years ago, but Windows with UTF-8 uses a separate code
+      path that was not updated.  If you are using a locale that
+      considers some non-identical strings as equal, you may need to
+      <code class="command">REINDEX</code> to fix existing indexes on textual columns.
+     </p>
+</li>
+<li><p>      Repair potential deadlock between concurrent <code class="command">VACUUM FULL</code>
+      operations on different system catalogs (Tom)
+     </p></li>
+<li>
+<p>      Fix longstanding <code class="command">LISTEN</code>/<code class="command">NOTIFY</code>
+      race condition (Tom)
+     </p>
+<p>      In rare cases a session that had just executed a
+      <code class="command">LISTEN</code> might not get a notification, even though
+      one would be expected because the concurrent transaction executing
+      <code class="command">NOTIFY</code> was observed to commit later.
+     </p>
+<p>      A side effect of the fix is that a transaction that has executed
+      a not-yet-committed <code class="command">LISTEN</code> command will not see any
+      row in <code class="structname">pg_listener</code> for the <code class="command">LISTEN</code>,
+      should it choose to look; formerly it would have.  This behavior
+      was never documented one way or the other, but it is possible that
+      some applications depend on the old behavior.
+     </p>
+</li>
+<li>
+<p>      Disallow <code class="command">LISTEN</code> and <code class="command">UNLISTEN</code> within a
+      prepared transaction (Tom)
+     </p>
+<p>      This was formerly allowed but trying to do it had various unpleasant
+      consequences, notably that the originating backend could not exit
+      as long as an <code class="command">UNLISTEN</code> remained uncommitted.
+     </p>
+</li>
+<li>
+<p>      Disallow dropping a temporary table within a
+      prepared transaction (Heikki)
+     </p>
+<p>      This was correctly disallowed by 8.1, but the check was inadvertently
+      broken in 8.2.
+     </p>
+</li>
+<li><p>      Fix rare crash when an error occurs during a query using a hash index
+      (Heikki)
+     </p></li>
+<li><p>      Fix memory leaks in certain usages of set-returning functions (Neil)
+     </p></li>
+<li>
+<p>      Fix input of datetime values for February 29 in years BC (Tom)
+     </p>
+<p>      The former coding was mistaken about which years were leap years.
+     </p>
+</li>
+<li><p>      Fix &#8220;<span class="quote">unrecognized node type</span>&#8221; error in some variants of
+      <code class="command">ALTER OWNER</code> (Tom)
+     </p></li>
+<li><p>      Ensure <code class="structname">pg_stat_activity</code>.<code class="structfield">waiting</code> flag
+      is cleared when a lock wait is aborted (Tom)
+     </p></li>
+<li>
+<p>      Fix handling of process permissions on Windows Vista (Dave, Magnus)
+     </p>
+<p>      In particular, this fix allows starting the server as the Administrator
+      user.
+     </p>
+</li>
+<li><p>      Update time zone data files to <span class="application">tzdata</span> release 2008a
+      (in particular, recent Chile changes); adjust timezone abbreviation
+      <code class="literal">VET</code> (Venezuela) to mean UTC-4:30, not UTC-4:00 (Tom)
+     </p></li>
+<li>
+<p>      Fix <span class="application">pg_ctl</span> to correctly extract the postmaster's port
+      number from command-line options (Itagaki Takahiro, Tom)
+     </p>
+<p>      Previously, <code class="literal">pg_ctl start -w</code> could try to contact the
+      postmaster on the wrong port, leading to bogus reports of startup
+      failure.
+     </p>
+</li>
+<li>
+<p>      Use <code class="option">-fwrapv</code> to defend against possible misoptimization
+      in recent <span class="application">gcc</span> versions (Tom)
+     </p>
+<p>      This is known to be necessary when building <span class="productname">PostgreSQL</span>
+      with <span class="application">gcc</span> 4.3 or later.
+     </p>
+</li>
+<li>
+<p>      Correctly enforce <code class="varname">statement_timeout</code> values longer
+      than <code class="literal">INT_MAX</code> microseconds (about 35 minutes) (Tom)
+     </p>
+<p>      This bug affects only builds with <code class="option">--enable-integer-datetimes</code>.
+     </p>
+</li>
+<li><p>      Fix &#8220;<span class="quote">unexpected PARAM_SUBLINK ID</span>&#8221; planner error when
+      constant-folding simplifies a sub-select (Tom)
+     </p></li>
+<li>
+<p>      Fix logical errors in constraint-exclusion handling of <code class="literal">IS
+      NULL</code> and <code class="literal">NOT</code> expressions (Tom)
+     </p>
+<p>      The planner would sometimes exclude partitions that should not
+      have been excluded because of the possibility of NULL results.
+     </p>
+</li>
+<li>
+<p>      Fix another cause of &#8220;<span class="quote">failed to build any N-way joins</span>&#8221;
+      planner errors (Tom)
+     </p>
+<p>      This could happen in cases where a clauseless join needed to be
+      forced before a join clause could be exploited.
+     </p>
+</li>
+<li>
+<p>      Fix incorrect constant propagation in outer-join planning (Tom)
+     </p>
+<p>      The planner could sometimes incorrectly conclude that a variable
+      could be constrained to be equal to a constant, leading
+      to wrong query results.
+     </p>
+</li>
+<li>
+<p>      Fix display of constant expressions in <code class="literal">ORDER BY</code>
+      and <code class="literal">GROUP BY</code> (Tom)
+     </p>
+<p>      An explictly casted constant would be shown incorrectly.  This could
+      for example lead to corruption of a view definition during
+      dump and reload.
+     </p>
+</li>
+<li>
+<p>      Fix <span class="application">libpq</span> to handle NOTICE messages correctly
+      during COPY OUT (Tom)
+     </p>
+<p>      This failure has only been observed to occur when a user-defined
+      datatype's output routine issues a NOTICE, but there is no
+      guarantee it couldn't happen due to other causes.
+     </p>
+</li>
+</ul></div>
+</div>
+</div></body>
+</html>

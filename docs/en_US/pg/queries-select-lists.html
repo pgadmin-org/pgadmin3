@@ -4,16 +4,16 @@
 <title>7.3. Select Lists</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.8 Documentation">
 <link rel="up" href="queries.html" title="Chapter 7. Queries">
 <link rel="prev" href="queries-table-expressions.html" title="7.2. Table Expressions">
 <link rel="next" href="queries-union.html" title="7.4. Combining Queries">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="queries-select-lists">7.3. Select Lists</h2></div></div></div>
-<a name="id2595970"></a><p>   As shown in the previous section,
+<a name="id2597417"></a><p>   As shown in the previous section,
    the table expression in the <code class="command">SELECT</code> command
    constructs an intermediate virtual table by possibly combining
    tables, views, eliminating rows, grouping, etc.  This table is
@@ -23,7 +23,7 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="queries-select-list-items">7.3.1. Select-List Items</h3></div></div></div>
-<a name="id2596008"></a><p>    The simplest kind of select list is <code class="literal">*</code> which
+<a name="id2597454"></a><p>    The simplest kind of select list is <code class="literal">*</code> which
     emits all columns that the table expression produces.  Otherwise,
     a select list is a comma-separated list of value expressions (as
     defined in <a class="xref" href="sql-expressions.html" title="4.2. Value Expressions">Section 4.2, &#8220;Value Expressions&#8221;</a>).  For instance, it
@@ -49,7 +49,7 @@
 </p>
 <pre class="programlisting">SELECT tbl1.*, tbl2.a FROM ...</pre>
 <p>
-    (See also <a class="xref" href="queries-table-expressions.html#queries-where" title="7.2.2. The WHERE Clause">Section 7.2.2, &#8220;The <code class="literal">WHERE</code> Clause&#8221;</a>.)
+    (See also <a class="xref" href="queries-table-expressions.html#queries-where" title="7.2.2. The WHERE Clause">Section 7.2.2, &#8220;The WHERE Clause&#8221;</a>.)
    </p>
 <p>    If an arbitrary value expression is used in the select list, it
     conceptually adds a new virtual column to the returned table.  The
@@ -63,7 +63,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="queries-column-labels">7.3.2. Column Labels</h3></div></div></div>
-<a name="id2596132"></a><p>    The entries in the select list can be assigned names for further
+<a name="id2597579"></a><p>    The entries in the select list can be assigned names for further
     processing.  The &#8220;<span class="quote">further processing</span>&#8221; in this case is
     an optional sort specification and the client application (e.g.,
     column headers for display).  For example:
@@ -88,7 +88,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="queries-distinct">7.3.3. <code class="literal">DISTINCT</code></h3></div></div></div>
-<a name="id2596204"></a><a name="id2596214"></a><p>    After the select list has been processed, the result table may
+<a name="id2597651"></a><a name="id2597660"></a><p>    After the select list has been processed, the result table may
     optionally be subject to the elimination of duplicate rows.  The
     <code class="literal">DISTINCT</code> key word is written directly after
     <code class="literal">SELECT</code> to specify this:
@@ -98,7 +98,7 @@
     (Instead of <code class="literal">DISTINCT</code> the key word <code class="literal">ALL</code>
     can be used to specify the default behavior of retaining all rows.)
    </p>
-<p>    <a name="id2596265"></a>
+<p>    <a name="id2597711"></a>
     Obviously, two rows are considered distinct if they differ in at
     least one column value.  Null values are considered equal in this
     comparison.

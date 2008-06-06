@@ -4,16 +4,16 @@
 <title>5.7. Schemas</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="PostgreSQL 8.2.7 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.8 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-priv.html" title="5.6. Privileges">
 <link rel="next" href="ddl-inherit.html" title="5.8. Inheritance">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddl-schemas">5.7. Schemas</h2></div></div></div>
-<a name="id2590644"></a><p>   A <span class="productname">PostgreSQL</span> database cluster
+<a name="id2592090"></a><p>   A <span class="productname">PostgreSQL</span> database cluster
    contains one or more named databases.  Users and groups of users are
    shared across the entire cluster, but no other data is shared across
    databases.  Any given client connection to the server can access
@@ -60,13 +60,13 @@
   </p>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-schemas-create">5.7.1. Creating a Schema</h3></div></div></div>
-<a name="id2590749"></a><p>    To create a schema, use the <a class="xref" href="sql-createschema.html" title="CREATE SCHEMA">CREATE SCHEMA</a> command.  Give the schema a name
+<a name="id2592196"></a><p>    To create a schema, use the <a class="xref" href="sql-createschema.html" title="CREATE SCHEMA">CREATE SCHEMA</a> command.  Give the schema a name
     of your choice.  For example:
 </p>
 <pre class="programlisting">CREATE SCHEMA myschema;</pre>
 <p>
    </p>
-<a name="id2590783"></a><a name="id2590789"></a><p>    To create or access objects in a schema, write a
+<a name="id2592230"></a><a name="id2592236"></a><p>    To create or access objects in a schema, write a
     <em class="firstterm">qualified name</em> consisting of the schema name and
     table name separated by a dot:
 </p>
@@ -93,7 +93,7 @@
 );</pre>
 <p>
    </p>
-<a name="id2590864"></a><p>    To drop a schema if it's empty (all objects in it have been
+<a name="id2592311"></a><p>    To drop a schema if it's empty (all objects in it have been
     dropped), use
 </p>
 <pre class="programlisting">DROP SCHEMA myschema;</pre>
@@ -120,7 +120,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-schemas-public">5.7.2. The Public Schema</h3></div></div></div>
-<a name="id2590942"></a><p>    In the previous sections we created tables without specifying any
+<a name="id2592388"></a><p>    In the previous sections we created tables without specifying any
     schema names.  By default, such tables (and other objects) are
     automatically put into a schema named &#8220;<span class="quote">public</span>&#8221;.  Every new
     database contains such a schema.  Thus, the following are equivalent:
@@ -135,7 +135,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-schemas-path">5.7.3. The Schema Search Path</h3></div></div></div>
-<a name="id2590985"></a><a name="id2590991"></a><a name="id2590996"></a><p>    Qualified names are tedious to write, and it's often best not to
+<a name="id2592432"></a><a name="id2592437"></a><a name="id2592443"></a><p>    Qualified names are tedious to write, and it's often best not to
     wire a particular schema name into applications anyway.  Therefore
     tables are often referred to by <em class="firstterm">unqualified names</em>,
     which consist of just the table name.  The system determines which table
@@ -145,12 +145,12 @@
     path, an error is reported, even if matching table names exist
     in other schemas in the database.
    </p>
-<a name="id2591023"></a><p>    The first schema named in the search path is called the current schema.
+<a name="id2592470"></a><p>    The first schema named in the search path is called the current schema.
     Aside from being the first schema searched, it is also the schema in
     which new tables will be created if the <code class="command">CREATE TABLE</code>
     command does not specify a schema name.
    </p>
-<a name="id2591044"></a><p>    To show the current search path, use the following command:
+<a name="id2592490"></a><p>    To show the current search path, use the following command:
 </p>
 <pre class="programlisting">SHOW search_path;</pre>
 <p>
@@ -216,7 +216,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-schemas-priv">5.7.4. Schemas and Privileges</h3></div></div></div>
-<a name="id2591184"></a><p>    By default, users cannot access any objects in schemas they do not
+<a name="id2592630"></a><p>    By default, users cannot access any objects in schemas they do not
     own.  To allow that, the owner of the schema needs to grant the
     <code class="literal">USAGE</code> privilege on the schema.  To allow users
     to make use of the objects in the schema, additional privileges
@@ -243,7 +243,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-schemas-catalog">5.7.5. The System Catalog Schema</h3></div></div></div>
-<a name="id2591285"></a><p>    In addition to <code class="literal">public</code> and user-created schemas, each
+<a name="id2592731"></a><p>    In addition to <code class="literal">public</code> and user-created schemas, each
     database contains a <code class="literal">pg_catalog</code> schema, which contains
     the system tables and all the built-in data types, functions, and
     operators.  <code class="literal">pg_catalog</code> is always effectively part of

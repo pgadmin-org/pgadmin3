@@ -4,16 +4,16 @@
 <title>2. Replicating Your First Database</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.73.2">
-<link rel="start" href="index.html" title="Slony-I 1.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="Slony-I 1.2.14 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="next" href="slonstart.html" title="3. Slon daemons">
-<link rel="copyright" href="ln-legalnotice.html" title="Legal Notice">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="firstdb">2. Replicating Your First Database</h2></div></div></div>
-<a name="id2584810"></a><p>In this example, we will be replicating a brand new
+<a name="id2586253"></a><p>In this example, we will be replicating a brand new
 <span class="application">pgbench</span> database.  The mechanics of
 replicating an existing database are covered here, however we
 recommend that you learn how <span class="productname">Slony-I</span> functions by using a fresh new
@@ -75,11 +75,11 @@ in an error similar to the following:</p>
 <p><code class="command">ERROR  remoteListenThread_1: db_getLocalNodeId() returned 2 - wrong database?</code></p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2585062">2.1. Creating the <span class="application">pgbench</span> user</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2586505">2.1. Creating the <span class="application">pgbench</span> user</h3></div></div></div>
 <p><code class="command">createuser -A -D $PGBENCHUSER</code></p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2585078">2.2. Preparing the databases</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2586521">2.2. Preparing the databases</h3></div></div></div>
 <pre class="programlisting">createdb -O $PGBENCHUSER -h $MASTERHOST $MASTERDBNAME
 createdb -O $PGBENCHUSER -h $SLAVEHOST $SLAVEDBNAME
 pgbench -i -s 1 -U $PGBENCHUSER -h $MASTERHOST $MASTERDBNAME</pre>
@@ -112,14 +112,14 @@ each processing 1000 transactions against the <span class="application">pgbench<
 database running on localhost as the pgbench user.</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2585188">2.3. Configuring the Database for Replication.</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2586632">2.3. Configuring the Database for Replication.</h3></div></div></div>
 <p>Creating the configuration tables, stored procedures, triggers
 and configuration is all done through the <a class="xref" href="slonik.html" title="slonik"><span class="refentrytitle"><a name="app-slonik-title"></a><span class="application">slonik</span></span></a>
 tool. It is a specialized scripting aid that mostly calls stored
 procedures in the master/slave (node) databases. </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2585204">2.3.1. Using the altperl scripts</h4></div></div></div>
-<a name="id2585208"></a><p>Using the <a class="xref" href="adminscripts.html#altperl" title="19.1. altperl Scripts">Section 19.1, &#8220;altperl Scripts&#8221;</a> scripts is an easy way to get started.  The
+<div class="titlepage"><div><div><h4 class="title" id="id2586647">2.3.1. Using the altperl scripts</h4></div></div></div>
+<a name="id2586651"></a><p>Using the <a class="xref" href="adminscripts.html#altperl" title="19.1. altperl Scripts">Section 19.1, &#8220;altperl Scripts&#8221;</a> scripts is an easy way to get started.  The
 <code class="command">slonik_build_env</code> script will generate output providing
 details you need to  omplete building a <code class="filename">slon_tools.conf</code>. 
 An example <code class="filename">slon_tools.conf</code> is provided in the distribution
@@ -142,7 +142,7 @@ $ slonik_subscribe_set  2 | slonik</pre>
 of documentation if you'd like, which documents more of a &#8220;<span class="quote">bare-metal</span>&#8221; approach.</p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2585265">2.3.2. Using slonik command directly</h4></div></div></div>
+<div class="titlepage"><div><div><h4 class="title" id="id2586708">2.3.2. Using slonik command directly</h4></div></div></div>
 <p>The traditional approach to administering slony is to craft
 slonik commands directly. An example of this given here. </p>
 <p> The script to create

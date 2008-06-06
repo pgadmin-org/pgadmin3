@@ -1,0 +1,174 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.10. Release 8.1.12</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.8 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-2.html" title="E.9. Release 8.2">
+<link rel="next" href="release-8-1-11.html" title="E.11. Release 8.1.11">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1-12">E.10. Release 8.1.12</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2008-06-09</p>
+</div>
+<p>   This release contains a variety of fixes from 8.1.11.
+   For information about new features in the 8.1 major release, see
+   <a class="xref" href="release-8-1.html" title="E.22. Release 8.1">Section E.22, &#8220;Release 8.1&#8221;</a>.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2883432">E.10.1. Migration to Version 8.1.12</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.1.X.
+    However, if you are upgrading from a version earlier than 8.1.2,
+    see the release notes for 8.1.2.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2883441">E.10.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      Fix <code class="command">ALTER TABLE ADD COLUMN ... PRIMARY KEY</code> so that the new
+      column is correctly checked to see if it's been initialized to all
+      non-nulls (Brendan Jurd)
+     </p>
+<p>      Previous versions neglected to check this requirement at all.
+     </p>
+</li>
+<li><p>      Fix possible <code class="command">CREATE TABLE</code> failure when inheriting the
+      &#8220;<span class="quote">same</span>&#8221; constraint from multiple parent relations that
+      inherited that constraint from a common ancestor (Tom)
+     </p></li>
+<li><p>      Fix conversions between ISO-8859-5 and other encodings to handle
+      Cyrillic &#8220;<span class="quote">Yo</span>&#8221; characters (<code class="literal">e</code> and <code class="literal">E</code> with
+      two dots) (Sergey Burladyan)
+     </p></li>
+<li>
+<p>      Fix a few datatype input functions
+      that were allowing unused bytes in their results to contain
+      uninitialized, unpredictable values (Tom)
+     </p>
+<p>      This could lead to failures in which two apparently identical literal
+      values were not seen as equal, resulting in the parser complaining
+      about unmatched <code class="literal">ORDER BY</code> and <code class="literal">DISTINCT</code>
+      expressions.
+     </p>
+</li>
+<li>
+<p>      Fix a corner case in regular-expression substring matching
+      (<code class="literal">substring(<em class="replaceable"><code>string</code></em> from
+      <em class="replaceable"><code>pattern</code></em>)</code>) (Tom)
+     </p>
+<p>      The problem occurs when there is a match to the pattern overall but
+      the user has specified a parenthesized subexpression and that
+      subexpression hasn't got a match.  An example is
+      <code class="literal">substring('foo' from 'foo(bar)?')</code>.
+      This should return NULL, since <code class="literal">(bar)</code> isn't matched, but
+      it was mistakenly returning the whole-pattern match instead (ie,
+      <code class="literal">foo</code>).
+     </p>
+</li>
+<li><p>      Update time zone data files to <span class="application">tzdata</span> release 2008c (for
+      DST law changes in Morocco, Iraq, Choibalsan, Pakistan, Syria, Cuba,
+      Argentina/San_Luis, and Chile)
+     </p></li>
+<li><p>      Fix incorrect result from <span class="application">ecpg</span>'s
+      <code class="function">PGTYPEStimestamp_sub()</code> function (Michael)
+     </p></li>
+<li><p>      Fix core dump in <code class="filename">contrib/xml2</code>'s
+      <code class="function">xpath_table()</code> function when the input query returns a
+      NULL value (Tom)
+     </p></li>
+<li><p>      Fix <code class="filename">contrib/xml2</code>'s makefile to not override
+      <code class="literal">CFLAGS</code> (Tom)
+     </p></li>
+<li>
+<p>      Fix <code class="literal">DatumGetBool</code> macro to not fail with <span class="application">gcc</span>
+      4.3 (Tom)
+     </p>
+<p>      This problem affects &#8220;<span class="quote">old style</span>&#8221; (V0) C functions that
+      return boolean.  The fix is already in 8.3, but the need to
+      back-patch it was not realized at the time.
+     </p>
+</li>
+<li>
+<p>      Fix longstanding <code class="command">LISTEN</code>/<code class="command">NOTIFY</code>
+      race condition (Tom)
+     </p>
+<p>      In rare cases a session that had just executed a
+      <code class="command">LISTEN</code> might not get a notification, even though
+      one would be expected because the concurrent transaction executing
+      <code class="command">NOTIFY</code> was observed to commit later.
+     </p>
+<p>      A side effect of the fix is that a transaction that has executed
+      a not-yet-committed <code class="command">LISTEN</code> command will not see any
+      row in <code class="structname">pg_listener</code> for the <code class="command">LISTEN</code>,
+      should it choose to look; formerly it would have.  This behavior
+      was never documented one way or the other, but it is possible that
+      some applications depend on the old behavior.
+     </p>
+</li>
+<li>
+<p>      Disallow <code class="command">LISTEN</code> and <code class="command">UNLISTEN</code> within a
+      prepared transaction (Tom)
+     </p>
+<p>      This was formerly allowed but trying to do it had various unpleasant
+      consequences, notably that the originating backend could not exit
+      as long as an <code class="command">UNLISTEN</code> remained uncommitted.
+     </p>
+</li>
+<li><p>      Fix rare crash when an error occurs during a query using a hash index
+      (Heikki)
+     </p></li>
+<li>
+<p>      Fix input of datetime values for February 29 in years BC (Tom)
+     </p>
+<p>      The former coding was mistaken about which years were leap years.
+     </p>
+</li>
+<li><p>      Fix &#8220;<span class="quote">unrecognized node type</span>&#8221; error in some variants of
+      <code class="command">ALTER OWNER</code> (Tom)
+     </p></li>
+<li>
+<p>      Fix <span class="application">pg_ctl</span> to correctly extract the postmaster's port
+      number from command-line options (Itagaki Takahiro, Tom)
+     </p>
+<p>      Previously, <code class="literal">pg_ctl start -w</code> could try to contact the
+      postmaster on the wrong port, leading to bogus reports of startup
+      failure.
+     </p>
+</li>
+<li>
+<p>      Use <code class="option">-fwrapv</code> to defend against possible misoptimization
+      in recent <span class="application">gcc</span> versions (Tom)
+     </p>
+<p>      This is known to be necessary when building <span class="productname">PostgreSQL</span>
+      with <span class="application">gcc</span> 4.3 or later.
+     </p>
+</li>
+<li>
+<p>      Fix display of constant expressions in <code class="literal">ORDER BY</code>
+      and <code class="literal">GROUP BY</code> (Tom)
+     </p>
+<p>      An explictly casted constant would be shown incorrectly.  This could
+      for example lead to corruption of a view definition during
+      dump and reload.
+     </p>
+</li>
+<li>
+<p>      Fix <span class="application">libpq</span> to handle NOTICE messages correctly
+      during COPY OUT (Tom)
+     </p>
+<p>      This failure has only been observed to occur when a user-defined
+      datatype's output routine issues a NOTICE, but there is no
+      guarantee it couldn't happen due to other causes.
+     </p>
+</li>
+</ul></div>
+</div>
+</div></body>
+</html>
