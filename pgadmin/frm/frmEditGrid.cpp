@@ -410,12 +410,12 @@ void frmEditGrid::OnCellRightClick(wxGridEvent& event)
 {
 	wxMenu *xmenu = new wxMenu();
 	
-	if (thread->IsRunning()) {
-		
-		// We have a thread running. This right-click should not be processed
-		return;
-	}
-	
+	// If we cannot refresh, assume there is a data thread running. We cannot 
+	// check thread->IsRunning() as it can crash if the thread is in some
+	// states :-(
+    if (!toolBar->GetToolEnabled(MNU_REFRESH))
+        return;
+
 	sqlGrid->SetGridCursor(event.GetRow(), event.GetCol());
 	
 	xmenu->Append(MNU_INCLUDEFILTER, _("Filter By &Selection"),_("Display only those rows that have this value in this column."));
