@@ -1,0 +1,50 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.25. Release 8.0.17</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.9 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-1.html" title="E.24. Release 8.1">
+<link rel="next" href="release-8-0-16.html" title="E.26. Release 8.0.16">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-0-17">E.25. Release 8.0.17</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2008-06-12</p>
+</div>
+<p>   This release contains one serious bug fix over 8.0.16.
+   For information about new features in the 8.0 major release, see
+   <a class="xref" href="release-8-0.html" title="E.42. Release 8.0">Section E.42, &#8220;Release 8.0&#8221;</a>.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2890385">E.25.1. Migration to Version 8.0.17</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.0.X.
+    However, if you are upgrading from a version earlier than 8.0.6,
+    see the release notes for 8.0.6.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2890394">E.25.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc"><li>
+<p>      Make <code class="function">pg_get_ruledef()</code> parenthesize negative constants (Tom)
+     </p>
+<p>      Before this fix, a negative constant in a view or rule might be dumped
+      as, say, <code class="literal">-42::integer</code>, which is subtly incorrect: it should
+      be <code class="literal">(-42)::integer</code> due to operator precedence rules.
+      Usually this would make little difference, but it could interact with
+      another recent patch to cause
+      <span class="productname">PostgreSQL</span> to reject what had been a valid
+      <code class="command">SELECT DISTINCT</code> view query.  Since this could result in
+      <span class="application">pg_dump</span> output failing to reload, it is being treated
+      as a high-priority fix.  The only released versions in which dump
+      output is actually incorrect are 8.3.1 and 8.2.7.
+     </p>
+</li></ul></div>
+</div>
+</div></body>
+</html>
