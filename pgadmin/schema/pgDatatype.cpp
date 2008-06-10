@@ -92,6 +92,7 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
         len=prec=0;
 }
 
+// Return the full name of the type, with dimension and array qualifiers
 wxString pgDatatype::FullName() const 
 {
     if (name == wxT("time with time zone"))
@@ -104,6 +105,21 @@ wxString pgDatatype::FullName() const
         return wxT("timestamp") + length + wxT(" without time zone") + array;
     else
         return name + length + array;
+}
+
+// Return the quoted full name of the type, with dimension and array qualifiers
+wxString pgDatatype::QuotedFullName() const 
+{
+    if (name == wxT("time with time zone"))
+        return wxT("time") + length + wxT(" with time zone") + array;
+    else if (name == wxT("time without time zone"))
+        return wxT("time") + length + wxT(" without time zone") + array;
+    else if (name == wxT("timestamp with time zone"))
+        return wxT("timestamp") + length + wxT(" with time zone") + array;
+    else if (name == wxT("timestamp without time zone"))
+        return wxT("timestamp") + length + wxT(" without time zone") + array;
+    else
+        return qtTypeIdent(name) + length + array;
 }
 
 wxString pgDatatype::GetSchemaPrefix(pgDatabase *db) const
