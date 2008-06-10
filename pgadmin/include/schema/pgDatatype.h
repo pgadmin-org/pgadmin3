@@ -29,7 +29,7 @@ public:
     wxString LengthString() const { return length; }
     wxString Array() const { return array; }
     wxString FullName() const;
-    wxString QuotedFullName() const { return qtTypeIdent(name) + length + array; }
+    wxString QuotedFullName() const;
     wxString GetSchemaPrefix(pgDatabase *db) const;
     wxString GetQuotedSchemaPrefix(pgDatabase *db) const;
     long Length() const { return len; }
