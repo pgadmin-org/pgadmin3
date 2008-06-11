@@ -446,7 +446,7 @@ void dlgProperty::AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2)
 {
     if (connection->BackendMinimumVersion(8, 1))
     {
-        FillCombobox(wxT("SELECT rolname FROM pg_roles ORDER BY 1"), cb1, cb2);
+        FillCombobox(wxT("SELECT rolname FROM pg_roles WHERE rolcanlogin ORDER BY 1"), cb1, cb2);
     }
     else
     {
@@ -1377,9 +1377,6 @@ void dlgSecurityProperty::AddGroups(ctlComboBox *comboBox)
 {
     if (!((securityPage && securityPage->cbGroups) || comboBox))
         return;
-
-	if (connection->BackendMinimumVersion(8, 1))
-		return;
 
     pgSet *set=connection->ExecuteSet(wxT("SELECT groname FROM pg_group ORDER BY groname"));
 
