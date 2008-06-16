@@ -110,7 +110,7 @@ public:
     bool SetPassword(const wxString& newVal);
     wxDateTime GetUpSince() { return upSince; }
     void iSetUpSince(const wxDateTime &d) { upSince = d; }
-	void iSetColour(const wxString &s) { colour = wxColour(s); }
+	void iSetColour(const wxString &s) { colour = s.Length() == 0 ? wxColour(wxT("#ffffff")) : wxColour(s); }
 	wxColour GetColour() { return colour; }
 
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv) { return conn->HasPrivilege(objTyp, objName, priv); }

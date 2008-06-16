@@ -11,6 +11,7 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/colordlg.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -37,6 +38,7 @@
 #define txtPassword     CTRL_TEXT("txtPassword")
 #define txtDbRestriction CTRL_TEXT("txtDbRestriction")
 #define txtColour       CTRL_TEXT("txtColour")
+#define btnColor        CTRL_BUTTON("btnColor")
 
 
 BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
@@ -53,6 +55,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_CHECKBOX(XRCID("chkRestore"),               dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkTryConnect"),            dlgServer::OnChangeTryConnect)
 	EVT_TEXT(XRCID("txtColour"),                    dlgProperty::OnChange)
+    EVT_BUTTON(XRCID("btnColor"),                   dlgServer::OnChooseColor)
     EVT_BUTTON(wxID_OK,                             dlgServer::OnOK)
 END_EVENT_TABLE();
 
@@ -232,7 +235,7 @@ int dlgServer::Go(bool modal)
         chkStorePwd->SetValue(server->GetStorePwd());
         chkRestore->SetValue(server->GetRestore());
         txtDbRestriction->SetValue(server->GetDbRestriction());
-		txtColour->SetValue(server->GetColour().GetAsString(wxC2S_HTML_SYNTAX));
+        txtColour->SetValue(server->GetColour().GetAsString(wxC2S_HTML_SYNTAX));
 
         stPassword->Disable();
         txtPassword->Disable();
@@ -287,6 +290,16 @@ void dlgServer::OnChangeTryConnect(wxCommandEvent &ev)
     chkStorePwd->Enable(chkTryConnect->GetValue());
     txtPassword->Enable(chkTryConnect->GetValue());
     OnChange(ev);
+}
+
+
+void dlgServer::OnChooseColor(wxCommandEvent &ev)
+{
+    wxColourDialog dlg( NULL );
+    if ( dlg.ShowModal() == wxID_OK )
+    {
+        txtColour->SetValue(dlg.GetColourData().GetColour().GetAsString(wxC2S_HTML_SYNTAX));
+    }
 }
 
 

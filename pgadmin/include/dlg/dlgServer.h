@@ -42,6 +42,7 @@ private:
     void OnChangeRestr(wxCommandEvent &ev);
     void OnChangeTryConnect(wxCommandEvent &ev);
     void OnPageSelect(wxNotebookEvent &event);
+    void OnChooseColor(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE()
 };
