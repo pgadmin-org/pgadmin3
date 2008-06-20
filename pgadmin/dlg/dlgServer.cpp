@@ -11,7 +11,6 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/colordlg.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -20,6 +19,9 @@
 #include "frm/frmHint.h"
 #include "dlg/dlgServer.h"
 #include "schema/pgDatabase.h"
+
+// Must be after pgAdmin3.h or MSVC++ complains
+#include <wx/colordlg.h>
 
 // pointer to controls
 #define txtDescription  CTRL_TEXT("txtDescription")
