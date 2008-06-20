@@ -120,6 +120,8 @@ public:
 	void SetSystemFont(const wxFont &font);
 	wxFont GetSQLFont();
     void SetSQLFont(const wxFont &font);
+    int GetLineEndingType() const { int i; Read(wxT("LineEndingType"), &i, 2); return i; }
+	void SetLineEndingType(const int newval) { Write(wxT("LineEndingType"), newval); }
 
     // Misc options
     long GetAutoRowCountThreshold() const { long l; Read(wxT("AutoRowCount"), &l, 2000L); return l; }

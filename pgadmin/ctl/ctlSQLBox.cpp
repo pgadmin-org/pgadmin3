@@ -124,6 +124,8 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
 	AutoCompSetIgnoreCase(true);
 	AutoCompSetFillUps(wxT(" \t"));
 	AutoCompSetDropRestOfWord(true);
+
+	SetEOLMode(settings->GetLineEndingType());
 }
 
 void ctlSQLBox::SetDatabase(pgConn *db)

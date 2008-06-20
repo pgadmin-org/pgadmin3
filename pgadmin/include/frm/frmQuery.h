@@ -139,6 +139,7 @@ private:
     void SetLineEndingStyle();
     int GetLineEndingStyle();
     void OnSetEOLMode(wxCommandEvent& event);
+	void SetEOLModeDisplay(int mode);
 	void OnMacroInvoke(wxCommandEvent& event);
 	void OnMacroManage(wxCommandEvent& event);
 	void UpdateMacrosList();

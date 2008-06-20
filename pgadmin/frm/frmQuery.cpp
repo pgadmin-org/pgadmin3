@@ -305,7 +305,7 @@ frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const w
     sqlQuery = new ctlSQLBox(this, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
     sqlQuery->SetDatabase(conn);
     sqlQuery->SetMarginWidth(1, 16);
-    SetLineEndingStyle();
+    SetEOLModeDisplay(sqlQuery->GetEOLMode());
 
     // Results pane
     outputPane = new wxNotebook(this, -1, wxDefaultPosition, wxSize(500, 300));
@@ -1305,6 +1305,7 @@ void frmQuery::OnSave(wxCommandEvent& event)
     }
 }
 
+// Set the line ending style based on the current document.
 void frmQuery::SetLineEndingStyle()
 {
     // Detect the file mode
@@ -1321,7 +1322,7 @@ void frmQuery::SetLineEndingStyle()
         haveLF && haveCRLF ||
         haveCR && haveCRLF)
     {
-        wxMessageBox(_("This file contain mixed line endings. They will be converted to the current setting."), _("Warning"), wxICON_INFORMATION);
+        wxMessageBox(_("This file contains mixed line endings. They will be converted to the current setting."), _("Warning"), wxICON_INFORMATION);
         sqlQuery->ConvertEOLs(mode);
         changed=true;
         setExtendedTitle();
@@ -1366,6 +1367,7 @@ void frmQuery::SetLineEndingStyle()
     delete reLF;
 }
 
+// Get the line ending style
 int frmQuery::GetLineEndingStyle()
 {
     if (lineEndMenu->IsChecked(MNU_LF))
@@ -1378,12 +1380,26 @@ int frmQuery::GetLineEndingStyle()
         return sqlQuery->GetEOLMode();
 }
 
+// User-set the current EOL mode for the form
 void frmQuery::OnSetEOLMode(wxCommandEvent& event)
 {
     int mode = GetLineEndingStyle();
     sqlQuery->ConvertEOLs(mode);
 	sqlQuery->SetEOLMode(mode);
+	settings->SetLineEndingType(mode);
 
+    SetEOLModeDisplay(mode);
+
+    if (!changed)
+    {
+        changed=true;
+        setExtendedTitle();  
+    }
+}
+
+// Display the EOL mode settings on the form
+void frmQuery::SetEOLModeDisplay(int mode)
+{
     switch(mode)
     {
 
@@ -1404,12 +1420,6 @@ void frmQuery::OnSetEOLMode(wxCommandEvent& event)
 
         default:
             wxLogError(wxT("Someone created a new line ending style! Run, run for your lives!!"));
-    }
-
-    if (!changed)
-    {
-        changed=true;
-        setExtendedTitle();  
     }
 }
 
