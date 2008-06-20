@@ -1379,6 +1379,7 @@ void frmQuery::OnSetEOLMode(wxCommandEvent& event)
 {
     int mode = GetLineEndingStyle();
     sqlQuery->ConvertEOLs(mode);
+	sqlQuery->SetEOLMode(mode);
 
     switch(mode)
     {

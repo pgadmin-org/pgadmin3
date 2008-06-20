@@ -308,6 +308,21 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 	event.m_metaDown=false;
 #endif
 
+	// Get the line ending type
+	wxString lineEnd;
+	switch (GetEOLMode())
+	{
+		case wxSTC_EOL_LF:
+			lineEnd = wxT("\n");
+			break;
+		case wxSTC_EOL_CRLF:
+			lineEnd = wxT("\r\n");
+			break;
+		case wxSTC_EOL_CR:
+			lineEnd = wxT("\r");
+			break;
+	}
+
 	if (!AutoCompActive() &&
 		 ( settings->GetTabForCompletion() && /* autocomplete on tab only if specifically configured */
 		  !event.AltDown() && !event.CmdDown() && !event.ControlDown() && event.GetKeyCode() == '\t'
@@ -322,9 +337,13 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
         line = GetLine(GetCurrentLine());
 
         // Get the offset for the current line - basically, whether
-        // or not it ends with a \n
+        // or not it ends with a \r\n, \n or \r, and if so, the length
         int offset =  0;
-        if (line.EndsWith(wxT("\n")))
+        if (line.EndsWith(wxT("\r\n")))
+            offset = 2;
+        else if (line.EndsWith(wxT("\n")))
+            offset = 1;
+        else if (line.EndsWith(wxT("\r")))
             offset = 1;
 
         // Get the indent. This is every leading space or tab on the
@@ -346,11 +365,11 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
         // Lose any selected text.
         ReplaceSelection(wxEmptyString);
 
-        // Insert a replacement \n, and the indent at the insertion point.
-        InsertText(GetCurrentPos(), wxT("\n") + indent);
+        // Insert a replacement \n (or whatever), and the indent at the insertion point.
+        InsertText(GetCurrentPos(), lineEnd + indent);
 
         // Now, reset the position, and clear the selection
-        SetCurrentPos(GetCurrentPos() + indent.Length() + 1);
+        SetCurrentPos(GetCurrentPos() + indent.Length() + lineEnd.Length());
         SetSelection(GetCurrentPos(), GetCurrentPos());
     }
     else if (m_dlgFindReplace && event.GetKeyCode() == WXK_F3)
