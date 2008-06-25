@@ -1149,49 +1149,49 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
     }
 #endif // WIN32
 
-    // Add local PostgresPlus servers on non-Win32 platforms (on Win32, they will be picked up above)
+    // Add local servers on non-Win32 platforms (on Win32, they will be picked up above)
 #ifndef WIN32
 
-	// On Unix/Mac, the discovery ID can be anything. We use the Postgres Plus 
-	// blade config filename if it's present, as that is the only thing vaguely 
+	// On Unix/Mac, the discovery ID can be anything. We use the PostgreSQL 
+	// package config filename if it's present, as that is the only thing vaguely 
 	// discoverable and unique to a given installation. We can do the same for
 	// other distros in the future if they drop a suitable file someplace. 
-	// Look for any files that match the basic postgresplus-X.Y.ini pattern.
+	// Look for any files that match the basic postgres*.ini pattern.
 
     wxDir dir(wxT("/etc/"));
-	wxLogInfo(wxT("Loading Postgres Plus servers"));
+	wxLogInfo(wxT("Loading servers registered on the local machine"));
 	
 	if (dir.IsOpened())
 	{
-		wxString postgresPlusIni, filename;
+		wxString postgresqlIni, filename;
 		
-		bool cont = dir.GetFirst(&filename, wxT("postgresplus-*.ini"), wxDIR_FILES);
-		postgresPlusIni = wxT("/etc/") + filename;
+		bool cont = dir.GetFirst(&filename, wxT("postgres*.ini"), wxDIR_FILES);
+		postgresqlIni = wxT("/etc/") + filename;
 		 
 		while (cont)
 		{
 			// Only load the server if we didn't load it with all the others.
-			if (discoveredServers.Index(postgresPlusIni, false) < 0)
+			if (discoveredServers.Index(postgresqlIni, false) < 0)
 			{
-			    wxLogInfo(wxT("Checking file %s"), postgresPlusIni.c_str());
+			    wxLogInfo(wxT("Checking file %s"), postgresqlIni.c_str());
 				
-				wxFileStream fst(postgresPlusIni);
+				wxFileStream fst(postgresqlIni);
 				wxFileConfig *cnf = new wxFileConfig(fst);
 
 				wxString version;
-				if (cnf->Read(wxT("/Blades/Server"), &version))
+				if (cnf->Read(wxT("/Packages/Server"), &version))
 				{
-				    wxLogInfo(wxT("Loading server from %s"), postgresPlusIni.c_str());
+				    wxLogInfo(wxT("Loading server from %s"), postgresqlIni.c_str());
 					
 					// Basic details
 					servername = wxT("localhost");
-					cnf->Read(wxT("/Server/Description"), &description, wxT("Postgres Plus ") + version);
+					cnf->Read(wxT("/Server/Description"), &description, wxT("PostgreSQL ") + version);
 					cnf->Read(wxT("/Server/Username"), &username, wxT("postgres"));
 					cnf->Read(wxT("/Server/Port"), &port, 5432);
 
 					// We found a version number, so create the server
 					server = new pgServer(servername, description, wxT("postgres"), username, port, false, 0);
-					server->iSetDiscoveryID(postgresPlusIni);
+					server->iSetDiscoveryID(postgresqlIni);
 					server->iSetDiscovered(true);
 					browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
 					browser->SortChildren(obj->GetId());
@@ -1200,7 +1200,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 				delete cnf;
 			}
 			cont = dir.GetNext(&filename);
-			postgresPlusIni = wxT("/etc/") + filename;
+			postgresqlIni = wxT("/etc/") + filename;
 		}
     }
 	else 
