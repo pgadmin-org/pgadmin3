@@ -77,7 +77,10 @@ wxString pgQueryThread::GetMessagesAndClear()
 void pgQueryThread::appendMessage(const wxString &str)
 {
     wxCriticalSectionLocker cs(criticalSection);
-    messages.Append(str);
+	if (messages.IsEmpty())
+        messages.Append(str);
+	else
+        messages.Append(wxT("\n") + str);
 }
 
 
