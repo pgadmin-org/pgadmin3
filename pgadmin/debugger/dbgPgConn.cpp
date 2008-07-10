@@ -26,6 +26,11 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <netinet/in.h>
+
+#ifndef INADDR_NONE
+#define INADDR_NONE (-1)
+#endif
+
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
