@@ -311,8 +311,11 @@ int dlgProperty::Go(bool modal)
 
 void dlgProperty::CreateAdditionalPages()
 {
-    sqlPane = new ctlSQLBox(nbNotebook, CTL_PROPSQL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_READONLY | wxTE_RICH2);
-    nbNotebook->AddPage(sqlPane, wxT("SQL"));
+    if (wxString(factory->GetTypeName()).Cmp(wxT("Server")))
+    {
+      sqlPane = new ctlSQLBox(nbNotebook, CTL_PROPSQL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_READONLY | wxTE_RICH2);
+      nbNotebook->AddPage(sqlPane, wxT("SQL"));
+    }
 }
 
 
