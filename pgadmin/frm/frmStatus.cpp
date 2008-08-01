@@ -29,7 +29,8 @@
 BEGIN_EVENT_TABLE(frmStatus, pgDialog)
     EVT_BUTTON(wxID_REFRESH,	     				frmStatus::OnRefresh)
     EVT_BUTTON(wxID_CLOSE,	  				        frmStatus::OnCloseBtn)
-    EVT_BUTTON(wxID_CANCEL,          				frmStatus::OnCancelBtn)
+    EVT_BUTTON(wxID_CANCEL,          				frmStatus::OnCloseBtn)
+    EVT_BUTTON(XRCID("btnCancelSt"),          		frmStatus::OnCancelBtn)
     EVT_BUTTON(wxID_STOP,            				frmStatus::OnTerminateBtn)
     EVT_BUTTON(XRCID("btnCommit"),                  frmStatus::OnCommit)
     EVT_BUTTON(XRCID("btnRollback"),                frmStatus::OnRollback)
@@ -101,8 +102,6 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn)
     btnTerminateLk = CTRL_BUTTON("btnTerminateLk");
     btnCommit = CTRL_BUTTON("btnCommit");
     btnRollback = CTRL_BUTTON("btnRollback");
-    ChangeButtonId(btnCancelSt, wxID_CANCEL, _("Cancel"));
-    ChangeButtonId(btnCancelLk, wxID_CANCEL, _("Cancel"));
     ChangeButtonId(btnTerminateSt, wxID_STOP, _("Terminate"));
     ChangeButtonId(btnTerminateLk, wxID_STOP, _("Terminate"));
 
