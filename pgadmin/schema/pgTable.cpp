@@ -229,7 +229,8 @@ wxString pgTable::GetSql(ctlTree *browser)
                     if (column->GetInheritedCount() > 0)
 					{
 					    if (!column->GetIsLocal())
-							sql += wxString::Format(wxT("-- %s: "), _("Inherited"));
+							sql += wxString::Format(wxT("-- %s "), _("Inherited"))
+                                + wxT("from table ") +  column->GetInheritedTableName() + wxT(":");
 					}
 
                     sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" ")
@@ -511,7 +512,7 @@ void pgTable::UpdateInheritance()
 {
     // not checked so far
     pgSet *props=ExecuteSet(
-        wxT("SELECT c.relname , nspname\n")
+        wxT("SELECT c.oid, c.relname , nspname\n")
         wxT("  FROM pg_inherits i\n")
         wxT("  JOIN pg_class c ON c.oid = i.inhparent\n")
         wxT("  JOIN pg_namespace n ON n.oid=c.relnamespace\n")
@@ -533,6 +534,7 @@ void pgTable::UpdateInheritance()
                     + qtIdent(props->GetVal(wxT("relname")));
             quotedInheritedTablesList.Add(GetQuotedSchemaPrefix(props->GetVal(wxT("nspname")))
                     + qtIdent(props->GetVal(wxT("relname"))));
+            inheritedTablesOidList.Add(props->GetVal(wxT("oid")));
             props->MoveNext();
             inheritedTableCount++;
         }

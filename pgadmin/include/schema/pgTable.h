@@ -72,6 +72,7 @@ public:
     long GetInheritedTableCount() { if (inheritedTableCount < 0) UpdateInheritance(); return inheritedTableCount; }
     wxString GetInheritedTables() { GetInheritedTableCount(); return inheritedTables; }
     wxString GetQuotedInheritedTables() { GetInheritedTableCount(); return quotedInheritedTables; }
+    wxArrayString GetInheritedTablesOidList() { GetInheritedTableCount(); return inheritedTablesOidList; }
     wxArrayString GetQuotedInheritedTablesList() { GetInheritedTableCount(); return quotedInheritedTablesList; }
     wxString GetCoveringIndex(ctlTree *browser, const wxString &collist);
     pgCollection *GetColumnCollection(ctlTree *browser);
@@ -124,7 +125,7 @@ private:
     long inheritedTableCount;
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
         primaryKeyName, primaryKeyColNumbers, tablespace;
-    wxArrayString quotedInheritedTablesList;
+    wxArrayString quotedInheritedTablesList, inheritedTablesOidList;
     slSet *replicationSet;
 	OID tablespaceOid;
 };

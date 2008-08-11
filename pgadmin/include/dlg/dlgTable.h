@@ -56,7 +56,7 @@ private:
     wxString GetItemConstraintType(ctlListView *list, long pos);
     bool hasPK;
 
-    wxArrayString previousColumns, previousConstraints;
+    wxArrayString previousColumns, previousConstraints, previousTables;
     wxArrayString tableOids, inheritedTableOids;
     wxTreeItemId columnsItem, constraintsItem;
 

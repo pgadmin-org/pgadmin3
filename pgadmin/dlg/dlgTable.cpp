@@ -115,6 +115,7 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
     schema=sch;
     table=node;
 
+    btnAddTable->Disable();
     btnRemoveTable->Disable();
 
     lstColumns->AddColumn(_("Column name"), 90);
@@ -157,14 +158,19 @@ int dlgTable::Go(bool modal)
         if (table->GetTablespaceOid() != 0)
             cbTablespace->SetKey(table->GetTablespaceOid());
 
+        inheritedTableOids=table->GetInheritedTablesOidList();
+
         wxArrayString qitl=table->GetQuotedInheritedTablesList();
         size_t i;
         for (i=0 ; i < qitl.GetCount() ; i++)
+        {
+            previousTables.Add(qitl.Item(i));
             lbTables->Append(qitl.Item(i));
+        }
 
-        btnAddTable->Disable();
-        lbTables->Disable();
-        cbTables->Disable();
+        btnAddTable->Enable(connection->BackendMinimumVersion(8, 2) && cbTables->GetGuessedSelection() >= 0);
+        lbTables->Enable(connection->BackendMinimumVersion(8, 2));
+        cbTables->Enable(connection->BackendMinimumVersion(8, 2));
         chkHasOids->Enable(table->GetHasOids() && connection->BackendMinimumVersion(8, 0));
         cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
 
@@ -217,7 +223,7 @@ int dlgTable::Go(bool modal)
                             + wxT(" ") + column->GetDefinition());
                         lstColumns->SetItem(pos, 6, NumToStr((long)column));
                         if (inherited)
-                            lstColumns->SetItem(pos, 2, _("Inherited"));
+                            lstColumns->SetItem(pos, 2, column->GetInheritedTableName());
                     }
                 }
                 
@@ -278,11 +284,30 @@ int dlgTable::Go(bool modal)
         // create mode
         btnChangeCol->Hide();
 
+        // Add the default tablespace 
+        cbTablespace->Insert(_("<default tablespace>"), 0, (void *)0);
+        cbTablespace->SetSelection(0);
+    }
+
+    if (connection->BackendMinimumVersion(8,2) || !table)
+    {
         wxString systemRestriction;
         if (!settings->GetShowSystemObjects())
         systemRestriction = 
             wxT("   AND ") + connection->SystemNamespaceRestriction(wxT("n.nspname"));
-            
+        
+        if (table)
+        {
+            wxString oids = table->GetOidStr();
+            int i;
+            for (i=0 ; i < (int)inheritedTableOids.GetCount() ; i++)
+            {
+                oids += wxT(", ") + inheritedTableOids.Item(i);
+            }
+            if (oids.Length() > 0)
+                systemRestriction += wxT(" AND c.oid NOT IN (") + oids + wxT(")");
+        }
+    
         pgSet *set=connection->ExecuteSet(
             wxT("SELECT c.oid, c.relname , nspname\n")
             wxT("  FROM pg_class c\n")
@@ -302,10 +327,6 @@ int dlgTable::Go(bool modal)
             }
             delete set;
         }
-
-        // Add the default tablespace 
-        cbTablespace->Insert(_("<default tablespace>"), 0, (void *)0);
-        cbTablespace->SetSelection(0);
     }
 
     FillConstraint();
@@ -511,30 +532,42 @@ wxString dlgTable::GetSql()
         wxArrayString tmpDef=previousColumns;
         wxString tmpsql;
 
-        // Build a tmeporary list of ADD COLUMNs, and fixup the list to remove
+        // Build a temporary list of ADD COLUMNs, and fixup the list to remove
         for (pos=0; pos < lstColumns->GetItemCount() ; pos++)
         {
-            definition = lstColumns->GetText(pos, 3);
-            if (definition.IsEmpty())
+            index = -1;
+            if (lstColumns->GetText(pos, 2).IsEmpty())
             {
-                definition=qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, 1);
-                index=tmpDef.Index(definition);
-                if (index < 0)
-                    tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                        +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
+                definition = lstColumns->GetText(pos, 3);
+                if (definition.IsEmpty())
+                {
+                    definition=qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, 1);
+                    index=tmpDef.Index(definition);
+                    if (index < 0)
+                        tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                            +  wxT(" ADD COLUMN ") + definition + wxT(";\n");
+                }
+                else
+                {
+                    tmpsql += definition;
+
+                    pgColumn *column=(pgColumn*) StrToLong(lstColumns->GetText(pos, 6));
+                    if (column)
+                    {
+                        index=tmpDef.Index(column->GetQuotedIdentifier() 
+                                    + wxT(" ") + column->GetDefinition());
+                    }
+                }
             }
             else
             {
-                tmpsql += definition;
-
-                pgColumn *column=(pgColumn*) StrToLong(lstColumns->GetText(pos, 6));
-                if (column)
+                if (! lstColumns->GetText(pos, 2).IsEmpty())
                 {
-                    index=tmpDef.Index(column->GetQuotedIdentifier() 
-                                + wxT(" ") + column->GetDefinition());
+                    definition=qtIdent(lstColumns->GetText(pos)) + wxT(" ") + lstColumns->GetText(pos, 1);
+                    index=tmpDef.Index(definition);
                 }
             }
-            if (index >= 0)
+            if (index >= 0 && index < (int)tmpDef.GetCount())
                 tmpDef.RemoveAt(index);
         }
 
@@ -555,10 +588,34 @@ wxString dlgTable::GetSql()
         AppendNameChange(sql);
         AppendOwnerChange(sql, wxT("TABLE ") + tabname);
 
+        tmpDef=previousTables;
+        tmpsql.Empty();
+
+        // Build a temporary list of INHERIT tables, and fixup the list to remove
+        for (pos = 0 ; pos < (int)lbTables->GetCount() ; pos++)
+        {
+            definition = lbTables->GetString(pos);
+            index = tmpDef.Index(definition);
+            if (index < 0)
+                tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT(" INHERIT ") + qtIdent(definition) + wxT(";\n");
+            else
+                tmpDef.RemoveAt(index);
+        }
+
+        for (index = 0 ; index < (int)tmpDef.GetCount() ; index++)
+        {
+            definition = tmpDef.Item(index);
+            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                +  wxT(" NO INHERIT ") + qtIdent(definition) + wxT(";\n");
+        }
+        // Add the INHERIT COLUMNs...
+        sql += tmpsql;
+
         tmpDef=previousConstraints;
         tmpsql.Empty();
 
-        // Build a tmeporary list of ADD CONSTRAINTs, and fixup the list to remove
+        // Build a temporary list of ADD CONSTRAINTs, and fixup the list to remove
         for (pos=0; pos < lstConstraints->GetItemCount() ; pos++)
         {
             wxString conname= qtIdent(lstConstraints->GetItemText(pos));
@@ -904,6 +961,7 @@ void dlgTable::OnChangeVacuum(wxCommandEvent &ev)
 void dlgTable::OnChangeTable(wxCommandEvent &ev)
 {
     cbTables->GuessSelection(ev);
+    btnAddTable->Enable((table || connection->BackendMinimumVersion(8, 2)) && cbTables->GetGuessedSelection() >= 0);
 }
 
 
@@ -954,15 +1012,36 @@ void dlgTable::OnAddTable(wxCommandEvent &ev)
         cbTables->Delete(sel);
 
         pgSet *set=connection->ExecuteSet(
-            wxT("SELECT attname FROM pg_attribute WHERE NOT attisdropped AND attnum>0 AND attrelid=") + taboid);
+            wxT("SELECT attname, format_type(atttypid, NULL) AS atttype FROM pg_attribute\n")
+            wxT (" WHERE NOT attisdropped AND attnum>0 AND attrelid=") + taboid);
         if (set)
         {
-            int row;
+            bool found;
             while (!set->Eof())
             {
-                row=lstColumns->AppendItem(tableFactory.GetIconId(), set->GetVal(wxT("attname")), 
-                    wxString::Format(_("Inherited from table %s"), tabname.c_str()));
-                lstColumns->SetItem(row, 2, tabname);
+                found = false;
+
+                size_t row=lstColumns->GetItemCount();
+                while (row--)
+                {
+                    if (set->GetVal(wxT("attname")).Cmp(lstColumns->GetText(row, 0)) == 0)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found)
+                {
+                    lstColumns->SetItem(row, 2, tabname);
+                }
+                else
+                {
+                    lstColumns->AppendItem(tableFactory.GetIconId(),
+                        set->GetVal(wxT("attname")), 
+                        set->GetVal(wxT("atttype")),
+                        tabname);
+                }
                 set->MoveNext();
             }
             delete set;
@@ -994,7 +1073,9 @@ void dlgTable::OnRemoveTable(wxCommandEvent &ev)
         while (row--)
         {
             if (tabname == lstColumns->GetText(row, 2))
-                lstColumns->DeleteItem(row);
+            {
+                lstColumns->SetItem(row, 2, wxT(""));
+            }
         }
         CheckChange();
     }

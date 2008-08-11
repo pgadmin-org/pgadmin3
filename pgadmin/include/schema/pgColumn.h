@@ -75,6 +75,8 @@ public:
     void iSetStorage(const wxString& s) { storage=s; }
     long GetInheritedCount() const { return inheritedCount; }
     void iSetInheritedCount(const long l) { inheritedCount=l; }
+    wxString GetInheritedTableName() const { return inheritedTableName; }
+    void iSetInheritedTableName(const wxString &s) { inheritedTableName=s; }
     bool GetIsLocal() const { return isLocal; }
     void iSetIsLocal(const bool b) { isLocal=b; }
     OID  GetAttTypId() const { return attTypId; }
@@ -104,7 +106,7 @@ public:
 
 private:
     wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, storage, rawTypename;
-    wxString serialSequence, serialSchema, pkCols;
+    wxString serialSequence, serialSchema, pkCols, inheritedTableName;
     long colNumber, length, precision, statistics, attstattarget;
     long typlen, typmod, inheritedCount;
     bool isPK, isFK, notNull, isArray, isLocal;
