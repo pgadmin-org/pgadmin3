@@ -62,6 +62,10 @@ TMP_ui += \
 	$(srcdir)/ui/dlgSynonym.xrc \
 	$(srcdir)/ui/dlgTable.xrc \
 	$(srcdir)/ui/dlgTablespace.xrc \
+	$(srcdir)/ui/dlgTextSearchConfiguration.xrc \
+	$(srcdir)/ui/dlgTextSearchDictionary.xrc \
+	$(srcdir)/ui/dlgTextSearchParser.xrc \
+	$(srcdir)/ui/dlgTextSearchTemplate.xrc \
 	$(srcdir)/ui/dlgTrigger.xrc \
 	$(srcdir)/ui/dlgType.xrc \
 	$(srcdir)/ui/dlgUser.xrc \

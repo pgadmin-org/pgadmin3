@@ -44,6 +44,10 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlg/dlgSynonym.h \
 	$(srcdir)/include/dlg/dlgTable.h \
 	$(srcdir)/include/dlg/dlgTablespace.h \
+	$(srcdir)/include/dlg/dlgTextSearchConfiguration.h \
+	$(srcdir)/include/dlg/dlgTextSearchDictionary.h \
+	$(srcdir)/include/dlg/dlgTextSearchParser.h \
+	$(srcdir)/include/dlg/dlgTextSearchTemplate.h \
 	$(srcdir)/include/dlg/dlgTrigger.h \
 	$(srcdir)/include/dlg/dlgType.h \
 	$(srcdir)/include/dlg/dlgUser.h \

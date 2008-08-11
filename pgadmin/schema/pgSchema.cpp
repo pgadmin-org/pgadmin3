@@ -29,6 +29,10 @@
 #include "schema/pgOperatorFamily.h"
 #include "schema/pgSequence.h"
 #include "schema/pgTable.h"
+#include "schema/pgTextSearchConfiguration.h"
+#include "schema/pgTextSearchDictionary.h"
+#include "schema/pgTextSearchParser.h"
+#include "schema/pgTextSearchTemplate.h"
 #include "schema/pgType.h"
 #include "schema/pgView.h"
 #include "frm/frmReport.h"
@@ -99,6 +103,26 @@ wxMenu *pgSchemaBase::GetNewMenu()
             sequenceFactory.AppendMenu(menu);
         if (settings->GetDisplayOption(_("Tables")))
             tableFactory.AppendMenu(menu);
+        if (settings->GetDisplayOption(_("FTS Configurations")))
+        {
+            if (GetConnection()->BackendMinimumVersion(8, 3))
+                textSearchConfigurationFactory.AppendMenu(menu);
+        }
+        if (settings->GetDisplayOption(_("FTS Dictionaries")))
+        {
+            if (GetConnection()->BackendMinimumVersion(8, 3))
+                textSearchConfigurationFactory.AppendMenu(menu);
+        }
+        if (settings->GetDisplayOption(_("FTS Parsers")))
+        {
+            if (GetConnection()->BackendMinimumVersion(8, 3))
+                textSearchConfigurationFactory.AppendMenu(menu);
+        }
+        if (settings->GetDisplayOption(_("FTS Templates")))
+        {
+            if (GetConnection()->BackendMinimumVersion(8, 3))
+                textSearchConfigurationFactory.AppendMenu(menu);
+        }
         if (settings->GetDisplayOption(_("Trigger functions")))
             triggerFunctionFactory.AppendMenu(menu);
         if (settings->GetDisplayOption(_("Types")))
@@ -189,7 +213,27 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 			    browser->AppendCollection(this, sequenceFactory);
 		    if (settings->GetDisplayOption(_("Tables")))
 			    browser->AppendCollection(this, tableFactory);
-            if (settings->GetDisplayOption(_("Trigger functions")))
+		    if (settings->GetDisplayOption(_("FTS Configurations")))
+            {
+                if (GetConnection()->BackendMinimumVersion(8, 3))
+			        browser->AppendCollection(this, textSearchConfigurationFactory);
+            }
+		    if (settings->GetDisplayOption(_("FTS Dictionaries")))
+            {
+                if (GetConnection()->BackendMinimumVersion(8, 3))
+			        browser->AppendCollection(this, textSearchDictionaryFactory);
+            }
+		    if (settings->GetDisplayOption(_("FTS Parsers")))
+            {
+                if (GetConnection()->BackendMinimumVersion(8, 3))
+			        browser->AppendCollection(this, textSearchParserFactory);
+            }
+		    if (settings->GetDisplayOption(_("FTS Templates")))
+            {
+                if (GetConnection()->BackendMinimumVersion(8, 3))
+			        browser->AppendCollection(this, textSearchTemplateFactory);
+            }
+		    if (settings->GetDisplayOption(_("Trigger functions")))
 		        browser->AppendCollection(this, triggerFunctionFactory);
 		    if (settings->GetDisplayOption(_("Types")))
 			    browser->AppendCollection(this, typeFactory);

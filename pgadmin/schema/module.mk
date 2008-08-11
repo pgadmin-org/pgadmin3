@@ -44,6 +44,10 @@ pgadmin3_SOURCES += \
         $(subdir)/pgServer.cpp \
         $(subdir)/pgTable.cpp \
         $(subdir)/pgTablespace.cpp \
+        $(subdir)/pgTextSearchConfiguration.cpp \
+	$(subdir)/pgTextSearchDictionary.cpp \
+        $(subdir)/pgTextSearchParser.cpp \
+        $(subdir)/pgTextSearchTemplate.cpp \
         $(subdir)/pgTrigger.cpp \
         $(subdir)/pgType.cpp \
         $(subdir)/pgUser.cpp \

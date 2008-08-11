@@ -42,6 +42,10 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/schema/pgServer.h \
 	$(srcdir)/include/schema/pgTable.h \
 	$(srcdir)/include/schema/pgTablespace.h \
+  	$(srcdir)/include/schema/pgTextSearchConfiguration.h \
+  	$(srcdir)/include/schema/pgTextSearchDictionary.h \
+  	$(srcdir)/include/schema/pgTextSearchParser.h \
+  	$(srcdir)/include/schema/pgTextSearchTemplate.h \
 	$(srcdir)/include/schema/pgTrigger.h \
 	$(srcdir)/include/schema/pgType.h \
 	$(srcdir)/include/schema/pgUser.h \

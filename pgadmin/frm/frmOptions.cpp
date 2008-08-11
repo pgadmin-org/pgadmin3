@@ -187,6 +187,10 @@ frmOptions::frmOptions(frmMain *parent)
 	lstDisplay->Append(_("Rules"));
 	lstDisplay->Append(_("Sequences"));
 	lstDisplay->Append(_("Tables"));
+	lstDisplay->Append(_("FTS Configurations"));
+	lstDisplay->Append(_("FTS Dictionaries"));
+	lstDisplay->Append(_("FTS Parsers"));
+	lstDisplay->Append(_("FTS Templates"));
 	lstDisplay->Append(_("Types"));
 	lstDisplay->Append(_("Views"));
 
