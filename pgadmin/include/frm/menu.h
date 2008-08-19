@@ -108,7 +108,10 @@ enum
     QUERY_COMPLETE=MNU_MACROS_MANAGE+100,
 
     // This is a dummy menu item
-    MNU_DUMMY=QUERY_COMPLETE+1000
+    MNU_DUMMY=QUERY_COMPLETE+1000,
+
+	//Menu Test
+	MNU_GENERATESQL
 };
 
 #endif

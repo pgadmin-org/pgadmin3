@@ -39,6 +39,7 @@ include $(srcdir)/frm/module.mk
 include $(srcdir)/include/module.mk
 include $(srcdir)/schema/module.mk
 include $(srcdir)/slony/module.mk
+include $(srcdir)/gqb/module.mk
 include $(srcdir)/ui/module.mk
 include $(srcdir)/utils/module.mk
 

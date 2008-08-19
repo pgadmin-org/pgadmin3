@@ -13,12 +13,16 @@
 #define __FRM_QUERY_H
 
 #include "dlg/dlgClasses.h"
+#include "gqb/gqbViewController.h"
+#include "gqb/gqbModel.h"
 #include "utils/factory.h"
 #include "utils/favourites.h"
 #include "utils/macros.h"
 
 // wxAUI
 #include <wx/aui/aui.h>
+#include <wx/textctrl.h>
+#include <wx/dcbuffer.h>
 #include <wx/timer.h>
 
 #define FRMQUERY_PERPSECTIVE_VER wxT("$Rev$")
@@ -64,17 +68,28 @@ private:
     ctlComboBoxFix *cbConnection;
     wxTextCtrl *scratchPad;
 
-    // Query timing/status update
+	// Query timing/status update
     wxTimer timer;
     wxLongLong elapsedQuery, startTimeQuery;
 
-    // Our connection
+	//GQB related
+    void OnChangeNotebook(wxNotebookEvent& event);
+    void OnAdjustSizesTimer(wxTimerEvent & event);
+	void onResizeHorizontally(wxSplitterEvent& event);
+    void adjustGQBSizes();
+    wxNotebook *sqlNotebook;
+    gqbModel *model;
+    gqbController *controller;
+    bool firstTime,firstGeneration;
+    wxTimer *adjustSizesTimer;
+
+	// Our connection
     pgConn *conn;
 
 	// These status flags are required to work round some wierdness on wxGTK,
 	// particularly on Solaris.
     bool closing, loading;
-    
+
     void OnEraseBackground(wxEraseEvent& event);
     void OnSize(wxSizeEvent& event);
 
@@ -124,7 +139,7 @@ private:
     void OnAuiUpdate(wxAuiManagerEvent& event);
     void OnDefaultView(wxCommandEvent& event);
 
-	void OnTimer(wxTimerEvent & event);
+    void OnTimer(wxTimerEvent & event);
 
     bool CheckChanged(bool canVeto);
     void OpenLastFile();
@@ -139,28 +154,26 @@ private:
     void SetLineEndingStyle();
     int GetLineEndingStyle();
     void OnSetEOLMode(wxCommandEvent& event);
-	void SetEOLModeDisplay(int mode);
-	void OnMacroInvoke(wxCommandEvent& event);
-	void OnMacroManage(wxCommandEvent& event);
-	void UpdateMacrosList();
+    void SetEOLModeDisplay(int mode);
+    void OnMacroInvoke(wxCommandEvent& event);
+    void OnMacroManage(wxCommandEvent& event);
+    void UpdateMacrosList();
     wxWindow *currentControl();
     wxMenu *queryMenu;
     wxMenu *favouritesMenu;
-	wxMenu *macrosMenu;
+    wxMenu *macrosMenu;
     wxMenu *lineEndMenu;
     wxString title;
     wxString lastFilename, lastDir;
 
     queryFavouriteFolder *favourites;
-	queryMacroList *macros;
+    queryMacroList *macros;
 
     bool aborted;
     bool lastFileFormat;
 
     DECLARE_EVENT_TABLE()
 };
-
-
 
 // Position of status line fields
 enum
@@ -172,13 +185,16 @@ enum
     STATUSPOS_SECS
 };
 
-
 enum
 {
     CTL_SQLQUERY=331,
     CTL_SQLRESULT,
     CTL_MSGRESULT,
-    CTL_MSGHISTORY
+    CTL_MSGHISTORY,
+    CTL_NTBKCENTER,
+    CTL_COLSGRID,
+    CTL_TIMERSIZES,
+    CTL_TIMERFRM
 };
 
 ///////////////////////////////////////////////////////
@@ -200,8 +216,6 @@ public:
     bool CheckEnable(pgObject *obj);
 };
 
-
-
 class queryToolFactory : public queryToolBaseFactory
 {
 public:
@@ -209,7 +223,6 @@ public:
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
-    
 class queryToolSqlFactory : public queryToolBaseFactory
 {
 public:
@@ -218,9 +231,7 @@ public:
     bool CheckEnable(pgObject *obj);
 };
 
-
 class queryToolSelectFactory : public queryToolDataFactory
-
 {
 public:
     queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
@@ -250,5 +261,4 @@ public:
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
-
 #endif // __FRM_QUERY_H
