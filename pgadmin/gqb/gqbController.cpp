@@ -416,7 +416,7 @@ wxString gqbController::generateSQL()
 
         // Remove last " AND " from joins if there isn't restrictions, only left white space
 		if(truncAnd && (restrictions->restrictionsCount()<=0))
-                sentence.Truncate(sentence.Length()-6);
+                sentence.Truncate(sentence.Length()-5);
 
         // Never found a join
         if (!truncAnd && (restrictions->restrictionsCount()>0))
