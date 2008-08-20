@@ -128,7 +128,7 @@ EVT_TIMER(CTL_TIMERFRM,         frmQuery::OnTimer)
 // These fire when the queries complete
 EVT_MENU(QUERY_COMPLETE,        frmQuery::OnQueryComplete)
 EVT_NOTEBOOK_PAGE_CHANGED(CTL_NTBKCENTER, frmQuery::OnChangeNotebook)
-EVT_SPLITTER_SASH_POS_CHANGED(GQB_HORZ_SASH, frmQuery::onResizeHorizontally)
+EVT_SPLITTER_SASH_POS_CHANGED(GQB_HORZ_SASH, frmQuery::OnResizeHorizontally)
 END_EVENT_TABLE()
 
 frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxString& query, const wxString& file)
@@ -333,7 +333,7 @@ timer(this,CTL_TIMERFRM)
     model=new gqbModel();
     controller = new gqbController(model,sqlNotebook, outputPane, wxSize(1280,800));
     firstTime=true;                               // Inform to GQB that the tree of table haven't filled.
-	firstGeneration=true;                         // Allow to ask if a query can be overwrite by a new one generate with GQB
+	gqbUpdateRunning = false;					  // Are we already updating the SQL query - event recursion protection.
     adjustSizesTimer=NULL;                        // Timer used to avoid a bug when close outputPane
 
 	// Setup SQL editor notebook NBP_SQLEDTR
@@ -930,9 +930,11 @@ void frmQuery::OnSaveHistory(wxCommandEvent& event)
 
 void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
 {
-    if(sqlNotebook)
+    if(sqlNotebook && sqlNotebook->GetPageCount() >= 2)
 	{
-        if (sqlNotebook->GetPageCount()>=2)
+        if (event.GetSelection() == 0)
+			updateFromGqb(false);
+		else
 		{
             if(firstTime)        //Things that should be done on first click on GQB
             {
@@ -1631,6 +1633,12 @@ void frmQuery::OnCancel(wxCommandEvent& event)
 
 void frmQuery::OnExplain(wxCommandEvent& event)
 {
+	if(sqlNotebook->GetSelection()==1)
+	{
+		if (!updateFromGqb(true))
+			return;
+	}
+
     wxString query=sqlQuery->GetSelectedText();
     if (query.IsNull())
         query = sqlQuery->GetText();
@@ -1666,104 +1674,98 @@ void frmQuery::OnExplain(wxCommandEvent& event)
     execQuery(sql, resultToRetrieve, true, offset, false, true, verbose);
 }
 
+// Update the main SQL query from the GQB if desired
+bool frmQuery::updateFromGqb(bool executing)
+{
+	// Make sure this doesn't get call recursively through an event
+	if (gqbUpdateRunning)
+		return false;
+
+	gqbUpdateRunning = true;
+
+    // Execute Generation of SQL sentence from GQB
+	bool canGenerate=false;
+	wxString newQuery = controller->generateSQL();
+
+	// If the new query is empty, don't do anything
+	if (newQuery.IsEmpty())
+	{
+		wxMessageBox(_("No SQL query was generated."), wxT("Graphical Query Builder"), wxICON_INFORMATION);
+		gqbUpdateRunning = false;
+		return false;
+	}
+
+	// Only prompt the user if the dirty flag is set, and the textbox is not empty, and the query has changed.
+	if(changed && !sqlQuery->GetText().Trim().IsEmpty() && sqlQuery->GetText() != newQuery + wxT("\n")) 
+	{
+	    wxString fn;
+		if (executing)
+			fn = _("The generated SQL query has changed.\nDo you want to update it and execute the query?");
+		else
+            fn = _("The generated SQL query has changed.\nDo you want to update it?");
+
+        wxMessageDialog msg(this, fn, _("Query"), wxYES_NO|wxICON_EXCLAMATION);
+	    if(msg.ShowModal() == wxID_YES && changed)
+	    {
+	        canGenerate=true;
+	    }
+	}
+	else
+	{
+	    canGenerate=true;
+	}
+
+	if(canGenerate)
+	{
+	    sqlQuery->ClearAll();
+	    sqlQuery->AddText(newQuery + wxT("\n"));
+        sqlNotebook->SetSelection(0);
+	    changed=true;
+		
+		gqbUpdateRunning = false;
+		return true;
+	}
+
+	return false;
+}
 
 void frmQuery::OnExecute(wxCommandEvent& event)
 {
-	// Execute Generation of SQL sentence from GQB
-	bool canGenerate=false;
 	if(sqlNotebook->GetSelection()==1)
 	{
-		if(firstGeneration)  // First time generate sentence without asking for overwriting
-		{
-			changed=false;
-			firstGeneration=false;
-		}
-
-		if(changed) //Next time ask for permisson only if have changed
-		{
-		    wxString fn = _("The generated SQL query has changed.\nDo you want to update it?");
-            wxMessageDialog msg(this, fn, _("Query"), wxYES_NO|wxICON_EXCLAMATION);
-		    if(msg.ShowModal() == wxID_YES && changed)
-		    {
-		        canGenerate=true;
-		    }
-		}
-		else
-		{
-		    canGenerate=true;
-		}
-
-		if(canGenerate)
-		{
-		    sqlQuery->ClearAll();
-		    sqlQuery->AddText(controller->generateSQL());
-		    sqlQuery->AddText(wxT("\n"));
-	        sqlNotebook->SetSelection(0);
-		    changed=false;
-		}
-	}
-	// Execute SQL sentences created by user
-	else
-	{
-		wxString query=sqlQuery->GetSelectedText();
-		if (query.IsNull())
-			query = sqlQuery->GetText();
-
-		if (query.IsNull())
+		if (!updateFromGqb(true))
 			return;
-
-		execQuery(query);
-		sqlQuery->SetFocus();
 	}
+
+	wxString query=sqlQuery->GetSelectedText();
+	if (query.IsNull())
+		query = sqlQuery->GetText();
+
+	if (query.IsNull())
+		return;
+
+	execQuery(query);
+	sqlQuery->SetFocus();
 }
 
 
 void frmQuery::OnExecFile(wxCommandEvent &event)
 {
-    bool canGenerate=false;
 	if(sqlNotebook->GetSelection()==1)
 	{
-	    if(firstGeneration)  // First time generate sentence without asking for overwriting
-		{
-			changed=false;
-			firstGeneration=false;
-		}
-
-		if(changed) //Next time ask for permisson only if have changed
-		{
-		    wxString fn = _("The generated SQL query has changed.\nDo you want to update it?");
-            wxMessageDialog msg(this, fn, _("Query"), wxYES_NO|wxICON_EXCLAMATION);
-		    if(msg.ShowModal() == wxID_YES && changed)
-		    {
-		        canGenerate=true;
-		    }
-		}
-		else
-		{
-		    canGenerate=true;
-		}
-
-		if(canGenerate)
-		{
-		    sqlQuery->ClearAll();
-		    sqlQuery->AddText(controller->generateSQL());
-		    sqlQuery->AddText(wxT("\n"));
-	        sqlNotebook->SetSelection(0);
-		    changed=false;
-		}
+		if (!updateFromGqb(true))
+			return;
 	}
-	else
-	{
-        wxString query=sqlQuery->GetSelectedText();
-        if (query.IsNull())
-            query = sqlQuery->GetText();
 
-        if (query.IsNull())
-            return;
+    wxString query=sqlQuery->GetSelectedText();
+    if (query.IsNull())
+        query = sqlQuery->GetText();
 
-        execQuery(query, 0, false, 0, true);
-        sqlQuery->SetFocus();
-	}
+    if (query.IsNull())
+        return;
+
+    execQuery(query, 0, false, 0, true);
+    sqlQuery->SetFocus();
 }
 
 
@@ -2182,7 +2184,7 @@ void frmQuery::adjustGQBSizes()
 // Adjust sizes of GQB components after vertical sash adjustment, 
 // Located here because need to avoid some issues when implementing 
 // inside controller/view Classes
-void frmQuery::onResizeHorizontally(wxSplitterEvent& event)
+void frmQuery::OnResizeHorizontally(wxSplitterEvent& event)
 {
     int y = event.GetSashPosition();
 	wxSize s = controller->getTablesBrowser()->GetSize();

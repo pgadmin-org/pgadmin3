@@ -75,12 +75,14 @@ private:
 	//GQB related
     void OnChangeNotebook(wxNotebookEvent& event);
     void OnAdjustSizesTimer(wxTimerEvent & event);
-	void onResizeHorizontally(wxSplitterEvent& event);
+	void OnResizeHorizontally(wxSplitterEvent& event);
     void adjustGQBSizes();
+	bool updateFromGqb(bool executing);
     wxNotebook *sqlNotebook;
     gqbModel *model;
     gqbController *controller;
-    bool firstTime,firstGeneration;
+    bool firstTime;
+	bool gqbUpdateRunning;
     wxTimer *adjustSizesTimer;
 
 	// Our connection
