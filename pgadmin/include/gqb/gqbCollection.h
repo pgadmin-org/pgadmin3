@@ -31,7 +31,8 @@ public:
     gqbObject* getItemAt(int index);
     void insertAtIndex(gqbObject *item, int index);
     gqbIteratorBase* createIterator();
-		gqbIteratorBase* createDownIterator();
+	gqbIteratorBase* createDownIterator();
+
 private:
     gqbCollectionBase *collection;
 };

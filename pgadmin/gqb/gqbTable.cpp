@@ -21,10 +21,10 @@
 #include "gqb/gqbColumn.h"
 #include "gqb/gqbArrayCollection.h"
 
-gqbTable::gqbTable(gqbObject *parent, wxString name, type_gqbObject type=_gqbTable):
+gqbTable::gqbTable(gqbObject *parent, wxString name, type_gqbObject type=GQB_TABLE):
 gqbObjectCollection(name,type)
 {
-    this->setType(_gqbTable);
+    this->setType(type);
     this->setName(name);
     this->setOwner(parent);
 }
@@ -101,7 +101,7 @@ void gqbTable::createColumns(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
             {
                 //Disable, Column SHOULDN'T be added to tree only use for debug purposes tablesBrowser->AppendItem(parentNode, columns->GetVal(wxT("attname")) , -1, -1);
                 wxString tmpname = wxString(columns->GetVal(wxT("attname")));
-                gqbColumn *column = new gqbColumn(this,tmpname,_gqbColumn);
+                gqbColumn *column = new gqbColumn(this,tmpname,GQB_COLUMN);
                 this->addColumn(column);
                 columns->MoveNext();
             }

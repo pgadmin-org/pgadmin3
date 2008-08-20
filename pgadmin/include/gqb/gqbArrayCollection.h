@@ -24,6 +24,7 @@ public:
     gqbObject* Next();
     bool HasNext();
     void ResetIterator();
+
 private:
     int position;
     gqbObjsArray *internalArray;
@@ -36,6 +37,7 @@ public:
     gqbObject* Next();
     bool HasNext();
     void ResetIterator();
+
 private:
     int position;
     gqbObjsArray *internalArray;
@@ -49,7 +51,7 @@ public:
     void addItem(gqbObject *item);
     void removeItem(gqbObject *item);
     gqbIteratorBase* createIterator();
-		gqbIteratorBase* createDownIterator();
+	gqbIteratorBase* createDownIterator();
     gqbObject* getItemAt(int index);
     int count();
     bool existsObject(gqbObject *item);
@@ -57,6 +59,7 @@ public:
     void insertAtIndex(gqbObject *item, int index);
     void deleteAll();
     void removeAll();
+
 private:
     gqbObjsArray gqbArray;
 };

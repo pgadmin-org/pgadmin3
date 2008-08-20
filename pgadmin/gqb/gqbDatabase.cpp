@@ -22,10 +22,10 @@
 #include "gqb/gqbSchema.h"
 #include "schema/pgSchema.h"
 
-gqbDatabase::gqbDatabase(wxString name, type_gqbObject type=_gqbDatabase):
+gqbDatabase::gqbDatabase(wxString name, type_gqbObject type=GQB_DATABASE):
 gqbObject(name,type)
 {
-    this->setType(_gqbDatabase);
+    this->setType(GQB_DATABASE);
     this->setName(name);
     this->setOwner(NULL);
     conn=NULL;
@@ -131,7 +131,7 @@ void gqbDatabase::createSchemas(pgConn *conn,  gqbBrowser *tablesBrowser, wxTree
 
                 // Create Schema Object
                 wxString tmpname = wxString(name);
-                gqbSchema *schema = new gqbSchema(this, tmpname, _gqbSchema);
+                gqbSchema *schema = new gqbSchema(this, tmpname, GQB_SCHEMA);
                 parent=tablesBrowser->AppendItem(parentNode, name , indexImage, indexImage,schema);
                 schema->createObjects(tablesBrowser, conn, schemas->GetOid(wxT("oid")), parent, 5, 5);
                 schemas->MoveNext();
@@ -141,7 +141,7 @@ void gqbDatabase::createSchemas(pgConn *conn,  gqbBrowser *tablesBrowser, wxTree
 
                 // Create Schema Object
                 wxString tmpname= wxString(name);
-                gqbSchema *schema = new gqbSchema(this, tmpname, _gqbSchema);
+                gqbSchema *schema = new gqbSchema(this, tmpname, GQB_SCHEMA);
                 parent=tablesBrowser->AppendItem(parentNode, name , indexImage, indexImage,schema);
                 int tableImage=-1, viewImage=-1;
 

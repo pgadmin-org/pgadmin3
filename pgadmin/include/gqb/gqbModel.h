@@ -34,20 +34,21 @@ public:
     int tablesCount();
 
 	// Projection Panel
-    gqbObjsArray* getOrderedColumns(){return &colsPosition;};
-    gqbObjsArray* getColumnsParents(){return &colsParents;};
-    wxArrayString* getColumnsAlias(){return columnsAlias;};
+    gqbObjsArray* getOrderedColumns() { return &colsPosition; };
+    gqbObjsArray* getColumnsParents() { return &colsParents; };
+    wxArrayString* getColumnsAlias() { return columnsAlias; };
 
 	// Restrictions Panel
     gqbQueryRestriction* addRestriction();    // GQB-TODO: delete if not use this function
-    gqbRestrictions* getRestrictions(){return restrictions;};
+    gqbRestrictions* getRestrictions() { return restrictions; };
 
 	// Order By Panel
-    gqbObjsArray* getOrdByAvailColumns(){return &AvailableColumns;};
-    gqbObjsArray* getOrdByAvailParents(){return &ColumnAvailParent;};
-    gqbObjsArray* getOrdByColumns(){return &OrderedColumns;};
-    gqbObjsArray* getOrdByParents(){return &ColumnOrdParent;};
-    charArray* getOrdByKind(){return &orderBy;};
+    gqbObjsArray* getOrdByAvailColumns() { return &AvailableColumns; };
+    gqbObjsArray* getOrdByAvailParents() { return &ColumnAvailParent; };
+    gqbObjsArray* getOrdByColumns() { return &OrderedColumns; };
+    gqbObjsArray* getOrdByParents() { return &ColumnOrdParent; };
+    charArray* getOrdByKind() { return &orderBy; };
+
 private:
 	// query objects [tables] with joins inside
     gqbQueryObjs *queryCollection;

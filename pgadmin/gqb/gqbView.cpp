@@ -144,7 +144,7 @@ void gqbView::onRightClick(wxMouseEvent& event)
     anySelected=controller->getModelSelected(pdc,cTempSelected, jTempSelected, false);
     if(anySelected)
     {
-        if(anySelected->getType()==_gqbQueryObj)
+        if(anySelected->getType()==GQB_QUERYOBJ)
         {
             if(!m_rightTables)
             {
@@ -157,7 +157,7 @@ void gqbView::onRightClick(wxMouseEvent& event)
             PopupMenu(m_rightTables, event.GetPosition());
         }
 
-        if(anySelected->getType()==_gqbJoin)
+        if(anySelected->getType()==GQB_JOIN)
         {
             if(!m_rightJoins)
             {
@@ -266,7 +266,7 @@ void gqbView::onDoubleClick(wxMouseEvent& event)
     anySelected=controller->getModelSelected(pdc,cTempSelected, jTempSelected, false);
     if(anySelected)
     {
-        if(anySelected->getType()==_gqbQueryObj)
+        if(anySelected->getType()==GQB_QUERYOBJ)
         {
             gqbQueryObject *t = (gqbQueryObject *) (gqbObjectCollection *) anySelected;
 
@@ -280,7 +280,7 @@ void gqbView::onDoubleClick(wxMouseEvent& event)
             if (dialog.ShowModal() == wxID_OK)
                 t->setAlias(dialog.GetValue());
         }
-        else if(anySelected->getType()==_gqbJoin)
+        else if(anySelected->getType()==GQB_JOIN)
         {
             gqbQueryJoin *j = (gqbQueryJoin *) anySelected;
             wxSingleChoiceDialog dialog(controller->getDialogParent(),
@@ -349,7 +349,7 @@ void gqbView::onMotion(wxMouseEvent& event)
             jpos.x=0;
             jpos.y=0;
 
-            if(anySelected->getType()==_gqbQueryObj)
+            if(anySelected->getType()==GQB_QUERYOBJ)
             {
                 gqbQueryObject* t = (gqbQueryObject *) (gqbObjectCollection *) anySelected;
 
@@ -378,12 +378,12 @@ void gqbView::onMotion(wxMouseEvent& event)
             // Do conversion of type object if any found
             if(anySelected)
             {
-                if(anySelected->getType()==_gqbQueryObj)
+                if(anySelected->getType()==GQB_QUERYOBJ)
                 {
                     collectionSelected = (gqbQueryObject *) (gqbObjectCollection *) anySelected;
                     joinSelected = NULL;
                 }
-                else if(anySelected->getType()==_gqbJoin)
+                else if(anySelected->getType()==GQB_JOIN)
                 {
                     joinSelected = (gqbQueryJoin *) anySelected;
                     collectionSelected = NULL;
@@ -422,7 +422,7 @@ void gqbView::onMotion(wxMouseEvent& event)
             anySelected=controller->getModelSelected(pos,collectionSelected, joinSelected, false);
 
             // Even if I get an object check that it isn't a join
-            if( (anySelected) && anySelected->getType()==_gqbQueryObj)
+            if( (anySelected) && anySelected->getType()==GQB_QUERYOBJ)
                 joinSource = (gqbQueryObject *)(gqbObjectCollection *) anySelected;
             else
                 joinSource = NULL;
@@ -461,7 +461,7 @@ void gqbView::onMotion(wxMouseEvent& event)
             anySelected=controller->getModelSelected(pos,collectionSelected, joinSelected, false);
 
             // Even if I get an object check that it isn't a join
-            if( (anySelected) && anySelected->getType()==_gqbQueryObj)
+            if( (anySelected) && anySelected->getType()==GQB_QUERYOBJ)
             {
                 joinDest = (gqbQueryObject *)(gqbObjectCollection *) anySelected;
                 // Validate not self joins [in this version tables can be duplicated to create same effect]

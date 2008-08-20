@@ -12,7 +12,7 @@
 #ifndef GQBBROWSER_H
 #define GQBBROWSER_H
 
-typedef unsigned long OID;
+// typedef unsigned long OID;
 
 class gqbController;
 

@@ -21,10 +21,10 @@
 #include "gqb/gqbTable.h"
 #include "gqb/gqbBrowser.h"
 
-gqbSchema::gqbSchema(gqbObject *parent, wxString name, type_gqbObject type=_gqbSchema):
+gqbSchema::gqbSchema(gqbObject *parent, wxString name, type_gqbObject type=GQB_SCHEMA):
 gqbObject(name,type)
 {
-    this->setType(_gqbSchema);
+    this->setType(GQB_SCHEMA);
     this->setName(name);
     this->setOwner(parent);
 }
@@ -94,7 +94,7 @@ void gqbSchema::createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
         while (!tables->Eof())
         {
             wxString tmpname = wxString(tables->GetVal(wxT("relname")));
-            gqbTable *table = new gqbTable(this,tmpname,_gqbTable);
+            gqbTable *table = new gqbTable(this, tmpname, GQB_TABLE);
             parent=tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , tableImage, tableImage, table);
 
 			// Create columns inside this table.
@@ -124,7 +124,7 @@ void gqbSchema::createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
         while (!views->Eof())
         {
             wxString tmpname = wxString(views->GetVal(wxT("relname")));
-            gqbTable *table = new gqbTable(this,tmpname,_gqbTable);
+            gqbTable *table = new gqbTable(this, tmpname, GQB_VIEW);
             parent=tablesBrowser->AppendItem(parentNode, views->GetVal(wxT("relname")) , viewImage, viewImage, table);
 
 			// Create columns inside this view.
@@ -133,4 +133,6 @@ void gqbSchema::createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
             views->MoveNext();
 			}
 	  }
+
+	  tablesBrowser->SortChildren(parentNode);
 }

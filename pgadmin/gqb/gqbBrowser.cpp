@@ -80,7 +80,7 @@ void gqbBrowser::OnItemActivated(wxTreeEvent& event)
 {
     wxTreeItemId itemId = event.GetItem();
     gqbObject *object = (gqbObject *) GetItemData(itemId);
-    if(object!=NULL && object->getType()==_gqbTable)
+    if(object!=NULL && (object->getType() == GQB_TABLE || object->getType() == GQB_VIEW))
     {
         gqbTable *item = (gqbTable *)  object;
         controller->addTableToModel(item,wxPoint(10,10));
@@ -94,7 +94,7 @@ void gqbBrowser::refreshTables(pgConn *connection)
     controller->emptyModel();
     this->DeleteAllItems();                       // GQB-TODO: same as destructor
     wxString a = wxString(wxT("Database Name Here"));
-    gqbDatabase *Data = new gqbDatabase(a,_gqbDatabase);
+    gqbDatabase *Data = new gqbDatabase(a,GQB_DATABASE);
     Data->createObjects(this,connection);
     this->Expand(rootNode);
 }
@@ -106,7 +106,7 @@ void gqbBrowser::OnBeginDrag(wxTreeEvent& event)
 
 	// Simplest solution, simulate DnD but actually don't do it
     gqbObject *object = (gqbObject *) GetItemData(itemId);
-    if(object!=NULL && object->getType()==_gqbTable)
+    if(object!=NULL && (object->getType() == GQB_TABLE || object->getType() == GQB_VIEW))
     {
         gqbTable *item = (gqbTable *) object;
         wxString tableName=item->getName();

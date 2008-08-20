@@ -28,7 +28,7 @@
 //
 
 gqbQueryObjs::gqbQueryObjs():
-gqbObjectCollection(wxT(""),_gqbQuery)
+gqbObjectCollection(wxT(""),GQB_QUERY)
 {
     this->setOwner(NULL);
 }
@@ -75,7 +75,7 @@ void gqbQueryObjs::removeAllQueryObjs()
 //         Because this we can not use directly the base table object
 
 gqbQueryObject::gqbQueryObject(gqbTable *table)
-:gqbObjectCollection(table->getName(),_gqbQueryObj)
+:gqbObjectCollection(table->getName(), GQB_QUERYOBJ)
 {
     selected=false;
     parent=table;
@@ -320,7 +320,7 @@ bool gqbQueryObject::haveUpperCase(wxString &str)
 //  A Join inside a query Object like Table or view [Stored at source, registered at destination]
 //  I need to store the owner, destination because columns it's share between multiple joins
 gqbQueryJoin::gqbQueryJoin(gqbQueryObject *_owner, gqbQueryObject *_destination, gqbColumn *sourceCol, gqbColumn *destCol, type_Join joinKind):
-gqbObject(wxT(""),_gqbJoin)
+gqbObject(wxT(""),GQB_JOIN)
 {
     kindofJoin=joinKind;
     sCol=sourceCol;
@@ -458,7 +458,7 @@ enum
 };
 
 gqbQueryRestriction::gqbQueryRestriction():
-gqbObject(wxT(""),_gqbRestriction)
+gqbObject(wxT(""),GQB_RESTRICTION)
 {
     leftPart=wxT("");
     value_s=wxT("");
@@ -468,7 +468,7 @@ gqbObject(wxT(""),_gqbRestriction)
 
 
 gqbRestrictions::gqbRestrictions():
-gqbObjectCollection(wxT(""),_gqbRestriction)
+gqbObjectCollection(wxT(""),GQB_RESTRICTION)
 {
     this->setOwner(NULL);
 }

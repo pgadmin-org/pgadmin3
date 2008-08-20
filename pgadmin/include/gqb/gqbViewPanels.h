@@ -19,14 +19,23 @@
 #include "gqb/gqbGridRestTable.h"
 #include "gqb/gqbGridOrderTable.h"
 
-enum gridColsButton
+enum gridButtons
 {
-    buttonUp_ID,
-    buttonUpTop_ID,
-    buttonDown_ID,
-    buttonDownBottom_ID,
-    addButton_ID,
-    dropButton_ID
+    GQB_COLS_UP_BUTTON_ID,
+    GQB_COLS_UP_TOP_BUTTON_ID,
+    GQB_COLS_DOWN_BUTTON_ID,
+    GQB_COLS_DOWN_BOTTOM_BUTTON_ID,
+    GQB_COLS_ADD_BUTTON_ID,
+    GQB_COLS_DROP_BUTTON_ID,
+
+    GQB_ORDER_DROP_BUTTON_ID,
+    GQB_ORDER_DROP_ALL_BUTTON_ID,
+    GQB_ORDER_ADD_ALL_BUTTON_ID,
+    GQB_ORDER_ADD_BUTTON_ID,
+    GQB_ORDER_UP_BUTTON_ID,
+    GQB_ORDER_UP_TOP_BUTTON_ID,
+    GQB_ORDER_DOWN_BUTTON_ID,
+    GQB_ORDER_DOWN_BOTTOM_BUTTON_ID
 };
 
 //
@@ -144,18 +153,6 @@ private:
 //
 // Order by Panel
 //
-
-enum orderButtons
-{
-    bRem_ID,
-    bRemAll_ID,
-    bAddAll_ID,
-    bAdd_ID,
-    bUp_ID,
-    bUpTop_ID,
-    bDown_ID,
-    bDownBottom_ID
-};
 
 class gqbOrderPanel: public wxPanel
 {

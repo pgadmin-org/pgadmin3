@@ -40,6 +40,7 @@
 #include "images/tables.xpm"
 #include "images/table-sm.xpm"
 #include "images/column-sm.xpm"
+#include "images/view-sm.xpm"
 
 //
 //    View Columns Grid Panel Class.
@@ -48,10 +49,10 @@
 BEGIN_EVENT_TABLE(gqbGridPanel, wxPanel)
 EVT_GRID_SELECT_CELL(gqbGridPanel::OnGridSelectCell)
 EVT_GRID_RANGE_SELECT(gqbGridPanel::OnGridRangeSelected)
-EVT_BUTTON(buttonUp_ID, gqbGridPanel::OnButtonUp)
-EVT_BUTTON(buttonUpTop_ID, gqbGridPanel::OnButtonUpTop)
-EVT_BUTTON(buttonDown_ID, gqbGridPanel::OnButtonDown)
-EVT_BUTTON(buttonDownBottom_ID, gqbGridPanel::OnButtonDownBottom)
+EVT_BUTTON(GQB_COLS_UP_BUTTON_ID, gqbGridPanel::OnButtonUp)
+EVT_BUTTON(GQB_COLS_UP_TOP_BUTTON_ID, gqbGridPanel::OnButtonUpTop)
+EVT_BUTTON(GQB_COLS_DOWN_BUTTON_ID, gqbGridPanel::OnButtonDown)
+EVT_BUTTON(GQB_COLS_DOWN_BOTTOM_BUTTON_ID, gqbGridPanel::OnButtonDownBottom)
 END_EVENT_TABLE()
 
 gqbGridPanel::gqbGridPanel(wxWindow* parent, wxWindowID id = wxID_ANY, gqbGridProjTable *gridModel=NULL):
@@ -66,10 +67,10 @@ wxPanel(parent,-1)
     downBitmap = wxBitmap(gqbDown_xpm);
     downBottomBitmap = wxBitmap(gqbDownBottom_xpm);
 
-    buttonUp = new wxBitmapButton( this, buttonUp_ID,  upBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonUpTop  = new wxBitmapButton( this, buttonUpTop_ID,  upTopBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonDown = new wxBitmapButton( this, buttonDown_ID,  downBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonDownBottom = new wxBitmapButton( this, buttonDownBottom_ID,  downBottomBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
+    buttonUp = new wxBitmapButton( this, GQB_COLS_UP_BUTTON_ID,  upBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
+    buttonUpTop  = new wxBitmapButton( this, GQB_COLS_UP_TOP_BUTTON_ID,  upTopBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
+    buttonDown = new wxBitmapButton( this, GQB_COLS_DOWN_BUTTON_ID,  downBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
+    buttonDownBottom = new wxBitmapButton( this, GQB_COLS_DOWN_BOTTOM_BUTTON_ID,  downBottomBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
 
     this->colsGrid = new wxGrid(this, -1, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_BESTWRAP ,wxT(""));
     colsGrid->SetTable(gModel,true,wxGrid::wxGridSelectCells);
@@ -366,6 +367,7 @@ gqbColsTree::gqbColsTree(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
     imageList->Add(wxIcon(tables_xpm));
     imageList->Add(wxIcon(table_sm_xpm));
     imageList->Add(wxIcon(column_sm_xpm));
+    imageList->Add(wxIcon(view_sm_xpm));
     this->AssignImageList(imageList);
     wxString a=wxT("Select Column");
     createRoot(a);
@@ -394,13 +396,20 @@ void gqbColsTree::refreshTree(gqbModel * model)
     while(iterator->HasNext())
     {
         gqbQueryObject *tmpTable= (gqbQueryObject *)iterator->Next();
+		
+		int iconIndex;
+		if (tmpTable->parent->getType() == GQB_TABLE)
+			iconIndex = 1;
+		else // Must be a view
+			iconIndex = 3;
+
         if(tmpTable->getAlias().length()>0)
         {
-            parent=this->AppendItem(rootNode, tmpTable->getAlias() , 1, 1,NULL);
+            parent=this->AppendItem(rootNode, tmpTable->getAlias() , iconIndex, iconIndex, NULL);
         }
         else
         {
-            parent=this->AppendItem(rootNode, tmpTable->getName() , 1, 1,NULL);
+            parent=this->AppendItem(rootNode, tmpTable->getName() , iconIndex, iconIndex, NULL);
         }
         gqbIteratorBase *colsIterator = tmpTable->parent->createColumnsIterator();
         while(colsIterator->HasNext())
@@ -412,8 +421,11 @@ void gqbColsTree::refreshTree(gqbModel * model)
     }
     delete iterator;
 
-    if(rootNode)
+    if (rootNode)
+	{
+		this->SortChildren(rootNode);
         this->Expand(rootNode);
+	}
 }
 
 
@@ -523,8 +535,8 @@ void gqbColsPopUp::focus()
 //
 
 BEGIN_EVENT_TABLE(gqbCriteriaPanel, wxPanel)
-EVT_BUTTON(addButton_ID, gqbCriteriaPanel::OnButtonAdd)
-EVT_BUTTON(dropButton_ID, gqbCriteriaPanel::OnButtonDrop)
+EVT_BUTTON(GQB_COLS_ADD_BUTTON_ID, gqbCriteriaPanel::OnButtonAdd)
+EVT_BUTTON(GQB_COLS_DROP_BUTTON_ID, gqbCriteriaPanel::OnButtonDrop)
 END_EVENT_TABLE()
 
 gqbCriteriaPanel::gqbCriteriaPanel(wxWindow* parent, gqbModel *_model, gqbGridRestTable *gridModel):
@@ -545,8 +557,8 @@ wxPanel(parent,-1)
 
     addBitmap= wxBitmap(gqbAddRest_xpm);
     dropBitmap= wxBitmap(gqbRemoveRest_xpm);
-    buttonAdd= new wxBitmapButton( this, addButton_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add"));
-    buttonDrop= new wxBitmapButton( this, dropButton_ID,  dropBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove"));
+    buttonAdd= new wxBitmapButton( this, GQB_COLS_ADD_BUTTON_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add"));
+    buttonDrop= new wxBitmapButton( this, GQB_COLS_DROP_BUTTON_ID,  dropBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove"));
 
     wxBoxSizer *horizontalSizer = new wxBoxSizer( wxHORIZONTAL );
     horizontalSizer->Add(restrictionsGrid,
@@ -776,16 +788,16 @@ void wxRestrictionGrid::ComboBoxEvent(wxGridEvent& event)
 //
 
 BEGIN_EVENT_TABLE(gqbOrderPanel, wxPanel)
-EVT_BUTTON(bRem_ID, gqbOrderPanel::OnButtonRemove)
-EVT_BUTTON(bRemAll_ID, gqbOrderPanel::OnButtonRemoveAll)
-EVT_BUTTON(bAdd_ID, gqbOrderPanel::OnButtonAdd)
-EVT_BUTTON(bAddAll_ID, gqbOrderPanel::OnButtonAddAll)
+EVT_BUTTON(GQB_ORDER_DROP_BUTTON_ID, gqbOrderPanel::OnButtonRemove)
+EVT_BUTTON(GQB_ORDER_DROP_ALL_BUTTON_ID, gqbOrderPanel::OnButtonRemoveAll)
+EVT_BUTTON(GQB_ORDER_ADD_BUTTON_ID, gqbOrderPanel::OnButtonAdd)
+EVT_BUTTON(GQB_ORDER_ADD_ALL_BUTTON_ID, gqbOrderPanel::OnButtonAddAll)
 EVT_GRID_SELECT_CELL(gqbOrderPanel::OnGridSelectCell)
 EVT_GRID_RANGE_SELECT(gqbOrderPanel::OnGridRangeSelected)
-EVT_BUTTON(bUp_ID, gqbOrderPanel::OnButtonUp)
-EVT_BUTTON(bUpTop_ID, gqbOrderPanel::OnButtonUpTop)
-EVT_BUTTON(bDown_ID, gqbOrderPanel::OnButtonDown)
-EVT_BUTTON(bDownBottom_ID, gqbOrderPanel::OnButtonDownBottom)
+EVT_BUTTON(GQB_ORDER_UP_BUTTON_ID, gqbOrderPanel::OnButtonUp)
+EVT_BUTTON(GQB_ORDER_UP_TOP_BUTTON_ID, gqbOrderPanel::OnButtonUpTop)
+EVT_BUTTON(GQB_ORDER_DOWN_BUTTON_ID, gqbOrderPanel::OnButtonDown)
+EVT_BUTTON(GQB_ORDER_DOWN_BOTTOM_BUTTON_ID, gqbOrderPanel::OnButtonDownBottom)
 END_EVENT_TABLE()
 
 gqbOrderPanel::gqbOrderPanel(wxWindow* parent, gqbGridOrderTable* gridTableLeft, gqbGridOrderTable* gridTableRight):
@@ -805,20 +817,20 @@ wxPanel(parent,-1)
     removeBitmap = wxBitmap(gqbOrderRemove_xpm);
     removeAllBitmap = wxBitmap(gqbOrderRemoveAll_xpm);
 
-    buttonAdd=new wxBitmapButton( this, bAdd_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add Column") );
-    buttonAddAll=new wxBitmapButton( this, bAddAll_ID,  addAllBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add All Columns") );
-    buttonRemove=new wxBitmapButton( this, bRem_ID,  removeBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove Column") );
-    buttonRemoveAll=new wxBitmapButton( this, bRemAll_ID,  removeAllBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove All Columns") );
+    buttonAdd=new wxBitmapButton( this, GQB_ORDER_ADD_BUTTON_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add Column") );
+    buttonAddAll=new wxBitmapButton( this, GQB_ORDER_ADD_ALL_BUTTON_ID,  addAllBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add All Columns") );
+    buttonRemove=new wxBitmapButton( this, GQB_ORDER_DROP_BUTTON_ID,  removeBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove Column") );
+    buttonRemoveAll=new wxBitmapButton( this, GQB_ORDER_DROP_ALL_BUTTON_ID,  removeAllBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove All Columns") );
 
     upBitmap = wxBitmap(gqbUp_xpm);
     upTopBitmap = wxBitmap(gqbUpTop_xpm);
     downBitmap = wxBitmap(gqbDown_xpm);
     downBottomBitmap = wxBitmap(gqbDownBottom_xpm);
 
-    buttonUp = new wxBitmapButton( this, bUp_ID,  upBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonDown  = new wxBitmapButton( this, bDown_ID,  downBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonUpTop = new wxBitmapButton( this, bUpTop_ID,  upTopBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonDownBottom = new wxBitmapButton( this, bDownBottom_ID,  downBottomBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
+    buttonUp = new wxBitmapButton( this, GQB_ORDER_UP_BUTTON_ID,  upBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
+    buttonDown  = new wxBitmapButton( this, GQB_ORDER_DOWN_BUTTON_ID,  downBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
+    buttonUpTop = new wxBitmapButton( this, GQB_ORDER_UP_TOP_BUTTON_ID,  upTopBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
+    buttonDownBottom = new wxBitmapButton( this, GQB_ORDER_DOWN_BOTTOM_BUTTON_ID,  downBottomBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
 
     availableColumns = new wxGrid(this, -1, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_BESTWRAP ,wxT("Available Columns"));
 	availableColumns->SetTable(gridTableLeft);
