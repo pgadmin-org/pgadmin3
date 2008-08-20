@@ -45,7 +45,6 @@ public:
     void emptyTableData();
 
 private:
-    bool haveUpperCase(wxString &str);
     gqbObjsArray *colsPosition;       // Here store position of the columns at Select projection clause 
 	                                  // [Select c1,c2,c3...,cn from...]
     gqbObjsArray *colsParents;        // Because above array only store a column object cannot be recovered 

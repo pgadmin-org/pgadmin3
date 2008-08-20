@@ -41,7 +41,6 @@ public:
 
 private:
     int numberColumns;					// GQB-TODO: replace this with grid cols number function if possible
-    bool haveUpperCase(wxString &str);
     gqbObjsArray *columns;				// Here store position of the columns at Select projection clause 
 										// [Select c1,c2,c3...,cn from...]
     gqbObjsArray *colsParents;			// Because above array only store a column object cannot be recovered 

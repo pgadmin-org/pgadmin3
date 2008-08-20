@@ -112,29 +112,10 @@ void gqbGridProjTable::SetValue( int row, int col, const wxString& value )
     switch(col)
     {
         case 2:
-            wxString tmp = value;
-            if (haveUpperCase(tmp))
-                columnsAlias->Item(row)=wxT("\"")+value+wxT("\"");
-            else
-                columnsAlias->Item(row)=value;
+            columnsAlias->Item(row)=value;
             break;
     };
 }
-
-
-bool gqbGridProjTable::haveUpperCase(wxString &str)
-{
-    bool result=false;
-    // if any uppercase character at string, then quoted.
-    wxRegEx *reUpper =  new wxRegEx(wxT("[a-z0-9]*[A-Z]"));
-    if(reUpper->Matches(str))
-    {
-        result=true;
-    }
-    delete reUpper;
-    return result;
-}
-
 
 void* gqbGridProjTable::GetValueAsCustom( int row, int col, const wxString& typeName )
 {

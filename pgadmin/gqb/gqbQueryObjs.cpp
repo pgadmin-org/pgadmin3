@@ -288,31 +288,6 @@ bool gqbQueryObject::getHaveRegJoins()
     return haveRegisteredJoins;
 }
 
-
-wxString gqbQueryObject::getAlias()
-{
-    if (haveUpperCase(alias))
-    {
-        return wxT("\"")+alias+wxT("\"");
-    }
-    return alias;
-};
-
-bool gqbQueryObject::haveUpperCase(wxString &str)
-{
-    bool result=false;
-    
-	// if any uppercase character at string, then quoted.
-    wxRegEx *reUpper =  new wxRegEx(wxT("[a-z0-9]*[A-Z]"));
-    if(reUpper->Matches(str))
-    {
-        result=true;
-    }
-    delete reUpper;
-    return result;
-}
-
-
 // GQB-TODO if last join it's delete I MUST delete implementation & collection & put haveJoins in false;
 // Same for registered joins
 

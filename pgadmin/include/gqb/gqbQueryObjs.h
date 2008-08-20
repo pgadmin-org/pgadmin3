@@ -78,11 +78,10 @@ public:
     void unregisterJoin(gqbQueryJoin *join, bool removeIt);
     bool getHaveJoins();
     bool getHaveRegJoins();
-    void setAlias(wxString name){alias=name;};
-    wxString getAlias();
+    void setAlias(wxString name) { alias=name; };
+	wxString getAlias() { return alias; };
 
 private:
-    bool haveUpperCase(wxString &str);
     bool selected;
     wxString alias;
     int width;
