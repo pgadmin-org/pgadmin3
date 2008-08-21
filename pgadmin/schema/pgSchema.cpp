@@ -186,6 +186,26 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 			    browser->AppendCollection(this, conversionFactory);
 		    if (settings->GetDisplayOption(_("Domains")))
 			    browser->AppendCollection(this, domainFactory);
+		    if (settings->GetDisplayOption(_("FTS Configurations")))
+            {
+                if (GetConnection()->BackendMinimumVersion(8, 3))
+			        browser->AppendCollection(this, textSearchConfigurationFactory);
+            }
+		    if (settings->GetDisplayOption(_("FTS Dictionaries")))
+            {
+                if (GetConnection()->BackendMinimumVersion(8, 3))
+			        browser->AppendCollection(this, textSearchDictionaryFactory);
+            }
+		    if (settings->GetDisplayOption(_("FTS Parsers")))
+            {
+                if (GetConnection()->BackendMinimumVersion(8, 3))
+			        browser->AppendCollection(this, textSearchParserFactory);
+            }
+		    if (settings->GetDisplayOption(_("FTS Templates")))
+            {
+                if (GetConnection()->BackendMinimumVersion(8, 3))
+			        browser->AppendCollection(this, textSearchTemplateFactory);
+            }
 		    if (settings->GetDisplayOption(_("Functions")))
 			    browser->AppendCollection(this, functionFactory);
 
@@ -213,26 +233,6 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 			    browser->AppendCollection(this, sequenceFactory);
 		    if (settings->GetDisplayOption(_("Tables")))
 			    browser->AppendCollection(this, tableFactory);
-		    if (settings->GetDisplayOption(_("FTS Configurations")))
-            {
-                if (GetConnection()->BackendMinimumVersion(8, 3))
-			        browser->AppendCollection(this, textSearchConfigurationFactory);
-            }
-		    if (settings->GetDisplayOption(_("FTS Dictionaries")))
-            {
-                if (GetConnection()->BackendMinimumVersion(8, 3))
-			        browser->AppendCollection(this, textSearchDictionaryFactory);
-            }
-		    if (settings->GetDisplayOption(_("FTS Parsers")))
-            {
-                if (GetConnection()->BackendMinimumVersion(8, 3))
-			        browser->AppendCollection(this, textSearchParserFactory);
-            }
-		    if (settings->GetDisplayOption(_("FTS Templates")))
-            {
-                if (GetConnection()->BackendMinimumVersion(8, 3))
-			        browser->AppendCollection(this, textSearchTemplateFactory);
-            }
 		    if (settings->GetDisplayOption(_("Trigger functions")))
 		        browser->AppendCollection(this, triggerFunctionFactory);
 		    if (settings->GetDisplayOption(_("Types")))
