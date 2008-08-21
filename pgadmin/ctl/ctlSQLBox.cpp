@@ -49,6 +49,7 @@ ctlSQLBox::ctlSQLBox()
 {
     m_dlgFindReplace=0;
     m_autoIndent=false;
+	m_autocompDisabled=false;
 }
 
 
@@ -57,6 +58,8 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const 
     m_dlgFindReplace=0;
 
 	m_database=NULL;
+
+	m_autocompDisabled=false;
 
     Create(parent, id, pos, size, style);
 }
@@ -442,6 +445,8 @@ void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)
 	if (GetReadOnly())
 		return;
 	if (m_database == NULL)
+		return;
+	if (m_autocompDisabled)
 		return;
 
 	wxString what = GetCurLine().Left(GetCurrentPos()-PositionFromLine(GetCurrentLine()));;

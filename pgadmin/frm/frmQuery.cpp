@@ -1829,7 +1829,7 @@ void frmQuery::setTools(const bool running)
     fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
     fileMenu->Enable(MNU_QUICKREPORT, sqlResult->CanExport());
     fileMenu->Enable(MNU_RECENT, (recentFileMenu->GetMenuItemCount() > 0));
-	sqlQuery->Enable(!running);
+	sqlQuery->EnableAutoComp(running);
 }
 
 
