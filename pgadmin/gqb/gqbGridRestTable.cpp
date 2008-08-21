@@ -86,16 +86,16 @@ wxString gqbGridRestTable::GetColLabelValue( int col)
     switch(col)
     {
         case 0:
-            return wxT("Restricted Value");
+            return _("Restricted Value");
             break;
         case 1:
-            return wxT("Restriction");
+            return _("Operator");
             break;
         case 2:
-            return wxT("Value");
+            return _("Value");
             break;
         case 3:
-            return wxT("Connector");
+            return _("Connector");
             break;
     };
     return wxT("");

@@ -149,8 +149,8 @@ void gqbView::onRightClick(wxMouseEvent& event)
             if(!m_rightTables)
             {
                 m_rightTables = new wxMenu;
-                m_rightTables->Append(GQB_RMT_SETALIAS, wxT("&Set Alias for table"));
-                m_rightTables->Append(GQB_RMT_DELETE, wxT("&Delete Table"));
+                m_rightTables->Append(GQB_RMT_SETALIAS, _("&Set Alias for table"));
+                m_rightTables->Append(GQB_RMT_DELETE, _("&Delete Table"));
             }
             cTempSelected=(gqbQueryObject *) (gqbObjectCollection *) anySelected;
             jTempSelected=NULL;
@@ -162,8 +162,8 @@ void gqbView::onRightClick(wxMouseEvent& event)
             if(!m_rightJoins)
             {
                 m_rightJoins = new wxMenu;
-                m_rightJoins->Append(GQB_RMJ_SETTYPE, wxT("&Set Join Type"));
-                m_rightJoins->Append(GQB_RMJ_DELETE, wxT("&Delete Join"));
+                m_rightJoins->Append(GQB_RMJ_SETTYPE, _("&Set Join Type"));
+                m_rightJoins->Append(GQB_RMJ_DELETE, _("&Delete Join"));
             }
             cTempSelected=NULL;
             jTempSelected=(gqbQueryJoin *) anySelected;;
@@ -191,8 +191,8 @@ void gqbView::OnMenuJoinSetType(wxCommandEvent& WXUNUSED(event))
     if(jTempSelected)
     {
         wxSingleChoiceDialog dialog(controller->getDialogParent(),
-            wxT("Select the kind of Join"),
-            wxT("Please select a type of Join for relation, e.g. = "),
+            _("Select the kind of Join"),
+            _("Please select a type of Join for relation, e.g. = "),
             joinTypeChoices,
             NULL,
             wxOK | wxCANCEL| wxCENTRE);
@@ -239,11 +239,11 @@ void gqbView::OnMenuTableSetAlias(wxCommandEvent& event)
 {
     if(cTempSelected)
     {
-// Because a bug that scrolled automatically the panel of the view if this dialog is called, then assign
-// as his parent the main container of the view, and void the bug
+        // Because a bug that scrolled automatically the panel of the view if this dialog is called, then assign
+        // as his parent the main container of the view, and void the bug
         wxTextEntryDialog dialog(controller->getDialogParent(),
-            wxT("Enter an Alias for table ")+cTempSelected->getName()+wxT(" without white spaces"),
-            wxT("Please enter an Alias for table, e.g. for table Customers may be ctr"),
+			wxString::Format(_("Enter an alias for table %s"), cTempSelected->getName().c_str()),
+            _("Please enter an alias for the table."),
             wxT(""),
             wxOK | wxCANCEL| wxCENTRE);
         if (dialog.ShowModal() == wxID_OK)
@@ -273,8 +273,8 @@ void gqbView::onDoubleClick(wxMouseEvent& event)
             // Because a bug that scrolled automatically the panel of the view if this dialog is called, then assign
             // as his parent the main container of the view, and void the bug
             wxTextEntryDialog dialog(controller->getDialogParent(),
-                wxT("Enter an Alias for table ")+t->getName()+wxT(" without white spaces"),
-                wxT("Please enter an Alias for table, e.g. for table Customers may be ctr"),
+			wxString::Format(_("Enter an alias for table %s"), t->getName().c_str()),
+            _("Please enter an alias for the table."),
                 wxT(""),
                 wxOK | wxCANCEL| wxCENTRE);
             if (dialog.ShowModal() == wxID_OK)
@@ -284,8 +284,8 @@ void gqbView::onDoubleClick(wxMouseEvent& event)
         {
             gqbQueryJoin *j = (gqbQueryJoin *) anySelected;
             wxSingleChoiceDialog dialog(controller->getDialogParent(),
-                wxT("Select the kind of Join"),
-                wxT("Please select a type of Join for relation, e.g. = "),
+                _("Select the kind of join"),
+                _("Please select a type of join between the relations."),
                 joinTypeChoices,
                 NULL,
                 wxOK | wxCANCEL| wxCENTRE);

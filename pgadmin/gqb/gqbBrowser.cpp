@@ -69,8 +69,8 @@ gqbBrowser::~gqbBrowser()
 wxTreeItemId& gqbBrowser::createRoot(wxString &Name)
 {
     rootNode=this->AddRoot(Name,0,0);
-    catalogsNode=this->AppendItem(rootNode,wxT("Catalogs"),4,4,NULL);
-    schemasNode=this->AppendItem(rootNode,wxT("Schemas"),3,3,NULL);
+    catalogsNode=this->AppendItem(rootNode, _("Catalogs"), 4, 4, NULL);
+    schemasNode=this->AppendItem(rootNode, _("Schemas"), 3, 3, NULL);
     return rootNode;
 }
 
@@ -94,7 +94,7 @@ void gqbBrowser::refreshTables(pgConn *connection)
     controller->emptyModel();
     this->DeleteAllItems();                       // GQB-TODO: same as destructor
     wxString a = wxString(wxT("Database Name Here"));
-    gqbDatabase *Data = new gqbDatabase(a,GQB_DATABASE);
+    gqbDatabase *Data = new gqbDatabase(a, GQB_DATABASE);
     Data->createObjects(this,connection);
     this->Expand(rootNode);
 }

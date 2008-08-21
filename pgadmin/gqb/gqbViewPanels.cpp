@@ -369,7 +369,7 @@ gqbColsTree::gqbColsTree(wxWindow* parent, wxWindowID id, const wxPoint& pos, co
     imageList->Add(wxIcon(column_sm_xpm));
     imageList->Add(wxIcon(view_sm_xpm));
     this->AssignImageList(imageList);
-    wxString a=wxT("Select Column");
+    wxString a=_("Select column");
     createRoot(a);
     this->Expand(rootNode);
 }
@@ -387,7 +387,7 @@ void gqbColsTree::refreshTree(gqbModel * model)
 {
     // This remove and delete data inside tree's node
 	this->DeleteAllItems();                       
-    wxString a=wxT("Select Column");
+    wxString a=_("Select column");
     createRoot(a);
     this->Expand(rootNode);
 
@@ -491,9 +491,9 @@ void  gqbColsPopUp::OnPopUpTreeDoubleClick(wxTreeEvent& event)
         if(!colsTree->ItemHasChildren(itemId) && (colsTree->GetRootItem()!=itemId))
         {
             this->usedGrid->SetCellValue(_row,_col,this->getEditText());
-            if(this->usedGrid->GetCellValue(_row,_col).length()<=0)
+            if(this->usedGrid->GetCellValue(_row, _col).length() <= 0)
             {
-                this->usedGrid->SetCellValue(_row,_col,wxT("Set Value"));
+                this->usedGrid->SetCellValue(_row, _col, _("Set value"));
             }
             this->MakeModal(false);
             this->Hide();

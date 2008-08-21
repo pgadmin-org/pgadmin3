@@ -93,13 +93,13 @@ wxString gqbGridProjTable::GetColLabelValue( int col)
     switch(col)
     {
         case 0:
-            return wxT("Relation");
+            return _("Relation");
             break;
         case 1:
-            return wxT("Column");
+            return _("Column");
             break;
         case 2:
-            return wxT("Alias");
+            return _("Alias");
             break;
     };
     return wxT("");

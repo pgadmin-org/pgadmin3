@@ -98,15 +98,15 @@ wxString gqbGridOrderTable::GetColLabelValue(int col)
         case 0:
             if(numberColumns==2)
             {
-                return wxT("Column");
+                return _("Column");
             }
             else
             {
-                return wxT("Available Columns");
+                return _("Available Columns");
             }
             break;
         case 1:
-            return wxT("Order");
+            return _("Order");
             break;
     };
     return wxT("");
