@@ -44,10 +44,10 @@ EVT_LEFT_UP(gqbView::onMotion)
 EVT_LEFT_DCLICK(gqbView::onDoubleClick)
 EVT_ERASE_BACKGROUND(gqbView::onEraseBackGround)  //This erase flicker create by wxStaticText when erasing background but this is not needed
 EVT_KEY_DOWN(gqbView::OnKeyDown)
-EVT_MENU(GQB_RMJ_DELETE,gqbView::OnMenuJoinDelete)
-EVT_MENU(GQB_RMJ_SETTYPE,gqbView::OnMenuJoinSetType)
-EVT_MENU(GQB_RMT_DELETE,gqbView::OnMenuTableDelete)
-EVT_MENU(GQB_RMT_SETALIAS,gqbView::OnMenuTableSetAlias)
+EVT_MENU(GQB_RMJ_DELETE,	gqbView::OnMenuJoinDelete)
+EVT_MENU(GQB_RMJ_SETTYPE,	gqbView::OnMenuJoinSetType)
+EVT_MENU(GQB_RMT_DELETE,	gqbView::OnMenuTableDelete)
+EVT_MENU(GQB_RMT_SETALIAS,	gqbView::OnMenuTableSetAlias)
 END_EVENT_TABLE()
 
 gqbView::gqbView(wxWindow *gqbParent, wxNotebook *gridParent, wxSize size, gqbController *controller, gqbModel *model)
@@ -596,8 +596,10 @@ void gqbView::drawAll(wxBufferedDC& bdc)
                 gqbQueryJoin *join = (gqbQueryJoin *) joinsIterator->Next();
                 wxPoint o = join->getSourceAnchor();
                 wxPoint d = join->getDestAnchor();
+
                 // adjust coordinates origin
                 this->CalcScrolledPosition(o.x,o.y,&o.x,&o.y);
+
                 // adjust coordinates destination
                 this->CalcScrolledPosition(d.x,d.y,&d.x,&d.y);
                 graphBehavior->drawJoin(bdc,o,d,join->getAnchorsUsed(), join->getSelected(), join->getKindofJoin());
