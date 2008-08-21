@@ -331,6 +331,46 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 			break;
 	}
 
+	// If more than one line is selected, then we may be doing a block indent or block comment.
+	if (GetSelectedText().Contains(lineEnd))
+	{
+		// Figure out what a tab looks like
+		wxString newIndent;
+		if (GetUseTabs())
+		    newIndent = wxT("\t");
+		else
+		{
+			for (int x=0; x < GetTabWidth(); x++ )
+				newIndent += wxT(" ");
+		}
+
+		// Save the start position
+		int start = GetSelectionStart();
+
+		// Block indent
+		if (event.GetKeyCode() == '\t' && !event.ShiftDown() && !event.AltDown() && !event.CmdDown() && !event.ControlDown())
+		{
+			wxString selection = GetSelectedText();
+			selection.Replace(lineEnd, lineEnd + newIndent);
+			selection.Prepend(newIndent);
+			ReplaceSelection(selection);
+			SetSelection(start, start + selection.Length());
+			return;
+		}
+
+		// Block outdent
+		if (event.GetKeyCode() == '\t' && event.ShiftDown() && !event.AltDown() && !event.CmdDown() && !event.ControlDown())
+		{
+			wxString selection = GetSelectedText();
+			selection.Replace(lineEnd + newIndent, lineEnd);
+			if (selection.StartsWith(newIndent))
+				selection = selection.Right(selection.Length() - newIndent.Length());
+			ReplaceSelection(selection);
+			SetSelection(start, start + selection.Length());
+			return;
+		}
+	}
+
 	if (!AutoCompActive() &&
 		 ( settings->GetTabForCompletion() && /* autocomplete on tab only if specifically configured */
 		  !event.AltDown() && !event.CmdDown() && !event.ControlDown() && event.GetKeyCode() == '\t'
