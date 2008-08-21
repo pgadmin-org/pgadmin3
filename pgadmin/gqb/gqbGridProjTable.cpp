@@ -171,6 +171,10 @@ void gqbGridProjTable::AppendItem(int col, gqbObject *item)
             (colsParents->GetCount()-1),
             1 );
         GetView()->ProcessTableMessage( msg );
+
+		// Set the cells read-only
+		GetView()->SetReadOnly(GetView()->GetNumberRows() - 1, 0);
+		GetView()->SetReadOnly(GetView()->GetNumberRows() - 1, 1);
     }
 
 }
