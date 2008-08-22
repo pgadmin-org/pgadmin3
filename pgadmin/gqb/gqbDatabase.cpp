@@ -126,7 +126,7 @@ void gqbDatabase::createSchemas(pgConn *conn,  gqbBrowser *tablesBrowser, wxTree
                 continue;
             }
 
-            if (MetaType == PGM_CATALOG)
+            if (MetaType == GQB_CATALOG)
             {
 
                 // Create Schema Object
