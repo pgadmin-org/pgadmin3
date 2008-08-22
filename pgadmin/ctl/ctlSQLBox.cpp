@@ -33,7 +33,8 @@ wxString ftsKeywords = wxT(" gettoken lextypes headline init lexize");
 
 
 BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
-    EVT_KEY_DOWN(ctlSQLBox::OnKeyDown)
+    EVT_CHAR(ctlSQLBox::OnChar)
+	EVT_KEY_DOWN(ctlSQLBox::OnKeyDown)
     EVT_MENU(MNU_FIND,ctlSQLBox::OnSearchReplace)
 	EVT_MENU(MNU_AUTOCOMPLETE,ctlSQLBox::OnAutoComplete)
 	EVT_KILL_FOCUS(ctlSQLBox::OnKillFocus)
@@ -310,6 +311,35 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
         return false;
 }
 
+void ctlSQLBox::OnChar(wxKeyEvent& event)
+{
+#ifdef __WXGTK__
+	event.m_metaDown=false;
+#endif
+
+	// Save the start/end position
+	int start = GetSelectionStart();
+	int end = GetSelectionEnd();
+
+	// Shift to upper
+	if (!GetSelectedText().IsEmpty() && event.GetKeyCode() == '^' && !event.ControlDown() && !event.AltDown() && !event.CmdDown())
+	{
+		ReplaceSelection(GetSelectedText().Upper());
+		SetSelection(start, end);
+		return;
+	}
+
+	// Shift to lower
+	if (!GetSelectedText().IsEmpty() && event.GetKeyCode() == '_' && !event.ControlDown() && !event.AltDown() && !event.CmdDown())
+	{
+		ReplaceSelection(GetSelectedText().Lower());
+		SetSelection(start, end);
+		return;
+	}
+
+	event.Skip();
+}
+
 void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 {
 #ifdef __WXGTK__
@@ -347,7 +377,7 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 		// Save the start position
 		int start = GetSelectionStart();
 
-		// Block indent
+		// Block indent (Tab)
 		if (event.GetKeyCode() == '\t' && !event.ShiftDown() && !event.AltDown() && !event.CmdDown() && !event.ControlDown())
 		{
 			wxString selection = GetSelectedText();
@@ -358,7 +388,7 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 			return;
 		}
 
-		// Block outdent
+		// Block outdent (Shift+Tab)
 		if (event.GetKeyCode() == '\t' && event.ShiftDown() && !event.AltDown() && !event.CmdDown() && !event.ControlDown())
 		{
 			wxString selection = GetSelectedText();
@@ -369,8 +399,32 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 			SetSelection(start, start + selection.Length());
 			return;
 		}
+
+		// Block comment (-)
+		if (event.GetKeyCode() == '-' && !event.ControlDown() && !event.AltDown() && !event.CmdDown())
+		{
+			wxString selection = GetSelectedText();
+			selection.Replace(lineEnd, lineEnd + wxT("-- "));
+			selection.Prepend(wxT("-- "));
+			ReplaceSelection(selection);
+			SetSelection(start, start + selection.Length());
+			return;
+		}
+
+		// Block uncomment (+)
+		if (event.GetKeyCode() == '+' && !event.ControlDown() && !event.AltDown() && !event.CmdDown())
+		{
+			wxString selection = GetSelectedText();
+			selection.Replace(lineEnd + wxT("-- "), lineEnd);
+			if (selection.StartsWith(wxT("-- ")))
+				selection = selection.Right(selection.Length() - 3);
+			ReplaceSelection(selection);
+			SetSelection(start, start + selection.Length());
+			return;
+		}
 	}
 
+	// Autocomplete
 	if (!AutoCompActive() &&
 		 ( settings->GetTabForCompletion() && /* autocomplete on tab only if specifically configured */
 		  !event.AltDown() && !event.CmdDown() && !event.ControlDown() && event.GetKeyCode() == '\t'
