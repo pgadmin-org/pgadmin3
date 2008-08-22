@@ -1719,7 +1719,8 @@ bool frmQuery::updateFromGqb(bool executing)
 	{
 	    sqlQuery->ClearAll();
 	    sqlQuery->AddText(newQuery + wxT("\n"));
-        sqlNotebook->SetSelection(0);
+            sqlQuery->Colourise(0, sqlQuery->GetText().Length());
+            sqlNotebook->SetSelection(0);
 	    changed=true;
 		
 		gqbUpdateRunning = false;
