@@ -176,8 +176,13 @@ protected:
     virtual wxString GetHelpPage() const;
     virtual int Go(bool modal=false);
     bool DisablePrivilege(const wxString &priv);
+    void SetPrivilegesSize(int width, int height);
 
 private:
+
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
 
     void OnAddPriv(wxCommandEvent& ev);
     void OnDelPriv(wxCommandEvent& ev);

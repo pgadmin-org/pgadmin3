@@ -34,6 +34,10 @@ private:
     pgAggregate *aggregate;
 
     virtual wxString GetDisplayName() { return GetName() + wxT("(") + GetInputTypesList() + wxT(")"); };
+    
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
 
     void OnChangeType(wxCommandEvent &ev);
     void OnChangeTypeBase(wxCommandEvent &ev);

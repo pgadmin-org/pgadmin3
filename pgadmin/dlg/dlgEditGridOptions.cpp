@@ -56,6 +56,9 @@ BEGIN_EVENT_TABLE(dlgEditGridOptions, pgDialog)
     EVT_COMBOBOX             (XRCID("cboColumns"),  dlgEditGridOptions::OnCboColumnsChange) 
     EVT_LIST_ITEM_SELECTED   (XRCID("lstSortCols"), dlgEditGridOptions::OnLstSortColsChange) 
     EVT_LIST_ITEM_DESELECTED (XRCID("lstSortCols"), dlgEditGridOptions::OnLstSortColsChange) 
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgEditGridOptions::OnChangeSize)
+#endif
 END_EVENT_TABLE()
 
 dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxString &rel, ctlSQLEditGrid *grid)
@@ -215,6 +218,19 @@ void dlgEditGridOptions::OnDesc(wxCommandEvent &ev)
     wxListEvent nullLstEvent;
     OnLstSortColsChange(nullLstEvent);
 }
+
+#ifdef __WXMAC__
+void dlgEditGridOptions::OnChangeSize(wxSizeEvent &ev)
+{
+	if (lstSortCols)
+	    lstSortCols->SetSize(wxDefaultCoord, wxDefaultCoord,
+	        ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 void dlgEditGridOptions::OnValidate(wxCommandEvent &ev)
 {

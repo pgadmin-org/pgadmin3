@@ -37,6 +37,10 @@ private:
 
     wxString GetOptionsSql();
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
     void OnSelChangeOption(wxListEvent &ev);
     void OnChangeOptionName(wxCommandEvent &ev);
     void OnAddOption(wxCommandEvent &ev);

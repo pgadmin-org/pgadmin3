@@ -60,7 +60,10 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, con
 
     wxStringTokenizer privileges(privList, wxT(","));
     privilegeCount=privileges.CountTokens();
-
+    
+    wxFlexGridSizer *item0 = new wxFlexGridSizer(3, 1, 5, 5);
+    item0->AddGrowableCol(0);
+    item0->AddGrowableRow(0);
 
     if (privilegeCount)
     {
@@ -68,85 +71,63 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, con
         privCheckboxes = new wxCheckBox*[privilegeCount*2];
         int i=0;
 
-        int width, height;
+        wxFlexGridSizer *itemSizer1 = new wxFlexGridSizer(1, 1, 5, 5);
+        itemSizer1->AddGrowableCol(0);
+        itemSizer1->AddGrowableRow(0);
+        lbPrivileges = new ctlListView(this, CTL_LBPRIV, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxLC_REPORT);
+        lbPrivileges->CreateColumns(imgList, _("User/Group"), _("Privileges"), -1);
+        itemSizer1->Add(lbPrivileges, 0, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT, 4);
+        item0->Add(itemSizer1, 0, wxEXPAND|wxALL, 5);
 
-#ifdef __WIN32__
-		GetClientSize(&width, &height);
-#else
-		nbNotebook->GetClientSize(&width, &height);
-		height -= ConvertDialogToPixels(wxPoint(0, 20)).y;   // sizes of tabs
-#endif
-
-        wxPoint zeroPos=ConvertDialogToPixels(wxPoint(5, 5));
-
+        wxBoxSizer* itemSizer2 = new wxBoxSizer(wxHORIZONTAL);
         btnAddPriv = new wxButton(this, CTL_ADDPRIV, _("Add/Change"));
-        wxSize btnSize=btnAddPriv->GetSize();
-        wxSize chkSize=ConvertDialogToPixels(wxSize(65,12));
-        wxSize spcSize=ConvertDialogToPixels(wxSize(2, 2));
+        itemSizer2->Add(btnAddPriv, 0, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT, 4);
+        btnDelPriv = new wxButton(this, CTL_DELPRIV, _("Remove"));
+        itemSizer2->Add(btnDelPriv, 0, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT, 4);
+        item0->Add(itemSizer2, 0, wxEXPAND|wxALL, 0);
 
+        wxStaticBox* sb = new wxStaticBox(this, -1, _("Privileges"));
+        wxBoxSizer* itemSizer3 = new wxStaticBoxSizer( sb, wxVERTICAL );
+        item0->Add(itemSizer3, 0, wxEXPAND|wxALL, 5);
+
+        wxBoxSizer* itemSizer4 = new wxBoxSizer(wxHORIZONTAL);
+        stGroup = new wxStaticText(this, CTL_STATICGROUP, _("Group"));
+        itemSizer4->Add(stGroup, 0, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT, 4);
+        cbGroups = new ctlComboBox(this, CTL_CBGROUP, wxDefaultPosition, wxDefaultSize);
+        cbGroups->Append(wxT("public"));
+        cbGroups->SetSelection(0);
+        itemSizer4->Add(cbGroups, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT);
+        itemSizer3->Add(itemSizer4, 0, wxEXPAND|wxALL, 0);
+
+        if (needAll)
         {
-            int y = height 
-                - spcSize.GetHeight()
-                - zeroPos.y * 2
-			    - btnSize.GetHeight()
-                - chkSize.GetHeight() * (3 + privilegeCount + (needAll ? 0 : 1));
-
-            lbPrivileges = new ctlListView(this, CTL_LBPRIV, 
-                zeroPos, 
-                wxSize(width - zeroPos.x * 2, y - zeroPos.y - spcSize.GetHeight()), wxSUNKEN_BORDER|wxLC_REPORT);
-
-            lbPrivileges->CreateColumns(imgList, _("User/Group"), _("Privileges"), -1);
-
-			btnAddPriv->Move(wxPoint(zeroPos.x, y)); 
-            btnDelPriv = new wxButton(this, CTL_DELPRIV, _("Remove"), 
-                wxPoint(zeroPos.x * 2 + btnSize.GetWidth(), y), btnSize);
-            y += zeroPos.y + btnSize.GetHeight();
-
-            new wxStaticBox(this, -1, _("Privileges"), 
-                wxPoint(zeroPos.x, y), 
-                wxSize(width - zeroPos.x*2, btnSize.GetHeight() + chkSize.GetHeight() * (2 + privilegeCount-(needAll?0:1))));
-            y += zeroPos.y + spcSize.GetHeight();
-
-            stGroup = new wxStaticText(this, CTL_STATICGROUP, _("Group"), wxPoint(zeroPos.x * 2, y+3), chkSize);
-            cbGroups = new ctlComboBox(this, CTL_CBGROUP, 
-                wxPoint(zeroPos.x * 3 + chkSize.GetWidth(), y), 
-                wxSize(width - zeroPos.x * 4 - chkSize.GetWidth() - spcSize.GetWidth(), chkSize.GetHeight()));
-            y += btnSize.GetHeight();
-            cbGroups->Append(wxT("public"));
-            cbGroups->SetSelection(0);
-
-
-            if (needAll)
-            {
-                allPrivileges = new wxCheckBox(this, CTL_ALLPRIV, wxT("ALL"), 
-                    wxPoint(zeroPos.x * 2, y), 
-                    chkSize);
-                allPrivilegesGrant = new wxCheckBox(this, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"), 
-                    wxPoint(zeroPos.x * 3 + chkSize.GetWidth(), y), 
-                    wxSize(width - zeroPos.x * 4 - chkSize.GetWidth() - spcSize.GetWidth(), chkSize.GetHeight()));
-                y += chkSize.GetHeight();
-                allPrivilegesGrant->Disable();
-            }
-
-            while (privileges.HasMoreTokens())
-            {
-                wxString priv=privileges.GetNextToken();
-                wxCheckBox *cb;
-                cb=new wxCheckBox(this, CTL_PRIVCB+i, priv, 
-                    wxPoint(zeroPos.x * 2, y), 
-                    chkSize);
-                privCheckboxes[i++] = cb;
-                cb=new wxCheckBox(this, CTL_PRIVCB+i, wxT("WITH GRANT OPTION"), 
-                    wxPoint(zeroPos.x * 3 + chkSize.GetWidth(), y), 
-                    wxSize(width - zeroPos.x * 4 - chkSize.GetWidth() - spcSize.GetWidth(), chkSize.GetHeight()));
-                cb->Disable();
-                privCheckboxes[i++] = cb;
-
-                y += chkSize.GetHeight();
-            }
+            wxBoxSizer* itemSizer5 = new wxBoxSizer(wxHORIZONTAL);
+            allPrivileges = new wxCheckBox(this, CTL_ALLPRIV, wxT("ALL"));
+            itemSizer5->Add(allPrivileges, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT);
+            allPrivilegesGrant = new wxCheckBox(this, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"));
+            itemSizer5->Add(allPrivilegesGrant, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT);
+            allPrivilegesGrant->Disable();
+            itemSizer3->Add(itemSizer5, 0, wxALL, 0);
         }
 
+        while (privileges.HasMoreTokens())
+        {
+            wxString priv=privileges.GetNextToken();
+            wxCheckBox *cb;
+            wxBoxSizer* itemSizer6 = new wxBoxSizer(wxHORIZONTAL);
+            cb=new wxCheckBox(this, CTL_PRIVCB+i, priv);
+            itemSizer6->Add(cb, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT);
+            privCheckboxes[i++] = cb;
+            cb=new wxCheckBox(this, CTL_PRIVCB+i, wxT("WITH GRANT OPTION"));
+            itemSizer6->Add(cb, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT);
+            cb->Disable();
+            privCheckboxes[i++] = cb;
+            itemSizer3->Add(itemSizer6, 0, wxALL, 0);
+        }
     }
+    
+    this->SetSizer(item0);
+    item0->Fit(this);
 }
 
 

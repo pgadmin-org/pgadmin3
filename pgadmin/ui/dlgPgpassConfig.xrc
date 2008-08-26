@@ -2,87 +2,145 @@
 <resource>
   <object class="wxDialog" name="dlgPgpassConfig">
     <title>Client Access Configuration</title>
-    <object class="wxStaticText" name="stEnabled">
-      <label>Enabled</label>
-      <pos>5,7d</pos>
-    </object>
-    <object class="wxCheckBox" name="chkEnabled">
-      <pos>70,5d</pos>
-      <label></label>
-      <size>12,12d</size>
-    </object>
-    
-	<object class="wxStaticText" name="stHostname">
-      <label>Hostname</label>
-      <pos>5,22d</pos>
-    </object>
-	<object class="wxTextCtrl" name="txtHostname">
-	  <pos>70,20d</pos>
-	  <size>135,12d</size>
-	</object>
-
-	<object class="wxStaticText" name="stPort">
-	  <label>Port</label>
-	  <pos>5,37d</pos>
-	</object>
-	<object class="wxTextCtrl" name="txtPort">
-	  <pos>70,35d</pos>
-	  <size>135,12d</size>
-	</object>
-
-	<object class="wxStaticText" name="stDatabase">
-	  <label>Database</label>
-	  <pos>5,52d</pos>
-	</object>
-	<object class="wxTextCtrl" name="txtDatabase">
-	  <pos>70,50d</pos>
-	  <size>135,12d</size>
-	</object>
-
-	<object class="wxStaticText" name="stUsername">
-	  <label>Username</label>
-	  <pos>5,67d</pos>
-	</object>
-	<object class="wxTextCtrl" name="txtUsername">
-	  <pos>70,65d</pos>
-	  <size>135,12d</size>
-	</object>
-
-	<object class="wxStaticText" name="stPassword">
-	  <label>Password</label>
-	  <pos>5,82d</pos>
-	</object>
-	<object class="wxTextCtrl" name="txtPassword">
-	  <pos>70,80d</pos>
-	  <size>135,12d</size>
-	 <style>wxTE_PASSWORD</style>
-	</object>
-
-	<object class="wxStaticText" name="stRePassword">
-	  <label>Password (again)</label>
-	  <pos>5,97d</pos>
-	</object>
-	<object class="wxTextCtrl" name="txtRePassword">
-	  <pos>70,95d</pos>
-	  <size>135,12d</size>
-	 <style>wxTE_PASSWORD</style>
-	</object>
-
-
-    <object class="wxButton" name="wxID_HELP">
-      <label>&amp;Help</label>
-      <pos>2,115d</pos>
-    </object>
-    <object class="wxButton" name="wxID_OK">
-      <label>&amp;OK</label>
-      <default>1</default>
-      <pos>113,115d</pos>
-    </object>
-    <object class="wxButton" name="wxID_CANCEL">
-      <label>&amp;Cancel</label>
-      <pos>166,115d</pos>
-    </object>
     <size>218,133d</size>
-    <style></style>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <rows>2</rows>
+      <vgap>5</vgap>
+      <hgap>5</hgap>
+      <growablerows>0</growablerows>
+      <growablecols>0</growablecols>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>2</cols>
+          <rows>7</rows>
+          <vgap>5</vgap>
+          <hgap>5</hgap>
+          <growablecols>1</growablecols>
+          <object class="sizeritem">
+            <object class="wxStaticText" name="stEnabled">
+              <label>Enabled</label>
+            </object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxCheckBox" name="chkEnabled">
+              <label></label>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxStaticText" name="stHostname">
+              <label>Hostname</label>
+            </object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxTextCtrl" name="txtHostname">
+        	</object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxStaticText" name="stPort">
+        	  <label>Port</label>
+        	</object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxTextCtrl" name="txtPort">
+        	</object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxStaticText" name="stDatabase">
+        	  <label>Database</label>
+        	</object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxTextCtrl" name="txtDatabase">
+        	</object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxStaticText" name="stUsername">
+        	  <label>Username</label>
+        	</object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxTextCtrl" name="txtUsername">
+        	</object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxStaticText" name="stPassword">
+        	  <label>Password</label>
+        	</object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxTextCtrl" name="txtPassword">
+        	 <style>wxTE_PASSWORD</style>
+        	</object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxStaticText" name="stRePassword">
+        	  <label>Password (again)</label>
+        	</object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+        	<object class="wxTextCtrl" name="txtRePassword">
+        	 <style>wxTE_PASSWORD</style>
+        	</object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE|wxALL</flag>
+        <border>3</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>3</cols>
+          <growablecols>0</growablecols>
+          <object class="spacer">
+            <size>0,0d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_OK">
+              <label>&amp;OK</label>
+              <default>1</default>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_CANCEL">
+              <label>&amp;Cancel</label>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+            <border>4</border>
+          </object>
+        </object>
+        <flag>wxEXPAND</flag>
+      </object>
+    </object>
   </object>
 </resource>

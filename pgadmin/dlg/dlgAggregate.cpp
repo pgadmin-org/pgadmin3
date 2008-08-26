@@ -47,6 +47,9 @@ BEGIN_EVENT_TABLE(dlgAggregate, dlgTypeProperty)
     EVT_BUTTON(XRCID("btnAddType"),                 dlgAggregate::OnAddInputType)
     EVT_BUTTON(XRCID("btnRemoveType"),              dlgAggregate::OnRemoveInputType)
     EVT_LIST_ITEM_SELECTED(XRCID("lstInputTypes"),  dlgAggregate::OnSelectInputType)
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgAggregate::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -137,6 +140,19 @@ pgObject *dlgAggregate::CreateObject(pgCollection *collection)
 
     return obj;
 }
+
+
+#ifdef __WXMAC__
+void dlgAggregate::OnChangeSize(wxSizeEvent &ev)
+{
+	lstInputTypes->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 
 void dlgAggregate::CheckChange()

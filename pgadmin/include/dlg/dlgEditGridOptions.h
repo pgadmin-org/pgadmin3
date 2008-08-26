@@ -43,6 +43,10 @@ public:
 
 private:
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
 	void OnCancel(wxCommandEvent &ev);
     void OnClose(wxCloseEvent &ev);
 	void OnOK(wxCommandEvent &ev);

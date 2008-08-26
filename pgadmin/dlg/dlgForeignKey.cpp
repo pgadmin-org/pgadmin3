@@ -54,6 +54,9 @@ BEGIN_EVENT_TABLE(dlgForeignKey, dlgProperty)
     EVT_BUTTON(XRCID("btnAddRef"),              dlgForeignKey::OnAddRef)
     EVT_BUTTON(XRCID("btnRemoveRef"),           dlgForeignKey::OnRemoveRef)
     EVT_BUTTON(wxID_OK,                         dlgForeignKey::OnOK)
+#ifdef __WXMAC__
+    EVT_SIZE(                                   dlgForeignKey::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -96,6 +99,19 @@ void dlgForeignKey::OnOK(wxCommandEvent &ev)
 
     dlgProperty::OnOK(ev);
 }
+
+
+#ifdef __WXMAC__
+void dlgForeignKey::OnChangeSize(wxSizeEvent &ev)
+{
+	lstColumns->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 450);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 
 void dlgForeignKey::CheckChange()

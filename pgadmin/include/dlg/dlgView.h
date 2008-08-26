@@ -40,6 +40,10 @@ private:
     pgView *view;
     wxString oldDefinition;
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
     DECLARE_EVENT_TABLE()
 };
 

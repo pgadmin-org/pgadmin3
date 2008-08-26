@@ -35,6 +35,9 @@ private:
     wxArrayString varInfo;
     bool schemaRestrictionOk;
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
     void OnChangeRestr(wxCommandEvent &ev);
     void OnGroupAdd(wxCommandEvent &ev);
     void OnGroupRemove(wxCommandEvent &ev);

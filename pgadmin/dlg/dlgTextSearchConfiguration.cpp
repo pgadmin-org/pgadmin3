@@ -43,9 +43,12 @@ BEGIN_EVENT_TABLE(dlgTextSearchConfiguration, dlgTypeProperty)
     EVT_TEXT(XRCID("cbToken"),                  dlgTextSearchConfiguration::OnChangeCbToken)
     EVT_COMBOBOX(XRCID("cbToken"),              dlgTextSearchConfiguration::OnChangeCbToken)
     EVT_TEXT(XRCID("txtDictionary"),            dlgTextSearchConfiguration::OnChangeTxtDictionary)
-    EVT_CHOICE(XRCID("cbDictionary"),         dlgTextSearchConfiguration::OnChangeCbDictionary)
+    EVT_CHOICE(XRCID("cbDictionary"),           dlgTextSearchConfiguration::OnChangeCbDictionary)
     EVT_BUTTON(wxID_ADD,                        dlgTextSearchConfiguration::OnAddToken)
     EVT_BUTTON(wxID_REMOVE,                     dlgTextSearchConfiguration::OnRemoveToken)
+#ifdef __WXMAC__
+    EVT_SIZE(                                   dlgTextSearchConfiguration::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -185,6 +188,19 @@ pgObject *dlgTextSearchConfiguration::CreateObject(pgCollection *collection)
 
     return obj;
 }
+
+
+#ifdef __WXMAC__
+void dlgTextSearchConfiguration::OnChangeSize(wxSizeEvent &ev)
+{
+	lstTokens->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 
 void dlgTextSearchConfiguration::CheckChange()

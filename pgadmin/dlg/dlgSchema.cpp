@@ -80,6 +80,18 @@ pgObject *dlgSchema::CreateObject(pgCollection *collection)
 }
 
 
+#ifdef __WXMAC__
+void dlgSchema::OnChangeSize(wxSizeEvent &ev)
+{
+    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
+
+
 void dlgSchema::CheckChange()
 {
     wxString name=GetName();

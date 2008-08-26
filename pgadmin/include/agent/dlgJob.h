@@ -37,6 +37,10 @@ private:
 
     wxArrayString previousSteps, previousSchedules;
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
     void OnSelChangeStep(wxListEvent &ev);
     void OnChangeStep(wxCommandEvent &ev);
     void OnAddStep(wxCommandEvent &ev);

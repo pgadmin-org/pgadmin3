@@ -2,150 +2,266 @@
 <resource>
   <object class="wxDialog" name="dlgServer">
     <title></title>
-    <object class="wxNotebook" name="nbNotebook">
-      <object class="notebookpage">
-        <label>Properties</label>
-        <object class="wxPanel" name="pnlProperties">
-          <object class="wxStaticText" name="stDescription">
-            <label>Name</label>
-            <pos>5,7d</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtDescription">
-            <value></value>
-            <pos>70,5d</pos>
-            <size>135,-1d</size>
-          </object>
-          <object class="wxStaticText" name="stName">
-            <label>Host</label>
-            <pos>5,22d</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtName">
-            <pos>70,20d</pos>
-            <size>135,-1d</size>
-          </object>
-          <object class="wxStaticText" name="stPort">
-            <label>Port</label>
-            <pos>5,37d</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtPort">
-            <pos>70,35d</pos>
-            <size>28,-1d</size>
-          </object>
-          <object class="wxStaticText" name="stSSL">
-            <label>SSL</label>
-            <pos>105,37d</pos>
-          </object>
-          <object class="wxComboBox" name="cbSSL">
-            <pos>120,35d</pos>
-            <size>85,12d</size>
-            <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-            <content/>
-          </object>
-          <object class="wxStaticText" name="stDatabase">
-            <label>Maintenance DB</label>
-            <pos>5,52d</pos>
-          </object>
-          <object class="wxComboBox" name="cbDatabase">
-            <pos>70,50d</pos>
-            <size>135,12d</size>
-            <content/>
-            <style>wxCB_DROPDOWN</style>
-          </object>
-          <object class="wxStaticText" name="stUsername">
-            <label>Username</label>
-            <pos>5,67d</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtUsername">
-            <pos>70,65d</pos>
-            <size>135,-1d</size>
-          </object>
-          <object class="wxStaticText" name="stPassword">
-            <label>Password</label>
-            <pos>5,82d</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtPassword">
-            <pos>70,80d</pos>
-            <style>wxTE_PASSWORD</style>
-            <size>135,-1d</size>
-          </object>
-          <object class="wxStaticText" name="stStorePwd">
-            <label>Store password</label>
-            <pos>5,98d</pos>
-          </object>
-          <object class="wxCheckBox" name="chkStorePwd">
-            <label></label>
-            <checked>1</checked>
-            <pos>70,97d</pos>
-            <size>12,12d</size>
-          </object>
-          <object class="wxStaticText" name="stRestore">
-            <label>Restore env?</label>
-            <pos>5,112d</pos>
-          </object>
-          <object class="wxCheckBox" name="chkRestore">
-            <label></label>
-            <checked>1</checked>
-            <pos>70,111d</pos>
-            <size>12,12d</size>
-          </object>
-          <object class="wxStaticText" name="stDbRestr">
-            <label>DB restriction</label>
-            <pos>5,127d</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtDbRestriction">
-            <pos>70,125d</pos>
-            <size>135,-1d</size>
-          </object>
-          <object class="wxStaticText" name="stService">
-            <label>Service</label>
-            <pos>5,142d</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtService">
-            <pos>70,140d</pos>
-            <size>135,-1d</size>
-          </object>
-          <object class="wxStaticText" name="stTryConnect">
-            <label>Connect now</label>
-            <pos>5,157d</pos>
-          </object>
-          <object class="wxCheckBox" name="chkTryConnect">
-            <label></label>
-            <checked>1</checked>
-            <pos>70,155d</pos>
-            <size>12,12d</size>
-          </object>
-          <object class="wxStaticText" name="stColour">
-            <label>Colour</label>
-            <pos>5,171d</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtColour">
-            <pos>70,169d</pos>
-            <size>75,-1d</size>
-          </object>
-          <object class="wxButton" name="btnColor">
-            <label>...</label>
-            <pos>150,169d</pos>
+    <size>218,240d</size>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <growablerows>0</growablerows>
+      <growablecols>0</growablecols>
+      <object class="sizeritem">
+        <object class="wxNotebook" name="nbNotebook">
+          <size>214,215d</size>
+          <selected>0</selected>
+          <object class="notebookpage">
+            <label>Properties</label>
+            <object class="wxPanel" name="pnlProperties">
+              <object class="wxFlexGridSizer">
+                <cols>2</cols>
+                <rows>13</rows>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablecols>1</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stDescription">
+                    <label>Name</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtDescription">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stName">
+                    <label>Host</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtName">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stPort">
+                    <label>Port</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtPort">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stSSL">
+                    <label>SSL</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxComboBox" name="cbSSL">
+                    <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                    <content/>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stDatabase">
+                    <label>Maintenance DB</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxComboBox" name="cbDatabase">
+                    <content/>
+                    <style>wxCB_DROPDOWN</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stUsername">
+                    <label>Username</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtUsername">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stPassword">
+                    <label>Password</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtPassword">
+                    <style>wxTE_PASSWORD</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stStorePwd">
+                    <label>Store password</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxCheckBox" name="chkStorePwd">
+                    <label></label>
+                    <checked>1</checked>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stRestore">
+                    <label>Restore env?</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxCheckBox" name="chkRestore">
+                    <label></label>
+                    <checked>1</checked>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stDbRestr">
+                    <label>DB restriction</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtDbRestriction">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stService">
+                    <label>Service</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtService">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stTryConnect">
+                    <label>Connect now</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxCheckBox" name="chkTryConnect">
+                    <label></label>
+                    <checked>1</checked>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stColour">
+                    <label>Colour</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxFlexGridSizer">
+                    <cols>2</cols>
+                    <growablecols>0</growablecols>
+                    <object class="sizeritem">
+                      <object class="wxTextCtrl" name="txtColour">
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxButton" name="btnColor">
+                        <label>...</label>
+                      </object>
+                      <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
           </object>
         </object>
-        <selected>1</selected>
+        <flag>wxEXPAND|wxALIGN_CENTRE|wxALL</flag>
+        <border>3</border>
       </object>
-      <pos>2,2d</pos>
-      <size>214,202d</size>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>4</cols>
+          <growablecols>1</growablecols>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_HELP">
+              <label>Help</label>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+          <object class="spacer">
+            <size>0,0d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_OK">
+              <label>&amp;OK</label>
+              <default>1</default>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_CANCEL">
+              <label>&amp;Cancel</label>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxTOP|wxLEFT|wxRIGHT</flag>
+      </object>
+      <object class="sizeritem">
+        <object class="wxStatusBar" name="unkStatusBar">
+          <style>wxST_SIZEGRIP</style>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE</flag>
+        <border>3</border>
+      </object>
     </object>
-    <object class="wxButton" name="wxID_HELP">
-      <label>&amp;Help</label>
-      <pos>2,207d</pos>
-    </object>
-    <object class="wxButton" name="wxID_OK">
-      <label>&amp;OK</label>
-      <default>1</default>
-      <pos>113,207d</pos>
-    </object>
-    <object class="wxButton" name="wxID_CANCEL">
-      <label>&amp;Cancel</label>
-      <pos>166,207d</pos>
-    </object>
-    <size>218,225d</size>
-    <style></style>
   </object>
 </resource>

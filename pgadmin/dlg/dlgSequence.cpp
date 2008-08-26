@@ -137,6 +137,18 @@ pgObject *dlgSequence::CreateObject(pgCollection *collection)
 }
 
 
+#ifdef __WXMAC__
+void dlgSequence::OnChangeSize(wxSizeEvent &ev)
+{
+    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
+
+
 void dlgSequence::CheckChange()
 {
     wxString name=GetName();

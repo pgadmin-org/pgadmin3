@@ -58,6 +58,10 @@ BEGIN_EVENT_TABLE(dlgJob, dlgAgentProperty)
     EVT_BUTTON(XRCID("btnChangeSchedule"),          dlgJob::OnChangeSchedule)
     EVT_BUTTON(XRCID("btnAddSchedule"),             dlgJob::OnAddSchedule)
     EVT_BUTTON(XRCID("btnRemoveSchedule"),          dlgJob::OnRemoveSchedule)
+
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgJob::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -96,6 +100,21 @@ pgObject *dlgJob::GetObject()
 {
     return job;
 }
+
+
+#ifdef __WXMAC__
+void dlgJob::OnChangeSize(wxSizeEvent &ev)
+{
+	lstSteps->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+	lstSchedules->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 
 int dlgJob::Go(bool modal)

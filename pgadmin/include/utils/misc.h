@@ -74,6 +74,7 @@ extern sysSettings *settings;
 #define CTRL_BUTTON(id)         (XRCCTRL(*this, id, wxButton))
 #define CTRL_CALENDAR(id)       (XRCCTRL(*this, id, wxCalendarBox))
 #define CTRL_TIME(id)           (XRCCTRL(*this, id, wxTimeSpinCtrl))
+#define CTRL_FLEXGRIDSIZER(id)  (XRCCTRL(*this, id, wxFlexGridSizer))
 #define CTRL_PANEL(id)          (XRCCTRL(*this, id, wxPanel))
 #define CTRL_SLIDER(id)         (XRCCTRL(*this, id, wxSlider))
 #define CTRL_SQLBOX(id)         (XRCCTRL(*this, id, ctlSQLBox))

@@ -101,6 +101,18 @@ pgObject *dlgPackage::CreateObject(pgCollection *collection)
 }
 
 
+#ifdef __WXMAC__
+void dlgPackage::OnChangeSize(wxSizeEvent &ev)
+{
+    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
+
+
 void dlgPackage::CheckChange()
 {
     bool enable=true;

@@ -2,33 +2,68 @@
 <resource>
   <object class="wxDialog" name="dlgAddFavourite">
     <title>Add favourite</title>
-    <object class="wxStaticText" name="stTitle">
-     <label>Title</label>
-     <pos>5,7d</pos>
-    </object>
-    <object class="wxTextCtrl" name="txtTitle">
-     <pos>5,22d</pos>
-     <size>208,-1d</size>
-    </object>
-    <object class="wxStaticText" name="stLocation">
-     <label>Location</label>
-     <pos>5,37d</pos>
-    </object>
-    <object class="ctlTree" name="trLocation">
-     <pos>5,52d</pos>
-     <size>208,125d</size>
-     <style>wxTR_HAS_BUTTONS | wxSIMPLE_BORDER</style>
-    </object>
-    <object class="wxButton" name="wxID_OK">
-      <label>&amp;OK</label>
-      <default>1</default>
-      <pos>113,180d</pos>
-    </object>
-    <object class="wxButton" name="wxID_CANCEL">
-      <label>&amp;Cancel</label>
-      <pos>166,180d</pos>
-    </object>
     <size>218,198d</size>
-    <style></style>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
+    <object class="wxFlexGridSizer">
+      <minsize>215,195d</minsize>
+      <cols>1</cols>
+      <rows>5</rows>
+      <vgap>5</vgap>
+      <hgap>5</hgap>
+      <growablerows>3</growablerows>
+      <growablecols>0</growablecols>
+      <object class="sizeritem">
+        <object class="wxStaticText" name="stTitle">
+         <label>Title</label>
+        </object>
+        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+        <border>4</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxTextCtrl" name="txtTitle">
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+        <border>4</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxStaticText" name="stLocation">
+         <label>Location</label>
+        </object>
+        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+        <border>4</border>
+      </object>
+      <object class="sizeritem">
+        <object class="ctlTree" name="trLocation">
+         <style>wxTR_HAS_BUTTONS | wxSIMPLE_BORDER</style>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+        <border>4</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>3</cols>
+          <growablecols>0</growablecols>
+          <object class="spacer">
+            <size>0,0d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_OK">
+              <label>&amp;OK</label>
+              <default>1</default>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_CANCEL">
+              <label>&amp;Cancel</label>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+            <border>4</border>
+          </object>
+        </object>
+        <flag>wxEXPAND</flag>
+      </object>
+    </object>
   </object>
 </resource>

@@ -31,6 +31,10 @@ public:
 private:
     pgSchema *schema;
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
     DECLARE_EVENT_TABLE()
 };
 

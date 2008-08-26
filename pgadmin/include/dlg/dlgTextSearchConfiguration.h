@@ -36,6 +36,10 @@ private:
     pgTextSearchConfiguration *config;
     bool dirtyTokens;
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
     void OnSelChangeToken(wxListEvent &ev);
     void OnChangeCbToken(wxCommandEvent &ev);
     void OnChangeTxtDictionary(wxCommandEvent &ev);

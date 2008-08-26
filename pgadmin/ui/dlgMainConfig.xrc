@@ -2,64 +2,141 @@
 <resource>
   <object class="wxDialog" name="dlgMainConfig">
     <title></title>
-    <object class="wxStaticText" name="stEnabled">
-      <label>Enabled</label>
-      <pos>5,7d</pos>
-    </object>
-    <object class="wxCheckBox" name="chkEnabled">
-      <pos>70,5d</pos>
-      <label></label>
-      <size>12,12d</size>
-    </object>
-    <object class="wxStaticText" name="stValue">
-      <label>Value</label>
-      <pos>5,22d</pos>
-    </object>
-    <object class="wxTextCtrl" name="txtValue">
-      <pos>70,20d</pos>
-      <size>170,-1d</size>
-    </object>
-    <object class="wxComboBox" name="cbValue">
-      <pos>70,20d</pos>
-      <size>135,12d</size>
-      <content/>
-    </object>
-    <object class="wxCheckBox" name="chkValue">
-      <pos>70,20d</pos>
-      <size>12,12d</size>
-      <label></label>
-    </object>
-    <object class="wxStaticText" name="stComment">
-      <label>Comment</label>
-      <pos>5,37d</pos>
-    </object>
-    <object class="wxTextCtrl" name="txtComment">
-      <pos>70,35d</pos>
-      <size>170,-1d</size>
-    </object>
-    <object class="wxStaticText" name="stName">
-      <label></label>
-      <pos>5,55d</pos>
-    </object>
-    <object class="wxStaticText" name="stDescription">
-      <label></label>
-      <pos>10,65d</pos>
-      <size>238,90d</size>
-      <style>wxST_NO_AUTORESIZE</style>
-    </object>
-    <object class="wxButton" name="wxID_HELP">
-      <label>&amp;Help</label>
-      <pos>2,160d</pos>
-    </object>
-    <object class="wxButton" name="wxID_OK">
-      <label>&amp;OK</label>
-      <default>1</default>
-      <pos>143,160d</pos>
-    </object>
-    <object class="wxButton" name="wxID_CANCEL">
-      <label>&amp;Cancel</label>
-      <pos>196,160d</pos>
-    </object>
     <size>248,198d</size>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <rows>4</rows>
+      <vgap>5</vgap>
+      <hgap>5</hgap>
+      <growablerows>2</growablerows>
+      <growablecols>0</growablecols>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>2</cols>
+          <rows>3</rows>
+          <vgap>5</vgap>
+          <hgap>5</hgap>
+          <growablecols>1</growablecols>
+          <object class="sizeritem">
+            <object class="wxStaticText" name="stEnabled">
+              <label>Enabled</label>
+            </object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxCheckBox" name="chkEnabled">
+              <label></label>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxStaticText" name="stValue">
+              <label>Value</label>
+            </object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxFlexGridSizer">
+              <cols>1</cols>
+              <rows>3</rows>
+              <vgap>5</vgap>
+              <hgap>5</hgap>
+              <growablecols>0</growablecols>
+              <object class="sizeritem">
+                <object class="wxTextCtrl" name="txtValue">
+                </object>
+                <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxComboBox" name="cbValue">
+                  <content/>
+                </object>
+                <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxCheckBox" name="chkValue">
+                  <label></label>
+                </object>
+                <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE|wxALL</flag>
+            <border>3</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxStaticText" name="stComment">
+              <label>Comment</label>
+            </object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxTextCtrl" name="txtComment">
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE|wxALL</flag>
+        <border>3</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxStaticText" name="stName">
+          <label></label>
+          <pos>5,55d</pos>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+        <border>4</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxStaticText" name="stDescription">
+          <label></label>
+          <pos>10,65d</pos>
+          <size>238,90d</size>
+          <style>wxST_NO_AUTORESIZE</style>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+        <border>4</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>4</cols>
+          <growablecols>1</growablecols>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_HELP">
+              <label>Help</label>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+          <object class="spacer">
+            <size>0,0d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_OK">
+              <label>&amp;OK</label>
+              <default>1</default>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_CANCEL">
+              <label>&amp;Cancel</label>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxTOP|wxLEFT|wxRIGHT</flag>
+      </object>
+    </object>
   </object>
 </resource>

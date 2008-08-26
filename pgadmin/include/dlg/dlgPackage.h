@@ -36,6 +36,9 @@ private:
     pgSchema *schema;
 
 	virtual bool IsUpToDate();
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
 
     DECLARE_EVENT_TABLE()
 };

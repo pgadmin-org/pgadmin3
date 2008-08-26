@@ -125,7 +125,7 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
     numericValidator.SetStyle(wxFILTER_NUMERIC);
     btnOK->Disable();
 
-    AddStatusBar();
+    statusBar = XRCCTRL(*this, "unkStatusBar", wxStatusBar);
 }
 
 
@@ -195,6 +195,13 @@ void dlgProperty::EnableOK(bool enable)
         if (statusBar)
             statusBar->SetStatusText(wxEmptyString);
     }
+}
+
+
+void dlgSecurityProperty::SetPrivilegesSize(int width, int height)
+{
+	securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    width, height);
 }
 
 
@@ -1301,6 +1308,9 @@ int dlgCollistProperty::Go(bool modal)
 BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
     EVT_BUTTON(CTL_ADDPRIV,             dlgSecurityProperty::OnAddPriv)
     EVT_BUTTON(CTL_DELPRIV,             dlgSecurityProperty::OnDelPriv)
+#ifdef __WXMAC__
+    EVT_SIZE(                           dlgSecurityProperty::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -1366,6 +1376,19 @@ dlgSecurityProperty::~dlgSecurityProperty()
 {
 }
 
+
+
+#ifdef __WXMAC__
+void dlgSecurityProperty::OnChangeSize(wxSizeEvent &ev)
+{
+	securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 
 int dlgSecurityProperty::Go(bool modal)

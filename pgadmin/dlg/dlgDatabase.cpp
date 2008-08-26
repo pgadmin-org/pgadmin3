@@ -24,6 +24,7 @@
 #define cbTemplate      CTRL_COMBOBOX("cbTemplate")
 #define stPath          CTRL_STATIC("stPath")
 #define txtPath         CTRL_TEXT("txtPath")
+#define stTablespace    CTRL_STATIC("stTablespace")
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
 #define txtSchemaRestr  CTRL_TEXT("txtSchemaRestr")
 
@@ -60,6 +61,9 @@ BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_TEXT(XRCID("cbVarname"),                    dlgDatabase::OnVarnameSelChange)
     EVT_COMBOBOX(XRCID("cbVarname"),                dlgDatabase::OnVarnameSelChange)
     EVT_BUTTON(wxID_OK,                             dlgDatabase::OnOK)
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgDatabase::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -100,11 +104,12 @@ int dlgDatabase::Go(bool modal)
 
     if (connection->BackendMinimumVersion(8, 0))
     {
-        stPath->SetLabel(_("Tablespace"));
+        stPath->Hide();
         txtPath->Hide();
     }
     else
     {
+        stTablespace->Hide();
         cbTablespace->Hide();
     }
 
@@ -236,6 +241,20 @@ pgObject *dlgDatabase::CreateObject(pgCollection *collection)
 }
 
 
+#ifdef __WXMAC__
+void dlgDatabase::OnChangeSize(wxSizeEvent &ev)
+{
+    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+	lstVariables->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
+
+
 void dlgDatabase::OnChangeRestr(wxCommandEvent &ev)
 {
     if (txtSchemaRestr->GetValue().IsEmpty())
@@ -304,6 +323,8 @@ void dlgDatabase::SetupVarEditor(int var)
         {
             txtValue->Hide();
             chkValue->Show();
+            chkValue->SetSize(wxDefaultCoord, wxDefaultCoord,
+                cbVarname->GetSize().GetWidth(), cbVarname->GetSize().GetHeight());
         }
         else
         {
@@ -313,6 +334,8 @@ void dlgDatabase::SetupVarEditor(int var)
                 txtValue->SetValidator(wxTextValidator());
             else
                 txtValue->SetValidator(numericValidator);
+            txtValue->SetSize(wxDefaultCoord, wxDefaultCoord,
+                cbVarname->GetSize().GetWidth(), cbVarname->GetSize().GetHeight());
         }
     }
 }

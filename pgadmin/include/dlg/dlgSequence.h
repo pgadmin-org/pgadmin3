@@ -33,6 +33,10 @@ private:
     pgSchema *schema;
     pgSequence *sequence;
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
     DECLARE_EVENT_TABLE()
 };
 

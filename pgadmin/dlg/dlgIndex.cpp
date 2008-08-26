@@ -43,6 +43,9 @@ BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndexBase::OnRemoveCol)
     EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"),     dlgIndexBase::OnSelectListCol)
     EVT_COMBOBOX(XRCID("cbColumns"),                dlgIndexBase::OnSelectComboCol)
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgIndexBase::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -178,6 +181,19 @@ void dlgIndexBase::OnSelectCol()
     else
         btnAddCol->Enable(false);
 }
+
+#ifdef __WXMAC__
+void dlgIndexBase::OnChangeSize(wxSizeEvent &ev)
+{
+	lstColumns->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
+
 
 void dlgIndexBase::CheckChange()
 {

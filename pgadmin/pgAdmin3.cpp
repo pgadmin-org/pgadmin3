@@ -140,7 +140,7 @@ END_EVENT_TABLE();
 
 frmDlgTest::frmDlgTest() : wxFrame(0, -1, wxT("pgAdmin III Translation test mode"))
 {
-    dlgList=new wxListBox(this, CTL_LB);
+    dlgList=new wxListBox(this, CTL_LB, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_SORT);
 
     // unfortunately, the MemoryFS has no search functions implemented 
     // so we can't extract the names in the EMBED_XRC case

@@ -39,6 +39,9 @@ BEGIN_EVENT_TABLE(dlgTextSearchDictionary, dlgTypeProperty)
     EVT_TEXT(XRCID("txtOption"),                dlgTextSearchDictionary::OnChangeOptionName)
     EVT_BUTTON(wxID_ADD,                        dlgTextSearchDictionary::OnAddOption)
     EVT_BUTTON(wxID_REMOVE,                     dlgTextSearchDictionary::OnRemoveOption)
+#ifdef __WXMAC__
+    EVT_SIZE(                                   dlgTextSearchDictionary::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -129,6 +132,19 @@ pgObject *dlgTextSearchDictionary::CreateObject(pgCollection *collection)
 
     return obj;
 }
+
+
+#ifdef __WXMAC__
+void dlgTextSearchDictionary::OnChangeSize(wxSizeEvent &ev)
+{
+	lstOptions->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 
 void dlgTextSearchDictionary::CheckChange()

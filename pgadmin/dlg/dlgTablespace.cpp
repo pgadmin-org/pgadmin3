@@ -80,6 +80,18 @@ int dlgTablespace::Go(bool modal)
 }
 
 
+#ifdef __WXMAC__
+void dlgTablespace::OnChangeSize(wxSizeEvent &ev)
+{
+    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
+
+
 void dlgTablespace::CheckChange()
 {
     if (tablespace)

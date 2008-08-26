@@ -92,6 +92,18 @@ pgObject *dlgView::CreateObject(pgCollection *collection)
 }
 
 
+#ifdef __WXMAC__
+void dlgView::OnChangeSize(wxSizeEvent &ev)
+{
+    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
+
+
 void dlgView::CheckChange()
 {
     wxString name=GetName();

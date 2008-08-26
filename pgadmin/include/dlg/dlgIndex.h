@@ -37,6 +37,10 @@ protected:
     pgIndexBase *index;
 
 private:
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
     void OnAddCol(wxCommandEvent &ev);
     void OnRemoveCol(wxCommandEvent &ev);
 
