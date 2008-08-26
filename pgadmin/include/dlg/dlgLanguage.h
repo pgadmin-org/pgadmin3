@@ -31,6 +31,9 @@ public:
 private:
     pgLanguage *language;
     void OnChangeName(wxCommandEvent &ev);
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
 
     DECLARE_EVENT_TABLE()
 };

@@ -125,6 +125,8 @@ int dlgLanguage::Go(bool modal)
             }
             delete set;
         }
+        cbHandler->SetSelection(0);
+        cbValidator->SetSelection(0);
     }
 
     return dlgSecurityProperty::Go(modal);
