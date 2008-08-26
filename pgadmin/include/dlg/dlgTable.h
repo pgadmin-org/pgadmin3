@@ -36,6 +36,9 @@ private:
 
     void OnOK(wxCommandEvent &ev);
     void OnChangeTable(wxCommandEvent &ev);
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
 
     void OnAddTable(wxCommandEvent &ev);
     void OnRemoveTable(wxCommandEvent &ev);

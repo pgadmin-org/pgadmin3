@@ -101,6 +101,10 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_TEXT(XRCID("txtFreezeMaxAge"),              dlgTable::OnChangeVacuum)
 
     EVT_BUTTON(wxID_OK,                             dlgTable::OnOK)
+
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgTable::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -914,6 +918,25 @@ wxString dlgTable::AppendNum(bool &changed, wxTextCtrl *ctl, double val)
     changed |= (v != val);
     return NumToStr(v);
 }
+
+
+#ifdef __WXMAC__
+void dlgTable::OnChangeSize(wxSizeEvent &ev)
+{
+	if (lstConstraints)
+    {
+		lstConstraints->SetSize(wxDefaultCoord, wxDefaultCoord,
+			ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    }
+	lstColumns->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 150);
+    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 
 void dlgTable::OnChangeVacuum(wxCommandEvent &ev)
