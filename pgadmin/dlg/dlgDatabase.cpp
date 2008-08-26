@@ -101,7 +101,6 @@ int dlgDatabase::Go(bool modal)
     AddGroups();
     AddUsers(cbOwner);
 
-
     if (connection->BackendMinimumVersion(8, 0))
     {
         stPath->Hide();
@@ -190,6 +189,7 @@ int dlgDatabase::Go(bool modal)
 
         cbTemplate->Append(wxEmptyString);
         FillCombobox(wxT("SELECT datname FROM pg_database ORDER BY datname"), cbTemplate);
+        cbTemplate->SetSelection(0);
 
         long encNo=0;
         wxString encStr;
