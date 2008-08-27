@@ -156,6 +156,14 @@ bool sysSettings::GetDisplayOption(const wxString &objtype, bool GetDefault)
         engtype = wxT("Sequences");
     else if (objtype == _("Tables")) 
         engtype = wxT("Tables");
+    else if (objtype == _("FTS Configurations")) 
+        engtype = wxT("FTS Configurations");
+    else if (objtype == _("FTS Dictionaries")) 
+        engtype = wxT("FTS Dictionaries");
+    else if (objtype == _("FTS Parsers")) 
+        engtype = wxT("FTS Parsers");
+    else if (objtype == _("FTS Templates")) 
+        engtype = wxT("FTS Templates");
     else if (objtype == _("Types")) 
     {
         engtype = wxT("Types");
@@ -201,6 +209,10 @@ void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
     else if (objtype == _("Rules")) engtype = wxT("Rules");
     else if (objtype == _("Sequences")) engtype = wxT("Sequences");
     else if (objtype == _("Tables")) engtype = wxT("Tables");
+    else if (objtype == _("FTS Configurations")) engtype = wxT("FTS Configurations");
+    else if (objtype == _("FTS Dictionaries")) engtype = wxT("FTS Dictionaries");
+    else if (objtype == _("FTS Parsers")) engtype = wxT("FTS Parsers");
+    else if (objtype == _("FTS Templates")) engtype = wxT("FTS Templates");
     else if (objtype == _("Types")) engtype = wxT("Types");
     else if (objtype == _("Views")) engtype = wxT("Views");
 
