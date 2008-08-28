@@ -2,317 +2,592 @@
 <resource>
   <object class="wxDialog" name="dlgType">
     <title></title>
-    <object class="wxNotebook" name="nbNotebook">
-      <object class="notebookpage">
-        <label>Properties</label>
-        <object class="wxPanel" name="pnlProperties">
-          <object class="wxStaticText" name="stName">
-            <label>Name</label>
-            <pos>5,7d</pos>
+    <size>218,300d</size>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <growablerows>0</growablerows>
+      <growablecols>0</growablecols>
+      <object class="sizeritem">
+        <object class="wxNotebook" name="nbNotebook">
+          <size>214,275d</size>
+          <selected>0</selected>
+          <object class="notebookpage">
+            <label>Properties</label>
+            <object class="wxPanel" name="pnlProperties">
+              <object class="wxFlexGridSizer">
+                <cols>2</cols>
+                <rows>6</rows>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablerows>4</growablerows>
+                <growablecols>1</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stName">
+                    <label>Name</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtName">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stOID">
+                    <label>OID</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtOID">
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stOwner">
+                    <label>Owner</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="ctlComboBox" name="cbOwner">
+                    <content/>
+                    <style>wxCB_DROPDOWN</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stType">
+                    <label>Type</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxRadioBox" name="rdbType">
+                    <label></label>
+                    <content>
+                      <item>Composite</item>
+                      <item>Enumeration</item>
+                      <item>External</item>
+                    </content>
+                    <dimension>1</dimension>
+                    <style>wxRA_SPECIFY_COLS</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stComment">
+                    <label>Comment</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtComment">
+                    <style>wxTE_MULTILINE</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stClusterSet">
+                    <label>Use replication</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxComboBox" name="cbClusterSet">
+                    <content/>
+                    <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
           </object>
-          <object class="wxTextCtrl" name="txtName">
-            <pos>70,5d</pos>
-            <size>135,-1d</size>
-          </object>
-          <object class="wxStaticText" name="stOID">
-            <label>OID</label>
-            <pos>5,22d</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtOID">
-            <pos>70,20d</pos>
-            <size>135,-1d</size>
-          </object>
-          <object class="wxStaticText" name="stOwner">
-            <label>Owner</label>
-            <pos>5,37d</pos>
-          </object>
-          <object class="ctlComboBox" name="cbOwner">
-            <content/>
-            <pos>70,35d</pos>
-            <size>135,12d</size>
-            <style>wxCB_DROPDOWN</style>
-          </object>
-          <object class="wxStaticText" name="stType">
-            <label>Type</label>
-            <pos>5,59d</pos>
-          </object>
-          <object class="wxRadioBox" name="rdbType">
-            <label></label>
-            <content>
-              <item>Composite</item>
-              <item>Enumeration</item>
-              <item>External</item>
-            </content>
-            <pos>70,50d</pos>
-            <size>135,-1d</size>
-            <dimension>1</dimension>
-            <style>wxRA_SPECIFY_COLS</style>
-          </object>
-          <object class="wxStaticText" name="stComment">
-            <label>Comment</label>
-            <pos>5,107d</pos>
-          </object>
-          <object class="wxTextCtrl" name="txtComment">
-            <pos>70,100d</pos>
-            <size>135,82d</size>
-            <style>wxTE_MULTILINE</style>
-          </object>
-          <object class="wxStaticText" name="stClusterSet">
-            <label>Use replication</label>
-            <pos>5,187d</pos>
-          </object>
-          <object class="wxComboBox" name="cbClusterSet">
-            <content/>
-            <pos>70,185d</pos>
-            <size>135,12d</size>
-            <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+          <object class="notebookpage">
+            <label>Definition</label>
+            <object class="wxPanel" name="pnlDefinition">
+              <object class="wxFlexGridSizer">
+                <cols>1</cols>
+                <rows>3</rows>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablerows>0,1,2</growablerows>
+                <growablecols>0</growablecols>
+                <object class="sizeritem">
+                  <object class="wxPanel" name="pnlDefinitionComposite">
+                    <object class="wxFlexGridSizer">
+                    <cols>1</cols>
+                    <rows>3</rows>
+                    <vgap>5</vgap>
+                    <hgap>5</hgap>
+                    <growablecols>0</growablecols>
+                    <growablerows>0</growablerows>
+                    <object class="sizeritem">
+                      <object class="wxListCtrl" name="lstMembers">
+                        <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxFlexGridSizer">
+                        <cols>2</cols>
+                        <rows>4</rows>
+                        <vgap>5</vgap>
+                        <hgap>5</hgap>
+                        <growablecols>1</growablecols>
+                        <object class="sizeritem">
+                          <object class="wxStaticText" name="stMembername">
+                            <label>Member name</label>
+                          </object>
+                          <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                          <border>4</border>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxTextCtrl" name="txtMembername">
+                          </object>
+                          <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                          <border>4</border>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxStaticText" name="stDatatype">
+                            <label>Data type</label>
+                          </object>
+                          <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                          <border>4</border>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxComboBox" name="cbDatatype">
+                            <content/>
+                            <style>wxCB_DROPDOWN</style>
+                          </object>
+                          <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                          <border>4</border>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxStaticText" name="stLength">
+                            <label>Length</label>
+                          </object>
+                          <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                          <border>4</border>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxTextCtrl" name="txtLength">
+                          </object>
+                          <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                          <border>4</border>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxStaticText" name="stPrecision">
+                            <label>Precision</label>
+                          </object>
+                          <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                          <border>4</border>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxTextCtrl" name="txtPrecision">
+                          </object>
+                          <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                          <border>4</border>
+                        </object>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxFlexGridSizer">
+                        <cols>3</cols>
+                        <rows>1</rows>
+                        <vgap>5</vgap>
+                        <hgap>5</hgap>
+                        <growablecols>0</growablecols>
+                        <object class="spacer">
+                          <size>0,0d</size>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxButton" name="btnAddMember">
+                            <label>Add/Change</label>
+                          </object>
+                          <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                          <border>4</border>
+                        </object>
+                        <object class="sizeritem">
+                          <object class="wxButton" name="btnRemoveMember">
+                            <label>Remove</label>
+                          </object>
+                          <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                          <border>4</border>
+                        </object>
+                      </object>
+                    </object>
+                  </object>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxPanel" name="pnlDefinitionEnum">
+                    <object class="wxFlexGridSizer">
+                      <cols>1</cols>
+                      <rows>3</rows>
+                      <vgap>5</vgap>
+                      <hgap>5</hgap>
+                      <growablerows>0</growablerows>
+                      <growablecols>0</growablecols>
+                      <object class="sizeritem">
+                        <object class="wxListCtrl" name="lstLabels">
+                          <pos>5,5d</pos>
+                          <size>200,155d</size>
+                          <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxFlexGridSizer">
+                          <cols>2</cols>
+                          <rows>1</rows>
+                          <vgap>5</vgap>
+                          <hgap>5</hgap>
+                          <growablecols>1</growablecols>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stLabel">
+                              <label>Label</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtLabel">
+                            </object>
+                            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxFlexGridSizer">
+                          <cols>3</cols>
+                          <rows>1</rows>
+                          <vgap>5</vgap>
+                          <hgap>5</hgap>
+                          <growablecols>0</growablecols>
+                          <object class="spacer">
+                            <size>2,2d</size>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxButton" name="btnAddLabel">
+                              <label>Add</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxButton" name="btnRemoveLabel">
+                              <label>Remove</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                    </object>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxPanel" name="pnlDefinitionExtern">
+                    <object class="wxFlexGridSizer">
+                      <cols>2</cols>
+                      <rows>14</rows>
+                      <vgap>5</vgap>
+                      <hgap>5</hgap>
+                      <growablecols>1</growablecols>
+                      <object class="sizeritem">
+                        <object class="wxStaticText" name="stInput">
+                          <label>Input function</label>
+                        </object>
+                        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxComboBox" name="cbInput">
+                          <content/>
+                          <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxStaticText" name="stOutput">
+                          <label>Output function</label>
+                        </object>
+                        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxComboBox" name="cbOutput">
+                          <content/>
+                          <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxStaticText" name="stReceive">
+                          <label>Receive function</label>
+                        </object>
+                        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxComboBox" name="cbReceive">
+                      	<content/>
+                      	<style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxStaticText" name="stSend">
+                      	<label>Send function</label>
+                        </object>
+                        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxComboBox" name="cbSend">
+                          <content/>
+                          <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxStaticText" name="stTypmodin">
+                      	<label>Typmod in func</label>
+                        </object>
+                        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxComboBox" name="cbTypmodin">
+                      	<content/>
+                      	<style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxStaticText" name="stTypmodout">
+                      	<label>Typmod out func</label>
+                        </object>
+                        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxComboBox" name="cbTypmodout">
+                      	<content/>
+                      	<style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxStaticText" name="stIntLength">
+                          <label>Internal length</label>
+                        </object>
+                        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxTextCtrl" name="txtIntLength">
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxStaticText" name="stVariable">
+                          <label>Variable</label>
+                        </object>
+                        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxCheckBox" name="chkVariable">
+                          <label></label>
+                          <checked>1</checked>
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxStaticText" name="stDefault">
+                          <label>Default</label>
+                        </object>
+                        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxTextCtrl" name="txtDefault">
+                        </object>
+                        <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                        <object class="wxStaticText" name="stElement">
+                          <label>Element</label>
+                        </object>
+                        <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                        <border>4</border>
+                      </object>
+                      <object class="sizeritem">
+                            <object class="ctlComboBox" name="cbElement">
+                              <content/>
+                              <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                            </object>
+                            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stDelimiter">
+                              <label>Delimiter</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxTextCtrl" name="txtDelimiter">
+                            </object>
+                            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stAlignment">
+                              <label>Alignment</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxComboBox" name="cbAlignment">
+                              <content>
+                                <item/>
+                                <item>char</item>
+                                <item>int2</item>
+                                <item>int4</item>
+                                <item>double</item>
+                              </content>
+                              <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                            </object>
+                            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stStorage">
+                              <label>Storage</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxComboBox" name="cbStorage">
+                              <content>
+                                <item/>
+                                <item>PLAIN</item>
+                                <item>EXTERNAL</item>
+                                <item>EXTENDED</item>
+                                <item>MAIN</item>
+                              </content>
+                              <selection>0</selection>
+                              <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                            </object>
+                            <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxStaticText" name="stPassedByValue">
+                              <label>Passed by value</label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                          <object class="sizeritem">
+                            <object class="wxCheckBox" name="chkByValue">
+                              <label></label>
+                            </object>
+                            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                            <border>4</border>
+                          </object>
+                        </object>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
           </object>
         </object>
-        <selected>1</selected>
+        <flag>wxEXPAND|wxALIGN_CENTRE|wxALL</flag>
+        <border>3</border>
       </object>
-      <pos>2,2d</pos>
-      <size>214,215d</size>
-      <object class="notebookpage">
-        <label>Definition</label>
-        <object class="wxPanel" name="pnlDefinition">
-          <object class="wxPanel" name="pnlDefinitionExtern">
-            <object class="wxStaticText" name="stInput">
-              <label>Input function</label>
-              <pos>5,7d</pos>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>4</cols>
+          <growablecols>1</growablecols>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_HELP">
+              <label>Help</label>
             </object>
-            <object class="wxComboBox" name="cbInput">
-              <content/>
-              <pos>70,5d</pos>
-              <size>135,12d</size>
-              <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-            </object>
-            <object class="wxStaticText" name="stOutput">
-              <label>Output function</label>
-              <pos>5,22d</pos>
-            </object>
-            <object class="wxComboBox" name="cbOutput">
-              <content/>
-              <pos>70,20d</pos>
-              <size>135,12d</size>
-              <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-            </object>
-	    <object class="wxStaticText" name="stReceive">
-		    <label>Receive function</label>
-		    <pos>5,37d</pos>
-	    </object>
-	    <object class="wxComboBox" name="cbReceive">
-		    <content/>
-		    <pos>70,35d</pos>
-		    <size>135,12d</size>
-		    <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-	    </object>
-	    <object class="wxStaticText" name="stSend">
-		    <label>Send function</label>
-		    <pos>5,52d</pos>
-	    </object>
-	    <object class="wxComboBox" name="cbSend">
-		    <content/>
-		    <pos>70,50d</pos>
-		    <size>135,12d</size>
-		    <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-	    </object>
-	    <object class="wxStaticText" name="stTypmodin">
-		    <label>Typmod in func</label>
-		    <pos>5,67d</pos>
-	    </object>
-	    <object class="wxComboBox" name="cbTypmodin">
-		    <content/>
-		    <pos>70,65d</pos>
-		    <size>135,12d</size>
-		    <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-	    </object>
-	    <object class="wxStaticText" name="stTypmodout">
-		    <label>Typmod out func</label>
-		    <pos>5,82d</pos>
-	    </object>
-	    <object class="wxComboBox" name="cbTypmodout">
-		    <content/>
-		    <pos>70,80d</pos>
-		    <size>135,12d</size>
-		    <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-	    </object>
-            <object class="wxStaticText" name="stIntLength">
-              <label>Internal length</label>
-              <pos>5,97d</pos>
-            </object>
-            <object class="wxTextCtrl" name="txtIntLength">
-              <pos>70,95d</pos>
-              <size>70,-1d</size>
-            </object>
-            <object class="wxCheckBox" name="chkVariable">
-              <label>Variable</label>
-              <checked>1</checked>
-              <pos>150,95d</pos>
-              <size>70,12d</size>
-            </object>
-            <object class="wxStaticText" name="stDefault">
-              <label>Default</label>
-              <pos>5,112d</pos>
-            </object>
-            <object class="wxTextCtrl" name="txtDefault">
-              <pos>70,110d</pos>
-              <size>135,-1d</size>
-            </object>
-            <object class="wxStaticText" name="stElement">
-              <label>Element</label>
-              <pos>5,127d</pos>
-            </object>
-            <object class="ctlComboBox" name="cbElement">
-              <content/>
-              <pos>70,125d</pos>
-              <size>135,12d</size>
-              <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-            </object>
-            <object class="wxStaticText" name="stDelimiter">
-              <label>Delimiter</label>
-              <pos>5,142d</pos>
-            </object>
-            <object class="wxTextCtrl" name="txtDelimiter">
-              <pos>70,140d</pos>
-              <size>135,-1d</size>
-            </object>
-            <object class="wxStaticText" name="stAlignment">
-              <label>Alignment</label>
-              <pos>5,157d</pos>
-            </object>
-            <object class="wxComboBox" name="cbAlignment">
-              <content>
-                <item/>
-                <item>char</item>
-                <item>int2</item>
-                <item>int4</item>
-                <item>double</item></content>
-              <pos>70,155d</pos>
-              <size>135,12d</size>
-              <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-            </object>
-            <object class="wxStaticText" name="stStorage">
-              <label>Storage</label>
-              <pos>5,172d</pos>
-            </object>
-            <object class="wxComboBox" name="cbStorage">
-              <content>
-                <item/>
-                <item>PLAIN</item>
-                <item>EXTERNAL</item>
-                <item>EXTENDED</item>
-                <item>MAIN</item></content>
-              <selection>0</selection>
-              <pos>70,170d</pos>
-              <size>135,12d</size>
-              <style>wxCB_READONLY|wxCB_DROPDOWN</style>
-            </object>
-            <object class="wxCheckBox" name="chkByValue">
-              <label>Passed by value</label>
-              <pos>70,185d</pos>
-              <size>135,12d</size>
-            </object>
-            <pos>0,0</pos>
-            <size>214,200d</size>
-            <style></style>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
           </object>
-          <object class="wxPanel" name="pnlDefinitionComposite">
-            <object class="wxListCtrl" name="lstMembers">
-              <pos>5,5d</pos>
-              <size>200,125d</size>
-              <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
-            </object>
-            <object class="wxStaticText" name="stMembername">
-              <label>Member name</label>
-              <pos>5,137d</pos>
-            </object>
-            <object class="wxTextCtrl" name="txtMembername">
-              <pos>70,135d</pos>
-              <size>135,-1d</size>
-            </object>
-            <object class="wxStaticText" name="stDatatype">
-              <label>Data type</label>
-              <pos>5,152d</pos>
-            </object>
-            <object class="wxComboBox" name="cbDatatype">
-              <content/>
-              <pos>70,150d</pos>
-              <size>135,12d</size>
-              <style>wxCB_DROPDOWN</style>
-            </object>
-            <object class="wxStaticText" name="stLength">
-              <label>Length</label>
-              <pos>5,167d</pos>
-            </object>
-            <object class="wxTextCtrl" name="txtLength">
-              <pos>70,165d</pos>
-              <size>35,-1d</size>
-            </object>
-            <object class="wxStaticText" name="stPrecision">
-              <label>Precision</label>
-              <pos>126,166d</pos>
-            </object>
-            <object class="wxTextCtrl" name="txtPrecision">
-              <pos>170,165d</pos>
-              <size>35,-1d</size>
-            </object>
-            <object class="wxButton" name="btnAddMember">
-              <label>Add/Change</label>
-              <pos>100,181d</pos>
-              <size>50,-1d</size>
-            </object>
-            <object class="wxButton" name="btnRemoveMember">
-              <label>Remove</label>
-              <pos>155,181d</pos>
-              <size>50,-1d</size>
-            </object>
-            <pos>0,0</pos>
-	    <size>214,200d</size>
+          <object class="spacer">
+            <size>0,0d</size>
           </object>
-          <object class="wxPanel" name="pnlDefinitionEnum">
-            <object class="wxListCtrl" name="lstLabels">
-              <pos>5,5d</pos>
-              <size>200,155d</size>
-              <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_OK">
+              <label>&amp;OK</label>
+              <default>1</default>
             </object>
-            <object class="wxStaticText" name="stLabel">
-              <label>Label</label>
-              <pos>5,167d</pos>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_CANCEL">
+              <label>&amp;Cancel</label>
             </object>
-            <object class="wxTextCtrl" name="txtLabel">
-              <pos>70,165d</pos>
-              <size>135,-1d</size>
-            </object>
-            <object class="wxButton" name="btnAddLabel">
-              <label>Add</label>
-              <pos>100,181d</pos>
-              <size>50,-1d</size>
-            </object>
-            <object class="wxButton" name="btnRemoveLabel">
-              <label>Remove</label>
-              <pos>155,181d</pos>
-              <size>50,-1d</size>
-            </object>
-            <pos>0,0</pos>
-	    <size>214,200d</size>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
           </object>
         </object>
+        <flag>wxEXPAND|wxTOP|wxLEFT|wxRIGHT</flag>
+      </object>
+      <object class="sizeritem">
+        <object class="wxStatusBar" name="unkStatusBar">
+          <style>wxST_SIZEGRIP</style>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE</flag>
+        <border>3</border>
       </object>
     </object>
-    <object class="wxButton" name="wxID_HELP">
-      <label>&amp;Help</label>
-      <pos>2,220d</pos>
-    </object>
-    <object class="wxButton" name="wxID_OK">
-      <label>&amp;OK</label>
-      <default>1</default>
-      <pos>113,220d</pos>
-    </object>
-    <object class="wxButton" name="wxID_CANCEL">
-      <label>&amp;Cancel</label>
-      <pos>166,220d</pos>
-    </object>
-    <size>218,2223d</size>
-    <style></style>
   </object>
 </resource>

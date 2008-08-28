@@ -120,6 +120,10 @@ void dlgType::showDefinition(int panel)
             pnlDefinitionExtern->Show(true);
             break;
     }
+
+    pnlDefinitionComposite->GetParent()->Layout();
+    // we don't need to call GetParent()->Layout() for all three panels
+    // because they all share the same parent
 }
 
 
