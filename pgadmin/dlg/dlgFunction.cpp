@@ -92,6 +92,9 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_BUTTON(XRCID("btnRemoveVar"),               dlgFunction::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgFunction::OnVarnameSelChange)
     EVT_COMBOBOX(XRCID("cbVarname"),                dlgFunction::OnVarnameSelChange)
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgFunction::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -354,6 +357,22 @@ int dlgFunction::Go(bool modal)
     return dlgSecurityProperty::Go(modal);
 }
 
+#ifdef __WXMAC__
+void dlgFunction::OnChangeSize(wxSizeEvent &ev)
+{
+    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+	lstArguments->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+	lstVariables->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
+
+
 void dlgFunction::OnVarnameSelChange(wxCommandEvent &ev)
 {
     int sel=cbVarname->GuessSelection(ev);
@@ -372,11 +391,13 @@ void dlgFunction::SetupVarEditor(int var)
         {
             txtValue->Hide();
             chkValue->Show();
+            chkValue->GetParent()->Layout();
         }
         else
         {
             chkValue->Hide();
             txtValue->Show();
+            txtValue->GetParent()->Layout();
             if (typ == wxT("string"))
                 txtValue->SetValidator(wxTextValidator());
             else

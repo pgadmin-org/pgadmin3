@@ -37,6 +37,10 @@ private:
     pgFunction *function;
     wxArrayString varInfo;
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
     void OnChangeArgName(wxCommandEvent &ev);
     void OnChangeReturn(wxCommandEvent &ev);
     void OnChangeSetof(wxCommandEvent &ev);
