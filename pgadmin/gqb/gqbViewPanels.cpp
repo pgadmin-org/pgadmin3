@@ -146,7 +146,7 @@ gqbGridPanel::~gqbGridPanel()
 void gqbGridPanel::SetGridColsSize()
 {
     // After sizers determine the width of Grid then calculate the % space for each column about 33% each one
-    int size=(int)(colsGrid->GetSize().GetWidth() - colsGrid->GetRowLabelSize())*0.30;
+    int size=(int)((colsGrid->GetSize().GetWidth() - colsGrid->GetRowLabelSize())*0.30);
     colsGrid->SetColSize(0,size);
     colsGrid->SetColSize(1,size);
     colsGrid->SetColSize(2,size);
@@ -707,7 +707,7 @@ void gqbCriteriaPanel::OnButtonDrop(wxCommandEvent&)
 void gqbCriteriaPanel::SetGridColsSize()
 {
     // After sizers determine the width of Grid then calculate the % space for each column about 33% each one
-    int size=(int)(restrictionsGrid->GetSize().GetWidth() - restrictionsGrid->GetRowLabelSize())*0.225;
+    int size=(int)((restrictionsGrid->GetSize().GetWidth() - restrictionsGrid->GetRowLabelSize())*0.225);
     restrictionsGrid->SetColSize(0,size);
     restrictionsGrid->SetColSize(1,size);
     restrictionsGrid->SetColSize(2,size);
@@ -1228,11 +1228,11 @@ void gqbOrderPanel::OnButtonDownBottom(wxCommandEvent&)
 void gqbOrderPanel::SetGridColsSize()
 {
     // After sizers determine the width of Grid then calculate the % space for each column
-    int size=(int)(availableColumns->GetSize().GetWidth() - availableColumns->GetRowLabelSize())*0.90;
+    int size=(int)((availableColumns->GetSize().GetWidth() - availableColumns->GetRowLabelSize())*0.90);
     availableColumns->SetColSize(0,size);
 
-    size=(int)(usedColumns->GetSize().GetWidth() - usedColumns->GetRowLabelSize())*0.65;
-    int size2=(int)(usedColumns->GetSize().GetWidth() - usedColumns->GetRowLabelSize())*0.25;
+    size=(int)((usedColumns->GetSize().GetWidth() - usedColumns->GetRowLabelSize())*0.65);
+    int size2=(int)((usedColumns->GetSize().GetWidth() - usedColumns->GetRowLabelSize())*0.25);
     usedColumns->SetColSize(0,size);
     usedColumns->SetColSize(1,size2);
 }
