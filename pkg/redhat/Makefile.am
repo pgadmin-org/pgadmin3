@@ -9,5 +9,5 @@
 
 EXTRA_DIST = \
 	$(srcdir)/pgadmin3.spec \
-	$(srcdir)/pgadmin3.spec.in \
-	$(srcdir)/pgagent
+	$(srcdir)/pgadmin3.spec.in
+

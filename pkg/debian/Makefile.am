@@ -23,10 +23,4 @@ EXTRA_DIST = \
 	$(srcdir)/pgadmin3.menu \
 	$(srcdir)/pgadmin3.NEWS \
 	$(srcdir)/pgadmin3.xpm \
-	$(srcdir)/pgagent.1 \
-	$(srcdir)/pgagent.copyright \
-	$(srcdir)/pgagent.install \
-	$(srcdir)/pgagent.manpages \
-	$(srcdir)/pgagent.README.Debian \
-	$(srcdir)/pgagent.xml \
 	$(srcdir)/rules

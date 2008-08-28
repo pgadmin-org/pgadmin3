@@ -303,27 +303,11 @@
 
                         </Directory>
 
-                        <Component Id="pgagent_exes" Guid="{A69F5805-E612-40B5-A430-BD703769FB79}">
-                            <File Id="pgagent_exes.pgagent.exe" Name="pgagent.exe" DiskId="1" Source="$(var.BUILDTREE)/xtra/pgagent/Release/pgAgent.exe" />
-                        </Component>
-
                         <Component Id="postgresql_exes" Guid="{3FD9C660-73B1-4A30-A53A-6E121CB83139}">
                             <File Id="postgresql_exes.pg_dump.exe" Name="pg_dump.exe" DiskId="1" Source="$(var.PGBUILD)/pgInst-8.3/pgsql/bin/pg_dump.exe" />
                             <File Id="postgresql_exes.pg_dumpall.exe" Name="pg_dumpall.exe" DiskId="1" Source="$(var.PGBUILD)/pgInst-8.3/pgsql/bin/pg_dumpall.exe" />
                             <File Id="postgresql_exes.pg_restore.exe" Name="pg_restore.exe" DiskId="1" Source="$(var.PGBUILD)/pgInst-8.3/pgsql/bin/pg_restore.exe" />
                         </Component>
-
-                        <Component Id="pgagent_libs" Guid="{BE4AEC2C-5954-4CB8-ABB4-F12B16D2DE16}">
-                            <File Id="pgagent_libs.pgaevent.dll" Name="pgaevent.dll" DiskId="1" Source="$(var.BUILDTREE)/xtra/pgaevent/Release/pgaevent.dll" />
-                        </Component>
-
-                        <Directory Id="ScriptsDir" Name="Scripts">
-
-                            <Component Id="pgagent_scripts" Guid="{C69A314E-F3CD-4D58-B0CB-1E8D471AE34D}">
-                                <File Id="pgagent_scripts.pgagent.sql" Name="pgagent.sql" DiskId="1" Source="$(var.BUILDTREE)/xtra/pgagent/pgagent.sql" />
-                            </Component>
-
-                        </Directory>
 
                         <Directory Id="i18nDir" Name="i18n">
 
@@ -389,9 +373,6 @@
             <Feature Id="pgagent" Title="pgAgent" Description="A job scheduler designed for centralised management of SQL and shell/batch jobs on one or more hosts." Level="1">
                 <ComponentRef Id="core_libs" />
                 <ComponentRef Id="core_runtimes" />
-                <ComponentRef Id="pgagent_exes" />
-                <ComponentRef Id="pgagent_libs" />
-                <ComponentRef Id="pgagent_scripts" />
             </Feature>
 
             <Feature Id="i18n" Title="Internationalisation" Description="Multi language support for $(var.APPNAME) applications." Level="1">
