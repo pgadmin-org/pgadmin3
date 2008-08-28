@@ -44,6 +44,10 @@ private:
     void OnRoleAdd(wxCommandEvent &ev);
     void OnRoleRemove(wxCommandEvent &ev);
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
     void OnVarAdd(wxCommandEvent &ev);
     void OnVarRemove(wxCommandEvent &ev);
     void OnVarSelChange(wxListEvent &ev);

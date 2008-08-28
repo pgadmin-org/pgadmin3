@@ -83,6 +83,10 @@ BEGIN_EVENT_TABLE(dlgRole, dlgProperty)
     EVT_COMBOBOX(XRCID("cbVarname"),                dlgRole::OnVarnameSelChange)
 
     EVT_BUTTON(wxID_OK,                             dlgRole::OnOK)
+
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgRole::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -103,6 +107,19 @@ pgObject *dlgRole::GetObject()
 {
     return role;
 }
+
+
+#ifdef __WXMAC__
+void dlgRole::OnChangeSize(wxSizeEvent &ev)
+{
+	lstVariables->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 
 int dlgRole::Go(bool modal)
@@ -373,16 +390,19 @@ void dlgRole::SetupVarEditor(int var)
         {
             txtValue->Hide();
             chkValue->Show();
+            chkValue->GetParent()->Layout();
         }
         else
         {
             chkValue->Hide();
             txtValue->Show();
+            txtValue->GetParent()->Layout();
             if (typ == wxT("string"))
                 txtValue->SetValidator(wxTextValidator());
             else
                 txtValue->SetValidator(numericValidator);
         }
+        
     }
 }
 
@@ -393,7 +413,6 @@ void dlgRole::OnVarSelChange(wxListEvent &ev)
     {
         wxString value=lstVariables->GetText(pos, 1);
         cbVarname->SetValue(lstVariables->GetText(pos));
-
 
         // We used to raise an OnVarnameSelChange() event here, but
         // at this point the combo box hasn't necessarily updated.
