@@ -44,6 +44,10 @@ private:
     
 	wxArrayString deleteExceptions;
 
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
     void OnChangeCom(wxCommandEvent &ev);
     void OnChangeCal(wxCalendarEvent &ev);
     void OnSelChangeException(wxListEvent &ev);

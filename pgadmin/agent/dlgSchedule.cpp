@@ -52,6 +52,9 @@ BEGIN_EVENT_TABLE(dlgSchedule, dlgAgentProperty)
 	EVT_CHECKLISTBOX(XRCID("chkMonths"),             dlgSchedule::OnChangeCom)
 	EVT_CHECKLISTBOX(XRCID("chkHours"),              dlgSchedule::OnChangeCom)
 	EVT_CHECKLISTBOX(XRCID("chkMinutes"),            dlgSchedule::OnChangeCom)
+#ifdef __WXMAC__
+    EVT_SIZE(                                        dlgSchedule::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -94,6 +97,19 @@ pgObject *dlgSchedule::GetObject()
 {
     return schedule;
 }
+
+
+#ifdef __WXMAC__
+void dlgSchedule::OnChangeSize(wxSizeEvent &ev)
+{
+	lstExceptions->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 
 int dlgSchedule::Go(bool modal)
