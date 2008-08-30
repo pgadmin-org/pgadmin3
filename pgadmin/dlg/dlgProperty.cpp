@@ -59,8 +59,6 @@
 #include "schema/pgUser.h"
 
 
-
-
 class replClientData : public wxClientData
 {
 public:
@@ -72,6 +70,9 @@ public:
 };
 
 
+#define CTRLID_CHKSQLTEXTFIELD 1000
+
+
 BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
     EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgProperty::OnPageSelect)  
 
@@ -79,6 +80,8 @@ BEGIN_EVENT_TABLE(dlgProperty, DialogWithHelp)
     EVT_TEXT(XRCID("cbOwner"),                      dlgProperty::OnChangeOwner)
     EVT_COMBOBOX(XRCID("cbOwner"),                  dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtComment"),                   dlgProperty::OnChange)
+    
+    EVT_CHECKBOX(CTRLID_CHKSQLTEXTFIELD,            dlgProperty::OnChangeReadOnly)
     
     EVT_BUTTON(wxID_HELP,                           dlgProperty::OnHelp)
     EVT_BUTTON(wxID_OK,                             dlgProperty::OnOK)
@@ -90,6 +93,8 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
 {
     readOnly=false;
     sqlPane=0;
+    sqlTextField1=0;
+    sqlTextField2=0;
     processing=false;
     mainForm=frame;
     database=0;
@@ -117,6 +122,11 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
     txtComment = CTRL_TEXT("txtComment");
     cbOwner = CTRL_COMBOBOX2("cbOwner");
     cbClusterSet = CTRL_COMBOBOX2("cbClusterSet");
+	
+	wxString db = wxT("Database");
+	wxString ts = wxT("Tablespace");
+	enableSQL2 = db.Cmp(factory->GetTypeName()) == 0
+	    || ts.Cmp(factory->GetTypeName()) == 0;
 
     wxNotebookPage *page=nbNotebook->GetPage(0);
     wxASSERT(page != NULL);
@@ -320,9 +330,42 @@ void dlgProperty::CreateAdditionalPages()
 {
     if (wxString(factory->GetTypeName()).Cmp(wxT("Server")))
     {
-      sqlPane = new ctlSQLBox(nbNotebook, CTL_PROPSQL, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_READONLY | wxTE_RICH2);
-      nbNotebook->AddPage(sqlPane, wxT("SQL"));
+	// create a panel
+    sqlPane = new wxPanel(nbNotebook);
+    
+    // add panel to the notebook
+    nbNotebook->AddPage(sqlPane, wxT("SQL"));
+
+    // create a flex grid sizer
+    wxFlexGridSizer *fgsizer = new wxFlexGridSizer(1, 5, 5);
+
+    // add checkbox to the panel
+    chkReadOnly = new wxCheckBox(sqlPane, CTRLID_CHKSQLTEXTFIELD, wxT("Read only"));
+    chkReadOnly->SetValue(true);
+    fgsizer->Add(chkReadOnly, 1, wxALL | wxALIGN_LEFT, 5);
+
+    // text entry box
+    sqlTextField1 = new ctlSQLBox(sqlPane, CTL_PROPSQL,
+        wxDefaultPosition, wxDefaultSize,
+		wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
+    fgsizer->Add(sqlTextField1, 1, wxALL | wxEXPAND, 5);
+
+    // text entry box
+    if (enableSQL2)
+    {
+        sqlTextField2 = new ctlSQLBox(sqlPane, CTL_PROPSQL,
+            wxDefaultPosition, wxDefaultSize,
+		    wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
+        fgsizer->Add(sqlTextField2, 1, wxALL | wxEXPAND, 5);
     }
+
+    fgsizer->AddGrowableCol(0);
+    fgsizer->AddGrowableRow(1);
+    fgsizer->AddGrowableRow(2);
+
+    sqlPane->SetAutoLayout(true);
+    sqlPane->SetSizer(fgsizer);
+}
 }
 
 
@@ -516,6 +559,85 @@ void dlgProperty::OnChangeOwner(wxCommandEvent &ev)
 }
 
 
+void dlgProperty::OnChangeReadOnly(wxCommandEvent &ev)
+{
+    size_t pos;
+    bool showmessage;
+    
+    showmessage = chkReadOnly->GetValue()
+        && ! (!enableSQL2 && GetSql().Length() == 0 && sqlTextField1->GetText().Cmp(_("-- nothing to change")) == 0)
+	    && ! (!enableSQL2 && GetSql().Length() == 0 && sqlTextField1->GetText().Cmp(_("-- definition incomplete")) == 0)
+        && ! (enableSQL2 && GetSql().Length() == 0 && GetSql2().Length() == 0 && sqlTextField1->GetText().Cmp(_("-- nothing to change")) == 0 && sqlTextField2->GetText().Length() == 0)
+	    && ! (enableSQL2 && GetSql().Length() == 0 && GetSql2().Length() == 0 && sqlTextField1->GetText().Cmp(_("-- definition incomplete")) == 0 && sqlTextField2->GetText().Length() == 0)
+	    && (sqlTextField1->GetText().Cmp(GetSql()) != 0 || (enableSQL2 && sqlTextField2->GetText().Cmp(GetSql2()) != 0));
+    
+	if (showmessage)
+	{
+		if (wxMessageBox(_("Are you sure you wish to cancel your edit?"), _("SQL editor"), wxYES_NO|wxNO_DEFAULT) == wxNO)
+		{
+			chkReadOnly->SetValue(false);
+			return;
+		}
+	}
+
+	sqlTextField1->SetReadOnly(chkReadOnly->GetValue());
+	if (enableSQL2)
+	{
+		sqlTextField2->SetReadOnly(chkReadOnly->GetValue());
+	}
+    for (pos = 0; pos < nbNotebook->GetPageCount() - 1; pos++)
+    {
+        nbNotebook->GetPage(pos)->Enable(chkReadOnly->GetValue());
+    }
+    
+    if (chkReadOnly->GetValue())
+    {
+		FillSQLTextfield();
+    }
+}
+
+
+void dlgProperty::FillSQLTextfield()
+{    
+    // create a function because this is a duplicated code
+    sqlTextField1->SetReadOnly(false);
+	if (enableSQL2)
+	{
+		sqlTextField2->SetReadOnly(false);
+	}
+    if (btnOK->IsEnabled())
+    {
+        wxString tmp;
+        if (cbClusterSet && cbClusterSet->GetSelection() > 0)
+        {
+            replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+            tmp.Printf(_("-- Execute replicated using cluster \"%s\", set %ld\n"), data->cluster.c_str(), data->setId);
+        }
+        sqlTextField1->SetText(tmp + GetSql());
+		if (enableSQL2)
+		{
+			sqlTextField2->SetText(GetSql2());
+		}
+    }
+    else
+    {
+        if (GetObject())
+            sqlTextField1->SetText(_("-- nothing to change"));
+		else
+            sqlTextField1->SetText(_("-- definition incomplete"));
+		if (enableSQL2)
+		{
+			sqlTextField2->SetText(wxT(""));
+		}
+	}
+    sqlTextField1->SetReadOnly(true);
+	if (enableSQL2)
+	{
+		sqlTextField2->SetReadOnly(true);
+	}
+}
+
+
 bool dlgProperty::tryUpdate(wxTreeItemId collectionItem)
 {
     ctlTree *browser=mainForm->GetBrowser();
@@ -618,7 +740,7 @@ void dlgProperty::ShowObject()
             mainForm->GetSqlPane()->SetReadOnly(true);
         }
     }
-    else if (item)
+    else if (item && chkReadOnly->GetValue())
     {
         wxTreeItemId collectionItem=item;
 
@@ -763,8 +885,25 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
         return;
     }
 
-    wxString sql=GetSql();
-    wxString sql2=GetSql2();
+    wxString sql;
+    wxString sql2;
+    if (chkReadOnly->GetValue())
+    {
+        sql = GetSql();
+		sql2 = GetSql2();
+    }
+    else
+    {
+        sql = sqlTextField1->GetText();
+		if (enableSQL2)
+		{
+			sql2 = sqlTextField2->GetText();
+		}
+		else
+		{
+			sql2 = wxT("");
+		}
+    }    
 
     if (!apply(sql, sql2))
     {
@@ -778,27 +917,10 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
 
 void dlgProperty::OnPageSelect(wxNotebookEvent& event)
 {
-    if (sqlPane && event.GetSelection() == (int)nbNotebook->GetPageCount()-1)
+    if (sqlTextField1 && chkReadOnly->GetValue() &&
+        event.GetSelection() == (int)nbNotebook->GetPageCount()-1)
     {
-        sqlPane->SetReadOnly(false);
-        if (btnOK->IsEnabled())
-        {
-            wxString tmp;
-            if (cbClusterSet && cbClusterSet->GetSelection() > 0)
-            {
-                replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
-                tmp.Printf(_("-- Execute replicated using cluster \"%s\", set %ld\n"), data->cluster.c_str(), data->setId);
-            }
-            sqlPane->SetText(tmp + GetSql() + GetSql2());
-        }
-        else
-        {
-            if (GetObject())
-                sqlPane->SetText(_("-- nothing to change"));
-            else
-                sqlPane->SetText(_("-- definition incomplete"));
-        }
-        sqlPane->SetReadOnly(true);
+		FillSQLTextfield();
     }
 }
 

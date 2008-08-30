@@ -60,6 +60,8 @@ protected:
     void EnableOK(bool enable);
 	virtual bool IsUpToDate() { return true; };
     void ShowObject();
+	
+	void FillSQLTextfield();
 
     void CheckValid(bool &enable, const bool condition, const wxString &msg);
     static dlgProperty *CreateDlg(frmMain *frame, pgObject *node, bool asNew, pgaFactory *factory=0);
@@ -86,6 +88,7 @@ public:
     void OnChange(wxCommandEvent &ev);
     void OnChangeOwner(wxCommandEvent &ev);
     void OnChangeStc(wxStyledTextEvent& event);
+    void OnChangeReadOnly(wxCommandEvent& event);
 
 protected:
     void AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2=0);
@@ -97,7 +100,7 @@ protected:
     pgDatabase *database;
 
     frmMain *mainForm;
-    ctlSQLBox *sqlPane;
+    wxPanel *sqlPane;
 
     wxTextValidator numericValidator;
 
@@ -105,6 +108,10 @@ protected:
     wxTextCtrl *txtName, *txtOid, *txtComment;
     ctlComboBox *cbOwner;
     ctlComboBox *cbClusterSet;
+    wxCheckBox *chkReadOnly;
+    ctlSQLBox *sqlTextField1;
+    ctlSQLBox *sqlTextField2;
+	bool enableSQL2;
 
     int width, height;
     wxTreeItemId item, owneritem;
