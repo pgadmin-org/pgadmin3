@@ -308,6 +308,16 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
     if (!collection->GetDatabase()->GetSchemaRestriction().IsEmpty())
         restr += wxT("  AND nspname IN (") + collection->GetDatabase()->GetSchemaRestriction() + wxT(")");
 
+	// Don't fetch temp schemas if not actually required, as Greenplum seems to 
+	// generate thousands in some circumstances.
+	if (!settings->GetShowSystemObjects())
+	{
+		if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
+			restr += wxT("  AND nspname NOT LIKE E'pg\\\\_temp\\\\_%'AND nspname NOT LIKE E'pg\\\\_toast_temp\\\\_%'");
+		else
+			restr += wxT("  AND nspname NOT LIKE 'pg\\\\_temp\\\\_%'AND nspname NOT LIKE 'pg\\\\_toast_temp\\\\_%'");
+	}
+
 	wxString sql;
 
 	if (GetMetaType() == PGM_CATALOG)
