@@ -1875,7 +1875,8 @@ wxWindow *refreshFactory::StartDialog(frmMain *form, pgObject *obj)
        obj = form->GetBrowser()->GetObject(form->GetBrowser()->GetSelection()); 
 
     if (obj) 
-        form->Refresh(obj);
+        if (CheckEnable(obj))
+            form->Refresh(obj);
     return 0;
 }
 
