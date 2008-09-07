@@ -17,7 +17,7 @@ pgadmin3_SOURCES += \
     $(srcdir)/include/gqb/gqbColumn.h \
     $(srcdir)/include/gqb/gqbDatabase.h \
     $(srcdir)/include/gqb/gqbEvents.h \
-    $(srcdir)/include/gqb/gqbGraphBehaviour.h \
+    $(srcdir)/include/gqb/gqbGraphBehavior.h \
     $(srcdir)/include/gqb/gqbGraphSimple.h \
     $(srcdir)/include/gqb/gqbGridOrderTable.h \
     $(srcdir)/include/gqb/gqbGridProjTable.h \
