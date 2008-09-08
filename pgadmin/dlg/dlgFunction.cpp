@@ -40,6 +40,7 @@
 #define rdbIn               CTRL_RADIOBUTTON("rdbIn")
 #define rdbOut              CTRL_RADIOBUTTON("rdbOut")
 #define rdbInOut            CTRL_RADIOBUTTON("rdbInOut")
+#define rdbVariadic         CTRL_RADIOBUTTON("rdbVariadic")
 
 #define txtArgName          CTRL_TEXT("txtArgName")
 #define btnAdd              CTRL_BUTTON("wxID_ADD")
@@ -157,6 +158,7 @@ int dlgFunction::Go(bool modal)
         rdbIn->Disable();
         rdbOut->Disable();
         rdbInOut->Disable();
+		rdbVariadic->Disable();
         isProcedure = function->GetIsProcedure();
     }
     else
@@ -166,7 +168,7 @@ int dlgFunction::Go(bool modal)
     AddUsers(cbOwner);
 
     lstArguments->AddColumn(_("Type"), 80);
-    lstArguments->AddColumn(_("Direction"), 40);
+    lstArguments->AddColumn(_("Mode"), 50);
     lstArguments->AddColumn(_("Name"), 80);
 
     if (!connection->BackendMinimumVersion(8, 0))
@@ -202,6 +204,11 @@ int dlgFunction::Go(bool modal)
             rdbIn->Disable();
             rdbOut->Disable();
             rdbInOut->Disable();
+        }
+
+        if (!connection->BackendMinimumVersion(8, 4))
+        {
+            rdbVariadic->Disable();
         }
     }
 
@@ -546,6 +553,8 @@ void dlgFunction::OnSelChangeArg(wxListEvent &ev)
             rdbOut->SetValue(true);
         else if (mode == wxT("IN OUT") || mode == wxT("INOUT"))
             rdbInOut->SetValue(true);
+        else if (mode == wxT("VARIADIC"))
+            rdbVariadic->SetValue(true);
         txtArgName->SetValue(lstArguments->GetText(row, 2));
 
         wxCommandEvent ev;
@@ -600,6 +609,13 @@ void dlgFunction::OnChangeArgName(wxCommandEvent &ev)
 
 void dlgFunction::OnChangeArg(wxCommandEvent &ev)
 {
+	if (GetSelectedDirection() == wxT("VARIADIC") && 
+		!cbDatatype->GetValue().EndsWith(wxT("[]")))
+	{
+		wxLogError(_("Only array types can be VARIADIC."));
+		return;
+	}
+
     int row=lstArguments->GetSelection();
 
     if (row >= 0)
@@ -619,6 +635,13 @@ void dlgFunction::OnChangeArg(wxCommandEvent &ev)
 
 void dlgFunction::OnAddArg(wxCommandEvent &ev)
 {
+	if (GetSelectedDirection() == wxT("VARIADIC") && 
+		!cbDatatype->GetValue().EndsWith(wxT("[]")))
+	{
+		wxLogError(_("Only array types can be VARIADIC."));
+		return;
+	}
+
     lstArguments->AppendItem(-1, cbDatatype->GetValue(), GetSelectedDirection(), txtArgName->GetValue());
 
     if (!function)
@@ -652,6 +675,8 @@ wxString dlgFunction::GetSelectedDirection()
         else
             return wxT("INOUT");
     }
+    else if (rdbVariadic->GetValue())
+        return wxT("VARIADIC");
     else
         return wxEmptyString;
 }

@@ -468,7 +468,9 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                             mode = wxT("INOUT");
                     else if (mode == wxT("3"))
                         mode = wxT("IN OUT");
-                    else
+                    else if (mode == wxT("v"))
+						mode = wxT("VARIADIC");
+					else
                         mode = wxT("IN");
 
                     function->iAddArgMode(mode);
