@@ -304,6 +304,7 @@
                         </Directory>
 
                         <Component Id="postgresql_exes" Guid="{3FD9C660-73B1-4A30-A53A-6E121CB83139}">
+                            <File Id="postgresql_exes.psql.exe" Name="psql.exe" DiskId="1" Source="$(var.PGBUILD)/pgInst-8.3/pgsql/bin/psql.exe" />
                             <File Id="postgresql_exes.pg_dump.exe" Name="pg_dump.exe" DiskId="1" Source="$(var.PGBUILD)/pgInst-8.3/pgsql/bin/pg_dump.exe" />
                             <File Id="postgresql_exes.pg_dumpall.exe" Name="pg_dumpall.exe" DiskId="1" Source="$(var.PGBUILD)/pgInst-8.3/pgsql/bin/pg_dumpall.exe" />
                             <File Id="postgresql_exes.pg_restore.exe" Name="pg_restore.exe" DiskId="1" Source="$(var.PGBUILD)/pgInst-8.3/pgsql/bin/pg_restore.exe" />
@@ -368,11 +369,6 @@
                 <Feature Id="postgresql_utilities" Title="PostgreSQL Utilties" Description="PostgreSQL's pg_dump and pg_restore utilties used by $(var.APPNAME) to dump and restore databases." Level="1">
                     <ComponentRef Id="postgresql_exes" />
                 </Feature>
-            </Feature>
-            
-            <Feature Id="pgagent" Title="pgAgent" Description="A job scheduler designed for centralised management of SQL and shell/batch jobs on one or more hosts." Level="1">
-                <ComponentRef Id="core_libs" />
-                <ComponentRef Id="core_runtimes" />
             </Feature>
 
             <Feature Id="i18n" Title="Internationalisation" Description="Multi language support for $(var.APPNAME) applications." Level="1">
