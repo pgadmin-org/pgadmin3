@@ -424,7 +424,7 @@ wxString gqbController::generateSQL()
 
         //GQB-TODO: VALIDATE RESTRICTIONS
         iteratorRestrictions=restrictions->createRestrictionsIterator();
-        gqbQueryRestriction *r;
+        gqbQueryRestriction *r = NULL;
 
         while(iteratorRestrictions->HasNext())
         {
