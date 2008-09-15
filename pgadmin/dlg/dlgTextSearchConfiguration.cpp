@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: dlgTextSearchConfiguration.cpp 7245 2008-05-01 16:23:17Z guillaume $
+// RCS-ID:      $Id$
 // Copyright (C) 2002 - 2008, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //

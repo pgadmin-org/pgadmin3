@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// RCS-ID:      $Id: pgsContext.cpp,v 1.3 2008/08/10 22:11:29 pgunittest Exp $
+// RCS-ID:      $Id$
 // Copyright (C) 2002 - 2008, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //

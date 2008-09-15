@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:	$Id: ctlTabWindow.h 6199 2007-04-17 16:12:00Z dpage $
+// RCS-ID:	$Id$
 // Copyright (C) 2002 - 2008, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
