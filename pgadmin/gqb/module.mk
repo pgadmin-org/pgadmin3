@@ -1,7 +1,7 @@
 #######################################################################
 #
 # pgAdmin III - PostgreSQL Tools
-# $Id: module.mk 7109 2008-03-03 20:04:34Z dpage $
+# $Id$
 # Copyright (C) 2002 - 2008, The pgAdmin Development Team
 # This software is released under the Artistic Licence
 #
