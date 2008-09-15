@@ -1,0 +1,114 @@
+SET @DATABASE   = 'mytable';
+SET @ITERATIONS = 50;
+
+PRINT 'Testing random data on ' + @DATABASE;
+
+-- Delete table if it does exist
+IF (SELECT COUNT(*) FROM @DATABASE)
+BEGIN
+    DROP TABLE @DATABASE;
+END
+
+-- Create table
+PRINT '  Creating table';
+CREATE TABLE @DATABASE
+(
+  a bigint,
+  b bigserial NOT NULL,
+  c bit(1),
+  d bit varying,
+  e boolean,
+  f bytea,
+  g character varying,
+  h character(1),
+  i cidr,
+  j circle,
+  k date,
+  l double precision,
+  m inet,
+  n interval,
+  o lseg,
+  p lseg,
+  q macaddr,
+  r decimal,
+  s numeric,
+  t path,
+  u point,
+  v polygon,
+  w smallint,
+  x serial NOT NULL,
+  y text,
+  z time with time zone,
+  _ timestamp with time zone,
+  PRIMARY KEY (b)
+)
+WITHOUT OIDS;
+
+-- Prepare generators used directly
+SET @INTEGER  = INTEGER(-10000, +10000);
+SET @UNIQUE   = INTEGER(0, 10000, 1);
+SET @REAL     = REAL(-10000, +10000, 2);
+SET @BINARY   = REGEX('[01]');
+SET @BSTRING  = REGEX('[01]{1,10}');
+SET @BOOLEAN  = INTEGER(0, 1);
+SET @STRING   = STRING(5, 10, 3);
+SET @CHAR     = STRING(1, 1, 1);
+SET @NUMERIC  = REGEX('[0-9]{5}.[0-9]{2}');
+SET @TIME     = TIME('00:00:00', '23:59:59');
+SET @DATE     = DATE('1900-01-01', '2008-08-01');
+SET @DATETIME = DATETIME('1900-01-01 00:00:00', '2008-08-0100:00:00');
+
+-- Prepare generators used indirectly (for generating complex values)
+SET @RADIUS   = INTEGER(1, 10000);
+SET @IPELM    = INTEGER(1, 254);
+SET @MACELM   = REGEX('[0-9a-f]{2}');
+
+PRINT '  Inserting data';
+SET @I = 0;
+WHILE @I < @ITERATIONS
+BEGIN
+	-- Generate complex values with the indirect generators
+    SET @INETCIDR = CAST (@IPELM  AS STRING) + '.' + CAST (@IPELM  AS STRING) + '.'
+                  + CAST (@IPELM  AS STRING) + '.' + CAST (@IPELM  AS STRING) + '/32';
+    SET @MACADDR  = CAST (@MACELM AS STRING) + ':' + CAST (@MACELM AS STRING) + ':'
+                  + CAST (@MACELM AS STRING) + ':' + CAST (@MACELM AS STRING) + ':'
+                  + CAST (@MACELM AS STRING) + ':' + CAST (@MACELM AS STRING);
+    SET @CIRCLE   = '(('  + CAST (@INTEGER AS STRING) + ',' + CAST (@INTEGER AS STRING)
+                  + '),'  + CAST (@RADIUS  AS STRING) + ')';
+    SET @LSEG     = '(('  + CAST (@INTEGER AS STRING) + ',' + CAST (@INTEGER AS STRING)
+                  + '),(' + CAST (@INTEGER AS STRING) + ',' + CAST (@INTEGER AS STRING) + '))';
+    SET @PATH     = '(('  + CAST (@INTEGER AS STRING) + ',' + CAST (@INTEGER AS STRING)
+                  + '),(' + CAST (@INTEGER AS STRING) + ',' + CAST (@INTEGER AS STRING)
+                  + '),(' + CAST (@INTEGER AS STRING) + ',' + CAST (@INTEGER AS STRING) + '))';
+    SET @POINT    = '('   + CAST (@INTEGER AS STRING) + ',' + CAST (@INTEGER AS STRING) + ')';
+    SET @POLYGON  = '(('  + CAST (@INTEGER AS STRING) + ',' + CAST (@INTEGER AS STRING)
+                  + '),(' + CAST (@INTEGER AS STRING) + ',' + CAST (@INTEGER AS STRING)
+                  + '),(' + CAST (@INTEGER AS STRING) + ',' + CAST (@INTEGER AS STRING) + '))';
+    
+    -- Insert value into the database
+    INSERT INTO @DATABASE(
+            a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q,
+            r, s, t, u, v, w, x, y, z, _)
+        VALUES (
+            @INTEGER, @UNIQUE, B'@BINARY', B'@BSTRING', '@BOOLEAN',
+            '@STRING'::bytea, '@STRING', '@CHAR', '@INETCIDR', '@CIRCLE',
+            '@DATE', @REAL, '@INETCIDR', '1 12:59:10',
+            '@LSEG', '@LSEG', '@MACADDR', @NUMERIC, @NUMERIC,
+            '@PATH', '@POINT', '@POLYGON', @INTEGER, @INTEGER,
+            '@STRING', '@TIME', '@DATETIME');
+      
+	-- Iterate            
+    SET @I = @I + 1;
+END
+
+-- Perform some tests
+PRINT '  Checking data';
+ASSERT (SELECT COUNT(*) FROM @DATABASE);
+ASSERT CAST ((SELECT COUNT(*) FROM @DATABASE) AS INTEGER) = @ITERATIONS;
+SET @RESULT = SELECT * FROM @DATABASE LIMIT 2;
+SET @RESSTR = CAST (@RESULT AS STRING);
+ASSERT @RESULT = CAST (@RESSTR AS RECORD);
+
+-- Delete table
+PRINT '  Deleting table';
+DROP TABLE @DATABASE;

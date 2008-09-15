@@ -19,6 +19,9 @@
 #include "utils/favourites.h"
 #include "utils/macros.h"
 
+#include <wx/sstream.h>
+#include <wx/txtstrm.h>
+
 // wxAUI
 #include <wx/aui/aui.h>
 #include <wx/textctrl.h>
@@ -28,17 +31,19 @@
 #define FRMQUERY_PERPSECTIVE_VER wxT("$Rev$")
 
 #ifdef __WXMAC__
-#define FRMQUERY_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=385;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=396;prop=100000;bestw=250;besth=21;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=17404;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779260;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=290|dock_size(2,0,0)=255|")
+#define FRMQUERY_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=415;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=396;prop=100000;bestw=250;besth=21;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=17404;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779260;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=290|dock_size(2,0,0)=255|")
 #else
 #ifdef __WXGTK__
-#define FRMQUERY_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=485;besth=30;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=396;prop=100000;bestw=250;besth=30;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=17404;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779260;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=290|dock_size(2,0,0)=255|")
+#define FRMQUERY_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=525;besth=30;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=396;prop=100000;bestw=250;besth=30;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=17404;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779260;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=290|dock_size(2,0,0)=255|")
 #else
-#define FRMQUERY_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=385;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=396;prop=100000;bestw=250;besth=21;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=17404;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779260;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=290|dock_size(2,0,0)=255|")
+#define FRMQUERY_DEFAULT_PERSPECTIVE wxT("layout2|name=toolBar;caption=Tool bar;state=16788208;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=415;besth=23;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=databaseBar;caption=Database bar;state=16788208;dir=1;layer=10;row=0;pos=396;prop=100000;bestw=250;besth=21;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=sqlQuery;caption=SQL query;state=17404;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=350;besth=200;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=outputPane;caption=Output pane;state=16779260;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=550;besth=300;minw=200;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=scratchPad;caption=Scratch pad;state=16779260;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=250;besth=200;minw=100;minh=100;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(1,10,0)=25|dock_size(5,0,0)=200|dock_size(3,0,0)=290|dock_size(2,0,0)=255|")
 #endif
 #endif
 
 class ExplainCanvas;
 class ctlSQLResult;
+class pgsApplication;
+class pgScriptTimer;
 
 class QueryExecInfo
 {
@@ -56,6 +61,8 @@ public:
     frmQuery(frmMain *form, const wxString& _title, pgConn *conn, const wxString& qry, const wxString& file = wxEmptyString);
     ~frmQuery();
     void Go();
+    
+    void writeScriptOutput();
 
 private:
     frmMain *mainForm;
@@ -71,6 +78,13 @@ private:
 	// Query timing/status update
     wxTimer timer;
     wxLongLong elapsedQuery, startTimeQuery;
+    
+    // pgScript interface
+    pgsApplication * pgScript;
+    wxString pgsOutputString;
+    wxStringOutputStream pgsStringOutput;
+    wxTextOutputStream pgsOutput;
+    pgScriptTimer * pgsTimer;
 
 	//GQB related
     void OnChangeNotebook(wxNotebookEvent& event);
@@ -103,6 +117,7 @@ private:
     void OnHelp(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
     void OnExecute(wxCommandEvent& event);
+    void OnExecScript(wxCommandEvent& event);
     void OnExecFile(wxCommandEvent& event);
     void OnExplain(wxCommandEvent& event);
     void OnNew(wxCommandEvent& event);
@@ -149,6 +164,7 @@ private:
     void execQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0, bool toFile=false, bool explain=false, bool verbose=false);
     void OnQueryComplete(wxCommandEvent &ev);
     void completeQuery(bool done, bool explain, bool verbose);
+    void OnScriptComplete(wxCommandEvent &ev);
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();
@@ -263,4 +279,16 @@ public:
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
+
+///////////////////////////////////////////////////////
+class pgScriptTimer : public wxTimer
+{
+private:
+    frmQuery * m_parent;
+
+public:
+    pgScriptTimer(frmQuery * parent);
+    void Notify();
+};
+
 #endif // __FRM_QUERY_H

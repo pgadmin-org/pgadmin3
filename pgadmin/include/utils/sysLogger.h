@@ -42,9 +42,13 @@ private:
 #define wxLOG_Notice (wxLOG_User+1)
 #define wxLOG_Sql (wxLOG_User+2)
 #define wxLOG_QuietError (wxLOG_User+3)
+#define wxLOG_Script (wxLOG_User+4)
+#define wxLOG_ScriptVerbose (wxLOG_User+5)
 
 DECLARE_LOG_FUNCTION(Notice);
 DECLARE_LOG_FUNCTION(Sql);
 DECLARE_LOG_FUNCTION(QuietError);
+DECLARE_LOG_FUNCTION(Script);
+DECLARE_LOG_FUNCTION(ScriptVerbose);
 
 #endif

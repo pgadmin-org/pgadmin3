@@ -76,8 +76,19 @@ Query menu. Please note that "EXPLAIN VERBOSE" can not be displayed graphically.
 Explain command takes longer than you expect, and you would like to
 abort the execution, you can select Cancel from the Query menu, press
 the Cancel toolbar button or use Alt-Break function key to abort the
-execution. 
-</p>
+execution.</p>
+<p>You can run pgScript scripts by selecting Execute pgScript from the Query menu instead of Execute, or
+you press the Execute pgScript toolbar button, or you press the F6 function
+key. The complete contents of the edit entry window
+will be sent to the pgScript engine, which interprets it. pgScript scripts are 
+composed of regular SQL commands but add some enhancements:</p>
+<ul>
+	<li>Control-of-flow language (<span class="fixed">IF</span> and <span class="fixed">WHILE</span> structures) </li>
+	<li>Local variables (<span class="fixed">SET @VARIABLE = 5</span>) </li>
+	<li>Random data generators (<span class="fixed">INTEGER(10, 20)</span> or <span class="fixed">REFERENCE(table, column)</span>) </li>
+</ul>
+<p>For more information on the pgScript language please look at the 
+<a href="pgscript.html">pgScript scripting language reference</a>.</p>
 <p>If you want to have help about a SQL command you want to execute,
 you can mark a SQL keyword and select SQL Help from the Help menu,
 the SQL Help toolbar button or simply press the F1 key. pgAdmin III

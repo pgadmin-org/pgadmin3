@@ -69,6 +69,7 @@ enum
     MNU_SAVEHISTORY,
     MNU_CHECKALIVE,
     MNU_SELECTALL,
+    MNU_EXECPGS,
 
     MNU_CONTENTS,
     MNU_HELP,
@@ -106,6 +107,7 @@ enum
 
     // This is used by the Query Tool - the event is fired when the query completes
     QUERY_COMPLETE=MNU_MACROS_MANAGE+100,
+    PGSCRIPT_COMPLETE,
 
     // This is a dummy menu item
     MNU_DUMMY=QUERY_COMPLETE+1000,

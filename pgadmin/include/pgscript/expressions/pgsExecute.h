@@ -1,0 +1,50 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// pgScript - PostgreSQL Tools
+// RCS-ID:      $Id: pgsExecute.h,v 1.2 2008/08/10 17:45:37 pgunittest Exp $
+// Copyright (C) 2002 - 2008, The pgAdmin Development Team
+// This software is released under the Artistic Licence
+//
+//////////////////////////////////////////////////////////////////////////
+
+
+#ifndef PGSEXECUTE_H_
+#define PGSEXECUTE_H_
+
+#include "pgscript/pgScript.h"
+#include "pgscript/expressions/pgsExpression.h"
+
+class pgsOutputStream;
+class pgsThread;
+
+class pgsExecute : public pgsExpression
+{
+
+private:
+
+	wxString m_query;
+	
+	pgsOutputStream * m_cout;
+	
+	pgsThread * m_app;
+
+public:
+
+	pgsExecute(const wxString & query, pgsOutputStream * cout = 0,
+			pgsThread * app = 0);
+
+	virtual ~pgsExecute();
+
+	/* pgsExecute(const pgsExecute & that); */
+
+	pgsExecute & operator=(const pgsExecute & that);
+
+	virtual pgsExpression * clone() const;
+	
+	virtual wxString value() const;
+
+	virtual pgsOperand eval(pgsVarMap & vars) const;
+
+};
+
+#endif /*PGSEXECUTE_H_*/

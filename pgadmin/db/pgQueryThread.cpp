@@ -181,9 +181,11 @@ int pgQueryThread::raiseEvent(int retval)
 {
     if (caller)
     {
+#if !defined(PGSCLI)
         wxCommandEvent resultEvent(wxEVT_COMMAND_MENU_SELECTED, eventId);
         resultEvent.SetClientData(data);
         caller->AddPendingEvent(resultEvent);
+#endif
     }
     return retval;
 }

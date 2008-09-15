@@ -37,6 +37,7 @@ include $(srcdir)/debugger/module.mk
 include $(srcdir)/dlg/module.mk
 include $(srcdir)/frm/module.mk
 include $(srcdir)/include/module.mk
+include $(srcdir)/pgscript/module.mk
 include $(srcdir)/schema/module.mk
 include $(srcdir)/slony/module.mk
 include $(srcdir)/gqb/module.mk

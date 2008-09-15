@@ -18,7 +18,10 @@
 #include <wx/log.h>
 
 // App headers
+#if !defined(PGSCLI)
 #include "copyright.h"      // needed for APPNAME_L caption
+#endif // PGSCLI
+
 #include "utils/sysLogger.h"
 
 wxLogLevel sysLogger::logLevel=LOG_ERRORS;
@@ -87,6 +90,45 @@ void wxLogNotice(const wxChar *szFormat, ...)
     va_end(argptr);
 }
 
+void wxVLogScript(const wxChar *szFormat, va_list argptr)
+{
+    static wxChar s_szBuf[1024];
+
+    if (sysLogger::logLevel >= LOG_SQL)
+    {
+        wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
+        wxLog::OnLog(wxLOG_Script, s_szBuf, time(NULL));
+    }
+}
+
+void wxLogScript(const wxChar *szFormat, ...)
+{
+    va_list argptr;
+    va_start(argptr, szFormat);
+    wxVLogScript(szFormat, argptr);
+    va_end(argptr);
+}
+
+void wxVLogScriptVerbose(const wxChar *szFormat, va_list argptr)
+{
+    static wxChar s_szBuf[1024];
+
+    if (sysLogger::logLevel >= LOG_DEBUG)
+    {
+        wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
+        wxLog::OnLog(wxLOG_ScriptVerbose, s_szBuf, time(NULL));
+    }
+}
+
+void wxLogScriptVerbose(const wxChar *szFormat, ...)
+{
+    va_list argptr;
+    va_start(argptr, szFormat);
+    wxVLogScriptVerbose(szFormat, argptr);
+    va_end(argptr);
+}
+
+
 void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 {
     wxString msgtype, preamble;
@@ -135,6 +177,14 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 
         case wxLOG_Sql:
             msgtype = wxT("QUERY  ");
+            break;
+
+        case wxLOG_Script:
+            msgtype = wxT("SCRIPT ");
+            break;
+
+        case wxLOG_ScriptVerbose:
+            msgtype = wxT("SCRIPT ");
             break;
 
         case wxLOG_Trace:
@@ -190,7 +240,8 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
                 level == wxLOG_Message ||
                 level == wxLOG_Status ||
                 level == wxLOG_Notice ||
-                level == wxLOG_Sql)
+                level == wxLOG_Sql ||
+                level == wxLOG_Script)
                 WriteLog(fullmsg);
             break;
 
@@ -200,8 +251,10 @@ void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
     }
 
     // Display a messagebox if required.
+#if !defined(PGSCLI)
 	if (icon != 0 && !SilenceMessage(msg)) 
         wxMessageBox(preamble + wxGetTranslation(msg), appearanceFactory->GetLongAppName(), wxOK | wxCENTRE | icon);
+#endif // PGSCLI
 }
 
 
@@ -218,10 +271,12 @@ void sysLogger::WriteLog(const wxString& msg)
 
     wxFFile file(logfile, wxT("a"));
 
+#if !defined(PGSCLI)
     if (!file.IsOpened()) {
         wxMessageBox(_("Cannot open the logfile!"), _("FATAL"), wxOK | wxCENTRE | wxICON_ERROR);
         return;
     }
+#endif // PGSCLI
 
    file.Write(msg + wxT("\n"));
    file.Close();

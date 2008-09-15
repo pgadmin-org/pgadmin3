@@ -36,6 +36,10 @@
 
 // App headers
 #include "utils/misc.h"
+
+#if !defined(PGSCLI)
+
+// App headers
 #include "frm/frmMain.h"
 
 extern "C"
@@ -47,6 +51,8 @@ extern "C"
 }
 
 wxImageList *imageList=0;
+
+#endif // PGSCLI
 
 // we dont have an appropriate wxLongLong method
 #ifdef __WIN32__
@@ -203,6 +209,7 @@ wxDateTime StrToDateTime(const wxString &value)
     return dt;
 }
 
+#if !defined(PGSCLI)
 
 void CheckOnScreen(wxWindow *win, wxPoint &pos, wxSize &size, const int w0, const int h0)
 {
@@ -244,6 +251,8 @@ void CheckOnScreen(wxWindow *win, wxPoint &pos, wxSize &size, const int w0, cons
         size.SetHeight(scrH);
 }
 
+#endif // PGSCLI
+
 wxString qtConnString(const wxString& value)
 {
     wxString result = value;	
@@ -255,6 +264,8 @@ wxString qtConnString(const wxString& value)
 	
     return result;
 }
+
+#if !defined(PGSCLI)
 
 wxString IdAndName(long id, const wxString &name)
 {
@@ -1214,4 +1225,6 @@ wxString commandLineCleanOption(const wxString &option)
 
     return tmp;
 }
+
+#endif // PGSCLI
 

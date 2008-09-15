@@ -1,0 +1,41 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// pgScript - PostgreSQL Tools
+// RCS-ID:      $Id: pgsNumberGen.h,v 1.2 2008/08/10 17:45:37 pgunittest Exp $
+// Copyright (C) 2002 - 2008, The pgAdmin Development Team
+// This software is released under the Artistic Licence
+//
+//////////////////////////////////////////////////////////////////////////
+
+
+#ifndef PGSNUMBERGEN_H_
+#define PGSNUMBERGEN_H_
+
+#include "pgscript/pgScript.h"
+#include "pgscript/utilities/pgsMapm.h"
+
+class pgsNumberGen
+{
+	
+protected:
+
+	MAPM m_range;
+
+	static const int BUFFER_SIZE = 1000;
+	
+	pgsNumberGen(const MAPM & range);
+
+public:
+
+	virtual ~pgsNumberGen();
+
+	virtual MAPM random() = 0;
+	
+	virtual pgsNumberGen * clone() = 0;
+	
+	/* pgsNumberGen & operator =(const pgsNumberGen & that); */
+	
+	/* pgsNumberGen(const pgsNumberGen & that); */
+};
+
+#endif /*PGSNUMBERGEN_H_*/

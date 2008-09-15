@@ -14,6 +14,11 @@
 
 #define MD5_PASSWD_LEN	35
 
+#if defined(PGSCLI)
+#include <stdlib.h>
+#include <string.h>
+#endif
+
 typedef unsigned char uint8;	/* == 8 bits */
 typedef unsigned int uint32;	/* == 32 bits */
 

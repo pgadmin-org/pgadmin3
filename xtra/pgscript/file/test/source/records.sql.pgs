@@ -1,0 +1,233 @@
+PRINT 'Testing records';
+
+/* Fill in a first record with several lines */
+DECLARE @r1 { @a, @b, @c, @d };
+ASSERT columns(@r1) = 4 AND lines(@r1) = 0;
+ASSERT NOT @r1;
+SET @a = 0;
+SET @b = 1;
+SET @c = '@c';
+SET @d = '@d';
+SET @l = 0;
+WHILE @l >= 0 AND @l < 10
+BEGIN
+	SET @r1[@l][@a] = @l * 1;
+	SET @r1[@l][@b] = @l * 2;
+	SET @r1[@l][@c] = @l * 3;
+	SET @r1[@l][@d] = @l * 4;
+	
+	ASSERT @r1[@l][@a] = @l * 1;
+	ASSERT -@r1[@l][@b] = @l * -2;
+	ASSERT @r1[@l][@d] = @l * 4;
+	ASSERT -(-@r1[@l][@c]) = @l * 3;
+	
+	SET @l = @l + 1;
+END
+ASSERT columns(@r1) = 4 AND lines(@r1) = 10;
+ASSERT (@r1 AND NOT NOT @r1) = 1;
+ASSERT @r1;
+ASSERT @r1 AND NOT NOT @r1 AND NOT (NOT @r1);
+
+/* Prepare a second record with no columns */
+DECLARE @r2 { @a, @b, @c };
+ASSERT columns(@r2) = 3 AND columns(@r1) <> columns(@r2);
+ASSERT NOT @r2;
+ASSERT @r1 <> @r2 AND NOT (@r1 = @r2); -- AND NOT (@r2 ~= @r3); @r3 does not exist
+ASSERT NOT (@r1 < @r2) AND NOT (@r1 > @r2);
+ASSERT NOT (@r1 <= @r2) AND NOT (@r1 >= @r2);
+
+/* Third record equal with the second one */
+DECLARE @r3 { @d, @e, @f }; -- Column names do not matter
+ASSERT columns(@r3) = 3 AND columns(@r2) = columns(@r3);
+ASSERT NOT @r3;
+ASSERT @r2 = @r3 AND NOT (@r2 <> @r3) AND @r2 ~= @r3;
+ASSERT NOT (@r2 < @r3) AND NOT (@r2 > @r3);
+ASSERT @r2 <= @r3 AND @r2 >= @r3;
+
+/* Add something to the third record */
+SET @r3[0][0] = '@a';
+ASSERT @r3;
+SET @r3[0][1] = '@b';
+ASSERT @r2 <> @r3 AND NOT (@r2 = @r3);
+ASSERT @r2 < @r3 AND NOT (@r2 > @r3);
+ASSERT @r2 <= @r3 AND NOT (@r2 >= @r3);
+
+/* Add the same thing to the second but with different case */
+SET @r2[0][0] = '@a';
+SET @r2[0][1] = '@B';
+ASSERT @r2 <> @r3 AND NOT (@r2 = @r3) AND @r2 ~= @r3;
+ASSERT NOT (@r2 < @r3) AND NOT (@r2 > @r3);
+ASSERT NOT (@r2 <= @r3) AND NOT (@r2 >= @r3);
+
+/* Verify if spaces are relevant */
+SET @r2[0][1] = ' b ';
+ASSERT @r2 <> @r3 AND NOT (@r2 = @r3) AND NOT (@r2 ~= @r3);
+ASSERT NOT (@r2 < @r3) AND NOT (@r2 > @r3);
+ASSERT NOT (@r2 <= @r3) AND NOT (@r2 >= @r3);
+SET @r2[0][1] = '@b';
+
+/* Delete an irrelevant line in the second record */
+/* Impossible */
+
+/* Fourth record to compare to the first one */
+DECLARE @r4 { @a, @b, @c, @d };
+ASSERT columns(@r1) = columns(@r4) AND lines(@r4) = 0;
+ASSERT NOT @r4;
+SET @a = 0;
+SET @b = 1;
+SET @c = '@c';
+SET @d = '@d';
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT @r4 < @r1 AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND NOT (@r4 >= @r1);
+
+/* The first lines are equal */
+DECLARE @r4 { @a, @b, @c, @d };
+SET @l = 0;
+WHILE (@l >= 0 AND @l < 2)
+BEGIN
+	SET @r4[@l][@a] = @l * 1;
+	SET @r4[@l][@b] = @l * 2;
+	SET @r4[@l][@c] = @l * 3;
+	SET @r4[@l][@d] = @l * 4;
+	
+	SET @l = @l + 1;
+END
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT @r4 < @r1 AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND NOT (@r4 >= @r1);
+
+/* Only some lines are equal but the first lines are empty */
+DECLARE @r4 { @a, @b, @c, @d };
+SET @l = 4;
+WHILE (((@l >= 0) AND (@l < 7)))
+BEGIN
+	SET @r4[@l][@a] = @l * 1;
+	SET @r4[@l][@b] = @l * 2;
+	SET @r4[@l][@c] = @l * 3;
+	SET @r4[@l][@d] = @l * 4;
+	
+	SET @l = @l + 1;
+END
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT NOT (@r4 < @r1) AND NOT (@r4 > @r1);
+ASSERT NOT (@r4 <= @r1) AND NOT (@r4 >= @r1);
+
+/* Some lines are equal */
+DECLARE @r4 { @a, @b, @c, @d };
+SET @i = 0;
+SET @l = 4;
+WHILE @l >= 0 AND @l < 8
+BEGIN
+	SET @r4[@i][@a] = @l * 1;
+	SET @r4[@i][@b] = @l * 2;
+	SET @r4[@i][@c] = @l * 3;
+	SET @r4[@i][@d] = @l * 4;
+	SET @i = @i + 1;
+	
+	SET @l = @l + 1;
+END
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT @r4 < @r1 AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND NOT (@r4 >= @r1);
+
+/* Some lines are equal and the order is random */
+DECLARE @r4 { @a, @b, @c, @d };
+SET @i = 0;     SET @l = 3;
+SET @r4[@i][@a] = @l * 1;
+SET @r4[@i][@b] = @l * 2;
+SET @r4[@i][@c] = @l * 3;
+SET @r4[@i][@d] = @l * 4;
+SET @i = @i + 1; SET @l = 6;
+SET @r4[@i][@a] = @l * 1;
+SET @r4[@i][@b] = @l * 2;
+SET @r4[@i][@c] = @l * 3;
+SET @r4[@i][@d] = @l * 4;
+SET @i = @i + 1; SET @l = 2;
+SET @r4[@i][@a] = @l * 1;
+SET @r4[@i][@b] = @l * 2;
+SET @r4[@i][@c] = @l * 3;
+SET @r4[@i][@d] = @l * 4;
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT @r4 < @r1 AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND NOT (@r4 >= @r1);
+
+/* Everything is equal */
+DECLARE @r4 { @a, @b, @c, @d };
+SET @l = 0;
+WHILE @l >= 0 AND @l < 10
+BEGIN
+	SET @r4[@l][@a] = @l * 1;
+	SET @r4[@l][@b] = @l * 2;
+	SET @r4[@l][@c] = @l * 3;
+	SET @r4[@l][@d] = @l * 4;
+	
+	SET @l = @l + 1;
+END
+ASSERT @r4 = @r1 AND @r4 ~= @r1 AND NOT (@r4 <> @r1);
+ASSERT NOT (@r4 < @r1) AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND @r4 >= @r1;
+
+/* Modify a field from a number to a string */
+SET @r4[0][0] = '0';
+ASSERT @r4 = @r1 AND @r4 ~= @r1 AND NOT (@r4 <> @r1);
+ASSERT NOT (@r4 < @r1) AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND @r4 >= @r1;
+
+/* Modify a field */
+SET @r4[0][0] = '@x';
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT NOT (@r4 < @r1) AND NOT (@r4 > @r1);
+ASSERT NOT (@r4 <= @r1) AND NOT (@r4 >= @r1);
+
+/* Make a case insensitive comparison */
+SET @r1 [0] [0] = '@X';
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND @r4 ~= @r1;
+ASSERT NOT (@r4 < @r1) AND NOT (@r4 > @r1);
+ASSERT NOT (@r4 <= @r1) AND NOT (@r4 >= @r1);
+SET @r1[0][0] = '@x';
+
+/* Delete a line in the middle */
+RMLINE(@r4[5]);
+ASSERT @r4 AND lines(@r4) = 9;
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT @r4 < @r1 AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND NOT (@r4 >= @r1);
+
+/* Delete the first line */
+RMLINE(@r4[0]);
+ASSERT @r4 AND lines(@r4) = 8;
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT @r4 < @r1 AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND NOT (@r4 >= @r1);
+
+/* Delete the last line */
+RMLINE(@r4[lines(@r4) - 1]);
+ASSERT @r4 AND lines(@r4) = 7;
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT @r4 < @r1 AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND NOT (@r4 >= @r1);
+
+/* Delete everything */
+WHILE (lines(@r4))
+BEGIN
+	RMLINE(@r4[0]);
+	ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+	ASSERT @r4 < @r1 AND NOT (@r4 > @r1);
+	ASSERT @r4 <= @r1 AND NOT (@r4 >= @r1);
+END
+
+/* Test a record that does not exist */
+/* SET @r5[0][0] = 1; */
+
+/* Take a line the first record */
+SET @r4 = @r1[0];
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT @r4 < @r1 AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND NOT (@r4 >= @r1);
+
+/* Take a line the first record */
+SET @r4 = @r1 [5];
+ASSERT @r4 <> @r1 AND NOT (@r4 = @r1) AND NOT (@r4 ~= @r1);
+ASSERT @r4 < @r1 AND NOT (@r4 > @r1);
+ASSERT @r4 <= @r1 AND NOT (@r4 >= @r1);

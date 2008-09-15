@@ -47,6 +47,7 @@
 #include "utils/favourites.h"
 #include "utils/sysLogger.h"
 #include "utils/utffile.h"
+#include "pgscript/pgsApplication.h"
 
 // Icons
 #include "images/sql.xpm"
@@ -63,6 +64,7 @@
 #include "images/edit_undo.xpm"
 #include "images/edit_redo.xpm"
 #include "images/query_execute.xpm"
+#include "images/query_pgscript.xpm"
 #include "images/query_execfile.xpm"
 #include "images/query_explain.xpm"
 #include "images/query_cancel.xpm"
@@ -92,6 +94,7 @@ EVT_MENU(MNU_FIND,              frmQuery::OnSearchReplace)
 EVT_MENU(MNU_UNDO,              frmQuery::OnUndo)
 EVT_MENU(MNU_REDO,              frmQuery::OnRedo)
 EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
+EVT_MENU(MNU_EXECPGS,           frmQuery::OnExecScript)
 EVT_MENU(MNU_EXECFILE,          frmQuery::OnExecFile)
 EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
 EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
@@ -127,14 +130,21 @@ EVT_TIMER(CTL_TIMERSIZES,       frmQuery::OnAdjustSizesTimer)
 EVT_TIMER(CTL_TIMERFRM,         frmQuery::OnTimer)
 // These fire when the queries complete
 EVT_MENU(QUERY_COMPLETE,        frmQuery::OnQueryComplete)
+EVT_MENU(PGSCRIPT_COMPLETE,     frmQuery::OnScriptComplete)
 EVT_NOTEBOOK_PAGE_CHANGED(CTL_NTBKCENTER, frmQuery::OnChangeNotebook)
 EVT_SPLITTER_SASH_POS_CHANGED(GQB_HORZ_SASH, frmQuery::OnResizeHorizontally)
 END_EVENT_TABLE()
 
 frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxString& query, const wxString& file)
 : pgFrame(NULL, _title),
-timer(this,CTL_TIMERFRM)
+timer(this,CTL_TIMERFRM),
+pgScript(new pgsApplication(_conn)),
+pgsStringOutput(&pgsOutputString),
+pgsOutput(pgsStringOutput, wxEOL_UNIX),
+pgsTimer(new pgScriptTimer(this))
 {
+    pgScript->SetCaller(this, PGSCRIPT_COMPLETE);
+
     mainForm=form;
     conn=_conn;
 
@@ -192,6 +202,7 @@ timer(this,CTL_TIMERFRM)
 
     queryMenu = new wxMenu();
     queryMenu->Append(MNU_EXECUTE, _("&Execute\tF5"), _("Execute query / Generate SQL from Graphical Query Builder Model"));
+    queryMenu->Append(MNU_EXECPGS, _("Execute &pgScript\tF6"), _("Execute pgScript"));
     queryMenu->Append(MNU_EXECFILE, _("Execute to file"), _("Execute query, write result to file / Generate SQL from Graphical Query Builder Model"));
     queryMenu->Append(MNU_EXPLAIN, _("E&xplain\tF7"), _("Explain query"));
     
@@ -251,7 +262,7 @@ timer(this,CTL_TIMERFRM)
 
     UpdateRecentFiles();
 
-    wxAcceleratorEntry entries[11];
+    wxAcceleratorEntry entries[12];
 
     entries[0].Set(wxACCEL_CTRL,                (int)'E',      MNU_EXECUTE);
     entries[1].Set(wxACCEL_CTRL,                (int)'O',      MNU_OPEN);
@@ -264,8 +275,9 @@ timer(this,CTL_TIMERFRM)
     entries[8].Set(wxACCEL_CTRL,                (int)'A',       MNU_SELECTALL);
     entries[9].Set(wxACCEL_NORMAL,              WXK_F1,        MNU_HELP);
     entries[10].Set(wxACCEL_CTRL,               (int)'N',      MNU_NEW);
+    entries[11].Set(wxACCEL_CTRL,               WXK_F6,        MNU_EXECPGS);
 
-    wxAcceleratorTable accel(11, entries);
+    wxAcceleratorTable accel(12, entries);
     SetAcceleratorTable(accel);
 
     queryMenu->Enable(MNU_CANCEL, false);
@@ -296,6 +308,7 @@ timer(this,CTL_TIMERFRM)
     toolBar->AddSeparator();
 
     toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query / Generate SQL from Graphical Query Builder Model"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_EXECPGS, _("Execute pgScript"), wxBitmap(query_pgscript_xpm), _("Execute pgScript"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXECFILE, _("Execute to file"), wxBitmap(query_execfile_xpm), _("Execute query, write result to file / Generate SQL from Graphical Query Builder Model"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
@@ -494,6 +507,12 @@ frmQuery::~frmQuery()
 
     if (favourites)
         delete favourites;
+        
+    if (pgsTimer)
+        delete pgsTimer;
+
+    if (pgScript)
+        delete pgScript;
 }
 
 
@@ -1381,7 +1400,7 @@ void frmQuery::OnOpen(wxCommandEvent& event)
         return;
 
     wxFileDialog dlg(this, _("Open query file"), lastDir, wxT(""),
-        _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxFD_OPEN);
+        _("Query files (*.sql)|*.sql|pgScript files (*.pgs)|*.pgs|All files (*.*)|*.*"), wxFD_OPEN);
     if (dlg.ShowModal() == wxID_OK)
     {
         lastFilename=dlg.GetFilename();
@@ -1511,6 +1530,8 @@ void frmQuery::OnSetEOLMode(wxCommandEvent& event)
         changed=true;
         setExtendedTitle();
     }
+    
+    pgScript->SetConnection(conn);
 }
 
 
@@ -1626,7 +1647,10 @@ void frmQuery::OnCancel(wxCommandEvent& event)
     queryMenu->Enable(MNU_CANCEL, false);
     SetStatusText(_("Cancelling."), STATUSPOS_MSGS);
 
-    sqlResult->Abort();
+    if (sqlResult->RunStatus() == CTLSQL_RUNNING)
+        sqlResult->Abort();
+    else if (pgScript->IsRunning())
+        pgScript->Terminate();
     aborted=true;
 }
 
@@ -1750,6 +1774,48 @@ void frmQuery::OnExecute(wxCommandEvent& event)
 }
 
 
+void frmQuery::OnExecScript(wxCommandEvent& event)
+{
+    // Clear markers and indicators
+    sqlQuery->MarkerDeleteAll(0);
+    sqlQuery->StartStyling(0, wxSTC_INDICS_MASK);
+    sqlQuery->SetStyling(sqlQuery->GetText().Length(), 0);
+
+    // Menu stuff to initialize
+    setTools(true);
+    queryMenu->Enable(MNU_SAVEHISTORY, true);
+    queryMenu->Enable(MNU_CLEARHISTORY, true);
+
+    // Window stuff
+    explainCanvas->Clear();
+    msgResult->Clear();
+    outputPane->SetSelection(2);
+
+    // Status text
+    SetStatusText(wxT(""), STATUSPOS_SECS);
+    SetStatusText(_("pgScript is running."), STATUSPOS_MSGS);
+    SetStatusText(wxT(""), STATUSPOS_ROWS);
+
+    // History
+    msgHistory->AppendText(_("-- Executing pgScript\n"));
+    Update();
+    wxTheApp->Yield(true);
+
+    // Timer
+    startTimeQuery = wxGetLocalTimeMillis();
+    timer.Start(10);
+    
+    // Delete previous variables
+    pgScript->ClearSymbols();
+
+    // Parse script
+    pgScript->ParseString(sqlQuery->GetText(), pgsOutput);
+    pgsTimer->Start(20);
+    aborted = false;
+}
+
+
+
 void frmQuery::OnExecFile(wxCommandEvent &event)
 {
 	if(sqlNotebook->GetSelection()==1)
@@ -1820,10 +1886,12 @@ void frmQuery::OnMacroInvoke(wxCommandEvent &event)
 void frmQuery::setTools(const bool running)
 {
     toolBar->EnableTool(MNU_EXECUTE, !running);
+    toolBar->EnableTool(MNU_EXECPGS, !running);
     toolBar->EnableTool(MNU_EXECFILE, !running);
     toolBar->EnableTool(MNU_EXPLAIN, !running);
     toolBar->EnableTool(MNU_CANCEL, running);
     queryMenu->Enable(MNU_EXECUTE, !running);
+    queryMenu->Enable(MNU_EXECPGS, !running);
     queryMenu->Enable(MNU_EXECFILE, !running);
     queryMenu->Enable(MNU_EXPLAIN, !running);
     queryMenu->Enable(MNU_CANCEL, running);
@@ -1910,6 +1978,12 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
     while (sqlResult->RunStatus() == CTLSQL_RUNNING)
     {
         wxTheApp->Yield(true);
+    }
+    
+    while (pgScript->IsRunning())
+    {
+        wxLogInfo(wxT("SQL Query box: Waiting for script to abort"));
+        wxSleep(1);
     }
 
     timer.Stop();
@@ -2054,6 +2128,37 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
     completeQuery(done, qi->explain, qi->verbose);
 }
 
+
+void frmQuery::OnScriptComplete(wxCommandEvent &ev)
+{
+    // Stop timers
+    timer.Stop();
+    pgsTimer->Stop();
+    
+    // Write output
+    writeScriptOutput();
+
+    // Reset tools
+    setTools(false);
+
+    // Manage timer
+    elapsedQuery = wxGetLocalTimeMillis() - startTimeQuery;
+    SetStatusText(elapsedQuery.ToString() + wxT(" ms"), STATUSPOS_SECS);
+    SetStatusText(_("pgScript completed."), STATUSPOS_MSGS);
+    wxString str = _("Total pgScript runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n\n");
+    msgHistory->AppendText(str);
+}
+
+void frmQuery::writeScriptOutput()
+{
+    pgScript->LockOutput();
+    
+    wxString output(pgsOutputString);
+    pgsOutputString.Clear();
+    msgResult->AppendText(output);
+    
+    pgScript->UnlockOutput();
+}
 
 // Complete the processing of a query
 void frmQuery::completeQuery(bool done, bool explain, bool verbose)
@@ -2382,4 +2487,18 @@ bool queryToolInsertFactory::CheckEnable(pgObject *obj)
     pgView *view=(pgView*)obj;
 
     return view->HasInsertRule();
+}
+
+///////////////////////////////////////////////////////
+
+pgScriptTimer::pgScriptTimer(frmQuery * parent) :
+  m_parent(parent)
+{
+
+}
+
+void pgScriptTimer::Notify()
+{
+    // Write script output
+    m_parent->writeScriptOutput();
 }

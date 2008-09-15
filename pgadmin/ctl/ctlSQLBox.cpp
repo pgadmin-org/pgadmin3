@@ -31,6 +31,9 @@ wxString plpgsqlKeywords = wxT(" elsif exception exit loop raise record return t
 // Additional Text Search keywords we should highlight
 wxString ftsKeywords = wxT(" gettoken lextypes headline init lexize");
 
+// Additional pgScript keywords we should highlight
+wxString pgscriptKeywords = wxT(" assert break columns continue date datetime file go lines ")
+                        wxT(" log print record reference regexrmline string waitfor while");
 
 BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
     EVT_CHAR(ctlSQLBox::OnChar)
@@ -117,7 +120,7 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     if (sqlKeywords.IsEmpty())
         FillKeywords(sqlKeywords);
     SetLexer(wxSTC_LEX_SQL);
-    SetKeyWords(0, sqlKeywords + plpgsqlKeywords + ftsKeywords);
+    SetKeyWords(0, sqlKeywords + plpgsqlKeywords + ftsKeywords + pgscriptKeywords);
 
     wxAcceleratorEntry entries[2];
     entries[0].Set(wxACCEL_CTRL, (int)'F', MNU_FIND);

@@ -1,0 +1,13 @@
+Please see xtra/pgscript/doc/developers.html for the pgScript developer
+documentation.
+
+parser.sh ust be called for regenerating Flex and Bison source files because it
+does some more processing that just executing bison and flex: it replaces some
+headers and add other ones.
+
+Note that the FlexLexer.h file that comes along with your Flex distribution
+must be copied to pgadmin/include/pgscript only if you use parser.sh with a
+Flex version different from the one used before. Let's say you download pgAdmin
+source code and the pgadmin/include/pgscript/FlexLexer.h corresponds to Flex
+2.5.33. If you use Flex 2.5.34 you will need to copy FlexLexr.h from your Flex
+distribution to pgadmin/include/pgscript.

@@ -130,6 +130,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/query_execfile.xpm \
 	$(srcdir)/include/images/query_execute.xpm \
 	$(srcdir)/include/images/query_explain.xpm \
+	$(srcdir)/include/images/query_pgscript.xpm \
 	$(srcdir)/include/images/readdata.xpm \
 	$(srcdir)/include/images/refresh.xpm \
 	$(srcdir)/include/images/reload.xpm \

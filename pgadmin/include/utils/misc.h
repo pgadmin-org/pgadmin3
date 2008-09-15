@@ -48,6 +48,8 @@ typedef unsigned long OID;
 #define END_OF_LINE wxT("\n")
 #endif
 
+#if !defined(PGSCLI)
+
 #define wxCookieType wxTreeItemIdValue
 
 class sysSettings;
@@ -85,6 +87,8 @@ extern sysSettings *settings;
 #define CTRL_DATEPICK(id)       (XRCCTRL(*this, id, wxDatePickerCtrl))
 #define CTRL_TREE(id)           (XRCCTRL(*this, id, ctlTree))
 
+#endif // PGSCLI
+
 // Conversions
 wxString BoolToStr(bool value);         // english; used for config values
 wxString DateToAnsiStr(const wxDateTime &datetime);
@@ -107,6 +111,8 @@ wxString DateToStr(const wxDateTime &datetime);
 
 // Quoting
 wxString qtConnString(const wxString& value); // connection strings always have single quotes escaped with backslash
+
+#if !defined(PGSCLI)
 
 // check if size/pos have reasonable values
 void CheckOnScreen(wxWindow *win, wxPoint &pos, wxSize &size, const int w0=100, const int h0=70);
@@ -228,8 +234,14 @@ enum        // depends on pgaFactory::addImage order!
     PGICON_PUBLIC
 };
 
+#endif // PGSCLI
+
 #endif
+
+#if !defined(PGSCLI)
 
 // File/directory name cleanup
 wxString sanitizePath(const wxString &path);
 wxString commandLineCleanOption(const wxString &option);
+
+#endif // PGSCLI
