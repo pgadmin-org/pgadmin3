@@ -1158,59 +1158,88 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 	// other distros in the future if they drop a suitable file someplace. 
 	// Look for any files that match the basic postgres*.ini pattern.
 
-    wxDir dir(wxT("/etc/"));
 	wxLogInfo(wxT("Loading servers registered on the local machine"));
 	
-	if (dir.IsOpened())
+	if (wxFile::Exists(REGISTRY_FILE))
 	{
-		wxString postgresqlIni, filename;
-		
-		bool cont = dir.GetFirst(&filename, wxT("postgres*.ini"), wxDIR_FILES);
-		postgresqlIni = wxT("/etc/") + filename;
-		 
-		while (cont)
-		{
-			// Only load the server if we didn't load it with all the others.
-			if (discoveredServers.Index(postgresqlIni, false) < 0)
-			{
-			    wxLogInfo(wxT("Checking file %s"), postgresqlIni.c_str());
-				
-				wxFileStream fst(postgresqlIni);
-				wxFileConfig *cnf = new wxFileConfig(fst);
-
-				wxString version;
-				if (cnf->Read(wxT("/Packages/Server"), &version))
+        wxString version, locale;
+        long cookie;
+        
+        wxFileStream fst(REGISTRY_FILE);
+        wxFileConfig *cnf = new wxFileConfig(fst);
+        
+		// PostgreSQL servers
+        cnf->SetPath(wxT("/PostgreSQL"));
+        bool flag = cnf->GetFirstGroup(version, cookie);
+        while (flag)
+        {
+            // If there is no Version entry, this is probably an uninstalled server
+            if (cnf->Read(version + wxT("/Version"), wxEmptyString) != wxEmptyString)
+            {
+				// Only load this server if we haven't read it from the pgAdmin config
+				if (discoveredServers.Index(cnf->GetPath() + wxT("/") + version, false) < 0)
 				{
-				    wxLogInfo(wxT("Loading server from %s"), postgresqlIni.c_str());
+					 
+					// Basic details
+					servername = wxT("localhost");
+					cnf->Read(version + wxT("/Description"), &description, wxT("PostgreSQL ") + version);
+					cnf->Read(version + wxT("/Superuser"), &username, wxEmptyString);
+					cnf->Read(version + wxT("/Port"), &port, 0);
+				
+				    // Add the item, if it looks sane
+				    if (port != 0 && username != wxEmptyString)
+				    {
+						server = new pgServer(servername, description, wxT("postgres"), username, port, false, 0);
+						server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
+						server->iSetDiscovered(true);
+				    	browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+				    }
+				}
+			}
+			
+            flag = cnf->GetNextGroup(version, cookie);
+		}
+		
+		// EnterpriseDB servers
+        cnf->SetPath(wxT("/EnterpriseDB"));
+        flag = cnf->GetFirstGroup(version, cookie);
+        while (flag)
+        {
+            // If there is no Version entry, this is probably an uninstalled server
+            if (cnf->Read(version + wxT("/Version"), wxEmptyString) != wxEmptyString)
+            {
+				// Only load this server if we haven't read it from the pgAdmin config
+				if (discoveredServers.Index(cnf->GetPath() + wxT("/") + version, false) < 0)
+				{
 					
 					// Basic details
 					servername = wxT("localhost");
-					cnf->Read(wxT("/Server/Description"), &description, wxT("PostgreSQL ") + version);
-					cnf->Read(wxT("/Server/Username"), &username, wxT("postgres"));
-					cnf->Read(wxT("/Server/Port"), &port, 5432);
-
-					// We found a version number, so create the server
-					server = new pgServer(servername, description, wxT("postgres"), username, port, false, 0);
-					server->iSetDiscoveryID(postgresqlIni);
-					server->iSetDiscovered(true);
-					browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
-					browser->SortChildren(obj->GetId());
+					cnf->Read(version + wxT("/Description"), &description, wxT("EnterpriseDB ") + version);
+					cnf->Read(version + wxT("/Superuser"), &username, wxEmptyString);
+					cnf->Read(version + wxT("/Port"), &port, 0);
+					
+				    // Add the item, if it looks sane
+				    if (port != 0 && username != wxEmptyString)
+				    {
+						server = new pgServer(servername, description, wxT("edb"), username, port, false, 0);
+						server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
+						server->iSetDiscovered(true);
+				    	browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+				    }
 				}
-				
-				delete cnf;
 			}
-			cont = dir.GetNext(&filename);
-			postgresqlIni = wxT("/etc/") + filename;
+			
+            flag = cnf->GetNextGroup(version, cookie);
 		}
+	
+		delete cnf;
+	    browser->SortChildren(obj->GetId());
     }
-	else 
-	    wxLogError(wxT("Failed to open /etc"));
 
 #endif // !WIN32
 
     return server;
 }
-
 
 #include "images/servers.xpm"
 #include "images/server.xpm"

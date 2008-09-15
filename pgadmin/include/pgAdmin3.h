@@ -50,6 +50,11 @@
 
 const float SERVER_MIN_VERSION = 7.3f;
 
+// The registry file
+#ifndef __WXMSW__
+#define REGISTRY_FILE wxT("/etc/postgres-reg.ini")
+#endif
+
 // Some redefines for modern Microsoft compilers
 #if defined(_MSC_VER) 
 #define creat _creat
@@ -71,13 +76,13 @@ extern wxString i18nPath;               // Where i18n data is stored
 extern wxString utilitiesIni;           // The plugins ini
 extern wxString settingsIni;            // The default settings file
 
-extern sysSettings *settings;			// The settings manager
+extern sysSettings *settings;           // The settings manager
 
-extern frmMain *winMain;				// The main app window
+extern frmMain *winMain;                // The main app window
 
-extern wxLocale *locale;				// Application locale
-extern wxArrayInt existingLangs;		// Language IDs
-extern wxArrayString existingLangNames;	// Language Names
+extern wxLocale *locale;                // Application locale
+extern wxArrayInt existingLangs;        // Language IDs
+extern wxArrayString existingLangNames; // Language Names
 
 // Helper app paths - PG
 extern wxString pgBackupExecutable;
@@ -132,20 +137,20 @@ class pgAdmin3 : public wxApp
 public:
     virtual bool OnInit();
     virtual int OnExit();
-	
+    
 #ifdef __WXMAC__
     void MacOpenFile(const wxString &fileName); 
 #endif
 
 private:
-	wxString LocatePath(const wxString &pathToFind, const bool isFile);
+    wxString LocatePath(const wxString &pathToFind, const bool isFile);
     wxString GenerateHelpPath(const wxString &file, const wxString &current, wxPathList stdPaths, wxPathList dbmsPaths);
     bool LoadAllXrc(const wxString dir);
 
 #ifdef __WXMAC__
-	wxString macFileToOpen;
+    wxString macFileToOpen;
 #endif
-	
+    
 protected:
     void InitAppPaths();
     void InitXtraPaths();
@@ -164,23 +169,23 @@ public:
     void SetIcons(wxTopLevelWindow *dlg);
     wxIcon GetSmallIconImage();
     wxIcon GetBigIconImage();
-	wxBitmap GetSplashImage() { return wxBitmap(splash_image); };
+    wxBitmap GetSplashImage() { return wxBitmap(splash_image); };
     wxFont GetSplashTextFont();
-	wxColour GetSplashTextColour() { return splash_text_colour; };
-	long GetSplashTextOffset() { return splash_pos_offset; };
-	wxPoint GetSplashTextPos() { return wxPoint(splash_pos_x, splash_pos_y); };
-	wxString GetShortAppName() { return short_appname; };
+    wxColour GetSplashTextColour() { return splash_text_colour; };
+    long GetSplashTextOffset() { return splash_pos_offset; };
+    wxPoint GetSplashTextPos() { return wxPoint(splash_pos_x, splash_pos_y); };
+    wxString GetShortAppName() { return short_appname; };
     wxString GetLongAppName() { return long_appname; };
     wxString GetWebsiteUrl() { return website_url; };
     wxColour GetReportKeyColour() { return report_key_colour; };
-	bool IsBranded() { return is_branded; };
+    bool IsBranded() { return is_branded; };
 
 private:
-	wxString long_appname, short_appname, website_url, icon;
-	wxImage large_icon, small_icon, splash_image;
-	long splash_font_size, splash_pos_x, splash_pos_y, splash_pos_offset;
-	wxColor splash_text_colour, report_key_colour;
-	bool is_branded;
+    wxString long_appname, short_appname, website_url, icon;
+    wxImage large_icon, small_icon, splash_image;
+    long splash_font_size, splash_pos_x, splash_pos_y, splash_pos_offset;
+    wxColor splash_text_colour, report_key_colour;
+    bool is_branded;
 };
 
 extern pgAppearanceFactory *appearanceFactory;
