@@ -135,7 +135,7 @@ void dlgIndexBase::OnAddCol(wxCommandEvent &ev)
             cbColumns->SetSelection(0);
 
         CheckChange();
-        if (cbColumns->GetValue().IsEmpty())
+        if (!cbColumns->GetCount())
             btnAddCol->Disable();
     }
 }

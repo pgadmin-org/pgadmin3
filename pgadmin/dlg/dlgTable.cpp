@@ -470,7 +470,7 @@ int dlgTable::Go(bool modal)
     }
     else
     {
-        nbNotebook->DeletePage(3);
+        nbNotebook->DeletePage(4);
     }
 
     // Find, and disable the RULE ACL option if we're 8.2
@@ -824,28 +824,28 @@ wxString dlgTable::GetSql()
 
         AppendOwnerNew(sql, wxT("TABLE ") + tabname);
 
-		// Extra column info
+        // Extra column info
 
-		// Statistics
-		for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
-		{
-			if (!lstColumns->GetText(pos, 4).IsEmpty())
-				sql += wxT("ALTER TABLE ") + tabname
-					+ wxT(" ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
-					+ wxT(" SET STATISTICS ") + lstColumns->GetText(pos, 4)
-					+ wxT(";\n");
-		}
+        // Statistics
+        for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
+        {
+            if (!lstColumns->GetText(pos, 4).IsEmpty())
+                sql += wxT("ALTER TABLE ") + tabname
+                    + wxT(" ALTER COLUMN ") + qtIdent(lstColumns->GetText(pos, 0))
+                    + wxT(" SET STATISTICS ") + lstColumns->GetText(pos, 4)
+                    + wxT(";\n");
+        }
 
-		// Comments
-		for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
-		{
-			if (!lstColumns->GetText(pos, 5).IsEmpty())
-				sql += wxT("COMMENT ON COLUMN ") + tabname
-					+ wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
-					+ wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
-					+ wxT(";\n");
-		}
-	}
+        // Comments
+        for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
+        {
+            if (!lstColumns->GetText(pos, 5).IsEmpty())
+                sql += wxT("COMMENT ON COLUMN ") + tabname
+                    + wxT(".") + qtIdent(lstColumns->GetText(pos, 0))
+                    + wxT(" IS ") + qtDbString(lstColumns->GetText(pos, 5))
+                    + wxT(";\n");
+        }
+    }
 
     AppendComment(sql, wxT("TABLE"), schema, table);
 
@@ -923,14 +923,16 @@ wxString dlgTable::AppendNum(bool &changed, wxTextCtrl *ctl, double val)
 #ifdef __WXMAC__
 void dlgTable::OnChangeSize(wxSizeEvent &ev)
 {
-	if (lstConstraints)
+    if (lstConstraints)
     {
-		lstConstraints->SetSize(wxDefaultCoord, wxDefaultCoord,
-			ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+        lstConstraints->SetSize(wxDefaultCoord, wxDefaultCoord,
+            ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 150);
     }
-	lstColumns->SetSize(wxDefaultCoord, wxDefaultCoord,
-	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 150);
+
+    lstColumns->SetSize(wxDefaultCoord, wxDefaultCoord,
+        ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 150);
     SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+
     if (GetAutoLayout())
     {
         Layout();
