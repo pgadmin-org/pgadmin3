@@ -97,10 +97,6 @@ int pgDatabase::Connect()
         }
 
         // Now we're connected.
-        if (connection()->BackendMinimumVersion(8, 2))
-            iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_shdescription WHERE objoid=") + GetOidStr()));
-        else
-            iSetComment(connection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + GetOidStr()));
 
         // check for extended ruleutils with pretty-print option
         wxString exprname=connection()->ExecuteScalar(wxT("SELECT proname FROM pg_proc WHERE proname='pg_get_viewdef' AND proargtypes[1]=16"));
@@ -494,17 +490,23 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
            wxT("SELECT db.oid, datname, db.dattablespace AS spcoid, spcname, datallowconn, datconfig, datacl, ")
            wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
            wxT("has_database_privilege(db.oid, 'CREATE') as cancreate, \n")
-           wxT("current_setting('default_tablespace') AS default_tablespace\n")
+           wxT("current_setting('default_tablespace') AS default_tablespace, \n")
+           wxT("descr.description\n")
            wxT("  FROM pg_database db\n")
            wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
+           wxT("  LEFT OUTER JOIN ") 
+           + wxString(collection->GetConnection()->BackendMinimumVersion(8, 2)?wxT("pg_shdescription"):wxT("pg_description")) +
+           wxT(" descr ON db.oid=descr.objoid\n")
            + restr +
            wxT(" ORDER BY datname"));
     else
         databases = collection->GetServer()->ExecuteSet(
            wxT("SELECT db.oid, datname, datpath, datallowconn, datconfig, datacl, ")
                   wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
-                  wxT("has_database_privilege(db.oid, 'CREATE') as cancreate\n")
+                  wxT("has_database_privilege(db.oid, 'CREATE') as cancreate,\n")
+                  wxT("descr.description\n")
            wxT("  FROM pg_database db\n")
+           wxT("  LEFT OUTER JOIN pg_description descr ON db.oid=descr.objoid\n")
            + restr +
            wxT(" ORDER BY datname"));
     
@@ -520,6 +522,7 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             database->iSetAcl(databases->GetVal(wxT("datacl")));
             database->iSetEncoding(databases->GetVal(wxT("serverencoding")));
             database->iSetCreatePrivilege(databases->GetBool(wxT("cancreate")));
+            database->iSetComment(databases->GetVal(wxT("description")));
             wxString str=databases->GetVal(wxT("datconfig"));
             if (!str.IsEmpty())
                 FillArray(database->GetVariables(), str.Mid(1, str.Length()-2));
@@ -545,13 +548,6 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
                 database->iSetSchemaRestriction(value);
             }
-
-            if (collection->GetConnection()->BackendMinimumVersion(8, 2))
-                database->iSetComment(collection->GetConnection()->ExecuteScalar(wxT("SELECT description FROM pg_shdescription WHERE objoid=") + database->GetOidStr()));
-            else
-                database->iSetComment(collection->GetConnection()->ExecuteScalar(wxT("SELECT description FROM pg_description WHERE objoid=") + database->GetOidStr()));
-
-			database->UpdateDefaultSchema();
 
             // Add the treeview node if required
             if (settings->GetShowSystemObjects() ||!database->GetSystemObject()) 
