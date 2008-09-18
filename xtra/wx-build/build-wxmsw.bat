@@ -59,4 +59,4 @@ goto :eof
 
 :no_wx
 echo wxWidgets not found in %WX%!
-exit 1
+exit /b 1
