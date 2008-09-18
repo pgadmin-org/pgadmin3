@@ -155,7 +155,7 @@ pgsTimer(new pgScriptTimer(this))
     recentKey = wxT("RecentFiles");
     RestorePosition(100, 100, 600, 500, 450, 300);
 
-	// notify wxAUI which frame to use
+    // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
 
@@ -233,7 +233,7 @@ pgsTimer(new pgScriptTimer(this))
     UpdateMacrosList();
     menuBar->Append(macrosMenu, _("&Macros"));
 
-	// View menu
+    // View menu
     viewMenu = new wxMenu();
     viewMenu->Append(MNU_DATABASEBAR, _("&Database bar\tCtrl-Alt-B"), _("Show or hide the database selection bar."), wxITEM_CHECK);
     viewMenu->Append(MNU_OUTPUTPANE, _("&Output pane\tCtrl-Alt-O"), _("Show or hide the output pane."), wxITEM_CHECK);
@@ -317,22 +317,22 @@ pgsTimer(new pgScriptTimer(this))
     toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help on SQL commands."), wxITEM_NORMAL);
     toolBar->Realize();
 
-	// Add the database selection bar
+    // Add the database selection bar
     cbConnection = new ctlComboBoxFix(this, CTRLID_CONNECTION, wxDefaultPosition, wxSize(-1, -1), wxCB_READONLY|wxCB_DROPDOWN);
     cbConnection->Append(conn->GetName(), (void*)conn);
     cbConnection->Append(_("<new connection>"), (void*)0);
 
-	//Create SQL editor notebook
+    //Create SQL editor notebook
     sqlNotebook = new wxNotebook(this, CTL_NTBKCENTER, wxDefaultPosition, wxDefaultSize);
 
-	// Query box
+    // Query box
     sqlQuery = new ctlSQLBox(sqlNotebook, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
     sqlQuery->SetDatabase(conn);
     sqlQuery->SetMarginWidth(1, 16);
     SetEOLModeDisplay(sqlQuery->GetEOLMode());
 
-	// Results pane
-	// TODO change number 9999 by a correct one & should use static event instead?
+    // Results pane
+    // TODO change number 9999 by a correct one & should use static event instead?
     outputPane = new wxNotebook(this, 9999, wxDefaultPosition, wxSize(500, 300));
     sqlResult = new ctlSQLResult(outputPane, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
     explainCanvas = new ExplainCanvas(outputPane);
@@ -341,15 +341,15 @@ pgsTimer(new pgScriptTimer(this))
     msgHistory = new wxTextCtrl(outputPane, CTL_MSGHISTORY, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
     msgHistory->SetFont(settings->GetSQLFont());
 
-	// Graphical Canvas
-	// initialize values
+    // Graphical Canvas
+    // initialize values
     model=new gqbModel();
     controller = new gqbController(model,sqlNotebook, outputPane, wxSize(1280,800));
     firstTime=true;                               // Inform to GQB that the tree of table haven't filled.
-	gqbUpdateRunning = false;					  // Are we already updating the SQL query - event recursion protection.
+    gqbUpdateRunning = false;                      // Are we already updating the SQL query - event recursion protection.
     adjustSizesTimer=NULL;                        // Timer used to avoid a bug when close outputPane
 
-	// Setup SQL editor notebook NBP_SQLEDTR
+    // Setup SQL editor notebook NBP_SQLEDTR
     sqlNotebook->AddPage(sqlQuery, _("SQL Editor"));
     sqlNotebook->AddPage(controller->getViewContainer(), _("Graphical Query Builder"));
     sqlNotebook->SetSelection(0);
@@ -364,17 +364,22 @@ pgsTimer(new pgScriptTimer(this))
     msgResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgHistory->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 
-	// Now, the scratchpad
+    // Now, the scratchpad
     scratchPad = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
 
-	// Kickstart wxAUI
+    // Kickstart wxAUI
     manager.AddPane(toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
     manager.AddPane(cbConnection, wxAuiPaneInfo().Name(wxT("databaseBar")).Caption(_("Database bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
     manager.AddPane(outputPane, wxAuiPaneInfo().Name(wxT("outputPane")).Caption(_("Output pane")).Bottom().MinSize(wxSize(200,100)).BestSize(wxSize(550,300)));
     manager.AddPane(scratchPad, wxAuiPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Right().MinSize(wxSize(100,100)).BestSize(wxSize(250,200)));
     manager.AddPane(sqlNotebook, wxAuiPaneInfo().Name(wxT("sqlQuery")).Caption(_("SQL query")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
 
-	// and reset the captions for the current language
+    // Now load the layout	 
+    wxString perspective;	 
+    settings->Read(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERPSECTIVE_VER), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);	 
+    manager.LoadPerspective(perspective, true);
+
+    // and reset the captions for the current language
     manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
     manager.GetPane(wxT("databaseBar")).Caption(_("Database bar"));
     manager.GetPane(wxT("sqlQuery")).Caption(_("SQL query"));
@@ -382,18 +387,18 @@ pgsTimer(new pgScriptTimer(this))
     manager.GetPane(wxT("scratchPad")).Caption(_("Scratch pad"));
 
 
-	// Sync the View menu options
+    // Sync the View menu options
     viewMenu->Check(MNU_DATABASEBAR, manager.GetPane(wxT("databaseBar")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
     viewMenu->Check(MNU_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
     viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
 
-	// tell the manager to "commit" all the changes just made
+    // tell the manager to "commit" all the changes just made
     manager.Update();
 
     bool bVal;
 
-	// Auto indent
+    // Auto indent
     settings->Read(wxT("frmQuery/AutoIndent"), &bVal, true);
     editMenu->Check(MNU_AUTOINDENT, bVal);
     if (bVal)
@@ -401,7 +406,7 @@ pgsTimer(new pgScriptTimer(this))
     else
         sqlQuery->SetAutoIndent(false);
 
-	// Word wrap
+    // Word wrap
     settings->Read(wxT("frmQuery/WordWrap"), &bVal, false);
     viewMenu->Check(MNU_WORDWRAP, bVal);
     if (bVal)
@@ -409,7 +414,7 @@ pgsTimer(new pgScriptTimer(this))
     else
         sqlQuery->SetWrapMode(wxSTC_WRAP_NONE);
 
-	// Indent Guides
+    // Indent Guides
     settings->Read(wxT("frmQuery/ShowIndentGuides"), &bVal, false);
     viewMenu->Check(MNU_SHOWINDENTGUIDES, bVal);
     if (bVal)
@@ -417,7 +422,7 @@ pgsTimer(new pgScriptTimer(this))
     else
         sqlQuery->SetIndentationGuides(false);
 
-	// Whitespace
+    // Whitespace
     settings->Read(wxT("frmQuery/ShowWhitespace"), &bVal, false);
     viewMenu->Check(MNU_SHOWWHITESPACE, bVal);
     if (bVal)
@@ -425,7 +430,7 @@ pgsTimer(new pgScriptTimer(this))
     else
         sqlQuery->SetViewWhiteSpace(wxSTC_WS_INVISIBLE);
 
-	// Line ends
+    // Line ends
     settings->Read(wxT("frmQuery/ShowLineEnds"), &bVal, false);
     viewMenu->Check(MNU_SHOWLINEENDS, bVal);
     if (bVal)
@@ -458,7 +463,7 @@ pgsTimer(new pgScriptTimer(this))
     msgResult->SetMaxLength(0L);
     msgHistory->SetMaxLength(0L);
 
-	// TODO 666 : This should be replaced with a message when activating GQB not at startup
+    // TODO 666 : This should be replaced with a message when activating GQB not at startup
     wxString msg=wxT("Loading Database metadata info for Graphical Query Builder");
     wxBusyInfo waiting(msg, this);
 
@@ -484,7 +489,7 @@ frmQuery::~frmQuery()
     if(adjustSizesTimer)
         delete adjustSizesTimer;
 
-	// Commented out in the original GQB patch - why?
+    // Commented out in the original GQB patch - why?
     // if(tablesBrowser)
     //     delete tablesBrowser;
 
@@ -609,7 +614,7 @@ void frmQuery::OnDefaultView(wxCommandEvent& event)
 {
     manager.LoadPerspective(FRMQUERY_DEFAULT_PERSPECTIVE, true);
 
-	// Reset the captions for the current language
+    // Reset the captions for the current language
     manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
     manager.GetPane(wxT("databaseBar")).Caption(_("Database bar"));
     manager.GetPane(wxT("sqlQuery")).Caption(_("SQL query"));
@@ -618,7 +623,7 @@ void frmQuery::OnDefaultView(wxCommandEvent& event)
 
     manager.Update();
 
-	// Sync the View menu options
+    // Sync the View menu options
     viewMenu->Check(MNU_DATABASEBAR, manager.GetPane(wxT("databaseBar")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
     viewMenu->Check(MNU_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
@@ -753,12 +758,12 @@ SqlTokenHelp sqlTokenHelp[] =
     { wxT("MOVE"), 0, 0},
     { wxT("NOTIFY"), 0, 0},
     { wxT("END"), 0, 0},
-	// { wxT("PREPARE"), 0, 0},  handled individually
+    // { wxT("PREPARE"), 0, 0},  handled individually
     { wxT("REINDEX"), 0, 0},
     { wxT("RELEASE"), wxT("pg/sql-release-savepoint"), 0},
     { wxT("RESET"), 0, 0},
     { wxT("REVOKE"), 0, 0},
-	// { wxT("ROLLBACK"), 0, 0}, handled individually
+    // { wxT("ROLLBACK"), 0, 0}, handled individually
     { wxT("SAVEPOINT"), 0, 0},
     { wxT("SELECT"), 0, 0},
     { wxT("SET"), 0, 0},
@@ -801,14 +806,14 @@ void frmQuery::OnContents(wxCommandEvent& event)
 
 void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 {
-	// On Solaris, this event seems to get fired when the form closes(!!)
+    // On Solaris, this event seems to get fired when the form closes(!!)
     if(!IsVisible() && !loading)
         return;
 
     unsigned int sel=cbConnection->GetCurrentSelection();
     if (sel == cbConnection->GetCount()-1)
     {
-		// new Connection
+        // new Connection
         dlgSelectConnection dlg(this, mainForm);
         int rc=dlg.Go(conn, cbConnection);
         if (rc == wxID_OK)
@@ -843,7 +848,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
         title = wxT("Query - ") + cbConnection->GetValue();
         setExtendedTitle();
 
-		//Refresh GQB Tree if used
+        //Refresh GQB Tree if used
         if(conn && !firstTime)
         {
             wxString msg = wxT("Retrieving tables from database ")+conn->GetDbname();
@@ -950,25 +955,25 @@ void frmQuery::OnSaveHistory(wxCommandEvent& event)
 void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
 {
     if(sqlNotebook && sqlNotebook->GetPageCount() >= 2)
-	{
+    {
         if (event.GetSelection() == 0)
-			updateFromGqb(false);
-		else
-		{
+            updateFromGqb(false);
+        else
+        {
             if(firstTime)        //Things that should be done on first click on GQB
             {
-				// Size, and pause to allow the window to draw
-				adjustGQBSizes();
-				wxTheApp->Yield(true);
+                // Size, and pause to allow the window to draw
+                adjustGQBSizes();
+                wxTheApp->Yield(true);
 
-				// Database related Stuffs.
-				// Create a server object and connect it.
-				wxString msg= wxT("Retrieving tables from database ") + conn->GetDbname();
-				wxBusyInfo waiting(msg, this);
-				controller->getTablesBrowser()->refreshTables(conn);
-				firstTime=false;
-			}
-		}
+                // Database related Stuffs.
+                // Create a server object and connect it.
+                wxString msg= wxT("Retrieving tables from database ") + conn->GetDbname();
+                wxBusyInfo waiting(msg, this);
+                controller->getTablesBrowser()->refreshTables(conn);
+                firstTime=false;
+            }
+        }
     }
 }
 
@@ -1221,7 +1226,7 @@ void frmQuery::OnAddFavourite(wxCommandEvent &event)
         return;
     if (dlgAddFavourite(this,favourites).AddFavourite(sqlQuery->GetText()))
     {
-		// Added a favourite, so save
+        // Added a favourite, so save
         queryFavouriteFileProvider::SaveFavourites(favourites);
         UpdateFavouritesList();
     }
@@ -1233,13 +1238,13 @@ void frmQuery::OnManageFavourites(wxCommandEvent &event)
     int r = dlgManageFavourites(this,favourites).ManageFavourites();
     if (r == 1)
     {
-		// Changed something, so save
+        // Changed something, so save
         queryFavouriteFileProvider::SaveFavourites(favourites);
         UpdateFavouritesList();
     }
     else if (r == -1)
     {
-		// Changed something requiring rollback
+        // Changed something requiring rollback
         delete favourites;
         favourites = queryFavouriteFileProvider::LoadFavourites(true);
         UpdateFavouritesList();
@@ -1344,8 +1349,8 @@ void frmQuery::OnClose(wxCloseEvent& event)
 
 void frmQuery::OnChangeStc(wxStyledTextEvent& event)
 {
-	// The STC seems to fire this event even if it loses focus. Fortunately,
-	// that seems to be m_modificationType == 512.
+    // The STC seems to fire this event even if it loses focus. Fortunately,
+    // that seems to be m_modificationType == 512.
     if (!changed && event.m_modificationType != 512)
     {
         changed=true;
@@ -1441,7 +1446,7 @@ void frmQuery::OnSave(wxCommandEvent& event)
 // Set the line ending style based on the current document.
 void frmQuery::SetLineEndingStyle()
 {
-	// Detect the file mode
+    // Detect the file mode
     wxRegEx *reLF = new wxRegEx(wxT("[^\r]\n"), wxRE_NEWLINE);
     wxRegEx *reCRLF = new wxRegEx(wxT("\r\n"), wxRE_NEWLINE);
     wxRegEx *reCR = new wxRegEx(wxT("\r[^\n]"), wxRE_NEWLINE);
@@ -1471,7 +1476,7 @@ void frmQuery::SetLineEndingStyle()
             mode = wxSTC_EOL_CR;
     }
 
-	// Now set the status text, menu options, and the mode
+    // Now set the status text, menu options, and the mode
     sqlQuery->SetEOLMode(mode);
     switch(mode)
     {
@@ -1657,11 +1662,11 @@ void frmQuery::OnCancel(wxCommandEvent& event)
 
 void frmQuery::OnExplain(wxCommandEvent& event)
 {
-	if(sqlNotebook->GetSelection()==1)
-	{
-		if (!updateFromGqb(true))
-			return;
-	}
+    if(sqlNotebook->GetSelection()==1)
+    {
+        if (!updateFromGqb(true))
+            return;
+    }
 
     wxString query=sqlQuery->GetSelectedText();
     if (query.IsNull())
@@ -1690,8 +1695,8 @@ void frmQuery::OnExplain(wxCommandEvent& event)
 
     if (analyze)
     {
-		// Bizarre bug fix - if we append a rollback directly after -- it'll crash!!
-		// Add a \n first.
+        // Bizarre bug fix - if we append a rollback directly after -- it'll crash!!
+        // Add a \n first.
         sql += wxT("\n;\nROLLBACK;");
     }
 
@@ -1701,76 +1706,76 @@ void frmQuery::OnExplain(wxCommandEvent& event)
 // Update the main SQL query from the GQB if desired
 bool frmQuery::updateFromGqb(bool executing)
 {
-	// Make sure this doesn't get call recursively through an event
-	if (gqbUpdateRunning)
-		return false;
+    // Make sure this doesn't get call recursively through an event
+    if (gqbUpdateRunning)
+        return false;
 
-	gqbUpdateRunning = true;
+    gqbUpdateRunning = true;
 
     // Execute Generation of SQL sentence from GQB
-	bool canGenerate=false;
-	wxString newQuery = controller->generateSQL();
+    bool canGenerate=false;
+    wxString newQuery = controller->generateSQL();
 
-	// If the new query is empty, don't do anything
-	if (newQuery.IsEmpty())
-	{
-		wxMessageBox(_("No SQL query was generated."), wxT("Graphical Query Builder"), wxICON_INFORMATION);
-		gqbUpdateRunning = false;
-		return false;
-	}
+    // If the new query is empty, don't do anything
+    if (newQuery.IsEmpty())
+    {
+        wxMessageBox(_("No SQL query was generated."), wxT("Graphical Query Builder"), wxICON_INFORMATION);
+        gqbUpdateRunning = false;
+        return false;
+    }
 
-	// Only prompt the user if the dirty flag is set, and the textbox is not empty, and the query has changed.
-	if(changed && !sqlQuery->GetText().Trim().IsEmpty() && sqlQuery->GetText() != newQuery + wxT("\n")) 
-	{
-	    wxString fn;
-		if (executing)
-			fn = _("The generated SQL query has changed.\nDo you want to update it and execute the query?");
-		else
+    // Only prompt the user if the dirty flag is set, and the textbox is not empty, and the query has changed.
+    if(changed && !sqlQuery->GetText().Trim().IsEmpty() && sqlQuery->GetText() != newQuery + wxT("\n")) 
+    {
+        wxString fn;
+        if (executing)
+            fn = _("The generated SQL query has changed.\nDo you want to update it and execute the query?");
+        else
             fn = _("The generated SQL query has changed.\nDo you want to update it?");
 
         wxMessageDialog msg(this, fn, _("Query"), wxYES_NO|wxICON_EXCLAMATION);
-	    if(msg.ShowModal() == wxID_YES && changed)
-	    {
-	        canGenerate=true;
-	    }
-	}
-	else
-	{
-	    canGenerate=true;
-	}
+        if(msg.ShowModal() == wxID_YES && changed)
+        {
+            canGenerate=true;
+        }
+    }
+    else
+    {
+        canGenerate=true;
+    }
 
-	if(canGenerate)
-	{
-	    sqlQuery->ClearAll();
-	    sqlQuery->AddText(newQuery + wxT("\n"));
+    if(canGenerate)
+    {
+        sqlQuery->ClearAll();
+        sqlQuery->AddText(newQuery + wxT("\n"));
             sqlQuery->Colourise(0, sqlQuery->GetText().Length());
             sqlNotebook->SetSelection(0);
-	    changed=true;
-		
-		gqbUpdateRunning = false;
-		return true;
-	}
+        changed=true;
+        
+        gqbUpdateRunning = false;
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 void frmQuery::OnExecute(wxCommandEvent& event)
 {
-	if(sqlNotebook->GetSelection()==1)
-	{
-		if (!updateFromGqb(true))
-			return;
-	}
+    if(sqlNotebook->GetSelection()==1)
+    {
+        if (!updateFromGqb(true))
+            return;
+    }
 
-	wxString query=sqlQuery->GetSelectedText();
-	if (query.IsNull())
-		query = sqlQuery->GetText();
+    wxString query=sqlQuery->GetSelectedText();
+    if (query.IsNull())
+        query = sqlQuery->GetText();
 
-	if (query.IsNull())
-		return;
+    if (query.IsNull())
+        return;
 
-	execQuery(query);
-	sqlQuery->SetFocus();
+    execQuery(query);
+    sqlQuery->SetFocus();
 }
 
 
@@ -1818,11 +1823,11 @@ void frmQuery::OnExecScript(wxCommandEvent& event)
 
 void frmQuery::OnExecFile(wxCommandEvent &event)
 {
-	if(sqlNotebook->GetSelection()==1)
-	{
-		if (!updateFromGqb(true))
-			return;
-	}
+    if(sqlNotebook->GetSelection()==1)
+    {
+        if (!updateFromGqb(true))
+            return;
+    }
 
     wxString query=sqlQuery->GetSelectedText();
     if (query.IsNull())
@@ -1841,13 +1846,13 @@ void frmQuery::OnMacroManage(wxCommandEvent &event)
     int r = dlgManageMacros(this,mainForm,macros).ManageMacros();
     if (r == 1)
     {
-		// Changed something, so save
+        // Changed something, so save
         queryMacroFileProvider::SaveMacros(macros);
         UpdateMacrosList();
     }
     else if (r == -1)
     {
-		// Changed something requiring rollback
+        // Changed something requiring rollback
         delete macros;
         macros = queryMacroFileProvider::LoadMacros(true);
         UpdateMacrosList();
@@ -1866,7 +1871,7 @@ void frmQuery::OnMacroInvoke(wxCommandEvent &event)
 
     wxString query = mac->GetQuery();
     if (query.IsEmpty())
-        return;			// do not execute empty query
+        return;            // do not execute empty query
 
     if (query.Find(wxT("$SELECTION$")) != wxNOT_FOUND)
     {
@@ -1898,7 +1903,7 @@ void frmQuery::setTools(const bool running)
     fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
     fileMenu->Enable(MNU_QUICKREPORT, sqlResult->CanExport());
     fileMenu->Enable(MNU_RECENT, (recentFileMenu->GetMenuItemCount() > 0));
-	sqlQuery->EnableAutoComp(running);
+    sqlQuery->EnableAutoComp(running);
 }
 
 
@@ -1924,7 +1929,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
     explainCanvas->Clear();
 
-	// Clear markers and indicators
+    // Clear markers and indicators
     sqlQuery->MarkerDeleteAll(0);
     sqlQuery->StartStyling(0, wxSTC_INDICS_MASK);
     sqlQuery->SetStyling(sqlQuery->GetText().Length(), 0);
@@ -1941,9 +1946,9 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
     qi->explain = explain;
     qi->verbose = verbose;
 
-	// We must do this lot before the query starts, otherwise
-	// it might not happen once the main thread gets busy with
-	// other stuff.
+    // We must do this lot before the query starts, otherwise
+    // it might not happen once the main thread gets busy with
+    // other stuff.
     SetStatusText(wxT(""), STATUSPOS_SECS);
     SetStatusText(_("Query is running."), STATUSPOS_MSGS);
     SetStatusText(wxT(""), STATUSPOS_ROWS);
@@ -1960,7 +1965,7 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
     if (sqlResult->Execute(query, resultToRetrieve, this, QUERY_COMPLETE, qi) >= 0)
     {
-		// Return and wait for the result
+        // Return and wait for the result
         return;
     }
 
@@ -2043,7 +2048,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 
                 errPos -= qi->queryOffset;        // do not count EXPLAIN or similar
 
-				// Set an indicator on the error word (break on any kind of bracket, a space or full stop)
+                // Set an indicator on the error word (break on any kind of bracket, a space or full stop)
                 int sPos = errPos + selStart - 1, wEnd = 1;
                 sqlQuery->StartStyling(sPos, wxSTC_INDICS_MASK);
                 while(sqlQuery->GetCharAt(sPos + wEnd) != ' ' &&
@@ -2163,7 +2168,7 @@ void frmQuery::writeScriptOutput()
 // Complete the processing of a query
 void frmQuery::completeQuery(bool done, bool explain, bool verbose)
 {
-	// Display async notifications
+    // Display async notifications
     pgNotification *notify;
     int notifies = 0;
     notify = conn->GetNotification();
@@ -2197,7 +2202,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
     msgHistory->AppendText(wxT("\n"));
     msgHistory->ShowPosition(0);
 
-	// If the transaction aborted for some reason, issue a rollback to cleanup.
+    // If the transaction aborted for some reason, issue a rollback to cleanup.
     if (conn->GetTxStatus() == PGCONN_TXSTATUS_INERROR)
         conn->ExecuteVoid(wxT("ROLLBACK;"));
 
@@ -2214,7 +2219,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
         manager.Update();
     }
 
-	// If this was an EXPLAIN query, process the results
+    // If this was an EXPLAIN query, process the results
     if (done && explain)
     {
         if (!verbose)
@@ -2223,7 +2228,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
             wxString str;
             if (sqlResult->NumRows() == 1)
             {
-				// Avoid shared storage issues with strings
+                // Avoid shared storage issues with strings
                 str.Append(sqlResult->OnGetItemText(0, 0).c_str());
             }
             else
@@ -2256,7 +2261,7 @@ void frmQuery::OnTimer(wxTimerEvent & event)
         msgHistory->AppendText(str + wxT("\n"));
     }
 
-	// Increase the granularity for longer running queries
+    // Increase the granularity for longer running queries
     if (elapsedQuery > 200 && timer.GetInterval() == 10 && timer.IsRunning())
     {
         timer.Stop();
@@ -2268,21 +2273,21 @@ void frmQuery::OnTimer(wxTimerEvent & event)
 // avoid some issues when implementing inside controller/view Classes
 void frmQuery::adjustGQBSizes()
 {
-	// Get Size (only height) from main Tab with GQB and SQL Editor and adjust the width 
-	// to desiree, then set [Sash of tablesBrowser | GQB_Canvas]
+    // Get Size (only height) from main Tab with GQB and SQL Editor and adjust the width 
+    // to desiree, then set [Sash of tablesBrowser | GQB_Canvas]
     manager.Update();
     sqlNotebook->Refresh();
     wxSize s = sqlNotebook->GetSize();
     s.SetWidth(200);
-    s.SetHeight(s.GetHeight()-180);		//re-adjust weight eliminating Horz Sash Position
+    s.SetHeight(s.GetHeight()-180);        //re-adjust weight eliminating Horz Sash Position
     controller->getTablesBrowser()->SetSize(s);
     controller->setSashVertPosition(controller->getTablesBrowser()->GetSize().GetWidth());
 
-	// Now Adjust Sash Horizontal
+    // Now Adjust Sash Horizontal
     s = sqlNotebook->GetSize();
     controller->setSashHorizPosition(s.GetHeight()-150);
 
-	// Adjust GQB grids internal columns sizes
+    // Adjust GQB grids internal columns sizes
     controller->calcGridColsSizes();
 }
 
@@ -2293,7 +2298,7 @@ void frmQuery::adjustGQBSizes()
 void frmQuery::OnResizeHorizontally(wxSplitterEvent& event)
 {
     int y = event.GetSashPosition();
-	wxSize s = controller->getTablesBrowser()->GetSize();
+    wxSize s = controller->getTablesBrowser()->GetSize();
     s.SetHeight(y);               // re-adjust weight eliminating Horz Sash Position
     controller->getTablesBrowser()->SetSize(s);
 }
