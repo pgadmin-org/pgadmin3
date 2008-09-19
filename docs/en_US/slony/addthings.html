@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
-<link rel="home" href="index.html" title="Slony-I 1.2.14 Documentation">
+<link rel="home" href="index.html" title="Slony-I 1.2.15 Documentation">
 <link rel="up" href="slonyadmin.html" title="Slony-I Administration">
 <link rel="prev" href="locking.html" title="11. Locking Issues">
 <link rel="next" href="dropthings.html" title="13. Dropping things from Slony-I Replication">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="addthings">12. A Task-Oriented View of <span class="productname">Slony-I</span></h2></div></div></div>
-<a name="id2591096"></a><p>You may discover that you have missed replicating things that
+<a name="id2591102"></a><p>You may discover that you have missed replicating things that
 you wish you were replicating.</p>
 <p>This can generally be fairly easily remedied.  This section
 attempts to provide a &#8220;<span class="quote">task-oriented</span>&#8221; view of how to use
@@ -61,8 +61,8 @@ the interaction of five things that have all broken.</p>
 <p> Here are a set of &#8220;<span class="quote">recipes</span>&#8221; for how to do various
 sorts of modifications to replication configuration:</p>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2591270">12.1.  Adding a table to replication </h3></div></div></div>
-<a name="id2591274"></a><p> <span class="productname">Slony-I</span> does not allow you to add a table to a replication set
+<div class="titlepage"><div><div><h3 class="title" id="id2591275">12.1.  Adding a table to replication </h3></div></div></div>
+<a name="id2591279"></a><p> <span class="productname">Slony-I</span> does not allow you to add a table to a replication set
 that is already being replicated. In principle, it would certainly be
 <span class="emphasis"><em>possible;</em></span> what would happen is that the
 SET_ADD_TABLE event would lead to the relevant code from the
@@ -108,8 +108,8 @@ can merge the new set in alongside the old one via <a class="xref" href="stmtmer
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2591417">12.2.  How to add columns to a replicated table </h3></div></div></div>
-<a name="id2591421"></a><p> This also answers the question &#8220;<span class="quote">How do I rename columns
+<div class="titlepage"><div><div><h3 class="title" id="id2591422">12.2.  How to add columns to a replicated table </h3></div></div></div>
+<a name="id2591426"></a><p> This also answers the question &#8220;<span class="quote">How do I rename columns
 on a replicated table?</span>&#8221;, and, more generally, other questions
 to the effect of &#8220;<span class="quote">How do I modify the definitions of replicated
 tables?</span>&#8221;</p>
@@ -156,7 +156,7 @@ alter column c1 set not null; </code>.</p>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2591601">12.3.  How to remove replication for a node</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2591606">12.3.  How to remove replication for a node</h3></div></div></div>
 <p> You will want to remove the various <span class="productname">Slony-I</span> components
 connected to the database(s).</p>
 <p> We will just consider, for now, doing this to one node. If you
@@ -204,7 +204,7 @@ previously added in using <a class="xref" href="stmttableaddkey.html" title="TAB
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2591756">12.4.  Adding A Node To Replication</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2591761">12.4.  Adding A Node To Replication</h3></div></div></div>
 <p>Things are not fundamentally different whether you are adding a
 brand new, fresh node, or if you had previously dropped a node and are
 recreating it. In either case, you are adding a node to
@@ -252,7 +252,7 @@ some replication set.</p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2591940">12.5.  How do I reshape subscriptions?</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2591945">12.5.  How do I reshape subscriptions?</h3></div></div></div>
 <p> For instance, I want subscriber node 3 to draw data from node
 1, when it is presently drawing data from node 2. </p>
 <p> This isn't a case for <a class="xref" href="stmtmoveset.html" title="MOVE SET"><span class="refentrytitle">MOVE SET</span></a>; we're not
@@ -262,11 +262,11 @@ the subscriptions.  Subscriptions will not be started from scratch;
 they will merely be reconfigured.  </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2591971">12.6.  How do I use <a class="link" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Log Shipping?</a> </h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2591976">12.6.  How do I use <a class="link" href="logshipping.html" title="14. Log Shipping - Slony-I with Files">Log Shipping?</a> </h3></div></div></div>
 <p> Discussed in the <a class="link" href="logshipping.html" title="14. Log Shipping - Slony-I with Files"> Log Shipping </a> section... </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2591991">12.7.  How do I know replication is working?</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2591997">12.7.  How do I know replication is working?</h3></div></div></div>
 <p> The ultimate proof is in looking at whether data added at the
 origin makes it to the subscribers.  That's a &#8220;<span class="quote">simply matter of
 querying</span>&#8221;.</p>
@@ -297,16 +297,16 @@ node. </p></li>
 </ul></div>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2592067">12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2592073">12.8. How do I upgrade <span class="productname">Slony-I</span> to a newer version? </h3></div></div></div>
 <p> Discussed  <a class="link" href="slonyupgrade.html" title="21.  Slony-I Upgrade"> here </a> </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2592088">12.9.  What happens when I fail over?</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2592094">12.9.  What happens when I fail over?</h3></div></div></div>
 <p> Some of this is described under <a class="xref" href="failover.html" title="8. Doing switchover and failover with Slony-I">Section 8, &#8220;Doing switchover and failover with Slony-I&#8221;</a> but
 more of a procedure should be written...</p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2592101">12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2592106">12.10.  How do I &#8220;<span class="quote">move master</span>&#8221; to a new node? </h3></div></div></div>
 <p> You must first pick a node that is connected to the former
 origin (otherwise it is not straightforward to reverse connections in
 the move to keep everything connected). </p>
@@ -322,7 +322,7 @@ origin node.  If the new node is a few events behind, it may take a
 little while for this to take place. </p>
 </div>
 <div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2592153">12.11.  How Do I Do A &#8220;<span class="quote">Full Sync</span>&#8221; On A Table? </h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2592158">12.11.  How Do I Do A &#8220;<span class="quote">Full Sync</span>&#8221; On A Table? </h3></div></div></div>
 <p> The <span class="productname">Slony-I</span> notion of a <code class="command">SYNC</code> is actually
 always an <span class="emphasis"><em>incremental</em></span> thing; a
 <code class="command">SYNC</code> represents the set of updates that were

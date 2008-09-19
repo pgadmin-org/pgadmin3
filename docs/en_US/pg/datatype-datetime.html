@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.9 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.10 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-binary.html" title="8.4. Binary Data Types">
 <link rel="next" href="datatype-boolean.html" title="8.6. Boolean Type">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="datatype-datetime">8.5. Date/Time Types</h2></div></div></div>
-<a name="id2601604"></a><a name="id2601615"></a><a name="id2601624"></a><a name="id2601633"></a><a name="id2601642"></a><a name="id2601652"></a><a name="id2601661"></a><a name="id2601671"></a><a name="id2601680"></a><p>    <span class="productname">PostgreSQL</span> supports the full set of
+<a name="id2601615"></a><a name="id2601626"></a><a name="id2601635"></a><a name="id2601644"></a><a name="id2601653"></a><a name="id2601663"></a><a name="id2601672"></a><a name="id2601682"></a><a name="id2601691"></a><p>    <span class="productname">PostgreSQL</span> supports the full set of
     <acronym class="acronym">SQL</acronym> date and time types, shown in <a class="xref" href="datatype-datetime.html#datatype-datetime-table" title="Table 8.9. Date/Time Types">Table 8.9, &#8220;Date/Time Types&#8221;</a>.  The operations available
     on these data types are described in
     <a class="xref" href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">Section 9.9, &#8220;Date/Time Functions and Operators&#8221;</a>.
@@ -178,8 +178,8 @@
      it defaults to the precision of the literal value.
     </p>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2602130">8.5.1.1. Dates</h4></div></div></div>
-<a name="id2602134"></a><p>     <a class="xref" href="datatype-datetime.html#datatype-datetime-date-table" title="Table 8.10. Date Input">Table 8.10, &#8220;Date Input&#8221;</a> shows some possible
+<div class="titlepage"><div><div><h4 class="title" id="id2602141">8.5.1.1. Dates</h4></div></div></div>
+<a name="id2602145"></a><p>     <a class="xref" href="datatype-datetime.html#datatype-datetime-date-table" title="Table 8.10. Date Input">Table 8.10, &#8220;Date Input&#8221;</a> shows some possible
      inputs for the <code class="type">date</code> type.
     </p>
 <div class="table">
@@ -270,8 +270,8 @@
 <br class="table-break">
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2602329">8.5.1.2. Times</h4></div></div></div>
-<a name="id2602332"></a><a name="id2602338"></a><a name="id2602344"></a><p>      The time-of-day types are <code class="type">time [
+<div class="titlepage"><div><div><h4 class="title" id="id2602340">8.5.1.2. Times</h4></div></div></div>
+<a name="id2602344"></a><a name="id2602349"></a><a name="id2602355"></a><p>      The time-of-day types are <code class="type">time [
       (<em class="replaceable"><code>p</code></em>) ] without time zone</code> and
       <code class="type">time [ (<em class="replaceable"><code>p</code></em>) ] with time
       zone</code>.  Writing just <code class="type">time</code> is equivalent to
@@ -405,8 +405,8 @@
     </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2602659">8.5.1.3. Time Stamps</h4></div></div></div>
-<a name="id2602663"></a><a name="id2602668"></a><a name="id2602674"></a><p>      Valid input for the time stamp types consists of a concatenation
+<div class="titlepage"><div><div><h4 class="title" id="id2602670">8.5.1.3. Time Stamps</h4></div></div></div>
+<a name="id2602674"></a><a name="id2602680"></a><a name="id2602686"></a><p>      Valid input for the time stamp types consists of a concatenation
       of a date and a time, followed by an optional time zone,
       followed by an optional <code class="literal">AD</code> or <code class="literal">BC</code>.
       (Alternatively, <code class="literal">AD</code>/<code class="literal">BC</code> can appear
@@ -478,8 +478,8 @@
      </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2602901">8.5.1.4. Intervals</h4></div></div></div>
-<a name="id2602905"></a><p>       <code class="type">interval</code> values can be written with the following syntax:
+<div class="titlepage"><div><div><h4 class="title" id="id2602913">8.5.1.4. Intervals</h4></div></div></div>
+<a name="id2602916"></a><p>       <code class="type">interval</code> values can be written with the following syntax:
 
 </p>
 <pre class="programlisting">[<span class="optional">@</span>] <em class="replaceable"><code>quantity</code></em> <em class="replaceable"><code>unit</code></em> [<span class="optional"><em class="replaceable"><code>quantity</code></em> <em class="replaceable"><code>unit</code></em>...</span>] [<span class="optional"><em class="replaceable"><code>direction</code></em></span>]</pre>
@@ -516,8 +516,8 @@
      </p>
 </div>
 <div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2603095">8.5.1.5. Special Values</h4></div></div></div>
-<a name="id2603099"></a><a name="id2603107"></a><p>      <span class="productname">PostgreSQL</span> supports several
+<div class="titlepage"><div><div><h4 class="title" id="id2603107">8.5.1.5. Special Values</h4></div></div></div>
+<a name="id2603110"></a><a name="id2603118"></a><p>      <span class="productname">PostgreSQL</span> supports several
       special date/time input values for convenience, as shown in <a class="xref" href="datatype-datetime.html#datatype-datetime-special-table" title="Table 8.13. Special Date/Time Inputs">Table 8.13, &#8220;Special Date/Time Inputs&#8221;</a>.  The values
       <code class="literal">infinity</code> and <code class="literal">-infinity</code>
       are specially represented inside the system and will be displayed
@@ -607,7 +607,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="datatype-datetime-output">8.5.2. Date/Time Output</h3></div></div></div>
-<a name="id2603363"></a><a name="id2603374"></a><p>     The output format of the date/time types can be set to one of the four
+<a name="id2603374"></a><a name="id2603385"></a><p>     The output format of the date/time types can be set to one of the four
      styles ISO 8601,
      <acronym class="acronym">SQL</acronym> (Ingres), traditional POSTGRES, and
      German, using the command <code class="literal">SET datestyle</code>.  The default
@@ -724,7 +724,7 @@
 </div>
 <div class="sect2" lang="en">
 <div class="titlepage"><div><div><h3 class="title" id="datatype-timezones">8.5.3. Time Zones</h3></div></div></div>
-<a name="id2603705"></a><p>    Time zones, and time-zone conventions, are influenced by
+<a name="id2603716"></a><p>    Time zones, and time-zone conventions, are influenced by
     political decisions, not just earth geometry. Time zones around the
     world became somewhat standardized during the 1900's,
     but continue to be prone to arbitrary changes, particularly with
