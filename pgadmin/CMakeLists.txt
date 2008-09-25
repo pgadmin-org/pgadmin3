@@ -48,9 +48,9 @@ IF(ENABLE_NLS)
             ADD_CUSTOM_COMMAND(
                 OUTPUT ${_out}
                 COMMAND ${MSGFMT_EXECUTABLE} -o ${_out} ${_pofile}
-                COMMAND mkdir -p ${pgadmin3_BINARY_DIR}/pgadmin3.app/Contents/Resources/i18n/${_lang}
-                COMMAND cp ${_out} ${pgadmin3_BINARY_DIR}/pgadmin3.app/Contents/Resources/i18n/${_lang}/pgadmin3.mo
-                COMMAND cp ${_dir}/wxstd.mo ${pgadmin3_BINARY_DIR}/pgadmin3.app/Contents/Resources/i18n/${_lang}/wxstd.mo 
+                COMMAND mkdir -p ${pgadmin3_BINARY_DIR}/pgadmin/pgadmin.app/Contents/Resources/i18n/${_lang}
+                COMMAND cp ${_out} ${pgadmin3_BINARY_DIR}/pgadmin/pgadmin.app/Contents/Resources/i18n/${_lang}/pgadmin3.mo
+                COMMAND cp ${_dir}/wxstd.mo ${pgadmin3_BINARY_DIR}/pgadmin/pgadmin.app/Contents/Resources/i18n/${_lang}/wxstd.mo 
                 DEPENDS ${_pofile}
             )
         ELSE(APPLE)
@@ -94,7 +94,7 @@ IF(WIN32)
 ENDIF(WIN32)
 
 # Create the target
-ADD_EXECUTABLE(pgadmin WIN32 ${pgadmin_srcs})
+ADD_EXECUTABLE(pgadmin WIN32 MACOSX_BUNDLE ${pgadmin_srcs})
 TARGET_LINK_LIBRARIES(pgadmin ${PG_LIBRARIES} ${WX_LIBRARIES} ${LIBXML2_LIBRARIES} ${LIBXSLT_LIBRARIES})
 
 # Add subversion tag rule and "fake target"
