@@ -602,7 +602,7 @@ wxString dlgTable::GetSql()
             index = tmpDef.Index(definition);
             if (index < 0)
                 tmpsql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                    +  wxT(" INHERIT ") + qtIdent(definition) + wxT(";\n");
+                    +  wxT(" INHERIT ") + definition + wxT(";\n");
             else
                 tmpDef.RemoveAt(index);
         }
