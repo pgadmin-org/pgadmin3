@@ -2869,6 +2869,9 @@ wxString sqlCellAttr::Quote(pgConn *conn, const wxString& value)
         str = wxT("''");
     else if (type == PGOID_TYPE_BOOL)
         str = value;
+	else if (type == PGOID_TYPE_BIT)
+		// Don't cast this one
+		return wxT("B'") + value + wxT("'");
     else
         str = conn->qtDbString(value);
    
