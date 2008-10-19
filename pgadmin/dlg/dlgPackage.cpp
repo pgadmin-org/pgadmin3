@@ -60,6 +60,8 @@ pgObject *dlgPackage::GetObject()
 
 int dlgPackage::Go(bool modal)
 {
+    int returncode;
+
 	if (!connection->EdbMinimumVersion(8, 2))
 		txtComment->Disable();
 
@@ -82,7 +84,16 @@ int dlgPackage::Go(bool modal)
 
     }
 
-    return dlgSecurityProperty::Go(modal);
+    returncode = dlgSecurityProperty::Go(modal);
+
+#ifdef __WXMAC__
+    // This fixes a UI glitch on MacOS X
+    // Because of the new layout code, the Privileges pane don't size itself properly
+    SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
+    SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
+#endif
+
+    return returncode;
 }
 
 
@@ -104,7 +115,7 @@ pgObject *dlgPackage::CreateObject(pgCollection *collection)
 #ifdef __WXMAC__
 void dlgPackage::OnChangeSize(wxSizeEvent &ev)
 {
-    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    SetPrivilegesLayout();
     if (GetAutoLayout())
     {
         Layout();

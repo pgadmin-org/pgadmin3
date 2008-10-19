@@ -64,6 +64,8 @@ pgObject *dlgSequence::GetObject()
 
 int dlgSequence::Go(bool modal)
 {
+    int returncode;
+
     if (!sequence)
         cbOwner->Append(wxEmptyString);
     AddGroups();
@@ -123,7 +125,16 @@ int dlgSequence::Go(bool modal)
             wxLogError(_("Failed to disable the TRIGGER privilege checkbox!"));
     }
 
-    return dlgSecurityProperty::Go(modal);
+    returncode = dlgSecurityProperty::Go(modal);
+
+#ifdef __WXMAC__
+    // This fixes a UI glitch on MacOS X
+    // Because of the new layout code, the Privileges pane don't size itself properly
+    SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
+    SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
+#endif
+
+    return returncode;
 }
 
 
@@ -140,7 +151,7 @@ pgObject *dlgSequence::CreateObject(pgCollection *collection)
 #ifdef __WXMAC__
 void dlgSequence::OnChangeSize(wxSizeEvent &ev)
 {
-    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    SetPrivilegesLayout();
     if (GetAutoLayout())
     {
         Layout();

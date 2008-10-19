@@ -54,6 +54,8 @@ pgObject *dlgTablespace::GetObject()
 
 int dlgTablespace::Go(bool modal)
 {
+    int returncode;
+
     if (!tablespace)
         cbOwner->Append(wxEmptyString);
     AddGroups();
@@ -76,14 +78,23 @@ int dlgTablespace::Go(bool modal)
     if (!connection->BackendMinimumVersion(8, 2))
         txtComment->Disable();
 
-    return dlgSecurityProperty::Go(modal);
+    returncode = dlgSecurityProperty::Go(modal);
+
+#ifdef __WXMAC__
+    // This fixes a UI glitch on MacOS X
+    // Because of the new layout code, the Privileges pane don't size itself properly
+    SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
+    SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
+#endif
+
+    return returncode;
 }
 
 
 #ifdef __WXMAC__
 void dlgTablespace::OnChangeSize(wxSizeEvent &ev)
 {
-    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    SetPrivilegesLayout();
     if (GetAutoLayout())
     {
         Layout();

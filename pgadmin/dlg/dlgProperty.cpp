@@ -208,10 +208,9 @@ void dlgProperty::EnableOK(bool enable)
 }
 
 
-void dlgSecurityProperty::SetPrivilegesSize(int width, int height)
+void dlgSecurityProperty::SetPrivilegesLayout()
 {
-	securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
-	    width, height);
+	securityPage->lbPrivileges->GetParent()->Layout();
 }
 
 
@@ -1504,7 +1503,7 @@ dlgSecurityProperty::~dlgSecurityProperty()
 void dlgSecurityProperty::OnChangeSize(wxSizeEvent &ev)
 {
 	securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
-	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 550);
     if (GetAutoLayout())
     {
         Layout();
@@ -1516,7 +1515,10 @@ void dlgSecurityProperty::OnChangeSize(wxSizeEvent &ev)
 int dlgSecurityProperty::Go(bool modal)
 {
     if (securityPage)
+    {
         securityPage->SetConnection(connection);
+	    //securityPage->Layout();
+    }
     
     return dlgProperty::Go(modal);
 }

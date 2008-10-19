@@ -56,6 +56,8 @@ pgObject *dlgView::GetObject()
 
 int dlgView::Go(bool modal)
 {
+    int returncode;
+
     AddGroups();
     AddUsers(cbOwner);
 
@@ -79,7 +81,16 @@ int dlgView::Go(bool modal)
             wxLogError(_("Failed to disable the RULE privilege checkbox!"));
     }
 
-    return dlgSecurityProperty::Go(modal);
+    returncode = dlgSecurityProperty::Go(modal);
+
+#ifdef __WXMAC__
+    // This fixes a UI glitch on MacOS X
+    // Because of the new layout code, the Privileges pane don't size itself properly
+    SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
+    SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
+#endif
+
+    return returncode;
 }
 
 
@@ -90,18 +101,6 @@ pgObject *dlgView::CreateObject(pgCollection *collection)
         wxT("\n   AND c.relnamespace=") + schema->GetOidStr());
     return obj;
 }
-
-
-#ifdef __WXMAC__
-void dlgView::OnChangeSize(wxSizeEvent &ev)
-{
-    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
-    if (GetAutoLayout())
-    {
-        Layout();
-    }
-}
-#endif
 
 
 void dlgView::CheckChange()

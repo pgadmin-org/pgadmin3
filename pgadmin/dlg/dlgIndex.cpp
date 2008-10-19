@@ -82,6 +82,8 @@ pgObject *dlgIndexBase::GetObject()
 
 int dlgIndexBase::Go(bool modal)
 {
+    int returncode;
+
     if (index)
     {
         // edit mode: view only
@@ -120,7 +122,14 @@ int dlgIndexBase::Go(bool modal)
     btnAddCol->Disable();
     btnRemoveCol->Disable();
 
-    return dlgCollistProperty::Go(modal);
+    returncode = dlgCollistProperty::Go(modal);
+
+    #ifdef __WXMAC__
+    wxSizeEvent event(wxSize(GetSize().GetWidth() - 25, GetSize().GetHeight() + 200));
+    OnChangeSize(event);
+    #endif
+
+    return returncode;
 }
 
 

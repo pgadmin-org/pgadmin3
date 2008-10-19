@@ -81,6 +81,7 @@ int dlgTextSearchConfiguration::Go(bool modal)
 {
     wxString qry;
     pgSet *set;
+    int returncode;
 
     cbParser->Append(wxT(""));
 
@@ -176,7 +177,14 @@ int dlgTextSearchConfiguration::Go(bool modal)
     btnAdd->Disable();
     btnRemove->Disable();
 
-    return dlgProperty::Go(modal);
+    returncode = dlgProperty::Go(modal);
+
+    #ifdef __WXMAC__
+    wxSizeEvent event(wxSize(GetSize().GetWidth() - 25, GetSize().GetHeight() + 120));
+    OnChangeSize(event);
+    #endif
+
+    return returncode;
 }
 
 

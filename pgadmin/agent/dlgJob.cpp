@@ -119,6 +119,8 @@ void dlgJob::OnChangeSize(wxSizeEvent &ev)
 
 int dlgJob::Go(bool modal)
 {
+    int returncode;
+
     pgSet *jcl=connection->ExecuteSet(wxT("SELECT jclname FROM pgagent.pga_jobclass"));
     if (jcl)
     {
@@ -214,7 +216,14 @@ int dlgJob::Go(bool modal)
 		btnChangeSchedule->Hide();
     }
 
-    return dlgProperty::Go(modal);
+    returncode = dlgProperty::Go(modal);
+
+    #ifdef __WXMAC__
+    wxSizeEvent event(wxSize(GetSize().GetWidth() - 20, GetSize().GetHeight() + 200));
+    OnChangeSize(event);
+    #endif
+
+    return returncode;
 }
 
 

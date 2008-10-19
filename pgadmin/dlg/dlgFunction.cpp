@@ -153,6 +153,8 @@ pgObject *dlgFunction::GetObject()
 
 int dlgFunction::Go(bool modal)
 {
+    int returncode;
+
     if (function)
     {
         rdbIn->Disable();
@@ -361,21 +363,27 @@ int dlgFunction::Go(bool modal)
     OnSelChangeLanguage(event);
 
     SetupVarEditor(1);
-    return dlgSecurityProperty::Go(modal);
+
+    returncode = dlgSecurityProperty::Go(modal);
+
+#ifdef __WXMAC__
+    // This fixes a UI glitch on MacOS X
+    // Because of the new layout code, the Privileges pane don't size itself properly
+    SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
+    SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
+#endif
+
+    return returncode;
 }
 
 #ifdef __WXMAC__
 void dlgFunction::OnChangeSize(wxSizeEvent &ev)
 {
-    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
-	lstArguments->SetSize(wxDefaultCoord, wxDefaultCoord,
-	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
-	lstVariables->SetSize(wxDefaultCoord, wxDefaultCoord,
-	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
-    if (GetAutoLayout())
-    {
-        Layout();
-    }
+    lstArguments->SetSize(wxDefaultCoord, wxDefaultCoord,
+        ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    lstVariables->SetSize(wxDefaultCoord, wxDefaultCoord,
+        ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    dlgSecurityProperty::OnChangeSize(ev);
 }
 #endif
 

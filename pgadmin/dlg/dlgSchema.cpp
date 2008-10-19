@@ -44,6 +44,8 @@ pgObject *dlgSchema::GetObject()
 
 int dlgSchema::Go(bool modal)
 {
+    int returncode;
+
     if (!schema)
         cbOwner->Append(wxT(""));
 
@@ -67,7 +69,16 @@ int dlgSchema::Go(bool modal)
         // create mode
     }
 
-    return dlgSecurityProperty::Go(modal);
+    returncode = dlgSecurityProperty::Go(modal);
+
+#ifdef __WXMAC__
+    // This fixes a UI glitch on MacOS X
+    // Because of the new layout code, the Privileges pane don't size itself properly
+    SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
+    SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
+#endif
+
+    return returncode;
 }
 
 
@@ -83,7 +94,7 @@ pgObject *dlgSchema::CreateObject(pgCollection *collection)
 #ifdef __WXMAC__
 void dlgSchema::OnChangeSize(wxSizeEvent &ev)
 {
-    SetPrivilegesSize(ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    SetPrivilegesLayout();
     if (GetAutoLayout())
     {
         Layout();

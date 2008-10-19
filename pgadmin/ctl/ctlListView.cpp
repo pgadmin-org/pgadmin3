@@ -73,13 +73,22 @@ void ctlListView::CreateColumns(wxImageList *images, const wxString &left, const
     int rightSize;
     if (leftSize < 0)
     {
-        leftSize = rightSize = GetClientSize().GetWidth()/2;
+#ifdef __WXMAC__
+        leftSize = rightSize = (GetParent()->GetSize().GetWidth() - 20)/2;
+#else
+        leftSize = rightSize = GetSize().GetWidth()/2;
+#endif
     }
     else
     {
         if (leftSize)
             leftSize = ConvertDialogToPixels(wxPoint(leftSize, 0)).x;
+
+#ifdef __WXMAC__
+        rightSize = (GetParent()->GetSize().GetWidth() - 20) - leftSize;
+#else
         rightSize = GetClientSize().GetWidth()-leftSize;
+#endif
     }
     if (!leftSize)
     {
