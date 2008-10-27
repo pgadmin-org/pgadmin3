@@ -262,22 +262,19 @@ void pgIndexBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 
 void pgIndexBase::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    wxString sql;
+    wxString sql =
+        wxT("SELECT idx_scan AS ") + qtIdent(_("Index Scans")) +
+             wxT(", idx_tup_read AS ") + qtIdent(_("Index Tuples Read")) +
+             wxT(", idx_tup_fetch AS ") + qtIdent(_("Index Tuples Fetched"))+
+             wxT(", idx_blks_read AS ") + qtIdent(_("Index Blocks Read")) +
+             wxT(", idx_blks_hit AS ") + qtIdent(_("Index Blocks Hit"));
 
     if (GetConnection()->HasFeature(FEATURE_SIZE))
-        sql = wxT("SELECT pg_size_pretty(pg_relation_size(") + GetOidStr() + wxT(")) AS ") + qtIdent(_("Index Size"));
+        sql += wxT(", pg_size_pretty(pg_relation_size(") + GetOidStr() + wxT(")) AS ") + qtIdent(_("Index Size"));
 
     if (showExtendedStatistics)
     {
-        if (sql.Length() == 0)
-        {
-          sql = wxT("SELECT ");
-        }
-        else
-        {
-          sql += wxT(", ");
-        }
-        sql += wxT(" version AS ") + qtIdent(_("Version")) + wxT(",\n")
+        sql += wxT(", version AS ") + qtIdent(_("Version")) + wxT(",\n")
                wxT("  tree_level AS ") + qtIdent(_("Tree Level")) + wxT(",\n")
                wxT("  pg_size_pretty(index_size) AS ") + qtIdent(_("Index Size")) + wxT(",\n")
                wxT("  root_block_no AS ") + qtIdent(_("Root Block No")) + wxT(",\n")
@@ -287,8 +284,17 @@ void pgIndexBase::ShowStatistics(frmMain *form, ctlListView *statistics)
                wxT("  deleted_pages AS ") + qtIdent(_("Deleted Pages")) + wxT(",\n")
                wxT("  avg_leaf_density AS ") + qtIdent(_("Average Leaf Density")) + wxT(",\n")
                wxT("  leaf_fragmentation AS ") + qtIdent(_("Leaf Fragmentation")) + wxT("\n")
-               wxT("  FROM pgstatindex('") + GetQuotedFullIdentifier() + wxT("')");
+               wxT("  FROM pgstatindex('") + GetQuotedFullIdentifier() + wxT("'), pg_stat_all_indexes stat");
     }
+    else
+    {
+        sql += wxT("\n")
+               wxT("  FROM pg_stat_all_indexes stat");
+    }
+    sql +=  wxT("\n")
+        wxT("  JOIN pg_statio_all_indexes statio ON stat.indexrelid = statio.indexrelid\n")
+        wxT("  JOIN pg_class cl ON cl.oid=stat.indexrelid\n")
+        wxT(" WHERE stat.indexrelid = ") + GetOidStr();
 
     DisplayStatistics(statistics, sql);
 }
@@ -309,6 +315,7 @@ bool pgIndexBase::HasPgstatindex()
 {
     return GetConnection()->HasFeature(FEATURE_PGSTATINDEX);
 }
+
 
 executePgstatindexFactory::executePgstatindexFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
@@ -477,7 +484,6 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
     }
     return index;
 }
-
 
 
 pgObject *pgIndexFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
