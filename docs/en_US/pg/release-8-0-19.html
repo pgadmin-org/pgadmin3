@@ -1,0 +1,77 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.29. Release 8.0.19</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.11 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-1.html" title="E.28. Release 8.1">
+<link rel="next" href="release-8-0-18.html" title="E.30. Release 8.0.18">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-0-19">E.29. Release 8.0.19</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2008-11-03</p>
+</div>
+<p>   This release contains a variety of fixes from 8.0.18.
+   For information about new features in the 8.0 major release, see
+   <a class="xref" href="release-8-0.html" title="E.48. Release 8.0">Section E.48, &#8220;Release 8.0&#8221;</a>.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2891530">E.29.1. Migration to Version 8.0.19</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.0.X.
+    However, if you are upgrading from a version earlier than 8.0.6,
+    see the release notes for 8.0.6.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2891539">E.29.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      Fix backend crash when the client encoding cannot represent a localized
+      error message (Tom)
+     </p>
+<p>      We have addressed similar issues before, but it would still fail if
+      the &#8220;<span class="quote">character has no equivalent</span>&#8221; message itself couldn't
+      be converted.  The fix is to disable localization and send the plain
+      ASCII error message when we detect such a situation.
+     </p>
+</li>
+<li><p>      Fix possible crash when deeply nested functions are invoked from
+      a trigger (Tom)
+     </p></li>
+<li><p>      Ensure an error is reported when a newly-defined PL/pgSQL trigger
+      function is invoked as a normal function (Tom)
+     </p></li>
+<li><p>      Fix incorrect tsearch2 headline generation when single query
+      item matches first word of text (Sushant Sinha)
+     </p></li>
+<li><p>      Fix improper display of fractional seconds in interval values when
+      using a non-ISO datestyle in an <code class="option">--enable-integer-datetimes</code>
+      build (Ron Mayer)
+     </p></li>
+<li>
+<p>      Ensure <code class="function">SPI_getvalue</code> and <code class="function">SPI_getbinval</code>
+      behave correctly when the passed tuple and tuple descriptor have
+      different numbers of columns (Tom)
+     </p>
+<p>      This situation is normal when a table has had columns added or removed,
+      but these two functions didn't handle it properly.
+      The only likely consequence is an incorrect error indication.
+     </p>
+</li>
+<li><p>      Fix <span class="application">ecpg</span>'s parsing of <code class="command">CREATE USER</code> (Michael)
+     </p></li>
+<li><p>      Fix recent breakage of <code class="literal">pg_ctl restart</code> (Tom)
+     </p></li>
+<li><p>      Update time zone data files to <span class="application">tzdata</span> release 2008i (for
+      DST law changes in Argentina, Brazil, Mauritius, Syria)
+     </p></li>
+</ul></div>
+</div>
+</div></body>
+</html>
