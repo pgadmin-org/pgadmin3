@@ -73,12 +73,4 @@ public:
 };
 
 
-class tipOfDayFactory : public actionFactory
-{
-public:
-    tipOfDayFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
-};
-
-
 #endif

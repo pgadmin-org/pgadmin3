@@ -474,32 +474,3 @@ bool hintFactory::CheckEnable(pgObject *obj)
     return obj && obj->GetCanHint();
 }
 
-
-tipOfDayFactory::tipOfDayFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
-{
-    if (mnu)
-        mnu->Append(id, _("&Tip of the Day"), _("Show a tip of the day."));
-}
-
-
-wxWindow *tipOfDayFactory::StartDialog(frmMain *form, pgObject *obj)
-{
-    wxString file;
-    
-    file = docPath + wxT("/") + locale->GetCanonicalName() + wxT("/tips.txt");
-
-    if (!wxFile::Exists(file))
-        file = docPath + wxT("/en_US/tips.txt");    
-
-    if (!wxFile::Exists(file)) {
-        wxLogError(_("Couldn't open a tips.txt file!"));
-        return 0;
-    }
-
-    wxTipProvider *tipProvider = wxCreateFileTipProvider(file, settings->GetNextTipOfTheDay());
-    settings->SetShowTipOfTheDay(wxShowTip(form, tipProvider));
-    settings->SetNextTipOfTheDay(tipProvider->GetCurrentTip());
-
-    delete tipProvider;
-    return 0;
-}

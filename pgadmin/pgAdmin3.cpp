@@ -530,20 +530,6 @@ bool pgAdmin3::OnInit()
             winMain->Show();
             SetTopWindow(winMain);
 
-            // Display a Tip if required.
-            wxCommandEvent evt = wxCommandEvent();
-            if (winMain && settings->GetShowTipOfTheDay())
-            {
-                if (winSplash)
-                {
-                    winSplash->Close();
-                    delete winSplash;
-                    winSplash = 0;
-                }
-                tipOfDayFactory tip(0, 0, 0);
-                tip.StartDialog(winMain, 0);
-            }
-
             wxString str;
             if (cmdParser.Found(wxT("s"), &str))
             {

@@ -39,26 +39,6 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
         defaultSettings = new wxFileConfig(fst);
 	}	
 
-    // Convert setting from pre-1.3
-#ifdef __WXMSW__
-    DWORD type=0;
-    HKEY hkey=0;
-    RegOpenKeyEx(HKEY_CURRENT_USER, wxT("Software\\") + GetAppName(), 0, KEY_READ, &hkey);
-    if (hkey)
-    {
-        RegQueryValueEx(hkey, wxT("ShowTipOfTheDay"), 0, &type, 0, 0);
-        if (type == REG_DWORD)
-        {
-            long value;
-			wxConfig::Read(wxT("ShowTipOfTheDay"), &value, 0L);
-
-            Write(wxT("ShowTipOfTheDay"), value != 0);
-        }
-        RegCloseKey(hkey);
-    }
-#endif
-
-
     // Convert settings from pre-1.5
     long i, serverCount;
     Read(wxT("Servers/Count"), &serverCount, 0L);

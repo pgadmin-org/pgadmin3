@@ -29,12 +29,6 @@ public:
 	bool GetDisplayOption(const wxString &objtype, bool GetDefault = false);
 	void SetDisplayOption(const wxString &objtype, bool display);
 
-    // Tip Of The Day
-    bool GetShowTipOfTheDay() const { bool b; Read(wxT("ShowTipOfTheDay"), &b, true); return b; }
-	void SetShowTipOfTheDay(const bool newval) { Write(wxT("ShowTipOfTheDay"), newval); }
-    int GetNextTipOfTheDay() const { int i; Read(wxT("NextTipOfTheDay"), &i, true); return i; }
-    void SetNextTipOfTheDay(const int newval) { Write(wxT("NextTipOfTheDay"), newval); }
-
     // Log
     wxString GetLogFile();
 	void SetLogFile(const wxString& newval) { Write(wxT("LogFile"), newval); sysLogger::logFile = newval; }

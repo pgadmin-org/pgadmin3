@@ -37,22 +37,13 @@ TMP_docs = \
 	$(top_srcdir)/docs/en_US/*.html \
 	$(top_srcdir)/docs/en_US/*.css \
 	$(top_srcdir)/docs/en_US/pgadmin3.hh* \
-	$(top_srcdir)/docs/en_US/tips.txt \
-	$(top_srcdir)/docs/de_DE/tips.txt \
 	$(top_srcdir)/docs/de_DE/hints/*.html \
-	$(top_srcdir)/docs/es_ES/tips.txt \
 	$(top_srcdir)/docs/es_ES/hints/*.html \
-	$(top_srcdir)/docs/fi_FI/tips.txt \
 	$(top_srcdir)/docs/fi_FI/hints/*.html \
 	$(top_srcdir)/docs/fr_FR/*.html \
-	$(top_srcdir)/docs/fr_FR/tips.txt \
 	$(top_srcdir)/docs/fr_FR/hints/*.html \
-	$(top_srcdir)/docs/it_IT/tips.txt \
-	$(top_srcdir)/docs/sl_SI/tips.txt \
 	$(top_srcdir)/docs/sl_SI/hints/*.html \
-	$(top_srcdir)/docs/zh_CN/tips.txt \
 	$(top_srcdir)/docs/zh_CN/hints/*.html \
-	$(top_srcdir)/docs/zh_TW/tips.txt \
 	$(top_srcdir)/docs/zh_TW/hints/*.html
 
 if !APPBUNDLE
