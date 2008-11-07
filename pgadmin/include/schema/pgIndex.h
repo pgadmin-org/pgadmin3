@@ -13,6 +13,7 @@
 #define PGINDEX_H
 
 #include "pgTable.h"
+#include <wx/arrstr.h>
 
 class pgCollection;
 
@@ -34,6 +35,7 @@ public:
     wxString GetOperatorClasses() const { return operatorClasses; }
     wxString GetQuotedColumns() const { return quotedColumns; }
     wxString GetColumns() const { return columns; }
+	wxArrayString GetColumnList() const { return columnList; }
 
     wxString GetColumnNumbers() const { return columnNumbers; }
     void iSetColumnNumbers(const wxString& s) { columnNumbers=s; }
@@ -96,6 +98,7 @@ private:
     wxString columnNumbers, columns, quotedColumns, indexType, idxTable, idxSchema, constraint, tablespace;
     wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
     long columnCount;
+	wxArrayString columnList;
     bool isUnique, isPrimary, isClustered;
     bool deferrable, deferred, showExtendedStatistics;
     OID relTableOid, tablespaceOid;

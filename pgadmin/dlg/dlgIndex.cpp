@@ -90,15 +90,9 @@ int dlgIndexBase::Go(bool modal)
         txtName->Disable();
         cbColumns->Disable();
 
-	    int pos = 0;
-        wxStringTokenizer cols(index->GetColumns(), wxT(","));
-        while (cols.HasMoreTokens())
-        {
-            wxString str=cols.GetNextToken();
-            if (str.Strip() == wxT(""))
-                str.RemoveLast();       // there's a space
-            lstColumns->InsertItem(pos++, str, columnFactory.GetIconId());
-        }
+		wxArrayString colsArr = index->GetColumnList();
+		for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
+			lstColumns->InsertItem(colIdx, colsArr.Item(colIdx), columnFactory.GetIconId());
 
         if (txtFillFactor)
         {

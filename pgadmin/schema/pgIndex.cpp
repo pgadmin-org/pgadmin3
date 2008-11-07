@@ -100,7 +100,10 @@ void pgIndexBase::ReadColumnDetails()
     {
         expandedKids = true;
 
-        if (GetConnection()->BackendMinimumVersion(7, 4))
+		// Allocate memory to store column def
+		if (columnCount>0) columnList.Alloc(columnCount);
+
+		if (GetConnection()->BackendMinimumVersion(7, 4))
         {
             long i;
 
@@ -154,6 +157,7 @@ void pgIndexBase::ReadColumnDetails()
 
                 columns += coldef;
                 quotedColumns += coldef;
+				columnList.Add(coldef);
             }
         }
         else
@@ -185,6 +189,7 @@ void pgIndexBase::ReadColumnDetails()
                     }
                     wxString colName=colSet->GetVal(0);
                     columns += colName;
+					columnList.Add(colName);
                     quotedColumns += qtIdent(colName);
 
                     if (!ct.IsNull())
