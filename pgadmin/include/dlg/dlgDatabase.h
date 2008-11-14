@@ -26,6 +26,7 @@ public:
     void CheckChange();
     wxString GetSql();
     wxString GetSql2();
+    bool GetDisconnectFirst();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
     wxString GetHelpPage() const;

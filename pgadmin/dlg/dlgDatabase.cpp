@@ -139,9 +139,7 @@ int dlgDatabase::Go(bool modal)
     {
         // edit mode
 
-		// Even with 7.4+, we don't currently have a way to change the database name
-		// as it must be done from a different database.
-        // if (!connection->BackendMinimumVersion(7, 4))
+        if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
 
         if (!connection->BackendMinimumVersion(8, 0))
@@ -165,7 +163,10 @@ int dlgDatabase::Go(bool modal)
         }
 
         PrepareTablespace(cbTablespace, database->GetTablespaceOid());
-		cbTablespace->Disable();
+		if (connection->BackendMinimumVersion(8, 4))
+		    cbTablespace->Enable();
+		else
+		    cbTablespace->Disable();
         txtPath->SetValue(database->GetPath());
         txtPath->Disable();
 
@@ -311,6 +312,7 @@ void dlgDatabase::CheckChange()
                || txtComment->GetValue() != database->GetComment()
 			   || txtName->GetValue() != database->GetName()
                || cbOwner->GetValue() != database->GetOwner()
+               || cbTablespace->GetValue() != database->GetTablespace()
 			   || dirtyVars;
     }
 
@@ -428,6 +430,15 @@ wxString dlgDatabase::GetSql()
 
         AppendComment(sql, wxT("DATABASE"), 0, database);
 
+        if (connection->BackendMinimumVersion(8, 4))
+        {
+            if (cbTablespace->GetCurrentSelection() > 0 && cbTablespace->GetOIDKey() > 0
+                && cbTablespace->GetOIDKey() != database->GetTablespaceOid())
+            	sql += wxT("ALTER DATABASE ") + qtIdent(name)
+                    +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+                    +  wxT(";\n");
+        }
+
         if (!connection->BackendMinimumVersion(8, 2))
             sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
         else
@@ -528,4 +539,9 @@ wxString dlgDatabase::GetSql2()
     return sql;
 }
 
-
+bool dlgDatabase::GetDisconnectFirst()
+{
+    if (database)
+      return true;
+    return false;
+}

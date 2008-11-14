@@ -763,6 +763,14 @@ void dlgProperty::ShowObject()
 
 bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
 {
+	pgConn *myConn = connection;
+
+    if (GetDisconnectFirst())
+    {
+		myConn = database->GetServer()->GetConnection();
+    	database->Disconnect();
+    }
+
     if (!sql.IsEmpty())
     {
         wxString tmp;
@@ -788,7 +796,7 @@ bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
         else
             tmp = sql;
 
-        if (!connection->ExecuteVoid(tmp))
+        if (!myConn->ExecuteVoid(tmp))
         {
             // error message is displayed inside ExecuteVoid
             return false;
@@ -826,7 +834,7 @@ bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
         else
             tmp = sql2;
 
-        if (!connection->ExecuteVoid(tmp))
+        if (!myConn->ExecuteVoid(tmp))
         {
             // error message is displayed inside ExecuteVoid
             // Warn the user about partially applied changes, but don't bail out. 
@@ -883,7 +891,7 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
         EndModal(0);
         return;
     }
-
+    
     wxString sql;
     wxString sql2;
     if (chkReadOnly->GetValue())

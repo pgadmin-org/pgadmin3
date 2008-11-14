@@ -41,6 +41,7 @@ public:
 
     virtual wxString GetSql() =0;
     virtual wxString GetSql2() { return wxEmptyString; };
+    virtual bool GetDisconnectFirst() { return false; };
     virtual pgObject *CreateObject(pgCollection *collection) =0;
     virtual pgObject *GetObject() =0;
     virtual void SetObject(pgObject *obj) {} // only necessary if apply is implemented
