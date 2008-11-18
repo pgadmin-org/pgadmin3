@@ -67,6 +67,12 @@ public:
     void iSetEncoding(const wxString& newVal) { encoding = newVal; }
     wxString GetSchemaRestriction() { return schemaRestriction; }
     void iSetSchemaRestriction(const wxString &s) { schemaRestriction = s; }
+    wxString GetCollate() const { return collate; }
+    void iSetCollate( const wxString& newVal) { collate = newVal; }
+    wxString GetCType() const { return ctype; }
+    void iSetCType( const wxString& newVal) { ctype = newVal; }
+    long GetConnectionLimit() { return connectionLimit; }
+    void iSetConnectionLimit(long newVal) { connectionLimit = newVal; }
 
     wxArrayString& GetVariables() { return variables; }
     bool GetAllowConnections() const { return allowConnections; }
@@ -111,10 +117,11 @@ private:
     pgConn *conn;
     bool connected;
     bool useServerConnection;
-    wxString searchPath, path, tablespace, defaultTablespace, encoding;
+    wxString searchPath, path, tablespace, defaultTablespace, encoding, collate, ctype;
     wxString prettyOption, defaultSchema;
     bool allowConnections, createPrivilege;
     long missingFKs;
+    long connectionLimit;
     wxArrayString variables;
 
     wxString schemaChanges;

@@ -107,6 +107,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"createuser", CREATEUSER, UNRESERVED_KEYWORD},
 	{"cross", CROSS, TYPE_FUNC_NAME_KEYWORD},
 	{"csv", CSV, UNRESERVED_KEYWORD},
+        {"ctype", CTYPE, RESERVED_KEYWORD},
 	{"current", CURRENT_P, UNRESERVED_KEYWORD},
 	{"current_date", CURRENT_DATE, RESERVED_KEYWORD},
 	{"current_role", CURRENT_ROLE, RESERVED_KEYWORD},

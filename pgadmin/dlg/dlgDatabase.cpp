@@ -11,6 +11,8 @@
 
 // wxWindows headers
 #include <wx/wx.h>
+#include <wx/generic/spinctlg.h>
+#include <wx/spinbutt.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -34,7 +36,9 @@
 #define chkValue        CTRL_CHECKBOX("chkValue")
 #define btnAdd          CTRL_BUTTON("wxID_ADD")
 #define btnRemove       CTRL_BUTTON("wxID_REMOVE")
-
+#define cbCollate       CTRL_COMBOBOX2("cbCollate")
+#define cbCType         CTRL_COMBOBOX2("cbCType")
+#define txtConnLimit    CTRL_TEXT("txtConnLimit")
 
 dlgProperty *pgDatabaseFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
@@ -61,6 +65,9 @@ BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_TEXT(XRCID("cbVarname"),                    dlgDatabase::OnVarnameSelChange)
     EVT_COMBOBOX(XRCID("cbVarname"),                dlgDatabase::OnVarnameSelChange)
     EVT_BUTTON(wxID_OK,                             dlgDatabase::OnOK)
+    EVT_TEXT(XRCID("cbCollate"),                    dlgDatabase::OnCollateSelChange)
+    EVT_TEXT(XRCID("cbCType"),                      dlgDatabase::OnCTypeSelChange)
+    EVT_TEXT(XRCID("txtConnLimit"),                 dlgDatabase::OnConnLimitChange)
 #ifdef __WXMAC__
     EVT_SIZE(                                       dlgDatabase::OnChangeSize)
 #endif
@@ -112,6 +119,19 @@ int dlgDatabase::Go(bool modal)
     {
         stTablespace->Hide();
         cbTablespace->Hide();
+    }
+
+    if (!connection->BackendMinimumVersion(8,1))
+    {
+        txtConnLimit->Disable();
+    }
+    else
+        txtConnLimit->SetValidator(numericValidator);
+    
+    if (!connection->BackendMinimumVersion(8,4))
+    {
+        cbCollate->Disable();
+        cbCType->Disable();
     }
 
     pgSet *set;
@@ -173,8 +193,25 @@ int dlgDatabase::Go(bool modal)
         cbEncoding->Append(database->GetEncoding());
         cbEncoding->SetSelection(0);
 
+        if (connection->BackendMinimumVersion(8,1))
+        {
+            wxString strConnLimit;
+            strConnLimit.Printf(wxT("%ld"), database->GetConnectionLimit());
+            txtConnLimit->SetValue(strConnLimit);
+        }
+
+        if (connection->BackendMinimumVersion(8, 4))
+        {
+            cbCollate->Append(database->GetCollate());
+            cbCollate->SetSelection(0);
+            cbCType->Append(database->GetCType());
+            cbCType->SetSelection(0);
+        }
+
         cbTemplate->Disable();
         cbEncoding->Disable();
+        cbCollate->Disable();
+        cbCType->Disable();
 
         txtSchemaRestr->SetValue(database->GetSchemaRestriction());
     }
@@ -193,6 +230,26 @@ int dlgDatabase::Go(bool modal)
         cbTemplate->Append(wxEmptyString);
         FillCombobox(wxT("SELECT datname FROM pg_database ORDER BY datname"), cbTemplate);
         cbTemplate->SetSelection(0);
+
+        if (connection->BackendMinimumVersion(8,4))
+        {
+            FillCombobox(wxT("select DISTINCT(datctype) from pg_database UNION SELECT DISTINCT(datcollate) from pg_database"), cbCollate, cbCType);
+            if (cbCollate->FindString(wxT("C")) < 0)
+            {
+                cbCollate->AppendString(wxT("C"));
+                cbCType->AppendString(wxT("C"));
+            }
+            if (cbCollate->FindString(wxT("POSIX")) < 0)
+            {
+                cbCollate->AppendString(wxT("POSIX"));
+                cbCType->AppendString(wxT("POSIX"));
+            }
+        }
+        if (connection->BackendMinimumVersion(8,1))
+        {
+            txtConnLimit->SetValue(wxT("-1"));
+        }
+
 
         long encNo=0;
         wxString encStr;
@@ -308,11 +365,16 @@ void dlgDatabase::CheckChange()
     
     if (database)
     {
+        long connLimit;
+        if (!txtConnLimit->GetValue().ToLong(&connLimit))
+            connLimit = database->GetConnectionLimit();
+
         enable = txtSchemaRestr->GetValue() != database->GetSchemaRestriction()
                || txtComment->GetValue() != database->GetComment()
 			   || txtName->GetValue() != database->GetName()
                || cbOwner->GetValue() != database->GetOwner()
                || cbTablespace->GetValue() != database->GetTablespace()
+               || connLimit != database->GetConnectionLimit()
 			   || dirtyVars;
     }
 
@@ -328,6 +390,56 @@ void dlgDatabase::OnVarnameSelChange(wxCommandEvent &ev)
     int sel=cbVarname->GuessSelection(ev);
 
     SetupVarEditor(sel);
+}
+
+void dlgDatabase::OnCollateSelChange(wxCommandEvent &ev)
+{
+    cbCollate->GuessSelection(ev);
+}
+
+void dlgDatabase::OnCTypeSelChange(wxCommandEvent &ev)
+{
+    cbCType->GuessSelection(ev);
+}
+
+void dlgDatabase::OnConnLimitChange(wxCommandEvent &ev)
+{
+    if (ev.GetEventType() == wxEVT_COMMAND_TEXT_UPDATED)
+    {
+        wxString strConnLimit = txtConnLimit->GetValue();
+        long val = 0;
+        if (strConnLimit.ToLong(&val))
+        {
+            CheckChange();
+        }
+        else if (strConnLimit.Contains(wxT(".")))
+        {
+            double val;
+
+            // Stop Propagation of the event to the parents
+            ev.StopPropagation();
+            if (strConnLimit.ToDouble(&val))
+            {
+                strConnLimit.Printf(wxT("%ld"), (long)val);
+                txtConnLimit->SetValue(strConnLimit);
+                txtConnLimit->SetInsertionPointEnd();
+                return;
+            }
+        }
+        else if (strConnLimit.length() > 9)
+        {
+            // Maximum value support is 2147483647
+            wxString newVal = strConnLimit.substr(0, 10);
+            if (!newVal.ToLong(&val))
+            {
+                newVal = strConnLimit.substr(0,9);
+            }
+            ev.StopPropagation();
+            txtConnLimit->SetValue(newVal);
+            txtConnLimit->SetInsertionPointEnd();
+            return;
+        }
+    }
 }
 
 void dlgDatabase::SetupVarEditor(int var)
@@ -438,6 +550,25 @@ wxString dlgDatabase::GetSql()
                     +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
                     +  wxT(";\n");
         }
+        if (connection->BackendMinimumVersion(8, 1))
+        {
+            long connLimit;
+
+            if (txtConnLimit->GetValue().IsEmpty())
+                connLimit = -1;
+            else if (!txtConnLimit->GetValue().ToLong(&connLimit))
+                connLimit = database->GetConnectionLimit();
+
+            if (connLimit != database->GetConnectionLimit())
+            {
+                wxString strConnLimit;
+                strConnLimit << connLimit;
+                sql += wxT("ALTER DATABASE ") + qtIdent(name)
+                    +  wxT(" WITH CONNECTION LIMIT = ")
+                    +  strConnLimit
+                    +  wxT(";\n");
+            }
+        }
 
         if (!connection->BackendMinimumVersion(8, 2))
             sql += GetGrant(wxT("CT"), wxT("DATABASE ") + qtIdent(name));
@@ -498,6 +629,19 @@ wxString dlgDatabase::GetSql()
         AppendIfFilled(sql, wxT("\n       OWNER="), qtIdent(cbOwner->GetValue()));
         AppendIfFilled(sql, wxT("\n       TEMPLATE="), qtIdent(cbTemplate->GetValue()));
         AppendIfFilled(sql, wxT("\n       LOCATION="), txtPath->GetValue());
+        if (connection->BackendMinimumVersion(8,4))
+        {
+            wxString strCollate = cbCollate->GetValue();
+            if (!strCollate.IsEmpty())
+                AppendIfFilled(sql, wxT("\n       COLLATE="), qtDbString(strCollate));
+            wxString strCType = cbCType->GetValue();
+            if (!strCType.IsEmpty())
+                AppendIfFilled(sql, wxT("\n       CTYPE="), qtDbString(strCType));
+        }
+        if (connection->BackendMinimumVersion(8,1))
+        {
+            AppendIfFilled(sql, wxT("\n       CONNECTION LIMIT="), (txtConnLimit->GetValue() == wxT("-") ? wxT("-1") : txtConnLimit->GetValue()));
+        }
         if (cbTablespace->GetCurrentSelection() > 0 && cbTablespace->GetOIDKey() > 0)
             sql += wxT("\n       TABLESPACE=") + qtIdent(cbTablespace->GetValue());
 

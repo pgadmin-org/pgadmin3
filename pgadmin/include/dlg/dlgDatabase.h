@@ -46,6 +46,9 @@ private:
     void OnVarAdd(wxCommandEvent &ev);
     void OnVarRemove(wxCommandEvent &ev);
     void OnVarSelChange(wxListEvent &ev);
+    void OnCollateSelChange(wxCommandEvent &ev);
+    void OnCTypeSelChange(wxCommandEvent &ev);
+    void OnConnLimitChange(wxCommandEvent &ev);
 
     void OnVarnameSelChange(wxCommandEvent &ev);
     void OnOK(wxCommandEvent &ev);

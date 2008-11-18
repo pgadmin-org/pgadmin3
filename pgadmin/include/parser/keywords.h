@@ -437,6 +437,7 @@ enum yytokentype {
  POSTFIXOP = 643,
  UMINUS = 644,
  TYPECAST = 645,
+ CTYPE=646,
 
  /* The following additions are keywords in EnterpriseDB */
  CONNECT_EDB = 800,

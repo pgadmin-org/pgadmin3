@@ -338,6 +338,11 @@ wxString pgDatabase::GetSql(ctlTree *browser)
 {
     if (sql.IsEmpty())
     {
+        // If we can't connect to this database, use the maintenance DB
+        pgConn *myConn = GetConnection();
+        if (!myConn)
+            myConn = GetServer()->GetConnection();
+
         sql = wxT("-- Database: ") + GetQuotedFullIdentifier() + wxT("\n\n")
             + wxT("-- DROP DATABASE ") + GetQuotedIdentifier() + wxT(";")
             + wxT("\n\nCREATE DATABASE ") + GetQuotedIdentifier()
@@ -345,18 +350,22 @@ wxString pgDatabase::GetSql(ctlTree *browser)
             + wxT("\n       ENCODING = ") + qtDbString(GetEncoding());
         if (tablespace != defaultTablespace)
             sql += wxT("\n       TABLESPACE = ") + qtIdent(GetTablespace());
-        
+        if (myConn && myConn->BackendMinimumVersion(8, 4))
+        {
+            sql += wxT("\n       COLLATE = ") + qtDbString(GetCollate());
+            sql += wxT("\n       CTYPE = ") + qtDbString(GetCType());
+        }
+        if (myConn && myConn->BackendMinimumVersion(8, 1))
+        {
+            sql += wxT("\n       CONNECTION LIMIT = ");
+            sql << GetConnectionLimit();
+        }
         sql += wxT(";\n");
 
         size_t i;
         for (i=0 ; i < variables.GetCount() ; i++)
             sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
                 +  wxT(" SET ") + variables.Item(i) + wxT(";\n");
-
-		// If we can't connect to this database, use the maintenance DB
-		pgConn *myConn = GetConnection();
-		if (!myConn)
-			myConn = GetServer()->GetConnection();
 
 		if (myConn)
 		{
@@ -431,6 +440,12 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         }
         properties->AppendItem(_("Encoding"), GetEncoding());
 
+        if (GetConnection() && GetConnection()->BackendMinimumVersion(8, 4))
+        {
+            properties->AppendItem(_("Collation"), GetCollate());
+            properties->AppendItem(_("Character type"), GetCType());
+        }
+
         if (!defaultSchema.IsEmpty())
             properties->AppendItem(_("Default schema"), defaultSchema);
 
@@ -442,6 +457,12 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         }
         properties->AppendItem(_("Allow connections?"), GetAllowConnections());
         properties->AppendItem(_("Connected?"), GetConnected());
+        if (GetConnection() && GetConnection()->BackendMinimumVersion(8, 1))
+        {
+            wxString strConnLimit;
+            strConnLimit.Printf(wxT("%ld"), GetConnectionLimit()); 
+            properties->AppendItem(_("Connection limit"), strConnLimit);
+        }
         properties->AppendItem(_("System database?"), GetSystemObject());
         if (GetMissingFKs())
             properties->AppendItem(_("Old style FKs"), GetMissingFKs());
@@ -474,6 +495,18 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
     pgSet *databases;
 
+    wxString datcollate, datctype, datconnlimit;
+
+    if (collection->GetConnection()->BackendMinimumVersion(8, 1))
+    {
+        datconnlimit = wxT(", db.datconnlimit as connectionlimit");
+    }
+    if (collection->GetConnection()->BackendMinimumVersion(8, 4))
+    {
+        datctype = wxT(", db.datctype as ctype");
+        datcollate = wxT(", db.datcollate as collate");
+    }
+
     wxString restr=restriction;
     if (!collection->GetServer()->GetDbRestriction().IsEmpty())
     {
@@ -491,7 +524,8 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
            wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
            wxT("has_database_privilege(db.oid, 'CREATE') as cancreate, \n")
            wxT("current_setting('default_tablespace') AS default_tablespace, \n")
-           wxT("descr.description\n")
+           wxT("descr.description\n") +
+           datconnlimit + datcollate + datctype +
            wxT("  FROM pg_database db\n")
            wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
            wxT("  LEFT OUTER JOIN ") 
@@ -539,6 +573,16 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             }
             else
                 database->iSetPath(databases->GetVal(wxT("datpath")));
+
+            if (collection->GetConnection()->BackendMinimumVersion(8, 1))
+            {
+                database->iSetConnectionLimit(databases->GetLong(wxT("connectionlimit")));
+            }
+            if (collection->GetConnection()->BackendMinimumVersion(8, 4))
+            {
+                database->iSetCollate(databases->GetVal(wxT("collate")));
+                database->iSetCType(databases->GetVal(wxT("ctype")));
+            }
 
             if (collection->GetServer()->GetServerIndex())
             {
