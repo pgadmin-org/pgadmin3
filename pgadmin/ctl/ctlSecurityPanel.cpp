@@ -99,6 +99,17 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, con
         itemSizer4->Add(cbGroups, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT);
         itemSizer3->Add(itemSizer4, 0, wxEXPAND|wxALL, 0);
 
+        /* border size depends on the plateform */
+        #ifdef __WXMSW__
+        int bordersize = 4;
+        #endif
+        #ifdef __WXMAC__
+        int bordersize = 3;
+        #endif
+        #ifdef __WXGTK__
+        int bordersize = 0;
+        #endif
+
         if (needAll)
         {
             wxBoxSizer* itemSizer5 = new wxBoxSizer(wxHORIZONTAL);
@@ -107,7 +118,7 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, con
             allPrivilegesGrant = new wxCheckBox(this, CTL_ALLPRIVGRANT, wxT("WITH GRANT OPTION"));
             itemSizer5->Add(allPrivilegesGrant, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT);
             allPrivilegesGrant->Disable();
-            itemSizer3->Add(itemSizer5, 0, wxALL, 0);
+            itemSizer3->Add(itemSizer5, 0, wxALL, bordersize);
         }
 
         while (privileges.HasMoreTokens())
@@ -122,7 +133,7 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, con
             itemSizer6->Add(cb, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT);
             cb->Disable();
             privCheckboxes[i++] = cb;
-            itemSizer3->Add(itemSizer6, 0, wxALL, 0);
+            itemSizer3->Add(itemSizer6, 0, wxALL, bordersize);
         }
     }
     

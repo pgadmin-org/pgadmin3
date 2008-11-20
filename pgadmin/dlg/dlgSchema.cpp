@@ -71,12 +71,10 @@ int dlgSchema::Go(bool modal)
 
     returncode = dlgSecurityProperty::Go(modal);
 
-#ifdef __WXMAC__
-    // This fixes a UI glitch on MacOS X
+    // This fixes a UI glitch on MacOS X and Windows
     // Because of the new layout code, the Privileges pane don't size itself properly
     SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
     SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
-#endif
 
     return returncode;
 }
