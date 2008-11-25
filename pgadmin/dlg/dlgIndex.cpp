@@ -428,7 +428,10 @@ wxString dlgIndex::GetSql()
             sql += qtIdent(name);
 
             sql += wxT("\n   ON ") + table->GetQuotedFullIdentifier();
-            AppendIfFilled(sql, wxT(" USING "), cbType->GetValue());
+
+            if (cbType->GetCurrentSelection() > 0)
+                AppendIfFilled(sql, wxT(" USING "), cbType->GetValue());
+
             sql += wxT(" (") + GetColumns()
                 + wxT(")");
 
