@@ -1426,6 +1426,7 @@ int dlgCollistProperty::Go(bool modal)
             }
         }
     }
+
     return dlgProperty::Go(modal);
 }
 
