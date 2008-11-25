@@ -34,9 +34,19 @@ public:
 
     int Go(bool modal);
     wxString GetDefinition();
+    wxString GetColumns();
     wxString GetSql();
     wxString GetHelpPage() const { return wxT("pg/sql-altertable"); }
 
+private:
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
+    void OnAddCol(wxCommandEvent &ev);
+    void OnRemoveCol(wxCommandEvent &ev);
+
+    DECLARE_EVENT_TABLE()
 };
 
 

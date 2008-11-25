@@ -19,6 +19,9 @@
 class pgIndex;
 class pgIndexBase;
 
+#define btnAddCol       CTRL_BUTTON("btnAddCol")
+#define btnRemoveCol    CTRL_BUTTON("btnRemoveCol")
+
 class dlgIndexBase : public dlgCollistProperty
 {
 public:
@@ -30,20 +33,12 @@ public:
     void OnSelectCol();
     void CheckChange();
     pgObject *GetObject();
-    wxString GetColumns();
     int Go(bool modal);
 
 protected:
     pgIndexBase *index;
 
 private:
-#ifdef __WXMAC__
-    void OnChangeSize(wxSizeEvent &ev);
-#endif
-
-    void OnAddCol(wxCommandEvent &ev);
-    void OnRemoveCol(wxCommandEvent &ev);
-
     DECLARE_EVENT_TABLE()
 };
 
@@ -55,10 +50,19 @@ public:
 
     int Go(bool modal);
     void CheckChange();
+    wxString GetColumns();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
 
 private:
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
+    void OnDescChange(wxCommandEvent &ev);
+    void OnAddCol(wxCommandEvent &ev);
+    void OnRemoveCol(wxCommandEvent &ev);
+
     DECLARE_EVENT_TABLE()
 };
 

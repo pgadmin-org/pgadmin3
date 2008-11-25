@@ -23,19 +23,45 @@
 #include "schema/pgIndexConstraint.h"
 
 
-
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
+
+BEGIN_EVENT_TABLE(dlgIndexConstraint, dlgIndexBase)
+    EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndexConstraint::OnAddCol)
+    EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndexConstraint::OnRemoveCol)
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgIndexConstraint::OnChangeSize)
+#endif
+END_EVENT_TABLE();
 
 
 dlgIndexConstraint::dlgIndexConstraint(pgaFactory *f, frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode)
 : dlgIndexBase(f, frame, resName, index, parentNode)
 {
+    lstColumns->CreateColumns(0, _("Columns"), wxT(""), 0);
 }
 
 
 dlgIndexConstraint::dlgIndexConstraint(pgaFactory *f, frmMain *frame, const wxString &resName, ctlListView *colList)
 : dlgIndexBase(f, frame, resName, colList)
 {
+    lstColumns->CreateColumns(0, _("Columns"), wxT(""), 0);
+}
+
+
+wxString dlgIndexConstraint::GetColumns()
+{
+    wxString sql;
+
+    int pos;
+    // iterate cols
+    for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
+    {
+        if (pos)
+            sql += wxT(", ");
+
+        sql += qtIdent(lstColumns->GetItemText(pos));
+    }
+    return sql;
 }
 
 
@@ -46,6 +72,10 @@ int dlgIndexConstraint::Go(bool modal)
     if (index)
     {
         pgIndexConstraint *idc=(pgIndexConstraint*)index;
+
+        wxArrayString colsArr = index->GetColumnList();
+        for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
+            lstColumns->InsertItem(colIdx, colsArr.Item(colIdx), columnFactory.GetIconId());
 
         if (idc->GetTablespaceOid() != 0)
             cbTablespace->SetKey(idc->GetTablespaceOid());
@@ -65,8 +95,59 @@ int dlgIndexConstraint::Go(bool modal)
         cbTablespace->SetSelection(0);
     }
 
-    return dlgIndexBase::Go(modal);
+    int returnCode = dlgIndexBase::Go(modal);
+
+    #ifdef __WXMAC__
+    wxSizeEvent event(wxSize(GetSize().GetWidth() - 25, GetSize().GetHeight() + 200));
+    OnChangeSize(event);
+    #endif
+
+    return returnCode;
 }
+
+
+void dlgIndexConstraint::OnAddCol(wxCommandEvent &ev)
+{
+    wxString col=cbColumns->GetValue();
+    if (!col.IsEmpty())
+    {
+        lstColumns->InsertItem(lstColumns->GetItemCount(), col, columnFactory.GetIconId());
+        cbColumns->Delete(cbColumns->GetCurrentSelection());
+        if (cbColumns->GetCount())
+            cbColumns->SetSelection(0);
+
+        CheckChange();
+        if (!cbColumns->GetCount())
+            btnAddCol->Disable();
+    }
+}
+
+
+void dlgIndexConstraint::OnRemoveCol(wxCommandEvent &ev)
+{
+    long pos=lstColumns->GetSelection();
+    if (pos >= 0)
+    {
+        wxString col=lstColumns->GetItemText(pos);
+        lstColumns->DeleteItem(pos);
+        cbColumns->Append(col);
+
+        CheckChange();
+        btnRemoveCol->Disable();
+    }
+}
+
+#ifdef __WXMAC__
+void dlgIndexConstraint::OnChangeSize(wxSizeEvent &ev)
+{
+    lstColumns->SetSize(wxDefaultCoord, wxDefaultCoord,
+        ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 
 wxString dlgIndexConstraint::GetDefinition()

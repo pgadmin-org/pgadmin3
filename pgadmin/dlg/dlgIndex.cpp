@@ -30,22 +30,18 @@
 #define txtWhere        CTRL_TEXT("txtWhere")
 #define txtFillFactor   CTRL_TEXT("txtFillFactor")
 
-#define btnAddCol       CTRL_BUTTON("btnAddCol")
-#define btnRemoveCol    CTRL_BUTTON("btnRemoveCol")
-
+#define chkDesc         CTRL_CHECKBOX("chkDesc")
+//#define rdbNulls        CTRL_RADIOBOX("rdbNulls")
+#define rdbNullsFirst   CTRL_RADIOBUTTON("rdbNullsFirst")
+#define rdbNullsLast    CTRL_RADIOBUTTON("rdbNullsLast")
 
 
 BEGIN_EVENT_TABLE(dlgIndexBase, dlgCollistProperty)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtFillFactor"),                dlgProperty::OnChange)
-    EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndexBase::OnAddCol)
-    EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndexBase::OnRemoveCol)
     EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"),     dlgIndexBase::OnSelectListCol)
     EVT_COMBOBOX(XRCID("cbColumns"),                dlgIndexBase::OnSelectComboCol)
-#ifdef __WXMAC__
-    EVT_SIZE(                                       dlgIndexBase::OnChangeSize)
-#endif
 END_EVENT_TABLE();
 
 
@@ -60,8 +56,6 @@ dlgIndexBase::dlgIndexBase(pgaFactory *f, frmMain *frame, const wxString &resNam
 {
     index=node;
     wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
-
-    lstColumns->CreateColumns(0, _("Columns"), wxT(""), 0);
 }
 
 
@@ -69,8 +63,6 @@ dlgIndexBase::dlgIndexBase(pgaFactory *f, frmMain *frame, const wxString &resNam
 : dlgCollistProperty(f, frame, resName, colList)
 {
     index=0;
-    
-    lstColumns->CreateColumns(0, _("Columns"), wxT(""), 0);
 }
 
 
@@ -82,17 +74,12 @@ pgObject *dlgIndexBase::GetObject()
 
 int dlgIndexBase::Go(bool modal)
 {
-    int returncode;
 
     if (index)
     {
         // edit mode: view only
         txtName->Disable();
         cbColumns->Disable();
-
-		wxArrayString colsArr = index->GetColumnList();
-		for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
-			lstColumns->InsertItem(colIdx, colsArr.Item(colIdx), columnFactory.GetIconId());
 
         if (txtFillFactor)
         {
@@ -116,46 +103,7 @@ int dlgIndexBase::Go(bool modal)
     btnAddCol->Disable();
     btnRemoveCol->Disable();
 
-    returncode = dlgCollistProperty::Go(modal);
-
-    #ifdef __WXMAC__
-    wxSizeEvent event(wxSize(GetSize().GetWidth() - 25, GetSize().GetHeight() + 200));
-    OnChangeSize(event);
-    #endif
-
-    return returncode;
-}
-
-
-void dlgIndexBase::OnAddCol(wxCommandEvent &ev)
-{
-    wxString col=cbColumns->GetValue();
-    if (!col.IsEmpty())
-    {
-        lstColumns->InsertItem(lstColumns->GetItemCount(), col, columnFactory.GetIconId());
-        cbColumns->Delete(cbColumns->GetCurrentSelection());
-        if (cbColumns->GetCount())
-            cbColumns->SetSelection(0);
-
-        CheckChange();
-        if (!cbColumns->GetCount())
-            btnAddCol->Disable();
-    }
-}
-
-
-void dlgIndexBase::OnRemoveCol(wxCommandEvent &ev)
-{
-    long pos=lstColumns->GetSelection();
-    if (pos >= 0)
-    {
-        wxString col=lstColumns->GetItemText(pos);
-        lstColumns->DeleteItem(pos);
-        cbColumns->Append(col);
-
-        CheckChange();
-        btnRemoveCol->Disable();
-    }
+    return dlgCollistProperty::Go(modal);
 }
 
 void dlgIndexBase::OnSelectListCol(wxListEvent &ev)
@@ -185,18 +133,6 @@ void dlgIndexBase::OnSelectCol()
         btnAddCol->Enable(false);
 }
 
-#ifdef __WXMAC__
-void dlgIndexBase::OnChangeSize(wxSizeEvent &ev)
-{
-	lstColumns->SetSize(wxDefaultCoord, wxDefaultCoord,
-	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
-    if (GetAutoLayout())
-    {
-        Layout();
-    }
-}
-#endif
-
 
 void dlgIndexBase::CheckChange()
 {
@@ -215,32 +151,23 @@ void dlgIndexBase::CheckChange()
 }
 
 
-wxString dlgIndexBase::GetColumns()
-{
-    wxString sql;
-
-    int pos;
-    // iterate cols
-    for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
-    {
-        if (pos)
-            sql += wxT(", ");
-
-        sql += qtIdent(lstColumns->GetItemText(pos));
-    }
-    return sql;
-}
-
-
 BEGIN_EVENT_TABLE(dlgIndex, dlgIndexBase)
-    EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
+    EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndex::OnAddCol)
+    EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndex::OnRemoveCol)
     EVT_CHECKBOX(XRCID("chkClustered"),             dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkDesc"),                  dlgIndex::OnDescChange)
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgIndex::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
         
 dlgIndex::dlgIndex(pgaFactory *f, frmMain *frame, pgIndex *index, pgTable *parentNode)
 : dlgIndexBase(f, frame, wxT("dlgIndex"), index, parentNode)
 {
+    lstColumns->AddColumn(_("Column name"), 90);
+    lstColumns->AddColumn(_("Order"), 40);
+    lstColumns->AddColumn(_("NULLs Order"), 50);
 }
 
 
@@ -272,6 +199,34 @@ void dlgIndex::CheckChange()
 }
 
 
+wxString dlgIndex::GetColumns()
+{
+    wxString sql;
+
+    int pos;
+    // iterate cols
+    for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
+    {
+        if (pos)
+            sql += wxT(", ");
+
+        sql += qtIdent(lstColumns->GetItemText(pos));
+
+        if (this->database->BackendMinimumVersion(8, 3))
+        {
+            wxString order = lstColumns->GetText(pos, 1);
+            if (!order.IsEmpty())
+                sql += wxT(" ") + order;
+
+            wxString nullsOrder = lstColumns->GetText(pos, 2);
+            if (!nullsOrder.IsEmpty())
+                sql += wxT(" NULLS ") + nullsOrder;
+        }
+    }
+    return sql;
+}
+
+
 int dlgIndex::Go(bool modal)
 {
     if (!connection->BackendMinimumVersion(7, 4))
@@ -280,7 +235,53 @@ int dlgIndex::Go(bool modal)
     if (index)
     {
         // edit mode: view only
-        
+
+		wxArrayString colsArr = index->GetColumnList();
+        if (this->database->BackendMinimumVersion(8, 3))
+        {
+            wxString colDef, colRest, colName, descDef, nullsDef;
+            const wxString firstOrder = wxT(" NULLS FIRST"), lastOrder = wxT(" NULLS LAST"), descOrder = wxT(" DESC");
+
+            for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
+            {
+                colDef = colsArr.Item(colIdx);
+
+                if (colDef.EndsWith(firstOrder.GetData(), &colRest))
+                {
+                    colDef = colRest;
+                    nullsDef = wxT("FIRST");
+                }
+                else if (colDef.EndsWith(lastOrder.GetData(), &colRest))
+                {
+                    colDef = colRest;
+                    nullsDef = wxT("LAST");
+                }
+                else
+                    nullsDef = wxT("");
+
+                if (colDef.EndsWith(descOrder.GetData(), &colRest))
+                {
+                    colDef = colRest;
+                    descDef = wxT("DESC");
+                    if (nullsDef.IsEmpty())
+                        nullsDef = wxT("FIRST");
+                }
+                else
+                {
+                    descDef = wxT("ASC");
+                    if (nullsDef.IsEmpty())
+                        nullsDef = wxT("LAST");
+                }
+
+			    lstColumns->InsertItem(colIdx, colDef, columnFactory.GetIconId());
+                lstColumns->SetItem(colIdx, 1, descDef);
+                lstColumns->SetItem(colIdx, 2, nullsDef);
+            }
+        }
+        else
+            for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
+			    lstColumns->InsertItem(colIdx, colsArr.Item(colIdx), columnFactory.GetIconId());
+
         cbType->Append(index->GetIndexType());
         chkUnique->SetValue(index->GetIsUnique());
         chkClustered->SetValue(index->GetIsClustered());
@@ -291,6 +292,9 @@ int dlgIndex::Go(bool modal)
         chkUnique->Disable();
         chkConcurrent->Disable();
         PrepareTablespace(cbTablespace, index->GetTablespaceOid());
+        chkDesc->Disable();
+        rdbNullsFirst->Disable();
+        rdbNullsLast->Disable();
     }
     else
     {
@@ -312,13 +316,96 @@ int dlgIndex::Go(bool modal)
         if (!this->database->BackendMinimumVersion(8, 2))
             chkConcurrent->Disable();
 
+        if (!this->database->BackendMinimumVersion(8, 3))
+        {
+            chkDesc->Disable();
+            rdbNullsFirst->Disable();
+            rdbNullsLast->Disable();
+        }
+
         // Add the default tablespace 
         cbTablespace->Insert(_("<default tablespace>"), 0, (void *)0);
         cbTablespace->SetSelection(0);
     }
-    return dlgIndexBase::Go(modal);
+
+    int returnCode = dlgIndexBase::Go(modal);
+
+    #ifdef __WXMAC__
+    wxSizeEvent event(wxSize(GetSize().GetWidth() - 25, GetSize().GetHeight() + 200));
+    OnChangeSize(event);
+    #endif
+
+    return returnCode;
 }
-       
+
+
+void dlgIndex::OnAddCol(wxCommandEvent &ev)
+{
+    wxString colName=cbColumns->GetValue();
+
+    if (!colName.IsEmpty())
+    {
+        long colIndex = lstColumns->InsertItem(lstColumns->GetItemCount(), colName, columnFactory.GetIconId());
+
+        if (this->database->BackendMinimumVersion(8, 3))
+        {
+            if (chkDesc->GetValue())
+            {
+                lstColumns->SetItem(colIndex, 1, wxT("DESC"));
+
+                if (rdbNullsLast->GetValue())
+                    lstColumns->SetItem(colIndex, 2, wxT("LAST"));
+                else
+                    lstColumns->SetItem(colIndex, 2, wxT("FIRST"));
+            }
+            else
+            {
+                lstColumns->SetItem(colIndex, 1, wxT("ASC"));
+
+                if (rdbNullsFirst->GetValue())
+                    lstColumns->SetItem(colIndex, 2, wxT("FIRST"));
+                else
+                    lstColumns->SetItem(colIndex, 2, wxT("LAST"));
+            }
+        }
+
+        cbColumns->Delete(cbColumns->GetCurrentSelection());
+        if (cbColumns->GetCount())
+            cbColumns->SetSelection(0);
+
+        CheckChange();
+        if (!cbColumns->GetCount())
+            btnAddCol->Disable();
+    }
+}
+
+
+void dlgIndex::OnRemoveCol(wxCommandEvent &ev)
+{
+    long pos=lstColumns->GetSelection();
+    if (pos >= 0)
+    {
+        wxString colName=lstColumns->GetItemText(pos);
+
+        lstColumns->DeleteItem(pos);
+        cbColumns->Append(colName);
+
+        CheckChange();
+        btnRemoveCol->Disable();
+    }
+}
+
+#ifdef __WXMAC__
+void dlgIndex::OnChangeSize(wxSizeEvent &ev)
+{
+	lstColumns->SetSize(wxDefaultCoord, wxDefaultCoord,
+	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 700);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 wxString dlgIndex::GetSql()
 {
@@ -392,3 +479,14 @@ pgObject *dlgIndex::CreateObject(pgCollection *collection)
     return obj;
 }
 
+void dlgIndex::OnDescChange(wxCommandEvent &ev)
+{
+    if (chkDesc->GetValue())
+    {
+        rdbNullsFirst->SetValue(true);
+    }
+    else
+    {
+        rdbNullsLast->SetValue(true);
+    }
+}
