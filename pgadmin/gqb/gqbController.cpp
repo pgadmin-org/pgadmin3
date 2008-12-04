@@ -27,6 +27,8 @@
 #include "gqb/gqbEvents.h"
 #include "gqb/gqbViewPanels.h"
 
+wxWindowID CTL_NTBKPANELS = ::wxNewId();
+
 gqbController::gqbController(gqbModel *_model, wxWindow *gqbParent, wxNotebook *gridParent, wxSize size=wxSize(800,1280)):
 wxObject()
 {
@@ -36,7 +38,7 @@ wxObject()
 
     // Initialize Main Splitter
     gqbMainContainer = new wxSplitterWindow(gqbParent,GQB_HORZ_SASH,wxDefaultPosition,wxDefaultSize,wxSP_3D);
-    tabs = new wxNotebook(gqbMainContainer, CTL_NTBKCENTER, wxDefaultPosition, wxDefaultSize);
+    tabs = new wxNotebook(gqbMainContainer, CTL_NTBKPANELS, wxDefaultPosition, wxDefaultSize);
 
     // Initialize view container with tables browser
     // GQB-TODO: change 976 with a enum value of events.h
