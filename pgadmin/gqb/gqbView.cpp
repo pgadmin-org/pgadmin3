@@ -45,7 +45,6 @@ EVT_LEFT_DCLICK(gqbView::onDoubleClick)
 EVT_ERASE_BACKGROUND(gqbView::onEraseBackGround)  //This erase flicker create by wxStaticText when erasing background but this is not needed
 EVT_KEY_DOWN(gqbView::OnKeyDown)
 EVT_MENU(GQB_RMJ_DELETE,	gqbView::OnMenuJoinDelete)
-EVT_MENU(GQB_RMJ_SETTYPE,	gqbView::OnMenuJoinSetType)
 EVT_MENU(GQB_RMT_DELETE,	gqbView::OnMenuTableDelete)
 EVT_MENU(GQB_RMT_SETALIAS,	gqbView::OnMenuTableSetAlias)
 END_EVENT_TABLE()
@@ -94,6 +93,10 @@ wxHSCROLL | wxVSCROLL | wxBORDER | wxRETAINED)
     // Create Restrictions Panel
     this->restrictionsGridTable = new gqbGridRestTable(model->getRestrictions());
     this->criteriaPanel = new gqbCriteriaPanel(controller->getTabs(),model,restrictionsGridTable);
+
+    // Create Joins Panel
+    this->joinsGridTable = new gqbGridJoinTable(this->controller);
+    this->joinsPanel = new gqbJoinsPanel(controller->getTabs(), model, joinsGridTable, controller);
 
     // Create Order by Panel
     this->orderByLGridTable = new gqbGridOrderTable(1,model->getOrdByAvailColumns(),model->getOrdByAvailParents(),NULL);
@@ -162,7 +165,6 @@ void gqbView::onRightClick(wxMouseEvent& event)
             if(!m_rightJoins)
             {
                 m_rightJoins = new wxMenu;
-                m_rightJoins->Append(GQB_RMJ_SETTYPE, _("&Set Join Type"));
                 m_rightJoins->Append(GQB_RMJ_DELETE, _("&Delete Join"));
             }
             cTempSelected=NULL;
@@ -177,49 +179,10 @@ void gqbView::OnMenuJoinDelete(wxCommandEvent& WXUNUSED(event))
 {
     if(jTempSelected)
     {
+        this->joinsGridTable->removeJoin(joinSelected);
         controller->removeJoin(jTempSelected);
         jTempSelected=NULL;
         this->Refresh();
-    }
-}
-
-
-void gqbView::OnMenuJoinSetType(wxCommandEvent& WXUNUSED(event))
-{
-// Because a bug that scrolled automatically the panel of the view if this dialog is called, then assign
-// as his parent the main container of the view, and void the bug
-    if(jTempSelected)
-    {
-        wxSingleChoiceDialog dialog(controller->getDialogParent(),
-            _("Select the kind of Join"),
-            _("Please select a type of Join for relation, e.g. = "),
-            joinTypeChoices,
-            NULL,
-            wxOK | wxCANCEL| wxCENTRE);
-        dialog.SetSelection(0);
-        if (dialog.ShowModal() == wxID_OK)
-        {
-            if(dialog.GetStringSelection().Contains(wxT(" = ")))
-            {
-                jTempSelected->setKindofJoin(_equally);
-            }
-            else if(dialog.GetStringSelection().Contains(wxT(" > ")))
-            {
-                jTempSelected->setKindofJoin(_greater);
-            }
-            else if(dialog.GetStringSelection().Contains(wxT(" < ")))
-            {
-                jTempSelected->setKindofJoin(_lesser);
-            }
-            else if(dialog.GetStringSelection().Contains(wxT(" >= ")))
-            {
-                jTempSelected->setKindofJoin(_equgreater);
-            }
-            else if(dialog.GetStringSelection().Contains(wxT(" <= ")))
-            {
-                jTempSelected->setKindofJoin(_equlesser);
-            }
-        }
     }
 }
 
@@ -246,8 +209,12 @@ void gqbView::OnMenuTableSetAlias(wxCommandEvent& event)
             _("Please enter an alias for the table."),
             wxT(""),
             wxOK | wxCANCEL| wxCENTRE);
+        dialog.SetValue(cTempSelected->getAlias());
         if (dialog.ShowModal() == wxID_OK)
+        {
             cTempSelected->setAlias(dialog.GetValue());
+            joinsPanel->Refresh();
+        }
         cTempSelected=NULL;
         this->Refresh();
     }
@@ -277,42 +244,20 @@ void gqbView::onDoubleClick(wxMouseEvent& event)
             _("Please enter an alias for the table."),
                 wxT(""),
                 wxOK | wxCANCEL| wxCENTRE);
+            dialog.SetValue(t->getAlias());
             if (dialog.ShowModal() == wxID_OK)
+            {
                 t->setAlias(dialog.GetValue());
+                joinsPanel->Refresh();
+            }
         }
         else if(anySelected->getType()==GQB_JOIN)
         {
             gqbQueryJoin *j = (gqbQueryJoin *) anySelected;
-            wxSingleChoiceDialog dialog(controller->getDialogParent(),
-                _("Select the kind of join"),
-                _("Please select a type of join between the relations."),
-                joinTypeChoices,
-                NULL,
-                wxOK | wxCANCEL| wxCENTRE);
-            dialog.SetSelection(0);
-            if (dialog.ShowModal() == wxID_OK)
-            {
-                if(dialog.GetStringSelection().Contains(wxT(" = ")))
-                {
-                    j->setKindofJoin(_equally);
-                }
-                else if(dialog.GetStringSelection().Contains(wxT(" > ")))
-                {
-                    j->setKindofJoin(_greater);
-                }
-                else if(dialog.GetStringSelection().Contains(wxT(" < ")))
-                {
-                    j->setKindofJoin(_lesser);
-                }
-                else if(dialog.GetStringSelection().Contains(wxT(" >= ")))
-                {
-                    j->setKindofJoin(_equgreater);
-                }
-                else if(dialog.GetStringSelection().Contains(wxT(" <= ")))
-                {
-                    j->setKindofJoin(_equlesser);
-                }
-            }
+
+            controller->getTabs()->ChangeSelection(ti_joinsPanel);
+            gqbJoinsPanel *jPanel = wxDynamicCast( joinsPanel, gqbJoinsPanel );
+            jPanel->selectJoin(j);
         }
     }
     this->Refresh();
@@ -454,6 +399,12 @@ void gqbView::onMotion(wxMouseEvent& event)
 		if(mode==pt_normal)
         {
             changeTOpressed=false;
+            anySelected=controller->getModelSelected(pos, collectionSelected, joinSelected, false);
+            if (anySelected && anySelected->getType() == GQB_JOIN)
+            {
+                gqbJoinsPanel *jPanel = wxDynamicCast( joinsPanel, gqbJoinsPanel );
+                jPanel->selectJoin((gqbQueryJoin *)anySelected);
+            }
         }                                         
         // Pointer is used to add joins
 		else if(mode==pt_join)
@@ -490,6 +441,7 @@ void gqbView::onMotion(wxMouseEvent& event)
                     // GQB-TODO: Allow other type of joins
                     gqbQueryJoin *qj=controller->addJoin(joinSource,joinSCol,joinDest,joinDCol,_equally);
                     graphBehavior->calcAnchorPoint(qj);
+                    this->joinsGridTable->AppendJoin(qj);
                 }
                 // Let the temporary join line to be draw again [Don't destroy anything because all object where own by other objects this are just pointers]
                 joinSource=NULL;
@@ -546,6 +498,7 @@ void gqbView::OnKeyDown(wxKeyEvent& event)
     {
         if(collectionSelected)
         {
+            this->joinsGridTable->removeJoins(collectionSelected);
             controller->removeTableFromModel(collectionSelected,gridTable,orderByLGridTable,orderByRGridTable);
             collectionSelected=NULL;
             this->Refresh();
@@ -553,6 +506,7 @@ void gqbView::OnKeyDown(wxKeyEvent& event)
 
         if(joinSelected)
         {
+            this->joinsGridTable->removeJoin(joinSelected);
             controller->removeJoin(joinSelected);
             joinSelected=NULL;
             this->Refresh();
@@ -641,6 +595,7 @@ bool gqbView::clickOnJoin (gqbQueryJoin *join, wxPoint &pt, wxPoint &origin, wxP
 void gqbView::emptyPanelsData()
 {
     gridTable->emptyTableData();
+    this->joinsGridTable->emptyTableData();
 }
 
 
@@ -656,3 +611,31 @@ void gqbView::newTableAdded(gqbQueryObject *item)
         orderByLGridTable->GetView()->ProcessTableMessage( msg );
     }
 }
+
+void gqbView::updateTable(gqbQueryObject *queryTable)
+{
+    if (queryTable->getHaveJoins())
+    {
+        gqbIteratorBase *j=queryTable->createJoinsIterator();
+        while (j->HasNext())
+        {
+            gqbQueryJoin *tmp= (gqbQueryJoin *)j->Next();
+            graphBehavior->calcAnchorPoint(tmp);
+        }
+        delete j;
+    }
+
+    // Update position of anchor points of Joins that come from others tables
+    if (queryTable->getHaveRegJoins())
+    {
+        gqbIteratorBase *r=queryTable->createRegJoinsIterator();
+        while (r->HasNext())
+        {
+            gqbQueryJoin *tmp= (gqbQueryJoin *)r->Next();
+            graphBehavior->calcAnchorPoint(tmp);
+        }
+        delete r;
+    }
+    this->Refresh();
+}
+

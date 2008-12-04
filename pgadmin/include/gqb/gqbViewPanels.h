@@ -15,9 +15,11 @@
 #include <wx/minifram.h>
 
 // App headers
+#include "gqb/gqbViewController.h"
 #include "gqb/gqbGridProjTable.h"
 #include "gqb/gqbGridRestTable.h"
 #include "gqb/gqbGridOrderTable.h"
+#include "gqb/gqbGridJoinTable.h"
 
 enum gridButtons
 {
@@ -27,6 +29,9 @@ enum gridButtons
     GQB_COLS_DOWN_BOTTOM_BUTTON_ID,
     GQB_COLS_ADD_BUTTON_ID,
     GQB_COLS_DROP_BUTTON_ID,
+
+    GQB_JOIN_COLS_ADD_BUTTON_ID,
+    GQB_JOIN_COLS_DELETE_BUTTON_ID,
 
     GQB_ORDER_DROP_BUTTON_ID,
     GQB_ORDER_DROP_ALL_BUTTON_ID,
@@ -77,7 +82,9 @@ public:
     gqbColsTree(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style);
     wxTreeItemId& createRoot(wxString &Name);
     wxTreeItemId& getRootNode(){return rootNode;}
-    void refreshTree(gqbModel *model);
+    void refreshTree(gqbModel *model, gqbQueryObject *doNotInclude=NULL);
+    virtual void DeleteAllItems();
+    ~gqbColsTree() { DeleteAllItems(); }
 
 private:
     wxTreeItemId rootNode;
@@ -93,7 +100,7 @@ class gqbColsPopUp: public wxDialog
 {
 public:
     gqbColsPopUp(wxWindow* parent, wxWindowID id, wxString title, wxPoint pos, const wxSize size);
-    void refreshTree(gqbModel *_model);
+    virtual void refreshTree(gqbModel *_model);
     void OnPopUpOKClick(wxCommandEvent& event);
     void OnPopUpTreeClick(wxTreeEvent& event);
     void OnPopUpTreeDoubleClick(wxTreeEvent& event);
@@ -102,7 +109,7 @@ public:
     void setUsedCell(wxGrid* grid, int row, int col){usedGrid=grid; _row=row; _col=col;};
     void focus();
 
-private:
+protected:
     int _row,_col;
     wxGrid *usedGrid;
     gqbColsTree *colsTree;
@@ -112,14 +119,40 @@ private:
 
 };
 
+class gqbJoinsPanel;
+
+class gqbJoinsPopUp: public gqbColsPopUp
+{
+public:
+    gqbJoinsPopUp(
+        gqbJoinsPanel* parent, wxWindowID id, wxString title, wxPoint pos,
+        const wxSize size, gqbQueryJoin* _join, bool isSource,
+        gqbGridJoinTable* _gmodel);
+    void OnPopUpOKClick(wxCommandEvent& event);
+    void OnPopUpTreeClick(wxTreeEvent& event);
+    void OnPopUpTreeDoubleClick(wxTreeEvent& event);
+
+    // This should be called through OnPopUpOKClick & OnPopUpTreeDoubleClick
+    void updateJoin();
+
+    virtual void refreshTree(gqbModel* _model);
+
+private:
+    gqbQueryJoin *join; // Not owned, shouldn't be deletedat this class
+    gqbQueryObject *selectedTbl; //Not owned, shouldn't be deletedat this class
+    gqbColumn *selectedCol; //Not owned, shouldn't be deletedat this class
+    bool isSource;
+    gqbGridJoinTable *gModel; //Not owned, shouldn't be deletedat this class
+};
+
 //
 //   Criterias Panel
 //
 
-class wxRestrictionGrid: public wxGrid
+class gqbCustomGrid: public wxGrid
 {
 public:
-    wxRestrictionGrid(wxWindow* parent, wxWindowID id);
+    gqbCustomGrid(wxWindow* parent, wxWindowID id);
     void ComboBoxEvent(wxGridEvent& event);
     void RevertSel();
 
@@ -146,6 +179,31 @@ private:
     wxGrid *restrictionsGrid;     // Columns Grid used for order of columns in sentence & single row functions
     gqbModel *model;              // Not owned shouldn't be deleted at this class
     gqbColsPopUp *colsPopUp;
+    DECLARE_EVENT_TABLE()
+
+};
+
+class gqbJoinsPanel: public wxPanel
+{
+public:
+    gqbJoinsPanel(wxWindow* parent, gqbModel *_model, gqbGridJoinTable *_gmodel, gqbController *_controller);
+    void OnCellLeftClick(wxGridEvent& ev);
+    void refreshTree(gqbModel *_model);
+    void OnButtonAdd(wxCommandEvent&);
+    void OnButtonDrop(wxCommandEvent&);
+    void SetGridColsSize();
+    void updateView(gqbQueryObject *tbl);
+    void selectJoin(gqbQueryJoin *join);
+
+private:
+    wxBitmapButton *buttonAdd, *buttonDrop;
+    wxBitmap addBitmap, dropBitmap;
+    void showColsPopUp(int row, int col, wxPoint pos);
+    gqbCustomGrid *joinsGrid;
+    gqbModel *model;              // Not owned shouldn't be deleted at this class
+    gqbJoinsPopUp *joinsPopUp;    // It will be automatically deleted
+    gqbGridJoinTable *gModel;     // Not owned shouldn't be deleted at this class
+    gqbController *controller;    // Not owned shouldn't be deleted at this class
     DECLARE_EVENT_TABLE()
 
 };

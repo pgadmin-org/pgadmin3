@@ -23,6 +23,8 @@
 #include "gqb/gqbObjectCollection.h"
 #include "gqb/gqbViewPanels.h"
 
+const wxString wxEmptyStr = wxEmptyString;
+
 //
 // Collections of Tables inside a Query, data structured used for query storage & later generation of SQL sentence
 //
@@ -348,6 +350,8 @@ gqbColumn* gqbQueryJoin::getSCol()
 
 const wxString& gqbQueryJoin::getSourceTable()
 {
+    if (!owner)
+        return wxEmptyStr;
     gqbTable *s=(gqbTable*)&sCol->getOwner();
     return s->getName();
 }
@@ -355,6 +359,8 @@ const wxString& gqbQueryJoin::getSourceTable()
 
 const wxString& gqbQueryJoin::getDestTable()
 {
+    if (!destination)
+        return wxEmptyStr;
     gqbTable *d=(gqbTable*)&dCol->getOwner();
     return d->getName();
 }
@@ -362,12 +368,16 @@ const wxString& gqbQueryJoin::getDestTable()
 
 const wxString& gqbQueryJoin::getSourceCol()
 {
+    if (!sCol)
+        return wxEmptyStr;
     return sCol->getName();
 }
 
 
 const wxString& gqbQueryJoin::getDestCol()
 {
+    if (!dCol)
+        return wxEmptyStr;
     return dCol->getName();
 }
 

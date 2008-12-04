@@ -59,6 +59,7 @@ public:
     void insertAtIndex(gqbObject *item, int index);
     void deleteAll();
     void removeAll();
+    gqbObject *& operator[](size_t index) { return gqbArray[index]; }
 
 private:
     gqbObjsArray gqbArray;

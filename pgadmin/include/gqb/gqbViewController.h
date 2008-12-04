@@ -27,6 +27,7 @@
 #include "gqb/gqbGridProjTable.h"
 #include "gqb/gqbGridRestTable.h"
 #include "gqb/gqbGridOrderTable.h"
+#include "gqb/gqbGridJoinTable.h"
 #include "gqb/gqbBrowser.h"
 
 class gqbView;
@@ -50,6 +51,15 @@ private:
     gqbBrowser *tablesBrowser;        // tables Browser Tree
     wxPanel *browserPanel;            // Container of tables Browser Tree
     DECLARE_EVENT_TABLE()
+};
+
+// This enum is useful to select particular page from the tabs
+enum tabsIndex
+{
+    ti_colsGridPanel = 0,
+    ti_criteriaPanel,
+    ti_orderPanel,
+    ti_joinsPanel
 };
 
 class gqbController: public wxObject
@@ -109,8 +119,10 @@ public:
     wxPanel* getColsGridPanel(){ return (wxPanel*)projectionPanel; };
     wxPanel* getCriteriaPanel(){ return (wxPanel*)criteriaPanel; };
     wxPanel* getOrderPanel(){ return (wxPanel*)orderPanel; };
+    wxPanel* getJoinsPanel() { return joinsPanel; }
     void newTableAdded(gqbQueryObject *item);
     bool clickOnJoin (gqbQueryJoin *join, wxPoint &pt, wxPoint &origin, wxPoint &dest);
+    void updateTable(gqbQueryObject *table);
 
 	// Functions for all gqb extra Panels (projection, criteria..)
     void emptyPanelsData();
@@ -124,9 +136,10 @@ private:
 																// if change the way objects were draw changes too.
     gqbIteratorBase *iterator;									//include here for reuse of iterator, should be 
 																// delete when class destroy
-    wxPanel *projectionPanel, *criteriaPanel, *orderPanel;
+    wxPanel *projectionPanel, *criteriaPanel, *orderPanel, *joinsPanel;
     gqbGridProjTable *gridTable;								// Data model for the columns grid internals
     gqbGridRestTable *restrictionsGridTable;					// Data model for restricions grid internals
+    gqbGridJoinTable *joinsGridTable;                            // Data model for joins grid internals
                           
     gqbGridOrderTable *orderByLGridTable, *orderByRGridTable;	// Data model for order by grid internals
     wxSize canvasSize;
@@ -144,7 +157,6 @@ private:
     wxMenu *m_rightJoins, *m_rightTables;
     void OnMenuJoinDelete(wxCommandEvent& event);
     void OnMenuTableDelete(wxCommandEvent& event);
-    void OnMenuJoinSetType(wxCommandEvent& event);
     void OnMenuTableSetAlias(wxCommandEvent& event);
     wxArrayString joinTypeChoices;
     DECLARE_EVENT_TABLE()

@@ -25,6 +25,7 @@
 #include "gqb/gqbGridProjTable.h"
 #include "gqb/gqbGridRestTable.h"
 #include "gqb/gqbGridOrderTable.h"
+#include "gqb/gqbGridJoinTable.h"
 
 // Images
 #include "images/gqbUp.xpm"
@@ -41,6 +42,12 @@
 #include "images/table-sm.xpm"
 #include "images/column-sm.xpm"
 #include "images/view-sm.xpm"
+#include "images/gqbAdd.xpm"
+#include "images/gqbRemove.xpm"
+
+// Get available ID for Criteria & Joins Panel
+long CRITERIA_PANEL_RESTRICTION_GRID_ID = ::wxNewId();
+long JOINS_PANEL_GRID_ID = ::wxNewId();
 
 //
 //    View Columns Grid Panel Class.
@@ -383,10 +390,50 @@ wxTreeItemId& gqbColsTree::createRoot(wxString &Name)
 }
 
 
-void gqbColsTree::refreshTree(gqbModel * model)
+// Override the DeleteAllItems virtual function
+// Needs to set null as item-data, otherwise they will delete
+// the gqbQueryObject(s) and gqbColumn(s), while deleting these
+// items
+void gqbColsTree::DeleteAllItems()
+{
+    wxTreeItemId tableId;
+    wxTreeItemIdValue tableCookie;
+    wxTreeItemId rootId = this->GetRootItem();
+
+    if ( this->GetChildrenCount(rootId, false) != 0 )
+    {
+        wxTreeItemId lastTableId = this->GetLastChild(rootId);
+        tableId = this->GetFirstChild(rootId, tableCookie);
+        while ( true )
+        {
+            this->SetItemData(tableId, NULL);
+            wxTreeItemIdValue colCookie;
+            wxTreeItemId colId = this->GetFirstChild(tableId, colCookie);
+            wxTreeItemId lastColId = this->GetLastChild(tableId);
+            if ( this->GetChildrenCount(tableId, false) != 0 )
+            {
+                while ( true )
+                {
+                    this->SetItemData(colId, NULL);
+                    if ( colId != lastColId )
+                        colId = this->GetNextSibling(colId);
+                    else
+                        break;                    
+                }
+            }
+            if ( lastTableId != tableId )
+                tableId = this->GetNextSibling(tableId);
+            else
+                break;
+        }
+    }
+    wxTreeCtrl::DeleteAllItems();
+}
+
+void gqbColsTree::refreshTree(gqbModel * model, gqbQueryObject *doNotInclude)
 {
     // This remove and delete data inside tree's node
-	this->DeleteAllItems();                       
+    this->DeleteAllItems();
     wxString a=_("Select column");
     createRoot(a);
     this->Expand(rootNode);
@@ -396,26 +443,29 @@ void gqbColsTree::refreshTree(gqbModel * model)
     while(iterator->HasNext())
     {
         gqbQueryObject *tmpTable= (gqbQueryObject *)iterator->Next();
+
+        if (doNotInclude && tmpTable == doNotInclude)
+            continue;
 		
-		int iconIndex;
-		if (tmpTable->parent->getType() == GQB_TABLE)
-			iconIndex = 1;
-		else // Must be a view
-			iconIndex = 3;
+        int iconIndex;
+        if (tmpTable->parent->getType() == GQB_TABLE)
+            iconIndex = 1;
+        else // Must be a view
+            iconIndex = 3;
 
         if(tmpTable->getAlias().length()>0)
         {
-            parent=this->AppendItem(rootNode, tmpTable->getAlias() , iconIndex, iconIndex, NULL);
+            parent=this->AppendItem(rootNode, tmpTable->getAlias() , iconIndex, iconIndex, tmpTable);
         }
         else
         {
-            parent=this->AppendItem(rootNode, tmpTable->getName() , iconIndex, iconIndex, NULL);
+            parent=this->AppendItem(rootNode, tmpTable->getName() , iconIndex, iconIndex, tmpTable);
         }
         gqbIteratorBase *colsIterator = tmpTable->parent->createColumnsIterator();
         while(colsIterator->HasNext())
         {
             gqbColumn *tmpColumn= (gqbColumn *)colsIterator->Next();
-            this->AppendItem(parent, tmpColumn->getName() , 2, 2,NULL);
+            this->AppendItem(parent, tmpColumn->getName() , 2, 2, tmpColumn);
         }
         delete colsIterator;
     }
@@ -546,13 +596,11 @@ wxPanel(parent,-1)
     gModel=gridModel;
     colsPopUp=NULL;
 
-    // GQB-TODO: add real ID not 321
-    // wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP,wxT(""));
-    this->restrictionsGrid = new wxRestrictionGrid(this, 321);
+    this->restrictionsGrid = new gqbCustomGrid(this, CRITERIA_PANEL_RESTRICTION_GRID_ID);
     restrictionsGrid->SetTable(gModel, true, wxGrid::wxGridSelectCells);
     this->restrictionsGrid->SetSelectionMode(wxGrid::wxGridSelectRows);
 
-    this->Connect(321, wxEVT_GRID_CELL_LEFT_CLICK, (wxObjectEventFunction) (wxEventFunction) (wxGridEventFunction) &gqbCriteriaPanel::OnCellLeftClick);
+    this->Connect(CRITERIA_PANEL_RESTRICTION_GRID_ID, wxEVT_GRID_CELL_LEFT_CLICK, (wxObjectEventFunction) (wxEventFunction) (wxGridEventFunction) &gqbCriteriaPanel::OnCellLeftClick);
     // GQB-TODO: in a future implement OnMouseWheel
 
     addBitmap= wxBitmap(gqbAddRest_xpm);
@@ -633,7 +681,7 @@ void gqbCriteriaPanel::refreshTree(gqbModel *_model)
 void gqbCriteriaPanel::OnCellLeftClick(wxGridEvent& event)
 {
     wxObject *object = event.GetEventObject();
-    wxRestrictionGrid *grid = wxDynamicCast( object, wxRestrictionGrid );
+    gqbCustomGrid *grid = wxDynamicCast( object, gqbCustomGrid );
 
     // Only show editor y case of column 1
     if(event.GetCol()==1)
@@ -718,7 +766,7 @@ void gqbCriteriaPanel::SetGridColsSize()
 //
 //  View Selection Criteria Panel Class's Grid.
 //
-wxRestrictionGrid::wxRestrictionGrid(wxWindow* parent, wxWindowID id):
+gqbCustomGrid::gqbCustomGrid(wxWindow* parent, wxWindowID id):
 wxGrid(parent, id, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_BESTWRAP,wxT("")),
 m_selTemp(NULL)
 {
@@ -737,7 +785,7 @@ m_selTemp(NULL)
 }
 
 
-void wxRestrictionGrid::RevertSel()
+void gqbCustomGrid::RevertSel()
 {
     if (m_selTemp)
     {
@@ -748,7 +796,7 @@ void wxRestrictionGrid::RevertSel()
 }
 
 
-void wxRestrictionGrid::ComboBoxEvent(wxGridEvent& event)
+void gqbCustomGrid::ComboBoxEvent(wxGridEvent& event)
 {
 
     // This forces the cell to go into edit mode directly
@@ -772,7 +820,7 @@ void wxRestrictionGrid::ComboBoxEvent(wxGridEvent& event)
     }
 
     // hack to prevent selection from being lost when click combobox
-    if (event.GetCol() == 0 && this->IsInSelection(event.GetRow(), event.GetCol()))
+    if (this->IsInSelection(event.GetRow(), event.GetCol()))
     {
         this->m_selTemp = this->m_selection;
         this->m_selection = NULL;
@@ -1266,3 +1314,310 @@ void gqbOrderPanel::OnCellLeftClick(wxGridEvent& event)
     }
     event.Skip();
 }
+
+// Popup window for gqbJoinsPanel
+//
+gqbJoinsPopUp::gqbJoinsPopUp(
+                             gqbJoinsPanel* parent, wxWindowID id, wxString title,
+                             wxPoint pos, const wxSize size, gqbQueryJoin *_join,
+                             bool isSource, gqbGridJoinTable* _gmodel)
+:gqbColsPopUp(parent, id, title, pos, size)
+{
+    this->editTree->SetEditable(false);
+
+    // Handles different events for Ok button, single mouse click, double mouse click
+    this->Connect(QR_TREE_OK, wxEVT_COMMAND_BUTTON_CLICKED, (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction) &gqbJoinsPopUp::OnPopUpOKClick);
+    this->Connect(QR_TREE, wxEVT_COMMAND_TREE_ITEM_ACTIVATED, (wxObjectEventFunction) (wxEventFunction) (wxTreeEventFunction) &gqbJoinsPopUp::OnPopUpTreeDoubleClick);
+    this->Connect(QR_TREE, wxEVT_COMMAND_TREE_SEL_CHANGED, (wxObjectEventFunction) (wxEventFunction) (wxTreeEventFunction) &gqbJoinsPopUp::OnPopUpTreeClick);
+
+    this->selectedTbl = NULL;
+    this->selectedCol = NULL;
+    this->join = _join;
+    this->isSource = isSource;
+    this->gModel = _gmodel;
+}
+
+void gqbJoinsPopUp::refreshTree(gqbModel *_model)
+{
+    model=_model;
+    if(colsTree && _model)
+    {
+        // Do not include already included Table
+        // For self join, other entity for the same table should be used with alias
+        if ( join )
+            colsTree->refreshTree(model, isSource ? join->getDestQTable() : join->getSourceQTable());
+        else
+            colsTree->refreshTree(model);
+    }
+}
+
+// single mouse click on tree
+void  gqbJoinsPopUp::OnPopUpTreeClick(wxTreeEvent& event)
+{
+    if( colsTree )
+    {
+        wxTreeItemId itemId = event.GetItem();
+        wxTreeItemId itemIdParent =  colsTree->GetItemParent(itemId);
+
+        if(!colsTree->ItemHasChildren(itemId) && (colsTree->GetRootItem()!=itemId))
+        {
+            selectedCol = (gqbColumn *)colsTree->GetItemData(itemId);
+            selectedTbl = (gqbQueryObject *)colsTree->GetItemData(itemIdParent);
+            this->editTree->SetValue(qtIdent(colsTree->GetItemText(itemIdParent)) + wxT(".") + qtIdent(colsTree->GetItemText(itemId)));
+        }
+        else
+        {
+            selectedCol = NULL;
+            selectedTbl = NULL;
+        }
+    }
+}
+
+
+void gqbJoinsPopUp::OnPopUpOKClick(wxCommandEvent& event)
+{
+    if( colsTree && selectedCol && selectedTbl )
+    {
+        // This should update the selected Join with the new values.
+        updateJoin();
+    }
+    
+    this->MakeModal(false);
+    this->Hide();
+    this->GetParent()->Refresh();
+    this->join = NULL;
+    this->selectedCol = NULL;
+    this->selectedTbl = NULL;
+}
+
+
+// Update the view fo this query table, involved in
+// the whole operation
+void gqbJoinsPanel::updateView(gqbQueryObject *table)
+{
+    if (table)
+        controller->getView()->updateTable(table);
+}
+
+void gqbJoinsPopUp::updateJoin()
+{
+    if ((isSource ? join->getSCol() : join->getDCol()) != selectedCol)
+    {
+        // Create a new join with the existing data
+        // Replace it in the gqbJoinTable with the existing one
+        // Unregister the join, if exists
+        gqbQueryObject *srcTbl = ( isSource ? selectedTbl : join->getSourceQTable() );
+        gqbQueryObject *destTbl = ( isSource ? join->getDestQTable() : selectedTbl );
+        gqbColumn *srcCol = ( isSource ? selectedCol : join->getSCol() );
+        gqbColumn *destCol = ( isSource ? join->getDCol() : selectedCol );
+        type_Join joinType = join->getKindofJoin();
+
+        gqbQueryJoin *newJoin = NULL;
+        if( srcTbl && destTbl )
+        {
+            newJoin = srcTbl->addJoin(srcTbl, destTbl, srcCol, destCol, joinType);
+            ((gqbJoinsPanel *)GetParent())->updateView(newJoin->getSourceQTable());
+        }
+        else
+            newJoin = new gqbQueryJoin(srcTbl, destTbl, srcCol, destCol, joinType);
+
+        gModel->ReplaceJoin(join, newJoin);
+
+        if (join->getSourceQTable() && join->getDestQTable())
+        {
+            // This will remove the join object too
+            gqbQueryObject* srcObj = join->getSourceQTable();
+            srcObj->removeJoin(join, true);
+        }
+        else
+        {
+            delete join;
+        }
+        join = newJoin;
+    }
+}
+
+
+void  gqbJoinsPopUp::OnPopUpTreeDoubleClick(wxTreeEvent& event)
+{
+    if(colsTree)
+    {
+        wxTreeItemId itemId = event.GetItem();
+        wxTreeItemId itemIdParent =  colsTree->GetItemParent(itemId);
+        if(!colsTree->ItemHasChildren(itemId) && (colsTree->GetRootItem()!=itemId))
+        {
+            selectedCol = (gqbColumn *)colsTree->GetItemData(itemId);
+            selectedTbl = (gqbQueryObject *)colsTree->GetItemData(itemIdParent);
+
+            updateJoin();
+
+            this->MakeModal(false);
+            this->Hide();
+            this->GetParent()->Refresh();
+            this->join = NULL;
+            this->selectedCol = NULL;
+            this->selectedTbl = NULL;
+        }
+    }
+}
+
+//
+//    View Selection Joins Panel Class.
+//
+
+BEGIN_EVENT_TABLE(gqbJoinsPanel, wxPanel)
+EVT_BUTTON(GQB_JOIN_COLS_ADD_BUTTON_ID, gqbJoinsPanel::OnButtonAdd)
+EVT_BUTTON(GQB_JOIN_COLS_DELETE_BUTTON_ID, gqbJoinsPanel::OnButtonDrop)
+END_EVENT_TABLE()
+
+gqbJoinsPanel::gqbJoinsPanel(wxWindow* parent, gqbModel *_model, gqbGridJoinTable* _gmodel, gqbController *_controller):
+wxPanel(parent, wxID_ANY)
+{
+    model=_model;
+    gModel=_gmodel;
+    controller=_controller;
+    joinsPopUp=NULL;
+
+    this->joinsGrid = new gqbCustomGrid(this, JOINS_PANEL_GRID_ID);
+    joinsGrid->CreateGrid(0, 5, wxGrid::wxGridSelectRows);
+    joinsGrid->SetTable(gModel, true, wxGrid::wxGridSelectCells);
+    this->joinsGrid->SetSelectionMode(wxGrid::wxGridSelectRows);
+
+    this->Connect(JOINS_PANEL_GRID_ID, wxEVT_GRID_CELL_LEFT_CLICK, (wxObjectEventFunction) (wxEventFunction) (wxGridEventFunction) &gqbJoinsPanel::OnCellLeftClick);
+    // GQB-TODO: in a future implement OnMouseWheel
+
+    addBitmap= wxBitmap(gqbAdd_xpm);
+    dropBitmap= wxBitmap(gqbRemove_xpm);
+    buttonAdd= new wxBitmapButton( this, GQB_JOIN_COLS_ADD_BUTTON_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add"));
+    buttonDrop= new wxBitmapButton( this, GQB_JOIN_COLS_DELETE_BUTTON_ID,  dropBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove"));
+
+    wxBoxSizer *horizontalSizer = new wxBoxSizer( wxHORIZONTAL );
+    horizontalSizer->Add(joinsGrid,
+        1,                                        // make vertically stretchable
+        wxEXPAND |                                // make horizontally stretchable
+        wxALL,                                    //   and make border all around
+        3 );                                     // set border width to 10
+
+    wxBoxSizer *buttonsSizer = new wxBoxSizer( wxVERTICAL );
+
+    buttonsSizer->Add(
+        this->buttonAdd,
+        0,                                        // make horizontally unstretchable
+        wxALL,                                    // make border all around (implicit top alignment)
+        10 );                                     // set border width to 10
+
+    buttonsSizer->Add(
+        this->buttonDrop,
+        0,                                        // make horizontally unstretchable
+        wxALL,                                    // make border all around (implicit top alignment)
+        10 );                                     // set border width to 10
+
+    horizontalSizer->Add(
+        buttonsSizer,
+        0,                                        // make vertically unstretchable
+        wxALIGN_CENTER );                         // no border and centre horizontally
+
+    this->SetSizer(horizontalSizer);
+}
+
+
+void gqbJoinsPanel::showColsPopUp(int row, int col, wxPoint pos)
+{
+    if( joinsPopUp )
+    {
+        joinsPopUp->Destroy();
+        joinsPopUp = NULL;
+    }
+    joinsPopUp = new gqbJoinsPopUp(this,-1,wxT("Select Column"),wxDefaultPosition,wxDefaultSize, this->gModel->GetJoin(row), ( col == 0  ? true : false ), this->gModel);
+    
+    refreshTree(model);
+
+    // Set initial Value
+    joinsPopUp->setEditText(joinsGrid->GetCellValue(row,col));
+
+    // Set Position for Pop Up Tree
+    // Position of wxNotebook
+    wxPoint p=this->GetParent()->GetPosition();
+    p.x+=pos.x;
+    p.y+=pos.y;
+    wxPoint p2=this->GetPosition();
+
+    // Position of panel inside wxNotebook
+    p.x+=p2.x;
+    p.y+=p2.y+40;
+    joinsPopUp->SetPosition(p);
+    joinsPopUp->Show();
+    joinsPopUp->MakeModal(true);
+    joinsPopUp->focus();
+    joinsPopUp->setUsedCell(joinsGrid,row,col);
+}
+
+
+void gqbJoinsPanel::refreshTree(gqbModel *_model)
+{
+    model=_model;
+    if(joinsPopUp && model)
+        joinsPopUp->refreshTree(model);
+}
+
+
+void gqbJoinsPanel::OnCellLeftClick(wxGridEvent& event)
+{
+    wxObject *object = event.GetEventObject();
+    gqbCustomGrid *grid = wxDynamicCast( object, gqbCustomGrid );
+
+    // Only show editor y case of column 1
+    if(event.GetCol()==1)
+    {
+        grid->ComboBoxEvent(event);
+    } else if(event.GetCol()==0 || event.GetCol()==2)
+    {
+        // Allow mini browser frame to be visible to user
+        wxRect cellSize=grid->CellToRect(event.GetRow(), event.GetCol());
+        wxPoint p = event.GetPosition();
+        joinsGrid->CalcUnscrolledPosition(p.x,p.y,&p.x,&p.y);
+
+        // Number 17 is button's width at cellRender function [nButtonWidth]
+        if((grid->GetRowLabelSize()+cellSize.GetRight())-(p.x) <= 17 )
+        {
+            p = event.GetPosition();
+            showColsPopUp(event.GetRow(), event.GetCol(),p);
+        }
+    }
+    event.Skip();
+}
+
+
+void gqbJoinsPanel::OnButtonAdd(wxCommandEvent&)
+{
+    this->gModel->AppendJoin( NULL );
+}
+
+
+void gqbJoinsPanel::OnButtonDrop(wxCommandEvent&)
+{
+    if(joinsGrid->GetGridCursorRow()>=0)
+    {
+        gqbQueryObject *updateTbl = gModel->DeleteRow(joinsGrid->GetGridCursorRow());
+        if (updateTbl)
+            controller->getView()->updateTable(updateTbl);
+    }
+    joinsGrid->Refresh();
+}
+
+
+void gqbJoinsPanel::SetGridColsSize()
+{
+    // After sizers determine the width of Grid then calculate the % space for each column about 33% each one
+    int size=(int)((joinsGrid->GetSize().GetWidth() - joinsGrid->GetRowLabelSize())*0.3);
+    joinsGrid->SetColSize(0,size);
+    joinsGrid->SetColSize(1,size);
+    joinsGrid->SetColSize(2,size);
+}
+
+void gqbJoinsPanel::selectJoin(gqbQueryJoin *join)
+{
+    joinsGrid->RevertSel();
+    gModel->selectJoin(join);
+}
+

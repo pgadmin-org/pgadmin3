@@ -22,6 +22,7 @@ pgadmin3_SOURCES += \
     $(srcdir)/include/gqb/gqbGridOrderTable.h \
     $(srcdir)/include/gqb/gqbGridProjTable.h \
     $(srcdir)/include/gqb/gqbGridRestTable.h \
+    $(srcdir)/include/gqb/gqbGridJoinTable.h \
     $(srcdir)/include/gqb/gqbModel.h \
     $(srcdir)/include/gqb/gqbObject.h \
     $(srcdir)/include/gqb/gqbObjectCollection.h \

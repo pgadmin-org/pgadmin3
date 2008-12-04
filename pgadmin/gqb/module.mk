@@ -20,6 +20,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/gqb/gqbGridOrderTable.cpp \
 	$(srcdir)/gqb/gqbGridProjTable.cpp \
 	$(srcdir)/gqb/gqbGridRestTable.cpp \
+        $(srcdir)/gqb/gqbGridJoinTable.cpp \
 	$(srcdir)/gqb/gqbModel.cpp \
 	$(srcdir)/gqb/gqbObject.cpp \
 	$(srcdir)/gqb/gqbObjectCollection.cpp \

@@ -54,9 +54,10 @@ wxObject()
     view->SetScrollbars( 10, 10, 127, 80 );
     gqbContainer->SplitVertically(browserPanel,view);
 
-    tabs->AddPage(view->getColsGridPanel(), _("Columns"));
-    tabs->AddPage(view->getCriteriaPanel(), _("Criteria"));
-    tabs->AddPage(view->getOrderPanel(), _("Ordering"));
+    tabs->InsertPage(ti_colsGridPanel, view->getColsGridPanel(), _("Columns"));
+    tabs->InsertPage(ti_criteriaPanel, view->getCriteriaPanel(), _("Criteria"));
+    tabs->InsertPage(ti_orderPanel, view->getOrderPanel(), _("Ordering"));
+    tabs->InsertPage(ti_joinsPanel, view->getJoinsPanel(), _("Joins"));
     gqbMainContainer->SplitHorizontally(gqbContainer,tabs);
 
     // Fix Sash resize bug
@@ -536,6 +537,7 @@ void gqbController::calcGridColsSizes()
     ((gqbGridPanel *)view->getColsGridPanel())->SetGridColsSize();
     ((gqbCriteriaPanel *)view->getCriteriaPanel())->SetGridColsSize();
     ((gqbOrderPanel *)view->getOrderPanel())->SetGridColsSize();
+    ((gqbJoinsPanel *)view->getJoinsPanel())->SetGridColsSize();
 }
 
 

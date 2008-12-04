@@ -92,6 +92,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/forward.xpm \
 	$(srcdir)/include/images/function.xpm \
 	$(srcdir)/include/images/functions.xpm \
+        $(srcdir)/include/images/gqbAdd.xpm \
+        $(srcdir)/include/images/gqbRemove.xpm \
 	$(srcdir)/include/images/group.xpm \
 	$(srcdir)/include/images/groups.xpm \
 	$(srcdir)/include/images/help.xpm \
