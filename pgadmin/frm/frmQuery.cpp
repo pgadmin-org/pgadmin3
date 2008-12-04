@@ -1738,6 +1738,10 @@ bool frmQuery::updateFromGqb(bool executing)
         {
             canGenerate=true;
         }
+		else
+		{
+			gqbUpdateRunning = false;
+		}
     }
     else
     {
