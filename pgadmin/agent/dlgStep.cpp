@@ -84,14 +84,6 @@ pgObject *dlgStep::GetObject()
 
 int dlgStep::Go(bool modal)
 {
-    // Set height for txtDatabase, btnSelDatabase, cbDatabase same as other text
-    // control 
-//    int commonHeight = txtID->GetSize().GetHeight();
-
-//    cbDatabase->SetMinSize(wxSize(cbDatabase->GetSize().GetWidth(), commonHeight));
-//    btnSelDatabase->SetMinSize(wxSize(30, commonHeight));
-//    txtConnStr->SetMinSize(wxSize(/* txtConnStr->GetSize().GetWidth() */ 10, commonHeight));
-    
     hasConnStrSupport = connection->TableHasColumn(wxT("pgagent"), wxT("pga_jobstep"), wxT("jstconnstr"));
     cbDatabase->Append(wxT(" "));
     cbDatabase->SetSelection(0);
