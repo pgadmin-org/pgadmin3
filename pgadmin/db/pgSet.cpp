@@ -203,6 +203,19 @@ int pgSet::ColNumber(const wxString &colname) const
     return col;
 }
 
+bool pgSet::HasColumn(const wxString &colname) const
+{
+    if (needColQuoting)
+    {
+        wxString quotedColName = colname;
+        quotedColName.Replace(wxT("\""), wxT("\"\""));
+        return (PQfnumber(res, (wxT("\"") + quotedColName + wxT("\"")).mb_str(conv)) < 0 ? false : true);
+    }
+    else
+        return (PQfnumber(res, colname.mb_str(conv)) < 0 ? false : true);
+
+}
+
 
 
 char *pgSet::GetCharPtr(const int col) const

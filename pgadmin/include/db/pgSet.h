@@ -62,6 +62,7 @@ public:
     bool IsNull(const int col) const { return (PQgetisnull(res, pos-1, col) != 0); }
     int ColScale(const int col) const;
     int ColNumber(const wxString &colName) const;
+    bool HasColumn(const wxString &colname) const;
 
 
     wxString GetVal(const int col) const;

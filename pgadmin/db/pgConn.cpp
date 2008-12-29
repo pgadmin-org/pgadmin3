@@ -819,3 +819,62 @@ wxString pgConn::qtString(const wxString& value)
 	
     return result;
 }
+
+// Check if, TABLE (tblname) has column with name colname
+bool pgConn::TableHasColumn(wxString schemaname, wxString tblname, const wxString& colname)
+{
+    //
+    // SELECT a.attname
+    // FROM pg_catalog.pg_attribute a
+    // WHERE a.attrelid = (SELECT c.oid
+    //                     FROM pg_catalog.pg_class c
+    //                          LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+    //                     WHERE c.relname ~ '^(TABLENAME)$' AND 
+    //                           pg_catalog.pg_table_is_visible(c.oid) AND 
+    //                           n.nspname ~ '^(SCHEMANAME)$') AND 
+    //       a.attnum > 0 AND NOT a.attisdropped
+    // ORDER BY a.attnum
+    //
+
+    if (tblname.IsEmpty() || colname.IsEmpty())
+        return false;
+
+    if (schemaname.IsEmpty())
+        schemaname = wxT("public");
+
+    if (this && GetStatus() == PGCONN_OK)
+    {
+        tblname.Replace(wxT("\\"), wxT("\\\\"));
+        tblname.Replace(wxT("'"), wxT("''"));
+        schemaname.Replace(wxT("\\"), wxT("\\\\"));
+        schemaname.Replace(wxT("'"), wxT("''"));
+
+        wxString sql
+          = wxT("SELECT a.attname AS colname FROM pg_catalog.pg_attribute a ") \
+            wxT("WHERE a.attrelid = (SELECT c.oid FROM pg_catalog.pg_class c ") \
+            wxT("                    LEFT JOIN pg_catalog.pg_namespace n ON ") \
+            wxT("                                    n.oid = c.relnamespace ") \
+            wxT("                    WHERE c.relname ~ '^(") + tblname + wxT(")$' AND ") \
+            wxT("                          n.nspname ~ '^(") + schemaname + wxT(")$') AND ") \
+            wxT("      a.attnum > 0 AND NOT a.attisdropped ") \
+            wxT("ORDER BY a.attnum");
+
+        pgSet* set = ExecuteSet(sql);
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                if (set->GetVal(wxT("colname")) == colname)
+                {
+                    delete set;
+                    return true;
+                }
+                set->MoveNext();
+            }
+        }
+        delete set;
+    }
+
+    return false;
+}
+

@@ -46,6 +46,8 @@ public:
     void iSetCode(const wxString &s) { code=s; }
     wxString GetDbname() const { return dbname; }
     void iSetDbname(const wxString &s) { dbname=s; }
+    wxString GetConnStr() const { return connstr; }
+    void iSetConnStr(const wxString &s) { connstr=s; }
     wxString GetOnError() const { return onError; }
     void iSetOnError(const wxString &s) { onError=s; }
     wxChar GetOnErrorChar() const { return onErrorChar; }
@@ -53,13 +55,15 @@ public:
 	long GetRecId() const { return recId; }
     void iSetRecId(const long l) { recId=l; }
 
+    bool HasConnectionString() const { return !connstr.IsEmpty(); }
+
 	bool IsUpToDate();
 
     wxString GetHelpPage(bool forCreate) const { return wxT("pgagent-steps"); }
 
 private:
     bool enabled;
-    wxString kind, code, dbname, onError;
+    wxString kind, code, dbname, connstr, onError;
     wxChar kindChar, onErrorChar;
 	long recId;
 };

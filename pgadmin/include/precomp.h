@@ -91,6 +91,7 @@
 #include "dlg/dlgRule.h"
 #include "dlg/dlgSchema.h"
 #include "dlg/dlgSelectConnection.h"
+#include "dlg/dlgSelectDatabase.h"
 #include "dlg/dlgSequence.h"
 #include "dlg/dlgServer.h"
 #include "dlg/dlgSynonym.h"

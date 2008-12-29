@@ -39,13 +39,17 @@ public:
     wxString GetHelpPage(bool forCreate) const { return wxT("pgagent-steps"); }
 
 private:
+    void OnSelRemoteConn(wxCommandEvent& ev);
+    void OnSelLocalConn(wxCommandEvent& ev);
+    void OnSelectDatabase(wxCommandEvent &ev);
 
-	virtual bool IsUpToDate();
+    virtual bool IsUpToDate();
 
     long jobId;
     ctlSQLBox *sqlBox;
     pgaStep *step;
     pgaJob *job;
+    bool hasConnStrSupport;
 
     DECLARE_EVENT_TABLE()
 };

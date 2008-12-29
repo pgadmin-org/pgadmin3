@@ -56,7 +56,10 @@ void pgaStep::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         properties->AppendItem(_("ID"), GetRecId());
         properties->AppendItem(_("Enabled"), GetEnabled());
         properties->AppendItem(_("Kind"), GetKind());
-        properties->AppendItem(_("Database"), GetDbname());
+        if (GetConnStr().IsEmpty())
+            properties->AppendItem(_("Database"), GetDbname());
+        else
+            properties->AppendItem(_("Connection String"), GetConnStr());
         properties->AppendItem(_("Code"), GetCode());
         properties->AppendItem(_("On error"), GetOnError());
 
@@ -98,6 +101,8 @@ pgObject *pgaStepFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             step->iSetRecId(steps->GetLong(wxT("jstid")));
 			step->iSetXid(steps->GetOid(wxT("xmin")));
             step->iSetDbname(steps->GetVal(wxT("jstdbname")));
+            if (steps->HasColumn(wxT("jstconnstr")))
+                step->iSetConnStr(steps->GetVal(wxT("jstconnstr")));
             step->iSetCode(steps->GetVal(wxT("jstcode")));
             step->iSetEnabled(steps->GetBool(wxT("jstenabled")));
 

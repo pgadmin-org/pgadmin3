@@ -136,6 +136,8 @@ public:
     pgNotification *GetNotification();
     int GetTxStatus();
 
+    bool TableHasColumn(wxString schemaname, wxString tblname, const wxString& colname);
+
 protected:
     PGconn *conn;
     int lastResultStatus;
