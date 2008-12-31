@@ -90,6 +90,8 @@ wxString pgRole::GetSql(ctlTree *browser)
         else                        sql += wxT(" NOCREATEDB");
         if (GetCreateRole())        sql += wxT(" CREATEROLE");
         else                        sql += wxT(" NOCREATEROLE");
+        if (GetConnectionLimit() > 0)
+                                    sql += wxT(" CONNECTION LIMIT ") + NumToStr(GetConnectionLimit());
         if (GetAccountExpires().IsValid())
         AppendIfFilled(sql, wxT(" VALID UNTIL "), qtDbString(DateToAnsiStr(GetAccountExpires())));
         sql +=wxT(";\n");
@@ -258,6 +260,11 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         properties->AppendItem(_("Create roles?"), BoolToYesNo(GetCreateRole()));
         properties->AppendItem(_("Update catalogs?"), BoolToYesNo(GetUpdateCatalog()));
         properties->AppendItem(_("Inherits?"), BoolToYesNo(GetInherits()));
+
+        wxString strConnLimit;
+        strConnLimit.Printf(wxT("%ld"), GetConnectionLimit()); 
+        properties->AppendItem(_("Connection limit"), strConnLimit);
+
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 
         wxString roleList;
@@ -370,6 +377,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             role->iSetAccountExpires(roles->GetDateTime(wxT("rolvaliduntil")));
             role->iSetPassword(roles->GetVal(wxT("rolpassword")));
             role->iSetComment(roles->GetVal(wxT("description")));
+            role->iSetConnectionLimit(roles->GetLong(wxT("rolconnlimit")));
 
             wxString cfg=roles->GetVal(wxT("rolconfig"));
             if (!cfg.IsEmpty())

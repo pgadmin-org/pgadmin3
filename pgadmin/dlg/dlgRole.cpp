@@ -31,6 +31,7 @@
 #define chkCreateDB     CTRL_CHECKBOX("chkCreateDB")
 #define chkCreateRole   CTRL_CHECKBOX("chkCreateRole")
 #define chkUpdateCat    CTRL_CHECKBOX("chkUpdateCat")
+#define txtConnectionLimit CTRL_TEXT("txtConnectionLimit")
 
 #define lbRolesNotIn    CTRL_LISTBOX("lbRolesNotIn")
 #define lbRolesIn       CTRL_LISTBOX("lbRolesIn")
@@ -72,6 +73,7 @@ BEGIN_EVENT_TABLE(dlgRole, dlgProperty)
     EVT_CHECKBOX(XRCID("chkUpdateCat"),             dlgRole::OnChange)
     EVT_CHECKBOX(XRCID("chkSuperuser"),             dlgRole::OnChangeSuperuser)
     EVT_CHECKBOX(XRCID("chkCreateRole"),            dlgRole::OnChange)
+    EVT_TEXT(XRCID("txtConnectionLimit"),           dlgRole::OnChange)
 
     EVT_BUTTON(XRCID("btnAddRole"),                 dlgRole::OnRoleAdd)
     EVT_BUTTON(XRCID("btnDelRole"),                 dlgRole::OnRoleRemove)
@@ -176,6 +178,7 @@ int dlgRole::Go(bool modal)
         chkCanLogin->SetValue(role->GetCanLogin());
         datValidUntil->SetValue(role->GetAccountExpires());
         timValidUntil->SetTime(role->GetAccountExpires());
+        txtConnectionLimit->SetValue(NumToStr(role->GetConnectionLimit()));
         txtComment->SetValue(role->GetComment());
 
         size_t index;
@@ -203,6 +206,7 @@ int dlgRole::Go(bool modal)
             btnDelRole->Disable();
             cbVarname->Disable();
             txtValue->Disable();
+            txtConnectionLimit->Disable();
             btnAdd->Disable();
             btnRemove->Disable();
         }
@@ -540,6 +544,21 @@ wxString dlgRole::GetSql()
                 options += wxT("\n   VALID UNTIL 'infinity'");
         }
 
+        if (txtConnectionLimit->GetValue().Length() == 0)
+        {
+            if (role->GetConnectionLimit() != -1)
+            {
+                options += wxT(" CONNECTION LIMIT -1");
+            }
+        }
+        else
+        {
+            if (txtConnectionLimit->GetValue() != NumToStr(role->GetConnectionLimit()))
+            {
+                options += wxT(" CONNECTION LIMIT ") + txtConnectionLimit->GetValue();
+            }
+        }
+
         if (!options.IsNull())
             sql += wxT("ALTER Role ") + qtIdent(name) + options + wxT(";\n");
 
@@ -639,6 +658,11 @@ wxString dlgRole::GetSql()
         else
             sql += wxT("\n   VALID UNTIL 'infinity'");
         
+        if (txtConnectionLimit->GetValue().Length() > 0)
+        {
+            sql += wxT(" CONNECTION LIMIT ") + txtConnectionLimit->GetValue();
+        }
+
         int cnt = lbRolesIn->GetCount();
 		wxString grants;
 
