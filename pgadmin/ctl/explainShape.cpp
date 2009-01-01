@@ -45,6 +45,26 @@
 
 #define BMP_BORDER 3
 
+
+// TODO:: 
+// Remove these defines, when appropriate xpm are generated for them
+#define ex_nested_loop_anti_join_xpm   ex_join_xpm
+#define ex_nested_loop_semi_join_xpm   ex_join_xpm
+#define ex_merge_anti_join             ex_join_xpm
+#define ex_merge_semi_join             ex_join_xpm
+#define ex_hash_anti_join_xpm          ex_join_xpm
+#define ex_hash_semi_join_xpm          ex_join_xpm
+#define ex_hashsetop_except_all_xpm    ex_setop_xpm
+#define ex_hashsetop_except_xpm        ex_setop_xpm
+#define ex_hashsetop_intersect_all_xpm ex_setop_xpm
+#define ex_hashsetop_intersect_xpm     ex_setop_xpm
+#define ex_hashsetop_unknown_xpm       ex_setop_xpm
+#define ex_worktable_scan_xpm          ex_scan_xpm
+#define ex_cte_scan_xpm                ex_scan_xpm
+#define ex_recursive_union_xpm         ex_nested_xpm
+#define ex_windowagg_xpm               ex_sort_xpm
+
+
 ExplainShape::ExplainShape(const char *bmp[], const wxString &description, long tokenNo, long detailNo)
 {
     SetBitmap(wxBitmap(bmp));
@@ -149,6 +169,9 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
     wxString token = tokens.GetNextToken();
     wxString token2 = tokens.GetNextToken();
     wxString token3 = tokens.GetNextToken();
+    wxString token4;
+    if (tokens.HasMoreTokens())
+        token4 = tokens.GetNextToken();
     wxString descr = costPos > 0 ? str.Left(costPos) : str;
 
     // possible keywords can be found in postgresql/src/backend/commands/explain.c
@@ -157,18 +180,107 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
     else if (token == wxT("Trigger"))       return 0;
     else if (token == wxT("Result"))        s = new ExplainShape(ex_result_xpm, descr);
     else if (token == wxT("Append"))        s = new ExplainShape(ex_append_xpm, descr);
-    else if (token == wxT("Nested"))        s = new ExplainShape(ex_nested_xpm, descr);
-    else if (token == wxT("Merge"))         s = new ExplainShape(ex_merge_xpm, descr);
+    else if (token == wxT("Nested"))
+    {
+        if (token2 == wxT("Loop") && token4 == wxT("Join"))
+        {
+            // Nested Loop Anti Join
+            if (token3 == wxT("Anti"))
+            {
+                s = new ExplainShape(ex_nested_loop_anti_join_xpm, descr);
+            }
+            // Nested Loop Semi Join
+            else
+            {
+                s = new ExplainShape(ex_nested_loop_semi_join_xpm, descr);
+            }
+        }
+        if (!s)
+            s = new ExplainShape(ex_nested_xpm, descr);
+    }
+    else if (token == wxT("Merge"))
+    {
+        if (token3 == wxT("Join"))
+        {
+            // Merge Anti Join
+            if (token2 == wxT("Anti"))
+            {
+                s = new ExplainShape(ex_merge_anti_join, descr);
+            }
+            // Merge Semi Join
+            else
+            {
+                s = new ExplainShape(ex_merge_semi_join, descr);
+            }
+        }
+        else
+        {
+            s = new ExplainShape(ex_merge_xpm, descr);
+        }
+    }
     else if (token == wxT("Hash"))
     {
         if (token2 == wxT("Join"))
+        {
             s = new ExplainShape(ex_join_xpm, descr);
+        }
         else
         {
             if (token3 == wxT("Join"))
-                s = new ExplainShape(ex_join_xpm, descr);
+            {
+                // Hash Anti Join
+                if (token2 == wxT("Anti"))
+                {
+                    s = new ExplainShape(ex_hash_anti_join_xpm, descr);
+                }
+                // Hash Semi Join
+                else if (token2 == wxT("Semi"))
+                {
+                    s = new ExplainShape(ex_hash_semi_join_xpm, descr);
+                }
+                else
+                {
+                    s = new ExplainShape(ex_hash_xpm, descr);
+                }
+            }
             else
+            {
                 s = new ExplainShape(ex_hash_xpm, descr);
+            }
+        }
+    }
+    else if (token == wxT("HashSetOp"))
+    {
+        if (token2 == wxT("Except"))
+        {
+            // HashSetOp Except ALL
+            if (token3 == wxT("ALL"))
+            {
+                s = new ExplainShape(ex_hashsetop_except_all_xpm, descr);
+            }
+            // HashSetOp Except
+            else
+            {
+                s = new ExplainShape(ex_hashsetop_except_xpm, descr);
+            }
+        }
+        else if (token2 == wxT("Intersect"))
+        {
+            // HashSetOp Intersect ALL
+            if (token3 == wxT("ALL"))
+            {
+                s = new ExplainShape(ex_hashsetop_intersect_all_xpm, descr);
+            }
+            // HashSetOp Intersect
+            else
+            {
+                s = new ExplainShape(ex_hashsetop_intersect_xpm, descr);
+            }
+        }
+        else
+        {
+           // HashSetOp ???
+           s = new ExplainShape(ex_hashsetop_unknown_xpm, descr);
         }
     }
     else if (token == wxT("Subquery"))      s = new ExplainShape(ex_subplan_xpm, descr, 0, 2);
@@ -180,10 +292,7 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
         s = new ExplainShape(ex_aggregate_xpm, descr);
     else if (token == wxT("Unique"))        s = new ExplainShape(ex_unique_xpm, descr);
     else if (token == wxT("SetOp"))         s = new ExplainShape(ex_setop_xpm, descr);
-
-    
     else if (token == wxT("Limit"))         s = new ExplainShape(ex_limit_xpm, descr);
-
     else if (token == wxT("Bitmap"))
     {
         if (token2 == wxT("Index"))         s = new ExplainShape(ex_bmp_index_xpm, descr, 4, 3);
@@ -192,16 +301,29 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
     else if (token2 == wxT("Scan"))
     {
         if (token == wxT("Index"))
-		{
-		    if (token3 == wxT("Backward"))
-				s = new ExplainShape(ex_index_scan_xpm, descr, 4, 3);
-			else
-			    s = new ExplainShape(ex_index_scan_xpm, descr, 3, 2);
-		}
-        else if (token == wxT("Tid"))       s = new ExplainShape(ex_tid_scan_xpm, descr, 3, 2);
-        else                                s = new ExplainShape(ex_scan_xpm, descr, 3, 2);
+            // Scan Index Backword
+            if (token3 == wxT("Backward"))
+                s = new ExplainShape(ex_index_scan_xpm, descr, 4, 3);
+            else
+                s = new ExplainShape(ex_index_scan_xpm, descr, 3, 2);
+        // Tid Scan
+        else if (token == wxT("Tid"))
+            s = new ExplainShape(ex_tid_scan_xpm, descr, 3, 2);
+        // WorkTable scan
+        else if (token == wxT("WorkTable"))
+            s = new ExplainShape(ex_worktable_scan_xpm, descr, 3, 2);
+        // CTE Scan
+        else if (token == wxT("CTE"))
+            s = new ExplainShape(ex_cte_scan_xpm, descr, 3, 2);
+        else
+            s = new ExplainShape(ex_scan_xpm, descr, 3, 2);
     }
     else if (token2 == wxT("Seek"))         s = new ExplainShape(ex_seek_xpm, descr, 3, 2);
+    // Recursive Union
+    else if (token == wxT("Recursive") && token2 == wxT("Union"))
+        s = new ExplainShape(ex_recursive_union_xpm, descr);
+    else if (token == wxT("WindowAgg"))
+        s = new ExplainShape(ex_windowagg_xpm, descr);
 
     if (!s)
         s = new ExplainShape(ex_unknown_xpm, descr);
