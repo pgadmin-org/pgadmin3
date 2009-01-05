@@ -53,6 +53,7 @@
 #include "frm/frmMain.h"
 #include "frm/frmConfig.h"
 #include "frm/frmQuery.h"
+#include "frm/frmStatus.h"
 #include "frm/frmSplash.h"
 #include "dlg/dlgSelectConnection.h"
 #include "db/pgConn.h"
@@ -193,6 +194,8 @@ bool pgAdmin3::OnInit()
     {
         {wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
         {wxCMD_LINE_OPTION, wxT("s"), wxT("server"), _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},
+        {wxCMD_LINE_SWITCH, wxT("S"), wxT("serverstatus"), _("open server status window"), wxCMD_LINE_VAL_NONE},
+        {wxCMD_LINE_OPTION, wxT("Sc"), wxT("serverstatusconnect"), _("connect server status window to database"), wxCMD_LINE_VAL_STRING},
         {wxCMD_LINE_SWITCH, wxT("q"), wxT("query"), _("open query tool"), wxCMD_LINE_VAL_NONE},
         {wxCMD_LINE_OPTION, wxT("qc"), wxT("queryconnect"), _("connect query tool to database"), wxCMD_LINE_VAL_STRING},
         {wxCMD_LINE_OPTION, wxT("f"), wxT("file"), _("file to load into the query tool in -q or -qc mode"), wxCMD_LINE_VAL_STRING},
@@ -224,7 +227,8 @@ bool pgAdmin3::OnInit()
     if (cmdParser.Parse() != 0) 
         return false;
 
-    if (cmdParser.Found(wxT("q")) && cmdParser.Found(wxT("qc")))
+    if ((cmdParser.Found(wxT("q")) && cmdParser.Found(wxT("qc"))) ||
+      (cmdParser.Found(wxT("S")) && cmdParser.Found(wxT("Sc"))))
     {
         cmdParser.Usage();
         return false;
@@ -418,6 +422,84 @@ bool pgAdmin3::OnInit()
             wxFrame *dtf=new frmDlgTest();
             dtf->Show();
             SetTopWindow(dtf);
+        }
+
+        else if ((cmdParser.Found(wxT("S")) || cmdParser.Found(wxT("Sc"))) && !cmdParser.Found(wxT("s")))
+        {
+            // -S specified, but not -s. Open the server status window but do *not* open the main window
+            pgConn *conn = NULL;
+            wxString connstr;
+
+            if (cmdParser.Found(wxT("S")))
+            {
+                wxLogInfo(wxT("Starting in server status mode (-S)."), configFile.c_str());
+
+                winSplash->Show(false);
+                dlgSelectConnection dlg(NULL, NULL);
+                dlg.CenterOnParent();
+                
+                int rc=dlg.Go(conn, NULL);
+                if (rc != wxID_OK)
+                    return false;
+                conn = dlg.CreateConn();
+            }
+            else if (cmdParser.Found(wxT("Sc"), &connstr))
+            {
+                wxLogInfo(wxT("Starting in server status connect mode (-Sc)."), configFile.c_str());
+                wxString host, database, username, tmps;
+                int sslmode=0,port=0;
+                wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
+                while (tkn.HasMoreTokens())
+                {
+                    wxString str = tkn.GetNextToken();
+                    if (str.StartsWith(wxT("hostaddr="), &host))
+                        continue;
+                    if (str.StartsWith(wxT("host="), &host))
+                        continue;
+                    if (str.StartsWith(wxT("dbname="), &database))
+                        continue;
+                    if (str.StartsWith(wxT("user="), &username))
+                        continue;
+                    if (str.StartsWith(wxT("port="), &tmps))
+                    {
+                        port = StrToLong(tmps);
+                        continue;
+                    }
+                    if (str.StartsWith(wxT("sslmode="), &tmps))
+                    {
+                        if (!tmps.Cmp(wxT("require")))
+                            sslmode = 1;
+                        else if (!tmps.Cmp(wxT("prefer")))
+                            sslmode = 2;
+                        else if (!tmps.Cmp(wxT("allow")))
+                            sslmode = 3;
+                        else if (!tmps.Cmp(wxT("disable")))
+                            sslmode = 4;
+                        else
+                        {
+                            wxMessageBox(_("Unknown SSL mode: ") + tmps);
+                            return false;
+                        }
+                        continue;
+                    }
+                    wxMessageBox(_("Unknown token in connection string: ") + str);
+                    return false;
+                }
+                winSplash->Show(false);
+                dlgSelectConnection dlg(NULL, NULL);
+                dlg.CenterOnParent();
+                conn = dlg.CreateConn(host, database, username, port, sslmode);
+            }
+            else
+            {
+                /* Can't happen.. */
+                return false;
+            }
+            if (!conn)
+                return false;
+
+            frmStatus *fq = new frmStatus(NULL, wxEmptyString, conn);
+            fq->Go();
         }
 
 #ifdef __WXMAC__
