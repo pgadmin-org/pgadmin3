@@ -688,7 +688,7 @@ static yyconst flex_int16_t yy_chk[563] =
 //
 // pgScript - PostgreSQL Tools
 // RCS-ID:      $Id: lex.pgs.cc,v 1.8 2008/08/10 22:11:29 pgunittest Exp $
-// Copyright (C) 2002 - 2008, The pgAdmin Development Team
+// Copyright (C) 2002 - 2009, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 //////////////////////////////////////////////////////////////////////////
