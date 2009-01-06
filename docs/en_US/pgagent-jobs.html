@@ -29,10 +29,20 @@ details of each run of the job.</P>
 schedules. When configuring a job, we specify the job name, whether or
 not it is enabled, a job class or category, and optionally the hostname
 of a specific machine running pgAgent, if this job should only run on
-that specific server. If left empty, any server may run the job. This
-is not normally an issue for SQL-only jobs, however any jobs with
-batch/shell steps may need to be targetted to a specific server. A
-comment may also be included.</P>
+that specific server. If left empty (which is normally the case), any 
+server may run the job. This is not normally needed for SQL-only jobs, 
+however any jobs with batch/shell steps may need to be targetted to a 
+specific server. A comment may also be included.</P>
+
+<p><b>Note:</b> It is not always obvious what value to specify for the
+Host Agent in order to target a job step to a specific machine. With pgAgent
+running on the required machines and connected to the scheduler database, 
+the following query may be run to view the hostnames as reported by each
+agent:</p>
+
+<p><i>SELECT jagstation FROM pgagent.pga_jobagent</i></p>
+
+<p>Use the hostname exactly as reported by the query in the Host Agent field.</p>
 
 <P><center><img src="images/pgagent-jobproperties.png" alt="Job properties"></center></P>
 
