@@ -247,7 +247,13 @@ void dlgDirectDbg::populateParamGrid( )
         {
             grdParams->AppendRows( 1 );
             grdParams->SetCellValue( i, COL_NAME,  arg.getName());
-            grdParams->SetCellValue( i, COL_TYPE,  arg.getType());
+
+			// Make it obvious which are variadics
+			if (arg.getMode() != wxT( "v" ))
+                grdParams->SetCellValue( i, COL_TYPE,  arg.getType());
+			else
+                grdParams->SetCellValue( i, COL_TYPE, arg.getType() + wxT(" VARIADIC"));
+
             grdParams->SetCellValue( i, COL_VALUE, arg.getValue());
         
             grdParams->SetReadOnly( i, COL_NAME,  true );
@@ -657,8 +663,11 @@ void dlgDirectDbg::invokeTargetStatement()
             if (!m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() == wxT("edbspl"))
                 query.Append( wxT("NULL::") + arg.getType() + wxT(", "));
         }
-        else
+        else if(arg.getMode() == wxT("v"))
+			query.Append( arg.getValue() + wxT(", "));
+		else
             query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
+			
     }
 
     if (query.EndsWith(wxT(", ")))

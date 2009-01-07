@@ -215,7 +215,7 @@ const wxString wsArgInfo::quoteValue()
     else if (m_value == wxT("\\'\\'"))
         return (wxT("'\\'\\''"));
     else if (m_value[0] == '\'' )
-    	return(m_value);
+    	return (m_value);
     else
     	return(wxString(wxT("'") + m_value + wxT("'")));
 }
