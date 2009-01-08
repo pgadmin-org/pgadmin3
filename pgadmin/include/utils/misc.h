@@ -147,6 +147,8 @@ private:
     char delimiter;
 };
 
+// Get an array from a comma(,) separated list
+bool getArrayFromCommaSeparatedList(const wxString& str, wxArrayString& res);
 
 // File handling including encoding according to sysSettings if format<0,
 // 0-> local charset, 1->utf8

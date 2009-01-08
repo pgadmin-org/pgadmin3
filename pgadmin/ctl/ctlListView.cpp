@@ -56,13 +56,15 @@ void ctlListView::AddColumn(const wxChar *text, int size, int format)
 }
 
 
-long ctlListView::AppendItem(int icon, const wxChar *val, const wxChar *val2, const wxChar *val3)
+long ctlListView::AppendItem(int icon, const wxChar *val, const wxChar *val2, const wxChar *val3, const wxChar *val4)
 {
     long pos=InsertItem(GetItemCount(), val, icon);
     if (val2 && *val2)
         SetItem(pos, 1, val2);
     if (val3 && *val3)
         SetItem(pos, 2, val3);
+    if (val4 && *val4)
+        SetItem(pos, 3, val4);
 
     return pos;
 }

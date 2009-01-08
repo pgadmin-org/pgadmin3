@@ -1228,3 +1228,41 @@ wxString commandLineCleanOption(const wxString &option)
 
 #endif // PGSCLI
 
+// Get an array from a comma separated list
+bool getArrayFromCommaSeparatedList(const wxString& str, wxArrayString& res)
+{
+    size_t len = str.Len(), index = 0, nBracketLevel = 0, startArray = 0;
+    bool inSingleQuote = false, inDoubleQuote = false;
+
+    if (len == 0)
+        return true;
+
+    for(; index < len; index++)
+    {
+        wxChar curr = str.GetChar(index);
+        if (!inDoubleQuote && curr == (wxChar)'\'')
+            inSingleQuote = !inSingleQuote;
+        else if (!inSingleQuote && curr == (wxChar)'"')
+            inDoubleQuote = !inDoubleQuote;
+        else if (!inDoubleQuote && !inSingleQuote && curr == (wxChar)'(')
+            nBracketLevel++;
+        else if (!inDoubleQuote && !inSingleQuote && curr == (wxChar)')')
+            nBracketLevel--;
+        else if (!inDoubleQuote && !inSingleQuote && nBracketLevel == 0 && curr == (wxChar)',')
+        {
+            if (index != startArray)
+                res.Add(str.SubString(startArray, index - 1).Trim());
+            else
+                res.Add(wxEmptyString);
+            startArray = index + 1;
+        }
+    }
+    if (inDoubleQuote || inSingleQuote || nBracketLevel != 0)
+        return false;
+
+    // Add last value to array
+    res.Add(str.SubString(startArray, index).Trim());
+    
+    return true;
+}
+

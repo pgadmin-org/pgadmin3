@@ -30,7 +30,7 @@ public:
 
     void AddColumn(const wxChar *text, int size=wxLIST_AUTOSIZE_USEHEADER, int format=wxLIST_FORMAT_LEFT);
 
-    long AppendItem(int icon, const wxChar *val, const wxChar *val2=0, const wxChar *val3=0);
+    long AppendItem(int icon, const wxChar *val, const wxChar *val2=0, const wxChar *val3=0, const wxChar *val4=0);
     long AppendItem(const wxChar *val, const wxChar *val2=0, const wxChar *val3=0)
         {  return AppendItem(PGICON_PROPERTY, val, val2, val3); }
     void AppendItem(const wxChar *str, const long l)

@@ -49,6 +49,7 @@ private:
     void OnSelChangeType(wxCommandEvent &ev);
     void OnAddArg(wxCommandEvent &ev);
     void OnChangeArg(wxCommandEvent &ev);
+    void OnChangeArgMode(wxCommandEvent &ev);
     void OnRemoveArg(wxCommandEvent &ev);
 
     void OnVarAdd(wxCommandEvent &ev);
@@ -71,6 +72,7 @@ private:
 
 protected:
     bool isProcedure;
+    bool isBackendMinVer84;
 
     DECLARE_EVENT_TABLE()
 };

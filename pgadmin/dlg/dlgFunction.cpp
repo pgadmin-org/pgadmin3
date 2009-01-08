@@ -43,6 +43,7 @@
 #define rdbVariadic         CTRL_RADIOBUTTON("rdbVariadic")
 
 #define txtArgName          CTRL_TEXT("txtArgName")
+#define txtArgDefVal        CTRL_TEXT("txtArgDefVal")
 #define btnAdd              CTRL_BUTTON("wxID_ADD")
 #define btnChange           CTRL_BUTTON("wxID_CHANGE")
 #define btnRemove           CTRL_BUTTON("wxID_REMOVE")
@@ -93,6 +94,10 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_BUTTON(XRCID("btnRemoveVar"),               dlgFunction::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgFunction::OnVarnameSelChange)
     EVT_COMBOBOX(XRCID("cbVarname"),                dlgFunction::OnVarnameSelChange)
+    EVT_RADIOBUTTON(XRCID("rdbIn"),                 dlgFunction::OnChangeArgMode)
+    EVT_RADIOBUTTON(XRCID("rdbOut"),                dlgFunction::OnChangeArgMode)
+    EVT_RADIOBUTTON(XRCID("rdbInOut"),              dlgFunction::OnChangeArgMode)
+    EVT_RADIOBUTTON(XRCID("rdbVariadic"),           dlgFunction::OnChangeArgMode)
 #ifdef __WXMAC__
     EVT_SIZE(                                       dlgFunction::OnChangeSize)
 #endif
@@ -154,24 +159,29 @@ pgObject *dlgFunction::GetObject()
 int dlgFunction::Go(bool modal)
 {
     int returncode;
+    isBackendMinVer84 = connection->BackendMinimumVersion(8, 4);
 
     if (function)
     {
         rdbIn->Disable();
         rdbOut->Disable();
         rdbInOut->Disable();
-		rdbVariadic->Disable();
+        rdbVariadic->Disable();
         isProcedure = function->GetIsProcedure();
     }
     else
         cbOwner->Append(wxEmptyString);
 
+    if (!isBackendMinVer84)
+        txtArgDefVal->Disable();
+
     AddGroups();
     AddUsers(cbOwner);
 
-    lstArguments->AddColumn(_("Type"), 80);
-    lstArguments->AddColumn(_("Mode"), 50);
-    lstArguments->AddColumn(_("Name"), 80);
+    lstArguments->AddColumn(_("Type"), 60);
+    lstArguments->AddColumn(_("Mode"), 40);
+    lstArguments->AddColumn(_("Name"), 60);
+    lstArguments->AddColumn(_("Default Value"), 60);
 
     if (!connection->BackendMinimumVersion(8, 0))
         cbOwner->Disable();
@@ -208,7 +218,7 @@ int dlgFunction::Go(bool modal)
             rdbInOut->Disable();
         }
 
-        if (!connection->BackendMinimumVersion(8, 4))
+        if (!isBackendMinVer84)
         {
             rdbVariadic->Disable();
         }
@@ -261,13 +271,17 @@ int dlgFunction::Go(bool modal)
 
         if (factory != &triggerFunctionFactory)
         {
-			wxArrayString argTypes = function->GetArgTypesArray();
+            wxArrayString argTypes = function->GetArgTypesArray();
             wxArrayString argNames = function->GetArgNamesArray();
             wxArrayString argModes = function->GetArgModesArray();
+            wxArrayString argDefs  = function->GetArgDefsArray();
 
             for (unsigned int i=0; i<argTypes.Count(); i++)
             {
-                lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i]);
+                if (isBackendMinVer84)
+                    lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i], argDefs[i]);
+                else
+                    lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i]);
             }
         }
 
@@ -562,6 +576,11 @@ void dlgFunction::OnSelChangeArg(wxListEvent &ev)
         else if (mode == wxT("VARIADIC"))
             rdbVariadic->SetValue(true);
         txtArgName->SetValue(lstArguments->GetText(row, 2));
+        if (isBackendMinVer84)
+        {
+            txtArgDefVal->SetValue(lstArguments->GetText(row, 3));
+            txtArgDefVal->Enable(mode == wxT("IN") || mode.IsEmpty());
+        }
 
         wxCommandEvent ev;
         OnChangeArgName(ev);
@@ -612,15 +631,32 @@ void dlgFunction::OnChangeArgName(wxCommandEvent &ev)
     }
 }
 
+void dlgFunction::OnChangeArgMode(wxCommandEvent &ev)
+{
+    // Do nothing, if Default value for function parameter not supported
+    if (!isBackendMinVer84)
+        return;
+
+    // Only IN parameter supports default value
+    if (!rdbIn->GetValue())
+    {
+        txtArgDefVal->SetValue(wxEmptyString);
+        txtArgDefVal->Enable(false);
+    }
+    else
+    {
+        txtArgDefVal->Enable(true);
+    }
+}
 
 void dlgFunction::OnChangeArg(wxCommandEvent &ev)
 {
-	if (GetSelectedDirection() == wxT("VARIADIC") && 
-		!cbDatatype->GetValue().EndsWith(wxT("[]")))
-	{
-		wxLogError(_("Only array types can be VARIADIC."));
-		return;
-	}
+    if (GetSelectedDirection() == wxT("VARIADIC") && 
+        !cbDatatype->GetValue().EndsWith(wxT("[]")))
+    {
+        wxLogError(_("Only array types can be VARIADIC."));
+        return;
+    }
 
     int row=lstArguments->GetSelection();
 
@@ -629,6 +665,8 @@ void dlgFunction::OnChangeArg(wxCommandEvent &ev)
         lstArguments->SetItem(row, 0, cbDatatype->GetValue());
         lstArguments->SetItem(row, 1, GetSelectedDirection());
         lstArguments->SetItem(row, 2, txtArgName->GetValue());
+        if (isBackendMinVer84)
+            lstArguments->SetItem(row, 3, txtArgDefVal->GetValue());
 
         if (!function)
             argOids.Item(row) = typOids.Item(cbDatatype->GetGuessedSelection());
@@ -641,14 +679,14 @@ void dlgFunction::OnChangeArg(wxCommandEvent &ev)
 
 void dlgFunction::OnAddArg(wxCommandEvent &ev)
 {
-	if (GetSelectedDirection() == wxT("VARIADIC") && 
-		!cbDatatype->GetValue().EndsWith(wxT("[]")))
-	{
-		wxLogError(_("Only array types can be VARIADIC."));
-		return;
-	}
+    if (GetSelectedDirection() == wxT("VARIADIC") && 
+        !cbDatatype->GetValue().EndsWith(wxT("[]")))
+    {
+        wxLogError(_("Only array types can be VARIADIC."));
+        return;
+    }
 
-    lstArguments->AppendItem(-1, cbDatatype->GetValue(), GetSelectedDirection(), txtArgName->GetValue());
+    lstArguments->AppendItem(-1, cbDatatype->GetValue(), GetSelectedDirection(), txtArgName->GetValue(), txtArgDefVal->GetValue().Trim());
 
     if (!function)
         argOids.Add(typOids.Item(cbDatatype->GetGuessedSelection()));
@@ -729,6 +767,8 @@ wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
 
             args += lstArguments->GetText(i, 0);
         }
+        if (isBackendMinVer84 && !lstArguments->GetText(i, 3).IsEmpty())
+           args += wxT(" DEFAULT ") + lstArguments->GetText(i, 3);
     }
 
     return args;

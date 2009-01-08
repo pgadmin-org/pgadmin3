@@ -67,6 +67,8 @@ public:
     void iSetBin(const wxString& s) { bin=s; }
     long GetArgCount() const { return argCount; }
     void iSetArgCount(long ac) { argCount = ac; }
+    void iSetArgDefValCount(long ac) { argDefValCount = ac; }
+    long GetArgDefValCount() { return argDefValCount; }
     long GetCost() const { return cost; }
     void iSetCost(long c) { cost = c; }
     long GetRows() const { return rows; }
@@ -101,7 +103,7 @@ private:
     wxString returnType, language, volatility, source, bin;
     wxArrayString argNamesArray, argTypesArray, argModesArray, argDefsArray;
     bool returnAsSet, secureDefiner, isStrict;
-    long argCount, cost, rows;
+    long argCount, cost, rows, argDefValCount;
     wxArrayString configList;
 };
 

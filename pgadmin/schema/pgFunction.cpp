@@ -272,10 +272,12 @@ wxString pgFunction::GetArgListWithNames()
                 arg += qtIdent(argNamesArray.Item(i));
 
             if (!argModesArray.Item(i).IsEmpty())
+            {
                 if (arg.IsEmpty())
                     arg += argModesArray.Item(i);
                 else
                     arg += wxT(" ") + argModesArray.Item(i);
+            }
         }
         else
         {
@@ -283,10 +285,12 @@ wxString pgFunction::GetArgListWithNames()
                 arg += argModesArray.Item(i);
 
             if (!argNamesArray.Item(i).IsEmpty())
+            {
                 if (arg.IsEmpty())
                     arg += qtIdent(argNamesArray.Item(i));
                 else
                     arg += wxT(" ") + qtIdent(argNamesArray.Item(i));
+            }
         }
 
         if (!arg.IsEmpty())
@@ -295,7 +299,7 @@ wxString pgFunction::GetArgListWithNames()
             arg += argTypesArray.Item(i);
 
         // Parameter default value
-        if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+        if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) || GetConnection()->BackendMinimumVersion(8, 4))
         {
             if (!argDefsArray.Item(i).IsEmpty())
                 arg += wxT(" DEFAULT ") + argDefsArray.Item(i);
@@ -343,13 +347,16 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
     wxString argNamesCol, argDefsCol, proConfigCol;
     if (obj->GetConnection()->BackendMinimumVersion(8, 0))
         argNamesCol = wxT("proargnames, ");
-    if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+    if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) && !obj->GetConnection()->BackendMinimumVersion(8, 4))
         argDefsCol = wxT("proargdefvals, ");
+    if (obj->GetConnection()->BackendMinimumVersion(8, 4))
+        argDefsCol = wxT("pg_get_expr(proargdefaults, 'pg_catalog.pg_class'::regclass) AS proargdefaultvals, pronargdefaults, ");
     if (obj->GetConnection()->BackendMinimumVersion(8, 3))
         proConfigCol = wxT("proconfig, ");
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(
-            wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") + argNamesCol  + argDefsCol + proConfigCol + 
+            wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") +
+            argNamesCol  + argDefsCol + proConfigCol + 
             wxT("       pg_get_userbyid(proowner) as funcowner, description\n")
             wxT("  FROM pg_proc pr\n")
             wxT("  JOIN pg_type typ ON typ.oid=prorettype\n")
@@ -362,20 +369,21 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
     pgSet *types = obj->GetDatabase()->ExecuteSet(wxT(
                     "SELECT oid, format_type(oid, NULL) AS typname FROM pg_type"));
 
-	if (types)
-	{
+    if (types)
+    {
         while(!types->Eof())
         {
             typeCache[types->GetVal(wxT("oid"))] = types->GetVal(wxT("typname"));
             types->MoveNext();
         }
-	}
+    }
 
     if (functions)
     {
         while (!functions->Eof())
         {
             bool isProcedure=false;
+            bool hasDefValSupport = false;
             wxString lanname=functions->GetVal(wxT("lanname"));
             wxString typname=functions->GetVal(wxT("typname"));
 
@@ -390,12 +398,14 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 function = new pgTriggerFunction(schema, functions->GetVal(wxT("proname")));
             else
                 function = new pgFunction(schema, functions->GetVal(wxT("proname")));
-
             
             // Tokenize the arguments
             wxStringTokenizer argTypesTkz(wxEmptyString), argModesTkz(wxEmptyString);
-            queryTokenizer argNamesTkz(wxEmptyString, (wxChar)','),  argDefsTkz(wxEmptyString, (wxChar)',');
+            queryTokenizer argNamesTkz(wxEmptyString, (wxChar)','), argDefsTkz(wxEmptyString, (wxChar)',');
             wxString tmp;
+
+            // Support for Default Value in PG 8.4
+            wxArrayString argDefValArray;
 
             // We always have types
             argTypesTkz.SetString(functions->GetVal(wxT("proargtypes")));
@@ -424,16 +434,27 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                     argModesTkz.SetString(tmp.Mid(1, tmp.Length()-2), wxT(","));
             }
 
-            // Function defaults
-            if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+            // EDB 8.3: Function defaults
+            if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) &&
+                !obj->GetConnection()->BackendMinimumVersion(8, 4))
             {
                 tmp = functions->GetVal(wxT("proargdefvals"));
                 if (!tmp.IsEmpty())
                     argDefsTkz.SetString(tmp.Mid(1, tmp.Length()-2), wxT(","));
             }
 
+            if (obj->GetConnection()->BackendMinimumVersion(8, 4))
+            {
+                hasDefValSupport = true;
+                tmp = functions->GetVal(wxT("proargdefaultvals"));
+                getArrayFromCommaSeparatedList(tmp, argDefValArray);
+
+                function->iSetArgDefValCount(functions->GetLong(wxT("pronargdefaults")));
+            }
+
             // Now iterate the arguments and build the arrays
             wxString type, name, mode, def;
+            size_t nArgsIN = 0;
             
             while (argTypesTkz.HasMoreTokens())
             {
@@ -469,18 +490,30 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                     else if (mode == wxT("3"))
                         mode = wxT("IN OUT");
                     else if (mode == wxT("v"))
-						mode = wxT("VARIADIC");
-					else
+                        mode = wxT("VARIADIC");
+                    else
+                    {
                         mode = wxT("IN");
+                        nArgsIN++;
+                    }
 
                     function->iAddArgMode(mode);
                 }
                 else
+                {
                     function->iAddArgMode(wxEmptyString);
+                    nArgsIN++;
+                }
 
-                // Finally the defaults, as we got them. 
-                def = argDefsTkz.GetNextToken();
-                if (!def.IsEmpty() && !def.IsSameAs(wxT("-")))
+                // Finally the defaults, as we got them.
+                if (!hasDefValSupport)
+                    def = argDefsTkz.GetNextToken();
+
+                if (hasDefValSupport)
+                {
+                    // We will process this later
+                }
+                else if (!def.IsEmpty() && !def.IsSameAs(wxT("-")))
                 {
                     if (def[0] == '"')
                         def = def.Mid(1, def.Length()-2);
@@ -497,13 +530,36 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 else
                     function->iAddArgDef(wxEmptyString);
             }
+            
+            function->iSetArgCount(functions->GetLong(wxT("pronargs")));
+
+            // Process default values
+            if (obj->GetConnection()->BackendMinimumVersion(8, 4) &&
+                function->GetArgCount() != 0)
+            {
+                size_t currINindex = 0;
+                for (size_t index = 0; index < function->GetArgModesArray().Count(); index++)
+                {
+                    if (function->GetArgModesArray()[index] == wxT("IN") ||
+                        function->GetArgModesArray()[index].IsEmpty())
+                    {
+                        nArgsIN--;
+                        if (function->GetArgDefValCount() != 0 &&
+                            nArgsIN < (size_t)function->GetArgDefValCount())
+                        {
+                            function->iAddArgDef(argDefValArray[currINindex++]);
+                            continue;
+                        }
+                    }
+                    function->iAddArgDef(wxEmptyString);
+                }
+            }
 
             function->iSetOid(functions->GetOid(wxT("oid")));
-			function->iSetXid(functions->GetOid(wxT("xmin")));
+            function->iSetXid(functions->GetOid(wxT("xmin")));
             function->UpdateSchema(browser, functions->GetOid(wxT("pronamespace")));
             function->iSetOwner(functions->GetVal(wxT("funcowner")));
             function->iSetAcl(functions->GetVal(wxT("proacl")));
-            function->iSetArgCount(functions->GetLong(wxT("pronargs")));
             function->iSetReturnType(functions->GetVal(wxT("typname")));
             function->iSetComment(functions->GetVal(wxT("description")));
 
@@ -533,13 +589,13 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             if (browser)
             {
                 browser->AppendObject(obj, function);
-			    functions->MoveNext();
+                functions->MoveNext();
             }
             else
                 break;
         }
 
-		delete functions;
+        delete functions;
         delete types;
     }
     return function;

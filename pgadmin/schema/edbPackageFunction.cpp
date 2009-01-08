@@ -86,7 +86,7 @@ wxString edbPackageFunction::GetArgListWithNames()
             arg += argTypesArray.Item(i);
 
         // Parameter default value
-        if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS))
+        if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) || GetConnection()->BackendMinimumVersion(8, 4))
         {
             if (!argDefsArray.Item(i).IsEmpty())
                 arg += wxT(" DEFAULT ") + argDefsArray.Item(i);
