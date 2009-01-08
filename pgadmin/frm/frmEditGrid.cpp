@@ -811,20 +811,27 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
             }
             else
             {
-                if (curcol == sqlGrid->GetNumberCols()-1)
+                if( keycode!=WXK_NUMPAD_ENTER )
                 {
-                    curcol=0;
-                    currow++;
-                    // locate first editable column
-                    while (sqlGrid->IsReadOnly(currow, curcol) && curcol < sqlGrid->GetNumberCols())
-                        curcol++;
-                    // next line is completely read-only
-                    if (curcol == sqlGrid->GetNumberCols())
-                        return;
+                    if (curcol == sqlGrid->GetNumberCols()-1)
+                    {
+                        curcol=0;
+                        currow++;
+                        // locate first editable column
+                        while (sqlGrid->IsReadOnly(currow, curcol) && curcol < sqlGrid->GetNumberCols())
+                            curcol++;
+                        // next line is completely read-only
+                        if (curcol == sqlGrid->GetNumberCols())
+                            return;
 
+                    }
+                    else
+                        curcol++;
                 }
-                else
-                    curcol++;
+                else // ( keycode==WXK_NUMPAD_ENTER )
+                {
+                    currow++;
+                }
 
                 OnSave(ev);
                 sqlGrid->SetGridCursor(currow, curcol);
