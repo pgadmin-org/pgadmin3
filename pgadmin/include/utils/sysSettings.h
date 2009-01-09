@@ -139,6 +139,8 @@ public:
     wxString GetCanonicalLanguageName();
 	wxLanguage GetCanonicalLanguage() const { int i; Read(wxT("LanguageId"), &i, wxLANGUAGE_UNKNOWN); return (wxLanguage)i; }
 	void SetCanonicalLanguage(const wxLanguage &lang);
+    bool GetIgnoreVersion() const { bool b; Read(wxT("IgnoreVersion"), &b, false); return b; }
+	void SetIgnoreVersion(const bool newval) { Write(wxT("IgnoreVersion"), newval); }
 
     // Functions for storing settings
     bool Write(const wxString &key, const wxChar *value) { return wxConfig::Write(key, value); }

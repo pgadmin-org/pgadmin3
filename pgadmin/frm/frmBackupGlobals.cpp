@@ -166,6 +166,8 @@ wxString frmBackupGlobals::getCmdPart2()
 {
     wxString cmd;
 
+    if (settings->GetIgnoreVersion())
+        cmd.Append(wxT(" -i"));
     if (chkVerbose->GetValue())
         cmd.Append(wxT(" -v"));
 

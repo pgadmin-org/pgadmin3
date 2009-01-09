@@ -62,6 +62,7 @@
 #define chkResetHints               CTRL_CHECKBOX("chkResetHints")
 #define lstDisplay					CTRL_CHECKLISTBOX("lstDisplay")
 #define chkSystemObjects            CTRL_CHECKBOX("chkSystemObjects")
+#define chkIgnoreVersion            CTRL_CHECKBOX("chkIgnoreVersion")
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_MENU(MNU_HELP,                        frmOptions::OnHelp)
@@ -136,6 +137,7 @@ frmOptions::frmOptions(frmMain *parent)
     txtSlonyPath->SetValue(settings->GetSlonyPath());
     txtPostgresqlPath->SetValue(settings->GetPostgresqlPath());
     txtEnterprisedbPath->SetValue(settings->GetEnterprisedbPath());
+	chkIgnoreVersion->SetValue(settings->GetIgnoreVersion());
 
     cbLanguage->Append(_("Default"));
     int sel=0;
@@ -401,6 +403,8 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         edbBackupAllExecutable = wxEmptyString;
     if (!wxFile::Exists(edbRestoreExecutable))
         edbRestoreExecutable = wxEmptyString;
+
+	settings->SetIgnoreVersion(chkIgnoreVersion->GetValue());
 
     if (chkResetHints->GetValue())
         frmHint::ResetHints();

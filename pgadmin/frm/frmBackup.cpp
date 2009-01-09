@@ -259,7 +259,9 @@ wxString frmBackup::getCmdPart2()
         cmd.Append(wxT(" -D"));
     if (chkDisableDollar->GetValue())
         cmd.Append(wxT(" --disable-dollar-quoting"));
-    if (chkVerbose->GetValue())
+    if (settings->GetIgnoreVersion())
+        cmd.Append(wxT(" -i"));
+	if (chkVerbose->GetValue())
         cmd.Append(wxT(" -v"));
 
     cmd.Append(wxT(" -f \"") + txtFilename->GetValue() + wxT("\""));

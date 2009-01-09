@@ -354,6 +354,9 @@ wxString frmRestore::getCmdPart2(int step)
                     break;
             }
         }
+
+        if (settings->GetIgnoreVersion())
+            cmd.Append(wxT(" -i"));
         if (chkVerbose->GetValue())
             cmd.Append(wxT(" -v"));
     }
