@@ -79,6 +79,8 @@ public:
     void iSetSecureDefiner(bool b) { secureDefiner = b; }
     bool GetIsStrict() const { return isStrict; }
     void iSetIsStrict(bool b) { isStrict = b; }
+    bool GetIsWindow() const { return isWindow; }
+    void iSetIsWindow(bool b) { isWindow = b; }
     wxArrayString& GetConfigList() { return configList; }
 
     bool CanRestore() { return true; }
@@ -102,7 +104,7 @@ protected:
 private:
     wxString returnType, language, volatility, source, bin;
     wxArrayString argNamesArray, argTypesArray, argModesArray, argDefsArray;
-    bool returnAsSet, secureDefiner, isStrict;
+    bool returnAsSet, secureDefiner, isStrict, isWindow;
     long argCount, cost, rows, argDefValCount;
     wxArrayString configList;
 };

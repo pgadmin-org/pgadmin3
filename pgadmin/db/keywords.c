@@ -107,7 +107,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"createuser", CREATEUSER, UNRESERVED_KEYWORD},
 	{"cross", CROSS, TYPE_FUNC_NAME_KEYWORD},
 	{"csv", CSV, UNRESERVED_KEYWORD},
-        {"ctype", CTYPE, RESERVED_KEYWORD},
+    {"ctype", CTYPE, RESERVED_KEYWORD},
 	{"current", CURRENT_P, UNRESERVED_KEYWORD},
 	{"current_date", CURRENT_DATE, RESERVED_KEYWORD},
 	{"current_role", CURRENT_ROLE, RESERVED_KEYWORD},
@@ -151,7 +151,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"except", EXCEPT, RESERVED_KEYWORD},
 	{"excluding", EXCLUDING, UNRESERVED_KEYWORD},
 	{"exclusive", EXCLUSIVE, UNRESERVED_KEYWORD},
-        {"exec", EXEC_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"exec", EXEC_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"execute", EXECUTE, UNRESERVED_KEYWORD},
 	{"exists", EXISTS, COL_NAME_KEYWORD},
 	{"explain", EXPLAIN, UNRESERVED_KEYWORD},
@@ -228,7 +228,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"location", LOCATION, UNRESERVED_KEYWORD},
 	{"lock", LOCK_P, UNRESERVED_KEYWORD},
 	{"login", LOGIN_P, UNRESERVED_KEYWORD},
-        {"long", LONG_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"long", LONG_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"mapping", MAPPING, UNRESERVED_KEYWORD},
 	{"match", MATCH, UNRESERVED_KEYWORD},
 	{"maxvalue", MAXVALUE, UNRESERVED_KEYWORD},
@@ -246,7 +246,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"new", NEW, RESERVED_KEYWORD},
 	{"next", NEXT, UNRESERVED_KEYWORD},
 	{"no", NO, UNRESERVED_KEYWORD},
-        {"nocache", NOCACHE_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"nocache", NOCACHE_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"nocreatedb", NOCREATEDB, UNRESERVED_KEYWORD},
 	{"nocreaterole", NOCREATEROLE, UNRESERVED_KEYWORD},
 	{"nocreateuser", NOCREATEUSER, UNRESERVED_KEYWORD},
@@ -262,7 +262,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"null", NULL_P, RESERVED_KEYWORD},
 	{"nullif", NULLIF, COL_NAME_KEYWORD},
 	{"nulls", NULLS_P, UNRESERVED_KEYWORD},
-        {"number", NUMBER_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"number", NUMBER_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"numeric", NUMERIC, COL_NAME_KEYWORD},
 	{"object", OBJECT_P, UNRESERVED_KEYWORD},
 	{"of", OF, UNRESERVED_KEYWORD},
@@ -282,13 +282,13 @@ static const ScanKeyword ScanKeywords[] = {
 	{"overlay", OVERLAY, COL_NAME_KEYWORD},
 	{"owned", OWNED, UNRESERVED_KEYWORD},
 	{"owner", OWNER, UNRESERVED_KEYWORD},
-        {"package", PACKAGE_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"package", PACKAGE_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"parser", PARSER, UNRESERVED_KEYWORD},
 	{"partial", PARTIAL, UNRESERVED_KEYWORD},
 	{"password", PASSWORD, UNRESERVED_KEYWORD},
 	{"placing", PLACING, RESERVED_KEYWORD},
 	{"plans", PLANS, UNRESERVED_KEYWORD},
-        {"pls_integer", PLS_INTEGER_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"pls_integer", PLS_INTEGER_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"position", POSITION, COL_NAME_KEYWORD},
 	{"precision", PRECISION, COL_NAME_KEYWORD},
 	{"prepare", PREPARE, UNRESERVED_KEYWORD},
@@ -300,7 +300,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"procedural", PROCEDURAL, UNRESERVED_KEYWORD},
 	{"procedure", PROCEDURE, UNRESERVED_KEYWORD},
 	{"quote", QUOTE, UNRESERVED_KEYWORD},
-        {"raw", RAW_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"raw", RAW_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"read", READ, UNRESERVED_KEYWORD},
 	{"real", REAL, COL_NAME_KEYWORD},
 	{"reassign", REASSIGN, UNRESERVED_KEYWORD},
@@ -316,7 +316,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"reset", RESET, UNRESERVED_KEYWORD},
 	{"restart", RESTART, UNRESERVED_KEYWORD},
 	{"restrict", RESTRICT, UNRESERVED_KEYWORD},
-        {"return", RETURN_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"return", RETURN_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"returning", RETURNING, RESERVED_KEYWORD},
 	{"returns", RETURNS, UNRESERVED_KEYWORD},
 	{"revoke", REVOKE, UNRESERVED_KEYWORD},
@@ -343,7 +343,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"show", SHOW, UNRESERVED_KEYWORD},
 	{"similar", SIMILAR, TYPE_FUNC_NAME_KEYWORD},
 	{"simple", SIMPLE, UNRESERVED_KEYWORD},
-        {"smalldatetime", SMALLDATETIME_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"smalldatetime", SMALLDATETIME_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"smallfloat", SMALLFLOAT_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"smallint", SMALLINT, COL_NAME_KEYWORD},
 	{"smallmoney", SMALLMONEY_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
@@ -361,10 +361,10 @@ static const ScanKeyword ScanKeywords[] = {
 	{"substring", SUBSTRING, COL_NAME_KEYWORD},
 	{"superuser", SUPERUSER_P, UNRESERVED_KEYWORD},
 	{"symmetric", SYMMETRIC, RESERVED_KEYWORD},
-        {"sysdate", SYSDATE_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"sysdate", SYSDATE_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"sysid", SYSID, UNRESERVED_KEYWORD},
 	{"system", SYSTEM_P, UNRESERVED_KEYWORD},
-        {"systimestamp", SYSTIMESTAMP_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"systimestamp", SYSTIMESTAMP_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"table", TABLE, RESERVED_KEYWORD},
 	{"tablespace", TABLESPACE, UNRESERVED_KEYWORD},
 	{"temp", TEMP, UNRESERVED_KEYWORD},
@@ -402,7 +402,7 @@ static const ScanKeyword ScanKeywords[] = {
 	{"value", VALUE_P, UNRESERVED_KEYWORD},
 	{"values", VALUES, COL_NAME_KEYWORD},
 	{"varchar", VARCHAR, COL_NAME_KEYWORD},
-        {"varchar2", VARCHAR2_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"varchar2", VARCHAR2_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"varying", VARYING, UNRESERVED_KEYWORD},
 	{"verbose", VERBOSE, TYPE_FUNC_NAME_KEYWORD},
 	{"version", VERSION_P, UNRESERVED_KEYWORD},
@@ -420,6 +420,7 @@ static const ScanKeyword ScanKeywords[] = {
 	 * at that time; in any case this should be back in sync with gram.y after
 	 * WITH clauses are implemented.
 	 */
+    {"window", WINDOW, RESERVED_KEYWORD},
 	{"with", WITH, RESERVED_KEYWORD},
 	{"without", WITHOUT, UNRESERVED_KEYWORD},
 	{"work", WORK, UNRESERVED_KEYWORD},

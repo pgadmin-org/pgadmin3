@@ -56,6 +56,7 @@ private:
     void OnVarRemove(wxCommandEvent &ev);
     void OnVarSelChange(wxListEvent &ev);
     void OnVarnameSelChange(wxCommandEvent &ev);
+    void OnChangeWindow(wxCommandEvent &ev);
     void SetupVarEditor(int var);
 
     wxString GetSelectedDirection();

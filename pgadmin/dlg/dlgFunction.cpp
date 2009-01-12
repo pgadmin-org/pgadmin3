@@ -32,6 +32,7 @@
 #define chkSetof            CTRL_CHECKBOX("chkSetof")
 #define cbVolatility        CTRL_COMBOBOX("cbVolatility")
 #define chkStrict           CTRL_CHECKBOX("chkStrict")
+#define chkWindow           CTRL_CHECKBOX("chkWindow")
 #define chkSecureDefiner    CTRL_CHECKBOX("chkSecureDefiner")
 #define txtCost             CTRL_TEXT("txtCost")
 #define txtRows             CTRL_TEXT("txtRows")
@@ -98,6 +99,7 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
     EVT_RADIOBUTTON(XRCID("rdbOut"),                dlgFunction::OnChangeArgMode)
     EVT_RADIOBUTTON(XRCID("rdbInOut"),              dlgFunction::OnChangeArgMode)
     EVT_RADIOBUTTON(XRCID("rdbVariadic"),           dlgFunction::OnChangeArgMode)
+    EVT_CHECKBOX(XRCID("chkWindow"),                dlgFunction::OnChangeWindow)
 #ifdef __WXMAC__
     EVT_SIZE(                                       dlgFunction::OnChangeSize)
 #endif
@@ -194,6 +196,11 @@ int dlgFunction::Go(bool modal)
     if (!connection->BackendMinimumVersion(8, 0))
         txtArgName->Disable();
 
+    // Window function can not be modified
+    // Disable it for editing
+    if (function || !isBackendMinVer84)
+        chkWindow->Disable();
+
     if (isProcedure)
     {
         if (function)
@@ -201,6 +208,7 @@ int dlgFunction::Go(bool modal)
         cbOwner->Disable();
         cbLanguage->Disable();
         chkStrict->Disable();
+        chkWindow->Disable();
         chkSecureDefiner->Disable();
         chkSetof->Disable();
         cbVolatility->Disable();
@@ -294,6 +302,7 @@ int dlgFunction::Go(bool modal)
 
         chkSetof->SetValue(function->GetReturnAsSet());
         chkStrict->SetValue(function->GetIsStrict());
+        chkWindow->SetValue(function->GetIsWindow());
         chkSecureDefiner->SetValue(function->GetSecureDefiner());
 
         if (function->GetLanguage().IsSameAs(wxT("C"), false))
@@ -786,7 +795,8 @@ wxString dlgFunction::GetSql()
         objType = wxT("FUNCTION ");
 
     bool isC=cbLanguage->GetValue().IsSameAs(wxT("C"), false);
-    bool didChange = !function 
+    bool didChange = !function
+		|| cbLanguage->GetValue() != function->GetLanguage()
         || cbVolatility->GetValue() != function->GetVolatility()
         || chkSecureDefiner->GetValue() != function->GetSecureDefiner()
         || chkStrict->GetValue() != function->GetIsStrict()
@@ -865,8 +875,12 @@ wxString dlgFunction::GetSql()
                     sql += qtDbString(txtSqlBox->GetText());
             }
 
-            sql += wxT("\nLANGUAGE ") + qtDbString(cbLanguage->GetValue())
-                +  wxT(" ") + cbVolatility->GetValue();
+            sql += wxT("\nLANGUAGE ") + qtDbString(cbLanguage->GetValue());
+            if (chkWindow->GetValue())
+                sql += wxT(" WINDOW ");
+            else
+                sql += wxT(" ");
+            sql +=  cbVolatility->GetValue();
             if (chkStrict->GetValue())
                 sql += wxT(" STRICT");
             if (chkSecureDefiner->GetValue())
@@ -965,4 +979,8 @@ wxString dlgFunction::GetSql()
 }
 
 
+void dlgFunction::OnChangeWindow(wxCommandEvent &ev)
+{
+    CheckChange();
+}
 

@@ -438,6 +438,7 @@ enum yytokentype {
  UMINUS = 644,
  TYPECAST = 645,
  CTYPE=646,
+ WINDOW=647,
 
  /* The following additions are keywords in EnterpriseDB */
  CONNECT_EDB = 800,
