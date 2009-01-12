@@ -339,7 +339,7 @@ void dlgProperty::CreateAdditionalPages()
     wxFlexGridSizer *fgsizer = new wxFlexGridSizer(1, 5, 5);
 
     // add checkbox to the panel
-    chkReadOnly = new wxCheckBox(sqlPane, CTRLID_CHKSQLTEXTFIELD, wxT("Read only"));
+    chkReadOnly = new wxCheckBox(sqlPane, CTRLID_CHKSQLTEXTFIELD, _("Read only"));
     chkReadOnly->SetValue(true);
     fgsizer->Add(chkReadOnly, 1, wxALL | wxALIGN_LEFT, 5);
 
