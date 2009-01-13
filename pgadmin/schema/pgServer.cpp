@@ -628,8 +628,12 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
         dbOid = conn->GetDbOid();
 
         // Check the server version
-        if (conn->BackendMinimumVersion(7, 3))
+        if (conn->BackendMinimumVersion(SERVER_MIN_VERSION_N >> 8, SERVER_MIN_VERSION_N & 0x00FF))
         {
+			// Warn the user if this is a newer version of PostgreSQL than we know of.
+			if (conn->BackendMinimumVersion(SERVER_MAX_VERSION_N >> 8, (SERVER_MAX_VERSION_N & 0x00FF) + 1))
+				wxLogWarning(_("This version of pgAdmin has only been tested with PostgreSQL version %s and below and may not function correctly with this server. Please upgrade pgAdmin."), SERVER_MAX_VERSION_T);
+
             connected = true;
             bool hasUptime=false;
 
@@ -688,7 +692,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
         }
         else
         {
-            error.Printf(_("The PostgreSQL server must be at least version %2.1f!"), SERVER_MIN_VERSION);
+            error.Printf(_("The server version %s is older than is supported by this release of pgAdmin."), SERVER_MIN_VERSION_T);
             connected = false;
             status = PGCONN_BAD;
         }
