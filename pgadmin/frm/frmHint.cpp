@@ -466,6 +466,9 @@ wxWindow *hintFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     if (obj)
         obj->ShowHint(form, true);
+    else
+        wxLogMessage(_("There are no hints available for the current object."));
+
     return 0;
 }
 
