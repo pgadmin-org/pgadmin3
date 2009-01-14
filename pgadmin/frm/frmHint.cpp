@@ -464,7 +464,8 @@ hintFactory::hintFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *too
 
 wxWindow *hintFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    obj->ShowHint(form, true);
+    if (obj)
+        obj->ShowHint(form, true);
     return 0;
 }
 
