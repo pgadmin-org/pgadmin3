@@ -563,8 +563,10 @@ void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)
 	free(tab_ret);
 
 	// Switch to the generic list control. Native doesn't play well with
-        // autocomplete on Mac.
+    // autocomplete on Mac.
+#ifdef __WXMAC__
 	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
 
 	if (spaceidx == -1)
 		AutoCompShow(what.Len(), wxRet);
@@ -572,7 +574,9 @@ void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)
 		AutoCompShow(what.Len()-spaceidx-1, wxRet);
  
 	// Now switch back
+#ifdef __WXMAC__
 	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+#endif
 }
 
 

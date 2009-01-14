@@ -146,18 +146,19 @@ frmMain::frmMain(const wxString& title)
 
     // Switch to the generic list control. Native doesn't play well with
     // multi-row select on Mac.
+#ifdef __WXMAC__
     wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
 
     properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
-
-    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
-
     statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
     dependencies = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
     dependents = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
 
     // Switch back to the native list control.
+#ifdef __WXMAC__
     wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+#endif
 
     listViews->AddPage(properties, _("Properties"));        // NBP_PROPERTIES
     listViews->AddPage(statistics, _("Statistics"));        // NBP_STATISTICS
