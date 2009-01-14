@@ -27,6 +27,7 @@
 #include <wx/toolbar.h>
 #include <wx/imaglist.h>
 #include <wx/busyinfo.h>
+#include <wx/sysopt.h>
 
 // wxAUI
 #include <wx/aui/aui.h>
@@ -142,10 +143,21 @@ frmMain::frmMain(const wxString& title)
 
     // Setup the listview
     listViews = new wxNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize);
+
+    // Switch to the generic list control. Native doesn't play well with
+    // multi-row select on Mac.
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+
     properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+
     statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
     dependencies = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
     dependents = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
+
+    // Switch back to the native list control.
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
 
     listViews->AddPage(properties, _("Properties"));        // NBP_PROPERTIES
     listViews->AddPage(statistics, _("Statistics"));        // NBP_STATISTICS

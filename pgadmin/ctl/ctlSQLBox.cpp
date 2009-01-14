@@ -12,6 +12,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/stc/stc.h>
+#include <wx/sysopt.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -561,10 +562,17 @@ void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)
 	wxString wxRet = wxString(tab_ret, wxConvUTF8);
 	free(tab_ret);
 
+	// Switch to the generic list control. Native doesn't play well with
+        // autocomplete on Mac.
+	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+
 	if (spaceidx == -1)
 		AutoCompShow(what.Len(), wxRet);
 	else
 		AutoCompShow(what.Len()-spaceidx-1, wxRet);
+ 
+	// Now switch back
+	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
 }
 
 
