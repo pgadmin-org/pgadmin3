@@ -160,7 +160,6 @@ pgObject *dlgFunction::GetObject()
 
 int dlgFunction::Go(bool modal)
 {
-    int returncode;
     isBackendMinVer84 = connection->BackendMinimumVersion(8, 4);
 
     if (function)
@@ -387,14 +386,7 @@ int dlgFunction::Go(bool modal)
 
     SetupVarEditor(1);
 
-    returncode = dlgSecurityProperty::Go(modal);
-
-    // This fixes a UI glitch on MacOS X and Windows
-    // Because of the new layout code, the Privileges pane don't size itself properly
-    SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
-    SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
-
-    return returncode;
+    return dlgSecurityProperty::Go(modal);
 }
 
 #ifdef __WXMAC__

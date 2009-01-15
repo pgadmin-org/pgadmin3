@@ -95,14 +95,7 @@ int dlgIndexConstraint::Go(bool modal)
         cbTablespace->SetSelection(0);
     }
 
-    int returnCode = dlgIndexBase::Go(modal);
-
-    #ifdef __WXMAC__
-    wxSizeEvent event(wxSize(GetSize().GetWidth() - 25, GetSize().GetHeight() + 200));
-    OnChangeSize(event);
-    #endif
-
-    return returnCode;
+    return dlgIndexBase::Go(modal);
 }
 
 

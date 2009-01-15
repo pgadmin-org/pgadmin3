@@ -102,8 +102,6 @@ wxString dlgDatabase::GetHelpPage() const
 
 int dlgDatabase::Go(bool modal)
 {
-    int returncode;
-
     if (!database)
         cbOwner->Append(wxT(""));
 
@@ -289,14 +287,7 @@ int dlgDatabase::Go(bool modal)
 
     SetupVarEditor(1);
 
-    returncode = dlgSecurityProperty::Go(modal);
-
-    // This fixes a UI glitch on MacOS X and Windows
-    // Because of the new layout code, the Privileges pane don't size itself properly
-    SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
-    SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
-
-    return returncode;
+    return dlgSecurityProperty::Go(modal);
 }
 
 
@@ -315,14 +306,6 @@ void dlgDatabase::OnChangeSize(wxSizeEvent &ev)
 	lstVariables->SetSize(wxDefaultCoord, wxDefaultCoord,
 	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 550);
     dlgSecurityProperty::OnChangeSize(ev);
-    
-/*
-    SetPrivilegesLayout();
-    if (GetAutoLayout())
-    {
-        Layout();
-    }
-*/
 }
 #endif
 

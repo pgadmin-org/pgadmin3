@@ -330,15 +330,10 @@ int dlgIndex::Go(bool modal)
 
     int returnCode = dlgIndexBase::Go(modal);
 
-#ifdef __WXMAC__
-    wxSizeEvent event(wxSize(GetSize().GetWidth() - 25, GetSize().GetHeight() + 200));
-    OnChangeSize(event);
-	
     // This fixes a UI glitch on MacOS X
     // Because of the new layout code, the Columns pane doesn't size itself properly
     SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
     SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
-#endif
 
     return returnCode;
 }

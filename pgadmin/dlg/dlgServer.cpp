@@ -256,9 +256,7 @@ int dlgServer::Go(bool modal)
         SetTitle(_("Add server"));
     }
 
-    int rc=dlgProperty::Go(modal);
-
-    return rc;
+    return dlgProperty::Go(modal);
 }
 
 

@@ -69,7 +69,6 @@ int dlgTextSearchDictionary::Go(bool modal)
 {
     wxString qry;
     pgSet *set;
-    int returncode;
 
     qry = wxT("SELECT tmplname, nspname\n")
           wxT("  FROM pg_ts_template\n")
@@ -121,14 +120,7 @@ int dlgTextSearchDictionary::Go(bool modal)
     btnAdd->Disable();
     btnRemove->Disable();
 
-    returncode = dlgProperty::Go(modal);
-
-    #ifdef __WXMAC__
-    wxSizeEvent event(wxSize(GetSize().GetWidth() - 25, GetSize().GetHeight() + 130));
-    OnChangeSize(event);
-    #endif
-
-    return returncode;
+    return dlgProperty::Go(modal);
 }
 
 

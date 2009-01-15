@@ -321,6 +321,12 @@ int dlgProperty::Go(bool modal)
         return ShowModal();
     else
         Show(true);
+
+    // This fixes a UI glitch on MacOS X and Windows
+    // Because of the new layout code, the Privileges pane don't size itself properly
+    SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
+    SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
+
     return 0;
 }
 

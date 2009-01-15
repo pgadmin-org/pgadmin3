@@ -56,8 +56,6 @@ pgObject *dlgView::GetObject()
 
 int dlgView::Go(bool modal)
 {
-    int returncode;
-
     AddGroups();
     AddUsers(cbOwner);
 
@@ -81,14 +79,7 @@ int dlgView::Go(bool modal)
             wxLogError(_("Failed to disable the RULE privilege checkbox!"));
     }
 
-    returncode = dlgSecurityProperty::Go(modal);
-
-    // This fixes a UI glitch on MacOS X and Windows
-    // Because of the new layout code, the Privileges pane don't size itself properly
-    SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
-    SetSize(GetSize().GetWidth()-1, GetSize().GetHeight());
-
-    return returncode;
+    return dlgSecurityProperty::Go(modal);
 }
 
 

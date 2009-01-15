@@ -47,8 +47,6 @@ dlgReassignDropOwned::dlgReassignDropOwned(frmMain *win, pgConn *conn,
 	wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(win, wxT("dlgReassignDropOwned"));
     
-    //RestorePosition();
-    
     cbRoles->Clear();
     query = wxT("SELECT rolname FROM pg_roles WHERE rolname<>") + conn->qtDbString(role->GetName()) + wxT(" ORDER BY rolname");
     pgSetIterator roles(connection, query);
