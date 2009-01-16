@@ -956,10 +956,19 @@ void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
 {
     if(sqlNotebook && sqlNotebook->GetPageCount() >= 2)
     {
+
         if (event.GetSelection() == 0)
+	  {
+		manager.GetPane(wxT("outputPane")).Show(true);
+		manager.GetPane(wxT("scratchPad")).Show(true);
+		manager.Update();
             updateFromGqb(false);
+	  }
         else
         {
+		manager.GetPane(wxT("outputPane")).Show(false);
+		manager.GetPane(wxT("scratchPad")).Show(false);
+		manager.Update();
             if(firstTime)        //Things that should be done on first click on GQB
             {
                 // Size, and pause to allow the window to draw
@@ -1340,6 +1349,11 @@ void frmQuery::OnClose(wxCloseEvent& event)
         event.Veto();
         return;
     }
+
+	//  Rearrangement of a Gqb pane.
+	manager.GetPane(wxT("outputPane")).Show(true);
+	manager.GetPane(wxT("scratchPad")).Show(true);
+	manager.Update();
 
     Hide();
 
