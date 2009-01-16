@@ -191,6 +191,7 @@ void gqbView::OnMenuTableDelete(wxCommandEvent& WXUNUSED(event))
 {
     if(cTempSelected)
     {
+        joinsGridTable->removeJoins(cTempSelected);
         controller->removeTableFromModel(cTempSelected, gridTable, orderByLGridTable, orderByRGridTable);
         cTempSelected=NULL;
         this->Refresh();
