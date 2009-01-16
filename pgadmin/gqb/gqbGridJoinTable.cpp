@@ -265,11 +265,11 @@ wxString gqbGridJoinTable::GetColLabelValue(int col)
     switch(col)
     {
     case 0:
-        return wxT("Source");
+        return _("Source");
     case 1:
-        return wxT("Join Type");
+        return _("Join Type");
     case 2:
-        return wxT("Destination");
+        return _("Destination");
     }
     return wxEmptyString;
 }
