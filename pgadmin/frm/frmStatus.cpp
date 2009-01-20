@@ -767,9 +767,20 @@ void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp,
         }
         read += strlen(raw);
 
+        wxString str;
+        if (wxString(wxString(raw,wxConvLibc),wxConvUTF8).Len() > 0)
+            str = line + wxString(wxString(raw,wxConvLibc),wxConvUTF8);
+        else
+            str = line + wxTextBuffer::Translate(wxString(raw, set->GetConversion()), wxTextFileType_Unix);
 
-        wxString str = line + wxTextBuffer::Translate(wxString(raw, set->GetConversion()), wxTextFileType_Unix);
         delete set;
+
+        if (str.Len() == 0)
+        {
+            wxString msgstr = _("The server log contains entries in multiple encodings and cannot be displayed by pgAdmin.");
+            wxMessageBox(msgstr);
+            return;
+        }
 
         bool hasCr = (str.Right(1) == wxT("\n"));
 
