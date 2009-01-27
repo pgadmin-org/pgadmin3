@@ -52,6 +52,7 @@ typedef struct PluginUtility {
     wxString title;
     wxString command;
     wxString description;
+    wxString keyfile;
     bool database;
     wxArrayString applies_to;
     bool set_password;

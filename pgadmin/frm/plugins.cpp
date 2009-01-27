@@ -72,9 +72,13 @@ void frmMain::LoadPluginUtilities()
             // Add the previous app if required.
             if (!util->title.IsEmpty() && !util->command.IsEmpty())
             {
-                CreatePluginUtility(util);
-                ClearPluginUtility(util);
-                pluginUtilityCount++;
+                // We're only going to add this if the keyfile exists or isn't specified
+                if (util->keyfile.IsEmpty() || wxFileExists(util->keyfile))
+                {
+                    CreatePluginUtility(util);
+                    ClearPluginUtility(util);
+                    pluginUtilityCount++;
+                }
             }
 
             util->title = token.AfterFirst('=').Trim();
@@ -87,6 +91,10 @@ void frmMain::LoadPluginUtilities()
         // Description
 		if (token.Lower().StartsWith(wxT("description=")))
             util->description = token.AfterFirst('=').Trim();
+
+        // KeyFile
+		if (token.Lower().StartsWith(wxT("keyfile=")))
+            util->keyfile = token.AfterFirst('=').Trim();
 
         // Database
 		if (token.Lower().StartsWith(wxT("database=")))
@@ -122,9 +130,13 @@ void frmMain::LoadPluginUtilities()
 	// Add the last app if required.
     if (!util->title.IsEmpty() && !util->command.IsEmpty())
     {
-        CreatePluginUtility(util);
-        ClearPluginUtility(util);
-        pluginUtilityCount++;
+        // We're only going to add this if the keyfile exists or isn't specified
+        if (util->keyfile.IsEmpty() || wxFileExists(util->keyfile))
+        {
+            CreatePluginUtility(util);
+            ClearPluginUtility(util);
+            pluginUtilityCount++;
+        }
     }
 
     if (util)
@@ -149,6 +161,7 @@ void frmMain::ClearPluginUtility(PluginUtility *util)
     util->title = wxEmptyString;
     util->command = wxEmptyString;
     util->description = wxEmptyString;
+    util->keyfile = wxEmptyString;
     util->database = false;
     util->applies_to.Clear();
     util->set_password = false;
