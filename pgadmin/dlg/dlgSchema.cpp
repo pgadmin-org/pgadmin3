@@ -44,8 +44,6 @@ pgObject *dlgSchema::GetObject()
 
 int dlgSchema::Go(bool modal)
 {
-    int returncode;
-
     if (!schema)
         cbOwner->Append(wxT(""));
 

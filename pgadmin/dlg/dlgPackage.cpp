@@ -60,10 +60,8 @@ pgObject *dlgPackage::GetObject()
 
 int dlgPackage::Go(bool modal)
 {
-    int returncode;
-
-	if (!connection->EdbMinimumVersion(8, 2))
-		txtComment->Disable();
+    if (!connection->EdbMinimumVersion(8, 2))
+        txtComment->Disable();
 
     cbOwner->Disable();
 
@@ -128,8 +126,8 @@ void dlgPackage::CheckChange()
            txtHeader->GetText() != package->GetHeaderInner())) 
            enable = false;
 
-	   if (txtComment->GetValue() != package->GetComment())
-		   enable = true;
+       if (txtComment->GetValue() != package->GetComment())
+           enable = true;
     }
 
     EnableOK(enable);
@@ -137,10 +135,10 @@ void dlgPackage::CheckChange()
 
 bool dlgPackage::IsUpToDate()
 {
-	if (package && !package->IsUpToDate())
-		return false;
-	else
-		return true;
+    if (package && !package->IsUpToDate())
+        return false;
+    else
+        return true;
 }
 
 
@@ -159,25 +157,25 @@ wxString dlgPackage::GetSql()
         sql += wxT("\nEND ") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
     }
 
-	if (!package || (package && txtBody->GetText() != package->GetBodyInner())
-				 || (package && txtHeader->GetText() != package->GetHeaderInner()))
-	{
-		if (!txtBody->GetText().IsEmpty())
-	    {
-			sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nAS\n");
-			sql += txtBody->GetText();
-			sql += wxT("\nEND ") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
-		}
-		else
-		{
-			if (package)
-				sql = wxT("DROP PACKAGE BODY ") + qtName + wxT(";\n\n");
-		}
-	}
+    if (!package || (package && txtBody->GetText() != package->GetBodyInner())
+                 || (package && txtHeader->GetText() != package->GetHeaderInner()))
+    {
+        if (!txtBody->GetText().IsEmpty())
+        {
+            sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nAS\n");
+            sql += txtBody->GetText();
+            sql += wxT("\nEND ") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
+        }
+        else
+        {
+            if (package)
+                sql = wxT("DROP PACKAGE BODY ") + qtName + wxT(";\n\n");
+        }
+    }
 
     sql += GetGrant(wxT("X"), wxT("PACKAGE ") + qtName);
 
-	AppendComment(sql, wxT("PACKAGE"), schema, package);
+    AppendComment(sql, wxT("PACKAGE"), schema, package);
 
     return sql;
 }
