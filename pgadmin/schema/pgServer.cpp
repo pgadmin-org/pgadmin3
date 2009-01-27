@@ -46,7 +46,7 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     username = newUsername;
     port = newPort;
     ssl=_ssl;
-	colour = _colour.IsEmpty() ? wxT("#FFFFFF") : wxColour(_colour);
+    colour = _colour.IsEmpty() ? wxT("#FFFFFF") : wxColour(_colour);
     serverIndex=0;
 
     connected = false;
@@ -492,7 +492,7 @@ void pgServer::StorePassword()
     wxUtfFile file;
     if (!wxFile::Exists(fname))
     {
-		file.Create(fname, false, S_IREAD | S_IWRITE);
+        file.Create(fname, false, S_IREAD | S_IWRITE);
     }
 
     // Don't try to read and write in one OP - it doesn't work well
@@ -630,9 +630,9 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
         // Check the server version
         if (conn->BackendMinimumVersion(SERVER_MIN_VERSION_N >> 8, SERVER_MIN_VERSION_N & 0x00FF))
         {
-			// Warn the user if this is a newer version of PostgreSQL than we know of.
-			if (conn->BackendMinimumVersion(SERVER_MAX_VERSION_N >> 8, (SERVER_MAX_VERSION_N & 0x00FF) + 1))
-				wxLogWarning(_("This version of pgAdmin has only been tested with PostgreSQL version %s and below and may not function correctly with this server. Please upgrade pgAdmin."), SERVER_MAX_VERSION_T);
+            // Warn the user if this is a newer version of PostgreSQL than we know of.
+            if (conn->BackendMinimumVersion(SERVER_MAX_VERSION_N >> 8, (SERVER_MAX_VERSION_N & 0x00FF) + 1))
+                wxLogWarning(_("This version of pgAdmin has only been tested with PostgreSQL version %s and below and may not function correctly with this server. Please upgrade pgAdmin."), wxString(SERVER_MAX_VERSION_T).c_str());
 
             connected = true;
             bool hasUptime=false;
@@ -692,7 +692,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
         }
         else
         {
-            error.Printf(_("The server version %s is older than is supported by this release of pgAdmin."), SERVER_MIN_VERSION_T);
+            error.Printf(_("The server version %s is older than is supported by this release of pgAdmin."), wxString(SERVER_MIN_VERSION_T).c_str());
             connected = false;
             status = PGCONN_BAD;
         }
@@ -1070,7 +1070,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         
         settings->Read(key + wxT("Server"), &servername, wxEmptyString);
         settings->Read(key + wxT("ServiceID"), &serviceID, wxEmptyString);
-		settings->Read(key + wxT("DiscoveryID"), &discoveryID, serviceID);
+        settings->Read(key + wxT("DiscoveryID"), &discoveryID, serviceID);
         settings->Read(key + wxT("Description"), &description, wxEmptyString);
         settings->Read(key + wxT("StorePwd"), &storePwd, wxEmptyString);
         settings->Read(key + wxT("Restore"), &restore, wxT("true"));
@@ -1080,7 +1080,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         settings->Read(key + wxT("LastDatabase"), &lastDatabase, wxEmptyString);
         settings->Read(key + wxT("LastSchema"), &lastSchema, wxEmptyString);
         settings->Read(key + wxT("DbRestriction"), &dbRestriction, wxEmptyString);
-		settings->Read(key + wxT("Colour"), &colour, wxT("#FFFFFF"));
+        settings->Read(key + wxT("Colour"), &colour, wxT("#FFFFFF"));
 
         // SSL mode
 #ifdef SSL
@@ -1092,16 +1092,16 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);
         server->iSetServiceID(serviceID);
-		server->iSetDiscoveryID(discoveryID);
+        server->iSetDiscoveryID(discoveryID);
         server->iSetDiscovered(false);
         server->iSetDbRestriction(dbRestriction);
-		server->iSetColour(colour);
+        server->iSetColour(colour);
         server->iSetServerIndex(loop);
         wxTreeItemId itm = browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
         browser->SortChildren(obj->GetId());
-		browser->SetItemBackgroundColour(itm, server->GetColour());
+        browser->SetItemBackgroundColour(itm, server->GetColour());
 
-		// Note if we're reloading a discovered server
+        // Note if we're reloading a discovered server
         if (!discoveryID.IsEmpty())
             discoveredServers.Add(discoveryID);
 
@@ -1111,7 +1111,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
     // Add local servers. Will currently only work on Win32 with >= BETA3 
     // of the Win32 PostgreSQL installer.
-	wxLogInfo(wxT("Loading servers registered on the local machine"));
+    wxLogInfo(wxT("Loading servers registered on the local machine"));
     wxRegKey *pgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services"));
 
     if (pgKey->Exists())
@@ -1126,8 +1126,8 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
         while (flag != false)
         {
-		    // On Windows, the discovery ID is always the service name. 
-			// Only load the server if we didn't load it with all the others.
+            // On Windows, the discovery ID is always the service name. 
+            // Only load the server if we didn't load it with all the others.
             if (discoveredServers.Index(svcName, false) < 0)
             {
                 key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
@@ -1141,7 +1141,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
                 // Add the Server node
                 server = new pgServer(servername, description, database, username, port, false, 0);
-				server->iSetDiscoveryID(svcName);
+                server->iSetDiscoveryID(svcName);
                 server->iSetDiscovered(true);
                 server->iSetServiceID(svcName);
                 browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
@@ -1156,23 +1156,23 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
     // Add local servers on non-Win32 platforms (on Win32, they will be picked up above)
 #ifndef WIN32
 
-	// On Unix/Mac, the discovery ID can be anything. We use the PostgreSQL 
-	// package config filename if it's present, as that is the only thing vaguely 
-	// discoverable and unique to a given installation. We can do the same for
-	// other distros in the future if they drop a suitable file someplace. 
-	// Look for any files that match the basic postgres*.ini pattern.
+    // On Unix/Mac, the discovery ID can be anything. We use the PostgreSQL 
+    // package config filename if it's present, as that is the only thing vaguely 
+    // discoverable and unique to a given installation. We can do the same for
+    // other distros in the future if they drop a suitable file someplace. 
+    // Look for any files that match the basic postgres*.ini pattern.
 
-	wxLogInfo(wxT("Loading servers registered on the local machine"));
-	
-	if (wxFile::Exists(REGISTRY_FILE))
-	{
+    wxLogInfo(wxT("Loading servers registered on the local machine"));
+    
+    if (wxFile::Exists(REGISTRY_FILE))
+    {
         wxString version, locale;
         long cookie;
         
         wxFileStream fst(REGISTRY_FILE);
         wxFileConfig *cnf = new wxFileConfig(fst);
         
-		// PostgreSQL servers
+        // PostgreSQL servers
         cnf->SetPath(wxT("/PostgreSQL"));
         bool flag = cnf->GetFirstGroup(version, cookie);
         while (flag)
@@ -1180,31 +1180,31 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
             // If there is no Version entry, this is probably an uninstalled server
             if (cnf->Read(version + wxT("/Version"), wxEmptyString) != wxEmptyString)
             {
-				// Only load this server if we haven't read it from the pgAdmin config
-				if (discoveredServers.Index(cnf->GetPath() + wxT("/") + version, false) < 0)
-				{
-					 
-					// Basic details
-					servername = wxT("localhost");
-					cnf->Read(version + wxT("/Description"), &description, wxT("PostgreSQL ") + version);
-					cnf->Read(version + wxT("/Superuser"), &username, wxEmptyString);
-					cnf->Read(version + wxT("/Port"), &port, 0);
-				
-				    // Add the item, if it looks sane
-				    if (port != 0 && username != wxEmptyString)
-				    {
-						server = new pgServer(servername, description, wxT("postgres"), username, port, false, 0);
-						server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
-						server->iSetDiscovered(true);
-				    	browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
-				    }
-				}
-			}
-			
+                // Only load this server if we haven't read it from the pgAdmin config
+                if (discoveredServers.Index(cnf->GetPath() + wxT("/") + version, false) < 0)
+                {
+                     
+                    // Basic details
+                    servername = wxT("localhost");
+                    cnf->Read(version + wxT("/Description"), &description, wxT("PostgreSQL ") + version);
+                    cnf->Read(version + wxT("/Superuser"), &username, wxEmptyString);
+                    cnf->Read(version + wxT("/Port"), &port, 0);
+                
+                    // Add the item, if it looks sane
+                    if (port != 0 && username != wxEmptyString)
+                    {
+                        server = new pgServer(servername, description, wxT("postgres"), username, port, false, 0);
+                        server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
+                        server->iSetDiscovered(true);
+                        browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+                    }
+                }
+            }
+            
             flag = cnf->GetNextGroup(version, cookie);
-		}
-		
-		// EnterpriseDB servers
+        }
+        
+        // EnterpriseDB servers
         cnf->SetPath(wxT("/EnterpriseDB"));
         flag = cnf->GetFirstGroup(version, cookie);
         while (flag)
@@ -1212,32 +1212,32 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
             // If there is no Version entry, this is probably an uninstalled server
             if (cnf->Read(version + wxT("/Version"), wxEmptyString) != wxEmptyString)
             {
-				// Only load this server if we haven't read it from the pgAdmin config
-				if (discoveredServers.Index(cnf->GetPath() + wxT("/") + version, false) < 0)
-				{
-					
-					// Basic details
-					servername = wxT("localhost");
-					cnf->Read(version + wxT("/Description"), &description, wxT("EnterpriseDB ") + version);
-					cnf->Read(version + wxT("/Superuser"), &username, wxEmptyString);
-					cnf->Read(version + wxT("/Port"), &port, 0);
-					
-				    // Add the item, if it looks sane
-				    if (port != 0 && username != wxEmptyString)
-				    {
-						server = new pgServer(servername, description, wxT("edb"), username, port, false, 0);
-						server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
-						server->iSetDiscovered(true);
-				    	browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
-				    }
-				}
-			}
-			
+                // Only load this server if we haven't read it from the pgAdmin config
+                if (discoveredServers.Index(cnf->GetPath() + wxT("/") + version, false) < 0)
+                {
+                    
+                    // Basic details
+                    servername = wxT("localhost");
+                    cnf->Read(version + wxT("/Description"), &description, wxT("EnterpriseDB ") + version);
+                    cnf->Read(version + wxT("/Superuser"), &username, wxEmptyString);
+                    cnf->Read(version + wxT("/Port"), &port, 0);
+                    
+                    // Add the item, if it looks sane
+                    if (port != 0 && username != wxEmptyString)
+                    {
+                        server = new pgServer(servername, description, wxT("edb"), username, port, false, 0);
+                        server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
+                        server->iSetDiscovered(true);
+                        browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+                    }
+                }
+            }
+            
             flag = cnf->GetNextGroup(version, cookie);
-		}
-	
-		delete cnf;
-	    browser->SortChildren(obj->GetId());
+        }
+    
+        delete cnf;
+        browser->SortChildren(obj->GetId());
     }
 
 #endif // !WIN32
