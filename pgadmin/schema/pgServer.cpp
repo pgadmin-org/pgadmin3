@@ -1169,7 +1169,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         wxString version, locale;
         long cookie;
         
-        wxFileStream fst(REGISTRY_FILE);
+        wxFileInputStream fst(REGISTRY_FILE);
         wxFileConfig *cnf = new wxFileConfig(fst);
         
         // PostgreSQL servers
