@@ -1251,7 +1251,7 @@ bool getArrayFromCommaSeparatedList(const wxString& str, wxArrayString& res)
         else if (!inDoubleQuote && !inSingleQuote && nBracketLevel == 0 && curr == (wxChar)',')
         {
             if (index != startArray)
-                res.Add(str.SubString(startArray, index - 1).Trim());
+                res.Add(str.SubString(startArray, index - 1).Trim(true).Trim(false));
             else
                 res.Add(wxEmptyString);
             startArray = index + 1;
@@ -1261,7 +1261,7 @@ bool getArrayFromCommaSeparatedList(const wxString& str, wxArrayString& res)
         return false;
 
     // Add last value to array
-    res.Add(str.SubString(startArray, index).Trim());
+    res.Add(str.SubString(startArray, index).Trim(true).Trim(false));
     
     return true;
 }

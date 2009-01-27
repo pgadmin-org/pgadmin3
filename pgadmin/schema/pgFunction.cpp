@@ -554,8 +554,8 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                         if (function->GetArgDefValCount() != 0 &&
                             nArgsIN < (size_t)function->GetArgDefValCount())
                         {
-                            function->iAddArgDef(argDefValArray[currINindex++]);
-                            continue;
+                            if (argDefValArray[currINindex++] != wxT("-"))
+                                function->iAddArgDef(argDefValArray[currINindex-1]);
                         }
                     }
                     function->iAddArgDef(wxEmptyString);
