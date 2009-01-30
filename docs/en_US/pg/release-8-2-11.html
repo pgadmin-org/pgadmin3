@@ -1,0 +1,126 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.2. Release 8.2.11</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.12 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release.html" title="Appendix E. Release Notes">
+<link rel="next" href="release-8-2-10.html" title="E.3. Release 8.2.10">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-11">E.2. Release 8.2.11</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2008-11-03</p>
+</div>
+<p>   This release contains a variety of fixes from 8.2.10.
+   For information about new features in the 8.2 major release, see
+   <a class="xref" href="release-8-2.html" title="E.13. Release 8.2">Section E.13, &#8220;Release 8.2&#8221;</a>.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2876671">E.2.1. Migration to Version 8.2.11</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.2.X.
+    However, if you are upgrading from a version earlier than 8.2.7,
+    see the release notes for 8.2.7.  Also, if you were running a previous
+    8.2.X release, it is recommended to <code class="command">REINDEX</code> all GiST
+    indexes after the upgrade.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2876688">E.2.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      Fix GiST index corruption due to marking the wrong index entry
+      &#8220;<span class="quote">dead</span>&#8221; after a deletion (Teodor)
+     </p>
+<p>      This would result in index searches failing to find rows they
+      should have found.  Corrupted indexes can be fixed with
+      <code class="command">REINDEX</code>.
+     </p>
+</li>
+<li>
+<p>      Fix backend crash when the client encoding cannot represent a localized
+      error message (Tom)
+     </p>
+<p>      We have addressed similar issues before, but it would still fail if
+      the &#8220;<span class="quote">character has no equivalent</span>&#8221; message itself couldn't
+      be converted.  The fix is to disable localization and send the plain
+      ASCII error message when we detect such a situation.
+     </p>
+</li>
+<li><p>      Fix possible crash when deeply nested functions are invoked from
+      a trigger (Tom)
+     </p></li>
+<li>
+<p>      Improve optimization of <em class="replaceable"><code>expression</code></em> <code class="literal">IN</code>
+      (<em class="replaceable"><code>expression-list</code></em>) queries (Tom, per an idea from Robert
+      Haas)
+     </p>
+<p>      Cases in which there are query variables on the right-hand side had been
+      handled less efficiently in 8.2.x and 8.3.x than in prior versions.
+      The fix restores 8.1 behavior for such cases.
+     </p>
+</li>
+<li>
+<p>      Fix mis-expansion of rule queries when a sub-<code class="literal">SELECT</code> appears
+      in a function call in <code class="literal">FROM</code>,  a multi-row <code class="literal">VALUES</code>
+      list, or a <code class="literal">RETURNING</code> list (Tom)
+     </p>
+<p>      The usual symptom of this problem is an &#8220;<span class="quote">unrecognized node type</span>&#8221;
+      error.
+     </p>
+</li>
+<li><p>      Fix memory leak during rescan of a hashed aggregation plan (Neil)
+     </p></li>
+<li><p>      Ensure an error is reported when a newly-defined PL/pgSQL trigger
+      function is invoked as a normal function (Tom)
+     </p></li>
+<li>
+<p>      Prevent possible collision of <code class="structfield">relfilenode</code> numbers
+      when moving a table to another tablespace with <code class="command">ALTER SET
+      TABLESPACE</code> (Heikki)
+     </p>
+<p>      The command tried to re-use the existing filename, instead of
+      picking one that is known unused in the destination directory.
+     </p>
+</li>
+<li><p>      Fix incorrect tsearch2 headline generation when single query
+      item matches first word of text (Sushant Sinha)
+     </p></li>
+<li><p>      Fix improper display of fractional seconds in interval values when
+      using a non-ISO datestyle in an <code class="option">--enable-integer-datetimes</code>
+      build (Ron Mayer)
+     </p></li>
+<li>
+<p>      Ensure <code class="function">SPI_getvalue</code> and <code class="function">SPI_getbinval</code>
+      behave correctly when the passed tuple and tuple descriptor have
+      different numbers of columns (Tom)
+     </p>
+<p>      This situation is normal when a table has had columns added or removed,
+      but these two functions didn't handle it properly.
+      The only likely consequence is an incorrect error indication.
+     </p>
+</li>
+<li><p>      Fix <span class="application">ecpg</span>'s parsing of <code class="command">CREATE ROLE</code> (Michael)
+     </p></li>
+<li><p>      Fix recent breakage of <code class="literal">pg_ctl restart</code> (Tom)
+     </p></li>
+<li>
+<p>      Ensure <code class="filename">pg_control</code> is opened in binary mode
+      (Itagaki Takahiro)
+     </p>
+<p>      <span class="application">pg_controldata</span> and <span class="application">pg_resetxlog</span>
+      did this incorrectly, and so could fail on Windows.
+     </p>
+</li>
+<li><p>      Update time zone data files to <span class="application">tzdata</span> release 2008i (for
+      DST law changes in Argentina, Brazil, Mauritius, Syria)
+     </p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

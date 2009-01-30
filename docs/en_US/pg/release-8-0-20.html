@@ -1,0 +1,60 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.31. Release 8.0.20</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.0">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.12 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-1.html" title="E.30. Release 8.1">
+<link rel="next" href="release-8-0-19.html" title="E.32. Release 8.0.19">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-0-20">E.31. Release 8.0.20</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2009-02-02</p>
+</div>
+<p>   This release contains a variety of fixes from 8.0.19.
+   For information about new features in the 8.0 major release, see
+   <a class="xref" href="release-8-0.html" title="E.51. Release 8.0">Section E.51, &#8220;Release 8.0&#8221;</a>.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2891680">E.31.1. Migration to Version 8.0.20</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.0.X.
+    However, if you are upgrading from a version earlier than 8.0.6,
+    see the release notes for 8.0.6.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2891688">E.31.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li><p>      Improve handling of URLs in <code class="function">headline()</code> function (Teodor)
+     </p></li>
+<li><p>      Improve handling of overlength headlines in <code class="function">headline()</code>
+      function (Teodor)
+     </p></li>
+<li><p>      Prevent possible Assert failure or misconversion if an encoding
+      conversion is created with the wrong conversion function for the
+      specified pair of encodings (Tom, Heikki)
+     </p></li>
+<li><p>      Avoid unnecessary locking of small tables in <code class="command">VACUUM</code>
+      (Heikki)
+     </p></li>
+<li><p>      Fix uninitialized variables in <code class="filename">contrib/tsearch2</code>'s
+      <code class="function">get_covers()</code> function (Teodor)
+     </p></li>
+<li><p>      Make all documentation reference <code class="literal">pgsql-bugs</code> and/or
+      <code class="literal">pgsql-hackers</code> as appropriate, instead of the
+      now-decommissioned <code class="literal">pgsql-ports</code> and <code class="literal">pgsql-patches</code>
+      mailing lists (Tom)
+     </p></li>
+<li><p>      Update time zone data files to <span class="application">tzdata</span> release 2009a (for
+      Kathmandu and historical DST corrections in Switzerland, Cuba)
+     </p></li>
+</ul></div>
+</div>
+</div></body>
+</html>
