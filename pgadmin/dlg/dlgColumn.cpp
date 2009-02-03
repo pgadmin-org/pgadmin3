@@ -22,6 +22,9 @@
 #include "schema/pgColumn.h"
 #include "schema/pgTable.h"
 #include "schema/pgDatatype.h"
+#include "frm/frmMain.h"
+#include "schema/pgUser.h"
+#include "schema/pgGroup.h"
 
 
 // pointer to controls
@@ -37,6 +40,11 @@ BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
     EVT_TEXT(XRCID("txtAttstattarget"),             dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
     EVT_COMBOBOX(XRCID("cbDatatype"),               dlgColumn::OnSelChangeTyp)
+    EVT_BUTTON(CTL_ADDPRIV,                         dlgColumn::OnAddPriv)
+    EVT_BUTTON(CTL_DELPRIV,                         dlgColumn::OnDelPriv)
+#ifdef __WXMAC__
+    EVT_SIZE(                                       dlgColumn::OnChangeSize)
+#endif
 END_EVENT_TABLE();
 
 
@@ -54,8 +62,110 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
     wxASSERT(!table || (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == PGM_VIEW));
 
     txtAttstattarget->SetValidator(numericValidator);
+
+    /* Column Level Privileges */
+    securityChanged=false;
+    if (node)
+        connection = node->GetConnection();
+    securityPage = new ctlSecurityPanel(nbNotebook, wxT("INSERT,SELECT,UPDATE,REFERENCES"), "arwx", frame->GetImageList());
+    if (connection && connection->BackendMinimumVersion(8, 4) && (!node || node->CanCreate()))
+    {
+        // Fetch Groups Information
+        pgSet *setGrp = connection->ExecuteSet(wxT("SELECT groname FROM pg_group ORDER BY groname"));
+
+        if (setGrp)
+        {
+            while (!setGrp->Eof())
+            {
+                groups.Add(setGrp->GetVal(0));
+                setGrp->MoveNext();
+            }
+            delete setGrp;
+        }
+
+        if (node)
+        {
+            wxString strAcl = node->GetAcl();
+            if (!strAcl.IsEmpty())
+            {
+                wxArrayString aclArray;
+                strAcl = strAcl.Mid(1, strAcl.Length()-2);
+                getArrayFromCommaSeparatedList(strAcl, aclArray);
+                wxString roleName;
+                for (unsigned int index = 0; index < aclArray.Count(); index++)
+                {
+                    wxString strCurrAcl = aclArray[index];
+
+                    /*
+                    * In rare case, we can have ',' (comma) in the user name.
+                    * But, we need to handle them also
+                    */ 
+                    if (strCurrAcl.Find(wxChar('=')) == wxNOT_FOUND)
+                    {
+                        // Check it is start of the ACL
+                        if (strCurrAcl[0U] == (wxChar)'"')
+                            roleName = strCurrAcl + wxT(",");
+                        continue;
+                    }
+                    else
+                        strCurrAcl = roleName + strCurrAcl;
+
+                    if (strCurrAcl[0U] == (wxChar)'"')
+                        strCurrAcl = strCurrAcl.Mid(1, strCurrAcl.Length()-1);
+                    roleName = strCurrAcl.BeforeLast('=');
+
+                    wxString value=strCurrAcl.Mid(roleName.Length()+1).BeforeLast('/');
+
+                    int icon = userFactory.GetIconId();
+
+                    if (roleName.Left(6).IsSameAs(wxT("group ")), false)
+                    {
+                        icon = groupFactory.GetIconId();
+                        roleName = wxT("group ") + qtStrip(roleName.Mid(6));
+                    }
+                    else if (roleName.IsEmpty())
+                    {
+                        icon = PGICON_PUBLIC;
+                        roleName = wxT("public");
+                    }
+                    else
+                    {
+                        roleName = qtStrip(roleName);
+                        for (unsigned int index=0; index < groups.Count(); index++)
+                            if (roleName == groups[index])
+                            {
+                                roleName = wxT("group ") + roleName;
+                                icon = groupFactory.GetIconId();
+                                break;
+                            }
+                    }
+
+                    securityPage->lbPrivileges->AppendItem(icon, roleName, value);
+                    currentAcl.Add(roleName + wxT("=") + value);
+
+                    // Reset roleName
+                    roleName.Empty();
+                }
+            }
+        }
+    }
+    else
+        securityPage->Disable();
+
 }
 
+
+#ifdef __WXMAC__
+void dlgColumn::OnChangeSize(wxSizeEvent &ev)
+{
+    securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
+        ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 550);
+    if (GetAutoLayout())
+    {
+        Layout();
+    }
+}
+#endif
 
 pgObject *dlgColumn::GetObject()
 {
@@ -65,6 +175,27 @@ pgObject *dlgColumn::GetObject()
 
 int dlgColumn::Go(bool modal)
 {
+    if (connection->BackendMinimumVersion(8, 4))
+    {
+        securityPage->SetConnection(connection);
+        
+        if (securityPage->cbGroups)
+        {
+            // Fetch Groups Information
+            for ( unsigned int index=0; index < groups.Count();)
+                securityPage->cbGroups->Append(wxT("group ") + groups[index++]);
+
+            // Fetch Users Information
+            if (settings->GetShowUsersForPrivileges())
+            {
+                securityPage->stGroup->SetLabel(_("Group/User"));
+                dlgProperty::AddUsers(securityPage->cbGroups);
+            }
+        }
+        securityPage->lbPrivileges->GetParent()->Layout();
+    }
+    
+
     if (column)
     {
         // edit mode
@@ -273,6 +404,10 @@ wxString dlgColumn::GetSql()
 
         AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier() 
                 + wxT(".") + qtIdent(name), column);
+
+        // securityPage will exists only for PG 8.4 and later
+        if (connection->BackendMinimumVersion(8, 4))
+            sql += securityPage->GetGrant(wxT("arwx"), table->GetQuotedFullIdentifier(), &currentAcl, qtIdent(name));
     }
     return sql;
 }
@@ -351,7 +486,8 @@ void dlgColumn::CheckChange()
                     || (isVarLen && varlen != column->GetLength())
                     || (isVarPrec && varprec != column->GetPrecision())
                     || txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget());
-        EnableOK(enable);
+
+        EnableOK(enable | securityChanged);
     }
     else
     {
@@ -374,4 +510,16 @@ void dlgColumn::CheckChange()
 }
 
 
+void dlgColumn::OnAddPriv(wxCommandEvent &ev)
+{
+    securityChanged=true;
+    CheckChange();
+}
+
+
+void dlgColumn::OnDelPriv(wxCommandEvent &ev)
+{
+    securityChanged=true;
+    CheckChange();
+}
 

@@ -172,6 +172,8 @@ wxString pgTable::GetSql(ctlTree *browser)
 	wxString colDetails, conDetails;
     wxString prevComment;
 
+    wxString columnPrivileges;
+
     if (sql.IsNull())
     {
         // make sure all kids are appended
@@ -242,9 +244,11 @@ wxString pgTable::GetSql(ctlTree *browser)
 					// Perhaps we should also get storage types here?
 					colDetails += column->GetCommentSql();
 					if (colDetails.Length() > 0)
-						if (colDetails.Last() != '\n') colDetails += wxT("\n");
+                        if (colDetails.Last() != '\n')
+                            colDetails += wxT("\n");
 
                     colCount++;
+                    columnPrivileges += column->GetPrivileges();
                 }
             }
         }
@@ -338,6 +342,11 @@ wxString pgTable::GetSql(ctlTree *browser)
 
         if (!conDetails.IsEmpty())
             sql += conDetails + wxT("\n");
+
+        if (!columnPrivileges.IsEmpty())
+        {
+            sql += columnPrivileges + wxT("\n");
+        }
 
         AppendStuff(sql, browser, indexFactory);
         AppendStuff(sql, browser, ruleFactory);

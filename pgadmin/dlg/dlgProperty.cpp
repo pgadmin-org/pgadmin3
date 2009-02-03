@@ -1462,6 +1462,21 @@ dlgSecurityProperty::dlgSecurityProperty(pgaFactory *f, frmMain *frame, pgObject
 
         if (obj)
         {
+
+            wxArrayString groups;
+            // Fetch Groups Information
+            pgSet *setGrp = obj->GetConnection()->ExecuteSet(wxT("SELECT groname FROM pg_group ORDER BY groname"));
+
+            if (setGrp)
+            {
+                while (!setGrp->Eof())
+                {
+                    groups.Add(setGrp->GetVal(0));
+                    setGrp->MoveNext();
+                }
+                delete setGrp;
+            }
+        
             wxString str=obj->GetAcl();
             if (!str.IsEmpty())
             {
@@ -1496,7 +1511,16 @@ dlgSecurityProperty::dlgSecurityProperty(pgaFactory *f, frmMain *frame, pgObject
                         name=wxT("public");
                     }
                     else
+                    {
                         name = qtStrip(name);
+                        for (unsigned int index=0; index < groups.Count(); index++)
+                            if (name == groups[index])
+                            {
+                                name = wxT("group ") + name;
+                                icon = groupFactory.GetIconId();
+                                break;
+                            }
+                    }
 
                     securityPage->lbPrivileges->AppendItem(icon, name, value);
                     currentAcl.Add(name + wxT("=") + value);

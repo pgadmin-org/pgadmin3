@@ -121,7 +121,10 @@ wxString pgColumn::GetSql(ctlTree *browser)
                         + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
                         + wxT(" SET STATISTICS ") + NumToStr(GetAttstattarget()) + wxT(";\n");
 
-			    sql += GetCommentSql();
+                sql += GetCommentSql();
+
+                if (GetDatabase()->BackendMinimumVersion(8, 4))
+                    sql += GetPrivileges();
             }
         }
     }
@@ -140,6 +143,55 @@ wxString pgColumn::GetCommentSql()
 	return commentSql;
 }
 
+wxString pgColumn::GetPrivileges()
+{
+    wxString privileges;
+    wxString strAcl = GetAcl();
+    if (!strAcl.IsEmpty())
+    {
+        wxArrayString aclArray;
+        strAcl = strAcl.Mid(1, strAcl.Length()-2);
+        getArrayFromCommaSeparatedList(strAcl, aclArray);
+        wxString role;
+        for (unsigned int index = 0; index < aclArray.Count(); index++)
+        {
+            wxString strCurrAcl = aclArray[index];
+            /*
+            * In rare case, we can have ',' (comma) in the user name.
+            * But, we need to handle them also
+            */
+            if (strCurrAcl.Find(wxChar('=')) == wxNOT_FOUND)
+            {
+                // Check it is start of the ACL
+                if (strCurrAcl[0U] == (wxChar)'"')
+                role = strCurrAcl + wxT(",");
+                continue;
+            }
+            else
+            strCurrAcl = role + strCurrAcl;
+        
+            if (strCurrAcl[0U] == (wxChar)'"')
+                strCurrAcl = strCurrAcl.Mid(1, strCurrAcl.Length()-1);
+            role = strCurrAcl.BeforeLast('=');
+            wxString value=strCurrAcl.Mid(role.Length()+1).BeforeLast('/');
+
+            if (role.Left(6).IsSameAs(wxT("group ")), false)
+            {
+                role = wxT("group ") + qtIdent(qtStrip(role.Mid(6)));
+            }
+            else if (role.IsEmpty())
+            {
+                role = wxT("public");
+            }
+            else
+                role = qtIdent(qtStrip(role));
+            
+            privileges += pgObject::GetPrivileges(wxT("awrx"), value, GetQuotedFullTable(), role, GetQuotedIdentifier());
+            role.Clear();
+        }
+    }
+    return privileges;
+}
 wxString pgColumn::GetDefinition()
 {
     wxString sql = GetQuotedTypename();
@@ -267,6 +319,10 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                 properties->AppendItem(_("System column?"), GetSystemObject());
             }
         }
+        if (GetDatabase()->BackendMinimumVersion(8, 4))
+        {
+            properties->AppendItem(_("ACL"), GetAcl());
+        }
 
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
@@ -393,6 +449,8 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
             column->iSetInheritedTableName(columns->GetVal(wxT("inhrelname")));
 			column->iSetIsLocal(columns->GetBool(wxT("attislocal")));
             column->iSetAttstattarget(columns->GetLong(wxT("attstattarget")));
+            if (database->BackendMinimumVersion(8, 4))
+                column->iSetAcl(columns->GetVal(wxT("attacl")));
 
             if (browser)
             {

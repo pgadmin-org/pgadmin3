@@ -47,8 +47,13 @@ protected:
     pgObject(pgaFactory &factory, const wxString& newName=wxEmptyString);
 
 public:
-
-    static wxString GetPrivileges(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
+    /*
+    *  Except column level privileges, column will be always an empty
+    *  string in any case
+    */
+    static wxString GetPrivileges(const wxString& allPattern,
+                     const wxString& acl, const wxString& grantObject,
+                     const wxString& user, const wxString& column=wxT(""));
     static int GetTypeId(const wxString &typname);
 
     pgaFactory *GetFactory() { return factory; }
@@ -97,7 +102,11 @@ public:
     virtual wxMenu *GetNewMenu();
 
     virtual wxString GetSql(ctlTree *browser) { return wxT(""); }
-    wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""));
+    /*
+    *  Except column level privileges, column will be always an empty
+    *  string in any case
+    */
+    wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""), const wxString& column=wxT(""));
     wxString GetCommentSql();
     wxString GetOwnerSql(int major, int minor, wxString objname=wxEmptyString);
     pgConn *GetConnection() const;
@@ -146,8 +155,12 @@ protected:
     pgaFactory *factory;
     
 private:
-    static void AppendRight(wxString &rights, const wxString& acl, wxChar c, const wxChar *rightName);
-    static wxString GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user);
+    /*
+    *  Except column level privileges, column will be always an empty
+    *  string in any case
+    */
+    static void AppendRight(wxString &rights, const wxString& acl, wxChar c, const wxChar *rightName, const wxString& column=wxEmptyString);
+    static wxString GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user, const wxString& column);
     void ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query, const wxString &clsOrder);
     wxString name, owner, comment, acl;
     int type;

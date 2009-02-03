@@ -521,41 +521,54 @@ wxString pgObject::GetOwnerSql(int major, int minor, wxString objname)
 }
 
 
-void pgObject::AppendRight(wxString &rights, const wxString& acl, wxChar c, const wxChar *rightName)
+void pgObject::AppendRight(wxString &rights, const wxString& acl, wxChar c, const wxChar *rightName, const wxString& column)
 {
     if (acl.Find(c) >= 0)
     {
         if (!rights.IsNull())
             rights.Append(wxT(", "));
         rights.Append(rightName);
+
+        if (!column.IsEmpty())
+            rights.Append(wxT("(") + column + wxT(")"));
     }
 }
 
 
-wxString pgObject::GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantOnObject, const wxString& user)
+wxString pgObject::GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantOnObject, const wxString& user, const wxString& column)
 {
     wxString rights;
 
     if (allPattern.Length() > 1 && acl == allPattern)
+	{
         rights = wxT("ALL");
+        if (!column.IsEmpty())
+            rights += wxT("(") + column + wxT(")");
+	}
     else
     {
-        AppendRight(rights, acl, 'r', wxT("SELECT"));
-        AppendRight(rights, acl, 'w', wxT("UPDATE"));
-        AppendRight(rights, acl, 'a', wxT("INSERT"));
-        AppendRight(rights, acl, 'c', wxT("CONNECT"));
-        AppendRight(rights, acl, 'd', wxT("DELETE"));
-        AppendRight(rights, acl, 'R', wxT("RULE"));
-        AppendRight(rights, acl, 'x', wxT("REFERENCES"));
-        AppendRight(rights, acl, 't', wxT("TRIGGER"));
-        AppendRight(rights, acl, 'X', wxT("EXECUTE"));
-        AppendRight(rights, acl, 'U', wxT("USAGE"));
-        AppendRight(rights, acl, 'C', wxT("CREATE"));
-        AppendRight(rights, acl, 'T', wxT("TEMPORARY"));
+        AppendRight(rights, acl, 'r', wxT("SELECT"), column);
+        AppendRight(rights, acl, 'w', wxT("UPDATE"), column);
+        AppendRight(rights, acl, 'a', wxT("INSERT"), column);
+        AppendRight(rights, acl, 'c', wxT("CONNECT"), column);
+        AppendRight(rights, acl, 'd', wxT("DELETE"), column);
+        AppendRight(rights, acl, 'R', wxT("RULE"), column);
+        AppendRight(rights, acl, 'x', wxT("REFERENCES"), column);
+        AppendRight(rights, acl, 't', wxT("TRIGGER"), column);
+        AppendRight(rights, acl, 'X', wxT("EXECUTE"), column);
+        AppendRight(rights, acl, 'U', wxT("USAGE"), column);
+        AppendRight(rights, acl, 'C', wxT("CREATE"), column);
+        AppendRight(rights, acl, 'T', wxT("TEMPORARY"), column);
     }
     wxString grant;
-    if (rights.IsNull())    grant += wxT("REVOKE ALL");
-    else                    grant += wxT("GRANT ") + rights;
+    if (rights.IsNull())
+    {
+        grant += wxT("REVOKE ALL");
+        if (!column.IsEmpty())
+        grant += wxT("(") + column + wxT(")");
+    }
+    else
+        grant += wxT("GRANT ") + rights;
     
     grant += wxT(" ON ") + grantOnObject;
 
@@ -568,7 +581,7 @@ wxString pgObject::GetPrivilegeGrant(const wxString& allPattern, const wxString&
 }
 
 
-wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str, const wxString& grantOnObject, const wxString& user)
+wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str, const wxString& grantOnObject, const wxString& user, const wxString& column)
 {
     wxString aclWithGrant, aclWithoutGrant;
 
@@ -589,15 +602,15 @@ wxString pgObject::GetPrivileges(const wxString& allPattern, const wxString& str
 
     wxString grant;
     if (!aclWithoutGrant.IsEmpty() || aclWithGrant.IsEmpty())
-        grant += GetPrivilegeGrant(allPattern, aclWithoutGrant, grantOnObject, user) + wxT(";\n");
+        grant += GetPrivilegeGrant(allPattern, aclWithoutGrant, grantOnObject, user, column) + wxT(";\n");
     if (!aclWithGrant.IsEmpty())
-        grant += GetPrivilegeGrant(allPattern, aclWithGrant, grantOnObject, user) + wxT(" WITH GRANT OPTION;\n");
+        grant += GetPrivilegeGrant(allPattern, aclWithGrant, grantOnObject, user, column) + wxT(" WITH GRANT OPTION;\n");
 
     return grant;
 }
 
 
-wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFor)
+wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFor, const wxString& _column)
 {
     wxString grant, str, user, grantFor;
     if (_grantFor.IsNull())
@@ -640,7 +653,7 @@ wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFo
 				}
             }
 
-            grant += GetPrivileges(allPattern, str, grantFor, user);
+            grant += GetPrivileges(allPattern, str, grantFor, user, qtIdent(_column));
         }
     }
     return grant;

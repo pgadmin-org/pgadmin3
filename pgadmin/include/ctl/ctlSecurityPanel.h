@@ -46,7 +46,11 @@ public:
     ctlComboBox *cbGroups;
     wxStaticText *stGroup;
     void SetConnection(pgConn *conn);
-    wxString GetGrant(const wxString &allPattern, const wxString &grantObject, wxArrayString *currentAcl=0);
+
+    /*
+     *  Except column level privileges, column will be always an empty string in any case
+     */
+    wxString GetGrant(const wxString &allPattern, const wxString &grantObject, wxArrayString *currentAcl=0, wxString column = wxEmptyString);
     bool DisablePrivilege(const wxString &priv);
 protected:
     wxNotebook *nbNotebook;

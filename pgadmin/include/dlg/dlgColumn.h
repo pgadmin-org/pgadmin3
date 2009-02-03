@@ -36,6 +36,27 @@ public:
 
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtable"); }
 
+protected:
+    /*
+    *  Column Level Privileges:
+    *  - Did not inherit dlgTypeProperty & dlgSecurityProperty as, it will
+    *    lead to a lot of problem later
+    **/
+
+    ctlSecurityPanel *securityPage;
+    wxArrayString currentAcl;
+    wxArrayString groups;
+    bool securityChanged;
+
+    wxString GetGrant(const wxString &allPattern, const wxString &grantObject);
+
+    void OnAddPriv(wxCommandEvent& ev);
+    void OnDelPriv(wxCommandEvent& ev);
+
+#ifdef __WXMAC__
+    void OnChangeSize(wxSizeEvent &ev);
+#endif
+
 private:
     pgColumn *column;
     pgTable *table;

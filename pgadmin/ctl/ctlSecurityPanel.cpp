@@ -13,6 +13,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/settings.h>
+#include <wx/imaglist.h>
 
 // App headers
 #include "pgAdmin3.h"
@@ -75,7 +76,9 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, con
         itemSizer1->AddGrowableCol(0);
         itemSizer1->AddGrowableRow(0);
         lbPrivileges = new ctlListView(this, CTL_LBPRIV, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxLC_REPORT);
-        lbPrivileges->CreateColumns(imgList, _("User/Group"), _("Privileges"), -1);
+        lbPrivileges->SetImageList(imgList, wxIMAGE_LIST_SMALL);
+        lbPrivileges->AddColumn(_("User/Group"), 70, wxLIST_FORMAT_LEFT);
+        lbPrivileges->AddColumn(_("Privileges"), 70, wxLIST_FORMAT_LEFT);
         itemSizer1->Add(lbPrivileges, 0, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT, 4);
         item0->Add(itemSizer1, 0, wxEXPAND|wxALL, 5);
 
@@ -157,7 +160,7 @@ void ctlSecurityPanel::SetConnection(pgConn *conn)
 }
 
 
-wxString ctlSecurityPanel::GetGrant(const wxString &allPattern, const wxString &grantObject, wxArrayString *currentAcl)
+wxString ctlSecurityPanel::GetGrant(const wxString &allPattern, const wxString &grantObject, wxArrayString *currentAcl, wxString column)
 {
     wxArrayString tmpAcl;
     if (currentAcl)
@@ -197,8 +200,8 @@ wxString ctlSecurityPanel::GetGrant(const wxString &allPattern, const wxString &
         if (!privWasAssigned)
         {
             if (privPartiallyAssigned)
-                sql += pgObject::GetPrivileges(allPattern, wxT(""), grantObject, name);
-            sql += pgObject::GetPrivileges(allPattern, value, grantObject, name);
+                sql += pgObject::GetPrivileges(allPattern, wxT(""), grantObject, name, column);
+            sql += pgObject::GetPrivileges(allPattern, value, grantObject, name, column);
         }
     }
 
@@ -210,7 +213,7 @@ wxString ctlSecurityPanel::GetGrant(const wxString &allPattern, const wxString &
             name = wxT("GROUP ") + qtIdent(name.Mid(6));
         else
             name=qtIdent(name);
-        sql += pgObject::GetPrivileges(allPattern, wxT(""), grantObject, name);
+        sql += pgObject::GetPrivileges(allPattern, wxT(""), grantObject, name, column);
     }
     return sql;
 }
