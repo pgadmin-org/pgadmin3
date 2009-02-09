@@ -398,7 +398,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             // Create the new object
             if (isProcedure)
                 function = new pgProcedure(schema, functions->GetVal(wxT("proname")));
-            else if (typname == wxT("\"trigger\""))
+            else if (typname == wxT("\"trigger\"") || typname == wxT("trigger"))
                 function = new pgTriggerFunction(schema, functions->GetVal(wxT("proname")));
             else
                 function = new pgFunction(schema, functions->GetVal(wxT("proname")));
