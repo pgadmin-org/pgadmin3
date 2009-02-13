@@ -220,7 +220,7 @@ void frmMainConfig::OnEditSetting(wxListEvent& event)
 
 void frmMainConfig::OnContents(wxCommandEvent& event)
 {
-    DisplayHelp(wxT("config"), HELP_PGADMIN);
+    DisplayHelp(wxT("index"), HELP_PGADMIN);
 }
 
 
