@@ -61,7 +61,7 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
               || name == wxT("time without time zone") || name == wxT("time with time zone")
               || name == wxT("timestamp") || name == wxT("timestamptz")
               || name == wxT("timestamp without time zone") || name == wxT("timestamp with time zone")
-              || name == wxT("bit"))
+              || name == wxT("bit") || name == wxT("bit varying") || name == wxT("varbit"))
         {
             prec=0;
             len=typmod;
@@ -155,7 +155,7 @@ long pgDatatype::GetTypmod(const wxString &name, const wxString &len, const wxSt
           || name == wxT("time without time zone") || name == wxT("time with time zone")
           || name == wxT("timestamp") || name == wxT("timestamptz")
           || name == wxT("timestamp without time zone") || name == wxT("timestamp with time zone")
-          || name == wxT("interval")  || name == wxT("bit"))
+          || name == wxT("interval")  || name == wxT("bit") || name == wxT("bit varying") || name == wxT("varbit"))
     {
         return StrToLong(len);
     }
