@@ -54,6 +54,8 @@
 #define PGOID_TYPE_TIMETZ_ARRAY             1270L
 #define PGOID_TYPE_BIT                      1560L
 #define PGOID_TYPE_BIT_ARRAY                1561L
+#define PGOID_TYPE_VARBIT                   1562L
+#define PGOID_TYPE_VARBIT_ARRAY             1563L
 #define PGOID_TYPE_NUMERIC                  1700L
 #define PGOID_TYPE_CSTRING                  2275L
 #define PGOID_TYPE_ANY                      2276L
