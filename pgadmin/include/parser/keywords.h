@@ -440,6 +440,19 @@ enum yytokentype {
  CTYPE=646,
  WINDOW=647,
 
+ /* The following additions are unreserved keywords for autovacuum settings */
+ AUTOVACUUM_E=700,
+ AUTOVACUUM_V_TH=701,
+ AUTOVACUUM_A_TH=702,
+ AUTOVACUUM_V_SC_F=703,
+ AUTOVACUUM_A_SC_F=704,
+ AUTOVACUUM_V_COST_D=705,
+ AUTOVACUUM_V_COST_L=705,
+ AUTOVACUUM_F_MIN_AGE=706,
+ AUTOVACUUM_F_MAX_AGE=707,
+ AUTOVACUUM_F_TBL_AGE=707,
+ FILLFACTOR=707,
+
  /* The following additions are keywords in EnterpriseDB */
  CONNECT_EDB = 800,
  CONVERT_EDB = 801,

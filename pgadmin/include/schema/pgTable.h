@@ -96,6 +96,28 @@ public:
     wxString GetFillFactor() { return fillFactor; }
     void iSetFillFactor(const wxString& s) { fillFactor = s; }
 
+    void iSetCustomAutoVacuumEnabled(bool b) { custom_autovacuum_enabled = b; }
+    bool GetCustomAutoVacuumEnabled() { return custom_autovacuum_enabled; }
+    bool GetAutoVacuumEnabled() { return autovacuum_enabled; }
+    void iSetAutoVacuumEnabled(bool b) { autovacuum_enabled = b; }
+    wxString GetAutoVacuumVacuumThreshold() { return autovacuum_vacuum_threshold; }
+    void iSetAutoVacuumVacuumThreshold(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_vacuum_threshold = s; }
+    wxString GetAutoVacuumVacuumScaleFactor() { return autovacuum_vacuum_scale_factor; }
+    void iSetAutoVacuumVacuumScaleFactor(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_vacuum_scale_factor = s; }
+    wxString GetAutoVacuumAnalyzeThreshold() { return autovacuum_analyze_threshold; }
+    void iSetAutoVacuumAnalyzeThreshold(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_analyze_threshold = s; }
+    wxString GetAutoVacuumAnalyzeScaleFactor() { return autovacuum_analyze_scale_factor; }
+    void iSetAutoVacuumAnalyzeScaleFactor(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_analyze_scale_factor = s; }
+    wxString GetAutoVacuumVacuumCostDelay() { return autovacuum_vacuum_cost_delay; }
+    void iSetAutoVacuumVacuumCostDelay(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_vacuum_cost_delay = s; }
+    wxString GetAutoVacuumVacuumCostLimit() { return autovacuum_vacuum_cost_limit; }
+    void iSetAutoVacuumVacuumCostLimit(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_vacuum_cost_limit = s; }
+    wxString GetAutoVacuumFreezeMinAge() { return autovacuum_freeze_min_age; }
+    void iSetAutoVacuumFreezeMinAge(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_freeze_min_age = s; }
+    wxString GetAutoVacuumFreezeMaxAge() { return autovacuum_freeze_max_age; }
+    void iSetAutoVacuumFreezeMaxAge(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_freeze_max_age = s; }
+    wxString GetAutoVacuumFreezeTableAge() { return autovacuum_freeze_table_age; }
+    void iSetAutoVacuumFreezeTableAge(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_freeze_table_age = s; }
 
     bool HasStats() { return true; }
     bool HasDepends() { return true; }
@@ -120,12 +142,18 @@ private:
     void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
     wxULongLong rows;
     double estimatedRows;
-    wxString fillFactor;
+    wxString fillFactor, autovacuum_vacuum_threshold,
+             autovacuum_vacuum_scale_factor, autovacuum_analyze_threshold,
+             autovacuum_analyze_scale_factor, autovacuum_vacuum_cost_delay,
+             autovacuum_vacuum_cost_limit, autovacuum_freeze_min_age,
+             autovacuum_freeze_max_age, autovacuum_freeze_table_age;
     bool hasOids, hasSubclass, rowsCounted, isReplicated, showExtendedStatistics;
+    bool autovacuum_enabled, custom_autovacuum_enabled;
     long inheritedTableCount;
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
-        primaryKeyName, primaryKeyColNumbers, tablespace;
+             primaryKeyName, primaryKeyColNumbers, tablespace;
     wxArrayString quotedInheritedTablesList, inheritedTablesOidList;
+
     slSet *replicationSet;
 	OID tablespaceOid;
 };

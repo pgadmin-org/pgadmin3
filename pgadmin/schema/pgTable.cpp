@@ -308,12 +308,58 @@ wxString pgTable::GetSql(ctlTree *browser)
         {
             sql += wxT("\nWITH (");
             if (GetFillFactor().Length() > 0)
-                sql += wxT("FILLFACTOR=") + GetFillFactor() + wxT(", ");
+                sql += wxT("\n  FILLFACTOR=") + GetFillFactor() + wxT(", ");
             if (GetHasOids())
-                sql +=  wxT("OIDS=TRUE");
+                sql +=  wxT("\n  OIDS=TRUE");
             else
-                sql +=  wxT("OIDS=FALSE");
-            sql += wxT(")");
+                sql +=  wxT("\n  OIDS=FALSE");
+            if(GetConnection()->BackendMinimumVersion(8, 4))
+            {
+                if (GetCustomAutoVacuumEnabled())
+                {
+                    if (GetAutoVacuumEnabled())
+                        sql += wxT(",\n  autovacuum_enabled=true");
+                    else
+                        sql += wxT(",\n  autovacuum_enabled=false");
+                }
+                if (!GetAutoVacuumVacuumThreshold().IsEmpty())
+                {
+                    sql += wxT(",\n  autovacuum_vacuum_threshold=") + GetAutoVacuumVacuumThreshold();
+                }
+                if (!GetAutoVacuumVacuumScaleFactor().IsEmpty())
+                {
+                    sql += wxT(",\n  autovacuum_vacuum_scale_factor=") + GetAutoVacuumVacuumScaleFactor();
+                }
+                if (!GetAutoVacuumAnalyzeThreshold().IsEmpty())
+                {
+                    sql += wxT(",\n  autovacuum_analyze_threshold=") + GetAutoVacuumAnalyzeThreshold();
+                }
+                if (!GetAutoVacuumAnalyzeScaleFactor().IsEmpty())
+                {
+                    sql += wxT(",\n  autovacuum_analyze_scale_factor=") + GetAutoVacuumAnalyzeScaleFactor();
+                }
+                if (!GetAutoVacuumVacuumCostDelay().IsEmpty())
+                {
+                    sql += wxT(",\n  autovacuum_vacuum_cost_delay=") + GetAutoVacuumVacuumCostDelay();
+                }
+                if (!GetAutoVacuumVacuumCostLimit().IsEmpty())
+                {
+                    sql += wxT(",\n  autovacuum_vacuum_cost_limit=") + GetAutoVacuumVacuumCostLimit();
+                }
+                if (!GetAutoVacuumFreezeMinAge().IsEmpty())
+                {
+                    sql += wxT(",\n  autovacuum_freeze_min_age=") + GetAutoVacuumFreezeMinAge();
+                }
+                if (!GetAutoVacuumFreezeMaxAge().IsEmpty())
+                {
+                    sql += wxT(",\n  autovacuum_freeze_max_age=") + GetAutoVacuumFreezeMaxAge();
+                }
+                if (!GetAutoVacuumFreezeTableAge().IsEmpty())
+                {
+                    sql += wxT(",\n  autovacuum_freeze_table_age=") + GetAutoVacuumFreezeTableAge();
+                }
+            }
+            sql += wxT("\n)");
         }
         else
         {
@@ -336,7 +382,7 @@ wxString pgTable::GetSql(ctlTree *browser)
 
         sql += GetCommentSql();
 
-		// Column/constraint comments
+        // Column/constraint comments
         if (!colDetails.IsEmpty())
 		    sql += colDetails + wxT("\n");
 
@@ -347,7 +393,7 @@ wxString pgTable::GetSql(ctlTree *browser)
         {
             sql += columnPrivileges + wxT("\n");
         }
-
+        
         AppendStuff(sql, browser, indexFactory);
         AppendStuff(sql, browser, ruleFactory);
         AppendStuff(sql, browser, triggerFactory);
@@ -939,6 +985,20 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             wxT("                     WHERE tgrelid=rel.oid) AS isrepl\n");
         if (collection->GetConnection()->BackendMinimumVersion(8, 2))
             query += wxT(", substring(array_to_string(reloptions, ',') from 'fillfactor=([0-9]*)') AS fillfactor \n");
+        if (collection->GetConnection()->BackendMinimumVersion(8, 4))
+        {
+            query += wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS autovacuum_enabled \n")
+                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold \n")
+                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor \n")
+                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold \n")
+                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor \n")
+                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay \n")
+                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit \n")
+                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
+                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
+                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n");
+        }
+
         query += wxT("  FROM pg_class rel\n")
             wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=rel.reltablespace\n")
             wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0)\n")
@@ -989,6 +1049,22 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")));
             if (collection->GetConnection()->BackendMinimumVersion(8, 2)) {
                 table->iSetFillFactor(tables->GetVal(wxT("fillfactor")));
+            }
+            if (collection->GetConnection()->BackendMinimumVersion(8, 4))
+            {
+                table->iSetCustomAutoVacuumEnabled(false);
+                if (!tables->GetVal(wxT("autovacuum_enabled")).IsEmpty())
+                    table->iSetCustomAutoVacuumEnabled(true);
+                table->iSetAutoVacuumEnabled(tables->GetBool(wxT("autovacuum_enabled")));
+                table->iSetAutoVacuumVacuumThreshold(tables->GetVal(wxT("autovacuum_vacuum_threshold")));
+                table->iSetAutoVacuumVacuumScaleFactor(tables->GetVal(wxT("autovacuum_vacuum_scale_factor")));
+                table->iSetAutoVacuumAnalyzeThreshold(tables->GetVal(wxT("autovacuum_analyze_threshold")));
+                table->iSetAutoVacuumAnalyzeScaleFactor(tables->GetVal(wxT("autovacuum_analyze_scale_factor")));
+                table->iSetAutoVacuumVacuumCostDelay(tables->GetVal(wxT("autovacuum_vacuum_cost_delay")));
+                table->iSetAutoVacuumVacuumCostLimit(tables->GetVal(wxT("autovacuum_vacuum_cost_limit")));
+                table->iSetAutoVacuumFreezeMinAge(tables->GetVal(wxT("autovacuum_freeze_min_age")));
+                table->iSetAutoVacuumFreezeMaxAge(tables->GetVal(wxT("autovacuum_freeze_max_age")));
+                table->iSetAutoVacuumFreezeTableAge(tables->GetVal(wxT("autovacuum_freeze_table_age")));
             }
             table->iSetHasSubclass(tables->GetBool(wxT("relhassubclass")));
             table->iSetPrimaryKeyName(tables->GetVal(wxT("conname")));

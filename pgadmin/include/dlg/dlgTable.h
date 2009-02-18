@@ -56,6 +56,8 @@ private:
     void OnChangeVacuum(wxCommandEvent &ev);
 
     void FillConstraint();
+    void FillAutoVacuumParameters(wxString& setString, wxString& resetStr,
+                                 const wxString& parameter, const wxString& val);
     wxString GetItemConstraintType(ctlListView *list, long pos);
     bool hasPK;
 
@@ -67,9 +69,11 @@ private:
     wxString AppendNum(bool &changed, wxTextCtrl *ctl, long val);
     wxString AppendNum(bool &changed, wxTextCtrl *ctl, double val);
 
-    bool tableVacEnabled, hasVacuum;
-    long settingVacBaseThr, settingAnlBaseThr, settingCostDelay, settingCostLimit, settingFreezeMinAge, settingFreezeMaxAge;
-    long tableVacBaseThr, tableAnlBaseThr, tableCostDelay, tableCostLimit, tableFreezeMinAge, tableFreezeMaxAge;
+    bool tableVacEnabled, hasVacuum, settingAutoVacuum;
+    long settingVacBaseThr, settingAnlBaseThr, settingCostDelay, settingCostLimit,
+         settingFreezeMinAge, settingFreezeMaxAge, settingFreezeTableAge;
+    long tableVacBaseThr, tableAnlBaseThr, tableCostDelay, tableCostLimit,
+         tableFreezeMinAge, tableFreezeMaxAge, tableFreezeTableAge;
     double settingVacFactor, settingAnlFactor;
     double tableVacFactor, tableAnlFactor;
 
