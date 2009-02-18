@@ -1207,7 +1207,7 @@ void dlgTable::OnChangeVacuum(wxCommandEvent &ev)
         }
         else
         {
-            stFreezeTableAgeCurr->SetLabel(wxT("N.A."));
+            stFreezeTableAgeCurr->SetLabel(wxEmptyString);
             txtFreezeTableAge->Enable(false);
         }
     }
