@@ -963,7 +963,7 @@ wxString dlgFunction::GetSql()
     }
 
 	if (isProcedure)
-        AppendComment(sql, wxT("PROCEDURE ") + GetName(), function);
+        AppendComment(sql, wxT("PROCEDURE ") + qtIdent(GetName()), function);
 	else
         AppendComment(sql, wxT("FUNCTION ") + name, function);
 
