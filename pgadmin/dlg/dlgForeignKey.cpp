@@ -137,44 +137,46 @@ void dlgForeignKey::CheckChange()
         chkDeferred->SetValue(false);
     chkDeferred->Enable(canDef);
 
-    txtIndexName->Enable(chkAutoIndex->GetValue());
+    txtIndexName->Enable(table && chkAutoIndex->GetValue());
 
     wxString coveringIndex;
     if (table)
+    {
         coveringIndex = table->GetCoveringIndex(mainForm->GetBrowser(), cols);
 
-    if (coveringIndex.IsEmpty())
-    {
-        if (!chkAutoIndex->IsEnabled())
+        if (coveringIndex.IsEmpty())
         {
-            chkAutoIndex->Enable();
-            chkAutoIndex->SetValue(true);
-            txtIndexName->Enable();
-            txtIndexName->SetValue(savedIndexName);
-        }
-
-        wxString idxName = txtIndexName->GetValue().Strip(wxString::both);
-
-        if (name != savedFKName || idxName == savedIndexName)
-        {
-            if (idxName.IsEmpty() || idxName == DefaultIndexName(savedFKName))
+            if (!chkAutoIndex->IsEnabled())
             {
-                idxName = DefaultIndexName(name);
-                txtIndexName->SetValue(idxName);
+                chkAutoIndex->Enable();
+                chkAutoIndex->SetValue(true);
+                txtIndexName->Enable();
+                txtIndexName->SetValue(savedIndexName);
             }
+
+            wxString idxName = txtIndexName->GetValue().Strip(wxString::both);
+
+            if (name != savedFKName || idxName == savedIndexName)
+            {
+                if (idxName.IsEmpty() || idxName == DefaultIndexName(savedFKName))
+                {
+                    idxName = DefaultIndexName(name);
+                    txtIndexName->SetValue(idxName);
+                }
+            }
+            savedIndexName = idxName;
         }
-        savedIndexName = idxName;
-    }
-    else
-    {
-        if (chkAutoIndex->IsEnabled())
-            savedIndexName = txtIndexName->GetValue();
+        else
+        {
+            if (chkAutoIndex->IsEnabled())
+                savedIndexName = txtIndexName->GetValue();
 
-        txtIndexName->SetValue(coveringIndex);
-        chkAutoIndex->SetValue(false);
+            txtIndexName->SetValue(coveringIndex);
+            chkAutoIndex->SetValue(false);
 
-        txtIndexName->Disable();
-        chkAutoIndex->Disable();
+            txtIndexName->Disable();
+            chkAutoIndex->Disable();
+        }
     }
 
     savedFKName = name;
@@ -409,6 +411,9 @@ int dlgForeignKey::Go(bool modal)
         }
         if (!table)
         {
+            chkAutoIndex->Disable();
+            chkAutoIndex->SetValue(false);
+            txtIndexName->Disable();
             cbClusterSet->Disable();
             cbClusterSet = 0;
         }

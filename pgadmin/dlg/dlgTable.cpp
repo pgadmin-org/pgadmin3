@@ -265,10 +265,15 @@ int dlgTable::Go(bool modal)
                     case PGM_FOREIGNKEY:
                     {
                         pgForeignKey *obj=(pgForeignKey*)data;
+                        wxString def = obj->GetDefinition();
 
-                        lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
+                        def.Replace(wxT("\n"), wxT(" "));
+                        while (def.Contains(wxT("  ")))
+                            def.Replace(wxT("  "), wxT(" "));
+
+                        lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), def);
                         previousConstraints.Add(obj->GetQuotedIdentifier() 
-                            + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
+                            + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + def);
                         break;
                     }
                     case PGM_CHECK:
@@ -1444,6 +1449,8 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             {
                 wxString tmpDef = fk.GetDefinition();
                 tmpDef.Replace(wxT("\n"), wxT(" "));
+                while (tmpDef.Contains(wxT("  ")))
+                    tmpDef.Replace(wxT("  "), wxT(" "));
 
                 lstConstraints->AppendItem(foreignKeyFactory.GetIconId(), fk.GetName(), tmpDef);
             }
