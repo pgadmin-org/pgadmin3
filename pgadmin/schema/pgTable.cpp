@@ -987,16 +987,17 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             query += wxT(", substring(array_to_string(reloptions, ',') from 'fillfactor=([0-9]*)') AS fillfactor \n");
         if (collection->GetConnection()->BackendMinimumVersion(8, 4))
         {
-            query += wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS autovacuum_enabled \n")
-                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold \n")
-                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor \n")
-                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold \n")
-                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor \n")
-                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay \n")
-                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit \n")
-                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
-                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
-                     wxT(", substring(array_to_string(reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n");
+            query += wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS autovacuum_enabled \n")
+                     wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold \n")
+                     wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor \n")
+                     wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold \n")
+                     wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor \n")
+                     wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay \n")
+                     wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit \n")
+                     wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
+                     wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
+                     wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n")
+                     wxT(", (CASE WHEN rel.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable\n");
         }
 
         query += wxT("  FROM pg_class rel\n")
@@ -1065,6 +1066,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
                 table->iSetAutoVacuumFreezeMinAge(tables->GetVal(wxT("autovacuum_freeze_min_age")));
                 table->iSetAutoVacuumFreezeMaxAge(tables->GetVal(wxT("autovacuum_freeze_max_age")));
                 table->iSetAutoVacuumFreezeTableAge(tables->GetVal(wxT("autovacuum_freeze_table_age")));
+                table->iSetHasToastTable(tables->GetBool(wxT("hastoasttable")));
             }
             table->iSetHasSubclass(tables->GetBool(wxT("relhassubclass")));
             table->iSetPrimaryKeyName(tables->GetVal(wxT("conname")));

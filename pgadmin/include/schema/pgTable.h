@@ -118,6 +118,8 @@ public:
     void iSetAutoVacuumFreezeMaxAge(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_freeze_max_age = s; }
     wxString GetAutoVacuumFreezeTableAge() { return autovacuum_freeze_table_age; }
     void iSetAutoVacuumFreezeTableAge(const wxString& s) { custom_autovacuum_enabled |= !s.IsEmpty(); autovacuum_freeze_table_age = s; }
+    void iSetHasToastTable(bool b) { hasToastTable = b; }
+    bool GetHasToastTable() { return hasToastTable; }
 
     bool HasStats() { return true; }
     bool HasDepends() { return true; }
@@ -148,7 +150,7 @@ private:
              autovacuum_vacuum_cost_limit, autovacuum_freeze_min_age,
              autovacuum_freeze_max_age, autovacuum_freeze_table_age;
     bool hasOids, hasSubclass, rowsCounted, isReplicated, showExtendedStatistics;
-    bool autovacuum_enabled, custom_autovacuum_enabled;
+    bool autovacuum_enabled, custom_autovacuum_enabled, hasToastTable;
     long inheritedTableCount;
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
              primaryKeyName, primaryKeyColNumbers, tablespace;

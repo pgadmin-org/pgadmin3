@@ -77,6 +77,12 @@ private:
     double settingVacFactor, settingAnlFactor;
     double tableVacFactor, tableAnlFactor;
 
+    /* Toast Table */
+    bool toastTableVacEnabled, toastTableHasVacuum;
+    long toastTableVacBaseThr, toastTableAnlBaseThr, toastTableCostDelay, toastTableCostLimit,
+         toastTableFreezeMinAge, toastTableFreezeMaxAge, toastTableFreezeTableAge;
+    double toastTableVacFactor, toastTableAnlFactor;
+
     DECLARE_EVENT_TABLE()
 };
 
