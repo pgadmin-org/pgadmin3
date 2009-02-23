@@ -210,6 +210,10 @@ IF(WIN32 AND NOT CYGWIN AND NOT MSYS)
         # Preprocessor definitions
         SET(${WX_DEFINITIONS} "-D__WXMSW__")
 
+        IF(_unicode)
+            SET(WX_DEFINITIONS "${WX_DEFINITIONS};-DUNICODE")
+        ENDIF(_unicode)
+
         IF(NOT _static)
             SET(WX_DEFINITIONS "${WX_DEFINITIONS};-DWXUSINGDLL")
         ENDIF(NOT _static)
