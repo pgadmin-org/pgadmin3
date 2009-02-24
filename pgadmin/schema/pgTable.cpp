@@ -317,46 +317,89 @@ wxString pgTable::GetSql(ctlTree *browser)
             {
                 if (GetCustomAutoVacuumEnabled())
                 {
-                    if (GetAutoVacuumEnabled())
+                    if (GetAutoVacuumEnabled() == 1)
                         sql += wxT(",\n  autovacuum_enabled=true");
-                    else
+                    else if (GetCustomAutoVacuumEnabled() == 0)
                         sql += wxT(",\n  autovacuum_enabled=false");
+                    if (!GetAutoVacuumVacuumThreshold().IsEmpty())
+                    {
+                        sql += wxT(",\n  autovacuum_vacuum_threshold=") + GetAutoVacuumVacuumThreshold();
+                    }
+                    if (!GetAutoVacuumVacuumScaleFactor().IsEmpty())
+                    {
+                        sql += wxT(",\n  autovacuum_vacuum_scale_factor=") + GetAutoVacuumVacuumScaleFactor();
+                    }
+                    if (!GetAutoVacuumAnalyzeThreshold().IsEmpty())
+                    {
+                        sql += wxT(",\n  autovacuum_analyze_threshold=") + GetAutoVacuumAnalyzeThreshold();
+                    }
+                    if (!GetAutoVacuumAnalyzeScaleFactor().IsEmpty())
+                    {
+                        sql += wxT(",\n  autovacuum_analyze_scale_factor=") + GetAutoVacuumAnalyzeScaleFactor();
+                    }
+                    if (!GetAutoVacuumVacuumCostDelay().IsEmpty())
+                    {
+                        sql += wxT(",\n  autovacuum_vacuum_cost_delay=") + GetAutoVacuumVacuumCostDelay();
+                    }
+                    if (!GetAutoVacuumVacuumCostLimit().IsEmpty())
+                    {
+                        sql += wxT(",\n  autovacuum_vacuum_cost_limit=") + GetAutoVacuumVacuumCostLimit();
+                    }
+                    if (!GetAutoVacuumFreezeMinAge().IsEmpty())
+                    {
+                        sql += wxT(",\n  autovacuum_freeze_min_age=") + GetAutoVacuumFreezeMinAge();
+                    }
+                    if (!GetAutoVacuumFreezeMaxAge().IsEmpty())
+                    {
+                        sql += wxT(",\n  autovacuum_freeze_max_age=") + GetAutoVacuumFreezeMaxAge();
+                    }
+                    if (!GetAutoVacuumFreezeTableAge().IsEmpty())
+                    {
+                        sql += wxT(",\n  autovacuum_freeze_table_age=") + GetAutoVacuumFreezeTableAge();
+                    }
                 }
-                if (!GetAutoVacuumVacuumThreshold().IsEmpty())
+                if (GetHasToastTable() && GetToastCustomAutoVacuumEnabled())
                 {
-                    sql += wxT(",\n  autovacuum_vacuum_threshold=") + GetAutoVacuumVacuumThreshold();
-                }
-                if (!GetAutoVacuumVacuumScaleFactor().IsEmpty())
-                {
-                    sql += wxT(",\n  autovacuum_vacuum_scale_factor=") + GetAutoVacuumVacuumScaleFactor();
-                }
-                if (!GetAutoVacuumAnalyzeThreshold().IsEmpty())
-                {
-                    sql += wxT(",\n  autovacuum_analyze_threshold=") + GetAutoVacuumAnalyzeThreshold();
-                }
-                if (!GetAutoVacuumAnalyzeScaleFactor().IsEmpty())
-                {
-                    sql += wxT(",\n  autovacuum_analyze_scale_factor=") + GetAutoVacuumAnalyzeScaleFactor();
-                }
-                if (!GetAutoVacuumVacuumCostDelay().IsEmpty())
-                {
-                    sql += wxT(",\n  autovacuum_vacuum_cost_delay=") + GetAutoVacuumVacuumCostDelay();
-                }
-                if (!GetAutoVacuumVacuumCostLimit().IsEmpty())
-                {
-                    sql += wxT(",\n  autovacuum_vacuum_cost_limit=") + GetAutoVacuumVacuumCostLimit();
-                }
-                if (!GetAutoVacuumFreezeMinAge().IsEmpty())
-                {
-                    sql += wxT(",\n  autovacuum_freeze_min_age=") + GetAutoVacuumFreezeMinAge();
-                }
-                if (!GetAutoVacuumFreezeMaxAge().IsEmpty())
-                {
-                    sql += wxT(",\n  autovacuum_freeze_max_age=") + GetAutoVacuumFreezeMaxAge();
-                }
-                if (!GetAutoVacuumFreezeTableAge().IsEmpty())
-                {
-                    sql += wxT(",\n  autovacuum_freeze_table_age=") + GetAutoVacuumFreezeTableAge();
+                    if (GetToastAutoVacuumEnabled() == 1)
+                        sql += wxT(",\n  toast.autovacuum_enabled=true");
+                    else if (GetToastAutoVacuumEnabled() == 0)
+                        sql += wxT(",\n  toast.autovacuum_enabled=false");
+                    if (!GetToastAutoVacuumVacuumThreshold().IsEmpty())
+                    {
+                        sql += wxT(",\n  toast.autovacuum_vacuum_threshold=") + GetToastAutoVacuumVacuumThreshold();
+                    }
+                    if (!GetToastAutoVacuumVacuumScaleFactor().IsEmpty())
+                    {
+                        sql += wxT(",\n  toast.autovacuum_vacuum_scale_factor=") + GetToastAutoVacuumVacuumScaleFactor();
+                    }
+                    if (!GetToastAutoVacuumAnalyzeThreshold().IsEmpty())
+                    {
+                        sql += wxT(",\n  toast.autovacuum_analyze_threshold=") + GetToastAutoVacuumAnalyzeThreshold();
+                    }
+                    if (!GetToastAutoVacuumAnalyzeScaleFactor().IsEmpty())
+                    {
+                        sql += wxT(",\n  toast.autovacuum_analyze_scale_factor=") + GetToastAutoVacuumAnalyzeScaleFactor();
+                    }
+                    if (!GetToastAutoVacuumVacuumCostDelay().IsEmpty())
+                    {
+                        sql += wxT(",\n  toast.autovacuum_vacuum_cost_delay=") + GetToastAutoVacuumVacuumCostDelay();
+                    }
+                    if (!GetToastAutoVacuumVacuumCostLimit().IsEmpty())
+                    {
+                        sql += wxT(",\n  toast.autovacuum_vacuum_cost_limit=") + GetToastAutoVacuumVacuumCostLimit();
+                    }
+                    if (!GetToastAutoVacuumFreezeMinAge().IsEmpty())
+                    {
+                        sql += wxT(",\n  toast.autovacuum_freeze_min_age=") + GetToastAutoVacuumFreezeMinAge();
+                    }
+                    if (!GetToastAutoVacuumFreezeMaxAge().IsEmpty())
+                    {
+                        sql += wxT(",\n  toast.autovacuum_freeze_max_age=") + GetToastAutoVacuumFreezeMaxAge();
+                    }
+                    if (!GetToastAutoVacuumFreezeTableAge().IsEmpty())
+                    {
+                        sql += wxT(",\n  toast.autovacuum_freeze_table_age=") + GetToastAutoVacuumFreezeTableAge();
+                    }
                 }
             }
             sql += wxT("\n)");
@@ -705,6 +748,62 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
             properties->AppendItem(_("Inherited tables"), GetInheritedTables());
         properties->AppendItem(_("Has OIDs?"), GetHasOids());
         properties->AppendItem(_("System table?"), GetSystemObject());
+
+        /* Custom AutoVacuum Settings */
+        if (GetConnection()->BackendMinimumVersion(8, 4) && GetCustomAutoVacuumEnabled())
+        {
+            if (GetAutoVacuumEnabled() != 2)
+            {
+                properties->AppendItem(_("Auto-vacuum enabled?"), GetAutoVacuumEnabled() == 1 ? _("Yes") : _("No"));
+            }
+			if (!GetAutoVacuumVacuumThreshold().IsEmpty())
+				properties->AppendItem(_("autovacuum vacuum threshold"), GetAutoVacuumVacuumThreshold());
+			if (!GetAutoVacuumVacuumScaleFactor().IsEmpty())
+				properties->AppendItem(_("autovacuum_vacuum_scale_factor"), GetAutoVacuumVacuumScaleFactor());
+			if (!GetAutoVacuumAnalyzeThreshold().IsEmpty())
+				properties->AppendItem(_("autovacuum_analyze_threshold"), GetAutoVacuumAnalyzeThreshold());
+			if (!GetAutoVacuumAnalyzeScaleFactor().IsEmpty())
+				properties->AppendItem(_("autovacuum_analyze_scale_factor"), GetAutoVacuumAnalyzeScaleFactor());
+			if (!GetAutoVacuumVacuumCostDelay().IsEmpty())
+				properties->AppendItem(_("autovacuum_vacuum_cost_delay"), GetAutoVacuumVacuumCostDelay());
+			if (!GetAutoVacuumVacuumCostLimit().IsEmpty())
+				properties->AppendItem(_("autovacuum_vacuum_cost_limit"), GetAutoVacuumVacuumCostLimit());
+			if (!GetAutoVacuumFreezeMinAge().IsEmpty())
+				properties->AppendItem(_("autovacuum_freeze_min_age"), GetAutoVacuumFreezeMinAge());
+			if (!GetAutoVacuumFreezeMaxAge().IsEmpty())
+				properties->AppendItem(_("autovacuum_freeze_max_age"), GetAutoVacuumFreezeMaxAge());
+			if (!GetAutoVacuumFreezeTableAge().IsEmpty())
+				properties->AppendItem(_("autovacuum_freeze_table_age"), GetAutoVacuumFreezeTableAge());
+        }
+
+        /* Custom TOAST-TABLE AutoVacuum Settings */
+        if (GetConnection()->BackendMinimumVersion(8, 4) &&
+            GetHasToastTable() &&
+            GetToastCustomAutoVacuumEnabled())
+        {
+			if (GetToastAutoVacuumEnabled() != 2)
+            {
+                properties->AppendItem(_("Toast auto-vacuum enabled?"), GetToastAutoVacuumEnabled() == 1 ? _("Yes") : _("No"));
+            }
+			if (!GetToastAutoVacuumVacuumThreshold().IsEmpty())
+				properties->AppendItem(_("toast.autovacuum_vacuum_threshold"), GetToastAutoVacuumVacuumThreshold());
+			if (!GetToastAutoVacuumVacuumScaleFactor().IsEmpty())
+				properties->AppendItem(_("toast.autovacuum_vacuum_scale_factor"), GetToastAutoVacuumVacuumScaleFactor());
+			if (!GetToastAutoVacuumAnalyzeThreshold().IsEmpty())
+				properties->AppendItem(_("toast.autovacuum_analyze_threshold"), GetToastAutoVacuumAnalyzeThreshold());
+			if (!GetToastAutoVacuumAnalyzeScaleFactor().IsEmpty())
+				properties->AppendItem(_("toast.autovacuum_analyze_scale_factor"), GetToastAutoVacuumAnalyzeScaleFactor());
+			if (!GetToastAutoVacuumVacuumCostDelay().IsEmpty())
+				properties->AppendItem(_("toast.autovacuum_vacuum_cost_delay"), GetToastAutoVacuumVacuumCostDelay());
+			if (!GetToastAutoVacuumVacuumCostLimit().IsEmpty())
+				properties->AppendItem(_("toast.autovacuum_vacuum_cost_limit"), GetToastAutoVacuumVacuumCostLimit());
+			if (!GetToastAutoVacuumFreezeMinAge().IsEmpty())
+				properties->AppendItem(_("toast.autovacuum_freeze_min_age"), GetToastAutoVacuumFreezeMinAge());
+			if (!GetToastAutoVacuumFreezeMaxAge().IsEmpty())
+				properties->AppendItem(_("toast.autovacuum_freeze_max_age"), GetToastAutoVacuumFreezeMaxAge());
+			if (!GetToastAutoVacuumFreezeTableAge().IsEmpty())
+				properties->AppendItem(_("toast.autovacuum_freeze_table_age"), GetToastAutoVacuumFreezeTableAge());
+        }
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 
     }
@@ -997,6 +1096,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n")
+                     wxT(", rel.reloptions AS reloptions \n")
                      wxT(", (CASE WHEN rel.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable\n");
         }
 
@@ -1053,20 +1153,70 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             }
             if (collection->GetConnection()->BackendMinimumVersion(8, 4))
             {
-                table->iSetCustomAutoVacuumEnabled(false);
-                if (!tables->GetVal(wxT("autovacuum_enabled")).IsEmpty())
-                    table->iSetCustomAutoVacuumEnabled(true);
-                table->iSetAutoVacuumEnabled(tables->GetBool(wxT("autovacuum_enabled")));
-                table->iSetAutoVacuumVacuumThreshold(tables->GetVal(wxT("autovacuum_vacuum_threshold")));
-                table->iSetAutoVacuumVacuumScaleFactor(tables->GetVal(wxT("autovacuum_vacuum_scale_factor")));
-                table->iSetAutoVacuumAnalyzeThreshold(tables->GetVal(wxT("autovacuum_analyze_threshold")));
-                table->iSetAutoVacuumAnalyzeScaleFactor(tables->GetVal(wxT("autovacuum_analyze_scale_factor")));
-                table->iSetAutoVacuumVacuumCostDelay(tables->GetVal(wxT("autovacuum_vacuum_cost_delay")));
-                table->iSetAutoVacuumVacuumCostLimit(tables->GetVal(wxT("autovacuum_vacuum_cost_limit")));
-                table->iSetAutoVacuumFreezeMinAge(tables->GetVal(wxT("autovacuum_freeze_min_age")));
-                table->iSetAutoVacuumFreezeMaxAge(tables->GetVal(wxT("autovacuum_freeze_max_age")));
-                table->iSetAutoVacuumFreezeTableAge(tables->GetVal(wxT("autovacuum_freeze_table_age")));
+                table->iSetRelOptions(tables->GetVal(wxT("reloptions")));
+                if (table->GetCustomAutoVacuumEnabled()) 
+                {
+                    if (tables->GetVal(wxT("autovacuum_enabled")).IsEmpty())
+                        table->iSetAutoVacuumEnabled(2);
+                    else if (tables->GetBool(wxT("autovacuum_enabled")))
+                        table->iSetAutoVacuumEnabled(1);
+                    else
+                        table->iSetAutoVacuumEnabled(0);
+                    table->iSetAutoVacuumVacuumThreshold(tables->GetVal(wxT("autovacuum_vacuum_threshold")));
+                    table->iSetAutoVacuumVacuumScaleFactor(tables->GetVal(wxT("autovacuum_vacuum_scale_factor")));
+                    table->iSetAutoVacuumAnalyzeThreshold(tables->GetVal(wxT("autovacuum_analyze_threshold")));
+                    table->iSetAutoVacuumAnalyzeScaleFactor(tables->GetVal(wxT("autovacuum_analyze_scale_factor")));
+                    table->iSetAutoVacuumVacuumCostDelay(tables->GetVal(wxT("autovacuum_vacuum_cost_delay")));
+                    table->iSetAutoVacuumVacuumCostLimit(tables->GetVal(wxT("autovacuum_vacuum_cost_limit")));
+                    table->iSetAutoVacuumFreezeMinAge(tables->GetVal(wxT("autovacuum_freeze_min_age")));
+                    table->iSetAutoVacuumFreezeMaxAge(tables->GetVal(wxT("autovacuum_freeze_max_age")));
+                    table->iSetAutoVacuumFreezeTableAge(tables->GetVal(wxT("autovacuum_freeze_table_age")));
+                }
                 table->iSetHasToastTable(tables->GetBool(wxT("hastoasttable")));
+                if (table->GetHasToastTable())
+                {
+                    pgSet *set = collection->GetDatabase()->ExecuteSet(
+                      wxT("SELECT \n")
+                      wxT("  substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS autovacuum_enabled \n")
+                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold \n")
+                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor \n")
+                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold \n")
+                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor \n")
+                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay \n")
+                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit \n")
+                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
+                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
+                      wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n")
+                      wxT(", rel.reloptions AS reloptions \n")
+                      wxT("FROM pg_catalog.pg_class rel \n")
+                      wxT("WHERE rel.oid=(SELECT org_tbl.reltoastrelid FROM pg_catalog.pg_class org_tbl WHERE org_tbl.oid=")
+                      + table->GetOidStr() + wxT(")"));
+                    if (set)
+                    {
+                        table->iSetToastRelOptions(set->GetVal(wxT("reloptions")));
+                        if (table->GetToastCustomAutoVacuumEnabled())
+                        {
+                            if (set->GetVal(wxT("autovacuum_enabled")).IsEmpty())
+                                table->iSetToastAutoVacuumEnabled(2);
+                            else if (set->GetBool(wxT("autovacuum_enabled")))
+                                table->iSetToastAutoVacuumEnabled(1);
+                            else
+                                table->iSetToastAutoVacuumEnabled(0);
+                            table->iSetToastAutoVacuumVacuumThreshold(set->GetVal(wxT("autovacuum_vacuum_threshold")));
+                            table->iSetToastAutoVacuumVacuumScaleFactor(set->GetVal(wxT("autovacuum_vacuum_scale_factor")));
+                            table->iSetToastAutoVacuumAnalyzeThreshold(set->GetVal(wxT("autovacuum_analyze_threshold")));
+                            table->iSetToastAutoVacuumAnalyzeScaleFactor(set->GetVal(wxT("autovacuum_analyze_scale_factor")));
+                            table->iSetToastAutoVacuumVacuumCostDelay(set->GetVal(wxT("autovacuum_vacuum_cost_delay")));
+                            table->iSetToastAutoVacuumVacuumCostLimit(set->GetVal(wxT("autovacuum_vacuum_cost_limit")));
+                            table->iSetToastAutoVacuumFreezeMinAge(set->GetVal(wxT("autovacuum_freeze_min_age")));
+                            table->iSetToastAutoVacuumFreezeMaxAge(set->GetVal(wxT("autovacuum_freeze_max_age")));
+                            table->iSetToastAutoVacuumFreezeTableAge(set->GetVal(wxT("autovacuum_freeze_table_age")));
+
+                        }
+                        delete set;
+                        set = 0;
+                    }
+                }
             }
             table->iSetHasSubclass(tables->GetBool(wxT("relhassubclass")));
             table->iSetPrimaryKeyName(tables->GetVal(wxT("conname")));

@@ -513,7 +513,10 @@ int dlgTable::Go(bool modal)
         }
         else if (table)
         {
-            tableVacEnabled = table->GetAutoVacuumEnabled();
+            if (table->GetAutoVacuumEnabled() == 2)
+                tableVacEnabled = settingAutoVacuum;
+            else
+                tableVacEnabled = table->GetAutoVacuumEnabled() == 1;
             if (!table->GetAutoVacuumVacuumThreshold().IsEmpty())
                 table->GetAutoVacuumVacuumThreshold().ToLong(&tableVacBaseThr);
             if (!table->GetAutoVacuumAnalyzeThreshold().IsEmpty())
@@ -538,72 +541,39 @@ int dlgTable::Go(bool modal)
 
             toastTableVacEnabled = false;
 
-            if (connection->BackendMinimumVersion(8,4))
+            if (!table->GetHasToastTable())
             {
-                if (!table->GetHasToastTable())
-                {
                 nbVaccum->GetPage(1)->Enable(false);
-                }
-                else
-                {
-                    pgSet *set = connection->ExecuteSet(
-                        wxT("SELECT \n")
-                        wxT("  substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') AS autovacuum_enabled \n")
-                        wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold \n")
-                        wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor \n")
-                        wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold \n")
-                        wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor \n")
-                        wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay \n")
-                        wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit \n")
-                        wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age \n")
-                        wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age \n")
-                        wxT(", substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age \n")
-                        wxT(", rel.reloptions AS hasautovacuum \n")
-                        wxT("FROM pg_catalog.pg_class rel \n")
-                        wxT("WHERE rel.oid=(SELECT org_tbl.reltoastrelid FROM pg_catalog.pg_class org_tbl WHERE org_tbl.oid=")
-                        + table->GetOidStr() + wxT(")"));
-
-                    if (set)
-                    {
-                        wxString val;
-
-                        val = set->GetVal(wxT("hasautovacuum"));
-                        if (!val.IsEmpty())
-                            toastTableHasVacuum = true;
-
-                        if (toastTableHasVacuum)
-                        {
-                            toastTableVacEnabled = set->GetBool(wxT("autovacuum_enabled"));
-                            val = set->GetVal(wxT("autovacuum_vacuum_threshold"));
-                            if (!val.IsEmpty())
-                                val.ToLong(&toastTableVacBaseThr);
-                            val = set->GetVal(wxT("autovacuum_vacuum_scale_factor"));
-                            if (!val.IsEmpty())
-                                val.ToDouble(&toastTableVacFactor);
-                            val = set->GetVal(wxT("autovacuum_analyze_threshold"));
-                            if (!val.IsEmpty())
-                                val.ToLong(&toastTableAnlBaseThr);
-                            val = set->GetVal(wxT("autovacuum_analyze_scale_factor"));
-                            if (!val.IsEmpty())
-                                val.ToDouble(&toastTableAnlFactor);
-                            val = set->GetVal(wxT("autovacuum_vacuum_cost_delay"));
-                            if (!val.IsEmpty())
-                                val.ToLong(&toastTableCostDelay);
-                            val = set->GetVal(wxT("autovacuum_vacuum_cost_limit"));
-                            if (!val.IsEmpty())
-                                val.ToLong(&toastTableCostLimit);
-                            val = set->GetVal(wxT("autovacuum_freeze_min_age"));
-                            if (!val.IsEmpty())
-                                val.ToLong(&toastTableFreezeMinAge);
-                            val = set->GetVal(wxT("autovacuum_freeze_max_age"));
-                            if (!val.IsEmpty())
-                                val.ToLong(&toastTableFreezeMaxAge);
-                            val = set->GetVal(wxT("autovacuum_freeze_table_age"));
-                            if (!val.IsEmpty())
-                                val.ToLong(&toastTableFreezeTableAge);
-                        }
-                    }
-                }
+            }
+            else
+            {
+               toastTableHasVacuum = table->GetToastCustomAutoVacuumEnabled();
+               if (toastTableHasVacuum)
+               {
+                   if (table->GetToastAutoVacuumEnabled() == 2)
+                       toastTableVacEnabled = settingAutoVacuum;
+                   else
+                       toastTableVacEnabled  = table->GetToastAutoVacuumEnabled() == 1;
+                   if (!table->GetToastAutoVacuumVacuumThreshold().IsEmpty())
+                       table->GetToastAutoVacuumVacuumThreshold().ToLong(&toastTableVacBaseThr);
+                   if (!table->GetToastAutoVacuumAnalyzeThreshold().IsEmpty())
+                       table->GetToastAutoVacuumAnalyzeThreshold().ToLong(&toastTableAnlBaseThr);
+                   if (!table->GetToastAutoVacuumVacuumScaleFactor().IsEmpty())
+                       table->GetToastAutoVacuumVacuumScaleFactor().ToDouble(&toastTableVacFactor);
+                   if (!table->GetToastAutoVacuumAnalyzeScaleFactor().IsEmpty())
+                       table->GetToastAutoVacuumAnalyzeScaleFactor().ToDouble(&toastTableAnlFactor);
+                   if (!table->GetToastAutoVacuumVacuumCostDelay().IsEmpty())
+                       table->GetToastAutoVacuumVacuumCostDelay().ToLong(&toastTableCostDelay);
+                   if (!table->GetToastAutoVacuumVacuumCostLimit().IsEmpty())
+                       table->GetToastAutoVacuumVacuumCostLimit().ToLong(&toastTableCostLimit);
+                   if (!table->GetToastAutoVacuumFreezeMinAge().IsEmpty())
+                       table->GetToastAutoVacuumFreezeMinAge().ToLong(&toastTableFreezeMinAge);
+                   if (!table->GetToastAutoVacuumFreezeMaxAge().IsEmpty())
+                       table->GetToastAutoVacuumFreezeMaxAge().ToLong(&toastTableFreezeMaxAge);
+                   if (!table->GetToastAutoVacuumFreezeTableAge().IsEmpty())
+                       table->GetToastAutoVacuumFreezeTableAge().ToLong(&toastTableFreezeTableAge);
+               }
+               chkToastVacEnabled->SetValue(toastTableHasVacuum ? toastTableVacEnabled : settingAutoVacuum);
             }
         }
         else
@@ -1573,7 +1543,7 @@ void dlgTable::OnChangeVacuum(wxCommandEvent &ev)
             stFreezeMinAgeCurr->SetLabel(NumToStr((tableFreezeMinAge == -1) ? settingFreezeMinAge : tableFreezeMinAge));
             stFreezeMaxAgeCurr->SetLabel(NumToStr((tableFreezeMaxAge == -1) ? settingFreezeMaxAge : tableFreezeMaxAge));
         }
-        if (connection->BackendMinimumVersion(8, 4) && table)
+        if (connection->BackendMinimumVersion(8, 4))
         {
             txtFreezeTableAge->Enable(vacEn);
             stFreezeTableAgeCurr->SetLabel(NumToStr((tableFreezeTableAge == -1) ? settingFreezeTableAge : tableFreezeTableAge));
