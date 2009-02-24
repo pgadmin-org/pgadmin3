@@ -147,7 +147,10 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         server->iSetStorePwd(chkStorePwd->GetValue());
         server->iSetRestore(chkRestore->GetValue());
         server->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
-		server->iSetColour(txtColour->GetValue());
+        if (txtColour->GetValue().Trim() == wxEmptyString)
+            server->iSetColour(wxEmptyString);
+        else
+		    server->iSetColour(wxColour(txtColour->GetValue().Trim()).GetAsString(wxC2S_HTML_SYNTAX));
         mainForm->execSelChange(server->GetId(), true);
         mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
 
@@ -237,7 +240,7 @@ int dlgServer::Go(bool modal)
         chkStorePwd->SetValue(server->GetStorePwd());
         chkRestore->SetValue(server->GetRestore());
         txtDbRestriction->SetValue(server->GetDbRestriction());
-        txtColour->SetValue(server->GetColour().GetAsString(wxC2S_HTML_SYNTAX));
+        txtColour->SetValue(server->GetColour());
 
         stPassword->Disable();
         txtPassword->Disable();
@@ -320,7 +323,7 @@ void dlgServer::CheckChange()
                || chkStorePwd->GetValue() != server->GetStorePwd()
                || chkRestore->GetValue() != server->GetRestore()
                || txtDbRestriction->GetValue() != server->GetDbRestriction()
-			   || txtColour->GetValue() != server->GetColour().GetAsString(wxC2S_HTML_SYNTAX);
+			   || txtColour->GetValue() != wxColour(server->GetColour()).GetAsString(wxC2S_HTML_SYNTAX);
     }
 
 

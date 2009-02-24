@@ -38,7 +38,7 @@ extern pgServerFactory serverFactory;
 class pgServer : public pgObject
 {
 public:
-	pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool storePwd=false, bool restore=true, int sslMode=0, const wxString &colour = wxT("#ffffff"));
+	pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool storePwd=false, bool restore=true, int sslMode=0, const wxString &colour = wxEmptyString);
     ~pgServer();
     int GetIconId();
 
@@ -110,8 +110,8 @@ public:
     bool SetPassword(const wxString& newVal);
     wxDateTime GetUpSince() { return upSince; }
     void iSetUpSince(const wxDateTime &d) { upSince = d; }
-	void iSetColour(const wxString &s) { colour = s.Length() == 0 ? wxColour(wxT("#ffffff")) : wxColour(s); }
-	wxColour GetColour() { return colour; }
+	void iSetColour(const wxString &s) { colour = s; }
+	wxString GetColour() { return colour; }
 
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv) { return conn->HasPrivilege(objTyp, objName, priv); }
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
@@ -152,7 +152,7 @@ private:
     OID dbOid;
     wxString versionNum;
     wxString dbRestriction;
-	wxColour colour;
+	wxString colour;
 
 #ifdef WIN32
     SC_HANDLE scmHandle;

@@ -46,7 +46,7 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     username = newUsername;
     port = newPort;
     ssl=_ssl;
-    colour = _colour.IsEmpty() ? wxT("#FFFFFF") : wxColour(_colour);
+    colour = _colour;
     serverIndex=0;
 
     connected = false;
@@ -1080,7 +1080,11 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         settings->Read(key + wxT("LastDatabase"), &lastDatabase, wxEmptyString);
         settings->Read(key + wxT("LastSchema"), &lastSchema, wxEmptyString);
         settings->Read(key + wxT("DbRestriction"), &dbRestriction, wxEmptyString);
-        settings->Read(key + wxT("Colour"), &colour, wxT("#FFFFFF"));
+        settings->Read(key + wxT("Colour"), &colour, wxEmptyString);
+
+        // Sanitize the colour
+        if (!colour.IsEmpty())
+            colour = wxColour(colour.Trim()).GetAsString(wxC2S_HTML_SYNTAX);
 
         // SSL mode
 #ifdef SSL
@@ -1099,7 +1103,8 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         server->iSetServerIndex(loop);
         wxTreeItemId itm = browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
         browser->SortChildren(obj->GetId());
-        browser->SetItemBackgroundColour(itm, server->GetColour());
+        if (!server->GetColour().IsEmpty())
+            browser->SetItemBackgroundColour(itm, wxColour(server->GetColour()));
 
         // Note if we're reloading a discovered server
         if (!discoveryID.IsEmpty())
