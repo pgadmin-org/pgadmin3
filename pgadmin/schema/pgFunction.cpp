@@ -85,7 +85,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
             + wxT("\n\nCREATE OR REPLACE FUNCTION ") + qtName;
 
         // Use Oracle style syntax for edb-spl functions
-        if (GetLanguage() == wxT("edbspl"))
+        if (GetLanguage() == wxT("edbspl") && GetProcType() == 2)
         {
             sql += wxT("\nRETURN ");
             sql += GetReturnType();
@@ -348,7 +348,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
     cacheMap typeCache, exprCache;
 
     pgFunction *function=0;
-    wxString argNamesCol, argDefsCol, proConfigCol;
+    wxString argNamesCol, argDefsCol, proConfigCol, proType;
     if (obj->GetConnection()->BackendMinimumVersion(8, 0))
         argNamesCol = wxT("proargnames, ");
     if (obj->GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) && !obj->GetConnection()->BackendMinimumVersion(8, 4))
@@ -357,10 +357,12 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
         argDefsCol = wxT("pg_get_expr(proargdefaults, 'pg_catalog.pg_class'::regclass) AS proargdefaultvals, pronargdefaults, ");
     if (obj->GetConnection()->BackendMinimumVersion(8, 3))
         proConfigCol = wxT("proconfig, ");
+    if (obj->GetConnection()->EdbMinimumVersion(8, 1))
+        proType = wxT("proType, ");
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(
             wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") +
-            argNamesCol  + argDefsCol + proConfigCol + 
+            argNamesCol  + argDefsCol + proConfigCol + proType +
             wxT("       pg_get_userbyid(proowner) as funcowner, description\n")
             wxT("  FROM pg_proc pr\n")
             wxT("  JOIN pg_type typ ON typ.oid=prorettype\n")
@@ -425,6 +427,9 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             // EDB 8.0 had modes in pg_proc.proargdirs
             if (!obj->GetConnection()->EdbMinimumVersion(8, 1) && isProcedure)
                 argModesTkz.SetString(functions->GetVal(wxT("proargdirs")));
+
+            if (obj->GetConnection()->EdbMinimumVersion(8, 1))
+                function->iSetProcType(functions->GetLong(wxT("proType")));
 
             // EDB 8.1 and PostgreSQL 8.1 have modes in pg_proc.proargmodes
             if (obj->GetConnection()->BackendMinimumVersion(8, 1))

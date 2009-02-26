@@ -81,6 +81,8 @@ public:
     void iSetIsStrict(bool b) { isStrict = b; }
     bool GetIsWindow() const { return isWindow; }
     void iSetIsWindow(bool b) { isWindow = b; }
+    long GetProcType() { return procType; }
+    void iSetProcType(long l) { procType = l; }
     wxArrayString& GetConfigList() { return configList; }
 
     bool CanRestore() { return true; }
@@ -105,7 +107,7 @@ private:
     wxString returnType, language, volatility, source, bin;
     wxArrayString argNamesArray, argTypesArray, argModesArray, argDefsArray;
     bool returnAsSet, secureDefiner, isStrict, isWindow;
-    long argCount, cost, rows, argDefValCount;
+    long argCount, cost, rows, argDefValCount, procType;
     wxArrayString configList;
 };
 

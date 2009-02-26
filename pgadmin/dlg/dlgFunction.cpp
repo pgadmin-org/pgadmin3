@@ -202,7 +202,7 @@ int dlgFunction::Go(bool modal)
 
     if (isProcedure)
     {
-        if (function)
+        if (function && !connection->EdbMinimumVersion(8, 2))
             txtName->Disable();
         cbOwner->Disable();
         cbLanguage->Disable();
@@ -809,9 +809,13 @@ wxString dlgFunction::GetSql()
         // edit mode
         if (name != function->GetName())
         {
-            sql = wxT("ALTER FUNCTION ") + function->GetQuotedFullIdentifier() 
-                                         + wxT("(") + function->GetArgSigList() + wxT(")")
-                + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+            if (!isProcedure)
+                sql = wxT("ALTER FUNCTION ") + function->GetQuotedFullIdentifier() 
+                                             + wxT("(") + function->GetArgSigList() + wxT(")")
+                                             + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
+            else
+                sql = wxT("ALTER PROCEDURE ") + function->GetQuotedFullIdentifier() 
+                    + wxT(" RENAME TO ") + qtIdent(name) + wxT(";\n");
         }
  
         if (didChange)
@@ -962,9 +966,9 @@ wxString dlgFunction::GetSql()
         sql += GetGrant(wxT("X"), wxT("FUNCTION ") + name);
     }
 
-	if (isProcedure)
-        AppendComment(sql, wxT("PROCEDURE ") + qtIdent(GetName()), function);
-	else
+    if (isProcedure)
+        AppendComment(sql, wxT("PROCEDURE ") + schema->GetQuotedPrefix() + qtIdent(GetName()), function);
+    else
         AppendComment(sql, wxT("FUNCTION ") + name, function);
 
     return sql;
