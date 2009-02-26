@@ -358,7 +358,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
     if (obj->GetConnection()->BackendMinimumVersion(8, 3))
         proConfigCol = wxT("proconfig, ");
     if (obj->GetConnection()->EdbMinimumVersion(8, 1))
-        proType = wxT("proType, ");
+        proType = wxT("protype, ");
 
     pgSet *functions = obj->GetDatabase()->ExecuteSet(
             wxT("SELECT pr.oid, pr.xmin, pr.*, format_type(TYP.oid, NULL) AS typname, typns.nspname AS typnsp, lanname, ") +
@@ -429,7 +429,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 argModesTkz.SetString(functions->GetVal(wxT("proargdirs")));
 
             if (obj->GetConnection()->EdbMinimumVersion(8, 1))
-                function->iSetProcType(functions->GetLong(wxT("proType")));
+                function->iSetProcType(functions->GetLong(wxT("protype")));
 
             // EDB 8.1 and PostgreSQL 8.1 have modes in pg_proc.proargmodes
             if (obj->GetConnection()->BackendMinimumVersion(8, 1))
