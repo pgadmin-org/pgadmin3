@@ -1083,6 +1083,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         settings->Read(key + wxT("Colour"), &colour, wxEmptyString);
 
         // Sanitize the colour
+        colour = colour.Trim();
         if (!colour.IsEmpty())
             colour = wxColour(colour.Trim()).GetAsString(wxC2S_HTML_SYNTAX);
 
