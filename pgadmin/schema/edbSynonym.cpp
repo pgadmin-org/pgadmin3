@@ -82,23 +82,14 @@ pgObject *edbSynonymFactory::CreateObjects(pgCollection *collection, ctlTree *br
     edbSynonym *synonym=0;
 
     wxString sql = wxT("SELECT *, pg_get_userbyid(synowner) AS owner,\n") 
-                   wxT("  COALESCE((SELECT \n")
-                   wxT("    CASE WHEN relkind = 'r' THEN '");
-             sql += _("Table");
-             sql += wxT("'\n         WHEN relkind = 'S' THEN '");
-             sql += _("Sequence");
-             sql += wxT("'\n         WHEN relkind = 'v' THEN '");
-             sql += _("View");
-             sql += wxT("'\n    END\n")
-                    wxT("  FROM pg_class c, pg_namespace n\n")
-                    wxT("  WHERE c.relnamespace = n.oid\n") 
-                    wxT("    AND n.nspname = synobjschema\n")
-                    wxT("    AND c.relname = synobjname), '");
-             sql += _("Public synonym");
-             sql += wxT("') AS targettype\n")
-                    wxT("  FROM pg_synonym")
-                    + restriction +
-                    wxT("  ORDER BY synname;");
+                   wxT("  COALESCE((SELECT relkind \n")
+                   wxT("  FROM pg_class c, pg_namespace n\n")
+                   wxT("  WHERE c.relnamespace = n.oid\n") 
+                   wxT("    AND n.nspname = synobjschema\n")
+                   wxT("    AND c.relname = synobjname), '') AS targettype\n")
+                   wxT("  FROM pg_synonym")
+                   + restriction +
+                   wxT("  ORDER BY synname;");
 
     pgSet *synonyms = collection->GetDatabase()->ExecuteSet(sql);
 
@@ -111,7 +102,16 @@ pgObject *edbSynonymFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
             synonym->iSetDatabase(collection->GetDatabase());
             synonym->iSetOwner(synonyms->GetVal(wxT("owner")));
-            synonym->iSetTargetType(synonyms->GetVal(wxT("targettype")));
+
+            if (synonyms->GetVal(wxT("targettype")) == wxT("r"))
+                synonym->iSetTargetType(_("Table"));
+            else if (synonyms->GetVal(wxT("targettype")) == wxT("S"))
+                synonym->iSetTargetType(_("Sequence"));
+            else if (synonyms->GetVal(wxT("targettype")) == wxT("v"))
+                synonym->iSetTargetType(_("View"));
+            else
+                synonym->iSetTargetType(_("Public synonym"));
+
             synonym->iSetTargetSchema(synonyms->GetVal(wxT("synobjschema")));
             synonym->iSetTargetObject(synonyms->GetVal(wxT("synobjname")));
 
