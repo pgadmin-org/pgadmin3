@@ -2622,7 +2622,7 @@ wxString sqlTable::GetValue(int row, int col)
             {
 				wxString val;
 				if (thread->DataSet()->ColType(i) == wxT("bytea"))
-					val = _("<Binary data>");
+					val = _("<binary data>");
 				else
 				{
 					val = thread->DataSet()->GetVal(i);
