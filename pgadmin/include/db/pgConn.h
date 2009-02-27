@@ -144,7 +144,7 @@ protected:
 
     int connStatus;
 
-    void SetLastResultError(PGresult *res);
+    void SetLastResultError(PGresult *res, const wxString &msg = wxEmptyString);
     pgError lastResultError;
 
     wxMBConv *conv;

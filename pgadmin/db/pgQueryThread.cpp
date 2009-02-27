@@ -78,7 +78,10 @@ void pgQueryThread::appendMessage(const wxString &str)
 {
     wxCriticalSectionLocker cs(criticalSection);
 	if (messages.IsEmpty())
-        messages.Append(str);
+    {
+        if (str != wxT("\n"))
+            messages.Append(str);
+    }
 	else
         messages.Append(wxT("\n") + str);
 }
@@ -91,8 +94,16 @@ int pgQueryThread::execute()
     if (!conn->conn)
         return(raiseEvent(0));
 
-    if (!PQsendQuery(conn->conn, query.mb_str(*conn->conv)))
+    wxCharBuffer queryBuf = query.mb_str(*conn->conv);
+    if (!queryBuf && !query.IsEmpty())
     {
+        conn->SetLastResultError(NULL, _("The query could not be converted to the required encoding."));
+        return(raiseEvent(0));
+    }
+
+    if (!PQsendQuery(conn->conn, queryBuf))
+    {
+        conn->SetLastResultError(NULL);
         conn->IsAlive();
         return(raiseEvent(0));
     }
@@ -171,7 +182,7 @@ int pgQueryThread::execute()
     }
     else if (rc == PGRES_FATAL_ERROR)
     {
-        appendMessage(conn->GetLastError() + wxT("\n"));
+        conn->SetLastResultError(NULL);
     }
     return(raiseEvent(1));
 }
