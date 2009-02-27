@@ -327,7 +327,7 @@ void wxTimeSpinCtrl::OnNavigate(wxNavigationKeyEvent &ev)
             tp++;
         else
             tp--;
-        if (tp >= 0 && tp < 3 || (hasDay && tp == 3))
+        if ((tp >= 0 && tp < 3) || (hasDay && tp == 3))
         {
             Highlight(tp);
             return;

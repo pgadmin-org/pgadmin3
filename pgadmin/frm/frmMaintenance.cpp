@@ -101,7 +101,7 @@ void frmMaintenance::OnAction(wxCommandEvent& ev)
     chkAnalyze->Enable(isVacuum);
 
     bool isReindex = (rbxAction->GetSelection() == 2);
-    sbxReindexOptions->Enable(isReindex && object->GetMetaType() == PGM_DATABASE || object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_PRIMARYKEY || object->GetMetaType() == PGM_UNIQUE);
+    sbxReindexOptions->Enable(isReindex && (object->GetMetaType() == PGM_DATABASE || object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_PRIMARYKEY || object->GetMetaType() == PGM_UNIQUE));
     chkRecreate->Enable(isReindex && object->GetMetaType() == PGM_INDEX);
 }
 

@@ -249,10 +249,12 @@ wxString dlgSequence::GetSql()
                 tmp += wxT("\n   CACHE ") + txtCache->GetValue();
 
             if (chkCycled->GetValue() != sequence->GetCycled())
+            {
                 if (chkCycled->GetValue())
                     tmp += wxT("\n   CYCLE");
                 else
                     tmp += wxT("\n   NO CYCLE");
+            }
 
             if (!tmp.IsEmpty())
             {

@@ -598,9 +598,9 @@ void dlgDirectDbg::invokeTargetCallable()
             if (strcmp(tmp, "") == 0)
                 params->paramValues[i] = 0;
             else if (strcmp(tmp, "''") == 0)
-                params->paramValues[i] = "";
+                params->paramValues[i] = (char *)"";
             else if (strcmp(tmp, "\\'\\'") == 0)
-                params->paramValues[i] = "''";
+                params->paramValues[i] = (char *)"''";
             else
                 params->paramValues[i] = tmp;
         }
@@ -614,9 +614,9 @@ void dlgDirectDbg::invokeTargetCallable()
             if (strcmp(tmp, "") == 0)
                 params->paramValues[i] = 0;
             else if (strcmp(tmp, "''") == 0)
-                params->paramValues[i] = "";
+                params->paramValues[i] = (char *)"";
             else if (strcmp(tmp, "\\'\\'") == 0)
-                params->paramValues[i] = "''";
+                params->paramValues[i] = (char *)"''";
             else
                 params->paramValues[i] = tmp;
         }

@@ -98,7 +98,7 @@ void ChangeButtonId(wxButton *btn, int id, const wxChar *txt)
 
 long cboToRate(wxComboBox *cbo)
 {
-    long rate;
+    long rate = 0;
 
     if (cbo->GetValue() == _("Don't refresh"))
         rate = 0;

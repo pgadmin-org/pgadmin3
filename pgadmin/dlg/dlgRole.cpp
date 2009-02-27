@@ -254,7 +254,7 @@ void dlgRole::OnOK(wxCommandEvent &ev)
 {
     dlgProperty::OnOK(ev);
 
-    if (role && role->GetCanLogin() != chkCanLogin->GetValue() == !btnOK->IsEnabled())
+    if (role && ((role->GetCanLogin() != chkCanLogin->GetValue()) == !btnOK->IsEnabled()))
     {
         // LOGIN attribute changed successfully; need to put object under different collection
     }

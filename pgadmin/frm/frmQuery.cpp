@@ -1470,9 +1470,9 @@ void frmQuery::SetLineEndingStyle()
     bool haveCR = reCR->Matches(sqlQuery->GetText());
     int mode = GetLineEndingStyle();
 
-    if (haveLF && haveCR ||
-        haveLF && haveCRLF ||
-        haveCR && haveCRLF)
+    if ((haveLF && haveCR) ||
+        (haveLF && haveCRLF) ||
+        (haveCR && haveCRLF))
     {
         wxMessageBox(_("This file contains mixed line endings. They will be converted to the current setting."), _("Warning"), wxICON_INFORMATION);
         sqlQuery->ConvertEOLs(mode);

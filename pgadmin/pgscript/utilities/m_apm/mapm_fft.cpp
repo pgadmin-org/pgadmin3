@@ -48,7 +48,7 @@ extern void   M_cftmdl(int, int, double *);
 static double *M_aa_array, *M_bb_array;
 static int    M_size = -1;
 
-static char   *M_fft_error_msg = "\'M_fast_mul_fft\', Out of memory";
+static char   *M_fft_error_msg = (char *)"\'M_fast_mul_fft\', Out of memory";
 
 /****************************************************************************/
 void	M_free_all_fft()

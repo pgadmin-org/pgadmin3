@@ -63,10 +63,12 @@ wxString edbPackageFunction::GetArgListWithNames()
                 arg += qtIdent(argNamesArray.Item(i));
 
             if (!argModesArray.Item(i).IsEmpty())
+            {
                 if (arg.IsEmpty())
                     arg += argModesArray.Item(i);
                 else
                     arg += wxT(" ") + argModesArray.Item(i);
+            }
         }
         else
         {
@@ -74,10 +76,12 @@ wxString edbPackageFunction::GetArgListWithNames()
                 arg += argModesArray.Item(i);
 
             if (!argNamesArray.Item(i).IsEmpty())
+            {
                 if (arg.IsEmpty())
                     arg += qtIdent(argNamesArray.Item(i));
                 else
                     arg += wxT(" ") + qtIdent(argNamesArray.Item(i));
+            }
         }
 
         if (!arg.IsEmpty())
