@@ -331,16 +331,16 @@ static bool needsQuoting(wxString& value, bool forTypes)
 			valNoArray = value;
 
 		if (forTypes &&
-            !valNoArray.CmpNoCase(wxT("character varying")) ||
-            !valNoArray.CmpNoCase(wxT("\"char\"")) ||
-			!valNoArray.CmpNoCase(wxT("bit varying")) ||
-			!valNoArray.CmpNoCase(wxT("double precision")) ||
-			!valNoArray.CmpNoCase(wxT("timestamp without time zone")) ||
-			!valNoArray.CmpNoCase(wxT("timestamp with time zone")) ||
-			!valNoArray.CmpNoCase(wxT("time without time zone")) ||
-			!valNoArray.CmpNoCase(wxT("time with time zone")) ||
-            !valNoArray.CmpNoCase(wxT("\"trigger\"")) ||
-            !valNoArray.CmpNoCase(wxT("\"unknown\"")))
+                        (!valNoArray.CmpNoCase(wxT("character varying")) ||
+                         !valNoArray.CmpNoCase(wxT("\"char\"")) ||
+			 !valNoArray.CmpNoCase(wxT("bit varying")) ||
+			 !valNoArray.CmpNoCase(wxT("double precision")) ||
+			 !valNoArray.CmpNoCase(wxT("timestamp without time zone")) ||
+			 !valNoArray.CmpNoCase(wxT("timestamp with time zone")) ||
+			 !valNoArray.CmpNoCase(wxT("time without time zone")) ||
+			 !valNoArray.CmpNoCase(wxT("time with time zone")) ||
+                         !valNoArray.CmpNoCase(wxT("\"trigger\"")) ||
+                         !valNoArray.CmpNoCase(wxT("\"unknown\""))))
 			return false;
 
         int pos = 0;
@@ -832,9 +832,9 @@ wxString GetHtmlEntity(const wxChar ch)
     // REWRITE THIS - IT'S (STILL) BLOODY INEFFICIENT!!
 
     // Quick bailout
-    if (ch >= 'a' && ch <= 'z' ||
-        ch >= 'A' && ch <= 'Z' ||
-        ch >= '0' && ch <= '9')
+    if ((ch >= 'a' && ch <= 'z') ||
+        (ch >= 'A' && ch <= 'Z') ||
+        (ch >= '0' && ch <= '9'))
         return wxString(ch);
 
     unsigned short ents[] = {
