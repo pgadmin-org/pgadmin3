@@ -333,7 +333,14 @@ wxString dlgAggregate::GetSql()
         }
         wxString initial=txtInitial->GetValue().Strip(wxString::both);
         if (!initial.IsEmpty())
-            sql += wxT(",\n   INITCOND=") + qtDbString(initial);
+        {
+            if (initial == wxT("''")) // Empty string
+                sql += wxT(",\n   INITCOND=''");
+            else if (initial == wxT("\\'\\'")) // Pair of quotes
+                sql += wxT(",\n   INITCOND=''''''");
+            else
+                sql += wxT(",\n   INITCOND=") + qtDbString(initial);
+        }
 
         wxString opr=cbSortOp->GetStringKey();
         if (!opr.IsEmpty())

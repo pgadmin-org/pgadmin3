@@ -56,8 +56,17 @@ wxString pgAggregate::GetSql(ctlTree *browser)
              + wxT(",\n  STYPE=") + GetStateType();
 
         AppendIfFilled(sql, wxT(",\n  FINALFUNC="), qtIdent(GetFinalFunction()));
+
         if (GetInitialCondition().length() > 0)
-          sql += wxT(",\n  INITCOND=") + qtDbString(GetInitialCondition());
+        {
+            if (GetInitialCondition() == wxT("''"))
+                sql += wxT(",\n  INITCOND=''");
+            else if (GetInitialCondition() == wxT("\\'\\'"))
+                sql += wxT(",\n  INITCOND=''''''");
+            else
+                sql += wxT(",\n  INITCOND=") + qtDbString(GetInitialCondition());
+        }
+
         AppendIfFilled(sql, wxT(",\n  SORTOP="), GetQuotedSortOp());
 
         sql += wxT("\n);\n")
@@ -113,7 +122,16 @@ void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
         properties->AppendItem(_("Final function"), GetFinalFunction());
         if (GetConnection()->BackendMinimumVersion(8,1))
             properties->AppendItem(_("Sort operator"), GetSortOp());
-        properties->AppendItem(_("Initial condition"), GetInitialCondition());
+
+        if (GetInitialCondition() == wxT(""))
+            properties->AppendItem(_("Initial condition"), _("<null>"));
+        else if (GetInitialCondition() == wxT("''"))
+            properties->AppendItem(_("Initial condition"), _("<empty string>"));
+        else if (GetInitialCondition() == wxT("\\'\\'"))
+            properties->AppendItem(_("Initial condition"), _("''"));
+        else
+            properties->AppendItem(_("Initial condition"), GetInitialCondition());
+
         properties->AppendItem(_("System aggregate?"), GetSystemObject());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
@@ -224,7 +242,17 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
             wxString final=aggregates->GetVal(wxT("aggfinalfn"));
             if (final != wxT("-"))
                 aggregate->iSetFinalFunction(final);
-            aggregate->iSetInitialCondition(aggregates->GetVal(wxT("agginitval")));
+
+            if (!aggregates->IsNull(aggregates->ColNumber(wxT("agginitval"))))
+            {
+                if (aggregates->GetVal(wxT("agginitval")).IsEmpty())
+                    aggregate->iSetInitialCondition(wxT("''"));
+                else if (aggregates->GetVal(wxT("agginitval")) == wxT("''"))
+                    aggregate->iSetInitialCondition(wxT("\\'\\'"));
+                else
+                    aggregate->iSetInitialCondition(aggregates->GetVal(wxT("agginitval")));
+            }
+            
             aggregate->iSetComment(aggregates->GetVal(wxT("description")));
             if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
             {
