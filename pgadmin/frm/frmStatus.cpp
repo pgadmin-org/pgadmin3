@@ -84,8 +84,6 @@ BEGIN_EVENT_TABLE(frmStatus, pgFrame)
     EVT_TIMER(TIMER_LOG_ID,							frmStatus::OnRefreshLogTimer)
 	EVT_LIST_ITEM_SELECTED(CTL_LOGLIST,	    	    frmStatus::OnSelLogItem)
 	EVT_LIST_ITEM_DESELECTED(CTL_LOGLIST,		    frmStatus::OnSelLogItem)
-    EVT_COMBOBOX(CTL_LOGCBO,                        frmStatus::OnLoadLogfile)
-    EVT_BUTTON(CTL_ROTATEBTN,	     			    frmStatus::OnRotateLogfile)
 
     EVT_CLOSE(										frmStatus::OnClose)
 END_EVENT_TABLE();
@@ -156,7 +154,6 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     xactTimer = 0;
     logTimer = 0;
     xactPage = 2;
-    logPage = 3;
     logHasTimestamp = false;
     logFormatKnown = false;
 
@@ -300,10 +297,11 @@ frmStatus::~frmStatus()
     settings->Write(wxT("frmStatus/RefreshXactRate"), xactRate);
     delete xactTimer;
     settings->Write(wxT("frmStatus/RefreshLogRate"), logRate);
-    
-    if (logPage > 0)
+    if (viewMenu->IsEnabled(MNU_LOGPAGE))
+    {
         emptyLogfileCombo();
-    delete logTimer;
+        delete logTimer;
+    }
 
     // If connection is still available, delete it
     if (connection)
@@ -465,7 +463,6 @@ void frmStatus::AddXactPane()
     if (!connection->BackendMinimumVersion(8, 1))
     {
         // Set page numbers
-        logPage--;
         xactPage=-5;
 
         // Uncheck and disable menu        
@@ -517,25 +514,6 @@ void frmStatus::AddXactPane()
 
 void frmStatus::AddLogPane()
 {
-    // We don't need this report
-    // if server release is less than 8.0 or if server has no adminpack
-    if (!(connection->BackendMinimumVersion(8, 0) && 
-		 connection->HasFeature(FEATURE_FILEREAD)))
-    {
-        if (connection->BackendMinimumVersion(8, 0))
-            frmHint::ShowHint(this, HINT_INSTRUMENTATION);
-
-        // Set page number
-        logPage=-5;
-
-        // Uncheck and disable menu        
-        viewMenu->Check(MNU_LOGPAGE, false);
-        viewMenu->Enable(MNU_LOGPAGE, false);
-
-        // We're done
-        return;
-    }
-
     // Create panel
     wxPanel *pnlLog = new wxPanel(this);
 
@@ -559,8 +537,29 @@ void frmStatus::AddLogPane()
     pnlLog->SetSizer(grdLog);
     grdLog->Fit(pnlLog);
 
-    // Add each column to the list control
+    // Add the log list
     logList = (ctlListView*)lstLog;
+
+    // We don't need this report (but we need the pane)
+    // if server release is less than 8.0 or if server has no adminpack
+    if (!(connection->BackendMinimumVersion(8, 0) && 
+		 connection->HasFeature(FEATURE_FILEREAD)))
+    {
+        if (connection->BackendMinimumVersion(8, 0))
+            frmHint::ShowHint(this, HINT_INSTRUMENTATION);
+        
+        logList->AddColumn(_("Log entry"), 800);
+        logList->AppendItem(-1, _("no logpane"));
+
+        // Uncheck and disable menu
+        viewMenu->Enable(MNU_LOGPAGE, false);
+        viewMenu->Check(MNU_LOGPAGE, false);
+
+        // We're done
+        return;
+    }
+
+    // Add each column to the list control
     logFormat = connection->ExecuteScalar(wxT("SHOW log_line_prefix"));
     if (logFormat == wxT("unset"))
         logFormat = wxEmptyString;
@@ -735,6 +734,7 @@ void frmStatus::OnToggleXactPane(wxCommandEvent& event)
 
 void frmStatus::OnToggleLogPane(wxCommandEvent& event)
 {
+    wxLogError(wxT("bad2"));
     if (viewMenu->IsChecked(MNU_LOGPAGE))
     {
         manager.GetPane(logTitle).Show(true);
@@ -746,7 +746,7 @@ void frmStatus::OnToggleLogPane(wxCommandEvent& event)
     else
     {
         manager.GetPane(logTitle).Show(false);
-        logTimer->Start();
+        logTimer->Stop();
     }
     
     // Tell the manager to "commit" all the changes just made
@@ -1889,12 +1889,17 @@ void frmStatus::OnSelLogItem(wxListEvent &event)
 #endif
     currentPane = PANE_LOG;
     cbRate->SetValue(logRate);
-    cbLogfiles->Enable(true);
-    btnRotateLog->Enable(true);
-    toolBar->EnableTool(MNU_CANCEL, false);
-    toolBar->EnableTool(MNU_TERMINATE, false);
-    toolBar->EnableTool(MNU_COMMIT, false);
-    toolBar->EnableTool(MNU_ROLLBACK, false);
+    
+    // if there's no log, don't enable items
+    if (logDirectory != wxT("-")) 
+    {
+        cbLogfiles->Enable(true);
+        btnRotateLog->Enable(true);
+        toolBar->EnableTool(MNU_CANCEL, false);
+        toolBar->EnableTool(MNU_TERMINATE, false);
+        toolBar->EnableTool(MNU_COMMIT, false);
+        toolBar->EnableTool(MNU_ROLLBACK, false);
+    }
     
     editMenu->Enable(MNU_COPY, logList->GetFirstSelected()>=0);
 }

@@ -107,7 +107,7 @@ private:
 
 	bool loaded;
     long logfileLength;
-    int xactPage, logPage;
+    int xactPage;
     
     int currentPane;
 
