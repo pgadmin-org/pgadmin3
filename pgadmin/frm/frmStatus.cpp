@@ -16,6 +16,7 @@
 #include <wx/xrc/xmlres.h>
 #include <wx/image.h>
 #include <wx/textbuf.h>
+#include <wx/clipbrd.h>
 
 // wxAUI
 #include <wx/aui/aui.h>
@@ -30,6 +31,7 @@
 #include "ctl/ctlMenuToolbar.h"
 
 // Icons
+#include "images/clip_copy.xpm"
 #include "images/readdata.xpm"
 #include "images/query_cancel.xpm"
 #include "images/terminate_backend.xpm"
@@ -44,14 +46,7 @@
 BEGIN_EVENT_TABLE(frmStatus, pgFrame)
     EVT_MENU(MNU_EXIT,               				frmStatus::OnExit)
     
-/* We will uncomment this when we will have a need for these actions
-    EVT_MENU(MNU_CUT,                				frmStatus::OnCut)
     EVT_MENU(MNU_COPY,               				frmStatus::OnCopy)
-    EVT_MENU(MNU_PASTE,              				frmStatus::OnPaste)
-    EVT_MENU(MNU_CLEAR,              				frmStatus::OnClear)
-    EVT_MENU(MNU_UNDO,               				frmStatus::OnUndo)
-    EVT_MENU(MNU_REDO,               				frmStatus::OnRedo)
-*/
 
     EVT_MENU(MNU_HELP,               				frmStatus::OnHelp)
     EVT_MENU(MNU_STATUSPAGE,        				frmStatus::OnToggleStatusPane)
@@ -185,13 +180,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     menuBar->Append(fileMenu, _("&File"));
 
     editMenu = new wxMenu();
-    editMenu->Append(MNU_UNDO, _("&Undo\tCtrl-Z"), _("Undo last action"), wxITEM_NORMAL);
-    editMenu->Append(MNU_REDO, _("&Redo\tCtrl-Y"), _("Redo last action"), wxITEM_NORMAL);
-    editMenu->AppendSeparator();
-    editMenu->Append(MNU_CUT, _("Cu&t\tCtrl-X"), _("Cut selected text to clipboard"), wxITEM_NORMAL);
     editMenu->Append(MNU_COPY, _("&Copy\tCtrl-C"), _("Copy selected text to clipboard"), wxITEM_NORMAL);
-    editMenu->Append(MNU_PASTE, _("&Paste\tCtrl-V"), _("Paste selected text from clipboard"), wxITEM_NORMAL);
-    editMenu->Append(MNU_CLEAR, _("C&lear window"), _("Clear edit window"), wxITEM_NORMAL);
 
     menuBar->Append(editMenu, _("&Edit"));
 
@@ -212,15 +201,8 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
 
     menuBar->Append(helpMenu, _("&Help"));
     
-    // Fix edit menu
-    // Currently all disabled because we don't really need edit items
-    // They are only there because they are sort-of standards
-    editMenu->Enable(MNU_UNDO, false);
-    editMenu->Enable(MNU_REDO, false);
-    editMenu->Enable(MNU_CUT, false);
+    // Setup edit menu
     editMenu->Enable(MNU_COPY, false);
-    editMenu->Enable(MNU_PASTE, false);
-    editMenu->Enable(MNU_CLEAR, false);
 
     // Finish menu bar
     SetMenuBar(menuBar);
@@ -233,6 +215,9 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
     toolBar->SetToolBitmapSize(wxSize(16, 16));
     toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(readdata_xpm), _("Refresh"), wxITEM_NORMAL);
+    toolBar->AddSeparator();
+    toolBar->AddTool(MNU_COPY, _("Copy"), wxBitmap(clip_copy_xpm), _("Copy selected text to clipboard"), wxITEM_NORMAL);
+    toolBar->AddSeparator();
     toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_TERMINATE, _("Terminate"), wxBitmap(terminate_backend_xpm), _("Terminate backend"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_COMMIT, _("Commit"), wxBitmap(storedata_xpm), _("Commit transaction"), wxITEM_NORMAL);
@@ -282,7 +267,9 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     // Get our PID
     backend_pid = connection->GetBackendPID();
     
-    // Create the refresh timer (half a second)
+    // Create the refresh timer (quarter of a second)
+    // This is a horrible hack to get around the lack of a 
+    // PANE_ACTIVATED event in wxAUI.
     refreshUITimer = new wxTimer(this, TIMER_REFRESHUI_ID);
     refreshUITimer->Start(250);
 
@@ -604,6 +591,57 @@ void frmStatus::AddLogPane()
         
     // Create the timer
     logTimer = new wxTimer(this, TIMER_LOG_ID);
+}
+
+
+void frmStatus::OnCopy(wxCommandEvent& ev)
+{
+    ctlListView *list;
+    int row, col;
+    wxString text;
+    
+    switch(currentPane)
+    {
+        case PANE_STATUS:
+            list = statusList;
+            break;
+        case PANE_LOCKS:
+            list = lockList;
+            break;
+        case PANE_XACT:
+            list = xactList;
+            break;
+        case PANE_LOG:
+            list = logList;
+            break;
+        default:
+            // This shouldn't happen.
+            // If it does, it's no big deal, we just need to get out.
+            return;
+            break;
+    }
+    
+    row = list->GetFirstSelected();
+    
+    while (row >= 0)
+    {
+        for (col = 0; col < list->GetColumnCount(); col++)
+        {
+            text.Append(list->GetText(row, col) + wxT("\t"));
+        }
+#ifdef __WXMSW__
+        text.Append(wxT("\r\n"));
+#else
+        text.Append(wxT("\n"));
+#endif
+        row = list->GetNextSelected(row);
+    }
+    
+    if (text.Length() > 0 && wxTheClipboard->Open())
+    {
+        wxTheClipboard->SetData(new wxTextDataObject(text));
+        wxTheClipboard->Close();
+    }
 }
 
 
@@ -1363,14 +1401,14 @@ void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp,
                 continue;
             }
             if (tk.HasMoreTokens() || hasCr)
-                addLogLine(str);
+                addLogLine(str.Trim());
             else
                 line = str;
         }
         logList->Thaw();
     }
     if (!line.IsEmpty())
-        addLogLine(line);
+        addLogLine(line.Trim());
 }
 
 
@@ -1450,7 +1488,7 @@ int frmStatus::fillLogfileCombo()
 {
     int count=cbLogfiles->GetCount();
     if (!count)
-        cbLogfiles->Append(_(" current"));
+        cbLogfiles->Append(_("Current log"));
     else
         count--;
 
@@ -1771,6 +1809,8 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
     toolBar->EnableTool(MNU_ROLLBACK, false);
     cbLogfiles->Enable(false);
     btnRotateLog->Enable(false);
+    
+    editMenu->Enable(MNU_COPY, statusList->GetFirstSelected()>=0);
 }
 
 
@@ -1803,6 +1843,8 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
     toolBar->EnableTool(MNU_ROLLBACK, false);
     cbLogfiles->Enable(false);
     btnRotateLog->Enable(false);
+    
+    editMenu->Enable(MNU_COPY, lockList->GetFirstSelected()>=0);
 }
 
 
@@ -1831,6 +1873,8 @@ void frmStatus::OnSelXactItem(wxListEvent &event)
     toolBar->EnableTool(MNU_TERMINATE, false);
     cbLogfiles->Enable(false);
     btnRotateLog->Enable(false);
+    
+    editMenu->Enable(MNU_COPY, xactList->GetFirstSelected()>=0);
 }
 
 
@@ -1851,6 +1895,8 @@ void frmStatus::OnSelLogItem(wxListEvent &event)
     toolBar->EnableTool(MNU_TERMINATE, false);
     toolBar->EnableTool(MNU_COMMIT, false);
     toolBar->EnableTool(MNU_ROLLBACK, false);
+    
+    editMenu->Enable(MNU_COPY, logList->GetFirstSelected()>=0);
 }
 
 
