@@ -50,11 +50,14 @@ wxString edbPackage::GetSql(ctlTree *browser)
               wxT("-- DROP PACKAGE ") + qtName;
 
         sql += wxT(";\n\n");
-        sql += GetHeader();
-        sql += wxT("\n\n");
-        sql += GetBody();
+        sql += wxT("CREATE OR REPLACE PACKAGE ") + qtName + wxT("\nIS\n");
+        sql += GetHeaderInner();
+        sql += wxT("\nEND ") + qtIdent(GetName()) + wxT(";\n\n");
 
-        sql += wxT("\n\n");
+        sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nIS\n");
+        sql += GetBodyInner();
+        sql += wxT("\nEND ") + qtIdent(GetName()) + wxT(";\n\n");
+
         sql += GetGrant(wxT("X"), wxT("PACKAGE ") + qtName);
 
         sql += wxT("\n");

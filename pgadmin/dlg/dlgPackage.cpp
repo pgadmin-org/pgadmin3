@@ -152,7 +152,7 @@ wxString dlgPackage::GetSql()
         if (package)
             sql = wxT("DROP PACKAGE BODY ") + qtName + wxT(";\n\n");
 
-        sql += wxT("CREATE OR REPLACE PACKAGE ") + qtName + wxT("\nAS\n");
+        sql += wxT("CREATE OR REPLACE PACKAGE ") + qtName + wxT("\nIS\n");
         sql += txtHeader->GetText();
         sql += wxT("\nEND ") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
     }
@@ -162,9 +162,9 @@ wxString dlgPackage::GetSql()
     {
         if (!txtBody->GetText().IsEmpty())
         {
-            sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nAS\n");
+            sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nIS\n");
             sql += txtBody->GetText();
-            sql += wxT("\nEND ") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
+            sql += wxT("\nEND") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
         }
         else
         {
