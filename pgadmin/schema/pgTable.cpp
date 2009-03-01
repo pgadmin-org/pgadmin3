@@ -754,26 +754,26 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         {
             if (GetAutoVacuumEnabled() != 2)
             {
-                properties->AppendItem(_("Auto-vacuum enabled?"), GetAutoVacuumEnabled() == 1 ? _("Yes") : _("No"));
+                properties->AppendItem(_("Table auto-vacuum enabled?"), GetAutoVacuumEnabled() == 1 ? _("Yes") : _("No"));
             }
 			if (!GetAutoVacuumVacuumThreshold().IsEmpty())
-				properties->AppendItem(_("autovacuum vacuum threshold"), GetAutoVacuumVacuumThreshold());
+				properties->AppendItem(_("Table auto-vacuum VACUUM base threshold"), GetAutoVacuumVacuumThreshold());
 			if (!GetAutoVacuumVacuumScaleFactor().IsEmpty())
-				properties->AppendItem(_("autovacuum_vacuum_scale_factor"), GetAutoVacuumVacuumScaleFactor());
+				properties->AppendItem(_("Table auto-vacuum VACUUM scale factor"), GetAutoVacuumVacuumScaleFactor());
 			if (!GetAutoVacuumAnalyzeThreshold().IsEmpty())
-				properties->AppendItem(_("autovacuum_analyze_threshold"), GetAutoVacuumAnalyzeThreshold());
+				properties->AppendItem(_("Table auto-vacuum ANALYZE base threshold"), GetAutoVacuumAnalyzeThreshold());
 			if (!GetAutoVacuumAnalyzeScaleFactor().IsEmpty())
-				properties->AppendItem(_("autovacuum_analyze_scale_factor"), GetAutoVacuumAnalyzeScaleFactor());
+				properties->AppendItem(_("Table auto-vacuum ANALYZE scale factor"), GetAutoVacuumAnalyzeScaleFactor());
 			if (!GetAutoVacuumVacuumCostDelay().IsEmpty())
-				properties->AppendItem(_("autovacuum_vacuum_cost_delay"), GetAutoVacuumVacuumCostDelay());
+				properties->AppendItem(_("Table auto-vacuum VACUUM cost delay"), GetAutoVacuumVacuumCostDelay());
 			if (!GetAutoVacuumVacuumCostLimit().IsEmpty())
-				properties->AppendItem(_("autovacuum_vacuum_cost_limit"), GetAutoVacuumVacuumCostLimit());
+				properties->AppendItem(_("Table auto-vacuum VACUUM cost limit"), GetAutoVacuumVacuumCostLimit());
 			if (!GetAutoVacuumFreezeMinAge().IsEmpty())
-				properties->AppendItem(_("autovacuum_freeze_min_age"), GetAutoVacuumFreezeMinAge());
+				properties->AppendItem(_("Table auto-vacuum FREEZE minimum age"), GetAutoVacuumFreezeMinAge());
 			if (!GetAutoVacuumFreezeMaxAge().IsEmpty())
-				properties->AppendItem(_("autovacuum_freeze_max_age"), GetAutoVacuumFreezeMaxAge());
+				properties->AppendItem(_("Table auto-vacuum FREEZE maximum age"), GetAutoVacuumFreezeMaxAge());
 			if (!GetAutoVacuumFreezeTableAge().IsEmpty())
-				properties->AppendItem(_("autovacuum_freeze_table_age"), GetAutoVacuumFreezeTableAge());
+				properties->AppendItem(_("Table auto-vacuum FREEZE table age"), GetAutoVacuumFreezeTableAge());
         }
 
         /* Custom TOAST-TABLE AutoVacuum Settings */
@@ -786,23 +786,23 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
                 properties->AppendItem(_("Toast auto-vacuum enabled?"), GetToastAutoVacuumEnabled() == 1 ? _("Yes") : _("No"));
             }
 			if (!GetToastAutoVacuumVacuumThreshold().IsEmpty())
-				properties->AppendItem(_("toast.autovacuum_vacuum_threshold"), GetToastAutoVacuumVacuumThreshold());
+				properties->AppendItem(_("Toast auto-vacuum VACUUM base threshold"), GetToastAutoVacuumVacuumThreshold());
 			if (!GetToastAutoVacuumVacuumScaleFactor().IsEmpty())
-				properties->AppendItem(_("toast.autovacuum_vacuum_scale_factor"), GetToastAutoVacuumVacuumScaleFactor());
+				properties->AppendItem(_("Toast auto-vacuum VACUUM scale factor"), GetToastAutoVacuumVacuumScaleFactor());
 			if (!GetToastAutoVacuumAnalyzeThreshold().IsEmpty())
-				properties->AppendItem(_("toast.autovacuum_analyze_threshold"), GetToastAutoVacuumAnalyzeThreshold());
+				properties->AppendItem(_("Toast auto-vacuum ANALYZE base threshold"), GetToastAutoVacuumAnalyzeThreshold());
 			if (!GetToastAutoVacuumAnalyzeScaleFactor().IsEmpty())
-				properties->AppendItem(_("toast.autovacuum_analyze_scale_factor"), GetToastAutoVacuumAnalyzeScaleFactor());
+				properties->AppendItem(_("Toast auto-vacuum ANALYZE scale factor"), GetToastAutoVacuumAnalyzeScaleFactor());
 			if (!GetToastAutoVacuumVacuumCostDelay().IsEmpty())
-				properties->AppendItem(_("toast.autovacuum_vacuum_cost_delay"), GetToastAutoVacuumVacuumCostDelay());
+				properties->AppendItem(_("Toast auto-vacuum VACUUM cost delay"), GetToastAutoVacuumVacuumCostDelay());
 			if (!GetToastAutoVacuumVacuumCostLimit().IsEmpty())
-				properties->AppendItem(_("toast.autovacuum_vacuum_cost_limit"), GetToastAutoVacuumVacuumCostLimit());
+				properties->AppendItem(_("Toast auto-vacuum VACUUM cost limit"), GetToastAutoVacuumVacuumCostLimit());
 			if (!GetToastAutoVacuumFreezeMinAge().IsEmpty())
-				properties->AppendItem(_("toast.autovacuum_freeze_min_age"), GetToastAutoVacuumFreezeMinAge());
+				properties->AppendItem(_("Toast auto-vacuum FREEZE minimum age"), GetToastAutoVacuumFreezeMinAge());
 			if (!GetToastAutoVacuumFreezeMaxAge().IsEmpty())
-				properties->AppendItem(_("toast.autovacuum_freeze_max_age"), GetToastAutoVacuumFreezeMaxAge());
+				properties->AppendItem(_("Toast auto-vacuum FREEZE maximum age"), GetToastAutoVacuumFreezeMaxAge());
 			if (!GetToastAutoVacuumFreezeTableAge().IsEmpty())
-				properties->AppendItem(_("toast.autovacuum_freeze_table_age"), GetToastAutoVacuumFreezeTableAge());
+				properties->AppendItem(_("Toast auto-vacuum FREEZE table age"), GetToastAutoVacuumFreezeTableAge());
         }
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 

@@ -31,7 +31,6 @@
 #define txtFillFactor   CTRL_TEXT("txtFillFactor")
 
 #define chkDesc         CTRL_CHECKBOX("chkDesc")
-//#define rdbNulls        CTRL_RADIOBOX("rdbNulls")
 #define rdbNullsFirst   CTRL_RADIOBUTTON("rdbNullsFirst")
 #define rdbNullsLast    CTRL_RADIOBUTTON("rdbNullsLast")
 

@@ -201,9 +201,9 @@ pgsTimer(new pgScriptTimer(this))
     menuBar->Append(editMenu, _("&Edit"));
 
     queryMenu = new wxMenu();
-    queryMenu->Append(MNU_EXECUTE, _("&Execute\tF5"), _("Execute query / Generate SQL from Graphical Query Builder Model"));
+    queryMenu->Append(MNU_EXECUTE, _("&Execute\tF5"), _("Execute query"));
     queryMenu->Append(MNU_EXECPGS, _("Execute &pgScript\tF6"), _("Execute pgScript"));
-    queryMenu->Append(MNU_EXECFILE, _("Execute to file"), _("Execute query, write result to file / Generate SQL from Graphical Query Builder Model"));
+    queryMenu->Append(MNU_EXECFILE, _("Execute to file"), _("Execute query, write result to file"));
     queryMenu->Append(MNU_EXPLAIN, _("E&xplain\tF7"), _("Explain query"));
     
 
@@ -307,9 +307,9 @@ pgsTimer(new pgScriptTimer(this))
     toolBar->AddTool(MNU_FIND, _("Find"), wxBitmap(edit_find_xpm), _("Find and replace text"), wxITEM_NORMAL);
     toolBar->AddSeparator();
 
-    toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query / Generate SQL from Graphical Query Builder Model"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXECPGS, _("Execute pgScript"), wxBitmap(query_pgscript_xpm), _("Execute pgScript"), wxITEM_NORMAL);
-    toolBar->AddTool(MNU_EXECFILE, _("Execute to file"), wxBitmap(query_execfile_xpm), _("Execute query, write result to file / Generate SQL from Graphical Query Builder Model"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_EXECFILE, _("Execute to file"), wxBitmap(query_execfile_xpm), _("Execute query, write result to file"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
     toolBar->AddSeparator();
@@ -959,6 +959,10 @@ void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
 
         if (event.GetSelection() == 0)
 	  {
+        queryMenu->SetHelpString(MNU_EXECUTE, _("Execute query"));
+        queryMenu->SetHelpString(MNU_EXECFILE, _("Execute query, write result to file"));
+        toolBar->SetToolShortHelp(MNU_EXECUTE, _("Execute query"));
+        toolBar->SetToolShortHelp(MNU_EXECFILE, _("Execute query, write result to file"));
 		manager.GetPane(wxT("outputPane")).Show(true);
 		manager.GetPane(wxT("scratchPad")).Show(true);
 		manager.Update();
@@ -966,6 +970,10 @@ void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
 	  }
         else
         {
+        queryMenu->Append(MNU_EXECUTE, _("Generate SQL from Graphical Query Builder Model"));
+        queryMenu->SetHelpString(MNU_EXECFILE, _("Generate SQL from Graphical Query Builder Model"));
+        toolBar->SetToolShortHelp(MNU_EXECUTE, _("Generate SQL from Graphical Query Builder Model"));
+        toolBar->SetToolShortHelp(MNU_EXECFILE, _("Generate SQL from Graphical Query Builder Model"));
 		manager.GetPane(wxT("outputPane")).Show(false);
 		manager.GetPane(wxT("scratchPad")).Show(false);
 		manager.Update();

@@ -263,7 +263,7 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
         wxString strConnLimit;
         strConnLimit.Printf(wxT("%ld"), GetConnectionLimit()); 
-        properties->AppendItem(_("Connection limit"), strConnLimit);
+        properties->AppendItem(_("Connection Limit"), strConnLimit);
 
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 
