@@ -153,7 +153,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     locksTimer = 0;
     xactTimer = 0;
     logTimer = 0;
-    xactPage = 2;
+    
     logHasTimestamp = false;
     logFormatKnown = false;
 
@@ -251,6 +251,18 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     settings->Read(wxT("frmStatus/Perspective-") + VerFromRev(FRMSTATUS_PERSPECTIVE_VER), &perspective, FRMSTATUS_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
+	// XACT and LOG panes must be hidden once again if server doesn't deal with them
+    if (!(connection->BackendMinimumVersion(8, 0) && 
+		 connection->HasFeature(FEATURE_FILEREAD)))
+    {
+		manager.GetPane(logTitle).Show(false);
+    }
+    if (!connection->BackendMinimumVersion(8, 1))
+    {
+		manager.GetPane(xactTitle).Show(false);
+    }
+
+
     // Tell the manager to "commit" all the changes just made
     manager.Update();
 
@@ -328,15 +340,15 @@ void frmStatus::Go()
         cbRate->SetValue(locksRate);
         OnRateChange(nullScrollEvent);
     }
-    if (viewMenu->IsChecked(MNU_XACTPAGE))
+    if (viewMenu->IsEnabled(MNU_XACTPAGE) && viewMenu->IsChecked(MNU_XACTPAGE))
     {
         currentPane = PANE_XACT;
         cbRate->SetValue(xactRate);
         OnRateChange(nullScrollEvent);
     }
-    if (viewMenu->IsChecked(MNU_LOGPAGE))
+    if (viewMenu->IsEnabled(MNU_LOGPAGE) && viewMenu->IsChecked(MNU_LOGPAGE))
     {
-        currentPane = PANE_LOG;
+		currentPane = PANE_LOG;
         cbRate->SetValue(logRate);
         OnRateChange(nullScrollEvent);
     }
@@ -459,20 +471,6 @@ void frmStatus::AddLockPane()
 
 void frmStatus::AddXactPane()
 {
-    // We don't need this report if server release is less than 8.1
-    if (!connection->BackendMinimumVersion(8, 1))
-    {
-        // Set page numbers
-        xactPage=-5;
-
-        // Uncheck and disable menu        
-        viewMenu->Check(MNU_LOCKPAGE, false);
-        viewMenu->Enable(MNU_LOCKPAGE, false);
-
-        // We're done
-        return;
-    }
-
     // Create panel
     wxPanel *pnlXacts = new wxPanel(this);
     
@@ -496,8 +494,22 @@ void frmStatus::AddXactPane()
     pnlXacts->SetSizer(grdXacts);
     grdXacts->Fit(pnlXacts);
 
-    // Add each column to the list control
+    // Add the xact list
     xactList = (ctlListView*)lstXacts;
+
+    // We don't need this report if server release is less than 8.1
+    if (!connection->BackendMinimumVersion(8, 1))
+    {
+        // Uncheck and disable menu        
+        viewMenu->Enable(MNU_XACTPAGE, false);
+        viewMenu->Check(MNU_XACTPAGE, false);
+		manager.GetPane(xactTitle).Show(false);
+        
+        // We're done
+        return;
+    }
+
+    // Add each column to the list control
     xactList->AddColumn(wxT("XID"), 50);
     xactList->AddColumn(_("Global ID"), 200);
     xactList->AddColumn(_("Time"), 100);
@@ -554,6 +566,7 @@ void frmStatus::AddLogPane()
         // Uncheck and disable menu
         viewMenu->Enable(MNU_LOGPAGE, false);
         viewMenu->Check(MNU_LOGPAGE, false);
+		manager.GetPane(logTitle).Show(false);
 
         // We're done
         return;
@@ -713,7 +726,7 @@ void frmStatus::OnToggleLockPane(wxCommandEvent& event)
 
 void frmStatus::OnToggleXactPane(wxCommandEvent& event)
 {
-    if (viewMenu->IsChecked(MNU_XACTPAGE))
+    if (viewMenu->IsEnabled(MNU_XACTPAGE) && viewMenu->IsChecked(MNU_XACTPAGE))
     {
         manager.GetPane(xactTitle).Show(true);
         cbRate->SetValue(xactRate);
@@ -734,8 +747,7 @@ void frmStatus::OnToggleXactPane(wxCommandEvent& event)
 
 void frmStatus::OnToggleLogPane(wxCommandEvent& event)
 {
-    wxLogError(wxT("bad2"));
-    if (viewMenu->IsChecked(MNU_LOGPAGE))
+    if (viewMenu->IsEnabled(MNU_LOGPAGE) && viewMenu->IsChecked(MNU_LOGPAGE))
     {
         manager.GetPane(logTitle).Show(true);
         cbRate->SetValue(logRate);
@@ -1115,7 +1127,7 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
 {
     long pid=0;
 
-    if (! viewMenu->IsChecked(MNU_XACTPAGE))
+    if (! viewMenu->IsEnabled(MNU_XACTPAGE) || ! viewMenu->IsChecked(MNU_XACTPAGE))
         return;
 
 	if (!connection)
@@ -1191,7 +1203,7 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
 
 void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
 {
-    if (! viewMenu->IsChecked(MNU_LOGPAGE))
+    if (! viewMenu->IsEnabled(MNU_LOGPAGE) || ! viewMenu->IsChecked(MNU_LOGPAGE))
         return;
 
 	if (!connection)
@@ -1199,7 +1211,7 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
 	    wxLogError(wxT("no connection for logs"));
 	    return;
     }
-
+    
     wxCriticalSectionLocker lock(gs_critsect);
 
     connection->ExecuteVoid(wxT("SET log_statement='none';"));
@@ -1338,7 +1350,7 @@ void frmStatus::addLogFile(wxDateTime *dt, bool skipFirst)
 void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp, long len, long &read, bool skipFirst)
 {
     wxString line;
-
+    
     if (skipFirst)
     {
         long maxServerLogSize = settings->GetMaxServerLogSize();
