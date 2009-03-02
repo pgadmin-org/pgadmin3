@@ -313,17 +313,17 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
 void pgObject::CreateList3Columns(ctlListView *list, const wxString &left, const wxString &middle, const wxString &right)
 {
     list->ClearAll();
-    list->AddColumn(left, 90);
-    list->AddColumn(middle, 50);
-    list->AddColumn(right, 400);
+    list->AddColumn(left, 80);
+    list->AddColumn(middle, 80);
+    list->AddColumn(right, list->GetSize().GetWidth() - 170);
 }
 
 
 void pgObject::CreateListColumns(ctlListView *list, const wxString &left, const wxString &right)
 {
     list->ClearAll();
-    list->AddColumn(left, 90);
-    list->AddColumn(right, 450);
+    list->AddColumn(left, 130);
+    list->AddColumn(right, list->GetSize().GetWidth() - 140);
 }
 
 

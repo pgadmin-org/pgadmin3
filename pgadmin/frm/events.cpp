@@ -254,7 +254,7 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
     if (currentNode)
     {
         properties->ClearAll();
-        properties->AddColumn(_("Properties"), 500);
+        properties->AddColumn(_("Properties"), properties->GetSize().GetWidth() - 10);
         properties->InsertItem(0, _("No properties are available for the current selection"), PGICON_PROPERTY);
 
         sqlPane->Clear();

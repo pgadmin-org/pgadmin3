@@ -645,7 +645,7 @@ void frmMain::ShowObjStatistics(pgObject *data, int sel)
         {
             statistics->Freeze();
             statistics->ClearAll();
-            statistics->AddColumn(_("Statistics"), 500);
+            statistics->AddColumn(_("Statistics"), statistics->GetSize().GetWidth() - 10);
             statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
             data->ShowStatistics(this, statistics);
             statistics->Thaw();
