@@ -38,10 +38,12 @@
 #include "images/delete.xpm"
 #include "images/storedata.xpm"
  
+// Panes' title
 #define statusTitle  wxT("Activity")
 #define locksTitle   wxT("Locks")
 #define xactTitle    wxT("Transactions")
 #define logTitle     wxT("Logfile")
+
 
 BEGIN_EVENT_TABLE(frmStatus, pgFrame)
     EVT_MENU(MNU_EXIT,               				frmStatus::OnExit)
@@ -89,54 +91,61 @@ BEGIN_EVENT_TABLE(frmStatus, pgFrame)
 END_EVENT_TABLE();
 
 
-void ChangeButtonId(wxButton *btn, int id, const wxChar *txt)
+int frmStatus::cboToRate()
 {
-    btn->SetId(id);
-    btn->SetLabel(txt);
-}
+    int rate = 0;
 
-
-long cboToRate(wxComboBox *cbo)
-{
-    long rate = 0;
-
-    if (cbo->GetValue() == _("Don't refresh"))
+    if (cbRate->GetValue() == _("Don't refresh"))
         rate = 0;
-    if (cbo->GetValue() == _("1 second"))
+    if (cbRate->GetValue() == _("1 second"))
         rate = 1;
-    if (cbo->GetValue() == _("5 seconds"))
+    if (cbRate->GetValue() == _("5 seconds"))
         rate = 5;
-    if (cbo->GetValue() == _("10 seconds"))
+    if (cbRate->GetValue() == _("10 seconds"))
         rate = 10;
-    if (cbo->GetValue() == _("30 seconds"))
+    if (cbRate->GetValue() == _("30 seconds"))
         rate = 30;
-    if (cbo->GetValue() == _("1 minute"))
+    if (cbRate->GetValue() == _("1 minute"))
         rate = 60;
-    if (cbo->GetValue() == _("5 minutes"))
+    if (cbRate->GetValue() == _("5 minutes"))
         rate = 300;
-    if (cbo->GetValue() == _("10 minutes"))
+    if (cbRate->GetValue() == _("10 minutes"))
         rate = 600;
-    if (cbo->GetValue() == _("30 minutes"))
+    if (cbRate->GetValue() == _("30 minutes"))
         rate = 1800;
-    if (cbo->GetValue() == _("1 hour"))
+    if (cbRate->GetValue() == _("1 hour"))
         rate = 3600;
 
-    return rate*1000L;
+    return rate;
 }
 
 
-void appendItemsToCbo(wxComboBox *cbo)
+wxString frmStatus::rateToCboString(int rate)
 {
-    cbo->Append(_("Don't refresh"));
-    cbo->Append(_("1 second"));
-    cbo->Append(_("5 seconds"));
-    cbo->Append(_("10 seconds"));
-    cbo->Append(_("30 seconds"));
-    cbo->Append(_("1 minute"));
-    cbo->Append(_("5 minutes"));
-    cbo->Append(_("10 minutes"));
-    cbo->Append(_("30 minutes"));
-    cbo->Append(_("1 hour"));
+    wxString rateStr;
+
+    if (rate == 0)
+        rateStr = _("Don't refresh");
+    if (rate == 1)
+        rateStr = _("1 second");
+    if (rate == 5)
+        rateStr = _("5 seconds");
+    if (rate == 10)
+        rateStr = _("10 seconds");
+    if (rate == 30)
+        rateStr = _("30 seconds");
+    if (rate == 60)
+        rateStr = _("1 minute");
+    if (rate == 300)
+        rateStr = _("5 minutes");
+    if (rate == 600)
+        rateStr = _("10 minutes");
+    if (rate == 1800)
+        rateStr = _("30 minutes");
+    if (rate == 3600)
+        rateStr = _("1 heure");
+
+    return rateStr;
 }
 
 
@@ -227,10 +236,21 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     toolBar->AddControl(btnRotateLog);
     toolBar->AddSeparator();
     cbRate = new ctlComboBoxFix(toolBar, CTL_RATECBO, wxDefaultPosition, wxSize(-1, -1), wxCB_READONLY|wxCB_DROPDOWN);
-    appendItemsToCbo(cbRate);
     toolBar->AddControl(cbRate);
     toolBar->Realize();
 
+    // Append items to cbo
+    cbRate->Append(_("Don't refresh"));
+    cbRate->Append(_("1 second"));
+    cbRate->Append(_("5 seconds"));
+    cbRate->Append(_("10 seconds"));
+    cbRate->Append(_("30 seconds"));
+    cbRate->Append(_("1 minute"));
+    cbRate->Append(_("5 minutes"));
+    cbRate->Append(_("10 minutes"));
+    cbRate->Append(_("30 minutes"));
+    cbRate->Append(_("1 hour"));
+    
     // Disable toolbar's items
     toolBar->EnableTool(MNU_CANCEL, false);
     toolBar->EnableTool(MNU_TERMINATE, false);
@@ -261,7 +281,6 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     {
 		manager.GetPane(xactTitle).Show(false);
     }
-
 
     // Tell the manager to "commit" all the changes just made
     manager.Update();
@@ -306,11 +325,14 @@ frmStatus::~frmStatus()
     delete statusTimer;
     settings->Write(wxT("frmStatus/RefreshLockRate"), locksRate);
     delete locksTimer;
-    settings->Write(wxT("frmStatus/RefreshXactRate"), xactRate);
-    delete xactTimer;
-    settings->Write(wxT("frmStatus/RefreshLogRate"), logRate);
+    if (viewMenu->IsEnabled(MNU_XACTPAGE))
+    {
+        settings->Write(wxT("frmStatus/RefreshXactRate"), xactRate);
+        delete xactTimer;
+    }
     if (viewMenu->IsEnabled(MNU_LOGPAGE))
     {
+        settings->Write(wxT("frmStatus/RefreshLogRate"), logRate);
         emptyLogfileCombo();
         delete logTimer;
     }
@@ -331,25 +353,25 @@ void frmStatus::Go()
     if (viewMenu->IsChecked(MNU_STATUSPAGE))
     {
         currentPane = PANE_STATUS;
-        cbRate->SetValue(statusRate);
+        cbRate->SetValue(rateToCboString(statusRate));
         OnRateChange(nullScrollEvent);
     }
     if (viewMenu->IsChecked(MNU_LOCKPAGE))
     {
         currentPane = PANE_LOCKS;
-        cbRate->SetValue(locksRate);
+        cbRate->SetValue(rateToCboString(locksRate));
         OnRateChange(nullScrollEvent);
     }
     if (viewMenu->IsEnabled(MNU_XACTPAGE) && viewMenu->IsChecked(MNU_XACTPAGE))
     {
         currentPane = PANE_XACT;
-        cbRate->SetValue(xactRate);
+        cbRate->SetValue(rateToCboString(xactRate));
         OnRateChange(nullScrollEvent);
     }
     if (viewMenu->IsEnabled(MNU_LOGPAGE) && viewMenu->IsChecked(MNU_LOGPAGE))
     {
 		currentPane = PANE_LOG;
-        cbRate->SetValue(logRate);
+        cbRate->SetValue(rateToCboString(logRate));
         OnRateChange(nullScrollEvent);
     }
 
@@ -414,7 +436,7 @@ void frmStatus::AddStatusPane()
     statusList->AddColumn(_("Query"), 500);
 
 	// Read statusRate configuration
-    settings->Read(wxT("frmStatus/RefreshStatusRate"), &statusRate, wxT("10 seconds"));
+    settings->Read(wxT("frmStatus/RefreshStatusRate"), &statusRate, 10);
     
     // Create the timer
     statusTimer = new wxTimer(this, TIMER_STATUS_ID);
@@ -462,7 +484,7 @@ void frmStatus::AddLockPane()
     lockList->AddColumn(_("Query"), 500);
 
 	// Read locksRate configuration
-    settings->Read(wxT("frmStatus/RefreshLockRate"), &locksRate, wxT("10 seconds"));
+    settings->Read(wxT("frmStatus/RefreshLockRate"), &locksRate, 10);
     
     // Create the timer
     locksTimer = new wxTimer(this, TIMER_LOCKS_ID);
@@ -517,7 +539,7 @@ void frmStatus::AddXactPane()
     xactList->AddColumn(_("Database"), 50);
 
 	// Read xactRate configuration
-    settings->Read(wxT("frmStatus/RefreshXactRate"), &xactRate, wxT("10 seconds"));
+    settings->Read(wxT("frmStatus/RefreshXactRate"), &xactRate, 10);
     
     // Create the timer
     xactTimer = new wxTimer(this, TIMER_XACT_ID);
@@ -599,7 +621,7 @@ void frmStatus::AddLogPane()
     logfileLength = 0;
     	
 	// Read logRate configuration
-    settings->Read(wxT("frmStatus/RefreshLogRate"), &logRate, wxT("10 seconds"));
+    settings->Read(wxT("frmStatus/RefreshLogRate"), &logRate, 10);
         
     // Create the timer
     logTimer = new wxTimer(this, TIMER_LOG_ID);
@@ -687,10 +709,9 @@ void frmStatus::OnToggleStatusPane(wxCommandEvent& event)
     if (viewMenu->IsChecked(MNU_STATUSPAGE))
     {
         manager.GetPane(statusTitle).Show(true);
-        cbRate->SetValue(statusRate);
-        long rate = cboToRate(cbRate);
-        if (rate > 0)
-            statusTimer->Start(rate);
+        cbRate->SetValue(rateToCboString(statusRate));
+        if (statusRate > 0)
+            statusTimer->Start(statusRate*1000L);
     }
     else
     {
@@ -708,10 +729,9 @@ void frmStatus::OnToggleLockPane(wxCommandEvent& event)
     if (viewMenu->IsChecked(MNU_LOCKPAGE))
     {
         manager.GetPane(locksTitle).Show(true);
-        cbRate->SetValue(locksRate);
-        long rate = cboToRate(cbRate);
-        if (rate > 0)
-            locksTimer->Start(rate);
+        cbRate->SetValue(rateToCboString(locksRate));
+        if (locksRate > 0)
+            locksTimer->Start(locksRate*1000L);
     }
     else
     {
@@ -729,10 +749,9 @@ void frmStatus::OnToggleXactPane(wxCommandEvent& event)
     if (viewMenu->IsEnabled(MNU_XACTPAGE) && viewMenu->IsChecked(MNU_XACTPAGE))
     {
         manager.GetPane(xactTitle).Show(true);
-        cbRate->SetValue(xactRate);
-        long rate = cboToRate(cbRate);
-        if (rate > 0)
-            xactTimer->Start(rate);
+        cbRate->SetValue(rateToCboString(xactRate));
+        if (xactRate > 0)
+            xactTimer->Start(xactRate*1000L);
     }
     else
     {
@@ -750,10 +769,9 @@ void frmStatus::OnToggleLogPane(wxCommandEvent& event)
     if (viewMenu->IsEnabled(MNU_LOGPAGE) && viewMenu->IsChecked(MNU_LOGPAGE))
     {
         manager.GetPane(logTitle).Show(true);
-        cbRate->SetValue(logRate);
-        long rate = cboToRate(cbRate);
-        if (rate > 0)
-            logTimer->Start(rate);
+        cbRate->SetValue(rateToCboString(logRate));
+        if (logRate > 0)
+            logTimer->Start(logRate*1000L);
     }
     else
     {
@@ -816,24 +834,29 @@ void frmStatus::OnHelp(wxCommandEvent& event)
 void frmStatus::OnRateChange(wxCommandEvent &event)
 {
     wxTimer *timer;
+    int rate;
     
     switch(currentPane)
     {
         case PANE_STATUS:
             timer = statusTimer;
-            statusRate = cbRate->GetValue();
+            rate = cboToRate();
+            statusRate = rate;
             break;
         case PANE_LOCKS:
             timer = locksTimer;
-            locksRate = cbRate->GetValue();
+            rate = cboToRate();
+            locksRate = rate;
             break;
         case PANE_XACT:
             timer = xactTimer;
-            xactRate = cbRate->GetValue();
+            rate = cboToRate();
+            xactRate = rate;
             break;
         case PANE_LOG:
             timer = logTimer;
-            logRate = cbRate->GetValue();
+            rate = cboToRate();
+            logRate = rate;
             break;
         default:
             // This shouldn't happen.
@@ -843,9 +866,8 @@ void frmStatus::OnRateChange(wxCommandEvent &event)
     }
     
     timer->Stop();
-    long rate = cboToRate(cbRate);
     if (rate > 0)
-        timer->Start(rate);
+        timer->Start(rate*1000L);
     OnRefresh(event);
 }
 
@@ -1802,7 +1824,7 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
   manager.Update();
 #endif
     currentPane = PANE_STATUS;
-    cbRate->SetValue(statusRate);
+    cbRate->SetValue(rateToCboString(statusRate));
 	if (connection->BackendMinimumVersion(8, 0))
 	{
 		if(statusList->GetSelectedItemCount() > 0) 
@@ -1836,7 +1858,7 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
   manager.Update();
 #endif
 	currentPane = PANE_LOCKS;
-	cbRate->SetValue(locksRate);
+	cbRate->SetValue(rateToCboString(locksRate));
 	if (connection->BackendMinimumVersion(8, 0))
 	{
 		if(lockList->GetSelectedItemCount() > 0) 
@@ -1870,7 +1892,7 @@ void frmStatus::OnSelXactItem(wxListEvent &event)
   manager.Update();
 #endif
     currentPane = PANE_XACT;
-    cbRate->SetValue(xactRate);
+    cbRate->SetValue(rateToCboString(xactRate));
     if(xactList->GetSelectedItemCount() > 0) 
 	{
 		toolBar->EnableTool(MNU_COMMIT, true);
@@ -1900,7 +1922,7 @@ void frmStatus::OnSelLogItem(wxListEvent &event)
   manager.Update();
 #endif
     currentPane = PANE_LOG;
-    cbRate->SetValue(logRate);
+    cbRate->SetValue(rateToCboString(logRate));
     
     // if there's no log, don't enable items
     if (logDirectory != wxT("-")) 

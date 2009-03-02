@@ -116,12 +116,15 @@ private:
     
     wxTimer *refreshUITimer;
     wxTimer *statusTimer, *locksTimer, *xactTimer, *logTimer;
-    wxString statusRate, locksRate, xactRate, logRate;
+    int statusRate, locksRate, xactRate, logRate;
 
     ctlListView   *statusList;
     ctlListView   *lockList;
     ctlListView   *xactList;
     ctlListView   *logList;
+    
+    int cboToRate();
+    wxString rateToCboString(int rate);
     
     void AddStatusPane();
     void AddLockPane();
