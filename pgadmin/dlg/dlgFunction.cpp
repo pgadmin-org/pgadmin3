@@ -301,7 +301,8 @@ int dlgFunction::Go(bool modal)
 
         chkSetof->SetValue(function->GetReturnAsSet());
         chkStrict->SetValue(function->GetIsStrict());
-        chkWindow->SetValue(function->GetIsWindow());
+		if (connection->BackendMinimumVersion(8, 4))
+	        chkWindow->SetValue(function->GetIsWindow());
         chkSecureDefiner->SetValue(function->GetSecureDefiner());
 
         if (function->GetLanguage().IsSameAs(wxT("C"), false))

@@ -117,7 +117,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
                     sql += qtDbString(GetSource());
             }
             sql += wxT("\n  LANGUAGE '") + GetLanguage() + wxT("' ");
-            if (GetIsWindow())
+            if (GetConnection()->BackendMinimumVersion(8, 4) && GetIsWindow())
                 sql += wxT("WINDOW ");
             sql += GetVolatility();
 
@@ -193,7 +193,8 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
         properties->AppendItem(_("Volatility"), GetVolatility());
         properties->AppendItem(_("Security of definer?"), GetSecureDefiner());
         properties->AppendItem(_("Strict?"), GetIsStrict());
-        properties->AppendItem(_("Window?"), GetIsWindow());
+		if (GetConnection()->BackendMinimumVersion(8, 4))
+	        properties->AppendItem(_("Window?"), GetIsWindow());
 
         size_t i;
         for (i=0 ; i < configList.GetCount() ; i++)
@@ -463,6 +464,8 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 // Check if it is a window function
                 function->iSetIsWindow(functions->GetBool(wxT("proiswindow")));
             }
+			else
+                function->iSetIsWindow(false);
 
             // Now iterate the arguments and build the arrays
             wxString type, name, mode, def;
