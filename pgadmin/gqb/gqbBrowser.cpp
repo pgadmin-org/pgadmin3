@@ -42,9 +42,9 @@ gqbBrowser::gqbBrowser(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 : wxTreeCtrl(parent, id, pos, size, style)
 {
     controller=_controller;
-    rootNode=NULL;
+    rootNode=(wxTreeItemId *)NULL;
 
-	// Create normal images list of browser
+    // Create normal images list of browser
     imageList = new wxImageList(16, 16);
     imageList->Add(wxIcon(database_sm_xpm));
     imageList->Add(wxIcon(namespace_sm_xpm));
@@ -53,7 +53,7 @@ gqbBrowser::gqbBrowser(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
     imageList->Add(wxIcon(catalogs_xpm));
     imageList->Add(wxIcon(catalog_sm_xpm));
     imageList->Add(wxIcon(catalogobject_sm_xpm));
-	imageList->Add(wxIcon(view_sm_xpm));
+    imageList->Add(wxIcon(view_sm_xpm));
     this->AssignImageList(imageList);
 }
 
@@ -61,7 +61,7 @@ gqbBrowser::gqbBrowser(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
 // Destructor
 gqbBrowser::~gqbBrowser()
 {
-    this->DeleteAllItems();		// This remove and delete data inside tree's node
+    this->DeleteAllItems();        // This remove and delete data inside tree's node
 }
 
 
@@ -104,7 +104,7 @@ void gqbBrowser::OnBeginDrag(wxTreeEvent& event)
 {
     wxTreeItemId itemId = event.GetItem();
 
-	// Simplest solution, simulate DnD but actually don't do it
+    // Simplest solution, simulate DnD but actually don't do it
     gqbObject *object = (gqbObject *) GetItemData(itemId);
     if(object!=NULL && (object->getType() == GQB_TABLE || object->getType() == GQB_VIEW))
     {
