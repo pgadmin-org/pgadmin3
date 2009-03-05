@@ -164,7 +164,7 @@ wxString dlgPackage::GetSql()
         {
             sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nIS\n");
             sql += txtBody->GetText();
-            sql += wxT("\nEND") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
+            sql += wxT("\nEND ") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
         }
         else
         {
