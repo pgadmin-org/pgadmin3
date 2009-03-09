@@ -182,7 +182,7 @@ int pgQueryThread::execute()
     }
     else if (rc == PGRES_FATAL_ERROR)
     {
-        conn->SetLastResultError(NULL);
+        appendMessage(conn->GetLastError() + wxT("\n"));
     }
     return(raiseEvent(1));
 }
