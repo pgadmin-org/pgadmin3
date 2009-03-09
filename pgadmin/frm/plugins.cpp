@@ -19,22 +19,24 @@
 
 // Application headers
 #include "frm/frmMain.h"
+#include "db/pgconn.h"
 #include "ctl/ctlMenuToolbar.h"
 #include "schema/pgObject.h"
 #include "schema/pgDatabase.h"
 #include "schema/pgSchema.h"
 #include "schema/pgTable.h"
+#include "utils/sysSettings.h"
 
 void frmMain::LoadPluginUtilities()
 {
-    if (utilitiesIni.IsEmpty())
+    if (pluginsIni.IsEmpty())
         return;
 
     PluginUtility *util = new PluginUtility;
     ClearPluginUtility(util);
 
     // Load the config file
-	wxFileName utilIni(utilitiesIni);
+	wxFileName utilIni(pluginsIni);
 	if (!utilIni.FileExists())
         return;
 
@@ -56,13 +58,7 @@ void frmMain::LoadPluginUtilities()
 		if (token.Lower().StartsWith(wxT("[separator]")))
 		{
             // Add the previous app if required.
-            if (!util->title.IsEmpty() && !util->command.IsEmpty())
-            {
-                CreatePluginUtility(util);
-                ClearPluginUtility(util);
-                pluginUtilityCount++;
-            }
-
+            AddPluginUtility(util);
             pluginsMenu->AppendSeparator();
         }
 
@@ -70,17 +66,7 @@ void frmMain::LoadPluginUtilities()
 		if (token.Lower().StartsWith(wxT("title=")))
 		{
             // Add the previous app if required.
-            if (!util->title.IsEmpty() && !util->command.IsEmpty())
-            {
-                // We're only going to add this if the keyfile exists or isn't specified
-                if (util->keyfile.IsEmpty() || wxFileExists(util->keyfile))
-                {
-                    CreatePluginUtility(util);
-                    ClearPluginUtility(util);
-                    pluginUtilityCount++;
-                }
-            }
-
+            AddPluginUtility(util);
             util->title = token.AfterFirst('=').Trim();
         }
 
@@ -94,7 +80,34 @@ void frmMain::LoadPluginUtilities()
 
         // KeyFile
 		if (token.Lower().StartsWith(wxT("keyfile=")))
-            util->keyfile = token.AfterFirst('=').Trim();
+        {
+            wxString keyfile = token.AfterFirst('=').Trim();
+
+            // Substitute path placeholders
+            keyfile.Replace(wxT("$$BINDIR"), loadPath);
+            keyfile.Replace(wxT("$$WORKINGDIR"), wxGetCwd());
+            keyfile.Replace(wxT("$$PGBINDIR"), settings->GetPostgresqlPath());
+            keyfile.Replace(wxT("$$EDBBINDIR"), settings->GetEnterprisedbPath());
+            keyfile.Replace(wxT("$$SLONYBINDIR"), settings->GetSlonyPath());
+
+            util->keyfile = keyfile;
+        }
+
+        // Platform
+		if (token.Lower().StartsWith(wxT("platform=")))
+            util->platform = token.AfterFirst('=').Trim();
+
+        // Server types
+		if (token.Lower().StartsWith(wxT("servertype=")))
+        {
+            util->server_types.Clear();
+
+            // This is a comma delimited list of values going into an array.
+            wxStringTokenizer valueTkz(token.AfterFirst('='), wxT(","));
+
+           	while(valueTkz.HasMoreTokens())
+		        util->server_types.Add(valueTkz.GetNextToken());
+        }
 
         // Database
 		if (token.Lower().StartsWith(wxT("database=")))
@@ -128,19 +141,41 @@ void frmMain::LoadPluginUtilities()
     }
 
 	// Add the last app if required.
-    if (!util->title.IsEmpty() && !util->command.IsEmpty())
-    {
-        // We're only going to add this if the keyfile exists or isn't specified
-        if (util->keyfile.IsEmpty() || wxFileExists(util->keyfile))
-        {
-            CreatePluginUtility(util);
-            ClearPluginUtility(util);
-            pluginUtilityCount++;
-        }
-    }
+    AddPluginUtility(util);
 
     if (util)
         delete util;
+}
+
+// Add a new plugin to the collection.
+void frmMain::AddPluginUtility(PluginUtility *util)
+{
+    // Platform name
+#ifdef __WXMSW__
+    wxString thisPlatform = wxT("windows");
+#else
+#ifdef __WXGTK__
+    wxString thisPlatform = wxT("unix");
+#else
+    wxString thisPlatform = wxT("osx");
+#endif
+#endif
+
+    // Only add apps targetted to this, or any platform
+    if (util->platform.Lower() == thisPlatform || util->platform == wxEmptyString)
+    {
+	    // Only add an app with a title and command
+        if (!util->title.IsEmpty() && !util->command.IsEmpty())
+        {
+            // We're only going to add this if the keyfile exists or isn't specified
+            if (util->keyfile.IsEmpty() || wxFileExists(util->keyfile))
+            {
+                CreatePluginUtility(util);
+                ClearPluginUtility(util);
+                pluginUtilityCount++;
+            }
+        }
+    }
 }
 
 // Create a new Plugin utility factory
@@ -162,6 +197,8 @@ void frmMain::ClearPluginUtility(PluginUtility *util)
     util->command = wxEmptyString;
     util->description = wxEmptyString;
     util->keyfile = wxEmptyString;
+    util->platform = wxEmptyString;
+    util->server_types.Clear();
     util->database = false;
     util->applies_to.Clear();
     util->set_password = false;
@@ -173,6 +210,7 @@ pluginUtilityFactory::pluginUtilityFactory(menuFactoryList *list, wxMenu *menu, 
     title = util->title;
     command = util->command;
     description = util->description;
+    server_types = util->server_types;
     database = util->database;
     applies_to = util->applies_to;
     set_password = util->set_password;
@@ -255,6 +293,13 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
     else
         execCmd.Replace(wxT("$$TABLE"), wxEmptyString);
 
+    // Directory substitutions
+    execCmd.Replace(wxT("$$BINDIR"), loadPath);
+    execCmd.Replace(wxT("$$WORKINGDIR"), wxGetCwd());
+    execCmd.Replace(wxT("$$PGBINDIR"), settings->GetPostgresqlPath());
+    execCmd.Replace(wxT("$$EDBBINDIR"), settings->GetEnterprisedbPath());
+    execCmd.Replace(wxT("$$SLONYBINDIR"), settings->GetSlonyPath());
+
     // Let's go!!
     if (wxExecute(execCmd) == 0)
         wxLogError(_("Failed to execute plugin %s (%s)"), title.c_str(), command.c_str());
@@ -264,7 +309,26 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
 
 bool pluginUtilityFactory::CheckEnable(pgObject *obj)
 {
-    // First check that this is one of the supported object types
+    // First check that this is one of the supported server types
+    // for this plugin. If none are specified, then anything goes
+    if (database && server_types.Count() > 0)
+    {
+        // If we need a specific server type, we can't enable unless 
+        // we have a connection.
+        if (!obj || !obj->GetConnection()->GetStatus() == PGCONN_OK)
+            return false;
+
+        // Get the server type.
+        wxString serverType = wxT("postgresql");
+        if (obj->GetConnection()->GetIsEdb())
+            serverType = wxT("enterprisedb");
+
+        // Check if it's in the list.
+        if (server_types.Index(serverType) == wxNOT_FOUND)
+            return false;
+    }
+
+    // Now check that this is one of the supported object types
     // for this plugin. If none are specified, then anything goes
     if (obj && applies_to.Count() > 0)
     {
@@ -318,7 +382,7 @@ pluginButtonMenuFactory::pluginButtonMenuFactory(menuFactoryList *list, wxMenu *
 // Call the last plugin used, or popup the menu if this is the first time
 wxWindow *pluginButtonMenuFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    if (form->GetLastPluginUtility())
+    if (form->GetLastPluginUtility() && form->GetLastPluginUtility()->CheckEnable(obj))
         return form->GetLastPluginUtility()->StartDialog(form, obj);
     else
     {

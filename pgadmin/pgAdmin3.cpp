@@ -66,12 +66,12 @@
 #include "ctl/xh_ctlcombo.h"
 #include "ctl/xh_ctltree.h"
 
-#define DOC_DIR      wxT("/docs")
-#define UI_DIR       wxT("/ui")
-#define I18N_DIR     wxT("/i18n")
-#define BRANDING_DIR wxT("/branding")
-#define UTILITIES_INI wxT("/plugins/utilities.ini")
-#define SETTINGS_INI wxT("/settings.ini")
+#define DOC_DIR       wxT("/docs")
+#define UI_DIR        wxT("/ui")
+#define I18N_DIR      wxT("/i18n")
+#define BRANDING_DIR  wxT("/branding")
+#define PLUGINS_INI   wxT("/plugins.ini")
+#define SETTINGS_INI  wxT("/settings.ini")
 
 // Globals
 frmMain *winMain=0;
@@ -97,7 +97,7 @@ wxString docPath;               // Where docs are stored
 wxString uiPath;                // Where ui data is stored
 wxString i18nPath;              // Where i18n data is stored
 wxString brandingPath;          // Where branding data is stored
-wxString utilitiesIni;          // The utilities.ini file
+wxString pluginsIni;            // The plugins.ini file
 wxString settingsIni;           // The settings.ini file
 
 wxLog *logger;
@@ -268,12 +268,12 @@ bool pgAdmin3::OnInit()
 #endif
 
     // Log the path info
-    wxLogInfo(wxT("i18n path    : %s"), i18nPath.c_str());
-    wxLogInfo(wxT("UI path      : %s"), uiPath.c_str());
-    wxLogInfo(wxT("Doc path     : %s"), docPath.c_str());
-    wxLogInfo(wxT("Branding path: %s"), brandingPath.c_str());
-    wxLogInfo(wxT("Utilities INI: %s"), utilitiesIni.c_str());
-    wxLogInfo(wxT("Settings INI : %s"), settingsIni.c_str());
+    wxLogInfo(wxT("i18n path     : %s"), i18nPath.c_str());
+    wxLogInfo(wxT("UI path       : %s"), uiPath.c_str());
+    wxLogInfo(wxT("Doc path      : %s"), docPath.c_str());
+    wxLogInfo(wxT("Branding path : %s"), brandingPath.c_str());
+    wxLogInfo(wxT("Plugins INI   : %s"), pluginsIni.c_str());
+    wxLogInfo(wxT("Settings INI  : %s"), settingsIni.c_str());
 
     wxLogInfo(wxT("PG pg_dump    : %s"), pgBackupExecutable.c_str());
     wxLogInfo(wxT("PG pg_dumpall : %s"), pgBackupAllExecutable.c_str());
@@ -678,7 +678,7 @@ void pgAdmin3::InitAppPaths()
     docPath = LocatePath(DOC_DIR, false);
     uiPath = LocatePath(UI_DIR, false);
     brandingPath = LocatePath(BRANDING_DIR, false);
-    utilitiesIni = LocatePath(UTILITIES_INI, true);
+    pluginsIni = LocatePath(PLUGINS_INI, true);
     settingsIni = LocatePath(SETTINGS_INI, true);
 }
 

@@ -69,11 +69,10 @@
                             </ProgId>
                         </Component>
                        
-                        <Directory Id="PluginsDir" Name="Plugins">
-                            <Component Id="utilities" Guid="{E5148580-CF1B-4ae4-862A-69243669CF15}">
-                                <File Id="utilities.utilities.ini" Name="utilities.ini" DiskId="1" Source="$(var.BUILDTREE)/plugins/utilities.ini" />
-                            </Component>
-                        </Directory>
+                        <Component Id="inis" Guid="{E5148580-CF1B-4ae4-862A-69243669CF15}">
+                            <File Id="inis.settings.ini" Name="settings.ini" DiskId="1" Source="$(var.BUILDTREE)/pgadmin/settings.ini" />
+                            <File Id="inis.plugins.ini" Name="plugins.ini" DiskId="1" Source="$(var.BUILDTREE)/pgadmin/plugins.ini" />
+                        </Component>
 
 <?if $(var.BRANDED) = 1 ?>
                         <Directory Id="BrandingDir" Name="Branding">
@@ -307,7 +306,7 @@
                 <ComponentRef Id="core_libs" />
                 <ComponentRef Id="core_runtimes" />
                 <ComponentRef Id="pgadmin_exes" />
-                <ComponentRef Id="utilities" />
+                <ComponentRef Id="inis" />
 <?if $(var.BRANDED) = 1 ?>
                 <ComponentRef Id="branding" />
 <?endif?>

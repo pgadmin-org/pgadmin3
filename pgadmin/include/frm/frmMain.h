@@ -53,6 +53,8 @@ typedef struct PluginUtility {
     wxString command;
     wxString description;
     wxString keyfile;
+    wxString platform;
+    wxArrayString server_types;
     bool database;
     wxArrayString applies_to;
     bool set_password;
@@ -183,6 +185,7 @@ private:
 
     // In plugins.cpp
     void LoadPluginUtilities();
+    void AddPluginUtility(PluginUtility *util);
     void CreatePluginUtility(PluginUtility *util);
     void ClearPluginUtility(PluginUtility *util);
 
@@ -258,7 +261,7 @@ private:
 
     wxString title, command, description;
     bool database, set_password;
-    wxArrayString applies_to;
+    wxArrayString applies_to, server_types;
 };
 
 class pluginButtonMenuFactory : public actionFactory
