@@ -17,7 +17,7 @@
             Keywords="$(var.APPKEYWORDS)"
             Comments="$(var.APPCOMMENTS)"
             Manufacturer="$(var.APPVENDOR)"
-            InstallerVersion="150"
+            InstallerVersion="300"
             Languages="1033" 
             Compressed="yes" 
             SummaryCodepage="1252" />
@@ -43,15 +43,10 @@
                             <File Id="core_libs.libxml2.dll" Name="libxml2.dll" DiskId="1" Source="$(var.PGBUILD)/libxml2/bin/libxml2.dll" />
                             <File Id="core_libs.libxslt.dll" Name="libxslt.dll" DiskId="1" Source="$(var.PGBUILD)/libxslt/bin/libxslt.dll" />
                             <File Id="core_libs.zlib1.dll" Name="zlib1.dll" DiskId="1" Source="$(var.PGBUILD)/zlib/zlib1.dll" />
+                            <File Id="core_libs.msvcr71.dll" Name="msvcr71.dll" DiskId="1" Source="$(var.SYSTEM32DIR)/msvcr71.dll" />
                         </Component>
 
-                        <Component Id="core_runtimes" Guid="{ED04E7E9-B22A-408C-B2D5-EBF37FF40C1D}">
-                            <File Id="core_runtimes.msvcm80.dll" Name="msvcm80.dll" DiskId="1" Source="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/msvcm80.dll" />
-                            <File Id="core_runtimes.msvcp80.dll" Name="msvcp80.dll" DiskId="1" Source="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/msvcp80.dll" />
-                            <File Id="core_runtimes.msvcr80.dll" Name="msvcr80.dll" DiskId="1" Source="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/msvcr80.dll" />
-                            <File Id="core_runtimes.msvcr71.dll" Name="msvcr71.dll" DiskId="1" Source="$(var.SYSTEM32DIR)/msvcr71.dll" />
-                            <File Id="core_runtimes.Microsoft.VC80.CRT.manifest" Name="Microsoft.VC80.CRT.manifest" DiskId="1" Source="C:/Program Files/Microsoft Visual Studio 8/VC/redist/x86/Microsoft.VC80.CRT/Microsoft.VC80.CRT.manifest" />
-                        </Component>
+                        <Merge Id="CRT" Language="0" SourceFile="$(env.ProgramFiles)\Common Files\Merge Modules\microsoft_vc80_crt_x86.msm" DiskId="1" />
 
                         <Component Id="pgadmin_exes" Guid="{91F4CE74-18A8-48F3-AE0E-8A1B96116923}">
                             <File Id="pgadmin_exes.pgadmin3.exe" Name="pgadmin3.exe" DiskId="1" Source="$(var.BUILDTREE)/pgadmin/Release/pgAdmin3.exe" KeyPath="yes" />
@@ -304,7 +299,7 @@
 
             <Feature Id="pgadmin3" Title="$(var.APPNAME)" Description="The $(var.APPNAME) management and administration console." Display="expand" Level="1">
                 <ComponentRef Id="core_libs" />
-                <ComponentRef Id="core_runtimes" />
+                <MergeRef Id="CRT" />
                 <ComponentRef Id="pgadmin_exes" />
                 <ComponentRef Id="inis" />
 <?if $(var.BRANDED) = 1 ?>
@@ -337,7 +332,6 @@
 
 <!-- Properties -->
 
-        <Property Id="ALLUSERS">2</Property>
         <Property Id="WIXUI_INSTALLDIR" Value="BASEDIR" />
 
 <!-- UI -->
