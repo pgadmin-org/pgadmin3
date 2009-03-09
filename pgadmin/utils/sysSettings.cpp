@@ -35,7 +35,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
 	defaultSettings = NULL;
 	if (!settingsIni.IsEmpty())
 	{
-	    wxFileStream fst(settingsIni);
+	    wxFileInputStream fst(settingsIni);
         defaultSettings = new wxFileConfig(fst);
 	}	
 
