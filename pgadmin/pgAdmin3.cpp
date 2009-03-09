@@ -689,6 +689,12 @@ void pgAdmin3::InitXtraPaths()
     // Now setup the app helper paths
     //////////////////////////////////
 
+    // Windows-only path prefixes
+#ifdef __WXMSW__
+    wxString programFiles = wxGetenv(wxT("ProgramFiles"));
+    wxString programFilesX86 = wxGetenv(wxT("ProgramFiles(x86)"));
+#endif
+
     // First, check and invalidate the paths if they're no good.
 #ifdef __WXMSW__
     if (!isPgApp(settings->GetPostgresqlPath() + wxT("\\pg_dump.exe")))
@@ -762,23 +768,36 @@ void pgAdmin3::InitXtraPaths()
         wxPathList path;
 
 #ifdef __WXMSW__
-        path.Add(wxT("C:\\PostgresPlus\\8.4\\dbserver\\bin"));
-        path.Add(wxT("C:\\PostgresPlus\\8.3\\dbserver\\bin"));
-        path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.4\\bin"));
-        path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.3\\bin"));
-        path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.2\\bin"));
-        path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.1\\bin"));
-        path.Add(wxT("C:\\Program Files\\PostgreSQL\\8.0\\bin"));
+        path.Add(wxT("C:\\PostgresPlus\\8.4\\bin"));
+        path.Add(wxT("C:\\PostgresPlus\\8.3\\bin"));
+
+        if (!programFiles.IsEmpty())
+        {
+            path.Add(programFiles + wxT("\\PostgreSQL\\8.4\\bin"));
+            path.Add(programFiles + wxT("\\PostgreSQL\\8.3\\bin"));
+            path.Add(programFiles + wxT("\\PostgreSQL\\8.2\\bin"));
+            path.Add(programFiles + wxT("\\PostgreSQL\\8.1\\bin"));
+            path.Add(programFiles + wxT("\\PostgreSQL\\8.0\\bin"));
+        }
+
+        if (!programFilesX86.IsEmpty())
+        {
+            path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.4\\bin"));
+            path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.3\\bin"));
+            path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.2\\bin"));
+            path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.1\\bin"));
+            path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.0\\bin"));
+        }
 
         wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
         // Mac paths
-        path.Add(wxT("/Library/PostgresPlus/8.4/dbserver/bin"));
+        path.Add(wxT("/Library/PostgresPlus/8.4/bin"));
         path.Add(wxT("/Library/PostgresPlus/8.3/bin"));
 
         // Generic Unix paths
-        path.Add(wxT("/opt/PostgresPlus/8.4/dbserver/bin"));
-        path.Add(wxT("/opt/PostgresPlus/8.3/dbserver/bin"));
+        path.Add(wxT("/opt/PostgresPlus/8.4/bin"));
+        path.Add(wxT("/opt/PostgresPlus/8.3/bin"));
         path.Add(wxT("/opt/PostgresPlus/8.3/bin"));
         path.Add(wxT("/usr/local/pgsql/bin"));
         path.Add(wxT("/usr/local/bin"));
@@ -804,6 +823,7 @@ void pgAdmin3::InitXtraPaths()
 
 #ifdef __WXMSW__
         path.Add(wxT("C:\\PostgresPlus\\8.4AS\\dbserver\\bin"));
+        path.Add(wxT("C:\\PostgresPlus\\8.3R2AS\\dbserver\\bin"));
         path.Add(wxT("C:\\PostgresPlus\\8.3AS\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\bin"));
         path.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\bin"));
@@ -813,10 +833,12 @@ void pgAdmin3::InitXtraPaths()
 #else
         // Mac paths
         path.Add(wxT("/Library/PostgresPlus/8.4AS/dbserver/bin"));
+        path.Add(wxT("/Library/PostgresPlus/8.3R2AS/dbserver/bin"));
         path.Add(wxT("/Library/PostgresPlus/8.3AS/dbserver/bin"));
 
         // Generic Unix paths
         path.Add(wxT("/opt/PostgresPlus/8.4AS/dbserver/bin"));
+        path.Add(wxT("/opt/PostgresPlus/8.3R2AS/dbserver/bin"));
         path.Add(wxT("/opt/PostgresPlus/8.3AS/dbserver/bin"));
         path.Add(wxT("/usr/local/enterpriseDB/bin"));
         path.Add(wxT("/usr/local/enterprisedb/bin"));
@@ -976,6 +998,12 @@ wxString pgAdmin3::LocatePath(const wxString &pathToFind, const bool isFile)
 
 void pgAdmin3::InitHelp()
 {
+    // Windows-only path prefixes
+#ifdef __WXMSW__
+    wxString programFiles = wxGetenv(wxT("ProgramFiles"));
+    wxString programFilesX86 = wxGetenv(wxT("ProgramFiles(x86)"));
+#endif
+
     // Search for external docs. As Windows and *nix etc 
     // are likely to be very different, we'll #ifdef them all.
     wxPathList stdPaths, noPaths, pgPaths, edbPaths, slonyPaths;
@@ -986,17 +1014,35 @@ void pgAdmin3::InitHelp()
     stdPaths.Add(docPath);
 
 #ifdef __WXMSW__
-    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.3\\doc"));
-    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.3\\doc\\html"));
-    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.2\\doc"));
-    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.2\\doc\\html"));
-    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.1\\doc"));
-    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.1\\doc\\html"));
-    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.0\\doc"));
-    pgPaths.Add(wxT("C:\\Program Files\\PostgreSQL\\8.0\\doc\\html"));
+    if (!programFiles.IsEmpty())
+    {
+        pgPaths.Add(programFiles + wxT("\\PostgreSQL\\8.4\\doc"));
+        pgPaths.Add(programFiles + wxT("\\PostgreSQL\\8.4\\doc\\html"));
+        pgPaths.Add(programFiles + wxT("\\PostgreSQL\\8.3\\doc"));
+        pgPaths.Add(programFiles + wxT("\\PostgreSQL\\8.3\\doc\\html"));
+        pgPaths.Add(programFiles + wxT("\\PostgreSQL\\8.2\\doc"));
+        pgPaths.Add(programFiles + wxT("\\PostgreSQL\\8.2\\doc\\html"));
+        pgPaths.Add(programFiles + wxT("\\PostgreSQL\\8.1\\doc"));
+        pgPaths.Add(programFiles + wxT("\\PostgreSQL\\8.1\\doc\\html"));
+        pgPaths.Add(programFiles + wxT("\\PostgreSQL\\8.0\\doc"));
+        pgPaths.Add(programFiles + wxT("\\PostgreSQL\\8.0\\doc\\html"));
+    }
 
-    edbPaths.Add(wxT("C:\\EnterpriseDB\\8.3\\dbserver\\doc"));
-    edbPaths.Add(wxT("C:\\EnterpriseDB\\8.3\\dbserver\\doc\\html"));
+    if (!programFilesX86.IsEmpty())
+    {
+        pgPaths.Add(programFilesX86 + wxT("\\PostgreSQL\\8.4\\doc"));
+        pgPaths.Add(programFilesX86 + wxT("\\PostgreSQL\\8.4\\doc\\html"));
+        pgPaths.Add(programFilesX86 + wxT("\\PostgreSQL\\8.3\\doc"));
+        pgPaths.Add(programFilesX86 + wxT("\\PostgreSQL\\8.3\\doc\\html"));
+        pgPaths.Add(programFilesX86 + wxT("\\PostgreSQL\\8.2\\doc"));
+        pgPaths.Add(programFilesX86 + wxT("\\PostgreSQL\\8.2\\doc\\html"));
+        pgPaths.Add(programFilesX86 + wxT("\\PostgreSQL\\8.1\\doc"));
+        pgPaths.Add(programFilesX86 + wxT("\\PostgreSQL\\8.1\\doc\\html"));
+        pgPaths.Add(programFilesX86 + wxT("\\PostgreSQL\\8.0\\doc"));
+        pgPaths.Add(programFilesX86 + wxT("\\PostgreSQL\\8.0\\doc\\html"));
+    }
+
+    // Note that EDB docs are online from 8.3.
     edbPaths.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\doc"));
     edbPaths.Add(wxT("C:\\EnterpriseDB\\8.2\\dbserver\\doc\\html"));
     edbPaths.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\doc"));
@@ -1119,7 +1165,7 @@ void pgAdmin3::InitHelp()
     if (pgHelpPath.IsEmpty())
         pgHelpPath = wxT("http://www.postgresql.org/docs/current/static/");
     if (edbHelpPath.IsEmpty())
-        edbHelpPath = wxT("http://www.enterprisedb.com/docs/en/8.3/server/");
+        edbHelpPath = wxT("http://www.enterprisedb.com/docs/en/current/server/");
     if (slonyHelpPath.IsEmpty())
         slonyHelpPath = wxT("http://www.slony.info/documentation/");
 
@@ -1163,8 +1209,6 @@ void pgAdmin3::InitXml()
         wxT("XRC ID not correctly assigned."));
     // if this assert fires, some event table uses XRCID(...) instead of wxID_... directly
         
-
-
 #ifdef EMBED_XRC
     wxLogInfo(__("Using embedded XRC data."));   
     
