@@ -19,7 +19,7 @@
 
 // Application headers
 #include "frm/frmMain.h"
-#include "db/pgconn.h"
+#include "db/pgConn.h"
 #include "ctl/ctlMenuToolbar.h"
 #include "schema/pgObject.h"
 #include "schema/pgDatabase.h"
