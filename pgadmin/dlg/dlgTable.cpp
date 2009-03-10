@@ -24,6 +24,7 @@
 #include "dlg/dlgForeignKey.h"
 #include "dlg/dlgCheck.h"
 
+#include "schema/gpPartition.h"
 #include "schema/pgSchema.h"
 #include "schema/pgTable.h"
 #include "schema/pgColumn.h"
