@@ -972,19 +972,19 @@ void pgAdmin3::InitXtraPaths()
 
         // Generic Unix paths
 
-        path.Add(wxT("/usr/local/greenplum-clients-3.3\bin"));
-        path.Add(wxT("/opt/local/greenplum-clients-3.3\bin"));
-        path.Add(wxT("/usr/local/greenplum-clients-3.2\bin"));
-        path.Add(wxT("/opt/local/greenplum-clients-3.2\bin"));
-        path.Add(wxT("/usr/local/greenplum-clients-3.1.1.1\bin"));
-        path.Add(wxT("/opt/local/greenplum-clients-3.1.1.1\bin"));
+        path.Add(wxT("/usr/local/greenplum-clients-3.3/bin"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.3/bin"));
+        path.Add(wxT("/usr/local/greenplum-clients-3.2/bin"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.2/bin"));
+        path.Add(wxT("/usr/local/greenplum-clients-3.1.1.1/bin"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.1.1.1/bin"));
 
-        path.Add(wxT("/usr/local/greenplum-clients-3.3\lib"));
-        path.Add(wxT("/opt/local/greenplum-clients-3.3\lib"));
-        path.Add(wxT("/usr/local/greenplum-clients-3.2\lib"));
-        path.Add(wxT("/opt/local/greenplum-clients-3.2\lib"));
-        path.Add(wxT("/usr/local/greenplum-clients-3.1.1.1\lib"));
-        path.Add(wxT("/opt/local/greenplum-clients-3.1.1.1\lib"));
+        path.Add(wxT("/usr/local/greenplum-clients-3.3/lib"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.3/lib"));
+        path.Add(wxT("/usr/local/greenplum-clients-3.2/lib"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.2/lib"));
+        path.Add(wxT("/usr/local/greenplum-clients-3.1.1.1/lib"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.1.1.1/lib"));
         
 
         wxFileName tmp = path.FindValidPath(wxT("pg_dump"));
@@ -1262,17 +1262,17 @@ void pgAdmin3::InitHelp()
     edbPaths.Add(wxT("/opt/local/edb/doc/html"));
 
     pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3"));
-    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3\html"));
-    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3\docs"));
-    pgPaths.Add(wxT("/opt/local/greenplum-clients-3.3\docs"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3/html"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3/docs"));
+    pgPaths.Add(wxT("/opt/local/greenplum-clients-3.3/docs"));
     pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3"));
-    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.2\html"));
-    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.2\docs"));
-    pgPaths.Add(wxT("/opt/local/greenplum-clients-3.2\docs"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.2/html"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.2/docs"));
+    pgPaths.Add(wxT("/opt/local/greenplum-clients-3.2/docs"));
     pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1"));
-    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1\html"));
-    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1\docs"));
-    pgPaths.Add(wxT("/opt/local/greenplum-clients-3.1.1.1\docs"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1/html"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1/docs"));
+    pgPaths.Add(wxT("/opt/local/greenplum-clients-3.1.1.1/docs"));
 
 #endif 
 
