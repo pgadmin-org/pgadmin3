@@ -82,7 +82,7 @@ void pgsStmtList::eval(pgsVarMap & vars) const
 					m_app->LockOutput();
 				}
 				
-				m_cout << wxT("[ERROR] Unknown exception:\n")
+				m_cout << PGSOUTERROR << _("Unknown exception:\n")
 						<< wx_static_cast(const wxString,
 								wxString(e.what(), wxConvUTF8));
 				m_exception_thrown = true;

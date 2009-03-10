@@ -116,12 +116,13 @@ pgsOperand pgsExecute::eval(pgsVarMap & vars) const
 					{
 						m_app->LockOutput();
 						
-						(*m_cout) << wxT("[WRNING] ");
+						(*m_cout) << PGSOUTWARNING;
 						wxString message(stmt + wxT("\n") + thread
 								.GetMessagesAndClear().Strip(wxString::both));
 						wxRegEx multilf(wxT("(\n)+"));
 						multilf.ReplaceAll(&message, wxT("\n"));
-						message.Replace(wxT("\n"), wxT("\n         "));
+						message.Replace(wxT("\n"), wxT("\n")
+								+ generate_spaces(PGSOUTWARNING.Length() + 1));
 						(*m_cout) << message << wxT("\n");
 						
 						m_app->UnlockOutput();
@@ -133,7 +134,7 @@ pgsOperand pgsExecute::eval(pgsVarMap & vars) const
 					{
 						m_app->LockOutput();
 						
-						(*m_cout) << wxT("[NOTICE] ");
+						(*m_cout) << PGSOUTQUERY;
 						wxString message(thread.GetMessagesAndClear()
 								.Strip(wxString::both));
 						if (!message.IsEmpty())
@@ -142,7 +143,8 @@ pgsOperand pgsExecute::eval(pgsVarMap & vars) const
 							message = stmt;
 						wxRegEx multilf(wxT("(\n)+"));
 						multilf.ReplaceAll(&message, wxT("\n"));
-						message.Replace(wxT("\n"), wxT("\n         "));
+						message.Replace(wxT("\n"), wxT("\n")
+								+ generate_spaces(PGSOUTQUERY.Length() + 1));
 						(*m_cout) << message << wxT("\n");
 						
 						m_app->UnlockOutput();

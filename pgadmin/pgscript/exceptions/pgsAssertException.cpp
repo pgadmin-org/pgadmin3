@@ -24,5 +24,5 @@ pgsAssertException::~pgsAssertException()
 
 const wxString pgsAssertException::message() const
 {
-	return wxString() << wxT("[EXCEPT] Assert Exception - ") << m_message;
+	return wxString() << PGSOUTEXCEPTION << _("Assert Exception - ") << m_message;
 }

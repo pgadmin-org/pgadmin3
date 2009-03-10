@@ -24,6 +24,7 @@ pgsArithmeticException::~pgsArithmeticException()
 
 const wxString pgsArithmeticException::message() const
 {
-	return wxString() << wxT("[EXCEPT] Arithmetic Exception - Operation impossible between ")
-			<< m_left << wxT(" and ") << m_right;
+	return wxString() << PGSOUTEXCEPTION <<
+		wxString::Format(_("Arithmetic Exception - Operation impossible between '%s' and '%s'"),
+			m_left.c_str(), m_right.c_str());
 }

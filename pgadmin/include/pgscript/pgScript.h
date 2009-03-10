@@ -28,6 +28,12 @@ typedef unsigned short int USHORT;
 #include <wx/txtstrm.h>
 #define pgsOutputStream wxTextOutputStream
 
+const wxString PGSOUTPGSCRIPT (wxT("[PGSCRIPT ] "));
+const wxString PGSOUTEXCEPTION(wxT("[EXCEPTION] "));
+const wxString PGSOUTQUERY    (wxT("[QUERY    ] "));
+const wxString PGSOUTWARNING  (wxT("[WARNING  ] "));
+const wxString PGSOUTERROR    (wxT("[ERROR    ] "));
+
 /*** LOGGING ***/
 
 #include "utils/sysLogger.h"

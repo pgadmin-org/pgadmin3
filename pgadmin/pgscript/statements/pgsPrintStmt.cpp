@@ -11,6 +11,7 @@
 #include "pgAdmin3.h"
 #include "pgscript/statements/pgsPrintStmt.h"
 
+#include "pgscript/exceptions/pgsException.h"
 #include "pgscript/utilities/pgsThread.h"
 #include "pgscript/utilities/pgsUtilities.h"
 
@@ -33,8 +34,20 @@ void pgsPrintStmt::eval(pgsVarMap & vars) const
 		m_app->LockOutput();
 	}
 	
-	m_cout << wxT("[OUTPUT] ") << wx_static_cast(const wxString,
-			m_var->eval(vars)->value()) << wxT("\n");
+	try
+	{
+		m_cout << PGSOUTPGSCRIPT << wx_static_cast(const wxString,
+				m_var->eval(vars)->value()) << wxT("\n");
+	}
+	catch (const pgsException &)
+	{
+		if (m_app != 0)
+		{
+			m_app->UnlockOutput();
+		}
+		
+		throw;
+	}
 	
 	if (m_app != 0)
 	{

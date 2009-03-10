@@ -24,5 +24,5 @@ pgsInterruptException::~pgsInterruptException()
 
 const wxString pgsInterruptException::message() const
 {
-	return wxT("[EXCEPT] pgScript interrupted");
+	return wxString() << PGSOUTEXCEPTION << _("pgScript interrupted");
 }

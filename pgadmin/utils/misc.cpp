@@ -132,6 +132,10 @@ OID StrToOid(const wxString& value)
     return (OID)strtoul(value.ToAscii(), 0, 10);
 }
 
+wxString generate_spaces(int length)
+{
+	return wxString().Pad(length);
+}
 
 wxString NumToStr(double value)
 {

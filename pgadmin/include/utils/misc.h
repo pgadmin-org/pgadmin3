@@ -100,6 +100,8 @@ wxLongLong StrToLongLong(const wxString& value);
 wxDateTime StrToDateTime(const wxString &value);
 OID StrToOid(const wxString& value);
 
+wxString generate_spaces(int length);
+
 // nls aware
 wxString BoolToYesNo(bool value);
 wxString NumToStr(long value);
