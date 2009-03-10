@@ -156,14 +156,23 @@ int dlgUser::Go(bool modal)
             chkCreateUser->Disable();
             datValidUntil->Disable();
             timValidUntil->Disable();
-            txtPasswd->Disable();
-            txtRePasswd->Disable();
             btnAddGroup->Disable();
             btnDelGroup->Disable();
             cbVarname->Disable();
             txtValue->Disable();
-            btnAdd->Disable();
             btnRemove->Disable();
+	    if (connection->GetUser() != user->GetName())
+	    {
+		txtPasswd->Disable();
+		txtRePasswd->Disable();
+		btnAdd->Disable();
+	    }
+	    else
+	    {
+		txtPasswd->Enable();
+		txtRePasswd->Enable();
+		btnAdd->Enable();
+	    }
         }
     }
     else

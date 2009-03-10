@@ -200,15 +200,25 @@ int dlgRole::Go(bool modal)
             chkUpdateCat->Disable();
             datValidUntil->Disable();
             timValidUntil->Disable();
-            txtPasswd->Disable();
-            txtRePasswd->Disable();
             btnAddRole->Disable();
             btnDelRole->Disable();
             cbVarname->Disable();
             txtValue->Disable();
             txtConnectionLimit->Disable();
-            btnAdd->Disable();
             btnRemove->Disable();
+	    /* Its own password can be changed. */
+	    if (connection->GetUser() != role->GetName())
+	    {
+		txtPasswd->Disable();
+		txtRePasswd->Disable();
+		btnAdd->Disable();
+	    }
+	    else
+	    {
+		txtPasswd->Enable();
+		txtRePasswd->Enable();
+		btnAdd->Enable();
+	    }
         }
     }
     else
