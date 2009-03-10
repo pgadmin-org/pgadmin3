@@ -289,11 +289,11 @@ wxString frmRestore::getCmdPart1()
         cmd=pgRestoreExecutable;
 
     if (!server->GetName().IsEmpty())
-        cmd += wxT(" -h ") + server->GetName();
+        cmd += wxT(" --host=") + server->GetName();
 
-    cmd += wxT(" -p ") + NumToStr((long)server->GetPort())
-         + wxT(" -U ") + qtIdent(server->GetUsername())
-         + wxT(" -d ") + commandLineCleanOption(object->GetDatabase()->GetQuotedIdentifier());
+    cmd += wxT(" --port=") + NumToStr((long)server->GetPort())
+         + wxT(" --username=") + qtIdent(server->GetUsername())
+         + wxT(" --dbname=") + commandLineCleanOption(object->GetDatabase()->GetQuotedIdentifier());
     return cmd;
 }
 
@@ -304,23 +304,23 @@ wxString frmRestore::getCmdPart2(int step)
 
     if (step)
     {
-        cmd.Append(wxT(" -l"));
+        cmd.Append(wxT(" --list"));
     }
     else
     {
         if (chkOnlyData->GetValue())
         {
-            cmd.Append(wxT(" -a"));
+            cmd.Append(wxT(" --data-only"));
         }
         else
         {
             if (chkNoOwner->GetValue())
-                cmd.Append(wxT(" -O"));
+                cmd.Append(wxT(" --no-owner"));
         }
 
         if (chkOnlySchema->GetValue())
         {
-            cmd.Append(wxT(" -s"));
+            cmd.Append(wxT(" --schema-only"));
         }
         else
         {
@@ -338,19 +338,19 @@ wxString frmRestore::getCmdPart2(int step)
                 {
                     int sel=lstContents->GetSelection();
                     if (lstContents->GetText(sel, 0).Lower() == wxString(_("Function")).Lower())
-                        cmd.Append(wxT(" -P ") + qtIdent(lstContents->GetText(sel, 1).BeforeLast('(')));
+                        cmd.Append(wxT(" --function=") + qtIdent(lstContents->GetText(sel, 1).BeforeLast('(')));
                     else if (lstContents->GetText(sel, 0).Lower() == wxString(_("Table")).Lower())
-                        cmd.Append(wxT(" -t ") + qtIdent(lstContents->GetText(sel, 1)));
+                        cmd.Append(wxT(" --table=") + qtIdent(lstContents->GetText(sel, 1)));
                     else
                         return wxT("restore: internal pgadmin error.");   // shouldn't happen!
 
                     break;
                 }
                 case PGM_TABLE:
-                    cmd.Append(wxT(" -t ") + object->GetQuotedIdentifier());
+                    cmd.Append(wxT(" --table=") + object->GetQuotedIdentifier());
                     break;
                 case PGM_FUNCTION:
-                    cmd.Append(wxT(" -P ") + object->GetQuotedIdentifier());
+                    cmd.Append(wxT(" --function=") + object->GetQuotedIdentifier());
                     break;
                 default:
                     break;
@@ -358,9 +358,9 @@ wxString frmRestore::getCmdPart2(int step)
         }
 
         if (settings->GetIgnoreVersion())
-            cmd.Append(wxT(" -i"));
+            cmd.Append(wxT(" --ignore-version"));
         if (chkVerbose->GetValue())
-            cmd.Append(wxT(" -v"));
+            cmd.Append(wxT(" --verbose"));
     }
 
 

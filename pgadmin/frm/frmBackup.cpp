@@ -195,10 +195,10 @@ wxString frmBackup::getCmdPart1()
         cmd=pgBackupExecutable;
 
     if (!server->GetName().IsEmpty())
-        cmd += wxT(" -h ") + server->GetName();
+        cmd += wxT(" --host=") + server->GetName();
 
-    cmd +=  wxT(" -p ") + NumToStr((long)server->GetPort())
-         +  wxT(" -U ") + server->GetUsername();
+    cmd +=  wxT(" --port=") + NumToStr((long)server->GetPort())
+         +  wxT(" --username=") + server->GetUsername();
 
     if (object->GetConnection()->GetIsGreenplum())
         cmd += wxT(" --gp-syntax ");
@@ -222,62 +222,60 @@ wxString frmBackup::getCmdPart2()
     {
         case 0: // compressed
         {
-            cmd.Append(wxT(" -F c"));
+            cmd.Append(wxT(" --format=custom"));
             if (chkBlobs->GetValue())
-                cmd.Append(wxT(" -b"));
+                cmd.Append(wxT(" --blobs"));
             break;
         }
         case 1: // tar
         {
-            cmd.Append(wxT(" -F t"));
+            cmd.Append(wxT(" --format=tar"));
             if (chkBlobs->GetValue())
-                cmd.Append(wxT(" -b"));
+                cmd.Append(wxT(" --blobs"));
             break;
         }
         case 2:
         {
-            cmd.Append(wxT(" -F p"));
+            cmd.Append(wxT(" --format=plain"));
             if (chkOnlyData->GetValue())
             {
-                cmd.Append(wxT(" -a"));
+                cmd.Append(wxT(" --data-only"));
                 if (chkDisableTrigger->GetValue())
                     cmd.Append(wxT(" --disable-triggers"));
             }
             else
             {
                 if (chkOnlySchema->GetValue())
-                    cmd.Append(wxT(" -s"));
-                if (chkOnlySchema->GetValue())
-                    cmd.Append(wxT(" -s"));
+                    cmd.Append(wxT(" --schema-only"));
                 if (chkNoOwner->GetValue())
-                    cmd.Append(wxT(" -O"));
+                    cmd.Append(wxT(" --no-owner"));
                 if (chkCreateDb->GetValue())
-                    cmd.Append(wxT(" -C"));
+                    cmd.Append(wxT(" --create"));
                 if (chkDropDb->GetValue())
-                    cmd.Append(wxT(" -c"));
+                    cmd.Append(wxT(" --clean"));
             }
             break;
         }
     }
 
     if (chkOid->GetValue())
-        cmd.Append(wxT(" -o"));
+        cmd.Append(wxT(" --oids"));
     if (chkInsert->GetValue())
-        cmd.Append(wxT(" -D"));
+        cmd.Append(wxT(" --column-inserts"));
     if (chkDisableDollar->GetValue())
         cmd.Append(wxT(" --disable-dollar-quoting"));
     if (settings->GetIgnoreVersion())
-        cmd.Append(wxT(" -i"));
+        cmd.Append(wxT(" --ignore-version"));
     if (chkVerbose->GetValue())
-        cmd.Append(wxT(" -v"));
+        cmd.Append(wxT(" --verbose"));
 
-    cmd.Append(wxT(" -f \"") + txtFilename->GetValue() + wxT("\""));
+    cmd.Append(wxT(" --file=\"") + txtFilename->GetValue() + wxT("\""));
 
     if (object->GetMetaType() == PGM_SCHEMA)
 #ifdef WIN32
-        cmd.Append(wxT(" -n \\\"") + ((pgSchema*)object)->GetIdentifier() + wxT("\\\""));
+        cmd.Append(wxT(" --schema=\\\"") + ((pgSchema*)object)->GetIdentifier() + wxT("\\\""));
 #else
-        cmd.Append(wxT(" -n '") + ((pgSchema*)object)->GetQuotedIdentifier() + wxT("'"));
+        cmd.Append(wxT(" --schema='") + ((pgSchema*)object)->GetQuotedIdentifier() + wxT("'"));
 #endif
 
     else if (object->GetMetaType() == PGM_TABLE || object->GetMetaType() == GP_PARTITION) 
@@ -286,17 +284,17 @@ wxString frmBackup::getCmdPart2()
         if (pgAppMinimumVersion(backupExecutable, 8, 2))
         {
 #ifdef WIN32
-            cmd.Append(wxT(" -t \"\\\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
+            cmd.Append(wxT(" --table=\"\\\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
                        wxT("\\\".\\\"") + ((pgTable*)object)->GetIdentifier() + wxT("\\\"\""));
 #else
-            cmd.Append(wxT(" -t '") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier() + 
+            cmd.Append(wxT(" --table='") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier() + 
                        wxT(".") + ((pgTable*)object)->GetQuotedIdentifier() + wxT("'"));
 #endif
         }
         else
         {
-            cmd.Append(wxT(" -t ") + ((pgTable*)object)->GetQuotedIdentifier());
-            cmd.Append(wxT(" -n ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+            cmd.Append(wxT(" --table=") + ((pgTable*)object)->GetQuotedIdentifier());
+            cmd.Append(wxT(" --schema=") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
         }
     }
 
