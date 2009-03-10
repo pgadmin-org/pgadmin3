@@ -87,14 +87,16 @@ public:
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
     bool HasFeature(int feature=0);
     bool BackendMinimumVersion(int major, int minor);
+    bool BackendMinimumVersion(int major, int minor, int patch);
     bool EdbMinimumVersion(int major, int minor);
     wxString SystemNamespaceRestriction(const wxString &nsp);
     int GetMajorVersion() const { return majorVersion; }
     int GetMinorVersion() const { return minorVersion; }
     bool GetIsEdb();
+    bool GetIsGreenplum();
     wxString EncryptPassword(const wxString &user, const wxString &password);
-	wxString qtDbString(const wxString& value);
-	pgConn *Duplicate();
+    wxString qtDbString(const wxString& value);
+    pgConn *Duplicate();
 
     static void ExamineLibpqVersion();
     static double GetLibpqVersion() { return libpqVersion; }
@@ -109,13 +111,13 @@ public:
     wxString GetHostName() const { return dbHostName; }
     wxString GetHostAddress() const { return dbHostAddress; }
     wxString GetDbname() const { return dbname; }
-	wxString GetName() const;
+    wxString GetName() const;
     bool GetNeedUtfConnectString() { return utfConnectString; }
     int GetPort() const { return atoi(PQport(conn)); };
     wxString GetTTY() const { return wxString(PQtty(conn), *conv); }
     wxString GetOptions() const { return wxString(PQoptions(conn), *conv); }
     int GetSslMode() const { return save_sslmode; }
-	wxString GetSslModeName();
+    wxString GetSslModeName();
     int GetBackendPID() const { return PQbackendPID(conn); }
     int GetStatus() const;
     int GetLastResultStatus() const { return lastResultStatus; }
@@ -163,14 +165,15 @@ private:
     wxString qtString(const wxString& value);
 
     bool features[32];
-    int minorVersion, majorVersion;
+    int minorVersion, majorVersion, patchVersion;
     bool isEdb;
+    bool isGreenplum;
 
     wxString reservedNamespaces;
 
-	wxString save_server, save_database, save_username, save_password;
-	int save_port, save_sslmode;
-	OID save_oid;
+    wxString save_server, save_database, save_username, save_password;
+    int save_port, save_sslmode;
+    OID save_oid;
 };
 
 #endif

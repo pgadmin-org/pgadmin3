@@ -118,49 +118,50 @@ static const ScanKeyword ScanKeywords[] = {
 	{"cross", CROSS, TYPE_FUNC_NAME_KEYWORD},
 	{"csv", CSV, UNRESERVED_KEYWORD},
     {"ctype", CTYPE, RESERVED_KEYWORD},
-	{"current", CURRENT_P, UNRESERVED_KEYWORD},
-	{"current_date", CURRENT_DATE, RESERVED_KEYWORD},
-	{"current_role", CURRENT_ROLE, RESERVED_KEYWORD},
-	{"current_time", CURRENT_TIME, RESERVED_KEYWORD},
-	{"current_timestamp", CURRENT_TIMESTAMP, RESERVED_KEYWORD},
-	{"current_user", CURRENT_USER, RESERVED_KEYWORD},
-	{"cursor", CURSOR, UNRESERVED_KEYWORD},
-	{"cycle", CYCLE, UNRESERVED_KEYWORD},
-	{"database", DATABASE, UNRESERVED_KEYWORD},
-	{"day", DAY_P, UNRESERVED_KEYWORD},
-	{"deallocate", DEALLOCATE, UNRESERVED_KEYWORD},
-	{"dec", DEC, COL_NAME_KEYWORD},
-	{"decimal", DECIMAL_P, COL_NAME_KEYWORD},
-	{"declare", DECLARE, UNRESERVED_KEYWORD},
-	{"default", DEFAULT, RESERVED_KEYWORD},
-	{"defaults", DEFAULTS, UNRESERVED_KEYWORD},
-	{"deferrable", DEFERRABLE, RESERVED_KEYWORD},
-	{"deferred", DEFERRED, UNRESERVED_KEYWORD},
-	{"definer", DEFINER, UNRESERVED_KEYWORD},
-	{"delete", DELETE_P, UNRESERVED_KEYWORD},
-	{"delimiter", DELIMITER, UNRESERVED_KEYWORD},
-	{"delimiters", DELIMITERS, UNRESERVED_KEYWORD},
-	{"desc", DESC, RESERVED_KEYWORD},
-	{"dictionary", DICTIONARY, UNRESERVED_KEYWORD},
-	{"disable", DISABLE_P, UNRESERVED_KEYWORD},
-	{"discard", DISCARD, UNRESERVED_KEYWORD},
-	{"distinct", DISTINCT, RESERVED_KEYWORD},
-	{"do", DO, RESERVED_KEYWORD},
-	{"document", DOCUMENT_P, UNRESERVED_KEYWORD},
-	{"domain", DOMAIN_P, UNRESERVED_KEYWORD},
-	{"double", DOUBLE_P, UNRESERVED_KEYWORD},
-	{"drop", DROP, UNRESERVED_KEYWORD},
-	{"each", EACH, UNRESERVED_KEYWORD},
-	{"else", ELSE, RESERVED_KEYWORD},
-	{"enable", ENABLE_P, UNRESERVED_KEYWORD},
-	{"encoding", ENCODING, UNRESERVED_KEYWORD},
-	{"encrypted", ENCRYPTED, UNRESERVED_KEYWORD},
-	{"end", END_P, RESERVED_KEYWORD},
-	{"enum", ENUM_P, UNRESERVED_KEYWORD},
-	{"escape", ESCAPE, UNRESERVED_KEYWORD},
-	{"except", EXCEPT, RESERVED_KEYWORD},
-	{"excluding", EXCLUDING, UNRESERVED_KEYWORD},
-	{"exclusive", EXCLUSIVE, UNRESERVED_KEYWORD},
+    {"current", CURRENT_P, UNRESERVED_KEYWORD},
+    {"current_date", CURRENT_DATE, RESERVED_KEYWORD},
+    {"current_role", CURRENT_ROLE, RESERVED_KEYWORD},
+    {"current_time", CURRENT_TIME, RESERVED_KEYWORD},
+    {"current_timestamp", CURRENT_TIMESTAMP, RESERVED_KEYWORD},
+    {"current_user", CURRENT_USER, RESERVED_KEYWORD},
+    {"cursor", CURSOR, UNRESERVED_KEYWORD},
+    {"cycle", CYCLE, UNRESERVED_KEYWORD},
+    {"database", DATABASE, UNRESERVED_KEYWORD},
+    {"day", DAY_P, UNRESERVED_KEYWORD},
+    {"deallocate", DEALLOCATE, UNRESERVED_KEYWORD},
+    {"dec", DEC, COL_NAME_KEYWORD},
+    {"decimal", DECIMAL_P, COL_NAME_KEYWORD},
+    {"declare", DECLARE, UNRESERVED_KEYWORD},
+    {"default", DEFAULT, RESERVED_KEYWORD},
+    {"defaults", DEFAULTS, UNRESERVED_KEYWORD},
+    {"deferrable", DEFERRABLE, RESERVED_KEYWORD},
+    {"deferred", DEFERRED, UNRESERVED_KEYWORD},
+    {"definer", DEFINER, UNRESERVED_KEYWORD},
+    {"delete", DELETE_P, UNRESERVED_KEYWORD},
+    {"delimiter", DELIMITER, UNRESERVED_KEYWORD},
+    {"delimiters", DELIMITERS, UNRESERVED_KEYWORD},
+    {"desc", DESC, RESERVED_KEYWORD},
+    {"dictionary", DICTIONARY, UNRESERVED_KEYWORD},
+    {"disable", DISABLE_P, UNRESERVED_KEYWORD},
+    {"discard", DISCARD, UNRESERVED_KEYWORD},
+    {"distinct", DISTINCT, RESERVED_KEYWORD},
+    {"distributed", DISTRIBUTED_GP, UNRESERVED_KEYWORD}, /* Greenplum Keyword */
+    {"do", DO, RESERVED_KEYWORD},
+    {"document", DOCUMENT_P, UNRESERVED_KEYWORD},
+    {"domain", DOMAIN_P, UNRESERVED_KEYWORD},
+    {"double", DOUBLE_P, UNRESERVED_KEYWORD},
+    {"drop", DROP, UNRESERVED_KEYWORD},
+    {"each", EACH, UNRESERVED_KEYWORD},
+    {"else", ELSE, RESERVED_KEYWORD},
+    {"enable", ENABLE_P, UNRESERVED_KEYWORD},
+    {"encoding", ENCODING, UNRESERVED_KEYWORD},
+    {"encrypted", ENCRYPTED, UNRESERVED_KEYWORD},
+    {"end", END_P, RESERVED_KEYWORD},
+    {"enum", ENUM_P, UNRESERVED_KEYWORD},
+    {"escape", ESCAPE, UNRESERVED_KEYWORD},
+    {"except", EXCEPT, RESERVED_KEYWORD},
+    {"excluding", EXCLUDING, UNRESERVED_KEYWORD},
+    {"exclusive", EXCLUSIVE, UNRESERVED_KEYWORD},
     {"exec", EXEC_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
 	{"execute", EXECUTE, UNRESERVED_KEYWORD},
 	{"exists", EXISTS, COL_NAME_KEYWORD},
@@ -238,216 +239,217 @@ static const ScanKeyword ScanKeywords[] = {
 	{"localtimestamp", LOCALTIMESTAMP, RESERVED_KEYWORD},
 	{"location", LOCATION, UNRESERVED_KEYWORD},
 	{"lock", LOCK_P, UNRESERVED_KEYWORD},
+    {"log", LOG_P_GP, RESERVED_KEYWORD},  /* Greenplum Keyword */
 	{"login", LOGIN_P, UNRESERVED_KEYWORD},
     {"long", LONG_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"mapping", MAPPING, UNRESERVED_KEYWORD},
-	{"match", MATCH, UNRESERVED_KEYWORD},
-	{"maxvalue", MAXVALUE, UNRESERVED_KEYWORD},
-	{"minus", MINUS_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"minute", MINUTE_P, UNRESERVED_KEYWORD},
-	{"minvalue", MINVALUE, UNRESERVED_KEYWORD},
-	{"mode", MODE, UNRESERVED_KEYWORD},
-	{"month", MONTH_P, UNRESERVED_KEYWORD},
-	{"move", MOVE, UNRESERVED_KEYWORD},
-	{"name", NAME_P, UNRESERVED_KEYWORD},
-	{"names", NAMES, UNRESERVED_KEYWORD},
-	{"national", NATIONAL, COL_NAME_KEYWORD},
-	{"natural", NATURAL, TYPE_FUNC_NAME_KEYWORD},
-	{"nchar", NCHAR, COL_NAME_KEYWORD},
-	{"new", NEW, RESERVED_KEYWORD},
-	{"next", NEXT, UNRESERVED_KEYWORD},
-	{"no", NO, UNRESERVED_KEYWORD},
+    {"mapping", MAPPING, UNRESERVED_KEYWORD},
+    {"match", MATCH, UNRESERVED_KEYWORD},
+    {"maxvalue", MAXVALUE, UNRESERVED_KEYWORD},
+    {"minus", MINUS_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"minute", MINUTE_P, UNRESERVED_KEYWORD},
+    {"minvalue", MINVALUE, UNRESERVED_KEYWORD},
+    {"mode", MODE, UNRESERVED_KEYWORD},
+    {"month", MONTH_P, UNRESERVED_KEYWORD},
+    {"move", MOVE, UNRESERVED_KEYWORD},
+    {"name", NAME_P, UNRESERVED_KEYWORD},
+    {"names", NAMES, UNRESERVED_KEYWORD},
+    {"national", NATIONAL, COL_NAME_KEYWORD},
+    {"natural", NATURAL, TYPE_FUNC_NAME_KEYWORD},
+    {"nchar", NCHAR, COL_NAME_KEYWORD},
+    {"new", NEW, RESERVED_KEYWORD},
+    {"next", NEXT, UNRESERVED_KEYWORD},
+    {"no", NO, UNRESERVED_KEYWORD},
     {"nocache", NOCACHE_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"nocreatedb", NOCREATEDB, UNRESERVED_KEYWORD},
-	{"nocreaterole", NOCREATEROLE, UNRESERVED_KEYWORD},
-	{"nocreateuser", NOCREATEUSER, UNRESERVED_KEYWORD},
-	{"noinherit", NOINHERIT, UNRESERVED_KEYWORD},
-	{"nologin", NOLOGIN_P, UNRESERVED_KEYWORD},
-	{"none", NONE, COL_NAME_KEYWORD},
-	{"nosuperuser", NOSUPERUSER, UNRESERVED_KEYWORD},
-	{"not", NOT, RESERVED_KEYWORD},
-	{"nothing", NOTHING, UNRESERVED_KEYWORD},
-	{"notify", NOTIFY, UNRESERVED_KEYWORD},
-	{"notnull", NOTNULL, TYPE_FUNC_NAME_KEYWORD},
-	{"nowait", NOWAIT, UNRESERVED_KEYWORD},
-	{"null", NULL_P, RESERVED_KEYWORD},
-	{"nullif", NULLIF, COL_NAME_KEYWORD},
-	{"nulls", NULLS_P, UNRESERVED_KEYWORD},
+    {"nocreatedb", NOCREATEDB, UNRESERVED_KEYWORD},
+    {"nocreaterole", NOCREATEROLE, UNRESERVED_KEYWORD},
+    {"nocreateuser", NOCREATEUSER, UNRESERVED_KEYWORD},
+    {"noinherit", NOINHERIT, UNRESERVED_KEYWORD},
+    {"nologin", NOLOGIN_P, UNRESERVED_KEYWORD},
+    {"none", NONE, COL_NAME_KEYWORD},
+    {"nosuperuser", NOSUPERUSER, UNRESERVED_KEYWORD},
+    {"not", NOT, RESERVED_KEYWORD},
+    {"nothing", NOTHING, UNRESERVED_KEYWORD},
+    {"notify", NOTIFY, UNRESERVED_KEYWORD},
+    {"notnull", NOTNULL, TYPE_FUNC_NAME_KEYWORD},
+    {"nowait", NOWAIT, UNRESERVED_KEYWORD},
+    {"null", NULL_P, RESERVED_KEYWORD},
+    {"nullif", NULLIF, COL_NAME_KEYWORD},
+    {"nulls", NULLS_P, UNRESERVED_KEYWORD},
     {"number", NUMBER_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"numeric", NUMERIC, COL_NAME_KEYWORD},
-	{"object", OBJECT_P, UNRESERVED_KEYWORD},
-	{"of", OF, UNRESERVED_KEYWORD},
-	{"off", OFF, RESERVED_KEYWORD},
-	{"offset", OFFSET, RESERVED_KEYWORD},
-	{"oids", OIDS, UNRESERVED_KEYWORD},
-	{"old", OLD, RESERVED_KEYWORD},
-	{"on", ON, RESERVED_KEYWORD},
-	{"only", ONLY, RESERVED_KEYWORD},
-	{"operator", OPERATOR, UNRESERVED_KEYWORD},
-	{"option", OPTION, UNRESERVED_KEYWORD},
-	{"or", OR, RESERVED_KEYWORD},
-	{"order", ORDER, RESERVED_KEYWORD},
-	{"out", OUT_P, COL_NAME_KEYWORD},
-	{"outer", OUTER_P, TYPE_FUNC_NAME_KEYWORD},
-	{"overlaps", OVERLAPS, TYPE_FUNC_NAME_KEYWORD},
-	{"overlay", OVERLAY, COL_NAME_KEYWORD},
-	{"owned", OWNED, UNRESERVED_KEYWORD},
-	{"owner", OWNER, UNRESERVED_KEYWORD},
+    {"numeric", NUMERIC, COL_NAME_KEYWORD},
+    {"object", OBJECT_P, UNRESERVED_KEYWORD},
+    {"of", OF, UNRESERVED_KEYWORD},
+    {"off", OFF, RESERVED_KEYWORD},
+    {"offset", OFFSET, RESERVED_KEYWORD},
+    {"oids", OIDS, UNRESERVED_KEYWORD},
+    {"old", OLD, RESERVED_KEYWORD},
+    {"on", ON, RESERVED_KEYWORD},
+    {"only", ONLY, RESERVED_KEYWORD},
+    {"operator", OPERATOR, UNRESERVED_KEYWORD},
+    {"option", OPTION, UNRESERVED_KEYWORD},
+    {"or", OR, RESERVED_KEYWORD},
+    {"order", ORDER, RESERVED_KEYWORD},
+    {"out", OUT_P, COL_NAME_KEYWORD},
+    {"outer", OUTER_P, TYPE_FUNC_NAME_KEYWORD},
+    {"overlaps", OVERLAPS, TYPE_FUNC_NAME_KEYWORD},
+    {"overlay", OVERLAY, COL_NAME_KEYWORD},
+    {"owned", OWNED, UNRESERVED_KEYWORD},
+    {"owner", OWNER, UNRESERVED_KEYWORD},
     {"package", PACKAGE_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"parser", PARSER, UNRESERVED_KEYWORD},
-	{"partial", PARTIAL, UNRESERVED_KEYWORD},
-	{"password", PASSWORD, UNRESERVED_KEYWORD},
-	{"placing", PLACING, RESERVED_KEYWORD},
-	{"plans", PLANS, UNRESERVED_KEYWORD},
+    {"parser", PARSER, UNRESERVED_KEYWORD},
+    {"partial", PARTIAL, UNRESERVED_KEYWORD},
+    {"password", PASSWORD, UNRESERVED_KEYWORD},
+    {"placing", PLACING, RESERVED_KEYWORD},
+    {"plans", PLANS, UNRESERVED_KEYWORD},
     {"pls_integer", PLS_INTEGER_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"position", POSITION, COL_NAME_KEYWORD},
-	{"precision", PRECISION, COL_NAME_KEYWORD},
-	{"prepare", PREPARE, UNRESERVED_KEYWORD},
-	{"prepared", PREPARED, UNRESERVED_KEYWORD},
-	{"preserve", PRESERVE, UNRESERVED_KEYWORD},
-	{"primary", PRIMARY, RESERVED_KEYWORD},
-	{"prior", PRIOR, UNRESERVED_KEYWORD},
-	{"privileges", PRIVILEGES, UNRESERVED_KEYWORD},
-	{"procedural", PROCEDURAL, UNRESERVED_KEYWORD},
-	{"procedure", PROCEDURE, UNRESERVED_KEYWORD},
-	{"quote", QUOTE, UNRESERVED_KEYWORD},
+    {"position", POSITION, COL_NAME_KEYWORD},
+    {"precision", PRECISION, COL_NAME_KEYWORD},
+    {"prepare", PREPARE, UNRESERVED_KEYWORD},
+    {"prepared", PREPARED, UNRESERVED_KEYWORD},
+    {"preserve", PRESERVE, UNRESERVED_KEYWORD},
+    {"primary", PRIMARY, RESERVED_KEYWORD},
+    {"prior", PRIOR, UNRESERVED_KEYWORD},
+    {"privileges", PRIVILEGES, UNRESERVED_KEYWORD},
+    {"procedural", PROCEDURAL, UNRESERVED_KEYWORD},
+    {"procedure", PROCEDURE, UNRESERVED_KEYWORD},
+    {"quote", QUOTE, UNRESERVED_KEYWORD},
     {"raw", RAW_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"read", READ, UNRESERVED_KEYWORD},
-	{"real", REAL, COL_NAME_KEYWORD},
-	{"reassign", REASSIGN, UNRESERVED_KEYWORD},
-	{"recheck", RECHECK, UNRESERVED_KEYWORD},
-	{"references", REFERENCES, RESERVED_KEYWORD},
-	{"reindex", REINDEX, UNRESERVED_KEYWORD},
-	{"relative", RELATIVE_P, UNRESERVED_KEYWORD},
-	{"release", RELEASE, UNRESERVED_KEYWORD},
-	{"rename", RENAME, UNRESERVED_KEYWORD},
-	{"repeatable", REPEATABLE, UNRESERVED_KEYWORD},
-	{"replace", REPLACE, UNRESERVED_KEYWORD},
-	{"replica", REPLICA, UNRESERVED_KEYWORD},
-	{"reset", RESET, UNRESERVED_KEYWORD},
-	{"restart", RESTART, UNRESERVED_KEYWORD},
-	{"restrict", RESTRICT, UNRESERVED_KEYWORD},
+    {"read", READ, UNRESERVED_KEYWORD},
+    {"real", REAL, COL_NAME_KEYWORD},
+    {"reassign", REASSIGN, UNRESERVED_KEYWORD},
+    {"recheck", RECHECK, UNRESERVED_KEYWORD},
+    {"references", REFERENCES, RESERVED_KEYWORD},
+    {"reindex", REINDEX, UNRESERVED_KEYWORD},
+    {"relative", RELATIVE_P, UNRESERVED_KEYWORD},
+    {"release", RELEASE, UNRESERVED_KEYWORD},
+    {"rename", RENAME, UNRESERVED_KEYWORD},
+    {"repeatable", REPEATABLE, UNRESERVED_KEYWORD},
+    {"replace", REPLACE, UNRESERVED_KEYWORD},
+    {"replica", REPLICA, UNRESERVED_KEYWORD},
+    {"reset", RESET, UNRESERVED_KEYWORD},
+    {"restart", RESTART, UNRESERVED_KEYWORD},
+    {"restrict", RESTRICT, UNRESERVED_KEYWORD},
     {"return", RETURN_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"returning", RETURNING, RESERVED_KEYWORD},
-	{"returns", RETURNS, UNRESERVED_KEYWORD},
-	{"revoke", REVOKE, UNRESERVED_KEYWORD},
-	{"right", RIGHT, TYPE_FUNC_NAME_KEYWORD},
-	{"role", ROLE, UNRESERVED_KEYWORD},
-	{"rollback", ROLLBACK, UNRESERVED_KEYWORD},
-	{"row", ROW, COL_NAME_KEYWORD},
-	{"rows", ROWS, UNRESERVED_KEYWORD},
-	{"rule", RULE, UNRESERVED_KEYWORD},
-	{"savepoint", SAVEPOINT, UNRESERVED_KEYWORD},
-	{"schema", SCHEMA, UNRESERVED_KEYWORD},
-	{"scroll", SCROLL, UNRESERVED_KEYWORD},
-	{"search", SEARCH, UNRESERVED_KEYWORD},
-	{"second", SECOND_P, UNRESERVED_KEYWORD},
-	{"security", SECURITY, UNRESERVED_KEYWORD},
-	{"select", SELECT, RESERVED_KEYWORD},
-	{"sequence", SEQUENCE, UNRESERVED_KEYWORD},
-	{"serializable", SERIALIZABLE, UNRESERVED_KEYWORD},
-	{"session", SESSION, UNRESERVED_KEYWORD},
-	{"session_user", SESSION_USER, RESERVED_KEYWORD},
-	{"set", SET, UNRESERVED_KEYWORD},
-	{"setof", SETOF, COL_NAME_KEYWORD},
-	{"share", SHARE, UNRESERVED_KEYWORD},
-	{"show", SHOW, UNRESERVED_KEYWORD},
-	{"similar", SIMILAR, TYPE_FUNC_NAME_KEYWORD},
-	{"simple", SIMPLE, UNRESERVED_KEYWORD},
+    {"returning", RETURNING, RESERVED_KEYWORD},
+    {"returns", RETURNS, UNRESERVED_KEYWORD},
+    {"revoke", REVOKE, UNRESERVED_KEYWORD},
+    {"right", RIGHT, TYPE_FUNC_NAME_KEYWORD},
+    {"role", ROLE, UNRESERVED_KEYWORD},
+    {"rollback", ROLLBACK, UNRESERVED_KEYWORD},
+    {"row", ROW, COL_NAME_KEYWORD},
+    {"rows", ROWS, UNRESERVED_KEYWORD},
+    {"rule", RULE, UNRESERVED_KEYWORD},
+    {"savepoint", SAVEPOINT, UNRESERVED_KEYWORD},
+    {"schema", SCHEMA, UNRESERVED_KEYWORD},
+    {"scroll", SCROLL, UNRESERVED_KEYWORD},
+    {"search", SEARCH, UNRESERVED_KEYWORD},
+    {"second", SECOND_P, UNRESERVED_KEYWORD},
+    {"security", SECURITY, UNRESERVED_KEYWORD},
+    {"select", SELECT, RESERVED_KEYWORD},
+    {"sequence", SEQUENCE, UNRESERVED_KEYWORD},
+    {"serializable", SERIALIZABLE, UNRESERVED_KEYWORD},
+    {"session", SESSION, UNRESERVED_KEYWORD},
+    {"session_user", SESSION_USER, RESERVED_KEYWORD},
+    {"set", SET, UNRESERVED_KEYWORD},
+    {"setof", SETOF, COL_NAME_KEYWORD},
+    {"share", SHARE, UNRESERVED_KEYWORD},
+    {"show", SHOW, UNRESERVED_KEYWORD},
+    {"similar", SIMILAR, TYPE_FUNC_NAME_KEYWORD},
+    {"simple", SIMPLE, UNRESERVED_KEYWORD},
     {"smalldatetime", SMALLDATETIME_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"smallfloat", SMALLFLOAT_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"smallint", SMALLINT, COL_NAME_KEYWORD},
-	{"smallmoney", SMALLMONEY_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"some", SOME, RESERVED_KEYWORD},
-	{"stable", STABLE, UNRESERVED_KEYWORD},
-	{"standalone", STANDALONE_P, UNRESERVED_KEYWORD},
-	{"start", START, UNRESERVED_KEYWORD},
-	{"statement", STATEMENT, UNRESERVED_KEYWORD},
-	{"statistics", STATISTICS, UNRESERVED_KEYWORD},
-	{"stdin", STDIN, UNRESERVED_KEYWORD},
-	{"stdout", STDOUT, UNRESERVED_KEYWORD},
-	{"storage", STORAGE, UNRESERVED_KEYWORD},
-	{"strict", STRICT_P, UNRESERVED_KEYWORD},
-	{"strip", STRIP_P, UNRESERVED_KEYWORD},
-	{"substring", SUBSTRING, COL_NAME_KEYWORD},
-	{"superuser", SUPERUSER_P, UNRESERVED_KEYWORD},
-	{"symmetric", SYMMETRIC, RESERVED_KEYWORD},
+    {"smallfloat", SMALLFLOAT_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"smallint", SMALLINT, COL_NAME_KEYWORD},
+    {"smallmoney", SMALLMONEY_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"some", SOME, RESERVED_KEYWORD},
+    {"stable", STABLE, UNRESERVED_KEYWORD},
+    {"standalone", STANDALONE_P, UNRESERVED_KEYWORD},
+    {"start", START, UNRESERVED_KEYWORD},
+    {"statement", STATEMENT, UNRESERVED_KEYWORD},
+    {"statistics", STATISTICS, UNRESERVED_KEYWORD},
+    {"stdin", STDIN, UNRESERVED_KEYWORD},
+    {"stdout", STDOUT, UNRESERVED_KEYWORD},
+    {"storage", STORAGE, UNRESERVED_KEYWORD},
+    {"strict", STRICT_P, UNRESERVED_KEYWORD},
+    {"strip", STRIP_P, UNRESERVED_KEYWORD},
+    {"substring", SUBSTRING, COL_NAME_KEYWORD},
+    {"superuser", SUPERUSER_P, UNRESERVED_KEYWORD},
+    {"symmetric", SYMMETRIC, RESERVED_KEYWORD},
     {"sysdate", SYSDATE_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"sysid", SYSID, UNRESERVED_KEYWORD},
-	{"system", SYSTEM_P, UNRESERVED_KEYWORD},
+    {"sysid", SYSID, UNRESERVED_KEYWORD},
+    {"system", SYSTEM_P, UNRESERVED_KEYWORD},
     {"systimestamp", SYSTIMESTAMP_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"table", TABLE, RESERVED_KEYWORD},
-	{"tablespace", TABLESPACE, UNRESERVED_KEYWORD},
-	{"temp", TEMP, UNRESERVED_KEYWORD},
-	{"template", TEMPLATE, UNRESERVED_KEYWORD},
-	{"temporary", TEMPORARY, UNRESERVED_KEYWORD},
-	{"text", TEXT_P, UNRESERVED_KEYWORD},
-	{"then", THEN, RESERVED_KEYWORD},
-	{"time", TIME, COL_NAME_KEYWORD},
-	{"timestamp", TIMESTAMP, COL_NAME_KEYWORD},
-	{"tinyint", TINYINT_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"tinytext", TINYTEXT_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"to", TO, RESERVED_KEYWORD},
-	{"trailing", TRAILING, RESERVED_KEYWORD},
-	{"transaction", TRANSACTION, UNRESERVED_KEYWORD},
-	{"treat", TREAT, COL_NAME_KEYWORD},
-	{"trigger", TRIGGER, UNRESERVED_KEYWORD},
-	{"trim", TRIM, COL_NAME_KEYWORD},
-	{"true", TRUE_P, RESERVED_KEYWORD},
-	{"truncate", TRUNCATE, UNRESERVED_KEYWORD},
-	{"trusted", TRUSTED, UNRESERVED_KEYWORD},
-	{"type", TYPE_P, UNRESERVED_KEYWORD},
-	{"uncommitted", UNCOMMITTED, UNRESERVED_KEYWORD},
-	{"unencrypted", UNENCRYPTED, UNRESERVED_KEYWORD},
-	{"union", UNION, RESERVED_KEYWORD},
-	{"unique", UNIQUE, RESERVED_KEYWORD},
-	{"unknown", UNKNOWN, UNRESERVED_KEYWORD},
-	{"unlisten", UNLISTEN, UNRESERVED_KEYWORD},
-	{"until", UNTIL, UNRESERVED_KEYWORD},
-	{"update", UPDATE, UNRESERVED_KEYWORD},
-	{"user", USER, RESERVED_KEYWORD},
-	{"using", USING, RESERVED_KEYWORD},
-	{"vacuum", VACUUM, UNRESERVED_KEYWORD},
-	{"valid", VALID, UNRESERVED_KEYWORD},
-	{"validator", VALIDATOR, UNRESERVED_KEYWORD},
-	{"value", VALUE_P, UNRESERVED_KEYWORD},
-	{"values", VALUES, COL_NAME_KEYWORD},
-	{"varchar", VARCHAR, COL_NAME_KEYWORD},
+    {"table", TABLE, RESERVED_KEYWORD},
+    {"tablespace", TABLESPACE, UNRESERVED_KEYWORD},
+    {"temp", TEMP, UNRESERVED_KEYWORD},
+    {"template", TEMPLATE, UNRESERVED_KEYWORD},
+    {"temporary", TEMPORARY, UNRESERVED_KEYWORD},
+    {"text", TEXT_P, UNRESERVED_KEYWORD},
+    {"then", THEN, RESERVED_KEYWORD},
+    {"time", TIME, COL_NAME_KEYWORD},
+    {"timestamp", TIMESTAMP, COL_NAME_KEYWORD},
+    {"tinyint", TINYINT_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"tinytext", TINYTEXT_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
+    {"to", TO, RESERVED_KEYWORD},
+    {"trailing", TRAILING, RESERVED_KEYWORD},
+    {"transaction", TRANSACTION, UNRESERVED_KEYWORD},
+    {"treat", TREAT, COL_NAME_KEYWORD},
+    {"trigger", TRIGGER, UNRESERVED_KEYWORD},
+    {"trim", TRIM, COL_NAME_KEYWORD},
+    {"true", TRUE_P, RESERVED_KEYWORD},
+    {"truncate", TRUNCATE, UNRESERVED_KEYWORD},
+    {"trusted", TRUSTED, UNRESERVED_KEYWORD},
+    {"type", TYPE_P, UNRESERVED_KEYWORD},
+    {"uncommitted", UNCOMMITTED, UNRESERVED_KEYWORD},
+    {"unencrypted", UNENCRYPTED, UNRESERVED_KEYWORD},
+    {"union", UNION, RESERVED_KEYWORD},
+    {"unique", UNIQUE, RESERVED_KEYWORD},
+    {"unknown", UNKNOWN, UNRESERVED_KEYWORD},
+    {"unlisten", UNLISTEN, UNRESERVED_KEYWORD},
+    {"until", UNTIL, UNRESERVED_KEYWORD},
+    {"update", UPDATE, UNRESERVED_KEYWORD},
+    {"user", USER, RESERVED_KEYWORD},
+    {"using", USING, RESERVED_KEYWORD},
+    {"vacuum", VACUUM, UNRESERVED_KEYWORD},
+    {"valid", VALID, UNRESERVED_KEYWORD},
+    {"validator", VALIDATOR, UNRESERVED_KEYWORD},
+    {"value", VALUE_P, UNRESERVED_KEYWORD},
+    {"values", VALUES, COL_NAME_KEYWORD},
+    {"varchar", VARCHAR, COL_NAME_KEYWORD},
     {"varchar2", VARCHAR2_EDB, RESERVED_KEYWORD}, /* EnterpriseDB Keyword */
-	{"varying", VARYING, UNRESERVED_KEYWORD},
-	{"verbose", VERBOSE, TYPE_FUNC_NAME_KEYWORD},
-	{"version", VERSION_P, UNRESERVED_KEYWORD},
-	{"view", VIEW, UNRESERVED_KEYWORD},
-	{"volatile", VOLATILE, UNRESERVED_KEYWORD},
-	{"when", WHEN, RESERVED_KEYWORD},
-	{"where", WHERE, RESERVED_KEYWORD},
-	{"whitespace", WHITESPACE_P, UNRESERVED_KEYWORD},
+    {"varying", VARYING, UNRESERVED_KEYWORD},
+    {"verbose", VERBOSE, TYPE_FUNC_NAME_KEYWORD},
+    {"version", VERSION_P, UNRESERVED_KEYWORD},
+    {"view", VIEW, UNRESERVED_KEYWORD},
+    {"volatile", VOLATILE, UNRESERVED_KEYWORD},
+    {"when", WHEN, RESERVED_KEYWORD},
+    {"where", WHERE, RESERVED_KEYWORD},
+    {"whitespace", WHITESPACE_P, UNRESERVED_KEYWORD},
 
-	/*
-	 * XXX we mark WITH as reserved to force it to be quoted in dumps, even
-	 * though it is currently unreserved according to gram.y.  This is because
-	 * we expect we'll have to make it reserved to implement SQL WITH clauses.
-	 * If that patch manages to do without reserving WITH, adjust this entry
-	 * at that time; in any case this should be back in sync with gram.y after
-	 * WITH clauses are implemented.
-	 */
+    /*
+     * XXX we mark WITH as reserved to force it to be quoted in dumps, even
+     * though it is currently unreserved according to gram.y.  This is because
+     * we expect we'll have to make it reserved to implement SQL WITH clauses.
+     * If that patch manages to do without reserving WITH, adjust this entry
+     * at that time; in any case this should be back in sync with gram.y after
+     * WITH clauses are implemented.
+     */
     {"window", WINDOW, RESERVED_KEYWORD},
-	{"with", WITH, RESERVED_KEYWORD},
-	{"without", WITHOUT, UNRESERVED_KEYWORD},
-	{"work", WORK, UNRESERVED_KEYWORD},
-	{"write", WRITE, UNRESERVED_KEYWORD},
-	{"xml", XML_P, UNRESERVED_KEYWORD},
-	{"xmlattributes", XMLATTRIBUTES, COL_NAME_KEYWORD},
-	{"xmlconcat", XMLCONCAT, COL_NAME_KEYWORD},
-	{"xmlelement", XMLELEMENT, COL_NAME_KEYWORD},
-	{"xmlforest", XMLFOREST, COL_NAME_KEYWORD},
-	{"xmlparse", XMLPARSE, COL_NAME_KEYWORD},
-	{"xmlpi", XMLPI, COL_NAME_KEYWORD},
-	{"xmlroot", XMLROOT, COL_NAME_KEYWORD},
-	{"xmlserialize", XMLSERIALIZE, COL_NAME_KEYWORD},
-	{"year", YEAR_P, UNRESERVED_KEYWORD},
-	{"yes", YES_P, UNRESERVED_KEYWORD},
-	{"zone", ZONE, UNRESERVED_KEYWORD},
+    {"with", WITH, RESERVED_KEYWORD},
+    {"without", WITHOUT, UNRESERVED_KEYWORD},
+    {"work", WORK, UNRESERVED_KEYWORD},
+    {"write", WRITE, UNRESERVED_KEYWORD},
+    {"xml", XML_P, UNRESERVED_KEYWORD},
+    {"xmlattributes", XMLATTRIBUTES, COL_NAME_KEYWORD},
+    {"xmlconcat", XMLCONCAT, COL_NAME_KEYWORD},
+    {"xmlelement", XMLELEMENT, COL_NAME_KEYWORD},
+    {"xmlforest", XMLFOREST, COL_NAME_KEYWORD},
+    {"xmlparse", XMLPARSE, COL_NAME_KEYWORD},
+    {"xmlpi", XMLPI, COL_NAME_KEYWORD},
+    {"xmlroot", XMLROOT, COL_NAME_KEYWORD},
+    {"xmlserialize", XMLSERIALIZE, COL_NAME_KEYWORD},
+    {"year", YEAR_P, UNRESERVED_KEYWORD},
+    {"yes", YES_P, UNRESERVED_KEYWORD},
+    {"zone", ZONE, UNRESERVED_KEYWORD},
 };
 
 /*
@@ -465,50 +467,50 @@ static const ScanKeyword ScanKeywords[] = {
 const ScanKeyword *
 ScanKeywordLookup(const char *text)
 {
-	int			len,
-				i;
-	char		word[NAMEDATALEN];
-	const ScanKeyword *low;
-	const ScanKeyword *high;
+    int			len,
+                i;
+    char		word[NAMEDATALEN];
+    const ScanKeyword *low;
+    const ScanKeyword *high;
 
-	len = strlen(text);
-	/* We assume all keywords are shorter than NAMEDATALEN. */
-	if (len >= NAMEDATALEN)
-		return NULL;
+    len = strlen(text);
+    /* We assume all keywords are shorter than NAMEDATALEN. */
+    if (len >= NAMEDATALEN)
+        return NULL;
 
-	/*
-	 * Apply an ASCII-only downcasing.	We must not use tolower() since it may
-	 * produce the wrong translation in some locales (eg, Turkish).
-	 */
-	for (i = 0; i < len; i++)
-	{
-		char		ch = text[i];
+    /*
+     * Apply an ASCII-only downcasing.	We must not use tolower() since it may
+     * produce the wrong translation in some locales (eg, Turkish).
+     */
+    for (i = 0; i < len; i++)
+    {
+        char		ch = text[i];
 
-		if (ch >= 'A' && ch <= 'Z')
-			ch += 'a' - 'A';
-		word[i] = ch;
-	}
-	word[len] = '\0';
+        if (ch >= 'A' && ch <= 'Z')
+            ch += 'a' - 'A';
+        word[i] = ch;
+    }
+    word[len] = '\0';
 
-	/*
-	 * Now do a binary search using plain strcmp() comparison.
-	 */
-	low = &ScanKeywords[0];
-	high = endof(ScanKeywords) - 1;
-	while (low <= high)
-	{
-		const ScanKeyword *middle;
-		int			difference;
+    /*
+     * Now do a binary search using plain strcmp() comparison.
+     */
+    low = &ScanKeywords[0];
+    high = endof(ScanKeywords) - 1;
+    while (low <= high)
+    {
+        const ScanKeyword *middle;
+        int			difference;
 
-		middle = low + (high - low) / 2;
-		difference = strcmp(middle->name, word);
-		if (difference == 0)
-			return middle;
-		else if (difference < 0)
-			low = middle + 1;
-		else
-			high = middle - 1;
-	}
+        middle = low + (high - low) / 2;
+        difference = strcmp(middle->name, word);
+        if (difference == 0)
+            return middle;
+        else if (difference < 0)
+            low = middle + 1;
+        else
+            high = middle - 1;
+    }
 
-	return NULL;
+    return NULL;
 }

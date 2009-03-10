@@ -32,6 +32,7 @@
 #include "images/catalog-sm.xpm"
 #include "images/catalogs.xpm"
 #include "images/catalogobject-sm.xpm"
+#include "images/exttable-sm.xpm"	// Greenplum external tables
 
 BEGIN_EVENT_TABLE(gqbBrowser, wxTreeCtrl)
 EVT_TREE_ITEM_ACTIVATED(GQB_BROWSER, gqbBrowser::OnItemActivated)
@@ -54,6 +55,7 @@ gqbBrowser::gqbBrowser(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
     imageList->Add(wxIcon(catalog_sm_xpm));
     imageList->Add(wxIcon(catalogobject_sm_xpm));
     imageList->Add(wxIcon(view_sm_xpm));
+    imageList->Add(wxIcon(exttable_sm_xpm));
     this->AssignImageList(imageList);
 }
 

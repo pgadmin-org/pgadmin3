@@ -52,13 +52,13 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 {
     wxString msg, hostip, hostname;
 
-	save_server = server;
-	save_database = database;
-	save_username = username;
-	save_password = password;
-	save_port = port;
-	save_sslmode = sslmode;
-	save_oid = oid;
+    save_server = server;
+    save_database = database;
+    save_username = username;
+    save_password = password;
+    save_port = port;
+    save_sslmode = sslmode;
+    save_oid = oid;
 
     memset(features, 0, sizeof(features));
     majorVersion=0;
@@ -96,13 +96,13 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
                 return;
             }
 
-        	memcpy(&(ipaddr),host->h_addr,host->h_length); 
-	    	hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
+            memcpy(&(ipaddr),host->h_addr,host->h_length); 
+            hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
             hostname = server;
         }
-    	else
+        else
         {
-    	    hostip = server;
+            hostip = server;
             hostname = server;
         }
 #ifndef __WXMSW__
@@ -198,14 +198,14 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
         if (oid)
             sql += wxT("oid = ") + NumToStr(oid);
         else
-		{
-			// Note, can't use qtDbString here as we don't know the server version yet.
-			wxString db = database;
-			db.Replace(wxT("\\"), wxT("\\\\"));
-			db.Replace(wxT("'"), wxT("''"));
+        {
+            // Note, can't use qtDbString here as we don't know the server version yet.
+            wxString db = database;
+            db.Replace(wxT("\\"), wxT("\\\\"));
+            db.Replace(wxT("'"), wxT("''"));
             sql += wxT("datname=") + qtString(database);
-		}
-		
+        }
+        
 
         pgSet *set = ExecuteSet(sql);
 
@@ -229,7 +229,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 
             wxLogInfo(wxT("Setting client_encoding to '%s'"), encoding.c_str());
             if (PQsetClientEncoding(conn, encoding.ToAscii()))
-				wxLogError(wxT("%s"), GetLastError().c_str());
+                wxLogError(wxT("%s"), GetLastError().c_str());
 
             delete set;
         }
@@ -252,7 +252,7 @@ void pgConn::Close()
 
 pgConn *pgConn::Duplicate()
 {
-	return new pgConn(wxString(save_server), wxString(save_database), wxString(save_username), wxString(save_password), save_port, save_sslmode, save_oid);
+    return new pgConn(wxString(save_server), wxString(save_database), wxString(save_username), wxString(save_password), save_port, save_sslmode, save_oid);
 }
 
 // Return the SSL mode name
@@ -261,20 +261,20 @@ wxString pgConn::GetSslModeName()
     switch (save_sslmode)
     {
         case 1: 
-			return wxT("require");   
-			break;
+            return wxT("require");   
+            break;
         case 2: 
-			return wxT("prefer");    
-			break;
+            return wxT("prefer");    
+            break;
         case 3: 
-			return wxT("allow");     
-			break;
+            return wxT("allow");     
+            break;
         case 4: 
-			return wxT("disable");   
-			break;
+            return wxT("disable");   
+            break;
         default: 
-			return wxT("prefer");   
-			break;
+            return wxT("prefer");   
+            break;
     }
 }
 
@@ -285,6 +285,12 @@ bool pgConn::GetIsEdb()
     return isEdb; 
 }
 
+bool pgConn::GetIsGreenplum()
+{
+    // to retrieve Greenplum flag
+    BackendMinimumVersion(0,0);
+    return isGreenplum; 
+}
 
 wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
 {
@@ -310,9 +316,9 @@ wxString pgConn::SystemNamespaceRestriction(const wxString &nsp)
         }
     }
 
-	if (BackendMinimumVersion(8, 1))
+    if (BackendMinimumVersion(8, 1))
       return wxT("(") + nsp + wxT(" NOT LIKE E'pg\\_%' AND ") + nsp + wxT(" NOT in (") + reservedNamespaces + wxT("))");
-	else
+    else
       return wxT("(") + nsp + wxT(" NOT LIKE 'pg\\_%' AND ") + nsp + wxT(" NOT in (") + reservedNamespaces + wxT("))");
 }
 
@@ -334,7 +340,7 @@ bool pgConn::BackendMinimumVersion(int major, int minor)
     if (!majorVersion)
     {
         wxString version=GetVersionString();
-	    sscanf(version.ToAscii(), "%*s %d.%d", &majorVersion, &minorVersion);
+        sscanf(version.ToAscii(), "%*s %d.%d.%d", &majorVersion, &minorVersion, &patchVersion);
         isEdb = version.Upper().Matches(wxT("ENTERPRISEDB*"));
 
         // EnterpriseDB 8.3 beta 1 & 2 and possibly later actually have PostgreSQL 8.2 style
@@ -346,9 +352,22 @@ bool pgConn::BackendMinimumVersion(int major, int minor)
             if (ExecuteScalar(wxT("SELECT count(*) FROM pg_attribute WHERE attname = 'proconfig' AND attrelid = 'pg_proc'::regclass")) == wxT("0"))
                 minorVersion = 2; 
         }
+
+        isGreenplum = version.Upper().Matches(wxT("*GREENPLUM DATABASE*"));
     }
 
-	return majorVersion > major || (majorVersion == major && minorVersion >= minor);
+    return majorVersion > major || (majorVersion == major && minorVersion >= minor);
+}
+
+
+// Greenplum sometimes adds features in patch releases, because Greenplum
+// releases are not coordinated with PostgreSQL minor releases.
+bool pgConn::BackendMinimumVersion(int major, int minor, int patch)
+{
+    if (!majorVersion)
+        BackendMinimumVersion(0,0);
+
+    return majorVersion > major || (majorVersion == major && minorVersion > minor) || (majorVersion == major && minorVersion == minor && patchVersion >= patch);
 }
 
 
@@ -437,15 +456,15 @@ wxString pgConn::qtDbString(const wxString& value)
     result.Replace(wxT("'"), wxT("''"));
     result.Append(wxT("'"));
 
-	if (BackendMinimumVersion(8, 1))
-	{
-		if (result.Contains(wxT("\\")))
-		    result.Prepend(wxT("E'"));
-		else
-			result.Prepend(wxT("'"));
-	}
-	else
-		result.Prepend(wxT("'"));
+    if (BackendMinimumVersion(8, 1))
+    {
+        if (result.Contains(wxT("\\")))
+            result.Prepend(wxT("E'"));
+        else
+            result.Prepend(wxT("'"));
+    }
+    else
+        result.Prepend(wxT("'"));
 
     return result;
 }
@@ -596,15 +615,15 @@ wxString pgConn::ExecuteScalar(const wxString& sql)
             return wxEmptyString;
         }
 
-	    // Check for a returned row
+        // Check for a returned row
         if (PQntuples(qryRes) < 1)
         {
-		    wxLogInfo(wxT("Query returned no tuples"));
+            wxLogInfo(wxT("Query returned no tuples"));
             PQclear(qryRes);
             return wxEmptyString;
-	    }
-	    
-	    // Retrieve the query result and return it.
+        }
+        
+        // Retrieve the query result and return it.
         result=wxString(PQgetvalue(qryRes, 0, 0), *conv);
 
         wxLogSql(wxT("Query result: %s"), result.c_str());
@@ -636,7 +655,7 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
                 wxLogError(__("Couldn't create a pgSet object!"));
                 PQclear(qryRes);
             }
-    	    return set;
+            return set;
         }
         else
         {
@@ -654,7 +673,7 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
 wxString pgConn::GetLastError() const
 { 
     wxString errmsg;
-	char *pqErr;
+    char *pqErr;
     if (conn && (pqErr = PQerrorMessage(conn)) != 0)
     {
         errmsg=wxString(pqErr, wxConvUTF8);
@@ -740,7 +759,7 @@ int pgConn::GetStatus() const
 
 wxString pgConn::GetVersionString()
 {
-	return ExecuteScalar(wxT("SELECT version();"));
+    return ExecuteScalar(wxT("SELECT version();"));
 }
 
 void pgConn::SetLastResultError(PGresult *res, const wxString &msg)
@@ -837,7 +856,7 @@ wxString pgConn::qtString(const wxString& value)
     result.Replace(wxT("'"), wxT("\\'"));
     result.Append(wxT("'"));
     result.Prepend(wxT("'"));
-	
+    
     return result;
 }
 

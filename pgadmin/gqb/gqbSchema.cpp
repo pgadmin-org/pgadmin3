@@ -47,11 +47,11 @@ wxString gqbSchema::NumToStr(OID value)
 
 void gqbSchema::createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItemId parentNode, OID oidVal, int tableImage, int viewImage)
 {
-	
+    
     wxString query;
     wxString restriction=wxT("");
-	
-	// First Add Tables;
+    
+    // First Add Tables;
     if (conn->BackendMinimumVersion(8, 0))
     {
         query= wxT("SELECT rel.oid, relname, rel.reltablespace AS spcoid, spcname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
@@ -97,7 +97,7 @@ void gqbSchema::createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
             gqbTable *table = new gqbTable(this, tmpname, GQB_TABLE);
             parent=tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , tableImage, tableImage, table);
 
-			// Create columns inside this table.
+            // Create columns inside this table.
             table->createObjects(tablesBrowser, conn, tables->GetOid(wxT("oid")), parent);
 
             tables->MoveNext();
@@ -106,8 +106,8 @@ void gqbSchema::createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
         delete tables;
     }
 
-	// Later Add Views;
-	query=wxT("SELECT c.oid, c.xmin, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description")
+    // Later Add Views;
+    query=wxT("SELECT c.oid, c.xmin, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description")
         wxT("  FROM pg_class c\n")
         wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0)\n")
         wxT(" WHERE ((c.relhasrules AND (EXISTS (\n")
@@ -119,7 +119,7 @@ void gqbSchema::createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
         + wxT(" ORDER BY relname");
 
     pgSet *views = conn->ExecuteSet(query);
-	  if (views)
+      if (views)
     {
         while (!views->Eof())
         {
@@ -127,12 +127,41 @@ void gqbSchema::createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
             gqbTable *table = new gqbTable(this, tmpname, GQB_VIEW);
             parent=tablesBrowser->AppendItem(parentNode, views->GetVal(wxT("relname")) , viewImage, viewImage, table);
 
-			// Create columns inside this view.
+            // Create columns inside this view.
             table->createObjects(tablesBrowser,conn,views->GetOid(wxT("oid")),parent);
 
             views->MoveNext();
-			}
-	  }
+            }
+      }
 
-	  tablesBrowser->SortChildren(parentNode);
+
+    // And Greenplum External Tables;
+    if (conn->GetIsGreenplum())
+    {
+        query=wxT("SELECT c.oid, c.xmin, c.relname, pg_get_userbyid(c.relowner) AS viewowner, c.relacl, description")
+            wxT("  FROM pg_class c\n")
+            wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=c.oid and des.objsubid=0)\n")
+            wxT(" WHERE (c.relkind = 'x'::char)\n")
+            wxT("   AND relnamespace = ") + NumToStr(oidVal) + wxT("\n")
+            + restriction
+            + wxT(" ORDER BY relname");
+
+        pgSet *exttables = conn->ExecuteSet(query);
+        if (exttables)
+        {
+            while (!exttables->Eof())
+            {
+                wxString tmpname = wxString(exttables->GetVal(wxT("relname")));
+                gqbTable *table = new gqbTable(this, tmpname, GQB_VIEW);
+                parent=tablesBrowser->AppendItem(parentNode, exttables->GetVal(wxT("relname")) , 8, 8, table);
+
+                // Create columns inside this view.
+                table->createObjects(tablesBrowser,conn,exttables->GetOid(wxT("oid")),parent);
+
+                exttables->MoveNext();
+                }
+          }
+    }
+
+      tablesBrowser->SortChildren(parentNode);
 }

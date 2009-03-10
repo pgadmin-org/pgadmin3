@@ -25,6 +25,7 @@
 #include "schema/pgSequence.h"
 #include "schema/pgTable.h"
 #include "schema/pgView.h"
+#include "schema/gpExtTable.h"
 
 // Icons
 #include "images/index.xpm"
@@ -135,6 +136,7 @@ void frmGrantWizard::AddObjects(pgCollection *collection)
             !factory->IsCollectionFor(triggerFunctionFactory) &&
             !factory->IsCollectionFor(procedureFactory) &&
             !factory->IsCollectionFor(viewFactory) &&
+            !factory->IsCollectionFor(extTableFactory) &&
             !factory->IsCollectionFor(sequenceFactory))
             return;
     }
@@ -150,11 +152,11 @@ void frmGrantWizard::AddObjects(pgCollection *collection)
                 AddObjects((pgCollection*)obj);
             else
             {
-				if (obj->CanEdit())
-				{
-					objectArray.Add(obj);
-					chkList->Append(obj->GetTypeName() + wxT(" ") + obj->GetFullIdentifier()); // no translation!
-				}
+                if (obj->CanEdit())
+                {
+                    objectArray.Add(obj);
+                    chkList->Append(obj->GetTypeName() + wxT(" ") + obj->GetFullIdentifier()); // no translation!
+                }
             }
         }
         item=mainForm->GetBrowser()->GetNextChild(collection->GetId(), cookie);
@@ -180,6 +182,9 @@ void frmGrantWizard::Go()
             privList = wxT("EXECUTE");
             privChar = "X";
             break;
+        case GP_EXTTABLE:
+            privList = wxT("SELECT,RULE");
+            privChar = "r";
         default:
             break;
     }
@@ -253,26 +258,33 @@ wxString frmGrantWizard::GetSql()
             {
                 case PGM_FUNCTION:
                 {
-					if (((pgFunction*)obj)->GetIsProcedure())
-					{
-						tmp = securityPage->GetGrant(wxT("X"), wxT("PROCEDURE ") 
-							+ obj->GetQuotedFullIdentifier() + wxT("(")
-							+ ((pgProcedure*)obj)->GetArgSigList() + wxT(")"));
-					}
-					else
-					{
-						tmp = securityPage->GetGrant(wxT("X"), wxT("FUNCTION ") 
-							+ obj->GetQuotedFullIdentifier() + wxT("(")
-							+ ((pgFunction*)obj)->GetArgSigList() + wxT(")"));
-					}
+                    if (((pgFunction*)obj)->GetIsProcedure())
+                    {
+                        tmp = securityPage->GetGrant(wxT("X"), wxT("PROCEDURE ") 
+                            + obj->GetQuotedFullIdentifier() + wxT("(")
+                            + ((pgProcedure*)obj)->GetArgSigList() + wxT(")"));
+                    }
+                    else
+                    {
+                        tmp = securityPage->GetGrant(wxT("X"), wxT("FUNCTION ") 
+                            + obj->GetQuotedFullIdentifier() + wxT("(")
+                            + ((pgFunction*)obj)->GetArgSigList() + wxT(")"));
+                    }
                     break;
                 }
                 case PGM_VIEW:
                 case PGM_SEQUENCE:
                     tmp = securityPage->GetGrant(wxT("arwdRxt"), wxT("TABLE ") + obj->GetQuotedFullIdentifier());
                     break;
+                case GP_EXTTABLE:
+                    tmp = securityPage->GetGrant(wxT("r"), wxT("TABLE ") + obj->GetQuotedFullIdentifier());
                 default:
-                    tmp = securityPage->GetGrant(wxT("arwdRxt"), obj->GetTypeName().Upper() + wxT(" ") + obj->GetQuotedFullIdentifier());
+                    if (obj->GetTypeName().Upper() == wxT("EXTERNAL TABLE")) // somewhat of a hack
+                    {
+                         tmp = securityPage->GetGrant(wxT("r"), wxT("TABLE ") + obj->GetQuotedFullIdentifier());
+                    }
+                    else
+                        tmp = securityPage->GetGrant(wxT("arwdRxt"), obj->GetTypeName().Upper() + wxT(" ") + obj->GetQuotedFullIdentifier());
                     break;
             }
 
@@ -308,12 +320,13 @@ bool grantWizardFactory::CheckEnable(pgObject *obj)
             case PGM_FUNCTION:
             case PGM_SEQUENCE:
             case PGM_VIEW:
-				if (obj->IsCollection() && obj->GetSchema()->GetMetaType() != PGM_CATALOG)
-					return obj->GetSchema()->CanEdit();
-				break;
+            case GP_EXTTABLE:
+                if (obj->IsCollection() && obj->GetSchema()->GetMetaType() != PGM_CATALOG)
+                    return obj->GetSchema()->CanEdit();
+                break;
 
-			case PGM_SCHEMA:
-					return obj->CanEdit();
+            case PGM_SCHEMA:
+                    return obj->CanEdit();
             default:
                 break;
         }

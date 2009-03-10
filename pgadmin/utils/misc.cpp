@@ -261,7 +261,7 @@ wxString qtConnString(const wxString& value)
     result.Replace(wxT("'"), wxT("\\'"));
     result.Append(wxT("'"));
     result.Prepend(wxT("'"));
-	
+    
     return result;
 }
 
@@ -281,14 +281,14 @@ wxString qtDbStringDollar(const wxString &value)
     wxString qt=qtDefault;
     int counter=1;
     if (value.Find('\'') < 0 && value.Find('\n') < 0)
-	{
-		wxString ret = value;
-		ret.Replace(wxT("\\"), wxT("\\\\"));
+    {
+        wxString ret = value;
+        ret.Replace(wxT("\\"), wxT("\\\\"));
         ret.Replace(wxT("'"), wxT("''"));
         ret.Append(wxT("'"));
         ret.Prepend(wxT("'"));
-		return ret;
-	}
+        return ret;
+    }
 
     while (value.Find(wxT("$") + qt + wxT("$")) >= 0)
         qt.Printf(wxT("%s%d"), qtDefault.c_str(), counter++);
@@ -323,14 +323,14 @@ static bool needsQuoting(wxString& value, bool forTypes)
         return true;
     else
     {
-		// certain types should not be quoted even though it contains a space. Evilness.
-		wxString valNoArray;
-		if (forTypes && value.Right(2) == wxT("[]"))
-			valNoArray = value.Mid(0, value.Len()-2);
-		else
-			valNoArray = value;
+        // certain types should not be quoted even though it contains a space. Evilness.
+        wxString valNoArray;
+        if (forTypes && value.Right(2) == wxT("[]"))
+            valNoArray = value.Mid(0, value.Len()-2);
+        else
+            valNoArray = value;
 
-		if (forTypes &&
+        if (forTypes &&
                         (!valNoArray.CmpNoCase(wxT("character varying")) ||
                          !valNoArray.CmpNoCase(wxT("\"char\"")) ||
 			 !valNoArray.CmpNoCase(wxT("bit varying")) ||
@@ -341,7 +341,7 @@ static bool needsQuoting(wxString& value, bool forTypes)
 			 !valNoArray.CmpNoCase(wxT("time with time zone")) ||
                          !valNoArray.CmpNoCase(wxT("\"trigger\"")) ||
                          !valNoArray.CmpNoCase(wxT("\"unknown\""))))
-			return false;
+            return false;
 
         int pos = 0;
         while (pos < (int)valNoArray.length())
@@ -381,7 +381,7 @@ static bool needsQuoting(wxString& value, bool forTypes)
                 case REAL:
                 case SET:
                 case SMALLINT:
-				case TEXT_P:
+                case TEXT_P:
                 case TIME:
                 case TIMESTAMP:
                 case TRIGGER:
@@ -594,13 +594,14 @@ wxString CleanHelpPath(const wxString &path)
     if (thePath.IsEmpty())
         return wxEmptyString;
 
-    // If the filename ends in .chm, .hhp or .zip, it's
+    // If the filename ends in .chm, .hhp, .pdf or .zip, it's
     // a file based help system and we can assumes it's
     // correct.
     if (thePath.Lower().EndsWith(wxT(".hhp")) || 
 #if defined (__WXMSW__) || wxUSE_LIBMSPACK
         thePath.Lower().EndsWith(wxT(".chm")) ||
 #endif
+        thePath.Lower().EndsWith(wxT(".pdf")) ||
         thePath.Lower().EndsWith(wxT(".zip")))
         return thePath;
 
@@ -639,6 +640,7 @@ bool HelpPathValid(const wxString &path)
 #if defined (__WXMSW__) || wxUSE_LIBMSPACK
          path.Lower().EndsWith(wxT(".chm")) ||
 #endif
+         path.Lower().EndsWith(wxT(".pdf")) ||
          path.Lower().EndsWith(wxT(".zip")) ||
          path.Lower().EndsWith(wxT("/"))))
          return true;
@@ -650,6 +652,7 @@ bool HelpPathValid(const wxString &path)
 #if defined (__WXMSW__) || wxUSE_LIBMSPACK
         path.Lower().EndsWith(wxT(".chm")) ||
 #endif
+        path.Lower().EndsWith(wxT(".pdf")) ||
         path.Lower().EndsWith(wxT(".zip")))
         return wxFile::Exists(path);
     else if (path.Lower().EndsWith(sep))
@@ -662,9 +665,11 @@ void DisplayHelp(const wxString &helpTopic, const HelpType helpType)
 {
     static wxHelpControllerBase *pgHelpCtl=0;
     static wxHelpControllerBase *edbHelpCtl=0;
+    static wxHelpControllerBase *greenplumHelpCtl=0;
     static wxHelpControllerBase *slonyHelpCtl=0;
     static wxString pgInitPath = wxEmptyString;
     static wxString edbInitPath = wxEmptyString;
+    static wxString gpInitPath = wxEmptyString;
     static wxString slonyInitPath = wxEmptyString;
 
     switch (helpType)
@@ -681,6 +686,11 @@ void DisplayHelp(const wxString &helpTopic, const HelpType helpType)
         case HELP_ENTERPRISEDB:
             DisplayExternalHelp(helpTopic, settings->GetEdbHelpPath(), edbHelpCtl, (edbInitPath != settings->GetEdbHelpPath() ? true : false));
             edbInitPath = settings->GetEdbHelpPath();
+            break;
+
+        case HELP_GREENPLUM:
+            DisplayExternalHelp(helpTopic, settings->GetGpHelpPath(), greenplumHelpCtl, (gpInitPath != settings->GetGpHelpPath() ? true : false));
+            gpInitPath = settings->GetGpHelpPath();
             break;
 
         case HELP_SLONY:
@@ -730,7 +740,7 @@ void DisplayPgAdminHelp(const wxString &helpTopic)
 #endif
         {
             helpCtl=new wxHtmlHelpController();
-			((wxHtmlHelpController*)helpCtl)->SetTempDir(helpdir);
+            ((wxHtmlHelpController*)helpCtl)->SetTempDir(helpdir);
             helpCtl->Initialize(helpdir + wxT("/pgadmin3"));
         }
     }
@@ -764,6 +774,14 @@ void DisplayExternalHelp(const wxString &helpTopic, const wxString &docPath, wxH
         page = helpTopic + wxT(".html");
     else
         page = helpTopic.Left(hashPos) + wxT(".html") + helpTopic.Mid(hashPos);
+
+    // If the docPath ends in .pdf, then open the file in the browser. No 
+    // bookmarks though :-(
+    if (docPath.Lower().EndsWith(wxT(".pdf")))
+    {
+        wxLaunchDefaultBrowser(docPath);
+        return;
+    }
 
     // If the docPath doesn't end in .chm, .zip or .hhp, then we must be using
     // plain HTML files, so just fire off the browser and be done with it.
@@ -1006,19 +1024,19 @@ wxString HtmlEntities(const wxString &str)
 wxString ExecProcess(const wxString &cmd)
 {
     wxString res;
-	FILE *f=popen(cmd.ToAscii(), "r");
+    FILE *f=popen(cmd.ToAscii(), "r");
 
-	if (f)
-	{
-		char buffer[1024];
-		int cnt;
-		while ((cnt = fread(buffer, 1, 1024, f)) > 0)
-		{
-			res += wxString::FromAscii(buffer);
-		}
-		pclose(f);
-	}
-	return res;
+    if (f)
+    {
+        char buffer[1024];
+        int cnt;
+        while ((cnt = fread(buffer, 1, 1024, f)) > 0)
+        {
+            res += wxString::FromAscii(buffer);
+        }
+        pclose(f);
+    }
+    return res;
 }
 
 int ExecProcess(const wxString &command, wxArrayString &result)
@@ -1029,13 +1047,13 @@ int ExecProcess(const wxString &command, wxArrayString &result)
     fp_command = popen(command.mb_str(wxConvUTF8), "r");
 
     if (!fp_command)
-	    return -1;
+        return -1;
 
     while(!feof(fp_command))
     {
         if (fgets(buf, 4096, fp_command) != NULL)
-	        result.Add(wxString::FromAscii(buf));
-	}
+            result.Add(wxString::FromAscii(buf));
+    }
 
     return pclose(fp_command);
 }
@@ -1080,13 +1098,13 @@ wxString firstLineOnly(const wxString &str)
 
 bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int minorVer)
 {
-	wxArrayString output;
+    wxArrayString output;
     bool isEnterpriseDB = false;
 
 #ifdef __WXMSW__
- 	if (wxExecute(cmd + wxT(" --version"), output, 0) != 0)
+    if (wxExecute(cmd + wxT(" --version"), output, 0) != 0)
 #else
-	if (ExecProcess(cmd + wxT(" --version"), output) != 0)
+    if (ExecProcess(cmd + wxT(" --version"), output) != 0)
 #endif
     {
         wxLogError(_("Failed to execute: %s --version"), cmd.c_str());
@@ -1097,9 +1115,9 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
     if (output[0].Contains(wxT("EnterpriseDB")))
         isEnterpriseDB = true;
 
-	wxString version = output[0].AfterLast(' ');
-	long actualMajor = 0, actualMinor = 0;
-	
+    wxString version = output[0].AfterLast(' ');
+    long actualMajor = 0, actualMinor = 0;
+    
     wxString tmp=wxT("");
     int x=0;
     while(version[x] == '0' || version[x] == '1' || version[x] == '2' || version[x] == '3' || version[x] == '4' ||
@@ -1126,13 +1144,13 @@ bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int mino
     if (isEnterpriseDB && actualMajor == 8 && actualMinor == 3)
         actualMinor = 2;
 
-	if (actualMajor > majorVer)
-		return true;
+    if (actualMajor > majorVer)
+        return true;
 
-	if (actualMajor == majorVer && actualMinor >= minorVer)
-		return true;
+    if (actualMajor == majorVer && actualMinor >= minorVer)
+        return true;
 
-	return false;
+    return false;
 }
 
 bool isPgApp(const wxString &app)
@@ -1140,12 +1158,12 @@ bool isPgApp(const wxString &app)
     if (!wxFile::Exists(app))
         return false;
 
-	wxArrayString output;
+    wxArrayString output;
 
 #ifdef __WXMSW__
-	if (wxExecute(app + wxT(" --version"), output, 0) != 0)
+    if (wxExecute(app + wxT(" --version"), output, 0) != 0)
 #else
-	if (ExecProcess(app + wxT(" --version"), output) != 0)
+    if (ExecProcess(app + wxT(" --version"), output) != 0)
 #endif
     {
         wxLogError(_("Failed to execute: %s --version"), app.c_str());
@@ -1155,7 +1173,7 @@ bool isPgApp(const wxString &app)
     if (output[0].Contains(wxT("PostgreSQL")))
         return true;
 
-	return false;
+    return false;
 }
 
 bool isEdbApp(const wxString &app)
@@ -1163,12 +1181,12 @@ bool isEdbApp(const wxString &app)
     if (!wxFile::Exists(app))
         return false;
 
-	wxArrayString output;
+    wxArrayString output;
 
 #ifdef __WXMSW__
-	if (wxExecute(app + wxT(" --version"), output, 0) != 0)
+    if (wxExecute(app + wxT(" --version"), output, 0) != 0)
 #else
-	if (ExecProcess(app + wxT(" --version"), output) != 0)
+    if (ExecProcess(app + wxT(" --version"), output) != 0)
 #endif
     {
         wxLogError(_("Failed to execute: %s --version"), app.c_str());
@@ -1178,7 +1196,30 @@ bool isEdbApp(const wxString &app)
     if (output[0].Contains(wxT("EnterpriseDB")))
         return true;
 
-	return false;
+    return false;
+}
+
+bool isGpApp(const wxString &app)
+{
+    if (!wxFile::Exists(app))
+        return false;
+
+    wxArrayString output;
+
+#ifdef __WXMSW__
+    if (wxExecute(app + wxT(" --version"), output, 0) != 0)
+#else
+    if (ExecProcess(app + wxT(" --version"), output) != 0)
+#endif
+    {
+        wxLogError(_("Failed to execute: %s --version"), app.c_str());
+        return false;
+    }
+
+    if (output[0].Contains(wxT("8.2")))  // Ugly... No way to tell Greenplum app from PostgreSQL 8.2 app
+        return true;
+
+    return false;
 }
 
 wxString sanitizePath(const wxString &path)
@@ -1190,7 +1231,7 @@ wxString sanitizePath(const wxString &path)
         return fn.GetLongPath();
     }
 
-	return wxEmptyString;
+    return wxEmptyString;
 }
 
 // Fixup a (quoted) string for use on the command line

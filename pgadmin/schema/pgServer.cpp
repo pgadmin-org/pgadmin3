@@ -30,6 +30,7 @@
 #include "schema/pgGroup.h"
 #include "schema/pgUser.h"
 #include "schema/pgRole.h"
+#include "schema/gpResQueue.h"
 #include "agent/pgaJob.h"
 #include "utils/utffile.h"
 #include "utils/pgfeatures.h"
@@ -97,16 +98,21 @@ wxMenu *pgServer::GetNewMenu()
             tablespaceFactory.AppendMenu(menu);
         if (GetConnection()->BackendMinimumVersion(8, 1))
         {
-            if (settings->GetDisplayOption(_("Groups/group roles")))
+            if (settings->GetDisplayOption(_("Groups/group Roles")))
                 groupRoleFactory.AppendMenu(menu);
-            if (settings->GetDisplayOption(_("Users/login roles")))
+            if (settings->GetDisplayOption(_("Users/login Roles")))
                 loginRoleFactory.AppendMenu(menu);
+            if (GetConnection()->GetIsGreenplum())
+            {
+                if (settings->GetDisplayOption(_("Resource Queues")))
+                    resQueueFactory.AppendMenu(menu);
+            }
         }
         else
         {
-            if (settings->GetDisplayOption(_("Groups/group roles")))
+            if (settings->GetDisplayOption(_("Groups/group Roles")))
                 groupFactory.AppendMenu(menu);
-            if (settings->GetDisplayOption(_("Users/login roles")))
+            if (settings->GetDisplayOption(_("Users/login Roles")))
                 userFactory.AppendMenu(menu);
         }
     }
@@ -830,7 +836,7 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 
             // Jobs
             // We only add the Jobs node if the appropriate objects are the initial DB.
-            if (settings->GetDisplayOption(_("pgAgent jobs")))
+            if (settings->GetDisplayOption(_("pgAgent Jobs")))
             {
                 wxString exists = conn->ExecuteScalar(
                     wxT("SELECT cl.oid FROM pg_class cl JOIN pg_namespace ns ON ns.oid=relnamespace\n")
@@ -847,16 +853,21 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 
             if (conn->BackendMinimumVersion(8, 1))
             {
-                if (settings->GetDisplayOption(_("Groups/group roles")))
+                if (settings->GetDisplayOption(_("Groups/group Roles")))
                     browser->AppendCollection(this, groupRoleFactory);
-                if (settings->GetDisplayOption(_("Users/login roles")))
-                browser->AppendCollection(this, loginRoleFactory);
+                if (settings->GetDisplayOption(_("Users/login Roles")))
+                    browser->AppendCollection(this, loginRoleFactory);
+                if (GetConnection()->GetIsGreenplum())
+                {
+                    if (settings->GetDisplayOption(_("Resource Queues")))
+                        browser->AppendCollection(this, resQueueFactory);
+                }
             }
             else
             {
-                if (settings->GetDisplayOption(_("Groups/group roles")))
+                if (settings->GetDisplayOption(_("Groups/group Roles")))
                     browser->AppendCollection(this, groupFactory);
-                if (settings->GetDisplayOption(_("Users/login roles")))
+                if (settings->GetDisplayOption(_("Users/login Roles")))
                     browser->AppendCollection(this, userFactory);
             }
 
@@ -1033,6 +1044,14 @@ pgServerObjCollection::pgServerObjCollection(pgaFactory *factory, pgServer *sv)
 
 bool pgServerObjCollection::CanCreate()
 {
+    // We can't create resource queues on Greenplum yet.
+    if (IsCollectionForType(GP_RESOURCE_QUEUE))
+        return false;
+
+    // We can't create tablespaces on Greenplum
+    if (server->GetConnection()->GetIsGreenplum() && IsCollectionForType(PGM_TABLESPACE))
+        return false;
+
     if (server->GetMetaType() == PGM_DATABASE)
         return (GetServer()->GetCreatePrivilege() || GetServer()->GetSuperUser());
     else

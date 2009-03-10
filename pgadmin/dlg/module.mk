@@ -54,6 +54,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dlg/dlgUser.cpp \
 	$(srcdir)/dlg/dlgView.cpp \
 	$(srcdir)/dlg/dlgManageMacros.cpp \
+	$(srcdir)/dlg/dlgExtTable.cpp \
 	$(srcdir)/dlg/dlgSelectDatabase.cpp
 
 EXTRA_DIST += \

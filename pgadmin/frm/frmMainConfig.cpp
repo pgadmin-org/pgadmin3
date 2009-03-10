@@ -125,8 +125,8 @@ void frmMainConfig::Init(pgSettingReader *reader)
     }
     while (item);
 
-	editMenu->Enable(MNU_DELETE, false);
-	toolBar->EnableTool(MNU_DELETE,false);
+    editMenu->Enable(MNU_DELETE, false);
+    toolBar->EnableTool(MNU_DELETE,false);
 }
 
 
@@ -228,7 +228,7 @@ wxString frmMainConfig::GetHelpPage() const
 {
     wxString page;
     if (page.IsEmpty())
-    	page=wxT("runtime-config");
+        page=wxT("runtime-config");
 
     return page;
 }
@@ -481,7 +481,8 @@ void frmMainConfig::DisplayFile(const wxString &str)
     FillList(wxT("explain_pretty_print"));      // Client Connection Defaults / Other Defaults
     FillList(wxT("enable_hashjoin"));           // Query Tuning / Planner Method Configuration
     FillList(wxT("cpu_operator_cost"));         // Query Tuning / Planner Cost Constants
-    FillList(wxT("geqo"));                      // Query Tuning / Genetic Query Optimizer
+    if (!conn || !conn->GetIsGreenplum())       // Greenplum doesn't have the Genetic Query Optimizer
+        FillList(wxT("geqo"));                  // Query Tuning / Genetic Query Optimizer
     FillList(wxT("default_statistics_target")); // Query Tuning / Other Planner Options
     FillList(wxT("deadlock_timeout"));          // Lock Management
     FillList(wxT("shared_buffers"));            // Resource Usage / Memory
@@ -497,7 +498,8 @@ void frmMainConfig::DisplayFile(const wxString &str)
     FillList(wxT("checkpoint_segments"));       // Write-Ahead Log / Checkpoints
     FillList(wxT("add_missing_from"));          // Version and Platform Compatibility / Previous PostgreSQL Version
     FillList(wxT("transform_null_equals"));     // Version and Platform Compatibility / Other Platforms and Clients
-    FillList(wxT("trace_notify"));              // Developer Options
+    if (!conn || !conn->GetIsGreenplum())       // Greenplum doesn't have trace_notify visible
+        FillList(wxT("trace_notify"));          // Developer Options
     FillList(wxT("hba_file"));                  // Ungrouped
 
 

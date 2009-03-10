@@ -105,6 +105,7 @@
 #include "dlg/dlgType.h"
 #include "dlg/dlgUser.h"
 #include "dlg/dlgView.h"
+#include "dlg/dlgExtTable.h"
 
 #include "frm/frmAbout.h"
 #include "frm/frmBackup.h"
@@ -187,6 +188,9 @@
 #include "schema/pgType.h"
 #include "schema/pgUser.h"
 #include "schema/pgView.h"
+#include "schema/gpExtTable.h"
+#include "schema/gpPartition.h"
+#include "schema/gpResQueue.h"
 
 #include "slony/dlgRepCluster.h"
 #include "slony/dlgRepListen.h"

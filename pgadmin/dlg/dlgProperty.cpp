@@ -122,11 +122,11 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
     txtComment = CTRL_TEXT("txtComment");
     cbOwner = CTRL_COMBOBOX2("cbOwner");
     cbClusterSet = CTRL_COMBOBOX2("cbClusterSet");
-	
-	wxString db = wxT("Database");
-	wxString ts = wxT("Tablespace");
-	enableSQL2 = db.Cmp(factory->GetTypeName()) == 0
-	    || ts.Cmp(factory->GetTypeName()) == 0;
+    
+    wxString db = wxT("Database");
+    wxString ts = wxT("Tablespace");
+    enableSQL2 = db.Cmp(factory->GetTypeName()) == 0
+        || ts.Cmp(factory->GetTypeName()) == 0;
 
     wxNotebookPage *page=nbNotebook->GetPage(0);
     wxASSERT(page != NULL);
@@ -142,7 +142,7 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
 dlgProperty::~dlgProperty()
 {
     wxString prop=wxT("Properties/") + wxString(factory->GetTypeName());
-	settings->Write(prop, GetPosition());
+    settings->Write(prop, GetPosition());
 
     if (GetWindowStyle() & wxRESIZE_BORDER)
         settings->Write(prop, GetSize());
@@ -166,7 +166,7 @@ wxString dlgProperty::GetHelpPage() const
             page += wxString(factory->GetTypeName()).Lower();
         }
     }
-			
+            
     return page;
 }
 
@@ -210,7 +210,7 @@ void dlgProperty::EnableOK(bool enable)
 
 void dlgSecurityProperty::SetPrivilegesLayout()
 {
-	securityPage->lbPrivileges->GetParent()->Layout();
+    securityPage->lbPrivileges->GetParent()->Layout();
 }
 
 
@@ -335,7 +335,7 @@ void dlgProperty::CreateAdditionalPages()
 {
     if (wxString(factory->GetTypeName()).Cmp(wxT("Server")))
     {
-	// create a panel
+    // create a panel
     sqlPane = new wxPanel(nbNotebook);
     
     // add panel to the notebook
@@ -352,7 +352,7 @@ void dlgProperty::CreateAdditionalPages()
     // text entry box
     sqlTextField1 = new ctlSQLBox(sqlPane, CTL_PROPSQL,
         wxDefaultPosition, wxDefaultSize,
-		wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
+        wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
     fgsizer->Add(sqlTextField1, 1, wxALL | wxEXPAND, 5);
 
     // text entry box
@@ -360,7 +360,7 @@ void dlgProperty::CreateAdditionalPages()
     {
         sqlTextField2 = new ctlSQLBox(sqlPane, CTL_PROPSQL,
             wxDefaultPosition, wxDefaultSize,
-		    wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
+            wxTE_MULTILINE | wxSUNKEN_BORDER | wxTE_RICH2);
         fgsizer->Add(sqlTextField2, 1, wxALL | wxEXPAND, 5);
     }
 
@@ -471,7 +471,7 @@ void dlgProperty::AppendQuoted(wxString &sql, const wxString &name)
 
 void dlgProperty::AppendQuotedType(wxString &sql, const wxString &name)
 {
-	// see AppendQuoted()
+    // see AppendQuoted()
     if (name.First('.') >= 0)
     {
         sql += qtIdent(name.BeforeFirst('.')) + wxT(".") + qtTypeIdent(name.AfterFirst('.'));
@@ -520,11 +520,11 @@ void dlgProperty::PrepareTablespace(ctlComboBoxFix *cb, const OID current)
 
     if (connection->BackendMinimumVersion(8, 0))
     {
-		// Populate the combo
-		cb->FillOidKey(connection, wxT("SELECT oid, spcname FROM pg_tablespace WHERE spcname <> 'pg_global' ORDER BY spcname"));
+        // Populate the combo
+        cb->FillOidKey(connection, wxT("SELECT oid, spcname FROM pg_tablespace WHERE spcname <> 'pg_global' ORDER BY spcname"));
 
         if (current)
-			cb->SetKey(current);
+            cb->SetKey(current);
         else
         {
             if (database)
@@ -571,25 +571,25 @@ void dlgProperty::OnChangeReadOnly(wxCommandEvent &ev)
     
     showmessage = chkReadOnly->GetValue()
         && ! (!enableSQL2 && GetSql().Length() == 0 && sqlTextField1->GetText().Cmp(_("-- nothing to change")) == 0)
-	    && ! (!enableSQL2 && GetSql().Length() == 0 && sqlTextField1->GetText().Cmp(_("-- definition incomplete")) == 0)
+        && ! (!enableSQL2 && GetSql().Length() == 0 && sqlTextField1->GetText().Cmp(_("-- definition incomplete")) == 0)
         && ! (enableSQL2 && GetSql().Length() == 0 && GetSql2().Length() == 0 && sqlTextField1->GetText().Cmp(_("-- nothing to change")) == 0 && sqlTextField2->GetText().Length() == 0)
-	    && ! (enableSQL2 && GetSql().Length() == 0 && GetSql2().Length() == 0 && sqlTextField1->GetText().Cmp(_("-- definition incomplete")) == 0 && sqlTextField2->GetText().Length() == 0)
-	    && (sqlTextField1->GetText().Cmp(GetSql()) != 0 || (enableSQL2 && sqlTextField2->GetText().Cmp(GetSql2()) != 0));
+        && ! (enableSQL2 && GetSql().Length() == 0 && GetSql2().Length() == 0 && sqlTextField1->GetText().Cmp(_("-- definition incomplete")) == 0 && sqlTextField2->GetText().Length() == 0)
+        && (sqlTextField1->GetText().Cmp(GetSql()) != 0 || (enableSQL2 && sqlTextField2->GetText().Cmp(GetSql2()) != 0));
     
-	if (showmessage)
-	{
-		if (wxMessageBox(_("Are you sure you wish to cancel your edit?"), _("SQL editor"), wxYES_NO|wxNO_DEFAULT) == wxNO)
-		{
-			chkReadOnly->SetValue(false);
-			return;
-		}
-	}
+    if (showmessage)
+    {
+        if (wxMessageBox(_("Are you sure you wish to cancel your edit?"), _("SQL editor"), wxYES_NO|wxNO_DEFAULT) == wxNO)
+        {
+            chkReadOnly->SetValue(false);
+            return;
+        }
+    }
 
-	sqlTextField1->SetReadOnly(chkReadOnly->GetValue());
-	if (enableSQL2)
-	{
-		sqlTextField2->SetReadOnly(chkReadOnly->GetValue());
-	}
+    sqlTextField1->SetReadOnly(chkReadOnly->GetValue());
+    if (enableSQL2)
+    {
+        sqlTextField2->SetReadOnly(chkReadOnly->GetValue());
+    }
     for (pos = 0; pos < nbNotebook->GetPageCount() - 1; pos++)
     {
         nbNotebook->GetPage(pos)->Enable(chkReadOnly->GetValue());
@@ -597,7 +597,7 @@ void dlgProperty::OnChangeReadOnly(wxCommandEvent &ev)
     
     if (chkReadOnly->GetValue())
     {
-		FillSQLTextfield();
+        FillSQLTextfield();
     }
 }
 
@@ -606,10 +606,10 @@ void dlgProperty::FillSQLTextfield()
 {    
     // create a function because this is a duplicated code
     sqlTextField1->SetReadOnly(false);
-	if (enableSQL2)
-	{
-		sqlTextField2->SetReadOnly(false);
-	}
+    if (enableSQL2)
+    {
+        sqlTextField2->SetReadOnly(false);
+    }
     if (btnOK->IsEnabled())
     {
         wxString tmp;
@@ -619,27 +619,27 @@ void dlgProperty::FillSQLTextfield()
             tmp.Printf(_("-- Execute replicated using cluster \"%s\", set %ld\n"), data->cluster.c_str(), data->setId);
         }
         sqlTextField1->SetText(tmp + GetSql());
-		if (enableSQL2)
-		{
-			sqlTextField2->SetText(GetSql2());
-		}
+        if (enableSQL2)
+        {
+            sqlTextField2->SetText(GetSql2());
+        }
     }
     else
     {
         if (GetObject())
             sqlTextField1->SetText(_("-- nothing to change"));
-		else
+        else
             sqlTextField1->SetText(_("-- definition incomplete"));
-		if (enableSQL2)
-		{
-			sqlTextField2->SetText(wxT(""));
-		}
-	}
+        if (enableSQL2)
+        {
+            sqlTextField2->SetText(wxT(""));
+        }
+    }
     sqlTextField1->SetReadOnly(true);
-	if (enableSQL2)
-	{
-		sqlTextField2->SetReadOnly(true);
-	}
+    if (enableSQL2)
+    {
+        sqlTextField2->SetReadOnly(true);
+    }
 }
 
 
@@ -705,7 +705,7 @@ void dlgProperty::ShowObject()
     pgObject *data=GetObject();
 
     // We might have a parent to refresh. If so, the children will
-	// inherently get refreshed as well. Yay :-)
+    // inherently get refreshed as well. Yay :-)
     if (owneritem)
     {
         // Stash the selected items path
@@ -717,9 +717,9 @@ void dlgProperty::ShowObject()
             mainForm->Refresh(tblobj);
 
         // Restore the previous selection...
-		mainForm->SetCurrentNode(mainForm->GetBrowser()->GetRootItem(), currentPath);
+        mainForm->SetCurrentNode(mainForm->GetBrowser()->GetRootItem(), currentPath);
     }
-	else if (data)
+    else if (data)
     {
         pgObject *newData=data->Refresh(mainForm->GetBrowser(), item);
         if (newData && newData != data)
@@ -769,12 +769,12 @@ void dlgProperty::ShowObject()
 
 bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
 {
-	pgConn *myConn = connection;
+    pgConn *myConn = connection;
 
     if (GetDisconnectFirst())
     {
-		myConn = database->GetServer()->GetConnection();
-    	database->Disconnect();
+        myConn = database->GetServer()->GetConnection();
+        database->Disconnect();
     }
 
     if (!sql.IsEmpty())
@@ -863,11 +863,11 @@ bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
 
 void dlgProperty::OnApply(wxCommandEvent &ev)
 {
-	if (!IsUpToDate())
-	{
-		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
-			return;
-	}
+    if (!IsUpToDate())
+    {
+        if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
+            return;
+    }
 
     EnableOK(false);
 
@@ -884,11 +884,11 @@ void dlgProperty::OnApply(wxCommandEvent &ev)
 
 void dlgProperty::OnOK(wxCommandEvent &ev)
 {
-	if (!IsUpToDate())
-	{
-		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
-			return;
-	}
+    if (!IsUpToDate())
+    {
+        if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
+            return;
+    }
 
     EnableOK(false);
 
@@ -903,19 +903,19 @@ void dlgProperty::OnOK(wxCommandEvent &ev)
     if (chkReadOnly->GetValue())
     {
         sql = GetSql();
-		sql2 = GetSql2();
+        sql2 = GetSql2();
     }
     else
     {
         sql = sqlTextField1->GetText();
-		if (enableSQL2)
-		{
-			sql2 = sqlTextField2->GetText();
-		}
-		else
-		{
-			sql2 = wxT("");
-		}
+        if (enableSQL2)
+        {
+            sql2 = sqlTextField2->GetText();
+        }
+        else
+        {
+            sql2 = wxT("");
+        }
     }    
 
     if (!apply(sql, sql2))
@@ -933,7 +933,7 @@ void dlgProperty::OnPageSelect(wxNotebookEvent& event)
     if (sqlTextField1 && chkReadOnly->GetValue() &&
         event.GetSelection() == (int)nbNotebook->GetPageCount()-1)
     {
-		FillSQLTextfield();
+        FillSQLTextfield();
     }
 }
 
@@ -964,38 +964,38 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
         item=node->GetId();
 
     // Additional hacks to get the table to refresh when modifying sub-objects
-    if (!item && (node->GetMetaType() == PGM_TABLE || node->GetMetaType() == PGM_VIEW))
+    if (!item && (node->GetMetaType() == PGM_TABLE || node->GetMetaType() == PGM_VIEW || node->GetMetaType() == GP_PARTITION))
         owneritem=node->GetId();
 
-	int metatype = node->GetMetaType();
+    int metatype = node->GetMetaType();
 
-	switch (metatype)
-	{
-		case PGM_CHECK:
-		case PGM_COLUMN: 
-		case PGM_CONSTRAINT:
-		case PGM_FOREIGNKEY:
-		case PGM_INDEX:
-		case PGM_PRIMARYKEY:
-		case PGM_TRIGGER:
-		case PGM_UNIQUE:
-			owneritem=node->GetTable()->GetId();
-			break;
+    switch (metatype)
+    {
+        case PGM_CHECK:
+        case PGM_COLUMN: 
+        case PGM_CONSTRAINT:
+        case PGM_FOREIGNKEY:
+        case PGM_INDEX:
+        case PGM_PRIMARYKEY:
+        case PGM_TRIGGER:
+        case PGM_UNIQUE:
+            owneritem=node->GetTable()->GetId();
+            break;
 
-		case PGM_RULE: // Rules are technically table objects! Yeuch
-		case EDB_PACKAGEFUNCTION:
-		case EDB_PACKAGEVARIABLE: 
-		case PGM_SCHEDULE:
-		case PGM_STEP:
-			if (node->IsCollection())
-				owneritem = frame->GetBrowser()->GetParentObject(node->GetId())->GetId();
-			else
-				owneritem = frame->GetBrowser()->GetParentObject(frame->GetBrowser()->GetParentObject(node->GetId())->GetId())->GetId();
-			break;
+        case PGM_RULE: // Rules are technically table objects! Yeuch
+        case EDB_PACKAGEFUNCTION:
+        case EDB_PACKAGEVARIABLE: 
+        case PGM_SCHEDULE:
+        case PGM_STEP:
+            if (node->IsCollection())
+                owneritem = frame->GetBrowser()->GetParentObject(node->GetId())->GetId();
+            else
+                owneritem = frame->GetBrowser()->GetParentObject(frame->GetBrowser()->GetParentObject(node->GetId())->GetId())->GetId();
+            break;
 
-		default:
-			break;
-	}
+        default:
+            break;
+    }
 }
 
 
@@ -1076,13 +1076,13 @@ bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
             return false;
     }
 
-	// If this is a function or view, hint that the user might want to edit the object in 
-	// the query tool.
+    // If this is a function or view, hint that the user might want to edit the object in 
+    // the query tool.
     if (node->GetMetaType() == PGM_FUNCTION || node->GetMetaType() == PGM_VIEW)
-	{
-	if (frmHint::ShowHint(frame, HINT_OBJECT_EDITING) == wxID_CANCEL)
-		return false;
-	}
+    {
+    if (frmHint::ShowHint(frame, HINT_OBJECT_EDITING) == wxID_CANCEL)
+        return false;
+    }
 
     dlgProperty *dlg=CreateDlg(frame, node, false);
 
@@ -1104,20 +1104,20 @@ bool dlgProperty::EditObjectDialog(frmMain *frame, ctlSQLBox *sqlbox, pgObject *
 
 wxString dlgProperty::qtDbString(const wxString &str) 
 { 
-	// Use the server aware version if possible
-	if (connection)
-	    return connection->qtDbString(str);
-	else if (database)
-		return database->GetConnection()->qtDbString(str);
-	else
-	{
-		wxString ret = str;
-		ret.Replace(wxT("\\"), wxT("\\\\"));
+    // Use the server aware version if possible
+    if (connection)
+        return connection->qtDbString(str);
+    else if (database)
+        return database->GetConnection()->qtDbString(str);
+    else
+    {
+        wxString ret = str;
+        ret.Replace(wxT("\\"), wxT("\\\\"));
         ret.Replace(wxT("'"), wxT("''"));
         ret.Append(wxT("'"));
         ret.Prepend(wxT("'"));
-		return ret;
-	}
+        return ret;
+    }
 }
 
 void dlgProperty::OnHelp(wxCommandEvent& ev)
@@ -1132,6 +1132,8 @@ void dlgProperty::OnHelp(wxCommandEvent& ev)
             {
                 if (connection->GetIsEdb())
                     DisplayHelp(page.Mid(3), HELP_ENTERPRISEDB);
+                else if (connection->GetIsGreenplum())
+                    DisplayHelp(page.Mid(3), HELP_GREENPLUM);
                 else
                     DisplayHelp(page.Mid(3), HELP_POSTGRESQL);
             }
@@ -1312,15 +1314,15 @@ wxString dlgTypeProperty::GetQuotedTypename(int sel)
             suffix = wxT("without time zone");
         }
         else if (sql.Right(2) == wxT("[]"))
-		{
-			sql = sql.SubString(0,sql.Len()-3);
-			isArray = true;
-		}
-		else if (sql.Right(3) == wxT("[]\""))
-		{
-			sql = sql.SubString(1,sql.Len()-4);
-			isArray = true;
-		}
+        {
+            sql = sql.SubString(0,sql.Len()-3);
+            isArray = true;
+        }
+        else if (sql.Right(3) == wxT("[]\""))
+        {
+            sql = sql.SubString(1,sql.Len()-4);
+            isArray = true;
+        }
 
         // Stick the length on
         if (isVarLen && txtLength)
@@ -1529,8 +1531,9 @@ dlgSecurityProperty::dlgSecurityProperty(pgaFactory *f, frmMain *frame, pgObject
                 }
             }
         }
-    }else
-    securityPage = NULL;
+    }
+    else
+        securityPage = NULL;
 }
 
 
@@ -1543,8 +1546,8 @@ dlgSecurityProperty::~dlgSecurityProperty()
 #ifdef __WXMAC__
 void dlgSecurityProperty::OnChangeSize(wxSizeEvent &ev)
 {
-	securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
-	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 550);
+    securityPage->lbPrivileges->SetSize(wxDefaultCoord, wxDefaultCoord,
+        ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 550);
     if (GetAutoLayout())
     {
         Layout();
@@ -1558,7 +1561,7 @@ int dlgSecurityProperty::Go(bool modal)
     if (securityPage)
     {
         securityPage->SetConnection(connection);
-	    //securityPage->Layout();
+        //securityPage->Layout();
     }
     
     return dlgProperty::Go(modal);
@@ -1624,8 +1627,8 @@ wxString dlgSecurityProperty::GetHelpPage() const
 
 void dlgSecurityProperty::EnableOK(bool enable)
 {
-	// Don't enable the OK button if the object isn't yet created,
-	// leave that to the object dialog.
+    // Don't enable the OK button if the object isn't yet created,
+    // leave that to the object dialog.
     if (securityChanged && GetObject())
     {
         wxString sql=GetSql();
@@ -1783,11 +1786,11 @@ bool dlgAgentProperty::executeSql()
 
 void dlgAgentProperty::OnOK(wxCommandEvent &ev)
 {
-	if (!IsUpToDate())
-	{
-		if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
-			return;
-	}
+    if (!IsUpToDate())
+    {
+        if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
+            return;
+    }
 
     if (IsModal())
     {

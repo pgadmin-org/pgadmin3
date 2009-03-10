@@ -134,6 +134,8 @@ wxString frmBackupServer::getCmdPart1()
     wxString cmd;
     if (server->GetConnection()->EdbMinimumVersion(8,0))
         cmd=edbBackupAllExecutable;
+    else if (server->GetConnection()->GetIsGreenplum())
+        cmd=gpBackupAllExecutable;
     else
         cmd=pgBackupAllExecutable;
 
@@ -208,6 +210,8 @@ bool backupServerFactory::CheckEnable(pgObject *obj)
 
     if (obj->GetConnection()->EdbMinimumVersion(8, 0))
         return !edbBackupExecutable.IsEmpty() && pgAppMinimumVersion(edbBackupExecutable, 8, 3);
+    else if (obj->GetConnection()->GetIsGreenplum())
+        return !gpBackupExecutable.IsEmpty() && pgAppMinimumVersion(gpBackupExecutable, 8, 3);
     else
         return !pgBackupExecutable.IsEmpty() && pgAppMinimumVersion(pgBackupExecutable, 8, 3);
 }

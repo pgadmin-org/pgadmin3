@@ -87,7 +87,7 @@ wxString pgColumn::GetSql(ctlTree *browser)
 
             sql += GetCommentSql();
         }
-        else if (GetTable()->GetMetaType() == PGM_CATALOGOBJECT)
+        else if (GetTable()->GetMetaType() == PGM_CATALOGOBJECT || GetTable()->GetMetaType() == GP_EXTTABLE)
         {
             sql = wxT("-- Column: ") + GetQuotedIdentifier() + wxT("\n\n");
         }
@@ -134,13 +134,13 @@ wxString pgColumn::GetSql(ctlTree *browser)
 
 wxString pgColumn::GetCommentSql()
 {
-	wxString commentSql;
+    wxString commentSql;
 
-	if (!GetComment().IsEmpty())
-		commentSql = wxT("COMMENT ON COLUMN ") + GetQuotedFullTable() + wxT(".") + GetQuotedIdentifier()
+    if (!GetComment().IsEmpty())
+        commentSql = wxT("COMMENT ON COLUMN ") + GetQuotedFullTable() + wxT(".") + GetQuotedIdentifier()
         +  wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
-	
-	return commentSql;
+    
+    return commentSql;
 }
 
 wxString pgColumn::GetPrivileges()
@@ -200,9 +200,9 @@ wxString pgColumn::GetDefinition()
     if (GetDatabase()->BackendMinimumVersion(8, 1))
     {
         seqDefault1 = wxT("nextval('") + schema->GetPrefix() + GetTableName()
-				    + wxT("_") + GetName() + wxT("_seq'::regclass)");
+                    + wxT("_") + GetName() + wxT("_seq'::regclass)");
         seqDefault2 = wxT("nextval('\"") + schema->GetPrefix() + GetTableName()
-				    + wxT("_") + GetName() + wxT("_seq\"'::regclass)");
+                    + wxT("_") + GetName() + wxT("_seq\"'::regclass)");
     }
     else
     {
@@ -296,7 +296,7 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
         if (GetTable()->GetMetaType() != PGM_CATALOGOBJECT)
         {
             properties->AppendItem(_("Default"), GetDefault());
-            if (GetTable()->GetMetaType() != PGM_VIEW)
+            if (GetTable()->GetMetaType() != PGM_VIEW && GetTable()->GetMetaType() != GP_EXTTABLE)
             {
                 properties->AppendItem(_("Sequence"), database->GetSchemaPrefix(GetSerialSchema()) + GetSerialSequence());
 
@@ -447,7 +447,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
             column->iSetTableName(columns->GetVal(wxT("relname")));
             column->iSetInheritedCount(columns->GetLong(wxT("attinhcount")));
             column->iSetInheritedTableName(columns->GetVal(wxT("inhrelname")));
-			column->iSetIsLocal(columns->GetBool(wxT("attislocal")));
+            column->iSetIsLocal(columns->GetBool(wxT("attislocal")));
             column->iSetAttstattarget(columns->GetLong(wxT("attstattarget")));
             if (database->BackendMinimumVersion(8, 4))
                 column->iSetAcl(columns->GetVal(wxT("attacl")));
@@ -455,13 +455,13 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
             if (browser)
             {
                 browser->AppendObject(collection, column);
-				columns->MoveNext();
+                columns->MoveNext();
             }
             else
                 break;
         }
 
-		delete columns;
+        delete columns;
     }
     return column;
 }

@@ -36,6 +36,7 @@
 #include "schema/pgCatalogObject.h"
 #include "schema/pgTable.h"
 #include "schema/pgView.h"
+#include "schema/gpExtTable.h"
 
 // wxAUI
 #include <wx/aui/aui.h>
@@ -100,7 +101,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     mainForm=form;
     thread=0;
     relkind=0;
-	limit=0;
+    limit=0;
     relid=(Oid)obj->GetOid();
     editorCell = new sqlCell();
 
@@ -185,19 +186,19 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view\tCtrl-Alt-V"),     _("Restore the default view."));
 
-	
+    
     // Tools menu
     toolsMenu = new wxMenu();
     toolsMenu->Append(MNU_OPTIONS, _("&Sort / Filter ..."),_("Sort / Filter options."));
     toolsMenu->AppendSeparator();
     toolsMenu->Append(MNU_INCLUDEFILTER, _("Filter By &Selection"),_("Display only those rows that have this value in this column."));
-	toolsMenu->Append(MNU_EXCLUDEFILTER, _("Filter E&xcluding Selection"),_("Display only those rows that do not have this value in this column."));
-	toolsMenu->Append(MNU_REMOVEFILTERS, _("&Remove Filter"),_("Remove all filters on this table"));
-	toolsMenu->AppendSeparator();
-	toolsMenu->Append(MNU_ASCSORT, _("Sort &Ascending"),_("Append an ASCENDING sort condition based on this column"));
-	toolsMenu->Append(MNU_DESCSORT, _("Sort &Descending"),_("Append a DESCENDING sort condition based on this column"));
-	toolsMenu->Append(MNU_REMOVESORT, _("&Remove Sort"),_("Remove all sort conditions"));
-	
+    toolsMenu->Append(MNU_EXCLUDEFILTER, _("Filter E&xcluding Selection"),_("Display only those rows that do not have this value in this column."));
+    toolsMenu->Append(MNU_REMOVEFILTERS, _("&Remove Filter"),_("Remove all filters on this table"));
+    toolsMenu->AppendSeparator();
+    toolsMenu->Append(MNU_ASCSORT, _("Sort &Ascending"),_("Append an ASCENDING sort condition based on this column"));
+    toolsMenu->Append(MNU_DESCSORT, _("Sort &Descending"),_("Append a DESCENDING sort condition based on this column"));
+    toolsMenu->Append(MNU_REMOVESORT, _("&Remove Sort"),_("Remove all sort conditions"));
+    
     // Help menu
     helpMenu = new wxMenu();
     helpMenu->Append(MNU_CONTENTS, _("&Help contents"),_("Open the helpfile."));
@@ -251,7 +252,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     // tell the manager to "commit" all the changes just made
     manager.Update();
 
-    if (obj->GetMetaType() == PGM_TABLE)
+    if (obj->GetMetaType() == PGM_TABLE || obj->GetMetaType() == GP_PARTITION)
     {
         pgTable *table = (pgTable*)obj;
 
@@ -272,6 +273,14 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
         relkind = 'v';
         hasOids=false;
         tableName = view->GetSchema()->GetQuotedFullIdentifier() + wxT(".") + view->GetQuotedIdentifier();
+    }
+    else if (obj->GetMetaType() == GP_EXTTABLE)
+    {
+        gpExtTable *exttable=(gpExtTable*)obj;
+
+        relkind = 'x';
+        hasOids=false;
+        tableName = exttable->GetSchema()->GetQuotedFullIdentifier() + wxT(".") + exttable->GetQuotedIdentifier();
     }
     else if (obj->GetMetaType() == PGM_CATALOGOBJECT)
     {
@@ -358,82 +367,82 @@ void frmEditGrid::OnDefaultView(wxCommandEvent& event)
 
 void frmEditGrid::SetSortCols(const wxString &cols) 
 { 
-	if (orderBy != cols) { 
-		orderBy = cols; 
-	} 
+    if (orderBy != cols) { 
+        orderBy = cols; 
+    } 
 }
 
 void frmEditGrid::SetFilter(const wxString &filter) 
 { 
-	if (rowFilter != filter) { 
-		rowFilter = filter; 
-	} 
+    if (rowFilter != filter) { 
+        rowFilter = filter; 
+    } 
 }
 
 void frmEditGrid::SetLimit(const int rowlimit)
 {
-	if (rowlimit != limit) {
-		limit = rowlimit;
+    if (rowlimit != limit) {
+        limit = rowlimit;
 
-    	if (limit <= 0)
-	    	cbLimit->SetValue(_("No limit"));
-	    else
+        if (limit <= 0)
+            cbLimit->SetValue(_("No limit"));
+        else
                 cbLimit->SetValue(wxString::Format(_("%i rows"), limit));
-	}
+    }
 }
 
 void frmEditGrid::OnLabelRightClick(wxGridEvent& event)
 {
-	wxMenu *xmenu = new wxMenu();
-	wxArrayInt rows=sqlGrid->GetSelectedRows();
-	xmenu->Append(MNU_COPY, _("&Copy"),_("Copy selected cells to clipboard."));
-	xmenu->Append(MNU_PASTE, _("&Paste"),_("Paste data from the clipboard."));
-	xmenu->Append(MNU_DELETE, _("&Delete"),_("Delete selected rows."));
+    wxMenu *xmenu = new wxMenu();
+    wxArrayInt rows=sqlGrid->GetSelectedRows();
+    xmenu->Append(MNU_COPY, _("&Copy"),_("Copy selected cells to clipboard."));
+    xmenu->Append(MNU_PASTE, _("&Paste"),_("Paste data from the clipboard."));
+    xmenu->Append(MNU_DELETE, _("&Delete"),_("Delete selected rows."));
 
-	if ((rows.GetCount()) && (!sqlGrid->IsCurrentCellReadOnly()))
-	{
-		xmenu->Enable(MNU_COPY, true);
-		xmenu->Enable(MNU_DELETE, true);
-		xmenu->Enable(MNU_PASTE, true);
-	}
-	else
-	{
-		xmenu->Enable(MNU_COPY, false);
-		xmenu->Enable(MNU_DELETE, false);
-		xmenu->Enable(MNU_PASTE, false);
-	}
-	sqlGrid->PopupMenu(xmenu);
+    if ((rows.GetCount()) && (!sqlGrid->IsCurrentCellReadOnly()))
+    {
+        xmenu->Enable(MNU_COPY, true);
+        xmenu->Enable(MNU_DELETE, true);
+        xmenu->Enable(MNU_PASTE, true);
+    }
+    else
+    {
+        xmenu->Enable(MNU_COPY, false);
+        xmenu->Enable(MNU_DELETE, false);
+        xmenu->Enable(MNU_PASTE, false);
+    }
+    sqlGrid->PopupMenu(xmenu);
 }
 
 
 void frmEditGrid::OnCellRightClick(wxGridEvent& event)
 {
-	wxMenu *xmenu = new wxMenu();
-	
-	// If we cannot refresh, assume there is a data thread running. We cannot 
-	// check thread->IsRunning() as it can crash if the thread is in some
-	// states :-(
+    wxMenu *xmenu = new wxMenu();
+    
+    // If we cannot refresh, assume there is a data thread running. We cannot 
+    // check thread->IsRunning() as it can crash if the thread is in some
+    // states :-(
     if (!toolBar->GetToolEnabled(MNU_REFRESH))
         return;
 
-	sqlGrid->SetGridCursor(event.GetRow(), event.GetCol());
-	
-	xmenu->Append(MNU_INCLUDEFILTER, _("Filter By &Selection"),_("Display only those rows that have this value in this column."));
-	xmenu->Append(MNU_EXCLUDEFILTER, _("Filter E&xcluding Selection"),_("Display only those rows that do not have this value in this column."));
-	xmenu->Append(MNU_REMOVEFILTERS, _("&Remove Filter"),_("Remove all filters on this table"));
-	xmenu->InsertSeparator(3);
-	xmenu->Append(MNU_ASCSORT, _("Sort &Ascending"),_("Append an ASCENDING sort condition based on this column"));
-	xmenu->Append(MNU_DESCSORT, _("Sort &Descending"),_("Append a DESCENDING sort condition based on this column"));
-	xmenu->Append(MNU_REMOVESORT, _("&Remove Sort"),_("Remove all sort conditions"));
-	
-	xmenu->Enable(MNU_INCLUDEFILTER, true);
-	xmenu->Enable(MNU_EXCLUDEFILTER, true);
-	xmenu->Enable(MNU_REMOVEFILTERS, true);
-	xmenu->Enable(MNU_ASCSORT, true);
-	xmenu->Enable(MNU_DESCSORT, true);
-	xmenu->Enable(MNU_REMOVESORT, true);
-	
-	sqlGrid->PopupMenu(xmenu);
+    sqlGrid->SetGridCursor(event.GetRow(), event.GetCol());
+    
+    xmenu->Append(MNU_INCLUDEFILTER, _("Filter By &Selection"),_("Display only those rows that have this value in this column."));
+    xmenu->Append(MNU_EXCLUDEFILTER, _("Filter E&xcluding Selection"),_("Display only those rows that do not have this value in this column."));
+    xmenu->Append(MNU_REMOVEFILTERS, _("&Remove Filter"),_("Remove all filters on this table"));
+    xmenu->InsertSeparator(3);
+    xmenu->Append(MNU_ASCSORT, _("Sort &Ascending"),_("Append an ASCENDING sort condition based on this column"));
+    xmenu->Append(MNU_DESCSORT, _("Sort &Descending"),_("Append a DESCENDING sort condition based on this column"));
+    xmenu->Append(MNU_REMOVESORT, _("&Remove Sort"),_("Remove all sort conditions"));
+    
+    xmenu->Enable(MNU_INCLUDEFILTER, true);
+    xmenu->Enable(MNU_EXCLUDEFILTER, true);
+    xmenu->Enable(MNU_REMOVEFILTERS, true);
+    xmenu->Enable(MNU_ASCSORT, true);
+    xmenu->Enable(MNU_DESCSORT, true);
+    xmenu->Enable(MNU_REMOVESORT, true);
+    
+    sqlGrid->PopupMenu(xmenu);
 }
 
 
@@ -467,174 +476,174 @@ void frmEditGrid::OnCellChange(wxGridEvent& event)
 
 void frmEditGrid::OnIncludeFilter(wxCommandEvent &event)
 {
-	int curcol=sqlGrid->GetGridCursorCol();
-	int currow=sqlGrid->GetGridCursorRow();
-	
-	sqlTable *table=sqlGrid->GetTable();
-	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
-	wxString new_filter_string;
-	
-	size_t old_filter_string_length = GetFilter().Trim().Len();
-	
-	if (old_filter_string_length > 0) {
-		new_filter_string = GetFilter().Trim() + wxT(" \n    AND ");
-	}
-		
-	if (table->IsColText(curcol)) {
+    int curcol=sqlGrid->GetGridCursorCol();
+    int currow=sqlGrid->GetGridCursorRow();
+    
+    sqlTable *table=sqlGrid->GetTable();
+    wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
+    wxString new_filter_string;
+    
+    size_t old_filter_string_length = GetFilter().Trim().Len();
+    
+    if (old_filter_string_length > 0) {
+        new_filter_string = GetFilter().Trim() + wxT(" \n    AND ");
+    }
+        
+    if (table->IsColText(curcol)) {
 
-		if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
-			new_filter_string += column_label + wxT(" IS NULL ");
-		} else {
-			
-			if (sqlGrid->GetCellValue(currow, curcol) == wxT("\'\'")) {
-				new_filter_string += column_label + wxT(" = ''");
-			} else {
-				new_filter_string += column_label + wxT(" = ") + connection->qtDbString(sqlGrid->GetCellValue(currow, curcol)) + wxT(" ");
-			}
-		}
-	} else {
-		
-		if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
-			new_filter_string += column_label + wxT(" IS NULL ");
-		} else {
-			new_filter_string += column_label + wxT(" = ") + sqlGrid->GetCellValue(currow, curcol);
-		}
-	}
-	
-	SetFilter(new_filter_string);
-	
-	Go();
+        if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
+            new_filter_string += column_label + wxT(" IS NULL ");
+        } else {
+            
+            if (sqlGrid->GetCellValue(currow, curcol) == wxT("\'\'")) {
+                new_filter_string += column_label + wxT(" = ''");
+            } else {
+                new_filter_string += column_label + wxT(" = ") + connection->qtDbString(sqlGrid->GetCellValue(currow, curcol)) + wxT(" ");
+            }
+        }
+    } else {
+        
+        if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
+            new_filter_string += column_label + wxT(" IS NULL ");
+        } else {
+            new_filter_string += column_label + wxT(" = ") + sqlGrid->GetCellValue(currow, curcol);
+        }
+    }
+    
+    SetFilter(new_filter_string);
+    
+    Go();
 }
 
 
 void frmEditGrid::OnExcludeFilter(wxCommandEvent &event)
 {
-	int curcol=sqlGrid->GetGridCursorCol();
-	int currow=sqlGrid->GetGridCursorRow();
-	
-	sqlTable *table=sqlGrid->GetTable();
-	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
-	wxString new_filter_string;
-	
-	size_t old_filter_string_length = GetFilter().Trim().Len();
-	
-	if (old_filter_string_length > 0) {
-		new_filter_string = GetFilter().Trim() + wxT(" \n    AND ");
-	}
-	
-	if (table->IsColText(curcol)) {
-		if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
-			new_filter_string += column_label + wxT(" IS NOT NULL ");
-		} else {
-			
-			if (sqlGrid->GetCellValue(currow, curcol) == wxT("\'\'")) {
-				new_filter_string += column_label + wxString::Format(_(" IS DISTINCT FROM '' ")) ;
-			} else {
-				new_filter_string += column_label + wxT(" IS DISTINCT FROM ") + connection->qtDbString(sqlGrid->GetCellValue(currow, curcol)) + wxT(" ");
-			}
-		}
-	} else {
-		
-		if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
-			new_filter_string += column_label + wxT(" IS NOT NULL ") ;
-		} else {
-			new_filter_string += column_label + wxT(" IS DISTINCT FROM ") + sqlGrid->GetCellValue(currow, curcol);
-		}
-	}
+    int curcol=sqlGrid->GetGridCursorCol();
+    int currow=sqlGrid->GetGridCursorRow();
+    
+    sqlTable *table=sqlGrid->GetTable();
+    wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
+    wxString new_filter_string;
+    
+    size_t old_filter_string_length = GetFilter().Trim().Len();
+    
+    if (old_filter_string_length > 0) {
+        new_filter_string = GetFilter().Trim() + wxT(" \n    AND ");
+    }
+    
+    if (table->IsColText(curcol)) {
+        if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
+            new_filter_string += column_label + wxT(" IS NOT NULL ");
+        } else {
+            
+            if (sqlGrid->GetCellValue(currow, curcol) == wxT("\'\'")) {
+                new_filter_string += column_label + wxString::Format(_(" IS DISTINCT FROM '' ")) ;
+            } else {
+                new_filter_string += column_label + wxT(" IS DISTINCT FROM ") + connection->qtDbString(sqlGrid->GetCellValue(currow, curcol)) + wxT(" ");
+            }
+        }
+    } else {
+        
+        if (sqlGrid->GetCellValue(currow, curcol).IsNull()) {
+            new_filter_string += column_label + wxT(" IS NOT NULL ") ;
+        } else {
+            new_filter_string += column_label + wxT(" IS DISTINCT FROM ") + sqlGrid->GetCellValue(currow, curcol);
+        }
+    }
 
-	SetFilter(new_filter_string);
-	
-	Go();
+    SetFilter(new_filter_string);
+    
+    Go();
 }
 
 
 void frmEditGrid::OnRemoveFilters(wxCommandEvent &event)
 {
-	SetFilter(wxT(""));
-	
-	Go();
+    SetFilter(wxT(""));
+    
+    Go();
 }
 
 
 void frmEditGrid::OnAscSort(wxCommandEvent &ev)
 {
-	int curcol=sqlGrid->GetGridCursorCol();
-	
-	sqlTable *table=sqlGrid->GetTable();
-	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
-	wxString old_sort_string = GetSortCols().Trim();
-	wxString new_sort_string;
-	
-	if (old_sort_string.Find(column_label) == wxNOT_FOUND)
-	{
-		if (old_sort_string.Len() > 0)
-			new_sort_string = old_sort_string + wxT(" , ");
+    int curcol=sqlGrid->GetGridCursorCol();
+    
+    sqlTable *table=sqlGrid->GetTable();
+    wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
+    wxString old_sort_string = GetSortCols().Trim();
+    wxString new_sort_string;
+    
+    if (old_sort_string.Find(column_label) == wxNOT_FOUND)
+    {
+        if (old_sort_string.Len() > 0)
+            new_sort_string = old_sort_string + wxT(" , ");
 
-		new_sort_string += column_label + wxT(" ASC ");
-	} 
-	else
-	{
-		if (old_sort_string.Find(column_label + wxT(" ASC")) == wxNOT_FOUND)
-		{
-			// Previous occurrence was for DESCENDING sort
-			new_sort_string = old_sort_string;
-			new_sort_string.Replace(column_label + wxT(" DESC"), column_label + wxT(" ASC"));
-		}
-		else
-		{
-			// Previous occurrence was for ASCENDING sort. Nothing to do
-			new_sort_string = old_sort_string;
-		}
-	}
+        new_sort_string += column_label + wxT(" ASC ");
+    } 
+    else
+    {
+        if (old_sort_string.Find(column_label + wxT(" ASC")) == wxNOT_FOUND)
+        {
+            // Previous occurrence was for DESCENDING sort
+            new_sort_string = old_sort_string;
+            new_sort_string.Replace(column_label + wxT(" DESC"), column_label + wxT(" ASC"));
+        }
+        else
+        {
+            // Previous occurrence was for ASCENDING sort. Nothing to do
+            new_sort_string = old_sort_string;
+        }
+    }
 
-	SetSortCols(new_sort_string);
-	
-	Go();
+    SetSortCols(new_sort_string);
+    
+    Go();
 }
 
 
 void frmEditGrid::OnDescSort(wxCommandEvent &ev)
 {
-	int curcol=sqlGrid->GetGridCursorCol();
-	
-	sqlTable *table=sqlGrid->GetTable();
-	wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
-	wxString old_sort_string = GetSortCols().Trim();
-	wxString new_sort_string;
-	
-	if (old_sort_string.Find(column_label) == wxNOT_FOUND)
-	{
-		if (old_sort_string.Len() > 0)
-			new_sort_string = old_sort_string + wxT(" , ");
-		
-		new_sort_string += column_label + wxT(" DESC ");
-	} 
-	else
-	{
-		if (old_sort_string.Find(column_label + wxT(" DESC")) == wxNOT_FOUND)
-		{
-			// Previous occurrence was for ASCENDING sort
-			new_sort_string = old_sort_string;
-			new_sort_string.Replace(column_label + wxT(" ASC"), column_label + wxT(" DESC"));
-		}
-		else
-		{
-			// Previous occurrence was for DESCENDING sort. Nothing to do
-			new_sort_string = old_sort_string;
-		}
-	}
+    int curcol=sqlGrid->GetGridCursorCol();
+    
+    sqlTable *table=sqlGrid->GetTable();
+    wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
+    wxString old_sort_string = GetSortCols().Trim();
+    wxString new_sort_string;
+    
+    if (old_sort_string.Find(column_label) == wxNOT_FOUND)
+    {
+        if (old_sort_string.Len() > 0)
+            new_sort_string = old_sort_string + wxT(" , ");
+        
+        new_sort_string += column_label + wxT(" DESC ");
+    } 
+    else
+    {
+        if (old_sort_string.Find(column_label + wxT(" DESC")) == wxNOT_FOUND)
+        {
+            // Previous occurrence was for ASCENDING sort
+            new_sort_string = old_sort_string;
+            new_sort_string.Replace(column_label + wxT(" ASC"), column_label + wxT(" DESC"));
+        }
+        else
+        {
+            // Previous occurrence was for DESCENDING sort. Nothing to do
+            new_sort_string = old_sort_string;
+        }
+    }
 
-	SetSortCols(new_sort_string);
+    SetSortCols(new_sort_string);
 
-	Go();
+    Go();
 }
 
 
 void frmEditGrid::OnRemoveSort(wxCommandEvent &ev)
 {
-	SetSortCols(wxT(""));
-	
-	Go();
+    SetSortCols(wxT(""));
+    
+    Go();
 }
 
 
@@ -647,7 +656,7 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
     }
     else
     {
-		if (editorCell->IsSet())
+        if (editorCell->IsSet())
         {
             if (wxTheClipboard->Open())
             {
@@ -655,12 +664,12 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
                 wxTheClipboard->Close();
             }
         }
-		else if(sqlGrid->GetNumberRows() > 0)
-		{
-		    int copied;
+        else if(sqlGrid->GetNumberRows() > 0)
+        {
+            int copied;
             copied = sqlGrid->Copy();
             SetStatusText(wxString::Format(_("Data from %d rows copied to clipboard."), copied));
-		}
+        }
     }
 }
 
@@ -758,31 +767,31 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
     {
         case WXK_DELETE:
         {
-			if (editorCell->IsSet() || !toolBar->GetToolEnabled(MNU_DELETE))
-			{
-				if (!sqlGrid->IsCurrentCellReadOnly())
-				{
-					sqlGrid->EnableCellEditControl();
-					sqlGrid->ShowCellEditControl();
+            if (editorCell->IsSet() || !toolBar->GetToolEnabled(MNU_DELETE))
+            {
+                if (!sqlGrid->IsCurrentCellReadOnly())
+                {
+                    sqlGrid->EnableCellEditControl();
+                    sqlGrid->ShowCellEditControl();
 
-					wxGridCellEditor *edit=sqlGrid->GetCellEditor(currow, curcol);
-					if (edit)
-					{
-						wxControl *ctl=edit->GetControl();
-						if (ctl)
-						{
-							wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
-							if (txt)
-								txt->SetValue(wxEmptyString);
-						}
-						edit->DecRef();
-					}
-				}
-			}
-			else
-			{
-				OnDelete(ev);
-			}
+                    wxGridCellEditor *edit=sqlGrid->GetCellEditor(currow, curcol);
+                    if (edit)
+                    {
+                        wxControl *ctl=edit->GetControl();
+                        if (ctl)
+                        {
+                            wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
+                            if (txt)
+                                txt->SetValue(wxEmptyString);
+                        }
+                        edit->DecRef();
+                    }
+                }
+            }
+            else
+            {
+                OnDelete(ev);
+            }
             return;
         }
         case WXK_RETURN:
@@ -1004,31 +1013,31 @@ void frmEditGrid::OnOptions(wxCommandEvent& event)
 
     dlgEditGridOptions *winOptions = new dlgEditGridOptions(this, connection, tableName, sqlGrid);
     if (winOptions->ShowModal())
-	    Go();
+        Go();
 }
 
 
 template < class T >
 int ArrayCmp(T *a, T *b)
 {
-	if (*a == *b)
-		return 0;
+    if (*a == *b)
+        return 0;
 
-	if (*a > *b)
-		return 1;
-	else
-		return -1;
+    if (*a > *b)
+        return 1;
+    else
+        return -1;
 }
 
 void frmEditGrid::OnDelete(wxCommandEvent& event)
 {
     // Don't bugger about with keypresses to the scratch pad.
     if (FindFocus() == scratchPad)
-	{
-	    event.Skip();
-		return;
-	}
-	
+    {
+        event.Skip();
+        return;
+    }
+    
     if (editorCell->IsSet())
     {
         if (sqlGrid->GetTable()->IsColBoolean(sqlGrid->GetGridCursorCol()))
@@ -1058,17 +1067,17 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
     else
         prompt.Printf(_("Are you sure you wish to delete the %d selected rows?"), i);
 
-	wxMessageDialog msg(this, prompt, _("Delete rows?"), wxYES_NO | wxICON_QUESTION);
+    wxMessageDialog msg(this, prompt, _("Delete rows?"), wxYES_NO | wxICON_QUESTION);
     if (msg.ShowModal() != wxID_YES)
         return;
 
     sqlGrid->BeginBatch();
 
-	// Sort the grid so we always delete last->first, otherwise we 
-	// could end up deleting anything because the array returned by 
-	// GetSelectedRows is in the order that rows were selected by
-	// the user.
-	delrows.Sort(ArrayCmp);
+    // Sort the grid so we always delete last->first, otherwise we 
+    // could end up deleting anything because the array returned by 
+    // GetSelectedRows is in the order that rows were selected by
+    // the user.
+    delrows.Sort(ArrayCmp);
 
     // don't care a lot about optimizing here; doing it line by line
     // just as sqlTable::DeleteRows does
@@ -1079,9 +1088,9 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
             i > 0 &&
             show_continue_message)
         {
-        	wxMessageDialog msg(this, wxString::Format(_("There was an error deleting the previous record.\nAre you sure you wish to delete the remaining %d rows ?"), i), _("Delete more records ?"), wxYES_NO | wxICON_QUESTION);
-        	if (msg.ShowModal() != wxID_YES)
-            	break;
+            wxMessageDialog msg(this, wxString::Format(_("There was an error deleting the previous record.\nAre you sure you wish to delete the remaining %d rows ?"), i), _("Delete more records ?"), wxYES_NO | wxICON_QUESTION);
+            if (msg.ShowModal() != wxID_YES)
+                break;
             else
                 show_continue_message = false;
         }
@@ -1164,25 +1173,25 @@ void frmEditGrid::OnGridSelectCells(wxGridRangeSelectEvent& event)
 
 void frmEditGrid::ShowForm(bool filter)
 {
-	bool abort = false;
+    bool abort = false;
 
     if (relkind == 'r' || relkind == 'v')
-	{
-		if (filter) 
-		{
-			dlgEditGridOptions *winOptions = new dlgEditGridOptions(this, connection, tableName, sqlGrid);
-			abort = !(winOptions->ShowModal());
-		}
-		if (abort) {
+    {
+        if (filter) 
+        {
+            dlgEditGridOptions *winOptions = new dlgEditGridOptions(this, connection, tableName, sqlGrid);
+            abort = !(winOptions->ShowModal());
+        }
+        if (abort) {
             // Hack to ensure there's a table for ~wxGrid() to delete
             sqlGrid->CreateGrid(0, 0);
-			Close();
-			Destroy();
-		} else {
+            Close();
+            Destroy();
+        } else {
             Show(true);
-		    Go();
-		}
-	}
+            Go();
+        }
+    }
     else
     {
         wxLogError(__("No Table or view."));
@@ -1203,7 +1212,7 @@ void frmEditGrid::Go()
         !cbLimit->GetValue().BeforeFirst(' ').ToLong(&templong))
     {
         wxLogError(_("The row limit must be an integer number or 'No limit'"));
-	return;
+    return;
     }
 
     if (cbLimit->GetValue() == _("No limit"))
@@ -1229,7 +1238,7 @@ void frmEditGrid::Go()
     toolsMenu->Enable(MNU_REMOVEFILTERS, false);
     toolsMenu->Enable(MNU_ASCSORT, false);
     toolsMenu->Enable(MNU_DESCSORT, false);
-	toolsMenu->Enable(MNU_REMOVESORT, false);
+    toolsMenu->Enable(MNU_REMOVESORT, false);
 
     // Stash the column sizes so we can reset them
     wxArrayInt colWidths;
@@ -1250,8 +1259,8 @@ void frmEditGrid::Go()
     {
         qry += wxT("\n ORDER BY ") + orderBy;
     }
-	if (limit > 0)
-		qry += wxT(" LIMIT ") + wxString::Format(wxT("%i"), limit);
+    if (limit > 0)
+        qry += wxT(" LIMIT ") + wxString::Format(wxT("%i"), limit);
 
     thread=new pgQueryThread(connection, qry);
     if (thread->Create() != wxTHREAD_NO_ERROR)
@@ -1262,13 +1271,13 @@ void frmEditGrid::Go()
         toolBar->EnableTool(MNU_OPTIONS, true);
         toolsMenu->Enable(MNU_OPTIONS, true);
         toolsMenu->Enable(MNU_INCLUDEFILTER, true);
-		toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
-		toolsMenu->Enable(MNU_REMOVEFILTERS, true);
-		toolsMenu->Enable(MNU_ASCSORT, true);
-		toolsMenu->Enable(MNU_DESCSORT, true);
-		toolsMenu->Enable(MNU_REMOVESORT, true);
+        toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
+        toolsMenu->Enable(MNU_REMOVEFILTERS, true);
+        toolsMenu->Enable(MNU_ASCSORT, true);
+        toolsMenu->Enable(MNU_DESCSORT, true);
+        toolsMenu->Enable(MNU_REMOVESORT, true);
 
-		return;
+        return;
     }
 
     thread->Run();
@@ -1278,19 +1287,19 @@ void frmEditGrid::Go()
         wxTheApp->Yield(true);
         wxMilliSleep(10);
     }
-	
+    
     if (!thread)
     {
         toolBar->EnableTool(MNU_REFRESH, true);
         viewMenu->Enable(MNU_REFRESH, true);
         toolBar->EnableTool(MNU_OPTIONS, true);
         toolsMenu->Enable(MNU_OPTIONS, true);
-		toolsMenu->Enable(MNU_INCLUDEFILTER, true);
-		toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
-		toolsMenu->Enable(MNU_REMOVEFILTERS, true);
-		toolsMenu->Enable(MNU_ASCSORT, true);
-		toolsMenu->Enable(MNU_DESCSORT, true);
-		toolsMenu->Enable(MNU_REMOVESORT, true);
+        toolsMenu->Enable(MNU_INCLUDEFILTER, true);
+        toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
+        toolsMenu->Enable(MNU_REMOVEFILTERS, true);
+        toolsMenu->Enable(MNU_ASCSORT, true);
+        toolsMenu->Enable(MNU_DESCSORT, true);
+        toolsMenu->Enable(MNU_REMOVESORT, true);
         return;
     }
 
@@ -1301,12 +1310,12 @@ void frmEditGrid::Go()
         viewMenu->Enable(MNU_REFRESH, true);
         toolBar->EnableTool(MNU_OPTIONS, true);
         toolsMenu->Enable(MNU_OPTIONS, true);
-		toolsMenu->Enable(MNU_INCLUDEFILTER, true);
-		toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
-		toolsMenu->Enable(MNU_REMOVEFILTERS, true);
-		toolsMenu->Enable(MNU_ASCSORT, true);
-		toolsMenu->Enable(MNU_DESCSORT, true);
-		toolsMenu->Enable(MNU_REMOVESORT, true);
+        toolsMenu->Enable(MNU_INCLUDEFILTER, true);
+        toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
+        toolsMenu->Enable(MNU_REMOVEFILTERS, true);
+        toolsMenu->Enable(MNU_ASCSORT, true);
+        toolsMenu->Enable(MNU_DESCSORT, true);
+        toolsMenu->Enable(MNU_REMOVESORT, true);
         return;
     }
     SetStatusText(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()), 0);
@@ -1333,13 +1342,13 @@ void frmEditGrid::Go()
     viewMenu->Enable(MNU_REFRESH, true);
     toolBar->EnableTool(MNU_OPTIONS, true);
     toolsMenu->Enable(MNU_OPTIONS, true);
-	toolsMenu->Enable(MNU_INCLUDEFILTER, true);
-	toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
-	toolsMenu->Enable(MNU_REMOVEFILTERS, true);
-	toolsMenu->Enable(MNU_ASCSORT, true);
-	toolsMenu->Enable(MNU_DESCSORT, true);
-	toolsMenu->Enable(MNU_REMOVESORT, true);
-	
+    toolsMenu->Enable(MNU_INCLUDEFILTER, true);
+    toolsMenu->Enable(MNU_EXCLUDEFILTER, true);
+    toolsMenu->Enable(MNU_REMOVEFILTERS, true);
+    toolsMenu->Enable(MNU_ASCSORT, true);
+    toolsMenu->Enable(MNU_DESCSORT, true);
+    toolsMenu->Enable(MNU_REMOVESORT, true);
+    
     manager.Update();
 
     if (!hasOids && primaryKeyColNumbers.IsEmpty() && relkind == 'r')
@@ -2021,29 +2030,29 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
     savedLine.cols = new wxString[nCols];
 
     // Get the "real" column list, including any dropped columns, as 
-	// key positions etc do not ignore these.
-	pgSet *allColsSet=connection->ExecuteSet(
-		wxT("SELECT attisdropped FROM pg_attribute")
-		wxT(" WHERE attnum > 0 AND attrelid=") + NumToStr(relid) + wxT("::oid\n")
+    // key positions etc do not ignore these.
+    pgSet *allColsSet=connection->ExecuteSet(
+        wxT("SELECT attisdropped FROM pg_attribute")
+        wxT(" WHERE attnum > 0 AND attrelid=") + NumToStr(relid) + wxT("::oid\n")
         wxT(" ORDER BY attnum"));
 
-	int x = 1;
-	if (allColsSet)
-	{
-		for (i=0; i < allColsSet->NumRows(); i++)
-		{
-			if (allColsSet->GetVal(wxT("attisdropped")) == wxT("t"))
-			{
-				colMap.Add(0);
-			}
-			else
-			{
-				colMap.Add(x);
-				x++;
-			}
-			allColsSet->MoveNext();
-		}
-	}
+    int x = 1;
+    if (allColsSet)
+    {
+        for (i=0; i < allColsSet->NumRows(); i++)
+        {
+            if (allColsSet->GetVal(wxT("attisdropped")) == wxT("t"))
+            {
+                colMap.Add(0);
+            }
+            else
+            {
+                colMap.Add(x);
+                x++;
+            }
+            allColsSet->MoveNext();
+        }
+    }
 
     pgSet *colSet=connection->ExecuteSet(
         wxT("SELECT n.nspname AS nspname, relname, format_type(t.oid,NULL) AS typname, format_type(t.oid, att.atttypmod) AS displaytypname, ")
@@ -2090,11 +2099,11 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
             if ((columns[i].type == PGOID_TYPE_INT4 || columns[i].type == PGOID_TYPE_INT8)
                 && colSet->GetBool(wxT("atthasdef")))
             {
-				wxString adsrc = colSet->GetVal(wxT("adsrc"));
+                wxString adsrc = colSet->GetVal(wxT("adsrc"));
                 if (adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::text)") ||
-				    adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("nspname")) + wxT(".") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::text)") ||
-				    adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::regclass)") ||
-				    adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("nspname")) + wxT(".") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::regclass)"))
+                    adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("nspname")) + wxT(".") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::text)") ||
+                    adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::regclass)") ||
+                    adsrc ==  wxT("nextval('") + colSet->GetVal(wxT("nspname")) + wxT(".") + colSet->GetVal(wxT("relname")) + wxT("_") + columns[i].name + wxT("_seq'::regclass)"))
                 {
                     if (columns[i].type == PGOID_TYPE_INT4)
                         columns[i].type = (Oid)PGOID_TYPE_SERIAL;
@@ -2237,11 +2246,11 @@ sqlTable::~sqlTable()
         delete dataPool;
 
     delete addPool;
-	
+    
     delete[] columns;
-	
-	if (lineIndex)
-	    delete[] lineIndex;
+    
+    if (lineIndex)
+        delete[] lineIndex;
 }
 
 
@@ -2357,19 +2366,19 @@ wxString sqlTable::MakeKey(cacheLine *line)
     {
         wxStringTokenizer collist(primaryKeyColNumbers, wxT(","));
         long cn;
-		int offset;
-		
-		if (hasOids)
-		    offset = 0;
-		else
-			offset = 1;
+        int offset;
+        
+        if (hasOids)
+            offset = 0;
+        else
+            offset = 1;
 
         while (collist.HasMoreTokens())
         {
             cn=StrToLong(collist.GetNextToken());
 
-			// Translate the column location to the real location in the actual columns still present
-			cn = colMap[cn-1];
+            // Translate the column location to the real location in the actual columns still present
+            cn = colMap[cn-1];
 
             wxString colval=line->cols[cn-offset];
             if (colval.IsEmpty())
@@ -2677,11 +2686,11 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
         cacheLine *line=GetLine(pos);
         if (!line)
             break;
-			
+            
         // If line->cols is null, it probably means we need to force the cacheline to be populated.
         if (!line->cols)
         {
-		    GetValue(pos, 0);	
+            GetValue(pos, 0);	
             line=GetLine(pos);
         }
 
@@ -2876,9 +2885,9 @@ wxString sqlCellAttr::Quote(pgConn *conn, const wxString& value)
         str = wxT("''");
     else if (type == PGOID_TYPE_BOOL)
         str = value;
-	else if (type == PGOID_TYPE_BIT)
-		// Don't cast this one
-		return wxT("B'") + value + wxT("'");
+    else if (type == PGOID_TYPE_BIT)
+        // Don't cast this one
+        return wxT("B'") + value + wxT("'");
     else
         str = conn->qtDbString(value);
    
@@ -3013,7 +3022,7 @@ bool editGridFactoryBase::CheckEnable(pgObject *obj)
     if (obj)
     {
         pgaFactory *factory=obj->GetFactory();
-        return factory == &tableFactory || factory == &viewFactory || factory == &catalogObjectFactory;
+        return factory == &tableFactory || factory == &viewFactory || factory == &extTableFactory || factory == &catalogObjectFactory;
     }
     return false;
 }
@@ -3035,7 +3044,7 @@ wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filte
             + wxT(" - ") + obj->GetFullIdentifier();
 
         frmEditGrid *eg= new frmEditGrid(form, txt, conn, (pgSchemaObject*)obj);
-		eg->SetLimit(rowlimit);
+        eg->SetLimit(rowlimit);
         eg->ShowForm(filter);
         return eg;
     }
@@ -3047,7 +3056,7 @@ editGridFactory::editGridFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuTool
 {
     mnu->Append(id, _("View &All Rows\tCtrl-D"), _("View the data in the selected object."));
     toolbar->AddTool(id, _("View All Rows\tCtrl-D"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
-	context = false;
+    context = false;
 }
 
 
@@ -3062,7 +3071,7 @@ editGridFilteredFactory::editGridFilteredFactory(menuFactoryList *list, wxMenu *
 {
     mnu->Append(id, _("View F&iltered Rows...\tCtrl-G"), _("Apply a filter and view the data in the selected object."));
     toolbar->AddTool(id, _("View Filtered Rows\tCtrl-G"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
-	context = false;
+    context = false;
 }
 
 
@@ -3073,12 +3082,12 @@ wxWindow *editGridFilteredFactory::StartDialog(frmMain *form, pgObject *obj)
 
 editGridLimitedFactory::editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, int limit) : editGridFactoryBase(list)
 {
-	mnu->Append(id, wxString::Format(_("View Top %i Rows"), limit), _("View a limited number of rows in the selected object."));
-	rowlimit = limit;
-	context = false;
+    mnu->Append(id, wxString::Format(_("View Top %i Rows"), limit), _("View a limited number of rows in the selected object."));
+    rowlimit = limit;
+    context = false;
 }
 
 wxWindow *editGridLimitedFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	return ViewData(form, obj, false);
+    return ViewData(form, obj, false);
 }

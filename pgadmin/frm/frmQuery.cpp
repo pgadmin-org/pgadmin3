@@ -43,6 +43,7 @@
 #include "schema/pgDatabase.h"
 #include "schema/pgTable.h"
 #include "schema/pgView.h"
+#include "schema/gpExtTable.h"
 #include "schema/pgServer.h"
 #include "utils/favourites.h"
 #include "utils/sysLogger.h"
@@ -795,6 +796,7 @@ SqlTokenHelp sqlTokenHelp[] =
     { wxT("TYPE"), 0, 11},
     { wxT("USER"), 0, 12},
     { wxT("VIEW"), 0, 11},
+    { wxT("EXTTABLE"), 0, 12},
     { 0, 0 }
 };
 
@@ -932,6 +934,8 @@ void frmQuery::OnHelp(wxCommandEvent& event)
 
     if (conn->GetIsEdb())
         DisplayHelp(page, HELP_ENTERPRISEDB);
+    else if (conn->GetIsGreenplum())
+        DisplayHelp(page, HELP_GREENPLUM);
     else
         DisplayHelp(page, HELP_POSTGRESQL);
 }
@@ -2423,6 +2427,11 @@ wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
         pgView *view = (pgView*)obj;
         return StartDialogSql(form, obj, view->GetSelectSql(form->GetBrowser()));
     }
+    else if (obj->IsCreatedBy(extTableFactory))
+    {
+        gpExtTable *exttable = (gpExtTable*)obj;
+        return StartDialogSql(form, obj, exttable->GetSelectSql(form->GetBrowser()));
+    }
     return 0;
 }
 
@@ -2472,6 +2481,7 @@ wxWindow *queryToolUpdateFactory::StartDialog(frmMain *form, pgObject *obj)
         pgView *view = (pgView*)obj;
         return StartDialogSql(form, obj, view->GetUpdateSql(form->GetBrowser()));
     }
+
     return 0;
 }
 

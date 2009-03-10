@@ -49,7 +49,7 @@ void pgConstraintCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctl
         wxTreeItemId id=browser->GetItemParent(GetId());
         wxASSERT(id);
         table = (pgTable*)browser->GetObject(id);
-        wxASSERT(table && table->GetMetaType() == PGM_TABLE);
+        wxASSERT(table && (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == GP_PARTITION));
 
         primaryKeyFactory.CreateObjects(this, browser);
         foreignKeyFactory.CreateObjects(this, browser);

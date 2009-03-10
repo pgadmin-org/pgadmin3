@@ -54,7 +54,7 @@ int pgRole::GetIconId()
 
 bool pgRole::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	if (GetUpdateCatalog())
+    if (GetUpdateCatalog())
     {
         wxMessageDialog dlg(frame, 
             _("Deleting a superuser might result in unwanted behaviour (e.g. when restoring the database).\nAre you sure?"),
@@ -94,6 +94,8 @@ wxString pgRole::GetSql(ctlTree *browser)
                                     sql += wxT(" CONNECTION LIMIT ") + NumToStr(GetConnectionLimit());
         if (GetAccountExpires().IsValid())
         AppendIfFilled(sql, wxT(" VALID UNTIL "), qtDbString(DateToAnsiStr(GetAccountExpires())));
+        if (GetRolQueueName().Length() > 0)
+            AppendIfFilled(sql, wxT(" RESOURCE QUEUE "), GetRolQueueName());
         sql +=wxT(";\n");
 
         if (this->GetSuperuser() && !GetUpdateCatalog())
@@ -288,42 +290,42 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
 void pgRole::ReassignDropOwnedTo(frmMain *form)
 {
-	wxString query;
-	
-	dlgReassignDropOwned rdo(form, GetConnection(), this, GetServer()->GetDbRestriction());
-	if (rdo.ShowModal() != wxID_CANCEL)
-	{
-		pgConn *conn;
-		conn = new pgConn(GetConnection()->GetHost(),
-    	             rdo.GetDatabase(),
-    	             GetConnection()->GetUser(),
-    	             GetConnection()->GetPassword(),
-    	             GetConnection()->GetPort(),
-    	             GetConnection()->GetSslMode());
-    	             
-		if (conn->GetStatus() == PGCONN_OK)
-    	{
-    	    if (rdo.IsReassign())
-    	    {
-			    if (wxMessageBox(_("Are you sure you wish to reassign all objects owned by the selected role?"), _("Reassign objects"), wxYES_NO) == wxNO)
-				    return;
+    wxString query;
+    
+    dlgReassignDropOwned rdo(form, GetConnection(), this, GetServer()->GetDbRestriction());
+    if (rdo.ShowModal() != wxID_CANCEL)
+    {
+        pgConn *conn;
+        conn = new pgConn(GetConnection()->GetHost(),
+                     rdo.GetDatabase(),
+                     GetConnection()->GetUser(),
+                     GetConnection()->GetPassword(),
+                     GetConnection()->GetPort(),
+                     GetConnection()->GetSslMode());
+                     
+        if (conn->GetStatus() == PGCONN_OK)
+        {
+            if (rdo.IsReassign())
+            {
+                if (wxMessageBox(_("Are you sure you wish to reassign all objects owned by the selected role?"), _("Reassign objects"), wxYES_NO) == wxNO)
+                    return;
 
-    	        query = wxT("REASSIGN OWNED BY ") + GetQuotedFullIdentifier() + wxT(" TO ") + rdo.GetRole();
+                query = wxT("REASSIGN OWNED BY ") + GetQuotedFullIdentifier() + wxT(" TO ") + rdo.GetRole();
             }
             else
             {
-			    if (wxMessageBox(_("Are you sure you wish to drop all objects owned by the selected role?"), _("Drop objects"), wxYES_NO) == wxNO)
-				    return;
+                if (wxMessageBox(_("Are you sure you wish to drop all objects owned by the selected role?"), _("Drop objects"), wxYES_NO) == wxNO)
+                    return;
 
-			    query = wxT("DROP OWNED BY ") + GetQuotedFullIdentifier();
+                query = wxT("DROP OWNED BY ") + GetQuotedFullIdentifier();
             }
             conn->ExecuteVoid(query);
-    	}
-    	else
-    	{
-    	    wxMessageBox(wxT("Connection failed: ") + conn->GetLastError());
         }
-	}
+        else
+        {
+            wxMessageBox(wxT("Connection failed: ") + conn->GetLastError());
+        }
+    }
 }
 
 
@@ -379,6 +381,16 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             role->iSetComment(roles->GetVal(wxT("description")));
             role->iSetConnectionLimit(roles->GetLong(wxT("rolconnlimit")));
 
+            if (collection->GetServer()->GetConnection()->GetIsGreenplum())
+            {
+                Oid rolresqueue = roles->GetOid(wxT("rolresqueue"));
+                if (rolresqueue != 0)
+                {
+                    role->iSetRolQueueName(collection->GetServer()->ExecuteScalar(wxT("SELECT rsqname FROM pg_resqueue WHERE pg_resqueue.oid = ") + roles->GetVal(wxT("rolresqueue"))));	
+                }
+            }
+
+
             wxString cfg=roles->GetVal(wxT("rolconfig"));
             if (!cfg.IsEmpty())
                 FillArray(role->GetConfigList(), cfg.Mid(1, cfg.Length()-2));
@@ -386,13 +398,13 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             if (browser)
             {
                 browser->AppendObject(collection, role);
-				roles->MoveNext();
+                roles->MoveNext();
             }
             else
                 break;
         }
 
-		delete roles;
+        delete roles;
     }
     return role;
 }
@@ -425,7 +437,7 @@ pgObject *pgGroupRoleFactory::CreateObjects(pgCollection *collection, ctlTree *b
 pgRoleBaseFactory::pgRoleBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img) 
 : pgServerObjFactory(tn, ns, nls, img)
 {
-	metaType = PGM_ROLE;
+    metaType = PGM_ROLE;
 }
 
 pgLoginRoleFactory::pgLoginRoleFactory()
@@ -455,7 +467,7 @@ reassignDropOwnedFactory::reassignDropOwnedFactory(menuFactoryList *list, wxMenu
 wxWindow *reassignDropOwnedFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     ((pgRole*)obj)->ReassignDropOwnedTo(form);
-	
+    
     return 0;
 }
 

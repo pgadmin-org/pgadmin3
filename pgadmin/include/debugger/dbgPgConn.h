@@ -66,6 +66,7 @@ class dbgPgConn
     bool BackendMinimumVersion(int major, int minor);
     bool EdbMinimumVersion(int major, int minor);
     bool GetIsEdb();
+    bool GetIsGreenplum();
     DebuggerApiVersions DebuggerApiVersion();
     wxString GetVersionString();
     bool isConnected() const;               // Returns true if the connection attempt succeeded
@@ -89,6 +90,7 @@ class dbgPgConn
     frmDebugger *m_frame;
     int m_minorVersion, m_majorVersion;
     bool m_isEdb;
+    bool m_isGreenplum;
     DebuggerApiVersions m_debuggerApiVersion;
 };
 

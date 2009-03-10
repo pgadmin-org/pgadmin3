@@ -285,7 +285,7 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
     // Table
     if (obj)
     {
-        if (obj->GetMetaType() == PGM_TABLE)
+        if (obj->GetMetaType() == PGM_TABLE || obj->GetMetaType() == GP_PARTITION)
             execCmd.Replace(wxT("$$TABLE"), obj->GetName());
         else if (obj->GetTable())
             execCmd.Replace(wxT("$$TABLE"), obj->GetTable()->GetName());

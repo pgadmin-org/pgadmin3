@@ -34,9 +34,9 @@
 
 typedef struct ScanKeyword
 {
-	const char *name;			/* in lower case */
-	int		value;			/* grammar's token code */
-	int		category;		/* see codes above */
+    const char *name;			/* in lower case */
+    int		value;			/* grammar's token code */
+    int		category;		/* see codes above */
 } ScanKeyword;
 
 extern const ScanKeyword *ScanKeywordLookup(const char *text);
@@ -472,7 +472,12 @@ enum yytokentype {
  RAW_EDB = 815,
  RETURN_EDB = 816,
  SYSDATE_EDB = 817,
- SYSTIMESTAMP_EDB = 818
+ SYSTIMESTAMP_EDB = 818,
+
+ /* The following additions are keywords in Greenplum Database */
+ DISTRIBUTED_GP = 900,
+ LOG_P_GP = 901
+
 };
 
 #endif   /* KEYWORDS_H */

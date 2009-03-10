@@ -26,6 +26,7 @@
 #include "schema/pgType.h"
 #include "schema/pgDatabase.h"
 #include "schema/pgTable.h"
+#include "schema/gpExtTable.h"
 #include "schema/pgColumn.h"
 #include "schema/pgView.h"
 #include "schema/pgType.h"
@@ -226,16 +227,17 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                     case 't':   set->MoveNext(); continue;
 
                     case 'r':
-					{
-						if (StrToLong(typestr.Mid(1)) > 0)
-							depFactory = &columnFactory;
-						else
-							depFactory=&tableFactory;
-						break;
-					}
+                    {
+                        if (StrToLong(typestr.Mid(1)) > 0)
+                            depFactory = &columnFactory;
+                        else
+                            depFactory=&tableFactory;
+                        break;
+                    }
                     case 'i':   depFactory=&indexFactory;    break;
                     case 'S':   depFactory=&sequenceFactory; break;
                     case 'v':   depFactory=&viewFactory;     break;
+                    case 'x':   depFactory=&extTableFactory; break;
                     case 'p':   depFactory=&functionFactory; break;
                     case 'n':   depFactory=&schemaFactory;   break;
                     case 'y':   depFactory=&typeFactory;     break;
@@ -350,7 +352,7 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
         wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname, nsrw.nspname) AS nspname\n")
         wxT("  FROM pg_depend dep\n")
         wxT("  LEFT JOIN pg_class cl ON dep.refobjid=cl.oid\n")
-		wxT("  LEFT JOIN pg_attribute att ON dep.refobjid=att.attrelid AND dep.refobjsubid=att.attnum\n")
+        wxT("  LEFT JOIN pg_attribute att ON dep.refobjid=att.attrelid AND dep.refobjsubid=att.attnum\n")
         wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
         wxT("  LEFT JOIN pg_proc pr ON dep.refobjid=pr.oid\n")
         wxT("  LEFT JOIN pg_namespace nsp ON pr.pronamespace=nsp.oid\n")
@@ -417,11 +419,11 @@ void pgObject::ShowDependents(frmMain *form, ctlListView *referencedBy, const wx
         wxT("            WHEN co.oid IS NOT NULL THEN 'C'::text || contype\n")
         wxT("            ELSE '' END AS type,\n")
         wxT("       COALESCE(coc.relname, clrw.relname) AS ownertable,\n")
-		wxT("       COALESCE(cl.relname || '.' || att.attname, cl.relname, co.conname, pr.proname, tg.tgname, ty.typname, la.lanname, rw.rulename, ns.nspname) AS refname,\n")
+        wxT("       COALESCE(cl.relname || '.' || att.attname, cl.relname, co.conname, pr.proname, tg.tgname, ty.typname, la.lanname, rw.rulename, ns.nspname) AS refname,\n")
         wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname, nsrw.nspname) AS nspname\n")
         wxT("  FROM pg_depend dep\n")
         wxT("  LEFT JOIN pg_class cl ON dep.objid=cl.oid\n")
-		wxT("  LEFT JOIN pg_attribute att ON dep.objid=att.attrelid AND dep.objsubid=att.attnum\n")
+        wxT("  LEFT JOIN pg_attribute att ON dep.objid=att.attrelid AND dep.objsubid=att.attnum\n")
         wxT("  LEFT JOIN pg_namespace nsc ON cl.relnamespace=nsc.oid\n")
         wxT("  LEFT JOIN pg_proc pr ON dep.objid=pr.oid\n")
         wxT("  LEFT JOIN pg_namespace nsp ON pr.pronamespace=nsp.oid\n")
@@ -505,15 +507,19 @@ wxString pgObject::GetCommentSql()
 }
 
 
-wxString pgObject::GetOwnerSql(int major, int minor, wxString objname)
+wxString pgObject::GetOwnerSql(int major, int minor, wxString objname, wxString objtype)
 {
     wxString sql;
     if (GetConnection()->BackendMinimumVersion(major, minor))
     {
 //      if (GetConnection()->GetUser() != owner)       // optional?
         {
+            if (objtype.IsEmpty())
+                objtype = GetTypeName().Upper();
+
             if (objname.IsEmpty())
-                objname = GetTypeName().Upper() + wxT(" ") + GetQuotedFullIdentifier();
+                objname = objtype + wxT(" ") + GetQuotedFullIdentifier();
+
             sql = wxT("ALTER ") + objname + wxT(" OWNER TO ") + qtIdent(owner) + wxT(";\n");
         }
     }
@@ -540,11 +546,11 @@ wxString pgObject::GetPrivilegeGrant(const wxString& allPattern, const wxString&
     wxString rights;
 
     if (allPattern.Length() > 1 && acl == allPattern)
-	{
+    {
         rights = wxT("ALL");
         if (!column.IsEmpty())
             rights += wxT("(") + column + wxT(")");
-	}
+    }
     else
     {
         AppendRight(rights, acl, 'r', wxT("SELECT"), column);
@@ -638,19 +644,19 @@ wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFo
             else
             {
                 if (user.Left(6) == wxT("group "))
-				{
-					if (user.Mid(6).StartsWith(wxT("\\\"")) && user.Mid(6).EndsWith(wxT("\\\"")))
+                {
+                    if (user.Mid(6).StartsWith(wxT("\\\"")) && user.Mid(6).EndsWith(wxT("\\\"")))
                         user = wxT("GROUP ") + qtIdent(user.Mid(8, user.Length() - 10));
-					else
-						user = wxT("GROUP ") + qtIdent(user.Mid(6));
-				}
+                    else
+                        user = wxT("GROUP ") + qtIdent(user.Mid(6));
+                }
                 else
-				{
-					if (user.StartsWith(wxT("\\\"")) && user.EndsWith(wxT("\\\"")))
+                {
+                    if (user.StartsWith(wxT("\\\"")) && user.EndsWith(wxT("\\\"")))
                         user = qtIdent(user.Mid(2, user.Length() - 4));
-					else
-						user = qtIdent(user);
-				}
+                    else
+                        user = qtIdent(user);
+                }
             }
 
             grant += GetPrivileges(allPattern, str, grantFor, user, qtIdent(_column));
@@ -687,12 +693,12 @@ bool pgServerObject::CanDrop()
     if (GetMetaType() == PGM_DATABASE)
         return (server->GetCreatePrivilege() || server->GetSuperUser());
     else
-	{
-		if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_ROLE)
-			return (server->GetCreateRole() || server->GetSuperUser());
-		else
-			return server->GetSuperUser();
-	}
+    {
+        if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_ROLE)
+            return (server->GetCreateRole() || server->GetSuperUser());
+        else
+            return server->GetSuperUser();
+    }
 }
 
 
@@ -701,12 +707,12 @@ bool pgServerObject::CanCreate()
     if (GetMetaType() == PGM_DATABASE)
         return (server->GetCreatePrivilege() || server->GetSuperUser());
     else
-	{
-		if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_ROLE)
-			return (server->GetCreateRole() || server->GetSuperUser());
-		else
-			return server->GetSuperUser();
-	}
+    {
+        if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_ROLE)
+            return (server->GetCreateRole() || server->GetSuperUser());
+        else
+            return server->GetSuperUser();
+    }
 }
 
 
@@ -756,7 +762,7 @@ void pgServerObject::FillOwned(ctlTree *browser, ctlListView *referencedBy, cons
 
         if (!conn)
         {
-		    tmpConn = GetServer()->CreateConn(dbname);
+            tmpConn = GetServer()->CreateConn(dbname);
             conn=tmpConn;
         }
 
@@ -782,14 +788,15 @@ void pgServerObject::FillOwned(ctlTree *browser, ctlListView *referencedBy, cons
                                     break;
                         case 'S':   ownerFactory=&sequenceFactory;         break;
                         case 'v':   ownerFactory=&viewFactory;             break;
+                        case 'x':   ownerFactory=&extTableFactory;         break;
                         case 'c':   // composite type handled in PG_TYPE
                         case 's':   // special
                         case 't':   // toast
                                     break;
-                        case 'n':   ownerFactory = &schemaFactory;           break;
-                        case 'y':   ownerFactory = &typeFactory;             break;
+                        case 'n':   ownerFactory = &schemaFactory;         break;
+                        case 'y':   ownerFactory = &typeFactory;           break;
                         case 'd':   ownerFactory = &domainFactory; break;
-                        case 'C':   ownerFactory = &conversionFactory;       break;
+                        case 'C':   ownerFactory = &conversionFactory;     break;
                         case 'p':   ownerFactory=&functionFactory;         break;
                         case 'T':   ownerFactory=&triggerFunctionFactory;  break;
                         case 'o':   ownerFactory=&operatorFactory;
@@ -1163,16 +1170,16 @@ gotToken:
 
 wxString pgObject::qtDbString(const wxString &str) 
 { 
-	// Use the server aware version if possible
-	if (GetDatabase() && GetDatabase()->GetConnection())
-	    return GetDatabase()->GetConnection()->qtDbString(str);
-	else
-	{
-		wxString ret = str;
-		ret.Replace(wxT("\\"), wxT("\\\\"));
+    // Use the server aware version if possible
+    if (GetDatabase() && GetDatabase()->GetConnection())
+        return GetDatabase()->GetConnection()->qtDbString(str);
+    else
+    {
+        wxString ret = str;
+        ret.Replace(wxT("\\"), wxT("\\\\"));
         ret.Replace(wxT("'"), wxT("''"));
         ret.Append(wxT("'"));
         ret.Prepend(wxT("'"));
-		return ret;
-	}
+        return ret;
+    }
 }

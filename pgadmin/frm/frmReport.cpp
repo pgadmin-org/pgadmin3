@@ -1257,7 +1257,7 @@ bool reportObjectDataDictionaryFactory::CheckEnable(pgObject *obj)
 {
     if (obj)
     {
-        if (obj->GetMetaType() == PGM_TABLE && !obj->IsCollection())
+        if ((obj->GetMetaType() == PGM_TABLE || obj->GetMetaType() == GP_PARTITION) && !obj->IsCollection())
             return true;
         else
             return false;
@@ -1388,6 +1388,7 @@ bool reportObjectStatisticsFactory::CheckEnable(pgObject *obj)
                 if (f)
                 {
                     if (f->GetMetaType() == PGM_TABLE ||
+                        f->GetMetaType() == GP_PARTITION ||
                         f->GetMetaType() == PGM_TABLESPACE || 
                         f->GetMetaType() == PGM_DATABASE)
                         return true;

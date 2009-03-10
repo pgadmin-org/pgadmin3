@@ -40,6 +40,7 @@ public:
 
     pgDatabase *GetDatabase() const { return (pgDatabase*)this; }
     bool BackendMinimumVersion(int major, int minor) { return connection()->BackendMinimumVersion(major, minor); }
+    bool BackendMinimumVersion(int major, int minor, int patch) { return connection()->BackendMinimumVersion(major, minor, patch); }
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowHint(frmMain *form, bool force);
@@ -80,7 +81,7 @@ public:
     wxString GetSearchPath() const { return searchPath; }
     wxString GetSchemaPrefix(const wxString &schemaname) const;
     wxString GetQuotedSchemaPrefix(const wxString &schemaname) const;
-	wxString GetDefaultSchema() { return defaultSchema; };
+    wxString GetDefaultSchema() { return defaultSchema; };
     bool GetConnected() { return connected; }
     bool GetSystemObject() const;
     long GetMissingFKs() const { return missingFKs; }
@@ -129,7 +130,7 @@ private:
 
     int canDebugPlpgsql, canDebugEdbspl;
 
-	OID tablespaceOid;
+    OID tablespaceOid;
 };
 
 class pgDatabaseCollection : public pgServerObjCollection

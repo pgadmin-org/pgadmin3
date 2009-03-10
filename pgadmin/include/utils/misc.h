@@ -160,6 +160,7 @@ typedef enum
     HELP_PGADMIN,
     HELP_POSTGRESQL,
     HELP_ENTERPRISEDB,
+    HELP_GREENPLUM,
     HELP_SLONY
 } HelpType;
 
@@ -184,26 +185,27 @@ wxString firstLineOnly(const wxString &str);
 bool pgAppMinimumVersion(const wxString &cmd, const int majorVer, const int minorVer);
 bool isPgApp(const wxString &app);
 bool isEdbApp(const wxString &app);
+bool isGpApp(const wxString &app);
 
 enum 
 {
     EDB_PACKAGE,
     EDB_PACKAGEFUNCTION,
-	EDB_PACKAGEVARIABLE,
+    EDB_PACKAGEVARIABLE,
 
-	PGM_CATALOG,
-  	PGM_CATALOGOBJECT,
+    PGM_CATALOG,
+    PGM_CATALOGOBJECT,
     PGM_CHECK,
     PGM_COLUMN,    
-	PGM_CONSTRAINT,
-	PGM_DATABASE,
+    PGM_CONSTRAINT,
+    PGM_DATABASE,
     PGM_FOREIGNKEY,
     PGM_FUNCTION,
     PGM_INDEX,
-	PGM_OPCLASS,
-	PGM_OPFAMILY,
+    PGM_OPCLASS,
+    PGM_OPFAMILY,
     PGM_PRIMARYKEY,
-	PGM_ROLE,
+    PGM_ROLE,
     PGM_RULE,
     PGM_SCHEMA,
     PGM_SERVER,
@@ -212,8 +214,12 @@ enum
     PGM_TABLESPACE,
     PGM_TRIGGER,
     PGM_UNKNOWN,
-	PGM_UNIQUE,
+    PGM_UNIQUE,
     PGM_VIEW,
+
+    GP_EXTTABLE,
+    GP_RESOURCE_QUEUE,
+    GP_PARTITION,
 
     PGM_JOB,
     PGM_SCHEDULE,

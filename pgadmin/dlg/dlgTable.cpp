@@ -155,6 +155,11 @@ dlgProperty *pgTableFactory::CreateDialog(frmMain *frame, pgObject *node, pgObje
     return new dlgTable(this, frame, (pgTable*)node, (pgSchema*)parent);
 }
 
+dlgProperty *gpPartitionFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgTable(this, frame, (gpPartition*)node, (pgSchema*)parent);
+}
+
 dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
 : dlgSecurityProperty(f, frame, node, wxT("dlgTable"), wxT("INSERT,SELECT,UPDATE,DELETE,RULE,REFERENCES,TRIGGER"), "arwdRxt")
 {

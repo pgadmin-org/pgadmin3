@@ -32,10 +32,12 @@
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
 #define txtPgHelpPath               CTRL_TEXT("txtPgHelpPath")
 #define txtEdbHelpPath              CTRL_TEXT("txtEdbHelpPath")
+#define txtGpHelpPath               CTRL_TEXT("txtGpHelpPath")
 #define txtSlonyHelpPath            CTRL_TEXT("txtSlonyHelpPath")
 #define txtSlonyPath                CTRL_TEXT("txtSlonyPath")
 #define txtPostgresqlPath           CTRL_TEXT("txtPostgresqlPath")
 #define txtEnterprisedbPath         CTRL_TEXT("txtEnterprisedbPath")
+#define txtGPDBPath                 CTRL_TEXT("txtGPDBPath")
 #define txtSystemSchemas            CTRL_TEXT("txtSystemSchemas")
 #define txtLogfile                  CTRL_TEXT("txtLogfile")
 #define radLoglevel                 CTRL_RADIOBOX("radLoglevel")
@@ -72,6 +74,7 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_BUTTON (XRCID("btnSlonyPath"),        frmOptions::OnSlonyPathSelect)
     EVT_BUTTON (XRCID("btnPostgresqlPath"),   frmOptions::OnPostgresqlPathSelect)
     EVT_BUTTON (XRCID("btnEnterprisedbPath"), frmOptions::OnEnterprisedbPathSelect)
+    EVT_BUTTON (XRCID("btnGPDBPath"),         frmOptions::OnGPDBPathSelect)
     EVT_BUTTON (XRCID("btnDefault"),          frmOptions::OnDefault)
     EVT_CHECKBOX(XRCID("chkSuppressHints"),   frmOptions::OnSuppressHints)
     EVT_CHECKBOX(XRCID("chkResetHints"),      frmOptions::OnResetHints)
@@ -114,21 +117,22 @@ frmOptions::frmOptions(frmMain *parent)
     txtAutoRowCount->SetValue(NumToStr(settings->GetAutoRowCountThreshold()));
     txtIndent->SetValue(NumToStr(settings->GetIndentSpaces()));
     chkSpacesForTabs->SetValue(settings->GetSpacesForTabs());
-	cbCopyQuote->SetSelection(settings->GetCopyQuoting());
-	cbCopyQuoteChar->SetValue(settings->GetCopyQuoteChar());
+    cbCopyQuote->SetSelection(settings->GetCopyQuoting());
+    cbCopyQuoteChar->SetValue(settings->GetCopyQuoteChar());
 
     wxString copySeparator = settings->GetCopyColSeparator();
     if (copySeparator == wxT("\t"))
         copySeparator = _("Tab");
     cbCopySeparator->SetValue(copySeparator);
 
-	chkTabForCompletion->SetValue(settings->GetTabForCompletion());
+    chkTabForCompletion->SetValue(settings->GetTabForCompletion());
     chkStickySql->SetValue(settings->GetStickySql());
     chkIndicateNull->SetValue(settings->GetIndicateNull());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
 
     txtPgHelpPath->SetValue(settings->GetPgHelpPath());
     txtEdbHelpPath->SetValue(settings->GetEdbHelpPath());
+    txtGpHelpPath->SetValue(settings->GetGpHelpPath());
     txtSlonyHelpPath->SetValue(settings->GetSlonyHelpPath());
     
     txtSystemSchemas->SetValue(settings->GetSystemSchemas());
@@ -137,7 +141,8 @@ frmOptions::frmOptions(frmMain *parent)
     txtSlonyPath->SetValue(settings->GetSlonyPath());
     txtPostgresqlPath->SetValue(settings->GetPostgresqlPath());
     txtEnterprisedbPath->SetValue(settings->GetEnterprisedbPath());
-	chkIgnoreVersion->SetValue(settings->GetIgnoreVersion());
+    txtGPDBPath->SetValue(settings->GetGPDBPath());
+    chkIgnoreVersion->SetValue(settings->GetIgnoreVersion());
 
     cbLanguage->Append(_("Default"));
     int sel=0;
@@ -164,45 +169,47 @@ frmOptions::frmOptions(frmMain *parent)
     currentSqlFont=settings->GetSQLFont();
     txtSqlFont->SetValue(currentSqlFont.GetNativeFontInfoUserDesc());
 
-	// Load the display options
-	lstDisplay->Append(_("Databases"));
-	lstDisplay->Append(_("Tablespaces"));
-	lstDisplay->Append(_("pgAgent jobs"));
-	lstDisplay->Append(_("Groups/group roles"));
-	lstDisplay->Append(_("Users/login roles"));
-	lstDisplay->Append(_("Catalogs"));
-	lstDisplay->Append(_("Casts"));
-	lstDisplay->Append(_("Languages"));
-	lstDisplay->Append(_("Public synonyms"));
-	lstDisplay->Append(_("Schemas"));
-	lstDisplay->Append(_("Slony-I clusters"));
-	lstDisplay->Append(_("Aggregates"));
-	lstDisplay->Append(_("Conversions"));
-	lstDisplay->Append(_("Domains"));
-	lstDisplay->Append(_("Functions"));
-	lstDisplay->Append(_("Trigger functions"));
-	lstDisplay->Append(_("Packages"));
-	lstDisplay->Append(_("Procedures"));
-	lstDisplay->Append(_("Operators"));
-	lstDisplay->Append(_("Operator classes"));
-	lstDisplay->Append(_("Operator families"));
-	lstDisplay->Append(_("Rules"));
-	lstDisplay->Append(_("Sequences"));
-	lstDisplay->Append(_("Tables"));
-	lstDisplay->Append(_("FTS Configurations"));
-	lstDisplay->Append(_("FTS Dictionaries"));
-	lstDisplay->Append(_("FTS Parsers"));
-	lstDisplay->Append(_("FTS Templates"));
-	lstDisplay->Append(_("Types"));
-	lstDisplay->Append(_("Views"));
+    // Load the display options
+    lstDisplay->Append(_("Databases"));
+    lstDisplay->Append(_("Tablespaces"));
+    lstDisplay->Append(_("pgAgent Jobs"));
+    lstDisplay->Append(_("Groups/group Roles"));
+    lstDisplay->Append(_("Users/login Roles"));
+    lstDisplay->Append(_("Resource Queues"));
+    lstDisplay->Append(_("Catalogs"));
+    lstDisplay->Append(_("Casts"));
+    lstDisplay->Append(_("Languages"));
+    lstDisplay->Append(_("Public Synonyms"));
+    lstDisplay->Append(_("Schemas"));
+    lstDisplay->Append(_("Slony-I Clusters"));
+    lstDisplay->Append(_("Aggregates"));
+    lstDisplay->Append(_("Conversions"));
+    lstDisplay->Append(_("Domains"));
+    lstDisplay->Append(_("Functions"));
+    lstDisplay->Append(_("Trigger Functions"));
+    lstDisplay->Append(_("Packages"));
+    lstDisplay->Append(_("Procedures"));
+    lstDisplay->Append(_("Operators"));
+    lstDisplay->Append(_("Operator Classes"));
+    lstDisplay->Append(_("Operator Families"));
+    lstDisplay->Append(_("Rules"));
+    lstDisplay->Append(_("Sequences"));
+    lstDisplay->Append(_("Tables"));
+    lstDisplay->Append(_("External Tables"));
+    lstDisplay->Append(_("FTS Configurations"));
+    lstDisplay->Append(_("FTS Dictionaries"));
+    lstDisplay->Append(_("FTS Parsers"));
+    lstDisplay->Append(_("FTS Templates"));
+    lstDisplay->Append(_("Types"));
+    lstDisplay->Append(_("Views"));
 
-	for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
-		lstDisplay->Check(x, settings->GetDisplayOption(lstDisplay->GetString(x)));
+    for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
+        lstDisplay->Check(x, settings->GetDisplayOption(lstDisplay->GetString(x)));
 
     chkSystemObjects->SetValue(settings->GetShowSystemObjects());
 
-	wxCommandEvent e;
-	OnChangeCopyQuote(e);
+    wxCommandEvent e;
+    OnChangeCopyQuote(e);
 }
 
 
@@ -222,7 +229,7 @@ void frmOptions::OnDefault(wxCommandEvent &ev)
     // Reset the display options to the defaults.
     // Clear them all first
     for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
-		lstDisplay->Check(x, settings->GetDisplayOption(lstDisplay->GetString(x), true));
+        lstDisplay->Check(x, settings->GetDisplayOption(lstDisplay->GetString(x), true));
 }
 
 void frmOptions::OnSlonyPathSelect(wxCommandEvent &ev)
@@ -244,6 +251,13 @@ void frmOptions::OnEnterprisedbPathSelect(wxCommandEvent &ev)
     wxDirDialog dlg(this, _("Select directory with EnterpriseDB utilities"), txtEnterprisedbPath->GetValue());
     if (dlg.ShowModal() == wxID_OK)
         txtEnterprisedbPath->SetValue(dlg.GetPath());
+}
+
+void frmOptions::OnGPDBPathSelect(wxCommandEvent &ev)
+{
+    wxDirDialog dlg(this, _("Select directory with GreenplumDB utilities"), txtGPDBPath->GetValue());
+    if (dlg.ShowModal() == wxID_OK)
+        txtGPDBPath->SetValue(dlg.GetPath());
 }
 
 void frmOptions::OnSuppressHints(wxCommandEvent &ev)
@@ -285,6 +299,17 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         return;
     }
 
+#ifdef __WXMSW__
+    if (!txtGPDBPath->GetValue().IsEmpty() && !isGpApp(txtGPDBPath->GetValue() + wxT("\\pg_dump.exe")))
+#else
+    if (!txtGPDBPath->GetValue().IsEmpty() && !isGpApp(txtGPDBPath->GetValue() + wxT("/pg_dump")))
+#endif
+    {
+        wxMessageBox(_("The Greenplum bin path specified is not valid or does not contain a Greenplum pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR); 
+        txtGPDBPath->SetFocus();
+        return;
+    }
+
     // Clean and check the help paths
     txtPgHelpPath->SetValue(CleanHelpPath(txtPgHelpPath->GetValue()));
     if (!HelpPathValid(txtPgHelpPath->GetValue()))
@@ -299,6 +324,14 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     {
         wxMessageBox(_("An invalid EnterpriseDB help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR);
         txtEdbHelpPath->SetFocus();
+        return;
+    }
+
+    txtGpHelpPath->SetValue(CleanHelpPath(txtGpHelpPath->GetValue()));
+    if (!HelpPathValid(txtGpHelpPath->GetValue()))
+    {
+        wxMessageBox(_("An invalid GreenplumDB help path was specified.\n\nPlease enter another filename, directory or URL, or leave the path blank."), _("Error"), wxICON_ERROR);
+        txtGpHelpPath->SetFocus();
         return;
     }
 
@@ -351,15 +384,15 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetAutoRowCountThreshold(StrToLong(txtAutoRowCount->GetValue()));
     settings->SetIndentSpaces(StrToLong(txtIndent->GetValue()));
     settings->SetSpacesForTabs(chkSpacesForTabs->GetValue());
-	settings->SetCopyQuoting(cbCopyQuote->GetCurrentSelection());
-	settings->SetCopyQuoteChar(cbCopyQuoteChar->GetValue());
-	
+    settings->SetCopyQuoting(cbCopyQuote->GetCurrentSelection());
+    settings->SetCopyQuoteChar(cbCopyQuoteChar->GetValue());
+    
     wxString copySeparator = cbCopySeparator->GetValue();
     if (copySeparator == _("Tab"))
         copySeparator = wxT("\t");
     settings->SetCopyColSeparator(copySeparator);
 
-	settings->SetTabForCompletion(chkTabForCompletion->GetValue());
+    settings->SetTabForCompletion(chkTabForCompletion->GetValue());
     settings->SetStickySql(chkStickySql->GetValue());
     settings->SetIndicateNull(chkIndicateNull->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
@@ -370,6 +403,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetSlonyPath(txtSlonyPath->GetValue());
     settings->SetPostgresqlPath(txtPostgresqlPath->GetValue());
     settings->SetEnterprisedbPath(txtEnterprisedbPath->GetValue());
+    settings->SetGPDBPath(txtGPDBPath->GetValue());
 
     // Setup PostgreSQL/EnterpriseDB working paths
 #if defined(__WXMSW__)
@@ -380,14 +414,22 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dump.exe");
     edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dumpall.exe");
     edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("\\pg_restore.exe");
+
+    gpBackupExecutable  = settings->GetGPDBPath() + wxT("\\pg_dump.exe");
+    gpBackupAllExecutable  = settings->GetGPDBPath() + wxT("\\pg_dumpall.exe");
+    gpRestoreExecutable = settings->GetGPDBPath() + wxT("\\pg_restore.exe");
 #else
     pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dump");
-	pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dumpall");
+    pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dumpall");
     pgRestoreExecutable = settings->GetPostgresqlPath() + wxT("/pg_restore");
 
     edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dump");
-	edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dumpall");
+    edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dumpall");
     edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("/pg_restore");
+
+    gpBackupExecutable  = settings->GetGPDBPath() + wxT("/pg_dump");
+    gpBackupAllExecutable  = settings->GetGPDBPath() + wxT("/pg_dumpall");
+    gpRestoreExecutable = settings->GetGPDBPath() + wxT("/pg_restore");
 #endif
 
     if (!wxFile::Exists(pgBackupExecutable))
@@ -404,7 +446,15 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     if (!wxFile::Exists(edbRestoreExecutable))
         edbRestoreExecutable = wxEmptyString;
 
-	settings->SetIgnoreVersion(chkIgnoreVersion->GetValue());
+    if (!wxFile::Exists(gpBackupExecutable))
+        gpBackupExecutable = wxEmptyString;
+    if (!wxFile::Exists(gpBackupAllExecutable))
+        gpBackupAllExecutable = wxEmptyString;
+    if (!wxFile::Exists(gpRestoreExecutable))
+        gpRestoreExecutable = wxEmptyString;
+
+
+    settings->SetIgnoreVersion(chkIgnoreVersion->GetValue());
 
     if (chkResetHints->GetValue())
         frmHint::ResetHints();
@@ -412,20 +462,21 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     // Set the help paths
     settings->SetPgHelpPath(txtPgHelpPath->GetValue());
     settings->SetEdbHelpPath(txtEdbHelpPath->GetValue());
+    settings->SetGpHelpPath(txtGpHelpPath->GetValue());
     settings->SetSlonyHelpPath(txtSlonyHelpPath->GetValue());
 
     settings->SetSystemSchemas(txtSystemSchemas->GetValue());
 
-	// Save the display options
-	int changed = false;
-	for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
-	{
-		if (lstDisplay->IsChecked(x) != settings->GetDisplayOption(lstDisplay->GetString(x)))
+    // Save the display options
+    int changed = false;
+    for (unsigned int x=0; x < lstDisplay->GetCount(); x++)
+    {
+        if (lstDisplay->IsChecked(x) != settings->GetDisplayOption(lstDisplay->GetString(x)))
         {
-			changed = true;
-		    settings->SetDisplayOption(lstDisplay->GetString(x), lstDisplay->IsChecked(x));
+            changed = true;
+            settings->SetDisplayOption(lstDisplay->GetString(x), lstDisplay->IsChecked(x));
         }
-	}
+    }
 
     if (chkSystemObjects->GetValue() != settings->GetShowSystemObjects())
     {
@@ -433,8 +484,8 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         settings->SetShowSystemObjects(chkSystemObjects->GetValue());
     }
 
-	// Change the language last, as it will affect our tests for changes
-	// in the display object types.
+    // Change the language last, as it will affect our tests for changes
+    // in the display object types.
     int langNo=cbLanguage->GetCurrentSelection();
     if (langNo >= 0)
     {
@@ -447,13 +498,13 @@ void frmOptions::OnOK(wxCommandEvent &ev)
             langId = (wxLanguage) langInfo->Language;
         }
 
-		settings->SetCanonicalLanguage(langId);
+        settings->SetCanonicalLanguage(langId);
     }
 
-	// Did any display options change? Display this message last, so it's
-	// in the selected language.
-	if (changed)
-		wxMessageBox(_("Changes to the display options may not be visible until the browser tree is refreshed."), _("Display options"), wxICON_INFORMATION);
+    // Did any display options change? Display this message last, so it's
+    // in the selected language.
+    if (changed)
+        wxMessageBox(_("Changes to the display options may not be visible until the browser tree is refreshed."), _("Display options"), wxICON_INFORMATION);
 
     Destroy();
 }
@@ -517,8 +568,8 @@ wxWindow *optionsFactory::StartDialog(frmMain *form, pgObject *obj)
 // Enable/disable the copy quote option as required.
 void frmOptions::OnChangeCopyQuote(wxCommandEvent& WXUNUSED(ev))
 {
-	if (cbCopyQuote->GetValue() == _("None"))
-		cbCopyQuoteChar->Disable();
-	else
-		cbCopyQuoteChar->Enable();
+    if (cbCopyQuote->GetValue() == _("None"))
+        cbCopyQuoteChar->Disable();
+    else
+        cbCopyQuoteChar->Enable();
 }

@@ -97,8 +97,8 @@ public:
     wxString GetPrivileges();
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
 
-    virtual bool CanDrop() { return inheritedCount == 0 && pgSchemaObject::CanDrop() && GetSchema()->GetMetaType() != PGM_CATALOG && GetTable()->GetMetaType() != PGM_VIEW; }
-    virtual bool CanCreate() { return GetTable()->GetMetaType() != PGM_VIEW && GetSchema()->GetMetaType() != PGM_CATALOG; }
+    virtual bool CanDrop() { return inheritedCount == 0 && pgSchemaObject::CanDrop() && GetSchema()->GetMetaType() != PGM_CATALOG && GetTable()->GetMetaType() != PGM_VIEW && GetTable()->GetMetaType() != GP_EXTTABLE; }
+    virtual bool CanCreate() { return GetTable()->GetMetaType() != PGM_VIEW && GetTable()->GetMetaType() != GP_EXTTABLE && GetSchema()->GetMetaType() != PGM_CATALOG; }
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
     bool HasStats() { return true; }

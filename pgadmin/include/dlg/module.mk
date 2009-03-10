@@ -53,6 +53,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlg/dlgUser.h \
 	$(srcdir)/include/dlg/dlgView.h \
 	$(srcdir)/include/dlg/dlgManageMacros.h \
+	$(srcdir)/include/dlg/dlgExtTable.h \
 	$(srcdir)/include/dlg/dlgSelectDatabase.h
 
 EXTRA_DIST += \

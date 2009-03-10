@@ -425,6 +425,7 @@ void frmMain::CreateMenus()
 
     new pgsqlHelpFactory(menuFactories, helpMenu, toolBar, true);
     new edbHelpFactory(menuFactories, helpMenu, toolBar, true);
+    new greenplumHelpFactory(menuFactories, helpMenu, toolBar, true);
     new slonyHelpFactory(menuFactories, helpMenu, toolBar, true);
     
     // Don't include this seperator on Mac, because the only option
@@ -519,12 +520,12 @@ void frmMain::Refresh(pgObject *data)
         {
             wxLogInfo(wxT("Replacing with new node %s %s for refresh"), newData->GetTypeName().c_str(), newData->GetQuotedFullIdentifier().c_str());
 
-			newData->SetId(currentItem);    // not done automatically
+            newData->SetId(currentItem);    // not done automatically
             browser->SetItemData(currentItem, newData);
 
-			// Update the node text if this is an object, as it may have been renamed
-			if (!newData->IsCollection())
-				browser->SetItemText(currentItem, newData->GetDisplayName());
+            // Update the node text if this is an object, as it may have been renamed
+            if (!newData->IsCollection())
+                browser->SetItemText(currentItem, newData->GetDisplayName());
 
             delete data;
         }
@@ -1032,7 +1033,7 @@ void frmMain::StoreServers()
             settings->Write(key + wxT("Server"), server->GetName());
             settings->Write(key + wxT("Description"), server->GetDescription());
             settings->Write(key + wxT("ServiceID"), server->GetServiceID());
-			settings->Write(key + wxT("DiscoveryID"), server->GetDiscoveryID());
+            settings->Write(key + wxT("DiscoveryID"), server->GetDiscoveryID());
             settings->Write(key + wxT("Port"), server->GetPort());
             settings->Write(key + wxT("StorePwd"), server->GetStorePwd());
             settings->Write(key + wxT("Restore"), server->GetRestore());
@@ -1068,7 +1069,7 @@ void frmMain::RetrieveServers()
     wxLogInfo(wxT("Reloading servers..."));
 
     serverFactory.CreateObjects(serversObj, browser);
-	
+    
     // Reset the Servers node text
     wxString label;
     label.Printf(_("Servers (%d)"), browser->GetChildrenCount(serversObj->GetId(), false));
@@ -1199,6 +1200,19 @@ wxWindow *edbHelpFactory::StartDialog(frmMain *form, pgObject *obj)
     DisplayHelp(wxT("index"), HELP_ENTERPRISEDB);
     return 0;
 }
+
+greenplumHelpFactory::greenplumHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigIcon) : actionFactory(list)
+{
+    mnu->Append(id, _("&Greenplum Database Help"), _("Display help on the Greenplum Database system."));
+}
+
+
+wxWindow *greenplumHelpFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    DisplayHelp(wxT("index"), HELP_GREENPLUM);
+    return 0;
+}
+
 
 slonyHelpFactory::slonyHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigIcon) : actionFactory(list)
 {

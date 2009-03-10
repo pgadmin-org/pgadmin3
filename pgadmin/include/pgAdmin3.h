@@ -98,6 +98,11 @@ extern wxString edbBackupExecutable;
 extern wxString edbBackupAllExecutable;
 extern wxString edbRestoreExecutable;
 
+// Helper app paths - Greenplum
+extern wxString gpBackupExecutable;
+extern wxString gpBackupAllExecutable;
+extern wxString gpRestoreExecutable;
+
 // 
 // Support for additional functions included in the EnterpriseDB
 // version of libpq. These are enable via runtime loading of the

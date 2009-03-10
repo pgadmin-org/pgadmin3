@@ -108,7 +108,7 @@ public:
     */
     wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""), const wxString& column=wxT(""));
     wxString GetCommentSql();
-    wxString GetOwnerSql(int major, int minor, wxString objname=wxEmptyString);
+    wxString GetOwnerSql(int major, int minor, wxString objname=wxEmptyString, wxString objtype=wxEmptyString);
     pgConn *GetConnection() const;
 
     virtual void SetDirty() { sql=wxT(""); expandedKids=false; needReread=true; }

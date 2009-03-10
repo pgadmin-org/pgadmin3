@@ -42,6 +42,7 @@ class pgTable : public pgSchemaObject
 {
 public:
     pgTable(pgSchema *newSchema, const wxString& newName = wxT(""));
+    pgTable(pgSchema *newSchema, pgaFactory &factory, const wxString& newName = wxT(""));
     ~pgTable();
     int GetIconId();
 
@@ -62,6 +63,9 @@ public:
     void iSetPrimaryKeyColNumbers(const wxString& s) {primaryKeyColNumbers = s; }
     wxString GetPrimaryKeyName() const { return primaryKeyName; }
     void iSetPrimaryKeyName(const wxString& s) {primaryKeyName = s; }
+    wxString GetDistributionColNumbers() const { return distributionColNumbers; }			// for Greenplum
+    void iSetDistributionColNumbers(const wxString& s) { distributionColNumbers = s; if (s.Length() > 0) distributionIsRandom = false; }	// for Greenplum
+    void iSetDistributionIsRandom() { distributionIsRandom = true; }
     double GetEstimatedRows() const { return estimatedRows; }
     void iSetEstimatedRows(const double d) { estimatedRows=d; }
     wxString GetTablespace() const { return tablespace; };
@@ -95,6 +99,16 @@ public:
     void iSetShowExtendedStatistics(bool b) { showExtendedStatistics = b; }
     wxString GetFillFactor() { return fillFactor; }
     void iSetFillFactor(const wxString& s) { fillFactor = s; }
+    wxString GetAppendOnly() { return appendOnly; }
+    void iSetAppendOnly(const wxString& s) { appendOnly = s; }
+    wxString GetCompressLevel() { return compressLevel; }
+    void iSetCompressLevel(const wxString& s) { compressLevel = s; }
+    wxString GetIsColumnStore() { return columnstore; }
+    void iSetIsColumnStore(const wxString& s) { columnstore = s; }
+    wxString GetPartitionDef() { return partitionDef; }
+    void iSetPartitionDef(const wxString& s) { partitionDef = s; }
+    bool GetIsPartitioned() const { return isPartitioned || partitionDef.Length() > 0; }
+    void iSetIsPartitioned(bool b) { isPartitioned = b; }
 
     bool GetCustomAutoVacuumEnabled() { return !reloptions.IsEmpty(); }
     wxString GetRelOptions() { return reloptions; }
@@ -152,22 +166,23 @@ public:
     bool HasReferences() { return true; }
     bool HasPgstattuple();
 
-    wxMenu *GetNewMenu();
-    wxString GetSql(ctlTree *browser);
+    virtual wxMenu *GetNewMenu();
+    virtual wxString GetSql(ctlTree *browser);
     wxString GetSelectSql(ctlTree *browser);
     wxString GetInsertSql(ctlTree *browser);
     wxString GetUpdateSql(ctlTree *browser);
     wxString GetDeleteSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const;
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
-	void iSetTriggersEnabled(ctlTree *browser, bool enable);
+    void iSetTriggersEnabled(ctlTree *browser, bool enable);
 
 private:
     void UpdateInheritance();
     bool GetVacuumHint();
-	wxString GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM);
-
+    wxString GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM);
     void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
+    void AppendStuffNoSql(wxString &sql, ctlTree *browser, pgaFactory &factory);
+   
     wxULongLong rows;
     double estimatedRows;
 
@@ -186,7 +201,12 @@ private:
              autovacuum_analyze_scale_factor, autovacuum_vacuum_cost_delay,
              autovacuum_vacuum_cost_limit, autovacuum_freeze_min_age,
              autovacuum_freeze_max_age, autovacuum_freeze_table_age;
-    bool hasOids, hasSubclass, rowsCounted, isReplicated, showExtendedStatistics;
+    wxString appendOnly;
+    wxString compressLevel;
+    wxString columnstore;
+    wxString partitionDef;
+    bool isPartitioned;
+    bool hasOids, hasSubclass, rowsCounted, isReplicated, showExtendedStatistics, distributionIsRandom;
 
     wxString toast_fillFactor, toast_autovacuum_vacuum_threshold,
              toast_autovacuum_vacuum_scale_factor, toast_autovacuum_analyze_threshold,
@@ -196,11 +216,11 @@ private:
    
     long inheritedTableCount;
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
-             primaryKeyName, primaryKeyColNumbers, tablespace;
+        primaryKeyName, primaryKeyColNumbers, tablespace, distributionColNumbers;
     wxArrayString quotedInheritedTablesList, inheritedTablesOidList;
 
     slSet *replicationSet;
-	OID tablespaceOid;
+    OID tablespaceOid;
 };
 
 
@@ -260,7 +280,7 @@ public:
     executePgstattupleFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
-	bool CheckChecked(pgObject *obj);
+    bool CheckChecked(pgObject *obj);
 };
 
 class disableAllTriggersFactory : public contextActionFactory

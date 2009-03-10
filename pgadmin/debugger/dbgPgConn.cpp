@@ -63,9 +63,9 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
     m_isEdb = false;
 
     if( startThread )
-    	m_workerThread = new dbgPgThread( *this );
+        m_workerThread = new dbgPgThread( *this );
     else
-    	m_workerThread = NULL;
+        m_workerThread = NULL;
 
     wxString 	msg;
     wxString	delimiter;
@@ -79,8 +79,8 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
 
     if( m_workerThread )
     {
-    	m_workerThread->Create();
-    	m_workerThread->Run();
+        m_workerThread->Create();
+        m_workerThread->Run();
     }
 
     // Figure out the hostname/IP address
@@ -108,13 +108,13 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
                 return;
             }
 
-        	memcpy(&(ipaddr),host->h_addr,host->h_length); 
-	    	hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
+            memcpy(&(ipaddr),host->h_addr,host->h_length); 
+            hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
             hostname = server;
         }
-    	else
+        else
         {
-    	    hostip = server;
+            hostip = server;
             hostname = server;
         }
 #ifndef __WXMSW__
@@ -128,10 +128,10 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
 
     if(hostname.Length()) 
     {
-    	connectParams.Append(wxT( "host="));
-    	connectParams.Append(hostname);
+        connectParams.Append(wxT( "host="));
+        connectParams.Append(hostname);
 
-    	msg += delimiter + server; delimiter = _(":");
+        msg += delimiter + server; delimiter = _(":");
     }
 
     if (hostip.Length()) 
@@ -142,33 +142,33 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
 
     if( port.Length()) 
     {
-    	connectParams += wxT(" port=");
-    	connectParams += port;
+        connectParams += wxT(" port=");
+        connectParams += port;
 
-    	msg += delimiter + port; delimiter = _(":");
+        msg += delimiter + port; delimiter = _(":");
     }
 
 
     if( database.Length()) 
     {
-    	connectParams.Append(wxT(" dbname="));
-    	connectParams.Append(qtConnString(database));
+        connectParams.Append(wxT(" dbname="));
+        connectParams.Append(qtConnString(database));
 
-    	msg += delimiter + database; delimiter = _(":");
+        msg += delimiter + database; delimiter = _(":");
     }
 
     if(username.Length()) 
     {
-    	connectParams.Append(wxT(" user="));
-    	connectParams.Append(username );
+        connectParams.Append(wxT(" user="));
+        connectParams.Append(username );
 
-    	msg += delimiter + username; delimiter =  _(":");
+        msg += delimiter + username; delimiter =  _(":");
     }
 
     if(password.Length()) 
     {
-    	connectParams.Append(wxT(" password="));
-    	connectParams.Append(password);
+        connectParams.Append(wxT(" password="));
+        connectParams.Append(password);
     }
 
     switch (sslmode)
@@ -201,13 +201,13 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
 
     if( PQstatus( m_pgConn ) == CONNECTION_OK )
     {
-    	m_frame->getStatusBar()->SetStatusText( wxString::Format(_( "Connected to %s" ), msg.c_str()), 1 );
+        m_frame->getStatusBar()->SetStatusText( wxString::Format(_( "Connected to %s" ), msg.c_str()), 1 );
 
-    	PQsetClientEncoding( m_pgConn, "UNICODE" );
+        PQsetClientEncoding( m_pgConn, "UNICODE" );
     }
     else
     {
-    	throw( std::runtime_error( PQerrorMessage( m_pgConn )));
+        throw( std::runtime_error( PQerrorMessage( m_pgConn )));
     }
 }
 
@@ -225,9 +225,9 @@ dbgPgConn::~dbgPgConn()
 bool dbgPgConn::isConnected( void ) const
 {
     if( m_pgConn && PQstatus( m_pgConn ) == CONNECTION_OK )
-    	return( true );
+        return( true );
     else
-    	return( false );
+        return( false );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -326,7 +326,7 @@ void dbgPgConn::Close()
 
     if (m_workerThread)
     {
-    	m_workerThread->Die();
+        m_workerThread->Die();
         m_workerThread->Wait();
 
         delete m_workerThread;
@@ -334,7 +334,7 @@ void dbgPgConn::Close()
     }
 
     if (m_pgConn)
-    	PQfinish(m_pgConn);
+        PQfinish(m_pgConn);
 
     m_pgConn = NULL;
 }
@@ -381,6 +381,8 @@ bool dbgPgConn::BackendMinimumVersion(int major, int minor)
             }
             if (result == wxT("0"))
                 m_minorVersion = 2; 
+
+            m_isGreenplum = version.Upper().Matches(wxT("*GREENPLUM DATABASE*"));
         }
     }
 
@@ -465,6 +467,13 @@ bool dbgPgConn::GetIsEdb()
     // to retrieve edb flag
     BackendMinimumVersion(0,0);
     return m_isEdb; 
+}
+
+bool dbgPgConn::GetIsGreenplum()
+{
+    // to retrieve edb flag
+    BackendMinimumVersion(0,0);
+    return m_isGreenplum; 
 }
 
 

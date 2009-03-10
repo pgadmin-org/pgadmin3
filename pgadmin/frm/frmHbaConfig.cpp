@@ -36,7 +36,7 @@ WX_DEFINE_OBJARRAY(pgHbaConfigLineArray);
 
 BEGIN_EVENT_TABLE(frmHbaConfig, frmConfig)
     EVT_MENU(MNU_UNDO,                      frmHbaConfig::OnUndo)
-	EVT_MENU(MNU_DELETE,					frmHbaConfig::OnDelete)
+    EVT_MENU(MNU_DELETE,					frmHbaConfig::OnDelete)
     EVT_MENU(MNU_CONTENTS,                  frmHbaConfig::OnContents)
     EVT_LIST_ITEM_ACTIVATED(CTL_CFGVIEW,    frmHbaConfig::OnEditSetting)
     EVT_LIST_ITEM_SELECTED(CTL_CFGVIEW,     frmHbaConfig::OnSelectSetting)
@@ -108,11 +108,11 @@ void frmHbaConfig::Init()
     listEdit->AddColumn(_("Method"), 40);
     listEdit->AddColumn(_("Option"), 100);
 
-	helpMenu->Enable(MNU_HINT, false);
-	toolBar->EnableTool(MNU_HINT, false);
+    helpMenu->Enable(MNU_HINT, false);
+    toolBar->EnableTool(MNU_HINT, false);
 
-	editMenu->Enable(MNU_DELETE, false);
-	toolBar->EnableTool(MNU_DELETE, false);
+    editMenu->Enable(MNU_DELETE, false);
+    toolBar->EnableTool(MNU_DELETE, false);
 }
 
 
@@ -208,7 +208,7 @@ void frmHbaConfig::WriteFile(pgConn *conn)
         toolBar->EnableTool(MNU_SAVE, false);
         toolBar->EnableTool(MNU_UNDO, false);
 
-		// make intermediate change current
+        // make intermediate change current
         for (i=0 ; i < lines.GetCount() ; i++)
             lines.Item(i).Init(lines.Item(i).GetText());
     }
@@ -257,38 +257,38 @@ void frmHbaConfig::OnUndo(wxCommandEvent& ev)
 
 void frmHbaConfig::OnDelete(wxCommandEvent &event)
 {
-	bool found = false;
-	int pos = listEdit->GetSelection();
-	if (pos >= 0)
-	{
-		listEdit->DeleteCurrentItem();
-		size_t i;
-		for (i=0; i < lines.GetCount(); i++)
-		{
-			if (lines.Item(i).item == pos)
-			{
-				lines.RemoveAt(i);
-				changed = true;
+    bool found = false;
+    int pos = listEdit->GetSelection();
+    if (pos >= 0)
+    {
+        listEdit->DeleteCurrentItem();
+        size_t i;
+        for (i=0; i < lines.GetCount(); i++)
+        {
+            if (lines.Item(i).item == pos)
+            {
+                lines.RemoveAt(i);
+                changed = true;
                 fileMenu->Enable(MNU_SAVE, true);
                 editMenu->Enable(MNU_UNDO, false);
                 editMenu->Enable(MNU_DELETE, false);
                 toolBar->EnableTool(MNU_SAVE, true);
                 toolBar->EnableTool(MNU_UNDO, false);
-	            toolBar->EnableTool(MNU_DELETE, false);
-				found = true;
-				break;
-			}
-		}
-		if (found) 
-		{
-			/* Renumber all positions */
-			for (i=0; i < lines.GetCount(); i++)
-			{
-				if (lines.Item(i).item > pos)
-					lines.Item(i).item--;
-			}
-		}
-	}
+                toolBar->EnableTool(MNU_DELETE, false);
+                found = true;
+                break;
+            }
+        }
+        if (found) 
+        {
+            /* Renumber all positions */
+            for (i=0; i < lines.GetCount(); i++)
+            {
+                if (lines.Item(i).item > pos)
+                    lines.Item(i).item--;
+            }
+        }
+    }
 }
 
 

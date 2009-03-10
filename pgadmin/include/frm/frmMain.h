@@ -92,12 +92,12 @@ public:
     ctlListView *GetDependenciesCtl();
     ctlListView *GetReferencedBy();
     ctlListView *GetReferencedByCtl();
-	void SelectStatisticsTab() { listViews->SetSelection(1); };
+    void SelectStatisticsTab() { listViews->SetSelection(1); };
     void StoreServers();
     int ReconnectServer(pgServer *server, bool restore = true);
     void ReportConnError(pgServer *server);
     pgServerCollection *GetServerCollection() { return serversObj; }
-	pgServer *ConnectToServer(const wxString& servername, bool restore = false);
+    pgServer *ConnectToServer(const wxString& servername, bool restore = false);
 
     void SetLastPluginUtility(pluginUtilityFactory *pluginFactory) { lastPluginUtility = pluginFactory; }
     pluginUtilityFactory *GetLastPluginUtility() { return lastPluginUtility; }
@@ -125,8 +125,8 @@ private:
     actionFactory *newMenuFactory;
     actionFactory *debuggingMenuFactory;
     actionFactory *reportMenuFactory;
-	actionFactory *scriptingMenuFactory;
-	actionFactory *viewdataMenuFactory;
+    actionFactory *scriptingMenuFactory;
+    actionFactory *viewdataMenuFactory;
 
     wxStopWatch stopwatch;
     wxString timermsg;
@@ -223,6 +223,13 @@ class edbHelpFactory : public actionFactory
 {
 public:
     edbHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigTool);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+};
+
+class greenplumHelpFactory : public actionFactory
+{
+public:
+    greenplumHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigTool);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 

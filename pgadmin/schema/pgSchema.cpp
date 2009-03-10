@@ -29,12 +29,14 @@
 #include "schema/pgOperatorFamily.h"
 #include "schema/pgSequence.h"
 #include "schema/pgTable.h"
+#include "schema/gpExtTable.h"
 #include "schema/pgTextSearchConfiguration.h"
 #include "schema/pgTextSearchDictionary.h"
 #include "schema/pgTextSearchParser.h"
 #include "schema/pgTextSearchTemplate.h"
 #include "schema/pgType.h"
 #include "schema/pgView.h"
+#include "schema/gpPartition.h"
 #include "frm/frmReport.h"
 
 #include "wx/regex.h"
@@ -56,20 +58,20 @@ pgSchemaBase::pgSchemaBase(pgaFactory &factory, const wxString& newName)
 
 wxString pgCatalog::GetDisplayName()
 {
-	if (GetFullName() == wxT("pg_catalog"))
-		return wxT("PostgreSQL (pg_catalog)");
-	else if (GetFullName() == wxT("pgagent"))
-		return wxT("pgAgent (pgagent)");
-	else if (GetFullName() == wxT("information_schema"))
-		return wxT("ANSI (information_schema)");
-	else if (GetFullName().StartsWith(wxT("_")))
-		return wxT("Slony cluster (") + GetFullName().AfterFirst('_') + wxT(")");
-	else if (GetFullName() == wxT("dbo"))
-		return wxT("Redmond (dbo)");
-	else if (GetFullName() == wxT("sys"))
-		return wxT("Redwood (sys)");
-	else
-		return GetFullName();
+    if (GetFullName() == wxT("pg_catalog"))
+        return wxT("PostgreSQL (pg_catalog)");
+    else if (GetFullName() == wxT("pgagent"))
+        return wxT("pgAgent (pgagent)");
+    else if (GetFullName() == wxT("information_schema"))
+        return wxT("ANSI (information_schema)");
+    else if (GetFullName().StartsWith(wxT("_")))
+        return wxT("Slony cluster (") + GetFullName().AfterFirst('_') + wxT(")");
+    else if (GetFullName() == wxT("dbo"))
+        return wxT("Redmond (dbo)");
+    else if (GetFullName() == wxT("sys"))
+        return wxT("Redwood (sys)");
+    else
+        return GetFullName();
 }
 
 
@@ -123,12 +125,17 @@ wxMenu *pgSchemaBase::GetNewMenu()
             if (GetConnection()->BackendMinimumVersion(8, 3))
                 textSearchConfigurationFactory.AppendMenu(menu);
         }
-        if (settings->GetDisplayOption(_("Trigger functions")))
+        if (settings->GetDisplayOption(_("Trigger Functions")))
             triggerFunctionFactory.AppendMenu(menu);
         if (settings->GetDisplayOption(_("Types")))
             typeFactory.AppendMenu(menu);
         if (settings->GetDisplayOption(_("Views")))
             viewFactory.AppendMenu(menu);
+        if (settings->GetDisplayOption(_("External Tables")))
+        {
+            if (GetConnection() != 0 && GetConnection()->GetIsGreenplum())
+                extTableFactory.AppendMenu(menu);
+        }
     }
     return menu;
 }
@@ -181,64 +188,69 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
         if (!(GetMetaType() == PGM_CATALOG && (GetFullName() == wxT("dbo") || GetFullName() == wxT("sys") || GetFullName() == wxT("information_schema"))))
         {
             if (settings->GetDisplayOption(_("Aggregates")))
-			    browser->AppendCollection(this, aggregateFactory);
-		    if (settings->GetDisplayOption(_("Conversions")))
-			    browser->AppendCollection(this, conversionFactory);
-		    if (settings->GetDisplayOption(_("Domains")))
-			    browser->AppendCollection(this, domainFactory);
-		    if (settings->GetDisplayOption(_("FTS Configurations")))
+                browser->AppendCollection(this, aggregateFactory);
+            if (settings->GetDisplayOption(_("Conversions")))
+                browser->AppendCollection(this, conversionFactory);
+            if (settings->GetDisplayOption(_("Domains")))
+                browser->AppendCollection(this, domainFactory);
+            if (settings->GetDisplayOption(_("FTS Configurations")))
             {
                 if (GetConnection()->BackendMinimumVersion(8, 3))
-			        browser->AppendCollection(this, textSearchConfigurationFactory);
+                    browser->AppendCollection(this, textSearchConfigurationFactory);
             }
-		    if (settings->GetDisplayOption(_("FTS Dictionaries")))
+            if (settings->GetDisplayOption(_("FTS Dictionaries")))
             {
                 if (GetConnection()->BackendMinimumVersion(8, 3))
-			        browser->AppendCollection(this, textSearchDictionaryFactory);
+                    browser->AppendCollection(this, textSearchDictionaryFactory);
             }
-		    if (settings->GetDisplayOption(_("FTS Parsers")))
+            if (settings->GetDisplayOption(_("FTS Parsers")))
             {
                 if (GetConnection()->BackendMinimumVersion(8, 3))
-			        browser->AppendCollection(this, textSearchParserFactory);
+                    browser->AppendCollection(this, textSearchParserFactory);
             }
-		    if (settings->GetDisplayOption(_("FTS Templates")))
+            if (settings->GetDisplayOption(_("FTS Templates")))
             {
                 if (GetConnection()->BackendMinimumVersion(8, 3))
-			        browser->AppendCollection(this, textSearchTemplateFactory);
+                    browser->AppendCollection(this, textSearchTemplateFactory);
             }
-		    if (settings->GetDisplayOption(_("Functions")))
-			    browser->AppendCollection(this, functionFactory);
+            if (settings->GetDisplayOption(_("Functions")))
+                browser->AppendCollection(this, functionFactory);
 
-		    if (settings->GetDisplayOption(_("Operators")))
-			    browser->AppendCollection(this, operatorFactory);
-		    if (settings->GetDisplayOption(_("Operator classes")))
-			    browser->AppendCollection(this, operatorClassFactory);
+            if (settings->GetDisplayOption(_("Operators")))
+                browser->AppendCollection(this, operatorFactory);
+            if (settings->GetDisplayOption(_("Operator Classes")))
+                browser->AppendCollection(this, operatorClassFactory);
 
-		    if (settings->GetDisplayOption(_("Operator families")))
-		    {
-			    if (GetConnection()->BackendMinimumVersion(8, 3))
-				    browser->AppendCollection(this, operatorFamilyFactory);
-		    }
+            if (settings->GetDisplayOption(_("Operator Families")))
+            {
+                if (GetConnection()->BackendMinimumVersion(8, 3))
+                    browser->AppendCollection(this, operatorFamilyFactory);
+            }
 
-		    if (settings->GetDisplayOption(_("Packages")) && GetConnection()->EdbMinimumVersion(8,1))
-			    browser->AppendCollection(this, packageFactory);
+            if (settings->GetDisplayOption(_("Packages")) && GetConnection()->EdbMinimumVersion(8,1))
+                browser->AppendCollection(this, packageFactory);
 
-		    if (settings->GetDisplayOption(_("Procedures")))
-		    {
-			    if (GetConnection()->EdbMinimumVersion(8, 0))
-				    browser->AppendCollection(this, procedureFactory);
-		    }
+            if (settings->GetDisplayOption(_("Procedures")))
+            {
+                if (GetConnection()->EdbMinimumVersion(8, 0))
+                    browser->AppendCollection(this, procedureFactory);
+            }
 
-		    if (settings->GetDisplayOption(_("Sequences")))
-			    browser->AppendCollection(this, sequenceFactory);
-		    if (settings->GetDisplayOption(_("Tables")))
-			    browser->AppendCollection(this, tableFactory);
-		    if (settings->GetDisplayOption(_("Trigger functions")))
-		        browser->AppendCollection(this, triggerFunctionFactory);
-		    if (settings->GetDisplayOption(_("Types")))
-			    browser->AppendCollection(this, typeFactory);
-		    if (settings->GetDisplayOption(_("Views")))
-			    browser->AppendCollection(this, viewFactory);
+            if (settings->GetDisplayOption(_("Sequences")))
+                browser->AppendCollection(this, sequenceFactory);
+            if (settings->GetDisplayOption(_("Tables")))
+                browser->AppendCollection(this, tableFactory);
+            if (settings->GetDisplayOption(_("External Tables")))
+            {
+                if (GetConnection() != 0 && GetConnection()->GetIsGreenplum())
+                    browser->AppendCollection(this, extTableFactory);
+            }
+            if (settings->GetDisplayOption(_("Trigger Functions")))
+                browser->AppendCollection(this, triggerFunctionFactory);
+            if (settings->GetDisplayOption(_("Types")))
+                browser->AppendCollection(this, typeFactory);
+            if (settings->GetDisplayOption(_("Views")))
+                browser->AppendCollection(this, viewFactory);
         }
         else
             browser->AppendCollection(this, catalogObjectFactory);
@@ -252,9 +264,9 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
-		properties->AppendItem(_("ACL"), GetAcl());
-		if (GetMetaType() != PGM_CATALOG)
-			properties->AppendItem(_("System schema?"), GetSystemObject());
+        properties->AppendItem(_("ACL"), GetAcl());
+        if (GetMetaType() != PGM_CATALOG)
+            properties->AppendItem(_("System schema?"), GetSystemObject());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
@@ -291,16 +303,16 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
         restr += wxT("   AND ");
 
     if (GetMetaType() != PGM_CATALOG)
-	{
-		restr += wxT("NOT ");
-	}
+    {
+        restr += wxT("NOT ");
+    }
 
-	restr += wxT("((nspname = 'pg_catalog' and (SELECT count(*) FROM pg_class WHERE relname = 'pg_class' AND relnamespace = nsp.oid) > 0) OR\n");
-	restr += wxT("(nspname = 'pgagent' and (SELECT count(*) FROM pg_class WHERE relname = 'pga_job' AND relnamespace = nsp.oid) > 0) OR\n");
-	restr += wxT("(nspname = 'information_schema' and (SELECT count(*) FROM pg_class WHERE relname = 'tables' AND relnamespace = nsp.oid) > 0) OR\n");
-	restr += wxT("(nspname LIKE '_%' and (SELECT count(*) FROM pg_proc WHERE proname='slonyversion' AND pronamespace = nsp.oid) > 0) OR\n");
-	restr += wxT("(nspname = 'dbo' and (SELECT count(*) FROM pg_class WHERE relname = 'systables' AND relnamespace = nsp.oid) > 0) OR\n");
-	restr += wxT("(nspname = 'sys' and (SELECT count(*) FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid) > 0))\n");
+    restr += wxT("((nspname = 'pg_catalog' and (SELECT count(*) FROM pg_class WHERE relname = 'pg_class' AND relnamespace = nsp.oid) > 0) OR\n");
+    restr += wxT("(nspname = 'pgagent' and (SELECT count(*) FROM pg_class WHERE relname = 'pga_job' AND relnamespace = nsp.oid) > 0) OR\n");
+    restr += wxT("(nspname = 'information_schema' and (SELECT count(*) FROM pg_class WHERE relname = 'tables' AND relnamespace = nsp.oid) > 0) OR\n");
+    restr += wxT("(nspname LIKE '_%' and (SELECT count(*) FROM pg_proc WHERE proname='slonyversion' AND pronamespace = nsp.oid) > 0) OR\n");
+    restr += wxT("(nspname = 'dbo' and (SELECT count(*) FROM pg_class WHERE relname = 'systables' AND relnamespace = nsp.oid) > 0) OR\n");
+    restr += wxT("(nspname = 'sys' and (SELECT count(*) FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid) > 0))\n");
 
     if (collection->GetConnection()->EdbMinimumVersion(8, 2))
         restr += wxT("  AND nsp.nspparent = 0\n");
@@ -308,48 +320,48 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
     if (!collection->GetDatabase()->GetSchemaRestriction().IsEmpty())
         restr += wxT("  AND nspname IN (") + collection->GetDatabase()->GetSchemaRestriction() + wxT(")");
 
-	// Don't fetch temp schemas if not actually required, as Greenplum seems to 
-	// generate thousands in some circumstances.
-	if (!settings->GetShowSystemObjects())
-	{
-		if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
-			restr += wxT("  AND nspname NOT LIKE E'pg\\\\_temp\\\\_%'AND nspname NOT LIKE E'pg\\\\_toast_temp\\\\_%'");
-		else
-			restr += wxT("  AND nspname NOT LIKE 'pg\\\\_temp\\\\_%'AND nspname NOT LIKE 'pg\\\\_toast_temp\\\\_%'");
-	}
+    // Don't fetch temp schemas if not actually required, as Greenplum seems to 
+    // generate thousands in some circumstances.
+    if (!settings->GetShowSystemObjects())
+    {
+        if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
+            restr += wxT("  AND nspname NOT LIKE E'pg\\\\_temp\\\\_%'AND nspname NOT LIKE E'pg\\\\_toast_temp\\\\_%'");
+        else
+            restr += wxT("  AND nspname NOT LIKE 'pg\\\\_temp\\\\_%'AND nspname NOT LIKE 'pg\\\\_toast_temp\\\\_%'");
+    }
 
-	wxString sql;
+    wxString sql;
 
-	if (GetMetaType() == PGM_CATALOG)
-	{
-		sql = wxT("SELECT 2 AS nsptyp,\n")
-			  wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
-			  wxT("       FALSE as cancreate\n")
-			  wxT("  FROM pg_namespace nsp\n")
-			  wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
-			  + restr +
-			  wxT(" ORDER BY 1, nspname");
-	}
-	else
-	{
-		if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
-		{
-			sql = wxT("SELECT CASE WHEN nspname LIKE E'pg\\\\_temp\\\\_%' THEN 1\n")
-			      wxT("            WHEN (nspname LIKE E'pg\\\\_%') THEN 0\n");
-		}
-		else
-		{
-			sql = wxT("SELECT CASE WHEN nspname LIKE 'pg\\\\_temp\\\\_%' THEN 1\n")
-				  wxT("            WHEN (nspname LIKE 'pg\\\\_%') THEN 0\n");
-		}
-		sql += wxT("            ELSE 3 END AS nsptyp,\n")
-			   wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
-			   wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
-			   wxT("  FROM pg_namespace nsp\n")
-			   wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
-			   + restr +
-			   wxT(" ORDER BY 1, nspname");
-	}
+    if (GetMetaType() == PGM_CATALOG)
+    {
+        sql = wxT("SELECT 2 AS nsptyp,\n")
+              wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
+              wxT("       FALSE as cancreate\n")
+              wxT("  FROM pg_namespace nsp\n")
+              wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
+              + restr +
+              wxT(" ORDER BY 1, nspname");
+    }
+    else
+    {
+        if (collection->GetDatabase()->BackendMinimumVersion(8, 1))
+        {
+            sql = wxT("SELECT CASE WHEN nspname LIKE E'pg\\\\_temp\\\\_%' THEN 1\n")
+                  wxT("            WHEN (nspname LIKE E'pg\\\\_%') THEN 0\n");
+        }
+        else
+        {
+            sql = wxT("SELECT CASE WHEN nspname LIKE 'pg\\\\_temp\\\\_%' THEN 1\n")
+                  wxT("            WHEN (nspname LIKE 'pg\\\\_%') THEN 0\n");
+        }
+        sql += wxT("            ELSE 3 END AS nsptyp,\n")
+               wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
+               wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
+               wxT("  FROM pg_namespace nsp\n")
+               wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
+               + restr +
+               wxT(" ORDER BY 1, nspname");
+    }
 
     pgSet *schemas = collection->GetDatabase()->ExecuteSet(sql);
 
@@ -377,55 +389,55 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
                 continue;
             }
 
-			if (GetMetaType() == PGM_CATALOG)
-			{
-				catalog = new pgCatalog(name);
+            if (GetMetaType() == PGM_CATALOG)
+            {
+                catalog = new pgCatalog(name);
 
-				catalog->iSetSchemaTyp(nsptyp);
-				catalog->iSetDatabase(collection->GetDatabase());
-				catalog->iSetComment(schemas->GetVal(wxT("description")));
-				catalog->iSetOid(schemas->GetOid(wxT("oid")));
-				catalog->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
-				catalog->iSetAcl(schemas->GetVal(wxT("nspacl")));
-				catalog->iSetCreatePrivilege(false);
+                catalog->iSetSchemaTyp(nsptyp);
+                catalog->iSetDatabase(collection->GetDatabase());
+                catalog->iSetComment(schemas->GetVal(wxT("description")));
+                catalog->iSetOid(schemas->GetOid(wxT("oid")));
+                catalog->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
+                catalog->iSetAcl(schemas->GetVal(wxT("nspacl")));
+                catalog->iSetCreatePrivilege(false);
 
-				if (browser)
-				{
-					browser->AppendObject(collection, catalog);
-					schemas->MoveNext();
-				}
-				else
-					break;
-			}
-			else
-			{
-				schema = new pgSchema(name);
+                if (browser)
+                {
+                    browser->AppendObject(collection, catalog);
+                    schemas->MoveNext();
+                }
+                else
+                    break;
+            }
+            else
+            {
+                schema = new pgSchema(name);
 
-				schema->iSetSchemaTyp(nsptyp);
-				schema->iSetDatabase(collection->GetDatabase());
-				schema->iSetComment(schemas->GetVal(wxT("description")));
-				schema->iSetOid(schemas->GetOid(wxT("oid")));
-				schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
-				schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
-				schema->iSetCreatePrivilege(schemas->GetBool(wxT("cancreate")));
+                schema->iSetSchemaTyp(nsptyp);
+                schema->iSetDatabase(collection->GetDatabase());
+                schema->iSetComment(schemas->GetVal(wxT("description")));
+                schema->iSetOid(schemas->GetOid(wxT("oid")));
+                schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
+                schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
+                schema->iSetCreatePrivilege(schemas->GetBool(wxT("cancreate")));
 
-				if (browser)
-				{
-					browser->AppendObject(collection, schema);
-					schemas->MoveNext();
-				}
-				else
-	                break;
-			}
+                if (browser)
+                {
+                    browser->AppendObject(collection, schema);
+                    schemas->MoveNext();
+                }
+                else
+                    break;
+            }
         }
 
-		delete schemas;
+        delete schemas;
     }
 
-	if (GetMetaType() == PGM_CATALOG)
-		return catalog;
-	else
-		return schema;
+    if (GetMetaType() == PGM_CATALOG)
+        return catalog;
+    else
+        return schema;
 }
 
 
@@ -454,17 +466,17 @@ pgSchemaObjCollection::pgSchemaObjCollection(pgaFactory *factory, pgSchema *sch)
 
 bool pgSchemaObjCollection::CanCreate()
 {
-	if(IsCollectionForType(PGM_OPCLASS) || IsCollectionForType(PGM_OPFAMILY))
-		return false;
+    if(IsCollectionForType(PGM_OPCLASS) || IsCollectionForType(PGM_OPFAMILY))
+        return false;
 
     // TODO
     // OK, this is a hack. Rules and Views are both derived from pgRuleObject, which
-    // is derived from pgSchemaObject. In order that they attached to the treeview 
+    // is derived from pgSchemaObject. In order that they attach to the treeview 
     // under the relevant node however, the Schema object is actually the table or
     // View (yeah, I know - I didn't write it :-p ). This works fine *except* for
     // Get CreatePrivilege() which doesn't exist in these classes so must be fixed
     // up at this level. This needs a major rethink in the longer term
-    if (GetSchema()->GetMetaType() == PGM_TABLE || GetSchema()->GetMetaType() == PGM_VIEW)
+    if (GetSchema()->GetMetaType() == PGM_TABLE || GetSchema()->GetMetaType() == PGM_VIEW || GetSchema()->GetMetaType() == GP_EXTTABLE || GetSchema()->GetMetaType() == GP_PARTITION)
         return GetSchema()->GetSchema()->GetCreatePrivilege();
     else
         return GetSchema()->GetCreatePrivilege();
@@ -493,7 +505,7 @@ pgSchemaFactory::pgSchemaFactory()
 pgCatalogFactory::pgCatalogFactory() 
 : pgSchemaBaseFactory(__("Catalog"), __("New Catalog..."), __("Create a new Catalog."), catalog_xpm, catalog_sm_xpm)
 {
-	metaType = PGM_CATALOG;
+    metaType = PGM_CATALOG;
 }
 
 pgCollection *pgSchemaObjFactory::CreateCollection(pgObject *obj)

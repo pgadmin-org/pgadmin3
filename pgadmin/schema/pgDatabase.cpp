@@ -62,7 +62,7 @@ wxMenu *pgDatabase::GetNewMenu()
             castFactory.AppendMenu(menu);
         if (settings->GetDisplayOption(_("Languages")))
             languageFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(_("Public synonyms")) && GetConnection()->EdbMinimumVersion(8, 0))
+        if (settings->GetDisplayOption(_("Public Synonyms")) && GetConnection()->EdbMinimumVersion(8, 0))
                 synonymFactory.AppendMenu(menu);
         if (settings->GetDisplayOption(_("Schemas")))
             schemaFactory.AppendMenu(menu);
@@ -400,11 +400,11 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 				browser->AppendCollection(this, castFactory);
 			if (settings->GetDisplayOption(_("Languages")))
 				browser->AppendCollection(this, languageFactory);
-			if (settings->GetDisplayOption(_("Public synonyms")) && connection()->EdbMinimumVersion(8,0))
+			if (settings->GetDisplayOption(_("Public Synonyms")) && connection()->EdbMinimumVersion(8,0))
 				browser->AppendCollection(this, synonymFactory);
 			if (settings->GetDisplayOption(_("Schemas")))
 				browser->AppendCollection(this, schemaFactory);
-			if (settings->GetDisplayOption(_("Slony-I clusters")))
+			if (settings->GetDisplayOption(_("Slony-I Clusters")))
 				browser->AppendCollection(this, slClusterFactory);
             
             missingFKs = StrToLong(connection()->ExecuteScalar(

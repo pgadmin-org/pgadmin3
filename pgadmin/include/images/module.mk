@@ -204,7 +204,13 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/view.xpm \
 	$(srcdir)/include/images/viewdata.xpm \
 	$(srcdir)/include/images/viewfiltereddata.xpm \
-	$(srcdir)/include/images/views.xpm
+	$(srcdir)/include/images/views.xpm \
+	$(srcdir)/include/images/ex_broadcast_motion.xpm \
+	$(srcdir)/include/images/ex_redistribute_motion.xpm \
+	$(srcdir)/include/images/ex_gather_motion.xpm \
+	$(srcdir)/include/images/exttable-sm.xpm \
+	$(srcdir)/include/images/exttables.xpm \
+	$(srcdir)/include/images/exttable.xpm
 
 EXTRA_DIST += \
         $(srcdir)/include/images/module.mk \

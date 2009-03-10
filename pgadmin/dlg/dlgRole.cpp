@@ -746,4 +746,3 @@ wxString dlgRole::GetSql()
     return sql;
 }
 
-

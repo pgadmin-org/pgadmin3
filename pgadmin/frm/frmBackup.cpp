@@ -78,17 +78,17 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     if (!object->GetDatabase()->GetServer()->GetPasswordIsStored())
         environment.Add(wxT("PGPASSWORD=") + object->GetServer()->GetPassword());
 
-	// Pass the SSL mode via the environment
-	environment.Add(wxT("PGSSLMODE=") + object->GetServer()->GetConnection()->GetSslModeName());
+    // Pass the SSL mode via the environment
+    environment.Add(wxT("PGSSLMODE=") + object->GetServer()->GetConnection()->GetSslModeName());
 
     // Icon
     SetIcon(wxIcon(backup_xpm));
 
-	// fix translation problem
-	wxString dollarLabel=wxGetTranslation(_("Disable $$ quoting"));
-	dollarLabel.Replace(wxT("$$"), wxT("$"));
-	chkDisableDollar->SetLabel(dollarLabel);
-	chkDisableDollar->SetSize(chkDisableDollar->GetBestSize());
+    // fix translation problem
+    wxString dollarLabel=wxGetTranslation(_("Disable $$ quoting"));
+    dollarLabel.Replace(wxT("$$"), wxT("$"));
+    chkDisableDollar->SetLabel(dollarLabel);
+    chkDisableDollar->SetSize(chkDisableDollar->GetBestSize());
 
     txtMessages = CTRL_TEXT("txtMessages");
     txtMessages->SetMaxLength(0L);
@@ -189,6 +189,8 @@ wxString frmBackup::getCmdPart1()
     wxString cmd;
     if (object->GetConnection()->EdbMinimumVersion(8,0))
         cmd=edbBackupExecutable;
+    else if (object->GetConnection()->GetIsGreenplum())
+        cmd=gpBackupExecutable;
     else
         cmd=pgBackupExecutable;
 
@@ -197,6 +199,9 @@ wxString frmBackup::getCmdPart1()
 
     cmd +=  wxT(" -p ") + NumToStr((long)server->GetPort())
          +  wxT(" -U ") + server->GetUsername();
+
+    if (object->GetConnection()->GetIsGreenplum())
+        cmd += wxT(" --gp-syntax ");
     return cmd;
 }
 
@@ -206,6 +211,8 @@ wxString frmBackup::getCmdPart2()
     wxString backupExecutable;
     if (object->GetConnection()->EdbMinimumVersion(8,0))
         backupExecutable=edbBackupExecutable;
+    else if (object->GetConnection()->GetIsGreenplum())
+        backupExecutable=gpBackupExecutable;
     else
         backupExecutable=pgBackupExecutable;
 
@@ -261,7 +268,7 @@ wxString frmBackup::getCmdPart2()
         cmd.Append(wxT(" --disable-dollar-quoting"));
     if (settings->GetIgnoreVersion())
         cmd.Append(wxT(" -i"));
-	if (chkVerbose->GetValue())
+    if (chkVerbose->GetValue())
         cmd.Append(wxT(" -v"));
 
     cmd.Append(wxT(" -f \"") + txtFilename->GetValue() + wxT("\""));
@@ -270,27 +277,27 @@ wxString frmBackup::getCmdPart2()
 #ifdef WIN32
         cmd.Append(wxT(" -n \\\"") + ((pgSchema*)object)->GetIdentifier() + wxT("\\\""));
 #else
-		cmd.Append(wxT(" -n '") + ((pgSchema*)object)->GetQuotedIdentifier() + wxT("'"));
+        cmd.Append(wxT(" -n '") + ((pgSchema*)object)->GetQuotedIdentifier() + wxT("'"));
 #endif
 
-    else if (object->GetMetaType() == PGM_TABLE) 
+    else if (object->GetMetaType() == PGM_TABLE || object->GetMetaType() == GP_PARTITION) 
     {
-		// The syntax changed in 8.2 :-(
-		if (pgAppMinimumVersion(backupExecutable, 8, 2))
-		{
+        // The syntax changed in 8.2 :-(
+        if (pgAppMinimumVersion(backupExecutable, 8, 2))
+        {
 #ifdef WIN32
-			cmd.Append(wxT(" -t \"\\\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
-					   wxT("\\\".\\\"") + ((pgTable*)object)->GetIdentifier() + wxT("\\\"\""));
+            cmd.Append(wxT(" -t \"\\\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
+                       wxT("\\\".\\\"") + ((pgTable*)object)->GetIdentifier() + wxT("\\\"\""));
 #else
-			cmd.Append(wxT(" -t '") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier() + 
-					   wxT(".") + ((pgTable*)object)->GetQuotedIdentifier() + wxT("'"));
+            cmd.Append(wxT(" -t '") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier() + 
+                       wxT(".") + ((pgTable*)object)->GetQuotedIdentifier() + wxT("'"));
 #endif
-		}
-		else
-		{
-			cmd.Append(wxT(" -t ") + ((pgTable*)object)->GetQuotedIdentifier());
-			cmd.Append(wxT(" -n ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
-		}
+        }
+        else
+        {
+            cmd.Append(wxT(" -t ") + ((pgTable*)object)->GetQuotedIdentifier());
+            cmd.Append(wxT(" -n ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+        }
     }
 
     cmd.Append(wxT(" ") + commandLineCleanOption(object->GetDatabase()->GetQuotedIdentifier()));
@@ -343,6 +350,8 @@ bool backupFactory::CheckEnable(pgObject *obj)
 
     if (obj->GetConnection() && obj->GetConnection()->EdbMinimumVersion(8, 0))
         return obj->CanBackup() && !edbBackupExecutable.IsEmpty();
+    else if (obj->GetConnection() && obj->GetConnection()->GetIsGreenplum())
+        return obj->CanBackup() && !gpBackupExecutable.IsEmpty();
     else
         return obj->CanBackup() && !pgBackupExecutable.IsEmpty();
 

@@ -49,7 +49,10 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/schema/pgTrigger.h \
 	$(srcdir)/include/schema/pgType.h \
 	$(srcdir)/include/schema/pgUser.h \
-	$(srcdir)/include/schema/pgView.h
+	$(srcdir)/include/schema/pgView.h \
+	$(srcdir)/include/schema/gpExtTable.h \
+	$(srcdir)/include/schema/gpResQueue.h \
+	$(srcdir)/include/schema/gpPartition.h
 
 EXTRA_DIST += \
 	$(srcdir)/include/schema/module.mk

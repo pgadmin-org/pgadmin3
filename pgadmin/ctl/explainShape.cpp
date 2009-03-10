@@ -41,6 +41,10 @@
 #include "images/ex_seek.xpm"
 #include "images/ex_setop.xpm"
 #include "images/ex_result.xpm"
+// Greenplum images
+#include "images/ex_broadcast_motion.xpm"
+#include "images/ex_redistribute_motion.xpm"
+#include "images/ex_gather_motion.xpm"
 
 
 #define BMP_BORDER 3
@@ -178,6 +182,9 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 
     if (token == wxT("Total"))              return 0;
     else if (token == wxT("Trigger"))       return 0;
+    else if (token == wxT("Settings:"))		return 0;		/* Greenplum */
+    else if (token == wxT("Slice"))			return 0;		/* Greenplum */
+    else if (token.Mid(0,6) == wxT("(slice"))	return 0;	/* Greenplum */
     else if (token == wxT("Result"))        s = new ExplainShape(ex_result_xpm, descr);
     else if (token == wxT("Append"))        s = new ExplainShape(ex_append_xpm, descr);
     else if (token == wxT("Nested"))
@@ -319,11 +326,19 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
             s = new ExplainShape(ex_scan_xpm, descr, 3, 2);
     }
     else if (token2 == wxT("Seek"))         s = new ExplainShape(ex_seek_xpm, descr, 3, 2);
-    // Recursive Union
+     // Recursive Union
     else if (token == wxT("Recursive") && token2 == wxT("Union"))
         s = new ExplainShape(ex_recursive_union_xpm, descr);
     else if (token == wxT("WindowAgg"))
         s = new ExplainShape(ex_windowagg_xpm, descr);
+
+    // Greenplum additions
+    else if (token == wxT("Gather") && token2 ==wxT("Motion"))
+        s = new ExplainShape(ex_gather_motion_xpm, descr);
+    else if (token == wxT("Broadcast") && token2 ==wxT("Motion"))
+        s = new ExplainShape(ex_broadcast_motion_xpm, descr);
+    else if (token == wxT("Redistribute") && token2 ==wxT("Motion"))
+        s = new ExplainShape(ex_redistribute_motion_xpm, descr);
 
     if (!s)
         s = new ExplainShape(ex_unknown_xpm, descr);
@@ -399,7 +414,6 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 }
 
 
-
 ExplainLine::ExplainLine(ExplainShape *from, ExplainShape *to, double weight)
 {
     SetCanvas(from->GetCanvas());
@@ -409,6 +423,12 @@ ExplainLine::ExplainLine(ExplainShape *from, ExplainShape *to, double weight)
     width = (int) log(from->GetAverageCost());
     if (width > 10)
         width = 10;
+
+    // If we got an average cost of 0, width is probably negative
+    // which will look pretty darn ugly as an arrow width!
+    // This may happen on Greenplum.
+    if (width < 1)
+        width = 1;
 
     wxNode *first = GetLineControlPoints()->GetFirst();
     wxNode *last  = GetLineControlPoints()->GetLast();

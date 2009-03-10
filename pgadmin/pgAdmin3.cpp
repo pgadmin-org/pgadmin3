@@ -91,6 +91,10 @@ wxString edbBackupExecutable;      // complete filename of EnterpriseDB's pg_dum
 wxString edbBackupAllExecutable;
 wxString edbRestoreExecutable;
 
+wxString gpBackupExecutable;      // complete filename of Greenplum's pg_dump, pg_dumpall and pg_restore, if available
+wxString gpBackupAllExecutable;
+wxString gpRestoreExecutable;
+
 wxString loadPath;              // Where the program is loaded from
 wxString dataDir;               // The program data directory
 wxString docPath;               // Where docs are stored
@@ -283,6 +287,10 @@ bool pgAdmin3::OnInit()
     wxLogInfo(wxT("EDB pg_dumpall: %s"), edbBackupAllExecutable.c_str());
     wxLogInfo(wxT("EDB pg_restore: %s"), edbRestoreExecutable.c_str());
 
+    wxLogInfo(wxT("Greenplum pg_dump   : %s"), gpBackupExecutable.c_str());
+    wxLogInfo(wxT("Greenplum pg_dumpall: %s"), gpBackupAllExecutable.c_str());
+    wxLogInfo(wxT("Greenplum pg_restore: %s"), gpRestoreExecutable.c_str());
+
 #ifdef __WXGTK__
     static pgRendererNative *renderer=new pgRendererNative();
     wxRendererNative::Get();
@@ -381,6 +389,7 @@ bool pgAdmin3::OnInit()
     InitHelp();
     wxLogInfo(wxT("PG Help       : %s"), settings->GetPgHelpPath().c_str());
     wxLogInfo(wxT("EDB Help      : %s"), settings->GetEdbHelpPath().c_str());
+    wxLogInfo(wxT("Greenplum Help: %s"), settings->GetGpHelpPath().c_str());
     wxLogInfo(wxT("Slony Help    : %s"), settings->GetSlonyHelpPath().c_str());
 
 #ifndef __WXDEBUG__
@@ -702,12 +711,18 @@ void pgAdmin3::InitXtraPaths()
 
     if (!isEdbApp(settings->GetEnterprisedbPath() + wxT("\\pg_dump.exe")))
         settings->SetEnterprisedbPath(wxEmptyString);
+
+    if (!isGpApp(settings->GetGPDBPath() + wxT("\\pg_dump.exe")))
+        settings->SetGPDBPath(wxEmptyString);
 #else
     if (!isPgApp(settings->GetPostgresqlPath() + wxT("/pg_dump")))
         settings->SetPostgresqlPath(wxEmptyString);
 
     if (!isEdbApp(settings->GetEnterprisedbPath() + wxT("/pg_dump")))
         settings->SetEnterprisedbPath(wxEmptyString);
+
+    if (!isGpApp(settings->GetGPDBPath() + wxT("/pg_dump")))
+        settings->SetGPDBPath(wxEmptyString);
 #endif
 
     // Now, if either path is empty, start a search for helpers
@@ -757,6 +772,55 @@ void pgAdmin3::InitXtraPaths()
                 settings->SetPostgresqlPath(tmp.GetPath());
             else if (isEdbApp(tmp.GetFullPath()) && settings->GetEnterprisedbPath().IsEmpty())
                 settings->SetEnterprisedbPath(tmp.GetPath());
+     
+        }
+    }
+
+    if (settings->GetGPDBPath().IsEmpty())
+    {
+         wxPathList path;
+
+#ifdef __WXMSW__
+
+        wxString GPhint = wxString(getenv( "GPHOME_CLIENTS" ), wxConvUTF8 );
+
+        if (GPhint.Length() > 1)
+        {
+            path.Add(GPhint + wxT("\\bin"));
+            path.Add(GPhint + wxT("\\lib"));
+            path.Add(GPhint);
+        }
+
+        GPhint = wxString(getenv( "GPHOME" ), wxConvUTF8 );
+
+        if (GPhint.Length() > 1)
+        {
+            path.Add(GPhint + wxT("\\bin"));
+            path.Add(GPhint + wxT("\\lib"));
+            path.Add(GPhint);
+        }
+
+#endif
+        // Look in the app directory for things
+        path.Add(loadPath);
+
+#ifdef __WXMAC__
+
+        if (wxDir::Exists(dataDir))
+        path.Add(dataDir) ;
+#endif
+        path.AddEnvList(wxT("PATH"));
+
+#ifdef __WXMSW__
+        wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
+#else
+        wxFileName tmp = path.FindValidPath(wxT("pg_dump"));
+#endif
+
+        if (tmp.FileExists())
+        {
+            if (isGpApp(tmp.GetFullPath()) && settings->GetGPDBPath().IsEmpty())
+                settings->SetGPDBPath(tmp.GetPath());
         }
     }
 
@@ -860,6 +924,79 @@ void pgAdmin3::InitXtraPaths()
         }
     }
 
+    // Greenplum
+    if (settings->GetGPDBPath().IsEmpty())
+    {
+        wxPathList path;
+
+#ifdef __WXMSW__
+        // Ugly... Greenplum client releases have no predictable numbers, because the path is the server version
+        if (!programFiles.IsEmpty())
+        {
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\bin"));
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\bin"));
+
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\lib"));
+             
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\bin"));
+
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\lib"));
+        }
+
+        if (!programFilesX86.IsEmpty())
+        {
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\bin"));
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\bin"));
+
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\lib"));
+             
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\bin"));
+
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\lib"));
+        }
+
+
+        wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
+#else
+        // Mac paths
+
+        // Generic Unix paths
+
+        path.Add(wxT("/usr/local/greenplum-clients-3.3\bin"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.3\bin"));
+        path.Add(wxT("/usr/local/greenplum-clients-3.2\bin"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.2\bin"));
+        path.Add(wxT("/usr/local/greenplum-clients-3.1.1.1\bin"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.1.1.1\bin"));
+
+        path.Add(wxT("/usr/local/greenplum-clients-3.3\lib"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.3\lib"));
+        path.Add(wxT("/usr/local/greenplum-clients-3.2\lib"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.2\lib"));
+        path.Add(wxT("/usr/local/greenplum-clients-3.1.1.1\lib"));
+        path.Add(wxT("/opt/local/greenplum-clients-3.1.1.1\lib"));
+        
+
+        wxFileName tmp = path.FindValidPath(wxT("pg_dump"));
+#endif 
+
+        if (tmp.FileExists())
+        {
+            if (isGpApp(tmp.GetFullPath()))
+                settings->SetGPDBPath(tmp.GetPath());
+        }
+    }
+
     // Now setup and verify the paths for each individual helper
 #if defined(__WXMSW__)
     pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("\\pg_dump.exe");
@@ -869,6 +1006,10 @@ void pgAdmin3::InitXtraPaths()
     edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dump.exe");
     edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("\\pg_dumpall.exe");
     edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("\\pg_restore.exe");
+
+    gpBackupExecutable  = settings->GetGPDBPath() + wxT("\\pg_dump.exe");
+    gpBackupAllExecutable  = settings->GetGPDBPath() + wxT("\\pg_dumpall.exe");
+    gpRestoreExecutable = settings->GetGPDBPath() + wxT("\\pg_restore.exe");
 #else
     pgBackupExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dump");
     pgBackupAllExecutable  = settings->GetPostgresqlPath() + wxT("/pg_dumpall");
@@ -877,6 +1018,10 @@ void pgAdmin3::InitXtraPaths()
     edbBackupExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dump");
     edbBackupAllExecutable  = settings->GetEnterprisedbPath() + wxT("/pg_dumpall");
     edbRestoreExecutable = settings->GetEnterprisedbPath() + wxT("/pg_restore");
+
+    gpBackupExecutable  = settings->GetGPDBPath() + wxT("/pg_dump");
+    gpBackupAllExecutable  = settings->GetGPDBPath() + wxT("/pg_dumpall");
+    gpRestoreExecutable = settings->GetGPDBPath() + wxT("/pg_restore");
 #endif
 
     if (!isPgApp(pgBackupExecutable))
@@ -892,6 +1037,13 @@ void pgAdmin3::InitXtraPaths()
         edbBackupAllExecutable = wxEmptyString;
     if (!isEdbApp(edbRestoreExecutable))
         edbRestoreExecutable = wxEmptyString;
+
+    if (!isGpApp(gpBackupExecutable))
+        gpBackupExecutable = wxEmptyString;
+    if (!isGpApp(gpBackupAllExecutable))
+        gpBackupAllExecutable = wxEmptyString;
+    if (!isGpApp(gpRestoreExecutable))
+        gpRestoreExecutable = wxEmptyString;
 }
 
 wxString pgAdmin3::LocatePath(const wxString &pathToFind, const bool isFile)
@@ -1006,7 +1158,7 @@ void pgAdmin3::InitHelp()
 
     // Search for external docs. As Windows and *nix etc 
     // are likely to be very different, we'll #ifdef them all.
-    wxPathList stdPaths, noPaths, pgPaths, edbPaths, slonyPaths;
+    wxPathList stdPaths, noPaths, pgPaths, edbPaths, gpPaths, slonyPaths;
     wxString sep = wxFileName::GetPathSeparator();
 
     stdPaths.Add(docPath + sep + settings->GetCanonicalLanguageName());
@@ -1049,6 +1201,39 @@ void pgAdmin3::InitHelp()
     edbPaths.Add(wxT("C:\\EnterpriseDB\\8.1\\dbserver\\doc\\html"));
     edbPaths.Add(wxT("C:\\EnterpriseDB\\8.0\\dbserver\\doc"));
     edbPaths.Add(wxT("C:\\EnterpriseDB\\8.0\\dbserver\\doc\\html"));
+
+    wxString GPhint = wxString(getenv( "GPHOME_CLIENTS" ), wxConvUTF8 );
+
+    if (GPhint.Length() > 1)
+    {
+        gpPaths.Add(GPhint + wxT("\\docs"));
+        gpPaths.Add(GPhint);
+    }
+
+    GPhint = wxString(getenv( "GPHOME" ), wxConvUTF8 );
+
+    if (GPhint.Length() > 1)
+    {
+        gpPaths.Add(GPhint + wxT("\\docs"));
+        gpPaths.Add(GPhint);
+    }
+
+    if (!programFiles.IsEmpty())
+    {
+        gpPaths.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\docs"));
+        gpPaths.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\docs"));
+        gpPaths.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\docs"));
+    }
+
+    if (!programFilesX86.IsEmpty())
+    {
+        gpPaths.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\docs"));
+        gpPaths.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\docs"));
+        gpPaths.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\docs"));
+    }
+;
+    
+    
 #else
     pgPaths.Add(wxT("/usr/local/pgsql/doc"));
     pgPaths.Add(wxT("/usr/local/pgsql/doc/html"));
@@ -1075,11 +1260,26 @@ void pgAdmin3::InitHelp()
     edbPaths.Add(wxT("/opt/local/enterprisedb/doc/html"));
     edbPaths.Add(wxT("/opt/local/edb/doc"));
     edbPaths.Add(wxT("/opt/local/edb/doc/html"));
+
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3\html"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3\docs"));
+    pgPaths.Add(wxT("/opt/local/greenplum-clients-3.3\docs"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.3"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.2\html"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.2\docs"));
+    pgPaths.Add(wxT("/opt/local/greenplum-clients-3.2\docs"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1\html"));
+    pgPaths.Add(wxT("/usr/local/greenplum-clients-3.1.1.1\docs"));
+    pgPaths.Add(wxT("/opt/local/greenplum-clients-3.1.1.1\docs"));
+
 #endif 
 
     // Slony will be installed into one of the DBMS directories
     slonyPaths.Add(pgPaths);
     slonyPaths.Add(edbPaths);
+    slonyPaths.Add(gpPaths);
 
     // First look for a chm, then a zip, then an hhp file. For PostgreSQL
     // and EnterpriseDB we'll then look for an index.html. No point for 
@@ -1087,6 +1287,7 @@ void pgAdmin3::InitHelp()
 
     wxString pgHelpPath = settings->GetPgHelpPath();
     wxString edbHelpPath = settings->GetEdbHelpPath();
+    wxString gpHelpPath = settings->GetGpHelpPath();
     wxString slonyHelpPath = settings->GetSlonyHelpPath();
 
 #if defined (__WXMSW__) || wxUSE_LIBMSPACK
@@ -1099,6 +1300,13 @@ void pgAdmin3::InitHelp()
     edbHelpPath = GenerateHelpPath(wxT("enterprisedb.chm"), edbHelpPath, stdPaths, edbPaths);
     edbHelpPath = GenerateHelpPath(wxT("edb.chm"), edbHelpPath, stdPaths, edbPaths);
 
+    gpHelpPath = GenerateHelpPath(wxT("Greenplum.chm"), gpHelpPath, stdPaths, gpPaths);
+    gpHelpPath = GenerateHelpPath(wxT("GPDB.chm"), gpHelpPath, stdPaths, gpPaths);
+    gpHelpPath = GenerateHelpPath(wxT("GPSQL.zip"), gpHelpPath, stdPaths, gpPaths);
+    gpHelpPath = GenerateHelpPath(wxT("GPClientToolsWin.pdf"), gpHelpPath, stdPaths, gpPaths);
+    gpHelpPath = GenerateHelpPath(wxT("GPClientTools.pdf"), gpHelpPath, stdPaths, gpPaths);
+    gpHelpPath = GenerateHelpPath(wxT("GPUserGuide.pdf"), gpHelpPath, stdPaths, gpPaths);
+    
     slonyHelpPath = GenerateHelpPath(wxT("Slony-I.chm"), slonyHelpPath, stdPaths, slonyPaths);
     slonyHelpPath = GenerateHelpPath(wxT("slony-i.chm"), slonyHelpPath, stdPaths, slonyPaths);
     slonyHelpPath = GenerateHelpPath(wxT("slony1.chm"), slonyHelpPath, stdPaths, slonyPaths);
@@ -1114,6 +1322,9 @@ void pgAdmin3::InitHelp()
     edbHelpPath = GenerateHelpPath(wxT("enterprisedb.zip"), edbHelpPath, stdPaths, edbPaths);
     edbHelpPath = GenerateHelpPath(wxT("edb.zip"), edbHelpPath, stdPaths, edbPaths);
 
+    gpHelpPath = GenerateHelpPath(wxT("Greenplum.zip"), gpHelpPath, stdPaths, gpPaths); 
+    gpHelpPath = GenerateHelpPath(wxT("GPSQL.zip"), gpHelpPath, stdPaths, gpPaths); 
+
     slonyHelpPath = GenerateHelpPath(wxT("Slony-I.zip"), slonyHelpPath, stdPaths, slonyPaths);
     slonyHelpPath = GenerateHelpPath(wxT("slony-i.zip"), slonyHelpPath, stdPaths, slonyPaths);
     slonyHelpPath = GenerateHelpPath(wxT("slony1.zip"), slonyHelpPath, stdPaths, slonyPaths);
@@ -1128,6 +1339,9 @@ void pgAdmin3::InitHelp()
     edbHelpPath = GenerateHelpPath(wxT("enterprisedb.hhp"), edbHelpPath, stdPaths, edbPaths);
     edbHelpPath = GenerateHelpPath(wxT("edb.hhp"), edbHelpPath, stdPaths, edbPaths);
 
+    gpHelpPath = GenerateHelpPath(wxT("Greenplum.hhp"), gpHelpPath, stdPaths, gpPaths);
+    gpHelpPath = GenerateHelpPath(wxT("GPUserGuide.pdf"), gpHelpPath, stdPaths, gpPaths);
+
     slonyHelpPath = GenerateHelpPath(wxT("Slony-I.hhp"), slonyHelpPath, stdPaths, slonyPaths);
     slonyHelpPath = GenerateHelpPath(wxT("slony-i.hhp"), slonyHelpPath, stdPaths, slonyPaths);
     slonyHelpPath = GenerateHelpPath(wxT("slony1.hhp"), slonyHelpPath, stdPaths, slonyPaths);
@@ -1141,6 +1355,8 @@ void pgAdmin3::InitHelp()
     edbHelpPath = GenerateHelpPath(wxT("index.html"), edbHelpPath, noPaths, edbPaths);
     edbHelpPath = GenerateHelpPath(wxT("index.html"), edbHelpPath, noPaths, edbPaths);
     edbHelpPath = GenerateHelpPath(wxT("index.html"), edbHelpPath, noPaths, edbPaths);
+
+    gpHelpPath = GenerateHelpPath(wxT("index.html"), gpHelpPath, noPaths, gpPaths);
 
     // If either path ends in index.html, remove the filename because we
     // just want the path. In this case, we should also add file:/// on
@@ -1161,11 +1377,21 @@ void pgAdmin3::InitHelp()
 #endif
     }
 
+    if (gpHelpPath.EndsWith(wxT("index.html")))
+    {
+        gpHelpPath = gpHelpPath.Left(gpHelpPath.Length() - 10);
+#ifndef __WXMSW__
+        gpHelpPath = wxT("file:///") + gpHelpPath;
+#endif
+    }
+
     // Last resorts - if we still have no help by now, use the websites!
     if (pgHelpPath.IsEmpty())
         pgHelpPath = wxT("http://www.postgresql.org/docs/current/static/");
     if (edbHelpPath.IsEmpty())
         edbHelpPath = wxT("http://www.enterprisedb.com/docs/en/current/server/");
+    if (gpHelpPath.IsEmpty())
+        gpHelpPath = wxT("http://www.postgresql.org/docs/8.2/static/"); // Greenplum doesn't have help on web site yet, use closest PostgreSQL help
     if (slonyHelpPath.IsEmpty())
         slonyHelpPath = wxT("http://www.slony.info/documentation/");
 
@@ -1174,6 +1400,8 @@ void pgAdmin3::InitHelp()
         settings->SetPgHelpPath(pgHelpPath);
     if (settings->GetEdbHelpPath().IsEmpty())
         settings->SetEdbHelpPath(edbHelpPath);
+    if (settings->GetGpHelpPath().IsEmpty())
+        settings->SetGpHelpPath(gpHelpPath);
     if (settings->GetSlonyHelpPath().IsEmpty())
         settings->SetSlonyHelpPath(slonyHelpPath);
 }

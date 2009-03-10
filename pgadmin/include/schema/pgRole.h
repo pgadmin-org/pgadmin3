@@ -73,6 +73,8 @@ public:
     void iSetSuperuser(const bool b) { superuser=b; }
     bool GetUpdateCatalog() const { return updateCatalog; }
     void iSetUpdateCatalog(const bool b) { updateCatalog=b; }
+    wxString GetRolQueueName() const { return rolqueuename; }
+    void iSetRolQueueName(const wxString& newVal) { rolqueuename = newVal; }
     long GetConnectionLimit() const { return connectionLimit; }
     void iSetConnectionLimit(long newVal) { connectionLimit=newVal; }
     wxArrayString& GetRolesIn() { return rolesIn; }
@@ -94,6 +96,7 @@ public:
     bool HasReferences() { return true; }
 private:
     wxString password;
+    wxString rolqueuename;
     wxDateTime accountExpires;
     bool superuser, createDatabase, createRole, updateCatalog, inherits, canLogin;
     long connectionLimit;

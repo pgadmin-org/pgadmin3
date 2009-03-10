@@ -59,7 +59,7 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
 {
     column=node;
     table=parentNode;
-    wxASSERT(!table || (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == PGM_VIEW));
+    wxASSERT(!table || (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == PGM_VIEW || table->GetMetaType() == GP_EXTTABLE || table->GetMetaType() == GP_PARTITION));
 
     txtAttstattarget->SetValidator(numericValidator);
 
@@ -207,9 +207,9 @@ int dlgColumn::Go(bool modal)
         chkNotNull->SetValue(column->GetNotNull());
         txtAttstattarget->SetValue(NumToStr(column->GetAttstattarget()));
 
-		wxString fullType = column->GetRawTypename();
-		if (column->GetIsArray())
-			fullType += wxT("[]");
+        wxString fullType = column->GetRawTypename();
+        if (column->GetIsArray())
+            fullType += wxT("[]");
         cbDatatype->Append(fullType);
         AddType(wxT("?"), column->GetAttTypId(), fullType);
 
@@ -262,6 +262,15 @@ int dlgColumn::Go(bool modal)
             cbDatatype->Disable();
             txtAttstattarget->Disable();
         }
+         else if (column->GetTable()->GetMetaType() == GP_EXTTABLE) // Disable controls not valid for external table columns
+        {
+            txtName->Disable();
+            chkNotNull->Disable();
+            txtLength->Disable();
+            cbDatatype->Disable();
+            txtAttstattarget->Disable();
+            txtDefault->Disable();
+        }
     }
     else
     {
@@ -273,7 +282,7 @@ int dlgColumn::Go(bool modal)
         AddType(wxT(" "), 0, wxT("bigserial"));
 
         if (!table)
-		{
+        {
             cbClusterSet->Disable();
             cbClusterSet = 0;
         }
@@ -290,7 +299,7 @@ wxString dlgColumn::GetSql()
     wxString sql;
     wxString name=GetName();
 
-	bool isSerial = (cbDatatype->GetValue() == wxT("serial") || cbDatatype->GetValue() == wxT("bigserial"));
+    bool isSerial = (cbDatatype->GetValue() == wxT("serial") || cbDatatype->GetValue() == wxT("bigserial"));
 
     if (table)
     {

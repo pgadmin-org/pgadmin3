@@ -47,7 +47,7 @@ public:
     ExplainShape(const char *bmp[], const wxString &description, long tokenNo=-1, long detailNo=-1);
     static ExplainShape *Create(long level, ExplainShape *last, const wxString &str); 
 
-    void SetCondition(const wxString &str) { condition = str; }
+    void SetCondition(const wxString &str) { if (condition.Length()==0) condition = str; else condition += wxT(" ") + str; }
     long GetLevel() { return level; }
     wxRealPoint GetStartPoint();
     wxRealPoint GetEndPoint(int kidNo);

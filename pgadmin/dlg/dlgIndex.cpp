@@ -54,7 +54,7 @@ dlgIndexBase::dlgIndexBase(pgaFactory *f, frmMain *frame, const wxString &resNam
 : dlgCollistProperty(f, frame, resName, parentNode)
 {
     index=node;
-    wxASSERT(!table || table->GetMetaType() == PGM_TABLE);
+    wxASSERT(!table || table->GetMetaType() == PGM_TABLE || table->GetMetaType() == GP_PARTITION);
 }
 
 

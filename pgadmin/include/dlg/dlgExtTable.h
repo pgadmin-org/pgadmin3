@@ -1,28 +1,28 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id$
+// RCS-ID:      $Id:  $
 // Copyright (C) 2002 - 2009, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
-// dlgView.h - View property 
+// dlgExtTable.h - Greenplum External Table property 
 //
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __DLG_VIEWPROP
-#define __DLG_VIEWPROP
+#ifndef __DLG_EXTTABLEPROP
+#define __DLG_EXTTABLEPROP
 
 #include "dlg/dlgProperty.h"
 
 class pgSchema;
-class pgView;
+class gpExtTable;
 class ctlSQLBox;
 
-class dlgView : public dlgSecurityProperty
+class dlgExtTable : public dlgSecurityProperty
 {
 public:
-    dlgView(pgaFactory *factory, frmMain *frame, pgView *v, pgSchema *sch);
+    dlgExtTable(pgaFactory *factory, frmMain *frame, gpExtTable *v, pgSchema *sch);
     int Go(bool modal);
 
     void CheckChange();
@@ -30,14 +30,14 @@ public:
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
-    void SetObject(pgObject *obj) { view = (pgView*)obj; }
+    void SetObject(pgObject *obj) { extTable = (gpExtTable*)obj; }
 
 private:
 
     virtual bool IsUpToDate();
 
     pgSchema *schema;
-    pgView *view;
+    gpExtTable *extTable;
     wxString oldDefinition;
 
     DECLARE_EVENT_TABLE()

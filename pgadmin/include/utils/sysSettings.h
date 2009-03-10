@@ -56,6 +56,8 @@ public:
 	void SetPostgresqlPath(const wxString &newval) { Write(wxT("PostgreSQLPath"), newval); }
     wxString GetEnterprisedbPath() const { wxString s; Read(wxT("EnterpriseDBPath"), &s, wxEmptyString); return s; }
 	void SetEnterprisedbPath(const wxString &newval) { Write(wxT("EnterpriseDBPath"), newval); }
+    wxString GetGPDBPath() const { wxString s; Read(wxT("GreenplumDBPath"), &s, wxEmptyString); return s; }
+	void SetGPDBPath(const wxString &newval) { Write(wxT("GreenplumDBPath"), newval); }
 
 	// Help paths
     wxString GetSlonyHelpPath();
@@ -64,6 +66,8 @@ public:
     void SetPgHelpPath(const wxString &newval) { Write(wxT("PostgreSQLHelpPath"), newval); }
     wxString GetEdbHelpPath();
     void SetEdbHelpPath(const wxString &newval) { Write(wxT("EnterpriseDBHelpPath"), newval); }
+    wxString GetGpHelpPath();
+    void SetGpHelpPath(const wxString &newval) { Write(wxT("GreenplumDBHelpPath"), newval); }
 
     // Copy options
     wxString GetCopyQuoteChar() const { wxString s; Read(wxT("Copy/QuoteChar"), &s, wxT("\"")); return s; }

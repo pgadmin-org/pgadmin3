@@ -82,7 +82,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 
     if (object->GetMetaType() != PGM_DATABASE)
     {
-        if (object->GetMetaType() == PGM_TABLE)
+        if (object->GetMetaType() == PGM_TABLE || object->GetMetaType() == GP_PARTITION)
         {
             chkOnlySchema->SetValue(false);
             chkOnlyData->SetValue(true);
@@ -283,6 +283,8 @@ wxString frmRestore::getCmdPart1()
 
     if (object->GetConnection()->EdbMinimumVersion(8,0))
         cmd=edbRestoreExecutable;
+    else if (object->GetConnection()->GetIsGreenplum())
+        cmd=gpRestoreExecutable;
     else
         cmd=pgRestoreExecutable;
 
@@ -503,6 +505,8 @@ bool restoreFactory::CheckEnable(pgObject *obj)
 
     if (obj->GetConnection() && obj->GetConnection()->EdbMinimumVersion(8, 0))
         return obj->CanCreate() && obj->CanRestore() && !edbRestoreExecutable.IsEmpty();
+    else if (obj->GetConnection() && obj->GetConnection()->GetIsGreenplum())
+        return obj->CanCreate() && obj->CanRestore() && !gpRestoreExecutable.IsEmpty();
     else
         return obj->CanCreate() && obj->CanRestore() && !pgRestoreExecutable.IsEmpty();
 }
