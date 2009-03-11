@@ -1850,8 +1850,9 @@ void frmQuery::OnExecScript(wxCommandEvent& event)
     // Delete previous variables
     pgScript->ClearSymbols();
 
-    // Parse script
-    pgScript->ParseString(query, pgsOutput);
+    // Parse script. Note that we add \n so the parse can correctly identify 
+    // a comment on the last line of the query.
+    pgScript->ParseString(query + wxT("\n"), pgsOutput);
     pgsTimer->Start(20);
     aborted = false;
 }
