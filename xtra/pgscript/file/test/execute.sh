@@ -30,7 +30,7 @@ then
 else
 	PARAMETERS="$*"
 fi
-echo "Using '$PARAMETERS' for database connection"
+echo -e "- Using '$PARAMETERS' \n  for database connection"
 
 # Try to find pgScript
 PGS1="./../../src/pgScript"
@@ -43,18 +43,29 @@ else
 	then
 		PGS="$PGS2"
 	else
-		echo "pgScript executable not found: please configure script"
+		echo "- pgScript executable not found: please configure script"
 		exit
 	fi
 fi
-echo "pgScript at '$PGS' found"
+echo "- pgScript at '$PGS' found"
+echo "- Check output below: no [EXCEPTION] should appear."
 echo ""
 
 # Execute pgScript programs
 echo "############# RUNNING  TESTS #############"
 
 for src in `ls ./source/*.sql.pgs`; do
-	$PGS $PARAMETERS -e cp1252 "$src"
+	output=$($PGS $PARAMETERS -e cp1252 "$src" 2>&1 >/dev/null)
+	echo "$output" | awk '{
+		if ($1 == "[QUERY")
+		{
+			query=1
+		}
+		else if ($1 != "[QUERY" && query == 0)
+		{
+			print $0
+			query=0
+		}}'
 done
 echo "################## DONE ##################"
 
