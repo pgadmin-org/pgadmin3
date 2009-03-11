@@ -122,7 +122,7 @@ pgsOperand pgsExecute::eval(pgsVarMap & vars) const
 						wxRegEx multilf(wxT("(\n)+"));
 						multilf.ReplaceAll(&message, wxT("\n"));
 						message.Replace(wxT("\n"), wxT("\n")
-								+ generate_spaces(PGSOUTWARNING.Length() + 1));
+								+ generate_spaces(PGSOUTWARNING.Length()));
 						(*m_cout) << message << wxT("\n");
 						
 						m_app->UnlockOutput();
@@ -144,7 +144,7 @@ pgsOperand pgsExecute::eval(pgsVarMap & vars) const
 						wxRegEx multilf(wxT("(\n)+"));
 						multilf.ReplaceAll(&message, wxT("\n"));
 						message.Replace(wxT("\n"), wxT("\n")
-								+ generate_spaces(PGSOUTQUERY.Length() + 1));
+								+ generate_spaces(PGSOUTQUERY.Length()));
 						(*m_cout) << message << wxT("\n");
 						
 						m_app->UnlockOutput();
