@@ -894,6 +894,11 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
     wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
         server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
 
+    // Give the UI a chance to redraw
+    wxSafeYield();
+    wxMilliSleep(100);
+    wxSafeYield();
+
     int res = server->Connect(this, true);
 
     // Check the result, and handle it as appropriate

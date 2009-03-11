@@ -581,14 +581,23 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
                 switch (dlg.Go())
                 {
                     case wxID_OK:
-                        wxTheApp->Yield();
+                        // Give the UI a chance to redraw
+                        wxSafeYield();
+                        wxMilliSleep(100);
+                        wxSafeYield();
                         break;
                     case wxID_CANCEL:
                     case -1:
-                        wxTheApp->Yield();
+                        // Give the UI a chance to redraw
+                        wxSafeYield();
+                        wxMilliSleep(100);
+                        wxSafeYield();
                         return PGCONN_ABORTED;
                     default:
-                        wxTheApp->Yield();
+                        // Give the UI a chance to redraw
+                        wxSafeYield();
+                        wxMilliSleep(100);
+                        wxSafeYield();
                         wxLogError(__("Couldn't create a connection dialogue!"));
                         return PGCONN_BAD;
                 }
@@ -1325,6 +1334,12 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
         {
             wxBusyInfo waiting(wxString::Format(_("Connecting to server %s (%s:%d)"),
                 server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), form);
+
+            // Give the UI a chance to redraw
+            wxSafeYield();
+            wxMilliSleep(100);
+            wxSafeYield();
+
             rc = server->Connect(form, false, dlg.GetPassword(), true);
         }
         else
