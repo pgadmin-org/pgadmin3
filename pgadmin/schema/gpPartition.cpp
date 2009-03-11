@@ -193,8 +193,6 @@ void gpPartitionFactory::AppendMenu(wxMenu *menu)
 }
 
 #include "images/table.xpm"
-#include "images/table-repl.xpm"
-#include "images/table-repl-sm.xpm"
 #include "images/table-sm.xpm"
 #include "images/tables.xpm"
 

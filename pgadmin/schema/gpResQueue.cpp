@@ -64,13 +64,11 @@ wxString gpResQueue::GetSql(ctlTree *browser)
         if (GetCostLimit() != -1.0)
         {
             sql += wxT(" COST THRESHOLD ");
-            sql += GetCostLimit();
             sql += NumToStr(GetCostLimit());
         }
         if (GetIgnoreCostLimit() != 0.0)
         {
             sql += wxT(" IGNORE THRESHOLD ");
-            sql += GetIgnoreCostLimit();
             sql += NumToStr(GetIgnoreCostLimit());
         }
         if (GetOvercommit())
