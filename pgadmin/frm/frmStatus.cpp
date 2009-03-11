@@ -143,7 +143,7 @@ wxString frmStatus::rateToCboString(int rate)
     if (rate == 1800)
         rateStr = _("30 minutes");
     if (rate == 3600)
-        rateStr = _("1 heure");
+        rateStr = _("1 hour");
 
     return rateStr;
 }
