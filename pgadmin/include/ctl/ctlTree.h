@@ -36,6 +36,12 @@ public:
     pgCollection *GetParentCollection(wxTreeItemId id);
     pgObject *FindObject(pgaFactory &factory, wxTreeItemId parent);
     pgCollection *FindCollection(pgaFactory &factory, wxTreeItemId parent);
+    wxTreeItemId FindItem(const wxTreeItemId& item, const wxString& str);
+
+    DECLARE_EVENT_TABLE()
+
+private:
+    void OnChar(wxKeyEvent& event);
 };
 
 
