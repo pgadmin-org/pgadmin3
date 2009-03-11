@@ -54,6 +54,7 @@ bool pgsApplication::ParseFile(const wxString & file, pgsOutputStream & out,
 {
 	if (!IsRunning())
 	{
+		m_last_error_line = -1;
 		m_thread = new pgsThread(m_vars, m_mutex, m_connection,
 				file, out, *this, conv);
 		return RunThread();
@@ -69,6 +70,7 @@ bool pgsApplication::ParseString(const wxString & string,
 {
 	if (!IsRunning())
 	{
+		m_last_error_line = -1;
 		m_thread = new pgsThread(m_vars, m_mutex, m_connection,
 				string, out, *this);
 		return RunThread();
@@ -147,6 +149,10 @@ void pgsApplication::Complete()
 		m_caller->AddPendingEvent(resultEvent);
     }
 #endif // PGSCLI
+
+	// If last_error_line() == -1 then there was no error
+	// Else get the line number where the error occurred
+	m_last_error_line = m_thread->last_error_line();
 	
 	wxLogScript(wxT("Execution completed"));
 }
@@ -191,4 +197,14 @@ void pgsApplication::LockOutput()
 void pgsApplication::UnlockOutput()
 {
 	m_stream.Post();
+}
+
+bool pgsApplication::errorOccurred() const
+{
+	return (m_last_error_line != -1);
+}
+
+int pgsApplication::errorLine() const
+{
+	return m_last_error_line;
 }

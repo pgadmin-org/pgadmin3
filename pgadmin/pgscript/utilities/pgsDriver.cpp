@@ -70,6 +70,7 @@ void pgsDriver::error(const class location & l, const wxString & m)
 {
 	std::ostringstream oss;
 	oss << l;
+	thread.last_error_line(l.begin.line);
 	thread.LockOutput();
 	context.m_cout << wx_static_cast(const wxString, wxString(oss.str()
 			.c_str(), wxConvUTF8)) << wxT(": ") << m << wxT("\n");

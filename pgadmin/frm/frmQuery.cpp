@@ -1811,6 +1811,13 @@ void frmQuery::OnExecute(wxCommandEvent& event)
 
 void frmQuery::OnExecScript(wxCommandEvent& event)
 {
+    // Get the script
+    wxString query = sqlQuery->GetSelectedText();
+    if (query.IsNull())
+        query = sqlQuery->GetText();
+    if (query.IsNull())
+        return;
+
     // Clear markers and indicators
     sqlQuery->MarkerDeleteAll(0);
     sqlQuery->StartStyling(0, wxSTC_INDICS_MASK);
@@ -1844,7 +1851,7 @@ void frmQuery::OnExecScript(wxCommandEvent& event)
     pgScript->ClearSymbols();
 
     // Parse script
-    pgScript->ParseString(sqlQuery->GetText(), pgsOutput);
+    pgScript->ParseString(query, pgsOutput);
     pgsTimer->Start(20);
     aborted = false;
 }
@@ -2182,6 +2189,26 @@ void frmQuery::OnScriptComplete(wxCommandEvent &ev)
     SetStatusText(_("pgScript completed."), STATUSPOS_MSGS);
     wxString str = _("Total pgScript runtime: ") + elapsedQuery.ToString() + wxT(" ms.\n\n");
     msgHistory->AppendText(str);
+    
+    // Check whether there was an error/exception
+    if (pgScript->errorOccurred() && pgScript->errorLine() >= 1)
+    {
+        // Find out what the line number is
+        int selStart = sqlQuery->GetSelectionStart(), selEnd = sqlQuery->GetSelectionEnd();
+        if (selStart == selEnd)
+            selStart = 0;
+        SetStatusText(wxString() << selStart, STATUSPOS_MSGS);
+        int line = 0, maxLine = sqlQuery->GetLineCount();
+        while (line < maxLine && sqlQuery->GetLineEndPosition(line) < selStart)
+            line++;
+        line += pgScript->errorLine() - 1;
+        
+        // Mark the line where the error occurred
+        sqlQuery->MarkerAdd(line, 0);
+        
+        // Go to that line
+        sqlQuery->GotoPos(sqlQuery->GetLineEndPosition(line));
+    }
 }
 
 void frmQuery::writeScriptOutput()

@@ -21,7 +21,7 @@ pgsThread::pgsThread(pgsVarMap & vars, wxSemaphore & mutex,
 		pgsApplication & app, wxMBConv * conv) :
 	wxThread(wxTHREAD_DETACHED), m_vars(vars), m_mutex(mutex),
 			m_connection(connection), m_data(file), m_out(out),
-			m_app(app), m_conv(conv)
+			m_app(app), m_conv(conv), m_last_error_line(-1)
 {
 	wxLogScript(wxT("Starting thread"));
 	m_mutex.Wait();
@@ -32,7 +32,7 @@ pgsThread::pgsThread(pgsVarMap & vars, wxSemaphore & mutex,
 		pgsApplication & app) :
 	wxThread(wxTHREAD_DETACHED), m_vars(vars), m_mutex(mutex),
 			m_connection(connection), m_data(string), m_out(out),
-			m_app(app), m_conv(0)
+			m_app(app), m_conv(0), m_last_error_line(-1)
 {
 	wxLogScript(wxT("Starting thread"));
 	m_mutex.Wait();
@@ -81,4 +81,14 @@ void pgsThread::LockOutput()
 void pgsThread::UnlockOutput()
 {
 	m_app.UnlockOutput();
+}
+
+void pgsThread::last_error_line(int line)
+{
+	m_last_error_line = line;
+}
+
+int pgsThread::last_error_line() const
+{
+	return m_last_error_line;
 }

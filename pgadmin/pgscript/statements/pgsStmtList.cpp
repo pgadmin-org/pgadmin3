@@ -60,6 +60,7 @@ void pgsStmtList::eval(pgsVarMap & vars) const
 				if (m_app != 0)
 				{
 					m_app->LockOutput();
+					m_app->last_error_line(current->line());
 				}
 				
 				m_cout << wx_static_cast(const wxString, e.message())
@@ -80,6 +81,7 @@ void pgsStmtList::eval(pgsVarMap & vars) const
 				if (m_app != 0)
 				{
 					m_app->LockOutput();
+					m_app->last_error_line(current->line());
 				}
 				
 				m_cout << PGSOUTERROR << _("Unknown exception:\n")

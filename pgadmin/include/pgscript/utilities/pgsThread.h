@@ -46,6 +46,9 @@ private:
 	/** If set it is the encoding used in the file to parse. */
 	wxMBConv * m_conv;
 	
+	/** Location of the last error if there was one otherwise -1 */
+	int m_last_error_line;
+	
 public:
 	
 	/** Parses a file with the provided encoding. */
@@ -71,6 +74,12 @@ public:
 	
 	/** Releases the lock on the output stream. */
 	void UnlockOutput();
+	
+	/** Set the position (line) of the last error. */
+	void last_error_line(int line);
+	
+	/** Get the position (line) of the last error. */
+	int last_error_line() const;
 	
 private:
 	

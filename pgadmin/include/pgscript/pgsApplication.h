@@ -47,6 +47,9 @@ private:
 	/** pgAdmin specific: post this event when m_thread is done. */
 	long m_event_id;
 	
+	/** Location of the last error if there was one. */
+	int m_last_error_line;
+	
 public:
 	
 	/** Creates an application and creates a connection. */
@@ -102,6 +105,12 @@ public:
 	
 	/** Releases the lock on the output stream. */
 	void UnlockOutput();
+	
+	/** Was there an error? */
+	bool errorOccurred() const;
+	
+	/** Get the position (line) of the last error. */
+	int errorLine() const;
 	
 private:
 	
