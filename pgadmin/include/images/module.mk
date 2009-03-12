@@ -5,7 +5,7 @@
 # Copyright (C) 2002 - 2009, The pgAdmin Development Team
 # This software is released under the Artistic Licence
 #
-# module.mk - pgadmin/include/images/ Makefile fragment
+# module.mk -	 $(srcdir)/include/images/ Makefile fragment
 #
 #######################################################################
 
@@ -36,6 +36,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/column-sm.xpm \
 	$(srcdir)/include/images/column.xpm \
 	$(srcdir)/include/images/columns.xpm \
+	$(srcdir)/include/images/configuration.xpm \
+	$(srcdir)/include/images/configurations.xpm \
 	$(srcdir)/include/images/connect.xpm \
 	$(srcdir)/include/images/constraints.xpm \
 	$(srcdir)/include/images/continue.xpm \
@@ -47,6 +49,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/databases.xpm \
 	$(srcdir)/include/images/debugger.xpm \
 	$(srcdir)/include/images/delete.xpm \
+	$(srcdir)/include/images/dictionary.xpm \
+	$(srcdir)/include/images/dictionaries.xpm \
 	$(srcdir)/include/images/dnd_copy.xpm \
 	$(srcdir)/include/images/dnd_move.xpm \
 	$(srcdir)/include/images/dnd_none.xpm \
@@ -92,8 +96,22 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/forward.xpm \
 	$(srcdir)/include/images/function.xpm \
 	$(srcdir)/include/images/functions.xpm \
-        $(srcdir)/include/images/gqbAdd.xpm \
-        $(srcdir)/include/images/gqbRemove.xpm \
+	$(srcdir)/include/images/gqbAdd.xpm \
+	$(srcdir)/include/images/gqbAddRest.xpm \
+	$(srcdir)/include/images/gqbColNotSel.xpm \
+	$(srcdir)/include/images/gqbColSel.xpm \
+	$(srcdir)/include/images/gqbDown.xpm \
+	$(srcdir)/include/images/gqbDownBottom.xpm \
+	$(srcdir)/include/images/gqbJoin.xpm \
+	$(srcdir)/include/images/gqbJoinCursor.xpm \
+	$(srcdir)/include/images/gqbOrderAdd.xpm \
+	$(srcdir)/include/images/gqbOrderAddAll.xpm \
+	$(srcdir)/include/images/gqbOrderRemove.xpm \
+	$(srcdir)/include/images/gqbOrderRemoveAll.xpm \
+	$(srcdir)/include/images/gqbRemove.xpm \
+	$(srcdir)/include/images/gqbRemoveRest.xpm \
+	$(srcdir)/include/images/gqbUp.xpm \
+	$(srcdir)/include/images/gqbUpTop.xpm \
 	$(srcdir)/include/images/group.xpm \
 	$(srcdir)/include/images/groups.xpm \
 	$(srcdir)/include/images/help.xpm \
@@ -121,6 +139,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/operatorfamilies.xpm \
 	$(srcdir)/include/images/package.xpm \
 	$(srcdir)/include/images/packages.xpm \
+	$(srcdir)/include/images/parser.xpm \
+	$(srcdir)/include/images/parsers.xpm \
 	$(srcdir)/include/images/plugins.xpm \
 	$(srcdir)/include/images/pgAdmin3.xpm \
 	$(srcdir)/include/images/primarykey.xpm \
@@ -187,6 +207,9 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/tables.xpm \
 	$(srcdir)/include/images/tablespace.xpm \
 	$(srcdir)/include/images/tablespaces.xpm \
+	$(srcdir)/include/images/template.xpm \
+	$(srcdir)/include/images/templates.xpm \
+	$(srcdir)/include/images/terminate_backend.xpm \
 	$(srcdir)/include/images/trigger.xpm \
 	$(srcdir)/include/images/triggerfunction.xpm \
 	$(srcdir)/include/images/triggerfunctions.xpm \
@@ -213,5 +236,5 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/exttable.xpm
 
 EXTRA_DIST += \
-        $(srcdir)/include/images/module.mk \
+	$(srcdir)/include/images/module.mk \
 	$(srcdir)/include/images/pgAdmin3.ico

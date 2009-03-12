@@ -35,6 +35,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlg/dlgPackage.h \
 	$(srcdir)/include/dlg/dlgPgpassConfig.h \
 	$(srcdir)/include/dlg/dlgProperty.h \
+	$(srcdir)/include/dlg/dlgReassignDropOwned.h \
 	$(srcdir)/include/dlg/dlgRole.h \
 	$(srcdir)/include/dlg/dlgRule.h \
 	$(srcdir)/include/dlg/dlgSchema.h \
