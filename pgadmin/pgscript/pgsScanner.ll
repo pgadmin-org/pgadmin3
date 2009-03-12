@@ -286,6 +286,8 @@ typedef pgscript::pgsParser::token_type token_type;
 					}
 \r					{ query += yytext; yylloc->step(); }
 \n					{ query += yytext; yylloc->lines(yyleng); yylloc->step(); }
+<<EOF>>				{ yylval->str = pnew wxString(query.c_str(), m_conv);
+					  query.clear(); m_parent = 0; return query_token; }
 .					{ yylloc->columns(columns(*yytext)); query += yytext; }
 }
 
@@ -294,6 +296,8 @@ typedef pgscript::pgsParser::token_type token_type;
 					  if (std::string(yytext) == dollar) BEGIN(SC_QUERY); }
 \r					{ query += yytext; yylloc->step(); }
 \n					{ query += yytext; yylloc->lines(yyleng); yylloc->step(); }
+<<EOF>>				{ query += yytext; yylval->str = pnew wxString(query.c_str(), m_conv);
+					  query.clear(); m_parent = 0; return query_token; }
 .					{ yylloc->columns(columns(*yytext)); query += yytext; }
 }
 
@@ -345,6 +349,20 @@ typedef pgscript::pgsParser::token_type token_type;
 						else
 							str += yytext;
 						yylloc->lines(yyleng); yylloc->step();
+					}
+<<EOF>>				{
+						if (string_caller == SC_QUERY)
+						{
+							query += yytext; yylval->str = pnew wxString(query.c_str(), m_conv);
+							query.clear(); m_parent = 0; return query_token;
+						}
+						else
+						{
+							yylval->str = pnew wxString(str.c_str(), m_conv);
+							str.clear();
+							BEGIN(string_caller);
+							return token::PGS_VAL_STR;
+						}
 					}
 .					{ 
 						if (string_caller == SC_QUERY)

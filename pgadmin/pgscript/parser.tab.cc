@@ -534,7 +534,7 @@ namespace pgscript
 	// Initialize the initial location object
 	yylloc.begin.filename = yylloc.end.filename;
 }
-  /* Line 555 of yacc.c.  */
+  /* Line 547 of yacc.c.  */
 #line 534 "pgscript/parser.tab.cc"
     /* Initialize the stacks.  The initial state will be pushed in
        yynewstate, since the latter expects the semantical and the

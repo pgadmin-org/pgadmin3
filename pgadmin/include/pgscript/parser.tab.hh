@@ -54,7 +54,7 @@ namespace pgscript
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// RCS-ID:      $Id: parser.tab.hh,v 1.8 2008/08/10 22:11:29 pgunittest Exp $
+// RCS-ID:      $Id: pgsParser.yy,v 1.6 2008/08/10 22:11:29 pgunittest Exp $
 // Copyright (C) 2002 - 2009, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
@@ -68,7 +68,7 @@ namespace pgscript
 
 
 
-/* Line 303 of lalr1.cc.  */
+/* Line 35 of lalr1.cc.  */
 #line 73 "pgscript/parser.tab.hh"
 
 #include "location.hh"
@@ -128,7 +128,7 @@ namespace pgscript
 	pgsStmt * stmt;
 	pgsStmtList * stmt_list;
 }
-/* Line 303 of lalr1.cc.  */
+/* Line 35 of lalr1.cc.  */
 #line 133 "pgscript/parser.tab.hh"
 	;
 #else

@@ -687,7 +687,7 @@ static yyconst flex_int16_t yy_chk[563] =
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// RCS-ID:      $Id: lex.pgs.cc,v 1.8 2008/08/10 22:11:29 pgunittest Exp $
+// RCS-ID:      $Id: pgsScanner.ll,v 1.5 2008/08/10 22:11:29 pgunittest Exp $
 // Copyright (C) 2002 - 2009, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
@@ -1603,63 +1603,73 @@ YY_RULE_SETUP
 #line 288 "pgscript/pgsScanner.ll"
 { query += yytext; yylloc->lines(yyleng); yylloc->step(); }
 	YY_BREAK
+case YY_STATE_EOF(SC_QUERY):
+#line 289 "pgscript/pgsScanner.ll"
+{ yylval->str = pnew wxString(query.c_str(), m_conv);
+					  query.clear(); m_parent = 0; return query_token; }
+	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 289 "pgscript/pgsScanner.ll"
+#line 291 "pgscript/pgsScanner.ll"
 { yylloc->columns(columns(*yytext)); query += yytext; }
 	YY_BREAK
 
 
 case 123:
 YY_RULE_SETUP
-#line 293 "pgscript/pgsScanner.ll"
+#line 295 "pgscript/pgsScanner.ll"
 { query += yytext;
 					  if (std::string(yytext) == dollar) BEGIN(SC_QUERY); }
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
-#line 295 "pgscript/pgsScanner.ll"
+#line 297 "pgscript/pgsScanner.ll"
 { query += yytext; yylloc->step(); }
 	YY_BREAK
 case 125:
 /* rule 125 can match eol */
 YY_RULE_SETUP
-#line 296 "pgscript/pgsScanner.ll"
+#line 298 "pgscript/pgsScanner.ll"
 { query += yytext; yylloc->lines(yyleng); yylloc->step(); }
+	YY_BREAK
+case YY_STATE_EOF(SC_DOLLAR):
+#line 299 "pgscript/pgsScanner.ll"
+{ query += yytext; yylval->str = pnew wxString(query.c_str(), m_conv);
+					  query.clear(); m_parent = 0; return query_token; }
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
-#line 297 "pgscript/pgsScanner.ll"
+#line 301 "pgscript/pgsScanner.ll"
 { yylloc->columns(columns(*yytext)); query += yytext; }
 	YY_BREAK
 
 
 case 127:
 YY_RULE_SETUP
-#line 301 "pgscript/pgsScanner.ll"
+#line 305 "pgscript/pgsScanner.ll"
 { BEGIN(comment_caller); }
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 302 "pgscript/pgsScanner.ll"
+#line 306 "pgscript/pgsScanner.ll"
 { yylloc->step(); }
 	YY_BREAK
 case 129:
 /* rule 129 can match eol */
 YY_RULE_SETUP
-#line 303 "pgscript/pgsScanner.ll"
+#line 307 "pgscript/pgsScanner.ll"
 { yylloc->lines(yyleng); yylloc->step(); }
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 304 "pgscript/pgsScanner.ll"
+#line 308 "pgscript/pgsScanner.ll"
 { yylloc->columns(columns(*yytext)); }
 	YY_BREAK
 
 
 case 131:
 YY_RULE_SETUP
-#line 308 "pgscript/pgsScanner.ll"
+#line 312 "pgscript/pgsScanner.ll"
 {
 						if (string_caller == SC_QUERY)
 							query += yytext;
@@ -1669,7 +1679,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 314 "pgscript/pgsScanner.ll"
+#line 318 "pgscript/pgsScanner.ll"
 {
 						if (string_caller == SC_QUERY)
 							query += yytext;
@@ -1680,7 +1690,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 321 "pgscript/pgsScanner.ll"
+#line 325 "pgscript/pgsScanner.ll"
 {
 						if (string_caller == SC_QUERY)
 						{
@@ -1698,7 +1708,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
-#line 335 "pgscript/pgsScanner.ll"
+#line 339 "pgscript/pgsScanner.ll"
 {
 						if (string_caller == SC_QUERY)
 							query += yytext;
@@ -1710,7 +1720,7 @@ YY_RULE_SETUP
 case 135:
 /* rule 135 can match eol */
 YY_RULE_SETUP
-#line 342 "pgscript/pgsScanner.ll"
+#line 346 "pgscript/pgsScanner.ll"
 {
 						if (string_caller == SC_QUERY)
 							query += yytext;
@@ -1719,9 +1729,26 @@ YY_RULE_SETUP
 						yylloc->lines(yyleng); yylloc->step();
 					}
 	YY_BREAK
+case YY_STATE_EOF(SC_STRING):
+#line 353 "pgscript/pgsScanner.ll"
+{
+						if (string_caller == SC_QUERY)
+						{
+							query += yytext; yylval->str = pnew wxString(query.c_str(), m_conv);
+							query.clear(); m_parent = 0; return query_token;
+						}
+						else
+						{
+							yylval->str = pnew wxString(str.c_str(), m_conv);
+							str.clear();
+							BEGIN(string_caller);
+							return token::PGS_VAL_STR;
+						}
+					}
+	YY_BREAK
 case 136:
 YY_RULE_SETUP
-#line 349 "pgscript/pgsScanner.ll"
+#line 367 "pgscript/pgsScanner.ll"
 { 
 						if (string_caller == SC_QUERY)
 							query += yytext;
@@ -1733,15 +1760,12 @@ YY_RULE_SETUP
 
 case 137:
 YY_RULE_SETUP
-#line 358 "pgscript/pgsScanner.ll"
+#line 376 "pgscript/pgsScanner.ll"
 ECHO;
 	YY_BREAK
-#line 1737 "pgscript/lex.pgs.cc"
+#line 1764 "pgscript/lex.pgs.cc"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(SC_COMMENT):
-case YY_STATE_EOF(SC_QUERY):
-case YY_STATE_EOF(SC_DOLLAR):
-case YY_STATE_EOF(SC_STRING):
 	yyterminate();
 
 	case YY_END_OF_BUFFER:
@@ -2621,7 +2645,7 @@ void pgsfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 358 "pgscript/pgsScanner.ll"
+#line 376 "pgscript/pgsScanner.ll"
 
 
 

@@ -2198,7 +2198,6 @@ void frmQuery::OnScriptComplete(wxCommandEvent &ev)
         int selStart = sqlQuery->GetSelectionStart(), selEnd = sqlQuery->GetSelectionEnd();
         if (selStart == selEnd)
             selStart = 0;
-        SetStatusText(wxString() << selStart, STATUSPOS_MSGS);
         int line = 0, maxLine = sqlQuery->GetLineCount();
         while (line < maxLine && sqlQuery->GetLineEndPosition(line) < selStart)
             line++;

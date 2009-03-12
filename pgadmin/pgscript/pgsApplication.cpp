@@ -142,6 +142,10 @@ void pgsApplication::Terminate()
 
 void pgsApplication::Complete()
 {
+	// If last_error_line() == -1 then there was no error
+	// Else get the line number where the error occurred
+	m_last_error_line = m_thread->last_error_line();
+	
 #if !defined(PGSCLI)
 	if (m_caller != 0)
 	{
@@ -149,10 +153,6 @@ void pgsApplication::Complete()
 		m_caller->AddPendingEvent(resultEvent);
     }
 #endif // PGSCLI
-
-	// If last_error_line() == -1 then there was no error
-	// Else get the line number where the error occurred
-	m_last_error_line = m_thread->last_error_line();
 	
 	wxLogScript(wxT("Execution completed"));
 }
