@@ -30,6 +30,6 @@ const wxString pgsParameterException::message() const
 	message.Prepend(wxT(">> "));
 	message.Prepend(generate_spaces(PGSOUTEXCEPTION.Length()));
 	return wxString() << PGSOUTEXCEPTION <<
-			wxString::Format(_("Parameter Exception - Some parameters are invalid:\n>> %s"),
+			wxString::Format(_("Parameter Exception - Some parameters are invalid:\n%s"),
 				message.c_str());
 }
