@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.33. Release 8.0.21</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-1.html" title="E.32. Release 8.1">
+<link rel="next" href="release-8-0-20.html" title="E.34. Release 8.0.20">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-0-21">E.33. Release 8.0.21</h2></div></div></div>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2009-03-16</p>
+</div>
+<p>   This release contains a variety of fixes from 8.0.20.
+   For information about new features in the 8.0 major release, see
+   <a class="xref" href="release-8-0.html" title="E.54. Release 8.0">Section E.54, &#8220;Release 8.0&#8221;</a>.
+  </p>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2892328">E.33.1. Migration to Version 8.0.21</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.0.X.
+    However, if you are upgrading from a version earlier than 8.0.6,
+    see the release notes for 8.0.6.
+   </p>
+</div>
+<div class="sect2" lang="en">
+<div class="titlepage"><div><div><h3 class="title" id="id2892337">E.33.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul type="disc">
+<li>
+<p>      Prevent error recursion crashes when encoding conversion fails (Tom)
+     </p>
+<p>      This change extends fixes made in the last two minor releases for
+      related failure scenarios.  The previous fixes were narrowly tailored
+      for the original problem reports, but we have now recognized that
+      <span class="emphasis"><em>any</em></span> error thrown by an encoding conversion function could
+      potentially lead to infinite recursion while trying to report the
+      error.  The solution therefore is to disable translation and encoding
+      conversion and report the plain-ASCII form of any error message,
+      if we find we have gotten into a recursive error reporting situation.
+     </p>
+</li>
+<li>
+<p>      Disallow <code class="command">CREATE CONVERSION</code> with the wrong encodings
+      for the specified conversion function (Heikki)
+     </p>
+<p>      This prevents one possible scenario for encoding conversion failure.
+      The previous change is a backstop to guard against other kinds of
+      failures in the same area.
+     </p>
+</li>
+<li><p>      Fix core dump when <code class="function">to_char()</code> is given format codes that
+      are inappropriate for the type of the data argument (Tom)
+     </p></li>
+<li><p>      Add <code class="literal">MUST</code> (Mauritius Island Summer Time) to the default list
+      of known timezone abbreviations (Xavier Bugaud)
+     </p></li>
+</ul></div>
+</div>
+</div></body>
+</html>
