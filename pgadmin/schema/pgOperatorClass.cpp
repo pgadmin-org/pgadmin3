@@ -94,10 +94,25 @@ void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
 				wxT(" WHERE amopclaid=") + GetOidStr()+ wxT("\n")
 				wxT(" ORDER BY amopstrategy"));
 		}
-		else
+		else if (!GetConnection()->BackendMinimumVersion(8, 4))
 		{
 			set=ExecuteSet(
 				wxT("SELECT amopstrategy, amopreqcheck, oprname, lt.typname as lefttype, rt.typname as righttype\n")
+				wxT("  FROM pg_amop am\n")
+				wxT("  JOIN pg_operator op ON amopopr=op.oid\n")
+				wxT("  JOIN pg_opfamily opf ON amopfamily = opf.oid\n")
+				wxT("  JOIN pg_opclass opc ON opf.oid = opcfamily\n")
+				wxT("  LEFT OUTER JOIN pg_type lt ON lt.oid=oprleft\n")
+				wxT("  LEFT OUTER JOIN pg_type rt ON rt.oid=oprright\n")
+				wxT(" WHERE opc.oid=") + GetOidStr()+ wxT("\n")
+				wxT(" AND amopmethod = opf.opfmethod\n")
+				wxT(" AND amoplefttype = op.oprleft AND amoprighttype = op.oprright\n")
+				wxT(" ORDER BY amopstrategy"));
+		}
+		else
+		{
+			set=ExecuteSet(
+				wxT("SELECT amopstrategy, oprname, lt.typname as lefttype, rt.typname as righttype\n")
 				wxT("  FROM pg_amop am\n")
 				wxT("  JOIN pg_operator op ON amopopr=op.oid\n")
 				wxT("  JOIN pg_opfamily opf ON amopfamily = opf.oid\n")
@@ -135,8 +150,13 @@ void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
                         str += rt;
                     str += wxT(")");
                 }
-                if (set->GetBool(wxT("amopreqcheck")))
-                    str += wxT(" RECHECK");
+
+                if (!GetConnection()->BackendMinimumVersion(8, 4))
+                {
+                    if (set->GetBool(wxT("amopreqcheck")))
+                        str += wxT(" RECHECK");
+                }
+
                 operators.Add(str);
                 set->MoveNext();
             }
