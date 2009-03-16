@@ -39,10 +39,10 @@
 #include "images/storedata.xpm"
  
 // Panes' title
-#define statusTitle  wxT("Activity")
-#define locksTitle   wxT("Locks")
-#define xactTitle    wxT("Transactions")
-#define logTitle     wxT("Logfile")
+#define statusTitle  _("Activity")
+#define locksTitle   _("Locks")
+#define xactTitle    _("Transactions")
+#define logTitle     _("Logfile")
 
 
 BEGIN_EVENT_TABLE(frmStatus, pgFrame)
