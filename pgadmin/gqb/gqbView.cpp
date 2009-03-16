@@ -250,6 +250,11 @@ void gqbView::onDoubleClick(wxMouseEvent& event)
             {
                 t->setAlias(dialog.GetValue());
                 joinsPanel->Refresh();
+
+                // hack to avoid misplaced joins anchors after insert an alias that trigger a table graph resize (bigger)
+                this->Refresh();
+                this->Update(); //force refresh
+                graphBehavior->UpdatePosObject(t,t->position.x,t->position.y,0);
             }
         }
         else if(anySelected->getType()==GQB_JOIN)
