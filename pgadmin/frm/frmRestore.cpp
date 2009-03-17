@@ -115,6 +115,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 
 	// Pass the SSL mode via the environment
 	environment.Add(wxT("PGSSLMODE=") + server->GetConnection()->GetSslModeName());
+	environment.Add(wxT("PGSSLVERIFY=") + server->GetConnection()->GetSslVerifyModeName());
 
     wxCommandEvent ev;
     OnChangeName(ev);

@@ -62,6 +62,7 @@ frmBackupGlobals::frmBackupGlobals(frmMain *form, pgObject *obj) : ExternProcess
 
 		// Pass the SSL mode via the environment
 		environment.Add(wxT("PGSSLMODE=") + ((pgServer *)object)->GetConnection()->GetSslModeName());
+		environment.Add(wxT("PGSSLVERIFY=") + ((pgServer *)object)->GetConnection()->GetSslVerifyModeName());
 	}
 	else
 	{
@@ -70,7 +71,7 @@ frmBackupGlobals::frmBackupGlobals(frmMain *form, pgObject *obj) : ExternProcess
 
 		// Pass the SSL mode via the environment
 		environment.Add(wxT("PGSSLMODE=") + object->GetServer()->GetConnection()->GetSslModeName());
-
+		environment.Add(wxT("PGSSLVERIFY=") + object->GetServer()->GetConnection()->GetSslVerifyModeName());
 	}
 
     // Icon

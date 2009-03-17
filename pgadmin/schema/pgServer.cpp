@@ -39,7 +39,7 @@
 
 #define DEFAULT_PG_DATABASE wxT("postgres")
 
-pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, bool _restore, int _ssl, const wxString &_colour)
+pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, bool _restore, int _ssl, int _sslverify, const wxString &_colour)
 : pgObject(serverFactory, newName)
 {  
     description = newDescription;
@@ -47,6 +47,7 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     username = newUsername;
     port = newPort;
     ssl=_ssl;
+    sslverify=_sslverify;
     colour = _colour;
     serverIndex=0;
 
@@ -137,7 +138,7 @@ pgConn *pgServer::CreateConn(wxString dbName, OID oid)
         dbName = GetDatabaseName();
         oid = dbOid;
     }
-    pgConn *conn=new pgConn(GetName(), dbName, username, password, port, ssl, oid);
+    pgConn *conn=new pgConn(GetName(), dbName, username, password, port, ssl, sslverify, oid);
 
     if (conn && conn->GetStatus() != PGCONN_OK)
     {
@@ -614,21 +615,21 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 
         if (database.IsEmpty())
         {
-            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, ssl);
+            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, ssl, sslverify);
             if (conn->GetStatus() == PGCONN_OK)
                 database=DEFAULT_PG_DATABASE;
             else if (conn->GetStatus() == PGCONN_BAD && conn->GetLastError().Find(
                                 wxT("database \"") DEFAULT_PG_DATABASE wxT("\" does not exist")) >= 0)
             {
                 delete conn;
-                conn = new pgConn(GetName(), wxT("template1"), username, password, port, ssl);
+                conn = new pgConn(GetName(), wxT("template1"), username, password, port, ssl, sslverify);
                 if (conn && conn->GetStatus() == PGCONN_OK)
                     database=wxT("template1");
             }
         }
         else
         {
-            conn = new pgConn(GetName(), database, username, password, port, ssl);
+            conn = new pgConn(GetName(), database, username, password, port, ssl, sslverify);
             if (!conn)
             {
                 form->EndMsg(false);
@@ -933,6 +934,17 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                     }
                     properties->AppendItem(_("SSL Mode"), sslMode);
                 }
+                if (sslverify > 0)
+                {
+                    wxString sslVerifyMode;
+                    switch (sslverify)
+                    {
+                        case 1: sslVerifyMode = _("Full verification"); break;
+                        case 2: sslVerifyMode = _("Certificate only"); break;
+                        case 3: sslVerifyMode = _("No verification"); break;
+                    }
+                    properties->AppendItem(_("SSL Verify Mode"), sslVerifyMode);
+                }
             }
 #endif
         }
@@ -1079,7 +1091,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 {
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
-    long loop, port, ssl=0;
+    long loop, port, ssl=0, sslverify=0;
     wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, restore, serviceID, discoveryID, dbRestriction, colour;
     pgServer *server=0;
 
@@ -1118,10 +1130,11 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         // SSL mode
 #ifdef SSL
         settings->Read(key + wxT("SSL"), &ssl, 0);
+        settings->Read(key + wxT("SSLverify"), &sslverify, 0);
 #endif
 
         // Add the Server node
-        server = new pgServer(servername, description, database, username, port, StrToBool(storePwd), StrToBool(restore), ssl);
+        server = new pgServer(servername, description, database, username, port, StrToBool(storePwd), StrToBool(restore), ssl, sslverify);
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);
         server->iSetServiceID(serviceID);

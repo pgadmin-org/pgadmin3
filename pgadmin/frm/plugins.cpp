@@ -244,6 +244,7 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
 
 		// Pass the SSL mode via the environment
 		wxSetEnv(wxT("PGSSLMODE"), obj->GetConnection()->GetSslModeName());
+		wxSetEnv(wxT("PGSSLVERIFY"), obj->GetConnection()->GetSslVerifyModeName());
     }
     else
     {
@@ -252,6 +253,7 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
         execCmd.Replace(wxT("$$HOSTADDR"), wxEmptyString);
         execCmd.Replace(wxT("$$PORT"), wxEmptyString);
         execCmd.Replace(wxT("$$SSLMODE"), wxEmptyString);
+        execCmd.Replace(wxT("$$SSLVERIFY"), wxEmptyString);
         execCmd.Replace(wxT("$$DATABASE"), wxEmptyString);
         execCmd.Replace(wxT("$$USERNAME"), wxEmptyString);
         execCmd.Replace(wxT("$$PASSWORD"), wxEmptyString);

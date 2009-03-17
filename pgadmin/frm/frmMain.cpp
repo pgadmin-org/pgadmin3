@@ -1049,6 +1049,7 @@ void frmMain::StoreServers()
             settings->Write(key + wxT("DbRestriction"), server->GetDbRestriction());
             settings->Write(key + wxT("Colour"), server->GetColour());
             settings->Write(key + wxT("SSL"), server->GetSSL());
+            settings->Write(key + wxT("SSLverify"), server->GetSSLverify());
 
             pgCollection *coll=browser->FindCollection(databaseFactory, server->GetId());
             if (coll)
