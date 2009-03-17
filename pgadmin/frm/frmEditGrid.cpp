@@ -537,7 +537,7 @@ void frmEditGrid::OnExcludeFilter(wxCommandEvent &event)
         } else {
             
             if (sqlGrid->GetCellValue(currow, curcol) == wxT("\'\'")) {
-                new_filter_string += column_label + wxString::Format(_(" IS DISTINCT FROM '' ")) ;
+                new_filter_string += column_label + wxString::Format(wxT(" IS DISTINCT FROM '' ")) ;
             } else {
                 new_filter_string += column_label + wxT(" IS DISTINCT FROM ") + connection->qtDbString(sqlGrid->GetCellValue(currow, curcol)) + wxT(" ");
             }
