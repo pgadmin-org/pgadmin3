@@ -119,7 +119,7 @@ public:
 
     bool GetSystemObject() const;
 
-    bool CanDrop(); 
+    bool CanDrop();
     bool CanEdit() { return schema->GetMetaType() != PGM_CATALOG; }
     bool CanCreate();
 

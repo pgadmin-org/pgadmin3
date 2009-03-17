@@ -834,7 +834,7 @@ pgServer *pgDatabaseObject::GetServer() const
     
 bool pgDatabaseObject::CanDrop()
 {
-    return database->GetCreatePrivilege();
+    return (database->GetCreatePrivilege() && (GetMetaType() != PGM_CATALOG));
 }
 
 
