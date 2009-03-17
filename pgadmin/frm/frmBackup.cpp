@@ -196,10 +196,10 @@ wxString frmBackup::getCmdPart1()
         cmd=pgBackupExecutable;
 
     if (!server->GetName().IsEmpty())
-        cmd += wxT(" --host=") + server->GetName();
+        cmd += wxT(" --host ") + server->GetName();
 
-    cmd +=  wxT(" --port=") + NumToStr((long)server->GetPort())
-         +  wxT(" --username=") + server->GetUsername();
+    cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
+         +  wxT(" --username ") + server->GetUsername();
 
     if (object->GetConnection()->GetIsGreenplum())
         cmd += wxT(" --gp-syntax ");
@@ -223,21 +223,21 @@ wxString frmBackup::getCmdPart2()
     {
         case 0: // compressed
         {
-            cmd.Append(wxT(" --format=custom"));
+            cmd.Append(wxT(" --format custom"));
             if (chkBlobs->GetValue())
                 cmd.Append(wxT(" --blobs"));
             break;
         }
         case 1: // tar
         {
-            cmd.Append(wxT(" --format=tar"));
+            cmd.Append(wxT(" --format tar"));
             if (chkBlobs->GetValue())
                 cmd.Append(wxT(" --blobs"));
             break;
         }
         case 2:
         {
-            cmd.Append(wxT(" --format=plain"));
+            cmd.Append(wxT(" --format plain"));
             if (chkOnlyData->GetValue())
             {
                 cmd.Append(wxT(" --data-only"));
@@ -270,13 +270,13 @@ wxString frmBackup::getCmdPart2()
     if (chkVerbose->GetValue())
         cmd.Append(wxT(" --verbose"));
 
-    cmd.Append(wxT(" --file=\"") + txtFilename->GetValue() + wxT("\""));
+    cmd.Append(wxT(" --file \"") + txtFilename->GetValue() + wxT("\""));
 
     if (object->GetMetaType() == PGM_SCHEMA)
 #ifdef WIN32
-        cmd.Append(wxT(" --schema=\\\"") + ((pgSchema*)object)->GetIdentifier() + wxT("\\\""));
+        cmd.Append(wxT(" --schema \\\"") + ((pgSchema*)object)->GetIdentifier() + wxT("\\\""));
 #else
-        cmd.Append(wxT(" --schema='") + ((pgSchema*)object)->GetQuotedIdentifier() + wxT("'"));
+        cmd.Append(wxT(" --schema '") + ((pgSchema*)object)->GetQuotedIdentifier() + wxT("'"));
 #endif
 
     else if (object->GetMetaType() == PGM_TABLE || object->GetMetaType() == GP_PARTITION) 
@@ -285,17 +285,17 @@ wxString frmBackup::getCmdPart2()
         if (pgAppMinimumVersion(backupExecutable, 8, 2))
         {
 #ifdef WIN32
-            cmd.Append(wxT(" --table=\"\\\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
+            cmd.Append(wxT(" --table \"\\\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
                        wxT("\\\".\\\"") + ((pgTable*)object)->GetIdentifier() + wxT("\\\"\""));
 #else
-            cmd.Append(wxT(" --table='") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier() + 
+            cmd.Append(wxT(" --table '") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier() + 
                        wxT(".") + ((pgTable*)object)->GetQuotedIdentifier() + wxT("'"));
 #endif
         }
         else
         {
-            cmd.Append(wxT(" --table=") + ((pgTable*)object)->GetQuotedIdentifier());
-            cmd.Append(wxT(" --schema=") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+            cmd.Append(wxT(" --table ") + ((pgTable*)object)->GetQuotedIdentifier());
+            cmd.Append(wxT(" --schema ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
         }
     }
 

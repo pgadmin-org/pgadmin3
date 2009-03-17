@@ -141,10 +141,10 @@ wxString frmBackupServer::getCmdPart1()
         cmd=pgBackupAllExecutable;
 
     if (!server->GetName().IsEmpty())
-        cmd += wxT(" --host=") + server->GetName();
+        cmd += wxT(" --host ") + server->GetName();
 
-    cmd +=  wxT(" --port=") + NumToStr((long)server->GetPort())
-         +  wxT(" --username=") + server->GetUsername();
+    cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
+         +  wxT(" --username ") + server->GetUsername();
     return cmd;
 }
 
@@ -158,7 +158,7 @@ wxString frmBackupServer::getCmdPart2()
     if (chkVerbose->GetValue())
         cmd.Append(wxT(" --verbose"));
 
-    cmd.Append(wxT(" --file=\"") + txtFilename->GetValue() + wxT("\""));
+    cmd.Append(wxT(" --file \"") + txtFilename->GetValue() + wxT("\""));
 
     return cmd;
 }

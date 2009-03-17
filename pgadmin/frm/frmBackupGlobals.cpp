@@ -157,10 +157,10 @@ wxString frmBackupGlobals::getCmdPart1()
         cmd=pgBackupAllExecutable;
 
     if (!server->GetName().IsEmpty())
-        cmd += wxT(" --host=") + server->GetName();
+        cmd += wxT(" --host ") + server->GetName();
 
-    cmd +=  wxT(" --port=") + NumToStr((long)server->GetPort())
-         +  wxT(" --username=") + server->GetUsername();
+    cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
+         +  wxT(" --username ") + server->GetUsername();
     return cmd;
 }
 
@@ -174,7 +174,7 @@ wxString frmBackupGlobals::getCmdPart2()
     if (chkVerbose->GetValue())
         cmd.Append(wxT(" --verbose"));
 
-    cmd.Append(wxT(" --file=\"") + txtFilename->GetValue() + wxT("\""));
+    cmd.Append(wxT(" --file \"") + txtFilename->GetValue() + wxT("\""));
 
     cmd.Append(wxT(" --globals-only"));
 
