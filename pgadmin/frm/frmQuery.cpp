@@ -375,9 +375,9 @@ pgsTimer(new pgScriptTimer(this))
     manager.AddPane(scratchPad, wxAuiPaneInfo().Name(wxT("scratchPad")).Caption(_("Scratch pad")).Right().MinSize(wxSize(100,100)).BestSize(wxSize(250,200)));
     manager.AddPane(sqlNotebook, wxAuiPaneInfo().Name(wxT("sqlQuery")).Caption(_("SQL query")).Center().CaptionVisible(false).CloseButton(false).MinSize(wxSize(200,100)).BestSize(wxSize(350,200)));
 
-    // Now load the layout	 
-    wxString perspective;	 
-    settings->Read(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERPSECTIVE_VER), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);	 
+    // Now load the layout    
+    wxString perspective;    
+    settings->Read(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERPSECTIVE_VER), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);    
     manager.LoadPerspective(perspective, true);
 
     // and reset the captions for the current language
@@ -962,25 +962,31 @@ void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
     {
 
         if (event.GetSelection() == 0)
-	  {
-        queryMenu->SetHelpString(MNU_EXECUTE, _("Execute query"));
-        queryMenu->SetHelpString(MNU_EXECFILE, _("Execute query, write result to file"));
-        toolBar->SetToolShortHelp(MNU_EXECUTE, _("Execute query"));
-        toolBar->SetToolShortHelp(MNU_EXECFILE, _("Execute query, write result to file"));
-		manager.GetPane(wxT("outputPane")).Show(true);
-		manager.GetPane(wxT("scratchPad")).Show(true);
-		manager.Update();
+       {
+            queryMenu->SetHelpString(MNU_EXECUTE, _("Execute query"));
+            queryMenu->SetHelpString(MNU_EXECFILE, _("Execute query, write result to file"));
+            toolBar->SetToolShortHelp(MNU_EXECUTE, _("Execute query"));
+            toolBar->SetToolShortHelp(MNU_EXECFILE, _("Execute query, write result to file"));
+
+            // Reset the panes
+            if (viewMenu->IsChecked(MNU_OUTPUTPANE))
+	            manager.GetPane(wxT("outputPane")).Show(true);
+            if (viewMenu->IsChecked(MNU_SCRATCHPAD))
+	            manager.GetPane(wxT("scratchPad")).Show(true);
+	        manager.Update();
+
             updateFromGqb(false);
-	  }
+        }
         else
         {
-        queryMenu->Append(MNU_EXECUTE, _("Generate SQL from Graphical Query Builder Model"));
-        queryMenu->SetHelpString(MNU_EXECFILE, _("Generate SQL from Graphical Query Builder Model"));
-        toolBar->SetToolShortHelp(MNU_EXECUTE, _("Generate SQL from Graphical Query Builder Model"));
-        toolBar->SetToolShortHelp(MNU_EXECFILE, _("Generate SQL from Graphical Query Builder Model"));
-		manager.GetPane(wxT("outputPane")).Show(false);
-		manager.GetPane(wxT("scratchPad")).Show(false);
-		manager.Update();
+            queryMenu->Append(MNU_EXECUTE, _("Generate SQL from Graphical Query Builder Model"));
+            queryMenu->SetHelpString(MNU_EXECFILE, _("Generate SQL from Graphical Query Builder Model"));
+            toolBar->SetToolShortHelp(MNU_EXECUTE, _("Generate SQL from Graphical Query Builder Model"));
+            toolBar->SetToolShortHelp(MNU_EXECFILE, _("Generate SQL from Graphical Query Builder Model"));
+	        manager.GetPane(wxT("outputPane")).Show(false);
+       	    manager.GetPane(wxT("scratchPad")).Show(false);
+    		manager.Update();
+            
             if(firstTime)        //Things that should be done on first click on GQB
             {
                 // Size, and pause to allow the window to draw
@@ -1362,10 +1368,12 @@ void frmQuery::OnClose(wxCloseEvent& event)
         return;
     }
 
-	//  Rearrangement of a Gqb pane.
-	manager.GetPane(wxT("outputPane")).Show(true);
-	manager.GetPane(wxT("scratchPad")).Show(true);
-	manager.Update();
+    // Reset the panes
+    if (viewMenu->IsChecked(MNU_OUTPUTPANE))
+        manager.GetPane(wxT("outputPane")).Show(true);
+    if (viewMenu->IsChecked(MNU_SCRATCHPAD))
+        manager.GetPane(wxT("scratchPad")).Show(true);
+    manager.Update();
 
     Hide();
 
