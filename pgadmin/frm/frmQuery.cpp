@@ -333,8 +333,7 @@ pgsTimer(new pgScriptTimer(this))
     SetEOLModeDisplay(sqlQuery->GetEOLMode());
 
     // Results pane
-    // TODO change number 9999 by a correct one & should use static event instead?
-    outputPane = new wxNotebook(this, 9999, wxDefaultPosition, wxSize(500, 300));
+    outputPane = new wxNotebook(this, CTL_NTBKGQB, wxDefaultPosition, wxSize(500, 300));
     sqlResult = new ctlSQLResult(outputPane, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
     explainCanvas = new ExplainCanvas(outputPane);
     msgResult = new wxTextCtrl(outputPane, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);

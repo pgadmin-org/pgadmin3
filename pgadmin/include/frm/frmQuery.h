@@ -212,7 +212,8 @@ enum
     CTL_NTBKCENTER,
     CTL_COLSGRID,
     CTL_TIMERSIZES,
-    CTL_TIMERFRM
+    CTL_TIMERFRM,
+    CTL_NTBKGQB
 };
 
 ///////////////////////////////////////////////////////
