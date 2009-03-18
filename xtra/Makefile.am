@@ -7,10 +7,6 @@
 # Makefile - Makefile for *nix systems
 ##############################################################################
 
-if !APPBUNDLE
-
 DIST_SUBDIRS = pgscript wx-build
 SUBDIRS = wx-build
-
-endif
 
