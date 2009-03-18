@@ -70,14 +70,27 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/ex_append.xpm \
 	$(srcdir)/include/images/ex_bmp_heap.xpm \
 	$(srcdir)/include/images/ex_bmp_index.xpm \
+	$(srcdir)/include/images/ex_cte_scan.xpm \
 	$(srcdir)/include/images/ex_group.xpm \
 	$(srcdir)/include/images/ex_hash.xpm \
+	$(srcdir)/include/images/ex_hash_anti_join.xpm \
+	$(srcdir)/include/images/ex_hash_semi_join.xpm \
+	$(srcdir)/include/images/ex_hash_setop_except.xpm \
+	$(srcdir)/include/images/ex_hash_setop_except_all.xpm \
+	$(srcdir)/include/images/ex_hash_setop_intersect.xpm \
+	$(srcdir)/include/images/ex_hash_setop_intersect_all.xpm \
+	$(srcdir)/include/images/ex_hash_setop_unknown.xpm \
 	$(srcdir)/include/images/ex_index_scan.xpm \
 	$(srcdir)/include/images/ex_join.xpm \
 	$(srcdir)/include/images/ex_limit.xpm \
 	$(srcdir)/include/images/ex_materialize.xpm \
 	$(srcdir)/include/images/ex_merge.xpm \
+	$(srcdir)/include/images/ex_merge_anti_join.xpm \
+	$(srcdir)/include/images/ex_merge_semi_join.xpm \
 	$(srcdir)/include/images/ex_nested.xpm \
+	$(srcdir)/include/images/ex_nested_loop_anti_join.xpm \
+	$(srcdir)/include/images/ex_nested_loop_semi_join.xpm \
+	$(srcdir)/include/images/ex_recursive_union.xpm \
 	$(srcdir)/include/images/ex_result.xpm \
 	$(srcdir)/include/images/ex_scan.xpm \
 	$(srcdir)/include/images/ex_seek.xpm \
@@ -87,6 +100,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/ex_tid_scan.xpm \
 	$(srcdir)/include/images/ex_unique.xpm \
 	$(srcdir)/include/images/ex_unknown.xpm \
+	$(srcdir)/include/images/ex_window_aggregate.xpm \
+	$(srcdir)/include/images/ex_worktable_scan.xpm \
 	$(srcdir)/include/images/favourite.xpm \
 	$(srcdir)/include/images/file_new.xpm \
 	$(srcdir)/include/images/file_open.xpm \

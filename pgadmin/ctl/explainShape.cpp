@@ -20,54 +20,49 @@
 
 #include <wx/docview.h>
 
-#include "images/ex_unknown.xpm"
-#include "images/ex_limit.xpm"
-#include "images/ex_unique.xpm"
-#include "images/ex_append.xpm"
-#include "images/ex_hash.xpm"
-#include "images/ex_nested.xpm"
-#include "images/ex_merge.xpm"
-#include "images/ex_join.xpm"
 #include "images/ex_aggregate.xpm"
-#include "images/ex_scan.xpm"
-#include "images/ex_index_scan.xpm"
-#include "images/ex_tid_scan.xpm"
-#include "images/ex_bmp_index.xpm"
+#include "images/ex_append.xpm"
 #include "images/ex_bmp_heap.xpm"
-#include "images/ex_sort.xpm"
+#include "images/ex_bmp_index.xpm"
+#include "images/ex_cte_scan.xpm"
 #include "images/ex_group.xpm"
-#include "images/ex_subplan.xpm"
+#include "images/ex_hash.xpm"
+#include "images/ex_hash_anti_join.xpm"
+#include "images/ex_hash_semi_join.xpm"
+#include "images/ex_hash_setop_except.xpm"
+#include "images/ex_hash_setop_except_all.xpm"
+#include "images/ex_hash_setop_intersect.xpm"
+#include "images/ex_hash_setop_intersect_all.xpm"
+#include "images/ex_hash_setop_unknown.xpm"
+#include "images/ex_index_scan.xpm"
+#include "images/ex_join.xpm"
+#include "images/ex_limit.xpm"
 #include "images/ex_materialize.xpm"
+#include "images/ex_merge.xpm"
+#include "images/ex_merge_anti_join.xpm"
+#include "images/ex_merge_semi_join.xpm"
+#include "images/ex_nested.xpm"
+#include "images/ex_nested_loop_anti_join.xpm"
+#include "images/ex_nested_loop_semi_join.xpm"
+#include "images/ex_recursive_union.xpm"
+#include "images/ex_result.xpm"
+#include "images/ex_scan.xpm"
 #include "images/ex_seek.xpm"
 #include "images/ex_setop.xpm"
-#include "images/ex_result.xpm"
+#include "images/ex_sort.xpm"
+#include "images/ex_subplan.xpm"
+#include "images/ex_tid_scan.xpm"
+#include "images/ex_unique.xpm"
+#include "images/ex_unknown.xpm"
+#include "images/ex_window_aggregate.xpm"
+#include "images/ex_worktable_scan.xpm"
+
 // Greenplum images
 #include "images/ex_broadcast_motion.xpm"
 #include "images/ex_redistribute_motion.xpm"
 #include "images/ex_gather_motion.xpm"
 
-
 #define BMP_BORDER 3
-
-
-// TODO:: 
-// Remove these defines, when appropriate xpm are generated for them
-#define ex_nested_loop_anti_join_xpm   ex_join_xpm
-#define ex_nested_loop_semi_join_xpm   ex_join_xpm
-#define ex_merge_anti_join             ex_join_xpm
-#define ex_merge_semi_join             ex_join_xpm
-#define ex_hash_anti_join_xpm          ex_join_xpm
-#define ex_hash_semi_join_xpm          ex_join_xpm
-#define ex_hashsetop_except_all_xpm    ex_setop_xpm
-#define ex_hashsetop_except_xpm        ex_setop_xpm
-#define ex_hashsetop_intersect_all_xpm ex_setop_xpm
-#define ex_hashsetop_intersect_xpm     ex_setop_xpm
-#define ex_hashsetop_unknown_xpm       ex_setop_xpm
-#define ex_worktable_scan_xpm          ex_scan_xpm
-#define ex_cte_scan_xpm                ex_scan_xpm
-#define ex_recursive_union_xpm         ex_nested_xpm
-#define ex_windowagg_xpm               ex_sort_xpm
-
 
 ExplainShape::ExplainShape(const char *bmp[], const wxString &description, long tokenNo, long detailNo)
 {
@@ -212,12 +207,12 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
             // Merge Anti Join
             if (token2 == wxT("Anti"))
             {
-                s = new ExplainShape(ex_merge_anti_join, descr);
+                s = new ExplainShape(ex_merge_anti_join_xpm, descr);
             }
             // Merge Semi Join
             else
             {
-                s = new ExplainShape(ex_merge_semi_join, descr);
+                s = new ExplainShape(ex_merge_semi_join_xpm, descr);
             }
         }
         else
@@ -263,12 +258,12 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
             // HashSetOp Except ALL
             if (token3 == wxT("ALL"))
             {
-                s = new ExplainShape(ex_hashsetop_except_all_xpm, descr);
+                s = new ExplainShape(ex_hash_setop_except_all_xpm, descr);
             }
             // HashSetOp Except
             else
             {
-                s = new ExplainShape(ex_hashsetop_except_xpm, descr);
+                s = new ExplainShape(ex_hash_setop_except_xpm, descr);
             }
         }
         else if (token2 == wxT("Intersect"))
@@ -276,18 +271,18 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
             // HashSetOp Intersect ALL
             if (token3 == wxT("ALL"))
             {
-                s = new ExplainShape(ex_hashsetop_intersect_all_xpm, descr);
+                s = new ExplainShape(ex_hash_setop_intersect_all_xpm, descr);
             }
             // HashSetOp Intersect
             else
             {
-                s = new ExplainShape(ex_hashsetop_intersect_xpm, descr);
+                s = new ExplainShape(ex_hash_setop_intersect_xpm, descr);
             }
         }
         else
         {
            // HashSetOp ???
-           s = new ExplainShape(ex_hashsetop_unknown_xpm, descr);
+           s = new ExplainShape(ex_hash_setop_unknown_xpm, descr);
         }
     }
     else if (token == wxT("Subquery"))      s = new ExplainShape(ex_subplan_xpm, descr, 0, 2);
@@ -330,7 +325,7 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
     else if (token == wxT("Recursive") && token2 == wxT("Union"))
         s = new ExplainShape(ex_recursive_union_xpm, descr);
     else if (token == wxT("WindowAgg"))
-        s = new ExplainShape(ex_windowagg_xpm, descr);
+        s = new ExplainShape(ex_window_aggregate_xpm, descr);
 
     // Greenplum additions
     else if (token == wxT("Gather") && token2 ==wxT("Motion"))
