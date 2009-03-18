@@ -46,7 +46,6 @@ public:
 
 	void SetDatabase(pgConn *db);
 
-    void OnChar(wxKeyEvent& event);
     void OnKeyDown(wxKeyEvent& event);
 	void OnAutoComplete(wxCommandEvent& event);
     void OnSearchReplace(wxCommandEvent& event);

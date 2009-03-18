@@ -37,7 +37,6 @@ wxString pgscriptKeywords = wxT(" assert break columns continue date datetime fi
                         wxT(" log print record reference regexrmline string waitfor while");
 
 BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
-    EVT_CHAR(ctlSQLBox::OnChar)
 	EVT_KEY_DOWN(ctlSQLBox::OnKeyDown)
     EVT_MENU(MNU_FIND,ctlSQLBox::OnSearchReplace)
 	EVT_MENU(MNU_AUTOCOMPLETE,ctlSQLBox::OnAutoComplete)
@@ -315,35 +314,6 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
         return false;
 }
 
-void ctlSQLBox::OnChar(wxKeyEvent& event)
-{
-#ifdef __WXGTK__
-	event.m_metaDown=false;
-#endif
-
-	// Save the start/end position
-	int start = GetSelectionStart();
-	int end = GetSelectionEnd();
-
-	// Shift to upper
-	if (!GetSelectedText().IsEmpty() && event.GetKeyCode() == '^' && !event.ControlDown() && !event.AltDown() && !event.CmdDown())
-	{
-		ReplaceSelection(GetSelectedText().Upper());
-		SetSelection(start, end);
-		return;
-	}
-
-	// Shift to lower
-	if (!GetSelectedText().IsEmpty() && event.GetKeyCode() == '_' && !event.ControlDown() && !event.AltDown() && !event.CmdDown())
-	{
-		ReplaceSelection(GetSelectedText().Lower());
-		SetSelection(start, end);
-		return;
-	}
-
-	event.Skip();
-}
-
 void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 {
 #ifdef __WXGTK__
@@ -365,7 +335,10 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 			break;
 	}
 
-	// If more than one line is selected, then we may be doing a block indent or block comment.
+	// Save the start position
+	int start = GetSelectionStart();
+
+	// If more than one line is selected, then we may be doing a block indent.
 	if (GetSelectedText().Contains(lineEnd))
 	{
 		// Figure out what a tab looks like
@@ -378,11 +351,8 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 				newIndent += wxT(" ");
 		}
 
-		// Save the start position
-		int start = GetSelectionStart();
-
 		// Block indent (Tab)
-		if (event.GetKeyCode() == '\t' && !event.ShiftDown() && !event.AltDown() && !event.CmdDown() && !event.ControlDown())
+		if (event.GetKeyCode() == '\t' && event.GetModifiers() == wxMOD_NONE)
 		{
 			wxString selection = GetSelectedText();
 			selection.Replace(lineEnd, lineEnd + newIndent);
@@ -393,7 +363,7 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 		}
 
 		// Block outdent (Shift+Tab)
-		if (event.GetKeyCode() == '\t' && event.ShiftDown() && !event.AltDown() && !event.CmdDown() && !event.ControlDown())
+		if (event.GetKeyCode() == '\t' && event.GetModifiers() == wxMOD_SHIFT)
 		{
 			wxString selection = GetSelectedText();
 			selection.Replace(lineEnd + newIndent, lineEnd);
@@ -403,35 +373,40 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 			SetSelection(start, start + selection.Length());
 			return;
 		}
+    }
 
-		// Block comment (-)
-		if (event.GetKeyCode() == '-' && !event.ControlDown() && !event.AltDown() && !event.CmdDown())
-		{
-			wxString selection = GetSelectedText();
-			selection.Replace(lineEnd, lineEnd + wxT("-- "));
-			selection.Prepend(wxT("-- "));
-			ReplaceSelection(selection);
-			SetSelection(start, start + selection.Length());
-			return;
-		}
+    // Commenting can be on any text, block or otherwise.
 
-		// Block uncomment (+)
-		if (event.GetKeyCode() == '+' && !event.ControlDown() && !event.AltDown() && !event.CmdDown())
-		{
-			wxString selection = GetSelectedText();
-			selection.Replace(lineEnd + wxT("-- "), lineEnd);
-			if (selection.StartsWith(wxT("-- ")))
-				selection = selection.Right(selection.Length() - 3);
-			ReplaceSelection(selection);
-			SetSelection(start, start + selection.Length());
-			return;
-		}
-	}
+    // Ccomment (Ctrl+k)
+    if (!GetSelectedText().IsEmpty())
+    {
+	    if (event.GetKeyCode() == 'K' && event.GetModifiers() == wxMOD_CONTROL)
+	    {
+		    wxString selection = GetSelectedText();
+		    selection.Replace(lineEnd, lineEnd + wxT("-- "));
+		    selection.Prepend(wxT("-- "));
+		    ReplaceSelection(selection);
+		    SetSelection(start, start + selection.Length());
+		    return;
+	    }
+
+	    // Uncomment (Ctrl+K)
+	    if (event.GetKeyCode() == 'K' && event.GetModifiers() == (wxMOD_CONTROL | wxMOD_SHIFT))
+	    {
+            wxString selection = GetSelectedText();
+            selection.Replace(lineEnd + wxT("-- "), lineEnd);
+		    if (selection.StartsWith(wxT("-- ")))
+			    selection = selection.Right(selection.Length() - 3);
+		    ReplaceSelection(selection);
+		    SetSelection(start, start + selection.Length());
+		    return;
+	    }
+    }
 
 	// Autocomplete
 	if (!AutoCompActive() &&
-		 ( settings->GetTabForCompletion() && /* autocomplete on tab only if specifically configured */
-		  !event.AltDown() && !event.CmdDown() && !event.ControlDown() && event.GetKeyCode() == '\t'
+		 ( settings->GetTabForCompletion() && // autocomplete on tab only if specifically configured
+		  event.GetModifiers() == wxMOD_NONE && event.GetKeyCode() == '\t'
 		 ))
 	{
 		wxCommandEvent e;
