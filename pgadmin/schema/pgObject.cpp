@@ -192,14 +192,13 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
         // - pg_opclass
         
         // not being implemented:
-        // - pg_attrdef (won't make sense)
-        // - pg_index (done by pg_class
+        // - pg_index (done by pg_class)
 
         set=conn->ExecuteSet(query + wxT("\n")
             wxT("   AND ") + clsorder + wxT(" IN (\n")
             wxT("   SELECT oid FROM pg_class\n")
             wxT("    WHERE relname IN ('pg_class', 'pg_constraint', 'pg_conversion', 'pg_language', 'pg_proc',\n")
-            wxT("                      'pg_rewrite', 'pg_namespace', 'pg_trigger', 'pg_type'))\n")
+            wxT("                      'pg_rewrite', 'pg_namespace', 'pg_trigger', 'pg_type', 'pg_attrdef'))\n")
             wxT(" ORDER BY ") + clsorder + wxT(", cl.relkind"));
 
         if (set)
@@ -263,6 +262,21 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                             default:    break;
                         }
                         break;
+                    }
+                    case 'A':
+                    {
+                        // Include only functions
+                        if (set->GetVal(wxT("adbin")).StartsWith(wxT("{FUNCEXPR")))
+                        {
+                            depFactory=&functionFactory;
+                            refname = set->GetVal(wxT("adsrc"));
+                            break;
+                        }
+                        else
+                        {
+                            set->MoveNext();
+                            continue;
+                        }
                     }
                     default:
                         break;
@@ -337,7 +351,7 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
     else
         where = wh;
     ShowDependency(GetDatabase(), Dependencies,
-        wxT("SELECT DISTINCT dep.deptype, dep.refclassid, cl.relkind,\n")
+        wxT("SELECT DISTINCT dep.deptype, dep.refclassid, cl.relkind, ad.adbin, ad.adsrc, \n")
         wxT("       CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind || COALESCE(dep.refobjsubid::text, '')\n")
         wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
         wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
@@ -346,6 +360,7 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
         wxT("            WHEN la.oid IS NOT NULL THEN 'l'::text\n")
         wxT("            WHEN rw.oid IS NOT NULL THEN 'R'::text\n")
         wxT("            WHEN co.oid IS NOT NULL THEN 'C'::text || contype\n")
+        wxT("            WHEN ad.oid IS NOT NULL THEN 'A'::text\n")
         wxT("            ELSE '' END AS type,\n")
         wxT("       COALESCE(coc.relname, clrw.relname) AS ownertable,\n")
         wxT("       COALESCE(cl.relname || '.' || att.attname, cl.relname, co.conname, pr.proname, tg.tgname, ty.typname, la.lanname, rw.rulename, ns.nspname) AS refname,\n")
@@ -367,33 +382,83 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
         wxT("  LEFT JOIN pg_namespace nsrw ON clrw.relnamespace=nsrw.oid\n")
         wxT("  LEFT JOIN pg_language la ON dep.refobjid=la.oid\n")
         wxT("  LEFT JOIN pg_namespace ns ON dep.refobjid=ns.oid\n")
+        wxT("  LEFT JOIN pg_attrdef ad ON ad.adrelid=att.attrelid AND ad.adnum=att.attnum\n")
         + where, wxT("refclassid"));
 
     pgConn *conn=GetConnection();
-    if (conn && conn->BackendMinimumVersion(8, 1) && where.Find(wxT("subid")) < 0)
+    if (conn)
     {
-        int iconId=groupRoleFactory.GetCollectionFactory()->GetIconId();
-
-        pgSetIterator set(conn, 
-            wxT("SELECT rolname AS refname, refclassid, deptype\n")
-            wxT("  FROM pg_shdepend dep\n")
-            wxT("  LEFT JOIN pg_roles r ON refclassid=1260 AND refobjid=r.oid\n")
-            + where + wxT("\n")
-            wxT(" ORDER BY 1"));
-
-        while (set.RowsLeft())
+        if (where.Find(wxT("subid")) < 0 && conn->BackendMinimumVersion(8, 1))
         {
-            wxString refname = set.GetVal(wxT("refname"));
-            wxString deptype = set.GetVal(wxT("deptype"));
-            if (deptype == wxT("a"))
-                deptype = wxT("ACL");
-            else if (deptype == wxT("o"))
-                deptype = _("Owner");
-
-            if (set.GetOid(wxT("refclassid")) == PGOID_CLASS_PG_AUTHID)
-                    Dependencies->AppendItem(iconId, wxT("Role"), refname, deptype);
+            int iconId=groupRoleFactory.GetCollectionFactory()->GetIconId();
+            pgSetIterator set(conn, 
+                wxT("SELECT rolname AS refname, refclassid, deptype\n")
+                wxT("  FROM pg_shdepend dep\n")
+                wxT("  LEFT JOIN pg_roles r ON refclassid=1260 AND refobjid=r.oid\n")
+                + where + wxT("\n")
+                wxT(" ORDER BY 1"));
+    
+            while (set.RowsLeft())
+            {
+                wxString refname = set.GetVal(wxT("refname"));
+                wxString deptype = set.GetVal(wxT("deptype"));
+                if (deptype == wxT("a"))
+                    deptype = wxT("ACL");
+                else if (deptype == wxT("o"))
+                    deptype = _("Owner");
+    
+                if (set.GetOid(wxT("refclassid")) == PGOID_CLASS_PG_AUTHID)
+                        Dependencies->AppendItem(iconId, wxT("Role"), refname, deptype);
+            }
+        }
+        /*
+        * 
+        * A Corner case, reported by Guillaume Lelarge, could be found at:
+        * http://archives.postgresql.org/pgadmin-hackers/2009-03/msg00026.php
+        * 
+        * SQL:
+        * CREATE TABLE t1 (id serial);
+        * CREATE TABLE t2 (LIKE t1 INCLUDING DEFAULTS);
+        *
+        * When we try to drop the table t1, it gives the following notice:
+        * "NOTICE:  default for table t2 column id depends on sequence t1_id_seq"
+        *
+        * This suggests that the column 't2.id' should be shown in the "Dependency" list
+        * of the sequence 't1_seq_id'
+        * 
+        * As we could not find any direct relationship between 't1_seq_id' and 't2'
+        * table, we come up with this solution.
+        *
+        */
+        if (GetMetaType() == PGM_SEQUENCE)
+        {
+            int iconId = columnFactory.GetIconId();
+            pgSetIterator set(conn, 
+                wxT("SELECT COALESCE(ref.relname || '.' || att.attname, ref.relname) AS refname,\n")
+                wxT("       d2.refclassid, d1.deptype AS deptype\n")
+                wxT("FROM        pg_depend d1\n")
+                wxT("  LEFT JOIN pg_depend d2 ON d1.objid=d2.objid AND d1.refobjid != d2.refobjid\n")
+                wxT("  LEFT JOIN pg_class ref ON ref.oid = d2.refobjid\n")
+                wxT("  LEFT JOIN pg_attribute att ON d2.refobjid=att.attrelid AND d2.refobjsubid=att.attnum\n")
+                wxT("WHERE d1.classid=(SELECT oid FROM pg_class WHERE relname='pg_attrdef')\n")
+                wxT("  AND d2.refobjid NOT IN (SELECT d3.refobjid FROM pg_depend d3 WHERE d3.objid=d1.refobjid)\n")
+                wxT("  AND d1.refobjid=") + GetOidStr());
+            while (set.RowsLeft())
+            {
+                wxString refname = set.GetVal(wxT("refname"));
+                wxString deptype = set.GetVal(wxT("deptype"));
+                if (deptype == wxT("n"))
+                    deptype = wxT("normal");
+                else if (deptype == wxT("i"))
+                    deptype = _("internal");
+                else if (deptype == wxT("a"))
+                    deptype = _("auto");
+    
+                Dependencies->AppendItem(iconId, wxT("Column"), refname, deptype);
+            }
         }
     }
+    
 }
 
 
@@ -408,7 +473,7 @@ void pgObject::ShowDependents(frmMain *form, ctlListView *referencedBy, const wx
     else
         where = wh;
     ShowDependency(GetDatabase(), referencedBy,
-        wxT("SELECT DISTINCT dep.deptype, dep.classid, cl.relkind,\n")
+        wxT("SELECT DISTINCT dep.deptype, dep.classid, cl.relkind, ad.adbin, ad.adsrc, \n")
         wxT("       CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind || COALESCE(dep.objsubid::text, '')\n")
         wxT("            WHEN tg.oid IS NOT NULL THEN 'T'::text\n")
         wxT("            WHEN ty.oid IS NOT NULL THEN 'y'::text\n")
@@ -417,6 +482,7 @@ void pgObject::ShowDependents(frmMain *form, ctlListView *referencedBy, const wx
         wxT("            WHEN la.oid IS NOT NULL THEN 'l'::text\n")
         wxT("            WHEN rw.oid IS NOT NULL THEN 'R'::text\n")
         wxT("            WHEN co.oid IS NOT NULL THEN 'C'::text || contype\n")
+        wxT("            WHEN ad.oid IS NOT NULL THEN 'A'::text\n")
         wxT("            ELSE '' END AS type,\n")
         wxT("       COALESCE(coc.relname, clrw.relname) AS ownertable,\n")
         wxT("       COALESCE(cl.relname || '.' || att.attname, cl.relname, co.conname, pr.proname, tg.tgname, ty.typname, la.lanname, rw.rulename, ns.nspname) AS refname,\n")
@@ -438,7 +504,59 @@ void pgObject::ShowDependents(frmMain *form, ctlListView *referencedBy, const wx
         wxT("  LEFT JOIN pg_namespace nsrw ON clrw.relnamespace=nsrw.oid\n")
         wxT("  LEFT JOIN pg_language la ON dep.objid=la.oid\n")
         wxT("  LEFT JOIN pg_namespace ns ON dep.objid=ns.oid\n")
+        wxT("  LEFT JOIN pg_attrdef ad ON ad.oid=dep.objid\n")
         + where, wxT("classid"));
+
+    /*
+    * 
+    * A Corner case, reported by Guillaume Lelarge, could be found at:
+    * http://archives.postgresql.org/pgadmin-hackers/2009-03/msg00026.php
+    * 
+    * SQL:
+    * CREATE TABLE t1 (id serial);
+    * CREATE TABLE t2 (LIKE t1 INCLUDING DEFAULTS);
+    *
+    * When we try to drop the table t1, it gives the following notice:
+    * "NOTICE:  default for table t2 column id depends on sequence t1_id_seq"
+    *
+    * This suggests that the sequence 't1_seq_id' should be shown in the
+    * "Dependents" list of the table 't2' and column 't2.id'
+    * 
+    * As we could not find any direct relationship between 't1_seq_id' and 't2'
+    * table, we come up with this solution.
+    *
+    */
+    pgConn *conn=GetConnection();
+    if (conn && (GetMetaType() == PGM_TABLE || GetMetaType() == PGM_COLUMN))
+    {
+        int iconId=sequenceFactory.GetIconId();
+        wxString strQuery =
+            wxT("SELECT ref.relname AS refname, d2.refclassid, dep.deptype AS deptype\n")
+            wxT("  FROM pg_depend dep\n")
+            wxT("  LEFT JOIN pg_depend d2 ON dep.objid=d2.objid AND dep.refobjid != d2.refobjid\n")
+            wxT("  LEFT JOIN pg_class ref ON ref.oid=d2.refobjid\n")
+            wxT("  LEFT JOIN pg_attribute att ON d2.refclassid=att.attrelid AND d2.refobjsubid=att.attnum\n")
+            + where +
+            wxT("    AND dep.classid=(SELECT oid FROM pg_class WHERE relname='pg_attrdef')\n")
+            wxT("    AND dep.refobjid NOT IN (SELECT d3.refobjid FROM pg_depend d3 WHERE d3.objid=d2.refobjid)");
+
+
+        pgSetIterator set(conn, strQuery);
+
+        while (set.RowsLeft())
+        {
+            wxString refname = set.GetVal(wxT("refname"));
+            wxString deptype = set.GetVal(wxT("deptype"));
+            if (deptype == wxT("a"))
+                deptype = _("auto");
+            else if (deptype == wxT("n"))
+                deptype = _("normal");
+            else if (deptype == wxT("i"))
+                deptype = _("internal");
+
+            referencedBy->AppendItem(iconId, wxT("Sequence"), refname, deptype);
+        }
+    }
 }
 
 
