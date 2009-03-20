@@ -56,7 +56,9 @@ public:
     bool ReplaceAll(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps);
     bool DoFind(const wxString &find, const wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
     void SetAutoIndent(bool on) { m_autoIndent = on; }
-	void EnableAutoComp(bool on) { m_autocompDisabled = on; }
+    void EnableAutoComp(bool on) { m_autocompDisabled = on; }
+    bool BlockIndent(bool outdent=false);
+    bool BlockComment(bool uncomment=false);
 
     CharacterRange RegexFindText(int minPos, int maxPos, const wxString& text);
 

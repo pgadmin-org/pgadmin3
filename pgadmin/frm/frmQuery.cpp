@@ -118,6 +118,12 @@ EVT_MENU(MNU_TOOLBAR,           frmQuery::OnToggleToolBar)
 EVT_MENU(MNU_SCRATCHPAD,        frmQuery::OnToggleScratchPad)
 EVT_MENU(MNU_OUTPUTPANE,        frmQuery::OnToggleOutputPane)
 EVT_MENU(MNU_DEFAULTVIEW,       frmQuery::OnDefaultView)
+EVT_MENU(MNU_UPPER_CASE,        frmQuery::OnChangeToUpperCase)
+EVT_MENU(MNU_LOWER_CASE,        frmQuery::OnChangeToLowerCase)
+EVT_MENU(MNU_BLOCK_INDENT,      frmQuery::OnBlockIndent)
+EVT_MENU(MNU_BLOCK_OUTDENT,     frmQuery::OnBlockOutDent)
+EVT_MENU(MNU_COMMENT_TEXT,      frmQuery::OnCommentText)
+EVT_MENU(MNU_UNCOMMENT_TEXT,    frmQuery::OnUncommentText)
 EVT_MENU(MNU_LF,                frmQuery::OnSetEOLMode)
 EVT_MENU(MNU_CRLF,              frmQuery::OnSetEOLMode)
 EVT_MENU(MNU_CR,                frmQuery::OnSetEOLMode)
@@ -198,7 +204,19 @@ pgsTimer(new pgScriptTimer(this))
     editMenu->Append(MNU_FIND, _("&Find and Replace\tCtrl-F"), _("Find and replace text"), wxITEM_NORMAL);
     editMenu->AppendSeparator();
     editMenu->Append(MNU_AUTOINDENT, _("&Auto indent"), _("Automatically indent text to the same level as the preceding line"), wxITEM_CHECK);
+
+  //  editMenu->AppendSeparator();
+    formatMenu = new wxMenu();
+    formatMenu->Append(MNU_UPPER_CASE, _("&Upper case\tCtrl-U"), _("Change the selected text to upper case"));
+    formatMenu->Append(MNU_LOWER_CASE, _("&Lower case\tCtrl-Shift-U"), _("Change the selected text to lower case"));
+    formatMenu->AppendSeparator();
+    formatMenu->Append(MNU_BLOCK_INDENT, _("Block &Indent\tTab"), _("Indent the selected block"));
+    formatMenu->Append(MNU_BLOCK_OUTDENT, _("Block &Outdent\tShift-Tab"), _("Outdent the selected block"));
+    formatMenu->Append(MNU_COMMENT_TEXT, _("Co&mment Text\tCtrl-K"), _("Comment out the selected text"));
+    formatMenu->Append(MNU_UNCOMMENT_TEXT, _("Uncomme&nt Text\tCtrl-Shift-K"), _("Uncomment the selected text"));
+    editMenu->AppendSubMenu(formatMenu, _("F&ormat"));
     editMenu->Append(MNU_LINEENDS, _("&Line ends"), lineEndMenu);
+
     menuBar->Append(editMenu, _("&Edit"));
 
     queryMenu = new wxMenu();
@@ -2377,6 +2395,35 @@ void frmQuery::OnAdjustSizesTimer(wxTimerEvent & event)
     adjustSizesTimer->Stop();
 }
 
+void frmQuery::OnChangeToUpperCase(wxCommandEvent& event)
+{
+    sqlQuery->UpperCase();
+}
+
+void frmQuery::OnChangeToLowerCase(wxCommandEvent& event)
+{
+    sqlQuery->LowerCase();
+}
+
+void frmQuery::OnBlockIndent(wxCommandEvent& event)
+{
+    sqlQuery->BlockIndent(false);
+}
+
+void frmQuery::OnBlockOutDent(wxCommandEvent& event)
+{
+    sqlQuery->BlockIndent(true);
+}
+
+void frmQuery::OnCommentText(wxCommandEvent& event)
+{
+    sqlQuery->BlockComment(false);
+}
+
+void frmQuery::OnUncommentText(wxCommandEvent& event)
+{
+    sqlQuery->BlockComment(true);
+}
 
 ///////////////////////////////////////////////////////
 
@@ -2577,3 +2624,4 @@ void pgScriptTimer::Notify()
     // Write script output
     m_parent->writeScriptOutput();
 }
+

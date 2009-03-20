@@ -335,72 +335,40 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 			break;
 	}
 
-	// Save the start position
-	int start = GetSelectionStart();
-
-	// If more than one line is selected, then we may be doing a block indent.
-	if (GetSelectedText().Contains(lineEnd))
-	{
-		// Figure out what a tab looks like
-		wxString newIndent;
-		if (GetUseTabs())
-		    newIndent = wxT("\t");
-		else
-		{
-			for (int x=0; x < GetTabWidth(); x++ )
-				newIndent += wxT(" ");
-		}
-
-		// Block indent (Tab)
-		if (event.GetKeyCode() == '\t' && event.GetModifiers() == wxMOD_NONE)
-		{
-			wxString selection = GetSelectedText();
-			selection.Replace(lineEnd, lineEnd + newIndent);
-			selection.Prepend(newIndent);
-			ReplaceSelection(selection);
-			SetSelection(start, start + selection.Length());
-			return;
-		}
-
-		// Block outdent (Shift+Tab)
-		if (event.GetKeyCode() == '\t' && event.GetModifiers() == wxMOD_SHIFT)
-		{
-			wxString selection = GetSelectedText();
-			selection.Replace(lineEnd + newIndent, lineEnd);
-			if (selection.StartsWith(newIndent))
-				selection = selection.Right(selection.Length() - newIndent.Length());
-			ReplaceSelection(selection);
-			SetSelection(start, start + selection.Length());
-			return;
-		}
-    }
-
-    // Commenting can be on any text, block or otherwise.
-
-    // Ccomment (Ctrl+k)
-    if (!GetSelectedText().IsEmpty())
+    // Block indent/outdent
+    
+    if (event.GetKeyCode() == '\t')
     {
-	    if (event.GetKeyCode() == 'K' && event.GetModifiers() == wxMOD_CONTROL)
-	    {
-		    wxString selection = GetSelectedText();
-		    selection.Replace(lineEnd, lineEnd + wxT("-- "));
-		    selection.Prepend(wxT("-- "));
-		    ReplaceSelection(selection);
-		    SetSelection(start, start + selection.Length());
-		    return;
-	    }
-
-	    // Uncomment (Ctrl+K)
-	    if (event.GetKeyCode() == 'K' && event.GetModifiers() == (wxMOD_CONTROL | wxMOD_SHIFT))
-	    {
-            wxString selection = GetSelectedText();
-            selection.Replace(lineEnd + wxT("-- "), lineEnd);
-		    if (selection.StartsWith(wxT("-- ")))
-			    selection = selection.Right(selection.Length() - 3);
-		    ReplaceSelection(selection);
-		    SetSelection(start, start + selection.Length());
-		    return;
-	    }
+        // Block indent (Tab)
+        if (event.GetModifiers() == wxMOD_NONE)
+        {
+            if (BlockIndent(false))
+                return;
+        }
+        // Block outdent (Shift+Tab)
+        else if (event.GetModifiers() == wxMOD_SHIFT)
+        {
+            if (BlockIndent(true))
+                return;
+        }
+    }
+    
+    // Block comment/uncomment
+    
+    else if (event.GetKeyCode() == 'K')
+    {
+        // Comment (Ctrl+k)
+        if (event.GetModifiers() == wxMOD_CONTROL)
+        {
+            if (BlockComment(false))
+                return;
+        }
+        // Uncomment (Ctrl+Shift+K)
+        else if (event.GetModifiers() == (wxMOD_CONTROL | wxMOD_SHIFT))
+        {
+            if (BlockComment(true))
+                return;
+        }
     }
 
 	// Autocomplete
@@ -459,6 +427,98 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
     }
     else
 		event.Skip();
+}
+
+bool ctlSQLBox::BlockIndent(bool outdent)
+{
+    wxString lineEnd;
+    switch (GetEOLMode())
+    {
+        case wxSTC_EOL_LF:
+            lineEnd = wxT("\n");
+            break;
+        case wxSTC_EOL_CRLF:
+            lineEnd = wxT("\r\n");
+            break;
+        case wxSTC_EOL_CR:
+            lineEnd = wxT("\r");
+            break;
+    }
+
+    // Save the start position
+    int start = GetSelectionStart();
+
+    // If more than one line is selected, then we may be doing a block indent/outdent.
+    if (GetSelectedText().Contains(lineEnd))
+    {
+        // Figure out what a tab looks like
+        wxString newIndent;
+        if (GetUseTabs())
+            newIndent = wxT("\t");
+        else
+        {
+            for (int x=0; x < GetTabWidth(); x++ )
+                newIndent += wxT(" ");
+        }
+
+        wxString selection = GetSelectedText();
+        // Block indent (Tab)
+        if (!outdent)
+        {
+            selection.Replace(lineEnd, lineEnd + newIndent);
+            selection.Prepend(newIndent);
+        }
+        else
+        {
+            selection.Replace(lineEnd + newIndent, lineEnd);
+            if (selection.StartsWith(newIndent))
+                selection = selection.Right(selection.Length() - newIndent.Length());
+        }
+        ReplaceSelection(selection);
+        SetSelection(start, start + selection.Length());
+        return false;
+    }
+    return false;
+}
+
+bool ctlSQLBox::BlockComment(bool uncomment)
+{
+    wxString lineEnd;
+    switch (GetEOLMode())
+    {
+        case wxSTC_EOL_LF:
+            lineEnd = wxT("\n");
+            break;
+        case wxSTC_EOL_CRLF:
+            lineEnd = wxT("\r\n");
+            break;
+        case wxSTC_EOL_CR:
+            lineEnd = wxT("\r");
+            break;
+    }
+
+    // Save the start position
+    int start = GetSelectionStart();
+
+    if (!GetSelectedText().IsEmpty())
+    {
+        wxString selection = GetSelectedText();
+        if (!uncomment)
+        {
+            selection.Replace(lineEnd, lineEnd + wxT("-- "));
+            selection.Prepend(wxT("-- "));
+        }
+        else
+        {
+            selection.Replace(lineEnd + wxT("-- "), lineEnd);
+            if (selection.StartsWith(wxT("-- ")))
+                selection = selection.Right(selection.Length() - 3);
+        }
+        ReplaceSelection(selection);
+        SetSelection(start, start + selection.Length());
+        return true;
+    }
+    return false;
 }
 
 void ctlSQLBox::OnKillFocus(wxFocusEvent& event)

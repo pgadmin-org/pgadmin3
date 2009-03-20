@@ -155,6 +155,12 @@ private:
     void OnToggleOutputPane(wxCommandEvent& event);
     void OnAuiUpdate(wxAuiManagerEvent& event);
     void OnDefaultView(wxCommandEvent& event);
+    void OnChangeToUpperCase(wxCommandEvent& event);
+    void OnChangeToLowerCase(wxCommandEvent& event);
+    void OnBlockIndent(wxCommandEvent& event);
+    void OnBlockOutDent(wxCommandEvent& event);
+    void OnCommentText(wxCommandEvent& event);
+    void OnUncommentText(wxCommandEvent& event);
 
     void OnTimer(wxTimerEvent & event);
 
@@ -181,6 +187,7 @@ private:
     wxMenu *favouritesMenu;
     wxMenu *macrosMenu;
     wxMenu *lineEndMenu;
+    wxMenu *formatMenu;
     wxString title;
     wxString lastFilename, lastDir;
 
