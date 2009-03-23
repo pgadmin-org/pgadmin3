@@ -156,7 +156,20 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         if (txtColour->GetValue().Trim() == wxEmptyString)
             server->iSetColour(wxEmptyString);
         else
-		    server->iSetColour(wxColour(txtColour->GetValue().Trim()).GetAsString(wxC2S_HTML_SYNTAX));
+        {
+            wxColour colour;
+            wxString sColour = wxEmptyString;
+
+            if (colour.Set(txtColour->GetValue().Trim()))
+                sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
+            else
+            {
+                wxLogError(_("The colour specified is not valid."));
+                return;
+            }
+
+            server->iSetColour(sColour);
+        }
         mainForm->execSelChange(server->GetId(), true);
         mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
 
@@ -330,6 +343,12 @@ void dlgServer::CheckChange()
 
     if (server)
     {
+        wxColour colour;
+        wxString sColour = wxEmptyString;
+
+        if (colour.Set(server->GetColour()))
+            sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
+
         enable =  name != server->GetName()
                || txtDescription->GetValue() != server->GetDescription()
                || txtService->GetValue() != server->GetServiceID()
@@ -341,7 +360,7 @@ void dlgServer::CheckChange()
                || chkStorePwd->GetValue() != server->GetStorePwd()
                || chkRestore->GetValue() != server->GetRestore()
                || txtDbRestriction->GetValue() != server->GetDbRestriction()
-			   || txtColour->GetValue() != wxColour(server->GetColour()).GetAsString(wxC2S_HTML_SYNTAX);
+               || txtColour->GetValue() != sColour;
     }
 
 

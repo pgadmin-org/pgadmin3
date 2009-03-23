@@ -1125,7 +1125,15 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         // Sanitize the colour
         colour = colour.Trim();
         if (!colour.IsEmpty())
-            colour = wxColour(colour.Trim()).GetAsString(wxC2S_HTML_SYNTAX);
+        {
+            wxColour cColour;
+            wxString sColour = wxEmptyString;
+
+            if (cColour.Set(colour))
+                colour = cColour.GetAsString(wxC2S_HTML_SYNTAX);
+            else
+                colour = wxEmptyString;
+        }
 
         // SSL mode
 #ifdef SSL
