@@ -490,6 +490,8 @@ pgsTimer(new pgScriptTimer(this))
 
 frmQuery::~frmQuery()
 {
+    closing = true;
+
     sqlQuery->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
@@ -1757,6 +1759,9 @@ void frmQuery::OnExplain(wxCommandEvent& event)
 // Update the main SQL query from the GQB if desired
 bool frmQuery::updateFromGqb(bool executing)
 {
+    if (closing)
+        return false;
+
     // Make sure this doesn't get call recursively through an event
     if (gqbUpdateRunning)
         return false;
