@@ -916,9 +916,17 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
     
 	if (!connection)
 	{
-	    wxLogError(wxT("no connection for status"));
+	    statusTimer->Stop();
+	    locksTimer->Stop();
+	    xactTimer->Stop();
+	    logTimer->Stop();
+		statusBar->SetStatusText(wxT("Connection broken."));
 	    return;
     }
+
+	checkConnection();
+	if (!connection)
+	    return;
     
     wxCriticalSectionLocker lock(gs_critsect);
 
@@ -1015,10 +1023,18 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 
 	if (!connection)
 	{
-	    wxLogError(wxT("no connection for locks"));
+	    statusTimer->Stop();
+	    locksTimer->Stop();
+	    xactTimer->Stop();
+	    logTimer->Stop();
+		statusBar->SetStatusText(wxT("Connection broken."));
 	    return;
     }
 
+	checkConnection();
+	if (!connection)
+	    return;
+    
     wxCriticalSectionLocker lock(gs_critsect);
 
     connection->ExecuteVoid(wxT("SET log_statement='none';"));
@@ -1154,10 +1170,18 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
 
 	if (!connection)
 	{
-	    wxLogError(wxT("no connection for xact"));
+	    statusTimer->Stop();
+	    locksTimer->Stop();
+	    xactTimer->Stop();
+	    logTimer->Stop();
+		statusBar->SetStatusText(wxT("Connection broken."));
 	    return;
     }
 
+	checkConnection();
+	if (!connection)
+	    return;
+    
     wxCriticalSectionLocker lock(gs_critsect);
 
     connection->ExecuteVoid(wxT("SET log_statement='none';"));
@@ -1230,9 +1254,17 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
 
 	if (!connection)
 	{
-	    wxLogError(wxT("no connection for logs"));
+	    statusTimer->Stop();
+	    locksTimer->Stop();
+	    xactTimer->Stop();
+	    logTimer->Stop();
+		statusBar->SetStatusText(wxT("Connection broken."));
 	    return;
     }
+    
+	checkConnection();
+	if (!connection)
+	    return;
     
     wxCriticalSectionLocker lock(gs_critsect);
 
@@ -1344,6 +1376,10 @@ void frmStatus::checkConnection()
 	{
 	    delete connection;
 		connection=0;
+	    statusTimer->Stop();
+	    locksTimer->Stop();
+	    xactTimer->Stop();
+	    logTimer->Stop();
 		statusBar->SetStatusText(_("Connection broken."));
 	}
 }
@@ -1825,7 +1861,7 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
 #endif
     currentPane = PANE_STATUS;
     cbRate->SetValue(rateToCboString(statusRate));
-	if (connection->BackendMinimumVersion(8, 0))
+	if (connection && connection->BackendMinimumVersion(8, 0))
 	{
 		if(statusList->GetSelectedItemCount() > 0) 
 		{
@@ -1859,7 +1895,7 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
 #endif
 	currentPane = PANE_LOCKS;
 	cbRate->SetValue(rateToCboString(locksRate));
-	if (connection->BackendMinimumVersion(8, 0))
+	if (connection && connection->BackendMinimumVersion(8, 0))
 	{
 		if(lockList->GetSelectedItemCount() > 0) 
 		{
