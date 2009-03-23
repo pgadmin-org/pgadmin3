@@ -74,10 +74,14 @@ wxPanel(parent,-1)
     downBitmap = wxBitmap(gqbDown_xpm);
     downBottomBitmap = wxBitmap(gqbDownBottom_xpm);
 
-    buttonUp = new wxBitmapButton( this, GQB_COLS_UP_BUTTON_ID,  upBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonUpTop  = new wxBitmapButton( this, GQB_COLS_UP_TOP_BUTTON_ID,  upTopBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonDown = new wxBitmapButton( this, GQB_COLS_DOWN_BUTTON_ID,  downBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonDownBottom = new wxBitmapButton( this, GQB_COLS_DOWN_BOTTOM_BUTTON_ID,  downBottomBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
+    buttonUp = new wxBitmapButton( this, GQB_COLS_UP_BUTTON_ID,  upBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Up") );
+    buttonUp->SetToolTip(_("Move the selected column up"));
+    buttonUpTop  = new wxBitmapButton( this, GQB_COLS_UP_TOP_BUTTON_ID,  upTopBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Top") );
+    buttonUpTop->SetToolTip(_("Move the selected column to the top"));
+    buttonDown = new wxBitmapButton( this, GQB_COLS_DOWN_BUTTON_ID,  downBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Down") );
+    buttonDown->SetToolTip(_("Move the selected column down"));
+    buttonDownBottom = new wxBitmapButton( this, GQB_COLS_DOWN_BOTTOM_BUTTON_ID,  downBottomBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Bottom") );
+    buttonDownBottom->SetToolTip(_("Move the selected column to the bottom"));
 
     this->colsGrid = new wxGrid(this, -1, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_BESTWRAP ,wxT(""));
     colsGrid->SetTable(gModel,true,wxGrid::wxGridSelectCells);
@@ -606,7 +610,9 @@ wxPanel(parent,-1)
     addBitmap= wxBitmap(gqbAddRest_xpm);
     dropBitmap= wxBitmap(gqbRemoveRest_xpm);
     buttonAdd= new wxBitmapButton( this, GQB_COLS_ADD_BUTTON_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add"));
+    buttonAdd->SetToolTip(_("Add a new criteria line"));
     buttonDrop= new wxBitmapButton( this, GQB_COLS_DROP_BUTTON_ID,  dropBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove"));
+    buttonDrop->SetToolTip(_("Remove the selected criteria line"));
 
     wxBoxSizer *horizontalSizer = new wxBoxSizer( wxHORIZONTAL );
     horizontalSizer->Add(restrictionsGrid,
@@ -866,19 +872,27 @@ wxPanel(parent,-1)
     removeAllBitmap = wxBitmap(gqbOrderRemoveAll_xpm);
 
     buttonAdd=new wxBitmapButton( this, GQB_ORDER_ADD_BUTTON_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add Column") );
+    buttonAdd->SetToolTip(_("Add the selected column"));
     buttonAddAll=new wxBitmapButton( this, GQB_ORDER_ADD_ALL_BUTTON_ID,  addAllBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add All Columns") );
+    buttonAddAll->SetToolTip(_("Add all columns"));
     buttonRemove=new wxBitmapButton( this, GQB_ORDER_DROP_BUTTON_ID,  removeBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove Column") );
+    buttonRemove->SetToolTip(_("Remove the selected column"));
     buttonRemoveAll=new wxBitmapButton( this, GQB_ORDER_DROP_ALL_BUTTON_ID,  removeAllBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove All Columns") );
+    buttonRemoveAll->SetToolTip(_("Remove all columns"));
 
     upBitmap = wxBitmap(gqbUp_xpm);
     upTopBitmap = wxBitmap(gqbUpTop_xpm);
     downBitmap = wxBitmap(gqbDown_xpm);
     downBottomBitmap = wxBitmap(gqbDownBottom_xpm);
 
-    buttonUp = new wxBitmapButton( this, GQB_ORDER_UP_BUTTON_ID,  upBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonDown  = new wxBitmapButton( this, GQB_ORDER_DOWN_BUTTON_ID,  downBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonUpTop = new wxBitmapButton( this, GQB_ORDER_UP_TOP_BUTTON_ID,  upTopBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
-    buttonDownBottom = new wxBitmapButton( this, GQB_ORDER_DOWN_BOTTOM_BUTTON_ID,  downBottomBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Column(s) Up") );
+    buttonUp = new wxBitmapButton( this, GQB_ORDER_UP_BUTTON_ID,  upBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Up") );
+    buttonUp->SetToolTip(_("Move the selected column up"));
+    buttonDown  = new wxBitmapButton( this, GQB_ORDER_DOWN_BUTTON_ID,  downBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Down") );
+    buttonDown->SetToolTip(_("Move the selected column down"));
+    buttonUpTop = new wxBitmapButton( this, GQB_ORDER_UP_TOP_BUTTON_ID,  upTopBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Top") );
+    buttonUpTop->SetToolTip(_("Move the selected column to the top"));
+    buttonDownBottom = new wxBitmapButton( this, GQB_ORDER_DOWN_BOTTOM_BUTTON_ID,  downBottomBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Bottom") );
+    buttonDownBottom->SetToolTip(_("Move the selected column to the bottom"));
 
     availableColumns = new wxGrid(this, -1, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_BESTWRAP ,wxT("Available Columns"));
 	availableColumns->SetTable(gridTableLeft);
@@ -1489,7 +1503,9 @@ wxPanel(parent, wxID_ANY)
     addBitmap= wxBitmap(gqbAdd_xpm);
     dropBitmap= wxBitmap(gqbRemove_xpm);
     buttonAdd= new wxBitmapButton( this, GQB_JOIN_COLS_ADD_BUTTON_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add"));
+    buttonAdd->SetToolTip(_("Add a new join"));
     buttonDrop= new wxBitmapButton( this, GQB_JOIN_COLS_DELETE_BUTTON_ID,  dropBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove"));
+    buttonDrop->SetToolTip(_("Remove the selected join"));
 
     wxBoxSizer *horizontalSizer = new wxBoxSizer( wxHORIZONTAL );
     horizontalSizer->Add(joinsGrid,
