@@ -480,11 +480,6 @@ pgsTimer(new pgScriptTimer(this))
 
     msgResult->SetMaxLength(0L);
     msgHistory->SetMaxLength(0L);
-
-    // TODO 666 : This should be replaced with a message when activating GQB not at startup
-    wxString msg=wxT("Loading Database metadata info for Graphical Query Builder");
-    wxBusyInfo waiting(msg, this);
-
 }
 
 
@@ -874,6 +869,12 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
         {
             wxString msg = _("Retrieving tables from database ") + wxString(conn->GetDbname());
             wxBusyInfo waiting(msg, this);
+
+            // Give the UI a chance to redraw
+            wxSafeYield();
+            wxMilliSleep(100);
+            wxSafeYield();
+
             controller->getTablesBrowser()->refreshTables(conn);
             controller->getView()->Refresh();
         }
@@ -1016,6 +1017,12 @@ void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
                 // Create a server object and connect it.
                 wxString msg= _("Retrieving tables from database ") + wxString(conn->GetDbname());
                 wxBusyInfo waiting(msg, this);
+
+                // Give the UI a chance to redraw
+                wxSafeYield();
+                wxMilliSleep(100);
+                wxSafeYield();
+
                 controller->getTablesBrowser()->refreshTables(conn);
                 firstTime=false;
             }
