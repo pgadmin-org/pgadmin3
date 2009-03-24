@@ -216,7 +216,7 @@ wxString dlgSequence::GetSql()
 
             if (txtMax->GetValue().IsEmpty())
                 tmp += wxT("\n   NO MAXVALUE");
-            else if (StrToLongLong(txtMax->GetValue()) > sequence->GetMaxValue())
+            else if (StrToLongLong(txtMax->GetValue()) >= sequence->GetMaxValue())
                 tmp += wxT("\n   MAXVALUE ") + txtMax->GetValue();
 
             if (!tmp.IsEmpty())
