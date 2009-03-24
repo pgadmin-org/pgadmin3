@@ -13,14 +13,6 @@
 #include <wx/xrc/xmlres.h>
 #include <wx/xrc/xh_all.h>
 
-#if wxCHECK_VERSION(2,8,5) && wxABI_VERSION >= 20805
-    #define XRC_ADD_FILE(name, data, size, mime) \
-        wxMemoryFSHandler::AddFileWithMimeType(name, data, size, mime)
-#else
-    #define XRC_ADD_FILE(name, data, size, mime) \
-        wxMemoryFSHandler::AddFile(name, data, size)
-#endif
-
 static size_t xml_res_size_0 = 2378;
 static unsigned char xml_res_file_0[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
@@ -2793,7 +2785,7 @@ static unsigned char xml_res_file_7[] = {
 99,116,62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,
 111,117,114,99,101,62,10};
 
-static size_t xml_res_size_8 = 3226;
+static size_t xml_res_size_8 = 3389;
 static unsigned char xml_res_file_8[] = {
 60,63,120,109,108,32,118,101,114,115,105,111,110,61,34,49,46,48,34,32,101,
 110,99,111,100,105,110,103,61,34,73,83,79,45,56,56,53,57,45,49,34,63,62,
@@ -2942,9 +2934,16 @@ static unsigned char xml_res_file_8[] = {
 47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,32,32,60,102,108,97,103,
 62,119,120,69,88,80,65,78,68,124,119,120,84,79,80,124,119,120,76,69,70,
 84,124,119,120,82,73,71,72,84,60,47,102,108,97,103,62,10,32,32,32,32,32,
-32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,60,47,111,98,106,101,99,
-116,62,10,32,32,60,47,111,98,106,101,99,116,62,10,60,47,114,101,115,111,
-117,114,99,101,62,10};
+32,60,47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,60,111,98,106,101,
+99,116,32,99,108,97,115,115,61,34,115,105,122,101,114,105,116,101,109,34,
+62,10,32,32,32,32,32,32,32,32,60,111,98,106,101,99,116,32,99,108,97,115,
+115,61,34,119,120,83,116,97,116,117,115,66,97,114,34,32,110,97,109,101,
+61,34,117,110,107,83,116,97,116,117,115,66,97,114,34,62,10,32,32,32,32,
+32,32,32,32,32,32,60,115,116,121,108,101,62,119,120,83,84,95,83,73,90,69,
+71,82,73,80,60,47,115,116,121,108,101,62,10,32,32,32,32,32,32,32,32,60,
+47,111,98,106,101,99,116,62,10,32,32,32,32,32,32,60,47,111,98,106,101,99,
+116,62,10,32,32,32,32,60,47,111,98,106,101,99,116,62,10,32,32,60,47,111,
+98,106,101,99,116,62,10,60,47,114,101,115,111,117,114,99,101,62,10};
 
 static size_t xml_res_size_9 = 9233;
 static unsigned char xml_res_file_9[] = {
@@ -26443,75 +26442,75 @@ void InitXmlResource()
         else wxFileSystem::AddHandler(new wxMemoryFSHandler);
     }
 
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgAddFavourite.xrc"), xml_res_file_0, xml_res_size_0, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgAggregate.xrc"), xml_res_file_1, xml_res_size_1, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgCast.xrc"), xml_res_file_2, xml_res_size_2, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgCheck.xrc"), xml_res_file_3, xml_res_size_3, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgColumn.xrc"), xml_res_file_4, xml_res_size_4, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgConnect.xrc"), xml_res_file_5, xml_res_size_5, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgConversion.xrc"), xml_res_file_6, xml_res_size_6, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgDatabase.xrc"), xml_res_file_7, xml_res_size_7, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgDirectDbg.xrc"), xml_res_file_8, xml_res_size_8, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgDomain.xrc"), xml_res_file_9, xml_res_size_9, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgEditGridOptions.xrc"), xml_res_file_10, xml_res_size_10, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgExtTable.xrc"), xml_res_file_11, xml_res_size_11, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgFindReplace.xrc"), xml_res_file_12, xml_res_size_12, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgForeignKey.xrc"), xml_res_file_13, xml_res_size_13, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgFunction.xrc"), xml_res_file_14, xml_res_size_14, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgGroup.xrc"), xml_res_file_15, xml_res_size_15, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgHbaConfig.xrc"), xml_res_file_16, xml_res_size_16, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgIndex.xrc"), xml_res_file_17, xml_res_size_17, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgIndexConstraint.xrc"), xml_res_file_18, xml_res_size_18, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgJob.xrc"), xml_res_file_19, xml_res_size_19, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgLanguage.xrc"), xml_res_file_20, xml_res_size_20, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgMainConfig.xrc"), xml_res_file_21, xml_res_size_21, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgManageFavourites.xrc"), xml_res_file_22, xml_res_size_22, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgManageMacros.xrc"), xml_res_file_23, xml_res_size_23, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgOperator.xrc"), xml_res_file_24, xml_res_size_24, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgPackage.xrc"), xml_res_file_25, xml_res_size_25, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgPgpassConfig.xrc"), xml_res_file_26, xml_res_size_26, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgReassignDropOwned.xrc"), xml_res_file_27, xml_res_size_27, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepCluster.xrc"), xml_res_file_28, xml_res_size_28, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepClusterUpgrade.xrc"), xml_res_file_29, xml_res_size_29, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepListen.xrc"), xml_res_file_30, xml_res_size_30, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepNode.xrc"), xml_res_file_31, xml_res_size_31, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepPath.xrc"), xml_res_file_32, xml_res_size_32, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSequence.xrc"), xml_res_file_33, xml_res_size_33, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSet.xrc"), xml_res_file_34, xml_res_size_34, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSetMerge.xrc"), xml_res_file_35, xml_res_size_35, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSetMove.xrc"), xml_res_file_36, xml_res_size_36, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSubscription.xrc"), xml_res_file_37, xml_res_size_37, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRepTable.xrc"), xml_res_file_38, xml_res_size_38, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRole.xrc"), xml_res_file_39, xml_res_size_39, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgRule.xrc"), xml_res_file_40, xml_res_size_40, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgSchedule.xrc"), xml_res_file_41, xml_res_size_41, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgSchema.xrc"), xml_res_file_42, xml_res_size_42, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgSelectConnection.xrc"), xml_res_file_43, xml_res_size_43, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgSequence.xrc"), xml_res_file_44, xml_res_size_44, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgServer.xrc"), xml_res_file_45, xml_res_size_45, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgStep.xrc"), xml_res_file_46, xml_res_size_46, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgSynonym.xrc"), xml_res_file_47, xml_res_size_47, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgTable.xrc"), xml_res_file_48, xml_res_size_48, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgTablespace.xrc"), xml_res_file_49, xml_res_size_49, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgTextSearchConfiguration.xrc"), xml_res_file_50, xml_res_size_50, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgTextSearchDictionary.xrc"), xml_res_file_51, xml_res_size_51, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgTextSearchParser.xrc"), xml_res_file_52, xml_res_size_52, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgTextSearchTemplate.xrc"), xml_res_file_53, xml_res_size_53, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgTrigger.xrc"), xml_res_file_54, xml_res_size_54, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgType.xrc"), xml_res_file_55, xml_res_size_55, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgUser.xrc"), xml_res_file_56, xml_res_size_56, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$dlgView.xrc"), xml_res_file_57, xml_res_size_57, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmBackup.xrc"), xml_res_file_58, xml_res_size_58, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmBackupGlobals.xrc"), xml_res_file_59, xml_res_size_59, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmBackupServer.xrc"), xml_res_file_60, xml_res_size_60, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmExport.xrc"), xml_res_file_61, xml_res_size_61, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmGrantWizard.xrc"), xml_res_file_62, xml_res_size_62, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmHint.xrc"), xml_res_file_63, xml_res_size_63, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmMaintenance.xrc"), xml_res_file_64, xml_res_size_64, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmOptions.xrc"), xml_res_file_65, xml_res_size_65, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmPassword.xrc"), xml_res_file_66, xml_res_size_66, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmReport.xrc"), xml_res_file_67, xml_res_size_67, _T("text/xml"));
-    XRC_ADD_FILE(wxT("XRC_resource/xrcDialogs.cpp$frmRestore.xrc"), xml_res_file_68, xml_res_size_68, _T("text/xml"));
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgAddFavourite.xrc"), xml_res_file_0, xml_res_size_0);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgAggregate.xrc"), xml_res_file_1, xml_res_size_1);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgCast.xrc"), xml_res_file_2, xml_res_size_2);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgCheck.xrc"), xml_res_file_3, xml_res_size_3);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgColumn.xrc"), xml_res_file_4, xml_res_size_4);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgConnect.xrc"), xml_res_file_5, xml_res_size_5);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgConversion.xrc"), xml_res_file_6, xml_res_size_6);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgDatabase.xrc"), xml_res_file_7, xml_res_size_7);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgDirectDbg.xrc"), xml_res_file_8, xml_res_size_8);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgDomain.xrc"), xml_res_file_9, xml_res_size_9);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgEditGridOptions.xrc"), xml_res_file_10, xml_res_size_10);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgExtTable.xrc"), xml_res_file_11, xml_res_size_11);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgFindReplace.xrc"), xml_res_file_12, xml_res_size_12);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgForeignKey.xrc"), xml_res_file_13, xml_res_size_13);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgFunction.xrc"), xml_res_file_14, xml_res_size_14);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgGroup.xrc"), xml_res_file_15, xml_res_size_15);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgHbaConfig.xrc"), xml_res_file_16, xml_res_size_16);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgIndex.xrc"), xml_res_file_17, xml_res_size_17);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgIndexConstraint.xrc"), xml_res_file_18, xml_res_size_18);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgJob.xrc"), xml_res_file_19, xml_res_size_19);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgLanguage.xrc"), xml_res_file_20, xml_res_size_20);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgMainConfig.xrc"), xml_res_file_21, xml_res_size_21);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgManageFavourites.xrc"), xml_res_file_22, xml_res_size_22);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgManageMacros.xrc"), xml_res_file_23, xml_res_size_23);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgOperator.xrc"), xml_res_file_24, xml_res_size_24);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgPackage.xrc"), xml_res_file_25, xml_res_size_25);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgPgpassConfig.xrc"), xml_res_file_26, xml_res_size_26);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgReassignDropOwned.xrc"), xml_res_file_27, xml_res_size_27);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepCluster.xrc"), xml_res_file_28, xml_res_size_28);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepClusterUpgrade.xrc"), xml_res_file_29, xml_res_size_29);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepListen.xrc"), xml_res_file_30, xml_res_size_30);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepNode.xrc"), xml_res_file_31, xml_res_size_31);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepPath.xrc"), xml_res_file_32, xml_res_size_32);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSequence.xrc"), xml_res_file_33, xml_res_size_33);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSet.xrc"), xml_res_file_34, xml_res_size_34);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSetMerge.xrc"), xml_res_file_35, xml_res_size_35);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSetMove.xrc"), xml_res_file_36, xml_res_size_36);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepSubscription.xrc"), xml_res_file_37, xml_res_size_37);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRepTable.xrc"), xml_res_file_38, xml_res_size_38);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRole.xrc"), xml_res_file_39, xml_res_size_39);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgRule.xrc"), xml_res_file_40, xml_res_size_40);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgSchedule.xrc"), xml_res_file_41, xml_res_size_41);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgSchema.xrc"), xml_res_file_42, xml_res_size_42);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgSelectConnection.xrc"), xml_res_file_43, xml_res_size_43);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgSequence.xrc"), xml_res_file_44, xml_res_size_44);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgServer.xrc"), xml_res_file_45, xml_res_size_45);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgStep.xrc"), xml_res_file_46, xml_res_size_46);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgSynonym.xrc"), xml_res_file_47, xml_res_size_47);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgTable.xrc"), xml_res_file_48, xml_res_size_48);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgTablespace.xrc"), xml_res_file_49, xml_res_size_49);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgTextSearchConfiguration.xrc"), xml_res_file_50, xml_res_size_50);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgTextSearchDictionary.xrc"), xml_res_file_51, xml_res_size_51);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgTextSearchParser.xrc"), xml_res_file_52, xml_res_size_52);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgTextSearchTemplate.xrc"), xml_res_file_53, xml_res_size_53);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgTrigger.xrc"), xml_res_file_54, xml_res_size_54);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgType.xrc"), xml_res_file_55, xml_res_size_55);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgUser.xrc"), xml_res_file_56, xml_res_size_56);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$dlgView.xrc"), xml_res_file_57, xml_res_size_57);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmBackup.xrc"), xml_res_file_58, xml_res_size_58);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmBackupGlobals.xrc"), xml_res_file_59, xml_res_size_59);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmBackupServer.xrc"), xml_res_file_60, xml_res_size_60);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmExport.xrc"), xml_res_file_61, xml_res_size_61);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmGrantWizard.xrc"), xml_res_file_62, xml_res_size_62);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmHint.xrc"), xml_res_file_63, xml_res_size_63);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmMaintenance.xrc"), xml_res_file_64, xml_res_size_64);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmOptions.xrc"), xml_res_file_65, xml_res_size_65);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmPassword.xrc"), xml_res_file_66, xml_res_size_66);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmReport.xrc"), xml_res_file_67, xml_res_size_67);
+    wxMemoryFSHandler::AddFile(wxT("XRC_resource/xrcDialogs.cpp$frmRestore.xrc"), xml_res_file_68, xml_res_size_68);
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgAddFavourite.xrc"));
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgAggregate.xrc"));
     wxXmlResource::Get()->Load(wxT("memory:XRC_resource/xrcDialogs.cpp$dlgCast.xrc"));
