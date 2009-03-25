@@ -37,10 +37,10 @@ wxString pgscriptKeywords = wxT(" assert break columns continue date datetime fi
                         wxT(" log print record reference regexrmline string waitfor while");
 
 BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
-	EVT_KEY_DOWN(ctlSQLBox::OnKeyDown)
+    EVT_KEY_DOWN(ctlSQLBox::OnKeyDown)
     EVT_MENU(MNU_FIND,ctlSQLBox::OnSearchReplace)
-	EVT_MENU(MNU_AUTOCOMPLETE,ctlSQLBox::OnAutoComplete)
-	EVT_KILL_FOCUS(ctlSQLBox::OnKillFocus)
+    EVT_MENU(MNU_AUTOCOMPLETE,ctlSQLBox::OnAutoComplete)
+    EVT_KILL_FOCUS(ctlSQLBox::OnKillFocus)
     EVT_STC_UPDATEUI(-1,  ctlSQLBox::OnPositionStc)
 END_EVENT_TABLE()
 
@@ -53,7 +53,7 @@ ctlSQLBox::ctlSQLBox()
 {
     m_dlgFindReplace=0;
     m_autoIndent=false;
-	m_autocompDisabled=false;
+    m_autocompDisabled=false;
 }
 
 
@@ -61,9 +61,9 @@ ctlSQLBox::ctlSQLBox(wxWindow *parent, wxWindowID id, const wxPoint& pos, const 
 {
     m_dlgFindReplace=0;
 
-	m_database=NULL;
+    m_database=NULL;
 
-	m_autocompDisabled=false;
+    m_autocompDisabled=false;
 
     Create(parent, id, pos, size, style);
 }
@@ -112,7 +112,7 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     StyleSetForeground(10, wxColour(0x00, 0x00, 0x00));
     StyleSetForeground(11, wxColour(0x00, 0x00, 0x00));
 
-	// Brace maching styles
+    // Brace maching styles
     StyleSetBackground(34, wxColour(0x99, 0xF9, 0xFF));
     StyleSetBackground(35, wxColour(0xFF, 0xCF, 0x27));
 
@@ -124,23 +124,23 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
 
     wxAcceleratorEntry entries[2];
     entries[0].Set(wxACCEL_CTRL, (int)'F', MNU_FIND);
-	entries[1].Set(wxACCEL_CTRL, (int)' ', MNU_AUTOCOMPLETE);
+    entries[1].Set(wxACCEL_CTRL, (int)' ', MNU_AUTOCOMPLETE);
     wxAcceleratorTable accel(2, entries);
     SetAcceleratorTable(accel);
 
-	// Autocompletion configuration
-	AutoCompSetSeparator('\t');
-	AutoCompSetChooseSingle(true);
-	AutoCompSetIgnoreCase(true);
-	AutoCompSetFillUps(wxT(" \t"));
-	AutoCompSetDropRestOfWord(true);
+    // Autocompletion configuration
+    AutoCompSetSeparator('\t');
+    AutoCompSetChooseSingle(true);
+    AutoCompSetIgnoreCase(true);
+    AutoCompSetFillUps(wxT(" \t"));
+    AutoCompSetDropRestOfWord(true);
 
-	SetEOLMode(settings->GetLineEndingType());
+    SetEOLMode(settings->GetLineEndingType());
 }
 
 void ctlSQLBox::SetDatabase(pgConn *db)
 {
-	m_database = db;
+    m_database = db;
 }
 
 void ctlSQLBox::OnSearchReplace(wxCommandEvent& ev)
@@ -317,45 +317,26 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
 void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
 {
 #ifdef __WXGTK__
-	event.m_metaDown=false;
+    event.m_metaDown=false;
 #endif
 
-	// Get the line ending type
-	wxString lineEnd;
-	switch (GetEOLMode())
-	{
-		case wxSTC_EOL_LF:
-			lineEnd = wxT("\n");
-			break;
-		case wxSTC_EOL_CRLF:
-			lineEnd = wxT("\r\n");
-			break;
-		case wxSTC_EOL_CR:
-			lineEnd = wxT("\r");
-			break;
-	}
-
-    // Block indent/outdent
-    
-    if (event.GetKeyCode() == '\t')
+    // Get the line ending type
+    wxString lineEnd;
+    switch (GetEOLMode())
     {
-        // Block indent (Tab)
-        if (event.GetModifiers() == wxMOD_NONE)
-        {
-            if (BlockIndent(false))
-                return;
-        }
-        // Block outdent (Shift+Tab)
-        else if (event.GetModifiers() == wxMOD_SHIFT)
-        {
-            if (BlockIndent(true))
-                return;
-        }
+        case wxSTC_EOL_LF:
+            lineEnd = wxT("\n");
+            break;
+        case wxSTC_EOL_CRLF:
+            lineEnd = wxT("\r\n");
+            break;
+        case wxSTC_EOL_CR:
+            lineEnd = wxT("\r");
+            break;
     }
-    
+
     // Block comment/uncomment
-    
-    else if (event.GetKeyCode() == 'K')
+    if (event.GetKeyCode() == 'K')
     {
         // Comment (Ctrl+k)
         if (event.GetModifiers() == wxMOD_CONTROL)
@@ -371,16 +352,16 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
         }
     }
 
-	// Autocomplete
-	if (!AutoCompActive() &&
-		 ( settings->GetTabForCompletion() && // autocomplete on tab only if specifically configured
-		  event.GetModifiers() == wxMOD_NONE && event.GetKeyCode() == '\t'
-		 ))
-	{
-		wxCommandEvent e;
-		OnAutoComplete(e);
-	}
-	else if (m_autoIndent && event.GetKeyCode() == WXK_RETURN)
+    // Autocomplete
+    if (!AutoCompActive() &&
+         ( settings->GetTabForCompletion() && // autocomplete on tab only if specifically configured
+          event.GetModifiers() == wxMOD_NONE && event.GetKeyCode() == '\t'
+         ))
+    {
+        wxCommandEvent e;
+        OnAutoComplete(e);
+    }
+    else if (m_autoIndent && event.GetKeyCode() == WXK_RETURN)
     {
         wxString indent, line;
         line = GetLine(GetCurrentLine());
@@ -426,59 +407,7 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
         m_dlgFindReplace->FindNext();
     }
     else
-		event.Skip();
-}
-
-bool ctlSQLBox::BlockIndent(bool outdent)
-{
-    wxString lineEnd;
-    switch (GetEOLMode())
-    {
-        case wxSTC_EOL_LF:
-            lineEnd = wxT("\n");
-            break;
-        case wxSTC_EOL_CRLF:
-            lineEnd = wxT("\r\n");
-            break;
-        case wxSTC_EOL_CR:
-            lineEnd = wxT("\r");
-            break;
-    }
-
-    // Save the start position
-    int start = GetSelectionStart();
-
-    // If more than one line is selected, then we may be doing a block indent/outdent.
-    if (GetSelectedText().Contains(lineEnd))
-    {
-        // Figure out what a tab looks like
-        wxString newIndent;
-        if (GetUseTabs())
-            newIndent = wxT("\t");
-        else
-        {
-            for (int x=0; x < GetTabWidth(); x++ )
-                newIndent += wxT(" ");
-        }
-
-        wxString selection = GetSelectedText();
-        // Block indent (Tab)
-        if (!outdent)
-        {
-            selection.Replace(lineEnd, lineEnd + newIndent);
-            selection.Prepend(newIndent);
-        }
-        else
-        {
-            selection.Replace(lineEnd + newIndent, lineEnd);
-            if (selection.StartsWith(newIndent))
-                selection = selection.Right(selection.Length() - newIndent.Length());
-        }
-        ReplaceSelection(selection);
-        SetSelection(start, start + selection.Length());
-        return false;
-    }
-    return false;
+        event.Skip();
 }
 
 bool ctlSQLBox::BlockComment(bool uncomment)
@@ -523,94 +452,94 @@ bool ctlSQLBox::BlockComment(bool uncomment)
 
 void ctlSQLBox::OnKillFocus(wxFocusEvent& event)
 {
-	AutoCompCancel();
+    AutoCompCancel();
     event.Skip();
 }
 
 void ctlSQLBox::OnPositionStc(wxStyledTextEvent& event)
 {
-	int pos = GetCurrentPos();
-	wxChar ch = GetCharAt(pos-1);
+    int pos = GetCurrentPos();
+    wxChar ch = GetCharAt(pos-1);
     int st = GetStyleAt(pos-1);
-	int match;
+    int match;
 
-	// Clear all highlighting
-	BraceBadLight(wxSTC_INVALID_POSITION);
+    // Clear all highlighting
+    BraceBadLight(wxSTC_INVALID_POSITION);
 
     // Check for braces that aren't in comment styles,
     // double quoted styles or single quoted styles
-	if ((ch == '{' || ch == '}' ||
-		 ch == '[' || ch == ']' ||
-		 ch == '(' || ch == ')') &&
+    if ((ch == '{' || ch == '}' ||
+         ch == '[' || ch == ']' ||
+         ch == '(' || ch == ')') &&
          st != 2 && st != 6 && st != 7) 
-	{
-		match = BraceMatch(pos-1);
-		if (match != wxSTC_INVALID_POSITION)
-			BraceHighlight(pos-1, match);
-	}
+    {
+        match = BraceMatch(pos-1);
+        if (match != wxSTC_INVALID_POSITION)
+            BraceHighlight(pos-1, match);
+    }
 
-	// Roll back through the doc and highlight any unmatched braces
-	while ((pos--) >= 0)
-	{
-		ch = GetCharAt(pos);
+    // Roll back through the doc and highlight any unmatched braces
+    while ((pos--) >= 0)
+    {
+        ch = GetCharAt(pos);
         st = GetStyleAt(pos);
 
-		if ((ch == '{' || ch == '}' ||
-			 ch == '[' || ch == ']' ||
-			 ch == '(' || ch == ')') &&
+        if ((ch == '{' || ch == '}' ||
+             ch == '[' || ch == ']' ||
+             ch == '(' || ch == ')') &&
              st != 2 && st != 6 && st != 7)
-		{
-			match = BraceMatch(pos);
-			if (match == wxSTC_INVALID_POSITION)
-			{
-				BraceBadLight(pos);
-				break;
-			}
-		}
-	}
+        {
+            match = BraceMatch(pos);
+            if (match == wxSTC_INVALID_POSITION)
+            {
+                BraceBadLight(pos);
+                break;
+            }
+        }
+    }
     
-	event.Skip();
+    event.Skip();
 }
 
 extern "C" char *tab_complete(const char *allstr, const int startptr, const int endptr, void *dbptr);
 void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)
 {
-	if (GetReadOnly())
-		return;
-	if (m_database == NULL)
-		return;
-	if (m_autocompDisabled)
-		return;
+    if (GetReadOnly())
+        return;
+    if (m_database == NULL)
+        return;
+    if (m_autocompDisabled)
+        return;
 
-	wxString what = GetCurLine().Left(GetCurrentPos()-PositionFromLine(GetCurrentLine()));;
-	int spaceidx = what.Find(' ',true);
-	
-	char *tab_ret;
-	if (spaceidx == -1)
-		tab_ret = tab_complete(what.mb_str(wxConvUTF8), 0, what.Len()+1, m_database);
-	else
-		tab_ret = tab_complete(what.mb_str(wxConvUTF8), spaceidx+1, what.Len()+1, m_database);
+    wxString what = GetCurLine().Left(GetCurrentPos()-PositionFromLine(GetCurrentLine()));;
+    int spaceidx = what.Find(' ',true);
+    
+    char *tab_ret;
+    if (spaceidx == -1)
+        tab_ret = tab_complete(what.mb_str(wxConvUTF8), 0, what.Len()+1, m_database);
+    else
+        tab_ret = tab_complete(what.mb_str(wxConvUTF8), spaceidx+1, what.Len()+1, m_database);
 
-	if (tab_ret == NULL || tab_ret[0] == '\0')
-		return; /* No autocomplete available for this string */
+    if (tab_ret == NULL || tab_ret[0] == '\0')
+        return; /* No autocomplete available for this string */
 
-	wxString wxRet = wxString(tab_ret, wxConvUTF8);
-	free(tab_ret);
+    wxString wxRet = wxString(tab_ret, wxConvUTF8);
+    free(tab_ret);
 
-	// Switch to the generic list control. Native doesn't play well with
+    // Switch to the generic list control. Native doesn't play well with
     // autocomplete on Mac.
 #ifdef __WXMAC__
-	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
 #endif
 
-	if (spaceidx == -1)
-		AutoCompShow(what.Len(), wxRet);
-	else
-		AutoCompShow(what.Len()-spaceidx-1, wxRet);
+    if (spaceidx == -1)
+        AutoCompShow(what.Len(), wxRet);
+    else
+        AutoCompShow(what.Len()-spaceidx-1, wxRet);
  
-	// Now switch back
+    // Now switch back
 #ifdef __WXMAC__
-	wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
 #endif
 }
 
@@ -635,31 +564,31 @@ ctlSQLBox::~ctlSQLBox()
 extern "C"
 char *pg_query_to_single_ordered_string(char *query, void *dbptr)
 {
-	pgConn *db = (pgConn *)dbptr;
-	pgSet *res = db->ExecuteSet(wxString(query, wxConvUTF8) + wxT(" ORDER BY 1"));
-	if (!res)
-		return NULL;
+    pgConn *db = (pgConn *)dbptr;
+    pgSet *res = db->ExecuteSet(wxString(query, wxConvUTF8) + wxT(" ORDER BY 1"));
+    if (!res)
+        return NULL;
 
-	wxString ret = wxString();
+    wxString ret = wxString();
     wxString tmp;
 
-	while (!res->Eof())
-	{
+    while (!res->Eof())
+    {
         tmp =  res->GetVal(0);
         if (tmp.Mid(tmp.Length() - 1) == wxT("."))
-		    ret += tmp + wxT("\t");
+            ret += tmp + wxT("\t");
         else
-		    ret += tmp + wxT(" \t");
+            ret += tmp + wxT(" \t");
 
-		res->MoveNext();
-	}
+        res->MoveNext();
+    }
 
-	ret.Trim();
-	// Trims both space and tab, but we want to keep the space!
-	if (ret.Length() > 0)
-	    ret += wxT(" ");
+    ret.Trim();
+    // Trims both space and tab, but we want to keep the space!
+    if (ret.Length() > 0)
+        ret += wxT(" ");
 
-	return strdup(ret.mb_str(wxConvUTF8));
+    return strdup(ret.mb_str(wxConvUTF8));
 }
 
 

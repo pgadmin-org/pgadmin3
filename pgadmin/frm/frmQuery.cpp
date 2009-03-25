@@ -120,8 +120,6 @@ EVT_MENU(MNU_OUTPUTPANE,        frmQuery::OnToggleOutputPane)
 EVT_MENU(MNU_DEFAULTVIEW,       frmQuery::OnDefaultView)
 EVT_MENU(MNU_UPPER_CASE,        frmQuery::OnChangeToUpperCase)
 EVT_MENU(MNU_LOWER_CASE,        frmQuery::OnChangeToLowerCase)
-EVT_MENU(MNU_BLOCK_INDENT,      frmQuery::OnBlockIndent)
-EVT_MENU(MNU_BLOCK_OUTDENT,     frmQuery::OnBlockOutDent)
 EVT_MENU(MNU_COMMENT_TEXT,      frmQuery::OnCommentText)
 EVT_MENU(MNU_UNCOMMENT_TEXT,    frmQuery::OnUncommentText)
 EVT_MENU(MNU_LF,                frmQuery::OnSetEOLMode)
@@ -2415,16 +2413,6 @@ void frmQuery::OnChangeToUpperCase(wxCommandEvent& event)
 void frmQuery::OnChangeToLowerCase(wxCommandEvent& event)
 {
     sqlQuery->LowerCase();
-}
-
-void frmQuery::OnBlockIndent(wxCommandEvent& event)
-{
-    sqlQuery->BlockIndent(false);
-}
-
-void frmQuery::OnBlockOutDent(wxCommandEvent& event)
-{
-    sqlQuery->BlockIndent(true);
 }
 
 void frmQuery::OnCommentText(wxCommandEvent& event)

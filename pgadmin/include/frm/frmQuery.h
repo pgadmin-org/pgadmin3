@@ -157,8 +157,6 @@ private:
     void OnDefaultView(wxCommandEvent& event);
     void OnChangeToUpperCase(wxCommandEvent& event);
     void OnChangeToLowerCase(wxCommandEvent& event);
-    void OnBlockIndent(wxCommandEvent& event);
-    void OnBlockOutDent(wxCommandEvent& event);
     void OnCommentText(wxCommandEvent& event);
     void OnUncommentText(wxCommandEvent& event);
 
