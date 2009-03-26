@@ -506,9 +506,6 @@ frmQuery::~frmQuery()
     // if(tablesBrowser)
     //     delete tablesBrowser;
 
-    if (mainForm)
-        mainForm->RemoveFrame(this);
-
     settings->Write(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERPSECTIVE_VER), manager.SavePerspective());
     manager.UnInit();
 
@@ -531,6 +528,15 @@ frmQuery::~frmQuery()
 
     if (pgScript)
         delete pgScript;
+
+    /*
+    * Keep these lines at the end of this function, to avoid generating events before
+    * it gets executed completely.
+    *
+    * To avoid a bug on *nix system.
+    */
+    if (mainForm)
+        mainForm->RemoveFrame(this);
 }
 
 
@@ -1210,17 +1216,19 @@ void frmQuery::updateMenu(wxObject *obj)
     if (closing)
         return;
 
-    if (!obj || obj == sqlQuery)
+    if (obj != msgResult && obj != msgHistory)
     {
-        canUndo=sqlQuery->CanUndo();
-        canRedo=sqlQuery->CanRedo();
-        canPaste=sqlQuery->CanPaste();
+        if (sqlQuery)
+        {
+            canUndo=sqlQuery->CanUndo();
+            canRedo=sqlQuery->CanRedo();
+            canPaste=sqlQuery->CanPaste();
+            canAddFavourite = (sqlQuery->GetLength() > 0);
+        }
 
         canCut = true;
         canClear = true;
         canFind = true;
-
-        canAddFavourite = (sqlQuery->GetLength() > 0);
     }
     else if (obj == msgResult || obj == msgHistory)
     {
