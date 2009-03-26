@@ -2,7 +2,7 @@
 # pgAdmin III - PostgreSQL Tools
 # $Id: Makefile.am 4209 2005-05-18 11:23:14Z dpage $
 # Copyright (C) 2002 - 2008, The pgAdmin Development Team
-# This software is released under the Artistic Licence
+# This software is released under the BSD Licence
 #
 # Makefile - Makefile for *nix systems
 ##############################################################################

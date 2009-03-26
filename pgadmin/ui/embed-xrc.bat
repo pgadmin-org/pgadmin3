@@ -3,7 +3,7 @@ REM #######################################################################
 REM #
 REM # pgAdmin III - PostgreSQL Tools
 REM # Copyright (C) 2002 - 2009, The pgAdmin Development Team
-REM # This software is released under the Artistic Licence
+REM # This software is released under the BSD Licence
 REM #
 REM # embed-xrc.bat - convert xrc files to c++ files
 REM #
