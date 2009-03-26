@@ -31,38 +31,12 @@ resource 'STR#' (5000, "English buttons") {
 data 'TEXT' (5000, "English") {
     "pgAdmin III\n"
     "\n"
-    "Copyright (c) 2002 - 2009,\n"
-    "        The pgAdmin Development Team\n"
+    "Copyright (c) 2002 - 2009, The pgAdmin Development Team\n"
     "\n"
-    "Permission to use, copy, modify, and distribute\n"
-    "this software and its documentation for any\n"
-    "purpose, without fee, and without a written\n"
-    "agreement is hereby granted, provided that the\n"
-    "above copyright notice and this paragraph and the\n"
-    "following two paragraphs appear in all copies.\n"
+    "Permission to use, copy, modify, and distribute this software and its documentation for any purpose, without fee, and without a written agreement is hereby granted, provided that the above copyright notice and this paragraph and the following two paragraphs appear in all copies.\n"
     "\n"
-    "IN NO EVENT SHALL THE PGADMIN DEVELOPMENT TEAM BE\n"
-    "LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,\n"
-    "INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING\n"
-    "LOST PROFITS, ARISING OUT OF THE USE OF THIS\n"
-    "SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE\n"
-    "PGADMIN DEVELOPMENT TEAM HAS BEEN ADVISED OF THE\n"
-    "POSSIBILITY OF SUCH DAMAGE.\n"
+    "IN NO EVENT SHALL THE PGADMIN DEVELOPMENT TEAM BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE PGADMIN DEVELOPMENT TEAM HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n"
     "\n"
-    "THE PGADMIN DEVELOPMENT TEAM SPECIFICALLY\n"
-    "DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT\n"
-    "LIMITED TO, THE IMPLIED WARRANTIES OF\n"
-    "MERCHANTABILITY AND FITNESS FOR A PARTICULAR\n"
-    "PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON\n"
-    "AN "AS IS" BASIS, AND THE PGADMIN DEVELOPMENT\n"
-    "TEAM HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE,\n"
-    "SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.\n"
-};
-
-data 'styl' (5000) {
-	$"0003 0000 0000 0010 000C 0004 0000 000C"            /* ................ */
-	$"0000 0000 0000 0000 0277 0015 0010 0004"            /* .........w...... */
-	$"0100 0010 0000 0000 0000 0000 028B 0010"            /* .............‹.. */
-	$"000C 0004 0000 000C 0000 0000 0000"                 /* .............. */
+    "THE PGADMIN DEVELOPMENT TEAM SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE PGADMIN DEVELOPMENT TEAM HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.\n"
 };
 
