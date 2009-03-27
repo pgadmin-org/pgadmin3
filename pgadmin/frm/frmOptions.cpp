@@ -54,7 +54,6 @@
 #define cbCopyQuote					CTRL_COMBOBOX("cbCopyQuote")
 #define cbCopyQuoteChar				CTRL_COMBOBOX("cbCopyQuoteChar")
 #define cbCopySeparator				CTRL_COMBOBOX("cbCopySeparator")
-#define chkTabForCompletion			CTRL_CHECKBOX("chkTabForCompletion")
 #define chkStickySql                CTRL_CHECKBOX("chkStickySql")
 #define chkIndicateNull             CTRL_CHECKBOX("chkIndicateNull")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
@@ -125,7 +124,6 @@ frmOptions::frmOptions(frmMain *parent)
         copySeparator = _("Tab");
     cbCopySeparator->SetValue(copySeparator);
 
-    chkTabForCompletion->SetValue(settings->GetTabForCompletion());
     chkStickySql->SetValue(settings->GetStickySql());
     chkIndicateNull->SetValue(settings->GetIndicateNull());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
@@ -392,7 +390,6 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         copySeparator = wxT("\t");
     settings->SetCopyColSeparator(copySeparator);
 
-    settings->SetTabForCompletion(chkTabForCompletion->GetValue());
     settings->SetStickySql(chkStickySql->GetValue());
     settings->SetIndicateNull(chkIndicateNull->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());

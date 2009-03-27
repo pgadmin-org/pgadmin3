@@ -155,6 +155,8 @@ private:
     void OnToggleOutputPane(wxCommandEvent& event);
     void OnAuiUpdate(wxAuiManagerEvent& event);
     void OnDefaultView(wxCommandEvent& event);
+    void OnBlockIndent(wxCommandEvent& event);
+    void OnBlockOutDent(wxCommandEvent& event);
     void OnChangeToUpperCase(wxCommandEvent& event);
     void OnChangeToLowerCase(wxCommandEvent& event);
     void OnCommentText(wxCommandEvent& event);

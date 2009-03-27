@@ -352,16 +352,8 @@ void ctlSQLBox::OnKeyDown(wxKeyEvent& event)
         }
     }
 
-    // Autocomplete
-    if (!AutoCompActive() &&
-         ( settings->GetTabForCompletion() && // autocomplete on tab only if specifically configured
-          event.GetModifiers() == wxMOD_NONE && event.GetKeyCode() == '\t'
-         ))
-    {
-        wxCommandEvent e;
-        OnAutoComplete(e);
-    }
-    else if (m_autoIndent && event.GetKeyCode() == WXK_RETURN)
+    // Autoindent
+    if (m_autoIndent && event.GetKeyCode() == WXK_RETURN)
     {
         wxString indent, line;
         line = GetLine(GetCurrentLine());

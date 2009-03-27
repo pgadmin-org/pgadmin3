@@ -110,8 +110,6 @@ public:
 	void SetSpacesForTabs(const bool newval) { Write(wxT("SpacesForTabs"), newval); }
     long GetIndentSpaces() const { long l; Read(wxT("IndentSpaces"), &l, 0L); return l; }
 	void SetIndentSpaces(const long newval) { Write(wxT("IndentSpaces"), newval); }
-    bool GetTabForCompletion() const { bool b; Read(wxT("TabForCompletion"), &b, false); return b; }
-	void SetTabForCompletion(const bool newval) { Write(wxT("TabForCompletion"), newval); }
     bool GetIndicateNull() const { bool b; Read(wxT("frmQuery/IndicateNull"), &b, false); return b; }
 	void SetIndicateNull(const bool newval) { Write(wxT("frmQuery/IndicateNull"), newval); }
     bool GetUnicodeFile() const { bool b; Read(wxT("WriteUnicodeFile"), &b, true); return b; }
