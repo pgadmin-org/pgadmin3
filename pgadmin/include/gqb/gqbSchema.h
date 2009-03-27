@@ -20,11 +20,11 @@ class gqbSchema : public gqbObject
 {
 public:
     gqbSchema(gqbObject *parent, wxString name, type_gqbObject type);
-    void createObjects(gqbBrowser *_tablesBrowser,  pgConn *_conn, OID oidVal, wxTreeItemId parentNode, int _tableImage, int _viewImage);
+    void createObjects(gqbBrowser *tablesBrowser,  pgConn *conn, OID oidVal, wxTreeItemId parentNode, int tableImage, int viewImage, int xTableImage);
 
 private:
     pgConn *conn;
     wxString NumToStr(OID value);
-    void createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItemId parentNode, OID oidVal, int _tableImage, int _viewImage);
+    void createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItemId parentNode, OID oidVal, int tableImage, int viewImage, int xTableImage);
 };
 #endif

@@ -56,25 +56,22 @@ void gqbDatabase::createSchemas(pgConn *conn,  gqbBrowser *tablesBrowser, wxTree
     {
         restr += wxT("NOT ");
     }
-    restr += wxT("((nspname = 'pg_catalog' and (SELECT count(*) FROM pg_class WHERE relname = 'pg_class' AND relnamespace = nsp.oid) > 0) OR\n");
-    restr += wxT("(nspname = 'pgagent' and (SELECT count(*) FROM pg_class WHERE relname = 'pga_job' AND relnamespace = nsp.oid) > 0) OR\n");
-    restr += wxT("(nspname = 'information_schema' and (SELECT count(*) FROM pg_class WHERE relname = 'tables' AND relnamespace = nsp.oid) > 0) OR\n");
-    restr += wxT("(nspname LIKE '_%' and (SELECT count(*) FROM pg_proc WHERE proname='slonyversion' AND pronamespace = nsp.oid) > 0) OR\n");
-    restr += wxT("(nspname = 'dbo' and (SELECT count(*) FROM pg_class WHERE relname = 'systables' AND relnamespace = nsp.oid) > 0) OR\n");
-    restr += wxT("(nspname = 'sys' and (SELECT count(*) FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid) > 0)) AND nspname!='information_schema'\n");
+    restr += wxT("((nspname = 'pg_catalog' AND EXISTS (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND relnamespace = nsp.oid LIMIT 1)) OR\n");
+    restr += wxT("(nspname = 'pgagent' AND EXISTS (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND relnamespace = nsp.oid LIMIT 1)) OR\n");
+    restr += wxT("(nspname = 'information_schema' AND EXISTS (SELECT 1 FROM pg_class WHERE relname = 'tables' AND relnamespace = nsp.oid LIMIT 1)) OR\n");
+    restr += wxT("(nspname LIKE '_%' AND EXISTS (SELECT 1 FROM pg_proc WHERE proname='slonyversion' AND pronamespace = nsp.oid LIMIT 1)) OR\n");
+    restr += wxT("(nspname = 'dbo' AND EXISTS (SELECT 1 FROM pg_class WHERE relname = 'systables' AND relnamespace = nsp.oid LIMIT 1)) OR\n");
+    restr += wxT("(nspname = 'sys' AND EXISTS (SELECT 1 FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid LIMIT 1)))\n");
 
     if (conn->EdbMinimumVersion(8, 2))
-        restr += wxT("  AND nsp.nspparent = 0\n");
+        restr += wxT("  AND nspparent = 0\n");
 
     wxString sql;
 
     if (MetaType == GQB_CATALOG)
     {
-        sql = wxT("SELECT 2 AS nsptyp,\n")
-            wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
-            wxT("       FALSE as cancreate\n")
+        sql = wxT("SELECT 2 AS nsptyp, nspname, nsp.oid")
             wxT("  FROM pg_namespace nsp\n")
-            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
             + restr +
             wxT(" ORDER BY 1, nspname");
     }
@@ -90,11 +87,8 @@ void gqbDatabase::createSchemas(pgConn *conn,  gqbBrowser *tablesBrowser, wxTree
             sql = wxT("SELECT CASE WHEN nspname LIKE 'pg\\\\_temp\\\\_%' THEN 1\n")
                 wxT("            WHEN (nspname LIKE 'pg\\\\_%') THEN 0\n");
         }
-        sql += wxT("            ELSE 3 END AS nsptyp,\n")
-            wxT("       nsp.nspname, nsp.oid, pg_get_userbyid(nspowner) AS namespaceowner, nspacl, description,")
-            wxT("       has_schema_privilege(nsp.oid, 'CREATE') as cancreate\n")
+        sql += wxT("            ELSE 3 END AS nsptyp, nspname, nsp.oid\n")
             wxT("  FROM pg_namespace nsp\n")
-            wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
             + restr +
             wxT(" ORDER BY 1, nspname");
     }
@@ -126,42 +120,32 @@ void gqbDatabase::createSchemas(pgConn *conn,  gqbBrowser *tablesBrowser, wxTree
                 continue;
             }
 
+            int tableImage = 2, viewImage = 7;
+            gqbSchema *schema;
+
             if (MetaType == GQB_CATALOG)
             {
 
                 // Create Schema Object
-                wxString tmpname = wxString(name);
-                gqbSchema *schema = new gqbSchema(this, tmpname, GQB_SCHEMA);
-                parent=tablesBrowser->AppendItem(parentNode, name , indexImage, indexImage,schema);
-                schema->createObjects(tablesBrowser, conn, schemas->GetOid(wxT("oid")), parent, 5, 5);
-                schemas->MoveNext();
+                schema = new gqbSchema(this, name, GQB_SCHEMA);
+                parent=tablesBrowser->AppendItem(parentNode, name , indexImage, indexImage, schema);
+
+                if(name != wxT("pg_catalog") && name != wxT("pgagent"))
+				{
+                    tableImage=5;
+					viewImage=5;
+				}
             }
             else
             {
 
                 // Create Schema Object
-                wxString tmpname= wxString(name);
-                gqbSchema *schema = new gqbSchema(this, tmpname, GQB_SCHEMA);
-                parent=tablesBrowser->AppendItem(parentNode, name , indexImage, indexImage,schema);
-                int tableImage=-1, viewImage=-1;
-
-                //GQB-TODO: temporary fix replace this with a better one option
-                if(schema->getName().Contains(wxT("pg_catalog")))
-				{
-                    tableImage=6;
-					viewImage=6;
-				}
-                else
-				{
-                    tableImage=2;
-					viewImage=7;
-				}
-
-                //Create tables inside this schema.
-                schema->createObjects(tablesBrowser, conn, schemas->GetOid(wxT("oid")), parent, tableImage, viewImage);
-
-                schemas->MoveNext();
+                schema = new gqbSchema(this, name, GQB_SCHEMA);
+                parent=tablesBrowser->AppendItem(parentNode, name , indexImage, indexImage, schema);
             }
+
+            schema->createObjects(tablesBrowser, conn, schemas->GetOid(wxT("oid")), parent, tableImage, viewImage, 8);
+            schemas->MoveNext();
         }
 
         delete schemas;

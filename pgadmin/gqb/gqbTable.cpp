@@ -64,28 +64,7 @@ void gqbTable::createColumns(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
         systemRestriction = wxT("\n   AND attnum > 0");
 
     wxString sql=
-        wxT("SELECT att.*, def.*, pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS defval, CASE WHEN attndims > 0 THEN 1 ELSE 0 END AS isarray, format_type(ty.oid,NULL) AS typname, tn.nspname as typnspname, et.typname as elemtypname,\n")
-        wxT("  cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
-        wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey");
-
-    if (conn->BackendMinimumVersion(7, 4))
-        sql +=
-            wxT(",\n")
-            wxT("  EXISTS(SELECT 1 FROM  pg_constraint WHERE conrelid=att.attrelid AND contype='f'")
-            wxT(" AND att.attnum=ANY(conkey)) As isfk");
-
-    sql += wxT("\n")
-        wxT("  FROM pg_attribute att\n")
-        wxT("  JOIN pg_type ty ON ty.oid=atttypid\n")
-        wxT("  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n")
-        wxT("  JOIN pg_class cl ON cl.oid=attrelid\n")
-        wxT("  JOIN pg_namespace na ON na.oid=cl.relnamespace\n")
-        wxT("  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n")
-        wxT("  LEFT OUTER JOIN pg_attrdef def ON adrelid=attrelid AND adnum=attnum\n")
-        wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=attrelid AND des.objsubid=attnum\n")
-        wxT("  LEFT OUTER JOIN (pg_depend JOIN pg_class cs ON objid=cs.oid AND cs.relkind='S') ON refobjid=attrelid AND refobjsubid=attnum\n")
-        wxT("  LEFT OUTER JOIN pg_namespace ns ON ns.oid=cs.relnamespace\n")
-        wxT("  LEFT OUTER JOIN pg_index pi ON pi.indrelid=attrelid AND indisprimary\n")
+        wxT("SELECT attname FROM pg_attribute att\n")
         wxT(" WHERE attrelid = ")
         + NumToStr(oidVal)
         + systemRestriction + wxT("\n")
