@@ -491,7 +491,7 @@ logical_or_expression
 
 expression
 	: logical_or_expression		{
-									wxLogScriptVerbose($1->value().c_str());
+									wxLogScriptVerbose(wxT("%s"), $1->value().c_str());
 									$$ = $1;
 								}
 	;
@@ -737,7 +737,7 @@ compound_statement
 	
 sql_statement
 	: sql_expression			{
-									wxLogScriptVerbose($1->value().c_str());
+									wxLogScriptVerbose(wxT("%s"), $1->value().c_str());
 									$$ = pnew pgsExpressionStmt($1, &(driver.thread));
 									driver.context.pop_var(); // $1
 									driver.context.push_stmt($$); // pgsExpressionStmt

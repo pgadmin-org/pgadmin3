@@ -992,7 +992,7 @@ namespace pgscript
   case 44:
 #line 493 "pgscript/pgsParser.yy"
     {
-									wxLogScriptVerbose((yysemantic_stack_[(1) - (1)].expr)->value().c_str());
+									wxLogScriptVerbose(wxT("%s"), (yysemantic_stack_[(1) - (1)].expr)->value().c_str());
 									(yyval.expr) = (yysemantic_stack_[(1) - (1)].expr);
 								;}
     break;
@@ -1355,7 +1355,7 @@ namespace pgscript
   case 84:
 #line 739 "pgscript/pgsParser.yy"
     {
-									wxLogScriptVerbose((yysemantic_stack_[(1) - (1)].expr)->value().c_str());
+									wxLogScriptVerbose(wxT("%s"), (yysemantic_stack_[(1) - (1)].expr)->value().c_str());
 									(yyval.stmt) = pnew pgsExpressionStmt((yysemantic_stack_[(1) - (1)].expr), &(driver.thread));
 									driver.context.pop_var(); // $1
 									driver.context.push_stmt((yyval.stmt)); // pgsExpressionStmt
