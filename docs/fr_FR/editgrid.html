@@ -1,0 +1,87 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Éditer les données</title>
+</head>
+
+<body>
+
+<H3>Éditer les données</H3>
+
+<center><img src="images/editgrid.png"></center>
+
+<P>L'outil d'édition des données vous permet de visualiser les données stockées
+dans une table ou une vue, et d'en modifier le contenu quand cela est
+techniquement possible.</P>
+<P>L'en-tête de la grille affichera le nom de chaque colonne avec le type de
+données. Une colonne faisant partie d'une clé primaire sera marquée du texte
+[PK] (acronyme de Primary Key).</P>
+<P><B>Important&nbsp;:</B> Pour modifier les données, chaque ligne de la table
+doit être identifiable de façon unique. Cela peut se faire avec un OID ou une
+clé primaire. Si aucun de ces moyens existe, la table est en lecture seule.
+Notez que les vues ne peuvent pas être modifiées et sont en lecture seule par
+design&nbsp;; les vues modifiables (via des règles) ne sont pas encore
+supportées.</P>
+<P>Pour modifier la valeur d'un champ, vous sélectionnez ce champ et saisissez
+le nouveau texte. Le bouton Enregistrer de la barre d'outils permet aux données
+d'être enregistrées sur le serveur. La ligne sera écrite automatiquement si vous
+sélectionnez une autre ligne.</P>
+<P>Pour ajouter une nouvelle ligne à la table, vous entrez les données dans la
+dernière ligne qui a comme numéro de ligne un astérisque. Dès que vous
+enregistrez les données, la ligne obtiendra un numéro de ligne et une nouvelle
+ligne vide avec astérisque est créée.</P>
+<P>Si une valeur NULL doit être écrite dans la table, laissez simplement le
+champ vide. SI vous enregistrez une nouvelle ligne, le serveur enregistrera
+la valeur par défaut pour cette colonne. Si vous modifiez une ligne existante,
+la valeur NULL sera explicitement enregistrée.</P>
+<P>Pour saisir une nouvelle ligne dans un champ, cliquez sur Ctrl-Enter.</P>
+<P>Si vous voulez que pgAdmin III écrive une chaîne vide dans la table,
+saisissez la chaîne spéciale '' (deux guillemets simples) dans le champ. Si
+vous voulez écrire une chaîne contenant seulement deux guillemets simples,
+vous aurez besoin d'échapper ces guillemets, ainsi \'\'.
+</P>
+<P>Pour supprimer une ligne, cliquez sur le bouton Supprimer de la barre
+d'outils.</P>
+<P>Le bouton Rafraichir permet de relire le contenu de la table et de mettre
+à jour l'affichage.</P>
+<P>
+Vous pouvez sélectionner une ou plusieurs lignes, et les copier dans le
+presse-papier avec Ctrl-C ou en cliquant sur le bouton Copier de la barre
+d'outils.
+</P>
+<P>
+Le bouton Trier/Filtrer de la barre d'outils ouvrira le dialogue <A
+href=gridopts.html>Options de visualisation des données</A>.
+</P>
+<P>
+Le menu contextuelle peut aussi être utilisé pour trier ou filtrer rapidement
+les données. Quand un clic droit survient sur une cellule de la grille, les
+options suivantes permettent à l'utilisateur de visualiser les données de
+façon sélective&nbsp;:
+<ul>
+<li><i>Filtrer par sélection</i>&nbsp;: si activé, rafraichit les données et
+affiche seulement les lignes dont la valeur de la colonne correspondant à la
+valeur de la cellule actuellement sélectionnée.</li>
+<li><i>Exclure par sélection</i>&nbsp;: si activé, rafraichit les données et
+exclut les lignes dont la valeur de la colonne correspond à la valeur de la
+cellule actuellement sélectionnée.</li>
+<li><i>Supprimer le filtre</i>&nbsp;: si activé, supprime toutes les conditions
+de filtre (sélection et exclusion).</li>
+<li><i>Tri ascendant</i>&nbsp;: si activé, rafraichit les données et affiche
+les lignes dans l'ordre ascendant des valeurs des colonnes sélectionnées. Si un
+tri est déjà présent pour cet ensemble de données, cette préférence de tri est
+ajoutée à l'ordre de tri précédent.</li>
+<li><i>Tri descendant</i>&nbsp;: si activé, rafraichit les données et affiche
+les lignes dans l'ordre descendant des valeurs des colonnes sélectionnées. Si un
+tri est déjà présent pour cet ensemble de données, cette préférence de tri est
+ajoutée à l'ordre de tri précédent.</li>
+<li><i>Supprimer le tri</i>&nbsp;: si activé, supprime toutes les préférences
+de tri pour cet ensemble de données.</li>
+</ul>
+Note&nbsp;: si une colonne est déjà sélectionnée pour le tri, sa position dans la
+liste de tri restera la même, seule la direction sera changée.
+</P>
+</BODY>
+</HTML>

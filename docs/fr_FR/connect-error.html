@@ -1,0 +1,69 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Erreurs de connexion</title>
+</head>
+
+<body>
+
+<H3>Erreurs de connexion</H3>
+
+<p>
+Lors de la connexion à un serveur PostgreSQL, vous pouvez obtenir des messages
+d'erreur nécessitant un peu plus d'explications. Si vous en rencontrez un, merci
+de lire les informations suivantes avec attention, nous sommes certains qu'elles
+vous aideront.
+<br>
+<ul>
+<li><a href="hints/conn-listen.html">could not connect to Server: Connection refused</a>
+<li><a href="hints/conn-hba.html">FATAL: no pg_hba.conf entry</a>
+</ul>
+<br>
+</p>
+<H3 id="notrunning">could not connect to Server: Connection refused</H3>
+<center><img src="images/not-running.png"></center>
+<p>
+Il y a deux raisons à ce message. Le serveur peut tout simplement ne pas être
+démarré. Commencez par le lancer.
+</p>
+<p>
+L'autre possibilité est que le serveur n'est pas configuré pour accepter les
+requêtes TCP/IP sur l'adresse affichée.
+</p>
+<p>
+Pour des raisons de sécurité, un serveur PostgreSQL &quot;tout neuf&quot;
+n'écoute pas sur les ports TCP/IP. En fait, il doit être activé pour
+écouter. Ceci se fait en ajoutant <b>tcpip = true</b> au fichier postgresql.conf
+pour les versions 7.3.x et 7.4.x, et <b>listen_addresses='*'</b> pour les
+versions 8.0.x et ultérieures&nbsp;; cela permettra au serveur d'accepter les
+connexions sur n'importe quelle interface IP.
+</p>
+<p>
+Pour plus d'informations, merci de vous référer à la documentation de
+PostgreSQL sur la <a href="pg/runtime-config.html">configuration du serveur</a>.
+<br>
+</p>
+<br>
+<H3 id="no-hba">FATAL: no pg_hba.conf entry</H3>
+<center><img src="images/no-hba.png"></center>
+<p>
+Si ce message apparaît, votre serveur est accessible sur le réseau mais n'est
+pas configuré pour accepter votre connexion. Votre client n'est pas détecté
+comme un utilisateur légal de la base de données.
+</p>
+<p>
+Vous devez ajouter une entrée de la forme
+<br>&nbsp;&nbsp;&nbsp;<b>host template1 postgres 192.168.0.0/24 md5</b>
+<br>pour IPv4 ou de la forme
+<br>&nbsp;&nbsp;&nbsp;<b>host template1 postgres ::ffff:192.168.0.0/120 md5</b>
+<br>pour IPv6 dans le fichier pg_hba.conf.
+</p>
+<p>
+Pour plus d'informations, merci de vous référer à la documentation de
+PostgreSQL sur l'<a href="pg/client-authentication.html">authentification des
+clients</a>.<br>
+</p>
+</BODY>
+</HTML>

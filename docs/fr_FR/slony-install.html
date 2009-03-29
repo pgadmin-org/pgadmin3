@@ -1,0 +1,109 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Administration de Slony-I avec pgAdmin III&nbsp;: installation</title>
+</head>
+
+<body>
+<A name="node"></a>
+<h3>Administration de Slony-I avec pgAdmin III&nbsp;: installation</h3>
+<BR>
+<H4>Prérequis</H4>
+<p>
+Comme prérequis de l'exécution de Slony-I sur PostgreSQL, les modules Slony-I
+xxid et slony1_funcs doivent être présents sur tous les serveurs correspondant
+à un n&oelig;ud de réplication Slony-I. Cela se fait habituellement par la
+routine d'installation de Slony-I. 
+</p>
+
+<A name="overview"></a>
+<H4>Aperçu</H4>
+<p>
+Configurer Slony-I la première fois est un gros travail. Les sections suivantes
+de l'aide de pgAdmin vous guide dans la création de votre premier cluster de
+réplication.
+<p>
+<ul>
+<li><a href="#create">Étape 1</a>&nbsp;: Créer le cluster sur le n&oelig;ud
+maître.<br />&nbsp;</li>
+<li><a href="#join">Étape 2</a>&nbsp;: Ajouter les n&oelig;uds esclaves au
+cluster.<br />&nbsp;</li>
+<li><a href="slony-path.html#path">Étape 3</a>&nbsp;: COnfigurer les chemins de
+chaque n&oelig;ud vers tous les autres n&oelig;uds.<br />&nbsp;</li>
+<li><a href="slony-path.html#listen">Étape 4</a>&nbsp;: Configurer les écoutes
+de chaque n&oelig;ud vers tous les autres n&oelig;ud (<b>Note</b>&nbsp;: cela
+n'est pas requis avec Slony-I v1.1 ainsi que les versions ultérieures).<br />&nbsp;</li>
+<li><a href="slony-set.html#set">Étape 5</a>&nbsp;: Créer un ensemble de
+réplication.<br />&nbsp;</li>
+<li><a href="slony-set.html#table">Étape 6</a>&nbsp;: Ajouter les tables et
+séquences à l'ensemble.<br />&nbsp;</li>
+<li><a href="slony-set.html#subscription">Étape 7</a>&nbsp;: Abonner les esclaves
+à l'ensemble.</li>
+</ul>
+<p>
+<b>Note</b>&nbsp;: à ce moment, les démons slon (services sous Windows) doivent être démarrés.
+</p>
+<br />
+
+<A name="create"></a>
+<H4>Créer le cluster et le premier n&oelig;ud</H4>
+<BR>
+<center><img src="images/slony-create.png"></center>
+
+<p>
+Pour installer un cluster Slony-I sur la première base de données, la fenêtre
+« Ajouter un cluster Slony-I » est utilisée. Il exécute les scripts SQL officiels
+de création de cluster Slony-I, qui sont situés dans le répertoire configuré dans
+la fenêtre des <A HREF="options-tab1.html">options</A>.
+</p>
+<p>
+pgAdmin III a besoin de stocker des informations sur comment contacter chaque
+n&oelig;ud individuel dans le cluster. Pour cela, pgAdmin III utilise le concept
+de « N&oelig;uds administratifs ».
+
+</p>
+
+<A name="join"></a>
+<H4>Joindre des n&oelig;uds supplémentaires au cluster</H4>
+<BR>
+<center><img src="images/slony-join.png"></center>
+<p>
+Après la création réussie du premier n&oelig;ud dans le cluster de réplication
+Slony-I, tous les n&oelig;uds suivants prennent leur configuration et les
+procédures des premiers n&oelig;uds. Ce processus est appelé « Joindre un
+cluster » dans pgAdmin III. Habituellement, vous devez aussi sélectionner un
+n&oelig;ud existant au n&oelig;ud d'administration pour vous assurer son accès
+plus tard dans pgAdmin III.
+<p>
+</p>
+Après avoir ajouté un nouveau n&oelig;ud au cluster Slony-I, vous avez besoin de
+configurer les <A href='"slony-path.html'>chemins de réplication</A> entre
+les n&oelig;uds pour activer la communication entre eux.
+</p>
+
+<A name="upgrade"></a>
+<H4>Mise à jour d'un n&oelig;ud avec le nouveau logiciel</H4>
+<BR>
+<center><img src="images/slony-upgrade.png"></center>
+<p>
+Quand un cluster doit être mis à jour avec une nouvelle version du logiciel
+Slony-I, le processus de mise à jour doit être exécuté sur tous les n&oelig;uds
+du cluster. Pour chaque n&oelig;ud, le démon slon a besoin d'être arrêté, puis
+la fenêtre de mise à jour est lancé et un n&oelig;ud avec le nouveau logiciel
+est sélectionné (pgAdmin III extraira tous les logiciels de ce n&oelig;ud),
+enfin le démon slon est redémarré.
+</p>
+<p>
+Actuellement, pgAdmin III ne supporte <B>pas</B> la mise à jour à partir des
+scripts de création Slony-I. À la place, créez un cluster intermédiaire à partir
+des scripts de création, utilisez-le comme source pour la fenêtre de mise à jour
+et supprimez le cluster après usage. Vous pouvez aussi utiliser l'outil slonik
+pour mettre à jour le premier n&oelig;ud, puis utiliser ce dernier comme source
+pour les mises à jour des autres n&oelig;uds.
+</p>
+<p>
+</p>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Débogueur de pgAdmin</title>
+</head>
+
+<body>
+
+<h3>Débogueur de pgAdmin</h3>
+
+<center><img src="images/debugger.png"></center>
+
+<p>Le débogueur peut être utilisé pour déboguer les fonctions PL/pgsql dans
+PostgreSQL, ainsi que dans les fonctions, procédures stockées et packages des
+bases d'EnterpriseDB.
+</p>
+
+<P><b>Note&nbsp;:</b> le débogueur peut seulement être utilisé par des rôles
+ayant le droit de super-utilisateur.
+</p> 
+
+<p>Pour utiliser le débogueur, un plugin doit être installé sur votre serveur.
+Il est inclus par défaut avec EnterpriseDB, et est disponible en téléchargement
+sur <a href="http://pgfoundry.org/projects/edb-debugger/">pgFoundry</a>. Il est
+installé en tant que module contrib avec la distribution Windows de PostgreSQL
+8.3 et ultérieure.
+</p>
+
+<p>Le débogueur peut être utilisé pour du débogage dans le contexte et direct.
+Pour déboguer un objet dans le contexte, faites un clic droit dans le navigateur
+de pgAdmin et sélectionnez l'option «&nbsp;Breakpoint global&nbsp;». Le
+débogueur attendra la prochaine session pour exécuter l'objet, et s'arrêter
+sur la première ligne du code exécutable. Pour déboguer directement un objet,
+faites un clic droit sur l'objet et sélectionnez l'objet «&nbsp;Débogage&nbsp;».
+Le débogueur vous demandera les valeurs des paramètres nécessaires, invoquera
+l'objet et se stoppera sur la première ligne de code.</p>
+
+<p>Lors de la saisie des valeurs des paramètres, saisissez la valeur dans chaque
+cellule appropriée sur la grille ou laissez la cellule vide pour représenter la
+valeur NULL. Saisissez '' (deux guillemets simples) pour représenter une chaîne
+vide. Pour saisir une chaîne contenant deux guillemets simples, saisir \'\'.
+PostgreSQL 8.4 et ultérieurs supporte les paramètres de fonctions variadic. Elles
+peuvent être saisies sous la forme d'une liste de valeurs, séparées par des
+virgules, entre guillemets ou avec des conversions si nécessaire.</p>
+
+<p>Une fois que la session de déboguage a commencé, vous pouvez aller d'étape en
+étape en utilisant le menu Options, les raccourcis clavier et les boutons de la
+barre d'outils. Des points d'arrêt peuvent être mis en place ou supprimés en
+cliquant sur la marge de la fenêtre des sources ou en cliquant sur la ligne de
+code désiré et en utilisant le bouton «&nbsp;Basculer le point d'arrêt&nbsp;» ou
+le menu. Si vous vous déplacez dans d'autres fonctions, le panneau Pile peut être
+utilisé pour naviguer dans les différentes piles - sélectionnez simplement la
+partie que vous voulez visualiser.</p>
+
+<p>Quand le débogueur atteint la fin du code exécutable, s'il fonctionne en mode
+contexte, il attends le prochain appel de la fonction. Sinon, il demande de
+nouveau les valeurs des paramètres et relance l'exécution. Vous pouvez quitter
+le débogueur à tout moment.</p>
+
+</body>
+</html>

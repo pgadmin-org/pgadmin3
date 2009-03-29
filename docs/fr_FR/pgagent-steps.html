@@ -1,0 +1,43 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>pgAgent Steps</title>
+</head>
+
+<body>
+
+<H3>Étapes de pgAgent</H3>
+<P>Chaque job consiste en un certain nombre d'étapes, chacune d'entre elle
+pouvant être un script SQL ou un script shell/batch suivant le système
+d'exploitation. Chaque étape dans un job donné est exécuté à son tour dans un
+ordre alphanumérique.</P>
+
+<P>Les étapes peuvent être ajoutées à un job via le dialogue de propriétés du
+job ou en tant que sous-objet. L'onglet <I>Propriétés</I> de la fenêtre principale
+de pgAdmin affichera les détails de l'étape sélectionnée, et l'onglet
+<I>Statistiques</I> affichera les détails de chaque exécution de l'étape,
+incluant sortie et erreurs du script.</P>
+
+<P><center><img src="images/pgagent-stepstats.png" alt="Step statistics"></center></P>
+
+<P>Chaque étape consiste en les détails affichées sur la copie d'écran ci-dessous,
+la plupart s'expliquant d'eux-même. Si <I>Genre</I> est SQL, alors il va sans dire
+qu'une base de données doit être sélectionnée pour exécuter le script. S'il est
+configuré à <I>Batch</I>, la chaîne de connexion à la base doit être laissée vide.
+L'option <I>En cas d'erreur</I> contrôle comment les échecs de cette étape
+affecteront le statut du job complet.</P>
+
+<P><center><img src="images/pgagent-stepdetails.png" alt="Step details"></center></P>
+
+<P>L'onglet <I>Définition</I> contient un simple champ texte dans lequel le
+script de l'étape doit être saisir. Pour les étapes SQL, cela doit correspondre
+à une série d'une ou plusieurs instructions SQL. Pour les jobs batch, sur un
+serveur WIndows, le syntaxe du fichier batch standard doit être utilisé alors
+que pour un serveur *nix, tout script shell peut être utilisé, à condition
+que l'interpréteur adéquat soit indiqué en première ligne (par exemple
+<I>#!/bin/sh</I>).</P>
+
+</BODY>
+</HTML>
