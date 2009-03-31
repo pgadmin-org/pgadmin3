@@ -76,9 +76,9 @@ END</pre>
 <pre class="screen">DECLARE @I, @J, @T, @G;
 SET @I = 0;
 SET @G1 = INTEGER(10, 29, 1); /* Random integer generator
-                             Unique numbers beetween 10 and 29 */
+                             Unique numbers between 10 and 29 */
 SET @G2 = STRING(10, 20, 3); /* Random string generator
-                             3 words beetween 10 and 20 characters */
+                             3 words between 10 and 20 characters */
 WHILE @I &lt; 20
 BEGIN
     SET @T = 'table' + CAST (@I AS STRING);
@@ -168,7 +168,7 @@ PRINT @A; -- Prints an integer between 100 and 200
 PRINT @A; -- Prints another integer between 100 and 200</pre>
 <p>A variable can contain a generator but its type is one of:
     number (real or integer), string. For a list of available generators
-    and their associated type see <a href="#generators">Random data generators</a>.</p>
+    and their associated type, see <a href="#generators">Random data generators</a>.</p>
 <h4><a name="variable2"></a>Records</h4>
 <h5>Record declaration</h5>
 <p>Declaring a record is <strong>required</strong>.
@@ -179,7 +179,7 @@ DECLARE @R3 { @A, @B, @C, @D };         -- One record  with four columns</pre>
 <p>The number of lines is dynamic: see the next section.</p>
 <h5>Record affectation</h5>
 <p>To access a specific location in a record, one must use the line
-    number (starts at 0) and can user either the column name (between
+    number (starts at 0) and can use either the column name (between
     quotes) or the column number (starts at 0). This specific location
     behaves like a simple variable. Note that a record cannot contain a
     record.</p>
@@ -187,7 +187,7 @@ DECLARE @R3 { @A, @B, @C, @D };         -- One record  with four columns</pre>
 SET @R1[0][0] = 1;    -- Same location
 SET @R1[4]['@B'] = 1; -- Fifth line &amp; second column
 SET @R1[0][1] = 1;    -- Same location</pre>
-<p>In the above example three empty lines are automatically
+<p>In the above example, three empty lines are automatically
     inserted between the first and the fifth. Using an invalid column
     number or name results in an exception.</p>
 <p>Specific location can be used as right values as well. A
@@ -197,7 +197,7 @@ SET @A = @R1[1]; -- @A becomes a record which is the first line of @R1</pre>
 <p>Remember that <code>SET @R1[0][0] = @R2</code> is impossible
     because a record cannot contain a record.</p>
 <p>It is possible to assign a record to a variable, in this case
-    the variables does not need to be declared:</p>
+    the variable does not need to be declared:</p>
 <pre class="screen">SET @A = @R3; -- @A becomes a record because it is assigned a record</pre>
 <h5>SQL queries</h5>
 <p>Any SQL query executed returns a record. If the query is a <code>SELECT</code> query then it returns the results of the query. If
@@ -215,12 +215,12 @@ SET @B = INSERT INTO table ...; -- @B is a one-line record if the query succeeds
 SET @A = CAST (@B AS REAL);
 SET @A = CAST (@B AS INTEGER);
 SET @A = CAST (@B AS RECORD);</pre>
-<p>When a record is converted to a string it is converted to its flat
-    representation. When converted to a number the record is first converted
+<p>When a record is converted to a string, it is converted to its flat
+    representation. When converted to a number, the record is first converted
     to a string and then to a number (see string conversion for more
     details).</p>
-<p>When a number is converted to a string it is converted to its
-    string representation. When converted to a record it is converted to a
+<p>When a number is converted to a string, it is converted to its
+    string representation. When converted to a record, it is converted to a
     one-line-one-column record whose value is the number.</p>
 <p>When a string is converted to a number, if the string represents a
     number then this number is returned else an exception is thrown. When
@@ -470,8 +470,8 @@ REGEX ( '[a-z]{1,3}@[0-9]{3}' );</pre>
     </li>
 </ul>
 <p>Note: be careful with spaces because <code>'a {3}'</code> means
-    one <code>a</code> followed by three spaces because the <code>3</code> is about the last character or set of characters which is .</p>
-<p>If you need to use <code>[</code> <code>]</code> <code>\</code> <code>{</code> or <code>}</code> they must be escaped because they are
+    one <code>a</code> followed by three spaces because the <code>3</code> is about the last character or set of characters which is a space in this example.</p>
+<p>If you need to use <code>[</code> <code>]</code> <code>\</code> <code>{</code> or <code>}</code>, they must be escaped because they are
     special characters. Remember to use <strong>double
     backslash</strong>: <code>'\\[{3}'</code> for three <code>[</code>.</p>
 <h5>Strings from dictionary files</h5>
