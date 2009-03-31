@@ -52,11 +52,13 @@ END_EVENT_TABLE()
 #define stOption            CTRL_STATIC("stOption")
 
 
-dlgHbaConfig::dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *_line, pgConn *conn) : 
+dlgHbaConfig::dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *_line, pgConn *_conn) : 
 DialogWithHelp((frmMain*)parent)
 {
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource((wxWindow*)parent, wxT("dlgHbaConfig"));
+
+    conn = _conn;
 
     userAdding = databaseAdding = false;
 
@@ -87,6 +89,27 @@ DialogWithHelp((frmMain*)parent)
     cbMethod->Append(wxT("krb5"));
     cbMethod->Append(wxT("ident"));
     cbMethod->Append(wxT("pam"));
+
+    if (conn)
+    {
+        // LDAP is supported from 8.2
+        if (conn->BackendMinimumVersion(8, 2))
+            cbMethod->Append(wxT("ldap"));
+
+        // GSS/SSPI are supported from 8.3
+        if (conn->BackendMinimumVersion(8, 3))
+        {
+            cbMethod->Append(wxT("gss"));
+            cbMethod->Append(wxT("sspi"));
+        }
+    }
+    else
+    {
+        // Add all version-dependent methods if we don't know what version we have.
+        cbMethod->Append(wxT("ldap"));
+        cbMethod->Append(wxT("gss"));
+        cbMethod->Append(wxT("sspi"));
+    }
 
     if (conn)
     {
@@ -284,7 +307,27 @@ void dlgHbaConfig::OnChange(wxCommandEvent& ev)
     stIPaddress->Enable(needIp);
     txtIPaddress->Enable(needIp);
 
-    bool needOption = (cbMethod->GetCurrentSelection() >= pgHbaConfigLine::PGC_IDENT);
+    bool needOption = false;
+    // IDENT and LDAP always take an option
+    if (cbMethod->GetCurrentSelection() == pgHbaConfigLine::PGC_IDENT ||
+        cbMethod->GetCurrentSelection() == pgHbaConfigLine::PGC_LDAP)
+    {
+        needOption = true;
+    }
+    else if (cbMethod->GetCurrentSelection() == pgHbaConfigLine::PGC_GSS ||
+             cbMethod->GetCurrentSelection() == pgHbaConfigLine::PGC_SSPI)
+    {
+        // GSS/SSPI take options from 8.4 onwards. If we don't know the version
+        // then allow the option to be specified.
+        if (conn)
+        {
+            if (conn->BackendMinimumVersion(8, 4))
+                needOption = true;
+        }
+        else
+            needOption = true;
+    }
+
     stOption->Enable(needOption);
     txtOption->Enable(needOption);
 
@@ -307,7 +350,10 @@ void dlgHbaConfig::OnOK(wxCommandEvent& ev)
     line->user = user;
     line->ipaddress = txtIPaddress->GetValue();
     line->method = (pgHbaConfigLine::pgHbaMethod)cbMethod->GetCurrentSelection();
-    line->option = txtOption->GetValue();
+    if (txtOption->IsEnabled())
+        line->option = txtOption->GetValue();
+    else
+        line->option = wxEmptyString;
     line->changed = true;
 
     EndModal(wxID_OK);

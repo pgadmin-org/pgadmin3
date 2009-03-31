@@ -19,7 +19,7 @@
 class dlgHbaConfig : public DialogWithHelp
 {
 public:
-    dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *line, pgConn *conn);
+    dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *line, pgConn *_conn);
     ~dlgHbaConfig();
     wxString GetHelpPage() const;
 
@@ -38,6 +38,8 @@ private:
     wxString database, user;
 
     bool databaseAdding, userAdding;
+
+    pgConn *conn;
 
     DECLARE_EVENT_TABLE()
 };

@@ -354,6 +354,9 @@ const wxChar *pgHbaMethodStrings[] =
     wxT("krb5"),
     wxT("ident"),
     wxT("pam"),
+    wxT("ldap"),
+    wxT("gss"),
+    wxT("sspi"),
     0
 };
 

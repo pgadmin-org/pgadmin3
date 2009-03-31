@@ -76,6 +76,9 @@ public:
         PGC_KRB5,
         PGC_IDENT,
         PGC_PAM,
+        PGC_LDAP,
+        PGC_GSS,
+        PGC_SSPI,
         PGC_INVALIDMETHOD
     };
 
