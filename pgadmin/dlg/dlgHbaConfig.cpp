@@ -102,6 +102,12 @@ DialogWithHelp((frmMain*)parent)
             cbMethod->Append(wxT("gss"));
             cbMethod->Append(wxT("sspi"));
         }
+
+        // CERT is supported from 8.4
+        if (conn->BackendMinimumVersion(8, 4))
+        {
+            cbMethod->Append(wxT("cert"));
+        }
     }
     else
     {
@@ -109,6 +115,7 @@ DialogWithHelp((frmMain*)parent)
         cbMethod->Append(wxT("ldap"));
         cbMethod->Append(wxT("gss"));
         cbMethod->Append(wxT("sspi"));
+        cbMethod->Append(wxT("cert"));
     }
 
     if (conn)
@@ -315,10 +322,25 @@ void dlgHbaConfig::OnChange(wxCommandEvent& ev)
         needOption = true;
     }
     else if (cbMethod->GetCurrentSelection() == pgHbaConfigLine::PGC_GSS ||
-             cbMethod->GetCurrentSelection() == pgHbaConfigLine::PGC_SSPI)
+             cbMethod->GetCurrentSelection() == pgHbaConfigLine::PGC_SSPI ||
+             cbMethod->GetCurrentSelection() == pgHbaConfigLine::PGC_KRB5 ||
+             cbMethod->GetCurrentSelection() == pgHbaConfigLine::PGC_PAM ||
+             cbMethod->GetCurrentSelection() == pgHbaConfigLine::PGC_CERT)
     {
-        // GSS/SSPI take options from 8.4 onwards. If we don't know the version
+        // GSS/SSPI/KRB5/PAM/CERT take options from 8.4 onwards. If we don't know the version
         // then allow the option to be specified.
+        if (conn)
+        {
+            if (conn->BackendMinimumVersion(8, 4))
+                needOption = true;
+        }
+        else
+            needOption = true;
+    }
+
+    // On 8.4 and above, any hostssl lines can take an option
+    if (cbType->GetCurrentSelection() == pgHbaConfigLine::PGC_HOSTSSL)
+    {
         if (conn)
         {
             if (conn->BackendMinimumVersion(8, 4))

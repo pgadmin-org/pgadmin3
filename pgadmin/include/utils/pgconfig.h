@@ -79,6 +79,7 @@ public:
         PGC_LDAP,
         PGC_GSS,
         PGC_SSPI,
+        PGC_CERT,
         PGC_INVALIDMETHOD
     };
 
