@@ -30,6 +30,8 @@ public:
     pgObject *GetObject();
 
 private:
+    bool doesOverflowBigInt(const wxString &str, bool emptyAllowed);
+
     pgSchema *schema;
     pgSequence *sequence;
 

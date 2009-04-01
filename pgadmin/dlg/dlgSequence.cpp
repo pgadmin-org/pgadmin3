@@ -154,36 +154,39 @@ void dlgSequence::CheckChange()
     wxString name=GetName();
     bool maxOk = true;
 
+    if (statusBar)
+        statusBar->SetStatusText(wxEmptyString);
+
     // Check we don't overflow INT64_MAX
-    if (NumToStr(StrToLongLong(txtCache->GetValue())) != txtCache->GetValue())
+    if (doesOverflowBigInt(txtCache->GetValue(), !sequence))
     {
         if (statusBar)
             statusBar->SetStatusText(_("Invalid cache value"));
         maxOk = false;
     }
 
-    if (NumToStr(StrToLongLong(txtMax->GetValue())) != txtMax->GetValue())
+    if (doesOverflowBigInt(txtMax->GetValue(), !sequence))
     {
         if (statusBar)
             statusBar->SetStatusText(_("Invalid maximum value"));
         maxOk = false;
     }
 
-    if (NumToStr(StrToLongLong(txtMin->GetValue())) != txtMin->GetValue())
+    if (doesOverflowBigInt(txtMin->GetValue(), !sequence))
     {
         if (statusBar)
             statusBar->SetStatusText(_("Invalid minimum value"));
         maxOk = false;
     }
 
-    if (NumToStr(StrToLongLong(txtStart->GetValue())) != txtStart->GetValue())
+    if (doesOverflowBigInt(txtStart->GetValue(), !sequence))
     {
         if (statusBar)
             statusBar->SetStatusText(_("Invalid current value"));
         maxOk = false;
     }
 
-    if (NumToStr(StrToLongLong(txtIncrement->GetValue())) != txtIncrement->GetValue())
+    if (doesOverflowBigInt(txtIncrement->GetValue(), !sequence))
     {
         if (statusBar)
             statusBar->SetStatusText(_("Invalid increment value"));
@@ -210,6 +213,16 @@ void dlgSequence::CheckChange()
     }
 }
 
+bool dlgSequence::doesOverflowBigInt(const wxString &str, bool emptyAllowed)
+{
+    if (emptyAllowed && str.IsEmpty())
+        return false;
+
+    if (NumToStr(StrToLongLong(str)) != str)
+        return true;
+
+    return false;
+}
 
 wxString dlgSequence::GetSql()
 {
