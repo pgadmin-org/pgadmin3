@@ -105,6 +105,12 @@ public:
     void iSetCompressLevel(const wxString& s) { compressLevel = s; }
     wxString GetIsColumnStore() { return columnstore; }
     void iSetIsColumnStore(const wxString& s) { columnstore = s; }
+    wxString GetCompressType() { return compresstype; }
+    void iSetCompressType(const wxString& s) { compresstype = s; };
+    wxString GetBlocksize() { return blocksize; }
+    void iSetBlocksize(const wxString& s) { blocksize = s; };
+    wxString GetChecksum() { return checksum; }
+    void iSetChecksum(const wxString& s) { checksum = s; };
     wxString GetPartitionDef() { return partitionDef; }
     void iSetPartitionDef(const wxString& s) { partitionDef = s; }
     bool GetIsPartitioned() const { return isPartitioned || partitionDef.Length() > 0; }
@@ -204,6 +210,9 @@ private:
     wxString appendOnly;
     wxString compressLevel;
     wxString columnstore;
+    wxString compresstype;
+    wxString blocksize;
+    wxString checksum;
     wxString partitionDef;
     bool isPartitioned;
     bool hasOids, hasSubclass, rowsCounted, isReplicated, showExtendedStatistics, distributionIsRandom;

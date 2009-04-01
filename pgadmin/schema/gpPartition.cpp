@@ -110,6 +110,9 @@ pgObject *gpPartitionFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 	query += wxT(", substring(array_to_string(reloptions, ',') from 'appendonly=([a-z]*)') AS appendonly \n");
 	query += wxT(", substring(array_to_string(reloptions, ',') from 'compresslevel=([0-9]*)') AS compresslevel \n");
     query += wxT(", substring(array_to_string(reloptions, ',') from 'columnstore=([a-z]*)') AS columnstore \n");
+    query += wxT(", substring(array_to_string(reloptions, ',') from 'compresstype=([a-z0-9]*)') AS compresstype \n");
+    query += wxT(", substring(array_to_string(reloptions, ',') from 'blocksize=([0-9]*)') AS blocksize \n");
+    query += wxT(", substring(array_to_string(reloptions, ',') from 'checksum=([a-z]*)') AS checksum \n");
 	//query += wxT(", rel.oid in (select parrelid from pg_partition) as ispartitioned\n"); // This only works for top-level tables, not intermediate ones
 	// This looks for intermediate partitions that have subpartitions
 	query += wxT(", rel.oid in (select pr.parchildrelid from pg_partition_rule pr, pg_partition pp where pr.paroid = pp.oid and pp.parlevel < (select max(parlevel) from pg_partition where parrelid = pp.parrelid)) as ispartitioned \n");
@@ -170,6 +173,9 @@ pgObject *gpPartitionFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 			table->iSetAppendOnly(tables->GetVal(wxT("appendonly")));
 			table->iSetCompressLevel(tables->GetVal(wxT("compresslevel")));
             table->iSetIsColumnStore(tables->GetVal(wxT("columnstore")));
+            table->iSetCompressType(tables->GetVal(wxT("compresstype")));
+            table->iSetBlocksize(tables->GetVal(wxT("blocksize")));
+            table->iSetChecksum(tables->GetVal(wxT("checksum")));
 
 			table->iSetPartitionDef(wxT(""));
 			table->iSetIsPartitioned(tables->GetBool(wxT("ispartitioned"))); 
