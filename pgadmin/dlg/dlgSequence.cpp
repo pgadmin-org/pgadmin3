@@ -152,9 +152,47 @@ void dlgSequence::OnChangeSize(wxSizeEvent &ev)
 void dlgSequence::CheckChange()
 {
     wxString name=GetName();
+    bool maxOk = true;
+
+    // Check we don't overflow INT64_MAX
+    if (NumToStr(StrToLongLong(txtCache->GetValue())) != txtCache->GetValue())
+    {
+        if (statusBar)
+            statusBar->SetStatusText(_("Invalid cache value"));
+        maxOk = false;
+    }
+
+    if (NumToStr(StrToLongLong(txtMax->GetValue())) != txtMax->GetValue())
+    {
+        if (statusBar)
+            statusBar->SetStatusText(_("Invalid maximum value"));
+        maxOk = false;
+    }
+
+    if (NumToStr(StrToLongLong(txtMin->GetValue())) != txtMin->GetValue())
+    {
+        if (statusBar)
+            statusBar->SetStatusText(_("Invalid minimum value"));
+        maxOk = false;
+    }
+
+    if (NumToStr(StrToLongLong(txtStart->GetValue())) != txtStart->GetValue())
+    {
+        if (statusBar)
+            statusBar->SetStatusText(_("Invalid current value"));
+        maxOk = false;
+    }
+
+    if (NumToStr(StrToLongLong(txtIncrement->GetValue())) != txtIncrement->GetValue())
+    {
+        if (statusBar)
+            statusBar->SetStatusText(_("Invalid increment value"));
+        maxOk = false;
+    }
+
     if (sequence)
     {
-        EnableOK(name != sequence->GetName() 
+        EnableOK(maxOk && (name != sequence->GetName() 
                || txtComment->GetValue() != sequence->GetComment()
                || cbOwner->GetValue() != sequence->GetOwner()
                || txtStart->GetValue() != sequence->GetLastValue().ToString()
@@ -162,13 +200,13 @@ void dlgSequence::CheckChange()
                || txtMax->GetValue() != sequence->GetMaxValue().ToString()
                || txtCache->GetValue() != sequence->GetCacheValue().ToString()
                || txtIncrement->GetValue() != sequence->GetIncrement().ToString()
-               || chkCycled->GetValue() != sequence->GetCycled());
+               || chkCycled->GetValue() != sequence->GetCycled()));
     }
     else
     {
         bool enable=true;
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        EnableOK(enable);
+        EnableOK(enable && maxOk);
     }
 }
 
@@ -216,7 +254,7 @@ wxString dlgSequence::GetSql()
 
             if (txtMax->GetValue().IsEmpty())
                 tmp += wxT("\n   NO MAXVALUE");
-            else if (StrToLongLong(txtMax->GetValue()) >= sequence->GetMaxValue())
+            else if (StrToLongLong(txtMax->GetValue()) > sequence->GetMaxValue())
                 tmp += wxT("\n   MAXVALUE ") + txtMax->GetValue();
 
             if (!tmp.IsEmpty())
