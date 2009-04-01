@@ -192,11 +192,8 @@ void dlgServer::OnChangeRestr(wxCommandEvent &ev)
         dbRestrictionOk = true;
     else
     {
-        wxString sql=wxT("EXPLAIN SELECT 1 FROM pg_database DB\n");
-        if (connection->BackendMinimumVersion(8, 0))
-            sql += wxT(" JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n");
-        sql += wxT(" WHERE (") + txtDbRestriction->GetValue() + wxT(")");
-
+        wxString sql=wxT("EXPLAIN SELECT 1 FROM pg_database\n")
+                     wxT("WHERE datname IN (") + txtDbRestriction->GetValue() + wxT(")");
 
         wxLogNull nix;
         wxString result=connection->ExecuteScalar(sql);

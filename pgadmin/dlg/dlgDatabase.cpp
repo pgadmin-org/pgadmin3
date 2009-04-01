@@ -316,9 +316,8 @@ void dlgDatabase::OnChangeRestr(wxCommandEvent &ev)
         schemaRestrictionOk = true;
     else
     {
-        wxString sql=wxT("SELECT 1 FROM pg_namespace nsp\n")
-                wxT("  JOIN pg_description des ON des.objoid=nsp.oid\n")
-                wxT(" WHERE nspname IN (") + txtSchemaRestr->GetValue() + wxT(")");
+        wxString sql=wxT("EXPLAIN SELECT 1 FROM pg_namespace\n")
+                wxT("WHERE nspname IN (") + txtSchemaRestr->GetValue() + wxT(")");
 
         wxLogNull nix;
         wxString result=connection->ExecuteScalar(sql);
