@@ -30,7 +30,7 @@ wxString sysLogger::logFile=wxT("debug.log");
 // IMPLEMENT_LOG_FUNCTION(Sql) from wx../common/log.c
 void wxVLogQuietError(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[1024];
+    static wxChar s_szBuf[8192];
 
     if (sysLogger::logLevel >= LOG_ERRORS)
     {
@@ -51,7 +51,7 @@ void wxLogQuietError(const wxChar *szFormat, ...)
 
 void wxVLogSql(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[1024];
+    static wxChar s_szBuf[8192];
 
     if (sysLogger::logLevel >= LOG_SQL)
     {
@@ -73,7 +73,7 @@ void wxLogSql(const wxChar *szFormat, ...)
 
 void wxVLogNotice(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[1024];
+    static wxChar s_szBuf[8192];
 
     if (sysLogger::logLevel >= LOG_NOTICE)
     {
@@ -92,7 +92,7 @@ void wxLogNotice(const wxChar *szFormat, ...)
 
 void wxVLogScript(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[1024];
+    static wxChar s_szBuf[8192];
 
     if (sysLogger::logLevel >= LOG_SQL)
     {
@@ -111,7 +111,7 @@ void wxLogScript(const wxChar *szFormat, ...)
 
 void wxVLogScriptVerbose(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[1024];
+    static wxChar s_szBuf[8192];
 
     if (sysLogger::logLevel >= LOG_DEBUG)
     {
