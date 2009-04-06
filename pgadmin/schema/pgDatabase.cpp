@@ -352,8 +352,8 @@ wxString pgDatabase::GetSql(ctlTree *browser)
             sql += wxT("\n       TABLESPACE = ") + qtIdent(GetTablespace());
         if (myConn && myConn->BackendMinimumVersion(8, 4))
         {
-            sql += wxT("\n       COLLATE = ") + qtDbString(GetCollate());
-            sql += wxT("\n       CTYPE = ") + qtDbString(GetCType());
+            sql += wxT("\n       LC_COLLATE = ") + qtDbString(GetCollate());
+            sql += wxT("\n       LC_CTYPE = ") + qtDbString(GetCType());
         }
         if (myConn && myConn->BackendMinimumVersion(8, 1))
         {

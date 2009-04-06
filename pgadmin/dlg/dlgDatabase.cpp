@@ -613,10 +613,10 @@ wxString dlgDatabase::GetSql()
         {
             wxString strCollate = cbCollate->GetValue();
             if (!strCollate.IsEmpty())
-                AppendIfFilled(sql, wxT("\n       COLLATE="), qtDbString(strCollate));
+                AppendIfFilled(sql, wxT("\n       LC_COLLATE="), qtDbString(strCollate));
             wxString strCType = cbCType->GetValue();
             if (!strCType.IsEmpty())
-                AppendIfFilled(sql, wxT("\n       CTYPE="), qtDbString(strCType));
+                AppendIfFilled(sql, wxT("\n       LC_CTYPE="), qtDbString(strCType));
         }
         if (connection->BackendMinimumVersion(8,1))
         {
