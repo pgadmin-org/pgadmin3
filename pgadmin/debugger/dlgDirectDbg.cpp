@@ -295,7 +295,7 @@ void dlgDirectDbg::populateParamGrid( )
         font.SetStyle( wxFONTSTYLE_ITALIC );
         grdParams->SetCellFont( 0, COL_NAME, font );
 
-        grdParams->AutoSizeColumns();
+        grdParams->SetColSize(COL_NAME, 200);
         activateDebugger();
     }
     else
