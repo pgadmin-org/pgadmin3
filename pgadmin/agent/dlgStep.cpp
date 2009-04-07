@@ -288,6 +288,11 @@ wxString dlgStep::GetInsertSql()
 				connstr = wxT("''");
 			}
         }
+        else
+        {
+            db = wxT("''");
+            connstr = wxT("''");
+        }
 
         sql = wxT("INSERT INTO pgagent.pga_jobstep (jstid, jstjobid, jstname, jstdesc, jstenabled, jstkind, jstonerror, jstcode, jstdbname");
         if (hasConnStrSupport)
