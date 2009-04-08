@@ -97,22 +97,21 @@ void dlgView::CheckChange()
     wxString name=GetName();
     if (name) 
     {
+        bool enable = true;
         if (view)
-             EnableOK(txtComment->GetValue() != view->GetComment()
-              || txtSqlBox->GetText() != oldDefinition
-              || cbOwner->GetValue() != view->GetOwner()
-              || name != view->GetName());
-         else
-	     EnableOK(!txtComment->GetValue().IsEmpty()
-              || !txtSqlBox->GetText().IsEmpty()
-              || !cbOwner->GetValue().IsEmpty());
+            enable = txtComment->GetValue() != view->GetComment()
+                  || txtSqlBox->GetText().Trim(true).Trim(false) != oldDefinition.Trim(true).Trim(false)
+                  || cbOwner->GetValue() != view->GetOwner()
+                  || name != view->GetName();
+        enable &= !txtSqlBox->GetText().Trim(true).IsEmpty();
+        EnableOK(enable);
     }
     else
     {
         bool enable=true;
 
         CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, txtSqlBox->GetText().Length() > 14 , _("Please enter function definition."));
+        CheckValid(enable, txtSqlBox->GetText().Trim(true).Trim(false).Length() > 0 , _("Please enter function definition."));
 
         EnableOK(enable);
     }
@@ -122,7 +121,6 @@ void dlgView::CheckChange()
 wxString dlgView::GetSql()
 {
     wxString sql, name=GetName();
-
 
     if (view)
     {
@@ -138,7 +136,7 @@ wxString dlgView::GetSql()
     if (!view || txtSqlBox->GetText() != oldDefinition)
     {
         sql += wxT("CREATE OR REPLACE VIEW ") + schema->GetQuotedPrefix() + qtIdent(name) + wxT(" AS\n")
-            + txtSqlBox->GetText()
+            + txtSqlBox->GetText().Trim(true).Trim(false)
             + wxT(";\n");
     }
 
