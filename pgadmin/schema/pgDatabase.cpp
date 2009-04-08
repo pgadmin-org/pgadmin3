@@ -627,6 +627,13 @@ bool pgDatabase::CanDebugPlpgsql()
     else if (canDebugPlpgsql == 2)
         return true;
 
+    // Check the appropriate plugin is loaded
+    if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_debugger.")))
+    {
+        canDebugPlpgsql = 1;
+        return false;
+    }
+
     if (ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE proname = 'pldbg_get_target_info';")) == wxT("0"))
     {
         canDebugPlpgsql = 1;
@@ -664,6 +671,13 @@ bool pgDatabase::CanDebugEdbspl()
         return false;
     else if (canDebugEdbspl == 2)
         return true;
+
+    // Check the appropriate plugin is loaded
+    if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_spl_debugger.")))
+    {
+        canDebugEdbspl = 1;
+        return false;
+    }
 
     if (ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE proname = 'pldbg_get_target_info';")) == wxT("0"))
     {
