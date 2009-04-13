@@ -259,6 +259,7 @@ void dlgDirectDbg::populateParamGrid( )
             grdParams->SetReadOnly( i, COL_NAME,  true );
             grdParams->SetReadOnly( i, COL_TYPE,  true );
             grdParams->SetReadOnly( i, COL_VALUE, false );
+            grdParams->SetColSize(COL_NAME, 200);
         
             i++;
         }
