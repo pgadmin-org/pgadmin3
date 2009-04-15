@@ -668,8 +668,21 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
             }
             else
             {
-                text = wxString::Format(_("Are you sure you wish to drop %s %s?"),
-                    data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str());
+                /*
+                *  curerntObject is set using the following command.
+                *  i.e. currentObject = browser->GetObject(item);
+                *  While fetching this object using this code, somehow it looses its virtual table pointer.
+                *  Hence, it is not able to call the GetFullIdentifier - virtual function from the 
+                *  particular class, but it will always call this functions from pgObject class always.
+                *  To rectify this problem, we need to explicitly check the meta data type and call the
+                *  function from the particular class.
+                */
+                if (data->GetMetaType() == PGM_SERVER)
+                    text = wxString::Format(_("Are you sure you wish to drop %s \"%s\"?"),
+                        data->GetTranslatedTypeName().c_str(), ((pgServer*)data)->GetFullIdentifier().c_str());
+                else
+                    text = wxString::Format(_("Are you sure you wish to drop %s %s?"),
+                        data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str());
                 caption = wxString::Format(_("Drop %s?"), data->GetTranslatedTypeName().c_str());
             }
             wxMessageDialog msg(this, text, caption, wxYES_NO | wxICON_QUESTION);
