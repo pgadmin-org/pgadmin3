@@ -1194,6 +1194,17 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
     wxString query;
     pgTable *table=0;
 
+    // Greenplum returns reltuples and relpages as tuples per segmentDB and pages per segmentDB,
+    // so we need to multiply them by the number of segmentDBs to get reasonable values.
+    long gp_segments =1;
+    if (collection->GetConnection()->GetIsGreenplum())
+    {
+        query = wxT("SELECT count(*) AS gp_segments from pg_catalog.gp_configuration where definedprimary = 't' and content >= 0");
+        gp_segments = StrToLong(collection->GetDatabase()->ExecuteScalar(query));
+        if (gp_segments <= 1)
+            gp_segments = 1;
+    }
+
     pgSet *tables;
     if (collection->GetConnection()->BackendMinimumVersion(8, 0))
     {
@@ -1291,7 +1302,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             }
             table->iSetComment(tables->GetVal(wxT("description")));
             table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
-            table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")));
+            table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")) * gp_segments);
             if (collection->GetConnection()->BackendMinimumVersion(8, 2)) {
                 table->iSetFillFactor(tables->GetVal(wxT("fillfactor")));
             }

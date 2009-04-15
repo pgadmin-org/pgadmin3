@@ -96,6 +96,16 @@ pgObject *gpPartitionFactory::CreateObjects(pgCollection *coll, ctlTree *browser
     wxString query;
     gpPartition *table=0;
 
+    // Greenplum returns reltuples and relpages as tuples per segmentDB and pages per segmentDB,
+    // so we need to multiply them by the number of segmentDBs to get reasonable values.
+    long gp_segments =1;
+
+    query = wxT("SELECT count(*) AS gp_segments from pg_catalog.gp_configuration where definedprimary = 't' and content >= 0");
+    gp_segments = StrToLong(collection->GetDatabase()->ExecuteScalar(query));
+    if (gp_segments <= 1)
+        gp_segments = 1;
+
+
 	pgSet *tables;
 
 	query= wxT("SELECT rel.oid, relname, rel.reltablespace AS spcoid, spcname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
@@ -152,7 +162,7 @@ pgObject *gpPartitionFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 
 			table->iSetComment(tables->GetVal(wxT("description")));
 			table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
-			table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")));
+			table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")) * gp_segments);
 
 			table->iSetFillFactor(tables->GetVal(wxT("fillfactor")));
 
