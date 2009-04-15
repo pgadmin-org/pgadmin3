@@ -1218,7 +1218,7 @@ void frmQuery::updateMenu(wxObject *obj)
     if (closing)
         return;
 
-    if (obj != msgResult && obj != msgHistory)
+    if (!obj && obj != msgResult && obj != msgHistory)
     {
         if (sqlQuery)
         {
