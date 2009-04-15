@@ -628,7 +628,7 @@ bool pgDatabase::CanDebugPlpgsql()
         return true;
 
     // Check the appropriate plugin is loaded
-    if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_debugger.")))
+    if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_debugger")))
     {
         canDebugPlpgsql = 1;
         return false;
@@ -673,7 +673,7 @@ bool pgDatabase::CanDebugEdbspl()
         return true;
 
     // Check the appropriate plugin is loaded
-    if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_spl_debugger.")))
+    if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_spl_debugger")))
     {
         canDebugEdbspl = 1;
         return false;
