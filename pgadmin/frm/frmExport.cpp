@@ -305,8 +305,19 @@ void frmExport::OnCancel(wxCommandEvent &ev)
 
 void frmExport::OnBrowseFile(wxCommandEvent &ev)
 {
-    wxFileDialog file(this, _("Select export filename"), wxGetHomeDir(), txtFilename->GetValue(), 
-        _("CSV files (*.csv)|*.csv|Data files (*.dat)|*.dat|All files (*.*)|*.*"));
+    wxString directory;
+    wxString filename;
+
+    if (txtFilename->GetValue().IsEmpty())
+        directory = wxGetHomeDir();
+    else
+    {
+        directory = wxFileName(txtFilename->GetValue()).GetPath();
+        filename = wxFileName(txtFilename->GetValue()).GetFullName();
+    }
+
+    wxFileDialog file(this, _("Select export filename"), directory, filename, 
+        _("CSV files (*.csv)|*.csv|Data files (*.dat)|*.dat|All files (*.*)|*.*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
     if (file.ShowModal() == wxID_OK)
     {
