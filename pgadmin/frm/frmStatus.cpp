@@ -37,57 +37,51 @@
 #include "images/terminate_backend.xpm"
 #include "images/delete.xpm"
 #include "images/storedata.xpm"
- 
-// Panes' title
-#define statusTitle  _("Activity")
-#define locksTitle   _("Locks")
-#define xactTitle    _("Transactions")
-#define logTitle     _("Logfile")
 
 
 BEGIN_EVENT_TABLE(frmStatus, pgFrame)
-    EVT_MENU(MNU_EXIT,               				frmStatus::OnExit)
+    EVT_MENU(MNU_EXIT,                               frmStatus::OnExit)
     
-    EVT_MENU(MNU_COPY,               				frmStatus::OnCopy)
+    EVT_MENU(MNU_COPY,                               frmStatus::OnCopy)
 
-    EVT_MENU(MNU_HELP,               				frmStatus::OnHelp)
-    EVT_MENU(MNU_STATUSPAGE,        				frmStatus::OnToggleStatusPane)
-    EVT_MENU(MNU_LOCKPAGE,            				frmStatus::OnToggleLockPane)
-    EVT_MENU(MNU_XACTPAGE,         				    frmStatus::OnToggleXactPane)
-    EVT_MENU(MNU_LOGPAGE,         				    frmStatus::OnToggleLogPane)
-    EVT_MENU(MNU_TOOLBAR,         				    frmStatus::OnToggleToolBar)
-    EVT_MENU(MNU_DEFAULTVIEW,        				frmStatus::OnDefaultView)
+    EVT_MENU(MNU_HELP,                               frmStatus::OnHelp)
+    EVT_MENU(MNU_STATUSPAGE,                        frmStatus::OnToggleStatusPane)
+    EVT_MENU(MNU_LOCKPAGE,                            frmStatus::OnToggleLockPane)
+    EVT_MENU(MNU_XACTPAGE,                             frmStatus::OnToggleXactPane)
+    EVT_MENU(MNU_LOGPAGE,                             frmStatus::OnToggleLogPane)
+    EVT_MENU(MNU_TOOLBAR,                             frmStatus::OnToggleToolBar)
+    EVT_MENU(MNU_DEFAULTVIEW,                        frmStatus::OnDefaultView)
 
     EVT_AUI_PANE_CLOSE(                             frmStatus::OnPaneClose)
     
     EVT_COMBOBOX(CTL_RATECBO,                       frmStatus::OnRateChange)
-    EVT_MENU(MNU_REFRESH,		     		        frmStatus::OnRefresh)
-    EVT_MENU(MNU_CANCEL,		     		        frmStatus::OnCancelBtn)
-    EVT_MENU(MNU_TERMINATE,			          		frmStatus::OnTerminateBtn)
-    EVT_MENU(MNU_COMMIT,		                    frmStatus::OnCommit)
-    EVT_MENU(MNU_ROLLBACK,			                frmStatus::OnRollback)
+    EVT_MENU(MNU_REFRESH,                             frmStatus::OnRefresh)
+    EVT_MENU(MNU_CANCEL,                             frmStatus::OnCancelBtn)
+    EVT_MENU(MNU_TERMINATE,                              frmStatus::OnTerminateBtn)
+    EVT_MENU(MNU_COMMIT,                            frmStatus::OnCommit)
+    EVT_MENU(MNU_ROLLBACK,                            frmStatus::OnRollback)
     EVT_COMBOBOX(CTL_LOGCBO,                        frmStatus::OnLoadLogfile)
     EVT_BUTTON(CTL_ROTATEBTN,                       frmStatus::OnRotateLogfile)
     
-    EVT_TIMER(TIMER_REFRESHUI_ID,					frmStatus::OnRefreshUITimer)
+    EVT_TIMER(TIMER_REFRESHUI_ID,                    frmStatus::OnRefreshUITimer)
 
-    EVT_TIMER(TIMER_STATUS_ID,						frmStatus::OnRefreshStatusTimer)
-	EVT_LIST_ITEM_SELECTED(CTL_STATUSLIST,		    frmStatus::OnSelStatusItem)
-	EVT_LIST_ITEM_DESELECTED(CTL_STATUSLIST,	    frmStatus::OnSelStatusItem)
+    EVT_TIMER(TIMER_STATUS_ID,                        frmStatus::OnRefreshStatusTimer)
+    EVT_LIST_ITEM_SELECTED(CTL_STATUSLIST,            frmStatus::OnSelStatusItem)
+    EVT_LIST_ITEM_DESELECTED(CTL_STATUSLIST,        frmStatus::OnSelStatusItem)
     
-    EVT_TIMER(TIMER_LOCKS_ID,						frmStatus::OnRefreshLocksTimer)
-	EVT_LIST_ITEM_SELECTED(CTL_LOCKLIST,		    frmStatus::OnSelLockItem)
-	EVT_LIST_ITEM_DESELECTED(CTL_LOCKLIST,		    frmStatus::OnSelLockItem)
+    EVT_TIMER(TIMER_LOCKS_ID,                        frmStatus::OnRefreshLocksTimer)
+    EVT_LIST_ITEM_SELECTED(CTL_LOCKLIST,            frmStatus::OnSelLockItem)
+    EVT_LIST_ITEM_DESELECTED(CTL_LOCKLIST,            frmStatus::OnSelLockItem)
     
-    EVT_TIMER(TIMER_XACT_ID,						frmStatus::OnRefreshXactTimer)
-	EVT_LIST_ITEM_SELECTED(CTL_XACTLIST,		    frmStatus::OnSelXactItem)
-	EVT_LIST_ITEM_DESELECTED(CTL_XACTLIST,		    frmStatus::OnSelXactItem)
+    EVT_TIMER(TIMER_XACT_ID,                        frmStatus::OnRefreshXactTimer)
+    EVT_LIST_ITEM_SELECTED(CTL_XACTLIST,            frmStatus::OnSelXactItem)
+    EVT_LIST_ITEM_DESELECTED(CTL_XACTLIST,            frmStatus::OnSelXactItem)
     
-    EVT_TIMER(TIMER_LOG_ID,							frmStatus::OnRefreshLogTimer)
-	EVT_LIST_ITEM_SELECTED(CTL_LOGLIST,	    	    frmStatus::OnSelLogItem)
-	EVT_LIST_ITEM_DESELECTED(CTL_LOGLIST,		    frmStatus::OnSelLogItem)
+    EVT_TIMER(TIMER_LOG_ID,                            frmStatus::OnRefreshLogTimer)
+    EVT_LIST_ITEM_SELECTED(CTL_LOGLIST,                frmStatus::OnSelLogItem)
+    EVT_LIST_ITEM_DESELECTED(CTL_LOGLIST,            frmStatus::OnSelLogItem)
 
-    EVT_CLOSE(										frmStatus::OnClose)
+    EVT_CLOSE(                                        frmStatus::OnClose)
 END_EVENT_TABLE();
 
 
@@ -153,7 +147,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
 {
     dlgName = wxT("frmStatus");
     
-	loaded = false;
+    loaded = false;
 
     mainForm = form;
     connection = conn;
@@ -271,25 +265,32 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     settings->Read(wxT("frmStatus/Perspective-") + VerFromRev(FRMSTATUS_PERSPECTIVE_VER), &perspective, FRMSTATUS_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
-	// XACT and LOG panes must be hidden once again if server doesn't deal with them
+    // Reset the captions for the current language
+    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+    manager.GetPane(wxT("Activity")).Caption(_("Activity"));
+    manager.GetPane(wxT("Locks")).Caption(_("Locks"));
+    manager.GetPane(wxT("Transactions")).Caption(_("Transactions"));
+    manager.GetPane(wxT("Logfile")).Caption(_("Logfile"));
+
+    // XACT and LOG panes must be hidden once again if server doesn't deal with them
     if (!(connection->BackendMinimumVersion(8, 0) && 
-		 connection->HasFeature(FEATURE_FILEREAD)))
+         connection->HasFeature(FEATURE_FILEREAD)))
     {
-		manager.GetPane(logTitle).Show(false);
+        manager.GetPane(wxT("Logfile")).Show(false);
     }
     if (!connection->BackendMinimumVersion(8, 1))
     {
-		manager.GetPane(xactTitle).Show(false);
+        manager.GetPane(wxT("Transactions")).Show(false);
     }
 
     // Tell the manager to "commit" all the changes just made
     manager.Update();
 
     // Sync the View menu options
-    viewMenu->Check(MNU_STATUSPAGE, manager.GetPane(statusTitle).IsShown());
-    viewMenu->Check(MNU_LOCKPAGE, manager.GetPane(locksTitle).IsShown());
-    viewMenu->Check(MNU_XACTPAGE, manager.GetPane(xactTitle).IsShown());
-    viewMenu->Check(MNU_LOGPAGE, manager.GetPane(logTitle).IsShown());
+    viewMenu->Check(MNU_STATUSPAGE, manager.GetPane(wxT("Activity")).IsShown());
+    viewMenu->Check(MNU_LOCKPAGE, manager.GetPane(wxT("Locks")).IsShown());
+    viewMenu->Check(MNU_XACTPAGE, manager.GetPane(wxT("Transactions")).IsShown());
+    viewMenu->Check(MNU_LOGPAGE, manager.GetPane(wxT("Logfile")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
 
     // Get our PID
@@ -302,7 +303,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     refreshUITimer->Start(250);
 
     // We're good now
-	loaded = true;
+    loaded = true;
 }
 
 
@@ -370,7 +371,7 @@ void frmStatus::Go()
     }
     if (viewMenu->IsEnabled(MNU_LOGPAGE) && viewMenu->IsChecked(MNU_LOGPAGE))
     {
-		currentPane = PANE_LOG;
+        currentPane = PANE_LOG;
         cbRate->SetValue(rateToCboString(logRate));
         OnRateChange(nullScrollEvent);
     }
@@ -410,8 +411,8 @@ void frmStatus::AddStatusPane()
     // Add the panel to the notebook
     manager.AddPane(pnlActivity,
       wxAuiPaneInfo().
-      Name(statusTitle).Caption(statusTitle).
-	  CaptionVisible(true).CloseButton(true).MaximizeButton(true).
+      Name(wxT("Activity")).Caption(_("Activity")).
+      CaptionVisible(true).CloseButton(true).MaximizeButton(true).
       Dockable(true).Movable(true));
     
     // Auto-sizing
@@ -424,18 +425,18 @@ void frmStatus::AddStatusPane()
     statusList->AddColumn(_("Database"), 70);
     statusList->AddColumn(_("User"), 70);
     if (connection->BackendMinimumVersion(8, 1))
-	{
+    {
         statusList->AddColumn(_("Client"), 70);
-		statusList->AddColumn(_("Client start"), 80);
-	}
+        statusList->AddColumn(_("Client start"), 80);
+    }
     if (connection->BackendMinimumVersion(7, 4))
         statusList->AddColumn(_("Query start"), 50);
     if (connection->BackendMinimumVersion(8, 3))
         statusList->AddColumn(_("TX start"), 50);
-	statusList->AddColumn(_("Blocked by"), 35);
+    statusList->AddColumn(_("Blocked by"), 35);
     statusList->AddColumn(_("Query"), 500);
 
-	// Read statusRate configuration
+    // Read statusRate configuration
     settings->Read(wxT("frmStatus/RefreshStatusRate"), &statusRate, 10);
     
     // Create the timer
@@ -460,8 +461,8 @@ void frmStatus::AddLockPane()
     // Add the panel to the notebook
     manager.AddPane(pnlLock,
       wxAuiPaneInfo().
-      Name(locksTitle).Caption(locksTitle).
-	  CaptionVisible(true).CloseButton(true).MaximizeButton(true).
+      Name(wxT("Locks")).Caption(_("Locks")).
+      CaptionVisible(true).CloseButton(true).MaximizeButton(true).
       Dockable(true).Movable(true));
     
     // Auto-sizing
@@ -483,7 +484,7 @@ void frmStatus::AddLockPane()
         lockList->AddColumn(_("Start"), 50);
     lockList->AddColumn(_("Query"), 500);
 
-	// Read locksRate configuration
+    // Read locksRate configuration
     settings->Read(wxT("frmStatus/RefreshLockRate"), &locksRate, 10);
     
     // Create the timer
@@ -508,8 +509,8 @@ void frmStatus::AddXactPane()
     // Add the panel to the notebook
     manager.AddPane(pnlXacts,
       wxAuiPaneInfo().
-      Name(xactTitle).Caption(xactTitle).
-	  CaptionVisible(true).CloseButton(true).MaximizeButton(true).
+      Name(wxT("Transactions")).Caption(_("Transactions")).
+      CaptionVisible(true).CloseButton(true).MaximizeButton(true).
       Dockable(true).Movable(true));
 
     // Auto-sizing
@@ -525,7 +526,7 @@ void frmStatus::AddXactPane()
         // Uncheck and disable menu        
         viewMenu->Enable(MNU_XACTPAGE, false);
         viewMenu->Check(MNU_XACTPAGE, false);
-		manager.GetPane(xactTitle).Show(false);
+        manager.GetPane(wxT("Transactions")).Show(false);
         
         // We're done
         return;
@@ -538,7 +539,7 @@ void frmStatus::AddXactPane()
     xactList->AddColumn(_("Owner"), 50);
     xactList->AddColumn(_("Database"), 50);
 
-	// Read xactRate configuration
+    // Read xactRate configuration
     settings->Read(wxT("frmStatus/RefreshXactRate"), &xactRate, 10);
     
     // Create the timer
@@ -563,8 +564,8 @@ void frmStatus::AddLogPane()
     // Add the panel to the notebook
     manager.AddPane(pnlLog,
       wxAuiPaneInfo().Center().
-      Name(logTitle).Caption(logTitle).
-	  CaptionVisible(true).CloseButton(true).MaximizeButton(true).
+      Name(wxT("Logfile")).Caption(_("Logfile")).
+      CaptionVisible(true).CloseButton(true).MaximizeButton(true).
       Dockable(true).Movable(true));
 
     // Auto-sizing
@@ -577,7 +578,7 @@ void frmStatus::AddLogPane()
     // We don't need this report (but we need the pane)
     // if server release is less than 8.0 or if server has no adminpack
     if (!(connection->BackendMinimumVersion(8, 0) && 
-		 connection->HasFeature(FEATURE_FILEREAD)))
+         connection->HasFeature(FEATURE_FILEREAD)))
     {
         if (connection->BackendMinimumVersion(8, 0))
             frmHint::ShowHint(this, HINT_INSTRUMENTATION);
@@ -588,7 +589,7 @@ void frmStatus::AddLogPane()
         // Uncheck and disable menu
         viewMenu->Enable(MNU_LOGPAGE, false);
         viewMenu->Check(MNU_LOGPAGE, false);
-		manager.GetPane(logTitle).Show(false);
+        manager.GetPane(wxT("Logfile")).Show(false);
 
         // We're done
         return;
@@ -619,8 +620,8 @@ void frmStatus::AddLogPane()
 
     // Re-initialize variables
     logfileLength = 0;
-    	
-	// Read logRate configuration
+        
+    // Read logRate configuration
     settings->Read(wxT("frmStatus/RefreshLogRate"), &logRate, 10);
         
     // Create the timer
@@ -681,22 +682,22 @@ void frmStatus::OnCopy(wxCommandEvent& ev)
 
 void frmStatus::OnPaneClose(wxAuiManagerEvent& evt)
 {
-    if (evt.pane->name == statusTitle)
+    if (evt.pane->name == wxT("Activity"))
     {
         viewMenu->Check(MNU_STATUSPAGE, false);
         statusTimer->Stop();
     }
-    if (evt.pane->name == locksTitle)
+    if (evt.pane->name == wxT("Locks"))
     {
         viewMenu->Check(MNU_LOCKPAGE, false);
         locksTimer->Stop();
     }
-    if (evt.pane->name == xactTitle)
+    if (evt.pane->name == wxT("Transactions"))
     {
         viewMenu->Check(MNU_XACTPAGE, false);
         xactTimer->Stop();
     }
-    if (evt.pane->name == logTitle)
+    if (evt.pane->name == wxT("Logfile"))
     {
         viewMenu->Check(MNU_LOGPAGE, false);
         logTimer->Stop();
@@ -708,14 +709,14 @@ void frmStatus::OnToggleStatusPane(wxCommandEvent& event)
 {
     if (viewMenu->IsChecked(MNU_STATUSPAGE))
     {
-        manager.GetPane(statusTitle).Show(true);
+        manager.GetPane(wxT("Activity")).Show(true);
         cbRate->SetValue(rateToCboString(statusRate));
         if (statusRate > 0)
             statusTimer->Start(statusRate*1000L);
     }
     else
     {
-        manager.GetPane(statusTitle).Show(false);
+        manager.GetPane(wxT("Activity")).Show(false);
         statusTimer->Stop();
     }
 
@@ -728,14 +729,14 @@ void frmStatus::OnToggleLockPane(wxCommandEvent& event)
 {
     if (viewMenu->IsChecked(MNU_LOCKPAGE))
     {
-        manager.GetPane(locksTitle).Show(true);
+        manager.GetPane(wxT("Locks")).Show(true);
         cbRate->SetValue(rateToCboString(locksRate));
         if (locksRate > 0)
             locksTimer->Start(locksRate*1000L);
     }
     else
     {
-        manager.GetPane(locksTitle).Show(false);
+        manager.GetPane(wxT("Locks")).Show(false);
         locksTimer->Stop();
     }
     
@@ -748,14 +749,14 @@ void frmStatus::OnToggleXactPane(wxCommandEvent& event)
 {
     if (viewMenu->IsEnabled(MNU_XACTPAGE) && viewMenu->IsChecked(MNU_XACTPAGE))
     {
-        manager.GetPane(xactTitle).Show(true);
+        manager.GetPane(wxT("Transactions")).Show(true);
         cbRate->SetValue(rateToCboString(xactRate));
         if (xactRate > 0)
             xactTimer->Start(xactRate*1000L);
     }
     else
     {
-        manager.GetPane(xactTitle).Show(false);
+        manager.GetPane(wxT("Transactions")).Show(false);
         xactTimer->Stop();
     }
     
@@ -768,14 +769,14 @@ void frmStatus::OnToggleLogPane(wxCommandEvent& event)
 {
     if (viewMenu->IsEnabled(MNU_LOGPAGE) && viewMenu->IsChecked(MNU_LOGPAGE))
     {
-        manager.GetPane(logTitle).Show(true);
+        manager.GetPane(wxT("Logfile")).Show(true);
         cbRate->SetValue(rateToCboString(logRate));
         if (logRate > 0)
             logTimer->Start(logRate*1000L);
     }
     else
     {
-        manager.GetPane(logTitle).Show(false);
+        manager.GetPane(wxT("Logfile")).Show(false);
         logTimer->Stop();
     }
     
@@ -802,19 +803,24 @@ void frmStatus::OnToggleToolBar(wxCommandEvent& event)
 
 void frmStatus::OnDefaultView(wxCommandEvent& event)
 {
-    // Re-load the layout
-    wxString perspective;
-    settings->Read(wxT("frmStatus/Perspective-") + VerFromRev(FRMSTATUS_PERSPECTIVE_VER), &perspective, FRMSTATUS_DEFAULT_PERSPECTIVE);
-    manager.LoadPerspective(perspective, true);
+    manager.LoadPerspective(FRMSTATUS_DEFAULT_PERSPECTIVE, true);
 
-    // Tell the manager to "commit" all the changes just made
+    // Reset the captions for the current language
+    manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
+    manager.GetPane(wxT("Activity")).Caption(_("Activity"));
+    manager.GetPane(wxT("Locks")).Caption(_("Locks"));
+    manager.GetPane(wxT("Transactions")).Caption(_("Transactions"));
+    manager.GetPane(wxT("Logfile")).Caption(_("Logfile"));
+
+    // tell the manager to "commit" all the changes just made
     manager.Update();
 
     // Sync the View menu options
-    viewMenu->Check(MNU_STATUSPAGE, manager.GetPane(statusTitle).IsShown());
-    viewMenu->Check(MNU_LOCKPAGE, manager.GetPane(locksTitle).IsShown());
-    viewMenu->Check(MNU_XACTPAGE, manager.GetPane(xactTitle).IsShown());
-    viewMenu->Check(MNU_LOGPAGE, manager.GetPane(logTitle).IsShown());
+    viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+    viewMenu->Check(MNU_STATUSPAGE, manager.GetPane(wxT("Activity")).IsShown());
+    viewMenu->Check(MNU_LOCKPAGE, manager.GetPane(wxT("Locks")).IsShown());
+    viewMenu->Check(MNU_XACTPAGE, manager.GetPane(wxT("Transactions")).IsShown());
+    viewMenu->Check(MNU_LOGPAGE, manager.GetPane(wxT("Logfile")).IsShown());
 }
 
 
@@ -884,19 +890,19 @@ void frmStatus::OnRefreshUITimer(wxTimerEvent &event)
 
         if (pane.HasFlag(wxAuiPaneInfo::optionActive))
         {
-            if (pane.name == statusTitle && currentPane != PANE_STATUS)
+            if (pane.name == wxT("Activity") && currentPane != PANE_STATUS)
             {
                 OnSelStatusItem(evt);
             }
-            if (pane.name == locksTitle && currentPane != PANE_LOCKS)
+            if (pane.name == wxT("Locks") && currentPane != PANE_LOCKS)
             {
                 OnSelLockItem(evt);
             }
-            if (pane.name == xactTitle && currentPane != PANE_XACT)
+            if (pane.name == wxT("Transactions") && currentPane != PANE_XACT)
             {
                 OnSelXactItem(evt);
             }
-            if (pane.name == logTitle && currentPane != PANE_LOG)
+            if (pane.name == wxT("Logfile") && currentPane != PANE_LOG)
             {
                 OnSelLogItem(evt);
             }
@@ -914,56 +920,56 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
     if (! viewMenu->IsChecked(MNU_STATUSPAGE))
         return;
     
-	if (!connection)
-	{
-	    statusTimer->Stop();
-	    locksTimer->Stop();
-	    xactTimer->Stop();
-	    logTimer->Stop();
-		statusBar->SetStatusText(wxT("Connection broken."));
-	    return;
+    if (!connection)
+    {
+        statusTimer->Stop();
+        locksTimer->Stop();
+        xactTimer->Stop();
+        logTimer->Stop();
+        statusBar->SetStatusText(wxT("Connection broken."));
+        return;
     }
 
-	checkConnection();
-	if (!connection)
-	    return;
+    checkConnection();
+    if (!connection)
+        return;
     
     wxCriticalSectionLocker lock(gs_critsect);
 
     connection->ExecuteVoid(wxT("SET log_statement='none';"));
 
-	long row=0;
-	pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT *,(SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND relation IN (SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)) AS blockedby FROM pg_stat_activity ORDER BY procpid"));
-	if (dataSet1)
-	{
+    long row=0;
+    pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT *,(SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND relation IN (SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)) AS blockedby FROM pg_stat_activity ORDER BY procpid"));
+    if (dataSet1)
+    {
         statusList->Freeze();
-		statusBar->SetStatusText(_("Refreshing status list."));
-		while (!dataSet1->Eof())
-		{
-			pid=dataSet1->GetLong(wxT("procpid"));
+        statusBar->SetStatusText(_("Refreshing status list."));
+        while (!dataSet1->Eof())
+        {
+            pid=dataSet1->GetLong(wxT("procpid"));
 
-			if (pid != backend_pid)
-			{
-				long itempid=0;
+            if (pid != backend_pid)
+            {
+                long itempid=0;
 
-				while (row < statusList->GetItemCount())
-				{
-					itempid=StrToLong(statusList->GetItemText(row));
-					if (itempid && itempid < pid)
-						statusList->DeleteItem(row);
-					else
-						break;
-				}
+                while (row < statusList->GetItemCount())
+                {
+                    itempid=StrToLong(statusList->GetItemText(row));
+                    if (itempid && itempid < pid)
+                        statusList->DeleteItem(row);
+                    else
+                        break;
+                }
 
-				if (!itempid || itempid > pid)
-				{
-					statusList->InsertItem(row, NumToStr(pid), 0);
-				}
-				wxString qry=dataSet1->GetVal(wxT("current_query"));
+                if (!itempid || itempid > pid)
+                {
+                    statusList->InsertItem(row, NumToStr(pid), 0);
+                }
+                wxString qry=dataSet1->GetVal(wxT("current_query"));
 
                 int colpos=1;
-				statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("datname")));
-				statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("usename")));
+                statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("datname")));
+                statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("usename")));
 
                 if (connection->BackendMinimumVersion(8, 1))
                 {
@@ -972,45 +978,45 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
                          client = _("local pipe");
                      statusList->SetItem(row, colpos++, client);
 
-					statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("backend_start")));
+                    statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("backend_start")));
                 }
                 if (connection->BackendMinimumVersion(7, 4))
-    			{
-					if (qry.IsEmpty() || qry == wxT("<IDLE>"))
-						statusList->SetItem(row, colpos++, wxEmptyString);
+                {
+                    if (qry.IsEmpty() || qry == wxT("<IDLE>"))
+                        statusList->SetItem(row, colpos++, wxEmptyString);
                     else
-        				statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("query_start")));
-				}
+                        statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("query_start")));
+                }
 
                 if (connection->BackendMinimumVersion(8, 3))
-				    statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("xact_start")));
+                    statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("xact_start")));
 
-				statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("blockedby")));
-   				statusList->SetItem(row, colpos, qry.Left(250));
-				row++;
-			}
-			dataSet1->MoveNext();
-		}
+                statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("blockedby")));
+                   statusList->SetItem(row, colpos, qry.Left(250));
+                row++;
+            }
+            dataSet1->MoveNext();
+        }
         delete dataSet1;
-			
+            
         while (row < statusList->GetItemCount())
-    		statusList->DeleteItem(row);
+            statusList->DeleteItem(row);
 
         statusList->Thaw();
-		statusBar->SetStatusText(_("Done."));
-	}
+        statusBar->SetStatusText(_("Done."));
+    }
     else
-	    checkConnection();
+        checkConnection();
 
     row=0;
-	while (row < statusList->GetItemCount())
-	{
-		long itempid=StrToLong(statusList->GetItemText(row));
-		if (itempid && itempid > pid)
-			statusList->DeleteItem(row);
+    while (row < statusList->GetItemCount())
+    {
+        long itempid=StrToLong(statusList->GetItemText(row));
+        if (itempid && itempid > pid)
+            statusList->DeleteItem(row);
         else
             row++;
-	}
+    }
 }
 
 
@@ -1021,27 +1027,27 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
     if (! viewMenu->IsChecked(MNU_LOCKPAGE))
         return;
 
-	if (!connection)
-	{
-	    statusTimer->Stop();
-	    locksTimer->Stop();
-	    xactTimer->Stop();
-	    logTimer->Stop();
-		statusBar->SetStatusText(wxT("Connection broken."));
-	    return;
+    if (!connection)
+    {
+        statusTimer->Stop();
+        locksTimer->Stop();
+        xactTimer->Stop();
+        logTimer->Stop();
+        statusBar->SetStatusText(wxT("Connection broken."));
+        return;
     }
 
-	checkConnection();
-	if (!connection)
-	    return;
+    checkConnection();
+    if (!connection)
+        return;
     
     wxCriticalSectionLocker lock(gs_critsect);
 
     connection->ExecuteVoid(wxT("SET log_statement='none';"));
 
-	long row=0;
-	wxString sql;
-	if (connection->BackendMinimumVersion(8, 3)) 
+    long row=0;
+    wxString sql;
+    if (connection->BackendMinimumVersion(8, 3)) 
     {
         sql = wxT("SELECT ")
               wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
@@ -1053,7 +1059,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
               wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
               wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
               wxT("ORDER BY pid;");
-	} 
+    } 
     else if (connection->BackendMinimumVersion(7, 4)) 
     {
            sql = wxT("SELECT ")
@@ -1066,7 +1072,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
               wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
               wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
               wxT("ORDER BY pid;");
-	} 
+    } 
     else 
     {
         sql = wxT("SELECT ")
@@ -1078,86 +1084,86 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
               wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
               wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
               wxT("ORDER BY pid;");
-	}
+    }
 
     pgSet *dataSet2=connection->ExecuteSet(sql);
-	if (dataSet2)
-	{
-		statusBar->SetStatusText(_("Refreshing locks list."));
+    if (dataSet2)
+    {
+        statusBar->SetStatusText(_("Refreshing locks list."));
         lockList->Freeze();
 
-		while (!dataSet2->Eof())
-		{
-			pid=dataSet2->GetLong(wxT("pid"));
+        while (!dataSet2->Eof())
+        {
+            pid=dataSet2->GetLong(wxT("pid"));
 
-			if (pid != backend_pid)
-			{
-				long itempid=0;
+            if (pid != backend_pid)
+            {
+                long itempid=0;
 
-				while (row < lockList->GetItemCount())
-				{
-					itempid=StrToLong(lockList->GetItemText(row));
-					if (itempid && itempid < pid)
-						lockList->DeleteItem(row);
-					else
-						break;
-				}
+                while (row < lockList->GetItemCount())
+                {
+                    itempid=StrToLong(lockList->GetItemText(row));
+                    if (itempid && itempid < pid)
+                        lockList->DeleteItem(row);
+                    else
+                        break;
+                }
 
-				if (!itempid || itempid > pid)
-				{
-					lockList->InsertItem(row, NumToStr(pid), 0);
-				}
+                if (!itempid || itempid > pid)
+                {
+                    lockList->InsertItem(row, NumToStr(pid), 0);
+                }
 
                 int colpos=1;
-				lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("dbname")));
-				lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("class")));
-				lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("user")));
-	            if (connection->BackendMinimumVersion(8, 3)) 
+                lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("dbname")));
+                lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("class")));
+                lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("user")));
+                if (connection->BackendMinimumVersion(8, 3)) 
                     lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("virtualxid")));
-				lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("transaction")));
-				lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("mode")));
-					
+                lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("transaction")));
+                lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("mode")));
+                    
                 if (dataSet2->GetVal(wxT("granted")) == wxT("t"))
-					lockList->SetItem(row, colpos++, _("Yes"));
-				else
-					lockList->SetItem(row, colpos++, _("No"));
+                    lockList->SetItem(row, colpos++, _("Yes"));
+                else
+                    lockList->SetItem(row, colpos++, _("No"));
 
-				wxString qry=dataSet2->GetVal(wxT("current_query"));
+                wxString qry=dataSet2->GetVal(wxT("current_query"));
 
-				if (connection->BackendMinimumVersion(7, 4))
-				{
-					if (qry.IsEmpty() || qry == wxT("<IDLE>"))
-						lockList->SetItem(row, colpos++, wxEmptyString);
-					else
-						lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("query_start")));
-				}
+                if (connection->BackendMinimumVersion(7, 4))
+                {
+                    if (qry.IsEmpty() || qry == wxT("<IDLE>"))
+                        lockList->SetItem(row, colpos++, wxEmptyString);
+                    else
+                        lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("query_start")));
+                }
                 lockList->SetItem(row, colpos++, qry.Left(250));
 
-				row++;
-			}
-			dataSet2->MoveNext();
-		}
+                row++;
+            }
+            dataSet2->MoveNext();
+        }
 
         delete dataSet2;
-		
+        
         while (row < lockList->GetItemCount())
-			lockList->DeleteItem(row);
+            lockList->DeleteItem(row);
 
         lockList->Thaw();
-    	statusBar->SetStatusText(_("Done."));
-	}
+        statusBar->SetStatusText(_("Done."));
+    }
     else
         checkConnection();
 
     row=0;
     while (row < lockList->GetItemCount())
-	{
-		long itempid=StrToLong(lockList->GetItemText(row));
-		if (itempid && itempid > pid)
-			lockList->DeleteItem(row);
+    {
+        long itempid=StrToLong(lockList->GetItemText(row));
+        if (itempid && itempid > pid)
+            lockList->DeleteItem(row);
         else
             row++;
-	}
+    }
 }
 
 
@@ -1168,82 +1174,82 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
     if (! viewMenu->IsEnabled(MNU_XACTPAGE) || ! viewMenu->IsChecked(MNU_XACTPAGE))
         return;
 
-	if (!connection)
-	{
-	    statusTimer->Stop();
-	    locksTimer->Stop();
-	    xactTimer->Stop();
-	    logTimer->Stop();
-		statusBar->SetStatusText(wxT("Connection broken."));
-	    return;
+    if (!connection)
+    {
+        statusTimer->Stop();
+        locksTimer->Stop();
+        xactTimer->Stop();
+        logTimer->Stop();
+        statusBar->SetStatusText(wxT("Connection broken."));
+        return;
     }
 
-	checkConnection();
-	if (!connection)
-	    return;
+    checkConnection();
+    if (!connection)
+        return;
     
     wxCriticalSectionLocker lock(gs_critsect);
 
     connection->ExecuteVoid(wxT("SET log_statement='none';"));
 
-	long row=0;
-	wxString sql = wxT("SELECT * FROM pg_prepared_xacts");
+    long row=0;
+    wxString sql = wxT("SELECT * FROM pg_prepared_xacts");
 
-	pgSet *dataSet3=connection->ExecuteSet(sql);
-	if (dataSet3)
-	{
-		statusBar->SetStatusText(_("Refreshing transactions list."));
+    pgSet *dataSet3=connection->ExecuteSet(sql);
+    if (dataSet3)
+    {
+        statusBar->SetStatusText(_("Refreshing transactions list."));
         xactList->Freeze();
 
-		while (!dataSet3->Eof())
-		{
-    		long xid=dataSet3->GetLong(wxT("transaction"));
+        while (!dataSet3->Eof())
+        {
+            long xid=dataSet3->GetLong(wxT("transaction"));
 
-			long itemxid=0;
+            long itemxid=0;
 
-			while (row < xactList->GetItemCount())
-			{
-				itemxid=StrToLong(xactList->GetItemText(row));
-				if (itemxid && itemxid < xid)
-					xactList->DeleteItem(row);
-				else
-					break;
-			}
+            while (row < xactList->GetItemCount())
+            {
+                itemxid=StrToLong(xactList->GetItemText(row));
+                if (itemxid && itemxid < xid)
+                    xactList->DeleteItem(row);
+                else
+                    break;
+            }
 
-			if (!itemxid || itemxid > xid)
-			{
-				xactList->InsertItem(row, NumToStr(xid), 0);
-			}
+            if (!itemxid || itemxid > xid)
+            {
+                xactList->InsertItem(row, NumToStr(xid), 0);
+            }
 
             int colpos=1;
-			xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("gid")));
-			xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("prepared")));
-			xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("owner")));
-			xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("database")));
+            xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("gid")));
+            xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("prepared")));
+            xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("owner")));
+            xactList->SetItem(row, colpos++, dataSet3->GetVal(wxT("database")));
 
-		    row++;
-   			dataSet3->MoveNext();
-		}
+            row++;
+               dataSet3->MoveNext();
+        }
         delete dataSet3;
-			
+            
         while (row < xactList->GetItemCount())
-			xactList->DeleteItem(row);
+            xactList->DeleteItem(row);
 
         xactList->Thaw();
-		statusBar->SetStatusText(_("Done."));
-	}
+        statusBar->SetStatusText(_("Done."));
+    }
     else
         checkConnection();
 
     row=0;
-	while (row < xactList->GetItemCount())
-	{
-	long itempid=StrToLong(lockList->GetItemText(row));
-	if (itempid && itempid > pid)
-	    xactList->DeleteItem(row);
+    while (row < xactList->GetItemCount())
+    {
+    long itempid=StrToLong(lockList->GetItemText(row));
+    if (itempid && itempid > pid)
+        xactList->DeleteItem(row);
     else
         row++;
-	}
+    }
 }
 
 
@@ -1252,19 +1258,19 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
     if (! viewMenu->IsEnabled(MNU_LOGPAGE) || ! viewMenu->IsChecked(MNU_LOGPAGE))
         return;
 
-	if (!connection)
-	{
-	    statusTimer->Stop();
-	    locksTimer->Stop();
-	    xactTimer->Stop();
-	    logTimer->Stop();
-		statusBar->SetStatusText(wxT("Connection broken."));
-	    return;
+    if (!connection)
+    {
+        statusTimer->Stop();
+        locksTimer->Stop();
+        xactTimer->Stop();
+        logTimer->Stop();
+        statusBar->SetStatusText(wxT("Connection broken."));
+        return;
     }
     
-	checkConnection();
-	if (!connection)
-	    return;
+    checkConnection();
+    if (!connection)
+        return;
     
     wxCriticalSectionLocker lock(gs_critsect);
 
@@ -1302,21 +1308,21 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
     {
         // check if the current logfile changed
         pgSet *set = connection->ExecuteSet(wxT("SELECT pg_file_length(") + connection->qtDbString(logfileName) + wxT(") AS len"));
-	    if (set)
-		{
-			newlen = set->GetLong(wxT("len"));
-			delete set;
-	    }
-		else
-		{
-	        checkConnection();
-			return;
-		}
+        if (set)
+        {
+            newlen = set->GetLong(wxT("len"));
+            delete set;
+        }
+        else
+        {
+            checkConnection();
+            return;
+        }
         if (newlen > logfileLength)
         {
-		    statusBar->SetStatusText(_("Refreshing log list."));
+            statusBar->SetStatusText(_("Refreshing log list."));
             addLogFile(logfileName, logfileTimestamp, newlen, logfileLength, false);
-			statusBar->SetStatusText(_("Done."));
+            statusBar->SetStatusText(_("Done."));
 
             // as long as there was new data, the logfile is probably the current
             // one so we don't need to check for rotation
@@ -1373,15 +1379,15 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 void frmStatus::checkConnection()
 {
     if (!connection->IsAlive())
-	{
-	    delete connection;
-		connection=0;
-	    statusTimer->Stop();
-	    locksTimer->Stop();
-	    xactTimer->Stop();
-	    logTimer->Stop();
-		statusBar->SetStatusText(_("Connection broken."));
-	}
+    {
+        delete connection;
+        connection=0;
+        statusTimer->Stop();
+        locksTimer->Stop();
+        xactTimer->Stop();
+        logTimer->Stop();
+        statusBar->SetStatusText(_("Connection broken."));
+    }
 }
 
 
@@ -1644,19 +1650,19 @@ void frmStatus::OnStatusCancelBtn(wxCommandEvent &event)
         return;
 
     if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-		return;
+        return;
 
     while  (item >= 0)
     {
-		wxString pid = statusList->GetItemText(item);
-		wxString sql = wxT("SELECT pg_cancel_backend(") + pid + wxT(");");
-		connection->ExecuteScalar(sql);
+        wxString pid = statusList->GetItemText(item);
+        wxString sql = wxT("SELECT pg_cancel_backend(") + pid + wxT(");");
+        connection->ExecuteScalar(sql);
 
         item = statusList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	}
+    }
 
-	wxMessageBox(_("A cancel signal was sent to the selected server process(es)."), _("Cancel query"), wxOK | wxICON_INFORMATION);
-	OnRefresh(event);
+    wxMessageBox(_("A cancel signal was sent to the selected server process(es)."), _("Cancel query"), wxOK | wxICON_INFORMATION);
+    OnRefresh(event);
     wxListEvent ev;
     OnSelStatusItem(ev);
 }
@@ -1669,19 +1675,19 @@ void frmStatus::OnLocksCancelBtn(wxCommandEvent &event)
         return;
 
     if (wxMessageBox(_("Are you sure you wish to cancel the selected query(s)?"), _("Cancel query?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-		return;
+        return;
 
     while  (item >= 0)
     {
-		wxString pid = lockList->GetItemText(item);
-		wxString sql = wxT("SELECT pg_cancel_backend(") + pid + wxT(");");
-		connection->ExecuteScalar(sql);
+        wxString pid = lockList->GetItemText(item);
+        wxString sql = wxT("SELECT pg_cancel_backend(") + pid + wxT(");");
+        connection->ExecuteScalar(sql);
 
         item = lockList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	}
+    }
 
-	wxMessageBox(_("A cancel signal was sent to the selected server process(es)."), _("Cancel query"), wxOK | wxICON_INFORMATION);
-	OnRefresh(event);
+    wxMessageBox(_("A cancel signal was sent to the selected server process(es)."), _("Cancel query"), wxOK | wxICON_INFORMATION);
+    OnRefresh(event);
     wxListEvent ev;
     OnSelLockItem(ev);
 }
@@ -1710,20 +1716,20 @@ void frmStatus::OnStatusTerminateBtn(wxCommandEvent &event)
     if (item < 0)
         return;
 
-	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-		return;
+    if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+        return;
 
     while  (item >= 0)
     {
-		wxString pid = statusList->GetItemText(item);
-		wxString sql = wxT("SELECT pg_terminate_backend(") + pid + wxT(");");
-		connection->ExecuteScalar(sql);
+        wxString pid = statusList->GetItemText(item);
+        wxString sql = wxT("SELECT pg_terminate_backend(") + pid + wxT(");");
+        connection->ExecuteScalar(sql);
 
-	    item = statusList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+        item = statusList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     }
 
-	wxMessageBox(_("A terminate signal was sent to the selected server process(es)."), _("Terminate process"), wxOK | wxICON_INFORMATION);
-	OnRefresh(event);
+    wxMessageBox(_("A terminate signal was sent to the selected server process(es)."), _("Terminate process"), wxOK | wxICON_INFORMATION);
+    OnRefresh(event);
     wxListEvent ev;
     OnSelStatusItem(ev);
 }
@@ -1735,20 +1741,20 @@ void frmStatus::OnLocksTerminateBtn(wxCommandEvent &event)
     if (item < 0)
         return;
 
-	if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-		return;
+    if (wxMessageBox(_("Are you sure you wish to terminate the selected server process(es)?"), _("Terminate process?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+        return;
 
     while  (item >= 0)
     {
-		wxString pid = lockList->GetItemText(item);
-		wxString sql = wxT("SELECT pg_terminate_backend(") + pid + wxT(");");
-		connection->ExecuteScalar(sql);
+        wxString pid = lockList->GetItemText(item);
+        wxString sql = wxT("SELECT pg_terminate_backend(") + pid + wxT(");");
+        connection->ExecuteScalar(sql);
 
-	    item = lockList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+        item = lockList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     }
 
-	wxMessageBox(_("A terminate signal was sent to the selected server process(es)."), _("Terminate process"), wxOK | wxICON_INFORMATION);
-	OnRefresh(event);
+    wxMessageBox(_("A terminate signal was sent to the selected server process(es)."), _("Terminate process"), wxOK | wxICON_INFORMATION);
+    OnRefresh(event);
     wxListEvent ev;
     OnSelLockItem(ev);
 }
@@ -1760,13 +1766,13 @@ void frmStatus::OnCommit(wxCommandEvent &event)
     if (item < 0)
         return;
 
-	if (wxMessageBox(_("Are you sure you wish to commit the selected prepared transactions?"), _("Commit transaction?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-		return;
+    if (wxMessageBox(_("Are you sure you wish to commit the selected prepared transactions?"), _("Commit transaction?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
+        return;
 
     while  (item >= 0)
     {
-		wxString xid = xactList->GetText(item, 1);
-		wxString sql = wxT("COMMIT PREPARED ") + connection->qtDbString(xid);
+        wxString xid = xactList->GetText(item, 1);
+        wxString sql = wxT("COMMIT PREPARED ") + connection->qtDbString(xid);
 
         // We must execute this in the database in which the prepared transation originated.
         if (connection->GetDbname() != xactList->GetText(item, 4))
@@ -1778,12 +1784,12 @@ void frmStatus::OnCommit(wxCommandEvent &event)
                                        connection->GetPort(), 
                                        connection->GetSslMode());
             if (tmpConn)
-	        {
-		        if (tmpConn->GetStatus() != PGCONN_OK)
-		        {
-		        	wxMessageBox(wxT("Connection failed: ") + tmpConn->GetLastError());
-			        return ;
-		        }
+            {
+                if (tmpConn->GetStatus() != PGCONN_OK)
+                {
+                    wxMessageBox(wxT("Connection failed: ") + tmpConn->GetLastError());
+                    return ;
+                }
                 tmpConn->ExecuteScalar(sql);
 
                 tmpConn->Close();
@@ -1791,12 +1797,12 @@ void frmStatus::OnCommit(wxCommandEvent &event)
             }
         }
         else
-		    connection->ExecuteScalar(sql);
+            connection->ExecuteScalar(sql);
 
         item = xactList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	}
+    }
 
-	OnRefresh(event);
+    OnRefresh(event);
     wxListEvent ev;
     OnSelXactItem(ev);
 }
@@ -1809,12 +1815,12 @@ void frmStatus::OnRollback(wxCommandEvent &event)
         return;
 
     if (wxMessageBox(_("Are you sure you wish to rollback the selected prepared transactions?"), _("Rollback transaction?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxNO)
-		return;
+        return;
 
     while  (item >= 0)
     {
-		wxString xid = xactList->GetText(item, 1);
-		wxString sql = wxT("ROLLBACK PREPARED ") + connection->qtDbString(xid);
+        wxString xid = xactList->GetText(item, 1);
+        wxString sql = wxT("ROLLBACK PREPARED ") + connection->qtDbString(xid);
 
         // We must execute this in the database in which the prepared transation originated.
         if (connection->GetDbname() != xactList->GetText(item, 4))
@@ -1826,12 +1832,12 @@ void frmStatus::OnRollback(wxCommandEvent &event)
                                        connection->GetPort(), 
                                        connection->GetSslMode());
             if (tmpConn)
-	        {
-		        if (tmpConn->GetStatus() != PGCONN_OK)
-		        {
-		        	wxMessageBox(wxT("Connection failed: ") + tmpConn->GetLastError());
-			        return ;
-		        }
+            {
+                if (tmpConn->GetStatus() != PGCONN_OK)
+                {
+                    wxMessageBox(wxT("Connection failed: ") + tmpConn->GetLastError());
+                    return ;
+                }
                 tmpConn->ExecuteScalar(sql);
 
                 tmpConn->Close();
@@ -1839,12 +1845,12 @@ void frmStatus::OnRollback(wxCommandEvent &event)
             }
         }
         else
-		    connection->ExecuteScalar(sql);
+            connection->ExecuteScalar(sql);
 
         item = xactList->GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	}
+    }
 
-	OnRefresh(event);
+    OnRefresh(event);
     wxListEvent ev;
     OnSelXactItem(ev);
 }
@@ -1853,28 +1859,28 @@ void frmStatus::OnRollback(wxCommandEvent &event)
 void frmStatus::OnSelStatusItem(wxListEvent &event)
 {
 #ifdef __WXGTK__
-  manager.GetPane(statusTitle).SetFlag(wxAuiPaneInfo::optionActive, true);
-  manager.GetPane(locksTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.GetPane(xactTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.GetPane(logTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.Update();
+    manager.GetPane(wxT("Activity")).SetFlag(wxAuiPaneInfo::optionActive, true);
+    manager.GetPane(wxT("Locks")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.GetPane(wxT("Transactions")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.GetPane(wxT("Logfile")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.Update();
 #endif
     currentPane = PANE_STATUS;
     cbRate->SetValue(rateToCboString(statusRate));
-	if (connection && connection->BackendMinimumVersion(8, 0))
-	{
-		if(statusList->GetSelectedItemCount() > 0) 
-		{
-			toolBar->EnableTool(MNU_CANCEL, true);
+    if (connection && connection->BackendMinimumVersion(8, 0))
+    {
+        if(statusList->GetSelectedItemCount() > 0) 
+        {
+            toolBar->EnableTool(MNU_CANCEL, true);
             if (connection->HasFeature(FEATURE_TERMINATE_BACKEND))
-			    toolBar->EnableTool(MNU_TERMINATE, true);
-		} 
-		else 
-		{
-			toolBar->EnableTool(MNU_CANCEL, false);
-		    toolBar->EnableTool(MNU_TERMINATE, false);
-		}
-	}
+                toolBar->EnableTool(MNU_TERMINATE, true);
+        } 
+        else 
+        {
+            toolBar->EnableTool(MNU_CANCEL, false);
+            toolBar->EnableTool(MNU_TERMINATE, false);
+        }
+    }
     toolBar->EnableTool(MNU_COMMIT, false);
     toolBar->EnableTool(MNU_ROLLBACK, false);
     cbLogfiles->Enable(false);
@@ -1887,28 +1893,28 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
 void frmStatus::OnSelLockItem(wxListEvent &event)
 {
 #ifdef __WXGTK__
-  manager.GetPane(statusTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.GetPane(locksTitle).SetFlag(wxAuiPaneInfo::optionActive, true);
-  manager.GetPane(xactTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.GetPane(logTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.Update();
+    manager.GetPane(wxT("Activity")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.GetPane(wxT("Locks")).SetFlag(wxAuiPaneInfo::optionActive, true);
+    manager.GetPane(wxT("Transactions")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.GetPane(wxT("Logfile")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.Update();
 #endif
-	currentPane = PANE_LOCKS;
-	cbRate->SetValue(rateToCboString(locksRate));
-	if (connection && connection->BackendMinimumVersion(8, 0))
-	{
-		if(lockList->GetSelectedItemCount() > 0) 
-		{
-			toolBar->EnableTool(MNU_CANCEL, true);
+    currentPane = PANE_LOCKS;
+    cbRate->SetValue(rateToCboString(locksRate));
+    if (connection && connection->BackendMinimumVersion(8, 0))
+    {
+        if(lockList->GetSelectedItemCount() > 0) 
+        {
+            toolBar->EnableTool(MNU_CANCEL, true);
             if (connection->HasFeature(FEATURE_TERMINATE_BACKEND))
-			    toolBar->EnableTool(MNU_TERMINATE, true);
-		} 
-		else 
-		{
-			toolBar->EnableTool(MNU_CANCEL, false);
-		    toolBar->EnableTool(MNU_TERMINATE, false);
-		}
-	}
+                toolBar->EnableTool(MNU_TERMINATE, true);
+        } 
+        else 
+        {
+            toolBar->EnableTool(MNU_CANCEL, false);
+            toolBar->EnableTool(MNU_TERMINATE, false);
+        }
+    }
     toolBar->EnableTool(MNU_COMMIT, false);
     toolBar->EnableTool(MNU_ROLLBACK, false);
     cbLogfiles->Enable(false);
@@ -1921,24 +1927,24 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
 void frmStatus::OnSelXactItem(wxListEvent &event)
 {
 #ifdef __WXGTK__
-  manager.GetPane(statusTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.GetPane(locksTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.GetPane(xactTitle).SetFlag(wxAuiPaneInfo::optionActive, true);
-  manager.GetPane(logTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.Update();
+    manager.GetPane(wxT("Activity")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.GetPane(wxT("Locks")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.GetPane(wxT("Transactions")).SetFlag(wxAuiPaneInfo::optionActive, true);
+    manager.GetPane(wxT("Logfile")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.Update();
 #endif
     currentPane = PANE_XACT;
     cbRate->SetValue(rateToCboString(xactRate));
     if(xactList->GetSelectedItemCount() > 0) 
-	{
-		toolBar->EnableTool(MNU_COMMIT, true);
+    {
+        toolBar->EnableTool(MNU_COMMIT, true);
         toolBar->EnableTool(MNU_ROLLBACK, true);
-	} 
-	else 
-	{
-		toolBar->EnableTool(MNU_COMMIT, false);
+    } 
+    else 
+    {
+        toolBar->EnableTool(MNU_COMMIT, false);
         toolBar->EnableTool(MNU_ROLLBACK, false);
-	}
+    }
     toolBar->EnableTool(MNU_CANCEL, false);
     toolBar->EnableTool(MNU_TERMINATE, false);
     cbLogfiles->Enable(false);
@@ -1951,11 +1957,11 @@ void frmStatus::OnSelXactItem(wxListEvent &event)
 void frmStatus::OnSelLogItem(wxListEvent &event)
 {
 #ifdef __WXGTK__
-  manager.GetPane(statusTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.GetPane(locksTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.GetPane(xactTitle).SetFlag(wxAuiPaneInfo::optionActive, false);
-  manager.GetPane(logTitle).SetFlag(wxAuiPaneInfo::optionActive, true);
-  manager.Update();
+    manager.GetPane(wxT("Activity")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.GetPane(wxT("Locks")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.GetPane(wxT("Transactions")).SetFlag(wxAuiPaneInfo::optionActive, false);
+    manager.GetPane(wxT("Logfile")).SetFlag(wxAuiPaneInfo::optionActive, true);
+    manager.Update();
 #endif
     currentPane = PANE_LOG;
     cbRate->SetValue(rateToCboString(logRate));
