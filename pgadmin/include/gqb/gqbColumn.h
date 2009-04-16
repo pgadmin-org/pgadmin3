@@ -20,6 +20,6 @@
 class gqbColumn : public gqbObject
 {
 public:
-    gqbColumn(gqbObject *parent, wxString name, type_gqbObject type);
+    gqbColumn(gqbObject *parent, wxString name, pgConn *connection);
 };
 #endif

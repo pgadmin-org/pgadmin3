@@ -103,10 +103,10 @@ public:
     gqbQueryObject* getDestQTable();
     gqbColumn* getDCol();
     gqbColumn* getSCol();
-    const wxString& getSourceTable();
-    const wxString& getDestTable();
-    const wxString& getSourceCol();
-    const wxString& getDestCol();
+    wxString getSourceTable();
+    wxString getDestTable();
+    wxString getSourceCol();
+    wxString getDestCol();
     void setSourceAnchor(wxPoint pt);
     void setDestAnchor(wxPoint pt);
     wxPoint& getSourceAnchor();

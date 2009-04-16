@@ -46,6 +46,7 @@ gqbBrowser::gqbBrowser(wxWindow* parent, wxWindowID id, const wxPoint& pos, cons
     rootNode=(wxTreeItemId *)NULL;
 
     // Create normal images list of browser
+    // Remember to update enum gqbImages in gqbBrowser.h if changing the images!!
     imageList = new wxImageList(16, 16);
     imageList->Add(wxIcon(database_sm_xpm));
     imageList->Add(wxIcon(namespace_sm_xpm));
@@ -71,8 +72,8 @@ gqbBrowser::~gqbBrowser()
 wxTreeItemId& gqbBrowser::createRoot(wxString &Name)
 {
     rootNode=this->AddRoot(Name,0,0);
-    catalogsNode=this->AppendItem(rootNode, _("Catalogs"), 4, 4, NULL);
-    schemasNode=this->AppendItem(rootNode, _("Schemas"), 3, 3, NULL);
+    catalogsNode=this->AppendItem(rootNode, _("Catalogs"), GQB_IMG_CATALOGS, GQB_IMG_CATALOGS, NULL);
+    schemasNode=this->AppendItem(rootNode, _("Schemas"), GQB_IMG_NAMESPACES, GQB_IMG_NAMESPACES, NULL);
     return rootNode;
 }
 
@@ -82,22 +83,29 @@ void gqbBrowser::OnItemActivated(wxTreeEvent& event)
 {
     wxTreeItemId itemId = event.GetItem();
     gqbObject *object = (gqbObject *) GetItemData(itemId);
-    if(object!=NULL && (object->getType() == GQB_TABLE || object->getType() == GQB_VIEW))
+    if(object)
     {
-        gqbTable *item = (gqbTable *)  object;
-        controller->addTableToModel(item,wxPoint(10,10));
-        controller->getView()->Refresh();
+        if (object->getType() == GQB_TABLE || object->getType() == GQB_VIEW)
+        {
+            gqbTable *item = (gqbTable *)  object;
+            controller->addTableToModel(item,wxPoint(10,10));
+            controller->getView()->Refresh();
+        }
+        else if (GetChildrenCount(itemId) == 0 && object->getType() == GQB_SCHEMA)
+        {
+            gqbSchema *schema = (gqbSchema *)object;
+            schema->createObjects(this, schema->getOid(), itemId, GQB_IMG_TABLE, GQB_IMG_VIEW, GQB_IMG_EXTTABLE);
+        }
     }
+       
 }
-
 
 void gqbBrowser::refreshTables(pgConn *connection)
 {
     controller->emptyModel();
-    this->DeleteAllItems();                       // GQB-TODO: same as destructor
-    wxString a = wxString(wxT("Database Name Here"));
-    gqbDatabase *Data = new gqbDatabase(a, GQB_DATABASE);
-    Data->createObjects(this,connection);
+    this->DeleteAllItems();
+    gqbDatabase *Data = new gqbDatabase(wxEmptyString, connection);
+    Data->createObjects(this);
     this->Expand(rootNode);
 }
 

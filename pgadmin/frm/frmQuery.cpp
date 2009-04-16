@@ -873,14 +873,6 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
         //Refresh GQB Tree if used
         if(conn && !firstTime)
         {
-            wxString msg = _("Retrieving tables from database ") + wxString(conn->GetDbname());
-            wxBusyInfo waiting(msg, this);
-
-            // Give the UI a chance to redraw
-            wxSafeYield();
-            wxMilliSleep(100);
-            wxSafeYield();
-
             controller->getTablesBrowser()->refreshTables(conn);
             controller->getView()->Refresh();
         }
@@ -1021,14 +1013,6 @@ void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
 
                 // Database related Stuffs.
                 // Create a server object and connect it.
-                wxString msg= _("Retrieving tables from database ") + wxString(conn->GetDbname());
-                wxBusyInfo waiting(msg, this);
-
-                // Give the UI a chance to redraw
-                wxSafeYield();
-                wxMilliSleep(100);
-                wxSafeYield();
-
                 controller->getTablesBrowser()->refreshTables(conn);
                 firstTime=false;
             }

@@ -12,7 +12,18 @@
 #ifndef GQBBROWSER_H
 #define GQBBROWSER_H
 
-// typedef unsigned long OID;
+enum gqbImages
+{
+    GQB_IMG_DATABASE = 0,
+    GQB_IMG_NAMESPACE = 1,
+    GQB_IMG_TABLE = 2,
+    GQB_IMG_NAMESPACES = 3,
+    GQB_IMG_CATALOGS = 4,
+    GQB_IMG_CATALOG = 5,
+    GQB_IMG_CATALOG_OBJ = 6,
+    GQB_IMG_VIEW = 7,
+    GQB_IMG_EXTTABLE = 8
+};
 
 class gqbController;
 

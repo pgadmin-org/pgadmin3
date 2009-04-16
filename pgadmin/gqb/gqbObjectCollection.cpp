@@ -21,8 +21,8 @@
 #include "gqb/gqbCollection.h"
 #include "gqb/gqbArrayCollection.h"
 
-gqbObjectCollection::gqbObjectCollection(wxString name, type_gqbObject type):
-gqbObject(name, type)
+gqbObjectCollection::gqbObjectCollection(wxString name, wxTreeItemData *owner, pgConn *connection, OID oid)
+: gqbObject(name, owner, connection, oid)
 {
 	// Create the concrete implementation of the Collection, right now only one implementation not need parameter
     implementation = new gqbArrayCollection();
@@ -30,7 +30,6 @@ gqbObject(name, type)
 	// Create the collection using the concrete implementation
 	// use the array implementation of the collection
     objectsCollection =  new gqbCollection(implementation);
-    this->setOwner(NULL);
 }
 
 

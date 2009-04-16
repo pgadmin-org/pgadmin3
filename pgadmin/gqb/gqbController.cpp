@@ -29,8 +29,8 @@
 
 wxWindowID CTL_NTBKPANELS = ::wxNewId();
 
-gqbController::gqbController(gqbModel *_model, wxWindow *gqbParent, wxNotebook *gridParent, wxSize size=wxSize(800,1280)):
-wxObject()
+gqbController::gqbController(gqbModel *_model, wxWindow *gqbParent, wxNotebook *gridParent, wxSize size=wxSize(800,1280))
+: wxObject()
 {
     pparent = gqbParent;
     model=_model;
@@ -324,7 +324,7 @@ wxString gqbController::generateSQL()
         while(iteratorModel->HasNext())
         {
             sel=(gqbQueryObject *)iteratorModel->Next();
-            gqbSchema *schema = (gqbSchema *)&sel->parent->getOwner();
+            gqbSchema *schema = (gqbSchema *)sel->parent->getOwner();
             if(sel->getAlias().length()>0)
             {
                 sentence += wxT("  ") +

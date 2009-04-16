@@ -20,16 +20,15 @@
 class gqbDatabase : public gqbObject
 {
 public:
-    gqbDatabase(wxString name, type_gqbObject type);
-    void createObjects(gqbBrowser *_tablesBrowser,  pgConn *_conn);
+    gqbDatabase(wxString name, pgConn *connection);
+    void createObjects(gqbBrowser *_tablesBrowser);
 
 private:
-    pgConn *conn;
     enum typeSchema
     {
         GQB_CATALOG,
         GQB_OTHER
     };
-    void createSchemas(pgConn *conn,  gqbBrowser *tablesBrowser, wxTreeItemId parentNode,typeSchema MetaType, int indexImage);
+    void createSchemas(gqbBrowser *tablesBrowser, wxTreeItemId parentNode,typeSchema MetaType, int indexImage);
 };
 #endif

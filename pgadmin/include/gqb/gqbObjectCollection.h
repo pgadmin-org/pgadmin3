@@ -21,7 +21,7 @@
 class gqbObjectCollection : public gqbObject
 {
 public:
-    gqbObjectCollection(wxString name, type_gqbObject type);
+    gqbObjectCollection(wxString name, wxTreeItemData *owner, pgConn *connection, OID oid = 0);
     virtual ~gqbObjectCollection();
 
 protected:

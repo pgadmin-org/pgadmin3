@@ -21,12 +21,10 @@
 #include "gqb/gqbColumn.h"
 #include "gqb/gqbArrayCollection.h"
 
-gqbTable::gqbTable(gqbObject *parent, wxString name, type_gqbObject type=GQB_TABLE):
-gqbObjectCollection(name,type)
+gqbTable::gqbTable(gqbObject *parent, wxString name, pgConn *connection, type_gqbObject type, OID oid)
+: gqbObjectCollection(name, parent, connection, oid)
 {
-    this->setType(type);
-    this->setName(name);
-    this->setOwner(parent);
+    setType(type);
 }
 
 
@@ -46,15 +44,6 @@ void gqbTable::createObjects(gqbBrowser *_tablesBrowser,  pgConn *_conn, OID oid
 {
     createColumns(_conn, _tablesBrowser, parentNode, oidVal);
 }
-
-
-wxString gqbTable::NumToStr(OID value)
-{
-    wxString result;
-    result.Printf(wxT("%lu"), (long)value);
-    return result;
-}
-
 
 void gqbTable::createColumns(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItemId parentNode,  OID oidVal)
 {
@@ -80,7 +69,7 @@ void gqbTable::createColumns(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
             {
                 //Disable, Column SHOULDN'T be added to tree only use for debug purposes tablesBrowser->AppendItem(parentNode, columns->GetVal(wxT("attname")) , -1, -1);
                 wxString tmpname = wxString(columns->GetVal(wxT("attname")));
-                gqbColumn *column = new gqbColumn(this,tmpname,GQB_COLUMN);
+                gqbColumn *column = new gqbColumn(this, tmpname, conn);
                 this->addColumn(column);
                 columns->MoveNext();
             }

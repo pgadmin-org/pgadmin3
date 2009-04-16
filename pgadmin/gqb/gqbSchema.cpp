@@ -21,31 +21,20 @@
 #include "gqb/gqbTable.h"
 #include "gqb/gqbBrowser.h"
 
-gqbSchema::gqbSchema(gqbObject *parent, wxString name, type_gqbObject type=GQB_SCHEMA):
-gqbObject(name,type)
+gqbSchema::gqbSchema(gqbObject *parent, wxString name, pgConn *connection, OID oid)
+: gqbObject(name, parent, connection, oid)
 {
-    this->setType(GQB_SCHEMA);
-    this->setName(name);
-    this->setOwner(parent);
+    setType(GQB_SCHEMA);
 }
 
 
 // GQB-TODO: don't declare OID inside gqbBrowsear instead use the pgadmin one
-void gqbSchema::createObjects(gqbBrowser *tablesBrowser,  pgConn *conn, OID oidVal, wxTreeItemId parentNode, int tableImage, int viewImage, int xTableImage)
+void gqbSchema::createObjects(gqbBrowser *tablesBrowser, OID oidVal, wxTreeItemId parentNode, int tableImage, int viewImage, int xTableImage)
 {
-    createTables(conn, tablesBrowser, parentNode, oidVal, tableImage, viewImage, xTableImage);
+    createTables(tablesBrowser, parentNode, oidVal, tableImage, viewImage, xTableImage);
 }
 
-
-wxString gqbSchema::NumToStr(OID value)
-{
-    wxString result;
-    result.Printf(wxT("%lu"), (long)value);
-    return result;
-}
-
-
-void gqbSchema::createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItemId parentNode, OID oidVal, int tableImage, int viewImage, int xTableImage)
+void gqbSchema::createTables(gqbBrowser *tablesBrowser, wxTreeItemId parentNode, OID oidVal, int tableImage, int viewImage, int xTableImage)
 { 
     wxString query;
     
@@ -67,18 +56,18 @@ void gqbSchema::createTables(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItem
             
             if (relkind == wxT("r")) // Table
             {
-                table = new gqbTable(this, tmpname, GQB_TABLE);
+                table = new gqbTable(this, tmpname, conn, GQB_TABLE, tables->GetOid(wxT("oid")));
                 parent=tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , tableImage, tableImage, table);
             }
             else if (relkind == wxT("v"))
             {
-                table = new gqbTable(this, tmpname, GQB_VIEW);
+                table = new gqbTable(this, tmpname, conn, GQB_VIEW, tables->GetOid(wxT("oid")));
                 parent=tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , viewImage, viewImage, table);
             }
             else if (relkind == wxT("x"))  // Greenplum external table
             {
-                table = new gqbTable(this, tmpname, GQB_TABLE);
-                parent=tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , xTableImage, xTableImage, table);
+                table = new gqbTable(this, tmpname, conn, GQB_TABLE, tables->GetOid(wxT("oid")));
+                parent=tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")), xTableImage, xTableImage, table);
             }
 
             // Create columns inside this table.

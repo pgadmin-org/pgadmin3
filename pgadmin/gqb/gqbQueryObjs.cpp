@@ -23,16 +23,14 @@
 #include "gqb/gqbObjectCollection.h"
 #include "gqb/gqbViewPanels.h"
 
-const wxString wxEmptyStr = wxEmptyString;
-
 //
 // Collections of Tables inside a Query, data structured used for query storage & later generation of SQL sentence
 //
 
-gqbQueryObjs::gqbQueryObjs():
-gqbObjectCollection(wxT(""),GQB_QUERY)
+gqbQueryObjs::gqbQueryObjs()
+: gqbObjectCollection(wxT(""), NULL, NULL)
 {
-    this->setOwner(NULL);
+    setType(GQB_QUERY);
 }
 
 
@@ -77,10 +75,10 @@ void gqbQueryObjs::removeAllQueryObjs()
 //         Because this we can not use directly the base table object
 
 gqbQueryObject::gqbQueryObject(gqbTable *table)
-:gqbObjectCollection(table->getName(), GQB_QUERYOBJ)
+: gqbObjectCollection(table->getName(), table, table->getConnection())
 {
     selected=false;
-    parent=table;
+    parent = table;
 
 	//GQB-TODO: Calculate a good initial position
     position.x=20;
@@ -89,6 +87,7 @@ gqbQueryObject::gqbQueryObject(gqbTable *table)
     haveRegisteredJoins=false;
     registeredCollection=NULL;
     joinsCollection=NULL;
+    setType(GQB_QUERYOBJ);
 }
 
 
@@ -296,8 +295,8 @@ bool gqbQueryObject::getHaveRegJoins()
 //
 //  A Join inside a query Object like Table or view [Stored at source, registered at destination]
 //  I need to store the owner, destination because columns it's share between multiple joins
-gqbQueryJoin::gqbQueryJoin(gqbQueryObject *_owner, gqbQueryObject *_destination, gqbColumn *sourceCol, gqbColumn *destCol, type_Join joinKind):
-gqbObject(wxT(""),GQB_JOIN)
+gqbQueryJoin::gqbQueryJoin(gqbQueryObject *_owner, gqbQueryObject *_destination, gqbColumn *sourceCol, gqbColumn *destCol, type_Join joinKind)
+: gqbObject(wxT(""), _owner, NULL)
 {
     kindofJoin=joinKind;
     sCol=sourceCol;
@@ -305,6 +304,7 @@ gqbObject(wxT(""),GQB_JOIN)
     owner=_owner;
     selected=false;
     destination=_destination;
+    setType(GQB_JOIN);
 }
 
 
@@ -348,36 +348,40 @@ gqbColumn* gqbQueryJoin::getSCol()
 }
 
 
-const wxString& gqbQueryJoin::getSourceTable()
+wxString gqbQueryJoin::getSourceTable()
 {
     if (!owner)
-        return wxEmptyStr;
-    gqbTable *s=(gqbTable*)&sCol->getOwner();
+        return wxEmptyString;
+
+    gqbTable *s=(gqbTable*)sCol->getOwner();
     return s->getName();
 }
 
 
-const wxString& gqbQueryJoin::getDestTable()
+wxString gqbQueryJoin::getDestTable()
 {
     if (!destination)
-        return wxEmptyStr;
-    gqbTable *d=(gqbTable*)&dCol->getOwner();
+        return wxEmptyString;
+
+    gqbTable *d=(gqbTable*)dCol->getOwner();
     return d->getName();
 }
 
 
-const wxString& gqbQueryJoin::getSourceCol()
+wxString gqbQueryJoin::getSourceCol()
 {
     if (!sCol)
-        return wxEmptyStr;
+        return wxEmptyString;
+
     return sCol->getName();
 }
 
 
-const wxString& gqbQueryJoin::getDestCol()
+wxString gqbQueryJoin::getDestCol()
 {
     if (!dCol)
-        return wxEmptyStr;
+        return wxEmptyString;
+
     return dCol->getName();
 }
 
@@ -442,20 +446,21 @@ enum
     QRtype
 };
 
-gqbQueryRestriction::gqbQueryRestriction():
-gqbObject(wxT(""),GQB_RESTRICTION)
+gqbQueryRestriction::gqbQueryRestriction()
+: gqbObject(wxT(""), NULL, NULL)
 {
     leftPart=wxT("");
     value_s=wxT("");
     connector=wxT("AND");
     restriction=wxT("=");
+    setType(GQB_RESTRICTION);
 }
 
 
-gqbRestrictions::gqbRestrictions():
-gqbObjectCollection(wxT(""),GQB_RESTRICTION)
+gqbRestrictions::gqbRestrictions()
+: gqbObjectCollection(wxT(""), NULL, NULL)
 {
-    this->setOwner(NULL);
+    setType(GQB_RESTRICTION);
 }
 
 

@@ -22,10 +22,8 @@
 #include "gqb/gqbTable.h"
 #include "gqb/gqbArrayCollection.h"
 
-gqbColumn::gqbColumn(gqbObject *parent, wxString name, type_gqbObject type=GQB_COLUMN):
-gqbObject(name, type)
+gqbColumn::gqbColumn(gqbObject *parent, wxString name, pgConn *connection):
+gqbObject(name, parent, connection)
 {
-    this->setType(GQB_COLUMN);
-    this->setName(name);
-    this->setOwner(parent);
+    setType(GQB_COLUMN);
 }

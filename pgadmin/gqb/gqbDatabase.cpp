@@ -22,31 +22,28 @@
 #include "gqb/gqbSchema.h"
 #include "schema/pgSchema.h"
 
-gqbDatabase::gqbDatabase(wxString name, type_gqbObject type=GQB_DATABASE):
-gqbObject(name,type)
+gqbDatabase::gqbDatabase(wxString name, pgConn *connection)
+: gqbObject(name, NULL, connection)
 {
-    this->setType(GQB_DATABASE);
-    this->setName(name);
-    this->setOwner(NULL);
-    conn=NULL;
+    setType(GQB_DATABASE);
 }
 
 
-void gqbDatabase::createObjects(gqbBrowser *_tablesBrowser,  pgConn *_conn)
+void gqbDatabase::createObjects(gqbBrowser *_tablesBrowser)
 {
 
-    wxString rootNodeString = wxString(_conn->GetDbname());
+    wxString rootNodeString = wxString(conn->GetDbname());
     // Create Root Node
     _tablesBrowser->createRoot(rootNodeString);
 
     // FillBrowser
-    createSchemas(_conn,_tablesBrowser,_tablesBrowser->getCatalogRootNode(),GQB_CATALOG,5);
-    createSchemas(_conn,_tablesBrowser,_tablesBrowser->getTablesRootNode(),GQB_OTHER,1);
+    createSchemas(_tablesBrowser, _tablesBrowser->getCatalogRootNode(), GQB_CATALOG, GQB_IMG_CATALOG);
+    createSchemas(_tablesBrowser, _tablesBrowser->getTablesRootNode(), GQB_OTHER, GQB_IMG_NAMESPACE);
 }
 
 
 // Use database connection to create all objects inside tree
-void gqbDatabase::createSchemas(pgConn *conn,  gqbBrowser *tablesBrowser, wxTreeItemId parentNode,typeSchema MetaType, int indexImage)
+void gqbDatabase::createSchemas(gqbBrowser *tablesBrowser, wxTreeItemId parentNode,typeSchema MetaType, int indexImage)
 {
 
     // Search Schemas and insert it
@@ -120,31 +117,31 @@ void gqbDatabase::createSchemas(pgConn *conn,  gqbBrowser *tablesBrowser, wxTree
                 continue;
             }
 
-            int tableImage = 2, viewImage = 7;
+            int tableImage = GQB_IMG_TABLE, viewImage = GQB_IMG_VIEW;
             gqbSchema *schema;
 
             if (MetaType == GQB_CATALOG)
             {
 
                 // Create Schema Object
-                schema = new gqbSchema(this, name, GQB_SCHEMA);
-                parent=tablesBrowser->AppendItem(parentNode, name , indexImage, indexImage, schema);
+                schema = new gqbSchema(this, name, conn, schemas->GetOid(wxT("oid")));
+                parent=tablesBrowser->AppendItem(parentNode, name, indexImage, indexImage, schema);
 
                 if(name != wxT("pg_catalog") && name != wxT("pgagent"))
 				{
-                    tableImage=5;
-					viewImage=5;
+                    tableImage=GQB_IMG_CATALOG_OBJ;
+					viewImage=GQB_IMG_CATALOG_OBJ;
 				}
             }
             else
             {
 
                 // Create Schema Object
-                schema = new gqbSchema(this, name, GQB_SCHEMA);
+                // Note that the schema will be populated when the node is expanded.
+                schema = new gqbSchema(this, name, conn, schemas->GetOid(wxT("oid")));
                 parent=tablesBrowser->AppendItem(parentNode, name , indexImage, indexImage, schema);
             }
 
-            schema->createObjects(tablesBrowser, conn, schemas->GetOid(wxT("oid")), parent, tableImage, viewImage, 8);
             schemas->MoveNext();
         }
 

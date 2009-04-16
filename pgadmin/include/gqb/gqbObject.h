@@ -29,18 +29,22 @@ enum type_gqbObject
 class gqbObject : public wxTreeItemData
 {
 public:
-    gqbObject(wxString name, type_gqbObject type);
+    gqbObject(wxString name, wxTreeItemData *owner, pgConn *connection, OID oid = 0);
     virtual ~gqbObject();
-    void setName(wxString name);
-    const wxString& getName();
-    void setOwner(wxTreeItemData *owner);
-    const wxTreeItemData& getOwner();
-    void setType(type_gqbObject name);
-    const type_gqbObject getType();
+    const wxString& getName() { return Name; }
+    wxTreeItemData *getOwner() { return Owner; }
+    const type_gqbObject getType() { return Type; }
+    void setType(const type_gqbObject type) { Type = type; }
+    pgConn *getConnection() { return conn; }
+    OID getOid() { return Oid; }
+
+protected:
+    pgConn *conn;
 
 private:
     wxString Name;
     wxTreeItemData *Owner;
     type_gqbObject Type;
+    OID Oid;
 };
 #endif

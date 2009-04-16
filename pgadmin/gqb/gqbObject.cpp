@@ -18,49 +18,15 @@
 // App headers
 #include "gqb/gqbObject.h"
 
-gqbObject::gqbObject(wxString name, type_gqbObject type)
+gqbObject::gqbObject(wxString name, wxTreeItemData *owner, pgConn *connection, OID oid)
 {
-    this->Type=type;
-    this->Name=name;
+    Name = name;
+    Owner = owner;
+    conn = connection;
+    Oid = oid;
 }
 
 
 gqbObject::~gqbObject()
 {
-}
-
-
-void gqbObject::setName(wxString name)
-{
-    this->Name=name;
-}
-
-
-const wxString& gqbObject::getName()
-{
-    return Name;
-}
-
-
-void gqbObject::setOwner(wxTreeItemData *owner)
-{
-    this->Owner=owner;
-}
-
-
-const wxTreeItemData& gqbObject::getOwner()
-{
-    return (*Owner);
-}
-
-
-void gqbObject::setType(type_gqbObject tname)
-{
-    this->Type=tname;
-}
-
-
-const type_gqbObject gqbObject::getType()
-{
-    return this->Type;
 }

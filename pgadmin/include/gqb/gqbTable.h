@@ -23,7 +23,7 @@ class gqbColumn;
 class gqbTable : public gqbObjectCollection
 {
 public:
-    gqbTable(gqbObject *parent, wxString name, type_gqbObject type);
+    gqbTable(gqbObject *parent, wxString name, pgConn *connection, type_gqbObject type, OID oid);
     void createObjects(gqbBrowser *_tablesBrowser,  pgConn *_conn, OID oidVal, wxTreeItemId parentNode);
     gqbIteratorBase* createColumnsIterator();
     int countCols();
@@ -31,7 +31,6 @@ public:
     int indexColumn(gqbColumn *col);
 
 private:
-    wxString NumToStr(OID value);
     void addColumn(gqbColumn *column);    // Used only as synonym for gqbObjectCollection addObject
     void createColumns(pgConn *conn, gqbBrowser *tablesBrowser, wxTreeItemId parentNode,  OID oidVal);
 
