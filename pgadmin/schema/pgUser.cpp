@@ -195,7 +195,7 @@ void pgUser::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("User ID"), GetUserId());
-        properties->AppendItem(_("Account expires"), GetAccountExpires());
+        properties->AppendItem(_("Account expires"), DateToAnsiStr(GetAccountExpires()));
         properties->AppendItem(_("Superuser?"), BoolToYesNo(GetSuperuser()));
         properties->AppendItem(_("Create databases?"), BoolToYesNo(GetCreateDatabase()));
         properties->AppendItem(_("Update catalogs?"), BoolToYesNo(GetUpdateCatalog()));

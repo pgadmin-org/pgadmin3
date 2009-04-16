@@ -255,7 +255,7 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
         properties->AppendItem(_("Name"), GetName());
         properties->AppendItem(_("OID"), GetOid());
-        properties->AppendItem(_("Account expires"), GetAccountExpires());
+        properties->AppendItem(_("Account expires"), DateToAnsiStr(GetAccountExpires()));
         properties->AppendItem(_("Can login?"), BoolToYesNo(GetCanLogin()));
         properties->AppendItem(_("Superuser?"), BoolToYesNo(GetSuperuser()));
         properties->AppendItem(_("Create databases?"), BoolToYesNo(GetCreateDatabase()));

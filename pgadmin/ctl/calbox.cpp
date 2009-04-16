@@ -72,7 +72,7 @@ bool wxCalendarBox::Create(wxWindow *parent,
 {
     wxString txt;
     if (date.IsValid())
-        txt = date.FormatDate();
+        txt = date.FormatISODate();
 
     if ( !wxControl::Create(parent, id, pos, size,
                             style | wxCLIP_CHILDREN | wxWANTS_CHARS,
@@ -106,7 +106,7 @@ bool wxCalendarBox::Create(wxWindow *parent,
     m_txt=new wxTextCtrl(this, CTRLID_TXT, txt, wxDefaultPosition, size, TXTCTRL_FLAGS);
     m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, wxKeyEventHandler(wxCalendarBox::OnEditKey), 0, this);
     m_txt->Connect(wxID_ANY, wxID_ANY, wxEVT_KILL_FOCUS, wxFocusEventHandler(wxCalendarBox::OnKillFocus), 0, this);
-    SetFormat(wxT("%x"));
+    SetFormat(wxT("%Y-%m-%d"));
 
     m_btn = new wxBitmapButton(this, CTRLID_BTN, bmp, wxDefaultPosition, bs);
 
@@ -339,7 +339,7 @@ bool wxCalendarBox::SetValue(const wxDateTime& date)
     if (m_cal)
     {
         if (date.IsValid())
-            m_txt->SetValue(date.FormatDate());
+            m_txt->SetValue(date.FormatISODate());
         else
             m_txt->SetValue(wxEmptyString);
     }
@@ -443,7 +443,7 @@ void wxCalendarBox::OnSelChange(wxCalendarEvent &ev)
 {
     if (m_cal)
     {
-        m_txt->SetValue(m_cal->GetDate().FormatDate());
+        m_txt->SetValue(m_cal->GetDate().FormatISODate());
         if (ev.GetEventType() == wxEVT_CALENDAR_DOUBLECLICKED)
         {
             DropDown(false);
