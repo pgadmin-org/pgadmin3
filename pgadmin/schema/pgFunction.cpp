@@ -99,7 +99,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
         else
         {
             sql += wxT("\n  RETURNS ");
-            if (GetReturnAsSet())
+            if (GetReturnAsSet() && !GetReturnType().StartsWith(wxT("TABLE")))
                 sql += wxT("SETOF ");
             sql += GetReturnType();
 
@@ -266,6 +266,13 @@ wxString pgFunction::GetArgListWithNames()
 
     for (unsigned int i=0; i < argTypesArray.Count(); i++)
     {
+        /*
+        * All Table arguments lies at the end of the list
+        * Do not include them as the part of the argument list
+        */
+        if (argModesArray.Item(i) == wxT("TABLE"))
+            break;
+
         if (args.Length() > 0)
             args += wxT(", ");
 
@@ -273,8 +280,16 @@ wxString pgFunction::GetArgListWithNames()
 
         if (GetIsProcedure())
         {
-            if (!argNamesArray.Item(i).IsEmpty())
+            if (!argModesArray.Item(i).IsEmpty())
+            {
                 arg += qtIdent(argNamesArray.Item(i));
+            }
+            else
+            {
+                if (!argNamesArray.Item(i).IsEmpty())
+                    arg += qtIdent(argNamesArray.Item(i));
+                arg += wxT(" ") + argModesArray.Item(i);
+            }
 
             if (!argModesArray.Item(i).IsEmpty())
             {
@@ -322,7 +337,7 @@ wxString pgFunction::GetArgSigList()
     for (unsigned int i=0; i < argTypesArray.Count(); i++)
     {
         // OUT parameters are not considered part of the signature, except for EDB-SPL
-        if (argModesArray.Item(i) != wxT("OUT"))
+        if (argModesArray.Item(i) != wxT("OUT") && argModesArray.Item(i) != wxT("TABLE"))
         {
             if (args.Length() > 0)
                 args += wxT(", ");
@@ -331,7 +346,7 @@ wxString pgFunction::GetArgSigList()
         }
         else
         {
-            if (GetLanguage() == wxT("edbspl"))
+            if (GetLanguage() == wxT("edbspl") && argModesArray.Item(i) != wxT("TABLE"))
             {
                 if (args.Length() > 0)
                     args += wxT(", ");
@@ -506,6 +521,8 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                         mode = wxT("IN OUT");
                     else if (mode == wxT("v"))
                         mode = wxT("VARIADIC");
+                    else if (mode == wxT("t"))
+                        mode = wxT("TABLE");
                     else
                     {
                         mode = wxT("IN");
@@ -548,6 +565,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             
             function->iSetArgCount(functions->GetLong(wxT("pronargs")));
 
+            wxString strReturnTableArgs;
             // Process default values
             if (obj->GetConnection()->BackendMinimumVersion(8, 4) &&
                 function->GetArgCount() != 0)
@@ -566,6 +584,15 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                                 function->iAddArgDef(argDefValArray[currINindex-1]);
                         }
                     }
+                    else if(function->GetArgModesArray()[index] == wxT("TABLE"))
+                    {
+                        if (strReturnTableArgs.Length() > 0)
+                            strReturnTableArgs += wxT(", ");
+                        wxString strName = function->GetArgNamesArray()[index];
+                        if (!strName.IsEmpty())
+                            strReturnTableArgs += strName + wxT(" ");
+                        strReturnTableArgs += function->GetArgTypesArray()[index];
+                    }
                     function->iAddArgDef(wxEmptyString);
                 }
             }
@@ -575,7 +602,12 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
             function->UpdateSchema(browser, functions->GetOid(wxT("pronamespace")));
             function->iSetOwner(functions->GetVal(wxT("funcowner")));
             function->iSetAcl(functions->GetVal(wxT("proacl")));
-            function->iSetReturnType(functions->GetVal(wxT("typname")));
+            wxString strType = functions->GetVal(wxT("typname"));
+            if (strType.Lower() == wxT("record") && !strReturnTableArgs.IsEmpty())
+            {
+                strType = wxT("TABLE(") + strReturnTableArgs + wxT(")");
+            }
+            function->iSetReturnType(strType);
             function->iSetComment(functions->GetVal(wxT("description")));
 
             function->iSetLanguage(lanname);

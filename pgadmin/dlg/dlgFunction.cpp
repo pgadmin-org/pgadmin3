@@ -513,7 +513,7 @@ void dlgFunction::CheckChange()
 
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
     if (!isProcedure)
-        CheckValid(enable, cbReturntype->GetGuessedSelection() >= 0, _("Please select return type."));
+        CheckValid(enable, cbReturntype->GetValue().Trim() != wxEmptyString, _("Please select return type."));
 
     if (!(isProcedure && connection->GetIsEdb()))
         CheckValid(enable, cbLanguage->GetGuessedSelection() >= 0, _("Please select language."));
