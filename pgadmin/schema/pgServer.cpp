@@ -930,6 +930,8 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                         case 2: sslMode = _("prefer"); break;
                         case 3: sslMode = _("allow"); break;
                         case 4: sslMode = _("disable"); break;
+						case 5: sslMode = _("verify-ca"); break;
+						case 6: sslMode = _("verify-full"); break;
                     }
                     properties->AppendItem(_("SSL Mode"), sslMode);
                 }

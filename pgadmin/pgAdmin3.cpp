@@ -479,6 +479,10 @@ bool pgAdmin3::OnInit()
                             sslmode = 3;
                         else if (!tmps.Cmp(wxT("disable")))
                             sslmode = 4;
+						else if (!tmps.Cmp(wxT("verify-ca")))
+							sslmode = 5;
+						else if (!tmps.Cmp(wxT("verify-full")))
+							sslmode = 6;
                         else
                         {
                             wxMessageBox(_("Unknown SSL mode: ") + tmps);
@@ -565,6 +569,10 @@ bool pgAdmin3::OnInit()
                             sslmode = 3;
                         else if (!tmps.Cmp(wxT("disable")))
                             sslmode = 4;
+						else if (!tmps.Cmp(wxT("verify-ca")))
+							sslmode = 5;
+						else if (!tmps.Cmp(wxT("verify-full")))
+							sslmode = 6;
                         else
                         {
                             wxMessageBox(_("Unknown SSL mode: ") + tmps);

@@ -189,6 +189,14 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
             connectParams.Append(wxT(" sslmode=disable"));
             break;
 
+		case 5:
+			connectParams.Append(wxT(" sslmode=verify-ca"));
+			break;
+
+		case 6:
+			connectParams.Append(wxT(" sslmode=verify-full"));
+			break;
+
         default:
             break;
     }

@@ -150,6 +150,8 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
             case 2: connstr.Append(wxT(" sslmode=prefer"));    break;
             case 3: connstr.Append(wxT(" sslmode=allow"));     break;
             case 4: connstr.Append(wxT(" sslmode=disable"));   break;
+			case 5: connstr.Append(wxT(" sslmode=verify-ca")); break;
+			case 6: connstr.Append(wxT(" sslmode=verify-full"));break;
         }
     }
     else
@@ -268,6 +270,10 @@ wxString pgConn::GetSslModeName()
             return wxT("allow");     
         case 4: 
             return wxT("disable");   
+		case 5:
+			return wxT("verify-ca");
+		case 6:
+			return wxT("verify-full");
         default: 
             return wxT("prefer");   
     }
@@ -479,6 +485,11 @@ void pgConn::ExamineLibpqVersion()
                 if (libpqVersion < 7.4)
                     libpqVersion=7.4;
             }
+			if (!strcmp(co->keyword, "sslrootcert"))
+			{
+				if (libpqVersion < 8.4)
+					libpqVersion=8.4;
+			}
             co++;
         }
         PQconninfoFree(cio);

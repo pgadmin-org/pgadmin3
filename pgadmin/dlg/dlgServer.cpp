@@ -235,6 +235,12 @@ int dlgServer::Go(bool modal)
         cbSSL->Append(_("allow"));
         cbSSL->Append(_("disable"));
     }
+
+	if (pgConn::GetLibpqVersion() >= 8.4)
+	{
+		cbSSL->Append(_("verify-ca"));
+		cbSSL->Append(_("verify-full"));
+	}
 #endif
 
     if (server)
