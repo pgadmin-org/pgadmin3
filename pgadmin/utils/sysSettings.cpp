@@ -129,11 +129,6 @@ bool sysSettings::GetDisplayOption(const wxString &objtype, bool GetDefault)
         engtype = wxT("Operator Families");
         def = false;
     }
-    else if (objtype == _("Rules")) 
-    {
-        engtype = wxT("Rules");
-        def = false;
-    }
     else if (objtype == _("Sequences")) 
         engtype = wxT("Sequences");
     else if (objtype == _("Tables")) 
@@ -191,7 +186,6 @@ void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
     else if (objtype == _("Operators")) engtype = wxT("Operators");
     else if (objtype == _("Operator Classes")) engtype = wxT("Operator Classes");
     else if (objtype == _("Operator Families")) engtype = wxT("Operator Families");
-    else if (objtype == _("Rules")) engtype = wxT("Rules");
     else if (objtype == _("Sequences")) engtype = wxT("Sequences");
     else if (objtype == _("Tables")) engtype = wxT("Tables");
     else if (objtype == _("FTS Configurations")) engtype = wxT("FTS Configurations");

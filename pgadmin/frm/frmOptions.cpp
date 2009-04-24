@@ -190,7 +190,6 @@ frmOptions::frmOptions(frmMain *parent)
     lstDisplay->Append(_("Operators"));
     lstDisplay->Append(_("Operator Classes"));
     lstDisplay->Append(_("Operator Families"));
-    lstDisplay->Append(_("Rules"));
     lstDisplay->Append(_("Sequences"));
     lstDisplay->Append(_("Tables"));
     lstDisplay->Append(_("External Tables"));
