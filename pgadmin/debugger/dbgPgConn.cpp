@@ -399,9 +399,9 @@ bool dbgPgConn::BackendMinimumVersion(int major, int minor)
             }
             if (result == wxT("0"))
                 m_minorVersion = 2; 
-
-            m_isGreenplum = version.Upper().Matches(wxT("*GREENPLUM DATABASE*"));
         }
+        else
+            m_isGreenplum = version.Upper().Matches(wxT("*GREENPLUM DATABASE*"));
     }
 
     return m_majorVersion > major || (m_majorVersion == major && m_minorVersion >= minor);

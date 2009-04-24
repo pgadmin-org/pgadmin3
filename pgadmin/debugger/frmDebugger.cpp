@@ -14,6 +14,8 @@
 // wxWindows headers
 #include <wx/wx.h>
 
+#include <stdexcept>
+
 // App headers
 #include "debugger/frmDebugger.h"
 #include "debugger/ctlCodeWindow.h"
@@ -137,17 +139,32 @@ void frmDebugger::OnHelp(wxCommandEvent& event)
 
 ctlCodeWindow * frmDebugger::addDebug( const dbgConnProp & connProps )
 {
-    m_standaloneDebugger = new ctlCodeWindow( this , -1, connProps );
-    m_standaloneDebugger->Show( false );
-    return( m_standaloneDebugger );
+    try
+    {
+        m_standaloneDebugger = new ctlCodeWindow( this , -1, connProps );
+        m_standaloneDebugger->Show( false );
+        return( m_standaloneDebugger );
+    }
+    catch( const std::runtime_error & error )
+    {
+        wxLogError(wxT("%s"), wxString(error.what(), wxConvUTF8).c_str());
+        return NULL;
+    }
 }
 
 dlgDirectDbg * frmDebugger::addDirectDbg( const dbgConnProp & connProp )
 {
-
-    m_standaloneDirectDbg = new dlgDirectDbg( this, -1, connProp );
-    m_standaloneDirectDbg->setupParamWindow();
-    return( m_standaloneDirectDbg );
+    try
+    {
+        m_standaloneDirectDbg = new dlgDirectDbg( this, -1, connProp );
+        m_standaloneDirectDbg->setupParamWindow();
+        return( m_standaloneDirectDbg );
+    }
+    catch( const std::runtime_error & error )
+    {
+        wxLogError(wxT("%s"), wxString(error.what(), wxConvUTF8).c_str());
+        return NULL;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

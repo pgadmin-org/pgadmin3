@@ -70,10 +70,18 @@ wxWindow *debuggerFactory::StartDialog(frmMain *form, pgObject *obj)
     cp.m_port = NumToStr((long)obj->GetServer()->GetPort());
     cp.m_sslMode = obj->GetServer()->GetSSL();
     cp.m_userName = obj->GetServer()->GetUsername();
+    if (obj->GetServer()->GetConnection()->BackendMinimumVersion(8,4))
+        cp.m_sslVerify = obj->GetServer()->GetSSLverify();
+    else
+        cp.m_sslVerify = 0;
 
     // Setup the debugging session
     dlgDirectDbg *directDebugger = NULL;
     directDebugger = debugger->addDirectDbg(cp);
+    if (directDebugger == NULL)
+    {
+        return 0;
+    }
 
     dbgBreakPointList &breakpoints = directDebugger->getBreakpointList();
     breakpoints.Append(new dbgBreakPoint(dbgBreakPoint::OID, NumToStr((long)obj->GetOid()), wxT("'NULL'")));
@@ -202,10 +210,16 @@ wxWindow *breakpointFactory::StartDialog(frmMain *form, pgObject *obj)
     cp.m_port = NumToStr((long)obj->GetServer()->GetPort());
     cp.m_sslMode = obj->GetServer()->GetSSL();
     cp.m_userName = obj->GetServer()->GetUsername();
+    if (obj->GetServer()->GetConnection()->BackendMinimumVersion(8,4))
+        cp.m_sslVerify = obj->GetServer()->GetSSLverify();
+    else
+        cp.m_sslVerify = 0;
 
     // Setup the debugging session
     ctlCodeWindow *globalDebugger = NULL;
     globalDebugger = debugger->addDebug(cp);
+	if (globalDebugger == NULL)
+		return 0;
 
     dbgBreakPointList &breakpoints = globalDebugger->getBreakpointList();
     breakpoints.Append(new dbgBreakPoint(dbgBreakPoint::OID, dbgOid, wxT("'NULL'")));
