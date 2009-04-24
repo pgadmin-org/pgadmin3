@@ -289,8 +289,12 @@ void dlgTrigger::CheckChange()
 
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
     CheckValid(enable, !function.IsEmpty(), _("Please specify trigger function."));
+
     CheckValid(enable, chkInsert->GetValue() || chkUpdate->GetValue() ||chkDelete->GetValue() ||chkTruncate->GetValue(),
         _("Please specify at least one action."));
+
+    if (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
+        CheckValid(enable, !txtBody->GetText().IsEmpty(), _("Please specify trigger body."));
 
     if (trigger)
     {
