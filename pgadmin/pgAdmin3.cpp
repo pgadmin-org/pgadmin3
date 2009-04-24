@@ -451,7 +451,7 @@ bool pgAdmin3::OnInit()
             {
                 wxLogInfo(wxT("Starting in server status connect mode (-Sc)."), configFile.c_str());
                 wxString host, database, username, tmps;
-                int sslmode=0,sslverify=0,port=0;
+                int sslmode=0,port=0;
                 wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
                 while (tkn.HasMoreTokens())
                 {
@@ -486,28 +486,13 @@ bool pgAdmin3::OnInit()
                         }
                         continue;
                     }
-                    if (str.StartsWith(wxT("sslverify="), &tmps))
-                    {
-                        if (!tmps.Cmp(wxT("cn")))
-                            sslverify = 1;
-                        else if (!tmps.Cmp(wxT("cert")))
-                            sslverify = 2;
-                        else if (!tmps.Cmp(wxT("none")))
-                            sslverify = 3;
-                        else
-                        {
-                            wxMessageBox(_("Unknown SSL verify mode: ") + tmps);
-                            return false;
-                        }
-                        continue;
-                    }
                     wxMessageBox(_("Unknown token in connection string: ") + str);
                     return false;
                 }
                 winSplash->Show(false);
                 dlgSelectConnection dlg(NULL, NULL);
                 dlg.CenterOnParent();
-                conn = dlg.CreateConn(host, database, username, port, sslmode, sslverify);
+                conn = dlg.CreateConn(host, database, username, port, sslmode);
             }
             else
             {
@@ -552,7 +537,7 @@ bool pgAdmin3::OnInit()
             {
                 wxLogInfo(wxT("Starting in query tool connect mode (-qc)."), configFile.c_str());
                 wxString host, database, username, tmps;
-                int sslmode=0,sslverify=0,port=0;
+                int sslmode=0,port=0;
                 wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
                 while (tkn.HasMoreTokens())
                 {
@@ -587,28 +572,13 @@ bool pgAdmin3::OnInit()
                         }
                         continue;
                     }
-                    if (str.StartsWith(wxT("sslverify="), &tmps))
-                    {
-                        if (!tmps.Cmp(wxT("cn")))
-                            sslverify = 1;
-                        else if (!tmps.Cmp(wxT("cert")))
-                            sslverify = 2;
-                        else if (!tmps.Cmp(wxT("none")))
-                            sslverify = 3;
-                        else
-                        {
-                            wxMessageBox(_("Unknown SSL verify mode: ") + tmps);
-                            return false;
-                        }
-                        continue;
-                    }
                     wxMessageBox(_("Unknown token in connection string: ") + str);
                     return false;
                 }
                 winSplash->Show(false);
                 dlgSelectConnection dlg(NULL, NULL);
                 dlg.CenterOnParent();
-                conn = dlg.CreateConn(host, database, username, port, sslmode, sslverify);
+                conn = dlg.CreateConn(host, database, username, port, sslmode);
             }
             else
             {

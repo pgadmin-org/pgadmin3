@@ -48,7 +48,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
     ((pgConn*)arg)->Notice(message);
 }
 
-pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, int sslverifymode, OID oid)
+pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, OID oid)
 {
     wxString msg, hostip, hostname;
 
@@ -58,7 +58,6 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     save_password = password;
     save_port = port;
     save_sslmode = sslmode;
-    save_sslverifymode = sslverifymode;
     save_oid = oid;
 
     memset(features, 0, sizeof(features));
@@ -161,15 +160,6 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
             case 2: connstr.Append(wxT(" requiressl=0"));   break;
         }
     }
-    if (libpqVersion >= 8.4)
-    {
-        switch (sslverifymode)
-        {
-            case 1: connstr.Append(wxT(" sslverify=cn"));   break;
-            case 2: connstr.Append(wxT(" sslverify=cert")); break;
-            case 3: connstr.Append(wxT(" sslverify=none")); break;
-        }
-    }
     connstr.Trim(false);
     
     // Open the connection
@@ -262,7 +252,7 @@ void pgConn::Close()
 
 pgConn *pgConn::Duplicate()
 {
-    return new pgConn(wxString(save_server), wxString(save_database), wxString(save_username), wxString(save_password), save_port, save_sslmode, save_sslverifymode, save_oid);
+    return new pgConn(wxString(save_server), wxString(save_database), wxString(save_username), wxString(save_password), save_port, save_sslmode, save_oid);
 }
 
 // Return the SSL mode name
@@ -280,22 +270,6 @@ wxString pgConn::GetSslModeName()
             return wxT("disable");   
         default: 
             return wxT("prefer");   
-    }
-}
-
-// Return the SSL verify mode name
-wxString pgConn::GetSslVerifyModeName()
-{
-    switch (save_sslverifymode)
-    {
-        case 1:
-            return wxT("cn");
-        case 2:
-            return wxT("cert");
-        case 3:
-            return wxT("none");
-        default:
-            return wxT("cn");
     }
 }
 
@@ -504,11 +478,6 @@ void pgConn::ExamineLibpqVersion()
             {
                 if (libpqVersion < 7.4)
                     libpqVersion=7.4;
-            }
-            if (!strcmp(co->keyword, "sslverify"))
-            {
-                if (libpqVersion < 8.4)
-                    libpqVersion=8.4;
             }
             co++;
         }

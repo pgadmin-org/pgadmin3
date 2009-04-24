@@ -81,7 +81,7 @@ typedef struct pgError {
 class pgConn
 {
 public:
-    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, int sslmode=0, int sslverify=0, OID oid=0);
+    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, int sslmode=0, OID oid=0);
     ~pgConn();
 
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
@@ -117,9 +117,7 @@ public:
     wxString GetTTY() const { return wxString(PQtty(conn), *conv); }
     wxString GetOptions() const { return wxString(PQoptions(conn), *conv); }
     int GetSslMode() const { return save_sslmode; }
-    int GetSslVerifyMode() const { return save_sslverifymode;}
     wxString GetSslModeName();
-    wxString GetSslVerifyModeName();
     int GetBackendPID() const { return PQbackendPID(conn); }
     int GetStatus() const;
     int GetLastResultStatus() const { return lastResultStatus; }
@@ -174,7 +172,7 @@ private:
     wxString reservedNamespaces;
 
     wxString save_server, save_database, save_username, save_password;
-    int save_port, save_sslmode, save_sslverifymode;
+    int save_port, save_sslmode;
     OID save_oid;
 };
 

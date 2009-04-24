@@ -60,7 +60,6 @@ frmBackupServer::frmBackupServer(frmMain *form, pgObject *obj) : ExternProcessDi
 
 	// Pass the SSL mode via the environment
 	environment.Add(wxT("PGSSLMODE=") + ((pgServer *)object)->GetConnection()->GetSslModeName());
-	environment.Add(wxT("PGSSLVERIFY=") + ((pgServer *)object)->GetConnection()->GetSslVerifyModeName());
 
 	// Icon
     SetIcon(wxIcon(backup_xpm));

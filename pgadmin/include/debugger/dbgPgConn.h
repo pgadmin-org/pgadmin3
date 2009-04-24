@@ -57,8 +57,7 @@ class dbgPgConn
               const wxString &username = wxT( "" ), 
               const wxString &password = wxT( "" ), 
               const wxString &port     = wxT( "5432" ), 
-              int sslmode               = 0,
-              int sslverify            = 0 );
+              int sslmode               = 0 );
 
     dbgPgConn( frmDebugger *frame, const dbgConnProp & props, bool startThread = true );
 
@@ -84,7 +83,7 @@ class dbgPgConn
 
   private:
 
-    void Init( const wxString &server, const wxString &database, const wxString &userName, const wxString &password, const wxString &port, int sslmode, int sslverify, bool startThread );
+    void Init( const wxString &server, const wxString &database, const wxString &userName, const wxString &password, const wxString &port, int sslmode, bool startThread );
 
     PGconn *m_pgConn;               // libpq connection handler
     dbgPgThread *m_workerThread;    // Worker thread (this thread interacts with the server)

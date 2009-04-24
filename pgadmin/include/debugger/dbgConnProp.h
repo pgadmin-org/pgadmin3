@@ -32,7 +32,6 @@ public:
 	wxString	m_port;			// Port number
 	wxString	m_debugPort;	// Port number for debugger connection
 	int		    m_sslMode;		// SSL Mode
-	int             m_sslVerify;            // SSL Certificate Verify Mode
 };
 
 #endif

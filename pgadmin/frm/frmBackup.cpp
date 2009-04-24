@@ -80,7 +80,6 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 
     // Pass the SSL mode via the environment
     environment.Add(wxT("PGSSLMODE=") + object->GetServer()->GetConnection()->GetSslModeName());
-    environment.Add(wxT("PGSSLVERIFY=") + object->GetServer()->GetConnection()->GetSslVerifyModeName());
 
     // Icon
     SetIcon(wxIcon(backup_xpm));

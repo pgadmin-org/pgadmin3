@@ -48,8 +48,6 @@ public:
 	void SetLastPort(const int newval) { Write(wxT("LastPort"), newval); }
     int GetLastSSL() const { int i; Read(wxT("LastSSL"), &i, 0); return i; }
 	void SetLastSSL(const int newval) { Write(wxT("LastSSL"), newval); }
-    int GetLastSSLverify() const { int i; Read(wxT("LastSSLverify"), &i, 0); return i; }
-	void SetLastSSLverify(const int newval) { Write(wxT("LastSSLverify"), newval); }
 
     // Helper paths
     wxString GetSlonyPath() const { wxString s; Read(wxT("SlonyPath"), &s, wxEmptyString); return s; }

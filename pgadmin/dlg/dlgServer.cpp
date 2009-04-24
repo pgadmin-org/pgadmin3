@@ -29,7 +29,6 @@
 #define cbDatabase      CTRL_COMBOBOX("cbDatabase")
 #define txtPort         CTRL_TEXT("txtPort")
 #define cbSSL           CTRL_COMBOBOX("cbSSL")
-#define cbSSLverify     CTRL_COMBOBOX("cbSSLverify")
 #define txtUsername     CTRL_TEXT("txtUsername")
 #define stTryConnect    CTRL_STATIC("stTryConnect")
 #define chkTryConnect   CTRL_CHECKBOX("chkTryConnect")
@@ -54,7 +53,6 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_TEXT(XRCID("txtUsername"),                  dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtDbRestriction"),             dlgServer::OnChangeRestr)
     EVT_COMBOBOX(XRCID("cbSSL"),                    dlgProperty::OnChange)
-    EVT_COMBOBOX(XRCID("cbSSLverify"),              dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkStorePwd"),              dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkRestore"),               dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkTryConnect"),            dlgServer::OnChangeTryConnect)
@@ -87,8 +85,6 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
     txtPort->SetValue(NumToStr((long)settings->GetLastPort()));    
     if (!cbSSL->IsEmpty())
         cbSSL->SetSelection(settings->GetLastSSL());
-    if (!cbSSLverify->IsEmpty())
-        cbSSLverify->SetSelection(settings->GetLastSSLverify());
     txtUsername->SetValue(settings->GetLastUsername());
  
     chkTryConnect->SetValue(true);
@@ -109,7 +105,6 @@ dlgServer::~dlgServer()
         settings->SetLastDatabase(cbDatabase->GetValue());
         settings->SetLastPort(StrToLong(txtPort->GetValue()));
         settings->SetLastSSL(cbSSL->GetCurrentSelection());
-        settings->SetLastSSLverify(cbSSLverify->GetCurrentSelection());
         settings->SetLastUsername(txtUsername->GetValue());
     }
 }
@@ -147,7 +142,6 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         }
         server->iSetPort(StrToLong(txtPort->GetValue()));
         server->iSetSSL(cbSSL->GetCurrentSelection());
-        server->iSetSSLverify(cbSSLverify->GetCurrentSelection());
         server->iSetDatabase(cbDatabase->GetValue());
         server->iSetUsername(txtUsername->GetValue());
         server->iSetStorePwd(chkStorePwd->GetValue());
@@ -231,7 +225,6 @@ int dlgServer::GoNew()
 int dlgServer::Go(bool modal)
 {
     cbSSL->Append(wxT(" "));
-    cbSSLverify->Append(wxT(" "));
 
 #ifdef SSL
     cbSSL->Append(_("require"));
@@ -241,13 +234,6 @@ int dlgServer::Go(bool modal)
     {
         cbSSL->Append(_("allow"));
         cbSSL->Append(_("disable"));
-    }
-    
-    if (pgConn::GetLibpqVersion() >= 8.4)
-    {
-    	cbSSLverify->Append(_("Full verification"));
-    	cbSSLverify->Append(_("Certificate only"));
-    	cbSSLverify->Append(_("No verification"));
     }
 #endif
 
@@ -259,7 +245,6 @@ int dlgServer::Go(bool modal)
         txtService->SetValue(server->GetServiceID());
         txtPort->SetValue(NumToStr((long)server->GetPort()));
         cbSSL->SetSelection(server->GetSSL());
-        cbSSLverify->SetSelection(server->GetSSLverify());
         cbDatabase->SetValue(server->GetDatabaseName());
         txtUsername->SetValue(server->GetUsername());
         chkStorePwd->SetValue(server->GetStorePwd());
@@ -275,7 +260,6 @@ int dlgServer::Go(bool modal)
             cbDatabase->Disable();
             txtPort->Disable();
             cbSSL->Disable();
-            cbSSLverify->Disable();
             txtUsername->Disable();
             chkStorePwd->Disable();
         }
@@ -308,8 +292,7 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
     pgObject *obj=new pgServer(GetName(), txtDescription->GetValue(), cbDatabase->GetValue(), 
         txtUsername->GetValue(), StrToLong(txtPort->GetValue()), 
 		chkTryConnect->GetValue() && chkStorePwd->GetValue(), 
-		chkRestore->GetValue(), cbSSL->GetCurrentSelection(), 
-		cbSSLverify->GetCurrentSelection(), txtColour->GetValue());
+		chkRestore->GetValue(), cbSSL->GetCurrentSelection());
 
     return obj;
 }
@@ -353,7 +336,6 @@ void dlgServer::CheckChange()
                || cbDatabase->GetValue() != server->GetDatabaseName()
                || txtUsername->GetValue() != server->GetUsername()
                || cbSSL->GetCurrentSelection() != server->GetSSL()
-               || cbSSLverify->GetCurrentSelection() != server->GetSSLverify()
                || chkStorePwd->GetValue() != server->GetStorePwd()
                || chkRestore->GetValue() != server->GetRestore()
                || txtDbRestriction->GetValue() != server->GetDbRestriction()
@@ -366,7 +348,6 @@ void dlgServer::CheckChange()
 #else
     bool isPipe = (name.IsEmpty() || name.StartsWith(wxT("/")));
     cbSSL->Enable(!isPipe);
-    cbSSLverify->Enable(!isPipe);
 #endif
     CheckValid(enable, !txtDescription->GetValue().IsEmpty(), _("Please specify description."));
     CheckValid(enable, StrToLong(txtPort->GetValue()) > 0, _("Please specify port."));

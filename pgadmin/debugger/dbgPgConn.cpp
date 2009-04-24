@@ -42,19 +42,19 @@
 //
 //    The constructor creates a new thread and connects to the specified server
 
-dbgPgConn::dbgPgConn(frmDebugger *frame, const wxString &server, const wxString &database, const wxString &userName, const wxString &password, const wxString &port, int sslmode, int sslverify )
+dbgPgConn::dbgPgConn(frmDebugger *frame, const wxString &server, const wxString &database, const wxString &userName, const wxString &password, const wxString &port, int sslmode)
    : m_frame(frame)
 {
-    Init( server, database, userName, password, port, sslmode, sslverify, true );
+    Init( server, database, userName, password, port, sslmode, true );
 }
 
 dbgPgConn::dbgPgConn(frmDebugger *frame, const dbgConnProp & props, bool startThread )
    : m_frame(frame)
 {
-    Init(  props.m_host, props.m_database, props.m_userName, props.m_password, props.m_port, props.m_sslMode, props.m_sslVerify, startThread );
+    Init(  props.m_host, props.m_database, props.m_userName, props.m_password, props.m_port, props.m_sslMode, startThread );
 }
 
-void dbgPgConn::Init( const wxString &server, const wxString &database, const wxString &username, const wxString &password, const wxString &port, int sslmode, int sslverify, bool startThread )
+void dbgPgConn::Init( const wxString &server, const wxString &database, const wxString &username, const wxString &password, const wxString &port, int sslmode, bool startThread )
 {
     m_pgConn       = NULL;
     m_majorVersion = 0;
@@ -193,24 +193,6 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
             break;
     }
     
-    switch (sslverify)
-    {
-        case 1:
-            connectParams.Append(wxT(" sslverify=cn"));
-            break;
-
-        case 2:
-            connectParams.Append(wxT(" sslverify=cert"));
-            break;
-
-        case 3:
-            connectParams.Append(wxT(" sslverify=none"));
-            break;
-
-        default:
-            break;
-    }
-
     connectParams.Trim(true);
     connectParams.Trim(false);
 

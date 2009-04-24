@@ -24,7 +24,7 @@ public:
     wxString GetHelpPage() const;
     pgServer *GetServer() { return remoteServer; }
 	pgConn *CreateConn();
-	pgConn *CreateConn(wxString& server, wxString& dbname, wxString& username, int port, int sslmode, int sslverify, bool writeMRU = false);
+	pgConn *CreateConn(wxString& server, wxString& dbname, wxString& username, int port, int sslmode, bool writeMRU = false);
 	wxString GetServerName();
     wxString GetDatabase();
 
