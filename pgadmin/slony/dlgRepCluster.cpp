@@ -353,6 +353,13 @@ void dlgRepCluster::OnChangeJoin(wxCommandEvent &ev)
     txtAdminNodeName->Show(!joinCluster && !cluster);
     cbAdminNode->Show(joinCluster || cluster);
 
+    // Force the dialogue to resize to prevent a drawing issue on GTK
+#ifdef __WXGTK__
+    SetSize(GetSize().x + 1, GetSize().y + 1); 
+    Layout();
+    SetSize(GetSize().x - 1, GetSize().y - 1); 
+#endif
+
     if (joinCluster && !cbDatabase->GetCount())
     {
         OnChangeServer(ev);
