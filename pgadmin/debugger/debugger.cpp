@@ -121,6 +121,11 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
             case PGM_FUNCTION:
                 {
                     pgFunction *func = (pgFunction *)obj;
+
+                    // If this is an EDB wrapped function, no debugging allowed
+                    if (obj->GetConnection()->GetIsEdb() && func->GetSource().Trim(false).StartsWith(wxT("$__EDBwrapped__$")))
+                        return false;
+
                     if (func->GetReturnType() != wxT("trigger") && func->GetReturnType() != wxT("\"trigger\""))
                     {
                         if (func->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
@@ -139,7 +144,8 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
                 if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && 
                     obj->GetDatabase()->CanDebugEdbspl() && 
                     obj->GetName() != wxT("cons") &&
-                    ((edbPackageFunction *)obj)->GetSource() != wxEmptyString)
+                    ((edbPackageFunction *)obj)->GetSource() != wxEmptyString &&
+                    (!((edbPackageFunction *)obj)->GetSource().Trim(false).StartsWith(wxT("$__EDBwrapped__$"))))
                     return true;
                 break;
 
@@ -242,6 +248,11 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
             case PGM_FUNCTION:
                 {
                     pgFunction *func = (pgFunction *)obj;
+
+                    // If this is an EDB wrapped function, no debugging allowed
+                    if (obj->GetConnection()->GetIsEdb() && func->GetSource().Trim(false).StartsWith(wxT("$__EDBwrapped__$")))
+                        return false;
+
                     if (func->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
                         return true;
                     else if (func->GetLanguage() == wxT("edbspl") && obj->GetDatabase()->CanDebugEdbspl())
@@ -255,13 +266,19 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
                 if (obj->GetDatabase()->GetConnection()->EdbMinimumVersion(8, 2) && 
                     obj->GetDatabase()->CanDebugEdbspl() && 
                     obj->GetName() != wxT("cons") &&
-                    ((edbPackageFunction *)obj)->GetSource() != wxEmptyString)
+                    ((edbPackageFunction *)obj)->GetSource() != wxEmptyString &&
+                    (!((edbPackageFunction *)obj)->GetSource().Trim(false).StartsWith(wxT("$__EDBwrapped__$"))))
                     return true;
                 break;
 
             case PGM_TRIGGER:
                 {
                     pgTrigger *trig = (pgTrigger *)obj;
+
+                    // If this is an EDB wrapped function, no debugging allowed
+                    if (obj->GetConnection()->GetIsEdb() && trig->GetSource().Trim(false).StartsWith(wxT("$__EDBwrapped__$")))
+                        return false;
+
                     if (trig->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
                         return true;
                     else if (trig->GetLanguage() == wxT("edbspl") && obj->GetDatabase()->CanDebugEdbspl())
