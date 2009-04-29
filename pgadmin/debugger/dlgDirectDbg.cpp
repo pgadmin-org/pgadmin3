@@ -414,6 +414,14 @@ void dlgDirectDbg::OnClose( wxCloseEvent & event )
         event.Skip();
     else
         m_parent->Close();
+
+    if ( this->IsModal() )
+    {
+        if ( m_cancelled )
+            EndModal( wxID_CANCEL );
+        else
+            EndModal( wxID_OK);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
