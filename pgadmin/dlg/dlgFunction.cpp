@@ -49,7 +49,7 @@
 #define btnChange           CTRL_BUTTON("wxID_CHANGE")
 #define btnRemove           CTRL_BUTTON("wxID_REMOVE")
 
-#define pnlParameter        CTRL_PANEL("pnlParameter")
+#define pnlParameters       CTRL_PANEL("pnlParameters")
 #define sbxDefinition       CTRL_STATICBOX("sbxDefinition")
 #define stObjectFile        CTRL_STATIC("stObjectFile")
 #define txtObjectFile       CTRL_TEXT("txtObjectFile")
@@ -120,7 +120,8 @@ dlgProperty *pgFunctionFactory::CreateDialog(frmMain *frame, pgObject *node, pgO
 
 
 dlgFunction::dlgFunction(pgaFactory *f, frmMain *frame, pgFunction *node, pgSchema *sch)
-: dlgSecurityProperty(f, frame, node, wxT("dlgFunction"), wxT("EXECUTE"), "X")
+: dlgSecurityProperty(f, frame, node, wxT("dlgFunction"), wxT("EXECUTE"), "X"),
+  isEdbWrapped( false )
 {
     schema=sch;
     function=node;
@@ -267,6 +268,8 @@ int dlgFunction::Go(bool modal)
     }
     else
     {
+        btnAddVar->Disable();
+        btnRemoveVar->Disable();
         cbVarname->Disable();
         txtValue->Disable();
         chkValue->Disable();
@@ -338,6 +341,23 @@ int dlgFunction::Go(bool modal)
         cbReturntype->Disable();
         chkSetof->Disable();
         cbDatatype->Disable();
+        // Editing paramter for wrapped functions is not allowed
+        // It will anyway throw an error, if we try to edit the paramter list
+        if ( connection->GetIsEdb() &&
+             function->GetSource().Trim(false).StartsWith( wxT( "$__EDBwrapped__$" )))
+        {
+            isEdbWrapped = true;
+            cbDatatype->Disable();
+            rdbIn->Disable();
+            rdbOut->Disable();
+            rdbInOut->Disable();
+            rdbVariadic->Disable();
+            txtArgName->Disable();
+            txtArgDefVal->Disable();
+            btnAdd->Disable();
+            btnChange->Disable();
+            btnRemove->Disable();
+        }
     }
     else
     {
@@ -625,11 +645,13 @@ void dlgFunction::OnChangeArgName(wxCommandEvent &ev)
 
     bool typeValid = (function != 0 || cbDatatype->GetGuessedSelection() >= 0);
 
-    btnChange->Enable(pos >= 0 && typeValid);
+    // EDBWrapped function does not allow modification in parameter list
+    btnChange->Enable(pos >= 0 && typeValid && !isEdbWrapped);
     if (!function)
     {
-        btnAdd->Enable(argNameRow < 0 && typeValid);
-        btnRemove->Enable(pos >= 0);
+        // EDBWrapped function does not allow modification in parameter list
+        btnAdd->Enable(argNameRow < 0 && typeValid && !isEdbWrapped);
+        btnRemove->Enable(pos >= 0 && !isEdbWrapped);
     }
 }
 
@@ -647,7 +669,8 @@ void dlgFunction::OnChangeArgMode(wxCommandEvent &ev)
     }
     else
     {
-        txtArgDefVal->Enable(true);
+        // EDBWrapped function does not allow modification in parameter list
+        txtArgDefVal->Enable(true && !isEdbWrapped);
     }
 }
 
@@ -700,7 +723,7 @@ void dlgFunction::OnAddArg(wxCommandEvent &ev)
 
 void dlgFunction::OnRemoveArg(wxCommandEvent &ev)
 {
-    int sel=lstArguments->GetSelection();
+    unsigned int sel=lstArguments->GetSelection();
     argOids.RemoveAt(sel);
     lstArguments->DeleteItem(sel);
     btnRemove->Disable();

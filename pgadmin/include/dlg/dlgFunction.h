@@ -74,6 +74,7 @@ private:
 protected:
     bool isProcedure;
     bool isBackendMinVer84;
+    bool isEdbWrapped;
 
     DECLARE_EVENT_TABLE()
 };
