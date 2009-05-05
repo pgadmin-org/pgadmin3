@@ -405,8 +405,11 @@ void dlgDirectDbg::OnClose( wxCloseEvent & event )
 
     // Close the debugger (proxy) connection
     if (m_conn)
+    {
         m_conn->Close();
-    m_conn = NULL;
+        delete m_conn;
+        m_conn = NULL;
+    }
 
 	// Closing frmMain from here leads to recursive call
     // to OnClose function on windows
