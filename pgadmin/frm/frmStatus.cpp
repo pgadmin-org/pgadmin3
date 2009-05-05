@@ -584,12 +584,6 @@ void frmStatus::AddLogPane()
             frmHint::ShowHint(this, HINT_INSTRUMENTATION);
         
         logList->AddColumn(_("Log entry"), 800);
-        logList->AppendItem(-1, _("no logpane"));
-
-        // Uncheck and disable menu
-        viewMenu->Enable(MNU_LOGPAGE, false);
-        viewMenu->Check(MNU_LOGPAGE, false);
-        manager.GetPane(wxT("Logfile")).Show(false);
 
         // We're done
         return;
@@ -602,8 +596,14 @@ void frmStatus::AddLogPane()
     logFmtPos=logFormat.Find('%', true);
 
     if (logFmtPos < 0)
+        logFormatKnown = true;  // log_line_prefix not specified.
+    else if (!logFmtPos && logFormat.Mid(logFmtPos, 2) == wxT("%t") && logFormat.Length() > 2)  // Timestamp at end of log_line_prefix?
+    {
         logFormatKnown = true;
-    else if (!logFmtPos && logFormat.Mid(logFmtPos, 2) == wxT("%t") && logFormat.Length() > 2)
+        logHasTimestamp = true;
+        logList->AddColumn(_("Timestamp"), 100);
+    }
+    else if (connection->GetIsGreenplum())
     {
         logFormatKnown = true;
         logHasTimestamp = true;
@@ -1495,26 +1495,82 @@ void frmStatus::addLogLine(const wxString &str, bool formatted)
         logList->AppendItem(-1, str);
     else
     {
-        if (str.Find(':') < 0)
+        if (connection->GetIsGreenplum() && connection->BackendMinimumVersion(8, 2, 13))
         {
-            logList->InsertItem(row, wxEmptyString, -1);
-            logList->SetItem(row, (logHasTimestamp ? 2 : 1), str);
-        }
-        else
-        {
-            wxString rest;
+            // Greenplum 3.3 release and later:  log is in CSV format
 
-            if (logHasTimestamp)
+            if (!formatted)
             {
+                logList->InsertItem(row, wxEmptyString, -1);
+                logList->SetItem(row, 1, str.BeforeFirst(':'));
+                logList->SetItem(row, 2, str.AfterFirst(':').Mid(2));
+            }
+            else
+            {
+                wxString ts = str.BeforeFirst(',');
+                if (ts.Length() < 20 || ts[0] != wxT('2') || ts[1] != wxT('0'))
+                {
+                    // Log line not a timestamp... Must be a continuation of the previous line.
+                    logList->InsertItem(row, wxEmptyString, -1);
+                    logList->SetItem(row, 2, str);
+                }
+                else
+                {
+                    logList->InsertItem(row, ts, -1);   // Insert timestamp
+                    // Find loglevel... This needs work.  Better than nothing for beta 3.
+                    wxString loglevel = str.AfterFirst('\"').BeforeFirst('\"');
+                    if (str.Find(wxT(",\"LOG\",")) > 0)
+                        loglevel = wxT("LOG");
+                    if (str.Find(wxT(",\"NOTICE\",")) > 0)
+                        loglevel = wxT("NOTICE");
+                    if (str.Find(wxT(",\"WARNING\",")) > 0)
+                        loglevel = wxT("WARNING");
+                    if (str.Find(wxT(",\"ERROR\",")) > 0)
+                        loglevel = wxT("ERROR");
+                    if (str.Find(wxT(",\"FATAL\",")) > 0)
+                        loglevel = wxT("FATAL");
+                    if (str.Find(wxT(",\"PANIC\",")) > 0)
+                        loglevel = wxT("PANIC");
+                    if (str.Find(wxT(",\"DEBUG")) > 0)
+                        loglevel = wxT("DEBUG");
+                    if (loglevel[0] >= wxT('D') && loglevel[0] <= wxT('W'))
+                    {
+                        logList->SetItem(row, 1, loglevel);
+                        logList->SetItem(row, 2, str.AfterFirst(','));
+                    }
+                    else
+                        logList->SetItem(row, 2, str.AfterFirst(','));
+                }
+            }
+        }
+        else if (connection->GetIsGreenplum())
+        {
+            // Greenplum 3.2 and before.
+
+            if (str.Find(':') < 0)
+            {
+                // Must be a continuation of a previous line.
+                logList->InsertItem(row, wxEmptyString, -1);
+                logList->SetItem(row, 2, str);
+            }
+            else
+            {
+                wxString rest;
                 if (formatted)
                 {
-                    rest = str.Mid(logFmtPos + 22).AfterFirst(':');
-                    wxString ts=str.Mid(logFmtPos, str.Length()-rest.Length() - logFmtPos -1);
-
-                    int pos = ts.Find(logFormat.c_str()[logFmtPos+2], true);
-                    logList->InsertItem(row, ts.Left(pos), -1);
-                    logList->SetItem(row, 1, ts.Mid(pos + logFormat.Length() - logFmtPos -2));
-                    logList->SetItem(row, 2, rest.Mid(2));
+                    wxString ts = str.BeforeFirst(logFormat.c_str()[logFmtPos+2]);
+                    if (ts.Length() < 20  || ts.Left(2) != wxT("20") || str.Find(':') < 0)
+                    {
+                        // No Timestamp?  Must be a continuation of a previous line.
+                        logList->InsertItem(row, wxEmptyString, -1);
+                        logList->SetItem(row, 2, str);
+                    }
+                    else
+                    {
+                        logList->InsertItem(row, ts, -1);
+                        rest = str.Mid(logFmtPos + ts.Length()).AfterFirst(':');
+                        logList->SetItem(row, 2, rest);   
+                    }
                 }
                 else
                 {
@@ -1523,21 +1579,56 @@ void frmStatus::addLogLine(const wxString &str, bool formatted)
                     logList->SetItem(row, 2, str.AfterFirst(':').Mid(2));
                 }
             }
+            
+        }
+        else
+        {
+            // All Non-GPDB PostgreSQL systems.
+
+            if (str.Find(':') < 0)
+            {
+                logList->InsertItem(row, wxEmptyString, -1);
+                logList->SetItem(row, (logHasTimestamp ? 2 : 1), str);
+            }
             else
             {
-                if (formatted)
-                    rest = str.Mid(logFormat.Length());
-                else
-                    rest = str;
+                wxString rest;
 
-                int pos = rest.Find(':');
+                if (logHasTimestamp)
+                {
+                    if (formatted)
+                    {
+                        rest = str.Mid(logFmtPos + 22).AfterFirst(':');
+                        wxString ts=str.Mid(logFmtPos, str.Length()-rest.Length() - logFmtPos -1);
 
-                if (pos < 0)
-                    logList->InsertItem(row, rest, -1);
+                        int pos = ts.Find(logFormat.c_str()[logFmtPos+2], true);
+                        logList->InsertItem(row, ts.Left(pos), -1);
+                        logList->SetItem(row, 1, ts.Mid(pos + logFormat.Length() - logFmtPos -2));
+                        logList->SetItem(row, 2, rest.Mid(2));
+                    }
+                    else
+                    {
+                        logList->InsertItem(row, wxEmptyString, -1);
+                        logList->SetItem(row, 1, str.BeforeFirst(':'));
+                        logList->SetItem(row, 2, str.AfterFirst(':').Mid(2));
+                    }
+                }
                 else
                 {
-                    logList->InsertItem(row, rest.BeforeFirst(':'), -1);
-                    logList->SetItem(row, 1, rest.AfterFirst(':').Mid(2));
+                    if (formatted)
+                        rest = str.Mid(logFormat.Length());
+                    else
+                        rest = str;
+
+                    int pos = rest.Find(':');
+
+                    if (pos < 0)
+                        logList->InsertItem(row, rest, -1);
+                    else
+                    {
+                        logList->InsertItem(row, rest.BeforeFirst(':'), -1);
+                        logList->SetItem(row, 1, rest.AfterFirst(':').Mid(2));
+                    }
                 }
             }
         }
