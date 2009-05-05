@@ -256,14 +256,14 @@ ctlMenuToolbar * frmDebugger::setupToolBar( void )
 
     m_toolBar->SetToolBitmapSize( wxSize( 16, 16 ));
  
-    m_toolBar->AddTool( MENU_ID_STEP_INTO,    	 _( "Step into" ),    		 wxBitmap(stepInto_xpm));
-    m_toolBar->AddTool( MENU_ID_STEP_OVER,    	 _( "Step over" ),    		 wxBitmap(stepOver_xpm));
-    m_toolBar->AddTool( MENU_ID_CONTINUE,    	 _( "Continue" ),    		 wxBitmap(continue_xpm));
+    m_toolBar->AddTool( MENU_ID_STEP_INTO,    	 _( "Step into" ),    		 wxBitmap(stepInto_xpm), _( "Step into" ));
+    m_toolBar->AddTool( MENU_ID_STEP_OVER,    	 _( "Step over" ),    		 wxBitmap(stepOver_xpm), _( "Step over" ));
+    m_toolBar->AddTool( MENU_ID_CONTINUE,    	 _( "Continue" ),    		 wxBitmap(continue_xpm), _( "Continue" ));
     m_toolBar->AddSeparator();
-    m_toolBar->AddTool( MENU_ID_TOGGLE_BREAK,     _( "Toggle breakpoint" ),   wxBitmap(setBreak_xpm));
-    m_toolBar->AddTool( MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints" ), wxBitmap(clearAll_xpm));
+    m_toolBar->AddTool( MENU_ID_TOGGLE_BREAK,     _( "Toggle breakpoint" ),   wxBitmap(setBreak_xpm), _( "Toggle breakpoint" ));
+    m_toolBar->AddTool( MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints" ), wxBitmap(clearAll_xpm), _( "Clear all breakpoints" ));
     m_toolBar->AddSeparator();
-    m_toolBar->AddTool( MENU_ID_STOP,          	 _( "Stop debugging" ),    	 wxBitmap(stop_xpm));
+    m_toolBar->AddTool( MENU_ID_STOP,          	 _( "Stop debugging" ),    	 wxBitmap(stop_xpm), _( "Stop debugging" ));
 
     m_toolBar->EnableTool(MENU_ID_STEP_INTO,           false);
     m_toolBar->EnableTool(MENU_ID_STEP_OVER,           false);
