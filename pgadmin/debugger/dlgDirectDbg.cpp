@@ -408,12 +408,16 @@ void dlgDirectDbg::OnClose( wxCloseEvent & event )
         m_conn->Close();
     m_conn = NULL;
 
+	// Closing frmMain from here leads to recursive call
+    // to OnClose function on windows
+#ifndef __WXWIN__
     // This will inform the MainWindow to close.
     // if it's not visible yet.
     if (m_parent->IsShown())
         event.Skip();
     else
         m_parent->Close();
+#endif // __WXWIN__
 
     if ( this->IsModal() )
     {
