@@ -21,6 +21,7 @@
 #include "debugger/ctlCodeWindow.h"
 #include "debugger/ctlVarWindow.h"
 #include "debugger/frmDebugger.h"
+#include "debugger/dlgDirectDbg.h"
 #include "debugger/dbgConst.h"
 #include "debugger/dbgPgConn.h"
 #include "debugger/dbgResultset.h"
@@ -256,6 +257,11 @@ void ctlCodeWindow::OnClose(wxCloseEvent& event)
 
     closeConnection();
     m_timer.Stop();
+
+#ifdef __WXGTK__
+    if (m_parent->m_standaloneDirectDbg && m_targetAborted)
+        m_parent->m_standaloneDirectDbg->Close();
+#endif
 
     event.Skip();
 }
