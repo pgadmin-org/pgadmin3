@@ -109,7 +109,7 @@ pgObject *gpPartitionFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 	pgSet *tables;
 
 	query= wxT("SELECT rel.oid, relname, rel.reltablespace AS spcoid, spcname, pg_get_userbyid(relowner) AS relowner, relacl, relhasoids, ")
-		wxT("relhassubclass, reltuples, description, conname, conkey,\n")
+		wxT("relhassubclass, reltuples, description, conname, conkey, parname, \n")
 		wxT("       EXISTS(select 1 FROM pg_trigger\n")
 		wxT("                       JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'\n")
 		wxT("                       JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'\n")
@@ -129,11 +129,13 @@ pgObject *gpPartitionFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 
 
 	query += wxT("  FROM pg_class rel JOIN pg_partition_rule pr ON(rel.oid = pr.parchildrelid) JOIN pg_partition p ON (pr.paroid = p.oid)\n")
+        wxT("  JOIN pg_inherits i ON (rel.oid = i.inhrelid) \n")
 		wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=rel.reltablespace\n")
 		wxT("  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0)\n")
 		wxT("  LEFT OUTER JOIN pg_constraint c ON c.conrelid=rel.oid AND c.contype='p'\n");
 	query += wxT("  LEFT OUTER JOIN gp_distribution_policy gpd ON gpd.localoid=rel.oid\n");
-	query += wxT(" WHERE relkind = 'r' AND p.parrelid = ") + collection->GetOidStr() + wxT("\n");
+	query += wxT(" WHERE relkind = 'r' ");
+    query += wxT(" AND i.inhparent = ") + collection->GetOidStr() + wxT("\n"); 
 
 	query += restriction + 
 		wxT(" ORDER BY relname");
@@ -167,6 +169,7 @@ pgObject *gpPartitionFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 			table->iSetFillFactor(tables->GetVal(wxT("fillfactor")));
 
 			table->iSetHasSubclass(tables->GetBool(wxT("relhassubclass")));
+            table->iSetPartitionName(tables->GetVal(wxT("parname")));
 			table->iSetPrimaryKeyName(tables->GetVal(wxT("conname")));
 			table->iSetIsReplicated(tables->GetBool(wxT("isrepl")));
 			wxString cn=tables->GetVal(wxT("conkey"));

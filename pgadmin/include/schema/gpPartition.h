@@ -38,6 +38,11 @@ public:
     wxMenu * GetNewMenu();
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+    wxString GetPartitionName() { return partitionname; }
+    void iSetPartitionName(const wxString& pn) { partitionname = pn; }
+
+private:
+    wxString partitionname;
 };
 
 
