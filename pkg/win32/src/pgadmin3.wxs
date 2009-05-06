@@ -86,8 +86,8 @@
                                 <Component Id="en_us_docs" Guid="{BD553EA6-2938-4A3D-B1C8-F3340990E993}">
                                     <File Id="en_us_docs.pgadmin3.chm" Name="pgadmin3.chm" DiskId="1" Source="$(var.BUILDTREE)/docs/en_US/pgadmin3.chm" KeyPath="yes" />
                                     <File Id="en_us_docs.bugreport.html" Name="bugreport.html" DiskId="1" Source="$(var.BUILDTREE)/docs/en_US/bugreport.html" />
-                                    <Shortcut Id="en_us_docs.pgadmin3.chm" Directory="SMDir" Name="$(var.APPNAME) Help" Description="pgAdmin documentation" Show="normal" Advertise="yes" Icon="help.ico">
-                                        <Icon Id="help.ico" SourceFile="Resources/help.ico" />
+                                    <Shortcut Id="en_us_docs.pgadmin3.chm" Directory="SMDir" Name="$(var.APPNAME) Help (English)" Description="pgAdmin documentation (English)" Show="normal" Advertise="yes" Icon="en_us_help.ico">
+                                        <Icon Id="en_us_help.ico" SourceFile="Resources/help.ico" />
                                     </Shortcut>
                                 </Component>
                                     
@@ -176,6 +176,14 @@
 
 
                            <Directory Id="fr_frDocsDir" Name="fr_FR">
+
+                                <Component Id="fr_fr_docs" Guid="{4FD77388-CA09-4529-B34D-72C30A4663FC}">
+                                    <File Id="fr_fr_docs.pgadmin3.chm" Name="pgadmin3.chm" DiskId="1" Source="$(var.BUILDTREE)/docs/fr_FR/pgadmin3.chm" KeyPath="yes" />
+                                    <File Id="fr_fr_docs.bugreport.html" Name="bugreport.html" DiskId="1" Source="$(var.BUILDTREE)/docs/fr_FR/bugreport.html" />
+                                    <Shortcut Id="fr_fr_docs.pgadmin3.chm" Directory="SMDir" Name="$(var.APPNAME) Help (French)" Description="pgAdmin documentation (French)" Show="normal" Advertise="yes" Icon="fr_fr_help.ico">
+                                        <Icon Id="fr_fr_help.ico" SourceFile="Resources/help.ico" />
+                                    </Shortcut>
+                                </Component>
 
                                 <Directory Id="fr_frHintsDir" Name="Hints">
                                     <Component Id="fr_fr_hints" Guid="{78AFAE5C-F12E-43A8-B3D1-A11FF63F47B3}">
@@ -310,6 +318,7 @@
                 <ComponentRef Id="en_us_hints" />
                 <ComponentRef Id="es_es_hints" />
                 <ComponentRef Id="fi_fi_hints" />
+                <ComponentRef Id="fr_fr_docs" />
                 <ComponentRef Id="fr_fr_hints" />
                 <ComponentRef Id="sl_si_hints" />
                 <ComponentRef Id="zh_cn_hints" />
