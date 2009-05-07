@@ -769,6 +769,11 @@ void dlgDirectDbg::OnTargetComplete( wxCommandEvent & event )
         m_codeWindow->m_targetComplete = true;
         m_codeWindow->disableTools( );
     }
+
+    // Do not show if aborted
+    if ( m_codeWindow && m_codeWindow->m_targetAborted )
+        return;
+
     this->Show( true );
     this->SetFocus();
 }
