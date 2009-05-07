@@ -487,34 +487,32 @@ frmQuery::~frmQuery()
 {
     closing = true;
 
-    sqlQuery->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
-    sqlResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
-    msgResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
-    msgHistory->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
+    // Save frmQuery Perspective
+    settings->Write(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERPSECTIVE_VER), manager.SavePerspective());
+
+    // Uninitialize wxAUIManager
+    manager.UnInit();
 
     if(sqlNotebook)
     {
         delete sqlNotebook;
-        controller->nullView();                   //to avoid bug on *nix when deleting controller
+        sqlNotebook = NULL;
     }
     if(controller)
+    {
         delete controller;
+        controller = NULL;
+    }
     if(model)
+    {
         delete model;
+        model = NULL;
+    }
     if(adjustSizesTimer)
+    {
         delete adjustSizesTimer;
-
-    // Commented out in the original GQB patch - why?
-    // if(tablesBrowser)
-    //     delete tablesBrowser;
-
-    settings->Write(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERPSECTIVE_VER), manager.SavePerspective());
-    manager.UnInit();
-
-    settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
-    settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));
-
-    sqlResult->Abort();                           // to make sure conn is unused
+        adjustSizesTimer = NULL;
+    }
 
     while (cbConnection->GetCount() > 1)
     {
@@ -523,20 +521,23 @@ frmQuery::~frmQuery()
     }
 
     if (favourites)
+    {
         delete favourites;
+        favourites = NULL;
+    }
         
     if (pgsTimer)
+    {
         delete pgsTimer;
+        pgsTimer = NULL;
+    }
 
     if (pgScript)
+    {
         delete pgScript;
+        pgScript = NULL;
+    }
 
-    /*
-    * Keep these lines at the end of this function, to avoid generating events before
-    * it gets executed completely.
-    *
-    * To avoid a bug on *nix system.
-    */
     if (mainForm)
         mainForm->RemoveFrame(this);
 }
@@ -1386,6 +1387,8 @@ void frmQuery::OnClose(wxCloseEvent& event)
         return;
     }
 
+    closing = true;
+
     // Reset the panes
     if (viewMenu->IsChecked(MNU_OUTPUTPANE))
         manager.GetPane(wxT("outputPane")).Show(true);
@@ -1395,7 +1398,20 @@ void frmQuery::OnClose(wxCloseEvent& event)
 
     Hide();
 
+    sqlQuery->Disconnect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
+    sqlResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
+    msgResult->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
+    msgHistory->Disconnect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
+    
+    controller->nullView();                   //to avoid bug on *nix when deleting controller
+
+    settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
+    settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));
+
+    sqlResult->Abort();                           // to make sure conn is unused
+
     Destroy();
+
 }
 
 
