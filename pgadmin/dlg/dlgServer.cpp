@@ -295,10 +295,12 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
 {
     wxString name=GetName();
 
-    pgObject *obj=new pgServer(GetName(), txtDescription->GetValue(), cbDatabase->GetValue(), 
+    pgServer *obj=new pgServer(GetName(), txtDescription->GetValue(), cbDatabase->GetValue(), 
         txtUsername->GetValue(), StrToLong(txtPort->GetValue()), 
-		chkTryConnect->GetValue() && chkStorePwd->GetValue(), 
-		chkRestore->GetValue(), cbSSL->GetCurrentSelection());
+        chkTryConnect->GetValue() && chkStorePwd->GetValue(), 
+        chkRestore->GetValue(), cbSSL->GetCurrentSelection());
+
+    obj->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
 
     return obj;
 }
