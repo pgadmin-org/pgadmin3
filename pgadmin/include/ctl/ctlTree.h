@@ -15,12 +15,12 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/treectrl.h>
+#include <wx/timer.h>
 
 class pgObject;
 class pgCollection;
 class pgaFactory;
-
-
+class ctlTreeFindTimer;
 
 class ctlTree : public wxTreeCtrl
 {
@@ -37,11 +37,35 @@ public:
     pgObject *FindObject(pgaFactory &factory, wxTreeItemId parent);
     pgCollection *FindCollection(pgaFactory &factory, wxTreeItemId parent);
     wxTreeItemId FindItem(const wxTreeItemId& item, const wxString& str);
+    virtual ~ctlTree();
 
     DECLARE_EVENT_TABLE()
 
 private:
     void OnChar(wxKeyEvent& event);
+    wxString m_findPrefix;
+    ctlTreeFindTimer * m_findTimer;
+
+friend class ctlTreeFindTimer;
+};
+
+
+// timer used to clear ctlTreeCtrl::m_findPrefix if no key was pressed
+// for a sufficiently long time
+class ctlTreeFindTimer : public wxTimer
+{
+public:
+    // reset the current prefix after half a second of inactivity
+    enum { CTLTREE_DELAY = 500 };
+
+    ctlTreeFindTimer( ctlTree *owner ) { m_owner = owner; }
+
+    virtual void Notify() { m_owner->m_findPrefix.clear(); }
+
+private:
+    ctlTree *m_owner;
+
+    DECLARE_NO_COPY_CLASS(ctlTreeFindTimer)
 };
 
 

@@ -24,43 +24,112 @@ BEGIN_EVENT_TABLE(ctlTree, wxTreeCtrl)
     EVT_CHAR(ctlTree::OnChar)
 END_EVENT_TABLE()
 
-int level = 0;
 
-wxTreeItemId ctlTree::FindItem(const wxTreeItemId& item, const wxString& str)
+wxTreeItemId ctlTree::FindItem(const wxTreeItemId& idParent, const wxString& prefixOrig)
 {
-    wxTreeItemId resultItem;
-    wxTreeItemId currItem = item;
-    if (!currItem.IsOk())
-        return currItem;
-    
-    wxString val = GetItemText(currItem);
+    // match is case insensitive as this is more convenient to the user: having
+    // to press Shift-letter to go to the item starting with a capital letter
+    // would be too bothersome
+    wxString prefix = prefixOrig.Lower();
 
-    // Ignore Dummy Nodes
-    if (!(val == wxT("Dummy") && GetItemData(item) == NULL) && val.Lower().StartsWith(str))
+    // determine the starting point: we shouldn't take the current item (this
+    // allows to switch between two items starting with the same letter just by
+    // pressing it) but we shouldn't jump to the next one if the user is
+    // continuing to type as otherwise he might easily skip the item he wanted
+    wxTreeItemId id = idParent;
+
+    if ( prefix.length() == 1 )
     {
-        return currItem;
-    }
-    
-    if (HasChildren(currItem))
-    {
-        wxTreeItemIdValue cookie;
-        wxTreeItemId childItem = GetFirstChild(currItem, cookie);
-        level++;
-        resultItem = FindItem(childItem, str);
-        if (resultItem.IsOk())
+        wxCookieType cookie;
+        if (HasChildren(id))
+            id = GetFirstChild(id, cookie);
+        else
         {
-            level--;
-            return resultItem;
+             // Try a sibling of this or ancestor instead
+             wxTreeItemId p = id;
+             wxTreeItemId toFind;
+             do
+             {
+                  toFind = GetNextSibling(p);
+                  p = GetItemParent(p);
+             } while (p.IsOk() && !toFind.IsOk());
+             id = toFind;
         }
-        level--;
     }
-    
-    currItem = GetNextSibling(currItem);
-    
-    if (currItem.IsOk())
-        resultItem = FindItem(currItem, str);
 
-    return resultItem;
+    // look for the item starting with the given prefix after it
+    while ( id.IsOk() &&
+            ( ( GetItemText(id) == wxT("Dummy") && !GetItemData(id) ) ||
+             !GetItemText(id).Lower().StartsWith(prefix) ))
+    {
+        wxCookieType cookie;
+        if ( HasChildren(id) )
+            id = GetFirstChild(id, cookie);
+        else
+        {
+             // Try a sibling of this or ancestor instead
+             wxTreeItemId p = id;
+             wxTreeItemId toFind;
+             do
+             {
+                  toFind = GetNextSibling(p);
+                  p = GetItemParent(p);
+             } while (p.IsOk() && !toFind.IsOk());
+             id = toFind;
+        }
+    }
+
+    // if we haven't found anything...
+    if ( !id.IsOk() )
+    {
+        // ... wrap to the beginning
+        id = GetRootItem();
+        if ( HasFlag(wxTR_HIDE_ROOT) )
+        {
+            wxCookieType cookie;
+            // can't select virtual root
+            if ( HasChildren(id) )
+                id = GetFirstChild(id, cookie);
+            else
+            {
+                 // Try a sibling of this or ancestor instead
+                 wxTreeItemId p = id;
+                 wxTreeItemId toFind;
+                 do
+                 {
+                      toFind = GetNextSibling(p);
+                      p = GetItemParent(p);
+                 } while (p.IsOk() && !toFind.IsOk());
+                 id = toFind;
+            }
+        }
+
+        // and try all the items (stop when we get to the one we started from)
+        while ( id.IsOk() && id != idParent &&
+                (( GetItemText(id) == wxT("Dummy") && !GetItemData(id) ) ||
+                 !GetItemText(id).Lower().StartsWith(prefix) ))
+        {
+            wxCookieType cookie;
+            if ( HasChildren(id) )
+                id = GetFirstChild(id, cookie);
+            else
+            {
+                 // Try a sibling of this or ancestor instead
+                 wxTreeItemId p = id;
+                 wxTreeItemId toFind;
+                 do
+                 {
+                      toFind = GetNextSibling(p);
+                      p = GetItemParent(p);
+                 } while (p.IsOk() && !toFind.IsOk());
+                 id = toFind;
+            }
+        }
+        // If we haven't found the item, id.IsOk() will be false, as per
+        // documentation
+    }
+
+    return id;
 }
 
 void ctlTree::OnChar(wxKeyEvent& event)
@@ -71,16 +140,30 @@ void ctlTree::OnChar(wxKeyEvent& event)
           (keyCode >= 'a' && keyCode <= 'z') ||
           (keyCode >= 'A' && keyCode <= 'Z')))
     {
-        wxChar ch = (wxChar)keyCode;
         wxTreeItemId currItem = GetSelection();
+
         if (!currItem.IsOk())
             return;
 
-        wxTreeItemId matchItem = FindItem(currItem, wxString(ch).Lower());
-        if (matchItem.IsOk())
+        wxTreeItemId matchItem = FindItem(currItem, m_findPrefix + (wxChar)keyCode);
+
+        if ( matchItem.IsOk() )
         {
             EnsureVisible(matchItem);
             SelectItem(matchItem);
+
+            m_findPrefix += (wxChar)keyCode;
+
+            // also start the timer to reset the current prefix if the user
+            // doesn't press any more alnum keys soon -- we wouldn't want
+            // to use this prefix for a new item search
+            if ( !m_findTimer )
+            {
+                m_findTimer = new ctlTreeFindTimer(this);
+            }
+
+            m_findTimer->Start(ctlTreeFindTimer::CTLTREE_DELAY, wxTIMER_ONE_SHOT);
+            return;
         }
     }
     else
@@ -90,8 +173,15 @@ void ctlTree::OnChar(wxKeyEvent& event)
 }
 
 ctlTree::ctlTree(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style)
-: wxTreeCtrl(parent, id, pos, size, style)
+: wxTreeCtrl(parent, id, pos, size, style), m_findTimer(NULL)
 {
+}
+
+ctlTree::~ctlTree()
+{
+    if ( m_findTimer )
+        delete m_findTimer;
+    m_findTimer = NULL;
 }
 
 
