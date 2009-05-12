@@ -180,10 +180,10 @@ DatatypeReader::DatatypeReader(pgDatabase *db, bool withDomains)
     else
         condition += wxT("IN ('b', 'c', 'e')");
 
-    condition += wxT("AND typname NOT IN (SELECT relname FROM pg_class WHERE relnamespace = typnamespace AND relkind != 'c' UNION SELECT '_' || relname FROM pg_class WHERE relnamespace = typnamespace AND relkind != 'c') ");
+    condition += wxT("AND NOT EXISTS (select 1 from pg_class where relnamespace=typnamespace and relname = typname and relkind != 'c') AND (typname not like '_%' OR NOT EXISTS (select 1 from pg_class where relnamespace=typnamespace and relname = substring(typname from 2)::name and relkind != 'c')) ");
 
     if (!settings->GetShowSystemObjects())
-        condition += wxT(" AND nsp.nspname NOT LIKE 'information_schema'");
+        condition += wxT(" AND nsp.nspname != 'information_schema'");
     init(db, condition);
 }
 
@@ -196,7 +196,7 @@ void DatatypeReader::init(pgDatabase *db, const wxString &condition)
         wxT("  FROM pg_type t\n")
         wxT("  JOIN pg_namespace nsp ON typnamespace=nsp.oid\n")
         wxT(" WHERE (NOT (typname = 'unknown' AND nspname = 'pg_catalog')) AND ") + condition + wxT("\n")
-        wxT(" ORDER BY CASE WHEN typtype='d' THEN 0 ELSE 1 END, (t.typelem>0)::bool, 1"));
+        wxT("  ORDER BY typtype != 'd', t.typelem > 0, 1"));
 }
 
 
