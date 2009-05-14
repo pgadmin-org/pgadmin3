@@ -312,6 +312,27 @@ wxMenuBar *frmDebugger::setupMenuBar(void)
 #endif
 
     m_debugMenu = new wxMenu;
+#ifdef __WXGTK__
+    /*
+    *  F10 is treated as a System menu under GTK. Hence, we will use Ctrl+F10 for
+    *  "step over" operation under GTK, instead of F10.
+    *  
+    *  To make the behavior consitent, we will also use Ctrl+ for all the operations
+    *  under GTK. (i.e. Step into, Step over, Continue, Toggle breakpoint, Stop 
+    *  debugging)
+    * 
+    *  Please follow this link for more details:
+    *  http://trac.wxwidgets.org/ticket/2404
+    */
+    m_debugMenu->Append(MENU_ID_STEP_INTO,          _( "Step into\tCtrl+F11" ));
+    m_debugMenu->Append(MENU_ID_STEP_OVER,          _( "Step over\tCtrl+F10" ));
+    m_debugMenu->Append(MENU_ID_CONTINUE,           _( "Continue\tCtrl+F5" ));
+    m_debugMenu->AppendSeparator();
+    m_debugMenu->Append(MENU_ID_TOGGLE_BREAK,       _( "Toggle breakpoint\tCtrl+F9" ));
+    m_debugMenu->Append(MENU_ID_CLEAR_ALL_BREAK,    _( "Clear all breakpoints\tCtrl+Shift+F9" ));
+    m_debugMenu->AppendSeparator();
+    m_debugMenu->Append(MENU_ID_STOP,               _( "Stop debugging\tCtrl+F8" ));
+#else
     m_debugMenu->Append(MENU_ID_STEP_INTO,          _( "Step into\tF11" ));
     m_debugMenu->Append(MENU_ID_STEP_OVER,          _( "Step over\tF10" ));
     m_debugMenu->Append(MENU_ID_CONTINUE,           _( "Continue\tF5" ));
@@ -320,6 +341,7 @@ wxMenuBar *frmDebugger::setupMenuBar(void)
     m_debugMenu->Append(MENU_ID_CLEAR_ALL_BREAK,    _( "Clear all breakpoints\tCtrl+Shift+F9" ));
     m_debugMenu->AppendSeparator();
     m_debugMenu->Append(MENU_ID_STOP,               _( "Stop debugging\tF8" ));
+#endif //__WXGTK__
     m_debugMenu->Enable(MENU_ID_STEP_INTO,   	    false);
     m_debugMenu->Enable(MENU_ID_STEP_OVER,   	    false);
     m_debugMenu->Enable(MENU_ID_CONTINUE,    	    false);
@@ -362,6 +384,7 @@ void frmDebugger::OnClose( wxCloseEvent & event )
             return;
 
         delete m_standaloneDebugger;
+        m_standaloneDebugger = NULL;
     }
     event.Skip();
 }
