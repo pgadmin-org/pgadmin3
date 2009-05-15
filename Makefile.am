@@ -32,16 +32,19 @@ EXTRA_DIST = \
 TMP_docs = \
 	$(top_srcdir)/docs/Docs.vcproj \
 	$(top_srcdir)/docs/builddocs.bat \
+	$(top_srcdir)/docs/en_US/*.css \
+	$(top_srcdir)/docs/en_US/*.html \
+	$(top_srcdir)/docs/en_US/pgadmin3.hh* \
 	$(top_srcdir)/docs/en_US/hints/*.html \
 	$(top_srcdir)/docs/en_US/images/*.png \
-	$(top_srcdir)/docs/en_US/*.html \
-	$(top_srcdir)/docs/en_US/*.css \
-	$(top_srcdir)/docs/en_US/pgadmin3.hh* \
 	$(top_srcdir)/docs/de_DE/hints/*.html \
 	$(top_srcdir)/docs/es_ES/hints/*.html \
 	$(top_srcdir)/docs/fi_FI/hints/*.html \
+	$(top_srcdir)/docs/fr_FR/*.css \
 	$(top_srcdir)/docs/fr_FR/*.html \
+        $(top_srcdir)/docs/fr_FR/pgadmin3.hh* \
 	$(top_srcdir)/docs/fr_FR/hints/*.html \
+	$(top_srcdir)/docs/fr_FR/images/*.png \
 	$(top_srcdir)/docs/sl_SI/hints/*.html \
 	$(top_srcdir)/docs/zh_CN/hints/*.html \
 	$(top_srcdir)/docs/zh_TW/hints/*.html
