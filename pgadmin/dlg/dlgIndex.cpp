@@ -158,6 +158,7 @@ BEGIN_EVENT_TABLE(dlgIndex, dlgIndexBase)
 #ifdef __WXMAC__
     EVT_SIZE(                                       dlgIndex::OnChangeSize)
 #endif
+    EVT_COMBOBOX(XRCID("cbType"),                   dlgIndex::OnSelectType)
 END_EVENT_TABLE();
 
         
@@ -195,6 +196,56 @@ void dlgIndex::CheckChange()
         CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
         EnableOK(enable);
     }
+}
+
+void dlgIndex::OnSelectType(wxCommandEvent &ev)
+{
+    // The column options available change depending on the
+    // index type. We need to clear the column list, and 
+    // setup some of the other controls accordingly.
+
+    wxString newType = cbType->GetValue();
+    bool changingDefault = false;
+
+    // Detect if we're changing between default and btree (which are the same) to
+    // avoid annoying the user needlessly.
+    if ((m_previousType == wxEmptyString && cbType->GetValue() == wxT("btree")) ||
+        (m_previousType == wxT("btree") && cbType->GetValue() == wxEmptyString))
+        changingDefault = true;
+
+    if (lstColumns->GetItemCount() > 0 && !changingDefault)
+    {
+        if (wxMessageBox(_("Changing the index type will cause the column list to be cleared. Do you wish to continue?"), _("Change index type?"), wxYES_NO) == wxNO)
+        {
+            cbType->SetValue(m_previousType);
+            return;
+        }
+
+        // Move all the columns back to the combo
+        for (int pos = lstColumns->GetItemCount(); pos > 0; pos--)
+        {
+            wxString colName = lstColumns->GetItemText(pos - 1);
+
+            lstColumns->DeleteItem(pos - 1);
+            cbColumns->Append(colName);
+        }
+    }
+
+    if (newType == wxT("btree") || newType == wxEmptyString)
+    {
+        chkDesc->Enable(true);
+        rdbNullsFirst->Enable(true);
+        rdbNullsLast->Enable(true);
+    }
+    else
+    {
+        chkDesc->Enable(false);
+        rdbNullsFirst->Enable(false);
+        rdbNullsLast->Enable(false);
+    }
+
+    // Make a note of the type so we can compare if it changes again.
+    m_previousType = cbType->GetValue();
 }
 
 
@@ -235,8 +286,10 @@ int dlgIndex::Go(bool modal)
     {
         // edit mode: view only
 
+        // We only display the column options (ASC/DESC, NULLS FIRST/LAST)
+        // on PostgreSQL 8.3+, for btree indexes.
 		wxArrayString colsArr = index->GetColumnList();
-        if (this->database->BackendMinimumVersion(8, 3))
+        if (this->database->BackendMinimumVersion(8, 3) && index->GetIndexType() == wxT("btree"))
         {
             wxString colDef, colRest, colName, descDef, nullsDef;
             const wxString firstOrder = wxT(" NULLS FIRST"), lastOrder = wxT(" NULLS LAST"), descOrder = wxT(" DESC");
@@ -350,21 +403,36 @@ void dlgIndex::OnAddCol(wxCommandEvent &ev)
         {
             if (chkDesc->GetValue())
             {
-                lstColumns->SetItem(colIndex, 1, wxT("DESC"));
+                if (chkDesc->IsEnabled())
+                    lstColumns->SetItem(colIndex, 1, wxT("DESC"));
+
 
                 if (rdbNullsLast->GetValue())
-                    lstColumns->SetItem(colIndex, 2, wxT("LAST"));
+                {
+                    if (rdbNullsLast->IsEnabled())
+                        lstColumns->SetItem(colIndex, 2, wxT("LAST"));
+                }
                 else
-                    lstColumns->SetItem(colIndex, 2, wxT("FIRST"));
+                {
+                    if (rdbNullsLast->IsEnabled())
+                        lstColumns->SetItem(colIndex, 2, wxT("FIRST"));
+                }
             }
             else
             {
-                lstColumns->SetItem(colIndex, 1, wxT("ASC"));
+                if (chkDesc->IsEnabled())
+                    lstColumns->SetItem(colIndex, 1, wxT("ASC"));
 
                 if (rdbNullsFirst->GetValue())
-                    lstColumns->SetItem(colIndex, 2, wxT("FIRST"));
+                {
+                    if (rdbNullsFirst->IsEnabled())
+                        lstColumns->SetItem(colIndex, 2, wxT("FIRST"));
+                }
                 else
-                    lstColumns->SetItem(colIndex, 2, wxT("LAST"));
+                {
+                    if (rdbNullsLast->IsEnabled())
+                        lstColumns->SetItem(colIndex, 2, wxT("LAST"));
+                }
             }
         }
 

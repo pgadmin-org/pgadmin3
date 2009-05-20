@@ -59,9 +59,12 @@ private:
     void OnChangeSize(wxSizeEvent &ev);
 #endif
 
+    void OnSelectType(wxCommandEvent &ev);
     void OnDescChange(wxCommandEvent &ev);
     void OnAddCol(wxCommandEvent &ev);
     void OnRemoveCol(wxCommandEvent &ev);
+
+    wxString m_previousType;
 
     DECLARE_EVENT_TABLE()
 };
