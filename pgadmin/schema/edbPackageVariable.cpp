@@ -95,9 +95,17 @@ pgObject *edbPackageVariableFactory::CreateObjects(pgCollection *collection, ctl
 
     if (packageVariables)
     {
+        edbPackage* package = ((edbPackageObjCollection *)collection)->GetPackage();
+
         while (!packageVariables->Eof())
         {
-            packageVariable = new edbPackageVariable(((edbPackageObjCollection *)collection)->GetPackage(), packageVariables->GetVal(wxT("eltname")));
+            // Do not create edbPackageVariable, if package is wrapped
+            if (package->GetBody().Trim(false).StartsWith(wxT("$__EDBwrapped__$")))
+            {
+                packageVariables->MoveNext();
+                continue;
+            }
+            packageVariable = new edbPackageVariable(package, packageVariables->GetVal(wxT("eltname")));
             packageVariable->iSetOid(packageVariables->GetOid(wxT("oid")));
             packageVariable->iSetDataType(packageVariables->GetVal(wxT("datatype")));
             if (packageVariables->GetVal(wxT("visibility")) == wxT("+"))
