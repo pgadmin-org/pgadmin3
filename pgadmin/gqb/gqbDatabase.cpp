@@ -61,7 +61,12 @@ void gqbDatabase::createSchemas(gqbBrowser *tablesBrowser, wxTreeItemId parentNo
     restr += wxT("(nspname = 'sys' AND EXISTS (SELECT 1 FROM pg_class WHERE relname = 'all_tables' AND relnamespace = nsp.oid LIMIT 1)))\n");
 
     if (conn->EdbMinimumVersion(8, 2))
-        restr += wxT("  AND nspparent = 0\n");
+    {
+        restr += wxT("  AND nsp.nspparent = 0\n");
+        // Do not show dbms_job_procedure in schemas
+        if (!settings->GetShowSystemObjects())
+            restr += wxT("AND NOT (nspname = 'dbms_job_procedure' AND EXISTS(SELECT 1 FROM pg_proc WHERE pronamespace = nsp.oid and proname = 'run_job' LIMIT 1))\n");
+    }
 
     wxString sql;
 
