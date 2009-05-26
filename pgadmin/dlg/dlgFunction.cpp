@@ -289,7 +289,7 @@ int dlgFunction::Go(bool modal)
             for (unsigned int i=0; i<argTypes.Count(); i++)
             {
                 if (isBackendMinVer84)
-                    lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i], argDefs[i]);
+                    lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i], (argDefs.Count() > i ? argDefs[i] : wxEmptyString));
                 else
                     lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i]);
             }

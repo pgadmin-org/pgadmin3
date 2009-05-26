@@ -321,7 +321,7 @@ wxString pgFunction::GetArgListWithNames()
         // Parameter default value
         if (GetConnection()->HasFeature(FEATURE_FUNCTION_DEFAULTS) || GetConnection()->BackendMinimumVersion(8, 4))
         {
-            if (!argDefsArray.Item(i).IsEmpty())
+            if (!argModesArray.Item(i).IsSameAs(wxT("OUT"), false) && !argDefsArray.Item(i).IsEmpty())
                 arg += wxT(" DEFAULT ") + argDefsArray.Item(i);
         }
 
