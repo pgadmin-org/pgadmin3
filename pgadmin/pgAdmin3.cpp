@@ -1348,7 +1348,6 @@ void pgAdmin3::InitHelp()
     edbHelpPath = GenerateHelpPath(wxT("edb.hhp"), edbHelpPath, stdPaths, edbPaths);
 
     gpHelpPath = GenerateHelpPath(wxT("Greenplum.hhp"), gpHelpPath, stdPaths, gpPaths);
-    gpHelpPath = GenerateHelpPath(wxT("GPUserGuide.pdf"), gpHelpPath, stdPaths, gpPaths);
 
     slonyHelpPath = GenerateHelpPath(wxT("Slony-I.hhp"), slonyHelpPath, stdPaths, slonyPaths);
     slonyHelpPath = GenerateHelpPath(wxT("slony-i.hhp"), slonyHelpPath, stdPaths, slonyPaths);
@@ -1365,6 +1364,7 @@ void pgAdmin3::InitHelp()
     edbHelpPath = GenerateHelpPath(wxT("index.html"), edbHelpPath, noPaths, edbPaths);
 
     gpHelpPath = GenerateHelpPath(wxT("index.html"), gpHelpPath, noPaths, gpPaths);
+    gpHelpPath = GenerateHelpPath(wxT("GPUserGuide.pdf"), gpHelpPath, stdPaths, gpPaths);
 
     // If either path ends in index.html, remove the filename because we
     // just want the path. In this case, we should also add file:/// on
@@ -1399,7 +1399,7 @@ void pgAdmin3::InitHelp()
     if (edbHelpPath.IsEmpty())
         edbHelpPath = wxT("http://www.enterprisedb.com/docs/en/current/server/");
     if (gpHelpPath.IsEmpty())
-        gpHelpPath = wxT("http://www.postgresql.org/docs/8.2/static/"); // Greenplum doesn't have help on web site yet, use closest PostgreSQL help
+        gpHelpPath = wxT("http://www.greenplum.com/docs/3300/");
     if (slonyHelpPath.IsEmpty())
         slonyHelpPath = wxT("http://www.slony.info/documentation/");
 
