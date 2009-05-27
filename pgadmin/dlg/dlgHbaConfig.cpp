@@ -366,6 +366,10 @@ void dlgHbaConfig::OnChange(wxCommandEvent& ev)
 
 void dlgHbaConfig::OnOK(wxCommandEvent& ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     line->isComment = !chkEnabled->GetValue();
     line->connectType = (pgHbaConfigLine::pgHbaConnectType)cbType->GetCurrentSelection();
     line->database = database;

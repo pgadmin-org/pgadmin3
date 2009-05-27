@@ -156,6 +156,10 @@ void dlgMainConfig::OnChange(wxCommandEvent& ev)
 
 void dlgMainConfig::OnOK(wxCommandEvent& ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     item->newLine->value = GetValue();
     item->newLine->comment = txtComment->GetValue();
     item->newLine->isComment = !chkEnabled->GetValue();

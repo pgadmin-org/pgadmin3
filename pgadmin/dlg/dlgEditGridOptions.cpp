@@ -272,6 +272,10 @@ void dlgEditGridOptions::OnClose(wxCloseEvent &ev)
 
 void dlgEditGridOptions::OnOK(wxCommandEvent &ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     // Check the filter syntax
     if (!Validate()) return;
 

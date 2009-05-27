@@ -492,6 +492,10 @@ bool dlgRepCluster::CopyTable(pgConn *from, pgConn *to, const wxString &table)
 
 void dlgRepCluster::OnOK(wxCommandEvent &ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     EnableOK(false);
 
     bool done=true;

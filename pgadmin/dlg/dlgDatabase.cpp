@@ -330,6 +330,10 @@ void dlgDatabase::OnChangeRestr(wxCommandEvent &ev)
 
 void dlgDatabase::OnOK(wxCommandEvent &ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     if (database)
     {
         database->iSetSchemaRestriction(txtSchemaRestr->GetValue().Trim());

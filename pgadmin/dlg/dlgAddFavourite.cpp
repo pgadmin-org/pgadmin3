@@ -88,6 +88,10 @@ dlgAddFavourite::~dlgAddFavourite()
 
 void dlgAddFavourite::OnOK(wxCommandEvent& ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     EndModal(wxID_OK);
 }
 

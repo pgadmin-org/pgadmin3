@@ -91,13 +91,17 @@ void dlgPgpassConfig::OnChange(wxCommandEvent& ev)
         if (passwd.IsEmpty()||(passwd.Length() >1))
         {
             if (!passwd.compare(repasswd))
-               btnOK->Enable();
+                btnOK->Enable();
         }
 }
 
 
 void dlgPgpassConfig::OnOK(wxCommandEvent& ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
 	line->isComment = !chkEnabled->GetValue();
 	line->hostname = txtHostname->GetValue();
 	line->port = txtPort->GetValue();

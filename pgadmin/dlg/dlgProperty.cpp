@@ -884,6 +884,10 @@ void dlgProperty::OnApply(wxCommandEvent &ev)
 
 void dlgProperty::OnOK(wxCommandEvent &ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     if (!IsUpToDate())
     {
         if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)
@@ -1786,6 +1790,10 @@ bool dlgAgentProperty::executeSql()
 
 void dlgAgentProperty::OnOK(wxCommandEvent &ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     if (!IsUpToDate())
     {
         if (wxMessageBox(wxT("The object has been changed by another user. Do you wish to continue to to try to update it?"), wxT("Overwrite changes?"), wxYES_NO) == wxNO)

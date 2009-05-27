@@ -167,6 +167,10 @@ void dlgSelectConnection::OnTextChange(wxCommandEvent& ev)
 
 void dlgSelectConnection::OnOK(wxCommandEvent& ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
 	if (cbDatabase->GetCurrentSelection() == wxNOT_FOUND ||
 		cbServer->GetCurrentSelection() == wxNOT_FOUND)
 		remoteServer = NULL;

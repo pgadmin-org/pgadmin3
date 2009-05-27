@@ -474,6 +474,10 @@ void ExecutionDialog::Abort()
 
 void ExecutionDialog::OnOK(wxCommandEvent& ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     if (!thread)
     {
         wxString sql=GetSql();
@@ -581,6 +585,10 @@ ExternProcessDialog::~ExternProcessDialog()
 
 void ExternProcessDialog::OnOK(wxCommandEvent& ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     if (!done)
         Execute(0);
     else

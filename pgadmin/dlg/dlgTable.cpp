@@ -1598,6 +1598,10 @@ void dlgTable::OnChangeTable(wxCommandEvent &ev)
 
 void dlgTable::OnOK(wxCommandEvent &ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     if (lstColumns->GetItemCount() > 0 && !hasPK
         && frmHint::ShowHint(this, HINT_PRIMARYKEY) == wxID_CANCEL)
         return;

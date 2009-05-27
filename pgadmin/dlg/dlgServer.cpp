@@ -118,6 +118,10 @@ pgObject *dlgServer::GetObject()
 
 void dlgServer::OnOK(wxCommandEvent &ev)
 {
+#ifdef __WXGTK__
+    if (!btnOK->IsEnabled())
+        return;
+#endif
     // Display the 'save password' hint if required
     if(chkStorePwd->GetValue())
     {
