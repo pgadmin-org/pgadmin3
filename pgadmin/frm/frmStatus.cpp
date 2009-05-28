@@ -1647,7 +1647,7 @@ void frmStatus::addLogLine(const wxString &str, bool formatted)
                 wxString logSeverity;
                 // Skip prefix, get message
                 wxString rest = str.Mid(str.Find(wxT(":-"))+1) ;
-                if (rest[0] = wxT('-'))
+                if (rest[0] == wxT('-'))
                     rest = rest.Mid(1);
 
                 // Separate loglevel from message
