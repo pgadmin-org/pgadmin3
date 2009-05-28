@@ -50,7 +50,7 @@ void gqbSchema::createTables(gqbBrowser *tablesBrowser, wxTreeItemId parentNode,
     {
         while (!tables->Eof())
         {
-            gqbTable *table;
+            gqbTable *table = 0;
             wxString tmpname = tables->GetVal(wxT("relname"));
             wxString relkind = tables->GetVal(wxT("relkind"));
             
@@ -71,7 +71,9 @@ void gqbSchema::createTables(gqbBrowser *tablesBrowser, wxTreeItemId parentNode,
             }
 
             // Create columns inside this table.
-            table->createObjects(tablesBrowser, conn, tables->GetOid(wxT("oid")), parent);
+            if (table)
+                table->createObjects(tablesBrowser, conn, tables->GetOid(wxT("oid")), parent);
+
             tables->MoveNext();
         }
 
