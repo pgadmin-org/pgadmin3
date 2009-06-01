@@ -292,6 +292,9 @@ void ctlSecurityPanel::CheckGrantOpt(int id)
 
 void ctlSecurityPanel::OnDelPriv(wxCommandEvent &ev)
 {
+    if (lbPrivileges->GetFirstSelected() == -1)
+        return;
+        
     lbPrivileges->DeleteCurrentItem();
     
     wxCommandEvent event( EVT_SECURITYPANEL_CHANGE, GetId() );
