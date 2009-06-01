@@ -350,6 +350,25 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
         where = wxT(" WHERE dep.objid=") + GetOidStr();
     else
         where = wh;
+    /*
+    * Behavior of concatinating operator (||) is different for EnterpriseDB.
+    * For the following query:
+    *     SELECT a || null;
+    * When selected postgresql compatible mode, it will return null.
+    * And when selected oracle compatible mode, it will return 'a'.
+    *
+    * Hence, the following query may or may not work for EnterpriseDB depending on the 
+    * compatiblity mode:
+    *     COALESCE(cl.relname || '.' || att.attname, cl.relname, co.conname, pr.proname,
+    *              tg.tgname, ty.typname, la.lanname, rw.rulename, ns.nspname)
+    *
+    * Instead of that, we will use the following query to run it correctly everytime:
+    *     CASE WHEN cl.relname IS NOT NULL AND att.attname IS NOT NULL
+    *               THEN cl.relname || '.' || att.attname
+    *          ELSE COALESCE(cl.relname, co.conname, pr.proname, tg.tgname, ty.typname,
+    *                        la.lanname, rw.rulename, ns.nspname)
+    *     END
+    */
     ShowDependency(GetDatabase(), Dependencies,
         wxT("SELECT DISTINCT dep.deptype, dep.refclassid, cl.relkind, ad.adbin, ad.adsrc, \n")
         wxT("       CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind || COALESCE(dep.refobjsubid::text, '')\n")
@@ -363,7 +382,9 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
         wxT("            WHEN ad.oid IS NOT NULL THEN 'A'::text\n")
         wxT("            ELSE '' END AS type,\n")
         wxT("       COALESCE(coc.relname, clrw.relname) AS ownertable,\n")
-        wxT("       COALESCE(cl.relname || '.' || att.attname, cl.relname, co.conname, pr.proname, tg.tgname, ty.typname, la.lanname, rw.rulename, ns.nspname) AS refname,\n")
+        wxT("       CASE WHEN cl.relname IS NOT NULL OR att.attname IS NOT NULL THEN cl.relname || '.' || att.attname\n")
+        wxT("            ELSE COALESCE(cl.relname, co.conname, pr.proname, tg.tgname, ty.typname, la.lanname, rw.rulename, ns.nspname)\n")
+        wxT("       END AS refname,\n")
         wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname, nsrw.nspname) AS nspname\n")
         wxT("  FROM pg_depend dep\n")
         wxT("  LEFT JOIN pg_class cl ON dep.refobjid=cl.oid\n")
@@ -433,10 +454,30 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
         if (GetMetaType() == PGM_SEQUENCE)
         {
             int iconId = columnFactory.GetIconId();
+            /*
+            * Behavior of concatinating operator (||) is different for EnterpriseDB.
+            * For the following query:
+            *     SELECT a || null;
+            * When selected postgresql compatible mode, it will return null.
+            * And when selected oracle compatible mode, it will return 'a'.
+            *
+            * Hence, the following query may or may not work for EnterpriseDB depending on the 
+            * compatiblity mode:
+            *     COALESCE(ref.relname || '.' || att.attname, ref.relname)
+            *
+            * Instead of that, we will use the following query to run it correctly everytime:
+            *     CASE WHEN ref.relname IS NOT NULL AND att.attname IS NOT NULL
+            *               THEN ref.relname || '.' || att.attname
+            *          ELSE ref.relname
+            *     END
+            */
             pgSetIterator set(conn, 
-                wxT("SELECT COALESCE(ref.relname || '.' || att.attname, ref.relname) AS refname,\n")
-                wxT("       d2.refclassid, d1.deptype AS deptype\n")
-                wxT("FROM        pg_depend d1\n")
+                wxT("SELECT \n")
+                wxT("  CASE WHEN att.attname IS NOT NULL AND ref.relname IS NOT NULL THEN ref.relname || '.' att.attname\n")
+                wxT("       ELSE ref.relname \n")
+                wxT("  END AS refname, \n")
+                wxT("  d2.refclassid, d1.deptype AS deptype\n")
+                wxT("FROM pg_depend d1\n")
                 wxT("  LEFT JOIN pg_depend d2 ON d1.objid=d2.objid AND d1.refobjid != d2.refobjid\n")
                 wxT("  LEFT JOIN pg_class ref ON ref.oid = d2.refobjid\n")
                 wxT("  LEFT JOIN pg_attribute att ON d2.refobjid=att.attrelid AND d2.refobjsubid=att.attnum\n")
@@ -472,6 +513,25 @@ void pgObject::ShowDependents(frmMain *form, ctlListView *referencedBy, const wx
         where = wxT(" WHERE dep.refobjid=") + GetOidStr();
     else
         where = wh;
+    /*
+    * Behavior of concatinating operator (||) is different for EnterpriseDB.
+    * For the following query:
+    *     SELECT a || null;
+    * When selected postgresql compatible mode, it will return null.
+    * And when selected oracle compatible mode, it will return 'a'.
+    *
+    * Hence, the following query may or may not work for EnterpriseDB depending on the 
+    * compatiblity mode:
+    *     COALESCE(cl.relname || '.' || att.attname, cl.relname, co.conname, pr.proname,
+    *              tg.tgname, ty.typname, la.lanname, rw.rulename, ns.nspname)
+    *
+    * Instead of that, we will use the following query to run it correctly everytime:
+    *     CASE WHEN cl.relname IS NOT NULL AND att.attname IS NOT NULL
+    *               THEN cl.relname || '.' || att.attname
+    *          ELSE COALESCE(cl.relname, co.conname, pr.proname, tg.tgname, ty.typname,
+    *                        la.lanname, rw.rulename, ns.nspname)
+    *     END
+    */
     ShowDependency(GetDatabase(), referencedBy,
         wxT("SELECT DISTINCT dep.deptype, dep.classid, cl.relkind, ad.adbin, ad.adsrc, \n")
         wxT("       CASE WHEN cl.relkind IS NOT NULL THEN cl.relkind || COALESCE(dep.objsubid::text, '')\n")
@@ -485,7 +545,9 @@ void pgObject::ShowDependents(frmMain *form, ctlListView *referencedBy, const wx
         wxT("            WHEN ad.oid IS NOT NULL THEN 'A'::text\n")
         wxT("            ELSE '' END AS type,\n")
         wxT("       COALESCE(coc.relname, clrw.relname) AS ownertable,\n")
-        wxT("       COALESCE(cl.relname || '.' || att.attname, cl.relname, co.conname, pr.proname, tg.tgname, ty.typname, la.lanname, rw.rulename, ns.nspname) AS refname,\n")
+        wxT("       CASE WHEN cl.relname IS NOT NULL AND att.attname IS NOT NULL THEN cl.relname || '.' || att.attname \n")
+        wxT("            ELSE COALESCE(cl.relname, co.conname, pr.proname, tg.tgname, ty.typname, la.lanname, rw.rulename, ns.nspname) \n")
+        wxT("       END AS refname,\n")
         wxT("       COALESCE(nsc.nspname, nso.nspname, nsp.nspname, nst.nspname, nsrw.nspname) AS nspname\n")
         wxT("  FROM pg_depend dep\n")
         wxT("  LEFT JOIN pg_class cl ON dep.objid=cl.oid\n")
