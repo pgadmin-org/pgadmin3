@@ -145,6 +145,8 @@ void dlgSynonym::ProcessTypeChange()
         delete schemas;
 
         cbTargetSchema->Enable();
+        cbTargetSchema->SetValue(wxT("public"));
+        ProcessSchemaChange();
     }
     else
     {
