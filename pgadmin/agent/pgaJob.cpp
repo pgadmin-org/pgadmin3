@@ -304,7 +304,7 @@ bool runNowFactory::CheckEnable(pgObject *obj)
 {
     if (obj)
     {
-        if (obj->GetMetaType() == PGM_JOB)
+        if (obj->GetMetaType() == PGM_JOB && !obj->IsCollection())
             return true;
     }
     return false;
