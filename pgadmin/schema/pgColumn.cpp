@@ -371,7 +371,12 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
     wxString sql=
         wxT("SELECT att.*, def.*, pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS defval, CASE WHEN att.attndims > 0 THEN 1 ELSE 0 END AS isarray, format_type(ty.oid,NULL) AS typname, tn.nspname as typnspname, et.typname as elemtypname,\n")
         wxT("  cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
-        wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey, inha.attrelid::regclass AS inhrelname");
+        wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey,\n")
+        wxT("  CASE \n")
+        wxT("       WHEN EXISTS( SELECT inhparent FROM pg_inherits WHERE inhrelid=att.attrelid )\n")
+        wxT("            THEN att.attrelid::regclass\n")
+        wxT("       ELSE NULL\n")
+        wxT("  END AS inhrelname");
 
     if (database->BackendMinimumVersion(7, 4))
         sql += 
@@ -391,7 +396,6 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
         wxT("  LEFT OUTER JOIN (pg_depend JOIN pg_class cs ON objid=cs.oid AND cs.relkind='S') ON refobjid=att.attrelid AND refobjsubid=att.attnum\n")
         wxT("  LEFT OUTER JOIN pg_namespace ns ON ns.oid=cs.relnamespace\n")
         wxT("  LEFT OUTER JOIN pg_index pi ON pi.indrelid=att.attrelid AND indisprimary\n")
-        wxT("  LEFT JOIN pg_attribute inha ON att.attname=inha.attname AND inha.attrelid IN (SELECT inhparent FROM pg_inherits WHERE inhrelid=att.attrelid)\n")
         wxT(" WHERE att.attrelid = ") + collection->GetOidStr()
         + restriction + systemRestriction + wxT("\n")
         wxT("   AND att.attisdropped IS FALSE\n")
