@@ -1071,6 +1071,8 @@ bool pgServerObjCollection::CanCreate()
             return (server->GetCreateRole() || server->GetSuperUser());
         else if (server->GetConnection()->BackendMinimumVersion(8, 1) && GetMetaType() == PGM_DATABASE)
             return (server->GetCreatePrivilege() || server->GetSuperUser());
+        else if (GetMetaType() == PGM_JOB)
+            return true;
         else
             return server->GetSuperUser();
     }
