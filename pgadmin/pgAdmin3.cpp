@@ -189,6 +189,68 @@ bool pgAdmin3::OnInit()
     wxLog *seLog=new wxLogStderr();
     wxLog::SetActiveTarget(seLog);
       
+    // Setup the basic paths for the app installation. Required by settings!
+    InitAppPaths();
+
+    // Load the Settings
+#ifdef __WXMSW__
+    settings = new sysSettings(wxT("pgAdmin III"));
+#else
+    settings = new sysSettings(wxT("pgadmin3"));
+#endif
+
+    // Setup additional helper paths etc. Requires settings!
+    InitXtraPaths();
+
+    locale = new wxLocale();
+    locale->AddCatalogLookupPathPrefix(i18nPath);
+
+    wxLanguage langId = (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_DEFAULT);
+    if (locale->Init(langId))
+    {
+#ifdef __LINUX__
+        {
+            wxLogNull noLog;
+            locale->AddCatalog(wxT("fileutils"));
+        }
+#endif
+        locale->AddCatalog(wxT("pgadmin3"));
+    }
+
+
+    long langCount=0;
+    const wxLanguageInfo *langInfo;
+
+    wxString langfile=FileRead(i18nPath + wxT("/") LANG_FILE, 1);
+
+    if (!langfile.IsEmpty())
+    {
+        wxStringTokenizer tk(langfile, wxT("\n\r"));
+
+        while (tk.HasMoreTokens())
+        {
+            wxString line=tk.GetNextToken().Strip(wxString::both);
+            if (line.IsEmpty() || line.StartsWith(wxT("#")))
+                continue;
+
+            wxString englishName=line.BeforeFirst(',').Trim(true);
+            wxString translatedName=line.AfterFirst(',').Trim(false);
+
+            langInfo=wxLocale::FindLanguageInfo(englishName);
+            if (langInfo)
+            {
+                if (langInfo->CanonicalName == wxT("en_US") || 
+                    (!langInfo->CanonicalName.IsEmpty() && 
+                     wxDir::Exists(i18nPath + wxT("/") + langInfo->CanonicalName)))
+                {
+                    existingLangs.Add(langInfo->Language);
+                    existingLangNames.Add(translatedName);
+                    langCount++;
+                }
+            }
+        }
+    }
+
     static const wxCmdLineEntryDesc cmdLineDesc[] = 
     {
         {wxCMD_LINE_SWITCH, wxT("h"), wxT("help"), _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
@@ -205,19 +267,6 @@ bool pgAdmin3::OnInit()
         {wxCMD_LINE_SWITCH, wxT("t"), NULL, _("dialog translation test mode"), wxCMD_LINE_VAL_NONE},
         {wxCMD_LINE_NONE}
     };
-
-    // Setup the basic paths for the app installation. Required by settings!
-    InitAppPaths();
-
-    // Load the Settings
-#ifdef __WXMSW__
-    settings = new sysSettings(wxT("pgAdmin III"));
-#else
-    settings = new sysSettings(wxT("pgadmin3"));
-#endif
-
-    // Setup additional helper paths etc. Requires settings!
-    InitXtraPaths();
 
     frmConfig::tryMode configMode=frmConfig::NONE;
     wxString configFile;
@@ -300,55 +349,6 @@ bool pgAdmin3::OnInit()
 #ifdef __LINUX__
     signal(SIGPIPE, SIG_IGN);
 #endif
-
-    locale = new wxLocale();
-    locale->AddCatalogLookupPathPrefix(i18nPath);
-
-    wxLanguage langId = (wxLanguage)settings->Read(wxT("LanguageId"), wxLANGUAGE_DEFAULT);
-    if (locale->Init(langId))
-    {
-#ifdef __LINUX__
-        {
-            wxLogNull noLog;
-            locale->AddCatalog(wxT("fileutils"));
-        }
-#endif
-        locale->AddCatalog(wxT("pgadmin3"));
-    }
-
-
-    long langCount=0;
-    const wxLanguageInfo *langInfo;
-
-    wxString langfile=FileRead(i18nPath + wxT("/") LANG_FILE, 1);
-
-    if (!langfile.IsEmpty())
-    {
-        wxStringTokenizer tk(langfile, wxT("\n\r"));
-
-        while (tk.HasMoreTokens())
-        {
-            wxString line=tk.GetNextToken().Strip(wxString::both);
-            if (line.IsEmpty() || line.StartsWith(wxT("#")))
-                continue;
-
-            wxString englishName=line.BeforeFirst(',').Trim(true);
-            wxString translatedName=line.AfterFirst(',').Trim(false);
-
-            langInfo=wxLocale::FindLanguageInfo(englishName);
-            if (langInfo)
-            {
-                if (langInfo->CanonicalName == wxT("en_US") || 
-                    (!langInfo->CanonicalName.IsEmpty() && 
-                     wxDir::Exists(i18nPath + wxT("/") + langInfo->CanonicalName)))
-                {
-                    existingLangs.Add(langInfo->Language);
-                    existingLangNames.Add(translatedName);
-                    langCount++;
-                }
-            }
-        }
-    }
 
     // Show the splash screen
     // NOTE: We must *always* do this as in -q and -qc modes
