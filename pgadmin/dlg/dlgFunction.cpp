@@ -238,9 +238,17 @@ int dlgFunction::Go(bool modal)
         while (!lang->Eof())
         {
             wxString language=lang->GetVal(0);
-            if (factory != &triggerFunctionFactory || !language.IsSameAs(wxT("SQL"), false))
+            if (factory == &triggerFunctionFactory)
+            {
+                if (language.IsSameAs(wxT("SQL"), false) ||
+                    language.IsSameAs(wxT("edbspl"), false))
+                {
+                    lang->MoveNext();
+                    continue;
+                }
                 cbLanguage->Append(language);
-            lang->MoveNext();
+                lang->MoveNext();
+            }
         }
         delete lang;
     }
