@@ -246,9 +246,9 @@ int dlgFunction::Go(bool modal)
                     lang->MoveNext();
                     continue;
                 }
-                cbLanguage->Append(language);
-                lang->MoveNext();
             }
+            cbLanguage->Append(language);
+            lang->MoveNext();
         }
         delete lang;
     }
