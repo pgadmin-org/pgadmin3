@@ -210,6 +210,7 @@
 #include "slony/slSubscription.h"
 #include "slony/slTable.h"
 
+#include "utils/csvfiles.h"
 #include "utils/factory.h"
 #include "utils/favourites.h"
 #include "utils/macros.h"

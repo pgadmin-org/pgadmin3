@@ -101,6 +101,9 @@ private:
 
     wxDateTime logfileTimestamp, latestTimestamp;
     wxString logDirectory, logfileName;
+
+    wxString savedPartialLine;
+
     bool showCurrent, isCurrent;
     
     long backend_pid;
@@ -175,7 +178,7 @@ private:
 
     void addLogFile(wxDateTime *dt, bool skipFirst);
     void addLogFile(const wxString &filename, const wxDateTime timestamp, long len, long &read, bool skipFirst);
-    void addLogLine(const wxString &str, bool formatted=true);
+    void addLogLine(const wxString &str, bool formatted=true, bool csv_log_format=false);
 
 	void checkConnection();
     

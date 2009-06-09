@@ -298,7 +298,7 @@ void frmMainConfig::WriteFile(pgConn *conn)
     {
         pgSettingItem *item = options[cfgList->GetText(i)];
 
-        if (item && item->newLine && !item->orgLine)
+        if (item && item->newLine && item->newLine->item && !item->orgLine)
             str.Append(item->newLine->GetNewText() + wxT("\n"));
     }
 

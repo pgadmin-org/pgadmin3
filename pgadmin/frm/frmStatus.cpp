@@ -29,6 +29,7 @@
 #include "utils/pgfeatures.h"
 #include "schema/pgServer.h"
 #include "ctl/ctlMenuToolbar.h"
+#include "utils/csvfiles.h"
 
 // Icons
 #include "images/clip_copy.xpm"
@@ -280,6 +281,13 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     }
     if (!connection->BackendMinimumVersion(8, 1))
     {
+        manager.GetPane(wxT("Transactions")).Show(false);
+    }
+    else if (connection->GetIsGreenplum())
+    {
+        // GPDB doesn't have external global transactions.
+        // Perhaps we should use this display to show our
+        // global xid to local xid mappings?
         manager.GetPane(wxT("Transactions")).Show(false);
     }
 
@@ -601,21 +609,37 @@ void frmStatus::AddLogPane()
     {
         logFormatKnown = true;
         logHasTimestamp = true;
-        logList->AddColumn(_("Timestamp"), 100);
     }
     else if (connection->GetIsGreenplum())  
     {
         // Always %m|%u|%d|%p|%I|%X|:- (timestamp w/ millisec) for 3.2.x
-        // Always CSV formatted for 3.3
+        // Usually CSV formatted for 3.3
         logFormatKnown = true;
         logHasTimestamp = true;
-        logList->AddColumn(_("Timestamp"), 120);  // Room for millisecs
     }
 
-    if (logFormatKnown)
-        logList->AddColumn(_("Level"), 35);
 
-    logList->AddColumn(_("Log entry"), 800);
+    if (connection->GetIsGreenplum() && connection->BackendMinimumVersion(8,2,13))
+    {
+        // Be ready for GPDB CSV format log file
+        logList->AddColumn(_("Timestamp"), 120);  // Room for millisecs
+        logList->AddColumn(_("Level"), 35);
+        logList->AddColumn(_("Log entry"), 400);
+        logList->AddColumn(_("Connection"), 45);
+        logList->AddColumn(_("Cmd number"), 48);
+        logList->AddColumn(_("Dbname"), 48);
+        logList->AddColumn(_("Segment"), 45);
+    }
+    else    // Non-GPDB or non-CSV format log
+    {
+        if (logHasTimestamp)
+            logList->AddColumn(_("Timestamp"), 100);
+
+        if (logFormatKnown)
+            logList->AddColumn(_("Level"), 35);
+
+        logList->AddColumn(_("Log entry"), 800);
+    }
 
     if (!connection->HasFeature(FEATURE_ROTATELOG))
         btnRotateLog->Disable();
@@ -938,7 +962,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
     
     wxCriticalSectionLocker lock(gs_critsect);
 
-    connection->ExecuteVoid(wxT("SET log_statement='none';"));
+    connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
 
     long row=0;
     pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT *,(SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND relation IN (SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)) AS blockedby FROM pg_stat_activity ORDER BY procpid"));
@@ -963,7 +987,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
                         break;
                 }
 
-                if (!itempid || itempid > pid)
+                if (!itempid || itempid > pid || row >= statusList->GetItemCount())
                 {
                     statusList->InsertItem(row, NumToStr(pid), 0);
                 }
@@ -1045,7 +1069,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
     
     wxCriticalSectionLocker lock(gs_critsect);
 
-    connection->ExecuteVoid(wxT("SET log_statement='none';"));
+    connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
 
     long row=0;
     wxString sql;
@@ -1111,7 +1135,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
                         break;
                 }
 
-                if (!itempid || itempid > pid)
+                if (!itempid || itempid > pid || lockList->GetItemCount() == 0)
                 {
                     lockList->InsertItem(row, NumToStr(pid), 0);
                 }
@@ -1192,7 +1216,7 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
     
     wxCriticalSectionLocker lock(gs_critsect);
 
-    connection->ExecuteVoid(wxT("SET log_statement='none';"));
+    connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
 
     long row=0;
     wxString sql = wxT("SELECT * FROM pg_prepared_xacts");
@@ -1276,7 +1300,18 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
     
     wxCriticalSectionLocker lock(gs_critsect);
 
-    connection->ExecuteVoid(wxT("SET log_statement='none';"));
+    connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
+
+    if (connection->GetLastResultError().sql_state == wxT("42501"))
+    {
+        // Don't have superuser privileges, so can't do anything with the log display
+        logTimer->Stop();
+        cbLogfiles->Disable();
+        btnRotateLog->Disable();
+        manager.GetPane(wxT("Logfile")).Show(false);
+        manager.Update();
+        return;
+    }
 
     long newlen=0;
 
@@ -1284,8 +1319,19 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
     {
         // freshly started
         logDirectory = connection->ExecuteScalar(wxT("SHOW log_directory"));
+        if (connection->GetLastResultError().sql_state == wxT("42501"))
+        {
+            // Don't have superuser privileges, so can't do anything with the log display
+            logTimer->Stop();
+            cbLogfiles->Disable();
+            btnRotateLog->Disable();
+            manager.GetPane(wxT("Logfile")).Show(false);
+            manager.Update();
+            return;
+        }
         if (fillLogfileCombo())
         {
+            savedPartialLine.Clear();
             cbLogfiles->SetSelection(0);
             wxCommandEvent ev;
             OnLoadLogfile(ev);
@@ -1430,9 +1476,26 @@ void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp,
             skipFirst=false;
     }
 
+    // If GPDB 3.3 and later, log is normally in CSV format.  Let's get a whole log line before calling addLogLine,
+    // so we can do things smarter.
+
+    // PostgreSQL can log in CSV format, as well as regular format.  Normally, we'd only see 
+    // the regular format logs here, because pg_logdir_ls only returns those.  But if pg_logdir_ls is
+    // changed to return the csv format log files, we should handle it.
+
+    bool csv_log_format = filename.Right(4) == wxT(".csv");
+
+    if (csv_log_format && savedPartialLine.length() > 0)
+    {
+        if (read == 0)  // Starting at beginning of log file
+            savedPartialLine.clear();
+        else 
+            line = savedPartialLine;
+    }
 
     while (len > read)
     {
+        statusBar->SetStatusText(_("Reading log from server..."));
         pgSet *set=connection->ExecuteSet(wxT("SELECT pg_file_read(") + 
             connection->qtDbString(filename) + wxT(", ") + NumToStr(read) + wxT(", 50000)"));
         if (!set)
@@ -1447,6 +1510,7 @@ void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp,
             delete set;
             break;
         }
+
         read += strlen(raw);
 
         wxString str;
@@ -1464,48 +1528,79 @@ void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp,
             return;
         }
 
-        bool hasCr = (str.Right(1) == wxT("\n"));
-
-        wxStringTokenizer tk(str, wxT("\n"));
-            
-        bool gpdbformat = (connection->GetIsGreenplum() && connection->BackendMinimumVersion(8, 2, 13));
-
-        logList->Freeze();
-        if (gpdbformat)
+        if (csv_log_format)
         {
-            // This would actually work for any DB assuming the log line prefix starts with %t or %m
-            wxString nextStr;
-            while (tk.HasMoreTokens())
+            // This will work for any DB using CSV format logs
+
+            if (logHasTimestamp)
             {
-                str = nextStr;
-                nextStr = tk.GetNextToken();
-                if (str.Length() == 0)
-                    continue;
+                // Right now, csv format logs from GPDB and PostgreSQL always start with a timestamp, so we count on that.
 
-                // The first field must be a Timestamp, so must start with "2009" or "201" (at least for the next 10 years).
-                if (skipFirst && (str.Left(4) != wxT("2009") && str.Left(3) != wxT("201")))
+                // And the only reason we need to do that is to make sure we are in sync.  
+
+                // Bad things happen if we start in the middle of a 
+                // double-quoted string, as we would never find a correct line terminator!
+
+                // In CSV logs, the first field must be a Timestamp, so must start with "2009" or "201" or "202" (at least for the next 20 years).
+                if (str.length() > 4 && str.Left(4) != wxT("2009") && str.Left(3) != wxT("201") && str.Left(3) != wxT("202"))
                 {
-                    // Something isn't right, as we are not at the beginning of a log record.
-                    skipFirst = false;
-                    continue;
+                    wxLogNotice(wxT("Log line does not start with timestamp: %s \n"), str.Mid(0,100).c_str());
+                    // Something isn't right, as we are not at the beginning of a csv log record.
+                    // We should never get here, but if we do, try to handle it in a smart way.
+                    str = str.Mid(str.Find(wxT("\n20"))+1);  // Try to re-sync.
                 }
-
-                // The first field must be a Timestamp, so must start with "2009" or "201" (at least for the next 10 years).
-                // If nextStr doesn't start with that, it must be a continuation of this line.
-                if (nextStr.Left(4) != wxT("2009") && nextStr.Left(3) != wxT("201"))
-                {
-                    nextStr = str + wxT("\n") + nextStr;
-                    continue;
-                }
-
-                if (tk.HasMoreTokens() || hasCr)
-                    addLogLine(str.Trim());
-                else
-                    line = str;
             }
+
+            CSVLineTokenizer tk(str);
+
+            logList->Freeze();
+
+            while (tk.HasMoreLines())
+            {
+                line.Clear();
+
+                bool partial;
+                str = tk.GetNextLine(partial);
+                if (partial)
+                {
+                    line = str; // Start of a log line, but not complete.  Loop back, Read more data.
+                    break;
+                }
+
+                // Some extra debug checking, assuming csv logs line start with timestamps.
+                // Not really necessary, but it is good for debugging if something isn't right.
+                if (logHasTimestamp)
+                {
+                    // The first field must be a Timestamp, so must start with "2009" or "201" or "202" (at least for the next 20 years).
+                    // This is just an extra check to make sure we haven't gotten out of sync with the log.
+                    if (str.length() > 5 && str.Left(4) != wxT("2009") && str.Left(3) != wxT("201") && str.Left(3) != wxT("202"))
+                    {
+                        // BUG:  We are out of sync on the log
+                        wxLogNotice(wxT("Log line does not start with timestamp: %s\n"), str.c_str());;
+                    }
+                    else if (str.length() < 20)
+                    {
+                        // BUG:  We are out of sync on the log, or the log is garbled
+                        wxLogNotice(wxT("Log line too short: %s\n"), str.c_str());
+                    }
+                }
+
+                // Looks like we have a good complete CSV log record.
+                addLogLine(str.Trim(), true, true);
+            }
+
+            logList->Thaw();
         }
         else
         {
+            // Non-csv format log file
+
+            bool hasCr = (str.Right(1) == wxT("\n"));
+
+            wxStringTokenizer tk(str, wxT("\n"));
+
+            logList->Freeze();
+
             while (tk.HasMoreTokens())
             {
                 str = tk.GetNextToken();
@@ -1521,225 +1616,315 @@ void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp,
                 else
                     line = str;
             }
+
+            logList->Thaw();
         }
-        logList->Thaw();
     }
+    
+    savedPartialLine.clear();
+
     if (!line.IsEmpty())
-        addLogLine(line.Trim());
+    {
+        // We finished reading to the end of the log file, but still have some data left
+        if (csv_log_format)
+        {
+            savedPartialLine = line;    // Save partial log line for next read of the data file.
+            line.Clear();
+        }
+        else
+            addLogLine(line.Trim());
+    }
+        
 }
 
 
-void frmStatus::addLogLine(const wxString &str, bool formatted)
+void frmStatus::addLogLine(const wxString &str, bool formatted, bool csv_log_format)
 {
     int row=logList->GetItemCount();
+
     if (!logFormatKnown)
         logList->AppendItem(-1, str);
-    else
+    else if ((!csv_log_format) && str.Find(':') < 0)
     {
-        if (connection->GetIsGreenplum() && connection->BackendMinimumVersion(8, 2, 13))
+        // Must be a continuation of a previous line.
+        logList->InsertItem(row, wxEmptyString, -1);
+        logList->SetItem(row, 2, str);
+    }
+    else if (!formatted)
+    {
+        // Not from a log, from pgAdmin itself.
+        logList->InsertItem(row, wxEmptyString, -1);
+        logList->SetItem(row, 1, str.BeforeFirst(':'));
+        logList->SetItem(row, 2, str.AfterFirst(':'));
+    }
+    else // formatted log
+    { 
+        if (csv_log_format)
         {
-            // Greenplum 3.3 release and later:  log is in CSV format
+            // Log is in CSV format (GPDB 3.3 and later, or Postgres if only csv log enabled)
+            // In this case, we are always supposed to have a complete log line in csv format in str when called.
 
-            if (!formatted)
+            if (logHasTimestamp && (str.Length() < 20 || (logHasTimestamp && (str[0] != wxT('2') || str[1] != wxT('0')))))
             {
-                // Not from log, from pgAdmin itself.
-                logList->InsertItem(row, wxEmptyString, -1);
-                logList->SetItem(row, 1, str.BeforeFirst(':'));
-                logList->SetItem(row, 2, str.AfterFirst(':').Mid(2));
-            }
-            else
-            {
-                wxStringTokenizer tk(str, wxT(","));
-                wxString logTime = tk.GetNextToken();
-                if (logTime.Length() < 20 || logTime[0] != wxT('2') || logTime[1] != wxT('0'))
-                {
-                    // Log line does not start with a timestamp... Must be a continuation of the previous line or garbage.
-                    logList->InsertItem(row, wxEmptyString, -1);
-                    logList->SetItem(row, 2, str);
-                }
-                else
-                {
-                    wxString logUser = tk.GetNextToken();
-                    wxString logDatabase = tk.GetNextToken();
-                    wxString logPid = tk.GetNextToken();
-                    wxString logThread =  tk.GetNextToken();
-                    wxString logHost = tk.GetNextToken();
-                    wxString logPort = tk.GetNextToken();
-                    wxString logSessiontime = tk.GetNextToken();
-                    wxString logTransaction = tk.GetNextToken();
-                    wxString logSession = tk.GetNextToken();
-                    wxString logCmdcount = tk.GetNextToken();
-                    wxString logSegment = tk.GetNextToken();
-                    wxString logSlice = tk.GetNextToken();
-                    wxString logDistxact = tk.GetNextToken();
-                    wxString logLocalxact = tk.GetNextToken();
-                    wxString logSubxact = tk.GetNextToken();
-                    wxString logSeverity = tk.GetNextToken();
-                    wxString logState = tk.GetNextToken();
-                    wxString logMessage = tk.GetNextToken();
-                    while (logMessage.Length() > 2 && logMessage[logMessage.Length()-1] != wxT('\"') && tk.HasMoreTokens())
-                        logMessage = logMessage + wxT(",") + tk.GetNextToken();
-                    wxString logDetail = tk.GetNextToken();
-                    while (logDetail.Length() > 2 && logDetail[logDetail.Length()-1] != wxT('\"') && tk.HasMoreTokens())
-                        logDetail = logDetail + wxT(",") + tk.GetNextToken();
-                    wxString logHint = tk.GetNextToken();
-                    while (logHint.Length() > 2 && logHint[logHint.Length()-1] != wxT('\"') && tk.HasMoreTokens())
-                        logHint = logHint + wxT(",") + tk.GetNextToken();
-                    wxString logQuery = tk.GetNextToken();
-                    while (logQuery.Length() > 2 && logQuery[logQuery.Length()-1] != wxT('\"') && tk.HasMoreTokens())
-                        logQuery = logQuery + wxT(",") + tk.GetNextToken();
-                    wxString logQuerypos = tk.GetNextToken();
-                    wxString logContext = tk.GetNextToken();
-                    wxString logDebug = tk.GetNextToken();
-                    while (logDebug.Length() > 2 && logDebug[logDebug.Length()-1] != wxT('\"') && tk.HasMoreTokens())
-                        logDebug = logDebug + wxT(",") + tk.GetNextToken();
-                    wxString logCursorpos = tk.GetNextToken();
-                    wxString logFunction = tk.GetNextToken();
-                    wxString logFile = tk.GetNextToken();
-                    wxString logLine = tk.GetNextToken();
-                    wxString logStack = tk.GetNextToken();
-                    while (logStack.Length() > 2 && logStack[logStack.Length()-1] != wxT('\"') && tk.HasMoreTokens())
-                        logStack = logStack + wxT(",") + tk.GetNextToken();
-
-                    logSeverity = logSeverity.AfterFirst('\"').BeforeLast('\"');
-                    logMessage = logMessage.AfterFirst('\"').BeforeLast('\"');
-                    logStack = logStack.AfterFirst('\"').BeforeLast('\"');
-
-                    wxStringTokenizer lm(logMessage,wxT("\n"));
-                    wxStringTokenizer ls(logStack,wxT("\n"));
-                    
-                    logList->InsertItem(row, logTime, -1);   // Insert timestamp
-                    
-                    
-                    logList->SetItem(row, 1, logSeverity);
-                    logList->SetItem(row, 2, lm.GetNextToken());
-                    
-
-                    while (lm.HasMoreTokens())
-                    {
-                        int controw=logList->GetItemCount();
-                        logList->InsertItem(controw, wxEmptyString, -1);
-                        logList->SetItem(controw, 2, lm.GetNextToken());
-                    }
-                    while (ls.HasMoreTokens())
-                    {
-                        int controw=logList->GetItemCount();
-                        logList->InsertItem(controw, wxEmptyString, -1);
-                        logList->SetItem(controw, 2, ls.GetNextToken());
-                    }
-                   
-                }
-            }
-        }
-        else if (connection->GetIsGreenplum())
-        {
-            // Greenplum 3.2 and before.
-
-            if (str.Find(':') < 0)
-            {
-                // Must be a continuation of a previous line, or a message from pgAdmin itself.
-                // Not sure if we ever get here, since lines from the log always have a timestamp at the start.
+                // Log line too short or does not start with an expected timestamp... 
+                // Must be a continuation of the previous line or garbage,
+                // or we are out of sync in our CSV handling.
+                // We shouldn't ever get here.
                 logList->InsertItem(row, wxEmptyString, -1);
                 logList->SetItem(row, 2, str);
             }
             else
             {
-                wxString logSeverity;
-                // Skip prefix, get message
-                wxString rest = str.Mid(str.Find(wxT(":-"))+1) ;
-                if (rest[0] == wxT('-'))
-                    rest = rest.Mid(1);
+                CSVTokenizer tk(str);
 
-                // Separate loglevel from message
+                bool gpdb = connection->GetIsGreenplum();
 
+                // Get the fields from the CSV log. 
+                wxString logTime = tk.GetNextToken();         
+                wxString logUser = tk.GetNextToken();
+                wxString logDatabase = tk.GetNextToken();
+                wxString logPid = tk.GetNextToken();
 
-                if (rest[0] != wxT(' ') && rest.Find(':') > 0)
+                wxString logSession;
+                wxString logCmdcount;
+                wxString logSegment;
+
+                if (gpdb)
                 {
-                    logSeverity = rest.BeforeFirst(':');
-                    rest = rest.AfterFirst(':').Mid(2);
+                    wxString logThread =  tk.GetNextToken();        // GPDB specific
+                    wxString logHost = tk.GetNextToken();
+                    wxString logPort = tk.GetNextToken();           // GPDB (Postgres puts port with Host)
+                    wxString logSessiontime = tk.GetNextToken();
+                    wxString logTransaction = tk.GetNextToken();
+                    logSession = tk.GetNextToken();
+                    logCmdcount = tk.GetNextToken();
+                    logSegment = tk.GetNextToken();
+                    wxString logSlice = tk.GetNextToken();
+                    wxString logDistxact = tk.GetNextToken();
+                    wxString logLocalxact = tk.GetNextToken();
+                    wxString logSubxact = tk.GetNextToken();
+                }
+                else
+                {
+                    wxString logHost = tk.GetNextToken();       // Postgres puts port with Hostname
+                    logSession = tk.GetNextToken();
+                    wxString logLineNumber = tk.GetNextToken();
+                    wxString logPsDisplay = tk.GetNextToken();
+                    wxString logSessiontime = tk.GetNextToken();
+                    wxString logVXid = tk.GetNextToken();
+                    wxString logTransaction = tk.GetNextToken();
+                }
+                
+                wxString logSeverity = tk.GetNextToken();
+                wxString logState = tk.GetNextToken();
+                wxString logMessage = tk.GetNextToken();
+                wxString logDetail = tk.GetNextToken();
+                wxString logHint = tk.GetNextToken();
+                wxString logQuery = tk.GetNextToken();
+                wxString logQuerypos = tk.GetNextToken();
+                wxString logContext = tk.GetNextToken();
+                wxString logDebug = tk.GetNextToken();
+                wxString logCursorpos = tk.GetNextToken();
+
+                wxString logStack;
+                if (gpdb)
+                {
+                    wxString logFunction = tk.GetNextToken();       // GPDB.  Postgres puts func, file, and line together
+                    wxString logFile = tk.GetNextToken();
+                    wxString logLine = tk.GetNextToken();
+                    logStack = tk.GetNextToken();                   // GPDB only.
+                }
+                else
+                    wxString logFuncFileLine = tk.GetNextToken();  
+
+                logList->InsertItem(row, logTime, -1);      // Insert timestamp (with time zone)
+            
+                logList->SetItem(row, 1, logSeverity);
+
+                // Display the logMessage, breaking it into lines
+                wxStringTokenizer lm(logMessage,wxT("\n"));
+                logList->SetItem(row, 2, lm.GetNextToken());
+
+                logList->SetItem(row, 3, logSession);
+                logList->SetItem(row, 4, logCmdcount);
+                logList->SetItem(row, 5, logDatabase);
+                if ((!gpdb) || (logSegment.length() > 0 && logSegment != wxT("seg-1")))
+                {
+                    logList->SetItem(row, 6, logSegment);
+                }
+                else
+                {
+                    // If we are reading the masterDB log only, the logSegment won't
+                    // have anything useful in it.  Look in the logMessage, and see if the
+                    // segment info exists in there.  It will always be at the end.
+                    if (logMessage.length() > 0 && logMessage[logMessage.length()-1] == wxT(')'))
+                    {
+                        int segpos = -1;
+                        segpos = logMessage.Find(wxT("(seg"));
+                        if (segpos <= 0)
+                            segpos = logMessage.Find(wxT("(mir"));
+                        if (segpos > 0)
+                        {
+                            logSegment = logMessage.Mid(segpos+1);
+                            if (logSegment.Find(wxT(' ')) > 0)
+                                logSegment = logSegment.Mid(0,logSegment.Find(wxT(' ')));
+                            logList->SetItem(row, 6, logSegment);
+                        }
+                    }
+                }
+                
+                // The rest of the lines from the logMessage
+                while (lm.HasMoreTokens())
+                {
+                    int controw=logList->GetItemCount();
+                    logList->InsertItem(controw, wxEmptyString, -1);
+                    logList->SetItem(controw, 2, lm.GetNextToken());
                 }
 
+                // Add the detail
+                wxStringTokenizer ld(logDetail,wxT("\n"));
+                while (ld.HasMoreTokens())
+                {
+                    int controw=logList->GetItemCount();
+                    logList->InsertItem(controw, wxEmptyString, -1);
+                    logList->SetItem(controw, 2, ld.GetNextToken());
+                }
+
+                // And the hint
+                wxStringTokenizer lh(logHint,wxT("\n"));
+                while (lh.HasMoreTokens())
+                {
+                    int controw=logList->GetItemCount();
+                    logList->InsertItem(controw, wxEmptyString, -1);
+                    logList->SetItem(controw, 2, lh.GetNextToken());
+                }
+
+                if (logDebug.length() > 0)
+                {
+                    wxString logState3 = logState.Mid(0,3);
+                    if (logState3 == wxT("426") || logState3 == wxT("22P") || logState3 == wxT("427") 
+                        || logState3 == wxT("42P") || logState3 == wxT("458") 
+                        || logMessage.Mid(0,9) == wxT("duration:") || logSeverity == wxT("FATAL") || logSeverity == wxT("PANIC"))
+                    {
+                        // If not redundant, add the statement from the debug_string
+                        wxStringTokenizer lh(logDebug,wxT("\n"));
+                        if (lh.HasMoreTokens())
+                        {
+                            int controw=logList->GetItemCount();
+                            logList->InsertItem(controw, wxEmptyString, -1);
+                            logList->SetItem(controw, 2, wxT("statement: ") + lh.GetNextToken());
+                        }
+                        while (lh.HasMoreTokens())
+                        {
+                            int controw=logList->GetItemCount();
+                            logList->InsertItem(controw, wxEmptyString, -1);
+                            logList->SetItem(controw, 2, lh.GetNextToken());
+                        }
+                    }
+                }
+
+                if (gpdb)
+                    if (logSeverity == wxT("PANIC") || 
+                        (logSeverity == wxT("FATAL") && logState != wxT("57P03") && logState != wxT("53300")))
+                    {
+                        // If this is a severe error, add the stack trace.
+                        wxStringTokenizer ls(logStack,wxT("\n"));
+                        if (ls.HasMoreTokens())
+                        {
+                            int controw=logList->GetItemCount();
+                            logList->InsertItem(controw, wxEmptyString, -1);
+                            logList->SetItem(controw, 1, wxT("STACK"));
+                            logList->SetItem(controw, 2, ls.GetNextToken());
+                        }
+                        while (ls.HasMoreTokens())
+                        {
+                            int controw=logList->GetItemCount();
+                            logList->InsertItem(controw, wxEmptyString, -1);
+                            logList->SetItem(controw, 2, ls.GetNextToken());
+                        }
+                    }
+            }
+        }
+        else if (connection->GetIsGreenplum())
+        {
+            // Greenplum 3.2 and before.  log_line_prefix =  "%m|%u|%d|%p|%I|%X|:-"
+
+            wxString logSeverity;
+            // Skip prefix, get message.  In GPDB, always follows ":-".
+            wxString rest = str.Mid(str.Find(wxT(":-"))+1) ;
+            if (rest.Length() > 0 && rest[0] == wxT('-'))
+                rest = rest.Mid(1);
+
+            // Separate loglevel from message
+
+            if (rest.Length() > 1 && rest[0] != wxT(' ') && rest.Find(':') > 0)
+            {
+                logSeverity = rest.BeforeFirst(':');
+                rest = rest.AfterFirst(':').Mid(2);
+            }
+
+            wxString ts = str.BeforeFirst(logFormat.c_str()[logFmtPos+2]);
+            if (ts.Length() < 20  || (logHasTimestamp && (ts.Left(2) != wxT("20") || str.Find(':') < 0)))
+            {
+                // No Timestamp?  Must be a continuation of a previous line?  
+                // Not sure if it is possible to get here.
+                logList->InsertItem(row, wxEmptyString, -1);
+                logList->SetItem(row, 2, rest);
+            }
+            else if (logSeverity.Length() > 1)
+            {
+                // Normal case:  Start of a new log record.
+                logList->InsertItem(row, ts, -1);
+                logList->SetItem(row, 1, logSeverity);
+                logList->SetItem(row, 2, rest);   
+            }
+            else
+            {
+                // Continuation of previous line
+                logList->InsertItem(row, wxEmptyString, -1);
+                logList->SetItem(row, 2, rest);
+            }
+        }
+        else
+        {
+            // All Non-csv-format non-GPDB PostgreSQL systems.
+
+            wxString rest;
+
+            if (logHasTimestamp)
+            {
                 if (formatted)
                 {
-                    wxString ts = str.BeforeFirst(logFormat.c_str()[logFmtPos+2]);
-                    if (ts.Length() < 20  || ts.Left(2) != wxT("20") || str.Find(':') < 0)
-                    {
-                        // No Timestamp?  Must be a continuation of a previous line?  
-                        // Not sure if it is possible to get here.
-                        logList->InsertItem(row, wxEmptyString, -1);
-                        logList->SetItem(row, 2, rest);
-                    }
-                    else if (logSeverity.Length() > 1)
-                    {
-                        // Normal case:  Start of a new log record.
-                        logList->InsertItem(row, ts, -1);
-                        logList->SetItem(row, 1, logSeverity);
-                        logList->SetItem(row, 2, rest);   
-                    }
-                    else
-                    {
-                        // Continuation of previous line
-                        logList->InsertItem(row, wxEmptyString, -1);
-                        logList->SetItem(row, 2, rest);
-                    }
+                    rest = str.Mid(logFmtPos + 22).AfterFirst(':');
+                    wxString ts=str.Mid(logFmtPos, str.Length()-rest.Length() - logFmtPos -1);
+
+                    int pos = ts.Find(logFormat.c_str()[logFmtPos+2], true);
+                    logList->InsertItem(row, ts.Left(pos), -1);
+                    logList->SetItem(row, 1, ts.Mid(pos + logFormat.Length() - logFmtPos -2));
+                    logList->SetItem(row, 2, rest.Mid(2));
                 }
-                else // Not from log, from pgAdmin itself?
+                else
                 {
                     logList->InsertItem(row, wxEmptyString, -1);
                     logList->SetItem(row, 1, str.BeforeFirst(':'));
                     logList->SetItem(row, 2, str.AfterFirst(':').Mid(2));
                 }
             }
-            
-        }
-        else
-        {
-            // All Non-GPDB PostgreSQL systems.
-
-            if (str.Find(':') < 0)
-            {
-                logList->InsertItem(row, wxEmptyString, -1);
-                logList->SetItem(row, (logHasTimestamp ? 2 : 1), str);
-            }
             else
             {
-                wxString rest;
+                if (formatted)
+                    rest = str.Mid(logFormat.Length());
+                else
+                    rest = str;
 
-                if (logHasTimestamp)
-                {
-                    if (formatted)
-                    {
-                        rest = str.Mid(logFmtPos + 22).AfterFirst(':');
-                        wxString ts=str.Mid(logFmtPos, str.Length()-rest.Length() - logFmtPos -1);
+                int pos = rest.Find(':');
 
-                        int pos = ts.Find(logFormat.c_str()[logFmtPos+2], true);
-                        logList->InsertItem(row, ts.Left(pos), -1);
-                        logList->SetItem(row, 1, ts.Mid(pos + logFormat.Length() - logFmtPos -2));
-                        logList->SetItem(row, 2, rest.Mid(2));
-                    }
-                    else
-                    {
-                        logList->InsertItem(row, wxEmptyString, -1);
-                        logList->SetItem(row, 1, str.BeforeFirst(':'));
-                        logList->SetItem(row, 2, str.AfterFirst(':').Mid(2));
-                    }
-                }
+                if (pos < 0)
+                    logList->InsertItem(row, rest, -1);
                 else
                 {
-                    if (formatted)
-                        rest = str.Mid(logFormat.Length());
-                    else
-                        rest = str;
-
-                    int pos = rest.Find(':');
-
-                    if (pos < 0)
-                        logList->InsertItem(row, rest, -1);
-                    else
-                    {
-                        logList->InsertItem(row, rest.BeforeFirst(':'), -1);
-                        logList->SetItem(row, 1, rest.AfterFirst(':').Mid(2));
-                    }
+                    logList->InsertItem(row, rest.BeforeFirst(':'), -1);
+                    logList->SetItem(row, 1, rest.AfterFirst(':').Mid(2));
                 }
             }
         }
