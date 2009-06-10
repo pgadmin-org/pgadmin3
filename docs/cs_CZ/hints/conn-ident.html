@@ -1,0 +1,36 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Rady odborníka</title>
+</head>
+
+<body>
+
+<h3>Ověření metodou Ident</h3>
+<p>
+Server není ochotný přijmout aktuálního uživatele: Server hlásí
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+Pokud se objeví toto hlášení, je v pg_hba.conf záznam pro kombinaci klienta / uživatele / databázi s nastaveným 
+ověřování na „ident“. Některé distribuce, např. Debian, mají tuto možnost jako výchozí. Aby mohlo ověření typu ident 
+proběhnout v pořádku, jsou zapotřebí doplňující nastavení. Podrobnosti najdete v nápovědě k PostgreSQL. Pro začátečníky 
+může být vhodnější použít jiný typ ověřování. Dobrou volbou jsou hesla šifrovaná pomocí MD5. V pg_hba.conf je můžete 
+nastavit nějak takto:
+</p>
+<p>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p>
+Tento příklad uděluje na základě MD5 hesla přístup ke všem databázím pro všechny uživatele v privátní síti 192.168.0.0/24.
+</p>
+<p>
+Na úpravu souboru pg_hba.conf můžete použít editor nastavení, který je součástí pgAdmin III. Po provedení změn v pb_hba.conf 
+je potřeba přimět server, aby nové nastavení načetl. Buď pomocí pg_ctl nebo restartováním procesu serveru.
+</p>
+</body>
+</html>

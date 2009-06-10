@@ -1,0 +1,42 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Rady odborníka</title>
+</head>
+
+<body>
+
+<h3>Server nenaslouchá</h3>
+<p>
+Server nepřijímá spojení: připojovací knihovna hlásí
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+Pokud jste narazili na toto hlášení, zkontrolujte prosím, zda na serveru, který se snažíte kontaktovat, 
+běží na příslušném portu PostgreSQL. Otestujte, jestli je funkční síťové spojení z vašeho klienta na server 
+pomocí příkazu „ping“ nebo nějakého podobného nástroje. Je správně nastavená vaše síť / VPN / SSH tunel / firewall?
+</p>
+<p>
+Z bezpečnostních důvodů <b>nenaslouchá</b> PostgreSQL po nainstalování na všech dostupných IP adresách serveru. Abyste 
+zajistili dostupnost serveru ze sítě, musíte nejprve povolit naslouchání na dalších IP adresách.
+</p>
+<p>
+V PostgreSQL od verze 8.0 se toto určuje pomocí parametru „listen_addresses“ v souboru postgresql.conf. Tam můžete zadat seznam IP adres, 
+na kterých by měl server naslouchat, nebo jednoduše použít hvězdičku „*“, aby naslouchal na všech dostupných IP adresách. Ve starších 
+verzích (verze 7.3 nebo 7.4) je zapotřebí nastavit parametr „tcpip_socket“ na „true“.
+</p>
+<p>
+Na úpravu souboru postgresql.conf můžete použít editor nastavení, který je součástí pgAdmin III. Aby se nové nastavení projevilo, 
+je nutné po provedení příslušných změn provést restart procesu serveru.
+</p>
+<p>
+Pokud dostáváte toto hlášení i nadále, přestože jste nastavení po sobě dvakrát zkontrolovali, neznamená to ještě, že se jedná
+o chybu v PostgreSQL. Pravděpodobnější je problém v síťovém spojení (např. nastavení firewallu). Prověřte prosím důkladně i
+tato nastavení, než se rozhodnete nahlásit vývojářům chybu v PostgreSQL.
+</p>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Příklady pro Slony-I</title>
+</head>
+
+<body>
+
+<h3>Příklady pro Slony-I</h3>
+
+<p>V tomto příkladu si nastavíte server master s dvěma přímými servery slave. Příklad je napsaný a testovaný
+za použití Slony-I verze 1.2.11 a PostgreSQL 8.2.5 na jednom počítači s Windows XP. Na vygenerování testovacího
+schématu a zátěže byla použita pomůcka PostgreSQL pgbench.
+<p>
+
+<ol>
+  <li>Vytvořte 3 databáze, master, slave1 a slave2 a ujistěte se, že je na každé nainstalovaný pl/pgsql.<br />&nbsp;</li>
+
+  <li>Vytvořte schéma pgbench v databázi master:<br /><br />
+
+    <code>&gt; pgbench -i -U postgres master</code><br />&nbsp;</li>
+   
+  <li>Do tabulky history přidejte primární klíč nazvaný history_pkey na sloupcích tid, bid a aid.<br />&nbsp;</li>
+
+  <li>Vytvořte výpis pouze schématu databáze master a načtěte jej na slave1 a slave2:<br /><br />
+
+    <code>
+    &gt; pg_dump -s -U postgres master &gt; schema.sql<br />
+    &gt; psql -U postgres slave1 &lt; schema.sql<br />
+    &gt; psql -U postgres slave2 &lt; schema.sql
+    </code><br />&nbsp;</li>
+
+  <li>Vytvořte pro každý proces služby slon (démona v *nixu) soubory s nastavením. Tyto soubory by měly obsahovat právě dva řádky 
+  a to následující:<br /><br />
+
+    <code>
+    cluster_name='pgbench'<br />
+    conn_info='host=127.0.0.1 port=5432 user=postgres dbname=master'
+    </code><br /><br />
+
+    Vytvořte soubor pro každou databázi, upravte parametr dbname jak je potřeba a případně přidejte další potřebné volby připojení.<br />&nbsp;</li>
+
+  <li>(Pouze pro Windows) Nainstalujte službu Slony-I:<br /><br />
+
+    <code>
+    > slon -regservice Slony-I
+    </code><br />&nbsp;</li>
+
+  <li>Každý proces zaregistrujte (to je nutné pouze ve Windows, v *nixu lze každého démona slon spustit zvlášť a cestu k souboru s nastavením mu předat
+  jako volbu -f příkazové řádky):<br /><br />
+
+    <code>
+    &gt; slon -addengine Slony-I C:\slony\master.conf<br />
+    &gt; slon -addengine Slony-I C:\slony\slave1.conf<br />
+    &gt; slon -addengine Slony-I C:\slony\slave2.conf
+    </code><br />&nbsp;</li>
+
+  <li>V pgAdminu vytvořte v replikačním uzlu v databázi master nový cluster Slony-I s následujícími volbami:<br /><br />
+
+    <pre>
+Napojit existující cluster: nezvoleno
+Název clusteru:             pgbench
+Lokální uzel:               1        Uzel Master
+Řídící uzel:                99       Uzel Admin
+    </pre></li>
+
+  <li>V replikačním uzlu vytvořte pro každou databázi slave cluster Slony-I s následujícími volbami:<br /><br />
+
+    <pre>
+Napojit existující cluster: zvoleno
+Server:                     &lt;Zvolte server obsahující databázi master&gt;
+Databáze:                   master
+Název clusteru:             pgbench
+Lokální uzel:               10       Uzel Slave 1
+Řídící uzel:                99 - Uzel Admin
+
+Napojit existující cluster: zvoleno
+Server:                     &lt;Zvolte server obsahující databázi master&gt;
+Databáze:                   master
+Název clusteru:             pgbench
+Lokální uzel:               20       Uzel Slave 2
+Řídící uzel:                99 - Uzel Admin
+    </pre></li>
+
+  <li>V databázi master vytvořte cesty na obě databáze slave a v každé databázi slave cestu zpět na master. Vytvořte cesty v každém uzlu 
+  na master s použitím připojovacího řetězce určeného v souborech nastavení slon. Poznamenejme, že změna struktury clusteru v budoucnu
+  může vyžadovat přidání dalších cest.
+  <br />&nbsp;</li>
+
+  <li>Vytvořte replikační sadu v databázi master s následujícím nastavením:
+  <br /><br />
+
+    <pre>
+ID:                  1
+Komentář:            sada pgbench
+    </pre></li>
+
+  <li>Do replikační sady přidejte tabulky s následujícím nastavením:
+  <br /><br />
+
+    <pre>
+Tabulka:             public.accounts
+ID:                  1
+Index:               accounts_pkey
+
+Tabulka:             public.branches
+ID:                  2
+Index:               branches_pkey
+
+Tabulka:             public.history
+ID:                  3
+Index:               history_pkey
+
+Tabulka:             public.tellers
+ID:                  4
+Index:               tellers_pkey
+    </pre></li>
+
+  <li>Na uzlu master vytvořte nový odběr pro každý uzel slave s následujícími volbami:<br /><br />
+
+    <pre>
+Počátek:             1
+Poskytovatel:        1 - Uzel Master
+Příjemce:            10 - Uzel Slave 1
+
+Počátek:             1
+Poskytovatel:        1 - Uzel Master
+Příjemce:            20 - Uzel Slave 2
+    </pre></li>
+
+  <li>Spusťte službu slon (nebo démona v *nixu): <br /><br />
+
+    <code>
+    > net start Slony-I
+    </code><br />&nbsp;</li>
+</ol>
+
+<p>Měla by začít úvodní replikace a v pgAdminu by se pro každý uzel na kartě statistiky měly sledovat změny. Pro testování pod zátěží lze proti 
+databázi master spustit pomůcku pgbench.
+</p>
+
+</body>
+</html>

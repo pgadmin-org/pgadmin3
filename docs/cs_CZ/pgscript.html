@@ -1,0 +1,454 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Příručka skriptovacího jazyka pgScript</title>
+</head>
+
+<body>
+
+<h3>Příručka skriptovacího jazyka pgScript</h3>
+
+<p><b>Obsah</b></p>
+<ul>
+    <li><a href="#overview">Přehled</a></li>
+    <li><a href="#examples">Příklady</a></li>
+    <ul>
+        <li><a href="#example1">Dávkové vytváření tabulek</a></li>
+        <li><a href="#example2">Vkládání náhodných dat</a></li>
+        <li><a href="#example3">Dávkové mazání tabulek</a></li>
+        <li><a href="#example4">Výpis informací na obrazovku</a></li>
+    </ul>
+    <li><a href="#commands">Příkazy SQL</a></li>
+    <li><a href="#variables">Proměnné</a></li>
+    <ul>
+        <li><a href="#variable1">Jednoduché proměnné</a></li>
+        <li><a href="#variable2">Záznamy</a></li>
+        <li><a href="#variable3">Přetypování</a></li>
+        <li><a href="#variable4">Operace</a></li>
+    </ul>
+    <li><a href="#control">Struktury pro řízení běhu</a></li>
+    <ul>
+        <li><a href="#control1">Struktury podmínek</a></li>
+        <li><a href="#control2">Struktury cyklů</a></li>
+        <li><a href="#control3">Podmínky</a></li>
+    </ul>
+    <li><a href="#functions">Doplňující funkce a procedury</a></li>
+    <ul>
+        <li><a href="#function1">Procedury</a></li>
+        <li><a href="#function2">Funkce</a></li>
+    </ul>
+    <li><a href="#generators">Generátory náhodných dat</a></li>
+    <ul>
+        <li><a href="#generator1">Přehled o generátorech</a></li>
+        <li><a href="#generator2">Sekvence a semínka</a></li>
+        <li><a href="#generator3">Generátory dat</a></li>
+    </ul>
+</ul>
+
+<!-- ----------------------------------------------------------------------  -->
+
+<h3><a name="overview"></a>Přehled</h3>
+<p>pgScript se skládá z příkazů pgScript:</p>
+<pre class="screen">příkaz pgScript
+    : normální příkaz PostgreSQL SQL (SELECT INSERT CREATE ...)
+    | deklarace nebo přiřazení proměnné (DECLARE SET)
+    | řídící struktura (IF WHILE)
+    | procedura (ASSERT PRINT LOG RMLINE)</pre>
+<p>Názvy příkazů (<strong class="command">SELECT</strong>, <strong class="command">IF</strong>, <strong class="command">SET</strong>, ...) nejsou
+   citlivé na velikost písmen a musí být zakončené středníkem <code>;</code>. Identifikátory jsou citlivé na velikost písmen.</p>
+
+<!-- ----------------------------------------------------------------------  -->
+
+<h3><a name="examples"></a>Příklady</h3>
+<h4><a name="example1"></a>Dávkové vytváření tabulek</h4>
+<pre class="screen">DECLARE @I, @T; -- Názvy proměnných začínají s @
+SET @I = 0; -- @I je celé číslo
+WHILE @I &lt; 20
+BEGIN
+    SET @T = 'tabulka' + CAST (@I AS STRING); -- Přetypování @I
+    CREATE TABLE @T (id integer primary key, data text);
+
+    SET @I = @I + 1;
+END</pre>
+<h4><a name="example2"></a>Vkládání náhodných dat</h4>
+<pre class="screen">DECLARE @I, @J, @T, @G;
+SET @I = 0;
+SET @G1 = INTEGER(10, 29, 1); /* Generátor náhodných celých čísel
+                              Jedinečné číslo v rozsahu 10 až 29 */
+SET @G2 = STRING(10, 20, 3); /* Generátor náhodných řetězců
+                             3 slova v délce 10 až 20 znaků */
+WHILE @I &lt; 20
+BEGIN
+    SET @T = 'tabulka' + CAST (@I AS STRING);
+
+    SET @J = 0;
+    WHILE @J &lt; 20
+    BEGIN
+        INSERT INTO @T VALUES (@G1, '@G2');
+        SET @J = @J + 1;
+    END
+
+    SET @I = @I + 1;
+END</pre>
+<h4><a name="example3"></a>Dávkové mazání tabulek</h4>
+<pre class="screen">DECLARE @I, @T; -- Deklarace je volitelná
+SET @I = 0;
+WHILE 1 -- Vždy pravda
+BEGIN
+    IF @I &gt;= 20
+      BREAK; -- Opustit smyčku pokud @I &gt; 20
+
+    SET @T = 'tabulka' + CAST (@I AS STRING);
+    DROP TABLE @T;
+
+    SET @I = @I + 1;
+END</pre>
+<h4><a name="example4"></a>Výpis informací na obrazovku</h4>
+<pre class="screen">SET @PROGR@M#TITLE = 'pgScript';
+PRINT '';
+PRINT @PROGR@M#TITLE + ' vlastnosti:';
+PRINT '';
+PRINT '  * Normální příkazy PostgreSQL';
+PRINT '  * Jazyk pro řízení běhu';
+PRINT '  * Lokální proměnné';
+PRINT '  * Generátory náhodných dat';</pre>
+
+<!-- ----------------------------------------------------------------------  -->
+
+<h3><a name="commands"></a>Příkazy SQL</h3>
+<p>V skriptu pgScript můžete spustit LIBOVOLNÝ dotaz PostgreSQL KROMĚ tohoto jednoho:</p>
+<pre class="screen">BEGIN;
+END;</pre>
+<p>To je proto, že <strong class="command">BEGIN</strong> a <strong class="command">END</strong> se používají k oddělení bloků. 
+   Místo toho použijte:</p>
+<pre class="screen">BEGIN TRANSACTION;
+END TRANSACTION;</pre>
+<p>Seznam příkazů PostgreSQL: <a href="http://www.postgresql.org/docs/8.3/interactive/sql-commands.html" target="_blank">http://www.postgresql.org/docs/8.3/interactive/sql-commands.html</a></p>
+
+<!-- ----------------------------------------------------------------------  -->
+
+<h3><a name="variables"></a>Proměnné</h3>
+<p>Jsou dva hlavní typy proměnných: jednoduché proměnné a záznamy 
+   (množiny výsledků složené z řádků a sloupců).</p>
+<p>Názvy proměnných začínají s <code>@</code> a mohou se skládat z písmen, 
+   číslic, <code>_</code>, <code>#</code>, <code>@</code>.</p>
+<p>Typ proměnné se odhadne automaticky v závislosti na druhu hodnoty, kterou 
+   obsahuje. Může to být jeden z těchto: číslo (reálné nebo celé), řetězec,
+   záznam.</p>
+<h4><a name="variable1"></a>Jednoduché proměnné</h4>
+<h5>Deklarace jednoduché proměnné</h5>
+<p>Deklarace jednoduché proměnné je volitelná.</p>
+<pre class="screen">DECLARE @A, @B;
+DECLARE @VAR1;</pre>
+<h5>Přiřazení jednoduché proměnné</h5>
+<p>Provádí se příkazem <strong class="command">SET</strong>. Typ proměnné 
+   závisí na hodnotě, která je do ní přiřazená.</p>
+<pre class="screen">SET @A = 1000, @B = 2000;   -- @A a @B jsou <strong>celá čísla</strong>
+SET @C = 10e1, @D = 1.5;    -- @C a @D jsou <strong>reálná čísla</strong>
+SET @E = 'ab', @F = 'a''b'; -- @E a @F jsou <strong>řetězce</strong>
+SET @G = "ab", @H = "a\"b"; -- @G a @H jsou <strong>řetězce</strong></pre>
+<p>Neinicializované proměnné se automaticky nastaví na prázdný řetězec. Proměnnou
+   je možné libovolně přepisovat.</p>
+<pre class="screen">PRINT @A;      -- Vytiskne prázdný řetězec
+SET @A = 1000; -- @A je inicializováno jako celé číslo
+PRINT @A;      -- Vytiskne 1000
+SET @A = 'ab'; -- @A se změní na řetězec
+PRINT @A;      -- Vytiskne ab</pre>
+<h5>Generátory dat</h5>
+<p>Generátory dat umožňují uživatelům generovat náhodné hodnoty. Je několik
+   typů generátorů, každý generuje různé typy dat. Proměnná inicializovaná
+   generátorem se chová jako běžná jednoduchá proměnná, akorát že při každém
+   použití má jinou hodnotu.</p>
+<pre class="screen">SET @A = INTEGER(100, 200);
+PRINT @A; -- Vytiskne celé číslo z rozsahu do 100 do 200
+PRINT @A; -- Vytiskne jiné celé číslo z rozsahu od 100 do 200</pre>
+<p>Proměnná může obsahovat generátor, ale její typ je jeden z následujících:
+   číslo (reálné nebo celé), řetězec. Seznam dostupných generátorů a k nim
+   přidružených typů najdete v kapitole <a href="#generators">Generátory náhodných dat</a>.</p>
+<h4><a name="variable2"></a>Záznamy</h4>
+<h5>Deklarace záznamu</h5>
+<p>Deklarace záznamu je <strong>povinná</strong>.
+   Musí být uveden název každého sloupce i když nebude později použitý.</p>
+<pre class="screen">DECLARE @R1 { @A, @B }, @R2 { @A, @C }; -- Dva záznamy se dvěma sloupci
+DECLARE @R3 { @A, @B, @C, @D };         -- Jeden záznam se čtyřmi sloupci</pre>
+<p>Počet řádků je dynamický: viz následující sekce.</p>
+<h5>Přiřazení záznamu</h5>
+<p>Přístup k určitému místu v záznamu je dán číslem řádku (začíná se od 0) a buď názvem sloupce
+   (uzavřeném do uvozovek) nebo číslem sloupce (začíná se od 0). Takto specifikované místo se
+   chová jako jednoduchá proměnná. Upozorněme, že záznam nemůže obsahovat další záznam.
+</p>
+<pre class="screen">SET @R1[0]['@A'] = 1; -- První řádek a první sloupec
+SET @R1[0][0] = 1;    -- To stejné umístění
+SET @R1[4]['@B'] = 1; -- Pátý řádek a sedmý sloupec
+SET @R1[0][1] = 1;    -- To stejné umístění</pre>
+<p>V předchozím příkladu se vloží automaticky tři řádky mezi první a pátý řádek. Použití neplatného
+   čísla nebo názvu sloupce způsobí výjimku.</p>
+<p>Specifikované místo je možné použít jako regulérní proměnnou. A specifikovaný řádek rovněž.</p>
+<pre class="screen">SET @R1[0][0] = @R3[0][1], @A = @R2[0][0]; -- Chová se jako jednoduchá proměnná
+SET @A = @R1[1]; -- @A se stane záznamem, který obsahuje první řádek z @R1</pre>
+<p>Nezapomeňte, že nelze použít <code>SET @R1[0][0] = @R2</code>, protože záznam nemůže obsahovat záznam.</p>
+<p>Za to je možné přiřadit záznam do proměnné, v takovém případě není nutné proměnnou deklarovat:</p>
+<pre class="screen">SET @A = @R3; -- @A se stane záznamem, protože je do něj přiřazený záznam</pre>
+<h5>Dotazy SQL</h5>
+<p>Některé dotazy SQL vrací záznamy. Pokud je dotazem <code>SELECT</code>, vrací výsledky dotazu. Ostatní dotazy 
+   vrací jednořádkový záznam (<code>true</code>) pokud dopadly úspěšně, v opačném případě záznam s nulovým počtem
+   řádků (<code>false</code>).</p>
+<pre class="screen">SET @A = SELECT * FROM tabulka;  -- @A je záznam s výsledkem dotazu
+SET @B = INSERT INTO tabulka ...; -- @B je jednořádkový záznam, pokud dotaz dopadl úspěšně</pre>
+<h5>Funkce záznamů</h5>
+<p>Viz <a href="#function2">Funkce</a>.</p>
+<h4><a name="variable3"></a>Přetypování</h4>
+<p>Proměnnou je možné změnit z jednoho typu na jiný pomocí funkce přetypování:</p>
+<pre class="screen">SET @A = CAST (@B AS STRING);
+SET @A = CAST (@B AS REAL);
+SET @A = CAST (@B AS INTEGER);
+SET @A = CAST (@B AS RECORD);</pre>
+<p>Pokud se konvertuje záznam na řetězec, změní se na jeho textovou reprezentaci.
+   Pokud se konvertuje na číslo, nejprve se záznam zkonvertuje na řetězec a potom na
+   číslo (viz konverze řetězců).</p>
+<p>Pokud se konvertuje číslo na řetězec, změní se na jeho textovou reprezentaci.
+   Pokud se konvertuje na záznam, změní se na záznam s jedním řádkem a jedním sloupcem,
+   který obsahuje číslo.</p>
+<p>Pokud se konvertuje řetězec na číslo, tak pokud řetězec představuje číslo změní se 
+   na číslo, jinak se vyvolá výjimka. Pokud se konvertuje na záznam, pokusí se program
+   v řetězci najít <strong>vzor záznamu</strong>. Pokud ho nenajde provede konverzi na
+   záznam s jedním řádkem a jedním sloupcem, který obsahuje řetězec. Vzor záznamu je:</p>
+<pre class="screen">SET @B = '(1, "abc", "ab\\"")(1, "abc", "ab\\"")'; -- @B je řetězec
+SET @B = CAST (@B AS RECORD); -- @B se změnilo na záznam s dvěma řádky a třemi sloupci</pre>
+<p>Zapamatujte si, že řetězec je uzavřený do apostrofů. Řetězec v záznamu musí být
+   uzavřený v uvozovkách zakončených s <code>\\</code> (zpětné lomítko je zdvojené, protože
+   je už i speciálním znakem pro řetězec v apostrovech).</p>
+<h4><a name="variable4"></a>Operace</h4>
+<p>Operace lze provádět pouze mezi operandy stejného typu. Pokud jsou různého typu, lze to 
+   řešit přetypováním.</p>
+<p>Výsledkem porovnávání je číslo 0 nebo 1.</p>
+<h5>Řetězce</h5>
+<p>Porovnávání: <code>= &lt;&gt; &gt; &lt; &lt;= &gt;= AND
+    OR</code></p>
+<p>Spojování: <code>+</code></p>
+<pre class="screen">SET @B = @A + 'abcdef'; -- @A musí být řetězec a @B bude řetězec</pre>
+<p>Logická hodnota: neprázdný řetězec je <code>true</code>, prázdný
+    řetězec je <code>false</code></p>
+<p>Inverze logické hodnoty: <code>NOT</code></p>
+<p>Porovnávání bez citlivosti na velikost písmen: <code>~=</code></p>
+<h5>Čísla</h5>
+<p>Porovnávání: <code>= &lt;&gt; &gt; &lt; &lt;= &gt;= AND
+    OR</code></p>
+<p>Aritmetika: <code>+ - * / %</code></p>
+<pre class="screen">SET @A = CAST ('10' AS INTEGER) + 5; -- řetězec '10' se převede na číslo</pre>
+<p>Logická hodnota: 0 je <code>false</code>, cokoliv jiného je <code>true</code></p>
+<p>Inverze logické hodnoty: <code>NOT</code> (poznámka: <code>NOT NOT
+    10 = 1</code>)</p>
+<p>Aritmetická operace obsahující alespoň jedno reálné číslo vrátí jako výsledek reálné číslo:</p>
+<pre class="screen">SET @A = 10 / 4.; -- 4. je reálné číslo, takže výsledek je reálné číslo: @A = 2.5
+SET @A = 10 / 4;  -- 4 je celé číslo, takže výsledkem je celé číslo: @A = 2</pre>
+<h5>Záznamy</h5>
+<p>Porovnávání: <code>= &lt;&gt; &gt; &lt; &lt;= &gt;= AND
+    OR</code></p>
+<p>Logická hodnota: záznam s nulovým počtem řádků je <code>false</code>, cokoliv jiného je <code>true</code></p>
+<p>Inverze logické hodnoty: <code>NOT</code></p>
+<p>Porovnávání záznamů je o inkluzi a exkluzi. Pořadí řádků není podstatné. <code>&lt;=</code> znamená, že každý 
+   řádek v levém operandu má odpovídající v pravém operandu. <code>&gt;=</code> je opakem. <code>=</code> znamená, 
+   že musí být pravdivé současně <code>&lt;=</code> i <code>&gt;=</code></p>
+<p>Porovnávání se provádí na řetězcích: i když záznam obsahuje čísla jako <code>10</code> a <code>1e1</code>, dostaneme 
+   <code>'10' &lt;&gt; '1e1'</code>.</p>
+
+<!-- ----------------------------------------------------------------------  -->
+
+<h3><a name="control"></a>Struktury pro řízení běhu</h3>
+<h4><a name="control1"></a>Struktury podmínek</h4>
+<pre class="screen">IF podmínka
+BEGIN
+    přikazy pgScript
+END
+ELSE
+BEGIN
+    příkazy pgScript
+END</pre>
+<p>Příkazy pgScript jsou nepovinné. Klíčová slova <strong class="command">BEGIN</strong> a <strong class="command">END</strong> jsou volitelná v případě, že příkaz pgScript je jen jeden.</p>
+<h4><a name="control2"></a>Struktury cyklů</h4>
+<pre class="screen">WHILE podmínka
+BEGIN
+    příkazy pgScript
+END</pre>
+<p>Příkazy pgScript jsou nepovinné. Klíčová slova <strong class="command">BEGIN</strong> a <strong class="command">END</strong> jsou volitelná v případě, že příkaz pgScript je jen jeden.</p>
+<p><strong class="command">BREAK</strong> ukončí smyčku cyklu <strong class="command">WHILE</strong>, ve které je uzavřený, zatímco <strong class="command">CONTINUE</strong> způsobí přechod na další iteraci cyklu, ve kterém byl vyvolaný. <strong class="command">RETURN</strong> funguje 
+podobně jako <strong class="command">BREAK</strong>.</p>
+<pre class="screen">WHILE podmínka1
+BEGIN
+    IF podmínka2
+    BEGIN
+        BREAK;
+    END
+END</pre>
+<h4><a name="control3"></a>Podmínky</h4>
+<p>Podmínky jsou ve skutečnosti výsledky operací. Například porovnávání řetězců <code>'ab' = 'ac'</code> vrátí <code>false</code>.</p>
+<pre class="screen">IF 'ab' ~= 'AB' -- Porovnávání bez citlivosti na velikost písmen, jehož výsledkem je 1 (true)
+BEGIN
+    -- Toto nastane
+END
+
+IF 0 -- false
+BEGIN
+    -- Toto <strong>nenastane</strong>
+END
+ELSE
+BEGIN
+    -- Toto nastane
+END
+
+WHILE 1
+BEGIN
+    -- Nekonečná smyčka: použijte BREAK pro ukončení
+END</pre>
+<p>Výsledek dotazu SQL SELECT je možné přímo použít jako podmínku. Dotaz se musí uzavřít do závorek:</p>
+<pre class="screen">IF (SELECT 1 FROM tabulka)
+BEGIN
+    -- Toto znamená, že tabulka existuje, jinak by podmínka musela být false
+END</pre>
+
+<!-- ----------------------------------------------------------------------  -->
+
+<h3><a name="functions"></a>Doplňující funkce a procedury</h3>
+<h4><a name="function1"></a>Procedury</h4>
+<p>Procedury nevrací výsledek. Musí se použít na samostatném řádku a nelze je přiřadit proměnné.</p>
+<h5>Print</h5>
+<p>Výpíše výraz na obrazovku:</p>
+<pre class="screen">PRINT 'Hodnota @A je' + CAST (@A AS STRING);</pre>
+<h5>Assert</h5>
+<p>Vyvolá výjimku pokud je výsledkem výrazu false:</p>
+<pre class="screen">ASSERT 5 &gt; 3 AND 'a' = 'a';</pre>
+<h5>RmLine</h5>
+<p>Odebere konkrétní řádek ze záznamu:</p>
+<pre class="screen">RMLINE(@R[1]); -- Odebere druhý řádek @R</pre>
+<h4><a name="function2"></a>Funkce</h4>
+<p>Funkce vrací výsledek. Vrácený výsledek můžete přiřadit do proměnné, podobně jako u operace <code>CAST</code>.</p>
+<h5>Trim</h5>
+<p>Odstraní přebytečné mezery obklopující řetězec:</p>
+<pre class="screen">SET @A = TRIM(' a '); -- @A = 'a'</pre>
+<h5>Lines</h5>
+<p>Vrátí počet řádků v záznamu:</p>
+<pre class="screen">IF LINES(@R) &gt; 0
+BEGIN
+    -- Zpracování
+END</pre>
+<h5>Columns</h5>
+<p>Vrátí počet sloupců v záznamu:</p>
+<pre class="screen">IF COLUMNS(@R) &gt; 0
+BEGIN
+    -- Zpracování
+END</pre>
+
+<!-- ----------------------------------------------------------------------  -->
+
+<h3><a name="generators"></a>Generátory náhodných dat</h3>
+<h4><a name="generator1"></a>Přehled o generátorech</h4>
+<p>Generátor náhodných dat můžete do proměnné přiřadit příkazem <strong class="command">SET</strong>.
+   Proměnná pak bude mít, pokaždé když se použije, jinou hodnotu.</p>
+<p>Jinak se proměnná používá tak, jak je běžné:</p>
+<pre class="screen">SET @G = STRING(10, 20, 2);
+SET @A = @G; -- @A obsahuje náhodný řetězec
+SET @B = @G; -- @B obsahuje jiný náhodný řetězec
+PRINT @G,    -- Vypíše ještě jiný náhodný řetězec</pre>
+<h4><a name="generator2"></a>Sekvence a semínka</h4>
+<p>Běžnými parametry datových generátorů jsou <span class="emphasis"><em>sekvence</em></span> a <span class="emphasis"><em>semínka</em></span>.</p>
+<p><span class="emphasis"><em>sekvence</em></span> znamená, že hodnoty se generují v náhodném pořadí, každá hodnota se ale vyskytne maximálně
+   jednou, dokud se sekvence nezačne znovu. To lze s úspěchem využít pro sloupce s omezením jedinečnosti <code>UNIQUE</code>. Např. následující
+   generátor:</p>
+<pre class="screen">SET @G = INTEGER(10, 15, 1); -- 1 znamená, že se bude generovat sekvence</pre>
+<p>může generovat třeba takové hodnoty: <code class="computeroutput">14 12 10 13 11 15 14 12 10 13 11</code>..., kde se každé číslo objeví jen
+   jednou, dokud se generátor nespustí znovu od začátku.</p>
+<p>Parametr <span class="emphasis"><em>sequence</em></span> musí být celé číslo. Pokud je 0, tak se negeneruje sekvence (výchozí volba), jakékoliv
+   jiné číslo generuje sekvenci.</p>
+<p><span class="emphasis"><em>semínko</em></span> je celé číslo, které inicializuje generátor. Dva generátory se stejnými parametry a stejným
+   semínkem budou generovat <strong>přesně</strong> stejné hodnoty.</p>
+<p><span class="emphasis"><em>semínko</em></span> musí být celé číslo, které se použije přímo k inicializaci generátoru náhodných dat.</p>
+<h4><a name="generator3"></a>Generátory dat</h4>
+<p>Volitelné parametry jsou uvedené v hranatých závorkách.</p>
+<pre class="screen">Generátor
+    : INTEGER ( min, max, [sekvence], [semínko] );
+    | REAL ( min, max, přesnost, [sekvence], [semínko] );
+    | DATE ( min, max, [sekvence], [semínko] );
+    | TIME ( min, max, [sekvence], [semínko] );
+    | DATETIME ( min, max, [sekvence], [semínko] );
+    | STRING ( min, max, [počet], [semínko] );
+    | REGEX ( regvýraz, [semínko] );
+    | FILE ( cesta, [sekvence], [semínko], [kódování] );
+    | REFERENCE ( tabulka, sloupec, [sekvence], [semínko] );</pre>
+<h5>Celá čísla</h5>
+<pre class="screen">INTEGER ( min, max, [sekvence], [semínko] );
+INTEGER ( -10, 10, 1, 123456 );</pre>
+<p><code>min</code> je celé číslo, <code>max</code> je celé číslo, <code>sekvence</code> je celé číslo a <code>semínko</code> je rovněž celé číslo.</p>
+<h5>Realná čísla</h5>
+<pre class="screen">REAL ( min, max, přesnost, [sekvence], [semínko] );
+REAL ( 1.5, 1.8, 2, 1 );</pre>
+<p><code>min</code> je číslo, <code>max</code> je číslo, <code>přesnost</code> je celé číslo, které udává počet desetinných míst (mělo by být menší než 
+   30), <code>sekvence</code> je celé číslo a <code>semínko</code> je celé číslo.</p>
+<h5>Datumy</h5>
+<pre class="screen">DATE ( min, max, [sekvence], [semínko] );
+DATE ( '2008-05-01', '2008-05-05', 0 );</pre>
+<p><code>min</code> je řetězec představujíc datum, <code>max</code> je řetězec představující datum, <code>sekvence</code> je celé číslo a 
+   <code>semínko</code> je celé číslo.</p>
+<h5>Časy</h5>
+<pre class="screen">TIME ( min, max, [sekvence], [semínko] );
+TIME ( '00:30:00', '00:30:15', 0 );</pre>
+<p><code>min</code> je řetězec představující čas, <code>max</code> je řetězec představující čas, <code>sekvence</code> je celé číslo a 
+   <code>semínko</code> je celé číslo.</p>
+<h5>Časová razítka (datum/čas)</h5>
+<pre class="screen">DATETIME ( min, max, [sekvence], [semínko] );
+DATETIME ( '2008-05-01 14:00:00', '2008-05-05 15:00:00', 1 );</pre>
+<p><code>min</code> je řetězec představující časové razítko, <code>max</code> je řetězec představující časové razítko, <code>sekvence</code> 
+   je celé číslo a <code>semínko</code> je celé číslo.</p>
+<h5>Řetězce</h5>
+<pre class="screen">STRING ( min, max, [počet], [semínko] );
+STRING ( 10, 20, 5 );</pre>
+<p><code>min</code> je celé číslo udávající minimální délku slova, <code>max</code> je celé číslo udávající maximální délku slova, 
+   <code>počet</code> je celé číslo udávající počet slov (výchozí je: <code>1</code>) a <code>semínko</code> je celé číslo.</p>
+<p>V předchozím příkladu se bude generovat 5 slov (oddělených mezerami) s délkou od 10 do 20 znaků.</p>
+<h5>Řetězce z regulárního výrazu</h5>
+<pre class="screen">REGEX ( regvýraz, [semínko] );
+REGEX ( '[a-z]{1,3}@[0-9]{3}' );</pre>
+<p><code>regvýraz</code> je řetězec představující jednoduchý regulární výraz a <code>semínko</code> je celé číslo.</p>
+<p>Jednoduchý regulární výraz se skládá z:</p>
+<ul type="disc">
+    <li>
+        <p>Množiny možných znaků, např. <code>[a-z_.]</code> pro znaky v rozmezí <code>a</code> až <code>z</code> + <code>_</code> a <code>.</code></p>
+    </li>
+    <li>
+        <p>Samostatných znaků.</p>
+    </li>
+</ul>
+<p>Lze určit minimální a maximální délku pro předcházející množinu nebo znak:</p>
+<ul type="disc">
+    <li>
+        <p><code>{min, max}</code>, např. <code>{1,3}</code> pro délku v rozmezí <code>1</code> až <code>3</code> znaky.</p>
+    </li>
+    <li>
+        <p><code>{min}</code>, např. <code>{3}</code> pro délku <code>3</code> znaky.</p>
+    </li>
+    <li>
+        <p>Výchozí délka (pokud není zadaná) je <code>1</code> znak.</p>
+    </li>
+</ul>
+<p>Poznámka: dávejte pozor při zadávání mezer, protože např. <code>'a {3}'</code> znamená jeden znak <code>a</code> následovaný třemi mezerami, protože 
+   <code>3</code> se váže k poslednímu znaku, což je v tomto případě mezera.</p>
+<p>Pokud potřebujete zadat <code>[</code> <code>]</code> <code>\</code> <code>{</code> nebo <code>}</code>, musíte tyto znaky ošetřit zpětným lomítkem, 
+   protože se jedná o znaky se speciálním významem. Nezapomeňte použít <strong>zdvojené zpětné lomítko</strong>: 
+   <code>'\\[{3}'</code> pro tři znaky <code>[</code>.</p>
+<h5>Řetězce ze slovníkových souborů</h5>
+<pre class="screen">FILE ( cesta, [sekvence], [semínko], [kódování] );
+FILE ( 'soubor.txt', 0, 54321, 'utf-8' );</pre>
+<p><code>cesta</code> je řetězec představující cestu k textovému souboru, <code>sekvence</code> je celé číslo, <code>semínko</code> je celé číslo a 
+   <code>kódování</code> je řetězec představující znakovou sadu použitou v souboru (výchozí je kódování podle nastavení v systému).</p>
+<p>Generují se celá čísla v rozmezí od 1 do počtu řádků souboru a vrátí se příslušný řádek. Pokud soubor neexistuje, vyvolá se výjimka.</p>
+<p>Jako <code>kódování</code> je podporovaná většina známých kódování jako utf-8, utf-16le, utf-16be, iso-8859-1, ...</p>
+<h5>Odkaz na jiné pole</h5>
+<pre class="screen">REFERENCE ( tabulka, sloupec, [sekvence], [semínko] );
+REFERENCE ( 'tab', 'col', 1 );</pre>
+<p><code>tabulka</code> je řetězec představující název tabulky, <code>sloupec</code> je řetězec představující název sloupce tabulky, 
+   <code>sekvence</code> je celé číslo a <code>semínko</code> je celé číslo.</p>
+<p>Účel použití je pro generování dat do sloupců určených jako cizí klíče.</p>
+</body>
+</html>

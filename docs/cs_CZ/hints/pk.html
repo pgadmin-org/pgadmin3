@@ -1,0 +1,37 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Rady odborníka</title>
+</head>
+
+<body>
+
+<h3>Primární klíče</h3>
+<p>
+Při návrhu tabulky byste měli vždy brát na vědomí, jak bude tabulka později adresovaná. Ve většině případů 
+budete potřebovat nějakou jednoznačnou identifikaci každého řádku. Takový jednoznačný identifikátor by měl být 
+vytvořený jako primární klíč. Primární klíč nemusí nutně sestávat z jediného sloupce. Může obsahovat tolik sloupců, 
+kolik je nutné pro jedinečnou identifikaci řádku. Pokud byste potřebovali hodně sloupců (odhadem více než 3), může být 
+dobrým řešením vymyslet doplňující sloupec s vhodným datovým typem, např. serial nebo bigserial, ve kterém se bude 
+primární klíč uchovávat.
+</p>
+<p>
+Pouze ve výjimečných případech není důležité vytvářet primární klíč. To znamená, že chybějící primární klíč je docela 
+významný ukazatel, že návrh tabulky není dokončený. Proto se také objeví Rada odborníka, když vytvoříte tabulku bez 
+primárního klíče.
+</p>
+<p>
+Když se podíváte na systémové tabulky PostgreSQL, zjistíte že žádná z nich nemá primární klíč. Co si o tom myslet? 
+Ve skutečnosti všechny tyto tabulky mají jeden nebo více sloupců (obvykle pouze OID), které jedinečně identifikují
+každý řádek a přitom dodržují pravidlo pro primární klíče, že nesmí být nulové a jsou pokryté indexem pro rychlý přístup.
+Použití OID má historické příčiny a skutečně to není hlavní volba při návrhu uživatelských tabulek. PostgreSQL je používá
+kvůli zpětné kompatibilitě a hned tak se to nezmění, přestože novější koncepce by výslovně použila primární klíče.
+</p>
+<p>
+Jak je vidět na případu systémových tabulek, cíle unikátnosti a rychlého přístupu lze dosáhnout i s jinými přístupy, než
+jen primárním klíčem. Přesto, kvůli čistotě datového modelu, vám důrazně doporučujeme pro tyto účely používat primární klíče.
+</p>
+</body>
+</html>

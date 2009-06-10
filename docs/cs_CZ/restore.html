@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Obnova</title>
+</head>
+
+<body>
+
+<h3>Obnova</h3>
+<center><img src="images/restore.png"></center>
+
+<p>
+Dialog zálohování je v podstatě jednoduché rozhraní nástroje PostgreSQL <a href="pg/app-pgrestore.html">pg_restore</a>.
+</p>
+<p>
+Když vyberete platný záložní soubor a zmáčknete tlačítko „Zobrazit“, pgAdmin načte obsah zálohy. V závislosti na velikosti
+souboru to může chvíli trvat. Průběh můžete sledovat na kartě „Zprávy“. Po dokončení zobrazí pgAdmin obsah na kartě „Obsah“.
+</p>
+<p>
+Tento nástroj záměrně nevytváří databázi, která se má obnovit. Nejdříve musíte databázi vytvořit pomocí pgAdmin a teprve
+potom spustit nástroj na obnovu a databázi mít přitom vybranou. Tak se data obnoví do této databáze.
+</p>
+<p>
+I když jste v režimu obnovy databáze (to je indikováno v titulku dialogu, tak jak je tomu na ukázkovém obrázku), můžete
+obnovit i jednotlivý objekt. Po zobrazení obsahu záložního souboru požadovanou tabulku vyberete na kartě „Obsah“ a zvolíte
+„Jednotlivý objekt“. Tímto postupem se obnoví jen ona zvolená tabulka.
+</p>
+<p>
+Jako cíl obnovy můžete mít zvolenou i tabulku. pgAdmin v takovém případě obnoví její obsah, pokud jej záložní soubor
+obsahuje.
+</p>
+Aby obnova fungovala, musí mít pgAdmin přístup k nástroji pg_restore. To lze splnit dvěma způsoby. Buď musí být umístěný
+v prohledávané cestě nebo ve stejné složce, ve které je spustitelný soubor pgadmin3.
+<p>
+
+</body>
+
+</html>
