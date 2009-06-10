@@ -273,24 +273,6 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     manager.GetPane(wxT("Transactions")).Caption(_("Transactions"));
     manager.GetPane(wxT("Logfile")).Caption(_("Logfile"));
 
-    // XACT and LOG panes must be hidden once again if server doesn't deal with them
-    if (!(connection->BackendMinimumVersion(8, 0) && 
-         connection->HasFeature(FEATURE_FILEREAD)))
-    {
-        manager.GetPane(wxT("Logfile")).Show(false);
-    }
-    if (!connection->BackendMinimumVersion(8, 1))
-    {
-        manager.GetPane(wxT("Transactions")).Show(false);
-    }
-    else if (connection->GetIsGreenplum())
-    {
-        // GPDB doesn't have external global transactions.
-        // Perhaps we should use this display to show our
-        // global xid to local xid mappings?
-        manager.GetPane(wxT("Transactions")).Show(false);
-    }
-
     // Tell the manager to "commit" all the changes just made
     manager.Update();
 
@@ -337,13 +319,21 @@ frmStatus::~frmStatus()
     if (viewMenu->IsEnabled(MNU_XACTPAGE))
     {
         settings->Write(wxT("frmStatus/RefreshXactRate"), xactRate);
-        delete xactTimer;
+        if (xactTimer)
+        {
+            delete xactTimer;
+            xactTimer = NULL;
+        }
     }
     if (viewMenu->IsEnabled(MNU_LOGPAGE))
     {
         settings->Write(wxT("frmStatus/RefreshLogRate"), logRate);
         emptyLogfileCombo();
-        delete logTimer;
+        if (logTimer)
+        {
+            delete logTimer;
+            logTimer = NULL;
+        }
     }
 
     // If connection is still available, delete it
@@ -529,12 +519,16 @@ void frmStatus::AddXactPane()
     xactList = (ctlListView*)lstXacts;
 
     // We don't need this report if server release is less than 8.1
-    if (!connection->BackendMinimumVersion(8, 1))
+    // GPDB doesn't have external global transactions.
+    // Perhaps we should use this display to show our
+    // global xid to local xid mappings?
+    if (!connection->BackendMinimumVersion(8, 1) || connection->GetIsGreenplum())
     {
-        // Uncheck and disable menu        
-        viewMenu->Enable(MNU_XACTPAGE, false);
-        viewMenu->Check(MNU_XACTPAGE, false);
-        manager.GetPane(wxT("Transactions")).Show(false);
+        // manager.GetPane(wxT("Transactions")).Show(false);
+        lstXacts->InsertColumn(lstXacts->GetColumnCount(), _("Message"), wxLIST_FORMAT_LEFT, 800);
+        lstXacts->InsertItem(lstXacts->GetItemCount(), _("Prepared transactions not available on this server."));
+        lstXacts->Enable(false);
+        xactTimer = NULL;
         
         // We're done
         return;
@@ -591,8 +585,10 @@ void frmStatus::AddLogPane()
         if (connection->BackendMinimumVersion(8, 0))
             frmHint::ShowHint(this, HINT_INSTRUMENTATION);
         
-        logList->AddColumn(_("Log entry"), 800);
-
+        logList->InsertColumn(logList->GetColumnCount(), _("Message"), wxLIST_FORMAT_LEFT, 800);
+        logList->InsertItem(logList->GetItemCount(), _("Logs are not available for this server."));
+        logList->Enable(false);
+        logTimer = NULL;
         // We're done
         return;
     }
@@ -721,12 +717,14 @@ void frmStatus::OnPaneClose(wxAuiManagerEvent& evt)
     if (evt.pane->name == wxT("Transactions"))
     {
         viewMenu->Check(MNU_XACTPAGE, false);
-        xactTimer->Stop();
+        if (xactTimer)
+            xactTimer->Stop();
     }
     if (evt.pane->name == wxT("Logfile"))
     {
         viewMenu->Check(MNU_LOGPAGE, false);
-        logTimer->Stop();
+        if (logTimer)
+            logTimer->Stop();
     }
 }
 
@@ -777,13 +775,14 @@ void frmStatus::OnToggleXactPane(wxCommandEvent& event)
     {
         manager.GetPane(wxT("Transactions")).Show(true);
         cbRate->SetValue(rateToCboString(xactRate));
-        if (xactRate > 0)
+        if (xactRate > 0 && xactTimer)
             xactTimer->Start(xactRate*1000L);
     }
     else
     {
         manager.GetPane(wxT("Transactions")).Show(false);
-        xactTimer->Stop();
+        if (xactTimer)
+            xactTimer->Stop();
     }
     
     // Tell the manager to "commit" all the changes just made
@@ -797,13 +796,14 @@ void frmStatus::OnToggleLogPane(wxCommandEvent& event)
     {
         manager.GetPane(wxT("Logfile")).Show(true);
         cbRate->SetValue(rateToCboString(logRate));
-        if (logRate > 0)
+        if (logRate > 0 && logTimer)
             logTimer->Start(logRate*1000L);
     }
     else
     {
         manager.GetPane(wxT("Logfile")).Show(false);
-        logTimer->Stop();
+        if (logTimer)
+            logTimer->Stop();
     }
     
     // Tell the manager to "commit" all the changes just made
@@ -896,10 +896,13 @@ void frmStatus::OnRateChange(wxCommandEvent &event)
             return;
             break;
     }
-    
-    timer->Stop();
-    if (rate > 0)
-        timer->Start(rate*1000L);
+
+    if (timer)
+    {
+        timer->Stop();
+        if (rate > 0)
+            timer->Start(rate*1000L);
+    }
     OnRefresh(event);
 }
 
@@ -950,8 +953,10 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
     {
         statusTimer->Stop();
         locksTimer->Stop();
-        xactTimer->Stop();
-        logTimer->Stop();
+        if (xactTimer)
+            xactTimer->Stop();
+        if (logTimer)
+            logTimer->Stop();
         statusBar->SetStatusText(wxT("Connection broken."));
         return;
     }
@@ -1057,8 +1062,10 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
     {
         statusTimer->Stop();
         locksTimer->Stop();
-        xactTimer->Stop();
-        logTimer->Stop();
+        if (xactTimer)
+            xactTimer->Stop();
+        if (logTimer)
+            logTimer->Stop();
         statusBar->SetStatusText(wxT("Connection broken."));
         return;
     }
@@ -1197,7 +1204,7 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
 {
     long pid=0;
 
-    if (! viewMenu->IsEnabled(MNU_XACTPAGE) || ! viewMenu->IsChecked(MNU_XACTPAGE))
+    if (! viewMenu->IsEnabled(MNU_XACTPAGE) || ! viewMenu->IsChecked(MNU_XACTPAGE) || !xactTimer)
         return;
 
     if (!connection)
@@ -1205,7 +1212,8 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
         statusTimer->Stop();
         locksTimer->Stop();
         xactTimer->Stop();
-        logTimer->Stop();
+        if (logTimer)
+            logTimer->Stop();
         statusBar->SetStatusText(wxT("Connection broken."));
         return;
     }
@@ -1281,14 +1289,15 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
 
 void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
 {
-    if (! viewMenu->IsEnabled(MNU_LOGPAGE) || ! viewMenu->IsChecked(MNU_LOGPAGE))
+    if (! viewMenu->IsEnabled(MNU_LOGPAGE) || ! viewMenu->IsChecked(MNU_LOGPAGE) || !logTimer)
         return;
 
     if (!connection)
     {
         statusTimer->Stop();
         locksTimer->Stop();
-        xactTimer->Stop();
+        if (xactTimer)
+            xactTimer->Stop();
         logTimer->Stop();
         statusBar->SetStatusText(wxT("Connection broken."));
         return;
@@ -1432,8 +1441,10 @@ void frmStatus::checkConnection()
         connection=0;
         statusTimer->Stop();
         locksTimer->Stop();
-        xactTimer->Stop();
-        logTimer->Stop();
+        if (xactTimer)
+            xactTimer->Stop();
+        if (logTimer)
+            logTimer->Stop();
         statusBar->SetStatusText(_("Connection broken."));
     }
 }
