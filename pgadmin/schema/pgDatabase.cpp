@@ -627,11 +627,16 @@ bool pgDatabase::CanDebugPlpgsql()
     else if (canDebugPlpgsql == 2)
         return true;
 
-    // Check the appropriate plugin is loaded
-    if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_debugger")))
+    // "show shared_preload_libraries" does not work for other than
+    // the super users.
+    if (GetServer()->GetSuperUser())
     {
-        canDebugPlpgsql = 1;
-        return false;
+        // Check the appropriate plugin is loaded
+        if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_debugger")))
+        {
+            canDebugPlpgsql = 1;
+            return false;
+        }
     }
 
     if (ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE proname = 'pldbg_get_target_info';")) == wxT("0"))
@@ -672,11 +677,16 @@ bool pgDatabase::CanDebugEdbspl()
     else if (canDebugEdbspl == 2)
         return true;
 
-    // Check the appropriate plugin is loaded
-    if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_spl_debugger")))
+    // "show shared_preload_libraries" does not work for other than
+    // the super users.
+    if (GetServer()->GetSuperUser())
     {
-        canDebugEdbspl = 1;
-        return false;
+        // Check the appropriate plugin is loaded
+        if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_spl_debugger")))
+        {
+            canDebugEdbspl = 1;
+            return false;
+        }
     }
 
     if (ExecuteScalar(wxT("SELECT count(*) FROM pg_proc WHERE proname = 'pldbg_get_target_info';")) == wxT("0"))
