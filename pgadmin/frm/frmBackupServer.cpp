@@ -222,3 +222,4 @@ bool backupServerFactory::CheckEnable(pgObject *obj)
     else
         return !pgBackupExecutable.IsEmpty() && pgAppMinimumVersion(pgBackupExecutable, 8, 3);
 }
+

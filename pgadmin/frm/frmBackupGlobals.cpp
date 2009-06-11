@@ -240,3 +240,4 @@ bool backupGlobalsFactory::CheckEnable(pgObject *obj)
     else
         return obj->CanBackupGlobals() && !pgBackupExecutable.IsEmpty() && pgAppMinimumVersion(pgBackupExecutable, 8, 3);
 }
+
