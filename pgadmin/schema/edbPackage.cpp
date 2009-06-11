@@ -54,9 +54,12 @@ wxString edbPackage::GetSql(ctlTree *browser)
         sql += GetHeaderInner();
         sql += wxT("\nEND ") + qtIdent(GetName()) + wxT(";\n\n");
 
-        sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nIS\n");
-        sql += GetBodyInner();
-        sql += wxT("\nEND ") + qtIdent(GetName()) + wxT(";\n\n");
+        if (!GetBodyInner().Trim().IsEmpty())
+        {
+            sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nIS\n");
+            sql += GetBodyInner();
+            sql += wxT("\nEND ") + qtIdent(GetName()) + wxT(";\n\n");
+        }
 
         sql += GetGrant(wxT("X"), wxT("PACKAGE ") + qtName);
 
