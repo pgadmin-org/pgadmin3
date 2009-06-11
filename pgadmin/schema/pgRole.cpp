@@ -310,7 +310,7 @@ void pgRole::ReassignDropOwnedTo(frmMain *form)
                 if (wxMessageBox(_("Are you sure you wish to reassign all objects owned by the selected role?"), _("Reassign objects"), wxYES_NO) == wxNO)
                     return;
 
-                query = wxT("REASSIGN OWNED BY ") + GetQuotedFullIdentifier() + wxT(" TO ") + rdo.GetRole();
+                query = wxT("REASSIGN OWNED BY ") + GetQuotedFullIdentifier() + wxT(" TO ") + qtIdent(rdo.GetRole());
             }
             else
             {
