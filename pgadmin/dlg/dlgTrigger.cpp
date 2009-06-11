@@ -114,6 +114,8 @@ int dlgTrigger::Go(bool modal)
             chkDelete->Disable();
 		    chkTruncate->Disable();
         }
+        else if (!connection->BackendMinimumVersion(8, 4))
+			chkTruncate->Disable();
     }
     else
     {
