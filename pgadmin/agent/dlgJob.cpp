@@ -217,6 +217,8 @@ int dlgJob::Go(bool modal)
     }
 
     returncode = dlgProperty::Go(modal);
+	
+	SetSqlReadOnly(true);
 
     // This fixes a UI glitch on MacOS X
     // Because of the new layout code, the Columns pane doesn't size itself properly

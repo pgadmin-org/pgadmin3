@@ -114,6 +114,7 @@ void dlgSchedule::OnChangeSize(wxSizeEvent &ev)
 
 int dlgSchedule::Go(bool modal)
 {
+	int returncode;
 
     if (schedule)
     {
@@ -197,7 +198,11 @@ int dlgSchedule::Go(bool modal)
         // create mode
     }
 
-    return dlgProperty::Go(modal);
+    returncode = dlgProperty::Go(modal);
+	
+	SetSqlReadOnly(true);
+
+	return returncode;
 }
 
 

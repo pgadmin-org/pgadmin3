@@ -84,6 +84,8 @@ pgObject *dlgStep::GetObject()
 
 int dlgStep::Go(bool modal)
 {
+	int returncode;
+	
     hasConnStrSupport = connection->TableHasColumn(wxT("pgagent"), wxT("pga_jobstep"), wxT("jstconnstr"));
     cbDatabase->Append(wxT(" "));
     cbDatabase->SetSelection(0);
@@ -139,7 +141,11 @@ int dlgStep::Go(bool modal)
             rbLocalConn->Enable(false);
     }
 
-    return dlgProperty::Go(modal);
+    returncode = dlgProperty::Go(modal);
+	
+	SetSqlReadOnly(true);
+
+	return returncode;
 }
 
 

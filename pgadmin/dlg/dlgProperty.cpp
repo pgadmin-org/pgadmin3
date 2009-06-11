@@ -208,6 +208,12 @@ void dlgProperty::EnableOK(bool enable)
 }
 
 
+void dlgProperty::SetSqlReadOnly(bool readonly)
+{
+    chkReadOnly->Enable(!readonly);
+}
+
+
 void dlgSecurityProperty::SetPrivilegesLayout()
 {
     securityPage->lbPrivileges->GetParent()->Layout();

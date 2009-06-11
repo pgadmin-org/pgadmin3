@@ -59,6 +59,7 @@ protected:
     ~dlgProperty();
 
     void EnableOK(bool enable);
+	void SetSqlReadOnly(bool readonly);
 	virtual bool IsUpToDate() { return true; };
     void ShowObject();
 	
