@@ -387,7 +387,7 @@ void frmEditGrid::SetLimit(const int rowlimit)
         if (limit <= 0)
             cbLimit->SetValue(_("No limit"));
         else
-                cbLimit->SetValue(wxString::Format(_("%i rows"), limit));
+            cbLimit->SetValue(wxString::Format(wxPLURAL("%i row", "%i rows", limit), limit));
     }
 }
 
@@ -668,7 +668,9 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
         {
             int copied;
             copied = sqlGrid->Copy();
-            SetStatusText(wxString::Format(_("Data from %d rows copied to clipboard."), copied));
+            SetStatusText(wxString::Format(
+                wxPLURAL("Data from %d row copied to clipboard.", "Data from %d rows copied to clipboard.", copied), 
+                copied));
         }
     }
 }
@@ -1062,10 +1064,7 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
         return;
 
     wxString prompt;
-    if (i == 1)
-        prompt.Printf(_("Are you sure you wish to delete the selected row?"));
-    else
-        prompt.Printf(_("Are you sure you wish to delete the %d selected rows?"), i);
+    prompt.Printf(wxPLURAL("Are you sure you wish to delete the selected row?", "Are you sure you wish to delete the %d selected rows?", i));
 
     wxMessageDialog msg(this, prompt, _("Delete rows?"), wxYES_NO | wxICON_QUESTION);
     if (msg.ShowModal() != wxID_YES)
@@ -1088,7 +1087,10 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
             i > 0 &&
             show_continue_message)
         {
-            wxMessageDialog msg(this, wxString::Format(_("There was an error deleting the previous record.\nAre you sure you wish to delete the remaining %d rows ?"), i), _("Delete more records ?"), wxYES_NO | wxICON_QUESTION);
+            wxMessageDialog msg(this, wxString::Format(wxPLURAL(
+                "There was an error deleting the previous record.\nAre you sure you wish to delete the remaining %d row?", 
+                "There was an error deleting the previous record.\nAre you sure you wish to delete the remaining %d rows?", 
+                i), i), _("Delete more records ?"), wxYES_NO | wxICON_QUESTION);
             if (msg.ShowModal() != wxID_YES)
                 break;
             else
@@ -1099,7 +1101,7 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
 
     sqlGrid->EndBatch();
 
-    SetStatusText(wxString::Format(_("%d rows."), sqlGrid->GetTable()->GetNumberStoredRows()), 0);
+    SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", sqlGrid->GetTable()->GetNumberStoredRows()), sqlGrid->GetTable()->GetNumberStoredRows()), 0);
 }
 
 
@@ -1318,7 +1320,7 @@ void frmEditGrid::Go()
         toolsMenu->Enable(MNU_REMOVESORT, true);
         return;
     }
-    SetStatusText(wxString::Format(_("%d rows."), thread->DataSet()->NumRows()), 0);
+    SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", thread->DataSet()->NumRows()), thread->DataSet()->NumRows()), 0);
 
     sqlGrid->BeginBatch();
 
@@ -3082,7 +3084,7 @@ wxWindow *editGridFilteredFactory::StartDialog(frmMain *form, pgObject *obj)
 
 editGridLimitedFactory::editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, int limit) : editGridFactoryBase(list)
 {
-    mnu->Append(id, wxString::Format(_("View Top %i Rows"), limit), _("View a limited number of rows in the selected object."));
+    mnu->Append(id, wxString::Format(wxPLURAL("View Top %i Row", "View Top %i Rows", limit), limit), _("View a limited number of rows in the selected object."));
     rowlimit = limit;
     context = false;
 }

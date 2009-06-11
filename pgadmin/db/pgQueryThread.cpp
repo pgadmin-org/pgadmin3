@@ -145,14 +145,16 @@ int pgQueryThread::execute()
             insertedOid=PQoidValue(res);
             if (insertedOid && insertedOid != (OID)-1)
                 appendMessage(wxString::Format(_("Query inserted one row with OID %d.\n"), insertedOid));
-			else
-                appendMessage(wxString::Format(_("Query result with %d rows will be returned.\n"), PQntuples(result)));
+            else
+                appendMessage(wxString::Format(wxPLURAL("Query result with %d row will be returned.\n", "Query result with %d rows will be returned.\n", 
+                    PQntuples(result)), PQntuples(result)));
             continue;
         }
         if (lastResult)
         {
             if (PQntuples(lastResult))
-                appendMessage(wxString::Format(_("Query result with %d rows discarded.\n"), PQntuples(lastResult)));
+                appendMessage(wxString::Format(wxPLURAL("Query result with %d row discarded.\n", "Query result with %d rows discarded.\n", 
+                    PQntuples(lastResult)), PQntuples(lastResult)));
             PQclear(lastResult);
         }
         lastResult=res;

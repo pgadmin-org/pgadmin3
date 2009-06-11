@@ -287,7 +287,10 @@ bool frmExport::Export(pgSet *set)
     file.Close();
 
     if (skipped)
-        wxLogError(_("Data export incomplete.\n\n%d row(s) contained characters that could not be converted to the local charset.\n\nPlease correct the data or try using UTF8 instead."), skipped);
+        wxLogError(wxPLURAL(
+            "Data export incomplete.\n\n%d row contained characters that could not be converted to the local charset.\n\nPlease correct the data or try using UTF8 instead.", 
+            "Data export incomplete.\n\n%d rows contained characters that could not be converted to the local charset.\n\nPlease correct the data or try using UTF8 instead.", 
+            skipped), skipped);
     else
         wxMessageBox(_("Data export completed successfully."), _("Export data"), wxICON_INFORMATION | wxOK);
 
