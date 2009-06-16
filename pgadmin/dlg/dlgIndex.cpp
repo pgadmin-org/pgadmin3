@@ -179,13 +179,15 @@ void dlgIndex::CheckChange()
     {
         if (txtFillFactor)
         {
-            fill = txtFillFactor->GetValue() != index->GetFillFactor();
+            fill = txtFillFactor->GetValue() != index->GetFillFactor() && !txtFillFactor->GetValue().IsEmpty();
         }
 
         EnableOK(fill || 
                  txtComment->GetValue() != index->GetComment() || 
                  chkClustered->GetValue() != index->GetIsClustered() ||
-                 cbTablespace->GetOIDKey() != index->GetTablespaceOid());
+                 cbTablespace->GetOIDKey() != index->GetTablespaceOid() ||
+                 (txtName->GetValue() != index->GetName() && 
+                 txtName->GetValue().Length() != 0));
     }
     else
     {
@@ -382,6 +384,9 @@ int dlgIndex::Go(bool modal)
 
     int returnCode = dlgIndexBase::Go(modal);
 
+    if (index && connection->BackendMinimumVersion(8, 0))
+        txtName->Enable(true);
+
     // This fixes a UI glitch on MacOS X
     // Because of the new layout code, the Columns pane doesn't size itself properly
     SetSize(GetSize().GetWidth()+1, GetSize().GetHeight());
@@ -516,10 +521,24 @@ wxString dlgIndex::GetSql()
         }
         else
         {
-            if (connection->BackendMinimumVersion(8, 0) && cbTablespace->GetOIDKey() != index->GetTablespaceOid())
-                sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".") + qtIdent(name) 
-                    +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
-                    + wxT(";\n");
+            if (connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
+                sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".")
+                    + qtIdent(index->GetName()) +  wxT(" SET (FILLFACTOR=")
+                    + txtFillFactor->GetValue() + wxT(");\n");
+
+            if(connection->BackendMinimumVersion(8, 0))
+            {
+                if (index->GetName() != txtName->GetValue() &&
+                    !txtName->GetValue().IsEmpty())
+                    sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".")
+                        + qtIdent(index->GetName()) +  wxT(" RENAME TO ")
+                        + qtIdent(txtName->GetValue()) + wxT(";\n");
+
+                if (cbTablespace->GetOIDKey() != index->GetTablespaceOid())
+                    sql += wxT("ALTER INDEX ") + qtIdent(index->GetSchema()->GetName()) + wxT(".") + qtIdent(name) 
+                        +  wxT(" SET TABLESPACE ") + qtIdent(cbTablespace->GetValue())
+                        +  wxT(";\n");
+            }
         }
         if (connection->BackendMinimumVersion(7, 4))
         {
@@ -530,9 +549,7 @@ wxString dlgIndex::GetSql()
                 sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
                     +  wxT(" CLUSTER ON ") + qtIdent(name) + wxT(";\n");
         }
-        if (index && connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
-            sql += wxT("ALTER INDEX ") + qtIdent(name)
-                +  wxT(" SET (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(");\n");
+
         AppendComment(sql, wxT("INDEX"), table->GetSchema(), index);
     }
     return sql;
