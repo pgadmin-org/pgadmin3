@@ -97,7 +97,7 @@ int pgObject::GetTypeId(const wxString &typname)
 
 
 pgObject::pgObject(pgaFactory &_factory, const wxString& newName)
-: wxTreeItemData()
+: wxTreeItemData(), oid(0)
 {
     factory=&_factory;
 
@@ -114,7 +114,7 @@ pgObject::pgObject(pgaFactory &_factory, const wxString& newName)
 
 
 pgObject::pgObject(int newType, const wxString& newName)
-: wxTreeItemData()
+: wxTreeItemData(), oid(0)
 {
     factory=pgaFactory::GetFactory(newType);
 
@@ -347,7 +347,12 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
 {
     wxString where;
     if (wh.IsEmpty())
-        where = wxT(" WHERE dep.objid=") + GetOidStr();
+    {
+        if(!GetOidStr().IsSameAs(wxT("0")))
+            where = wxT(" WHERE dep.objid=") + GetOidStr();
+        else
+            return;
+    }
     else
         where = wh;
     /*
