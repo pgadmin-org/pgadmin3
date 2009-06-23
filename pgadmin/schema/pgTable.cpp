@@ -1257,8 +1257,9 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
         query += wxT(" WHERE relkind IN ('r','s','t') AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
 
         // Greenplum: Eliminate (sub)partitions from the display, only show the parent partitioned table
+        // and eliminate external tables
         if (collection->GetConnection()->GetIsGreenplum() && collection->GetConnection()->BackendMinimumVersion(8, 2, 9))
-            query += wxT("AND rel.oid NOT IN (select parchildrelid from pg_partition_rule)");
+            query += wxT("AND rel.relstorage <> 'x' AND rel.oid NOT IN (select parchildrelid from pg_partition_rule)");
 
         query += restriction + 
             wxT(" ORDER BY relname");
