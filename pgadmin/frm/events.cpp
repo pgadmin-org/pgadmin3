@@ -588,7 +588,7 @@ void frmMain::ExecDrop(bool cascaded)
                             text = _("Are you sure you wish to drop multiple objects?");
                             caption = _("Drop multiple objects?");
                         }
-                        wxMessageDialog msg(this, text, caption, wxYES_NO | wxICON_QUESTION);
+                        wxMessageDialog msg(this, text, caption, wxYES_NO | wxICON_QUESTION | wxNO_DEFAULT);
                         if (msg.ShowModal() != wxID_YES)
                         {
                             return;
@@ -685,7 +685,7 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
                         data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str());
                 caption = wxString::Format(_("Drop %s?"), data->GetTranslatedTypeName().c_str());
             }
-            wxMessageDialog msg(this, text, caption, wxYES_NO | wxICON_QUESTION);
+            wxMessageDialog msg(this, text, caption, wxYES_NO | wxICON_QUESTION | wxNO_DEFAULT);
             if (msg.ShowModal() != wxID_YES)
             {
                 return false;
