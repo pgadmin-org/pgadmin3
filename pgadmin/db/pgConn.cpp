@@ -21,6 +21,8 @@
 // Network  headers
 #ifdef __WXMSW__
 #include <winsock.h>
+typedef u_long in_addr_t;
+
 #else
 
 #include <arpa/inet.h>
@@ -69,7 +71,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 
     // Check the hostname/ipaddress
     struct hostent *host;
-    unsigned long addr;
+    in_addr_t addr;
     conn=0;
     noticeArg=0;
     connStatus = PGCONN_BAD;
