@@ -295,7 +295,7 @@ bool ctlSQLBox::DoFind(const wxString &find, const wxString &replace, bool doRep
         selEnd = selStart + find.Length();
     }
 
-    if (selStart >= 0 && selStart != (unsigned int)(-1))
+    if (selStart >= 0 && selStart != (size_t)(-1))
     {
         if (reverse)
         {
