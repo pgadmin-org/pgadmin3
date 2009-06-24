@@ -1177,7 +1177,7 @@ void frmEditGrid::ShowForm(bool filter)
 {
     bool abort = false;
 
-    if (relkind == 'r' || relkind == 'v')
+    if (relkind == 'r' || relkind == 'v' || relkind == 'x')
     {
         if (filter) 
         {
