@@ -197,6 +197,10 @@ private:
     bool aborted;
     bool lastFileFormat;
 
+    // A simple mutex-like flag to prevent concurrent script execution.
+    // Required because the pgScript parser isn't currently thread-safe :-(
+    static bool    ms_pgScriptRunning;
+
     DECLARE_EVENT_TABLE()
 };
 

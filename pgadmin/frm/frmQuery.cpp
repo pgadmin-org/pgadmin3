@@ -75,6 +75,12 @@
 #define CTRLID_CONNECTION       4200
 #define CTRLID_DATABASELABEL    4201
 
+// Initialize execution 'mutex'. As this will always run in the
+// main thread, there aren't any real concurrency issues, so
+// a simple flag will suffice.
+// Required because the pgScript parser isn't currently thread-safe :-(
+bool    frmQuery::ms_pgScriptRunning = false;
+
 BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 EVT_ERASE_BACKGROUND(           frmQuery::OnEraseBackground)
 EVT_SIZE(                       frmQuery::OnSize)
@@ -1863,6 +1869,15 @@ void frmQuery::OnExecScript(wxCommandEvent& event)
     if (query.IsNull())
         return;
 
+    // Make sure pgScript is not already running
+    // Required because the pgScript parser isn't currently thread-safe :-(
+    if (frmQuery::ms_pgScriptRunning == true)
+    {
+        wxMessageBox(_("pgScript already running."), _("Concurrent execution of pgScripts is not supported at this time."), wxICON_WARNING);
+        return;
+    }
+    frmQuery::ms_pgScriptRunning = true;
+
     // Clear markers and indicators
     sqlQuery->MarkerDeleteAll(0);
     sqlQuery->StartStyling(0, wxSTC_INDICS_MASK);
@@ -2234,6 +2249,9 @@ void frmQuery::OnScriptComplete(wxCommandEvent &ev)
 
     // Reset tools
     setTools(false);
+
+    // Unlock our pseudo-mutex thingy
+    frmQuery::ms_pgScriptRunning = false;
 
     // Manage timer
     elapsedQuery = wxGetLocalTimeMillis() - startTimeQuery;
