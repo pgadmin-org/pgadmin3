@@ -1,0 +1,27 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>Unicode encoding on a Win32 server</h3>
+<p>
+The database <INFO> is created to use Unicode (UTF8) encoding to store data and 
+is operated on a PostgreSQL 8.0 server running on a Win32 server.
+</p>
+<p>
+The PostgreSQL 8.0 Win32 implementation is not able to sort character strings according 
+to appropriate collation sequences, because the operating system doesn't offer sufficient
+support for this.
+</p>
+<p>
+For this installation, it is recommended to use a locale specific encoding, run the cluster on
+a different operating system or upgrade your database cluster to PostgreSQL 8.1 which has 
+additional code to deal with unicode collations to solve the issue.
+</p>
+</body>
+</html>

@@ -1,0 +1,103 @@
+PRINT 'Testing trim';
+
+ASSERT TRIM('  abc ') = 'abc';
+ASSERT TRIM(8) = '8';
+ASSERT TRIM('  abc
+
+  ') = 'abc';
+ASSERT TRIM('abc ') = 'abc';
+ASSERT TRIM('  abc') = 'abc';
+ASSERT CAST (TRIM(8 + 2.5) AS REAL) = 10.5;
+ASSERT TRIM('  ab''c ') = 'ab''c';
+
+PRINT 'Testing cast';
+
+-- Record -> String & String -> Record
+DECLARE @A { @a, @b, @c };
+SET @A[0][0] = 1.00001e-5;
+SET @A[0][1] = 'I''m the game.';
+SET @A[0][2] = 'I\'m the game.';
+SET @A[1][0] = -2E-5;
+SET @A[1][1] = 'I''m the game.';
+SET @A[1][2] = 'I\'m the game.';
+SET @A[3][0] = 300001;
+SET @A[3][1] = 'I''m ("the") game.';
+SET @A[3][2] = 'I\'m (the) game.';
+SET @B = CAST (@A AS STRING);
+SET @C = CAST (@B AS RECORD);
+ASSERT @A = @C AND @A <= @C AND @C >= @A;
+RMLINE(@C[1]);
+ASSERT @C < @A AND @A <> @C;
+RMLINE(@C[0]);
+ASSERT @C < @A AND @A <> @C;
+RMLINE(@A[0]);
+RMLINE(@A[0]);
+ASSERT @A = @C AND @A <= @C AND @C >= @A;
+
+-- Record -> String & String -> Record
+DECLARE @A { @a, @b, @c };
+SET @A[0][0] = 1;
+SET @A[0][1] = 2;
+SET @A[0][2] = 3;
+SET @A[1][0] = 1;
+SET @A[1][1] = 2;
+SET @A[2][0] = 1;
+SET @A[2][1] = 2;
+SET @A[2][2] = 3;
+SET @B = '(1, 2, 3) (1, 2) (  1 , 2,3, 4) ';
+SET @A = CAST (@B AS RECORD);
+
+-- Record -> String & String -> Record
+DECLARE @A { @a, @b, @c };
+SET @A[0][0] = 'abc';
+SET @A[0][1] = 'abc';
+SET @A[0][2] = 'abc';
+SET @A[1][0] = 1;
+SET @A[1][1] = 2;
+SET @A[1][1] = 3;
+SET @A[2][0] = 1;
+SET @A[2][1] = 2;
+SET @A[2][2] = 3;
+SET @B = '("abc", abc , abc) (1, 2, 3) (  1 , 2,3, 4) ';
+SET @A = CAST (@B AS RECORD);
+
+-- String -> Integer & Integer -> String
+SET @A = '-10';
+SET @B = 10 * -1.0;
+ASSERT @B = CAST (@A AS INTEGER);
+SET @C = CAST (CAST (@A AS INTEGER) AS STRING);
+ASSERT @A = @C;
+
+SET @A = '+10';
+SET @B = 10;
+ASSERT @B = CAST (@A AS INTEGER);
+SET @C = CAST (CAST (@A AS INTEGER) AS STRING);
+ASSERT @A = '+' + @C;
+
+-- String -> Real & Real -> String
+SET @A = '5.5e-10';
+SET @B = 5.5 * 1e-10;
+ASSERT @B = CAST (@A AS REAL);
+SET @C = CAST (CAST (@A AS REAL) AS STRING);
+ASSERT @A = @C;
+
+-- Real -> Integer & Integer -> Real
+SET @A = '5.5';
+SET @B = 5;
+SET @C = 5.5;
+ASSERT @B = CAST (@A AS INTEGER);
+ASSERT @C > CAST (@A AS INTEGER);
+ASSERT CAST (@A AS INTEGER) = CAST (@C AS INTEGER);
+
+-- Record -> Number & Number -> Record
+DECLARE @A { @a };
+SET @A[0][0] = 5.5;
+ASSERT CAST (@A AS INTEGER) = 5;
+ASSERT CAST (@A AS REAL) = 5.5;
+ASSERT @A = CAST (5.5 AS RECORD);
+
+-- String -> Record
+DECLARE @A { @a };
+SET @A[0][0] = '(I''m the game)';
+SET @B = '(I''m the game)';
+ASSERT @A = CAST (@B AS RECORD);

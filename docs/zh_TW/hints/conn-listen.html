@@ -1,0 +1,42 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>伺服器沒有進行監聽</h3>
+<p>
+伺 服 器 無 法 接 受 連 線： 由 連 線 資 料 庫 報 告
+</p>
+<p>
+<b><tt class="command"><info></info></tt></b>
+</p>
+<p>
+
+如 果 看 到 這 個 消 息， 請 檢 查 正 在 試 圖 連 接 的 伺 服 器 是 否 在 指 定 端 口 下 運 行 PostgreSQL，
+使 用 ping 或 者 相 似 工 具 檢 查 客 戶 端 到 伺 服 器 主 機 之 間 是 否 存 在 網 絡 連 接，
+你 的 網 絡 / VPN / SSH 通 道 / 防 火 牆 是 否 正 確 設 置。
+</p>
+<p>
+出 於 安 全 原 因， PostgreSQL 最 初 <b>不 會</b> 監 聽 伺 服 器 的 所 有 有 效 IP 地 址，
+為 了 能 夠 通 過 網 絡 連 接 資 料 庫， 首 先 需 要 設 置 它 能 夠 監 聽 相 對 應 的 地 址。
+</p>
+<p>
+從 PostgreSQL 8.0 開 始， 可 以 在 postgresql.conf 文 件 中 用 "listen_addresses" 參 數 控 制 監 聽。
+可 以 在 這 裡 輸 入 一 個 應 該 被 監 聽 的 IP 地 址 列 表， 或 者 用 '*' 表 示 監 聽 所 有 有 效 地 址。
+對 於 比 較 早 的 版 本 （7.3 或 者 7.4）， 需 要 將 "tcpip_socket" 參 數 設 置 為 'true'。
+</p>
+<p>
+可 以 使 用 在 pgAdmin III 中 整 合 的 postgresql.conf 編 輯 器 來 編 輯 postgresql.conf 配 置 文 件，
+修 改 這 個 文 件 之 後， 需 要 重 新 啟 動 資 料 庫 進 程 使 設 置 有 效。
+</p>
+<p>
+如 果 多 次 檢 查 配 置 之 後 仍 然 得 到 這 個 錯 誤 訊 息， 可 能 是 遇 到 了 一 個 致 命 的 PostgreSQL 錯 誤，
+或 者 可 能 是 低 層 網 絡 連 接 問 題 （比 如 防 火 牆 的 設 置）， 在 向 PostgreSQL 團 隊 提 交 bug 報 告 之 前 請 仔 細 檢 查。
+</p>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Gurun neuvot</title>
+</head>
+
+<body>
+
+<h3>pg_autovacuum:n ajaminen on suositeltavaa</h3>
+<p>
+PostgreSQL:n 8.1-versiosta lähtien pg_autovacuum, joka oli ennen ulkoinen 
+ohjelma, on integroitu palvelinohjelmistoon. Se ajaa VACUUM-komennon
+automaattisesti kun säädetty määrä dataa on muuttunut.
+</p>
+<p>
+VACUUM-komennon ajaminen on pakollista PostgreSQL:ssä datan eheyden ja 
+palvelimen suorituskyvyn varmistamiseksi. Suosittelemme pg_autovacuumin
+kytkemistä päälle asettamalla "autovacuum"-, "stats_start_collector"- ja
+"stats_row_level"-asetukset "on"-asentoon postgresql.conf-tiedostossa.
+Datan muutosten seuraamisesta aiheutuva rasitus on yleensä merkityksettömän
+pieni, ja saat automaattiset, suorituskykyiset VACUUM-ajot.
+</p>
+<p>
+Säätääksesi pg_autovacuumin suorituskykyä yksilöllisiin tarpeisiin, voit
+säätämään sen asetuksia globaalisti postgresql.conf-tiedostossa, tai
+taulukohtaisesti; katso lisätietoja dokumentaatiosta.
+</p>
+</body>
+</html>

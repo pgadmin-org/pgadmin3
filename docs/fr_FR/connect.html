@@ -1,0 +1,98 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Connexion au serveur</title>
+</head>
+
+<body>
+
+<H3>Connexion au serveur</H3>
+
+<center><img src="images/server.png"></center>
+
+<P>
+Utilisez ce dialogue pour ajouter une nouvelle connexion au serveur à la
+racine de pgAdmin.
+</P>
+<P>
+Si vous expérimentez des problèmes de connexion, lisez la page des <a
+href="connect-error.html">problèmes de connexion</a>.
+</P>
+<P>
+La description est un texte pour identifier le serveur dans l'arbre de pgAdmin.
+</P>
+<P>
+L'hôte est l'adresse IP de la machine à contacter ou son alias. Sur les
+systèmes Unix, le champ de l'adresse peut être laissé libre pour utiliser
+le socket de domaine Unix par défaut sur la machine locale ou configurer
+un autre chemin contenant la socket PostgreSQL. Si un chemin est saisi, il
+doit commencer par un /. Le numéro de port et les options de connexion SSL
+peuvent aussi être spécifiés.
+</P> 
+<p>
+Le champ de la base de maintenance est utilisé pour spécifier la base de données
+initiales auquelle pgAdmin se connecte et qui doit contenir le schéma de
+<a href="pgagent.html">pgAgent</a> et les objets de l'<a
+href="extend.html">adminpack</a> (les deux étant optionnels). Sur PostgreSQL 8.1
+et ultérieure, la base de données de maintenance est normalement appelée postgres
+alors que sur les versions précédentes, template1 est souvent utilisé bien qu'il
+soit préférable de créer une base de données postgres pour éviter d'ajouter des
+objets dans cette base modèle.
+</p>
+<P>
+Si vous cochez «&nbsp;Stockez le mot de passe&nbsp;», pgAdmin stocke les mots
+de passe dans le fichier ~/.pgpass sous *nix et dans %APPDATA%\postgresql\pgpass.conf
+sous Windows pour pouvoir les réutiliser. Pour les détails, voir la <a
+href='pg/libpq-pgpass.html'>documentation sur pgpass</a>. Elle sera utilisée par
+tous les outils basés sur la libpq. Si vous voulez supprimer le mot de passe,
+vous allez dans les propriétés du serveur et décochez cette case.
+</P>
+<P>
+L'option «&nbsp;Restaurer l'environnement&nbsp;?&nbsp;» détermine si pgAdmin
+tentera de restaurer l'environnement de navigation quand vous vous connecterez
+au serveur. Si vous utilisez régulièrement des bases de données différentes sur
+le même serveur, désactiver cette option est préférable.
+</P>
+<P>Le champ «&nbsp;Restriction de base&nbsp;» vous permet de saisir une
+restriction SQL qui sera utilisée sur <a
+href="pg/catalog-pg-database.html">pg_database</a> pour limiter les bases de
+données que vous voyez. Par exemple, vous pouvez saisir&nbsp;: 
+<i>'live_db', 'test_db'</i> pour que seules les bases de données
+live_db et test_db apparaissent dans le navigateur de pgAdmin. Notez que vous
+pouvez aussi limiter les schémas affichés dans la base de données à partir
+des propriétés de la base en saisissant une restriction sur <a
+href="pg/catalog-pg-namespace.html">pg_namespace</a>.
+</P>
+<P>
+Le champ service spécifie les paramètres pour contrôler le processus de la
+base de données. Sa signification est liée au système d'exploitation.
+</P>
+<P>
+Si pgAdmin est exécuté sur une machine Windows, il peut contrôler le
+service postmaster si vous avez les droits nécessaires. Saisissez le nom du
+service. Dans le cas d'un serveur distant, vous devez ajouter le nom de la
+machine (par exemple PSE1\pgsql-8.0). pgAdmin découvrira automatiquement les
+services fonctionnant sur votre machine locale.
+</P>
+<P>
+Si pgAdmin est exécuté sur une machine Unix, il peut contrôler les processus
+exécutés sur la machine locale si vous avez les droits nécessaires. Saisissez
+un chemin complet et les options nécessaires pour accéder au programme pg_ctl.
+Lors de l'exécution des fonctions de contrôle du service, pgAdmin ajoutera les
+mots clés status/start/stop. Exemple&nbsp;:<BR>
+sudo /usr/local/pgsql/bin/pg_ctl -D /data/pgsql
+</P>
+<P>
+Vous pouvez décocher la case «&nbsp;Se connecter maintenant&nbsp;» si vous ne
+voulez pas que la connexion au serveur soit établit immédiatement, et que seul
+l'enregistrement du serveur ait lieu. Dans ce cas, les paramètres de connexion
+ne seront pas validés.
+</P>
+<P>
+Ce dialogue peut être lancé plus tard pour corriger ou ajouter des paramètres en
+sélectionnant «&nbsp;Propriétés&nbsp;» une fois le serveur sélectionné.
+</P>
+</BODY>
+</HTML>

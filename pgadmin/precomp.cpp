@@ -1,0 +1,14 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+// RCS-ID:      $Id$
+// Copyright (C) 2002 - 2009, The pgAdmin Development Team
+// This software is released under the BSD Licence
+//
+// precomp.cpp - precompiled header
+//
+//////////////////////////////////////////////////////////////////////////
+
+#include <wx/wxprec.h>
+
+#include "pgAdmin3.h"

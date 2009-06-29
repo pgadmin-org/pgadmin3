@@ -1,0 +1,56 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Ladicí program pgAdmin</title>
+</head>
+
+<body>
+
+<h3>Ladicí program pgAdmin</h3>
+
+<center><img src="images/debugger.png"></center>
+
+<p>
+Pomocí ladicího programu můžete ladit pl/pgsql funkce v PostgreSQL, stejně jako EDB-SPL funkce, uložené procedury a balíky v EnterpriseDB.
+</p>
+
+<p>
+<b>Upozornění: </b>Ladicí program může používat pouze role s oprávněním „superuživatel“.
+</p> 
+
+<p>
+Abyste mohli ladicí program používat, musí být na serveru nainstalovaný zásuvný modul. Ten je již součástí EnterpriseDB a nebo jej lze 
+stáhnout na <a href="http://pgfoundry.org/projects/edb-debugger/">pgFoundry</a>. Rovněž se nainstaluje jako přídavný modul z distribuce 
+PostgreSQL 8.3 a novější pro Windows.
+</p>
+
+<p>
+Ladicí program lze použít jak pro ladění v kontextu tak přímé ladění. Pokud chcete ladit v kontextu nějakého objektu, klikněte na něj pravým 
+tlačítkem ve stromu objektů pgAdminu a zvolte „Nastavit bod přerušení“. Ladicí program bude čekat na další sezení, které objekt spustí a 
+zastaví se na prvním řádku proveditelného kódu. Pokud chcete přímo ladit, klikněte pravým tlačítkem na objekt a zvolte „Ladit“. Ladicí program 
+se dotáže na případné hodnoty parametrů, vyvolá objekt a zastaví se na prvním řádku proveditelného kódu.
+</p>
+
+<p>
+Když zadáváte hodnoty parametrů, zapisujte hodnoty do příslušných buněk v mřížce, případně ponechejte buňku prázdnou, pokud má obsahovat NULL. 
+Prázdný řetězec zadejte jako '' (dva apostrofy), pokud chcete zadat řetězec obsahující apostrofy, ošetřete je zpětnými lomítky \'\'. Od 
+verze 8.4 podporuje PostgreSQL proměnný počet parametrů (VARIADIC). Ty lze zadat jako seznam hodnot oddělených čárkou, případně za použití 
+uvozovek a přetypování, pokud je to zapotřebí.
+</p>
+
+<p>
+Pokud ladicí sezení probíhá, můžete krokovat kód pomocí voleb z menu, klávesových zkratek nebo tlačítek na panelu nástrojů. Body přerušení 
+můžete přidávat nebo mazat kliknutím na okraj okna se zdrojovým kódem nebo kliknutím na požadovaný řádek s kódem a následnou volbou 
+„Přepnout bod přerušení“ v menu nebo na panelu nástrojů. Při zanořování do dalších funkcí můžete pro navigaci použít panel „Zásobník“, stačí 
+v něm vybrat příslušný řádek.
+</p>
+
+<p>
+Když ladicí program dosáhne konce spustitelného kódu, tak v případě že běží v kontextu, bude čekat na další volání téže funkce, jinak se 
+znovu přeptá na hodnoty parametrů a provede nové spuštění. Ladicí program můžete opustit v kterémkoliv okamžiku.
+</p>
+
+</body>
+</html>

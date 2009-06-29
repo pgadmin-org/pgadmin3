@@ -1,0 +1,75 @@
+SET @DATABASE1   = 'mytable1';
+SET @DATABASE2   = 'mytable2';
+SET @ITERATIONS = 100;
+
+PRINT 'Testing reference generator on ' + @DATABASE1 + ' & ' + @DATABASE2;
+
+-- Drop tables if they exist
+
+IF (SELECT COUNT(*) FROM @DATABASE1)
+	DROP TABLE @DATABASE1;
+IF (SELECT COUNT(*) FROM @DATABASE2)
+	DROP TABLE @DATABASE2;
+
+-- Create tables
+
+PRINT '  Creating tables';
+
+CREATE TABLE @DATABASE1
+(
+  a integer NOT NULL,
+  b smallint,
+  PRIMARY KEY (a),
+  UNIQUE (b)
+)
+WITH (OIDS=FALSE);
+
+CREATE TABLE @DATABASE2
+(
+  a integer NOT NULL,
+  b smallint,
+  PRIMARY KEY (a),
+  UNIQUE (b)
+)
+WITH (OIDS=FALSE);
+
+-- Insert data in the first table
+
+PRINT '  Inserting data';
+SET @I = 1;
+WHILE @I <= @ITERATIONS
+BEGIN
+	INSERT INTO @DATABASE1 (a, b) VALUES (@I * 4, @I);
+	SET @I = @I + 1;
+END
+
+-- Reference generator
+
+PRINT '  Using a reference generator';
+DECLARE @REC { @a };
+SET @REFA = REFERENCE(@DATABASE1, 'a', 1);
+SET @I = 1;
+WHILE @I <= @ITERATIONS
+BEGIN
+	SET @VALUE = CAST (@REFA AS INTEGER);
+	
+	INSERT INTO @DATABASE2 (a, b) VALUES (@VALUE, @I);
+	
+	-- Check that the value has not been generated yet
+	SET @J = 0;
+	SET @L = LINES(@REC);
+	WHILE @J < @L
+	BEGIN
+		ASSERT @REC[@J][0] <> @VALUE;
+		SET @J = @J + 1;
+	END
+	SET @REC[@J][0] = @VALUE;
+	
+	SET @I = @I + 1;
+END
+
+-- Delete tables
+
+PRINT '  Deleting tables';
+DROP TABLE @DATABASE1;
+DROP TABLE @DATABASE2;

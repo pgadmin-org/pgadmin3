@@ -1,0 +1,159 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Slony-I example</title>
+</head>
+
+<body>
+
+<h3>Slony-I example</h3>
+
+<p>
+In this example, a master server is setup with two direct slaves. This example was
+written and tested using Slony-I v1.2.11 and PostgreSQL 8.2.5, running on a single
+Windows XP machine. The PostgresSQL pgbench utility is used to generate the test 
+schema and workload.
+<p>
+
+<ol>
+  <li> Create 3 databases, master, slave1 and slave2 and ensure pl/pgsql is setup
+  in each.<br />&nbsp;</li>
+
+  <li>Create a pgbench schema in the master database:<br /><br />
+
+    <code>&gt; pgbench -i -U postgres master</code><br />&nbsp;</li>
+   
+  <li>Add a primary key called history_pkey to the history table on the tid, bid
+  and aid columns.<br />&nbsp;</li>
+
+  <li>Create a schema-only dump of the master database, and load it into slave1
+  and slave2:<br /><br />
+
+    <code>
+    &gt; pg_dump -s -U postgres master &gt; schema.sql<br />
+    &gt; psql -U postgres slave1 &lt; schema.sql<br />
+    &gt; psql -U postgres slave2 &lt; schema.sql
+    </code><br />&nbsp;</li>
+
+  <li>Create Slony config files for each slon engine (daemon on *nix). The files
+  should contain just the following two lines:<br /><br />
+
+    <code>
+    cluster_name='pgbench'<br />
+    conn_info='host=127.0.0.1 port=5432 user=postgres dbname=master'
+    </code><br /><br />
+
+    Create a file for each database, adjusting the dbname parameter as
+    required and adding any other connection options that may be
+    needed.<br />&nbsp;</li>
+
+  <li>(Windows only) Install the Slony-I service:<br /><br />
+
+    <code>
+    > slon -regservice Slony-I
+    </code><br />&nbsp;</li>
+
+  <li>Register each of the engines (this is only necessary on Windows - on *nix
+  the slon daemons may be started individually and given the path to the
+  config file on the command line using the -f option):<br /><br />
+
+    <code>
+    &gt; slon -addengine Slony-I C:\slony\master.conf<br />
+    &gt; slon -addengine Slony-I C:\slony\slave1.conf<br />
+    &gt; slon -addengine Slony-I C:\slony\slave2.conf
+    </code><br />&nbsp;</li>
+
+  <li>In pgAdmin under the Replication node in the master database, create a new
+  Slony-I cluster using the following options:<br /><br />
+
+    <pre>
+Join existing cluster: Unchecked
+Cluster name:          pgbench
+Local node:            1        Master node
+Admin node:            99       Admin node
+    </pre></li>
+
+  <li>Under the Replication node, create a Slony-I cluster in each of the slave
+  databases using the following options:<br /><br />
+
+    <pre>
+Join existing cluster: Checked
+Server:                &lt;Select the server containing the master database&gt;
+Database:              master
+Cluster name:          pgbench
+Local node:            10       Slave node 1
+Admin node:            99 - Admin node
+
+Join existing cluster: Checked
+Server:                &lt;Select the server containing the master database&gt;
+Database:              master
+Cluster name:          pgbench
+Local node:            20       Slave node 2
+Admin node:            99 - Admin node
+    </pre></li>
+
+  <li>Create Paths on the master to both slaves, and on each slave back to the
+  master. Create the paths under each node on the master, using the
+  connection strings specified in the slon config files. Note that future
+  restructuring of the cluster may require additional paths to be defined.
+  <br />&nbsp;</li>
+
+  <li>Create a Replication Set on the master using the following settings:
+  <br /><br />
+
+    <pre>
+ID:                  1
+Comment:             pgbench set
+    </pre></li>
+
+  <li>Add the tables to the replication set using the following settings:
+  <br /><br />
+
+    <pre>
+Table:               public.accounts
+ID:                  1
+Index:               accounts_pkey
+
+Table:               public.branches
+ID:                  2
+Index:               branches_pkey
+
+Table:               public.history
+ID:                  3
+Index:               history_pkey
+
+Table:               public.tellers
+ID:                  4
+Index:               tellers_pkey
+    </pre></li>
+
+  <li>On the master node, create a new subscription for each slave using the
+  following options:<br /><br />
+
+    <pre>
+Origin:              1
+Provider:            1 - Master node
+Receiver:            10 - Slave node 1
+
+Origin:              1
+Provider:            1 - Master node
+Receiver:            20 - Slave node 2
+    </pre></li>
+
+  <li>Start the slon service (or daemons on *nix): <br /><br />
+
+    <code>
+    > net start Slony-I
+    </code><br />&nbsp;</li>
+</ol>
+
+<p>
+Initial replication should begin and can be monitored on the statistics tab in
+pgAdmin for each node. The pgbench utility may be run against the master
+database to generate a test workload.
+</p>
+
+</body>
+</html>

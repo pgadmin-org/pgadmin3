@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Conseil d'expert</title>
+</head>
+
+<body>
+
+<h3>Exécuter VACUUM est recommandé</h3>
+<p>
+Le nombre de lignes estimés sur la table &quot;<INFO>&quot; dévie
+significativement du nombre de lignes réelles. Vous devez lancer VACUUM ANALYZE
+sur cette table.
+</p><p>
+Au lieu d'exécuter une commande VACUUM ANALYZE manuellement sur cette table
+(vous pouvez utiliser menu de maintenance de pgAdmin III pour cela), exécuter
+VACUUM ANALYZE sur une base régulière, voire automatisée, doit être réfléchi.
+Ceci se réalise en utilisant un outil de planification. PostgreSQL fournit aussi
+le démon pg_autovacuum, qui conservera la trace des modifications réalisée sur
+la base de données et lancera les commandes VACUUM automatiquement si nécessaire.
+Dans la plupart des cas, pg_autovacuum sera le meilleur choix.
+</p><p><br><br></p>
+<b>À quoi VACUUM est-il bon&nbsp;?</b>
+<p>
+Le planificateur de requêtes de PostgreSQL prend des décisions sur des
+suppositions, réalisées à partir du nombre de lignes estimées. Si le nombre de
+lignes réel est trop différent du nombre de lignes supposé, le planificateur
+pourrait prendre une mauvaise décision, résultant en un plan de requête qui n'est
+pas optimal. Ceci peut avoir comme conséquences des performances pauvres.
+</p><p>
+Le stockage de PostgreSQL nécessite l'utilisation de VACUUM pour que les
+identifiants de transaction soient corrigés dans les tables. De plus, les lignes
+obsolètes ne sont pas nettoyées tant que la commande VACUUM n'a pas été exécutée
+sur cette table. Des informations en profondeur sont disponibles dans la
+documentation en ligne, appuyez simplement sur le bouton d'aide.
+</p>
+</body>
+</html>

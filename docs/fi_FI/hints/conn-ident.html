@@ -1,0 +1,31 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Gurun neuvot</title>
+</head>
+
+<body>
+
+<h3>Ident-todentaminen epäonnistui</h3>
+<p>
+Palvelin ei hyväksy käyttäjää. Palvelin antoi virheilmoituksen:
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+Jos tämä viesti näkyy, koneen osoite / käyttäjä / tietokanta -yhdistelmääsi vastaava pg_hba.conf-rivi on määritelty käyttämään &quot;ident&quot;-todennusta. Joissain distribuutioissa, mm. Debianissa, tämä on oletus. Jotta ident-todennus toimisi, tarvitset lisäasetuksia; ks. lisätietoja PostgreSQL:n ohjeista. Aloittelijoille saattaa olla sopivampaa valita toiden todennysmenetelmä; MD5-salatut salasanat on hyvä valinta. Se valitaan allaolevan kaltaisella pg_hba.conf-rivillä:
+</p>
+<p>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p>
+Tämä esimerkki myöntää pääsyn MD5-salatuilla salasanoilla kaikkiin tietokantoihin kaikille käyttäjille aliverkosta 192.168.0.0/24.
+</p>
+<p>
+Voit käyttää pgAdmin III:n sisäänrakennettua pg_hba.conf-editoria sen muokkaamiseen. Muutettuasi pg_hba.conf-tiedostoa, palvelimen asetukset pitää ladata uudestaan pg_ctl-komennolla, tai käynnistämällä PostgreSQL uudestaan.
+</p>
+</body>
+</html>

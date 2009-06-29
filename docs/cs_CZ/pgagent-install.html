@@ -1,0 +1,110 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Instalace pgAgenta</title>
+</head>
+
+<body>
+
+<h3>Instalace pgAgenta</h3>
+<p>pgAgent běží jako démon v *nixový systémech a služba na systémech Windows. Ve většině
+případů to je přímo na databázovém serveru, z toho důvodu se také pgAgent neinstaluje 
+automaticky s pgAdminem. V některých případech je ale výhodnější mít pgAgenta spuštěného
+na více systémech, takže na rozdíl od databází mohou být jednotlivé úkoly individuální pro 
+jednotlivé klienty a zároveň je možné je spustit na libovolném klientovi. Aby nedošlo
+k současnému spuštění na více instancí stejného úkolu, používá se zamykání.</p>
+
+<h3>Nastavení databáze</h3>
+<p>Nastavení si pgAgent uchovává v databázi „postgres“ ve vašem clusteru. Tato databáze
+se od verze PostgreSQL 8.1 vytváří při instalaci automaticky, ve starších verzích si ji
+musíte vytvořit sami. Databáze musí mít nainstalovaný procedurální jazyk pl/pgsql, pokud
+je potřeba můžete na to využít program „createlang“, který je součástí PostgreSQL.</p>
+
+<p>Připojte se do databáze „postgres“ (pokud neexistuje, tak ji nejprve vytvořte) a otevřte
+dotazovací nástroj. V menu zvolte Soubor -&gt; Otevřít a najděte skript „pgagent.sql“, který
+se nainstaloval spolu s pgAgentem. Umístění souboru záleží na operačním systému. Pod Windows
+jej normálně naleznete v „C:\Program files\pgAdmin III“ (nebo „C:\Program files\PostgreSQL\8.x\pgAdmin III“
+pokud byl nainstalován jako součást PostgreSQL). V *nixových systémech pak obvykle v 
+„/usr/local/pgadmin3/share/pgadmin3“ nebo „/usr/share/pgadmin3“. Po načtení souboru klepněte na tlačítko
+„Provést dotaz“, které skript spustí.</p>
+
+<p>Skript vytvoří několik tabulek a objektů ve katalogu nazvaném „pgAgent“.</p>
+
+<h3>Instalace démona na *nixových systémech</h3>
+<p>Abyste mohli nainstalovat démona pgAgent v *nixovém systému, potřebujete oprávnění
+uživatele root na úpravu startovacích skriptů. Startovací skripty jsou specifická záležitost
+jednotlivých systémů, takže podrobnější informace budete muset najít v dokumentaci svého
+systému.</p>
+
+<p>Samotný program rozumí několika volbám příkazové řádky, většina z nich slouží k ladění
+a speciálnímu nastavení:</p>
+
+<pre>
+Použití:
+  /cesta/pgagent [volby] &lt;připojovací řetězec&gt;
+  
+volby:
+  -f běžet na popředí (neodpojovat od terminálu)
+  -t &lt;interval dotazování v sekundách (výchozí 10)&gt;
+  -r &lt;čekání na nový pokus při selhání připojení v sekundách (&gt;=10, výchozí 30)&gt;
+  -s &lt;soubor deníku (když není udán, vypisují se zprávy na standardní výstup)&gt;
+  -l &lt;úroveň evidence (CHYBA=0, VAROVÁNÍ=1, LADĚNÍ=2, výchozí 0)&gt;
+</pre>
+
+<p>Povinný parametr „připojovací řetězec“ je standardní připojovací řetězec PostgreSQL, tak jak jej
+požaduje libpq (podrobnosti v <a href="http://www.postgresql.org/docs/current/static/libpq.html#libpq-connect">
+dokumentaci  k PostgreSQL</a>). V následujícím příkladu se spuštěný pgAgent připojí jako uživatel „postgres“ 
+k serveru naslouchajícímu na localhost a databázi „pgadmin“:</p>
+
+<pre>
+/cesta/pgagent hostaddr=127.0.0.1 dbname=pgadmin user=postgres
+</pre>
+
+<h3>Instalace služby ve Windows</h3>
+<p>V rámci instalace se pgAgent sám nastaví jako služba systému Windows. Dostupné volby příkazového
+řádku jsou podobné jako na *nixových systémech, ale jejich pár navíc pro potřeby ovládání služby:</p>
+
+<pre>
+Použití:
+  pgAgent REMOVE &lt;názevSlužby&gt;
+  pgAgent INSTALL &lt;názevSlužby&gt; [volby] &lt;připojovací-řetězec&gt;
+  pgAgent DEBUG [volby] &lt;connect-string&gt;
+
+  volby:
+    -u &lt;uživatel nebo DOMÉNA\uživatel&gt;
+    -p &lt;heslo&gt;
+    -d &lt;názevObrazovky&gt;
+    -t &lt;interval dotazování v sekundách (výchozí 10)&gt;
+    -r &lt;čekání na nový pokus při selhání připojení v sekundách (>=10, výchozí 30)&gt;
+    -l &lt;úroveň evidence (CHYBA=0, VAROVÁNÍ=1, LADĚNÍ=2, výchozí 0)&gt;
+</pre>
+
+<p>Službu lze docela jednoduše nainstalovat z příkazového řádku následovně (cestu k programu
+samozřejmě případně upravte):</p>
+
+<pre>
+"C:\Program Files\pgAdmin III\pgAgent" INSTALL pgAgent -u postgres -p secret hostaddr=127.0.0.1 dbname=pgadmin user=postgres
+</pre>
+
+<p>Spustit službu lze z příkazového řádku pomocí <i>net start pgAgent</i>, nebo z ovládacího panelu „Služby“. Případná
+informační nebo chybová hlášení můžete najít v Prohlížeči událostí v sekci Aplikace. Z příkazovém řádku můžete
+pgAgenta spustit v ladícím režimu (volba DEBUG), zprávy se potom budou vypisovat v okně s příkazovým řádkem.</p>
+
+<h3>Bezpečnostní záležitosti</h3>
+<p>pgAgent je velmi mocný nástroj, ale to má svá bezpečnostní specifika, kterým byste měli věnovat pozornost:</p>
+
+<p><b>Databázové heslo</b> - <i>NIKDY NEZADÁVEJTE</i> heslo jako součást připojovacího řetězce - v *nixových systémech
+by jej všichni viděli ve výpisu příkazu „ps“ a ve Windows by se uložilo do registru v podobě prostého textu. Místo toho
+použijte soubor <i>~/.pgpass</i>, do kterého se hesla ke všem potřebným databázím uloží tak, jak to požaduje libpq. Podrobnosti
+o této technice najdete v <a href="http://www.postgresql.org/docs/current/static/libpq-pgpass.html">dokumentaci k PostgreSQL</a>.</p>
+
+<p><b>Přístup k systému/databázi</b> - všechny úkoly spuštěné pgAgentem běží s právy uživatele pgAgenta. Skripty SQL se spouští pod
+uživatelem, kterého použil pgAgent pro připojení k databázi. Dávky shellu se spouští pod uživatelem systému, stejným pod kterým je
+spuštěná služba nebo démon. Z těchto důvodů je podstatné pečlivě určit, kteří uživatelé mají právo vytvářet a upravovat úkoly. Jako
+výchozí má toto oprávnění pouze uživatel, který vytvořil databázový objekt pgAgenta. Normálně je tímto uživatelem superuživatel 
+PostgreSQL.</p>
+
+</body>
+</html>

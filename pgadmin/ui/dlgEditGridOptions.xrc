@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<resource>
+  <object class="wxDialog" name="dlgEditGridOptions">
+    <title>View Data Options</title>
+    <size>220,250d</size>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <growablerows>0</growablerows>
+      <growablecols>0</growablecols>
+      <object class="sizeritem">
+        <object class="wxNotebook" name="nbOptions">
+          <size>216,225d</size>
+          <object class="notebookpage">
+            <label>Data Sorting</label>
+            <object class="wxPanel" name="pnlSort">
+              <object class="wxFlexGridSizer">
+                <cols>1</cols>
+                <rows>5</rows>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablerows>1</growablerows>
+                <growablecols>0</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="lblSortCols">
+                    <label>Selected Columns</label>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxListCtrl" name="lstSortCols">
+                    <style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
+                    <tooltip>Lists the columns that the data will be sorted by.</tooltip>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="lblAvailCols">
+                    <label>Available Columns</label>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxComboBox" name="cboColumns">
+                    <content/>
+                    <style>wxCB_READONLY|wxCB_DROPDOWN</style>
+                    <tooltip>Select a column to add to the sort list.</tooltip>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxFlexGridSizer">
+                    <cols>3</cols>
+                    <vgap>5</vgap>
+                    <hgap>5</hgap>
+                    <growablerows>0</growablerows>
+                    <growablecols>0,1,2</growablecols>
+                    <object class="sizeritem">
+                      <object class="wxButton" name="btnAsc">
+                        <label>Ascending</label>
+                        <tooltip>Add the select column for ascending sort.</tooltip>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxALL</flag>
+                      <border>4</border>
+                      <perspective>1</perspective>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxButton" name="btnDesc">
+                        <label>Descending</label>
+                        <tooltip>Add the select column for descending sort.</tooltip>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxALL</flag>
+                      <border>4</border>
+                      <perspective>1</perspective>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxButton" name="wxID_REMOVE">
+                        <label>Remove</label>
+                        <tooltip>Remove the selected sort column.</tooltip>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxALL</flag>
+                      <border>4</border>
+                      <perspective>1</perspective>
+                    </object>
+                </object>
+              </object>
+            </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Filter</label>
+            <object class="wxPanel" name="pnlFilter">
+              <object class="wxFlexGridSizer">
+                <cols>1</cols>
+                <rows>3</rows>
+                <growablecols>0</growablecols>
+                <growablerows>1</growablerows>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="lblFilter">
+                    <label>Filter String (eg. oid &gt; 10 AND oid &lt; 50)</label>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="ctlSQLBox" name="sqlFilter">
+                    <tooltip>Enter the filter string to apply to the data. SQL syntax should be used as the string will be used as a 'WHERE' clause.</tooltip>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxButton" name="btnValidate">
+                    <label>Validate</label>
+                    <tooltip>Validate the syntax of the filter string.</tooltip>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE</flag>
+      </object>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>3</cols>
+          <growablecols>0</growablecols>
+          <object class="spacer">
+            <size>0,0d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_OK">
+              <label>&amp;OK</label>
+              <tooltip>Accept the current options and close the dialogue.</tooltip>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_CANCEL">
+              <label>&amp;Cancel</label>
+              <tooltip>Cancel any changes and close the dialogue.</tooltip>
+            </object>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxTOP|wxLEFT|wxRIGHT</flag>
+      </object>
+    </object>
+  </object>
+</resource>

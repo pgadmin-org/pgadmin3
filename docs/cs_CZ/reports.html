@@ -1,0 +1,62 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Nástroj na vytváření reportů</title>
+</head>
+
+<body>
+
+<h3>Nástroj na vytváření reportů</h3>
+
+<p>
+pgAdmin obsahuje jednoduché vytváření reportu, pomocí kterého můžete rychle vygenerovat report z dotazů napsaných 
+v <a href="query.html">dotazovacím nástroji</a> a z objektu nebo kolekce objektů v hlavním okně. Např. můžete vytvořit
+report o vlastnostech objektu nebo seznam funkcí ve schématu. Report vytvoříte tak, že ve stromu objektů zvolíte uzel 
+a následně v kontextovém menu nebo podmenu „Reporty“ v menu „Nástroje“ zvolíte report, který chcete vytvořit. Při 
+vytváření reportu v dotazovacím nástroji zvolte „Rychlý report...“ v menu „Soubor“.
+</p>
+
+<center><img src="images/reporttool-html.png"></center>
+
+<p>
+Každý report obsahuje titulek a volitelně poznámky. Oboje lze před finálním vytvořením reportu upravit. Navíc si můžete 
+vybrat, jestli chcete do reportu zahrnout SQL, které se k reportu vztahuje.
+</p>
+
+<p>
+Interně se reporty vytvářejí v XML. Na něj umí pgAdmin následně aplikovat styl XML, tak abyste získali požadovaný formát. 
+Pro vytvoření výstupu v HTML se používá zabudovaný výchozí styl. Pokud bude výstup v HTML, lze do něj navíc vložit výchozí 
+styl CSS (ten má stejnou podobu jak webové stránky pgAdminu) nebo do něj vložit externí styl a nebo vložit odkaz na externí 
+styl. Používají se následující třídy a ID objektů:
+</p>
+
+<ul>
+  <li><b>#ReportHeader</b>: Tento div obsahuje hlavičku reportu.</li>
+  <li><b>#ReportNotes</b>: Tento div obsahuje volitelné poznámky k reportu.</li>
+  <li><b>#ReportDetails</b>: Tento div obsahuje hlavní tělo reportu.</li>
+  <li><b>#ReportFooter</b>: Tento div obsahuje patičku reportu.</li>
+  <li><b>.ReportSQL</b>: Tuto třídu využívají bloky &lt;PRE&gt;&lt;/PRE&gt; obsahující SQL.</li>
+  <li><b>.ReportDetailsOddDataRow</b>: Tato třída se aplikuje na liché řádky tabulky.</li>
+  <li><b>.ReportDetailsEvenDataRow</b>: Tato třída se aplikuje na sudé řádky tabulky.</li>
+  <li><b>.ReportTableHeaderCell</b>: Tato třída se aplikuje na hlavičkové buňky tabulky.</li>
+  <li><b>.ReportTableValueCell</b>: Tato třída se aplikuje na datové buňky tabulky.</li>
+  <li><b>.ReportTableInfo</b>: Tato třída se aplikuje na poznámky v patičce tabulky.</li>
+</ul>
+
+<center><img src="images/reporttool-xml.png"></center>
+
+<p>
+Když generujete report ve formátu XML, můžete volit mezi výstupem prostého XML, XML napojeného na externí styl XSL nebo 
+XML, které se zpracuje externím stylem a uloží se výsledek. Tohle všechno poskytuje velkou flexibilitu ve formátování 
+reportů různými způsoby.
+</p>
+
+<p>
+Pokud si hodláte vytvořit vlastní styl XSL, můžete vyjít z výchozího <a href="default-xsl.html">stylu XSL</a>, používaného 
+k vytvoření výstupu v XHTML. Rovněž se můžete podívat, jak vypadají ukázková <a href="sample-xml.html">data XML</a>.
+</p>
+
+</body>
+</html>

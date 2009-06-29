@@ -1,0 +1,33 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Gurun neuvot</title>
+</head>
+
+<body>
+
+<h3>Palvelimen instrumentointi</h3>
+<p>
+Palvelimella ei ole instrumentointifunktioita.
+</p>
+<p>
+pgAdmin III käyttää eräitä apufunktioita jotka eivät kaikissa PostgreSQL versioissa tule valmiiksi asennettuina. Funktiot mahdollistavat toimintoja jotka helpottavat loki- ja asetustiedostojen hallintaa.
+</p>
+<p>
+Asentaessasi PostgreSQL versio 8.0:n tai uudemman Windows-installerilla, sinun tarvitsee vain valita "admin"- tai "adminpack"-moduli.
+</p>
+<p>
+Kääntäessäsi lähdekoodista, tarvittavat tiedostot löytyvät pgAdminin lähdekoodipaketin xtra-hakemistosta. Jos käytät PostgreSQL:n versiota 8.0, kopioi admin-alihakemisto PostgreSQL:n contrib-hakemistosta, ja aja "make" ja "make install". Jos käytät PostgreSQL:n versiota 8.1, käytä admin81-hakemistoa admin-hakemiston sijaan.
+<p>
+PostgreSQL versiossa 8.2 ja uudemmissa instrumentointifunktiot tulevat asennuspaketin mukana "adminpack" contrib-modulissa.
+</p>
+</p>
+Kun moduli on asennettu, instrumentointifunktiot tulee luoda huoltotietokantaan käyttäen admin.sql-skriptiä (admin81.sql PostgreSQL 8.1 versiota varten) joka on yleensä pgsql share-hakemisossa (esim. /usr/local/pgsql/share).
+</p>
+<p>
+Laajennettu palvelimen instrumentointi ei ole tuettu versioissa 7.3 ja 7.4.
+</p>
+</body>
+</html>

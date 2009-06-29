@@ -1,0 +1,41 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GB2312">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>服务器没有进行监听</h3>
+<p>
+服 务 器 无 法 接 受 连 接： 由 连 接 库 报 告
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+如 果 看 到 这 个 消 息， 请 检 查 正 在 试 图 连 接 的 服 务 器 是 否 在 指 定 端 口 下 运 行 PostgreSQL，
+使 用 ping 或 者 相 似 工 具 检 查 客 户 端 到 服 务 器 主 机 之 间 是 否 存 在 网 络 连 接，
+你 的 网络 / VPN / SSH通道 / 防火墙 是 否 正 确 设 置。
+</p>
+<p>
+出 于 安 全 原 因， PostgreSQL 最 初 <B>不会</B> 监 听 服 务 器 的 所 有 有 效 IP 地 址，
+为 了 能 够 通 过 网 络 连 接 数 据 库， 首 先 需 要 设 置 它 能 够 监 听 相 应 地 址。
+</p>
+<p>
+从 PostgreSQL 8.0 开 始， 可 以 在 postgresql.conf 文 件 中 用 &quot;listen_addresses&quot; 参 数 控 制 监 听。
+可 以 在 这 里 输 入 一 个 应 该 被 监 听 的 IP 地 址 列 表， 或 者 用 '*' 表 示 监 听 所 有 有 效 地 址。
+对 于 比 较 早 的 版 本 （7.3 或 者 7.4）， 需 要 将 &quot;tcpip_socket&quot; 参 数 设 置 为 'true'。
+</p>
+<p>
+可 以 使 用 在 pgAdmin III 中 整 合 的 postgresql.conf 编 辑 器 来 编 辑 postgresql.conf 配 置 文 件，
+修 改 这 个 文 件 之 后， 需 要 重 新 启 动 数 据 库 进 程 使 设 置 有 效。
+</p>
+<p>
+如 果 多 次 检 查 配 置 之 后 仍 然 得 到 这 个 错 误 信 息， 可 能 是 遇 到 了 一 个 致 命 的 PostgreSQL 错 误，
+或 者 可 能 是 低 层 网 络 连 接 问 题 （比 如 防 火 墙 的 设 置）， 在 向 PostgreSQL 团 体 提 交 bug 报 告 之 前 请 仔 细 检 查。
+</p>
+</body>
+</html>

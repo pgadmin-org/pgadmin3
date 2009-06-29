@@ -1,0 +1,51 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Créer des chemins et des écoutes</title>
+</head>
+
+<body>
+<h3>Créer des chemins et des écoutes</h3>
+
+<A name="path"></a>
+<H4>Créer des chemins vers d'autres n&oelig;uds</H4>
+<BR>
+<center><img src="images/slony-path.png"></center>
+<p>
+Slony-I a besoin d'informations sur le chemin pour définir comment un processus
+slon peut communiquer avec d'autres n&oelig;uds. La chaîne de connexion
+(conninfo) est décrite dans la documentation sur la <a
+href='http://www.postgresql.org/docs/current/static/libpq.html#LIBPQ-CONNECT'>connection
+avec libpq</A>. Habituellement, vous aurez besoin de spécifier le nom de l'hôte,
+le nom de la base de données et celui de l'utilisateur. Le mot de passe doit
+être stocké dans le <a
+href='http://www.postgresql.org/docs/current/static/libpq-pgpass.html'>fichier
+.pgpass</A>.
+</p>
+
+<p>
+Vous pouvez créer un chemin vers tous les autres n&oelig;uds, sur chaque
+n&oelig;ud. Par exemple, dans un cluster à deux n&oelig;uds, vous avez
+besoin de créer un chemin vers l'esclave sur le maître et un vers le
+maître sur l'esclave.
+</p>
+
+<A name="listen"></a>
+<H4>Créer des écoutes vers d'autres n&oelig;uds</H4>
+<BR>
+<center><img src="images/slony-listen.png"></center>
+<p>
+Après la définition du chemin de communication, les processus slon ont
+besoin d'être avertis pour écouter les événements provenant des autres
+n&oelig;uds.
+</p>
+
+<p>
+<b>Note&nbsp;:</b> cette étape n'est pas nécessaire pour Slony-I v1.1 et les
+versions ultérieures car l'information listen est générée automatiquement
+quand les chemins sont définis.
+</p>
+</body>
+</html>

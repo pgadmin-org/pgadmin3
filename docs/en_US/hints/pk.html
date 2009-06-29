@@ -1,0 +1,37 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>Primary keys</h3>
+<p>
+When designing a table, you should always keep in mind how the table will be addressed 
+later. In most cases, you will need an identifier in order to uniquely address a specific 
+row; this identifier should be created as your primary key. A primary key needn't 
+necessarily consist of a single column; it may contain as many columns as necessary 
+to uniquely identify a row. If you need many columns (rule of thumb: more than 3), it might be a good
+idea to invent an additional column with a convenient data type, e.g. serial or bigserial, which holds the primary key.
+</p>
+<p>
+Only in rare cases it doesn't make sense to use a primary key. That means, a missing primary key is quite 
+a strong indicator for table not being designed completely; that's why a Guru Hint will arise if you create a table without
+primary key.
+</p>
+<p>
+If you look at PostgreSQL's system tables, you will find that none of them has a primary key, so what's this about?
+Actually, all of these tables have one or two columns (usually OID only) which uniquely identifies each row, obeying the
+second rule for a primary key, not allowing zero, and being covered by an index for faster access. Usage of OIDs has 
+historic reasons, and isn't really first choice for designing user tables. PostgreSQL still uses this for backwards compatibility, 
+and while a newer approach would probably use explicit primary keys it won't be changed now any more.
+</p>
+<p>
+As the case of system tables shows, the goal of uniqueness and fast access can be achieved with other approaches than 
+a primary key. Still, for clarity of the data model, you're strongly encouraged to use primary keys for this purpose.
+</p>
+</body>
+</html>

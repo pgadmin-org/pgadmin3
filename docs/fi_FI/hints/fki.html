@@ -1,0 +1,28 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Gurun neuvot</title>
+</head>
+
+<body>
+<h3>Viiteavaimen kattavat indeksit</h3>
+<p>
+Viiteavainta käytetään yhdistämään toisiinsa kaksi taulua loogisella tavalla, jarajoittamaan niihin sallittavia muutoksia.
+</p>
+<p>
+Kaikki alkaa isätaulusta johon viitataan, eli viitatusta taulusta. Se tarvitsee primääriavaimen (tarkkaan ottaen, viitattujen kenttien tarvitsee vain olla määritelty NOT NULLiksi, ja taululla pitää olla yksilöivä indeksi joka kattaa kentät, mutta on erittäin primääriavaimen määritteleminen on erittäin suositeltavaa). Lapsitaulu riippuu isätaulusta, siten että viiteavaimeen kuuluvien kenttien arvojen on vastattava jokaisella rivillä jonkin isätaulussa olevan rivin arvoja. Lapsitaulu on toiselta nimeltään viiteavaimen viittaava taulu.
+</p>
+<p>
+Viiteavain rajoittaa paitsi lapsitaulua, myös isätaulua; rajoituksen tyyppi voi olla RESTRICT, CASCADE tai SET NULL. Tämä tarkoittaa, että kun isätaulun riviä muutetaan (UPDATE tai DELETE), kaikkien lapsitaulujen viite-eheys tarkistetaan. Lue lisää PostgreSQL:n dokumentaatiosta kohdasta "foreign keys".
+</p>
+<p>
+Tämä tarkoittaa että kun isätaulun riviä muutetaan, viiteavainta vastaavat rivit haetaan kaikista lapsitauluista viite-eheyden tarkistusta varten. Tämän johdosta kaikki lukutapahtumien suorituskykyyn liittyvät säännöt pätevät yleensä myös lapsitaulun kenttiin. Hyvän suorituskyvyn takaamiseksi lapsitaulun viiteavaimille kannattaa yleensä luoda indeksit. PostgreSQL ei valvo sitä millään tavalla, joten indeksin luominen on tietokannan suunnittelijan vastuulla.
+</p>
+<p>
+pgAdmin III tarjoaa yksinkertaisen "rasti ruutuun"-valinnan viiteavaimen luomisessa, joka tarkistaa automaattisesti sopivan indeksi olemassaolon, ja luo indeksin jos sitä ei ole ennestään. Kuten aina indeksien kanssa, joissain harvinaisissa tapauksissa indeksi huonontaa hieman suorituskykyä, mutta yleensä ottaen indeksin puuttuminen huonontaa suorituskykyä paljon enemmän kuin ylimääräisen indeksin olemassaolo.
+</p>
+</body>
+
+</html>

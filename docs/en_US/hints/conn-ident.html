@@ -1,0 +1,37 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>Ident authentication failed</h3>
+<p>
+The server doesn't accept the current user: The server reports
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+If this message appears, the pg_hba.conf entry found for your client / user / database combination 
+is set to &quot;ident&quot; authentication. Some distributions, e.g. Debian, have this by default.
+To perform ident based authentication successfully, you need additional setup; see the PostgreSQL
+help for this. For a beginner, it might be more appropriate to use a different authentication method; 
+MD5 encrypted passwords are a good choice, which can be configured by an entry in pg_hba.conf like this:
+</p>
+<p>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p>
+This example grants MD5 encrypted password access to all databases to all users on the private network 192.168.0.0/24.
+</p>
+<p>
+You can use the pg_hba.conf editor that is built into pgAdmin III to edit the pg_hba.conf 
+configuration file. After changing pg_hba.conf, you need to trigger a server configuration reload using pg_ctl or by 
+stopping and restarting the server process.
+</p>
+</body>
+</html>

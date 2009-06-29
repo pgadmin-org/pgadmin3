@@ -1,0 +1,31 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=GB2312">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>推荐运行VACUUM</h3>
+<p>
+&quot;<INFO>&quot 中 的 预 测 行 数 已 经 严 重 偏 离 实 际 行 数， 应 该 在 这 个 数 据 表 上 运 行 VACUUM ANALYZE。
+</p><p>
+除 去 手 动 运 行 VACUUM ANALYZE 命 令 （ 也 可 以 利 用 pgAdmin III 的 “维 护” 菜 单 来 做 ） 之 外，
+还 应 该 考 虑 定 期 有 规 律 或 者 自 动 地 运 行 VACUUM ANALYZE。使 用 调 度 程 序 可 以 做 到 这 一 点，
+另 外 PostgreSQL 也 提 供 了 一 个 叫 做 pg_autovacuum 的 后 台 程 序，
+能 够 跟 踪 数 据 库 的 变 化 并 在 适 当 时 刻 自 动 调 用 vacuum 命 令。
+在 大 多 数 情 况 下， pg_autovacuum 是 最 好 的 选 择。
+</p><p><br><br></p>
+<b>VACUUM有什么好处？</b>
+<p>
+PostgreSQL 的 查 询 计 划 根 据 预 测 行 数 做 出 决 定， 如 果 实 际 行 数 与 预 测 行 数 有 太 大 差 异，
+可 能 会 作 出 错 误 判 断， 造 成 查 询 计 划 不 是 最 优 化 的 ， 导 致 执 行 效 率 过 低 。
+</p><p>
+PostgreSQL 数 据 库 需 要 VACUUM 修 复 表 中 的 事 务 ID。
+另 外， 由 于 更 新 和 删 除 操 作 而 产 生 的 过 时 数 据 直 到 在 这 个 表 上 运 行 VACUUM 命 令 才 会 被 清 理。
+按 下 帮 助 按 钮， 可 以 从 在 线 文 档 中 看 到 更 详 细 信 息。
+</p>
+</body>
+</html>

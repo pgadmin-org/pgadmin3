@@ -1,0 +1,36 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>Running VACUUM recommended</h3>
+<p>
+The estimated rowcount on the table &quot;<INFO>&quot; deviates significantly from the actual rowcount.
+You should run VACUUM ANALYZE on this table.
+</p><p>
+Instead of issuing a manual VACUUM ANALYZE command on this table (you can use
+the pgAdmin III maintenance menu for this), running VACUUM ANALYZE on a regular
+or automated basis should be considered. This can be achieved using a scheduler. PostgreSQL also supplies
+the autovacuum daemon, which will track changes made to the database and issue 
+vacuum commands as required automatically. In most cases, autovacuum will be the
+best choice.
+</p><p><br><br></p>
+<b>What is VACUUM good for?</b>
+<p>
+The PostgreSQL query planner makes its decision based on assumptions, taken from
+the estimated rowcount. If the actual rowcount is too different from the estimated rowcount,
+the planner might take a wrong decision, resulting in a query plan that is not optimal. This might
+result in poor performance.
+</p><p>
+The PostgreSQL storage needs VACUUM to have transaction IDs in tables fixed.
+Additionally, outdated rows from updates and deletes are not cleaned up until the VACUUM
+command has been issued on that table. In-depth information can be found in the online
+documentation, just press the help button.
+</p>
+</body>
+</html>

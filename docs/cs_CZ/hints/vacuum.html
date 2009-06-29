@@ -1,0 +1,33 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Rady odborníka</title>
+</head>
+
+<body>
+
+<h3>Je doporučeno spustit VACUUM</h3>
+<p>
+Odhadovaný počet řádků v tabulce „<INFO>“ se významně odlišuje od aktuálního počtu řádků. Měli byste pro 
+tuto tabulku spustit příkaz VACUUM ANALYZE.
+</p><p>
+Namísto ručního spouštění příkazu VACUUM ANALYZE pro tuto tabulku (můžete rovněž použít položku menu „Údržba“ 
+v pgAdmin III) zvažte pravidelné a automatické provádění VACUUM ANALYZE. Toho lze dosáhnout pomocí plánovače 
+úkolů. PostgreSQL také obsahuje démona pro automatický úklid, který sleduje změny v databázi a pokud je potřeba 
+provádí příkaz VACUUM automaticky. Ve většině případů je automatický úklid lepší volbou.
+</p><p><br><br></p>
+<b>K čemu je příkaz VACUUM dobrý?</b>
+<p>
+Plánovač dotazů v PostgreSQL dělá rozhodnutí na základě předpokladů vycházejících z odhadu počtu řádků. Pokud 
+se aktuální počet řádků významně liší od odhadovaného počtu řádků, může plánovač dělat nesprávná rozhodnutí. 
+Výsledkem bude neoptimální plán a to se může odrazit ve špatném výkonu.
+</p><p>
+Úložiště PostgreSQL potřebuje provádění VACUUM kvůli stabilizování ID transakcí v tabulkách. 
+Navíc zastaralé řádky po aktualizacích a mazáních nejsou vyčištěny, dokud se na příslušných 
+tabulkách neprovede příkaz VACUUM. Důkladnější informace naleznete v on-line dokumentaci, stačí 
+stisknout tlačítko „Nápověda“.
+</p>
+</body>
+</html>

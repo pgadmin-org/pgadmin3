@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Rady odborníka</title>
+</head>
+
+<body>
+<h3>Pokrytí cizích klíčů indexem</h3>
+<p>
+Cizí klíč se používá k logickému propojení páru tabulek a omezení změn, které lze na nich provádět.
+</p>
+<p>
+Vše začíná hlavní tabulkou, která bude odkazovanou tabulkou. Musí mít primární klíč (přesněji odkazovaný sloupec nesmí 
+obsahovat prázdné hodnoty a musí být pokrytý jedinečným indexem, ale je skutečně dobrá rada, abyste v ní měli primární index). 
+Podřízená tabulka závisí na hlavní tabulce, což dává tušit, že sloupce, na kterých je cizí klíč vytvořený, musí odpovídat 
+hlavní tabulce pro každý vkládaný nebo aktualizovaný klíč. Podřízená tabulka je odkazující tabulkou cizího klíče.
+</p>
+<p>
+Cizí klíče omezují nejen odkazující tabulku, ale i odkazovanou tabulku. Druhy omezení mohou být RESTRICT, CASCADE nebo SET NULL. 
+Znamená to, že když se změní řádek v hlavní/odkazované tabulce (aktualizací nebo smazáním), všechny odkazující tabulky jsou 
+zkontrolované, jestli je operace platná a pokud ano, provedou se určité dodatečné akce. Podrobnosti najdete v dokumentaci 
+k PostgreSQL.
+</p>
+<p>
+To dále znamená, že pokud se k nějakému řádku v odkazované tabulkce přistupuje kvůli změně, provádí se následně čtení odpovídajících 
+řádků ve všech odkazujících tabulkách, přičemž se použije sloupec s cizím klíčem pro určení toho správného řádku. Proto by se pro tyto 
+sloupce měla brát v úvahu pravidla návrhu ovlivňující výkon. Ve většině případů je doporučeno použít index. PostgreSQL to vyloženě 
+nevyžaduje, proto zůstává na návrháři tabulky, aby se o to postaral.
+</p>
+<p>
+Pro větší pohodlí poskytuje pgAdmin III při vytváření cizího klíče jednoduchý přepínač, který automaticky zkontroluje 
+přítomnost použitelných indexů a pokud žádný nenajde, tak jeden vytvoří. Tak jako u všech indexů, jsou výjimečné případy, 
+kdy takový index může trochu degradovat celkový výkon, ale obecně mít o index méně má horší vliv na výkon než mít o jeden 
+index více.
+</p>
+</body>
+
+</html>

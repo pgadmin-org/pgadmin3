@@ -1,0 +1,38 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru nasveti</title>
+</head>
+
+<body>
+
+<h3>Ident avtentikacija spodletela</h3>
+<p align="justify">
+Stre&#382;nik ne sprejme trenutnega uporabnika: stre&#382;nik sporo&#269;a
+</p>
+<p align="justify">
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p align="justify">
+&#268;e se pojavi to sporo&#269;ilo, je vnos v pg_hba.conf datoteki za kombinacijo va&#353;ega naslova, uporabnika ter baze 
+nastavljen na &quot;ident&quot; avtentikacijo. Nekatere distribucije, npr. Debian, imajo to &#382;e v privzetih 
+nastavitvah. Za uspe&#353;no izvr&#353;itev ident avtentikacije je potrebno nekaj dodatnih nastavitev; o tem ti lahko 
+preberete v PostgreSQL dokumentaciji. Za za&#269;etnike je morda bolj primerno nastaviti druga&#269;en na&#269;in preverjanja 
+pristnosti; MD5 kriptirana gesla so dobra izbira, ki se jo lahko dolo&#269;i z vnosom v datoteko pg_hba.conf, denimo:
+</p>
+<p align="justify">
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p align="justify">
+Ta primer dovoli vsem uporabnikom, ki prihajajo iz zasebnega omre&#382;ja 192.168.0.0/24 in se identificirajo z MD5 
+kodiranim geslom, dostop do vseh baz.
+</p>
+<p align="justify">
+Za urejanje pg_hba.conf nastavitvene datoteke lahko uporabite namenski urejevalnik, vgrajen v pgAdmin III. 
+Ko spremenite to datoteko, je potrebno spro&#382;iti osve&#382;itev nastavitev, kar lahko opravite z ukazom pg_ctl ali z 
+zaustavitvijo in ponovnim zagonom stre&#382;ni&#353;kega procesa.
+</p>
+</body>
+</html>

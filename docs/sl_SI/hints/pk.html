@@ -1,0 +1,39 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru nasveti</title>
+</head>
+
+<body>
+
+<h3>Primarni klju&#269;i</h3>
+<p align="justify">
+Ko gradite tabelo, imejte v mislih, kako jo boste kasneje uporabljali. V ve&#269;ini primerov 
+boste potrebovali nek identifikator, s katerim lahko enoli&#269;no dolo&#269;ite posamezne zapise. Ta 
+identifikator naj bo ustvarjen kot primarni klju&#269;. Primarni klju&#269; ne obsega nujno le enega stolpca; 
+lahko jih je toliko, kolikor je potrebno, da se lahko enoli&#269;no dolo&#269;a zapise v tabeli. &#268;e je 
+potrebno ve&#269; stolpcev (nenapisano pravilo: ve&#269; kot 3), bi bilo morda pametneje ustvariti dodatni 
+stolpec z ustreznim podatkovnim tipom, npr. serial ali bigserial, ki bo slu&#382;il kor primarni klju&#269;.
+</p>
+<p align="justify">
+Le v redkih primerih se ne izpla&#269;a uporaba primarnega klju&#269;a. To pomeni, da manjkajo&#269; primarni klju&#269; 
+pomeni veliko verjetnost, da tabela ni ustrezno zasnovana. Zato se tudi pojavi Guru nasvet, &#269;e kreirate 
+tabelo brez primarnega klju&#269;a.
+</p>
+<p align="justify">
+&#268;e pogledate PostgreSQL-ove sistemske tabele, boste videli, da nobena nima primarnega klju&#269;a. &#268;emu torej vse to? 
+Pravzaprav ima vsaka tabela en ali dva stolpca (navadno le OID), ki enoli&#269;no dolo&#269;ita posamezno vrstico, 
+s tem zadovoljita drugo pravilo za primarne klju&#269;e, ne dovolita ni&#269;el, pokrita pa sta z indeksom za hitrej&#353;i dostop. 
+Uporaba OID-jev ima zgodovinske razloge in navadno ni prva izbira pri oblikovanju tabel. PostgreSQL jih 
+uporablja zaradi zdru&#382;ljivosti za nazaj in &#269;eprav bi novej&#353;i pristop izrecno uporabljal primarne klju&#269;e, 
+se stanje najbr&#382; ne bo ve&#269; kaj dosti spreminjalo.
+</p>
+<p align="justify">
+Kot je razvidno iz primera sistemskih tabel, se lahko unikatnost in hiter dostop dose&#382;e tudi z druga&#269;nim pristopom, 
+ne le s primarnim klju&#269;em. Vseeno pa je zavoljo jasnosti zasnove podatkovnih modelov priporo&#269;ljiva uporaba 
+primarnih klju&#269;ev v ta namen.
+</p>
+</body>
+</html>

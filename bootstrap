@@ -1,0 +1,71 @@
+#######################################################################
+#
+# pgAdmin III - PostgreSQL Tools
+# Copyright (C) 2002 - 2009, The pgAdmin Development Team
+# This software is released under the BSD Licence
+#
+# bootstrap - bootstrap the build system
+#
+#######################################################################
+
+# Check for aclocal 1.9/1.10
+echo "Checking aclocal..."
+RET=`type aclocal-1.10 > /dev/null 2>&1 || echo fail`
+if [ ! $RET ];
+then
+  ACLOCAL=aclocal-1.10
+else
+  RET=`type aclocal-1.9 > /dev/null 2>&1 || echo fail` 
+  if [ ! $RET ];
+  then
+    ACLOCAL=aclocal-1.9
+  else
+    echo "ERROR: this script requires aclocal-1.9 or aclocal-1.10"
+    exit 1
+  fi
+fi
+
+# Check for automake 1.9/1.10
+echo "Checking automake..."
+RET=`type automake-1.10 > /dev/null 2>&1 || echo fail`
+if [ ! $RET ];
+then
+  AUTOMAKE=automake-1.10
+else
+  RET=`type automake-1.9 > /dev/null 2>&1 || echo fail`
+  if [ ! $RET ];
+  then
+    AUTOMAKE=automake-1.9
+  else
+    echo "ERROR: this script requires automake-1.9 or automake-1.10"
+    exit 1
+  fi
+fi
+
+# Insert the version number wherever it's needed
+echo "Stamping the version number..."
+LONG_VER=`grep '#define VERSION_PACKAGE' pgadmin/include/version.h | awk '{print $3}'`
+SHORT_VER=`echo $LONG_VER | cut -d . -f1,2`
+
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" configure.ac.in > configure.ac
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mac/pgadmin.Info.plist.in > pkg/mac/pgadmin.Info.plist
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mac/debug.pgadmin.Info.plist.in > pkg/mac/debug.pgadmin.Info.plist
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/mandrake/pgadmin3.spec.in > pkg/mandrake/pgadmin3.spec
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/redhat/pgadmin3.spec.in > pkg/redhat/pgadmin3.spec
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/slackware/build-release.in > pkg/slackware/build-release
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/src/build-tarball.in > pkg/src/build-tarball
+sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VER/" pkg/suse/pgadmin3.spec.in > pkg/suse/pgadmin3.spec
+
+echo "Configuring the build system..."
+
+if ! ([ -x config ]); then 
+  set -x
+  mkdir config
+fi
+
+set -x
+
+$ACLOCAL && \
+autoheader && \
+$AUTOMAKE --foreign --add-missing --copy && \
+autoconf

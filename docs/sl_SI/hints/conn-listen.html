@@ -1,0 +1,46 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru nasveti</title>
+</head>
+
+<body>
+
+<h3>Stre&#382;nik ne poslu&#353;a</h3>
+<p align="justify">
+Stre&#382;nik ne sprejema povezav: povezovalna knji&#382;nica sporo&#269;a
+</p>
+<p align="justify">
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p align="justify">
+&#268;e naletite na to sporo&#269;ilo, preverite ali je na stre&#382;niku, na katerega se posku&#353;ate povezavi, 
+PostgreSQL zagnan in poslu&#353;a na navedenih vratih. Preverite, &#269;e je vse v redu s povezljivostjo 
+med va&#353;im odjemalcem in stre&#382;nikom z orodji, kot so ping ipd. Ali je va&#353;e omre&#382;je / VPN / SSH tunel / 
+po&#382;arni zid pravilno nastavljen?
+</p>
+<p align="justify">
+Iz varnostnih razlogov PostgreSQL <b>ne</b> poslu&#353;a na vseh IP naslovih, ki jih ima na voljo na sistemu, 
+kjer te&#269;e. Da bi lahko do stre&#382;nika dostopali preko omre&#382;ja, je potrebno najprej omogo&#269;iti poslu&#353;anje 
+na dolo&#269;enih naslovih.
+</p>
+<p align="justify">
+Pri PostgreSQL stre&#382;nikih od razli&#269;ice 8.0 dalje se ta nadzor opravlja z uporabo &quot;listen_addresses&quot; parametra 
+v datoteki postgresql.conf. Tu lahko navedete seznam IP naslovov, na katerih naj stre&#382;nik poslu&#353;a ali preprosto 
+uporabite '*' za poslu&#353;anje na vseh IP naslovih, ki so na voljo. Za starej&#353;e razli&#269;ice stre&#382;nikov (7.3 ali 7.4) se v ta namen 
+nastavi parameter &quot;tcpip_socket&quot; na vrednost 'true'.
+</p>
+<p align="justify">
+Za urejanje datoteke postgresql.conf lahko uporabite v pgAdmin III vgrajen namenski urejevalnik te datoteke. Po 
+opravljenih spremembah v tej datoteki je potrebno stre&#382;nik ponovno zagnati, da se spremembe uveljavijo.
+</p>
+<p align="justify">
+&#268;e ste temeljito preverili nastavitve, to sporo&#269;ilo pa se &#353;e vedno pojavlja, je vseeno zelo malo verjetno, da 
+ste naleteli na nenavadno obna&#353;anje ali te&#382;avo PostgreSQLa. Najverjetneje gre za te&#382;ave na nivoju omre&#382;ja, 
+morda nastavitve po&#382;arnega zidu ipd. Prosimo, &#269;e temeljito preverite nastavitve, preden PostgreSQL 
+skupnosti posredujete sporo&#269;ilo o napaki.
+</p>
+</body>
+</html>

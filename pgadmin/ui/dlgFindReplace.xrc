@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<resource>
+  <object class="wxDialog" name="dlgFindReplace">
+    <title>Find and Replace</title>
+    <size>300,166d</size>
+    <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
+    <object class="wxFlexGridSizer">
+      <cols>1</cols>
+      <rows>3</rows>
+      <growablecols>0</growablecols>
+      <growablerows>0</growablerows>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>3</cols>
+          <rows>3</rows>
+          <growablecols>1</growablecols>
+          <object class="sizeritem">
+            <object class="wxStaticText" name="lblFind">
+              <label>Find what:</label>
+            </object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxTextCtrl" name="txtFind">
+              <tooltip>Enter the string to search for</tooltip>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_FIND">
+              <label>&amp;Find</label>
+              <default>1</default>
+              <tooltip>Find the specified text</tooltip>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxStaticText" name="lblReplace">
+              <label>Replace with:</label>
+            </object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxTextCtrl" name="txtReplace">
+              <tooltip>Enter the replacement text</tooltip>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_REPLACE">
+              <label>&amp;Replace</label>
+              <tooltip>Find and replace the specified text</tooltip>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="spacer">
+            <size>0,0d</size>
+          </object>
+          <object class="spacer">
+            <size>0,0d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_REPLACEALL">
+              <label>Replace &amp;All</label>
+              <tooltip>Find and replace all occurrences of the specified text</tooltip>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+        <border>4</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>3</cols>
+          <rows>1</rows>
+          <growablecols>2</growablecols>
+          <object class="sizeritem">
+            <object class="wxFlexGridSizer">
+              <cols>1</cols>
+              <rows>5</rows>
+              <object class="sizeritem">
+                <object class="wxStaticText" name="sbOrigin">
+                  <label>Origin</label>
+                </object>
+                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxRadioButton" name="rdOriginCursor">
+                  <label>From the cursor</label>
+                  <style>wxRB_GROUP</style>
+                  <value>1</value>
+                  <tooltip>Begin searching at the current cursor position</tooltip>
+                </object>
+                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxRadioButton" name="rdOriginTop">
+                  <label>From the top</label>
+                  <tooltip>Begin searching at the top of the text</tooltip>
+                </object>
+                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxStaticText" name="sbDirection">
+                  <label>Direction</label>
+                </object>
+                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxRadioButton" name="rdDirectionForward">
+                  <label>Forwards</label>
+                  <style>wxRB_GROUP</style>
+                  <value>1</value>
+                  <tooltip>Search forwards through the text</tooltip>
+                </object>
+                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxRadioButton" name="rdDirectionBackward">
+                  <label>Backwards</label>
+                  <tooltip>Search backwards through the text</tooltip>
+                </object>
+                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="sizeritem">
+            <object class="wxFlexGridSizer">
+              <cols>1</cols>
+              <rows>3</rows>
+              <object class="sizeritem">
+                <object class="wxStaticText" name="sbOptions">
+                  <label>Options</label>
+                </object>
+                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxCheckBox" name="chkOptionsWholeWord">
+                  <label>Whole word</label>
+                  <tooltip>Match on whole words</tooltip>
+                </object>
+                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxCheckBox" name="chkOptionsMatchCase">
+                  <label>Match case</label>
+                  <tooltip>Match the case of the text</tooltip>
+                </object>
+                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+              <object class="sizeritem">
+                <object class="wxCheckBox" name="chkOptionsUseRegexps">
+                  <label>Regular expressions</label>
+                  <tooltip>Use regular expressions when searching</tooltip>
+                </object>
+                <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                <border>4</border>
+              </object>
+            </object>
+            <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+            <border>4</border>
+          </object>
+          <object class="spacer">
+            <size>0,0d</size>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+        <border>4</border>
+      </object>
+      <object class="sizeritem">
+        <object class="wxFlexGridSizer">
+          <cols>2</cols>
+          <rows>1</rows>
+          <growablecols>0</growablecols>
+          <object class="spacer">
+            <size>0,0d</size>
+          </object>
+          <object class="sizeritem">
+            <object class="wxButton" name="wxID_CANCEL">
+              <label>&amp;Close</label>
+              <tooltip>Close the dialog</tooltip>
+            </object>
+            <flag>wxALIGN_CENTRE_VERTICAL|wxALL</flag>
+            <border>4</border>
+          </object>
+        </object>
+        <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL</flag>
+      </object>
+    </object>
+  </object>
+</resource>

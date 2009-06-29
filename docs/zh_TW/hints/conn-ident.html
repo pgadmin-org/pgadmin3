@@ -1,0 +1,35 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru Hints</title>
+</head>
+
+<body>
+
+<h3>Ident 驗證失敗</h3>
+<p>
+伺 服 器 無 法 接 受 當 前 的 使 用 者： 伺 服 器 報 告
+</p>
+<p>
+<b><tt class="command"><info></info></tt></b>
+</p>
+<p>
+
+如 果 出 現 這 個 消 息， 說 明 你 的 客 戶 端 / 使 用 者 / 資 料 庫 組 合 在 pg_hba.conf 中 被 設 置 為 "ident" 驗 證。
+在 一 些 發 佈 當 中， 比 如 Debian， 這 是 預 設 設 置。 為 了 能 夠 成 功 執 行 基 於 ident 的 驗 證， 需 要 進 行 額 外 的 設 置 ， 請 查 看 PostgreSQL 說 明。
+對 初 學 者 來 說， 使 用 其 它 的 驗 證 方 式 可 能 更 合 適， 用 MD5 加 密 密 碼 是 個 好 主 意， 可 以 在 pg_hba.conf 這 樣 配 置：
+</p>
+<p>
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p>
+這 個 例 子 允 許 私 有 網 路 192.168.0.0/24 使 用 MD5 加 密 的 密 碼 連 接 到 所 有 使 用 者 和 所 有 資 料 庫。
+</p>
+<p>
+利 用 整 合 進 pgAdmin III 的 pg_hba.conf 編 輯 器 可 以 修 改 pg_hba.conf 配 置 文 件，
+修 改 完 畢 以 後 ， 需 要 使 用 pg_ctl 通 知 資 料 庫 重 新 讀 入 配 置 或 者 重 新 啟 動 資 料 庫。
+</p>
+</body>
+</html>

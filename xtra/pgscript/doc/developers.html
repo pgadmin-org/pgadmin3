@@ -1,0 +1,421 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<link rel="stylesheet" type="text/css" href="../../../docs/en_US/pgadmin3.css" />
+<title>pgScript Developer Guide</title>
+</head>
+
+<body>
+<h2>pgScript Developer Guide</h2>
+<hr />
+<p><b>Table of Contents</b></p>
+<dl>
+    <dt><a href="#programs">Additional programs required</a></dt>
+    <dd>
+        <dl>
+            <dt><a href="#program1">Flex</a></dt>
+            <dt><a href="#program2">Bison</a></dt>
+        </dl>
+    </dd>
+    <dt><a href="#structure">Directory structure</a></dt>
+    <dt><a href="#architecture">Software architecture</a></dt>
+    <dt><a href="#test">Test pgScript</a></dt>
+    <dd>
+        <dl>
+            <dt><a href="#test1">Unit tests</a></dt>
+            <dt><a href="#test2">Integration tests</a></dt>
+        </dl>
+    </dd>
+    <dt><a href="#symbols">Preprocessor symbols</a></dt>
+    <dd>
+        <dl>
+            <dt><a href="#symbol1">PGSCLI</a></dt>
+            <dt><a href="#symbol2">PGSDEBUG</a></dt>
+        </dl>
+    </dd>
+    <dt><a href="#scripts">Automation scripts</a></dt>
+    <dt><a href="#expression">Add a new expression</a></dt>
+    <dd>
+        <dl>
+            <dt><a href="#expression1">Properties of an expression</a></dt>
+            <dt><a href="#expression2">Operands</a></dt>
+            <dt><a href="#expression3">New expression</a></dt>
+        </dl>
+    </dd>
+    <dt><a href="#statement">Add a new statement</a></dt>
+    <dd>
+        <dl>
+            <dt><a href="#statement1">Properties of a statement</a></dt>
+            <dt><a href="#statement2">New statement</a></dt>
+        </dl>
+    </dd>
+</dl>
+<h2><a id="programs"></a>Additional programs required</h2>
+<h3><a id="program1"></a>Flex</h3>
+<p><strong>Flex 2.5.33 or later is required.</strong></p>
+<p>You need to use <code>FlexLexer.h</code> provided with your Flex
+    distribution: copy this file into <code>lib/include/pgscript</code>.</p>
+<p>For MinGW you can download flex-2.5.33 from MinGW Supplementary
+    Tools download section. regex-0.12 is also required. Unzip the archives
+    in <code>msys/1.0</code> directory and then:</p>
+<pre class="screen">flex --version</pre>
+<p>This
+    must print 2.5.33 or later.</p>
+<h3><a id="program2"></a>Bison</h3>
+<p><strong>Bison 2.3 or later is required.</strong></p>
+<p>For MinGW you can download bison-2.3 from MinGW Supplementary
+    Tools download section. regex-0.12 is also required. Unzip the archives
+    in <code>msys/1.0</code> directory and then:</p>
+<pre class="screen">bison --version</pre>
+<p>This must print 2.3 or later.</p>
+<h2><a id="structure"></a>Directory structure</h2>
+<ul type="disc">
+    <li>
+        <p><code>pgadmin/include/pgscript</code></p>
+        <p>pgScript <strong>engine</strong> header files .</p>
+    </li>
+    <li>
+        <p><code>pgadmin/pgscript</code></p>
+        <p>pgScript <strong>engine</strong> source files .</p>
+    </li>
+    <li>
+        <p><code>xtra/pgscript/bin</code></p>
+        <p>Source files for pgScript <strong>command-line interface</strong>: it relies on <code>pgadmin/include/pgscript</code> and <code>pgadmin/pgscript</code>. </p>
+    </li>
+    <li>
+        <p><code>xtra/pgscript/doc</code></p>
+        <p>Contains files related to the application documentation.</p>
+    </li>
+    <li>
+        <p><code>xtra/pgscript/file</code></p>
+        <p>Contains sample input files and test files.</p>
+        <ul type="circle">
+            <li>
+                <p><code>xtra/pgscript/file/input</code></p>
+                <p>Sample pgScript scripts.</p>
+            </li>
+            <li>
+                <p><code>xtra/pgscript/file/test</code></p>
+                <p>Integration test suite.</p>
+                <p><strong class="command">execute.sh</strong> executes this integration test
+                    suite.</p>
+                <ul type="square">
+                    <li>
+                        <p><code>xtra/pgscript/file/test/dictionary</code></p>
+                        <p>Sample dictionaries for the dictionary generator.</p>
+                    </li>
+                    <li>
+                        <p><code>xtra/pgscript/file/test/source</code></p>
+                        <p>Input scripts used by <strong class="command">execute.sh</strong></p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <p><code>xtra/pgscript/lib</code></p>
+        <p><code>padmin/pgscript</code> source files are compiled to this directory first when compiling the command-line interface (<code>bin</code>) or the unit test suite (<code>test</code>). This creates a <code>libpgs.a</code>. </p>
+    </li>
+    <li>
+        <p><code>xtra/pgscript/test</code></p>
+        <p>Source files for pgScript <strong>unit test suite </strong>: it relies on <code>pgadmin/include/pgscript</code> and <code>pgadmin/pgscript</code>.</p>
+    </li>
+</ul>
+<h2><a id="architecture"></a>Software architecture</h2>
+<p>This section describes the <code>pgadmin/pgscript</code> folder, which is
+    very like <code>pgadmin/</code><code>include/pgscript</code>.</p>
+<ul type="disc">
+    <li>
+        <p><code>pgadmin/pgscript</code></p>
+        <p><code>pgsParser.yy</code> and <code>pgsScanner.ll</code>: Bison
+            and Flex parser for the T-SQL syntax (use <strong class="command">parser.sh</strong> to generate
+            source and header files).</p>
+        <p><code>parser.tab.cc</code> and <code>lex.pgs.cc</code>: Bison
+            and Flex generated files.</p>
+        <p>The parser goes through the to-be-parsed script and builds a
+            statement tree (made of <code>pgsStmt</code> and its children). A 
+            statement can be based on an expression (made of <code>pgsExpression</code> and its children). Once the whole script
+            is parsed the tree is evaluated with the common <code>eval(...)</code> method.</p>
+        <p><code>pgsApplication</code>: interface of the pgScript engine with the
+            outside world. It allows users to parse a file or a string.</p>
+        <ul type="circle">
+            <li>
+                <p><code>pgadmin/pgscript/exceptions</code></p>
+                <p>Contains pgScript exceptions which inherits from <code>pgsException</code>.</p>
+                <ul>
+                    <li><code>pgsArithmeticException</code>: when an operation
+                        cannot be performed because of incompatible types for
+                        example.</li>
+                    <li><code>pgsAssertException</code>: when <code>pgsAssertStmt</code> detects an assertion failure.</li>
+                    <li><code>pgsBreakException</code>: when a break instruction
+                        is found, must be caught by the enclosing <code>pgsWhileStmt</code>.</li>
+                    <li><code>pgsCastException</code>: when a type conversion
+                        cannot be performed (string <code>'abc'</code> to number for
+                        example).</li>
+                    <li><code>pgsContinueException</code>: when a continue
+                        instruction is found, must be caught by the enclosing <code>pgsWhileStmt</code>.</li>
+                    <li><code>pgsInterruptException</code>: when the program is
+                        stopped as it is running.</li>
+                    <li><code>pgsParameterException</code>: when the type of a
+                        parameter of a function or a generator is not valid.</li>
+                </ul>
+            </li>
+            <li>
+                <p><code>pgadmin/pgscript/expressions</code></p>
+                <p>Contains <strong>r-values</strong>. This means
+                    expressions that return <span class="emphasis"><em>something</em></span> that can
+                    be assigned to a variable. <code>pgsExpression</code> is the
+                    common parent class.</p>
+                <p>The common interface implies that the children must
+                    implement a copy constructor, the assignment operator and a <code>clone()</code> method which does a deep copy and which is
+                    based on the copy constructor.</p>
+                <p>The <code>eval(pgsVarMap &amp;)</code> method is crucial.
+                    During evaluation of the statement tree it performs the
+                    operation associated to an expression and returns its values as
+                    an r-value (value which can be used in an assignment). This
+                    r-value isa <code>pgsOperand</code>. Its parameter <code>pgsVarMap</code> is a map of <code>pgsOperand</code>: this is the symbol table (the program memory). </p>
+                <p><code>pgsOperand</code> is simply a smart pointer on a <code>pgsObject</code> (see <code>objects</code>).</p>
+            </li>
+            <li>
+                <p><code>pgadmin/pgscript/generators</code></p>
+                <p>Contains random <strong>data
+                    generators</strong>. <code>pgsObjectGen</code> is the common
+                    parent. The <code>wxString random()</code> method returns the
+                    random object as a string.</p>
+                <p>A lot of generators use a <code>pgsIntegerGen</code> through a smart pointer.</p>
+            </li>
+            <li>
+                <p><code>pgadmin/pgscript/objects</code></p>
+                <ul>
+                    <li><code>pgsObject</code> is the common parent class: a smart
+                        pointer to a <code>pgsObject</code> (<code>pgsOperand</code>) is <strong>the data</strong> that is used in
+                        pgScript</li>
+                    <li><code>pgsGenerator</code>: container for the
+                        generators.</li>
+                    <li><code>pgsNumber</code>: represents a number, either a real
+                        number or an integer.</li>
+                    <li><code>pgsRecord</code>: represents a record set, which is
+                        composed of <code>pgsGenerator</code>, <code>pgsNumber</code> and <code>pgsString</code>.</li>
+                    <li><code>pgsString</code>: represents a string. </li>
+                </ul>
+                <p>The <code>eval(...)</code> method returns in general a
+                    string representation of the object or the object itself. This is
+                    something that is used in expressions to perform
+                    operations. Each object must implement some operations. Operations
+                    should only be possible between operands of the same
+                    type.</p>
+                <p>The type of an object is known either by a dynamic cast or
+                    by the <code>is_xxx()</code> methods, which use the type
+                    specified in the object constructor (<code>pgsTReal</code>, <code>pgsTInt</code>, ...).</p>
+            </li>
+            <li>
+                <p><code>pgadmin/pgscript/statements</code></p>
+                <p>Similar to expressions, they perform operation but do not
+                    return anything. <code>pgsStmt</code> is the common parent
+                    class.</p>
+                <p>Those classes do not require copy constructor, assignment
+                    operator, <code>clone()</code> method as they are never
+                    copied.</p>
+                <ul>
+                    <li><code>pgsStmtList</code> is a list of statements and
+                        therefore owns additional methods: <code>push_xxx()</code>.</li>
+                    <li><code>pgsProgram</code> is not really a statement: it is
+                        the program the root statement that contains the first statement
+                        list.</li>
+                </ul>
+            </li>
+            <li>
+                <p><code>pgadmin/pgscript/utilities</code></p>
+                <ul>
+                    <li><code>pgsAlloc</code>: when configured with the PGSDEBUG symbol it tracks each <code>new</code> or <code>delete</code> that occur and at the
+                        end of the program execution it shows what <code>new</code> operations have not been deleted. <code class="classname">pnew</code> <code class="classname">pdelete</code> and <code class="classname">pdeletea</code> must be used instead of <code class="classname">new</code> <code class="classname">delete</code> and <code class="classname">delete[]</code> in order to enable those
+                        features.</li>
+                    <li><code>pgsContext</code>: utilities for script parsing in <code>pgsParser.yy</code>.</li>
+                    <li><code>pgsDriver</code>: manages Bison and Flex
+                        files.</li>
+                    <li><code>pgsScanner</code>: Flex header.</li>
+                    <li><code>pgsMapm</code>: conversion utilities for the MAPM
+                        library which is the big number library used in pgScript.</li>
+                    <li><code>pgsThread</code>: pgScript runs in a detached (auto
+                        delete) thread that can be interrupted.</li>
+                    <li><code>pgsUtilities</code>: various utilities.</li>
+                    <li><code>pgsCopiedPtr</code> and <code>pgsSharedPtr</code>:
+                        smart pointers whose names are explicit.</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+<h2><a id="test"></a>Test pgScript</h2>
+<p>There are two steps: unit tests on classes and integration tests on
+    pgScript executable.</p>
+<p>Go to the root directory of pgAdmin and enter the following
+    command:</p>
+<pre class="screen">./configure</pre>
+<p>Go to the <code>xtra/pgscript</code> directory and enter the following
+    command:</p>
+<pre class="screen">
+make</pre>
+<p>This should compile both the pgScript command-line interface (<code>bin</code>) and the unit test suite (<code>test</code>).</p>
+<h3><a id="test1"></a>Unit tests</h3>
+<p>Go to the <code>xtra/pgscript</code> directory and enter the following
+    command:</p>
+<pre class="screen">
+./test/pgsTest</pre>
+<p>There should be no assertion failure otherwise there is a
+    bug.</p>
+<h3><a id="test2"></a>Integration tests</h3>
+<p>Go to the <code>xtra/pgscript</code> and enter the following
+    command:</p>
+<pre class="screen">
+./file/test/execute.sh -h 192.168.190.1 -p 5432 -U postgres -W postgres -d testbase</pre>
+<p>The string <code>-h 192.168.190.1 -p 5432 -U postgres -W postgres
+    -d testbase</code> are the parameters for pgScript. Replace them with
+    your database parameters.</p>
+<p>There should be no error during this process. An error is a line in the output that begins with <code>[EXCEPT]</code> or <code>[ERROR]</code> or a segmentation fault. </p>
+<p><strong>Note</strong>: use a <code>LOG_ERRORS</code> log level in <code>main()</code> in order not to display too many things on the screen, otherwise it
+    would be hard to see if there was a failure.</p>
+<h2><a id="symbols"></a>Preprocessor symbols</h2>
+<h3><a id="symbol1"></a>PGSCLI</h3>
+<p>Automatically defined when compiling the command-line interface. <code>PGSCLI</code> stands for <span class="emphasis"><em>pgScript Command-Line Interface</em></span>. This
+    means not to compile specific parts of pgAdmin and pgScript code because the command-line interface does need them: this is mainly GUI code that is ignored.</p>
+<p>Along with <code>PGSCLI</code> <code>PGADMIN3_H</code> is also defined because the command-line must not include <code>pgAdmin3.h</code>. </p>
+<p>When compiled normally with pgAdmin this symbol is not defined.</p>
+<h3><a name="symbol2" id="symbol3"></a>PGSDEBUG</h3>
+<p>Compiles pgScript command-line interface or unit test suite with
+    memory tracking features. At the end of the program undeallocated memory
+    blocks are displayed. Use <code>pnew</code> instead of <code>new</code>, <code>pdelete(x)</code> instead of <code>delete x</code> and <code>pdeletea(x)</code> instead of <code>delete[] x</code> when
+    programming pgScript in order to be able to use those features.</p>
+<h2><a id="scripts"></a>Automation scripts</h2>
+<p><code>pgadmin/pgscript/parser.sh</code></p>
+<p><strong class="command">parser.sh</strong> must be called for regenerating
+    Flex and Bison source files because it does some more processing that
+    just executing <strong class="command">bison</strong> and <strong class="command">flex</strong>:
+    it replaces some headers and adds other ones.</p>
+<p><code>xtra/pgscript/file/test/execute.sh</code></p>
+<p>See the <a href="#structure">Directory structure</a> section. Runs the
+    integration test suite.</p>
+<h2><a id="expression"></a>Add a new expression</h2>
+<h3><a id="expression1"></a>Properties of an expression</h3>
+<ul type="disc">
+    <li>
+        <p>Header file is in <code>pgadmin/include/pgscript/expressions</code> and source file is in <code>pgadmin/pgscript/expressions</code>.</p>
+    </li>
+    <li>
+        <p>It returns a value (<code>pgsOperand</code>) once it has been
+            evaluated.</p>
+    </li>
+    <li>
+        <p>It is a <code>pgsExpression</code> child.</p>
+    </li>
+    <li>
+        <p>The header file must be included in <code>pgsExpressions.h</code>.</p>
+    </li>
+</ul>
+<h3><a id="expression2"></a>Operands</h3>
+<p>A <code>pgsOperand</code> is a smart pointer to a <code>pgs</code>Variable (<code>pgsGenerator</code>, <code>pgsNumber</code>, <code>pgsRecord</code> and <code>pgsString</code>).</p>
+<p>To declare a <code>pgsOperand</code>:</p>
+<pre class="screen">pgsOperand operand(pnew pgsNumber(wxT("1")));</pre>
+<p>Then a <code>pgsOperand</code> is copied, duplicated and deleted
+    automatically. In the example above there is no need to delete the new <code>pgsNumber</code>: the destructor is called automatically when <code>operand</code> is deleted.</p>
+<pre class="screen">pgsOperand copy(operand);
+operand = copy;</pre>
+<p>To duplicate and retrieve the <code>pgsNumber</code>:</p>
+<pre class="screen">pgsNumber * number = operand-&gt;clone();</pre>
+<p>Even if copy and deletion are handled automatically, <code>pgsOperand</code> is accessed like a regular pointer with <code>-&gt;</code>:</p>
+<pre class="screen">cout &lt;&lt; operand<strong>-&gt;</strong>value() &lt;&lt; endl;
+return operand<strong>-&gt;</strong>eval(vars);</pre>
+<h3><a id="expression3"></a>New expression</h3>
+<ul type="disc">
+    <li>
+        <p>Duplicate <code>pgsAssign</code> (header and source) and
+            rename the files: <code>pgsMyExpression</code> for example.</p>
+    </li>
+    <li>
+        <p>Replace each occurrence of <code>pgsAssign</code> with <code>pgsMyExpression</code>.</p>
+    </li>
+    <li>
+        <p>Replace the protected data and the constructor with what you
+            want.</p>
+    </li>
+    <li>
+        <p>Do not forget to modify the destructor, the copy constructor
+            and the assignment operator according to your new data.</p>
+    </li>
+    <li>
+        <p>The <code>value()</code> method must return the <strong>not</strong> evaluated expression.</p>
+    </li>
+    <li>
+        <p>The <code>eval(vars)</code> method must return the evaluated
+            expression.</p>
+    </li>
+</ul>
+<p><strong>Note</strong>. The <code>vars</code> parameter is the symbol table: this is a
+    map whose key is the variable name and whose value is a <code>pgsOperand</code>.</p>
+<ul type="disc">
+    <li>
+        <p>Add <code>pgsMyExpression.h</code> in <code>pgsExpressions.h</code>.</p>
+    </li>
+    <li>
+        <p>Modify <code>pgscript/pgsScanner.ll</code> (Flex) and <code>pgscript/pgsParser.yy</code> (Bison) to take into account this
+            new expression.</p>
+    </li>
+</ul>
+<p><strong>Note</strong>. Use <strong class="command">parser.sh</strong> to regenerate the Flex/Bison
+    parser.</p>
+<p>The protected data is most of the time string identifiers and
+    pointers to <code>pgsExpression</code> expressions that are used
+    (evaluated) for evaluating the expression.</p>
+<h2><a id="statement"></a>Add a new statement</h2>
+<h3><a id="statement1"></a>Properties of a statement</h3>
+<ul type="disc">
+    <li>
+        <p>Header file is in <code>pgadmin/include/pgscript/statements</code> and source file is in <code>pgadmin/pgscript/statements</code>.</p>
+    </li>
+    <li>
+        <p>It returns nothing: this is kind of an expression that returns
+            nothing.</p>
+    </li>
+    <li>
+        <p>It is a <code>pgsStmt</code> child.</p>
+    </li>
+    <li>
+        <p>The header file must be included in <code>pgsStatements.h</code>.</p>
+    </li>
+</ul>
+<h3><a id="statement2"></a>New statement</h3>
+<ul type="disc">
+    <li>
+        <p>Duplicate <code>pgsPrint</code> (header and source) and rename
+            the files: <code>pgsMyStmt</code> for example.</p>
+    </li>
+    <li>
+        <p>Replace each occurrence of <code>pgsPrint</code> with <code>pgsMyStmt</code>.</p>
+    </li>
+    <li>
+        <p>Replace the protected data and the constructor with what you
+            want.</p>
+    </li>
+    <li>
+        <p>Do not forget to make the copy constructor and the assignment
+            operator private (<strong>not
+            allowed</strong>).</p>
+    </li>
+    <li>
+        <p>The <code>value()</code> method must return the <strong>not</strong> evaluated statement.</p>
+    </li>
+    <li>
+        <p>The <code>eval(vars)</code> method evaluate the statement (it
+            returns nothing).</p>
+    </li>
+    <li>
+        <p>Add <code>pgsMyStmt.h</code> in <code>pgsStatements.h</code>.</p>
+    </li>
+    <li>
+        <p>Modify <code>pgscript/pgsScanner.ll</code> (Flex) and <code>pgscript/pgsParser.yy</code> (Bison) to take into account this
+            new statement.</p>
+    </li>
+</ul>
+</body>
+</html>

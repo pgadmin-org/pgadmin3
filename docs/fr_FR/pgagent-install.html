@@ -1,0 +1,139 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Installation de pgAgent</title>
+</head>
+
+<body>
+
+<H3>Installation de pgAgent</H3>
+<P>pgAgent fonctionne comme un démon sur les systèmes *nix et comme un service
+sur les systèmes Windows. Dans la majorité des cas, il fonctionnera sur le
+serveur de bases de données lui-même - c'est pour cette raison que pgAgent
+n'est pas automatiquement configuré quand pgAdmin est installé. Cependant,
+dans certains cas, il peut être préférable d'exécuter pgAgent sur plusieurs
+systèmes vers la même base de données - les jobs individuels peuvent ciblés
+un hôte particulier ou laissés pour exécution sur un des hôtes. Le verrou
+empêche l'exécution de la même instance d'un job par plusieurs hôtes.</P>
+
+<H3>Configuration de la base de données</H3>
+<P>pgAgent enregistre sa configuration dans la base de données
+&quot;postgres&quot; de votre cluster. Cette base de données existe par défaut
+à partir des versions 8.1 de PostgreSQL. Pour les versions précédentes, vous
+devez créer la base de données vous-même. La base de données doit avoir
+activé le langage de procédures PL/pgsql - le programme createlang de PostgreSQL
+peut faire cela si nécessaire.</P>
+
+<P>Connectez-vous à la base de données postgres (une fois qu'elle est créée)
+puis ouvrez l'outil de requêtage. Sélectionnez l'élément Ouvrir du menu Fichier
+et cherchez le script pgagent.sql installé avec pgAdmin. L'emplacement de ce
+fichier varie suivant les systèmes d'exploitation. Néanmoins, il se trouve
+normalement sous C:\Program files\pgAdmin III sur les systèmes Windows (ou
+'C:\Program files\PostgreSQL\8.x\pgAdmin III' si pgAdmin a été installé avec
+l'installeur du serveur PostgreSQL), ou sous /usr/local/pgadmin3/share/pgadmin3
+ou /usr/share/pgadmin3 sur les systèmes *nix. Une fois que le fichier est
+chargé, cliquez sur le bouton Exécuter pour exécuter ce script.</P>
+
+<P>Le script créera quelques tables et autres objets dans un schéma nommé
+pgagent.</P>
+
+<H3>Installation du démon sous *nix</H3>
+<P>Pour installer le démon sur un système *nix, vous aurez normalement besoin
+d'avoir les droits de l'utilisateur root pour modifier les scripts de démarrage
+du système - cela est très spécifique au système, donc vous devriez consulter
+la documentation du système pour plus d'informations.</P>
+
+<P>Le programme lui-même accepte quelques options en ligne de commande, la
+plupart uniquement disponible pour des raisons de débogage ou de
+configurations spécialisées&nbsp;:</P>
+
+<PRE>
+Usage:
+  /path/to/pgagent [options] &lt;chaine-de-connexion&gt;
+  
+options:
+  -f exécution en avant-plan (n'est pas détaché du terminal)
+  -t &lt;intervalle d'interrogation en secondes (10 par défaut)&gt;
+  -r &lt;préiode de tentative après l'annulation de la connexion en secondes
+     (&gt;=10, 30 par défaut)&gt;
+  -s &lt;journal applicatif (les messages sont tracées vers STDOUT si ce fichier
+         n'est pas précisé)&gt;
+  -l &lt;verbosité des traces (ERROR=0, WARNING=1, DEBUG=2, 0 par défaut)&gt;
+</PRE>
+
+<P>La chaîne de connexion requise est une chaîne de connexion au standard libpq
+(voir la <a
+href="http://www.postgresql.org/docs/current/static/libpq.html#libpq-connect">documentation
+de PostgreSQL</a> pour plus de détails). Par exemple, la ligne de commande
+suivante exécutera pgAgent avec un serveur écoutant sur localhost et utilisant
+une base de données appelée pgadmin et l'utilisateur postgres&nbsp;:</P>
+
+<PRE>
+/path/to/pgagent hostaddr=127.0.0.1 dbname=pgadmin user=postgres
+</PRE>
+
+<H3>Installation du service sur Windows</H3>
+<P>pgAgent est capable de s'auto-installer comme un service sur les systèmes
+Windows. Les options en ligne de commande sont similaires à celles pour les
+systèmes Windows. Les options disponibles sont similaires à celles des systèmes
+*nix mais incluent un paramètre supplémentaire pour indiquer le service à
+traiter&nbsp;:</P>
+
+<PRE>
+Usage:
+  pgAgent REMOVE &lt;nomService&gt;
+  pgAgent INSTALL &lt;nomService&gt; [options] &lt;chaine-de-connexion&gt;
+  pgAgent DEBUG [options] &lt;chaine-de-connexion&gt;
+
+  options:
+    -u &lt;utilisateur ou DOMAINE\utilisateur&gt;
+    -p &lt;mot de passe&gt;
+    -d &lt;nom affiché&gt;
+    -t &lt;interval d'interrogation en secondes (10 par défaut)&gt;
+    -r &lt;période de tentative après l'annulation de la connexion en secondes
+       (&gt;=10, 30 par défaut)&gt;
+    -l &lt;verbosité des traces (ERROR=0, WARNING=1, DEBUG=2, 0 par défaut)&gt;
+</PRE>
+
+<P>Le service peut être facilement installé à partir de la ligne de commande,
+comme le montre cet exemple (en ajustant le chemin si nécessaire)&nbsp;:</P>
+
+<PRE>
+"C:\Program Files\pgAdmin III\pgAgent" INSTALL pgAgent -u postgres -p secret hostaddr=127.0.0.1 dbname=pgadmin user=postgres
+</PRE>
+
+<P>Le service peut alors être démarré à partir de la ligne de commande en
+utilisant <I>net start pgAgent</I> ou à partir de l'outil <I>Services</I>
+du panneau de contrôle. Toutes les traces et les erreurs seront rapportées
+dans le journal des événements des applications. Le mode DEBUG peut être
+utilisé en exécutant pgAgent à partir de la ligne de commande. Mais du coup,
+les traces seront envoyées sur la fenêtre de commande.</P>
+
+<H3>Problèmes de sécurité</H3>
+<P>pgAgent est un outil très puissant mais vous devez connaître ses implications
+en terme de sécurité&nbsp;:</P>
+
+<P><B>Mot de passe pour la base de données</B> - <I>NE SOYEZ PAS</I> tenté
+d'inclure un mot de passe dans la chaîne de connexion de pgAgent - sur les
+systèmes *nix, il serait visible de tous les utilisateurs dans la sortie de
+la commande ps. Sur les systèmes Windows, il sera enregistré dans la base
+de registre en clair. À la place, utiliser un fichier <I>~/.pgpass</I> pour
+enregistrer les mots de passe de chaque base de données auquel pgAgent doit
+accéder. Les détails de cette technique sont disponibles dans la <a
+href="http://www.postgresql.org/docs/current/static/libpq-pgpass.html">documentation
+de PostgreSQL</a>.</P>
+
+<P><B>Accès au système/à la base de données</B> - tous les jobs exécutés par
+pgAgent s'exécuteront avec les droits de l'utilisateur de pgAgent. Les étapes
+SQL seront exécutés par l'utilisateur qu'utilise pgAgent pour se connecter
+à la base de données. Les scripts batch/shell seront exécutés avec l'utilisateur
+sous lequel le service/démon pgAgent fonctionne. À cause de ceci, il est
+essentiel de conserver le contrôle sur les utilisateurs qui sont capables de
+créer et de modifier les jobs. Par défaut, seul l'utilisateur qui a créé les
+objets dans la base de données pgagent sera capable de le faire. Généralement,
+il s'agira d'un super-utilisateur PostgreSQL.</P>
+
+</BODY>
+</HTML>

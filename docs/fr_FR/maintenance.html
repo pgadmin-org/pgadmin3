@@ -1,0 +1,51 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Maintain a database object</title>
+</head>
+
+<body>
+
+<H3>Maintenir un objet de la base de données</H3>
+
+<center><img src="images/maintenance.png"></center>
+
+<P>Cet outil permet de maintenir la base de données dans sa globalité ou
+une table/index sélectionnée.</P>
+<P>Il y a trois types de maintenance&nbsp;:</P>
+<H3>VACUUM</H3>
+<P>VACUUM parcourera la base de données ou la table pour chercher les lignes
+mortes. Si une ligne est mise à jour ou supprimée, le contenu précédent n'est
+pas remplacé, mais plutôt marqué invalide. La nouvelle donnée est insérée
+proprement dans la base de données. Vous avez besoin de réaliser cette
+opération régulièrement pour vous assurer que votre base de données ne
+contient pas trop de données inutilisées. Dans le cas contraire, vous perdrez
+de l'espace disque et vos performances se dégraderont petit à petit.</P>
+<P>Appuyez sur le bouton d'aide pour aller sur l'aide de PostgreSQL concernant
+la commande VACUUM et avoir ainsi plus d'informations sur les options.</P>
+<P>La sortie du serveur est affichée dans la page des messages une fois qu'ils
+arrivent. Si le mode verbeux est sélectionné, le serveur enverra des informations
+détaillées sur ce qu'il a fait.</P>
+<P>Bien que cet outil soit très utile dans des buts de maintenance, vous êtes
+encouragé à installer un job automatique qui réalise un job VACUUM régulier pour
+conserver votre base de données dans un état propre.</P>
+<H3>ANALYZE</H3>
+<P>ANALYZE investigates statistical values about the selected
+database or table. This enables the query optimizer to select the
+fastest query plan, to give optimal performance. Every time your data
+is changing radically, you should perform this task. It can be
+included in a VACUUM run, using the appropriate option.</P>
+<H3>REINDEX</H3>
+<P>REINDEX reconstruit les index au cas où ces derniers se sont détériorés suite
+à l'insertion de modèles de données inhabituelles. Ceci peut arriver par exemple
+si vous insérez de nombreuses lignes avec des valeurs d'index en augmentation,
+et si vous supprimez des valeurs d'index inférieures.</P>
+<P>L'option RECREATE n'appelle pas la commande SQL REINDEX. À la place, il
+supprime l'index puis le recrée suivant sa définition. Ceci ne verrouille pas
+la table de façon exclusive alors que REINDEX le fait, mais verrouillera
+seulement les écritures.
+</P>
+</BODY>
+</HTML>

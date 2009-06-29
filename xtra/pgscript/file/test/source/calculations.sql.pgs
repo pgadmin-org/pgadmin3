@@ -1,0 +1,119 @@
+PRINT 'Testing calculations';
+
+SET @A = 10;
+SET @B = 5;
+SET @C = 4;
+SET @D = 2.5;
+
+-- +
+ASSERT 5 + 1 + 2 = 8;
+ASSERT @A + (@B + 5) = 20;
+ASSERT @A + @D = 1.250e1;
+
+-- -
+ASSERT 5 - 1 - 2 = 2;
+ASSERT @A - @C - (@B + 5) = -4;
+ASSERT @A - @D = 75e-1;
+
+-- *
+ASSERT 5 * 1 * 2 = 10;
+ASSERT @A * @C * 2 = 8e1;
+ASSERT (@B * 3) * @D = 37.50;
+
+-- / & > & <> & <
+ASSERT 5 / 1.0 / 2 = 2.5; -- Left to right priority
+ASSERT 5 / 1 / 2 = 2;
+ASSERT @A / @B = 2;
+ASSERT @A / 4 = 2; -- Integer division
+ASSERT @A / 4. = 2.5; -- Float division
+ASSERT @A / 40e-1 = 2.5; -- Float division
+ASSERT @A / 3 < @A / 3.0;
+ASSERT (@A / 3.0) > (@A / 3);
+ASSERT @A / 3.0 <> @A / 3;
+
+-- %
+ASSERT 5 % 2 = 1;
+ASSERT @A % @B = 0;
+ASSERT @A % @C = 2;
+ASSERT @C % @D = 1.5;
+
+-- = & ~=
+ASSERT 0 = 0;
+ASSERT 1 = 1;
+ASSERT (0 = 0) = (1 = 1);
+ASSERT 0 = (0 = 1) = 1; -- Right to left priority
+ASSERT @A * @B = @B * @A;
+ASSERT @C + (@A = @A) = @B;
+ASSERT 0 * @D = 0;
+ASSERT 'abc' = 'abc';
+ASSERT '' = '';
+ASSERT 'abc' ~= 'aBc';
+
+-- <>
+ASSERT 0 <> 1;
+ASSERT (0 = 1) <> (1 = 1);
+ASSERT 1 <> (0 <> 1) <> 1; -- Right to left priority
+ASSERT @C + (@A = @A) <> @C + (@A = @B);
+ASSERT @C + (@A = @A) <> @C + (@A <> @A);
+ASSERT 'abc' <> 'abC';
+ASSERT '' <> ' ';
+
+-- < & > & AND
+ASSERT @B < @A AND @A > @B;
+ASSERT 1 AND 1;
+ASSERT 5 >= 5;
+ASSERT @A >= @B;
+ASSERT @C <= @B;
+ASSERT 0 < 3 AND 3 > 0;
+ASSERT @C + @D < @A + @B
+	AND (@A) + (@B) - (@C) > (@D);
+ASSERT -1 * @A * (@B + @C - @D) < 0;
+ASSERT 'abc' > 'aBc';
+ASSERT 'abc' >= 'abc';
+ASSERT 'abc' >= 'aBc';
+
+-- < & > & OR
+ASSERT @B > @A OR @A > @B;
+ASSERT 1 OR 0;
+ASSERT 0 OR 1;
+ASSERT 1 OR 1;
+ASSERT 0 < 3 OR 3 < 0;
+ASSERT @C + @D > @A + @B
+	OR (@A) + (@B) - (@C) > (@D);
+ASSERT 1 < 2 < 3; -- Left to right priority
+ASSERT 1 > 2 < 3; -- Left to right priority
+ASSERT 'abc' < 'acc';
+ASSERT 'abc' <= 'abc';
+ASSERT 'abc' <= 'acc';
+
+-- NOT 
+ASSERT NOT 0 = 1;
+ASSERT NOT 0;
+ASSERT NOT NOT 1;
+ASSERT NOT (NOT 1);
+ASSERT NOT 1 = 0;
+ASSERT 1;
+ASSERT NOT 5 = 0;
+ASSERT NOT @A = 0;
+ASSERT NOT (@A + @B) = 0;
+ASSERT NOT '' = '1';
+ASSERT NOT ' ' = '1';
+ASSERT NOT '	' = '1';
+ASSERT NOT 'abc' = '';
+ASSERT NOT '1' = '';
+
+-- +
+ASSERT +1 = 1;
+ASSERT +(+1) = 1;
+ASSERT ++1 = 1;
+
+-- -
+ASSERT -(1) = -1;
+-- ASSERT --1 = 1; This is a SQL comment
+ASSERT -(-1) = 1;
+ASSERT -1 * @A = -@A;
+
+-- Big calculations (priorities)
+ASSERT 5 + 5 * 10 - 18 / 3 + 3 = 52;
+ASSERT 10 * 10 * (3 * 10) / 1e3 = 3;
+ASSERT (4 * 5) + 2 / 3 - (4 + 1) = 15;

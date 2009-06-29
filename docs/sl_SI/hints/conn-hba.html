@@ -1,0 +1,41 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru nasveti</title>
+</head>
+
+<body>
+
+<h3>Dostop do baze zavrnjen</h3>
+<p align="justify">
+Stre&#382;nik ne dovoli dostopa do baze: stre&#382;nik sporo&#269;a
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p align="justify">
+Da bi lahko dostopali do podatkovne baze na PostgreSQL stre&#382;niku, je potrebno najprej dodeliti va&#353;emu odjemalcu 
+dostop do stre&#382;nika (Host Based Authentication). PostgreSQL bo pregledal datoteko pg_hba.conf, &#269;e se v njej 
+nahaja vzorec, ki se ujema va&#353;emu omre&#382;nemu naslovu / uporabni&#353;kemu imenu / bazi in &#269;e je le-ta omogo&#269;en, preden 
+se preverijo SQL GRANT seznami dostopov.
+</p>
+<p align="justify">
+Za&#269;etne nastavitve v datoteki pg_hba.conf so zelo omejujo&#269;e, da bi se izognili varnostnim luknjam, ki jih lahko 
+povzro&#269;ijo nepregledane, vendar obvezne sistemske nastavitve. Najbr&#382; boste morali dodati vrstico, podobno tej
+</p>
+<p align="justify">
+<b><tt class="command">host all all 192.168.0.0/24 md5</tt></b>
+</p>
+<p align="justify">
+Ta primer dovoli vsem uporabnikom, ki prihajajo iz zasebnega omre&#382;ja 192.168.0.0/24 in se identificirajo z MD5 
+kodiranim geslom, dostop do vseh baz.
+</p>
+<p align="justify">
+Za urejanje pg_hba.conf nastavitvene datoteke lahko uporabite namenski urejevalnik, vgrajen v pgAdmin III. 
+Ko spremenite to datoteko, je potrebno spro&#382;iti osve&#382;itev nastavitev, kar lahko opravite z ukazom pg_ctl ali z 
+zaustavitvijo in ponovnim zagonom stre&#382;ni&#353;kega procesa.
+</p>
+</body>
+</html>

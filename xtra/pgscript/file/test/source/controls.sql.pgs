@@ -1,0 +1,66 @@
+PRINT 'Testing control structures';
+
+SET @I = 5;
+WHILE @I < 20
+BEGIN
+	SET @I = @I + 1;
+	IF @I + @I > 0
+	BEGIN
+		SET @J = 5;
+		ASSERT @I > 5 AND @I <= 20;
+		WHILE @J < 10
+			SET @J = @J + 1;
+	END
+END
+ASSERT @I = 20;
+ASSERT @J = 10;
+
+SET @I = 5;
+WHILE @I < 20
+BEGIN
+	SET @I = @I + 1;
+	IF @I > 10
+		BREAK;
+	ELSE
+	BEGIN
+		CONTINUE;
+		ASSERT 0;
+	END
+END
+ASSERT @I = 11;
+
+SET @I = 0;
+WHILE @I = 0
+BEGIN
+	SET @J = 0;
+	WHILE @J = 0
+	BEGIN
+		SET @K = 10;
+		WHILE @K
+			SET @K = @J * @K;
+		SET @J = @J + 1;
+	END
+	SET @I = NOT @K;
+END
+ASSERT @I = 1;
+ASSERT @J = 1;
+ASSERT @K = 0;
+
+SET @I = 5;
+SET @J = 1;
+WHILE @I >= 1
+BEGIN
+	SET @J = @J * @I;
+	SET @I = @I - 1;
+END
+ASSERT @I = 0;
+ASSERT @J = 120;
+
+IF 'a' = 'a'
+	ASSERT 1;
+ELSE
+	ASSERT 0;
+
+SET @I = 5;
+WHILE @I > 0
+	SET @I = @I - 1;

@@ -1,0 +1,82 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Správa Slony-I v pgAdmin III: instalace</title>
+</head>
+
+<body>
+<a name="node"></a>
+<h3>Správa Slony-I v pgAdmin III: instalace</h3>
+<br />
+<h4>Předpoklady</h4>
+<p>
+Předpokladem pro fungování Slony-I na PostgreSQL je, že se na všech serverech, na kterých má běžet replikační uzel, musí nacházet moduly xxid a 
+slony1_funcs. To obvykle zařídí instalační rutina Slony-I.
+</p>
+
+<A name="overview"></a>
+<h4>Přehled</h4>
+<p>
+Prvotní nastavení Slony-I vás možná bude odrazovat. Následující pasáž nápovědy pgAdmin se vám pokusí pomoct s vytvořením vašeho prvního clusteru.
+<p>
+<ul>
+<li><a href="#create">Krok 1</a>: Vytvořit cluster v uzlu master.<br />&nbsp;</li>
+<li><a href="#join">Krok 2</a>: Přidat uzly slave do clusteru.<br />&nbsp;</li>
+<li><a href="slony-path.html#path">Krok 3</a>: V každém uzlu nastavit cesty do všech dalších uzlů.<br />&nbsp;</li>
+<li><a href="slony-path.html#listen">Krok 4</a>: V každém uzlu nastavit naslouchání do každého dalšího uzlu
+(<b>Poznámka</b>: Není potřeba ve Slony-I verze 1.1 a novější).<br />&nbsp;</li>
+<li><a href="slony-set.html#set">Krok 5</a>: Vytvořit replikační sadu.<br />&nbsp;</li>
+<li><a href="slony-set.html#table">Krok 6</a>: Přidat do sady tabulky a sekvence.<br />&nbsp;</li>
+<li><a href="slony-set.html#subscription">Krok 7</a>: Přihlásit uzly slave k odběru sady.</li>
+</ul>
+<p>
+<b>Poznámka</b>: V tuto chvíli by měl být spuštěný démon slon (respektive služba ve Windows).
+</p>
+<br />
+
+<a name="create"></a>
+<h4>Vytvoření clusteru a prvního uzlu</h4>
+<br />
+<center><img src="images/slony-create.png"></center>
+
+<p>
+Instalaci clusteru Slony-I v první databázi provedete v dialogu „Nový cluster Slony-I“. Ten spustí oficiální vytvářecí SQL skript, který najde ve 
+složce nastavené v dialogu <a href="options-tab1.html">options</a>.
+</p>
+<p>
+pgAdmin III si potřebuje uchovat informaci, jak má kontaktovat každý jednotlivý uzel v clusteru. Aby toho dosáhl, používá pgAdmin III koncept 
+„administračních uzlů“.
+</p>
+
+<a name="join"></a>
+<h4>Napojení dalších uzlů do clusteru</h4>
+<br />
+<center><img src="images/slony-join.png"></center>
+<p>
+V okamžiku, kdy úspěšně vytvoříte první uzel v replikačním clusteru Slony-I, budou všechny následující uzly přebírat jeho nastavení a procedury. 
+Tento postup se v pgAdmin III nazývá „napojení clusteru“. Obvykle byste měli také zvolit některý existující uzel jako administrační, abyste 
+zajistili pozdější dostupnost z pgAdmin III.
+<p>
+</p>
+Aby po přidání nového uzlu do clusteru Slony-I mohly uzly komunikovat, musíte nastavit <a href='"slony-path.html'>replikační cesty</a> 
+mezi uzly.
+</p>
+
+<a name="upgrade"></a>
+<h4>Povýšení na nový software v uzlu clusteru</h4>
+<br />
+<center><img src="images/slony-upgrade.png"></center>
+<p>
+Když se v clusteru přechází na novější verzi software Slony-I, musí se aktualizační proces spustit ve všech uzlech clusteru. V každém uzlu je potřeba 
+zastavit démona slon, potom se spustí aktualizační dialog a je zvolen uzel s novým software (pgAdmin III stáhne veškerý software z tohoto uzlu) a na 
+konec se opět nastartuje démon slon.
+</p>
+<p>
+V současnosti pgAdmin III <b>NEPODPORUJE</b> aktualizace pomocí vytvářecího skriptu slony. Místo toho vytvoří vytvářecím skriptem přechodný cluster 
+použije jej jako zdroj pro aktualizační dialog a po použití cluster odstraní. Pro aktualizaci prvního uzlu můžete také použít nástroj slonik a potom 
+ho použít jako zdroj aktualizací pro následující uzly.
+</p>
+</body>
+</html>

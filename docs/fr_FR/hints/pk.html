@@ -1,0 +1,48 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Conseil d'expert</title>
+</head>
+
+<body>
+
+<h3>Clés primaires</h3>
+<p>
+Lors de la conception d'une table, vous devez toujours garder à l'esprit la façon
+dont la table sera utilisée plus tard. Dans la plupart des cas, vous aurez besoin
+d'un identifieur pour adresser de façon unique une ligne spécifique&nbsp;; cet
+identifieur devra être créé en tant que clé primaire. Une clé primaire ne consiste
+pas nécessairement en une seule colonne&nbsp;; elle peut contenir autant de
+colonnes que nécessaire pour identifier une ligne de façon unique. Si vous avez
+besoin de plusieurs colonnes (règle de base&nbsp;: plus de trois), une bonne
+idée serait d'inventer une colonne supplémentaire avec un type de données
+intéressant, c'est-à-dire serial ou bigserial, contenant la clé primaire.
+</p>
+<p>
+Dans de rares cas, utiliser une clé primaire n'a pas de sens. Cela signifie
+qu'une clé primaire manquante est un bon indicateur d'une table conçue
+partiellement&nbsp;; c'est pourquoi un conseil d'expert apparaîtra si vous créez
+une base sans clé primaire.
+</p>
+<p>
+Si vous regardez les tables système de PostgreSQL, vous n'en trouverez aucune
+avec une clé primaire. Pourquoi ?
+En fait, chacune de ces tables ont une ou deux colonnes (habituellement seulement
+l'OID) qui identifient de façon unique chaque ligne, obéissant à la seconde
+règle pour une clé primaire, n'autorisant pas zéro et étant couvert par un index
+pour un accès plus rapide. L'utilisation des OID a une raison historique et n'est
+pas vraiment un bon choix pour la conception de tables utilisateur. PostgreSQL
+utilise toujours ceci pour des raisons de compatibilité ascendante et, bien
+qu'une nouvelle approche utiliserait probablement des clés primaires explicites,
+cela ne sera pas modifié.
+</p>
+<p>
+Comme le montre le cas des tables système, le but d'unicité et d'accès rapide peut
+être obtenu avec d'autres approches qu'une clé primaire. Malgré tout, pour la
+clareté du modèle de données, vous êtes fortement encouragé à utiliser des clés
+primaires dans ce but.
+</p>
+</body>
+</html>

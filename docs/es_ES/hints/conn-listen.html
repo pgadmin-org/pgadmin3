@@ -1,0 +1,44 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Sugerencias de Gurú</title>
+</head>
+
+<body>
+
+<h3>El servidor no escucha</h3>
+<p>
+El servidor no acepta conexiones: la librería de conexión reporta
+</p>
+<p>
+<b><tt class="command"><INFO></tt></b>
+</p>
+<p>
+Si usted encuentra esta mensaje, por favor verifique si el servidor que está tratando de contactar esta realmente 
+ejecutando PostgreSQL el el puerto indicado. Verifique si tiene conectividad de red desde su cliente
+al servidor usando ping herramientas equivalentes. ¿ Está su red / VPN / túnel SSH / 
+cortafuegos configurado correctamente?
+</p>
+<p>
+Por razones de seguridad, PostgreSQL <B>no</B> escucha en todas las direcciones IP disponibles en la máquina del servidor inicialmente. Para acceder al servidor desde la red,
+usted necesita primero habilitar la escucha en la dirección.
+</p>
+<p>
+Para los servidores PostgreSQL comenzando con la versión 8.0, esto 
+es controlado utilizando el parámentro &quot;listen_addresses&quot; en el archivo postgresql.conf. Aquí, usted puede sepecificar una lista de direcciones IP donde el servidor debe escuchar 
+, o simplemente usar '*' para escuchar en todas las direcciones IP disponibles. Para servidores anteriores (Versión 7.3 o 7.4), usted necesitará configurar el parámetro &quot;tcpip_socket&quot; como 'true'. 
+</p>
+<p>
+Usted puede utilizar el editor de postgresql.conf editor incluido en pgAdmin III para editar el archivo de configuración postgresql.conf.
+Luego de modificar este archivo, necesitará reiniciar el proceso servidor para que los cambios sean efectivos.
+</p>
+<p>
+Si usted verifica su configuración pero aún sigue obteniendo este mensaje, sigue siendo poco probable que  
+haya encontrado un fatal comportamiento erróneo de PostgreSQL. Usted probablemente tiene algún problema de conectividad de red de bajo nivel
+(p.e. configuración del cortafuegos). Por favor verifique esto exhaustivamente antes de reportar
+ una falla a la comunidad PostgreSQL.
+</p>
+</body>
+</html>

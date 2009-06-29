@@ -1,0 +1,73 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Extended features</title>
+</head>
+
+<body>
+
+<h3>Fonctionnalités étendues</h3>
+
+<p>Les fonctionnalités de pgAdmin III peuvent être étendues grâce au module
+contrib <I>adminpack</I> pour PostgreSQL. Cette bibliothèque de fonctionnalités
+supplémentaires peut être installé sur votre serveur et permettre à pgAdmin
+d'offrir des fonctionnalités comme&nbsp;:</p>
+
+<ul>
+
+<li>Les tailles sur disque des tablespaces, bases de données, tables et indexes
+  sont affichées dans l'onglet Statistiques dans la <a href="main.html">fenêtre
+  principale</a>.<br>&nbsp;</li>
+
+<li>Le <a href="status.html">dialogue de statut</A> a un onglet
+  «&nbsp;Logfile&nbsp;» et peut afficher les journaux applicatifs du serveur
+  (si la journalisation est correctement configurée).<br>&nbsp;</li>
+
+<li>Les requêtes en cours d'exécution des autres utilisateurs peuvent être
+  annulées du <a href="status.html">dialogue de statut</A>.<br>&nbsp;</li>
+
+<li>Les fichiers de configuration du serveur, postgresql.conf et pg_hba.conf,
+  peuvent être édités et rechargés à distance.<br>&nbsp;</li>
+
+</ul>
+
+<p>Le module adminpack est installé et activé par défaut si vous utilisez la
+distribution officielle de PostgreSQL pour Windows et est inclus en tant que
+module contrib avec PostgreSQL 8.2 et ultérieures. Néanmoins, si vous utilisez
+une autre version de PostgreSQL, vous aurez besoin de l'installer manuellement.
+Pour cela, copiez simplement le code source de l'adminpack vers le répertoire
+/contrib de votre source préconfiguré de PostgreSQL. Vous pouvez télépcharger
+les adminpacks <a href="http://www.pgadmin.org/download/adminpacks.php">ici</a>.
+</p>
+
+<p>Exécutez les commandes suivantes (en substituant <i>admin</i> par <i>admin81</i>
+si nécessaire)&nbsp;:</p>
+
+<pre>
+    # cd $PGSRC/contrib/admin
+    # make all
+    # make install
+</pre>
+
+<p>Le module doit maintenant être construit et installé dans votre installation
+de PostgreSQL. Pour l'utiliser, vous devez maintenant installer le module dans
+la base que vous utilisez en tant que <I>base de données maintenance</I> de
+pgAdmin (habituellement <i>postgres</i>, bien que vous pourriez utiliser une
+autre base de données). Pour cela, localisez le fichier <i>admin.sql</i> ou
+<i>admin81.sql</i> installé à l'étape précédente - habituellement, il se trouve
+dans /usr/local/pgsql/share/contrib et exécutez le sur votre base de données.
+Vous aurez normalement besoin du super-utilisateur PostgreSQL&nbsp;:</p>
+
+<pre>
+    $ psql postgres &lt; /usr/local/pgsql/share/contrib/admin.sql
+</pre>
+
+<p>La prochaine fois que vous vous connectez au serveur avec pgAdmin, il
+détectera la présence d'adminpack et vous offrira toutes les fonctionnalités.
+</p>
+
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Rady odborníka</title>
+</head>
+
+<body>
+
+<h3>Je doporučeno mít spuštěný atuomatický úklid</h3>
+<p>
+Počínaje PostgreSQL 8.1 je proces automatického úklidu, který byl dříve implementován v podobě 
+procesu externí služby, nyní integrován přímo v serveru. Automaticky spouští příkaz VACUUM, pokud 
+množství změn překročí nastavitelný limit.
+</p>
+<p>
+Spouštění příkazu VACUUM je na serveru PostgreSQL povinné kvůli zachování konzistence dat a výkonu serveru. 
+Pro začátek je doporučeno povolit démona pro automatický úklid nastavením „autovacuum“, „stats_start_collector“ 
+a „stats_row_level“ v postgresql.conf na „on“.
+<p>
+V PostgreSQL 8.3 a novějších je ve výchozím stavu automatický úklid již povolený, pokud nevypnete 
+„track_activities“ nebo „track_counts“.
+</p>
+<p>
+Výměnou za obvykle zanedbatelné snížení výkonu kvůli sledování změn v datech získáte automatické spouštění 
+příkazu VACUUM.
+</p>
+<p>
+Pro upravení výkonu automatického úklidu pro individuální potřeby budete možná potřebovat vyladit některá 
+nastavení. Buď v globálních parametrech v postgresql.conf nebo jednotlivě pro každou tabulku. Podrobnosti 
+najdete v dokumentaci.
+</p>
+</body>
+</html>

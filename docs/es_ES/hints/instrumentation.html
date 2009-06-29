@@ -1,0 +1,37 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Sugerencias de Gurú</title>
+</head>
+
+<body>
+
+<h3>Instrumentación del servidor</h3>
+<p>
+El servidor carece de funciones de instrumentación.
+</p>
+<p>
+pgAdmin III usa alguna funciones de soporte que no están disponibles por defecto
+en todas las versiones de PostgreSQL. Éstas habilitan algunas tareas que hacen la vida más fácil al
+tratar con archivos de registros (log) y de configuración..
+</p>
+<p>
+Al instalar PostgreSQL 8.0 o superior usando el instalador Windows, sólo necesita 
+marcar la opción "admin option".
+</p>
+<p>
+Al compilar desde los fuentes, los archivos necesarios pueden ser encontrados en el subdirectorio xtra
+del árbol de fuentes de pgAdmin. Para PostgreSQL 8.0, copie el directorio admin al 
+ directorio contrib de los fuentes de postgresql, y ejecute make y make install desde allí. Para PostgreSQL 8.1, 
+use el directorio admin81 para ello.
+Después que el módulo está instalado, necesita crear las funciones de instrumentación en 
+su base de datos de mantenimiento usando el script admin.sql (admin81.sql para PostgreSQL 8.1) 
+que están usualmente ubicados en el directorio share de pgsql (p.e. /usr/local/pgsql/share)
+</p>
+<p>
+La instrumentación extendida de servidor no está soportada para PostgreSQL 7.3 y 7.4.
+</p>
+</body>
+</html>

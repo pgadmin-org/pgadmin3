@@ -1,0 +1,25 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Gurun neuvot</title>
+</head>
+
+<body>
+
+<h3>Primääriavaimet</h3>
+<p>
+Suunnitellessasi taulua, pidä aina mielessä miten taulusta tullaan myöhemmin hakemaan rivejä. Useimmissa tapauksissa tarvitset avaimen voidaksesi hakea ja muuttaa tiettyä riviä yksikäsitteisesti; tämä avain tulisi määritellä taulun primääriavaimeksi. Primääriavain ei välttämättä ole vain yksi kenttä; se voi koostua niin monesta kentästä kuin rivin yksilöimiseen tarvitaan. Jos tarvitset montaa kenttää (nyrkkisääntönä voidaan pitää kolmea), voi olla hyvä idea luoda keinotekoinen avainkenttä kätevällä tietotyppillä, esimerkiksi serial tai bigserial.
+</p>
+<p>
+Vain äärimmäisen harvinaisissa tapauksissa ei ole järkevää luoda primääriavainta. Toisin sanoen, primääriavaimen puuttuminen on vahva merkki siitä että taulu ei ole valmiiksi saakka suunniteltu; sen takia tämä Gurun neuvo näytetään aina jos luot taulun ilman primääriavainta.
+</p>
+<p>
+Jos katsot PostgreSQL:n järjestelmätauluja, huomaat että millään niistä ei ole primääriavainta. Mistä oikein on kysymys? Itse asiasssa, kaikissa näissä tauluissa on yksi tai kaksi kenttää (useimmiten vain OID), joka yksilöi jokaisen rivin, noudattaa primääriavainten toista sääntöä, eli ei huoli NULLia, ja on indeksoitu hakujen nopeuttamiseksi. OID:den käyttö johtuu historiallisista syistä, eikä ole suositeltavaa sovellustaulujen suunnittelussa. PostgreSQL tukee sitä yhä taaksepäin yhteensopivuuden takaamiseksi. Jos järjestelmätaulut suunniteltaisiin tänä päivänä uudelleen, niissä todennäköisesti käytettäisiin primääriavaimia, mutta sitä ei enää lähdetä muuttamaan.
+</p>
+<p>
+Kuten järjestelmätaulujen tapaus osoittaa, yksilöllisyyden ja nopeiden hakujen tavoitteeseen voi päästä muillakin keinoilla kuin primääriavaimilla. Siitä huolimatta, tietomallin selkeyden vuoksi, kannattaa ehdottomasti käyttää primääriavaimia tähän tarkoitukseen.
+</p>
+</body>
+</html>

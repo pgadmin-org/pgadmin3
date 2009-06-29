@@ -1,0 +1,40 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Guru nasveti</title>
+</head>
+
+<body>
+<h3>Indeksi na tujih klju&#269;ih</h3>
+<p align="justify">
+Tuji klju&#269; se uporablja za logi&#269;no povezavo ter omejevanje sprememb, ki se lahko izvajajo na dveh tabelah. 
+</p>
+<p align="justify">
+Za&#269;ne se &#382;e pri glavni tabeli, na katero se kasneje sklicujemo. Ta potrebuje primarni klju&#269; (pravzaprav 
+referencirani stolpci samo ne smejo biti brez vrednosti, pokrivati pa jih mora preverjanje unikatnosti, vseeno pa 
+je priporo&#269;ljivo imeti primarni klju&#269;). Druga tabela je odvisna od referen&#269;ne tako, da se morajo vrednosti v stolpcu, 
+ki ga pokriva tuji klju&#269;, ujemati z vrednostmi v stolpcu glavne tabele. Omejitev velja pri vnosu, izbrisu ali urejanju 
+zapisov. Odvisna tabela je referencirana tabela tujega klju&#269;a.
+</p>
+<p align="justify">
+Tuji klju&#269; lahko omejuje tudi referen&#269;no tabelo, ne le referencirane. Vrste omejitev so lahko RESTRICT, CASCADE ali SET NULL. 
+To pomeni, da &#269;e se v glavni/referen&#269;ni tabeli vrstica spremeni (uredi ali odstrani), se pri vseh referenciranih tabelah preveri, 
+&#269;e se operacijo lahko izvede in &#269;e je ob tem morda potrebno izvesti &#353;e kak&#353;en dodaten ukaz. Za ve&#269; informacij o tujih 
+klju&#269;ih si oglejte PostgreSQL dokumentacijo.
+</p>
+<p align="justify">
+To pomeni, da se ob spremembi dolo&#269;ene vrstice v referen&#269;ni tabeli izvede branje v referenciranih tabelah, z 
+uporabo stolpcev s tujimi klju&#269;i kot klju&#269;i dostopa. Posledi&#269;no je dobro pazljivo zasnovati zgradbo tabel, da bi se 
+zagotovilo dobro delovanje. Za hitrej&#353;e branje podatkov je v ve&#269;ini primerov priporo&#269;ljiva postavitev indeksov. 
+PostgreSQL v to nikakor ne sili uporabnikov, zato je postavitev indeksa odvisna od snovalca podatkovne zbirke.
+</p>
+<p align="justify">
+Zavoljo priro&#269;nosti pgAdmin III ponuja mo&#382;nost, ki ob ustvarjenju zunanjega klju&#269;a samodejno preveri za uporabnimi indeksi 
+in po potrebi ustvari novega. Kot pri vseh indeksih, so tudi tu redki primeri, kjer lahko to vpliva na malenkost 
+po&#269;asnej&#353;e delovanje, vendat v splo&#353;nem dr&#382;i, da je imeti en indeks premalo mnogo bolj upo&#269;asni delovanje, kot en preve&#269;.
+</p>
+</body>
+
+</html>

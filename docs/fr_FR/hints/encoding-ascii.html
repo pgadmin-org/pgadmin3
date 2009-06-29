@@ -1,0 +1,35 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
+<title>Conseil d'expert</title>
+</head>
+
+<body>
+
+<h3>Codage de la base de données</h3>
+<p>
+La base de données <INFO> a été créé pour stocker des données dans le codage
+SQL_ASCII. Ce codage est seulement défini pour les caractères sur sept bits&nbsp;;
+la signification des caractères dont le huitième bit est positionné (caractères
+non ASCII allant de 127 à 255) n'est pas définie. En conséquence, il n'est pas
+possible pour le serveur de convertir les données vers d'autres codages.
+</p>
+<p>
+Si vous stockez des données non ASCII dans la base, vous êtes fortement encouragé
+à utiliser un bon codage représentant la locale de votre ensemble de caractères
+pour retrouver le bénéfice des conversions automatiques vers les différents
+codages client si nécessaire. Si vous stockez des données non ASCII dans une
+base de données SQL_ASCII, vous pouvez rencontrer des problèmes avec des
+caractères étranges écrit ou lu depuis la base de données, problèmes causés par
+des soucis de conversion de code. Ceci pourrait vous amener beaucoup de problèmes
+en accédant à la base de données avec des programmes clients et des pilotes
+différents.
+</p>
+<p>
+Pour la grande majorité des installations, le codage Unicode (UTF8) apportera la
+plus grande flexibilité. 
+</p>
+</body>
+</html>

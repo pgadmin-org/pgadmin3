@@ -1,0 +1,162 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="STYLESHEET" type="text/css" href="pgadmin3.css">
+<title>Exemple Slony-I</title>
+</head>
+
+<body>
+
+<h3>Exemple Slony-I</h3>
+
+<p>
+Dans cet exemple, un serveur maître est configuré avec deux esclaves directs.
+Cet exemple a été écrit et tester en utilisant Slony-I v1.2.11 et PostgreSQL
+8.2.5, exécutés sur une même machine Windows XP. L'outil pgbench de PostgreSQL
+est utilisé pour générer le schéma de test et pour générer une certaine charge.
+<p>
+
+<ol>
+  <li>Créez trois bases de données, maître, esclave1 et esclave2, et
+  assurez-vous que PL/pgsql est activée dans chaque base.<br />&nbsp;</li>
+
+  <li>Créez un schéma pgbench dans la base maître&nbsp;:<br /><br />
+
+    <code>&gt; pgbench -i -U postgres maitre</code><br />&nbsp;</li>
+   
+  <li>Ajouter une clé primaire appelée history_pkey dans la table history sur
+  les colonnes tid, bid et aid.<br />&nbsp;</li>
+
+  <li>Créez une sauvegarde de la structure seule de la base de données maître,
+  puis chargez-la dans esclave1 et esclave2&nbsp;:<br /><br />
+
+    <code>
+    &gt; pg_dump -s -U postgres maitre &gt; schema.sql<br />
+    &gt; psql -U postgres esclave1 &lt; schema.sql<br />
+    &gt; psql -U postgres esclave2 &lt; schema.sql
+    </code><br />&nbsp;</li>
+
+  <li>Créez les fichiers de configuration Slony pour chaque service slon (démon
+  sous *nix). Les fichiers doivent contenir ces deux lignes&nbsp;:<br /><br />
+
+    <code>
+    cluster_name='pgbench'<br />
+    conn_info='host=127.0.0.1 port=5432 user=postgres dbname=maitre'
+    </code><br /><br />
+
+    Créez un fichier pour chaque base de données, ajustez le paramètre dbname
+    comme requis, et ajoutez toute autre option de connexion nécessaire.
+    <br />&nbsp;</li>
+
+  <li>(Windows seulement) Installez le service Slony-I&nbsp;:<br /><br />
+
+    <code>
+    > slon -regservice Slony-I
+    </code><br />&nbsp;</li>
+
+  <li>Enregistrez chaque service (seulement nécessaire sous Windows - sur *nix
+  les démons slon peuvent être démarrés individuellement avec un chemin vers le
+  fichier de configuration sur la ligne de commande en utilisant l'option
+  -f)&nbsp;:<br /><br />
+
+    <code>
+    &gt; slon -addengine Slony-I C:\slony\master.conf<br />
+    &gt; slon -addengine Slony-I C:\slony\slave1.conf<br />
+    &gt; slon -addengine Slony-I C:\slony\slave2.conf
+    </code><br />&nbsp;</li>
+
+  <li>Dans pgAdmin sous le n&oelig;ud Réplication de la base de données maître,
+  créez un nouveau cluster Slony-I en ajoutant les options suivantes&nbsp;:<br /><br />
+
+    <pre>
+Join existing cluster: Unchecked
+Cluster name:          pgbench
+Local node:            1        Master node
+Admin node:            99       Admin node
+    </pre></li>
+
+  <li>Sous le n&oelig;ud Réplication, créez un cluster Slony-I dans chacune des
+  bases de données esclaves en utilisant les options suivantes&nbsp;:<br /><br />
+
+    <pre>
+Join existing cluster: Checked
+Server:                &lt;Select the server containing the master database&gt;
+Database:              master
+Cluster name:          pgbench
+Local node:            10       Slave node 1
+Admin node:            99 - Admin node
+
+Join existing cluster: Checked
+Server:                &lt;Select the server containing the master database&gt;
+Database:              master
+Cluster name:          pgbench
+Local node:            20       Slave node 2
+Admin node:            99 - Admin node
+    </pre></li>
+
+  <li>Créez les chemins du maître vers les deux esclaves, et de chaque esclave
+  vers le maître. Créez les chemins sous chaque n&oelig;ud du maître en
+  utilisant les chaînes de connexion spécifiées dans les fichiers de
+  configuration de slon. Notez qu'une restructuration future du cluster pourrait
+  nécessiter la définition de chemins supplémentaires.<br />&nbsp;</li>
+
+  <li>Créez un ensemble de réplication sur le maître en utilisant les paramètres
+  suivants&nbsp;:
+  <br /><br />
+
+    <pre>
+ID:                  1
+Comment:             pgbench set
+    </pre></li>
+
+  <li>Ajouter les tables à l'ensemble de réplication en utilisant les paramètres
+  suivants&nbsp;:
+  <br /><br />
+
+    <pre>
+Table:               public.accounts
+ID:                  1
+Index:               accounts_pkey
+
+Table:               public.branches
+ID:                  2
+Index:               branches_pkey
+
+Table:               public.history
+ID:                  3
+Index:               history_pkey
+
+Table:               public.tellers
+ID:                  4
+Index:               tellers_pkey
+    </pre></li>
+
+  <li>Sur le n&oelig;ud maître, créez un nouvel abonnement pour chaque esclave
+  en utilisant les options suivantes&nbsp;:<br /><br />
+
+    <pre>
+Origin:              1
+Provider:            1 - Master node
+Receiver:            10 - Slave node 1
+
+Origin:              1
+Provider:            1 - Master node
+Receiver:            20 - Slave node 2
+    </pre></li>
+
+  <li>Lancez le service slon (ou les démons sous *nix)&nbsp;: <br /><br />
+
+    <code>
+    > net start Slony-I
+    </code><br />&nbsp;</li>
+</ol>
+
+<p>
+Une réplication initiale devrait commencer et peut être surveillée sur l'onglet
+Statistiques dans pgAdmin pour chaque n&oelig;ud. L'outil pgbench peut être
+exécuté sur la base de données maître pour générer un test de charge.
+</p>
+
+</body>
+</html>
