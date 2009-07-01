@@ -287,7 +287,10 @@ pgObject *slNodeFactory::CreateObjects(pgCollection *coll, ctlTree *browser, con
             node->iSetComment(nodes->GetVal(wxT("no_comment")));
 
             if (collection->GetCluster()->ClusterMinimumVersion(1,1))
-                node->iSetSpool(nodes->GetBool(wxT("no_spool")));
+            {
+                if (nodes->HasColumn(wxT("no_spool")))
+                    node->iSetSpool(nodes->GetBool(wxT("no_spool")));
+            }
 
             if (browser)
             {
