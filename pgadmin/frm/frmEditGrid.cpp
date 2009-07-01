@@ -692,13 +692,10 @@ void frmEditGrid::OnPaste(wxCommandEvent &ev)
                 wxTextDataObject data;
                 wxTheClipboard->GetData(data);
                 wxControl *ed = sqlGrid->GetCellEditor(editorCell->GetRow(), editorCell->GetCol())->GetControl();
-                if (ed->IsKindOf(CLASSINFO(wxTextCtrl)))
+                if (ed->IsKindOf(CLASSINFO(wxStyledTextCtrl)))
                 {
-                    wxTextCtrl *txtEd = (wxTextCtrl *)ed;
-
-                    long from, to;
-                    txtEd->GetSelection(&from, &to);
-                    txtEd->Replace(from, to, data.GetText());
+                    wxStyledTextCtrl *txtEd = (wxStyledTextCtrl *)ed;
+                    txtEd->ReplaceSelection(data.GetText());
                 }
                 else if (ed->IsKindOf(CLASSINFO(wxCheckBox)))
                 {
@@ -782,9 +779,9 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
                         wxControl *ctl=edit->GetControl();
                         if (ctl)
                         {
-                            wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
+                            wxStyledTextCtrl *txt=wxDynamicCast(ctl, wxStyledTextCtrl);
                             if (txt)
-                                txt->SetValue(wxEmptyString);
+                                txt->SetText(wxEmptyString);
                         }
                         edit->DecRef();
                     }
@@ -808,13 +805,9 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
                     wxControl *ctl=edit->GetControl();
                     if (ctl)
                     {
-                        wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
+                        wxStyledTextCtrl *txt=wxDynamicCast(ctl, wxStyledTextCtrl);
                         if (txt)
-                        {
-                            long from, to;
-                            txt->GetSelection(&from, &to);
-                            txt->Replace(from, to, END_OF_LINE);
-                        }
+                            txt->ReplaceSelection(END_OF_LINE);
                     }
                     edit->DecRef();
                 }
@@ -853,9 +846,9 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
         case WXK_TAB:
             if (event.ControlDown())
             {
-                wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
+                wxStyledTextCtrl *text = (wxStyledTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
                 if (text)
-                    text->WriteText(wxT("\t"));
+                    text->SetText(wxT("\t"));
                 return;
             }
 
@@ -1045,14 +1038,15 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
         if (sqlGrid->GetTable()->IsColBoolean(sqlGrid->GetGridCursorCol()))
             return;
 
-        wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
-        if (text->GetInsertionPoint() <= text->GetLastPosition())
+        wxStyledTextCtrl *text = (wxStyledTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
+        if (text->GetCurrentPos() <= text->GetTextLength())
         {
-            int len = text->GetStringSelection().Length();
+            int len = text->GetSelectedText().Length();
             if (len)
-                text->Remove(text->GetInsertionPoint(), text->GetInsertionPoint() + len);
+                text->SetSelection(text->GetCurrentPos(), text->GetCurrentPos() + len);
             else
-                text->Remove(text->GetInsertionPoint(), text->GetInsertionPoint() + 1);
+                text->SetSelection(text->GetCurrentPos(), text->GetCurrentPos() + 1);
+            text->Clear(); 
         }
         return;
     }
@@ -1489,16 +1483,14 @@ wxArrayInt ctlSQLEditGrid::GetSelectedRows() const
 class sqlGridTextEditor : public wxGridCellTextEditor
 {
 public:
-    sqlGridTextEditor(bool multiLine=false, int len=0) { isMultiLine=multiLine; textlen=len;  }
-    virtual wxGridCellEditor *Clone() const { return new sqlGridTextEditor(isMultiLine, textlen); }
+    virtual wxGridCellEditor *Clone() const { return new sqlGridTextEditor(); }
     void Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler);
     void BeginEdit(int row, int col, wxGrid* grid);
     bool EndEdit(int row, int col, wxGrid* grid);
 
-
 protected:
-    int textlen;
-    bool isMultiLine;
+    void DoBeginEdit(const wxString& startValue);
+    wxStyledTextCtrl *Text() const { return (wxStyledTextCtrl *)m_control; }
     wxString m_startValue;
 };
 
@@ -1507,15 +1499,11 @@ protected:
 
 void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler)
 {
-    int flags=0;
-    if (isMultiLine)
-        flags = wxTE_RICH|wxTE_MULTILINE|wxTE_DONTWRAP;
+    int flags = wxSTC_WRAP_NONE;
 
-    m_control = new wxTextCtrl(parent, id, wxEmptyString,
+    m_control = new wxStyledTextCtrl(parent, id,
                                wxDefaultPosition, wxDefaultSize, flags
                               );
-
-    Text()->SetMaxLength(textlen);
 
     wxGridCellEditor::Create(parent, id, evtHandler);
 }
@@ -1524,15 +1512,25 @@ void sqlGridTextEditor::Create(wxWindow* parent, wxWindowID id, wxEvtHandler* ev
 void sqlGridTextEditor::BeginEdit(int row, int col, wxGrid *grid)
 {
     m_startValue = grid->GetTable()->GetValue(row, col);
-    wxGridCellTextEditor::BeginEdit(row, col, grid);
+    DoBeginEdit(m_startValue);
     ((ctlSQLEditGrid*)grid)->ResizeEditor(row, col);
 }
 
+void sqlGridTextEditor::DoBeginEdit(const wxString& startValue)
+{
+    Text()->SetMarginWidth(1, 0);
+    Text()->SetText(startValue);
+    Text()->SetCurrentPos(Text()->GetTextLength());
+    Text()->SetUseHorizontalScrollBar(false);
+    Text()->SetUseVerticalScrollBar(false);
+    Text()->SetSelection(0, -1);
+    Text()->SetFocus();
+}
 
 bool sqlGridTextEditor::EndEdit(int row, int col, wxGrid *grid)
 {
     bool changed = false;
-    wxString value = Text()->GetValue();
+    wxString value = Text()->GetText();
     
     if (value != m_startValue)
         changed = true;
@@ -1540,21 +1538,7 @@ bool sqlGridTextEditor::EndEdit(int row, int col, wxGrid *grid)
     if (changed)
         grid->GetTable()->SetValue(row, col, value);
 
-//    Text()->SetValue(wxEmptyString);
-
     return changed;
-
-#if 0
-    bool rc=wxGridCellTextEditor::EndEdit(row, col, grid);
-#ifdef __WXMSW__
-    if (Text()->IsRich())
-    {
-        m_control->wxWindowBase::Show(true);
-        m_control->Show(false);
-    }
-#endif
-    return rc;
-#endif
 }
 
     
@@ -2182,7 +2166,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
                     columns[i].needResize = true;
-                    editor = new sqlGridTextEditor(true);
+                    editor = new sqlGridTextEditor();
                     break;
             }
             if (editor)

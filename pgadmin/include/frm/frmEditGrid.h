@@ -13,7 +13,7 @@
 #define __FRMEDITGRID_H
 
 #include <wx/grid.h>
-
+#include <wx/stc/stc.h>
 // wxAUI
 #include <wx/aui/aui.h>
 
