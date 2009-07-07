@@ -254,7 +254,7 @@ void queryMacroFileProvider::SaveMacros(queryMacroList *macros)
 	writer = xmlNewTextWriterFilename((const char *)sysSettings::GetConfigFile(sysSettings::PGAMACROS).mb_str(wxConvUTF8),0);
 	if (!writer)
 	{
-		wxMessageBox(_("Failed to write to macros file!"));
+		wxMessageBox(_("Failed to open macros file!"));
 		return;
 	}
 	xmlTextWriterSetIndent(writer, 1);
@@ -269,7 +269,7 @@ void queryMacroFileProvider::SaveMacros(queryMacroList *macros)
 
 	((queryMacroList *)macros)->saveList(writer);
 
-	if (xmlTextWriterEndDocument(writer))
+	if (xmlTextWriterEndDocument(writer) < -1)
 	{
 		wxMessageBox(_("Failed to write to macros file!"));
 	}
