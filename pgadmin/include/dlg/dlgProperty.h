@@ -15,6 +15,7 @@
 
 
 #include <wx/notebook.h>
+#include <wx/dynarray.h>
 #include "schema/pgObject.h"
 #include "db/pgConn.h"
 #include "ctl/ctlSecurityPanel.h"
@@ -28,6 +29,23 @@ class pgaFactory;
 #define stComment       CTRL_STATIC("stComment")
 #define lstColumns      CTRL_LISTVIEW("lstColumns")
 #define cbColumns       CTRL_COMBOBOX("cbColumns")
+
+class dataType
+{
+public:
+    void SetTypename(wxString name);
+    wxString GetTypename();
+ 
+    void SetOid(OID id);
+    OID GetOid();
+
+private:
+    wxString typeName;
+    OID      oid;
+       
+};
+
+WX_DEFINE_ARRAY(dataType *, dataTypeCache);
 
 class dlgProperty : public DialogWithHelp
 {
@@ -51,6 +69,7 @@ public:
     virtual wxString GetHelpPage(bool forCreate) const { return wxEmptyString; }
     void SetConnection(pgConn *conn) { connection=conn; }
     void SetDatabase(pgDatabase *db);
+    void SetDatatypeCache(dataTypeCache cache);
     virtual int Go(bool modal=false);
     virtual void CheckChange() =0;
 
@@ -120,6 +139,7 @@ protected:
     bool readOnly;
     bool processing;
     pgaFactory *factory;
+    dataTypeCache dtCache;
 
 private:
     bool tryUpdate(wxTreeItemId collectionItem);

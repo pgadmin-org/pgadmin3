@@ -31,7 +31,7 @@
 #include "schema/pgCheck.h"
 #include "schema/pgForeignKey.h"
 #include "schema/pgIndexConstraint.h"
-
+#include "schema/pgDatatype.h"
 
 
 #define stHasOids       CTRL_STATIC("stHasOids")
@@ -185,6 +185,13 @@ dlgTable::dlgTable(pgaFactory *f, frmMain *frame, pgTable *node, pgSchema *sch)
     lstConstraints->CreateColumns(0, _("Constraint name"), _("Definition"), 90);
 }
 
+dlgTable::~dlgTable()
+{
+    //Clear the cached datatypes
+    size_t i;
+    for (i = 0; i < dtCache.GetCount(); i++)
+        delete dtCache.Item(i);
+}
 
 pgObject *dlgTable::GetObject()
 {
@@ -199,6 +206,7 @@ int dlgTable::Go(bool modal)
     AddGroups();
     AddUsers(cbOwner);
     PrepareTablespace(cbTablespace);
+    PopulateDatatypeCache();
 
     hasPK=false;
 
@@ -1743,12 +1751,30 @@ void dlgTable::OnChangeCol(wxCommandEvent &ev)
     CheckChange();
 }
 
+// Cache datatypes to avoid multiple calls to server when adding multiple columns to a table. 
+void dlgTable::PopulateDatatypeCache()
+{
+    DatatypeReader tr(database, true);
+    while (tr.HasMore())
+    {
+        pgDatatype dt=tr.GetDatatype();
+
+        dataType *dType = new dataType();
+        dType->SetOid(tr.GetOid());
+        dType->SetTypename(dt.FullName());
+        dtCache.Add(dType);
+
+        tr.MoveNext();
+    }
+}
+
 
 void dlgTable::OnAddCol(wxCommandEvent &ev)
 {
     dlgColumn col(&columnFactory, mainForm, NULL, table);
     col.CenterOnParent();
     col.SetDatabase(database);
+    col.SetDatatypeCache(dtCache);   
     if (col.Go(true) != wxID_CANCEL)
     {
         long pos = lstColumns->AppendItem(columnFactory.GetIconId(), col.GetName(), col.GetDefinition());

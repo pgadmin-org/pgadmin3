@@ -70,6 +70,26 @@ public:
 };
 
 
+void dataType::SetOid(OID id)
+{
+    oid = id;
+}
+
+void dataType::SetTypename(wxString name)
+{
+    typeName = name;
+}
+
+OID dataType::GetOid()
+{
+   return oid;
+}
+
+wxString dataType::GetTypename()
+{
+   return typeName;
+}
+
 #define CTRLID_CHKSQLTEXTFIELD 1000
 
 
@@ -192,6 +212,10 @@ void dlgProperty::SetDatabase(pgDatabase *db)
         connection=db->GetConnection();
 }
 
+void dlgProperty::SetDatatypeCache(dataTypeCache cache)
+{
+   dtCache = cache;
+}
     
 void dlgProperty::EnableOK(bool enable)
 {
@@ -1189,20 +1213,39 @@ void dlgTypeProperty::FillDatatype(ctlComboBox *cb, bool withDomains)
     FillDatatype(cb, 0, withDomains);
 }
 
-
 void dlgTypeProperty::FillDatatype(ctlComboBox *cb, ctlComboBox *cb2, bool withDomains)
 {
-    DatatypeReader tr(database, withDomains);
-    while (tr.HasMore())
+     
+    if (dtCache.IsEmpty())
     {
-        pgDatatype dt=tr.GetDatatype();
+        // A column dialog is directly called, no datatype caching is done.
+        // Fetching datatypes from server. 
+        DatatypeReader tr(database, withDomains);
+        while (tr.HasMore())
+        {
+            pgDatatype dt=tr.GetDatatype();
 
-        AddType(wxT("?"), tr.GetOid(), dt.FullName());
-        cb->Append(dt.FullName());
-        if (cb2)
-            cb2->Append(dt.FullName());
-        tr.MoveNext();
+            AddType(wxT("?"), tr.GetOid(), dt.FullName());
+            cb->Append(dt.FullName());
+            if (cb2)
+                cb2->Append(dt.FullName());
+            tr.MoveNext();
+        }
     }
+    else
+    { 
+        // A column dialog is called from a table dialog where we have already cached the datatypes.  
+        // Using cached datatypes.
+        size_t i;
+        for (i = 0; i < dtCache.GetCount(); i++)
+        {
+            AddType(wxT("?"), dtCache.Item(i)->GetOid(), dtCache.Item(i)->GetTypename()); 
+            cb->Append(dtCache.Item(i)->GetTypename());
+            if (cb2)
+                cb2->Append(dtCache.Item(i)->GetTypename());
+        }
+    }
+
 }
 
 

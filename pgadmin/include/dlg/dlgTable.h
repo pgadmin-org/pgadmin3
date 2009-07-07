@@ -29,10 +29,12 @@ public:
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+    ~dlgTable();
 
 private:
     pgSchema *schema;
     pgTable *table;
+    dataTypeCache dtCache;
 
     void OnOK(wxCommandEvent &ev);
     void OnChangeTable(wxCommandEvent &ev);
@@ -58,6 +60,7 @@ private:
     void FillConstraint();
     void FillAutoVacuumParameters(wxString& setString, wxString& resetStr,
                                  const wxString& parameter, const wxString& val);
+    void PopulateDatatypeCache();
     wxString GetItemConstraintType(ctlListView *list, long pos);
     bool hasPK;
 
