@@ -196,7 +196,9 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
         PQsetNoticeProcessor(conn, pgNoticeProcessor, this);
 
 
-        wxString sql=wxT("SET DateStyle=ISO;SELECT oid, pg_encoding_to_char(encoding) AS encoding, datlastsysoid\n")
+        ExecuteVoid(wxT("SET DateStyle=ISO;"));
+
+        wxString sql=wxT("SELECT oid, pg_encoding_to_char(encoding) AS encoding, datlastsysoid\n")
                       wxT("  FROM pg_database WHERE ");
 
         if (oid)
