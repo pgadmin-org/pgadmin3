@@ -621,6 +621,8 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 bool pgDatabase::CanDebugPlpgsql()
 {
+    wxString preload_option;
+
     // Result cache - 0 = not tested, 1 = false, 2 = true.
     if (canDebugPlpgsql == 1)
         return false;
@@ -631,8 +633,18 @@ bool pgDatabase::CanDebugPlpgsql()
     // the super users.
     if (GetServer()->GetSuperUser())
     {
+        // Parameter's name depends of the backend's version
+        if (server->GetConnection()->BackendMinimumVersion(8, 2))
+        {
+            preload_option = wxT("shared_preload_libraries");
+        }
+        else
+        {
+            preload_option = wxT("preload_libraries");
+        }
+
         // Check the appropriate plugin is loaded
-        if (!ExecuteScalar(wxT("SHOW shared_preload_libraries;")).Contains(wxT("plugin_debugger")))
+        if (!ExecuteScalar(wxT("SHOW ") + preload_option).Contains(wxT("plugin_debugger")))
         {
             canDebugPlpgsql = 1;
             return false;
