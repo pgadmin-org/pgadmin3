@@ -817,6 +817,12 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
+        if (GetConnection() != 0 && GetConnection()->GetIsGreenplum())
+        {
+            gpPartition * p = dynamic_cast<gpPartition *>(this);
+            if (p != 0)
+                properties->AppendItem(_("Partition Name"), p->GetPartitionName());   
+        }
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
         if (GetConnection()->BackendMinimumVersion(8, 0))
