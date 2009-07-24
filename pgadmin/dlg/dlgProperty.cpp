@@ -102,6 +102,7 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
     factory=f;
     item = (void *)NULL;
     owneritem = (void *)NULL;
+    chkReadOnly = (wxCheckBox *)NULL;
     wxWindowBase::SetFont(settings->GetSystemFont());
     LoadResource(frame, resName);
 
@@ -210,7 +211,8 @@ void dlgProperty::EnableOK(bool enable)
 
 void dlgProperty::SetSqlReadOnly(bool readonly)
 {
-    chkReadOnly->Enable(!readonly);
+    if (chkReadOnly)
+        chkReadOnly->Enable(!readonly);
 }
 
 
