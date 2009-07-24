@@ -180,6 +180,48 @@ void pgDatabase::ShowHint(frmMain *form, bool force)
 }
 
 
+void pgDatabase::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    bool hasSize=GetConnection()->HasFeature(FEATURE_SIZE);
+
+    wxString sql=wxT("SELECT numbackends AS ") + qtIdent(_("Backends")) +
+	      wxT(", xact_commit AS ") + qtIdent(_("Xact Committed")) +
+	      wxT(", xact_rollback AS ") + qtIdent(_("Xact Rolled Back")) +
+	      wxT(", blks_read AS ") + qtIdent(_("Blocks Read")) +
+	      wxT(", blks_hit AS ") + qtIdent(_("Blocks Hit"));
+
+	if (GetConnection()->BackendMinimumVersion(8,3))
+		sql += wxT(", tup_returned AS ") + qtIdent(_("Tuples Returned")) +
+	      wxT(", tup_fetched AS ") + qtIdent(_("Tuples Fetched")) +
+	      wxT(", tup_inserted AS ") + qtIdent(_("Tuples Inserted")) +
+	      wxT(", tup_updated AS ") + qtIdent(_("Tuples Updated")) +
+	      wxT(", tup_deleted AS ") + qtIdent(_("Tuples Deleted"));
+
+    if (hasSize)
+        sql += wxT(", pg_size_pretty(pg_database_size(datid)) AS ") + qtIdent(_("Size"));
+
+    sql += wxT("\n  FROM pg_stat_database db WHERE datname=") + qtDbString(GetName());
+
+	// DisplayStatistics is not available for this object
+
+	CreateListColumns(statistics, _("Statistic"), _("Value"));
+
+	pgSet *stats = connection()->ExecuteSet(sql);
+
+	if (stats)
+	{
+		int col;
+		for (col=0 ; col < stats->NumCols() ; col++)
+		{
+			if (!stats->ColName(col).IsEmpty())
+				statistics->AppendItem(stats->ColName(col), stats->GetVal(col));
+		}
+		delete stats;
+	}
+
+}
+
+
 pgSet *pgDatabase::ExecuteSet(const wxString& sql)
 {
     pgSet *set=0;

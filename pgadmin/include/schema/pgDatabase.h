@@ -44,6 +44,7 @@ public:
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowHint(frmMain *form, bool force);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
 
     pgSet *ExecuteSet(const wxString& sql);
     wxString ExecuteScalar(const wxString& sql);

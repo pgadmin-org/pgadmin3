@@ -14,7 +14,6 @@
 
 #include "pgSchema.h"
 
-class pgCollection;
 class pgFunction;
 
 class pgFunctionFactory : public pgSchemaObjFactory
@@ -23,6 +22,7 @@ public:
     pgFunctionFactory(const wxChar *tn=0, const wxChar *ns=0, const wxChar *nls=0, const char **img=0);
     virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    virtual pgCollection *CreateCollection(pgObject *obj);
 
     pgFunction *AppendFunctions(pgObject *obj, pgSchema *schema, ctlTree *browser, const wxString &restriction);
 };
@@ -39,6 +39,7 @@ public:
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return GetSchema()->GetMetaType() != PGM_CATALOG; }
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
 
     virtual bool GetIsProcedure() const {return false; }
 
@@ -109,6 +110,14 @@ private:
     bool returnAsSet, secureDefiner, isStrict, isWindow;
     long argCount, cost, rows, argDefValCount, procType;
     wxArrayString configList;
+};
+
+
+class pgFunctionCollection : public pgSchemaObjCollection
+{
+public:
+    pgFunctionCollection(pgaFactory *factory, pgSchema *sch);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 
 

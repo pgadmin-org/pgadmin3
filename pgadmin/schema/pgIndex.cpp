@@ -491,6 +491,13 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 }
 
 
+pgCollection *pgIndexBaseFactory::CreateCollection(pgObject *obj)
+{
+    return new pgIndexBaseCollection(GetCollectionFactory(), (pgTable*)obj);
+}
+
+
+
 pgObject *pgIndexFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
     return pgIndexBaseFactory::CreateObjects(collection, browser, restriction + wxT("\n   AND conname IS NULL"));
@@ -511,3 +518,62 @@ pgIndexFactory::pgIndexFactory()
 
 pgIndexFactory indexFactory;
 static pgaCollectionFactory cf(&indexFactory, __("Indexes"), indexes_xpm);
+
+
+pgIndexBaseCollection::pgIndexBaseCollection(pgaFactory *factory, pgTable *tbl)
+: pgTableObjCollection(factory, tbl)
+{
+}
+
+
+void pgIndexBaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    wxLogInfo(wxT("Displaying statistics for indexes on ") + GetTable()->GetName());
+
+    bool hasSize=GetConnection()->HasFeature(FEATURE_SIZE);
+
+    // Add the statistics view columns
+    statistics->ClearAll();
+    statistics->AddColumn(_("Index Name"));
+    statistics->AddColumn(_("Index Scans"));
+    statistics->AddColumn(_("Index Tuples Read"));
+    statistics->AddColumn(_("Index Tuples Fetched"));
+    if (hasSize)
+        statistics->AddColumn(_("Size"));
+
+    wxString sql = wxT("SELECT indexrelname, ")
+		wxT("idx_scan, idx_tup_read, idx_tup_fetch");
+
+    if (hasSize)
+        sql += wxT(", pg_size_pretty(pg_relation_size(") + GetOidStr() + wxT(")) AS ") + qtIdent(_("size"));
+
+    sql += wxT("\n")
+        wxT("  FROM pg_stat_all_indexes stat\n")
+        wxT("  JOIN pg_class cls ON cls.oid=indexrelid\n")
+        wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0')\n")
+        wxT("  LEFT OUTER JOIN pg_constraint con ON (con.tableoid = dep.refclassid AND con.oid = dep.refobjid)\n")
+        wxT("  WHERE schemaname = ") + qtDbString(GetTable()->GetSchema()->GetName())
+		+ wxT(" AND stat.relname = ") + qtDbString(GetTable()->GetName())
+		+ wxT(" AND con.contype IS NULL")
+        + wxT("\n ORDER BY indexrelname");
+
+    pgSet *stats = GetDatabase()->ExecuteSet(sql);
+
+    if (stats)
+    {
+        long pos=0;
+        while (!stats->Eof())
+        {
+            statistics->InsertItem(pos, stats->GetVal(wxT("indexrelname")), PGICON_STATISTICS);
+            statistics->SetItem(pos, 1, stats->GetVal(wxT("idx_scan")));
+            statistics->SetItem(pos, 2, stats->GetVal(wxT("idx_tup_read")));
+            statistics->SetItem(pos, 3, stats->GetVal(wxT("idx_tup_fetch")));
+            if (hasSize)
+                statistics->SetItem(pos, 4, stats->GetVal(wxT("size")));
+            stats->MoveNext();
+            pos++;
+        }
+
+        delete stats;
+    }
+}

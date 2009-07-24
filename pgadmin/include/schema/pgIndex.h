@@ -15,7 +15,6 @@
 #include "pgTable.h"
 #include <wx/arrstr.h>
 
-class pgCollection;
 
 
 
@@ -117,6 +116,7 @@ class pgIndexBaseFactory : public pgTableObjFactory
 {
 public:
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+    virtual pgCollection *CreateCollection(pgObject *obj);
 protected:
     pgIndexBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img) : pgTableObjFactory(tn, ns, nls, img) {}
 };
@@ -129,6 +129,14 @@ public:
     virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
 };
 extern pgIndexFactory indexFactory;
+
+class pgIndexBaseCollection : public pgTableObjCollection
+{
+public:
+    pgIndexBaseCollection(pgaFactory *factory, pgTable *tbl);
+    void ShowStatistics(frmMain *form, ctlListView *statistics);
+};
+
 
 class executePgstatindexFactory : public contextActionFactory
 {

@@ -42,6 +42,20 @@ pgProcedure::pgProcedure(pgSchema *newSchema, const wxString& newName)
 {
 }
 
+void pgFunction::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    if (GetConnection()->BackendMinimumVersion(8, 4))
+    {
+		wxString sql=wxT("SELECT calls AS ") + qtIdent(_("Number of calls")) +
+	      wxT(", total_time AS ") + qtIdent(_("Total Time")) +
+	      wxT(", self_time AS ") + qtIdent(_("Self Time")) +
+          wxT(" FROM pg_stat_user_functions") +
+          wxT(" WHERE schemaname = ") + qtDbString(GetSchema()->GetName()) +
+		  wxT(" AND funcname = ") + qtDbString(GetName());
+		DisplayStatistics(statistics, sql);
+	}
+}
+
 bool pgFunction::IsUpToDate()
 {
     wxString sql = wxT("SELECT xmin FROM pg_proc WHERE oid = ") + this->GetOidStr();
@@ -681,6 +695,11 @@ pgObject *pgFunctionFactory::CreateObjects(pgCollection *collection, ctlTree *br
 }
 
 
+pgCollection *pgFunctionFactory::CreateCollection(pgObject *obj)
+{
+    return new pgFunctionCollection(GetCollectionFactory(), (pgSchema*)obj);
+}
+
 pgObject *pgTriggerFunctionFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restr)
 {
     wxString funcRestriction=wxT(
@@ -738,3 +757,46 @@ pgProcedureFactory::pgProcedureFactory()
 
 pgProcedureFactory procedureFactory;
 static pgaCollectionFactory cfp(&procedureFactory, __("Procedures"), procedures_xpm);
+
+pgFunctionCollection::pgFunctionCollection(pgaFactory *factory, pgSchema *sch)
+: pgSchemaObjCollection(factory, sch)
+{
+}
+
+
+void pgFunctionCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
+{
+    if (GetConnection()->BackendMinimumVersion(8, 4))
+    {
+		wxLogInfo(wxT("Displaying statistics for functions on ") + GetSchema()->GetName());
+
+		wxString sql=wxT("SELECT funcname, calls, total_time, self_time")
+                 wxT(" FROM pg_stat_user_functions")
+                 wxT(" WHERE schemaname = ") + qtDbString(GetSchema()->GetName())
+                 + wxT(" ORDER BY funcname");
+
+		// Add the statistics view columns
+		statistics->ClearAll();
+		statistics->AddColumn(_("Function"), 60);
+		statistics->AddColumn(_("Calls"), 50);
+		statistics->AddColumn(_("Total Time"), 60);
+		statistics->AddColumn(_("Self Time"), 60);
+
+		pgSet *stats = GetDatabase()->ExecuteSet(sql);
+		if (stats)
+		{
+			long pos=0;
+			while (!stats->Eof())
+			{
+				statistics->InsertItem(pos, stats->GetVal(wxT("funcname")), PGICON_STATISTICS);
+				statistics->SetItem(pos, 1, stats->GetVal(wxT("calls")));
+				statistics->SetItem(pos, 2, stats->GetVal(wxT("total_time")));
+				statistics->SetItem(pos, 3, stats->GetVal(wxT("self_time")));
+				stats->MoveNext();
+				pos++;
+			}
+
+			delete stats;
+		}
+    }
+}
