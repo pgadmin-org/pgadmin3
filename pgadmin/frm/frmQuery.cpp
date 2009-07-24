@@ -1004,16 +1004,18 @@ void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
         }
         else
         {
-            queryMenu->Append(MNU_EXECUTE, _("Generate SQL from Graphical Query Builder Model"));
-            queryMenu->SetHelpString(MNU_EXECFILE, _("Generate SQL from Graphical Query Builder Model"));
-            toolBar->SetToolShortHelp(MNU_EXECUTE, _("Generate SQL from Graphical Query Builder Model"));
-            toolBar->SetToolShortHelp(MNU_EXECFILE, _("Generate SQL from Graphical Query Builder Model"));
 	        manager.GetPane(wxT("outputPane")).Show(false);
        	    manager.GetPane(wxT("scratchPad")).Show(false);
     		manager.Update();
             
             if(firstTime)        //Things that should be done on first click on GQB
             {
+				// Menu
+				queryMenu->Append(MNU_EXECUTE, _("Generate SQL from Graphical Query Builder Model"));
+				queryMenu->SetHelpString(MNU_EXECFILE, _("Generate SQL from Graphical Query Builder Model"));
+				toolBar->SetToolShortHelp(MNU_EXECUTE, _("Generate SQL from Graphical Query Builder Model"));
+				toolBar->SetToolShortHelp(MNU_EXECFILE, _("Generate SQL from Graphical Query Builder Model"));
+				
                 // Size, and pause to allow the window to draw
                 adjustGQBSizes();
                 wxTheApp->Yield(true);
