@@ -1487,6 +1487,7 @@ public:
     void Create(wxWindow* parent, wxWindowID id, wxEvtHandler* evtHandler);
     void BeginEdit(int row, int col, wxGrid* grid);
     bool EndEdit(int row, int col, wxGrid* grid);
+    wxString GetValue() const;
 
 protected:
     void DoBeginEdit(const wxString& startValue);
@@ -1541,6 +1542,10 @@ bool sqlGridTextEditor::EndEdit(int row, int col, wxGrid *grid)
     return changed;
 }
 
+wxString sqlGridTextEditor::GetValue() const
+{
+    return Text()->GetText();
+}
     
 class sqlGridNumericEditor : public wxGridCellTextEditor
 {
