@@ -478,7 +478,7 @@ void pgObject::ShowDependencies(frmMain *form, ctlListView *Dependencies, const 
             */
             pgSetIterator set(conn, 
                 wxT("SELECT \n")
-                wxT("  CASE WHEN att.attname IS NOT NULL AND ref.relname IS NOT NULL THEN ref.relname || '.' att.attname\n")
+                wxT("  CASE WHEN att.attname IS NOT NULL AND ref.relname IS NOT NULL THEN ref.relname || '.' || att.attname\n")
                 wxT("       ELSE ref.relname \n")
                 wxT("  END AS refname, \n")
                 wxT("  d2.refclassid, d1.deptype AS deptype\n")
