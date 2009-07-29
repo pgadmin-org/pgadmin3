@@ -163,10 +163,10 @@ AC_DEFUN([CHECK_WXWIDGETS],
         WX_MINOR=`expr ${TMP_WX_VERSION} : '[0-9]*\.\([0-9]*\)'`
         changequote([, ])dnl
         if test "$WX_MAJOR" -lt 2; then
-                AC_MSG_ERROR([wxWidgets 2.8.0 or newer is require to build pgAdmin])
+                AC_MSG_ERROR([wxWidgets 2.8.0 or newer is required to build pgAdmin])
         fi
         if test "$WX_MAJOR" -eq 2 && test "$WX_MINOR" -lt 8; then
-                AC_MSG_ERROR([wxWidgets 2.8.0 or newer is require to build pgAdmin])
+                AC_MSG_ERROR([wxWidgets 2.8.0 or newer is required to build pgAdmin])
         fi
         AC_MSG_RESULT(ok)
 ])
@@ -228,13 +228,13 @@ AC_DEFUN([CHECK_LIBXML2],
 	XML2_REVISION=`expr ${XML2_VERSION} : '[0-9]*\.[0-9]*\.\([0-9]*\)'`
 	changequote([, ])dnl
 	if test "$XML2_MAJOR" -lt 2; then
-		AC_MSG_ERROR([libxml2 2.6.18 or newer is require to build pgAdmin])
+		AC_MSG_ERROR([libxml2 2.6.18 or newer is required to build pgAdmin])
 	fi
 	if test "$XML2_MAJOR" -eq 2 && test "$XML2_MINOR" -lt 6; then
-		AC_MSG_ERROR([libxml2 2.6.18 or newer is require to build pgAdmin])
+		AC_MSG_ERROR([libxml2 2.6.18 or newer is required to build pgAdmin])
 	fi
 	if test "$XML2_MAJOR" -eq 2 && test "$XML2_MINOR" -eq 6 && test "$XML2_REVISION" -lt 18; then
-		AC_MSG_ERROR([libxml2 2.6.18 or newer is require to build pgAdmin])
+		AC_MSG_ERROR([libxml2 2.6.18 or newer is required to build pgAdmin])
 	fi
 	AC_MSG_RESULT(ok)
 ])
