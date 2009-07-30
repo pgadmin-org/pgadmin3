@@ -22,6 +22,7 @@
 
 #ifdef __WXMSW__
 #include <winsock.h>
+typedef u_long in_addr_t;
 #else
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -85,7 +86,7 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
 
     // Figure out the hostname/IP address
     struct hostent *host;
-    unsigned long addr;
+    in_addr_t addr;
     wxString hostip, hostname;
 
 #ifdef __WXMSW__
