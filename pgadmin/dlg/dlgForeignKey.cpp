@@ -249,8 +249,11 @@ void dlgForeignKey::OnSelChangeRef(wxCommandEvent &ev)
             set->MoveNext();
         }
         delete set;
-        cbRefColumns->SetSelection(0);
+
+        if (cbRefColumns->GetCount())
+            cbRefColumns->SetSelection(0);
     }
+
     OnSelChangeRefCol(ev);
 }
 
@@ -266,8 +269,12 @@ void dlgForeignKey::OnAddRef(wxCommandEvent &ev)
         cbRefColumns->Delete(cbRefColumns->GetCurrentSelection());
         cbReferences->Disable();
 
-        cbColumns->SetSelection(0);
-        cbRefColumns->SetSelection(0);
+        if (cbColumns->GetCount())
+            cbColumns->SetSelection(0);
+
+        if (cbRefColumns->GetCount())
+            cbRefColumns->SetSelection(0);
+
         OnSelChangeRefCol(ev);
         CheckChange();
     }
