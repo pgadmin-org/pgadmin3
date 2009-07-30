@@ -139,7 +139,8 @@ void dlgRepClusterBase::OnChangeServer(wxCommandEvent &ev)
                 }
                 delete set;
 
-                cbDatabase->SetSelection(0);
+                if (cbDatabase->GetCount())
+                    cbDatabase->SetSelection(0);
             }
         }
 
@@ -179,7 +180,9 @@ void dlgRepClusterBase::OnChangeDatabase(wxCommandEvent &ev)
                 }
                 delete set;
             }
-            cbClusterName->SetSelection(0);
+
+            if (cbClusterName->GetCount())
+                cbClusterName->SetSelection(0);
         }
     }
     OnChangeCluster(ev);
