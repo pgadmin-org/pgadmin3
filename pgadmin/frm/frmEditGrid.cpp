@@ -120,7 +120,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
     toolBar->SetToolBitmapSize(wxSize(16, 16));
 
-    toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(storedata_xpm), _("Saved the changed row."), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(storedata_xpm), _("Save the changed row."), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(readdata_xpm), _("Refresh."), wxITEM_NORMAL);
     toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo change of data."), wxITEM_NORMAL);
@@ -160,7 +160,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
     // File menu
     fileMenu = new wxMenu();
-    fileMenu->Append(MNU_SAVE, _("&Save"),_("Saved the changed row."));
+    fileMenu->Append(MNU_SAVE, _("&Save"),_("Save the changed row."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_CLOSE, _("&Close"), _("Close this window."));
     fileMenu->Enable(MNU_SAVE, false);
