@@ -155,7 +155,7 @@ void frmGrantWizard::AddObjects(pgCollection *collection)
                 if (obj->CanEdit())
                 {
                     objectArray.Add(obj);
-                    chkList->Append(obj->GetTypeName() + wxT(" ") + obj->GetFullIdentifier()); // no translation!
+                    chkList->Append((wxString)wxGetTranslation(obj->GetTypeName()) + wxT(" ") + obj->GetFullIdentifier());
                 }
             }
         }
