@@ -259,6 +259,12 @@ wxString pgProcedure::GetSql(ctlTree *browser)
             + GetSource()
             + wxT("\n\n")
             + GetGrant(wxT("X"), wxT("PROCEDURE ") + qtSig);
+
+        if (!GetComment().IsNull())
+        {
+            sql += wxT("COMMENT ON PROCEDURE ") + GetQuotedFullIdentifier()
+                + wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
+        }
     }
 
     return sql;
