@@ -131,9 +131,9 @@ void pgSequence::ShowStatistics(frmMain *form, ctlListView *statistics)
 
     if (stats)
     {
-        statistics->InsertItem(0, wxT("Blocks Read"), PGICON_STATISTICS);
+        statistics->InsertItem(0, _("Blocks Read"), PGICON_STATISTICS);
         statistics->SetItem(0l, 1, stats->GetVal(wxT("blks_read")));
-        statistics->InsertItem(1, wxT("Blocks Hit"), PGICON_STATISTICS);
+        statistics->InsertItem(1, _("Blocks Hit"), PGICON_STATISTICS);
         statistics->SetItem(1, 1, stats->GetVal(wxT("blks_hit")));
 
         delete stats;
