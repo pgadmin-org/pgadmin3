@@ -440,7 +440,11 @@ void frmReport::OnBrowseStylesheet(wxCommandEvent &ev)
         if (!wxFile::Exists(def))
             def.Empty();
    
+#ifdef __WXMSW__
         wxFileDialog file(this, _("Select stylesheet filename"), wxGetHomeDir(), def, _("HTML Stylesheet files (*.css)|*.css|All files (*.*)|*.*"), wxFD_OPEN);
+#else
+        wxFileDialog file(this, _("Select stylesheet filename"), wxGetHomeDir(), def, _("HTML Stylesheet files (*.css)|*.css|All files (*)|*"), wxFD_OPEN);
+#endif
 
         if (file.ShowModal() == wxID_OK)
         {
@@ -455,7 +459,11 @@ void frmReport::OnBrowseStylesheet(wxCommandEvent &ev)
         if (!wxFile::Exists(def))
             def.Empty();
    
+#ifdef __WXMSW__
         wxFileDialog file(this, _("Select stylesheet filename"), wxGetHomeDir(), def, _("XML Stylesheet files (*.xsl)|*.xsl|All files (*.*)|*.*"), wxFD_OPEN);
+#else
+        wxFileDialog file(this, _("Select stylesheet filename"), wxGetHomeDir(), def, _("XML Stylesheet files (*.xsl)|*.xsl|All files (*)|*"), wxFD_OPEN);
+#endif
 
         if (file.ShowModal() == wxID_OK)
         {
@@ -469,8 +477,13 @@ void frmReport::OnBrowseFile(wxCommandEvent &ev)
 {
     if (rbHtml->GetValue())
     {
+#ifdef __WXMSW__
         wxFileDialog file(this, _("Select output filename"), wxGetHomeDir(), txtHtmlFile->GetValue(),
             _("HTML files (*.html)|*.html|All files (*.*)|*.*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+#else
+        wxFileDialog file(this, _("Select output filename"), wxGetHomeDir(), txtHtmlFile->GetValue(),
+            _("HTML files (*.html)|*.html|All files (*)|*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+#endif
 
         if (file.ShowModal() == wxID_OK)
         {
@@ -480,8 +493,13 @@ void frmReport::OnBrowseFile(wxCommandEvent &ev)
     }
     else
     {
+#ifdef __WXMSW__
         wxFileDialog file(this, _("Select output filename"), wxGetHomeDir(), txtXmlFile->GetValue(),
             _("XML files (*.xml)|*.xml|All files (*.*)|*.*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+#else
+        wxFileDialog file(this, _("Select output filename"), wxGetHomeDir(), txtXmlFile->GetValue(),
+            _("XML files (*.xml)|*.xml|All files (*)|*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+#endif
 
         if (file.ShowModal() == wxID_OK)
         {

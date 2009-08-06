@@ -319,8 +319,13 @@ void frmExport::OnBrowseFile(wxCommandEvent &ev)
         filename = wxFileName(txtFilename->GetValue()).GetFullName();
     }
 
+#ifdef __WXMSW__
     wxFileDialog file(this, _("Select export filename"), directory, filename, 
         _("CSV files (*.csv)|*.csv|Data files (*.dat)|*.dat|All files (*.*)|*.*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+#else
+    wxFileDialog file(this, _("Select export filename"), directory, filename, 
+        _("CSV files (*.csv)|*.csv|Data files (*.dat)|*.dat|All files (*)|*"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+#endif
 
     if (file.ShowModal() == wxID_OK)
     {

@@ -968,8 +968,13 @@ void frmQuery::OnHelp(wxCommandEvent& event)
 
 void frmQuery::OnSaveHistory(wxCommandEvent& event)
 {
+#ifdef __WXMSW__
     wxFileDialog *dlg=new wxFileDialog(this, _("Save history"), lastDir, wxEmptyString,
         _("Log files (*.log)|*.log|All files (*.*)|*.*"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+#else
+    wxFileDialog *dlg=new wxFileDialog(this, _("Save history"), lastDir, wxEmptyString,
+        _("Log files (*.log)|*.log|All files (*)|*"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+#endif
     if (dlg->ShowModal() == wxID_OK)
     {
         if (!FileWrite(dlg->GetPath(), msgHistory->GetValue(), false))
@@ -1480,8 +1485,14 @@ void frmQuery::OnOpen(wxCommandEvent& event)
     if (CheckChanged(true))
         return;
 
+#ifdef __WXMSW__
     wxFileDialog dlg(this, _("Open query file"), lastDir, wxT(""),
         _("Query files (*.sql)|*.sql|pgScript files (*.pgs)|*.pgs|All files (*.*)|*.*"), wxFD_OPEN);
+#else
+    wxFileDialog dlg(this, _("Open query file"), lastDir, wxT(""),
+        _("Query files (*.sql)|*.sql|pgScript files (*.pgs)|*.pgs|All files (*)|*"), wxFD_OPEN);
+#endif
+
     if (dlg.ShowModal() == wxID_OK)
     {
         lastFilename=dlg.GetFilename();
@@ -1645,8 +1656,13 @@ void frmQuery::SetEOLModeDisplay(int mode)
 
 void frmQuery::OnSaveAs(wxCommandEvent& event)
 {
+#ifdef __WXMSW__
     wxFileDialog *dlg=new wxFileDialog(this, _("Save query file as"), lastDir, lastFilename,
         _("Query files (*.sql)|*.sql|All files (*.*)|*.*"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+#else
+    wxFileDialog *dlg=new wxFileDialog(this, _("Save query file as"), lastDir, lastFilename,
+        _("Query files (*.sql)|*.sql|All files (*)|*"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+#endif
     if (dlg->ShowModal() == wxID_OK)
     {
         lastFilename=dlg->GetFilename();

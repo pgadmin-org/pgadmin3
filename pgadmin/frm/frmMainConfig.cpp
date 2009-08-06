@@ -640,8 +640,13 @@ void frmMainConfig::OnOpen(wxCommandEvent& event)
     if (CheckChanged(true))
         return;
 
+#ifdef __WXMSW__
     wxFileDialog dlg(this, _("Open configuration file"), lastDir, wxT(""), 
         _("Configuration files (*.conf)|*.conf|All files (*.*)|*.*"), wxFD_OPEN);
+#else
+    wxFileDialog dlg(this, _("Open configuration file"), lastDir, wxT(""), 
+        _("Configuration files (*.conf)|*.conf|All files (*)|*"), wxFD_OPEN);
+#endif
     if (dlg.ShowModal() == wxID_OK)
     {
         Init();

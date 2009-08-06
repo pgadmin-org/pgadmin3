@@ -540,7 +540,11 @@ void frmOptions::OnCancel(wxCommandEvent &ev)
 
 void frmOptions::OnBrowseLogFile(wxCommandEvent &ev)
 {
+#ifdef __WXMSW__
     wxFileDialog logFile(this, _("Select log file"), wxT(""), wxT(""), _("Log files (*.log)|*.log|All files (*.*)|*.*"));
+#else
+    wxFileDialog logFile(this, _("Select log file"), wxT(""), wxT(""), _("Log files (*.log)|*.log|All files (*)|*"));
+#endif
     logFile.SetDirectory(wxGetHomeDir());
 
     if (logFile.ShowModal() == wxID_OK)

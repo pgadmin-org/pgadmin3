@@ -141,8 +141,13 @@ void frmRestore::OnSelectFilename(wxCommandEvent &ev)
     wxString FilenameOnly;    
     wxFileName::SplitPath(txtFilename->GetValue(), NULL, NULL, &FilenameOnly, NULL);
     
+#ifdef __WXMSW__
     wxFileDialog file(this, _("Select backup filename"), ::wxPathOnly(txtFilename->GetValue()), FilenameOnly, 
         _("Backup files (*.backup)|*.backup|All files (*.*)|*.*"));
+#else
+    wxFileDialog file(this, _("Select backup filename"), ::wxPathOnly(txtFilename->GetValue()), FilenameOnly, 
+        _("Backup files (*.backup)|*.backup|All files (*)|*"));
+#endif
 
     if (file.ShowModal() == wxID_OK)
     {

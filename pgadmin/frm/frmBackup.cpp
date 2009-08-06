@@ -120,12 +120,20 @@ void frmBackup::OnSelectFilename(wxCommandEvent &ev)
     if (rbxFormat->GetSelection() == 2) // plain
     {
         title  = _("Select output file");
+#ifdef __WXMSW__
         prompt = _("Query files (*.sql)|*.sql|All files (*.*)|*.*");
+#else
+        prompt = _("Query files (*.sql)|*.sql|All files (*)|*");
+#endif
     }
     else
     {
         title  = _("Select backup filename");
+#ifdef __WXMSW__
         prompt = _("Backup files (*.backup)|*.backup|All files (*.*)|*.*");
+#else
+        prompt = _("Backup files (*.backup)|*.backup|All files (*)|*");
+#endif
     }
 
     wxFileName::SplitPath(txtFilename->GetValue(), NULL, NULL, &FilenameOnly, NULL);

@@ -92,7 +92,11 @@ void frmBackupServer::OnSelectFilename(wxCommandEvent &ev)
     wxString title, prompt, FilenameOnly;
 
     title  = _("Select output file");
+#ifdef __WXMSW__
     prompt = _("Query files (*.sql)|*.sql|All files (*.*)|*.*");
+#else
+    prompt = _("Query files (*.sql)|*.sql|All files (*)|*");
+#endif
     
     wxFileName::SplitPath(txtFilename->GetValue(), NULL, NULL, &FilenameOnly, NULL);
     wxFileDialog file(this, title, ::wxPathOnly(txtFilename->GetValue()), FilenameOnly, prompt, wxFD_SAVE);
