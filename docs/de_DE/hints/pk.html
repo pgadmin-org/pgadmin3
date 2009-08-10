@@ -1,41 +1,41 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
 <title>Guru-Hinweise</title>
 </head>
 
 <body>
 
-<h3>Primärschlüssel</h3>
+<h3>PrimÃ¤rschlÃ¼ssel</h3>
 <p>
-Beim Designen einer Tabelle sollte man stehts im Blick behalten, auf welche Weise später auf sie
-zugegriffen wird. In den meisten Fällen wird ein eindeutiger Schlüsselbegriff erforderlich sein um eine 
-spezifische Zeile jeweils eindeutig identifizieren zu können. Dieser Schlüsselbegriff sollte als Primärschlüssel
+Beim Designen einer Tabelle sollte man stehts im Blick behalten, auf welche Weise spÃ¤ter auf sie
+zugegriffen wird. In den meisten FÃ¤llen wird ein eindeutiger SchlÃ¼sselbegriff erforderlich sein um eine 
+spezifische Zeile jeweils eindeutig identifizieren zu kÃ¶nnen. Dieser SchlÃ¼sselbegriff sollte als PrimÃ¤rschlÃ¼ssel
 erzeugt werden.
-Ein Primärschlüssel muß nicht unbedingt aus einer einzelnen Spalte bestehen; er kann soviel Spalten beinhalten wie nötig 
+Ein PrimÃ¤rschlÃ¼ssel muÃŸ nicht unbedingt aus einer einzelnen Spalte bestehen; er kann soviel Spalten beinhalten wie nÃ¶tig 
 um eine Zeile eindeutig zu identifizieren. Wenn hierzu allerdings viele Spalten erforderlich sein sollten (Faustregel: mehr als 3) 
-könnte es eine gute Idee sein eine zusätzliche Spalte mit einem handlichen Datentyp, z.b. serial oder bigserial, einzuführen,
-welche den eindeutigen Schlüssel enthält.
+kÃ¶nnte es eine gute Idee sein eine zusÃ¤tzliche Spalte mit einem handlichen Datentyp, z.b. serial oder bigserial, einzufÃ¼hren,
+welche den eindeutigen SchlÃ¼ssel enthÃ¤lt.
 </p>
 <p>
-Nur in seltenen Ausnahmefällen macht das Erzeugen eines Primärschlüssels keinen Sinn. Das bedeutet, daß das Fehlen eines 
-Primärschlüssels in einer Tabelle auf eine unvollständige Definition hinweist; darum kommt der Guruhinweis hoch 
+Nur in seltenen AusnahmefÃ¤llen macht das Erzeugen eines PrimÃ¤rschlÃ¼ssels keinen Sinn. Das bedeutet, daÃŸ das Fehlen eines 
+PrimÃ¤rschlÃ¼ssels in einer Tabelle auf eine unvollstÃ¤ndige Definition hinweist; darum kommt der Guruhinweis hoch 
 wenn man eine Tabelle ohne PK anzulegen versucht.
 </p>
 <p>
-Wenn man einen Blick auf die PostgreSQL-Systemtabellen wirft, stellt man fest daß keine von ihnen einen Primärschlüssel aufweist,
-also was soll das Ganze? Tatsächlich haben alle diese Tabellen eine oder zwei Spalten (typischerweise nur die OID), welche 
-jede Zeile eindeutig identifiziert, welche die zweite Regel für einen Primärschlüssel, nicht NULL enthalten zu dürfen, befolgt, und einen 
-Index für schnelleren Zugriff beinhaltet. Die Verwendung von OIDs hat historische Gründe, und ist nicht gerade erste Wahl wenn es um den Design
-von User-Tabellen geht. PostgreSQL benutzt diese um Rückwärtskompatibilität zu gewährleisten. Aus heutiger Sicht würde man vermutlich
-Primärschlüssel verwenden, eine dahingehende Änderung der Systemtabellen ist allerdings nicht zu erwarten.
+Wenn man einen Blick auf die PostgreSQL-Systemtabellen wirft, stellt man fest daÃŸ keine von ihnen einen PrimÃ¤rschlÃ¼ssel aufweist,
+also was soll das Ganze? TatsÃ¤chlich haben alle diese Tabellen eine oder zwei Spalten (typischerweise nur die OID), welche 
+jede Zeile eindeutig identifiziert, welche die zweite Regel fÃ¼r einen PrimÃ¤rschlÃ¼ssel, nicht NULL enthalten zu dÃ¼rfen, befolgt, und einen 
+Index fÃ¼r schnelleren Zugriff beinhaltet. Die Verwendung von OIDs hat historische GrÃ¼nde, und ist nicht gerade erste Wahl wenn es um den Design
+von User-Tabellen geht. PostgreSQL benutzt diese um RÃ¼ckwÃ¤rtskompatibilitÃ¤t zu gewÃ¤hrleisten. Aus heutiger Sicht wÃ¼rde man vermutlich
+PrimÃ¤rschlÃ¼ssel verwenden, eine dahingehende Ã„nderung der Systemtabellen ist allerdings nicht zu erwarten.
 </p>
 <p>
 Wie das Beispiel der Systemtabellen zeigt, kann das Ziel der Eindeutigkeit und des schnellen Zugriffs auch auf andere Weise
-als mit einem Primärschlüssel erreicht werden. Es ist allerdings sehr empfehlenswert, aus Gründen der Klarheit des Datenmodells
-stets Primärschlüssel zu verwenden.
+als mit einem PrimÃ¤rschlÃ¼ssel erreicht werden. Es ist allerdings sehr empfehlenswert, aus GrÃ¼nden der Klarheit des Datenmodells
+stets PrimÃ¤rschlÃ¼ssel zu verwenden.
 </p>
 </body>
 </html>

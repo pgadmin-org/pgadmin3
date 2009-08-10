@@ -1,25 +1,25 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
 <title>Gurun neuvot</title>
 </head>
 
 <body>
 
-<h3>Primääriavaimet</h3>
+<h3>PrimÃ¤Ã¤riavaimet</h3>
 <p>
-Suunnitellessasi taulua, pidä aina mielessä miten taulusta tullaan myöhemmin hakemaan rivejä. Useimmissa tapauksissa tarvitset avaimen voidaksesi hakea ja muuttaa tiettyä riviä yksikäsitteisesti; tämä avain tulisi määritellä taulun primääriavaimeksi. Primääriavain ei välttämättä ole vain yksi kenttä; se voi koostua niin monesta kentästä kuin rivin yksilöimiseen tarvitaan. Jos tarvitset montaa kenttää (nyrkkisääntönä voidaan pitää kolmea), voi olla hyvä idea luoda keinotekoinen avainkenttä kätevällä tietotyppillä, esimerkiksi serial tai bigserial.
+Suunnitellessasi taulua, pidÃ¤ aina mielessÃ¤ miten taulusta tullaan myÃ¶hemmin hakemaan rivejÃ¤. Useimmissa tapauksissa tarvitset avaimen voidaksesi hakea ja muuttaa tiettyÃ¤ riviÃ¤ yksikÃ¤sitteisesti; tÃ¤mÃ¤ avain tulisi mÃ¤Ã¤ritellÃ¤ taulun primÃ¤Ã¤riavaimeksi. PrimÃ¤Ã¤riavain ei vÃ¤lttÃ¤mÃ¤ttÃ¤ ole vain yksi kenttÃ¤; se voi koostua niin monesta kentÃ¤stÃ¤ kuin rivin yksilÃ¶imiseen tarvitaan. Jos tarvitset montaa kenttÃ¤Ã¤ (nyrkkisÃ¤Ã¤ntÃ¶nÃ¤ voidaan pitÃ¤Ã¤ kolmea), voi olla hyvÃ¤ idea luoda keinotekoinen avainkenttÃ¤ kÃ¤tevÃ¤llÃ¤ tietotyppillÃ¤, esimerkiksi serial tai bigserial.
 </p>
 <p>
-Vain äärimmäisen harvinaisissa tapauksissa ei ole järkevää luoda primääriavainta. Toisin sanoen, primääriavaimen puuttuminen on vahva merkki siitä että taulu ei ole valmiiksi saakka suunniteltu; sen takia tämä Gurun neuvo näytetään aina jos luot taulun ilman primääriavainta.
+Vain Ã¤Ã¤rimmÃ¤isen harvinaisissa tapauksissa ei ole jÃ¤rkevÃ¤Ã¤ luoda primÃ¤Ã¤riavainta. Toisin sanoen, primÃ¤Ã¤riavaimen puuttuminen on vahva merkki siitÃ¤ ettÃ¤ taulu ei ole valmiiksi saakka suunniteltu; sen takia tÃ¤mÃ¤ Gurun neuvo nÃ¤ytetÃ¤Ã¤n aina jos luot taulun ilman primÃ¤Ã¤riavainta.
 </p>
 <p>
-Jos katsot PostgreSQL:n järjestelmätauluja, huomaat että millään niistä ei ole primääriavainta. Mistä oikein on kysymys? Itse asiasssa, kaikissa näissä tauluissa on yksi tai kaksi kenttää (useimmiten vain OID), joka yksilöi jokaisen rivin, noudattaa primääriavainten toista sääntöä, eli ei huoli NULLia, ja on indeksoitu hakujen nopeuttamiseksi. OID:den käyttö johtuu historiallisista syistä, eikä ole suositeltavaa sovellustaulujen suunnittelussa. PostgreSQL tukee sitä yhä taaksepäin yhteensopivuuden takaamiseksi. Jos järjestelmätaulut suunniteltaisiin tänä päivänä uudelleen, niissä todennäköisesti käytettäisiin primääriavaimia, mutta sitä ei enää lähdetä muuttamaan.
+Jos katsot PostgreSQL:n jÃ¤rjestelmÃ¤tauluja, huomaat ettÃ¤ millÃ¤Ã¤n niistÃ¤ ei ole primÃ¤Ã¤riavainta. MistÃ¤ oikein on kysymys? Itse asiasssa, kaikissa nÃ¤issÃ¤ tauluissa on yksi tai kaksi kenttÃ¤Ã¤ (useimmiten vain OID), joka yksilÃ¶i jokaisen rivin, noudattaa primÃ¤Ã¤riavainten toista sÃ¤Ã¤ntÃ¶Ã¤, eli ei huoli NULLia, ja on indeksoitu hakujen nopeuttamiseksi. OID:den kÃ¤yttÃ¶ johtuu historiallisista syistÃ¤, eikÃ¤ ole suositeltavaa sovellustaulujen suunnittelussa. PostgreSQL tukee sitÃ¤ yhÃ¤ taaksepÃ¤in yhteensopivuuden takaamiseksi. Jos jÃ¤rjestelmÃ¤taulut suunniteltaisiin tÃ¤nÃ¤ pÃ¤ivÃ¤nÃ¤ uudelleen, niissÃ¤ todennÃ¤kÃ¶isesti kÃ¤ytettÃ¤isiin primÃ¤Ã¤riavaimia, mutta sitÃ¤ ei enÃ¤Ã¤ lÃ¤hdetÃ¤ muuttamaan.
 </p>
 <p>
-Kuten järjestelmätaulujen tapaus osoittaa, yksilöllisyyden ja nopeiden hakujen tavoitteeseen voi päästä muillakin keinoilla kuin primääriavaimilla. Siitä huolimatta, tietomallin selkeyden vuoksi, kannattaa ehdottomasti käyttää primääriavaimia tähän tarkoitukseen.
+Kuten jÃ¤rjestelmÃ¤taulujen tapaus osoittaa, yksilÃ¶llisyyden ja nopeiden hakujen tavoitteeseen voi pÃ¤Ã¤stÃ¤ muillakin keinoilla kuin primÃ¤Ã¤riavaimilla. SiitÃ¤ huolimatta, tietomallin selkeyden vuoksi, kannattaa ehdottomasti kÃ¤yttÃ¤Ã¤ primÃ¤Ã¤riavaimia tÃ¤hÃ¤n tarkoitukseen.
 </p>
 </body>
 </html>
