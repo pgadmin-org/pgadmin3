@@ -1,47 +1,47 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
 <title>Conseil d'expert</title>
 </head>
 
 <body>
 
-<h3>Clés primaires</h3>
+<h3>ClÃ©s primaires</h3>
 <p>
-Lors de la conception d'une table, vous devez toujours garder à l'esprit la façon
-dont la table sera utilisée plus tard. Dans la plupart des cas, vous aurez besoin
-d'un identifieur pour adresser de façon unique une ligne spécifique&nbsp;; cet
-identifieur devra être créé en tant que clé primaire. Une clé primaire ne consiste
-pas nécessairement en une seule colonne&nbsp;; elle peut contenir autant de
-colonnes que nécessaire pour identifier une ligne de façon unique. Si vous avez
-besoin de plusieurs colonnes (règle de base&nbsp;: plus de trois), une bonne
-idée serait d'inventer une colonne supplémentaire avec un type de données
-intéressant, c'est-à-dire serial ou bigserial, contenant la clé primaire.
+Lors de la conception d'une table, vous devez toujours garder Ã  l'esprit la faÃ§on
+dont la table sera utilisÃ©e plus tard. Dans la plupart des cas, vous aurez besoin
+d'un identifieur pour adresser de faÃ§on unique une ligne spÃ©cifique&nbsp;; cet
+identifieur devra Ãªtre crÃ©Ã© en tant que clÃ© primaire. Une clÃ© primaire ne consiste
+pas nÃ©cessairement en une seule colonne&nbsp;; elle peut contenir autant de
+colonnes que nÃ©cessaire pour identifier une ligne de faÃ§on unique. Si vous avez
+besoin de plusieurs colonnes (rÃ¨gle de base&nbsp;: plus de trois), une bonne
+idÃ©e serait d'inventer une colonne supplÃ©mentaire avec un type de donnÃ©es
+intÃ©ressant, c'est-Ã -dire serial ou bigserial, contenant la clÃ© primaire.
 </p>
 <p>
-Dans de rares cas, utiliser une clé primaire n'a pas de sens. Cela signifie
-qu'une clé primaire manquante est un bon indicateur d'une table conçue
-partiellement&nbsp;; c'est pourquoi un conseil d'expert apparaîtra si vous créez
-une base sans clé primaire.
+Dans de rares cas, utiliser une clÃ© primaire n'a pas de sens. Cela signifie
+qu'une clÃ© primaire manquante est un bon indicateur d'une table conÃ§ue
+partiellement&nbsp;; c'est pourquoi un conseil d'expert apparaÃ®tra si vous crÃ©ez
+une base sans clÃ© primaire.
 </p>
 <p>
-Si vous regardez les tables système de PostgreSQL, vous n'en trouverez aucune
-avec une clé primaire. Pourquoi ?
+Si vous regardez les tables systÃ¨me de PostgreSQL, vous n'en trouverez aucune
+avec une clÃ© primaire. Pourquoi ?
 En fait, chacune de ces tables ont une ou deux colonnes (habituellement seulement
-l'OID) qui identifient de façon unique chaque ligne, obéissant à la seconde
-règle pour une clé primaire, n'autorisant pas zéro et étant couvert par un index
-pour un accès plus rapide. L'utilisation des OID a une raison historique et n'est
+l'OID) qui identifient de faÃ§on unique chaque ligne, obÃ©issant Ã  la seconde
+rÃ¨gle pour une clÃ© primaire, n'autorisant pas zÃ©ro et Ã©tant couvert par un index
+pour un accÃ¨s plus rapide. L'utilisation des OID a une raison historique et n'est
 pas vraiment un bon choix pour la conception de tables utilisateur. PostgreSQL
-utilise toujours ceci pour des raisons de compatibilité ascendante et, bien
-qu'une nouvelle approche utiliserait probablement des clés primaires explicites,
-cela ne sera pas modifié.
+utilise toujours ceci pour des raisons de compatibilitÃ© ascendante et, bien
+qu'une nouvelle approche utiliserait probablement des clÃ©s primaires explicites,
+cela ne sera pas modifiÃ©.
 </p>
 <p>
-Comme le montre le cas des tables système, le but d'unicité et d'accès rapide peut
-être obtenu avec d'autres approches qu'une clé primaire. Malgré tout, pour la
-clareté du modèle de données, vous êtes fortement encouragé à utiliser des clés
+Comme le montre le cas des tables systÃ¨me, le but d'unicitÃ© et d'accÃ¨s rapide peut
+Ãªtre obtenu avec d'autres approches qu'une clÃ© primaire. MalgrÃ© tout, pour la
+claretÃ© du modÃ¨le de donnÃ©es, vous Ãªtes fortement encouragÃ© Ã  utiliser des clÃ©s
 primaires dans ce but.
 </p>
 </body>

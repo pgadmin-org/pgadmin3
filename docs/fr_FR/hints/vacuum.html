@@ -1,38 +1,38 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
 <title>Conseil d'expert</title>
 </head>
 
 <body>
 
-<h3>Exécuter VACUUM est recommandé</h3>
+<h3>ExÃ©cuter VACUUM est recommandÃ©</h3>
 <p>
-Le nombre de lignes estimés sur la table &quot;<INFO>&quot; dévie
-significativement du nombre de lignes réelles. Vous devez lancer VACUUM ANALYZE
+Le nombre de lignes estimÃ©s sur la table &quot;<INFO>&quot; dÃ©vie
+significativement du nombre de lignes rÃ©elles. Vous devez lancer VACUUM ANALYZE
 sur cette table.
 </p><p>
-Au lieu d'exécuter une commande VACUUM ANALYZE manuellement sur cette table
-(vous pouvez utiliser menu de maintenance de pgAdmin III pour cela), exécuter
-VACUUM ANALYZE sur une base régulière, voire automatisée, doit être réfléchi.
-Ceci se réalise en utilisant un outil de planification. PostgreSQL fournit aussi
-le démon pg_autovacuum, qui conservera la trace des modifications réalisée sur
-la base de données et lancera les commandes VACUUM automatiquement si nécessaire.
+Au lieu d'exÃ©cuter une commande VACUUM ANALYZE manuellement sur cette table
+(vous pouvez utiliser menu de maintenance de pgAdmin III pour cela), exÃ©cuter
+VACUUM ANALYZE sur une base rÃ©guliÃ¨re, voire automatisÃ©e, doit Ãªtre rÃ©flÃ©chi.
+Ceci se rÃ©alise en utilisant un outil de planification. PostgreSQL fournit aussi
+le dÃ©mon pg_autovacuum, qui conservera la trace des modifications rÃ©alisÃ©e sur
+la base de donnÃ©es et lancera les commandes VACUUM automatiquement si nÃ©cessaire.
 Dans la plupart des cas, pg_autovacuum sera le meilleur choix.
 </p><p><br><br></p>
-<b>À quoi VACUUM est-il bon&nbsp;?</b>
+<b>Ã€ quoi VACUUM est-il bon&nbsp;?</b>
 <p>
-Le planificateur de requêtes de PostgreSQL prend des décisions sur des
-suppositions, réalisées à partir du nombre de lignes estimées. Si le nombre de
-lignes réel est trop différent du nombre de lignes supposé, le planificateur
-pourrait prendre une mauvaise décision, résultant en un plan de requête qui n'est
-pas optimal. Ceci peut avoir comme conséquences des performances pauvres.
+Le planificateur de requÃªtes de PostgreSQL prend des dÃ©cisions sur des
+suppositions, rÃ©alisÃ©es Ã  partir du nombre de lignes estimÃ©es. Si le nombre de
+lignes rÃ©el est trop diffÃ©rent du nombre de lignes supposÃ©, le planificateur
+pourrait prendre une mauvaise dÃ©cision, rÃ©sultant en un plan de requÃªte qui n'est
+pas optimal. Ceci peut avoir comme consÃ©quences des performances pauvres.
 </p><p>
-Le stockage de PostgreSQL nécessite l'utilisation de VACUUM pour que les
-identifiants de transaction soient corrigés dans les tables. De plus, les lignes
-obsolètes ne sont pas nettoyées tant que la commande VACUUM n'a pas été exécutée
+Le stockage de PostgreSQL nÃ©cessite l'utilisation de VACUUM pour que les
+identifiants de transaction soient corrigÃ©s dans les tables. De plus, les lignes
+obsolÃ¨tes ne sont pas nettoyÃ©es tant que la commande VACUUM n'a pas Ã©tÃ© exÃ©cutÃ©e
 sur cette table. Des informations en profondeur sont disponibles dans la
 documentation en ligne, appuyez simplement sur le bouton d'aide.
 </p>

@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
 <title>Gurun neuvot</title>
 </head>
@@ -9,19 +9,19 @@
 <body>
 <h3>Viiteavaimen kattavat indeksit</h3>
 <p>
-Viiteavainta käytetään yhdistämään toisiinsa kaksi taulua loogisella tavalla, jarajoittamaan niihin sallittavia muutoksia.
+Viiteavainta kÃ¤ytetÃ¤Ã¤n yhdistÃ¤mÃ¤Ã¤n toisiinsa kaksi taulua loogisella tavalla, jarajoittamaan niihin sallittavia muutoksia.
 </p>
 <p>
-Kaikki alkaa isätaulusta johon viitataan, eli viitatusta taulusta. Se tarvitsee primääriavaimen (tarkkaan ottaen, viitattujen kenttien tarvitsee vain olla määritelty NOT NULLiksi, ja taululla pitää olla yksilöivä indeksi joka kattaa kentät, mutta on erittäin primääriavaimen määritteleminen on erittäin suositeltavaa). Lapsitaulu riippuu isätaulusta, siten että viiteavaimeen kuuluvien kenttien arvojen on vastattava jokaisella rivillä jonkin isätaulussa olevan rivin arvoja. Lapsitaulu on toiselta nimeltään viiteavaimen viittaava taulu.
+Kaikki alkaa isÃ¤taulusta johon viitataan, eli viitatusta taulusta. Se tarvitsee primÃ¤Ã¤riavaimen (tarkkaan ottaen, viitattujen kenttien tarvitsee vain olla mÃ¤Ã¤ritelty NOT NULLiksi, ja taululla pitÃ¤Ã¤ olla yksilÃ¶ivÃ¤ indeksi joka kattaa kentÃ¤t, mutta on erittÃ¤in primÃ¤Ã¤riavaimen mÃ¤Ã¤ritteleminen on erittÃ¤in suositeltavaa). Lapsitaulu riippuu isÃ¤taulusta, siten ettÃ¤ viiteavaimeen kuuluvien kenttien arvojen on vastattava jokaisella rivillÃ¤ jonkin isÃ¤taulussa olevan rivin arvoja. Lapsitaulu on toiselta nimeltÃ¤Ã¤n viiteavaimen viittaava taulu.
 </p>
 <p>
-Viiteavain rajoittaa paitsi lapsitaulua, myös isätaulua; rajoituksen tyyppi voi olla RESTRICT, CASCADE tai SET NULL. Tämä tarkoittaa, että kun isätaulun riviä muutetaan (UPDATE tai DELETE), kaikkien lapsitaulujen viite-eheys tarkistetaan. Lue lisää PostgreSQL:n dokumentaatiosta kohdasta "foreign keys".
+Viiteavain rajoittaa paitsi lapsitaulua, myÃ¶s isÃ¤taulua; rajoituksen tyyppi voi olla RESTRICT, CASCADE tai SET NULL. TÃ¤mÃ¤ tarkoittaa, ettÃ¤ kun isÃ¤taulun riviÃ¤ muutetaan (UPDATE tai DELETE), kaikkien lapsitaulujen viite-eheys tarkistetaan. Lue lisÃ¤Ã¤ PostgreSQL:n dokumentaatiosta kohdasta "foreign keys".
 </p>
 <p>
-Tämä tarkoittaa että kun isätaulun riviä muutetaan, viiteavainta vastaavat rivit haetaan kaikista lapsitauluista viite-eheyden tarkistusta varten. Tämän johdosta kaikki lukutapahtumien suorituskykyyn liittyvät säännöt pätevät yleensä myös lapsitaulun kenttiin. Hyvän suorituskyvyn takaamiseksi lapsitaulun viiteavaimille kannattaa yleensä luoda indeksit. PostgreSQL ei valvo sitä millään tavalla, joten indeksin luominen on tietokannan suunnittelijan vastuulla.
+TÃ¤mÃ¤ tarkoittaa ettÃ¤ kun isÃ¤taulun riviÃ¤ muutetaan, viiteavainta vastaavat rivit haetaan kaikista lapsitauluista viite-eheyden tarkistusta varten. TÃ¤mÃ¤n johdosta kaikki lukutapahtumien suorituskykyyn liittyvÃ¤t sÃ¤Ã¤nnÃ¶t pÃ¤tevÃ¤t yleensÃ¤ myÃ¶s lapsitaulun kenttiin. HyvÃ¤n suorituskyvyn takaamiseksi lapsitaulun viiteavaimille kannattaa yleensÃ¤ luoda indeksit. PostgreSQL ei valvo sitÃ¤ millÃ¤Ã¤n tavalla, joten indeksin luominen on tietokannan suunnittelijan vastuulla.
 </p>
 <p>
-pgAdmin III tarjoaa yksinkertaisen "rasti ruutuun"-valinnan viiteavaimen luomisessa, joka tarkistaa automaattisesti sopivan indeksi olemassaolon, ja luo indeksin jos sitä ei ole ennestään. Kuten aina indeksien kanssa, joissain harvinaisissa tapauksissa indeksi huonontaa hieman suorituskykyä, mutta yleensä ottaen indeksin puuttuminen huonontaa suorituskykyä paljon enemmän kuin ylimääräisen indeksin olemassaolo.
+pgAdmin III tarjoaa yksinkertaisen "rasti ruutuun"-valinnan viiteavaimen luomisessa, joka tarkistaa automaattisesti sopivan indeksi olemassaolon, ja luo indeksin jos sitÃ¤ ei ole ennestÃ¤Ã¤n. Kuten aina indeksien kanssa, joissain harvinaisissa tapauksissa indeksi huonontaa hieman suorituskykyÃ¤, mutta yleensÃ¤ ottaen indeksin puuttuminen huonontaa suorituskykyÃ¤ paljon enemmÃ¤n kuin ylimÃ¤Ã¤rÃ¤isen indeksin olemassaolo.
 </p>
 </body>
 

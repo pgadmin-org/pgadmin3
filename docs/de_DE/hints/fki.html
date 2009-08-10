@@ -1,41 +1,41 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
 <title>Guru-Hinweise</title>
 </head>
 
 <body>
-<h3>Fremdschlüssel abdeckende Indizes</h3>
+<h3>FremdschlÃ¼ssel abdeckende Indizes</h3>
 <p>
-Ein Fremdschlüssel koppelt zwei Tabellen auf logische Weise, und beschränkt Änderungen die auf sie angewendet werden können.
+Ein FremdschlÃ¼ssel koppelt zwei Tabellen auf logische Weise, und beschrÃ¤nkt Ã„nderungen die auf sie angewendet werden kÃ¶nnen.
 </p>
 <p>
-Es fängt mit einer Mastertabelle an, welche die Referenzierte Tabelle wird. Sie muß einen Primärschlüssel haben
-(strenggenommen müssen die referenzierten Spalten nur nicht-NULL sein und mit einem eindeutigen Index versehen sein, 
-aber es ist gute Praxis das über einen Primärschlüssel zu implementieren). Die Slave-Tabelle hängt von der Mastertabelle ab,
-in dem Sinne daß Spalten auf die der Fremdschlüssel definiert ist für jeden Wert passende Einträge in der Mastertabelle erfordert.
-Die Slave-Tabelle ist die referenzierende Tabelle des Fremdschlüssels.
+Es fÃ¤ngt mit einer Mastertabelle an, welche die Referenzierte Tabelle wird. Sie muÃŸ einen PrimÃ¤rschlÃ¼ssel haben
+(strenggenommen mÃ¼ssen die referenzierten Spalten nur nicht-NULL sein und mit einem eindeutigen Index versehen sein, 
+aber es ist gute Praxis das Ã¼ber einen PrimÃ¤rschlÃ¼ssel zu implementieren). Die Slave-Tabelle hÃ¤ngt von der Mastertabelle ab,
+in dem Sinne daÃŸ Spalten auf die der FremdschlÃ¼ssel definiert ist fÃ¼r jeden Wert passende EintrÃ¤ge in der Mastertabelle erfordert.
+Die Slave-Tabelle ist die referenzierende Tabelle des FremdschlÃ¼ssels.
 </p>
 <p>
-Der Fremdschlüssel beschränkt allerdings nicht nur die referenzierende Tabelle, sondern auch die referenzierte. Die 
-Geschmacksrichtung kann dabei zwischen RESTRICT, CASCADE und SET NULL variieren. Dies bedeuted, daß sobale
-eine Zeile in der referenzierten Tabelle geändert wird (Update oder Delete), alle referenzierenden Tabelen geprüft werden müssen
-ob die Operation gültig ist, und ob weitere Aktionen ausgelöst werden müssen; siehe hierzu auch die PostgreSQL-Dokumentation 
-über Fremdschlüssel (Foreign Keys).
+Der FremdschlÃ¼ssel beschrÃ¤nkt allerdings nicht nur die referenzierende Tabelle, sondern auch die referenzierte. Die 
+Geschmacksrichtung kann dabei zwischen RESTRICT, CASCADE und SET NULL variieren. Dies bedeuted, daÃŸ sobale
+eine Zeile in der referenzierten Tabelle geÃ¤ndert wird (Update oder Delete), alle referenzierenden Tabelen geprÃ¼ft werden mÃ¼ssen
+ob die Operation gÃ¼ltig ist, und ob weitere Aktionen ausgelÃ¶st werden mÃ¼ssen; siehe hierzu auch die PostgreSQL-Dokumentation 
+Ã¼ber FremdschlÃ¼ssel (Foreign Keys).
 </p>
 <p>
-Dies bedeutet, daß Änderungen an einer bestimmten Zeile in der referenzierten Tabelle zusätzliche Lesezugriffe 
-in allen referenzierenden Tabellen auslöst, mit den Fremdschlüssel als Zugriffsbegriff. In der Konsequenz sollten alle Designregeln
-für performanten Lesezugriff auch auf die Fremdschlüsselspalten angewendet werden. Für gute Zugriffsgeschwindigkeiten
+Dies bedeutet, daÃŸ Ã„nderungen an einer bestimmten Zeile in der referenzierten Tabelle zusÃ¤tzliche Lesezugriffe 
+in allen referenzierenden Tabellen auslÃ¶st, mit den FremdschlÃ¼ssel als Zugriffsbegriff. In der Konsequenz sollten alle Designregeln
+fÃ¼r performanten Lesezugriff auch auf die FremdschlÃ¼sselspalten angewendet werden. FÃ¼r gute Zugriffsgeschwindigkeiten
 ist in der Regel ein Index empfehlenswert. PostgreSQL verlangt dies nicht unbedingt, es liegt daher in der Verantwortung
-des Datenbankdesigners für das Anlegen eines passenden Index zu sorgen.
+des Datenbankdesigners fÃ¼r das Anlegen eines passenden Index zu sorgen.
 </p>
 <p>
 Zur Steigerung des Komforts und des allgemeinen Wohlbefindens bietet pgAdmin III eine Checkbox an, mit deren Hilfe
-auf einen passenden Index geprüft wird und dieser bei Bedarf angelegt wird soweit noch nicht vorhanden. Wie bei allen Indizes gibt
-es Fälle in denen Indizes die Gesamtperformance verringern können; in aller Regel ist ein Index zu wenig jedoch wesentlich 
+auf einen passenden Index geprÃ¼ft wird und dieser bei Bedarf angelegt wird soweit noch nicht vorhanden. Wie bei allen Indizes gibt
+es FÃ¤lle in denen Indizes die Gesamtperformance verringern kÃ¶nnen; in aller Regel ist ein Index zu wenig jedoch wesentlich 
 schlimmer als einer zuviel.
 </p>
 </body>

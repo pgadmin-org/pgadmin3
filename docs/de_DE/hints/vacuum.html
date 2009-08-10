@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <link rel="STYLESHEET" type="text/css" href="../pgadmin3.css">
 <title>Guru-Hinweise</title>
 </head>
@@ -10,26 +10,26 @@
 
 <h3>VACUUM-Lauf empfohlen</h3>
 <p>
-Die geschätzte Anzahl Zeilen in der Tabelle &quot;<INFO>&quot; weicht erheblich von der tatsächlich ermittelten ab.
-VACUUM ANALYZE sollte auf dieser Tabelle ausgeführt werden.
+Die geschÃ¤tzte Anzahl Zeilen in der Tabelle &quot;<INFO>&quot; weicht erheblich von der tatsÃ¤chlich ermittelten ab.
+VACUUM ANALYZE sollte auf dieser Tabelle ausgefÃ¼hrt werden.
 </p><p>
-Anstatt das Kommando VACUUM ANALYZE auf dieser Tabelle manuell auszuführen (dies kann über das 
-Wartungs-Menü von pgAdmin III ausgelöst werden), empfiehlt es sich VACUUM ANALYZE regelmäßig
-automatisiert durchzuführen. Dies kann durch einen Scheduler erreicht werden. PostgreSQL bietet auch den
-pg_autovacuum Daemon, der Änderung an der Datenbank verfolgt und bei Bedarf VACUUM automatisch auslöst.
-In der Regel bietet pg_autovacuum die optimale Lösung.
+Anstatt das Kommando VACUUM ANALYZE auf dieser Tabelle manuell auszufÃ¼hren (dies kann Ã¼ber das 
+Wartungs-MenÃ¼ von pgAdmin III ausgelÃ¶st werden), empfiehlt es sich VACUUM ANALYZE regelmÃ¤ÃŸig
+automatisiert durchzufÃ¼hren. Dies kann durch einen Scheduler erreicht werden. PostgreSQL bietet auch den
+pg_autovacuum Daemon, der Ã„nderung an der Datenbank verfolgt und bei Bedarf VACUUM automatisch auslÃ¶st.
+In der Regel bietet pg_autovacuum die optimale LÃ¶sung.
 </p><p><br><br></p>
-<b>Wozu ist VACUUM überhaupt gut?</b>
+<b>Wozu ist VACUUM Ã¼berhaupt gut?</b>
 <p>
-Der PostgreSQL Queryplaner fällt seine Entscheidung anhand von Annahmen, die er aus der geschätzten Anzahl Reihen
-ableitet. Wenn die tatsächliche Anzahl zu sehr von der geschätzten Anzahl abweicht,  kann der Planer eine falsche
+Der PostgreSQL Queryplaner fÃ¤llt seine Entscheidung anhand von Annahmen, die er aus der geschÃ¤tzten Anzahl Reihen
+ableitet. Wenn die tatsÃ¤chliche Anzahl zu sehr von der geschÃ¤tzten Anzahl abweicht,  kann der Planer eine falsche
 Entscheidung treffen, wodurch ein nicht-optimaler Queryplan zur Anwendung gelangt. Daraus kann eine schlechte 
 Performance resultieren.
 </p><p>
-Die PostgreSQL Datenspeicherung benötigt VACUUM um Transaktion-IDs in Tabellen zu fixieren.
-Weiterhin werden Zeilen, die nach Updates und Deletes nicht mehr benötigt werden, erst durch ein VACUUM
-tatsächlich wieder freigegeben.
-Weitergehende Informationen sind in der Online-Hilfe zu finden: einfach den Hilfe-Button drücken.
+Die PostgreSQL Datenspeicherung benÃ¶tigt VACUUM um Transaktion-IDs in Tabellen zu fixieren.
+Weiterhin werden Zeilen, die nach Updates und Deletes nicht mehr benÃ¶tigt werden, erst durch ein VACUUM
+tatsÃ¤chlich wieder freigegeben.
+Weitergehende Informationen sind in der Online-Hilfe zu finden: einfach den Hilfe-Button drÃ¼cken.
 </p>
 </body>
 </html>
