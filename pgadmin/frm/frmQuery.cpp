@@ -1798,7 +1798,10 @@ bool frmQuery::updateFromGqb(bool executing)
     // If the new query is empty, don't do anything
     if (newQuery.IsEmpty())
     {
-        wxMessageBox(_("No SQL query was generated."), wxT("Graphical Query Builder"), wxICON_INFORMATION);
+        if (controller->getTableCount() > 0)
+        {
+            wxMessageBox(_("No SQL query was generated."), wxT("Graphical Query Builder"), wxICON_INFORMATION);
+        }
         gqbUpdateRunning = false;
         return false;
     }

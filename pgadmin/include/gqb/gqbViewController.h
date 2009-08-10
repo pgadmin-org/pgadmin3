@@ -88,6 +88,7 @@ public:
     void emptyModel();
     void calcGridColsSizes();
     gqbQueryRestriction* addRestriction();
+    int getTableCount() { return model->tablesCount(); };
 
 protected:
     gqbView *view;						// owned by caller application shouldn't be destroy by this class
