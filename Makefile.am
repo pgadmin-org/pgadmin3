@@ -27,11 +27,11 @@ EXTRA_DIST = \
 	$(top_srcdir)/pgadmin3-release.pot \
 	$(top_srcdir)/pgAdmin3.sln \
 	$(top_srcdir)/stringextract \
-	$(top_srcdir)/stringmerge
+	$(top_srcdir)/stringmerge \
+        $(top_srcdir)/docs/Docs.vcproj \
+        $(top_srcdir)/docs/builddocs.bat 
 
 TMP_docs = \
-	$(top_srcdir)/docs/Docs.vcproj \
-	$(top_srcdir)/docs/builddocs.bat \
 	$(top_srcdir)/docs/en_US/*.css \
 	$(top_srcdir)/docs/en_US/*.html \
 	$(top_srcdir)/docs/en_US/pgadmin3.hh* \
