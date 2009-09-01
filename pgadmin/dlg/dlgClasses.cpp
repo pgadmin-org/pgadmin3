@@ -341,6 +341,7 @@ void pgFrame::UpdateRecentFiles()
 
 void pgFrame::RestorePosition(int defaultX, int defaultY, int defaultW, int defaultH, int minW, int minH)
 {
+    bool maximized=false;
     wxPoint pos(settings->Read(dlgName, wxPoint(defaultX, defaultY)));
     wxSize size;
     if (defaultW < 0)
@@ -354,13 +355,20 @@ void pgFrame::RestorePosition(int defaultX, int defaultY, int defaultW, int defa
     SetSize(pos.x, pos.y, size.x, size.y);
     if (posDefault)
         CenterOnParent();
+
+    settings->Read(dlgName+wxT("/Maximized"), &maximized, wxEmptyString);
+    if (maximized)
+        Maximize();
 }
 
 
 void pgFrame::SavePosition()
 {
 	if (!IsIconized())
+    {
 	    settings->Write(dlgName, GetSize(), GetPosition());
+        settings->Write(dlgName+wxT("/Maximized"), IsMaximized());
+    }
 }
 
 
