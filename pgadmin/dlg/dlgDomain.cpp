@@ -184,7 +184,7 @@ wxString dlgDomain::GetSql()
             else
                 sql += wxT(" SET DEFAULT ") + txtDefault->GetValue() + wxT(";\n");
         }
-        AppendOwnerChange(sql, wxT("DOMAIN ") + qtIdent(name));
+        AppendOwnerChange(sql, wxT("DOMAIN ") + domain->GetQuotedFullIdentifier());
     }
     else
     {
@@ -199,7 +199,7 @@ wxString dlgDomain::GetSql()
             sql += wxT("\n   CHECK (") + txtCheck->GetValue() + wxT(")");
         sql += wxT(";\n");
 
-        AppendOwnerNew(sql, wxT("DOMAIN ") + qtIdent(name));
+        AppendOwnerNew(sql, wxT("DOMAIN ") + schema->GetQuotedPrefix() + qtIdent(name));
     }
     AppendComment(sql, wxT("DOMAIN"), schema, domain);
 
