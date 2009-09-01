@@ -49,7 +49,7 @@ wxString pgLanguage::GetSql(ctlTree *browser)
 
         sql += wxT(";\n")
             +  GetOwnerSql(8, 3, wxT("LANGUAGE ") + GetName())
-            +  GetGrant(wxT("X"), wxT("LANGUAGE ") + GetQuotedFullIdentifier());
+            +  GetGrant(wxT("U"), wxT("LANGUAGE ") + GetQuotedFullIdentifier());
     }
     return sql;
 }
