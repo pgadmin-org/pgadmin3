@@ -56,6 +56,7 @@
 #define cbCopySeparator				CTRL_COMBOBOX("cbCopySeparator")
 #define chkStickySql                CTRL_CHECKBOX("chkStickySql")
 #define chkIndicateNull             CTRL_CHECKBOX("chkIndicateNull")
+#define chkAutoRollback             CTRL_CHECKBOX("chkAutoRollback")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
 #define cbLanguage                  CTRL_COMBOBOX("cbLanguage")
 #define txtSqlFont                  CTRL_TEXT("txtSqlFont")
@@ -126,6 +127,7 @@ frmOptions::frmOptions(frmMain *parent)
 
     chkStickySql->SetValue(settings->GetStickySql());
     chkIndicateNull->SetValue(settings->GetIndicateNull());
+    chkAutoRollback->SetValue(settings->GetAutoRollback());
     chkDoubleClickProperties->SetValue(settings->GetDoubleClickProperties());
 
     txtPgHelpPath->SetValue(settings->GetPgHelpPath());
@@ -391,6 +393,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 
     settings->SetStickySql(chkStickySql->GetValue());
     settings->SetIndicateNull(chkIndicateNull->GetValue());
+    settings->SetAutoRollback(chkAutoRollback->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());
     settings->SetSystemFont(currentFont);

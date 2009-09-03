@@ -110,6 +110,8 @@ public:
 	void SetIndentSpaces(const long newval) { Write(wxT("IndentSpaces"), newval); }
     bool GetIndicateNull() const { bool b; Read(wxT("frmQuery/IndicateNull"), &b, false); return b; }
 	void SetIndicateNull(const bool newval) { Write(wxT("frmQuery/IndicateNull"), newval); }
+    bool GetAutoRollback() const { bool b; Read(wxT("frmQuery/AutoRollback"), &b, true); return b; }
+	void SetAutoRollback(const bool newval) { Write(wxT("frmQuery/AutoRollback"), newval); }
     bool GetUnicodeFile() const { bool b; Read(wxT("WriteUnicodeFile"), &b, true); return b; }
 	void SetUnicodeFile(const bool newval) { Write(wxT("WriteUnicodeFile"), newval); }
     wxFont GetSystemFont();

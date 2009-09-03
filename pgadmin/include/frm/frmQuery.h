@@ -134,6 +134,7 @@ private:
     void OnUndo(wxCommandEvent& event);
     void OnRedo(wxCommandEvent& event);
     void OnSaveHistory(wxCommandEvent& event);
+    void OnAutoRollback(wxCommandEvent& event);
     void OnChangeConnection(wxCommandEvent &ev);
     void OnClearHistory(wxCommandEvent& event);
     void OnActivate(wxActivateEvent& event);

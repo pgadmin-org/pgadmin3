@@ -47,6 +47,7 @@
 #include "schema/pgServer.h"
 #include "utils/favourites.h"
 #include "utils/sysLogger.h"
+#include "utils/sysSettings.h"
 #include "utils/utffile.h"
 #include "pgscript/pgsApplication.h"
 
@@ -105,6 +106,7 @@ EVT_MENU(MNU_EXECPGS,           frmQuery::OnExecScript)
 EVT_MENU(MNU_EXECFILE,          frmQuery::OnExecFile)
 EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
 EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
+EVT_MENU(MNU_AUTOROLLBACK,      frmQuery::OnAutoRollback)
 EVT_MENU(MNU_CONTENTS,          frmQuery::OnContents)
 EVT_MENU(MNU_HELP,              frmQuery::OnHelp)
 EVT_MENU(MNU_CLEARHISTORY,      frmQuery::OnClearHistory)
@@ -239,6 +241,8 @@ pgsTimer(new pgScriptTimer(this))
     queryMenu->AppendSeparator();
     queryMenu->Append(MNU_SAVEHISTORY, _("Save history"), _("Save history of executed commands."));
     queryMenu->Append(MNU_CLEARHISTORY, _("Clear history"), _("Clear history window."));
+    queryMenu->AppendSeparator();
+    queryMenu->Append(MNU_AUTOROLLBACK, _("&Auto-Rollback"), _("Rollback the current transaction if an error is detected"), wxITEM_CHECK);
     queryMenu->AppendSeparator();
     queryMenu->Append(MNU_CANCEL, _("&Cancel\tAlt-Break"), _("Cancel query"));
     menuBar->Append(queryMenu, _("&Query"));
@@ -421,6 +425,10 @@ pgsTimer(new pgScriptTimer(this))
     manager.Update();
 
     bool bVal;
+
+    // Auto-rollback
+    settings->Read(wxT("frmQuery/AutoRollback"), &bVal, false);
+    queryMenu->Check(MNU_AUTOROLLBACK, bVal);
 
     // Auto indent
     settings->Read(wxT("frmQuery/AutoIndent"), &bVal, true);
@@ -656,6 +664,14 @@ void frmQuery::OnDefaultView(wxCommandEvent& event)
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
     viewMenu->Check(MNU_OUTPUTPANE, manager.GetPane(wxT("outputPane")).IsShown());
     viewMenu->Check(MNU_SCRATCHPAD, manager.GetPane(wxT("scratchPad")).IsShown());
+}
+
+
+void frmQuery::OnAutoRollback(wxCommandEvent& event)
+{
+    queryMenu->Check(MNU_AUTOROLLBACK, event.IsChecked());
+
+    settings->Write(wxT("frmQuery/AutoRollback"), queryMenu->IsChecked(MNU_AUTOROLLBACK));
 }
 
 
@@ -2352,7 +2368,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
     msgHistory->ShowPosition(0);
 
     // If the transaction aborted for some reason, issue a rollback to cleanup.
-    if (conn->GetTxStatus() == PGCONN_TXSTATUS_INERROR)
+    if (settings->GetAutoRollback() && conn->GetTxStatus() == PGCONN_TXSTATUS_INERROR)
         conn->ExecuteVoid(wxT("ROLLBACK;"));
 
     setTools(false);
