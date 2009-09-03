@@ -665,6 +665,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 			*-apple-darwin*)
 				MAC_PPC=`${WX_CONFIG} --libs | grep -c "arch ppc"`
 				MAC_I386=`${WX_CONFIG} --libs | grep -c "arch i386"`
+                                MAC_X86_64=`${WX_CONFIG} --libs | grep -c "arch x86_64"`
 				CPPFLAGS="$CPPFLAGS -no-cpp-precomp"
                                 LDFLAGS="$LDFLAGS -headerpad_max_install_names"
 				if test "$MAC_PPC" != "0"
@@ -674,6 +675,10 @@ AC_DEFUN([SETUP_WXWIDGETS],
                                 if test "$MAC_I386" != "0"
                                 then
                                         CPPFLAGS="$CPPFLAGS -arch i386"
+                                fi
+                                if test "$MAC_X86_64" != "0"
+                                then
+                                        CPPFLAGS="$CPPFLAGS -arch x86_64"
                                 fi
 				;;
 			*solaris*)
