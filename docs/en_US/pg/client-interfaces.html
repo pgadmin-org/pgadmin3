@@ -4,16 +4,16 @@
 <title>Part IV. Client Interfaces</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
-<link rel="up" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
+<link rel="up" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="prev" href="regress-variant.html" title="28.3. Variant Comparison Files">
 <link rel="next" href="libpq.html" title="Chapter 29. libpq - C Library">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" lang="en" id="client-interfaces">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="part" title="Part IV. Client Interfaces" id="client-interfaces">
 <div class="titlepage"><div><div><h1 class="title">Part IV. Client Interfaces</h1></div></div></div>
-<div class="partintro" lang="en" id="id2690046">
+<div class="partintro" title="Client Interfaces" id="id2697673">
 <div></div>
 <p>    This part describes the client programming interfaces distributed
     with <span class="productname">PostgreSQL</span>.  Each of these chapters can be
@@ -28,7 +28,7 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="chapter"><a href="libpq.html">29. libpq - C Library</a></span></dt>
+<dt><span class="chapter"><a href="libpq.html">29. <span class="application">libpq</span> - C Library</a></span></dt>
 <dd><dl>
 <dt><span class="sect1"><a href="libpq.html#libpq-connect">29.1. Database Connection Control Functions</a></span></dt>
 <dt><span class="sect1"><a href="libpq-status.html">29.2. Connection Status Functions</a></span></dt>
@@ -44,11 +44,11 @@
 <dt><span class="sect1"><a href="libpq-cancel.html">29.5. Cancelling Queries in Progress</a></span></dt>
 <dt><span class="sect1"><a href="libpq-fastpath.html">29.6. The Fast-Path Interface</a></span></dt>
 <dt><span class="sect1"><a href="libpq-notify.html">29.7. Asynchronous Notification</a></span></dt>
-<dt><span class="sect1"><a href="libpq-copy.html">29.8. Functions Associated with the COPY Command</a></span></dt>
+<dt><span class="sect1"><a href="libpq-copy.html">29.8. Functions Associated with the <code class="command">COPY</code> Command</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="libpq-copy.html#libpq-copy-send">29.8.1. Functions for Sending COPY Data</a></span></dt>
-<dt><span class="sect2"><a href="libpq-copy.html#libpq-copy-receive">29.8.2. Functions for Receiving COPY Data</a></span></dt>
-<dt><span class="sect2"><a href="libpq-copy.html#libpq-copy-deprecated">29.8.3. Obsolete Functions for COPY</a></span></dt>
+<dt><span class="sect2"><a href="libpq-copy.html#libpq-copy-send">29.8.1. Functions for Sending <code class="command">COPY</code> Data</a></span></dt>
+<dt><span class="sect2"><a href="libpq-copy.html#libpq-copy-receive">29.8.2. Functions for Receiving <code class="command">COPY</code> Data</a></span></dt>
+<dt><span class="sect2"><a href="libpq-copy.html#libpq-copy-deprecated">29.8.3. Obsolete Functions for <code class="command">COPY</code></a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="libpq-control.html">29.9. Control Functions</a></span></dt>
 <dt><span class="sect1"><a href="libpq-misc.html">29.10. Miscellaneous Functions</a></span></dt>
@@ -59,7 +59,7 @@
 <dt><span class="sect1"><a href="libpq-ldap.html">29.15. LDAP Lookup of Connection Parameters</a></span></dt>
 <dt><span class="sect1"><a href="libpq-ssl.html">29.16. SSL Support</a></span></dt>
 <dt><span class="sect1"><a href="libpq-threading.html">29.17. Behavior in Threaded Programs</a></span></dt>
-<dt><span class="sect1"><a href="libpq-build.html">29.18. Building libpq Programs</a></span></dt>
+<dt><span class="sect1"><a href="libpq-build.html">29.18. Building <span class="application">libpq</span> Programs</a></span></dt>
 <dt><span class="sect1"><a href="libpq-example.html">29.19. Example Programs</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="largeobjects.html">30. Large Objects</a></span></dt>
@@ -68,21 +68,21 @@
 <dt><span class="sect1"><a href="lo-implementation.html">30.2. Implementation Features</a></span></dt>
 <dt><span class="sect1"><a href="lo-interfaces.html">30.3. Client Interfaces</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2702238">30.3.1. Creating a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2702394">30.3.2. Importing a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2702431">30.3.3. Exporting a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2702468">30.3.4. Opening an Existing Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2702632">30.3.5. Writing Data to a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2702685">30.3.6. Reading Data from a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2702738">30.3.7. Seeking in a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2702793">30.3.8. Obtaining the Seek Position of a Large Object</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2702815">30.3.9. Closing a Large Object Descriptor</a></span></dt>
-<dt><span class="sect2"><a href="lo-interfaces.html#id2702859">30.3.10. Removing a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2709864">30.3.1. Creating a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2710021">30.3.2. Importing a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2710057">30.3.3. Exporting a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2710094">30.3.4. Opening an Existing Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2710258">30.3.5. Writing Data to a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2710311">30.3.6. Reading Data from a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2710364">30.3.7. Seeking in a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2710419">30.3.8. Obtaining the Seek Position of a Large Object</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2710441">30.3.9. Closing a Large Object Descriptor</a></span></dt>
+<dt><span class="sect2"><a href="lo-interfaces.html#id2710485">30.3.10. Removing a Large Object</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="lo-funcs.html">30.4. Server-Side Functions</a></span></dt>
 <dt><span class="sect1"><a href="lo-examplesect.html">30.5. Example Program</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ecpg.html">31. ECPG - Embedded SQL in C</a></span></dt>
+<dt><span class="chapter"><a href="ecpg.html">31. <span class="application">ECPG</span> - Embedded <acronym class="acronym">SQL</acronym> in C</a></span></dt>
 <dd><dl>
 <dt><span class="sect1"><a href="ecpg.html#ecpg-concept">31.1. The Concept</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-connect.html">31.2. Connecting to the Database Server</a></span></dt>
@@ -91,41 +91,41 @@
 <dt><span class="sect1"><a href="ecpg-set-connection.html">31.5. Choosing a Connection</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-variables.html">31.6. Using Host Variables</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2703907">31.6.1. Overview</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2703941">31.6.2. Declare Sections</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2704007">31.6.3. Different types of host variables</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2704163">31.6.4. SELECT INTO and FETCH INTO</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-variables.html#id2704266">31.6.5. Indicators</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2711533">31.6.1. Overview</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2711567">31.6.2. Declare Sections</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2711633">31.6.3. Different types of host variables</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2711789">31.6.4. <code class="command">SELECT INTO</code> and <code class="command">FETCH INTO</code></a></span></dt>
+<dt><span class="sect2"><a href="ecpg-variables.html#id2711892">31.6.5. Indicators</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-dynamic.html">31.7. Dynamic SQL</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-pgtypes.html">31.8. pgtypes library</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2704465">31.8.1. The numeric type</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2705213">31.8.2. The date type</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2706405">31.8.3. The timestamp type</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2707606">31.8.4. The interval type</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2707795">31.8.5. The decimal type</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2707871">31.8.6. errno values of pgtypeslib </a></span></dt>
-<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2708012">31.8.7. Special constants of pgtypeslib </a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2712091">31.8.1. The numeric type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2712839">31.8.2. The date type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2714031">31.8.3. The timestamp type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2715232">31.8.4. The interval type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2715422">31.8.5. The decimal type</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2715497">31.8.6. errno values of pgtypeslib </a></span></dt>
+<dt><span class="sect2"><a href="ecpg-pgtypes.html#id2715638">31.8.7. Special constants of pgtypeslib </a></span></dt>
 </dl></dd>
-<dt><span class="sect1"><a href="ecpg-informix-compat.html">31.9. Informix compatibility mode</a></span></dt>
+<dt><span class="sect1"><a href="ecpg-informix-compat.html">31.9. <span class="productname">Informix</span> compatibility mode</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2708201">31.9.1. Additional embedded SQL statements</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2708234">31.9.2. Additional functions</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2710479">31.9.3. Additional constants</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2715827">31.9.1. Additional embedded SQL statements</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2715860">31.9.2. Additional functions</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-informix-compat.html#id2718106">31.9.3. Additional constants</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-descriptors.html">31.10. Using SQL Descriptor Areas</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-errors.html">31.11. Error Handling</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2711109">31.11.1. Setting Callbacks</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2711381">31.11.2. sqlca</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-errors.html#id2711627">31.11.3. SQLSTATE vs SQLCODE</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2718742">31.11.1. Setting Callbacks</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2719013">31.11.2. sqlca</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-errors.html#id2719260">31.11.3. <code class="literal">SQLSTATE</code> vs <code class="literal">SQLCODE</code></a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-preproc.html">31.12. Preprocessor directives</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ecpg-preproc.html#id2712205">31.12.1. Including files</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-preproc.html#id2712270">31.12.2. The #define and #undef directives</a></span></dt>
-<dt><span class="sect2"><a href="ecpg-preproc.html#id2712376">31.12.3. ifdef, ifndef, else, elif and endif directives</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-preproc.html#id2719838">31.12.1. Including files</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-preproc.html#id2719903">31.12.2. The #define and #undef directives</a></span></dt>
+<dt><span class="sect2"><a href="ecpg-preproc.html#id2720009">31.12.3. ifdef, ifndef, else, elif and endif directives</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ecpg-process.html">31.13. Processing Embedded SQL Programs</a></span></dt>
 <dt><span class="sect1"><a href="ecpg-library.html">31.14. Library Functions</a></span></dt>
@@ -135,51 +135,51 @@
 <dd><dl>
 <dt><span class="sect1"><a href="information-schema.html#infoschema-schema">32.1. The Schema</a></span></dt>
 <dt><span class="sect1"><a href="infoschema-datatypes.html">32.2. Data Types</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-information-schema-catalog-name.html">32.3. information_schema_catalog_name</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-administrable-role-authorizations.html">32.4. administrable_role_authorizations</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-applicable-roles.html">32.5. applicable_roles</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-attributes.html">32.6. attributes</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-check-constraint-routine-usage.html">32.7. check_constraint_routine_usage</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-check-constraints.html">32.8. check_constraints</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-column-domain-usage.html">32.9. column_domain_usage</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-column-privileges.html">32.10. column_privileges</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-column-udt-usage.html">32.11. column_udt_usage</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-columns.html">32.12. columns</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-constraint-column-usage.html">32.13. constraint_column_usage</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-constraint-table-usage.html">32.14. constraint_table_usage</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-data-type-privileges.html">32.15. data_type_privileges</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-domain-constraints.html">32.16. domain_constraints</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-domain-udt-usage.html">32.17. domain_udt_usage</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-domains.html">32.18. domains</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-element-types.html">32.19. element_types</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-enabled-roles.html">32.20. enabled_roles</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-key-column-usage.html">32.21. key_column_usage</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-parameters.html">32.22. parameters</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-referential-constraints.html">32.23. referential_constraints</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-role-column-grants.html">32.24. role_column_grants</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-role-routine-grants.html">32.25. role_routine_grants</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-role-table-grants.html">32.26. role_table_grants</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-role-usage-grants.html">32.27. role_usage_grants</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-routine-privileges.html">32.28. routine_privileges</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-routines.html">32.29. routines</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-schemata.html">32.30. schemata</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sequences.html">32.31. sequences</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-features.html">32.32. sql_features</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-implementation-info.html">32.33. sql_implementation_info</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-languages.html">32.34. sql_languages</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-packages.html">32.35. sql_packages</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-parts.html">32.36. sql_parts</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-sizing.html">32.37. sql_sizing</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-sql-sizing-profiles.html">32.38. sql_sizing_profiles</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-table-constraints.html">32.39. table_constraints</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-table-privileges.html">32.40. table_privileges</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-tables.html">32.41. tables</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-triggers.html">32.42. triggers</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-usage-privileges.html">32.43. usage_privileges</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-view-column-usage.html">32.44. view_column_usage</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-view-routine-usage.html">32.45. view_routine_usage</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-view-table-usage.html">32.46. view_table_usage</a></span></dt>
-<dt><span class="sect1"><a href="infoschema-views.html">32.47. views</a></span></dt>
+<dt><span class="sect1"><a href="infoschema-information-schema-catalog-name.html">32.3. <code class="literal">information_schema_catalog_name</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-administrable-role-authorizations.html">32.4. <code class="literal">administrable_role_authorizations</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-applicable-roles.html">32.5. <code class="literal">applicable_roles</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-attributes.html">32.6. <code class="literal">attributes</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-check-constraint-routine-usage.html">32.7. <code class="literal">check_constraint_routine_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-check-constraints.html">32.8. <code class="literal">check_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-column-domain-usage.html">32.9. <code class="literal">column_domain_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-column-privileges.html">32.10. <code class="literal">column_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-column-udt-usage.html">32.11. <code class="literal">column_udt_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-columns.html">32.12. <code class="literal">columns</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-constraint-column-usage.html">32.13. <code class="literal">constraint_column_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-constraint-table-usage.html">32.14. <code class="literal">constraint_table_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-data-type-privileges.html">32.15. <code class="literal">data_type_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-domain-constraints.html">32.16. <code class="literal">domain_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-domain-udt-usage.html">32.17. <code class="literal">domain_udt_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-domains.html">32.18. <code class="literal">domains</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-element-types.html">32.19. <code class="literal">element_types</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-enabled-roles.html">32.20. <code class="literal">enabled_roles</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-key-column-usage.html">32.21. <code class="literal">key_column_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-parameters.html">32.22. <code class="literal">parameters</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-referential-constraints.html">32.23. <code class="literal">referential_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-column-grants.html">32.24. <code class="literal">role_column_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-routine-grants.html">32.25. <code class="literal">role_routine_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-table-grants.html">32.26. <code class="literal">role_table_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-role-usage-grants.html">32.27. <code class="literal">role_usage_grants</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-routine-privileges.html">32.28. <code class="literal">routine_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-routines.html">32.29. <code class="literal">routines</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-schemata.html">32.30. <code class="literal">schemata</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sequences.html">32.31. <code class="literal">sequences</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-features.html">32.32. <code class="literal">sql_features</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-implementation-info.html">32.33. <code class="literal">sql_implementation_info</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-languages.html">32.34. <code class="literal">sql_languages</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-packages.html">32.35. <code class="literal">sql_packages</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-parts.html">32.36. <code class="literal">sql_parts</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-sizing.html">32.37. <code class="literal">sql_sizing</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-sql-sizing-profiles.html">32.38. <code class="literal">sql_sizing_profiles</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-table-constraints.html">32.39. <code class="literal">table_constraints</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-table-privileges.html">32.40. <code class="literal">table_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-tables.html">32.41. <code class="literal">tables</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-triggers.html">32.42. <code class="literal">triggers</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-usage-privileges.html">32.43. <code class="literal">usage_privileges</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-view-column-usage.html">32.44. <code class="literal">view_column_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-view-routine-usage.html">32.45. <code class="literal">view_routine_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-view-table-usage.html">32.46. <code class="literal">view_table_usage</code></a></span></dt>
+<dt><span class="sect1"><a href="infoschema-views.html">32.47. <code class="literal">views</code></a></span></dt>
 </dl></dd>
 </dl>
 </div>

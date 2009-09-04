@@ -4,16 +4,16 @@
 <title>9.8. Data Type Formatting Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-matching.html" title="9.7. Pattern Matching">
 <link rel="next" href="functions-datetime.html" title="9.9. Date/Time Functions and Operators">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="9.8. Data Type Formatting Functions">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="functions-formatting">9.8. Data Type Formatting Functions</h2></div></div></div>
-<a name="id2622106"></a><a name="id2622112"></a><a name="id2622118"></a><a name="id2622124"></a><a name="id2622129"></a><p>    The <span class="productname">PostgreSQL</span> formatting functions
+<a name="id2629461"></a><a name="id2629467"></a><a name="id2629473"></a><a name="id2629478"></a><a name="id2629484"></a><p>    The <span class="productname">PostgreSQL</span> formatting functions
     provide a powerful set of tools for converting various data types
     (date/time, integer, floating point, numeric) to formatted strings
     and for converting from formatted strings to specific data types.
@@ -390,14 +390,14 @@
 <br class="table-break"><p>    Usage notes for date/time formatting:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       <code class="literal">FM</code> suppresses leading zeroes and trailing blanks
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       <code class="literal">FM</code> suppresses leading zeroes and trailing blanks
        that would otherwise be added to make the output of a pattern be
        fixed-width.
       </p></li>
-<li><p>       <code class="literal">TM</code> does not include trailing blanks.
+<li class="listitem"><p>       <code class="literal">TM</code> does not include trailing blanks.
       </p></li>
-<li><p>       <code class="function">to_timestamp</code> and <code class="function">to_date</code>
+<li class="listitem"><p>       <code class="function">to_timestamp</code> and <code class="function">to_date</code>
        skip multiple blank spaces in the input string if the <code class="literal">FX</code> option 
        is not used. <code class="literal">FX</code> must be specified as the first item
        in the template.  For example 
@@ -405,7 +405,7 @@
        <code class="literal">to_timestamp('2000    JUN', 'FXYYYY MON')</code> returns an error,
        because <code class="function">to_timestamp</code> expects one space only.
       </p></li>
-<li><p>       Ordinary text is allowed in <code class="function">to_char</code>
+<li class="listitem"><p>       Ordinary text is allowed in <code class="function">to_char</code>
        templates and will be output literally.  You can put a substring
        in double quotes to force it to be interpreted as literal text
        even if it contains pattern key words.  For example, in
@@ -413,13 +413,13 @@
        will be replaced by the year data, but the single <code class="literal">Y</code> in <code class="literal">Year</code>
        will not be.
       </p></li>
-<li><p>       If you want to have a double quote in the output you must
+<li class="listitem"><p>       If you want to have a double quote in the output you must
        precede it with a backslash, for example <code class="literal">E'\\"YYYY
        Month\\"'</code>. 
        (Two backslashes are necessary because the backslash already
        has a special meaning when using the escape string syntax.)
       </p></li>
-<li><p>       The <code class="literal">YYYY</code> conversion from string to <code class="type">timestamp</code> or
+<li class="listitem"><p>       The <code class="literal">YYYY</code> conversion from string to <code class="type">timestamp</code> or
        <code class="type">date</code> has a restriction if you use a year with more than 4 digits. You must
        use some non-digit character or template after <code class="literal">YYYY</code>,
        otherwise the year is always interpreted as 4 digits. For example
@@ -430,14 +430,14 @@
        <code class="literal">to_date('20000-1131', 'YYYY-MMDD')</code> or
        <code class="literal">to_date('20000Nov31', 'YYYYMonDD')</code>.
       </p></li>
-<li><p>       In conversions from string to <code class="type">timestamp</code> or
+<li class="listitem"><p>       In conversions from string to <code class="type">timestamp</code> or
        <code class="type">date</code>, the <code class="literal">CC</code> field is ignored if there
        is a <code class="literal">YYY</code>, <code class="literal">YYYY</code> or
        <code class="literal">Y,YYY</code> field. If <code class="literal">CC</code> is used with
        <code class="literal">YY</code> or <code class="literal">Y</code> then the year is computed
        as <code class="literal">(CC-1)*100+YY</code>.
       </p></li>
-<li>
+<li class="listitem">
 <p>       Millisecond (<code class="literal">MS</code>) and microsecond (<code class="literal">US</code>)
        values in a conversion from string to <code class="type">timestamp</code> are used as part of the
        seconds after the decimal point. For example 
@@ -456,11 +456,11 @@
        1230 microseconds = 2.021230 seconds. 
       </p>
 </li>
-<li><p><code class="function">to_char</code>'s day of the week numbering
+<li class="listitem"><p><code class="function">to_char</code>'s day of the week numbering
         (see the 'D' formatting pattern) is different from that of the 
         <code class="function">extract</code> function.
       </p></li>
-<li><p><code class="function">to_char(interval)</code> formats <code class="literal">HH</code> and 
+<li class="listitem"><p><code class="function">to_char(interval)</code> formats <code class="literal">HH</code> and 
         <code class="literal">HH12</code> as hours in a single day, while <code class="literal">HH24</code>
         can output hours exceeding a single day, e.g. &gt;24.
       </p></li>
@@ -556,8 +556,8 @@
 <br class="table-break"><p>    Usage notes for numeric formatting:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       A sign formatted using <code class="literal">SG</code>, <code class="literal">PL</code>, or
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       A sign formatted using <code class="literal">SG</code>, <code class="literal">PL</code>, or
        <code class="literal">MI</code> is not anchored to
        the number; for example,
        <code class="literal">to_char(-12, 'S9999')</code> produces <code class="literal">'  -12'</code>,
@@ -567,18 +567,18 @@
        requires that <code class="literal">9</code> precede
        <code class="literal">MI</code>.
       </p></li>
-<li><p>       <code class="literal">9</code> results in a value with the same number of 
+<li class="listitem"><p>       <code class="literal">9</code> results in a value with the same number of 
        digits as there are <code class="literal">9</code>s. If a digit is
        not available it outputs a space.
       </p></li>
-<li><p>       <code class="literal">TH</code> does not convert values less than zero
+<li class="listitem"><p>       <code class="literal">TH</code> does not convert values less than zero
        and does not convert fractional numbers.
       </p></li>
-<li><p>       <code class="literal">PL</code>, <code class="literal">SG</code>, and
+<li class="listitem"><p>       <code class="literal">PL</code>, <code class="literal">SG</code>, and
        <code class="literal">TH</code> are <span class="productname">PostgreSQL</span>
        extensions. 
       </p></li>
-<li><p>       <code class="literal">V</code> effectively
+<li class="listitem"><p>       <code class="literal">V</code> effectively
        multiplies the input values by
        <code class="literal">10^<em class="replaceable"><code>n</code></em></code>, where
        <em class="replaceable"><code>n</code></em> is the number of digits following
@@ -590,7 +590,7 @@
 </ul></div>
 <p>
    </p>
-<p>   <a class="xref" href="functions-formatting.html#functions-formatting-examples-table" title="Table 9.24. to_char Examples">Table 9.24, &#8220;to_char Examples&#8221;</a> shows some
+<p>   <a class="xref" href="functions-formatting.html#functions-formatting-examples-table" title="Table 9.24. to_char Examples">Table 9.24, &#8220;<code class="function">to_char</code> Examples&#8221;</a> shows some
    examples of the use of the <code class="function">to_char</code> function.
   </p>
 <div class="table">

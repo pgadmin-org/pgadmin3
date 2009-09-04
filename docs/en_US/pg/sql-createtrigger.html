@@ -4,27 +4,27 @@
 <title>CREATE TRIGGER</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createtablespace.html" title="CREATE TABLESPACE">
 <link rel="next" href="sql-createtype.html" title="CREATE TYPE">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="CREATE TRIGGER">
 <a name="sql-createtrigger"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE TRIGGER &#8212; define a new trigger</p>
 </div>
-<a name="id2785577"></a><div class="refsynopsisdiv">
+<a name="id2793190"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE TRIGGER <em class="replaceable"><code>name</code></em> { BEFORE | AFTER } { <em class="replaceable"><code>event</code></em> [ OR ... ] }
     ON <em class="replaceable"><code>table</code></em> [ FOR [ EACH ] { ROW | STATEMENT } ]
     EXECUTE PROCEDURE <em class="replaceable"><code>funcname</code></em> ( <em class="replaceable"><code>arguments</code></em> )</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2785624"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2793237"></a><h2>Description</h2>
 <p>   <code class="command">CREATE TRIGGER</code> creates a new trigger.  The
    trigger will be associated with the specified table and will
    execute the specified function <em class="replaceable"><code>funcname</code></em> when certain events occur.
@@ -40,7 +40,7 @@
    current row, or change the row being inserted (for
    <code class="command">INSERT</code> and <code class="command">UPDATE</code> operations
    only). If the trigger fires after the event, all changes, including
-   the last insertion, update, or deletion, are &#8220;<span class="quote">visible</span>&#8221;
+   the last insertion, update, or deletion, are <span class="quote">&#8220;<span class="quote">visible</span>&#8221;</span>
    to the trigger.
   </p>
 <p>   A trigger that is marked <code class="literal">FOR EACH ROW</code> is called
@@ -64,8 +64,8 @@
 <p>   Refer to <a class="xref" href="triggers.html" title="Chapter 34. Triggers">Chapter 34, <i>Triggers</i></a> for more information about triggers.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2785776"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2793389"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name to give the new trigger.  This must be distinct from
@@ -112,7 +112,7 @@
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Notes">
 <a name="sql-createtrigger-notes"></a><h2>Notes</h2>
 <p>   To create a trigger on a table, the user must have the
    <code class="literal">TRIGGER</code> privilege on the table.
@@ -127,24 +127,24 @@
 <p>   Use <a class="xref" href="sql-droptrigger.html" title="DROP TRIGGER">DROP TRIGGER</a> to remove a trigger.
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Examples">
 <a name="r1-sql-createtrigger-2"></a><h2>Examples</h2>
 <p>   <a class="xref" href="trigger-example.html" title="34.4. A Complete Example">Section 34.4, &#8220;A Complete Example&#8221;</a> contains a complete example.
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Compatibility">
 <a name="sql-createtrigger-compatibility"></a><h2>Compatibility</h2>
 <p>   The <code class="command">CREATE TRIGGER</code> statement in
    <span class="productname">PostgreSQL</span> implements a subset of the
    <acronym class="acronym">SQL</acronym> standard. The following functionality is currently missing:
 
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      SQL allows triggers to fire on updates to specific columns
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      SQL allows triggers to fire on updates to specific columns
       (e.g., <code class="literal">AFTER UPDATE OF col1, col2</code>).
      </p></li>
-<li><p>      SQL allows you to define aliases for the &#8220;<span class="quote">old</span>&#8221;
-      and &#8220;<span class="quote">new</span>&#8221; rows or tables for use in the definition
+<li class="listitem"><p>      SQL allows you to define aliases for the <span class="quote">&#8220;<span class="quote">old</span>&#8221;</span>
+      and <span class="quote">&#8220;<span class="quote">new</span>&#8221;</span> rows or tables for use in the definition
       of the triggered action (e.g., <code class="literal">CREATE TRIGGER ... ON
       tablename REFERENCING OLD ROW AS somename NEW ROW AS othername
       ...</code>).  Since <span class="productname">PostgreSQL</span>
@@ -152,7 +152,7 @@
       user-defined languages, access to the data is handled in a
       language-specific way.
      </p></li>
-<li><p>      <span class="productname">PostgreSQL</span> only allows the execution
+<li class="listitem"><p>      <span class="productname">PostgreSQL</span> only allows the execution
       of a user-defined function for the triggered action.  The standard
       allows the execution of a number of other SQL commands, such as
       <code class="command">CREATE TABLE</code> as the triggered action.  This
@@ -180,8 +180,8 @@
    the SQL standard.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2786161"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2793774"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>, <a class="xref" href="sql-altertrigger.html" title="ALTER TRIGGER">ALTER TRIGGER</a>, <a class="xref" href="sql-droptrigger.html" title="DROP TRIGGER">DROP TRIGGER</a></span>
 </div>
 </div></body>

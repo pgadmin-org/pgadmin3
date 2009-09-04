@@ -4,20 +4,20 @@
 <title>CREATE OPERATOR</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createlanguage.html" title="CREATE LANGUAGE">
 <link rel="next" href="sql-createopclass.html" title="CREATE OPERATOR CLASS">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="CREATE OPERATOR">
 <a name="sql-createoperator"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE OPERATOR &#8212; define a new operator</p>
 </div>
-<a name="id2778093"></a><div class="refsynopsisdiv">
+<a name="id2785707"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE OPERATOR <em class="replaceable"><code>name</code></em> (
     PROCEDURE = <em class="replaceable"><code>funcname</code></em>
@@ -29,8 +29,8 @@
     [, LTCMP = <em class="replaceable"><code>less_than_op</code></em> ] [, GTCMP = <em class="replaceable"><code>greater_than_op</code></em> ]
 )</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2778167"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2785781"></a><h2>Description</h2>
 <p>   <code class="command">CREATE OPERATOR</code> defines a new operator,
    <em class="replaceable"><code>name</code></em>.  The user who
    defines an operator becomes its owner.  If a schema name is given
@@ -45,11 +45,11 @@
 
    There are a few restrictions on your choice of name:
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>     <code class="literal">--</code> and <code class="literal">/*</code> cannot appear anywhere in an operator name,
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>     <code class="literal">--</code> and <code class="literal">/*</code> cannot appear anywhere in an operator name,
      since they will be taken as the start of a comment.
      </p></li>
-<li>
+<li class="listitem">
 <p>     A multicharacter operator name cannot end in <code class="literal">+</code> or
      <code class="literal">-</code>,
      unless the name also contains at least one of these characters:
@@ -83,8 +83,8 @@
    Their meaning is detailed in <a class="xref" href="xoper-optimization.html" title="33.13. Operator Optimization Information">Section 33.13, &#8220;Operator Optimization Information&#8221;</a>.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2778326"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2785940"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of the operator to be defined. See above for allowable
@@ -148,8 +148,8 @@
 <p>  
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2778522"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2786136"></a><h2>Notes</h2>
 <p>   Refer to <a class="xref" href="xoper.html" title="33.12. User-Defined Operators">Section 33.12, &#8220;User-Defined Operators&#8221;</a> for further information.
   </p>
 <p>   Use <a class="xref" href="sql-dropoperator.html" title="DROP OPERATOR">DROP OPERATOR</a> to delete user-defined operators
@@ -157,8 +157,8 @@
    database.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2778548"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2786162"></a><h2>Examples</h2>
 <p>   The following command defines a new operator, area-equality, for
    the data type <code class="type">box</code>:
 </p>
@@ -179,15 +179,15 @@
 <p>  
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2778572"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2786186"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE OPERATOR</code> is a
    <span class="productname">PostgreSQL</span> extension.  There are no
    provisions for user-defined operators in the SQL standard.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2778589"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2786203"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-alteroperator.html" title="ALTER OPERATOR">ALTER OPERATOR</a>, <a class="xref" href="sql-createopclass.html" title="CREATE OPERATOR CLASS">CREATE OPERATOR CLASS</a>, <a class="xref" href="sql-dropoperator.html" title="DROP OPERATOR">DROP OPERATOR</a></span>
 </div>
 </div></body>

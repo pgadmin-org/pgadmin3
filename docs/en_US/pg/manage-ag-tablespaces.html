@@ -4,16 +4,16 @@
 <title>19.6. Tablespaces</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="managing-databases.html" title="Chapter 19. Managing Databases">
 <link rel="prev" href="manage-ag-dropdb.html" title="19.5. Destroying a Database">
 <link rel="next" href="client-authentication.html" title="Chapter 20. Client Authentication">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="19.6. Tablespaces">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="manage-ag-tablespaces">19.6. Tablespaces</h2></div></div></div>
-<a name="id2673795"></a><p>    Tablespaces in <span class="productname">PostgreSQL</span> allow database administrators to
+<a name="id2681155"></a><p>    Tablespaces in <span class="productname">PostgreSQL</span> allow database administrators to
     define locations in the file system where the files representing
     database objects can be stored. Once created, a tablespace can be referred
     to by name when creating database objects.
@@ -34,7 +34,7 @@
     expensive, slower disk system.
    </p>
 <p>    To define a tablespace, use the <a class="xref" href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a>
-    command, for example:<a name="id2673856"></a>
+    command, for example:<a name="id2681216"></a>
 </p>
 <pre class="programlisting">CREATE TABLESPACE fastspace LOCATION '/mnt/sda1/postgresql/data';</pre>
 <p>
@@ -43,7 +43,7 @@
     created within the tablespace will be stored in files underneath this
     directory.
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     There is usually not much point in making more than one
      tablespace per logical file system, since you cannot control the location

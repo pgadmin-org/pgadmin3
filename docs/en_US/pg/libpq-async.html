@@ -4,29 +4,29 @@
 <title>29.4. Asynchronous Command Processing</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 29. libpq - C Library">
 <link rel="prev" href="libpq-exec.html" title="29.3. Command Execution Functions">
 <link rel="next" href="libpq-cancel.html" title="29.5. Cancelling Queries in Progress">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="29.4. Asynchronous Command Processing">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="libpq-async">29.4. Asynchronous Command Processing</h2></div></div></div>
-<a name="id2696319"></a><p>The <code class="function">PQexec</code> function is adequate for submitting commands in
+<a name="id2703945"></a><p>The <code class="function">PQexec</code> function is adequate for submitting commands in
 normal, synchronous
 applications.  It has a couple of deficiencies, however, that can be of importance to some users:
 
 </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p><code class="function">PQexec</code> waits for the command to be completed.  The application may have other
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p><code class="function">PQexec</code> waits for the command to be completed.  The application may have other
 work to do (such as maintaining a user interface), in which case it won't
 want to block waiting for the response.</p></li>
-<li><p>Since the execution of the client application is suspended while it
+<li class="listitem"><p>Since the execution of the client application is suspended while it
 waits for the result, it is hard for the application to decide that it
 would like to try to cancel the ongoing command.  (It can be done from
 a signal handler, but not otherwise.)</p></li>
-<li><p><code class="function">PQexec</code> can return only one <code class="structname">PGresult</code> structure.  If the submitted command
+<li class="listitem"><p><code class="function">PQexec</code> can return only one <code class="structname">PGresult</code> structure.  If the submitted command
 string contains multiple <acronym class="acronym">SQL</acronym> commands, all but the last <code class="structname">PGresult</code> are
 discarded by <code class="function">PQexec</code>.</p></li>
 </ul></div>
@@ -50,7 +50,7 @@ respectively.
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQsendQuery</code><a name="id2696482"></a></span></dt>
+<dt><span class="term"><code class="function">PQsendQuery</code><a name="id2704109"></a></span></dt>
 <dd>
 <p>          Submits a command to the server without
           waiting for the result(s).  1 is returned if the command was
@@ -66,7 +66,7 @@ respectively.
           again (on the same connection) until <code class="function">PQgetResult</code> has returned a null pointer,
           indicating that the command is done.</p>
 </dd>
-<dt><span class="term"><code class="function">PQsendQueryParams</code><a name="id2696543"></a></span></dt>
+<dt><span class="term"><code class="function">PQsendQueryParams</code><a name="id2704170"></a></span></dt>
 <dd>
 <p>          Submits a command and separate parameters to the server without
           waiting for the result(s).
@@ -88,7 +88,7 @@ respectively.
         <code class="function">PQexecParams</code>, it will not work on 2.0-protocol
         connections, and it allows only one command in the query string.</p>
 </dd>
-<dt><span class="term"><code class="function">PQsendPrepare</code><a name="id2696596"></a></span></dt>
+<dt><span class="term"><code class="function">PQsendPrepare</code><a name="id2704222"></a></span></dt>
 <dd>
 <p>        Sends a request to create a prepared statement with the given
         parameters, without waiting for completion.
@@ -110,7 +110,7 @@ respectively.
         <code class="function">PQprepare</code>, it will not work on 2.0-protocol
         connections.</p>
 </dd>
-<dt><span class="term"><code class="function">PQsendQueryPrepared</code><a name="id2696653"></a></span></dt>
+<dt><span class="term"><code class="function">PQsendQueryPrepared</code><a name="id2704280"></a></span></dt>
 <dd>
 <p>          Sends a request to execute a prepared statement with given
           parameters, without waiting for the result(s).
@@ -132,7 +132,7 @@ respectively.
         <code class="function">PQexecPrepared</code>, it will not work on 2.0-protocol
         connections.</p>
 </dd>
-<dt><span class="term"><code class="function">PQsendDescribePrepared</code><a name="id2696706"></a></span></dt>
+<dt><span class="term"><code class="function">PQsendDescribePrepared</code><a name="id2704332"></a></span></dt>
 <dd>
 <p>        Submits a request to obtain information about the specified
         prepared statement, without waiting for completion.
@@ -149,7 +149,7 @@ respectively.
         <code class="function">PQdescribePrepared</code>, it will not work on 2.0-protocol
         connections.</p>
 </dd>
-<dt><span class="term"><code class="function">PQsendDescribePortal</code><a name="id2696761"></a></span></dt>
+<dt><span class="term"><code class="function">PQsendDescribePortal</code><a name="id2704387"></a></span></dt>
 <dd>
 <p>        Submits a request to obtain information about the specified
         portal, without waiting for completion.
@@ -166,7 +166,7 @@ respectively.
         <code class="function">PQdescribePortal</code>, it will not work on 2.0-protocol
         connections.</p>
 </dd>
-<dt><span class="term"><code class="function">PQgetResult</code><a name="id2696815"></a></span></dt>
+<dt><span class="term"><code class="function">PQgetResult</code><a name="id2704442"></a></span></dt>
 <dd>
 <p>          Waits for the next result from a prior
           <code class="function">PQsendQuery</code>,
@@ -200,12 +200,12 @@ more functions:
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQconsumeInput</code><a name="id2696956"></a></span></dt>
+<dt><span class="term"><code class="function">PQconsumeInput</code><a name="id2704583"></a></span></dt>
 <dd>
 <p>          If input is available from the server, consume it.
 </p>
 <pre class="synopsis">int PQconsumeInput(PGconn *conn);</pre>
-<p><code class="function">PQconsumeInput</code> normally returns 1 indicating &#8220;<span class="quote">no error</span>&#8221;,
+<p><code class="function">PQconsumeInput</code> normally returns 1 indicating <span class="quote">&#8220;<span class="quote">no error</span>&#8221;</span>,
 but returns 0 if there was some kind of trouble (in which case
 <code class="function">PQerrorMessage</code> can be consulted).  Note that the result
 does not say 
@@ -220,7 +220,7 @@ causing a <code class="function">select()</code> read-ready indication to go awa
 application can thus use <code class="function">PQconsumeInput</code> to clear the
 <code class="function">select()</code> condition immediately, and then examine the results at leisure.</p>
 </dd>
-<dt><span class="term"><code class="function">PQisBusy</code><a name="id2697048"></a></span></dt>
+<dt><span class="term"><code class="function">PQisBusy</code><a name="id2704674"></a></span></dt>
 <dd>
 <p>Returns 1 if a command is busy, that is, <code class="function">PQgetResult</code> would block
 waiting for input.  A 0 return indicates that <code class="function">PQgetResult</code> can
@@ -262,7 +262,7 @@ functions may be used.
 
 </p>
 <div class="variablelist"><dl>
-<dt><span class="term"><code class="function">PQsetnonblocking</code><a name="id2697230"></a></span></dt>
+<dt><span class="term"><code class="function">PQsetnonblocking</code><a name="id2704857"></a></span></dt>
 <dd>
 <p>    Sets the nonblocking status of the connection.
 </p>
@@ -282,7 +282,7 @@ functions may be used.
     if it is called, it will act in blocking fashion anyway.
    </p>
 </dd>
-<dt><span class="term"><code class="function">PQisnonblocking</code><a name="id2697306"></a></span></dt>
+<dt><span class="term"><code class="function">PQisnonblocking</code><a name="id2704933"></a></span></dt>
 <dd>
 <p>       Returns the blocking status of the database connection.
 </p>
@@ -290,7 +290,7 @@ functions may be used.
 <p>       Returns 1 if the connection is set to nonblocking mode and
        0 if blocking.</p>
 </dd>
-<dt><span class="term"><code class="function">PQflush</code><a name="id2697332"></a></span></dt>
+<dt><span class="term"><code class="function">PQflush</code><a name="id2704959"></a></span></dt>
 <dd>
 <p>Attempts to flush any queued output data to the server.
 Returns 0 if successful (or if the send queue is empty), -1 if it failed for

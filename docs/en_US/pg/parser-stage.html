@@ -4,32 +4,32 @@
 <title>42.3. The Parser Stage</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="overview.html" title="Chapter 42. Overview of PostgreSQL Internals">
 <link rel="prev" href="connect-estab.html" title="42.2. How Connections are Established">
 <link rel="next" href="rule-system.html" title="42.4. The PostgreSQL Rule System">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="42.3. The Parser Stage">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="parser-stage">42.3. The Parser Stage</h2></div></div></div>
 <p>    The <em class="firstterm">parser stage</em> consists of two parts:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       The <em class="firstterm">parser</em> defined in
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       The <em class="firstterm">parser</em> defined in
        <code class="filename">gram.y</code> and <code class="filename">scan.l</code> is
        built using the Unix tools <span class="application">yacc</span>
        and <span class="application">lex</span>.
       </p></li>
-<li><p>       The <em class="firstterm">transformation process</em> does
+<li class="listitem"><p>       The <em class="firstterm">transformation process</em> does
        modifications and augmentations to the data structures returned by the parser.
       </p></li>
 </ul></div>
 <p>
    </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2833128">42.3.1. Parser</h3></div></div></div>
+<div class="sect2" title="42.3.1. Parser">
+<div class="titlepage"><div><div><h3 class="title" id="id2840765">42.3.1. Parser</h3></div></div></div>
 <p>     The parser has to check the query string (which arrives as plain
      ASCII text) for valid syntax. If the syntax is correct a
      <em class="firstterm">parse tree</em> is built up and handed back;
@@ -61,7 +61,7 @@
      or <span class="application">yacc</span> is called.
 
      </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>       The mentioned transformations and compilations are normally done
        automatically using the <em class="firstterm">makefiles</em>
@@ -81,8 +81,8 @@
      understand what happens there.
     </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2833313">42.3.2. Transformation Process</h3></div></div></div>
+<div class="sect2" title="42.3.2. Transformation Process">
+<div class="titlepage"><div><div><h3 class="title" id="id2840950">42.3.2. Transformation Process</h3></div></div></div>
 <p>     The parser stage creates a parse tree using only fixed rules about
      the syntactic structure of SQL.  It does not make any lookups in the
      system catalogs, so there is no possibility to understand the detailed

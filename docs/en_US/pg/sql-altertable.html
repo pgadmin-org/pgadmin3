@@ -4,20 +4,20 @@
 <title>ALTER TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-altersequence.html" title="ALTER SEQUENCE">
 <link rel="next" href="sql-altertablespace.html" title="ALTER TABLESPACE">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="ALTER TABLE">
 <a name="sql-altertable"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>ALTER TABLE &#8212; change the definition of a table</p>
 </div>
-<a name="id2765054"></a><div class="refsynopsisdiv">
+<a name="id2772679"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER TABLE [ ONLY ] <em class="replaceable"><code>name</code></em> [ * ]
     <em class="replaceable"><code>action</code></em> [, ... ]
@@ -52,8 +52,8 @@ where <em class="replaceable"><code>action</code></em> is one of:
     OWNER TO <em class="replaceable"><code>new_owner</code></em>
     SET TABLESPACE <em class="replaceable"><code>new_tablespace</code></em></pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2765294"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2772919"></a><h2>Description</h2>
 <p>   <code class="command">ALTER TABLE</code> changes the definition of an existing table.
    There are several subforms:
 
@@ -176,7 +176,7 @@ where <em class="replaceable"><code>action</code></em> is one of:
       That can be done with <a class="xref" href="sql-cluster.html" title="CLUSTER">CLUSTER</a> or one of the forms of <code class="command">ALTER
       TABLE</code> that forces a table rewrite.
      </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>       While <code class="command">CREATE TABLE</code> allows <code class="literal">OIDS</code> to be specified
        in the <code class="literal">WITH (<em class="replaceable"><code>storage_parameter</code></em>)</code> syntax,
@@ -257,8 +257,8 @@ where <em class="replaceable"><code>action</code></em> is one of:
    However, a superuser can alter ownership of any table anyway.)
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2766061"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2773687"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name (possibly schema-qualified) of an existing table to
@@ -334,8 +334,8 @@ where <em class="replaceable"><code>action</code></em> is one of:
        </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2766323"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2773948"></a><h2>Notes</h2>
 <p>    The key word <code class="literal">COLUMN</code> is noise and can be omitted.
    </p>
 <p>    When a column is added with <code class="literal">ADD COLUMN</code>, all existing
@@ -416,8 +416,8 @@ where <em class="replaceable"><code>action</code></em> is one of:
     inheritance.
    </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2766608"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2774233"></a><h2>Examples</h2>
 <p>   To add a column of type <code class="type">varchar</code> to a table:
 </p>
 <pre class="programlisting">ALTER TABLE distributors ADD COLUMN address varchar(30);</pre>
@@ -518,8 +518,8 @@ where <em class="replaceable"><code>action</code></em> is one of:
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2766788"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2774413"></a><h2>Compatibility</h2>
 <p>   The <code class="literal">ADD</code>, <code class="literal">DROP</code>, and <code class="literal">SET DEFAULT</code>
    forms conform with the SQL standard.  The other forms are
    <span class="productname">PostgreSQL</span> extensions of the SQL standard.

@@ -4,20 +4,20 @@
 <title>CREATE TABLE AS</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createtable.html" title="CREATE TABLE">
 <link rel="next" href="sql-createtablespace.html" title="CREATE TABLESPACE">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="CREATE TABLE AS">
 <a name="sql-createtableas"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE TABLE AS &#8212; define a new table from the results of a query</p>
 </div>
-<a name="id2784468"></a><div class="refsynopsisdiv">
+<a name="id2792081"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em>
     [ (<em class="replaceable"><code>column_name</code></em> [, ...] ) ]
@@ -26,8 +26,8 @@
     [ TABLESPACE <em class="replaceable"><code>tablespace</code></em> ]
     AS <em class="replaceable"><code>query</code></em></pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2784515"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2792128"></a><h2>Description</h2>
 <p>   <code class="command">CREATE TABLE AS</code> creates a table and fills it
    with data computed by a <code class="command">SELECT</code> command.
    The table columns have the
@@ -44,8 +44,8 @@
    queried.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2784563"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2792176"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">GLOBAL</code> or <code class="literal">LOCAL</code></span></dt>
 <dd><p>      Ignored for compatibility. Refer to <a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> for
@@ -126,8 +126,8 @@
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2784914"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2792527"></a><h2>Notes</h2>
 <p>   This command is functionally similar to <a class="xref" href="sql-selectinto.html" title="SELECT INTO">SELECT INTO</a>, but it is
    preferred since it is less likely to be confused with other uses of
    the <code class="command">SELECT INTO</code> syntax. Furthermore, <code class="command">CREATE
@@ -149,8 +149,8 @@
    to ensure proper behavior.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2785011"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2792624"></a><h2>Examples</h2>
 <p>   Create a new table <code class="literal">films_recent</code> consisting of only
    recent entries from the table <code class="literal">films</code>:
 
@@ -171,33 +171,33 @@ CREATE TEMP TABLE films_recent WITH (OIDS) ON COMMIT DROP AS
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2785069"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2792682"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE TABLE AS</code> conforms to the <acronym class="acronym">SQL</acronym>
    standard, with the following exceptions:
 
    </p>
-<div class="itemizedlist"><ul type="disc" compact>
-<li><p>      The standard requires parentheses around the subquery clause; in
+<div class="itemizedlist"><ul class="itemizedlist" type="disc" compact>
+<li class="listitem"><p>      The standard requires parentheses around the subquery clause; in
       <span class="productname">PostgreSQL</span>, these parentheses are
       optional.
      </p></li>
-<li><p>      The standard defines a <code class="literal">WITH [ NO ] DATA</code> clause;
+<li class="listitem"><p>      The standard defines a <code class="literal">WITH [ NO ] DATA</code> clause;
       this is not currently implemented by <span class="productname">PostgreSQL</span>.
       The behavior provided by <span class="productname">PostgreSQL</span> is equivalent
       to the standard's <code class="literal">WITH DATA</code> case.
       <code class="literal">WITH NO DATA</code> can be simulated by appending
       <code class="literal">LIMIT 0</code> to the query.
      </p></li>
-<li><p>      <span class="productname">PostgreSQL</span> handles temporary tables in a way
+<li class="listitem"><p>      <span class="productname">PostgreSQL</span> handles temporary tables in a way
       rather different from the standard; see
       <a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>
       for details.
      </p></li>
-<li><p>      The <code class="literal">WITH</code> clause is a <span class="productname">PostgreSQL</span>
+<li class="listitem"><p>      The <code class="literal">WITH</code> clause is a <span class="productname">PostgreSQL</span>
       extension; neither storage parameters nor OIDs are in the standard.
      </p></li>
-<li><p>      The <span class="productname">PostgreSQL</span> concept of tablespaces is not
+<li class="listitem"><p>      The <span class="productname">PostgreSQL</span> concept of tablespaces is not
       part of the standard.  Hence, the clause <code class="literal">TABLESPACE</code>
       is an extension.
      </p></li>
@@ -205,8 +205,8 @@ CREATE TEMP TABLE films_recent WITH (OIDS) ON COMMIT DROP AS
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2785198"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2792811"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a>, <a class="xref" href="sql-execute.html" title="EXECUTE">EXECUTE</a>, <a class="xref" href="sql-select.html" title="SELECT">SELECT</a>, <a class="xref" href="sql-selectinto.html" title="SELECT INTO">SELECT INTO</a>, <a class="xref" href="sql-values.html" title="VALUES">VALUES</a></span>
 </div>
 </div></body>

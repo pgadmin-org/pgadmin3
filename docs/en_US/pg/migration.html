@@ -4,16 +4,16 @@
 <title>23.5. Migration Between Releases</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="warm-standby.html" title="23.4. Warm Standby Servers for High Availability">
 <link rel="next" href="high-availability.html" title="Chapter 24. High Availability and Load Balancing">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="23.5. Migration Between Releases">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="migration">23.5. Migration Between Releases</h2></div></div></div>
-<a name="id2685334"></a><a name="id2685343"></a><p>   This section discusses how to migrate your database data from one
+<a name="id2692687"></a><a name="id2692696"></a><p>   This section discusses how to migrate your database data from one
    <span class="productname">PostgreSQL</span> release to a newer one.
    The software installation procedure <span class="foreignphrase"><em class="foreignphrase">per se</em></span> is not the
    subject of this section; those details are in <a class="xref" href="installation.html" title="Chapter 14.  Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a>.
@@ -69,7 +69,7 @@
 <pre class="programlisting">pg_dumpall &gt; backup
 pg_ctl stop
 mv /usr/local/pgsql /usr/local/pgsql.old
-cd ~/postgresql-8.2.13
+cd ~/postgresql-8.2.14
 gmake install
 initdb -D /usr/local/pgsql/data
 postgres -D /usr/local/pgsql/data
@@ -80,9 +80,9 @@ psql -f backup postgres</pre>
    server and other details. The installation instructions will advise
    you of strategic places to perform these steps.
   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>    When you &#8220;<span class="quote">move the old installation out of the way</span>&#8221;
+<p>    When you <span class="quote">&#8220;<span class="quote">move the old installation out of the way</span>&#8221;</span>
     it may no longer be perfectly usable. Some of the executable programs
     contain absolute paths to various installed programs and data files.
     This is usually not a big problem but if you plan on using two

@@ -4,20 +4,20 @@
 <title>CREATE TABLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createsequence.html" title="CREATE SEQUENCE">
 <link rel="next" href="sql-createtableas.html" title="CREATE TABLE AS">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="CREATE TABLE">
 <a name="sql-createtable"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE TABLE &#8212; define a new table</p>
 </div>
-<a name="id2782219"></a><div class="refsynopsisdiv">
+<a name="id2789832"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ [ GLOBAL | LOCAL ] { TEMPORARY | TEMP } ] TABLE <em class="replaceable"><code>table_name</code></em> ( [
   { <em class="replaceable"><code>column_name</code></em> <em class="replaceable"><code>data_type</code></em> [ DEFAULT <em class="replaceable"><code>default_expr</code></em> ] [ <em class="replaceable"><code>column_constraint</code></em> [ ... ] ]
@@ -57,7 +57,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 [ WITH ( <em class="replaceable"><code>storage_parameter</code></em> [= <em class="replaceable"><code>value</code></em>] [, ... ] ) ]
 [ USING INDEX TABLESPACE <em class="replaceable"><code>tablespace</code></em> ]</pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="sql-createtable-description"></a><h2>Description</h2>
 <p>   <code class="command">CREATE TABLE</code> will create a new, initially empty table
    in the current database. The table will be owned by the user issuing the
@@ -90,8 +90,8 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
    constraint only affects one column.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2782529"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2790142"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd>
@@ -453,7 +453,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
       string.
      </p></dd>
 </dl></div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="Storage Parameters">
 <a name="sql-createtable-storage-parameters"></a><h3>Storage Parameters</h3>
 <p>    The <code class="literal">WITH</code> clause can specify <em class="firstterm">storage parameters</em>
     for tables, and for indexes associated with a <code class="literal">UNIQUE</code> or
@@ -477,7 +477,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
 </dl></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Notes">
 <a name="sql-createtable-notes"></a><h2>Notes</h2>
 <p>     Using OIDs in new applications is not recommended: where
      possible, using a <code class="literal">SERIAL</code> or other sequence
@@ -491,7 +491,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
      combination of <code class="structfield">tableoid</code> and row OID for the
      purpose.
     </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>      The use of <code class="literal">OIDS=FALSE</code> is not recommended
       for tables with no primary key, since without either an OID or a
@@ -511,7 +511,7 @@ and <em class="replaceable"><code>table_constraint</code></em> is:
      effective limit is usually lower because of tuple-length constraints.)
     </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Examples">
 <a name="sql-createtable-examples"></a><h2>Examples</h2>
 <p>   Create table <code class="structname">films</code> and table
    <code class="structname">distributors</code>:
@@ -680,13 +680,13 @@ WITH (fillfactor=70);</pre>
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Compatibility">
 <a name="sql-createtable-compatibility"></a><h2>Compatibility</h2>
 <p>   The <code class="command">CREATE TABLE</code> command conforms to the
    <acronym class="acronym">SQL</acronym> standard, with exceptions listed below.
   </p>
-<div class="refsect2" lang="en">
-<a name="id2784114"></a><h3>Temporary Tables</h3>
+<div class="refsect2" title="Temporary Tables">
+<a name="id2791727"></a><h3>Temporary Tables</h3>
 <p>    Although the syntax of <code class="literal">CREATE TEMPORARY TABLE</code>
     resembles that of the SQL standard, the effect is not the same.  In the
     standard,
@@ -720,8 +720,8 @@ WITH (fillfactor=70);</pre>
     DROP</code> option does not exist in SQL.
    </p>
 </div>
-<div class="refsect2" lang="en">
-<a name="id2784239"></a><h3>Column Check Constraints</h3>
+<div class="refsect2" title="Column Check Constraints">
+<a name="id2791852"></a><h3>Column Check Constraints</h3>
 <p>    The SQL standard says that <code class="literal">CHECK</code> column constraints
     may only refer to the column they apply to; only <code class="literal">CHECK</code>
     table constraints may refer to multiple columns.
@@ -729,10 +729,11 @@ WITH (fillfactor=70);</pre>
     restriction; it treats column and table check constraints alike.
    </p>
 </div>
-<div class="refsect2" lang="en">
-<a name="id2784266"></a><h3>
-<code class="literal">NULL</code> &#8220;<span class="quote">Constraint</span>&#8221;</h3>
-<p>    The <code class="literal">NULL</code> &#8220;<span class="quote">constraint</span>&#8221; (actually a
+<div class="refsect2" title="NULL &#8220;Constraint&#8221;">
+<a name="id2791880"></a><h3>
+<code class="literal">NULL</code> <span class="quote">&#8220;<span class="quote">Constraint</span>&#8221;</span>
+</h3>
+<p>    The <code class="literal">NULL</code> <span class="quote">&#8220;<span class="quote">constraint</span>&#8221;</span> (actually a
     non-constraint) is a <span class="productname">PostgreSQL</span>
     extension to the SQL standard that is included for compatibility with some
     other database systems (and for symmetry with the <code class="literal">NOT
@@ -740,8 +741,8 @@ WITH (fillfactor=70);</pre>
     column, its presence is simply noise.
    </p>
 </div>
-<div class="refsect2" lang="en">
-<a name="id2784305"></a><h3>Inheritance</h3>
+<div class="refsect2" title="Inheritance">
+<a name="id2791918"></a><h3>Inheritance</h3>
 <p>    Multiple inheritance via the <code class="literal">INHERITS</code> clause is
     a <span class="productname">PostgreSQL</span> language extension.
     SQL:1999 and later define single inheritance using a
@@ -750,8 +751,8 @@ WITH (fillfactor=70);</pre>
     <span class="productname">PostgreSQL</span>.
    </p>
 </div>
-<div class="refsect2" lang="en">
-<a name="id2784332"></a><h3>Zero-column tables</h3>
+<div class="refsect2" title="Zero-column tables">
+<a name="id2791945"></a><h3>Zero-column tables</h3>
 <p>    <span class="productname">PostgreSQL</span> allows a table of no columns
     to be created (for example, <code class="literal">CREATE TABLE foo();</code>).  This
     is an extension from the SQL standard, which does not allow zero-column
@@ -760,23 +761,23 @@ WITH (fillfactor=70);</pre>
     DROP COLUMN</code>, so it seems cleaner to ignore this spec restriction.
    </p>
 </div>
-<div class="refsect2" lang="en">
-<a name="id2784361"></a><h3>
+<div class="refsect2" title="WITH clause">
+<a name="id2791975"></a><h3>
 <code class="literal">WITH</code> clause</h3>
 <p>    The <code class="literal">WITH</code> clause is a <span class="productname">PostgreSQL</span>
     extension; neither storage parameters nor OIDs are in the standard.
    </p>
 </div>
-<div class="refsect2" lang="en">
-<a name="id2784385"></a><h3>Tablespaces</h3>
+<div class="refsect2" title="Tablespaces">
+<a name="id2791998"></a><h3>Tablespaces</h3>
 <p>    The <span class="productname">PostgreSQL</span> concept of tablespaces is not
     part of the standard.  Hence, the clauses <code class="literal">TABLESPACE</code>
     and <code class="literal">USING INDEX TABLESPACE</code> are extensions.
    </p>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2784411"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2792024"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-altertable.html" title="ALTER TABLE">ALTER TABLE</a>, <a class="xref" href="sql-droptable.html" title="DROP TABLE">DROP TABLE</a>, <a class="xref" href="sql-createtablespace.html" title="CREATE TABLESPACE">CREATE TABLESPACE</a></span>
 </div>
 </div></body>

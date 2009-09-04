@@ -4,26 +4,26 @@
 <title>43.12. pg_class</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-cast.html" title="43.11. pg_cast">
 <link rel="next" href="catalog-pg-constraint.html" title="43.13. pg_constraint">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="43.12. pg_class">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalog-pg-class">43.12. <code class="structname">pg_class</code></h2></div></div></div>
-<a name="id2837049"></a><p>   The catalog <code class="structname">pg_class</code> catalogs tables and most
+<a name="id2844678"></a><p>   The catalog <code class="structname">pg_class</code> catalogs tables and most
    everything else that has columns or is otherwise similar to a
    table.  This includes indexes (but see also
    <code class="structname">pg_index</code>), sequences, views, composite types,
    and TOAST tables; see <code class="structfield">relkind</code>.
    Below, when we mean all of these
-   kinds of objects we speak of &#8220;<span class="quote">relations</span>&#8221;.  Not all
+   kinds of objects we speak of <span class="quote">&#8220;<span class="quote">relations</span>&#8221;</span>.  Not all
    columns are meaningful for all relation types.
   </p>
 <div class="table">
-<a name="id2837080"></a><p class="title"><b>Table 43.12. <code class="structname">pg_class</code> Columns</b></p>
+<a name="id2844710"></a><p class="title"><b>Table 43.12. <code class="structname">pg_class</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_class Columns" border="1">
 <colgroup>
 <col>
@@ -112,7 +112,7 @@
 <td><code class="type">oid</code></td>
 <td><code class="literal"><a class="link" href="catalog-pg-class.html" title="43.12. pg_class"><code class="structname">pg_class</code></a>.oid</code></td>
 <td>       OID of the TOAST table associated with this table, 0 if none.  The
-       TOAST table stores large attributes &#8220;<span class="quote">out of line</span>&#8221; in a
+       TOAST table stores large attributes <span class="quote">&#8220;<span class="quote">out of line</span>&#8221;</span> in a
        secondary table
       </td>
 </tr>
@@ -230,7 +230,7 @@
 <td><code class="type">xid</code></td>
 <td> </td>
 <td>       All transaction IDs before this one have been replaced with a permanent
-       (&#8220;<span class="quote">frozen</span>&#8221;) transaction ID in this table.  This is used to track
+       (<span class="quote">&#8220;<span class="quote">frozen</span>&#8221;</span>) transaction ID in this table.  This is used to track
        whether the table needs to be vacuumed in order to prevent transaction
        ID wraparound or to allow <code class="literal">pg_clog</code> to be shrunk.  Zero
        (<code class="symbol">InvalidTransactionId</code>) if the relation is not a table
@@ -250,7 +250,7 @@
 <td><code class="structfield">reloptions</code></td>
 <td><code class="type">text[]</code></td>
 <td> </td>
-<td>       Access-method-specific options, as &#8220;<span class="quote">keyword=value</span>&#8221; strings
+<td>       Access-method-specific options, as <span class="quote">&#8220;<span class="quote">keyword=value</span>&#8221;</span> strings
       </td>
 </tr>
 </tbody>

@@ -4,16 +4,16 @@
 <title>52.2. TOAST</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="storage.html" title="Chapter 52. Database Physical Storage">
 <link rel="prev" href="storage.html" title="Chapter 52. Database Physical Storage">
 <link rel="next" href="storage-page-layout.html" title="52.3. Database Page Layout">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="52.2. TOAST">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="storage-toast">52.2. TOAST</h2></div></div></div>
-<a name="id2857954"></a><a name="id2857959"></a><p>This section provides an overview of <acronym class="acronym">TOAST</acronym> (The
+<a name="id2865544"></a><a name="id2865550"></a><p>This section provides an overview of <acronym class="acronym">TOAST</acronym> (The
 Oversized-Attribute Storage Technique).</p>
 <p><span class="productname">PostgreSQL</span> uses a fixed page size (commonly
 8 kB), and does not allow tuples to span multiple pages.  Therefore,  it is
@@ -21,7 +21,7 @@ not possible to store very large field values directly.  To overcome
 this limitation, large  field values are compressed and/or broken up into
 multiple physical rows. This happens transparently to the user, with only
 small impact on most of the backend code.  The technique is affectionately 
-known as <acronym class="acronym">TOAST</acronym>  (or &#8220;<span class="quote">the best thing since sliced bread</span>&#8221;).</p>
+known as <acronym class="acronym">TOAST</acronym>  (or <span class="quote">&#8220;<span class="quote">the best thing since sliced bread</span>&#8221;</span>).</p>
 <p>Only certain data types support <acronym class="acronym">TOAST</acronym> &#8212; there is no need to
 impose the overhead on data types that cannot produce large field values.
 To support <acronym class="acronym">TOAST</acronym>, a data type must have a variable-length
@@ -81,24 +81,24 @@ none of the out-of-line values change.</p>
 <acronym class="acronym">TOAST</acronym>-able columns:
 
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      <code class="literal">PLAIN</code> prevents either compression or
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      <code class="literal">PLAIN</code> prevents either compression or
       out-of-line storage.  This is the only possible strategy for
       columns of non-<acronym class="acronym">TOAST</acronym>-able data types.
      </p></li>
-<li><p>      <code class="literal">EXTENDED</code> allows both compression and out-of-line
+<li class="listitem"><p>      <code class="literal">EXTENDED</code> allows both compression and out-of-line
       storage.  This is the default for most <acronym class="acronym">TOAST</acronym>-able data types.
       Compression will be attempted first, then out-of-line storage if
       the row is still too big.
      </p></li>
-<li><p>      <code class="literal">EXTERNAL</code> allows out-of-line storage but not
+<li class="listitem"><p>      <code class="literal">EXTERNAL</code> allows out-of-line storage but not
       compression.  Use of <code class="literal">EXTERNAL</code> will
       make substring operations on wide <code class="type">text</code> and
       <code class="type">bytea</code> columns faster (at the penalty of increased storage
       space) because these operations are optimized to fetch only the
       required parts of the out-of-line value when it is not compressed.
      </p></li>
-<li><p>      <code class="literal">MAIN</code> allows compression but not out-of-line
+<li class="listitem"><p>      <code class="literal">MAIN</code> allows compression but not out-of-line
       storage.  (Actually, out-of-line storage will still be performed
       for such columns, but only as a last resort when there is no other
       way to make the row small enough.)

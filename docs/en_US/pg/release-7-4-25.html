@@ -1,37 +1,37 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.55. Release 7.4.25</title>
+<title>E.59. Release 7.4.25</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-0.html" title="E.54. Release 8.0">
-<link rel="next" href="release-7-4-24.html" title="E.56. Release 7.4.24">
+<link rel="prev" href="release-7-4-26.html" title="E.58. Release 7.4.26">
+<link rel="next" href="release-7-4-24.html" title="E.60. Release 7.4.24">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-25">E.55. Release 7.4.25</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.59. Release 7.4.25">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-25">E.59. Release 7.4.25</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2009-03-16</p>
 </div>
 <p>   This release contains a variety of fixes from 7.4.24.
    For information about new features in the 7.4 major release, see
-   <a class="xref" href="release-7-4.html" title="E.80. Release 7.4">Section E.80, &#8220;Release 7.4&#8221;</a>.
+   <a class="xref" href="release-7-4.html" title="E.84. Release 7.4">Section E.84, &#8220;Release 7.4&#8221;</a>.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2900459">E.55.1. Migration to Version 7.4.25</h3></div></div></div>
+<div class="sect2" title="E.59.1. Migration to Version 7.4.25">
+<div class="titlepage"><div><div><h3 class="title" id="id2909099">E.59.1. Migration to Version 7.4.25</h3></div></div></div>
 <p>    A dump/restore is not required for those running 7.4.X.
     However, if you are upgrading from a version earlier than 7.4.11,
     see the release notes for 7.4.11.
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2900468">E.55.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect2" title="E.59.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2909108">E.59.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>      Prevent error recursion crashes when encoding conversion fails (Tom)
      </p>
 <p>      This change extends fixes made in the last two minor releases for
@@ -42,9 +42,10 @@
       error.  The solution therefore is to disable translation and encoding
       conversion and report the plain-ASCII form of any error message,
       if we find we have gotten into a recursive error reporting situation.
+      (CVE-2009-0922)
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Disallow <code class="command">CREATE CONVERSION</code> with the wrong encodings
       for the specified conversion function (Heikki)
      </p>
@@ -53,10 +54,10 @@
       failures in the same area.
      </p>
 </li>
-<li><p>      Fix core dump when <code class="function">to_char()</code> is given format codes that
+<li class="listitem"><p>      Fix core dump when <code class="function">to_char()</code> is given format codes that
       are inappropriate for the type of the data argument (Tom)
      </p></li>
-<li><p>      Add <code class="literal">MUST</code> (Mauritius Island Summer Time) to the default list
+<li class="listitem"><p>      Add <code class="literal">MUST</code> (Mauritius Island Summer Time) to the default list
       of known timezone abbreviations (Xavier Bugaud)
      </p></li>
 </ul></div>

@@ -4,21 +4,21 @@
 <title>41.4. Visibility of Data Changes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="spi.html" title="Chapter 41. Server Programming Interface">
 <link rel="prev" href="spi-spi-freeplan.html" title="SPI_freeplan">
 <link rel="next" href="spi-examples.html" title="41.5. Examples">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="41.4. Visibility of Data Changes">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="spi-visibility">41.4. Visibility of Data Changes</h2></div></div></div>
 <p>   The following rules govern the visibility of data changes in
    functions that use SPI (or any other C function):
 
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>      During the execution of an SQL command, any data changes made by
       the command are invisible to the command itself.  For
       example, in
@@ -29,11 +29,11 @@
       part.
      </p>
 </li>
-<li><p>      Changes made by a command C are visible to all commands that are
+<li class="listitem"><p>      Changes made by a command C are visible to all commands that are
       started after C, no matter whether they are started inside C
       (during the execution of C) or after C is done.
      </p></li>
-<li><p>      Commands executed via SPI inside a function called by an SQL command
+<li class="listitem"><p>      Commands executed via SPI inside a function called by an SQL command
       (either an ordinary function or a trigger) follow one or the
       other of the above rules depending on the read/write flag passed
       to SPI.  Commands executed in read-only mode follow the first
@@ -41,7 +41,7 @@
       in read-write mode follow the second rule: they can see all changes made
       so far.
      </p></li>
-<li><p>      All standard procedural languages set the SPI read-write mode
+<li class="listitem"><p>      All standard procedural languages set the SPI read-write mode
       depending on the volatility attribute of the function.  Commands of
       <code class="literal">STABLE</code> and <code class="literal">IMMUTABLE</code> functions are done in
       read-only mode, while commands of <code class="literal">VOLATILE</code> functions are

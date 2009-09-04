@@ -4,14 +4,14 @@
 <title>Chapter 34. Triggers</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="xindex.html" title="33.14. Interfacing Extensions To Indexes">
 <link rel="next" href="trigger-datachanges.html" title="34.2. Visibility of Data Changes">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="triggers">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" title="Chapter 34. Triggers" id="triggers">
 <div class="titlepage"><div><div><h2 class="title">Chapter 34. Triggers</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
@@ -22,10 +22,10 @@
 <dt><span class="sect1"><a href="trigger-example.html">34.4. A Complete Example</a></span></dt>
 </dl>
 </div>
-<a name="id2735368"></a><p>   This chapter provides general information about writing trigger functions.
+<a name="id2743001"></a><p>   This chapter provides general information about writing trigger functions.
    Trigger functions can be written in most of the available procedural
    languages, including
-   <span class="application">PL/pgSQL</span> (<a class="xref" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">Chapter 37, <i>PL/pgSQL - SQL Procedural Language</i></a>),
+   <span class="application">PL/pgSQL</span> (<a class="xref" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">Chapter 37, <i><span class="application">PL/pgSQL</span> - <acronym class="acronym">SQL</acronym> Procedural Language</i></a>),
    <span class="application">PL/Tcl</span> (<a class="xref" href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">Chapter 38, <i>PL/Tcl - Tcl Procedural Language</i></a>),
    <span class="application">PL/Perl</span> (<a class="xref" href="plperl.html" title="Chapter 39. PL/Perl - Perl Procedural Language">Chapter 39, <i>PL/Perl - Perl Procedural Language</i></a>), and
    <span class="application">PL/Python</span> (<a class="xref" href="plpython.html" title="Chapter 40. PL/Python - Python Procedural Language">Chapter 40, <i>PL/Python - Python Procedural Language</i></a>).
@@ -38,7 +38,7 @@
    It is not currently possible to write a trigger function in the
    plain SQL function language.
   </p>
-<div class="sect1" lang="en">
+<div class="sect1" title="34.1. Overview of Trigger Behavior">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="trigger-definition">34.1. Overview of Trigger Behavior</h2></div></div></div>
 <p>    A trigger is a specification that the database should automatically
     execute a particular function whenever a certain type of operation is
@@ -91,13 +91,13 @@
     the following choices:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       It can return <code class="symbol">NULL</code> to skip the operation for the
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       It can return <code class="symbol">NULL</code> to skip the operation for the
        current row. This instructs the executor to not perform the
        row-level operation that invoked the trigger (the insertion or
        modification of a particular table row).
       </p></li>
-<li><p>       For row-level <code class="command">INSERT</code>
+<li class="listitem"><p>       For row-level <code class="command">INSERT</code>
        and <code class="command">UPDATE</code> triggers only, the returned row
        becomes the row that will be inserted or will replace the row
        being updated.  This allows the trigger function to modify the
@@ -148,7 +148,7 @@
     to avoid infinite recursion in such scenarios.
    </p>
 <p>    When a trigger is being defined, arguments can be specified for
-    it.<a name="id2735707"></a> The purpose of including arguments in the
+    it.<a name="id2743351"></a> The purpose of including arguments in the
     trigger definition is to allow different triggers with similar
     requirements to call the same function.  As an example, there
     could be a generalized trigger function that takes as its

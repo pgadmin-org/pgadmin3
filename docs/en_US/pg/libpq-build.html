@@ -4,22 +4,22 @@
 <title>29.18. Building libpq Programs</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="libpq.html" title="Chapter 29. libpq - C Library">
 <link rel="prev" href="libpq-threading.html" title="29.17. Behavior in Threaded Programs">
 <link rel="next" href="libpq-example.html" title="29.19. Example Programs">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="29.18. Building libpq Programs">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="libpq-build">29.18. Building <span class="application">libpq</span> Programs</h2></div></div></div>
-<a name="id2701353"></a><p>   To build (i.e., compile and link) a program using
+<a name="id2708979"></a><p>   To build (i.e., compile and link) a program using
    <span class="application">libpq</span> you need to 
    do all of the following things:
 
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>      Include the <code class="filename">libpq-fe.h</code> header file:
 </p>
 <pre class="programlisting">#include &lt;libpq-fe.h&gt;</pre>
@@ -36,7 +36,7 @@ foo.c:95: `PGRES_TUPLES_OK' undeclared (first use in this function)</pre>
 <p>
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Point your compiler to the directory where the <span class="productname">PostgreSQL</span> header
       files were installed, by supplying the
       <code class="literal">-I<em class="replaceable"><code>directory</code></em></code> option
@@ -56,7 +56,7 @@ foo.c:95: `PGRES_TUPLES_OK' undeclared (first use in this function)</pre>
 <p>      If there is any chance that your program might be compiled by
       other users then you should not hardcode the directory location
       like that.  Instead, you can run the utility
-      <code class="command">pg_config</code><a name="id2701457"></a> to find out where the header
+      <code class="command">pg_config</code><a name="id2709083"></a> to find out where the header
       files are on the local system:
 </p>
 <pre class="screen"><code class="prompt">$</code> pg_config --includedir
@@ -70,7 +70,7 @@ foo.c:95: `PGRES_TUPLES_OK' undeclared (first use in this function)</pre>
 <p>
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      When linking the final program, specify the option
       <code class="literal">-lpq</code> so that the <span class="application">libpq</span> library gets pulled
       in, as well as the option

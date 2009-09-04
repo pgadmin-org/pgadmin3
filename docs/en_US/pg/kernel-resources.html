@@ -4,26 +4,26 @@
 <title>16.4. Managing Kernel Resources</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="server-start.html" title="16.3. Starting the Database Server">
 <link rel="next" href="server-shutdown.html" title="16.5. Shutting Down the Server">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="16.4. Managing Kernel Resources">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="kernel-resources">16.4. Managing Kernel Resources</h2></div></div></div>
 <p>   A large <span class="productname">PostgreSQL</span> installation can quickly exhaust
    various operating system resource limits. (On some systems, the
    factory defaults are so low that you don't even need a really
-   &#8220;<span class="quote">large</span>&#8221; installation.) If you have encountered this kind of
+   <span class="quote">&#8220;<span class="quote">large</span>&#8221;</span> installation.) If you have encountered this kind of
    problem, keep reading.
   </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="16.4.1. Shared Memory and Semaphores">
 <div class="titlepage"><div><div><h3 class="title" id="sysvipc">16.4.1. Shared Memory and Semaphores</h3></div></div></div>
-<a name="id2656305"></a><a name="id2656314"></a><p>    Shared memory and semaphores are collectively referred to as
-    &#8220;<span class="quote"><span class="systemitem">System V</span>
-    <acronym class="acronym">IPC</acronym></span>&#8221; (together with message queues, which are not
+<a name="id2663660"></a><a name="id2663668"></a><p>    Shared memory and semaphores are collectively referred to as
+    <span class="quote">&#8220;<span class="quote"><span class="systemitem">System V</span>
+    <acronym class="acronym">IPC</acronym></span>&#8221;</span> (together with message queues, which are not
     relevant for <span class="productname">PostgreSQL</span>). Almost all modern
     operating systems provide these features, but not all of them have
     them turned on or sufficiently sized by default, especially systems
@@ -40,7 +40,7 @@
     <acronym class="acronym">IPC</acronym> limits, the server will refuse to start and
     should leave an instructive error message describing the problem
     encountered and what to do about it. (See also <a class="xref" href="server-start.html#server-start-failures" title="16.3.1. Server Start-up Failures">Section 16.3.1, &#8220;Server Start-up Failures&#8221;</a>.) The relevant kernel
-    parameters are named consistently across different systems; <a class="xref" href="kernel-resources.html#sysvipc-parameters" title="Table 16.1. System V IPC parameters">Table 16.1, &#8220;System V IPC parameters&#8221;</a> gives an overview. The methods to set
+    parameters are named consistently across different systems; <a class="xref" href="kernel-resources.html#sysvipc-parameters" title="Table 16.1. System V IPC parameters">Table 16.1, &#8220;<span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters&#8221;</a> gives an overview. The methods to set
     them, however, vary. Suggestions for some platforms are given below.
     Be warned that it is often necessary to reboot your machine, and
     possibly even recompile the kernel, to change these settings.
@@ -115,7 +115,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><p>    <a name="id2656572"></a> The most important
+<br class="table-break"><p>    <a name="id2663926"></a> The most important
     shared memory parameter is <code class="varname">SHMMAX</code>, the maximum size, in
     bytes, of a shared memory segment. If you get an error message from
     <code class="function">shmget</code> like <span class="errorname">Invalid argument</span>, it is
@@ -123,7 +123,7 @@
     shared memory segment varies depending on several
     <span class="productname">PostgreSQL</span> configuration parameters, as shown in
     <a class="xref" href="kernel-resources.html#shared-memory-parameters" title="Table 16.2. Configuration parameters affecting PostgreSQL's shared memory usage">Table 16.2, &#8220;Configuration parameters affecting
-    PostgreSQL's shared memory usage&#8221;</a>.
+    <span class="productname">PostgreSQL</span>'s shared memory usage&#8221;</a>.
     You can, as a temporary solution, lower some of those settings to
     avoid the failure.  As a rough approximation, you can estimate the
     required segment size as 700 kB plus the variable amounts shown in
@@ -148,12 +148,12 @@
    </p>
 <p>    <span class="productname">PostgreSQL</span> uses one semaphore per allowed connection
     (<a class="xref" href="runtime-config-connection.html#guc-max-connections">max_connections</a>), in sets of 16.  Each such set will
-    also contain a 17th semaphore which contains a &#8220;<span class="quote">magic
-    number</span>&#8221;, to detect collision with semaphore sets used by
+    also contain a 17th semaphore which contains a <span class="quote">&#8220;<span class="quote">magic
+    number</span>&#8221;</span>, to detect collision with semaphore sets used by
     other applications. The maximum number of semaphores in the system
     is set by <code class="varname">SEMMNS</code>, which consequently must be at least
     as high as <code class="varname">max_connections</code> plus one extra for each 16
-    allowed connections (see the formula in <a class="xref" href="kernel-resources.html#sysvipc-parameters" title="Table 16.1. System V IPC parameters">Table 16.1, &#8220;System V IPC parameters&#8221;</a>).  The parameter <code class="varname">SEMMNI</code>
+    allowed connections (see the formula in <a class="xref" href="kernel-resources.html#sysvipc-parameters" title="Table 16.1. System V IPC parameters">Table 16.1, &#8220;<span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym> parameters&#8221;</a>).  The parameter <code class="varname">SEMMNI</code>
     determines the limit on the number of semaphore sets that can
     exist on the system at one time.  Hence this parameter must be at
     least <code class="literal">ceil(max_connections / 16)</code>. Lowering the number
@@ -176,14 +176,14 @@
     semaphores can be in a set, must be at least 17 for
     <span class="productname">PostgreSQL</span>.
    </p>
-<p>    Various other settings related to &#8220;<span class="quote">semaphore undo</span>&#8221;, such as
+<p>    Various other settings related to <span class="quote">&#8220;<span class="quote">semaphore undo</span>&#8221;</span>, such as
     <code class="varname">SEMMNU</code> and <code class="varname">SEMUME</code>, are not of concern
     for <span class="productname">PostgreSQL</span>.
    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><span class="systemitem">BSD/OS</span></span></dt>
 <dd>
-<p><b>Shared Memory. </b>         By default, only 4 MB of shared memory is supported. Keep in
+<p title="Shared Memory"><b>Shared Memory. </b>         By default, only 4 MB of shared memory is supported. Keep in
          mind that shared memory is not pageable; it is locked in RAM.
          To increase the amount of shared memory supported by your
          system, add something like the following to your kernel configuration
@@ -191,7 +191,7 @@
 </p>
 <pre class="programlisting">options "SHMALL=8192"
 options "SHMMAX=\(SHMALL*PAGE_SIZE\)"</pre>
-<p>
+<p title="Shared Memory">
          <code class="varname">SHMALL</code> is measured in 4 kB pages, so a value of
          1024 represents 4 MB of shared memory. Therefore the above increases
          the maximum shared memory area to 32 MB.
@@ -215,14 +215,14 @@ options "SHMMAX=\(SHMALL*PAGE_SIZE\)"</pre>
 <p>
         <code class="varname">sysptsize</code> cannot be changed by <code class="command">sysctl</code>.
        </p>
-<p><b>Semaphores. </b>         You will probably want to increase the number of semaphores
+<p title="Semaphores"><b>Semaphores. </b>         You will probably want to increase the number of semaphores
          as well; the default system total of 60 will only allow about
          50 <span class="productname">PostgreSQL</span> connections.  Set the
          values you want in your kernel configuration file, e.g.:
 </p>
 <pre class="programlisting">options "SEMMNI=40"
 options "SEMMNS=240"</pre>
-<p>
+<p title="Semaphores">
         </p>
 </dd>
 <dt><span class="term"><span class="systemitem">FreeBSD</span></span></dt>
@@ -509,15 +509,15 @@ set semsys:seminfo_semmsl=32</pre>
 </div>
 <br class="table-break">
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2657924">16.4.2. Resource Limits</h3></div></div></div>
+<div class="sect2" title="16.4.2. Resource Limits">
+<div class="titlepage"><div><div><h3 class="title" id="id2665278">16.4.2. Resource Limits</h3></div></div></div>
 <p>    Unix-like operating systems enforce various kinds of resource limits
     that might interfere with the operation of your
     <span class="productname">PostgreSQL</span> server. Of particular
     importance are limits on the number of processes per user, the
     number of open files per process, and the amount of memory available
-    to each process. Each of these have a &#8220;<span class="quote">hard</span>&#8221; and a
-    &#8220;<span class="quote">soft</span>&#8221; limit. The soft limit is what actually counts
+    to each process. Each of these have a <span class="quote">&#8220;<span class="quote">hard</span>&#8221;</span> and a
+    <span class="quote">&#8220;<span class="quote">soft</span>&#8221;</span> limit. The soft limit is what actually counts
     but it can be changed by the user up to the hard limit. The hard
     limit can only be changed by the root user. The system call
     <code class="function">setrlimit</code> is responsible for setting these
@@ -543,7 +543,7 @@ set semsys:seminfo_semmsl=32</pre>
    </p>
 <p>    Kernels can also have system-wide limits on some resources.
     </p>
-<div class="itemizedlist"><ul type="disc"><li><p>      On <span class="productname">Linux</span>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>      On <span class="productname">Linux</span>
       <code class="filename">/proc/sys/fs/file-max</code> determines the
       maximum number of open files that the kernel will support.  It can
       be changed by writing a different number into the file or by
@@ -562,7 +562,7 @@ set semsys:seminfo_semmsl=32</pre>
     several servers on one machine things might get tight.
    </p>
 <p>    The factory default limit on open files is often set to
-    &#8220;<span class="quote">socially friendly</span>&#8221; values that allow many users to
+    <span class="quote">&#8220;<span class="quote">socially friendly</span>&#8221;</span> values that allow many users to
     coexist on a machine without using an inappropriate fraction of
     the system resources.  If you run many servers on a machine this
     is perhaps what you want, but on dedicated servers you may want to
@@ -576,8 +576,8 @@ set semsys:seminfo_semmsl=32</pre>
     limit the consumption of open files.
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2658104">16.4.3. Linux Memory Overcommit</h3></div></div></div>
+<div class="sect2" title="16.4.3. Linux Memory Overcommit">
+<div class="titlepage"><div><div><h3 class="title" id="id2665458">16.4.3. Linux Memory Overcommit</h3></div></div></div>
 <p>    In Linux 2.4 and later, the default virtual memory behavior is not
     optimal for <span class="productname">PostgreSQL</span>. Because of the
     way that the kernel implements memory overcommit, the kernel may
@@ -603,7 +603,7 @@ set semsys:seminfo_semmsl=32</pre>
     run the machine out of memory.
    </p>
 <p>    On Linux 2.6 and later, a better solution is to modify the kernel's
-    behavior so that it will not &#8220;<span class="quote">overcommit</span>&#8221; memory.  This is
+    behavior so that it will not <span class="quote">&#8220;<span class="quote">overcommit</span>&#8221;</span> memory.  This is
     done by selecting strict overcommit mode via <code class="command">sysctl</code>:
 </p>
 <pre class="programlisting">sysctl -w vm.overcommit_memory=2</pre>

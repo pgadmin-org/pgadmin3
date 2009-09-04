@@ -4,16 +4,16 @@
 <title>17.4. Resource Consumption</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-connection.html" title="17.3. Connections and Authentication">
 <link rel="next" href="runtime-config-wal.html" title="17.5. Write Ahead Log">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="17.4. Resource Consumption">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="runtime-config-resource">17.4. Resource Consumption</h2></div></div></div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.4.1. Memory">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource-memory">17.4.1. Memory</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
@@ -65,7 +65,7 @@
 </dt>
 <dd>
 <p>        Sets the maximum number of transactions that can be in the
-        &#8220;<span class="quote">prepared</span>&#8221; state simultaneously (see <a class="xref" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a>).
+        <span class="quote">&#8220;<span class="quote">prepared</span>&#8221;</span> state simultaneously (see <a class="xref" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION">PREPARE TRANSACTION</a>).
         Setting this parameter to zero disables the prepared-transaction
         feature.
         The default is five transactions.
@@ -142,9 +142,9 @@
 </dd>
 </dl></div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.4.2. Free Space Map">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource-fsm">17.4.2. Free Space Map</h3></div></div></div>
-<a name="id2661392"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
+<a name="id2668746"></a><p>      These parameters control the size of the shared <em class="firstterm">free space
       map</em>, which tracks the locations of unused space in the database.
       An undersized free space map may cause the database to consume
       increasing amounts of disk space over time, because free space that
@@ -185,7 +185,7 @@
        </p></dd>
 </dl></div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.4.3. Kernel Resource Usage">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource-kernel">17.4.3. Kernel Resource Usage</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
@@ -197,8 +197,8 @@
         But on some platforms (notably, most BSD systems), the kernel will
         allow individual processes to open many more files than the system
         can really support when a large number of processes all try to open
-        that many files. If you find yourself seeing &#8220;<span class="quote">Too many open
-        files</span>&#8221; failures, try reducing this setting.
+        that many files. If you find yourself seeing <span class="quote">&#8220;<span class="quote">Too many open
+        files</span>&#8221;</span> failures, try reducing this setting.
         This parameter can only be set at server start.
        </p></dd>
 <dt>
@@ -226,7 +226,7 @@
         uses the library.  So this parameter is recommended only for
         libraries that will be used in most sessions. 
        </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>        On Windows hosts, preloading a library at server start will not reduce
         the time required to start each new server process; each server process
@@ -240,15 +240,15 @@
 <p>        If a specified library is not found,
         the server will fail to start.
        </p>
-<p>        Every  PostgreSQL-supported library has a &#8220;<span class="quote">magic
-        block</span>&#8221; that is checked to guarantee compatibility.  
+<p>        Every  PostgreSQL-supported library has a <span class="quote">&#8220;<span class="quote">magic
+        block</span>&#8221;</span> that is checked to guarantee compatibility.  
         For this reason, non-PostgreSQL libraries cannot be 
         loaded in this way.
        </p>
 </dd>
 </dl></div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.4.4.  Cost-Based Vacuum Delay">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource-vacuum-cost">17.4.4.        Cost-Based Vacuum Delay
      </h3></div></div></div>
 <p>      During the execution of <a class="xref" href="sql-vacuum.html" title="VACUUM">VACUUM</a> and <a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a> commands, the system maintains an
@@ -319,7 +319,7 @@
          The default value is 200.
         </p></dd>
 </dl></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>       There are certain operations that hold critical locks and should
        therefore complete as quickly as possible.  Cost-based vacuum
@@ -333,11 +333,11 @@
       </p>
 </div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.4.5. Background Writer">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-resource-background-writer">17.4.5. Background Writer</h3></div></div></div>
 <p>      Beginning in <span class="productname">PostgreSQL</span> 8.0, there is a separate server
       process called the <em class="firstterm">background writer</em>, whose sole function
-      is to issue writes of &#8220;<span class="quote">dirty</span>&#8221; shared buffers.  The intent is
+      is to issue writes of <span class="quote">&#8220;<span class="quote">dirty</span>&#8221;</span> shared buffers.  The intent is
       that server processes handling user queries should seldom or never have
       to wait for a write to occur, because the background writer will do it.
       This arrangement also reduces the performance penalty associated with

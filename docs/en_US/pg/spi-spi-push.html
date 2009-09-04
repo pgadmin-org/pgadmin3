@@ -4,29 +4,29 @@
 <title>SPI_push</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="spi.html#spi-interface" title="41.1. Interface Functions">
 <link rel="prev" href="spi-spi-finish.html" title="SPI_finish">
 <link rel="next" href="spi-spi-pop.html" title="SPI_pop">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="SPI_push">
 <a name="spi-spi-push"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>SPI_push &#8212; push SPI stack to allow recursive SPI usage</p>
 </div>
-<a name="id2754701"></a><div class="refsynopsisdiv">
+<a name="id2762326"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">void SPI_push(void)</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2754712"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2762338"></a><h2>Description</h2>
 <p>   <code class="function">SPI_push</code> should be called before executing another
    procedure that might itself wish to use SPI.
    After <code class="function">SPI_push</code>, SPI is no longer in a
-   &#8220;<span class="quote">connected</span>&#8221; state, and SPI function calls will be rejected unless
+   <span class="quote">&#8220;<span class="quote">connected</span>&#8221;</span> state, and SPI function calls will be rejected unless
    a fresh <code class="function">SPI_connect</code> is done.  This ensures a clean
    separation between your procedure's SPI state and that of another procedure
    you call.  After the other procedure returns, call

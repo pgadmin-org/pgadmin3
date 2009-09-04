@@ -4,18 +4,18 @@
 <title>16.3. Starting the Database Server</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="runtime.html" title="Chapter 16. Operating System Environment">
 <link rel="prev" href="creating-cluster.html" title="16.2. Creating a Database Cluster">
 <link rel="next" href="kernel-resources.html" title="16.4. Managing Kernel Resources">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="16.3. Starting the Database Server">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="server-start">16.3. Starting the Database Server</h2></div></div></div>
 <p>   Before anyone can access the database, you must start the database
    server. The database server program is called
-   <code class="command">postgres</code>.<a name="id2655578"></a>
+   <code class="command">postgres</code>.<a name="id2662933"></a>
    The <code class="command">postgres</code> program must know where to
    find the data it is supposed to use. This is done with the
    <code class="option">-D</code> option. Thus, the simplest way to start the
@@ -46,7 +46,7 @@
   </p>
 <p>   This shell syntax can get tedious quickly.  Therefore the wrapper
    program
-   <a class="xref" href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id2655702"></a>
+   <a class="xref" href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><a name="app-pg-ctl-title"></a><span class="application">pg_ctl</span></span></a><a name="id2663056"></a>
    is provided to simplify some tasks.  For example:
 </p>
 <pre class="programlisting">pg_ctl start -l logfile</pre>
@@ -57,7 +57,7 @@
    is also capable of stopping the server.
   </p>
 <p>   Normally, you will want to start the database server when the
-   computer boots.<a name="id2655737"></a> Autostart scripts are operating-system-specific.
+   computer boots.<a name="id2663092"></a> Autostart scripts are operating-system-specific.
    There are a few distributed with
    <span class="productname">PostgreSQL</span> in the
    <code class="filename">contrib/start-scripts</code> directory. Installing one will require
@@ -81,16 +81,16 @@
    name where we show generic values.)
 
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      For <span class="productname">FreeBSD</span>, look at the file
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      For <span class="productname">FreeBSD</span>, look at the file
       <code class="filename">contrib/start-scripts/freebsd</code> in the
       <span class="productname">PostgreSQL</span> source distribution.
-      <a name="id2655839"></a>
+      <a name="id2663193"></a>
      </p></li>
-<li>
+<li class="listitem">
 <p>      On <span class="productname">OpenBSD</span>, add the following lines
       to the file <code class="filename">/etc/rc.local</code>:
-      <a name="id2655864"></a>
+      <a name="id2663219"></a>
 </p>
 <pre class="programlisting">if [ -x /usr/local/pgsql/bin/pg_ctl -a -x /usr/local/pgsql/bin/postgres ]; then
     su - -c '/usr/local/pgsql/bin/pg_ctl start -l /var/postgresql/log -s' postgres
@@ -99,9 +99,9 @@ fi</pre>
 <p>
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      On <span class="productname">Linux</span> systems either add
-      <a name="id2655892"></a>
+      <a name="id2663247"></a>
 </p>
 <pre class="programlisting">/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data</pre>
 <p>
@@ -110,16 +110,16 @@ fi</pre>
       <span class="productname">PostgreSQL</span> source distribution.
      </p>
 </li>
-<li><p>      On <span class="productname">NetBSD</span>, either use the
+<li class="listitem"><p>      On <span class="productname">NetBSD</span>, either use the
       <span class="productname">FreeBSD</span> or
       <span class="productname">Linux</span> start scripts, depending on
-      preference. <a name="id2655950"></a>
+      preference. <a name="id2663305"></a>
      </p></li>
-<li>
+<li class="listitem">
 <p>      On <span class="productname">Solaris</span>, create a file called
       <code class="filename">/etc/init.d/postgresql</code> that contains
       the following line:
-      <a name="id2655977"></a>
+      <a name="id2663331"></a>
 </p>
 <pre class="programlisting">su - postgres -c "/usr/local/pgsql/bin/pg_ctl start -l logfile -D /usr/local/pgsql/data"</pre>
 <p>
@@ -138,7 +138,7 @@ fi</pre>
     running in the same data directory and can also be used for
     shutting down the server.
    </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="16.3.1. Server Start-up Failures">
 <div class="titlepage"><div><div><h3 class="title" id="server-start-failures">16.3.1. Server Start-up Failures</h3></div></div></div>
 <p>     There are several common reasons the server might fail to
      start. Check the server's log file, or start it by hand (without
@@ -193,7 +193,7 @@ DETAIL:  Failed system call was semget(5440126, 17, 03600).</pre>
      (<a class="xref" href="runtime-config-connection.html#guc-max-connections">max_connections</a>), but you'll eventually want to
      increase the kernel limit.
     </p>
-<p>     If you get an &#8220;<span class="quote">illegal system call</span>&#8221; error, it is likely that
+<p>     If you get an <span class="quote">&#8220;<span class="quote">illegal system call</span>&#8221;</span> error, it is likely that
      shared memory or semaphores are not supported in your kernel at
      all. In that case your only option is to reconfigure the kernel to
      enable these features.
@@ -202,7 +202,7 @@ DETAIL:  Failed system call was semget(5440126, 17, 03600).</pre>
      <acronym class="acronym">IPC</acronym> facilities are given in <a class="xref" href="kernel-resources.html#sysvipc" title="16.4.1. Shared Memory and Semaphores">Section 16.4.1, &#8220;Shared Memory and Semaphores&#8221;</a>.
     </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="16.3.2. Client Connection Problems">
 <div class="titlepage"><div><div><h3 class="title" id="client-connection-problems">16.3.2. Client Connection Problems</h3></div></div></div>
 <p>     Although the error conditions possible on the client side are quite
      varied and application-dependent, a few of them might be directly
@@ -214,8 +214,8 @@ DETAIL:  Failed system call was semget(5440126, 17, 03600).</pre>
         Is the server running on host "server.joe.com" and accepting
         TCP/IP connections on port 5432?</pre>
 <p>
-     This is the generic &#8220;<span class="quote">I couldn't find a server to talk
-     to</span>&#8221; failure. It looks like the above when TCP/IP
+     This is the generic <span class="quote">&#8220;<span class="quote">I couldn't find a server to talk
+     to</span>&#8221;</span> failure. It looks like the above when TCP/IP
      communication is attempted. A common mistake is to forget to
      configure the server to allow TCP/IP connections.
     </p>

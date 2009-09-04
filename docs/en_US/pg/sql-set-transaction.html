@@ -4,20 +4,20 @@
 <title>SET TRANSACTION</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-set-session-authorization.html" title="SET SESSION AUTHORIZATION">
 <link rel="next" href="sql-show.html" title="SHOW">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="SET TRANSACTION">
 <a name="sql-set-transaction"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>SET TRANSACTION &#8212; set the characteristics of the current transaction</p>
 </div>
-<a name="id2807791"></a><div class="refsynopsisdiv">
+<a name="id2815412"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">SET TRANSACTION <em class="replaceable"><code>transaction_mode</code></em> [, ...]
 SET SESSION CHARACTERISTICS AS TRANSACTION <em class="replaceable"><code>transaction_mode</code></em> [, ...]
@@ -27,8 +27,8 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
     ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
     READ WRITE | READ ONLY</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2807828"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2815448"></a><h2>Description</h2>
 <p>   The <code class="command">SET TRANSACTION</code> command sets the
    characteristics of the current transaction. It has no effect on any
    subsequent transactions.  <code class="command">SET SESSION
@@ -88,8 +88,8 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
    does not prevent all writes to disk.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2808071"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2815692"></a><h2>Notes</h2>
 <p>   If <code class="command">SET TRANSACTION</code> is executed without a prior
    <code class="command">START TRANSACTION</code> or  <code class="command">BEGIN</code>,
    it will appear to have no effect, since the transaction will immediately
@@ -109,7 +109,7 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
    for more information.
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Compatibility">
 <a name="r1-sql-set-transaction-3"></a><h2>Compatibility</h2>
 <p>   Both commands are defined in the <acronym class="acronym">SQL</acronym> standard.
    <code class="literal">SERIALIZABLE</code> is the default transaction

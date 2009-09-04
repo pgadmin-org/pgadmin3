@@ -4,16 +4,16 @@
 <title>43.34. pg_type</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-trigger.html" title="43.33. pg_trigger">
 <link rel="next" href="views-overview.html" title="43.35. System Views">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="43.34. pg_type">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalog-pg-type">43.34. <code class="structname">pg_type</code></h2></div></div></div>
-<a name="id2842866"></a><p>   The catalog <code class="structname">pg_type</code> stores information about data
+<a name="id2850501"></a><p>   The catalog <code class="structname">pg_type</code> stores information about data
    types.  Base types (scalar types) are created with
    <a class="xref" href="sql-createtype.html" title="CREATE TYPE">CREATE TYPE</a>, and
    domains with
@@ -23,7 +23,7 @@
    composite types with <code class="command">CREATE TYPE AS</code>.
   </p>
 <div class="table">
-<a name="id2842911"></a><p class="title"><b>Table 43.34. <code class="structname">pg_type</code> Columns</b></p>
+<a name="id2850546"></a><p class="title"><b>Table 43.34. <code class="structname">pg_type</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_type Columns" border="1">
 <colgroup>
 <col>
@@ -64,7 +64,7 @@
 <td>       For a fixed-size type, <code class="structfield">typlen</code> is the number
        of bytes in the internal representation of the type.  But for a
        variable-length type, <code class="structfield">typlen</code> is negative.
-       -1 indicates a &#8220;<span class="quote">varlena</span>&#8221; type (one that has a length word),
+       -1 indicates a <span class="quote">&#8220;<span class="quote">varlena</span>&#8221;</span> type (one that has a length word),
        -2 indicates a null-terminated C string.
       </td>
 </tr>
@@ -136,7 +136,7 @@
        identifies another row in <code class="structname">pg_type</code>.
        The current type can then be subscripted like an array yielding
        values of type <code class="structfield">typelem</code>.  A
-       &#8220;<span class="quote">true</span>&#8221; array type is variable length
+       <span class="quote">&#8220;<span class="quote">true</span>&#8221;</span> array type is variable length
        (<code class="structfield">typlen</code> = -1),
        but some fixed-length (<code class="structfield">typlen</code> &gt; 0) types
        also have nonzero <code class="structfield">typelem</code>, for example
@@ -196,15 +196,15 @@
       </p>
 <p>       Possible values are:
        </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p><code class="literal">c</code> = <code class="type">char</code> alignment, i.e., no alignment needed.</p></li>
-<li><p><code class="literal">s</code> = <code class="type">short</code> alignment (2 bytes on most machines).</p></li>
-<li><p><code class="literal">i</code> = <code class="type">int</code> alignment (4 bytes on most machines).</p></li>
-<li><p><code class="literal">d</code> = <code class="type">double</code> alignment (8 bytes on many machines, but by no means all).</p></li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p><code class="literal">c</code> = <code class="type">char</code> alignment, i.e., no alignment needed.</p></li>
+<li class="listitem"><p><code class="literal">s</code> = <code class="type">short</code> alignment (2 bytes on most machines).</p></li>
+<li class="listitem"><p><code class="literal">i</code> = <code class="type">int</code> alignment (4 bytes on most machines).</p></li>
+<li class="listitem"><p><code class="literal">d</code> = <code class="type">double</code> alignment (8 bytes on many machines, but by no means all).</p></li>
 </ul></div>
 <p>
       </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>        For types used in system tables, it is critical that the size
         and alignment defined in <code class="structname">pg_type</code>
@@ -225,14 +225,14 @@
        for attributes of this type should be.
        Possible values are
        </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p><code class="literal">p</code>: Value must always be stored plain.</p></li>
-<li><p>          <code class="literal">e</code>: Value can be stored in a &#8220;<span class="quote">secondary</span>&#8221;
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p><code class="literal">p</code>: Value must always be stored plain.</p></li>
+<li class="listitem"><p>          <code class="literal">e</code>: Value can be stored in a <span class="quote">&#8220;<span class="quote">secondary</span>&#8221;</span>
           relation (if relation has one, see
           <code class="literal">pg_class.reltoastrelid</code>).
          </p></li>
-<li><p><code class="literal">m</code>: Value can be stored compressed inline.</p></li>
-<li><p><code class="literal">x</code>: Value can be stored compressed inline or stored in &#8220;<span class="quote">secondary</span>&#8221; storage.</p></li>
+<li class="listitem"><p><code class="literal">m</code>: Value can be stored compressed inline.</p></li>
+<li class="listitem"><p><code class="literal">x</code>: Value can be stored compressed inline or stored in <span class="quote">&#8220;<span class="quote">secondary</span>&#8221;</span> storage.</p></li>
 </ul></div>
 <p>
        Note that <code class="literal">m</code> columns can also be moved out to secondary

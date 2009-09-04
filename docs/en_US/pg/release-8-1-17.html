@@ -1,37 +1,37 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.15. Release 8.1.17</title>
+<title>E.17. Release 8.1.17</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-2.html" title="E.14. Release 8.2">
-<link rel="next" href="release-8-1-16.html" title="E.16. Release 8.1.16">
+<link rel="prev" href="release-8-1-18.html" title="E.16. Release 8.1.18">
+<link rel="next" href="release-8-1-16.html" title="E.18. Release 8.1.16">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1-17">E.15. Release 8.1.17</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.17. Release 8.1.17">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1-17">E.17. Release 8.1.17</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2009-03-16</p>
 </div>
 <p>   This release contains a variety of fixes from 8.1.16.
    For information about new features in the 8.1 major release, see
-   <a class="xref" href="release-8-1.html" title="E.32. Release 8.1">Section E.32, &#8220;Release 8.1&#8221;</a>.
+   <a class="xref" href="release-8-1.html" title="E.34. Release 8.1">Section E.34, &#8220;Release 8.1&#8221;</a>.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2884690">E.15.1. Migration to Version 8.1.17</h3></div></div></div>
+<div class="sect2" title="E.17.1. Migration to Version 8.1.17">
+<div class="titlepage"><div><div><h3 class="title" id="id2892867">E.17.1. Migration to Version 8.1.17</h3></div></div></div>
 <p>    A dump/restore is not required for those running 8.1.X.
     However, if you are upgrading from a version earlier than 8.1.15,
     see the release notes for 8.1.15.
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2884699">E.15.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect2" title="E.17.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2892876">E.17.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>      Prevent error recursion crashes when encoding conversion fails (Tom)
      </p>
 <p>      This change extends fixes made in the last two minor releases for
@@ -42,9 +42,10 @@
       error.  The solution therefore is to disable translation and encoding
       conversion and report the plain-ASCII form of any error message,
       if we find we have gotten into a recursive error reporting situation.
+      (CVE-2009-0922)
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Disallow <code class="command">CREATE CONVERSION</code> with the wrong encodings
       for the specified conversion function (Heikki)
      </p>
@@ -53,19 +54,19 @@
       failures in the same area.
      </p>
 </li>
-<li><p>      Fix core dump when <code class="function">to_char()</code> is given format codes that
+<li class="listitem"><p>      Fix core dump when <code class="function">to_char()</code> is given format codes that
       are inappropriate for the type of the data argument (Tom)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Fix decompilation of <code class="literal">CASE WHEN</code> with an implicit coercion
       (Tom)
      </p>
 <p>      This mistake could lead to Assert failures in an Assert-enabled build,
-      or an &#8220;<span class="quote">unexpected CASE WHEN clause</span>&#8221; error message in other
+      or an <span class="quote">&#8220;<span class="quote">unexpected CASE WHEN clause</span>&#8221;</span> error message in other
       cases, when trying to examine or dump a view.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Fix possible misassignment of the owner of a TOAST table's rowtype (Tom)
      </p>
 <p>      If <code class="command">CLUSTER</code> or a rewriting variant of <code class="command">ALTER TABLE</code>
@@ -75,11 +76,11 @@
       since the permissions on the TOAST rowtype aren't examined by any
       ordinary database operation.  However, it could lead to unexpected
       failures if one later tried to drop the role that issued the command
-      (in 8.1 or 8.2), or &#8220;<span class="quote">owner of data type appears to be invalid</span>&#8221;
+      (in 8.1 or 8.2), or <span class="quote">&#8220;<span class="quote">owner of data type appears to be invalid</span>&#8221;</span>
       warnings from <span class="application">pg_dump</span> after having done so (in 8.3).
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Clean up PL/pgSQL error status variables fully at block exit
       (Ashesh Vashi and Dave Page)
      </p>
@@ -87,7 +88,7 @@
       the PL/pgSQL Debugger to crash while examining the state of a function.
      </p>
 </li>
-<li><p>      Add <code class="literal">MUST</code> (Mauritius Island Summer Time) to the default list
+<li class="listitem"><p>      Add <code class="literal">MUST</code> (Mauritius Island Summer Time) to the default list
       of known timezone abbreviations (Xavier Bugaud)
      </p></li>
 </ul></div>

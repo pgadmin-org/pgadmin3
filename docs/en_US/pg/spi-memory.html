@@ -4,24 +4,24 @@
 <title>41.3. Memory Management</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="spi.html" title="Chapter 41. Server Programming Interface">
 <link rel="prev" href="spi-spi-getnspname.html" title="SPI_getnspname">
 <link rel="next" href="spi-spi-palloc.html" title="SPI_palloc">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="41.3. Memory Management">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="spi-memory">41.3. Memory Management</h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span> allocates memory within
-   <em class="firstterm">memory contexts</em><a name="id2758708"></a>, which provide a convenient method of
+   <em class="firstterm">memory contexts</em><a name="id2766334"></a>, which provide a convenient method of
    managing allocations made in many different places that need to
    live for differing amounts of time.  Destroying a context releases
    all the memory that was allocated in it.  Thus, it is not necessary
    to keep track of individual objects to avoid memory leaks; instead
    only a relatively small number of contexts have to be managed.
    <code class="function">palloc</code> and related functions allocate memory
-   from the &#8220;<span class="quote">current</span>&#8221; context.
+   from the <span class="quote">&#8220;<span class="quote">current</span>&#8221;</span> context.
   </p>
 <p>   <code class="function">SPI_connect</code> creates a new memory context and
    makes it current.  <code class="function">SPI_finish</code> restores the
@@ -38,7 +38,7 @@
    procedure will not work reliably.  To solve this problem, use
    <code class="function">SPI_palloc</code> to allocate memory for your return
    object.  <code class="function">SPI_palloc</code> allocates memory in the
-   &#8220;<span class="quote">upper executor context</span>&#8221;, that is, the memory context
+   <span class="quote">&#8220;<span class="quote">upper executor context</span>&#8221;</span>, that is, the memory context
    that was current when <code class="function">SPI_connect</code> was called,
    which is precisely the right context for a value returned from your
    procedure.

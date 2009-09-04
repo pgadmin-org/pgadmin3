@@ -4,16 +4,16 @@
 <title>37.11. Porting from Oracle PL/SQL</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-trigger.html" title="37.10. Trigger Procedures">
 <link rel="next" href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="37.11. Porting from Oracle PL/SQL">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpgsql-porting">37.11. Porting from <span class="productname">Oracle</span> PL/SQL</h2></div></div></div>
-<a name="id2748239"></a><a name="id2748252"></a><p>   This section explains differences between
+<a name="id2755882"></a><a name="id2755895"></a><p>   This section explains differences between
    <span class="productname">PostgreSQL</span>'s <span class="application">PL/pgSQL</span>
    language and Oracle's <span class="application">PL/SQL</span> language,
    to help developers who port applications from
@@ -27,39 +27,39 @@
    <span class="application">PL/pgSQL</span> are:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       There are no default values for parameters in <span class="productname">PostgreSQL</span>.
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       There are no default values for parameters in <span class="productname">PostgreSQL</span>.
       </p></li>
-<li><p>       You can overload function names in <span class="productname">PostgreSQL</span>. This is
+<li class="listitem"><p>       You can overload function names in <span class="productname">PostgreSQL</span>. This is
        often used to work around the lack of default parameters.
       </p></li>
-<li><p>       You cannot use parameter names that are the same as columns
+<li class="listitem"><p>       You cannot use parameter names that are the same as columns
        that are referenced in the function. Oracle allows you to do this
        if you qualify the parameter name using
        <code class="literal">function_name.parameter_name</code>.
        In <span class="application">PL/pgSQL</span>, you can instead avoid a conflict by
        qualifying the column or table name.
       </p></li>
-<li><p>       No need for cursors in <span class="application">PL/pgSQL</span>, just put the
-       query in the <code class="literal">FOR</code> statement.  (See <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 37.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 37.6, &#8220;Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL&#8221;</a>.)
+<li class="listitem"><p>       No need for cursors in <span class="application">PL/pgSQL</span>, just put the
+       query in the <code class="literal">FOR</code> statement.  (See <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 37.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 37.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a>.)
       </p></li>
-<li><p>       In <span class="productname">PostgreSQL</span> the function body must be written as
+<li class="listitem"><p>       In <span class="productname">PostgreSQL</span> the function body must be written as
        a string literal.  Therefore you need to use dollar quoting or escape
        single quotes in the function body. See <a class="xref" href="plpgsql-development-tips.html#plpgsql-quote-tips" title="37.2.1. Handling of Quotation Marks">Section 37.2.1, &#8220;Handling of Quotation Marks&#8221;</a>.
       </p></li>
-<li><p>       Instead of packages, use schemas to organize your functions
+<li class="listitem"><p>       Instead of packages, use schemas to organize your functions
        into groups.
       </p></li>
-<li><p>       Since there are no packages, there are no package-level variables
+<li class="listitem"><p>       Since there are no packages, there are no package-level variables
        either. This is somewhat annoying.  You can keep per-session state 
        in temporary tables instead.
       </p></li>
 </ul></div>
 <p>
    </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2748418">37.11.1. Porting Examples</h3></div></div></div>
-<p>    <a class="xref" href="plpgsql-porting.html#pgsql-porting-ex1" title="Example 37.5. Porting a Simple Function from PL/SQL to PL/pgSQL">Example 37.5, &#8220;Porting a Simple Function from PL/SQL to PL/pgSQL&#8221;</a> shows how to port a simple
+<div class="sect2" title="37.11.1. Porting Examples">
+<div class="titlepage"><div><div><h3 class="title" id="id2756061">37.11.1. Porting Examples</h3></div></div></div>
+<p>    <a class="xref" href="plpgsql-porting.html#pgsql-porting-ex1" title="Example 37.5. Porting a Simple Function from PL/SQL to PL/pgSQL">Example 37.5, &#8220;Porting a Simple Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a simple
     function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>.
    </p>
 <div class="example">
@@ -84,8 +84,8 @@ show errors;</pre>
      <span class="application">PL/pgSQL</span>:
 
      </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>        The <code class="literal">RETURN</code> key word in the function
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>        The <code class="literal">RETURN</code> key word in the function
         prototype (not the function body) becomes
         <code class="literal">RETURNS</code> in
         <span class="productname">PostgreSQL</span>.
@@ -93,12 +93,12 @@ show errors;</pre>
         add a <code class="literal">LANGUAGE</code> clause because <span class="application">PL/pgSQL</span>
         is not the only possible function language.
        </p></li>
-<li><p>        In <span class="productname">PostgreSQL</span>, the function body is considered
+<li class="listitem"><p>        In <span class="productname">PostgreSQL</span>, the function body is considered
         to be a string literal, so you need to use quote marks or dollar
         quotes around it.  This substitutes for the terminating <code class="literal">/</code>
         in the Oracle approach.
        </p></li>
-<li><p>        The <code class="literal">show errors</code> command does not exist in
+<li class="listitem"><p>        The <code class="literal">show errors</code> command does not exist in
         <span class="productname">PostgreSQL</span>, and is not needed since errors are
         reported automatically.
        </p></li>
@@ -123,7 +123,7 @@ $$ LANGUAGE plpgsql;</pre>
     </p>
 </div>
 </div>
-<br class="example-break"><p>    <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 37.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 37.6, &#8220;Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL&#8221;</a> shows how to port a
+<br class="example-break"><p>    <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 37.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 37.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a
     function that creates another function and how to handle the
     ensuing quoting problems.
    </p>
@@ -215,13 +215,13 @@ $func$ LANGUAGE plpgsql;</pre>
 </div>
 </div>
 <br class="example-break"><p>    <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex3" title="Example 37.7. Porting a Procedure With String Manipulation and OUT Parameters from PL/SQL to PL/pgSQL">Example 37.7, &#8220;Porting a Procedure With String Manipulation and
-    OUT Parameters from PL/SQL to
-    PL/pgSQL&#8221;</a> shows how to port a function
+    <code class="literal">OUT</code> Parameters from <span class="application">PL/SQL</span> to
+    <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a function
     with <code class="literal">OUT</code> parameters and string manipulation.
     <span class="productname">PostgreSQL</span> does not have a built-in
     <code class="function">instr</code> function, but you can create one
     using a combination of other
-    functions.<a name="id2748819"></a> In <a class="xref" href="plpgsql-porting.html#plpgsql-porting-appendix" title="37.11.3. Appendix">Section 37.11.3, &#8220;Appendix&#8221;</a> there is a
+    functions.<a name="id2756462"></a> In <a class="xref" href="plpgsql-porting.html#plpgsql-porting-appendix" title="37.11.3. Appendix">Section 37.11.3, &#8220;Appendix&#8221;</a> there is a
     <span class="application">PL/pgSQL</span> implementation of
     <code class="function">instr</code> that you can use to make your porting
     easier.
@@ -323,7 +323,7 @@ $$ LANGUAGE plpgsql;</pre>
     </p>
 </div>
 </div>
-<br class="example-break"><p>    <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex4" title="Example 37.8. Porting a Procedure from PL/SQL to PL/pgSQL">Example 37.8, &#8220;Porting a Procedure from PL/SQL to PL/pgSQL&#8221;</a> shows how to port a procedure
+<br class="example-break"><p>    <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex4" title="Example 37.8. Porting a Procedure from PL/SQL to PL/pgSQL">Example 37.8, &#8220;Porting a Procedure from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a> shows how to port a procedure
     that uses numerous features that are specific to Oracle.
    </p>
 <div class="example">
@@ -431,7 +431,7 @@ $$ LANGUAGE plpgsql;</pre>
 <td width="5%" valign="top" align="left"><p><a href="#co.plpgsql-porting-exception">(2)</a> </p></td>
 <td valign="top" align="left"><p>       The exception names supported by <span class="application">PL/pgSQL</span> are
        different from Oracle's.  The set of built-in exception names
-       is much larger (see <a class="xref" href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">Appendix A, <i>PostgreSQL Error Codes</i></a>).  There
+       is much larger (see <a class="xref" href="errcodes-appendix.html" title="Appendix A. PostgreSQL Error Codes">Appendix A, <i><span class="productname">PostgreSQL</span> Error Codes</i></a>).  There
        is not currently a way to declare user-defined exception names.
       </p></td>
 </tr>
@@ -448,13 +448,13 @@ $$ LANGUAGE plpgsql;</pre>
 </div>
 <br class="example-break">
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.11.2. Other Things to Watch For">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-porting-other">37.11.2. Other Things to Watch For</h3></div></div></div>
 <p>    This section explains a few other things to watch for when porting
     Oracle <span class="application">PL/SQL</span> functions to
     <span class="productname">PostgreSQL</span>.
    </p>
-<div class="sect3" lang="en">
+<div class="sect3" title="37.11.2.1. Implicit Rollback after Exceptions">
 <div class="titlepage"><div><div><h4 class="title" id="plpgsql-porting-exceptions">37.11.2.1. Implicit Rollback after Exceptions</h4></div></div></div>
 <p>     In <span class="application">PL/pgSQL</span>, when an exception is caught by an
      <code class="literal">EXCEPTION</code> clause, all database changes since the block's
@@ -483,8 +483,8 @@ $$ LANGUAGE plpgsql;</pre>
      then some actual thought will be required.
     </p>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2749311">37.11.2.2. <code class="command">EXECUTE</code></h4></div></div></div>
+<div class="sect3" title="37.11.2.2. EXECUTE">
+<div class="titlepage"><div><div><h4 class="title" id="id2756954">37.11.2.2. <code class="command">EXECUTE</code></h4></div></div></div>
 <p>     The <span class="application">PL/pgSQL</span> version of
      <code class="command">EXECUTE</code> works similarly to the
      <span class="application">PL/SQL</span> version, but you have to remember to use
@@ -494,12 +494,12 @@ $$ LANGUAGE plpgsql;</pre>
      reliably unless you use these functions.
     </p>
 </div>
-<div class="sect3" lang="en">
+<div class="sect3" title="37.11.2.3. Optimizing PL/pgSQL Functions">
 <div class="titlepage"><div><div><h4 class="title" id="plpgsql-porting-optimization">37.11.2.3. Optimizing <span class="application">PL/pgSQL</span> Functions</h4></div></div></div>
 <p>     <span class="productname">PostgreSQL</span> gives you two function creation
-     modifiers to optimize execution: &#8220;<span class="quote">volatility</span>&#8221; (whether
+     modifiers to optimize execution: <span class="quote">&#8220;<span class="quote">volatility</span>&#8221;</span> (whether
      the function always returns the same result when given the same
-     arguments) and &#8220;<span class="quote">strictness</span>&#8221; (whether the function
+     arguments) and <span class="quote">&#8220;<span class="quote">strictness</span>&#8221;</span> (whether the function
      returns null if any argument is null).  Consult the <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
      reference page for details.
     </p>
@@ -515,7 +515,7 @@ $$ LANGUAGE plpgsql STRICT IMMUTABLE;</pre>
     </p>
 </div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.11.3. Appendix">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-porting-appendix">37.11.3. Appendix</h3></div></div></div>
 <p>    This section contains the code for a set of Oracle-compatible
     <code class="function">instr</code> functions that you can use to simplify

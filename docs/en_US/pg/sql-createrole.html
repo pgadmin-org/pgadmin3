@@ -4,20 +4,20 @@
 <title>CREATE ROLE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createopclass.html" title="CREATE OPERATOR CLASS">
 <link rel="next" href="sql-createrule.html" title="CREATE RULE">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="CREATE ROLE">
 <a name="sql-createrole"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE ROLE &#8212; define a new database role</p>
 </div>
-<a name="id2779078"></a><div class="refsynopsisdiv">
+<a name="id2786691"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE ROLE <em class="replaceable"><code>name</code></em> [ [ WITH ] <em class="replaceable"><code>option</code></em> [ ... ] ]
 
@@ -39,12 +39,12 @@ where <em class="replaceable"><code>option</code></em> can be:
     | USER <em class="replaceable"><code>rolename</code></em> [, ...]
     | SYSID <em class="replaceable"><code>uid</code></em> </pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2779170"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2786784"></a><h2>Description</h2>
 <p>   <code class="command">CREATE ROLE</code> adds a new role to a
    <span class="productname">PostgreSQL</span> database cluster.  A role is
    an entity that can own database objects and have database privileges;
-   a role can be considered a &#8220;<span class="quote">user</span>&#8221;, a &#8220;<span class="quote">group</span>&#8221;, or both
+   a role can be considered a <span class="quote">&#8220;<span class="quote">user</span>&#8221;</span>, a <span class="quote">&#8220;<span class="quote">group</span>&#8221;</span>, or both
    depending on how it is used.  Refer to
    <a class="xref" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a> and <a class="xref" href="client-authentication.html" title="Chapter 20. Client Authentication">Chapter 20, <i>Client Authentication</i></a> for information about managing
    users and authentication.  You must have <code class="literal">CREATEROLE</code>
@@ -54,8 +54,8 @@ where <em class="replaceable"><code>option</code></em> can be:
    level, and so are valid in all databases in the cluster.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2779223"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2786836"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>        The name of the new role.
@@ -63,7 +63,7 @@ where <em class="replaceable"><code>option</code></em> can be:
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">SUPERUSER</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">NOSUPERUSER</code></span>
 </dt>
-<dd><p>        These clauses determine whether the new role is a &#8220;<span class="quote">superuser</span>&#8221;,
+<dd><p>        These clauses determine whether the new role is a <span class="quote">&#8220;<span class="quote">superuser</span>&#8221;</span>,
         who can override all access restrictions within the database.
         Superuser status is dangerous and should be used only when really
         needed.  You must yourself be a superuser to create a new superuser.
@@ -101,7 +101,7 @@ where <em class="replaceable"><code>option</code></em> can be:
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">INHERIT</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">NOINHERIT</code></span>
 </dt>
-<dd><p>        These clauses determine whether a role &#8220;<span class="quote">inherits</span>&#8221; the
+<dd><p>        These clauses determine whether a role <span class="quote">&#8220;<span class="quote">inherits</span>&#8221;</span> the
         privileges of roles it is a member of.
         A role with the <code class="literal">INHERIT</code> attribute can automatically
         use whatever database privileges have been granted to all roles
@@ -179,7 +179,7 @@ where <em class="replaceable"><code>option</code></em> can be:
 <dt><span class="term"><code class="literal">ROLE</code> <em class="replaceable"><code>rolename</code></em></span></dt>
 <dd><p>        The <code class="literal">ROLE</code> clause lists one or more existing
         roles which are automatically added as members of the new role.
-        (This in effect makes the new role a &#8220;<span class="quote">group</span>&#8221;.)
+        (This in effect makes the new role a <span class="quote">&#8220;<span class="quote">group</span>&#8221;</span>.)
        </p></dd>
 <dt><span class="term"><code class="literal">ADMIN</code> <em class="replaceable"><code>rolename</code></em></span></dt>
 <dd><p>        The <code class="literal">ADMIN</code> clause is like <code class="literal">ROLE</code>,
@@ -197,8 +197,8 @@ where <em class="replaceable"><code>option</code></em> can be:
        </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2779791"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2787405"></a><h2>Notes</h2>
 <p>   Use <a class="xref" href="sql-alterrole.html" title="ALTER ROLE">ALTER ROLE</a> to
    change the attributes of a role, and <a class="xref" href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a> to remove a role.  All the attributes
    specified by <code class="command">CREATE ROLE</code> can be modified by later
@@ -235,7 +235,7 @@ where <em class="replaceable"><code>option</code></em> can be:
    means that even if a role does not have a certain privilege but is allowed
    to create other roles, it can easily create another role with different
    privileges than its own (except for creating roles with superuser
-   privileges). For example, if the role &#8220;<span class="quote">user</span>&#8221; has the
+   privileges). For example, if the role <span class="quote">&#8220;<span class="quote">user</span>&#8221;</span> has the
    <code class="literal">CREATEROLE</code> privilege but not the <code class="literal">CREATEDB</code> privilege,
    nonetheless it can create a new role with the <code class="literal">CREATEDB</code>
    privilege. Therefore, regard roles that have the <code class="literal">CREATEROLE</code>
@@ -247,7 +247,7 @@ where <em class="replaceable"><code>option</code></em> can be:
   </p>
 <p>   The <code class="literal">CONNECTION LIMIT</code> option is only enforced approximately;
    if two new sessions start at about the same time when just one
-   connection &#8220;<span class="quote">slot</span>&#8221; remains for the role, it is possible that
+   connection <span class="quote">&#8220;<span class="quote">slot</span>&#8221;</span> remains for the role, it is possible that
    both will fail.  Also, the limit is never enforced for superusers.
   </p>
 <p>   Caution must be exercised when specifying an unencrypted password
@@ -259,8 +259,8 @@ where <em class="replaceable"><code>option</code></em> can be:
    password later.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2780066"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2787680"></a><h2>Examples</h2>
 <p>   Create a role that can log in, but don't give it a password:
 </p>
 <pre class="programlisting">CREATE ROLE jonathan LOGIN;</pre>
@@ -288,8 +288,8 @@ where <em class="replaceable"><code>option</code></em> can be:
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2780128"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2787742"></a><h2>Compatibility</h2>
 <p>   The <code class="command">CREATE ROLE</code> statement is in the SQL standard,
    but the standard only requires the syntax
 </p>
@@ -311,8 +311,8 @@ where <em class="replaceable"><code>option</code></em> can be:
    given the <code class="literal">INHERIT</code> attribute.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2780204"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2787817"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-set-role.html" title="SET ROLE">SET ROLE</a>, <a class="xref" href="sql-alterrole.html" title="ALTER ROLE">ALTER ROLE</a>, <a class="xref" href="sql-droprole.html" title="DROP ROLE">DROP ROLE</a>, <a class="xref" href="sql-grant.html" title="GRANT">GRANT</a>, <a class="xref" href="sql-revoke.html" title="REVOKE">REVOKE</a>, <a class="xref" href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a></span>
 </div>
 </div></body>

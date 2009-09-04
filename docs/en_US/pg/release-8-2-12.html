@@ -1,50 +1,50 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.2. Release 8.2.12</title>
+<title>E.3. Release 8.2.12</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release.html" title="Appendix E. Release Notes">
-<link rel="next" href="release-8-2-11.html" title="E.3. Release 8.2.11">
+<link rel="prev" href="release-8-2-13.html" title="E.2. Release 8.2.13">
+<link rel="next" href="release-8-2-11.html" title="E.4. Release 8.2.11">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-12">E.2. Release 8.2.12</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.3. Release 8.2.12">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-12">E.3. Release 8.2.12</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2009-02-02</p>
 </div>
 <p>   This release contains a variety of fixes from 8.2.11.
    For information about new features in the 8.2 major release, see
-   <a class="xref" href="release-8-2.html" title="E.14. Release 8.2">Section E.14, &#8220;Release 8.2&#8221;</a>.
+   <a class="xref" href="release-8-2.html" title="E.15. Release 8.2">Section E.15, &#8220;Release 8.2&#8221;</a>.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2876896">E.2.1. Migration to Version 8.2.12</h3></div></div></div>
+<div class="sect2" title="E.3.1. Migration to Version 8.2.12">
+<div class="titlepage"><div><div><h3 class="title" id="id2884823">E.3.1. Migration to Version 8.2.12</h3></div></div></div>
 <p>    A dump/restore is not required for those running 8.2.X.
     However, if you are upgrading from a version earlier than 8.2.11,
     see the release notes for 8.2.11.
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2876905">E.2.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      Improve handling of URLs in <code class="function">headline()</code> function (Teodor)
+<div class="sect2" title="E.3.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2884832">E.3.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      Improve handling of URLs in <code class="function">headline()</code> function (Teodor)
      </p></li>
-<li><p>      Improve handling of overlength headlines in <code class="function">headline()</code>
+<li class="listitem"><p>      Improve handling of overlength headlines in <code class="function">headline()</code>
       function (Teodor)
      </p></li>
-<li><p>      Prevent possible Assert failure or misconversion if an encoding
+<li class="listitem"><p>      Prevent possible Assert failure or misconversion if an encoding
       conversion is created with the wrong conversion function for the
       specified pair of encodings (Tom, Heikki)
      </p></li>
-<li><p>      Fix possible Assert failure if a statement executed in PL/pgSQL is
+<li class="listitem"><p>      Fix possible Assert failure if a statement executed in PL/pgSQL is
       rewritten into another kind of statement, for example if an
       <code class="command">INSERT</code> is rewritten into an <code class="command">UPDATE</code> (Heikki)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Ensure that a snapshot is available to datatype input functions (Tom)
      </p>
 <p>      This primarily affects domains that are declared with <code class="literal">CHECK</code>
@@ -52,16 +52,16 @@
       functions typically fail if no snapshot has been set.
      </p>
 </li>
-<li><p>      Make it safer for SPI-using functions to be used within datatype I/O;
+<li class="listitem"><p>      Make it safer for SPI-using functions to be used within datatype I/O;
       in particular, to be used in domain check constraints (Tom)
      </p></li>
-<li><p>      Avoid unnecessary locking of small tables in <code class="command">VACUUM</code>
+<li class="listitem"><p>      Avoid unnecessary locking of small tables in <code class="command">VACUUM</code>
       (Heikki)
      </p></li>
-<li><p>      Fix a problem that made <code class="literal">UPDATE RETURNING tableoid</code>
+<li class="listitem"><p>      Fix a problem that made <code class="literal">UPDATE RETURNING tableoid</code>
       return zero instead of the correct OID (Tom)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Fix planner misestimation of selectivity when transitive equality
       is applied to an outer-join clause (Tom)
      </p>
@@ -69,14 +69,14 @@
       <code class="literal">... from a left join b on a.a1 = b.b1 where a.a1 = 42 ...</code>
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Improve optimizer's handling of long <code class="literal">IN</code> lists (Tom)
      </p>
 <p>      This change avoids wasting large amounts of time on such lists
       when constraint exclusion is enabled.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Ensure that the contents of a holdable cursor don't depend on the
       contents of TOAST tables (Tom)
      </p>
@@ -87,24 +87,24 @@
       but it could with a cursor that is held past its creating transaction.
      </p>
 </li>
-<li><p>      Fix memory leak when a set-returning function is terminated without
+<li class="listitem"><p>      Fix memory leak when a set-returning function is terminated without
       reading its whole result (Tom)
      </p></li>
-<li><p>      Fix <code class="filename">contrib/dblink</code>'s
+<li class="listitem"><p>      Fix <code class="filename">contrib/dblink</code>'s
       <code class="function">dblink_get_result(text,bool)</code> function (Joe)
      </p></li>
-<li><p>      Fix possible garbage output from <code class="filename">contrib/sslinfo</code> functions
+<li class="listitem"><p>      Fix possible garbage output from <code class="filename">contrib/sslinfo</code> functions
       (Tom)
      </p></li>
-<li><p>      Fix <span class="application">configure</span> script to properly report failure when
+<li class="listitem"><p>      Fix <span class="application">configure</span> script to properly report failure when
       unable to obtain linkage information for PL/Perl (Andrew)
      </p></li>
-<li><p>      Make all documentation reference <code class="literal">pgsql-bugs</code> and/or
+<li class="listitem"><p>      Make all documentation reference <code class="literal">pgsql-bugs</code> and/or
       <code class="literal">pgsql-hackers</code> as appropriate, instead of the
       now-decommissioned <code class="literal">pgsql-ports</code> and <code class="literal">pgsql-patches</code>
       mailing lists (Tom)
      </p></li>
-<li><p>      Update time zone data files to <span class="application">tzdata</span> release 2009a (for
+<li class="listitem"><p>      Update time zone data files to <span class="application">tzdata</span> release 2009a (for
       Kathmandu and historical DST corrections in Switzerland, Cuba)
      </p></li>
 </ul></div>

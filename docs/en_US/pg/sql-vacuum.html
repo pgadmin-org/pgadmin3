@@ -4,26 +4,26 @@
 <title>VACUUM</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-update.html" title="UPDATE">
 <link rel="next" href="sql-values.html" title="VALUES">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="VACUUM">
 <a name="sql-vacuum"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>VACUUM &#8212; garbage-collect and optionally analyze a database</p>
 </div>
-<a name="id2810007"></a><div class="refsynopsisdiv">
+<a name="id2817622"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] [ <em class="replaceable"><code>table</code></em> ]
 VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>table</code></em> [ (<em class="replaceable"><code>column</code></em> [, ...] ) ] ]</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2810041"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2817656"></a><h2>Description</h2>
 <p>   <code class="command">VACUUM</code> reclaims storage occupied by deleted tuples.
    In normal <span class="productname">PostgreSQL</span> operation, tuples that
    are deleted or obsoleted by an update are not physically removed from
@@ -52,15 +52,15 @@ VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>t
    table while it is being processed.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2810151"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2817766"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">FULL</code></span></dt>
-<dd><p>      Selects &#8220;<span class="quote">full</span>&#8221; vacuum, which may reclaim more
+<dd><p>      Selects <span class="quote">&#8220;<span class="quote">full</span>&#8221;</span> vacuum, which may reclaim more
       space, but takes much longer and exclusively locks the table.
      </p></dd>
 <dt><span class="term"><code class="literal">FREEZE</code></span></dt>
-<dd><p>      Selects aggressive &#8220;<span class="quote">freezing</span>&#8221; of tuples.
+<dd><p>      Selects aggressive <span class="quote">&#8220;<span class="quote">freezing</span>&#8221;</span> of tuples.
       Specifying <code class="literal">FREEZE</code> is equivalent to performing
       <code class="command">VACUUM</code> with the
       <a class="xref" href="runtime-config-client.html#guc-vacuum-freeze-min-age">vacuum_freeze_min_age</a> parameter
@@ -83,15 +83,15 @@ VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>t
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2810260"></a><h2>Outputs</h2>
+<div class="refsect1" title="Outputs">
+<a name="id2817875"></a><h2>Outputs</h2>
 <p>    When <code class="literal">VERBOSE</code> is specified, <code class="command">VACUUM</code> emits
     progress messages to indicate which table is currently being
     processed.  Various statistics about the tables are printed as well.
    </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2810281"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2817896"></a><h2>Notes</h2>
 <p>    <code class="command">VACUUM</code> cannot be executed inside a transaction block.
    </p>
 <p>    We recommend that active production databases be
@@ -119,14 +119,14 @@ VACUUM [ FULL ] [ FREEZE ] [ VERBOSE ] ANALYZE [ <em class="replaceable"><code>t
     See <a class="xref" href="runtime-config-resource.html#runtime-config-resource-vacuum-cost" title="17.4.4.  Cost-Based Vacuum Delay">Section 17.4.4, &#8220;       Cost-Based Vacuum Delay
      &#8221;</a> for details.
    </p>
-<p>    <span class="productname">PostgreSQL</span> includes an &#8220;<span class="quote">autovacuum</span>&#8221;
+<p>    <span class="productname">PostgreSQL</span> includes an <span class="quote">&#8220;<span class="quote">autovacuum</span>&#8221;</span>
     facility which can automate routine vacuum maintenance.  For more
     information about automatic and manual vacuuming, see
     <a class="xref" href="maintenance.html#routine-vacuuming" title="22.1. Routine Vacuuming">Section 22.1, &#8220;Routine Vacuuming&#8221;</a>.
    </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2810394"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2818009"></a><h2>Examples</h2>
 <p>   The following is an example from running <code class="command">VACUUM</code> on a
    table in the regression database:
 
@@ -162,13 +162,13 @@ VACUUM</pre>
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2810456"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2818071"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">VACUUM</code> statement in the SQL standard.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2810468"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2818083"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="app-vacuumdb.html" title="vacuumdb"><span class="application">vacuumdb</span></a>, <a class="xref" href="runtime-config-resource.html#runtime-config-resource-vacuum-cost" title="17.4.4.  Cost-Based Vacuum Delay">       Cost-Based Vacuum Delay
      </a></span>
 </div>

@@ -1,19 +1,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.126. Release 6.4</title>
+<title>E.130. Release 6.4</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-6-4-1.html" title="E.125. Release 6.4.1">
-<link rel="next" href="release-6-3-2.html" title="E.127. Release 6.3.2">
+<link rel="prev" href="release-6-4-1.html" title="E.129. Release 6.4.1">
+<link rel="next" href="release-6-3-2.html" title="E.131. Release 6.3.2">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-6-4">E.126. Release 6.4</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.130. Release 6.4">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-6-4">E.130. Release 6.4</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1998-10-30</p>
 </div>
@@ -23,44 +23,44 @@ has received some attention since the previous release.
 Here is a brief, incomplete summary:
 
 </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>Views and rules are now functional thanks to extensive new code in the
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>Views and rules are now functional thanks to extensive new code in the
 rewrite rules system from Jan Wieck. He also wrote a chapter on it
 for the <em class="citetitle">Programmer's Guide</em>.</p></li>
-<li><p>Jan also contributed a second procedural language, <span class="application">PL/pgSQL</span>, to go with the
+<li class="listitem"><p>Jan also contributed a second procedural language, <span class="application">PL/pgSQL</span>, to go with the
 original <span class="application">PL/pgTCL</span> procedural language he contributed last release.</p></li>
-<li><p>We have optional multiple-byte character set support from Tatsuo Ishii
+<li class="listitem"><p>We have optional multiple-byte character set support from Tatsuo Ishii
 to complement our existing locale support.</p></li>
-<li><p>Client/server communications has been cleaned up, with better support for
+<li class="listitem"><p>Client/server communications has been cleaned up, with better support for
 asynchronous messages and interrupts thanks to Tom Lane.</p></li>
-<li><p>The parser will now perform automatic type coercion to match arguments
+<li class="listitem"><p>The parser will now perform automatic type coercion to match arguments
 to available operators and functions, and to match columns and expressions
 with target columns. This uses a generic mechanism which supports
 the type extensibility features of <span class="productname">PostgreSQL</span>.
 There is a new chapter in the <em class="citetitle">User's Guide</em>
 which covers this topic.</p></li>
-<li><p>Three new data types have been added.
+<li class="listitem"><p>Three new data types have been added.
 Two types, <code class="type">inet</code> and <code class="type">cidr</code>, support various forms
 of IP network, subnet, and machine addressing. There is now an 8-byte integer
 type available on some platforms. See the chapter on data types
 in the <em class="citetitle">User's Guide</em> for details.
 A fourth type, <code class="type">serial</code>, is now supported by the parser as an
 amalgam of the <code class="type">int4</code> type, a sequence, and a unique index.</p></li>
-<li><p>Several more <acronym class="acronym">SQL92</acronym>-compatible syntax features have been
+<li class="listitem"><p>Several more <acronym class="acronym">SQL92</acronym>-compatible syntax features have been
 added, including <code class="command">INSERT DEFAULT VALUES</code></p></li>
-<li><p>The automatic configuration and installation system has received some
+<li class="listitem"><p>The automatic configuration and installation system has received some
 attention, and should be more robust for more platforms than it has ever
 been.</p></li>
 </ul></div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2917315">E.126.1. Migration to Version 6.4</h3></div></div></div>
+<div class="sect2" title="E.130.1. Migration to Version 6.4">
+<div class="titlepage"><div><div><h3 class="title" id="id2926004">E.130.1. Migration to Version 6.4</h3></div></div></div>
 <p>A dump/restore using <span class="application">pg_dump</span>
 or <span class="application">pg_dumpall</span>
 is required for those wishing to migrate data from any
 previous release of <span class="productname">PostgreSQL</span>.</p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2917340">E.126.2. Changes</h3></div></div></div>
+<div class="sect2" title="E.130.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2926030">E.130.2. Changes</h3></div></div></div>
 <p>    </p>
 <pre class="programlisting">Bug Fixes
 ---------

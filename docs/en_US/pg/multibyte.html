@@ -4,16 +4,16 @@
 <title>21.2. Character Set Support</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="charset.html" title="Chapter 21. Localization">
 <link rel="prev" href="charset.html" title="Chapter 21. Localization">
 <link rel="next" href="maintenance.html" title="Chapter 22. Routine Database Maintenance Tasks">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="21.2. Character Set Support">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="multibyte">21.2. Character Set Support</h2></div></div></div>
-<a name="id2677486"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
+<a name="id2684845"></a><p>   The character set support in <span class="productname">PostgreSQL</span>
    allows you to store text in a variety of character sets, including
    single-byte character sets such as the ISO 8859 series and
    multiple-byte character sets such as <acronym class="acronym">EUC</acronym> (Extended Unix
@@ -26,9 +26,9 @@
    create a database, so you can have multiple
    databases each with a different character set.
   </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="21.2.1. Supported Character Sets">
 <div class="titlepage"><div><div><h3 class="title" id="multibyte-charset-supported">21.2.1. Supported Character Sets</h3></div></div></div>
-<p>     <a class="xref" href="multibyte.html#charset-table" title="Table 21.1. PostgreSQL Character Sets">Table 21.1, &#8220;PostgreSQL Character Sets&#8221;</a> shows the character sets available
+<p>     <a class="xref" href="multibyte.html#charset-table" title="Table 21.1. PostgreSQL Character Sets">Table 21.1, &#8220;<span class="productname">PostgreSQL</span> Character Sets&#8221;</a> shows the character sets available
      for use in <span class="productname">PostgreSQL</span>.
     </p>
 <div class="table">
@@ -396,8 +396,8 @@
       converting or validating non-ASCII characters.
      </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2678516">21.2.2. Setting the Character Set</h3></div></div></div>
+<div class="sect2" title="21.2.2. Setting the Character Set">
+<div class="titlepage"><div><div><h3 class="title" id="id2685875">21.2.2. Setting the Character Set</h3></div></div></div>
 <p>     <code class="command">initdb</code> defines the default character set
      for a <span class="productname">PostgreSQL</span> cluster. For example,
 
@@ -450,7 +450,7 @@
 (9 rows)</pre>
 <p>
     </p>
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Important</h3>
 <p>      Although you can specify any encoding you want for a database, it is
       unwise to choose an encoding that is not what is expected by the locale
@@ -471,8 +471,8 @@
      </p>
 </div>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2678706">21.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div></div>
+<div class="sect2" title="21.2.3. Automatic Character Set Conversion Between Server and Client">
+<div class="titlepage"><div><div><h3 class="title" id="id2686066">21.2.3. Automatic Character Set Conversion Between Server and Client</h3></div></div></div>
 <p>     <span class="productname">PostgreSQL</span> supports automatic
      character set conversion between server and client for certain
      character set combinations. The conversion information is stored in the
@@ -807,8 +807,8 @@
      ways to accomplish this:
 
      </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>        Using the <code class="command">\encoding</code> command in
         <span class="application">psql</span>.
         <code class="command">\encoding</code> allows you to change client
@@ -820,7 +820,7 @@
 <p>
        </p>
 </li>
-<li>
+<li class="listitem">
 <p>        Using <span class="application">libpq</span> functions.
         <code class="command">\encoding</code> actually calls
         <code class="function">PQsetClientEncoding()</code> for its purpose.
@@ -848,7 +848,7 @@
 <p>
        </p>
 </li>
-<li>
+<li class="listitem">
 <p>        Using <code class="command">SET client_encoding TO</code>.
 
         Setting the client encoding can be done with this SQL command:
@@ -877,14 +877,14 @@
 <p>
        </p>
 </li>
-<li><p>        Using <code class="envar">PGCLIENTENCODING</code>. If the environment variable
+<li class="listitem"><p>        Using <code class="envar">PGCLIENTENCODING</code>. If the environment variable
         <code class="envar">PGCLIENTENCODING</code> is defined in the client's
         environment, that client encoding is automatically selected
         when a connection to the server is made.  (This can
         subsequently be overridden using any of the other methods
         mentioned above.)
        </p></li>
-<li><p>       Using the configuration variable <a class="xref" href="runtime-config-client.html#guc-client-encoding">client_encoding</a>. If the
+<li class="listitem"><p>       Using the configuration variable <a class="xref" href="runtime-config-client.html#guc-client-encoding">client_encoding</a>. If the
        <code class="varname">client_encoding</code> variable is set, that client
        encoding is automatically selected when a connection to the
        server is made.  (This can subsequently be overridden using any
@@ -905,8 +905,8 @@
      unless you are working with all-ASCII data.
     </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2679908">21.2.4. Further Reading</h3></div></div></div>
+<div class="sect2" title="21.2.4. Further Reading">
+<div class="titlepage"><div><div><h3 class="title" id="id2687268">21.2.4. Further Reading</h3></div></div></div>
 <p>     These are good sources to start learning about various kinds of encoding
      systems.
 

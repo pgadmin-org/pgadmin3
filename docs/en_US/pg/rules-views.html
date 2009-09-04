@@ -4,16 +4,16 @@
 <title>35.2. Views and the Rule System</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="rules.html" title="Chapter 35. The Rule System">
 <link rel="prev" href="rules.html" title="Chapter 35. The Rule System">
 <link rel="next" href="rules-update.html" title="35.3. Rules on INSERT, UPDATE, and DELETE">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="35.2. Views and the Rule System">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="rules-views">35.2. Views and the Rule System</h2></div></div></div>
-<a name="id2737132"></a><a name="id2737144"></a><p>    Views in <span class="productname">PostgreSQL</span> are implemented
+<a name="id2744769"></a><a name="id2744781"></a><p>    Views in <span class="productname">PostgreSQL</span> are implemented
     using the rule system. In fact, there is essentially no difference
     between
 
@@ -36,9 +36,9 @@ CREATE RULE "_RETURN" AS ON SELECT TO myview DO INSTEAD
     the same as it is for a table. So for the parser, there is
     absolutely no difference between a table and a view. They are the
     same thing: relations.</p>
-<div class="sect2" lang="en">
+<div class="sect2" title="35.2.1. How SELECT Rules Work">
 <div class="titlepage"><div><div><h3 class="title" id="rules-select">35.2.1. How <code class="command">SELECT</code> Rules Work</h3></div></div></div>
-<a name="id2737217"></a><p>    Rules <code class="literal">ON SELECT</code> are applied to all queries as the last step, even
+<a name="id2744854"></a><p>    Rules <code class="literal">ON SELECT</code> are applied to all queries as the last step, even
     if the command given is an <code class="command">INSERT</code>,
     <code class="command">UPDATE</code> or <code class="command">DELETE</code>. And they
     have different semantics from rules on the other command types in that they modify the
@@ -142,7 +142,7 @@ CREATE VIEW shoe_ready AS
     The action of our rule has a query qualification.
     The action of the rule is one query tree that is a copy of the
     <code class="command">SELECT</code> statement in the view creation command.</p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>    The two extra range
     table entries for <code class="literal">NEW</code> and <code class="literal">OLD</code> (named <code class="literal">*NEW*</code> and <code class="literal">*OLD*</code> for
@@ -330,7 +330,7 @@ SELECT * FROM shoelace;
    </p>
 <p>    It turns out that the planner will collapse this tree into a
     two-level query tree: the bottommost <code class="command">SELECT</code>
-    commands will be &#8220;<span class="quote">pulled up</span>&#8221; into the middle
+    commands will be <span class="quote">&#8220;<span class="quote">pulled up</span>&#8221;</span> into the middle
     <code class="command">SELECT</code> since there's no need to process them
     separately.  But the middle <code class="command">SELECT</code> will remain
     separate from the top, because it contains aggregate functions.
@@ -340,8 +340,8 @@ SELECT * FROM shoelace;
     system doesn't have to concern itself with.
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2737845">35.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</h3></div></div></div>
+<div class="sect2" title="35.2.2. View Rules in Non-SELECT Statements">
+<div class="titlepage"><div><div><h3 class="title" id="id2745482">35.2.2. View Rules in Non-<code class="command">SELECT</code> Statements</h3></div></div></div>
 <p>    Two details of the query tree aren't touched in the description of
     view rules above. These are the command type and the result relation.
     In fact, view rules don't need this information.</p>
@@ -363,16 +363,16 @@ UPDATE t1 SET b = t2.b FROM t2 WHERE t1.a = t2.a;</pre>
     are nearly identical.  In particular:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>            The range tables contain entries for the tables <code class="literal">t1</code> and <code class="literal">t2</code>.
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>            The range tables contain entries for the tables <code class="literal">t1</code> and <code class="literal">t2</code>.
         </p></li>
-<li><p>            The target lists contain one variable that points to column
+<li class="listitem"><p>            The target lists contain one variable that points to column
             <code class="literal">b</code> of the range table entry for table <code class="literal">t2</code>.
         </p></li>
-<li><p>            The qualification expressions compare the columns <code class="literal">a</code> of both
+<li class="listitem"><p>            The qualification expressions compare the columns <code class="literal">a</code> of both
             range-table entries for equality.
         </p></li>
-<li><p>            The join trees show a simple join between <code class="literal">t1</code> and <code class="literal">t2</code>.
+<li class="listitem"><p>            The join trees show a simple join between <code class="literal">t1</code> and <code class="literal">t2</code>.
         </p></li>
 </ul></div>
 <p>
@@ -407,7 +407,7 @@ UPDATE t1 SET b = t2.b FROM t2 WHERE t1.a = t2.a;</pre>
 <p>    To resolve this problem, another entry is added to the target list
     in <code class="command">UPDATE</code> (and also in
     <code class="command">DELETE</code>) statements: the current tuple ID
-    (<acronym class="acronym">CTID</acronym>).<a name="id2738064"></a>
+    (<acronym class="acronym">CTID</acronym>).<a name="id2745701"></a>
     This is a system column containing the
     file block number and position in the block for the row. Knowing
     the table, the <acronym class="acronym">CTID</acronym> can be used to retrieve the
@@ -430,8 +430,8 @@ UPDATE t1 SET b = t2.b FROM t2 WHERE t1.a = t2.a;</pre>
 <p>    Knowing all that, we can simply apply view rules in absolutely
     the same way to any command. There is no difference.</p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2738144">35.2.3. The Power of Views in <span class="productname">PostgreSQL</span></h3></div></div></div>
+<div class="sect2" title="35.2.3. The Power of Views in PostgreSQL">
+<div class="titlepage"><div><div><h3 class="title" id="id2745781">35.2.3. The Power of Views in <span class="productname">PostgreSQL</span></h3></div></div></div>
 <p>    The above demonstrates how the rule system incorporates view
     definitions into the original query tree. In the second example, a
     simple <code class="command">SELECT</code> from one view created a final
@@ -452,7 +452,7 @@ UPDATE t1 SET b = t2.b FROM t2 WHERE t1.a = t2.a;</pre>
     ensures, that this is all information available about the query
     up to that point.</p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="35.2.4. Updating a View">
 <div class="titlepage"><div><div><h3 class="title" id="rules-views-update">35.2.4. Updating a View</h3></div></div></div>
 <p>    What happens if a view is named as the target relation for an
     <code class="command">INSERT</code>, <code class="command">UPDATE</code>, or

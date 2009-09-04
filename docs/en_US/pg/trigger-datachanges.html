@@ -4,14 +4,14 @@
 <title>34.2. Visibility of Data Changes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="triggers.html" title="Chapter 34. Triggers">
 <link rel="prev" href="triggers.html" title="Chapter 34. Triggers">
 <link rel="next" href="trigger-interface.html" title="34.3. Writing Trigger Functions in C">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="34.2. Visibility of Data Changes">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="trigger-datachanges">34.2. Visibility of Data Changes</h2></div></div></div>
 <p>    If you execute SQL commands in your trigger function, and these
     commands access the table that the trigger is for, then
@@ -20,25 +20,25 @@
     is fired for.  Briefly:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       Statement-level triggers follow simple visibility rules: none of
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       Statement-level triggers follow simple visibility rules: none of
        the changes made by a statement are visible to statement-level
        triggers that are invoked before the statement, whereas all
        modifications are visible to statement-level after triggers.
       </p></li>
-<li><p>       The data change (insertion, update, or deletion) causing the
+<li class="listitem"><p>       The data change (insertion, update, or deletion) causing the
        trigger to fire is naturally <span class="emphasis"><em>not</em></span> visible
        to SQL commands executed in a row-level before trigger, because
        it hasn't happened yet.
       </p></li>
-<li><p>       However, SQL commands executed in a row-level before
+<li class="listitem"><p>       However, SQL commands executed in a row-level before
        trigger <span class="emphasis"><em>will</em></span> see the effects of data
        changes for rows previously processed in the same outer
        command.  This requires caution, since the ordering of these
        change events is not in general predictable; a SQL command that
        affects multiple rows may visit the rows in any order.
       </p></li>
-<li><p>       When a row-level after trigger is fired, all data changes made
+<li class="listitem"><p>       When a row-level after trigger is fired, all data changes made
        by the outer command are already complete, and are visible to
        the invoked trigger function.
       </p></li>

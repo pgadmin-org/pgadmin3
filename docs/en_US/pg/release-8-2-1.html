@@ -1,40 +1,40 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.13. Release 8.2.1</title>
+<title>E.14. Release 8.2.1</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-2-2.html" title="E.12. Release 8.2.2">
-<link rel="next" href="release-8-2.html" title="E.14. Release 8.2">
+<link rel="prev" href="release-8-2-2.html" title="E.13. Release 8.2.2">
+<link rel="next" href="release-8-2.html" title="E.15. Release 8.2">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-1">E.13. Release 8.2.1</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.14. Release 8.2.1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-1">E.14. Release 8.2.1</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2007-01-08</p>
 </div>
 <p>   This release contains a variety of fixes from 8.2.
    For information about new features in the 8.2 major release, see
-   <a class="xref" href="release-8-2.html" title="E.14. Release 8.2">Section E.14, &#8220;Release 8.2&#8221;</a>.
+   <a class="xref" href="release-8-2.html" title="E.15. Release 8.2">Section E.15, &#8220;Release 8.2&#8221;</a>.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2879792">E.13.1. Migration to Version 8.2.1</h3></div></div></div>
+<div class="sect2" title="E.14.1. Migration to Version 8.2.1">
+<div class="titlepage"><div><div><h3 class="title" id="id2887718">E.14.1. Migration to Version 8.2.1</h3></div></div></div>
 <p>    A dump/restore is not required for those running 8.2.
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2879799">E.13.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      Fix crash with <code class="literal">SELECT</code> ... <code class="literal">LIMIT ALL</code> (also
+<div class="sect2" title="E.14.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2887726">E.14.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      Fix crash with <code class="literal">SELECT</code> ... <code class="literal">LIMIT ALL</code> (also
       <code class="literal">LIMIT NULL</code>) (Tom)
      </p></li>
-<li><p>      <code class="filename">Several /contrib/tsearch2</code> fixes (Teodor)
+<li class="listitem"><p>      <code class="filename">Several /contrib/tsearch2</code> fixes (Teodor)
      </p></li>
-<li>
+<li class="listitem">
 <p>      On Windows, make log messages coming from the operating system use
       <acronym class="acronym">ASCII</acronym> encoding (Hiroshi Saito)
      </p>
@@ -42,36 +42,36 @@
       the encoding of the operating system and database server.
      </p>
 </li>
-<li><p>      Fix Windows linking of <span class="application">pg_dump</span> using
+<li class="listitem"><p>      Fix Windows linking of <span class="application">pg_dump</span> using
       <code class="filename">win32.mak</code>
       (Hiroshi Saito)
      </p></li>
-<li><p>      Fix planner mistakes for outer join queries (Tom)
+<li class="listitem"><p>      Fix planner mistakes for outer join queries (Tom)
      </p></li>
-<li><p>      Fix several problems in queries involving sub-SELECTs (Tom)
+<li class="listitem"><p>      Fix several problems in queries involving sub-SELECTs (Tom)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Fix potential crash in SPI during subtransaction abort (Tom)
      </p>
 <p>      This affects all PL functions since they all use SPI.
      </p>
 </li>
-<li><p>      Improve build speed of <acronym class="acronym">PDF</acronym> documentation (Peter)
+<li class="listitem"><p>      Improve build speed of <acronym class="acronym">PDF</acronym> documentation (Peter)
      </p></li>
-<li><p>      Re-add <acronym class="acronym">JST</acronym> (Japan) timezone abbreviation (Tom)
+<li class="listitem"><p>      Re-add <acronym class="acronym">JST</acronym> (Japan) timezone abbreviation (Tom)
      </p></li>
-<li><p>      Improve optimization decisions related to index scans (Tom)
+<li class="listitem"><p>      Improve optimization decisions related to index scans (Tom)
      </p></li>
-<li><p>      Have <span class="application">psql</span> print multi-byte combining characters as
+<li class="listitem"><p>      Have <span class="application">psql</span> print multi-byte combining characters as
       before, rather than output as <code class="literal">\u</code> (Tom)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Improve index usage of regular expressions that use parentheses (Tom)
      </p>
 <p>      This improves <span class="application">psql</span> <code class="literal">\d</code> performance also.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Make <span class="application">pg_dumpall</span> assume that databases have public
       <code class="literal">CONNECT</code> privilege, when dumping from a pre-8.2 server (Tom)
      </p>

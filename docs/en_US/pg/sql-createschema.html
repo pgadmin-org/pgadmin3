@@ -4,26 +4,26 @@
 <title>CREATE SCHEMA</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createrule.html" title="CREATE RULE">
 <link rel="next" href="sql-createsequence.html" title="CREATE SEQUENCE">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="CREATE SCHEMA">
 <a name="sql-createschema"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE SCHEMA &#8212; define a new schema</p>
 </div>
-<a name="id2781031"></a><div class="refsynopsisdiv">
+<a name="id2788644"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE SCHEMA <em class="replaceable"><code>schemaname</code></em> [ AUTHORIZATION <em class="replaceable"><code>username</code></em> ] [ <em class="replaceable"><code>schema_element</code></em> [ ... ] ]
 CREATE SCHEMA AUTHORIZATION <em class="replaceable"><code>username</code></em> [ <em class="replaceable"><code>schema_element</code></em> [ ... ] ]</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2781077"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2788690"></a><h2>Description</h2>
 <p>   <code class="command">CREATE SCHEMA</code> enters a new schema
    into the current database.
    The schema name must be distinct from the name of any existing schema
@@ -32,7 +32,7 @@ CREATE SCHEMA AUTHORIZATION <em class="replaceable"><code>username</code></em> [
 <p>   A schema is essentially a namespace:
    it contains named objects (tables, data types, functions, and operators)
    whose names may duplicate those of other objects existing in other
-   schemas.  Named objects are accessed either by &#8220;<span class="quote">qualifying</span>&#8221;
+   schemas.  Named objects are accessed either by <span class="quote">&#8220;<span class="quote">qualifying</span>&#8221;</span>
    their names with the schema name as a prefix, or by setting a search
    path that includes the desired schema(s).  A <code class="literal">CREATE</code> command
    specifying an unqualified object name creates the object
@@ -46,8 +46,8 @@ CREATE SCHEMA AUTHORIZATION <em class="replaceable"><code>username</code></em> [
    all the created objects will be owned by that user.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2781137"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2788750"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>schemaname</code></em></span></dt>
 <dd><p>        The name of a schema to be created.  If this is omitted, the user name
@@ -71,15 +71,15 @@ CREATE SCHEMA AUTHORIZATION <em class="replaceable"><code>username</code></em> [
        </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2781231"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2788844"></a><h2>Notes</h2>
 <p>   To create a schema, the invoking user must have the
    <code class="literal">CREATE</code> privilege for the current database.
    (Of course, superusers bypass this check.)
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2781245"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2788858"></a><h2>Examples</h2>
 <p>   Create a schema:
 </p>
 <pre class="programlisting">CREATE SCHEMA myschema;</pre>
@@ -109,8 +109,8 @@ CREATE VIEW hollywood.winners AS
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2781303"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2788917"></a><h2>Compatibility</h2>
 <p>   The SQL standard allows a <code class="literal">DEFAULT CHARACTER SET</code> clause
    in <code class="command">CREATE SCHEMA</code>, as well as more subcommand
    types than are presently accepted by
@@ -130,8 +130,8 @@ CREATE VIEW hollywood.winners AS
    <code class="literal">CREATE</code> privilege on his schema to someone else.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2781367"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2788980"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-alterschema.html" title="ALTER SCHEMA">ALTER SCHEMA</a>, <a class="xref" href="sql-dropschema.html" title="DROP SCHEMA">DROP SCHEMA</a></span>
 </div>
 </div></body>

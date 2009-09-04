@@ -4,20 +4,20 @@
 <title>CREATE CAST</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createaggregate.html" title="CREATE AGGREGATE">
 <link rel="next" href="sql-createconstraint.html" title="CREATE CONSTRAINT TRIGGER">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="CREATE CAST">
 <a name="sql-createcast"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE CAST &#8212; define a new cast</p>
 </div>
-<a name="id2772628"></a><div class="refsynopsisdiv">
+<a name="id2780248"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="replaceable"><code>targettype</code></em>)
     WITH FUNCTION <em class="replaceable"><code>funcname</code></em> (<em class="replaceable"><code>argtypes</code></em>)
@@ -27,7 +27,7 @@ CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="
     WITHOUT FUNCTION
     [ AS ASSIGNMENT | AS IMPLICIT ]</pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="sql-createcast-description"></a><h2>Description</h2>
 <p>   <code class="command">CREATE CAST</code> defines a new cast.  A cast
    specifies how to perform a conversion between
@@ -41,8 +41,8 @@ CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="
    conversion fails.)
   </p>
 <p>   Two types may be <em class="firstterm">binary compatible</em>, which
-   means that they can be converted into one another &#8220;<span class="quote">for
-   free</span>&#8221; without invoking any function.  This requires that
+   means that they can be converted into one another <span class="quote">&#8220;<span class="quote">for
+   free</span>&#8221;</span> without invoking any function.  This requires that
    corresponding values use the same internal representation.  For
    instance, the types <code class="type">text</code> and <code class="type">varchar</code> are
    binary compatible.
@@ -101,8 +101,8 @@ CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="
    conversion can easily crash the server.)
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2772900"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2780520"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>sourcetype</code></em></span></dt>
 <dd><p>       The name of the source data type of the cast.
@@ -159,7 +159,7 @@ CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="
    convert between data types and a second to apply the modifier.
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Notes">
 <a name="sql-createcast-notes"></a><h2>Notes</h2>
 <p>   Use <a class="xref" href="sql-dropcast.html" title="DROP CAST">DROP CAST</a> to remove user-defined casts.
   </p>
@@ -188,7 +188,7 @@ CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="
    multiple conversion functions from different types that all use the
    target type's name.
   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>   There is one small lie in the preceding paragraph: there is still one
    case in which <code class="structname">pg_cast</code> will be used to resolve the
@@ -203,7 +203,7 @@ CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="
    </p>
 </div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Examples">
 <a name="sql-createcast-examples"></a><h2>Examples</h2>
 <p>   To create a cast from type <code class="type">text</code> to type
    <code class="type">int4</code> using the function <code class="literal">int4(text)</code>:
@@ -213,7 +213,7 @@ CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="
    (This cast is already predefined in the system.)
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Compatibility">
 <a name="sql-createcast-compat"></a><h2>Compatibility</h2>
 <p>   The <code class="command">CREATE CAST</code> command conforms to the
    <acronym class="acronym">SQL</acronym> standard,
@@ -223,7 +223,7 @@ CREATE CAST (<em class="replaceable"><code>sourcetype</code></em> AS <em class="
    extension, too.
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="See Also">
 <a name="sql-createcast-seealso"></a><h2>See Also</h2>
 <p>   <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>,
    <a class="xref" href="sql-createtype.html" title="CREATE TYPE">CREATE TYPE</a>,

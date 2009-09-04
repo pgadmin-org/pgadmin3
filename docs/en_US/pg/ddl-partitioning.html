@@ -4,45 +4,45 @@
 <title>5.9. Partitioning</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-inherit.html" title="5.8. Inheritance">
 <link rel="next" href="ddl-others.html" title="5.10. Other Database Objects">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="5.9. Partitioning">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddl-partitioning">5.9. Partitioning</h2></div></div></div>
-<a name="id2593780"></a><a name="id2593786"></a><p>    <span class="productname">PostgreSQL</span> supports basic table
+<a name="id2601128"></a><a name="id2601134"></a><p>    <span class="productname">PostgreSQL</span> supports basic table
     partitioning. This section describes why and how to implement
     partitioning as part of your database design.
    </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="5.9.1. Overview">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-partitioning-overview">5.9.1. Overview</h3></div></div></div>
 <p>    Partitioning refers to splitting what is logically one large table
     into smaller physical pieces.
     Partitioning can provide several benefits:
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      Query performance can be improved dramatically in certain situations,
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      Query performance can be improved dramatically in certain situations,
       particularly when most of the heavily accessed rows of the table are in a
       single partition or a small number of partitions.  The partitioning
       substitutes for leading columns of indexes, reducing index size and
       making it more likely that the heavily-used parts of the indexes
       fit in memory.
      </p></li>
-<li><p>      When queries or updates access a large percentage of a single
+<li class="listitem"><p>      When queries or updates access a large percentage of a single
       partition, performance can be improved by taking advantage
       of sequential scan of that partition instead of using an
       index and random access reads scattered across the whole table.
      </p></li>
-<li><p>      Bulk loads and deletes may be accomplished by adding or removing
+<li class="listitem"><p>      Bulk loads and deletes may be accomplished by adding or removing
       partitions, if that requirement is planned into the partitioning design.
       <code class="command">ALTER TABLE</code> is far faster than a bulk operation.
       It also entirely avoids the <code class="command">VACUUM</code>
       overhead caused by a bulk <code class="command">DELETE</code>.
      </p></li>
-<li><p>      Seldom-used data can be migrated to cheaper and slower storage media.
+<li class="listitem"><p>      Seldom-used data can be migrated to cheaper and slower storage media.
      </p></li>
 </ul></div>
 <p>
@@ -66,7 +66,7 @@
     </p>
 <div class="variablelist"><dl>
 <dt><span class="term">Range Partitioning</span></dt>
-<dd><p>        The table is partitioned into &#8220;<span class="quote">ranges</span>&#8221; defined
+<dd><p>        The table is partitioned into <span class="quote">&#8220;<span class="quote">ranges</span>&#8221;</span> defined
         by a key column or set of columns, with no overlap between
         the ranges of values assigned to different partitions.  For
         example one might partition by date ranges, or by ranges of
@@ -80,13 +80,13 @@
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="5.9.2. Implementing Partitioning">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-partitioning-implementation">5.9.2. Implementing Partitioning</h3></div></div></div>
 <p>     To set up a partitioned table, do the following:
      </p>
-<div class="orderedlist"><ol type="1" compact>
-<li>
-<p>        Create the &#8220;<span class="quote">master</span>&#8221; table, from which all of the
+<div class="orderedlist"><ol class="orderedlist" type="1" compact>
+<li class="listitem">
+<p>        Create the <span class="quote">&#8220;<span class="quote">master</span>&#8221;</span> table, from which all of the
         partitions will inherit.
        </p>
 <p>        This table will contain no data.  Do not define any check
@@ -95,8 +95,8 @@
         in defining any indexes or unique constraints on it, either.
        </p>
 </li>
-<li>
-<p>        Create several &#8220;<span class="quote">child</span>&#8221; tables that each inherit from
+<li class="listitem">
+<p>        Create several <span class="quote">&#8220;<span class="quote">child</span>&#8221;</span> tables that each inherit from
         the master table.  Normally, these tables will not add any columns
         to the set inherited from the master.
        </p>
@@ -104,7 +104,7 @@
         are in every way normal <span class="productname">PostgreSQL</span> tables.
        </p>
 </li>
-<li>
+<li class="listitem">
 <p>        Add table constraints to the partition tables to define the
         allowed key values in each partition.
        </p>
@@ -129,17 +129,17 @@ CHECK ( outletID BETWEEN 200 AND 300 )</pre>
         descriptive only.
        </p>
 </li>
-<li><p>        For each partition, create an index on the key column(s),
+<li class="listitem"><p>        For each partition, create an index on the key column(s),
         as well as any other indexes you might want.  (The key index is
         not strictly necessary, but in most scenarios it is helpful.
         If you intend the key values to be unique then you should
         always create a unique or primary-key constraint for each
         partition.)
        </p></li>
-<li><p>        Optionally, define a rule or trigger to redirect modifications
+<li class="listitem"><p>        Optionally, define a rule or trigger to redirect modifications
         of the master table to the appropriate partition.
        </p></li>
-<li><p>        Ensure that the <a class="xref" href="runtime-config-query.html#guc-constraint-exclusion">constraint_exclusion</a>
+<li class="listitem"><p>        Ensure that the <a class="xref" href="runtime-config-query.html#guc-constraint-exclusion">constraint_exclusion</a>
         configuration
         parameter is enabled in <code class="filename">postgresql.conf</code>.  Without
         this, queries will not be optimized as desired.
@@ -173,11 +173,11 @@ CHECK ( outletID BETWEEN 200 AND 300 )</pre>
      steps outlined above, partitioning can be set up as follows:
     </p>
 <p>     </p>
-<div class="orderedlist"><ol type="1" compact>
-<li><p>        The master table is the <code class="structname">measurement</code> table, declared
+<div class="orderedlist"><ol class="orderedlist" type="1" compact>
+<li class="listitem"><p>        The master table is the <code class="structname">measurement</code> table, declared
         exactly as above.
        </p></li>
-<li>
+<li class="listitem">
 <p>        Next we create one partition for each active month:
 
 </p>
@@ -199,7 +199,7 @@ CREATE TABLE measurement_y2006m01 ( ) INHERITS (measurement);</pre>
         child table for the new month's data.
        </p>
 </li>
-<li>
+<li class="listitem">
 <p>        We must add non-overlapping table constraints, so that our
         table creation script becomes:
 
@@ -223,7 +223,7 @@ CREATE TABLE measurement_y2006m01 (
 <p>
        </p>
 </li>
-<li>
+<li class="listitem">
 <p>        We probably need indexes on the key columns too:
 
  </p>
@@ -238,7 +238,7 @@ CREATE INDEX measurement_y2006m01_logdate ON measurement_y2006m01 (logdate);</pr
         We choose not to add further indexes at this time.
        </p>
 </li>
-<li>
+<li class="listitem">
 <p>        If data will be added only to the latest partition, we can
         set up a very simple rule to insert data. We must
         redefine this each month so that it always points to the
@@ -317,7 +317,7 @@ UNION ALL SELECT * FROM measurement_y2006m01;</pre>
     individual partitions of the data set.
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="5.9.3. Managing Partitions">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-partitioning-managing-partitions">5.9.3. Managing Partitions</h3></div></div></div>
 <p>     Normally the set of partitions established when initially
      defining the table are not intended to remain static. It is
@@ -375,9 +375,9 @@ ALTER TABLE measurement_y2006m02 INHERIT measurement;</pre>
 <p>
     </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="5.9.4. Partitioning and Constraint Exclusion">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-partitioning-constraint-exclusion">5.9.4. Partitioning and Constraint Exclusion</h3></div></div></div>
-<a name="id2594415"></a><p>    <em class="firstterm">Constraint exclusion</em> is a query optimization technique
+<a name="id2601763"></a><p>    <em class="firstterm">Constraint exclusion</em> is a query optimization technique
     that improves performance for partitioned tables defined in the
     fashion described above.  As an example:
 
@@ -447,16 +447,16 @@ EXPLAIN SELECT count(*) FROM measurement WHERE logdate &gt;= DATE '2006-01-01';
     be helpful in the latter case but not the former.
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="5.9.5. Caveats">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-partitioning-caveats">5.9.5. Caveats</h3></div></div></div>
 <p>    The following caveats apply to partitioned tables:
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      There is currently no way to verify that all of the
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      There is currently no way to verify that all of the
       <code class="literal">CHECK</code> constraints are mutually
       exclusive. Care is required by the database designer.
      </p></li>
-<li><p>      There is currently no simple way to specify that rows must not be
+<li class="listitem"><p>      There is currently no simple way to specify that rows must not be
       inserted into the master table. A <code class="literal">CHECK (false)</code>
       constraint on the master table would be inherited by all child
       tables, so that cannot be used for this purpose.  One possibility is
@@ -471,15 +471,15 @@ EXPLAIN SELECT count(*) FROM measurement WHERE logdate &gt;= DATE '2006-01-01';
 <p>    The following caveats apply to constraint exclusion:
 
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      Constraint exclusion only works when the query's <code class="literal">WHERE</code>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      Constraint exclusion only works when the query's <code class="literal">WHERE</code>
       clause contains constants.  A parameterized query will not be
       optimized, since the planner cannot know what partitions the
       parameter value might select at run time.  For the same reason,
-      &#8220;<span class="quote">stable</span>&#8221; functions such as <code class="function">CURRENT_DATE</code>
+      <span class="quote">&#8220;<span class="quote">stable</span>&#8221;</span> functions such as <code class="function">CURRENT_DATE</code>
       must be avoided.
      </p></li>
-<li>
+<li class="listitem">
 <p>      Avoid cross-data type comparisons in the <code class="literal">CHECK</code>
       constraints, as the planner will currently fail to prove such
       conditions false.  For example, the following constraint
@@ -500,11 +500,11 @@ EXPLAIN SELECT count(*) FROM measurement WHERE logdate &gt;= DATE '2006-01-01';
       queries are usually OK, just not in the <code class="literal">CHECK</code> conditions.
      </p>
 </li>
-<li><p>      All constraints on all partitions of the master table are considered for
+<li class="listitem"><p>      All constraints on all partitions of the master table are considered for
       constraint exclusion, so large numbers of partitions are likely to
       increase query planning time considerably.
      </p></li>
-<li>
+<li class="listitem">
 <p>      Don't forget that you still need to run <code class="command">ANALYZE</code>
       on each partition individually. A command like
 </p>

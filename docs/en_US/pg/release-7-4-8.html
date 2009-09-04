@@ -1,29 +1,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.72. Release 7.4.8</title>
+<title>E.76. Release 7.4.8</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-4-9.html" title="E.71. Release 7.4.9">
-<link rel="next" href="release-7-4-7.html" title="E.73. Release 7.4.7">
+<link rel="prev" href="release-7-4-9.html" title="E.75. Release 7.4.9">
+<link rel="next" href="release-7-4-7.html" title="E.77. Release 7.4.7">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-8">E.72. Release 7.4.8</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.76. Release 7.4.8">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-8">E.76. Release 7.4.8</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2005-05-09</p>
 </div>
 <p>   This release contains a variety of fixes from 7.4.7, including several
    security-related issues.
    For information about new features in the 7.4 major release, see
-   <a class="xref" href="release-7-4.html" title="E.80. Release 7.4">Section E.80, &#8220;Release 7.4&#8221;</a>.
+   <a class="xref" href="release-7-4.html" title="E.84. Release 7.4">Section E.84, &#8220;Release 7.4&#8221;</a>.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2902832">E.72.1. Migration to Version 7.4.8</h3></div></div></div>
+<div class="sect2" title="E.76.1. Migration to Version 7.4.8">
+<div class="titlepage"><div><div><h3 class="title" id="id2911472">E.76.1. Migration to Version 7.4.8</h3></div></div></div>
 <p>    A dump/restore is not required for those running 7.4.X.  However,
     it is one possible way of handling two significant security problems
     that have been found in the initial contents of 7.4.X system
@@ -80,8 +80,8 @@ WHERE oid IN (
 COMMIT;</pre>
 <p>
 
-    If this command fails with a message like &#8220;<span class="quote">function
-    "dex_init(text)" does not exist</span>&#8221;, then either <code class="filename">tsearch2</code>
+    If this command fails with a message like <span class="quote">&#8220;<span class="quote">function
+    "dex_init(text)" does not exist</span>&#8221;</span>, then either <code class="filename">tsearch2</code>
     is not installed in this database, or you already did the update.
    </p>
 <p>    The above procedures must be carried out in <span class="emphasis"><em>each</em></span> database
@@ -104,28 +104,28 @@ UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2902989">E.72.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>Change encoding function signature to prevent
+<div class="sect2" title="E.76.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2911629">E.76.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>Change encoding function signature to prevent
 misuse</p></li>
-<li><p>Change <code class="filename">contrib/tsearch2</code> to avoid unsafe use of
+<li class="listitem"><p>Change <code class="filename">contrib/tsearch2</code> to avoid unsafe use of
 <code class="type">INTERNAL</code> function results</p></li>
-<li>
+<li class="listitem">
 <p>Repair ancient race condition that allowed a transaction to be
 seen as committed for some purposes (eg SELECT FOR UPDATE) slightly sooner
 than for other purposes</p>
 <p>This is an extremely serious bug since it could lead to apparent
 data inconsistencies being briefly visible to applications.</p>
 </li>
-<li>
+<li class="listitem">
 <p>Repair race condition between relation extension and
 VACUUM</p>
 <p>This could theoretically have caused loss of a page's worth of
 freshly-inserted data, although the scenario seems of very low probability.
 There are no known cases of it having caused more than an Assert failure.</p>
 </li>
-<li>
+<li class="listitem">
 <p>Fix comparisons of <code class="type">TIME WITH TIME ZONE</code> values</p>
 <p>The comparison code was wrong in the case where the
 <code class="literal">--enable-integer-datetimes</code> configuration switch had been used.
@@ -133,15 +133,15 @@ NOTE: if you have an index on a <code class="type">TIME WITH TIME ZONE</code> co
 it will need to be <code class="command">REINDEX</code>ed after installing this update, because
 the fix corrects the sort order of column values.</p>
 </li>
-<li><p>Fix <code class="function">EXTRACT(EPOCH)</code> for
+<li class="listitem"><p>Fix <code class="function">EXTRACT(EPOCH)</code> for
 <code class="type">TIME WITH TIME ZONE</code> values</p></li>
-<li>
+<li class="listitem">
 <p>Fix mis-display of negative fractional seconds in
 <code class="type">INTERVAL</code> values</p>
 <p>This error only occurred when the
 <code class="literal">--enable-integer-datetimes</code> configuration switch had been used.</p>
 </li>
-<li>
+<li class="listitem">
 <p>Ensure operations done during backend shutdown are counted by
 statistics collector</p>
 <p>This is expected to resolve reports of <span class="application">pg_autovacuum</span>
@@ -149,31 +149,31 @@ not vacuuming the system catalogs often enough &#8212; it was not being
 told about catalog deletions caused by temporary table removal during
 backend exit.</p>
 </li>
-<li><p>Additional buffer overrun checks in plpgsql
+<li class="listitem"><p>Additional buffer overrun checks in plpgsql
 (Neil)</p></li>
-<li><p>Fix pg_dump to dump trigger names containing <code class="literal">%</code>
+<li class="listitem"><p>Fix pg_dump to dump trigger names containing <code class="literal">%</code>
 correctly (Neil)</p></li>
-<li><p>Fix <code class="filename">contrib/pgcrypto</code> for newer OpenSSL builds
+<li class="listitem"><p>Fix <code class="filename">contrib/pgcrypto</code> for newer OpenSSL builds
 (Marko Kreen)</p></li>
-<li><p>Still more 64-bit fixes for
+<li class="listitem"><p>Still more 64-bit fixes for
 <code class="filename">contrib/intagg</code></p></li>
-<li><p>Prevent incorrect optimization of functions returning
+<li class="listitem"><p>Prevent incorrect optimization of functions returning
 <code class="type">RECORD</code></p></li>
-<li><p>Prevent <code class="function">to_char(interval)</code> from dumping core for
+<li class="listitem"><p>Prevent <code class="function">to_char(interval)</code> from dumping core for
 month-related formats</p></li>
-<li><p>Prevent crash on <code class="literal">COALESCE(NULL,NULL)</code></p></li>
-<li><p>Fix <code class="function">array_map</code> to call PL functions correctly</p></li>
-<li><p>Fix permission checking in <code class="command">ALTER DATABASE RENAME</code></p></li>
-<li><p>Fix <code class="command">ALTER LANGUAGE RENAME</code></p></li>
-<li>
+<li class="listitem"><p>Prevent crash on <code class="literal">COALESCE(NULL,NULL)</code></p></li>
+<li class="listitem"><p>Fix <code class="function">array_map</code> to call PL functions correctly</p></li>
+<li class="listitem"><p>Fix permission checking in <code class="command">ALTER DATABASE RENAME</code></p></li>
+<li class="listitem"><p>Fix <code class="command">ALTER LANGUAGE RENAME</code></p></li>
+<li class="listitem">
 <p>Make <code class="function">RemoveFromWaitQueue</code> clean up after itself</p>
 <p>This fixes a lock management error that would only be visible if a transaction
 was kicked out of a wait for a lock (typically by query cancel) and then the
 holder of the lock released it within a very narrow window.</p>
 </li>
-<li><p>Fix problem with untyped parameter appearing in
+<li class="listitem"><p>Fix problem with untyped parameter appearing in
 <code class="command">INSERT ... SELECT</code></p></li>
-<li><p>Fix <code class="command">CLUSTER</code> failure after
+<li class="listitem"><p>Fix <code class="command">CLUSTER</code> failure after
 <code class="command">ALTER TABLE SET WITHOUT OIDS</code></p></li>
 </ul></div>
 </div>

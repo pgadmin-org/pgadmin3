@@ -4,14 +4,14 @@
 <title>37.4. Declarations</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-structure.html" title="37.3. Structure of PL/pgSQL">
 <link rel="next" href="plpgsql-expressions.html" title="37.5. Expressions">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="37.4. Declarations">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpgsql-declarations">37.4. Declarations</h2></div></div></div>
 <p>     All variables used in a block must be declared in the
      declarations section of the block. 
@@ -61,7 +61,7 @@ url varchar := 'http://mysite.com';
 user_id CONSTANT integer := 10;</pre>
 <p>
      </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.4.1. Aliases for Function Parameters">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-declaration-aliases">37.4.1. Aliases for Function Parameters</h3></div></div></div>
 <p>      Parameters passed to functions are named with the identifiers
       <code class="literal">$1</code>, <code class="literal">$2</code>,
@@ -195,7 +195,7 @@ $$ LANGUAGE plpgsql;</pre>
 <p>
      </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.4.2. Copying Types">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-declaration-type">37.4.2. Copying Types</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>variable</code></em>%TYPE</pre>
 <p>    <code class="literal">%TYPE</code> provides the data type of a variable or
@@ -222,7 +222,7 @@ $$ LANGUAGE plpgsql;</pre>
     arguments or result placeholders.
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.4.3. Row Types">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-declaration-rowtypes">37.4.3. Row Types</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>name</code></em> <em class="replaceable"><code>table_name</code></em><code class="literal">%ROWTYPE</code>;
 <em class="replaceable"><code>name</code></em> <em class="replaceable"><code>composite_type_name</code></em>;</pre>
@@ -273,7 +273,7 @@ SELECT merge_fields(t.*) FROM table1 t WHERE ... ;</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.4.4. Record Types">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-declaration-records">37.4.4. Record Types</h3></div></div></div>
 <pre class="synopsis"><em class="replaceable"><code>name</code></em> RECORD;</pre>
 <p>    Record variables are similar to row-type variables, but they have no
@@ -295,7 +295,7 @@ SELECT merge_fields(t.*) FROM table1 t WHERE ... ;</pre>
     structure on-the-fly.
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.4.5. RENAME">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-declaration-renaming-vars">37.4.5. <code class="literal">RENAME</code></h3></div></div></div>
 <pre class="synopsis">RENAME <em class="replaceable"><code>oldname</code></em> TO <em class="replaceable"><code>newname</code></em>;</pre>
 <p>    Using the <code class="literal">RENAME</code> declaration you can change the
@@ -310,7 +310,7 @@ SELECT merge_fields(t.*) FROM table1 t WHERE ... ;</pre>
 RENAME this_var TO that_var;</pre>
 <p>
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>      <code class="literal">RENAME</code> appears to be broken as of
       <span class="productname">PostgreSQL</span> 7.3.  Fixing this is of low priority,

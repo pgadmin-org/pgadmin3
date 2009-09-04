@@ -4,33 +4,33 @@
 <title>TRUNCATE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-start-transaction.html" title="START TRANSACTION">
 <link rel="next" href="sql-unlisten.html" title="UNLISTEN">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="TRUNCATE">
 <a name="sql-truncate"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>TRUNCATE &#8212; empty a table or set of tables</p>
 </div>
-<a name="id2808820"></a><div class="refsynopsisdiv">
+<a name="id2816441"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">TRUNCATE [ TABLE ] <em class="replaceable"><code>name</code></em> [, ...] [ CASCADE | RESTRICT ]</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2808842"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2816462"></a><h2>Description</h2>
 <p>   <code class="command">TRUNCATE</code> quickly removes all rows from a set of
    tables. It has the same effect as an unqualified
    <code class="command">DELETE</code> on each table, but since it does not actually
    scan the tables it is faster. This is most useful on large tables.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2808862"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2816483"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name (optionally schema-qualified) of a table to be truncated.
@@ -46,8 +46,8 @@
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2808910"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2816530"></a><h2>Notes</h2>
 <p>   Only the owner of a table may <code class="command">TRUNCATE</code> it.
   </p>
 <p>   <code class="command">TRUNCATE</code> cannot be used on a table that has foreign-key
@@ -62,8 +62,8 @@
    DELETE</code> triggers that might exist for the tables.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2808959"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2816579"></a><h2>Examples</h2>
 <p>   Truncate the tables <code class="literal">bigtable</code> and <code class="literal">fattable</code>:
 
 </p>
@@ -79,8 +79,8 @@
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2809005"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2816625"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">TRUNCATE</code> command in the SQL standard.
   </p>
 </div>

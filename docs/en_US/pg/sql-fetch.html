@@ -4,20 +4,20 @@
 <title>FETCH</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-explain.html" title="EXPLAIN">
 <link rel="next" href="sql-grant.html" title="GRANT">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="FETCH">
 <a name="sql-fetch"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>FETCH &#8212; retrieve rows from a query using a cursor</p>
 </div>
-<a name="id2794470"></a><a name="id2794478"></a><div class="refsynopsisdiv">
+<a name="id2802073"></a><a name="id2802081"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">FETCH [ <em class="replaceable"><code>direction</code></em> { FROM | IN } ] <em class="replaceable"><code>cursorname</code></em>
 
@@ -38,8 +38,8 @@ where <em class="replaceable"><code>direction</code></em> can be empty or one of
     BACKWARD <em class="replaceable"><code>count</code></em>
     BACKWARD ALL</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2794546"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2802149"></a><h2>Description</h2>
 <p>   <code class="command">FETCH</code> retrieves rows using a previously-created cursor.
   </p>
 <p>   A cursor has an associated position, which is used by
@@ -73,8 +73,8 @@ where <em class="replaceable"><code>direction</code></em> can be empty or one of
    first row or after the last row; in which case, no row is returned.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2794684"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2802287"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>direction</code></em></span></dt>
 <dd>
@@ -155,8 +155,8 @@ where <em class="replaceable"><code>direction</code></em> can be empty or one of
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2795088"></a><h2>Outputs</h2>
+<div class="refsect1" title="Outputs">
+<a name="id2802691"></a><h2>Outputs</h2>
 <p>   On successful completion, a <code class="command">FETCH</code> command returns a command
    tag of the form
 </p>
@@ -169,8 +169,8 @@ where <em class="replaceable"><code>direction</code></em> can be empty or one of
    rows instead.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2795132"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2802735"></a><h2>Notes</h2>
 <p>   The cursor should be declared with the <code class="literal">SCROLL</code>
    option if one intends to use any variants of <code class="command">FETCH</code>
    other than <code class="command">FETCH NEXT</code> or <code class="command">FETCH FORWARD</code> with
@@ -197,8 +197,8 @@ where <em class="replaceable"><code>direction</code></em> can be empty or one of
    to change cursor position without retrieving data.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2795237"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2802840"></a><h2>Examples</h2>
 <p>   The following example traverses a table using a cursor.
 
 </p>
@@ -231,8 +231,8 @@ COMMIT WORK;</pre>
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2795265"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2802884"></a><h2>Compatibility</h2>
 <p>   The SQL standard defines <code class="command">FETCH</code> for use in
    embedded SQL only.  The variant of <code class="command">FETCH</code>
    described here returns the data as if it were a
@@ -250,8 +250,8 @@ COMMIT WORK;</pre>
    name; the option to use <code class="literal">IN</code> is an extension.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2795364"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2802983"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-close.html" title="CLOSE">CLOSE</a>, <a class="xref" href="sql-declare.html" title="DECLARE">DECLARE</a>, <a class="xref" href="sql-move.html" title="MOVE">MOVE</a></span>
 </div>
 </div></body>

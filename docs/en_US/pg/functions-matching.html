@@ -4,16 +4,16 @@
 <title>9.7. Pattern Matching</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="functions.html" title="Chapter 9. Functions and Operators">
 <link rel="prev" href="functions-bitstring.html" title="9.6. Bit String Functions and Operators">
 <link rel="next" href="functions-formatting.html" title="9.8. Data Type Formatting Functions">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="9.7. Pattern Matching">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="functions-matching">9.7. Pattern Matching</h2></div></div></div>
-<a name="id2617624"></a><p>    There are three separate approaches to pattern matching provided
+<a name="id2624973"></a><p>    There are three separate approaches to pattern matching provided
     by <span class="productname">PostgreSQL</span>: the traditional
     <acronym class="acronym">SQL</acronym> <code class="function">LIKE</code> operator, the
     more recent <code class="function">SIMILAR TO</code> operator (added in
@@ -24,15 +24,15 @@
     <code class="function">SIMILAR TO</code>-style or POSIX-style regular
     expressions.
    </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>     If you have pattern matching needs that go beyond this,
      consider writing a user-defined function in Perl or Tcl.
     </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="9.7.1. LIKE">
 <div class="titlepage"><div><div><h3 class="title" id="functions-like">9.7.1. <code class="function">LIKE</code></h3></div></div></div>
-<a name="id2617694"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
+<a name="id2625043"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
 <em class="replaceable"><code>string</code></em> NOT LIKE <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]</pre>
 <p>     Every <em class="replaceable"><code>pattern</code></em> defines a set of strings.
      The <code class="function">LIKE</code> expression returns true if the
@@ -101,9 +101,9 @@
     <span class="productname">PostgreSQL</span>-specific.
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="9.7.2. SIMILAR TO Regular Expressions">
 <div class="titlepage"><div><div><h3 class="title" id="functions-similarto-regexp">9.7.2. <code class="function">SIMILAR TO</code> Regular Expressions</h3></div></div></div>
-<a name="id2617988"></a><a name="id2617994"></a><a name="id2618000"></a><a name="id2618005"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
+<a name="id2625337"></a><a name="id2625343"></a><a name="id2625349"></a><a name="id2625354"></a><pre class="synopsis"><em class="replaceable"><code>string</code></em> SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]
 <em class="replaceable"><code>string</code></em> NOT SIMILAR TO <em class="replaceable"><code>pattern</code></em> [<span class="optional">ESCAPE <em class="replaceable"><code>escape-character</code></em></span>]</pre>
 <p>     The <code class="function">SIMILAR TO</code> operator returns true or
      false depending on whether its pattern matches the given string.
@@ -129,19 +129,19 @@
      metacharacters borrowed from POSIX regular expressions:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       <code class="literal">|</code> denotes alternation (either of two alternatives).
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       <code class="literal">|</code> denotes alternation (either of two alternatives).
       </p></li>
-<li><p>       <code class="literal">*</code> denotes repetition of the previous item zero
+<li class="listitem"><p>       <code class="literal">*</code> denotes repetition of the previous item zero
        or more times.
       </p></li>
-<li><p>       <code class="literal">+</code> denotes repetition of the previous item one
+<li class="listitem"><p>       <code class="literal">+</code> denotes repetition of the previous item one
        or more times.
       </p></li>
-<li><p>       Parentheses <code class="literal">()</code> may be used to group items into
+<li class="listitem"><p>       Parentheses <code class="literal">()</code> may be used to group items into
        a single logical item.
       </p></li>
-<li><p>       A bracket expression <code class="literal">[...]</code> specifies a character
+<li class="listitem"><p>       A bracket expression <code class="literal">[...]</code> specifies a character
        class, just as in POSIX regular expressions.
       </p></li>
 </ul></div>
@@ -183,9 +183,9 @@ substring('foobar' from '#"o_b#"%' for '#')    <em class="lineannotation"><span 
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="9.7.3. POSIX Regular Expressions">
 <div class="titlepage"><div><div><h3 class="title" id="functions-posix-regexp">9.7.3. <acronym class="acronym">POSIX</acronym> Regular Expressions</h3></div></div></div>
-<a name="id2618322"></a><p>    <a class="xref" href="functions-matching.html#functions-posix-table" title="Table 9.11. Regular Expression Match Operators">Table 9.11, &#8220;Regular Expression Match Operators&#8221;</a> lists the available
+<a name="id2625671"></a><p>    <a class="xref" href="functions-matching.html#functions-posix-table" title="Table 9.11. Regular Expression Match Operators">Table 9.11, &#8220;Regular Expression Match Operators&#8221;</a> lists the available
     operators for pattern matching using POSIX regular expressions.
    </p>
 <div class="table">
@@ -315,7 +315,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     the description of regular expressions below is copied verbatim from his
     manual entry.
    </p>
-<div class="sect3" lang="en">
+<div class="sect3" title="9.7.3.1. Regular Expression Details">
 <div class="titlepage"><div><div><h4 class="title" id="posix-syntax-details">9.7.3.1. Regular Expression Details</h4></div></div></div>
 <p>    Regular expressions (<acronym class="acronym">RE</acronym>s), as defined in
     <acronym class="acronym">POSIX</acronym> 1003.2, come in two forms:
@@ -335,7 +335,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     We first describe the ARE and ERE forms, noting features that apply
     only to AREs, and then describe how BREs differ.
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     The form of regular expressions accepted by
      <span class="productname">PostgreSQL</span> can be chosen by setting the <a class="xref" href="runtime-config-compatible.html#guc-regex-flavor">regex_flavor</a> run-time parameter.  The usual
@@ -391,7 +391,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 <tr>
 <td> <code class="literal">(?:</code><em class="replaceable"><code>re</code></em><code class="literal">)</code> </td>
 <td> as above, but the match is not noted for reporting
-       (a &#8220;<span class="quote">non-capturing</span>&#8221; set of parentheses)
+       (a <span class="quote">&#8220;<span class="quote">non-capturing</span>&#8221;</span> set of parentheses)
        (AREs only) </td>
 </tr>
 <tr>
@@ -434,7 +434,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 </div>
 <br class="table-break"><p>    An RE may not end with <code class="literal">\</code>.
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     Remember that the backslash (<code class="literal">\</code>) already has a special
      meaning in <span class="productname">PostgreSQL</span> string literals.
@@ -519,7 +519,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
      number of matches.
      See <a class="xref" href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a> for more detail.
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     A quantifier cannot immediately follow another quantifier.
      A quantifier cannot
@@ -567,7 +567,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     and all parentheses within them are considered non-capturing.
    </p>
 </div>
-<div class="sect3" lang="en">
+<div class="sect3" title="9.7.3.2. Bracket Expressions">
 <div class="titlepage"><div><div><h4 class="title" id="posix-bracket-expressions">9.7.3.2. Bracket Expressions</h4></div></div></div>
 <p>    A <em class="firstterm">bracket expression</em> is a list of
     characters enclosed in <code class="literal">[]</code>.  It normally matches
@@ -610,7 +610,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     <code class="literal">[[.ch.]]*c</code> matches the first five characters of
     <code class="literal">chchcc</code>.
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     <span class="productname">PostgreSQL</span> currently has no multicharacter collating
      elements. This information describes possible future behavior.
@@ -659,7 +659,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     are no more standard, but are certainly easier to type).
    </p>
 </div>
-<div class="sect3" lang="en">
+<div class="sect3" title="9.7.3.3. Regular Expression Escapes">
 <div class="titlepage"><div><div><h4 class="title" id="posix-escape-sequences">9.7.3.3. Regular Expression Escapes</h4></div></div></div>
 <p>    <em class="firstterm">Escapes</em> are special sequences beginning with <code class="literal">\</code>
     followed by an alphanumeric character. Escapes come in several varieties:
@@ -695,7 +695,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     Subexpressions are numbered in the order of their leading parentheses.
     Non-capturing parentheses do not define subexpressions.
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     Keep in mind that an escape's leading <code class="literal">\</code> will need to be
      doubled when entering the pattern as an SQL string constant.  For example:
@@ -937,7 +937,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<br class="table-break"><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     There is an inherent historical ambiguity between octal character-entry 
      escapes and back references, which is resolved by heuristics,
@@ -952,7 +952,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     </p>
 </div>
 </div>
-<div class="sect3" lang="en">
+<div class="sect3" title="9.7.3.4. Regular Expression Metasyntax">
 <div class="titlepage"><div><div><h4 class="title" id="posix-metasyntax">9.7.3.4. Regular Expression Metasyntax</h4></div></div></div>
 <p>    In addition to the main syntax described above, there are some special
     forms and miscellaneous syntactic facilities available.
@@ -1021,7 +1021,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 </tr>
 <tr>
 <td> <code class="literal">q</code> </td>
-<td> rest of RE is a literal (&#8220;<span class="quote">quoted</span>&#8221;) string, all ordinary
+<td> rest of RE is a literal (<span class="quote">&#8220;<span class="quote">quoted</span>&#8221;</span>) string, all ordinary
        characters </td>
 </tr>
 <tr>
@@ -1034,7 +1034,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
 </tr>
 <tr>
 <td> <code class="literal">w</code> </td>
-<td> inverse partial newline-sensitive (&#8220;<span class="quote">weird</span>&#8221;) matching
+<td> inverse partial newline-sensitive (<span class="quote">&#8220;<span class="quote">weird</span>&#8221;</span>) matching
        (see <a class="xref" href="functions-matching.html#posix-matching-rules" title="9.7.3.5. Regular Expression Matching Rules">Section 9.7.3.5, &#8220;Regular Expression Matching Rules&#8221;</a>) </td>
 </tr>
 <tr>
@@ -1059,13 +1059,13 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     There are three exceptions to that basic rule:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       a white-space character or <code class="literal">#</code> preceded by <code class="literal">\</code> is
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       a white-space character or <code class="literal">#</code> preceded by <code class="literal">\</code> is
        retained
       </p></li>
-<li><p>       white space or <code class="literal">#</code> within a bracket expression is retained
+<li class="listitem"><p>       white space or <code class="literal">#</code> within a bracket expression is retained
       </p></li>
-<li><p>       white space and comments cannot appear within multicharacter symbols,
+<li class="listitem"><p>       white space and comments cannot appear within multicharacter symbols,
        such as <code class="literal">(?:</code>
       </p></li>
 </ul></div>
@@ -1089,7 +1089,7 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
     rather than as an RE.
    </p>
 </div>
-<div class="sect3" lang="en">
+<div class="sect3" title="9.7.3.5. Regular Expression Matching Rules">
 <div class="titlepage"><div><div><h4 class="title" id="posix-matching-rules">9.7.3.5. Regular Expression Matching Rules</h4></div></div></div>
 <p>    In the event that an RE could match more than one substring of a given
     string, the RE matches the one starting earliest in the string.
@@ -1100,33 +1100,33 @@ regexp_replace('foobarbaz', 'b(..)', E'X\\1Y', 'g')
    </p>
 <p>    Whether an RE is greedy or not is determined by the following rules:
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       Most atoms, and all constraints, have no greediness attribute (because
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       Most atoms, and all constraints, have no greediness attribute (because
        they cannot match variable amounts of text anyway).
       </p></li>
-<li><p>       Adding parentheses around an RE does not change its greediness.
+<li class="listitem"><p>       Adding parentheses around an RE does not change its greediness.
       </p></li>
-<li><p>       A quantified atom with a fixed-repetition quantifier
+<li class="listitem"><p>       A quantified atom with a fixed-repetition quantifier
        (<code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">}</code>
        or
        <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">}?</code>)
        has the same greediness (possibly none) as the atom itself.
       </p></li>
-<li><p>       A quantified atom with other normal quantifiers (including
+<li class="listitem"><p>       A quantified atom with other normal quantifiers (including
        <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">,</code><em class="replaceable"><code>n</code></em><code class="literal">}</code>
        with <em class="replaceable"><code>m</code></em> equal to <em class="replaceable"><code>n</code></em>)
        is greedy (prefers longest match).
       </p></li>
-<li><p>       A quantified atom with a non-greedy quantifier (including
+<li class="listitem"><p>       A quantified atom with a non-greedy quantifier (including
        <code class="literal">{</code><em class="replaceable"><code>m</code></em><code class="literal">,</code><em class="replaceable"><code>n</code></em><code class="literal">}?</code>
        with <em class="replaceable"><code>m</code></em> equal to <em class="replaceable"><code>n</code></em>)
        is non-greedy (prefers shortest match).
       </p></li>
-<li><p>       A branch &#8212; that is, an RE that has no top-level
+<li class="listitem"><p>       A branch &#8212; that is, an RE that has no top-level
        <code class="literal">|</code> operator &#8212; has the same greediness as the first
        quantified atom in it that has a greediness attribute.
       </p></li>
-<li><p>       An RE consisting of two or more branches connected by the
+<li class="listitem"><p>       An RE consisting of two or more branches connected by the
        <code class="literal">|</code> operator is always greedy.
       </p></li>
 </ul></div>
@@ -1164,7 +1164,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
     the total match length is either as long as possible or as short as
     possible, according to the attribute assigned to the whole RE.  The
     attributes assigned to the subexpressions only affect how much of that
-    match they are allowed to &#8220;<span class="quote">eat</span>&#8221; relative to each other.
+    match they are allowed to <span class="quote">&#8220;<span class="quote">eat</span>&#8221;</span> relative to each other.
    </p>
 <p>    The quantifiers <code class="literal">{1,1}</code> and <code class="literal">{1,1}?</code>
     can be used to force greediness or non-greediness, respectively,
@@ -1220,7 +1220,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
     This isn't very useful but is provided for symmetry.
    </p>
 </div>
-<div class="sect3" lang="en">
+<div class="sect3" title="9.7.3.6. Limits and Compatibility">
 <div class="titlepage"><div><div><h4 class="title" id="posix-limits-compatibility">9.7.3.6. Limits and Compatibility</h4></div></div></div>
 <p>    No particular limit is imposed on the length of REs in this
     implementation.  However,
@@ -1250,14 +1250,14 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
     recognized by pre-7.4 releases of <span class="productname">PostgreSQL</span>:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       In AREs, <code class="literal">\</code> followed by an alphanumeric character is either
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       In AREs, <code class="literal">\</code> followed by an alphanumeric character is either
        an escape or an error, while in previous releases, it was just another
        way of writing the alphanumeric.
        This should not be much of a problem because there was no reason to
        write such a sequence in earlier releases.
       </p></li>
-<li><p>       In AREs, <code class="literal">\</code> remains a special character within
+<li class="listitem"><p>       In AREs, <code class="literal">\</code> remains a special character within
        <code class="literal">[]</code>, so a literal <code class="literal">\</code> within a bracket
        expression must be written <code class="literal">\\</code>.
       </p></li>
@@ -1269,7 +1269,7 @@ SELECT SUBSTRING('XY1234Z', 'Y*?([0-9]{1,3})');
     setting <code class="varname">regex_flavor</code> to <code class="literal">extended</code>.
    </p>
 </div>
-<div class="sect3" lang="en">
+<div class="sect3" title="9.7.3.7. Basic Regular Expressions">
 <div class="titlepage"><div><div><h4 class="title" id="posix-basic-regexes">9.7.3.7. Basic Regular Expressions</h4></div></div></div>
 <p>    BREs differ from EREs in several respects.
     <code class="literal">|</code>, <code class="literal">+</code>, and <code class="literal">?</code>

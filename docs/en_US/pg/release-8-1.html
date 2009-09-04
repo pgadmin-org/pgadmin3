@@ -1,24 +1,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.32. Release 8.1</title>
+<title>E.34. Release 8.1</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-1-1.html" title="E.31. Release 8.1.1">
-<link rel="next" href="release-8-0-21.html" title="E.33. Release 8.0.21">
+<link rel="prev" href="release-8-1-1.html" title="E.33. Release 8.1.1">
+<link rel="next" href="release-8-0-22.html" title="E.35. Release 8.0.22">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1">E.32. Release 8.1</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.34. Release 8.1">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1">E.34. Release 8.1</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2005-11-08</p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2888545">E.32.1. Overview</h3></div></div></div>
+<div class="sect2" title="E.34.1. Overview">
+<div class="titlepage"><div><div><h3 class="title" id="id2896722">E.34.1. Overview</h3></div></div></div>
 <p>    Major changes in this release:
    </p>
 <div class="variablelist"><dl>
@@ -29,7 +29,7 @@
        systems. In this release, the way that locking is done in the
        buffer manager has been overhauled to reduce lock contention
        and improve scalability. The buffer manager has also been
-       changed to use a &#8220;<span class="quote">clock sweep</span>&#8221; replacement
+       changed to use a <span class="quote">&#8220;<span class="quote">clock sweep</span>&#8221;</span> replacement
        policy.
       </p></dd>
 <dt><span class="term">      Allow index scans to use an intermediate in-memory bitmap (Tom)
@@ -70,14 +70,14 @@
        other roles as members. Roles basically remove the distinction
        between users and groups. For example, a role can:
       </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>          Have login capability (optionally)
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>          Have login capability (optionally)
         </p></li>
-<li><p>         Own objects
+<li class="listitem"><p>         Own objects
         </p></li>
-<li><p>         Hold access permissions for database objects
+<li class="listitem"><p>         Hold access permissions for database objects
         </p></li>
-<li><p>         Inherit permissions from other roles it is a member of
+<li class="listitem"><p>         Inherit permissions from other roles it is a member of
         </p></li>
 </ul></div>
 <p>       Once a user logs into a role, she obtains capabilities of
@@ -122,7 +122,7 @@
      </span></dt>
 <dd><p>       This extension of the dependency mechanism prevents roles from
        being dropped while there are still database objects they own.
-       Formerly it was possible to accidentally &#8220;<span class="quote">orphan</span>&#8221; objects by
+       Formerly it was possible to accidentally <span class="quote">&#8220;<span class="quote">orphan</span>&#8221;</span> objects by
        deleting their owner.  While this could be recovered from, it
        was messy and unpleasant.
       </p></dd>
@@ -142,8 +142,8 @@
 </dd>
 </dl></div>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2888867">E.32.2. Migration to Version 8.1</h3></div></div></div>
+<div class="sect2" title="E.34.2. Migration to Version 8.1">
+<div class="titlepage"><div><div><h3 class="title" id="id2897045">E.34.2. Migration to Version 8.1</h3></div></div></div>
 <p>    A dump/restore using <span class="application">pg_dump</span> is required
     for those wishing to migrate data from any previous release.
    </p>
@@ -154,8 +154,8 @@
    </p>
 <p>    Observe the following incompatibilities:
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>      <code class="varname">add_missing_from</code> is now false by default (Neil)
      </p>
 <p>      By default, we now generate an error if a table is used in a query
@@ -171,7 +171,7 @@
       Subsequent dumps will therefore not have the problem.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Cause input of a zero-length string (<code class="literal">''</code>) for
       <code class="type">float4</code>/<code class="type">float8</code>/<code class="type">oid</code>
       to throw an error, rather than treating it as a zero (Neil)
@@ -181,7 +181,7 @@
       was announced in 8.0.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      <code class="varname">default_with_oids</code> is now false by default (Neil)
      </p>
 <p>      With this option set to false, user-created tables no longer
@@ -194,7 +194,7 @@
       which have been supported since <span class="productname">PostgreSQL</span> 6.4.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Add <code class="literal">E''</code> syntax so eventually ordinary strings can
       treat backslashes literally (Bruce)
      </p>
@@ -214,11 +214,11 @@
       does add new configuration parameters to help users migrate applications
       for future releases:
      </p>
-<div class="itemizedlist"><ul type="circle">
-<li><p>        <code class="varname">standard_conforming_strings</code> &#8212; does this release
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>        <code class="varname">standard_conforming_strings</code> &#8212; does this release
         treat backslashes literally in ordinary strings?
        </p></li>
-<li><p>       <code class="varname">escape_string_warning</code> &#8212; warn about backslashes in
+<li class="listitem"><p>       <code class="varname">escape_string_warning</code> &#8212; warn about backslashes in
        ordinary (non-E) strings
       </p></li>
 </ul></div>
@@ -242,7 +242,7 @@
       specially.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Make <code class="command">REINDEX DATABASE</code> reindex all indexes in the
       database (Tom)
      </p>
@@ -252,19 +252,19 @@
       of reindexing just the system tables.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Read-only large object descriptors now obey MVCC snapshot semantics
      </p>
 <p>      When a large object is opened with <code class="literal">INV_READ</code> (and not
       <code class="literal">INV_WRITE</code>), the data read from the descriptor will now
-      reflect a &#8220;<span class="quote">snapshot</span>&#8221; of the large object's state at the
+      reflect a <span class="quote">&#8220;<span class="quote">snapshot</span>&#8221;</span> of the large object's state at the
       time of the transaction snapshot in use by the query that called
       <code class="function">lo_open()</code>.  To obtain the old behavior of always
       returning the latest committed data, include <code class="literal">INV_WRITE</code>
       in the mode flags for <code class="function">lo_open()</code>.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Add proper dependencies for arguments of sequence functions (Tom)
      </p>
 <p>      In previous releases, sequence names passed to <code class="function">nextval()</code>,
@@ -319,7 +319,7 @@ WHERE   n.oid = c.relnamespace AND
       This process must be repeated in each database to be updated.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      In <span class="application">psql</span>, treat unquoted
       <code class="literal">\{digit}+</code> sequences as octal (Bruce)
      </p>
@@ -328,7 +328,7 @@ WHERE   n.oid = c.relnamespace AND
       as octal. This change was made for consistency.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Remove grammar productions for prefix and postfix <code class="literal">%</code>
       and <code class="literal">^</code> operators
       (Tom)
@@ -337,10 +337,10 @@ WHERE   n.oid = c.relnamespace AND
       modulus operator (<code class="literal">%</code>) with negative numbers.
      </p>
 </li>
-<li><p>      Make <code class="literal">&amp;&lt;</code> and <code class="literal">&amp;&gt;</code> for polygons
+<li class="listitem"><p>      Make <code class="literal">&amp;&lt;</code> and <code class="literal">&amp;&gt;</code> for polygons
       consistent with the box "over" operators (Tom)
      </p></li>
-<li>
+<li class="listitem">
 <p>      <code class="command">CREATE LANGUAGE</code> can ignore the provided arguments
       in favor of information from <code class="structname">pg_pltemplate</code>
       (Tom)
@@ -359,10 +359,10 @@ WHERE   n.oid = c.relnamespace AND
       more future-proof representation.
      </p>
 </li>
-<li><p>      Make <code class="function">pg_cancel_backend(int)</code> return a
+<li class="listitem"><p>      Make <code class="function">pg_cancel_backend(int)</code> return a
       <code class="type">boolean</code> rather than an <code class="type">integer</code> (Neil)
      </p></li>
-<li><p>      Some users are having problems loading UTF-8 data into 8.1.X.
+<li class="listitem"><p>      Some users are having problems loading UTF-8 data into 8.1.X.
       This is because previous versions allowed invalid UTF-8 byte
       sequences to be entered into the database, and this release
       properly accepts only valid UTF-8 sequences. One way to correct a
@@ -376,34 +376,34 @@ WHERE   n.oid = c.relnamespace AND
      </p></li>
 </ul></div>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2889557">E.32.3. Additional Changes</h3></div></div></div>
+<div class="sect2" title="E.34.3. Additional Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2897735">E.34.3. Additional Changes</h3></div></div></div>
 <p>    Below you will find a detailed account of the additional changes
     between <span class="productname">PostgreSQL</span> 8.1 and the
     previous major release.
    </p>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2889571">E.32.3.1. Performance Improvements</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       Improve GiST and R-tree index performance (Neil)
+<div class="sect3" title="E.34.3.1. Performance Improvements">
+<div class="titlepage"><div><div><h4 class="title" id="id2897749">E.34.3.1. Performance Improvements</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       Improve GiST and R-tree index performance (Neil)
       </p></li>
-<li><p>       Improve the optimizer, including auto-resizing of hash joins
+<li class="listitem"><p>       Improve the optimizer, including auto-resizing of hash joins
        (Tom)
       </p></li>
-<li><p>       Overhaul internal API in several areas
+<li class="listitem"><p>       Overhaul internal API in several areas
       </p></li>
-<li>
+<li class="listitem">
 <p>       Change WAL record CRCs from 64-bit to 32-bit (Tom)
       </p>
 <p>       We determined that the extra cost of computing 64-bit CRCs was
        significant, and the gain in reliability too marginal to justify it.
       </p>
 </li>
-<li><p>       Prevent writing large empty gaps in WAL pages (Tom)
+<li class="listitem"><p>       Prevent writing large empty gaps in WAL pages (Tom)
       </p></li>
-<li><p>       Improve spinlock behavior on SMP machines, particularly Opterons (Tom)
+<li class="listitem"><p>       Improve spinlock behavior on SMP machines, particularly Opterons (Tom)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Allow nonconsecutive index columns to be used in a multicolumn
        index (Tom)
       </p>
@@ -411,7 +411,7 @@ WHERE   n.oid = c.relnamespace AND
        a query with <code class="command">WHERE a = 4 and c = 10</code>.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Skip WAL logging for <code class="command">CREATE TABLE AS</code> /
        <code class="command">SELECT INTO</code> (Simon)
       </p>
@@ -421,9 +421,9 @@ WHERE   n.oid = c.relnamespace AND
        archiving is enabled, however.)
       </p>
 </li>
-<li><p>       Allow concurrent GiST index access (Teodor, Oleg)
+<li class="listitem"><p>       Allow concurrent GiST index access (Teodor, Oleg)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Add configuration parameter <code class="varname">full_page_writes</code> to
        control writing full pages to WAL (Bruce)
       </p>
@@ -435,7 +435,7 @@ WHERE   n.oid = c.relnamespace AND
        partial page writes cannot happen.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Use <code class="literal">O_DIRECT</code> if available when using
        <code class="literal">O_SYNC</code> for <code class="varname">wal_sync_method</code>
        (Itagaki Takahiro)
@@ -444,24 +444,24 @@ WHERE   n.oid = c.relnamespace AND
        cache, and for WAL writes, this improves performance.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Improve <code class="command">COPY FROM</code> performance (Alon Goldshuv)
       </p>
 <p>       This was accomplished by reading <code class="command">COPY</code> input in
        larger chunks, rather than character by character.
       </p>
 </li>
-<li><p>       Improve the performance of <code class="function">COUNT()</code>,
+<li class="listitem"><p>       Improve the performance of <code class="function">COUNT()</code>,
        <code class="function">SUM</code>, <code class="function">AVG()</code>,
        <code class="function">STDDEV()</code>, and
        <code class="function">VARIANCE()</code> (Neil, Tom)
       </p></li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2889762">E.32.3.2. Server Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect3" title="E.34.3.2. Server Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2897945">E.34.3.2. Server Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>       Prevent problems due to transaction ID (XID) wraparound (Tom)
       </p>
 <p>       The server will now warn when the transaction counter approaches
@@ -470,35 +470,35 @@ WHERE   n.oid = c.relnamespace AND
        not lost before needed vacuuming is performed.
       </p>
 </li>
-<li><p>       Fix problems with object IDs (OIDs) conflicting with existing system
+<li class="listitem"><p>       Fix problems with object IDs (OIDs) conflicting with existing system
        objects after the OID counter has wrapped around (Tom)
       </p></li>
-<li><p>       Add warning about the need to increase
+<li class="listitem"><p>       Add warning about the need to increase
        <code class="varname">max_fsm_relations</code> and <code class="varname">max_fsm_pages</code>
        during <code class="command">VACUUM</code> (Ron Mayer)
       </p></li>
-<li><p>       Add <code class="varname">temp_buffers</code> configuration parameter to allow
+<li class="listitem"><p>       Add <code class="varname">temp_buffers</code> configuration parameter to allow
        users to determine the size of the local buffer area for
        temporary table access (Tom)
       </p></li>
-<li><p>       Add session start time and client IP address to
+<li class="listitem"><p>       Add session start time and client IP address to
        <code class="literal">pg_stat_activity</code> (Magnus)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Adjust <code class="literal">pg_stat</code> views for bitmap scans (Tom)
       </p>
 <p>       The meanings of some of the fields have changed slightly.
       </p>
 </li>
-<li><p>       Enhance <code class="literal">pg_locks</code> view (Tom)
+<li class="listitem"><p>       Enhance <code class="literal">pg_locks</code> view (Tom)
       </p></li>
-<li><p>       Log queries for client-side <code class="command">PREPARE</code> and
+<li class="listitem"><p>       Log queries for client-side <code class="command">PREPARE</code> and
        <code class="command">EXECUTE</code> (Simon)
       </p></li>
-<li><p>       Allow Kerberos name and user name case sensitivity to be
+<li class="listitem"><p>       Allow Kerberos name and user name case sensitivity to be
        specified in <code class="filename">postgresql.conf</code> (Magnus)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Add configuration parameter <code class="varname">krb_server_hostname</code> so
        that the server host name can be specified as part of service
        principal (Todd Kover)
@@ -508,17 +508,17 @@ WHERE   n.oid = c.relnamespace AND
        this release.
       </p>
 </li>
-<li><p>       Add <code class="varname">log_line_prefix</code> options for millisecond
+<li class="listitem"><p>       Add <code class="varname">log_line_prefix</code> options for millisecond
        timestamps (<code class="literal">%m</code>) and remote host (<code class="literal">%h</code>) (Ed
        L.)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Add WAL logging for GiST indexes (Teodor, Oleg)
       </p>
 <p>       GiST indexes are now safe for crash and point-in-time recovery.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Remove old <code class="filename">*.backup</code> files when we do
        <code class="function">pg_stop_backup()</code> (Bruce)
       </p>
@@ -526,7 +526,7 @@ WHERE   n.oid = c.relnamespace AND
        existing in <code class="filename">pg_xlog/</code>.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add configuration parameters to control TCP/IP keep-alive
        times for idle, interval, and count (Oliver Jowett)
       </p>
@@ -534,7 +534,7 @@ WHERE   n.oid = c.relnamespace AND
        lost client connections.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add per-user and per-database connection limits (Petr Jelinek)
       </p>
 <p>       Using <code class="command">ALTER USER</code> and <code class="command">ALTER DATABASE</code>,
@@ -543,20 +543,20 @@ WHERE   n.oid = c.relnamespace AND
        Setting the limit to zero disables user or database connections.
       </p>
 </li>
-<li><p>       Allow more than two gigabytes of shared memory and per-backend
+<li class="listitem"><p>       Allow more than two gigabytes of shared memory and per-backend
        work memory on 64-bit machines (Koichi Suzuki)
       </p></li>
-<li><p>       New system catalog <code class="structname">pg_pltemplate</code> allows overriding
+<li class="listitem"><p>       New system catalog <code class="structname">pg_pltemplate</code> allows overriding
        obsolete procedural-language definitions in dump files (Tom)
       </p></li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2889994">E.32.3.3. Query Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       Add temporary views (Koju Iijima, Neil)
+<div class="sect3" title="E.34.3.3. Query Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2898176">E.34.3.3. Query Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       Add temporary views (Koju Iijima, Neil)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Fix <code class="command">HAVING</code> without any aggregate functions or
        <code class="command">GROUP BY</code> so that the query returns a single group (Tom)
       </p>
@@ -564,7 +564,7 @@ WHERE   n.oid = c.relnamespace AND
        clause the same as a <code class="command">WHERE</code> clause.  This was not per spec.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="command">USING</code> clause to allow additional tables to be
        specified to <code class="command">DELETE</code> (Euler Taveira de Oliveira, Neil)
       </p>
@@ -574,7 +574,7 @@ WHERE   n.oid = c.relnamespace AND
        clause for this purpose.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add support for <code class="literal">\x</code> hex escapes in backend and ecpg
        strings (Bruce)
       </p>
@@ -582,7 +582,7 @@ WHERE   n.oid = c.relnamespace AND
        Octal escapes were already supported.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="command">BETWEEN SYMMETRIC</code> query syntax (Pavel Stehule)
       </p>
 <p>       This feature allows <code class="command">BETWEEN</code> comparisons without
@@ -592,7 +592,7 @@ WHERE   n.oid = c.relnamespace AND
        true. <code class="command">BETWEEN ASYMMETRIC</code> was already supported.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="command">NOWAIT</code> option to <code class="command">SELECT ... FOR
        UPDATE/SHARE</code> (Hans-Juergen Schoenig)
       </p>
@@ -605,10 +605,10 @@ WHERE   n.oid = c.relnamespace AND
 </li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2890174">E.32.3.4. Object Manipulation Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect3" title="E.34.3.4. Object Manipulation Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2898357">E.34.3.4. Object Manipulation Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>       Track dependencies of shared objects (Alvaro)
       </p>
 <p>       <span class="productname">PostgreSQL</span> allows global tables
@@ -620,7 +620,7 @@ WHERE   n.oid = c.relnamespace AND
        existed for database-local objects.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Allow limited <code class="command">ALTER OWNER</code> commands to be performed
        by the object owner (Stephen Frost)
       </p>
@@ -632,22 +632,22 @@ WHERE   n.oid = c.relnamespace AND
        afresh).
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="command">ALTER</code> object <code class="command">SET SCHEMA</code> capability
        for some object types (tables, functions, types) (Bernd Helmle)
       </p>
 <p>       This allows objects to be moved to different schemas.
       </p>
 </li>
-<li><p>       Add <code class="command">ALTER TABLE ENABLE/DISABLE TRIGGER</code> to
+<li class="listitem"><p>       Add <code class="command">ALTER TABLE ENABLE/DISABLE TRIGGER</code> to
        disable triggers (Satoshi Nagayasu)
       </p></li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2890249">E.32.3.5. Utility Command Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect3" title="E.34.3.5. Utility Command Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2898431">E.34.3.5. Utility Command Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>       Allow <code class="command">TRUNCATE</code> to truncate multiple tables in a
        single command (Alvaro)
       </p>
@@ -659,7 +659,7 @@ WHERE   n.oid = c.relnamespace AND
        <code class="command">TRUNCATE</code> command.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Properly process carriage returns and line feeds in
        <code class="command">COPY CSV</code> mode (Andrew)
       </p>
@@ -668,7 +668,7 @@ WHERE   n.oid = c.relnamespace AND
        documented on the TODO list.)
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="command">COPY WITH CSV HEADER</code> to allow a header line as
        the first line in <code class="command">COPY</code> (Andrew)
       </p>
@@ -678,10 +678,10 @@ WHERE   n.oid = c.relnamespace AND
        and for <code class="command">COPY FROM</code>, the first line is ignored.
       </p>
 </li>
-<li><p>       On Windows, display better sub-second precision in
+<li class="listitem"><p>       On Windows, display better sub-second precision in
        <code class="command">EXPLAIN ANALYZE</code> (Magnus)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Add trigger duration display to <code class="command">EXPLAIN ANALYZE</code>
        (Tom)
       </p>
@@ -690,14 +690,14 @@ WHERE   n.oid = c.relnamespace AND
        possible to see how much time is spent in each trigger.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add support for <code class="literal">\x</code> hex escapes in <code class="command">COPY</code>
        (Sergey Ten)
       </p>
 <p>       Previous releases only supported octal escapes.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Make <code class="command">SHOW ALL</code> include variable descriptions
        (Matthias Schmidt)
       </p>
@@ -705,7 +705,7 @@ WHERE   n.oid = c.relnamespace AND
        value and does not include the description.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Make <span class="application">initdb</span> create a new standard
        database called <code class="literal">postgres</code>, and convert utilities to
        use <code class="literal">postgres</code> rather than <code class="literal">template1</code> for
@@ -722,19 +722,19 @@ WHERE   n.oid = c.relnamespace AND
        <code class="literal">template1</code> during <code class="command">CREATE DATABASE</code>.
       </p>
 </li>
-<li><p>       Create new <span class="application">reindexdb</span> command-line
+<li class="listitem"><p>       Create new <span class="application">reindexdb</span> command-line
        utility by moving <code class="filename">/contrib/reindexdb</code> into the
        server (Euler Taveira de Oliveira)
       </p></li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2890503">E.32.3.6. Data Type and Function Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       Add <code class="function">MAX()</code> and <code class="function">MIN()</code> aggregates for
+<div class="sect3" title="E.34.3.6. Data Type and Function Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2898685">E.34.3.6. Data Type and Function Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       Add <code class="function">MAX()</code> and <code class="function">MIN()</code> aggregates for
        array types (Koju Iijima)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Fix <code class="function">to_date()</code> and <code class="function">to_timestamp()</code> to
        behave reasonably when <code class="literal">CC</code> and <code class="literal">YY</code> fields
        are both used (Karel Zak)
@@ -745,13 +745,13 @@ WHERE   n.oid = c.relnamespace AND
        shorter, interpret <code class="literal">CC</code> as the previous century.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="function">md5(bytea)</code> (Abhijit Menon-Sen)
       </p>
 <p>       <code class="function">md5(text)</code> already existed.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add support for <code class="command">numeric ^ numeric</code> based on
        <code class="function">power(numeric, numeric)</code>
       </p>
@@ -759,7 +759,7 @@ WHERE   n.oid = c.relnamespace AND
        to it.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Fix <code class="type">NUMERIC</code> modulus by properly truncating the quotient
        during computation (Bruce)
       </p>
@@ -767,7 +767,7 @@ WHERE   n.oid = c.relnamespace AND
        returned negative results due to rounding of the quotient.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add a function <code class="function">lastval()</code> (Dennis Björklund)
       </p>
 <p>       <code class="function">lastval()</code> is a simplified version of
@@ -776,17 +776,17 @@ WHERE   n.oid = c.relnamespace AND
        <code class="function">setval()</code> call performed by the current session.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="function">to_timestamp(DOUBLE PRECISION) (Michael Glaesemann)</code>
       </p>
 <p>       Converts Unix seconds since 1970 to a <code class="type">TIMESTAMP WITH
        TIMEZONE</code>.
       </p>
 </li>
-<li><p>       Add <code class="function">pg_postmaster_start_time()</code> function (Euler
+<li class="listitem"><p>       Add <code class="function">pg_postmaster_start_time()</code> function (Euler
        Taveira de Oliveira, Matthias Schmidt)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Allow the full use of time zone names in <code class="command">AT TIME
        ZONE</code>, not just the short list previously available (Magnus)
       </p>
@@ -802,7 +802,7 @@ WHERE   n.oid = c.relnamespace AND
        date.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="function">GREATEST()</code> and <code class="function">LEAST()</code> variadic
        functions (Pavel Stehule)
       </p>
@@ -810,13 +810,13 @@ WHERE   n.oid = c.relnamespace AND
        the greatest or least value among the arguments.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="function">pg_column_size()</code> (Mark Kirkwood)
       </p>
 <p>       This returns storage size of a column, which might be compressed.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="function">regexp_replace()</code> (Atsushi Ogawa)
       </p>
 <p>       This allows regular expression replacement, like sed. An optional
@@ -824,7 +824,7 @@ WHERE   n.oid = c.relnamespace AND
        case-insensitive modes.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Fix interval division and multiplication (Bruce)
       </p>
 <p>       Previous versions sometimes returned unjustified results, like
@@ -832,22 +832,22 @@ WHERE   n.oid = c.relnamespace AND
        -6 days'</code>.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Fix roundoff behavior in timestamp, time, and interval output (Tom)
       </p>
 <p>       This fixes some cases in which the seconds field would be shown as
        <code class="literal">60</code> instead of incrementing the higher-order fields.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add a separate day field to type <code class="type">interval</code> so a one day
        interval can be distinguished from a 24 hour interval (Michael
        Glaesemann)
       </p>
 <p>       Days that contain a daylight saving time adjustment are not 24
        hours long, but typically 23 or 25 hours.  This change creates a
-       conceptual distinction between intervals of &#8220;<span class="quote">so many days</span>&#8221;
-       and intervals of &#8220;<span class="quote">so many hours</span>&#8221;.  Adding
+       conceptual distinction between intervals of <span class="quote">&#8220;<span class="quote">so many days</span>&#8221;</span>
+       and intervals of <span class="quote">&#8220;<span class="quote">so many hours</span>&#8221;</span>.  Adding
        <code class="literal">1 day</code> to a timestamp now gives the same local time on
        the next day even if a daylight saving time adjustment occurs
        between, whereas adding <code class="literal">24 hours</code> will give a different
@@ -859,7 +859,7 @@ WHERE   n.oid = c.relnamespace AND
 <p>
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="function">justify_days()</code> and <code class="function">justify_hours()</code>
        (Michael Glaesemann)
       </p>
@@ -868,21 +868,21 @@ WHERE   n.oid = c.relnamespace AND
        appropriate number of full days and hours.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Move <code class="filename">/contrib/dbsize</code> into the backend, and rename
        some of the functions (Dave Page, Andreas Pflug)
       </p>
 <p>       </p>
-<div class="itemizedlist"><ul type="circle">
-<li><p>           <code class="function">pg_tablespace_size()</code>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>           <code class="function">pg_tablespace_size()</code>
          </p></li>
-<li><p>          <code class="function">pg_database_size()</code>
+<li class="listitem"><p>          <code class="function">pg_database_size()</code>
          </p></li>
-<li><p>          <code class="function">pg_relation_size()</code>
+<li class="listitem"><p>          <code class="function">pg_relation_size()</code>
          </p></li>
-<li><p>          <code class="function">pg_total_relation_size()</code>
+<li class="listitem"><p>          <code class="function">pg_total_relation_size()</code>
          </p></li>
-<li><p>          <code class="function">pg_size_pretty()</code>
+<li class="listitem"><p>          <code class="function">pg_size_pretty()</code>
          </p></li>
 </ul></div>
 <p>
@@ -891,48 +891,48 @@ WHERE   n.oid = c.relnamespace AND
        tables.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add functions for read-only file access to the cluster directory
        (Dave Page, Andreas Pflug)
       </p>
 <p>       </p>
-<div class="itemizedlist"><ul type="circle">
-<li><p>          <code class="function">pg_stat_file()</code>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>          <code class="function">pg_stat_file()</code>
          </p></li>
-<li><p>          <code class="function">pg_read_file()</code>
+<li class="listitem"><p>          <code class="function">pg_read_file()</code>
          </p></li>
-<li><p>          <code class="function">pg_ls_dir()</code>
+<li class="listitem"><p>          <code class="function">pg_ls_dir()</code>
          </p></li>
 </ul></div>
 <p>
       </p>
 </li>
-<li><p>       Add <code class="function">pg_reload_conf()</code> to force reloading of the
+<li class="listitem"><p>       Add <code class="function">pg_reload_conf()</code> to force reloading of the
        configuration files (Dave Page, Andreas Pflug)
       </p></li>
-<li><p>       Add <code class="function">pg_rotate_logfile()</code> to force rotation of the
+<li class="listitem"><p>       Add <code class="function">pg_rotate_logfile()</code> to force rotation of the
        server log file (Dave Page, Andreas Pflug)
       </p></li>
-<li><p>       Change <code class="literal">pg_stat_*</code> views to include TOAST tables (Tom)
+<li class="listitem"><p>       Change <code class="literal">pg_stat_*</code> views to include TOAST tables (Tom)
       </p></li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2891027">E.32.3.7. Encoding and Locale Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect3" title="E.34.3.7. Encoding and Locale Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2899210">E.34.3.7. Encoding and Locale Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>       Rename some encodings to be more consistent and to follow
        international standards (Bruce)
       </p>
 <p>       </p>
-<div class="itemizedlist"><ul type="circle">
-<li><p>          <code class="literal">UNICODE</code> is now <code class="literal">UTF8</code>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem"><p>          <code class="literal">UNICODE</code> is now <code class="literal">UTF8</code>
          </p></li>
-<li><p>          <code class="literal">ALT</code> is now <code class="literal">WIN866</code>
+<li class="listitem"><p>          <code class="literal">ALT</code> is now <code class="literal">WIN866</code>
          </p></li>
-<li><p>          <code class="literal">WIN</code> is now <code class="literal">WIN1251</code>
+<li class="listitem"><p>          <code class="literal">WIN</code> is now <code class="literal">WIN1251</code>
          </p></li>
-<li><p>         <code class="literal">TCVN</code> is now <code class="literal">WIN1258</code>
+<li class="listitem"><p>         <code class="literal">TCVN</code> is now <code class="literal">WIN1258</code>
          </p></li>
 </ul></div>
 <p>
@@ -940,9 +940,9 @@ WHERE   n.oid = c.relnamespace AND
 <p>       The original names still work.
       </p>
 </li>
-<li><p>       Add support for <code class="literal">WIN1252</code> encoding (Roland Volkmann)
+<li class="listitem"><p>       Add support for <code class="literal">WIN1252</code> encoding (Roland Volkmann)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Add support for four-byte <code class="literal">UTF8</code> characters (John
        Hansen)
       </p>
@@ -951,10 +951,10 @@ WHERE   n.oid = c.relnamespace AND
        some Chinese character sets.
       </p>
 </li>
-<li><p>       Allow direct conversion between <code class="literal">EUC_JP</code> and
+<li class="listitem"><p>       Allow direct conversion between <code class="literal">EUC_JP</code> and
        <code class="literal">SJIS</code> to improve performance (Atsushi Ogawa)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Allow the UTF8 encoding to work on Windows (Magnus)
       </p>
 <p>       This is done by mapping UTF8 to the Windows-native UTF16
@@ -963,17 +963,17 @@ WHERE   n.oid = c.relnamespace AND
 </li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2891160">E.32.3.8. General Server-Side Language Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       Fix <code class="command">ALTER LANGUAGE RENAME</code> (Sergey Yatskevich)
+<div class="sect3" title="E.34.3.8. General Server-Side Language Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2899343">E.34.3.8. General Server-Side Language Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       Fix <code class="command">ALTER LANGUAGE RENAME</code> (Sergey Yatskevich)
       </p></li>
-<li><p>       Allow function characteristics, like strictness and volatility,
+<li class="listitem"><p>       Allow function characteristics, like strictness and volatility,
        to be modified via <code class="command">ALTER FUNCTION</code> (Neil)
       </p></li>
-<li><p>       Increase the maximum number of function arguments to 100 (Tom)
+<li class="listitem"><p>       Increase the maximum number of function arguments to 100 (Tom)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Allow SQL and PL/PgSQL functions to use <code class="command">OUT</code> and
        <code class="command">INOUT</code> parameters (Tom)
       </p>
@@ -988,20 +988,20 @@ WHERE   n.oid = c.relnamespace AND
        languages in future releases.)
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Move language handler functions into the <code class="literal">pg_catalog</code> schema
       </p>
 <p>       This makes it easier to drop the public schema if desired.
       </p>
 </li>
-<li><p>       Add <code class="function">SPI_getnspname()</code> to SPI (Neil)
+<li class="listitem"><p>       Add <code class="function">SPI_getnspname()</code> to SPI (Neil)
       </p></li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2891265">E.32.3.9. PL/PgSQL Server-Side Language Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect3" title="E.34.3.9. PL/PgSQL Server-Side Language Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2899447">E.34.3.9. PL/PgSQL Server-Side Language Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>       Overhaul the memory management of PL/PgSQL functions (Neil)
       </p>
 <p>       The parsetree of each function is now stored in a separate
@@ -1009,7 +1009,7 @@ WHERE   n.oid = c.relnamespace AND
        when it is no longer needed.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Check function syntax at <code class="command">CREATE FUNCTION</code> time,
        rather than at runtime (Neil)
       </p>
@@ -1017,10 +1017,10 @@ WHERE   n.oid = c.relnamespace AND
        function was executed.
       </p>
 </li>
-<li><p>       Allow <code class="command">OPEN</code> to open non-<code class="command">SELECT</code> queries
+<li class="listitem"><p>       Allow <code class="command">OPEN</code> to open non-<code class="command">SELECT</code> queries
        like <code class="command">EXPLAIN</code> and <code class="command">SHOW</code> (Tom)
       </p></li>
-<li>
+<li class="listitem">
 <p>       No longer require functions to issue a <code class="command">RETURN</code>
        statement (Tom)
       </p>
@@ -1030,12 +1030,12 @@ WHERE   n.oid = c.relnamespace AND
        return value.
       </p>
 </li>
-<li><p>       Add support for an optional <code class="command">INTO</code> clause to
+<li class="listitem"><p>       Add support for an optional <code class="command">INTO</code> clause to
        PL/PgSQL's <code class="command">EXECUTE</code> statement (Pavel Stehule, Neil)
       </p></li>
-<li><p>       Make <code class="command">CREATE TABLE AS</code> set <code class="command">ROW_COUNT</code> (Tom)
+<li class="listitem"><p>       Make <code class="command">CREATE TABLE AS</code> set <code class="command">ROW_COUNT</code> (Tom)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Define <code class="literal">SQLSTATE</code> and <code class="literal">SQLERRM</code> to return
        the <code class="literal">SQLSTATE</code> and error message of the current
        exception (Pavel Stehule, Neil)
@@ -1043,19 +1043,19 @@ WHERE   n.oid = c.relnamespace AND
 <p>       These variables are only defined inside exception blocks.
       </p>
 </li>
-<li><p>       Allow the parameters to the <code class="command">RAISE</code> statement to be
+<li class="listitem"><p>       Allow the parameters to the <code class="command">RAISE</code> statement to be
        expressions (Pavel Stehule, Neil)
       </p></li>
-<li><p>       Add a loop <code class="command">CONTINUE</code> statement (Pavel Stehule, Neil)
+<li class="listitem"><p>       Add a loop <code class="command">CONTINUE</code> statement (Pavel Stehule, Neil)
       </p></li>
-<li><p>       Allow block and loop labels (Pavel Stehule)
+<li class="listitem"><p>       Allow block and loop labels (Pavel Stehule)
       </p></li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2891440">E.32.3.10. PL/Perl Server-Side Language Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect3" title="E.34.3.10. PL/Perl Server-Side Language Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2899622">E.34.3.10. PL/Perl Server-Side Language Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>       Allow large result sets to be returned efficiently (Abhijit
        Menon-Sen)
       </p>
@@ -1063,7 +1063,7 @@ WHERE   n.oid = c.relnamespace AND
        building the entire result set in memory.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Allow one-row-at-a-time retrieval of query results (Abhijit Menon-Sen)
       </p>
 <p>       This allows functions to use <code class="function">spi_query()</code> and
@@ -1071,17 +1071,17 @@ WHERE   n.oid = c.relnamespace AND
        result set in memory.
       </p>
 </li>
-<li><p>       Force PL/Perl to handle strings as <code class="literal">UTF8</code> if the
+<li class="listitem"><p>       Force PL/Perl to handle strings as <code class="literal">UTF8</code> if the
        server encoding is <code class="literal">UTF8</code> (David Kamholz)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Add a validator function for PL/Perl (Andrew)
       </p>
 <p>       This allows syntax errors to be reported at definition time,
        rather than execution time.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Allow PL/Perl to return a Perl array when the function returns
        an array type (Andrew)
       </p>
@@ -1089,17 +1089,17 @@ WHERE   n.oid = c.relnamespace AND
        to Perl arrays.
       </p>
 </li>
-<li><p>       Allow Perl nonfatal warnings to generate <code class="command">NOTICE</code>
+<li class="listitem"><p>       Allow Perl nonfatal warnings to generate <code class="command">NOTICE</code>
        messages (Andrew)
       </p></li>
-<li><p>       Allow Perl's <code class="literal">strict</code> mode to be enabled (Andrew)
+<li class="listitem"><p>       Allow Perl's <code class="literal">strict</code> mode to be enabled (Andrew)
       </p></li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2891541">E.32.3.11. <span class="application">psql</span> Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect3" title="E.34.3.11. psql Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2899723">E.34.3.11. <span class="application">psql</span> Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>       Add <code class="command">\set ON_ERROR_ROLLBACK</code> to allow statements in
        a transaction to error without affecting the rest of the
        transaction (Greg Sabino Mullane)
@@ -1108,27 +1108,27 @@ WHERE   n.oid = c.relnamespace AND
        sub-transaction.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add support for <code class="literal">\x</code> hex strings in
        <span class="application">psql</span> variables (Bruce)
       </p>
 <p>       Octal escapes were already supported.
       </p>
 </li>
-<li><p>       Add support for <code class="command">troff -ms</code> output format (Roger
+<li class="listitem"><p>       Add support for <code class="command">troff -ms</code> output format (Roger
        Leigh)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Allow the history file location to be controlled by
        <code class="envar">HISTFILE</code> (Andreas Seltenreich)
       </p>
 <p>       This allows configuration of per-database history storage.
       </p>
 </li>
-<li><p>       Prevent <code class="command">\x</code> (expanded mode) from affecting
+<li class="listitem"><p>       Prevent <code class="command">\x</code> (expanded mode) from affecting
        the output of <code class="command">\d tablename</code> (Neil)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Add <code class="option">-L</code> option to <span class="application">psql</span> to
        log sessions (Lorne Sunley)
       </p>
@@ -1136,10 +1136,10 @@ WHERE   n.oid = c.relnamespace AND
        simple command-line activity logging functionality.
       </p>
 </li>
-<li><p>       Make <code class="command">\d</code> show the tablespaces of indexes (Qingqing
+<li class="listitem"><p>       Make <code class="command">\d</code> show the tablespaces of indexes (Qingqing
        Zhou)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Allow <span class="application">psql</span> help (<code class="command">\h</code>) to
        make a best guess on the proper help information (Greg Sabino
        Mullane)
@@ -1150,7 +1150,7 @@ WHERE   n.oid = c.relnamespace AND
        had to be removed to use <code class="command">\h</code>.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Add <code class="command">\pset numericlocale</code> to allow numbers to be
        output in a locale-aware format (Eugen Nedelcu)
       </p>
@@ -1159,7 +1159,7 @@ WHERE   n.oid = c.relnamespace AND
        output this value as <code class="literal">100.000,0</code>.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Make startup banner show both server version number and
        <span class="application">psql</span>'s version number, when they are different (Bruce)
       </p>
@@ -1169,17 +1169,17 @@ WHERE   n.oid = c.relnamespace AND
 </li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2891746">E.32.3.12. <span class="application">pg_dump</span> Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect3" title="E.34.3.12. pg_dump Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2899928">E.34.3.12. <span class="application">pg_dump</span> Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>       Add <code class="option">-n</code> / <code class="option">--schema</code> switch to
        <span class="application">pg_restore</span> (Richard van den Berg)
       </p>
 <p>       This allows just the objects in a specified schema to be restored.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Allow <span class="application">pg_dump</span> to dump large objects even in
        text mode (Tom)
       </p>
@@ -1187,12 +1187,12 @@ WHERE   n.oid = c.relnamespace AND
        <code class="option">-b</code> switch is a no-op.
       </p>
 </li>
-<li><p>       Allow <span class="application">pg_dump</span> to dump a consistent snapshot of
+<li class="listitem"><p>       Allow <span class="application">pg_dump</span> to dump a consistent snapshot of
        large objects (Tom)
       </p></li>
-<li><p>       Dump comments for large objects (Tom)
+<li class="listitem"><p>       Dump comments for large objects (Tom)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Add <code class="option">--encoding</code> to <span class="application">pg_dump</span>
        (Magnus Hagander)
       </p>
@@ -1201,7 +1201,7 @@ WHERE   n.oid = c.relnamespace AND
        transferring the dump to a machine with a different encoding.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Rely on <code class="structname">pg_pltemplate</code> for procedural languages (Tom)
       </p>
 <p>       If the call handler for a procedural language is in the
@@ -1214,76 +1214,76 @@ WHERE   n.oid = c.relnamespace AND
 </li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2891866">E.32.3.13. <span class="application">libpq</span> Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       Add a <code class="envar">PGPASSFILE</code> environment variable to specify the
+<div class="sect3" title="E.34.3.13. libpq Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2900049">E.34.3.13. <span class="application">libpq</span> Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       Add a <code class="envar">PGPASSFILE</code> environment variable to specify the
        password file's filename (Andrew)
       </p></li>
-<li><p>       Add <code class="function">lo_create()</code>, that is similar to
+<li class="listitem"><p>       Add <code class="function">lo_create()</code>, that is similar to
        <code class="function">lo_creat()</code> but allows the OID of the large object
        to be specified (Tom)
       </p></li>
-<li><p>       Make <span class="application">libpq</span> consistently return an error
+<li class="listitem"><p>       Make <span class="application">libpq</span> consistently return an error
        to the client application on <code class="function">malloc()</code>
        failure (Neil)
       </p></li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2891918">E.32.3.14. Source Code Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       Fix <span class="application">pgxs</span> to support building against a relocated
+<div class="sect3" title="E.34.3.14. Source Code Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2900100">E.34.3.14. Source Code Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       Fix <span class="application">pgxs</span> to support building against a relocated
        installation
       </p></li>
-<li><p>       Add spinlock support for the Itanium processor using Intel
+<li class="listitem"><p>       Add spinlock support for the Itanium processor using Intel
        compiler (Vikram Kalsi)
       </p></li>
-<li><p>       Add Kerberos 5 support for Windows (Magnus)
+<li class="listitem"><p>       Add Kerberos 5 support for Windows (Magnus)
       </p></li>
-<li><p>       Add Chinese FAQ (laser@pgsqldb.com)
+<li class="listitem"><p>       Add Chinese FAQ (laser@pgsqldb.com)
       </p></li>
-<li><p>       Rename Rendezvous to Bonjour to match OS/X feature renaming
+<li class="listitem"><p>       Rename Rendezvous to Bonjour to match OS/X feature renaming
        (Bruce)
       </p></li>
-<li><p>       Add support for <code class="literal">fsync_writethrough</code> on
+<li class="listitem"><p>       Add support for <code class="literal">fsync_writethrough</code> on
        Darwin (Chris Campbell)
       </p></li>
-<li><p>       Streamline the passing of information within the server, the
+<li class="listitem"><p>       Streamline the passing of information within the server, the
        optimizer, and the lock system (Tom)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Allow <span class="application">pg_config</span> to be compiled using MSVC (Andrew)
       </p>
 <p>       This is required to build DBD::Pg using <span class="application">MSVC</span>.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Remove support for Kerberos V4 (Magnus)
       </p>
 <p>       Kerberos 4 had security vulnerabilities and is no longer
        maintained.
       </p>
 </li>
-<li><p>       Code cleanups (Coverity static analysis performed by
+<li class="listitem"><p>       Code cleanups (Coverity static analysis performed by
        EnterpriseDB)
       </p></li>
-<li><p>       Modify <code class="filename">postgresql.conf</code> to use documentation defaults
+<li class="listitem"><p>       Modify <code class="filename">postgresql.conf</code> to use documentation defaults
        <code class="literal">on</code>/<code class="literal">off</code> rather than
        <code class="literal">true</code>/<code class="literal">false</code> (Bruce)
       </p></li>
-<li><p>       Enhance <span class="application">pg_config</span> to be able to report more
+<li class="listitem"><p>       Enhance <span class="application">pg_config</span> to be able to report more
        build-time values (Tom)
       </p></li>
-<li><p>       Allow <span class="application">libpq</span> to be built thread-safe
+<li class="listitem"><p>       Allow <span class="application">libpq</span> to be built thread-safe
        on Windows (Dave Page)
       </p></li>
-<li><p>       Allow IPv6 connections to be used on Windows (Andrew)
+<li class="listitem"><p>       Allow IPv6 connections to be used on Windows (Andrew)
       </p></li>
-<li><p>       Add Server Administration documentation about I/O subsystem
+<li class="listitem"><p>       Add Server Administration documentation about I/O subsystem
        reliability (Bruce)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Move private declarations from <code class="filename">gist.h</code> to
        <code class="filename">gist_private.h</code> (Neil)
       </p>
@@ -1295,7 +1295,7 @@ WHERE   n.oid = c.relnamespace AND
        index implementations should be unaffected.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Overhaul GiST memory management (Neil)
       </p>
 <p>       GiST methods are now always invoked in a short-lived memory
@@ -1307,10 +1307,10 @@ WHERE   n.oid = c.relnamespace AND
 </li>
 </ul></div>
 </div>
-<div class="sect3" lang="en">
-<div class="titlepage"><div><div><h4 class="title" id="id2892122">E.32.3.15. Contrib Changes</h4></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect3" title="E.34.3.15. Contrib Changes">
+<div class="titlepage"><div><div><h4 class="title" id="id2900304">E.34.3.15. Contrib Changes</h4></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>       Add <code class="filename">/contrib/pg_buffercache</code> contrib module (Mark
        Kirkwood)
       </p>
@@ -1318,14 +1318,14 @@ WHERE   n.oid = c.relnamespace AND
        performance tuning purposes.
       </p>
 </li>
-<li><p>       Remove <code class="filename">/contrib/array</code> because it is obsolete (Tom)
+<li class="listitem"><p>       Remove <code class="filename">/contrib/array</code> because it is obsolete (Tom)
       </p></li>
-<li><p>       Clean up the <code class="filename">/contrib/lo</code> module (Tom)
+<li class="listitem"><p>       Clean up the <code class="filename">/contrib/lo</code> module (Tom)
       </p></li>
-<li><p>       Move <code class="filename">/contrib/findoidjoins</code> to
+<li class="listitem"><p>       Move <code class="filename">/contrib/findoidjoins</code> to
        <code class="filename">/src/tools</code> (Tom)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Remove the <code class="literal">&lt;&lt;</code>, <code class="literal">&gt;&gt;</code>,
        <code class="literal">&amp;&lt;</code>, and <code class="literal">&amp;&gt;</code> operators from
        <code class="filename">/contrib/cube</code>
@@ -1333,36 +1333,36 @@ WHERE   n.oid = c.relnamespace AND
 <p>       These operators were not useful.
       </p>
 </li>
-<li><p>       Improve <code class="filename">/contrib/btree_gist</code> (Janko Richter)
+<li class="listitem"><p>       Improve <code class="filename">/contrib/btree_gist</code> (Janko Richter)
       </p></li>
-<li>
+<li class="listitem">
 <p>       Improve <code class="filename">/contrib/pgbench</code> (Tomoaki Sato, Tatsuo)
       </p>
 <p>       There is now a facility for testing with SQL command scripts given
        by the user, instead of only a hard-wired command sequence.
       </p>
 </li>
-<li>
+<li class="listitem">
 <p>       Improve <code class="filename">/contrib/pgcrypto</code> (Marko Kreen)
       </p>
-<div class="itemizedlist"><ul type="circle">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
 <p>         Implementation of OpenPGP symmetric-key and public-key encryption
         </p>
 <p>         Both RSA and Elgamal public-key algorithms are supported.
         </p>
 </li>
-<li><p>         Stand alone build: include SHA256/384/512 hashes, Fortuna PRNG
+<li class="listitem"><p>         Stand alone build: include SHA256/384/512 hashes, Fortuna PRNG
         </p></li>
-<li><p>         OpenSSL build: support 3DES, use internal AES with OpenSSL &lt; 0.9.7
+<li class="listitem"><p>         OpenSSL build: support 3DES, use internal AES with OpenSSL &lt; 0.9.7
         </p></li>
-<li>
+<li class="listitem">
 <p>         Take build parameters (OpenSSL, zlib) from <code class="filename">configure</code> result
         </p>
 <p>         There is no need to edit the <code class="filename">Makefile</code> anymore.
         </p>
 </li>
-<li><p>         Remove support for <code class="filename">libmhash</code> and <code class="filename">libmcrypt</code>
+<li class="listitem"><p>         Remove support for <code class="filename">libmhash</code> and <code class="filename">libmcrypt</code>
         </p></li>
 </ul></div>
 </li>

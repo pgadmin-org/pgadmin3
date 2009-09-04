@@ -1,27 +1,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.136. Release 1.02</title>
+<title>E.140. Release 1.02</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-1-09.html" title="E.135. Release 1.09">
-<link rel="next" href="release-1-01.html" title="E.137. Release 1.01">
+<link rel="prev" href="release-1-09.html" title="E.139. Release 1.09">
+<link rel="next" href="release-1-01.html" title="E.141. Release 1.01">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-1-02">E.136. Release 1.02</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.140. Release 1.02">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-1-02">E.140. Release 1.02</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>1996-08-01</p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2919163">E.136.1. Migration from version 1.02 to version 1.02.1</h3></div></div></div>
+<div class="sect2" title="E.140.1. Migration from version 1.02 to version 1.02.1">
+<div class="titlepage"><div><div><h3 class="title" id="id2927785">E.140.1. Migration from version 1.02 to version 1.02.1</h3></div></div></div>
 <p>Here is a new migration file for 1.02.1.  It includes the 'copy' change
 and a script to convert old <acronym class="acronym">ASCII</acronym> files.</p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>The following notes are for the benefit of users who want to migrate
 databases from <span class="productname">Postgres95</span> 1.01 and 1.02 to <span class="productname">Postgres95</span> 1.02.1.</p>
@@ -30,9 +30,9 @@ to migrate old databases, you do not need to read any further.</p>
 </div>
 <p>In order to upgrade older <span class="productname">Postgres95</span> version 1.01 or 1.02 databases to
 version 1.02.1, the following steps are required:</p>
-<div class="procedure"><ol type="1">
-<li><p>Start up a new 1.02.1 postmaster</p></li>
-<li>
+<div class="procedure"><ol class="procedure" type="1">
+<li class="step" title="Step 1"><p>Start up a new 1.02.1 postmaster</p></li>
+<li class="step" title="Step 2">
 <p>Add the new built-in functions and operators of 1.02.1 to 1.01 or 1.02
   databases.  This is done by running the new 1.02.1 server against
   your own 1.01 or 1.02 database and applying the queries attached at
@@ -49,8 +49,8 @@ not a cause for concern.</p>
 </li>
 </ol></div>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2919258">E.136.2. Dump/Reload Procedure</h3></div></div></div>
+<div class="sect2" title="E.140.2. Dump/Reload Procedure">
+<div class="titlepage"><div><div><h3 class="title" id="id2927880">E.140.2. Dump/Reload Procedure</h3></div></div></div>
 <p>If you are trying to reload a pg_dump or text-mode, <code class="literal">copy tablename to
 stdout</code> generated with a previous version, you will need to run the
 attached <code class="command">sed</code> script on the ASCII file before loading it into the
@@ -71,8 +71,8 @@ create operator !~* (leftarg = bpchar, rightarg = text, procedure = texticregexn
 create operator ~* (leftarg = varchar, rightarg = text, procedure = texticregexeq);
 create operator !~* (leftarg = varchar, rightarg = text, procedure = texticregexne);</pre>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2919310">E.136.3. Changes</h3></div></div></div>
+<div class="sect2" title="E.140.3. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2927940">E.140.3. Changes</h3></div></div></div>
 <pre class="programlisting">Source code maintenance and development
  * worldwide team of volunteers
  * the source tree now in CVS at ftp.ki.net

@@ -4,27 +4,27 @@
 <title>DECLARE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-deallocate.html" title="DEALLOCATE">
 <link rel="next" href="sql-delete.html" title="DELETE">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="DECLARE">
 <a name="sql-declare"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>DECLARE &#8212; define a cursor</p>
 </div>
-<a name="id2788226"></a><a name="id2788235"></a><div class="refsynopsisdiv">
+<a name="id2795829"></a><a name="id2795838"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">DECLARE <em class="replaceable"><code>name</code></em> [ BINARY ] [ INSENSITIVE ] [ [ NO ] SCROLL ]
     CURSOR [ { WITH | WITHOUT } HOLD ] FOR <em class="replaceable"><code>query</code></em>
     [ FOR { READ ONLY | UPDATE [ OF <em class="replaceable"><code>column</code></em> [, ...] ] } ]</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2788273"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2795876"></a><h2>Description</h2>
 <p>   <code class="command">DECLARE</code> allows a user to create cursors, which
    can be used to retrieve
    a small number of rows at a time out of a larger query. Cursors can
@@ -54,9 +54,9 @@
    handle binary cursors and expect data to come back in the text
    format.
   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
-<p>    When the client application uses the &#8220;<span class="quote">extended query</span>&#8221; protocol
+<p>    When the client application uses the <span class="quote">&#8220;<span class="quote">extended query</span>&#8221;</span> protocol
     to issue a <code class="command">FETCH</code> command, the Bind protocol message
     specifies whether data is to be retrieved in text or binary format.
     This choice overrides the way that the cursor is defined.  The concept
@@ -65,8 +65,8 @@
    </p>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2782809"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2790423"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of the cursor to be created.
@@ -133,7 +133,7 @@
    appear in any order.
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Notes">
 <a name="sql-declare-notes"></a><h2>Notes</h2>
 <p>    Unless <code class="literal">WITH HOLD</code> is specified, the cursor
     created by this command can only be used within the current
@@ -184,8 +184,8 @@
     system view.
    </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2788844"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2796447"></a><h2>Examples</h2>
 <p>   To declare a cursor:
 </p>
 <pre class="programlisting">DECLARE liahona CURSOR FOR SELECT * FROM films;</pre>
@@ -194,8 +194,8 @@
    examples of cursor usage.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2788866"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2796469"></a><h2>Compatibility</h2>
 <p>   The SQL standard allows cursors only in embedded
    <acronym class="acronym">SQL</acronym> and in modules. <span class="productname">PostgreSQL</span>
    permits cursors to be used interactively.
@@ -207,8 +207,8 @@
    extension.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2788902"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2796504"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-close.html" title="CLOSE">CLOSE</a>, <a class="xref" href="sql-fetch.html" title="FETCH">FETCH</a>, <a class="xref" href="sql-move.html" title="MOVE">MOVE</a></span>
 </div>
 </div></body>

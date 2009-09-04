@@ -4,20 +4,20 @@
 <title>CREATE OPERATOR CLASS</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createoperator.html" title="CREATE OPERATOR">
 <link rel="next" href="sql-createrole.html" title="CREATE ROLE">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="CREATE OPERATOR CLASS">
 <a name="sql-createopclass"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE OPERATOR CLASS &#8212; define a new operator class</p>
 </div>
-<a name="id2778629"></a><div class="refsynopsisdiv">
+<a name="id2786244"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE OPERATOR CLASS <em class="replaceable"><code>name</code></em> [ DEFAULT ] FOR TYPE <em class="replaceable"><code>data_type</code></em> USING <em class="replaceable"><code>index_method</code></em> AS
   {  OPERATOR <em class="replaceable"><code>strategy_number</code></em> <em class="replaceable"><code>operator_name</code></em> [ ( <em class="replaceable"><code>op_type</code></em>, <em class="replaceable"><code>op_type</code></em> ) ] [ RECHECK ]
@@ -25,12 +25,12 @@
    | STORAGE <em class="replaceable"><code>storage_type</code></em>
   } [, ... ]</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2778700"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2786314"></a><h2>Description</h2>
 <p>   <code class="command">CREATE OPERATOR CLASS</code> creates a new operator class.
    An operator class defines how a particular data type can be used with
    an index.  The operator class specifies that certain operators will fill
-   particular roles or &#8220;<span class="quote">strategies</span>&#8221; for this data type and this
+   particular roles or <span class="quote">&#8220;<span class="quote">strategies</span>&#8221;</span> for this data type and this
    index method.  The operator class also specifies the support procedures to
    be used by 
    the index method when the operator class is selected for an
@@ -56,8 +56,8 @@
 <p>   Refer to <a class="xref" href="xindex.html" title="33.14. Interfacing Extensions To Indexes">Section 33.14, &#8220;Interfacing Extensions To Indexes&#8221;</a> for further information.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2778754"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2786369"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of the operator class to be created.  The name may be
@@ -89,7 +89,7 @@
       as the operator class's data type.
      </p></dd>
 <dt><span class="term"><code class="literal">RECHECK</code></span></dt>
-<dd><p>      If present, the index is &#8220;<span class="quote">lossy</span>&#8221; for this operator, and
+<dd><p>      If present, the index is <span class="quote">&#8220;<span class="quote">lossy</span>&#8221;</span> for this operator, and
       so the rows retrieved using the index must be rechecked to
       verify that they actually satisfy the qualification clause
       involving this operator.
@@ -117,8 +117,8 @@
    clauses may appear in any order.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2778935"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2786549"></a><h2>Notes</h2>
 <p>   Because the index machinery does not check access permissions on functions
    before using them, including a function or operator in an operator class
    is tantamount to granting public execute permission on it.  This is usually
@@ -130,8 +130,8 @@
    the optimizer from recognizing that the query matches an index.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2778951"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2786566"></a><h2>Examples</h2>
 <p>   The following example command defines a GiST index operator class
    for the data type <code class="literal">_int4</code> (array of <code class="type">int4</code>).  See
    <code class="filename">contrib/intarray/</code> for the complete example.
@@ -151,16 +151,16 @@
         FUNCTION        6       g_int_picksplit (internal, internal),
         FUNCTION        7       g_int_same (_int4, _int4, internal);</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2779012"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2786626"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE OPERATOR CLASS</code> is a
    <span class="productname">PostgreSQL</span> extension.  There is no
    <code class="command">CREATE OPERATOR CLASS</code> statement in the SQL
    standard.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2779034"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2786648"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-alteropclass.html" title="ALTER OPERATOR CLASS">ALTER OPERATOR CLASS</a>, <a class="xref" href="sql-dropopclass.html" title="DROP OPERATOR CLASS">DROP OPERATOR CLASS</a></span>
 </div>
 </div></body>

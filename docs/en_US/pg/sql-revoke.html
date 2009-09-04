@@ -4,20 +4,20 @@
 <title>REVOKE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-reset.html" title="RESET">
 <link rel="next" href="sql-rollback.html" title="ROLLBACK">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="REVOKE">
 <a name="sql-revoke"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>REVOKE &#8212; remove access privileges</p>
 </div>
-<a name="id2800870"></a><div class="refsynopsisdiv">
+<a name="id2808484"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">REVOKE [ GRANT OPTION FOR ]
     { { SELECT | INSERT | UPDATE | DELETE | REFERENCES | TRIGGER }
@@ -67,7 +67,7 @@ REVOKE [ ADMIN OPTION FOR ]
     <em class="replaceable"><code>role</code></em> [, ...] FROM <em class="replaceable"><code>username</code></em> [, ...]
     [ CASCADE | RESTRICT ]</pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="sql-revoke-description"></a><h2>Description</h2>
 <p>   The <code class="command">REVOKE</code> command revokes previously granted
    privileges from one or more roles.  The key word
@@ -107,7 +107,7 @@ REVOKE [ ADMIN OPTION FOR ]
    allow the noise word <code class="literal">GROUP</code>.
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Notes">
 <a name="sql-revoke-notes"></a><h2>Notes</h2>
 <p>   Use <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle"><a name="app-psql-title"></a><span class="application">psql</span></span></a>'s <code class="command">\z</code> command to
    display the privileges granted on existing objects.  See <a class="xref" href="sql-grant.html" title="GRANT">GRANT</a> for information about the format.
@@ -163,7 +163,7 @@ REVOKE [ ADMIN OPTION FOR ]
     revoking anything at all.
    </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Examples">
 <a name="sql-revoke-examples"></a><h2>Examples</h2>
 <p>   Revoke insert privilege for the public on table
    <code class="literal">films</code>:
@@ -179,8 +179,8 @@ REVOKE [ ADMIN OPTION FOR ]
 <pre class="programlisting">REVOKE ALL PRIVILEGES ON kinds FROM manuel;</pre>
 <p>
 
-   Note that this actually means &#8220;<span class="quote">revoke all privileges that I
-   granted</span>&#8221;.
+   Note that this actually means <span class="quote">&#8220;<span class="quote">revoke all privileges that I
+   granted</span>&#8221;</span>.
   </p>
 <p>   Revoke membership in role <code class="literal">admins</code> from user <code class="literal">joe</code>:
 
@@ -189,7 +189,7 @@ REVOKE [ ADMIN OPTION FOR ]
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Compatibility">
 <a name="sql-revoke-compatibility"></a><h2>Compatibility</h2>
 <p>    The compatibility notes of the <a class="xref" href="sql-grant.html" title="GRANT">GRANT</a> command
     apply analogously to <code class="command">REVOKE</code>.  The syntax summary is:
@@ -205,8 +205,8 @@ REVOKE [ ADMIN OPTION FOR ]
     assumes <code class="literal">RESTRICT</code> by default.
    </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2801532"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2809153"></a><h2>See Also</h2>
 <p>   <a class="xref" href="sql-grant.html" title="GRANT">GRANT</a>
   </p>
 </div>

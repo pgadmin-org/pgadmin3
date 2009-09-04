@@ -4,19 +4,19 @@
 <title>17.5. Write Ahead Log</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-resource.html" title="17.4. Resource Consumption">
 <link rel="next" href="runtime-config-query.html" title="17.6. Query Planning">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="17.5. Write Ahead Log">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="runtime-config-wal">17.5. Write Ahead Log</h2></div></div></div>
-<p>    See also <a class="xref" href="wal-configuration.html" title="27.3. WAL Configuration">Section 27.3, &#8220;WAL Configuration&#8221;</a> for details on WAL
+<p>    See also <a class="xref" href="wal-configuration.html" title="27.3. WAL Configuration">Section 27.3, &#8220;<acronym class="acronym">WAL</acronym> Configuration&#8221;</a> for details on WAL
     tuning.
    </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.5.1. Settings">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-wal-settings">17.5.1. Settings</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
@@ -70,16 +70,16 @@
         since updates will not be forced out at all.
         Possible values are:
        </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>         <code class="literal">open_datasync</code> (write WAL files with <code class="function">open()</code> option <code class="symbol">O_DSYNC</code>)
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>         <code class="literal">open_datasync</code> (write WAL files with <code class="function">open()</code> option <code class="symbol">O_DSYNC</code>)
         </p></li>
-<li><p>         <code class="literal">fdatasync</code> (call <code class="function">fdatasync()</code> at each commit)
+<li class="listitem"><p>         <code class="literal">fdatasync</code> (call <code class="function">fdatasync()</code> at each commit)
         </p></li>
-<li><p>         <code class="literal">fsync_writethrough</code> (call <code class="function">fsync()</code> at each commit, forcing write-through of any disk write cache)
+<li class="listitem"><p>         <code class="literal">fsync_writethrough</code> (call <code class="function">fsync()</code> at each commit, forcing write-through of any disk write cache)
         </p></li>
-<li><p>         <code class="literal">fsync</code> (call <code class="function">fsync()</code> at each commit)
+<li class="listitem"><p>         <code class="literal">fsync</code> (call <code class="function">fsync()</code> at each commit)
         </p></li>
-<li><p>         <code class="literal">open_sync</code> (write WAL files with <code class="function">open()</code> option <code class="symbol">O_SYNC</code>)
+<li class="listitem"><p>         <code class="literal">open_sync</code> (write WAL files with <code class="function">open()</code> option <code class="symbol">O_SYNC</code>)
         </p></li>
 </ul></div>
 <p>        Not all of these choices are available on all platforms.
@@ -171,7 +171,7 @@
        </p></dd>
 </dl></div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.5.2. Checkpoints">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-wal-checkpoints">17.5.2. Checkpoints</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
@@ -204,7 +204,7 @@
        </p></dd>
 </dl></div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.5.3. Archiving">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-wal-archiving">17.5.3. Archiving</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>

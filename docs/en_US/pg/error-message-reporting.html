@@ -4,16 +4,16 @@
 <title>45.2. Reporting Errors Within the Server</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="source.html" title="Chapter 45. PostgreSQL Coding Conventions">
 <link rel="prev" href="source.html" title="Chapter 45. PostgreSQL Coding Conventions">
 <link rel="next" href="error-style-guide.html" title="45.3. Error Message Style Guide">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="45.2. Reporting Errors Within the Server">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="error-message-reporting">45.2. Reporting Errors Within the Server</h2></div></div></div>
-<a name="id2851984"></a><a name="id2851990"></a><p>    Error, warning, and log messages generated within the server code
+<a name="id2859596"></a><a name="id2859602"></a><p>    Error, warning, and log messages generated within the server code
     should be created using <code class="function">ereport</code>, or its older cousin
     <code class="function">elog</code>.  The use of this function is complex enough to
     require some explanation.
@@ -55,12 +55,12 @@
                  "You may need to add explicit typecasts.")));</pre>
 <p>
     This illustrates the use of format codes to embed run-time values into
-    a message text.  Also, an optional &#8220;<span class="quote">hint</span>&#8221; message is provided.
+    a message text.  Also, an optional <span class="quote">&#8220;<span class="quote">hint</span>&#8221;</span> message is provided.
    </p>
 <p>    The available auxiliary routines for <code class="function">ereport</code> are:
   </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>     <code class="function">errcode(sqlerrcode)</code> specifies the SQLSTATE error identifier
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>     <code class="function">errcode(sqlerrcode)</code> specifies the SQLSTATE error identifier
      code for the condition.  If this routine is not called, the error
      identifier defaults to
      <code class="literal">ERRCODE_INTERNAL_ERROR</code> when the error severity level is
@@ -70,38 +70,38 @@
      While these defaults are often convenient, always think whether they
      are appropriate before omitting the <code class="function">errcode()</code> call.
     </p></li>
-<li><p>     <code class="function">errmsg(const char *msg, ...)</code> specifies the primary error
+<li class="listitem"><p>     <code class="function">errmsg(const char *msg, ...)</code> specifies the primary error
      message text, and possibly run-time values to insert into it.  Insertions
      are specified by <code class="function">sprintf</code>-style format codes.  In addition to
      the standard format codes accepted by <code class="function">sprintf</code>, the format
      code <code class="literal">%m</code> can be used to insert the error message returned
      by <code class="function">strerror</code> for the current value of <code class="literal">errno</code>.
-     <sup>[<a name="id2852239" href="#ftn.id2852239" class="footnote">9</a>]</sup>
+     <sup>[<a name="id2859851" href="#ftn.id2859851" class="footnote">9</a>]</sup>
      <code class="literal">%m</code> does not require any
      corresponding entry in the parameter list for <code class="function">errmsg</code>.
      Note that the message string will be run through <code class="function">gettext</code>
      for possible localization before format codes are processed.
     </p></li>
-<li><p>     <code class="function">errmsg_internal(const char *msg, ...)</code> is the same as
+<li class="listitem"><p>     <code class="function">errmsg_internal(const char *msg, ...)</code> is the same as
      <code class="function">errmsg</code>, except that the message string will not be
      translated nor included in the internationalization message dictionary.
-     This should be used for &#8220;<span class="quote">can't happen</span>&#8221; cases that are probably
+     This should be used for <span class="quote">&#8220;<span class="quote">can't happen</span>&#8221;</span> cases that are probably
      not worth expending translation effort on.
     </p></li>
-<li><p>     <code class="function">errdetail(const char *msg, ...)</code> supplies an optional
-     &#8220;<span class="quote">detail</span>&#8221; message; this is to be used when there is additional
+<li class="listitem"><p>     <code class="function">errdetail(const char *msg, ...)</code> supplies an optional
+     <span class="quote">&#8220;<span class="quote">detail</span>&#8221;</span> message; this is to be used when there is additional
      information that seems inappropriate to put in the primary message.
      The message string is processed in just the same way as for
      <code class="function">errmsg</code>.
     </p></li>
-<li><p>     <code class="function">errhint(const char *msg, ...)</code> supplies an optional
-     &#8220;<span class="quote">hint</span>&#8221; message; this is to be used when offering suggestions
+<li class="listitem"><p>     <code class="function">errhint(const char *msg, ...)</code> supplies an optional
+     <span class="quote">&#8220;<span class="quote">hint</span>&#8221;</span> message; this is to be used when offering suggestions
      about how to fix the problem, as opposed to factual details about
      what went wrong.
      The message string is processed in just the same way as for
      <code class="function">errmsg</code>.
     </p></li>
-<li><p>     <code class="function">errcontext(const char *msg, ...)</code> is not normally called
+<li class="listitem"><p>     <code class="function">errcontext(const char *msg, ...)</code> is not normally called
      directly from an <code class="function">ereport</code> message site; rather it is used
      in <code class="literal">error_context_stack</code> callback functions to provide
      information about the context in which an error occurred, such as the
@@ -111,19 +111,19 @@
      be called more than once per <code class="function">ereport</code> call; the successive
      strings thus supplied are concatenated with separating newlines.
     </p></li>
-<li><p>     <code class="function">errposition(int cursorpos)</code> specifies the textual location
+<li class="listitem"><p>     <code class="function">errposition(int cursorpos)</code> specifies the textual location
      of an error within a query string.  Currently it is only useful for
      errors detected in the lexical and syntactic analysis phases of
      query processing.
     </p></li>
-<li><p>     <code class="function">errcode_for_file_access()</code> is a convenience function that
+<li class="listitem"><p>     <code class="function">errcode_for_file_access()</code> is a convenience function that
      selects an appropriate SQLSTATE error identifier for a failure in a
      file-access-related system call.  It uses the saved
      <code class="literal">errno</code> to determine which error code to generate.
      Usually this should be used in combination with <code class="literal">%m</code> in the
      primary error message text.
     </p></li>
-<li><p>     <code class="function">errcode_for_socket_access()</code> is a convenience function that
+<li class="listitem"><p>     <code class="function">errcode_for_socket_access()</code> is a convenience function that
      selects an appropriate SQLSTATE error identifier for a failure in a
      socket-related system call.
     </p></li>
@@ -144,7 +144,7 @@
     Therefore, <code class="function">elog</code> should be used only for internal errors and
     low-level debug logging.  Any message that is likely to be of interest to
     ordinary users should go through <code class="function">ereport</code>.  Nonetheless,
-    there are enough internal &#8220;<span class="quote">can't happen</span>&#8221; error checks in the
+    there are enough internal <span class="quote">&#8220;<span class="quote">can't happen</span>&#8221;</span> error checks in the
     system that <code class="function">elog</code> is still widely used; it is preferred for
     those messages for its notational simplicity.
    </p>
@@ -153,7 +153,7 @@
    </p>
 <div class="footnotes">
 <br><hr width="100" align="left">
-<div class="footnote"><p><sup>[<a name="ftn.id2852239" href="#id2852239" class="para">9</a>] </sup>       That is, the value that was current when the <code class="function">ereport</code> call
+<div class="footnote"><p><sup>[<a name="ftn.id2859851" href="#id2859851" class="para">9</a>] </sup>       That is, the value that was current when the <code class="function">ereport</code> call
        was reached; changes of <code class="literal">errno</code> within the auxiliary reporting
        routines will not affect it.  That would not be true if you were to
        write <code class="literal">strerror(errno)</code> explicitly in <code class="function">errmsg</code>'s

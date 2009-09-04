@@ -4,14 +4,14 @@
 <title>53.3. Structure of the Bootstrap BKI File</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="bki.html" title="Chapter 53. BKI Backend Interface">
 <link rel="prev" href="bki-commands.html" title="53.2. BKI Commands">
 <link rel="next" href="bki-example.html" title="53.4. Example">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="53.3. Structure of the Bootstrap BKI File">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="bki-structure">53.3. Structure of the Bootstrap <acronym class="acronym">BKI</acronym> File</h2></div></div></div>
 <p>   The <code class="literal">open</code> command cannot be used until the tables it uses
    exist and have entries for the table that is to be opened.
@@ -28,28 +28,28 @@
 <p>   Thus, the structure of the <code class="filename">postgres.bki</code> file has to
    be:
    </p>
-<div class="orderedlist"><ol type="1">
-<li><p>      <code class="literal">create bootstrap</code> one of the critical tables
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>      <code class="literal">create bootstrap</code> one of the critical tables
      </p></li>
-<li><p>      <code class="literal">insert</code> data describing at least the critical tables
+<li class="listitem"><p>      <code class="literal">insert</code> data describing at least the critical tables
      </p></li>
-<li><p>      <code class="literal">close</code>
+<li class="listitem"><p>      <code class="literal">close</code>
      </p></li>
-<li><p>      Repeat for the other critical tables.
+<li class="listitem"><p>      Repeat for the other critical tables.
      </p></li>
-<li><p>      <code class="literal">create</code> (without <code class="literal">bootstrap</code>) a noncritical table
+<li class="listitem"><p>      <code class="literal">create</code> (without <code class="literal">bootstrap</code>) a noncritical table
      </p></li>
-<li><p>      <code class="literal">open</code>
+<li class="listitem"><p>      <code class="literal">open</code>
      </p></li>
-<li><p>      <code class="literal">insert</code> desired data
+<li class="listitem"><p>      <code class="literal">insert</code> desired data
      </p></li>
-<li><p>      <code class="literal">close</code>
+<li class="listitem"><p>      <code class="literal">close</code>
      </p></li>
-<li><p>      Repeat for the other noncritical tables.
+<li class="listitem"><p>      Repeat for the other noncritical tables.
      </p></li>
-<li><p>      Define indexes and toast tables.
+<li class="listitem"><p>      Define indexes and toast tables.
      </p></li>
-<li><p>      <code class="literal">build indices</code>
+<li class="listitem"><p>      <code class="literal">build indices</code>
      </p></li>
 </ol></div>
 <p>

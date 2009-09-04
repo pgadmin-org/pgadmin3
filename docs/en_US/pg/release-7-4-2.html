@@ -1,28 +1,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.78. Release 7.4.2</title>
+<title>E.82. Release 7.4.2</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-4-3.html" title="E.77. Release 7.4.3">
-<link rel="next" href="release-7-4-1.html" title="E.79. Release 7.4.1">
+<link rel="prev" href="release-7-4-3.html" title="E.81. Release 7.4.3">
+<link rel="next" href="release-7-4-1.html" title="E.83. Release 7.4.1">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-2">E.78. Release 7.4.2</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.82. Release 7.4.2">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-2">E.82. Release 7.4.2</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2004-03-08</p>
 </div>
 <p>   This release contains a variety of fixes from 7.4.1.
    For information about new features in the 7.4 major release, see
-   <a class="xref" href="release-7-4.html" title="E.80. Release 7.4">Section E.80, &#8220;Release 7.4&#8221;</a>.
+   <a class="xref" href="release-7-4.html" title="E.84. Release 7.4">Section E.84, &#8220;Release 7.4&#8221;</a>.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2903803">E.78.1. Migration to Version 7.4.2</h3></div></div></div>
+<div class="sect2" title="E.82.1. Migration to Version 7.4.2">
+<div class="titlepage"><div><div><h3 class="title" id="id2912444">E.82.1. Migration to Version 7.4.2</h3></div></div></div>
 <p>    A dump/restore is not required for those running 7.4.X.  However,
     it might be advisable as the easiest method of incorporating fixes for
     two errors that have been found in the initial contents of 7.4.X system
@@ -94,43 +94,43 @@ UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2903976">E.78.2. Changes</h3></div></div></div>
+<div class="sect2" title="E.82.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2912616">E.82.2. Changes</h3></div></div></div>
 <p>   Release 7.4.2 incorporates all the fixes included in release 7.3.6,
    plus the following fixes:</p>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>Fix <code class="structname">pg_statistics</code> alignment bug that could crash optimizer</p>
 <p>See above for details about this problem.</p>
 </li>
-<li><p>Allow non-super users to update <code class="structname">pg_settings</code></p></li>
-<li><p>Fix several optimizer bugs, most of which led to
-&#8220;<span class="quote">variable not found in subplan target lists</span>&#8221; errors</p></li>
-<li><p>Avoid out-of-memory failure during startup of large multiple
+<li class="listitem"><p>Allow non-super users to update <code class="structname">pg_settings</code></p></li>
+<li class="listitem"><p>Fix several optimizer bugs, most of which led to
+<span class="quote">&#8220;<span class="quote">variable not found in subplan target lists</span>&#8221;</span> errors</p></li>
+<li class="listitem"><p>Avoid out-of-memory failure during startup of large multiple
 index scan</p></li>
-<li><p>Fix multibyte problem that could lead to &#8220;<span class="quote">out of
-memory</span>&#8221; error during <code class="command">COPY IN</code></p></li>
-<li><p>Fix problems with <code class="command">SELECT INTO</code> / <code class="command">CREATE
+<li class="listitem"><p>Fix multibyte problem that could lead to <span class="quote">&#8220;<span class="quote">out of
+memory</span>&#8221;</span> error during <code class="command">COPY IN</code></p></li>
+<li class="listitem"><p>Fix problems with <code class="command">SELECT INTO</code> / <code class="command">CREATE
 TABLE AS</code> from tables without OIDs</p></li>
-<li><p>Fix problems with <code class="filename">alter_table</code> regression test
+<li class="listitem"><p>Fix problems with <code class="filename">alter_table</code> regression test
 during parallel testing</p></li>
-<li><p>Fix problems with hitting open file limit, especially on OS X (Tom)</p></li>
-<li>
+<li class="listitem"><p>Fix problems with hitting open file limit, especially on OS X (Tom)</p></li>
+<li class="listitem">
 <p>Partial fix for Turkish-locale issues</p>
 <p>initdb will succeed now in Turkish locale, but there are still some
 inconveniences associated with the <code class="literal">i/I</code> problem.</p>
 </li>
-<li><p>Make pg_dump set client encoding on restore</p></li>
-<li><p>Other minor pg_dump fixes</p></li>
-<li><p>Allow ecpg to again use C keywords as column names (Michael)</p></li>
-<li><p>Added ecpg <code class="literal">WHENEVER NOT_FOUND</code> to
+<li class="listitem"><p>Make pg_dump set client encoding on restore</p></li>
+<li class="listitem"><p>Other minor pg_dump fixes</p></li>
+<li class="listitem"><p>Allow ecpg to again use C keywords as column names (Michael)</p></li>
+<li class="listitem"><p>Added ecpg <code class="literal">WHENEVER NOT_FOUND</code> to
 <code class="literal">SELECT/INSERT/UPDATE/DELETE</code> (Michael)</p></li>
-<li><p>Fix ecpg crash for queries calling set-returning functions (Michael)</p></li>
-<li><p>Various other ecpg fixes (Michael)</p></li>
-<li><p>Fixes for Borland compiler</p></li>
-<li><p>Thread build improvements (Bruce)</p></li>
-<li><p>Various other build fixes</p></li>
-<li><p>Various JDBC fixes</p></li>
+<li class="listitem"><p>Fix ecpg crash for queries calling set-returning functions (Michael)</p></li>
+<li class="listitem"><p>Various other ecpg fixes (Michael)</p></li>
+<li class="listitem"><p>Fixes for Borland compiler</p></li>
+<li class="listitem"><p>Thread build improvements (Bruce)</p></li>
+<li class="listitem"><p>Various other build fixes</p></li>
+<li class="listitem"><p>Various JDBC fixes</p></li>
 </ul></div>
 </div>
 </div></body>

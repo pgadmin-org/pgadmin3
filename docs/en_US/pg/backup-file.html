@@ -4,14 +4,14 @@
 <title>23.2. File System Level Backup</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="prev" href="backup.html" title="Chapter 23. Backup and Restore">
 <link rel="next" href="continuous-archiving.html" title="23.3. Continuous Archiving and Point-In-Time Recovery (PITR)">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="23.2. File System Level Backup">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="backup-file">23.2. File System Level Backup</h2></div></div></div>
 <p>   An alternative backup strategy is to directly copy the files that
    <span class="productname">PostgreSQL</span> uses to store the data in the database. In
@@ -29,8 +29,8 @@
    method:
 
    </p>
-<div class="orderedlist"><ol type="1">
-<li><p>      The database server <span class="emphasis"><em>must</em></span> be shut down in order to
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>      The database server <span class="emphasis"><em>must</em></span> be shut down in order to
       get a usable backup. Half-way measures such as disallowing all
       connections will <span class="emphasis"><em>not</em></span> work
       (mainly because <code class="command">tar</code> and similar tools do not take an
@@ -39,7 +39,7 @@
       <a class="xref" href="server-shutdown.html" title="16.5. Shutting Down the Server">Section 16.5, &#8220;Shutting Down the Server&#8221;</a>.  Needless to say that you
       also need to shut down the server before restoring the data.
      </p></li>
-<li><p>      If you have dug into the details of the file system layout of the
+<li class="listitem"><p>      If you have dug into the details of the file system layout of the
       database, you may be tempted to try to back up or restore only certain
       individual tables or databases from their respective files or
       directories. This will <span class="emphasis"><em>not</em></span> work because the
@@ -57,10 +57,10 @@
 <p>
   </p>
 <p>   An alternative file-system backup approach is to make a
-   &#8220;<span class="quote">consistent snapshot</span>&#8221; of the data directory, if the
+   <span class="quote">&#8220;<span class="quote">consistent snapshot</span>&#8221;</span> of the data directory, if the
    file system supports that functionality (and you are willing to
    trust that it is implemented correctly).  The typical procedure is
-   to make a &#8220;<span class="quote">frozen snapshot</span>&#8221; of the volume containing the
+   to make a <span class="quote">&#8220;<span class="quote">frozen snapshot</span>&#8221;</span> of the volume containing the
    database, then copy the whole data directory (not just parts, see
    above) from the snapshot to a backup device, then release the frozen
    snapshot.  This will work even while the database server is running.

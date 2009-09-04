@@ -1,29 +1,29 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.28. Release 8.1.4</title>
+<title>E.30. Release 8.1.4</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-1-5.html" title="E.27. Release 8.1.5">
-<link rel="next" href="release-8-1-3.html" title="E.29. Release 8.1.3">
+<link rel="prev" href="release-8-1-5.html" title="E.29. Release 8.1.5">
+<link rel="next" href="release-8-1-3.html" title="E.31. Release 8.1.3">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1-4">E.28. Release 8.1.4</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.30. Release 8.1.4">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1-4">E.30. Release 8.1.4</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2006-05-23</p>
 </div>
 <p>   This release contains a variety of fixes from 8.1.3,
    including patches for extremely serious security issues.
    For information about new features in the 8.1 major release, see
-   <a class="xref" href="release-8-1.html" title="E.32. Release 8.1">Section E.32, &#8220;Release 8.1&#8221;</a>.
+   <a class="xref" href="release-8-1.html" title="E.34. Release 8.1">Section E.34, &#8220;Release 8.1&#8221;</a>.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2887357">E.28.1. Migration to Version 8.1.4</h3></div></div></div>
+<div class="sect2" title="E.30.1. Migration to Version 8.1.4">
+<div class="titlepage"><div><div><h3 class="title" id="id2895535">E.30.1. Migration to Version 8.1.4</h3></div></div></div>
 <p>    A dump/restore is not required for those running 8.1.X.
     However, if you are upgrading from a version earlier than 8.1.2,
     see the release notes for 8.1.2.
@@ -39,10 +39,10 @@
     rather than relying on <span class="foreignphrase"><em class="foreignphrase">ad hoc</em></span> code to do it.
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2887392">E.28.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect2" title="E.30.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2895570">E.30.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>Change the server to reject invalidly-encoded multibyte
 characters in all cases (Tatsuo, Tom)</p>
 <p>While <span class="productname">PostgreSQL</span> has been moving in this direction for
@@ -50,7 +50,7 @@ some time, the checks are now applied uniformly to all encodings and all
 textual input, and are now always errors not merely warnings.  This change
 defends against SQL-injection attacks of the type described in CVE-2006-2313.</p>
 </li>
-<li>
+<li class="listitem">
 <p>Reject unsafe uses of <code class="literal">\'</code> in string literals</p>
 <p>As a server-side defense against SQL-injection attacks of the type
 described in CVE-2006-2314, the server now only accepts <code class="literal">''</code> and not
@@ -64,7 +64,7 @@ CVE-2006-2314 might require client-side changes; the purpose of
 <code class="varname">backslash_quote</code> is in part to make it obvious that insecure
 clients are insecure.</p>
 </li>
-<li>
+<li class="listitem">
 <p>Modify <span class="application">libpq</span>'s string-escaping routines to be
 aware of encoding considerations and
 <code class="varname">standard_conforming_strings</code></p>
@@ -75,60 +75,60 @@ Applications that use multiple <span class="productname">PostgreSQL</span> conne
 concurrently should migrate to <code class="function">PQescapeStringConn()</code> and
 <code class="function">PQescapeByteaConn()</code> to ensure that escaping is done correctly
 for the settings in use in each database connection.  Applications that
-do string escaping &#8220;<span class="quote">by hand</span>&#8221; should be modified to rely on library
+do string escaping <span class="quote">&#8220;<span class="quote">by hand</span>&#8221;</span> should be modified to rely on library
 routines instead.</p>
 </li>
-<li>
+<li class="listitem">
 <p>Fix weak key selection in pgcrypto (Marko Kreen)</p>
 <p>Errors in fortuna PRNG reseeding logic could cause a predictable
 session key to be selected by <code class="function">pgp_sym_encrypt()</code> in some cases.
 This only affects non-OpenSSL-using builds.</p>
 </li>
-<li>
+<li class="listitem">
 <p>Fix some incorrect encoding conversion functions</p>
 <p><code class="function">win1251_to_iso</code>, <code class="function">win866_to_iso</code>,
 <code class="function">euc_tw_to_big5</code>, <code class="function">euc_tw_to_mic</code>,
 <code class="function">mic_to_euc_tw</code> were all broken to varying
 extents.</p>
 </li>
-<li><p>Clean up stray remaining uses of <code class="literal">\'</code> in strings
+<li class="listitem"><p>Clean up stray remaining uses of <code class="literal">\'</code> in strings
 (Bruce, Jan)</p></li>
-<li><p>Make autovacuum visible in <code class="structname">pg_stat_activity</code>
+<li class="listitem"><p>Make autovacuum visible in <code class="structname">pg_stat_activity</code>
 (Alvaro)</p></li>
-<li>
+<li class="listitem">
 <p>Disable <code class="literal">full_page_writes</code> (Tom)</p>
 <p>In certain cases, having <code class="literal">full_page_writes</code> off would cause
 crash recovery to fail.  A proper fix will appear in 8.2; for now it's just
 disabled.</p>
 </li>
-<li><p>Various planner fixes, particularly for bitmap index scans and
+<li class="listitem"><p>Various planner fixes, particularly for bitmap index scans and
 MIN/MAX optimization (Tom)</p></li>
-<li>
+<li class="listitem">
 <p>Fix incorrect optimization in merge join (Tom)</p>
 <p>Outer joins could sometimes emit multiple copies of unmatched rows.</p>
 </li>
-<li><p>Fix crash from using and modifying a plpgsql function in the
+<li class="listitem"><p>Fix crash from using and modifying a plpgsql function in the
 same transaction</p></li>
-<li><p>Fix WAL replay for case where a B-Tree index has been
+<li class="listitem"><p>Fix WAL replay for case where a B-Tree index has been
 truncated</p></li>
-<li><p>Fix <code class="literal">SIMILAR TO</code> for patterns involving
+<li class="listitem"><p>Fix <code class="literal">SIMILAR TO</code> for patterns involving
 <code class="literal">|</code> (Tom)</p></li>
-<li><p>Fix <code class="command">SELECT INTO</code> and <code class="command">CREATE TABLE AS</code> to
+<li class="listitem"><p>Fix <code class="command">SELECT INTO</code> and <code class="command">CREATE TABLE AS</code> to
 create tables in the default tablespace, not the base directory (Kris
 Jurka)</p></li>
-<li><p>Fix server to use custom DH SSL parameters correctly (Michael
+<li class="listitem"><p>Fix server to use custom DH SSL parameters correctly (Michael
 Fuhr)</p></li>
-<li>
+<li class="listitem">
 <p>Improve qsort performance (Dann Corbit)</p>
 <p>Currently this code is only used on Solaris.</p>
 </li>
-<li><p>Fix for OS/X Bonjour on x86 systems (Ashley Clark)</p></li>
-<li><p>Fix various minor memory leaks</p></li>
-<li><p>Fix problem with password prompting on some Win32 systems
+<li class="listitem"><p>Fix for OS/X Bonjour on x86 systems (Ashley Clark)</p></li>
+<li class="listitem"><p>Fix various minor memory leaks</p></li>
+<li class="listitem"><p>Fix problem with password prompting on some Win32 systems
 (Robert Kinberg)</p></li>
-<li><p>Improve <span class="application">pg_dump</span>'s handling of default values
+<li class="listitem"><p>Improve <span class="application">pg_dump</span>'s handling of default values
 for domains</p></li>
-<li>
+<li class="listitem">
 <p>Fix <span class="application">pg_dumpall</span> to handle identically-named
 users and groups reasonably (only possible when dumping from a pre-8.1 server)
 (Tom)</p>
@@ -136,7 +136,7 @@ users and groups reasonably (only possible when dumping from a pre-8.1 server)
 <code class="literal">LOGIN</code> permission.  Formerly the merged role wouldn't have
 <code class="literal">LOGIN</code> permission, making it unusable as a user.</p>
 </li>
-<li><p>Fix <span class="application">pg_restore</span> <code class="literal">-n</code> to work as
+<li class="listitem"><p>Fix <span class="application">pg_restore</span> <code class="literal">-n</code> to work as
 documented (Tom)</p></li>
 </ul></div>
 </div>

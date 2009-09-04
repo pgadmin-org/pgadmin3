@@ -4,16 +4,16 @@
 <title>12.3. Explicit Locking</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="mvcc.html" title="Chapter 12. Concurrency Control">
 <link rel="prev" href="transaction-iso.html" title="12.2. Transaction Isolation">
 <link rel="next" href="applevel-consistency.html" title="12.4. Data Consistency Checks at the Application Level">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="12.3. Explicit Locking">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="explicit-locking">12.3. Explicit Locking</h2></div></div></div>
-<a name="id2645326"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
+<a name="id2652681"></a><p>    <span class="productname">PostgreSQL</span> provides various lock modes
     to control concurrent access to data in tables.  These modes can
     be used for application-controlled locking in situations where
     <acronym class="acronym">MVCC</acronym> does not give the desired behavior.  Also,
@@ -30,15 +30,15 @@
     system view. For more information on monitoring the status of the lock
     manager subsystem, refer to <a class="xref" href="monitoring.html" title="Chapter 25. Monitoring Database Activity">Chapter 25, <i>Monitoring Database Activity</i></a>.
    </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="12.3.1. Table-Level Locks">
 <div class="titlepage"><div><div><h3 class="title" id="locking-tables">12.3.1. Table-Level Locks</h3></div></div></div>
-<a name="id2645395"></a><p>    The list below shows the available lock modes and the contexts in
+<a name="id2652749"></a><p>    The list below shows the available lock modes and the contexts in
     which they are used automatically by
     <span class="productname">PostgreSQL</span>.  You can also acquire any
     of these locks explicitly with the command <a class="xref" href="sql-lock.html" title="LOCK">LOCK</a>.
     Remember that all of these lock modes are table-level locks,
     even if the name contains the word
-    &#8220;<span class="quote">row</span>&#8221;; the names of the lock modes are historical.
+    <span class="quote">&#8220;<span class="quote">row</span>&#8221;</span>; the names of the lock modes are historical.
     To some extent the names reflect the typical usage of each lock
     mode &#8212; but the semantics are all the same.  The only real difference
     between one lock mode and another is the set of lock modes with
@@ -53,7 +53,7 @@
     transaction at a time) while others are not self-conflicting (for example,
     an <code class="literal">ACCESS SHARE</code> lock can be held by multiple transactions).
    </p>
-<div class="variablelist">
+<div class="variablelist" title="Table-level lock modes">
 <p class="title"><b>Table-level lock modes</b></p>
 <dl>
 <dt><span class="term">        <code class="literal">ACCESS SHARE</code>
@@ -174,7 +174,7 @@
 </dd>
 </dl>
 </div>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>       Only an <code class="literal">ACCESS EXCLUSIVE</code> lock blocks a
        <code class="command">SELECT</code> (without <code class="option">FOR UPDATE/SHARE</code>)
@@ -190,7 +190,7 @@
     releases locks acquired within it.
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="12.3.2. Row-Level Locks">
 <div class="titlepage"><div><div><h3 class="title" id="locking-rows">12.3.2. Row-Level Locks</h3></div></div></div>
 <p>     In addition to table-level locks, there are row-level locks, which
      can be exclusive or shared locks.  An exclusive row-level lock on a
@@ -227,9 +227,9 @@
      page-level locks, but we mention them for completeness.
     </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="12.3.3. Deadlocks">
 <div class="titlepage"><div><div><h3 class="title" id="locking-deadlocks">12.3.3. Deadlocks</h3></div></div></div>
-<a name="id2646128"></a><p>     The use of explicit locking can increase the likelihood of
+<a name="id2653482"></a><p>     The use of explicit locking can increase the likelihood of
      <em class="firstterm">deadlocks</em>, wherein two (or more) transactions each
      hold locks that the other wants.  For example, if transaction 1
      acquires an exclusive lock on table A and then tries to acquire
@@ -298,9 +298,9 @@ UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 11111;</pre>
      (e.g., while waiting for user input).
     </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="12.3.4. Advisory Locks">
 <div class="titlepage"><div><div><h3 class="title" id="advisory-locks">12.3.4. Advisory Locks</h3></div></div></div>
-<a name="id2646262"></a><p>     <span class="productname">PostgreSQL</span> provides a means for
+<a name="id2653616"></a><p>     <span class="productname">PostgreSQL</span> provides a means for
      creating locks that have application-defined meanings.  These are
      called <em class="firstterm">advisory locks</em>, because the system does not
      enforce their use &#8212; it is up to the application to use them
@@ -332,7 +332,7 @@ UPDATE accounts SET balance = balance - 100.00 WHERE acctnum = 11111;</pre>
      depending on how the server is configured.
     </p>
 <p>     A common use of advisory locks is to emulate pessimistic locking
-     strategies typical of so called &#8220;<span class="quote">flat file</span>&#8221; data management
+     strategies typical of so called <span class="quote">&#8220;<span class="quote">flat file</span>&#8221;</span> data management
      systems.
      While a flag stored in a table could be used for the same purpose,
      advisory locks are faster, avoid MVCC bloat, and are automatically

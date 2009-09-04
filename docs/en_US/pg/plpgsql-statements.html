@@ -4,14 +4,14 @@
 <title>37.6. Basic Statements</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="plpgsql.html" title="Chapter 37. PL/pgSQL - SQL Procedural Language">
 <link rel="prev" href="plpgsql-expressions.html" title="37.5. Expressions">
 <link rel="next" href="plpgsql-control-structures.html" title="37.7. Control Structures">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="37.6. Basic Statements">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpgsql-statements">37.6. Basic Statements</h2></div></div></div>
 <p>    In this section and the following ones, we describe all the statement
     types that are explicitly understood by
@@ -21,7 +21,7 @@
     as described in <a class="xref" href="plpgsql-statements.html#plpgsql-statements-sql-noresult" title="37.6.2. Executing a Query With No Result">Section 37.6.2, &#8220;Executing a Query With No Result&#8221;</a>
     and <a class="xref" href="plpgsql-statements.html#plpgsql-statements-sql-onerow" title="37.6.3. Executing a Query with a Single-Row Result">Section 37.6.3, &#8220;Executing a Query with a Single-Row Result&#8221;</a>.
    </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.6.1. Assignment">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-assignment">37.6.1. Assignment</h3></div></div></div>
 <p>     An assignment of a value to a <span class="application">PL/pgSQL</span>
      variable or row/record field is written as:
@@ -48,7 +48,7 @@ tax := subtotal * 0.06;</pre>
 <p>
     </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.6.2. Executing a Query With No Result">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-sql-noresult">37.6.2. Executing a Query With No Result</h3></div></div></div>
 <p>     For any SQL query that does not return rows, for example
      <code class="command">INSERT</code> without a <code class="literal">RETURNING</code> clause, you can
@@ -61,7 +61,7 @@ tax := subtotal * 0.06;</pre>
      at run time.  This allows the same textual query to do different
      things in different calls of the function.
     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>      This two-step process allows
       <span class="application">PL/pgSQL</span> to plan the query just once
@@ -83,7 +83,7 @@ BEGIN
       to know it when you need to make sense of syntax-error messages.
      </p>
 </div>
-<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Caution</h3>
 <p>      <span class="application">PL/pgSQL</span> will substitute for any identifier
       matching one of the function's declared variables; it is not bright
@@ -116,7 +116,7 @@ BEGIN
      <code class="literal">FOUND</code> is set to true if the query produced at
      least one row, or false if it produced no rows.
     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>      One might expect that writing <code class="command">SELECT</code> directly
       would accomplish this result, but at
@@ -133,9 +133,9 @@ BEGIN
 <p>
     </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.6.3. Executing a Query with a Single-Row Result">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-sql-onerow">37.6.3. Executing a Query with a Single-Row Result</h3></div></div></div>
-<a name="id2743612"></a><a name="id2743624"></a><p>     The result of a SQL command yielding a single row (possibly of multiple
+<a name="id2751255"></a><a name="id2751268"></a><p>     The result of a SQL command yielding a single row (possibly of multiple
      columns) can be assigned to a record variable, row-type variable, or list
      of scalar variables.  This is done by writing the base SQL command and
      adding an <code class="literal">INTO</code> clause.  For example,
@@ -159,7 +159,7 @@ DELETE ... RETURNING <em class="replaceable"><code>expressions</code></em> INTO 
      Except for the <code class="literal">INTO</code> clause, the SQL command is the same
      as it would be written outside <span class="application">PL/pgSQL</span>.
     </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>     Note that this interpretation of <code class="command">SELECT</code> with <code class="literal">INTO</code>
      is quite different from <span class="productname">PostgreSQL</span>'s regular
@@ -187,7 +187,7 @@ DELETE ... RETURNING <em class="replaceable"><code>expressions</code></em> INTO 
 <p>     If <code class="literal">STRICT</code> is not specified, then
      <em class="replaceable"><code>target</code></em> will be set to the first row
      returned by the query, or to nulls if the query returned no rows.
-     (Note that &#8220;<span class="quote">the first row</span>&#8221; is not
+     (Note that <span class="quote">&#8220;<span class="quote">the first row</span>&#8221;</span> is not
      well-defined unless you've used <code class="literal">ORDER BY</code>.)  Any result rows
      after the first row are discarded.
      You can check the special <code class="literal">FOUND</code> variable (see
@@ -227,7 +227,7 @@ END;</pre>
      is no option such as <code class="literal">ORDER BY</code> with which to determine
      which affected row would be returned.
     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>      The <code class="literal">STRICT</code> option matches the behavior of
       Oracle PL/SQL's <code class="command">SELECT INTO</code> and related statements.
@@ -237,7 +237,7 @@ END;</pre>
      from a SQL query, see <a class="xref" href="plpgsql-control-structures.html#plpgsql-records-iterating" title="37.7.4. Looping Through Query Results">Section 37.7.4, &#8220;Looping Through Query Results&#8221;</a>.
     </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.6.4. Doing Nothing At All">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-null">37.6.4. Doing Nothing At All</h3></div></div></div>
 <p>     Sometimes a placeholder statement that does nothing is useful.
      For example, it can indicate that one arm of an if/then/else
@@ -267,7 +267,7 @@ END;</pre>
 <p>
      Which is preferable is a matter of taste.
     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>      In Oracle's PL/SQL, empty statement lists are not allowed, and so
       <code class="command">NULL</code> statements are <span class="emphasis"><em>required</em></span> for situations
@@ -276,7 +276,7 @@ END;</pre>
      </p>
 </div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.6.5. Executing Dynamic Commands">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-executing-dyn">37.6.5. Executing Dynamic Commands</h3></div></div></div>
 <p>     Oftentimes you will want to generate dynamic commands inside your
      <span class="application">PL/pgSQL</span> functions, that is, commands
@@ -345,7 +345,7 @@ END;</pre>
         || quote_literal(keyvalue);</pre>
 <p>
     </p>
-<a name="id2744286"></a><a name="id2744294"></a><p>     This example demonstrates the use of the
+<a name="id2751929"></a><a name="id2751937"></a><p>     This example demonstrates the use of the
      <code class="function">quote_ident</code> and
      <code class="function">quote_literal</code> functions.  For safety,
      expressions containing column and table identifiers should be
@@ -373,11 +373,11 @@ END;</pre>
      <span class="emphasis"><em>must</em></span> use <code class="function">quote_literal</code>.
     </p>
 <p>     A much larger example of a dynamic command and
-     <code class="command">EXECUTE</code> can be seen in <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 37.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 37.6, &#8220;Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL&#8221;</a>, which builds and executes a
+     <code class="command">EXECUTE</code> can be seen in <a class="xref" href="plpgsql-porting.html#plpgsql-porting-ex2" title="Example 37.6. Porting a Function that Creates Another Function from PL/SQL to PL/pgSQL">Example 37.6, &#8220;Porting a Function that Creates Another Function from <span class="application">PL/SQL</span> to <span class="application">PL/pgSQL</span>&#8221;</a>, which builds and executes a
      <code class="command">CREATE FUNCTION</code> command to define a new function.
     </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="37.6.6. Obtaining the Result Status">
 <div class="titlepage"><div><div><h3 class="title" id="plpgsql-statements-diagnostics">37.6.6. Obtaining the Result Status</h3></div></div></div>
 <p>     There are several ways to determine the effect of a command. The
      first method is to use the <code class="command">GET DIAGNOSTICS</code>
@@ -410,23 +410,23 @@ END;</pre>
      false within each <span class="application">PL/pgSQL</span> function call.
      It is set by each of the following types of statements:
          </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>                A <code class="command">SELECT INTO</code> statement sets 
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>                A <code class="command">SELECT INTO</code> statement sets 
                 <code class="literal">FOUND</code> true if a row is assigned, false if no
                 row is returned.
            </p></li>
-<li><p>                A <code class="command">PERFORM</code> statement sets <code class="literal">FOUND</code>
+<li class="listitem"><p>                A <code class="command">PERFORM</code> statement sets <code class="literal">FOUND</code>
                 true if it produces (and discards) a row, false if no row is
                 produced.
            </p></li>
-<li><p>                <code class="command">UPDATE</code>, <code class="command">INSERT</code>, and <code class="command">DELETE</code>
+<li class="listitem"><p>                <code class="command">UPDATE</code>, <code class="command">INSERT</code>, and <code class="command">DELETE</code>
                 statements set <code class="literal">FOUND</code> true if at least one
                 row is affected, false if no row is affected.
            </p></li>
-<li><p>                A <code class="command">FETCH</code> statement sets <code class="literal">FOUND</code>
+<li class="listitem"><p>                A <code class="command">FETCH</code> statement sets <code class="literal">FOUND</code>
                 true if it returns a row, false if no row is returned.
            </p></li>
-<li><p>                A <code class="command">FOR</code> statement sets <code class="literal">FOUND</code> true
+<li class="listitem"><p>                A <code class="command">FOR</code> statement sets <code class="literal">FOUND</code> true
                 if it iterates one or more times, else false.  This applies to
                 all three variants of the <code class="command">FOR</code> statement (integer
                 <code class="command">FOR</code> loops, record-set <code class="command">FOR</code> loops, and

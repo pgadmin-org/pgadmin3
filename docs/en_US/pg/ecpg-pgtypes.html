@@ -4,14 +4,14 @@
 <title>31.8. pgtypes library</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 31. ECPG - Embedded SQL in C">
 <link rel="prev" href="ecpg-dynamic.html" title="31.7. Dynamic SQL">
 <link rel="next" href="ecpg-informix-compat.html" title="31.9. Informix compatibility mode">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="31.8. pgtypes library">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ecpg-pgtypes">31.8. pgtypes library</h2></div></div></div>
 <p>   The pgtypes library maps <span class="productname">PostgreSQL</span> database
    types to C equivalents that can be used in C programs. It also offers
@@ -34,8 +34,8 @@ printf("Started + duration: %s\n", out);
 free(out);</pre>
 <p>
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2704465">31.8.1. The numeric type</h3></div></div></div>
+<div class="sect2" title="31.8.1. The numeric type">
+<div class="titlepage"><div><div><h3 class="title" id="id2712091">31.8.1. The numeric type</h3></div></div></div>
 <p>    The numeric type offers to do calculations with arbitrary precision. See
     <a class="xref" href="datatype.html#datatype-numeric" title="8.1. Numeric Types">Section 8.1, &#8220;Numeric Types&#8221;</a> for the equivalent type in the
     <span class="productname">PostgreSQL</span> server. Because of the arbitrary precision this
@@ -152,12 +152,12 @@ free(out);</pre>
        <code class="literal">INT_MAX</code> is returned. On success, the function
        returns one of three possible results:
        </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>          1, if <code class="literal">var1</code> is bigger than <code class="literal">var2</code>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>          1, if <code class="literal">var1</code> is bigger than <code class="literal">var2</code>
          </p></li>
-<li><p>          -1, if <code class="literal">var1</code> is smaller than <code class="literal">var2</code>
+<li class="listitem"><p>          -1, if <code class="literal">var1</code> is smaller than <code class="literal">var2</code>
          </p></li>
-<li><p>          0, if <code class="literal">var1</code> and <code class="literal">var2</code> are equal
+<li class="listitem"><p>          0, if <code class="literal">var1</code> and <code class="literal">var2</code> are equal
          </p></li>
 </ul></div>
 <p>
@@ -278,8 +278,8 @@ free(out);</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2705213">31.8.2. The date type</h3></div></div></div>
+<div class="sect2" title="31.8.2. The date type">
+<div class="titlepage"><div><div><h3 class="title" id="id2712839">31.8.2. The date type</h3></div></div></div>
 <p>    The date type in C enables your programs to deal with data of the SQL type
     date. See <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for the equivalent type in the
     <span class="productname">PostgreSQL</span> server.
@@ -319,7 +319,7 @@ free(out);</pre>
 <p>        The following input formats are allowed:
         </p>
 <div class="table">
-<a name="id2705320"></a><p class="title"><b>Table 31.1. Valid input formats for <code class="function">PGTYPESdate_from_asc</code></b></p>
+<a name="id2712946"></a><p class="title"><b>Table 31.1. Valid input formats for <code class="function">PGTYPESdate_from_asc</code></b></p>
 <div class="table-contents"><table summary="Valid input formats for PGTYPESdate_from_asc" border="1">
 <colgroup>
 <col>
@@ -460,20 +460,20 @@ free(out);</pre>
 	argument and returns an integer that indicates the day of the week for
 	this date.
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>	   0 - Sunday
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>	   0 - Sunday
           </p></li>
-<li><p>	   1 - Monday
+<li class="listitem"><p>	   1 - Monday
           </p></li>
-<li><p>	   2 - Tuesday
+<li class="listitem"><p>	   2 - Tuesday
           </p></li>
-<li><p>	   3 - Wednesday
+<li class="listitem"><p>	   3 - Wednesday
           </p></li>
-<li><p>	   4 - Thursday
+<li class="listitem"><p>	   4 - Thursday
           </p></li>
-<li><p>	   5 - Friday
+<li class="listitem"><p>	   5 - Friday
           </p></li>
-<li><p>	   6 - Saturday
+<li class="listitem"><p>	   6 - Saturday
           </p></li>
 </ul></div>
 <p>
@@ -508,18 +508,18 @@ free(out);</pre>
        </p>
 <p>        The following literals are the field specifiers you can use:
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>           <code class="literal">dd</code> - The number of the day of the month.
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>           <code class="literal">dd</code> - The number of the day of the month.
           </p></li>
-<li><p>           <code class="literal">mm</code> - The number of the month of the year.
+<li class="listitem"><p>           <code class="literal">mm</code> - The number of the month of the year.
           </p></li>
-<li><p>           <code class="literal">yy</code> - The number of the year as a two digit number.
+<li class="listitem"><p>           <code class="literal">yy</code> - The number of the year as a two digit number.
           </p></li>
-<li><p>           <code class="literal">yyyy</code> - The number of the year as a four digit number.
+<li class="listitem"><p>           <code class="literal">yyyy</code> - The number of the year as a four digit number.
           </p></li>
-<li><p>           <code class="literal">ddd</code> - The name of the day (abbreviated).
+<li class="listitem"><p>           <code class="literal">ddd</code> - The name of the day (abbreviated).
           </p></li>
-<li><p>           <code class="literal">mmm</code> - The name of the month (abbreviated).
+<li class="listitem"><p>           <code class="literal">mmm</code> - The name of the month (abbreviated).
           </p></li>
 </ul></div>
 <p>
@@ -530,7 +530,7 @@ free(out);</pre>
 	the same date: November, 23rd, 1959.
         </p>
 <div class="table">
-<a name="id2705894"></a><p class="title"><b>Table 31.2. Valid input formats for <code class="function">PGTYPESdate_fmt_asc</code></b></p>
+<a name="id2713520"></a><p class="title"><b>Table 31.2. Valid input formats for <code class="function">PGTYPESdate_fmt_asc</code></b></p>
 <div class="table-contents"><table summary="Valid input formats for PGTYPESdate_fmt_asc" border="1">
 <colgroup>
 <col>
@@ -621,7 +621,7 @@ free(out);</pre>
 	you an idea of how to use this function.
         </p>
 <div class="table">
-<a name="id2706142"></a><p class="title"><b>Table 31.3. Valid input formats for <code class="function">rdefmtdate</code></b></p>
+<a name="id2713768"></a><p class="title"><b>Table 31.3. Valid input formats for <code class="function">rdefmtdate</code></b></p>
 <div class="table-contents"><table summary="Valid input formats for rdefmtdate" border="1">
 <colgroup>
 <col>
@@ -708,8 +708,8 @@ free(out);</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2706405">31.8.3. The timestamp type</h3></div></div></div>
+<div class="sect2" title="31.8.3. The timestamp type">
+<div class="titlepage"><div><div><h3 class="title" id="id2714031">31.8.3. The timestamp type</h3></div></div></div>
 <p>    The timestamp type in C enables your programs to deal with data of the SQL
     type timestamp. See <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for the equivalent
     type in the <span class="productname">PostgreSQL</span> server.
@@ -748,7 +748,7 @@ free(out);</pre>
 <p>        The following table contains a few examples for input strings:
         </p>
 <div class="table">
-<a name="id2706523"></a><p class="title"><b>Table 31.4. Valid input formats for <code class="function">PGTYPEStimestamp_from_asc</code></b></p>
+<a name="id2714149"></a><p class="title"><b>Table 31.4. Valid input formats for <code class="function">PGTYPEStimestamp_from_asc</code></b></p>
 <div class="table-contents"><table summary="Valid input formats for PGTYPEStimestamp_from_asc" border="1">
 <colgroup>
 <col>
@@ -829,32 +829,32 @@ free(out);</pre>
 	non-format specifier will be copied into the output buffer. 
 	
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>	   <code class="literal">%A</code> - is replaced by national representation of
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>	   <code class="literal">%A</code> - is replaced by national representation of
 	   the full weekday name.
           </p></li>
-<li><p>	   <code class="literal">%a</code> - is replaced by national representation of
+<li class="listitem"><p>	   <code class="literal">%a</code> - is replaced by national representation of
 	   the abbreviated weekday name.
           </p></li>
-<li><p>	   <code class="literal">%B</code> - is replaced by national representation of
+<li class="listitem"><p>	   <code class="literal">%B</code> - is replaced by national representation of
 	   the full month name.
           </p></li>
-<li><p>	   <code class="literal">%b</code> - is replaced by national representation of
+<li class="listitem"><p>	   <code class="literal">%b</code> - is replaced by national representation of
 	   the abbreviated month name.
           </p></li>
-<li><p>	   <code class="literal">%C</code> - is replaced by (year / 100) as decimal
+<li class="listitem"><p>	   <code class="literal">%C</code> - is replaced by (year / 100) as decimal
 	   number; single digits are preceded by a zero.
           </p></li>
-<li><p>	   <code class="literal">%c</code> - is replaced by national representation of
+<li class="listitem"><p>	   <code class="literal">%c</code> - is replaced by national representation of
 	   time and date.
           </p></li>
-<li><p>	   <code class="literal">%D</code> - is equivalent to
+<li class="listitem"><p>	   <code class="literal">%D</code> - is equivalent to
 	   <code class="literal">%m/%d/%y</code>.
           </p></li>
-<li><p>	   <code class="literal">%d</code> - is replaced by the day of the month as a
+<li class="listitem"><p>	   <code class="literal">%d</code> - is replaced by the day of the month as a
 	   decimal number (01-31).
           </p></li>
-<li>
+<li class="listitem">
 <p>	   <code class="literal">%E*</code> <code class="literal">%O*</code> -  POSIX locale
 	   extensions. The sequences
 	   <code class="literal">%Ec</code>
@@ -882,116 +882,116 @@ free(out);</pre>
 	   alternative months names (used standalone, without day mentioned).
           </p>
 </li>
-<li><p>	   <code class="literal">%e</code> - is replaced by the day of month as a decimal
+<li class="listitem"><p>	   <code class="literal">%e</code> - is replaced by the day of month as a decimal
 	   number (1-31); single digits are preceded by a blank.
           </p></li>
-<li><p>	   <code class="literal">%F</code> - is equivalent to <code class="literal">%Y-%m-%d</code>.
+<li class="listitem"><p>	   <code class="literal">%F</code> - is equivalent to <code class="literal">%Y-%m-%d</code>.
           </p></li>
-<li><p>	   <code class="literal">%G</code> - is replaced by a year as a decimal number
+<li class="listitem"><p>	   <code class="literal">%G</code> - is replaced by a year as a decimal number
 	   with century. This year is the one that contains the greater part of
 	   the week (Monday as the first day of the week).
           </p></li>
-<li><p>	   <code class="literal">%g</code> - is replaced by the same year as in
+<li class="listitem"><p>	   <code class="literal">%g</code> - is replaced by the same year as in
 	   <code class="literal">%G</code>, but as a decimal number without century
 	   (00-99).
           </p></li>
-<li><p>	   <code class="literal">%H</code> - is replaced by the hour (24-hour clock) as a
+<li class="listitem"><p>	   <code class="literal">%H</code> - is replaced by the hour (24-hour clock) as a
 	   decimal number (00-23).
           </p></li>
-<li><p>	   <code class="literal">%h</code> - the same as <code class="literal">%b</code>.
+<li class="listitem"><p>	   <code class="literal">%h</code> - the same as <code class="literal">%b</code>.
           </p></li>
-<li><p>	   <code class="literal">%I</code> - is replaced by the hour (12-hour clock) as a
+<li class="listitem"><p>	   <code class="literal">%I</code> - is replaced by the hour (12-hour clock) as a
 	   decimal number (01-12).
           </p></li>
-<li><p>	   <code class="literal">%j</code> - is replaced by the day of the year as a
+<li class="listitem"><p>	   <code class="literal">%j</code> - is replaced by the day of the year as a
 	   decimal number (001-366).
           </p></li>
-<li><p>	   <code class="literal">%k</code> - is replaced by the hour (24-hour clock) as a
+<li class="listitem"><p>	   <code class="literal">%k</code> - is replaced by the hour (24-hour clock) as a
 	   decimal number (0-23); single digits are preceded by a blank.
           </p></li>
-<li><p>	   <code class="literal">%l</code> - is replaced by the hour (12-hour clock) as a
+<li class="listitem"><p>	   <code class="literal">%l</code> - is replaced by the hour (12-hour clock) as a
 	   decimal number (1-12); single digits are preceded by a blank.
           </p></li>
-<li><p>	   <code class="literal">%M</code> - is replaced by the minute as a decimal
+<li class="listitem"><p>	   <code class="literal">%M</code> - is replaced by the minute as a decimal
 	   number (00-59).
           </p></li>
-<li><p>	   <code class="literal">%m</code> - is replaced by the month as a decimal number
+<li class="listitem"><p>	   <code class="literal">%m</code> - is replaced by the month as a decimal number
 	   (01-12).
           </p></li>
-<li><p>	  <code class="literal">%n</code> - is replaced by a newline.
+<li class="listitem"><p>	  <code class="literal">%n</code> - is replaced by a newline.
           </p></li>
-<li><p>	   <code class="literal">%O*</code> - the same as <code class="literal">%E*</code>.
+<li class="listitem"><p>	   <code class="literal">%O*</code> - the same as <code class="literal">%E*</code>.
           </p></li>
-<li><p>	   <code class="literal">%p</code> - is replaced by national representation of
+<li class="listitem"><p>	   <code class="literal">%p</code> - is replaced by national representation of
 	   either "ante meridiem" or "post meridiem" as appropriate.
           </p></li>
-<li><p>	   <code class="literal">%R</code> - is equivalent to <code class="literal">%H:%M</code>.
+<li class="listitem"><p>	   <code class="literal">%R</code> - is equivalent to <code class="literal">%H:%M</code>.
           </p></li>
-<li><p>	   <code class="literal">%r</code> - is equivalent to <code class="literal">%I:%M:%S
+<li class="listitem"><p>	   <code class="literal">%r</code> - is equivalent to <code class="literal">%I:%M:%S
 	   %p</code>.
           </p></li>
-<li><p>	   <code class="literal">%S</code> - is replaced by the second as a decimal
+<li class="listitem"><p>	   <code class="literal">%S</code> - is replaced by the second as a decimal
 	   number (00-60).
           </p></li>
-<li><p>	   <code class="literal">%s</code> - is replaced by the number of seconds since
+<li class="listitem"><p>	   <code class="literal">%s</code> - is replaced by the number of seconds since
 	   the Epoch, UTC.
           </p></li>
-<li><p>	   <code class="literal">%T</code> - is equivalent to <code class="literal">%H:%M:%S</code>
+<li class="listitem"><p>	   <code class="literal">%T</code> - is equivalent to <code class="literal">%H:%M:%S</code>
           </p></li>
-<li><p>	   <code class="literal">%t</code> - is replaced by a tab.
+<li class="listitem"><p>	   <code class="literal">%t</code> - is replaced by a tab.
           </p></li>
-<li><p>	   <code class="literal">%U</code> - is replaced by the week number of the year
+<li class="listitem"><p>	   <code class="literal">%U</code> - is replaced by the week number of the year
 	   (Sunday as the first day of the week) as a decimal number (00-53).
           </p></li>
-<li><p>	   <code class="literal">%u</code> - is replaced by the weekday (Monday as the
+<li class="listitem"><p>	   <code class="literal">%u</code> - is replaced by the weekday (Monday as the
 	   first day of the week) as a decimal number (1-7).
           </p></li>
-<li><p>	   <code class="literal">%V</code> - is replaced by the week number of the year
+<li class="listitem"><p>	   <code class="literal">%V</code> - is replaced by the week number of the year
 	   (Monday as the first day of the week) as a decimal number (01-53).
 	   If the week containing January 1 has four or more days in the new
 	   year, then it is week 1; otherwise it is the last week of the
 	   previous year, and the next week is week 1.
           </p></li>
-<li><p>	   <code class="literal">%v</code> - is equivalent to
+<li class="listitem"><p>	   <code class="literal">%v</code> - is equivalent to
 	   <code class="literal">%e-%b-%Y</code>.
           </p></li>
-<li><p>	   <code class="literal">%W</code> - is replaced by the week number of the year
+<li class="listitem"><p>	   <code class="literal">%W</code> - is replaced by the week number of the year
 	   (Monday as the first day of the week) as a decimal number (00-53).
           </p></li>
-<li><p>	   <code class="literal">%w</code> - is replaced by the weekday (Sunday as the
+<li class="listitem"><p>	   <code class="literal">%w</code> - is replaced by the weekday (Sunday as the
 	   first day of the week) as a decimal number (0-6).
           </p></li>
-<li><p>	   <code class="literal">%X</code> - is replaced by national representation of
+<li class="listitem"><p>	   <code class="literal">%X</code> - is replaced by national representation of
 	   the time.
           </p></li>
-<li><p>	   <code class="literal">%x</code> - is replaced by national representation of
+<li class="listitem"><p>	   <code class="literal">%x</code> - is replaced by national representation of
 	   the date.
           </p></li>
-<li><p>	   <code class="literal">%Y</code> - is replaced by the year with century as a
+<li class="listitem"><p>	   <code class="literal">%Y</code> - is replaced by the year with century as a
 	   decimal number.
           </p></li>
-<li><p>	   <code class="literal">%y</code> - is replaced by the year without century as a
+<li class="listitem"><p>	   <code class="literal">%y</code> - is replaced by the year without century as a
 	   decimal number (00-99).
           </p></li>
-<li><p>	   <code class="literal">%Z</code> - is replaced by the time zone name.
+<li class="listitem"><p>	   <code class="literal">%Z</code> - is replaced by the time zone name.
           </p></li>
-<li><p>	   <code class="literal">%z</code> - is replaced by the time zone offset from
+<li class="listitem"><p>	   <code class="literal">%z</code> - is replaced by the time zone offset from
 	   UTC; a leading plus sign stands for east of UTC, a minus sign for
 	   west of UTC, hours and minutes follow with two digits each and no
 	   delimiter between them (common form for RFC 822 date headers).
           </p></li>
-<li><p>	   <code class="literal">%+</code> - is replaced by national representation of
+<li class="listitem"><p>	   <code class="literal">%+</code> - is replaced by national representation of
 	   the date and time.
           </p></li>
-<li><p>	   <code class="literal">%-*</code> - GNU libc extension.	Do not do any padding
+<li class="listitem"><p>	   <code class="literal">%-*</code> - GNU libc extension.	Do not do any padding
 	   when performing numerical outputs.
           </p></li>
-<li><p>	   $_* - GNU libc extension.	Explicitly specify space for padding.
+<li class="listitem"><p>	   $_* - GNU libc extension.	Explicitly specify space for padding.
           </p></li>
-<li><p>	   <code class="literal">%0*</code> - GNU libc extension.	Explicitly specify zero
+<li class="listitem"><p>	   <code class="literal">%0*</code> - GNU libc extension.	Explicitly specify zero
 	   for padding.
           </p></li>
-<li><p>	   <code class="literal">%%</code> - is replaced by <code class="literal">%</code>.
+<li class="listitem"><p>	   <code class="literal">%%</code> - is replaced by <code class="literal">%</code>.
           </p></li>
 </ul></div>
 <p>
@@ -1075,8 +1075,8 @@ free(out);</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2707606">31.8.4. The interval type</h3></div></div></div>
+<div class="sect2" title="31.8.4. The interval type">
+<div class="titlepage"><div><div><h3 class="title" id="id2715232">31.8.4. The interval type</h3></div></div></div>
 <p>    The interval type in C enables your programs to deal with data of the SQL
     type interval. See <a class="xref" href="datatype-datetime.html" title="8.5. Date/Time Types">Section 8.5, &#8220;Date/Time Types&#8221;</a> for the equivalent
     type in the <span class="productname">PostgreSQL</span> server.
@@ -1151,15 +1151,15 @@ free(out);</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2707795">31.8.5. The decimal type</h3></div></div></div>
+<div class="sect2" title="31.8.5. The decimal type">
+<div class="titlepage"><div><div><h3 class="title" id="id2715422">31.8.5. The decimal type</h3></div></div></div>
 <p>     The decimal type is similar to the numeric type. However it is limited to
      a maximal precision of 30 significant digits. In contrast to the numeric
      type which can be created on the heap only, the decimal type can be
      created either on the stack or on the heap (by means of the functions
      PGTYPESdecimal_new() and PGTYPESdecimal_free(). There are a lot of other
      functions that deal with the decimal type in the <span class="productname">Informix</span> compatibility
-     mode described in <a class="xref" href="ecpg-informix-compat.html" title="31.9. Informix compatibility mode">Section 31.9, &#8220;Informix compatibility mode&#8221;</a>.
+     mode described in <a class="xref" href="ecpg-informix-compat.html" title="31.9. Informix compatibility mode">Section 31.9, &#8220;<span class="productname">Informix</span> compatibility mode&#8221;</a>.
    </p>
 <p>    The following functions can be used to work with the decimal type and are
     not only contained in the <code class="literal">libcompat</code> library.
@@ -1185,8 +1185,8 @@ free(out);</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2707871">31.8.6. errno values of pgtypeslib </h3></div></div></div>
+<div class="sect2" title="31.8.6. errno values of pgtypeslib">
+<div class="titlepage"><div><div><h3 class="title" id="id2715497">31.8.6. errno values of pgtypeslib </h3></div></div></div>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">PGTYPES_NUM_BAD_NUMERIC</code></span></dt>
@@ -1234,8 +1234,8 @@ free(out);</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2708012">31.8.7. Special constants of pgtypeslib </h3></div></div></div>
+<div class="sect2" title="31.8.7. Special constants of pgtypeslib">
+<div class="titlepage"><div><div><h3 class="title" id="id2715638">31.8.7. Special constants of pgtypeslib </h3></div></div></div>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt>

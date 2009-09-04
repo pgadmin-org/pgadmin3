@@ -4,16 +4,16 @@
 <title>11.7. Partial Indexes</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes-expressional.html" title="11.6. Indexes on Expressions">
 <link rel="next" href="indexes-opclass.html" title="11.8. Operator Classes">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="11.7. Partial Indexes">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="indexes-partial">11.7. Partial Indexes</h2></div></div></div>
-<a name="id2643719"></a><p>   A <em class="firstterm">partial index</em> is an index built over a
+<a name="id2651079"></a><p>   A <em class="firstterm">partial index</em> is an index built over a
    subset of a table; the subset is defined by a conditional
    expression (called the <em class="firstterm">predicate</em> of the
    partial index).  The index contains entries for only those table
@@ -78,7 +78,7 @@
    index that the
    typical query workload is not interested in; this is shown in <a class="xref" href="indexes-partial.html#indexes-partial-ex2" title="Example 11.2. Setting up a Partial Index to Exclude Uninteresting Values">Example 11.2, &#8220;Setting up a Partial Index to Exclude Uninteresting Values&#8221;</a>.  This results in the same
    advantages as listed above, but it prevents the
-   &#8220;<span class="quote">uninteresting</span>&#8221; values from being accessed via that
+   <span class="quote">&#8220;<span class="quote">uninteresting</span>&#8221;</span> values from being accessed via that
    index at all, even if an index scan might be profitable in that
    case.  Obviously, setting up partial indexes for this kind of
    scenario will require a lot of care and experimentation.
@@ -136,15 +136,15 @@
    only is such a general theorem prover extremely difficult to
    create, it would probably be too slow to be of any real use.)
    The system can recognize simple inequality implications, for example
-   &#8220;<span class="quote">x &lt; 1</span>&#8221; implies &#8220;<span class="quote">x &lt; 2</span>&#8221;; otherwise
+   <span class="quote">&#8220;<span class="quote">x &lt; 1</span>&#8221;</span> implies <span class="quote">&#8220;<span class="quote">x &lt; 2</span>&#8221;</span>; otherwise
    the predicate condition must exactly match part of the query's
    <code class="literal">WHERE</code> condition
    or the index will not be recognized to be usable. Matching takes
    place at query planning time, not at run time. As a result,
    parameterized query clauses will not work with a partial index. For
    example a prepared query with a parameter might specify 
-   &#8220;<span class="quote">x &lt; ?</span>&#8221; which will never imply 
-   &#8220;<span class="quote">x &lt; 2</span>&#8221; for all possible values of the parameter. 
+   <span class="quote">&#8220;<span class="quote">x &lt; ?</span>&#8221;</span> which will never imply 
+   <span class="quote">&#8220;<span class="quote">x &lt; 2</span>&#8221;</span> for all possible values of the parameter. 
   </p>
 <p>   A third possible use for partial indexes does not require the
    index to be used in queries at all.  The idea here is to create
@@ -156,9 +156,9 @@
 <a name="indexes-partial-ex3"></a><p class="title"><b>Example 11.3. Setting up a Partial Unique Index</b></p>
 <div class="example-contents">
 <p>    Suppose that we have a table describing test outcomes.  We wish
-    to ensure that there is only one &#8220;<span class="quote">successful</span>&#8221; entry for
+    to ensure that there is only one <span class="quote">&#8220;<span class="quote">successful</span>&#8221;</span> entry for
     a given subject and target combination, but there might be any number of
-    &#8220;<span class="quote">unsuccessful</span>&#8221; entries.  Here is one way to do it:
+    <span class="quote">&#8220;<span class="quote">unsuccessful</span>&#8221;</span> entries.  Here is one way to do it:
 </p>
 <pre class="programlisting">CREATE TABLE tests (
     subject text,
@@ -193,7 +193,7 @@ CREATE UNIQUE INDEX tests_success_constraint ON tests (subject, target)
    <span class="productname">PostgreSQL</span> work.  In most cases, the advantage of a
    partial index over a regular index will not be much.
   </p>
-<p>   More information about partial indexes can be found in <a class="xref" href="biblio.html#ston89b" title="???TITLE???">[ston89b]</a>, <a class="xref" href="biblio.html#olson93" title="Partial indexing in POSTGRES: research project">[olson93]</a>, and <a class="xref" href="biblio.html#seshadri95" title="???TITLE???">[seshadri95]</a>.
+<p>   More information about partial indexes can be found in <a class="xref" href="biblio.html#ston89b">[ston89b]</a>, <a class="xref" href="biblio.html#olson93" title="Partial indexing in POSTGRES: research project">[olson93]</a>, and <a class="xref" href="biblio.html#seshadri95">[seshadri95]</a>.
   </p>
 </div></body>
 </html>

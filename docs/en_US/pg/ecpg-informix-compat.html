@@ -4,14 +4,14 @@
 <title>31.9. Informix compatibility mode</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="ecpg.html" title="Chapter 31. ECPG - Embedded SQL in C">
 <link rel="prev" href="ecpg-pgtypes.html" title="31.8. pgtypes library">
 <link rel="next" href="ecpg-descriptors.html" title="31.10. Using SQL Descriptor Areas">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="31.9. Informix compatibility mode">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ecpg-informix-compat">31.9. <span class="productname">Informix</span> compatibility mode</h2></div></div></div>
 <p>   ecpg can be run in a so-called <em class="firstterm">Informix compatibility mode</em>. If
    this mode is active, it tries to behave as if it were the <span class="productname">Informix</span>
@@ -48,8 +48,8 @@
    know about ranges like for example <code class="literal">YEAR TO MINUTE</code> so you won't
    find support in ecpg for that either.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2708201">31.9.1. Additional embedded SQL statements</h3></div></div></div>
+<div class="sect2" title="31.9.1. Additional embedded SQL statements">
+<div class="titlepage"><div><div><h3 class="title" id="id2715827">31.9.1. Additional embedded SQL statements</h3></div></div></div>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">CLOSE DATABASE</code></span></dt>
@@ -66,8 +66,8 @@
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2708234">31.9.2. Additional functions</h3></div></div></div>
+<div class="sect2" title="31.9.2. Additional functions">
+<div class="titlepage"><div><div><h3 class="title" id="id2715860">31.9.2. Additional functions</h3></div></div></div>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="function">decadd</code></span></dt>
@@ -97,13 +97,13 @@
 	(<code class="literal">arg2</code>) and returns an integer value that indicates which is
 	the bigger value.
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>	   1, if the value that <code class="literal">arg1</code> points to is bigger than the
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>	   1, if the value that <code class="literal">arg1</code> points to is bigger than the
 	   value that <code class="literal">var2</code> points to
           </p></li>
-<li><p>	   -1, if the value that <code class="literal">arg1</code> points to is smaller than the
+<li class="listitem"><p>	   -1, if the value that <code class="literal">arg1</code> points to is smaller than the
 	   value that <code class="literal">arg2</code> points to </p></li>
-<li><p>	   0, if the value that <code class="literal">arg1</code> points to and the value that
+<li class="listitem"><p>	   0, if the value that <code class="literal">arg1</code> points to and the value that
 	   <code class="literal">arg2</code> points to are equal
           </p></li>
 </ul></div>
@@ -420,23 +420,23 @@
        </p>
 <p>        The function returns the following values:
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>           0 - The function terminated successfully.
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>           0 - The function terminated successfully.
           </p></li>
-<li><p>	   <code class="literal">ECPG_INFORMIX_ENOSHORTDATE</code> - The date does not contain
+<li class="listitem"><p>	   <code class="literal">ECPG_INFORMIX_ENOSHORTDATE</code> - The date does not contain
 	   delimiters between day, month and year. In this case the input
 	   string must be exactly 6 or 8 bytes long but isn't.
           </p></li>
-<li><p>	   <code class="literal">ECPG_INFORMIX_ENOTDMY</code> - The format string did not
+<li class="listitem"><p>	   <code class="literal">ECPG_INFORMIX_ENOTDMY</code> - The format string did not
 	   correctly indicate the sequential order of year, month and day.
           </p></li>
-<li><p>	   <code class="literal">ECPG_INFORMIX_BAD_DAY</code> - The input string does not
+<li class="listitem"><p>	   <code class="literal">ECPG_INFORMIX_BAD_DAY</code> - The input string does not
 	   contain a valid day.
           </p></li>
-<li><p>	   <code class="literal">ECPG_INFORMIX_BAD_MONTH</code> - The input string does not
+<li class="listitem"><p>	   <code class="literal">ECPG_INFORMIX_BAD_MONTH</code> - The input string does not
 	   contain a valid month.
           </p></li>
-<li><p>	   <code class="literal">ECPG_INFORMIX_BAD_YEAR</code> - The input string does not
+<li class="listitem"><p>	   <code class="literal">ECPG_INFORMIX_BAD_YEAR</code> - The input string does not
 	   contain a valid year.
           </p></li>
 </ul></div>
@@ -489,20 +489,20 @@
 	argument and returns an integer that indicates the day of the week for
 	this date.
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>	   0 - Sunday
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>	   0 - Sunday
           </p></li>
-<li><p>	   1 - Monday
+<li class="listitem"><p>	   1 - Monday
           </p></li>
-<li><p>	   2 - Tuesday
+<li class="listitem"><p>	   2 - Tuesday
           </p></li>
-<li><p>	   3 - Wednesday
+<li class="listitem"><p>	   3 - Wednesday
           </p></li>
-<li><p>	   4 - Thursday
+<li class="listitem"><p>	   4 - Thursday
           </p></li>
-<li><p>	   5 - Friday
+<li class="listitem"><p>	   5 - Friday
           </p></li>
-<li><p>	   6 - Saturday
+<li class="listitem"><p>	   6 - Saturday
           </p></li>
 </ul></div>
 <p>
@@ -638,36 +638,36 @@
 <p>	The format mask can be composed of the following format specifying
 	characters:
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>	   <code class="literal">*</code> (asterisk) - if this position would be blank
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>	   <code class="literal">*</code> (asterisk) - if this position would be blank
 	   otherwise, fill it with an asterisk.
           </p></li>
-<li><p>	   <code class="literal">&amp;</code> (ampersand) - if this position would be
+<li class="listitem"><p>	   <code class="literal">&amp;</code> (ampersand) - if this position would be
 	   blank otherwise, fill it with a zero.
           </p></li>
-<li><p>	   <code class="literal">#</code> - turn leading zeroes into blanks.
+<li class="listitem"><p>	   <code class="literal">#</code> - turn leading zeroes into blanks.
           </p></li>
-<li><p>	   <code class="literal">&lt;</code> - left-justify the number in the string.
+<li class="listitem"><p>	   <code class="literal">&lt;</code> - left-justify the number in the string.
           </p></li>
-<li><p>	   <code class="literal">,</code> (comma) - group numbers of four or more digits
+<li class="listitem"><p>	   <code class="literal">,</code> (comma) - group numbers of four or more digits
 	   into groups of three digits separated by a comma.
           </p></li>
-<li><p>	   <code class="literal">.</code> (period) - this character separates the
+<li class="listitem"><p>	   <code class="literal">.</code> (period) - this character separates the
 	   whole-number part of the number from the fractional part.
           </p></li>
-<li><p>	   <code class="literal">-</code> (minus) - the minus sign appears if the number
+<li class="listitem"><p>	   <code class="literal">-</code> (minus) - the minus sign appears if the number
 	   is a negative value.
           </p></li>
-<li><p>	   <code class="literal">+</code> (plus) - the plus sign appears if the number is
+<li class="listitem"><p>	   <code class="literal">+</code> (plus) - the plus sign appears if the number is
 	   a positive value.
           </p></li>
-<li><p>	   <code class="literal">(</code> - this replaces the minus sign in front of the
+<li class="listitem"><p>	   <code class="literal">(</code> - this replaces the minus sign in front of the
 	   negative number. The minus sign will not appear.
           </p></li>
-<li><p>	   <code class="literal">)</code> - this character replaces the minus and is
+<li class="listitem"><p>	   <code class="literal">)</code> - this character replaces the minus and is
 	   printed behind the negative value.
           </p></li>
-<li><p>	   <code class="literal">$</code> - the currency symbol.
+<li class="listitem"><p>	   <code class="literal">$</code> - the currency symbol.
           </p></li>
 </ul></div>
 <p>
@@ -753,26 +753,26 @@
        </p>
 <p>        The following types exist:
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>	   <code class="literal">CCHARTYPE</code> - For a variable of type <code class="type">char</code> or <code class="type">char*</code>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>	   <code class="literal">CCHARTYPE</code> - For a variable of type <code class="type">char</code> or <code class="type">char*</code>
           </p></li>
-<li><p>	   <code class="literal">CSHORTTYPE</code> - For a variable of type <code class="type">short int</code>
+<li class="listitem"><p>	   <code class="literal">CSHORTTYPE</code> - For a variable of type <code class="type">short int</code>
           </p></li>
-<li><p>	   <code class="literal">CINTTYPE</code> - For a variable of type <code class="type">int</code>
+<li class="listitem"><p>	   <code class="literal">CINTTYPE</code> - For a variable of type <code class="type">int</code>
           </p></li>
-<li><p>	   <code class="literal">CBOOLTYPE</code> - For a variable of type <code class="type">boolean</code>
+<li class="listitem"><p>	   <code class="literal">CBOOLTYPE</code> - For a variable of type <code class="type">boolean</code>
           </p></li>
-<li><p>	   <code class="literal">CFLOATTYPE</code> - For a variable of type <code class="type">float</code>
+<li class="listitem"><p>	   <code class="literal">CFLOATTYPE</code> - For a variable of type <code class="type">float</code>
           </p></li>
-<li><p>	   <code class="literal">CLONGTYPE</code> - For a variable of type <code class="type">long</code>
+<li class="listitem"><p>	   <code class="literal">CLONGTYPE</code> - For a variable of type <code class="type">long</code>
           </p></li>
-<li><p>	   <code class="literal">CDOUBLETYPE</code> - For a variable of type <code class="type">double</code>
+<li class="listitem"><p>	   <code class="literal">CDOUBLETYPE</code> - For a variable of type <code class="type">double</code>
           </p></li>
-<li><p>	   <code class="literal">CDECIMALTYPE</code> - For a variable of type <code class="type">decimal</code>
+<li class="listitem"><p>	   <code class="literal">CDECIMALTYPE</code> - For a variable of type <code class="type">decimal</code>
           </p></li>
-<li><p>	   <code class="literal">CDATETYPE</code> - For a variable of type <code class="type">date</code>
+<li class="listitem"><p>	   <code class="literal">CDATETYPE</code> - For a variable of type <code class="type">date</code>
           </p></li>
-<li><p>	   <code class="literal">CDTIMETYPE</code> - For a variable of type <code class="type">timestamp</code>
+<li class="listitem"><p>	   <code class="literal">CDTIMETYPE</code> - For a variable of type <code class="type">timestamp</code>
           </p></li>
 </ul></div>
 <p>
@@ -815,8 +815,8 @@ risnull(CINTTYPE, (char *) &amp;i);</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2710479">31.9.3. Additional constants</h3></div></div></div>
+<div class="sect2" title="31.9.3. Additional constants">
+<div class="titlepage"><div><div><h3 class="title" id="id2718106">31.9.3. Additional constants</h3></div></div></div>
 <p>    Note that all constants here describe errors and all of them are defined
     to represent negative values. In the descriptions of the different
     constants you can also find the value that the constants represent in the

@@ -4,14 +4,14 @@
 <title>49.3. Index Scanning</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">
 <link rel="prev" href="index-functions.html" title="49.2. Index Access Method Functions">
 <link rel="next" href="index-locking.html" title="49.4. Index Locking Considerations">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="49.3. Index Scanning">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="index-scanning">49.3. Index Scanning</h2></div></div></div>
 <p>   In an index scan, the index access method is responsible for regurgitating
    the TIDs of all the tuples it has been told about that match the
@@ -47,7 +47,7 @@
    to realize that the first scan key is redundant and can be discarded.
    The extent of preprocessing needed during <code class="function">amrescan</code> will
    depend on the extent to which the index access method needs to reduce
-   the scan keys to a &#8220;<span class="quote">normalized</span>&#8221; form.
+   the scan keys to a <span class="quote">&#8220;<span class="quote">normalized</span>&#8221;</span> form.
   </p>
 <p>   The <code class="function">amgettuple</code> function has a <code class="literal">direction</code> argument,
    which can be either <code class="literal">ForwardScanDirection</code> (the normal case)
@@ -62,7 +62,7 @@
    first call, <code class="function">amgettuple</code> must be prepared to advance the scan in
    either direction from the most recently returned entry.
   </p>
-<p>   The access method must support &#8220;<span class="quote">marking</span>&#8221; a position in a scan
+<p>   The access method must support <span class="quote">&#8220;<span class="quote">marking</span>&#8221;</span> a position in a scan
    and later returning to the marked position.  The same position may be
    restored multiple times.  However, only one position need be remembered
    per scan; a new <code class="function">ammarkpos</code> call overrides the previously

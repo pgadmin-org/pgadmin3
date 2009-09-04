@@ -4,14 +4,14 @@
 <title>49.5. Index Uniqueness Checks</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">
 <link rel="prev" href="index-locking.html" title="49.4. Index Locking Considerations">
 <link rel="next" href="index-cost-estimation.html" title="49.6. Index Cost Estimation Functions">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="49.5. Index Uniqueness Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="index-unique-checks">49.5. Index Uniqueness Checks</h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span> enforces SQL uniqueness constraints
    using <em class="firstterm">unique indexes</em>, which are indexes that disallow
@@ -27,20 +27,20 @@
    checked when inserting a new row into a unique index:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       If a conflicting valid row has been deleted by the current transaction,
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       If a conflicting valid row has been deleted by the current transaction,
        it's okay.  (In particular, since an UPDATE always deletes the old row
        version before inserting the new version, this will allow an UPDATE on
        a row without changing the key.)
       </p></li>
-<li><p>       If a conflicting row has been inserted by an as-yet-uncommitted
+<li class="listitem"><p>       If a conflicting row has been inserted by an as-yet-uncommitted
        transaction, the would-be inserter must wait to see if that transaction
        commits.  If it rolls back then there is no conflict.  If it commits
        without deleting the conflicting row again, there is a uniqueness
        violation.  (In practice we just wait for the other transaction to
        end and then redo the visibility check in toto.)
       </p></li>
-<li><p>       Similarly, if a conflicting valid row has been deleted by an
+<li class="listitem"><p>       Similarly, if a conflicting valid row has been deleted by an
        as-yet-uncommitted transaction, the would-be inserter must wait
        for that transaction to commit or abort, and then repeat the test.
       </p></li>

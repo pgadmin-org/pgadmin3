@@ -4,19 +4,19 @@
 <title>14.5. Installation Procedure</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.  Installation Instructions">
 <link rel="prev" href="install-upgrading.html" title="14.4. If You Are Upgrading">
 <link rel="next" href="install-post.html" title="14.6. Post-Installation Setup">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="14.5. Installation Procedure">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="install-procedure">14.5. Installation Procedure</h2></div></div></div>
-<div class="procedure"><ol type="1">
-<li>
+<div class="procedure"><ol class="procedure" type="1">
+<li class="step" title="Configuration">
 <a name="configure"></a><p class="title"><b>Configuration</b></p>
-<a name="id2650095"></a><p>    The first step of the installation procedure is to configure the
+<a name="id2657449"></a><p>    The first step of the installation procedure is to configure the
     source tree for your system and choose the options you would like.
     This is done by running the <code class="filename">configure</code> script. For a
     default installation simply enter
@@ -105,7 +105,7 @@
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="option">--with-docdir=<em class="replaceable"><code>DIRECTORY</code></em></code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="option">--without-docdir</code></span>
 </dt>
-<dd><p>         Documentation files, except &#8220;<span class="quote">man</span>&#8221; pages, will be
+<dd><p>         Documentation files, except <span class="quote">&#8220;<span class="quote">man</span>&#8221;</span> pages, will be
          installed into this directory. The default is
          <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/doc</code>.  If the option
          <code class="option">--without-docdir</code> is specified, the
@@ -117,18 +117,18 @@
 <p>
 
      </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>       Care has been taken to make it possible to install
        <span class="productname">PostgreSQL</span> into shared installation locations
        (such as <code class="filename">/usr/local/include</code>) without
        interfering with the namespace of the rest of the system. First,
-       the string &#8220;<span class="quote"><code class="literal">/postgresql</code></span>&#8221; is
+       the string <span class="quote">&#8220;<span class="quote"><code class="literal">/postgresql</code></span>&#8221;</span> is
        automatically appended to <code class="varname">datadir</code>,
        <code class="varname">sysconfdir</code>, and <code class="varname">docdir</code>,
        unless the fully expanded directory name already contains the
-       string &#8220;<span class="quote"><code class="literal">postgres</code></span>&#8221; or
-       &#8220;<span class="quote"><code class="literal">pgsql</code></span>&#8221;. For example, if you choose
+       string <span class="quote">&#8220;<span class="quote"><code class="literal">postgres</code></span>&#8221;</span> or
+       <span class="quote">&#8220;<span class="quote"><code class="literal">pgsql</code></span>&#8221;</span>. For example, if you choose
        <code class="filename">/usr/local</code> as prefix, the documentation will
        be installed in <code class="filename">/usr/local/doc/postgresql</code>,
        but if the prefix is <code class="filename">/opt/postgres</code>, then it
@@ -238,11 +238,11 @@
          before proceeding.
         </p></dd>
 <dt><span class="term"><code class="option">--with-pam</code></span></dt>
-<dd><p>         Build with <acronym class="acronym">PAM</acronym><a name="id2650862"></a>
+<dd><p>         Build with <acronym class="acronym">PAM</acronym><a name="id2658217"></a>
          (Pluggable Authentication Modules) support.
         </p></dd>
 <dt><span class="term"><code class="option">--with-ldap</code></span></dt>
-<dd><p>         Build with <acronym class="acronym">LDAP</acronym><a name="id2650881"></a>
+<dd><p>         Build with <acronym class="acronym">LDAP</acronym><a name="id2658235"></a>
          support for authentication and connection parameter lookup (see 
          <a class="xref" href="libpq-ldap.html" title="29.15. LDAP Lookup of Connection Parameters">Section 29.15, &#8220;LDAP Lookup of Connection Parameters&#8221;</a> and
          <a class="xref" href="auth-methods.html#auth-ldap" title="20.2.5. LDAP authentication">Section 20.2.5, &#8220;LDAP authentication&#8221;</a> for more information). On Unix,
@@ -298,7 +298,7 @@
          threading support in your operating system.
         </p></dd>
 <dt><span class="term"><code class="option">--without-zlib</code></span></dt>
-<dd><p>         <a name="id2651087"></a>
+<dd><p>         <a name="id2658441"></a>
          Prevents use of the <span class="application">Zlib</span> library.  This disables
          support for compressed archives in <span class="application">pg_dump</span>
          and <span class="application">pg_restore</span>.
@@ -319,7 +319,7 @@
         </p></dd>
 <dt><span class="term"><code class="option">--enable-cassert</code></span></dt>
 <dd><p>         Enables <em class="firstterm">assertion</em> checks in the server, which test for
-         many &#8220;<span class="quote">can't happen</span>&#8221; conditions.  This is invaluable for
+         many <span class="quote">&#8220;<span class="quote">can't happen</span>&#8221;</span> conditions.  This is invaluable for
          code development purposes, but the tests slow things down a little.
          Also, having the tests turned on won't necessarily enhance the
          stability of your server!  The assertion checks are not categorized
@@ -339,7 +339,7 @@
         </p></dd>
 <dt><span class="term"><code class="option">--enable-dtrace</code></span></dt>
 <dd>
-<p>         <a name="id2651184"></a>
+<p>         <a name="id2658538"></a>
          Compiles with support for the dynamic tracing tool DTrace.
          Operating system support for DTrace is currently only
          available in Solaris.
@@ -434,7 +434,7 @@
 <p>
     </p>
 </li>
-<li>
+<li class="step" title="Build">
 <p class="title"><b>Build</b></p>
 <p>    To start the build, type
 </p>
@@ -448,9 +448,9 @@
 <p>
    </p>
 </li>
-<li>
+<li class="step" title="Regression Tests">
 <p class="title"><b>Regression Tests</b></p>
-<a name="id2651504"></a><p>    If you want to test the newly built server before you install it,
+<a name="id2658858"></a><p>    If you want to test the newly built server before you install it,
     you can run the regression tests at this point. The regression
     tests are a test suite to verify that <span class="productname">PostgreSQL</span>
     runs on your machine in the way the developers expected it
@@ -465,9 +465,9 @@
     repeat this test at any later time by issuing the same command.
    </p>
 </li>
-<li>
+<li class="step" title="Installing The Files">
 <a name="install"></a><p class="title"><b>Installing The Files</b></p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     If you are upgrading an existing system and are going to install
      the new files over the old ones, be sure to back up
@@ -504,30 +504,30 @@
     install-all-headers</code> command was needed for the latter, but this
     step has been folded into the standard install.)
    </p>
-<p><b>Client-only installation: </b>     If you want to install only the client applications and
+<p title="Client-only installation:"><b>Client-only installation: </b>     If you want to install only the client applications and
      interface libraries, then you can use these commands:
 </p>
 <pre class="screen"><strong class="userinput"><code>gmake -C src/bin install</code></strong>
 <strong class="userinput"><code>gmake -C src/include install</code></strong>
 <strong class="userinput"><code>gmake -C src/interfaces install</code></strong>
 <strong class="userinput"><code>gmake -C doc install</code></strong></pre>
-<p>
+<p title="Client-only installation:">
     <code class="filename">src/bin</code> has a few binaries for server-only use,
     but they are small.
     </p>
 </li>
 </ol></div>
-<p><b>Registering <span class="application">eventlog</span> on <span class="systemitem">Windows</span>: </b>    To register a <span class="systemitem">Windows</span> <span class="application">eventlog</span>
+<p title="Registering eventlog on Windows:"><b>Registering <span class="application">eventlog</span> on <span class="systemitem">Windows</span>: </b>    To register a <span class="systemitem">Windows</span> <span class="application">eventlog</span>
     library with the operating system, issue this command after installation:
 </p>
 <pre class="screen"><strong class="userinput"><code>regsvr32 <em class="replaceable"><code>pgsql_library_directory</code></em>/pgevent.dll</code></strong></pre>
-<p>
+<p title="Registering eventlog on Windows:">
     This creates registry entries used by the event viewer.
    </p>
-<p><b>Uninstallation: </b>    To undo the installation use the command <code class="command">gmake
+<p title="Uninstallation:"><b>Uninstallation: </b>    To undo the installation use the command <code class="command">gmake
     uninstall</code>. However, this will not remove any created directories.
    </p>
-<p><b>Cleaning: </b>    After the installation you can make room by removing the built
+<p title="Cleaning:"><b>Cleaning: </b>    After the installation you can make room by removing the built
     files from the source tree with the command <code class="command">gmake
     clean</code>. This will preserve the files made by the <code class="command">configure</code>
     program, so that you can rebuild everything with <code class="command">gmake</code>

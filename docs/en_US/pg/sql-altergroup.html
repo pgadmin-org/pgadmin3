@@ -4,38 +4,38 @@
 <title>ALTER GROUP</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-alterfunction.html" title="ALTER FUNCTION">
 <link rel="next" href="sql-alterindex.html" title="ALTER INDEX">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="ALTER GROUP">
 <a name="sql-altergroup"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>ALTER GROUP &#8212; change role name or membership</p>
 </div>
-<a name="id2762434"></a><div class="refsynopsisdiv">
+<a name="id2770059"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER GROUP <em class="replaceable"><code>groupname</code></em> ADD USER <em class="replaceable"><code>username</code></em> [, ... ]
 ALTER GROUP <em class="replaceable"><code>groupname</code></em> DROP USER <em class="replaceable"><code>username</code></em> [, ... ]
 
 ALTER GROUP <em class="replaceable"><code>groupname</code></em> RENAME TO <em class="replaceable"><code>newname</code></em></pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2762483"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2770109"></a><h2>Description</h2>
 <p>   <code class="command">ALTER GROUP</code> changes the attributes of a user group.
    This is an obsolete command, though still accepted for backwards
    compatibility, because groups (and users too) have been superseded by the
    more general concept of roles.
   </p>
 <p>   The first two variants add users to a group or remove them from a group.
-   (Any role can play the part of either a &#8220;<span class="quote">user</span>&#8221; or a
-   &#8220;<span class="quote">group</span>&#8221; for this purpose.)  These variants are effectively
+   (Any role can play the part of either a <span class="quote">&#8220;<span class="quote">user</span>&#8221;</span> or a
+   <span class="quote">&#8220;<span class="quote">group</span>&#8221;</span> for this purpose.)  These variants are effectively
    equivalent to granting or revoking membership in the role named as the
-   &#8220;<span class="quote">group</span>&#8221;; so the preferred way to do this is to use
+   <span class="quote">&#8220;<span class="quote">group</span>&#8221;</span>; so the preferred way to do this is to use
    <a class="xref" href="sql-grant.html" title="GRANT">GRANT</a> or
    <a class="xref" href="sql-revoke.html" title="REVOKE">REVOKE</a>.
   </p>
@@ -44,8 +44,8 @@ ALTER GROUP <em class="replaceable"><code>groupname</code></em> RENAME TO <em cl
    <a class="xref" href="sql-alterrole.html" title="ALTER ROLE">ALTER ROLE</a>.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2762549"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2770174"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>groupname</code></em></span></dt>
 <dd><p>      The name of the group (role) to modify.
@@ -60,8 +60,8 @@ ALTER GROUP <em class="replaceable"><code>groupname</code></em> RENAME TO <em cl
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2762591"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2770216"></a><h2>Examples</h2>
 <p>   Add users to a group:
 
 </p>
@@ -76,14 +76,14 @@ ALTER GROUP <em class="replaceable"><code>groupname</code></em> RENAME TO <em cl
 
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2762610"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2770235"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">ALTER GROUP</code> statement in the SQL
    standard.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2762623"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2770248"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-grant.html" title="GRANT">GRANT</a>, <a class="xref" href="sql-revoke.html" title="REVOKE">REVOKE</a>, <a class="xref" href="sql-alterrole.html" title="ALTER ROLE">ALTER ROLE</a></span>
 </div>
 </div></body>

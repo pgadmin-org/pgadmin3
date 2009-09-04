@@ -4,25 +4,25 @@
 <title>EXPLAIN</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-execute.html" title="EXECUTE">
 <link rel="next" href="sql-fetch.html" title="FETCH">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="EXPLAIN">
 <a name="sql-explain"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>EXPLAIN &#8212; show the execution plan of a statement</p>
 </div>
-<a name="id2793975"></a><a name="id2793983"></a><a name="id2793995"></a><div class="refsynopsisdiv">
+<a name="id2801578"></a><a name="id2801586"></a><a name="id2801598"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">EXPLAIN [ ANALYZE ] [ VERBOSE ] <em class="replaceable"><code>statement</code></em></pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2794018"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2801621"></a><h2>Description</h2>
 <p>   This command displays the execution plan that the
    <span class="productname">PostgreSQL</span> planner generates for the
    supplied statement.  The execution plan shows how the table(s)
@@ -49,7 +49,7 @@
    the display.  This is useful for seeing whether the planner's estimates
    are close to reality.
   </p>
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Important</h3>
 <p>    Keep in mind that the statement is actually executed when
     <code class="literal">ANALYZE</code> is used.  Although
@@ -68,8 +68,8 @@ ROLLBACK;</pre>
    </p>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2794139"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2801742"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">ANALYZE</code></span></dt>
 <dd><p>      Carry out the command and show the actual run times.
@@ -88,11 +88,11 @@ ROLLBACK;</pre>
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2794235"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2801838"></a><h2>Notes</h2>
 <p>   There is only sparse documentation on the optimizer's use of cost
    information in <span class="productname">PostgreSQL</span>.  Refer to
-   <a class="xref" href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using EXPLAIN&#8221;</a> for more information.
+   <a class="xref" href="performance-tips.html#using-explain" title="13.1. Using EXPLAIN">Section 13.1, &#8220;Using <code class="command">EXPLAIN</code>&#8221;</a> for more information.
   </p>
 <p>   In order to allow the <span class="productname">PostgreSQL</span> query
    planner to make reasonably informed decisions when optimizing
@@ -111,8 +111,8 @@ ROLLBACK;</pre>
    is executed.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2794296"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2801899"></a><h2>Examples</h2>
 <p>   To show the plan for a simple query on a table with a single
    <code class="type">integer</code> column and 10000 rows:
 
@@ -183,13 +183,13 @@ EXPLAIN ANALYZE EXECUTE query(100, 200);
    in the table has not changed.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2794420"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2802023"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">EXPLAIN</code> statement defined in the SQL standard.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2794433"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2802036"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-analyze.html" title="ANALYZE">ANALYZE</a></span>
 </div>
 </div></body>

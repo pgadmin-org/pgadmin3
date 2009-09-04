@@ -4,14 +4,14 @@
 <title>49.2. Index Access Method Functions</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">
 <link rel="prev" href="indexam.html" title="Chapter 49. Index Access Method Interface Definition">
 <link rel="next" href="index-scanning.html" title="49.3. Index Scanning">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="49.2. Index Access Method Functions">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="index-functions">49.2. Index Access Method Functions</h2></div></div></div>
 <p>   The index construction and maintenance functions that an index access
    method must provide are:
@@ -57,7 +57,7 @@ ambulkdelete (IndexVacuumInfo *info,
               IndexBulkDeleteCallback callback,
               void *callback_state);</pre>
 <p>
-   Delete tuple(s) from the index.  This is a &#8220;<span class="quote">bulk delete</span>&#8221; operation
+   Delete tuple(s) from the index.  This is a <span class="quote">&#8220;<span class="quote">bulk delete</span>&#8221;</span> operation
    that is intended to be implemented by scanning the whole index and checking
    each entry to see if it should be deleted.
    The passed-in <code class="literal">callback</code> function must be called, in the style
@@ -157,7 +157,7 @@ amgettuple (IndexScanDesc scan,
    direction (forward or backward in the index).  Returns TRUE if a tuple was
    obtained, FALSE if no matching tuples remain.  In the TRUE case the tuple
    TID is stored into the <code class="literal">scan</code> structure.  Note that
-   &#8220;<span class="quote">success</span>&#8221; means only that the index contains an entry that matches
+   <span class="quote">&#8220;<span class="quote">success</span>&#8221;</span> means only that the index contains an entry that matches
    the scan keys, not that the tuple necessarily still exists in the heap or
    will pass the caller's snapshot test.
   </p>

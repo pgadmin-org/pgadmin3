@@ -4,16 +4,16 @@
 <title>33.6. Function Volatility Categories</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="extend.html" title="Chapter 33. Extending SQL">
 <link rel="prev" href="xfunc-overload.html" title="33.5. Function Overloading">
 <link rel="next" href="xfunc-pl.html" title="33.7. Procedural Language Functions">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="33.6. Function Volatility Categories">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="xfunc-volatility">33.6. Function Volatility Categories</h2></div></div></div>
-<a name="id2726964"></a><a name="id2726977"></a><a name="id2726986"></a><a name="id2726995"></a><p>    Every function has a <em class="firstterm">volatility</em> classification, with
+<a name="id2734597"></a><a name="id2734610"></a><a name="id2734619"></a><a name="id2734628"></a><p>    Every function has a <em class="firstterm">volatility</em> classification, with
     the possibilities being <code class="literal">VOLATILE</code>, <code class="literal">STABLE</code>, or
     <code class="literal">IMMUTABLE</code>.  <code class="literal">VOLATILE</code> is the default if the
     <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
@@ -21,14 +21,14 @@
     promise to the optimizer about the behavior of the function:
 
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      A <code class="literal">VOLATILE</code> function can do anything, including modifying
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      A <code class="literal">VOLATILE</code> function can do anything, including modifying
       the database.  It can return different results on successive calls with
       the same arguments.  The optimizer makes no assumptions about the
       behavior of such functions.  A query using a volatile function will
       re-evaluate the function at every row where its value is needed.
      </p></li>
-<li><p>      A <code class="literal">STABLE</code> function cannot modify the database and is
+<li class="listitem"><p>      A <code class="literal">STABLE</code> function cannot modify the database and is
       guaranteed to return the same results given the same arguments
       for all rows within a single statement. This category allows the
       optimizer to optimize multiple calls of the function to a single
@@ -38,7 +38,7 @@
       row, it is not valid to use a <code class="literal">VOLATILE</code> function in an
       index scan condition.)
      </p></li>
-<li><p>      An <code class="literal">IMMUTABLE</code> function cannot modify the database and is
+<li class="listitem"><p>      An <code class="literal">IMMUTABLE</code> function cannot modify the database and is
       guaranteed to return the same results given the same arguments forever.
       This category allows the optimizer to pre-evaluate the function when
       a query calls it with constant arguments.  For example, a query like
@@ -95,7 +95,7 @@
     <a class="xref" href="runtime-config-client.html#guc-timezone">timezone</a> setting.  For safety, such functions should
     be labeled <code class="literal">STABLE</code> instead.
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     Before <span class="productname">PostgreSQL</span> release 8.0, the requirement
      that <code class="literal">STABLE</code> and <code class="literal">IMMUTABLE</code> functions cannot modify

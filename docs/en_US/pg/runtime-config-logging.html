@@ -4,18 +4,18 @@
 <title>17.7. Error Reporting and Logging</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-query.html" title="17.6. Query Planning">
 <link rel="next" href="runtime-config-statistics.html" title="17.8. Run-Time Statistics">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="17.7. Error Reporting and Logging">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="runtime-config-logging">17.7. Error Reporting and Logging</h2></div></div></div>
-<a name="id2664461"></a><div class="sect2" lang="en">
+<a name="id2671815"></a><div class="sect2" title="17.7.1. Where To Log">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-logging-where">17.7.1. Where To Log</h3></div></div></div>
-<a name="id2664481"></a><div class="variablelist"><dl>
+<a name="id2671835"></a><div class="variablelist"><dl>
 <dt>
 <a name="guc-log-destination"></a><span class="term"><code class="varname">log_destination</code> (<code class="type">string</code>)</span>
 </dt>
@@ -131,7 +131,7 @@
 </dt>
 <dd><p>        When logging to <span class="application">syslog</span> is enabled, this parameter
         determines the <span class="application">syslog</span>
-        &#8220;<span class="quote">facility</span>&#8221; to be used.  You may choose
+        <span class="quote">&#8220;<span class="quote">facility</span>&#8221;</span> to be used.  You may choose
         from <code class="literal">LOCAL0</code>, <code class="literal">LOCAL1</code>,
         <code class="literal">LOCAL2</code>, <code class="literal">LOCAL3</code>, <code class="literal">LOCAL4</code>,
         <code class="literal">LOCAL5</code>, <code class="literal">LOCAL6</code>, <code class="literal">LOCAL7</code>;
@@ -154,7 +154,7 @@
         </p></dd>
 </dl></div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.7.2. When To Log">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-logging-when">17.7.2. When To Log</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
@@ -231,7 +231,7 @@
 <p>         For clients using extended query protocol, durations of the Parse,
          Bind, and Execute steps are logged independently.
         </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>         When using this option together with
          <a class="xref" href="runtime-config-logging.html#guc-log-statement">log_statement</a>,
@@ -297,7 +297,7 @@
 <p>
        </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.7.3. What To Log">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-logging-what">17.7.3. What To Log</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
@@ -321,7 +321,7 @@
         connection. This is off by default, although it is probably very
         useful.  Some client programs, like <span class="application">psql</span>, attempt 
         to connect twice while determining if a password is required, so 
-        duplicate &#8220;<span class="quote">connection received</span>&#8221; messages do not
+        duplicate <span class="quote">&#8220;<span class="quote">connection received</span>&#8221;</span> messages do not
         necessarily indicate a problem.
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
@@ -347,7 +347,7 @@
 <p>        For clients using extended query protocol, durations of the Parse,
         Bind, and Execute steps are logged independently.
        </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>         The difference between setting this option and setting
          <a class="xref" href="runtime-config-logging.html#guc-log-min-duration-statement">log_min_duration_statement</a> to zero is that
@@ -496,7 +496,7 @@
 <p>        The default is <code class="literal">none</code>. Only superusers can change this
         setting.
        </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>         Statements that contain simple syntax errors are not logged
          even by the <code class="varname">log_statement</code> = <code class="literal">all</code> setting,

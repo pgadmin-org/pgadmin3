@@ -4,14 +4,14 @@
 <title>35.5. Rules and Command Status</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="rules.html" title="Chapter 35. The Rule System">
 <link rel="prev" href="rules-privileges.html" title="35.4. Rules and Privileges">
 <link rel="next" href="rules-triggers.html" title="35.6. Rules versus Triggers">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="35.5. Rules and Command Status">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="rules-status">35.5. Rules and Command Status</h2></div></div></div>
 <p>    The <span class="productname">PostgreSQL</span> server returns a command
     status string, such as <code class="literal">INSERT 149592 1</code>, for each
@@ -20,8 +20,8 @@
 <p>    Rules affect the command status as follows:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       If there is no unconditional <code class="literal">INSTEAD</code> rule for the query, then
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       If there is no unconditional <code class="literal">INSTEAD</code> rule for the query, then
        the originally given query will be executed, and its command
        status will be returned as usual.  (But note that if there were
        any conditional <code class="literal">INSTEAD</code> rules, the negation of their qualifications
@@ -29,7 +29,7 @@
        number of rows it processes, and if so the reported status will
        be affected.)
       </p></li>
-<li><p>       If there is any unconditional <code class="literal">INSTEAD</code> rule for the query, then
+<li class="listitem"><p>       If there is any unconditional <code class="literal">INSTEAD</code> rule for the query, then
        the original query will not be executed at all.  In this case,
        the server will return the command status for the last query
        that was inserted by an <code class="literal">INSTEAD</code> rule (conditional or

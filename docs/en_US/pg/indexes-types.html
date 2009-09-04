@@ -4,14 +4,14 @@
 <title>11.2. Index Types</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="prev" href="indexes.html" title="Chapter 11. Indexes">
 <link rel="next" href="indexes-multicolumn.html" title="11.3. Multicolumn Indexes">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="11.2. Index Types">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="indexes-types">11.2. Index Types</h2></div></div></div>
 <p>   <span class="productname">PostgreSQL</span> provides several index types:
    B-tree, Hash, GiST and GIN.  Each index type uses a different
@@ -19,8 +19,8 @@
    By default, the <code class="command">CREATE INDEX</code> command will create a
    B-tree index, which fits the most common situations.
   </p>
-<p>   <a name="id2642609"></a>
-   <a name="id2642618"></a>
+<p>   <a name="id2649969"></a>
+   <a name="id2649978"></a>
    B-trees can handle equality and range queries on data that can be sorted
    into some ordering.
    In particular, the <span class="productname">PostgreSQL</span> query planner
@@ -28,7 +28,7 @@
    involved in a comparison using one of these operators:
 
    </p>
-<table class="simplelist" border="0" summary="Simple list">
+<table border="0" summary="Simple list" class="simplelist">
 <tr><td><code class="literal">&lt;</code></td></tr>
 <tr><td><code class="literal">&lt;=</code></td></tr>
 <tr><td><code class="literal">=</code></td></tr>
@@ -56,8 +56,8 @@
    non-alphabetic characters, i.e. characters that are not affected by
    upper/lower case conversion.
   </p>
-<p>   <a name="id2642763"></a>
-   <a name="id2642772"></a>
+<p>   <a name="id2650123"></a>
+   <a name="id2650132"></a>
    Hash indexes can only handle simple equality comparisons.
    The query planner will consider using a hash index whenever an
    indexed column is involved in a comparison using the
@@ -67,7 +67,7 @@
 <pre class="synopsis">CREATE INDEX <em class="replaceable"><code>name</code></em> ON <em class="replaceable"><code>table</code></em> USING hash (<em class="replaceable"><code>column</code></em>);</pre>
 <p>
   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>    Testing has shown <span class="productname">PostgreSQL</span>'s hash
     indexes to perform no better than B-tree indexes, and the
@@ -78,8 +78,8 @@
     For these reasons, hash index use is presently discouraged.
    </p>
 </div>
-<p>   <a name="id2642832"></a>
-   <a name="id2642841"></a>
+<p>   <a name="id2650191"></a>
+   <a name="id2650200"></a>
    GiST indexes are not a single kind of index, but rather an infrastructure
    within which many different indexing strategies can be implemented.
    Accordingly, the particular operators with which a GiST index can be
@@ -90,7 +90,7 @@
    queries using these operators:
 
    </p>
-<table class="simplelist" border="0" summary="Simple list">
+<table border="0" summary="Simple list" class="simplelist">
 <tr><td><code class="literal">&lt;&lt;</code></td></tr>
 <tr><td><code class="literal">&amp;&lt;</code></td></tr>
 <tr><td><code class="literal">&amp;&gt;</code></td></tr>
@@ -112,8 +112,8 @@
    classes are available in the <code class="literal">contrib</code> collection or as separate
    projects.  For more information see <a class="xref" href="gist.html" title="Chapter 50. GiST Indexes">Chapter 50, <i>GiST Indexes</i></a>.
   </p>
-<p>   <a name="id2642964"></a>
-   <a name="id2642973"></a>
+<p>   <a name="id2650323"></a>
+   <a name="id2650333"></a>
    GIN indexes are inverted indexes which can handle values that contain more
    than one key, arrays for example. Like GiST, GIN can support
    many different user-defined indexing strategies and the particular 
@@ -125,7 +125,7 @@
    queries using these operators:
 
    </p>
-<table class="simplelist" border="0" summary="Simple list">
+<table border="0" summary="Simple list" class="simplelist">
 <tr><td><code class="literal">&lt;@</code></td></tr>
 <tr><td><code class="literal">@&gt;</code></td></tr>
 <tr><td><code class="literal">=</code></td></tr>

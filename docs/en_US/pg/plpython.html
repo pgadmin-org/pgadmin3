@@ -4,14 +4,14 @@
 <title>Chapter 40. PL/Python - Python Procedural Language</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="plperl-missing.html" title="39.7. Limitations and Missing Features">
 <link rel="next" href="plpython-trigger.html" title="40.2. Trigger Functions">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="plpython">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" title="Chapter 40. PL/Python - Python Procedural Language" id="plpython">
 <div class="titlepage"><div><div><h2 class="title">Chapter 40. PL/Python - Python Procedural Language</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
@@ -21,27 +21,27 @@
 <dt><span class="sect1"><a href="plpython-database.html">40.3. Database Access</a></span></dt>
 </dl>
 </div>
-<a name="id2753213"></a><a name="id2753222"></a><p>  The <span class="application">PL/Python</span> procedural language allows
+<a name="id2760849"></a><a name="id2760857"></a><p>  The <span class="application">PL/Python</span> procedural language allows
   <span class="productname">PostgreSQL</span> functions to be written in the
   <a class="ulink" href="http://www.python.org" target="_top">Python language</a>.
  </p>
 <p>  To install PL/Python in a particular database, use
   <code class="literal">createlang plpythonu <em class="replaceable"><code>dbname</code></em></code>.
  </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>    If a language is installed into <code class="literal">template1</code>, all subsequently
     created databases will have the language installed automatically.
    </p>
 </div>
 <p>  As of <span class="productname">PostgreSQL</span> 7.4, PL/Python is only
-  available as an &#8220;<span class="quote">untrusted</span>&#8221; language (meaning it does not
+  available as an <span class="quote">&#8220;<span class="quote">untrusted</span>&#8221;</span> language (meaning it does not
   offer any way of restricting what users can do in it).  It has
   therefore been renamed to <code class="literal">plpythonu</code>.  The trusted
   variant <code class="literal">plpython</code> may become available again in future,
   if a new secure execution mechanism is developed in Python.
  </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>   Users of source packages must specially enable the build of
    PL/Python during the installation process.  (Refer to the
@@ -49,7 +49,7 @@
    packages might find PL/Python in a separate subpackage.
   </p>
 </div>
-<div class="sect1" lang="en">
+<div class="sect1" title="40.1. PL/Python Functions">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="plpython-funcs">40.1. PL/Python Functions</h2></div></div></div>
 <p>   Functions in PL/Python are declared via the standard <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
    syntax:
@@ -103,7 +103,7 @@ $$ LANGUAGE plpythonu;</pre>
    value. Alternatively, one can use named parameters as shown in the example
    above.  Use of named parameters is usually more readable.
   </p>
-<p>   If an SQL null value<a name="id2753435"></a> is passed to a
+<p>   If an SQL null value<a name="id2761070"></a> is passed to a
    function, the argument value will appear as <code class="symbol">None</code> in
    Python. The above function definition will return the wrong answer for null
    inputs. We could add <code class="literal">STRICT</code> to the function definition
@@ -301,7 +301,7 @@ $$ LANGUAGE plpythonu;</pre>
 <p>
 
        </p>
-<div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Warning</h3>
 <p>         Currently, due to Python 
          <a class="ulink" href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1483133&amp;group_id=5470&amp;atid=105470" target="_top">bug #1483133</a>,
@@ -324,7 +324,7 @@ $$ LANGUAGE plpythonu;</pre>
    data between function calls.  This variable is private static data.
    The global dictionary <code class="varname">GD</code> is public data,
    available to all Python functions within a session.  Use with
-   care.<a name="id2753741"></a>
+   care.<a name="id2761377"></a>
   </p>
 <p>   Each function gets its own execution environment in the
    Python interpreter, so that global data and function arguments from

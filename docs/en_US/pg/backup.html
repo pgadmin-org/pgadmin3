@@ -4,22 +4,22 @@
 <title>Chapter 23. Backup and Restore</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="logfile-maintenance.html" title="22.3. Log File Maintenance">
 <link rel="next" href="backup-file.html" title="23.2. File System Level Backup">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="backup">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" title="Chapter 23. Backup and Restore" id="backup">
 <div class="titlepage"><div><div><h2 class="title">Chapter 23. Backup and Restore</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="backup.html#backup-dump">23.1. SQL Dump</a></span></dt>
+<dt><span class="sect1"><a href="backup.html#backup-dump">23.1. <acronym class="acronym">SQL</acronym> Dump</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="backup.html#backup-dump-restore">23.1.1. Restoring the dump</a></span></dt>
-<dt><span class="sect2"><a href="backup.html#backup-dump-all">23.1.2. Using pg_dumpall</a></span></dt>
+<dt><span class="sect2"><a href="backup.html#backup-dump-all">23.1.2. Using <span class="application">pg_dumpall</span></a></span></dt>
 <dt><span class="sect2"><a href="backup.html#backup-dump-large">23.1.3. Handling large databases</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="backup-file.html">23.2. File System Level Backup</a></span></dt>
@@ -42,7 +42,7 @@
 <dt><span class="sect1"><a href="migration.html">23.5. Migration Between Releases</a></span></dt>
 </dl>
 </div>
-<a name="id2681902"></a><p>  As with everything that contains valuable data, <span class="productname">PostgreSQL</span>
+<a name="id2689261"></a><p>  As with everything that contains valuable data, <span class="productname">PostgreSQL</span>
   databases should be backed up regularly. While the procedure is
   essentially simple, it is important to have a basic understanding of
   the underlying techniques and assumptions.
@@ -50,15 +50,15 @@
 <p>  There are three fundamentally different approaches to backing up
   <span class="productname">PostgreSQL</span> data:
   </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p><acronym class="acronym">SQL</acronym> dump</p></li>
-<li><p>File system level backup</p></li>
-<li><p>Continuous archiving</p></li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p><acronym class="acronym">SQL</acronym> dump</p></li>
+<li class="listitem"><p>File system level backup</p></li>
+<li class="listitem"><p>Continuous archiving</p></li>
 </ul></div>
 <p>
   Each has its own strengths and weaknesses.
  </p>
-<div class="sect1" lang="en">
+<div class="sect1" title="23.1. SQL Dump">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="backup-dump">23.1. <acronym class="acronym">SQL</acronym> Dump</h2></div></div></div>
 <p>   The idea behind this dump method is to generate a text file with SQL
    commands that, when fed back to the server, will recreate the
@@ -105,7 +105,7 @@
    (Exceptions are those operations that need to operate with an
    exclusive lock, such as <code class="command">VACUUM FULL</code>.)
   </p>
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Important</h3>
 <p>    If your database schema relies on OIDs (for instance as foreign
     keys) you must instruct <span class="application">pg_dump</span> to dump the OIDs
@@ -113,7 +113,7 @@
     option.
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="23.1.1. Restoring the dump">
 <div class="titlepage"><div><div><h3 class="title" id="backup-dump-restore">23.1.1. Restoring the dump</h3></div></div></div>
 <p>    The text files created by <span class="application">pg_dump</span> are intended to
     be read in by the <span class="application">psql</span> program. The
@@ -163,7 +163,7 @@
 <pre class="programlisting">pg_dump -h <em class="replaceable"><code>host1</code></em> <em class="replaceable"><code>dbname</code></em> | psql -h <em class="replaceable"><code>host2</code></em> <em class="replaceable"><code>dbname</code></em></pre>
 <p>
    </p>
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Important</h3>
 <p>     The dumps produced by <span class="application">pg_dump</span> are relative to
      <code class="literal">template0</code>. This means that any languages, procedures,
@@ -182,7 +182,7 @@
     into <span class="productname">PostgreSQL</span> efficiently, refer to <a class="xref" href="populate.html" title="13.4. Populating a Database">Section 13.4, &#8220;Populating a Database&#8221;</a>.
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="23.1.2. Using pg_dumpall">
 <div class="titlepage"><div><div><h3 class="title" id="backup-dump-all">23.1.2. Using <span class="application">pg_dumpall</span></h3></div></div></div>
 <p>    <span class="application">pg_dump</span> dumps only a single database at a time,
     and it does not dump information about roles or tablespaces
@@ -208,7 +208,7 @@
     dump are appropriate for the new installation.
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="23.1.3. Handling large databases">
 <div class="titlepage"><div><div><h3 class="title" id="backup-dump-large">23.1.3. Handling large databases</h3></div></div></div>
 <p>    Since <span class="productname">PostgreSQL</span> allows tables larger
     than the maximum file size on your system, it can be problematic
@@ -217,43 +217,43 @@
     <span class="application">pg_dump</span> can write to the standard output, you can
     use standard Unix tools to work around this possible problem.
    </p>
-<p><b>Use compressed dumps. </b>     You can use your favorite compression program, for example
+<p title="Use compressed dumps."><b>Use compressed dumps. </b>     You can use your favorite compression program, for example
      <span class="application">gzip</span>.
 
 </p>
 <pre class="programlisting">pg_dump <em class="replaceable"><code>dbname</code></em> | gzip &gt; <em class="replaceable"><code>filename</code></em>.gz</pre>
-<p>
+<p title="Use compressed dumps.">
 
      Reload with
 
 </p>
 <pre class="programlisting">createdb <em class="replaceable"><code>dbname</code></em>
 gunzip -c <em class="replaceable"><code>filename</code></em>.gz | psql <em class="replaceable"><code>dbname</code></em></pre>
-<p>
+<p title="Use compressed dumps.">
 
      or
 
 </p>
 <pre class="programlisting">cat <em class="replaceable"><code>filename</code></em>.gz | gunzip | psql <em class="replaceable"><code>dbname</code></em></pre>
-<p>
+<p title="Use compressed dumps.">
     </p>
-<p><b>Use <code class="command">split</code>. </b>     The <code class="command">split</code> command
+<p title="Use split."><b>Use <code class="command">split</code>. </b>     The <code class="command">split</code> command
      allows you to split the output into pieces that are
      acceptable in size to the underlying file system. For example, to
      make chunks of 1 megabyte:
 
 </p>
 <pre class="programlisting">pg_dump <em class="replaceable"><code>dbname</code></em> | split -b 1m - <em class="replaceable"><code>filename</code></em></pre>
-<p>
+<p title="Use split.">
 
      Reload with
 
 </p>
 <pre class="programlisting">createdb <em class="replaceable"><code>dbname</code></em>
 cat <em class="replaceable"><code>filename</code></em>* | psql <em class="replaceable"><code>dbname</code></em></pre>
-<p>
+<p title="Use split.">
     </p>
-<p><b>Use the custom dump format. </b>     If <span class="productname">PostgreSQL</span> was built on a system with the
+<p title="Use the custom dump format."><b>Use the custom dump format. </b>     If <span class="productname">PostgreSQL</span> was built on a system with the
      <span class="application">zlib</span> compression library installed, the custom dump
      format will compress data as it writes it to the output file. This will
      produce dump file sizes similar to using <code class="command">gzip</code>, but it
@@ -262,7 +262,7 @@ cat <em class="replaceable"><code>filename</code></em>* | psql <em class="replac
 
 </p>
 <pre class="programlisting">pg_dump -Fc <em class="replaceable"><code>dbname</code></em> &gt; <em class="replaceable"><code>filename</code></em></pre>
-<p>
+<p title="Use the custom dump format.">
 
      A custom-format dump is not a script for <span class="application">psql</span>, but
      instead must be restored with <span class="application">pg_restore</span>.

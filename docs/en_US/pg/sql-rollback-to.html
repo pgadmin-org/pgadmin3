@@ -4,25 +4,25 @@
 <title>ROLLBACK TO SAVEPOINT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-rollback-prepared.html" title="ROLLBACK PREPARED">
 <link rel="next" href="sql-savepoint.html" title="SAVEPOINT">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="ROLLBACK TO SAVEPOINT">
 <a name="sql-rollback-to"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>ROLLBACK TO SAVEPOINT &#8212; roll back to a savepoint</p>
 </div>
-<a name="id2801882"></a><a name="id2801892"></a><div class="refsynopsisdiv">
+<a name="id2809503"></a><a name="id2809512"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">ROLLBACK [ WORK | TRANSACTION ] TO [ SAVEPOINT ] <em class="replaceable"><code>savepoint_name</code></em></pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2801912"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2809533"></a><h2>Description</h2>
 <p>   Roll back all commands that were executed after the savepoint was
    established.  The savepoint remains valid and can be rolled back to
    again later, if needed.
@@ -31,16 +31,16 @@
    were established after the named savepoint.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2801930"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2809551"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>savepoint_name</code></em></span></dt>
 <dd><p>      The savepoint to roll back to.
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2801945"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2809566"></a><h2>Notes</h2>
 <p>   Use <a class="xref" href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">RELEASE SAVEPOINT</a> to destroy a savepoint without
    discarding the effects of commands executed after it was established.
   </p>
@@ -59,8 +59,8 @@
    <code class="command">ROLLBACK TO SAVEPOINT</code>, the cursor can no longer be used.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2802003"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2809624"></a><h2>Examples</h2>
 <p>   To undo the effects of the commands executed after <code class="literal">my_savepoint</code>
    was established:
 </p>
@@ -91,8 +91,8 @@ COMMIT;</pre>
 <p>
    </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2802035"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2809655"></a><h2>Compatibility</h2>
 <p>   The <acronym class="acronym">SQL</acronym> standard specifies that the key word
    <code class="literal">SAVEPOINT</code> is mandatory, but <span class="productname">PostgreSQL</span>
    and <span class="productname">Oracle</span> allow it to be omitted.  SQL allows
@@ -103,8 +103,8 @@ COMMIT;</pre>
    the SQL standard.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2802096"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2809717"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-begin.html" title="BEGIN">BEGIN</a>, <a class="xref" href="sql-commit.html" title="COMMIT">COMMIT</a>, <a class="xref" href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">RELEASE SAVEPOINT</a>, <a class="xref" href="sql-rollback.html" title="ROLLBACK">ROLLBACK</a>, <a class="xref" href="sql-savepoint.html" title="SAVEPOINT">SAVEPOINT</a></span>
 </div>
 </div></body>

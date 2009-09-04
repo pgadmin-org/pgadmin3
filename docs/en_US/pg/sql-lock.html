@@ -4,20 +4,20 @@
 <title>LOCK</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-load.html" title="LOAD">
 <link rel="next" href="sql-move.html" title="MOVE">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="LOCK">
 <a name="sql-lock"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>LOCK &#8212; lock a table</p>
 </div>
-<a name="id2797770"></a><div class="refsynopsisdiv">
+<a name="id2805394"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">LOCK [ TABLE ] <em class="replaceable"><code>name</code></em> [, ...] [ IN <em class="replaceable"><code>lockmode</code></em> MODE ] [ NOWAIT ]
 
@@ -26,8 +26,8 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
     ACCESS SHARE | ROW SHARE | ROW EXCLUSIVE | SHARE UPDATE EXCLUSIVE
     | SHARE | SHARE ROW EXCLUSIVE | EXCLUSIVE | ACCESS EXCLUSIVE</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2797805"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2805430"></a><h2>Description</h2>
 <p>   <code class="command">LOCK TABLE</code> obtains a table-level lock, waiting
    if necessary for any conflicting locks to be released.  If
    <code class="literal">NOWAIT</code> is specified, <code class="command">LOCK
@@ -84,8 +84,8 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
    found in <a class="xref" href="explicit-locking.html" title="12.3. Explicit Locking">Section 12.3, &#8220;Explicit Locking&#8221;</a>.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2798009"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2805634"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd>
@@ -115,8 +115,8 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2798095"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2805719"></a><h2>Notes</h2>
 <p>    <code class="literal">LOCK TABLE ... IN ACCESS SHARE MODE</code> requires <code class="literal">SELECT</code>
     privileges on the target table.  All other forms of <code class="command">LOCK</code>
     require <code class="literal">UPDATE</code> and/or <code class="literal">DELETE</code> privileges.
@@ -141,8 +141,8 @@ where <em class="replaceable"><code>lockmode</code></em> is one of:
    reference documentation.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2798222"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2805847"></a><h2>Examples</h2>
 <p>   Obtain a <code class="literal">SHARE</code> lock on a primary key table when going to perform
    inserts into a foreign key table:
 
@@ -170,8 +170,8 @@ COMMIT WORK;</pre>
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2798265"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2805890"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">LOCK TABLE</code> in the SQL standard,
    which instead uses <code class="command">SET TRANSACTION</code> to specify
    concurrency levels on transactions.  <span class="productname">PostgreSQL</span> supports that too;

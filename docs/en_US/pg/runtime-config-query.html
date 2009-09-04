@@ -4,16 +4,16 @@
 <title>17.6. Query Planning</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-wal.html" title="17.5. Write Ahead Log">
 <link rel="next" href="runtime-config-logging.html" title="17.7. Error Reporting and Logging">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="17.6. Query Planning">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="runtime-config-query">17.6. Query Planning</h2></div></div></div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.6.1. Planner Method Configuration">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-query-enable">17.6.1. Planner Method Configuration</h3></div></div></div>
 <p>       These configuration parameters provide a crude method of
        influencing the query plans chosen by the query optimizer. If
@@ -96,7 +96,7 @@
        </p></dd>
 </dl></div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.6.2.  Planner Cost Constants">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-query-constants">17.6.2.       Planner Cost Constants
      </h3></div></div></div>
 <p>     The <em class="firstterm">cost</em> variables described in this section are measured
@@ -109,7 +109,7 @@
      you can use a different scale if you prefer, such as actual execution
      times in milliseconds on a particular machine.
     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     Unfortunately, there is no well-defined method for determining ideal
      values for the cost variables.  They are best treated as averages over
@@ -138,7 +138,7 @@
         costs relative to CPU costs, which are described by the following
         parameters.
        </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>         Although the system will let you set <code class="varname">random_page_cost</code> to
          less than <code class="varname">seq_page_cost</code>, it is not physically sensible
@@ -193,7 +193,7 @@
        </p></dd>
 </dl></div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.6.3. Genetic Query Optimizer">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-query-geqo">17.6.3. Genetic Query Optimizer</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
@@ -263,7 +263,7 @@
        </p></dd>
 </dl></div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="17.6.4. Other Planner Options">
 <div class="titlepage"><div><div><h3 class="title" id="runtime-config-query-other">17.6.4. Other Planner Options</h3></div></div></div>
 <div class="variablelist"><dl>
 <dt>
@@ -327,7 +327,7 @@ SELECT * FROM parent WHERE key = 2400;</pre>
         this many items.  Smaller values reduce planning time but may
         yield inferior query plans.  The default is eight.  It is usually
         wise to keep this less than <a class="xref" href="runtime-config-query.html#guc-geqo-threshold">geqo_threshold</a>.
-        For more information see <a class="xref" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">Section 13.3, &#8220;Controlling the Planner with Explicit JOIN Clauses&#8221;</a>.
+        For more information see <a class="xref" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">Section 13.3, &#8220;Controlling the Planner with Explicit <code class="literal">JOIN</code> Clauses&#8221;</a>.
        </p></dd>
 <dt>
 <a name="guc-join-collapse-limit"></a><span class="term"><code class="varname">join_collapse_limit</code> (<code class="type">integer</code>)</span>
@@ -348,7 +348,7 @@ SELECT * FROM parent WHERE key = 2400;</pre>
         the optimal join order; advanced users may elect to
         temporarily set this variable to 1, and then specify the join
         order they desire explicitly.
-        For more information see <a class="xref" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">Section 13.3, &#8220;Controlling the Planner with Explicit JOIN Clauses&#8221;</a>.
+        For more information see <a class="xref" href="explicit-joins.html" title="13.3. Controlling the Planner with Explicit JOIN Clauses">Section 13.3, &#8220;Controlling the Planner with Explicit <code class="literal">JOIN</code> Clauses&#8221;</a>.
        </p>
 </dd>
 </dl></div>

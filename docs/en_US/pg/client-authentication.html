@@ -4,19 +4,19 @@
 <title>Chapter 20. Client Authentication</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="manage-ag-tablespaces.html" title="19.6. Tablespaces">
 <link rel="next" href="auth-methods.html" title="20.2. Authentication methods">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="client-authentication">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" title="Chapter 20. Client Authentication" id="client-authentication">
 <div class="titlepage"><div><div><h2 class="title">Chapter 20. Client Authentication</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="sect1"><a href="client-authentication.html#auth-pg-hba-conf">20.1. The pg_hba.conf file</a></span></dt>
+<dt><span class="sect1"><a href="client-authentication.html#auth-pg-hba-conf">20.1. The <code class="filename">pg_hba.conf</code> file</a></span></dt>
 <dt><span class="sect1"><a href="auth-methods.html">20.2. Authentication methods</a></span></dt>
 <dd><dl>
 <dt><span class="sect2"><a href="auth-methods.html#auth-trust">20.2.1. Trust authentication</a></span></dt>
@@ -29,7 +29,7 @@
 <dt><span class="sect1"><a href="client-authentication-problems.html">20.3. Authentication problems</a></span></dt>
 </dl>
 </div>
-<a name="id2674140"></a><p>  When a client application connects to the database server, it
+<a name="id2681499"></a><p>  When a client application connects to the database server, it
   specifies which <span class="productname">PostgreSQL</span> database user name it
   wants to connect as, much the same way one logs into a Unix computer
   as a particular user. Within the SQL environment the active database
@@ -37,13 +37,13 @@
   <a class="xref" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a> for more information. Therefore, it is
   essential to restrict which database users can connect.
  </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>   As explained in <a class="xref" href="user-manag.html" title="Chapter 18. Database Roles and Privileges">Chapter 18, <i>Database Roles and Privileges</i></a>,
    <span class="productname">PostgreSQL</span> actually does privilege
-   management in terms of &#8220;<span class="quote">roles</span>&#8221;.  In this chapter, we
-   consistently use <em class="firstterm">database user</em> to mean &#8220;<span class="quote">role with the
-   <code class="literal">LOGIN</code> privilege</span>&#8221;.
+   management in terms of <span class="quote">&#8220;<span class="quote">roles</span>&#8221;</span>.  In this chapter, we
+   consistently use <em class="firstterm">database user</em> to mean <span class="quote">&#8220;<span class="quote">role with the
+   <code class="literal">LOGIN</code> privilege</span>&#8221;</span>.
   </p>
 </div>
 <p>  <em class="firstterm">Authentication</em> is the process by which the
@@ -66,9 +66,9 @@
   account, and in such cases there need be no connection between
   database user names and OS user names.
  </p>
-<div class="sect1" lang="en">
+<div class="sect1" title="20.1. The pg_hba.conf file">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="auth-pg-hba-conf">20.1. The <code class="filename">pg_hba.conf</code> file</h2></div></div></div>
-<a name="id2674256"></a><p>   Client authentication is controlled by a configuration file,
+<a name="id2681615"></a><p>   Client authentication is controlled by a configuration file,
    which traditionally is named
    <code class="filename">pg_hba.conf</code> and is stored in the database
    cluster's data directory.
@@ -90,8 +90,8 @@
    and the authentication method to be used for connections matching
    these parameters. The first record with a matching connection type,
    client address, requested database, and user name is used to perform
-   authentication. There is no &#8220;<span class="quote">fall-through</span>&#8221; or
-   &#8220;<span class="quote">backup</span>&#8221;: if one record is chosen and the authentication
+   authentication. There is no <span class="quote">&#8220;<span class="quote">fall-through</span>&#8221;</span> or
+   <span class="quote">&#8220;<span class="quote">backup</span>&#8221;</span>: if one record is chosen and the authentication
    fails, subsequent records are not considered. If no record matches,
    access is denied.
   </p>
@@ -121,7 +121,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
        <acronym class="acronym">SSL</acronym> or non-<acronym class="acronym">SSL</acronym> connection
        attempts.
       </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>       Remote TCP/IP connections will not be possible unless
        the server is started with an appropriate value for the
@@ -171,8 +171,8 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
        database user, or a group name preceded by <code class="literal">+</code>.
        (Recall that there is no real distinction between users and groups
        in <span class="productname">PostgreSQL</span>; a <code class="literal">+</code> mark really means
-       &#8220;<span class="quote">match any of the roles that are directly or indirectly members
-       of this role</span>&#8221;, while a name without a <code class="literal">+</code> mark matches
+       <span class="quote">&#8220;<span class="quote">match any of the roles that are directly or indirectly members
+       of this role</span>&#8221;</span>, while a name without a <code class="literal">+</code> mark matches
        only that specific role.)
        Multiple user names can be supplied by separating them with commas.
        A separate file containing user names can be specified by preceding the
@@ -241,7 +241,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
          </p></dd>
 <dt><span class="term"><code class="literal">reject</code></span></dt>
 <dd><p>          Reject the connection unconditionally. This is useful for
-          &#8220;<span class="quote">filtering out</span>&#8221; certain hosts from a group.
+          <span class="quote">&#8220;<span class="quote">filtering out</span>&#8221;</span> certain hosts from a group.
          </p></dd>
 <dt><span class="term"><code class="literal">md5</code></span></dt>
 <dd><p>          Require the client to supply an MD5-encrypted password for
@@ -250,7 +250,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
          </p></dd>
 <dt><span class="term"><code class="literal">crypt</code></span></dt>
 <dd>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>          This option is recommended only for communicating with pre-7.2
           clients.
@@ -324,13 +324,13 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
   </p>
 <p>   The <code class="filename">pg_hba.conf</code> file is read on start-up and when
    the main server process receives a
-   <span class="systemitem">SIGHUP</span><a name="id2675199"></a>
+   <span class="systemitem">SIGHUP</span><a name="id2682558"></a>
    signal. If you edit the file on an
    active system, you will need to signal the server
    (using <code class="literal">pg_ctl reload</code> or <code class="literal">kill -HUP</code>) to make it
    re-read the file.
   </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>    To connect to a particular database, a user must not only pass the
     <code class="filename">pg_hba.conf</code> checks, but must have the
@@ -341,7 +341,7 @@ hostnossl  <em class="replaceable"><code>database</code></em>  <em class="replac
    </p>
 </div>
 <p>   Some examples of <code class="filename">pg_hba.conf</code> entries are shown in
-   <a class="xref" href="client-authentication.html#example-pg-hba.conf" title="Example 20.1. Example pg_hba.conf entries">Example 20.1, &#8220;Example pg_hba.conf entries&#8221;</a>. See the next section for details on the
+   <a class="xref" href="client-authentication.html#example-pg-hba.conf" title="Example 20.1. Example pg_hba.conf entries">Example 20.1, &#8220;Example <code class="filename">pg_hba.conf</code> entries&#8221;</a>. See the next section for details on the
    different authentication methods.
   </p>
 <div class="example">

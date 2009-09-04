@@ -4,28 +4,28 @@
 <title>CREATE SEQUENCE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createschema.html" title="CREATE SCHEMA">
 <link rel="next" href="sql-createtable.html" title="CREATE TABLE">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="CREATE SEQUENCE">
 <a name="sql-createsequence"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE SEQUENCE &#8212; define a new sequence generator</p>
 </div>
-<a name="id2781415"></a><div class="refsynopsisdiv">
+<a name="id2789028"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ TEMPORARY | TEMP ] SEQUENCE <em class="replaceable"><code>name</code></em> [ INCREMENT [ BY ] <em class="replaceable"><code>increment</code></em> ]
     [ MINVALUE <em class="replaceable"><code>minvalue</code></em> | NO MINVALUE ] [ MAXVALUE <em class="replaceable"><code>maxvalue</code></em> | NO MAXVALUE ]
     [ START [ WITH ] <em class="replaceable"><code>start</code></em> ] [ CACHE <em class="replaceable"><code>cache</code></em> ] [ [ NO ] CYCLE ]
     [ OWNED BY { <em class="replaceable"><code>table</code></em>.<em class="replaceable"><code>column</code></em> | NONE } ]</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2781481"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2789094"></a><h2>Description</h2>
 <p>   <code class="command">CREATE SEQUENCE</code> creates a new sequence number
    generator.  This involves creating and initializing a new special
    single-row table with the name <em class="replaceable"><code>name</code></em>.  The generator will be
@@ -58,8 +58,8 @@
    <code class="function">nextval</code> calls.)
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2781568"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2789181"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">TEMPORARY</code> or <code class="literal">TEMP</code></span></dt>
 <dd><p>      If specified, the sequence object is created only for this
@@ -139,8 +139,8 @@
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2781897"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2789510"></a><h2>Notes</h2>
 <p>   Use <code class="command">DROP SEQUENCE</code> to remove a sequence.
   </p>
 <p>   Sequences are based on <code class="type">bigint</code> arithmetic, so the range
@@ -159,7 +159,7 @@
    uses of <code class="function">nextval</code> within that session simply return the
    preallocated values without touching the sequence object.  So, any
    numbers allocated but not used within a session will be lost when
-   that session ends, resulting in &#8220;<span class="quote">holes</span>&#8221; in the
+   that session ends, resulting in <span class="quote">&#8220;<span class="quote">holes</span>&#8221;</span> in the
    sequence.
   </p>
 <p>   Furthermore, although multiple sessions are guaranteed to allocate
@@ -184,8 +184,8 @@
    have used up any preallocated values they have cached.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2782049"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2789662"></a><h2>Examples</h2>
 <p>   Create an ascending sequence called <code class="literal">serial</code>, starting at 101:
 </p>
 <pre class="programlisting">CREATE SEQUENCE serial START 101;</pre>
@@ -214,28 +214,28 @@ END;</pre>
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2782109"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2789722"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE SEQUENCE</code> conforms to the <acronym class="acronym">SQL</acronym>
    standard, with the following exceptions:
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      The standard's <code class="literal">AS &lt;data type&gt;</code> expression is not
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      The standard's <code class="literal">AS &lt;data type&gt;</code> expression is not
       supported.
      </p></li>
-<li><p>      Obtaining the next value is done using the <code class="function">nextval()</code>
+<li class="listitem"><p>      Obtaining the next value is done using the <code class="function">nextval()</code>
       function instead of the standard's <code class="command">NEXT VALUE FOR</code>
       expression.
      </p></li>
-<li><p>      The <code class="literal">OWNED BY</code> clause is a <span class="productname">PostgreSQL</span>
+<li class="listitem"><p>      The <code class="literal">OWNED BY</code> clause is a <span class="productname">PostgreSQL</span>
       extension. 
      </p></li>
 </ul></div>
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2782171"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2789784"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-altersequence.html" title="ALTER SEQUENCE">ALTER SEQUENCE</a>, <a class="xref" href="sql-dropsequence.html" title="DROP SEQUENCE">DROP SEQUENCE</a></span>
 </div>
 </div></body>

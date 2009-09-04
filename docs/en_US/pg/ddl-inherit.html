@@ -4,16 +4,16 @@
 <title>5.8. Inheritance</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="ddl.html" title="Chapter 5. Data Definition">
 <link rel="prev" href="ddl-schemas.html" title="5.7. Schemas">
 <link rel="next" href="ddl-partitioning.html" title="5.9. Partitioning">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="5.8. Inheritance">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddl-inherit">5.8. Inheritance</h2></div></div></div>
-<a name="id2593161"></a><a name="id2593166"></a><p>   <span class="productname">PostgreSQL</span> implements table inheritance,
+<a name="id2600509"></a><a name="id2600515"></a><p>   <span class="productname">PostgreSQL</span> implements table inheritance,
    which can be a useful tool for database designers.  (SQL:1999 and
    later define a type inheritance feature, which differs in many
    respects from the features described here.)
@@ -159,7 +159,7 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    the union of the columns defined by the parent tables.  Any columns
    declared in the child table's definition are added to these.  If the
    same column name appears in multiple parent tables, or in both a parent
-   table and the child's definition, then these columns are &#8220;<span class="quote">merged</span>&#8221;
+   table and the child's definition, then these columns are <span class="quote">&#8220;<span class="quote">merged</span>&#8221;</span>
    so that there is only one such column in the child table.  To be merged,
    columns must have the same data types, else an error is raised.  The
    merged column will have copies of all the check constraints coming from
@@ -205,7 +205,7 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    TABLE</code> follows the same rules for duplicate column merging
    and rejection that apply during <code class="command">CREATE TABLE</code>.
   </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="5.8.1. Caveats">
 <div class="titlepage"><div><div><h3 class="title" id="ddl-inherit-caveats">5.8.1. Caveats</h3></div></div></div>
 <p>   Table access permissions are not automatically inherited.  Therefore,
    a user attempting to access a parent table must either have permissions
@@ -221,8 +221,8 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    in the terms of the above example:
 
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      If we declared <code class="structname">cities</code>.<code class="structfield">name</code> to be
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      If we declared <code class="structname">cities</code>.<code class="structfield">name</code> to be
       <code class="literal">UNIQUE</code> or a <code class="literal">PRIMARY KEY</code>, this would not stop the
       <code class="structname">capitals</code> table from having rows with names duplicating
       rows in <code class="structname">cities</code>.  And those duplicate rows would by
@@ -232,14 +232,14 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
       You could add a unique constraint to <code class="structname">capitals</code>, but this
       would not prevent duplication compared to <code class="structname">cities</code>.
      </p></li>
-<li><p>      Similarly, if we were to specify that
+<li class="listitem"><p>      Similarly, if we were to specify that
       <code class="structname">cities</code>.<code class="structfield">name</code> <code class="literal">REFERENCES</code> some
       other table, this constraint would not automatically propagate to
       <code class="structname">capitals</code>.  In this case you could work around it by
       manually adding the same <code class="literal">REFERENCES</code> constraint to
       <code class="structname">capitals</code>.
      </p></li>
-<li><p>      Specifying that another table's column <code class="literal">REFERENCES
+<li class="listitem"><p>      Specifying that another table's column <code class="literal">REFERENCES
       cities(name)</code> would allow the other table to contain city names, but
       not capital names.  There is no good workaround for this case.
      </p></li>
@@ -250,7 +250,7 @@ VALUES ('New York', NULL, NULL, 'NY');</pre>
    but in the meantime considerable care is needed in deciding whether
    inheritance is useful for your problem.
   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Deprecated" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Deprecated</h3>
 <p>     In releases of <span class="productname">PostgreSQL</span> prior to 7.1, the
      default behavior was not to include child tables in queries. This was

@@ -4,32 +4,32 @@
 <title>LOAD</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-listen.html" title="LISTEN">
 <link rel="next" href="sql-lock.html" title="LOCK">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="LOAD">
 <a name="sql-load"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
-<p>LOAD &#8212; load or reload a shared library file</p>
+<p>LOAD &#8212; load a shared library file</p>
 </div>
-<a name="id2797602"></a><div class="refsynopsisdiv">
+<a name="id2805225"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">LOAD '<em class="replaceable"><code>filename</code></em>'</pre>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="sql-load-description"></a><h2>Description</h2>
 <p>   This command loads a shared library file into the <span class="productname">PostgreSQL</span>
-   server's address space.  If the file had been loaded previously,
-   it is first unloaded.  This command is primarily useful to unload
-   and reload a shared library file that has been changed since the
-   server first loaded it.  To make use of the shared library,
-   function(s) in it need to be declared using the <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
-   command.
+   server's address space.  If the file has been loaded already,
+   the command does nothing.  Shared library files that contain C functions
+   are automatically loaded whenever one of their functions is called.
+   Therefore, an explicit <code class="command">LOAD</code> is usually only needed to
+   load a library that modifies the server's behavior through <span class="quote">&#8220;<span class="quote">hooks</span>&#8221;</span>
+   rather than providing a set of functions.
   </p>
 <p>   The file name is specified in the same way as for shared library
    names in <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>; in particular, one
@@ -37,22 +37,22 @@
    shared library file name extension.  See <a class="xref" href="xfunc-c.html" title="33.9. C-Language Functions">Section 33.9, &#8220;C-Language Functions&#8221;</a> for
    more information on this topic.
   </p>
-<a name="id2797676"></a><p>   Non-superusers may only apply <code class="command">LOAD</code> to library files
+<a name="id2805301"></a><p>   Non-superusers may only apply <code class="command">LOAD</code> to library files
    located in <code class="filename">$libdir/plugins/</code> &#8212; the specified
    <em class="replaceable"><code>filename</code></em> must begin
    with exactly that string.  (It is the database administrator's
-   responsibility to ensure that only &#8220;<span class="quote">safe</span>&#8221; libraries
+   responsibility to ensure that only <span class="quote">&#8220;<span class="quote">safe</span>&#8221;</span> libraries
    are installed there.)
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Compatibility">
 <a name="sql-load-compat"></a><h2>Compatibility</h2>
 <p>   <code class="command">LOAD</code> is a <span class="productname">PostgreSQL</span>
    extension.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2797735"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2805359"></a><h2>See Also</h2>
 <p>   <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
   </p>
 </div>

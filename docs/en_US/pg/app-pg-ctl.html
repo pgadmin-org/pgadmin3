@@ -4,20 +4,20 @@
 <title>pg_ctl</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="reference-server.html" title="PostgreSQL Server Applications">
 <link rel="prev" href="app-pgcontroldata.html" title="pg_controldata">
 <link rel="next" href="app-pgresetxlog.html" title="pg_resetxlog">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="pg_ctl">
 <a name="app-pg-ctl"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>pg_ctl &#8212; start, stop, or restart a <span class="productname">PostgreSQL</span> server</p>
 </div>
-<a name="id2829063"></a><div class="refsynopsisdiv">
+<a name="id2836707"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <div class="cmdsynopsis"><p><code class="command">pg_ctl</code>  start  [-w] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-l <em class="replaceable"><code>filename</code></em>] [-o <em class="replaceable"><code>options</code></em>] [-p <em class="replaceable"><code>path</code></em>]<br><code class="command">pg_ctl</code>  stop  [-W] [-s] [-D <em class="replaceable"><code>datadir</code></em>] [-m
       [s[mart]] |  [f[ast]] |  [i[mmediate]] 
@@ -25,7 +25,7 @@
       [s[mart]] |  [f[ast]] |  [i[mmediate]] 
    ] [-o <em class="replaceable"><code>options</code></em>]<br><code class="command">pg_ctl</code>  reload  [-s] [-D <em class="replaceable"><code>datadir</code></em>]<br><code class="command">pg_ctl</code>  status  [-D <em class="replaceable"><code>datadir</code></em>]<br><code class="command">pg_ctl</code>  kill  [<em class="replaceable"><code>signal_name</code></em>] [<em class="replaceable"><code>process_id</code></em>]<br><code class="command">pg_ctl</code>  register  [-N <em class="replaceable"><code>servicename</code></em>] [-U <em class="replaceable"><code>username</code></em>] [-P <em class="replaceable"><code>password</code></em>] [-D <em class="replaceable"><code>datadir</code></em>] [-w] [-o <em class="replaceable"><code>options</code></em>]<br><code class="command">pg_ctl</code>  unregister  [-N <em class="replaceable"><code>servicename</code></em>]</p></div>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Description">
 <a name="app-pg-ctl-description"></a><h2>Description</h2>
 <p>   <span class="application">pg_ctl</span> is a utility for starting,
    stopping, or restarting the <span class="productname">PostgreSQL</span>
@@ -51,11 +51,11 @@
 <p>   In <code class="option">stop</code> mode, the server that is running in
    the specified data directory is shut down.  Three different
    shutdown methods can be selected with the <code class="option">-m</code>
-   option: &#8220;<span class="quote">Smart</span>&#8221; mode waits for all the clients to
-   disconnect.  This is the default.  &#8220;<span class="quote">Fast</span>&#8221; mode does
+   option: <span class="quote">&#8220;<span class="quote">Smart</span>&#8221;</span> mode waits for all the clients to
+   disconnect.  This is the default.  <span class="quote">&#8220;<span class="quote">Fast</span>&#8221;</span> mode does
    not wait for clients to disconnect.  All active transactions are
    rolled back and clients are forcibly disconnected, then the
-   server is shut down.  &#8220;<span class="quote">Immediate</span>&#8221; mode will abort
+   server is shut down.  <span class="quote">&#8220;<span class="quote">Immediate</span>&#8221;</span> mode will abort
    all server processes without a clean shutdown.  This will lead to 
    a recovery run on restart.
   </p>
@@ -89,7 +89,7 @@
    <code class="option">register</code> command.
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Options">
 <a name="app-pg-ctl-options"></a><h2>Options</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="option">-D <em class="replaceable"><code>datadir</code></em></code></span></dt>
@@ -149,7 +149,7 @@
         default for starts and restarts.
        </p></dd>
 </dl></div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="Options for Windows">
 <a name="app-pg-ctl-windows-options"></a><h3>Options for Windows</h3>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="option">-N <em class="replaceable"><code>servicename</code></em></code></span></dt>
@@ -166,8 +166,8 @@
 </dl></div>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2829961"></a><h2>Environment</h2>
+<div class="refsect1" title="Environment">
+<a name="id2837605"></a><h2>Environment</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="envar">PGDATA</code></span></dt>
 <dd><p>      Default data directory location.
@@ -182,8 +182,8 @@
    (see <a class="xref" href="libpq-envars.html" title="29.12. Environment Variables">Section 29.12, &#8220;Environment Variables&#8221;</a>).
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2830016"></a><h2>Files</h2>
+<div class="refsect1" title="Files">
+<a name="id2837660"></a><h2>Files</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="filename">postmaster.pid</code></span></dt>
 <dd><p>      The existence of this file in the data directory is used to help
@@ -212,16 +212,16 @@
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2830133"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2837778"></a><h2>Notes</h2>
 <p>   Waiting for complete start is not a well-defined operation and may
    fail if access control is set up so that a local client cannot
    connect without manual interaction (e.g., password authentication).
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Examples">
 <a name="r1-app-pgctl-2"></a><h2>Examples</h2>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="Starting the Server">
 <a name="r2-app-pgctl-3"></a><h3>Starting the Server</h3>
 <p>    To start up a server:
 </p>
@@ -241,7 +241,7 @@
 <p>
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="Stopping the Server">
 <a name="r2-app-pgctl-4"></a><h3>Stopping the Server</h3>
 <pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_ctl stop</code></strong></pre>
 <p>
@@ -249,7 +249,7 @@
     to control <span class="emphasis"><em>how</em></span> the backend shuts down.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="Restarting the Server">
 <a name="r2-app-pgctl-5"></a><h3>Restarting the Server</h3>
 <p>    Restarting the server is almost equivalent to stopping the
     server and starting it again
@@ -272,7 +272,7 @@
 <p>
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="Showing the Server Status">
 <a name="r2-app-pgctl-6"></a><h3>Showing the Server Status</h3>
 <p>    Here is a sample status output from
     <span class="application">pg_ctl</span>:
@@ -286,8 +286,8 @@ Command line was:
    </p>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2830367"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2838012"></a><h2>See Also</h2>
 <p>   <a class="xref" href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a>
   </p>
 </div>

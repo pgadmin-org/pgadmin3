@@ -4,19 +4,19 @@
 <title>19.3. Template Databases</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="managing-databases.html" title="Chapter 19. Managing Databases">
 <link rel="prev" href="manage-ag-createdb.html" title="19.2. Creating a Database">
 <link rel="next" href="manage-ag-config.html" title="19.4. Database Configuration">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="19.3. Template Databases">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="manage-ag-templatedbs">19.3. Template Databases</h2></div></div></div>
 <p>   <code class="command">CREATE DATABASE</code> actually works by copying an existing
    database.  By default, it copies the standard system database named
-   <code class="literal">template1</code>.<a name="id2673255"></a> Thus that
-   database is the &#8220;<span class="quote">template</span>&#8221; from which new databases are
+   <code class="literal">template1</code>.<a name="id2680614"></a> Thus that
+   database is the <span class="quote">&#8220;<span class="quote">template</span>&#8221;</span> from which new databases are
    made.  If you add objects to <code class="literal">template1</code>, these objects
    will be copied into subsequently created user databases.  This
    behavior allows site-local modifications to the standard set of
@@ -26,14 +26,14 @@
    action being taken when those databases are made.
   </p>
 <p>   There is a second standard system database named
-   <code class="literal">template0</code>.<a name="id2673299"></a> This
+   <code class="literal">template0</code>.<a name="id2680659"></a> This
    database contains the same data as the initial contents of
    <code class="literal">template1</code>, that is, only the standard objects
    predefined by your version of
    <span class="productname">PostgreSQL</span>.  <code class="literal">template0</code>
    should never be changed after <code class="command">initdb</code>.  By instructing
    <code class="command">CREATE DATABASE</code> to copy <code class="literal">template0</code> instead
-   of <code class="literal">template1</code>, you can create a &#8220;<span class="quote">virgin</span>&#8221; user
+   of <code class="literal">template1</code>, you can create a <span class="quote">&#8220;<span class="quote">virgin</span>&#8221;</span> user
    database that contains none of the site-local additions in
    <code class="literal">template1</code>.  This is particularly handy when restoring a
    <code class="literal">pg_dump</code> dump: the dump script should be restored in a
@@ -55,14 +55,14 @@
    one may copy any database in a cluster by specifying its name
    as the template for <code class="command">CREATE DATABASE</code>.  It is important to
    understand, however, that this is not (yet) intended as
-   a general-purpose &#8220;<span class="quote"><code class="command">COPY DATABASE</code></span>&#8221; facility.
+   a general-purpose <span class="quote">&#8220;<span class="quote"><code class="command">COPY DATABASE</code></span>&#8221;</span> facility.
    The principal limitation is that no other sessions can be connected to
    the source database while it is being copied.  <code class="command">CREATE
    DATABASE</code> will fail if any other connection exists when it starts;
    otherwise, new connections to the source database are locked out
    until <code class="command">CREATE DATABASE</code> completes.
   </p>
-<p>   Two useful flags exist in <code class="literal">pg_database</code><a name="id2673451"></a> for each
+<p>   Two useful flags exist in <code class="literal">pg_database</code><a name="id2680810"></a> for each
    database: the columns <code class="literal">datistemplate</code> and
    <code class="literal">datallowconn</code>.  <code class="literal">datistemplate</code>
    may be set to indicate that a database is intended as a template for
@@ -77,7 +77,7 @@
    Both <code class="literal">template0</code> and <code class="literal">template1</code>
    should always be marked with <code class="literal">datistemplate = true</code>.
   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>    <code class="literal">template1</code> and <code class="literal">template0</code> do not have any special
     status beyond the fact that the name <code class="literal">template1</code> is the default

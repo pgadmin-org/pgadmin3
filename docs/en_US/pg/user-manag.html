@@ -4,14 +4,14 @@
 <title>Chapter 18. Database Roles and Privileges</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="runtime-config-short.html" title="17.16. Short Options">
 <link rel="next" href="role-attributes.html" title="18.2. Role Attributes">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="user-manag">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" title="Chapter 18. Database Roles and Privileges" id="user-manag">
 <div class="titlepage"><div><div><h2 class="title">Chapter 18. Database Roles and Privileges</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
@@ -33,8 +33,8 @@
   allowing the member role use of privileges assigned to the role it is
   a member of.
  </p>
-<p>  The concept of roles subsumes the concepts of &#8220;<span class="quote">users</span>&#8221; and
-  &#8220;<span class="quote">groups</span>&#8221;.  In <span class="productname">PostgreSQL</span> versions
+<p>  The concept of roles subsumes the concepts of <span class="quote">&#8220;<span class="quote">users</span>&#8221;</span> and
+  <span class="quote">&#8220;<span class="quote">groups</span>&#8221;</span>.  In <span class="productname">PostgreSQL</span> versions
   before 8.1, users and groups were distinct kinds of entities, but now
   there are only roles.  Any role can act as a user, a group, or both.
  </p>
@@ -43,9 +43,9 @@
   database objects and the effects of privileges can be found in
   <a class="xref" href="ddl.html" title="Chapter 5. Data Definition">Chapter 5, <i>Data Definition</i></a>.
  </p>
-<div class="sect1" lang="en">
+<div class="sect1" title="18.1. Database Roles">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="database-roles">18.1. Database Roles</h2></div></div></div>
-<a name="id2671490"></a><a name="id2671500"></a><a name="id2671509"></a><a name="id2671515"></a><p>   Database roles are conceptually completely separate from
+<a name="id2678850"></a><a name="id2678860"></a><a name="id2678869"></a><a name="id2678874"></a><p>   Database roles are conceptually completely separate from
    operating system users. In practice it might be convenient to
    maintain a correspondence, but this is not required. Database roles
    are global across a database cluster installation (and not
@@ -63,7 +63,7 @@
 <pre class="synopsis">DROP ROLE <em class="replaceable"><code>name</code></em>;</pre>
 <p>
   </p>
-<a name="id2671585"></a><a name="id2671591"></a><p>   For convenience, the programs <a class="xref" href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a>
+<a name="id2678945"></a><a name="id2678950"></a><p>   For convenience, the programs <a class="xref" href="app-createuser.html" title="createuser"><span class="refentrytitle"><a name="app-createuser-title"></a><span class="application">createuser</span></span></a>
    and <a class="xref" href="app-dropuser.html" title="dropuser"><span class="refentrytitle"><a name="app-dropuser-title"></a><span class="application">dropuser</span></span></a> are provided as wrappers
    around these SQL commands that can be called from the shell command
    line:
@@ -82,7 +82,7 @@ dropuser <em class="replaceable"><code>name</code></em></pre>
   </p>
 <p>   In order to bootstrap the database system, a freshly initialized
    system always contains one predefined role. This role is always
-   a &#8220;<span class="quote">superuser</span>&#8221;, and by default (unless altered when running
+   a <span class="quote">&#8220;<span class="quote">superuser</span>&#8221;</span>, and by default (unless altered when running
    <code class="command">initdb</code>) it will have the same name as the
    operating system user that initialized the database
    cluster. Customarily, this role will be named

@@ -1,59 +1,59 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.44. Release 8.0.10</title>
+<title>E.47. Release 8.0.10</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-0-11.html" title="E.43. Release 8.0.11">
-<link rel="next" href="release-8-0-9.html" title="E.45. Release 8.0.9">
+<link rel="prev" href="release-8-0-11.html" title="E.46. Release 8.0.11">
+<link rel="next" href="release-8-0-9.html" title="E.48. Release 8.0.9">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-0-10">E.44. Release 8.0.10</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.47. Release 8.0.10">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-0-10">E.47. Release 8.0.10</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2007-01-08</p>
 </div>
 <p>   This release contains a variety of fixes from 8.0.9.
    For information about new features in the 8.0 major release, see
-   <a class="xref" href="release-8-0.html" title="E.54. Release 8.0">Section E.54, &#8220;Release 8.0&#8221;</a>.
+   <a class="xref" href="release-8-0.html" title="E.57. Release 8.0">Section E.57, &#8220;Release 8.0&#8221;</a>.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2894120">E.44.1. Migration to Version 8.0.10</h3></div></div></div>
+<div class="sect2" title="E.47.1. Migration to Version 8.0.10">
+<div class="titlepage"><div><div><h3 class="title" id="id2902574">E.47.1. Migration to Version 8.0.10</h3></div></div></div>
 <p>    A dump/restore is not required for those running 8.0.X.  However,
     if you are upgrading from a version earlier than 8.0.6, see the release
     notes for 8.0.6.
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2894128">E.44.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect2" title="E.47.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2902583">E.47.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>      Improve handling of <code class="function">getaddrinfo()</code> on AIX (Tom)
      </p>
 <p>      This fixes a problem with starting the statistics collector,
       among other things.
      </p>
 </li>
-<li><p>       Fix &#8220;<span class="quote">failed to re-find parent key</span>&#8221; errors in
+<li class="listitem"><p>       Fix <span class="quote">&#8220;<span class="quote">failed to re-find parent key</span>&#8221;</span> errors in
        <code class="command">VACUUM</code> (Tom)
       </p></li>
-<li><p>       Fix race condition for truncation of a large relation across a
+<li class="listitem"><p>       Fix race condition for truncation of a large relation across a
        gigabyte boundary by <code class="command">VACUUM</code> (Tom)
       </p></li>
-<li><p>       Fix bugs affecting multi-gigabyte hash indexes (Tom)
+<li class="listitem"><p>       Fix bugs affecting multi-gigabyte hash indexes (Tom)
       </p></li>
-<li><p>      Fix possible deadlock in Windows signal handling (Teodor)
+<li class="listitem"><p>      Fix possible deadlock in Windows signal handling (Teodor)
      </p></li>
-<li><p>      Fix error when constructing an <code class="literal">ARRAY[]</code> made up of multiple
+<li class="listitem"><p>      Fix error when constructing an <code class="literal">ARRAY[]</code> made up of multiple
       empty elements (Tom)
      </p></li>
-<li><p>      Fix ecpg memory leak during connection (Michael)
+<li class="listitem"><p>      Fix ecpg memory leak during connection (Michael)
      </p></li>
-<li>
+<li class="listitem">
 <p>      <code class="function">to_number()</code> and <code class="function">to_char(numeric)</code>
       are now <code class="literal">STABLE</code>, not <code class="literal">IMMUTABLE</code>, for
       new <span class="application">initdb</span> installs (Tom)
@@ -62,13 +62,13 @@
       change the output of these functions.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Improve index usage of regular expressions that use parentheses (Tom)
      </p>
 <p>      This improves <span class="application">psql</span> <code class="literal">\d</code> performance also.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Update timezone database
      </p>
 <p>      This affects Australian and Canadian daylight-savings rules in

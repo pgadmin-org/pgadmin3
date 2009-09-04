@@ -4,20 +4,20 @@
 <title>BEGIN</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-analyze.html" title="ANALYZE">
 <link rel="next" href="sql-checkpoint.html" title="CHECKPOINT">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="BEGIN">
 <a name="sql-begin"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>BEGIN &#8212; start a transaction block</p>
 </div>
-<a name="id2767980"></a><div class="refsynopsisdiv">
+<a name="id2775606"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">BEGIN [ WORK | TRANSACTION ] [ <em class="replaceable"><code>transaction_mode</code></em> [, ...] ]
 
@@ -26,14 +26,14 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
     ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
     READ WRITE | READ ONLY</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2768010"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2775635"></a><h2>Description</h2>
 <p>   <code class="command">BEGIN</code> initiates a transaction block, that is,
    all statements after a <code class="command">BEGIN</code> command will be
    executed in a single transaction until an explicit <a class="xref" href="sql-commit.html" title="COMMIT">COMMIT</a> or <a class="xref" href="sql-rollback.html" title="ROLLBACK">ROLLBACK</a> is given.
    By default (without <code class="command">BEGIN</code>),
    <span class="productname">PostgreSQL</span> executes
-   transactions in &#8220;<span class="quote">autocommit</span>&#8221; mode, that is, each
+   transactions in <span class="quote">&#8220;<span class="quote">autocommit</span>&#8221;</span> mode, that is, each
    statement is executed in its own transaction and a commit is
    implicitly performed at the end of the statement (if execution was
    successful, otherwise a rollback is done).
@@ -51,8 +51,8 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
    was executed.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2768091"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2775716"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt>
 <span xmlns="http://www.w3.org/TR/xhtml1/transitional" class="term"><code xmlns="" class="literal">WORK</code></span><br xmlns="http://www.w3.org/TR/xhtml1/transitional"></br><span class="term"><code class="literal">TRANSACTION</code></span>
@@ -64,8 +64,8 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
    of the other parameters to this statement.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2768126"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2775751"></a><h2>Notes</h2>
 <p>   <a class="xref" href="sql-start-transaction.html" title="START TRANSACTION">START TRANSACTION</a> has the same functionality
    as <code class="command">BEGIN</code>.
   </p>
@@ -83,8 +83,8 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
    omitted.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2768205"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2775830"></a><h2>Examples</h2>
 <p>   To begin a transaction block:
 
 </p>
@@ -92,8 +92,8 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2768217"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2775842"></a><h2>Compatibility</h2>
 <p>   <code class="command">BEGIN</code> is a <span class="productname">PostgreSQL</span>
    language extension.  It is equivalent to the SQL-standard command
    <a class="xref" href="sql-start-transaction.html" title="START TRANSACTION">START TRANSACTION</a>, whose reference page
@@ -104,8 +104,8 @@ where <em class="replaceable"><code>transaction_mode</code></em> is one of:
    about the transaction semantics when porting database applications.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2768258"></a><h2>See Also</h2>
+<div class="refsect1" title="See Also">
+<a name="id2775884"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-commit.html" title="COMMIT">COMMIT</a>, <a class="xref" href="sql-rollback.html" title="ROLLBACK">ROLLBACK</a>, <a class="xref" href="sql-start-transaction.html" title="START TRANSACTION">START TRANSACTION</a>, <a class="xref" href="sql-savepoint.html" title="SAVEPOINT">SAVEPOINT</a></span>
 </div>
 </div></body>

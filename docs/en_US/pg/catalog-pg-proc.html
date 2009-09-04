@@ -4,16 +4,16 @@
 <title>43.27. pg_proc</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="catalogs.html" title="Chapter 43. System Catalogs">
 <link rel="prev" href="catalog-pg-pltemplate.html" title="43.26. pg_pltemplate">
 <link rel="next" href="catalog-pg-rewrite.html" title="43.28. pg_rewrite">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="43.27. pg_proc">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="catalog-pg-proc">43.27. <code class="structname">pg_proc</code></h2></div></div></div>
-<a name="id2840971"></a><p>   The catalog <code class="structname">pg_proc</code> stores information about functions (or procedures).
+<a name="id2848600"></a><p>   The catalog <code class="structname">pg_proc</code> stores information about functions (or procedures).
    See <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION">CREATE FUNCTION</a>
    and <a class="xref" href="xfunc.html" title="33.3. User-Defined Functions">Section 33.3, &#8220;User-Defined Functions&#8221;</a> for more information.
   </p>
@@ -22,7 +22,7 @@
    row in <code class="structfield">pg_aggregate</code>.
   </p>
 <div class="table">
-<a name="id2841014"></a><p class="title"><b>Table 43.27. <code class="structname">pg_proc</code> Columns</b></p>
+<a name="id2848644"></a><p class="title"><b>Table 43.27. <code class="structname">pg_proc</code> Columns</b></p>
 <div class="table-contents"><table summary="pg_proc Columns" border="1">
 <colgroup>
 <col>
@@ -72,7 +72,7 @@
 <td><code class="structfield">prosecdef</code></td>
 <td><code class="type">bool</code></td>
 <td> </td>
-<td>Function is a security definer (i.e., a &#8220;<span class="quote">setuid</span>&#8221;
+<td>Function is a security definer (i.e., a <span class="quote">&#8220;<span class="quote">setuid</span>&#8221;</span>
       function)</td>
 </tr>
 <tr>
@@ -81,7 +81,7 @@
 <td> </td>
 <td>       Function returns null if any call argument is null.  In that
        case the function won't actually be called at all.  Functions
-       that are not &#8220;<span class="quote">strict</span>&#8221; must be prepared to handle
+       that are not <span class="quote">&#8220;<span class="quote">strict</span>&#8221;</span> must be prepared to handle
        null inputs
       </td>
 </tr>
@@ -99,11 +99,11 @@
 <td>       <code class="structfield">provolatile</code> tells whether the function's
        result depends only on its input arguments, or is affected by outside
        factors.
-       It is <code class="literal">i</code> for &#8220;<span class="quote">immutable</span>&#8221; functions,
+       It is <code class="literal">i</code> for <span class="quote">&#8220;<span class="quote">immutable</span>&#8221;</span> functions,
        which always deliver the same result for the same inputs.
-       It is <code class="literal">s</code> for &#8220;<span class="quote">stable</span>&#8221; functions,
+       It is <code class="literal">s</code> for <span class="quote">&#8220;<span class="quote">stable</span>&#8221;</span> functions,
        whose results (for fixed inputs) do not change within a scan.
-       It is <code class="literal">v</code> for &#8220;<span class="quote">volatile</span>&#8221; functions,
+       It is <code class="literal">v</code> for <span class="quote">&#8220;<span class="quote">volatile</span>&#8221;</span> functions,
        whose results may change at any time.  (Use <code class="literal">v</code> also
        for functions with side-effects, so that calls to them cannot get
        optimized away.)

@@ -4,16 +4,16 @@
 <title>2.6. Joins Between Tables</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="tutorial-sql.html" title="Chapter 2. The SQL Language">
 <link rel="prev" href="tutorial-select.html" title="2.5. Querying a Table">
 <link rel="next" href="tutorial-agg.html" title="2.7. Aggregate Functions">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="2.6. Joins Between Tables">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="tutorial-join">2.6. Joins Between Tables</h2></div></div></div>
-<a name="id2584506"></a><p>    Thus far, our queries have only accessed one table at a time.
+<a name="id2591854"></a><p>    Thus far, our queries have only accessed one table at a time.
     Queries can access multiple tables at once, or access the same
     table in such a way that multiple rows of the table are being
     processed at the same time.  A query that accesses multiple rows
@@ -24,7 +24,7 @@
     each row of the weather table with the name column of all rows in
     the cities table, and select the pairs of rows where these values match.
     </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>      This  is only a conceptual model.  The join is usually performed
       in a more efficient manner than actually comparing each possible
@@ -51,14 +51,14 @@
    </p>
 <p>    Observe two things about the result set:
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       There is no result row for the city of Hayward.  This is
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       There is no result row for the city of Hayward.  This is
        because there is no matching entry in the
        <code class="classname">cities</code> table for Hayward, so the join
        ignores the unmatched rows in the weather table.  We will see
        shortly how this can be fixed.
       </p></li>
-<li>
+<li class="listitem">
 <p>       There are two columns containing the city name.  This is
        correct because the lists of columns of the
        <code class="classname">weather</code> and the
@@ -76,7 +76,7 @@
 </ul></div>
 <p>
    </p>
-<p><b>Exercise: </b>     Attempt to find out the semantics of this query when the
+<p title="Exercise:"><b>Exercise: </b>     Attempt to find out the semantics of this query when the
      <code class="literal">WHERE</code> clause is omitted.
     </p>
 <p>    Since the columns all had different names, the parser
@@ -107,13 +107,13 @@
     This syntax is not as commonly used as the one above, but we show
     it here to help you understand the following topics.
    </p>
-<p>    <a name="id2584654"></a>
+<p>    <a name="id2592002"></a>
 
     Now we will figure out how we can get the Hayward records back in.
     What we want the query to do is to scan the
     <code class="classname">weather</code> table and for each row to find the
     matching <code class="classname">cities</code> row(s).  If no matching row is
-    found we want some &#8220;<span class="quote">empty values</span>&#8221; to be substituted
+    found we want some <span class="quote">&#8220;<span class="quote">empty values</span>&#8221;</span> to be substituted
     for the <code class="classname">cities</code> table's columns.  This kind
     of query is called an <em class="firstterm">outer join</em>.  (The
     joins we have seen so far are inner joins.)  The command looks
@@ -139,11 +139,11 @@
     left-table row for which there is no right-table match, empty (null)
     values are substituted for the right-table columns.
    </p>
-<p><b>Exercise: </b>     There are also right outer joins and full outer joins.  Try to
+<p title="Exercise:"><b>Exercise: </b>     There are also right outer joins and full outer joins.  Try to
      find out what those do.
     </p>
-<p>    <a name="id2584723"></a>
-    <a name="id2584732"></a>
+<p>    <a name="id2592071"></a>
+    <a name="id2592080"></a>
 
     We can also join a table against itself.  This is called a
     <em class="firstterm">self join</em>.  As an example, suppose we wish

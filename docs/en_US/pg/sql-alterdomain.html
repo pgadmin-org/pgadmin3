@@ -4,14 +4,14 @@
 <title>ALTER DOMAIN</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-alterdatabase.html" title="ALTER DATABASE">
 <link rel="next" href="sql-alterfunction.html" title="ALTER FUNCTION">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="ALTER DOMAIN">
 <a name="sql-alterdomain"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
@@ -19,7 +19,7 @@
    &#8212;    change the definition of a domain
   </p>
 </div>
-<a name="id2761345"></a><div class="refsynopsisdiv">
+<a name="id2768971"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">ALTER DOMAIN <em class="replaceable"><code>name</code></em>
     { SET DEFAULT <em class="replaceable"><code>expression</code></em> | DROP DEFAULT }
@@ -35,8 +35,8 @@ ALTER DOMAIN <em class="replaceable"><code>name</code></em>
     SET SCHEMA <em class="replaceable"><code>new_schema</code></em> 
   </pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2761430"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2769055"></a><h2>Description</h2>
 <p>   <code class="command">ALTER DOMAIN</code> changes the definition of an existing domain.
    There are several sub-forms:
   </p>
@@ -78,8 +78,8 @@ ALTER DOMAIN <em class="replaceable"><code>name</code></em>
    However, a superuser can alter ownership of any domain anyway.)
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2761554"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2769179"></a><h2>Parameters</h2>
 <p>    </p>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
@@ -109,8 +109,8 @@ ALTER DOMAIN <em class="replaceable"><code>name</code></em>
 <p>
    </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2761642"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2769267"></a><h2>Notes</h2>
 <p>   Currently, <code class="command">ALTER DOMAIN ADD CONSTRAINT</code> and
    <code class="command">ALTER DOMAIN SET NOT NULL</code> will fail if the named domain or
    any derived domain is used within a composite-type column of any
@@ -118,8 +118,8 @@ ALTER DOMAIN <em class="replaceable"><code>name</code></em>
    able to verify the new constraint for such nested columns.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2761663"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2769288"></a><h2>Examples</h2>
 <p>   To add a <code class="literal">NOT NULL</code> constraint to a domain:
    </p>
 <pre class="programlisting">ALTER DOMAIN zipcode SET NOT NULL;
@@ -152,7 +152,7 @@ ALTER DOMAIN <em class="replaceable"><code>name</code></em>
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="Compatibility">
 <a name="sql-alterdomain-compatibility"></a><h2>Compatibility</h2>
 <p>   <code class="command">ALTER DOMAIN</code> conforms to the <acronym class="acronym">SQL</acronym>
    standard,
@@ -160,7 +160,7 @@ ALTER DOMAIN <em class="replaceable"><code>name</code></em>
    which are <span class="productname">PostgreSQL</span> extensions.
   </p>
 </div>
-<div class="refsect1" lang="en">
+<div class="refsect1" title="See Also">
 <a name="sql-alterdomain-see-also"></a><h2>See Also</h2>
 <span class="simplelist"><a class="xref" href="sql-createdomain.html" title="CREATE DOMAIN">CREATE DOMAIN</a>, <a class="xref" href="sql-dropdomain.html" title="DROP DOMAIN">DROP DOMAIN</a></span>
 </div>

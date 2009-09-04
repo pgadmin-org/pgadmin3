@@ -4,14 +4,14 @@
 <title>42.4. The PostgreSQL Rule System</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="overview.html" title="Chapter 42. Overview of PostgreSQL Internals">
 <link rel="prev" href="parser-stage.html" title="42.3. The Parser Stage">
 <link rel="next" href="planner-optimizer.html" title="42.5. Planner/Optimizer">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="42.4. The PostgreSQL Rule System">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="rule-system">42.4. The <span class="productname">PostgreSQL</span> Rule System</h2></div></div></div>
 <p>    <span class="productname">PostgreSQL</span> supports a powerful
     <em class="firstterm">rule system</em> for the specification
@@ -20,15 +20,15 @@
     rule system consisted of two implementations:
 
     </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>       The first one worked using <em class="firstterm">row level</em> processing and was
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>       The first one worked using <em class="firstterm">row level</em> processing and was
        implemented deep in the <em class="firstterm">executor</em>. The rule system was
        called whenever an individual row had been accessed. This
        implementation was removed in 1995 when the last official release
        of the <span class="productname">Berkeley Postgres</span> project was
        transformed into <span class="productname">Postgres95</span>. 
       </p></li>
-<li><p>       The second implementation of the rule system is a technique
+<li class="listitem"><p>       The second implementation of the rule system is a technique
        called <em class="firstterm">query rewriting</em>.
        The <em class="firstterm">rewrite system</em> is a module
        that exists between the <em class="firstterm">parser stage</em> and the

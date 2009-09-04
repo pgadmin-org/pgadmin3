@@ -1,41 +1,41 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.6. Release 8.2.8</title>
+<title>E.7. Release 8.2.8</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-2-9.html" title="E.5. Release 8.2.9">
-<link rel="next" href="release-8-2-7.html" title="E.7. Release 8.2.7">
+<link rel="prev" href="release-8-2-9.html" title="E.6. Release 8.2.9">
+<link rel="next" href="release-8-2-7.html" title="E.8. Release 8.2.7">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-8">E.6. Release 8.2.8</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.7. Release 8.2.8">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-8">E.7. Release 8.2.8</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>never released</p>
 </div>
 <p>   This release contains a variety of fixes from 8.2.7.
    For information about new features in the 8.2 major release, see
-   <a class="xref" href="release-8-2.html" title="E.14. Release 8.2">Section E.14, &#8220;Release 8.2&#8221;</a>.
+   <a class="xref" href="release-8-2.html" title="E.15. Release 8.2">Section E.15, &#8220;Release 8.2&#8221;</a>.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2877873">E.6.1. Migration to Version 8.2.8</h3></div></div></div>
+<div class="sect2" title="E.7.1. Migration to Version 8.2.8">
+<div class="titlepage"><div><div><h3 class="title" id="id2885800">E.7.1. Migration to Version 8.2.8</h3></div></div></div>
 <p>    A dump/restore is not required for those running 8.2.X.
     However, if you are upgrading from a version earlier than 8.2.7,
     see the release notes for 8.2.7.
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2877882">E.6.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      Fix <code class="literal">ERRORDATA_STACK_SIZE exceeded</code> crash that
+<div class="sect2" title="E.7.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2885809">E.7.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      Fix <code class="literal">ERRORDATA_STACK_SIZE exceeded</code> crash that
       occurred on Windows when using UTF-8 database encoding and a different
       client encoding (Tom)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Fix <code class="command">ALTER TABLE ADD COLUMN ... PRIMARY KEY</code> so that the new
       column is correctly checked to see if it's been initialized to all
       non-nulls (Brendan Jurd)
@@ -43,21 +43,21 @@
 <p>      Previous versions neglected to check this requirement at all.
      </p>
 </li>
-<li><p>      Fix possible <code class="command">CREATE TABLE</code> failure when inheriting the
-      &#8220;<span class="quote">same</span>&#8221; constraint from multiple parent relations that
+<li class="listitem"><p>      Fix possible <code class="command">CREATE TABLE</code> failure when inheriting the
+      <span class="quote">&#8220;<span class="quote">same</span>&#8221;</span> constraint from multiple parent relations that
       inherited that constraint from a common ancestor (Tom)
      </p></li>
-<li><p>      Fix <code class="function">pg_get_ruledef()</code> to show the alias, if any, attached
+<li class="listitem"><p>      Fix <code class="function">pg_get_ruledef()</code> to show the alias, if any, attached
       to the target table of an <code class="command">UPDATE</code> or <code class="command">DELETE</code>
       (Tom)
      </p></li>
-<li><p>      Fix GIN bug that could result in a <code class="literal">too many LWLocks
+<li class="listitem"><p>      Fix GIN bug that could result in a <code class="literal">too many LWLocks
       taken</code> failure (Teodor)
      </p></li>
-<li><p>      Avoid possible crash when decompressing corrupted data
+<li class="listitem"><p>      Avoid possible crash when decompressing corrupted data
       (Zdenek Kotala)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Repair two places where SIGTERM exit of a backend could leave corrupted
       state in shared memory (Tom)
      </p>
@@ -66,11 +66,11 @@
       tried to SIGTERM individual backends.
      </p>
 </li>
-<li><p>      Fix conversions between ISO-8859-5 and other encodings to handle
-      Cyrillic &#8220;<span class="quote">Yo</span>&#8221; characters (<code class="literal">e</code> and <code class="literal">E</code> with
+<li class="listitem"><p>      Fix conversions between ISO-8859-5 and other encodings to handle
+      Cyrillic <span class="quote">&#8220;<span class="quote">Yo</span>&#8221;</span> characters (<code class="literal">e</code> and <code class="literal">E</code> with
       two dots) (Sergey Burladyan)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Fix several datatype input functions, notably <code class="function">array_in()</code>,
       that were allowing unused bytes in their results to contain
       uninitialized, unpredictable values (Tom)
@@ -81,7 +81,7 @@
       expressions.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Fix a corner case in regular-expression substring matching
       (<code class="literal">substring(<em class="replaceable"><code>string</code></em> from
       <em class="replaceable"><code>pattern</code></em>)</code>) (Tom)
@@ -95,30 +95,30 @@
       <code class="literal">foo</code>).
      </p>
 </li>
-<li><p>      Update time zone data files to <span class="application">tzdata</span> release 2008c (for
+<li class="listitem"><p>      Update time zone data files to <span class="application">tzdata</span> release 2008c (for
       DST law changes in Morocco, Iraq, Choibalsan, Pakistan, Syria, Cuba, and
       Argentina/San_Luis)
      </p></li>
-<li><p>      Fix incorrect result from <span class="application">ecpg</span>'s
+<li class="listitem"><p>      Fix incorrect result from <span class="application">ecpg</span>'s
       <code class="function">PGTYPEStimestamp_sub()</code> function (Michael)
      </p></li>
-<li><p>      Fix broken GiST comparison function for <code class="filename">contrib/tsearch2</code>'s
+<li class="listitem"><p>      Fix broken GiST comparison function for <code class="filename">contrib/tsearch2</code>'s
       <code class="type">tsquery</code> type (Teodor)
      </p></li>
-<li><p>      Fix possible crashes in <code class="filename">contrib/cube</code> functions (Tom)
+<li class="listitem"><p>      Fix possible crashes in <code class="filename">contrib/cube</code> functions (Tom)
      </p></li>
-<li><p>      Fix core dump in <code class="filename">contrib/xml2</code>'s
+<li class="listitem"><p>      Fix core dump in <code class="filename">contrib/xml2</code>'s
       <code class="function">xpath_table()</code> function when the input query returns a
       NULL value (Tom)
      </p></li>
-<li><p>      Fix <code class="filename">contrib/xml2</code>'s makefile to not override
+<li class="listitem"><p>      Fix <code class="filename">contrib/xml2</code>'s makefile to not override
       <code class="literal">CFLAGS</code> (Tom)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Fix <code class="literal">DatumGetBool</code> macro to not fail with <span class="application">gcc</span>
       4.3 (Tom)
      </p>
-<p>      This problem affects &#8220;<span class="quote">old style</span>&#8221; (V0) C functions that
+<p>      This problem affects <span class="quote">&#8220;<span class="quote">old style</span>&#8221;</span> (V0) C functions that
       return boolean.  The fix is already in 8.3, but the need to
       back-patch it was not realized at the time.
      </p>

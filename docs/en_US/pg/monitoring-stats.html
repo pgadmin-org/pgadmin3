@@ -4,16 +4,16 @@
 <title>25.2. The Statistics Collector</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="monitoring.html" title="Chapter 25. Monitoring Database Activity">
 <link rel="prev" href="monitoring.html" title="Chapter 25. Monitoring Database Activity">
 <link rel="next" href="monitoring-locks.html" title="25.3. Viewing Locks">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="25.2. The Statistics Collector">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="monitoring-stats">25.2. The Statistics Collector</h2></div></div></div>
-<a name="id2686206"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
+<a name="id2693828"></a><p>   <span class="productname">PostgreSQL</span>'s <em class="firstterm">statistics collector</em>
    is a subsystem that supports collection and reporting of information about
    server activity.  Presently, the collector can count accesses to tables
    and indexes in both disk-block and individual-row terms.
@@ -23,7 +23,7 @@
    independent facility that can be enabled or disabled whether or not
    block-level and row-level statistics are being collected.
   </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="25.2.1. Statistics Collection Configuration">
 <div class="titlepage"><div><div><h3 class="title" id="monitoring-stats-setup">25.2.1. Statistics Collection Configuration</h3></div></div></div>
 <p>   Since collection of statistics adds some overhead to query execution,
    the system can be configured to collect or not collect information.
@@ -59,7 +59,7 @@
    only superusers are allowed to change these parameters with
    <code class="command">SET</code>.)
   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     Since the parameters <code class="varname">stats_block_level</code>, and
      <code class="varname">stats_row_level</code> default to <code class="literal">false</code>,
@@ -71,7 +71,7 @@
     </p>
 </div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="25.2.2. Viewing Collected Statistics">
 <div class="titlepage"><div><div><h3 class="title" id="monitoring-stats-views">25.2.2. Viewing Collected Statistics</h3></div></div></div>
 <p>   Several predefined views, listed in <a class="xref" href="monitoring-stats.html#monitoring-stats-views-table" title="Table 25.1. Standard Statistics Views">Table 25.1, &#8220;Standard Statistics Views&#8221;</a>, are available to show the results
    of statistics collection.  Alternatively, one can
@@ -244,7 +244,7 @@
    indexes are being used and how effective they are.
   </p>
 <p>   Beginning in <span class="productname">PostgreSQL</span> 8.1, indexes can be
-   used either directly or via &#8220;<span class="quote">bitmap scans</span>&#8221;.  In a bitmap scan
+   used either directly or via <span class="quote">&#8220;<span class="quote">bitmap scans</span>&#8221;</span>.  In a bitmap scan
    the output of several indexes can be combined via AND or OR rules;
    so it is difficult to associate individual heap row fetches 
    with specific indexes when a bitmap scan is used.  Therefore, a bitmap
@@ -255,7 +255,7 @@
    count for the table, but it does not affect
    <code class="structname">pg_stat_all_indexes</code>.<code class="structfield">idx_tup_fetch</code>.
   </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>    Before <span class="productname">PostgreSQL</span> 8.1, the
     <code class="structfield">idx_tup_read</code> and <code class="structfield">idx_tup_fetch</code> counts
@@ -507,7 +507,7 @@
 </tbody>
 </table></div>
 </div>
-<br class="table-break"><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<br class="table-break"><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     <code class="function">blocks_fetched</code> minus
      <code class="function">blocks_hit</code> gives the number of kernel

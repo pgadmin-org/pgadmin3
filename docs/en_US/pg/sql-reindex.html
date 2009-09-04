@@ -4,49 +4,49 @@
 <title>REINDEX</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-reassign-owned.html" title="REASSIGN OWNED">
 <link rel="next" href="sql-release-savepoint.html" title="RELEASE SAVEPOINT">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="REINDEX">
 <a name="sql-reindex"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>REINDEX &#8212; rebuild indexes</p>
 </div>
-<a name="id2799866"></a><div class="refsynopsisdiv">
+<a name="id2807481"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">REINDEX { INDEX | TABLE | DATABASE | SYSTEM } <em class="replaceable"><code>name</code></em> [ FORCE ]</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2799888"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2807503"></a><h2>Description</h2>
 <p>   <code class="command">REINDEX</code> rebuilds an index using the data
    stored in the index's table, replacing the old copy of the index. There are
    several scenarios in which to use <code class="command">REINDEX</code>:
 
    </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>      An index has become corrupted, and no longer contains valid
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>      An index has become corrupted, and no longer contains valid
       data. Although in theory this should never happen, in
       practice indexes may become corrupted due to software bugs or
       hardware failures.  <code class="command">REINDEX</code> provides a
       recovery method.
      </p></li>
-<li><p>      An index has become &#8220;<span class="quote">bloated</span>&#8221;, that it is contains many
+<li class="listitem"><p>      An index has become <span class="quote">&#8220;<span class="quote">bloated</span>&#8221;</span>, that it is contains many
       empty or nearly-empty pages.  This can occur with B-tree indexes in
       <span class="productname">PostgreSQL</span> under certain uncommon access
       patterns. <code class="command">REINDEX</code> provides a way to reduce
       the space consumption of the index by writing a new version of
       the index without the dead pages. See <a class="xref" href="routine-reindex.html" title="22.2. Routine Reindexing">Section 22.2, &#8220;Routine Reindexing&#8221;</a> for more information.
      </p></li>
-<li><p>      You have altered a storage parameter (such as fillfactor)
+<li class="listitem"><p>      You have altered a storage parameter (such as fillfactor)
       for an index, and wish to ensure that the change has taken full effect.
      </p></li>
-<li><p>      An index build with the <code class="literal">CONCURRENTLY</code> option failed, leaving
-      an &#8220;<span class="quote">invalid</span>&#8221; index. Such indexes are useless but it can be
+<li class="listitem"><p>      An index build with the <code class="literal">CONCURRENTLY</code> option failed, leaving
+      an <span class="quote">&#8220;<span class="quote">invalid</span>&#8221;</span> index. Such indexes are useless but it can be
       convenient to use <code class="command">REINDEX</code> to rebuild them. Note that
       <code class="command">REINDEX</code> will not perform a concurrent build. To build the
       index without interfering with production you should drop the index and
@@ -56,15 +56,15 @@
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2799996"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2807610"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><code class="literal">INDEX</code></span></dt>
 <dd><p>      Recreate the specified index.
      </p></dd>
 <dt><span class="term"><code class="literal">TABLE</code></span></dt>
 <dd><p>      Recreate all indexes of the specified table.  If the table has a
-      secondary &#8220;<span class="quote">TOAST</span>&#8221; table, that is reindexed as well.
+      secondary <span class="quote">&#8220;<span class="quote">TOAST</span>&#8221;</span> table, that is reindexed as well.
      </p></dd>
 <dt><span class="term"><code class="literal">DATABASE</code></span></dt>
 <dd><p>      Recreate all indexes within the current database.
@@ -91,8 +91,8 @@
      </p></dd>
 </dl></div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2800106"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2807720"></a><h2>Notes</h2>
 <p>   If you suspect corruption of an index on a user table, you can
    simply rebuild that index, or all indexes on the table, using
    <code class="command">REINDEX INDEX</code> or <code class="command">REINDEX TABLE</code>.  
@@ -146,8 +146,8 @@
    during normal operation.  If a failure occurs while reindexing one
    of these catalogs in standalone mode, it will not be possible to
    restart the regular server until the problem is rectified.  (The
-   typical symptom of a partially rebuilt shared index is &#8220;<span class="quote">index is not
-   a btree</span>&#8221; errors.)
+   typical symptom of a partially rebuilt shared index is <span class="quote">&#8220;<span class="quote">index is not
+   a btree</span>&#8221;</span> errors.)
   </p>
 <p>   <code class="command">REINDEX</code> is similar to a drop and recreate of the index
    in that the index contents are rebuilt from scratch.  However, the locking
@@ -180,8 +180,8 @@
    redundant.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2800381"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2807996"></a><h2>Examples</h2>
 <p>   Rebuild a single index:
 
 </p>
@@ -206,8 +206,8 @@ broken_db=&gt; \q</pre>
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2800432"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2808047"></a><h2>Compatibility</h2>
 <p>   There is no <code class="command">REINDEX</code> command in the SQL standard.
   </p>
 </div>

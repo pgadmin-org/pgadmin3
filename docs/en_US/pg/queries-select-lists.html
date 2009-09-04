@@ -4,16 +4,16 @@
 <title>7.3. Select Lists</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="queries.html" title="Chapter 7. Queries">
 <link rel="prev" href="queries-table-expressions.html" title="7.2. Table Expressions">
 <link rel="next" href="queries-union.html" title="7.4. Combining Queries">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="7.3. Select Lists">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="queries-select-lists">7.3. Select Lists</h2></div></div></div>
-<a name="id2597644"></a><p>   As shown in the previous section,
+<a name="id2604992"></a><p>   As shown in the previous section,
    the table expression in the <code class="command">SELECT</code> command
    constructs an intermediate virtual table by possibly combining
    tables, views, eliminating rows, grouping, etc.  This table is
@@ -21,9 +21,9 @@
    list determines which <span class="emphasis"><em>columns</em></span> of the
    intermediate table are actually output.
   </p>
-<div class="sect2" lang="en">
+<div class="sect2" title="7.3.1. Select-List Items">
 <div class="titlepage"><div><div><h3 class="title" id="queries-select-list-items">7.3.1. Select-List Items</h3></div></div></div>
-<a name="id2597681"></a><p>    The simplest kind of select list is <code class="literal">*</code> which
+<a name="id2605030"></a><p>    The simplest kind of select list is <code class="literal">*</code> which
     emits all columns that the table expression produces.  Otherwise,
     a select list is a comma-separated list of value expressions (as
     defined in <a class="xref" href="sql-expressions.html" title="4.2. Value Expressions">Section 4.2, &#8220;Value Expressions&#8221;</a>).  For instance, it
@@ -49,7 +49,7 @@
 </p>
 <pre class="programlisting">SELECT tbl1.*, tbl2.a FROM ...</pre>
 <p>
-    (See also <a class="xref" href="queries-table-expressions.html#queries-where" title="7.2.2. The WHERE Clause">Section 7.2.2, &#8220;The WHERE Clause&#8221;</a>.)
+    (See also <a class="xref" href="queries-table-expressions.html#queries-where" title="7.2.2. The WHERE Clause">Section 7.2.2, &#8220;The <code class="literal">WHERE</code> Clause&#8221;</a>.)
    </p>
 <p>    If an arbitrary value expression is used in the select list, it
     conceptually adds a new virtual column to the returned table.  The
@@ -61,10 +61,10 @@
     instance.
    </p>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="7.3.2. Column Labels">
 <div class="titlepage"><div><div><h3 class="title" id="queries-column-labels">7.3.2. Column Labels</h3></div></div></div>
-<a name="id2597806"></a><p>    The entries in the select list can be assigned names for further
-    processing.  The &#8220;<span class="quote">further processing</span>&#8221; in this case is
+<a name="id2605154"></a><p>    The entries in the select list can be assigned names for further
+    processing.  The <span class="quote">&#8220;<span class="quote">further processing</span>&#8221;</span> in this case is
     an optional sort specification and the client application (e.g.,
     column headers for display).  For example:
 </p>
@@ -77,7 +77,7 @@
     calls, this is the name of the function.  For complex expressions,
     the system will generate a generic name.
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     The naming of output columns here is different from that done in
      the <code class="literal">FROM</code> clause (see <a class="xref" href="queries-table-expressions.html#queries-table-aliases" title="7.2.1.2. Table and Column Aliases">Section 7.2.1.2, &#8220;Table and Column Aliases&#8221;</a>).  This pipeline will in fact
@@ -86,9 +86,9 @@
     </p>
 </div>
 </div>
-<div class="sect2" lang="en">
+<div class="sect2" title="7.3.3. DISTINCT">
 <div class="titlepage"><div><div><h3 class="title" id="queries-distinct">7.3.3. <code class="literal">DISTINCT</code></h3></div></div></div>
-<a name="id2597878"></a><a name="id2597887"></a><p>    After the select list has been processed, the result table may
+<a name="id2605226"></a><a name="id2605235"></a><p>    After the select list has been processed, the result table may
     optionally be subject to the elimination of duplicate rows.  The
     <code class="literal">DISTINCT</code> key word is written directly after
     <code class="literal">SELECT</code> to specify this:
@@ -98,7 +98,7 @@
     (Instead of <code class="literal">DISTINCT</code> the key word <code class="literal">ALL</code>
     can be used to specify the default behavior of retaining all rows.)
    </p>
-<p>    <a name="id2597938"></a>
+<p>    <a name="id2605287"></a>
     Obviously, two rows are considered distinct if they differ in at
     least one column value.  Null values are considered equal in this
     comparison.
@@ -112,7 +112,7 @@
     expression that is evaluated for all rows.  A set of rows for
     which all the expressions are equal are considered duplicates, and
     only the first row of the set is kept in the output.  Note that
-    the &#8220;<span class="quote">first row</span>&#8221; of a set is unpredictable unless the
+    the <span class="quote">&#8220;<span class="quote">first row</span>&#8221;</span> of a set is unpredictable unless the
     query is sorted on enough columns to guarantee a unique ordering
     of the rows arriving at the <code class="literal">DISTINCT</code> filter.
     (<code class="literal">DISTINCT ON</code> processing occurs after <code class="literal">ORDER

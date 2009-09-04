@@ -4,14 +4,14 @@
 <title>Chapter 5. Data Definition</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql.html" title="Part II. The SQL Language">
 <link rel="prev" href="sql-expressions.html" title="4.2. Value Expressions">
 <link rel="next" href="ddl-default.html" title="5.2. Default Values">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" lang="en" id="ddl">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="chapter" title="Chapter 5. Data Definition" id="ddl">
 <div class="titlepage"><div><div><h2 class="title">Chapter 5. Data Definition</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
@@ -20,23 +20,23 @@
 <dt><span class="sect1"><a href="ddl-default.html">5.2. Default Values</a></span></dt>
 <dt><span class="sect1"><a href="ddl-constraints.html">5.3. Constraints</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2590408">5.3.1. Check Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2590602">5.3.2. Not-Null Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2590732">5.3.3. Unique Constraints</a></span></dt>
-<dt><span class="sect2"><a href="ddl-constraints.html#id2590835">5.3.4. Primary Keys</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2597756">5.3.1. Check Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2597951">5.3.2. Not-Null Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2598081">5.3.3. Unique Constraints</a></span></dt>
+<dt><span class="sect2"><a href="ddl-constraints.html#id2598183">5.3.4. Primary Keys</a></span></dt>
 <dt><span class="sect2"><a href="ddl-constraints.html#ddl-constraints-fk">5.3.5. Foreign Keys</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ddl-system-columns.html">5.4. System Columns</a></span></dt>
 <dt><span class="sect1"><a href="ddl-alter.html">5.5. Modifying Tables</a></span></dt>
 <dd><dl>
-<dt><span class="sect2"><a href="ddl-alter.html#id2591641">5.5.1. Adding a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2591721">5.5.2. Removing a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2591774">5.5.3. Adding a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2591816">5.5.4. Removing a Constraint</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2591888">5.5.5. Changing a Column's Default Value</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2591932">5.5.6. Changing a Column's Data Type</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2591978">5.5.7. Renaming a Column</a></span></dt>
-<dt><span class="sect2"><a href="ddl-alter.html#id2591999">5.5.8. Renaming a Table</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2598989">5.5.1. Adding a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2599069">5.5.2. Removing a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2599122">5.5.3. Adding a Constraint</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2599164">5.5.4. Removing a Constraint</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2599236">5.5.5. Changing a Column's Default Value</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2599280">5.5.6. Changing a Column's Data Type</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2599326">5.5.7. Renaming a Column</a></span></dt>
+<dt><span class="sect2"><a href="ddl-alter.html#id2599348">5.5.8. Renaming a Table</a></span></dt>
 </dl></dd>
 <dt><span class="sect1"><a href="ddl-priv.html">5.6. Privileges</a></span></dt>
 <dt><span class="sect1"><a href="ddl-schemas.html">5.7. Schemas</a></span></dt>
@@ -73,9 +73,9 @@
   we will briefly look at other features that affect the data storage,
   such as inheritance, views, functions, and triggers.
  </p>
-<div class="sect1" lang="en">
+<div class="sect1" title="5.1. Table Basics">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="ddl-basics">5.1. Table Basics</h2></div></div></div>
-<a name="id2589944"></a><a name="id2589953"></a><a name="id2589958"></a><p>   A table in a relational database is much like a table on paper: It
+<a name="id2597292"></a><a name="id2597301"></a><a name="id2597306"></a><p>   A table in a relational database is much like a table on paper: It
    consists of rows and columns.  The number and order of the columns
    is fixed, and each column has a name.  The number of rows is
    variable &#8212; it reflects how much data is stored at a given moment.
@@ -108,7 +108,7 @@
    time-of-day values, and <code class="type">timestamp</code> for values
    containing both date and time.
   </p>
-<a name="id2590047"></a><p>   To create a table, you use the aptly named <a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> command.
+<a name="id2597395"></a><p>   To create a table, you use the aptly named <a class="xref" href="sql-createtable.html" title="CREATE TABLE">CREATE TABLE</a> command.
    In this command you specify at least a name for the new table, the
    names of the columns and the data type of each column.  For
    example:
@@ -142,7 +142,7 @@
    (The <code class="type">numeric</code> type can store fractional components, as
    would be typical of monetary amounts.)
   </p>
-<div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Tip</h3>
 <p>    When you create many interrelated tables it is wise to choose a
     consistent naming pattern for the tables and columns.  For
@@ -155,7 +155,7 @@
    However, defining a table with anywhere near this many columns is
    highly unusual and often a questionable design.
   </p>
-<a name="id2590150"></a><p>   If you no longer need a table, you can remove it using the <a class="xref" href="sql-droptable.html" title="DROP TABLE">DROP TABLE</a> command.
+<a name="id2597498"></a><p>   If you no longer need a table, you can remove it using the <a class="xref" href="sql-droptable.html" title="DROP TABLE">DROP TABLE</a> command.
    For example:
 </p>
 <pre class="programlisting">DROP TABLE my_first_table;

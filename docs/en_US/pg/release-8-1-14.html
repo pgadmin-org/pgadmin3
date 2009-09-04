@@ -1,47 +1,47 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.18. Release 8.1.14</title>
+<title>E.20. Release 8.1.14</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-8-1-15.html" title="E.17. Release 8.1.15">
-<link rel="next" href="release-8-1-13.html" title="E.19. Release 8.1.13">
+<link rel="prev" href="release-8-1-15.html" title="E.19. Release 8.1.15">
+<link rel="next" href="release-8-1-13.html" title="E.21. Release 8.1.13">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1-14">E.18. Release 8.1.14</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.20. Release 8.1.14">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-1-14">E.20. Release 8.1.14</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2008-09-22</p>
 </div>
 <p>   This release contains a variety of fixes from 8.1.13.
    For information about new features in the 8.1 major release, see
-   <a class="xref" href="release-8-1.html" title="E.32. Release 8.1">Section E.32, &#8220;Release 8.1&#8221;</a>.
+   <a class="xref" href="release-8-1.html" title="E.34. Release 8.1">Section E.34, &#8220;Release 8.1&#8221;</a>.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2885244">E.18.1. Migration to Version 8.1.14</h3></div></div></div>
+<div class="sect2" title="E.20.1. Migration to Version 8.1.14">
+<div class="titlepage"><div><div><h3 class="title" id="id2893422">E.20.1. Migration to Version 8.1.14</h3></div></div></div>
 <p>    A dump/restore is not required for those running 8.1.X.
     However, if you are upgrading from a version earlier than 8.1.2,
     see the release notes for 8.1.2.
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2885253">E.18.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li>
+<div class="sect2" title="E.20.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2893430">E.20.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
 <p>      Widen local lock counters from 32 to 64 bits (Tom)
      </p>
 <p>      This responds to reports that the counters could overflow in
-      sufficiently long transactions, leading to unexpected &#8220;<span class="quote">lock is
-      already held</span>&#8221; errors.
+      sufficiently long transactions, leading to unexpected <span class="quote">&#8220;<span class="quote">lock is
+      already held</span>&#8221;</span> errors.
      </p>
 </li>
-<li><p>      Fix possible duplicate output of tuples during a GiST index scan (Teodor)
+<li class="listitem"><p>      Fix possible duplicate output of tuples during a GiST index scan (Teodor)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Add checks in executor startup to ensure that the tuples produced by an
       <code class="command">INSERT</code> or <code class="command">UPDATE</code> will match the target table's
       current rowtype (Tom)
@@ -51,7 +51,7 @@
       against data corruption and/or crashes that could ensue.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Fix <code class="literal">AT TIME ZONE</code> to first try to interpret its timezone
       argument as a timezone abbreviation, and only try it as a full timezone
       name if that fails, rather than the other way around as formerly (Tom)
@@ -64,15 +64,15 @@
       <span class="emphasis"><em>only</em></span> abbreviations.
      </p>
 </li>
-<li><p>      Fix datetime input functions to correctly detect integer overflow when
+<li class="listitem"><p>      Fix datetime input functions to correctly detect integer overflow when
       running on a 64-bit platform (Tom)
      </p></li>
-<li><p>      Improve performance of writing very long log messages to syslog (Tom)
+<li class="listitem"><p>      Improve performance of writing very long log messages to syslog (Tom)
      </p></li>
-<li><p>      Fix bug in backwards scanning of a cursor on a <code class="literal">SELECT DISTINCT
+<li class="listitem"><p>      Fix bug in backwards scanning of a cursor on a <code class="literal">SELECT DISTINCT
       ON</code> query (Tom)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Fix planner bug with nested sub-select expressions (Tom)
      </p>
 <p>      If the outer sub-select has no direct dependency on the parent query,
@@ -80,7 +80,7 @@
       for new parent query rows.
      </p>
 </li>
-<li>
+<li class="listitem">
 <p>      Fix planner to estimate that <code class="literal">GROUP BY</code> expressions yielding
       boolean results always result in two groups, regardless of the
       expressions' contents (Tom)
@@ -90,25 +90,25 @@
       <code class="literal">IS NULL</code>.
      </p>
 </li>
-<li><p>      Fix PL/PgSQL to not fail when a <code class="literal">FOR</code> loop's target variable
+<li class="listitem"><p>      Fix PL/PgSQL to not fail when a <code class="literal">FOR</code> loop's target variable
       is a record containing composite-type fields (Tom)
      </p></li>
-<li><p>      Fix PL/Tcl to behave correctly with Tcl 8.5, and to be more careful
+<li class="listitem"><p>      Fix PL/Tcl to behave correctly with Tcl 8.5, and to be more careful
       about the encoding of data sent to or from Tcl (Tom)
      </p></li>
-<li>
+<li class="listitem">
 <p>      Fix PL/Python to work with Python 2.5
      </p>
 <p>      This is a back-port of fixes made during the 8.2 development cycle.
      </p>
 </li>
-<li><p>      Improve <span class="application">pg_dump</span> and <span class="application">pg_restore</span>'s
+<li class="listitem"><p>      Improve <span class="application">pg_dump</span> and <span class="application">pg_restore</span>'s
       error reporting after failure to send a SQL command (Tom)
      </p></li>
-<li><p>      Fix <span class="application">pg_ctl</span> to properly preserve postmaster
+<li class="listitem"><p>      Fix <span class="application">pg_ctl</span> to properly preserve postmaster
       command-line arguments across a <code class="literal">restart</code> (Bruce)
      </p></li>
-<li><p>      Update time zone data files to <span class="application">tzdata</span> release 2008f (for
+<li class="listitem"><p>      Update time zone data files to <span class="application">tzdata</span> release 2008f (for
       DST law changes in Argentina, Bahamas, Brazil, Mauritius, Morocco,
       Pakistan, Palestine, and Paraguay)
      </p></li>

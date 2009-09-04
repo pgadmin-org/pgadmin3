@@ -1,27 +1,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>E.92. Release 7.3.10</title>
+<title>E.96. Release 7.3.10</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="release.html" title="Appendix E. Release Notes">
-<link rel="prev" href="release-7-3-11.html" title="E.91. Release 7.3.11">
-<link rel="next" href="release-7-3-9.html" title="E.93. Release 7.3.9">
+<link rel="prev" href="release-7-3-11.html" title="E.95. Release 7.3.11">
+<link rel="next" href="release-7-3-9.html" title="E.97. Release 7.3.9">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-3-10">E.92. Release 7.3.10</h2></div></div></div>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.96. Release 7.3.10">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-3-10">E.96. Release 7.3.10</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Release date</h3>
 <p>2005-05-09</p>
 </div>
 <p>   This release contains a variety of fixes from 7.3.9, including several
    security-related issues.
   </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2909356">E.92.1. Migration to Version 7.3.10</h3></div></div></div>
+<div class="sect2" title="E.96.1. Migration to Version 7.3.10">
+<div class="titlepage"><div><div><h3 class="title" id="id2917991">E.96.1. Migration to Version 7.3.10</h3></div></div></div>
 <p>    A dump/restore is not required for those running 7.3.X.  However,
     it is one possible way of handling a significant security problem
     that has been found in the initial contents of 7.3.X system
@@ -74,26 +74,26 @@ UPDATE pg_database SET datallowconn = false WHERE datname = 'template0';</pre>
 <p>
    </p>
 </div>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2909470">E.92.2. Changes</h3></div></div></div>
-<div class="itemizedlist"><ul type="disc">
-<li><p>Change encoding function signature to prevent
+<div class="sect2" title="E.96.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2918091">E.96.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>Change encoding function signature to prevent
 misuse</p></li>
-<li>
+<li class="listitem">
 <p>Repair ancient race condition that allowed a transaction to be
 seen as committed for some purposes (eg SELECT FOR UPDATE) slightly sooner
 than for other purposes</p>
 <p>This is an extremely serious bug since it could lead to apparent
 data inconsistencies being briefly visible to applications.</p>
 </li>
-<li>
+<li class="listitem">
 <p>Repair race condition between relation extension and
 VACUUM</p>
 <p>This could theoretically have caused loss of a page's worth of
 freshly-inserted data, although the scenario seems of very low probability.
 There are no known cases of it having caused more than an Assert failure.</p>
 </li>
-<li>
+<li class="listitem">
 <p>Fix comparisons of <code class="type">TIME WITH TIME ZONE</code> values</p>
 <p>The comparison code was wrong in the case where the
 <code class="literal">--enable-integer-datetimes</code> configuration switch had been used.
@@ -101,25 +101,25 @@ NOTE: if you have an index on a <code class="type">TIME WITH TIME ZONE</code> co
 it will need to be <code class="command">REINDEX</code>ed after installing this update, because
 the fix corrects the sort order of column values.</p>
 </li>
-<li><p>Fix <code class="function">EXTRACT(EPOCH)</code> for
+<li class="listitem"><p>Fix <code class="function">EXTRACT(EPOCH)</code> for
 <code class="type">TIME WITH TIME ZONE</code> values</p></li>
-<li>
+<li class="listitem">
 <p>Fix mis-display of negative fractional seconds in
 <code class="type">INTERVAL</code> values</p>
 <p>This error only occurred when the
 <code class="literal">--enable-integer-datetimes</code> configuration switch had been used.</p>
 </li>
-<li><p>Additional buffer overrun checks in plpgsql
+<li class="listitem"><p>Additional buffer overrun checks in plpgsql
 (Neil)</p></li>
-<li><p>Fix pg_dump to dump trigger names containing <code class="literal">%</code>
+<li class="listitem"><p>Fix pg_dump to dump trigger names containing <code class="literal">%</code>
 correctly (Neil)</p></li>
-<li><p>Prevent <code class="function">to_char(interval)</code> from dumping core for
+<li class="listitem"><p>Prevent <code class="function">to_char(interval)</code> from dumping core for
 month-related formats</p></li>
-<li><p>Fix <code class="filename">contrib/pgcrypto</code> for newer OpenSSL builds
+<li class="listitem"><p>Fix <code class="filename">contrib/pgcrypto</code> for newer OpenSSL builds
 (Marko Kreen)</p></li>
-<li><p>Still more 64-bit fixes for
+<li class="listitem"><p>Still more 64-bit fixes for
 <code class="filename">contrib/intagg</code></p></li>
-<li><p>Prevent incorrect optimization of functions returning
+<li class="listitem"><p>Prevent incorrect optimization of functions returning
 <code class="type">RECORD</code></p></li>
 </ul></div>
 </div>

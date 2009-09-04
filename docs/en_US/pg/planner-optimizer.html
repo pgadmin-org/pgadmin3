@@ -4,14 +4,14 @@
 <title>42.5. Planner/Optimizer</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="overview.html" title="Chapter 42. Overview of PostgreSQL Internals">
 <link rel="prev" href="rule-system.html" title="42.4. The PostgreSQL Rule System">
 <link rel="next" href="executor.html" title="42.6. Executor">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="42.5. Planner/Optimizer">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="planner-optimizer">42.5. Planner/Optimizer</h2></div></div></div>
 <p>    The task of the <em class="firstterm">planner/optimizer</em> is to
     create an optimal execution plan. A given SQL query (and hence, a
@@ -21,7 +21,7 @@
     will examine each of these possible execution plans, ultimately
     selecting the execution plan that is expected to run the fastest.
    </p>
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>     In some situations, examining each possible way in which a query
      may be executed would take an excessive amount of time and memory
@@ -40,8 +40,8 @@
     In the rest of this section we'll ignore the distinction between paths
     and plans.
    </p>
-<div class="sect2" lang="en">
-<div class="titlepage"><div><div><h3 class="title" id="id2833567">42.5.1. Generating Possible Plans</h3></div></div></div>
+<div class="sect2" title="42.5.1. Generating Possible Plans">
+<div class="titlepage"><div><div><h3 class="title" id="id2841204">42.5.1. Generating Possible Plans</h3></div></div></div>
 <p>     The planner/optimizer starts by generating plans for scanning each
      individual relation (table) used in the query.  The possible plans
      are determined by the available indexes on each relation.
@@ -70,15 +70,15 @@
      by the planner/optimizer. The three possible join strategies are:
 
      </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p>        <em class="firstterm">nested loop join</em>: The right relation is scanned
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p>        <em class="firstterm">nested loop join</em>: The right relation is scanned
         once for every row found in the left relation. This strategy
         is easy to implement but can be very time consuming.  (However,
         if the right relation can be scanned with an index scan, this can
         be a good strategy.  It is possible to use values from the current
         row of the left relation as keys for the index scan of the right.)
        </p></li>
-<li><p>        <em class="firstterm">merge sort join</em>: Each relation is sorted on the join
+<li class="listitem"><p>        <em class="firstterm">merge sort join</em>: Each relation is sorted on the join
         attributes before the join starts. Then the two relations are
         scanned in parallel, and matching rows are combined to form
         join rows. This kind of join is more
@@ -87,7 +87,7 @@
         step, or by scanning the relation in the proper order using an
         index on the join key.
        </p></li>
-<li><p>        <em class="firstterm">hash join</em>: the right relation is first scanned
+<li class="listitem"><p>        <em class="firstterm">hash join</em>: the right relation is first scanned
         and loaded into a hash table, using its join attributes as hash keys.
         Next the left relation is scanned and the
         appropriate values of every row found are used as hash keys to

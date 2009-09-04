@@ -4,20 +4,20 @@
 <title>SELECT</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-savepoint.html" title="SAVEPOINT">
 <link rel="next" href="sql-selectinto.html" title="SELECT INTO">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="SELECT">
 <a name="sql-select"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>SELECT &#8212; retrieve rows from a table or view</p>
 </div>
-<a name="id2802401"></a><div class="refsynopsisdiv">
+<a name="id2810022"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">SELECT [ ALL | DISTINCT [ ON ( <em class="replaceable"><code>expression</code></em> [, ...] ) ] ]
     * | <em class="replaceable"><code>expression</code></em> [ AS <em class="replaceable"><code>output_name</code></em> ] [, ...]
@@ -39,37 +39,37 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     <em class="replaceable"><code>function_name</code></em> ( [ <em class="replaceable"><code>argument</code></em> [, ...] ] ) AS ( <em class="replaceable"><code>column_definition</code></em> [, ...] )
     <em class="replaceable"><code>from_item</code></em> [ NATURAL ] <em class="replaceable"><code>join_type</code></em> <em class="replaceable"><code>from_item</code></em> [ ON <em class="replaceable"><code>join_condition</code></em> | USING ( <em class="replaceable"><code>join_column</code></em> [, ...] ) ]</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2802621"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2810241"></a><h2>Description</h2>
 <p>   <code class="command">SELECT</code> retrieves rows from zero or more tables.
    The general processing of <code class="command">SELECT</code> is as follows:
 
    </p>
-<div class="orderedlist"><ol type="1">
-<li><p>      All elements in the <code class="literal">FROM</code> list are computed.
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><p>      All elements in the <code class="literal">FROM</code> list are computed.
       (Each element in the <code class="literal">FROM</code> list is a real or
       virtual table.)  If more than one element is specified in the
       <code class="literal">FROM</code> list, they are cross-joined together.
       (See <a class="xref" href="sql-select.html#sql-from" title="FROM Clause"><code class="literal">FROM</code> Clause</a> below.)
      </p></li>
-<li><p>      If the <code class="literal">WHERE</code> clause is specified, all rows
+<li class="listitem"><p>      If the <code class="literal">WHERE</code> clause is specified, all rows
       that do not satisfy the condition are eliminated from the
       output.  (See <a class="xref" href="sql-select.html#sql-where" title="WHERE Clause"><code class="literal">WHERE</code> Clause</a> below.)
      </p></li>
-<li><p>      If the <code class="literal">GROUP BY</code> clause is specified, the
+<li class="listitem"><p>      If the <code class="literal">GROUP BY</code> clause is specified, the
       output is divided into groups of rows that match on one or more
       values.  If the <code class="literal">HAVING</code> clause is present, it
       eliminates groups that do not satisfy the given condition.  (See
       <a class="xref" href="sql-select.html#sql-groupby" title="GROUP BY Clause"><code class="literal">GROUP BY</code> Clause</a> and
       <a class="xref" href="sql-select.html#sql-having" title="HAVING Clause"><code class="literal">HAVING</code> Clause</a> below.)
      </p></li>
-<li><p>      The actual output rows are computed using the
+<li class="listitem"><p>      The actual output rows are computed using the
       <code class="command">SELECT</code> output expressions for each selected
       row.  (See
       <a class="xref" href="sql-select.html#sql-select-list" title="SELECT List"><code class="command">SELECT</code> List</a>
       below.)
      </p></li>
-<li><p>      Using the operators <code class="literal">UNION</code>,
+<li class="listitem"><p>      Using the operators <code class="literal">UNION</code>,
       <code class="literal">INTERSECT</code>, and <code class="literal">EXCEPT</code>, the
       output of more than one <code class="command">SELECT</code> statement can
       be combined to form a single result set.  The
@@ -83,23 +83,23 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
       <a class="xref" href="sql-select.html#sql-union" title="UNION Clause"><code class="literal">UNION</code> Clause</a>, <a class="xref" href="sql-select.html#sql-intersect" title="INTERSECT Clause"><code class="literal">INTERSECT</code> Clause</a>, and
       <a class="xref" href="sql-select.html#sql-except" title="EXCEPT Clause"><code class="literal">EXCEPT</code> Clause</a> below.)
      </p></li>
-<li><p>      If the <code class="literal">ORDER BY</code> clause is specified, the
+<li class="listitem"><p>      If the <code class="literal">ORDER BY</code> clause is specified, the
       returned rows are sorted in the specified order.  If
       <code class="literal">ORDER BY</code> is not given, the rows are returned
       in whatever order the system finds fastest to produce.  (See
       <a class="xref" href="sql-select.html#sql-orderby" title="ORDER BY Clause"><code class="literal">ORDER BY</code> Clause</a> below.)
      </p></li>
-<li><p>      <code class="literal">DISTINCT</code> eliminates duplicate rows from the
+<li class="listitem"><p>      <code class="literal">DISTINCT</code> eliminates duplicate rows from the
       result.  <code class="literal">DISTINCT ON</code> eliminates rows that
       match on all the specified expressions.  <code class="literal">ALL</code>
       (the default) will return all candidate rows, including
       duplicates.  (See <a class="xref" href="sql-select.html#sql-distinct" title="DISTINCT Clause"><code class="literal">DISTINCT</code> Clause</a> below.)
      </p></li>
-<li><p>      If the <code class="literal">LIMIT</code> or <code class="literal">OFFSET</code>
+<li class="listitem"><p>      If the <code class="literal">LIMIT</code> or <code class="literal">OFFSET</code>
       clause is specified, the <code class="command">SELECT</code> statement
       only returns a subset of the result rows. (See <a class="xref" href="sql-select.html#sql-limit" title="LIMIT Clause"><code class="literal">LIMIT</code> Clause</a> below.)
      </p></li>
-<li><p>      If <code class="literal">FOR UPDATE</code> or <code class="literal">FOR SHARE</code>
+<li class="listitem"><p>      If <code class="literal">FOR UPDATE</code> or <code class="literal">FOR SHARE</code>
       is specified, the
       <code class="command">SELECT</code> statement locks the selected rows
       against concurrent updates.  (See <a class="xref" href="sql-select.html#sql-for-update-share" title="FOR UPDATE/FOR SHARE Clause"><code class="literal">FOR UPDATE</code>/<code class="literal">FOR SHARE</code> Clause</a> below.)
@@ -113,9 +113,9 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
    <code class="literal">UPDATE</code> privilege as well.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2803022"></a><h2>Parameters</h2>
-<div class="refsect2" lang="en">
+<div class="refsect1" title="Parameters">
+<a name="id2810643"></a><h2>Parameters</h2>
+<div class="refsect2" title="FROM Clause">
 <a name="sql-from"></a><h3>
 <code class="literal">FROM</code> Clause</h3>
 <p>    The <code class="literal">FROM</code> clause specifies one or more source
@@ -184,12 +184,12 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
 <dd>
 <p>        One of
         </p>
-<div class="itemizedlist"><ul type="disc">
-<li><p><code class="literal">[ INNER ] JOIN</code></p></li>
-<li><p><code class="literal">LEFT [ OUTER ] JOIN</code></p></li>
-<li><p><code class="literal">RIGHT [ OUTER ] JOIN</code></p></li>
-<li><p><code class="literal">FULL [ OUTER ] JOIN</code></p></li>
-<li><p><code class="literal">CROSS JOIN</code></p></li>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem"><p><code class="literal">[ INNER ] JOIN</code></p></li>
+<li class="listitem"><p><code class="literal">LEFT [ OUTER ] JOIN</code></p></li>
+<li class="listitem"><p><code class="literal">RIGHT [ OUTER ] JOIN</code></p></li>
+<li class="listitem"><p><code class="literal">FULL [ OUTER ] JOIN</code></p></li>
+<li class="listitem"><p><code class="literal">CROSS JOIN</code></p></li>
 </ul></div>
 <p>
 
@@ -263,7 +263,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
 <p>
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="WHERE Clause">
 <a name="sql-where"></a><h3>
 <code class="literal">WHERE</code> Clause</h3>
 <p>    The optional <code class="literal">WHERE</code> clause has the general form
@@ -278,7 +278,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     substituted for any variable references.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="GROUP BY Clause">
 <a name="sql-groupby"></a><h3>
 <code class="literal">GROUP BY</code> Clause</h3>
 <p>    The optional <code class="literal">GROUP BY</code> clause has the general form
@@ -306,7 +306,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     column.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="HAVING Clause">
 <a name="sql-having"></a><h3>
 <code class="literal">HAVING</code> Clause</h3>
 <p>    The optional <code class="literal">HAVING</code> clause has the general form
@@ -336,7 +336,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     <code class="literal">HAVING</code> condition is true, zero rows if it is not true.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="SELECT List">
 <a name="sql-select-list"></a><h3>
 <code class="command">SELECT</code> List</h3>
 <p>    The <code class="command">SELECT</code> list (between the key words
@@ -358,7 +358,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     shorthand for the columns coming from just that table.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="UNION Clause">
 <a name="sql-union"></a><h3>
 <code class="literal">UNION</code> Clause</h3>
 <p>    The <code class="literal">UNION</code> clause has this general form:
@@ -399,7 +399,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     <code class="literal">UNION</code>.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="INTERSECT Clause">
 <a name="sql-intersect"></a><h3>
 <code class="literal">INTERSECT</code> Clause</h3>
 <p>    The <code class="literal">INTERSECT</code> clause has this general form:
@@ -435,7 +435,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     an <code class="literal">INTERSECT</code>.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="EXCEPT Clause">
 <a name="sql-except"></a><h3>
 <code class="literal">EXCEPT</code> Clause</h3>
 <p>    The <code class="literal">EXCEPT</code> clause has this general form:
@@ -467,7 +467,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     an <code class="literal">EXCEPT</code>.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="ORDER BY Clause">
 <a name="sql-orderby"></a><h3>
 <code class="literal">ORDER BY</code> Clause</h3>
 <p>    The optional <code class="literal">ORDER BY</code> clause has this general form:
@@ -532,7 +532,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     was initialized.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="DISTINCT Clause">
 <a name="sql-distinct"></a><h3>
 <code class="literal">DISTINCT</code> Clause</h3>
 <p>    If <code class="literal">DISTINCT</code> is specified, all duplicate rows are
@@ -544,8 +544,8 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     keeps only the first row of each set of rows where the given
     expressions evaluate to equal.  The <code class="literal">DISTINCT ON</code>
     expressions are interpreted using the same rules as for
-    <code class="literal">ORDER BY</code> (see above).  Note that the &#8220;<span class="quote">first
-    row</span>&#8221; of each set is unpredictable unless <code class="literal">ORDER
+    <code class="literal">ORDER BY</code> (see above).  Note that the <span class="quote">&#8220;<span class="quote">first
+    row</span>&#8221;</span> of each set is unpredictable unless <code class="literal">ORDER
     BY</code> is used to ensure that the desired row appears first.  For
     example,
 </p>
@@ -564,7 +564,7 @@ where <em class="replaceable"><code>from_item</code></em> can be one of:
     desired precedence of rows within each <code class="literal">DISTINCT ON</code> group.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="LIMIT Clause">
 <a name="sql-limit"></a><h3>
 <code class="literal">LIMIT</code> Clause</h3>
 <p>    The <code class="literal">LIMIT</code> clause consists of two independent
@@ -599,7 +599,7 @@ OFFSET <em class="replaceable"><code>start</code></em></pre>
     <code class="literal">ORDER BY</code> is used to constrain the order.
    </p>
 </div>
-<div class="refsect2" lang="en">
+<div class="refsect2" title="FOR UPDATE/FOR SHARE Clause">
 <a name="sql-for-update-share"></a><h3>
 <code class="literal">FOR UPDATE</code>/<code class="literal">FOR SHARE</code> Clause</h3>
 <p>    The <code class="literal">FOR UPDATE</code> clause has this form:
@@ -666,7 +666,7 @@ OFFSET <em class="replaceable"><code>start</code></em></pre>
     used in contexts where returned rows can't be clearly identified with
     individual table rows; for example they can't be used with aggregation.
    </p>
-<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Caution</h3>
 <p>    Avoid locking a row and then modifying it within a later savepoint or
     <span class="application">PL/pgSQL</span> exception block.  A subsequent
@@ -689,7 +689,7 @@ ROLLBACK TO s;</pre>
     of <span class="productname">PostgreSQL</span>.
    </p>
 </div>
-<div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;">
+<div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Caution</h3>
 <p>    It is possible for a <code class="command">SELECT</code> command using both
     <code class="literal">LIMIT</code> and  <code class="literal">FOR UPDATE/SHARE</code>
@@ -704,8 +704,8 @@ ROLLBACK TO s;</pre>
 </div>
 </div>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2805557"></a><h2>Examples</h2>
+<div class="refsect1" title="Examples">
+<a name="id2813177"></a><h2>Examples</h2>
 <p>   To join the table <code class="literal">films</code> with the table
    <code class="literal">distributors</code>:
 
@@ -834,14 +834,14 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
 <p>
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2805725"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2813346"></a><h2>Compatibility</h2>
 <p>   Of course, the <code class="command">SELECT</code> statement is compatible
    with the SQL standard.  But there are some extensions and some
    missing features.
   </p>
-<div class="refsect2" lang="en">
-<a name="id2805739"></a><h3>Omitted <code class="literal">FROM</code> Clauses</h3>
+<div class="refsect2" title="Omitted FROM Clauses">
+<a name="id2813360"></a><h3>Omitted <code class="literal">FROM</code> Clauses</h3>
 <p>    <span class="productname">PostgreSQL</span> allows one to omit the
     <code class="literal">FROM</code> clause.  It has a straightforward use to
     compute the results of simple expressions:
@@ -872,8 +872,8 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
     enabled.
    </p>
 </div>
-<div class="refsect2" lang="en">
-<a name="id2805825"></a><h3>The <code class="literal">AS</code> Key Word</h3>
+<div class="refsect2" title="The AS Key Word">
+<a name="id2813445"></a><h3>The <code class="literal">AS</code> Key Word</h3>
 <p>    In the SQL standard, the optional key word <code class="literal">AS</code> is just
     noise and can be omitted without affecting the meaning.  The
     <span class="productname">PostgreSQL</span> parser requires this key
@@ -883,8 +883,8 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
     items, however.
    </p>
 </div>
-<div class="refsect2" lang="en">
-<a name="id2805864"></a><h3>Namespace Available to <code class="literal">GROUP BY</code> and <code class="literal">ORDER BY</code>
+<div class="refsect2" title="Namespace Available to GROUP BY and ORDER BY">
+<a name="id2813484"></a><h3>Namespace Available to <code class="literal">GROUP BY</code> and <code class="literal">ORDER BY</code>
 </h3>
 <p>    In the SQL-92 standard, an <code class="literal">ORDER BY</code> clause may
     only use result column names or numbers, while a <code class="literal">GROUP
@@ -904,8 +904,8 @@ SELECT * FROM distributors_2(111) AS (f1 int, f2 text);
     BY</code> expression the same way SQL:1999 does.
    </p>
 </div>
-<div class="refsect2" lang="en">
-<a name="id2805936"></a><h3>Nonstandard Clauses</h3>
+<div class="refsect2" title="Nonstandard Clauses">
+<a name="id2813556"></a><h3>Nonstandard Clauses</h3>
 <p>    The clauses <code class="literal">DISTINCT ON</code>,
     <code class="literal">LIMIT</code>, and <code class="literal">OFFSET</code> are not
     defined in the SQL standard.

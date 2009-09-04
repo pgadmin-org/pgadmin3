@@ -4,27 +4,27 @@
 <title>CREATE RULE</title>
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.74.3">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.13 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createrole.html" title="CREATE ROLE">
 <link rel="next" href="sql-createschema.html" title="CREATE SCHEMA">
 <link rel="copyright" href="legalnotice.html" title="Legal Notice">
 </head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en">
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="CREATE RULE">
 <a name="sql-createrule"></a><div class="titlepage"></div>
 <div class="refnamediv">
 <h2>Name</h2>
 <p>CREATE RULE &#8212; define a new rewrite rule</p>
 </div>
-<a name="id2780282"></a><div class="refsynopsisdiv">
+<a name="id2787896"></a><div class="refsynopsisdiv" title="Synopsis">
 <h2>Synopsis</h2>
 <pre class="synopsis">CREATE [ OR REPLACE ] RULE <em class="replaceable"><code>name</code></em> AS ON <em class="replaceable"><code>event</code></em>
     TO <em class="replaceable"><code>table</code></em> [ WHERE <em class="replaceable"><code>condition</code></em> ]
     DO [ ALSO | INSTEAD ] { NOTHING | <em class="replaceable"><code>command</code></em> | ( <em class="replaceable"><code>command</code></em> ; <em class="replaceable"><code>command</code></em> ... ) }</pre>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2780341"></a><h2>Description</h2>
+<div class="refsect1" title="Description">
+<a name="id2787954"></a><h2>Description</h2>
 <p>   <code class="command">CREATE RULE</code> defines a new rule applying to a specified
    table or view.
    <code class="command">CREATE OR REPLACE RULE</code> will either create a
@@ -80,8 +80,8 @@
    currently work to support <code class="literal">RETURNING</code> queries, however.)
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2780537"></a><h2>Parameters</h2>
+<div class="refsect1" title="Parameters">
+<a name="id2788150"></a><h2>Parameters</h2>
 <div class="variablelist"><dl>
 <dt><span class="term"><em class="replaceable"><code>name</code></em></span></dt>
 <dd><p>      The name of a rule to create.  This must be distinct from the
@@ -137,8 +137,8 @@
    to refer to the existing row being updated or deleted.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2780798"></a><h2>Notes</h2>
+<div class="refsect1" title="Notes">
+<a name="id2788411"></a><h2>Notes</h2>
 <p>   You must be the owner of a table to create or change rules for it.
   </p>
 <p>   In a rule for <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, or
@@ -193,8 +193,8 @@ UPDATE mytable SET name = 'foo' WHERE id = 42;</pre>
    implementation restriction that may be fixed in future releases.
   </p>
 </div>
-<div class="refsect1" lang="en">
-<a name="id2780991"></a><h2>Compatibility</h2>
+<div class="refsect1" title="Compatibility">
+<a name="id2788604"></a><h2>Compatibility</h2>
 <p>   <code class="command">CREATE RULE</code> is a
    <span class="productname">PostgreSQL</span> language extension, as is the
    entire query rewrite system.
