@@ -35,6 +35,15 @@
 #ifndef BISON_STACK_HH
 # define BISON_STACK_HH
 
+/* The Sun compiler defines _T, which conflicts with wxWidgets, so
+   we must un-define it if needed. */
+#if defined(__SUNPRO_CC)
+#ifdef _T
+#undef _T
+#define _T_is_defined
+#endif
+#endif /*__SUNPRO_CC */
+
 #include <deque>
 
 namespace pgscript
@@ -125,5 +134,19 @@ namespace pgscript
     unsigned int range_;
   };
 }
+
+/* Redefine _T if we un-defined it for the Sun compiler. */
+#if defined(__SUNPRO_CC)
+#ifdef _T_is_defined
+#undef _T_is_defined
+/* we need to define it back only if _T already was defined. */
+#if !wxUSE_UNICODE
+#define _T(x) x
+#else /* Unicode */
+/* use wxCONCAT_HELPER so that x could be expanded if it's a macro */
+#define _T(x) wxCONCAT_HELPER(L, x)
+#endif /* ASCII/Unicode */
+#endif /* T_is_defined */
+#endif /*__SUNPRO_CC */
 
 #endif // not BISON_STACK_HH
