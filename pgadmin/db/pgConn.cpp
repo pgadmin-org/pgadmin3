@@ -592,6 +592,7 @@ bool pgConn::ExecuteVoid(const wxString& sql, bool reportError)
         lastResultStatus != PGRES_COMMAND_OK)
     {
         LogError(!reportError);
+        PQclear(qryRes);
         return false;
     }
 
