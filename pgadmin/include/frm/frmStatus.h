@@ -47,6 +47,7 @@ enum
     MNU_TERMINATE,
     MNU_COMMIT,
     MNU_ROLLBACK,
+	MNU_COPY_QUERY,
     TIMER_REFRESHUI_ID,
     TIMER_STATUS_ID,
     TIMER_LOCKS_ID,
@@ -138,6 +139,7 @@ private:
     void OnExit(wxCommandEvent& event);
     
     void OnCopy(wxCommandEvent& ev);
+    void OnCopyQuery(wxCommandEvent& ev);
 
     void OnToggleStatusPane(wxCommandEvent& event);
     void OnToggleLockPane(wxCommandEvent& event);

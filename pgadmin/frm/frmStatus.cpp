@@ -26,6 +26,7 @@
 #include "frm/frmStatus.h"
 #include "frm/frmHint.h"
 #include "frm/frmMain.h"
+#include "frm/frmQuery.h"
 #include "utils/pgfeatures.h"
 #include "schema/pgServer.h"
 #include "ctl/ctlMenuToolbar.h"
@@ -44,6 +45,7 @@ BEGIN_EVENT_TABLE(frmStatus, pgFrame)
     EVT_MENU(MNU_EXIT,                               frmStatus::OnExit)
     
     EVT_MENU(MNU_COPY,                               frmStatus::OnCopy)
+    EVT_MENU(MNU_COPY_QUERY,                               frmStatus::OnCopyQuery)
 
     EVT_MENU(MNU_HELP,                               frmStatus::OnHelp)
     EVT_MENU(MNU_STATUSPAGE,                        frmStatus::OnToggleStatusPane)
@@ -218,6 +220,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(readdata_xpm), _("Refresh"), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_COPY, _("Copy"), wxBitmap(clip_copy_xpm), _("Copy selected text to clipboard"), wxITEM_NORMAL);
+    toolBar->AddTool(MNU_COPY_QUERY, _("Open query tool"), wxBitmap(clip_copy_xpm), _("Open the query tool with the selected query"), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_TERMINATE, _("Terminate"), wxBitmap(terminate_backend_xpm), _("Terminate backend"), wxITEM_NORMAL);
@@ -702,6 +705,62 @@ void frmStatus::OnCopy(wxCommandEvent& ev)
 }
 
 
+void frmStatus::OnCopyQuery(wxCommandEvent& ev)
+{
+    ctlListView *list;
+    int row, col;
+    wxString text = wxT("");
+    wxString dbname = wxT("");
+    int maxlength;
+
+    // Only the status list shows the query
+    list = statusList;
+
+    // Get the database
+    row = list->GetFirstSelected();
+    col = 1;
+    dbname.Append(list->GetText(row, col));
+    
+    // Get the actual query
+    row = list->GetFirstSelected();
+    col = list->GetColumnCount() - 1;
+    text.Append(list->GetText(row, col) + wxT("\t"));
+
+    // Check if we have a query whose length is maximum
+    maxlength = 1024;
+    if (connection->BackendMinimumVersion(8, 4))
+    {
+        pgSet *set;
+        set=connection->ExecuteSet(wxT("SELECT setting FROM pg_settings\n")
+            wxT("  WHERE name='track_activity_query_size'"));
+        if (set)
+        {
+            maxlength = set->GetLong(0);
+            delete set;
+        }
+    }
+
+    if (text.Length() == maxlength)
+        wxLogError(wxT("The query you copied is at the maximum length.")
+          wxT("It may have been truncated."));
+
+    // If we have some real query, launch the query tool
+    if (text.Length() > 0 && dbname.Length() > 0
+      && text.Trim() != wxT("<IDLE>") && text.Trim() != wxT("<IDLE in transaction>"))
+    {
+        //pgDatabase *db=obj->GetDatabase();
+        pgConn *conn = new pgConn(connection->GetHostAddress(), dbname,
+          connection->GetUser(), connection->GetPassword(),
+          connection->GetPort(), connection->GetSslMode(), connection->GetDbOid());
+        if (conn)
+        {
+            frmQuery *fq = new frmQuery(mainForm, wxEmptyString, conn, text);
+            fq->Go();
+        }
+    }
+}
+
+
 void frmStatus::OnPaneClose(wxAuiManagerEvent& evt)
 {
     if (evt.pane->name == wxT("Activity"))
@@ -1023,7 +1082,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
                     statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("xact_start")));
 
                 statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("blockedby")));
-                   statusList->SetItem(row, colpos, qry.Left(250));
+                statusList->SetItem(row, colpos, qry);
                 row++;
             }
             dataSet1->MoveNext();
@@ -2285,6 +2344,7 @@ void frmStatus::OnSelStatusItem(wxListEvent &event)
     btnRotateLog->Enable(false);
     
     editMenu->Enable(MNU_COPY, statusList->GetFirstSelected()>=0);
+    toolBar->EnableTool(MNU_COPY_QUERY, statusList->GetFirstSelected()>=0);
 }
 
 
@@ -2319,6 +2379,7 @@ void frmStatus::OnSelLockItem(wxListEvent &event)
     btnRotateLog->Enable(false);
     
     editMenu->Enable(MNU_COPY, lockList->GetFirstSelected()>=0);
+    toolBar->EnableTool(MNU_COPY_QUERY, false);
 }
 
 
@@ -2349,6 +2410,7 @@ void frmStatus::OnSelXactItem(wxListEvent &event)
     btnRotateLog->Enable(false);
     
     editMenu->Enable(MNU_COPY, xactList->GetFirstSelected()>=0);
+    toolBar->EnableTool(MNU_COPY_QUERY, false);
 }
 
 
@@ -2376,6 +2438,7 @@ void frmStatus::OnSelLogItem(wxListEvent &event)
     }
     
     editMenu->Enable(MNU_COPY, logList->GetFirstSelected()>=0);
+    toolBar->EnableTool(MNU_COPY_QUERY, false);
 }
 
 
