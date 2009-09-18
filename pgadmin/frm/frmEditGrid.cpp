@@ -1503,10 +1503,13 @@ public:
     void BeginEdit(int row, int col, wxGrid* grid);
     bool EndEdit(int row, int col, wxGrid* grid);
     wxString GetValue() const;
+    virtual void Reset() { DoReset(m_startValue); }
 
 protected:
     void DoBeginEdit(const wxString& startValue);
     wxStyledTextCtrl *Text() const { return (wxStyledTextCtrl *)m_control; }
+    void DoReset(const wxString& startValue);
+
     wxString m_startValue;
 };
 
@@ -1561,6 +1564,13 @@ wxString sqlGridTextEditor::GetValue() const
 {
     return Text()->GetText();
 }
+
+void sqlGridTextEditor::DoReset(const wxString& startValue)
+{
+    Text()->SetText(startValue);
+    Text()->SetSelection(-1, -1);
+}
+
     
 class sqlGridNumericEditor : public wxGridCellTextEditor
 {
