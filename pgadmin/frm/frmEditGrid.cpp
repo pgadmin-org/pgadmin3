@@ -1046,7 +1046,7 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
             return;
 
         wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
-        if (text->GetInsertionPoint() <= text->GetLastPosition())
+        if (text && text->GetInsertionPoint() <= text->GetLastPosition())
         {
             int len = text->GetStringSelection().Length();
             if (len)
