@@ -1038,15 +1038,30 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
         if (sqlGrid->GetTable()->IsColBoolean(sqlGrid->GetGridCursorCol()))
             return;
 
-        wxStyledTextCtrl *text = (wxStyledTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
-        if (text->GetCurrentPos() <= text->GetTextLength())
+        if (sqlGrid->GetTable()->IsColText(sqlGrid->GetGridCursorCol()))
         {
-            int len = text->GetSelectedText().Length();
-            if (len)
-                text->SetSelection(text->GetCurrentPos(), text->GetCurrentPos() + len);
-            else
-                text->SetSelection(text->GetCurrentPos(), text->GetCurrentPos() + 1);
-            text->Clear(); 
+            wxStyledTextCtrl *text = (wxStyledTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
+            if (text && text->GetCurrentPos() <= text->GetTextLength())
+            {
+                int len = text->GetSelectedText().Length();
+                if (len)
+                    text->SetSelection(text->GetCurrentPos(), text->GetCurrentPos() + len);
+                else
+                    text->SetSelection(text->GetCurrentPos(), text->GetCurrentPos() + 1);
+                text->Clear(); 
+            }
+        }
+        else
+        {
+            wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
+            if (text && text->GetInsertionPoint() <= text->GetLastPosition())
+            {
+                int len = text->GetStringSelection().Length();
+                if (len)
+                    text->Remove(text->GetInsertionPoint(), text->GetInsertionPoint() + len);
+                else
+                    text->Remove(text->GetInsertionPoint(), text->GetInsertionPoint() + 1);
+            }
         }
         return;
     }
