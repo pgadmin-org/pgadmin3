@@ -485,7 +485,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 // Check if it is a window function
                 function->iSetIsWindow(functions->GetBool(wxT("proiswindow")));
             }
-			else
+            else
                 function->iSetIsWindow(false);
 
             // Now iterate the arguments and build the arrays
@@ -522,7 +522,10 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                         if (isProcedure)
                             mode = wxT("IN OUT");
                         else
+                        {
                             mode = wxT("INOUT");
+                            nArgsIN++;
+                        }
                     else if (mode == wxT("3"))
                         mode = wxT("IN OUT");
                     else if (mode == wxT("v"))
@@ -580,6 +583,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                 for (size_t index = 0; index < function->GetArgModesArray().Count(); index++)
                 {
                     if (function->GetArgModesArray()[index] == wxT("IN") ||
+                        function->GetArgModesArray()[index] == wxT("INOUT") ||
                         function->GetArgModesArray()[index].IsEmpty())
                     {
                         nArgsIN--;
