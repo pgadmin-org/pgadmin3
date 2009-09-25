@@ -48,6 +48,7 @@ enum
     MNU_COMMIT,
     MNU_ROLLBACK,
 	MNU_COPY_QUERY,
+    MNU_HIGHLIGHTSTATUS,
     TIMER_REFRESHUI_ID,
     TIMER_STATUS_ID,
     TIMER_LOCKS_ID,
@@ -147,6 +148,7 @@ private:
     void OnToggleLogPane(wxCommandEvent& event);
     void OnToggleToolBar(wxCommandEvent& event);
     void OnDefaultView(wxCommandEvent& event);
+    void OnHighlightStatus(wxCommandEvent& event);
     
     void OnRefreshUITimer(wxTimerEvent &event);
     void OnRefreshStatusTimer(wxTimerEvent &event);

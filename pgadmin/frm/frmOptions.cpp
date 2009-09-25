@@ -27,6 +27,9 @@
 #include "utils/misc.h"
 #include "frm/menu.h"
 
+// Must be after pgAdmin3.h or MSVC++ complains
+#include <wx/colordlg.h>
+
 #include "images/properties.xpm"
 
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
@@ -65,23 +68,35 @@
 #define lstDisplay					CTRL_CHECKLISTBOX("lstDisplay")
 #define chkSystemObjects            CTRL_CHECKBOX("chkSystemObjects")
 #define chkIgnoreVersion            CTRL_CHECKBOX("chkIgnoreVersion")
+#define txtIdleProcessColour        CTRL_TEXT("txtIdleProcessColour")
+#define btnIdleProcessColour        CTRL_BUTTON("btnIdleProcessColour")
+#define txtActiveProcessColour      CTRL_TEXT("txtActiveProcessColour")
+#define btnActiveProcessColour      CTRL_BUTTON("btnActiveProcessColour")
+#define txtSlowProcessColour        CTRL_TEXT("txtSlowProcessColour")
+#define btnSlowProcessColour        CTRL_BUTTON("btnSlowProcessColour")
+#define txtBlockedProcessColour     CTRL_TEXT("txtBlockedProcessColour")
+#define btnBlockedProcessColour     CTRL_BUTTON("btnBlockedProcessColour")
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
-    EVT_MENU(MNU_HELP,                        frmOptions::OnHelp)
-    EVT_BUTTON (XRCID("btnFont"),             frmOptions::OnFontSelect)
-    EVT_BUTTON (XRCID("btnSqlFont"),          frmOptions::OnSqlFontSelect)
-    EVT_BUTTON (XRCID("btnBrowseLogfile"),    frmOptions::OnBrowseLogFile)
-    EVT_BUTTON (XRCID("btnSlonyPath"),        frmOptions::OnSlonyPathSelect)
-    EVT_BUTTON (XRCID("btnPostgresqlPath"),   frmOptions::OnPostgresqlPathSelect)
-    EVT_BUTTON (XRCID("btnEnterprisedbPath"), frmOptions::OnEnterprisedbPathSelect)
-    EVT_BUTTON (XRCID("btnGPDBPath"),         frmOptions::OnGPDBPathSelect)
-    EVT_BUTTON (XRCID("btnDefault"),          frmOptions::OnDefault)
-    EVT_CHECKBOX(XRCID("chkSuppressHints"),   frmOptions::OnSuppressHints)
-    EVT_CHECKBOX(XRCID("chkResetHints"),      frmOptions::OnResetHints)
-    EVT_BUTTON (wxID_OK,                      frmOptions::OnOK)
-    EVT_BUTTON (wxID_HELP,                    frmOptions::OnHelp)
-    EVT_BUTTON (wxID_CANCEL,                  frmOptions::OnCancel)
-    EVT_COMBOBOX(XRCID("cbCopyQuote"),		  frmOptions::OnChangeCopyQuote)
+    EVT_MENU(MNU_HELP,                           frmOptions::OnHelp)
+    EVT_BUTTON (XRCID("btnFont"),                frmOptions::OnFontSelect)
+    EVT_BUTTON (XRCID("btnSqlFont"),             frmOptions::OnSqlFontSelect)
+    EVT_BUTTON (XRCID("btnBrowseLogfile"),       frmOptions::OnBrowseLogFile)
+    EVT_BUTTON (XRCID("btnSlonyPath"),           frmOptions::OnSlonyPathSelect)
+    EVT_BUTTON (XRCID("btnPostgresqlPath"),      frmOptions::OnPostgresqlPathSelect)
+    EVT_BUTTON (XRCID("btnEnterprisedbPath"),    frmOptions::OnEnterprisedbPathSelect)
+    EVT_BUTTON (XRCID("btnGPDBPath"),            frmOptions::OnGPDBPathSelect)
+    EVT_BUTTON (XRCID("btnDefault"),             frmOptions::OnDefault)
+    EVT_CHECKBOX(XRCID("chkSuppressHints"),      frmOptions::OnSuppressHints)
+    EVT_CHECKBOX(XRCID("chkResetHints"),         frmOptions::OnResetHints)
+    EVT_BUTTON (wxID_OK,                         frmOptions::OnOK)
+    EVT_BUTTON (wxID_HELP,                       frmOptions::OnHelp)
+    EVT_BUTTON (wxID_CANCEL,                     frmOptions::OnCancel)
+    EVT_COMBOBOX(XRCID("cbCopyQuote"),		     frmOptions::OnChangeCopyQuote)
+    EVT_BUTTON(XRCID("btnIdleProcessColour"),    frmOptions::OnChooseIdleProcessColour)
+    EVT_BUTTON(XRCID("btnActiveProcessColour"),  frmOptions::OnChooseActiveProcessColour)
+    EVT_BUTTON(XRCID("btnSlowProcessColour"),    frmOptions::OnChooseSlowProcessColour)
+    EVT_BUTTON(XRCID("btnBlockedProcessColour"), frmOptions::OnChooseBlockedProcessColour)
 END_EVENT_TABLE()
 
 frmOptions::frmOptions(frmMain *parent)
@@ -143,6 +158,12 @@ frmOptions::frmOptions(frmMain *parent)
     txtEnterprisedbPath->SetValue(settings->GetEnterprisedbPath());
     txtGPDBPath->SetValue(settings->GetGPDBPath());
     chkIgnoreVersion->SetValue(settings->GetIgnoreVersion());
+
+    // Get back the colours
+    txtIdleProcessColour->SetValue(settings->GetIdleProcessColour());
+    txtActiveProcessColour->SetValue(settings->GetActiveProcessColour());
+    txtSlowProcessColour->SetValue(settings->GetSlowProcessColour());
+    txtBlockedProcessColour->SetValue(settings->GetBlockedProcessColour());
 
     cbLanguage->Append(_("Default"));
     int sel=0;
@@ -483,6 +504,28 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         settings->SetShowSystemObjects(chkSystemObjects->GetValue());
     }
 
+    // Change the status colours
+    if (txtIdleProcessColour->GetValue() != settings->GetIdleProcessColour())
+    {
+        changed = true;
+        settings->SetIdleProcessColour(CheckColour(txtIdleProcessColour->GetValue().Trim()));
+    }
+    if (txtActiveProcessColour->GetValue() != settings->GetActiveProcessColour())
+    {
+        changed = true;
+        settings->SetActiveProcessColour(CheckColour(txtActiveProcessColour->GetValue().Trim()));
+    }
+    if (txtSlowProcessColour->GetValue() != settings->GetSlowProcessColour())
+    {
+        changed = true;
+        settings->SetSlowProcessColour(CheckColour(txtSlowProcessColour->GetValue().Trim()));
+    }
+    if (txtBlockedProcessColour->GetValue() != settings->GetBlockedProcessColour())
+    {
+        changed = true;
+        settings->SetBlockedProcessColour(CheckColour(txtBlockedProcessColour->GetValue().Trim()));
+    }
+
     // Change the language last, as it will affect our tests for changes
     // in the display object types.
     int langNo=cbLanguage->GetCurrentSelection();
@@ -555,6 +598,46 @@ void frmOptions::OnBrowseLogFile(wxCommandEvent &ev)
 }
 
 
+void frmOptions::OnChooseIdleProcessColour(wxCommandEvent &ev)
+{
+    wxColourDialog dlg( NULL );
+    if ( dlg.ShowModal() == wxID_OK )
+    {
+        txtIdleProcessColour->SetValue(dlg.GetColourData().GetColour().GetAsString(wxC2S_HTML_SYNTAX));
+    }
+}
+
+
+void frmOptions::OnChooseActiveProcessColour(wxCommandEvent &ev)
+{
+    wxColourDialog dlg( NULL );
+    if ( dlg.ShowModal() == wxID_OK )
+    {
+        txtActiveProcessColour->SetValue(dlg.GetColourData().GetColour().GetAsString(wxC2S_HTML_SYNTAX));
+    }
+}
+
+
+void frmOptions::OnChooseSlowProcessColour(wxCommandEvent &ev)
+{
+    wxColourDialog dlg( NULL );
+    if ( dlg.ShowModal() == wxID_OK )
+    {
+        txtSlowProcessColour->SetValue(dlg.GetColourData().GetColour().GetAsString(wxC2S_HTML_SYNTAX));
+    }
+}
+
+
+void frmOptions::OnChooseBlockedProcessColour(wxCommandEvent &ev)
+{
+    wxColourDialog dlg( NULL );
+    if ( dlg.ShowModal() == wxID_OK )
+    {
+        txtBlockedProcessColour->SetValue(dlg.GetColourData().GetColour().GetAsString(wxC2S_HTML_SYNTAX));
+    }
+}
+
+
 optionsFactory::optionsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
     mnu->Append(id, _("&Options..."), _("Show options dialog."));
@@ -576,3 +659,22 @@ void frmOptions::OnChangeCopyQuote(wxCommandEvent& WXUNUSED(ev))
     else
         cbCopyQuoteChar->Enable();
 }
+
+
+wxString frmOptions::CheckColour(wxString oldColour)
+{
+    wxString newColour = wxEmptyString;
+
+    if (oldColour != wxEmptyString)
+    {
+        wxColour colour;
+
+        if (colour.Set(oldColour))
+            newColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
+        else
+            wxLogError(_("The colour specified is not valid."));
+    }
+
+    return newColour;
+}
+

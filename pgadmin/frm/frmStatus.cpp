@@ -54,6 +54,7 @@ BEGIN_EVENT_TABLE(frmStatus, pgFrame)
     EVT_MENU(MNU_LOGPAGE,                             frmStatus::OnToggleLogPane)
     EVT_MENU(MNU_TOOLBAR,                             frmStatus::OnToggleToolBar)
     EVT_MENU(MNU_DEFAULTVIEW,                        frmStatus::OnDefaultView)
+    EVT_MENU(MNU_HIGHLIGHTSTATUS,                        frmStatus::OnHighlightStatus)
 
     EVT_AUI_PANE_CLOSE(                             frmStatus::OnPaneClose)
     
@@ -148,6 +149,8 @@ wxString frmStatus::rateToCboString(int rate)
 
 frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFrame(NULL, _title)
 {
+    bool highlight = false;
+
     dlgName = wxT("frmStatus");
     
     loaded = false;
@@ -194,6 +197,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     viewMenu->Append(MNU_LOGPAGE, _("Log&file\tCtrl-Alt-F"), _("Show or hide the logfile tab."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_TOOLBAR, _("Tool&bar\tCtrl-Alt-B"), _("Show or hide the toolbar."), wxITEM_CHECK);
+    viewMenu->Append(MNU_HIGHLIGHTSTATUS, _("Highlight items of the activity list"), _("Highlight or not the items of the activity list."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view\tCtrl-Alt-V"), _("Restore the default view."));
 
@@ -285,6 +289,10 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     viewMenu->Check(MNU_XACTPAGE, manager.GetPane(wxT("Transactions")).IsShown());
     viewMenu->Check(MNU_LOGPAGE, manager.GetPane(wxT("Logfile")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
+		
+		// Read the highlight status checkbox
+    settings->Read(wxT("frmStatus/HighlightStatus"), &highlight, true);
+		viewMenu->Check(MNU_HIGHLIGHTSTATUS, highlight);
 
     // Get our PID
     backend_pid = connection->GetBackendPID();
@@ -313,6 +321,9 @@ frmStatus::~frmStatus()
     settings->Write(wxT("frmStatus/Perspective-") + VerFromRev(FRMSTATUS_PERSPECTIVE_VER), manager.SavePerspective());
     manager.UnInit();
     SavePosition();
+		
+		// Save the highlight status checkbox
+    settings->Write(wxT("frmStatus/HighlightStatus"), viewMenu->IsChecked(MNU_HIGHLIGHTSTATUS));
     
     // For each current page, save the slider's position and delete the timer
     settings->Write(wxT("frmStatus/RefreshStatusRate"), statusRate);
@@ -909,6 +920,14 @@ void frmStatus::OnDefaultView(wxCommandEvent& event)
 }
 
 
+void frmStatus::OnHighlightStatus(wxCommandEvent& event)
+{
+    wxTimerEvent evt;
+    
+    OnRefreshStatusTimer(evt);
+}
+
+
 void frmStatus::OnHelp(wxCommandEvent& event)
 {
     wxString page;
@@ -1029,7 +1048,11 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
     connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
 
     long row=0;
-    pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT *,(SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND relation IN (SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)) AS blockedby FROM pg_stat_activity ORDER BY procpid"));
+    pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT *, ")
+           wxT("CASE WHEN query_start IS NULL THEN false ELSE query_start + '10 seconds'::interval > now() END AS slowquery, ")
+           wxT("(SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND relation IN ")
+           wxT("(SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)) AS blockedby ")
+           wxT("FROM pg_stat_activity ORDER BY procpid"));
     if (dataSet1)
     {
         statusList->Freeze();
@@ -1083,6 +1106,25 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 
                 statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("blockedby")));
                 statusList->SetItem(row, colpos, qry);
+ 
+                // Colorize the new line
+                if (viewMenu->IsChecked(MNU_HIGHLIGHTSTATUS))
+                {
+                    statusList->SetItemBackgroundColour(row,
+                      wxColour(settings->GetActiveProcessColour()));
+                    if (qry == wxT("<IDLE>"))
+                        statusList->SetItemBackgroundColour(row,
+                          wxColour(settings->GetIdleProcessColour()));
+                    if (dataSet1->GetVal(wxT("blockedby")).Length() > 0)
+                        statusList->SetItemBackgroundColour(row,
+                          wxColour(settings->GetBlockedProcessColour()));
+                    if (dataSet1->GetBool(wxT("slowquery")))
+                        statusList->SetItemBackgroundColour(row,
+                          wxColour(settings->GetSlowProcessColour()));
+                }
+                else
+                    statusList->SetItemBackgroundColour(row, *wxWHITE);
+
                 row++;
             }
             dataSet1->MoveNext();

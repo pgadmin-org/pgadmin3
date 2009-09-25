@@ -121,6 +121,16 @@ public:
     int GetLineEndingType() const { int i; Read(wxT("LineEndingType"), &i, 2); return i; }
 	void SetLineEndingType(const int newval) { Write(wxT("LineEndingType"), newval); }
 
+    // Status Colours options
+    wxString GetIdleProcessColour() const { wxString s; Read(wxT("IdleProcessColour"), &s, wxT("#5fa4d9")); return s; }
+	void SetIdleProcessColour(const wxString &newval) { Write(wxT("IdleProcessColour"), newval); }
+    wxString GetActiveProcessColour() const { wxString s; Read(wxT("ActiveProcessColour"), &s, wxT("#5fd95f")); return s; }
+	void SetActiveProcessColour(const wxString &newval) { Write(wxT("ActiveProcessColour"), newval); }
+    wxString GetSlowProcessColour() const { wxString s; Read(wxT("SlowProcessColour"), &s, wxT("#d9a75f")); return s; }
+	void SetSlowProcessColour(const wxString &newval) { Write(wxT("SlowProcessColour"), newval); }
+    wxString GetBlockedProcessColour() const { wxString s; Read(wxT("BlockedProcessColour"), &s, wxT("#d96e5f")); return s; }
+	void SetBlockedProcessColour(const wxString &newval) { Write(wxT("BlockedProcessColour"), newval); }
+
     // Misc options
     long GetAutoRowCountThreshold() const { long l; Read(wxT("AutoRowCount"), &l, 2000L); return l; }
 	void SetAutoRowCountThreshold(const long newval) { Write(wxT("AutoRowCount"), newval); }
