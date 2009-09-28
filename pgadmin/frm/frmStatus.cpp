@@ -26,6 +26,7 @@
 #include "frm/frmStatus.h"
 #include "frm/frmHint.h"
 #include "frm/frmMain.h"
+#include "db/pgConn.h"
 #include "frm/frmQuery.h"
 #include "utils/pgfeatures.h"
 #include "schema/pgServer.h"
@@ -39,6 +40,12 @@
 #include "images/terminate_backend.xpm"
 #include "images/delete.xpm"
 #include "images/storedata.xpm"
+
+
+#include "db/pgConn.h"
+
+
+#define CTRLID_DATABASE         4200
 
 
 BEGIN_EVENT_TABLE(frmStatus, pgFrame)
@@ -84,6 +91,8 @@ BEGIN_EVENT_TABLE(frmStatus, pgFrame)
     EVT_TIMER(TIMER_LOG_ID,                            frmStatus::OnRefreshLogTimer)
     EVT_LIST_ITEM_SELECTED(CTL_LOGLIST,                frmStatus::OnSelLogItem)
     EVT_LIST_ITEM_DESELECTED(CTL_LOGLIST,            frmStatus::OnSelLogItem)
+
+    EVT_COMBOBOX(CTRLID_DATABASE,                   frmStatus::OnChangeDatabase)
 
     EVT_CLOSE(                                        frmStatus::OnClose)
 END_EVENT_TABLE();
@@ -157,6 +166,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
 
     mainForm = form;
     connection = conn;
+    locks_connection = conn;
 
     statusTimer = 0;
     locksTimer = 0;
@@ -239,6 +249,9 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     toolBar->AddSeparator();
     cbRate = new ctlComboBoxFix(toolBar, CTL_RATECBO, wxDefaultPosition, wxSize(-1, -1), wxCB_READONLY|wxCB_DROPDOWN);
     toolBar->AddControl(cbRate);
+    toolBar->AddSeparator();
+    cbDatabase = new ctlComboBoxFix(toolBar, CTRLID_DATABASE, wxDefaultPosition, wxSize(-1, -1), wxCB_READONLY|wxCB_DROPDOWN);
+    toolBar->AddControl(cbDatabase);
     toolBar->Realize();
 
     // Append items to cbo
@@ -260,6 +273,15 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     toolBar->EnableTool(MNU_ROLLBACK, false);
     cbLogfiles->Enable(false);
     btnRotateLog->Enable(false);
+
+    // Add the database combobox
+    pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT datname FROM pg_database WHERE datallowconn ORDER BY datname"));
+    while (!dataSet1->Eof())
+    {
+        cbDatabase->Append(dataSet1->GetVal(wxT("datname")));
+        dataSet1->MoveNext();
+    }
+    delete dataSet1;
     
     // Create panel
     AddStatusPane();
@@ -290,9 +312,9 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     viewMenu->Check(MNU_LOGPAGE, manager.GetPane(wxT("Logfile")).IsShown());
     viewMenu->Check(MNU_TOOLBAR, manager.GetPane(wxT("toolBar")).IsShown());
 		
-		// Read the highlight status checkbox
+    // Read the highlight status checkbox
     settings->Read(wxT("frmStatus/HighlightStatus"), &highlight, true);
-		viewMenu->Check(MNU_HIGHLIGHTSTATUS, highlight);
+    viewMenu->Check(MNU_HIGHLIGHTSTATUS, highlight);
 
     // Get our PID
     backend_pid = connection->GetBackendPID();
@@ -351,6 +373,8 @@ frmStatus::~frmStatus()
     }
 
     // If connection is still available, delete it
+    if (locks_connection && locks_connection != connection)
+        delete locks_connection;
     if (connection)
         delete connection;
 }
@@ -403,6 +427,18 @@ void frmStatus::OnClose(wxCloseEvent &event)
 void frmStatus::OnExit(wxCommandEvent& event)
 {
     Destroy();
+}
+
+
+void frmStatus::OnChangeDatabase(wxCommandEvent &ev)
+{
+    if (locks_connection != connection)
+    {
+        delete locks_connection;
+    }
+
+    locks_connection = new pgConn(connection->GetHostAddress(), cbDatabase->GetValue(),
+      connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetSslMode());
 }
 
 
@@ -487,12 +523,12 @@ void frmStatus::AddLockPane()
     lockList->AddColumn(_("Database"), 50);
     lockList->AddColumn(_("Relation"), 50);
     lockList->AddColumn(_("User"), 50);
-    if (connection->BackendMinimumVersion(8, 3))
+    if (locks_connection->BackendMinimumVersion(8, 3))
         lockList->AddColumn(_("XID"), 50);
     lockList->AddColumn(_("TX"), 50);
     lockList->AddColumn(_("Mode"), 50);
     lockList->AddColumn(_("Granted"), 50);
-    if (connection->BackendMinimumVersion(7, 4))
+    if (locks_connection->BackendMinimumVersion(7, 4))
         lockList->AddColumn(_("Start"), 50);
     lockList->AddColumn(_("Query"), 500);
 
@@ -1159,7 +1195,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
     if (! viewMenu->IsChecked(MNU_LOCKPAGE))
         return;
 
-    if (!connection)
+    if (!locks_connection)
     {
         statusTimer->Stop();
         locksTimer->Stop();
@@ -1172,16 +1208,16 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
     }
 
     checkConnection();
-    if (!connection)
+    if (!locks_connection)
         return;
     
     wxCriticalSectionLocker lock(gs_critsect);
 
-    connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
+    locks_connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
 
     long row=0;
     wxString sql;
-    if (connection->BackendMinimumVersion(8, 3)) 
+    if (locks_connection->BackendMinimumVersion(8, 3)) 
     {
         sql = wxT("SELECT ")
               wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
@@ -1194,7 +1230,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
               wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
               wxT("ORDER BY pid;");
     } 
-    else if (connection->BackendMinimumVersion(7, 4)) 
+    else if (locks_connection->BackendMinimumVersion(7, 4)) 
     {
            sql = wxT("SELECT ")
               wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
@@ -1220,7 +1256,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
               wxT("ORDER BY pid;");
     }
 
-    pgSet *dataSet2=connection->ExecuteSet(sql);
+    pgSet *dataSet2=locks_connection->ExecuteSet(sql);
     if (dataSet2)
     {
         statusBar->SetStatusText(_("Refreshing locks list."));
@@ -1252,7 +1288,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
                 lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("dbname")));
                 lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("class")));
                 lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("user")));
-                if (connection->BackendMinimumVersion(8, 3)) 
+                if (locks_connection->BackendMinimumVersion(8, 3)) 
                     lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("virtualxid")));
                 lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("transaction")));
                 lockList->SetItem(row, colpos++, dataSet2->GetVal(wxT("mode")));
@@ -1264,7 +1300,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 
                 wxString qry=dataSet2->GetVal(wxT("current_query"));
 
-                if (connection->BackendMinimumVersion(7, 4))
+                if (locks_connection->BackendMinimumVersion(7, 4))
                 {
                     if (qry.IsEmpty() || qry == wxT("<IDLE>"))
                         lockList->SetItem(row, colpos++, wxEmptyString);
@@ -1547,6 +1583,10 @@ void frmStatus::checkConnection()
         if (logTimer)
             logTimer->Stop();
         statusBar->SetStatusText(_("Connection broken."));
+    }
+    if (!locks_connection->IsAlive())
+    {
+        locks_connection = connection;
     }
 }
 
