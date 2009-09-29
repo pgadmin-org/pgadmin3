@@ -26,7 +26,7 @@ EXTRA_DIST = \
 $(srcdir)/include/svnversion.cpp:
 	test -f $(srcdir)/include/svnversion.cpp || touch $(srcdir)/include/svnversion.cpp
 	test -d $(srcdir)/.svn && ( V=`svnversion $(srcdir)/..` && OV=`cat $(srcdir)/include/svnversion.h | cut -d' ' -f3|tr -d '"'` ; if [ "$$V" != "$$OV" ]; then echo "#define VERSION_SVN \"$$V\"" > $(srcdir)/include/svnversion.h ; fi ) || true
-
+	test -f $(srcdir)/include/svnversion.h || echo "#define VERSION_SVN \"unknown\"" > $(srcdir)/include/svnversion.h
 TMP_ui = 
 
 # Include all the sub-Makefiles
