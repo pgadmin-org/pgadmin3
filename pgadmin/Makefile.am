@@ -26,6 +26,7 @@ EXTRA_DIST = \
 $(srcdir)/include/svnversion.cpp:
 	test -f $(srcdir)/include/svnversion.cpp || touch $(srcdir)/include/svnversion.cpp
 	test -d $(srcdir)/.svn && ( V=`svnversion $(srcdir)/..` && OV=`cat $(srcdir)/include/svnversion.h | cut -d' ' -f3|tr -d '"'` ; if [ "$$V" != "$$OV" ]; then echo "#define VERSION_SVN \"$$V\"" > $(srcdir)/include/svnversion.h ; fi ) || true
+	test -f $(srcdir)/include/svnversion.h -o -d $(srcdir)/.git/svn || echo "#define VERSION_SVN \"$$(git svn info | grep Revision: | sed -e 's/Revision: //'):$$(git svn info | grep Last\ Changed\ Rev: | sed -e 's/Last Changed Rev: //')\"" > $(srcdir)/include/svnversion.h
 	test -f $(srcdir)/include/svnversion.h || echo "#define VERSION_SVN \"unknown\"" > $(srcdir)/include/svnversion.h
 TMP_ui = 
 
