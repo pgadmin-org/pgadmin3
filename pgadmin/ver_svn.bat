@@ -21,5 +21,6 @@ goto :eof
 
 :nosvn
 echo Not generating svnversion.h, not working in a svn checkout.
+if not exist include\svnversion.h echo #define VERSION_SVN "unknown" > include\svnversion.h
 goto :eof
 
