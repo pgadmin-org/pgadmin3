@@ -112,8 +112,9 @@ wxString dlgRepNode::GetSql()
 
     sql += wxT(", ") + qtDbString(txtComment->GetValue());
 
-    // if cluster->GetClusterVersion()
-    sql +=  wxT(", false");
+    // The spool parameter was removed for Slony 2.0
+    if (!cluster->ClusterMinimumVersion(2, 0))
+        sql +=  wxT(", false");
 
     sql += wxT(");\n");
 
