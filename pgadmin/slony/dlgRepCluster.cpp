@@ -235,6 +235,19 @@ wxString dlgRepCluster::GetHelpPage() const
     return page;
 }
 
+bool dlgRepCluster::SlonyMaximumVersion(const wxString &series, long minor)
+{
+
+    wxString slonySeries;
+    long slonyMinorVersion;
+
+    slonySeries = slonyVersion.BeforeLast('.');  
+    slonyVersion.AfterLast('.').ToLong(&slonyMinorVersion);
+
+    return slonySeries == series && slonyMinorVersion <= minor;
+}
+
+
 
 int dlgRepCluster::Go(bool modal)
 {
@@ -299,27 +312,147 @@ int dlgRepCluster::Go(bool modal)
         // create mode
         cbAdminNode->Hide();
 
+        wxString scriptVersion = wxEmptyString;
+        wxString xxidVersion = wxEmptyString;
+
         txtNodeID->SetValidator(numericValidator);
         txtAdminNodeID->SetValidator(numericValidator);
         txtClusterName->Hide();
 
-		if (connection->BackendMinimumVersion(8, 0))
-		{
-			if (!AddScript(createScript, wxT("xxid.v80.sql")) || 
-				!AddScript(createScript, wxT("slony1_base.sql")) || 
-				!AddScript(createScript, wxT("slony1_funcs.sql")) || 
-				!AddScript(createScript, wxT("slony1_funcs.v80.sql")))
-				createScript = wxEmptyString;
-		}
-		else
-		{
-			if (!AddScript(createScript, wxT("xxid.v74.sql")) || 
-				!AddScript(createScript, wxT("slony1_base.sql")) || 
-				!AddScript(createScript, wxT("slony1_funcs.sql")) || 
-				!AddScript(createScript, wxT("slony1_funcs.v74.sql")))
-				createScript = wxEmptyString;
-		}
+        //We need to find the exact Slony Version.
+        //NOTE: We are not supporting Slony versions less than 1.2.0
 
+        wxString tempScript;
+        AddScript(tempScript, wxT("slony1_funcs.sql"));
+
+        if (tempScript.Contains(wxT("@MODULEVERSION@")) && slonyVersion.IsEmpty())
+        {
+                this->database->ExecuteVoid(wxT("CREATE OR REPLACE FUNCTION pgadmin_slony_version() returns text as '$libdir/slony1_funcs', '_Slony_I_getModuleVersion' LANGUAGE C"));
+                slonyVersion = this->database->ExecuteScalar(wxT("SELECT pgadmin_slony_version();"));
+                this->database->ExecuteVoid(wxT("DROP FUNCTION pgadmin_slony_version()"));
+
+                if (slonyVersion.IsEmpty())
+                {
+                    wxLogError(_("Couldn't test for the Slony version. Assuming 1.2.0"));
+                    slonyVersion = wxT("1.2.0");
+                }
+        }
+
+        //Here we are finding the exact slony scripts version, which is based on Slony Version and PG Version.
+        // For Slony 1.2.0 to 1.2.17 and 2.0.0 if PG 7.3 script version is v73 
+        // For Slony 1.2.0 to 1.2.17 and 2.0.0 if PG 7.4 script version is v74 
+        // For Slony 1.2.0 to 1.2.6 if PG 8.0+ script version is v80 
+        // For Slony 1.2.7 to 1.2.17 and 2.0.0 if PG 8.0 script version is v80 
+        // For Slony 1.2.7 to 1.2.17 and 2.0.0 if PG 8.1+ script version is v81 
+        // For Slony 2.0.1 and 2.0.2 if PG 8.3+ script version is v83. (These version onwards do not support PG Version less than 8.3) 
+        // For Slony 2.0.3 if PG 8.3 script version is v83.
+        // For Slony 2.0.3 if PG 8.4+ script version is v84.
+
+        //Since both 1.2 and 2.0 series is increasing, the following code needs to be updated with each Slony or PG update.
+          
+
+        if (!tempScript.IsEmpty())
+        {
+                //Set the slony_base and slony_funcs script version.
+                if (SlonyMaximumVersion(wxT("1.2"), 6)) 
+                { 
+                        if (connection->BackendMinimumVersion(8, 0))
+                                scriptVersion = wxT("v80");
+                        else 
+                        {
+                                if (connection->BackendMinimumVersion(7, 4))
+                                        scriptVersion = wxT("v74");
+                                else 
+                                        scriptVersion = wxT("v73");
+                        }
+                }
+                else 
+                {
+                        if (SlonyMaximumVersion(wxT("1.2"), 17) || SlonyMaximumVersion(wxT("2.0"), 0))
+                        {
+                                if (connection->BackendMinimumVersion(8, 1))
+                                        scriptVersion = wxT("v81");
+                                else 
+                                {
+                                        if (connection->BackendMinimumVersion(8, 0))
+                                                scriptVersion = wxT("v80");
+                                        else 
+                                        {
+                                                if (connection->BackendMinimumVersion(7, 4))
+                                                         scriptVersion = wxT("v74");
+                                                else 
+                                                         scriptVersion = wxT("v73");
+                                        }
+                                }
+                        }
+                        else 
+                        {
+                                if (SlonyMaximumVersion(wxT("2.0"), 2))
+                                        scriptVersion = wxT("v83");
+                                else 
+                                {
+                                        if (SlonyMaximumVersion(wxT("2.0"), 3))
+                                        {
+                                                if (connection->BackendMinimumVersion(8, 4))
+                                                        scriptVersion = wxT("v84");
+                                        }
+                                        else
+                                                scriptVersion = wxT("v83");
+                                }
+                        }
+
+               }
+
+               //Set the correct xxid version if applicable
+               // For Slony 1.2.0 to 1.2.17 and 2.0.0 if PG 7.3 xxid version is v73 
+               // For Slony 1.2.1 to 1.2.17 and 2.0.0 if PG 7.4+ xxid version is v74
+               // For Slony 1.2.0 if PG 8.0 xxid version is v80
+               // For Slony 2.0.1+ and PG8.4+ xxid is obsolete. 
+                        
+               if (SlonyMaximumVersion(wxT("1.2"), 0))
+               {
+                       if (connection->BackendMinimumVersion(8, 0))
+                               xxidVersion = wxT("v80");
+                       else
+                       {
+                               if (connection->BackendMinimumVersion(7, 4))
+                                        xxidVersion = wxT("v74");
+                               else
+                                        xxidVersion = wxT("v73"); 
+                       }
+               }
+               else
+               {
+                       if (SlonyMaximumVersion(wxT("1.2"), 17) || SlonyMaximumVersion(wxT("2.0"), 0))
+                       {
+                               if (!connection->BackendMinimumVersion(8, 4))
+                               {
+                                       if (connection->BackendMinimumVersion(7, 4))
+                                               xxidVersion = wxT("v74");
+                                       else
+                                               xxidVersion = wxT("v73");  
+                               }
+                       } 
+               } 
+  
+
+                wxString slonyBaseVersionFilename = wxT("slony1_base.") + scriptVersion + wxT(".sql");
+                wxString slonyFuncsVersionFilename = wxT("slony1_funcs.") + scriptVersion + wxT(".sql");
+
+                wxString xxidVersionFilename;
+                
+                if (!xxidVersion.IsEmpty())
+                        xxidVersionFilename = wxT("xxid.") + xxidVersion + wxT(".sql");
+       
+                if (((!xxidVersion.IsEmpty() && !AddScript(createScript, xxidVersionFilename)) ||
+                    !AddScript(createScript, wxT("slony1_base.sql")) || 
+                    !AddScript(createScript, slonyBaseVersionFilename) ||
+                    !AddScript(createScript, wxT("slony1_funcs.sql")) ||
+                    !AddScript(createScript, slonyFuncsVersionFilename)))
+                        createScript = wxEmptyString;
+                  
+        }
+ 
         treeObjectIterator it(mainForm->GetBrowser(), mainForm->GetServerCollection());
         pgServer *s;
         int sel=-1;
