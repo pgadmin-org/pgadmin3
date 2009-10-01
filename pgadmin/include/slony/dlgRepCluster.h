@@ -67,6 +67,8 @@ private:
     bool CopyTable(pgConn *from, pgConn *to, const wxString &table);
     sysProcess *process;
 
+    bool SlonyMaximumVersion(const wxString &series, long minor);
+
     wxArrayLong usedNodes;
     wxString clusterBackup;
     wxString slonyVersion;
