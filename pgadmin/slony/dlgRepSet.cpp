@@ -54,6 +54,7 @@ int dlgRepSet::Go(bool modal)
         txtID->SetValue(NumToStr(set->GetSlId()));
         txtID->Disable();
         txtOrigin->SetValue(IdAndName(set->GetOriginId(), set->GetOriginNode()));
+        txtComment->Disable();
     }
     else
     {
@@ -91,7 +92,7 @@ void dlgRepSet::CheckChange()
     }
     else
     {
-        bool enable=true;
+        bool enable=(!txtComment->IsEmpty());
 
         EnableOK(enable);
     }
