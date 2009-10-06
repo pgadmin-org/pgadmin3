@@ -978,7 +978,10 @@ wxString dlgFunction::GetSql()
                     break;
                 }
             }
-            if (oldVal != newVal)
+			
+            // Reset the vars if they've changed, or the function definition has
+            // changed, which will remove them all :-(
+            if ((oldVal != newVal) || didChange)  
             {
                 sql += wxT("ALTER FUNCTION ") + name
                     +  wxT(" SET ") + newVar
