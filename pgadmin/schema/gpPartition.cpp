@@ -119,7 +119,7 @@ pgObject *gpPartitionFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 	query += wxT(", gpd.localoid, gpd.attrnums \n");
 	query += wxT(", substring(array_to_string(reloptions, ',') from 'appendonly=([a-z]*)') AS appendonly \n");
 	query += wxT(", substring(array_to_string(reloptions, ',') from 'compresslevel=([0-9]*)') AS compresslevel \n");
-    query += wxT(", substring(array_to_string(reloptions, ',') from 'columnstore=([a-z]*)') AS columnstore \n");
+    query += wxT(", substring(array_to_string(reloptions, ',') from 'orientation=([a-z]*)') AS orientation \n");
     query += wxT(", substring(array_to_string(reloptions, ',') from 'compresstype=([a-z0-9]*)') AS compresstype \n");
     query += wxT(", substring(array_to_string(reloptions, ',') from 'blocksize=([0-9]*)') AS blocksize \n");
     query += wxT(", substring(array_to_string(reloptions, ',') from 'checksum=([a-z]*)') AS checksum \n");
@@ -185,7 +185,7 @@ pgObject *gpPartitionFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 				table->iSetDistributionIsRandom();
 			table->iSetAppendOnly(tables->GetVal(wxT("appendonly")));
 			table->iSetCompressLevel(tables->GetVal(wxT("compresslevel")));
-            table->iSetIsColumnStore(tables->GetVal(wxT("columnstore")));
+            table->iSetOrientation(tables->GetVal(wxT("orientation")));
             table->iSetCompressType(tables->GetVal(wxT("compresstype")));
             table->iSetBlocksize(tables->GetVal(wxT("blocksize")));
             table->iSetChecksum(tables->GetVal(wxT("checksum")));
