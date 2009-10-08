@@ -103,8 +103,8 @@ public:
     void iSetAppendOnly(const wxString& s) { appendOnly = s; }
     wxString GetCompressLevel() { return compressLevel; }
     void iSetCompressLevel(const wxString& s) { compressLevel = s; }
-    wxString GetIsColumnStore() { return columnstore; }
-    void iSetIsColumnStore(const wxString& s) { columnstore = s; }
+    wxString GetOrientation() { return orientation; }
+    void iSetOrientation(const wxString& s) { orientation = s; }
     wxString GetCompressType() { return compresstype; }
     void iSetCompressType(const wxString& s) { compresstype = s; };
     wxString GetBlocksize() { return blocksize; }
@@ -209,7 +209,7 @@ private:
              autovacuum_freeze_max_age, autovacuum_freeze_table_age;
     wxString appendOnly;
     wxString compressLevel;
-    wxString columnstore;
+    wxString orientation;  // "row" or "column"
     wxString compresstype;
     wxString blocksize;
     wxString checksum;

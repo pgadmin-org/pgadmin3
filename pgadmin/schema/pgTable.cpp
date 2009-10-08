@@ -348,8 +348,8 @@ wxString pgTable::GetSql(ctlTree *browser)
                 sql += wxT("APPENDONLY=") + GetAppendOnly() + wxT(", ");
             if (GetCompressLevel().Length() > 0)
                 sql += wxT("COMPRESSLEVEL=") + GetCompressLevel() + wxT(", ");
-            if (GetIsColumnStore().Length() > 0)
-                sql += wxT("COLUMNSTORE=") + GetIsColumnStore() + wxT(", ");
+            if (GetOrientation().Length() > 0)
+                sql += wxT("ORIENTATION=") + GetOrientation() + wxT(", ");
             if (GetCompressType().Length() > 0)
                 sql += wxT("COMPRESSTYPE=") + GetCompressType() + wxT(", ");
             if (GetBlocksize().Length() > 0)
@@ -817,6 +817,12 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         CreateListColumns(properties);
 
         properties->AppendItem(_("Name"), GetName());
+        if (GetConnection() != 0 && GetConnection()->GetIsGreenplum())
+        {
+            gpPartition * p = dynamic_cast<gpPartition *>(this);
+            if (p != 0)
+                properties->AppendItem(_("Partition Name"), p->GetPartitionName());   
+        }
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
         if (GetConnection()->BackendMinimumVersion(8, 0))
@@ -1221,7 +1227,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             query += wxT(", gpd.localoid, gpd.attrnums \n");
             query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'appendonly=([a-z]*)') AS appendonly \n");
             query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'compresslevel=([0-9]*)') AS compresslevel \n");
-            query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'columnstore=([a-z]*)') AS columnstore \n");
+            query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'orientation=([a-z]*)') AS orientation \n");
             query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'compresstype=([a-z0-9]*)') AS compresstype \n");
             query += wxT(", substring(array_to_string(reloptions, ',') from 'blocksize=([0-9]*)') AS blocksize \n");
             query += wxT(", substring(array_to_string(reloptions, ',') from 'checksum=([a-z]*)') AS checksum \n");
@@ -1391,7 +1397,7 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
                     table->iSetDistributionIsRandom();
                 table->iSetAppendOnly(tables->GetVal(wxT("appendonly")));
                 table->iSetCompressLevel(tables->GetVal(wxT("compresslevel")));
-                table->iSetIsColumnStore(tables->GetVal(wxT("columnstore")));
+                table->iSetOrientation(tables->GetVal(wxT("orientation")));
                 table->iSetCompressType(tables->GetVal(wxT("compresstype")));
                 table->iSetBlocksize(tables->GetVal(wxT("blocksize")));
                 table->iSetChecksum(tables->GetVal(wxT("checksum")));
