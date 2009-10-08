@@ -28,7 +28,7 @@ AC_DEFUN([CHECK_PRECOMP_HEADERS],
 [
 	AC_MSG_CHECKING([whether to use precompiled headers])
 	USE_PRECOMP=""
-	AC_ARG_ENABLE(precomp, [  --enable-precomp        Use precompiled headers], USE_PRECOMP="$enableval")
+	AC_ARG_ENABLE(precomp, [  --enable-precomp	Use precompiled headers], USE_PRECOMP="$enableval")
 
 	if test -z "$USE_PRECOMP"; then
 		if test "X$GCC" = Xyes; then
@@ -69,14 +69,14 @@ AC_DEFUN([CHECK_SUN_COMPILER],
        SUN_STR=`head -1 test.txt |cut -f2 -d" "`
        rm -rf test.txt
        if test "$SUN_STR" = "Sun"; then
-               SUN_CC_COMPILER=yes 
+	       SUN_CC_COMPILER=yes 
        fi
 
        $CXX -V 2>test.txt
        SUN_STR=`head -1 test.txt |cut -f2 -d" "`
        rm -rf test.txt
        if test "$SUN_STR" = "Sun"; then
-               SUN_CXX_COMPILER=yes
+	       SUN_CXX_COMPILER=yes
        fi
 
 ])
@@ -131,14 +131,14 @@ AC_DEFUN([LOCATE_WXWIDGETS],
 				WX_HOME=/usr
 				if test ! -f "${WX_HOME}/bin/wx-config"
 				then
-                    # Search the path
+		    # Search the path
 				    AC_PATH_PROGS(WX_CONFIG, wx-config)
-                    if test ! -f "${WX_CONFIG}"
+		    if test ! -f "${WX_CONFIG}"
 				    then
-                        AC_MSG_ERROR([Could not find your wxWidgets installation. You might need to use the --with-wx=DIR configure option])
-                    else
+			AC_MSG_ERROR([Could not find your wxWidgets installation. You might need to use the --with-wx=DIR configure option])
+		    else
 					   WX_HOME=`${WX_CONFIG} --prefix`
-                    fi
+		    fi
 				fi
 			fi
 		fi
@@ -151,24 +151,24 @@ AC_DEFUN([LOCATE_WXWIDGETS],
 ###########################
 AC_DEFUN([CHECK_WXWIDGETS],
 [
-        AC_MSG_CHECKING(wxWidgets version)
-        TMP_WX_VERSION=`${WX_CONFIG} --version=${WX_VERSION} --version 2> /dev/null`
-        if test "$TMP_WX_VERSION" = ""
-        then
-                 AC_MSG_RESULT(failed)
-                 AC_MSG_ERROR([The version of wxWidgets required (${WX_VERSION}) is not supported by the installations in ${WX_HOME}.])
-        fi
-        changequote(<<. >>)dnl
-        WX_MAJOR=`expr ${TMP_WX_VERSION} : '\([0-9]*\)'`
-        WX_MINOR=`expr ${TMP_WX_VERSION} : '[0-9]*\.\([0-9]*\)'`
-        changequote([, ])dnl
-        if test "$WX_MAJOR" -lt 2; then
-                AC_MSG_ERROR([wxWidgets 2.8.0 or newer is required to build pgAdmin])
-        fi
-        if test "$WX_MAJOR" -eq 2 && test "$WX_MINOR" -lt 8; then
-                AC_MSG_ERROR([wxWidgets 2.8.0 or newer is required to build pgAdmin])
-        fi
-        AC_MSG_RESULT(ok)
+	AC_MSG_CHECKING(wxWidgets version)
+	TMP_WX_VERSION=`${WX_CONFIG} --version=${WX_VERSION} --version 2> /dev/null`
+	if test "$TMP_WX_VERSION" = ""
+	then
+		 AC_MSG_RESULT(failed)
+		 AC_MSG_ERROR([The version of wxWidgets required (${WX_VERSION}) is not supported by the installations in ${WX_HOME}.])
+	fi
+	changequote(<<. >>)dnl
+	WX_MAJOR=`expr ${TMP_WX_VERSION} : '\([0-9]*\)'`
+	WX_MINOR=`expr ${TMP_WX_VERSION} : '[0-9]*\.\([0-9]*\)'`
+	changequote([, ])dnl
+	if test "$WX_MAJOR" -lt 2; then
+		AC_MSG_ERROR([wxWidgets 2.8.0 or newer is required to build pgAdmin])
+	fi
+	if test "$WX_MAJOR" -eq 2 && test "$WX_MINOR" -lt 8; then
+		AC_MSG_ERROR([wxWidgets 2.8.0 or newer is required to build pgAdmin])
+	fi
+	AC_MSG_RESULT(ok)
 ])
 
 
@@ -200,14 +200,14 @@ AC_DEFUN([LOCATE_LIBXML2],
 			  XML2_HOME=/mingw
 			  if test ! -f "${XML2_HOME}/bin/xml2-config"
 			  then
-                  # Search the path
+		  # Search the path
 				  AC_PATH_PROGS(XML2_CONFIG, xml2-config)
-                  if test ! -f "${XML2_CONFIG}"
+		  if test ! -f "${XML2_CONFIG}"
 				  then
-                      AC_MSG_ERROR([Could not find your libxml2 installation. You might need to use the --with-libxml2=DIR configure option])
-                  else
+		      AC_MSG_ERROR([Could not find your libxml2 installation. You might need to use the --with-libxml2=DIR configure option])
+		  else
 					  XML2_HOME=`${XML2_CONFIG} --prefix`
-                  fi
+		  fi
 			  fi
 		  fi
 	  fi
@@ -268,14 +268,14 @@ AC_DEFUN([LOCATE_LIBXSLT],
 			  XSLT_HOME=/mingw
 			  if test ! -f "${XSLT_HOME}/bin/xslt-config"
 			  then
-                  # Search the path
+		  # Search the path
 				  AC_PATH_PROGS(XSLT_CONFIG, xslt-config)
-                  if test ! -f "${XSLT_CONFIG}"
+		  if test ! -f "${XSLT_CONFIG}"
 				  then
-                      AC_MSG_ERROR([Could not find your libxslt installation. You might need to use the --with-libxslt=DIR configure option])
-                  else
+		      AC_MSG_ERROR([Could not find your libxslt installation. You might need to use the --with-libxslt=DIR configure option])
+		  else
 					  XSLT_HOME=`${XSLT_CONFIG} --prefix`
-                  fi
+		  fi
 			  fi
 		  fi
 	  fi
@@ -368,6 +368,31 @@ AC_DEFUN([ENABLE_STATIC],
 	])
 ])
 
+#################################
+# Override the OSX architecture #
+#################################
+AC_DEFUN([SETUP_OSX_ARCH],
+[
+	AC_ARG_WITH(osxarch, [  --with-osxarch=<arch>	  specify the Mac OS X architecture to build (ppc, i386, x86_64)],
+	[
+		if test "$withval" = "ppc"
+		then
+			OSX_ARCH="-arch ppc"
+		elif test "$withval" = "i386"
+ 		then
+			OSX_ARCH="-arch i386"
+		elif test "$withval" = "x86_64"
+		then
+			OSX_ARCH="-arch x86_64"
+		else
+			AC_MSG_ERROR([Invalid Max OS X architecture specified: $withval])
+		fi
+	],
+	[
+		OSX_ARCH=""
+	])
+])
+
 ##########################
 # Build a Mac App Bundle #
 ##########################
@@ -381,10 +406,8 @@ AC_DEFUN([ENABLE_APPBUNDLE],
 			prefix=$(pwd)/tmp
 			bundledir="$(pwd)/pgAdmin3.app"
 			bindir="$bundledir/Contents/MacOS"
-			debuggerbindir="$bundledir/Contents/Resources/Debugger.app/Contents/MacOS"
 			datadir="$bundledir/Contents/SharedSupport"
 			AC_SUBST(bundledir)
-			AC_SUBST(debuggerbindir)
 		else
 			BUILD_APPBUNDLE=no
 		fi
@@ -407,20 +430,20 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		PGSQL_OLD_CPPFLAGS="$CPPFLAGS"
 
 		AC_LANG_SAVE    
-		AC_LANG_C               
+		AC_LANG_C	       
 		AC_CHECK_LIB(ssl, SSL_library_init, [LIB_SSL=yes], [LIB_SSL=no])
-		AC_LANG_RESTORE         
+		AC_LANG_RESTORE	 
 
 		AC_LANG_SAVE    
-		AC_LANG_C               
+		AC_LANG_C	       
 		AC_CHECK_LIB(krb5, krb5_sendauth, [LIB_KRB5=yes], [LIB_KRB5=no])
-		AC_LANG_RESTORE         
+		AC_LANG_RESTORE	 
 
 
 		# Solaris needs -lssl for this test
 		case "${host}" in
 			*solaris*)
-                if test "$LIB_SSL" = "yes"
+		if test "$LIB_SSL" = "yes"
 				then
 					LDFLAGS="$LDFLAGS -L${PG_LIB} -lssl"
 				else
@@ -434,23 +457,23 @@ AC_DEFUN([SETUP_POSTGRESQL],
 
 		
 
-                if test "$BUILD_STATIC" = "yes"
-                then
-                        AC_MSG_CHECKING(for PQexec in libpq.a)
-                        if test "$(nm ${PG_LIB}/libpq.a | grep -c PQexec)" -gt 0
-                        then
-                                AC_MSG_RESULT(present)
-                                PG_LIBPQ="yes" 
-                        else    
-                                AC_MSG_RESULT(not present)
-                                PG_LIBPQ="no"
-                        fi              
-                else                            
-                        AC_LANG_SAVE    
-                        AC_LANG_C               
-                        AC_CHECK_LIB(pq, PQexec, [PG_LIBPQ=yes], [PG_LIBPQ=no])
-                        AC_LANG_RESTORE         
-                fi
+		if test "$BUILD_STATIC" = "yes"
+		then
+			AC_MSG_CHECKING(for PQexec in libpq.a)
+			if test "$(nm ${PG_LIB}/libpq.a | grep -c PQexec)" -gt 0
+			then
+				AC_MSG_RESULT(present)
+				PG_LIBPQ="yes" 
+			else    
+				AC_MSG_RESULT(not present)
+				PG_LIBPQ="no"
+			fi	      
+		else			    
+			AC_LANG_SAVE    
+			AC_LANG_C	       
+			AC_CHECK_LIB(pq, PQexec, [PG_LIBPQ=yes], [PG_LIBPQ=no])
+			AC_LANG_RESTORE	 
+		fi
 
 
 		AC_LANG_SAVE
@@ -458,71 +481,71 @@ AC_DEFUN([SETUP_POSTGRESQL],
 
 		if test "$LIB_SSL" = "yes"
 		then
-                # Check for SSL support
-                if test "$BUILD_STATIC" = "yes"
-                then
-                        AC_MSG_CHECKING(for SSL_connect in libpq.a)
-                        if test "$(nm ${PG_LIB}/libpq.a | grep -c SSL_connect)" -gt 0
-                        then
-                                AC_MSG_RESULT(present)
-                                PG_SSL="yes"
-                        else   
-                                AC_MSG_RESULT(not present)
-                                PG_SSL="no"
-                        fi
-                else
-		        if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i386-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
-        		then
-                                AC_MSG_CHECKING(for SSL_connect in -lpq)
-		        	if test "$(otool -L ${PG_LIB}/libpq.?.dylib | grep -c libssl)" -gt 0
-			        then
-                                        AC_MSG_RESULT(present)
-        				PG_SSL="yes"
-	        		else
-                                        AC_MSG_RESULT(not present)
-	        			PG_SSL="no"
-		        	fi
-        		else
-	        		AC_CHECK_LIB(pq, SSL_connect, [PG_SSL=yes], [PG_SSL=no])
-	        	fi
-                fi
+		# Check for SSL support
+		if test "$BUILD_STATIC" = "yes"
+		then
+			AC_MSG_CHECKING(for SSL_connect in libpq.a)
+			if test "$(nm ${PG_LIB}/libpq.a | grep -c SSL_connect)" -gt 0
+			then
+				AC_MSG_RESULT(present)
+				PG_SSL="yes"
+			else   
+				AC_MSG_RESULT(not present)
+				PG_SSL="no"
+			fi
+		else
+			if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i386-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
+			then
+				AC_MSG_CHECKING(for SSL_connect in -lpq)
+				if test "$(otool -L ${PG_LIB}/libpq.?.dylib | grep -c libssl)" -gt 0
+				then
+					AC_MSG_RESULT(present)
+					PG_SSL="yes"
+				else
+					AC_MSG_RESULT(not present)
+					PG_SSL="no"
+				fi
+			else
+				AC_CHECK_LIB(pq, SSL_connect, [PG_SSL=yes], [PG_SSL=no])
+			fi
+		fi
 		else
 			PG_SSL="no"
 		fi
 
 		if test "$LIB_KRB5" = "yes"
 		then
-                # Check for Kerberos support
+		# Check for Kerberos support
 
 				LDFLAGS="$LDFLAGS -lkrb5"
 
-                if test "$BUILD_STATIC" = "yes"
-                then
-                        AC_MSG_CHECKING(for krb5_free_principal in libpq.a)
-                        if test "$(nm ${PG_LIB}/libpq.a | grep -c krb5_free_principal)" -gt 0
-                        then
-                                AC_MSG_RESULT(present)
-                                PG_KRB5="yes"
-                        else
-                                AC_MSG_RESULT(not present)
-                                PG_KRB5="no"
-                        fi
-                else
-		        if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i386-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
-		        then
-                                AC_MSG_CHECKING(for krb5_free_principle in -lpq)
-			        if test "$(otool -L ${PG_LIB}/libpq.?.dylib | grep -c libkrb5)" -gt 0
-			        then
-                                        AC_MSG_RESULT(present)
-				        PG_KRB5="yes"
-			        else
-                                        AC_MSG_RESULT(not present)
-				        PG_KRB5="no"
-			        fi
-		        else
-			        AC_CHECK_LIB(pq, krb5_free_principal, [PG_KRB5=yes], [PG_KRB5=no])
-		        fi
-                fi
+		if test "$BUILD_STATIC" = "yes"
+		then
+			AC_MSG_CHECKING(for krb5_free_principal in libpq.a)
+			if test "$(nm ${PG_LIB}/libpq.a | grep -c krb5_free_principal)" -gt 0
+			then
+				AC_MSG_RESULT(present)
+				PG_KRB5="yes"
+			else
+				AC_MSG_RESULT(not present)
+				PG_KRB5="no"
+			fi
+		else
+			if test "$build_cpu-$build_vendor" = "powerpc-apple" -o "$build_cpu-$build_vendor" = "i386-apple" -o "$build_cpu-$build_vendor" = "i686-apple"
+			then
+				AC_MSG_CHECKING(for krb5_free_principle in -lpq)
+				if test "$(otool -L ${PG_LIB}/libpq.?.dylib | grep -c libkrb5)" -gt 0
+				then
+					AC_MSG_RESULT(present)
+					PG_KRB5="yes"
+				else
+					AC_MSG_RESULT(not present)
+					PG_KRB5="no"
+				fi
+			else
+				AC_CHECK_LIB(pq, krb5_free_principal, [PG_KRB5=yes], [PG_KRB5=no])
+			fi
+		fi
 		else
 			PG_KRB5="no"
 		fi
@@ -600,23 +623,23 @@ AC_SUBST(PG_CONFIG)
 #######################################################
 AC_DEFUN([CHECK_EDB_LIBPQ],
 [
-        if test "$BUILD_STATIC" = "yes"
-        then
-                AC_MSG_CHECKING(for PQgetOutResult in libpq.a)
-                if test "$(nm ${PG_LIB}/libpq.a | grep -c PQgetOutResult)" -gt 0
-                then
-                        AC_MSG_RESULT(present)
-                        EDB_LIBPQ="yes"
-                else
-                        AC_MSG_RESULT(not present)
-                        EDB_LIBPQ="no"
-                fi
-        else
-                AC_LANG_SAVE
-                AC_LANG_C
-                AC_CHECK_LIB(pq, PQgetOutResult, [EDB_LIBPQ=yes], [EDB_LIBPQ=no])
-                AC_LANG_RESTORE
-        fi
+	if test "$BUILD_STATIC" = "yes"
+	then
+		AC_MSG_CHECKING(for PQgetOutResult in libpq.a)
+		if test "$(nm ${PG_LIB}/libpq.a | grep -c PQgetOutResult)" -gt 0
+		then
+			AC_MSG_RESULT(present)
+			EDB_LIBPQ="yes"
+		else
+			AC_MSG_RESULT(not present)
+			EDB_LIBPQ="no"
+		fi
+	else
+		AC_LANG_SAVE
+		AC_LANG_C
+		AC_CHECK_LIB(pq, PQgetOutResult, [EDB_LIBPQ=yes], [EDB_LIBPQ=no])
+		AC_LANG_RESTORE
+	fi
 ])
 AC_SUBST(EDB_LIBPQ)
 
@@ -636,18 +659,14 @@ AC_DEFUN([SETUP_WXWIDGETS],
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
 			
-			debugger_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
-			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			pgsTest_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			pgScript_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 		else
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2 -DEMBED_XRC"
 		
-			debugger_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
-			pgagent_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			pgsTest_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			pgScript_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 		fi
@@ -663,23 +682,39 @@ AC_DEFUN([SETUP_WXWIDGETS],
 
 		case "${host}" in
 			*-apple-darwin*)
-				MAC_PPC=`${WX_CONFIG} --libs | grep -c "arch ppc"`
-				MAC_I386=`${WX_CONFIG} --libs | grep -c "arch i386"`
-                                MAC_X86_64=`${WX_CONFIG} --libs | grep -c "arch x86_64"`
+
+				LDFLAGS="$LDFLAGS -headerpad_max_install_names"
 				CPPFLAGS="$CPPFLAGS -no-cpp-precomp"
-                                LDFLAGS="$LDFLAGS -headerpad_max_install_names"
-				if test "$MAC_PPC" != "0"
+
+				if test "$OSX_ARCH" = ""
 				then
-					CPPFLAGS="$CPPFLAGS -arch ppc"
+ 	 				MAC_PPC=`${WX_CONFIG} --libs | grep -c "arch ppc"`
+					MAC_I386=`${WX_CONFIG} --libs | grep -c "arch i386"`
+					MAC_X86_64=`${WX_CONFIG} --libs | grep -c "arch x86_64"`
+	
+					if test "$MAC_PPC" != "0"
+					then
+						CPPFLAGS="$CPPFLAGS -arch ppc"
+					fi
+	       				if test "$MAC_I386" != "0"
+	       				then
+						CPPFLAGS="$CPPFLAGS -arch i386"
+					fi
+					if test "$MAC_X86_64" != "0"
+					then
+						CPPFLAGS="$CPPFLAGS -arch x86_64"
+					fi
+				else
+					CPPFLAGS="$CPPFLAGS $OSX_ARCH"
+
+					# Strip any existing arch flags from LDFLAGS and add the desired ones
+					pgadmin3_LDADD=`echo $pgadmin3_LDADD | sed -e "s/-arch ppc//g" -e "s/-arch i386//g" -e "s/-arch x86_64//g"` 
+					pgadmin3_LDADD="$pgadmin3_LDADD $OSX_ARCH"
+                                        pgsTest_LDADD=`echo $pgsTest_LDADD | sed -e "s/-arch ppc//g" -e "s/-arch i386//g" -e "s/-arch x86_64//g"`
+                                        pgsTest_LDADD="$pgsTest_LDADD $OSX_ARCH"
+                                        pgScript_LDADD=`echo $pgScript_LDADD | sed -e "s/-arch ppc//g" -e "s/-arch i386//g" -e "s/-arch x86_64//g"`
+                                        pgScript_LDADD="$pgScript_LDADD $OSX_ARCH"
 				fi
-                                if test "$MAC_I386" != "0"
-                                then
-                                        CPPFLAGS="$CPPFLAGS -arch i386"
-                                fi
-                                if test "$MAC_X86_64" != "0"
-                                then
-                                        CPPFLAGS="$CPPFLAGS -arch x86_64"
-                                fi
 				;;
 			*solaris*)
 				LDFLAGS="$LDFLAGS -lnsl"
@@ -690,9 +725,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 	fi
 ])
 AC_SUBST(WX_CONFIG)
-AC_SUBST(debugger_LDADD)
 AC_SUBST(pgadmin3_LDADD)
-AC_SUBST(pgagent_LDADD)
 AC_SUBST(pgsTest_LDADD)
 AC_SUBST(pgScript_LDADD)
 
@@ -764,12 +797,12 @@ AC_DEFUN([SUMMARY],
 	echo "PostgreSQL directory:			$PG_HOME"
 	echo "PostgreSQL pg_config binary:		$PG_CONFIG"
 	echo "PostgreSQL version:			$PG_VERSION"
-        if test "$PG_SSL" = yes
-        then
-                echo "PostgreSQL SSL support:                 Present"
-        else
-                echo "PostgreSQL SSL support:                 Missing"
-        fi
+	if test "$PG_SSL" = yes
+	then
+		echo "PostgreSQL SSL support:			Present"
+	else
+		echo "PostgreSQL SSL support:			Missing"
+	fi
 	echo
 	echo "wxWidgets directory:			$WX_HOME"
 	echo "wxWidgets wx-config binary:		$WX_CONFIG"
