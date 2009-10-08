@@ -267,6 +267,15 @@ class queryToolSelectFactory : public queryToolDataFactory
 public:
     queryToolSelectFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+class queryToolExecFactory : public queryToolDataFactory
+{
+public:
+    queryToolExecFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
 };
 
 class queryToolDeleteFactory : public queryToolDataFactory

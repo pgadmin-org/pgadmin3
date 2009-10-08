@@ -350,7 +350,9 @@ wxString pgFunction::GetArgListWithNames()
     return args;
 }
 
-wxString pgFunction::GetArgSigList()
+// Return the signature arguments list. If forScript = true, we format the list
+// appropriately for use in a SELECT script.
+wxString pgFunction::GetArgSigList(const bool forScript)
 {
     wxString args;
 
@@ -360,18 +362,34 @@ wxString pgFunction::GetArgSigList()
         if (argModesArray.Item(i) != wxT("OUT") && argModesArray.Item(i) != wxT("TABLE"))
         {
             if (args.Length() > 0)
-                args += wxT(", ");
+            {
+                if (forScript)
+                    args += wxT(",\n");
+                else
+                    args += wxT(", ");
+            }
 
-            args += argTypesArray.Item(i);
+            if (forScript)
+                args += wxT("    <") + argTypesArray.Item(i) + wxT(">");
+            else
+                args += argTypesArray.Item(i);
         }
         else
         {
             if (GetLanguage() == wxT("edbspl") && argModesArray.Item(i) != wxT("TABLE"))
             {
                 if (args.Length() > 0)
-                    args += wxT(", ");
+                {
+                    if (forScript)
+                        args += wxT(",\n");
+                    else
+                        args += wxT(", ");
+                }
 
-                args += argTypesArray.Item(i);
+                if (forScript)
+                    args += wxT("    <") + argTypesArray.Item(i) + wxT(">");
+                else
+                    args += argTypesArray.Item(i);
             }
         }
     }
@@ -689,7 +707,35 @@ pgObject *pgFunction::Refresh(ctlTree *browser, const wxTreeItemId item)
     return function;
 }
 
+// Generate the SELECT Script SQL
+wxString pgFunction::GetSelectSql(ctlTree *browser)
+{
+    wxString args = GetArgSigList(true);
 
+    wxString sql = wxT("SELECT ") + GetQuotedFullIdentifier();
+
+    if (args.Length())
+        sql += wxT("(\n") + args + wxT("\n);\n");
+    else
+        sql += wxT(");\n");
+
+    return sql;
+}
+
+// Generate the EXEC Script SQL
+wxString pgProcedure::GetExecSql(ctlTree *browser)
+{
+    wxString args = GetArgSigList(true);
+
+    wxString sql = wxT("EXEC ") + GetQuotedFullIdentifier();
+
+    if (args.Length())
+        sql += wxT("(\n") + args + wxT("\n);\n");
+    else
+        sql += wxT(";\n");
+
+    return sql;
+}
 
 pgObject *pgFunctionFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restr)
 {

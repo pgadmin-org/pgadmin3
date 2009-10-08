@@ -365,6 +365,7 @@ void frmMain::CreateMenus()
     toolsMenu->Append(scriptingMenuFactory->GetId(), _("Scripts"), scriptingMenu, _("Start Query Tool with scripted query."));
     new queryToolSqlFactory(menuFactories, scriptingMenu, 0);
     new queryToolSelectFactory(menuFactories, scriptingMenu, 0);
+    new queryToolExecFactory(menuFactories, scriptingMenu, 0);
     new queryToolInsertFactory(menuFactories, scriptingMenu, 0);
     new queryToolUpdateFactory(menuFactories, scriptingMenu, 0);
     new queryToolDeleteFactory(menuFactories, scriptingMenu, 0);

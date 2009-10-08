@@ -41,6 +41,7 @@
 #include "gqb/gqbViewPanels.h"
 #include "gqb/gqbEvents.h"
 #include "schema/pgDatabase.h"
+#include "schema/pgFunction.h"
 #include "schema/pgTable.h"
 #include "schema/pgView.h"
 #include "schema/gpExtTable.h"
@@ -2578,6 +2579,11 @@ queryToolSelectFactory::queryToolSelectFactory(menuFactoryList *list, wxMenu *mn
     mnu->Append(id, _("SELECT script"), _("Start query tool with SELECT script."));
 }
 
+bool queryToolSelectFactory::CheckEnable(pgObject *obj)
+{
+    return queryToolBaseFactory::CheckEnable(obj) && !obj->IsCollection() &&
+        (obj->IsCreatedBy(tableFactory) || obj->IsCreatedBy(viewFactory) || obj->IsCreatedBy(functionFactory));
+}
 
 wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
 {
@@ -2596,9 +2602,33 @@ wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
         gpExtTable *exttable = (gpExtTable*)obj;
         return StartDialogSql(form, obj, exttable->GetSelectSql(form->GetBrowser()));
     }
+    else if (obj->IsCreatedBy(functionFactory))
+    {
+        pgFunction *function = (pgFunction*)obj;
+        return StartDialogSql(form, obj, function->GetSelectSql(form->GetBrowser()));
+    }
     return 0;
 }
 
+queryToolExecFactory::queryToolExecFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
+{
+    mnu->Append(id, _("EXEC script"), _("Start query tool with EXEC script."));
+}
+
+bool queryToolExecFactory::CheckEnable(pgObject *obj)
+{
+    return queryToolBaseFactory::CheckEnable(obj) && !obj->IsCollection() && obj->IsCreatedBy(procedureFactory);
+}
+
+wxWindow *queryToolExecFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (obj->IsCreatedBy(procedureFactory))
+    {
+        pgProcedure *procedure = (pgProcedure*)obj;
+        return StartDialogSql(form, obj, procedure->GetExecSql(form->GetBrowser()));
+    }
+    return 0;
+}
 
 queryToolDeleteFactory::queryToolDeleteFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolDataFactory(list)
 {

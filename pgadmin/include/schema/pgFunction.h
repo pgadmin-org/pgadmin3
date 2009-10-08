@@ -45,7 +45,7 @@ public:
 
     wxString GetFullName();
     wxString GetArgListWithNames();
-    wxString GetArgSigList();
+    wxString GetArgSigList(const bool forScript = false);
 
     wxArrayString &GetArgNamesArray() { return argNamesArray; }
     void iAddArgName(const wxString &s) { argNamesArray.Add(s); }
@@ -91,6 +91,7 @@ public:
     wxString GetSql(ctlTree *browser);
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createfunction"); }
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+    wxString GetSelectSql(ctlTree *browser);
 
 	void ShowHint(frmMain *form, bool force);
 	bool GetCanHint() { return true; };
@@ -159,6 +160,7 @@ public:
 
     wxString GetSql(ctlTree *browser);
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    wxString GetExecSql(ctlTree *browser);
 
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createprocedure"); }
 };
