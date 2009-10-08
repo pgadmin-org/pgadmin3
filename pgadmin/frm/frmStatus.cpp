@@ -758,7 +758,7 @@ void frmStatus::OnCopyQuery(wxCommandEvent& ev)
     int row, col;
     wxString text = wxT("");
     wxString dbname = wxT("");
-    int maxlength;
+    unsigned int maxlength;
 
     // Only the status list shows the query
     list = statusList;
