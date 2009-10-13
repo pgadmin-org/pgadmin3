@@ -815,36 +815,44 @@ wxString pgObject::GetGrant(const wxString& allPattern, const wxString& _grantFo
 
     if (!acl.IsNull())
     {
-        queryTokenizer acls(acl.Mid(1, acl.Length()-2), ',');
-        while (acls.HasMoreTokens())
-        {
-            str=acls.GetNextToken();
+		if (acl == wxT("{}"))
+		{
+			grant += GetPrivileges(allPattern, str, grantFor, wxT("public"), qtIdent(_column));
+			grant += GetPrivileges(allPattern, str, grantFor, qtIdent(owner), qtIdent(_column));
+		}
+		else 
+		{
+			queryTokenizer acls(acl.Mid(1, acl.Length()-2), ',');
+			while (acls.HasMoreTokens())
+			{
+				str=acls.GetNextToken();
 
-            if (str.Left(1) == '"')
-                str = str.Mid(1, str.Length()-2);
-            user=str.BeforeFirst('=');
-            str=str.AfterFirst('=').BeforeFirst('/');
-            if (user == wxT(""))
-                user=wxT("public");
-            else
-            {
-                if (user.Left(6) == wxT("group "))
-                {
-                    if (user.Mid(6).StartsWith(wxT("\\\"")) && user.Mid(6).EndsWith(wxT("\\\"")))
-                        user = wxT("GROUP ") + qtIdent(user.Mid(8, user.Length() - 10));
-                    else
-                        user = wxT("GROUP ") + qtIdent(user.Mid(6));
-                }
-                else
-                {
-                    if (user.StartsWith(wxT("\\\"")) && user.EndsWith(wxT("\\\"")))
-                        user = qtIdent(user.Mid(2, user.Length() - 4));
-                    else
-                        user = qtIdent(user);
-                }
-            }
+				if (str.Left(1) == '"')
+					str = str.Mid(1, str.Length()-2);
+				user=str.BeforeFirst('=');
+				str=str.AfterFirst('=').BeforeFirst('/');
+				if (user == wxT(""))
+					user=wxT("public");
+				else
+				{
+					if (user.Left(6) == wxT("group "))
+					{
+						if (user.Mid(6).StartsWith(wxT("\\\"")) && user.Mid(6).EndsWith(wxT("\\\"")))
+							user = wxT("GROUP ") + qtIdent(user.Mid(8, user.Length() - 10));
+						else
+							user = wxT("GROUP ") + qtIdent(user.Mid(6));
+					}
+					else
+					{
+						if (user.StartsWith(wxT("\\\"")) && user.EndsWith(wxT("\\\"")))
+							user = qtIdent(user.Mid(2, user.Length() - 4));
+						else
+							user = qtIdent(user);
+					}
+				}
 
-            grant += GetPrivileges(allPattern, str, grantFor, user, qtIdent(_column));
+				grant += GetPrivileges(allPattern, str, grantFor, user, qtIdent(_column));
+			}
         }
     }
     return grant;
