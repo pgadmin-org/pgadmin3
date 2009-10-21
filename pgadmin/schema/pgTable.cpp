@@ -1526,7 +1526,7 @@ bool executePgstattupleFactory::CheckEnable(pgObject *obj)
 
 bool executePgstattupleFactory::CheckChecked(pgObject *obj)
 {
-    return obj && ((pgTable*)obj)->GetShowExtendedStatistics();
+    return obj && obj->IsCreatedBy(tableFactory) && ((pgTable*)obj)->GetShowExtendedStatistics();
 }
 
 disableAllTriggersFactory::disableAllTriggersFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
