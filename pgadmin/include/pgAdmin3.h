@@ -187,6 +187,8 @@ public:
     wxString GetLongAppName() { return long_appname; };
     wxString GetWebsiteUrl() { return website_url; };
     wxColour GetReportKeyColour() { return report_key_colour; };
+    bool GetHideEnterprisedbHelp() { return hide_enterprisedb_help; };
+    bool GetHideGreenplumHelp() { return hide_greenplum_help; };
     bool IsBranded() { return is_branded; };
 
 private:
@@ -194,7 +196,7 @@ private:
     wxImage large_icon, small_icon, splash_image;
     long splash_font_size, splash_pos_x, splash_pos_y, splash_pos_offset;
     wxColor splash_text_colour, report_key_colour;
-    bool is_branded;
+    bool hide_enterprisedb_help, hide_greenplum_help, is_branded;
 };
 
 extern pgAppearanceFactory *appearanceFactory;

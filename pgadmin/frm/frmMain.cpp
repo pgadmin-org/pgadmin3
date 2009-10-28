@@ -425,8 +425,10 @@ void frmMain::CreateMenus()
     helpMenu->AppendSeparator();
 
     new pgsqlHelpFactory(menuFactories, helpMenu, toolBar, true);
-    new edbHelpFactory(menuFactories, helpMenu, toolBar, true);
-    new greenplumHelpFactory(menuFactories, helpMenu, toolBar, true);
+    if (!appearanceFactory->GetHideEnterprisedbHelp())
+        new edbHelpFactory(menuFactories, helpMenu, toolBar, true);
+    if (!appearanceFactory->GetHideGreenplumHelp())
+        new greenplumHelpFactory(menuFactories, helpMenu, toolBar, true);
     new slonyHelpFactory(menuFactories, helpMenu, toolBar, true);
     
     // Don't include this seperator on Mac, because the only option

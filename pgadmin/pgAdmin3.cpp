@@ -1521,6 +1521,9 @@ pgAppearanceFactory::pgAppearanceFactory()
     short_appname = wxT("pgadmin3");
     website_url = wxT("http://www.pgadmin.org/");
 
+    hide_enterprisedb_help = false;
+    hide_greenplum_help = false;
+
     // Attempt to overload branding information
     wxFileName brIni(brandingPath + wxT("/branding.ini"));
     if (brIni.FileExists())
@@ -1617,6 +1620,22 @@ pgAppearanceFactory::pgAppearanceFactory()
             {
                 report_key_colour = wxColor(token.AfterFirst('=').Trim());
                 is_branded = true;
+            }
+            else if (token.Lower().StartsWith(wxT("hideenterprisedbhelp=")))
+            {
+                if (token.AfterFirst('=').Trim() == wxT("1"))
+                {
+                    hide_enterprisedb_help = true;
+                    is_branded = true;
+                }
+            }
+            else if (token.Lower().StartsWith(wxT("hidegreenplumhelp=")))
+            {
+                if (token.AfterFirst('=').Trim() == wxT("1"))
+                {
+                    hide_greenplum_help = true;
+                    is_branded = true;
+                }
             }
         }
     }
