@@ -560,7 +560,22 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
         restr += collection->GetServer()->GetDbRestriction() + wxT(")\n");
     }
     
-    if (collection->GetConnection()->BackendMinimumVersion(7, 5))
+    // In 8.5+, database config options are in pg_db_role_setting
+    if (collection->GetConnection()->BackendMinimumVersion(8, 5))
+        databases = collection->GetServer()->ExecuteSet(
+           wxT("SELECT db.oid, datname, db.dattablespace AS spcoid, spcname, datallowconn, setconfig AS datconfig, datacl, ")
+           wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
+           wxT("has_database_privilege(db.oid, 'CREATE') as cancreate, \n")
+           wxT("current_setting('default_tablespace') AS default_tablespace, \n")
+           wxT("descr.description\n") +
+           datconnlimit + datcollate + datctype +
+           wxT("  FROM pg_database db\n")
+           wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
+           wxT("  LEFT OUTER JOIN pg_shdescription descr ON db.oid=descr.objoid\n")
+           wxT("  LEFT OUTER JOIN pg_db_role_setting setting ON (db.oid=setting.setdatabase AND setting.setrole=0)\n")
+           + restr +
+           wxT(" ORDER BY datname"));
+    else if (collection->GetConnection()->BackendMinimumVersion(8, 0))
         databases = collection->GetServer()->ExecuteSet(
            wxT("SELECT db.oid, datname, db.dattablespace AS spcoid, spcname, datallowconn, datconfig, datacl, ")
            wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
