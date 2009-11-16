@@ -129,7 +129,7 @@ pgObject *pgTextSearchConfigurationFactory::CreateObjects(pgCollection *collecti
             wxT("  LEFT OUTER JOIN pg_ts_config ON mapcfg=pg_ts_config.oid\n")
             wxT("  LEFT OUTER JOIN pg_ts_dict ON mapdict=pg_ts_dict.oid\n")
             wxT("WHERE mapcfg=") + config->GetOidStr() + wxT("\n")
-            wxT("ORDER BY 1"));
+            wxT("ORDER BY 1, mapseqno"));
 
             if (maps)
             {
