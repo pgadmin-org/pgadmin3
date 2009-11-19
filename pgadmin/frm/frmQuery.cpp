@@ -16,6 +16,7 @@
 #include <wx/busyinfo.h>
 #include <wx/clipbrd.h>
 #include <wx/dcbuffer.h>
+#include <wx/dnd.h>
 #include <wx/filename.h>
 #include <wx/regex.h>
 #include <wx/textctrl.h>
@@ -150,6 +151,45 @@ EVT_MENU(PGSCRIPT_COMPLETE,     frmQuery::OnScriptComplete)
 EVT_NOTEBOOK_PAGE_CHANGED(CTL_NTBKCENTER, frmQuery::OnChangeNotebook)
 EVT_SPLITTER_SASH_POS_CHANGED(GQB_HORZ_SASH, frmQuery::OnResizeHorizontally)
 END_EVENT_TABLE()
+
+class DnDFile : public wxFileDropTarget
+{
+	public:
+    DnDFile(frmQuery * fquery) { m_fquery = fquery; }
+		
+		virtual bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
+		{
+			size_t nFiles = filenames.GetCount();
+			if ((int) nFiles > 1)
+				wxLogError(wxT("Drag one file at a time"));
+			else if ((int) nFiles == 1)
+			{
+				wxString str;
+				bool modeUnicode = settings->GetUnicodeFile();
+				wxUtfFile file(filenames[0], wxFile::read, modeUnicode ? wxFONTENCODING_UTF8:wxFONTENCODING_DEFAULT);
+
+				if (file.IsOpened())
+						file.Read(str);
+
+				if (!str.IsEmpty() && !m_fquery->CheckChanged(true))
+				{
+						m_fquery->SetLastPath(filenames[0]);
+						m_fquery->SetQueryText(str);
+						m_fquery->ColouriseQuery(0, str.Length());
+						wxSafeYield();                            // needed to process sqlQuery modify event
+						m_fquery->SetChanged(false);
+						m_fquery->setExtendedTitle();
+						m_fquery->SetLineEndingStyle();
+						m_fquery->UpdateRecentFiles();
+				}
+			}
+			return true;
+		}
+		
+	private:
+		frmQuery * m_fquery;
+};
+
 
 frmQuery::frmQuery(frmMain *form, const wxString& _title, pgConn *_conn, const wxString& query, const wxString& file)
 : pgFrame(NULL, _title),
@@ -359,6 +399,7 @@ pgsTimer(new pgScriptTimer(this))
     sqlQuery = new ctlSQLBox(sqlNotebook, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
     sqlQuery->SetDatabase(conn);
     sqlQuery->SetMarginWidth(1, 16);
+		sqlQuery->SetDropTarget(new DnDFile(this));
     SetEOLModeDisplay(sqlQuery->GetEOLMode());
 
     // Results pane

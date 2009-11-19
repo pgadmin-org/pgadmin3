@@ -63,6 +63,14 @@ public:
     void Go();
     
     void writeScriptOutput();
+    void setExtendedTitle();
+    void SetLineEndingStyle();
+
+    void SetQueryText(wxString str) { sqlQuery->SetText(str); }
+    void ColouriseQuery(int start, int stop) { sqlQuery->Colourise(start, stop); }
+		void SetChanged(bool p_changed) { changed = p_changed; }
+		void SetLastPath(wxString p_lastpath) { lastPath = p_lastpath; }
+    bool CheckChanged(bool canVeto);
 
 private:
     frmMain *mainForm;
@@ -165,7 +173,6 @@ private:
 
     void OnTimer(wxTimerEvent & event);
 
-    bool CheckChanged(bool canVeto);
     void OpenLastFile();
     void updateMenu(wxObject *obj=0);
     void execQuery(const wxString &query, int resultToRetrieve=0, bool singleResult=false, const int queryOffset=0, bool toFile=false, bool explain=false, bool verbose=false);
@@ -174,9 +181,7 @@ private:
     void OnScriptComplete(wxCommandEvent &ev);
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
-    void setExtendedTitle();
     void UpdateFavouritesList();
-    void SetLineEndingStyle();
     int GetLineEndingStyle();
     void OnSetEOLMode(wxCommandEvent& event);
     void SetEOLModeDisplay(int mode);

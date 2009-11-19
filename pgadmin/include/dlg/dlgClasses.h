@@ -59,6 +59,9 @@ public:
     void RestorePosition(int defaultX=-1, int defaultY=-1, int defaultW=-1, int defaultH=-1, int minW=100, int minH=70);
     void SavePosition();
     void OnAction(wxCommandEvent& event);
+		
+    void UpdateRecentFiles();
+
 	menuFactoryList *GetMenuFactories() { return menuFactories; }
 
 protected:
@@ -71,8 +74,6 @@ protected:
     virtual void OpenLastFile() {}
     virtual bool CheckChanged(bool canVeto) { return false; }
     virtual wxString GetHelpPage() const { return wxEmptyString; }
-
-    void UpdateRecentFiles();
 
     windowList frames;
     menuFactoryList *menuFactories;
