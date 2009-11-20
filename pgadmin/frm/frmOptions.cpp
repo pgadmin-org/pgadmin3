@@ -83,6 +83,75 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_COMBOBOX(XRCID("cbCopyQuote"),		  frmOptions::OnChangeCopyQuote)
 END_EVENT_TABLE()
 
+
+//----------------------------------------------------------------------------
+// wxRichTextFontDialog: a substitute for wxFontDialog, which is broken on 
+// Mac OS X Snow Leopard
+//----------------------------------------------------------------------------
+
+#ifdef __WXMAC__
+
+#include <wx/fontdlg.h>
+#include <wx/richtext/richtextbuffer.h>
+#include <wx/richtext/richtextformatdlg.h>
+
+class wxRichTextFontDialog: public wxFontDialogBase
+{
+public:
+    wxRichTextFontDialog() : wxFontDialogBase() { Init(); /* must be
+														   Create()d later */ }
+    wxRichTextFontDialog(wxWindow *parent)
+	: wxFontDialogBase(parent) { Init(); Create(parent); }
+    wxRichTextFontDialog(wxWindow *parent, const wxFontData& data)
+	: wxFontDialogBase(parent, data) { Init(); Create(parent, data); }
+	
+    void Init() { m_title = _("Font"); }
+	
+    virtual int ShowModal();
+	
+    virtual void SetTitle( const wxString& title) { m_title = title; }
+    virtual wxString GetTitle() const { return m_title; }
+	
+protected:
+    wxString    m_title;
+	
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxRichTextFontDialog)
+	
+};
+
+IMPLEMENT_DYNAMIC_CLASS(wxRichTextFontDialog, wxDialog)
+
+int wxRichTextFontDialog::ShowModal()
+{
+    wxTextAttrEx attr;
+    if (m_fontData.GetInitialFont().Ok())
+        attr.SetFont(m_fontData.GetInitialFont());
+	
+    if (m_fontData.GetColour().Ok())
+        attr.SetTextColour(m_fontData.GetColour());
+	
+    wxRichTextFormattingDialog formatDlg(wxRICHTEXT_FORMAT_FONT,
+										 GetParent(), GetTitle());
+    formatDlg.SetAttributes(attr);
+	
+    if (formatDlg.ShowModal() == wxID_OK)
+    {
+        wxTextAttrEx attr(formatDlg.GetAttributes());
+		
+        m_fontData.SetChosenFont(attr.GetFont());
+        m_fontData.SetColour(attr.GetTextColour());
+		
+        return wxID_OK;
+    }
+    else
+        return wxID_CANCEL;
+	
+} 
+
+#endif
+
+//----------------------------------------------------------------------------
+
 frmOptions::frmOptions(frmMain *parent)
 {
     mainForm=parent;
@@ -511,7 +580,11 @@ void frmOptions::OnSqlFontSelect(wxCommandEvent &ev)
 {
     wxFontData fd;
     fd.SetInitialFont(settings->GetSQLFont());
-    wxFontDialog dlg(this, fd);
+#ifdef __WXMAC__
+    wxRichTextFontDialog dlg(this, fd);
+#else
+	wxFontDialog dlg(this, fd);
+#endif
 
     if (dlg.ShowModal() == wxID_OK)
     {
@@ -525,8 +598,12 @@ void frmOptions::OnFontSelect(wxCommandEvent &ev)
 {
     wxFontData fd;
     fd.SetInitialFont(settings->GetSystemFont());
-    wxFontDialog dlg(this, fd);
-
+#ifdef __WXMAC__
+    wxRichTextFontDialog dlg(this, fd);
+#else
+	wxFontDialog dlg(this, fd);
+#endif
+	
     if (dlg.ShowModal() == wxID_OK)
     {
         currentFont=dlg.GetFontData().GetChosenFont();
