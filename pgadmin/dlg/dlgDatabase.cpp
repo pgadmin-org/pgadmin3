@@ -255,7 +255,7 @@ int dlgDatabase::Go(bool modal)
         {
             encStr=connection->ExecuteScalar(
                 wxT("SELECT pg_encoding_to_char(") + NumToStr(encNo) + wxT(")"));
-            if (!encStr.IsEmpty())
+            if (pgConn::IsValidServerEncoding(encNo) && !encStr.IsEmpty())
                 cbEncoding->Append(encStr);
 
             encNo++;
