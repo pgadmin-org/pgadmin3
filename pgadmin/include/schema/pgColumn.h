@@ -83,6 +83,8 @@ public:
     void iSetAttTypId(const OID o) { attTypId =o; }
     long GetAttstattarget() const { return attstattarget; }
     void iSetAttstattarget(const long l) { attstattarget=l; }
+    long GetAttdistinct() const { return attdistinct; }
+    void iSetAttdistinct(const long l) { attdistinct=l; }
     wxString GetSerialSequence() const { return serialSequence; }
     void iSetSerialSequence(const wxString &s) { serialSequence=s; }
     wxString GetSerialSchema() const { return serialSchema; }
@@ -108,7 +110,7 @@ public:
 private:
     wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, storage, rawTypename;
     wxString serialSequence, serialSchema, pkCols, inheritedTableName;
-    long colNumber, length, precision, statistics, attstattarget;
+    long colNumber, length, precision, statistics, attstattarget, attdistinct;
     long typlen, typmod, inheritedCount;
     bool isPK, isFK, notNull, isArray, isLocal;
     OID attTypId;

@@ -120,6 +120,10 @@ wxString pgColumn::GetSql(ctlTree *browser)
                     sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                         + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
                         + wxT(" SET STATISTICS ") + NumToStr(GetAttstattarget()) + wxT(";\n");
+                if (database->BackendMinimumVersion(8, 5) && GetAttdistinct() >= 0)
+                    sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
+                        + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+                        + wxT(" SET STATISTICS DISTINCT ") + NumToStr(GetAttdistinct()) + wxT(";\n");
 
                 sql += GetCommentSql();
 
@@ -314,6 +318,8 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                     properties->AppendItem(_("Inherited"), false);
                 }
                 properties->AppendItem(_("Statistics"), GetAttstattarget());
+                if (database->BackendMinimumVersion(8, 5))
+                    properties->AppendItem(_("Distincts"), GetAttdistinct());
 
 
                 properties->AppendItem(_("System column?"), GetSystemObject());
@@ -378,6 +384,10 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
         wxT("       ELSE NULL\n")
         wxT("  END AS inhrelname");
 
+    if (database->BackendMinimumVersion(8, 5))
+        sql += 
+            wxT(",\n")
+            wxT("  attdistinct");
     if (database->BackendMinimumVersion(7, 4))
         sql += 
             wxT(",\n")
@@ -453,6 +463,8 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
             column->iSetInheritedTableName(columns->GetVal(wxT("inhrelname")));
             column->iSetIsLocal(columns->GetBool(wxT("attislocal")));
             column->iSetAttstattarget(columns->GetLong(wxT("attstattarget")));
+            if (database->BackendMinimumVersion(8, 5))
+                column->iSetAttdistinct(columns->GetLong(wxT("attdistinct")));
             if (database->BackendMinimumVersion(8, 4))
                 column->iSetAcl(columns->GetVal(wxT("attacl")));
 
