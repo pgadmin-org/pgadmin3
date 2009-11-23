@@ -101,6 +101,8 @@ public:
     static void ExamineLibpqVersion();
     static double GetLibpqVersion() { return libpqVersion; }
 
+    static bool IsValidServerEncoding(int encid) { return pg_valid_server_encoding_id(encid); }
+
     void Close();
     bool ExecuteVoid(const wxString& sql, bool reportError = true);
     wxString ExecuteScalar(const wxString& sql);
