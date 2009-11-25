@@ -568,7 +568,7 @@ void frmEditGrid::OnRemoveFilters(wxCommandEvent &event)
 void frmEditGrid::OnAscSort(wxCommandEvent &ev)
 {
     int curcol=sqlGrid->GetGridCursorCol();
-    
+
     sqlTable *table=sqlGrid->GetTable();
     wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
     wxString old_sort_string = GetSortCols().Trim();
@@ -1056,6 +1056,10 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
         }
         return;
     }
+
+    // If the delete button is disabled, don't try to delete anything
+    if (!toolBar->GetToolEnabled(MNU_DELETE))
+        return;
 
     wxArrayInt delrows=sqlGrid->GetSelectedRows();
     int i=delrows.GetCount();
