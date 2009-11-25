@@ -1066,6 +1066,10 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
         return;
     }
 
+    // If the delete button is disabled, don't try to delete anything
+    if (!toolBar->GetToolEnabled(MNU_DELETE))
+        return;
+
     wxArrayInt delrows=sqlGrid->GetSelectedRows();
     int i=delrows.GetCount();
 
