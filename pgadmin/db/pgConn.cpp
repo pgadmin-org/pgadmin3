@@ -75,7 +75,6 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     conn=0;
     noticeArg=0;
     connStatus = PGCONN_BAD;
-    dbname = database;
     
 #ifdef __WXMSW__
     struct in_addr ipaddr;
@@ -117,7 +116,6 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     wxLogInfo(wxT("Server name: %s (resolved to: %s)"), server.c_str(), hostip.c_str());
 
     // Create the connection string
-    wxString connstr;
     if (!hostname.IsEmpty()) {
       connstr.Append(wxT(" host="));
       connstr.Append(qtConnString(hostname));
@@ -165,12 +163,28 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
         }
     }
     connstr.Trim(false);
-    
+	
+    dbHost = server;
+    dbHostName = hostname;
+    dbHostAddress = hostip;
+	
     // Open the connection
     wxString cleanConnStr = connstr;
     cleanConnStr.Replace(qtConnString(password), wxT("'XXXXXX'"));
     wxLogInfo(wxT("Opening connection with connection string: %s"), cleanConnStr.c_str());
+	
+	DoConnect();
+}
+	
 
+pgConn::~pgConn()
+{
+    Close();
+}
+
+
+bool pgConn::DoConnect()
+{
     wxCharBuffer cstrUTF=connstr.mb_str(wxConvUTF8);
     conn = PQconnectdb(cstrUTF);
     if (PQstatus(conn) == CONNECTION_OK)
@@ -185,10 +199,6 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
         }
     }
 
-    dbHost = server;
-    dbHostName = hostname;
-    dbHostAddress = hostip;
-
     // Set client encoding to Unicode/Ascii
     if (PQstatus(conn) == CONNECTION_OK)
     {
@@ -199,15 +209,15 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
         wxString sql=wxT("SET DateStyle=ISO;SELECT oid, pg_encoding_to_char(encoding) AS encoding, datlastsysoid\n")
                       wxT("  FROM pg_database WHERE ");
 
-        if (oid)
-            sql += wxT("oid = ") + NumToStr(oid);
+        if (save_oid)
+            sql += wxT("oid = ") + NumToStr(save_oid);
         else
         {
             // Note, can't use qtDbString here as we don't know the server version yet.
-            wxString db = database;
+            wxString db = save_database;
             db.Replace(wxT("\\"), wxT("\\\\"));
             db.Replace(wxT("'"), wxT("''"));
-            sql += wxT("datname=") + qtString(database);
+            sql += wxT("datname=") + qtString(save_database);
         }
         
 
@@ -238,13 +248,12 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
             delete set;
         }
     }
+    else
+        return false;
+
+    return true;
 }
 
-
-pgConn::~pgConn()
-{
-    Close();
-}
 
 void pgConn::Close()
 {
@@ -254,10 +263,32 @@ void pgConn::Close()
     connStatus=PGCONN_BAD;
 }
 
+
+// Reconnect to the server
+bool pgConn::Reconnect()
+{
+    // Close the existing (possibly broken) connection
+    Close();
+
+    // Reset any vars that need to be in a defined state before connecting
+    needColQuoting = false;
+
+    // Attempt the reconnect
+	if (!DoConnect())
+    {
+        wxLogError(_("Failed to re-establish the connection to the server %s"), GetName());
+        return false;
+    }
+
+    return true;
+}
+
+
 pgConn *pgConn::Duplicate()
 {
     return new pgConn(wxString(save_server), wxString(save_database), wxString(save_username), wxString(save_password), save_port, save_sslmode, save_oid);
 }
+
 
 // Return the SSL mode name
 wxString pgConn::GetSslModeName()
@@ -502,9 +533,9 @@ wxString pgConn::GetName() const
 {
     wxString str;
     if (dbHost.IsEmpty())
-        str.Printf(_("%s on local socket"), dbname.c_str());
+        str.Printf(_("%s on local socket"), save_database.c_str());
     else
-        str.Printf(_("%s on %s@%s:%d"), dbname.c_str(), GetUser().c_str(), dbHost.c_str(), GetPort());
+        str.Printf(_("%s on %s@%s:%d"), save_database.c_str(), GetUser().c_str(), dbHost.c_str(), GetPort());
     return str;
 }
 
@@ -672,7 +703,7 @@ pgSet *pgConn::ExecuteSet(const wxString& sql)
             PQclear(qryRes);
         }
     }
-    return 0;
+    return new pgSet();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -722,13 +753,7 @@ void pgConn::LogError(const bool quiet)
 bool pgConn::IsAlive()
 {
     if (GetStatus() != PGCONN_OK)
-    {
-        lastResultError.severity = wxString(wxT("FATAL"));
-        lastResultError.msg_primary = wxString(PQerrorMessage(conn), *conv);
-        lastResultError.formatted_msg = lastResultError.severity + wxT(": ") + lastResultError.msg_primary;
-        wxLogError(wxT("%s"), lastResultError.msg_primary.c_str());
         return false;
-    }
 
     PGresult *qryRes = PQexec(conn, "SELECT 1;");
     lastResultStatus = PQresultStatus(qryRes);

@@ -101,9 +101,10 @@ public:
     static void ExamineLibpqVersion();
     static double GetLibpqVersion() { return libpqVersion; }
 
-    static bool IsValidServerEncoding(int encid) { return pg_valid_server_encoding_id(encid); }
+    static bool IsValidServerEncoding(int encid) { return (bool)pg_valid_server_encoding_id(encid); }
 
     void Close();
+	bool Reconnect();
     bool ExecuteVoid(const wxString& sql, bool reportError = true);
     wxString ExecuteScalar(const wxString& sql);
     pgSet *ExecuteSet(const wxString& sql);
@@ -112,7 +113,7 @@ public:
     wxString GetHost() const { return dbHost; }
     wxString GetHostName() const { return dbHostName; }
     wxString GetHostAddress() const { return dbHostAddress; }
-    wxString GetDbname() const { return dbname; }
+    wxString GetDbname() const { return save_database; }
     wxString GetName() const;
     bool GetNeedUtfConnectString() { return utfConnectString; }
     int GetPort() const { return atoi(PQport(conn)); };
@@ -153,7 +154,7 @@ protected:
 
     wxMBConv *conv;
     bool needColQuoting, utfConnectString;
-    wxString dbHost, dbHostName, dbHostAddress, dbname;
+    wxString dbHost, dbHostName, dbHostAddress;
     OID lastSystemOID;
     OID dbOid;
 
@@ -164,6 +165,8 @@ protected:
     friend class pgQueryThread;
 
 private:
+	bool DoConnect();
+	
     wxString qtString(const wxString& value);
 
     bool features[32];
@@ -172,7 +175,8 @@ private:
     bool isGreenplum;
 
     wxString reservedNamespaces;
-
+	wxString connstr;
+	
     wxString save_server, save_database, save_username, save_password;
     int save_port, save_sslmode;
     OID save_oid;

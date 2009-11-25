@@ -762,11 +762,11 @@ bool frmMain::CheckAlive()
                                         conn->Close();
                                         if (!userInformed)
                                         {
-                                            wxMessageDialog dlg(this, _("Close database browser? If you abort, the object browser will not show accurate data."),
+                                            wxMessageDialog dlg(this, _("Do you want to attempt to reconnect to the database?"),
                                             wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()), 
                                                 wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
 
-                                            closeIt = (dlg.ShowModal() == wxID_YES);
+                                            closeIt = (dlg.ShowModal() == wxID_NO);
                                             userInformed = true;
                                         }
                                         if (closeIt)
@@ -776,6 +776,29 @@ bool frmMain::CheckAlive()
                                             browser->DeleteChildren(db->GetId());
                                             db->UpdateIcon(browser);
                                         }
+										else 
+										{
+                                            // Create a server object and connect it.
+                                            wxBusyInfo waiting(wxString::Format(_("Reconnecting to database %s"),
+                                                db->GetName().c_str()), this);
+
+                                            // Give the UI a chance to redraw
+                                            wxSafeYield();
+                                            wxMilliSleep(100);
+                                            wxSafeYield();
+
+											if (!conn->Reconnect())
+                                            {
+                                                db->Disconnect();
+                                            
+                                                browser->DeleteChildren(db->GetId());
+                                                db->UpdateIcon(browser);
+                                            }
+                                            else
+                                                // Indicate things are back to normal
+                                                userInformed = false;
+										}
+
                                     }
                                 }
                             }
@@ -792,11 +815,11 @@ bool frmMain::CheckAlive()
                     server->connection()->Close();
                     if (!userInformed)
                     {
-                        wxMessageDialog dlg(this, _("Close server browser? If you abort, the object browser will not show accurate data."),
+                        wxMessageDialog dlg(this, _("Do you want to attempt to reconnect to the server?"),
                             wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()), 
                             wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
 
-                        closeIt = (dlg.ShowModal() == wxID_YES);
+                        closeIt = (dlg.ShowModal() == wxID_NO);
                         userInformed = true;
                     }
                     if (closeIt)
@@ -806,6 +829,28 @@ bool frmMain::CheckAlive()
                         execSelChange(serverItem, true);
                         browser->DeleteChildren(serverItem);
                     }
+					else 
+					{
+                        // Create a server object and connect it.
+                        wxBusyInfo waiting(wxString::Format(_("Reconnecting to server %s (%s:%d)"),
+                            server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
+
+                        // Give the UI a chance to redraw
+                        wxSafeYield();
+                        wxMilliSleep(100);
+                        wxSafeYield();
+
+						if (!server->connection()->Reconnect())
+                        {
+                            server->Disconnect(this);
+                            browser->SelectItem(serverItem);
+                            execSelChange(serverItem, true);
+                            browser->DeleteChildren(serverItem);
+                        }
+                        else
+                            // Indicate things are back to normal
+                            userInformed = false;
+					}
                 }
             }
         }

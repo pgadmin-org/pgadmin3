@@ -36,6 +36,7 @@ class pgConn;
 class pgSet
 {
 public:
+    pgSet();
     pgSet(PGresult *newRes, pgConn *newConn, wxMBConv &cnv, bool needColQt);
     ~pgSet();
     long NumRows() const { return nRows; }

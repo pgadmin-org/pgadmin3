@@ -24,6 +24,16 @@
 #include "utils/sysLogger.h"
 #include "utils/pgDefs.h"
 
+pgSet::pgSet()
+: conv(wxConvLibc)
+{
+    conn = 0;
+    res = 0;
+    nCols = 0;
+    nRows = 0;
+    pos = 0;
+}
+
 pgSet::pgSet(PGresult *newRes, pgConn *newConn, wxMBConv &cnv, bool needColQt)
 : conv(cnv)
 {
