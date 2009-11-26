@@ -250,9 +250,10 @@ private:
     wxString tableName;
     wxString primaryKeyColNumbers;
     wxString orderBy;
-	wxString rowFilter;
-	int limit;
+    wxString rowFilter;
+    int limit;
     sqlCell *editorCell;
+    bool closing;
 
     DECLARE_EVENT_TABLE()
 };

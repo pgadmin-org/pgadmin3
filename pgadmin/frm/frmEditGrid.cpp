@@ -93,6 +93,8 @@ END_EVENT_TABLE()
 frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, pgSchemaObject *obj)
 : pgFrame(NULL, _title)
 {
+    closing = false;
+
     SetIcon(wxIcon(viewdata_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
     dlgName = wxT("frmEditGrid");
@@ -1293,6 +1295,10 @@ void frmEditGrid::Go()
         wxTheApp->Yield(true);
         wxMilliSleep(10);
     }
+
+    // Brute force check to ensure the user didn't get bored and close the window
+    if (closing)
+        return;
     
     if (!thread)
     {
@@ -1324,6 +1330,7 @@ void frmEditGrid::Go()
         toolsMenu->Enable(MNU_REMOVESORT, true);
         return;
     }
+
     SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", thread->DataSet()->NumRows()), thread->DataSet()->NumRows()), 0);
 
     sqlGrid->BeginBatch();
@@ -1364,6 +1371,8 @@ void frmEditGrid::Go()
 
 frmEditGrid::~frmEditGrid()
 {
+    closing = true;
+
     mainForm->RemoveFrame(this);
 
     settings->Write(wxT("frmEditGrid/Perspective-") + VerFromRev(FRMEDITGRID_PERPSECTIVE_VER), manager.SavePerspective());
