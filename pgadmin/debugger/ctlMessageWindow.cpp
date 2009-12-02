@@ -26,7 +26,7 @@ IMPLEMENT_CLASS( ctlMessageWindow, wxTextCtrl )
 //
 
 ctlMessageWindow::ctlMessageWindow( wxWindow * parent, wxWindowID id )
-    : wxTextCtrl( parent, wxID_ANY, _T(""), wxPoint(0, 0), wxSize(0, 0),
+    : wxTextCtrl( parent, wxID_ANY, wxT(""), wxPoint(0, 0), wxSize(0, 0),
                                wxTE_MULTILINE | wxTE_READONLY)
 {
     SetFont(settings->GetSQLFont());

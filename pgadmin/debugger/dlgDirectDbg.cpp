@@ -291,7 +291,7 @@ void dlgDirectDbg::populateParamGrid( )
         grdParams->SetReadOnly( i, COL_TYPE,  true );
         grdParams->SetReadOnly( i, COL_VALUE, true );
 
-        grdParams->SetCellValue( 0, COL_NAME, _T( "No arguments required" ));
+        grdParams->SetCellValue( 0, COL_NAME, _( "No arguments required" ));
         wxFont font = grdParams->GetCellFont( 0, COL_NAME );
         font.SetStyle( wxFONTSTYLE_ITALIC );
         grdParams->SetCellFont( 0, COL_NAME, font );
