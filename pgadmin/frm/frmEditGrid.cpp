@@ -1726,11 +1726,11 @@ void sqlGridNumericEditor::SetParameters(const wxString& params)
     else
     {
         long tmp;
-        if ( params.BeforeFirst(_T(',')).ToLong(&tmp) )
+        if ( params.BeforeFirst(wxT(',')).ToLong(&tmp) )
         {
             numlen = (int)tmp;
 
-            if ( params.AfterFirst(_T(',')).ToLong(&tmp) )
+            if ( params.AfterFirst(wxT(',')).ToLong(&tmp) )
             {
                 numprec = (int)tmp;
 
