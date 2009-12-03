@@ -305,7 +305,7 @@ void frmMain::CreateMenus()
     new pgpassConfigFileFactory(menuFactories, fileMenu, 0);
 
     fileMenu->AppendSeparator();
-    fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"),                _("Quit this program."));
+    fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-Q"),                _("Quit this program."));
 
     new slonyRestartFactory(menuFactories, slonyMenu, 0);
     new slonyUpgradeFactory(menuFactories, slonyMenu, 0);

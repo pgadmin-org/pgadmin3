@@ -176,7 +176,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     menuBar = new wxMenuBar();
 
     fileMenu = new wxMenu();
-    fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"), _("Exit query window"));
+    fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-W"), _("Exit query window"));
 
     menuBar->Append(fileMenu, _("&File"));
 
