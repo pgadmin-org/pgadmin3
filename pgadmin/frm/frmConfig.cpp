@@ -128,7 +128,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
     toolBar->AddSeparator();
 
     fileMenu->Append(MNU_RECENT, _("&Recent files"), recentFileMenu);
-    fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"), _("Exit configuration tool"));
+    fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-W"), _("Exit configuration tool"));
 
     editMenu->Append(MNU_UNDO, _("&Undo\tCtrl-Z"), _("Undo last action"), wxITEM_NORMAL);
     toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo last action"), wxITEM_NORMAL);

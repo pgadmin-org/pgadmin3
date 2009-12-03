@@ -232,7 +232,7 @@ pgsTimer(new pgScriptTimer(this))
     fileMenu->Append(MNU_QUICKREPORT, _("&Quick report..."),  _("Run a quick report..."));
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_RECENT, _("&Recent files"), recentFileMenu);
-    fileMenu->Append(MNU_EXIT, _("E&xit\tAlt-F4"), _("Exit query window"));
+    fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-W"), _("Exit query window"));
 
     menuBar->Append(fileMenu, _("&File"));
 
