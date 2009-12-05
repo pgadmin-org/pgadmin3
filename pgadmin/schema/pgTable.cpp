@@ -1618,7 +1618,7 @@ truncateCascadedFactory::truncateCascadedFactory(menuFactoryList *list, wxMenu *
 
 wxWindow *truncateCascadedFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    if (wxMessageBox(_("Are you sure you wish to truncate this table and all tables that have foreign key references to this table?\n\nWARNING: This action will delete ALL data in the table!"), _("Truncate table cascaded"), wxYES_NO) == wxNO)
+    if (wxMessageBox(_("Are you sure you wish to truncate this table and all tables that have foreign key references to this table?\n\nWARNING: This action will delete ALL data in the tables!"), _("Truncate table cascaded"), wxYES_NO) == wxNO)
         return 0;
 
     ((pgTable*)obj)->Truncate(true);
