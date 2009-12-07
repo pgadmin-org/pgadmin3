@@ -48,10 +48,6 @@ private:
     void OnSuppressHints(wxCommandEvent &ev);
     void OnResetHints(wxCommandEvent &ev);
 	void OnChangeCopyQuote(wxCommandEvent &ev);
-    void OnChooseIdleProcessColour(wxCommandEvent&);
-    void OnChooseActiveProcessColour(wxCommandEvent&);
-    void OnChooseSlowProcessColour(wxCommandEvent&);
-    void OnChooseBlockedProcessColour(wxCommandEvent&);
     wxString CheckColour(wxString colour);
     DECLARE_EVENT_TABLE()
 };

@@ -14,6 +14,7 @@
 #define __DLG_SERVERPROP
 
 #include "dlg/dlgProperty.h"
+#include <wx/clrpicker.h>
 
 class pgServer;
 
@@ -42,7 +43,7 @@ private:
     void OnChangeRestr(wxCommandEvent &ev);
     void OnChangeTryConnect(wxCommandEvent &ev);
     void OnPageSelect(wxNotebookEvent &event);
-    void OnChooseColor(wxCommandEvent &ev);
+    void OnChangeColour(wxColourPickerEvent &ev);
 
     DECLARE_EVENT_TABLE()
 };

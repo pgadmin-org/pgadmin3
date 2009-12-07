@@ -86,6 +86,7 @@ extern sysSettings *settings;
 #define CTRL_CHECKLISTBOX(id)   (XRCCTRL(*this, id, wxCheckListBox))
 #define CTRL_DATEPICK(id)       (XRCCTRL(*this, id, wxDatePickerCtrl))
 #define CTRL_TREE(id)           (XRCCTRL(*this, id, ctlTree))
+#define CTRL_COLOURPICKER(id)   (XRCCTRL(*this, id, wxColourPickerCtrl))
 
 #endif // PGSCLI
 

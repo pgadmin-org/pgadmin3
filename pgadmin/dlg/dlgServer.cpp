@@ -14,14 +14,17 @@
 
 // App headers
 #include "pgAdmin3.h"
+
+// Must be after pgAdmin3.h or MSVC++ complains
+#include <wx/colordlg.h>
+#include <wx/clrpicker.h>
+
+// Other app headers
 #include "utils/misc.h"
 #include "frm/frmMain.h"
 #include "frm/frmHint.h"
 #include "dlg/dlgServer.h"
 #include "schema/pgDatabase.h"
-
-// Must be after pgAdmin3.h or MSVC++ complains
-#include <wx/colordlg.h>
 
 // pointer to controls
 #define txtDescription  CTRL_TEXT("txtDescription")
@@ -39,8 +42,7 @@
 #define stPassword      CTRL_STATIC("stPassword")
 #define txtPassword     CTRL_TEXT("txtPassword")
 #define txtDbRestriction CTRL_TEXT("txtDbRestriction")
-#define txtColour       CTRL_TEXT("txtColour")
-#define btnColor        CTRL_BUTTON("btnColor")
+#define colourPicker    CTRL_COLOURPICKER("colourPicker")
 
 
 BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
@@ -56,8 +58,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_CHECKBOX(XRCID("chkStorePwd"),              dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkRestore"),               dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkTryConnect"),            dlgServer::OnChangeTryConnect)
-	EVT_TEXT(XRCID("txtColour"),                    dlgProperty::OnChange)
-    EVT_BUTTON(XRCID("btnColor"),                   dlgServer::OnChooseColor)
+    EVT_COLOURPICKER_CHANGED(XRCID("colourPicker"), dlgServer::OnChangeColour)
     EVT_BUTTON(wxID_OK,                             dlgServer::OnOK)
 END_EVENT_TABLE();
 
@@ -151,23 +152,9 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         server->iSetStorePwd(chkStorePwd->GetValue());
         server->iSetRestore(chkRestore->GetValue());
         server->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
-        if (txtColour->GetValue().Trim() == wxEmptyString)
-            server->iSetColour(wxEmptyString);
-        else
-        {
-            wxColour colour;
-            wxString sColour = wxEmptyString;
-
-            if (colour.Set(txtColour->GetValue().Trim()))
-                sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
-            else
-            {
-                wxLogError(_("The colour specified is not valid."));
-                return;
-            }
-
-            server->iSetColour(sColour);
-        }
+        wxColour colour = colourPicker->GetColour();
+        wxString sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
+        server->iSetColour(sColour);
         mainForm->execSelChange(server->GetId(), true);
         mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
 
@@ -181,6 +168,12 @@ void dlgServer::OnOK(wxCommandEvent &ev)
     }
     else
         Destroy();
+}
+
+
+void dlgServer::OnChangeColour(wxColourPickerEvent &ev)
+{
+    dlgProperty::OnChange(ev);
 }
 
 
@@ -260,7 +253,7 @@ int dlgServer::Go(bool modal)
         chkStorePwd->SetValue(server->GetStorePwd());
         chkRestore->SetValue(server->GetRestore());
         txtDbRestriction->SetValue(server->GetDbRestriction());
-        txtColour->SetValue(server->GetColour());
+        colourPicker->SetColour(server->GetColour());
 
         stPassword->Disable();
         txtPassword->Disable();
@@ -318,16 +311,6 @@ void dlgServer::OnChangeTryConnect(wxCommandEvent &ev)
 }
 
 
-void dlgServer::OnChooseColor(wxCommandEvent &ev)
-{
-    wxColourDialog dlg( NULL );
-    if ( dlg.ShowModal() == wxID_OK )
-    {
-        txtColour->SetValue(dlg.GetColourData().GetColour().GetAsString(wxC2S_HTML_SYNTAX));
-    }
-}
-
-
 void dlgServer::CheckChange()
 {
     wxString name=GetName();
@@ -335,11 +318,16 @@ void dlgServer::CheckChange()
 
     if (server)
     {
+        // Get old value
         wxColour colour;
         wxString sColour = wxEmptyString;
 
         if (colour.Set(server->GetColour()))
             sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
+
+        // Get new value
+        wxColour colour2 = colourPicker->GetColour();
+        wxString sColour2 = colour2.GetAsString(wxC2S_HTML_SYNTAX);
 
         enable =  name != server->GetName()
                || txtDescription->GetValue() != server->GetDescription()
@@ -351,7 +339,7 @@ void dlgServer::CheckChange()
                || chkStorePwd->GetValue() != server->GetStorePwd()
                || chkRestore->GetValue() != server->GetRestore()
                || txtDbRestriction->GetValue() != server->GetDbRestriction()
-               || txtColour->GetValue() != sColour;
+               || sColour != sColour2;
     }
 
 
