@@ -18,7 +18,7 @@
 class pgTrigger;
 class pgTable;
 
-class dlgTrigger : public dlgProperty
+class dlgTrigger : public dlgCollistProperty
 {
 public:
     dlgTrigger(pgaFactory *factory, frmMain *frame, pgTrigger *trg, pgTable *sch);
@@ -29,12 +29,20 @@ public:
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
     void SetObject(pgObject *obj) { trigger = (pgTrigger*)obj; }
+    wxString GetColumns();
+
 
 private:
     pgTable *table;
     pgTrigger *trigger;
 
+    void OnChange(wxCommandEvent &ev);
     void OnChangeFunc(wxCommandEvent &ev);
+    void OnSelectComboCol(wxCommandEvent &ev);
+    void OnSelectListCol(wxListEvent &ev);
+    void OnSelectCol();
+    void OnAddCol(wxCommandEvent &ev);
+    void OnRemoveCol(wxCommandEvent &ev);
 
 	virtual bool IsUpToDate();
 

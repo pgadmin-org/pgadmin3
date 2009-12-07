@@ -58,6 +58,11 @@ public:
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
     OID GetFunctionOid() const { return functionOid; }
     void iSetFunctionOid(const OID d) { functionOid=d; }
+    wxString GetQuotedColumns() const { return quotedColumns; }
+    wxString GetColumns() const { return columns; }
+	wxArrayString GetColumnList() const { return columnList; }
+    long GetColumnCount() const { return columnCount; }
+    void iSetColumnCount(const long l) { columnCount=l; }
 
     void SetDirty();
 
@@ -71,8 +76,13 @@ public:
 
     bool IsUpToDate();
 
+protected:
+    void ReadColumnDetails();
+
 private:
-    wxString function, quotedFullTable, arguments, when, language, source;
+    wxString function, quotedFullTable, arguments, when, language, source, columns, quotedColumns;
+	wxArrayString columnList;
+    long columnCount;
     OID functionOid;
     long triggerType;
     bool enabled;

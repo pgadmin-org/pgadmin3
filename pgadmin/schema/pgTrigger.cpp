@@ -96,8 +96,12 @@ wxString pgTrigger::GetSql(ctlTree *browser)
             sql += wxT("CREATE TRIGGER ") + qtIdent(GetName());
 
         sql += wxT("\n  ") + GetFireWhen() 
-            + wxT(" ") + GetEvent()
-            + wxT("\n  ON ") + GetQuotedFullTable()
+            + wxT(" ") + GetEvent();
+
+        if (!GetQuotedColumns().IsEmpty())
+            sql += wxT(" OF ") + GetQuotedColumns();
+
+        sql += wxT("\n  ON ") + GetQuotedFullTable()
             + wxT("\n  FOR EACH ") + GetForEach();
         
         if (GetConnection()->BackendMinimumVersion(8, 5)
@@ -166,10 +170,59 @@ wxString pgTrigger::GetForEach() const
 
 
 
+void pgTrigger::ReadColumnDetails()
+{
+    if (!expandedKids && GetLanguage() != wxT("edbspl"))
+    {
+        expandedKids = true;
+
+		if (GetConnection()->BackendMinimumVersion(8, 5))
+        {
+            pgSet *res = ExecuteSet(
+                wxT("SELECT attname\n")
+                wxT("FROM pg_attribute,\n")
+                wxT("(SELECT tgrelid, unnest(tgattr) FROM pg_trigger\n")
+                wxT(" WHERE oid=") + GetOidStr() + wxT(") AS columns(tgrelid, colnum)\n")
+                wxT("WHERE colnum=attnum AND tgrelid=attrelid"));
+
+		    // Allocate memory to store column def
+		    if (res->NumRows()>0) columnList.Alloc(res->NumRows());
+
+            long i = 1;
+            columns = wxT("");
+            quotedColumns = wxT("");
+
+            while (!res->Eof())
+            {
+                if (i > 1)
+                {
+                    columns += wxT(", ");
+                    quotedColumns += wxT(", ");
+                }
+
+                columns += res->GetVal(wxT("attname"));
+                quotedColumns += res->GetVal(wxT("attname"));
+				columnList.Add(res->GetVal(wxT("attname")));
+
+                i++;
+                res->MoveNext();
+            }
+        }
+        else
+        {
+            columns = wxT("");
+            quotedColumns = wxT("");
+        }
+    }
+}
+
+
 void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
     if (!expandedKids && GetLanguage() != wxT("edbspl"))
     {
+        ReadColumnDetails();
+
         if (browser)
         {
             // if no browser present, function will not be appended to tree
@@ -195,6 +248,10 @@ void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Fires"), GetFireWhen());
         properties->AppendItem(_("Event"), GetEvent());
+        if (!GetQuotedColumns().IsEmpty())
+        {
+            properties->AppendItem(_("Columns"), GetColumns());
+        }
         properties->AppendItem(_("For each"), GetForEach());
         if (GetLanguage() != wxT("edbspl"))
             properties->AppendItem(_("Function"), GetFunction() + wxT("(") + GetArguments() + wxT(")"));

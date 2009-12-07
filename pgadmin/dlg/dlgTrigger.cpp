@@ -35,12 +35,16 @@
 #define chkTruncate     CTRL_CHECKBOX("chkTruncate")
 #define txtWhen         CTRL_TEXT("txtWhen")
 #define txtBody         CTRL_SQLBOX("txtBody")
+#define btnAddCol       CTRL_BUTTON("btnAddCol")
+#define btnRemoveCol    CTRL_BUTTON("btnRemoveCol")
+#define lstColumns      CTRL_LISTVIEW("lstColumns")
 
-BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
+
+BEGIN_EVENT_TABLE(dlgTrigger, dlgCollistProperty)
     EVT_RADIOBOX(XRCID("rdbFires"),                 dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkRow"),                   dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkInsert"),                dlgProperty::OnChange)
-    EVT_CHECKBOX(XRCID("chkUpdate"),                dlgProperty::OnChange)
+    EVT_CHECKBOX(XRCID("chkUpdate"),                dlgTrigger::OnChange)
     EVT_CHECKBOX(XRCID("chkDelete"),                dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkTruncate"),              dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbFunction"),                   dlgTrigger::OnChangeFunc)
@@ -48,6 +52,10 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
     EVT_TEXT(XRCID("txtArguments"),                 dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtWhen"),                      dlgProperty::OnChange)
     EVT_STC_MODIFIED(XRCID("txtBody"),              dlgProperty::OnChangeStc)
+    EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"),     dlgTrigger::OnSelectListCol)
+    EVT_COMBOBOX(XRCID("cbColumns"),                dlgTrigger::OnSelectComboCol)
+    EVT_BUTTON(XRCID("btnAddCol"),                  dlgTrigger::OnAddCol)
+    EVT_BUTTON(XRCID("btnRemoveCol"),               dlgTrigger::OnRemoveCol)
 END_EVENT_TABLE();
 
 
@@ -60,7 +68,7 @@ dlgProperty *pgTriggerFactory::CreateDialog(frmMain *frame, pgObject *node, pgOb
 
 
 dlgTrigger::dlgTrigger(pgaFactory *f, frmMain *frame, pgTrigger *node, pgTable *parentNode)
-: dlgProperty(f, frame, wxT("dlgTrigger"))
+: dlgCollistProperty(f, frame, wxT("dlgTrigger"), parentNode)
 {
     trigger=node;
     table=parentNode;
@@ -68,12 +76,31 @@ dlgTrigger::dlgTrigger(pgaFactory *f, frmMain *frame, pgTrigger *node, pgTable *
 
     txtBody->SetMarginType(1, wxSTC_MARGIN_NUMBER);
     txtBody->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
+
+    lstColumns->AddColumn(_("Column name"));
 }
 
 
 pgObject *dlgTrigger::GetObject()
 {
     return trigger;
+}
+
+
+wxString dlgTrigger::GetColumns()
+{
+    wxString sql;
+
+    int pos;
+    // iterate cols
+    for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
+    {
+        if (pos)
+            sql += wxT(", ");
+
+        sql += qtIdent(lstColumns->GetItemText(pos));
+    }
+    return sql;
 }
 
 
@@ -121,6 +148,12 @@ int dlgTrigger::Go(bool modal)
 			chkTruncate->Disable();
         else if (!connection->BackendMinimumVersion(8, 5))
             txtWhen->Disable();
+
+		wxArrayString colsArr = trigger->GetColumnList();
+        for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
+        {
+		    lstColumns->InsertItem(colIdx, colsArr.Item(colIdx));
+        }
     }
     else
     {
@@ -159,9 +192,47 @@ int dlgTrigger::Go(bool modal)
 
     }
 
-    return dlgProperty::Go(modal);
+    cbColumns->Disable();
+    btnAddCol->Disable();
+    btnRemoveCol->Disable();
+
+    return dlgCollistProperty::Go(modal);
 }
 
+
+void dlgTrigger::OnAddCol(wxCommandEvent &ev)
+{
+    wxString colName=cbColumns->GetValue();
+
+    if (!colName.IsEmpty())
+    {
+        long colIndex = lstColumns->InsertItem(lstColumns->GetItemCount(), colName);
+
+        cbColumns->Delete(cbColumns->GetCurrentSelection());
+        if (cbColumns->GetCount())
+            cbColumns->SetSelection(0);
+
+        CheckChange();
+        if (!cbColumns->GetCount())
+            btnAddCol->Disable();
+    }
+}
+
+
+void dlgTrigger::OnRemoveCol(wxCommandEvent &ev)
+{
+    long pos=lstColumns->GetSelection();
+    if (pos >= 0)
+    {
+        wxString colName=lstColumns->GetItemText(pos);
+
+        lstColumns->DeleteItem(pos);
+        cbColumns->Append(colName);
+
+        CheckChange();
+        btnRemoveCol->Disable();
+    }
+}
 
 wxString dlgTrigger::GetSql()
 {
@@ -205,6 +276,8 @@ wxString dlgTrigger::GetSql()
             if (actionCount++)
                 sql += wxT(" OR");
             sql += wxT(" UPDATE");
+            if (lstColumns->GetItemCount() > 0)
+                sql += wxT(" OF ") + GetColumns();
         }
         if (chkDelete->GetValue())
         {
@@ -256,6 +329,41 @@ pgObject *dlgTrigger::CreateObject(pgCollection *collection)
         wxT("\n   AND tgrelid=") + table->GetOidStr() +
         wxT("\n   AND relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;
+}
+
+
+void dlgTrigger::OnChange(wxCommandEvent &ev)
+{
+    if (chkUpdate->GetValue())
+    {
+        cbColumns->Enable();
+    }
+    else
+    {
+        if (lstColumns->GetItemCount() > 0)
+        {
+            if (wxMessageBox(_("Removing the UPDATE event will cause the column list to be cleared. Do you wish to continue?"), _("Remove UPDATE event?"), wxYES_NO) == wxNO)
+            {
+                chkUpdate->SetValue(true);
+                return;
+            }
+
+            // Move all the columns back to the combo
+            for (int pos = lstColumns->GetItemCount(); pos > 0; pos--)
+            {
+                wxString colName = lstColumns->GetItemText(pos - 1);
+
+                lstColumns->DeleteItem(pos - 1);
+                cbColumns->Append(colName);
+            }
+        }
+
+        cbColumns->Disable();
+        btnAddCol->Disable();
+        btnRemoveCol->Disable();
+    }
+
+    CheckChange();
 }
 
 
@@ -334,5 +442,33 @@ bool dlgTrigger::IsUpToDate()
 		return true;
 }
 
+
+
+void dlgTrigger::OnSelectListCol(wxListEvent &ev)
+{
+    OnSelectCol();
+}
+
+void dlgTrigger::OnSelectComboCol(wxCommandEvent &ev)
+{
+    OnSelectCol();
+}
+
+void dlgTrigger::OnSelectCol()
+{
+	// Can't change the columns on an existing index.
+	if (trigger)
+		return;
+
+    if (lstColumns->GetSelection() != wxNOT_FOUND)
+        btnRemoveCol->Enable(true);
+    else
+        btnRemoveCol->Enable(false);
+
+    if (cbColumns->GetSelection() != wxNOT_FOUND && !cbColumns->GetValue().IsEmpty())
+        btnAddCol->Enable(true);
+    else
+        btnAddCol->Enable(false);
+}
 
 
