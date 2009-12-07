@@ -20,4 +20,4 @@ endif
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(brandingdir)
-	$(install_sh) -c -m 644 branding.ini $(DESTDIR)$(brandingdir)
+	$(install_sh) -c -m 644 $(EXTRA_DIST) $(DESTDIR)$(brandingdir)
