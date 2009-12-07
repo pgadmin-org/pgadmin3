@@ -36,13 +36,13 @@ install-data-local:
 	@pub_tx='$(PUB_TX)'; \
 	for DIR in $$pub_tx; do \
 		$(mkinstalldirs) $(DESTDIR)$(i18ndir)/$$DIR; \
-		for FILE in `ls $$DIR/*.mo`; do \
+		for FILE in `ls $(srcdir)/$$DIR/*.mo`; do \
 			$(install_sh) -c -m 644 $$FILE $(DESTDIR)$(i18ndir)/$$DIR/; \
 		done \
 	done
-	$(install_sh) -c -m 644 pgadmin3.lng $(DESTDIR)$(i18ndir)/$$DIR
-	$(install_sh) -c -m 644 pg_settings.csv $(DESTDIR)$(i18ndir)/$$DIR
-	$(install_sh) -c -m 644 wxstd.mo $(DESTDIR)$(i18ndir)/$$DIR
+	$(install_sh) -c -m 644 $(srcdir)/pgadmin3.lng $(DESTDIR)$(i18ndir)/$$DIR
+	$(install_sh) -c -m 644 $(srcdir)/pg_settings.csv $(DESTDIR)$(i18ndir)/$$DIR
+	$(install_sh) -c -m 644 $(srcdir)/wxstd.mo $(DESTDIR)$(i18ndir)/$$DIR
 
 # Remove the wildcard directory that automake will have added for us
 dist-hook:
