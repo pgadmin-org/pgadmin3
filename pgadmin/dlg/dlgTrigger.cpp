@@ -33,6 +33,7 @@
 #define chkUpdate       CTRL_CHECKBOX("chkUpdate")
 #define chkDelete       CTRL_CHECKBOX("chkDelete")
 #define chkTruncate     CTRL_CHECKBOX("chkTruncate")
+#define txtWhen         CTRL_TEXT("txtWhen")
 #define txtBody         CTRL_SQLBOX("txtBody")
 
 BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
@@ -45,6 +46,7 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
     EVT_TEXT(XRCID("cbFunction"),                   dlgTrigger::OnChangeFunc)
     EVT_COMBOBOX(XRCID("cbFunction"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtArguments"),                 dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtWhen"),                      dlgProperty::OnChange)
     EVT_STC_MODIFIED(XRCID("txtBody"),              dlgProperty::OnChangeStc)
 END_EVENT_TABLE();
 
@@ -87,6 +89,7 @@ int dlgTrigger::Go(bool modal)
 		chkTruncate->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_TRUNCATE) != 0);
         rdbFires->SetSelection(trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1);
         txtArguments->SetValue(trigger->GetArguments());
+        txtWhen->SetValue(trigger->GetWhen());
         if (!connection->BackendMinimumVersion(7, 4))
             txtName->Disable();
 
@@ -116,6 +119,8 @@ int dlgTrigger::Go(bool modal)
         }
         else if (!connection->BackendMinimumVersion(8, 4))
 			chkTruncate->Disable();
+        else if (!connection->BackendMinimumVersion(8, 5))
+            txtWhen->Disable();
     }
     else
     {
@@ -220,6 +225,9 @@ wxString dlgTrigger::GetSql()
         else
             sql += wxT("STATEMENT");
 
+        if (connection->BackendMinimumVersion(8, 5) && !txtWhen->GetValue().IsEmpty())
+            sql += wxT("\n   WHEN (") + txtWhen->GetValue() + wxT(")");
+
         if (cbFunction->GetValue() != wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
         {
             sql += wxT("\n   EXECUTE PROCEDURE ") + cbFunction->GetValue()
@@ -304,6 +312,7 @@ void dlgTrigger::CheckChange()
                  (txtComment->GetValue() != trigger->GetComment() ||
                  txtName->GetValue() != trigger->GetName() ||
                  (txtBody->GetText() != trigger->GetSource() && cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL"))) ||
+                 txtWhen->GetValue() != trigger->GetWhen() ||
                  chkRow->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_ROW ? true : false) ||
                  chkInsert->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_INSERT ? true : false) ||
                  chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||

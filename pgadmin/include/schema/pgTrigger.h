@@ -42,6 +42,8 @@ public:
     void iSetFunction(const wxString& s) { function=s; }
     void iSetArguments(const wxString& s) { arguments=s; }
     wxString GetArguments() const { return arguments; }
+    void iSetWhen(const wxString& s) { when=s; }
+    wxString GetWhen() const { return when; }
     wxString GetLanguage() const { return language; }
     void iSetLanguage(const wxString& s) { language=s; }
     wxString GetSource() const { return source; }
@@ -70,7 +72,7 @@ public:
     bool IsUpToDate();
 
 private:
-    wxString function, quotedFullTable, arguments, language, source;
+    wxString function, quotedFullTable, arguments, when, language, source;
     OID functionOid;
     long triggerType;
     bool enabled;

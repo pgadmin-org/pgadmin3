@@ -100,6 +100,10 @@ wxString pgTrigger::GetSql(ctlTree *browser)
             + wxT("\n  ON ") + GetQuotedFullTable()
             + wxT("\n  FOR EACH ") + GetForEach();
         
+        if (GetConnection()->BackendMinimumVersion(8, 5)
+            && !GetWhen().IsEmpty())
+            sql += wxT("\n  WHEN (") + GetWhen() + wxT(")");
+
         if (GetLanguage() == wxT("edbspl"))
         {
             sql += wxT("\n") + GetSource();
@@ -194,6 +198,8 @@ void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
         properties->AppendItem(_("For each"), GetForEach());
         if (GetLanguage() != wxT("edbspl"))
             properties->AppendItem(_("Function"), GetFunction() + wxT("(") + GetArguments() + wxT(")"));
+        if (GetConnection()->BackendMinimumVersion(8, 5))
+            properties->AppendItem(_("When?"), GetWhen());
         properties->AppendItem(_("Enabled?"), GetEnabled());
         properties->AppendItem(_("System trigger?"), GetSystemObject());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
@@ -225,7 +231,8 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
     pgTrigger *trigger=0;
 
     wxString trig_sql;
-    trig_sql = wxT("SELECT t.oid, t.xmin, t.*, relname, nspname, des.description, l.lanname, p.prosrc \n")
+    trig_sql = wxT("SELECT t.oid, t.xmin, t.*, relname, nspname, des.description, l.lanname, p.prosrc, \n")
+        wxT("  trim(substring(pg_get_triggerdef(t.oid), 'WHEN (.*) EXECUTE PROCEDURE'), '()') AS whenclause\n")
         wxT("  FROM pg_trigger t\n")
         wxT("  JOIN pg_class cl ON cl.oid=tgrelid\n")
         wxT("  JOIN pg_namespace na ON na.oid=relnamespace\n")
@@ -292,6 +299,9 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
                     break;
             }
             trigger->iSetArguments(args);
+
+            if (collection->GetDatabase()->connection()->BackendMinimumVersion(8, 5))
+                trigger->iSetWhen(triggers->GetVal(wxT("whenclause")));
 
             if (browser)
             {
