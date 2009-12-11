@@ -206,7 +206,7 @@ void dlgTrigger::OnAddCol(wxCommandEvent &ev)
 
     if (!colName.IsEmpty())
     {
-        long colIndex = lstColumns->InsertItem(lstColumns->GetItemCount(), colName);
+        lstColumns->InsertItem(lstColumns->GetItemCount(), colName);
 
         cbColumns->Delete(cbColumns->GetCurrentSelection());
         if (cbColumns->GetCount())
