@@ -276,7 +276,7 @@ bool pgConn::Reconnect()
     // Attempt the reconnect
 	if (!DoConnect())
     {
-        wxLogError(_("Failed to re-establish the connection to the server %s"), GetName());
+        wxLogError(_("Failed to re-establish the connection to the server %s"), GetName().c_str());
         return false;
     }
 
