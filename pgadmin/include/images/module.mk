@@ -62,8 +62,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/edit_find.xpm \
 	$(srcdir)/include/images/edit_redo.xpm \
 	$(srcdir)/include/images/edit_undo.xpm \
-	$(srcdir)/include/images/elephant32.xpm \
-	$(srcdir)/include/images/elephant48.xpm \
 	$(srcdir)/include/images/enumeration.xpm \
 	$(srcdir)/include/images/enumerations.xpm \
 	$(srcdir)/include/images/ex_aggregate.xpm \
@@ -157,7 +155,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/parser.xpm \
 	$(srcdir)/include/images/parsers.xpm \
 	$(srcdir)/include/images/plugins.xpm \
-	$(srcdir)/include/images/pgAdmin3.xpm \
+	$(srcdir)/include/images/pgAdmin3-16.xpm \
+	$(srcdir)/include/images/pgAdmin3-32.xpm \
 	$(srcdir)/include/images/primarykey.xpm \
 	$(srcdir)/include/images/procedures.xpm \
 	$(srcdir)/include/images/procedure.xpm \
@@ -204,8 +203,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/slsubscriptions.xpm \
 	$(srcdir)/include/images/sortfilter.xpm \
 	$(srcdir)/include/images/splash.xpm \
-	$(srcdir)/include/images/sql.ico \
-	$(srcdir)/include/images/sql.xpm \
+	$(srcdir)/include/images/sql-16.xpm \
+	$(srcdir)/include/images/sql-32.xpm \
 	$(srcdir)/include/images/statistics.xpm \
 	$(srcdir)/include/images/step.xpm \
 	$(srcdir)/include/images/steps.xpm \
@@ -252,4 +251,8 @@ pgadmin3_SOURCES += \
 
 EXTRA_DIST += \
 	$(srcdir)/include/images/module.mk \
-	$(srcdir)/include/images/pgAdmin3.ico
+	$(srcdir)/include/images/pgAdmin3.ico \
+	$(srcdir)/include/images/pgAdmin3.png \
+	$(srcdir)/include/images/sql.ico \
+	$(srcdir)/include/images/sql.png
+

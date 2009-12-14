@@ -54,7 +54,7 @@
 #include "pgscript/pgsApplication.h"
 
 // Icons
-#include "images/sql.xpm"
+#include "images/sql-32.xpm"
 
 // Bitmaps
 #include "images/file_new.xpm"
@@ -217,7 +217,7 @@ pgsTimer(new pgScriptTimer(this))
 
     SetMinSize(wxSize(450,300));
 
-    SetIcon(wxIcon(sql_xpm));
+    SetIcon(wxIcon(sql_32_xpm));
     wxWindowBase::SetFont(settings->GetSystemFont());
     menuBar = new wxMenuBar();
 
@@ -2582,7 +2582,7 @@ bool queryToolDataFactory::CheckEnable(pgObject *obj)
 queryToolFactory::queryToolFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolBaseFactory(list)
 {
     mnu->Append(id, _("&Query tool\tCtrl-E"), _("Execute arbitrary SQL queries."));
-    toolbar->AddTool(id, _("Query tool\tCtrl-E"), wxBitmap(sql_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+    toolbar->AddTool(id, _("Query tool\tCtrl-E"), wxBitmap(sql_32_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
 }
 
 
@@ -2599,7 +2599,7 @@ queryToolSqlFactory::queryToolSqlFactory(menuFactoryList *list, wxMenu *mnu, ctl
 {
     mnu->Append(id, _("CREATE script"), _("Start Query tool with CREATE script."));
     if (toolbar)
-        toolbar->AddTool(id, _("CREATE script"), wxBitmap(sql_xpm), _("Start query tool with CREATE script."), wxITEM_NORMAL);
+        toolbar->AddTool(id, _("CREATE script"), wxBitmap(sql_32_xpm), _("Start query tool with CREATE script."), wxITEM_NORMAL);
 }
 
 
