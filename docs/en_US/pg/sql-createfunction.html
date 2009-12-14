@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.14 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.15 Documentation">
 <link rel="up" href="sql-commands.html" title="SQL Commands">
 <link rel="prev" href="sql-createdomain.html" title="CREATE DOMAIN">
 <link rel="next" href="sql-creategroup.html" title="CREATE GROUP">
@@ -284,6 +284,12 @@ CREATE FUNCTION foo(int, out text) ...</pre>
    </p>
 <p>    To be able to define a function, the user must have the
     <code class="literal">USAGE</code> privilege on the language.
+   </p>
+<p>    When <code class="command">CREATE OR REPLACE FUNCTION</code> is used to replace an
+    existing function, the ownership and permissions of the function
+    do not change.  All other function properties are assigned the
+    values specified or implied in the command.  You must own the function
+    to replace it (this includes being a member of the owning role).
    </p>
 </div>
 <div class="refsect1" title="Examples">
