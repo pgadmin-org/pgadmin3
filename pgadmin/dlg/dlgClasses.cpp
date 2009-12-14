@@ -356,7 +356,7 @@ void pgFrame::RestorePosition(int defaultX, int defaultY, int defaultW, int defa
     if (posDefault)
         CenterOnParent();
 
-    settings->Read(dlgName+wxT("/Maximized"), &maximized, wxEmptyString);
+    settings->Read(dlgName+wxT("/Maximized"), &maximized, false);
     if (maximized)
         Maximize();
 }

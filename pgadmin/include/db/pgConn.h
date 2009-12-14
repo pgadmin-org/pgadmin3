@@ -101,7 +101,7 @@ public:
     static void ExamineLibpqVersion();
     static double GetLibpqVersion() { return libpqVersion; }
 
-    static bool IsValidServerEncoding(int encid) { return (bool)pg_valid_server_encoding_id(encid); }
+    static bool IsValidServerEncoding(int encid) { return pg_valid_server_encoding_id(encid) == 0 ? false : true; }
 
     void Close();
 	bool Reconnect();
