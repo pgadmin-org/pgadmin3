@@ -1487,8 +1487,8 @@ void pgAdmin3::InitNetwork()
     pgConn::ExamineLibpqVersion();
 }
 
-#include "images/pgAdmin3.xpm"
-#include "images/elephant32.xpm"
+#include "images/pgAdmin3-16.xpm"
+#include "images/pgAdmin3-32.xpm"
 #include "images/splash.xpm"
 
 pgAppearanceFactory::pgAppearanceFactory()
@@ -1510,8 +1510,8 @@ pgAppearanceFactory::pgAppearanceFactory()
     splash_pos_y = 281;
     splash_pos_offset = 15;
 
-    large_icon = wxImage(elephant32_xpm);
-    small_icon = wxImage(pgAdmin3_xpm);
+    large_icon = wxImage(pgAdmin3_32_xpm);
+    small_icon = wxImage(pgAdmin3_16_xpm);
     splash_image = wxImage(splash_xpm);
 
     splash_text_colour = wxColour(255, 255, 255);
@@ -1543,7 +1543,7 @@ pgAppearanceFactory::pgAppearanceFactory()
             {
                 large_icon = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
                 if (!large_icon.IsOk())
-                    large_icon = wxImage(elephant32_xpm);
+                    large_icon = wxImage(pgAdmin3_32_xpm);
                 else
                     is_branded = true;
             }
@@ -1551,7 +1551,7 @@ pgAppearanceFactory::pgAppearanceFactory()
             {
                 small_icon = wxImage(brandingPath + wxT("/") + token.AfterFirst('=').Trim());
                 if (!small_icon.IsOk())
-                    small_icon = wxImage(pgAdmin3_xpm);
+                    small_icon = wxImage(pgAdmin3_16_xpm);
                 else
                     is_branded = true;
             }
