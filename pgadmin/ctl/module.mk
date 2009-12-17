@@ -11,6 +11,7 @@
 
 pgadmin3_SOURCES += \
 	$(srcdir)/ctl/calbox.cpp \
+        $(srcdir)/ctl/ctlCheckTreeView.cpp \
         $(srcdir)/ctl/ctlComboBox.cpp \
         $(srcdir)/ctl/ctlListView.cpp \
         $(srcdir)/ctl/ctlMenuToolbar.cpp \
@@ -24,6 +25,7 @@ pgadmin3_SOURCES += \
         $(srcdir)/ctl/timespin.cpp \
         $(srcdir)/ctl/xh_calb.cpp \
         $(srcdir)/ctl/xh_ctlcombo.cpp \
+        $(srcdir)/ctl/xh_ctlchecktreeview.cpp \
         $(srcdir)/ctl/xh_ctltree.cpp \
         $(srcdir)/ctl/xh_sqlbox.cpp \
         $(srcdir)/ctl/xh_timespin.cpp

@@ -23,6 +23,7 @@
 #include "ctl/ctlSQLBox.h"
 #include "ctl/ctlListView.h"
 #include "ctl/ctlComboBox.h"
+#include <ctl/ctlCheckTreeView.h>
 #include "dlg/dlgClasses.h"
 #include "db/pgConn.h"
 #include "db/pgSet.h"

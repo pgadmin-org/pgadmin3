@@ -39,6 +39,7 @@ private:
 
     pgObject *object;
 
+    wxString backupExecutable;
     bool canBlob;
     wxString processedFile;
 

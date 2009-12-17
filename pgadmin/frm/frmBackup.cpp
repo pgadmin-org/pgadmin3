@@ -21,6 +21,7 @@
 #include "utils/sysLogger.h"
 #include "schema/pgSchema.h"
 #include "schema/pgTable.h"
+#include "ctl/ctlCheckTreeView.h"
 
 // Icons
 #include "images/backup.xpm"
@@ -29,12 +30,13 @@
 #define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
 #define txtFilename             CTRL_TEXT("txtFilename")
 #define btnFilename             CTRL_BUTTON("btnFilename")
+#define txtCompressRatio        CTRL_TEXT("txtCompressRatio")
+#define cbEncoding              CTRL_COMBOBOX("cbEncoding")
 #define rbxFormat               CTRL_RADIOBOX("rbxFormat")
 #define chkBlobs                CTRL_CHECKBOX("chkBlobs")
 #define chkOid                  CTRL_CHECKBOX("chkOid")
 #define chkInsert               CTRL_CHECKBOX("chkInsert")
 #define chkDisableDollar        CTRL_CHECKBOX("chkDisableDollar")
-#define sbxPlainOptions         CTRL_STATICBOX("sbxPlainOptions")
 #define chkOnlyData             CTRL_CHECKBOX("chkOnlyData")
 #define chkOnlySchema           CTRL_CHECKBOX("chkOnlySchema")
 #define chkNoOwner              CTRL_CHECKBOX("chkNoOwner")
@@ -42,6 +44,11 @@
 #define chkDropDb               CTRL_CHECKBOX("chkDropDb")
 #define chkDisableTrigger       CTRL_CHECKBOX("chkDisableTrigger")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
+#define chkColumnInserts        CTRL_CHECKBOX("chkColumnInserts")
+#define chkNoPrivileges         CTRL_CHECKBOX("chkNoPrivileges")
+#define chkNoTablespaces        CTRL_CHECKBOX("chkNoTablespaces")
+#define chkUseSetSession        CTRL_CHECKBOX("chkUseSetSession")
+#define ctvObjects              CTRL_CHECKTREEVIEW("ctvObjects")
 
 
 BEGIN_EVENT_TABLE(frmBackup, ExternProcessDialog)
@@ -67,6 +74,13 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 
     SetTitle(wxString::Format(_("Backup %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
+    if (object->GetConnection()->EdbMinimumVersion(8,0))
+        backupExecutable=edbBackupExecutable;
+    else if (object->GetConnection()->GetIsGreenplum())
+        backupExecutable=gpBackupExecutable;
+    else
+        backupExecutable=pgBackupExecutable;
+
     canBlob = (obj->GetMetaType() == PGM_DATABASE);
     chkBlobs->SetValue(canBlob);
     chkDisableDollar->Enable(obj->GetConnection()->BackendMinimumVersion(7, 5));
@@ -85,7 +99,7 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     SetIcon(wxIcon(backup_xpm));
 
     // fix translation problem
-    wxString dollarLabel=wxGetTranslation(_("Disable $$ quoting"));
+    wxString dollarLabel=wxGetTranslation(_("$$ quoting"));
     dollarLabel.Replace(wxT("$$"), wxT("$"));
     chkDisableDollar->SetLabel(dollarLabel);
     chkDisableDollar->SetSize(chkDisableDollar->GetBestSize());
@@ -93,6 +107,90 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     txtMessages = CTRL_TEXT("txtMessages");
     txtMessages->SetMaxLength(0L);
     btnOK->Disable();
+
+    long encNo=0;
+    wxString encStr;
+    cbEncoding->Append(wxT(""));
+    do
+    {
+        encStr=object->GetConnection()->ExecuteScalar(
+            wxT("SELECT pg_encoding_to_char(") + NumToStr(encNo) + wxT(")"));
+        if (pgConn::IsValidServerEncoding(encNo) && !encStr.IsEmpty())
+            cbEncoding->Append(encStr);
+
+        encNo++;
+    }
+    while (!encStr.IsEmpty());
+
+    cbEncoding->SetSelection(0);
+
+    wxTreeItemId db = ctvObjects->AddRoot(wxT("Database ") + object->GetDatabase()->GetName(), 1);
+    bool checked;
+
+    wxString query = wxT("SELECT nspname, relname ")
+      wxT("FROM pg_namespace n ")
+      wxT("LEFT JOIN pg_class c ON n.oid=c.relnamespace AND relkind='r' ")
+      wxT("WHERE nspname NOT LIKE 'pg_%' AND nspname <> 'information_schema' ");
+    if (!object->GetDatabase()->GetSchemaRestriction().IsEmpty())
+        query += wxT("AND nspname IN (") + object->GetDatabase()->GetSchemaRestriction() + wxT(")");
+    query += wxT("ORDER BY nspname, relname");
+
+    pgSet *objects = object->GetDatabase()->ExecuteSet(query);
+
+    if (objects)
+    {
+        wxString currentSchema = wxT("");
+        wxTreeItemId currentSchemaNode;
+        while (!objects->Eof())
+        {
+            if (currentSchema != objects->GetVal(wxT("nspname")))
+            {
+                currentSchema = objects->GetVal(wxT("nspname"));
+                if (object->GetMetaType() == PGM_SCHEMA)
+                {
+                    checked = ((pgSchema*)object)->GetIdentifier() == currentSchema;
+                }
+                else
+                {
+                    checked = true;
+                }
+                currentSchemaNode = ctvObjects->AppendItem(db, currentSchema, checked? 1:0);
+            }
+            if (!objects->GetVal(wxT("relname")).IsNull())
+            {
+                if (object->GetMetaType() == PGM_TABLE || object->GetMetaType() == GP_PARTITION) 
+                {
+                    checked = ((pgTable*)object)->GetSchema()->GetIdentifier() == currentSchema
+                           && ((pgTable*)object)->GetIdentifier() == objects->GetVal(wxT("relname"));
+                }
+                else
+                {
+                    if (object->GetMetaType() == PGM_SCHEMA)
+                    {
+                        checked = ((pgSchema*)object)->GetIdentifier() == currentSchema;
+                    }
+                    else
+                    {
+                        checked = true;
+                    }
+                }
+                ctvObjects->AppendItem(currentSchemaNode, objects->GetVal(wxT("relname")), checked? 1:0);
+            }
+            objects->MoveNext();
+        }
+        ctvObjects->ExpandAll();
+
+        delete objects;
+    }
+
+    if (!pgAppMinimumVersion(backupExecutable, 8, 4))
+    {
+        chkNoTablespaces->Disable();
+    }
+    if (!pgAppMinimumVersion(backupExecutable, 8, 1))
+    {
+        cbEncoding->Disable();
+    }
 
     wxCommandEvent ev;
     OnChangePlain(ev);
@@ -157,7 +255,6 @@ void frmBackup::OnChange(wxCommandEvent &ev)
 void frmBackup::OnChangePlain(wxCommandEvent &ev)
 {
     bool isPlain = (rbxFormat->GetSelection() == 2);
-    sbxPlainOptions->Enable(isPlain);
     chkBlobs->Enable(canBlob && !isPlain);
     chkOnlyData->Enable(isPlain && !chkOnlySchema->GetValue());
     if (isPlain)
@@ -194,13 +291,7 @@ wxString frmBackup::getCmdPart1()
 {
     pgServer *server=object->GetDatabase()->GetServer();
 
-    wxString cmd;
-    if (object->GetConnection()->EdbMinimumVersion(8,0))
-        cmd=edbBackupExecutable;
-    else if (object->GetConnection()->GetIsGreenplum())
-        cmd=gpBackupExecutable;
-    else
-        cmd=pgBackupExecutable;
+    wxString cmd = backupExecutable;
 
     if (!server->GetName().IsEmpty())
         cmd += wxT(" --host ") + server->GetName();
@@ -216,14 +307,6 @@ wxString frmBackup::getCmdPart1()
 
 wxString frmBackup::getCmdPart2()
 {
-    wxString backupExecutable;
-    if (object->GetConnection()->EdbMinimumVersion(8,0))
-        backupExecutable=edbBackupExecutable;
-    else if (object->GetConnection()->GetIsGreenplum())
-        backupExecutable=gpBackupExecutable;
-    else
-        backupExecutable=pgBackupExecutable;
-
     wxString cmd;
 
     switch (rbxFormat->GetSelection())
@@ -233,6 +316,8 @@ wxString frmBackup::getCmdPart2()
             cmd.Append(wxT(" --format custom"));
             if (chkBlobs->GetValue())
                 cmd.Append(wxT(" --blobs"));
+            if (!txtCompressRatio->GetValue().IsEmpty())
+                cmd.Append(wxT(" --compress ") + txtCompressRatio->GetValue());
             break;
         }
         case 1: // tar
@@ -266,10 +351,20 @@ wxString frmBackup::getCmdPart2()
         }
     }
 
+    if (!cbEncoding->GetValue().IsEmpty())
+        cmd.Append(wxT(" --encoding ") + cbEncoding->GetValue());
     if (chkOid->GetValue())
         cmd.Append(wxT(" --oids"));
     if (chkInsert->GetValue())
+        cmd.Append(wxT(" --inserts"));
+    if (chkColumnInserts->GetValue())
         cmd.Append(wxT(" --column-inserts"));
+    if (chkNoPrivileges->GetValue())
+        cmd.Append(wxT(" --no-privileges"));
+    if (chkNoTablespaces->GetValue())
+        cmd.Append(wxT(" --no-tablespaces"));
+    if (chkUseSetSession->GetValue())
+        cmd.Append(wxT(" --use-set-session-authorization"));
     if (chkDisableDollar->GetValue())
         cmd.Append(wxT(" --disable-dollar-quoting"));
     if (settings->GetIgnoreVersion())
@@ -279,31 +374,81 @@ wxString frmBackup::getCmdPart2()
 
     cmd.Append(wxT(" --file \"") + txtFilename->GetValue() + wxT("\""));
 
-    if (object->GetMetaType() == PGM_SCHEMA)
-#ifdef WIN32
-        cmd.Append(wxT(" --schema \\\"") + ((pgSchema*)object)->GetIdentifier() + wxT("\\\""));
-#else
-        cmd.Append(wxT(" --schema '") + ((pgSchema*)object)->GetQuotedIdentifier() + wxT("'"));
-#endif
+    // Process selected items
+    wxTreeItemId root, schema, table;
+    wxTreeItemIdValue schemaData, tableData;
+    wxString cmdSchemas, cmdTables, tmpTables;
+    bool partialDump;
+    bool partialSchema;
 
-    else if (object->GetMetaType() == PGM_TABLE || object->GetMetaType() == GP_PARTITION) 
+    root = ctvObjects->GetRootItem();
+    schema = ctvObjects->GetFirstChild(root, schemaData);
+    cmdSchemas = wxT("");
+    cmdTables = wxT("");
+    partialDump = false;
+    while (schema.IsOk())
     {
-        // The syntax changed in 8.2 :-(
-        if (pgAppMinimumVersion(backupExecutable, 8, 2))
+        if (ctvObjects->IsChecked(schema))
         {
+            partialSchema = false;
+            tmpTables = wxT("");
+            table = ctvObjects->GetFirstChild(schema, tableData);
+            while (table.IsOk())
+            {
+                if (ctvObjects->IsChecked(table))
+                {
+                    // The syntax changed in 8.2 :-(
+                    if (pgAppMinimumVersion(backupExecutable, 8, 2))
+                    {
 #ifdef WIN32
-            cmd.Append(wxT(" --table \"\\\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
-                       wxT("\\\".\\\"") + ((pgTable*)object)->GetIdentifier() + wxT("\\\"\""));
+                        tmpTables.Append(wxT(" --table \"\\\"") + ctvObjects->GetItemText(schema) +
+                                   wxT("\\\".\\\"") + ctvObjects->GetItemText(table) + wxT("\\\"\""));
 #else
-            cmd.Append(wxT(" --table '") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier() + 
-                       wxT(".") + ((pgTable*)object)->GetQuotedIdentifier() + wxT("'"));
+                        tmpTables.Append(wxT(" --table '") + ctvObjects->GetItemText(schema) +
+                                   wxT(".") + ctvObjects->GetItemText(table) + wxT("'"));
 #endif
+                    }
+                    else
+                    {
+                        tmpTables.Append(wxT(" --table ") + ctvObjects->GetItemText(table));
+                        tmpTables.Append(wxT(" --schema ") + ctvObjects->GetItemText(schema));
+                    }
+                }
+                else
+                {
+                    partialDump = true;
+                    partialSchema = true;
+                }
+                table = ctvObjects->GetNextChild(schema, tableData);
+            }
+
+            if (partialSchema)
+            {
+                cmdTables += tmpTables;
+            }
+            else
+            {
+#ifdef WIN32
+                cmdSchemas.Append(wxT(" --schema \\\"") + ctvObjects->GetItemText(schema) + wxT("\\\""));
+#else
+                cmdSchemas.Append(wxT(" --schema '") + ctvObjects->GetItemText(schema) + wxT("'"));
+#endif
+            }
         }
         else
         {
-            cmd.Append(wxT(" --table ") + ((pgTable*)object)->GetQuotedIdentifier());
-            cmd.Append(wxT(" --schema ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+            partialDump = true;
         }
+
+        schema = ctvObjects->GetNextChild(root, schemaData);
+    }
+
+    if (partialDump)
+    {
+        if (!cmdTables.IsEmpty())
+            cmd.Append(cmdTables);
+        if (!cmdSchemas.IsEmpty())
+            cmd.Append(cmdSchemas);
     }
 
     cmd.Append(wxT(" ") + commandLineCleanOption(object->GetDatabase()->GetQuotedIdentifier()));

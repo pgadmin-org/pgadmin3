@@ -2,100 +2,312 @@
 <resource>
   <object class="wxDialog" name="frmBackup">
     <title>Backup</title>
-    <size>210,153d</size>
+    <size>300,193d</size>
     <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
     <object class="wxFlexGridSizer">
       <cols>1</cols>
       <rows>2</rows>
+      <growablecols>0</growablecols>
+      <growablerows>0</growablerows>
       <object class="sizeritem">
         <object class="wxNotebook" name="nbNotebook">
+          <pos>2,2d</pos>
+          <size>285,184d</size>
+          <style>wxNB_BOTTOM</style>
           <object class="notebookpage">
-            <label>Options</label>
-            <object class="wxPanel" name="pnlOptions">
-              <object class="wxStaticText" name="stFilename">
-                <label>Filename</label>
-                <pos>8,7d</pos>
-              </object>
-              <object class="wxTextCtrl" name="txtFilename">
-                <pos>65,5d</pos>
-                <size>150,-1d</size>
-              </object>
-              <object class="wxButton" name="btnFilename">
-                <label>...</label>
-                <pos>220,5d</pos>
-                <size>15,-1d</size>
-              </object>
-              <object class="wxRadioBox" name="rbxFormat">
-                <label>Format</label>
-                <content>
-                  <item>COMPRESS</item>
-                  <item>TAR</item>
-                  <item>PLAIN</item>
-                </content>
-                <selection>0</selection>
-                <dimension>1</dimension>
-                <pos>5,20d</pos>
-                <size>230,-1d</size>
-                <style>wxRA_SPECIFY_ROWS</style>
-              </object>
-              <object class="wxCheckBox" name="chkBlobs">
-                <label>Blobs</label>
-                <checked>1</checked>
-                <pos>10,60d</pos>
-              </object>
-              <object class="wxCheckBox" name="chkOid">
-                <label>With OIDs</label>
-                <pos>10,72d</pos>
-              </object>
-              <object class="wxCheckBox" name="chkInsert">
-                <label>Insert commands</label>
-                <pos>10,84d</pos>
-              </object>
-              <object class="wxCheckBox" name="chkDisableDollar">
-                <label>Disable $$ quoting</label>
-                <pos>10,96d</pos>
-              </object>
-              <object class="wxCheckBox" name="chkVerbose">
-                <label>Verbose messages</label>
-                <checked>1</checked>
-                <pos>10,144d</pos>
-              </object>
-              <object class="wxStaticBox" name="sbxPlainOptions">
-                <label>PLAIN options</label>
-                <pos>110,55d</pos>
-                <size>125,86d</size>
-              </object>
-              <object class="wxCheckBox" name="chkOnlyData">
-                <label>Only data</label>
-                <pos>117,67d</pos>
-              </object>
-              <object class="wxCheckBox" name="chkOnlySchema">
-                <label>Only schema</label>
-                <pos>117,79d</pos>
-              </object>
-              <object class="wxCheckBox" name="chkNoOwner">
-                <label>No owner</label>
-                <pos>117,91d</pos>
-              </object>
-              <object class="wxCheckBox" name="chkCreateDb">
-                <label>Create DB</label>
-                <pos>117,103d</pos>
-              </object>
-              <object class="wxCheckBox" name="chkDropDb">
-                <label>Drop DB</label>
-                <pos>117,115d</pos>
-              </object>
-              <style></style>
-              <object class="wxCheckBox" name="chkDisableTrigger">
-                <label>Disable Trigger</label>
-                <pos>117,127d</pos>
+            <label>File Options</label>
+            <object class="wxPanel" name="pnlFileOptions">
+              <object class="wxFlexGridSizer">
+                <cols>2</cols>
+                <rows>4</rows>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablecols>1</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stFilename">
+                    <label>Filename</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxFlexGridSizer">
+                    <cols>2</cols>
+                    <rows>1</rows>
+                    <vgap>5</vgap>
+                    <hgap>5</hgap>
+                    <growablecols>0</growablecols>
+                    <object class="sizeritem">
+                      <object class="wxTextCtrl" name="txtFilename"/>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxButton" name="btnFilename">
+                        <label>...</label>
+                      </object>
+                      <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                    <border>4</border>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stFormat">
+                    <label>Format</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxRadioBox" name="rbxFormat">
+                    <content>
+                      <item>COMPRESS</item>
+                      <item>TAR</item>
+                      <item>PLAIN</item>
+                    </content>
+                    <selection>0</selection>
+                    <dimension>1</dimension>
+                    <style>wxRA_SPECIFY_COLS</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stCompressRatio">
+                    <label>Compress Ratio</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtCompressRatio"/>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stEncoding">
+                    <label>Encoding</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxComboBox" name="cbEncoding">
+                    <content/>
+                    <style>wxCB_READONLY|wxCB_DROPDOWN|wxCB_SORT</style>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
               </object>
             </object>
-            <selected>1</selected>
           </object>
-          <pos>2,2d</pos>
-          <size>245,174d</size>
-          <style>wxNB_BOTTOM</style>
+          <object class="notebookpage">
+            <label>Dump Options #1</label>
+            <object class="wxPanel" name="pnlDumpOptions">
+              <object class="wxFlexGridSizer">
+                <cols>1</cols>
+                <rows>3</rows>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablecols>0</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticBoxSizer">
+                    <label>Type Of Objects</label>
+                    <cols>1</cols>
+                    <rows>3</rows>
+                    <vgap>5</vgap>
+                    <hgap>5</hgap>
+                    <growablecols>0</growablecols>
+                    <orient>wxVERTICAL</orient>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkOnlyData">
+                        <label>Only data</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkOnlySchema">
+                        <label>Only schema</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkBlobs">
+                        <label>Blobs</label>
+                        <checked>1</checked>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticBoxSizer">
+                    <label>Don't save</label>
+                    <cols>1</cols>
+                    <rows>3</rows>
+                    <vgap>5</vgap>
+                    <hgap>5</hgap>
+                    <growablecols>0</growablecols>
+                    <orient>wxVERTICAL</orient>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkNoOwner">
+                        <label>Owner</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkNoPrivileges">
+                        <label>Privilege</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkNoTablespaces">
+                        <label>Tablespace</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticBoxSizer">
+                    <label>Queries</label>
+                    <cols>1</cols>
+                    <rows>4</rows>
+                    <vgap>5</vgap>
+                    <hgap>5</hgap>
+                    <growablecols>0</growablecols>
+                    <orient>wxVERTICAL</orient>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkCreateDb">
+                        <label>Include CREATE DATABASE statement</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkDropDb">
+                        <label>Include DROP DATABASE statement</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkColumnInserts">
+                        <label>Use Column Inserts</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkInsert">
+                        <label>Use Insert commands</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Dump Options #2</label>
+            <object class="wxPanel" name="pnlDumpOptions">
+              <object class="wxFlexGridSizer">
+                <cols>1</cols>
+                <rows>2</rows>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablecols>0</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticBoxSizer">
+                    <label>Disable</label>
+                    <cols>1</cols>
+                    <rows>2</rows>
+                    <vgap>5</vgap>
+                    <hgap>5</hgap>
+                    <growablecols>0</growablecols>
+                    <orient>wxVERTICAL</orient>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkDisableTrigger">
+                        <label>Trigger</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkDisableDollar">
+                        <label>Dollar quoting</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticBoxSizer">
+                    <label>Miscellanous</label>
+                    <cols>1</cols>
+                    <rows>3</rows>
+                    <vgap>5</vgap>
+                    <hgap>5</hgap>
+                    <growablecols>0</growablecols>
+                    <orient>wxVERTICAL</orient>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkUseSetSession">
+                        <label>Use SET SESSION AUTHORIZATION</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkOid">
+                        <label>With OIDs</label>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                    <object class="sizeritem">
+                      <object class="wxCheckBox" name="chkVerbose">
+                        <label>Verbose messages</label>
+                        <checked>1</checked>
+                      </object>
+                      <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                      <border>4</border>
+                    </object>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTER_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Objects</label>
+            <object class="ctlCheckTreeView" name="ctvObjects">
+              <style>wxTR_HAS_BUTTONS|wxSIMPLE_BORDER</style>
+            </object>
+          </object>
           <object class="notebookpage">
             <label>Messages</label>
             <object class="wxTextCtrl" name="txtMessages">
@@ -108,41 +320,35 @@
       <object class="sizeritem">
         <object class="wxFlexGridSizer">
           <cols>4</cols>
-          <rows>1</rows>
+          <growablecols>1</growablecols>
           <object class="sizeritem">
             <object class="wxButton" name="wxID_HELP">
-              <label>&amp;Help</label>
-              <pos>2,135d</pos>
+              <label>Help</label>
             </object>
-            <flag>wxTOP|wxBOTTOM|wxLEFT|wxRIGHT</flag>
-            <border>5</border>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
           </object>
           <object class="spacer">
-            <size>0,0</size>
+            <size>0,0d</size>
           </object>
           <object class="sizeritem">
             <object class="wxButton" name="wxID_OK">
               <label>&amp;OK</label>
               <default>1</default>
-              <pos>93,135d</pos>
             </object>
-            <flag>wxTOP|wxBOTTOM|wxLEFT|wxRIGHT</flag>
-            <border>5</border>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
           </object>
           <object class="sizeritem">
             <object class="wxButton" name="wxID_CANCEL">
               <label>&amp;Cancel</label>
-              <pos>146,135d</pos>
             </object>
-            <flag>wxTOP|wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxGROW|wxALIGN_RIGHT</flag>
-            <border>5</border>
+            <flag>wxEXPAND|wxALL</flag>
+            <border>3</border>
           </object>
-          <growablecols>1</growablecols>
         </object>
-        <flag>wxEXPAND|wxGROW</flag>
+        <flag>wxEXPAND|wxTOP|wxLEFT|wxRIGHT</flag>
       </object>
-      <growablecols>0</growablecols>
-      <growablerows>0</growablerows>
     </object>
   </object>
 </resource>
