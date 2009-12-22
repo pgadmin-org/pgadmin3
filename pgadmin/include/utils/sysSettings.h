@@ -134,7 +134,7 @@ public:
     // Misc options
     long GetAutoRowCountThreshold() const { long l; Read(wxT("AutoRowCount"), &l, 2000L); return l; }
 	void SetAutoRowCountThreshold(const long newval) { Write(wxT("AutoRowCount"), newval); }
-    bool GetStickySql() const { bool b; Read(wxT("StickySql"), &b, true); return b; }
+    bool GetStickySql() const { bool b; Read(wxT("StickySql"), &b, false); return b; }
 	void SetStickySql(const bool newval) { Write(wxT("StickySql"), newval); }
     bool GetDoubleClickProperties() const { bool b; Read(wxT("DoubleClickProperties"), &b, false); return b; }
 	void SetDoubleClickProperties(const bool newval) { Write(wxT("DoubleClickProperties"), newval); }
