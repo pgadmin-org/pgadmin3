@@ -115,7 +115,7 @@ private:
     
     int currentPane;
 
-    ctlComboBoxFix    *cbRate;
+    wxComboBox    *cbRate;
     wxComboBox    *cbLogfiles;
     wxButton      *btnRotateLog;
     ctlComboBoxFix *cbDatabase;

@@ -22,6 +22,7 @@
 #include <wx/textctrl.h>
 #include <wx/timer.h>
 #include <wx/aui/aui.h>
+#include <wx/bmpcbox.h>
 
 // App headers
 #include "frm/frmMain.h"
@@ -388,9 +389,9 @@ pgsTimer(new pgScriptTimer(this))
     toolBar->Realize();
 
     // Add the database selection bar
-    cbConnection = new ctlComboBoxFix(this, CTRLID_CONNECTION, wxDefaultPosition, wxSize(-1, -1), wxCB_READONLY|wxCB_DROPDOWN);
-    cbConnection->Append(conn->GetName(), (void*)conn);
-    cbConnection->Append(_("<new connection>"), (void*)0);
+    cbConnection = new wxBitmapComboBox(this, CTRLID_CONNECTION, wxEmptyString, wxDefaultPosition, wxSize(-1, -1), NULL, wxCB_READONLY|wxCB_DROPDOWN);
+    cbConnection->Append(conn->GetName(), CreateBitmap(GetServerColour()), (void*)conn);
+    cbConnection->Append(_("<new connection>"), wxNullBitmap, (void*)0);
 
     //Create SQL editor notebook
     sqlNotebook = new wxNotebook(this, CTL_NTBKCENTER, wxDefaultPosition, wxDefaultSize);
@@ -897,7 +898,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
     if(!IsVisible() && !loading)
         return;
 
-    unsigned int sel=cbConnection->GetCurrentSelection();
+    unsigned int sel=cbConnection->GetSelection();
     if (sel == cbConnection->GetCount()-1)
     {
         // new Connection
@@ -908,7 +909,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
             conn = dlg.CreateConn();
             if (conn)
             {
-                cbConnection->Insert(conn->GetName(), sel, (void*)conn);
+                cbConnection->Insert(conn->GetName(), CreateBitmap(GetServerColour()), sel, (void*)conn);
                 cbConnection->SetSelection(sel);
                 OnChangeConnection(ev);
             }
@@ -2548,6 +2549,38 @@ void frmQuery::OnCommentText(wxCommandEvent& event)
 void frmQuery::OnUncommentText(wxCommandEvent& event)
 {
     sqlQuery->BlockComment(true);
+}
+
+wxBitmap frmQuery::CreateBitmap(const wxColour& colour)
+{
+    const int w = 10, h = 10;
+
+    wxMemoryDC dc;
+    wxBitmap bmp(w, h);
+    dc.SelectObject(bmp);
+    dc.SetBrush(wxBrush(colour));
+    dc.DrawRectangle(0, 0, w, h);
+
+    return bmp;
+}
+
+wxColour frmQuery::GetServerColour()
+{
+    wxColour tmp = wxNullColour;
+    if (mainForm != NULL)
+    {
+        treeObjectIterator servers(mainForm->GetBrowser(), mainForm->GetServerCollection());
+        pgServer *s;
+
+        while ((s=(pgServer*)servers.GetNextObject()) != 0)
+        {
+            if (s->GetConnected() && s->GetConnection()->GetHost() == conn->GetHost() && s->GetConnection()->GetPort() == conn->GetPort())
+            {
+                tmp = wxColour(s->GetColour());
+            }
+        }
+    }
+    return tmp;
 }
 
 ///////////////////////////////////////////////////////

@@ -241,7 +241,7 @@ private:
     pgQueryThread *thread;
     wxMenu *fileMenu, *editMenu, *viewMenu, *toolsMenu, *helpMenu;
     ctlMenuToolbar *toolBar;
-    ctlComboBoxFix *cbLimit;
+    wxComboBox *cbLimit;
     wxTextCtrl *scratchPad;
 
     char relkind;

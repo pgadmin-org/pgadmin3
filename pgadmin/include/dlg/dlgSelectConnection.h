@@ -12,6 +12,7 @@
 #ifndef DLGSELECTCONNECTION_H
 #define DLGSELECTCONNECTION_H
 
+#include <wx/bmpcbox.h>
 #include "dlg/dlgClasses.h"
 
 class pgServer;
@@ -28,7 +29,7 @@ public:
 	wxString GetServerName();
     wxString GetDatabase();
 
-    int Go(pgConn *conn, ctlComboBoxFix *cb);
+    int Go(pgConn *conn, wxBitmapComboBox *cb);
     
 private:
     void OnChangeServer(wxCommandEvent& ev);
@@ -38,9 +39,9 @@ private:
     void OnCancel(wxCommandEvent& ev);
 
     pgServer *remoteServer;
-    ctlComboBoxFix *cbConnection;
+    wxBitmapComboBox *cbConnection;
 	ctlComboBoxFix *cbServer;
-	ctlComboBoxFix *cbDatabase;
+	wxComboBox     *cbDatabase;
 
     DECLARE_EVENT_TABLE()
 };

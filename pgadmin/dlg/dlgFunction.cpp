@@ -940,7 +940,7 @@ wxString dlgFunction::GetSql()
     }
     else
     {
-        if (cbOwner->GetGuessedSelection() > 0)
+        if (cbOwner->GetCurrentSelection() > 0)
             AppendOwnerNew(sql,wxT("FUNCTION ") + name);
     }
 

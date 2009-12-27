@@ -21,6 +21,7 @@
 
 #include <wx/sstream.h>
 #include <wx/txtstrm.h>
+#include <wx/bmpcbox.h>
 
 // wxAUI
 #include <wx/aui/aui.h>
@@ -80,7 +81,7 @@ private:
     ctlSQLResult *sqlResult;
     ExplainCanvas *explainCanvas;
     wxTextCtrl *msgResult, *msgHistory;
-    ctlComboBoxFix *cbConnection;
+    wxBitmapComboBox *cbConnection;
     wxTextCtrl *scratchPad;
 
 	// Query timing/status update
@@ -188,6 +189,10 @@ private:
     void OnMacroInvoke(wxCommandEvent& event);
     void OnMacroManage(wxCommandEvent& event);
     void UpdateMacrosList();
+
+    wxBitmap CreateBitmap(const wxColour& colour);
+    wxColour GetServerColour();
+
     wxWindow *currentControl();
     wxMenu *queryMenu;
     wxMenu *favouritesMenu;

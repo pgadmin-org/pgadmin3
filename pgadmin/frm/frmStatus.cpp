@@ -247,7 +247,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     btnRotateLog = new wxButton(toolBar, CTL_ROTATEBTN, _("Rotate"));
     toolBar->AddControl(btnRotateLog);
     toolBar->AddSeparator();
-    cbRate = new ctlComboBoxFix(toolBar, CTL_RATECBO, wxDefaultPosition, wxSize(-1, -1), wxCB_READONLY|wxCB_DROPDOWN);
+    cbRate = new wxComboBox(toolBar, CTL_RATECBO, wxEmptyString, wxDefaultPosition, wxSize(-1, -1), NULL, wxCB_READONLY|wxCB_DROPDOWN);
     toolBar->AddControl(cbRate);
     toolBar->AddSeparator();
     cbDatabase = new ctlComboBoxFix(toolBar, CTRLID_DATABASE, wxDefaultPosition, wxSize(-1, -1), wxCB_READONLY|wxCB_DROPDOWN);

@@ -142,7 +142,7 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
     txtOid = CTRL_TEXT("txtOID");
     txtComment = CTRL_TEXT("txtComment");
     cbOwner = CTRL_COMBOBOX2("cbOwner");
-    cbClusterSet = CTRL_COMBOBOX2("cbClusterSet");
+    cbClusterSet = CTRL_COMBOBOX1("cbClusterSet");
     
     wxString db = wxT("Database");
     wxString ts = wxT("Tablespace");

@@ -9,11 +9,14 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-
-
 // App headers
 #include "pgAdmin3.h"
 
+// wxWindows headers
+#include <wx/wx.h>
+#include <wx/bmpcbox.h>
+
+// App headers
 #include "frm/frmMain.h"
 #include "dlg/dlgSelectConnection.h"
 #include "dlg/dlgConnect.h"
@@ -55,12 +58,12 @@ DialogWithHelp(form)
 		txtUsername->Hide();
 		btnOK->Enable(false);
 		cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65,5)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN | wxCB_READONLY);
-		cbDatabase = new ctlComboBoxFix(this, CTRLID_CBDATABASE, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN | wxCB_READONLY);
+		cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), NULL, wxCB_DROPDOWN | wxCB_READONLY);
 	}
 	else
 	{
 		cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65,5)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN);
-		cbDatabase = new ctlComboBoxFix(this, CTRLID_CBDATABASE, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN);
+		cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), NULL, wxCB_DROPDOWN);
 		cbServer->SetValue(settings->Read(wxT("QuickConnect/server"), wxEmptyString));
 		cbDatabase->SetValue(settings->Read(wxT("QuickConnect/database"), wxEmptyString));
 		txtUsername->SetValue(settings->Read(wxT("QuickConnect/username"), wxEmptyString));
@@ -245,7 +248,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxSt
 	return newconn;
 }
 
-int dlgSelectConnection::Go(pgConn *conn, ctlComboBoxFix *cb)
+int dlgSelectConnection::Go(pgConn *conn, wxBitmapComboBox *cb)
 {
     cbConnection=cb;
 	if (mainForm != NULL)

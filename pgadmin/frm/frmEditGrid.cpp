@@ -145,9 +145,9 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
     // Setup the limit bar
 #ifndef __WXMAC__
-    cbLimit = new ctlComboBoxFix(this, CTRLID_LIMITCOMBO, wxPoint(0, 0), wxSize(GetCharWidth()*12, -1), wxCB_DROPDOWN);
+    cbLimit = new wxComboBox(this, CTRLID_LIMITCOMBO, wxEmptyString, wxPoint(0, 0), wxSize(GetCharWidth()*12, -1), NULL, wxCB_DROPDOWN);
 #else
-    cbLimit = new ctlComboBoxFix(this, CTRLID_LIMITCOMBO, wxPoint(0, 0), wxSize(GetCharWidth()*24, -1), wxCB_DROPDOWN);
+    cbLimit = new wxComboBox(this, CTRLID_LIMITCOMBO, wxEmptyString, wxPoint(0, 0), wxSize(GetCharWidth()*24, -1), NULL, wxCB_DROPDOWN);
 #endif
     cbLimit->Append(_("No limit"));
     cbLimit->Append(_("1000 rows"));

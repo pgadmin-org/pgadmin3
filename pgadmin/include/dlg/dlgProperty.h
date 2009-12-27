@@ -128,7 +128,7 @@ protected:
     wxNotebook *nbNotebook;
     wxTextCtrl *txtName, *txtOid, *txtComment;
     ctlComboBox *cbOwner;
-    ctlComboBox *cbClusterSet;
+    wxComboBox *cbClusterSet;
     wxCheckBox *chkReadOnly;
     ctlSQLBox *sqlTextField1;
     ctlSQLBox *sqlTextField2;
