@@ -33,12 +33,9 @@ END_EVENT_TABLE()
 
 #define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
 #define rbxAction               CTRL_RADIOBOX("rbxAction")
-#define sbxOptions              CTRL_STATICBOX("sbxOptions")
 #define chkFull                 CTRL_CHECKBOX("chkFull")
 #define chkFreeze               CTRL_CHECKBOX("chkFreeze")
 #define chkAnalyze              CTRL_CHECKBOX("chkAnalyze")
-#define sbxReindexOptions       CTRL_STATICBOX("sbxReindexOptions")
-#define chkRecreate             CTRL_CHECKBOX("chkRecreate")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
 
 #define stBitmap                CTRL("stBitmap", wxStaticBitmap)
@@ -95,14 +92,16 @@ wxString frmMaintenance::GetHelpPage() const
 void frmMaintenance::OnAction(wxCommandEvent& ev)
 {
     bool isVacuum = (rbxAction->GetSelection() == 0);
-    sbxOptions->Enable(isVacuum);
     chkFull->Enable(isVacuum);
     chkFreeze->Enable(isVacuum);
     chkAnalyze->Enable(isVacuum);
 
     bool isReindex = (rbxAction->GetSelection() == 2);
-    sbxReindexOptions->Enable(isReindex && (object->GetMetaType() == PGM_DATABASE || object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_PRIMARYKEY || object->GetMetaType() == PGM_UNIQUE));
-    chkRecreate->Enable(isReindex && object->GetMetaType() == PGM_INDEX);
+    if (isReindex)
+    {
+        chkVerbose->SetValue(false);
+    }
+    chkVerbose->Enable(!isReindex);
 }
 
 
@@ -148,19 +147,10 @@ wxString frmMaintenance::GetSql()
             {
                 sql = wxT("REINDEX INDEX ") + object->GetQuotedFullIdentifier();
             }
-            else
+            else // Database, Tables, and Index (but not Constraintes ones)
             {
-                if (chkRecreate->GetValue())
-                {
-                    sql = wxT("DROP INDEX ") + object->GetQuotedFullIdentifier() + wxT(";\n")
-                        + ((pgIndex*)object)->GetCreate()
-                        + object->GetCommentSql();
-                }
-                else
-                {
-                    sql = wxT("REINDEX ") + object->GetTypeName().Upper()
-                        + wxT(" ") + object->GetQuotedFullIdentifier();
-                }
+                sql = wxT("REINDEX ") + object->GetTypeName().Upper()
+                    + wxT(" ") + object->GetQuotedFullIdentifier();
             }
             break;
         }
