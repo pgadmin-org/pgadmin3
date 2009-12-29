@@ -29,6 +29,7 @@
 #define chkConcurrent   CTRL_CHECKBOX("chkConcurrent")
 #define txtWhere        CTRL_TEXT("txtWhere")
 #define txtFillFactor   CTRL_TEXT("txtFillFactor")
+#define cbOpClass       CTRL_COMBOBOX("cbOpClass")
 
 #define chkDesc         CTRL_CHECKBOX("chkDesc")
 #define rdbNullsFirst   CTRL_RADIOBUTTON("rdbNullsFirst")
@@ -112,6 +113,28 @@ void dlgIndexBase::OnSelectListCol(wxListEvent &ev)
 
 void dlgIndexBase::OnSelectComboCol(wxCommandEvent &ev)
 {
+    if (cbType->GetValue().Length() > 0)
+    {
+        cbOpClass->Clear();
+
+        wxString sql = wxT("SELECT opcname FROM pg_opclass ");
+        sql+= wxT("WHERE opcintype=");
+        sql+= NumToStr(cbColumns->GetOIDKey(cbColumns->GetCurrentSelection()));
+        sql+= wxT("AND opcmethod=") + cbType->GetStringKey(cbType->GetCurrentSelection())
+            + wxT(" AND NOT opcdefault")
+            + wxT(" ORDER BY 1");
+        pgSet *set=connection->ExecuteSet(sql);
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                cbOpClass->Append(set->GetVal(0));
+                set->MoveNext();
+            }
+            delete set;
+        }
+    }
+
     OnSelectCol();
 }
 
@@ -167,7 +190,8 @@ dlgIndex::dlgIndex(pgaFactory *f, frmMain *frame, pgIndex *index, pgTable *paren
 {
     lstColumns->AddColumn(_("Column name"), 90);
     lstColumns->AddColumn(_("Order"), 40);
-    lstColumns->AddColumn(_("NULLs Order"), 50);
+    lstColumns->AddColumn(_("NULLs order"), 50);
+    lstColumns->AddColumn(_("Op. class"), 40);
 }
 
 
@@ -235,12 +259,14 @@ void dlgIndex::OnSelectType(wxCommandEvent &ev)
 
     if (newType == wxT("btree") || newType == wxEmptyString)
     {
+        cbOpClass->Enable(true);
         chkDesc->Enable(true);
         rdbNullsFirst->Enable(true);
         rdbNullsLast->Enable(true);
     }
     else
     {
+        cbOpClass->Enable(false);
         chkDesc->Enable(false);
         rdbNullsFirst->Enable(false);
         rdbNullsLast->Enable(false);
@@ -263,6 +289,10 @@ wxString dlgIndex::GetColumns()
             sql += wxT(", ");
 
         sql += qtIdent(lstColumns->GetItemText(pos));
+
+        wxString opclass = lstColumns->GetText(pos, 3);
+        if (!opclass.IsEmpty())
+            sql += wxT(" ") + opclass;
 
         if (this->database->BackendMinimumVersion(8, 3))
         {
@@ -291,11 +321,10 @@ int dlgIndex::Go(bool modal)
         // We only display the column options (ASC/DESC, NULLS FIRST/LAST)
         // on PostgreSQL 8.3+, for btree indexes.
 		wxArrayString colsArr = index->GetColumnList();
+        wxString colDef, colRest, colName, descDef, nullsDef, opclassDef;
+        const wxString firstOrder = wxT(" NULLS FIRST"), lastOrder = wxT(" NULLS LAST"), descOrder = wxT(" DESC");
         if (this->database->BackendMinimumVersion(8, 3) && index->GetIndexType() == wxT("btree"))
         {
-            wxString colDef, colRest, colName, descDef, nullsDef;
-            const wxString firstOrder = wxT(" NULLS FIRST"), lastOrder = wxT(" NULLS LAST"), descOrder = wxT(" DESC");
-
             for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
             {
                 colDef = colsArr.Item(colIdx);
@@ -327,14 +356,39 @@ int dlgIndex::Go(bool modal)
                         nullsDef = wxT("LAST");
                 }
 
+                int pos = colDef.First(wxT(" "));
+                if (pos > 0)
+                {
+                    opclassDef = colDef.Mid(pos + 1);
+                    colDef = colDef.Mid(0, pos - 1);
+                }
+                else
+                    opclassDef = wxEmptyString;
+
 			    lstColumns->InsertItem(colIdx, colDef, columnFactory.GetIconId());
                 lstColumns->SetItem(colIdx, 1, descDef);
                 lstColumns->SetItem(colIdx, 2, nullsDef);
+                lstColumns->SetItem(colIdx, 3, opclassDef);
             }
         }
         else
+        {
             for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
+            {
+                int pos = colDef.First(wxT(" "));
+                if (pos > 0)
+                {
+                    colDef = colRest;
+                    opclassDef = colDef.Mid(pos + 1);
+                    colDef = colDef.Mid(0, pos - 1);
+                }
+                else
+                    opclassDef = wxEmptyString;
+
 			    lstColumns->InsertItem(colIdx, colsArr.Item(colIdx), columnFactory.GetIconId());
+                lstColumns->SetItem(colIdx, 3, cbOpClass->GetValue());
+            }
+        }
 
         cbType->Append(index->GetIndexType());
         chkUnique->SetValue(index->GetIsUnique());
@@ -346,6 +400,7 @@ int dlgIndex::Go(bool modal)
         chkUnique->Disable();
         chkConcurrent->Disable();
         PrepareTablespace(cbTablespace, index->GetTablespaceOid());
+        cbOpClass->Disable();
         chkDesc->Disable();
         rdbNullsFirst->Disable();
         rdbNullsLast->Disable();
@@ -356,12 +411,12 @@ int dlgIndex::Go(bool modal)
         PrepareTablespace(cbTablespace);
         cbType->Append(wxT(""));
         pgSet *set=connection->ExecuteSet(wxT(
-            "SELECT amname FROM pg_am"));
+            "SELECT oid, amname FROM pg_am"));
         if (set)
         {
             while (!set->Eof())
             {
-                cbType->Append(set->GetVal(0));
+                cbType->Append(set->GetVal(1), set->GetVal(0));
                 set->MoveNext();
             }
             delete set;
@@ -404,6 +459,7 @@ void dlgIndex::OnAddCol(wxCommandEvent &ev)
     {
         long colIndex = lstColumns->InsertItem(lstColumns->GetItemCount(), colName, columnFactory.GetIconId());
 
+
         if (this->database->BackendMinimumVersion(8, 3))
         {
             if (chkDesc->GetValue())
@@ -439,6 +495,8 @@ void dlgIndex::OnAddCol(wxCommandEvent &ev)
                         lstColumns->SetItem(colIndex, 2, wxT("LAST"));
                 }
             }
+
+            lstColumns->SetItem(colIndex, 3, cbOpClass->GetValue());
         }
 
         cbColumns->Delete(cbColumns->GetCurrentSelection());

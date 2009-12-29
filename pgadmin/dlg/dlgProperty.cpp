@@ -1483,7 +1483,7 @@ int dlgCollistProperty::Go(bool modal)
                 {
                     if (column->GetColNumber() > 0)
                     {
-                        cbColumns->Append(column->GetName());
+                        cbColumns->Append(column->GetName(), column->GetAttTypId());
                     }
                 }
         
