@@ -212,6 +212,10 @@ pgsTimer(new pgScriptTimer(this))
     recentKey = wxT("RecentFiles");
     RestorePosition(100, 100, 600, 500, 450, 300);
 
+    // tell the backend who we really are
+    if (conn->BackendMinimumVersion(8, 5))
+        conn->ExecuteVoid(wxT("SET application_name='pgAdmin - Query Tool'"),false);
+
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);

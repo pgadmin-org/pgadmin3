@@ -107,6 +107,10 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     relid=(Oid)obj->GetOid();
     editorCell = new sqlCell();
 
+    // tell the backend who we really are
+    if (connection->BackendMinimumVersion(8, 5))
+        connection->ExecuteVoid(wxT("SET application_name='pgAdmin - Edit Grid'"),false);
+
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);

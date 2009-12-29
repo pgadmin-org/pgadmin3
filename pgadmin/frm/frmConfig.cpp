@@ -62,6 +62,11 @@ frmConfig::frmConfig(frmMain *parent, const wxString& title, pgConn *_conn)
     mainForm = parent;
     conn=_conn;
     SetStatusBarPane(-1);
+
+    // tell the backend who we really are
+    if (conn->BackendMinimumVersion(8, 5))
+        conn->ExecuteVoid(wxT("SET application_name='pgAdmin - Config Editor'"),false);
+
 }
 
 

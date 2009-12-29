@@ -162,6 +162,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
             case 2: connstr.Append(wxT(" requiressl=0"));   break;
         }
     }
+
     connstr.Trim(false);
 	
     dbHost = server;
@@ -205,6 +206,9 @@ bool pgConn::DoConnect()
         connStatus = PGCONN_OK;
         PQsetNoticeProcessor(conn, pgNoticeProcessor, this);
 
+        // tell the backend who we really are
+        if (BackendMinimumVersion(8, 5))
+            ExecuteVoid(wxT("SET application_name='pgAdmin - Browser'"),false);
 
         wxString sql=wxT("SET DateStyle=ISO;SELECT oid, pg_encoding_to_char(encoding) AS encoding, datlastsysoid\n")
                       wxT("  FROM pg_database WHERE ");

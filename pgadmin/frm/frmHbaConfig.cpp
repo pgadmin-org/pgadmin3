@@ -54,6 +54,10 @@ frmHbaConfig::frmHbaConfig(frmMain *parent, pgServer *server)
 
     if (conn)
     {
+        // tell the backend who we really are
+        if (conn->BackendMinimumVersion(8, 5))
+            conn->ExecuteVoid(wxT("SET application_name='pgAdmin - Config Editor'"),false);
+
         serverFileName = conn->ExecuteScalar(wxT("SHOW hba_file"));
         if (serverFileName == wxT("unset") || serverFileName.IsEmpty())
             serverFileName = wxT("pg_hba.conf");

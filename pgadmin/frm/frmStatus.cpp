@@ -176,6 +176,10 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     logHasTimestamp = false;
     logFormatKnown = false;
 
+    // tell the backend who we really are
+    if (conn->BackendMinimumVersion(8, 5))
+        conn->ExecuteVoid(wxT("SET application_name='pgAdmin - Server Status'"),false);
+
     // Notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
@@ -470,6 +474,8 @@ void frmStatus::AddStatusPane()
     // Add each column to the list control
     statusList = (ctlListView*)lstStatus;
     statusList->AddColumn(wxT("PID"), 35);
+    if (connection->BackendMinimumVersion(8, 5))
+        statusList->AddColumn(_("Application name"), 70);
     statusList->AddColumn(_("Database"), 70);
     statusList->AddColumn(_("User"), 70);
     if (connection->BackendMinimumVersion(8, 1))
@@ -1117,6 +1123,8 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
                 wxString qry=dataSet1->GetVal(wxT("current_query"));
 
                 int colpos=1;
+                if (connection->BackendMinimumVersion(8, 5))
+                    statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("application_name")));
                 statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("datname")));
                 statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("usename")));
 

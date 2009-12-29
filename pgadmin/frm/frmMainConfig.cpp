@@ -55,6 +55,9 @@ frmMainConfig::frmMainConfig(frmMain *parent, pgServer *server)
 
     if (conn)
     {
+        // tell the backend who we really are
+        if (conn->BackendMinimumVersion(8, 5))
+            conn->ExecuteVoid(wxT("SET application_name='pgAdmin - Config Editor'"),false);
 
         if (serverFileName.IsEmpty())
             serverFileName = wxT("postgresql.conf");
