@@ -186,10 +186,10 @@ void dlgSelectConnection::OnCancel(wxCommandEvent& ev)
     EndModal(wxID_CANCEL);
 }
 
-pgConn *dlgSelectConnection::CreateConn()
+pgConn *dlgSelectConnection::CreateConn(wxString& applicationname)
 {
 	if (GetServer())	/* Running with access to the main form with the object tree */
-		return GetServer()->CreateConn(GetDatabase());
+		return GetServer()->CreateConn(GetDatabase(), 0, applicationname);
 	else
     {
         /* gcc requires that we store this in temporary variables for some reason... */
@@ -206,14 +206,14 @@ pgConn *dlgSelectConnection::CreateConn()
 			serv = serv.Mid(0, serv.Find(':'));
 		}
         wxString user = txtUsername->GetValue();
-		return CreateConn(serv, db, user, port, 0, true);
+		return CreateConn(serv, db, user, port, 0, applicationname, true);
     }
 }
 
-pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxString& username, int port, int sslmode, bool writeMRU)
+pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxString& username, int port, int sslmode, wxString& applicationname, bool writeMRU)
 {
 	pgConn *newconn;
-	newconn = new pgConn(server, dbname, username, wxT(""), port, sslmode);
+	newconn = new pgConn(server, dbname, username, wxT(""), port, sslmode, 0, applicationname);
 	if (newconn->GetStatus() != PGCONN_OK &&
 		newconn->GetLastError().Cmp(wxString(PQnoPasswordSupplied, wxConvUTF8)) == 0)
 	{
@@ -227,7 +227,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxSt
 		if (dlg.Go() != wxID_OK)
 			return NULL;
 
-		newconn = new pgConn(server, dbname, username, dlg.GetPassword(), port, sslmode);
+		newconn = new pgConn(server, dbname, username, dlg.GetPassword(), port, sslmode, 0, applicationname);
 	}
 
 	if (newconn)

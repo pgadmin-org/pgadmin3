@@ -50,7 +50,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
     ((pgConn*)arg)->Notice(message);
 }
 
-pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, OID oid)
+pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, OID oid, const wxString& applicationname)
 {
     wxString msg, hostip, hostname;
 
@@ -61,6 +61,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     save_port = port;
     save_sslmode = sslmode;
     save_oid = oid;
+    save_applicationname = applicationname;
 
     memset(features, 0, sizeof(features));
     majorVersion=0;
@@ -168,6 +169,21 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     dbHost = server;
     dbHostName = hostname;
     dbHostAddress = hostip;
+
+    if (!applicationname.IsEmpty())
+    {
+        // Check connection string with application_name
+        char *errmsg;
+        wxString connstr_with_applicationname = connstr + wxT(" application_name='") + applicationname + wxT("'");
+        if (PQconninfoParse(connstr_with_applicationname.mb_str(wxConvUTF8), &errmsg))
+        {
+            connstr = connstr_with_applicationname;
+        }
+        else if (PQconninfoParse(connstr_with_applicationname.mb_str(wxConvLibc), &errmsg))
+        {
+            connstr = connstr_with_applicationname;
+        }
+    }
 	
     // Open the connection
     wxString cleanConnStr = connstr;
@@ -205,10 +221,6 @@ bool pgConn::DoConnect()
     {
         connStatus = PGCONN_OK;
         PQsetNoticeProcessor(conn, pgNoticeProcessor, this);
-
-        // tell the backend who we really are
-        if (BackendMinimumVersion(8, 5))
-            ExecuteVoid(wxT("SET application_name='pgAdmin - Browser'"),false);
 
         wxString sql=wxT("SET DateStyle=ISO;SELECT oid, pg_encoding_to_char(encoding) AS encoding, datlastsysoid\n")
                       wxT("  FROM pg_database WHERE ");

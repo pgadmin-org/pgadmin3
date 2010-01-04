@@ -107,10 +107,6 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     relid=(Oid)obj->GetOid();
     editorCell = new sqlCell();
 
-    // tell the backend who we really are
-    if (connection->BackendMinimumVersion(8, 5))
-        connection->ExecuteVoid(wxT("SET application_name='pgAdmin - Edit Grid'"),false);
-
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
@@ -3064,9 +3060,10 @@ bool editGridFactoryBase::CheckEnable(pgObject *obj)
 wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filter)
 {
     pgDatabase *db=((pgSchemaObject*)obj)->GetDatabase();
+    wxString applicationname = wxT("pgAdmin - Edit Grid");
 
     pgServer *server=db->GetServer();
-    pgConn *conn= db->CreateConn();
+    pgConn *conn= db->CreateConn(applicationname);
     if (conn)
     {
         wxString txt = wxT("Edit Data - ")

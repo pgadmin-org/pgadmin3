@@ -435,6 +435,7 @@ bool pgAdmin3::OnInit()
             // -S specified, but not -s. Open the server status window but do *not* open the main window
             pgConn *conn = NULL;
             wxString connstr;
+            wxString applicationname = wxT("pgAdmin - Server Status");
 
             if (cmdParser.Found(wxT("S")))
             {
@@ -447,7 +448,7 @@ bool pgAdmin3::OnInit()
                 int rc=dlg.Go(conn, NULL);
                 if (rc != wxID_OK)
                     return false;
-                conn = dlg.CreateConn();
+                conn = dlg.CreateConn(applicationname);
             }
             else if (cmdParser.Found(wxT("Sc"), &connstr))
             {
@@ -498,7 +499,7 @@ bool pgAdmin3::OnInit()
                 winSplash->Show(false);
                 dlgSelectConnection dlg(NULL, NULL);
                 dlg.CenterOnParent();
-                conn = dlg.CreateConn(host, database, username, port, sslmode);
+                conn = dlg.CreateConn(host, database, username, port, sslmode, applicationname);
             }
             else
             {
@@ -521,6 +522,7 @@ bool pgAdmin3::OnInit()
             // -q specified, but not -s. Open a query tool but do *not* open the main window
             pgConn *conn = NULL;
             wxString connstr;
+            wxString applicationname = wxT("pgAdmin - Query Tool");
 
 #ifdef __WXMAC__
             if (cmdParser.Found(wxT("q")) || !macFileToOpen.IsEmpty())
@@ -537,7 +539,7 @@ bool pgAdmin3::OnInit()
                 int rc=dlg.Go(conn, NULL);
                 if (rc != wxID_OK)
                     return false;
-                conn = dlg.CreateConn();
+                conn = dlg.CreateConn(applicationname);
             }
             else if (cmdParser.Found(wxT("qc"), &connstr))
             {
@@ -588,7 +590,7 @@ bool pgAdmin3::OnInit()
                 winSplash->Show(false);
                 dlgSelectConnection dlg(NULL, NULL);
                 dlg.CenterOnParent();
-                conn = dlg.CreateConn(host, database, username, port, sslmode);
+                conn = dlg.CreateConn(host, database, username, port, sslmode, applicationname);
             }
             else
             {
@@ -633,7 +635,8 @@ bool pgAdmin3::OnInit()
                 if (srv && cmdParser.Found(wxT("q")))
                 {
                     pgConn *conn;
-                    conn = srv->CreateConn();
+                    wxString applicationname = wxT("pgAdmin - Query Tool");
+                    conn = srv->CreateConn(applicationname);
                     if (conn)
                     {
                         wxString fn;

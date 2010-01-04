@@ -176,10 +176,6 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     logHasTimestamp = false;
     logFormatKnown = false;
 
-    // tell the backend who we really are
-    if (conn->BackendMinimumVersion(8, 5))
-        conn->ExecuteVoid(wxT("SET application_name='pgAdmin - Server Status'"),false);
-
     // Notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
@@ -442,7 +438,8 @@ void frmStatus::OnChangeDatabase(wxCommandEvent &ev)
     }
 
     locks_connection = new pgConn(connection->GetHostAddress(), cbDatabase->GetValue(),
-      connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetSslMode());
+      connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetSslMode(),
+      0, connection->GetApplicationName());
 }
 
 
@@ -801,10 +798,10 @@ void frmStatus::OnCopyQuery(wxCommandEvent& ev)
     if (text.Length() > 0 && dbname.Length() > 0
       && text.Trim() != wxT("<IDLE>") && text.Trim() != wxT("<IDLE in transaction>"))
     {
-        //pgDatabase *db=obj->GetDatabase();
         pgConn *conn = new pgConn(connection->GetHostAddress(), dbname,
           connection->GetUser(), connection->GetPassword(),
-          connection->GetPort(), connection->GetSslMode(), connection->GetDbOid());
+          connection->GetPort(), connection->GetSslMode(), connection->GetDbOid(),
+          connection->GetApplicationName());
         if (conn)
         {
             frmQuery *fq = new frmQuery(mainForm, wxEmptyString, conn, text);
@@ -2329,7 +2326,9 @@ void frmStatus::OnCommit(wxCommandEvent &event)
                                        connection->GetUser(), 
                                        connection->GetPassword(), 
                                        connection->GetPort(), 
-                                       connection->GetSslMode());
+                                       connection->GetSslMode(),
+                                       0,
+                                       connection->GetApplicationName());
             if (tmpConn)
             {
                 if (tmpConn->GetStatus() != PGCONN_OK)
@@ -2377,7 +2376,9 @@ void frmStatus::OnRollback(wxCommandEvent &event)
                                        connection->GetUser(), 
                                        connection->GetPassword(), 
                                        connection->GetPort(), 
-                                       connection->GetSslMode());
+                                       connection->GetSslMode(),
+                                       0,
+                                       connection->GetApplicationName());
             if (tmpConn)
             {
                 if (tmpConn->GetStatus() != PGCONN_OK)
@@ -2542,8 +2543,9 @@ wxWindow *serverStatusFactory::StartDialog(frmMain *form, pgObject *obj)
 {
 
     pgServer *server=obj->GetServer();
+    wxString applicationname = wxT("pgAdmin - Server Status");
 
-    pgConn *conn = server->CreateConn();
+    pgConn *conn = server->CreateConn(wxEmptyString, 0, applicationname);
     if (conn)
     {
         wxString txt = _("Server Status - ") + server->GetDescription() 

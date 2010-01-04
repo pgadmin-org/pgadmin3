@@ -87,7 +87,8 @@ int pgDatabase::Connect()
         else
         {
             useServerConnection = false;
-		    conn = CreateConn();
+            wxString applicationname = wxT("pgAdmin - Browser");
+		    conn = CreateConn(applicationname);
 
             if (!conn)
             {

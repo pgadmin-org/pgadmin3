@@ -81,7 +81,7 @@ public:
     bool GetCreateRole() const { return createRole; }
     void iSetCreateRole(const bool b) { createRole=b; }
 
-    pgConn *CreateConn(wxString dbName=wxEmptyString, OID oid=0);
+    pgConn *CreateConn(wxString dbName=wxEmptyString, OID oid=0, wxString applicationname=wxEmptyString);
 
     wxString GetLastDatabase() const { return lastDatabase; }
     void iSetLastDatabase(const wxString& s) { lastDatabase=s; }

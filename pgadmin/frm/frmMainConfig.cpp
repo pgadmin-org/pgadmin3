@@ -47,18 +47,15 @@ END_EVENT_TABLE()
 frmMainConfig::frmMainConfig(frmMain *parent, pgServer *server)
 : frmConfig(parent, BCE_TITLE, 0)
 {
+    wxString applicationname = wxT("pgAdmin - Configuration Editor");
     if (server)
-        conn = server->CreateConn();
+        conn = server->CreateConn(wxEmptyString, 0, applicationname);
 
     InitForm();
     Init();
 
     if (conn)
     {
-        // tell the backend who we really are
-        if (conn->BackendMinimumVersion(8, 5))
-            conn->ExecuteVoid(wxT("SET application_name='pgAdmin - Config Editor'"),false);
-
         if (serverFileName.IsEmpty())
             serverFileName = wxT("postgresql.conf");
 

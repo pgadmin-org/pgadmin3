@@ -43,20 +43,23 @@ typedef u_long in_addr_t;
 //
 //    The constructor creates a new thread and connects to the specified server
 
-dbgPgConn::dbgPgConn(frmDebugger *frame, const wxString &server, const wxString &database, const wxString &userName, const wxString &password, const wxString &port, int sslmode)
+dbgPgConn::dbgPgConn(frmDebugger *frame, const wxString &server, const wxString &database, const wxString &userName, const wxString &password, const wxString &port, int sslmode, const wxString &applicationname)
    : m_frame(frame)
 {
-    Init( server, database, userName, password, port, sslmode, true );
+    Init( server, database, userName, password, port, sslmode, applicationname, true );
 }
 
 dbgPgConn::dbgPgConn(frmDebugger *frame, const dbgConnProp & props, bool startThread )
    : m_frame(frame)
 {
-    Init(  props.m_host, props.m_database, props.m_userName, props.m_password, props.m_port, props.m_sslMode, startThread );
+    Init(  props.m_host, props.m_database, props.m_userName, props.m_password, props.m_port, props.m_sslMode, props.m_applicationName, startThread );
 }
 
-void dbgPgConn::Init( const wxString &server, const wxString &database, const wxString &username, const wxString &password, const wxString &port, int sslmode, bool startThread )
+void dbgPgConn::Init( const wxString &server, const wxString &database, const wxString &username, const wxString &password, const wxString &port, int sslmode, const wxString &applicationname, bool startThread )
 {
+    bool utfConnectString = false;
+    bool libcConnectString = false;
+
     m_pgConn       = NULL;
     m_majorVersion = 0;
     m_minorVersion = 0;
@@ -205,13 +208,41 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
     connectParams.Trim(true);
     connectParams.Trim(false);
 
+    if (!applicationname.IsEmpty())
+    {
+        // Check connection string with application_name
+        char *errmsg;
+        wxString connectParams_with_applicationname = connectParams + wxT(" application_name='") + applicationname + wxT("'");
+        if (PQconninfoParse(connectParams_with_applicationname.mb_str(wxConvUTF8), &errmsg))
+        {
+            utfConnectString = true;
+            connectParams = connectParams_with_applicationname;
+        }
+        else if (PQconninfoParse(connectParams_with_applicationname.mb_str(wxConvLibc), &errmsg))
+        {
+            libcConnectString = true;
+            connectParams = connectParams_with_applicationname;
+        }
+    }
+	
     m_frame->getStatusBar()->SetStatusText( wxString::Format(_( "Connecting to %s" ), msg.c_str()), 1 );	
-    m_pgConn = PQconnectdb( connectParams.mb_str(wxConvUTF8));
+    wxCharBuffer cstrUTF=connectParams.mb_str(wxConvUTF8);
+    wxCharBuffer cstrLibc=connectParams.mb_str(wxConvLibc);
+
+    if (!libcConnectString)
+        m_pgConn = PQconnectdb(cstrUTF);
+    else
+        m_pgConn = PQconnectdb(cstrLibc);
+
+    if (PQstatus(m_pgConn) != CONNECTION_OK)
+    {
+        PQfinish(m_pgConn);
+        m_pgConn = PQconnectdb(cstrLibc);
+    }
 
     if( PQstatus( m_pgConn ) == CONNECTION_OK )
     {
         m_frame->getStatusBar()->SetStatusText( wxString::Format(_( "Connected to %s" ), msg.c_str()), 1 );
-
         PQsetClientEncoding( m_pgConn, "UNICODE" );
     }
     else

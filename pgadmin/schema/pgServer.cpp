@@ -127,7 +127,7 @@ pgServer *pgServer::GetServer() const
 }
 
 
-pgConn *pgServer::CreateConn(wxString dbName, OID oid)
+pgConn *pgServer::CreateConn(wxString dbName, OID oid, wxString applicationname)
 {
     if (!connected)
         return 0;
@@ -137,7 +137,7 @@ pgConn *pgServer::CreateConn(wxString dbName, OID oid)
         dbName = GetDatabaseName();
         oid = dbOid;
     }
-    pgConn *conn=new pgConn(GetName(), dbName, username, password, port, ssl, oid);
+    pgConn *conn=new pgConn(GetName(), dbName, username, password, port, ssl, oid, applicationname);
 
     if (conn && conn->GetStatus() != PGCONN_OK)
     {
@@ -614,21 +614,21 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 
         if (database.IsEmpty())
         {
-            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, ssl);
+            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, ssl, 0, wxT("pgAdmin - Browser"));
             if (conn->GetStatus() == PGCONN_OK)
                 database=DEFAULT_PG_DATABASE;
             else if (conn->GetStatus() == PGCONN_BAD && conn->GetLastError().Find(
                                 wxT("database \"") DEFAULT_PG_DATABASE wxT("\" does not exist")) >= 0)
             {
                 delete conn;
-                conn = new pgConn(GetName(), wxT("template1"), username, password, port, ssl);
+                conn = new pgConn(GetName(), wxT("template1"), username, password, port, ssl, 0, wxT("pgAdmin - Browser"));
                 if (conn && conn->GetStatus() == PGCONN_OK)
                     database=wxT("template1");
             }
         }
         else
         {
-            conn = new pgConn(GetName(), database, username, password, port, ssl);
+            conn = new pgConn(GetName(), database, username, password, port, ssl, 0, wxT("pgAdmin - Browser"));
             if (!conn)
             {
                 form->EndMsg(false);

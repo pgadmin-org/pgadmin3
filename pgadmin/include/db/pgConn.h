@@ -81,7 +81,7 @@ typedef struct pgError {
 class pgConn
 {
 public:
-    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, int sslmode=0, OID oid=0);
+    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, int sslmode=0, OID oid=0, const wxString& applicationname = wxT("pgAdmin"));
     ~pgConn();
 
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
@@ -114,6 +114,7 @@ public:
     wxString GetHostName() const { return dbHostName; }
     wxString GetHostAddress() const { return dbHostAddress; }
     wxString GetDbname() const { return save_database; }
+    wxString GetApplicationName() const { return save_applicationname; }
     wxString GetName() const;
     bool GetNeedUtfConnectString() { return utfConnectString; }
     int GetPort() const { return atoi(PQport(conn)); };
@@ -177,7 +178,7 @@ private:
     wxString reservedNamespaces;
 	wxString connstr;
 	
-    wxString save_server, save_database, save_username, save_password;
+    wxString save_server, save_database, save_username, save_password, save_applicationname;
     int save_port, save_sslmode;
     OID save_oid;
 };
