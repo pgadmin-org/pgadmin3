@@ -199,6 +199,13 @@ wxString dlgUser::GetHelpPage() const
 void dlgUser::OnChangeCal(wxCalendarEvent &ev)
 {
 	CheckChange();
+
+    bool timEn=ev.GetDate().IsValid();
+    timValidUntil->Enable(timEn);
+    if (!timEn)
+        timValidUntil->SetTime(wxDefaultDateTime);
+    else
+        timValidUntil->SetTime(wxDateTime::Today());
 }
 
 
@@ -210,6 +217,8 @@ void dlgUser::OnChangeDate(wxDateEvent &ev)
     timValidUntil->Enable(timEn);
     if (!timEn)
         timValidUntil->SetTime(wxDefaultDateTime);
+    else
+        timValidUntil->SetTime(wxDateTime::Today());
 }
 
 void dlgUser::OnChangeSpin(wxSpinEvent &ev)
