@@ -375,7 +375,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
         systemRestriction = wxT("\n   AND att.attnum > 0");
         
     wxString sql=
-        wxT("SELECT att.*, def.*, pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS defval, CASE WHEN att.attndims > 0 THEN 1 ELSE 0 END AS isarray, format_type(ty.oid,NULL) AS typname, tn.nspname as typnspname, et.typname as elemtypname,\n")
+        wxT("SELECT att.*, def.*, pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS defval, CASE WHEN att.attndims > 0 THEN 1 ELSE 0 END AS isarray, format_type(ty.oid,NULL) AS typname, format_type(ty.oid,att.atttypmod) AS displaytypname, tn.nspname as typnspname, et.typname as elemtypname,\n")
         wxT("  cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
         wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey,\n")
         wxT("  CASE \n")
@@ -453,7 +453,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
             column->iSetRawTypename(dt.Name());
 
             column->iSetVarTypename(dt.FullName());
-            column->iSetQuotedTypename(dt.FullName());
+            column->iSetQuotedTypename(columns->GetVal(wxT("displaytypname")));
 
             column->iSetNotNull(columns->GetBool(wxT("attnotnull")));
             column->iSetQuotedFullTable(database->GetQuotedSchemaPrefix(columns->GetVal(wxT("nspname")))
