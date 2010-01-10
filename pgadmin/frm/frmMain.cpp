@@ -964,12 +964,12 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
 
             server->ShowTreeDetail(browser);
 
+            browser->Freeze();
             if (restore && server->GetRestore())
-            {
-                browser->Freeze();
                 item=RestoreEnvironment(server);
-                browser->Thaw();
-            }
+            else
+                item = server->GetId();
+            browser->Thaw();
 
             if (item)
             {
@@ -979,6 +979,7 @@ int frmMain::ReconnectServer(pgServer *server, bool restore)
                 browser->Expand(item);
                 browser->EnsureVisible(item);
             }
+
             if (item)
                 EndMsg(true);
             else
