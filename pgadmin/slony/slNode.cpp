@@ -82,7 +82,7 @@ wxString slNode::GetSql(ctlTree *browser)
                     + NumToStr(GetSlId()) + wxT(", ")
                     + qtDbString(GetComment());
 
-        if (GetCluster()->ClusterMinimumVersion(1, 1))
+		if (GetCluster()->ClusterMinimumVersion(1, 1) && !GetCluster()->ClusterMinimumVersion(2, 0))
             sql += wxT(", ") + BoolToStr(GetSpool());
         sql += wxT(");\n");
     }

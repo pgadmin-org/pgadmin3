@@ -737,7 +737,7 @@ void dlgRepCluster::OnOK(wxCommandEvent &ev)
                     + txtNodeID->GetValue() + wxT(", ")
                     + qtDbString(txtNodeName->GetValue());
 
-            if (StrToDouble(remoteVersion) >= 1.1)
+            if (StrToDouble(remoteVersion) >= 1.1 && StrToDouble(remoteVersion) < 2.0)
                 sql += wxT(", false");
 
             sql += wxT(");\n")
