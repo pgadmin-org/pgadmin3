@@ -128,7 +128,11 @@ void wxTimeSpinCtrl::Init()
 
 wxSize wxTimeSpinCtrl::DoGetBestSize() const
 {
+#ifdef __WXGTK__
+    return wxSize(100, m_spn->GetBestSize().y);
+#else
     return wxSize(100, m_txt->GetBestSize().y);
+#endif
 }
 
 

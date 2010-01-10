@@ -274,6 +274,13 @@ void dlgRole::OnOK(wxCommandEvent &ev)
 void dlgRole::OnChangeCal(wxCalendarEvent &ev)
 {
 	CheckChange();
+
+    bool timEn=ev.GetDate().IsValid();
+    timValidUntil->Enable(timEn);
+    if (!timEn)
+        timValidUntil->SetTime(wxDefaultDateTime);
+    else
+        timValidUntil->SetTime(wxDateTime::Today());
 }
 
 
@@ -285,6 +292,8 @@ void dlgRole::OnChangeDate(wxDateEvent &ev)
     timValidUntil->Enable(timEn);
     if (!timEn)
         timValidUntil->SetTime(wxDefaultDateTime);
+    else
+        timValidUntil->SetTime(wxDateTime::Today());
 }
 
 void dlgRole::OnChangeSpin(wxSpinEvent &ev)
