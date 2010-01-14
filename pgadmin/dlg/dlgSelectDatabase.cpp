@@ -294,7 +294,7 @@ wxString dlgSelDBNode::getConnectionString()
     if (conn && conn->GetStatus() == PGCONN_OK)
     {
         connStr += wxT("user=") + conn->GetUser() + wxT(" ");
-        connStr += wxT("hostaddr=") + conn->GetHostAddress() + wxT(" ");
+        connStr += wxT("host=") + conn->GetHostName() + wxT(" ");
 
         wxString port;
         port.Printf(wxT("port=%d "), conn->GetPort());

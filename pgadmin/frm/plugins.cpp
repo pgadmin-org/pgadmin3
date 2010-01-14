@@ -231,7 +231,7 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
     if (HaveDatabase(obj))
     {
         execCmd.Replace(wxT("$$HOSTNAME"), obj->GetConnection()->GetHostName());
-        execCmd.Replace(wxT("$$HOSTADDR"), obj->GetConnection()->GetHostAddress());
+        execCmd.Replace(wxT("$$HOSTADDR"), obj->GetConnection()->GetHostName());
         execCmd.Replace(wxT("$$PORT"), NumToStr((long)obj->GetConnection()->GetPort()));
         execCmd.Replace(wxT("$$SSLMODE"), obj->GetConnection()->GetSslModeName());
         execCmd.Replace(wxT("$$DATABASE"), obj->GetConnection()->GetDbname());

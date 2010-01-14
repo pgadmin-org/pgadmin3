@@ -52,7 +52,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
 
 pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, OID oid, const wxString& applicationname)
 {
-    wxString msg, hostip, hostname;
+    wxString msg;
 
     save_server = server;
     save_database = database;
@@ -71,59 +71,14 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     utfConnectString = false;
 
     // Check the hostname/ipaddress
-    struct hostent *host;
-    in_addr_t addr;
     conn=0;
     noticeArg=0;
     connStatus = PGCONN_BAD;
     
-#ifdef __WXMSW__
-    struct in_addr ipaddr;
-#else
-    unsigned long ipaddr;
-#endif
-    
-#ifndef __WXMSW__
-    if (!(server.IsEmpty() || server.StartsWith(wxT("/"))))
-    {
-#endif
-        addr = inet_addr(server.ToAscii());
-        if (addr == INADDR_NONE) // szServer is not an IP address
-        {
-            host = gethostbyname(server.ToAscii());
-            if (host == NULL)
-            {
-                connStatus = PGCONN_DNSERR;
-                wxLogError(__("Could not resolve hostname %s"), server.c_str());
-                return;
-            }
-
-            memcpy(&(ipaddr),host->h_addr,host->h_length); 
-            hostip = wxString::FromAscii(inet_ntoa(*((struct in_addr*) host->h_addr_list[0])));
-            hostname = server;
-        }
-        else
-        {
-            hostip = server;
-            hostname = server;
-        }
-#ifndef __WXMSW__
-    }
-    else
-        hostname = server;
-#endif
-    
-
-    wxLogInfo(wxT("Server name: %s (resolved to: %s)"), server.c_str(), hostip.c_str());
-
     // Create the connection string
-    if (!hostname.IsEmpty()) {
+    if (!server.IsEmpty()) {
       connstr.Append(wxT(" host="));
-      connstr.Append(qtConnString(hostname));
-    }
-    if (!hostip.IsEmpty()) {
-      connstr.Append(wxT(" hostaddr="));
-      connstr.Append(hostip);
+      connstr.Append(qtConnString(server));
     }
     if (!database.IsEmpty()) {
       connstr.Append(wxT(" dbname="));
@@ -167,8 +122,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     connstr.Trim(false);
 	
     dbHost = server;
-    dbHostName = hostname;
-    dbHostAddress = hostip;
+    dbHostName = server;
 
     if (!applicationname.IsEmpty())
     {

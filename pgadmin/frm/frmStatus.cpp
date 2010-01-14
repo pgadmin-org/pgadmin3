@@ -437,7 +437,7 @@ void frmStatus::OnChangeDatabase(wxCommandEvent &ev)
         delete locks_connection;
     }
 
-    locks_connection = new pgConn(connection->GetHostAddress(), cbDatabase->GetValue(),
+    locks_connection = new pgConn(connection->GetHostName(), cbDatabase->GetValue(),
       connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetSslMode(),
       0, connection->GetApplicationName());
 }
@@ -798,7 +798,7 @@ void frmStatus::OnCopyQuery(wxCommandEvent& ev)
     if (text.Length() > 0 && dbname.Length() > 0
       && text.Trim() != wxT("<IDLE>") && text.Trim() != wxT("<IDLE in transaction>"))
     {
-        pgConn *conn = new pgConn(connection->GetHostAddress(), dbname,
+        pgConn *conn = new pgConn(connection->GetHostName(), dbname,
           connection->GetUser(), connection->GetPassword(),
           connection->GetPort(), connection->GetSslMode(), connection->GetDbOid(),
           connection->GetApplicationName());

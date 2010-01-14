@@ -112,7 +112,6 @@ public:
     wxString GetPassword() const { return wxString(PQpass(conn), *conv); }
     wxString GetHost() const { return dbHost; }
     wxString GetHostName() const { return dbHostName; }
-    wxString GetHostAddress() const { return dbHostAddress; }
     wxString GetDbname() const { return save_database; }
     wxString GetApplicationName() const { return save_applicationname; }
     wxString GetName() const;
@@ -155,7 +154,7 @@ protected:
 
     wxMBConv *conv;
     bool needColQuoting, utfConnectString;
-    wxString dbHost, dbHostName, dbHostAddress;
+    wxString dbHost, dbHostName;
     OID lastSystemOID;
     OID dbOid;
 

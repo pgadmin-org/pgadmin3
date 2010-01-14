@@ -150,7 +150,7 @@ frmMain::frmMain(const wxString& title)
     wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
 #endif
 
-    properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+    properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
     statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
     dependencies = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
     dependents = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
