@@ -2,7 +2,7 @@
 //
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id: dlgDirectDbg.cpp 6213 2007-04-19 08:47:08Z dpage $
-// Copyright (C) 2002 - 2009, The pgAdmin Development Team
+// Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the Artistic Licence
 //
 // dlgDirectDbg.cpp - debugger 
