@@ -176,14 +176,18 @@ void dlgRepTable::OnChangeTable(wxCommandEvent &ev)
 
 void dlgRepTable::LoadTrigger(OID relid)
 {
-    pgSet *trg=connection->ExecuteSet(
-        wxT("SELECT tgname FROM pg_trigger\n")
+    wxString sql = wxT("SELECT tgname FROM pg_trigger\n")
         wxT("  JOIN pg_proc pr ON pr.oid=tgfoid\n")
         wxT("  JOIN pg_namespace ns ON ns.oid=pronamespace\n")
-        wxT(" WHERE tgrelid=") + NumToStr(relid) +
-        wxT("   AND NOT tgisconstraint\n")
-        wxT("   AND nspname <> ") + qtDbString(wxT("_") + set->GetCluster()->GetName()) + wxT("\n")
-        wxT(" ORDER BY tgname"));
+        wxT(" WHERE tgrelid=") + NumToStr(relid);
+    if (connection->BackendMinimumVersion(8, 5))
+        sql += wxT("   AND tgconstraint=0\n");
+    else
+        sql += wxT("   AND NOT tgisconstraint\n");
+    sql += wxT("   AND nspname <> ") + qtDbString(wxT("_") + set->GetCluster()->GetName()) + wxT("\n")
+        wxT(" ORDER BY tgname");
+
+    pgSet *trg=connection->ExecuteSet(sql);
 
     if (trg)
     {

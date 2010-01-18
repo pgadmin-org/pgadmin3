@@ -450,14 +450,19 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 			if (settings->GetDisplayOption(_("Slony-I Clusters")))
 				browser->AppendCollection(this, slClusterFactory);
             
-            missingFKs = StrToLong(connection()->ExecuteScalar(
-                wxT("SELECT COUNT(*) FROM\n")
+            wxString missingFKsql = wxT("SELECT COUNT(*) FROM\n")
                 wxT("   (SELECT tgargs from pg_trigger tr\n")
                 wxT("      LEFT JOIN pg_depend dep ON dep.objid=tr.oid AND deptype = 'i'\n")
                 wxT("      LEFT JOIN pg_constraint co ON refobjid = co.oid AND contype = 'f'\n")
-                wxT("     WHERE tgisconstraint AND co.oid IS NULL\n")
+                wxT("     WHERE \n");
+            if (connection()->BackendMinimumVersion(8, 5))
+                missingFKsql += wxT("tgconstraint <> 0\n");
+            else
+                missingFKsql += wxT("tgisconstraint\n");
+            missingFKsql += wxT("     AND co.oid IS NULL\n")
                 wxT("     GROUP BY tgargs\n")
-                wxT("    HAVING count(1) = 3) AS foo")));
+                wxT("    HAVING count(1) = 3) AS foo");
+            missingFKs = StrToLong(connection()->ExecuteScalar(missingFKsql));
         }
     }
 

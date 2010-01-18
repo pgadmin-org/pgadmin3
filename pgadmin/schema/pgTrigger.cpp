@@ -296,7 +296,11 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=t.oid\n")
         wxT("  LEFT OUTER JOIN pg_proc p ON p.oid=t.tgfoid\n")
         wxT("  LEFT OUTER JOIN pg_language l ON l.oid=p.prolang\n")
-        wxT(" WHERE NOT tgisconstraint \n");
+        wxT(" WHERE ");
+    if (collection->GetDatabase()->connection()->BackendMinimumVersion(8, 5))
+        trig_sql += wxT("tgconstraint <> 0\n");
+    else
+        trig_sql += wxT("NOT tgisconstraint\n");
     if (restriction.IsEmpty())
         trig_sql += wxT(" AND tgrelid = ") + collection->GetOidStr() + wxT("\n");
     else
