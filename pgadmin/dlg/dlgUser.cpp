@@ -541,8 +541,8 @@ wxString dlgUser::GetSql()
         {
             sql += wxT("ALTER USER ") + qtIdent(name)
                 +  wxT(" SET ") + newVar
-                +  wxT("=") + newVal
-                +  wxT(";\n");
+                +  wxT("='") + newVal
+                +  wxT("';\n");
         }
     }
     

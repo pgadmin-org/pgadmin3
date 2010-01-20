@@ -985,8 +985,8 @@ wxString dlgFunction::GetSql()
             {
                 sql += wxT("ALTER FUNCTION ") + name
                     +  wxT(" SET ") + newVar
-                    +  wxT("=") + newVal
-                    +  wxT(";\n");
+                    +  wxT("='") + newVal
+                    +  wxT("';\n");
             }
         }
         
