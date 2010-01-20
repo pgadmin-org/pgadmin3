@@ -591,8 +591,8 @@ wxString dlgDatabase::GetSql()
             {
                 sql += wxT("ALTER DATABASE ") + qtIdent(name)
                     +  wxT(" SET ") + newVar
-                    +  wxT("=") + newVal
-                    +  wxT(";\n");
+                    +  wxT("='") + newVal
+                    +  wxT("';\n");
             }
         }
         
@@ -659,8 +659,8 @@ wxString dlgDatabase::GetSql2()
         {
             sql += wxT("ALTER DATABASE ") + qtIdent(name)
                 +  wxT(" SET ") + lstVariables->GetText(pos)
-                +  wxT("=") + lstVariables->GetText(pos, 1)
-                +  wxT(";\n");
+                +  wxT("='") + lstVariables->GetText(pos, 1)
+                +  wxT("';\n");
         }
     }
 

@@ -747,8 +747,8 @@ wxString dlgRole::GetSql()
         {
             sql += wxT("ALTER ROLE ") + qtIdent(name)
                 +  wxT(" SET ") + newVar
-                +  wxT("=") + newVal
-                +  wxT(";\n");
+                +  wxT("='") + newVal
+                +  wxT("';\n");
         }
     }
     
