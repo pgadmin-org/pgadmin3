@@ -408,7 +408,7 @@ wxString pgDatabase::GetSql(ctlTree *browser)
         size_t i;
         for (i=0 ; i < variables.GetCount() ; i++)
             sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
-                +  wxT(" SET ") + variables.Item(i) + wxT(";\n");
+                + wxT(" SET ") + variables.Item(i).BeforeFirst('=') + wxT("='") + variables.Item(i).AfterFirst('=') + wxT("';\n");
 
 		if (myConn)
 		{
