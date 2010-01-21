@@ -105,7 +105,7 @@ wxString pgRole::GetSql(ctlTree *browser)
         for (index=0 ; index < configList.GetCount() ; index++)
         {
             sql += wxT("ALTER ROLE ") + GetQuotedIdentifier()
-                + wxT(" SET ") + configList.Item(index) + wxT(";\n");
+                + wxT(" SET ") + configList.Item(index).BeforeFirst('=') + wxT("='") + configList.Item(index).AfterFirst('=') + wxT("';\n");
         }
         for (index=0 ; index < rolesIn.GetCount() ; index++)
         {

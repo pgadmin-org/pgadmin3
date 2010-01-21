@@ -142,7 +142,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
         size_t i;
         for (i=0 ; i < configList.GetCount() ; i++)
             sql += wxT("\nALTER FUNCTION ") + qtSig
-                +  wxT(" SET ") + configList.Item(i) + wxT(";");
+                + wxT(" SET ") + configList.Item(i).BeforeFirst('=') + wxT("='") + configList.Item(i).AfterFirst('=') + wxT("';\n");
 
         sql += wxT("\n")
             +  GetOwnerSql(8, 0, wxT("FUNCTION ") + qtSig)

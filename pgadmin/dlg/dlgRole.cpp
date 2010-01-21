@@ -755,7 +755,7 @@ wxString dlgRole::GetSql()
     // check for removed vars
     for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
     {
-        sql += wxT("ALTER Role ") + qtIdent(name)
+        sql += wxT("ALTER ROLE ") + qtIdent(name)
             +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
             + wxT(";\n");
     }
