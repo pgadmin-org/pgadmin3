@@ -28,6 +28,7 @@
 #include <wx/imaglist.h>
 #include <wx/busyinfo.h>
 #include <wx/sysopt.h>
+#include <wx/clipbrd.h>
 
 // wxAUI
 #include <wx/aui/aui.h>
@@ -76,15 +77,6 @@
 #include "slony/slSet.h"
 
 
-enum
-{
-    NBP_PROPERTIES=0,
-    NBP_STATISTICS,
-    NBP_DEPENDENCIES,
-    NBP_DEPENDENTS
-};
-
-
 #if wxDIALOG_UNIT_COMPATIBILITY
 #error wxWindows must be compiled with wxDIALOG_UNIT_COMPATIBILITY=0!
 #endif
@@ -128,7 +120,7 @@ frmMain::frmMain(const wxString& title)
 
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
-    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
+    manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
 
     SetMinSize(wxSize(600, 450)); 
 
@@ -150,10 +142,10 @@ frmMain::frmMain(const wxString& title)
     wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
 #endif
 
-    properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
-    statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
-    dependencies = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
-    dependents = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER | wxLC_SINGLE_SEL);
+    properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+    statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+    dependencies = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+    dependents = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
 
     // Switch back to the native list control.
 #ifdef __WXMAC__
@@ -561,6 +553,70 @@ void frmMain::Refresh(pgObject *data)
 
     browser->Thaw();
     EndMsg(done);
+}
+
+void frmMain::OnCopy(wxCommandEvent &ev)
+{
+    for (unsigned int i = 0; i < manager.GetAllPanes().GetCount(); i++)
+    {
+        wxAuiPaneInfo& pane = manager.GetAllPanes()[i];
+        if (pane.HasFlag(wxAuiPaneInfo::optionActive))
+        {
+            if (pane.name == wxT("sqlPane"))
+            {
+                sqlPane->Copy();
+            }
+            else
+            {
+                ctlListView *list;
+                int row, col;
+                wxString text;
+                
+                switch(listViews->GetSelection())
+                {
+                    case NBP_PROPERTIES:
+                        list = properties;
+                        break;
+                    case NBP_STATISTICS:
+                        list = statistics;
+                        break;
+                    case NBP_DEPENDENCIES:
+                        list = dependencies;
+                        break;
+                    case NBP_DEPENDENTS:
+                        list = dependents;
+                        break;
+                    default:
+                        // This shouldn't happen.
+                        // If it does, it's no big deal, we just need to get out.
+                        return;
+                        break;
+                }
+                
+                row = list->GetFirstSelected();
+                
+                while (row >= 0)
+                {
+                    for (col = 0; col < list->GetColumnCount(); col++)
+                    {
+                        text.Append(list->GetText(row, col) + wxT("\t"));
+                    }
+#ifdef __WXMSW__
+                    text.Append(wxT("\r\n"));
+#else
+                    text.Append(wxT("\n"));
+#endif
+                    row = list->GetNextSelected(row);
+                }
+                
+                if (text.Length() > 0 && wxTheClipboard->Open())
+                {
+                    wxTheClipboard->SetData(new wxTextDataObject(text));
+                    wxTheClipboard->Close();
+                }
+            }
+        }
+    }
 }
 
 void frmMain::GetExpandedChildNodes(wxTreeItemId node, wxArrayString &expandedNodes)

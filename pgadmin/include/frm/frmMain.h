@@ -60,6 +60,16 @@ typedef struct PluginUtility {
     bool set_password;
 } PluginUtility;
 
+
+enum
+{
+    NBP_PROPERTIES=0,
+    NBP_STATISTICS,
+    NBP_DEPENDENCIES,
+    NBP_DEPENDENTS
+};
+
+
 // Class declarations
 class frmMain : public pgFrame
 {
@@ -137,6 +147,7 @@ private:
 
     void OnEraseBackground(wxEraseEvent& event);
     void OnSize(wxSizeEvent& event);
+	void OnSelectItem(wxListEvent &event);
     
     void CreateMenus();
     void OnContents(wxCommandEvent& event);
@@ -164,7 +175,7 @@ private:
 
     void OnNew(wxCommandEvent& event);
     void OnDelete(wxCommandEvent &ev);
-    void OnCopy(wxCommandEvent &ev) { sqlPane->Copy(); };
+    void OnCopy(wxCommandEvent &ev);
 
     void OnCheckAlive(wxCommandEvent& event);
 

@@ -58,6 +58,9 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
     EVT_LIST_ITEM_ACTIVATED(CTL_PROPVIEW,   frmMain::OnPropSelActivated)
     EVT_LIST_ITEM_RIGHT_CLICK(CTL_PROPVIEW, frmMain::OnPropRightClick)
+    EVT_LIST_ITEM_SELECTED(CTL_STATVIEW,    frmMain::OnSelectItem)
+    EVT_LIST_ITEM_SELECTED(CTL_DEPVIEW,     frmMain::OnSelectItem)
+    EVT_LIST_ITEM_SELECTED(CTL_REFVIEW,     frmMain::OnSelectItem)
     EVT_TREE_SEL_CHANGED(CTL_BROWSER,       frmMain::OnTreeSelChanged)
     EVT_TREE_ITEM_EXPANDING(CTL_BROWSER,    frmMain::OnExpand)
     EVT_TREE_ITEM_COLLAPSING(CTL_BROWSER,   frmMain::OnCollapse)
@@ -221,8 +224,43 @@ void frmMain::OnPropSelChanged(wxListEvent& event)
             }
         }
     }
+
+    editMenu->Enable(MNU_COPY, properties->GetSelectedItemCount() > 0);
+    if(properties->GetSelectedItemCount() > 0)
+    {
+        manager.GetPane(wxT("listViews")).SetFlag(wxAuiPaneInfo::optionActive, true);
+    }
 }
 
+
+void frmMain::OnSelectItem(wxListEvent &event)
+{
+    ctlListView *list;
+    
+    switch(listViews->GetSelection())
+    {
+        case NBP_STATISTICS:
+            list = statistics;
+            break;
+        case NBP_DEPENDENCIES:
+            list = dependencies;
+            break;
+        case NBP_DEPENDENTS:
+            list = dependents;
+            break;
+        default:
+            // This shouldn't happen.
+            // If it does, it's no big deal, we just need to get out.
+            return;
+            break;
+    }
+    
+    editMenu->Enable(MNU_COPY, list->GetSelectedItemCount() > 0);
+    if(list->GetSelectedItemCount() > 0)
+    {
+        manager.GetPane(wxT("listViews")).SetFlag(wxAuiPaneInfo::optionActive, true);
+    }
+}
 
 void frmMain::OnPropSelActivated(wxListEvent& event)
 {
