@@ -332,7 +332,7 @@ void queryFavouriteFileProvider::SaveFavourites(queryFavouriteFolder *favourites
 
 	((queryFavouriteFolder *)favourites)->saveFolder(writer);
 
-	if (xmlTextWriterEndDocument(writer))
+	if (xmlTextWriterEndDocument(writer) < 0)
 	{
 		wxMessageBox(_("Failed to write to favourites file!"));
 	}
