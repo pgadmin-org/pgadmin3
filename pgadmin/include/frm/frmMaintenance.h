@@ -28,6 +28,7 @@ public:
 private:
     wxString GetHelpPage() const;
     void OnAction(wxCommandEvent& ev);
+    void OnChange(wxCommandEvent& ev);
 
     DECLARE_EVENT_TABLE()
 };
