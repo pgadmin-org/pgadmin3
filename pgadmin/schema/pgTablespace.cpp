@@ -97,6 +97,11 @@ wxString pgTablespace::GetSql(ctlTree *browser)
                 +  wxT(";\n");
         sql += GetCommentSql();
 
+        size_t i;
+        for (i=0 ; i < variables.GetCount() ; i++)
+            sql += wxT("ALTER TABLESPACE ") + GetQuotedFullIdentifier()
+                +  wxT(" SET (") + variables.Item(i) + wxT(");\n");
+
     }
     return sql;
 }
@@ -117,6 +122,12 @@ void pgTablespace::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("Location"), GetLocation());
+        size_t i;
+        for (i=0 ; i < variables.GetCount() ; i++)
+        {
+            wxString item=variables.Item(i);
+            properties->AppendItem(item.BeforeFirst('='), item.AfterFirst('='));
+        }
         properties->AppendItem(_("ACL"), GetAcl());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
@@ -171,7 +182,11 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
     wxString tabname;
 
     pgSet *tablespaces;
-    if (collection->GetConnection()->BackendMinimumVersion(8, 2))
+    if (collection->GetConnection()->BackendMinimumVersion(8, 5))
+        tablespaces = collection->GetServer()->ExecuteSet(
+        wxT("SELECT ts.oid, spcname, spclocation, spcoptions, pg_get_userbyid(spcowner) as spcuser, spcacl, pg_catalog.shobj_description(oid, 'pg_tablespace') AS description FROM pg_tablespace ts\n")
+        + restriction + wxT(" ORDER BY spcname"));
+    else if (collection->GetConnection()->BackendMinimumVersion(8, 2))
         tablespaces = collection->GetServer()->ExecuteSet(
         wxT("SELECT ts.oid, spcname, spclocation, pg_get_userbyid(spcowner) as spcuser, spcacl, pg_catalog.shobj_description(oid, 'pg_tablespace') AS description FROM pg_tablespace ts\n")
         + restriction + wxT(" ORDER BY spcname"));
@@ -193,6 +208,12 @@ pgObject *pgTablespaceFactory::CreateObjects(pgCollection *collection, ctlTree *
             tablespace->iSetAcl(tablespaces->GetVal(wxT("spcacl")));
             if (collection->GetConnection()->BackendMinimumVersion(8, 2))
                 tablespace->iSetComment(tablespaces->GetVal(wxT("description")));
+            if (collection->GetConnection()->BackendMinimumVersion(8, 5))
+            {
+                wxString str=tablespaces->GetVal(wxT("spcoptions"));
+                if (!str.IsEmpty())
+                    FillArray(tablespace->GetVariables(), str.Mid(1, str.Length()-2));
+            }
 
             if (browser)
             {

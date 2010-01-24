@@ -37,6 +37,7 @@ public:
     
     wxString GetLocation() const { return location; };
     void iSetLocation(const wxString& newVal) { location = newVal; }
+    wxArrayString& GetVariables() { return variables; }
     
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     bool RequireDropConfirm() { return true; }
@@ -51,6 +52,7 @@ public:
 
 private:
     wxString location;
+    wxArrayString variables;
 };
 
 

@@ -27,15 +27,24 @@ public:
     wxString GetSql2();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
+    wxString GetHelpPage() const;
 
     int Go(bool modal);
 
 private:
     pgTablespace *tablespace;
+    wxArrayString varInfo;
+	bool dirtyVars;
 
 #ifdef __WXMAC__
     void OnChangeSize(wxSizeEvent &ev);
 #endif
+
+    void OnVarAdd(wxCommandEvent &ev);
+    void OnVarRemove(wxCommandEvent &ev);
+    void OnVarSelChange(wxListEvent &ev);
+    void OnVarnameSelChange(wxCommandEvent &ev);
+    void SetupVarEditor(int var);
 
     DECLARE_EVENT_TABLE()
 };
