@@ -47,6 +47,9 @@ private:
     pgServer *server;
     bool viewRunning, filenameValid;
     wxString processedFile;
+    wxString restoreExecutable;
+    wxString restoreTOCFilename;
+    int numberOfTOCItems;
 
     DECLARE_EVENT_TABLE()
 };
@@ -59,6 +62,21 @@ public:
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
+
+
+class restoreTreeItemData : public wxTreeItemData
+{
+public:
+    restoreTreeItemData(int id, const wxString& desc);
+
+    int GetId() { return restoreId; }
+    wxString GetDesc() { return restoreDesc; }
+
+private:
+   int restoreId;
+   wxString restoreDesc;
+};
+
 
 
 #endif

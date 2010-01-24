@@ -12,6 +12,10 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/settings.h>
+#include <wx/process.h>
+#include <wx/textbuf.h>
+#include <wx/file.h>
+#include <wx/filename.h>
 
 
 // App headers
@@ -20,44 +24,47 @@
 #include "frm/frmMain.h"
 #include "utils/sysLogger.h"
 #include "schema/pgTable.h"
-#include <wx/process.h>
-#include <wx/textbuf.h>
-#include <wx/file.h>
 #include "schema/pgLanguage.h"
 #include "schema/pgConstraints.h"
 #include "schema/pgForeignKey.h"
+#include "ctl/ctlCheckTreeView.h"
 
 // Icons
 #include "images/restore.xpm"
 
 
-#define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
-#define txtFilename             CTRL_TEXT("txtFilename")
-#define btnFilename             CTRL_BUTTON("btnFilename")
-#define chkOnlyData             CTRL_CHECKBOX("chkOnlyData")
-#define chkOnlySchema           CTRL_CHECKBOX("chkOnlySchema")
-#define chkSingleObject         CTRL_CHECKBOX("chkSingleObject")
-#define chkNoOwner              CTRL_CHECKBOX("chkNoOwner")
-#define chkDisableTrigger       CTRL_CHECKBOX("chkDisableTrigger")
-#define chkClean		        CTRL_CHECKBOX("chkClean")
-#define chkVerbose              CTRL_CHECKBOX("chkVerbose")
-#define stSingleObject          CTRL_STATIC("stSingleObject")
+#define nbNotebook               CTRL_NOTEBOOK("nbNotebook")
+#define txtFilename              CTRL_TEXT("txtFilename")
+#define btnFilename              CTRL_BUTTON("btnFilename")
+#define chkOnlyData              CTRL_CHECKBOX("chkOnlyData")
+#define chkOnlySchema            CTRL_CHECKBOX("chkOnlySchema")
+#define chkNoOwner               CTRL_CHECKBOX("chkNoOwner")
+#define chkNoPrivileges          CTRL_CHECKBOX("chkNoPrivileges")
+#define chkNoTablespaces         CTRL_CHECKBOX("chkNoTablespaces")
+#define chkCreateDb		         CTRL_CHECKBOX("chkCreateDb")
+#define chkClean		         CTRL_CHECKBOX("chkClean")
+#define chkSingleXact		     CTRL_CHECKBOX("chkSingleXact")
+#define chkDisableTrigger        CTRL_CHECKBOX("chkDisableTrigger")
+#define chkNoDataForFailedTables CTRL_CHECKBOX("chkNoDataForFailedTables")
+#define chkUseSetSession         CTRL_CHECKBOX("chkUseSetSession")
+#define chkExitOnError           CTRL_CHECKBOX("chkExitOnError")
+#define txtNumberOfJobs          CTRL_TEXT("txtNumberOfJobs")
+#define chkVerbose               CTRL_CHECKBOX("chkVerbose")
+#define stSingleObject           CTRL_STATIC("stSingleObject")
 
-#define lstContents             CTRL_LISTVIEW("lstContents")
+#define ctvObjects              CTRL_CHECKTREEVIEW("ctvObjects")
 #define btnView                 CTRL_BUTTON("btnView")
 
 
 BEGIN_EVENT_TABLE(frmRestore, ExternProcessDialog)
-    EVT_TEXT(XRCID("txtFilename"),          frmRestore::OnChangeName)
-    EVT_CHECKBOX(XRCID("chkOnlyData"),      frmRestore::OnChangeData)
-    EVT_CHECKBOX(XRCID("chkOnlySchema"),    frmRestore::OnChangeSchema)
-    EVT_CHECKBOX(XRCID("chkSingleObject"),  frmRestore::OnChange)
-    EVT_BUTTON(XRCID("btnFilename"),        frmRestore::OnSelectFilename)
-    EVT_BUTTON(wxID_OK,                     frmRestore::OnOK)
-    EVT_BUTTON(XRCID("btnView"),            frmRestore::OnView)
-    EVT_END_PROCESS(-1,                     frmRestore::OnEndProcess)
-    EVT_LIST_ITEM_SELECTED(XRCID("lstContents"), frmRestore::OnChangeList)
-    EVT_CLOSE(                              ExternProcessDialog::OnClose)
+    EVT_TEXT(XRCID("txtFilename"),               frmRestore::OnChangeName)
+    EVT_CHECKBOX(XRCID("chkOnlyData"),           frmRestore::OnChangeData)
+    EVT_CHECKBOX(XRCID("chkOnlySchema"),         frmRestore::OnChangeSchema)
+    EVT_BUTTON(XRCID("btnFilename"),             frmRestore::OnSelectFilename)
+    EVT_BUTTON(wxID_OK,                          frmRestore::OnOK)
+    EVT_BUTTON(XRCID("btnView"),                 frmRestore::OnView)
+    EVT_END_PROCESS(-1,                          frmRestore::OnEndProcess)
+    EVT_CLOSE(                                   ExternProcessDialog::OnClose)
 END_EVENT_TABLE()
 
 
@@ -79,23 +86,26 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 
     SetTitle(wxString::Format(_("Restore %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
 
+    if (object->GetConnection()->EdbMinimumVersion(8,0))
+        restoreExecutable=edbRestoreExecutable;
+    else if (object->GetConnection()->GetIsGreenplum())
+        restoreExecutable=gpRestoreExecutable;
+    else
+        restoreExecutable=pgRestoreExecutable;
 
     if (object->GetMetaType() != PGM_DATABASE)
     {
-        if (object->GetMetaType() == PGM_TABLE || object->GetMetaType() == GP_PARTITION)
+        chkOnlySchema->SetValue(object->GetMetaType() == PGM_FUNCTION
+                             || object->GetMetaType() == PGM_INDEX
+                             || object->GetMetaType() == PGM_TRIGGER);
+        chkOnlyData->SetValue(object->GetMetaType() == PGM_TABLE
+                             || object->GetMetaType() == GP_PARTITION);
+        if (object->GetMetaType() != PGM_SCHEMA)
         {
-            chkOnlySchema->SetValue(false);
-            chkOnlyData->SetValue(true);
+            chkOnlyData->Disable();
+            chkOnlySchema->Disable();
         }
-        else
-        {
-            chkOnlySchema->SetValue(true);
-            chkOnlyData->SetValue(false);
-        }
-        chkSingleObject->SetValue(true);
-        chkOnlyData->Disable();
-        chkOnlySchema->Disable();
-        chkSingleObject->Disable();
+        btnView->Disable();
     }
 
     wxString val;
@@ -115,6 +125,21 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 
 	// Pass the SSL mode via the environment
 	environment.Add(wxT("PGSSLMODE=") + server->GetConnection()->GetSslModeName());
+
+    if (!pgAppMinimumVersion(restoreExecutable, 8, 4))
+    {
+        chkNoTablespaces->Disable();
+        chkSingleXact->Disable();
+        txtNumberOfJobs->Disable();
+    }
+    if (!pgAppMinimumVersion(restoreExecutable, 8, 2))
+    {
+        chkNoDataForFailedTables->Disable();
+    }
+    if (!pgAppMinimumVersion(restoreExecutable, 8, 0))
+    {
+        chkExitOnError->Disable();
+    }
 
     wxCommandEvent ev;
     OnChangeName(ev);
@@ -217,52 +242,10 @@ void frmRestore::OnChangeName(wxCommandEvent &ev)
 }
 
 
-void frmRestore::OnChangeList(wxListEvent &ev)
-{
-    OnChange(ev);
-}
-
-
 void frmRestore::OnChange(wxCommandEvent &ev)
 {
-    bool singleValid = !chkSingleObject->GetValue();
-
-	stSingleObject->SetLabel(wxEmptyString);
-
-    if (!singleValid)
-    {
-        switch(object->GetMetaType())
-        {
-            case PGM_DATABASE:
-            {
-                int sel=lstContents->GetSelection();
-                if (sel >= 0)
-                {
-                    wxString type=lstContents->GetText(sel, 0);
-
-                    if ((type.Lower() == wxString(_("Function")).Lower() && !chkOnlyData->GetValue()) || 
-						(type.Lower() == wxString(_("Table")).Lower() && !chkOnlySchema->GetValue()))
-                    {
-						singleValid = true;
-						stSingleObject->SetLabel(type + wxT(" ") + lstContents->GetText(sel, 1));
-					}
-                }
-                break;
-            }
-            case PGM_TABLE:
-            case PGM_FUNCTION:
-            {
-                singleValid=true;
-                stSingleObject->SetLabel(object->GetTranslatedTypeName() + wxT(" ") + object->GetName());
-
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    btnOK->Enable(filenameValid && singleValid);
-    btnView->Enable(filenameValid);
+    btnOK->Enable(filenameValid);
+    btnView->Enable(filenameValid && object->GetMetaType() == PGM_DATABASE);
 }
 
 
@@ -286,12 +269,7 @@ wxString frmRestore::getCmdPart1()
 {
     wxString cmd;
 
-    if (object->GetConnection()->EdbMinimumVersion(8,0))
-        cmd=edbRestoreExecutable;
-    else if (object->GetConnection()->GetIsGreenplum())
-        cmd=gpRestoreExecutable;
-    else
-        cmd=pgRestoreExecutable;
+    cmd = restoreExecutable;
 
     if (!server->GetName().IsEmpty())
         cmd += wxT(" --host ") + server->GetName();
@@ -321,6 +299,10 @@ wxString frmRestore::getCmdPart2(int step)
         {
             if (chkNoOwner->GetValue())
                 cmd.Append(wxT(" --no-owner"));
+            if (chkNoPrivileges->GetValue())
+                cmd.Append(wxT(" --no-priviledges"));
+            if (chkNoTablespaces->GetValue())
+                cmd.Append(wxT(" --no-tablespaces"));
         }
 
         if (chkOnlySchema->GetValue())
@@ -330,32 +312,107 @@ wxString frmRestore::getCmdPart2(int step)
         else
         {
             if (chkDisableTrigger->GetValue())
-            cmd.Append(wxT(" --disable-triggers"));
+                cmd.Append(wxT(" --disable-triggers"));
         }
+        if (chkCreateDb->GetValue())
+            cmd.Append(wxT(" --create"));
         if (chkClean->GetValue())
             cmd.Append(wxT(" --clean"));
+        if (chkSingleXact->GetValue())
+            cmd.Append(wxT(" --single-transaction"));
+        if (chkNoDataForFailedTables->GetValue())
+            cmd.Append(wxT(" --no-data-for-failed-tables"));
+        if (chkUseSetSession->GetValue())
+            cmd.Append(wxT(" --use-set-session-authorization"));
+        if (chkExitOnError->GetValue())
+            cmd.Append(wxT(" --exit-on-error"));
 
-        if (chkSingleObject->GetValue())
+        if (!txtNumberOfJobs->GetValue().IsEmpty())
+            cmd.Append(wxT(" --jobs ") + txtNumberOfJobs->GetValue());
+
+        // Process selected items
+        wxTreeItemId root, firstLevelObject, secondLevelObject;
+        wxTreeItemIdValue firstLevelObjectData, secondLevelObjectData;
+        bool partialDump = false;
+
+        // Get root object
+        root = ctvObjects->GetRootItem();
+
+        if (root && object->GetMetaType() == PGM_DATABASE)
+        {
+            // Prepare the array
+            wxArrayString restoreStrings;
+            restoreStrings.Add(wxEmptyString, numberOfTOCItems);
+            restoreTreeItemData *data;
+
+            // Loop through first level objects
+            firstLevelObject = ctvObjects->GetFirstChild(root, firstLevelObjectData);
+            while (firstLevelObject.IsOk())
+            {
+                if (ctvObjects->IsChecked(firstLevelObject))
+                {
+                    // Write the file
+                    data = (restoreTreeItemData*)ctvObjects->GetItemData(firstLevelObject);
+                    restoreStrings[data->GetId()] = data->GetDesc();
+
+                    // Loop through second level objects
+                    secondLevelObject = ctvObjects->GetFirstChild(firstLevelObject, secondLevelObjectData);
+                    while (secondLevelObject.IsOk())
+                    {
+                        if (ctvObjects->IsChecked(secondLevelObject))
+                        {
+                            // Write the file
+                            data = (restoreTreeItemData*)ctvObjects->GetItemData(secondLevelObject);
+                            restoreStrings[data->GetId()] = data->GetDesc();
+                        }
+                        else
+                            partialDump = true;
+                        secondLevelObject = ctvObjects->GetNextChild(firstLevelObject, secondLevelObjectData);
+                    }
+                }
+                else
+                    partialDump = true;
+                firstLevelObject = ctvObjects->GetNextChild(root, firstLevelObjectData);
+            }
+
+            // Open a temporary file to store the TOC
+            restoreTOCFilename = wxFileName::CreateTempFileName(wxT("restore"));
+            wxFile tocFile;
+            tocFile.Open(restoreTOCFilename.c_str(), wxFile::write);
+
+            // Write all selected items in it
+            for (int i=0; i<numberOfTOCItems; i++)
+            {
+                if (restoreStrings[i] != wxEmptyString)
+                {
+                    if (!tocFile.Write(restoreStrings[i] + wxT("\n")))
+                        wxLogError(wxT("Error writing to the temporary file ") + restoreTOCFilename);
+                }
+            }
+
+            // If some items were not checked and if the file still contains something, we have to use the list
+            if (partialDump && tocFile.Length() > 0)
+                cmd.Append(wxT(" --use-list \"") + restoreTOCFilename + wxT("\""));
+            tocFile.Close();
+        }
+        else if (object->GetMetaType() != PGM_DATABASE)
         {
             switch (object->GetMetaType())
             {
-                case PGM_DATABASE:
-                {
-                    int sel=lstContents->GetSelection();
-                    if (lstContents->GetText(sel, 0).Lower() == wxString(_("Function")).Lower())
-                        cmd.Append(wxT(" --function ") + qtIdent(lstContents->GetText(sel, 1).BeforeLast('(')));
-                    else if (lstContents->GetText(sel, 0).Lower() == wxString(_("Table")).Lower())
-                        cmd.Append(wxT(" --table ") + qtIdent(lstContents->GetText(sel, 1)));
-                    else
-                        return wxT("restore: internal pgadmin error.");   // shouldn't happen!
-
+                case PGM_FUNCTION:
+                    cmd.Append(wxT(" --function ") + object->GetFullName());
                     break;
-                }
+                case PGM_INDEX:
+                    cmd.Append(wxT(" --index ") + object->GetQuotedIdentifier());
+                    break;
+                case PGM_SCHEMA:
+                    cmd.Append(wxT(" --schema ") + object->GetQuotedIdentifier());
+                    break;
                 case PGM_TABLE:
                     cmd.Append(wxT(" --table ") + object->GetQuotedIdentifier());
                     break;
-                case PGM_FUNCTION:
-                    cmd.Append(wxT(" --function ") + object->GetQuotedIdentifier());
+                case PGM_TRIGGER:
+                    cmd.Append(wxT(" --trigger ") + object->GetQuotedIdentifier());
                     break;
                 default:
                     break;
@@ -380,7 +437,6 @@ void frmRestore::OnView(wxCommandEvent &ev)
     btnView->Disable();
     btnOK->Disable();
     viewRunning = true;
-    lstContents->DeleteAllItems();
     Execute(1, false);
     btnOK->SetLabel(_("OK"));
     done=0;
@@ -417,66 +473,162 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
     {
         done = false;
 
-        lstContents->CreateColumns(0, _("Type"), _("Name"));
-
         wxString str=wxTextBuffer::Translate(txtMessages->GetValue(), wxTextFileType_Unix);
 
         wxStringTokenizer line(str, wxT("\n"));
         line.GetNextToken();
         
-        lstContents->Freeze();
         wxBeginBusyCursor();
+
+        wxTreeItemId root = ctvObjects->AddRoot(wxT("Backup ") + txtFilename->GetValue());
+        wxString currentSchema = wxT("");
+        wxTreeItemId currentSchemaNode;
+        wxTreeItemId schemaNode, lastItem;
+        wxTreeItemIdValue schemaNodeData;
+        numberOfTOCItems = 0;
 
         while (line.HasMoreTokens())
         {
+            // Read the next line
             str=line.GetNextToken();
-            if (str.Left(2) == wxT(";"))
+
+            // Skip the few lines of comments
+            if (str.Left(1) == wxT(";") || str.Left(1) == wxT("P"))
                 continue;
 
+            // Split the line according to spaces
             wxStringTokenizer col(str, wxT(" "));
-            col.GetNextToken();
-            if (!StrToLong(col.GetNextToken().c_str()))
-                continue;
-            col.GetNextToken();
-            wxString type=col.GetNextToken();
 
-            int icon = -1;
-            wxString typname;
-            pgaFactory *factory=0;
+            // Column 1 (dumpId)
+            col.GetNextToken();
+
+            // Column 2 (tableOid)
+            col.GetNextToken();
+
+            // Column 3 (oid)
+            col.GetNextToken();
+
+            // Column 4 (desc)
+            // First interesting information: object's type
+            wxString type=col.GetNextToken();
 
             if (type == wxT("PROCEDURAL"))
             {
-                factory=&languageFactory;
+                // type for a PL is PROCEDURAL LANGUAGE
+                // we'll keep the next column for the object's type
                 type = col.GetNextToken();
+            }
+            else if (type == wxT("SHELL"))
+            {
+                // type for a SHELL is SHELL TYPE
+                // we'll keep both columns for the object's type
+                type += col.GetNextToken();
+            }
+            else if (type == wxT("OPERATOR"))
+            {
+                // type for an operator class is OPERATOR CLASS
+                // we'll keep the two columns for the object's type
+                wxString tmp = str.Mid(str.Find(type)+type.Length()+1, 5);
+                if (tmp == wxT("CLASS"))
+                    type += wxT(" ") + col.GetNextToken();
+            }
+            else if (type == wxT("SEQUENCE"))
+            {
+                // type for a sequence can be SEQUENCE, SEQUENCE OWNED BY or SEQUENCE SET
+                // we'll keep all these columns for the object's type
+                wxString tmp = str.Mid(str.Find(type)+type.Length()+1, 3);
+                if (tmp == wxT("OWN") || tmp == wxT("SET"))
+                {
+                    type += wxT(" ") + col.GetNextToken();
+                    if (type == wxT("SEQUENCE OWNED"))
+                        type += wxT(" ") + col.GetNextToken();
+                }
             }
             else if (type == wxT("FK"))
             {
-                factory=&foreignKeyFactory;
+                // type for a FK is FK CONSTRAINT
+                // we'll keep the next column for the object's type
                 type = col.GetNextToken();
             }
-            else if (type == wxT("CONSTRAINT"))
+            else if (type == wxT("TABLE"))
             {
-                factory=constraintFactory.GetCollectionFactory();
-                // ??? type = col.GetNextToken();
+                if (col.CountTokens() == 4)
+                {
+                    // TABLE DATA detected
+                    type += wxT(" ") + col.GetNextToken();
+                }
+            }
+
+            // Column 5 (namespace)
+            // Second interesting information: object's schema
+            wxString schema=col.GetNextToken();
+
+            // Column 6 (tag)
+            // Third interesting information: object's qualified name
+            //wxString name=col.GetNextToken();
+            wxString name = str.Mid(str.Find(schema)+schema.Length()+1).BeforeLast(' ');
+
+            // Column 7 (owner)
+            // Fourth interesting information: object's owner
+            wxString owner = str.Mid(str.Find(name)+name.Length()+1);
+
+            // New method
+            if (type == wxT("LANGUAGE"))
+            {
+                lastItem = ctvObjects->AppendItem(root, wxT("Language ")+name+wxT(" [owner: ")+owner+wxT("]"), 1);
+            }
+            else if (type == wxT("ACL") && schema == wxT("-"))
+            {
+                lastItem = ctvObjects->AppendItem(root, type+wxT(" ")+name, 1);
+            }
+            else if (type == wxT("CAST"))
+            {
+                lastItem = ctvObjects->AppendItem(root, name, 1);
+            }
+            else if (type == wxT("SCHEMA"))
+            {
+                currentSchema = name;
+                lastItem = currentSchemaNode = ctvObjects->AppendItem(root, wxT("Schema ")+name //+wxT(" [owner: ")+owner+wxT("]")
+                                    , 1);
             }
             else
-                factory = pgaFactory::GetFactory(type);
-
-            wxString name = str.Mid(str.Find(type)+type.Length()+1).BeforeLast(' ');
-            if (factory)
             {
-                typname=factory->GetTypeName();
-                icon = factory->GetIconId();
-            }
-            else if (typname.IsEmpty())
-                typname = type;
+                if (schema != currentSchema)
+                {
+                    // Loop through the nodes to find the schema
+                    schemaNode = ctvObjects->GetFirstChild(root, schemaNodeData);
+                    bool found = false;
+                    while (schemaNode.IsOk() && !found)
+                    {
+                        if (ctvObjects->GetItemText(schemaNode) == wxT("Schema ")+schema)
+                            found=true;
+                        else
+                            schemaNode = ctvObjects->GetNextChild(root, schemaNodeData);
+                    }
 
-            lstContents->AppendItem(icon, typname, name);
+                    // Found it?
+                    if (schemaNode.IsOk())
+                    {
+                        currentSchema = schema;
+                        currentSchemaNode = schemaNode;
+                    }
+                    // if we are treating a comment, we use the schema of its
+                    // object (ie, the previous line)
+                    else if (type != wxT("COMMENT"))
+                        wxLogError(wxT("Schema node not found for object ") + type+wxT(" ")+name+wxT(" [owner: ")+owner+wxT("]"));
+                }
+                lastItem = ctvObjects->AppendItem(currentSchemaNode, type+wxT(" ")+name+wxT(" [owner: ")+owner+wxT("]"), 1);
+            }
+            ctvObjects->SetItemData(lastItem, new restoreTreeItemData(numberOfTOCItems,str));
+            numberOfTOCItems++;
         }
 
-        lstContents->Thaw();
         wxEndBusyCursor();
-        nbNotebook->SetSelection(1);
+        nbNotebook->SetSelection(3);
+    }
+    else
+    {
+        wxRemoveFile(restoreTOCFilename);
     }
 }
 
@@ -514,4 +666,11 @@ bool restoreFactory::CheckEnable(pgObject *obj)
         return obj->CanCreate() && obj->CanRestore() && !gpRestoreExecutable.IsEmpty();
     else
         return obj->CanCreate() && obj->CanRestore() && !pgRestoreExecutable.IsEmpty();
+}
+
+
+restoreTreeItemData::restoreTreeItemData(int id, const wxString& desc)
+{
+    restoreId = id;
+    restoreDesc = desc;
 }

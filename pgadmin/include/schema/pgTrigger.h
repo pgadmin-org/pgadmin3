@@ -68,6 +68,7 @@ public:
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetSql(ctlTree *browser);
+    bool CanRestore() { return true; }
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
     bool HasStats() { return false; }

@@ -72,6 +72,7 @@ public:
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxMenu *GetNewMenu();
+    bool CanRestore() { return GetConnection()->BackendMinimumVersion(8, 1); }
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
