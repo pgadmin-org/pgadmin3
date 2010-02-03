@@ -108,6 +108,8 @@ EVT_MENU(MNU_EXECUTE,           frmQuery::OnExecute)
 EVT_MENU(MNU_EXECPGS,           frmQuery::OnExecScript)
 EVT_MENU(MNU_EXECFILE,          frmQuery::OnExecFile)
 EVT_MENU(MNU_EXPLAIN,           frmQuery::OnExplain)
+EVT_MENU(MNU_EXPLAINANALYZE,    frmQuery::OnExplain)
+EVT_MENU(MNU_BUFFERS,           frmQuery::OnBuffers)
 EVT_MENU(MNU_CANCEL,            frmQuery::OnCancel)
 EVT_MENU(MNU_AUTOROLLBACK,      frmQuery::OnAutoRollback)
 EVT_MENU(MNU_CONTENTS,          frmQuery::OnContents)
@@ -274,11 +276,13 @@ pgsTimer(new pgScriptTimer(this))
     queryMenu->Append(MNU_EXECPGS, _("Execute &pgScript\tF6"), _("Execute pgScript"));
     queryMenu->Append(MNU_EXECFILE, _("Execute to file"), _("Execute query, write result to file"));
     queryMenu->Append(MNU_EXPLAIN, _("E&xplain\tF7"), _("Explain query"));
+    queryMenu->Append(MNU_EXPLAINANALYZE, _("Explain analyze\tShift-F7"), _("Explain and analyze query"));
     
 
     wxMenu *eo=new wxMenu();
     eo->Append(MNU_VERBOSE, _("Verbose"), _("Explain verbose query"), wxITEM_CHECK);
-    eo->Append(MNU_ANALYZE, _("Analyze"), _("Explain analyze query"), wxITEM_CHECK);
+    eo->Append(MNU_COSTS, _("Costs"), _("Explain analyze query with (or without costs)"), wxITEM_CHECK);
+    eo->Append(MNU_BUFFERS, _("Buffers"), _("Explain analyze query with (or without buffers)"), wxITEM_CHECK);
     queryMenu->Append(MNU_EXPLAINOPTIONS, _("Explain &options"), eo, _("Options modifying Explain output"));
     queryMenu->AppendSeparator();
     queryMenu->Append(MNU_SAVEHISTORY, _("Save history"), _("Save history of executed commands."));
@@ -329,7 +333,8 @@ pgsTimer(new pgScriptTimer(this))
     SetMenuBar(menuBar);
 
     queryMenu->Check(MNU_VERBOSE, settings->GetExplainVerbose());
-    queryMenu->Check(MNU_ANALYZE, settings->GetExplainAnalyze());
+    queryMenu->Check(MNU_COSTS, settings->GetExplainCosts());
+    queryMenu->Check(MNU_BUFFERS, settings->GetExplainBuffers());
 
     UpdateRecentFiles();
 
@@ -1478,8 +1483,9 @@ void frmQuery::OnClose(wxCloseEvent& event)
     
     controller->nullView();                   //to avoid bug on *nix when deleting controller
 
-    settings->SetExplainAnalyze(queryMenu->IsChecked(MNU_ANALYZE));
     settings->SetExplainVerbose(queryMenu->IsChecked(MNU_VERBOSE));
+    settings->SetExplainCosts(queryMenu->IsChecked(MNU_COSTS));
+    settings->SetExplainBuffers(queryMenu->IsChecked(MNU_BUFFERS));
 
     sqlResult->Abort();                           // to make sure conn is unused
 
@@ -1828,7 +1834,8 @@ void frmQuery::OnExplain(wxCommandEvent& event)
         return;
     wxString sql;
     int resultToRetrieve=1;
-    bool verbose=queryMenu->IsChecked(MNU_VERBOSE), analyze=queryMenu->IsChecked(MNU_ANALYZE);
+    bool verbose=queryMenu->IsChecked(MNU_VERBOSE);
+    bool analyze = event.GetId() == MNU_EXPLAINANALYZE;
 
     if (analyze)
     {
@@ -1836,10 +1843,37 @@ void frmQuery::OnExplain(wxCommandEvent& event)
         resultToRetrieve++;
     }
     sql += wxT("EXPLAIN ");
-    if (analyze)
-        sql += wxT("ANALYZE ");
-    if (verbose)
-        sql += wxT("VERBOSE ");
+    if (conn->BackendMinimumVersion(8, 5))
+    {
+        bool costs=queryMenu->IsChecked(MNU_COSTS);
+        bool buffers=queryMenu->IsChecked(MNU_BUFFERS);
+
+        sql += wxT("(");
+        if (analyze)
+            sql += wxT("ANALYZE on, ");
+        else
+            sql += wxT("ANALYZE off, ");
+        if (verbose)
+            sql += wxT("VERBOSE on, ");
+        else
+            sql += wxT("VERBOSE off, ");
+        if (costs)
+            sql += wxT("COSTS on, ");
+        else
+            sql += wxT("COSTS off, ");
+        if (buffers)
+            sql += wxT("BUFFERS on ");
+        else
+            sql += wxT("BUFFERS off ");
+        sql += wxT(")");
+    }
+    else
+    {
+        if (analyze)
+            sql += wxT("ANALYZE ");
+        if (verbose)
+            sql += wxT("VERBOSE ");
+    }
 
     int offset=sql.Length();
 
@@ -1853,6 +1887,14 @@ void frmQuery::OnExplain(wxCommandEvent& event)
     }
 
     execQuery(sql, resultToRetrieve, true, offset, false, true, verbose);
+}
+
+void frmQuery::OnBuffers(wxCommandEvent& event)
+{
+    queryMenu->Enable(MNU_EXPLAIN, !queryMenu->IsChecked(MNU_BUFFERS));
+    toolBar->EnableTool(MNU_EXPLAIN, !queryMenu->IsChecked(MNU_BUFFERS));
+
+    settings->SetExplainBuffers(queryMenu->IsChecked(MNU_BUFFERS));
 }
 
 // Update the main SQL query from the GQB if desired
@@ -2072,12 +2114,13 @@ void frmQuery::setTools(const bool running)
     toolBar->EnableTool(MNU_EXECUTE, !running);
     toolBar->EnableTool(MNU_EXECPGS, !running);
     toolBar->EnableTool(MNU_EXECFILE, !running);
-    toolBar->EnableTool(MNU_EXPLAIN, !running);
+    toolBar->EnableTool(MNU_EXPLAIN, (!running && !settings->GetExplainBuffers()));
     toolBar->EnableTool(MNU_CANCEL, running);
     queryMenu->Enable(MNU_EXECUTE, !running);
     queryMenu->Enable(MNU_EXECPGS, !running);
     queryMenu->Enable(MNU_EXECFILE, !running);
-    queryMenu->Enable(MNU_EXPLAIN, !running);
+    queryMenu->Enable(MNU_EXPLAIN, (!running && !settings->GetExplainBuffers()));
+	queryMenu->Enable(MNU_EXPLAINANALYZE, !running);
     queryMenu->Enable(MNU_CANCEL, running);
     fileMenu->Enable(MNU_EXPORT, sqlResult->CanExport());
     fileMenu->Enable(MNU_QUICKREPORT, sqlResult->CanExport());
@@ -2431,7 +2474,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
     // If this was an EXPLAIN query, process the results
     if (done && explain)
     {
-        if (!verbose)
+        if (!verbose || conn->BackendMinimumVersion(8, 4))
         {
             int i;
             wxString str;

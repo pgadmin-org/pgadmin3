@@ -92,8 +92,10 @@ public:
     // Explain options
     bool GetExplainVerbose() const { bool b; Read(wxT("frmQuery/ExplainVerbose"), &b, false); return b; }
 	void SetExplainVerbose(const bool newval) { Write(wxT("frmQuery/ExplainVerbose"), newval); }
-    bool GetExplainAnalyze() const { bool b; Read(wxT("frmQuery/ExplainAnalyze"), &b, false); return b; }
-	void SetExplainAnalyze(const bool newval) { Write(wxT("frmQuery/ExplainAnalyze"), newval); }
+    bool GetExplainCosts() const { bool b; Read(wxT("frmQuery/ExplainCosts"), &b, true); return b; }
+	void SetExplainCosts(const bool newval) { Write(wxT("frmQuery/ExplainCosts"), newval); }
+    bool GetExplainBuffers() const { bool b; Read(wxT("frmQuery/ExplainBuffers"), &b, false); return b; }
+	void SetExplainBuffers(const bool newval) { Write(wxT("frmQuery/ExplainBuffers"), newval); }
 
     // Display options
     wxString GetSystemSchemas() const { wxString s; Read(wxT("SystemSchemas"), &s, wxEmptyString); return s; }

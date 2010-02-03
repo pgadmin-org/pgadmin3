@@ -163,6 +163,7 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
     ExplainShape *s=0;
 
     int costPos=str.Find(wxT("(cost="));
+    int actPos = str.Find(wxT("(actual"));
 
     wxStringTokenizer tokens(str, wxT(" "));
     wxString token = tokens.GetNextToken();
@@ -171,7 +172,13 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
     wxString token4;
     if (tokens.HasMoreTokens())
         token4 = tokens.GetNextToken();
-    wxString descr = costPos > 0 ? str.Left(costPos) : str;
+    wxString descr;
+    if (costPos > 0)
+        descr = str.Left(costPos);
+    else if (actPos > 0)
+        descr = str.Left(actPos);
+    else
+        descr = str;
 
     // possible keywords can be found in postgresql/src/backend/commands/explain.c
 
@@ -344,7 +351,6 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 
     if (costPos > 0)
     {
-        int actPos = str.Find(wxT("(actual"));
         if (actPos > 0)
         {
             s->actual = str.Mid(actPos);
@@ -353,6 +359,8 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
         else
             s->cost = str.Mid(costPos);
     }
+    else if (actPos > 0)
+        s->actual = str.Mid(actPos);
     
     int w=50, h=20;
 
