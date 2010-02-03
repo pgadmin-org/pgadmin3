@@ -57,9 +57,18 @@ protected:
     void OnChangeSize(wxSizeEvent &ev);
 #endif
 
+    void OnVarAdd(wxCommandEvent &ev);
+    void OnVarRemove(wxCommandEvent &ev);
+    void OnVarSelChange(wxListEvent &ev);
+    void OnVarnameSelChange(wxCommandEvent &ev);
+    void SetupVarEditor(int var);
+
 private:
     pgColumn *column;
     pgTable *table;
+    wxArrayString varInfo; 
+    bool dirtyVars; 
+
     void OnSelChangeTyp(wxCommandEvent &ev);
  
     wxString previousDefinition;

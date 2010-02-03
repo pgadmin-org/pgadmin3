@@ -120,10 +120,12 @@ wxString pgColumn::GetSql(ctlTree *browser)
                     sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                         + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
                         + wxT(" SET STATISTICS ") + NumToStr(GetAttstattarget()) + wxT(";\n");
-                if (database->BackendMinimumVersion(8, 5) && GetAttdistinct() >= 0)
+
+                size_t i;
+                for (i=0 ; i < variables.GetCount() ; i++)
                     sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                         + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
-                        + wxT(" SET STATISTICS DISTINCT ") + NumToStr(GetAttdistinct()) + wxT(";\n");
+                        + wxT(" SET (") + variables.Item(i) + wxT(");\n");
 
                 sql += GetCommentSql();
 
@@ -318,10 +320,12 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                     properties->AppendItem(_("Inherited"), false);
                 }
                 properties->AppendItem(_("Statistics"), GetAttstattarget());
-                if (database->BackendMinimumVersion(8, 5))
-                    properties->AppendItem(_("Distincts"), GetAttdistinct());
-
-
+                size_t i;
+                for (i=0 ; i < variables.GetCount() ; i++)
+                {
+                    wxString item=variables.Item(i);
+                    properties->AppendItem(item.BeforeFirst('='), item.AfterFirst('='));
+                }
                 properties->AppendItem(_("System column?"), GetSystemObject());
             }
         }
@@ -387,7 +391,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
     if (database->BackendMinimumVersion(8, 5))
         sql += 
             wxT(",\n")
-            wxT("  attdistinct");
+            wxT("  attoptions");
     if (database->BackendMinimumVersion(7, 4))
         sql += 
             wxT(",\n")
@@ -464,7 +468,11 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
             column->iSetIsLocal(columns->GetBool(wxT("attislocal")));
             column->iSetAttstattarget(columns->GetLong(wxT("attstattarget")));
             if (database->BackendMinimumVersion(8, 5))
-                column->iSetAttdistinct(columns->GetLong(wxT("attdistinct")));
+            {
+                wxString str=columns->GetVal(wxT("attoptions"));
+                if (!str.IsEmpty())
+                    FillArray(column->GetVariables(), str.Mid(1, str.Length()-2));
+            }
             if (database->BackendMinimumVersion(8, 4))
                 column->iSetAcl(columns->GetVal(wxT("attacl")));
 

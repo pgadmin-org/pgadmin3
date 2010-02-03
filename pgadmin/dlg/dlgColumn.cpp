@@ -31,7 +31,12 @@
 #define txtDefault          CTRL_TEXT("txtDefault")
 #define chkNotNull          CTRL_CHECKBOX("chkNotNull")
 #define txtAttstattarget    CTRL_TEXT("txtAttstattarget")
-#define txtAttdistinct      CTRL_TEXT("txtAttdistinct")
+#define lstVariables        CTRL_LISTVIEW("lstVariables")
+#define cbVarname           CTRL_COMBOBOX2("cbVarname")
+#define txtValue            CTRL_TEXT("txtValue")
+#define btnAdd              CTRL_BUTTON("wxID_ADD")
+#define btnRemove           CTRL_BUTTON("wxID_REMOVE")
+
 
 BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
     EVT_TEXT(XRCID("txtLength"),                    dlgProperty::OnChange)
@@ -39,11 +44,16 @@ BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
     EVT_TEXT(XRCID("txtDefault"),                   dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkNotNull"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtAttstattarget"),             dlgProperty::OnChange)
-    EVT_TEXT(XRCID("txtAttdistinct"),             dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbDatatype"),                   dlgColumn::OnSelChangeTyp)
     EVT_COMBOBOX(XRCID("cbDatatype"),               dlgColumn::OnSelChangeTyp)
     EVT_BUTTON(CTL_ADDPRIV,                         dlgColumn::OnAddPriv)
     EVT_BUTTON(CTL_DELPRIV,                         dlgColumn::OnDelPriv)
+    EVT_LIST_ITEM_SELECTED(XRCID("lstVariables"),   dlgColumn::OnVarSelChange)
+    EVT_BUTTON(wxID_ADD,                            dlgColumn::OnVarAdd)
+    EVT_BUTTON(wxID_REMOVE,                         dlgColumn::OnVarRemove)
+    EVT_TEXT(XRCID("cbVarname"),                    dlgColumn::OnVarnameSelChange)
+    EVT_COMBOBOX(XRCID("cbVarname"),                dlgColumn::OnVarnameSelChange)
+
 #ifdef __WXMAC__
     EVT_SIZE(                                       dlgColumn::OnChangeSize)
 #endif
@@ -64,8 +74,8 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
     wxASSERT(!table || (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == PGM_VIEW || table->GetMetaType() == GP_EXTTABLE || table->GetMetaType() == GP_PARTITION));
 
     txtAttstattarget->SetValidator(numericValidator);
-    if (connection && connection->BackendMinimumVersion(8, 5))
-        txtAttdistinct->SetValidator(numericValidator);
+
+    lstVariables->CreateColumns(0, _("Variable"), _("Value"));
 
     /* Column Level Privileges */
     securityChanged=false;
@@ -199,6 +209,20 @@ int dlgColumn::Go(bool modal)
         securityPage->lbPrivileges->GetParent()->Layout();
     }
     
+    if (connection->BackendMinimumVersion(8, 5))
+    {
+        cbVarname->Append(wxT("n_distinct"));
+        cbVarname->Append(wxT("n_distinct_inherited"));
+        cbVarname->SetSelection(0);
+    }
+    else
+    {
+        lstVariables->Enable(false);
+        btnAdd->Enable(false);
+        btnRemove->Enable(false);
+        cbVarname->Enable(false);
+        txtValue->Enable(false);
+    }
 
     if (column)
     {
@@ -210,8 +234,6 @@ int dlgColumn::Go(bool modal)
         txtDefault->SetValue(column->GetDefault());
         chkNotNull->SetValue(column->GetNotNull());
         txtAttstattarget->SetValue(NumToStr(column->GetAttstattarget()));
-        if (connection && connection->BackendMinimumVersion(8, 5))
-            txtAttdistinct->SetValue(NumToStr(column->GetAttdistinct()));
 
         wxString fullType = column->GetRawTypename();
         if (column->GetIsArray())
@@ -259,7 +281,6 @@ int dlgColumn::Go(bool modal)
             txtLength->Disable();
             cbDatatype->Disable();
             txtAttstattarget->Disable();
-            txtAttdistinct->Disable();
         }
         else if (column->GetTable()->GetMetaType() == PGM_VIEW) // Disable controls not valid for view columns
         {
@@ -268,7 +289,6 @@ int dlgColumn::Go(bool modal)
             txtLength->Disable();
             cbDatatype->Disable();
             txtAttstattarget->Disable();
-            txtAttdistinct->Disable();
         }
          else if (column->GetTable()->GetMetaType() == GP_EXTTABLE) // Disable controls not valid for external table columns
         {
@@ -277,9 +297,16 @@ int dlgColumn::Go(bool modal)
             txtLength->Disable();
             cbDatatype->Disable();
             txtAttstattarget->Disable();
-            txtAttdistinct->Disable();
             txtDefault->Disable();
         }
+
+        size_t i;
+        for (i=0 ; i < column->GetVariables().GetCount() ; i++)
+        {
+            wxString item=column->GetVariables().Item(i);
+            lstVariables->AppendItem(0, item.BeforeFirst('='), item.AfterFirst('='));
+        }
+
     }
     else
     {
@@ -297,7 +324,6 @@ int dlgColumn::Go(bool modal)
         }
 
         txtAttstattarget->Disable();
-        txtAttdistinct->Disable();
         txtComment->Disable();
     }
     return dlgTypeProperty::Go(modal);
@@ -399,18 +425,48 @@ wxString dlgColumn::GetSql()
                     sql += wxT(" SET STATISTICS ") + txtAttstattarget->GetValue();
                 sql += wxT(";\n");
             }
-            if (connection->BackendMinimumVersion(8, 5))
+
+            wxArrayString vars;
+            size_t index;
+
+            for (index = 0 ; index < column->GetVariables().GetCount() ; index++)
+                vars.Add(column->GetVariables().Item(index));
+
+            int cnt=lstVariables->GetItemCount();
+            int pos;
+
+            // check for changed or added vars
+            for (pos=0 ; pos < cnt ; pos++)
             {
-                if (txtAttdistinct->GetValue() != NumToStr(column->GetAttdistinct()))
+                wxString newVar=lstVariables->GetText(pos);
+                wxString newVal=lstVariables->GetText(pos, 1);
+    
+                wxString oldVal;
+    
+                for (index=0 ; index < vars.GetCount() ; index++)
+                {
+                    wxString var=vars.Item(index);
+                    if (var.BeforeFirst('=').IsSameAs(newVar, false))
+                    {
+                            oldVal = var.Mid(newVar.Length()+1);
+                            vars.RemoveAt(index);
+                            break;
+                    }
+                }
+                if (oldVal != newVal)
                 {
                     sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                        +  wxT("\n   ALTER COLUMN ") + qtIdent(name);
-                    if (txtAttdistinct->GetValue().IsEmpty())
-                        sql += wxT(" SET STATISTICS DISTINCT 0");
-                    else
-                        sql += wxT(" SET STATISTICS DISTINCT ") + txtAttdistinct->GetValue();
-                    sql += wxT(";\n");
+                        +  wxT("\n   ALTER COLUMN ") + qtIdent(name)
+                        +  wxT("\n   SET (") + newVar +  wxT("=") + newVal + wxT(");\n");
                 }
+            }
+            
+            // check for removed vars
+            for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
+            {
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT("\n   ALTER COLUMN ") + qtIdent(name)
+                    +  wxT("\n   RESET (") + vars.Item(pos).BeforeFirst('=') + wxT(");\n");
             }
         }
         else
@@ -433,13 +489,13 @@ wxString dlgColumn::GetSql()
                     + wxT(" SET STATISTICS ") + txtAttstattarget->GetValue()
                     + wxT(";\n");
 
-            if (connection->BackendMinimumVersion(8, 5))
+            // check for added vars
+            for (int pos=0 ; pos < lstVariables->GetItemCount() ; pos++)
             {
-                if (!txtAttdistinct->GetValue().IsEmpty())
-                    sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                        + wxT("\n   ALTER COLUMN ") + qtIdent(name)
-                        + wxT(" SET DISTINCT ") + txtAttdistinct->GetValue()
-                        + wxT(";\n");
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT("\n   ALTER COLUMN ") + qtIdent(name)
+                    +  wxT("\n   SET (") + lstVariables->GetText(pos) +  wxT("=")
+                    +  lstVariables->GetText(pos, 1)+  wxT(");\n");
             }
         }
 
@@ -527,7 +583,7 @@ void dlgColumn::CheckChange()
                     || (isVarLen && varlen != column->GetLength())
                     || (isVarPrec && varprec != column->GetPrecision())
                     || txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget())
-                    || txtAttdistinct->GetValue() != NumToStr(column->GetAttdistinct());
+                    || dirtyVars;
 
         EnableOK(enable | securityChanged);
     }
@@ -563,5 +619,57 @@ void dlgColumn::OnDelPriv(wxCommandEvent &ev)
 {
     securityChanged=true;
     CheckChange();
+}
+
+void dlgColumn::OnVarnameSelChange(wxCommandEvent &ev)
+{
+    int sel=cbVarname->GuessSelection(ev);
+}
+
+void dlgColumn::OnVarSelChange(wxListEvent &ev)
+{
+    long pos=lstVariables->GetSelection();
+    if (pos >= 0)
+    {
+        wxString value=lstVariables->GetText(pos, 1);
+        cbVarname->SetValue(lstVariables->GetText(pos));
+        int sel = cbVarname->FindString(lstVariables->GetText(pos));
+        txtValue->SetValue(value);
+    }
+}
+
+
+void dlgColumn::OnVarAdd(wxCommandEvent &ev)
+{
+    wxString name = cbVarname->GetValue();
+    wxString value = txtValue->GetValue().Strip(wxString::both);
+
+    if (value.IsEmpty())
+        value = wxT("DEFAULT");
+
+    if (!name.IsEmpty())
+    {
+        long pos=lstVariables->FindItem(-1, name);
+        if (pos < 0)
+        {
+            pos = lstVariables->GetItemCount();
+            lstVariables->InsertItem(pos, name, 0);
+        }
+        lstVariables->SetItem(pos, 1, value);
+    }
+
+    dirtyVars = true;
+    CheckChange();
+}
+
+
+void dlgColumn::OnVarRemove(wxCommandEvent &ev)
+{
+    if (lstVariables->GetSelection() >= 0)
+    {
+        lstVariables->DeleteCurrentItem();
+        dirtyVars = true;
+        CheckChange();
+    }
 }
 
