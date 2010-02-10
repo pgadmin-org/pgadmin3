@@ -29,13 +29,11 @@
 
 BEGIN_EVENT_TABLE(frmMaintenance, ExecutionDialog)
     EVT_RADIOBOX(XRCID("rbxAction"),    frmMaintenance::OnAction)
-    EVT_CHECKBOX(XRCID("chkFull"),      frmMaintenance::OnChange)
 END_EVENT_TABLE()
 
 #define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
 #define rbxAction               CTRL_RADIOBOX("rbxAction")
 #define chkFull                 CTRL_CHECKBOX("chkFull")
-#define chkInPlace              CTRL_CHECKBOX("chkInPlace")
 #define chkFreeze               CTRL_CHECKBOX("chkFreeze")
 #define chkAnalyze              CTRL_CHECKBOX("chkAnalyze")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
@@ -108,12 +106,6 @@ void frmMaintenance::OnAction(wxCommandEvent& ev)
 
 
 
-void frmMaintenance::OnChange(wxCommandEvent &ev)
-{
-    chkInPlace->Enable(object->GetConnection()->BackendMinimumVersion(8, 5) && chkFull->GetValue());
-}
-
-
 wxString frmMaintenance::GetSql()
 {
     wxString sql;
@@ -124,28 +116,14 @@ wxString frmMaintenance::GetSql()
         {
             sql=wxT("VACUUM ");
 
-            if (object->GetConnection()->BackendMinimumVersion(8, 5) && chkInPlace->GetValue())
-            {
-                sql += wxT("(FULL INPLACE");
-                if (chkFreeze->GetValue())
-                    sql += wxT(", FREEZE");
-                if (chkVerbose->GetValue())
-                    sql += wxT(", VERBOSE");
-                if (chkAnalyze->GetValue())
-                    sql += wxT(", ANALYZE");
-                sql += wxT(")");
-            }
-            else
-            {
-                if (chkFull->GetValue())
-                    sql += wxT("FULL ");
-                if (chkFreeze->GetValue())
-                    sql += wxT("FREEZE ");
-                if (chkVerbose->GetValue())
-                    sql += wxT("VERBOSE ");
-                if (chkAnalyze->GetValue())
-                    sql += wxT("ANALYZE ");
-            }
+            if (chkFull->GetValue())
+                sql += wxT("FULL ");
+            if (chkFreeze->GetValue())
+                sql += wxT("FREEZE ");
+            if (chkVerbose->GetValue())
+                sql += wxT("VERBOSE ");
+            if (chkAnalyze->GetValue())
+                sql += wxT("ANALYZE ");
 
             if (object->GetMetaType() != PGM_DATABASE)
                 sql += object->GetQuotedFullIdentifier();
@@ -186,9 +164,6 @@ wxString frmMaintenance::GetSql()
 void frmMaintenance::Go()
 {
     chkFull->SetFocus();
-
-    chkInPlace->Enable(object->GetConnection()->BackendMinimumVersion(8, 5) && chkFull->GetValue());
-
     Show(true);
 }
 
