@@ -105,3 +105,41 @@ void ctlListView::CreateColumns(wxImageList *images, const wxString &left, const
     if (images)
         SetImageList(images, wxIMAGE_LIST_SMALL);
 }
+
+
+void ctlListView::CreateColumns(wxImageList *images, const wxString &str1, const wxString &str2, const wxString &str3, int leftSize)
+{
+    int rightSize;
+    if (leftSize < 0)
+    {
+#ifdef __WXMAC__
+        leftSize = rightSize = (GetParent()->GetSize().GetWidth() - 20)/2;
+#else
+        leftSize = rightSize = GetSize().GetWidth()/2;
+#endif
+    }
+    else
+    {
+        if (leftSize)
+            leftSize = ConvertDialogToPixels(wxPoint(leftSize, 0)).x;
+
+#ifdef __WXMAC__
+        rightSize = (GetParent()->GetSize().GetWidth() - 20) - leftSize;
+#else
+        rightSize = GetClientSize().GetWidth()-leftSize;
+#endif
+    }
+    if (!leftSize)
+    {
+        InsertColumn(0, str1, wxLIST_FORMAT_LEFT, GetClientSize().GetWidth());
+    }
+    else
+    {
+        InsertColumn(0, str1, wxLIST_FORMAT_LEFT, leftSize);
+        InsertColumn(1, str2, wxLIST_FORMAT_LEFT, rightSize/2);
+        InsertColumn(2, str3, wxLIST_FORMAT_LEFT, rightSize/2);
+    }
+
+    if (images)
+        SetImageList(images, wxIMAGE_LIST_SMALL);
+}

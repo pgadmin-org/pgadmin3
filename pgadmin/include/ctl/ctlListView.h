@@ -27,6 +27,7 @@ public:
     wxString GetText(long row, long col=0);
 
     void CreateColumns(wxImageList *images, const wxString &left, const wxString &right, int leftSize=60);
+    void CreateColumns(wxImageList *images, const wxString &str1, const wxString &str2, const wxString &str3, int leftSize=60);
 
     void AddColumn(const wxChar *text, int size=wxLIST_AUTOSIZE_USEHEADER, int format=wxLIST_FORMAT_LEFT);
 

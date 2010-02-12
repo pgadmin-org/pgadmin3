@@ -406,9 +406,30 @@ wxString pgDatabase::GetSql(ctlTree *browser)
         sql += wxT(";\n");
 
         size_t i;
+        wxString username;
+        wxString varname;
+        wxString varvalue;
         for (i=0 ; i < variables.GetCount() ; i++)
-            sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
-                + wxT(" SET ") + variables.Item(i).BeforeFirst('=') + wxT("='") + variables.Item(i).AfterFirst('=') + wxT("';\n");
+        {
+            wxStringTokenizer tkz(variables.Item(i), wxT("="));
+            while (tkz.HasMoreTokens())
+            {
+                username = tkz.GetNextToken();
+                varname = tkz.GetNextToken();
+                varvalue = tkz.GetNextToken();
+            }
+
+            if (username.Length() == 0)
+            {
+                sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
+                    +  wxT(" SET ") + varname + wxT("='") + varvalue + wxT("';\n");
+            }
+            else
+            {
+                sql += wxT("ALTER ROLE ") + username + wxT(" IN DATABASE ") + GetQuotedFullIdentifier()
+                    +  wxT(" SET ") + varname + wxT("='") + varvalue + wxT("';\n");
+            }
+        }
 
 		if (myConn)
 		{
@@ -498,10 +519,29 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
             properties->AppendItem(_("Default schema"), defaultSchema);
 
         size_t i;
+        wxString username;
+        wxString varname;
+        wxString varvalue;
         for (i=0 ; i < variables.GetCount() ; i++)
         {
-            wxString item=variables.Item(i);
-            properties->AppendItem(item.BeforeFirst('='), item.AfterFirst('='));
+            wxStringTokenizer tkz(variables.Item(i), wxT("="));
+            while (tkz.HasMoreTokens())
+            {
+                username = tkz.GetNextToken();
+                varname = tkz.GetNextToken();
+                varvalue = tkz.GetNextToken();
+            }
+
+            if (username.Length() == 0)
+            {
+                properties->AppendItem(varname, varvalue);
+            }
+            else
+            {
+                // should we add the parameters for the username?
+                // I don't think so
+                // but if we want this, how will we display that?
+            }
         }
         properties->AppendItem(_("Allow connections?"), GetAllowConnections());
         properties->AppendItem(_("Connected?"), GetConnected());
@@ -568,8 +608,12 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     
     // In 8.5+, database config options are in pg_db_role_setting
     if (collection->GetConnection()->BackendMinimumVersion(8, 5))
+    {
+        wxString setconfig = wxT("SELECT array(select coalesce('''' || rolname || '''', '') || '=' || unnest(setconfig) ")
+           wxT("FROM pg_db_role_setting setting LEFT JOIN pg_roles role ON setting.setrole=role.oid ")
+           wxT("WHERE setdatabase = db.oid)");
         databases = collection->GetServer()->ExecuteSet(
-           wxT("SELECT db.oid, datname, db.dattablespace AS spcoid, spcname, datallowconn, setconfig AS datconfig, datacl, ")
+           wxT("SELECT db.oid, datname, db.dattablespace AS spcoid, spcname, datallowconn, (") + setconfig + wxT(") AS datconfig, datacl, ")
            wxT("pg_encoding_to_char(encoding) AS serverencoding, pg_get_userbyid(datdba) AS datowner,")
            wxT("has_database_privilege(db.oid, 'CREATE') as cancreate, \n")
            wxT("current_setting('default_tablespace') AS default_tablespace, \n")
@@ -578,9 +622,9 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
            wxT("  FROM pg_database db\n")
            wxT("  LEFT OUTER JOIN pg_tablespace ta ON db.dattablespace=ta.OID\n")
            wxT("  LEFT OUTER JOIN pg_shdescription descr ON db.oid=descr.objoid\n")
-           wxT("  LEFT OUTER JOIN pg_db_role_setting setting ON (db.oid=setting.setdatabase AND setting.setrole=0)\n")
            + restr +
            wxT(" ORDER BY datname"));
+    }
     else if (collection->GetConnection()->BackendMinimumVersion(8, 0))
         databases = collection->GetServer()->ExecuteSet(
            wxT("SELECT db.oid, datname, db.dattablespace AS spcoid, spcname, datallowconn, datconfig, datacl, ")
@@ -621,6 +665,18 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             database->iSetCreatePrivilege(databases->GetBool(wxT("cancreate")));
             database->iSetComment(databases->GetVal(wxT("description")));
             wxString str=databases->GetVal(wxT("datconfig"));
+            if (!collection->GetConnection()->BackendMinimumVersion(8, 5))
+            {
+                wxString tmp = wxEmptyString;
+                wxStringTokenizer tkz(str.Mid(1, str.Length()-2), wxT(","));
+                while (tkz.HasMoreTokens())
+                {
+                    if (tmp.Length() > 0)
+                        tmp += wxT(",");
+                    tmp += wxT("=") + tkz.GetNextToken();
+                }
+                str = wxT("{") + tmp + wxT("}");
+            }
             if (!str.IsEmpty())
                 FillArray(database->GetVariables(), str.Mid(1, str.Length()-2));
             database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));

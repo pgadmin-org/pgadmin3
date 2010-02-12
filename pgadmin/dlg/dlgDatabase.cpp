@@ -32,6 +32,7 @@
 
 #define lstVariables    CTRL_LISTVIEW("lstVariables")
 #define cbVarname       CTRL_COMBOBOX2("cbVarname")
+#define cbVarUsername   CTRL_COMBOBOX2("cbVarUsername")
 #define txtValue        CTRL_TEXT("txtValue")
 #define chkValue        CTRL_CHECKBOX("chkValue")
 #define btnAdd          CTRL_BUTTON("wxID_ADD")
@@ -63,6 +64,7 @@ BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
     EVT_BUTTON(wxID_ADD,                            dlgDatabase::OnVarAdd)
     EVT_BUTTON(wxID_REMOVE,                         dlgDatabase::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgDatabase::OnVarnameSelChange)
+    EVT_TEXT(XRCID("cbVarUsername"),                dlgDatabase::OnVarnameSelChange)
     EVT_COMBOBOX(XRCID("cbVarname"),                dlgDatabase::OnVarnameSelChange)
     EVT_BUTTON(wxID_OK,                             dlgDatabase::OnOK)
     EVT_TEXT(XRCID("cbCollate"),                    dlgDatabase::OnCollateSelChange)
@@ -79,7 +81,7 @@ dlgDatabase::dlgDatabase(pgaFactory *f, frmMain *frame, pgDatabase *node)
 {
     database=node;
     schemaRestrictionOk=true;
-    lstVariables->CreateColumns(0, _("Variable"), _("Value"));
+    lstVariables->CreateColumns(0, _("Username"), _("Variable"), _("Value"));
 
     chkValue->Hide();
 
@@ -107,6 +109,14 @@ int dlgDatabase::Go(bool modal)
 
     AddGroups();
     AddUsers(cbOwner);
+
+    if (connection->BackendMinimumVersion(8,5))
+    {
+        cbVarUsername->Append(wxT(""));
+        AddUsers(cbVarUsername);
+    }
+    else
+        cbVarUsername->Enable(false);
 
     if (connection->BackendMinimumVersion(8, 0))
     {
@@ -151,6 +161,11 @@ int dlgDatabase::Go(bool modal)
         delete set;
 
         cbVarname->SetSelection(0);
+
+        if (connection->BackendMinimumVersion(8,5))
+        {
+            cbVarUsername->SetSelection(0);
+        }
     }
 
     if (database)
@@ -168,16 +183,27 @@ int dlgDatabase::Go(bool modal)
         if (readOnly)
         {
             cbVarname->Disable();
+            cbVarUsername->Disable();
             txtValue->Disable();
             btnAdd->Disable();
             btnRemove->Disable();
         }
 
         size_t i;
+        wxString username;
+        wxString varname;
+        wxString varvalue;
         for (i=0 ; i < database->GetVariables().GetCount() ; i++)
         {
-            wxString item=database->GetVariables().Item(i);
-            lstVariables->AppendItem(0, item.BeforeFirst('='), item.AfterFirst('='));
+            wxStringTokenizer tkz(database->GetVariables().Item(i), wxT("="));
+            while (tkz.HasMoreTokens())
+            {
+                username = tkz.GetNextToken();
+                varname = tkz.GetNextToken();
+                varvalue = tkz.GetNextToken();
+            }
+
+            lstVariables->AppendItem(0, username, varname, varvalue);
         }
 
         PrepareTablespace(cbTablespace, database->GetTablespaceOid());
@@ -459,12 +485,13 @@ void dlgDatabase::OnVarSelChange(wxListEvent &ev)
     long pos=lstVariables->GetSelection();
     if (pos >= 0)
     {
-        wxString value=lstVariables->GetText(pos, 1);
-        cbVarname->SetValue(lstVariables->GetText(pos));
+        cbVarUsername->SetValue(lstVariables->GetText(pos));
+        cbVarname->SetValue(lstVariables->GetText(pos, 1));
 
         // We used to raise an OnVarnameSelChange() event here, but
         // at this point the combo box hasn't necessarily updated.
-        int sel = cbVarname->FindString(lstVariables->GetText(pos));
+        wxString value=lstVariables->GetText(pos, 2);
+        int sel = cbVarname->FindString(lstVariables->GetText(pos, 1));
         SetupVarEditor(sel);
 
         txtValue->SetValue(value);
@@ -475,6 +502,7 @@ void dlgDatabase::OnVarSelChange(wxListEvent &ev)
 
 void dlgDatabase::OnVarAdd(wxCommandEvent &ev)
 {
+    wxString username=cbVarUsername->GetValue();
     wxString name=cbVarname->GetValue();
     wxString value;
     if (chkValue->IsShown())
@@ -487,13 +515,39 @@ void dlgDatabase::OnVarAdd(wxCommandEvent &ev)
 
     if (!name.IsEmpty())
     {
-        long pos=lstVariables->FindItem(-1, name);
-        if (pos < 0)
+        bool found = false;
+        long prevpos = -1;
+        for (long item=0; item<lstVariables->GetItemCount(); item++)
         {
-            pos = lstVariables->GetItemCount();
-            lstVariables->InsertItem(pos, name, 0);
+            if (name == lstVariables->GetText(item, 1))
+            {
+                if (username == lstVariables->GetText(item))
+                {
+                    found = true;
+                    lstVariables->SetItem(item, 2, value);
+                }
+                else
+                {
+                    prevpos = item;
+                }
+            }
         }
-        lstVariables->SetItem(pos, 1, value);
+        if (!found)
+        {
+            if (prevpos != -1)
+            {
+                lstVariables->InsertItem(prevpos, username, 1);
+                lstVariables->SetItem(prevpos, 1, name);
+                lstVariables->SetItem(prevpos, 2, value);
+            }
+            else
+            {
+                long pos = lstVariables->GetItemCount();
+                lstVariables->InsertItem(pos, username, 1);
+                lstVariables->SetItem(pos, 1, name);
+                lstVariables->SetItem(pos, 2, value);
+            }
+        }
     }
 	dirtyVars = true;
     CheckChange();
@@ -560,6 +614,9 @@ wxString dlgDatabase::GetSql()
             sql += GetGrant(wxT("CTc"), wxT("DATABASE ") + qtIdent(name));
 
         wxArrayString vars;
+        wxString username;
+        wxString varname;
+        wxString varvalue;
 
         size_t index;
 
@@ -572,36 +629,71 @@ wxString dlgDatabase::GetSql()
         // check for changed or added vars
         for (pos=0 ; pos < cnt ; pos++)
         {
-            wxString newVar=lstVariables->GetText(pos);
-            wxString newVal=lstVariables->GetText(pos, 1);
+            wxString newUsr=lstVariables->GetText(pos);
+            wxString newVar=lstVariables->GetText(pos, 1);
+            wxString newVal=lstVariables->GetText(pos, 2);
 
             wxString oldVal;
 
             for (index=0 ; index < vars.GetCount() ; index++)
             {
-                wxString var=vars.Item(index);
-                if (var.BeforeFirst('=').IsSameAs(newVar, false))
+                wxStringTokenizer tkz(vars.Item(index), wxT("="));
+                while (tkz.HasMoreTokens())
                 {
-                    oldVal = var.Mid(newVar.Length()+1);
+                    username = tkz.GetNextToken();
+                    varname = tkz.GetNextToken();
+                    varvalue = tkz.GetNextToken();
+                }
+
+                wxString var=vars.Item(index);
+                if (newUsr == username && newVar == varname)
+                {
+                    oldVal = varvalue;
                     vars.RemoveAt(index);
                     break;
                 }
             }
             if (oldVal != newVal)
             {
-                sql += wxT("ALTER DATABASE ") + qtIdent(name)
-                    +  wxT(" SET ") + newVar
-                    +  wxT("='") + newVal
-                    +  wxT("';\n");
+                if (newUsr.Length() == 0)
+                {
+                    sql += wxT("ALTER DATABASE ") + qtIdent(name)
+                        +  wxT(" SET ") + newVar
+                        +  wxT("='") + newVal
+                        +  wxT("';\n");
+                }
+                else
+                {
+                    sql += wxT("ALTER ROLE ") + newUsr + wxT(" IN DATABASE ") + qtIdent(name)
+                        +  wxT(" SET ") + newVar
+                        +  wxT("='") + newVal
+                        +  wxT("';\n");
+                }
             }
         }
         
         // check for removed vars
         for (pos=0 ; pos < (int)vars.GetCount() ; pos++)
         {
-            sql += wxT("ALTER DATABASE ") + qtIdent(name)
-                +  wxT(" RESET ") + vars.Item(pos).BeforeFirst('=')
-                + wxT(";\n");
+            wxStringTokenizer tkz(vars.Item(pos), wxT("="));
+            while (tkz.HasMoreTokens())
+            {
+                username = tkz.GetNextToken();
+                varname = tkz.GetNextToken();
+                varvalue = tkz.GetNextToken();
+            }
+
+            if (username.Length() == 0)
+            {
+                sql += wxT("ALTER DATABASE ") + qtIdent(name)
+                    +  wxT(" RESET ") + varname
+                    + wxT(";\n");
+            }
+            else
+            {
+                sql += wxT("ALTER ROLE ") + username + wxT(" IN DATABASE ") + qtIdent(name)
+                    +  wxT(" RESET ") + varname + wxT(";\n");
+            }
         }
     }
     else
