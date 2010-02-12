@@ -181,7 +181,8 @@ public:
 	{
 		PGPASS,
 		PGAFAVOURITES,
-		PGAMACROS
+		PGAMACROS,
+        PGAHISTOQUERIES
 	};
 	static wxString GetConfigFile(configFileName cfgname);
 

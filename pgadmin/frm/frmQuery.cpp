@@ -79,6 +79,10 @@
 #define CTRLID_CONNECTION       4200
 #define CTRLID_DATABASELABEL    4201
 
+#define XML_FROM_WXSTRING(s) ((const xmlChar *)(const char *)s.mb_str(wxConvUTF8))
+#define WXSTRING_FROM_XML(s) wxString((char *)s, wxConvUTF8)
+#define XML_STR(s) ((const xmlChar *)s)
+
 // Initialize execution 'mutex'. As this will always run in the
 // main thread, there aren't any real concurrency issues, so
 // a simple flag will suffice.
@@ -89,6 +93,7 @@ BEGIN_EVENT_TABLE(frmQuery, pgFrame)
 EVT_ERASE_BACKGROUND(           frmQuery::OnEraseBackground)
 EVT_SIZE(                       frmQuery::OnSize)
 EVT_COMBOBOX(CTRLID_CONNECTION, frmQuery::OnChangeConnection)
+EVT_COMBOBOX(CTL_SQLQUERYCBOX,  frmQuery::OnChangeQuery)
 EVT_CLOSE(                      frmQuery::OnClose)
 EVT_SET_FOCUS(                  frmQuery::OnSetFocus)
 EVT_MENU(MNU_NEW,               frmQuery::OnNew)
@@ -153,6 +158,8 @@ EVT_MENU(QUERY_COMPLETE,        frmQuery::OnQueryComplete)
 EVT_MENU(PGSCRIPT_COMPLETE,     frmQuery::OnScriptComplete)
 EVT_NOTEBOOK_PAGE_CHANGED(CTL_NTBKCENTER, frmQuery::OnChangeNotebook)
 EVT_SPLITTER_SASH_POS_CHANGED(GQB_HORZ_SASH, frmQuery::OnResizeHorizontally)
+EVT_BUTTON(CTL_DELETECURRENTBTN, frmQuery::OnDeleteCurrent)
+EVT_BUTTON(CTL_DELETEALLBTN,     frmQuery::OnDeleteAll)
 END_EVENT_TABLE()
 
 class DnDFile : public wxFileDropTarget
@@ -401,12 +408,50 @@ pgsTimer(new pgScriptTimer(this))
     //Create SQL editor notebook
     sqlNotebook = new wxNotebook(this, CTL_NTBKCENTER, wxDefaultPosition, wxDefaultSize);
 
+    // Create panel for query
+    wxPanel *pnlQuery = new wxPanel(sqlNotebook);
+    
+    // Create the outer box sizer
+    wxBoxSizer *boxQuery = new wxBoxSizer(wxVERTICAL);
+
+    // Create the inner box sizer
+    // This one will contain the combobox, and the two buttons
+    wxBoxSizer *boxHistory = new wxBoxSizer(wxHORIZONTAL);
+
+    // Query combobox
+    sqlQueries = new wxComboBox(pnlQuery, CTL_SQLQUERYCBOX, wxT(""), wxDefaultPosition, wxDefaultSize, NULL, wxCB_DROPDOWN);
+    LoadQueries();
+    boxHistory->Add(sqlQueries, 1, wxEXPAND | wxALL, 1);
+
+    // Delete Current button
+    btnDeleteCurrent = new wxButton(pnlQuery, CTL_DELETECURRENTBTN, wxT("Delete Current"));
+    btnDeleteCurrent->Enable(false);
+    boxHistory->Add(btnDeleteCurrent, 0, wxALL | wxALIGN_RIGHT, 1);
+
+    // Delete All button
+    btnDeleteAll = new wxButton(pnlQuery, CTL_DELETEALLBTN, wxT("Delete All"));
+    btnDeleteAll->Enable(sqlQueries->GetCount() > 0);
+    boxHistory->Add(btnDeleteAll, 0, wxALL | wxALIGN_RIGHT, 1);
+
+    boxQuery->Add(boxHistory, 0, wxEXPAND | wxALL, 1);
+
+    // Create the other inner box sizer
+    // This one will contain the SQL box
+    wxBoxSizer *boxSQL = new wxBoxSizer(wxHORIZONTAL);
+
     // Query box
-    sqlQuery = new ctlSQLBox(sqlNotebook, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
+    sqlQuery = new ctlSQLBox(pnlQuery, CTL_SQLQUERY, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxSIMPLE_BORDER | wxTE_RICH2);
     sqlQuery->SetDatabase(conn);
     sqlQuery->SetMarginWidth(1, 16);
-		sqlQuery->SetDropTarget(new DnDFile(this));
+	sqlQuery->SetDropTarget(new DnDFile(this));
     SetEOLModeDisplay(sqlQuery->GetEOLMode());
+    boxSQL->Add(sqlQuery, 1, wxEXPAND | wxRIGHT | wxLEFT | wxBOTTOM, 1);
+
+    boxQuery->Add(boxSQL, 1, wxEXPAND | wxRIGHT | wxLEFT | wxBOTTOM, 1);
+
+    // Auto-sizing
+    pnlQuery->SetSizer(boxQuery);
+    boxQuery->Fit(pnlQuery);
 
     // Results pane
     outputPane = new wxNotebook(this, CTL_NTBKGQB, wxDefaultPosition, wxSize(500, 300));
@@ -426,7 +471,7 @@ pgsTimer(new pgScriptTimer(this))
     adjustSizesTimer=NULL;                        // Timer used to avoid a bug when close outputPane
 
     // Setup SQL editor notebook NBP_SQLEDTR
-    sqlNotebook->AddPage(sqlQuery, _("SQL Editor"));
+    sqlNotebook->AddPage(pnlQuery, _("SQL Editor"));
     sqlNotebook->AddPage(controller->getViewContainer(), _("Graphical Query Builder"));
     sqlNotebook->SetSelection(0);
 
@@ -2182,6 +2227,13 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
     Update();
     wxTheApp->Yield(true);
 
+    wxString tmp = query;
+    tmp.Replace(wxT("\n"), wxT(" "));
+    tmp.Replace(wxT("\r"), wxT(" "));
+    sqlQueries->Append(tmp);
+    histoQueries.Add(query);
+    SaveQueries();
+
     startTimeQuery=wxGetLocalTimeMillis();
     timer.Start(10);
 
@@ -2626,6 +2678,129 @@ wxColour frmQuery::GetServerColour()
     }
     return tmp;
 }
+
+void frmQuery::LoadQueries()
+{
+	xmlTextReaderPtr reader;
+
+	if (!wxFile::Access(sysSettings::GetConfigFile(sysSettings::PGAHISTOQUERIES), wxFile::read))
+		return;
+
+	reader = xmlReaderForFile((const char *)sysSettings::GetConfigFile(sysSettings::PGAHISTOQUERIES).mb_str(wxConvUTF8),NULL,0);
+	if (!reader)
+	{
+		wxMessageBox(_("Failed to load histoqueries file!"));
+		return;
+	}
+
+	while (xmlTextReaderRead(reader))
+	{
+		wxString nodename = WXSTRING_FROM_XML(xmlTextReaderConstName(reader));
+
+		if (nodename == wxT("histoquery"))
+		{
+			xmlChar *cont = xmlTextReaderReadString(reader);
+
+			if (!cont)
+				continue;
+
+			if (WXSTRING_FROM_XML(cont) != wxT(""))
+            {
+                wxString query = WXSTRING_FROM_XML(cont);
+                wxString tmp = query;
+                tmp.Replace(wxT("\n"), wxT(" "));
+                tmp.Replace(wxT("\r"), wxT(" "));
+                sqlQueries->Append(tmp);
+                histoQueries.Add(query);
+            }
+
+			xmlFree(cont);
+		}
+	}
+
+	xmlTextReaderClose(reader);
+	xmlFreeTextReader(reader);
+	xmlCleanupParser();
+
+	return;
+}
+
+
+void frmQuery::SaveQueries()
+{
+    size_t i;
+	xmlTextWriterPtr writer;
+
+	writer = xmlNewTextWriterFilename((const char *)sysSettings::GetConfigFile(sysSettings::PGAHISTOQUERIES).mb_str(wxConvUTF8),0);
+	if (!writer)
+	{
+		wxMessageBox(_("Failed to write to histoqueries file!"));
+		return;
+	}
+	xmlTextWriterSetIndent(writer, 1);
+
+	if ((xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL) < 0) ||
+		(xmlTextWriterStartElement(writer, XML_STR("histoqueries")) < 0))
+	{
+		wxMessageBox(_("Failed to write to histoqueries file!"));
+		xmlFreeTextWriter(writer);
+		return;
+	}
+
+    for (i = 0; i < histoQueries.GetCount(); i++)
+    {
+        xmlTextWriterStartElement(writer, XML_STR("histoquery"));
+        xmlTextWriterWriteString(writer, XML_FROM_WXSTRING(histoQueries.Item(i)));
+        xmlTextWriterEndElement(writer);
+    }
+
+	if (xmlTextWriterEndDocument(writer) < 0)
+	{
+		wxMessageBox(_("Failed to write to histoqueries file!"));
+	}
+
+	xmlFreeTextWriter(writer);
+}
+
+
+void frmQuery::OnChangeQuery(wxCommandEvent &event)
+{
+    wxString query = histoQueries.Item(sqlQueries->GetSelection());
+    if (query.Length() > 0)
+    {
+        sqlQuery->SetText(query);
+        sqlQuery->Colourise(0, query.Length());
+        wxSafeYield();                            // needed to process sqlQuery modify event
+        changed = false;
+        setExtendedTitle();
+        SetLineEndingStyle();
+        btnDeleteCurrent->Enable(true);
+    }
+    btnDeleteAll->Enable(sqlQueries->GetCount() > 0);
+}
+
+
+void frmQuery::OnDeleteCurrent(wxCommandEvent& event)
+{
+    histoQueries.RemoveAt(sqlQueries->GetSelection());
+    sqlQueries->Delete(sqlQueries->GetSelection());
+    sqlQueries->SetValue(wxT(""));
+    btnDeleteCurrent->Enable(false);
+    btnDeleteAll->Enable(sqlQueries->GetCount() > 0);
+    SaveQueries();
+}
+
+
+void frmQuery::OnDeleteAll(wxCommandEvent& event)
+{
+    histoQueries.Clear();
+    sqlQueries->Clear();
+    sqlQueries->SetValue(wxT(""));
+    btnDeleteCurrent->Enable(false);
+    btnDeleteAll->Enable(false);
+    SaveQueries();
+}
+
 
 ///////////////////////////////////////////////////////
 

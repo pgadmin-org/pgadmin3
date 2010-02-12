@@ -683,7 +683,7 @@ void sysSettings::SetCanonicalLanguage(const wxLanguage &lang)
 //////////////////////////////////////////////////////////////////////////
 wxString sysSettings::GetConfigFile(configFileName cfgname)
 {
-    if (cfgname == PGPASS || cfgname == PGAFAVOURITES || cfgname == PGAMACROS)
+    if (cfgname == PGPASS || cfgname == PGAFAVOURITES || cfgname == PGAMACROS || cfgname == PGAHISTOQUERIES)
     {
         wxStandardPaths stdp;
         wxString fname=stdp.GetUserConfigDir();
@@ -702,6 +702,9 @@ wxString sysSettings::GetConfigFile(configFileName cfgname)
         case PGAMACROS:
             fname += wxT("\\pgadmin_macros.xml");
             break;
+        case PGAHISTOQUERIES:
+            fname += wxT("\\pgadmin_histoqueries.xml");
+            break;
         }
 #else
         switch(cfgname)
@@ -714,6 +717,9 @@ wxString sysSettings::GetConfigFile(configFileName cfgname)
             break;
         case PGAMACROS:
             fname += wxT("/.pgadminmacros");
+            break;
+        case PGAHISTOQUERIES:
+            fname += wxT("/.pgadmin_histoqueries");
             break;
         }
 #endif

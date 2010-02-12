@@ -83,6 +83,10 @@ private:
     wxTextCtrl *msgResult, *msgHistory;
     wxBitmapComboBox *cbConnection;
     wxTextCtrl *scratchPad;
+    wxComboBox *sqlQueries;
+    wxButton *btnDeleteCurrent;
+    wxButton *btnDeleteAll;
+    wxArrayString histoQueries;
 
 	// Query timing/status update
     wxTimer timer;
@@ -173,6 +177,9 @@ private:
     void OnCommentText(wxCommandEvent& event);
     void OnUncommentText(wxCommandEvent& event);
 
+    void OnDeleteCurrent(wxCommandEvent& event);
+    void OnDeleteAll(wxCommandEvent& event);
+
     void OnTimer(wxTimerEvent & event);
 
     void OpenLastFile();
@@ -190,6 +197,10 @@ private:
     void OnMacroInvoke(wxCommandEvent& event);
     void OnMacroManage(wxCommandEvent& event);
     void UpdateMacrosList();
+
+    void LoadQueries();
+    void SaveQueries();
+    void OnChangeQuery(wxCommandEvent &event);
 
     wxBitmap CreateBitmap(const wxColour& colour);
     wxColour GetServerColour();
@@ -236,7 +247,10 @@ enum
     CTL_COLSGRID,
     CTL_TIMERSIZES,
     CTL_TIMERFRM,
-    CTL_NTBKGQB
+    CTL_NTBKGQB,
+    CTL_SQLQUERYCBOX,
+    CTL_DELETECURRENTBTN,
+    CTL_DELETEALLBTN
 };
 
 ///////////////////////////////////////////////////////
