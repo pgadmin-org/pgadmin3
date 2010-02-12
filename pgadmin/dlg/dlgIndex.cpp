@@ -113,25 +113,28 @@ void dlgIndexBase::OnSelectListCol(wxListEvent &ev)
 
 void dlgIndexBase::OnSelectComboCol(wxCommandEvent &ev)
 {
-    if (cbType->GetValue().Length() > 0)
+    if (cbType)
     {
-        cbOpClass->Clear();
-
-        wxString sql = wxT("SELECT opcname FROM pg_opclass ");
-        sql+= wxT("WHERE opcintype=");
-        sql+= NumToStr(cbColumns->GetOIDKey(cbColumns->GetCurrentSelection()));
-        sql+= wxT("AND opcmethod=") + cbType->GetStringKey(cbType->GetCurrentSelection())
-            + wxT(" AND NOT opcdefault")
-            + wxT(" ORDER BY 1");
-        pgSet *set=connection->ExecuteSet(sql);
-        if (set)
+        if (cbType->GetValue().Length() > 0)
         {
-            while (!set->Eof())
+            cbOpClass->Clear();
+
+            wxString sql = wxT("SELECT opcname FROM pg_opclass ");
+            sql+= wxT("WHERE opcintype=");
+            sql+= NumToStr(cbColumns->GetOIDKey(cbColumns->GetCurrentSelection()));
+            sql+= wxT("AND opcmethod=") + cbType->GetStringKey(cbType->GetCurrentSelection())
+                + wxT(" AND NOT opcdefault")
+                + wxT(" ORDER BY 1");
+            pgSet *set=connection->ExecuteSet(sql);
+            if (set)
             {
-                cbOpClass->Append(set->GetVal(0));
-                set->MoveNext();
+                while (!set->Eof())
+                {
+                    cbOpClass->Append(set->GetVal(0));
+                    set->MoveNext();
+                }
+                delete set;
             }
-            delete set;
         }
     }
 
