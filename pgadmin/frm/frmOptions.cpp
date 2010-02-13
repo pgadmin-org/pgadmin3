@@ -73,6 +73,9 @@
 #define pickerActiveProcessColour   CTRL_COLOURPICKER("pickerActiveProcessColour")
 #define pickerSlowProcessColour     CTRL_COLOURPICKER("pickerSlowProcessColour")
 #define pickerBlockedProcessColour  CTRL_COLOURPICKER("pickerBlockedProcessColour")
+#define txtFavouritesFile           CTRL_TEXT("txtFavouritesFile")
+#define txtMacrosFile               CTRL_TEXT("txtMacrosFile")
+#define txtHistoryFile              CTRL_TEXT("txtHistoryFile")
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_MENU(MNU_HELP,                                            frmOptions::OnHelp)
@@ -90,6 +93,9 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_BUTTON (wxID_HELP,                                        frmOptions::OnHelp)
     EVT_BUTTON (wxID_CANCEL,                                      frmOptions::OnCancel)
     EVT_COMBOBOX(XRCID("cbCopyQuote"),		                      frmOptions::OnChangeCopyQuote)
+    EVT_BUTTON (XRCID("btnFavouritesFile"),                       frmOptions::OnFavouritesFileSelect)
+    EVT_BUTTON (XRCID("btnMacrosFile"),                           frmOptions::OnMacrosFileSelect)
+    EVT_BUTTON (XRCID("btnHistoryFile"),                          frmOptions::OnHistoryFileSelect)
 END_EVENT_TABLE()
 
 
@@ -226,6 +232,10 @@ frmOptions::frmOptions(frmMain *parent)
     pickerActiveProcessColour->SetColour(settings->GetActiveProcessColour());
     pickerSlowProcessColour->SetColour(settings->GetSlowProcessColour());
     pickerBlockedProcessColour->SetColour(settings->GetBlockedProcessColour());
+
+    txtFavouritesFile->SetValue(settings->GetFavouritesFile());
+    txtMacrosFile->SetValue(settings->GetMacrosFile());
+    txtHistoryFile->SetValue(settings->GetHistoryFile());
 
     cbLanguage->Append(_("Default"));
     int sel=0;
@@ -594,6 +604,10 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         changed = true;
     settings->SetBlockedProcessColour(sColour);
 
+    settings->SetFavouritesFile(txtFavouritesFile->GetValue());
+    settings->SetMacrosFile(txtMacrosFile->GetValue());
+    settings->SetHistoryFile(txtHistoryFile->GetValue());
+
     // Change the language last, as it will affect our tests for changes
     // in the display object types.
     int langNo=cbLanguage->GetCurrentSelection();
@@ -712,5 +726,30 @@ wxString frmOptions::CheckColour(wxString oldColour)
     }
 
     return newColour;
+}
+
+
+void frmOptions::OnFavouritesFileSelect(wxCommandEvent &ev)
+{
+    wxFileDialog dlg(this, _("Select file to store favourites queries"),
+    wxT(""), txtFavouritesFile->GetValue());
+    if (dlg.ShowModal() == wxID_OK)
+        txtFavouritesFile->SetValue(dlg.GetPath());
+}
+
+
+void frmOptions::OnMacrosFileSelect(wxCommandEvent &ev)
+{
+    wxFileDialog dlg(this, _("Select file to store macros"), wxT(""), txtMacrosFile->GetValue());
+    if (dlg.ShowModal() == wxID_OK)
+        txtMacrosFile->SetValue(dlg.GetPath());
+}
+
+
+void frmOptions::OnHistoryFileSelect(wxCommandEvent &ev)
+{
+    wxFileDialog dlg(this, _("Select file to store queries history"), wxT(""), txtHistoryFile->GetValue());
+    if (dlg.ShowModal() == wxID_OK)
+        txtHistoryFile->SetValue(dlg.GetPath());
 }
 

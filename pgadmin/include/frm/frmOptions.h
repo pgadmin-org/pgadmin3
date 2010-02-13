@@ -48,6 +48,9 @@ private:
     void OnSuppressHints(wxCommandEvent &ev);
     void OnResetHints(wxCommandEvent &ev);
 	void OnChangeCopyQuote(wxCommandEvent &ev);
+    void OnFavouritesFileSelect(wxCommandEvent &ev);
+    void OnMacrosFileSelect(wxCommandEvent &ev);
+    void OnHistoryFileSelect(wxCommandEvent &ev);
     wxString CheckColour(wxString colour);
     DECLARE_EVENT_TABLE()
 };

@@ -284,10 +284,10 @@ queryFavouriteFolder *queryFavouriteFileProvider::LoadFavourites(bool emptyonfai
 	xmlTextReaderPtr reader;
 	int ret;
 
-	if (!wxFile::Access(sysSettings::GetConfigFile(sysSettings::PGAFAVOURITES), wxFile::read))
+	if (!wxFile::Access(settings->GetFavouritesFile(), wxFile::read))
 		return emptyonfailure?(new queryFavouriteFolder()):NULL;
 
-	reader = xmlReaderForFile((const char *)sysSettings::GetConfigFile(sysSettings::PGAFAVOURITES).mb_str(wxConvUTF8),NULL,0);
+	reader = xmlReaderForFile((const char *)settings->GetFavouritesFile().mb_str(wxConvUTF8),NULL,0);
 	if (!reader)
 	{
 		wxMessageBox(_("Failed to load favourites file!"));
@@ -314,7 +314,7 @@ void queryFavouriteFileProvider::SaveFavourites(queryFavouriteFolder *favourites
 {
 	xmlTextWriterPtr writer;
 
-	writer = xmlNewTextWriterFilename((const char *)sysSettings::GetConfigFile(sysSettings::PGAFAVOURITES).mb_str(wxConvUTF8),0);
+	writer = xmlNewTextWriterFilename((const char *)settings->GetFavouritesFile().mb_str(wxConvUTF8),0);
 	if (!writer)
 	{
 		wxMessageBox(_("Failed to write to favourites file!"));

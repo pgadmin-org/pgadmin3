@@ -683,7 +683,7 @@ void sysSettings::SetCanonicalLanguage(const wxLanguage &lang)
 //////////////////////////////////////////////////////////////////////////
 wxString sysSettings::GetConfigFile(configFileName cfgname)
 {
-    if (cfgname == PGPASS || cfgname == PGAFAVOURITES || cfgname == PGAMACROS || cfgname == PGAHISTOQUERIES)
+    if (cfgname == PGPASS)
     {
         wxStandardPaths stdp;
         wxString fname=stdp.GetUserConfigDir();
@@ -696,15 +696,6 @@ wxString sysSettings::GetConfigFile(configFileName cfgname)
         case PGPASS:
             fname += wxT("\\pgpass.conf");
             break;
-        case PGAFAVOURITES:
-            fname += wxT("\\pgadmin_favourites.xml");
-            break;
-        case PGAMACROS:
-            fname += wxT("\\pgadmin_macros.xml");
-            break;
-        case PGAHISTOQUERIES:
-            fname += wxT("\\pgadmin_histoqueries.xml");
-            break;
         }
 #else
         switch(cfgname)
@@ -712,18 +703,73 @@ wxString sysSettings::GetConfigFile(configFileName cfgname)
         case PGPASS:
             fname += wxT("/.pgpass");
             break;
-        case PGAFAVOURITES:
-            fname += wxT("/.pgadminfavourites");
-            break;
-        case PGAMACROS:
-            fname += wxT("/.pgadminmacros");
-            break;
-        case PGAHISTOQUERIES:
-            fname += wxT("/.pgadmin_histoqueries");
-            break;
         }
 #endif
         return fname;
     }
     return wxT("");
 }
+
+
+wxString sysSettings::GetFavouritesFile()
+{
+    wxString s, tmp;
+    
+    wxStandardPaths stdp;
+    tmp = stdp.GetUserConfigDir();
+#ifdef WIN32
+    tmp += wxT("\\postgresql");
+    if (!wxDirExists(tmp))
+        wxMkdir(tmp);
+    tmp += wxT("\\pgadmin_favourites.xml");
+#else
+    tmp += wxT("/.pgadminfavourites");
+#endif
+
+    Read(wxT("FavouritesFile"), &s, tmp);
+    
+    return s;
+}
+
+
+wxString sysSettings::GetMacrosFile()
+{
+    wxString s, tmp;
+    
+    wxStandardPaths stdp;
+    tmp = stdp.GetUserConfigDir();
+#ifdef WIN32
+    tmp += wxT("\\postgresql");
+    if (!wxDirExists(tmp))
+        wxMkdir(tmp);
+    tmp += wxT("\\pgadmin_macros.xml");
+#else
+    tmp += wxT("/.pgadminmacros");
+#endif
+
+    Read(wxT("MacrosFile"), &s, tmp);
+    
+    return s;
+}
+
+
+wxString sysSettings::GetHistoryFile()
+{
+    wxString s, tmp;
+            
+    wxStandardPaths stdp;
+    tmp = stdp.GetUserConfigDir();
+#ifdef WIN32
+    tmp += wxT("\\postgresql");
+    if (!wxDirExists(tmp))
+        wxMkdir(tmp);
+    tmp += wxT("\\pgadmin_histoqueries.xml");
+#else
+    tmp += wxT("/.pgadmin_histoqueries");
+#endif
+
+    Read(wxT("HistoryFile"), &s, tmp);
+
+    return s;
+}
+

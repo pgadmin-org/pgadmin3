@@ -2683,10 +2683,10 @@ void frmQuery::LoadQueries()
 {
 	xmlTextReaderPtr reader;
 
-	if (!wxFile::Access(sysSettings::GetConfigFile(sysSettings::PGAHISTOQUERIES), wxFile::read))
+	if (!wxFile::Access(settings->GetHistoryFile(), wxFile::read))
 		return;
 
-	reader = xmlReaderForFile((const char *)sysSettings::GetConfigFile(sysSettings::PGAHISTOQUERIES).mb_str(wxConvUTF8),NULL,0);
+	reader = xmlReaderForFile((const char *)settings->GetHistoryFile().mb_str(wxConvUTF8),NULL,0);
 	if (!reader)
 	{
 		wxMessageBox(_("Failed to load histoqueries file!"));
@@ -2731,7 +2731,7 @@ void frmQuery::SaveQueries()
     size_t i;
 	xmlTextWriterPtr writer;
 
-	writer = xmlNewTextWriterFilename((const char *)sysSettings::GetConfigFile(sysSettings::PGAHISTOQUERIES).mb_str(wxConvUTF8),0);
+	writer = xmlNewTextWriterFilename((const char *)settings->GetHistoryFile().mb_str(wxConvUTF8),0);
 	if (!writer)
 	{
 		wxMessageBox(_("Failed to write to histoqueries file!"));

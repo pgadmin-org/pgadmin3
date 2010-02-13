@@ -221,10 +221,10 @@ queryMacroList *queryMacroFileProvider::LoadMacros(bool emptyOnFailure)
 	xmlTextReaderPtr reader;
 	int ret;
 
-	if (!wxFile::Access(sysSettings::GetConfigFile(sysSettings::PGAMACROS), wxFile::read))
+	if (!wxFile::Access(settings->GetMacrosFile(), wxFile::read))
 		return emptyOnFailure ? (new queryMacroList()) : NULL;
 
-	reader = xmlReaderForFile((const char *)sysSettings::GetConfigFile(sysSettings::PGAMACROS).mb_str(wxConvUTF8),NULL,0);
+	reader = xmlReaderForFile((const char *)settings->GetMacrosFile().mb_str(wxConvUTF8),NULL,0);
 	if (!reader)
 	{
 		wxMessageBox(_("Failed to load macros file!"));
@@ -251,7 +251,7 @@ void queryMacroFileProvider::SaveMacros(queryMacroList *macros)
 {
 	xmlTextWriterPtr writer;
 
-	writer = xmlNewTextWriterFilename((const char *)sysSettings::GetConfigFile(sysSettings::PGAMACROS).mb_str(wxConvUTF8),0);
+	writer = xmlNewTextWriterFilename((const char *)settings->GetMacrosFile().mb_str(wxConvUTF8),0);
 	if (!writer)
 	{
 		wxMessageBox(_("Failed to open macros file!"));

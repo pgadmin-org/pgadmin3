@@ -122,6 +122,12 @@ public:
     void SetSQLFont(const wxFont &font);
     int GetLineEndingType() const { int i; Read(wxT("LineEndingType"), &i, 2); return i; }
 	void SetLineEndingType(const int newval) { Write(wxT("LineEndingType"), newval); }
+	wxString GetFavouritesFile();
+	void SetFavouritesFile(const wxString &newval) { Write(wxT("FavouritesFile"), newval); }
+	wxString GetMacrosFile();
+	void SetMacrosFile(const wxString &newval) { Write(wxT("HistoryFile"), newval); }
+	wxString GetHistoryFile();
+	void SetHistoryFile(const wxString &newval) { Write(wxT("HistoryFile"), newval); }
 
     // Status Colours options
     wxString GetIdleProcessColour() const { wxString s; Read(wxT("IdleProcessColour"), &s, wxT("#5fa4d9")); return s; }
@@ -179,10 +185,7 @@ public:
 
 	enum configFileName
 	{
-		PGPASS,
-		PGAFAVOURITES,
-		PGAMACROS,
-        PGAHISTOQUERIES
+		PGPASS
 	};
 	static wxString GetConfigFile(configFileName cfgname);
 
