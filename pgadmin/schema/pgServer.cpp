@@ -663,6 +663,16 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
                 hasUptime=true;
                 sql += wxT(", CASE WHEN usesuper THEN pg_postmaster_starttime() ELSE NULL END as upsince");
             }
+            if (conn->BackendMinimumVersion(8, 4))
+            {
+                sql += wxT(", CASE WHEN usesuper THEN pg_conf_load_time() ELSE NULL END as confloadedsince");
+            }
+            if (conn->BackendMinimumVersion(8, 5))
+            {
+                sql += wxT(", CASE WHEN usesuper THEN pg_is_in_recovery() ELSE NULL END as inrecovery");
+                sql += wxT(", CASE WHEN usesuper THEN pg_last_xlog_receive_location() ELSE NULL END as receiveloc");
+                sql += wxT(", CASE WHEN usesuper THEN pg_last_xlog_replay_location() ELSE NULL END as replayloc");
+            }
 
             pgSet *set=ExecuteSet(sql + wxT("\n  FROM pg_user WHERE usename=current_user"));
             if (set)
@@ -671,6 +681,14 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
                 iSetSuperUser(set->GetBool(wxT("usesuper")));
                 if (hasUptime)
                     iSetUpSince(set->GetDateTime(wxT("upsince")));
+                if (conn->BackendMinimumVersion(8, 4))
+                    iSetConfLoadedSince(set->GetDateTime(wxT("confloadedsince")));
+                if (conn->BackendMinimumVersion(8, 5))
+                {
+                    iSetInRecovery(set->GetBool(wxT("inrecovery")));
+                    iSetReplayLoc(set->GetVal(wxT("replayloc")));
+                    iSetReceiveLoc(set->GetVal(wxT("receiveloc")));
+                }
                 delete set;
             }
 
@@ -956,8 +974,16 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
         {
             if (GetUpSince().IsValid())
                 properties->AppendItem(_("Up since"), GetUpSince());
+            if (GetConfLoadedSince().IsValid())
+                properties->AppendItem(_("Configuration loaded since"), GetConfLoadedSince());
             if (conn->BackendMinimumVersion(8,1))
                 properties->AppendItem(wxT("Autovacuum"), (autovacuumRunning ? _("running") : _("not running")));
+            if (conn->BackendMinimumVersion(8,5))
+            {
+                properties->AppendItem(wxT("In recovery"), (GetInRecovery() ? _("yes") : _("no")));
+                properties->AppendItem(wxT("Last XLOG receive location"), GetReceiveLoc());
+                properties->AppendItem(wxT("Last XLOG replay location"), GetReplayLoc());
+            }
         }
         if (GetServerControllable())
             properties->AppendItem(_("Running?"), GetServerRunning());

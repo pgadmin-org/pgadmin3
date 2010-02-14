@@ -81,6 +81,15 @@ public:
     bool GetCreateRole() const { return createRole; }
     void iSetCreateRole(const bool b) { createRole=b; }
 
+    bool GetInRecovery() const { return inRecovery; }
+    void iSetInRecovery(const bool b) { inRecovery=b; }
+    wxDateTime GetConfLoadedSince() { return confLoadedSince; }
+    void iSetConfLoadedSince(const wxDateTime &d) { confLoadedSince = d; }
+    wxString GetReceiveLoc() const { return receiveLoc; }
+    void iSetReceiveLoc(const wxString& s) { receiveLoc=s; }
+    wxString GetReplayLoc() const { return replayLoc; }
+    void iSetReplayLoc(const wxString& s) { replayLoc=s; }
+
     pgConn *CreateConn(wxString dbName=wxEmptyString, OID oid=0, wxString applicationname=wxEmptyString);
 
     wxString GetLastDatabase() const { return lastDatabase; }
@@ -153,6 +162,10 @@ private:
     wxString versionNum;
     wxString dbRestriction;
 	wxString colour;
+
+    bool inRecovery;
+    wxString receiveLoc, replayLoc;
+    wxDateTime confLoadedSince;
 
 #ifdef WIN32
     SC_HANDLE scmHandle;
