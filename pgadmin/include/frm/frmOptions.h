@@ -51,7 +51,9 @@ private:
     void OnFavouritesFileSelect(wxCommandEvent &ev);
     void OnMacrosFileSelect(wxCommandEvent &ev);
     void OnHistoryFileSelect(wxCommandEvent &ev);
+	void OnChangeSQLUseCustomColour(wxCommandEvent &ev);
     wxString CheckColour(wxString colour);
+	void UpdateColourControls();
     DECLARE_EVENT_TABLE()
 };
 

@@ -141,6 +141,20 @@ public:
     wxString GetBlockedProcessColour() const { wxString s; Read(wxT("BlockedProcessColour"), &s, wxT("#d96e5f")); return s; }
 	void SetBlockedProcessColour(const wxString &newval) { Write(wxT("BlockedProcessColour"), newval); }
 
+	// SQL Editor Colours options
+	bool GetSQLBoxUseSystemBackground() const { bool b; Read(wxT("ctlSQLBox/UseSystemBackground"), &b, true); return b; }
+	void SetSQLBoxUseSystemBackground(const bool newval) { Write(wxT("ctlSQLBox/UseSystemBackground"), newval); }
+	bool GetSQLBoxUseSystemForeground() const { bool b; Read(wxT("ctlSQLBox/UseSystemForeground"), &b, true); return b; }
+	void SetSQLBoxUseSystemForeground(const bool newval) { Write(wxT("ctlSQLBox/UseSystemForeground"), newval); }
+
+    wxString GetSQLBoxColourBackground() const { wxString s; Read(wxT("ctlSQLBox/ColourBackground"), &s, wxT("#ffffff")); return s; }
+	void SetSQLBoxColourBackground(const wxString &newval) { Write(wxT("ctlSQLBox/ColourBackground"), newval); }
+    wxString GetSQLBoxColourForeground() const { wxString s; Read(wxT("ctlSQLBox/ColourForeground"), &s, wxT("#000000")); return s; }
+	void SetSQLBoxColourForeground(const wxString &newval) { Write(wxT("ctlSQLBox/ColourForeground"), newval); }
+
+    wxString GetSQLBoxColour(int index) const { wxString s; Read(wxString::Format(wxT("ctlSQLBox/Colour%i"), index), &s, getDefaultElementColor(index)); return s; }
+	void SetSQLBoxColour(int index, const wxString &newval) { Write(wxString::Format(wxT("ctlSQLBox/Colour%i"), index), newval); }
+
     // Misc options
     long GetAutoRowCountThreshold() const { long l; Read(wxT("AutoRowCount"), &l, 2000L); return l; }
 	void SetAutoRowCountThreshold(const long newval) { Write(wxT("AutoRowCount"), newval); }
@@ -192,6 +206,17 @@ public:
 	static wxString GetConfigFile(configFileName cfgname);
 
 private:
+
+	static const wxString& getDefaultElementColor(int index)
+	{
+		static const wxString colors[] =
+		{
+			wxT("#808080"), wxT("#007f00"), wxT("#007f00"), wxT("#7f7f7f"), 
+			wxT("#007f7f"), wxT("#00007f"), wxT("#7f007f"), wxT("#7f007f"), 
+			wxT("#007f7f"), wxT("#7f7f7f"), wxT("#000000"), wxT("#000000")
+		};
+		return colors[index];
+	}
 
     bool moveStringValue(const wxChar *oldKey, const wxChar *newKey, int index=-1);
     bool moveLongValue(const wxChar *oldKey, const wxChar *newKey, int index=-1);

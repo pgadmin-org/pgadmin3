@@ -76,6 +76,12 @@
 #define txtFavouritesFile           CTRL_TEXT("txtFavouritesFile")
 #define txtMacrosFile               CTRL_TEXT("txtMacrosFile")
 #define txtHistoryFile              CTRL_TEXT("txtHistoryFile")
+#define chkSQLUseSystemBackgroundColour  CTRL_CHECKBOX("chkSQLUseSystemBackgroundColour")
+#define chkSQLUseSystemForegroundColour  CTRL_CHECKBOX("chkSQLUseSystemForegroundColour")
+#define pickerSQLBackgroundColour        CTRL_COLOURPICKER("pickerSQLBackgroundColour")
+#define pickerSQLForegroundColour        CTRL_COLOURPICKER("pickerSQLForegroundColour")
+#define stSQLCustomBackgroundColour      CTRL_STATIC("stSQLCustomBackgroundColour") 
+#define stSQLCustomForegroundColour      CTRL_STATIC("stSQLCustomForegroundColour") 
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_MENU(MNU_HELP,                                            frmOptions::OnHelp)
@@ -89,6 +95,8 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_BUTTON (XRCID("btnDefault"),                              frmOptions::OnDefault)
     EVT_CHECKBOX(XRCID("chkSuppressHints"),                       frmOptions::OnSuppressHints)
     EVT_CHECKBOX(XRCID("chkResetHints"),                          frmOptions::OnResetHints)
+	EVT_CHECKBOX(XRCID("chkSQLUseSystemBackgroundColour"),        frmOptions::OnChangeSQLUseCustomColour)
+	EVT_CHECKBOX(XRCID("chkSQLUseSystemForegroundColour"),        frmOptions::OnChangeSQLUseCustomColour)
     EVT_BUTTON (wxID_OK,                                          frmOptions::OnOK)
     EVT_BUTTON (wxID_HELP,                                        frmOptions::OnHelp)
     EVT_BUTTON (wxID_CANCEL,                                      frmOptions::OnCancel)
@@ -237,6 +245,18 @@ frmOptions::frmOptions(frmMain *parent)
     txtMacrosFile->SetValue(settings->GetMacrosFile());
     txtHistoryFile->SetValue(settings->GetHistoryFile());
 
+	chkSQLUseSystemBackgroundColour->SetValue(settings->GetSQLBoxUseSystemBackground());
+	chkSQLUseSystemForegroundColour->SetValue(settings->GetSQLBoxUseSystemForeground());
+	UpdateColourControls();
+
+	for (int i = 0; i <= 11; ++i)
+	{
+		wxString pickerId = wxString::Format(wxT("pickerSQLColour%i"), i);
+		wxColourPickerCtrl* picker = wxStaticCast(FindWindow(pickerId), wxColourPickerCtrl);
+		if (picker != NULL)
+			picker->SetColour(settings->GetSQLBoxColour(i));
+	}
+
     cbLanguage->Append(_("Default"));
     int sel=0;
     wxLanguage langId=settings->GetCanonicalLanguage();
@@ -365,6 +385,39 @@ void frmOptions::OnResetHints(wxCommandEvent &ev)
         chkSuppressHints->SetValue(false);
 }
 
+void frmOptions::UpdateColourControls()
+{
+	if (chkSQLUseSystemBackgroundColour->GetValue())
+	{
+		pickerSQLBackgroundColour->Enable(false);
+		pickerSQLBackgroundColour->SetColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
+		stSQLCustomBackgroundColour->Enable(false);
+	}
+	else
+	{
+		pickerSQLBackgroundColour->Enable(true);
+		pickerSQLBackgroundColour->SetColour(settings->GetSQLBoxColourBackground());
+		stSQLCustomBackgroundColour->Enable(true);
+	}
+
+	if (chkSQLUseSystemForegroundColour->GetValue())
+	{
+		pickerSQLForegroundColour->Enable(false);
+		pickerSQLForegroundColour->SetColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
+		stSQLCustomForegroundColour->Enable(false);
+	}
+	else
+	{
+		pickerSQLForegroundColour->Enable(true);
+		pickerSQLForegroundColour->SetColour(settings->GetSQLBoxColourForeground());
+		stSQLCustomForegroundColour->Enable(true);
+	}
+}
+
+void frmOptions::OnChangeSQLUseCustomColour(wxCommandEvent &ev)
+{
+    UpdateColourControls();
+}
 
 void frmOptions::OnOK(wxCommandEvent &ev)
 {
@@ -607,6 +660,51 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetFavouritesFile(txtFavouritesFile->GetValue());
     settings->SetMacrosFile(txtMacrosFile->GetValue());
     settings->SetHistoryFile(txtHistoryFile->GetValue());
+	// Change SQL Syntax colours
+
+	if (settings->GetSQLBoxUseSystemBackground() != chkSQLUseSystemBackgroundColour->GetValue())
+	{
+		changed = true;
+		settings->SetSQLBoxUseSystemBackground(chkSQLUseSystemBackgroundColour->GetValue());
+	}
+	
+	if (settings->GetSQLBoxUseSystemForeground() != chkSQLUseSystemForegroundColour->GetValue())
+	{
+		changed = true;
+		settings->SetSQLBoxUseSystemForeground(chkSQLUseSystemForegroundColour->GetValue());
+	}
+	
+	if (!settings->GetSQLBoxUseSystemBackground())
+	{
+		colour = pickerSQLBackgroundColour->GetColour();
+		sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
+		if (sColour != settings->GetSQLBoxColourBackground())
+			changed = true;
+		settings->SetSQLBoxColourBackground(sColour);
+	}
+
+	if (!settings->GetSQLBoxUseSystemForeground())
+	{
+		colour = pickerSQLForegroundColour->GetColour();
+		sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
+		if (sColour != settings->GetSQLBoxColourForeground())
+			changed = true;
+		settings->SetSQLBoxColourForeground(sColour);
+	}
+
+	for (int i = 0; i <= 11; ++i)
+	{
+		wxString pickerId = wxString::Format(wxT("pickerSQLColour%i"), i);
+		wxColourPickerCtrl* picker = wxStaticCast(FindWindow(pickerId), wxColourPickerCtrl);
+		if (picker != NULL)
+		{
+			colour = picker->GetColour();
+			sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
+			if (sColour != settings->GetSQLBoxColour(i))
+				changed = true;
+			settings->SetSQLBoxColour(i, sColour);
+		}
+	}
 
     // Change the language last, as it will affect our tests for changes
     // in the display object types.

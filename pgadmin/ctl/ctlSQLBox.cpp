@@ -80,37 +80,35 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     extern sysSettings *settings;
     wxFont fntSQLBox = settings->GetSQLFont();
 
+	wxColour bgColor = settings->GetSQLBoxColourBackground();
+	if (settings->GetSQLBoxUseSystemBackground())
+	{
+		bgColor = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW);
+	}
+
+	wxColour frColor = settings->GetSQLBoxColourForeground();
+	if (settings->GetSQLBoxUseSystemForeground())
+	{
+		frColor = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
+	}
+	StyleSetBackground(wxSTC_STYLE_DEFAULT, bgColor);
+	StyleSetForeground(wxSTC_STYLE_DEFAULT, frColor);
     StyleSetFont(wxSTC_STYLE_DEFAULT, fntSQLBox);
-    StyleSetFont(0, fntSQLBox);
-    StyleSetFont(1, fntSQLBox);
-    StyleSetFont(2, fntSQLBox);
-    StyleSetFont(3, fntSQLBox);
-    StyleSetFont(4, fntSQLBox);
-    StyleSetFont(5, fntSQLBox);
-    StyleSetFont(6, fntSQLBox);
-    StyleSetFont(7, fntSQLBox);
-    StyleSetFont(8, fntSQLBox);
-    StyleSetFont(9, fntSQLBox);
-    StyleSetFont(10, fntSQLBox);
-    StyleSetFont(11, fntSQLBox);
 
     SetMarginWidth(1, 0);
     SetTabWidth(settings->GetIndentSpaces());
     SetUseTabs(!settings->GetSpacesForTabs());
     
     // Setup the different highlight colurs
-    StyleSetForeground(0,  wxColour(0x80, 0x80, 0x80));
-    StyleSetForeground(1,  wxColour(0x00, 0x7f, 0x00));
-    StyleSetForeground(2,  wxColour(0x00, 0x7f, 0x00));
-    StyleSetForeground(3,  wxColour(0x7f, 0x7f, 0x7f));
-    StyleSetForeground(4,  wxColour(0x00, 0x7f, 0x7f));
-    StyleSetForeground(5,  wxColour(0x00, 0x00, 0x7f));
-    StyleSetForeground(6,  wxColour(0x7f, 0x00, 0x7f));
-    StyleSetForeground(7,  wxColour(0x7f, 0x00, 0x7f));
-    StyleSetForeground(8,  wxColour(0x00, 0x7f, 0x7f));
-    StyleSetForeground(9,  wxColour(0x7f, 0x7f, 0x7f));
-    StyleSetForeground(10, wxColour(0x00, 0x00, 0x00));
-    StyleSetForeground(11, wxColour(0x00, 0x00, 0x00));
+	for (int i = 0; i < 34; ++ i )
+	{
+		if (i > 0 && i < 12)
+			StyleSetForeground(i, settings->GetSQLBoxColour(i));
+		else
+			StyleSetForeground(i, frColor);
+		StyleSetBackground(i, bgColor);
+		StyleSetFont(i, fntSQLBox);
+	}
 
     // Brace maching styles
     StyleSetBackground(34, wxColour(0x99, 0xF9, 0xFF));
