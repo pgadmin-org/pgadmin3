@@ -448,12 +448,34 @@ void ctlSQLBox::OnKillFocus(wxFocusEvent& event)
     event.Skip();
 }
 
+void ctlSQLBox::UpdateLineNumber()
+{
+    bool showlinenumber;
+
+    settings->Read(wxT("frmQuery/ShowLineNumber"), &showlinenumber, false);
+    if (showlinenumber)
+    {
+        long int width = TextWidth(wxSTC_STYLE_LINENUMBER,
+            wxT(" ")+NumToStr((long int)GetLineCount())+wxT(" "));
+        if (width != GetMarginWidth(0))
+            SetMarginWidth(0, width);
+    }
+    else
+    {
+        SetMarginWidth(0, 0);
+    }
+}
+
 void ctlSQLBox::OnPositionStc(wxStyledTextEvent& event)
 {
     int pos = GetCurrentPos();
     wxChar ch = GetCharAt(pos-1);
     int st = GetStyleAt(pos-1);
     int match;
+
+
+    // Line numbers
+    UpdateLineNumber();
 
     // Clear all highlighting
     BraceBadLight(wxSTC_INVALID_POSITION);

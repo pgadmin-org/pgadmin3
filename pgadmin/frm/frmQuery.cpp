@@ -128,6 +128,7 @@ EVT_MENU(MNU_WORDWRAP,          frmQuery::OnWordWrap)
 EVT_MENU(MNU_SHOWINDENTGUIDES,  frmQuery::OnShowIndentGuides)
 EVT_MENU(MNU_SHOWWHITESPACE,    frmQuery::OnShowWhitespace)
 EVT_MENU(MNU_SHOWLINEENDS,      frmQuery::OnShowLineEnds)
+EVT_MENU(MNU_SHOWLINENUMBER,    frmQuery::OnShowLineNumber)
 EVT_MENU(MNU_FAVOURITES_ADD,    frmQuery::OnAddFavourite)
 EVT_MENU(MNU_FAVOURITES_MANAGE, frmQuery::OnManageFavourites)
 EVT_MENU(MNU_MACROS_MANAGE,     frmQuery::OnMacroManage)
@@ -326,6 +327,7 @@ pgsTimer(new pgScriptTimer(this))
     viewMenu->Append(MNU_SHOWLINEENDS, _("&Line ends"), _("Enable or disable display of line ends"), wxITEM_CHECK);
     viewMenu->Append(MNU_SHOWWHITESPACE, _("&Whitespace"), _("Enable or disable display of whitespaces"), wxITEM_CHECK);
     viewMenu->Append(MNU_WORDWRAP, _("&Word wrap"), _("Enable or disable word wrapping"), wxITEM_CHECK);
+    viewMenu->Append(MNU_SHOWLINENUMBER, _("&Line number"), _("Enable or disable display of line number"), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view\tCtrl-Alt-V"),     _("Restore the default view."));
 
@@ -562,6 +564,10 @@ pgsTimer(new pgScriptTimer(this))
         sqlQuery->SetViewEOL(1);
     else
         sqlQuery->SetViewEOL(0);
+
+    // Line number
+    settings->Read(wxT("frmQuery/ShowLineNumber"), &bVal, false);
+    viewMenu->Check(MNU_SHOWLINENUMBER, bVal);
 
     if (!file.IsEmpty() && wxFileName::FileExists(file))
     {
@@ -830,6 +836,16 @@ void frmQuery::OnShowLineEnds(wxCommandEvent& event)
         sqlQuery->SetViewEOL(1);
     else
         sqlQuery->SetViewEOL(0);
+}
+
+
+void frmQuery::OnShowLineNumber(wxCommandEvent& event)
+{
+    viewMenu->Check(MNU_SHOWLINENUMBER, event.IsChecked());
+
+    settings->Write(wxT("frmQuery/ShowLineNumber"), viewMenu->IsChecked(MNU_SHOWLINENUMBER));
+
+    sqlQuery->UpdateLineNumber();
 }
 
 

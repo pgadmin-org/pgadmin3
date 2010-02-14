@@ -163,6 +163,7 @@ private:
     void OnShowIndentGuides(wxCommandEvent& event);
     void OnShowWhitespace(wxCommandEvent& event);
     void OnShowLineEnds(wxCommandEvent& event);
+    void OnShowLineNumber(wxCommandEvent& event);
 
     void OnToggleScratchPad(wxCommandEvent& event);
     void OnToggleDatabaseBar(wxCommandEvent& event);

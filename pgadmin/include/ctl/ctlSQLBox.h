@@ -59,6 +59,8 @@ public:
     void EnableAutoComp(bool on) { m_autocompDisabled = on; }
     bool BlockComment(bool uncomment=false);
 
+    void UpdateLineNumber();
+
     CharacterRange RegexFindText(int minPos, int maxPos, const wxString& text);
 
     DECLARE_DYNAMIC_CLASS(ctlSQLBox)
