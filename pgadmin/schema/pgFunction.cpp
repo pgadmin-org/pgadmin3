@@ -593,6 +593,8 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                             if (argDefValArray[currINindex++] != wxT("-"))
                                 function->iAddArgDef(argDefValArray[currINindex-1]);
                         }
+                        else
+                            function->iAddArgDef(wxEmptyString);
                     }
                     else if(function->GetArgModesArray()[index] == wxT("TABLE"))
                     {
@@ -603,7 +605,8 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                             strReturnTableArgs += strName + wxT(" ");
                         strReturnTableArgs += function->GetArgTypesArray()[index];
                     }
-                    function->iAddArgDef(wxEmptyString);
+                    else
+                        function->iAddArgDef(wxEmptyString);
                 }
             }
 
