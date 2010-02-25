@@ -5,7 +5,7 @@
 // pgScript - PostgreSQL Tools
 // RCS-ID:      $Id: pgsParser.yy,v 1.6 2008/08/10 22:11:29 pgunittest Exp $
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
-// This software is released under the BSD Licence
+// This software is released under the PostgreSQL Licence
 //
 //////////////////////////////////////////////////////////////////////////
 

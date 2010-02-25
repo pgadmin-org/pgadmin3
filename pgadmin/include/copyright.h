@@ -3,7 +3,7 @@
 // pgAdmin III - PostgreSQL Tools
 // RCS-ID:      $Id$
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
-// This software is released under the BSD Licence
+// This software is released under the PostgreSQL Licence
 //
 // copyright.h - pgAdmin copyright messages
 //
@@ -14,6 +14,6 @@
 
 #define COPYRIGHT               wxT("Copyright 2002 - 2010, The pgAdmin Development Team")
 #define COPYRIGHT_WIN32         "\251 2002 - 2010, The pgAdmin Development Team"
-#define LICENSE                 _("This software is released under the BSD Licence.")
+#define LICENSE                 _("This software is released under the PostgreSQL Licence.")
 
 #endif

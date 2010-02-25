@@ -3,7 +3,7 @@
 # FindPg.cmake - A CMake module for locating wxWidgets
 #
 # Dave Page, EnterpriseDB UK Ltd.
-# This code is released under the BSD Licence
+# This code is released under the PostgreSQL Licence
 #
 #######################################################################
 
