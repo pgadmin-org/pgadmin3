@@ -423,17 +423,17 @@ pgsTimer(new pgScriptTimer(this))
     // Query combobox
     sqlQueries = new wxComboBox(pnlQuery, CTL_SQLQUERYCBOX, wxT(""), wxDefaultPosition, wxDefaultSize, NULL, wxCB_DROPDOWN);
     LoadQueries();
-    boxHistory->Add(sqlQueries, 1, wxEXPAND | wxALL, 1);
+    boxHistory->Add(sqlQueries, 1, wxEXPAND | wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
     // Delete Current button
     btnDeleteCurrent = new wxButton(pnlQuery, CTL_DELETECURRENTBTN, wxT("Delete Current"));
     btnDeleteCurrent->Enable(false);
-    boxHistory->Add(btnDeleteCurrent, 0, wxALL | wxALIGN_RIGHT, 1);
+    boxHistory->Add(btnDeleteCurrent, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
     // Delete All button
     btnDeleteAll = new wxButton(pnlQuery, CTL_DELETEALLBTN, wxT("Delete All"));
     btnDeleteAll->Enable(sqlQueries->GetCount() > 0);
-    boxHistory->Add(btnDeleteAll, 0, wxALL | wxALIGN_RIGHT, 1);
+    boxHistory->Add(btnDeleteAll, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
     boxQuery->Add(boxHistory, 0, wxEXPAND | wxALL, 1);
 
