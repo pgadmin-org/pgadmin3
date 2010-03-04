@@ -364,11 +364,15 @@ void pgFrame::RestorePosition(int defaultX, int defaultY, int defaultW, int defa
 
 void pgFrame::SavePosition()
 {
+#ifndef __WXGTK__
 	if (!IsIconized())
     {
+#endif
 	    settings->Write(dlgName, GetSize(), GetPosition());
         settings->Write(dlgName+wxT("/Maximized"), IsMaximized());
+#ifndef __WXGTK__
     }
+#endif
 }
 
 
