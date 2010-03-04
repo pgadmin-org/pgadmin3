@@ -359,7 +359,9 @@ void pgFrame::RestorePosition(int defaultX, int defaultY, int defaultW, int defa
 
 void pgFrame::SavePosition()
 {
+#ifndef __WXGTK__
 	if (!IsIconized())
+#endif
 	    settings->Write(dlgName, GetSize(), GetPosition());
 }
 
