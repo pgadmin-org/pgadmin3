@@ -623,7 +623,7 @@ void dlgColumn::OnDelPriv(wxCommandEvent &ev)
 
 void dlgColumn::OnVarnameSelChange(wxCommandEvent &ev)
 {
-    int sel=cbVarname->GuessSelection(ev);
+    cbVarname->GuessSelection(ev);
 }
 
 void dlgColumn::OnVarSelChange(wxListEvent &ev)
@@ -633,7 +633,7 @@ void dlgColumn::OnVarSelChange(wxListEvent &ev)
     {
         wxString value=lstVariables->GetText(pos, 1);
         cbVarname->SetValue(lstVariables->GetText(pos));
-        int sel = cbVarname->FindString(lstVariables->GetText(pos));
+        cbVarname->FindString(lstVariables->GetText(pos));
         txtValue->SetValue(value);
     }
 }
