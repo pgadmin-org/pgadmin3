@@ -12,6 +12,7 @@
 pgadmin3_SOURCES += \
     $(srcdir)/include/ctl/calbox.h \
 	$(srcdir)/include/ctl/ctlCheckTreeView.h \
+    $(srcdir)/include/ctl/ctlColourPicker.h \
 	$(srcdir)/include/ctl/ctlComboBox.h \
 	$(srcdir)/include/ctl/ctlListView.h \
 	$(srcdir)/include/ctl/ctlMenuToolbar.h \

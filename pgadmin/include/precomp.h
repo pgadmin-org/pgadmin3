@@ -24,6 +24,7 @@
 
 #include "ctl/calbox.h"
 #include "ctl/ctlCheckTreeView.h"
+#include "ctl/ctlColourPicker.h"
 #include "ctl/ctlComboBox.h"
 #include "ctl/ctlListView.h"
 #include "ctl/ctlSecurityPanel.h"
@@ -37,6 +38,7 @@
 #include "ctl/xh_calb.h"
 #include "ctl/xh_ctlcombo.h"
 #include "ctl/xh_ctlchecktreeview.h"
+#include "ctl/xh_ctlcolourpicker.h"
 #include "ctl/xh_ctltree.h"
 #include "ctl/xh_sqlbox.h"
 #include "ctl/xh_timespin.h"

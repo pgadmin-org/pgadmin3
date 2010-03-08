@@ -326,8 +326,7 @@ void dlgServer::CheckChange()
             sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
 
         // Get new value
-        wxColour colour2 = colourPicker->GetColour();
-        wxString sColour2 = colour2.GetAsString(wxC2S_HTML_SYNTAX);
+        wxString sColour2 = colourPicker->GetColourString();
 
         enable =  name != server->GetName()
                || txtDescription->GetValue() != server->GetDescription()

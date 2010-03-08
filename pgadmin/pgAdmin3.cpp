@@ -66,6 +66,7 @@
 #include "ctl/xh_ctlcombo.h"
 #include "ctl/xh_ctltree.h"
 #include "ctl/xh_ctlchecktreeview.h"
+#include "ctl/xh_ctlcolourpicker.h"
 
 #define DOC_DIR       wxT("/docs")
 #define UI_DIR        wxT("/ui")
@@ -379,6 +380,7 @@ bool pgAdmin3::OnInit()
     wxXmlResource::Get()->AddHandler(new ctlComboBoxXmlHandler);
     wxXmlResource::Get()->AddHandler(new ctlTreeXmlHandler);
     wxXmlResource::Get()->AddHandler(new ctlCheckTreeViewXmlHandler);
+    wxXmlResource::Get()->AddHandler(new ctlColourPickerXmlHandler);
 
     InitXml();
 

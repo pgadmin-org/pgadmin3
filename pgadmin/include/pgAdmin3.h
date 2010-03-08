@@ -15,6 +15,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/hashmap.h>
+#include <wx/colordlg.h>
 #include <wx/listctrl.h>
 #include <wx/xrc/xmlres.h>
 
@@ -24,6 +25,7 @@
 #include "ctl/ctlListView.h"
 #include "ctl/ctlComboBox.h"
 #include <ctl/ctlCheckTreeView.h>
+#include <ctl/ctlColourPicker.h>
 #include "dlg/dlgClasses.h"
 #include "db/pgConn.h"
 #include "db/pgSet.h"

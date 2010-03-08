@@ -27,6 +27,7 @@
 #include "utils/sysLogger.h"
 #include "utils/misc.h"
 #include "frm/menu.h"
+#include "ctl/ctlColourPicker.h"
 
 // Must be after pgAdmin3.h or MSVC++ complains
 #include <wx/colordlg.h>
@@ -82,6 +83,15 @@
 #define pickerSQLForegroundColour        CTRL_COLOURPICKER("pickerSQLForegroundColour")
 #define stSQLCustomBackgroundColour      CTRL_STATIC("stSQLCustomBackgroundColour") 
 #define stSQLCustomForegroundColour      CTRL_STATIC("stSQLCustomForegroundColour") 
+#define pickerSQLColour1            CTRL_COLOURPICKER("pickerSQLColour1")
+#define pickerSQLColour2            CTRL_COLOURPICKER("pickerSQLColour2")
+#define pickerSQLColour3            CTRL_COLOURPICKER("pickerSQLColour3")
+#define pickerSQLColour4            CTRL_COLOURPICKER("pickerSQLColour4")
+#define pickerSQLColour5            CTRL_COLOURPICKER("pickerSQLColour5")
+#define pickerSQLColour6            CTRL_COLOURPICKER("pickerSQLColour6")
+#define pickerSQLColour7            CTRL_COLOURPICKER("pickerSQLColour7")
+#define pickerSQLColour10           CTRL_COLOURPICKER("pickerSQLColour10")
+#define pickerSQLColour11           CTRL_COLOURPICKER("pickerSQLColour11")
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_MENU(MNU_HELP,                                            frmOptions::OnHelp)
@@ -249,13 +259,15 @@ frmOptions::frmOptions(frmMain *parent)
 	chkSQLUseSystemForegroundColour->SetValue(settings->GetSQLBoxUseSystemForeground());
 	UpdateColourControls();
 
-	for (int i = 0; i <= 11; ++i)
-	{
-		wxString pickerId = wxString::Format(wxT("pickerSQLColour%i"), i);
-		wxColourPickerCtrl* picker = wxStaticCast(FindWindow(pickerId), wxColourPickerCtrl);
-		if (picker != NULL)
-			picker->SetColour(settings->GetSQLBoxColour(i));
-	}
+	pickerSQLColour1->SetColour(settings->GetSQLBoxColour(1));
+	pickerSQLColour2->SetColour(settings->GetSQLBoxColour(2));
+	pickerSQLColour3->SetColour(settings->GetSQLBoxColour(3));
+	pickerSQLColour4->SetColour(settings->GetSQLBoxColour(4));
+	pickerSQLColour5->SetColour(settings->GetSQLBoxColour(5));
+	pickerSQLColour6->SetColour(settings->GetSQLBoxColour(6));
+	pickerSQLColour7->SetColour(settings->GetSQLBoxColour(7));
+	pickerSQLColour10->SetColour(settings->GetSQLBoxColour(10));
+	pickerSQLColour11->SetColour(settings->GetSQLBoxColour(11));
 
     cbLanguage->Append(_("Default"));
     int sel=0;
@@ -630,38 +642,28 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     }
 
     // Change the status colours
-    wxColour colour;
-    wxString sColour;
-
-    colour = pickerIdleProcessColour->GetColour();
-    sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
-    if (sColour != settings->GetIdleProcessColour())
+    if (pickerIdleProcessColour->GetColourString() != settings->GetIdleProcessColour())
         changed = true;
-    settings->SetIdleProcessColour(sColour);
+    settings->SetIdleProcessColour(pickerIdleProcessColour->GetColourString());
 
-    colour = pickerActiveProcessColour->GetColour();
-    sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
-    if (sColour != settings->GetActiveProcessColour())
+    if (pickerActiveProcessColour->GetColourString() != settings->GetActiveProcessColour())
         changed = true;
-    settings->SetActiveProcessColour(sColour);
+    settings->SetActiveProcessColour(pickerActiveProcessColour->GetColourString());
 
-    colour = pickerSlowProcessColour->GetColour();
-    sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
-    if (sColour != settings->GetSlowProcessColour())
+    if (pickerSlowProcessColour->GetColourString() != settings->GetSlowProcessColour())
         changed = true;
-    settings->SetSlowProcessColour(sColour);
+    settings->SetSlowProcessColour(pickerSlowProcessColour->GetColourString());
 
-    colour = pickerBlockedProcessColour->GetColour();
-    sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
-    if (sColour != settings->GetBlockedProcessColour())
+    if (pickerBlockedProcessColour->GetColourString() != settings->GetBlockedProcessColour())
         changed = true;
-    settings->SetBlockedProcessColour(sColour);
+    settings->SetBlockedProcessColour(pickerBlockedProcessColour->GetColourString());
 
+    // Change files' location
     settings->SetFavouritesFile(txtFavouritesFile->GetValue());
     settings->SetMacrosFile(txtMacrosFile->GetValue());
     settings->SetHistoryFile(txtHistoryFile->GetValue());
-	// Change SQL Syntax colours
 
+	// Change SQL Syntax colours
 	if (settings->GetSQLBoxUseSystemBackground() != chkSQLUseSystemBackgroundColour->GetValue())
 	{
 		changed = true;
@@ -676,35 +678,45 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 	
 	if (!settings->GetSQLBoxUseSystemBackground())
 	{
-		colour = pickerSQLBackgroundColour->GetColour();
-		sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
-		if (sColour != settings->GetSQLBoxColourBackground())
+		if (pickerSQLBackgroundColour->GetColourString() != settings->GetSQLBoxColourBackground())
 			changed = true;
-		settings->SetSQLBoxColourBackground(sColour);
+		settings->SetSQLBoxColourBackground(pickerSQLBackgroundColour->GetColourString());
 	}
 
 	if (!settings->GetSQLBoxUseSystemForeground())
 	{
-		colour = pickerSQLForegroundColour->GetColour();
-		sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
-		if (sColour != settings->GetSQLBoxColourForeground())
+		if (pickerSQLForegroundColour->GetColourString() != settings->GetSQLBoxColourForeground())
 			changed = true;
-		settings->SetSQLBoxColourForeground(sColour);
+		settings->SetSQLBoxColourForeground(pickerSQLForegroundColour->GetColourString());
 	}
 
-	for (int i = 0; i <= 11; ++i)
-	{
-		wxString pickerId = wxString::Format(wxT("pickerSQLColour%i"), i);
-		wxColourPickerCtrl* picker = wxStaticCast(FindWindow(pickerId), wxColourPickerCtrl);
-		if (picker != NULL)
-		{
-			colour = picker->GetColour();
-			sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
-			if (sColour != settings->GetSQLBoxColour(i))
-				changed = true;
-			settings->SetSQLBoxColour(i, sColour);
-		}
-	}
+    if (pickerSQLColour1->GetColourString() != settings->GetSQLBoxColour(1))
+        changed = true;
+    settings->SetSQLBoxColour(1, pickerSQLColour1->GetColourString());
+    if (pickerSQLColour2->GetColourString() != settings->GetSQLBoxColour(2))
+        changed = true;
+    settings->SetSQLBoxColour(2, pickerSQLColour2->GetColourString());
+    if (pickerSQLColour3->GetColourString() != settings->GetSQLBoxColour(3))
+        changed = true;
+    settings->SetSQLBoxColour(3, pickerSQLColour3->GetColourString());
+    if (pickerSQLColour4->GetColourString() != settings->GetSQLBoxColour(4))
+        changed = true;
+    settings->SetSQLBoxColour(4, pickerSQLColour4->GetColourString());
+    if (pickerSQLColour5->GetColourString() != settings->GetSQLBoxColour(5))
+        changed = true;
+    settings->SetSQLBoxColour(5, pickerSQLColour5->GetColourString());
+    if (pickerSQLColour6->GetColourString() != settings->GetSQLBoxColour(6))
+        changed = true;
+    settings->SetSQLBoxColour(6, pickerSQLColour6->GetColourString());
+    if (pickerSQLColour7->GetColourString() != settings->GetSQLBoxColour(7))
+        changed = true;
+    settings->SetSQLBoxColour(7, pickerSQLColour7->GetColourString());
+    if (pickerSQLColour10->GetColourString() != settings->GetSQLBoxColour(10))
+        changed = true;
+    settings->SetSQLBoxColour(10, pickerSQLColour10->GetColourString());
+    if (pickerSQLColour11->GetColourString() != settings->GetSQLBoxColour(11))
+        changed = true;
+    settings->SetSQLBoxColour(11, pickerSQLColour11->GetColourString());
 
     // Change the language last, as it will affect our tests for changes
     // in the display object types.
