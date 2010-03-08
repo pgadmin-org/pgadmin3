@@ -48,10 +48,10 @@ void ctlColourPicker::DoProcessLeftClick(wxMouseEvent& event)
 
     // Now, show it
     if (dialog.ShowModal() == wxID_OK)
-    {    
+    {
         clrData = dialog.GetColourData();
 		SetColour(clrData.GetColour());
-    }    
+    }
 }
 
 
@@ -69,10 +69,10 @@ void ctlColourPicker::UpdateColour()
     sz.y -= 2*GetMarginY();
 
     wxPoint topleft;
-    if ( sz.x < 1 ) 
+    if ( sz.x < 1 )
         sz.x = 1;
     else
-        if ( sz.y < 1 ) 
+        if ( sz.y < 1 )
              sz.y = 1;
     wxBitmap bmp(sz.x, sz.y);
 
