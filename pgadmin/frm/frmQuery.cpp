@@ -2677,7 +2677,10 @@ wxBitmap frmQuery::CreateBitmap(const wxColour& colour)
     wxMemoryDC dc;
     wxBitmap bmp(w, h);
     dc.SelectObject(bmp);
-    dc.SetBrush(wxBrush(colour));
+    if (colour == wxNullColour)
+        dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW)));
+    else
+        dc.SetBrush(wxBrush(colour));
     dc.DrawRectangle(0, 0, w, h);
 
     return bmp;
