@@ -426,7 +426,7 @@ pgsTimer(new pgScriptTimer(this))
     boxHistory->Add(sqlQueries, 1, wxEXPAND | wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
     // Delete Current button
-    btnDeleteCurrent = new wxButton(pnlQuery, CTL_DELETECURRENTBTN, wxT("Delete Current"));
+    btnDeleteCurrent = new wxButton(pnlQuery, CTL_DELETECURRENTBTN, wxT("Delete"));
     btnDeleteCurrent->Enable(false);
     boxHistory->Add(btnDeleteCurrent, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
@@ -2324,6 +2324,13 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
         }
         else
         {
+            // unsuccessfull queries are deleted of the history
+            histoQueries.RemoveAt(sqlQueries->GetCount()-1);
+            sqlQueries->Delete(sqlQueries->GetCount()-1);
+            btnDeleteCurrent->Enable(sqlQueries->GetValue().Length()>0);
+            btnDeleteAll->Enable(sqlQueries->GetCount() > 0);
+            SaveQueries();
+
             pgError err = sqlResult->GetResultError();
             wxString errMsg = err.formatted_msg;
             wxLogQuietError(wxT("%s"), conn->GetLastError().Trim().c_str());
