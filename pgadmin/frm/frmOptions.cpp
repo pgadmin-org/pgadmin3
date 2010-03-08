@@ -83,6 +83,7 @@
 #define pickerSQLForegroundColour        CTRL_COLOURPICKER("pickerSQLForegroundColour")
 #define stSQLCustomBackgroundColour      CTRL_STATIC("stSQLCustomBackgroundColour") 
 #define stSQLCustomForegroundColour      CTRL_STATIC("stSQLCustomForegroundColour") 
+#define pickerSQLMarginBackgroundColour  CTRL_COLOURPICKER("pickerSQLMarginBackgroundColour")
 #define pickerSQLColour1            CTRL_COLOURPICKER("pickerSQLColour1")
 #define pickerSQLColour2            CTRL_COLOURPICKER("pickerSQLColour2")
 #define pickerSQLColour3            CTRL_COLOURPICKER("pickerSQLColour3")
@@ -424,6 +425,8 @@ void frmOptions::UpdateColourControls()
 		pickerSQLForegroundColour->SetColour(settings->GetSQLBoxColourForeground());
 		stSQLCustomForegroundColour->Enable(true);
 	}
+
+	pickerSQLMarginBackgroundColour->SetColour(settings->GetSQLMarginBackgroundColour());
 }
 
 void frmOptions::OnChangeSQLUseCustomColour(wxCommandEvent &ev)
@@ -689,6 +692,10 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 			changed = true;
 		settings->SetSQLBoxColourForeground(pickerSQLForegroundColour->GetColourString());
 	}
+
+    if (pickerSQLMarginBackgroundColour->GetColourString() != settings->GetSQLMarginBackgroundColour())
+        changed = true;
+    settings->SetSQLMarginBackgroundColour(pickerSQLMarginBackgroundColour->GetColourString());
 
     if (pickerSQLColour1->GetColourString() != settings->GetSQLBoxColour(1))
         changed = true;

@@ -155,6 +155,9 @@ public:
     wxString GetSQLBoxColour(int index) const { wxString s; Read(wxString::Format(wxT("ctlSQLBox/Colour%i"), index), &s, getDefaultElementColor(index)); return s; }
 	void SetSQLBoxColour(int index, const wxString &newval) { Write(wxString::Format(wxT("ctlSQLBox/Colour%i"), index), newval); }
 
+    wxString GetSQLMarginBackgroundColour() const { wxString s; Read(wxT("ctlSQLBox/MarginBackgroundColour"), &s, wxT("#dddddd")); return s; }
+	void SetSQLMarginBackgroundColour(const wxString &newval) { Write(wxT("ctlSQLBox/MarginBackgroundColour"), newval); }
+
     // Misc options
     long GetAutoRowCountThreshold() const { long l; Read(wxT("AutoRowCount"), &l, 2000L); return l; }
 	void SetAutoRowCountThreshold(const long newval) { Write(wxT("AutoRowCount"), newval); }

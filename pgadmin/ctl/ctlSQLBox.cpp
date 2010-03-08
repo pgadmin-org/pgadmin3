@@ -111,7 +111,8 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
 	}
 
 	// Margin style
-	StyleSetBackground(wxSTC_STYLE_LINENUMBER, wxColour(0xDD, 0xDD, 0xDD));
+	StyleSetBackground(wxSTC_STYLE_LINENUMBER, settings->GetSQLMarginBackgroundColour());
+
     // Brace maching styles
     StyleSetBackground(34, wxColour(0x99, 0xF9, 0xFF));
     StyleSetBackground(35, wxColour(0xFF, 0xCF, 0x27));
