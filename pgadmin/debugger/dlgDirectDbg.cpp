@@ -741,7 +741,7 @@ void dlgDirectDbg::OnTargetComplete( wxCommandEvent & event )
         char *state = PQresultErrorField(result,PG_DIAG_SQLSTATE);
 
         // Don't bother telling the user that he aborted - he already knows!
-        if (strcmp(state, "57014"))
+        if (state != NULL && strcmp(state, "57014"))
             wxLogError( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
         else
             wxLogInfo( wxT( "%s\n" ), wxString(PQerrorMessage(m_conn->getConnection()), wxConvUTF8).c_str());
