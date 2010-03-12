@@ -1,0 +1,117 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.39. Release 8.0.24</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.16 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-8-1.html" title="E.38. Release 8.1">
+<link rel="next" href="release-8-0-23.html" title="E.40. Release 8.0.23">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.39. Release 8.0.24">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-0-24">E.39. Release 8.0.24</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2010-03-15</p>
+</div>
+<p>   This release contains a variety of fixes from 8.0.23.
+   For information about new features in the 8.0 major release, see
+   <a class="xref" href="release-8-0.html" title="E.63. Release 8.0">Section E.63, &#8220;Release 8.0&#8221;</a>.
+  </p>
+<p>   The <span class="productname">PostgreSQL</span> community will stop releasing updates
+   for the 8.0.X release series in July 2010.
+   Users are encouraged to update to a newer release branch soon.
+  </p>
+<div class="sect2" title="E.39.1. Migration to Version 8.0.24">
+<div class="titlepage"><div><div><h3 class="title" id="id2901444">E.39.1. Migration to Version 8.0.24</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.0.X.
+    However, if you are upgrading from a version earlier than 8.0.22,
+    see the release notes for 8.0.22.
+   </p>
+</div>
+<div class="sect2" title="E.39.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2901453">E.39.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<p>      Add new configuration parameter <code class="varname">ssl_renegotiation_limit</code> to
+      control how often we do session key renegotiation for an SSL connection
+      (Magnus)
+     </p>
+<p>      This can be set to zero to disable renegotiation completely, which may
+      be required if a broken SSL library is used.  In particular, some
+      vendors are shipping stopgap patches for CVE-2009-3555 that cause
+      renegotiation attempts to fail.
+     </p>
+</li>
+<li class="listitem"><p>      Fix possible crashes when trying to recover from a failure in
+      subtransaction start (Tom)
+     </p></li>
+<li class="listitem"><p>      Fix server memory leak associated with use of savepoints and a client
+      encoding different from server's encoding (Tom)
+     </p></li>
+<li class="listitem">
+<p>      Make <code class="function">substring()</code> for <code class="type">bit</code> types treat any negative
+      length as meaning <span class="quote">&#8220;<span class="quote">all the rest of the string</span>&#8221;</span> (Tom)
+     </p>
+<p>      The previous coding treated only -1 that way, and would produce an
+      invalid result value for other negative values, possibly leading to
+      a crash (CVE-2010-0442).
+     </p>
+</li>
+<li class="listitem"><p>      Fix integer-to-bit-string conversions to handle the first fractional
+      byte correctly when the output bit width is wider than the given
+      integer by something other than a multiple of 8 bits (Tom)
+     </p></li>
+<li class="listitem"><p>      Fix some cases of pathologically slow regular expression matching (Tom)
+     </p></li>
+<li class="listitem"><p>      Fix the <code class="literal">STOP WAL LOCATION</code> entry in backup history files to
+      report the next WAL segment's name when the end location is exactly at a
+      segment boundary (Itagaki Takahiro)
+     </p></li>
+<li class="listitem">
+<p>      When reading <code class="filename">pg_hba.conf</code> and related files, do not treat
+      <code class="literal">@something</code> as a file inclusion request if the <code class="literal">@</code>
+      appears inside quote marks; also, never treat <code class="literal">@</code> by itself
+      as a file inclusion request (Tom)
+     </p>
+<p>      This prevents erratic behavior if a role or database name starts with
+      <code class="literal">@</code>.  If you need to include a file whose path name
+      contains spaces, you can still do so, but you must write
+      <code class="literal">@"/path to/file"</code> rather than putting the quotes around
+      the whole construct.
+     </p>
+</li>
+<li class="listitem"><p>      Prevent infinite loop on some platforms if a directory is named as
+      an inclusion target in <code class="filename">pg_hba.conf</code> and related files
+      (Tom)
+     </p></li>
+<li class="listitem"><p>      Fix plpgsql failure in one case where a composite column is set to NULL
+      (Tom)
+     </p></li>
+<li class="listitem"><p>      Add <code class="literal">volatile</code> markings in PL/Python to avoid possible
+      compiler-specific misbehavior (Zdenek Kotala)
+     </p></li>
+<li class="listitem">
+<p>      Ensure PL/Tcl initializes the Tcl interpreter fully (Tom)
+     </p>
+<p>      The only known symptom of this oversight is that the Tcl
+      <code class="literal">clock</code> command misbehaves if using Tcl 8.5 or later.
+     </p>
+</li>
+<li class="listitem"><p>      Prevent crash in <code class="filename">contrib/dblink</code> when too many key
+      columns are specified to a <code class="function">dblink_build_sql_*</code> function
+      (Rushabh Lathia, Joe Conway)
+     </p></li>
+<li class="listitem"><p>      Fix assorted crashes in <code class="filename">contrib/xml2</code> caused by sloppy
+      memory management (Tom)
+     </p></li>
+<li class="listitem"><p>      Update time zone data files to <span class="application">tzdata</span> release 2010e
+      for DST law changes in Bangladesh, Chile, Fiji, Mexico, Paraguay, Samoa.
+     </p></li>
+</ul></div>
+</div>
+</div></body>
+</html>

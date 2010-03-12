@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.15 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.16 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-file-locations.html" title="17.2. File Locations">
 <link rel="next" href="runtime-config-resource.html" title="17.4. Resource Consumption">
@@ -182,6 +182,27 @@
         is <code class="literal">off</code>. This parameter can only be set at server
         start.
        </p></dd>
+<dt>
+<a name="guc-ssl-renegotiation-limit"></a><span class="term"><code class="varname">ssl_renegotiation_limit</code> (<code class="type">int</code>)</span>
+</dt>
+<dd>
+<p>        Specifies how much data can flow over an <acronym class="acronym">SSL</acronym> encrypted connection
+        before renegotiation of the session will take place. Renegotiation of the
+        session decreases the chance of doing cryptanalysis when large amounts of data
+        are sent, but it also carries a large performance penalty. The sum of
+        sent and received traffic is used to check the limit. If the parameter is
+        set to 0, renegotiation is disabled. The default is <code class="literal">512MB</code>.
+       </p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Note</h3>
+<p>         SSL libraries from before November 2009 are insecure when using SSL
+         renegotiation, due to a vulnerability in the SSL protocol. As a stop-gap fix
+         for this vulnerability, some vendors also shipped SSL libraries incapable
+         of doing renegotiation. If any of these libraries are in use on the client
+         or server, SSL renegotiation should be disabled.
+        </p>
+</div>
+</dd>
 <dt>
 <a name="guc-password-encryption"></a><span class="term"><code class="varname">password_encryption</code> (<code class="type">boolean</code>)</span>
 </dt>
