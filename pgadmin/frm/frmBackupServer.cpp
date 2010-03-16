@@ -143,7 +143,7 @@ wxString frmBackupServer::getCmdPart1()
         cmd += wxT(" --host ") + server->GetName();
 
     cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
-         +  wxT(" --username ") + server->GetUsername();
+         +  wxT(" --username ") + commandLineCleanOption(server->GetUsername());
     return cmd;
 }
 

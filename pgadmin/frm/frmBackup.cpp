@@ -198,7 +198,7 @@ wxString frmBackup::getCmdPart1()
         cmd += wxT(" --host ") + server->GetName();
 
     cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
-         +  wxT(" --username ") + server->GetUsername();
+         +  wxT(" --username ") + commandLineCleanOption(server->GetUsername());
 
     if (object->GetConnection()->GetIsGreenplum())
         cmd += wxT(" --gp-syntax ");
@@ -273,9 +273,9 @@ wxString frmBackup::getCmdPart2()
 
     if (object->GetMetaType() == PGM_SCHEMA)
 #ifdef WIN32
-        cmd.Append(wxT(" --schema \\\"") + ((pgSchema*)object)->GetIdentifier() + wxT("\\\""));
+        cmd.Append(wxT(" --schema ") + commandLineCleanOption(wxT("\"") + ((pgSchema*)object)->GetIdentifier() + wxT("\"")));
 #else
-        cmd.Append(wxT(" --schema '") + ((pgSchema*)object)->GetQuotedIdentifier() + wxT("'"));
+        cmd.Append(wxT(" --schema ") + commandLineCleanOption(wxT("'") + ((pgSchema*)object)->GetQuotedIdentifier() + wxT("'")));
 #endif
 
     else if (object->GetMetaType() == PGM_TABLE || object->GetMetaType() == GP_PARTITION) 
@@ -284,17 +284,19 @@ wxString frmBackup::getCmdPart2()
         if (pgAppMinimumVersion(backupExecutable, 8, 2))
         {
 #ifdef WIN32
-            cmd.Append(wxT(" --table \"\\\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
-                       wxT("\\\".\\\"") + ((pgTable*)object)->GetIdentifier() + wxT("\\\"\""));
+            cmd.Append(wxT(" --table ") +
+                  commandLineCleanOption(wxT("\"\"") + ((pgTable*)object)->GetSchema()->GetIdentifier() + 
+                        wxT("\".\"") + ((pgTable*)object)->GetIdentifier() + wxT("\"\"")));
 #else
-            cmd.Append(wxT(" --table '") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier() + 
-                       wxT(".") + ((pgTable*)object)->GetQuotedIdentifier() + wxT("'"));
+            cmd.Append(wxT(" --table ") +
+                  commandLineCleanOption(wxT("'") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier() + 
+                        wxT(".") + ((pgTable*)object)->GetQuotedIdentifier() + wxT("'")));
 #endif
         }
         else
         {
-            cmd.Append(wxT(" --table ") + ((pgTable*)object)->GetQuotedIdentifier());
-            cmd.Append(wxT(" --schema ") + ((pgTable*)object)->GetSchema()->GetQuotedIdentifier());
+            cmd.Append(wxT(" --table ") + commandLineCleanOption(((pgTable*)object)->GetQuotedIdentifier()));
+            cmd.Append(wxT(" --schema ") + commandLineCleanOption(((pgTable*)object)->GetSchema()->GetQuotedIdentifier()));
         }
     }
 
