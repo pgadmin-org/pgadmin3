@@ -297,7 +297,7 @@ wxString frmBackup::getCmdPart1()
         cmd += wxT(" --host ") + server->GetName();
 
     cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
-         +  wxT(" --username ") + server->GetUsername();
+         +  wxT(" --username ") + commandLineCleanOption(server->GetUsername());
 
     if (object->GetConnection()->GetIsGreenplum())
         cmd += wxT(" --gp-syntax ");
@@ -401,17 +401,19 @@ wxString frmBackup::getCmdPart2()
                     if (pgAppMinimumVersion(backupExecutable, 8, 2))
                     {
 #ifdef WIN32
-                        tmpTables.Append(wxT(" --table \"\\\"") + ctvObjects->GetItemText(schema) +
-                                   wxT("\\\".\\\"") + ctvObjects->GetItemText(table) + wxT("\\\"\""));
+                        tmpTables.Append(wxT(" --table ") + 
+                              commandLineCleanOption(wxT("\"") +ctvObjects->GetItemText(schema) +
+                                    wxT("\".\"") + ctvObjects->GetItemText(table) + wxT("\"\"")));
 #else
-                        tmpTables.Append(wxT(" --table '") + ctvObjects->GetItemText(schema) +
-                                   wxT(".") + ctvObjects->GetItemText(table) + wxT("'"));
+                        tmpTables.Append(wxT(" --table ") +
+                              commandLineCleanOption(wxT("'") + ctvObjects->GetItemText(schema) +
+                                   wxT(".") + ctvObjects->GetItemText(table) + wxT("'")));
 #endif
                     }
                     else
                     {
-                        tmpTables.Append(wxT(" --table ") + ctvObjects->GetItemText(table));
-                        tmpTables.Append(wxT(" --schema ") + ctvObjects->GetItemText(schema));
+                        tmpTables.Append(wxT(" --table ") + commandLineCleanOption(ctvObjects->GetItemText(table)));
+                        tmpTables.Append(wxT(" --schema ") + commandLineCleanOption(ctvObjects->GetItemText(schema)));
                     }
                 }
                 else
@@ -429,9 +431,9 @@ wxString frmBackup::getCmdPart2()
             else
             {
 #ifdef WIN32
-                cmdSchemas.Append(wxT(" --schema \\\"") + ctvObjects->GetItemText(schema) + wxT("\\\""));
+                cmdSchemas.Append(wxT(" --schema ") + commandLineCleanOption(wxT("\"") + ctvObjects->GetItemText(schema) + wxT("\"")));
 #else
-                cmdSchemas.Append(wxT(" --schema '") + ctvObjects->GetItemText(schema) + wxT("'"));
+                cmdSchemas.Append(wxT(" --schema '") + commandLineCleanOption(ctvObjects->GetItemText(schema) + wxT("'")));
 #endif
             }
         }
