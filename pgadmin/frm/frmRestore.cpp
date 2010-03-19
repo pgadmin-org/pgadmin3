@@ -400,19 +400,19 @@ wxString frmRestore::getCmdPart2(int step)
             switch (object->GetMetaType())
             {
                 case PGM_FUNCTION:
-                    cmd.Append(wxT(" --function ") + commandLineCleanOption(object->GetFullName()));
+                    cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(object->GetFullName()), true));
                     break;
                 case PGM_INDEX:
-                    cmd.Append(wxT(" --index ") + commandLineCleanOption(object->GetQuotedIdentifier()));
+                    cmd.Append(wxT(" --index ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
                     break;
                 case PGM_SCHEMA:
-                    cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetQuotedIdentifier()));
+                    cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
                     break;
                 case PGM_TABLE:
-                    cmd.Append(wxT(" --table ") + commandLineCleanOption(object->GetQuotedIdentifier()));
+                    cmd.Append(wxT(" --table ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
                     break;
                 case PGM_TRIGGER:
-                    cmd.Append(wxT(" --trigger ") + commandLineCleanOption(object->GetQuotedIdentifier()));
+                    cmd.Append(wxT(" --trigger ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
                     break;
                 default:
                     break;
