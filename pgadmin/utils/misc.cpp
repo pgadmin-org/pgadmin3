@@ -1238,35 +1238,50 @@ wxString sanitizePath(const wxString &path)
     return wxEmptyString;
 }
 
-// Fixup a (quoted) string for use on the command line
-wxString commandLineCleanOption(const wxString &option)
+/**
+ * FUNCTION: commandLineCleanOption
+ * INPUTS:
+ *       option       - input string needs to be reformatted
+ *       schemaObject - Is this an object related to schema?
+ * PURPOSE:
+ *  - Fixup a (double-quoted) string for use on the command line
+ *
+ *    1. Schema objects needs three (slash & double-quote) combination
+ *       instead of a double-quote to be used as a command-line option
+ *    2. Options other than the schema objects needs (slash & double-quote)
+ *       combination instead of a double-quote to be used as a command-line
+ *       option.
+ *
+ *    i.e. CASE: Dump a table named em"p and database name tes"t having username
+ *         xy\z. The command-line arguments for these values will be as below:
+ *
+ *         pg_dump --username "xy\\z" --table public."em\"\"\"p" "tes\"t"
+ *
+ */
+wxString commandLineCleanOption(const wxString &option, bool schemaObject)
 {
-    wxString tmp;
-    bool wasQuoted = false;
+    wxString tmp = option;
 
+    // Only double-quoted string needs to be formatted
     if (option.StartsWith(wxT("\"")) && option.EndsWith(wxT("\"")))
     {
         tmp = option.AfterFirst((wxChar)'"').BeforeLast((wxChar)'"');
-        wasQuoted = true;
-    }
-    else
-        tmp = option;
 
-#ifdef __WXMSW__
-    if (wasQuoted)
-        tmp.Replace(wxT("\"\""), wxT("\"\"\""));
-    else
-    {
-        tmp.Replace(wxT("\""), wxT("\"\""));
+        // Replace single splash to double-splash
         tmp.Replace(wxT("\\"), wxT("\\\\"));
-    }
-#else
-    tmp.Replace(wxT("\\"), wxT("\\\\"));
-    tmp.Replace(wxT("\"\""), wxT("\\\""));
-#endif
 
-    if (wasQuoted)
+        // Replace double-quote with slash & double-quote
+        tmp.Replace(wxT("\""), wxT("\\\""));
+
+        if (!schemaObject)
+            // Replace double (slash & double-quote) combination to single (slash & double-quote) combination
+            tmp.Replace(wxT("\\\"\\\""), wxT("\\\""));
+        else
+            // Replace double (slash & double-quote) combination to triple (slash & double-quote) combination
+            tmp.Replace(wxT("\\\"\\\""), wxT("\\\"\\\"\\\""));
+
         tmp = wxT("\"") + tmp + wxT("\"");
+    }
 
     return tmp;
 }

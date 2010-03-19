@@ -338,19 +338,19 @@ wxString frmRestore::getCmdPart2(int step)
                 {
                     int sel=lstContents->GetSelection();
                     if (lstContents->GetText(sel, 0).Lower() == wxString(_("Function")).Lower())
-                        cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).BeforeLast('('))));
+                        cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).BeforeLast('(')), true));
                     else if (lstContents->GetText(sel, 0).Lower() == wxString(_("Table")).Lower())
-                        cmd.Append(wxT(" --table ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1))));
+                        cmd.Append(wxT(" --table ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1)), true));
                     else
                         return wxT("restore: internal pgadmin error.");   // shouldn't happen!
 
                     break;
                 }
                 case PGM_TABLE:
-                    cmd.Append(wxT(" --table ") + commandLineCleanOption(object->GetQuotedIdentifier()));
+                    cmd.Append(wxT(" --table ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
                     break;
                 case PGM_FUNCTION:
-                    cmd.Append(wxT(" --function ") + commandLineCleanOption(object->GetQuotedIdentifier()));
+                    cmd.Append(wxT(" --function ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
                     break;
                 default:
                     break;
