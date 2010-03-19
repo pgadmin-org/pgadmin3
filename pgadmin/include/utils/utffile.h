@@ -47,6 +47,7 @@ protected:
     wxMBConv *m_conversion;
     wxFontEncoding m_encoding;
     off_t m_bomOffset;
+    wxString m_strFileName;
 };
 
 #endif // _WX_UTFFILEH__
