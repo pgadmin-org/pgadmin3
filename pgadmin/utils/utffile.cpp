@@ -31,6 +31,7 @@ wxUtfFile::wxUtfFile() : wxFile()
 
 wxUtfFile::wxUtfFile(const wxChar *szFileName, OpenMode mode, wxFontEncoding encoding) : wxFile()
 {
+    m_strFileName = szFileName;
     Open(szFileName, mode, wxS_DEFAULT, encoding);
 }
 
@@ -77,6 +78,8 @@ off_t wxUtfFile::Read(wxString &str, off_t nCount)
 
             if (nLen == (size_t)-1)
             {
+                if (!m_strFileName.IsEmpty())
+                    wxLogWarning(_("The file '%s' could not be opened because it contains characters that could not be interpreted."), m_strFileName.c_str());
                 Seek(decr-nLen, wxFromCurrent);
                 return (size_t)-1;
             }
