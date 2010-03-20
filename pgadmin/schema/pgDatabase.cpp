@@ -862,14 +862,25 @@ void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 
     bool hasSize=GetConnection()->HasFeature(FEATURE_SIZE);
 
-    wxString sql=wxT("SELECT datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit");
+    wxString restr;
+    if (!GetServer()->GetDbRestriction().IsEmpty())
+    {
+        if (restr.IsEmpty())
+            restr = wxT(" WHERE datname IN (");
+        else
+            restr = wxT("   AND datname IN (");
+
+        restr += GetServer()->GetDbRestriction() + wxT(")\n");
+    }
+    
+    wxString sql=wxT("SELECT datid, datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit");
 
 	if (GetConnection()->BackendMinimumVersion(8,3))
 		sql += wxT(", tup_returned, tup_fetched, tup_inserted, tup_updated, tup_deleted");
     if (hasSize)
         sql += wxT(", pg_size_pretty(pg_database_size(datid)) as size");
 
-    sql += wxT("\n  FROM pg_stat_database db ORDER BY datname");
+    sql += wxT("\n  FROM pg_stat_database db\n") + restr + wxT(" ORDER BY datname");
 
     // Add the statistics view columns
     statistics->ClearAll();
@@ -890,27 +901,36 @@ void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 		statistics->AddColumn(_("Tuples Deleted"), 60);
 	}
 
+    bool sysobj;
     pgSet *stats = GetServer()->ExecuteSet(sql);
     if (stats)
     {
         while (!stats->Eof())
         {
-            statistics->InsertItem(stats->CurrentPos() - 1, stats->GetVal(wxT("datname")), PGICON_STATISTICS);
-            statistics->SetItem(stats->CurrentPos() - 1, 1, stats->GetVal(wxT("numbackends")));
-            if (hasSize)
-                statistics->SetItem(stats->CurrentPos() - 1, 2, stats->GetVal(wxT("size")));
-			statistics->SetItem(stats->CurrentPos() - 1, 2 + (hasSize?1:0), stats->GetVal(wxT("xact_commit")));
-            statistics->SetItem(stats->CurrentPos() - 1, 3 + (hasSize?1:0), stats->GetVal(wxT("xact_rollback")));
-            statistics->SetItem(stats->CurrentPos() - 1, 4 + (hasSize?1:0), stats->GetVal(wxT("blks_read")));
-            statistics->SetItem(stats->CurrentPos() - 1, 5 + (hasSize?1:0), stats->GetVal(wxT("blks_hit")));
-			if (GetConnection()->BackendMinimumVersion(8,3))
-			{
-				statistics->SetItem(stats->CurrentPos()-1, 6 + (hasSize?1:0), stats->GetVal(wxT("tup_returned")));
-				statistics->SetItem(stats->CurrentPos()-1, 7 + (hasSize?1:0), stats->GetVal(wxT("tup_fetched")));
-				statistics->SetItem(stats->CurrentPos()-1, 8 + (hasSize?1:0), stats->GetVal(wxT("tup_inserted")));
-				statistics->SetItem(stats->CurrentPos()-1, 9 + (hasSize?1:0), stats->GetVal(wxT("tup_updated")));
-				statistics->SetItem(stats->CurrentPos()-1, 10 + (hasSize?1:0), stats->GetVal(wxT("tup_deleted")));
-			}
+            if (stats->GetVal(wxT("datname")) == wxT("template0"))
+                sysobj = true;
+            else
+                sysobj = stats->GetOid(wxT("datid")) <= GetServer()->GetLastSystemOID();
+
+            if (settings->GetShowSystemObjects() || !sysobj)
+            {
+                statistics->InsertItem(stats->CurrentPos() - 1, stats->GetVal(wxT("datname")), PGICON_STATISTICS);
+                statistics->SetItem(stats->CurrentPos() - 1, 1, stats->GetVal(wxT("numbackends")));
+                if (hasSize)
+                    statistics->SetItem(stats->CurrentPos() - 1, 2, stats->GetVal(wxT("size")));
+			    statistics->SetItem(stats->CurrentPos() - 1, 2 + (hasSize?1:0), stats->GetVal(wxT("xact_commit")));
+                statistics->SetItem(stats->CurrentPos() - 1, 3 + (hasSize?1:0), stats->GetVal(wxT("xact_rollback")));
+                statistics->SetItem(stats->CurrentPos() - 1, 4 + (hasSize?1:0), stats->GetVal(wxT("blks_read")));
+                statistics->SetItem(stats->CurrentPos() - 1, 5 + (hasSize?1:0), stats->GetVal(wxT("blks_hit")));
+			    if (GetConnection()->BackendMinimumVersion(8,3))
+			    {
+			    	statistics->SetItem(stats->CurrentPos()-1, 6 + (hasSize?1:0), stats->GetVal(wxT("tup_returned")));
+			    	statistics->SetItem(stats->CurrentPos()-1, 7 + (hasSize?1:0), stats->GetVal(wxT("tup_fetched")));
+			    	statistics->SetItem(stats->CurrentPos()-1, 8 + (hasSize?1:0), stats->GetVal(wxT("tup_inserted")));
+			    	statistics->SetItem(stats->CurrentPos()-1, 9 + (hasSize?1:0), stats->GetVal(wxT("tup_updated")));
+			    	statistics->SetItem(stats->CurrentPos()-1, 10 + (hasSize?1:0), stats->GetVal(wxT("tup_deleted")));
+			    }
+            }
             stats->MoveNext();
         }
 
