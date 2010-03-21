@@ -41,6 +41,7 @@
 #define btnRemoveTable  CTRL_BUTTON("btnRemoveTable")
 #define cbTables        CTRL_COMBOBOX2("cbTables")
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
+#define cbOfType        CTRL_COMBOBOX("cbOfType")
 #define txtFillFactor   CTRL_TEXT("txtFillFactor")
 
 #define btnAddCol       CTRL_BUTTON("btnAddCol")
@@ -102,6 +103,7 @@ BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
     EVT_CHECKBOX(XRCID("chkHasOids"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbOfType"),                 dlgTable::OnChangeOfType)
     EVT_CHECKBOX(XRCID("chkHasOids"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbTables"),                     dlgTable::OnChangeTable)
     EVT_BUTTON(XRCID("btnAddTable"),                dlgTable::OnAddTable)
@@ -208,6 +210,16 @@ int dlgTable::Go(bool modal)
     PrepareTablespace(cbTablespace);
     PopulateDatatypeCache();
 
+    // new of type combobox
+    wxString typeQuery = wxT("SELECT t.oid, t.typname ")
+        wxT("FROM pg_type t, pg_namespace n ")
+        wxT("WHERE t.typtype='c' AND t.typnamespace=n.oid ")
+        wxT("AND NOT (n.nspname like 'pg_%' OR n.nspname='information_schema') ")
+        wxT("ORDER BY typname");
+    cbOfType->Insert(wxEmptyString, 0, (void *)0);
+    cbOfType->FillOidKey(connection, typeQuery);
+    cbOfType->SetSelection(0);
+
     hasPK=false;
 
     if (table)
@@ -217,6 +229,9 @@ int dlgTable::Go(bool modal)
 
         if (table->GetTablespaceOid() != 0)
             cbTablespace->SetKey(table->GetTablespaceOid());
+
+        if (table->GetOfTypeOid() != 0)
+            cbOfType->SetKey(table->GetOfTypeOid());
 
         inheritedTableOids=table->GetInheritedTablesOidList();
 
@@ -230,7 +245,6 @@ int dlgTable::Go(bool modal)
 
         btnAddTable->Enable(connection->BackendMinimumVersion(8, 2) && cbTables->GetGuessedSelection() >= 0);
         lbTables->Enable(connection->BackendMinimumVersion(8, 2));
-        cbTables->Enable(connection->BackendMinimumVersion(8, 2));
         chkHasOids->Enable(table->GetHasOids() && connection->BackendMinimumVersion(8, 0));
         cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
 
@@ -353,6 +367,9 @@ int dlgTable::Go(bool modal)
         cbTablespace->Insert(_("<default tablespace>"), 0, (void *)0);
         cbTablespace->SetSelection(0);
     }
+
+    cbOfType->Enable(connection->BackendMinimumVersion(9, 0) && !table);
+    cbTables->Enable(connection->BackendMinimumVersion(8, 2) && cbOfType->GetCurrentSelection() == 0);
 
     if (connection->BackendMinimumVersion(8,2) || !table)
     {
@@ -1187,26 +1204,34 @@ wxString dlgTable::GetSql()
     }
     else
     {
-        sql = wxT("CREATE TABLE ") + tabname
-            + wxT("\n(");
+        bool typedTable = cbOfType->GetCurrentSelection() > 0 && cbOfType->GetOIDKey() > 0;
+        sql = wxT("CREATE TABLE ") + tabname;
+        if (typedTable)
+            sql += wxT("\nOF ") + qtIdent(cbOfType->GetValue());
+
+        if (!typedTable || (typedTable && lstConstraints->GetItemCount() > 0))
+            sql += wxT("\n(");
 
         int pos;
         bool needComma=false;
-        for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
+        if (!typedTable)
         {
-            if (lstColumns->GetText(pos, 2).IsEmpty())
+            for (pos=0 ; pos < lstColumns->GetItemCount() ; pos++)
             {
-                // standard definition, not inherited
-                if (needComma)
-                    sql += wxT(", ");
-                else
-                    needComma=true;
+                if (lstColumns->GetText(pos, 2).IsEmpty())
+                {
+                    // standard definition, not inherited
+                    if (needComma)
+                        sql += wxT(", ");
+                    else
+                        needComma=true;
 
-                wxString name=lstColumns->GetText(pos);
-                wxString definition = lstColumns->GetText(pos, 1);
+                    wxString name=lstColumns->GetText(pos);
+                    wxString definition = lstColumns->GetText(pos, 1);
 
-                sql += wxT("\n   ") + qtIdent(name)
-                    + wxT(" ") + definition;
+                    sql += wxT("\n   ") + qtIdent(name)
+                        + wxT(" ") + definition;
+                }
             }
         }
 
@@ -1225,7 +1250,9 @@ wxString dlgTable::GetSql()
 
             sql += wxT(" ") + GetItemConstraintType(lstConstraints, pos) + wxT(" ") + definition;
         }
-        sql += wxT("\n) ");
+        
+        if (!typedTable || (typedTable && lstConstraints->GetItemCount() > 0))
+            sql += wxT("\n) ");
 
 
         if (lbTables->GetCount() > 0)
@@ -1732,6 +1759,64 @@ void dlgTable::OnSelChangeTable(wxCommandEvent &ev)
 }
 
 
+void dlgTable::OnChangeOfType(wxCommandEvent &ev)
+{
+    if (cbOfType->GetCurrentSelection() > 0)
+    {
+        if (settings->GetConfirmDelete() && lstColumns->GetItemCount() > 0)
+        {
+            if (wxMessageBox(_("A typed table only has the type's columns. All other columns will be dropped. Are you sure you want to do this?"), _("Remove all columns?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxYES)
+            {
+                lstColumns->DeleteAllItems();
+                lstConstraints->DeleteAllItems();
+                hasPK = false;
+                FillConstraint();
+            }
+            else
+            {
+                cbOfType->SetSelection(0);
+                return;
+            }
+        }
+
+        pgSet *set=connection->ExecuteSet(
+            wxT("SELECT a.attname, format_type(atttypid, NULL) AS atttypname ")
+            wxT("FROM pg_attribute a, pg_class c\n")
+            wxT("WHERE NOT a.attisdropped AND a.attnum>0 ")
+            wxT("AND a.attrelid=c.oid AND c.relname='") + qtIdent(cbOfType->GetValue()) + wxT("'"));
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                lstColumns->AppendItem(tableFactory.GetIconId(),
+                    set->GetVal(wxT("attname")), 
+                    set->GetVal(wxT("atttypname")),
+                    wxT(""));
+                set->MoveNext();
+            }
+            delete set;
+        }        
+    }
+    else
+    {
+        if (settings->GetConfirmDelete() && lstColumns->GetItemCount() > 0)
+        {
+            if (wxMessageBox(_("All type's columns will be dropped. Are you sure you want to do this?"), _("Remove all columns?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION) == wxYES)
+            {
+                lstColumns->DeleteAllItems();
+                lstConstraints->DeleteAllItems();
+                hasPK = false;
+                FillConstraint();
+            }
+        }
+    }
+
+    btnAddCol->Enable(cbOfType->GetCurrentSelection() == 0);
+    cbTables->Enable(connection->BackendMinimumVersion(8, 2) && cbOfType->GetCurrentSelection() == 0);
+    btnRemoveCol->Enable(false);
+    CheckChange();
+}
+
 void dlgTable::OnChangeCol(wxCommandEvent &ev)
 {
     long pos=lstColumns->GetSelection();
@@ -1810,7 +1895,8 @@ void dlgTable::OnSelChangeCol(wxListEvent &ev)
     long pos=lstColumns->GetSelection();
     wxString inheritedFromTable=lstColumns->GetText(pos, 2);
     
-    btnRemoveCol->Enable(inheritedFromTable.IsEmpty());
+    btnAddCol->Enable(!(cbOfType->GetCurrentSelection() > 0 && cbOfType->GetOIDKey() > 0));
+    btnRemoveCol->Enable(inheritedFromTable.IsEmpty() && !(cbOfType->GetCurrentSelection() > 0 && cbOfType->GetOIDKey() > 0));
     btnChangeCol->Enable(table != 0 && !lstColumns->GetText(pos, 6).IsEmpty() && inheritedFromTable.IsEmpty());
 }
 

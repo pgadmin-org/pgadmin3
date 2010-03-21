@@ -200,8 +200,11 @@ wxString pgColumn::GetPrivileges()
 }
 wxString pgColumn::GetDefinition()
 {
-    wxString sql = GetQuotedTypename();
+    wxString sql = wxEmptyString;
     wxString seqDefault1, seqDefault2;
+
+    if (table->GetOfTypeOid() == 0)
+        sql += GetQuotedTypename();
 
     if (GetDatabase()->BackendMinimumVersion(8, 1))
     {

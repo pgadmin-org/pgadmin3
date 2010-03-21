@@ -206,6 +206,8 @@ wxString pgTable::GetSql(ctlTree *browser)
 {
     wxString colDetails, conDetails;
     wxString prevComment;
+    wxString cols_sql = wxEmptyString;
+    bool showparens = false;
 
     wxString columnPrivileges;
 
@@ -215,7 +217,11 @@ wxString pgTable::GetSql(ctlTree *browser)
         ShowTreeDetail(browser);
         sql = wxT("-- Table: ") + GetQuotedFullIdentifier() + wxT("\n\n")
             + wxT("-- DROP TABLE ") + GetQuotedFullIdentifier() + wxT(";")
-            + wxT("\n\nCREATE TABLE ") + GetQuotedFullIdentifier() + wxT("\n(\n");
+            + wxT("\n\nCREATE TABLE ") + GetQuotedFullIdentifier();
+
+        // of type (9.0 material)
+        if (ofTypeOid > 0)
+            sql += wxT("\nOF ") + qtIdent(ofType);
 
         // Get a count of the constraints.
         int consCount=0;
@@ -256,22 +262,44 @@ wxString pgTable::GetSql(ctlTree *browser)
                     {
                         // Only add a comma if this isn't the last 'real' column, or if there are constraints
                         if (colCount != lastRealCol || consCount)
-                            sql += wxT(",");
+                            cols_sql += wxT(",");
                         if (!prevComment.IsEmpty())
-                            sql += wxT(" -- ") + firstLineOnly(prevComment);
+                            cols_sql += wxT(" -- ") + firstLineOnly(prevComment);
 
-                        sql += wxT("\n");
+                        cols_sql += wxT("\n");
                     }
 
                     if (column->GetInheritedCount() > 0)
                     {
                         if (!column->GetIsLocal())
-                            sql += wxString::Format(wxT("-- %s "), _("Inherited"))
-                                + wxT("from table ") +  column->GetInheritedTableName() + wxT(":");
+                        {
+                            cols_sql += wxString::Format(wxT("-- %s "), _("Inherited"))
+                                     + wxT("from table ") +  column->GetInheritedTableName() + wxT(":");
+                            showparens = true;
+                        }
                     }
 
-                    sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" ")
-                        + column->GetDefinition();
+                    if (ofTypeOid > 0)
+                    {
+                        if (column->GetDefinition().Length() == 0)
+                        {
+                            cols_sql += wxString::Format(wxT("-- %s "), _("Inherited"))
+                                     + wxT("from type ") +  ofType + wxT(": ")
+                                     + column->GetQuotedIdentifier();
+                        }
+                        else
+                        {
+                            cols_sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" WITH OPTIONS ")
+                                     + column->GetDefinition();
+                            showparens = true;
+                        }
+                    }
+                    else
+                    {
+                        cols_sql += wxT("  ") + column->GetQuotedIdentifier() + wxT(" ")
+                                 + column->GetDefinition();
+                        showparens = true;
+                    }
 
                     prevComment = column->GetComment();
 
@@ -300,14 +328,14 @@ wxString pgTable::GetSql(ctlTree *browser)
             {
                 data->ShowTreeDetail(browser);
 
-                sql += wxT(",");
+                cols_sql += wxT(",");
 
                 if (!prevComment.IsEmpty())
-                    sql += wxT(" -- ") + firstLineOnly(prevComment);
+                    cols_sql += wxT(" -- ") + firstLineOnly(prevComment);
 
-                sql += wxT("\n  CONSTRAINT ") + data->GetQuotedIdentifier() 
-                    + wxT(" ") + data->GetTypeName().Upper() 
-                    + wxT(" ") ;
+                cols_sql += wxT("\n  CONSTRAINT ") + data->GetQuotedIdentifier() 
+                         + wxT(" ") + data->GetTypeName().Upper() 
+                         + wxT(" ") ;
 
                 prevComment = data->GetComment();
                 if (!data->GetComment().IsEmpty())
@@ -319,21 +347,25 @@ wxString pgTable::GetSql(ctlTree *browser)
                 {
                     case PGM_PRIMARYKEY:
                     case PGM_UNIQUE:
-                        sql += ((pgIndexConstraint*)data)->GetDefinition();
+                        cols_sql += ((pgIndexConstraint*)data)->GetDefinition();
                         break;
                     case PGM_FOREIGNKEY:
-                        sql += ((pgForeignKey*)data)->GetDefinition();
+                        cols_sql += ((pgForeignKey*)data)->GetDefinition();
                         break;
                     case PGM_CHECK:
-                      sql += wxT("(") + ((pgCheck*)data)->GetDefinition() + wxT(")");
+                        cols_sql += wxT("(") + ((pgCheck*)data)->GetDefinition() + wxT(")");
                         break;
                 }
             }
         }
         if (!prevComment.IsEmpty())
-            sql += wxT(" -- ") + firstLineOnly(prevComment);
+            cols_sql += wxT(" -- ") + firstLineOnly(prevComment);
 
-        sql += wxT("\n)");
+        if (showparens)
+            sql += wxT("\n(\n") + cols_sql + wxT("\n)");
+        else
+            sql += wxT("\n-- (\n") + cols_sql + wxT("\n-- )");
+
         if (GetInheritedTableCount())
         {
             sql += wxT("\nINHERITS (") + GetQuotedInheritedTables() + wxT(")");
@@ -828,6 +860,8 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
         if (GetConnection()->BackendMinimumVersion(8, 0))
             properties->AppendItem(_("Tablespace"), tablespace);
         properties->AppendItem(_("ACL"), GetAcl());
+        if (GetConnection()->BackendMinimumVersion(9, 0))
+            properties->AppendItem(_("Of type"), ofType);
         if (GetPrimaryKey().IsNull())
             properties->AppendItem(_("Primary key"), _("<no primary key>"));
         else
@@ -1249,6 +1283,8 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
                      wxT(", rel.reloptions AS reloptions \n")
                      wxT(", (CASE WHEN rel.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable\n");
         }
+        if (collection->GetConnection()->BackendMinimumVersion(9, 0))
+            query += wxT(", reloftype, typname\n");
 
         query += wxT("  FROM pg_class rel\n")
             wxT("  LEFT OUTER JOIN pg_tablespace ta on ta.oid=rel.reltablespace\n")
@@ -1260,6 +1296,10 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
             //if (collection->GetConnection()->GetIsGreenplum() && collection->GetConnection()->BackendMinimumVersion(8, 2, 9))
             //	query += wxT(" LEFT OUTER JOIN pg_partition ON rel.oid = parrelid\n");
         }
+
+        if (collection->GetConnection()->BackendMinimumVersion(9, 0))
+            query += wxT("LEFT JOIN pg_type ON reloftype=pg_type.oid\n");
+
         query += wxT(" WHERE relkind IN ('r','s','t') AND relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n");
 
         // Greenplum: Eliminate (sub)partitions from the display, only show the parent partitioned table
@@ -1306,6 +1346,16 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
                     table->iSetTablespace(collection->GetDatabase()->GetTablespace());
                 else
                     table->iSetTablespace(tables->GetVal(wxT("spcname")));
+            }
+            if (collection->GetConnection()->BackendMinimumVersion(9, 0))
+            {
+                table->iSetOfTypeOid(tables->GetOid(wxT("reloftype")));
+                table->iSetOfType(tables->GetVal(wxT("typname")));
+            }
+            else
+            {
+                table->iSetOfTypeOid(0);
+                table->iSetOfType(wxT(""));
             }
             table->iSetComment(tables->GetVal(wxT("description")));
             table->iSetHasOids(tables->GetBool(wxT("relhasoids")));

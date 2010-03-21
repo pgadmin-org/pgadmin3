@@ -42,6 +42,8 @@ private:
     void OnChangeSize(wxSizeEvent &ev);
 #endif
 
+    void OnChangeOfType(wxCommandEvent &ev);
+
     void OnAddTable(wxCommandEvent &ev);
     void OnRemoveTable(wxCommandEvent &ev);
     void OnSelChangeTable(wxCommandEvent &ev);

@@ -72,6 +72,10 @@ public:
     void iSetTablespace(const wxString& newVal) { tablespace = newVal; }
     OID GetTablespaceOid() const { return tablespaceOid; };
     void iSetTablespaceOid(const OID newVal) { tablespaceOid = newVal; }
+    wxString GetOfType() const { return ofType; };
+    void iSetOfType(const wxString& newVal) { ofType = newVal; }
+    OID GetOfTypeOid() const { return ofTypeOid; };
+    void iSetOfTypeOid(const OID newVal) { ofTypeOid = newVal; }
     wxULongLong GetRows() const { return rows; }
     long GetInheritedTableCount() { if (inheritedTableCount < 0) UpdateInheritance(); return inheritedTableCount; }
     wxString GetInheritedTables() { GetInheritedTableCount(); return inheritedTables; }
@@ -225,11 +229,13 @@ private:
    
     long inheritedTableCount;
     wxString quotedInheritedTables, inheritedTables, primaryKey, quotedPrimaryKey,
-        primaryKeyName, primaryKeyColNumbers, tablespace, distributionColNumbers;
+        primaryKeyName, primaryKeyColNumbers, tablespace,
+        distributionColNumbers, ofType;
     wxArrayString quotedInheritedTablesList, inheritedTablesOidList;
 
     slSet *replicationSet;
     OID tablespaceOid;
+    OID ofTypeOid;
 };
 
 

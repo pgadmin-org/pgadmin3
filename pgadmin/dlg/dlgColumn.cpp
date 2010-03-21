@@ -299,6 +299,15 @@ int dlgColumn::Go(bool modal)
             txtAttstattarget->Disable();
             txtDefault->Disable();
         }
+        else if (table->GetOfTypeOid() > 0)
+        {
+            txtName->Disable();
+            chkNotNull->Enable();
+            txtLength->Disable();
+            cbDatatype->Disable();
+            txtAttstattarget->Enable();
+            txtDefault->Enable();
+        }
 
         size_t i;
         for (i=0 ; i < column->GetVariables().GetCount() ; i++)
