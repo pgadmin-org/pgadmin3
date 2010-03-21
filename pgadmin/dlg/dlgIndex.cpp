@@ -221,7 +221,7 @@ void dlgIndex::CheckChange()
         wxString name=GetName();
 
         bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+        CheckValid(enable, !name.IsEmpty() || (name.IsEmpty() && this->database->BackendMinimumVersion(9, 0)), _("Please specify name."));
         CheckValid(enable, lstColumns->GetItemCount() > 0, _("Please specify columns."));
         EnableOK(enable);
     }
