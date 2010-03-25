@@ -179,7 +179,7 @@ void gqbView::OnMenuJoinDelete(wxCommandEvent& WXUNUSED(event))
 {
     if(jTempSelected)
     {
-        this->joinsGridTable->removeJoin(joinSelected);
+        this->joinsGridTable->removeJoin(jTempSelected);
         controller->removeJoin(jTempSelected);
         jTempSelected=NULL;
         this->Refresh();
