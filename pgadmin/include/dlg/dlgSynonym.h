@@ -16,11 +16,15 @@
 #include "dlg/dlgProperty.h"
 
 class edbSynonym;
+class edbPrivateSynonymFactory;
+class edbPrivateSynonym;
+class pgSchema;
 
 class dlgSynonym : public dlgProperty
 {
 public:
     dlgSynonym(pgaFactory *factory, frmMain *frame, edbSynonym *sy);
+    dlgSynonym(edbPrivateSynonymFactory *factory, frmMain *frame, edbPrivateSynonym *syn, pgSchema *schema);
     int Go(bool modal);
 
     void CheckChange();
@@ -36,7 +40,9 @@ private:
     void ProcessTypeChange();
     void ProcessSchemaChange();
 
-    edbSynonym *synonym;
+    edbSynonym        *synonym;
+    edbPrivateSynonym *privSynonym;
+    pgSchema          *synonymSchema;
 
     DECLARE_EVENT_TABLE()
 };

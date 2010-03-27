@@ -16,6 +16,7 @@ pgadmin3_SOURCES += \
         $(subdir)/edbPackageFunction.cpp \
         $(subdir)/edbPackageVariable.cpp \
         $(subdir)/edbSynonym.cpp \
+        $(subdir)/edbPrivateSynonym.cpp \
         $(subdir)/pgAggregate.cpp \
         $(subdir)/pgCast.cpp \
         $(subdir)/pgCatalogObject.cpp \

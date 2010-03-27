@@ -305,7 +305,7 @@ frmOptions::frmOptions(frmMain *parent)
     lstDisplay->Append(_("Catalogs"));
     lstDisplay->Append(_("Casts"));
     lstDisplay->Append(_("Languages"));
-    lstDisplay->Append(_("Public Synonyms"));
+    lstDisplay->Append(_("Synonyms"));
     lstDisplay->Append(_("Schemas"));
     lstDisplay->Append(_("Slony-I Clusters"));
     lstDisplay->Append(_("Aggregates"));

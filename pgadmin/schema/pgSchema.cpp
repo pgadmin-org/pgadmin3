@@ -37,6 +37,7 @@
 #include "schema/pgType.h"
 #include "schema/pgView.h"
 #include "schema/gpPartition.h"
+#include "schema/edbPrivateSynonym.h"
 #include "frm/frmReport.h"
 
 #include "wx/regex.h"
@@ -136,6 +137,8 @@ wxMenu *pgSchemaBase::GetNewMenu()
             if (GetConnection() != 0 && GetConnection()->GetIsGreenplum())
                 extTableFactory.AppendMenu(menu);
         }
+        if (settings->GetDisplayOption(_("Synonyms")) && GetConnection()->EdbMinimumVersion(8, 4))
+            edbPrivFactory.AppendMenu(menu);
     }
     return menu;
 }
@@ -251,6 +254,8 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
                 browser->AppendCollection(this, typeFactory);
             if (settings->GetDisplayOption(_("Views")))
                 browser->AppendCollection(this, viewFactory);
+            if (settings->GetDisplayOption(_("Synonyms")) && GetConnection()->EdbMinimumVersion(8, 4))
+                browser->AppendCollection(this, edbPrivFactory);
         }
         else
             browser->AppendCollection(this, catalogObjectFactory);

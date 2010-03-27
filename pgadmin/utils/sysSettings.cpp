@@ -88,8 +88,8 @@ bool sysSettings::GetDisplayOption(const wxString &objtype, bool GetDefault)
         engtype = wxT("Languages");
         def = false;
     }
-    else if (objtype == _("Public Synonyms")) 
-        engtype = wxT("Public Synonyms");
+    else if (objtype == _("Synonyms")) 
+        engtype = wxT("Synonyms");
     else if (objtype == _("Schemas")) 
         engtype = wxT("Schemas");
     else if (objtype == _("Slony-I Clusters")) 
@@ -173,7 +173,7 @@ void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
     else if (objtype == _("Catalogs")) engtype = wxT("Catalogs");
     else if (objtype == _("Casts")) engtype = wxT("Casts");
     else if (objtype == _("Languages")) engtype = wxT("Languages");
-    else if (objtype == _("Public Synonyms")) engtype = wxT("Public Synonyms");
+    else if (objtype == _("Synonyms")) engtype = wxT("Synonyms");
     else if (objtype == _("Schemas")) engtype = wxT("Schemas");
     else if (objtype == _("Slony-I Clusters")) engtype = wxT("Slony-I Clusters");
     else if (objtype == _("Aggregates")) engtype = wxT("Aggregates");
