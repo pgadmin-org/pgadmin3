@@ -348,7 +348,7 @@ wxString pgDatabase::GetSql(ctlTree *browser)
             + wxT("\n\nCREATE DATABASE ") + GetQuotedIdentifier()
             + wxT("\n  WITH OWNER = ") + qtIdent(GetOwner())
             + wxT("\n       ENCODING = ") + qtDbString(GetEncoding());
-        if (tablespace != defaultTablespace)
+        if (!GetTablespace().IsEmpty())
             sql += wxT("\n       TABLESPACE = ") + qtIdent(GetTablespace());
         if (myConn && myConn->BackendMinimumVersion(8, 4))
         {
