@@ -304,8 +304,15 @@ wxString pgTable::GetSql(ctlTree *browser)
                     prevComment = column->GetComment();
 
                     // Whilst we are looping round the columns, grab their comments as well.
-                    // Perhaps we should also get storage types here?
                     colDetails += column->GetCommentSql();
+                    if (colDetails.Length() > 0)
+                        if (colDetails.Last() != '\n')
+                            colDetails += wxT("\n");
+                    colDetails += column->GetStorageSql();
+                    if (colDetails.Length() > 0)
+                        if (colDetails.Last() != '\n')
+                            colDetails += wxT("\n");
+                    colDetails += column->GetAttstattargetSql();
                     if (colDetails.Length() > 0)
                         if (colDetails.Last() != '\n')
                             colDetails += wxT("\n");
