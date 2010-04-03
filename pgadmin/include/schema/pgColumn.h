@@ -94,6 +94,8 @@ public:
     bool GetSystemObject() const { return colNumber < 0; }
     wxString GetSql(ctlTree *browser);
 	wxString GetCommentSql();
+	wxString GetStorageSql();
+	wxString GetAttstattargetSql();
     wxString GetPrivileges();
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-altertable"); }
 

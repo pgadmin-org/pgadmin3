@@ -102,11 +102,10 @@ wxString pgColumn::GetSql(ctlTree *browser)
                     + wxT(" DROP COLUMN ") + GetQuotedIdentifier() + wxT(";")
                     
                     + wxT("\n\nALTER TABLE ") + GetQuotedFullTable()
-                    + wxT(" ADD COLUMN ") + GetQuotedIdentifier() + wxT(" ") + GetQuotedTypename()
+                    + wxT(" ADD COLUMN ") + GetQuotedIdentifier() + wxT(" ")
+                    + GetQuotedTypename() + wxT(";\n");
                     
-                    + wxT(";\nALTER TABLE ")+ GetQuotedFullTable()
-                    + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
-                    + wxT(" SET STORAGE ") + GetStorage() + wxT(";\n");
+                sql += GetStorageSql();
 
                 if (GetNotNull())
                     sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
@@ -116,10 +115,7 @@ wxString pgColumn::GetSql(ctlTree *browser)
                     sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
                         + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
                         + wxT(" SET DEFAULT ") + GetDefault() + wxT(";\n");
-                if (GetAttstattarget() >= 0)
-                    sql += wxT("ALTER TABLE ") + GetQuotedFullTable()
-                        + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
-                        + wxT(" SET STATISTICS ") + NumToStr(GetAttstattarget()) + wxT(";\n");
+                sql += GetAttstattargetSql();
 
                 sql += GetCommentSql();
 
@@ -141,6 +137,30 @@ wxString pgColumn::GetCommentSql()
         +  wxT(" IS ") + qtDbString(GetComment()) + wxT(";\n");
     
     return commentSql;
+}
+
+wxString pgColumn::GetStorageSql()
+{
+    wxString storageSql;
+
+    if (!GetStorage().IsEmpty())
+        storageSql = wxT("ALTER TABLE ")+ GetQuotedFullTable()
+                    + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+                    + wxT(" SET STORAGE ") + GetStorage() + wxT(";\n");
+    
+    return storageSql;
+}
+
+wxString pgColumn::GetAttstattargetSql()
+{
+    wxString attstattargetSql;
+
+    if (GetAttstattarget() >= 0)
+        attstattargetSql = wxT("ALTER TABLE ") + GetQuotedFullTable()
+                         + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
+                         + wxT(" SET STATISTICS ") + NumToStr(GetAttstattarget()) + wxT(";\n");
+    
+    return attstattargetSql;
 }
 
 wxString pgColumn::GetPrivileges()
