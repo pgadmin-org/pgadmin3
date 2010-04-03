@@ -18,6 +18,8 @@
 #include <wx/fontutil.h>
 #include <wx/file.h>
 #include <wx/clrpicker.h>
+#include <wx/filepicker.h>
+#include <wx/fontpicker.h>
 
 // App headers
 #include "frm/frmOptions.h"
@@ -39,16 +41,16 @@
 #define txtEdbHelpPath              CTRL_TEXT("txtEdbHelpPath")
 #define txtGpHelpPath               CTRL_TEXT("txtGpHelpPath")
 #define txtSlonyHelpPath            CTRL_TEXT("txtSlonyHelpPath")
-#define txtSlonyPath                CTRL_TEXT("txtSlonyPath")
-#define txtPostgresqlPath           CTRL_TEXT("txtPostgresqlPath")
-#define txtEnterprisedbPath         CTRL_TEXT("txtEnterprisedbPath")
-#define txtGPDBPath                 CTRL_TEXT("txtGPDBPath")
+#define pickerSlonyPath             CTRL_DIRPICKER("pickerSlonyPath")
+#define pickerPostgresqlPath        CTRL_DIRPICKER("pickerPostgresqlPath")
+#define pickerEnterprisedbPath      CTRL_DIRPICKER("pickerEnterprisedbPath")
+#define pickerGPDBPath              CTRL_DIRPICKER("pickerGPDBPath")
 #define txtSystemSchemas            CTRL_TEXT("txtSystemSchemas")
-#define txtLogfile                  CTRL_TEXT("txtLogfile")
+#define pickerLogfile               CTRL_FILEPICKER("pickerLogfile")
 #define radLoglevel                 CTRL_RADIOBOX("radLoglevel")
 #define txtMaxRows                  CTRL_TEXT("txtMaxRows")
 #define txtMaxColSize               CTRL_TEXT("txtMaxColSize")
-#define txtFont                     CTRL_TEXT("txtFont")
+#define pickerFont                  CTRL_FONTPICKER("pickerFont")
 #define chkUnicodeFile              CTRL_CHECKBOX("chkUnicodeFile")
 #define chkAskSaveConfirm           CTRL_CHECKBOX("chkAskSaveConfirm")
 #define chkAskDelete                CTRL_CHECKBOX("chkAskDelete")
@@ -64,7 +66,7 @@
 #define chkAutoRollback             CTRL_CHECKBOX("chkAutoRollback")
 #define chkDoubleClickProperties    CTRL_CHECKBOX("chkDoubleClickProperties")
 #define cbLanguage                  CTRL_COMBOBOX("cbLanguage")
-#define txtSqlFont                  CTRL_TEXT("txtSqlFont")
+#define pickerSqlFont               CTRL_FONTPICKER("pickerSqlFont")
 #define chkSuppressHints            CTRL_CHECKBOX("chkSuppressHints")
 #define chkResetHints               CTRL_CHECKBOX("chkResetHints")
 #define lstDisplay					CTRL_CHECKLISTBOX("lstDisplay")
@@ -74,9 +76,9 @@
 #define pickerActiveProcessColour   CTRL_COLOURPICKER("pickerActiveProcessColour")
 #define pickerSlowProcessColour     CTRL_COLOURPICKER("pickerSlowProcessColour")
 #define pickerBlockedProcessColour  CTRL_COLOURPICKER("pickerBlockedProcessColour")
-#define txtFavouritesFile           CTRL_TEXT("txtFavouritesFile")
-#define txtMacrosFile               CTRL_TEXT("txtMacrosFile")
-#define txtHistoryFile              CTRL_TEXT("txtHistoryFile")
+#define pickerFavouritesFile        CTRL_FILEPICKER("pickerFavouritesFile")
+#define pickerMacrosFile               CTRL_FILEPICKER("pickerMacrosFile")
+#define pickerHistoryFile              CTRL_FILEPICKER("pickerHistoryFile")
 #define chkSQLUseSystemBackgroundColour  CTRL_CHECKBOX("chkSQLUseSystemBackgroundColour")
 #define chkSQLUseSystemForegroundColour  CTRL_CHECKBOX("chkSQLUseSystemForegroundColour")
 #define pickerSQLBackgroundColour        CTRL_COLOURPICKER("pickerSQLBackgroundColour")
@@ -96,13 +98,6 @@
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_MENU(MNU_HELP,                                            frmOptions::OnHelp)
-    EVT_BUTTON (XRCID("btnFont"),                                 frmOptions::OnFontSelect)
-    EVT_BUTTON (XRCID("btnSqlFont"),                              frmOptions::OnSqlFontSelect)
-    EVT_BUTTON (XRCID("btnBrowseLogfile"),                        frmOptions::OnBrowseLogFile)
-    EVT_BUTTON (XRCID("btnSlonyPath"),                            frmOptions::OnSlonyPathSelect)
-    EVT_BUTTON (XRCID("btnPostgresqlPath"),                       frmOptions::OnPostgresqlPathSelect)
-    EVT_BUTTON (XRCID("btnEnterprisedbPath"),                     frmOptions::OnEnterprisedbPathSelect)
-    EVT_BUTTON (XRCID("btnGPDBPath"),                             frmOptions::OnGPDBPathSelect)
     EVT_BUTTON (XRCID("btnDefault"),                              frmOptions::OnDefault)
     EVT_CHECKBOX(XRCID("chkSuppressHints"),                       frmOptions::OnSuppressHints)
     EVT_CHECKBOX(XRCID("chkResetHints"),                          frmOptions::OnResetHints)
@@ -112,9 +107,6 @@ BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_BUTTON (wxID_HELP,                                        frmOptions::OnHelp)
     EVT_BUTTON (wxID_CANCEL,                                      frmOptions::OnCancel)
     EVT_COMBOBOX(XRCID("cbCopyQuote"),		                      frmOptions::OnChangeCopyQuote)
-    EVT_BUTTON (XRCID("btnFavouritesFile"),                       frmOptions::OnFavouritesFileSelect)
-    EVT_BUTTON (XRCID("btnMacrosFile"),                           frmOptions::OnMacrosFileSelect)
-    EVT_BUTTON (XRCID("btnHistoryFile"),                          frmOptions::OnHistoryFileSelect)
 END_EVENT_TABLE()
 
 
@@ -209,7 +201,7 @@ frmOptions::frmOptions(frmMain *parent)
     txtAutoRowCount->SetValidator(numval);
     txtIndent->SetValidator(numval);
     
-    txtLogfile->SetValue(settings->GetLogFile());
+    pickerLogfile->SetPath(settings->GetLogFile());
     radLoglevel->SetSelection(settings->GetLogLevel());
     txtMaxRows->SetValue(NumToStr(settings->GetMaxRows()));
     txtMaxColSize->SetValue(NumToStr(settings->GetMaxColSize()));
@@ -240,10 +232,10 @@ frmOptions::frmOptions(frmMain *parent)
     txtSystemSchemas->SetValue(settings->GetSystemSchemas());
     chkUnicodeFile->SetValue(settings->GetUnicodeFile());
     chkSuppressHints->SetValue(settings->GetSuppressGuruHints());
-    txtSlonyPath->SetValue(settings->GetSlonyPath());
-    txtPostgresqlPath->SetValue(settings->GetPostgresqlPath());
-    txtEnterprisedbPath->SetValue(settings->GetEnterprisedbPath());
-    txtGPDBPath->SetValue(settings->GetGPDBPath());
+    pickerSlonyPath->SetPath(settings->GetSlonyPath());
+    pickerPostgresqlPath->SetPath(settings->GetPostgresqlPath());
+    pickerEnterprisedbPath->SetPath(settings->GetEnterprisedbPath());
+    pickerGPDBPath->SetPath(settings->GetGPDBPath());
     chkIgnoreVersion->SetValue(settings->GetIgnoreVersion());
 
     // Get back the colours
@@ -252,9 +244,9 @@ frmOptions::frmOptions(frmMain *parent)
     pickerSlowProcessColour->SetColour(settings->GetSlowProcessColour());
     pickerBlockedProcessColour->SetColour(settings->GetBlockedProcessColour());
 
-    txtFavouritesFile->SetValue(settings->GetFavouritesFile());
-    txtMacrosFile->SetValue(settings->GetMacrosFile());
-    txtHistoryFile->SetValue(settings->GetHistoryFile());
+    pickerFavouritesFile->SetPath(settings->GetFavouritesFile());
+    pickerMacrosFile->SetPath(settings->GetMacrosFile());
+    pickerHistoryFile->SetPath(settings->GetHistoryFile());
 
 	chkSQLUseSystemBackgroundColour->SetValue(settings->GetSQLBoxUseSystemBackground());
 	chkSQLUseSystemForegroundColour->SetValue(settings->GetSQLBoxUseSystemForeground());
@@ -290,10 +282,8 @@ frmOptions::frmOptions(frmMain *parent)
     }
     cbLanguage->SetSelection(sel);
 
-    currentFont=settings->GetSystemFont();
-    txtFont->SetValue(currentFont.GetNativeFontInfoUserDesc());
-    currentSqlFont=settings->GetSQLFont();
-    txtSqlFont->SetValue(currentSqlFont.GetNativeFontInfoUserDesc());
+    pickerFont->SetSelectedFont(settings->GetSystemFont());
+    pickerSqlFont->SetSelectedFont(settings->GetSQLFont());
 
     // Load the display options
     lstDisplay->Append(_("Databases"));
@@ -357,34 +347,6 @@ void frmOptions::OnDefault(wxCommandEvent &ev)
         lstDisplay->Check(x, settings->GetDisplayOption(lstDisplay->GetString(x), true));
 }
 
-void frmOptions::OnSlonyPathSelect(wxCommandEvent &ev)
-{
-    wxDirDialog dlg(this, _("Select directory with Slony-I creation scripts"), txtSlonyPath->GetValue());
-    if (dlg.ShowModal() == wxID_OK)
-        txtSlonyPath->SetValue(dlg.GetPath());
-}
-
-void frmOptions::OnPostgresqlPathSelect(wxCommandEvent &ev)
-{
-    wxDirDialog dlg(this, _("Select directory with PostgreSQL utilities"), txtPostgresqlPath->GetValue());
-    if (dlg.ShowModal() == wxID_OK)
-        txtPostgresqlPath->SetValue(dlg.GetPath());
-}
-
-void frmOptions::OnEnterprisedbPathSelect(wxCommandEvent &ev)
-{
-    wxDirDialog dlg(this, _("Select directory with EnterpriseDB utilities"), txtEnterprisedbPath->GetValue());
-    if (dlg.ShowModal() == wxID_OK)
-        txtEnterprisedbPath->SetValue(dlg.GetPath());
-}
-
-void frmOptions::OnGPDBPathSelect(wxCommandEvent &ev)
-{
-    wxDirDialog dlg(this, _("Select directory with GreenplumDB utilities"), txtGPDBPath->GetValue());
-    if (dlg.ShowModal() == wxID_OK)
-        txtGPDBPath->SetValue(dlg.GetPath());
-}
-
 void frmOptions::OnSuppressHints(wxCommandEvent &ev)
 {
     if (chkSuppressHints->GetValue())
@@ -438,35 +400,32 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 {
     // Check the PostgreSQL and EnterpriseDB paths
 #ifdef __WXMSW__
-    if (!txtPostgresqlPath->GetValue().IsEmpty() && !isPgApp(txtPostgresqlPath->GetValue() + wxT("\\pg_dump.exe")))
+    if (!pickerPostgresqlPath->GetPath().IsEmpty() && !isPgApp(pickerPostgresqlPath->GetPath() + wxT("\\pg_dump.exe")))
 #else
-    if (!txtPostgresqlPath->GetValue().IsEmpty() && !isPgApp(txtPostgresqlPath->GetValue() + wxT("/pg_dump")))
+    if (!pickerPostgresqlPath->GetPath().IsEmpty() && !isPgApp(pickerPostgresqlPath->GetPath() + wxT("/pg_dump")))
 #endif
     {
         wxMessageBox(_("The PostgreSQL bin path specified is not valid or does not contain a PostgreSQL pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR); 
-        txtPostgresqlPath->SetFocus();
         return;
     }   
 
 #ifdef __WXMSW__
-    if (!txtEnterprisedbPath->GetValue().IsEmpty() && !isEdbApp(txtEnterprisedbPath->GetValue() + wxT("\\pg_dump.exe")))
+    if (!pickerEnterprisedbPath->GetPath().IsEmpty() && !isEdbApp(pickerEnterprisedbPath->GetPath() + wxT("\\pg_dump.exe")))
 #else
-    if (!txtEnterprisedbPath->GetValue().IsEmpty() && !isEdbApp(txtEnterprisedbPath->GetValue() + wxT("/pg_dump")))
+    if (!pickerEnterprisedbPath->GetPath().IsEmpty() && !isEdbApp(pickerEnterprisedbPath->GetPath() + wxT("/pg_dump")))
 #endif
     {
         wxMessageBox(_("The EnterpriseDB bin path specified is not valid or does not contain an EnterpriseDB pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR); 
-        txtEnterprisedbPath->SetFocus();
         return;
     }
 
 #ifdef __WXMSW__
-    if (!txtGPDBPath->GetValue().IsEmpty() && !isGpApp(txtGPDBPath->GetValue() + wxT("\\pg_dump.exe")))
+    if (!pickerGPDBPath->GetPath().IsEmpty() && !isGpApp(pickerGPDBPath->GetPath() + wxT("\\pg_dump.exe")))
 #else
-    if (!txtGPDBPath->GetValue().IsEmpty() && !isGpApp(txtGPDBPath->GetValue() + wxT("/pg_dump")))
+    if (!pickerGPDBPath->GetPath().IsEmpty() && !isGpApp(pickerGPDBPath->GetPath() + wxT("/pg_dump")))
 #endif
     {
         wxMessageBox(_("The Greenplum bin path specified is not valid or does not contain a Greenplum pg_dump executable.\n\nPlease select another directory, or leave the path blank."), _("Error"), wxICON_ERROR); 
-        txtGPDBPath->SetFocus();
         return;
     }
 
@@ -504,7 +463,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     }
 
     // Logfile
-    wxString logFile = txtLogfile->GetValue();
+    wxString logFile = pickerLogfile->GetPath();
     wxLogInfo(wxT("Setting logfile to: %s"), logFile.c_str());
     settings->SetLogFile(logFile);
 
@@ -557,13 +516,13 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetAutoRollback(chkAutoRollback->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());
-    settings->SetSystemFont(currentFont);
-    settings->SetSQLFont(currentSqlFont);
+    settings->SetSystemFont(pickerFont->GetSelectedFont());
+    settings->SetSQLFont(pickerSqlFont->GetSelectedFont());
     settings->SetSuppressGuruHints(chkSuppressHints->GetValue());
-    settings->SetSlonyPath(txtSlonyPath->GetValue());
-    settings->SetPostgresqlPath(txtPostgresqlPath->GetValue());
-    settings->SetEnterprisedbPath(txtEnterprisedbPath->GetValue());
-    settings->SetGPDBPath(txtGPDBPath->GetValue());
+    settings->SetSlonyPath(pickerSlonyPath->GetPath());
+    settings->SetPostgresqlPath(pickerPostgresqlPath->GetPath());
+    settings->SetEnterprisedbPath(pickerEnterprisedbPath->GetPath());
+    settings->SetGPDBPath(pickerGPDBPath->GetPath());
 
     // Setup PostgreSQL/EnterpriseDB working paths
 #if defined(__WXMSW__)
@@ -662,9 +621,9 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetBlockedProcessColour(pickerBlockedProcessColour->GetColourString());
 
     // Change files' location
-    settings->SetFavouritesFile(txtFavouritesFile->GetValue());
-    settings->SetMacrosFile(txtMacrosFile->GetValue());
-    settings->SetHistoryFile(txtHistoryFile->GetValue());
+    settings->SetFavouritesFile(pickerFavouritesFile->GetPath());
+    settings->SetMacrosFile(pickerMacrosFile->GetPath());
+    settings->SetHistoryFile(pickerHistoryFile->GetPath());
 
 	// Change SQL Syntax colours
 	if (settings->GetSQLBoxUseSystemBackground() != chkSQLUseSystemBackgroundColour->GetValue())
@@ -751,57 +710,9 @@ void frmOptions::OnOK(wxCommandEvent &ev)
 }
 
 
-
-void frmOptions::OnSqlFontSelect(wxCommandEvent &ev)
-{
-    wxFontData fd;
-    fd.SetInitialFont(settings->GetSQLFont());
-#ifdef __WXMAC__
-    wxRichTextFontDialog dlg(this, fd);
-#else
-	wxFontDialog dlg(this, fd);
-#endif
-
-    if (dlg.ShowModal() == wxID_OK)
-    {
-        currentSqlFont=dlg.GetFontData().GetChosenFont();
-        txtSqlFont->SetValue(currentSqlFont.GetNativeFontInfoUserDesc());
-    }
-}
-
-
-void frmOptions::OnFontSelect(wxCommandEvent &ev)
-{
-    wxFontData fd;
-    fd.SetInitialFont(settings->GetSystemFont());
-#ifdef __WXMAC__
-    wxRichTextFontDialog dlg(this, fd);
-#else
-	wxFontDialog dlg(this, fd);
-#endif
-	
-    if (dlg.ShowModal() == wxID_OK)
-    {
-        currentFont=dlg.GetFontData().GetChosenFont();
-        txtFont->SetValue(currentFont.GetNativeFontInfoUserDesc());
-    }
-}
 void frmOptions::OnCancel(wxCommandEvent &ev)
 {
     Destroy();
-}
-
-void frmOptions::OnBrowseLogFile(wxCommandEvent &ev)
-{
-#ifdef __WXMSW__
-    wxFileDialog logFile(this, _("Select log file"), wxT(""), wxT(""), _("Log files (*.log)|*.log|All files (*.*)|*.*"));
-#else
-    wxFileDialog logFile(this, _("Select log file"), wxT(""), wxT(""), _("Log files (*.log)|*.log|All files (*)|*"));
-#endif
-    logFile.SetDirectory(wxGetHomeDir());
-
-    if (logFile.ShowModal() == wxID_OK)
-        txtLogfile->SetValue(logFile.GetPath());
 }
 
 
@@ -843,30 +754,5 @@ wxString frmOptions::CheckColour(wxString oldColour)
     }
 
     return newColour;
-}
-
-
-void frmOptions::OnFavouritesFileSelect(wxCommandEvent &ev)
-{
-    wxFileDialog dlg(this, _("Select file to store favourites queries"),
-    wxT(""), txtFavouritesFile->GetValue());
-    if (dlg.ShowModal() == wxID_OK)
-        txtFavouritesFile->SetValue(dlg.GetPath());
-}
-
-
-void frmOptions::OnMacrosFileSelect(wxCommandEvent &ev)
-{
-    wxFileDialog dlg(this, _("Select file to store macros"), wxT(""), txtMacrosFile->GetValue());
-    if (dlg.ShowModal() == wxID_OK)
-        txtMacrosFile->SetValue(dlg.GetPath());
-}
-
-
-void frmOptions::OnHistoryFileSelect(wxCommandEvent &ev)
-{
-    wxFileDialog dlg(this, _("Select file to store queries history"), wxT(""), txtHistoryFile->GetValue());
-    if (dlg.ShowModal() == wxID_OK)
-        txtHistoryFile->SetValue(dlg.GetPath());
 }
 

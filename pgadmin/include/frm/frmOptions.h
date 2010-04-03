@@ -32,15 +32,7 @@ public:
     
 private:
     frmMain *mainForm;
-    wxFont currentFont, currentSqlFont;
 
-    void OnBrowseLogFile(wxCommandEvent &ev);
-    void OnSqlFontSelect(wxCommandEvent &ev);
-    void OnSlonyPathSelect(wxCommandEvent &ev);
-    void OnPostgresqlPathSelect(wxCommandEvent &ev);
-    void OnEnterprisedbPathSelect(wxCommandEvent &ev);
-    void OnGPDBPathSelect(wxCommandEvent &ev);
-    void OnFontSelect(wxCommandEvent &ev);
     void OnOK(wxCommandEvent &ev);
     void OnCancel(wxCommandEvent &ev);
     void OnHelp(wxCommandEvent &ev);
@@ -48,9 +40,6 @@ private:
     void OnSuppressHints(wxCommandEvent &ev);
     void OnResetHints(wxCommandEvent &ev);
 	void OnChangeCopyQuote(wxCommandEvent &ev);
-    void OnFavouritesFileSelect(wxCommandEvent &ev);
-    void OnMacrosFileSelect(wxCommandEvent &ev);
-    void OnHistoryFileSelect(wxCommandEvent &ev);
 	void OnChangeSQLUseCustomColour(wxCommandEvent &ev);
     wxString CheckColour(wxString colour);
 	void UpdateColourControls();
