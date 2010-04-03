@@ -835,6 +835,7 @@ wxTreeItemId frmMain::RestoreEnvironment(pgServer *server)
         return item;
 
     // found DATABASES item
+    listViews->SetSelection(NBP_PROPERTIES);
     data->ShowTree(this, browser, 0, 0);
     lastItem=item;
 
