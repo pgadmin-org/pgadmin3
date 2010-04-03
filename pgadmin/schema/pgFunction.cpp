@@ -576,8 +576,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
             wxString strReturnTableArgs;
             // Process default values
-            if (obj->GetConnection()->BackendMinimumVersion(8, 4) &&
-                function->GetArgCount() != 0)
+            if (obj->GetConnection()->BackendMinimumVersion(8, 4))
             {
                 size_t currINindex = 0;
                 for (size_t index = 0; index < function->GetArgModesArray().Count(); index++)
