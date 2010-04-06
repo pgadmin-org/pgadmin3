@@ -59,7 +59,7 @@ int dlgExtTable::Go(bool modal)
 {
     int returncode;
     
-    AddGroups();
+    AddGroups(cbOwner);
     AddUsers(cbOwner);
 
     if (extTable)

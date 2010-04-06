@@ -107,7 +107,7 @@ int dlgDatabase::Go(bool modal)
     if (!database)
         cbOwner->Append(wxT(""));
 
-    AddGroups();
+    AddGroups(cbOwner);
     AddUsers(cbOwner);
 
     if (connection->BackendMinimumVersion(8,5))

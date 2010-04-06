@@ -306,6 +306,7 @@ int dlgProperty::Go(bool modal)
     {
         if (!GetObject())
             cbOwner->Append(wxEmptyString);
+        AddGroups(cbowner);
         AddUsers(cbowner);
     }
     if (txtOid)
@@ -542,6 +543,19 @@ void dlgProperty::AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2)
     else
     {
         FillCombobox(wxT("SELECT usename FROM pg_user ORDER BY 1"), cb1, cb2);
+    }
+}
+
+
+void dlgProperty::AddGroups(ctlComboBoxFix *combo)
+{
+    if (connection->BackendMinimumVersion(8, 1))
+    {
+        FillCombobox(wxT("SELECT rolname FROM pg_roles WHERE NOT rolcanlogin ORDER BY 1"), combo);
+    }
+    else
+    {
+        FillCombobox(wxT("SELECT groname FROM pg_group ORDER BY 1"), combo);
     }
 }
 

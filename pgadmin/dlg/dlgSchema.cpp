@@ -47,7 +47,7 @@ int dlgSchema::Go(bool modal)
     if (!schema)
         cbOwner->Append(wxT(""));
 
-    AddGroups();
+    AddGroups(cbOwner);
     AddUsers(cbOwner);
     if (schema)
     {
