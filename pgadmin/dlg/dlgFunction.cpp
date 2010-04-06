@@ -177,7 +177,7 @@ int dlgFunction::Go(bool modal)
     if (!isBackendMinVer84)
         txtArgDefVal->Disable();
 
-    AddGroups();
+    AddGroups(cbOwner);
     AddUsers(cbOwner);
 
     lstArguments->AddColumn(_("Type"), 60);

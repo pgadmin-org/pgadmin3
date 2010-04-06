@@ -93,6 +93,7 @@ public:
     void OnChangeReadOnly(wxCommandEvent& event);
 
 protected:
+    void AddGroups(ctlComboBoxFix *comboBox=0);
     void AddUsers(ctlComboBoxFix *cb1, ctlComboBoxFix *cb2=0);
     void FillCombobox(const wxString &query, ctlComboBoxFix *cb1, ctlComboBoxFix *cb2=0);
     void PrepareTablespace(ctlComboBoxFix *cb, const OID current=0);

@@ -56,7 +56,7 @@ int dlgTablespace::Go(bool modal)
 {
     if (!tablespace)
         cbOwner->Append(wxEmptyString);
-    AddGroups();
+    AddGroups(cbOwner);
     AddUsers(cbOwner);
 
     if (tablespace)

@@ -65,7 +65,7 @@ int dlgPackage::Go(bool modal)
 
     cbOwner->Disable();
 
-    AddGroups();
+    AddGroups(cbOwner);
     AddUsers(cbOwner);
 
     if (package)

@@ -66,7 +66,7 @@ int dlgSequence::Go(bool modal)
 {
     if (!sequence)
         cbOwner->Append(wxEmptyString);
-    AddGroups();
+    AddGroups(cbOwner);
     AddUsers(cbOwner);
 
     if (sequence)

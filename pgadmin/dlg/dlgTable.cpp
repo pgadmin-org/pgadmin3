@@ -196,7 +196,7 @@ int dlgTable::Go(bool modal)
 {
     if (!table)
         cbOwner->Append(wxT(""));
-    AddGroups();
+    AddGroups(cbOwner);
     AddUsers(cbOwner);
     PrepareTablespace(cbTablespace);
 
