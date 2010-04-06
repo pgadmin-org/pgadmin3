@@ -36,6 +36,7 @@
 #define txtValue            CTRL_TEXT("txtValue")
 #define btnAdd              CTRL_BUTTON("wxID_ADD")
 #define btnRemove           CTRL_BUTTON("wxID_REMOVE")
+#define cbStorage           CTRL_COMBOBOX1("cbStorage")
 
 
 BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
@@ -53,6 +54,8 @@ BEGIN_EVENT_TABLE(dlgColumn, dlgTypeProperty)
     EVT_BUTTON(wxID_REMOVE,                         dlgColumn::OnVarRemove)
     EVT_TEXT(XRCID("cbVarname"),                    dlgColumn::OnVarnameSelChange)
     EVT_COMBOBOX(XRCID("cbVarname"),                dlgColumn::OnVarnameSelChange)
+    EVT_TEXT(XRCID("cbStorage"),                    dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbStorage"),                dlgProperty::OnChange)
 
 #ifdef __WXMAC__
     EVT_SIZE(                                       dlgColumn::OnChangeSize)
@@ -224,6 +227,8 @@ int dlgColumn::Go(bool modal)
         txtValue->Enable(false);
     }
 
+    cbStorage->Enable(true);
+
     if (column)
     {
         // edit mode
@@ -281,6 +286,7 @@ int dlgColumn::Go(bool modal)
             txtLength->Disable();
             cbDatatype->Disable();
             txtAttstattarget->Disable();
+            cbStorage->Disable();
         }
         else if (column->GetTable()->GetMetaType() == PGM_VIEW) // Disable controls not valid for view columns
         {
@@ -289,6 +295,7 @@ int dlgColumn::Go(bool modal)
             txtLength->Disable();
             cbDatatype->Disable();
             txtAttstattarget->Disable();
+            cbStorage->Disable();
         }
          else if (column->GetTable()->GetMetaType() == GP_EXTTABLE) // Disable controls not valid for external table columns
         {
@@ -298,6 +305,7 @@ int dlgColumn::Go(bool modal)
             cbDatatype->Disable();
             txtAttstattarget->Disable();
             txtDefault->Disable();
+            cbStorage->Disable();
         }
         else if (table->GetOfTypeOid() > 0)
         {
@@ -307,7 +315,10 @@ int dlgColumn::Go(bool modal)
             cbDatatype->Disable();
             txtAttstattarget->Enable();
             txtDefault->Enable();
+            cbStorage->Enable();
         }
+
+        cbStorage->SetValue(column->GetStorage());
 
         size_t i;
         for (i=0 ; i < column->GetVariables().GetCount() ; i++)
@@ -333,6 +344,7 @@ int dlgColumn::Go(bool modal)
         }
 
         txtAttstattarget->Disable();
+        cbStorage->Disable();
         txtComment->Disable();
     }
     return dlgTypeProperty::Go(modal);
@@ -506,6 +518,14 @@ wxString dlgColumn::GetSql()
                     +  wxT("\n   SET (") + lstVariables->GetText(pos) +  wxT("=")
                     +  lstVariables->GetText(pos, 1)+  wxT(");\n");
             }
+        }
+
+        if (cbStorage->GetValue() != column->GetStorage())
+        {
+            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                +  wxT("\n   ALTER COLUMN ") + qtIdent(name)
+                +  wxT(" SET STORAGE ") + cbStorage->GetValue()
+                +  wxT(";\n");
         }
 
         AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier() 
