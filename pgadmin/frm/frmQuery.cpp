@@ -2229,10 +2229,23 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 
     QueryExecInfo *qi = new QueryExecInfo();
     qi->queryOffset = queryOffset;
-    qi->toFile = toFile;
+    qi->toFileExportForm = NULL;
     qi->singleResult = singleResult;
     qi->explain = explain;
     qi->verbose = verbose;
+
+    if (toFile)
+    {
+		qi->toFileExportForm = new frmExport(this);
+		if (qi->toFileExportForm->ShowModal() != wxID_OK)
+		{
+			delete qi->toFileExportForm;
+			delete qi;
+			setTools(false);
+			aborted = true;
+			return;
+		}
+    }
 
     // We must do this lot before the query starts, otherwise
     // it might not happen once the main thread gets busy with
@@ -2388,7 +2401,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
         outputPane->SetSelection(0);
         long rowsTotal=sqlResult->NumRows();
 
-        if (qi->toFile)
+        if (qi->toFileExportForm)
         {
             SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", rowsTotal), rowsTotal), STATUSPOS_ROWS);
 
@@ -2400,7 +2413,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
                 queryMenu->Enable(MNU_CANCEL, false);
                 SetCursor(*wxHOURGLASS_CURSOR);
 
-                if (sqlResult->ToFile())
+                if (sqlResult->ToFile(qi->toFileExportForm))
                     SetStatusText(_("Data written to file."), STATUSPOS_MSGS);
                 else
                     SetStatusText(_("Data export aborted."), STATUSPOS_MSGS);

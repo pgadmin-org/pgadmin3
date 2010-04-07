@@ -18,6 +18,7 @@
 #include "db/pgSet.h"
 #include "db/pgConn.h"
 #include "ctlSQLGrid.h"
+#include "frm/frmExport.h"
 
 #define CTLSQL_RUNNING 100  // must be greater than ExecStatusType PGRES_xxx values
 
@@ -38,6 +39,7 @@ public:
 
     bool Export();
 	bool ToFile();
+	bool ToFile(frmExport *frm);
     bool CanExport() { return NumRows() >0 && colNames.GetCount() > 0; }
 
 	wxString OnGetItemText(long item, long col) const;

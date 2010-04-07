@@ -73,6 +73,15 @@ bool ctlSQLResult::ToFile()
     return false;
 }
 
+bool ctlSQLResult::ToFile(frmExport *frm)
+{
+	if (NumRows() > 0)
+	{
+		return frm->Export(thread->DataSet());
+	}
+	return false;
+}
+
 bool ctlSQLResult::IsColText(int col)
 {
 	switch (colTypClasses.Item(col))

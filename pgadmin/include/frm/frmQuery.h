@@ -15,6 +15,7 @@
 #include "dlg/dlgClasses.h"
 #include "gqb/gqbViewController.h"
 #include "gqb/gqbModel.h"
+#include "frm/frmExport.h"
 #include "utils/factory.h"
 #include "utils/favourites.h"
 #include "utils/macros.h"
@@ -49,8 +50,16 @@ class pgScriptTimer;
 class QueryExecInfo
 {
 public:
+	QueryExecInfo() {
+		toFileExportForm = NULL;
+	}
+	~QueryExecInfo() {
+		if (toFileExportForm)
+			delete toFileExportForm;
+	}
+
     int queryOffset;
-    bool toFile;
+    frmExport *toFileExportForm;
     bool singleResult;
     bool explain;
     bool verbose;
