@@ -1875,6 +1875,11 @@ void frmQuery::OnCancel(wxCommandEvent& event)
         sqlResult->Abort();
     else if (pgScript->IsRunning())
         pgScript->Terminate();
+
+    QueryExecInfo *qi = (QueryExecInfo *)event.GetClientData();
+	if (qi)
+		delete qi;
+
     aborted=true;
 }
 
@@ -2434,6 +2439,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
     }
 
     completeQuery(done, qi->explain, qi->verbose);
+	delete qi;
 }
 
 
