@@ -108,6 +108,8 @@ wxString pgView::GetSql(ctlTree *browser)
             if (!comments.IsEmpty())
                 sql += comments + wxT("\n");
         }
+
+        AppendStuff(sql, browser, ruleFactory);
     }
     return sql;
 }
@@ -256,6 +258,33 @@ void pgView::ShowHint(frmMain *form, bool force)
     wxArrayString hints;
     hints.Add(HINT_OBJECT_EDITING);
     frmHint::ShowHint((wxWindow *)form, hints, GetFullIdentifier(), force);
+}
+
+void pgView::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
+{
+    wxString tmp;
+
+    pgCollection *collection=browser->FindCollection(factory, GetId());
+    if (collection)
+    {
+        tmp += wxT("\n");
+        collection->ShowTreeDetail(browser);
+
+        treeObjectIterator idxIt(browser, collection);
+        pgObject *obj;
+        while ((obj = idxIt.GetNextObject()) != 0)
+        {
+            if (obj->GetName() != wxT("_RETURN"))
+            {
+                obj->ShowTreeDetail(browser);
+
+                tmp += obj->GetSql(browser) + wxT("\n");
+            }
+        }
+    }
+
+    if (!tmp.IsEmpty() && tmp != wxT("\n"))
+        sql += tmp;
 }
 
 ///////////////////////////////////////////////////////
