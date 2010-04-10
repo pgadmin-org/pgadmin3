@@ -61,6 +61,7 @@ public:
 
 private:
 	wxString GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM);
+    void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
 	bool hasInsertRule, hasUpdateRule, hasDeleteRule;
 };
 
