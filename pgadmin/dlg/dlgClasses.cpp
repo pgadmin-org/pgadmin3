@@ -20,6 +20,7 @@
 #include "frm/frmMain.h"
 #include "db/pgConn.h"
 #include "schema/pgObject.h"
+#include "schema/pgDatabase.h"
 #include "utils/sysProcess.h"
 #include "frm/menu.h"
 #include "db/pgQueryThread.h"
@@ -432,6 +433,10 @@ ExecutionDialog::ExecutionDialog(frmMain *frame, pgObject *_object) : DialogWith
     thread=0;
     object = _object;
     txtMessages = 0;
+
+    pgDatabase *db=object->GetDatabase();
+    wxString applicationname = wxT("pgAdmin - Execution Tool");
+    conn = db->CreateConn(applicationname);
 }
 
 void ExecutionDialog::EnableOK(const bool enable) 
@@ -443,6 +448,7 @@ void ExecutionDialog::EnableOK(const bool enable)
 void ExecutionDialog::OnClose(wxCloseEvent& event)
 {
     Abort();
+    delete conn;
     if (IsModal())
         EndModal(-1);
     else
@@ -464,6 +470,7 @@ void ExecutionDialog::OnCancel(wxCommandEvent& ev)
     }
     else
     {
+        delete conn;
         if (IsModal())
             EndModal(-1);
         else
@@ -498,7 +505,7 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
 
         btnOK->Disable();
 
-        thread=new pgQueryThread(object->GetConnection(), sql);
+        thread=new pgQueryThread(conn, sql);
         if (thread->Create() != wxTHREAD_NO_ERROR)
         {
             Abort();
@@ -543,7 +550,7 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
             else
             {
                 if (txtMessages)
-                    txtMessages->AppendText(object->GetConnection()->GetLastError());
+                    txtMessages->AppendText(conn->GetLastError());
                 Abort();
             }
         }
@@ -559,6 +566,7 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
     else
     {
         Abort();
+        delete conn;
         Destroy();
     }
 }
