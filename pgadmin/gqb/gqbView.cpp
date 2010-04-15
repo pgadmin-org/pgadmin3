@@ -47,6 +47,7 @@ EVT_KEY_DOWN(gqbView::OnKeyDown)
 EVT_MENU(GQB_RMJ_DELETE,	gqbView::OnMenuJoinDelete)
 EVT_MENU(GQB_RMT_DELETE,	gqbView::OnMenuTableDelete)
 EVT_MENU(GQB_RMT_SETALIAS,	gqbView::OnMenuTableSetAlias)
+EVT_MENU(GQB_REFRESH,           gqbView::OnRefresh)
 END_EVENT_TABLE()
 
 gqbView::gqbView(wxWindow *gqbParent, wxNotebook *gridParent, wxSize size, gqbController *controller, gqbModel *model)
@@ -72,6 +73,7 @@ wxHSCROLL | wxVSCROLL | wxBORDER | wxRETAINED)
     joinCursor= wxCursor(joinCursorImage);
     m_rightJoins=NULL;
     m_rightTables=NULL;
+    m_gqbPopup=NULL;
     jTempSelected=NULL;
     cTempSelected=NULL;
 
@@ -102,6 +104,8 @@ wxHSCROLL | wxVSCROLL | wxBORDER | wxRETAINED)
     this->orderByLGridTable = new gqbGridOrderTable(1,model->getOrdByAvailColumns(),model->getOrdByAvailParents(),NULL);
     this->orderByRGridTable = new gqbGridOrderTable(2,model->getOrdByColumns(), model->getOrdByParents(),model->getOrdByKind());
     this->orderPanel = new gqbOrderPanel(controller->getTabs(), orderByLGridTable, orderByRGridTable);
+
+    SetVirtualSizeHints(size);
 }
 
 
@@ -117,6 +121,9 @@ gqbView::~gqbView()
 
     if(m_rightJoins)
         delete m_rightJoins;
+
+    if (m_gqbPopup)
+        delete m_gqbPopup;
 }
 
 
@@ -154,6 +161,9 @@ void gqbView::onRightClick(wxMouseEvent& event)
                 m_rightTables = new wxMenu;
                 m_rightTables->Append(GQB_RMT_SETALIAS, _("&Set Alias for table"));
                 m_rightTables->Append(GQB_RMT_DELETE, _("&Delete Table"));
+                m_rightTables->AppendSeparator();
+                m_rightTables->Append(GQB_REFRESH, _("&Refresh"));
+
             }
             cTempSelected=(gqbQueryObject *) (gqbObjectCollection *) anySelected;
             jTempSelected=NULL;
@@ -166,11 +176,22 @@ void gqbView::onRightClick(wxMouseEvent& event)
             {
                 m_rightJoins = new wxMenu;
                 m_rightJoins->Append(GQB_RMJ_DELETE, _("&Delete Join"));
+                m_rightJoins->AppendSeparator();
+                m_rightJoins->Append(GQB_REFRESH, _("&Refresh"));
             }
             cTempSelected=NULL;
             jTempSelected=(gqbQueryJoin *) anySelected;;
             PopupMenu(m_rightJoins, event.GetPosition());
         }
+    }
+    else
+    {
+        if(!m_gqbPopup)
+        {
+            m_gqbPopup = new wxMenu;
+            m_gqbPopup->Append(GQB_REFRESH, _("&Refresh"));
+        }
+        PopupMenu(m_gqbPopup, event.GetPosition());
     }
 }
 
@@ -643,5 +664,89 @@ void gqbView::updateTable(gqbQueryObject *queryTable)
         delete r;
     }
     this->Refresh();
+}
+
+
+void gqbView::OnRefresh(wxCommandEvent& ev)
+{
+    updateModelSize(NULL, true);
+    this->Update();
+}
+
+
+/*
+*  updateModelSize
+*     - Update the model size.
+*     - Calculate the maximum width and maximum height of the model
+*  * When removed a table/view from model, the obj parameter must be null,
+*    and update parameter should be true, otherwise update parameter should
+*    be false (Dragging event)
+*/
+void gqbView::updateModelSize(gqbQueryObject* obj, bool updateAnyWay)
+{
+    static int callCount = 0;
+    callCount++;
+    if (!obj)
+    {
+        // Do not update model size, everytime it gets called
+        // Update the size once in 10 times
+        // Update the size only if update flag is true
+        if (callCount < 10 && !updateAnyWay)
+            return;
+        callCount = 0;
+        // Figure out the actual model size.
+        // Remove table
+        int w = 0, h = 0, maxW = 0, maxH = 0;
+        if(!iterator)
+            // Get an iterator for the objects (tables/views) in the model.
+            iterator = this->model->createQueryIterator();
+        else
+            iterator->ResetIterator();
+    
+        while (iterator->HasNext())
+        {
+            gqbQueryObject *tmp= (gqbQueryObject *)iterator->Next();;
+            w = tmp->position.x + tmp->getWidth();
+            h = tmp->position.y + tmp->getHeight();
+    
+            if (maxW < w)
+                maxW = w;
+            if (maxH < h)
+                maxH = h;
+        }
+ 
+        // Reset Model size
+        modelSize.Set(maxW, maxH);
+    }
+    else
+    {
+        int w = 0, h = 0;
+        w = obj->position.x + obj->getWidth();
+        h = obj->position.y + obj->getHeight();
+
+        if (w > modelSize.GetWidth())
+            modelSize.SetWidth(w);
+        if (h > modelSize.GetHeight())
+            modelSize.SetHeight(h);
+    }
+    bool updateView = false;
+
+    if ((modelSize.GetWidth() > GQB_MIN_WIDTH || canvasSize.GetWidth() > GQB_MIN_WIDTH) &&
+         modelSize.GetWidth() != canvasSize.GetWidth())
+    {
+        canvasSize.SetWidth((modelSize.GetWidth() > GQB_MIN_WIDTH ? modelSize.GetWidth() : GQB_MIN_WIDTH));
+        updateView = true;
+    }
+    if ((modelSize.GetHeight() > GQB_MIN_HEIGHT || canvasSize.GetHeight() > GQB_MIN_HEIGHT) &&
+         modelSize.GetHeight() != canvasSize.GetHeight())
+    {
+        canvasSize.SetHeight((modelSize.GetHeight() > GQB_MIN_HEIGHT ? modelSize.GetHeight() : GQB_MIN_HEIGHT));
+        updateView = true;
+    }
+
+    if (updateView)
+    {
+        SetVirtualSize(canvasSize);
+    }
 }
 

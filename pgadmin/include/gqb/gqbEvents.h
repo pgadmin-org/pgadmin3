@@ -24,6 +24,7 @@ enum gqb_rMenus
     GQB_RMJ_DELETE = 2000,
     GQB_RMJ_SETTYPE,
     GQB_RMT_DELETE,
-    GQB_RMT_SETALIAS
+    GQB_RMT_SETALIAS,
+    GQB_REFRESH
 };
 #endif

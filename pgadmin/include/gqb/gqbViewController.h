@@ -30,6 +30,9 @@
 #include "gqb/gqbGridJoinTable.h"
 #include "gqb/gqbBrowser.h"
 
+#define GQB_MIN_WIDTH  1280
+#define GQB_MIN_HEIGHT 800
+
 class gqbView;
 
 enum pointerMode
@@ -67,7 +70,7 @@ class gqbController: public wxObject
 public:
     gqbController(gqbModel *_model, wxWindow *gqbParent, wxNotebook *gridParent, wxSize size);
     ~gqbController();
-    void addTableToModel(gqbTable *table, wxPoint p);
+    gqbQueryObject* addTableToModel(gqbTable *table, wxPoint p);
     gqbQueryJoin* addJoin(gqbQueryObject *sTable, gqbColumn *sColumn, gqbQueryObject *dTable, gqbColumn *dColumn, type_Join kind);
     void removeJoin(gqbQueryJoin *join);
     void removeTableFromModel(gqbQueryObject *table, gqbGridProjTable *gridTable, gqbGridOrderTable *orderLTable, gqbGridOrderTable *orderRTable);
@@ -124,29 +127,32 @@ public:
     void newTableAdded(gqbQueryObject *item);
     bool clickOnJoin (gqbQueryJoin *join, wxPoint &pt, wxPoint &origin, wxPoint &dest);
     void updateTable(gqbQueryObject *table);
+    const wxSize& getModelSize() { return modelSize; }
 
-	// Functions for all gqb extra Panels (projection, criteria..)
+    // Functions for all gqb extra Panels (projection, criteria..)
     void emptyPanelsData();
 
+    void updateModelSize(gqbQueryObject* obj, bool updateAnyWay);
+
 private:
-    gqbController *controller;									// owned by caller application shouldn't be destroy 
-																// by this class
-    gqbModel *model;											// owned by caller application shouldn't be destroy 
-																// by this class
-    gqbGraphBehavior *graphBehavior;							// This points to the Graph behavior for objects, 
-																// if change the way objects were draw changes too.
-    gqbIteratorBase *iterator;									//include here for reuse of iterator, should be 
-																// delete when class destroy
+    gqbController *controller;                                  // owned by caller application shouldn't be destroy 
+                                                                // by this class
+    gqbModel *model;                                            // owned by caller application shouldn't be destroy 
+                                                                // by this class
+    gqbGraphBehavior *graphBehavior;                            // This points to the Graph behavior for objects, 
+                                                                // if change the way objects were draw changes too.
+    gqbIteratorBase *iterator;                                  //include here for reuse of iterator, should be 
+                                                                // delete when class destroy
     wxPanel *projectionPanel, *criteriaPanel, *orderPanel, *joinsPanel;
-    gqbGridProjTable *gridTable;								// Data model for the columns grid internals
-    gqbGridRestTable *restrictionsGridTable;					// Data model for restricions grid internals
-    gqbGridJoinTable *joinsGridTable;                            // Data model for joins grid internals
+    gqbGridProjTable *gridTable;                                // Data model for the columns grid internals
+    gqbGridRestTable *restrictionsGridTable;                    // Data model for restricions grid internals
+    gqbGridJoinTable *joinsGridTable;                           // Data model for joins grid internals
                           
-    gqbGridOrderTable *orderByLGridTable, *orderByRGridTable;	// Data model for order by grid internals
-    wxSize canvasSize;
+    gqbGridOrderTable *orderByLGridTable, *orderByRGridTable;   // Data model for order by grid internals
+    wxSize canvasSize, modelSize;
     bool changeTOpressed;
     
-	// just a point to the selected item on the collection, shouldn't be destroy inside this class
+    // just a point to the selected item on the collection, shouldn't be destroy inside this class
     gqbQueryObject *collectionSelected, *joinSource, *joinDest, *cTempSelected;
     gqbQueryJoin *joinSelected, *jTempSelected;
     gqbColumn *joinSCol, *joinDCol;
@@ -155,11 +161,14 @@ private:
     pointerMode mode;             // pointer is used as normally or as in joins by example
     wxImage joinCursorImage;
     wxCursor joinCursor;
-    wxMenu *m_rightJoins, *m_rightTables;
+    wxMenu *m_rightJoins, *m_rightTables, *m_gqbPopup;
     void OnMenuJoinDelete(wxCommandEvent& event);
     void OnMenuTableDelete(wxCommandEvent& event);
     void OnMenuTableSetAlias(wxCommandEvent& event);
+    void OnRefresh(wxCommandEvent& ev);
+
     wxArrayString joinTypeChoices;
+
     DECLARE_EVENT_TABLE()
 };
 

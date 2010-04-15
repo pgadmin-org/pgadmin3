@@ -119,6 +119,7 @@ protected:
 
     void EnableOK(const bool enable);
 
+    pgConn *conn;
     pgObject *object;
     pgQueryThread *thread;
     wxTextCtrl *txtMessages;

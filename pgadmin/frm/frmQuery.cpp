@@ -368,7 +368,7 @@ pgsTimer(new pgScriptTimer(this))
     // Graphical Canvas
     // initialize values
     model=new gqbModel();
-    controller = new gqbController(model,sqlNotebook, outputPane, wxSize(1280,800));
+    controller = new gqbController(model,sqlNotebook, outputPane, wxSize(GQB_MIN_WIDTH, GQB_MIN_HEIGHT));
     firstTime=true;                               // Inform to GQB that the tree of table haven't filled.
     gqbUpdateRunning = false;                      // Are we already updating the SQL query - event recursion protection.
     adjustSizesTimer=NULL;                        // Timer used to avoid a bug when close outputPane
