@@ -127,8 +127,13 @@ void gqbBrowser::OnBeginDrag(wxTreeEvent& event)
         if(result==wxDragCopy)
         {
             controller->getView()->CalcUnscrolledPosition(xx,yy,&xx,&yy);
-            controller->addTableToModel(item,wxPoint(xx,yy));
+            gqbQueryObject* queryObj = controller->addTableToModel(item,wxPoint(xx,yy));
             controller->getView()->Refresh();
+            if (queryObj)
+            {
+                controller->getView()->Update();
+                controller->getView()->updateModelSize(queryObj, false);
+            }
         }
     }
 }

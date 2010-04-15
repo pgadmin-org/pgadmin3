@@ -29,7 +29,7 @@
 
 wxWindowID CTL_NTBKPANELS = ::wxNewId();
 
-gqbController::gqbController(gqbModel *_model, wxWindow *gqbParent, wxNotebook *gridParent, wxSize size=wxSize(800,1280))
+gqbController::gqbController(gqbModel *_model, wxWindow *gqbParent, wxNotebook *gridParent, wxSize size=wxSize(GQB_MIN_WIDTH, GQB_MIN_HEIGHT))
 : wxObject()
 {
     pparent = gqbParent;
@@ -80,10 +80,11 @@ gqbController::~gqbController()
 
 
 // Add a table to the model
-void gqbController::addTableToModel(gqbTable *table, wxPoint p)
+gqbQueryObject* gqbController::addTableToModel(gqbTable *table, wxPoint p)
 {
     gqbQueryObject *added = model->addTable(table,p);
     view->newTableAdded(added);
+    return added;
 }
 
 
