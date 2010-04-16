@@ -17,6 +17,7 @@
 #include <wx/image.h>
 #include <wx/textbuf.h>
 #include <wx/clipbrd.h>
+#include <wx/sysopt.h>
 
 // wxAUI
 #include <wx/aui/aui.h>
@@ -403,7 +404,16 @@ void frmStatus::AddStatusPane()
     grdActivity->AddGrowableRow(0);
 
     // Add the list control
+#ifdef __WXMAC__
+    // Switch to the generic list control.
+    // Disable sort on Mac.
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
     wxListCtrl *lstStatus = new wxListCtrl(pnlActivity, CTL_STATUSLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER);
+    // Now switch back
+#ifdef __WXMAC__
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+#endif
     grdActivity->Add(lstStatus, 0, wxGROW, 3);
 
     // Add the panel to the notebook
@@ -453,7 +463,16 @@ void frmStatus::AddLockPane()
     grdLock->AddGrowableRow(0);
 
     // Add the list control
+#ifdef __WXMAC__
+    // Switch to the generic list control.
+    // Disable sort on Mac.
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
     wxListCtrl *lstLocks = new wxListCtrl(pnlLock, CTL_LOCKLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER);
+    // Now switch back
+#ifdef __WXMAC__
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+#endif
     grdLock->Add(lstLocks, 0, wxGROW, 3);
 
     // Add the panel to the notebook
@@ -501,7 +520,16 @@ void frmStatus::AddXactPane()
     grdXacts->AddGrowableRow(0);
 
     // Add the list control
+#ifdef __WXMAC__
+    // Switch to the generic list control.
+    // Disable sort on Mac.
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
     wxListCtrl *lstXacts = new wxListCtrl(pnlXacts, CTL_LOCKLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER);
+    // Now switch back
+#ifdef __WXMAC__
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+#endif
     grdXacts->Add(lstXacts, 0, wxGROW, 3);
 
     // Add the panel to the notebook
@@ -560,7 +588,16 @@ void frmStatus::AddLogPane()
     grdLog->AddGrowableRow(0);
 
     // Add the list control
+#ifdef __WXMAC__
+    // Switch to the generic list control.
+    // Disable sort on Mac.
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
     wxListCtrl *lstLog = new wxListCtrl(pnlLog, CTL_LOGLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER);
+    // Now switch back
+#ifdef __WXMAC__
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+#endif
     grdLog->Add(lstLog, 0, wxGROW, 3);
     
     // Add the panel to the notebook

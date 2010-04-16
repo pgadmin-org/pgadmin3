@@ -3,8 +3,8 @@
 #######################################################################
 #
 # pgAdmin III - PostgreSQL Tools
-# Copyright (C) 2002 - 2010, The pgAdmin Development Team
-# This software is released under the PostgreSQL Licence
+# Copyright (C) 2002 - 2009, The pgAdmin Development Team
+# This software is released under the BSD Licence
 #
 # stringextract - extract strings from sources 
 # and create gettext template file
@@ -56,7 +56,7 @@ xgettext -k_ -k__ -kwxPLURAL:1,2 -j -s -o pgadmin3.pot pgadmin/include/gqb/*.h
 xgettext -k_ -k__ -kwxPLURAL:1,2 -j -s -o pgadmin3.pot pgadmin/include/*.h
 xgettext -k_ -k__ -kwxPLURAL:1,2 -j -s -o pgadmin3.pot pgadmin/include/*.h
 
-TMPDIR=`mktemp -d tmpwork` || exit 1
+TMPDIR=`mktemp -d tmpwork.XXXX` || exit 1
 echo "$TMPDIR"
 
 mkdir $TMPDIR/pgadmin
