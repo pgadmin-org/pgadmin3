@@ -115,6 +115,13 @@ private:
     
     int currentPane;
 
+    int statusSortColumn;
+    wxString statusSortOrder;
+    int lockSortColumn;
+    wxString lockSortOrder;
+    int xactSortColumn;
+    wxString xactSortOrder;
+
     wxComboBox    *cbRate;
     wxComboBox    *cbLogfiles;
     wxButton      *btnRotateLog;
@@ -131,7 +138,9 @@ private:
     
     int cboToRate();
     wxString rateToCboString(int rate);
-    
+
+    wxImageList *listimages;
+
     void AddStatusPane();
     void AddLockPane();
     void AddXactPane();
@@ -157,6 +166,11 @@ private:
     void OnRefreshXactTimer(wxTimerEvent &event);
     void OnRefreshLogTimer(wxTimerEvent &event);
     
+    void SetColumnImage(ctlListView *list, int col, int image);
+    void OnSortStatusGrid(wxListEvent &event);
+    void OnSortLockGrid(wxListEvent &event);
+    void OnSortXactGrid(wxListEvent &event);
+
     void OnRateChange(wxCommandEvent &event);
     
     void OnPaneClose(wxAuiManagerEvent& evt);

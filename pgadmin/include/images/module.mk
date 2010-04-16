@@ -57,6 +57,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/domain-sm.xpm \
 	$(srcdir)/include/images/domain.xpm \
 	$(srcdir)/include/images/domains.xpm \
+	$(srcdir)/include/images/down.xpm \
 	$(srcdir)/include/images/drop.xpm \
 	$(srcdir)/include/images/edit_clear.xpm \
 	$(srcdir)/include/images/edit_find.xpm \
@@ -232,6 +233,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/types.xpm \
 	$(srcdir)/include/images/unchecked.xpm \
 	$(srcdir)/include/images/unique.xpm \
+	$(srcdir)/include/images/up.xpm \
 	$(srcdir)/include/images/user.xpm \
 	$(srcdir)/include/images/users.xpm \
 	$(srcdir)/include/images/vacuum.xpm \

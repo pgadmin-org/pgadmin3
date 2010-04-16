@@ -17,6 +17,7 @@
 #include <wx/image.h>
 #include <wx/textbuf.h>
 #include <wx/clipbrd.h>
+#include <wx/sysopt.h>
 
 // wxAUI
 #include <wx/aui/aui.h>
@@ -40,6 +41,8 @@
 #include "images/terminate_backend.xpm"
 #include "images/delete.xpm"
 #include "images/storedata.xpm"
+#include "images/down.xpm"
+#include "images/up.xpm"
 
 
 #include "db/pgConn.h"
@@ -79,14 +82,17 @@ BEGIN_EVENT_TABLE(frmStatus, pgFrame)
     EVT_TIMER(TIMER_STATUS_ID,                        frmStatus::OnRefreshStatusTimer)
     EVT_LIST_ITEM_SELECTED(CTL_STATUSLIST,            frmStatus::OnSelStatusItem)
     EVT_LIST_ITEM_DESELECTED(CTL_STATUSLIST,        frmStatus::OnSelStatusItem)
+    EVT_LIST_COL_CLICK(CTL_STATUSLIST,              frmStatus::OnSortStatusGrid)
     
     EVT_TIMER(TIMER_LOCKS_ID,                        frmStatus::OnRefreshLocksTimer)
     EVT_LIST_ITEM_SELECTED(CTL_LOCKLIST,            frmStatus::OnSelLockItem)
     EVT_LIST_ITEM_DESELECTED(CTL_LOCKLIST,            frmStatus::OnSelLockItem)
+    EVT_LIST_COL_CLICK(CTL_LOCKLIST,                  frmStatus::OnSortLockGrid)
     
     EVT_TIMER(TIMER_XACT_ID,                        frmStatus::OnRefreshXactTimer)
     EVT_LIST_ITEM_SELECTED(CTL_XACTLIST,            frmStatus::OnSelXactItem)
     EVT_LIST_ITEM_DESELECTED(CTL_XACTLIST,            frmStatus::OnSelXactItem)
+    EVT_LIST_COL_CLICK(CTL_XACTLIST,                  frmStatus::OnSortXactGrid)
     
     EVT_TIMER(TIMER_LOG_ID,                            frmStatus::OnRefreshLogTimer)
     EVT_LIST_ITEM_SELECTED(CTL_LOGLIST,                frmStatus::OnSelLogItem)
@@ -283,6 +289,11 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     }
     delete dataSet1;
     
+    // Image list for all listviews
+    listimages = new wxImageList(13, 8, true, 2);
+    listimages->Add(wxIcon(down_xpm));
+    listimages->Add(wxIcon(up_xpm));
+
     // Create panel
     AddStatusPane();
     AddLockPane();
@@ -454,7 +465,16 @@ void frmStatus::AddStatusPane()
     grdActivity->AddGrowableRow(0);
 
     // Add the list control
+#ifdef __WXMAC__
+    // Switch to the generic list control.
+    // Disable sort on Mac.
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
     wxListCtrl *lstStatus = new wxListCtrl(pnlActivity, CTL_STATUSLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER);
+    // Now switch back
+#ifdef __WXMAC__
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+#endif
     grdActivity->Add(lstStatus, 0, wxGROW, 3);
 
     // Add the panel to the notebook
@@ -487,8 +507,15 @@ void frmStatus::AddStatusPane()
     statusList->AddColumn(_("Blocked by"), 35);
     statusList->AddColumn(_("Query"), 500);
 
+    // Build image list
+    statusList->SetImageList(listimages, wxIMAGE_LIST_SMALL);
+
     // Read statusRate configuration
     settings->Read(wxT("frmStatus/RefreshStatusRate"), &statusRate, 10);
+
+    // Initialize sort order
+    statusSortColumn = 1;
+    statusSortOrder = wxT("ASC");
     
     // Create the timer
     statusTimer = new wxTimer(this, TIMER_STATUS_ID);
@@ -506,7 +533,16 @@ void frmStatus::AddLockPane()
     grdLock->AddGrowableRow(0);
 
     // Add the list control
+#ifdef __WXMAC__
+    // Switch to the generic list control.
+    // Disable sort on Mac.
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
     wxListCtrl *lstLocks = new wxListCtrl(pnlLock, CTL_LOCKLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER);
+    // Now switch back
+#ifdef __WXMAC__
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+#endif
     grdLock->Add(lstLocks, 0, wxGROW, 3);
 
     // Add the panel to the notebook
@@ -535,8 +571,15 @@ void frmStatus::AddLockPane()
         lockList->AddColumn(_("Start"), 50);
     lockList->AddColumn(_("Query"), 500);
 
+    // Build image list
+    lockList->SetImageList(listimages, wxIMAGE_LIST_SMALL);
+
     // Read locksRate configuration
     settings->Read(wxT("frmStatus/RefreshLockRate"), &locksRate, 10);
+    
+    // Initialize sort order
+    lockSortColumn = 1;
+    lockSortOrder = wxT("ASC");
     
     // Create the timer
     locksTimer = new wxTimer(this, TIMER_LOCKS_ID);
@@ -554,7 +597,16 @@ void frmStatus::AddXactPane()
     grdXacts->AddGrowableRow(0);
 
     // Add the list control
-    wxListCtrl *lstXacts = new wxListCtrl(pnlXacts, CTL_LOCKLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER);
+#ifdef __WXMAC__
+    // Switch to the generic list control.
+    // Disable sort on Mac.
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
+    wxListCtrl *lstXacts = new wxListCtrl(pnlXacts, CTL_XACTLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER);
+    // Now switch back
+#ifdef __WXMAC__
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+#endif
     grdXacts->Add(lstXacts, 0, wxGROW, 3);
 
     // Add the panel to the notebook
@@ -594,8 +646,15 @@ void frmStatus::AddXactPane()
     xactList->AddColumn(_("Owner"), 50);
     xactList->AddColumn(_("Database"), 50);
 
+    // Build image list
+    xactList->SetImageList(listimages, wxIMAGE_LIST_SMALL);
+
     // Read xactRate configuration
     settings->Read(wxT("frmStatus/RefreshXactRate"), &xactRate, 10);
+    
+    // Initialize sort order
+    xactSortColumn = 2;
+    xactSortOrder = wxT("ASC");
     
     // Create the timer
     xactTimer = new wxTimer(this, TIMER_XACT_ID);
@@ -613,7 +672,16 @@ void frmStatus::AddLogPane()
     grdLog->AddGrowableRow(0);
 
     // Add the list control
+#ifdef __WXMAC__
+    // Switch to the generic list control.
+    // Disable sort on Mac.
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), true);
+#endif
     wxListCtrl *lstLog = new wxListCtrl(pnlLog, CTL_LOGLIST, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxSUNKEN_BORDER);
+    // Now switch back
+#ifdef __WXMAC__
+    wxSystemOptions::SetOption(wxT("mac.listctrl.always_use_generic"), false);
+#endif
     grdLog->Add(lstLog, 0, wxGROW, 3);
     
     // Add the panel to the notebook
@@ -1087,36 +1155,53 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
     connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
 
     long row=0;
-    pgSet *dataSet1=connection->ExecuteSet(wxT("SELECT *, ")
-           wxT("CASE WHEN query_start IS NULL THEN false ELSE query_start + '10 seconds'::interval > now() END AS slowquery, ")
-           wxT("(SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND relation IN ")
-           wxT("(SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)) AS blockedby ")
-           wxT("FROM pg_stat_activity ORDER BY procpid"));
+    wxString q = wxT("SELECT procpid, ");
+    if (connection->BackendMinimumVersion(8, 5))
+        q += wxT("application_name, ");
+    q += wxT("datname, usename");
+    if (connection->BackendMinimumVersion(8, 1))
+    {
+        q += wxT(",\nCASE WHEN client_port=-1 THEN 'local pipe' ")
+             wxT("     ELSE client_addr||':'||client_port END AS client, ")
+             wxT("backend_start");
+    }
+    if (connection->BackendMinimumVersion(7, 4))
+    {
+        q += wxT(",\nCASE WHEN current_query='' OR current_query='<IDLE>' THEN '' ")
+             wxT("     ELSE query_start::text END AS query_start ");
+    }
+    if (connection->BackendMinimumVersion(8, 3))
+        q += wxT(",\nxact_start ");
+
+    q +=   wxT(", (SELECT min(pid) FROM pg_locks l1 WHERE GRANTED AND relation IN ")
+           wxT("(SELECT relation FROM pg_locks l2 WHERE l2.pid=procpid AND NOT granted)) AS blockedby, ")
+           wxT("current_query, ")
+           wxT("CASE WHEN query_start IS NULL THEN false ELSE query_start + '10 seconds'::interval > now() END AS slowquery ")
+           wxT("FROM pg_stat_activity ")
+           wxT("ORDER BY ") + NumToStr((long)statusSortColumn) + statusSortOrder;
+
+    pgSet *dataSet1=connection->ExecuteSet(q);
     if (dataSet1)
     {
-        statusList->Freeze();
         statusBar->SetStatusText(_("Refreshing status list."));
+        statusList->Freeze();
+        
         while (!dataSet1->Eof())
         {
             pid=dataSet1->GetLong(wxT("procpid"));
 
             if (pid != backend_pid)
             {
-                long itempid=0;
-
-                while (row < statusList->GetItemCount())
+                if (row >= statusList->GetItemCount())
                 {
-                    itempid=StrToLong(statusList->GetItemText(row));
-                    if (itempid && itempid < pid)
-                        statusList->DeleteItem(row);
-                    else
-                        break;
+                    statusList->InsertItem(row, NumToStr(pid));
+                    row = statusList->GetItemCount() - 1;
+                }
+                else
+                {
+                    statusList->SetItem(row, 0, NumToStr(pid));
                 }
 
-                if (!itempid || itempid > pid || row >= statusList->GetItemCount())
-                {
-                    statusList->InsertItem(row, NumToStr(pid), 0);
-                }
                 wxString qry=dataSet1->GetVal(wxT("current_query"));
 
                 int colpos=1;
@@ -1127,19 +1212,12 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 
                 if (connection->BackendMinimumVersion(8, 1))
                 {
-                     wxString client=dataSet1->GetVal(wxT("client_addr")) + wxT(":") + dataSet1->GetVal(wxT("client_port"));
-                     if (client == wxT(":-1"))
-                         client = _("local pipe");
-                     statusList->SetItem(row, colpos++, client);
-
+                    statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("client")));
                     statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("backend_start")));
                 }
                 if (connection->BackendMinimumVersion(7, 4))
                 {
-                    if (qry.IsEmpty() || qry == wxT("<IDLE>"))
-                        statusList->SetItem(row, colpos++, wxEmptyString);
-                    else
-                        statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("query_start")));
+                    statusList->SetItem(row, colpos++, dataSet1->GetVal(wxT("query_start")));
                 }
 
                 if (connection->BackendMinimumVersion(8, 3))
@@ -1180,16 +1258,6 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
     }
     else
         checkConnection();
-
-    row=0;
-    while (row < statusList->GetItemCount())
-    {
-        long itempid=StrToLong(statusList->GetItemText(row));
-        if (itempid && itempid > pid)
-            statusList->DeleteItem(row);
-        else
-            row++;
-    }
 }
 
 
@@ -1233,7 +1301,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
               wxT("pg_stat_get_backend_activity_start(svrid) AS query_start ")
               wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
               wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
-              wxT("ORDER BY pid;");
+              wxT("ORDER BY ") + NumToStr((long)lockSortColumn) + wxT(" ") + lockSortOrder;
     } 
     else if (locks_connection->BackendMinimumVersion(7, 4)) 
     {
@@ -1246,7 +1314,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
               wxT("pg_stat_get_backend_activity_start(svrid) AS query_start ")
               wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
               wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
-              wxT("ORDER BY pid;");
+              wxT("ORDER BY ") + NumToStr((long)lockSortColumn) + wxT(" ") + lockSortOrder;
     } 
     else 
     {
@@ -1258,7 +1326,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
               wxT("pg_stat_get_backend_activity(svrid) AS current_query ")
               wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
               wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
-              wxT("ORDER BY pid;");
+              wxT("ORDER BY ") + NumToStr((long)lockSortColumn) + wxT(" ") + lockSortOrder;
     }
 
     pgSet *dataSet2=locks_connection->ExecuteSet(sql);
@@ -1273,20 +1341,14 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 
             if (pid != backend_pid)
             {
-                long itempid=0;
-
-                while (row < lockList->GetItemCount())
+                if (row >= lockList->GetItemCount())
                 {
-                    itempid=StrToLong(lockList->GetItemText(row));
-                    if (itempid && itempid < pid)
-                        lockList->DeleteItem(row);
-                    else
-                        break;
+                    lockList->InsertItem(row, NumToStr(pid));
+                    row = lockList->GetItemCount() - 1;
                 }
-
-                if (!itempid || itempid > pid || lockList->GetItemCount() == 0)
+                else
                 {
-                    lockList->InsertItem(row, NumToStr(pid), 0);
+                    lockList->SetItem(row, 0, NumToStr(pid));
                 }
 
                 int colpos=1;
@@ -1329,23 +1391,11 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
     }
     else
         checkConnection();
-
-    row=0;
-    while (row < lockList->GetItemCount())
-    {
-        long itempid=StrToLong(lockList->GetItemText(row));
-        if (itempid && itempid > pid)
-            lockList->DeleteItem(row);
-        else
-            row++;
-    }
 }
 
 
 void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
 {
-    long pid=0;
-
     if (! viewMenu->IsEnabled(MNU_XACTPAGE) || ! viewMenu->IsChecked(MNU_XACTPAGE) || !xactTimer)
         return;
 
@@ -1369,7 +1419,9 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
     connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
 
     long row=0;
-    wxString sql = wxT("SELECT * FROM pg_prepared_xacts");
+    wxString sql = wxT("SELECT transaction, gid, prepared, owner, database ")
+                   wxT("FROM pg_prepared_xacts ")
+                   wxT("ORDER BY ") + NumToStr((long)xactSortColumn) + wxT(" ") + xactSortOrder;
 
     pgSet *dataSet3=connection->ExecuteSet(sql);
     if (dataSet3)
@@ -1381,20 +1433,14 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
         {
             long xid=dataSet3->GetLong(wxT("transaction"));
 
-            long itemxid=0;
-
-            while (row < xactList->GetItemCount())
+            if (row >= xactList->GetItemCount())
             {
-                itemxid=StrToLong(xactList->GetItemText(row));
-                if (itemxid && itemxid < xid)
-                    xactList->DeleteItem(row);
-                else
-                    break;
+                xactList->InsertItem(row, NumToStr(xid));
+                row = xactList->GetItemCount() - 1;
             }
-
-            if (!itemxid || itemxid > xid)
+            else
             {
-                xactList->InsertItem(row, NumToStr(xid), 0);
+                xactList->SetItem(row, 0, NumToStr(xid));
             }
 
             int colpos=1;
@@ -1416,16 +1462,6 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
     }
     else
         checkConnection();
-
-    row=0;
-    while (row < xactList->GetItemCount())
-    {
-    long itempid=StrToLong(lockList->GetItemText(row));
-    if (itempid && itempid > pid)
-        xactList->DeleteItem(row);
-    else
-        row++;
-    }
 }
 
 
@@ -2530,6 +2566,120 @@ void frmStatus::OnSelLogItem(wxListEvent &event)
     
     editMenu->Enable(MNU_COPY, logList->GetFirstSelected()>=0);
     toolBar->EnableTool(MNU_COPY_QUERY, false);
+}
+
+
+void frmStatus::SetColumnImage(ctlListView *list, int col, int image)
+{
+    wxListItem item;
+    item.SetMask(wxLIST_MASK_IMAGE);
+    item.SetImage(image);
+    list->SetColumn(col, item);
+}
+
+
+void frmStatus::OnSortStatusGrid(wxListEvent &event)
+{
+    // Get the information for the SQL ORDER BY
+    if (statusSortColumn == event.GetColumn() + 1)
+    {
+        if (statusSortOrder == wxT("ASC"))
+            statusSortOrder = wxT("DESC");
+        else
+            statusSortOrder = wxT("ASC");
+    }
+    else
+    {
+        statusSortColumn = event.GetColumn() + 1;
+        statusSortOrder = wxT("ASC");
+    }
+
+
+    // Re-initialize all columns' image
+    for (int i=0; i<statusList->GetColumnCount(); i++)
+    {
+        SetColumnImage(statusList, i, -1);
+    }
+
+    // Set the up/down image
+    if (statusSortOrder == wxT("ASC"))
+        SetColumnImage(statusList, event.GetColumn(), 0);
+    else
+        SetColumnImage(statusList, event.GetColumn(), 1);
+
+    // Refresh grid
+    wxTimerEvent evt;
+    OnRefreshStatusTimer(evt);
+}
+
+
+void frmStatus::OnSortLockGrid(wxListEvent &event)
+{
+    // Get the information for the SQL ORDER BY
+    if (lockSortColumn == event.GetColumn() + 1)
+    {
+        if (lockSortOrder == wxT("ASC"))
+            lockSortOrder = wxT("DESC");
+        else
+            lockSortOrder = wxT("ASC");
+    }
+    else
+    {
+        lockSortColumn = event.GetColumn() + 1;
+        lockSortOrder = wxT("ASC");
+    }
+
+
+    // Re-initialize all columns' image
+    for (int i=0; i<lockList->GetColumnCount(); i++)
+    {
+        SetColumnImage(lockList, i, -1);
+    }
+
+    // Set the up/down image
+    if (lockSortOrder == wxT("ASC"))
+        SetColumnImage(lockList, event.GetColumn(), 0);
+    else
+        SetColumnImage(lockList, event.GetColumn(), 1);
+
+    // Refresh grid
+    wxTimerEvent evt;
+    OnRefreshLocksTimer(evt);
+}
+
+
+void frmStatus::OnSortXactGrid(wxListEvent &event)
+{
+    // Get the information for the SQL ORDER BY
+    if (xactSortColumn == event.GetColumn() + 1)
+    {
+        if (xactSortOrder == wxT("ASC"))
+            xactSortOrder = wxT("DESC");
+        else
+            xactSortOrder = wxT("ASC");
+    }
+    else
+    {
+        xactSortColumn = event.GetColumn() + 1;
+        xactSortOrder = wxT("ASC");
+    }
+
+
+    // Re-initialize all columns' image
+    for (int i=0; i<xactList->GetColumnCount(); i++)
+    {
+        SetColumnImage(xactList, i, -1);
+    }
+
+    // Set the up/down image
+    if (xactSortOrder == wxT("ASC"))
+        SetColumnImage(xactList, event.GetColumn(), 0);
+    else
+        SetColumnImage(xactList, event.GetColumn(), 1);
+
+    // Refresh grid
+    wxTimerEvent evt;
+    OnRefreshXactTimer(evt);
 }
 
 
