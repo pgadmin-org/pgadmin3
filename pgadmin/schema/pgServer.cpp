@@ -1066,6 +1066,13 @@ void pgServer::ShowDependents(frmMain *form, ctlListView *referencedBy, const wx
     referencedBy->AddColumn(_("Restriction"), 50);
 }
 
+bool pgServer::ReloadConfiguration()
+{
+    wxString sql = wxT("select pg_reload_conf()");
+    return conn->ExecuteVoid(sql);
+}
+
+
 pgServerCollection::pgServerCollection(pgaFactory *factory)
  : pgCollection(factory)
 {
@@ -1548,3 +1555,30 @@ bool disconnectServerFactory::CheckEnable(pgObject *obj)
 
     return false;
 }
+
+reloadconfServiceFactory::reloadconfServiceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Reload configuration"), _("Reload configuration"));
+}
+
+
+wxWindow *reloadconfServiceFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    pgServer *server= (pgServer*)obj;
+    form->StartMsg(_("Reloading configuration"));
+    bool rc = server->ReloadConfiguration();
+    form->EndMsg(rc);
+    return 0;
+}
+
+
+bool reloadconfServiceFactory::CheckEnable(pgObject *obj)
+{
+    if (obj && obj->IsCreatedBy(serverFactory))
+    {
+        pgServer *server=(pgServer*)obj;
+        return server->GetConnected() && server->connection()->BackendMinimumVersion(8, 1);
+    }
+    return false;
+}
+

@@ -53,6 +53,7 @@ public:
     bool StopService();
     bool GetServerRunning();
     bool GetServerControllable();
+    bool ReloadConfiguration();
 
     pgServer *GetServer() const;
 
@@ -263,6 +264,14 @@ class disconnectServerFactory : public contextActionFactory
 {
 public:
     disconnectServerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
+class reloadconfServiceFactory : public contextActionFactory
+{
+public:
+    reloadconfServiceFactory (menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };

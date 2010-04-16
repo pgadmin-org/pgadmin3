@@ -333,6 +333,7 @@ void frmMain::CreateMenus()
 
     new startServiceFactory(menuFactories, toolsMenu, 0);
     new stopServiceFactory(menuFactories, toolsMenu, 0);
+    new reloadconfServiceFactory(menuFactories, toolsMenu, 0);
 
     new createFactory(menuFactories, editMenu, toolBar);
     new dropFactory(menuFactories, editMenu, toolBar);
