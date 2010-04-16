@@ -21,6 +21,7 @@
 // wxAUI
 #include <wx/aui/aui.h>
 
+#include "frm/frmQuery.h"
 #include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
@@ -116,13 +117,17 @@ public:
     wxString GetCurrentNodePath();
     bool SetCurrentNode(wxTreeItemId node, const wxString &path);
 
+    void UpdateAllRecentFiles();
+    void UpdateAllFavouritesList();
+    void UpdateAllMacrosList();
+
 private:
     wxAuiManager manager;
     ctlTree *browser;
     ctlListView *properties;
     ctlListView *statistics;
     ctlListView *dependents, *dependencies;
-    wxNotebook *listViews;
+    wxAuiNotebook *listViews;
     ctlSQLBox *sqlPane;
     wxMenu *newMenu, *debuggingMenu, *reportMenu, *toolsMenu, *pluginsMenu, *viewMenu, 
           *treeContextMenu, *newContextMenu, *slonyMenu, *scriptingMenu, *viewDataMenu;
@@ -161,7 +166,7 @@ private:
     void OnAuiUpdate(wxAuiManagerEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
-    void OnPageChange(wxNotebookEvent& event);
+    void OnPageChange(wxAuiNotebookEvent& event);
     void OnPropSelChanged(wxListEvent& event);
     void OnPropSelActivated(wxListEvent& event);
     void OnPropRightClick(wxListEvent& event);

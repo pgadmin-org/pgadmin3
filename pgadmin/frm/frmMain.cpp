@@ -134,7 +134,7 @@ frmMain::frmMain(const wxString& title)
     browser->SetImageList(imageList);
 
     // Setup the listview
-    listViews = new wxNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize);
+    listViews = new wxAuiNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP);
 
     // Switch to the generic list control. Native doesn't play well with
     // multi-row select on Mac.
@@ -733,7 +733,7 @@ void frmMain::ShowObjStatistics(pgObject *data, int sel)
 }
 
 
-void frmMain::OnPageChange(wxNotebookEvent& event)
+void frmMain::OnPageChange(wxAuiNotebookEvent& event)
 {
     pgObject *data = browser->GetObject(browser->GetSelection());
 

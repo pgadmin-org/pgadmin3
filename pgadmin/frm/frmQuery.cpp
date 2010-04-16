@@ -191,7 +191,8 @@ class DnDFile : public wxFileDropTarget
 						m_fquery->SetChanged(false);
 						m_fquery->setExtendedTitle();
 						m_fquery->SetLineEndingStyle();
-						m_fquery->UpdateRecentFiles();
+						m_fquery->UpdateRecentFiles(true);
+						m_fquery->UpdateAllRecentFiles();
 				}
 			}
 			return true;
@@ -305,14 +306,14 @@ pgsTimer(new pgScriptTimer(this))
     favouritesMenu->Append(MNU_FAVOURITES_ADD, _("Add favourite..."), _("Add current query to favourites"));
     favouritesMenu->Append(MNU_FAVOURITES_MANAGE, _("Manage favourites..."), _("Edit and delete favourites"));
     favouritesMenu->AppendSeparator();
-    favourites = queryFavouriteFileProvider::LoadFavourites(true);
+    favourites = 0L;
     UpdateFavouritesList();
     menuBar->Append(favouritesMenu, _("Fav&ourites"));
 
     macrosMenu = new wxMenu();
     macrosMenu->Append(MNU_MACROS_MANAGE, _("Manage macros..."), _("Edit and delete macros"));
     macrosMenu->AppendSeparator();
-    macros = queryMacroFileProvider::LoadMacros(true);
+    macros = 0L;
     UpdateMacrosList();
     menuBar->Append(macrosMenu, _("&Macros"));
 
@@ -1385,6 +1386,11 @@ void frmQuery::updateMenu(wxObject *obj)
 
 void frmQuery::UpdateFavouritesList()
 {
+    if (favourites)
+        delete favourites;
+
+    favourites = queryFavouriteFileProvider::LoadFavourites(true);
+
     while (favouritesMenu->GetMenuItemCount() > 3)
     {
         favouritesMenu->Destroy(favouritesMenu->GetMenuItems()[3]);
@@ -1396,6 +1402,11 @@ void frmQuery::UpdateFavouritesList()
 
 void frmQuery::UpdateMacrosList()
 {
+    if (macros)
+        delete macros;
+
+    macros = queryMacroFileProvider::LoadMacros(true);
+
     while (macrosMenu->GetMenuItemCount() > 2)
     {
         macrosMenu->Destroy(macrosMenu->GetMenuItems()[2]);
@@ -1413,7 +1424,7 @@ void frmQuery::OnAddFavourite(wxCommandEvent &event)
     {
         // Added a favourite, so save
         queryFavouriteFileProvider::SaveFavourites(favourites);
-        UpdateFavouritesList();
+        mainForm->UpdateAllFavouritesList();
     }
 }
 
@@ -1425,14 +1436,11 @@ void frmQuery::OnManageFavourites(wxCommandEvent &event)
     {
         // Changed something, so save
         queryFavouriteFileProvider::SaveFavourites(favourites);
-        UpdateFavouritesList();
     }
-    else if (r == -1)
+    if (r == 1 || r == -1)
     {
         // Changed something requiring rollback
-        delete favourites;
-        favourites = queryFavouriteFileProvider::LoadFavourites(true);
-        UpdateFavouritesList();
+        mainForm->UpdateAllFavouritesList();
     }
 }
 
@@ -1593,10 +1601,16 @@ void frmQuery::OpenLastFile()
         changed = false;
         setExtendedTitle();
         SetLineEndingStyle();
-        UpdateRecentFiles();
+        UpdateRecentFiles(true);
+        mainForm->UpdateAllRecentFiles();
     }
 }
 
+
+void frmQuery::UpdateAllRecentFiles()
+{
+    mainForm->UpdateAllRecentFiles();
+}
 
 void frmQuery::OnNew(wxCommandEvent& event)
 {
@@ -2135,14 +2149,11 @@ void frmQuery::OnMacroManage(wxCommandEvent &event)
     {
         // Changed something, so save
         queryMacroFileProvider::SaveMacros(macros);
-        UpdateMacrosList();
     }
-    else if (r == -1)
+    if (r == -1 || r == 1)
     {
         // Changed something requiring rollback
-        delete macros;
-        macros = queryMacroFileProvider::LoadMacros(true);
-        UpdateMacrosList();
+        mainForm->UpdateAllMacrosList();
     }
 
 }

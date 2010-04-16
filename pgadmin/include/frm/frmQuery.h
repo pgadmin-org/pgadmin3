@@ -82,6 +82,13 @@ public:
 		void SetLastPath(wxString p_lastpath) { lastPath = p_lastpath; }
     bool CheckChanged(bool canVeto);
 
+    void UpdateFavouritesList();
+    void UpdateMacrosList();
+
+    void UpdateAllRecentFiles();
+    void UpdateAllFavouritesList();
+    void UpdateAllMacrosList();
+
 private:
     frmMain *mainForm;
     wxAuiManager manager;
@@ -200,13 +207,11 @@ private:
     void OnScriptComplete(wxCommandEvent &ev);
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
-    void UpdateFavouritesList();
     int GetLineEndingStyle();
     void OnSetEOLMode(wxCommandEvent& event);
     void SetEOLModeDisplay(int mode);
     void OnMacroInvoke(wxCommandEvent& event);
     void OnMacroManage(wxCommandEvent& event);
-    void UpdateMacrosList();
 
     void LoadQueries();
     void SaveQueries();

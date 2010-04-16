@@ -60,7 +60,7 @@ public:
     void SavePosition();
     void OnAction(wxCommandEvent& event);
 		
-    void UpdateRecentFiles();
+    void UpdateRecentFiles(bool updatefile=true);
 
 	menuFactoryList *GetMenuFactories() { return menuFactories; }
 

@@ -54,7 +54,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
 
-    EVT_NOTEBOOK_PAGE_CHANGED(CTL_NOTEBOOK, frmMain::OnPageChange)
+    EVT_AUINOTEBOOK_PAGE_CHANGED(CTL_NOTEBOOK, frmMain::OnPageChange)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
     EVT_LIST_ITEM_ACTIVATED(CTL_PROPVIEW,   frmMain::OnPropSelActivated)
     EVT_LIST_ITEM_RIGHT_CLICK(CTL_PROPVIEW, frmMain::OnPropRightClick)
@@ -139,6 +139,47 @@ void frmMain::OnClose(wxCloseEvent& event)
         fr->Destroy();
     }
     Destroy();
+}
+
+
+void frmMain::UpdateAllRecentFiles()
+{
+    wxWindow *fr;
+    windowList::Node *node;
+    node = frames.GetFirst();
+    while (node)
+    {
+        fr=node->GetData();
+        ((frmQuery*)fr)->UpdateRecentFiles(false);
+        node = node->GetNext();
+    }
+}
+
+
+void frmMain::UpdateAllFavouritesList()
+{
+    wxWindow *fr;
+    windowList::Node *node;
+    node = frames.GetFirst();
+    while (node)
+    {
+        fr=node->GetData();
+        ((frmQuery*)fr)->UpdateFavouritesList();
+        node = node->GetNext();
+    }
+}
+
+void frmMain::UpdateAllMacrosList()
+{
+    wxWindow *fr;
+    windowList::Node *node;
+    node = frames.GetFirst();
+    while (node)
+    {
+        fr=node->GetData();
+        ((frmQuery*)fr)->UpdateMacrosList();
+        node = node->GetNext();
+    }
 }
 
 
