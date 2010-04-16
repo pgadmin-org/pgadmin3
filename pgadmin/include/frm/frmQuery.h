@@ -64,6 +64,13 @@ public:
     
     void writeScriptOutput();
 
+    void UpdateFavouritesList();
+    void UpdateMacrosList();
+
+    void UpdateAllRecentFiles();
+    void UpdateAllFavouritesList();
+    void UpdateAllMacrosList();
+
 private:
     frmMain *mainForm;
     wxAuiManager manager;
@@ -174,14 +181,12 @@ private:
     void setTools(const bool running);
     void showMessage(const wxString& msg, const wxString &msgShort=wxT(""));
     void setExtendedTitle();
-    void UpdateFavouritesList();
     void SetLineEndingStyle();
     int GetLineEndingStyle();
     void OnSetEOLMode(wxCommandEvent& event);
     void SetEOLModeDisplay(int mode);
     void OnMacroInvoke(wxCommandEvent& event);
     void OnMacroManage(wxCommandEvent& event);
-    void UpdateMacrosList();
     wxWindow *currentControl();
     wxMenu *queryMenu;
     wxMenu *favouritesMenu;

@@ -21,6 +21,7 @@
 // wxAUI
 #include <wx/aui/aui.h>
 
+#include "frm/frmQuery.h"
 #include "dlg/dlgClasses.h"
 #include "utils/factory.h"
 
@@ -105,6 +106,10 @@ public:
 
     wxString GetCurrentNodePath();
     bool SetCurrentNode(wxTreeItemId node, const wxString &path);
+
+    void UpdateAllRecentFiles();
+    void UpdateAllFavouritesList();
+    void UpdateAllMacrosList();
 
 private:
     wxAuiManager manager;

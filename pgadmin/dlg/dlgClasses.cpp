@@ -293,7 +293,7 @@ void pgFrame::OnRecent(wxCommandEvent& event)
 
 
 
-void pgFrame::UpdateRecentFiles()
+void pgFrame::UpdateRecentFiles(bool updatefile)
 {
     if (!recentFileMenu)
         return;
@@ -314,7 +314,7 @@ void pgFrame::UpdateRecentFiles()
     while (i <= maxFiles)
         lastFiles[i++] = wxT("");
 
-    if (recentIndex > 1 && !lastPath.IsNull())
+    if (recentIndex > 1 && !lastPath.IsNull() && updatefile)
     {
         for (i=recentIndex ; i > 1 ; i--)
             lastFiles[i] = lastFiles[i-1];
@@ -332,7 +332,8 @@ void pgFrame::UpdateRecentFiles()
 
     for (i=1 ; i <= maxFiles ; i++)
     {
-        settings->Write(recentKey + wxString::Format(wxT("/%d"), i), lastFiles[i]);
+        if (updatefile)
+            settings->Write(recentKey + wxString::Format(wxT("/%d"), i), lastFiles[i]);
 
         if (!lastFiles[i].IsNull())
             recentFileMenu->Append(MNU_RECENT+i, wxT("&") + wxString::Format(wxT("%d"), i) + wxT("  ") + lastFiles[i]);

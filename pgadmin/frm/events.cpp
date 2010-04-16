@@ -139,6 +139,47 @@ void frmMain::OnClose(wxCloseEvent& event)
 }
 
 
+void frmMain::UpdateAllRecentFiles()
+{
+    wxWindow *fr;
+    windowList::Node *node;
+    node = frames.GetFirst();
+    while (node)
+    {
+        fr=node->GetData();
+        ((frmQuery*)fr)->UpdateRecentFiles(false);
+        node = node->GetNext();
+    }
+}
+
+
+void frmMain::UpdateAllFavouritesList()
+{
+    wxWindow *fr;
+    windowList::Node *node;
+    node = frames.GetFirst();
+    while (node)
+    {
+        fr=node->GetData();
+        ((frmQuery*)fr)->UpdateFavouritesList();
+        node = node->GetNext();
+    }
+}
+
+void frmMain::UpdateAllMacrosList()
+{
+    wxWindow *fr;
+    windowList::Node *node;
+    node = frames.GetFirst();
+    while (node)
+    {
+        fr=node->GetData();
+        ((frmQuery*)fr)->UpdateMacrosList();
+        node = node->GetNext();
+    }
+}
+
+
 void frmMain::OnAction(wxCommandEvent &ev)
 {
     actionFactory *af=menuFactories->GetFactory(ev.GetId());

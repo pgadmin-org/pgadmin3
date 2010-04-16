@@ -61,6 +61,8 @@ public:
     void OnAction(wxCommandEvent& event);
 	menuFactoryList *GetMenuFactories() { return menuFactories; }
 
+    void UpdateRecentFiles(bool updatefile=true);
+
 protected:
 
     void OnKeyDown(wxKeyEvent& event);
@@ -71,8 +73,6 @@ protected:
     virtual void OpenLastFile() {}
     virtual bool CheckChanged(bool canVeto) { return false; }
     virtual wxString GetHelpPage() const { return wxEmptyString; }
-
-    void UpdateRecentFiles();
 
     windowList frames;
     menuFactoryList *menuFactories;
