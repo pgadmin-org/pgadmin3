@@ -31,13 +31,13 @@ BEGIN_EVENT_TABLE(dlgSelectConnection, DialogWithHelp)
     EVT_COMBOBOX(CTRLID_CBDATABASE,    dlgSelectConnection::OnChangeDatabase) 
 	EVT_TEXT(CTRLID_CBSERVER,          dlgSelectConnection::OnTextChange)
 	EVT_TEXT(CTRLID_CBDATABASE,        dlgSelectConnection::OnTextChange)
-	EVT_TEXT(XRCID("txtUsername"),     dlgSelectConnection::OnTextChange)
+	EVT_TEXT(XRCID("cbUsername"),      dlgSelectConnection::OnTextChange)
     EVT_BUTTON (wxID_OK,               dlgSelectConnection::OnOK)
     EVT_BUTTON (wxID_CANCEL,           dlgSelectConnection::OnCancel)
 END_EVENT_TABLE()
 
 #define stUsername		CTRL_STATIC("stUsername")
-#define txtUsername		CTRL_TEXT("txtUsername")
+#define cbUsername		CTRL_COMBOBOX("cbUsername")
 
 
 
@@ -52,22 +52,17 @@ DialogWithHelp(form)
     SetIcon(wxIcon(connect_xpm));
     RestorePosition();
 
-	if (form != NULL)
+	cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65,5)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN | wxCB_READONLY);
+	cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), NULL, wxCB_DROPDOWN | wxCB_READONLY);
+
+	if (form == NULL)
 	{
-		stUsername->Hide();
-		txtUsername->Hide();
-		btnOK->Enable(false);
-		cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65,5)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN | wxCB_READONLY);
-		cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), NULL, wxCB_DROPDOWN | wxCB_READONLY);
-	}
-	else
-	{
-		cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65,5)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN);
-		cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), NULL, wxCB_DROPDOWN);
 		cbServer->SetValue(settings->Read(wxT("QuickConnect/server"), wxEmptyString));
 		cbDatabase->SetValue(settings->Read(wxT("QuickConnect/database"), wxEmptyString));
-		txtUsername->SetValue(settings->Read(wxT("QuickConnect/username"), wxEmptyString));
+		cbUsername->SetValue(settings->Read(wxT("QuickConnect/username"), wxEmptyString));
 	}
+
+	btnOK->Enable(cbServer->GetValue().Length() > 0 && cbDatabase->GetValue().Length() > 0 && cbUsername->GetValue().Length() > 0);
 }
 
 
@@ -106,39 +101,27 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
         }
         if (remoteServer->GetConnected())
         {
-            pgSetIterator set(remoteServer->GetConnection(), 
+            pgSetIterator set1(remoteServer->GetConnection(), 
                 wxT("SELECT DISTINCT datname\n")
                 wxT("  FROM pg_database db\n")
                 wxT(" WHERE datallowconn ORDER BY datname"));
 
-            while(set.RowsLeft())
-            {
-                wxString dbName=set.GetVal(wxT("datname"));
+            while(set1.RowsLeft())
+                cbDatabase->Append(set1.GetVal(wxT("datname")));
 
-                bool alreadyConnected=false;
-
-                if (cbConnection)
-                {
-                    unsigned int i;
-
-                    for (i=0 ; i < cbConnection->GetCount()-1 ; i++)
-                    {
-                        pgConn *conn=(pgConn*)cbConnection->GetClientData(i);
-                        if (conn->GetHost() == remoteServer->GetName() && 
-                            conn->GetPort() == remoteServer->GetPort() &&
-                            conn->GetUser() == remoteServer->GetUsername() &&
-                            conn->GetDbname() == dbName)
-                        {
-                            alreadyConnected=true;
-                            break;
-                        }
-                    }
-                }
-                if (!alreadyConnected)
-                    cbDatabase->Append(dbName);
-            }
             if (cbDatabase->GetCount())
                 cbDatabase->SetSelection(0);
+
+            pgSetIterator set2(remoteServer->GetConnection(), 
+                wxT("SELECT DISTINCT usename\n")
+                wxT("FROM pg_user db\n")
+                wxT("ORDER BY usename"));
+
+            while(set2.RowsLeft())
+                cbUsername->Append(set2.GetVal(wxT("usename")));
+
+            if (cbUsername->GetCount())
+                cbUsername->SetSelection(0);
         }
 
     }
@@ -158,14 +141,12 @@ wxString dlgSelectConnection::GetServerName()
 
 void dlgSelectConnection::OnChangeDatabase(wxCommandEvent& ev)
 {
-	if (GetServer())
-		btnOK->Enable(cbDatabase->GetCount() > 0 && cbDatabase->GetCurrentSelection() >= 0);
+	btnOK->Enable(cbServer->GetValue().Length() > 0 && cbDatabase->GetValue().Length() > 0 && cbUsername->GetValue().Length() > 0);
 }
 
 void dlgSelectConnection::OnTextChange(wxCommandEvent& ev)
 {
-	if (!GetServer())
-		btnOK->Enable(cbDatabase->GetValue().Len() > 0 && cbServer->GetValue().Len() > 0 && txtUsername->GetValue().Len() > 0);
+	btnOK->Enable(cbServer->GetValue().Length() > 0 && cbDatabase->GetValue().Length() > 0 && cbUsername->GetValue().Length() > 0);
 }
 
 void dlgSelectConnection::OnOK(wxCommandEvent& ev)
@@ -174,9 +155,11 @@ void dlgSelectConnection::OnOK(wxCommandEvent& ev)
     if (!btnOK->IsEnabled())
         return;
 #endif
+
 	if (cbDatabase->GetCurrentSelection() == wxNOT_FOUND ||
 		cbServer->GetCurrentSelection() == wxNOT_FOUND)
 		remoteServer = NULL;
+
     EndModal(wxID_OK);
 }
 
@@ -188,26 +171,24 @@ void dlgSelectConnection::OnCancel(wxCommandEvent& ev)
 
 pgConn *dlgSelectConnection::CreateConn(wxString& applicationname)
 {
-	if (GetServer())	/* Running with access to the main form with the object tree */
-		return GetServer()->CreateConn(GetDatabase(), 0, applicationname);
-	else
-    {
-        /* gcc requires that we store this in temporary variables for some reason... */
-        wxString serv = cbServer->GetValue();
-        wxString db = cbDatabase->GetValue();
-		long port = 0;
-		if (serv.Find(':') > 0)
+    /* gcc requires that we store this in temporary variables for some reason... */
+    wxString serv = cbServer->GetValue();
+    wxString db = cbDatabase->GetValue();
+
+	long port = 0;
+	if (serv.Find(':') > 0)
+	{
+		if (!serv.Mid(serv.Find(':')+1).ToLong(&port))
 		{
-			if (!serv.Mid(serv.Find(':')+1).ToLong(&port))
-			{
-				wxMessageBox(_("Invalid port number specified."));
-				return NULL;
-			}
-			serv = serv.Mid(0, serv.Find(':'));
+			wxMessageBox(_("Invalid port number specified."));
+			return NULL;
 		}
-        wxString user = txtUsername->GetValue();
-		return CreateConn(serv, db, user, port, 0, applicationname, true);
-    }
+		serv = serv.Mid(0, serv.Find(':'));
+	}
+
+    wxString user = cbUsername->GetValue();
+
+	return CreateConn(serv, db, user, port, 0, applicationname, true);
 }
 
 pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxString& username, int port, int sslmode, wxString& applicationname, bool writeMRU)
@@ -242,7 +223,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxSt
 		{
 			settings->Write(wxT("QuickConnect/server"), cbServer->GetValue());
 			settings->Write(wxT("QuickConnect/database"), cbDatabase->GetValue());
-			settings->Write(wxT("QuickConnect/username"), txtUsername->GetValue());
+			settings->Write(wxT("QuickConnect/username"), cbUsername->GetValue());
 		}
 	}
 	return newconn;
@@ -273,5 +254,4 @@ int dlgSelectConnection::Go(pgConn *conn, wxBitmapComboBox *cb)
 
     return ShowModal();
 }
-
 

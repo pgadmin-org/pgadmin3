@@ -19,7 +19,6 @@
 #include "schema/pgRole.h"
 #include "frm/frmMain.h"
 #include "dlg/dlgReassignDropOwned.h"
-#include "dlg/dlgSelectConnection.h"
 #include "utils/pgDefs.h"
 #include "schema/pgDatabase.h"
 #include "schema/pgTablespace.h"
