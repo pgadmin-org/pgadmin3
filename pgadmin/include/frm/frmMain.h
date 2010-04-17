@@ -127,7 +127,7 @@ private:
     ctlListView *properties;
     ctlListView *statistics;
     ctlListView *dependents, *dependencies;
-    wxAuiNotebook *listViews;
+    wxNotebook *listViews;
     ctlSQLBox *sqlPane;
     wxMenu *newMenu, *debuggingMenu, *reportMenu, *toolsMenu, *pluginsMenu, *viewMenu, 
           *treeContextMenu, *newContextMenu, *slonyMenu, *scriptingMenu, *viewDataMenu;
@@ -166,7 +166,7 @@ private:
     void OnAuiUpdate(wxAuiManagerEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
-    void OnPageChange(wxAuiNotebookEvent& event);
+    void OnPageChange(wxNotebookEvent& event);
     void OnPropSelChanged(wxListEvent& event);
     void OnPropSelActivated(wxListEvent& event);
     void OnPropRightClick(wxListEvent& event);
