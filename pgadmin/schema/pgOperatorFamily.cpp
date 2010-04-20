@@ -40,7 +40,7 @@ wxString pgOperatorFamily::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Operator Family: \"") + GetName() + wxT("\"\n\n")
+        sql = wxT("-- Operator Family: ") + GetName() + wxT("\n\n")
             + wxT("-- DROP OPERATOR FAMILY ") + GetQuotedFullIdentifier() + wxT(" USING ") + GetAccessMethod() + wxT(";")
             + wxT("\n\nCREATE OPERATOR FAMILY ") + GetQuotedFullIdentifier()
             + wxT(" USING ") + GetAccessMethod()

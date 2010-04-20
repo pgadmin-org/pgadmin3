@@ -70,7 +70,7 @@ wxString pgRole::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Role: \"") + GetName() + wxT("\"\n\n")
+        sql = wxT("-- Role: ") + GetName() + wxT("\n\n")
             + wxT("-- DROP ROLE ") + GetQuotedFullIdentifier() + wxT(";")
             + wxT("\n\nCREATE ROLE ") + GetQuotedIdentifier();
 

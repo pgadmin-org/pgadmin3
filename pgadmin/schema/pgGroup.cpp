@@ -33,7 +33,7 @@ wxString pgGroup::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Group: \"") + GetName() + wxT("\"\n\n")
+        sql = wxT("-- Group: ") + GetName() + wxT("\n\n")
             + wxT("DROP GROUP ") + GetQuotedFullIdentifier() + wxT(";")
             + wxT("\n\nCREATE Group ") + GetQuotedIdentifier()
             + wxT("\n  WITH SYSID ") + NumToStr(groupId)
