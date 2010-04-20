@@ -40,7 +40,7 @@ wxString pgOperatorClass::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Operator Class: \"") + GetName() + wxT("\"\n\n")
+        sql = wxT("-- Operator Class: ") + GetName() + wxT("\n\n")
             + wxT("-- DROP OPERATOR CLASS ") + GetQuotedFullIdentifier() + wxT(" USING ") + GetAccessMethod() + wxT(";")
             + wxT("\n\nCREATE OPERATOR CLASS ") + GetQuotedFullIdentifier();
         if (GetOpcDefault())

@@ -45,7 +45,7 @@ wxString pgUser::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- User: \"") + GetName() + wxT("\"\n\n")
+        sql = wxT("-- User: ") + GetName() + wxT("\n\n")
             + wxT("-- DROP USER ") + GetQuotedFullIdentifier() + wxT(";")
             + wxT("\n\nCREATE USER ") + GetQuotedIdentifier()
             + wxT("\n  WITH SYSID ") + NumToStr(userId);

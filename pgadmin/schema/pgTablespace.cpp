@@ -86,7 +86,7 @@ wxString pgTablespace::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Tablespace: \"") + GetName() + wxT("\"\n\n");
+        sql = wxT("-- Tablespace: ") + GetName() + wxT("\n\n");
         if (location.IsEmpty())
             sql += wxT("-- System Tablespace\n");
         else

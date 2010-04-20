@@ -154,9 +154,9 @@ wxString pgSchemaBase::GetSql(ctlTree *browser)
     if (sql.IsNull())
     {
         if (GetMetaType() == PGM_CATALOG)
-            sql = wxT("-- Catalog: \"") + GetName() + wxT("\"\n\n");
+            sql = wxT("-- Catalog: ") + GetName() + wxT("\n\n");
         else
-            sql = wxT("-- Schema: \"") + GetName() + wxT("\"\n\n");
+            sql = wxT("-- Schema: ") + GetName() + wxT("\n\n");
 
         sql += wxT("-- DROP SCHEMA ") + GetQuotedFullIdentifier() + wxT(";")
             + wxT("\n\nCREATE SCHEMA ") + qtIdent(GetName()) 
