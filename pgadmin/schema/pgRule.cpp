@@ -58,7 +58,7 @@ wxString pgRule::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
-        sql = wxT("-- Rule: \"") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT("\"\n\n")
+        sql = wxT("-- Rule: ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT("\n\n")
             + wxT("-- DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable() + wxT(";\n\n")
             + wxT("CREATE OR REPLACE") + GetFormattedDefinition().Mid(6) // the backend pg_get_ruledef gives CREATE only
             + wxT("\n");
@@ -157,7 +157,7 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
                 rule->iSetCondition(definition.Mid(wherePos+7, doPos-wherePos-7));
 
             rule->iSetDefinition(definition);
-            rule->iSetQuotedFullTable(collection->GetDatabase()->GetSchemaPrefix(rules->GetVal(wxT("nspname"))) 
+            rule->iSetQuotedFullTable(collection->GetDatabase()->GetQuotedSchemaPrefix(rules->GetVal(wxT("nspname"))) 
                 + qtIdent(rules->GetVal(wxT("relname"))));
             const wxChar *evts[] = {0, wxT("SELECT"), wxT("UPDATE"), wxT("INSERT"), wxT("DELETE")};
             int evno=StrToLong(rules->GetVal(wxT("ev_type")));
