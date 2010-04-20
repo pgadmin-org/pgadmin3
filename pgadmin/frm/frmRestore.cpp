@@ -24,6 +24,7 @@
 #include "frm/frmMain.h"
 #include "utils/sysLogger.h"
 #include "schema/pgTable.h"
+#include "schema/pgFunction.h"
 #include "schema/pgLanguage.h"
 #include "schema/pgConstraints.h"
 #include "schema/pgForeignKey.h"
@@ -84,7 +85,9 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
     LoadResource(_form, wxT("frmRestore"));
     RestorePosition();
 
-    SetTitle(wxString::Format(_("Restore %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
+    SetTitle(wxString::Format(_("Restore %s %s"),
+        object->GetTranslatedTypeName().c_str(),
+        object->GetQuotedFullIdentifier().c_str()));
 
     if (object->GetConnection()->EdbMinimumVersion(8,0))
         restoreExecutable=edbRestoreExecutable;
@@ -104,6 +107,11 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
         {
             chkOnlyData->Disable();
             chkOnlySchema->Disable();
+        }
+        if (object->GetMetaType() == PGM_FUNCTION)
+        {
+            chkClean->SetValue(true);
+            chkClean->Disable();
         }
         btnView->Disable();
     }
@@ -285,6 +293,14 @@ wxString frmRestore::getCmdPart2(int step)
 {
     wxString cmd;
 
+    wxString restoreExecutable;
+    if (object->GetConnection()->EdbMinimumVersion(8,0))
+        restoreExecutable=edbBackupExecutable;
+    else if (object->GetConnection()->GetIsGreenplum())
+        restoreExecutable=gpBackupExecutable;
+    else
+        restoreExecutable=pgBackupExecutable;
+
     if (step)
     {
         cmd.Append(wxT(" --list"));
@@ -416,6 +432,10 @@ wxString frmRestore::getCmdPart2(int step)
                     break;
                 default:
                     break;
+            }
+            if (pgAppMinimumVersion(restoreExecutable, 8, 2))
+            {
+                cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetSchema()->GetQuotedIdentifier(), true));
             }
         }
 
