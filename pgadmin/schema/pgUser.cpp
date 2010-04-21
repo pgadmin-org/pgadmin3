@@ -63,8 +63,13 @@ wxString pgUser::GetSql(ctlTree *browser)
         size_t index;
         for (index=0 ; index < configList.GetCount() ; index++)
         {
-            sql += wxT("ALTER USER ") + GetQuotedIdentifier()
-                + wxT(" SET ") + configList.Item(index).BeforeFirst('=') + wxT("='") + configList.Item(index).AfterFirst('=') + wxT("';\n");
+            if (configList.Item(index).BeforeFirst('=') != wxT("search_path") &&
+                configList.Item(index).BeforeFirst('=') != wxT("temp_tablespaces"))
+                sql += wxT("ALTER USER ") + GetQuotedIdentifier()
+                    + wxT(" SET ") + configList.Item(index).BeforeFirst('=') + wxT("='") + configList.Item(index).AfterFirst('=') + wxT("';\n");
+            else
+                sql += wxT("ALTER USER ") + GetQuotedIdentifier()
+                    + wxT(" SET ") + configList.Item(index).BeforeFirst('=') + wxT("=") + configList.Item(index).AfterFirst('=') + wxT(";\n");
         }
         for (index=0 ; index < groupsIn.GetCount() ; index++)
             sql += wxT("ALTER GROUP ") + qtIdent(groupsIn.Item(index))

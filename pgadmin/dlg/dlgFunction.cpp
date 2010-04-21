@@ -983,10 +983,16 @@ wxString dlgFunction::GetSql()
             // changed, which will remove them all :-(
             if ((oldVal != newVal) || didChange)  
             {
-                sql += wxT("ALTER FUNCTION ") + name
-                    +  wxT(" SET ") + newVar
-                    +  wxT("='") + newVal
-                    +  wxT("';\n");
+                if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
+                    sql += wxT("ALTER FUNCTION ") + name
+                        +  wxT(" SET ") + newVar
+                        +  wxT("='") + newVal
+                        +  wxT("';\n");
+                else
+                    sql += wxT("ALTER FUNCTION ") + name
+                        +  wxT(" SET ") + newVar
+                        +  wxT("=") + newVal
+                        +  wxT(";\n");
             }
         }
         

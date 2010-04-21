@@ -422,14 +422,16 @@ wxString pgDatabase::GetSql(ctlTree *browser)
 
             if (username.Length() == 0)
             {
-                sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier()
-                    +  wxT(" SET ") + varname + wxT("='") + varvalue + wxT("';\n");
+                sql += wxT("ALTER DATABASE ") + GetQuotedFullIdentifier();
             }
             else
             {
-                sql += wxT("ALTER ROLE ") + username + wxT(" IN DATABASE ") + GetQuotedFullIdentifier()
-                    +  wxT(" SET ") + varname + wxT("='") + varvalue + wxT("';\n");
+                sql += wxT("ALTER ROLE ") + username + wxT(" IN DATABASE ") + GetQuotedFullIdentifier();
             }
+            if (varname != wxT("search_path") && varname != wxT("temp_tablespaces"))
+                sql += wxT(" SET ") + varname + wxT("='") + varvalue + wxT("';\n");
+            else
+                sql += wxT(" SET ") + varname + wxT("=") + varvalue + wxT(";\n");
         }
 
 		if (myConn)
@@ -672,6 +674,8 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
                 str = TransformToNewDatconfig(str.Mid(1, str.Length()-2));
                 //str = tmp;
             }
+            else
+                str = str.Mid(1, str.Length()-2);
             if (!str.IsEmpty())
                 FillArray(database->GetVariables(), str);
             database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));

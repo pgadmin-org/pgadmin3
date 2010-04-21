@@ -656,19 +656,14 @@ wxString dlgDatabase::GetSql()
             if (oldVal != newVal)
             {
                 if (newUsr.Length() == 0)
-                {
-                    sql += wxT("ALTER DATABASE ") + qtIdent(name)
-                        +  wxT(" SET ") + newVar
-                        +  wxT("='") + newVal
-                        +  wxT("';\n");
-                }
+                    sql += wxT("ALTER DATABASE ") + qtIdent(name);
                 else
-                {
-                    sql += wxT("ALTER ROLE ") + newUsr + wxT(" IN DATABASE ") + qtIdent(name)
-                        +  wxT(" SET ") + newVar
-                        +  wxT("='") + newVal
-                        +  wxT("';\n");
-                }
+                    sql += wxT("ALTER ROLE ") + newUsr + wxT(" IN DATABASE ") + qtIdent(name);
+
+                if (varname != wxT("search_path") && varname != wxT("temp_tablespaces"))
+                    sql += wxT(" SET ") + newVar + wxT("='") + newVal + wxT("';\n");
+                else
+                    sql += wxT(" SET ") + newVar + wxT("=") + newVal + wxT(";\n");
             }
         }
         
@@ -749,10 +744,11 @@ wxString dlgDatabase::GetSql2()
         // check for changed or added vars
         for (pos=0 ; pos < cnt ; pos++)
         {
-            sql += wxT("ALTER DATABASE ") + qtIdent(name)
-                +  wxT(" SET ") + lstVariables->GetText(pos)
-                +  wxT("='") + lstVariables->GetText(pos, 1)
-                +  wxT("';\n");
+            sql += wxT("ALTER DATABASE ") + qtIdent(name);
+            if (lstVariables->GetText(pos) != wxT("search_path") && lstVariables->GetText(pos) != wxT("temp_tablespaces"))
+                sql += wxT(" SET ") + lstVariables->GetText(pos) +  wxT("='") + lstVariables->GetText(pos, 1) +  wxT("';\n");
+            else
+                sql += wxT(" SET ") + lstVariables->GetText(pos) +  wxT("=") + lstVariables->GetText(pos, 1) +  wxT(";\n");
         }
     }
 

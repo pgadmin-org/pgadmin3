@@ -539,10 +539,16 @@ wxString dlgUser::GetSql()
         }
         if (oldVal != newVal)
         {
-            sql += wxT("ALTER USER ") + qtIdent(name)
-                +  wxT(" SET ") + newVar
-                +  wxT("='") + newVal
-                +  wxT("';\n");
+            if (newVar != wxT("search_path") && newVar != wxT("temp_tablespaces"))
+                sql += wxT("ALTER USER ") + qtIdent(name)
+                    +  wxT(" SET ") + newVar
+                    +  wxT("='") + newVal
+                    +  wxT("';\n");
+            else
+                sql += wxT("ALTER USER ") + qtIdent(name)
+                    +  wxT(" SET ") + newVar
+                    +  wxT("=") + newVal
+                    +  wxT(";\n");
         }
     }
     
