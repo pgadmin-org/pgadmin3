@@ -141,6 +141,9 @@ void AppendIfFilled(wxString &str, const wxString &delimiter, const wxString &wh
 // Create keyword list from PostgreSQL list
 void FillKeywords(wxString &str);
 
+// Recreate a 9.0 datconfig
+wxString TransformToNewDatconfig(const wxString &list);
+
 // Fill array, splitting the string separated by commas (maybe quoted elements)
 void FillArray(wxArrayString &array, const wxString &str);
 

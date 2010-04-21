@@ -669,18 +669,11 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             wxString str=databases->GetVal(wxT("datconfig"));
             if (!collection->GetConnection()->BackendMinimumVersion(8, 5))
             {
-                wxString tmp = wxEmptyString;
-                wxStringTokenizer tkz(str.Mid(1, str.Length()-2), wxT(","));
-                while (tkz.HasMoreTokens())
-                {
-                    if (tmp.Length() > 0)
-                        tmp += wxT(",");
-                    tmp += wxT("=") + tkz.GetNextToken();
-                }
-                str = wxT("{") + tmp + wxT("}");
+                str = TransformToNewDatconfig(str.Mid(1, str.Length()-2));
+                //str = tmp;
             }
             if (!str.IsEmpty())
-                FillArray(database->GetVariables(), str.Mid(1, str.Length()-2));
+                FillArray(database->GetVariables(), str);
             database->iSetAllowConnections(databases->GetBool(wxT("datallowconn")));
 
             if (collection->GetConnection()->BackendMinimumVersion(8, 0))

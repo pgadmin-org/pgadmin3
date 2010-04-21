@@ -446,6 +446,66 @@ wxString qtStrip(const wxString &str)
 }
 
 
+wxString TransformToNewDatconfig(const wxString &list)
+{
+    const wxChar *cp=list.c_str();
+
+    wxString config = wxEmptyString;
+    wxString str = wxEmptyString;
+    bool quote=false;
+    
+    while (*cp)
+    {
+        switch (*cp)
+        {
+            case '\\':
+            {
+                if (cp[1]== '"')
+                {
+                    str.Append(*cp);
+                    cp++;
+                    str.Append(*cp);
+                }
+                break;
+            }
+            case '"':
+            case '\'':
+            {
+                quote = !quote;
+                str.Append(*cp);
+                break;
+            }
+            case ',':
+            {
+                if (!quote)
+                {
+                    if (!config.IsEmpty())
+                        config += wxT(",");
+                    config += wxT("=")+str;
+                    str = wxEmptyString;
+                    break;
+                }
+            }
+            default:
+            {
+                str.Append(*cp);
+                break;
+            }
+        }
+        cp++;
+    }
+
+    if (!str.IsEmpty())
+    {
+        if (!config.IsEmpty())
+            config += wxT(",");
+        config += wxT("=")+str;
+    }
+
+    return config;
+}
+
+
 void FillArray(wxArrayString &array, const wxString &list)
 {
     const wxChar *cp=list.c_str();
