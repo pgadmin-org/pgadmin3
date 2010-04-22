@@ -421,9 +421,6 @@ wxString frmRestore::getCmdPart2(int step)
                 case PGM_INDEX:
                     cmd.Append(wxT(" --index ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
                     break;
-                case PGM_SCHEMA:
-                    cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
-                    break;
                 case PGM_TABLE:
                     cmd.Append(wxT(" --table ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
                     break;
@@ -433,10 +430,10 @@ wxString frmRestore::getCmdPart2(int step)
                 default:
                     break;
             }
-            if (pgAppMinimumVersion(restoreExecutable, 8, 2))
-            {
+            if (object->GetMetaType() == PGM_SCHEMA)
+                cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
+            else if (pgAppMinimumVersion(restoreExecutable, 8, 2))
                 cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetSchema()->GetQuotedIdentifier(), true));
-            }
         }
 
         if (settings->GetIgnoreVersion())
