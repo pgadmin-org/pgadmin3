@@ -114,6 +114,10 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
     if (!obj->GetServer() || !(obj->GetServer()->GetSuperUser() || obj->GetServer()->GetUsername() == obj->GetOwner()))
         return false;
 
+    // EnterpriseDB 8.3 or earlier does not support debugging by the non-superuser
+    if (!obj->GetServer()->GetSuperUser() && !obj->GetConnection()->EdbMinimumVersion(8, 4))
+        return false;
+
     if (!obj->IsCollection())
     {
         switch (obj->GetMetaType())
