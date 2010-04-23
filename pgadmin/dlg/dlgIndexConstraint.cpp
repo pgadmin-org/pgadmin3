@@ -24,8 +24,11 @@
 
 
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
+#define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
+#define chkDeferred     CTRL_CHECKBOX("chkDeferred")
 
 BEGIN_EVENT_TABLE(dlgIndexConstraint, dlgIndexBase)
+    EVT_CHECKBOX(XRCID("chkDeferrable"),            dlgProperty::OnChange)
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgIndexConstraint::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgIndexConstraint::OnRemoveCol)
 #ifdef __WXMAC__
@@ -80,6 +83,11 @@ int dlgIndexConstraint::Go(bool modal)
         if (idc->GetTablespaceOid() != 0)
             cbTablespace->SetKey(idc->GetTablespaceOid());
         cbTablespace->Enable(connection->BackendMinimumVersion(8, 0));
+
+        chkDeferrable->SetValue(index->GetDeferrable());
+        chkDeferred->SetValue(index->GetDeferred());
+        chkDeferrable->Enable(false);
+        chkDeferred->Enable(false);
     }
     else
     {
@@ -93,6 +101,9 @@ int dlgIndexConstraint::Go(bool modal)
         // Add the default tablespace 
         cbTablespace->Insert(_("<default tablespace>"), 0, (void *)0);
         cbTablespace->SetSelection(0);
+
+        chkDeferrable->Enable(connection->BackendMinimumVersion(9, 0));
+        chkDeferred->Enable(connection->BackendMinimumVersion(9, 0));
     }
 
     return dlgIndexBase::Go(modal);
@@ -151,6 +162,13 @@ wxString dlgIndexConstraint::GetDefinition()
 
     if (cbTablespace->GetOIDKey() > 0)
         sql += wxT(" USING INDEX TABLESPACE ") + qtIdent(cbTablespace->GetValue());
+
+    if (chkDeferrable->GetValue())
+    {
+        sql += wxT(" DEFERRABLE");
+        if (chkDeferred->GetValue())
+          sql += wxT(" INITIALLY DEFERRED");
+    }
 
     return sql;
 }
