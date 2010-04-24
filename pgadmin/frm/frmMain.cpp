@@ -130,7 +130,7 @@ frmMain::frmMain(const wxString& title)
     CreateMenus();
     
     // Setup the object browser
-    browser = new ctlTree(this, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
+    browser = new ctlTree(this, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER | wxTR_HIDE_ROOT);
     browser->SetImageList(imageList);
 
     // Setup the listview
@@ -207,12 +207,13 @@ frmMain::frmMain(const wxString& title)
 
     // Add the root node
     serversObj = new pgServerCollection(serverFactory.GetCollectionFactory());
-    wxTreeItemId servers = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
+    wxTreeItemId root = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
         serversObj->GetIconId(), -1, serversObj);
 
     // Load servers
     RetrieveServers();
-    browser->Expand(servers);
+
+    browser->SortChildren(root);
 }
 
 
@@ -1130,43 +1131,53 @@ void frmMain::StoreServers()
     gethostname(buf, 255); 
     wxString hostname = wxString(buf, wxConvUTF8);
 
-    // Write the individual servers
-    // Iterate through all the child nodes of the Servers node
-    treeObjectIterator servers(browser, serversObj);
-
-    while ((server = (pgServer*)servers.GetNextObject()) != 0)
+    wxTreeItemIdValue foldercookie;
+    wxTreeItemId folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
+    while (folderitem)
     {
-        if (server->IsCreatedBy(serverFactory))
+        if (browser->ItemHasChildren(folderitem))
         {
-            wxString key;
-            ++numServers;
-
-            key.Printf(wxT("Servers/%d/"), numServers);
-            settings->Write(key + wxT("Server"), server->GetName());
-            settings->Write(key + wxT("Description"), server->GetDescription());
-            settings->Write(key + wxT("ServiceID"), server->GetServiceID());
-            settings->Write(key + wxT("DiscoveryID"), server->GetDiscoveryID());
-            settings->Write(key + wxT("Port"), server->GetPort());
-            settings->Write(key + wxT("StorePwd"), server->GetStorePwd());
-            settings->Write(key + wxT("Restore"), server->GetRestore());
-            settings->Write(key + wxT("Database"), server->GetDatabaseName());
-            settings->Write(key + wxT("Username"), server->GetUsername());
-            settings->Write(key + wxT("LastDatabase"), server->GetLastDatabase());
-            settings->Write(key + wxT("LastSchema"), server->GetLastSchema());
-            settings->Write(key + wxT("DbRestriction"), server->GetDbRestriction());
-            settings->Write(key + wxT("Colour"), server->GetColour());
-            settings->Write(key + wxT("SSL"), server->GetSSL());
-
-            pgCollection *coll=browser->FindCollection(databaseFactory, server->GetId());
-            if (coll)
+            wxTreeItemIdValue servercookie;
+            wxTreeItemId serveritem = browser->GetFirstChild(folderitem, servercookie);
+            while (serveritem)
             {
-                treeObjectIterator dbs(browser, coll);
-                pgDatabase *db;
+                server = (pgServer*)browser->GetItemData(serveritem);
+                if (server->IsCreatedBy(serverFactory))
+                {
+                    wxString key;
+                    ++numServers;
 
-                while ((db=(pgDatabase*)dbs.GetNextObject()) != 0)
-                    settings->Write(key + wxT("Databases/") + db->GetName() + wxT("/SchemaRestriction"), db->GetSchemaRestriction());
+                    key.Printf(wxT("Servers/%d/"), numServers);
+                    settings->Write(key + wxT("Server"), server->GetName());
+                    settings->Write(key + wxT("Description"), server->GetDescription());
+                    settings->Write(key + wxT("ServiceID"), server->GetServiceID());
+                    settings->Write(key + wxT("DiscoveryID"), server->GetDiscoveryID());
+                    settings->Write(key + wxT("Port"), server->GetPort());
+                    settings->Write(key + wxT("StorePwd"), server->GetStorePwd());
+                    settings->Write(key + wxT("Restore"), server->GetRestore());
+                    settings->Write(key + wxT("Database"), server->GetDatabaseName());
+                    settings->Write(key + wxT("Username"), server->GetUsername());
+                    settings->Write(key + wxT("LastDatabase"), server->GetLastDatabase());
+                    settings->Write(key + wxT("LastSchema"), server->GetLastSchema());
+                    settings->Write(key + wxT("DbRestriction"), server->GetDbRestriction());
+                    settings->Write(key + wxT("Colour"), server->GetColour());
+                    settings->Write(key + wxT("SSL"), server->GetSSL());
+                    settings->Write(key + wxT("Group"), server->GetGroup());
+
+                    pgCollection *coll=browser->FindCollection(databaseFactory, server->GetId());
+                    if (coll)
+                    {
+                        treeObjectIterator dbs(browser, coll);
+                        pgDatabase *db;
+
+                        while ((db=(pgDatabase*)dbs.GetNextObject()) != 0)
+                            settings->Write(key + wxT("Databases/") + db->GetName() + wxT("/SchemaRestriction"), db->GetSchemaRestriction());
+                    }
+                }
+                serveritem = browser->GetNextChild(folderitem, servercookie);
             }
         }
+        folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
     }
 
     // Write the server count
@@ -1177,15 +1188,28 @@ void frmMain::StoreServers()
 
 void frmMain::RetrieveServers()
 {
+    wxString label;
+    int total = 0;
+    wxTreeItemIdValue groupcookie;
+    wxTreeItemId groupitem;
+
     // Retrieve previously stored servers
     wxLogInfo(wxT("Reloading servers..."));
 
+    // Create all servers' nodes
     serverFactory.CreateObjects(serversObj, browser);
     
-    // Reset the Servers node text
-    wxString label;
-    label.Printf(_("Servers (%d)"), browser->GetChildrenCount(serversObj->GetId(), false));
-    browser->SetItemText(serversObj->GetId(), label);
+    // Count number of servers and groups
+    groupitem = browser->GetFirstChild(browser->GetRootItem(), groupcookie);
+    while (groupitem)
+    {
+        total = browser->GetChildrenCount(groupitem, false);
+        label = browser->GetItemText(groupitem) + wxT(" (") + NumToStr((long)total) + wxT(")");
+        browser->SetItemText(groupitem, label);
+        browser->SortChildren(groupitem);
+        browser->Expand(groupitem);
+        groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
+    }
 }
 
 pgServer *frmMain::ConnectToServer(const wxString& servername, bool restore)
@@ -1250,6 +1274,23 @@ void frmMain::SetStatusText(const wxString &msg)
     statusBar->SetStatusText(msg, 1);
     statusBar->SetStatusText(wxEmptyString, 2);
 }
+
+void frmMain::SetItemBackgroundColour(wxTreeItemId item, wxColour colour)
+{
+    wxTreeItemIdValue cookie;
+
+    browser->SetItemBackgroundColour(item, wxColour(colour));
+    if (browser->ItemHasChildren(item))
+    {
+        wxTreeItemId childitem = browser->GetFirstChild(item, cookie);
+        while (childitem)
+        {
+            SetItemBackgroundColour(childitem, colour);
+            childitem = browser->GetNextChild(item, cookie);
+        }
+    }
+}
+
 
 /////////////////////////////////////////
 

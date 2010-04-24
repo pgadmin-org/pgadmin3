@@ -361,8 +361,6 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 
 void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 {
-    browser->RemoveDummyChild(data);
-
     pgServer *server=0;
 
 

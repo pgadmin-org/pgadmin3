@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id$
+// RCS-ID:      $Id: pgServer.cpp 8271 2010-04-16 21:11:41Z guillaume $
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -39,7 +39,7 @@
 
 #define DEFAULT_PG_DATABASE wxT("postgres")
 
-pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, bool _restore, int _ssl, const wxString &_colour)
+pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, bool _restore, int _ssl, const wxString &_colour, const wxString &_group)
 : pgObject(serverFactory, newName)
 {  
     description = newDescription;
@@ -48,7 +48,9 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     port = newPort;
     ssl=_ssl;
     colour = _colour;
-    serverIndex=0;
+    group = _group;
+
+	serverIndex=0;
 
     connected = false;
     lastSystemOID = 0;
@@ -1114,10 +1116,14 @@ bool pgServerObjCollection::CanCreate()
 
 pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr)
 {
+    wxTreeItemId groupitem, serveritem;
+    wxTreeItemIdValue groupcookie;
+    bool found;
+
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
     long loop, port, ssl=0;
-    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, restore, serviceID, discoveryID, dbRestriction, colour;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, restore, serviceID, discoveryID, dbRestriction, colour, group;
     pgServer *server=0;
 
     wxArrayString discoveredServers;
@@ -1127,6 +1133,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
     gethostname(buf, 255); 
     wxString hostname = wxString(buf, wxConvUTF8);
 
+    //wxLogError(wxT("Loading previously registered servers"));
     wxLogInfo(wxT("Loading previously registered servers"));
 
     for (loop = 1; loop <= numServers; ++loop)
@@ -1146,9 +1153,11 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         settings->Read(key + wxT("LastSchema"), &lastSchema, wxEmptyString);
         settings->Read(key + wxT("DbRestriction"), &dbRestriction, wxEmptyString);
         settings->Read(key + wxT("Colour"), &colour, wxEmptyString);
+        settings->Read(key + wxT("Group"), &group, wxT("Servers"));
 
         // Sanitize the colour
         colour = colour.Trim();
+
         if (!colour.IsEmpty())
         {
             wxColour cColour;
@@ -1160,10 +1169,23 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
                 colour = wxEmptyString;
         }
 
+        if (colour.IsEmpty())
+        {
+            wxColour cColour;
+            cColour.Set(wxT("#FFFFFF"));
+            colour = cColour.GetAsString(wxC2S_HTML_SYNTAX);
+        }
+
         // SSL mode
 #ifdef SSL
         settings->Read(key + wxT("SSL"), &ssl, 0);
 #endif
+
+        // Sanitize the group
+        if (group.IsEmpty())
+        {
+            group = wxT("Servers");
+        }
 
         // Add the Server node
         server = new pgServer(servername, description, database, username, port, StrToBool(storePwd), StrToBool(restore), ssl);
@@ -1174,16 +1196,35 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         server->iSetDiscovered(false);
         server->iSetDbRestriction(dbRestriction);
         server->iSetColour(colour);
+        server->iSetGroup(group);
         server->iSetServerIndex(loop);
-        wxTreeItemId itm = browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
-        browser->SortChildren(obj->GetId());
+
+        found = false;
+        if (browser->ItemHasChildren(obj->GetId()))
+        {
+            groupitem = browser->GetFirstChild(obj->GetId(), groupcookie);
+            while (!found && groupitem)
+            {
+                if (browser->GetItemText(groupitem).StartsWith(group))
+                    found = true;
+                else
+                    groupitem = browser->GetNextChild(obj->GetId(), groupcookie);
+            }
+        }
+
+        if (!found)
+        {
+            groupitem = browser->AppendItem(obj->GetId(), group, obj->GetIconId());
+        }
+
+        serveritem = browser->AppendItem(groupitem, server->GetFullName(), server->GetIconId(), -1, server);
+        browser->SortChildren(groupitem);
         if (!server->GetColour().IsEmpty())
-            browser->SetItemBackgroundColour(itm, wxColour(server->GetColour()));
+            browser->SetItemBackgroundColour(serveritem, wxColour(server->GetColour()));
 
         // Note if we're reloading a discovered server
         if (!discoveryID.IsEmpty())
             discoveredServers.Add(discoveryID);
-
     }
 
 #ifdef WIN32
@@ -1223,7 +1264,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
                 server->iSetDiscoveryID(svcName);
                 server->iSetDiscovered(true);
                 server->iSetServiceID(svcName);
-                browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+                browser->AppendItem(browser->GetFirstChild(obj->GetId(), groupcookie), server->GetFullName(), server->GetIconId(), -1, server);
                 browser->SortChildren(obj->GetId());
             }
             // Get the next one...
@@ -1275,7 +1316,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
                         server = new pgServer(servername, description, wxT("postgres"), username, port, false, 0);
                         server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
                         server->iSetDiscovered(true);
-                        browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+                        browser->AppendItem(browser->GetFirstChild(obj->GetId(), groupcookie), server->GetFullName(), server->GetIconId(), -1, server);
                     }
                 }
             }
@@ -1307,7 +1348,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
                         server = new pgServer(servername, description, wxT("edb"), username, port, false, 0);
                         server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
                         server->iSetDiscovered(true);
-                        browser->AppendItem(obj->GetId(), server->GetFullName(), server->GetIconId(), -1, server);
+                        browser->AppendItem(browser->GetFirstChild(obj->GetId(), groupcookie), server->GetFullName(), server->GetIconId(), -1, server);
                     }
                 }
             }
@@ -1366,8 +1407,6 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
     dlgServer dlg(&serverFactory, form, 0);
     dlg.CenterOnParent();
 
-    ctlTree *browser=form->GetBrowser();
-
     while (rc != PGCONN_OK)
     {
         if (dlg.GoNew() != wxID_OK)
@@ -1397,18 +1436,43 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
             case PGCONN_OK:
             {
                 int icon;
+                ctlTree *browser = form->GetBrowser();
+                wxTreeItemId groupitem, parentitem;
+                wxTreeItemIdValue groupcookie;
+                int total;
+                wxString label;
+
                 if (server->GetConnected())
                     icon = serverFactory.GetIconId();
                 else
                     icon = serverFactory.GetClosedIconId();
                 wxLogInfo(wxT("pgServer object initialised as required."));
-                browser->AppendItem(form->GetServerCollection()->GetId(), server->GetFullName(), icon, -1, server);
-                browser->SortChildren(form->GetServerCollection()->GetId());
 
-                browser->Expand(form->GetServerCollection()->GetId());
-                wxString label;
-                label.Printf(_("Servers (%d)"), form->GetBrowser()->GetChildrenCount(form->GetServerCollection()->GetId(), false));
-                browser->SetItemText(form->GetServerCollection()->GetId(), label);
+                // Add the new server in its group
+                wxString group = server->GetGroup();
+                if (group.Length() == 0)
+                    group = wxT("Servers");
+
+                // Get the parent group
+                groupitem = browser->GetFirstChild(browser->GetRootItem(), groupcookie);
+                while (!parentitem && groupitem)
+                {
+                    if (browser->GetItemText(groupitem).StartsWith(group))
+                        parentitem = groupitem;
+                    groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
+                }
+
+                if (!parentitem)
+                    parentitem = browser->AppendItem(browser->GetRootItem(), group, icon, -1);
+
+                browser->AppendItem(parentitem, server->GetFullName(), icon, -1, server);
+                browser->SortChildren(parentitem);
+                browser->Expand(parentitem);
+
+                total = browser->GetChildrenCount(parentitem, false);
+                label = group + wxT(" (") + NumToStr((long)total) + wxT(")");
+                browser->SetItemText(parentitem, label);
+
                 form->StoreServers();
                 return 0;
             }

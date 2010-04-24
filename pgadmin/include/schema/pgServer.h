@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id$
+// RCS-ID:      $Id: pgServer.h 8271 2010-04-16 21:11:41Z guillaume $
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -38,7 +38,7 @@ extern pgServerFactory serverFactory;
 class pgServer : public pgObject
 {
 public:
-	pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool storePwd=false, bool restore=true, int sslMode=0, const wxString &colour = wxEmptyString);
+	pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool storePwd=false, bool restore=true, int sslMode=0, const wxString &colour = wxEmptyString, const wxString &group = wxEmptyString);
     ~pgServer();
     int GetIconId();
 
@@ -123,6 +123,9 @@ public:
 	void iSetColour(const wxString &s) { colour = s; }
 	wxString GetColour() { return colour; }
 
+	void iSetGroup(const wxString &s) { group = s; }
+	wxString GetGroup() { return group; }
+
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv) { return conn->HasPrivilege(objTyp, objName, priv); }
     bool ExecuteVoid(const wxString& sql) { return conn->ExecuteVoid(sql); }
     wxString ExecuteScalar(const wxString& sql) { return conn->ExecuteScalar(sql); }
@@ -163,6 +166,7 @@ private:
     wxString versionNum;
     wxString dbRestriction;
 	wxString colour;
+	wxString group;
 
     bool inRecovery;
     wxString receiveLoc, replayLoc;

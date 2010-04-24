@@ -121,6 +121,8 @@ public:
     void UpdateAllFavouritesList();
     void UpdateAllMacrosList();
 
+    void SetItemBackgroundColour(wxTreeItemId item, wxColour colour);
+
 private:
     wxAuiManager manager;
     ctlTree *browser;

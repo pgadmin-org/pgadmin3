@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id$
+// RCS-ID:      $Id: dlgServer.cpp 8206 2010-03-08 17:57:26Z guillaume $
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -43,6 +43,7 @@
 #define txtPassword     CTRL_TEXT("txtPassword")
 #define txtDbRestriction CTRL_TEXT("txtDbRestriction")
 #define colourPicker    CTRL_COLOURPICKER("colourPicker")
+#define cbGroup         CTRL_COMBOBOX("cbGroup")
 
 
 BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
@@ -59,6 +60,8 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_CHECKBOX(XRCID("chkRestore"),               dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkTryConnect"),            dlgServer::OnChangeTryConnect)
     EVT_COLOURPICKER_CHANGED(XRCID("colourPicker"), dlgServer::OnChangeColour)
+    EVT_TEXT(XRCID("cbGroup"),                      dlgProperty::OnChange)
+    EVT_COMBOBOX(XRCID("cbGroup"),                  dlgProperty::OnChange)
     EVT_BUTTON(wxID_OK,                             dlgServer::OnOK)
 END_EVENT_TABLE();
 
@@ -95,6 +98,24 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
     {
         chkTryConnect->SetValue(false);
         chkTryConnect->Disable();
+    }
+
+    // Fill the group combobox
+    cbGroup->Append(wxT("Servers"));
+    ctlTree *browser = frame->GetBrowser();
+    wxTreeItemId groupitem;
+    wxTreeItemIdValue groupcookie, servercookie;
+    pgServer *firstserver;
+    if (browser->ItemHasChildren(browser->GetRootItem()))
+    {
+        groupitem = browser->GetFirstChild(browser->GetRootItem(), groupcookie);
+        while (groupitem)
+        {
+            firstserver = (pgServer*)browser->GetObject(browser->GetFirstChild(groupitem, servercookie));
+            if (!firstserver->GetGroup().IsEmpty() && firstserver->GetGroup() != wxT("Servers"))
+                cbGroup->Append(firstserver->GetGroup());
+            groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
+        }
     }
 }
 
@@ -155,10 +176,89 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         wxColour colour = colourPicker->GetColour();
         wxString sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
         server->iSetColour(sColour);
+        if (cbGroup->GetValue().IsEmpty())
+            cbGroup->SetValue(wxT("Servers"));
+        if (server->GetGroup() != cbGroup->GetValue())
+        {
+            ctlTree *browser = mainForm->GetBrowser();
+            wxTreeItemId oldgroupitem, groupitem, serveritem;
+            wxTreeItemIdValue groupcookie;
+            bool found;
+            int total;
+            wxString label, oldgroupname;
+
+            // Duplicate server object
+            pgServer *newserver = new pgServer(
+                server->GetName(),
+                server->GetDescription(),
+                server->GetDatabaseName(), 
+                server->GetUsername(), 
+                server->GetPort(), 
+                server->GetStorePwd(),
+                server->GetRestore(),
+                server->GetSSL(),
+	        	server->GetColour(),
+                server->GetGroup());
+            newserver->iSetDbRestriction(server->GetDbRestriction().Trim());
+
+            // Drop the old item
+            // (will also take care of dropping the pgServer item)
+            oldgroupitem = browser->GetItemParent(item);
+            oldgroupname = server->GetGroup();
+            if (oldgroupname.IsEmpty())
+                oldgroupname = wxT("Servers");
+            browser->Delete(item);
+
+            // Move the item
+            found = false;
+            if (browser->ItemHasChildren(browser->GetRootItem()))
+            {
+                groupitem = browser->GetFirstChild(browser->GetRootItem(), groupcookie);
+                while (!found && groupitem)
+                {
+                    if (browser->GetItemText(groupitem).StartsWith(cbGroup->GetValue()))
+                        found = true;
+                    else
+                        groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
+                }
+            }
+
+            if (!found)
+            {
+                groupitem = browser->AppendItem(browser->GetRootItem(), cbGroup->GetValue(), browser->GetItemImage(browser->GetRootItem()));
+                browser->SortChildren(browser->GetRootItem());
+            }
+
+            serveritem = browser->AppendItem(groupitem, newserver->GetFullName(), newserver->GetIconId(), -1, newserver);
+            browser->SortChildren(groupitem);
+            browser->Expand(groupitem);
+
+            // Count the number of items in the old group item
+            total = browser->GetChildrenCount(oldgroupitem, false);
+            if (total == 0)
+                browser->Delete(oldgroupitem);
+            else
+            {
+                label = oldgroupname + wxT(" (") + NumToStr((long)total) + wxT(")");
+                browser->SetItemText(oldgroupitem, label);
+            }
+
+            // Count the number of items in the new group item
+            total = browser->GetChildrenCount(groupitem, false);
+            label = cbGroup->GetValue() + wxT(" (") + NumToStr((long)total) + wxT(")");
+            browser->SetItemText(groupitem, label);
+
+            // Re-initialize old variables to have their new meanings
+            server = newserver;
+            item = serveritem;
+        }
+        server->iSetGroup(cbGroup->GetValue());
+
+        wxMessageBox(_("Note: some changes to server settings may only take effect the next time pgAdmin connects to the server."), _("Server settings"), wxICON_INFORMATION);
+
         mainForm->execSelChange(server->GetId(), true);
         mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
-
-        wxMessageBox(_("Note: changes to server settings will take effect the next time the server is connected."), _("Server settings"), wxICON_INFORMATION);
+        mainForm->SetItemBackgroundColour(item, wxColour(server->GetColour()));
     }
 
     if (IsModal())
@@ -254,6 +354,7 @@ int dlgServer::Go(bool modal)
         chkRestore->SetValue(server->GetRestore());
         txtDbRestriction->SetValue(server->GetDbRestriction());
         colourPicker->SetColour(server->GetColour());
+        cbGroup->SetValue(server->GetGroup());
 
         stPassword->Disable();
         txtPassword->Disable();
@@ -270,6 +371,7 @@ int dlgServer::Go(bool modal)
     else
     {
         SetTitle(_("Add server"));
+        cbGroup->SetValue(wxT("Servers"));
     }
 
     return dlgProperty::Go(modal);
@@ -295,7 +397,8 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
     pgServer *obj=new pgServer(GetName(), txtDescription->GetValue(), cbDatabase->GetValue(), 
         txtUsername->GetValue(), StrToLong(txtPort->GetValue()), 
         chkTryConnect->GetValue() && chkStorePwd->GetValue(), 
-        chkRestore->GetValue(), cbSSL->GetCurrentSelection());
+        chkRestore->GetValue(), cbSSL->GetCurrentSelection(),
+		colourPicker->GetColourString(), cbGroup->GetValue());
 
     obj->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
 
@@ -338,7 +441,8 @@ void dlgServer::CheckChange()
                || chkStorePwd->GetValue() != server->GetStorePwd()
                || chkRestore->GetValue() != server->GetRestore()
                || txtDbRestriction->GetValue() != server->GetDbRestriction()
-               || sColour != sColour2;
+               || sColour != sColour2
+               || cbGroup->GetValue() != server->GetGroup();
     }
 
 
