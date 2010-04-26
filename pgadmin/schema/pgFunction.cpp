@@ -630,6 +630,8 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                         {
                             if (argDefValArray[currINindex++] != wxT("-"))
                                 function->iAddArgDef(argDefValArray[currINindex-1]);
+                            else
+                                function->iAddArgDef(wxT(""));
                         }
                         else
                             function->iAddArgDef(wxEmptyString);
