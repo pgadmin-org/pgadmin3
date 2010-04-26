@@ -234,18 +234,38 @@ int dlgSelectConnection::Go(pgConn *conn, wxBitmapComboBox *cb)
     cbConnection=cb;
 	if (mainForm != NULL)
 	{
-		treeObjectIterator servers(mainForm->GetBrowser(), mainForm->GetServerCollection());
-		pgServer *s;
+        ctlTree *browser = mainForm->GetBrowser();
+        wxTreeItemIdValue foldercookie, servercookie;
+        wxTreeItemId folderitem, serveritem;
+        pgObject *object;
+        pgServer *server;
 
-		while ((s=(pgServer*)servers.GetNextObject()) != 0)
-		{
-			cbServer->Append(s->GetIdentifier(), (void*)s);
-			if (s->GetConnected() && s->GetConnection()->GetHost() == conn->GetHost() && s->GetConnection()->GetPort() == conn->GetPort())
-			{
-				 cbServer->SetSelection(cbServer->GetCount()-1);
-				 remoteServer = s;
-			}
-		}    
+        folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
+        while (folderitem)
+        {
+            if (browser->ItemHasChildren(folderitem))
+            {
+                serveritem = browser->GetFirstChild(folderitem, servercookie);
+                while (serveritem)
+                {
+                    object = browser->GetObject(serveritem);
+                    if (object->IsCreatedBy(serverFactory))
+                    {
+                        server = (pgServer *)object;
+			            cbServer->Append(server->GetIdentifier(), (void*)server);
+			            if (server->GetConnected() &&
+                            server->GetConnection()->GetHost() == conn->GetHost() &&
+                            server->GetConnection()->GetPort() == conn->GetPort())
+			            {
+			            	 cbServer->SetSelection(cbServer->GetCount()-1);
+			            	 remoteServer = server;
+			            }
+                    }
+                    serveritem = browser->GetNextChild(folderitem, servercookie);
+                }
+            }
+            folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
+        }
 		cbServer->SetFocus();
 	}
 

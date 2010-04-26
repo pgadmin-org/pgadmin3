@@ -788,132 +788,141 @@ bool frmMain::CheckAlive()
     bool userInformed = false;
     bool closeIt = false;
 
-    wxCookieType cookie;
-    wxTreeItemId serverItem=browser->GetFirstChild(serversObj->GetId(), cookie);
-    while (serverItem)
+    wxTreeItemIdValue foldercookie;
+    wxTreeItemId folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
+    while (folderitem)
     {
-        pgServer *server=(pgServer*)browser->GetObject(serverItem);
-
-        if (server && server->IsCreatedBy(serverFactory) && server->connection())
+        if (browser->ItemHasChildren(folderitem))
         {
-            if (server->connection()->IsAlive())
+            wxCookieType cookie;
+            wxTreeItemId serverItem=browser->GetFirstChild(folderitem, cookie);
+            while (serverItem)
             {
-                wxCookieType cookie2;
-                wxTreeItemId item = browser->GetFirstChild(serverItem, cookie2);
-                while (item)
+                pgServer *server=(pgServer*)browser->GetObject(serverItem);
+
+                if (server && server->IsCreatedBy(serverFactory) && server->connection())
                 {
-                    pgObject *obj=browser->GetObject(item);
-                    if (obj && obj->IsCreatedBy(databaseFactory.GetCollectionFactory()))
+                    if (server->connection()->IsAlive())
                     {
-                        wxCookieType cookie3;
-                        item = browser->GetFirstChild(obj->GetId(), cookie3);
+                        wxCookieType cookie2;
+                        wxTreeItemId item = browser->GetFirstChild(serverItem, cookie2);
                         while (item)
                         {
-                            pgDatabase *db=(pgDatabase*)browser->GetObject(item);
-                            if (db && db->IsCreatedBy(databaseFactory))
+                            pgObject *obj=browser->GetObject(item);
+                            if (obj && obj->IsCreatedBy(databaseFactory.GetCollectionFactory()))
                             {
-                                pgConn *conn=db->GetConnection();
-                                if (conn)
+                                wxCookieType cookie3;
+                                item = browser->GetFirstChild(obj->GetId(), cookie3);
+                                while (item)
                                 {
-                                    if (!conn->IsAlive() && (conn->GetStatus() == PGCONN_BROKEN || conn->GetStatus() == PGCONN_BAD))
+                                    pgDatabase *db=(pgDatabase*)browser->GetObject(item);
+                                    if (db && db->IsCreatedBy(databaseFactory))
                                     {
-                                        conn->Close();
-                                        if (!userInformed)
+                                        pgConn *conn=db->GetConnection();
+                                        if (conn)
                                         {
-                                            wxMessageDialog dlg(this, _("Do you want to attempt to reconnect to the database?"),
-                                            wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()), 
-                                                wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
-
-                                            closeIt = (dlg.ShowModal() == wxID_NO);
-                                            userInformed = true;
-                                        }
-                                        if (closeIt)
-                                        {
-                                            db->Disconnect();
-                                            
-                                            browser->DeleteChildren(db->GetId());
-                                            db->UpdateIcon(browser);
-                                        }
-										else 
-										{
-                                            // Create a server object and connect it.
-                                            wxBusyInfo waiting(wxString::Format(_("Reconnecting to database %s"),
-                                                db->GetName().c_str()), this);
-
-                                            // Give the UI a chance to redraw
-                                            wxSafeYield();
-                                            wxMilliSleep(100);
-                                            wxSafeYield();
-
-											if (!conn->Reconnect())
+                                            if (!conn->IsAlive() && (conn->GetStatus() == PGCONN_BROKEN || conn->GetStatus() == PGCONN_BAD))
                                             {
-                                                db->Disconnect();
-                                            
-                                                browser->DeleteChildren(db->GetId());
-                                                db->UpdateIcon(browser);
-                                            }
-                                            else
-                                                // Indicate things are back to normal
-                                                userInformed = false;
-										}
+                                                conn->Close();
+                                                if (!userInformed)
+                                                {
+                                                    wxMessageDialog dlg(this, _("Do you want to attempt to reconnect to the database?"),
+                                                    wxString::Format(_("Connection to database %s lost."), db->GetName().c_str()), 
+                                                        wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
 
+                                                    closeIt = (dlg.ShowModal() == wxID_NO);
+                                                    userInformed = true;
+                                                }
+                                                if (closeIt)
+                                                {
+                                                    db->Disconnect();
+                                                    
+                                                    browser->DeleteChildren(db->GetId());
+                                                    db->UpdateIcon(browser);
+                                                }
+	        									else 
+	        									{
+                                                    // Create a server object and connect it.
+                                                    wxBusyInfo waiting(wxString::Format(_("Reconnecting to database %s"),
+                                                        db->GetName().c_str()), this);
+
+                                                    // Give the UI a chance to redraw
+                                                    wxSafeYield();
+                                                    wxMilliSleep(100);
+                                                    wxSafeYield();
+
+	        										if (!conn->Reconnect())
+                                                    {
+                                                        db->Disconnect();
+                                                    
+                                                        browser->DeleteChildren(db->GetId());
+                                                        db->UpdateIcon(browser);
+                                                    }
+                                                    else
+                                                        // Indicate things are back to normal
+                                                        userInformed = false;
+	        									}
+
+                                            }
+                                        }
                                     }
+                                    item = browser->GetNextChild(obj->GetId(), cookie3);
                                 }
                             }
-                            item = browser->GetNextChild(obj->GetId(), cookie3);
+                            item = browser->GetNextChild(serverItem, cookie2);
                         }
                     }
-                    item = browser->GetNextChild(serverItem, cookie2);
-                }
-            }
-            else
-            {
-                if (server->connection()->GetStatus() == PGCONN_BROKEN || server->connection()->GetStatus() == PGCONN_BAD)
-                {
-                    server->connection()->Close();
-                    if (!userInformed)
+                    else
                     {
-                        wxMessageDialog dlg(this, _("Do you want to attempt to reconnect to the server?"),
-                            wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()), 
-                            wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
-
-                        closeIt = (dlg.ShowModal() == wxID_NO);
-                        userInformed = true;
-                    }
-                    if (closeIt)
-                    {
-                        server->Disconnect(this);
-                        browser->SelectItem(serverItem);
-                        execSelChange(serverItem, true);
-                        browser->DeleteChildren(serverItem);
-                    }
-					else 
-					{
-                        // Create a server object and connect it.
-                        wxBusyInfo waiting(wxString::Format(_("Reconnecting to server %s (%s:%d)"),
-                            server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
-
-                        // Give the UI a chance to redraw
-                        wxSafeYield();
-                        wxMilliSleep(100);
-                        wxSafeYield();
-
-						if (!server->connection()->Reconnect())
+                        if (server->connection()->GetStatus() == PGCONN_BROKEN || server->connection()->GetStatus() == PGCONN_BAD)
                         {
-                            server->Disconnect(this);
-                            browser->SelectItem(serverItem);
-                            execSelChange(serverItem, true);
-                            browser->DeleteChildren(serverItem);
+                            server->connection()->Close();
+                            if (!userInformed)
+                            {
+                                wxMessageDialog dlg(this, _("Do you want to attempt to reconnect to the server?"),
+                                    wxString::Format(_("Connection to server %s lost."), server->GetName().c_str()), 
+                                    wxICON_EXCLAMATION|wxYES_NO|wxYES_DEFAULT);
+
+                                closeIt = (dlg.ShowModal() == wxID_NO);
+                                userInformed = true;
+                            }
+                            if (closeIt)
+                            {
+                                server->Disconnect(this);
+                                browser->SelectItem(serverItem);
+                                execSelChange(serverItem, true);
+                                browser->DeleteChildren(serverItem);
+                            }
+	        				else 
+	        				{
+                                // Create a server object and connect it.
+                                wxBusyInfo waiting(wxString::Format(_("Reconnecting to server %s (%s:%d)"),
+                                    server->GetDescription().c_str(), server->GetName().c_str(), server->GetPort()), this);
+
+                                // Give the UI a chance to redraw
+                                wxSafeYield();
+                                wxMilliSleep(100);
+                                wxSafeYield();
+
+	        					if (!server->connection()->Reconnect())
+                                {
+                                    server->Disconnect(this);
+                                    browser->SelectItem(serverItem);
+                                    execSelChange(serverItem, true);
+                                    browser->DeleteChildren(serverItem);
+                                }
+                                else
+                                    // Indicate things are back to normal
+                                    userInformed = false;
+	        				}
                         }
-                        else
-                            // Indicate things are back to normal
-                            userInformed = false;
-					}
+                    }
                 }
+
+                serverItem = browser->GetNextChild(serversObj->GetId(), cookie);
             }
         }
-
-        serverItem = browser->GetNextChild(serversObj->GetId(), cookie);
+        folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
     }
     return userInformed;
 }
@@ -1214,21 +1223,36 @@ void frmMain::RetrieveServers()
 
 pgServer *frmMain::ConnectToServer(const wxString& servername, bool restore)
 {
-    for (int i = 0; ; i++)
+    wxTreeItemIdValue foldercookie, servercookie;
+    wxTreeItemId folderitem, serveritem;
+    pgObject *object;
+    pgServer *server;
+
+    folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
+    while (folderitem)
     {
-        pgObject *o = serversObj->FindChild(browser, i);
-        if (!o)
-            return NULL;
-        if (o->IsCreatedBy(serverFactory))
+        if (browser->ItemHasChildren(folderitem))
         {
-            pgServer *s = (pgServer *)o;
-            if (s->GetDescription() == servername)
+            serveritem = browser->GetFirstChild(folderitem, servercookie);
+            while (serveritem)
             {
-                ReconnectServer(s, restore);
-                return s;
+                object = browser->GetObject(serveritem);
+                if (object->IsCreatedBy(serverFactory))
+                {
+                    server = (pgServer *)object;
+                    if (server->GetDescription() == servername)
+                    {
+                        ReconnectServer(server, restore);
+                        return server;
+                    }
+                }
+                serveritem = browser->GetNextChild(folderitem, servercookie);
             }
         }
+        folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
     }
+
+    return 0;
 }
 
 void frmMain::StartMsg(const wxString& msg)

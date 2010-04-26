@@ -2721,15 +2721,35 @@ wxColour frmQuery::GetServerColour()
     wxColour tmp = wxNullColour;
     if (mainForm != NULL)
     {
-        treeObjectIterator servers(mainForm->GetBrowser(), mainForm->GetServerCollection());
-        pgServer *s;
+        ctlTree *browser = mainForm->GetBrowser();
+        wxTreeItemIdValue foldercookie, servercookie;
+        wxTreeItemId folderitem, serveritem;
+        pgObject *object;
+        pgServer *server;
 
-        while ((s=(pgServer*)servers.GetNextObject()) != 0)
+        folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
+        while (folderitem)
         {
-            if (s->GetConnected() && s->GetConnection()->GetHost() == conn->GetHost() && s->GetConnection()->GetPort() == conn->GetPort())
+            if (browser->ItemHasChildren(folderitem))
             {
-                tmp = wxColour(s->GetColour());
+                serveritem = browser->GetFirstChild(folderitem, servercookie);
+                while (serveritem)
+                {
+                    object = browser->GetObject(serveritem);
+                    if (object->IsCreatedBy(serverFactory))
+                    {
+                        server = (pgServer *)object;
+                        if (server->GetConnected() &&
+                            server->GetConnection()->GetHost() == conn->GetHost() &&
+                            server->GetConnection()->GetPort() == conn->GetPort())
+                        {
+                            tmp = wxColour(server->GetColour());
+                        }
+                    }
+                    serveritem = browser->GetNextChild(folderitem, servercookie);
+                }
             }
+            folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
         }
     }
     return tmp;
