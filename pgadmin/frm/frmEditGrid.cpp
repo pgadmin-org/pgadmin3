@@ -480,6 +480,9 @@ void frmEditGrid::OnIncludeFilter(wxCommandEvent &event)
 {
     int curcol=sqlGrid->GetGridCursorCol();
     int currow=sqlGrid->GetGridCursorRow();
+
+    if (curcol == -1 || currow == -1)
+        return;
     
     sqlTable *table=sqlGrid->GetTable();
     wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
@@ -522,6 +525,9 @@ void frmEditGrid::OnExcludeFilter(wxCommandEvent &event)
 {
     int curcol=sqlGrid->GetGridCursorCol();
     int currow=sqlGrid->GetGridCursorRow();
+
+    if (curcol == -1 || currow == -1)
+        return;
     
     sqlTable *table=sqlGrid->GetTable();
     wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
@@ -571,6 +577,9 @@ void frmEditGrid::OnAscSort(wxCommandEvent &ev)
 {
     int curcol=sqlGrid->GetGridCursorCol();
 
+    if (curcol == -1)
+        return;
+
     sqlTable *table=sqlGrid->GetTable();
     wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
     wxString old_sort_string = GetSortCols().Trim();
@@ -607,6 +616,9 @@ void frmEditGrid::OnAscSort(wxCommandEvent &ev)
 void frmEditGrid::OnDescSort(wxCommandEvent &ev)
 {
     int curcol=sqlGrid->GetGridCursorCol();
+
+    if (curcol == -1)
+       return;
     
     sqlTable *table=sqlGrid->GetTable();
     wxString column_label = qtIdent(table->GetColLabelValueUnformatted(curcol));
@@ -764,6 +776,10 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
 {
     int curcol=sqlGrid->GetGridCursorCol();
     int currow=sqlGrid->GetGridCursorRow();
+
+    if (curcol == -1 || currow == -1)
+        return;
+
     int keycode=event.GetKeyCode();
     wxCommandEvent ev;
 
