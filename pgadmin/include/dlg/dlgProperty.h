@@ -23,7 +23,6 @@
 class pgSchema;
 class pgTable;
 class frmMain;
-class ctlSecurityPanel;
 class pgaFactory;
 
 #define stComment       CTRL_STATIC("stComment")
@@ -44,6 +43,23 @@ private:
     OID      oid;
        
 };
+
+
+/*
+ * We need the definition of replClientData in dlgDatabase too, to hack
+ * the execution of default privileges statements (sqls) before getting
+ * disconnected.
+ */
+class replClientData : public wxClientData
+{
+public:
+    replClientData(const wxString &c, long s, long ma, long mi) { cluster=c; setId=s; majorVer=ma; minorVer=mi; }
+    wxString cluster;
+    long setId;
+    long majorVer;
+    long minorVer;
+};
+
 
 WX_DEFINE_ARRAY(dataType *, dataTypeCache);
 
@@ -67,7 +83,7 @@ public:
     virtual void CreateAdditionalPages();
     virtual wxString GetHelpPage() const;
     virtual wxString GetHelpPage(bool forCreate) const { return wxEmptyString; }
-    void SetConnection(pgConn *conn) { connection=conn; }
+    virtual void SetConnection(pgConn *conn) { connection=conn; }
     void SetDatabase(pgDatabase *db);
     void SetDatatypeCache(dataTypeCache cache);
     virtual int Go(bool modal=false);
@@ -212,14 +228,50 @@ protected:
     void OnChangeSize(wxSizeEvent &ev);
 #endif
 
+    ctlSecurityPanel *securityPage;
+
 private:
 
     void OnAddPriv(wxCommandEvent& ev);
     void OnDelPriv(wxCommandEvent& ev);
     bool securityChanged;
 
-    ctlSecurityPanel *securityPage;
     wxArrayString currentAcl;
+
+    DECLARE_EVENT_TABLE()
+};
+
+class ctlDefaultSecurityPanel;
+
+class dlgDefaultSecurityProperty : public dlgSecurityProperty
+{
+
+protected:
+    dlgDefaultSecurityProperty(pgaFactory *factory, frmMain *frame, pgObject *obj, const wxString &resName,
+                               const wxString& privilegeList, const char *privilegeChar, bool createDefPrivPanel=true);
+
+    virtual int      Go(bool modal=false, bool createDefPrivs = false,
+                        const wxString& defPrivsOnTables = wxT(""),
+                        const wxString& defPrivsOnSeqs   = wxT(""),
+                        const wxString& defPrivsOnFuncs  = wxT(""));
+
+    virtual wxString GetHelpPage() const;
+
+    void     EnableOK(bool enable);
+    wxString GetDefaultPrivileges(const wxString& schemaName = wxT(""));
+    void     AddGroups(ctlComboBox *comboBox=0);
+    void     AddUsers(ctlComboBox *comboBox=0);
+#ifdef __WXMAC__
+    void        OnChangeSize(wxSizeEvent &ev);
+#endif
+
+    bool defaultSecurityChanged;
+
+private:
+    void OnAddPriv(wxCommandEvent& ev);
+    void OnDelPriv(wxCommandEvent& ev);
+
+    ctlDefaultSecurityPanel *defaultSecurityPage;
 
     DECLARE_EVENT_TABLE()
 };

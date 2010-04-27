@@ -19,6 +19,7 @@
 #include "utils/misc.h"
 #include "dlg/dlgDatabase.h"
 #include "schema/pgDatabase.h"
+#include "ctl/ctlDefaultSecurityPanel.h"
 
 
 // pointer to controls
@@ -47,13 +48,13 @@ dlgProperty *pgDatabaseFactory::CreateDialog(frmMain *frame, pgObject *node, pgO
     if (dlg && !node)
     {
         // use the server's connection to avoid "template1 in use"
-        dlg->connection=parent->GetConnection();
+        dlg->SetConnection(parent->GetConnection());
     }
     return dlg;
 }
 
 
-BEGIN_EVENT_TABLE(dlgDatabase, dlgSecurityProperty)
+BEGIN_EVENT_TABLE(dlgDatabase, dlgDefaultSecurityProperty)
     EVT_TEXT(XRCID("txtPath"),                      dlgProperty::OnChange)
     EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
     EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
@@ -77,7 +78,7 @@ END_EVENT_TABLE();
 
 
 dlgDatabase::dlgDatabase(pgaFactory *f, frmMain *frame, pgDatabase *node)
-: dlgSecurityProperty(f, frame, node, wxT("dlgDatabase"), wxT("CREATE,TEMP,CONNECT"), "CTc")
+: dlgDefaultSecurityProperty(f, frame, node, wxT("dlgDatabase"), wxT("CREATE,TEMP,CONNECT"), "CTc", node != NULL ? true : false)
 {
     database=node;
     schemaRestrictionOk=true;
@@ -98,22 +99,27 @@ wxString dlgDatabase::GetHelpPage() const
 {
     if (nbNotebook->GetSelection() == 1)
         return wxT("pg/runtime-config");
-    return dlgSecurityProperty::GetHelpPage();
+    return dlgDefaultSecurityProperty::GetHelpPage();
 }
 
 
 int dlgDatabase::Go(bool modal)
 {
+    bool createDefPriv = false;
+    wxString strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs;
+
     if (!database)
         cbOwner->Append(wxT(""));
 
     AddGroups(cbOwner);
     AddUsers(cbOwner);
 
-    if (connection->BackendMinimumVersion(8,5))
+    if (connection->BackendMinimumVersion(9, 0))
     {
         cbVarUsername->Append(wxT(""));
-        AddUsers(cbVarUsername);
+        // AddUsers function of dlgDefaultSecurity has already been called.
+        // Hence, calling dlgProperty::AddUsers instead of that.
+        dlgProperty::AddUsers(cbVarUsername);
     }
     else
         cbVarUsername->Enable(false);
@@ -162,7 +168,7 @@ int dlgDatabase::Go(bool modal)
 
         cbVarname->SetSelection(0);
 
-        if (connection->BackendMinimumVersion(8,5))
+        if (connection->BackendMinimumVersion(9, 0))
         {
             cbVarUsername->SetSelection(0);
         }
@@ -179,6 +185,15 @@ int dlgDatabase::Go(bool modal)
             cbOwner->Disable();
 
         readOnly = !database->GetServer()->GetCreatePrivilege();
+
+
+        if (connection->BackendMinimumVersion(9, 0))
+        {
+            createDefPriv = true;
+            strDefPrivsOnTables = database->GetDefPrivsOnTables();
+            strDefPrivsOnSeqs   = database->GetDefPrivsOnSequences();
+            strDefPrivsOnFuncs  = database->GetDefPrivsOnFunctions();
+        }
 
         if (readOnly)
         {
@@ -313,7 +328,7 @@ int dlgDatabase::Go(bool modal)
 
     SetupVarEditor(1);
 
-    return dlgSecurityProperty::Go(modal);
+    return dlgDefaultSecurityProperty::Go(modal, createDefPriv, strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs);
 }
 
 
@@ -364,8 +379,74 @@ void dlgDatabase::OnOK(wxCommandEvent &ev)
     {
         database->iSetSchemaRestriction(txtSchemaRestr->GetValue().Trim());
         settings->Write(wxString::Format(wxT("Servers/%d/Databases/%s/SchemaRestriction"), database->GetServer()->GetServerIndex(), database->GetName().c_str()), txtSchemaRestr->GetValue().Trim());
+
+        /*
+         * The connection from the database will get disconnected before execution of any
+         * sql statements for the database.
+         *
+         * Hence, we need to hack the execution of the default privileges statements(sqls)
+         * before getting disconnected from this database. So that, these statements will
+         * run against the current database connection, and not against the server connection.
+         */
+        // defaultSecurityChanged will be true only for PostgreSQL 9.0 or later
+        if (defaultSecurityChanged)
+        {
+            wxString strDefPrivs = GetDefaultPrivileges();
+            if (!executeDDLSql(strDefPrivs))
+            {
+                EnableOK(true);
+                return;
+            }
+            defaultSecurityChanged = false;
+        }
     }
-    dlgSecurityProperty::OnOK(ev);
+    dlgDefaultSecurityProperty::OnOK(ev);
+}
+
+/*
+ * Execute default privileges statement
+ *
+ * - Hacked to execute the default privileges statement (sql) for dlgDatabse against this database,
+ *   because connection for this database object is getting disconnected, and replaced by the server
+ *   connection, before execution of any statements (sqls) in dlgPropery::apply function called
+ *   from dlgPropery::OnOK event handler.
+ *
+ *  NOTE: This will work only if the database object exists.
+ */
+bool dlgDatabase::executeDDLSql(const wxString& strSql)
+{
+    pgConn *myConn = connection;
+
+    if (!strSql.IsEmpty())
+    {
+        wxString tmp;
+        if (cbClusterSet && cbClusterSet->GetSelection() > 0)
+        {
+            replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+
+            if (data->majorVer > 1 || (data->majorVer == 1 && data->minorVer >= 2))
+            {
+                tmp = wxT("SELECT ") + qtIdent(data->cluster)
+                    + wxT(".ddlscript_prepare(") + NumToStr(data->setId) + wxT(", 0);\n")
+                    + wxT("SELECT ") + qtIdent(data->cluster)
+                    + wxT(".ddlscript_complete(") + NumToStr(data->setId) + wxT(", ")
+                    + qtDbString(strSql) + wxT(", 0);\n");
+            }
+            else
+            {
+                tmp = wxT("SELECT ") + qtIdent(data->cluster)
+                    + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
+                    + qtDbString(strSql) + wxT(", 0);\n");
+            }
+        }
+        else
+            tmp = strSql;
+
+        if (!myConn->ExecuteVoid(tmp))
+            // error message is displayed inside ExecuteVoid
+            return false;
+    }
+    return true;
 }
 
 
@@ -690,6 +771,9 @@ wxString dlgDatabase::GetSql()
                     +  wxT(" RESET ") + varname + wxT(";\n");
             }
         }
+
+        if (defaultSecurityChanged)
+            sql += wxT("\n") + GetDefaultPrivileges();
     }
     else
     {
@@ -719,7 +803,7 @@ wxString dlgDatabase::GetSql()
         sql += wxT(";\n");
     }
 
-    return sql;
+    return sql.Trim(false);
 }
 
 wxString dlgDatabase::GetSql2()

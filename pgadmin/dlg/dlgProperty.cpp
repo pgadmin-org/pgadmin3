@@ -22,6 +22,7 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 #include "ctl/ctlSecurityPanel.h"
+#include "ctl/ctlDefaultSecurityPanel.h"
 
 // Images
 #include "images/properties.xpm"
@@ -57,17 +58,6 @@
 #include "schema/pgTrigger.h"
 #include "schema/pgGroup.h"
 #include "schema/pgUser.h"
-
-
-class replClientData : public wxClientData
-{
-public:
-    replClientData(const wxString &c, long s, long ma, long mi) { cluster=c; setId=s; majorVer=ma; minorVer=mi; }
-    wxString cluster;
-    long setId;
-    long majorVer;
-    long minorVer;
-};
 
 
 void dataType::SetOid(OID id)
@@ -237,12 +227,6 @@ void dlgProperty::SetSqlReadOnly(bool readonly)
 {
     if (chkReadOnly)
         chkReadOnly->Enable(!readonly);
-}
-
-
-void dlgSecurityProperty::SetPrivilegesLayout()
-{
-    securityPage->lbPrivileges->GetParent()->Layout();
 }
 
 
@@ -1522,6 +1506,10 @@ BEGIN_EVENT_TABLE(dlgSecurityProperty, dlgProperty)
 #endif
 END_EVENT_TABLE();
 
+void dlgSecurityProperty::SetPrivilegesLayout()
+{
+    securityPage->lbPrivileges->GetParent()->Layout();
+}
 
 dlgSecurityProperty::dlgSecurityProperty(pgaFactory *f, frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privList, const char *privChar)
         : dlgProperty(f, frame, resName)
@@ -1713,14 +1701,12 @@ void dlgSecurityProperty::EnableOK(bool enable)
 }
 
 
-
-
 wxString dlgSecurityProperty::GetGrant(const wxString &allPattern, const wxString &grantObject)
 {
     if (securityPage)
         return securityPage->GetGrant(allPattern, grantObject, &currentAcl);
     else
-    return wxString();
+        return wxString();
 }
 
 bool dlgSecurityProperty::DisablePrivilege(const wxString &priv) 
@@ -1731,6 +1717,165 @@ bool dlgSecurityProperty::DisablePrivilege(const wxString &priv)
         return true; 
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+
+
+BEGIN_EVENT_TABLE(dlgDefaultSecurityProperty, dlgSecurityProperty)
+    EVT_BUTTON(CTL_DEFADDPRIV, dlgDefaultSecurityProperty::OnAddPriv)
+    EVT_BUTTON(CTL_DEFDELPRIV, dlgDefaultSecurityProperty::OnDelPriv)
+#ifdef __WXMAC__
+    EVT_SIZE(                  dlgDefaultSecurityProperty::OnChangeSize)
+#endif
+END_EVENT_TABLE();
+
+
+dlgDefaultSecurityProperty::dlgDefaultSecurityProperty(pgaFactory *f, frmMain *frame, pgObject *obj, const wxString &resName, const wxString& privList, const char *privChar, bool createDefPrivPanel)
+  : dlgSecurityProperty(f, frame, obj, resName, privList, privChar), defaultSecurityChanged(false)
+{
+    pgConn *l_conn= obj ? obj->GetConnection() : connection;
+    if ((!obj || obj->CanCreate()) && createDefPrivPanel)
+        defaultSecurityPage = new ctlDefaultSecurityPanel(l_conn, nbNotebook, frame->GetImageList());
+    else
+        defaultSecurityPage = NULL;
+}
+
+
+void dlgDefaultSecurityProperty::AddGroups(ctlComboBox *comboBox)
+{
+    if (!((securityPage && securityPage->cbGroups) || comboBox || defaultSecurityPage))
+        return;
+
+    pgSet *set=connection->ExecuteSet(wxT("SELECT groname FROM pg_group ORDER BY groname"));
+
+    if (set)
+    {
+        while (!set->Eof())
+        {
+            if (securityPage && securityPage->cbGroups)
+                securityPage->cbGroups->Append(wxT("group ") + set->GetVal(0));
+
+            if (comboBox)
+                comboBox->Append(set->GetVal(0));
+
+            if (defaultSecurityPage)
+                defaultSecurityPage->m_groups.Add(wxT("group ") + set->GetVal(0));
+
+            set->MoveNext();
+        }
+        delete set;
+    }
+}
+
+
+void dlgDefaultSecurityProperty::AddUsers(ctlComboBox *combobox)
+{
+    if ((securityPage && securityPage->cbGroups) || defaultSecurityPage || combobox)
+    {
+        wxString strFetchUserQuery =
+            connection->BackendMinimumVersion(8, 1) ?
+              wxT("SELECT rolname FROM pg_roles WHERE rolcanlogin ORDER BY 1") :
+              wxT("SELECT usename FROM pg_user ORDER BY 1");
+
+        pgSet *set=connection->ExecuteSet(strFetchUserQuery);
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                if (settings->GetShowUsersForPrivileges())
+                {
+                    if (securityPage && securityPage->cbGroups)
+                        securityPage->cbGroups->Append(set->GetVal(0));
+
+                    if (defaultSecurityPage)
+                        defaultSecurityPage->m_groups.Add(set->GetVal(0));
+                }
+
+                if (combobox)
+                    combobox->Append(set->GetVal(0));
+
+                set->MoveNext();
+            }
+        }
+    }
+}
+
+#ifdef __WXMAC__
+void dlgDefaultSecurityProperty::OnChangeSize(wxSizeEvent &ev)
+{
+    wxSize l_size = ev.GetSize();
+    if (defaultSecurityPage && l_size.GetWidth() > 10 && l_size.GetWidth() > 25)
+        defaultSecurityPage->SetSize(l_size.GetWidth() - 10, l_size.GetHeight() - 25);
+    dlgSecurityProperty::OnChangeSize(ev);
+}
+#endif
+
+
+void dlgDefaultSecurityProperty::EnableOK(bool enable)
+{
+    // Don't enable the OK button if the object isn't yet created,
+    // leave that to the object dialog.
+    if (GetObject())
+    {
+        wxString sql=GetSql();
+        if (sql.IsEmpty())
+        {
+            enable=false;
+        }
+        else
+            enable=true;
+    }
+    dlgSecurityProperty::EnableOK(enable);
+}
+
+
+void dlgDefaultSecurityProperty::OnAddPriv(wxCommandEvent &ev)
+{
+    defaultSecurityChanged=true;
+    EnableOK(btnOK->IsEnabled());
+}
+
+
+void dlgDefaultSecurityProperty::OnDelPriv(wxCommandEvent &ev)
+{
+    defaultSecurityChanged=true;
+    EnableOK(btnOK->IsEnabled());
+}
+
+wxString dlgDefaultSecurityProperty::GetDefaultPrivileges(const wxString& schemaName)
+{
+    if (defaultSecurityChanged)
+        return defaultSecurityPage->GetDefaultPrivileges(schemaName);
+    return wxT("");
+}
+
+int dlgDefaultSecurityProperty::Go(bool modal, bool createDefPrivs, const wxString& defPrivsOnTables,
+                                   const wxString& defPrivsOnSeqs, const wxString& defPrivsOnFuncs)
+{
+    int res = dlgSecurityProperty::Go(modal);
+
+    if (createDefPrivs && connection->BackendMinimumVersion(9, 0))
+        defaultSecurityPage->UpdatePrivilegePages(createDefPrivs, defPrivsOnTables, defPrivsOnSeqs, defPrivsOnFuncs);
+    else if (defaultSecurityPage != NULL)
+        defaultSecurityPage->Enable(false);
+
+    return res;
+}
+
+wxString dlgDefaultSecurityProperty::GetHelpPage() const
+{
+    int nDiff      = nbNotebook->GetPageCount() - nbNotebook->GetSelection();
+
+    switch (nDiff)
+    {
+    case 3:
+        return wxT("pg/sql-grant");
+    case 2:
+        return wxT("pg/sql-alterdefaultprivileges");
+    default:
+        return dlgProperty::GetHelpPage();
+    }
+}
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -2006,3 +2151,4 @@ bool refreshFactory::CheckEnable(pgObject *obj)
     // so it's Good Enough (tm) for now.
     return obj != 0 && !obj->IsCreatedBy(serverFactory.GetCollectionFactory());
 }
+

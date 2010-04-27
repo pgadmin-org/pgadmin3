@@ -38,6 +38,8 @@ public:
     ~pgDatabase();
     int GetIconId();
 
+    static wxString GetDefaultPrivileges(const wxChar& cType, wxString strDefPrivs, const wxString& strSchema);
+
     pgDatabase *GetDatabase() const { return (pgDatabase*)this; }
     bool BackendMinimumVersion(int major, int minor) { return connection()->BackendMinimumVersion(major, minor); }
     bool BackendMinimumVersion(int major, int minor, int patch) { return connection()->BackendMinimumVersion(major, minor, patch); }
@@ -57,6 +59,12 @@ public:
 
     bool GetCreatePrivilege() const { return createPrivilege; }
     void iSetCreatePrivilege(const bool b) { createPrivilege=b; }
+
+    // Default Privileges on ALL
+    wxString GetDefPrivsOnTables() { return m_defPrivsOnTables; }
+    wxString GetDefPrivsOnSequences() { return m_defPrivsOnSeqs; }
+    wxString GetDefPrivsOnFunctions() { return m_defPrivsOnFuncs; }
+
     wxString GetPath() const { return path; };
     void iSetPath(const wxString& newVal) { path = newVal; }
     wxString GetTablespace() const { return tablespace; };
@@ -128,6 +136,7 @@ private:
 
     wxString schemaChanges;
     wxString schemaRestriction;
+    wxString m_defPrivsOnTables, m_defPrivsOnSeqs, m_defPrivsOnFuncs;
 
     int canDebugPlpgsql, canDebugEdbspl;
 

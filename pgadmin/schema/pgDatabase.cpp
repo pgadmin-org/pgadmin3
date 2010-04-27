@@ -26,7 +26,7 @@
 #include "frm/frmReport.h"
 
 pgDatabase::pgDatabase(const wxString& newName)
-: pgServerObject(databaseFactory, newName)
+: pgServerObject(databaseFactory, newName) 
 {
     allowConnections = true;
     connected = false;
@@ -106,6 +106,13 @@ int pgDatabase::Connect()
             prettyOption = wxT(", true");
     
         UpdateDefaultSchema();
+
+        if (connection()->BackendMinimumVersion(9, 0))
+        {
+            m_defPrivsOnTables = connection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = 0::OID AND defaclobjtype='r'"));
+            m_defPrivsOnSeqs   = connection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = 0::OID AND defaclobjtype='S'"));
+            m_defPrivsOnFuncs  = connection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = 0::OID AND defaclobjtype='f'"));
+        }
 
         connected = true;
     }
@@ -442,6 +449,10 @@ wxString pgDatabase::GetSql(ctlTree *browser)
 				sql += GetGrant(wxT("CTc"));
 		}
 
+        sql += wxT("\n") + pgDatabase::GetDefaultPrivileges('r', m_defPrivsOnTables, wxT(""));
+        sql += pgDatabase::GetDefaultPrivileges('S', m_defPrivsOnSeqs, wxT(""));
+        sql += pgDatabase::GetDefaultPrivileges('f', m_defPrivsOnFuncs, wxT(""));
+
         sql += GetCommentSql();
     }
     return sql;
@@ -519,8 +530,11 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
             properties->AppendItem(_("Character type"), GetCType());
         }
 
-        if (!defaultSchema.IsEmpty())
-            properties->AppendItem(_("Default schema"), defaultSchema);
+        properties->AppendItem(_("Default schema"), defaultSchema);
+
+        properties->AppendItem(_("Default table ACL"), m_defPrivsOnTables);
+        properties->AppendItem(_("Default sequence ACL"), m_defPrivsOnSeqs);
+        properties->AppendItem(_("Default function ACL"), m_defPrivsOnFuncs);
 
         size_t i;
         wxString username;
@@ -610,8 +624,8 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
         restr += collection->GetServer()->GetDbRestriction() + wxT(")\n");
     }
     
-    // In 8.5+, database config options are in pg_db_role_setting
-    if (collection->GetConnection()->BackendMinimumVersion(8, 5))
+    // In 9.0+, database config options are in pg_db_role_setting
+    if (collection->GetConnection()->BackendMinimumVersion(9, 0))
     {
         wxString setconfig = wxT("SELECT array(select coalesce('''' || rolname || '''', '') || '=' || unnest(setconfig) ")
            wxT("FROM pg_db_role_setting setting LEFT JOIN pg_roles role ON setting.setrole=role.oid ")
@@ -735,6 +749,48 @@ pgObject *pgDatabaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 		delete databases;
     }
     return database;
+}
+
+wxString pgDatabase::GetDefaultPrivileges(const wxChar& cType, wxString strDefPrivs, const wxString& strSchema)
+{
+    wxString strDefPrivsSql;
+
+    if (!strDefPrivs.IsEmpty())
+    {
+       wxString strRole, strPriv, strSupportedPrivs, strType;
+       strDefPrivs.Replace(wxT("\\\""), wxT("\""), true);
+       strDefPrivs.Replace(wxT("\\\\"), wxT("\\"), true);
+
+       switch(cType)
+       {
+           case 'r':
+               strType = wxT("TABLES");
+               strSupportedPrivs = wxT("arwdDxt");
+               break;
+           case 'S':
+               strType = wxT("SEQUENCES");
+               strSupportedPrivs = wxT("rwU");
+               break;
+           case 'f':
+               strType = wxT("FUNCTIONS");
+               strSupportedPrivs = wxT("X");
+               break;
+           default:
+               return wxT("");
+       }
+
+       // Removing starting brace '{' and ending brace '}'
+       strDefPrivs = strDefPrivs.SubString(1, strDefPrivs.Length() - 1);
+
+       while (pgObject::findUserPrivs(strDefPrivs, strRole, strPriv))
+       {
+           strDefPrivsSql += pgObject::GetDefaultPrivileges(strType, strSupportedPrivs, strSchema, wxT(""), strPriv, qtIdent(strRole));
+
+           strRole = wxT("");
+           strPriv = wxT("");
+       }
+    }
+    return strDefPrivsSql;
 }
 
 bool pgDatabase::CanDebugPlpgsql()

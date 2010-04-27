@@ -16,6 +16,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/ctl/ctlComboBox.h \
 	$(srcdir)/include/ctl/ctlListView.h \
 	$(srcdir)/include/ctl/ctlMenuToolbar.h \
+	$(srcdir)/include/ctl/ctlDefaultSecurityPanel.h \
 	$(srcdir)/include/ctl/ctlSecurityPanel.h \
 	$(srcdir)/include/ctl/ctlSQLBox.h \
 	$(srcdir)/include/ctl/ctlSQLGrid.h \

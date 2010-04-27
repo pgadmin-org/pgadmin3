@@ -17,7 +17,7 @@
 
 class pgSchema;
 
-class dlgSchema : public dlgSecurityProperty
+class dlgSchema : public dlgDefaultSecurityProperty
 {
 public:
     dlgSchema(pgaFactory *factory, frmMain *frame, pgSchema *db);

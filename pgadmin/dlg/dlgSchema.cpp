@@ -21,7 +21,7 @@
 
 // pointer to controls
 
-BEGIN_EVENT_TABLE(dlgSchema, dlgSecurityProperty)
+BEGIN_EVENT_TABLE(dlgSchema, dlgDefaultSecurityProperty)
 END_EVENT_TABLE();
 
 dlgProperty *pgSchemaBaseFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
@@ -30,7 +30,7 @@ dlgProperty *pgSchemaBaseFactory::CreateDialog(frmMain *frame, pgObject *node, p
 }
 
 dlgSchema::dlgSchema(pgaFactory *f, frmMain *frame, pgSchema *node)
-: dlgSecurityProperty(f, frame, node, wxT("dlgSchema"), wxT("USAGE,CREATE"), "UC")
+: dlgDefaultSecurityProperty(f, frame, node, wxT("dlgSchema"), wxT("USAGE,CREATE"), "UC")
 {
     schema=node;
 }
@@ -44,6 +44,8 @@ pgObject *dlgSchema::GetObject()
 
 int dlgSchema::Go(bool modal)
 {
+    wxString strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs;
+
     if (!schema)
         cbOwner->Append(wxT(""));
 
@@ -51,8 +53,14 @@ int dlgSchema::Go(bool modal)
     AddUsers(cbOwner);
     if (schema)
     {
-        // edit mode
+        if (connection->BackendMinimumVersion(9, 0))
+        {
+            strDefPrivsOnTables = schema->GetDefPrivsOnTables();
+            strDefPrivsOnSeqs   = schema->GetDefPrivsOnSequences();
+            strDefPrivsOnFuncs  = schema->GetDefPrivsOnFunctions();
+        }
 
+        // edit mode
         if (!connection->BackendMinimumVersion(7, 5))
             cbOwner->Disable();
 
@@ -67,7 +75,7 @@ int dlgSchema::Go(bool modal)
         // create mode
     }
 
-    return dlgSecurityProperty::Go(modal);
+    return dlgDefaultSecurityProperty::Go(modal, true, strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs);
 }
 
 
@@ -115,25 +123,28 @@ void dlgSchema::CheckChange()
 wxString dlgSchema::GetSql()
 {
     wxString sql, name;
-    name=GetName();
+    name = qtIdent(GetName());
 
     if (schema)
     {
         // edit mode
         AppendNameChange(sql);
-        AppendOwnerChange(sql, wxT("SCHEMA ") + qtIdent(name));
+        AppendOwnerChange(sql, wxT("SCHEMA ") + name);
     }
     else
     {
         // create mode
-        sql = wxT("CREATE SCHEMA ") + qtIdent(name);
+        sql = wxT("CREATE SCHEMA ") + name;
         AppendIfFilled(sql, wxT("\n       AUTHORIZATION "), qtIdent(cbOwner->GetValue()));
         sql += wxT(";\n");
 
     }
     AppendComment(sql, wxT("SCHEMA"), 0, schema);
 
-    sql += GetGrant(wxT("UC"), wxT("SCHEMA ") + qtIdent(name));
+    sql += GetGrant(wxT("UC"), wxT("SCHEMA ") + name);
+
+    if (connection->BackendMinimumVersion(9, 0) && defaultSecurityChanged)
+        sql += GetDefaultPrivileges(name);
 
     return sql;
 }

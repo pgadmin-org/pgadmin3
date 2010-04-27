@@ -46,7 +46,6 @@
 #include "utils/pgDefs.h"
 #include "agent/pgaJob.h"
 
-
 int pgObject::GetType() const
 {
     if (factory)
@@ -1376,3 +1375,209 @@ wxString pgObject::qtDbString(const wxString &str)
         return ret;
     }
 }
+
+wxString pgObject::GetDefaultPrivileges(const wxString& strType, const wxString& strSupportedPrivs,
+                                        const wxString& strSchema, const wxString& strOrigDefPrivs,
+                                        const wxString& strNewDefPrivs, const wxString& strRole)
+{
+    wxString strDefPrivs, strGrant, strRevoke, strGrantOption, strRevokeGrantOption;
+    int privilegeCount = strSupportedPrivs.Length();
+
+    for (int index=0; index < privilegeCount; index++)
+    {
+        bool inOrigPriv = false, inNewPriv = false, grantOptInOrigPriv = false, grantOptInNewPriv = false;
+        wxChar privChar = strSupportedPrivs.GetChar(index);
+        int privAt = strOrigDefPrivs.Find(privChar);
+        if (privAt != wxNOT_FOUND)
+        {
+            inOrigPriv =  true;
+            if ((unsigned int)privAt < strOrigDefPrivs.Length() - 1 &&
+                strOrigDefPrivs.GetChar(privAt + 1) == wxT('*'))
+                grantOptInOrigPriv = true;
+        }
+
+        privAt = strNewDefPrivs.Find(privChar);
+        if (privAt != wxNOT_FOUND)
+        {
+            inNewPriv =  true;
+            if ((unsigned int)privAt < strNewDefPrivs.Length() - 1 &&
+                strNewDefPrivs.GetChar(privAt + 1) == wxT('*'))
+                grantOptInNewPriv = true;
+        }
+        if (inOrigPriv || inNewPriv || grantOptInOrigPriv || grantOptInNewPriv)
+        {
+            wxString strPrivilege = GetPrivilegeName(privChar);
+            if (!inOrigPriv && inNewPriv)
+            {
+                // GRANT PRIVILEGES
+                if (!grantOptInNewPriv)
+                    strGrant             += strPrivilege + wxT(", ");
+                // GRANT PRVILEGES WITH GRANT OPTION
+                else
+                    strGrantOption       += strPrivilege + wxT(", ");
+            }
+            // REVOKE PRIVILEGES
+            else if (inOrigPriv && !inNewPriv)
+                strRevoke                += strPrivilege + wxT(", ");
+            else if (inOrigPriv && inNewPriv)
+            {
+                // REVOKE ONLY 'WITH GRANT OPTION'
+                if(grantOptInOrigPriv && !grantOptInNewPriv)
+                    strRevokeGrantOption += strPrivilege + wxT(", ");
+                // GRANT PRVILEGES WITH GRANT OPTION
+                else if (!grantOptInOrigPriv && grantOptInNewPriv)
+                    strGrantOption       += strPrivilege + wxT(", ");
+            }
+        }
+    }
+
+    bool isModified = false;
+    wxString strAltDefPriv;
+
+    if (!strSchema.IsEmpty())
+        strAltDefPriv = wxT("ALTER DEFAULT PRIVILEGES IN SCHEMA ") + strSchema;
+    else
+        strAltDefPriv = wxT("ALTER DEFAULT PRIVILEGES ");
+
+    if (!strRevoke.IsEmpty())
+    {
+        isModified = true;
+        strRevoke = strRevoke.SubString(0, strRevoke.Length() - 3);
+        strDefPrivs += strAltDefPriv +
+              wxT("\n    REVOKE ") + strRevoke + wxT(" ON ") + strType +
+              wxT("\n    FROM ") + strRole + wxT(";\n");
+    }
+    if (!strRevokeGrantOption.IsEmpty())
+    {
+        isModified = true;
+        strRevokeGrantOption = strRevokeGrantOption.SubString(0, strRevokeGrantOption.Length() - 3);
+        strDefPrivs += strAltDefPriv +
+              wxT("\n    REVOKE GRANT OPTION FOR ") + strRevokeGrantOption + wxT(" ON ") + strType +
+              wxT("\n    FROM ") + strRole + wxT(";\n");
+    }
+    if (!strGrant.IsEmpty())
+    {
+        isModified = true;
+
+        strGrant = strGrant.SubString(0, strGrant.Length() - 3);
+        strDefPrivs += strAltDefPriv +
+              wxT("\n    GRANT ") + strGrant + wxT(" ON ") + strType +
+              wxT("\n    TO ") + strRole + wxT(";\n");
+    }
+    if (!strGrantOption.IsEmpty())
+    {
+        isModified = true;
+        strGrantOption = strGrantOption.SubString(0, strGrantOption.Length() - 3);
+        strDefPrivs += strAltDefPriv +
+              wxT("\n    GRANT ") + strGrantOption + wxT(" ON ") + strType +
+              wxT("\n    TO ") + strRole + wxT(" WITH GRANT OPTION;\n");
+    }
+    if (isModified)
+        return strDefPrivs + wxT("\n");
+    
+    return wxT("");
+}
+
+// Find the user-privileges pair from ACLs
+// i.e. {=wDx/user1,postgres=adDxt/user1}
+// Remove starting and ending curly braces, before supplying as the input
+bool pgObject::findUserPrivs(wxString& strDefPrivs, wxString& strUser, wxString& strPriv)
+{
+    strUser = strPriv = wxT("");
+    if (strDefPrivs.IsEmpty()) return false;
+
+    bool startsWithQuote = false;
+    if (strDefPrivs.StartsWith(wxT("\""))) startsWithQuote = true;
+
+    if (strDefPrivs.StartsWith(wxT("\"\"")))
+    {
+        wxChar currChar;
+        int    quoteCount = 0;
+        int    index = 0;
+
+        currChar = strDefPrivs.GetChar(index);
+
+        while (true)
+        {
+            if (currChar == wxT('=') && quoteCount%2 == 0)
+                break;
+            strUser += currChar;
+            currChar = strDefPrivs.GetChar(++index);
+            if (currChar == wxT('"')) quoteCount++;
+        }
+        strUser = strUser.SubString(2, strUser.Length() - 2);
+        strUser.Replace(wxT("\"\""), wxT("\""), true);
+        strDefPrivs = strDefPrivs.SubString(index + 1, strDefPrivs.Length());
+    }
+    else
+    {
+        /* Remove first quote */
+        if (startsWithQuote) strDefPrivs = strDefPrivs.SubString(1, strDefPrivs.Length());
+
+        int equalCharAt = strDefPrivs.Find(wxT('='));
+
+        if (equalCharAt != 0)
+            strUser = strDefPrivs.SubString(0, equalCharAt - 1);
+        else
+            strUser = wxT("public");
+        strDefPrivs = strDefPrivs.SubString(equalCharAt + 1, strDefPrivs.Length());
+    }
+
+    int slashCharAt = strDefPrivs.Find(wxT('/'));
+    strPriv = strDefPrivs.SubString(0, slashCharAt - 1);
+
+    strDefPrivs = strDefPrivs.SubString(strPriv.Length() + 2, strDefPrivs.Length());
+
+    if (!strDefPrivs.StartsWith(wxT("\"")))
+    {
+        int commaCharAt = strDefPrivs.Find(wxT(','));
+        if (commaCharAt == wxNOT_FOUND) strDefPrivs = wxT("");
+        else strDefPrivs = strDefPrivs.SubString(commaCharAt + 1, strDefPrivs.Length());
+    }
+    else
+    {
+        wxChar currChar;
+        int    quoteCount = 0;
+        int    index = 0;
+
+        currChar = strDefPrivs.GetChar(index);
+        while (true)
+        {
+            if (currChar == wxT(',') && quoteCount%2 == 0)
+                break;
+            currChar = strDefPrivs.GetChar(++index);
+            if (currChar == wxT('"')) quoteCount++;
+        }
+        strDefPrivs = strDefPrivs.SubString(index, strDefPrivs.Length());
+    }
+
+    return true;
+}
+
+wxString pgObject::GetPrivilegeName(wxChar privilege)
+{
+   switch(privilege) {
+     case 'a':
+         return wxT("INSERT");
+     case 'r':
+         return wxT("SELECT");
+     case 'w':
+         return wxT("UPDATE");
+     case 'd':
+         return wxT("DELETE");
+     case 'D':
+         return wxT("TRUNCATE");
+     case 'x':
+         return wxT("REFERENCES");
+     case 't':
+         return wxT("TRIGGER");
+     case 'U':
+         return wxT("USAGE");
+     case 'X':
+         return wxT("EXECUTE");
+     default:
+         return wxT("UNKNOWN");
+   }
+}
+
+

@@ -156,18 +156,23 @@ wxString pgSchemaBase::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
     {
+        wxString strName = qtIdent(GetName());
         if (GetMetaType() == PGM_CATALOG)
             sql = wxT("-- Catalog: ") + GetName() + wxT("\n\n");
         else
             sql = wxT("-- Schema: ") + GetName() + wxT("\n\n");
 
         sql += wxT("-- DROP SCHEMA ") + GetQuotedFullIdentifier() + wxT(";")
-            + wxT("\n\nCREATE SCHEMA ") + qtIdent(GetName()) 
+            + wxT("\n\nCREATE SCHEMA ") + strName
             + wxT("\n  AUTHORIZATION ") + qtIdent(GetOwner());
+        sql += wxT(";\n\n");
 
-        sql += wxT(";\n")
-            + GetGrant(wxT("UC"), wxT("SCHEMA ") + GetQuotedFullIdentifier())
+        sql += GetGrant(wxT("UC"), wxT("SCHEMA ") + GetQuotedFullIdentifier())
             + GetCommentSql();
+
+        sql += wxT("\n") + pgDatabase::GetDefaultPrivileges('r', m_defPrivsOnTables, strName);
+        sql += pgDatabase::GetDefaultPrivileges('S', m_defPrivsOnSeqs, strName);
+        sql += pgDatabase::GetDefaultPrivileges('f', m_defPrivsOnFuncs, strName);
     }
     return sql;
 }
@@ -270,8 +275,13 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
         properties->AppendItem(_("OID"), GetOid());
         properties->AppendItem(_("Owner"), GetOwner());
         properties->AppendItem(_("ACL"), GetAcl());
+        properties->AppendItem(_("Default table ACL"), m_defPrivsOnTables);
+        properties->AppendItem(_("Default sequence ACL"), m_defPrivsOnSeqs);
+        properties->AppendItem(_("Default function ACL"), m_defPrivsOnFuncs);
+
         if (GetMetaType() != PGM_CATALOG)
             properties->AppendItem(_("System schema?"), GetSystemObject());
+
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
@@ -411,6 +421,13 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
                 catalog->iSetAcl(schemas->GetVal(wxT("nspacl")));
                 catalog->iSetCreatePrivilege(false);
 
+                if (collection->GetDatabase()->BackendMinimumVersion(9, 0))
+                {
+                    catalog->iSetDefPrivsOnTables(collection->GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = " + catalog->GetOidStr() + wxT(" AND defaclobjtype='r'"))));
+                    catalog->iSetDefPrivsOnSeqs(collection->GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = " + catalog->GetOidStr() + wxT(" AND defaclobjtype='S'"))));
+                    catalog->iSetDefPrivsOnFuncs(collection->GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = " + catalog->GetOidStr() + wxT(" AND defaclobjtype='f'"))));
+                }
+
                 if (browser)
                 {
                     browser->AppendObject(collection, catalog);
@@ -430,6 +447,13 @@ pgObject *pgSchemaBaseFactory::CreateObjects(pgCollection *collection, ctlTree *
                 schema->iSetOwner(schemas->GetVal(wxT("namespaceowner")));
                 schema->iSetAcl(schemas->GetVal(wxT("nspacl")));
                 schema->iSetCreatePrivilege(schemas->GetBool(wxT("cancreate")));
+
+                if (collection->GetDatabase()->BackendMinimumVersion(9, 0))
+                {
+                    schema->iSetDefPrivsOnTables(collection->GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = " + schema->GetOidStr() + wxT(" AND defaclobjtype='r'"))));
+                    schema->iSetDefPrivsOnSeqs(collection->GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = " + schema->GetOidStr() + wxT(" AND defaclobjtype='S'"))));
+                    schema->iSetDefPrivsOnFuncs(collection->GetConnection()->ExecuteScalar(wxT("SELECT defaclacl FROM pg_catalog.pg_default_acl dacl WHERE dacl.defaclnamespace = " + schema->GetOidStr() + wxT(" AND defaclobjtype='f'"))));
+                }
 
                 if (browser)
                 {

@@ -54,6 +54,13 @@ public:
     static wxString GetPrivileges(const wxString& allPattern,
                      const wxString& acl, const wxString& grantObject,
                      const wxString& user, const wxString& column=wxT(""));
+
+    static wxString GetDefaultPrivileges(const wxString& strType, const wxString& strSupportedPrivs,
+                                         const wxString& strSchema, const wxString& strOrigDefPrivs,
+                                         const wxString& strNewDefPrivs, const wxString& strRole);
+    static wxString GetPrivilegeName(wxChar privilege);
+    static bool     findUserPrivs(wxString& , wxString&, wxString&);
+
     static int GetTypeId(const wxString &typname);
 
     pgaFactory *GetFactory() { return factory; }
@@ -168,7 +175,6 @@ private:
 
     friend class pgaFactory;
 };
-
 
 #endif
 

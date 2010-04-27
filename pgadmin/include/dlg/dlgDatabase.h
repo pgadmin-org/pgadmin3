@@ -17,7 +17,7 @@
 
 class pgDatabase;
 
-class dlgDatabase : public dlgSecurityProperty
+class dlgDatabase : public dlgDefaultSecurityProperty
 {
 public:
     dlgDatabase(pgaFactory *factory, frmMain *frame, pgDatabase *db);
@@ -54,6 +54,7 @@ private:
     void OnOK(wxCommandEvent &ev);
 
     void SetupVarEditor(int var);
+    bool executeDDLSql(const wxString& strSql);
 
 	bool dirtyVars;
 

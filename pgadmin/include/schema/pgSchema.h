@@ -76,9 +76,22 @@ public:
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
+    // Default Privileges on Schema
+    void iSetDefPrivsOnTables(const wxString& privs) { m_defPrivsOnTables = privs; }
+    void iSetDefPrivsOnSeqs(const wxString& privs) { m_defPrivsOnSeqs = privs; }
+    void iSetDefPrivsOnFuncs(const wxString& privs) { m_defPrivsOnFuncs = privs; }
+
+    wxString GetDefPrivsOnTables() { return m_defPrivsOnTables; }
+    wxString GetDefPrivsOnSequences() { return m_defPrivsOnSeqs; }
+    wxString GetDefPrivsOnFunctions() { return m_defPrivsOnFuncs; }
+
     bool HasStats() { return false; }
     bool HasDepends() { return true; }
     bool HasReferences() { return true; }
+
+protected:
+    wxString m_defPrivsOnTables, m_defPrivsOnSeqs, m_defPrivsOnFuncs;
+
 private:
     long schemaTyp;
     bool createPrivilege;
@@ -88,6 +101,7 @@ class pgSchema : public pgSchemaBase
 {
 public:
 	pgSchema(const wxString& newName = wxT(""));
+
 };
 
 class pgCatalog : public pgSchemaBase
