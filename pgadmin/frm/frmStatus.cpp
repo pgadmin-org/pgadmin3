@@ -490,7 +490,7 @@ void frmStatus::AddStatusPane()
     
     // Add each column to the list control
     statusList = (ctlListView*)lstStatus;
-    statusList->AddColumn(wxT("PID"), 35);
+    statusList->AddColumn(_("PID"), 35);
     if (connection->BackendMinimumVersion(8, 5))
         statusList->AddColumn(_("Application name"), 70);
     statusList->AddColumn(_("Database"), 70);
@@ -859,8 +859,7 @@ void frmStatus::OnCopyQuery(wxCommandEvent& ev)
     }
 
     if (text.Length() == maxlength)
-        wxLogError(wxT("The query you copied is at the maximum length.")
-          wxT("It may have been truncated."));
+        wxLogError(_("The query you copied is at the maximum length.\nIt may have been truncated."));
 
     // If we have some real query, launch the query tool
     if (text.Length() > 0 && dbname.Length() > 0
@@ -2693,7 +2692,7 @@ wxWindow *serverStatusFactory::StartDialog(frmMain *form, pgObject *obj)
 {
 
     pgServer *server=obj->GetServer();
-    wxString applicationname = wxT("pgAdmin - Server Status");
+    wxString applicationname = _("pgAdmin - Server Status");
 
     pgConn *conn = server->CreateConn(wxEmptyString, 0, applicationname);
     if (conn)

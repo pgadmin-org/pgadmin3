@@ -172,7 +172,7 @@ class DnDFile : public wxFileDropTarget
 		{
 			size_t nFiles = filenames.GetCount();
 			if ((int) nFiles > 1)
-				wxLogError(wxT("Drag one file at a time"));
+				wxLogError(_("Drag one file at a time"));
 			else if ((int) nFiles == 1)
 			{
 				wxString str;
@@ -973,7 +973,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
         int rc=dlg.Go(conn, cbConnection);
         if (rc == wxID_OK)
         {
-            wxString applicationname = wxT("pgAdmin - Query Tool");
+            wxString applicationname = _("pgAdmin - Query Tool");
             conn = dlg.CreateConn(applicationname);
             if (conn)
             {
@@ -1998,7 +1998,7 @@ bool frmQuery::updateFromGqb(bool executing)
     {
         if (controller->getTableCount() > 0)
         {
-            wxMessageBox(_("No SQL query was generated."), wxT("Graphical Query Builder"), wxICON_INFORMATION);
+            wxMessageBox(_("No SQL query was generated."), _("Graphical Query Builder"), wxICON_INFORMATION);
         }
         gqbUpdateRunning = false;
         return false;
@@ -2883,7 +2883,7 @@ void frmQuery::OnDeleteAll(wxCommandEvent& event)
 wxWindow *queryToolBaseFactory::StartDialogSql(frmMain *form, pgObject *obj, const wxString &sql)
 {
     pgDatabase *db=obj->GetDatabase();
-    wxString applicationname = wxT("pgAdmin - Query Tool");
+    wxString applicationname = _("pgAdmin - Query Tool");
     pgConn *conn = db->CreateConn(applicationname);
     if (conn)
     {

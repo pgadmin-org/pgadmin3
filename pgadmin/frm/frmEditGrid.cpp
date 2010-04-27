@@ -3076,13 +3076,13 @@ bool editGridFactoryBase::CheckEnable(pgObject *obj)
 wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filter)
 {
     pgDatabase *db=((pgSchemaObject*)obj)->GetDatabase();
-    wxString applicationname = wxT("pgAdmin - Edit Grid");
+    wxString applicationname = _("pgAdmin - Edit Grid");
 
     pgServer *server=db->GetServer();
     pgConn *conn= db->CreateConn(applicationname);
     if (conn)
     {
-        wxString txt = wxT("Edit Data - ")
+        wxString txt = _("Edit Data - ")
             + server->GetDescription() 
             + wxT(" (") + server->GetName() 
             + wxT(":") + NumToStr((long)server->GetPort()) 

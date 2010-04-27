@@ -436,7 +436,7 @@ ExecutionDialog::ExecutionDialog(frmMain *frame, pgObject *_object) : DialogWith
     txtMessages = 0;
 
     pgDatabase *db=object->GetDatabase();
-    wxString applicationname = wxT("pgAdmin - Execution Tool");
+    wxString applicationname = _("pgAdmin - Execution Tool");
     conn = db->CreateConn(applicationname);
 }
 

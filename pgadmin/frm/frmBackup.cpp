@@ -124,7 +124,8 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 
     cbEncoding->SetSelection(0);
 
-    wxTreeItemId db = ctvObjects->AddRoot(wxT("Database ") + object->GetDatabase()->GetName(), 1);
+    wxString i18ndb = _("Database");
+    wxTreeItemId db = ctvObjects->AddRoot(i18ndb + wxT(" ") + object->GetDatabase()->GetName(), 1);
     bool checked;
 
     wxString query = wxT("SELECT nspname, relname ")

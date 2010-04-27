@@ -101,7 +101,7 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
     }
 
     // Fill the group combobox
-    cbGroup->Append(wxT("Servers"));
+    cbGroup->Append(_("Servers"));
     ctlTree *browser = frame->GetBrowser();
     wxTreeItemId groupitem;
     wxTreeItemIdValue groupcookie, servercookie;
@@ -112,7 +112,7 @@ dlgServer::dlgServer(pgaFactory *f, frmMain *frame, pgServer *node)
         while (groupitem)
         {
             firstserver = (pgServer*)browser->GetObject(browser->GetFirstChild(groupitem, servercookie));
-            if (!firstserver->GetGroup().IsEmpty() && firstserver->GetGroup() != wxT("Servers"))
+            if (!firstserver->GetGroup().IsEmpty() && firstserver->GetGroup() != _("Servers"))
                 cbGroup->Append(firstserver->GetGroup());
             groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
         }
@@ -177,7 +177,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         wxString sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
         server->iSetColour(sColour);
         if (cbGroup->GetValue().IsEmpty())
-            cbGroup->SetValue(wxT("Servers"));
+            cbGroup->SetValue(_("Servers"));
         if (server->GetGroup() != cbGroup->GetValue())
         {
             ctlTree *browser = mainForm->GetBrowser();
@@ -206,7 +206,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
             oldgroupitem = browser->GetItemParent(item);
             oldgroupname = server->GetGroup();
             if (oldgroupname.IsEmpty())
-                oldgroupname = wxT("Servers");
+                oldgroupname = _("Servers");
             browser->Delete(item);
 
             // Move the item
@@ -371,7 +371,7 @@ int dlgServer::Go(bool modal)
     else
     {
         SetTitle(_("Add server"));
-        cbGroup->SetValue(wxT("Servers"));
+        cbGroup->SetValue(_("Servers"));
     }
 
     return dlgProperty::Go(modal);

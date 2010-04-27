@@ -616,21 +616,21 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 
         if (database.IsEmpty())
         {
-            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, ssl, 0, wxT("pgAdmin - Browser"));
+            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, ssl, 0, _("pgAdmin - Browser"));
             if (conn->GetStatus() == PGCONN_OK)
                 database=DEFAULT_PG_DATABASE;
             else if (conn->GetStatus() == PGCONN_BAD && conn->GetLastError().Find(
                                 wxT("database \"") DEFAULT_PG_DATABASE wxT("\" does not exist")) >= 0)
             {
                 delete conn;
-                conn = new pgConn(GetName(), wxT("template1"), username, password, port, ssl, 0, wxT("pgAdmin - Browser"));
+                conn = new pgConn(GetName(), wxT("template1"), username, password, port, ssl, 0, _("pgAdmin - Browser"));
                 if (conn && conn->GetStatus() == PGCONN_OK)
                     database=wxT("template1");
             }
         }
         else
         {
-            conn = new pgConn(GetName(), database, username, password, port, ssl, 0, wxT("pgAdmin - Browser"));
+            conn = new pgConn(GetName(), database, username, password, port, ssl, 0, _("pgAdmin - Browser"));
             if (!conn)
             {
                 form->EndMsg(false);
@@ -982,9 +982,9 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                 properties->AppendItem(wxT("Autovacuum"), (autovacuumRunning ? _("running") : _("not running")));
             if (conn->BackendMinimumVersion(8,5))
             {
-                properties->AppendItem(wxT("In recovery"), (GetInRecovery() ? _("yes") : _("no")));
-                properties->AppendItem(wxT("Last XLOG receive location"), GetReceiveLoc());
-                properties->AppendItem(wxT("Last XLOG replay location"), GetReplayLoc());
+                properties->AppendItem(_("In recovery"), (GetInRecovery() ? _("yes") : _("no")));
+                properties->AppendItem(_("Last XLOG receive location"), GetReceiveLoc());
+                properties->AppendItem(_("Last XLOG replay location"), GetReplayLoc());
             }
         }
         if (GetServerControllable())
@@ -1184,7 +1184,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         // Sanitize the group
         if (group.IsEmpty())
         {
-            group = wxT("Servers");
+            group = _("Servers");
         }
 
         // Add the Server node
@@ -1451,7 +1451,7 @@ wxWindow *addServerFactory::StartDialog(frmMain *form, pgObject *obj)
                 // Add the new server in its group
                 wxString group = server->GetGroup();
                 if (group.Length() == 0)
-                    group = wxT("Servers");
+                    group = _("Servers");
 
                 // Get the parent group
                 groupitem = browser->GetFirstChild(browser->GetRootItem(), groupcookie);

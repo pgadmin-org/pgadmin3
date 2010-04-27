@@ -402,7 +402,7 @@ wxString frmRestore::getCmdPart2(int step)
                 if (restoreStrings[i] != wxEmptyString)
                 {
                     if (!tocFile.Write(restoreStrings[i] + wxT("\n")))
-                        wxLogError(wxT("Error writing to the temporary file ") + restoreTOCFilename);
+                        wxLogError(_("Error writing to the temporary file ") + restoreTOCFilename);
                 }
             }
 
@@ -497,7 +497,8 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
         
         wxBeginBusyCursor();
 
-        wxTreeItemId root = ctvObjects->AddRoot(wxT("Backup ") + txtFilename->GetValue());
+        wxString i18nbackup = _("Backup");
+        wxTreeItemId root = ctvObjects->AddRoot(i18nbackup + wxT(" ") + txtFilename->GetValue());
         wxString currentSchema = wxT("");
         wxTreeItemId currentSchemaNode;
         wxTreeItemId schemaNode, lastItem;
@@ -592,7 +593,7 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
             // New method
             if (type == wxT("LANGUAGE"))
             {
-                lastItem = ctvObjects->AppendItem(root, wxT("Language ")+name+wxT(" [owner: ")+owner+wxT("]"), 1);
+                lastItem = ctvObjects->AppendItem(root, wxT("Language ")+name+wxT(" [") + _("owner") + wxT(": ")+owner+wxT("]"), 1);
             }
             else if (type == wxT("ACL") && schema == wxT("-"))
             {
@@ -605,8 +606,7 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
             else if (type == wxT("SCHEMA"))
             {
                 currentSchema = name;
-                lastItem = currentSchemaNode = ctvObjects->AppendItem(root, wxT("Schema ")+name //+wxT(" [owner: ")+owner+wxT("]")
-                                    , 1);
+                lastItem = currentSchemaNode = ctvObjects->AppendItem(root, wxT("Schema ")+name, 1);
             }
             else
             {
@@ -632,9 +632,9 @@ void frmRestore::OnEndProcess(wxProcessEvent& ev)
                     // if we are treating a comment, we use the schema of its
                     // object (ie, the previous line)
                     else if (type != wxT("COMMENT"))
-                        wxLogError(wxT("Schema node not found for object ") + type+wxT(" ")+name+wxT(" [owner: ")+owner+wxT("]"));
+                        wxLogError(_("Schema node not found for object ") + type+wxT(" ")+name+wxT(" [")+_("owner")+wxT(": ")+owner+wxT("]"));
                 }
-                lastItem = ctvObjects->AppendItem(currentSchemaNode, type+wxT(" ")+name+wxT(" [owner: ")+owner+wxT("]"), 1);
+                lastItem = ctvObjects->AppendItem(currentSchemaNode, type+wxT(" ")+name+wxT(" [")+_("owner")+wxT(": ")+owner+wxT("]"), 1);
             }
             ctvObjects->SetItemData(lastItem, new restoreTreeItemData(numberOfTOCItems,str));
             numberOfTOCItems++;

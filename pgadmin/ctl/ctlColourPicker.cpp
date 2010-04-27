@@ -22,7 +22,7 @@
 void ctlColourPicker::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
 {
     // Set Default Title
-    m_title = wxT("Choose the colour");
+    m_title = _("Choose the colour");
 
     // Create the wxBitmapButton
     ((wxBitmapButton *)this)->Create(parent, id, wxNullBitmap, pos, size);
