@@ -768,7 +768,7 @@ wxString sysSettings::GetHistoryFile()
     tmp += wxT("/.pgadmin_histoqueries");
 #endif
 
-    Read(wxT("HistoryFile"), &s, tmp);
+    Read(wxT("History/File"), &s, tmp);
 
     return s;
 }

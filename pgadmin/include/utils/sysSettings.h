@@ -127,9 +127,13 @@ public:
 	wxString GetFavouritesFile();
 	void SetFavouritesFile(const wxString &newval) { Write(wxT("FavouritesFile"), newval); }
 	wxString GetMacrosFile();
-	void SetMacrosFile(const wxString &newval) { Write(wxT("HistoryFile"), newval); }
+	void SetMacrosFile(const wxString &newval) { Write(wxT("MacrosFile"), newval); }
 	wxString GetHistoryFile();
-	void SetHistoryFile(const wxString &newval) { Write(wxT("HistoryFile"), newval); }
+	void SetHistoryFile(const wxString &newval) { Write(wxT("History/File"), newval); }
+	long  GetHistoryMaxQueries() const { long l; Read(wxT("History/MaxQueries"), &l, 10L); return l; }
+	void SetHistoryMaxQueries(const long newval) { Write(wxT("History/MaxQueries"), newval); }
+	long  GetHistoryMaxQuerySize() const { long l; Read(wxT("History/MaxQuerySize"), &l, 1024L); return l; }
+	void SetHistoryMaxQuerySize(const long newval) { Write(wxT("History/MaxQuerySize"), newval); }
 
     // Status Colours options
     wxString GetIdleProcessColour() const { wxString s; Read(wxT("IdleProcessColour"), &s, wxT("#5fa4d9")); return s; }

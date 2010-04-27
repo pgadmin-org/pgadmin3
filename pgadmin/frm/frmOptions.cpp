@@ -79,6 +79,8 @@
 #define pickerFavouritesFile        CTRL_FILEPICKER("pickerFavouritesFile")
 #define pickerMacrosFile               CTRL_FILEPICKER("pickerMacrosFile")
 #define pickerHistoryFile              CTRL_FILEPICKER("pickerHistoryFile")
+#define txtHistoryMaxQueries        CTRL_TEXT("txtHistoryMaxQueries")
+#define txtHistoryMaxQuerySize      CTRL_TEXT("txtHistoryMaxQuerySize")
 #define chkSQLUseSystemBackgroundColour  CTRL_CHECKBOX("chkSQLUseSystemBackgroundColour")
 #define chkSQLUseSystemForegroundColour  CTRL_CHECKBOX("chkSQLUseSystemForegroundColour")
 #define pickerSQLBackgroundColour        CTRL_COLOURPICKER("pickerSQLBackgroundColour")
@@ -200,6 +202,8 @@ frmOptions::frmOptions(frmMain *parent)
     txtMaxColSize->SetValidator(numval);
     txtAutoRowCount->SetValidator(numval);
     txtIndent->SetValidator(numval);
+    txtHistoryMaxQueries->SetValidator(numval);
+    txtHistoryMaxQuerySize->SetValidator(numval);
     
     pickerLogfile->SetPath(settings->GetLogFile());
     radLoglevel->SetSelection(settings->GetLogLevel());
@@ -247,6 +251,9 @@ frmOptions::frmOptions(frmMain *parent)
     pickerFavouritesFile->SetPath(settings->GetFavouritesFile());
     pickerMacrosFile->SetPath(settings->GetMacrosFile());
     pickerHistoryFile->SetPath(settings->GetHistoryFile());
+
+    txtHistoryMaxQueries->SetValue(NumToStr(settings->GetHistoryMaxQueries()));
+    txtHistoryMaxQuerySize->SetValue(NumToStr(settings->GetHistoryMaxQuerySize()));
 
 	chkSQLUseSystemBackgroundColour->SetValue(settings->GetSQLBoxUseSystemBackground());
 	chkSQLUseSystemForegroundColour->SetValue(settings->GetSQLBoxUseSystemForeground());
@@ -505,7 +512,9 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetSpacesForTabs(chkSpacesForTabs->GetValue());
     settings->SetCopyQuoting(cbCopyQuote->GetCurrentSelection());
     settings->SetCopyQuoteChar(cbCopyQuoteChar->GetValue());
-    
+    settings->SetHistoryMaxQueries(StrToLong(txtHistoryMaxQueries->GetValue()));
+    settings->SetHistoryMaxQuerySize(StrToLong(txtHistoryMaxQuerySize->GetValue()));
+ 
     wxString copySeparator = cbCopySeparator->GetValue();
     if (copySeparator == _("Tab"))
         copySeparator = wxT("\t");

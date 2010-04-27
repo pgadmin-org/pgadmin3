@@ -2358,7 +2358,6 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
             sqlQueries->Delete(sqlQueries->GetCount()-1);
             btnDeleteCurrent->Enable(sqlQueries->GetValue().Length()>0);
             btnDeleteAll->Enable(sqlQueries->GetCount() > 0);
-            SaveQueries();
 
             pgError err = sqlResult->GetResultError();
             wxString errMsg = err.formatted_msg;
@@ -2461,6 +2460,35 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
             SetStatusText(wxString::Format(wxPLURAL("%d row.", "%d rows.", rowsTotal), rowsTotal), STATUSPOS_ROWS);
         }
     }
+
+    if (sqlResult->RunStatus() == PGRES_TUPLES_OK || sqlResult->RunStatus() == PGRES_COMMAND_OK)
+    {
+        // Delete the current query if its size is bigger than the max allowed
+        if (sqlQueries->GetString(sqlQueries->GetCount() - 1).Len() > settings->GetHistoryMaxQuerySize())
+        {
+	        histoQueries.RemoveAt(sqlQueries->GetCount() - 1);
+            sqlQueries->Delete(sqlQueries->GetCount() - 1);
+        }
+        else
+        {
+            // Delete an old query if it matches the current one
+            unsigned int index = histoQueries.Index(sqlQueries->GetString(sqlQueries->GetCount() - 1), false);
+            if (index != wxNOT_FOUND && index < sqlQueries->GetCount() - 1)
+            {
+	            histoQueries.RemoveAt(index);
+                sqlQueries->Delete(index);
+            }
+        }
+    }
+
+    // Make sure only the maximum query number is enforced
+    while (sqlQueries->GetCount() > settings->GetHistoryMaxQueries())
+    {
+	    histoQueries.RemoveAt(0);
+        sqlQueries->Delete(0);
+    }
+
+    SaveQueries();
 
     completeQuery(done, qi->explain, qi->verbose);
 	delete qi;
@@ -2798,6 +2826,17 @@ void frmQuery::LoadQueries()
 	xmlFreeTextReader(reader);
 	xmlCleanupParser();
 
+    // Make sure only the maximum query number is enforced
+    if (sqlQueries->GetCount() > settings->GetHistoryMaxQueries())
+    {
+        while (sqlQueries->GetCount() > settings->GetHistoryMaxQueries())
+        {
+	        histoQueries.RemoveAt(0);
+            sqlQueries->Delete(0);
+        }
+        SaveQueries();
+    }
+
 	return;
 }
 
@@ -2858,23 +2897,37 @@ void frmQuery::OnChangeQuery(wxCommandEvent &event)
 
 void frmQuery::OnDeleteCurrent(wxCommandEvent& event)
 {
-    histoQueries.RemoveAt(sqlQueries->GetSelection());
-    sqlQueries->Delete(sqlQueries->GetSelection());
-    sqlQueries->SetValue(wxT(""));
-    btnDeleteCurrent->Enable(false);
-    btnDeleteAll->Enable(sqlQueries->GetCount() > 0);
-    SaveQueries();
+
+    if ( wxMessageDialog(this, 
+		_("Delete current query from history?"), 
+		_("Confirm deletion"), 
+		wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION).ShowModal() == wxID_YES )
+    {
+	    histoQueries.RemoveAt(sqlQueries->GetSelection());
+	    sqlQueries->Delete(sqlQueries->GetSelection());
+	    sqlQueries->SetValue(wxT(""));
+	    btnDeleteCurrent->Enable(false);
+	    btnDeleteAll->Enable(sqlQueries->GetCount() > 0);
+	    SaveQueries();
+    }
 }
 
 
 void frmQuery::OnDeleteAll(wxCommandEvent& event)
 {
-    histoQueries.Clear();
-    sqlQueries->Clear();
-    sqlQueries->SetValue(wxT(""));
-    btnDeleteCurrent->Enable(false);
-    btnDeleteAll->Enable(false);
-    SaveQueries();
+
+    if ( wxMessageDialog(this, 
+		_("Delete all queries from history?"), 
+		_("Confirm deletion"), 
+		wxYES_NO | wxNO_DEFAULT |wxICON_EXCLAMATION).ShowModal() == wxID_YES )
+    {
+    	histoQueries.Clear();
+    	sqlQueries->Clear();
+    	sqlQueries->SetValue(wxT(""));
+    	btnDeleteCurrent->Enable(false);
+    	btnDeleteAll->Enable(false);
+    	SaveQueries();
+    }
 }
 
 
