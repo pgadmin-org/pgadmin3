@@ -378,7 +378,8 @@ wxString dlgColumn::GetSql()
 
             if (connection->BackendMinimumVersion(7, 5))
             {
-                if (cbDatatype->GetValue() != column->GetRawTypename() || 
+                if ((cbDatatype->GetValue() != column->GetRawTypename() && !column->GetIsArray()) ||
+                    (cbDatatype->GetValue() != column->GetRawTypename() + wxT("[]") && column->GetIsArray()) ||
                     (isVarLen && txtLength->IsEnabled() && StrToLong(len) != column->GetLength()) ||
                     (isVarPrec && txtPrecision->IsEnabled() && StrToLong(prec) != column->GetPrecision()))
                 {
@@ -608,7 +609,8 @@ void dlgColumn::CheckChange()
                     || txtDefault->GetValue() != column->GetDefault()
                     || txtComment->GetValue() != column->GetComment()
                     || chkNotNull->GetValue() != column->GetNotNull()
-                    || (cbDatatype->GetCount() > 1 && cbDatatype->GetGuessedStringSelection() != column->GetRawTypename())
+                    || (cbDatatype->GetCount() > 1 && cbDatatype->GetGuessedStringSelection() != column->GetRawTypename() && !column->GetIsArray())
+                    || (cbDatatype->GetCount() > 1 && cbDatatype->GetGuessedStringSelection() != column->GetRawTypename() + wxT("[]") && column->GetIsArray())
                     || (isVarLen && varlen != column->GetLength())
                     || (isVarPrec && varprec != column->GetPrecision())
                     || txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget())
