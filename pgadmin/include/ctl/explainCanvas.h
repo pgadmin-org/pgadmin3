@@ -33,10 +33,11 @@ public:
     void ShowPopup(ExplainShape *s);
     void SetExplainString(const wxString &str);
     void Clear();
+    void SaveAsImage(const wxString& fileName, wxBitmapType imageType);
 
 private:
 
-    ExplainShape *rootShape, *lastShape;
+    ExplainShape *rootShape;
     ExplainPopup *popup;
 };
 
@@ -105,3 +106,4 @@ private:
 };
 
 #endif
+

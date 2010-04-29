@@ -101,6 +101,8 @@ EVT_MENU(MNU_OPEN,              frmQuery::OnOpen)
 EVT_MENU(MNU_SAVE,              frmQuery::OnSave)
 EVT_MENU(MNU_SAVEAS,            frmQuery::OnSaveAs)
 EVT_MENU(MNU_EXPORT,            frmQuery::OnExport)
+EVT_MENU(MNU_SAVEAS_IMAGE_GQB,     frmQuery::SaveExplainAsImage)
+EVT_MENU(MNU_SAVEAS_IMAGE_EXPLAIN, frmQuery::SaveExplainAsImage)
 EVT_MENU(MNU_EXIT,              frmQuery::OnExit)
 EVT_MENU(MNU_CUT,               frmQuery::OnCut)
 EVT_MENU(MNU_COPY,              frmQuery::OnCopy)
@@ -223,6 +225,8 @@ pgsTimer(new pgScriptTimer(this))
     recentKey = wxT("RecentFiles");
     RestorePosition(100, 100, 600, 500, 450, 300);
 
+    explainCanvas = NULL;
+
     // notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
@@ -238,7 +242,11 @@ pgsTimer(new pgScriptTimer(this))
     fileMenu->Append(MNU_NEW, _("&New window\tCtrl-N"), _("Open a new query window"));
     fileMenu->Append(MNU_OPEN, _("&Open...\tCtrl-O"),   _("Open a query file"));
     fileMenu->Append(MNU_SAVE, _("&Save\tCtrl-S"),      _("Save current file"));
-    fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
+    saveasImageMenu = new wxMenu();
+    saveasImageMenu->Append(MNU_SAVEAS, _("Query (text)"), _("Save file under new name"));
+    saveasImageMenu->Append(MNU_SAVEAS_IMAGE_GQB, _("Graphical Query (image)"), _("Save Graphical Query as an image"));
+    saveasImageMenu->Append(MNU_SAVEAS_IMAGE_EXPLAIN, _("Explain (image)"), _("Save output of Explain as an image"));
+    fileMenu->Append(wxID_ANY, _("Save as"), saveasImageMenu);
     fileMenu->AppendSeparator();
     fileMenu->Append(MNU_EXPORT, _("&Export..."),  _("Export data to file"));
     fileMenu->Append(MNU_QUICKREPORT, _("&Quick report..."),  _("Run a quick report..."));
@@ -1335,6 +1343,8 @@ void frmQuery::updateMenu(wxObject *obj)
     bool canClear=false;
     bool canFind=false;
     bool canAddFavourite=false;
+    bool canSaveExplain=false;
+    bool canSaveGQB=false;
 
     wxAuiFloatingFrame *fp = wxDynamicCastThis(wxAuiFloatingFrame);
     if (fp)
@@ -1362,6 +1372,9 @@ void frmQuery::updateMenu(wxObject *obj)
         canClear = true;
     }
 
+    canSaveExplain = explainCanvas->GetDiagram()->GetCount() > 0;
+    canSaveGQB = controller->getView()->canSaveAsImage();
+
     toolBar->EnableTool(MNU_UNDO, canUndo);
     editMenu->Enable(MNU_UNDO, canUndo);
 
@@ -1381,6 +1394,7 @@ void frmQuery::updateMenu(wxObject *obj)
     editMenu->Enable(MNU_FIND, canFind);
 
     favouritesMenu->Enable(MNU_FAVOURITES_ADD, canAddFavourite);
+
 }
 
 
@@ -1923,7 +1937,7 @@ void frmQuery::OnExplain(wxCommandEvent& event)
         resultToRetrieve++;
     }
     sql += wxT("EXPLAIN ");
-    if (conn->BackendMinimumVersion(8, 5))
+    if (conn->BackendMinimumVersion(9, 0))
     {
         bool costs=queryMenu->IsChecked(MNU_COSTS);
         bool buffers=queryMenu->IsChecked(MNU_BUFFERS);
@@ -1986,6 +2000,7 @@ bool frmQuery::updateFromGqb(bool executing)
     // Make sure this doesn't get call recursively through an event
     if (gqbUpdateRunning)
         return false;
+    updateMenu();
 
     gqbUpdateRunning = true;
 
@@ -2628,6 +2643,7 @@ void frmQuery::completeQuery(bool done, bool explain, bool verbose)
             explainCanvas->SetExplainString(str);
             outputPane->SetSelection(1);
         }
+        updateMenu();
     }
 
     sqlQuery->SetFocus();
@@ -3145,6 +3161,50 @@ bool queryToolInsertFactory::CheckEnable(pgObject *obj)
     pgView *view=(pgView*)obj;
 
     return view->HasInsertRule();
+}
+
+void frmQuery::SaveExplainAsImage(wxCommandEvent& ev)
+{
+    wxFileDialog *dlg=new wxFileDialog(this, _("Save Explain As image file"), lastDir, lastFilename,
+           wxT("Bitmap files (*.bmp)|*.bmp|JPEG files (*.jpeg)|*.jpeg|PNG files (*.png)|*.png"), wxFD_SAVE|wxFD_OVERWRITE_PROMPT);
+    if (dlg->ShowModal() == wxID_OK)
+    {
+        lastFilename=dlg->GetFilename();
+        lastDir = dlg->GetDirectory();
+        lastPath = dlg->GetPath();
+        int index = dlg->GetFilterIndex();
+
+        wxString     strType;
+        wxBitmapType imgType;
+        switch (index)
+        {
+        // bmp
+        case 0:
+            strType = wxT(".bmp");
+            imgType = wxBITMAP_TYPE_BMP;
+            break;
+        // jpeg
+        case 1:
+            strType = wxT(".jpeg");
+            imgType = wxBITMAP_TYPE_JPEG;
+            break;
+        // default (png)
+        default:
+        // png
+        case 2:
+            strType = wxT(".png");
+            imgType = wxBITMAP_TYPE_PNG;
+            break;
+        }
+
+        if (!lastPath.Contains(wxT(".")))
+            lastPath += strType;
+
+        if (ev.GetId() == MNU_SAVEAS_IMAGE_GQB)
+            controller->getView()->SaveAsImage(lastPath, imgType);
+        else if (ev.GetId() == MNU_SAVEAS_IMAGE_EXPLAIN)
+            explainCanvas->SaveAsImage(lastPath, imgType);
+    }
 }
 
 ///////////////////////////////////////////////////////

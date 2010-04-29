@@ -154,6 +154,7 @@ private:
     void OnOpen(wxCommandEvent& event);
     void OnSave(wxCommandEvent& event);
     void OnSaveAs(wxCommandEvent& event);
+    void SaveExplainAsImage(wxCommandEvent& event);
     void OnExport(wxCommandEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnCut(wxCommandEvent& event);
@@ -226,6 +227,8 @@ private:
     wxMenu *macrosMenu;
     wxMenu *lineEndMenu;
     wxMenu *formatMenu;
+    wxMenu *saveasImageMenu;
+
     wxString title;
     wxString lastFilename, lastDir;
 

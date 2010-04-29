@@ -26,7 +26,6 @@ ExplainCanvas::ExplainCanvas(wxWindow *parent)
     SetDiagram(new wxDiagram);
     GetDiagram()->SetCanvas(this);
     SetBackgroundColour(*wxWHITE);
-    lastShape=0;
     popup = new ExplainPopup(this);
 }
 
@@ -39,7 +38,6 @@ ExplainCanvas::~ExplainCanvas()
 void ExplainCanvas::Clear()
 {
     GetDiagram()->DeleteAllShapes();
-    lastShape=0;
 }
 
 
@@ -182,6 +180,37 @@ void ExplainCanvas::ShowPopup(ExplainShape *s)
     popup->Move(ClientToScreen(wxPoint(sx, sy)));
 }
 
+
+void ExplainCanvas::SaveAsImage(const wxString& fileName, wxBitmapType imageType)
+{
+    if (GetDiagram()->GetCount() == 0)
+    {
+        wxMessageBox(_("Nothing to be saved!"), _("Save As an image"), wxOK | wxICON_INFORMATION);
+        return;
+    }
+
+    int width = 0, height = 0;
+    GetVirtualSize(&width, &height);
+    
+    /*
+    * Create the bitmap from the Explain window
+    */
+    wxMemoryDC memDC;
+    wxBitmap tempBitmap(width, height);
+    
+    memDC.SelectObject(tempBitmap);
+    memDC.Clear();
+    
+    // Draw the diagram on the bitmap (Memory Device Context)
+    GetDiagram()->Redraw(memDC);
+    
+    memDC.SelectObject(wxNullBitmap);
+
+    if (!tempBitmap.SaveFile(fileName, imageType))
+    {
+        wxLogError(_("Could not write the file %s: Errcode=%d."), fileName.c_str(), wxSysErrorCode());
+    }
+}
 
 class ExplainText : public wxWindow
 {

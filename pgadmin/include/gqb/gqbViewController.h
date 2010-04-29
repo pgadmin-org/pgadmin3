@@ -18,6 +18,9 @@
 #include <wx/dnd.h>
 #include <wx/dataobj.h>
 
+#define GQB_MIN_WIDTH  1280
+#define GQB_MIN_HEIGHT 800
+
 // App headers
 #include "gqb/gqbObject.h"
 #include "gqb/gqbModel.h"
@@ -109,7 +112,9 @@ class gqbView: public wxScrolledWindow
 public:
     gqbView(wxWindow *gqbParent, wxNotebook *gridParent, wxSize size, gqbController *controller, gqbModel *model);
     ~gqbView();
-    void drawAll(wxBufferedDC& bdc);
+    void SaveAsImage(const wxString& path, wxBitmapType imgType);
+    bool canSaveAsImage();
+    void drawAll(wxMemoryDC& bdc, bool adjustScrolling);
     void setPointerMode(pointerMode pm);
 
 	// Events for wxScrolledWindow
@@ -186,4 +191,6 @@ public:
 private:
     gqbBrowser *tree;
 };
+
 #endif
+

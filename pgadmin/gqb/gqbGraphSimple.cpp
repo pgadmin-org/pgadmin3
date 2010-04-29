@@ -49,7 +49,7 @@ gqbGraphSimple::gqbGraphSimple()
 
 // NOTES:(1) store values of width & height at queryTable.
 // (2)Need to set a font for the device context before get font metrics with GetTextExtent
-void gqbGraphSimple::drawTable(wxBufferedDC& bdc, wxPoint *origin, gqbQueryObject *queryTable)
+void gqbGraphSimple::drawTable(wxMemoryDC& bdc, wxPoint *origin, gqbQueryObject *queryTable)
 {
     long  w=0,h=0,height=0,width=0,margin=5;
 
@@ -188,7 +188,7 @@ gqbColumn* gqbGraphSimple::getColumnAtPosition(wxPoint *clickPoint, gqbQueryObje
 }
 
 
-void gqbGraphSimple::drawTempJoinLine(wxBufferedDC& bdc, wxPoint &origin, wxPoint &end)
+void gqbGraphSimple::drawTempJoinLine(wxMemoryDC& bdc, wxPoint &origin, wxPoint &end)
 {
     wxPoint anchorsUsed = wxPoint(0,0);
 
@@ -207,7 +207,7 @@ void gqbGraphSimple::drawTempJoinLine(wxBufferedDC& bdc, wxPoint &origin, wxPoin
 }
 
 
-void gqbGraphSimple::drawJoin(wxBufferedDC& bdc, wxPoint& origin, wxPoint& dest, wxPoint& anchorUsed, bool selected=false, type_Join joinKind=_equally)
+void gqbGraphSimple::drawJoin(wxMemoryDC& bdc, wxPoint& origin, wxPoint& dest, wxPoint& anchorUsed, bool selected=false, type_Join joinKind=_equally)
 {
     wxPoint origin2=origin;
     wxPoint dest2=dest;
@@ -451,8 +451,11 @@ void  gqbGraphSimple::UpdatePosObject(gqbQueryObject *queryTable, int x, int y, 
 {
     x-=cursorAdjustment;                          // Move Pointer to a better Position;
     y-=rowHeight/2;
-    queryTable->position.x=x;                     // Update position of table
-    queryTable->position.y=y;
+    
+    // Update position of table
+    // Do not allow table/view moved/repositioned less than (0, 0) cordinates
+    queryTable->position.x= x > 0 ? x : 0;
+    queryTable->position.y= y > 0 ? y : 0;
 
     // Update position of anchor points of Joins that origin from this table
     if(queryTable->getHaveJoins())

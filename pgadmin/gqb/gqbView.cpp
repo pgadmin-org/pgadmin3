@@ -138,14 +138,14 @@ void gqbView::onPaint(wxPaintEvent& event)
 {
     wxPaintDC dcc(this);                          // Prepare Context for Buffered Draw
     wxBufferedDC dc(&dcc, canvasSize);
-    drawAll(dc);                                  // Call Function to draw all
+    drawAll(dc, true);                            // Call Function to draw all
 }
 
 
 // GQB-TODO: remove all possible modification to model from here to controller.
 void gqbView::onRightClick(wxMouseEvent& event)
 {
-// GQB-TODO: Validate Alias
+    // GQB-TODO: Validate Alias
     gqbObject *anySelected=NULL;
     wxPoint pdc=event.GetPosition();
     pdc.x=event.GetPosition().x;
@@ -502,8 +502,9 @@ void gqbView::onMotion(wxMouseEvent& event)
                 {
                     this->Refresh();
                     refresh=1;
-                }else
-                refresh++;
+                }
+                else
+                    refresh++;
 
             }
         }
@@ -542,7 +543,7 @@ void gqbView::OnKeyDown(wxKeyEvent& event)
 }
 
 
-void gqbView::drawAll(wxBufferedDC& bdc)
+void gqbView::drawAll(wxMemoryDC& bdc, bool adjustScrolling)
 {
     bdc.Clear();
     if(!iterator)
@@ -558,8 +559,11 @@ void gqbView::drawAll(wxBufferedDC& bdc)
         wxPoint pt = wxPoint(tmp->position);      // Use a copy because I don't want to store the modified 
 		                                          // version of point after CalcScrolledPosition was called
 
-		// adjust coordinates
-        this->CalcScrolledPosition(pt.x,pt.y,&pt.x,&pt.y);
+        if (adjustScrolling)
+        {
+            // adjust coordinates
+            this->CalcScrolledPosition(pt.x,pt.y,&pt.x,&pt.y);
+        }
         graphBehavior->drawTable(bdc,&pt,tmp);    // graph table
     }
 
@@ -578,11 +582,14 @@ void gqbView::drawAll(wxBufferedDC& bdc)
                 wxPoint o = join->getSourceAnchor();
                 wxPoint d = join->getDestAnchor();
 
-                // adjust coordinates origin
-                this->CalcScrolledPosition(o.x,o.y,&o.x,&o.y);
-
-                // adjust coordinates destination
-                this->CalcScrolledPosition(d.x,d.y,&d.x,&d.y);
+                if (adjustScrolling)
+                {
+                    // adjust coordinates origin
+                    this->CalcScrolledPosition(o.x,o.y,&o.x,&o.y);
+    
+                    // adjust coordinates destination
+                    this->CalcScrolledPosition(d.x,d.y,&d.x,&d.y);
+                }
                 graphBehavior->drawJoin(bdc,o,d,join->getAnchorsUsed(), join->getSelected(), join->getKindofJoin());
             }
             delete joinsIterator;
@@ -596,8 +603,11 @@ void gqbView::drawAll(wxBufferedDC& bdc)
         // Draw temporary line while creating a join
         wxPoint source=jpos;
         wxPoint destination=pos;
-        this->CalcScrolledPosition(source.x,source.y,&source.x,&source.y);
-        this->CalcScrolledPosition(destination.x,destination.y,&destination.x,&destination.y);
+        if(adjustScrolling)
+        {
+            this->CalcScrolledPosition(source.x,source.y,&source.x,&source.y);
+            this->CalcScrolledPosition(destination.x,destination.y,&destination.x,&destination.y);
+        }
         graphBehavior->drawTempJoinLine(bdc,source,destination);
     }
 }
@@ -749,4 +759,47 @@ void gqbView::updateModelSize(gqbQueryObject* obj, bool updateAnyWay)
         SetVirtualSize(canvasSize);
     }
 }
+
+
+bool gqbView::canSaveAsImage()
+{
+    updateModelSize(NULL, true);
+    return !(modelSize.GetWidth() == 0 || modelSize.GetHeight() == 0);
+}
+
+void gqbView::SaveAsImage(const wxString& fileName, wxBitmapType imgType)
+{
+
+    updateModelSize(NULL, true);
+
+    if (modelSize.GetWidth() == 0 || modelSize.GetHeight() == 0)
+    {
+        wxMessageBox(_("Nothing to be saved!"), _("Save As an image"), wxOK | wxICON_INFORMATION);
+        return;
+    }
+
+    int width = 0, height = 0;
+    GetVirtualSize(&width, &height);
+    
+    /*
+    * Create the bitmap from the Explain window
+    */
+    wxMemoryDC memDC;
+    wxBitmap tempBitmap(width, height);
+    
+    memDC.SelectObject(tempBitmap);
+    memDC.Clear();
+    
+    // Draw the diagram on the bitmap (Memory Device Context)
+    drawAll(memDC, false);
+    
+    memDC.SelectObject(wxNullBitmap);
+    
+    if (!tempBitmap.SaveFile(fileName, imgType))
+    {
+        wxLogError(_("Could not write the file %s: Errcode=%d."), fileName.c_str(), wxSysErrorCode());
+    }
+}
+
+
 

@@ -58,7 +58,6 @@ public:
     void SetAutoIndent(bool on) { m_autoIndent = on; }
     void EnableAutoComp(bool on) { m_autocompDisabled = on; }
     bool BlockComment(bool uncomment=false);
-
     void UpdateLineNumber();
 
     CharacterRange RegexFindText(int minPos, int maxPos, const wxString& text);
@@ -73,7 +72,9 @@ private:
     dlgFindReplace* m_dlgFindReplace;
 	pgConn *m_database;
     bool m_autoIndent, m_autocompDisabled;
+
+    friend class QueryPrintout;
 };
 
-
 #endif
+

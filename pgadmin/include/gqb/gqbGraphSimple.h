@@ -23,10 +23,10 @@ class gqbGraphSimple : public gqbGraphBehavior
 {
 public:
     gqbGraphSimple();
-    void drawTable(wxBufferedDC& bdc, wxPoint *origin, gqbQueryObject *queryTable);
-    void drawTempJoinLine(wxBufferedDC& bdc, wxPoint &origin, wxPoint &end);
+    void drawTable(wxMemoryDC& bdc, wxPoint *origin, gqbQueryObject *queryTable);
+    void drawTempJoinLine(wxMemoryDC& bdc, wxPoint &origin, wxPoint &end);
     void calcAnchorPoint(gqbQueryJoin *join);
-    void drawJoin(wxBufferedDC& bdc, wxPoint& origin, wxPoint& dest, wxPoint& anchorUsed, bool selected, type_Join joinKind);
+    void drawJoin(wxMemoryDC& bdc, wxPoint& origin, wxPoint& dest, wxPoint& anchorUsed, bool selected, type_Join joinKind);
     void UpdatePosObject(gqbQueryObject *queryTable, int x, int y, int cursorAdjustment);
     gqbColumn* getColumnAtPosition(wxPoint *clickPoint, gqbQueryObject *queryTable, int sensibility=17);
     bool clickOnJoin(gqbQueryJoin *join, wxPoint &pt, wxPoint &origin, wxPoint &dest);
