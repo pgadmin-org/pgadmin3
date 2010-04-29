@@ -775,7 +775,6 @@ void dlgDirectDbg::OnTargetComplete( wxCommandEvent & event )
         return;
 
     this->Show( true );
-    this->SetFocus();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
