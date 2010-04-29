@@ -2479,7 +2479,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
     if (sqlResult->RunStatus() == PGRES_TUPLES_OK || sqlResult->RunStatus() == PGRES_COMMAND_OK)
     {
         // Delete the current query if its size is bigger than the max allowed
-        if (sqlQueries->GetString(sqlQueries->GetCount() - 1).Len() > settings->GetHistoryMaxQuerySize())
+        if (sqlQueries->GetString(sqlQueries->GetCount() - 1).Len() > (unsigned int)settings->GetHistoryMaxQuerySize())
         {
 	        histoQueries.RemoveAt(sqlQueries->GetCount() - 1);
             sqlQueries->Delete(sqlQueries->GetCount() - 1);
@@ -2488,7 +2488,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
         {
             // Delete an old query if it matches the current one
             unsigned int index = histoQueries.Index(sqlQueries->GetString(sqlQueries->GetCount() - 1), false);
-            if (index != wxNOT_FOUND && index < sqlQueries->GetCount() - 1)
+            if (index != (unsigned int)wxNOT_FOUND && index < ((unsigned int)sqlQueries->GetCount() - 1))
             {
 	            histoQueries.RemoveAt(index);
                 sqlQueries->Delete(index);
@@ -2497,7 +2497,7 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
     }
 
     // Make sure only the maximum query number is enforced
-    while (sqlQueries->GetCount() > settings->GetHistoryMaxQueries())
+    while (sqlQueries->GetCount() > (unsigned int)settings->GetHistoryMaxQueries())
     {
 	    histoQueries.RemoveAt(0);
         sqlQueries->Delete(0);
@@ -2843,9 +2843,9 @@ void frmQuery::LoadQueries()
 	xmlCleanupParser();
 
     // Make sure only the maximum query number is enforced
-    if (sqlQueries->GetCount() > settings->GetHistoryMaxQueries())
+    if (sqlQueries->GetCount() > (unsigned int)settings->GetHistoryMaxQueries())
     {
-        while (sqlQueries->GetCount() > settings->GetHistoryMaxQueries())
+        while (sqlQueries->GetCount() > (unsigned int)settings->GetHistoryMaxQueries())
         {
 	        histoQueries.RemoveAt(0);
             sqlQueries->Delete(0);
