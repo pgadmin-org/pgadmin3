@@ -149,7 +149,7 @@ wxString pgColumn::GetStorageSql()
 {
     wxString storageSql;
 
-    if (!GetStorage().IsEmpty())
+    if (GetStorage() != GetDefaultStorage())
         storageSql = wxT("ALTER TABLE ")+ GetQuotedFullTable()
                     + wxT(" ALTER COLUMN ") + GetQuotedIdentifier()
                     + wxT(" SET STORAGE ") + GetStorage() + wxT(";\n");
@@ -403,7 +403,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
         
     wxString sql=
         wxT("SELECT att.*, def.*, pg_catalog.pg_get_expr(def.adbin, def.adrelid) AS defval, CASE WHEN att.attndims > 0 THEN 1 ELSE 0 END AS isarray, format_type(ty.oid,NULL) AS typname, format_type(ty.oid,att.atttypmod) AS displaytypname, tn.nspname as typnspname, et.typname as elemtypname,\n")
-        wxT("  cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
+        wxT("  ty.typstorage AS defaultstorage, cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
         wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey,\n")
         wxT("  CASE \n")
         wxT("       WHEN EXISTS( SELECT inhparent FROM pg_inherits WHERE inhrelid=att.attrelid )\n")
@@ -465,6 +465,12 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
                 storage == wxT("e") ? wxT("EXTERNAL") :
                 storage == wxT("m") ? wxT("MAIN") :
                 storage == wxT("x") ? wxT("EXTENDED") : wxT("Unknown"));
+            wxString defaultStorage=columns->GetVal(wxT("defaultstorage"));
+            column->iSetDefaultStorage(
+                defaultStorage == wxT("p") ? wxT("PLAIN") :
+                defaultStorage == wxT("e") ? wxT("EXTERNAL") :
+                defaultStorage == wxT("m") ? wxT("MAIN") :
+                defaultStorage == wxT("x") ? wxT("EXTENDED") : wxT("Unknown"));
 
             column->iSetTyplen(columns->GetLong(wxT("attlen")));
 

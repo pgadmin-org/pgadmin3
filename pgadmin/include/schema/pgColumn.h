@@ -71,6 +71,8 @@ public:
     void iSetTableName(const wxString &s) { tableName=s; }
     wxString GetQuotedFullTable() const { return quotedFullTable; }
     void iSetQuotedFullTable(const wxString &s) { quotedFullTable=s; }
+    wxString GetDefaultStorage() const {return defaultStorage; }
+    void iSetDefaultStorage(const wxString& s) { defaultStorage=s; }
     wxString GetStorage() const {return storage; }
     void iSetStorage(const wxString& s) { storage=s; }
     long GetInheritedCount() const { return inheritedCount; }
@@ -109,7 +111,7 @@ public:
     bool HasReferences() { return true; }
 
 private:
-    wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, storage, rawTypename;
+    wxString varTypename, quotedTypename, defaultVal, tableName, quotedFullTable, defaultStorage, storage, rawTypename;
     wxString serialSequence, serialSchema, pkCols, inheritedTableName;
     long colNumber, length, precision, statistics, attstattarget;
     long typlen, typmod, inheritedCount;
