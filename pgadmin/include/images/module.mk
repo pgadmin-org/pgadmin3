@@ -51,6 +51,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/delete.xpm \
 	$(srcdir)/include/images/dictionary.xpm \
 	$(srcdir)/include/images/dictionaries.xpm \
+	$(srcdir)/include/images/disabled.xpm \
 	$(srcdir)/include/images/dnd_copy.xpm \
 	$(srcdir)/include/images/dnd_move.xpm \
 	$(srcdir)/include/images/dnd_none.xpm \
