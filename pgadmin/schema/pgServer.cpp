@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: pgServer.cpp 8271 2010-04-16 21:11:41Z guillaume $
+// RCS-ID:      $Id$
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -1227,6 +1227,8 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
             discoveredServers.Add(discoveryID);
     }
 
+	group = _("Servers");
+
 #ifdef WIN32
 
     // Add local servers. Will currently only work on Win32 with >= BETA3 
@@ -1264,8 +1266,30 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
                 server->iSetDiscoveryID(svcName);
                 server->iSetDiscovered(true);
                 server->iSetServiceID(svcName);
-                browser->AppendItem(browser->GetFirstChild(obj->GetId(), groupcookie), server->GetFullName(), server->GetIconId(), -1, server);
-                browser->SortChildren(obj->GetId());
+                server->iSetGroup(group);
+
+				found = false;
+
+				if (browser->ItemHasChildren(browser->GetRootItem()))
+				{
+					groupitem = browser->GetFirstChild(browser->GetRootItem(), groupcookie);
+					while (!found && groupitem)
+					{
+						if (browser->GetItemText(groupitem).StartsWith(group))
+							found = true;
+						else
+							groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
+					}
+				}
+
+				if (!found)
+				{
+					groupitem = browser->AppendItem(browser->GetRootItem(), group, obj->GetIconId());
+					browser->SortChildren(browser->GetRootItem());
+				}
+
+				browser->AppendItem(groupitem, server->GetFullName(), server->GetIconId(), -1, server);
+                browser->SortChildren(groupitem);
             }
             // Get the next one...
             flag = pgKey->GetNextKey(svcName, cookie);
@@ -1316,7 +1340,28 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
                         server = new pgServer(servername, description, wxT("postgres"), username, port, false, 0);
                         server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
                         server->iSetDiscovered(true);
-                        browser->AppendItem(browser->GetFirstChild(obj->GetId(), groupcookie), server->GetFullName(), server->GetIconId(), -1, server);
+						server->iSetGroup(group);
+						found = false;
+						if (browser->ItemHasChildren(browser->GetRootItem()))
+						{
+							groupitem = browser->GetFirstChild(browser->GetRootItem(), groupcookie);
+							while (!found && groupitem)
+							{
+								if (browser->GetItemText(groupitem).StartsWith(group))
+									found = true;
+								else
+									groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
+							}
+						}
+
+						if (!found)
+						{
+							groupitem = browser->AppendItem(browser->GetRootItem(), group, obj->GetIconId());
+							browser->SortChildren(browser->GetRootItem());
+						}
+
+						browser->AppendItem(groupitem, server->GetFullName(), server->GetIconId(), -1, server);
+						browser->SortChildren(groupitem);
                     }
                 }
             }

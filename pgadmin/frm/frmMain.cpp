@@ -130,7 +130,7 @@ frmMain::frmMain(const wxString& title)
     CreateMenus();
     
     // Setup the object browser
-    browser = new ctlTree(this, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER | wxTR_HIDE_ROOT);
+    browser = new ctlTree(this, CTL_BROWSER, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS | wxSIMPLE_BORDER);
     browser->SetImageList(imageList);
 
     // Setup the listview
@@ -207,12 +207,12 @@ frmMain::frmMain(const wxString& title)
 
     // Add the root node
     serversObj = new pgServerCollection(serverFactory.GetCollectionFactory());
-    wxTreeItemId root = browser->AddRoot(wxGetTranslation(serverFactory.GetCollectionFactory()->GetTypeName()),
-        serversObj->GetIconId(), -1, serversObj);
+    wxTreeItemId root = browser->AddRoot(_("Server Groups"), serversObj->GetIconId(), -1, serversObj);
 
     // Load servers
     RetrieveServers();
 
+	browser->Expand(root);
     browser->SortChildren(root);
 }
 

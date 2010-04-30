@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// RCS-ID:      $Id: dlgServer.cpp 8206 2010-03-08 17:57:26Z guillaume $
+// RCS-ID:      $Id$
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -200,6 +200,8 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 	        	server->GetColour(),
                 server->GetGroup());
             newserver->iSetDbRestriction(server->GetDbRestriction().Trim());
+            newserver->iSetServiceID(server->GetServiceID().Trim());
+            newserver->iSetDiscoveryID(server->GetDiscoveryID().Trim());
 
             // Drop the old item
             // (will also take care of dropping the pgServer item)
@@ -372,6 +374,8 @@ int dlgServer::Go(bool modal)
     {
         SetTitle(_("Add server"));
         cbGroup->SetValue(_("Servers"));
+		wxString colour = wxT("#FFFFFF");
+		colourPicker->SetColour(colour);
     }
 
     return dlgProperty::Go(modal);

@@ -796,24 +796,46 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
                 browser->SelectItem(nextItem);
         }
         pgaFactory *droppedCollFactory = data->GetFactory()->GetCollectionFactory();
-        browser->Delete(data->GetId());
-        // data is invalid now
 
+		wxTreeItemId oldgroupitem;
+		wxString oldgroupname;
+		if (data->IsCreatedBy(serverFactory))
+		{
+			oldgroupname = ((pgServer*)data)->GetGroup();
+			oldgroupitem = browser->GetItemParent(data->GetId());
+		}
+
+		browser->Delete(data->GetId());
+        // data is invalid now
 
         if (updateFinal)
         {
-            pgCollection *collection=0;
+			if (!oldgroupname.IsEmpty())
+			{
+				int total = browser->GetChildrenCount(oldgroupitem, false);
+				if (total == 0)
+					browser->Delete(oldgroupitem);
+				else
+				{
+					wxString label = oldgroupname + wxT(" (") + NumToStr((long)total) + wxT(")");
+					browser->SetItemText(oldgroupitem, label);
+				}
+			}
+			else
+			{
+				pgCollection *collection=0;
 
-            while (parentItem)
-            {
-                collection = (pgCollection*)browser->GetObject(parentItem);
-                if (collection && collection->IsCollection() && collection->GetFactory() == droppedCollFactory)
-                {
-                    collection->UpdateChildCount(browser);
-                    break;
-                }
-                parentItem=browser->GetItemParent(parentItem);
-            }
+				while (parentItem)
+				{
+					collection = (pgCollection*)browser->GetObject(parentItem);
+					if (collection && collection->IsCollection() && collection->GetFactory() == droppedCollFactory)
+					{
+						collection->UpdateChildCount(browser);
+						break;
+					}
+					parentItem=browser->GetItemParent(parentItem);
+				}
+			}
         }
     }
     return done;
