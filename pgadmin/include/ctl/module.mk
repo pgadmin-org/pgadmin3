@@ -10,9 +10,9 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-    $(srcdir)/include/ctl/calbox.h \
+	$(srcdir)/include/ctl/calbox.h \
 	$(srcdir)/include/ctl/ctlCheckTreeView.h \
-    $(srcdir)/include/ctl/ctlColourPicker.h \
+	$(srcdir)/include/ctl/ctlColourPicker.h \
 	$(srcdir)/include/ctl/ctlComboBox.h \
 	$(srcdir)/include/ctl/ctlListView.h \
 	$(srcdir)/include/ctl/ctlMenuToolbar.h \
@@ -22,17 +22,18 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/ctl/ctlSQLGrid.h \
 	$(srcdir)/include/ctl/ctlSQLResult.h \
 	$(srcdir)/include/ctl/ctlTree.h \
-    $(srcdir)/include/ctl/explainCanvas.h \
+	$(srcdir)/include/ctl/explainCanvas.h \
 	$(srcdir)/include/ctl/timespin.h \
 	$(srcdir)/include/ctl/wxgridsel.h \
 	$(srcdir)/include/ctl/xh_calb.h \
 	$(srcdir)/include/ctl/xh_ctlcombo.h \
+	$(srcdir)/include/ctl/xh_ctlcolourpicker.h \
 	$(srcdir)/include/ctl/xh_ctlchecktreeview.h \
 	$(srcdir)/include/ctl/xh_ctltree.h \
 	$(srcdir)/include/ctl/xh_sqlbox.h \
 	$(srcdir)/include/ctl/xh_timespin.h
 
 EXTRA_DIST += \
-    $(srcdir)/include/ctl/module.mk
+	$(srcdir)/include/ctl/module.mk
 
 
