@@ -728,7 +728,7 @@ wxString pgFunction::GetSelectSql(ctlTree *browser)
     if (args.Length())
         sql += wxT("(\n") + args + wxT("\n);\n");
     else
-        sql += wxT(");\n");
+        sql += wxT("();\n");
 
     return sql;
 }
