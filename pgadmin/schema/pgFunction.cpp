@@ -652,7 +652,10 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
             function->iSetOid(functions->GetOid(wxT("oid")));
             function->iSetXid(functions->GetOid(wxT("xmin")));
-            function->UpdateSchema(browser, functions->GetOid(wxT("pronamespace")));
+			if (browser)
+	            function->UpdateSchema(browser, functions->GetOid(wxT("pronamespace")));
+			else
+				return 0;
             function->iSetOwner(functions->GetVal(wxT("funcowner")));
             function->iSetAcl(functions->GetVal(wxT("proacl")));
             wxString strType = functions->GetVal(wxT("typname"));
