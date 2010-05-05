@@ -11,7 +11,6 @@
 
 // wxWindows headers
 #include <wx/wx.h>
-#include <wx/generic/spinctlg.h>
 #include <wx/spinbutt.h>
 
 // App headers
