@@ -14,12 +14,6 @@
 #include <wx/grid.h>
 #include <wx/settings.h>
 
-#ifdef __WX_FULLSOURCE
-#include "wx/generic/gridsel.h"
-#else
-#include "ctl/wxgridsel.h"
-#endif
-
 #include <wx/generic/gridctrl.h>
 
 // App headers
