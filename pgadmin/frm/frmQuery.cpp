@@ -435,12 +435,12 @@ pgsTimer(new pgScriptTimer(this))
     boxHistory->Add(sqlQueries, 1, wxEXPAND | wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
     // Delete Current button
-    btnDeleteCurrent = new wxButton(pnlQuery, CTL_DELETECURRENTBTN, wxT("Delete"));
+    btnDeleteCurrent = new wxButton(pnlQuery, CTL_DELETECURRENTBTN, _("Delete"));
     btnDeleteCurrent->Enable(false);
     boxHistory->Add(btnDeleteCurrent, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
     // Delete All button
-    btnDeleteAll = new wxButton(pnlQuery, CTL_DELETEALLBTN, wxT("Delete All"));
+    btnDeleteAll = new wxButton(pnlQuery, CTL_DELETEALLBTN, _("Delete All"));
     btnDeleteAll->Enable(sqlQueries->GetCount() > 0);
     boxHistory->Add(btnDeleteAll, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
@@ -2809,7 +2809,7 @@ void frmQuery::LoadQueries()
 	reader = xmlReaderForFile((const char *)settings->GetHistoryFile().mb_str(wxConvUTF8),NULL,0);
 	if (!reader)
 	{
-		wxMessageBox(_("Failed to load histoqueries file!"));
+		wxMessageBox(_("Failed to load the history file!"));
 		return;
 	}
 
@@ -2865,7 +2865,7 @@ void frmQuery::SaveQueries()
 	writer = xmlNewTextWriterFilename((const char *)settings->GetHistoryFile().mb_str(wxConvUTF8),0);
 	if (!writer)
 	{
-		wxMessageBox(_("Failed to write to histoqueries file!"));
+		wxMessageBox(_("Failed to write to history file!"));
 		return;
 	}
 	xmlTextWriterSetIndent(writer, 1);
@@ -2873,7 +2873,7 @@ void frmQuery::SaveQueries()
 	if ((xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL) < 0) ||
 		(xmlTextWriterStartElement(writer, XML_STR("histoqueries")) < 0))
 	{
-		wxMessageBox(_("Failed to write to histoqueries file!"));
+		wxMessageBox(_("Failed to write to history file!"));
 		xmlFreeTextWriter(writer);
 		return;
 	}
@@ -2887,7 +2887,7 @@ void frmQuery::SaveQueries()
 
 	if (xmlTextWriterEndDocument(writer) < 0)
 	{
-		wxMessageBox(_("Failed to write to histoqueries file!"));
+		wxMessageBox(_("Failed to write to history file!"));
 	}
 
 	xmlFreeTextWriter(writer);
