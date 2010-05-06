@@ -12,6 +12,7 @@
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/stc/stc.h>
+#include <wx/sysopt.h>
 
 // App headers
 #include "pgAdmin3.h"
