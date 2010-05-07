@@ -26,11 +26,20 @@ edbPackage::edbPackage(pgSchema *newSchema, const wxString& newName)
 
 bool edbPackage::IsUpToDate()
 {
-    wxString sql = wxT("SELECT xmin FROM edb_package WHERE oid = ") + this->GetOidStr();
-	if (!this->GetDatabase()->GetConnection() || this->GetDatabase()->ExecuteScalar(sql) != NumToStr(GetXid()))
-		return false;
-	else
-		return true;
+    pgConn *conn = GetDatabase()->GetConnection();
+    if (!conn)
+        return false;
+
+    wxString sql;
+    if(conn->EdbMinimumVersion(8, 2))
+        sql = wxT("SELECT xmin FROM pg_namespace WHERE oid = ") + this->GetOidStr();
+    else
+        sql = wxT("SELECT xmin FROM edb_package WHERE oid = ") + this->GetOidStr();
+
+    if (conn->ExecuteScalar(sql) != NumToStr(GetXid()))
+        return false;
+    else
+        return true;
 }
 
 bool edbPackage::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
