@@ -660,6 +660,9 @@ void ExternProcessDialog::OnCancel(wxCommandEvent &ev)
     {
         btnCancel->Disable();
         Abort();
+        wxMilliSleep(100);
+        if (txtMessages)
+            txtMessages->AppendText(END_OF_LINE + wxString(_("Cancelled on user request.")) + END_OF_LINE + END_OF_LINE);
     }
     else
         pgDialog::OnCancel(ev);
