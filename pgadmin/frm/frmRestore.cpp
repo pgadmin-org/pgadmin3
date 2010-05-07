@@ -357,24 +357,24 @@ wxString frmRestore::getCmdPart2(int step)
                     {
                         if (pgAppMinimumVersion(restoreExecutable, 8, 2))
                         {
-                            cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).AfterLast(' ')), true));
-                            cmd.Append(wxT(" --schema ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).BeforeLast(' ')), true));
+                            cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).AfterLast(' '))));
+                            cmd.Append(wxT(" --schema ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).BeforeLast(' '))));
                         }
                         else
                         {
-                            cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).AfterLast(' ')), true));
+                            cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).AfterLast(' '))));
                         }
                     }
                     else if (lstContents->GetText(sel, 0).Lower() == wxString(_("Table")).Lower())
                     {
                         if (pgAppMinimumVersion(restoreExecutable, 8, 2))
                         {
-                            cmd.Append(wxT(" --table ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).AfterLast(' ')), true));
-                            cmd.Append(wxT(" --schema ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).BeforeLast(' ')), true));
+                            cmd.Append(wxT(" --table ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).AfterLast(' '))));
+                            cmd.Append(wxT(" --schema ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).BeforeLast(' '))));
                         }
                         else
                         {
-                            cmd.Append(wxT(" --table ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).AfterLast(' ')), true));
+                            cmd.Append(wxT(" --table ") + commandLineCleanOption(qtIdent(lstContents->GetText(sel, 1).AfterLast(' '))));
                         }
                     }
                     else
@@ -383,19 +383,19 @@ wxString frmRestore::getCmdPart2(int step)
                     break;
                 }
                 case PGM_TABLE:
-                    cmd.Append(wxT(" --table ") + commandLineCleanOption(((pgTable*)object)->GetQuotedIdentifier(), true));
+                    cmd.Append(wxT(" --table ") + commandLineCleanOption(((pgTable*)object)->GetQuotedIdentifier()));
                     if (pgAppMinimumVersion(restoreExecutable, 8, 2))
                     {
-                        cmd.Append(wxT(" --schema ") + commandLineCleanOption(((pgTable*)object)->GetSchema()->GetQuotedIdentifier(), true));
+                        cmd.Append(wxT(" --schema ") + commandLineCleanOption(((pgTable*)object)->GetSchema()->GetQuotedIdentifier()));
                     }
                     break;
                 case PGM_FUNCTION:
                     cmd.Append(wxT(" --function '")
                         + commandLineCleanOption(((pgFunction*)object)->GetQuotedIdentifier()
-                        + wxT("(") + ((pgFunction*)object)->GetArgListWithNames() + wxT(")'"), true));
+                        + wxT("(") + ((pgFunction*)object)->GetArgListWithNames() + wxT(")'")));
                     if (pgAppMinimumVersion(restoreExecutable, 8, 2))
                     {
-                        cmd.Append(wxT(" --schema ") + commandLineCleanOption(((pgFunction*)object)->GetSchema()->GetQuotedIdentifier(), true));
+                        cmd.Append(wxT(" --schema ") + commandLineCleanOption(((pgFunction*)object)->GetSchema()->GetQuotedIdentifier()));
                     }
                     break;
                 default:
