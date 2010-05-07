@@ -583,7 +583,8 @@ void dlgDirectDbg::invokeTargetCallable()
 {
     dbgPgParams *params = new dbgPgParams();
 
-    wxString query = wxT("CALL ") + m_targetInfo->getFQName() + wxT("(");
+    wxString query = m_targetInfo->getIsFunction() ? wxT("PERFORM ") : wxT("EXEC ");
+    query += m_targetInfo->getFQName() + wxT("(");
 
     // Setup the param struct.
     params->nParams = m_targetInfo->getArgCount();
@@ -653,12 +654,18 @@ void dlgDirectDbg::invokeTargetCallable()
 
 void dlgDirectDbg::invokeTargetStatement()
 {
-    wxString query( m_targetInfo->getIsFunction() ? wxT( "SELECT " ) : wxT( "EXEC " ));
+    wxString query = wxT("SELECT ");
+    wxString declareStatement;
+
+    if (!m_targetInfo->getIsFunction())
+        query = wxT("EXEC ");
+    else if (m_targetInfo->getLanguage() == wxT("edbspl"))
+        query = wxT("PERFORM ");
 
     // If this is a function, and the return type is not record, or 
     // we have at least one OUT/INOUT param, we should select from
     // the function to get a full resultset.
-    if (m_targetInfo->getIsFunction() &&
+    if (m_targetInfo->getIsFunction() && m_targetInfo->getLanguage() != wxT("edbspl") &&
         (m_targetInfo->getReturnType() != wxT("record") || 
          m_targetInfo->getArgInOutCount() > 0 ||
          m_targetInfo->getArgOutCount() > 0))
@@ -674,14 +681,23 @@ void dlgDirectDbg::invokeTargetStatement()
     {
         wsArgInfo & arg = (*m_targetInfo)[i];
 
-        if(arg.getMode() == wxT("o"))
+        if(arg.getMode() == wxT("o") || arg.getMode() == wxT("b"))
         {
             if (!m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() == wxT("edbspl"))
-                query.Append( wxT("NULL::") + arg.getType() + wxT(", "));
+            {
+                wxString strParam = wxString::Format(wxT("param%d"), i);
+                declareStatement +=  strParam + wxT(" ") + arg.getType();
+                if (arg.getMode() == wxT("b"))
+                    declareStatement += wxT(" ") + arg.quoteValue() + wxT("::") + arg.getType();
+                declareStatement += wxT(";\n");
+                query.Append(strParam + wxT(", "));
+            }
+            else
+                query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
         }
         else if(arg.getMode() == wxT("v"))
-			query.Append( arg.getValue() + wxT(", "));
-		else
+            query.Append( arg.getValue() + wxT(", "));
+        else
             query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
 			
     }
@@ -700,6 +716,16 @@ void dlgDirectDbg::invokeTargetStatement()
     else
     {
         query.Append( wxT( ")" ));
+    }
+
+    if (!declareStatement.IsEmpty())
+    {
+        wxString tmpQuery = wxT("DECLARE\n")
+                          + declareStatement
+                          + wxT("BEGIN\n")
+                          + query + wxT(";\n")
+                          + wxT("END;");
+        query = tmpQuery;
     }
 
     // And send the completed command to the server - we'll get 
