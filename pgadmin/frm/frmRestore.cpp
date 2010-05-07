@@ -416,24 +416,24 @@ wxString frmRestore::getCmdPart2(int step)
             switch (object->GetMetaType())
             {
                 case PGM_FUNCTION:
-                    cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(object->GetFullName()), true));
+                    cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(object->GetFullName())));
                     break;
                 case PGM_INDEX:
-                    cmd.Append(wxT(" --index ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
+                    cmd.Append(wxT(" --index ") + commandLineCleanOption(object->GetQuotedIdentifier()));
                     break;
                 case PGM_TABLE:
-                    cmd.Append(wxT(" --table ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
+                    cmd.Append(wxT(" --table ") + commandLineCleanOption(object->GetQuotedIdentifier()));
                     break;
                 case PGM_TRIGGER:
-                    cmd.Append(wxT(" --trigger ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
+                    cmd.Append(wxT(" --trigger ") + commandLineCleanOption(object->GetQuotedIdentifier()));
                     break;
                 default:
                     break;
             }
             if (object->GetMetaType() == PGM_SCHEMA)
-                cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
+                cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetQuotedIdentifier()));
             else if (pgAppMinimumVersion(restoreExecutable, 8, 2))
-                cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetSchema()->GetQuotedIdentifier(), true));
+                cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetSchema()->GetQuotedIdentifier()));
         }
 
         if (settings->GetIgnoreVersion())
