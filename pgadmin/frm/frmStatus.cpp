@@ -631,7 +631,7 @@ void frmStatus::AddXactPane()
     {
         // manager.GetPane(wxT("Transactions")).Show(false);
         lstXacts->InsertColumn(lstXacts->GetColumnCount(), _("Message"), wxLIST_FORMAT_LEFT, 800);
-        lstXacts->InsertItem(lstXacts->GetItemCount(), _("Prepared transactions not available on this server."));
+        lstXacts->InsertItem(lstXacts->GetItemCount(), _("Prepared transactions not available on this server."), -1);
         lstXacts->Enable(false);
         xactTimer = NULL;
         
@@ -707,7 +707,7 @@ void frmStatus::AddLogPane()
             frmHint::ShowHint(this, HINT_INSTRUMENTATION);
         
         logList->InsertColumn(logList->GetColumnCount(), _("Message"), wxLIST_FORMAT_LEFT, 800);
-        logList->InsertItem(logList->GetItemCount(), _("Logs are not available for this server."));
+        logList->InsertItem(logList->GetItemCount(), _("Logs are not available for this server."), -1);
         logList->Enable(false);
         logTimer = NULL;
         // We're done
@@ -1193,7 +1193,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
             {
                 if (row >= statusList->GetItemCount())
                 {
-                    statusList->InsertItem(row, NumToStr(pid));
+                    statusList->InsertItem(row, NumToStr(pid), -1);
                     row = statusList->GetItemCount() - 1;
                 }
                 else
@@ -1342,7 +1342,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
             {
                 if (row >= lockList->GetItemCount())
                 {
-                    lockList->InsertItem(row, NumToStr(pid));
+                    lockList->InsertItem(row, NumToStr(pid), -1);
                     row = lockList->GetItemCount() - 1;
                 }
                 else
@@ -1434,7 +1434,7 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
 
             if (row >= xactList->GetItemCount())
             {
-                xactList->InsertItem(row, NumToStr(xid));
+                xactList->InsertItem(row, NumToStr(xid), -1);
                 row = xactList->GetItemCount() - 1;
             }
             else
