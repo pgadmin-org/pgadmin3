@@ -182,6 +182,10 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     logHasTimestamp = false;
     logFormatKnown = false;
 
+    // Make the connection quiet on the logs
+    connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;"),false);
+    locks_connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;"),false);
+
     // Notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
@@ -451,6 +455,8 @@ void frmStatus::OnChangeDatabase(wxCommandEvent &ev)
     locks_connection = new pgConn(connection->GetHostName(), cbDatabase->GetValue(),
       connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetSslMode(),
       0, connection->GetApplicationName());
+
+    locks_connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;"),false);
 }
 
 
@@ -1151,8 +1157,6 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
     
     wxCriticalSectionLocker lock(gs_critsect);
 
-    connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
-
     long row=0;
     wxString q = wxT("SELECT procpid, ");
     if (connection->BackendMinimumVersion(8, 5))
@@ -1285,8 +1289,6 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
     
     wxCriticalSectionLocker lock(gs_critsect);
 
-    locks_connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
-
     long row=0;
     wxString sql;
     if (locks_connection->BackendMinimumVersion(8, 3)) 
@@ -1415,8 +1417,6 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
     
     wxCriticalSectionLocker lock(gs_critsect);
 
-    connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
-
     long row=0;
     wxString sql = wxT("SELECT transaction, gid, prepared, owner, database ")
                    wxT("FROM pg_prepared_xacts ")
@@ -1485,8 +1485,6 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
         return;
     
     wxCriticalSectionLocker lock(gs_critsect);
-
-    connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';"),false);
 
     if (connection->GetLastResultError().sql_state == wxT("42501"))
     {
