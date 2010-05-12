@@ -718,7 +718,7 @@ void dlgDirectDbg::invokeTargetStatement()
         query.Append( wxT( ")" ));
     }
 
-    if (!declareStatement.IsEmpty())
+    if (!m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() == wxT("edbspl"))
     {
         wxString tmpQuery = wxT("DECLARE\n")
                           + declareStatement
