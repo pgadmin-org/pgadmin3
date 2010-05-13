@@ -9,6 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include "pgAdmin3.h"
+
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/busyinfo.h>
@@ -17,7 +19,6 @@
 #include <wx/treectrl.h>
 
 // App headers
-#include "pgAdmin3.h"
 #include "ctl/ctlCheckTreeView.h"
 #include "images/checked.xpm"
 #include "images/disabled.xpm"

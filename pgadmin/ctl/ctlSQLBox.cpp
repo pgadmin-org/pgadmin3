@@ -9,13 +9,14 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include "pgAdmin3.h"
+
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/stc/stc.h>
 #include <wx/sysopt.h>
 
 // App headers
-#include "pgAdmin3.h"
 #include "db/pgSet.h"
 #include "ctl/ctlSQLBox.h"
 #include "dlg/dlgFindReplace.h"
