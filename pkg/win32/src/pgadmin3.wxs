@@ -5,8 +5,8 @@
 
     <Product
         Manufacturer="$(var.APPVENDOR)"
-        Id="{30DE52AF-3186-4396-883B-E3AFC7E522BB}"
-        UpgradeCode="{1A247339-FD58-4B99-8187-BFAD626D48FD}"
+        Id="{E4F96166-2B10-414B-A9B1-140DFE0CA3D6}"
+        UpgradeCode="{7D88E923-2C12-4668-99C4-A21812D0AA7E}"
         Name="$(var.APPNAME) $(var.APPVERSION)" 
         Version="$(var.APPVERSION)" 
         Language="1033">
@@ -29,26 +29,21 @@
                 <Directory Id="BASEDIR" Name="$(var.APPNAME)">
                     <Directory Id="VersionDir" Name="$(var.APPVERSION)">
 
-                        <Component Id="core_libs" Guid="{8440EDF6-F11F-46DC-8962-F93A0A5198EF}">
+                        <Component Id="core_libs" Guid="{57DEE5E5-C06B-454B-AC93-0F9C0DCC716C}">
                             <File Id="core_libs.libpq.dll" Name="libpq.dll" DiskId="1" Source="$(var.PGDIR)/bin/libpq.dll" />
                             <File Id="core_libs.libiconv_2.dll" Name="libiconv-2.dll" DiskId="1" Source="$(var.PGDIR)/bin/libiconv-2.dll" />
                             <File Id="core_libs.libintl_8.dll" Name="libintl-8.dll" DiskId="1" Source="$(var.PGDIR)/bin/libintl-8.dll" />
                             <File Id="core_libs.libeay32.dll" Name="libeay32.dll" DiskId="1" Source="$(var.PGDIR)/bin/libeay32.dll" />
                             <File Id="core_libs.ssleay32.dll" Name="ssleay32.dll" DiskId="1" Source="$(var.PGDIR)/bin/ssleay32.dll" />
-                            <File Id="core_libs.comerr32.dll" Name="comerr32.dll" DiskId="1" Source="$(var.PGDIR)/bin/comerr32.dll" />
-                            <File Id="core_libs.gssapi32.dll" Name="gssapi32.dll" DiskId="1" Source="$(var.PGDIR)/bin/gssapi32.dll" />
-                            <File Id="core_libs.krb5_32.dll" Name="krb5_32.dll" DiskId="1" Source="$(var.PGDIR)/bin/krb5_32.dll" />
-                            <File Id="core_libs.k5sprt32.dll" Name="k5sprt32.dll" DiskId="1" Source="$(var.PGDIR)/bin/k5sprt32.dll" />
                             <File Id="core_libs.iconv.dll" Name="iconv.dll" DiskId="1" Source="$(var.PGDIR)/bin/iconv.dll" />
                             <File Id="core_libs.libxml2.dll" Name="libxml2.dll" DiskId="1" Source="$(var.PGDIR)/bin/libxml2.dll" />
                             <File Id="core_libs.libxslt.dll" Name="libxslt.dll" DiskId="1" Source="$(var.PGDIR)/bin/libxslt.dll" />
                             <File Id="core_libs.zlib1.dll" Name="zlib1.dll" DiskId="1" Source="$(var.PGDIR)/bin/zlib1.dll" />
-                            <File Id="core_libs.msvcr71.dll" Name="msvcr71.dll" DiskId="1" Source="$(var.SYSTEM32DIR)/msvcr71.dll" />
                         </Component>
 
-                        <Merge Id="CRT" Language="0" SourceFile="$(env.ProgramFiles)\Common Files\Merge Modules\microsoft_vc80_crt_x86.msm" DiskId="1" />
+                        <Merge Id="CRT" Language="0" SourceFile="$(env.ProgramFiles)\Common Files\Merge Modules\Microsoft_vc90_crt_x86.msm" DiskId="1" />
 
-                        <Component Id="pgadmin_exes" Guid="{91F4CE74-18A8-48F3-AE0E-8A1B96116923}">
+                        <Component Id="pgadmin_exes" Guid="{CC9DE9AA-5F5B-4B4B-9CA1-358EE26863AF}">
                             <File Id="pgadmin_exes.pgadmin3.exe" Name="pgadmin3.exe" DiskId="1" Source="$(var.BUILDTREE)/pgadmin/Release/pgAdmin3.exe" KeyPath="yes" />
                             <Shortcut Id="pgadmin_exes.pgadmin3.exe" Directory="SMDir" Name="$(var.APPNAME)" Description="$(var.APPNAME) - $(var.APPCOMMENTS)" Show="normal" Advertise="yes" Icon="pgadmin3.ico" >
 <?if $(var.BRANDED) = 1 ?>
@@ -64,14 +59,14 @@
                             </ProgId>
                         </Component>
                        
-                        <Component Id="inis" Guid="{E5148580-CF1B-4ae4-862A-69243669CF15}">
+                        <Component Id="inis" Guid="{1C2EE6C5-AF9A-413F-9766-FE1E1C059FAA}">
                             <File Id="inis.settings.ini" Name="settings.ini" DiskId="1" Source="$(var.BUILDTREE)/pgadmin/settings.ini" />
                             <File Id="inis.plugins.ini" Name="plugins.ini" DiskId="1" Source="$(var.BUILDTREE)/pgadmin/plugins.ini" />
                         </Component>
 
 <?if $(var.BRANDED) = 1 ?>
                         <Directory Id="BrandingDir" Name="Branding">
-                            <Component Id="branding" Guid="{762A11EC-63DE-4E02-B7AF-9F9C1276CBDE}">
+                            <Component Id="branding" Guid="{0B2FE3C4-8DF8-4084-8C8E-CDD560C0964F}">
                                 <File Id="branding.branding.ini" Name="branding.ini" DiskId="1" Source="$(var.BRANDINGDIR)/branding.ini" />
                                 <File Id="branding.icon.ico" Name="icon.ico" DiskId="1" Source="$(var.BRANDINGDIR)/icon.ico" />
                                 <File Id="branding.largeicon.gif" Name="largeicon.gif" DiskId="1" Source="$(var.BRANDINGDIR)/largeicon.gif" />
@@ -83,7 +78,7 @@
 
                         <Directory Id="DocsDir" Name="Docs">
                             <Directory Id="en_usDocsDir" Name="en_US">
-                                <Component Id="en_us_docs" Guid="{BD553EA6-2938-4A3D-B1C8-F3340990E993}">
+                                <Component Id="en_us_docs" Guid="{BAB889D8-95B9-48BD-94DD-5266EEE53D9B}">
                                     <File Id="en_us_docs.pgadmin3.chm" Name="pgadmin3.chm" DiskId="1" Source="$(var.BUILDTREE)/docs/en_US/pgadmin3.chm" KeyPath="yes" />
                                     <File Id="en_us_docs.bugreport.html" Name="bugreport.html" DiskId="1" Source="$(var.BUILDTREE)/docs/en_US/bugreport.html" />
                                     <Shortcut Id="en_us_docs.pgadmin3.chm" Directory="SMDir" Name="Documentation (English)" Description="pgAdmin documentation (English)" Show="normal" Advertise="yes" Icon="en_us_help.ico">
@@ -92,7 +87,7 @@
                                 </Component>
                                     
                                 <Directory Id="en_usHintsDir" Name="Hints">
-                                    <Component Id="en_us_hints" Guid="{E580A575-8192-4840-9A51-9280AA3E9916}">
+                                    <Component Id="en_us_hints" Guid="{A4F799C5-F6E9-47BE-AAB5-63B5B6B93418}">
                                         <File Id="en_us_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/en_US/hints/autovacuum.html" />
                                         <File Id="en_us_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/en_US/hints/conn-hba.html" />
                                         <File Id="en_us_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/en_US/hints/conn-ident.html" />
@@ -113,7 +108,7 @@
 
                            <Directory Id="cs_czDocsDir" Name="cs_CZ">
 
-                                <Component Id="cs_cz_docs" Guid="{1C3F5667-47C5-4C02-B0E0-DC4795FAD74E}">
+                                <Component Id="cs_cz_docs" Guid="{AA9A4520-14DF-4935-B48C-680586B5859E}">
                                     <File Id="cs_cz_docs.pgadmin3.chm" Name="pgadmin3.chm" DiskId="1" Source="$(var.BUILDTREE)/docs/cs_CZ/pgadmin3.chm" KeyPath="yes" />
                                     <File Id="cs_cz_docs.bugreport.html" Name="bugreport.html" DiskId="1" Source="$(var.BUILDTREE)/docs/cs_CZ/bugreport.html" />
                                     <Shortcut Id="cs_cz_docs.pgadmin3.chm" Directory="SMDir" Name="Documentation (Czech)" Description="pgAdmin documentation (French)" Show="normal" Advertise="yes" Icon="cs_cz_help.ico">
@@ -122,7 +117,7 @@
                                 </Component>
 
                                 <Directory Id="cs_czHintsDir" Name="Hints">
-                                    <Component Id="cs_cz_hints" Guid="{FB322918-7CE2-4581-899A-A7E9F8825F30}">
+                                    <Component Id="cs_cz_hints" Guid="{689DA01A-C926-4668-A236-0E9E87929465}">
                                         <File Id="cs_cz_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/cs_CZ/hints/autovacuum.html" />
                                         <File Id="cs_cz_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/cs_CZ/hints/conn-hba.html" />
                                         <File Id="cs_cz_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/cs_CZ/hints/conn-ident.html" />
@@ -144,7 +139,7 @@
                             <Directory Id="de_deDocsDir" Name="de_DE">
 
                                 <Directory Id="de_deHintsDir" Name="Hints">
-                                    <Component Id="de_de_hints" Guid="{9DF92534-FBC9-494A-804D-844888974B7E}">
+                                    <Component Id="de_de_hints" Guid="{A619349D-F45F-489C-B751-D409C306F169}">
                                         <File Id="de_de_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/de_DE/hints/autovacuum.html" />
                                         <File Id="de_de_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/de_DE/hints/conn-hba.html" />
                                         <File Id="de_de_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/de_DE/hints/conn-ident.html" />
@@ -164,7 +159,7 @@
                             <Directory Id="es_esDocsDir" Name="es_ES">
 
                                 <Directory Id="es_esHintsDir" Name="Hints">
-                                    <Component Id="es_es_hints" Guid="{FBA59252-8D0F-4CDC-B126-F89791320625}">
+                                    <Component Id="es_es_hints" Guid="{95B40A82-D762-4A98-B538-0288807DFCD7}">
                                         <File Id="es_es_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/es_ES/hints/autovacuum.html" />
                                         <File Id="es_es_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/es_ES/hints/conn-hba.html" />
                                         <File Id="es_es_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/es_ES/hints/conn-ident.html" />
@@ -185,7 +180,7 @@
                           <Directory Id="fi_fiDocsDir" Name="fi_FI">
 
                                 <Directory Id="fi_fiHintsDir" Name="Hints">
-                                    <Component Id="fi_fi_hints" Guid="{22B4ED27-D350-4A0D-B8EF-52316622CF43}">
+                                    <Component Id="fi_fi_hints" Guid="{951C5BA3-68F6-4E1A-9D19-EC48FF37F949}">
                                         <File Id="fi_fi_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/fi_FI/hints/autovacuum.html" />
                                         <File Id="fi_fi_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/fi_FI/hints/conn-hba.html" />
                                         <File Id="fi_fi_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/fi_FI/hints/conn-ident.html" />
@@ -207,7 +202,7 @@
 
                            <Directory Id="fr_frDocsDir" Name="fr_FR">
 
-                                <Component Id="fr_fr_docs" Guid="{4FD77388-CA09-4529-B34D-72C30A4663FC}">
+                                <Component Id="fr_fr_docs" Guid="{F43EF2B9-5D59-4F36-8AD1-5827E0D9BF34}">
                                     <File Id="fr_fr_docs.pgadmin3.chm" Name="pgadmin3.chm" DiskId="1" Source="$(var.BUILDTREE)/docs/fr_FR/pgadmin3.chm" KeyPath="yes" />
                                     <File Id="fr_fr_docs.bugreport.html" Name="bugreport.html" DiskId="1" Source="$(var.BUILDTREE)/docs/fr_FR/bugreport.html" />
                                     <Shortcut Id="fr_fr_docs.pgadmin3.chm" Directory="SMDir" Name="Documentation (French)" Description="pgAdmin documentation (French)" Show="normal" Advertise="yes" Icon="fr_fr_help.ico">
@@ -216,7 +211,7 @@
                                 </Component>
 
                                 <Directory Id="fr_frHintsDir" Name="Hints">
-                                    <Component Id="fr_fr_hints" Guid="{78AFAE5C-F12E-43A8-B3D1-A11FF63F47B3}">
+                                    <Component Id="fr_fr_hints" Guid="{AFFE25AD-6088-431F-A300-EA6E0C6E2DE8}">
                                         <File Id="fr_fr_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/fr_FR/hints/autovacuum.html" />
                                         <File Id="fr_fr_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/fr_FR/hints/conn-hba.html" />
                                         <File Id="fr_fr_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/fr_FR/hints/conn-ident.html" />
@@ -237,7 +232,7 @@
                             <Directory Id="sl_siDocsDir" Name="sl_SI">
 
                                 <Directory Id="sl_siHintsDir" Name="Hints">
-                                    <Component Id="sl_si_hints" Guid="{4A30B943-E8CA-4F15-A074-0263A19F277D}">
+                                    <Component Id="sl_si_hints" Guid="{98A3E2FB-922F-4458-8162-A17793401542}">
                                         <File Id="sl_si_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/sl_SI/hints/autovacuum.html" />
                                         <File Id="sl_si_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/sl_SI/hints/conn-hba.html" />
                                         <File Id="sl_si_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/sl_SI/hints/conn-ident.html" />
@@ -257,7 +252,7 @@
                            <Directory Id="zh_cnDocsDir" Name="zh_CN">
 
                                 <Directory Id="zh_cnHintsDir" Name="Hints">
-                                    <Component Id="zh_cn_hints" Guid="{1A75B479-635A-4DA4-A931-DF5006420C5E}">
+                                    <Component Id="zh_cn_hints" Guid="{F10BC7A9-D6A0-4FDC-9750-71A590392CBA}">
                                         <File Id="zh_cn_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/autovacuum.html" />
                                         <File Id="zh_cn_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/conn-hba.html" />
                                         <File Id="zh_cn_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_CN/hints/conn-ident.html" />
@@ -279,7 +274,7 @@
                            <Directory Id="zh_twDocsDir" Name="zh_TW">
 
                                 <Directory Id="zh_twHintsDir" Name="Hints">
-                                    <Component Id="zh_tw_hints" Guid="{0534C11E-1AF2-4C25-B974-E960A6D5374F}">
+                                    <Component Id="zh_tw_hints" Guid="{6677E487-ABBC-488C-B268-3C00D1303C93}">
                                         <File Id="zh_tw_hints.autovacuum.html" Name="autovacuum.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/autovacuum.html" />
                                         <File Id="zh_tw_hints.conn_hba.html" Name="conn-hba.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/conn-hba.html" />
                                         <File Id="zh_tw_hints.conn_ident.html" Name="conn-ident.html" DiskId="1" Source="$(var.BUILDTREE)/docs/zh_TW/hints/conn-ident.html" />
@@ -300,7 +295,7 @@
 
                         </Directory>
 
-                        <Component Id="postgresql_exes" Guid="{3FD9C660-73B1-4A30-A53A-6E121CB83139}">
+                        <Component Id="postgresql_exes" Guid="{1E811C06-2965-4C0F-8E80-F35FC6168521}">
                             <File Id="postgresql_exes.psql.exe" Name="psql.exe" DiskId="1" Source="$(var.PGDIR)/bin/psql.exe" />
                             <File Id="postgresql_exes.pg_dump.exe" Name="pg_dump.exe" DiskId="1" Source="$(var.PGDIR)/bin/pg_dump.exe" />
                             <File Id="postgresql_exes.pg_dumpall.exe" Name="pg_dumpall.exe" DiskId="1" Source="$(var.PGDIR)/bin/pg_dumpall.exe" />
@@ -309,7 +304,7 @@
 
                         <Directory Id="i18nDir" Name="i18n">
 
-                            <Component Id="pgadmin_il8n" Guid="{BAB12ACE-8188-4DB2-B5AF-FF99461AA787}">
+                            <Component Id="pgadmin_il8n" Guid="{224F870E-C932-48CF-A179-613A00DFC230}">
                                 <File Id="pgadmin_il8n.pgadmin3.lng" Name="pgadmin3.lng" DiskId="1" Source="$(var.BUILDTREE)/i18n/pgadmin3.lng" />
                                 <File Id="pgadmin_il8n.pg_settings.csv" Name="pg_settings.csv" DiskId="1" Source="$(var.BUILDTREE)/i18n/pg_settings.csv" />
                             </Component>
@@ -323,7 +318,7 @@
             </Directory>
             <Directory Id="ProgramMenuFolder" Name="." SourceName="Programs">
                 <Directory Id="SMDir" Name="$(var.APPNAME) $(var.APPVERSION)">
-                    <Component Id="smdir" Guid="{9F36909D-EEBA-4C8B-8D4B-24B1C1256DE6}">
+                    <Component Id="smdir" Guid="{34A6E024-1D09-423B-AC22-725239A06984}">
                         <RegistryValue KeyPath="yes" Type="string" Root="HKCU" Key="Software\$(var.APPNAME)\SMDir Created" Value="y" />
                         <RemoveFolder Id="SMDir" On="uninstall" />
                     </Component>
