@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="Installer"
 	ProjectGUID="{F91F627F-F79C-49BE-BA21-E359FCEC461C}"
 	RootNamespace="Installer"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -20,6 +21,7 @@
 			IntermediateDirectory="$(SolutionDir)"
 			ConfigurationType="1"
 			CharacterSet="2"
+			ExcludeBuckets="1;5;6;7;8;9;10;12;13;14;15;16;18;21"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -27,7 +29,7 @@
 			<Tool
 				Name="VCCustomBuildTool"
 				Description="Calling installer build script..."
-				CommandLine="make.bat 1.10"
+				CommandLine="make.bat 1.12"
 				Outputs=".\pgadmin3.msi"
 			/>
 			<Tool
@@ -53,6 +55,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -71,9 +75,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
