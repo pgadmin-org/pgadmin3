@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.16 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.17 Documentation">
 <link rel="up" href="admin.html" title="Part III. Server Administration">
 <link rel="prev" href="multibyte.html" title="21.2. Character Set Support">
 <link rel="next" href="routine-reindex.html" title="22.2. Routine Reindexing">
@@ -59,7 +59,7 @@
   </p>
 <div class="sect1" title="22.1. Routine Vacuuming">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="routine-vacuuming">22.1. Routine Vacuuming</h2></div></div></div>
-<a name="id2687514"></a><p>   <span class="productname">PostgreSQL</span>'s <code class="command">VACUUM</code> command
+<a name="id2687515"></a><p>   <span class="productname">PostgreSQL</span>'s <code class="command">VACUUM</code> command
    <span class="emphasis"><em>must</em></span> be run on a regular basis for several reasons:
 
     </p>
@@ -99,7 +99,7 @@
   </p>
 <div class="sect2" title="22.1.1. Recovering disk space">
 <div class="titlepage"><div><div><h3 class="title" id="vacuum-for-space-recovery">22.1.1. Recovering disk space</h3></div></div></div>
-<a name="id2687682"></a><p>    In normal <span class="productname">PostgreSQL</span> operation, an
+<a name="id2687683"></a><p>    In normal <span class="productname">PostgreSQL</span> operation, an
     <code class="command">UPDATE</code> or <code class="command">DELETE</code> of a row does not
     immediately remove the old version of the row.
     This approach is necessary to gain the benefits of multiversion
@@ -228,7 +228,7 @@
 </div>
 <div class="sect2" title="22.1.3. Preventing transaction ID wraparound failures">
 <div class="titlepage"><div><div><h3 class="title" id="vacuum-for-wraparound">22.1.3. Preventing transaction ID wraparound failures</h3></div></div></div>
-<a name="id2688129"></a><p>    <span class="productname">PostgreSQL</span>'s MVCC transaction semantics
+<a name="id2688130"></a><p>    <span class="productname">PostgreSQL</span>'s MVCC transaction semantics
     depend on being able to compare transaction ID (<acronym class="acronym">XID</acronym>)
     numbers: a row version with an insertion XID greater than the current
     transaction's XID is <span class="quote">&#8220;<span class="quote">in the future</span>&#8221;</span> and should not be visible

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.16 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.17 Documentation">
 <link rel="up" href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">
 <link rel="prev" href="pltcl-trigger.html" title="38.6. Trigger Procedures in PL/Tcl">
 <link rel="next" href="pltcl-procnames.html" title="38.8. Tcl Procedure Names">
@@ -17,8 +17,10 @@
         It recognizes a special table, <code class="literal">pltcl_modules</code>, which
         is presumed to contain modules of Tcl code.  If this table
         exists, the module <code class="literal">unknown</code> is fetched from the table
-        and loaded into the Tcl interpreter immediately after creating
-        the interpreter.
+        and loaded into the Tcl interpreter immediately before the first
+        execution of a PL/Tcl function in a database session.  (This
+        happens separately for PL/Tcl and PL/TclU, if both are used,
+        because separate interpreters are used for the two languages.)
        </p>
 <p>        While the <code class="literal">unknown</code> module could actually contain any
         initialization script you need, it normally defines a Tcl
@@ -42,7 +44,11 @@
        </p>
 <p>        The tables <code class="literal">pltcl_modules</code> and <code class="literal">pltcl_modfuncs</code>
         must be readable by all, but it is wise to make them owned and
-        writable only by the database administrator.
+        writable only by the database administrator.  As a security
+        precaution, PL/Tcl will ignore <code class="literal">pltcl_modules</code> (and thus,
+        not attempt to load the <code class="literal">unknown</code> module) unless it is
+        owned by a superuser.  But update privileges on this table can be
+        granted to other users, if you trust them sufficiently.
        </p>
 </div></body>
 </html>
