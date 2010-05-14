@@ -296,10 +296,13 @@ int dlgFunction::Go(bool modal)
 
             for (unsigned int i=0; i<argTypes.Count(); i++)
             {
-                if (isBackendMinVer84)
-                    lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i], (argDefs.Count() > i ? argDefs[i] : wxString(wxEmptyString)));
-                else
-                    lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i]);
+                if (argModes[i] != wxT("TABLE"))
+                {
+                    if (isBackendMinVer84)
+                        lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i], (argDefs.Count() > i ? argDefs[i] : wxString(wxEmptyString)));
+                    else
+                        lstArguments->AppendItem(-1, argTypes.Item(i), argModes[i], argNames[i]);
+                }
             }
         }
 
@@ -874,7 +877,7 @@ wxString dlgFunction::GetSql()
         if (!isProcedure)
         {
             sql += wxT(" RETURNS ");
-            if (chkSetof->GetValue())
+            if (chkSetof->GetValue() && !cbReturntype->GetValue().StartsWith(wxT("TABLE")))
                 sql += wxT("SETOF ");
 
             sql += cbReturntype->GetValue();
