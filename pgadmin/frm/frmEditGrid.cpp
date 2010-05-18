@@ -2211,6 +2211,7 @@ sqlTable::sqlTable(pgConn *conn, pgQueryThread *_thread, const wxString& tabName
                 case PGOID_TYPE_INTERVAL:
                     columns[i].numeric = false;
                     columns[i].attr->SetReadOnly(false);
+                    editor = new sqlGridTextEditor();
                     break;
                 case PGOID_TYPE_CHAR:
                 case PGOID_TYPE_NAME:
