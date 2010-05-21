@@ -160,10 +160,10 @@ wxString dlgPackage::GetSql()
     if (!package || (package && txtBody->GetText() != package->GetBodyInner())
                  || (package && txtHeader->GetText() != package->GetHeaderInner()))
     {
-        if (!txtBody->GetText().IsEmpty())
+        if (!txtBody->GetText().Trim().IsEmpty())
         {
             sql += wxT("CREATE OR REPLACE PACKAGE BODY ") + qtName + wxT("\nIS\n");
-            sql += txtBody->GetText();
+            sql += txtBody->GetText().Trim().Trim(false);
             sql += wxT("\nEND ") + qtIdent(txtName->GetValue()) + wxT(";\n\n");
         }
         else
