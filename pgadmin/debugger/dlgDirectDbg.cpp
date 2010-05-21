@@ -688,7 +688,7 @@ void dlgDirectDbg::invokeTargetStatement()
                 wxString strParam = wxString::Format(wxT("param%d"), i);
                 declareStatement +=  strParam + wxT(" ") + arg.getType();
                 if (arg.getMode() == wxT("b"))
-                    declareStatement += wxT(" ") + arg.quoteValue() + wxT("::") + arg.getType();
+                  declareStatement += wxT(" := ") + arg.quoteValue() + wxT("::") + arg.getType();
                 declareStatement += wxT(";\n");
                 query.Append(strParam + wxT(", "));
             }
