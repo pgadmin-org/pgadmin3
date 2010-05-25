@@ -34,6 +34,7 @@
 #include "agent/pgaJob.h"
 #include "utils/utffile.h"
 #include "utils/pgfeatures.h"
+#include "utils/registry.h"
 #include "frm/frmReport.h"
 #include "dlg/dlgServer.h"
 
@@ -1229,70 +1230,92 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 
 	group = _("Servers");
 
-#ifdef WIN32
+#ifdef __WXMSW__
 
     // Add local servers. Will currently only work on Win32 with >= BETA3 
     // of the Win32 PostgreSQL installer.
     wxLogInfo(wxT("Loading servers registered on the local machine"));
-    wxRegKey *pgKey = new wxRegKey(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services"));
 
-    if (pgKey->Exists())
+    wxString strPgArch = ::wxIsPlatform64Bit() == true ? wxT(" [x86]") : wxEmptyString;
+    pgRegKey *pgKey = pgRegKey::OpenRegKey(HKEY_LOCAL_MACHINE, wxT("Software\\PostgreSQL\\Services"), pgRegKey::PGREG_READ, pgRegKey::PGREG_WOW32);
+
+    if (pgKey == NULL)
     {
+        strPgArch = wxT(" [x64]");
+        pgKey = pgRegKey::OpenRegKey(HKEY_LOCAL_MACHINE, wxT("Software\\PostgreSQL\\Services"), pgRegKey::PGREG_READ, pgRegKey::PGREG_WOW64);
+    }
 
+    while (pgKey != NULL)
+    {
+        pgRegKey *svcKey = NULL;
         wxString svcName, temp;
         long cookie = 0;
-        long *tmpport = 0;
+        DWORD tmpport = 0;
         bool flag = false;
 
-        flag = pgKey->GetFirstKey(svcName, cookie);
+        flag = pgKey->GetFirstKey(svcKey, cookie);
 
         while (flag != false)
         {
+            svcName = svcKey->GetKeyName();
             // On Windows, the discovery ID is always the service name. 
             // Only load the server if we didn't load it with all the others.
             if (discoveredServers.Index(svcName, false) < 0)
             {
-                key.Printf(wxT("HKEY_LOCAL_MACHINE\\Software\\PostgreSQL\\Services\\%s"), svcName);
-                wxRegKey *svcKey = new wxRegKey(key);
-
                 servername = wxT("localhost");
                 database = wxEmptyString;
                 svcKey->QueryValue(wxT("Display Name"), description);
                 svcKey->QueryValue(wxT("Database Superuser"), username);
-                svcKey->QueryValue(wxT("Port"), &port);
+                svcKey->QueryValue(wxT("Port"), &tmpport);
 
                 // Add the Server node
-                server = new pgServer(servername, description, database, username, port, false, 0);
+                server = new pgServer(servername, description + strPgArch, database, username, (long)tmpport, false, 0);
                 server->iSetDiscoveryID(svcName);
                 server->iSetDiscovered(true);
                 server->iSetServiceID(svcName);
                 server->iSetGroup(group);
 
-				found = false;
+                found = false;
 
-				if (browser->ItemHasChildren(browser->GetRootItem()))
-				{
-					groupitem = browser->GetFirstChild(browser->GetRootItem(), groupcookie);
-					while (!found && groupitem)
-					{
-						if (browser->GetItemText(groupitem).StartsWith(group))
-							found = true;
-						else
-							groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
-					}
-				}
+                if (browser->ItemHasChildren(browser->GetRootItem()))
+                {
+                    groupitem = browser->GetFirstChild(browser->GetRootItem(), groupcookie);
+                    while (!found && groupitem)
+                    {
+                        if (browser->GetItemText(groupitem).StartsWith(group))
+                            found = true;
+                        else
+                            groupitem = browser->GetNextChild(browser->GetRootItem(), groupcookie);
+                    }
+                }
 
-				if (!found)
-				{
-					groupitem = browser->AppendItem(browser->GetRootItem(), group, obj->GetIconId());
-					browser->SortChildren(browser->GetRootItem());
-				}
+                if (!found)
+                {
+                    groupitem = browser->AppendItem(browser->GetRootItem(), group, obj->GetIconId());
+                    browser->SortChildren(browser->GetRootItem());
+                }
 
-				browser->AppendItem(groupitem, server->GetFullName(), server->GetIconId(), -1, server);
+                browser->AppendItem(groupitem, server->GetFullName(), server->GetIconId(), -1, server);
                 browser->SortChildren(groupitem);
             }
+            // Release the current registry key
+            delete svcKey;
+
             // Get the next one...
-            flag = pgKey->GetNextKey(svcName, cookie);
+            flag = pgKey->GetNextKey(svcKey, cookie);
+        }
+
+        /* Release current registry key */
+        delete pgKey;
+        pgKey = NULL;
+        /*
+         * Value of strPgArch is ' [x86]', that means this is a 64 bit machine
+         * We need to read now 64 bit registry.
+         */
+        if (strPgArch.IsSameAs(wxT(" [x86]")))
+        {
+            strPgArch = wxT(" [x64]"); 
+            pgKey = pgRegKey::OpenRegKey(HKEY_LOCAL_MACHINE, wxT("Software\\PostgreSQL\\Services"), pgRegKey::PGREG_READ, pgRegKey::PGREG_WOW64);
         }
     }
 #endif // WIN32

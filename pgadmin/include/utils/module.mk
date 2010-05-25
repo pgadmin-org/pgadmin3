@@ -18,6 +18,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/utils/pgfeatures.h \
 	$(srcdir)/include/utils/pgDefs.h \
 	$(srcdir)/include/utils/pgconfig.h \
+	$(srcdir)/include/utils/registry.h \
 	$(srcdir)/include/utils/sysLogger.h \
 	$(srcdir)/include/utils/sysProcess.h \
 	$(srcdir)/include/utils/sysSettings.h \
