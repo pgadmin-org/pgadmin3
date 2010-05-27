@@ -583,8 +583,7 @@ void dlgDirectDbg::invokeTargetCallable()
 {
     dbgPgParams *params = new dbgPgParams();
 
-    wxString query = m_targetInfo->getIsFunction() ? wxT("PERFORM ") : wxT("EXEC ");
-    query += m_targetInfo->getFQName() + wxT("(");
+    wxString query = wxT("CALL ") + m_targetInfo->getFQName() + wxT("(");
 
     // Setup the param struct.
     params->nParams = m_targetInfo->getArgCount();
