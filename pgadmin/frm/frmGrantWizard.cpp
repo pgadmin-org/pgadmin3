@@ -230,10 +230,12 @@ void frmGrantWizard::Go()
                     set->MoveNext();
                 }
                 delete set;
+                Layout();
             }
         }
     }
 
+    Layout();
     Show(true);
 
     // Work around a wierd display bug in wx2.7

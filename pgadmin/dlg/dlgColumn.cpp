@@ -190,6 +190,7 @@ int dlgColumn::Go(bool modal)
             {
                 securityPage->stGroup->SetLabel(_("Group/User"));
                 dlgProperty::AddUsers(securityPage->cbGroups);
+                Layout();
             }
         }
         securityPage->lbPrivileges->GetParent()->Layout();

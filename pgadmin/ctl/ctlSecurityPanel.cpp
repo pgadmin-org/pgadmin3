@@ -95,6 +95,9 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, con
 
         wxBoxSizer* itemSizer4 = new wxBoxSizer(wxHORIZONTAL);
         stGroup = new wxStaticText(this, CTL_STATICGROUP, _("Group"));
+#ifdef __WXMSW__
+        stGroup->SetMinSize(wxSize(30, 15));
+#endif // __WXMSW__
         itemSizer4->Add(stGroup, 0, wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT, 4);
         cbGroups = new ctlComboBox(this, CTL_CBGROUP, wxDefaultPosition, wxDefaultSize);
         cbGroups->Append(wxT("public"));
