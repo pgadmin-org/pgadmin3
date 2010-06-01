@@ -1653,6 +1653,7 @@ void dlgSecurityProperty::AddUsers(ctlComboBox *combobox)
     {
         securityPage->stGroup->SetLabel(_("Group/User"));
         dlgProperty::AddUsers(securityPage->cbGroups, combobox);
+        Layout();
     }
     else
         dlgProperty::AddUsers(combobox);
