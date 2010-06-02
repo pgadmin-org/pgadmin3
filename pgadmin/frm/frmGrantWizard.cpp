@@ -141,36 +141,26 @@ void frmGrantWizard::AddObjects(pgCollection *collection)
             return;
     }
 
-    ctlTree *browser = mainForm->GetBrowser();
-    wxTreeItemIdValue foldercookie, cookie;
-    wxTreeItemId folderitem, item;
+    wxCookieType cookie;	 
+    wxTreeItemId item=mainForm->GetBrowser()->GetFirstChild(collection->GetId(), cookie);
 
-    folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
-    while (folderitem)
+    while (item)
     {
-        if (browser->ItemHasChildren(folderitem))
+        pgObject *obj=mainForm->GetBrowser()->GetObject(item);
+        if (obj)
         {
-            item = browser->GetFirstChild(folderitem, cookie);
-            while (item)
+            if (traverseKids)
+                AddObjects((pgCollection*)obj);
+            else
             {
-                pgObject *obj =  browser->GetObject(item);
-                if (obj)
+                if (obj->CanEdit())
                 {
-                    if (traverseKids)
-                        AddObjects((pgCollection*)obj);
-                    else
-                    {
-                        if (obj->CanEdit())
-                        {
-                            objectArray.Add(obj);
-                            chkList->Append((wxString)wxGetTranslation(obj->GetTypeName()) + wxT(" ") + obj->GetFullIdentifier());
-                        }
-                    }
+                    objectArray.Add(obj);
+                    chkList->Append((wxString)wxGetTranslation(obj->GetTypeName()) + wxT(" ") + obj->GetFullIdentifier());
                 }
-                item = browser->GetNextChild(folderitem, cookie);
             }
         }
-        folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
+        item=mainForm->GetBrowser()->GetNextChild(collection->GetId(), cookie);
     }
 }
 
