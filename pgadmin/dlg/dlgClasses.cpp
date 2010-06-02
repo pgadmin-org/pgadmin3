@@ -524,7 +524,11 @@ void ExecutionDialog::OnOK(wxCommandEvent& ev)
             wxMilliSleep(10);
             // here could be the animation
             if (txtMessages)
-                txtMessages->AppendText(thread->GetMessagesAndClear());
+            {
+                wxString msg = thread->GetMessagesAndClear();
+                if (!msg.IsEmpty())
+                    txtMessages->AppendText(msg + wxT("\n"));
+            }
 
             wxTheApp->Yield(true);
         }
