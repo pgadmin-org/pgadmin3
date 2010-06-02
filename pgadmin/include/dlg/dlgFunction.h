@@ -64,6 +64,7 @@ private:
     void ReplaceSizer(wxWindow *w, bool isC, int border);
 
 	virtual bool IsUpToDate();
+    void OnApply(wxCommandEvent &ev);
 
     wxArrayString typOids;
     wxArrayString types;

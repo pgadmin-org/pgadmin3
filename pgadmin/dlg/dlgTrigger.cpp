@@ -56,6 +56,7 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgCollistProperty)
     EVT_COMBOBOX(XRCID("cbColumns"),                dlgTrigger::OnSelectComboCol)
     EVT_BUTTON(XRCID("btnAddCol"),                  dlgTrigger::OnAddCol)
     EVT_BUTTON(XRCID("btnRemoveCol"),               dlgTrigger::OnRemoveCol)
+    EVT_BUTTON(wxID_APPLY,                          dlgTrigger::OnApply)
 END_EVENT_TABLE();
 
 
@@ -440,6 +441,14 @@ bool dlgTrigger::IsUpToDate()
 		return false;
 	else
 		return true;
+}
+  
+void dlgTrigger::OnApply(wxCommandEvent &ev)
+{
+    dlgProperty::OnApply(ev);
+
+    wxString sql = wxT("SELECT xmin FROM pg_trigger WHERE oid = ") + trigger->GetOidStr();
+	trigger->iSetXid(StrToOid(connection->ExecuteScalar(sql)));
 }
 
 

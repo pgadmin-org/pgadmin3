@@ -103,6 +103,7 @@ BEGIN_EVENT_TABLE(dlgFunction, dlgSecurityProperty)
 #ifdef __WXMAC__
     EVT_SIZE(                                       dlgFunction::OnChangeSize)
 #endif
+    EVT_BUTTON(wxID_APPLY,                          dlgFunction::OnApply)
 END_EVENT_TABLE();
 
 
@@ -577,6 +578,14 @@ bool dlgFunction::IsUpToDate()
 		return true;
 }
   
+void dlgFunction::OnApply(wxCommandEvent &ev)
+{
+    dlgProperty::OnApply(ev);
+
+    wxString sql = wxT("SELECT xmin FROM pg_proc WHERE oid = ") + function->GetOidStr();
+	function->iSetXid(StrToOid(connection->ExecuteScalar(sql)));
+}
+
 void dlgFunction::OnSelChangeLanguage(wxCommandEvent &ev)
 {
     bool isC=(cbLanguage->GetValue().IsSameAs(wxT("C"), false));
