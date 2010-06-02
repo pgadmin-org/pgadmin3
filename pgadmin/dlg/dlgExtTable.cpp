@@ -32,6 +32,7 @@
 
 BEGIN_EVENT_TABLE(dlgExtTable, dlgSecurityProperty)
     EVT_STC_MODIFIED(XRCID("txtSqlBox"),            dlgProperty::OnChangeStc)
+    EVT_BUTTON(wxID_APPLY,                          dlgExtTable::OnApply)
 END_EVENT_TABLE();
 
 
@@ -165,5 +166,13 @@ bool dlgExtTable::IsUpToDate()
         return false;
     else
         return true;
+}
+  
+void dlgExtTable::OnApply(wxCommandEvent &ev)
+{
+    dlgProperty::OnApply(ev);
+
+    wxString sql = wxT("SELECT xmin FROM pg_class WHERE oid = ") + extTable->GetOidStr();
+	extTable->iSetXid(StrToOid(connection->ExecuteScalar(sql)));
 }
 

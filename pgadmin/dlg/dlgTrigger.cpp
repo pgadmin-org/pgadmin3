@@ -46,6 +46,7 @@ BEGIN_EVENT_TABLE(dlgTrigger, dlgProperty)
     EVT_COMBOBOX(XRCID("cbFunction"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtArguments"),                 dlgProperty::OnChange)
     EVT_STC_MODIFIED(XRCID("txtBody"),              dlgProperty::OnChangeStc)
+    EVT_BUTTON(wxID_APPLY,                          dlgTrigger::OnApply)
 END_EVENT_TABLE();
 
 
@@ -324,6 +325,11 @@ bool dlgTrigger::IsUpToDate()
 	else
 		return true;
 }
+  
+void dlgTrigger::OnApply(wxCommandEvent &ev)
+{
+    dlgProperty::OnApply(ev);
 
-
-
+    wxString sql = wxT("SELECT xmin FROM pg_trigger WHERE oid = ") + trigger->GetOidStr();
+	trigger->iSetXid(StrToOid(connection->ExecuteScalar(sql)));
+}

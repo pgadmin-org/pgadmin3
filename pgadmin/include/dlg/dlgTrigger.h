@@ -37,6 +37,7 @@ private:
     void OnChangeFunc(wxCommandEvent &ev);
 
 	virtual bool IsUpToDate();
+    void OnApply(wxCommandEvent &ev);
 
     DECLARE_EVENT_TABLE()
 };
