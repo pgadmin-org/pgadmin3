@@ -1236,13 +1236,16 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
     // of the Win32 PostgreSQL installer.
     wxLogInfo(wxT("Loading servers registered on the local machine"));
 
-    wxString strPgArch = ::wxIsPlatform64Bit() == true ? wxT(" [x86]") : wxEmptyString;
-    pgRegKey *pgKey = pgRegKey::OpenRegKey(HKEY_LOCAL_MACHINE, wxT("Software\\PostgreSQL\\Services"), pgRegKey::PGREG_READ, pgRegKey::PGREG_WOW32);
+    pgRegKey::PGREGWOWMODE wowMode = pgRegKey::PGREG_WOW_DEFAULT;
+    if (::wxIsPlatform64Bit())
+        wowMode = pgRegKey::PGREG_WOW32;
+
+    pgRegKey *pgKey = pgRegKey::OpenRegKey(HKEY_LOCAL_MACHINE, wxT("Software\\PostgreSQL\\Services"), pgRegKey::PGREG_READ, wowMode);
 
     if (pgKey == NULL)
     {
-        strPgArch = wxT(" [x64]");
-        pgKey = pgRegKey::OpenRegKey(HKEY_LOCAL_MACHINE, wxT("Software\\PostgreSQL\\Services"), pgRegKey::PGREG_READ, pgRegKey::PGREG_WOW64);
+        wowMode = pgRegKey::PGREG_WOW64;
+        pgKey = pgRegKey::OpenRegKey(HKEY_LOCAL_MACHINE, wxT("Software\\PostgreSQL\\Services"), pgRegKey::PGREG_READ, wowMode);
     }
 
     while (pgKey != NULL)
@@ -1269,7 +1272,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
                 svcKey->QueryValue(wxT("Port"), &tmpport);
 
                 // Add the Server node
-                server = new pgServer(servername, description + strPgArch, database, username, (long)tmpport, false, 0);
+                server = new pgServer(servername, description, database, username, (long)tmpport, false, 0);
                 server->iSetDiscoveryID(svcName);
                 server->iSetDiscovered(true);
                 server->iSetServiceID(svcName);
@@ -1309,16 +1312,15 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         delete pgKey;
         pgKey = NULL;
         /*
-         * Value of strPgArch is ' [x86]', that means this is a 64 bit machine
-         * We need to read now 64 bit registry.
+         * If wowMode is equal to WOW32, that means this machine is a 64 bit machine and we need to read now 64 bit registry
          */
-        if (strPgArch.IsSameAs(wxT(" [x86]")))
+        if (wowMode == pgRegKey::PGREG_WOW32)
         {
-            strPgArch = wxT(" [x64]"); 
-            pgKey = pgRegKey::OpenRegKey(HKEY_LOCAL_MACHINE, wxT("Software\\PostgreSQL\\Services"), pgRegKey::PGREG_READ, pgRegKey::PGREG_WOW64);
+            wowMode = pgRegKey::PGREG_WOW64;
+            pgKey = pgRegKey::OpenRegKey(HKEY_LOCAL_MACHINE, wxT("Software\\PostgreSQL\\Services"), pgRegKey::PGREG_READ, wowMode);
         }
     }
-#endif // WIN32
+#endif // __WXMSW__
 
     // Add local servers on non-Win32 platforms (on Win32, they will be picked up above)
 #ifndef WIN32
