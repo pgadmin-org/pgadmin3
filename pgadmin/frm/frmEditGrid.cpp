@@ -771,12 +771,9 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
     int curcol=sqlGrid->GetGridCursorCol();
     int currow=sqlGrid->GetGridCursorRow();
 
-    wxLogError(wxT("here"));
-
     if (curcol == -1 || currow == -1)
         return;
 
-    wxLogError(wxT("still here"));
     int keycode=event.GetKeyCode();
     wxCommandEvent ev;
 
@@ -784,7 +781,6 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
     {
         case WXK_DELETE:
         {
-            wxLogError(wxT("delete"));
             if (editorCell->IsSet() || !toolBar->GetToolEnabled(MNU_DELETE))
             {
                 if (!sqlGrid->IsCurrentCellReadOnly())
@@ -801,22 +797,13 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
                             wxTextCtrl *txt=wxDynamicCast(ctl, wxTextCtrl);
                             if (txt)
                                 txt->SetValue(wxEmptyString);
-                            else
-                                wxLogError(wxT("no txt"));
                         }
-                        else
-                            wxLogError(wxT("no ctl"));
                         edit->DecRef();
                     }
-                    else
-                        wxLogError(wxT("not edit"));
                 }
-                else
-                    wxLogError(wxT("readonly"));
             }
             else
             {
-                wxLogError(wxT("ondelete"));
                 OnDelete(ev);
             }
             return;
@@ -887,7 +874,6 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
             break;
 
         default:
-            wxLogError(wxT("WTF!"));
             if (sqlGrid->IsEditable() && keycode >= WXK_SPACE && keycode < WXK_START)
             {
                 if (sqlGrid->IsCurrentCellReadOnly())
@@ -1059,22 +1045,18 @@ int ArrayCmp(T *a, T *b)
 
 void frmEditGrid::OnDelete(wxCommandEvent& event)
 {
-    wxLogError(wxT("1"));
     // Don't bugger about with keypresses to the scratch pad.
     if (FindFocus() == scratchPad)
     {
-    wxLogError(wxT("2"));
         event.Skip();
         return;
     }
     
     if (editorCell->IsSet())
     {
-    wxLogError(wxT("3"));
         if (sqlGrid->GetTable()->IsColBoolean(sqlGrid->GetGridCursorCol()))
             return;
 
-    wxLogError(wxT("4"));
         wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
         if (text && text->GetInsertionPoint() <= text->GetLastPosition())
         {
@@ -1084,7 +1066,6 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
             else
                 text->Remove(text->GetInsertionPoint(), text->GetInsertionPoint() + 1);
         }
-    wxLogError(wxT("5"));
         return;
     }
 
