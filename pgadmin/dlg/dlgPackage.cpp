@@ -181,7 +181,7 @@ wxString dlgPackage::GetSql()
         }
         else
         {
-            if (package)
+            if (package && !package->GetBodyInner().Trim().IsEmpty())
                 sql = wxT("DROP PACKAGE BODY ") + qtName + wxT(";\n\n");
         }
     }
