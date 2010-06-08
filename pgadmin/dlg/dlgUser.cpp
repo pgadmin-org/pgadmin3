@@ -125,6 +125,7 @@ int dlgUser::Go(bool modal)
         delete set;
 
         cbVarname->SetSelection(0);
+        SetupVarEditor(1);
     }
 
     if (user)
