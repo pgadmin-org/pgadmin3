@@ -491,6 +491,14 @@ wxString dlgColumn::GetSql()
                     +  wxT("\n   ALTER COLUMN ") + qtIdent(name)
                     +  wxT("\n   RESET (") + vars.Item(pos).BeforeFirst('=') + wxT(");\n");
             }
+
+            if (cbStorage->GetValue() != column->GetStorage())
+            {
+                sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+                    +  wxT("\n   ALTER COLUMN ") + qtIdent(name)
+                    +  wxT(" SET STORAGE ") + cbStorage->GetValue()
+                    +  wxT(";\n");
+            }
         }
         else
         {
@@ -520,14 +528,6 @@ wxString dlgColumn::GetSql()
                     +  wxT("\n   SET (") + lstVariables->GetText(pos) +  wxT("=")
                     +  lstVariables->GetText(pos, 1)+  wxT(");\n");
             }
-        }
-
-        if (cbStorage->GetValue() != column->GetStorage())
-        {
-            sql += wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
-                +  wxT("\n   ALTER COLUMN ") + qtIdent(name)
-                +  wxT(" SET STORAGE ") + cbStorage->GetValue()
-                +  wxT(";\n");
         }
 
         AppendComment(sql, wxT("COLUMN ") + table->GetQuotedFullIdentifier() 
@@ -615,6 +615,7 @@ void dlgColumn::CheckChange()
                     || (isVarLen && varlen != column->GetLength())
                     || (isVarPrec && varprec != column->GetPrecision())
                     || txtAttstattarget->GetValue() != NumToStr(column->GetAttstattarget())
+                    || cbStorage->GetValue() != column->GetStorage()
                     || dirtyVars;
 
         EnableOK(enable | securityChanged);
