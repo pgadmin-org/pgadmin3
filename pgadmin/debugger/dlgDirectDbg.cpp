@@ -691,7 +691,12 @@ void dlgDirectDbg::invokeTargetStatement()
                 declareStatement += wxT(";\n");
                 query.Append(strParam + wxT(", "));
             }
-            else
+            else if (arg.getMode() == wxT("o"))
+            {
+                if (arg.getValue() != wxT(""))
+                    query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
+            }
+            else if (arg.getMode() != wxT("o"))
                 query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
         }
         else if(arg.getMode() == wxT("v"))
