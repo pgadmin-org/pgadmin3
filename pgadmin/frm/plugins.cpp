@@ -138,6 +138,17 @@ void frmMain::LoadPluginUtilities()
             else
                 util->set_password = false;
         }
+        // Environment
+	if (token.Lower().StartsWith(wxT("environment=")))
+	{
+            util->set_env.Clear();
+
+        // This is a comma delimited list of values going into an array.
+            wxStringTokenizer valueTkz(token.AfterFirst('='), wxT(","));
+
+            while(valueTkz.HasMoreTokens())
+	        util->set_env.Add(valueTkz.GetNextToken());
+	}
     }
 
 	// Add the last app if required.
@@ -202,6 +213,7 @@ void frmMain::ClearPluginUtility(PluginUtility *util)
     util->database = false;
     util->applies_to.Clear();
     util->set_password = false;
+    util->set_env.Clear();
 }
 
 // The actionFactory for the plugin utilities
@@ -214,6 +226,7 @@ pluginUtilityFactory::pluginUtilityFactory(menuFactoryList *list, wxMenu *menu, 
     database = util->database;
     applies_to = util->applies_to;
     set_password = util->set_password;
+    set_env = util->set_env;
 
     menu->Append(id, title, description);
 }
@@ -222,7 +235,7 @@ pluginUtilityFactory::pluginUtilityFactory(menuFactoryList *list, wxMenu *menu, 
 wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
 {
     wxString execCmd = command;
-    wxArrayString environment;
+    wxArrayString environment = set_env;
 
     // Remember this as the last plugin used
     form->SetLastPluginUtility(this);
@@ -299,6 +312,13 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
     execCmd.Replace(wxT("$$PGBINDIR"), settings->GetPostgresqlPath());
     execCmd.Replace(wxT("$$EDBBINDIR"), settings->GetEnterprisedbPath());
     execCmd.Replace(wxT("$$SLONYBINDIR"), settings->GetSlonyPath());
+
+    // set Environment variable.
+    for (size_t i=0 ; i < environment.GetCount() ; i++)
+    {
+        wxString str=environment.Item(i);
+        wxSetEnv(str.BeforeFirst('='), str.AfterFirst('='));
+    }
 
     // Let's go!!
     if (wxExecute(execCmd) == 0)

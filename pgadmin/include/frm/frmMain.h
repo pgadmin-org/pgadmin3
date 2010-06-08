@@ -59,6 +59,7 @@ typedef struct PluginUtility {
     bool database;
     wxArrayString applies_to;
     bool set_password;
+    wxArrayString set_env;
 } PluginUtility;
 
 
@@ -286,7 +287,7 @@ private:
 
     wxString title, command, description;
     bool database, set_password;
-    wxArrayString applies_to, server_types;
+    wxArrayString applies_to, server_types, set_env;
 };
 
 class pluginButtonMenuFactory : public actionFactory
