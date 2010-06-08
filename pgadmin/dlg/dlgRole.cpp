@@ -420,7 +420,7 @@ void dlgRole::SetupVarEditor(int var)
             chkValue->Hide();
             txtValue->Show();
             txtValue->GetParent()->Layout();
-            if (typ == wxT("string"))
+            if (typ == wxT("string") || typ == wxT("enum"))
                 txtValue->SetValidator(wxTextValidator());
             else
                 txtValue->SetValidator(numericValidator);
