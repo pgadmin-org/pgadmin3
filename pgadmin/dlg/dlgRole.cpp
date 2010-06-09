@@ -150,7 +150,7 @@ int dlgRole::Go(bool modal)
             delete set;
 
             cbVarname->SetSelection(0);
-            SetupVarEditor(1);
+            SetupVarEditor(0);
         }
 
     if (role)
@@ -477,6 +477,8 @@ void dlgRole::OnVarAdd(wxCommandEvent &ev)
 
 void dlgRole::OnVarRemove(wxCommandEvent &ev)
 {
+    if (lstVariables->GetSelection() == wxNOT_FOUND)
+        return;
     lstVariables->DeleteCurrentItem();
     CheckChange();
 }

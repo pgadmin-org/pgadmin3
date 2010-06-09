@@ -272,7 +272,7 @@ int dlgFunction::Go(bool modal)
             delete set;
 
             cbVarname->SetSelection(0);
-            SetupVarEditor(1);
+            SetupVarEditor(0);
         }
 
     }
@@ -418,8 +418,6 @@ int dlgFunction::Go(bool modal)
     wxNotifyEvent event;
     OnSelChangeLanguage(event);
 
-    SetupVarEditor(1);
-
     return dlgSecurityProperty::Go(modal);
 }
 
@@ -517,6 +515,8 @@ void dlgFunction::OnVarAdd(wxCommandEvent &ev)
 
 void dlgFunction::OnVarRemove(wxCommandEvent &ev)
 {
+    if (lstVariables->GetSelection() == wxNOT_FOUND)
+        return;
     lstVariables->DeleteCurrentItem();
     CheckChange();
 }

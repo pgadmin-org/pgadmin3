@@ -98,7 +98,7 @@ int dlgTablespace::Go(bool modal)
             delete set;
 
             cbVarname->SetSelection(0);
-            SetupVarEditor(1);
+            SetupVarEditor(0);
         }
     }
     else
