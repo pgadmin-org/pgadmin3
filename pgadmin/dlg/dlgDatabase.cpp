@@ -150,7 +150,7 @@ int dlgDatabase::Go(bool modal)
         delete set;
 
         cbVarname->SetSelection(0);
-        SetupVarEditor(1);
+        SetupVarEditor(0);
     }
 
     if (database)
@@ -284,8 +284,6 @@ int dlgDatabase::Go(bool modal)
         if (!DisablePrivilege(wxT("CONNECT")))
             wxLogError(_("Failed to disable the CONNECT privilege checkbox!"));
     }
-
-    SetupVarEditor(1);
 
     return dlgSecurityProperty::Go(modal);
 }
@@ -437,8 +435,8 @@ void dlgDatabase::SetupVarEditor(int var)
         {
             txtValue->Hide();
             chkValue->Show();
-            chkValue->SetSize(wxDefaultCoord, wxDefaultCoord,
-                cbVarname->GetSize().GetWidth(), cbVarname->GetSize().GetHeight());
+            chkValue->SetMinSize(wxSize(cbVarname->GetSize().GetWidth(), cbVarname->GetSize().GetHeight()));
+            chkValue->GetParent()->Layout();
         }
         else
         {
@@ -448,8 +446,8 @@ void dlgDatabase::SetupVarEditor(int var)
                 txtValue->SetValidator(wxTextValidator());
             else
                 txtValue->SetValidator(numericValidator);
-            txtValue->SetSize(wxDefaultCoord, wxDefaultCoord,
-                cbVarname->GetSize().GetWidth(), cbVarname->GetSize().GetHeight());
+            txtValue->SetMinSize(wxSize(cbVarname->GetSize().GetWidth(), cbVarname->GetSize().GetHeight()));
+            txtValue->GetParent()->Layout();
         }
     }
 }
@@ -502,6 +500,8 @@ void dlgDatabase::OnVarAdd(wxCommandEvent &ev)
 
 void dlgDatabase::OnVarRemove(wxCommandEvent &ev)
 {
+    if (lstVariables->GetSelection() == wxNOT_FOUND)
+        return;
     lstVariables->DeleteCurrentItem();
 	dirtyVars = true;
     CheckChange();

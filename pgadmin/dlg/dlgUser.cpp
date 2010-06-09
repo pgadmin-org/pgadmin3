@@ -125,7 +125,7 @@ int dlgUser::Go(bool modal)
         delete set;
 
         cbVarname->SetSelection(0);
-        SetupVarEditor(1);
+        SetupVarEditor(0);
     }
 
     if (user)
@@ -184,7 +184,6 @@ int dlgUser::Go(bool modal)
         timValidUntil->Disable();
     }
 
-    SetupVarEditor(1);
     return dlgProperty::Go(modal);
 }
 
@@ -391,6 +390,8 @@ void dlgUser::OnVarAdd(wxCommandEvent &ev)
 
 void dlgUser::OnVarRemove(wxCommandEvent &ev)
 {
+    if (lstVariables->GetSelection() == wxNOT_FOUND)
+        return;
     lstVariables->DeleteCurrentItem();
     CheckChange();
 }
