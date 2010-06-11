@@ -116,7 +116,7 @@ wxString pgFunction::GetSql(ctlTree *browser)
                 else
                     sql += qtDbString(GetSource());
             }
-            sql += wxT("\n  LANGUAGE '") + GetLanguage() + wxT("' ");
+            sql += wxT("\n  LANGUAGE ") + GetLanguage() + wxT(" ");
             if (GetConnection()->BackendMinimumVersion(8, 4) && GetIsWindow())
                 sql += wxT("WINDOW ");
             sql += GetVolatility();
@@ -338,6 +338,7 @@ wxString pgFunction::GetArgListWithNames()
                 arg += wxT(" DEFAULT ") + argDefsArray.Item(i);
         }
 
+        wxLogError(arg);
         args += arg;
     }
     return args;
@@ -610,7 +611,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
                             strReturnTableArgs += wxT(", ");
                         wxString strName = function->GetArgNamesArray()[index];
                         if (!strName.IsEmpty())
-                            strReturnTableArgs += strName + wxT(" ");
+                            strReturnTableArgs += qtIdent(strName) + wxT(" ");
                         strReturnTableArgs += function->GetArgTypesArray()[index];
                     }
                     else

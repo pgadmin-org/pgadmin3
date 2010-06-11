@@ -916,7 +916,7 @@ wxString dlgFunction::GetSql()
                     sql += qtDbString(txtSqlBox->GetText());
             }
 
-            sql += wxT("\nLANGUAGE ") + qtDbString(cbLanguage->GetValue());
+            sql += wxT("\nLANGUAGE ") + cbLanguage->GetValue();
             if (chkWindow->GetValue())
                 sql += wxT(" WINDOW ");
             else
