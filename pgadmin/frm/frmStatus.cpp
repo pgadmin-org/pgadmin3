@@ -1165,7 +1165,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
     if (connection->BackendMinimumVersion(8, 1))
     {
         q += wxT(",\nCASE WHEN client_port=-1 THEN 'local pipe' ")
-            wxT("     ELSE inet_out(client_addr)||':'||client_port END AS client, ")
+            wxT("     ELSE textin(inet_out(client_addr))||':'||client_port END AS client, ")
              wxT("backend_start");
     }
     if (connection->BackendMinimumVersion(7, 4))
