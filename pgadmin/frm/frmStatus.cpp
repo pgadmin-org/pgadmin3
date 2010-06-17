@@ -213,7 +213,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     viewMenu = new wxMenu();
     viewMenu->Append(MNU_STATUSPAGE, _("&Activity\tCtrl-Alt-A"), _("Show or hide the activity tab."), wxITEM_CHECK);
     viewMenu->Append(MNU_LOCKPAGE, _("&Locks\tCtrl-Alt-L"), _("Show or hide the locks tab."), wxITEM_CHECK);
-    viewMenu->Append(MNU_XACTPAGE, _("&Transactions\tCtrl-Alt-T"), _("Show or hide the transactions tab."), wxITEM_CHECK);
+    viewMenu->Append(MNU_XACTPAGE, _("Prepared &Transactions\tCtrl-Alt-T"), _("Show or hide the prepared transactions tab."), wxITEM_CHECK);
     viewMenu->Append(MNU_LOGPAGE, _("Log&file\tCtrl-Alt-F"), _("Show or hide the logfile tab."), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_TOOLBAR, _("Tool&bar\tCtrl-Alt-B"), _("Show or hide the toolbar."), wxITEM_CHECK);
@@ -314,7 +314,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
     manager.GetPane(wxT("Activity")).Caption(_("Activity"));
     manager.GetPane(wxT("Locks")).Caption(_("Locks"));
-    manager.GetPane(wxT("Transactions")).Caption(_("Transactions"));
+    manager.GetPane(wxT("Transactions")).Caption(_("Prepared Transactions"));
     manager.GetPane(wxT("Logfile")).Caption(_("Logfile"));
 
     // Tell the manager to "commit" all the changes just made
@@ -1017,7 +1017,7 @@ void frmStatus::OnDefaultView(wxCommandEvent& event)
     manager.GetPane(wxT("toolBar")).Caption(_("Tool bar"));
     manager.GetPane(wxT("Activity")).Caption(_("Activity"));
     manager.GetPane(wxT("Locks")).Caption(_("Locks"));
-    manager.GetPane(wxT("Transactions")).Caption(_("Transactions"));
+    manager.GetPane(wxT("Transactions")).Caption(_("Prepared Transactions"));
     manager.GetPane(wxT("Logfile")).Caption(_("Logfile"));
 
     // tell the manager to "commit" all the changes just made
