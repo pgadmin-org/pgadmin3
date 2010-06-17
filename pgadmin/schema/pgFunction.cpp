@@ -352,7 +352,6 @@ wxString pgFunction::GetArgListWithNames()
                 arg += wxT(" DEFAULT ") + argDefsArray.Item(i);
         }
 
-        wxLogError(arg);
         args += arg;
     }
     return args;
