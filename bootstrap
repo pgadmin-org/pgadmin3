@@ -11,17 +11,17 @@
 # Check for aclocal 1.9/1.10/1.11
 echo "Checking aclocal..."
 RET=`type aclocal-1.11 > /dev/null 2>&1 || echo fail`
-if [ ! $RET ];
+if [ x$RET != xfail ];
 then
   ACLOCAL=aclocal-1.11
 else
   RET=`type aclocal-1.10 > /dev/null 2>&1 || echo fail`
-  if [ ! $RET ];
+  if [ x$RET != xfail ];
   then
     ACLOCAL=aclocal-1.10
   else
     RET=`type aclocal-1.9 > /dev/null 2>&1 || echo fail` 
-    if [ ! $RET ];
+    if [ x$RET != xfail ];
     then
       ACLOCAL=aclocal-1.9
     else
@@ -35,17 +35,17 @@ fi
 # Check for automake 1.9/1.10/1.11
 echo "Checking automake..."
 RET=`type automake-1.11 > /dev/null 2>&1 || echo fail`
-if [ ! $RET ];
+if [ x$RET != xfail ];
 then
   AUTOMAKE=automake-1.11
 else
   RET=`type automake-1.10 > /dev/null 2>&1 || echo fail`
-  if [ ! $RET ];
+  if [ x$RET != xfail ];
   then
     AUTOMAKE=automake-1.10
   else
     RET=`type automake-1.9 > /dev/null 2>&1 || echo fail`
-    if [ ! $RET ];
+    if [ x$RET != xfail ];
     then
       AUTOMAKE=automake-1.9
     else
@@ -71,7 +71,7 @@ sed -e "s/PGADMIN_LONG_VERSION/$LONG_VER/" -e "s/PGADMIN_SHORT_VERSION/$SHORT_VE
 
 echo "Configuring the build system..."
 
-if ! ([ -x config ]); then 
+if [ ! -x config ]; then 
   set -x
   mkdir config
 fi
