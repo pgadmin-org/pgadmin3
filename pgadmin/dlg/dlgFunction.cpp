@@ -898,7 +898,11 @@ wxString dlgFunction::GetSql()
         if (isProcedure)
         {
             sql += txtSqlBox->GetText();
-            sql += wxT("\n");
+            sql = sql.Trim(true);
+            if (!sql.EndsWith(wxT(";")))
+                sql += wxT(";\n");
+            else
+                sql += wxT("\n");
         }
         else
         {
