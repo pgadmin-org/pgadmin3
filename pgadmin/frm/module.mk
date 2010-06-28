@@ -36,5 +36,3 @@ pgadmin3_SOURCES += \
 
 EXTRA_DIST += \
     $(srcdir)/frm/module.mk
-
-
