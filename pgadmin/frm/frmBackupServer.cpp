@@ -82,7 +82,7 @@ frmBackupServer::~frmBackupServer()
 wxString frmBackupServer::GetHelpPage() const
 {
     wxString page;
-    page = wxT("pg/app-pgdumpall");
+    page = wxT("pg/app-pg-dumpall");
     return page;
 }
 
