@@ -207,7 +207,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
             wxString db = database;
             db.Replace(wxT("\\"), wxT("\\\\"));
             db.Replace(wxT("'"), wxT("''"));
-            sql += wxT("datname=") + qtString(database);
+            sql += wxT("datname=") + qtString(db);
         }
         
 
