@@ -187,7 +187,7 @@ bool pgConn::DoConnect()
             wxString db = save_database;
             db.Replace(wxT("\\"), wxT("\\\\"));
             db.Replace(wxT("'"), wxT("''"));
-            sql += wxT("datname=") + qtString(save_database);
+            sql += wxT("datname=") + qtString(db);
         }
         
 
