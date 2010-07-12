@@ -234,6 +234,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
             serveritem = browser->AppendItem(groupitem, newserver->GetFullName(), newserver->GetIconId(), -1, newserver);
             browser->SortChildren(groupitem);
             browser->Expand(groupitem);
+            browser->SelectItem(serveritem);
 
             // Count the number of items in the old group item
             total = browser->GetChildrenCount(oldgroupitem, false);
