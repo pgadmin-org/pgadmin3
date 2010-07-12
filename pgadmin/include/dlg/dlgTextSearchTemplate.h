@@ -26,6 +26,7 @@ public:
 
     void CheckChange();
     wxString GetSql();
+    virtual wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtstemplate"); }
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 

@@ -39,6 +39,7 @@ public:
     void iSetTemplate(const wxString& s) { tmpl=s; }
     wxString GetOptions() const { return options; }
     void iSetOptions(const wxString& s) { options=s; }
+    virtual wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtsdictionary"); }
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetSql(ctlTree *browser);

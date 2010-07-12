@@ -43,6 +43,7 @@ public:
     void iSetParserOid(const OID o) { parserOid=o; }
     wxString GetParserOidStr() const {return NumToStr(GetParserOid()) + wxT("::oid"); }
     wxArrayString& GetTokens() { return tokens; }
+    virtual wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtsconfig"); }
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetSql(ctlTree *browser);
