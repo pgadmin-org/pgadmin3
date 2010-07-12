@@ -24,6 +24,7 @@ public:
     dlgTextSearchConfiguration(pgaFactory *factory, frmMain *frame, pgTextSearchConfiguration *cfg, pgSchema *sch);
     int Go(bool modal);
 
+    virtual wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtsconfig"); }
     void CheckChange();
     wxString GetSql();
     pgObject *CreateObject(pgCollection *collection);

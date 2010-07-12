@@ -26,6 +26,7 @@ public:
 
     void CheckChange();
     wxString GetSql();
+    virtual wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtsdictionary"); }
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
