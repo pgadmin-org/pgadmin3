@@ -84,6 +84,7 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
 		return;
 
     cbDatabase->Clear();
+    cbUsername->Clear();
 
     int sel=cbServer->GetCurrentSelection();
     if (sel >= 0)
@@ -169,11 +170,13 @@ void dlgSelectConnection::OnCancel(wxCommandEvent& ev)
     EndModal(wxID_CANCEL);
 }
 
-pgConn *dlgSelectConnection::CreateConn(wxString& applicationname)
+pgConn *dlgSelectConnection::CreateConn(wxString& applicationname, bool& createdNew)
 {
     /* gcc requires that we store this in temporary variables for some reason... */
     wxString serv = cbServer->GetValue();
     wxString db = cbDatabase->GetValue();
+
+    createdNew = true;
 
 	long port = 0;
 	if (serv.Find(':') > 0)
@@ -188,7 +191,28 @@ pgConn *dlgSelectConnection::CreateConn(wxString& applicationname)
 
     wxString user = cbUsername->GetValue();
 
-	return CreateConn(serv, db, user, port, 0, applicationname, true);
+    if (cbConnection)
+    {
+        /* Check if selected combination already exists */
+        for (unsigned int index = 0; index < cbConnection->GetCount() - 1; index++)
+        {
+            pgConn* conn = (pgConn*)cbConnection->GetClientData(index);
+            if (conn &&
+                conn->GetHost() == serv &&
+                conn->GetPort() == port &&
+                conn->GetUser() == user &&
+                conn->GetDbname() == db)
+            {
+                createdNew = false;
+                return conn;
+            }
+        }
+    }
+
+    
+    int sslmode = remoteServer ? remoteServer->GetSSL() : 0;
+
+	return CreateConn(serv, db, user, port, sslmode, applicationname, true);
 }
 
 pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxString& username, int port, int sslmode, wxString& applicationname, bool writeMRU)
@@ -231,6 +255,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxSt
 
 int dlgSelectConnection::Go(pgConn *conn, wxBitmapComboBox *cb)
 {
+    bool foundServer = false;
     cbConnection=cb;
 	if (mainForm != NULL)
 	{
@@ -259,6 +284,7 @@ int dlgSelectConnection::Go(pgConn *conn, wxBitmapComboBox *cb)
 			            {
 			            	 cbServer->SetSelection(cbServer->GetCount()-1);
 			            	 remoteServer = server;
+                             foundServer = true;
 			            }
                     }
                     serveritem = browser->GetNextChild(folderitem, servercookie);
@@ -266,11 +292,34 @@ int dlgSelectConnection::Go(pgConn *conn, wxBitmapComboBox *cb)
             }
             folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
         }
-		cbServer->SetFocus();
 	}
+
+    cbServer->SetFocus();
 
     wxCommandEvent ev;
     OnChangeServer(ev);
+
+    if (foundServer)
+    {
+
+        unsigned int index = 0;
+        for (;index < cbDatabase->GetCount(); index++)
+        {
+            if (cbDatabase->GetString(index) == conn->GetDbname())
+            {
+                cbDatabase->SetSelection(index);
+                break;
+            }
+        }
+        for (index = 0;index < cbUsername->GetCount(); index++)
+        {
+            if (cbUsername->GetString(index) == conn->GetUser())
+            {
+                cbUsername->SetSelection(index);
+                break;
+            }
+        }
+    }
 
     return ShowModal();
 }

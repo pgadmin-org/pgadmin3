@@ -448,7 +448,8 @@ bool pgAdmin3::OnInit()
                 int rc=dlg.Go(conn, NULL);
                 if (rc != wxID_OK)
                     return false;
-                conn = dlg.CreateConn(applicationname);
+                bool dummyRes;
+                conn = dlg.CreateConn(applicationname, dummyRes);
             }
             else if (cmdParser.Found(wxT("Sc"), &connstr))
             {
@@ -539,7 +540,8 @@ bool pgAdmin3::OnInit()
                 int rc=dlg.Go(conn, NULL);
                 if (rc != wxID_OK)
                     return false;
-                conn = dlg.CreateConn(applicationname);
+                bool dummyRes;
+                conn = dlg.CreateConn(applicationname, dummyRes);
             }
             else if (cmdParser.Found(wxT("qc"), &connstr))
             {

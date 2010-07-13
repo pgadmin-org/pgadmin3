@@ -981,9 +981,10 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
         int rc=dlg.Go(conn, cbConnection);
         if (rc == wxID_OK)
         {
+            bool createdNewConn;
             wxString applicationname = _("pgAdmin - Query Tool");
-            conn = dlg.CreateConn(applicationname);
-            if (conn)
+            conn = dlg.CreateConn(applicationname, createdNewConn);
+            if (conn && createdNewConn)
             {
                 cbConnection->Insert(conn->GetName(), CreateBitmap(GetServerColour()), sel, (void*)conn);
                 cbConnection->SetSelection(sel);
