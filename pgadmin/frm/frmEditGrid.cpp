@@ -1527,6 +1527,7 @@ public:
     bool EndEdit(int row, int col, wxGrid* grid);
     wxString GetValue() const;
     virtual void Reset() { DoReset(m_startValue); }
+    void StartingKey(wxKeyEvent& event);
 
 protected:
     void DoBeginEdit(const wxString& startValue);
@@ -1594,7 +1595,25 @@ void sqlGridTextEditor::DoReset(const wxString& startValue)
     Text()->SetSelection(-1, -1);
 }
 
-    
+void sqlGridTextEditor::StartingKey(wxKeyEvent& event)
+{
+    wxChar ch;
+
+#if wxUSE_UNICODE
+    ch = event.GetUnicodeKey();
+    if (ch <= 127)
+        ch = (wxChar)event.GetKeyCode();
+#else
+    ch = (wxChar)event.GetKeyCode();
+#endif
+
+    if (ch != WXK_BACK)
+    {
+        Text()->SetText(ch);
+        Text()->GotoPos(Text()->GetLength());
+    }
+}
+
 class sqlGridNumericEditor : public wxGridCellTextEditor
 {
 public:
