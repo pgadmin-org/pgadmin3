@@ -63,8 +63,10 @@ enum
     PANE_LOG
 };
 
-
-#define FRMSTATUS_PERSPECTIVE_VER wxT("$Rev$")
+//
+// This number MUST be incremented if changing any of the default perspectives
+//
+#define FRMSTATUS_PERSPECTIVE_VER wxT("8187")
 
 #ifdef __WXMAC__
 #define FRMSTATUS_DEFAULT_PERSPECTIVE wxT("layout2|name=Activity;caption=Activity;state=6293500;dir=4;layer=0;row=0;pos=0;prop=100000;bestw=321;besth=244;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=462;floaty=165;floatw=595;floath=282|name=Locks;caption=Locks;state=6293500;dir=4;layer=0;row=0;pos=1;prop=100000;bestw=321;besth=244;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-231;floaty=235;floatw=595;floath=282|name=Transactions;caption=Transactions;state=6293500;dir=4;layer=0;row=0;pos=2;prop=100000;bestw=0;besth=0;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=461;floaty=527;floatw=595;floath=282|name=Logfile;caption=Logfile;state=6293500;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=0;besth=0;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-103;floaty=351;floatw=595;floath=282|name=toolBar;caption=Tool bar;state=2124528;dir=1;layer=10;row=0;pos=0;prop=100000;bestw=608;besth=33;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=888;floaty=829;floatw=558;floath=49|dock_size(4,0,0)=583|dock_size(5,0,0)=10|dock_size(1,10,0)=35|")
