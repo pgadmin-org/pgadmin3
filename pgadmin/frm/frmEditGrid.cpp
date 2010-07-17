@@ -1607,7 +1607,7 @@ void sqlGridTextEditor::StartingKey(wxKeyEvent& event)
     ch = (wxChar)event.GetKeyCode();
 #endif
 
-    if (ch != WXK_BACK)
+    if (ch != (wxChar)WXK_BACK)
     {
         Text()->SetText(ch);
         Text()->GotoPos(Text()->GetLength());
