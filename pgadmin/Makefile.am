@@ -15,10 +15,12 @@ pgadmin3_SOURCES = \
 	$(srcdir)/pgAdmin3.cpp 
 
 EXTRA_DIST = \
+	$(srcdir)/Makefile.deps \
 	$(srcdir)/pgAdmin3.vcproj \
 	$(srcdir)/precomp.cpp \
 	$(srcdir)/pgAdmin3.rc \
-	$(srcdir)/ver_svn.bat
+	$(srcdir)/ver_svn.bat \
+	$(srcdir)/ver_svn.sh
 
 # Make sure we always have these dependencies, even if dependency tracking
 # is turend off.  The leading dash keeps automake from trying to process this.
