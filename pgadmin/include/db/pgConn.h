@@ -81,7 +81,7 @@ typedef struct pgError {
 class pgConn
 {
 public:
-    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, int sslmode=0, OID oid=0);
+    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, int sslmode=0, OID oid=0, const wxString& applicationname = wxT("pgAdmin"));
     ~pgConn();
 
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
@@ -101,9 +101,10 @@ public:
     static void ExamineLibpqVersion();
     static double GetLibpqVersion() { return libpqVersion; }
 
-    static bool IsValidServerEncoding(int encid) { return pg_valid_server_encoding_id(encid) ? true : false; }
+    static bool IsValidServerEncoding(int encid) { return pg_valid_server_encoding_id(encid) == 0 ? false : true; }
 
     void Close();
+	bool Reconnect();
     bool ExecuteVoid(const wxString& sql, bool reportError = true);
     wxString ExecuteScalar(const wxString& sql);
     pgSet *ExecuteSet(const wxString& sql);
@@ -111,8 +112,8 @@ public:
     wxString GetPassword() const { return wxString(PQpass(conn), *conv); }
     wxString GetHost() const { return dbHost; }
     wxString GetHostName() const { return dbHostName; }
-    wxString GetHostAddress() const { return dbHostAddress; }
-    wxString GetDbname() const { return dbname; }
+    wxString GetDbname() const { return save_database; }
+    wxString GetApplicationName() const { return save_applicationname; }
     wxString GetName() const;
     bool GetNeedUtfConnectString() { return utfConnectString; }
     int GetPort() const { return atoi(PQport(conn)); };
@@ -153,7 +154,7 @@ protected:
 
     wxMBConv *conv;
     bool needColQuoting, utfConnectString;
-    wxString dbHost, dbHostName, dbHostAddress, dbname;
+    wxString dbHost, dbHostName;
     OID lastSystemOID;
     OID dbOid;
 
@@ -164,6 +165,8 @@ protected:
     friend class pgQueryThread;
 
 private:
+	bool DoConnect();
+	
     wxString qtString(const wxString& value);
 
     bool features[32];
@@ -172,8 +175,9 @@ private:
     bool isGreenplum;
 
     wxString reservedNamespaces;
-
-    wxString save_server, save_database, save_username, save_password;
+	wxString connstr;
+	
+    wxString save_server, save_database, save_username, save_password, save_applicationname;
     int save_port, save_sslmode;
     OID save_oid;
 };
