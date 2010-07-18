@@ -44,7 +44,7 @@ void ctlCheckTreeView::OnLeftClick(wxMouseEvent &evt)
 {
     int flags;
     wxTreeItemId node = HitTest(evt.GetPosition(), flags);
-    int newimage;
+    int newimage = 0;
 
     if ((flags & wxTREE_HITTEST_ONITEMLABEL) || (flags & wxTREE_HITTEST_ONITEMICON))
     {
