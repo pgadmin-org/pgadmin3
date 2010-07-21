@@ -69,7 +69,8 @@ public:
     bool GetParentIsTable() { return parentistable; }
 
     bool GetSystemObject() const { return GetName() == wxT("_RETURN"); }
-    bool CanDrop() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
+    bool CanDrop() { return !GetSystemObject() && GetSchema()->CanDrop(); }
+    bool CanCreate() { return GetSchema()->CanCreate(); }
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     wxString GetSql(ctlTree *browser);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
