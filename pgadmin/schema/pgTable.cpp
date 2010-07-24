@@ -145,6 +145,7 @@ wxMenu *pgTable::GetNewMenu()
         if (GetPrimaryKey().IsEmpty())      // Will not notice if pk has been added after last refresh
             primaryKeyFactory.AppendMenu(menu);
         foreignKeyFactory.AppendMenu(menu);
+        excludeFactory.AppendMenu(menu);
         uniqueFactory.AppendMenu(menu);
         checkFactory.AppendMenu(menu);
         indexFactory.AppendMenu(menu);
@@ -436,6 +437,7 @@ wxString pgTable::GetSql(ctlTree *browser)
                 {
                     case PGM_PRIMARYKEY:
                     case PGM_UNIQUE:
+                    case PGM_EXCLUDE:
                         cols_sql += ((pgIndexConstraint*)data)->GetDefinition();
                         break;
                     case PGM_FOREIGNKEY:
@@ -698,7 +700,8 @@ wxString pgTable::GetCoveringIndex(ctlTree *browser, const wxString &collist)
             while (item)
             {
                 pgIndex *index=(pgIndex*)browser->GetObject(item);
-                if (index && (index->GetMetaType() == PGM_INDEX || index->GetMetaType() == PGM_PRIMARYKEY || index->GetMetaType() == PGM_UNIQUE))
+                if (index && (index->GetMetaType() == PGM_INDEX || index->GetMetaType() == PGM_PRIMARYKEY
+                           || index->GetMetaType() == PGM_UNIQUE || index->GetMetaType() == PGM_EXCLUDE))
                 {
                     index->ShowTreeDetail(browser);
                     if (collist == index->GetColumns() || 

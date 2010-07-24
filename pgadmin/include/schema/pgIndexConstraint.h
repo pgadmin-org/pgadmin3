@@ -76,4 +76,23 @@ public:
 };
 
 
+class pgExcludeFactory : public pgIndexBaseFactory
+{
+public:
+    pgExcludeFactory();
+    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+};
+extern pgExcludeFactory excludeFactory;
+
+class pgExclude : public pgIndexConstraint
+{
+public:
+    pgExclude(pgTable *newTable, const wxString& newName = wxT(""))
+        : pgIndexConstraint(newTable, excludeFactory, newName) {}
+
+    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+};
+
+
 #endif

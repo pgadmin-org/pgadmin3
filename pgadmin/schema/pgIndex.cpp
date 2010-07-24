@@ -197,10 +197,13 @@ void pgIndexBase::ReadColumnDetails()
                     wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
                     wxT("  ELSE\n") +
                     wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
-                    wxT("  END AS coldef\n") +
+                    wxT("  END AS coldef,\n") +
+                    wxT("  op.oprname\n") +
                     wxT("FROM pg_index i\n") +
                     wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
                     wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i-1)) + wxT("])\n") +
+                    wxT("LEFT OUTER JOIN pg_constraint c ON (c.conindid = i.indexrelid) ")
+                    wxT("LEFT OUTER JOIN pg_operator op ON (op.oid = c.conexclop[") + NumToStr(i) + wxT("])\n") +
                     wxT("WHERE i.indexrelid = ") + GetOidStr());
 
                 if (res->NumRows() > 0)
@@ -225,6 +228,11 @@ void pgIndexBase::ReadColumnDetails()
                                 coldef += wxT(" NULLS FIRST");
                         }
                     }
+                }
+                
+                if (isExclude)
+                {
+                    coldef += wxT(" WITH ") + res->GetVal(wxT("oprname"));
                 }
 
                 columns += coldef;
@@ -421,7 +429,8 @@ wxWindow *executePgstatindexFactory::StartDialog(frmMain *form, pgObject *obj)
 bool executePgstatindexFactory::CheckEnable(pgObject *obj)
 {
     return obj && 
-           (obj->IsCreatedBy(indexFactory) || obj->IsCreatedBy(primaryKeyFactory) || obj->IsCreatedBy(uniqueFactory)) &&
+           (obj->IsCreatedBy(indexFactory) || obj->IsCreatedBy(primaryKeyFactory)
+         || obj->IsCreatedBy(uniqueFactory) || obj->IsCreatedBy(excludeFactory)) &&
            ((pgIndexBase*)obj)->HasPgstatindex();
 }
 
@@ -430,7 +439,8 @@ bool executePgstatindexFactory::CheckChecked(pgObject *obj)
     if (!obj)
         return false;
 
-    if (obj->GetMetaType() == PGM_INDEX || obj->GetMetaType() == PGM_PRIMARYKEY || obj->GetMetaType() == PGM_UNIQUE)
+    if (obj->GetMetaType() == PGM_INDEX || obj->GetMetaType() == PGM_PRIMARYKEY
+     || obj->GetMetaType() == PGM_UNIQUE || obj->GetMetaType() == PGM_EXCLUDE)
         return ((pgIndexBase*)obj)->GetShowExtendedStatistics();
 
     return false;
@@ -466,7 +476,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
                     wxT("  LEFT OUTER JOIN pg_namespace pn ON pn.oid=pr.pronamespace\n");
     }
     query = wxT("SELECT DISTINCT ON(cls.relname) cls.oid, cls.relname as idxname, indrelid, indkey, indisclustered, indisunique, indisprimary, n.nspname,\n")
-        wxT("       ") + proname + wxT("tab.relname as tabname, indclass, con.oid AS conoid, CASE contype WHEN 'p' THEN desp.description WHEN 'u' THEN desp.description ELSE des.description END AS description,\n")
+        wxT("       ") + proname + wxT("tab.relname as tabname, indclass, con.oid AS conoid, CASE contype WHEN 'p' THEN desp.description WHEN 'u' THEN desp.description WHEN 'x' THEN desp.description ELSE des.description END AS description,\n")
         wxT("       pg_get_expr(indpred, indrelid") + collection->GetDatabase()->GetPrettyOption() + wxT(") as indconstraint, contype, condeferrable, condeferred, amname\n");
     if (collection->GetConnection()->BackendMinimumVersion(8, 2))
         query += wxT(", substring(array_to_string(cls.reloptions, ',') from 'fillfactor=([0-9]*)') AS fillfactor \n");
@@ -476,7 +486,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
         + projoin + 
         wxT("  JOIN pg_namespace n ON n.oid=tab.relnamespace\n")
         wxT("  JOIN pg_am am ON am.oid=cls.relam\n")
-        wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0')\n")
+        wxT("  LEFT JOIN pg_depend dep ON (dep.classid = cls.tableoid AND dep.objid = cls.oid AND dep.refobjsubid = '0' AND dep.deptype='i')\n")
         wxT("  LEFT OUTER JOIN pg_constraint con ON (con.tableoid = dep.refclassid AND con.oid = dep.refobjid)\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=cls.oid\n")
         wxT("  LEFT OUTER JOIN pg_description desp ON (desp.objoid=con.oid AND desp.objsubid = 0)\n")
@@ -502,6 +512,10 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
                     index = new pgUnique(collection->GetTable(), indexes->GetVal(wxT("idxname")));
                     ((pgUnique *)index)->iSetConstraintOid(indexes->GetOid(wxT("conoid")));
                     break;
+                case 'x':
+                    index = new pgExclude(collection->GetTable(), indexes->GetVal(wxT("idxname")));
+                    ((pgExclude *)index)->iSetConstraintOid(indexes->GetOid(wxT("conoid")));
+                    break;
                 default:
                     index=0;
                     break;
@@ -511,6 +525,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
             index->iSetIsClustered(indexes->GetBool(wxT("indisclustered")));
             index->iSetIsUnique(indexes->GetBool(wxT("indisunique")));
             index->iSetIsPrimary(indexes->GetBool(wxT("indisprimary")));
+            index->iSetIsExclude(indexes->GetVal(wxT("contype"))[0U] == 'x');
             index->iSetColumnNumbers(indexes->GetVal(wxT("indkey")));
             index->iSetIdxSchema(indexes->GetVal(wxT("nspname")));
             index->iSetComment(indexes->GetVal(wxT("description")));

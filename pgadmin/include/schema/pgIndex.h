@@ -47,6 +47,8 @@ public:
     void iSetColumnCount(const long l) { columnCount=l; }
     bool GetIsUnique() const { return isUnique; }
     void iSetIsUnique(const bool b) { isUnique=b; }
+    bool GetIsExclude() const { return isExclude; }
+    void iSetIsExclude(const bool b) { isExclude=b; }
     bool GetIsPrimary() const { return isPrimary; }
     void iSetIsPrimary(const bool b) { isPrimary=b; }
     bool GetIsClustered() const { return isClustered; }
@@ -99,7 +101,7 @@ private:
     wxString procName, procNamespace, procArgs, procArgTypeList, typedColumns, quotedTypedColumns, operatorClasses, operatorClassList;
     long columnCount;
 	wxArrayString columnList;
-    bool isUnique, isPrimary, isClustered;
+    bool isUnique, isPrimary, isExclude, isClustered;
     bool deferrable, deferred, showExtendedStatistics;
     OID relTableOid, tablespaceOid;
     wxString fillFactor;

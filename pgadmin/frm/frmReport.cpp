@@ -1361,6 +1361,10 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
                 type = _("Foreign key");
                 definition = ((pgForeignKey*)constraint)->GetDefinition();
                 break;
+            case PGM_EXCLUDE:
+                type = _("Exclude");
+                definition = ((pgIndexConstraint*)constraint)->GetDefinition();
+                break;
             case PGM_CHECK:
                 type = _("Check");
 		        definition = wxT("(") + ((pgCheck*)constraint)->GetDefinition() + wxT(")");

@@ -24,8 +24,16 @@
 
 
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
+#define cbType          CTRL_COMBOBOX("cbType")
+#define txtFillFactor   CTRL_TEXT("txtFillFactor")
+#define txtWhere        CTRL_TEXT("txtWhere")
 #define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
 #define chkDeferred     CTRL_CHECKBOX("chkDeferred")
+#define cbOpClass       CTRL_COMBOBOX("cbOpClass")
+#define chkDesc         CTRL_CHECKBOX("chkDesc")
+#define rdbNullsFirst   CTRL_RADIOBUTTON("rdbNullsFirst")
+#define rdbNullsLast    CTRL_RADIOBUTTON("rdbNullsLast")
+#define cbOperator      CTRL_COMBOBOX("cbOperator")
 
 BEGIN_EVENT_TABLE(dlgIndexConstraint, dlgIndexBase)
     EVT_CHECKBOX(XRCID("chkDeferrable"),            dlgProperty::OnChange)
@@ -34,20 +42,30 @@ BEGIN_EVENT_TABLE(dlgIndexConstraint, dlgIndexBase)
 #ifdef __WXMAC__
     EVT_SIZE(                                       dlgIndexConstraint::OnChangeSize)
 #endif
+    EVT_COMBOBOX(XRCID("cbType"),                   dlgIndexConstraint::OnSelectType)
+    EVT_COMBOBOX(XRCID("cbColumns"),                dlgIndexConstraint::OnSelectComboCol)
 END_EVENT_TABLE();
 
 
 dlgIndexConstraint::dlgIndexConstraint(pgaFactory *f, frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode)
 : dlgIndexBase(f, frame, resName, index, parentNode)
 {
-    lstColumns->CreateColumns(0, _("Columns"), wxT(""), 0);
+    lstColumns->AddColumn(_("Column name"), 90);
+    lstColumns->AddColumn(_("Order"), 40);
+    lstColumns->AddColumn(_("NULLs order"), 50);
+    lstColumns->AddColumn(_("Op. class"), 40);
+    lstColumns->AddColumn(_("Operator"), 40);
 }
 
 
 dlgIndexConstraint::dlgIndexConstraint(pgaFactory *f, frmMain *frame, const wxString &resName, ctlListView *colList)
 : dlgIndexBase(f, frame, resName, colList)
 {
-    lstColumns->CreateColumns(0, _("Columns"), wxT(""), 0);
+    lstColumns->AddColumn(_("Column name"), 90);
+    lstColumns->AddColumn(_("Order"), 40);
+    lstColumns->AddColumn(_("NULLs order"), 50);
+    lstColumns->AddColumn(_("Op. class"), 40);
+    lstColumns->AddColumn(_("Operator"), 40);
 }
 
 
@@ -63,6 +81,22 @@ wxString dlgIndexConstraint::GetColumns()
             sql += wxT(", ");
 
         sql += qtIdent(lstColumns->GetItemText(pos));
+
+        wxString opclass = lstColumns->GetText(pos, 3);
+        if (!opclass.IsEmpty())
+            sql += wxT(" ") + opclass;
+
+        wxString order = lstColumns->GetText(pos, 1);
+        if (!order.IsEmpty())
+            sql += wxT(" ") + order;
+
+        wxString nullsOrder = lstColumns->GetText(pos, 2);
+        if (!nullsOrder.IsEmpty())
+            sql += wxT(" NULLS ") + nullsOrder;
+
+        wxString oper = lstColumns->GetText(pos, 4);
+        if (!oper.IsEmpty())
+            sql += wxT(" WITH ") + oper;
     }
     return sql;
 }
@@ -70,19 +104,135 @@ wxString dlgIndexConstraint::GetColumns()
 
 int dlgIndexConstraint::Go(bool modal)
 {
+    pgSet *set;
+    
     PrepareTablespace(cbTablespace);
+    
+    if (wxString(factory->GetTypeName()).Upper() != wxT("EXCLUDE"))
+    {
+        cbType->Disable();
+        txtWhere->Disable();
+        cbOpClass->Disable();
+        chkDesc->Disable();
+        rdbNullsFirst->Disable();
+        rdbNullsLast->Disable();
+        cbOperator->Disable();
+    }
 
     if (index)
     {
         pgIndexConstraint *idc=(pgIndexConstraint*)index;
 
-        wxArrayString colsArr = index->GetColumnList();
-        for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
-            lstColumns->InsertItem(colIdx, colsArr.Item(colIdx), columnFactory.GetIconId());
+        // We only display the column options (ASC/DESC, NULLS FIRST/LAST)
+        // on exclude constraints with btree
+		wxArrayString colsArr = index->GetColumnList();
+        wxString colDef, colRest, colName, descDef, nullsDef, opclassDef, withDef;
+        const wxString firstOrder = wxT(" NULLS FIRST"), lastOrder = wxT(" NULLS LAST");
+        const wxString descOrder = wxT(" DESC");
+        if (wxString(factory->GetTypeName()).Upper() == wxT("EXCLUDE") && index->GetIndexType() == wxT("btree"))
+        {
+            for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
+            {
+                colDef = colsArr.Item(colIdx);
+
+                int withStartPoint = colDef.Find(wxT(" WITH "));
+                if (withStartPoint > 0)
+                {
+                    withDef = colDef.Mid(withStartPoint + 6, colDef.Length() - withStartPoint - 6);
+                    colDef = colDef.Mid(0, withStartPoint);
+                }
+                else
+                    withDef = wxT("");
+
+                if (colDef.EndsWith(firstOrder.GetData(), &colRest))
+                {
+                    colDef = colRest;
+                    nullsDef = wxT("FIRST");
+                }
+                else if (colDef.EndsWith(lastOrder.GetData(), &colRest))
+                {
+                    colDef = colRest;
+                    nullsDef = wxT("LAST");
+                }
+                else
+                    nullsDef = wxT("");
+
+                if (colDef.EndsWith(descOrder.GetData(), &colRest))
+                {
+                    colDef = colRest;
+                    descDef = wxT("DESC");
+                    if (nullsDef.IsEmpty())
+                        nullsDef = wxT("FIRST");
+                }
+                else
+                {
+                    descDef = wxT("ASC");
+                    if (nullsDef.IsEmpty())
+                        nullsDef = wxT("LAST");
+                }
+
+                int pos = colDef.First(wxT(" "));
+                if (pos > 0)
+                {
+                    opclassDef = colDef.Mid(pos + 1);
+                    colDef = colDef.Mid(0, pos - 1);
+                }
+                else
+                    opclassDef = wxEmptyString;
+
+			    lstColumns->InsertItem(colIdx, colDef, columnFactory.GetIconId());
+                lstColumns->SetItem(colIdx, 1, descDef);
+                lstColumns->SetItem(colIdx, 2, nullsDef);
+                lstColumns->SetItem(colIdx, 3, opclassDef);
+                lstColumns->SetItem(colIdx, 4, withDef);
+            }
+        }
+        else
+        {
+            for (int colIdx=0,colsCount=colsArr.Count(); colIdx<colsCount; colIdx++)
+            {
+                colDef = colsArr.Item(colIdx);
+                
+                int withStartPoint = colDef.Find(wxT(" WITH "));
+                if (withStartPoint > 0)
+                {
+                    withDef = colDef.Mid(withStartPoint + 6, colDef.Length() - withStartPoint - 6);
+                    colDef = colDef.Mid(0, withStartPoint);
+                }
+                else
+                    withDef = wxT("");
+
+                int pos = colDef.First(wxT(" "));
+                if (pos > 0)
+                {
+                    colDef = colRest;
+                    opclassDef = colDef.Mid(pos + 1);
+                    colDef = colDef.Mid(0, pos - 1);
+                }
+                else
+                    opclassDef = wxEmptyString;
+
+			    lstColumns->InsertItem(colIdx, colDef, columnFactory.GetIconId());
+                lstColumns->SetItem(colIdx, 3, cbOpClass->GetValue());
+                lstColumns->SetItem(colIdx, 4, withDef);
+            }
+        }
 
         if (idc->GetTablespaceOid() != 0)
             cbTablespace->SetKey(idc->GetTablespaceOid());
         cbTablespace->Enable(connection->BackendMinimumVersion(8, 0));
+        
+        if (txtFillFactor)
+        {
+            txtFillFactor->SetValue(idc->GetFillFactor());
+        }
+        
+        if (index->GetIndexType().Length() > 0)
+        {
+            cbType->Append(index->GetIndexType());
+            cbType->SetSelection(0);
+            cbType->Disable();
+        }
 
         chkDeferrable->SetValue(index->GetDeferrable());
         chkDeferred->SetValue(index->GetDeferred());
@@ -102,9 +252,30 @@ int dlgIndexConstraint::Go(bool modal)
         cbTablespace->Insert(_("<default tablespace>"), 0, (void *)0);
         cbTablespace->SetSelection(0);
 
+        cbType->Append(wxT(""));
+        set=connection->ExecuteSet(
+            wxT("SELECT oid, amname FROM pg_am ")
+            wxT("WHERE EXISTS (SELECT 1 FROM pg_proc WHERE oid=amgettuple) ")
+            wxT("ORDER BY amname"));
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                cbType->Append(set->GetVal(1), set->GetVal(0));
+                set->MoveNext();
+            }
+            delete set;
+        }
+
         chkDeferrable->Enable(connection->BackendMinimumVersion(9, 0));
         chkDeferred->Enable(connection->BackendMinimumVersion(9, 0));
     }
+
+    txtFillFactor->SetValidator(numericValidator);
+    if (connection->BackendMinimumVersion(8, 2))
+        txtFillFactor->Enable();
+    else
+        txtFillFactor->Disable();
 
     return dlgIndexBase::Go(modal);
 }
@@ -112,10 +283,49 @@ int dlgIndexConstraint::Go(bool modal)
 
 void dlgIndexConstraint::OnAddCol(wxCommandEvent &ev)
 {
-    wxString col=cbColumns->GetValue();
-    if (!col.IsEmpty())
+    wxString colName=cbColumns->GetValue();
+
+    if (!colName.IsEmpty())
     {
-        lstColumns->InsertItem(lstColumns->GetItemCount(), col, columnFactory.GetIconId());
+        long colIndex = lstColumns->InsertItem(lstColumns->GetItemCount(), colName, columnFactory.GetIconId());
+
+        if (chkDesc->GetValue())
+        {
+            if (chkDesc->IsEnabled())
+                lstColumns->SetItem(colIndex, 1, wxT("DESC"));
+
+
+            if (rdbNullsLast->GetValue())
+            {
+                if (rdbNullsLast->IsEnabled())
+                    lstColumns->SetItem(colIndex, 2, wxT("LAST"));
+            }
+            else
+            {
+                if (rdbNullsLast->IsEnabled())
+                    lstColumns->SetItem(colIndex, 2, wxT("FIRST"));
+            }
+        }
+        else
+        {
+            if (chkDesc->IsEnabled())
+                lstColumns->SetItem(colIndex, 1, wxT("ASC"));
+
+            if (rdbNullsFirst->GetValue())
+            {
+                if (rdbNullsFirst->IsEnabled())
+                    lstColumns->SetItem(colIndex, 2, wxT("FIRST"));
+            }
+            else
+            {
+                if (rdbNullsLast->IsEnabled())
+                    lstColumns->SetItem(colIndex, 2, wxT("LAST"));
+            }
+        }
+
+        lstColumns->SetItem(colIndex, 3, cbOpClass->GetValue());
+        lstColumns->SetItem(colIndex, 4, cbOperator->GetValue());
+
         cbColumns->Delete(cbColumns->GetCurrentSelection());
         if (cbColumns->GetCount())
             cbColumns->SetSelection(0);
@@ -132,9 +342,10 @@ void dlgIndexConstraint::OnRemoveCol(wxCommandEvent &ev)
     long pos=lstColumns->GetSelection();
     if (pos >= 0)
     {
-        wxString col=lstColumns->GetItemText(pos);
+        wxString colName=lstColumns->GetItemText(pos);
+
         lstColumns->DeleteItem(pos);
-        cbColumns->Append(col);
+        cbColumns->Append(colName);
 
         CheckChange();
         btnRemoveCol->Disable();
@@ -154,11 +365,102 @@ void dlgIndexConstraint::OnChangeSize(wxSizeEvent &ev)
 #endif
 
 
+void dlgIndexConstraint::OnSelectComboCol(wxCommandEvent &ev)
+{
+    cbOperator->Clear();
+    cbOperator->Append(wxT(""));
+
+    if (cbColumns->GetValue().Length() > 0)
+    {
+        pgSet *set=connection->ExecuteSet(
+            wxT("SELECT DISTINCT oprname FROM pg_operator \n")
+            wxT("WHERE (")
+            wxT("    oprleft=") + NumToStr(cbColumns->GetOIDKey(cbColumns->GetCurrentSelection())) +
+            wxT(" OR oprright=") + NumToStr(cbColumns->GetOIDKey(cbColumns->GetCurrentSelection())) +
+            wxT(") AND oprcom > 0 \n")
+            wxT("ORDER BY oprname"));
+        if (set)
+        {
+            while (!set->Eof())
+            {
+                cbOperator->Append(set->GetVal(0));
+                set->MoveNext();
+            }
+            delete set;
+        }
+    }
+
+    dlgIndexBase::OnSelectComboCol(ev);
+}
+
+
+void dlgIndexConstraint::OnSelectType(wxCommandEvent &ev)
+{
+    // The column options available change depending on the
+    // index type. We need to clear the column list, and 
+    // setup some of the other controls accordingly.
+
+    wxString newType = cbType->GetValue();
+    bool changingDefault = false;
+
+    // Detect if we're changing between default and btree (which are the same) to
+    // avoid annoying the user needlessly.
+    if ((m_previousType == wxEmptyString && cbType->GetValue() == wxT("btree")) ||
+        (m_previousType == wxT("btree") && cbType->GetValue() == wxEmptyString))
+        changingDefault = true;
+
+    if (lstColumns->GetItemCount() > 0 && !changingDefault)
+    {
+        if (wxMessageBox(_("Changing the index type will cause the column list to be cleared. Do you wish to continue?"), _("Change index type?"), wxYES_NO) == wxNO)
+        {
+            cbType->SetValue(m_previousType);
+            return;
+        }
+
+        // Move all the columns back to the combo
+        for (int pos = lstColumns->GetItemCount(); pos > 0; pos--)
+        {
+            wxString colName = lstColumns->GetItemText(pos - 1);
+
+            lstColumns->DeleteItem(pos - 1);
+            cbColumns->Append(colName);
+        }
+    }
+
+    if (newType == wxT("btree") || newType == wxEmptyString)
+    {
+        cbOpClass->Enable(true);
+        chkDesc->Enable(true);
+        rdbNullsFirst->Enable(true);
+        rdbNullsLast->Enable(true);
+    }
+    else
+    {
+        cbOpClass->Enable(false);
+        chkDesc->Enable(false);
+        rdbNullsFirst->Enable(false);
+        rdbNullsLast->Enable(false);
+    }
+
+    // Make a note of the type so we can compare if it changes again.
+    m_previousType = cbType->GetValue();
+}
+
+
 wxString dlgIndexConstraint::GetDefinition()
 {
-    wxString sql;
+    wxString sql = wxEmptyString;
 
-    sql = wxT("(") + GetColumns() + wxT(")");
+    if (cbType->GetCurrentSelection() > 0)
+        AppendIfFilled(sql, wxT(" USING "), cbType->GetValue());
+
+    sql += wxT("(") + GetColumns() + wxT(")");
+
+    if (txtFillFactor)
+    {
+        if (connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
+            sql += wxT("\n  WITH (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(")");
+    }
 
     if (cbTablespace->GetOIDKey() > 0)
         sql += wxT(" USING INDEX TABLESPACE ") + qtIdent(cbTablespace->GetValue());
@@ -169,6 +471,9 @@ wxString dlgIndexConstraint::GetDefinition()
         if (chkDeferred->GetValue())
           sql += wxT(" INITIALLY DEFERRED");
     }
+
+    if (txtWhere->GetValue().Length() > 0)
+        sql += wxT(" WHERE (") + txtWhere->GetValue() + wxT(")");
 
     return sql;
 }
@@ -265,6 +570,35 @@ pgObject *dlgUnique::CreateObject(pgCollection *collection)
     wxString name=GetName();
 
     pgObject *obj=uniqueFactory.CreateObjects(collection, 0, wxT(
+        "\n   AND cls.relname=") + qtDbString(name) + wxT(
+        "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
+    return obj;
+}
+
+
+dlgProperty *pgExcludeFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+{
+    return new dlgExclude(this, frame, (pgExclude*)node, (pgTable*)parent);
+}
+
+
+dlgExclude::dlgExclude(pgaFactory *f, frmMain *frame, pgExclude *index, pgTable *parentNode)
+: dlgIndexConstraint(f, frame, wxT("dlgIndexConstraint"), index, parentNode)
+{
+}
+
+
+dlgExclude::dlgExclude(pgaFactory *f, frmMain *frame, ctlListView *colList)
+: dlgIndexConstraint(f, frame, wxT("dlgIndexConstraint"), colList)
+{
+}
+
+
+pgObject *dlgExclude::CreateObject(pgCollection *collection)
+{
+    wxString name=GetName();
+
+    pgObject *obj=excludeFactory.CreateObjects(collection, 0, wxT(
         "\n   AND cls.relname=") + qtDbString(name) + wxT(
         "\n   AND cls.relnamespace=") + table->GetSchema()->GetOidStr());
     return obj;

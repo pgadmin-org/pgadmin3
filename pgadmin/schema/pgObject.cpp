@@ -483,6 +483,7 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
                                 depFactory=&foreignKeyFactory;   break;
                             case 'p':   depFactory=&primaryKeyFactory;   break;
                             case 'u':   depFactory=&uniqueFactory;       break;
+                            case 'x':   depFactory=&excludeFactory;   break;
                             default:    break;
                         }
                         break;

@@ -103,16 +103,25 @@ bool pgIndexConstraint::DropObject(wxFrame *frame, ctlTree *browser, bool cascad
 
 wxString pgIndexConstraint::GetDefinition()
 {
-    wxString sql;
+    wxString sql = wxEmptyString;
 
-    sql = wxT("(") + GetQuotedColumns() + wxT(")");
+    if (wxString(GetTypeName()).Upper() == wxT("EXCLUDE"))
+        sql += wxT("\n  USING ") + GetIndexType();
+
+     sql += wxT("\n  (") + GetQuotedColumns() + wxT(")");
 
     if (GetConnection()->BackendMinimumVersion(8, 0) && GetTablespace() != GetDatabase()->GetDefaultTablespace())
-        sql += wxT(" USING INDEX TABLESPACE ") + qtIdent(GetTablespace());
+        sql += wxT("\n  USING INDEX TABLESPACE ") + qtIdent(GetTablespace());
+
+    if (GetConnection()->BackendMinimumVersion(8, 2) && GetFillFactor().Length() > 0)
+        sql += wxT("\n  WITH (FILLFACTOR=") + GetFillFactor() + wxT(")");
+
+    if (GetConstraint().Length() > 0)
+        sql += wxT(" WHERE (") + GetConstraint() + wxT(")");
 
     if (GetDeferrable())
     {
-        sql += wxT(" DEFERRABLE INITIALLY ");
+        sql += wxT("\n  DEFERRABLE INITIALLY ");
         if (GetDeferred())
             sql += wxT("DEFERRED");
         else
@@ -181,6 +190,8 @@ void pgIndexConstraint::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListV
         properties->AppendItem(_("Access method"), GetIndexType());
         properties->AppendItem(_("Constraint"), GetConstraint());
         properties->AppendItem(_("System index?"), GetSystemObject());
+        if (GetConnection()->BackendMinimumVersion(8, 2))
+            properties->AppendItem(_("Fill factor"), GetFillFactor());
         properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
     }
 }
@@ -205,6 +216,16 @@ pgObject *pgUnique::Refresh(ctlTree *browser, const wxTreeItemId item)
     return index;
 }
 
+pgObject *pgExclude::Refresh(ctlTree *browser, const wxTreeItemId item)
+{
+    pgObject *index=0;
+    pgCollection *coll=browser->GetParentCollection(item);
+    if (coll)
+        index = excludeFactory.CreateObjects(coll, 0, wxT("\n   AND cls.oid=") + GetOidStr());
+
+    return index;
+}
+
 pgObject *pgPrimaryKeyFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &where)
 {
     return pgIndexBaseFactory::CreateObjects(collection, browser, wxT("   AND contype='p'\n") + where);
@@ -214,6 +235,12 @@ pgObject *pgPrimaryKeyFactory::CreateObjects(pgCollection *collection, ctlTree *
 pgObject *pgUniqueFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &where)
 {
     return pgIndexBaseFactory::CreateObjects(collection, browser, wxT("   AND contype='u'\n") + where);
+}
+
+
+pgObject *pgExcludeFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &where)
+{
+    return pgIndexBaseFactory::CreateObjects(collection, browser, wxT("   AND contype='x'\n") + where);
 }
 
 
@@ -240,3 +267,16 @@ pgUniqueFactory::pgUniqueFactory()
 
 
 pgUniqueFactory uniqueFactory;
+
+
+#include "images/exclude.xpm"
+
+pgExcludeFactory::pgExcludeFactory() 
+: pgIndexBaseFactory(__("Exclude"), __("New Exclusion Constraint..."), __("Create a new Exclusion constraint."), exclude_xpm)
+{
+    metaType = PGM_EXCLUDE;
+    collectionFactory = &constraintCollectionFactory;
+}
+
+
+pgExcludeFactory excludeFactory;

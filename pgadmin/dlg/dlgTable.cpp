@@ -329,6 +329,15 @@ int dlgTable::Go(bool modal)
                             + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
                         break;
                     }
+                    case PGM_EXCLUDE:
+                    {
+                        pgIndexConstraint *obj=(pgIndexConstraint*)data;
+
+                        lstConstraints->AppendItem(data->GetIconId(), obj->GetName(), obj->GetDefinition());
+                        previousConstraints.Add(obj->GetQuotedIdentifier() 
+                            + wxT(" ") + obj->GetTypeName().Upper() + wxT(" ") + obj->GetDefinition());
+                        break;
+                    }
                     case PGM_FOREIGNKEY:
                     {
                         pgForeignKey *obj=(pgForeignKey*)data;
@@ -760,6 +769,8 @@ wxString dlgTable::GetItemConstraintType(ctlListView *list, long pos)
         con = wxT("PRIMARY KEY");
     if (item.GetImage() == foreignKeyFactory.GetIconId())
         con = wxT("FOREIGN KEY");
+    if (item.GetImage() == excludeFactory.GetIconId())
+        con = wxT("EXCLUDE");
     if (item.GetImage() == uniqueFactory.GetIconId())
         con = wxT("UNIQUE");
     if (item.GetImage() == checkFactory.GetIconId())
@@ -1476,6 +1487,7 @@ void dlgTable::FillConstraint()
 
 //    chkHasOids->Enable(!table || (table && table->GetHasOids() && hasPK && connection->BackendMinimumVersion(7, 4)));
     cbConstrType->Append(_("Foreign Key"));
+    cbConstrType->Append(_("Exclude Constraint"));
     cbConstrType->Append(_("Unique"));
     cbConstrType->Append(_("Check"));
     cbConstrType->SetSelection(0);
@@ -1941,7 +1953,23 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             }
             break;
         }
-        case 2: // Unique
+        case 2: // Exclusion Constraint
+        {
+            dlgExclude ec(&excludeFactory, mainForm, lstColumns);
+            ec.CenterOnParent();
+            ec.SetDatabase(database);
+            if (ec.Go(true) != wxID_CANCEL)
+            {
+                wxString tmpDef = ec.GetDefinition();
+                tmpDef.Replace(wxT("\n"), wxT(" "));
+                while (tmpDef.Contains(wxT("  ")))
+                    tmpDef.Replace(wxT("  "), wxT(" "));
+
+                lstConstraints->AppendItem(excludeFactory.GetIconId(), ec.GetName(), tmpDef);
+            }
+            break;
+        }
+        case 3: // Unique
         {
             dlgUnique unq(&uniqueFactory, mainForm, lstColumns);
             unq.CenterOnParent();
@@ -1955,7 +1983,7 @@ void dlgTable::OnAddConstr(wxCommandEvent &ev)
             }
             break;
         }
-        case 3: // Check
+        case 4: // Check
         {
             dlgCheck chk(&checkFactory, mainForm);
             chk.CenterOnParent();

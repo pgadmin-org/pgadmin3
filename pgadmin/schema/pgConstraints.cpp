@@ -21,7 +21,6 @@
 #include "schema/pgForeignKey.h"
 
 
-
 pgConstraintCollection::pgConstraintCollection(pgaFactory *factory, pgTable *table)
 : pgTableObjCollection(factory, table)
 { 
@@ -36,6 +35,7 @@ wxMenu *pgConstraintCollection::GetNewMenu()
     if (table->GetPrimaryKey().IsEmpty())
         primaryKeyFactory.AppendMenu(menu);
     foreignKeyFactory.AppendMenu(menu);
+    excludeFactory.AppendMenu(menu);
     uniqueFactory.AppendMenu(menu);
     checkFactory.AppendMenu(menu);
     return menu;
@@ -53,6 +53,7 @@ void pgConstraintCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctl
 
         primaryKeyFactory.CreateObjects(this, browser);
         foreignKeyFactory.CreateObjects(this, browser);
+        excludeFactory.CreateObjects(this, browser);
         uniqueFactory.CreateObjects(this, browser);
         checkFactory.CreateObjects(this, browser);
     }

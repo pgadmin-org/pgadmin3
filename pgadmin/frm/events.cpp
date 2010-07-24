@@ -609,6 +609,7 @@ void frmMain::ExecDrop(bool cascaded)
 		case PGM_CHECK:
 		case PGM_COLUMN: 
 		case PGM_CONSTRAINT:
+		case PGM_EXCLUDE:
 		case PGM_FOREIGNKEY:
 		case PGM_INDEX:
 		case PGM_PRIMARYKEY:

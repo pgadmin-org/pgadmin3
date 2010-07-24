@@ -21,6 +21,7 @@ class pgTable;
 class pgIndexBase;
 class pgPrimaryKey;
 class pgUnique;
+class pgExclude;
 
 class dlgIndexConstraint : public dlgIndexBase
 {
@@ -45,6 +46,10 @@ private:
 
     void OnAddCol(wxCommandEvent &ev);
     void OnRemoveCol(wxCommandEvent &ev);
+    void OnSelectType(wxCommandEvent &ev);
+    void OnSelectComboCol(wxCommandEvent &ev);
+
+    wxString m_previousType;
 
     DECLARE_EVENT_TABLE()
 };
@@ -65,6 +70,16 @@ class dlgUnique : public dlgIndexConstraint
 public:
     dlgUnique(pgaFactory *factory, frmMain *frame, pgUnique *index, pgTable *parentNode);
     dlgUnique(pgaFactory *factory, frmMain *frame, ctlListView *colList);
+
+    pgObject *CreateObject(pgCollection *collection);
+};
+
+
+class dlgExclude : public dlgIndexConstraint
+{
+public:
+    dlgExclude(pgaFactory *factory, frmMain *frame, pgExclude *index, pgTable *parentNode);
+    dlgExclude(pgaFactory *factory, frmMain *frame, ctlListView *colList);
 
     pgObject *CreateObject(pgCollection *collection);
 };
