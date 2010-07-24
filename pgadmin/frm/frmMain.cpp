@@ -68,6 +68,7 @@
 #include "dlg/dlgServer.h"
 #include "dlg/dlgDatabase.h"
 #include "schema/pgTable.h"
+#include "schema/pgFunction.h"
 #include "schema/pgIndex.h"
 #include "schema/pgTrigger.h"
 #include "schema/pgRole.h"
@@ -341,6 +342,8 @@ void frmMain::CreateMenus()
     new dropCascadedFactory(menuFactories, editMenu, 0);
     new truncateFactory(menuFactories, editMenu, 0);
     new truncateCascadedFactory(menuFactories, editMenu, 0);
+    new resetTableStatsFactory(menuFactories, editMenu, 0);
+    new resetFunctionStatsFactory(menuFactories, editMenu, 0);
     new reassignDropOwnedFactory(menuFactories, editMenu, 0);
     editMenu->AppendSeparator();
 

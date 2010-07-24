@@ -93,6 +93,7 @@ public:
     void UpdateRows();
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
     bool Truncate(bool cascaded);
+    bool ResetStats();
     bool CanView() { return true; }
     bool CanMaintenance() { return true; }
     bool CanBackup() { return true; }
@@ -330,5 +331,15 @@ public:
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
+
+
+class resetTableStatsFactory : public contextActionFactory
+{
+public:
+    resetTableStatsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
 
 #endif

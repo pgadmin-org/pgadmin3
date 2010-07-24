@@ -18,6 +18,7 @@
 #include "utils/pgfeatures.h"
 #include "utils/misc.h"
 #include "schema/pgFunction.h"
+#include "frm/frmMain.h"
 #include "frm/frmReport.h"
 #include "frm/frmHint.h"
 
@@ -70,6 +71,14 @@ bool pgFunction::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
     wxString sql=wxT("DROP FUNCTION ")  + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier() + wxT("(") + GetArgSigList() + wxT(")");
     if (cascaded)
         sql += wxT(" CASCADE");
+    return GetDatabase()->ExecuteVoid(sql);
+}
+
+bool pgFunction::ResetStats()
+{
+    wxString sql = wxT("SELECT pg_stat_reset_single_function_counters(")
+      + NumToStr(this->GetOid())
+      + wxT(")");
     return GetDatabase()->ExecuteVoid(sql);
 }
 
@@ -869,4 +878,28 @@ void pgFunctionCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 			delete stats;
 		}
     }
+}
+
+
+resetFunctionStatsFactory::resetFunctionStatsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("&Reset function statistics"),  _("Reset statistics of the selected function."));
+}
+
+
+wxWindow *resetFunctionStatsFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (wxMessageBox(_("Are you sure you wish to reset statistics of this function?"), _("Reset function statistics"), wxYES_NO) == wxNO)
+        return 0;
+
+    ((pgFunction*)obj)->ResetStats();
+    ((pgFunction*)obj)->ShowStatistics(form, form->GetStatistics());
+
+    return 0;
+}
+
+
+bool resetFunctionStatsFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(functionFactory) && ((pgFunction*)obj)->GetConnection()->BackendMinimumVersion(9, 0);
 }

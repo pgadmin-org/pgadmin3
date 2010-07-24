@@ -160,6 +160,15 @@ bool pgTable::Truncate(bool cascaded)
 }
 
 
+bool pgTable::ResetStats()
+{
+    wxString sql = wxT("SELECT pg_stat_reset_single_table_counters(")
+      + NumToStr(this->GetOid())
+      + wxT(")");
+    return GetDatabase()->ExecuteVoid(sql);
+}
+
+
 void pgTable::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
 {
     wxString tmp;
@@ -1693,3 +1702,26 @@ bool truncateCascadedFactory::CheckEnable(pgObject *obj)
     return obj && obj->IsCreatedBy(tableFactory) && ((pgTable*)obj)->GetConnection()->BackendMinimumVersion(8, 2);
 }
 
+
+resetTableStatsFactory::resetTableStatsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("&Reset table statistics"),  _("Reset statistics of the selected table."));
+}
+
+
+wxWindow *resetTableStatsFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    if (wxMessageBox(_("Are you sure you wish to reset statistics of this table?"), _("Reset statistics"), wxYES_NO) == wxNO)
+        return 0;
+
+    ((pgTable*)obj)->ResetStats();
+    ((pgTable*)obj)->ShowStatistics(form, form->GetStatistics());
+
+    return 0;
+}
+
+
+bool resetTableStatsFactory::CheckEnable(pgObject *obj)
+{
+    return obj && obj->IsCreatedBy(tableFactory) && ((pgTable*)obj)->GetConnection()->BackendMinimumVersion(9, 0);
+}

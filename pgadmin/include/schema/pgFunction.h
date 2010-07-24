@@ -93,6 +93,8 @@ public:
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     wxString GetSelectSql(ctlTree *browser);
 
+    bool ResetStats();
+
 	void ShowHint(frmMain *form, bool force);
 	bool GetCanHint() { return true; };
 
@@ -163,6 +165,15 @@ public:
     wxString GetExecSql(ctlTree *browser);
 
     wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createprocedure"); }
+};
+
+
+class resetFunctionStatsFactory : public contextActionFactory
+{
+public:
+    resetFunctionStatsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
 };
 
 #endif
