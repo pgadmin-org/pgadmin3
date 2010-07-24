@@ -1216,11 +1216,9 @@ bool reportObjectPropertiesFactory::CheckEnable(pgObject *obj)
 
 void reportObjectPropertiesFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title;
-    title.Printf(_("%s properties report - %s"), object->GetTranslatedTypeName().c_str(), object->GetIdentifier().c_str());
-    report->SetReportTitle(title);
+    report->SetReportTitle(object->GetTranslatedMessage(PROPERTIESREPORT));
 
-    int section = report->XmlCreateSection(wxString::Format(_("%s properties"), object->GetTranslatedTypeName().c_str()));
+    int section = report->XmlCreateSection(object->GetTranslatedMessage(PROPERTIES));
 
     ctlListView *list = GetFrmMain()->GetProperties();
     object->ShowProperties();
@@ -1253,11 +1251,9 @@ bool reportObjectDdlFactory::CheckEnable(pgObject *obj)
 
 void reportObjectDdlFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title;
-    title.Printf(_("%s DDL report - %s"), object->GetTranslatedTypeName().c_str(), object->GetIdentifier().c_str());
-    report->SetReportTitle(title);
+    report->SetReportTitle(object->GetTranslatedMessage(DDLREPORT));
 
-    int section = report->XmlCreateSection(wxString::Format(_("%s DDL"), object->GetTranslatedTypeName().c_str()));
+    int section = report->XmlCreateSection(object->GetTranslatedMessage(DDL));
 
     report->XmlSetSectionSql(section, object->GetSql(NULL));
 }
@@ -1288,9 +1284,7 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
 
     pgTable *table = (pgTable *)object;
 
-    wxString title;
-    title.Printf(_("%s Data dictionary report - %s"), object->GetTranslatedTypeName().c_str(), object->GetIdentifier().c_str());
-    report->SetReportTitle(title);
+    report->SetReportTitle(object->GetTranslatedMessage(DATADICTIONNARYREPORT));
 
     // Columns
     int section = report->XmlCreateSection(_("Columns"));
@@ -1433,11 +1427,9 @@ bool reportObjectStatisticsFactory::CheckEnable(pgObject *obj)
 
 void reportObjectStatisticsFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title;
-    title.Printf(_("%s statistics report - %s"), object->GetTranslatedTypeName().c_str(), object->GetIdentifier().c_str());
-    report->SetReportTitle(title);
+    report->SetReportTitle(object->GetTranslatedMessage(STATISTICSREPORT));
 
-    int section = report->XmlCreateSection(wxString::Format(_("%s statistics"), object->GetTranslatedTypeName().c_str()));
+    int section = report->XmlCreateSection(object->GetTranslatedMessage(STATISTICS));
 
     ctlListView *list = GetFrmMain()->GetStatisticsCtl();
     object->ShowStatistics(GetFrmMain(), list);
@@ -1468,11 +1460,9 @@ bool reportObjectDependenciesFactory::CheckEnable(pgObject *obj)
 
 void reportObjectDependenciesFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title;
-    title.Printf(_("%s dependencies report - %s"), object->GetTranslatedTypeName().c_str(), object->GetIdentifier().c_str());
-    report->SetReportTitle(title);
+    report->SetReportTitle(object->GetTranslatedMessage(DEPENDENCIESREPORT));
 
-    int section = report->XmlCreateSection(wxString::Format(_("%s dependencies"), object->GetTranslatedTypeName().c_str()));
+    int section = report->XmlCreateSection(object->GetTranslatedMessage(DEPENDENCIES));
 
     ctlListView *list = GetFrmMain()->GetDependenciesCtl();
     object->ShowDependencies(parent, list);
@@ -1503,11 +1493,9 @@ bool reportObjectDependentsFactory::CheckEnable(pgObject *obj)
 
 void reportObjectDependentsFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title;
-    title.Printf(_("%s dependents report - %s"), object->GetTranslatedTypeName().c_str(), object->GetIdentifier().c_str());
-    report->SetReportTitle(title);
+    report->SetReportTitle(object->GetTranslatedMessage(DEPENDENTSREPORT));
 
-    int section = report->XmlCreateSection(wxString::Format(_("%s dependents"), object->GetTranslatedTypeName().c_str()));
+    int section = report->XmlCreateSection(object->GetTranslatedMessage(DEPENDENTS));
 
     ctlListView *list = GetFrmMain()->GetReferencedByCtl();
     object->ShowDependents(parent, list);
@@ -1551,9 +1539,7 @@ bool reportObjectListFactory::CheckEnable(pgObject *obj)
 
 void reportObjectListFactory::GenerateReport(frmReport *report, pgObject *object)
 {
-    wxString title;
-    title.Printf(_("%s list report"), object->GetIdentifier().c_str());
-    report->SetReportTitle(title);
+    report->SetReportTitle(object->GetTranslatedMessage(OBJECTSLISTREPORT));
 
     int section = report->XmlCreateSection(object->GetFullIdentifier());
 

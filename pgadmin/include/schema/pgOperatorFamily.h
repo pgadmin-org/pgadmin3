@@ -31,6 +31,7 @@ public:
     pgOperatorFamily(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgOperatorFamily();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
     wxString GetFullName() { return GetName() + wxT("(") + GetAccessMethod() + wxT(")"); }
@@ -50,6 +51,13 @@ public:
 
 private:
     wxString accessMethod;
+};
+
+class pgOperatorFamilyCollection : public pgSchemaObjCollection
+{
+public:
+    pgOperatorFamilyCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

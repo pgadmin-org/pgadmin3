@@ -905,7 +905,7 @@ void DisplayExternalHelp(const wxString &helpTopic, const wxString &docPath, wxH
     }
     else
     {
-        wxLogError(_("The help source (%s) could not be opened. Please check the help configuration options."), docPath.c_str());
+        wxLogError(_("The help source (\"%s\") could not be opened. Please check the help configuration options."), docPath.c_str());
     }
 }
 

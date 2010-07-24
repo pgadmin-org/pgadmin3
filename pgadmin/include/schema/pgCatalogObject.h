@@ -30,6 +30,7 @@ class pgCatalogObject : public pgSchemaObject
 public:
     pgCatalogObject(pgSchema *newSchema, const wxString& newName = wxT(""));
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
     wxString GetSql(ctlTree *browser);
@@ -43,6 +44,13 @@ public:
 
 private:
 
+};
+
+class pgCatalogObjectCollection : public pgSchemaObjCollection
+{
+public:
+    pgCatalogObjectCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

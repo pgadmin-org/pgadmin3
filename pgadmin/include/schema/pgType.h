@@ -37,6 +37,7 @@ public:
     pgType(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgType();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
 
@@ -98,6 +99,13 @@ private:
     int typeClass;
     bool passedByValue, isRecordType;
     OID relOid;
+};
+
+class pgTypeCollection : public pgSchemaObjCollection
+{
+public:
+    pgTypeCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

@@ -33,6 +33,79 @@ pgColumn::~pgColumn()
 }
 
 
+wxString pgColumn::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on column");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing column");
+            message += wxT(" ") + GetName();
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for column");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop column \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop column \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop column cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop column?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Column properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Column properties");
+            break;
+        case DDLREPORT:
+            message = _("Column DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Column DDL");
+            break;
+        case STATISTICSREPORT:
+            message = _("Column statistics report");
+            message += wxT(" - ") + GetName();
+            break;
+        case STATISTICS:
+            message = _("Column statistics");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Column dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Column dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Column dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Column dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgColumn::IsReferenced()
 {
     if (isReferenced < 0)
@@ -519,6 +592,29 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
     return column;
 }
 
+/////////////////////////////
+
+wxString pgColumnCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on columns");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing columns");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Columns list report");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
 
 #include "images/column.xpm"
 #include "images/column-sm.xpm"

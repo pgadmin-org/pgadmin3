@@ -82,6 +82,51 @@ pgServer::~pgServer()
 }
 
 
+wxString pgServer::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on server");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing server");
+            message += wxT(" ") + GetName();
+            break;
+        case BACKUPGLOBALS:
+            message = _("Backup globals of server");
+            message += wxT(" ") + GetName();
+            break;
+        case BACKUPSERVERTITLE:
+            message = _("Backup server");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPTITLE:
+            message = _("Drop server?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Server properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Server properties");
+            break;
+        case STATISTICSREPORT:
+            message = _("Server statistics report");
+            message += wxT(" - ") + GetName();
+            break;
+        case STATISTICS:
+            message = _("Server statistics");
+            break;
+    }
+
+    return message;
+}
+
+
 int pgServer::GetIconId()
 {
     if (GetConnected())
@@ -1079,6 +1124,27 @@ bool pgServer::ReloadConfiguration()
 pgServerCollection::pgServerCollection(pgaFactory *factory)
  : pgCollection(factory)
 {
+}
+
+
+wxString pgServerCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on servers");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing servers");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Servers list report");
+            break;
+    }
+    
+    return message;
 }
 
 

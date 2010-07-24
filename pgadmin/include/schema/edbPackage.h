@@ -34,6 +34,7 @@ class edbPackage : public pgSchemaObject
 public:
     edbPackage(pgSchema *newSchema, const wxString& newName = wxT(""));
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
     bool GetSystemObject() const { return GetOid() <= GetConnection()->GetLastSystemOID(); }
@@ -90,6 +91,7 @@ class edbPackageCollection : public pgSchemaObjCollection
 {
 public:
     edbPackageCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 

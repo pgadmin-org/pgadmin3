@@ -18,6 +18,7 @@
 class pgIndexConstraint : public pgIndexBase
 {
 public:
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool DropObject(wxFrame *frame, ctlTree *browse, bool cascadedr);
     wxString GetDefinition();

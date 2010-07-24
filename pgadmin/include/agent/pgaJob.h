@@ -39,6 +39,7 @@ public:
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     wxString GetJobclass() const { return jobclass; }
     void iSetJobclass(const wxString &s) { jobclass=s; }
     bool GetEnabled() const { return enabled; }
@@ -98,6 +99,7 @@ class pgaJobObjCollection : public pgServerObjCollection
 {
 public:
     pgaJobObjCollection(pgaFactory *factory, pgaJob *job);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     bool CanCreate();
 };
 

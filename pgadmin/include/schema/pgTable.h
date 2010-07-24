@@ -44,6 +44,7 @@ public:
     pgTable(pgSchema *newSchema, const wxString& newName = wxT(""));
     pgTable(pgSchema *newSchema, pgaFactory &factory, const wxString& newName = wxT(""));
     ~pgTable();
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     int GetIconId();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
@@ -258,6 +259,7 @@ class pgTableCollection : public pgSchemaObjCollection
 {
 public:
     pgTableCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 
@@ -268,6 +270,7 @@ public:
     : pgSchemaObjCollection(factory, _table->GetSchema()) { iSetOid(_table->GetOid()); table=_table; }
     virtual pgTable *GetTable() const { return table; }
     bool CanCreate();
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 
 protected:
     pgTable *table;

@@ -28,6 +28,78 @@ pgIndexBase::pgIndexBase(pgTable *newTable, pgaFactory &factory, const wxString&
     showExtendedStatistics = false;
 }
 
+wxString pgIndexBase::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on index");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing index");
+            message += wxT(" ") + GetName();
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for index");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop index \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop index \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop index cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop index?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Index properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Index properties");
+            break;
+        case DDLREPORT:
+            message = _("Index DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Index DDL");
+            break;
+        case STATISTICSREPORT:
+            message = _("Index statistics report");
+            message += wxT(" - ") + GetName();
+            break;
+        case STATISTICS:
+            message = _("Index statistics");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Index dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Index dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Index dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Index dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool pgIndexBase::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP INDEX ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
@@ -503,6 +575,26 @@ pgObject *pgIndexFactory::CreateObjects(pgCollection *collection, ctlTree *brows
     return pgIndexBaseFactory::CreateObjects(collection, browser, restriction + wxT("\n   AND conname IS NULL"));
 }
 
+
+wxString pgIndexBaseCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on indexes");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing indexes");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Indexes list report");
+            break;
+    }
+    
+    return message;
+}
 
 /////////////////////////////
 

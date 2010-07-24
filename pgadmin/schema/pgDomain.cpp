@@ -28,6 +28,68 @@ pgDomain::~pgDomain()
 {
 }
 
+wxString pgDomain::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on domain");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing domain");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop domain \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop domain \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop domain cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop domain?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Domain properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Domain properties");
+            break;
+        case DDLREPORT:
+            message = _("Domain DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Domain DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Domain dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Domain dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Domain dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Domain dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgDomain::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP DOMAIN ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
@@ -184,6 +246,30 @@ pgObject *pgDomainFactory::CreateObjects(pgCollection *collection, ctlTree *brow
     }
     return domain;
 }
+
+/////////////////////////////
+
+wxString pgDomainCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on domains");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing domains");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Domains list report");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
 
 #include "images/domain.xpm"
 #include "images/domain-sm.xpm"

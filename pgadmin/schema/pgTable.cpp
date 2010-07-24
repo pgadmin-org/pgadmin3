@@ -54,6 +54,79 @@ pgTable::~pgTable()
 }
 
 
+wxString pgTable::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on table");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing table");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop table \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop table \"%s\"?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop table cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop table?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Table properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Table properties");
+            break;
+        case DDLREPORT:
+            message = _("Table DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Table DDL");
+            break;
+        case DATADICTIONNARYREPORT:
+            message = _("Table Data dictionary report");
+            message += wxT(" - ") + GetName();
+            break;
+        case STATISTICSREPORT:
+            message = _("Table statistics report");
+            message += wxT(" - ") + GetName();
+            break;
+        case STATISTICS:
+            message = _("Table statistics");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Table dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Table dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Table dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Table dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 int pgTable::GetIconId()
 {
     if (isReplicated)
@@ -1089,6 +1162,36 @@ pgTableCollection::pgTableCollection(pgaFactory *factory, pgSchema *sch)
 }
 
     
+wxString pgTableCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on tables");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing tables");
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for tables");
+            break;
+        case STATISTICSREPORT:
+            message = _("Tables statistics report");
+            break;
+        case STATISTICS:
+            message = _("Tables statistics");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Tables list report");
+            break;
+    }
+    
+    return message;
+}
+
+
 void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
     wxLogInfo(wxT("Displaying statistics for tables on %s"), GetSchema()->GetIdentifier().c_str());

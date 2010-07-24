@@ -33,6 +33,7 @@ public:
     pgCast(const wxString& newName = wxT(""));
     ~pgCast();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
     bool CanDropCascaded() { return true; }
@@ -70,6 +71,13 @@ private:
     wxString sourceType, sourceNamespace, targetType, targetNamespace, 
              castFunction, castContext, castNamespace;
     OID sourceTypeOid, targetTypeOid;
+};
+
+class pgCastCollection : public pgDatabaseObjCollection
+{
+public:
+    pgCastCollection(pgaFactory *factory, pgDatabase *db);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

@@ -28,6 +28,44 @@ pgaJob::pgaJob(const wxString& newName)
 {
 }
 
+wxString pgaJob::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on pgAgent job");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing pgAgent job");
+            break;
+        case PROPERTIESREPORT:
+            message = _("pgAgent job properties report");
+            break;
+        case PROPERTIES:
+            message = _("pgAgent job properties");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("pgAgent job dependencies report");
+            break;
+        case DEPENDENCIES:
+            message = _("pgAgent job dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("pgAgent job dependents report");
+            break;
+        case DEPENDENTS:
+            message = _("pgAgent job dependents");
+            break;
+    }
+    
+    if (!message.IsEmpty())
+        message += wxT(" ") + GetName();
+
+    return message;
+}
+
 int pgaJob::GetIconId()
 {
     if (GetEnabled())
@@ -266,6 +304,25 @@ pgCollection *pgaJobObjFactory::CreateCollection(pgObject *obj)
     return new pgaJobObjCollection(GetCollectionFactory(), (pgaJob*)obj);
 }
 
+
+wxString pgaJobObjCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on pgAgent jobs");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing pgAgent jobs");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
 
 
 #include "images/job.xpm"

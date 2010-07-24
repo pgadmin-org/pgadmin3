@@ -28,6 +28,72 @@ pgRule::~pgRule()
 {
 }
 
+wxString pgRule::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on rule");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing rule");
+            message += wxT(" ") + GetName();
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for rule");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop rule \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop rule \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop rule cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop rule?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Rule properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Rule properties");
+            break;
+        case DDLREPORT:
+            message = _("Rule DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Rule DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Rule dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Rule dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Rule dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Rule dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgRule::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable();
@@ -180,6 +246,28 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
     return rule;
 }
 
+
+/////////////////////////////
+
+wxString pgRuleCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on rules");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing rules");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Rules list report");
+            break;
+    }
+    
+    return message;
+}
 
 /////////////////////////////
 

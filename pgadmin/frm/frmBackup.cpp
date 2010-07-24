@@ -72,7 +72,7 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     LoadResource(form, wxT("frmBackup"));
     RestorePosition();
 
-    SetTitle(wxString::Format(_("Backup %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
+    SetTitle(object->GetTranslatedMessage(BACKUPTITLE));
 
     if (object->GetConnection()->EdbMinimumVersion(8,0))
         backupExecutable=edbBackupExecutable;

@@ -49,7 +49,7 @@ frmBackupGlobals::frmBackupGlobals(frmMain *form, pgObject *obj) : ExternProcess
     LoadResource(form, wxT("frmBackupGlobals"));
     RestorePosition();
 
-    SetTitle(wxString::Format(_("Backup globals %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
+    SetTitle(object->GetTranslatedMessage(BACKUPGLOBALS));
 
     wxString val;
     settings->Read(wxT("frmBackupGlobals/LastFile"), &val, wxEmptyString);

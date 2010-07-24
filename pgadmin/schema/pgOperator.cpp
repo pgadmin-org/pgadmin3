@@ -27,6 +27,67 @@ pgOperator::~pgOperator()
 {
 }
 
+wxString pgOperator::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on operator");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing operator");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop operator \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop operator \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop operator cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop operator?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Operator properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Operator properties");
+            break;
+        case DDLREPORT:
+            message = _("Operator DDL report");
+            message += wxT(" - ") + GetName();;
+            break;
+        case DDL:
+            message = _("Operator DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Operator dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Operator dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Operator dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Operator dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool pgOperator::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP OPERATOR ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetIdentifier();
@@ -158,6 +219,26 @@ pgObject *pgOperator::Refresh(ctlTree *browser, const wxTreeItemId item)
     return oper;
 }
 
+
+wxString pgOperatorCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on operators");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing operators");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Operators list report");
+            break;
+    }
+    
+    return message;
+}
 
 
 //////////////////////////////////////////////////////

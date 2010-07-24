@@ -27,6 +27,67 @@ pgTextSearchConfiguration::~pgTextSearchConfiguration()
 {
 }
 
+wxString pgTextSearchConfiguration::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on FTS configuration");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing FTS configuration");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop FTS configuration \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop FTS configuration \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop FTS configuration cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop FTS configuration?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("FTS configuration properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("FTS configuration properties");
+            break;
+        case DDLREPORT:
+            message = _("FTS configuration DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("FTS configuration DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("FTS configuration dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("FTS configuration dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("FTS configuration dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("FTS configuration dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool pgTextSearchConfiguration::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP TEXT SEARCH CONFIGURATION ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetIdentifier();
@@ -89,6 +150,26 @@ pgObject *pgTextSearchConfiguration::Refresh(ctlTree *browser, const wxTreeItemI
     return config;
 }
 
+
+wxString pgTextSearchConfigurationCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on FTS configurations");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing FTS configurations");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("FTS configurations list report");
+            break;
+    }
+    
+    return message;
+}
 
 
 //////////////////////////////////////////////////////

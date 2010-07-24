@@ -28,6 +28,68 @@ pgType::~pgType()
 {
 }
 
+wxString pgType::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on type");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing type");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop type \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop type \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop type cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop type?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Type properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Type properties");
+            break;
+        case DDLREPORT:
+            message = _("Type DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Type DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Type dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Type dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Type dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Type dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgType::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP TYPE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
@@ -221,6 +283,27 @@ pgObject *pgType::Refresh(ctlTree *browser, const wxTreeItemId item)
         type = typeFactory.CreateObjects(coll, 0, wxT("\n   AND t.oid=") + GetOidStr());
 
     return type;
+}
+
+
+wxString pgTypeCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on types");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing types");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Types list report");
+            break;
+    }
+    
+    return message;
 }
 
 

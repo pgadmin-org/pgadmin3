@@ -43,6 +43,7 @@ public:
     int GetIconId();
 
     wxString GetTypeName() const { return wxT("Server"); }
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     int Connect(frmMain *form, bool askPassword=true, const wxString &pwd=wxEmptyString, bool forceStorePassword=false);
     bool Disconnect(frmMain *form);
     void StorePassword();
@@ -185,6 +186,7 @@ class pgServerCollection : public pgCollection
 {
 public:
     pgServerCollection(pgaFactory *factory);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0) {};
 };
 

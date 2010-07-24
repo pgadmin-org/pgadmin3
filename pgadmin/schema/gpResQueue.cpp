@@ -22,9 +22,6 @@
 #include "schema/pgDatabase.h"
 
 
-
-
-
 gpResQueue::gpResQueue(pgaFactory &factory, const wxString& newName)
 : pgServerObject(factory, newName)
 {
@@ -33,6 +30,67 @@ gpResQueue::gpResQueue(pgaFactory &factory, const wxString& newName)
 gpResQueue::gpResQueue(const wxString& newName)
 : pgServerObject(resQueueFactory, newName)
 {
+}
+
+wxString gpResQueue::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on resource queue");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing resource queue");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop resource queue \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop resource queue \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop resource queue cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop resource queue?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Resource queue properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Resource queue properties");
+            break;
+        case DDLREPORT:
+            message = _("Resource queue DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Resource queue DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Resource queue dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Resource queue dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Resource queue dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Resource queue dependents");
+            break;
+    }
+
+    return message;
 }
 
 int gpResQueue::GetIconId()
@@ -185,6 +243,33 @@ pgObject *gpResQueueFactory::CreateObjects(pgCollection *collection, ctlTree *br
     return queue;
 }
  
+/////////////////////////////
+
+wxString gpResQueueCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on ressource queues");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing ressource queues");
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for ressource queues");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Ressource queues list report");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
+
 #include "images/group.xpm"
 #include "images/roles.xpm"
 

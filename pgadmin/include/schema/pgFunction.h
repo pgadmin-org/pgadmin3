@@ -36,7 +36,7 @@ public:
     pgFunction(pgSchema *newSchema, const wxString& newName = wxT(""));
     pgFunction(pgSchema *newSchema, pgaFactory &factory, const wxString& newName = wxT(""));
 
-
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return GetSchema()->GetMetaType() != PGM_CATALOG; }
     void ShowStatistics(frmMain *form, ctlListView *statistics);
@@ -120,6 +120,7 @@ class pgFunctionCollection : public pgSchemaObjCollection
 {
 public:
     pgFunctionCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 
@@ -137,7 +138,16 @@ class pgTriggerFunction : public pgFunction
 {
 public:
     pgTriggerFunction(pgSchema *newSchema, const wxString& newName = wxT(""));
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser);
+};
+
+
+class pgTriggerFunctionCollection : public pgSchemaObjCollection
+{
+public:
+    pgTriggerFunctionCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 
@@ -156,6 +166,7 @@ class pgProcedure : public pgFunction
 public:
     pgProcedure(pgSchema *newSchema, const wxString& newName = wxT(""));
     wxString GetFullName();
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     static pgObject *ReadObjects(pgCollection *collection, ctlTree *browser);
 
     bool GetIsProcedure() const { return true; }
@@ -175,5 +186,14 @@ public:
     wxWindow *StartDialog(frmMain *form, pgObject *obj);
     bool CheckEnable(pgObject *obj);
 };
+
+
+class pgProcedureCollection : public pgSchemaObjCollection
+{
+public:
+    pgProcedureCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
+};
+
 
 #endif

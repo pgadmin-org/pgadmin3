@@ -32,6 +32,7 @@ class pgSequence : public pgSchemaObject
 public:
     pgSequence(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgSequence();
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     int GetIconId();
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
@@ -58,6 +59,13 @@ public:
 private:
     wxLongLong lastValue, minValue, maxValue, cacheValue, increment;
     bool cycled, called, isReplicated;
+};
+
+class pgSequenceCollection : public pgSchemaObjCollection
+{
+public:
+    pgSequenceCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

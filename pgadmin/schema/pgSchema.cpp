@@ -47,9 +47,121 @@ pgSchema::pgSchema(const wxString& newName)
 {
 }
 
+wxString pgSchema::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on schema");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing schema");
+            message += wxT(" ") + GetName();
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for schema");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop schema \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop schema \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop schema cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop schema?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Schema properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Schema properties");
+            break;
+        case DDLREPORT:
+            message = _("Schema DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Schema DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Schema dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Schema dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Schema dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Schema dependents");
+            break;
+    }
+
+    return message;
+}
+
 pgCatalog::pgCatalog(const wxString& newName)
 : pgSchemaBase(catalogFactory, newName)
 {
+}
+
+wxString pgCatalog::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on catalog");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing catalog");
+            message += wxT(" ") + GetName();
+            break;
+        case PROPERTIESREPORT:
+            message = _("Catalog properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Catalog properties");
+            break;
+        case DDLREPORT:
+            message = _("Catalog DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Catalog DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Catalog dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Catalog dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Catalog dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Catalog dependents");
+            break;
+    }
+
+    return message;
 }
 
 pgSchemaBase::pgSchemaBase(pgaFactory &factory, const wxString& newName)
@@ -498,6 +610,26 @@ pgSchemaObjCollection::pgSchemaObjCollection(pgaFactory *factory, pgSchema *sch)
 }
 
 
+wxString pgSchemaObjCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on schemas");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing schemas");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Schemas list report");
+            break;
+    }
+    
+    return message;
+}
+
 bool pgSchemaObjCollection::CanCreate()
 {
     if(IsCollectionForType(PGM_OPCLASS) || IsCollectionForType(PGM_OPFAMILY))
@@ -514,6 +646,29 @@ bool pgSchemaObjCollection::CanCreate()
         return GetSchema()->GetSchema()->GetCreatePrivilege();
     else
         return GetSchema()->GetCreatePrivilege();
+}
+
+
+/////////////////////////////////////////////////////
+
+wxString pgCatalogObjCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on catalogs");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing catalogs");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Catalogs list report");
+            break;
+    }
+    
+    return message;
 }
 
 

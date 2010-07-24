@@ -35,6 +35,7 @@ public:
 
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     wxString GetFullName();
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 
     wxArrayString &GetInputTypesArray() { return inputTypes; }
     void iAddInputType(const wxString &s) { inputTypes.Add(s); }
@@ -67,6 +68,13 @@ private:
     wxArrayString inputTypes;
     wxString stateType, finalType, sortOp, quotedSortOp,
              stateFunction, finalFunction, initialCondition;
+};
+
+class pgAggregateCollection : public pgSchemaObjCollection
+{
+public:
+    pgAggregateCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

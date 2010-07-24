@@ -32,6 +32,7 @@ public:
     pgDomain(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgDomain();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return GetSchema()->GetMetaType() != PGM_CATALOG; }
 
@@ -75,6 +76,13 @@ private:
     long typlen, typmod;
     bool notNull, isDup;
     OID basetypeOid;
+};
+
+class pgDomainCollection : public pgSchemaObjCollection
+{
+public:
+    pgDomainCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

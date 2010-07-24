@@ -29,6 +29,7 @@ class pgLanguage : public pgDatabaseObject
 public:
     pgLanguage(const wxString& newName = wxT(""));
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return true; }
 
@@ -50,6 +51,13 @@ public:
 private:
     wxString handlerProc, validatorProc;
     bool trusted;
+};
+
+class pgLanguageCollection : public pgDatabaseObjCollection
+{
+public:
+    pgLanguageCollection(pgaFactory *factory, pgDatabase *db);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

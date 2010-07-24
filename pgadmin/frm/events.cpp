@@ -683,8 +683,8 @@ void frmMain::ExecDrop(bool cascaded)
                     {
                         if (data->GetSystemObject())
                         {
-                            wxMessageDialog msg(this, wxString::Format(_("Cannot drop system %s"), 
-                                data->GetTranslatedTypeName().c_str(), ""), 
+                            wxMessageDialog msg(this,
+                                data->GetTranslatedMessage(CANNOTDROPSYSTEM), 
                                 _("Trying to drop system object"), wxICON_EXCLAMATION);
                             msg.ShowModal();
                             return;
@@ -732,8 +732,7 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
 
         if (data->GetSystemObject())
         {
-            wxMessageDialog msg(this, wxString::Format(_("Cannot drop system %s %s."), 
-                data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str()), 
+            wxMessageDialog msg(this, data->GetTranslatedMessage(CANNOTDROPSYSTEM),
                 _("Trying to drop system object"), wxICON_EXCLAMATION);
             msg.ShowModal();
             return false;
@@ -744,14 +743,13 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
             wxString text, caption;
             if (cascaded)
             {
-                text = wxString::Format(_("Are you sure you wish to drop %s %s including all objects that depend on it?"),
-                    data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str());
-                caption = wxString::Format(_("Drop %s cascaded?"), data->GetTranslatedTypeName().c_str());
+                text = data->GetTranslatedMessage(DROPINCLUDINGDEPS);
+                caption = data->GetTranslatedMessage(DROPCASCADETITLE);
             }
             else
             {
                 /*
-                *  curerntObject is set using the following command.
+                *  currentObject is set using the following command.
                 *  i.e. currentObject = browser->GetObject(item);
                 *  While fetching this object using this code, somehow it looses its virtual table pointer.
                 *  Hence, it is not able to call the GetFullIdentifier - virtual function from the 
@@ -760,12 +758,11 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
                 *  function from the particular class.
                 */
                 if (data->GetMetaType() == PGM_SERVER)
-                    text = wxString::Format(_("Are you sure you wish to drop %s \"%s\"?"),
-                        data->GetTranslatedTypeName().c_str(), ((pgServer*)data)->GetFullIdentifier().c_str());
+                    text = wxString::Format(_("Are you sure you wish to drop server \"%s\"?"),
+                        ((pgServer*)data)->GetFullIdentifier().c_str());
                 else
-                    text = wxString::Format(_("Are you sure you wish to drop %s %s?"),
-                        data->GetTranslatedTypeName().c_str(), data->GetFullIdentifier().c_str());
-                caption = wxString::Format(_("Drop %s?"), data->GetTranslatedTypeName().c_str());
+                    text = data->GetTranslatedMessage(DROPEXCLUDINGDEPS);
+                caption = data->GetTranslatedMessage(DROPTITLE);
             }
             wxMessageDialog msg(this, text, caption, wxYES_NO | wxICON_QUESTION | wxNO_DEFAULT);
             if (msg.ShowModal() != wxID_YES)

@@ -31,6 +31,7 @@ public:
     pgOperator(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgOperator();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     virtual wxString GetQuotedIdentifier() const { return GetName(); }
     bool CanDropCascaded() { return GetSchema()->GetMetaType() != PGM_CATALOG; }
@@ -87,6 +88,13 @@ private:
              leftSortOperator, rightSortOperator, lessOperator, greaterOperator;
     OID leftTypeOid, rightTypeOid;
     bool hashJoins, mergeJoins;
+};
+
+class pgOperatorCollection : public pgSchemaObjCollection
+{
+public:
+    pgOperatorCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

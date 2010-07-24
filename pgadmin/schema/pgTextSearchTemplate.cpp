@@ -27,6 +27,67 @@ pgTextSearchTemplate::~pgTextSearchTemplate()
 {
 }
 
+wxString pgTextSearchTemplate::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on FTS template");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing FTS template");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop FTS template \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop FTS template \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop FTS template cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop FTS template?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("FTS template properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("FTS template properties");
+            break;
+        case DDLREPORT:
+            message = _("FTS template DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("FTS template DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("FTS template dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("FTS template dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("FTS template dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("FTS template dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool pgTextSearchTemplate::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP TEXT SEARCH TEMPLATE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetIdentifier();
@@ -84,6 +145,26 @@ pgObject *pgTextSearchTemplate::Refresh(ctlTree *browser, const wxTreeItemId ite
     return tstemplate;
 }
 
+
+wxString pgTextSearchTemplateCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on FTS templates");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing FTS templates");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("FTS templates list report");
+            break;
+    }
+    
+    return message;
+}
 
 
 //////////////////////////////////////////////////////

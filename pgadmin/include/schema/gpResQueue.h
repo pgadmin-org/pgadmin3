@@ -38,6 +38,7 @@ protected:
 
 public:
     gpResQueue(const wxString& newName = wxT(""));
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     int GetIconId();
 
     double GetCountLimit() const { return countlimit; }
@@ -68,9 +69,11 @@ private:
    
 };
 
-
-
- 
-
+class gpResQueueCollection : public pgServerObjCollection
+{
+public:
+    gpResQueueCollection(pgaFactory *factory, pgServer *sv);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
+};
 
 #endif

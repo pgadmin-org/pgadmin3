@@ -24,6 +24,47 @@ pgCatalogObject::pgCatalogObject(pgSchema *newSchema, const wxString& newName)
 {
 }
 
+wxString pgCatalogObject::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on catalog object");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing catalog object");
+            message += wxT(" ") + GetName();
+            break;
+        case PROPERTIESREPORT:
+            message = _("Catalog object properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Catalog object properties");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Catalog object dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Catalog object dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Catalog object dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Catalog object dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 wxString pgCatalogObject::GetSql(ctlTree *browser)
 {
     if (sql.IsNull())
@@ -117,6 +158,29 @@ pgObject *pgCatalogObjectFactory::CreateObjects(pgCollection *collection, ctlTre
     return catalog;
 }
 
+/////////////////////////////
+
+wxString pgCatalogObjectCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on catalog objects");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing catalog objects");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Catalog objects list report");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
 
 #include "images/catalogobject.xpm"
 #include "images/catalogobject-sm.xpm"

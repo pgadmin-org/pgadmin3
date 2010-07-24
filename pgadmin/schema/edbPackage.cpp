@@ -24,6 +24,54 @@ edbPackage::edbPackage(pgSchema *newSchema, const wxString& newName)
 {
 }
 
+wxString edbPackage::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on package");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing package");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop package \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop package \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop package cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop package?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Package properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Package properties");
+            break;
+        case DDLREPORT:
+            message = _("Package DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Package DDL");
+            break;
+    }
+
+    return message;
+}
+
+
 bool edbPackage::IsUpToDate()
 {
     pgConn *conn = GetDatabase()->GetConnection();
@@ -244,6 +292,30 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
     return package;
 }
 
+/////////////////////////////
+
+wxString edbPackageCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on packages");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing packages");
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for packages");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Packages list report");
+            break;
+    }
+    
+    return message;
+}
 
 /////////////////////////////
 

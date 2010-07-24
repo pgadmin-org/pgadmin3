@@ -24,6 +24,71 @@ pgGroup::pgGroup(const wxString& newName)
     memberCount=0;
 }
 
+wxString pgGroup::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on group");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing group");
+            message += wxT(" ") + GetName();
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for group");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop group \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop group \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop group cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop group?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Group properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Group properties");
+            break;
+        case DDLREPORT:
+            message = _("Group DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Group DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Group dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Group dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Group dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Group dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool pgGroup::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return server->ExecuteVoid(wxT("DROP GROUP ") + GetQuotedFullIdentifier());
@@ -134,6 +199,25 @@ pgObject *pgGroupFactory::CreateObjects(pgCollection *collection, ctlTree *brows
     return group;
 }
 
+wxString pgGroupCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on groups");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing groups");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Groups list report");
+            break;
+    }
+    
+    return message;
+}
 
 #include "images/group.xpm"
 #include "images/groups.xpm"

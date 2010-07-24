@@ -32,6 +32,7 @@ public:
     wxString GetDefinition();
     wxString GetFullName();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
     wxString GetOnUpdate() const { return onUpdate; }
@@ -83,6 +84,13 @@ private:
     wxString fkColumns, refColumns, quotedFkColumns, quotedRefColumns, coveringIndex, match;
     bool deferrable, deferred;
     OID relTableOid;
+};
+
+class pgForeignKeyCollection : public pgSchemaObjCollection
+{
+public:
+    pgForeignKeyCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

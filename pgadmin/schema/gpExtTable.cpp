@@ -29,6 +29,67 @@ gpExtTable::~gpExtTable()
 {
 }
 
+wxString gpExtTable::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on external table");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing external table");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop external table \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop external table \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop external table cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop external table?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("External table properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("External table properties");
+            break;
+        case DDLREPORT:
+            message = _("External table DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("External table DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("External table dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("External table dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("External table dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("External table dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool gpExtTable::IsUpToDate()
 {
     wxString sql = wxT("SELECT xmin FROM pg_class WHERE oid = ") + this->GetOidStr();
@@ -461,6 +522,32 @@ pgObject *gpExtTableFactory::CreateObjects(pgCollection *collection, ctlTree *br
     return extTable;
 }
 
+/////////////////////////////
+
+wxString gpExtTableCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on external tables");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing external tables");
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for external tables");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("External tables list report");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
 
 #include "images/exttable.xpm"
 #include "images/exttable-sm.xpm"

@@ -39,6 +39,37 @@ public:
 
 class pgaFactory;
 
+
+enum
+{
+    RETRIEVINGDETAILS=1,
+    REFRESHINGDETAILS,
+    BACKUPGLOBALS,
+    GRANTWIZARDTITLE,
+    MAINTENANCEDIALOGTITLE,
+    BACKUPSERVERTITLE,
+    BACKUPTITLE,
+    RESTORETITLE,
+    CANNOTDROPSYSTEM,
+    DROPINCLUDINGDEPS,
+    DROPEXCLUDINGDEPS,
+    DROPCASCADETITLE,
+    DROPTITLE,
+    PROPERTIESREPORT,
+    PROPERTIES,
+    DDLREPORT,
+    DDL,
+    DATADICTIONNARYREPORT,
+    STATISTICSREPORT,
+    STATISTICS,
+    DEPENDENCIESREPORT,
+    DEPENDENCIES,
+    DEPENDENTSREPORT,
+    DEPENDENTS,
+    OBJECTSLISTREPORT
+};
+
+
 // Class declarations
 class pgObject : public wxTreeItemData
 {
@@ -70,6 +101,7 @@ public:
     int GetMetaType() const;
     wxString GetTypeName() const;
     wxString GetTranslatedTypeName() const;
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     virtual int GetIconId();
     bool UpdateIcon(ctlTree *browser);
 

@@ -23,6 +23,67 @@ pgLanguage::pgLanguage(const wxString& newName)
 {
 }
 
+wxString pgLanguage::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on language");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing language");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop language \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop language \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop language cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop language?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Language properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Language properties");
+            break;
+        case DDLREPORT:
+            message = _("Language DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Language DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Language dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Language dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Language dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Language dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool pgLanguage::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP LANGUAGE ") + GetQuotedFullIdentifier();
@@ -137,6 +198,28 @@ pgObject *pgLanguageFactory::CreateObjects(pgCollection *collection, ctlTree *br
     return language;
 }
 
+
+/////////////////////////////
+
+wxString pgLanguageCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on languages");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing languages");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Languages list report");
+            break;
+    }
+    
+    return message;
+}
 
 ///////////////////////////////////////////////////
 

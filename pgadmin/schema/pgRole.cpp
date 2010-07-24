@@ -42,6 +42,130 @@ pgRole::pgRole(pgaFactory &factory, const wxString& newName)
 }
 
 
+wxString pgLoginRole::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on login role");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing login role");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop login role \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop login role \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop login role cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop login role?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Login role properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Login role properties");
+            break;
+        case DDLREPORT:
+            message = _("Login role DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Login role DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Login role dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Login role dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Login role dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Login role dependents");
+            break;
+    }
+
+    return message;
+}
+
+
+wxString pgGroupRole::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on group role");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing group role");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop group role \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop group role \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop group role cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop group role?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Group role properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Group role properties");
+            break;
+        case DDLREPORT:
+            message = _("Group role DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Group role DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Group role dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Group role dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Group role dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Group role dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 int pgRole::GetIconId()
 {
     if (GetCanLogin())
@@ -424,6 +548,52 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
         delete roles;
     }
     return role;
+}
+
+
+/////////////////////////////
+
+wxString pgLoginRoleCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on login roles");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing login roles");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Login roles list report");
+            break;
+    }
+    
+    return message;
+}
+
+
+/////////////////////////////
+
+wxString pgGroupRoleCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on group roles");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing group roles");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Group roles list report");
+            break;
+    }
+    
+    return message;
 }
 
 

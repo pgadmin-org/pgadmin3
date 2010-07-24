@@ -208,7 +208,7 @@ void ExplainCanvas::SaveAsImage(const wxString& fileName, wxBitmapType imageType
 
     if (!tempBitmap.SaveFile(fileName, imageType))
     {
-        wxLogError(_("Could not write the file %s: Errcode=%d."), fileName.c_str(), wxSysErrorCode());
+        wxLogError(_("Could not write file \"%s\": error code %d."), fileName.c_str(), wxSysErrorCode());
     }
 }
 

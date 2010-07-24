@@ -22,6 +22,67 @@ edbSynonym::edbSynonym(const wxString& newName)
 {
 }
 
+wxString edbSynonym::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on synonym");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing synonym");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop synonym \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop synonym \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop synonym cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop synonym?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Synonym properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Synonym properties");
+            break;
+        case DDLREPORT:
+            message = _("Synonym DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Synonym DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Synonym dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Synonym dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Synonym dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Synonym dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool edbSynonym::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP PUBLIC SYNONYM ") + GetQuotedIdentifier();
@@ -128,6 +189,30 @@ pgObject *edbSynonymFactory::CreateObjects(pgCollection *collection, ctlTree *br
     return synonym;
 }
 
+/////////////////////////////
+
+wxString edbSynonymCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on synonyms");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing synonyms");
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for synonyms");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Synonyms list report");
+            break;
+    }
+    
+    return message;
+}
 
 /////////////////////////////
 

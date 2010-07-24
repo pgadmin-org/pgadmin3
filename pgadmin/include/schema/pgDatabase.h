@@ -36,6 +36,7 @@ class pgDatabase : public pgServerObject
 public:
     pgDatabase(const wxString& newName = wxT(""));
     ~pgDatabase();
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     int GetIconId();
 
     static wxString GetDefaultPrivileges(const wxChar& cType, wxString strDefPrivs, const wxString& strSchema);
@@ -99,7 +100,7 @@ public:
 
     
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
-    bool CanMaintenance() { return GetConnected(); }
+    bool CanMaintenance() { return connected; }
     bool CanBackup() { return connected; }
     bool CanRestore() { return connected; }
     bool GetCanHint();
@@ -147,6 +148,7 @@ class pgDatabaseCollection : public pgServerObjCollection
 {
 public:
     pgDatabaseCollection(pgaFactory *factory, pgServer *sv);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 

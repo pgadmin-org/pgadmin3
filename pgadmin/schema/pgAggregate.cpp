@@ -27,6 +27,68 @@ pgAggregate::~pgAggregate()
 {
 }
 
+wxString pgAggregate::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on aggregate");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing aggregate");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop aggregate \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop aggregate \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop aggregate cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop aggregate?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Aggregate properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Aggregate properties");
+            break;
+        case DDLREPORT:
+            message = _("Aggregate DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Aggregate DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Aggregate dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Aggregate dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Aggregate dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Aggregate dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgAggregate::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP AGGREGATE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier() + wxT("(") + GetInputTypesList() + wxT(")");
@@ -280,6 +342,29 @@ pgObject *pgAggregateFactory::CreateObjects(pgCollection *collection, ctlTree *b
     return aggregate;
 }
 
+/////////////////////////////
+
+wxString pgAggregateCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on aggregates");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing aggregates");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Aggregates list report");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
 
 #include "images/aggregate.xpm"
 #include "images/aggregate-sm.xpm"

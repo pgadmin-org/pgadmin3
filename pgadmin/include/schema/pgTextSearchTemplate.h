@@ -31,6 +31,7 @@ public:
     pgTextSearchTemplate(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgTextSearchTemplate();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     virtual wxString GetQuotedIdentifier() const { return GetName(); }
     virtual wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtstemplate"); }
@@ -51,6 +52,13 @@ public:
 
 private:
     wxString init, lexize;
+};
+
+class pgTextSearchTemplateCollection : public pgSchemaObjCollection
+{
+public:
+    pgTextSearchTemplateCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

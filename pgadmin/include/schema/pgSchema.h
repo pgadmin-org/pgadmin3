@@ -101,14 +101,15 @@ class pgSchema : public pgSchemaBase
 {
 public:
 	pgSchema(const wxString& newName = wxT(""));
-
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 class pgCatalog : public pgSchemaBase
 {
 public:
 	pgCatalog(const wxString& newName = wxT(""));
-	virtual wxString GetDisplayName();
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+    virtual wxString GetDisplayName();
     bool CanCreate() { return false; }
     bool CanEdit() { return true; }
 };
@@ -160,7 +161,16 @@ class pgSchemaObjCollection : public pgCollection
 {
 public:
     pgSchemaObjCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     virtual bool CanCreate();
+};
+
+// collection of pgSchemaObject
+class pgCatalogObjCollection : public pgCollection
+{
+public:
+    pgCatalogObjCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 

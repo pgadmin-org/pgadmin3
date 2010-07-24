@@ -29,6 +29,7 @@ class pgUser : public pgServerObject
 {
 public:
     pgUser(const wxString& newName = wxT(""));
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 
     // User Specific
     bool GetSystemObject() const { return userId < 100; }
@@ -68,6 +69,13 @@ private:
     wxArrayString groupsIn;
     wxArrayString configList;
     long userId;
+};
+
+class pgUserCollection : public pgServerObjCollection
+{
+public:
+    pgUserCollection(pgaFactory *factory, pgServer *sv);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

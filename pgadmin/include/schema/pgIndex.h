@@ -24,6 +24,7 @@ protected:
     pgIndexBase(pgTable *newTable, pgaFactory &factory, const wxString& newName = wxT(""));
 
 public:
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     bool CanDropCascaded() { return GetSchema()->GetMetaType() != PGM_CATALOG; }
@@ -134,6 +135,7 @@ class pgIndexBaseCollection : public pgTableObjCollection
 {
 public:
     pgIndexBaseCollection(pgaFactory *factory, pgTable *tbl);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 

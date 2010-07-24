@@ -39,6 +39,71 @@ pgTrigger::~pgTrigger()
     }
 }
 
+wxString pgTrigger::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on trigger");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing trigger");
+            message += wxT(" ") + GetName();
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for trigger");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop trigger \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop trigger \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop trigger cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop trigger?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Trigger properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Trigger properties");
+            break;
+        case DDLREPORT:
+            message = _("Trigger DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Trigger DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Trigger dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Trigger dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Trigger dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Trigger dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool pgTrigger::IsUpToDate()
 {
     wxString sql = wxT("SELECT xmin FROM pg_trigger WHERE oid = ") + this->GetOidStr();
@@ -378,6 +443,27 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
     return trigger;
 }
 
+/////////////////////////////
+
+wxString pgTriggerCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on triggers");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing triggers");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Triggers list report");
+            break;
+    }
+    
+    return message;
+}
 
 /////////////////////////////
 

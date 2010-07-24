@@ -30,6 +30,44 @@ pgaSchedule::pgaSchedule(pgCollection *_collection, const wxString& newName)
 {
 }
 
+wxString pgaSchedule::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on pgAgent schedule");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing pgAgent schedule");
+            break;
+        case PROPERTIESREPORT:
+            message = _("pgAgent schedule properties report");
+            break;
+        case PROPERTIES:
+            message = _("pgAgent schedule properties");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("pgAgent schedule dependencies report");
+            break;
+        case DEPENDENCIES:
+            message = _("pgAgent schedule dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("pgAgent schedule dependents report");
+            break;
+        case DEPENDENTS:
+            message = _("pgAgent schedule dependents");
+            break;
+    }
+    
+    if (!message.IsEmpty())
+        message += wxT(" ") + GetName();
+
+    return message;
+}
+
 bool pgaSchedule::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetConnection()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetRecId()));
@@ -474,6 +512,28 @@ wxString pgaSchedule::GetExceptionsString()
 
 	return tmp;
 }
+
+
+/////////////////////////////
+
+wxString pgaScheduleCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on pgAgent schedules");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing pgAgent schedules");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
 
 
 #include "images/schedule.xpm"

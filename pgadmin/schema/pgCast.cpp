@@ -26,6 +26,69 @@ pgCast::~pgCast()
 {
 }
 
+
+wxString pgCast::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on cast");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing cast");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop cast \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop cast \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop cast cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop cast?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Cast properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Cast properties");
+            break;
+        case DDLREPORT:
+            message = _("Cast DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Cast DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Cast dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Cast dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Cast dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Cast dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgCast::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP CAST (") + GetSourceType() + wxT(" AS ") + GetTargetType() + wxT(")");
@@ -155,6 +218,28 @@ pgObject *pgCastFactory::CreateObjects(pgCollection *collection, ctlTree *browse
     return cast;
 }
 
+
+/////////////////////////////
+
+wxString pgCastCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on casts");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing casts");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Casts list report");
+            break;
+    }
+    
+    return message;
+}
 
 /////////////////////////////
 

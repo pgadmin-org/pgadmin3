@@ -31,6 +31,7 @@ class pgaStep : public pgaJobObject
 public:
     pgaStep(pgCollection *collection, const wxString& newName = wxT(""));
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 	void ShowStatistics(frmMain *form, ctlListView *statistics);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
@@ -66,6 +67,13 @@ private:
     wxString kind, code, dbname, connstr, onError;
     wxChar kindChar, onErrorChar;
 	long recId;
+};
+
+class pgaStepCollection : public pgaJobObjCollection
+{
+public:
+    pgaStepCollection(pgaFactory *factory, pgDatabase *db);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

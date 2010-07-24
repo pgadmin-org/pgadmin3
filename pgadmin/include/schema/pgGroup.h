@@ -30,6 +30,7 @@ class pgGroup : public pgServerObject
 {
 public:
     pgGroup(const wxString& newName = wxT(""));
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 
     // Group Specific
     long GetGroupId() const { return groupId; }
@@ -56,6 +57,13 @@ private:
     long groupId, memberCount;
     wxString memberIds, members, quotedMembers;
     wxArrayString usersIn;
+};
+
+class pgGroupCollection : public pgServerObjCollection
+{
+public:
+    pgGroupCollection(pgaFactory *factory, pgServer *sv);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

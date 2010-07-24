@@ -27,6 +27,67 @@ pgTextSearchDictionary::~pgTextSearchDictionary()
 {
 }
 
+wxString pgTextSearchDictionary::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on FTS dictionary");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing FTS dictionary");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop FTS dictionary \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop FTS dictionary \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop FTS dictionary cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop FTS dictionary?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("FTS dictionary properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("FTS dictionary properties");
+            break;
+        case DDLREPORT:
+            message = _("FTS dictionary DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("FTS dictionary DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("FTS dictionary dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("FTS dictionary dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("FTS dictionary dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("FTS dictionary dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool pgTextSearchDictionary::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP TEXT SEARCH DICTIONARY ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetIdentifier();
@@ -88,6 +149,26 @@ pgObject *pgTextSearchDictionary::Refresh(ctlTree *browser, const wxTreeItemId i
     return dict;
 }
 
+
+wxString pgTextSearchDictionaryCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on FTS dictionaries");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing FTS dictionaries");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("FTS dictionaries list report");
+            break;
+    }
+    
+    return message;
+}
 
 
 //////////////////////////////////////////////////////

@@ -31,6 +31,7 @@ class pgTablespace : public pgServerObject
 public:
     pgTablespace(const wxString& newName = wxT(""));
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
@@ -60,6 +61,7 @@ class pgTablespaceCollection : public pgServerObjCollection
 {
 public:
     pgTablespaceCollection(pgaFactory *factory, pgServer *sv);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowStatistics(frmMain *form, ctlListView *statistics);
 };
 

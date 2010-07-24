@@ -32,6 +32,7 @@ public:
     pgColumn(pgTable *newTable, const wxString& newName = wxT(""));
     ~pgColumn();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     void ShowStatistics(frmMain *form, ctlListView *statistics);
     void ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &where=wxEmptyString);
@@ -119,6 +120,13 @@ private:
     OID attTypId;
     int isReferenced;
     wxArrayString variables;
+};
+
+class pgColumnCollection : public pgSchemaObjCollection
+{
+public:
+    pgColumnCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

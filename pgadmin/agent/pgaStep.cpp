@@ -26,6 +26,44 @@ pgaStep::pgaStep(pgCollection *_collection, const wxString& newName)
 {
 }
 
+wxString pgaStep::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on pgAgent step");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing pgAgent step");
+            break;
+        case PROPERTIESREPORT:
+            message = _("pgAgent step properties report");
+            break;
+        case PROPERTIES:
+            message = _("pgAgent step properties");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("pgAgent step dependencies report");
+            break;
+        case DEPENDENCIES:
+            message = _("pgAgent step dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("pgAgent step dependents report");
+            break;
+        case DEPENDENTS:
+            message = _("pgAgent step dependents");
+            break;
+    }
+    
+    if (!message.IsEmpty())
+        message += wxT(" ") + GetName();
+
+    return message;
+}
+
 bool pgaStep::IsUpToDate()
 {
     wxString sql = wxT("SELECT xmin FROM pgagent.pga_jobstep WHERE jstid = ") + NumToStr(GetRecId());
@@ -214,6 +252,28 @@ void pgaStep::ShowStatistics(frmMain *form, ctlListView *statistics)
         }
     }
 }
+
+
+/////////////////////////////
+
+wxString pgaStepCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on pgAgent steps");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing pgAgent steps");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
 
 
 #include "images/step.xpm"

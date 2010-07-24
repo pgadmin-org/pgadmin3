@@ -43,6 +43,75 @@ pgDatabase::~pgDatabase()
 }
 
 
+wxString pgDatabase::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on database");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing database");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop database \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop database \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop database cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop database?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Database properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Database properties");
+            break;
+        case DDLREPORT:
+            message = _("Database DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Database DDL");
+            break;
+        case STATISTICSREPORT:
+            message = _("Database statistics report");
+            message += wxT(" - ") + GetName();
+            break;
+        case STATISTICS:
+            message = _("Database statistics");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Database dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Database dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Database dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Database dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 int pgDatabase::GetIconId()
 {
     if (GetConnected())
@@ -908,6 +977,33 @@ bool pgDatabase::CanDebugEdbspl()
 pgDatabaseCollection::pgDatabaseCollection(pgaFactory *factory, pgServer *sv)
 : pgServerObjCollection(factory, sv)
 {
+}
+
+
+wxString pgDatabaseCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on databases");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing databases");
+            break;
+        case STATISTICSREPORT:
+            message = _("Databases statistics report");
+            break;
+        case STATISTICS:
+            message = _("Databases statistics");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Databases list report");
+            break;
+    }
+    
+    return message;
 }
 
 

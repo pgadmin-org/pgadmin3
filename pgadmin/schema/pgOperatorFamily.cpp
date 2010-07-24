@@ -28,6 +28,67 @@ pgOperatorFamily::~pgOperatorFamily()
 {
 }
 
+wxString pgOperatorFamily::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on operator family");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing operator family");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop operator family \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop operator family \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop operator family cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop operator family?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Operator family properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Operator family properties");
+            break;
+        case DDLREPORT:
+            message = _("Operator family DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Operator family DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Operator family dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Operator family dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Operator family dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Operator family dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool pgOperatorFamily::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP OPERATOR FAMILY ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier() + wxT(" USING ") + GetAccessMethod();
@@ -76,6 +137,27 @@ pgObject *pgOperatorFamily::Refresh(ctlTree *browser, const wxTreeItemId item)
         operatorFamily = operatorFamilyFactory.CreateObjects(coll, 0, wxT("\n   AND opf.oid=") + GetOidStr());
 
     return operatorFamily;
+}
+
+
+wxString pgOperatorFamilyCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on operator families");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing operator families");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Operator families list report");
+            break;
+    }
+    
+    return message;
 }
 
 

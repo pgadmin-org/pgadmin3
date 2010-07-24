@@ -51,10 +51,7 @@ frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(f
     LoadResource(form, wxT("frmGrantWizard"));
     RestorePosition();
 
-    if (object->IsCollection())
-        SetTitle(wxString::Format(_("Privileges for %s"), object->GetTranslatedTypeName().c_str(), ""));
-    else
-        SetTitle(wxString::Format(_("Privileges for %s %s"), object->GetTranslatedTypeName().c_str(), object->GetFullIdentifier().c_str()));
+    SetTitle(object->GetTranslatedMessage(GRANTWIZARDTITLE));
 
     // Icon
     SetIcon(wxIcon(index_xpm));
@@ -300,7 +297,7 @@ wxString frmGrantWizard::GetSql()
 
 grantWizardFactory::grantWizardFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("&Grant Wizard"), _("Grants rights to multiple objects"));
+    mnu->Append(id, _("&Grant Wizard..."), _("Grants rights to multiple objects"));
 }
 
 

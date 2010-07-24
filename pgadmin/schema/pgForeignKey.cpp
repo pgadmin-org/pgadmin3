@@ -28,6 +28,72 @@ pgForeignKey::~pgForeignKey()
 }
 
 
+wxString pgForeignKey::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on foreign key");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing foreign key");
+            message += wxT(" ") + GetName();
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for foreign key");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop foreign key \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop foreign key \"%s\"?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop foreign key cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop foreign key?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Foreign key properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Foreign key properties");
+            break;
+        case DDLREPORT:
+            message = _("Foreign key DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Foreign key DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Foreign key dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Foreign key dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Foreign key dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Foreign key dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgForeignKey::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(wxT(
@@ -259,6 +325,27 @@ pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browse
     return foreignKey;
 }
 
+/////////////////////////////
+
+wxString pgForeignKeyCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on foreign keyrs");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing foreign keys");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Foreign keys list report");
+            break;
+    }
+    
+    return message;
+}
 
 /////////////////////////////
 

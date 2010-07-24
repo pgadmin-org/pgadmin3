@@ -27,6 +27,74 @@ pgTablespace::pgTablespace(const wxString& newName)
 {
 }
 
+wxString pgTablespace::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on tablespace");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing tablespace");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop tablespace \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop tablespace \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop tablespace cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop tablespace?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Tablespace properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Tablespace properties");
+            break;
+        case DDLREPORT:
+            message = _("Tablespace DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Tablespace DDL");
+            break;
+        case STATISTICSREPORT:
+            message = _("Tablespace statistics report");
+            message += wxT(" - ") + GetName();
+            break;
+        case STATISTICS:
+            message = _("Tablespace statistics");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Tablespace dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Tablespace dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Tablespace dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Tablespace dependents");
+            break;
+    }
+
+    return message;
+}
+
 void pgTablespace::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where)
 {
     form->StartMsg(_(" Retrieving tablespace usage"));
@@ -266,6 +334,32 @@ void pgTablespaceCollection::ShowStatistics(frmMain *form, ctlListView *statisti
     }
 }
 
+
+wxString pgTablespaceCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on tablespaces");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing tablespaces");
+            break;
+        case STATISTICSREPORT:
+            message = _("Tablespaces statistics report");
+            break;
+        case STATISTICS:
+            message = _("Tablespaces statistics");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Tablespaces list report");
+            break;
+    }
+    
+    return message;
+}
 
 
 #include "images/tablespace.xpm"

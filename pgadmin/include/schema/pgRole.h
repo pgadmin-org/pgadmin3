@@ -110,6 +110,7 @@ class pgLoginRole : public pgRole
 {
 public:
     pgLoginRole(const wxString& newName = wxT(""));
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 
@@ -117,8 +118,23 @@ class pgGroupRole : public pgRole
 {
 public:
     pgGroupRole(const wxString& newName = wxT(""));
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
+class pgLoginRoleCollection : public pgServerObjCollection
+{
+public:
+    pgLoginRoleCollection(pgaFactory *factory, pgServer *sv);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
+};
+
+
+class pgGroupRoleCollection : public pgServerObjCollection
+{
+public:
+    pgGroupRoleCollection(pgaFactory *factory, pgServer *sv);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
+};
 
 class reassignDropOwnedFactory : public contextActionFactory
 {

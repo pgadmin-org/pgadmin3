@@ -32,6 +32,7 @@ public:
     pgTrigger(pgTable *newTable, const wxString& newName = wxT(""));
     ~pgTrigger();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
 
@@ -88,6 +89,14 @@ private:
     long triggerType;
     bool enabled;
     pgFunction *triggerFunction;
+};
+
+
+class pgTriggerCollection : public pgTableObjCollection
+{
+public:
+    pgTriggerCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 

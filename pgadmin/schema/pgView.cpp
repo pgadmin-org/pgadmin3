@@ -32,6 +32,68 @@ pgView::~pgView()
 {
 }
 
+wxString pgView::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on view");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing view");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop view \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop view \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop view cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop view?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("View properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("View properties");
+            break;
+        case DDLREPORT:
+            message = _("View DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("View DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("View dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("View dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("View dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("View dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgView::IsUpToDate()
 {
     wxString sql = wxT("SELECT xmin FROM pg_class WHERE oid = ") + this->GetOidStr();
@@ -286,6 +348,31 @@ void pgView::AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory)
     if (!tmp.IsEmpty() && tmp != wxT("\n"))
         sql += tmp;
 }
+
+
+wxString pgViewCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on views");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing views");
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for views");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Views list report");
+            break;
+    }
+    
+    return message;
+}
+
 
 ///////////////////////////////////////////////////////
 

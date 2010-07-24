@@ -27,6 +27,68 @@ pgConversion::~pgConversion()
 {
 }
 
+wxString pgConversion::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on conversion");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing conversion");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop conversion \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop conversion \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop conversion cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop conversion?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Conversion properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Conversion properties");
+            break;
+        case DDLREPORT:
+            message = _("Conversion DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Conversion DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Conversion dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Conversion dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Conversion dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Conversion dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgConversion::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql=wxT("DROP CONVERSION ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetQuotedIdentifier();
@@ -135,6 +197,29 @@ pgObject *pgConversionFactory::CreateObjects(pgCollection *collection, ctlTree *
     return conversion;
 }
 
+/////////////////////////////
+
+wxString pgConversionCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on conversions");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing conversions");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Conversions list report");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
 
 #include "images/conversion.xpm"
 #include "images/conversions.xpm"

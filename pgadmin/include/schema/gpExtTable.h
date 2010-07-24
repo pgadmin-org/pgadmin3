@@ -32,6 +32,7 @@ public:
     gpExtTable(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~gpExtTable();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
 
@@ -56,6 +57,13 @@ public:
 
 private:
     wxString GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM);
+};
+
+class gpExtTableCollection : public pgSchemaObjCollection
+{
+public:
+    gpExtTableCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

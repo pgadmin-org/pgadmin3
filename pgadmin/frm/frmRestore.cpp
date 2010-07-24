@@ -85,9 +85,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
     LoadResource(_form, wxT("frmRestore"));
     RestorePosition();
 
-    SetTitle(wxString::Format(_("Restore %s %s"),
-        object->GetTranslatedTypeName().c_str(),
-        object->GetQuotedFullIdentifier().c_str()));
+    SetTitle(object->GetTranslatedMessage(RESTORETITLE));
 
     if (object->GetConnection()->EdbMinimumVersion(8,0))
         restoreExecutable=edbRestoreExecutable;

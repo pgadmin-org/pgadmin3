@@ -32,6 +32,7 @@ public:
     pgView(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgView();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     bool CanDropCascaded() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
 
@@ -63,6 +64,13 @@ private:
 	wxString GetCols(ctlTree *browser, size_t indent, wxString &QMs, bool withQM);
     void AppendStuff(wxString &sql, ctlTree *browser, pgaFactory &factory);
 	bool hasInsertRule, hasUpdateRule, hasDeleteRule;
+};
+
+class pgViewCollection : public pgSchemaObjCollection
+{
+public:
+    pgViewCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

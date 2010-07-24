@@ -2085,8 +2085,8 @@ bool createFactory::CheckEnable(pgObject *obj)
 #include "images/drop.xpm"
 dropFactory::dropFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("&Delete/Drop\tDel"),  _("Delete/Drop the selected object."));
-    toolbar->AddTool(id, _("Drop"), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
+    mnu->Append(id, _("&Delete/Drop...\tDel"),  _("Delete/Drop the selected object."));
+    toolbar->AddTool(id, _("Drop..."), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
 }
 
 
@@ -2105,7 +2105,7 @@ bool dropFactory::CheckEnable(pgObject *obj)
 
 dropCascadedFactory::dropCascadedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("Drop Cascaded"), _("Drop the selected object and all objects dependent on it."));
+    mnu->Append(id, _("Drop cascaded..."), _("Drop the selected object and all objects dependent on it."));
 }
 
 

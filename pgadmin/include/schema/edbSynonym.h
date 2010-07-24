@@ -32,6 +32,7 @@ class edbSynonym : public pgDatabaseObject
 public:
     edbSynonym(const wxString& newName = wxT(""));
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
     bool GetSystemObject() const { return false; }
@@ -55,5 +56,13 @@ public:
 private:
     wxString targetType, targetSchema, targetObject;
 };
+
+class edbSynonymCollection : public pgDatabaseObjCollection
+{
+public:
+    edbSynonymCollection(pgaFactory *factory, pgDatabase *db);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
+};
+
 
 #endif

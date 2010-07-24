@@ -31,6 +31,7 @@ public:
     pgTextSearchDictionary(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgTextSearchDictionary();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     virtual wxString GetQuotedIdentifier() const { return GetName(); }
     bool CanDropCascaded() { return GetSchema()->GetMetaType() != PGM_CATALOG; }
@@ -51,6 +52,13 @@ public:
 
 private:
     wxString tmpl, options;
+};
+
+class pgTextSearchDictionaryCollection : public pgSchemaObjCollection
+{
+public:
+    pgTextSearchDictionaryCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

@@ -33,6 +33,7 @@ pgFunction::pgFunction(pgSchema *newSchema, pgaFactory &factory, const wxString&
 {
 }
 
+
 pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newName)
 : pgFunction(newSchema, triggerFunctionFactory, newName)
 {
@@ -41,6 +42,189 @@ pgTriggerFunction::pgTriggerFunction(pgSchema *newSchema, const wxString& newNam
 pgProcedure::pgProcedure(pgSchema *newSchema, const wxString& newName)
 : pgFunction(newSchema, procedureFactory, newName)
 {
+}
+
+wxString pgFunction::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on function");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing function");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop function \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop function \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop function cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop function?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Function properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Function properties");
+            break;
+        case DDLREPORT:
+            message = _("Function DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Function DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Function dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Function dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Function dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Function dependents");
+            break;
+    }
+
+    return message;
+}
+
+wxString pgTriggerFunction::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on trigger function");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing trigger function");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop trigger function \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop trigger function \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop trigger function cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop trigger function?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Trigger function properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Trigger function properties");
+            break;
+        case DDLREPORT:
+            message = _("Trigger function DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Trigger function DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Trigger function dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Trigger function dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Trigger function dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Trigger function dependents");
+            break;
+    }
+
+    return message;
+}
+
+wxString pgProcedure::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on procedure");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing procedure");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop procedure \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop procedure \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop procedure cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop procedure?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Procedure properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Procedure properties");
+            break;
+        case DDLREPORT:
+            message = _("Procedure DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Procedure DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Procedure dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Procedure dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Procedure dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Procedure dependents");
+            break;
+    }
+
+    return message;
 }
 
 void pgFunction::ShowStatistics(frmMain *form, ctlListView *statistics)
@@ -842,6 +1026,28 @@ pgFunctionCollection::pgFunctionCollection(pgaFactory *factory, pgSchema *sch)
 {
 }
 
+wxString pgFunctionCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on functions");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing functions");
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for functions");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Functions list report");
+            break;
+    }
+    
+    return message;
+}
 
 void pgFunctionCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
@@ -903,3 +1109,51 @@ bool resetFunctionStatsFactory::CheckEnable(pgObject *obj)
 {
     return obj && obj->IsCreatedBy(functionFactory) && ((pgFunction*)obj)->GetConnection()->BackendMinimumVersion(9, 0);
 }
+
+wxString pgTriggerFunctionCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on trigger functions");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing trigger functions");
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for trigger functions");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Trigger functions list report");
+            break;
+    }
+    
+    return message;
+}
+
+wxString pgProcedureCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on procedures");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing procedures");
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for procedures");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Procedures list report");
+            break;
+    }
+    
+    return message;
+}
+
+

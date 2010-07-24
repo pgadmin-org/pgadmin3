@@ -34,6 +34,7 @@ public:
     pgCheck(pgTable *newTable, const wxString& newName = wxT(""));
     ~pgCheck();
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
 
     wxString GetFkTable() const { return fkTable; }
@@ -55,6 +56,13 @@ public:
 
 private:
     wxString definition, fkTable, fkSchema;
+};
+
+class pgCheckCollection : public pgSchemaObjCollection
+{
+public:
+    pgCheckCollection(pgaFactory *factory, pgSchema *sch);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

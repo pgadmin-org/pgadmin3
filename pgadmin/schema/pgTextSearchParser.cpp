@@ -27,6 +27,67 @@ pgTextSearchParser::~pgTextSearchParser()
 {
 }
 
+wxString pgTextSearchParser::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on FTS parser");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing FTS parser");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop FTS parser \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop FTS parser \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop FTS parser cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop FTS parser?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("FTS parser properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("FTS parser properties");
+            break;
+        case DDLREPORT:
+            message = _("FTS parser DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("FTS parser DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("FTS parser dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("FTS parser dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("FTS parser dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("FTS parser dependents");
+            break;
+    }
+
+    return message;
+}
+
 bool pgTextSearchParser::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     wxString sql = wxT("DROP TEXT SEARCH PARSER ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + this->GetIdentifier();
@@ -92,6 +153,26 @@ pgObject *pgTextSearchParser::Refresh(ctlTree *browser, const wxTreeItemId item)
     return parser;
 }
 
+
+wxString pgTextSearchParserCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on FTS parsers");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing FTS parsers");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("FTS parsers list report");
+            break;
+    }
+    
+    return message;
+}
 
 
 //////////////////////////////////////////////////////

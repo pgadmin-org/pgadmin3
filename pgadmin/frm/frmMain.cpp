@@ -490,7 +490,7 @@ void frmMain::CreateMenus()
 
 void frmMain::Refresh(pgObject *data)
 {
-    StartMsg(wxString::Format(_("Refreshing %s"), data->GetTranslatedTypeName().c_str()));
+    StartMsg(data->GetTranslatedMessage(REFRESHINGDETAILS));
     browser->Freeze();
 
     wxTreeItemId currentItem=data->GetId();

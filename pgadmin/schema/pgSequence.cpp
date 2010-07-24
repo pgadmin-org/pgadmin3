@@ -28,6 +28,75 @@ pgSequence::~pgSequence()
 {
 }
 
+wxString pgSequence::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on sequence");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing sequence");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop sequence \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop sequence \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop sequence cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop sequence?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Sequence properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Sequence properties");
+            break;
+        case DDLREPORT:
+            message = _("Sequence DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Sequence DDL");
+            break;
+        case STATISTICSREPORT:
+            message = _("Sequence statistics report");
+            message += wxT(" - ") + GetName();
+            break;
+        case STATISTICS:
+            message = _("Sequence statistics");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Sequence dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Sequence dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Sequence dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Sequence dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 int pgSequence::GetIconId()
 {
     if (isReplicated)
@@ -149,6 +218,30 @@ pgObject *pgSequence::Refresh(ctlTree *browser, const wxTreeItemId item)
         sequence = sequenceFactory.CreateObjects(coll, 0, wxT("\n   AND cl.oid=") + GetOidStr());
 
     return sequence;
+}
+
+
+wxString pgSequenceCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on sequences");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing sequences");
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for sequences");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Sequences list report");
+            break;
+    }
+    
+    return message;
 }
 
 

@@ -20,13 +20,12 @@
 #include "frm/frmMain.h"
 #include "frm/frmReport.h"
 #include "schema/pgDomain.h"
-
+#include "schema/pgAggregate.h"
 #include "schema/pgSequence.h"
 #include "schema/pgFunction.h"
 #include "schema/pgType.h"
 #include "schema/pgDatabase.h"
 #include "schema/pgTable.h"
-#include "schema/gpExtTable.h"
 #include "schema/pgColumn.h"
 #include "schema/pgView.h"
 #include "schema/pgType.h"
@@ -43,8 +42,25 @@
 #include "schema/pgForeignKey.h"
 #include "schema/pgRule.h"
 #include "schema/pgRole.h"
+#include "schema/pgCast.h"
+#include "schema/pgCatalogObject.h"
+#include "schema/pgTextSearchConfiguration.h"
+#include "schema/pgTextSearchDictionary.h"
+#include "schema/pgTextSearchParser.h"
+#include "schema/pgTextSearchTemplate.h"
+#include "schema/pgOperatorClass.h"
+#include "schema/pgOperatorFamily.h"
+#include "schema/pgSchema.h"
+#include "schema/pgIndexConstraint.h"
+#include "schema/edbPackage.h"
+#include "schema/edbSynonym.h"
 #include "utils/pgDefs.h"
+#include "schema/gpExtTable.h"
+#include "schema/gpResQueue.h"
 #include "agent/pgaJob.h"
+#include "agent/pgaSchedule.h"
+#include "agent/pgaStep.h"
+
 
 int pgObject::GetType() const
 {
@@ -71,6 +87,215 @@ wxString pgObject::GetTypeName() const
 wxString pgObject::GetTranslatedTypeName() const
 {
     return wxString(wxGetTranslation(GetTypeName()));
+}
+
+
+wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    wxString type = factory->GetTypeName();
+    
+    // singular form
+    if (type == wxT("Aggregate"))
+        message = ((pgAggregate*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Cast"))
+        message = ((pgCast*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Catalog"))
+        message = ((pgCatalog*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Catalog Object"))
+        message = ((pgCatalogObject*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Check"))
+        message = ((pgCheck*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Column"))
+        message = ((pgColumn*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Conversion"))
+        message = ((pgConversion*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Database"))
+        message = ((pgDatabase*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Domain"))
+        message = ((pgDomain*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("External Table"))
+        message = ((gpExtTable*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("ForeignKey"))
+        message = ((pgForeignKey*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("FTS Configuration"))
+        message = ((pgTextSearchConfiguration*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("FTS Dictionary"))
+        message = ((pgTextSearchDictionary*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("FTS Parser"))
+        message = ((pgTextSearchParser*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("FTS Template"))
+        message = ((pgTextSearchTemplate*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Function"))
+        message = ((pgFunction*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Group"))
+        message = ((pgGroup*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Group Role"))
+        message = ((pgGroupRole*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Index"))
+        message = ((pgIndexBase*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Index Constraint"))
+        message = ((pgIndexConstraint*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Language"))
+        message = ((pgLanguage*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Login Role"))
+        message = ((pgLoginRole*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Operator"))
+        message = ((pgOperator*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Operator Class"))
+        message = ((pgOperatorClass*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Operator Family"))
+        message = ((pgOperatorFamily*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Package"))
+        message = ((edbPackage*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("pgAgent Job"))
+        message = ((pgaJob*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("pgAgent Schedule"))
+        message = ((pgaSchedule*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("pgAgent Step"))
+        message = ((pgaStep*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Procedure"))
+        message = ((pgProcedure*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Resource Queue"))
+        message = ((gpResQueue*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Rule"))
+        message = ((pgRule*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Schema"))
+        message = ((pgSchema*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Sequence"))
+        message = ((pgSequence*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Server"))
+        message = ((pgServer*)this)->GetTranslatedMessage(kindOfMessage);
+    //else if (type == wxT("Slony-I Cluster"))
+    else if (type == wxT("Synonym"))
+        message = ((edbSynonym*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Table"))
+        message = ((pgTable*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Tablespace"))
+        message = ((pgTablespace*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Trigger"))
+        message = ((pgTrigger*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Trigger Function"))
+        message = ((pgTriggerFunction*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("Type"))
+        message = ((pgType*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("User"))
+        message = ((pgUser*)this)->GetTranslatedMessage(kindOfMessage);
+    else if (type == wxT("View"))
+        message = ((pgView*)this)->GetTranslatedMessage(kindOfMessage);
+    
+    if (message.IsEmpty())
+    {
+        // plural form
+        if (type == wxT("Aggregates"))
+            message = ((pgAggregateCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Casts"))
+            message = ((pgCastCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Catalogs"))
+            message = ((pgCatalogObjCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Catalog Objects"))
+            message = ((pgCatalogObjectCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Checks"))
+            message = ((pgCheckCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Columns"))
+            message = ((pgColumnCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Conversions"))
+            message = ((pgConversionCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Databases"))
+            message = ((pgDatabaseCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Domains"))
+            message = ((pgDomainCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("External Tables"))
+            message = ((gpExtTableCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("ForeignKeys"))
+            message = ((pgForeignKeyCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("FTS Configurations"))
+            message = ((pgTextSearchConfigurationCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("FTS Dictionaries"))
+            message = ((pgTextSearchDictionaryCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("FTS Parsers"))
+            message = ((pgTextSearchParserCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("FTS Templates"))
+            message = ((pgTextSearchTemplateCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Functions"))
+            message = ((pgFunctionCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Groups"))
+            message = ((pgGroupCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Group Roles"))
+            message = ((pgGroupRoleCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Indexes"))
+            message = ((pgIndexBaseCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        //else if (type == wxT("Index Constraints"))
+        //    message = ((pgIndexConstraintCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Languages"))
+            message = ((pgLanguageCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Login Roles"))
+            message = ((pgLoginRoleCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Operators"))
+            message = ((pgOperatorCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Operator Classes"))
+            message = ((pgOperatorClassCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Operator Families"))
+            message = ((pgOperatorFamilyCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Packages"))
+            message = ((edbPackageCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("pgAgent Jobs"))
+            message = ((pgaJobObjCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("pgAgent Schedules"))
+            message = ((pgaScheduleCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("pgAgent Steps"))
+            message = ((pgaStepCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Procedures"))
+            message = ((pgProcedureCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Resource Queues"))
+            message = ((gpResQueueCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Rules"))
+            message = ((pgRuleCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Schemas"))
+            message = ((pgSchemaObjCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Sequences"))
+            message = ((pgSequenceCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Servers"))
+            message = ((pgServerCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        //else if (type == wxT("Slony-I Clusters"))
+        else if (type == wxT("Synonyms"))
+            message = ((edbSynonymCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Tables"))
+            message = ((pgTableCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Tablespaces"))
+            message = ((pgTablespaceCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Triggers"))
+            message = ((pgTriggerCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Trigger Functions"))
+            message = ((pgTriggerFunctionCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Types"))
+            message = ((pgTypeCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Users"))
+            message = ((pgUserCollection*)this)->GetTranslatedMessage(kindOfMessage);
+        else if (type == wxT("Views"))
+            message = ((pgViewCollection*)this)->GetTranslatedMessage(kindOfMessage);
+    }
+
+    if (message.IsEmpty())
+    {
+        switch (kindOfMessage)
+        {
+            case RETRIEVINGDETAILS:
+                message = _("Retrieving details on unknown object of type");
+                break;
+            case REFRESHINGDETAILS:
+                message = _("Refreshing unknown object of type");
+                break;
+            case BACKUPGLOBALS:
+                message = _("Backup globals of unknown object of type");
+                break;
+            case BACKUPSERVERTITLE:
+                message = _("Backup unknown object of type");
+        }
+        message += wxT(" ") + type;
+    }
+    
+    return message;
 }
 
 
@@ -643,7 +868,7 @@ void pgObject::ShowTree(frmMain *form, ctlTree *browser, ctlListView *properties
 
     if (form)
     {
-        form->StartMsg(wxString::Format(_("Retrieving %s details"), GetTranslatedTypeName().c_str()));
+        form->StartMsg(GetTranslatedMessage(RETRIEVINGDETAILS));
 
         SetContextInfo(form);
 

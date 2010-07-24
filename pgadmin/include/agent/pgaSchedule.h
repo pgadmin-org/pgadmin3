@@ -30,6 +30,7 @@ class pgaSchedule : public pgaJobObject
 public:
     pgaSchedule(pgCollection *collection, const wxString& newName = wxT(""));
 
+    wxString GetTranslatedMessage(int kindOfMessage) const;
     void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
     pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
@@ -74,6 +75,13 @@ private:
     wxDateTime start, end;
 	long recId;
 	wxString minutes, hours, weekdays, monthdays, months, exceptions;
+};
+
+class pgaScheduleCollection : public pgaJobObjCollection
+{
+public:
+    pgaScheduleCollection(pgaFactory *factory, pgDatabase *db);
+    wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

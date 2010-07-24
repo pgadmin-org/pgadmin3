@@ -26,6 +26,72 @@ pgUser::pgUser(const wxString& newName)
 {
 }
 
+wxString pgUser::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on user");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing user");
+            message += wxT(" ") + GetName();
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for user");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop user \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop user \"%s?\""),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop user cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop user?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("User properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("User properties");
+            break;
+        case DDLREPORT:
+            message = _("User DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("User DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("User dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("User dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("User dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("User dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgUser::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     if (GetUpdateCatalog())
@@ -236,7 +302,29 @@ pgObject *pgUser::Refresh(ctlTree *browser, const wxTreeItemId item)
     return user;
 }
 
+/////////////////////////////
 
+wxString pgUserCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on users");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing users");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Users list report");
+            break;
+    }
+    
+    return message;
+}
+
+/////////////////////////////
 
 pgObject *pgUserFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {

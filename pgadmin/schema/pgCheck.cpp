@@ -28,6 +28,72 @@ pgCheck::~pgCheck()
 }
 
 
+wxString pgCheck::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on check constraint");
+            message += wxT(" ") + GetName();
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing check constraint");
+            message += wxT(" ") + GetName();
+            break;
+        case GRANTWIZARDTITLE:
+            message = _("Privileges for check constraint");
+            message += wxT(" ") + GetName();
+            break;
+        case DROPINCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop check constraint \"%s\" including all objects that depend on it?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPEXCLUDINGDEPS:
+            message = wxString::Format(_("Are you sure you wish to drop check constraint \"%s\"?"),
+                GetFullIdentifier().c_str());
+            break;
+        case DROPCASCADETITLE:
+            message = _("Drop check constraint cascaded?");
+            break;
+        case DROPTITLE:
+            message = _("Drop check constraint?");
+            break;
+        case PROPERTIESREPORT:
+            message = _("Check constraint properties report");
+            message += wxT(" - ") + GetName();
+            break;
+        case PROPERTIES:
+            message = _("Check constraint properties");
+            break;
+        case DDLREPORT:
+            message = _("Check constraint DDL report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DDL:
+            message = _("Check constraint DDL");
+            break;
+        case DEPENDENCIESREPORT:
+            message = _("Check constraint dependencies report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENCIES:
+            message = _("Check constraint dependencies");
+            break;
+        case DEPENDENTSREPORT:
+            message = _("Check constraint dependents report");
+            message += wxT(" - ") + GetName();
+            break;
+        case DEPENDENTS:
+            message = _("Check constraint dependents");
+            break;
+    }
+
+    return message;
+}
+
+
 bool pgCheck::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
     return GetDatabase()->ExecuteVoid(
@@ -133,6 +199,27 @@ pgObject *pgCheckFactory::CreateObjects(pgCollection *coll, ctlTree *browser, co
     return check;
 }
 
+/////////////////////////////
+
+wxString pgCheckCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+    wxString message = wxEmptyString;
+    
+    switch (kindOfMessage)
+    {
+        case RETRIEVINGDETAILS:
+            message = _("Retrieving details on check constraints");
+            break;
+        case REFRESHINGDETAILS:
+            message = _("Refreshing check constraints");
+            break;
+        case OBJECTSLISTREPORT:
+            message = _("Check constraints list report");
+            break;
+    }
+    
+    return message;
+}
 
 /////////////////////////////
 
