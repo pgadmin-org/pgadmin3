@@ -345,17 +345,22 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
 
     // If we didn't get an object, then we may have a right click, or 
     // invalid click, so ignore.
-    if (!currentObject) return;
-
-    if (currentNode)
+    if (!currentObject)
     {
-        properties->Freeze();
-        setDisplay(currentObject, properties, sqlPane);
-        properties->Thaw();
-        ShowObjStatistics(currentObject, listViews->GetSelection());
+        menuFactories->CheckMenu(currentObject, menuBar, toolBar);
     }
     else
-        setDisplay(currentObject, 0, 0);
+    {
+        if (currentNode)
+        {
+            properties->Freeze();
+            setDisplay(currentObject, properties, sqlPane);
+            properties->Thaw();
+            ShowObjStatistics(currentObject, listViews->GetSelection());
+        }
+        else
+            setDisplay(currentObject, 0, 0);
+    }
 }
 
 
