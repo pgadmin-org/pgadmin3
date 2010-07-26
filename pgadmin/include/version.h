@@ -13,9 +13,9 @@
 #define VERSION_H
 
 // Application Versions
-#define VERSION_STR     wxT("1.10.4")
-#define VERSION_NUM     1,10,4,0
-#define VERSION_PACKAGE 1.10.4
+#define VERSION_STR     wxT("1.10.5")
+#define VERSION_NUM     1,10,5,0
+#define VERSION_PACKAGE 1.10.5
 
 #define PRERELEASE 0
 // #define BUILD "..."
