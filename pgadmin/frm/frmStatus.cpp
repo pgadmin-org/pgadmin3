@@ -453,7 +453,7 @@ void frmStatus::OnChangeDatabase(wxCommandEvent &ev)
     }
 
     locks_connection = new pgConn(connection->GetHostName(), cbDatabase->GetValue(),
-      connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetSslMode(),
+      connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetRole(), connection->GetSslMode(),
       0, connection->GetApplicationName());
 
     locks_connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;"),false);
@@ -873,7 +873,7 @@ void frmStatus::OnCopyQuery(wxCommandEvent& ev)
     {
         pgConn *conn = new pgConn(connection->GetHostName(), dbname,
           connection->GetUser(), connection->GetPassword(),
-          connection->GetPort(), connection->GetSslMode(), connection->GetDbOid(),
+          connection->GetPort(), connection->GetRole(), connection->GetSslMode(), connection->GetDbOid(),
           connection->GetApplicationName());
         if (conn)
         {
@@ -2359,6 +2359,7 @@ void frmStatus::OnCommit(wxCommandEvent &event)
                                        connection->GetUser(), 
                                        connection->GetPassword(), 
                                        connection->GetPort(), 
+                                       connection->GetRole(),
                                        connection->GetSslMode(),
                                        0,
                                        connection->GetApplicationName());
@@ -2409,6 +2410,7 @@ void frmStatus::OnRollback(wxCommandEvent &event)
                                        connection->GetUser(), 
                                        connection->GetPassword(), 
                                        connection->GetPort(), 
+                                       connection->GetRole(),
                                        connection->GetSslMode(),
                                        0,
                                        connection->GetApplicationName());

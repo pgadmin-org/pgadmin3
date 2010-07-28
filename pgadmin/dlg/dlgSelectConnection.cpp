@@ -38,6 +38,7 @@ END_EVENT_TABLE()
 
 #define stUsername		CTRL_STATIC("stUsername")
 #define cbUsername		CTRL_COMBOBOX("cbUsername")
+#define cbRolename		CTRL_COMBOBOX("cbRolename")
 
 
 
@@ -60,6 +61,7 @@ DialogWithHelp(form)
 		cbServer->SetValue(settings->Read(wxT("QuickConnect/server"), wxEmptyString));
 		cbDatabase->SetValue(settings->Read(wxT("QuickConnect/database"), wxEmptyString));
 		cbUsername->SetValue(settings->Read(wxT("QuickConnect/username"), wxEmptyString));
+		cbRolename->SetValue(settings->Read(wxT("QuickConnect/rolename"), wxEmptyString));
 	}
 
 	btnOK->Enable(cbServer->GetValue().Length() > 0 && cbDatabase->GetValue().Length() > 0 && cbUsername->GetValue().Length() > 0);
@@ -85,6 +87,7 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
 
     cbDatabase->Clear();
     cbUsername->Clear();
+    cbRolename->Clear();
 
     int sel=cbServer->GetCurrentSelection();
     if (sel >= 0)
@@ -123,6 +126,25 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
 
             if (cbUsername->GetCount())
                 cbUsername->SetSelection(0);
+
+            if (remoteServer->GetConnection()->BackendMinimumVersion(8, 1))
+            {
+                pgSetIterator set3(remoteServer->GetConnection(),
+                    wxT("SELECT DISTINCT rolname\n")
+                    wxT("FROM pg_roles db\n")
+                    wxT("ORDER BY rolname"));
+
+                cbRolename->Append(wxEmptyString);
+
+                while(set3.RowsLeft())
+                    cbRolename->Append(set3.GetVal(wxT("rolname")));
+
+                cbRolename->Enable(true);
+            }
+            else
+                cbRolename->Disable();
+
+            cbRolename->SetValue(wxEmptyString);
         }
 
     }
@@ -190,6 +212,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString& applicationname, bool& created
 	}
 
     wxString user = cbUsername->GetValue();
+    wxString role = cbRolename->GetValue();
 
     if (cbConnection)
     {
@@ -201,6 +224,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString& applicationname, bool& created
                 conn->GetHost() == serv &&
                 conn->GetPort() == port &&
                 conn->GetUser() == user &&
+                conn->GetRole() == role &&
                 conn->GetDbname() == db)
             {
                 createdNew = false;
@@ -212,13 +236,13 @@ pgConn *dlgSelectConnection::CreateConn(wxString& applicationname, bool& created
     
     int sslmode = remoteServer ? remoteServer->GetSSL() : 0;
 
-	return CreateConn(serv, db, user, port, sslmode, applicationname, true);
+    return CreateConn(serv, db, user, port, role, sslmode, applicationname, true);
 }
 
-pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxString& username, int port, int sslmode, wxString& applicationname, bool writeMRU)
+pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxString& username, int port, wxString& rolename, int sslmode, wxString& applicationname, bool writeMRU)
 {
 	pgConn *newconn;
-	newconn = new pgConn(server, dbname, username, wxT(""), port, sslmode, 0, applicationname);
+	newconn = new pgConn(server, dbname, username, wxT(""), port, rolename, sslmode, 0, applicationname);
 	if (newconn->GetStatus() != PGCONN_OK &&
 		newconn->GetLastError().Cmp(wxString(PQnoPasswordSupplied, wxConvUTF8)) == 0)
 	{
@@ -232,7 +256,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxSt
 		if (dlg.Go() != wxID_OK)
 			return NULL;
 
-		newconn = new pgConn(server, dbname, username, dlg.GetPassword(), port, sslmode, 0, applicationname);
+		newconn = new pgConn(server, dbname, username, dlg.GetPassword(), port, rolename, sslmode, 0, applicationname);
 	}
 
 	if (newconn)
@@ -248,6 +272,7 @@ pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxSt
 			settings->Write(wxT("QuickConnect/server"), cbServer->GetValue());
 			settings->Write(wxT("QuickConnect/database"), cbDatabase->GetValue());
 			settings->Write(wxT("QuickConnect/username"), cbUsername->GetValue());
+			settings->Write(wxT("QuickConnect/rolename"), cbRolename->GetValue());
 		}
 	}
 	return newconn;
@@ -316,6 +341,14 @@ int dlgSelectConnection::Go(pgConn *conn, wxBitmapComboBox *cb)
             if (cbUsername->GetString(index) == conn->GetUser())
             {
                 cbUsername->SetSelection(index);
+                break;
+            }
+        }
+        for (index = 0;index < cbRolename->GetCount(); index++)
+        {
+            if (cbRolename->GetString(index) == conn->GetRole())
+            {
+                cbRolename->SetSelection(index);
                 break;
             }
         }

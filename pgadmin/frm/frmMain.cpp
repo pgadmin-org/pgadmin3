@@ -1166,6 +1166,7 @@ void frmMain::StoreServers()
                     settings->Write(key + wxT("DiscoveryID"), server->GetDiscoveryID());
                     settings->Write(key + wxT("Port"), server->GetPort());
                     settings->Write(key + wxT("StorePwd"), server->GetStorePwd());
+                    settings->Write(key + wxT("Rolename"), server->GetRolename());
                     settings->Write(key + wxT("Restore"), server->GetRestore());
                     settings->Write(key + wxT("Database"), server->GetDatabaseName());
                     settings->Write(key + wxT("Username"), server->GetUsername());

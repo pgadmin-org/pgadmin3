@@ -37,6 +37,7 @@
 #define nbNotebook               CTRL_NOTEBOOK("nbNotebook")
 #define txtFilename              CTRL_TEXT("txtFilename")
 #define btnFilename              CTRL_BUTTON("btnFilename")
+#define cbRolename               CTRL_COMBOBOX("cbRolename")
 #define chkOnlyData              CTRL_CHECKBOX("chkOnlyData")
 #define chkOnlySchema            CTRL_CHECKBOX("chkOnlySchema")
 #define chkNoOwner               CTRL_CHECKBOX("chkNoOwner")
@@ -137,6 +138,28 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
         chkNoTablespaces->Disable();
         chkSingleXact->Disable();
         txtNumberOfJobs->Disable();
+        cbRolename->Disable();
+    }
+    else
+    {
+        // Available rolenames
+        if (server->GetConnection()->BackendMinimumVersion(8, 1))
+        {
+            pgSetIterator set(server->GetConnection(),
+                wxT("SELECT DISTINCT rolname\n")
+                wxT("FROM pg_roles db\n")
+                wxT("ORDER BY rolname"));
+
+            cbRolename->Append(wxEmptyString);
+
+            while(set.RowsLeft())
+                cbRolename->Append(set.GetVal(wxT("rolname")));
+
+            cbRolename->SetValue(server->GetRolename());
+            cbRolename->Enable(true);
+        }
+        else
+            cbRolename->Disable();
     }
     if (!pgAppMinimumVersion(restoreExecutable, 8, 2))
     {
@@ -283,6 +306,10 @@ wxString frmRestore::getCmdPart1()
     cmd += wxT(" --port ") + NumToStr((long)server->GetPort())
          + wxT(" --username ") + qtIdent(server->GetUsername())
          + wxT(" --dbname ") + commandLineCleanOption(object->GetDatabase()->GetQuotedIdentifier());
+
+    if (!cbRolename->GetValue().IsEmpty())
+         cmd += wxT(" --role ") + commandLineCleanOption(qtIdent(cbRolename->GetValue()));
+
     return cmd;
 }
 

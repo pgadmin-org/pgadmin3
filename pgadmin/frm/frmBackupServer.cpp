@@ -29,6 +29,7 @@
 #define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
 #define txtFilename             CTRL_TEXT("txtFilename")
 #define btnFilename             CTRL_BUTTON("btnFilename")
+#define cbRolename              CTRL_COMBOBOX("cbRolename")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
 
 
@@ -51,9 +52,35 @@ frmBackupServer::frmBackupServer(frmMain *form, pgObject *obj) : ExternProcessDi
 
     SetTitle(object->GetTranslatedMessage(BACKUPSERVERTITLE));
 
+    if (object->GetConnection()->EdbMinimumVersion(8,0))
+        backupExecutable=edbBackupExecutable;
+    else if (object->GetConnection()->GetIsGreenplum())
+        backupExecutable=gpBackupExecutable;
+    else
+        backupExecutable=pgBackupExecutable;
+
     wxString val;
     settings->Read(wxT("frmBackupServer/LastFile"), &val, wxEmptyString);
     txtFilename->SetValue(val);
+
+    bool roles_supported = pgAppMinimumVersion(backupExecutable, 8, 4) && ((pgServer *)object)->GetConnection()->BackendMinimumVersion(8, 1);
+    cbRolename->Enable(roles_supported);
+
+    if (roles_supported)
+    {
+        // Collect the available rolenames
+        pgSetIterator set(((pgServer *)object)->GetConnection(),
+            wxT("SELECT DISTINCT rolname\n")
+            wxT("FROM pg_roles db\n")
+            wxT("ORDER BY rolname"));
+
+        cbRolename->Append(wxEmptyString);
+
+        while(set.RowsLeft())
+            cbRolename->Append(set.GetVal(wxT("rolname")));
+
+        cbRolename->SetValue(((pgServer *)object)->GetRolename());
+    }
 
     if (!((pgServer *)object)->GetPasswordIsStored())
        environment.Add(wxT("PGPASSWORD=") + ((pgServer *)object)->GetPassword());
@@ -135,19 +162,17 @@ wxString frmBackupServer::getCmdPart1()
 {
     pgServer *server = (pgServer *)object;
 
-    wxString cmd;
-    if (server->GetConnection()->EdbMinimumVersion(8,0))
-        cmd=edbBackupAllExecutable;
-    else if (server->GetConnection()->GetIsGreenplum())
-        cmd=gpBackupAllExecutable;
-    else
-        cmd=pgBackupAllExecutable;
+    wxString cmd = backupExecutable;
 
     if (!server->GetName().IsEmpty())
         cmd += wxT(" --host ") + server->GetName();
 
     cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
          +  wxT(" --username ") + commandLineCleanOption(qtIdent(server->GetUsername()));
+
+    if (!cbRolename->GetValue().IsEmpty())
+        cmd += wxT(" --role ") + commandLineCleanOption(qtIdent(cbRolename->GetValue()));
+
     return cmd;
 }
 

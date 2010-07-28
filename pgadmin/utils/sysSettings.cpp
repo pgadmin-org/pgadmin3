@@ -52,6 +52,7 @@ sysSettings::sysSettings(const wxString& name) : wxConfig(name)
             moveStringValue(wxT("Servers/Server%d"), wxT("Servers/%d/Server"), i);
             moveStringValue(wxT("Servers/ServiceId%d"), wxT("Servers/%d/ServiceId"), i);
             moveStringValue(wxT("Servers/StorePWD%d"), wxT("Servers/%d/StorePWD"), i);
+            moveStringValue(wxT("Servers/Rolename%d"), wxT("Servers/%d/Rolename"), i);
             moveStringValue(wxT("Servers/Username%d"), wxT("Servers/%d/Username"), i);
             moveLongValue(wxT("Servers/Port%d"), wxT("Servers/%d/Port"), i);
             moveLongValue(wxT("Servers/SSL%d"), wxT("Servers/%d/SSL"), i);

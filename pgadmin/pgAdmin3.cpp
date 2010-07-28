@@ -454,7 +454,7 @@ bool pgAdmin3::OnInit()
             else if (cmdParser.Found(wxT("Sc"), &connstr))
             {
                 wxLogInfo(wxT("Starting in server status connect mode (-Sc)."), configFile.c_str());
-                wxString host, database, username, tmps;
+                wxString host, database, username, rolename, tmps;
                 int sslmode=0,port=0;
                 wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
                 while (tkn.HasMoreTokens())
@@ -467,6 +467,8 @@ bool pgAdmin3::OnInit()
                     if (str.StartsWith(wxT("dbname="), &database))
                         continue;
                     if (str.StartsWith(wxT("user="), &username))
+                        continue;
+                    if (str.StartsWith(wxT("role="), &rolename))
                         continue;
                     if (str.StartsWith(wxT("port="), &tmps))
                     {
@@ -500,7 +502,7 @@ bool pgAdmin3::OnInit()
                 winSplash->Show(false);
                 dlgSelectConnection dlg(NULL, NULL);
                 dlg.CenterOnParent();
-                conn = dlg.CreateConn(host, database, username, port, sslmode, applicationname);
+                conn = dlg.CreateConn(host, database, username, port, rolename, sslmode, applicationname);
             }
             else
             {
@@ -546,7 +548,7 @@ bool pgAdmin3::OnInit()
             else if (cmdParser.Found(wxT("qc"), &connstr))
             {
                 wxLogInfo(wxT("Starting in query tool connect mode (-qc)."), configFile.c_str());
-                wxString host, database, username, tmps;
+                wxString host, database, username, rolename, tmps;
                 int sslmode=0,port=0;
                 wxStringTokenizer tkn(connstr, wxT(" "), wxTOKEN_STRTOK);
                 while (tkn.HasMoreTokens())
@@ -559,6 +561,8 @@ bool pgAdmin3::OnInit()
                     if (str.StartsWith(wxT("dbname="), &database))
                         continue;
                     if (str.StartsWith(wxT("user="), &username))
+                        continue;
+                    if (str.StartsWith(wxT("role="), &rolename))
                         continue;
                     if (str.StartsWith(wxT("port="), &tmps))
                     {
@@ -592,7 +596,7 @@ bool pgAdmin3::OnInit()
                 winSplash->Show(false);
                 dlgSelectConnection dlg(NULL, NULL);
                 dlg.CenterOnParent();
-                conn = dlg.CreateConn(host, database, username, port, sslmode, applicationname);
+                conn = dlg.CreateConn(host, database, username, port, rolename, sslmode, applicationname);
             }
             else
             {

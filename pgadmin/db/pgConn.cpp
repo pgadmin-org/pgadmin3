@@ -50,7 +50,7 @@ static void pgNoticeProcessor(void *arg, const char *message)
     ((pgConn*)arg)->Notice(message);
 }
 
-pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, int sslmode, OID oid, const wxString& applicationname)
+pgConn::pgConn(const wxString& server, const wxString& database, const wxString& username, const wxString& password, int port, const wxString& rolename, int sslmode, OID oid, const wxString& applicationname)
 {
     wxString msg;
 
@@ -59,6 +59,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     save_username = username;
     save_password = password;
     save_port = port;
+    save_rolename = rolename;
     save_sslmode = sslmode;
     save_oid = oid;
     save_applicationname = applicationname;
@@ -123,6 +124,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
 	
     dbHost = server;
     dbHostName = server;
+    dbRole = rolename;
 
     if (!applicationname.IsEmpty())
     {
@@ -216,6 +218,20 @@ bool pgConn::DoConnect()
                 wxLogError(wxT("%s"), GetLastError().c_str());
 
             delete set;
+
+            // Switch to the requested default role if supported by backend
+            if (dbRole != wxEmptyString && BackendMinimumVersion(8, 1))
+            {
+                sql = wxT("SET ROLE TO ");
+                sql += qtIdent(dbRole);
+
+                pgSet *set = ExecuteSet(sql);
+
+                if (set)
+                    delete set;
+                else
+                    return false;
+            }
         }
     }
     else
@@ -256,7 +272,7 @@ bool pgConn::Reconnect()
 
 pgConn *pgConn::Duplicate()
 {
-    return new pgConn(wxString(save_server), wxString(save_database), wxString(save_username), wxString(save_password), save_port, save_sslmode, save_oid);
+    return new pgConn(wxString(save_server), wxString(save_database), wxString(save_username), wxString(save_password), save_port, save_rolename, save_sslmode, save_oid);
 }
 
 
@@ -506,6 +522,10 @@ wxString pgConn::GetName() const
         str.Printf(_("%s on local socket"), save_database.c_str());
     else
         str.Printf(_("%s on %s@%s:%d"), save_database.c_str(), GetUser().c_str(), dbHost.c_str(), GetPort());
+
+    if (!GetRole().IsEmpty())
+        str += wxT(" ~") + GetRole();
+
     return str;
 }
 

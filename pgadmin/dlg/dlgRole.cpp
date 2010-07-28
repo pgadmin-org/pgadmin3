@@ -582,7 +582,7 @@ wxString dlgRole::GetSql()
         }
 
         if (!options.IsNull())
-            sql += wxT("ALTER Role ") + qtIdent(name) + options + wxT(";\n");
+            sql += wxT("ALTER ROLE ") + qtIdent(name) + options + wxT(";\n");
 
         if (chkUpdateCat->GetValue() != role->GetUpdateCatalog())
         {

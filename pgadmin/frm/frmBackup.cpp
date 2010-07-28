@@ -33,6 +33,7 @@
 #define txtCompressRatio        CTRL_TEXT("txtCompressRatio")
 #define cbEncoding              CTRL_COMBOBOX("cbEncoding")
 #define rbxFormat               CTRL_RADIOBOX("rbxFormat")
+#define cbRolename              CTRL_COMBOBOX("cbRolename")
 #define chkBlobs                CTRL_CHECKBOX("chkBlobs")
 #define chkOid                  CTRL_CHECKBOX("chkOid")
 #define chkInsert               CTRL_CHECKBOX("chkInsert")
@@ -187,6 +188,28 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
     if (!pgAppMinimumVersion(backupExecutable, 8, 4))
     {
         chkNoTablespaces->Disable();
+        cbRolename->Disable();
+    }
+    else
+    {
+        // Available rolenames
+        if (object->GetServer()->GetConnection()->BackendMinimumVersion(8, 1))
+        {
+            pgSetIterator set(object->GetServer()->GetConnection(),
+                wxT("SELECT DISTINCT rolname\n")
+                wxT("FROM pg_roles db\n")
+                wxT("ORDER BY rolname"));
+
+            cbRolename->Append(wxEmptyString);
+
+            while(set.RowsLeft())
+                cbRolename->Append(set.GetVal(wxT("rolname")));
+
+            cbRolename->SetValue(object->GetServer()->GetRolename());
+            cbRolename->Enable(true);
+        }
+        else
+            cbRolename->Disable();
     }
     if (!pgAppMinimumVersion(backupExecutable, 8, 1))
     {
@@ -299,6 +322,9 @@ wxString frmBackup::getCmdPart1()
 
     cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
          +  wxT(" --username ") + commandLineCleanOption(qtIdent(server->GetUsername()));
+
+    if (!cbRolename->GetValue().IsEmpty())
+        cmd += wxT(" --role ") + commandLineCleanOption(qtIdent(cbRolename->GetValue()));
 
     if (object->GetConnection()->GetIsGreenplum())
         cmd += wxT(" --gp-syntax ");

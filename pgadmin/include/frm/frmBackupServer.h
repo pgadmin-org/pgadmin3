@@ -38,6 +38,7 @@ private:
 
     pgObject *object;
     wxString processedFile;
+    wxString backupExecutable;
 
     DECLARE_EVENT_TABLE()
 };

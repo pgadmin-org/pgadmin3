@@ -37,6 +37,7 @@
 #define chkTryConnect   CTRL_CHECKBOX("chkTryConnect")
 #define stStorePwd      CTRL_STATIC("stStorePwd")
 #define chkStorePwd     CTRL_CHECKBOX("chkStorePwd")
+#define txtRolename     CTRL_TEXT("txtRolename")
 #define stRestore       CTRL_STATIC("stRestore")
 #define chkRestore      CTRL_CHECKBOX("chkRestore")
 #define stPassword      CTRL_STATIC("stPassword")
@@ -54,6 +55,7 @@ BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
     EVT_COMBOBOX(XRCID("cbDatabase"),               dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtPort")  ,                    dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtUsername"),                  dlgProperty::OnChange)
+    EVT_TEXT(XRCID("txtRolename"),                  dlgProperty::OnChange)
     EVT_TEXT(XRCID("txtDbRestriction"),             dlgServer::OnChangeRestr)
     EVT_COMBOBOX(XRCID("cbSSL"),                    dlgProperty::OnChange)
     EVT_CHECKBOX(XRCID("chkStorePwd"),              dlgProperty::OnChange)
@@ -170,6 +172,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
         server->iSetSSL(cbSSL->GetCurrentSelection());
         server->iSetDatabase(cbDatabase->GetValue());
         server->iSetUsername(txtUsername->GetValue());
+        server->iSetRolename(txtRolename->GetValue());
         server->iSetStorePwd(chkStorePwd->GetValue());
         server->iSetRestore(chkRestore->GetValue());
         server->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
@@ -195,6 +198,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
                 server->GetUsername(), 
                 server->GetPort(), 
                 server->GetStorePwd(),
+                server->GetRolename(),
                 server->GetRestore(),
                 server->GetSSL(),
 	        	server->GetColour(),
@@ -354,6 +358,7 @@ int dlgServer::Go(bool modal)
         cbDatabase->SetValue(server->GetDatabaseName());
         txtUsername->SetValue(server->GetUsername());
         chkStorePwd->SetValue(server->GetStorePwd());
+        txtRolename->SetValue(server->GetRolename());
         chkRestore->SetValue(server->GetRestore());
         txtDbRestriction->SetValue(server->GetDbRestriction());
         colourPicker->SetColour(server->GetColour());
@@ -369,6 +374,7 @@ int dlgServer::Go(bool modal)
             cbSSL->Disable();
             txtUsername->Disable();
             chkStorePwd->Disable();
+            txtRolename->Disable();
         }
     }
     else
@@ -402,7 +408,7 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
     pgServer *obj=new pgServer(GetName(), txtDescription->GetValue(), cbDatabase->GetValue(), 
         txtUsername->GetValue(), StrToLong(txtPort->GetValue()), 
         chkTryConnect->GetValue() && chkStorePwd->GetValue(), 
-        chkRestore->GetValue(), cbSSL->GetCurrentSelection(),
+        txtRolename->GetValue(), chkRestore->GetValue(), cbSSL->GetCurrentSelection(),
 		colourPicker->GetColourString(), cbGroup->GetValue());
 
     obj->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
@@ -444,6 +450,7 @@ void dlgServer::CheckChange()
                || txtUsername->GetValue() != server->GetUsername()
                || cbSSL->GetCurrentSelection() != server->GetSSL()
                || chkStorePwd->GetValue() != server->GetStorePwd()
+               || txtRolename->GetValue() != server->GetRolename()
                || chkRestore->GetValue() != server->GetRestore()
                || txtDbRestriction->GetValue() != server->GetDbRestriction()
                || sColour != sColour2

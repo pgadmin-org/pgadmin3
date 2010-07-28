@@ -38,7 +38,7 @@ extern pgServerFactory serverFactory;
 class pgServer : public pgObject
 {
 public:
-	pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool storePwd=false, bool restore=true, int sslMode=0, const wxString &colour = wxT("#FFFFFF"), const wxString &group = wxEmptyString);
+    pgServer(const wxString& newServer = wxT(""), const wxString& newDescription = wxT(""), const wxString& newDatabase = wxT(""), const wxString& newUsername = wxT(""), int newPort = 5432, bool storePwd=false, const wxString& newRolename = wxT(""), bool restore=true, int sslMode=0, const wxString &colour = wxT("#FFFFFF"), const wxString &group = wxEmptyString);
     ~pgServer();
     int GetIconId();
 
@@ -66,6 +66,7 @@ public:
     wxString GetUsername() const { return username; }
     wxString GetPassword() const { return (password == wxEmptyString ? conn->GetPassword() : password); }
     bool GetStorePwd() const { return storePwd; }
+    wxString GetRolename() const { return rolename; }
     bool GetRestore() const { return restore; }
     wxString GetLastError() const;
 
@@ -117,6 +118,7 @@ public:
     void iSetUsername(const wxString& newVal) { username = newVal; }
     void iSetPassword(const wxString& newVal) { password = newVal; }
     void iSetStorePwd(const bool b) { storePwd = b; }
+    void iSetRolename(const wxString& newVal) { rolename = newVal; }
     void iSetRestore(const bool b) { restore = b; }
     bool SetPassword(const wxString& newVal);
     wxDateTime GetUpSince() { return upSince; }
@@ -157,7 +159,7 @@ private:
     pgConn *conn;
     long serverIndex;
     bool connected, passwordValid, autovacuumRunning;
-    wxString database, username, password, ver, error;
+    wxString database, username, password, rolename, ver, error;
     wxString lastDatabase, lastSchema, description, serviceId, discoveryId;
     wxDateTime upSince;
     int port, ssl;

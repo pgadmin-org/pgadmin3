@@ -40,7 +40,7 @@
 
 #define DEFAULT_PG_DATABASE wxT("postgres")
 
-pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, bool _restore, int _ssl, const wxString &_colour, const wxString &_group)
+pgServer::pgServer(const wxString& newName, const wxString& newDescription, const wxString& newDatabase, const wxString& newUsername, int newPort, bool _storePwd, const wxString& newRolename, bool _restore, int _ssl, const wxString &_colour, const wxString &_group)
 : pgObject(serverFactory, newName)
 {  
     description = newDescription;
@@ -59,6 +59,7 @@ pgServer::pgServer(const wxString& newName, const wxString& newDescription, cons
     conn = NULL;
     passwordValid=true;
     storePwd=_storePwd;
+    rolename = newRolename;
     restore=_restore;
     superUser=false;
     createPrivilege=false;
@@ -185,7 +186,7 @@ pgConn *pgServer::CreateConn(wxString dbName, OID oid, wxString applicationname)
         dbName = GetDatabaseName();
         oid = dbOid;
     }
-    pgConn *conn=new pgConn(GetName(), dbName, username, password, port, ssl, oid, applicationname);
+    pgConn *conn=new pgConn(GetName(), dbName, username, password, port, rolename, ssl, oid, applicationname);
 
     if (conn && conn->GetStatus() != PGCONN_OK)
     {
@@ -662,21 +663,21 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 
         if (database.IsEmpty())
         {
-            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, ssl, 0, _("pgAdmin - Browser"));
+            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, rolename, ssl, 0, _("pgAdmin - Browser"));
             if (conn->GetStatus() == PGCONN_OK)
                 database=DEFAULT_PG_DATABASE;
             else if (conn->GetStatus() == PGCONN_BAD && conn->GetLastError().Find(
                                 wxT("database \"") DEFAULT_PG_DATABASE wxT("\" does not exist")) >= 0)
             {
                 delete conn;
-                conn = new pgConn(GetName(), wxT("template1"), username, password, port, ssl, 0, _("pgAdmin - Browser"));
+                conn = new pgConn(GetName(), wxT("template1"), username, password, port, rolename, ssl, 0, _("pgAdmin - Browser"));
                 if (conn && conn->GetStatus() == PGCONN_OK)
                     database=wxT("template1");
             }
         }
         else
         {
-            conn = new pgConn(GetName(), database, username, password, port, ssl, 0, _("pgAdmin - Browser"));
+            conn = new pgConn(GetName(), database, username, password, port, rolename, ssl, 0, _("pgAdmin - Browser"));
             if (!conn)
             {
                 form->EndMsg(false);
@@ -1009,6 +1010,8 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 
         properties->AppendItem(_("Maintenance database"), GetDatabaseName());
         properties->AppendItem(_("Username"), GetUsername());
+        if (!GetRolename().IsEmpty())
+            properties->AppendItem(_("Default role"), GetRolename());
         properties->AppendItem(_("Store password?"), GetStorePwd());
         properties->AppendItem(_("Restore environment?"), GetRestore());
         if (GetConnected())
@@ -1190,7 +1193,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
     long numServers=settings->Read(wxT("Servers/Count"), 0L);
 
     long loop, port, ssl=0;
-    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, restore, serviceID, discoveryID, dbRestriction, colour, group;
+    wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, rolename, restore, serviceID, discoveryID, dbRestriction, colour, group;
     pgServer *server=0;
 
     wxArrayString discoveredServers;
@@ -1212,6 +1215,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         settings->Read(key + wxT("DiscoveryID"), &discoveryID, serviceID);
         settings->Read(key + wxT("Description"), &description, wxEmptyString);
         settings->Read(key + wxT("StorePwd"), &storePwd, wxEmptyString);
+        settings->Read(key + wxT("Rolename"), &rolename, wxEmptyString);
         settings->Read(key + wxT("Restore"), &restore, wxT("true"));
         settings->Read(key + wxT("Port"), &port, 0);
         settings->Read(key + wxT("Database"), &database, wxEmptyString);
@@ -1255,7 +1259,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
         }
 
         // Add the Server node
-        server = new pgServer(servername, description, database, username, port, StrToBool(storePwd), StrToBool(restore), ssl);
+        server = new pgServer(servername, description, database, username, port, StrToBool(storePwd), rolename, StrToBool(restore), ssl);
         server->iSetLastDatabase(lastDatabase);
         server->iSetLastSchema(lastSchema);
         server->iSetServiceID(serviceID);
@@ -1428,7 +1432,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
                     // Add the item, if it looks sane
                     if (port != 0 && username != wxEmptyString)
                     {
-                        server = new pgServer(servername, description, wxT("postgres"), username, port, false, 0);
+                        server = new pgServer(servername, description, wxT("postgres"), username, port, false, rolename, 0);
                         server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
                         server->iSetDiscovered(true);
 						server->iSetGroup(group);
@@ -1481,7 +1485,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
                     // Add the item, if it looks sane
                     if (port != 0 && username != wxEmptyString)
                     {
-                        server = new pgServer(servername, description, wxT("edb"), username, port, false, 0);
+                        server = new pgServer(servername, description, wxT("edb"), username, port, false, rolename, 0);
                         server->iSetDiscoveryID(cnf->GetPath() + wxT("/") + version);
                         server->iSetDiscovered(true);
                         browser->AppendItem(browser->GetFirstChild(obj->GetId(), groupcookie), server->GetFullName(), server->GetIconId(), -1, server);

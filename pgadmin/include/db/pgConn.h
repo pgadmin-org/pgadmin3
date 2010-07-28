@@ -81,7 +81,7 @@ typedef struct pgError {
 class pgConn
 {
 public:
-    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, int sslmode=0, OID oid=0, const wxString& applicationname = wxT("pgAdmin"));
+    pgConn(const wxString& server = wxT(""), const wxString& database = wxT(""), const wxString& username = wxT(""), const wxString& password = wxT(""), int port = 5432, const wxString& rolename = wxT(""), int sslmode=0, OID oid=0, const wxString& applicationname = wxT("pgAdmin"));
     ~pgConn();
 
     bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
@@ -110,6 +110,7 @@ public:
     pgSet *ExecuteSet(const wxString& sql);
     wxString GetUser() const { return wxString(PQuser(conn), *conv); }
     wxString GetPassword() const { return wxString(PQpass(conn), *conv); }
+    wxString GetRole() const { return dbRole; }
     wxString GetHost() const { return dbHost; }
     wxString GetHostName() const { return dbHostName; }
     wxString GetDbname() const { return save_database; }
@@ -154,7 +155,7 @@ protected:
 
     wxMBConv *conv;
     bool needColQuoting, utfConnectString;
-    wxString dbHost, dbHostName;
+    wxString dbRole, dbHost, dbHostName;
     OID lastSystemOID;
     OID dbOid;
 
@@ -177,7 +178,7 @@ private:
     wxString reservedNamespaces;
 	wxString connstr;
 	
-    wxString save_server, save_database, save_username, save_password, save_applicationname;
+    wxString save_server, save_database, save_username, save_password, save_rolename, save_applicationname;
     int save_port, save_sslmode;
     OID save_oid;
 };
