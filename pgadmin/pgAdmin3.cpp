@@ -847,11 +847,15 @@ void pgAdmin3::InitXtraPaths()
         wxPathList path;
 
 #ifdef __WXMSW__
+        path.Add(wxT("C:\\PostgresPlus\\9.1\\bin"));
+        path.Add(wxT("C:\\PostgresPlus\\9.0\\bin"));
         path.Add(wxT("C:\\PostgresPlus\\8.4\\bin"));
         path.Add(wxT("C:\\PostgresPlus\\8.3\\bin"));
 
         if (!programFiles.IsEmpty())
         {
+            path.Add(programFiles + wxT("\\PostgreSQL\\9.1\\bin"));
+            path.Add(programFiles + wxT("\\PostgreSQL\\9.0\\bin"));
             path.Add(programFiles + wxT("\\PostgreSQL\\8.4\\bin"));
             path.Add(programFiles + wxT("\\PostgreSQL\\8.3\\bin"));
             path.Add(programFiles + wxT("\\PostgreSQL\\8.2\\bin"));
@@ -861,6 +865,8 @@ void pgAdmin3::InitXtraPaths()
 
         if (!programFilesX86.IsEmpty())
         {
+            path.Add(programFilesX86 + wxT("\\PostgreSQL\\9.1\\bin"));
+            path.Add(programFilesX86 + wxT("\\PostgreSQL\\9.0\\bin"));
             path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.4\\bin"));
             path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.3\\bin"));
             path.Add(programFilesX86 + wxT("\\PostgreSQL\\8.2\\bin"));
@@ -871,10 +877,14 @@ void pgAdmin3::InitXtraPaths()
         wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
         // Mac paths
+        path.Add(wxT("/Library/PostgresPlus/9.1/bin"));
+        path.Add(wxT("/Library/PostgresPlus/9.0/bin"));
         path.Add(wxT("/Library/PostgresPlus/8.4/bin"));
         path.Add(wxT("/Library/PostgresPlus/8.3/bin"));
 
         // Generic Unix paths
+        path.Add(wxT("/opt/PostgresPlus/9.1/bin"));
+        path.Add(wxT("/opt/PostgresPlus/9.0/bin"));
         path.Add(wxT("/opt/PostgresPlus/8.4/bin"));
         path.Add(wxT("/opt/PostgresPlus/8.3/bin"));
         path.Add(wxT("/opt/PostgresPlus/8.3/bin"));
@@ -901,6 +911,8 @@ void pgAdmin3::InitXtraPaths()
         wxPathList path;
 
 #ifdef __WXMSW__
+        path.Add(wxT("C:\\PostgresPlus\\9.1AS\\dbserver\\bin"));
+        path.Add(wxT("C:\\PostgresPlus\\9.0AS\\dbserver\\bin"));
         path.Add(wxT("C:\\PostgresPlus\\8.4AS\\dbserver\\bin"));
         path.Add(wxT("C:\\PostgresPlus\\8.3R2AS\\dbserver\\bin"));
         path.Add(wxT("C:\\PostgresPlus\\8.3AS\\dbserver\\bin"));
@@ -911,11 +923,15 @@ void pgAdmin3::InitXtraPaths()
         wxFileName tmp = path.FindValidPath(wxT("pg_dump.exe"));
 #else
         // Mac paths
+        path.Add(wxT("/Library/PostgresPlus/9.1AS/dbserver/bin"));
+        path.Add(wxT("/Library/PostgresPlus/9.0AS/dbserver/bin"));
         path.Add(wxT("/Library/PostgresPlus/8.4AS/dbserver/bin"));
         path.Add(wxT("/Library/PostgresPlus/8.3R2AS/dbserver/bin"));
         path.Add(wxT("/Library/PostgresPlus/8.3AS/dbserver/bin"));
 
         // Generic Unix paths
+        path.Add(wxT("/opt/PostgresPlus/9.1AS/dbserver/bin"));
+        path.Add(wxT("/opt/PostgresPlus/9.0AS/dbserver/bin"));
         path.Add(wxT("/opt/PostgresPlus/8.4AS/dbserver/bin"));
         path.Add(wxT("/opt/PostgresPlus/8.3R2AS/dbserver/bin"));
         path.Add(wxT("/opt/PostgresPlus/8.3AS/dbserver/bin"));
@@ -948,35 +964,27 @@ void pgAdmin3::InitXtraPaths()
         // Ugly... Greenplum client releases have no predictable numbers, because the path is the server version
         if (!programFiles.IsEmpty())
         {
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.0\\bin"));
             path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\bin"));
-            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\bin"));
-
-            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
-            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
-            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\lib"));
-             
             path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
             path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\bin"));
 
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-4.0\\lib"));
             path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
-            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
+            path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.2\\lib"));
             path.Add(programFiles + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\lib"));
         }
 
         if (!programFilesX86.IsEmpty())
         {
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.0\\bin"));
             path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\bin"));
-            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\bin"));
-
-            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
-            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
-            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\lib"));
-             
             path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
             path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\bin"));
 
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-4.0\\lib"));
             path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.3\\lib"));
-            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\bin"));
+            path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.2\\lib"));
             path.Add(programFilesX86 + wxT("\\Greenplum\\greenplum-clients-3.1.1.1\\lib"));
         }
 
@@ -987,6 +995,8 @@ void pgAdmin3::InitXtraPaths()
 
         // Generic Unix paths
 
+        path.Add(wxT("/usr/local/greenplum-clients-4.0/bin"));
+        path.Add(wxT("/opt/local/greenplum-clients-4.0/bin"));
         path.Add(wxT("/usr/local/greenplum-clients-3.3/bin"));
         path.Add(wxT("/opt/local/greenplum-clients-3.3/bin"));
         path.Add(wxT("/usr/local/greenplum-clients-3.2/bin"));
@@ -994,6 +1004,8 @@ void pgAdmin3::InitXtraPaths()
         path.Add(wxT("/usr/local/greenplum-clients-3.1.1.1/bin"));
         path.Add(wxT("/opt/local/greenplum-clients-3.1.1.1/bin"));
 
+        path.Add(wxT("/usr/local/greenplum-clients-4.0/lib"));
+        path.Add(wxT("/opt/local/greenplum-clients-4.0/lib"));
         path.Add(wxT("/usr/local/greenplum-clients-3.3/lib"));
         path.Add(wxT("/opt/local/greenplum-clients-3.3/lib"));
         path.Add(wxT("/usr/local/greenplum-clients-3.2/lib"));
