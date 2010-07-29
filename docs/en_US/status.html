@@ -54,8 +54,10 @@ the 'Commit' or 'Rollback' buttons to do this.
 </p>
 <p>
 The Logfile tab shows server log files, if configured in
-postgresql.conf (redirect_stderr = true, 
-log_destination='stderr' and log_filename='postgresql-%Y-%m-%d_%H%M%S.log'). 
+postgresql.conf (redirect_stderr or logging_collector = true, 
+log_destination = 'stderr' and log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
+on PostgreSQL or 'enterprisedb-%Y-%m-%d_%H%M%S.log' on EnterpriseDB's Advanced 
+Server). 
 pgAdmin will extract a time stamp from the logfile in a separate column, if the
 log_line_prefix is configured accordingly. We recommend using '%t:' as
 format, because more complicate formats might not be interpretable correctly.
