@@ -64,7 +64,6 @@ endif
 if !APPBUNDLE
 
 nobase_dist_pkgdata_DATA = \
-	$(srcdir)/plugins.ini \
 	$(srcdir)/settings.ini
 
 
@@ -83,7 +82,6 @@ install-exec-hook:
 else
 
 nobase_dist_data_DATA = \
-	$(srcdir)/plugins.ini \
 	$(srcdir)/settings.ini
 
 if BUILD_DEBUG

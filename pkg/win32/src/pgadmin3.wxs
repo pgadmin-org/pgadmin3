@@ -61,8 +61,13 @@
                        
                         <Component Id="inis" Guid="{1C2EE6C5-AF9A-413F-9766-FE1E1C059FAA}">
                             <File Id="inis.settings.ini" Name="settings.ini" DiskId="1" Source="$(var.BUILDTREE)/pgadmin/settings.ini" />
-                            <File Id="inis.plugins.ini" Name="plugins.ini" DiskId="1" Source="$(var.BUILDTREE)/pgadmin/plugins.ini" />
                         </Component>
+
+                        <Directory Id="PluginsDir" Name="plugins.d">
+                            <Component Id="plugins.d" Guid="{903DE3C5-0F2D-4985-B2A5-350EDF3C6524}">
+                                <File Id="plugins.d.plugins.ini" Name="plugins.ini" DiskId="1" Source="$(var.BUILDTREE)/plugins.d/plugins.ini" />
+                            </Component>
+                        </Directory>
 
 <?if $(var.BRANDED) = 1 ?>
                         <Directory Id="BrandingDir" Name="Branding">
@@ -335,6 +340,7 @@
                 <MergeRef Id="CRT" />
                 <ComponentRef Id="pgadmin_exes" />
                 <ComponentRef Id="inis" />
+                <ComponentRef Id="plugins.d" />
 <?if $(var.BRANDED) = 1 ?>
                 <ComponentRef Id="branding" />
 <?endif?>

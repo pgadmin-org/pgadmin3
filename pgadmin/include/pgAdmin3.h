@@ -80,7 +80,7 @@ extern wxString loadPath;               // Where the program is loaded from
 extern wxString docPath;                // Where docs are stored
 extern wxString uiPath;                 // Where ui data is stored
 extern wxString i18nPath;               // Where i18n data is stored
-extern wxString pluginsIni;             // The plugins ini
+extern wxString pluginsDir;             // The plugins ini file directory
 extern wxString settingsIni;            // The default settings file
 
 extern sysSettings *settings;           // The settings manager
