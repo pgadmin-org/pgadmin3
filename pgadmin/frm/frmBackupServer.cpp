@@ -31,6 +31,7 @@
 #define btnFilename             CTRL_BUTTON("btnFilename")
 #define cbRolename              CTRL_COMBOBOX("cbRolename")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
+#define chkForceQuoteForIdent   CTRL_CHECKBOX("chkForceQuoteForIdent")
 
 
 BEGIN_EVENT_TABLE(frmBackupServer, ExternProcessDialog)
@@ -52,24 +53,25 @@ frmBackupServer::frmBackupServer(frmMain *form, pgObject *obj) : ExternProcessDi
 
     SetTitle(object->GetTranslatedMessage(BACKUPSERVERTITLE));
 
-    if (object->GetConnection()->EdbMinimumVersion(8,0))
-        backupExecutable=edbBackupExecutable;
-    else if (object->GetConnection()->GetIsGreenplum())
-        backupExecutable=gpBackupExecutable;
+    pgServer *server = (pgServer *)object;
+    if (server->GetConnection()->EdbMinimumVersion(8,0))
+        backupExecutable=edbBackupAllExecutable;
+    else if (server->GetConnection()->GetIsGreenplum())
+        backupExecutable=gpBackupAllExecutable;
     else
-        backupExecutable=pgBackupExecutable;
+        backupExecutable=pgBackupAllExecutable;
 
     wxString val;
     settings->Read(wxT("frmBackupServer/LastFile"), &val, wxEmptyString);
     txtFilename->SetValue(val);
 
-    bool roles_supported = pgAppMinimumVersion(backupExecutable, 8, 4) && ((pgServer *)object)->GetConnection()->BackendMinimumVersion(8, 1);
+    bool roles_supported = pgAppMinimumVersion(backupExecutable, 8, 4) && server->GetConnection()->BackendMinimumVersion(8, 1);
     cbRolename->Enable(roles_supported);
 
     if (roles_supported)
     {
         // Collect the available rolenames
-        pgSetIterator set(((pgServer *)object)->GetConnection(),
+        pgSetIterator set(server->GetConnection(),
             wxT("SELECT DISTINCT rolname\n")
             wxT("FROM pg_roles db\n")
             wxT("ORDER BY rolname"));
@@ -79,14 +81,14 @@ frmBackupServer::frmBackupServer(frmMain *form, pgObject *obj) : ExternProcessDi
         while(set.RowsLeft())
             cbRolename->Append(set.GetVal(wxT("rolname")));
 
-        cbRolename->SetValue(((pgServer *)object)->GetRolename());
+        cbRolename->SetValue(server->GetRolename());
     }
 
-    if (!((pgServer *)object)->GetPasswordIsStored())
-       environment.Add(wxT("PGPASSWORD=") + ((pgServer *)object)->GetPassword());
+    if (!server->GetPasswordIsStored())
+       environment.Add(wxT("PGPASSWORD=") + server->GetPassword());
 
 	// Pass the SSL mode via the environment
-	environment.Add(wxT("PGSSLMODE=") + ((pgServer *)object)->GetConnection()->GetSslModeName());
+	environment.Add(wxT("PGSSLMODE=") + server->GetConnection()->GetSslModeName());
 
 	// Icon
     SetIcon(wxIcon(backup_xpm));
@@ -94,6 +96,11 @@ frmBackupServer::frmBackupServer(frmMain *form, pgObject *obj) : ExternProcessDi
     txtMessages = CTRL_TEXT("txtMessages");
     txtMessages->SetMaxLength(0L);
     btnOK->Disable();
+
+    if (!pgAppMinimumVersion(backupExecutable, 9,1))
+    {
+        chkForceQuoteForIdent->Disable();
+    }
 
     wxCommandEvent ev;
     OnChange(ev);
@@ -185,6 +192,8 @@ wxString frmBackupServer::getCmdPart2()
         cmd.Append(wxT(" --ignore-version"));
     if (chkVerbose->GetValue())
         cmd.Append(wxT(" --verbose"));
+    if (chkForceQuoteForIdent->GetValue())
+        cmd.Append(wxT(" --quote-all-identifiers"));
 
     cmd.Append(wxT(" --file \"") + txtFilename->GetValue() + wxT("\""));
 

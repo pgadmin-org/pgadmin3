@@ -31,6 +31,7 @@
 #define btnFilename             CTRL_BUTTON("btnFilename")
 #define cbRolename              CTRL_COMBOBOX("cbRolename")
 #define chkVerbose              CTRL_CHECKBOX("chkVerbose")
+#define chkForceQuoteForIdent   CTRL_CHECKBOX("chkForceQuoteForIdent")
 
 
 BEGIN_EVENT_TABLE(frmBackupGlobals, ExternProcessDialog)
@@ -100,6 +101,11 @@ frmBackupGlobals::frmBackupGlobals(frmMain *form, pgObject *obj) : ExternProcess
     txtMessages = CTRL_TEXT("txtMessages");
     txtMessages->SetMaxLength(0L);
     btnOK->Disable();
+
+    if (!pgAppMinimumVersion(backupExecutable, 9,1))
+    {
+        chkForceQuoteForIdent->Disable();
+    }
 
     wxCommandEvent ev;
     OnChange(ev);
@@ -195,6 +201,8 @@ wxString frmBackupGlobals::getCmdPart2()
         cmd.Append(wxT(" --ignore-version"));
     if (chkVerbose->GetValue())
         cmd.Append(wxT(" --verbose"));
+    if (chkForceQuoteForIdent->GetValue())
+        cmd.Append(wxT(" --quote-all-identifiers"));
 
     cmd.Append(wxT(" --file \"") + txtFilename->GetValue() + wxT("\""));
 

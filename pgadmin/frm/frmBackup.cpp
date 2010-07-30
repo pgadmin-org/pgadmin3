@@ -49,6 +49,7 @@
 #define chkNoPrivileges         CTRL_CHECKBOX("chkNoPrivileges")
 #define chkNoTablespaces        CTRL_CHECKBOX("chkNoTablespaces")
 #define chkUseSetSession        CTRL_CHECKBOX("chkUseSetSession")
+#define chkForceQuoteForIdent   CTRL_CHECKBOX("chkForceQuoteForIdent")
 #define ctvObjects              CTRL_CHECKTREEVIEW("ctvObjects")
 
 
@@ -185,6 +186,10 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
         delete objects;
     }
 
+    if (!pgAppMinimumVersion(backupExecutable, 9,1))
+    {
+        chkForceQuoteForIdent->Disable();
+    }
     if (!pgAppMinimumVersion(backupExecutable, 8, 4))
     {
         chkNoTablespaces->Disable();
@@ -398,6 +403,8 @@ wxString frmBackup::getCmdPart2()
         cmd.Append(wxT(" --ignore-version"));
     if (chkVerbose->GetValue())
         cmd.Append(wxT(" --verbose"));
+    if (chkForceQuoteForIdent->GetValue())
+        cmd.Append(wxT(" --quote-all-identifiers"));
 
     cmd.Append(wxT(" --file \"") + txtFilename->GetValue() + wxT("\""));
 
