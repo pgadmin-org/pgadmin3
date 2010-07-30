@@ -1,7 +1,7 @@
 #######################################################################
 #
 # pgAdmin III - PostgreSQL Tools
-# $Id$
+# 
 # Copyright (C) 2002 - 2009, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #

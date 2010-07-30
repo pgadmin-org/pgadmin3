@@ -1,6 +1,6 @@
 ##############################################################################
 # pgAdmin III - PostgreSQL Tools
-# $Id: Makefile.am 4874 2006-01-06 17:33:27Z dpage $
+# 
 # Copyright (C) 2002 - 2009, The pgAdmin Development Team
 # This software is released under the PostgreSQL Licence
 #
