@@ -481,6 +481,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 {
     pgRole *role=0;
     pgSet *roles=0;
+    wxString query;
 
     wxString tabname;
 
@@ -491,16 +492,29 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
     // In 8.5+, role config options are in pg_db_role_setting
     if (collection->GetServer()->GetConnection()->BackendMinimumVersion(8, 5))
-        roles = collection->GetServer()->ExecuteSet(wxT("SELECT tab.oid, tab.*, pg_catalog.shobj_description(tab.oid, 'pg_authid') AS description, setting.setconfig AS rolconfig FROM ") +
-              tabname + wxT(" tab") +
+    {
+        query = wxT("SELECT tab.oid, tab.*, pg_catalog.shobj_description(tab.oid, 'pg_authid') AS description, setting.setconfig AS rolconfig");
+        if (collection->GetServer()->GetConnection()->GetIsGreenplum())
+            query += wxT(", (SELECT rsqname FROM pg_resqueue WHERE pg_resqueue.oid = rolresqueue) AS rsqname");
+        query += wxT(" FROM ") + tabname + wxT(" tab") +
               wxT("  LEFT OUTER JOIN pg_db_role_setting setting ON (tab.oid=setting.setrole AND setting.setdatabase=0)\n") + 
-              restriction +  wxT(" ORDER BY rolname"));
+              restriction +  wxT(" ORDER BY rolname");
+    }
     else if (collection->GetServer()->GetConnection()->BackendMinimumVersion(8, 2))
-        roles = collection->GetServer()->ExecuteSet(wxT("SELECT oid, *, pg_catalog.shobj_description(oid, 'pg_authid') AS description FROM ") 
-              + tabname + restriction + wxT(" ORDER BY rolname"));
+    {
+        query = wxT("SELECT oid, *, pg_catalog.shobj_description(oid, 'pg_authid') AS description ");
+        if (collection->GetServer()->GetConnection()->GetIsGreenplum())
+            query += wxT(", (SELECT rsqname FROM pg_resqueue WHERE pg_resqueue.oid = rolresqueue) AS rsqname");
+        query += wxT(" FROM ") + tabname + restriction + wxT(" ORDER BY rolname");
+    }
     else
-        roles = collection->GetServer()->ExecuteSet(wxT("SELECT oid, *, '' AS description FROM ") 
-             + tabname + restriction + wxT(" ORDER BY rolname"));
+    {
+        query = wxT("SELECT oid, *, '' AS description ") ;
+        if (collection->GetServer()->GetConnection()->GetIsGreenplum())
+            query += wxT(", (SELECT rsqname FROM pg_resqueue WHERE pg_resqueue.oid = rolresqueue) AS rsqname");
+        query += wxT(" FROM ") + tabname + restriction + wxT(" ORDER BY rolname");
+    }
+    roles = collection->GetServer()->ExecuteSet(query);
 
     if (roles)
     {
@@ -525,13 +539,8 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
             if (collection->GetServer()->GetConnection()->GetIsGreenplum())
             {
-                Oid rolresqueue = roles->GetOid(wxT("rolresqueue"));
-                if (rolresqueue != 0)
-                {
-                    role->iSetRolQueueName(collection->GetServer()->ExecuteScalar(wxT("SELECT rsqname FROM pg_resqueue WHERE pg_resqueue.oid = ") + roles->GetVal(wxT("rolresqueue"))));	
-                }
+                role->iSetRolQueueName(roles->GetVal(wxT("rsqname")));	
             }
-
 
             wxString cfg=roles->GetVal(wxT("rolconfig"));
             if (!cfg.IsEmpty())
