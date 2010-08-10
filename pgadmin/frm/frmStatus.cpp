@@ -1139,6 +1139,7 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
     if (! viewMenu->IsChecked(MNU_STATUSPAGE))
         return;
     
+    checkConnection();
     if (!connection)
     {
         statusTimer->Stop();
@@ -1147,14 +1148,9 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
             xactTimer->Stop();
         if (logTimer)
             logTimer->Stop();
-        statusBar->SetStatusText(wxT("Connection broken."));
         return;
     }
 
-    checkConnection();
-    if (!connection)
-        return;
-    
     wxCriticalSectionLocker lock(gs_critsect);
 
     long row=0;
@@ -1271,6 +1267,7 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
     if (! viewMenu->IsChecked(MNU_LOCKPAGE))
         return;
 
+    checkConnection();
     if (!locks_connection)
     {
         statusTimer->Stop();
@@ -1279,14 +1276,9 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
             xactTimer->Stop();
         if (logTimer)
             logTimer->Stop();
-        statusBar->SetStatusText(wxT("Connection broken."));
         return;
     }
 
-    checkConnection();
-    if (!locks_connection)
-        return;
-    
     wxCriticalSectionLocker lock(gs_critsect);
 
     long row=0;
@@ -1400,6 +1392,7 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
     if (! viewMenu->IsEnabled(MNU_XACTPAGE) || ! viewMenu->IsChecked(MNU_XACTPAGE) || !xactTimer)
         return;
 
+    checkConnection();
     if (!connection)
     {
         statusTimer->Stop();
@@ -1407,14 +1400,9 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
         xactTimer->Stop();
         if (logTimer)
             logTimer->Stop();
-        statusBar->SetStatusText(wxT("Connection broken."));
         return;
     }
 
-    checkConnection();
-    if (!connection)
-        return;
-    
     wxCriticalSectionLocker lock(gs_critsect);
 
     long row=0;
@@ -1469,6 +1457,7 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
     if (! viewMenu->IsEnabled(MNU_LOGPAGE) || ! viewMenu->IsChecked(MNU_LOGPAGE) || !logTimer)
         return;
 
+    checkConnection();
     if (!connection)
     {
         statusTimer->Stop();
@@ -1476,13 +1465,8 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
         if (xactTimer)
             xactTimer->Stop();
         logTimer->Stop();
-        statusBar->SetStatusText(wxT("Connection broken."));
         return;
     }
-    
-    checkConnection();
-    if (!connection)
-        return;
     
     wxCriticalSectionLocker lock(gs_critsect);
 
@@ -1620,6 +1604,7 @@ void frmStatus::checkConnection()
             xactTimer->Stop();
         if (logTimer)
             logTimer->Stop();
+        toolBar->EnableTool(MNU_REFRESH, false);
         statusBar->SetStatusText(_("Connection broken."));
     }
     if (!locks_connection->IsAlive())
