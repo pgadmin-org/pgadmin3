@@ -2148,7 +2148,7 @@ int frmStatus::fillLogfileCombo()
     pgSet *set=connection->ExecuteSet(
         wxT("SELECT filename, filetime\n")
         wxT("  FROM pg_logdir_ls() AS A(filetime timestamp, filename text)\n")
-        wxT(" ORDER BY filetime ASC"));
+        wxT(" ORDER BY filetime DESC"));
     if (set)
     {
         if (set->NumRows() <= count)
