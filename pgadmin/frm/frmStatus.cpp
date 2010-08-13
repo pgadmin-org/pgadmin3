@@ -389,9 +389,15 @@ frmStatus::~frmStatus()
 
     // If connection is still available, delete it
     if (locks_connection && locks_connection != connection)
-        delete locks_connection;
+    {
+        if (locks_connection->IsAlive())
+            delete locks_connection;
+    }
     if (connection)
-        delete connection;
+    {
+        if (connection->IsAlive())
+            delete connection;
+    }
 }
 
 
@@ -1594,6 +1600,10 @@ void frmStatus::OnRefresh(wxCommandEvent &event)
 
 void frmStatus::checkConnection()
 {
+    if (!locks_connection->IsAlive())
+    {
+        locks_connection = connection;
+    }
     if (!connection->IsAlive())
     {
         delete connection;
@@ -1606,10 +1616,6 @@ void frmStatus::checkConnection()
             logTimer->Stop();
         toolBar->EnableTool(MNU_REFRESH, false);
         statusBar->SetStatusText(_("Connection broken."));
-    }
-    if (!locks_connection->IsAlive())
-    {
-        locks_connection = connection;
     }
 }
 
