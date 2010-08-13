@@ -642,7 +642,7 @@ bool pgAdmin3::OnInit()
                 {
                     pgConn *conn;
                     wxString applicationname = _("pgAdmin - Query Tool");
-                    conn = srv->CreateConn(applicationname);
+                    conn = srv->CreateConn(wxEmptyString, 0, applicationname);
                     if (conn)
                     {
                         wxString fn;
