@@ -1133,6 +1133,7 @@ void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
             queryMenu->SetHelpString(MNU_EXECFILE, _("Execute query, write result to file"));
             toolBar->SetToolShortHelp(MNU_EXECUTE, _("Execute query"));
             toolBar->SetToolShortHelp(MNU_EXECFILE, _("Execute query, write result to file"));
+            viewMenu->Enable(MNU_SCRATCHPAD, true);
 
             // Reset the panes
             if (viewMenu->IsChecked(MNU_OUTPUTPANE))
@@ -1148,6 +1149,7 @@ void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
 	        manager.GetPane(wxT("outputPane")).Show(false);
        	    manager.GetPane(wxT("scratchPad")).Show(false);
     		manager.Update();
+            viewMenu->Enable(MNU_SCRATCHPAD, false);
             
             if(firstTime)        //Things that should be done on first click on GQB
             {
