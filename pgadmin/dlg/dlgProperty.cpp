@@ -2037,7 +2037,7 @@ void dlgAgentProperty::OnOK(wxCommandEvent &ev)
 propertyFactory::propertyFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
     if (mnu)
-        mnu->Append(id, _("&Properties..."), _("Display/edit the properties of the selected object."));
+        mnu->Append(id, _("&Properties...\tCtrl-Alt-Enter"), _("Display/edit the properties of the selected object."));
     else
         context=false;
     if (toolbar)
