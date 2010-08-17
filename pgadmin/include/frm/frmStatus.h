@@ -139,6 +139,12 @@ private:
     ctlListView   *xactList;
     ctlListView   *logList;
     
+    wxMenu        *statusPopupMenu;
+    wxMenu        *lockPopupMenu;
+    wxMenu        *xactPopupMenu;
+    
+    int statusColWidth[10], lockColWidth[10], xactColWidth[5];
+    
     int cboToRate();
     wxString rateToCboString(int rate);
 
@@ -173,6 +179,18 @@ private:
     void OnSortStatusGrid(wxListEvent &event);
     void OnSortLockGrid(wxListEvent &event);
     void OnSortXactGrid(wxListEvent &event);
+
+    void OnRightClickStatusGrid(wxListEvent &event);
+    void OnRightClickLockGrid(wxListEvent &event);
+    void OnRightClickXactGrid(wxListEvent &event);
+    
+    void OnStatusMenu(wxCommandEvent &event);
+    void OnLockMenu(wxCommandEvent &event);
+    void OnXactMenu(wxCommandEvent &event);
+    
+    void OnChgColSizeStatusGrid(wxListEvent &event);
+    void OnChgColSizeLockGrid(wxListEvent &event);
+    void OnChgColSizeXactGrid(wxListEvent &event);
 
     void OnRateChange(wxCommandEvent &event);
     

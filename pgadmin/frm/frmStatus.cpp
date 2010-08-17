@@ -57,50 +57,56 @@ BEGIN_EVENT_TABLE(frmStatus, pgFrame)
     EVT_MENU(MNU_COPY,                               frmStatus::OnCopy)
     EVT_MENU(MNU_COPY_QUERY,                               frmStatus::OnCopyQuery)
 
-    EVT_MENU(MNU_HELP,                               frmStatus::OnHelp)
-    EVT_MENU(MNU_STATUSPAGE,                        frmStatus::OnToggleStatusPane)
-    EVT_MENU(MNU_LOCKPAGE,                            frmStatus::OnToggleLockPane)
-    EVT_MENU(MNU_XACTPAGE,                             frmStatus::OnToggleXactPane)
-    EVT_MENU(MNU_LOGPAGE,                             frmStatus::OnToggleLogPane)
-    EVT_MENU(MNU_TOOLBAR,                             frmStatus::OnToggleToolBar)
-    EVT_MENU(MNU_DEFAULTVIEW,                        frmStatus::OnDefaultView)
-    EVT_MENU(MNU_HIGHLIGHTSTATUS,                        frmStatus::OnHighlightStatus)
+    EVT_MENU(MNU_HELP,                            frmStatus::OnHelp)
+    EVT_MENU(MNU_STATUSPAGE,                      frmStatus::OnToggleStatusPane)
+    EVT_MENU(MNU_LOCKPAGE,                        frmStatus::OnToggleLockPane)
+    EVT_MENU(MNU_XACTPAGE,                        frmStatus::OnToggleXactPane)
+    EVT_MENU(MNU_LOGPAGE,                         frmStatus::OnToggleLogPane)
+    EVT_MENU(MNU_TOOLBAR,                         frmStatus::OnToggleToolBar)
+    EVT_MENU(MNU_DEFAULTVIEW,                     frmStatus::OnDefaultView)
+    EVT_MENU(MNU_HIGHLIGHTSTATUS,                 frmStatus::OnHighlightStatus)
 
-    EVT_AUI_PANE_CLOSE(                             frmStatus::OnPaneClose)
+    EVT_AUI_PANE_CLOSE(                           frmStatus::OnPaneClose)
     
-    EVT_COMBOBOX(CTL_RATECBO,                       frmStatus::OnRateChange)
-    EVT_MENU(MNU_REFRESH,                             frmStatus::OnRefresh)
-    EVT_MENU(MNU_CANCEL,                             frmStatus::OnCancelBtn)
-    EVT_MENU(MNU_TERMINATE,                              frmStatus::OnTerminateBtn)
-    EVT_MENU(MNU_COMMIT,                            frmStatus::OnCommit)
-    EVT_MENU(MNU_ROLLBACK,                            frmStatus::OnRollback)
-    EVT_COMBOBOX(CTL_LOGCBO,                        frmStatus::OnLoadLogfile)
-    EVT_BUTTON(CTL_ROTATEBTN,                       frmStatus::OnRotateLogfile)
+    EVT_COMBOBOX(CTL_RATECBO,                     frmStatus::OnRateChange)
+    EVT_MENU(MNU_REFRESH,                         frmStatus::OnRefresh)
+    EVT_MENU(MNU_CANCEL,                          frmStatus::OnCancelBtn)
+    EVT_MENU(MNU_TERMINATE,                       frmStatus::OnTerminateBtn)
+    EVT_MENU(MNU_COMMIT,                          frmStatus::OnCommit)
+    EVT_MENU(MNU_ROLLBACK,                        frmStatus::OnRollback)
+    EVT_COMBOBOX(CTL_LOGCBO,                      frmStatus::OnLoadLogfile)
+    EVT_BUTTON(CTL_ROTATEBTN,                     frmStatus::OnRotateLogfile)
     
-    EVT_TIMER(TIMER_REFRESHUI_ID,                    frmStatus::OnRefreshUITimer)
+    EVT_TIMER(TIMER_REFRESHUI_ID,                 frmStatus::OnRefreshUITimer)
 
-    EVT_TIMER(TIMER_STATUS_ID,                        frmStatus::OnRefreshStatusTimer)
-    EVT_LIST_ITEM_SELECTED(CTL_STATUSLIST,            frmStatus::OnSelStatusItem)
-    EVT_LIST_ITEM_DESELECTED(CTL_STATUSLIST,        frmStatus::OnSelStatusItem)
-    EVT_LIST_COL_CLICK(CTL_STATUSLIST,              frmStatus::OnSortStatusGrid)
+    EVT_TIMER(TIMER_STATUS_ID,                    frmStatus::OnRefreshStatusTimer)
+    EVT_LIST_ITEM_SELECTED(CTL_STATUSLIST,        frmStatus::OnSelStatusItem)
+    EVT_LIST_ITEM_DESELECTED(CTL_STATUSLIST,      frmStatus::OnSelStatusItem)
+    EVT_LIST_COL_CLICK(CTL_STATUSLIST,            frmStatus::OnSortStatusGrid)
+    EVT_LIST_COL_RIGHT_CLICK(CTL_STATUSLIST,      frmStatus::OnRightClickStatusGrid)
+    EVT_LIST_COL_END_DRAG(CTL_STATUSLIST,         frmStatus::OnChgColSizeStatusGrid)
     
-    EVT_TIMER(TIMER_LOCKS_ID,                        frmStatus::OnRefreshLocksTimer)
-    EVT_LIST_ITEM_SELECTED(CTL_LOCKLIST,            frmStatus::OnSelLockItem)
-    EVT_LIST_ITEM_DESELECTED(CTL_LOCKLIST,            frmStatus::OnSelLockItem)
-    EVT_LIST_COL_CLICK(CTL_LOCKLIST,                  frmStatus::OnSortLockGrid)
+    EVT_TIMER(TIMER_LOCKS_ID,                     frmStatus::OnRefreshLocksTimer)
+    EVT_LIST_ITEM_SELECTED(CTL_LOCKLIST,          frmStatus::OnSelLockItem)
+    EVT_LIST_ITEM_DESELECTED(CTL_LOCKLIST,        frmStatus::OnSelLockItem)
+    EVT_LIST_COL_CLICK(CTL_LOCKLIST,              frmStatus::OnSortLockGrid)
+    EVT_LIST_COL_RIGHT_CLICK(CTL_LOCKLIST,        frmStatus::OnRightClickLockGrid)
+    EVT_LIST_COL_END_DRAG(CTL_STATUSLIST,         frmStatus::OnChgColSizeLockGrid)
     
-    EVT_TIMER(TIMER_XACT_ID,                        frmStatus::OnRefreshXactTimer)
-    EVT_LIST_ITEM_SELECTED(CTL_XACTLIST,            frmStatus::OnSelXactItem)
-    EVT_LIST_ITEM_DESELECTED(CTL_XACTLIST,            frmStatus::OnSelXactItem)
-    EVT_LIST_COL_CLICK(CTL_XACTLIST,                  frmStatus::OnSortXactGrid)
+    EVT_TIMER(TIMER_XACT_ID,                      frmStatus::OnRefreshXactTimer)
+    EVT_LIST_ITEM_SELECTED(CTL_XACTLIST,          frmStatus::OnSelXactItem)
+    EVT_LIST_ITEM_DESELECTED(CTL_XACTLIST,        frmStatus::OnSelXactItem)
+    EVT_LIST_COL_CLICK(CTL_XACTLIST,              frmStatus::OnSortXactGrid)
+    EVT_LIST_COL_RIGHT_CLICK(CTL_XACTLIST,        frmStatus::OnRightClickXactGrid)
+    EVT_LIST_COL_END_DRAG(CTL_STATUSLIST,         frmStatus::OnChgColSizeXactGrid)
     
-    EVT_TIMER(TIMER_LOG_ID,                            frmStatus::OnRefreshLogTimer)
-    EVT_LIST_ITEM_SELECTED(CTL_LOGLIST,                frmStatus::OnSelLogItem)
-    EVT_LIST_ITEM_DESELECTED(CTL_LOGLIST,            frmStatus::OnSelLogItem)
+    EVT_TIMER(TIMER_LOG_ID,                       frmStatus::OnRefreshLogTimer)
+    EVT_LIST_ITEM_SELECTED(CTL_LOGLIST,           frmStatus::OnSelLogItem)
+    EVT_LIST_ITEM_DESELECTED(CTL_LOGLIST,         frmStatus::OnSelLogItem)
 
-    EVT_COMBOBOX(CTRLID_DATABASE,                   frmStatus::OnChangeDatabase)
+    EVT_COMBOBOX(CTRLID_DATABASE,                 frmStatus::OnChangeDatabase)
 
-    EVT_CLOSE(                                        frmStatus::OnClose)
+    EVT_CLOSE(                                    frmStatus::OnClose)
 END_EVENT_TABLE();
 
 
@@ -499,7 +505,7 @@ void frmStatus::AddStatusPane()
     // Auto-sizing
     pnlActivity->SetSizer(grdActivity);
     grdActivity->Fit(pnlActivity);
-    
+
     // Add each column to the list control
     statusList = (ctlListView*)lstStatus;
     statusList->AddColumn(_("PID"), 35);
@@ -518,6 +524,31 @@ void frmStatus::AddStatusPane()
         statusList->AddColumn(_("TX start"), 50);
     statusList->AddColumn(_("Blocked by"), 35);
     statusList->AddColumn(_("Query"), 500);
+    
+    // Get through the list of columns to build the popup menu
+    // and reinitialize column's width if we find a saved width
+    statusPopupMenu = new wxMenu();
+    wxListItem item;
+    int savedwidth;
+    for (int col=0; col<statusList->GetColumnCount(); col++)
+    {
+        // Get column
+        statusList->GetColumn(col, item);
+
+        // Reinitialize column's width
+        settings->Read(wxT("frmStatus/StatusPane_") + item.GetText() + wxT("_Width"), &savedwidth, item.GetWidth());
+        if (savedwidth > 0)
+            statusList->SetColumnWidth(col, savedwidth);
+        else
+            statusList->SetColumnWidth(col, 0);
+        statusColWidth[col] = savedwidth;
+        
+        // Add new check item on the popup menu
+        statusPopupMenu->AppendCheckItem(1000+col, item.GetText());
+        statusPopupMenu->Check(1000+col, statusList->GetColumnWidth(col) > 0);
+        this->Connect(1000+col, wxEVT_COMMAND_MENU_SELECTED,
+          wxCommandEventHandler(frmStatus::OnStatusMenu));
+    }
 
     // Build image list
     statusList->SetImageList(listimages, wxIMAGE_LIST_SMALL);
@@ -582,6 +613,30 @@ void frmStatus::AddLockPane()
     if (locks_connection->BackendMinimumVersion(7, 4))
         lockList->AddColumn(_("Start"), 50);
     lockList->AddColumn(_("Query"), 500);
+
+    // Get through the list of columns to build the popup menu
+    lockPopupMenu = new wxMenu();
+    wxListItem item;
+    int savedwidth;
+    for (int col=0; col<lockList->GetColumnCount(); col++)
+    {
+        // Get column
+        lockList->GetColumn(col, item);
+
+        // Reinitialize column's width
+        settings->Read(wxT("frmStatus/LockPane_") + item.GetText() + wxT("_Width"), &savedwidth, item.GetWidth());
+        if (savedwidth > 0)
+            lockList->SetColumnWidth(col, savedwidth);
+        else
+            lockList->SetColumnWidth(col, 0);
+        lockColWidth[col] = savedwidth;
+        
+        // Add new check item on the popup menu
+        lockPopupMenu->AppendCheckItem(2000+col, item.GetText());
+        lockPopupMenu->Check(2000+col, lockList->GetColumnWidth(col) > 0);
+        this->Connect(2000+col, wxEVT_COMMAND_MENU_SELECTED,
+          wxCommandEventHandler(frmStatus::OnLockMenu));
+    }
 
     // Build image list
     lockList->SetImageList(listimages, wxIMAGE_LIST_SMALL);
@@ -657,6 +712,30 @@ void frmStatus::AddXactPane()
     xactList->AddColumn(_("Time"), 100);
     xactList->AddColumn(_("Owner"), 50);
     xactList->AddColumn(_("Database"), 50);
+
+    // Get through the list of columns to build the popup menu
+    xactPopupMenu = new wxMenu();
+    wxListItem item;
+    int savedwidth;
+    for (int col=0; col<xactList->GetColumnCount(); col++)
+    {
+        // Get column
+        xactList->GetColumn(col, item);
+
+        // Reinitialize column's width
+        settings->Read(wxT("frmStatus/XactPane_") + item.GetText() + wxT("_Width"), &savedwidth, item.GetWidth());
+        if (savedwidth > 0)
+            xactList->SetColumnWidth(col, savedwidth);
+        else
+            xactList->SetColumnWidth(col, 0);
+        xactColWidth[col] = savedwidth;
+        
+        // Add new check item on the popup menu
+        xactPopupMenu->AppendCheckItem(3000+col, item.GetText());
+        xactPopupMenu->Check(3000+col, xactList->GetColumnWidth(col) > 0);
+        this->Connect(3000+col, wxEVT_COMMAND_MENU_SELECTED,
+          wxCommandEventHandler(frmStatus::OnXactMenu));
+    }
 
     // Build image list
     xactList->SetImageList(listimages, wxIMAGE_LIST_SMALL);
@@ -2328,6 +2407,90 @@ void frmStatus::OnLocksTerminateBtn(wxCommandEvent &event)
 }
 
 
+void frmStatus::OnStatusMenu(wxCommandEvent &event)
+{
+    for (unsigned int i=0; i<statusPopupMenu->GetMenuItemCount(); i++)
+    {
+        // Save column's width in a variable so that we can restore the old width
+        // if we make this column "invisible"
+        if (statusList->GetColumnWidth(i) > 0)
+            statusColWidth[i] = statusList->GetColumnWidth(i);
+
+        wxMenuItem* menu = statusPopupMenu->FindItemByPosition(i);
+        if (menu && menu->IsChecked())
+            statusList->SetColumnWidth(i, statusColWidth[i]);
+        else if (statusList->GetColumnWidth(i) > 0)
+            statusList->SetColumnWidth(i, 0);
+        
+        // Save current width to restore it at next launch
+        wxListItem column;
+        statusList->GetColumn(i, column);
+        if (column.GetWidth() > 0)
+            settings->Write(wxT("frmStatus/StatusPane_") + column.GetText() + wxT("_Width"),
+              statusColWidth[i]);
+        else
+            settings->Write(wxT("frmStatus/StatusPane_") + column.GetText() + wxT("_Width"),
+              -statusColWidth[i]);
+    }
+}
+
+
+void frmStatus::OnLockMenu(wxCommandEvent &event)
+{
+    for (unsigned int i=0; i<lockPopupMenu->GetMenuItemCount(); i++)
+    {
+        // Save column's width in a variable so that we can restore the old width
+        // if we make this column "invisible"
+        if (lockList->GetColumnWidth(i) > 0)
+            lockColWidth[i] = lockList->GetColumnWidth(i);
+
+        wxMenuItem* menu = lockPopupMenu->FindItemByPosition(i);
+        if (menu && menu->IsChecked())
+            lockList->SetColumnWidth(i, lockColWidth[i]);
+        else if (lockList->GetColumnWidth(i) > 0)
+            lockList->SetColumnWidth(i, 0);
+        
+        // Save current width to restore it at next launch
+        wxListItem column;
+        lockList->GetColumn(i, column);
+        if (column.GetWidth() > 0)
+            settings->Write(wxT("frmStatus/LockPane_") + column.GetText() + wxT("_Width"),
+              lockColWidth[i]);
+        else
+            settings->Write(wxT("frmStatus/LockPane_") + column.GetText() + wxT("_Width"),
+              -lockColWidth[i]);
+    }
+}
+
+
+void frmStatus::OnXactMenu(wxCommandEvent &event)
+{
+    for (unsigned int i=0; i<xactPopupMenu->GetMenuItemCount(); i++)
+    {
+        // Save column's width in a variable so that we can restore the old width
+        // if we make this column "invisible"
+        if (xactList->GetColumnWidth(i) > 0)
+            xactColWidth[i] = xactList->GetColumnWidth(i);
+
+        wxMenuItem* menu = xactPopupMenu->FindItemByPosition(i);
+        if (menu && menu->IsChecked())
+            xactList->SetColumnWidth(i, xactColWidth[i]);
+        else if (xactList->GetColumnWidth(i) > 0)
+            xactList->SetColumnWidth(i, 0);
+        
+        // Save current width to restore it at next launch
+        wxListItem column;
+        xactList->GetColumn(i, column);
+        if (column.GetWidth() > 0)
+            settings->Write(wxT("frmStatus/XactPane_") + column.GetText() + wxT("_Width"),
+              xactColWidth[i]);
+        else
+            settings->Write(wxT("frmStatus/XactPane_") + column.GetText() + wxT("_Width"),
+              -xactColWidth[i]);
+    }
+}
+
+
 void frmStatus::OnCommit(wxCommandEvent &event)
 {
     long item = xactList->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
@@ -2670,6 +2833,41 @@ void frmStatus::OnSortXactGrid(wxListEvent &event)
     // Refresh grid
     wxTimerEvent evt;
     OnRefreshXactTimer(evt);
+}
+
+
+void frmStatus::OnRightClickStatusGrid(wxListEvent &event)
+{
+    statusList->PopupMenu(statusPopupMenu, event.GetPoint());
+}
+
+void frmStatus::OnRightClickLockGrid(wxListEvent &event)
+{
+    lockList->PopupMenu(lockPopupMenu, event.GetPoint());
+}
+
+void frmStatus::OnRightClickXactGrid(wxListEvent &event)
+{
+    xactList->PopupMenu(xactPopupMenu, event.GetPoint());
+}
+
+
+void frmStatus::OnChgColSizeStatusGrid(wxListEvent &event)
+{
+    wxCommandEvent ev;
+    OnStatusMenu(ev);
+}
+
+void frmStatus::OnChgColSizeLockGrid(wxListEvent &event)
+{
+    wxCommandEvent ev;
+    OnStatusMenu(ev);
+}
+
+void frmStatus::OnChgColSizeXactGrid(wxListEvent &event)
+{
+    wxCommandEvent ev;
+    OnStatusMenu(ev);
 }
 
 
