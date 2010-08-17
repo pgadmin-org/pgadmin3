@@ -260,7 +260,12 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
         if (orderBy.IsEmpty() && hasOids)
             orderBy=wxT("oid");
         if (!orderBy.IsEmpty())
-            orderBy += wxT(" ASC");
+        {
+            if (ascending)
+                orderBy += wxT(" ASC");
+            else
+                orderBy += wxT(" DESC");
+        }
     }
     else if (obj->GetMetaType() == PGM_VIEW)
     {
@@ -385,6 +390,11 @@ void frmEditGrid::SetLimit(const int rowlimit)
         else
             cbLimit->SetValue(wxString::Format(wxPLURAL("%i row", "%i rows", limit), limit));
     }
+}
+
+void frmEditGrid::SetAscending(const bool ascendingin)
+{
+    ascending = ascendingin;
 }
 
 void frmEditGrid::OnLabelRightClick(wxGridEvent& event)
@@ -3105,6 +3115,7 @@ wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filte
 
         frmEditGrid *eg= new frmEditGrid(form, txt, conn, (pgSchemaObject*)obj);
         eg->SetLimit(rowlimit);
+        eg->SetAscending(pkAscending);
         eg->ShowForm(filter);
         return eg;
     }
@@ -3140,9 +3151,14 @@ wxWindow *editGridFilteredFactory::StartDialog(frmMain *form, pgObject *obj)
     return ViewData(form, obj, true);
 }
 
-editGridLimitedFactory::editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, int limit) : editGridFactoryBase(list)
+editGridLimitedFactory::editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, int limit, bool ascending) : editGridFactoryBase(list)
 {
-    mnu->Append(id, wxString::Format(wxPLURAL("View Top %i Row", "View Top %i Rows", limit), limit), _("View a limited number of rows in the selected object."));
+    if (ascending)
+        mnu->Append(id, wxString::Format(wxPLURAL("View Top %i Row", "View Top %i Rows", limit), limit), _("View a limited number of rows in the selected object."));
+    else
+        mnu->Append(id, wxString::Format(wxPLURAL("View Last %i Row", "View Last %i Rows", limit), limit), _("View a limited number of rows in the selected object."));
+
+    pkAscending = ascending;
     rowlimit = limit;
     context = false;
 }

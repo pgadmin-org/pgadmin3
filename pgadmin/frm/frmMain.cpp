@@ -383,7 +383,8 @@ void frmMain::CreateMenus()
 
     toolsMenu->AppendSeparator();
 
-    new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100);
+    new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100, true);
+    new editGridLimitedFactory(menuFactories, viewDataMenu, toolBar, 100, false);
     new editGridFactory(menuFactories, viewDataMenu, toolBar);
     new editGridFilteredFactory(menuFactories, viewDataMenu, toolBar);
 

@@ -195,6 +195,8 @@ public:
     void SetFilter(const wxString &filter);
     int GetLimit() const { return limit; } ;
     void SetLimit(const int rowlimit);
+    bool GetAscending() const { return ascending; } ;
+    void SetAscending(const bool ascending);
     wxMenu *GetFileMenu() { return fileMenu; };
     wxMenu *GetEditMenu() { return editMenu; };
 
@@ -255,6 +257,7 @@ private:
     wxString orderBy;
     wxString rowFilter;
     int limit;
+    bool ascending;
     sqlCell *editorCell;
     bool closing;
 
@@ -271,6 +274,7 @@ protected:
     editGridFactoryBase(menuFactoryList *list) : contextActionFactory(list) { rowlimit = 0; }
     wxWindow *ViewData(frmMain *form, pgObject *obj, bool filter);
 	int rowlimit;
+    bool pkAscending;
 };
 
 
@@ -292,7 +296,7 @@ public:
 class editGridLimitedFactory : public editGridFactoryBase
 {
 public:
-	editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, int limit);
+	editGridLimitedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, int limit, bool ascending);
 	wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
