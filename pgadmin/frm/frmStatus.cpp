@@ -1412,7 +1412,7 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
     wxCriticalSectionLocker lock(gs_critsect);
 
     long row=0;
-    wxString sql = wxT("SELECT transaction, gid, prepared, owner, database ")
+    wxString sql = wxT("SELECT transaction::text, gid, prepared, owner, database ")
                    wxT("FROM pg_prepared_xacts ")
                    wxT("ORDER BY ") + NumToStr((long)xactSortColumn) + wxT(" ") + xactSortOrder;
 
