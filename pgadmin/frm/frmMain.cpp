@@ -332,6 +332,7 @@ void frmMain::CreateMenus()
 
     new connectServerFactory(menuFactories, toolsMenu, 0);
     new disconnectServerFactory(menuFactories, toolsMenu, 0);
+    new disconnectDatabaseFactory(menuFactories, toolsMenu, 0);
 
     new startServiceFactory(menuFactories, toolsMenu, 0);
     new stopServiceFactory(menuFactories, toolsMenu, 0);

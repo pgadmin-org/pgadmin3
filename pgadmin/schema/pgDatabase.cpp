@@ -1137,3 +1137,33 @@ pgCollection *pgDatabaseObjFactory::CreateCollection(pgObject *obj)
 
 pgDatabaseFactory databaseFactory;
 static pgaCollectionFactory cf(&databaseFactory, __("Databases"), databases_xpm);
+
+
+disconnectDatabaseFactory::disconnectDatabaseFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+    mnu->Append(id, _("Disconnec&t"), _("Disconnect from the selected database."));
+}
+
+
+wxWindow *disconnectDatabaseFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+    ctlTree *browser = form->GetBrowser();
+    pgDatabase *database=(pgDatabase*)obj;
+
+    database->Disconnect();
+    database->UpdateIcon(browser);
+    browser->DeleteChildren(obj->GetId());
+    browser->SelectItem(browser->GetItemParent(obj->GetId()));
+    form->execSelChange(browser->GetItemParent(obj->GetId()), true);
+
+    return 0;
+}
+
+
+bool disconnectDatabaseFactory::CheckEnable(pgObject *obj)
+{
+    if (obj && obj->IsCreatedBy(databaseFactory))
+        return ((pgDatabase*)obj)->GetConnected() && (((pgDatabase*)obj)->GetName() != ((pgDatabase*)obj)->GetServer()->GetDatabaseName());
+
+    return false;
+}

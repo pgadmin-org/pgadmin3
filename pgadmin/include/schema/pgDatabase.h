@@ -163,6 +163,14 @@ public:
     virtual pgCollection *CreateCollection(pgObject *obj);
 };
 
+class disconnectDatabaseFactory : public contextActionFactory
+{
+public:
+    disconnectDatabaseFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+    bool CheckEnable(pgObject *obj);
+};
+
 
 // Object that lives in a database
 class pgDatabaseObject : public pgObject
