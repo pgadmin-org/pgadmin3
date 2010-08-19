@@ -497,7 +497,7 @@ pgsTimer(new pgScriptTimer(this))
     msgHistory->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
 
     // Now, the scratchpad
-    scratchPad = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
+    scratchPad = new wxTextCtrl(this, CTL_SCRATCHPAD, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
 
     // Kickstart wxAUI
     manager.AddPane(toolBar, wxAuiPaneInfo().Name(wxT("toolBar")).Caption(_("Tool bar")).ToolbarPane().Top().LeftDockable(false).RightDockable(false));
@@ -2721,32 +2721,40 @@ void frmQuery::OnAdjustSizesTimer(wxTimerEvent & event)
 
 void frmQuery::OnBlockIndent(wxCommandEvent& event) 
 { 
-    sqlQuery->CmdKeyExecute(wxSTC_CMD_TAB);
+    if (FindFocus()->GetId() == CTL_SQLQUERY)
+        sqlQuery->CmdKeyExecute(wxSTC_CMD_TAB);
+    else if (FindFocus()->GetId() == CTL_SCRATCHPAD)
+        scratchPad->WriteText(wxT("\t"));
 }
 
 void frmQuery::OnBlockOutDent(wxCommandEvent& event) 
 { 
-    sqlQuery->CmdKeyExecute(wxSTC_CMD_BACKTAB); 
+    if (FindFocus()->GetId() == CTL_SQLQUERY)
+        sqlQuery->CmdKeyExecute(wxSTC_CMD_BACKTAB); 
 }
 
 void frmQuery::OnChangeToUpperCase(wxCommandEvent& event)
 {
-    sqlQuery->UpperCase();
+    if (FindFocus()->GetId() == CTL_SQLQUERY)
+        sqlQuery->UpperCase();
 }
 
 void frmQuery::OnChangeToLowerCase(wxCommandEvent& event)
 {
-    sqlQuery->LowerCase();
+    if (FindFocus()->GetId() == CTL_SQLQUERY)
+        sqlQuery->LowerCase();
 }
 
 void frmQuery::OnCommentText(wxCommandEvent& event)
 {
-    sqlQuery->BlockComment(false);
+    if (FindFocus()->GetId() == CTL_SQLQUERY)
+        sqlQuery->BlockComment(false);
 }
 
 void frmQuery::OnUncommentText(wxCommandEvent& event)
 {
-    sqlQuery->BlockComment(true);
+    if (FindFocus()->GetId() == CTL_SQLQUERY)
+        sqlQuery->BlockComment(true);
 }
 
 wxBitmap frmQuery::CreateBitmap(const wxColour& colour)
