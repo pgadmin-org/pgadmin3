@@ -89,7 +89,7 @@ wxString pgDatabase::GetTranslatedMessage(int kindOfMessage) const
             message = _("Database statistics report");
             message += wxT(" - ") + GetName();
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Database statistics");
             break;
         case DEPENDENCIESREPORT:
@@ -995,7 +995,7 @@ wxString pgDatabaseCollection::GetTranslatedMessage(int kindOfMessage) const
         case STATISTICSREPORT:
             message = _("Databases statistics report");
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Databases statistics");
             break;
         case OBJECTSLISTREPORT:

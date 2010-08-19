@@ -83,7 +83,7 @@ wxString pgColumn::GetTranslatedMessage(int kindOfMessage) const
             message = _("Column statistics report");
             message += wxT(" - ") + GetName();
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Column statistics");
             break;
         case DEPENDENCIESREPORT:

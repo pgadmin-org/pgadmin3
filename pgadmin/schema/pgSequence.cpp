@@ -74,7 +74,7 @@ wxString pgSequence::GetTranslatedMessage(int kindOfMessage) const
             message = _("Sequence statistics report");
             message += wxT(" - ") + GetName();
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Sequence statistics");
             break;
         case DEPENDENCIESREPORT:

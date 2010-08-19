@@ -73,7 +73,7 @@ wxString pgTablespace::GetTranslatedMessage(int kindOfMessage) const
             message = _("Tablespace statistics report");
             message += wxT(" - ") + GetName();
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Tablespace statistics");
             break;
         case DEPENDENCIESREPORT:
@@ -350,7 +350,7 @@ wxString pgTablespaceCollection::GetTranslatedMessage(int kindOfMessage) const
         case STATISTICSREPORT:
             message = _("Tablespaces statistics report");
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Tablespaces statistics");
             break;
         case OBJECTSLISTREPORT:

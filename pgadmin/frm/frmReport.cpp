@@ -1433,7 +1433,7 @@ void reportObjectStatisticsFactory::GenerateReport(frmReport *report, pgObject *
 {
     report->SetReportTitle(object->GetTranslatedMessage(STATISTICSREPORT));
 
-    int section = report->XmlCreateSection(object->GetTranslatedMessage(STATISTICS));
+    int section = report->XmlCreateSection(object->GetTranslatedMessage(OBJSTATISTICS));
 
     ctlListView *list = GetFrmMain()->GetStatisticsCtl();
     object->ShowStatistics(GetFrmMain(), list);

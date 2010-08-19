@@ -104,7 +104,7 @@ wxString pgTable::GetTranslatedMessage(int kindOfMessage) const
             message = _("Table statistics report");
             message += wxT(" - ") + GetName();
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Table statistics");
             break;
         case DEPENDENCIESREPORT:
@@ -1183,7 +1183,7 @@ wxString pgTableCollection::GetTranslatedMessage(int kindOfMessage) const
         case STATISTICSREPORT:
             message = _("Tables statistics report");
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Tables statistics");
             break;
         case OBJECTSLISTREPORT:

@@ -70,7 +70,7 @@ wxString pgIndexConstraint::GetTranslatedMessage(int kindOfMessage) const
             message = _("Index constraint statistics report");
             message += wxT(" - ") + GetName();
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Index constraint statistics");
             break;
         case DEPENDENCIESREPORT:

@@ -78,7 +78,7 @@ wxString pgIndexBase::GetTranslatedMessage(int kindOfMessage) const
             message = _("Index statistics report");
             message += wxT(" - ") + GetName();
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Index statistics");
             break;
         case DEPENDENCIESREPORT:

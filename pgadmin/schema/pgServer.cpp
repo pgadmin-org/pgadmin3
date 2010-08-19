@@ -119,7 +119,7 @@ wxString pgServer::GetTranslatedMessage(int kindOfMessage) const
             message = _("Server statistics report");
             message += wxT(" - ") + GetName();
             break;
-        case STATISTICS:
+        case OBJSTATISTICS:
             message = _("Server statistics");
             break;
     }
@@ -1342,7 +1342,7 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
                 svcKey->QueryValue(wxT("Port"), &tmpport);
 
                 // Add the Server node
-                server = new pgServer(servername, description, database, username, (long)tmpport, false, 0);
+                server = new pgServer(servername, description, database, username, (long)tmpport, false, wxEmptyString, false);
                 server->iSetDiscoveryID(svcName);
                 server->iSetDiscovered(true);
                 server->iSetServiceID(svcName);
