@@ -191,20 +191,39 @@ void pgIndexBase::ReadColumnDetails()
                 if (GetConnection()->BackendMinimumVersion(8, 3))
                     options = wxT("  i.indoption[") + NumToStr((long)(i-1)) + wxT("] AS options,\n");
 
-                pgSet *res = ExecuteSet(
-                    wxT("SELECT\n") + options +
-                    wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
-                    wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
-                    wxT("  ELSE\n") +
-                    wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
-                    wxT("  END AS coldef,\n") +
-                    wxT("  op.oprname\n") +
-                    wxT("FROM pg_index i\n") +
-                    wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
-                    wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i-1)) + wxT("])\n") +
-                    wxT("LEFT OUTER JOIN pg_constraint c ON (c.conindid = i.indexrelid) ")
-                    wxT("LEFT OUTER JOIN pg_operator op ON (op.oid = c.conexclop[") + NumToStr(i) + wxT("])\n") +
-                    wxT("WHERE i.indexrelid = ") + GetOidStr());
+                pgSet *res;
+
+                if (GetConnection()->BackendMinimumVersion(9, 0))
+                {
+                    res = ExecuteSet(
+                        wxT("SELECT\n") + options +
+                        wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
+                        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
+                        wxT("  ELSE\n") +
+                        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
+                        wxT("  END AS coldef,\n") +
+                        wxT("  op.oprname\n") +
+                        wxT("FROM pg_index i\n") +
+                        wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
+                        wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i-1)) + wxT("])\n") +
+                        wxT("LEFT OUTER JOIN pg_constraint c ON (c.conindid = i.indexrelid) ")
+                        wxT("LEFT OUTER JOIN pg_operator op ON (op.oid = c.conexclop[") + NumToStr(i) + wxT("])\n") +
+                        wxT("WHERE i.indexrelid = ") + GetOidStr());
+                }
+                else
+                {
+                    res = ExecuteSet(
+                        wxT("SELECT\n") + options +
+                        wxT("  CASE WHEN (o.opcdefault = FALSE) THEN\n")
+                        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(") || ' ' || o.opcname\n") +
+                        wxT("  ELSE\n") +
+                        wxT("    pg_get_indexdef(i.indexrelid, ") + NumToStr(i) + GetDatabase()->GetPrettyOption() + wxT(")\n") +
+                        wxT("  END AS coldef\n") +
+                        wxT("FROM pg_index i\n") +
+                        wxT("JOIN pg_attribute a ON (a.attrelid = i.indexrelid AND attnum = ") + NumToStr(i) + wxT(")\n") +
+                        wxT("LEFT OUTER JOIN pg_opclass o ON (o.oid = i.indclass[") + NumToStr((long)(i-1)) + wxT("])\n") +
+                        wxT("WHERE i.indexrelid = ") + GetOidStr());
+                }
 
                 if (res->NumRows() > 0)
                 {

@@ -106,9 +106,9 @@ wxString pgIndexConstraint::GetDefinition()
     wxString sql = wxEmptyString;
 
     if (wxString(GetTypeName()).Upper() == wxT("EXCLUDE"))
-        sql += wxT("\n  USING ") + GetIndexType();
+        sql += wxT("\n  USING ") + GetIndexType() + wxT(" ");
 
-     sql += wxT("\n  (") + GetQuotedColumns() + wxT(")");
+     sql += wxT("(") + GetQuotedColumns() + wxT(")");
 
     if (GetConnection()->BackendMinimumVersion(8, 0) && GetTablespace() != GetDatabase()->GetDefaultTablespace())
         sql += wxT("\n  USING INDEX TABLESPACE ") + qtIdent(GetTablespace());
