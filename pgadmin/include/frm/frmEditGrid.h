@@ -184,7 +184,7 @@ class pgSchemaObject;
 class frmEditGrid : public pgFrame
 {
 public:
-    frmEditGrid(frmMain *form, const wxString& _title, pgConn *conn, pgSchemaObject *obj);
+    frmEditGrid(frmMain *form, const wxString& _title, pgConn *conn, pgSchemaObject *obj, bool ascending = true);
     ~frmEditGrid();
 
     void ShowForm(bool filter = false);
@@ -195,8 +195,6 @@ public:
     void SetFilter(const wxString &filter);
     int GetLimit() const { return limit; } ;
     void SetLimit(const int rowlimit);
-    bool GetAscending() const { return ascending; } ;
-    void SetAscending(const bool ascending);
     wxMenu *GetFileMenu() { return fileMenu; };
     wxMenu *GetEditMenu() { return editMenu; };
 
@@ -257,7 +255,6 @@ private:
     wxString orderBy;
     wxString rowFilter;
     int limit;
-    bool ascending;
     sqlCell *editorCell;
     bool closing;
 

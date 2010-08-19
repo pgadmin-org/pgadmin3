@@ -84,7 +84,7 @@ BEGIN_EVENT_TABLE(frmEditGrid, pgFrame)
 END_EVENT_TABLE()
 
 
-frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, pgSchemaObject *obj)
+frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, pgSchemaObject *obj, bool pkAscending)
 : pgFrame(NULL, _title)
 {
     closing = false;
@@ -261,7 +261,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
             orderBy=wxT("oid");
         if (!orderBy.IsEmpty())
         {
-            if (ascending)
+            if (pkAscending)
                 orderBy += wxT(" ASC");
             else
                 orderBy += wxT(" DESC");
@@ -390,11 +390,6 @@ void frmEditGrid::SetLimit(const int rowlimit)
         else
             cbLimit->SetValue(wxString::Format(wxPLURAL("%i row", "%i rows", limit), limit));
     }
-}
-
-void frmEditGrid::SetAscending(const bool ascendingin)
-{
-    ascending = ascendingin;
 }
 
 void frmEditGrid::OnLabelRightClick(wxGridEvent& event)
@@ -3113,9 +3108,8 @@ wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filte
             + wxT(") - ") + db->GetName()
             + wxT(" - ") + obj->GetFullIdentifier();
 
-        frmEditGrid *eg= new frmEditGrid(form, txt, conn, (pgSchemaObject*)obj);
+        frmEditGrid *eg= new frmEditGrid(form, txt, conn, (pgSchemaObject*)obj, pkAscending);
         eg->SetLimit(rowlimit);
-        eg->SetAscending(pkAscending);
         eg->ShowForm(filter);
         return eg;
     }
