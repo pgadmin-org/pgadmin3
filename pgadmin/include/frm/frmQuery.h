@@ -271,7 +271,8 @@ enum
     CTL_NTBKGQB,
     CTL_SQLQUERYCBOX,
     CTL_DELETECURRENTBTN,
-    CTL_DELETEALLBTN
+    CTL_DELETEALLBTN,
+    CTL_SCRATCHPAD
 };
 
 ///////////////////////////////////////////////////////
