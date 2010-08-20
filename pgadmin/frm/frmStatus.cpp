@@ -529,6 +529,7 @@ void frmStatus::AddStatusPane()
     // and reinitialize column's width if we find a saved width
     statusPopupMenu = new wxMenu();
     wxListItem item;
+    item.SetMask(wxLIST_MASK_TEXT);
     int savedwidth;
     for (int col=0; col<statusList->GetColumnCount(); col++)
     {
@@ -617,6 +618,7 @@ void frmStatus::AddLockPane()
     // Get through the list of columns to build the popup menu
     lockPopupMenu = new wxMenu();
     wxListItem item;
+    item.SetMask(wxLIST_MASK_TEXT);
     int savedwidth;
     for (int col=0; col<lockList->GetColumnCount(); col++)
     {
@@ -716,6 +718,7 @@ void frmStatus::AddXactPane()
     // Get through the list of columns to build the popup menu
     xactPopupMenu = new wxMenu();
     wxListItem item;
+    item.SetMask(wxLIST_MASK_TEXT);
     int savedwidth;
     for (int col=0; col<xactList->GetColumnCount(); col++)
     {
