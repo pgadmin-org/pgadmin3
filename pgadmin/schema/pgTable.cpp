@@ -1220,6 +1220,13 @@ void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
         statistics->AddColumn(_("Last analyze"));
         statistics->AddColumn(_("Last autoanalyze"));
     }
+    if (GetConnection()->BackendMinimumVersion(9, 1))
+    {
+        statistics->AddColumn(_("Vacuum counter"));
+        statistics->AddColumn(_("Autovacuum counter"));
+        statistics->AddColumn(_("Analyze counter"));
+        statistics->AddColumn(_("Autoanalyze counter"));
+    }
     if (hasSize)
         statistics->AddColumn(_("Size"));
 
@@ -1228,6 +1235,8 @@ void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
         sql += wxT(", n_tup_hot_upd, n_live_tup, n_dead_tup");
     if (GetConnection()->BackendMinimumVersion(8, 2))
         sql += wxT(", last_vacuum, last_autovacuum, last_analyze, last_autoanalyze");
+    if (GetConnection()->BackendMinimumVersion(9, 1))
+        sql += wxT(", vacuum_count, autovacuum_count, analyze_count, autoanalyze_count");
     if (hasSize)
         sql += wxT(", pg_size_pretty(pg_relation_size(st.relid)")
                wxT(" + CASE WHEN cl.reltoastrelid = 0 THEN 0 ELSE pg_relation_size(cl.reltoastrelid) + COALESCE((SELECT SUM(pg_relation_size(indexrelid)) FROM pg_index WHERE indrelid=cl.reltoastrelid)::int8, 0) END")
@@ -1263,6 +1272,13 @@ void pgTableCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
                 statistics->SetItem(pos, i++, stats->GetVal(wxT("last_autovacuum")));
                 statistics->SetItem(pos, i++, stats->GetVal(wxT("last_analyze")));
                 statistics->SetItem(pos, i++, stats->GetVal(wxT("last_autoanalyze")));
+            }
+            if (GetConnection()->BackendMinimumVersion(9, 1))
+            {
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("vacuum_count")));
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("autovacuum_count")));
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("analyze_count")));
+                statistics->SetItem(pos, i++, stats->GetVal(wxT("autoanalyze_count")));
             }
             if (hasSize)
                 statistics->SetItem(pos, i, stats->GetVal(wxT("size")));
@@ -1316,6 +1332,15 @@ void pgTable::ShowStatistics(frmMain *form, ctlListView *statistics)
              wxT(", last_autoanalyze AS ") + qtIdent(_("Last Autoanalyze"));
     }
     
+    if (GetConnection()->BackendMinimumVersion(9, 1))
+    {
+        sql +=
+             wxT(", vacuum_count AS ") + qtIdent(_("Vacuum counter")) +
+             wxT(", autovacuum_count AS ") + qtIdent(_("Autovacuum counter")) +
+             wxT(", analyze_count AS ") + qtIdent(_("Analyze counter")) +
+             wxT(", autoanalyze_count AS ") + qtIdent(_("Autoanalyze counter"));
+    }
+
     if (GetConnection()->HasFeature(FEATURE_SIZE))
     {
         sql += wxT(", pg_size_pretty(pg_relation_size(stat.relid)) AS ") + qtIdent(_("Table Size"))
