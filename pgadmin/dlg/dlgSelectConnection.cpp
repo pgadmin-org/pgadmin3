@@ -25,26 +25,26 @@
 
 #define CTRLID_CBSERVER 4242
 #define CTRLID_CBDATABASE 4243
+#define CTRLID_CBUSERNAME 4244
+#define CTRLID_CBROLENAME 4245
 
 BEGIN_EVENT_TABLE(dlgSelectConnection, DialogWithHelp)
     EVT_COMBOBOX(CTRLID_CBSERVER,      dlgSelectConnection::OnChangeServer) 
     EVT_COMBOBOX(CTRLID_CBDATABASE,    dlgSelectConnection::OnChangeDatabase) 
 	EVT_TEXT(CTRLID_CBSERVER,          dlgSelectConnection::OnTextChange)
 	EVT_TEXT(CTRLID_CBDATABASE,        dlgSelectConnection::OnTextChange)
-	EVT_TEXT(XRCID("cbUsername"),      dlgSelectConnection::OnTextChange)
+	EVT_TEXT(CTRLID_CBUSERNAME,        dlgSelectConnection::OnTextChange)
     EVT_BUTTON (wxID_OK,               dlgSelectConnection::OnOK)
     EVT_BUTTON (wxID_CANCEL,           dlgSelectConnection::OnCancel)
 END_EVENT_TABLE()
 
 #define stUsername		CTRL_STATIC("stUsername")
-#define cbUsername		CTRL_COMBOBOX("cbUsername")
-#define cbRolename		CTRL_COMBOBOX("cbRolename")
-
 
 
 dlgSelectConnection::dlgSelectConnection(wxWindow *parent, frmMain *form) : 
 DialogWithHelp(form)
 {
+    long style = wxCB_DROPDOWN;
  	remoteServer = NULL;
 
     wxWindowBase::SetFont(settings->GetSystemFont());
@@ -53,8 +53,13 @@ DialogWithHelp(form)
     SetIcon(wxIcon(connect_xpm));
     RestorePosition();
 
-	cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65,5)), ConvertDialogToPixels(wxSize(135,12)), wxCB_DROPDOWN | wxCB_READONLY);
-	cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), NULL, wxCB_DROPDOWN | wxCB_READONLY);
+    if (form != NULL)
+        style |= wxCB_READONLY;
+
+	cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65,5)), ConvertDialogToPixels(wxSize(135,12)), style);
+	cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), NULL, style);
+	cbUsername = new wxComboBox(this, CTRLID_CBUSERNAME, wxEmptyString, ConvertDialogToPixels(wxPoint(65,35)), ConvertDialogToPixels(wxSize(135,12)), NULL, style);
+	cbRolename = new wxComboBox(this, CTRLID_CBROLENAME, wxEmptyString, ConvertDialogToPixels(wxPoint(65,50)), ConvertDialogToPixels(wxSize(135,12)), NULL, style);
 
 	if (form == NULL)
 	{
