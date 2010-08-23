@@ -510,7 +510,8 @@ bool pgAdmin3::OnInit()
             if (!conn)
                 return false;
 
-            frmStatus *fq = new frmStatus(NULL, wxEmptyString, conn);
+            wxString txt = _("Server Status - ") + conn->GetName();
+            frmStatus *fq = new frmStatus(NULL, txt, conn);
             fq->Go();
         }
 
