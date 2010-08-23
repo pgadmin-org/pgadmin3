@@ -41,7 +41,7 @@ private:
     pgServer *remoteServer;
     wxBitmapComboBox *cbConnection;
 	ctlComboBoxFix *cbServer;
-	wxComboBox     *cbDatabase;
+	wxComboBox     *cbDatabase, *cbUsername;
 
     DECLARE_EVENT_TABLE()
 };
