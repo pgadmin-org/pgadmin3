@@ -456,7 +456,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		esac
 
 		
-
+                # Check for PQexec (basic sanity check!)
 		if test "$BUILD_STATIC" = "yes"
 		then
 			AC_MSG_CHECKING(for PQexec in libpq.a)
@@ -475,6 +475,24 @@ AC_DEFUN([SETUP_POSTGRESQL],
 			AC_LANG_RESTORE	 
 		fi
 
+                # Check for PQconninfoParse
+                if test "$BUILD_STATIC" = "yes"
+                then
+                        AC_MSG_CHECKING(for PQconninfoParse in libpq.a)
+                        if test "$(nm ${PG_LIB}/libpq.a | grep -c PQconninfoParse)" -gt 0
+                        then
+                                AC_MSG_RESULT(present)
+                                PG_LIBPQ="yes"
+                        else
+                                AC_MSG_RESULT(not present)
+                                PG_LIBPQ="no"
+                        fi
+                else
+                        AC_LANG_SAVE
+                        AC_LANG_C
+                        AC_CHECK_LIB(pq, PQconninfoParse, [PG_LIBPQ=yes], [PG_LIBPQ=no])
+                        AC_LANG_RESTORE
+                fi
 
 		AC_LANG_SAVE
 		AC_LANG_C
@@ -607,7 +625,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 			AC_MSG_RESULT(failed)
 			LDFLAGS="$PGSQL_OLD_LDFLAGS"
 			CPPFLAGS="$PGSQL_OLD_CPPFLAGS"
-			AC_MSG_ERROR([you must specify a valid PostgreSQL installation with --with-pgsql=DIR])
+			AC_MSG_ERROR([you must specify a valid PostgreSQL 8.4+ installation with --with-pgsql=DIR])
 		fi
 
 		if test "$PG_SSL" = "yes"
