@@ -2,7 +2,7 @@
 <resource>
   <object class="wxDialog" name="dlgServer">
     <title></title>
-    <size>220,300d</size>
+    <size>220,240d</size>
     <style>wxDEFAULT_DIALOG_STYLE|wxCAPTION|wxSYSTEM_MENU|wxRESIZE_BORDER|wxRESIZE_BOX|wxTHICK_FRAME</style>
     <object class="wxFlexGridSizer">
       <cols>1</cols>
@@ -10,17 +10,16 @@
       <growablecols>0</growablecols>
       <object class="sizeritem">
         <object class="wxNotebook" name="nbNotebook">
-          <size>216,275d</size>
+          <size>216,215d</size>
           <selected>0</selected>
           <object class="notebookpage">
             <label>Properties</label>
             <object class="wxPanel" name="pnlProperties">
               <object class="wxFlexGridSizer">
                 <cols>2</cols>
-                <rows>14</rows>
+                <rows>10</rows>
                 <vgap>5</vgap>
                 <hgap>5</hgap>
-                <growablerows>10</growablerows>
                 <growablecols>1</growablecols>
                 <object class="sizeritem">
                   <object class="wxStaticText" name="stDescription">
@@ -130,72 +129,6 @@
                   <border>4</border>
                 </object>
                 <object class="sizeritem">
-                  <object class="wxStaticText" name="stRolename">
-                    <label>Rolename</label>
-                  </object>
-                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxTextCtrl" name="txtRolename"/>
-                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stRestore">
-                    <label>Restore env?</label>
-                  </object>
-                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxCheckBox" name="chkRestore">
-                    <label></label>
-                    <checked>1</checked>
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stDbRestr">
-                    <label>DB restriction</label>
-                  </object>
-                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxTextCtrl" name="txtDbRestriction"/>
-                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stService">
-                    <label>Service</label>
-                  </object>
-                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxTextCtrl" name="txtService"/>
-                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxStaticText" name="stTryConnect">
-                    <label>Connect now</label>
-                  </object>
-                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
-                  <object class="wxCheckBox" name="chkTryConnect">
-                    <label></label>
-                    <checked>1</checked>
-                  </object>
-                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
-                  <border>4</border>
-                </object>
-                <object class="sizeritem">
                   <object class="wxStaticText" name="stColour">
                     <label>Colour</label>
                   </object>
@@ -220,6 +153,85 @@
                     <content/>
                   </object>
                   <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+              </object>
+            </object>
+          </object>
+          <object class="notebookpage">
+            <label>Advanced</label>
+            <object class="wxPanel" name="pnlOptional">
+              <object class="wxFlexGridSizer">
+                <cols>2</cols>
+                <rows>5</rows>
+                <vgap>5</vgap>
+                <hgap>5</hgap>
+                <growablerows>3</growablerows>
+                <growablecols>1</growablecols>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stTryConnect">
+                    <label>Connect now</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxCheckBox" name="chkTryConnect">
+                    <label></label>
+                    <checked>1</checked>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stRestore">
+                    <label>Restore env?</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxCheckBox" name="chkRestore">
+                    <label></label>
+                    <checked>1</checked>
+                  </object>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stRolename">
+                    <label>Rolename</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtRolename"/>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stDbRestr">
+                    <label>DB restriction</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtDbRestriction"/>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxTOP|wxLEFT|wxRIGHT</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxStaticText" name="stService">
+                    <label>Service</label>
+                  </object>
+                  <flag>wxALIGN_CENTRE_VERTICAL|wxALL</flag>
+                  <border>4</border>
+                </object>
+                <object class="sizeritem">
+                  <object class="wxTextCtrl" name="txtService"/>
+                  <flag>wxEXPAND|wxALIGN_CENTRE_VERTICAL|wxALL</flag>
                   <border>4</border>
                 </object>
               </object>
