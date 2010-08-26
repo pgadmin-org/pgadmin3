@@ -648,6 +648,7 @@ bool pgAdmin3::OnInit()
                             wxLogInfo(wxT("Auto-loading file: %s"), fn.c_str());
                         frmQuery *fq = new frmQuery(winMain, wxEmptyString, conn, wxEmptyString, fn);
                         fq->Go();
+                        winMain->AddFrame(fq);
                     }
                 }
             }
