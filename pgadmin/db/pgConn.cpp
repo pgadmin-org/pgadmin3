@@ -124,6 +124,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
     dbHost = server;
     dbHostName = server;
 
+#ifdef HAVE_CONNINFO_PARSE
     if (!applicationname.IsEmpty())
     {
         // Check connection string with application_name
@@ -138,6 +139,7 @@ pgConn::pgConn(const wxString& server, const wxString& database, const wxString&
             connstr = connstr_with_applicationname;
         }
     }
+#endif
 	
     // Open the connection
     wxString cleanConnStr = connstr;

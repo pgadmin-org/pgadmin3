@@ -482,15 +482,15 @@ AC_DEFUN([SETUP_POSTGRESQL],
                         if test "$(nm ${PG_LIB}/libpq.a | grep -c PQconninfoParse)" -gt 0
                         then
                                 AC_MSG_RESULT(present)
-                                PG_LIBPQ="yes"
+                                HAVE_CONNINFO_PARSE="yes"
                         else
                                 AC_MSG_RESULT(not present)
-                                PG_LIBPQ="no"
+                                HAVE_CONNINFO_PARSE="no"
                         fi
                 else
                         AC_LANG_SAVE
                         AC_LANG_C
-                        AC_CHECK_LIB(pq, PQconninfoParse, [PG_LIBPQ=yes], [PG_LIBPQ=no])
+                        AC_CHECK_LIB(pq, PQconninfoParse, [HAVE_CONNINFO_PARSE=yes], [HAVE_CONNINFO_PARSE=no])
                         AC_LANG_RESTORE
                 fi
 
@@ -631,6 +631,10 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		if test "$PG_SSL" = "yes"
 		then
 			CPPFLAGS="$CPPFLAGS -DSSL"
+		fi
+		if test "$HAVE_CONNINFO_PARSE" = "yes"
+		then
+			CPPFLAGS="$CPPFLAGS -DHAVE_CONNINFO_PARSE"
 		fi
 	fi
 ])
@@ -815,6 +819,13 @@ AC_DEFUN([SUMMARY],
 	echo "PostgreSQL directory:			$PG_HOME"
 	echo "PostgreSQL pg_config binary:		$PG_CONFIG"
 	echo "PostgreSQL version:			$PG_VERSION"
+	echo
+	if test "$HAVE_CONNINFO_PARSE" = yes
+	then
+		echo "PostgreSQL PQconninfoParse support:     Present"
+	else
+		echo "PostgreSQL PQconninfoParse support:     Missing"
+	fi
 	if test "$PG_SSL" = yes
 	then
 		echo "PostgreSQL SSL support:			Present"
