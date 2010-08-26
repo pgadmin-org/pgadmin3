@@ -28,6 +28,7 @@
 pgDatabase::pgDatabase(const wxString& newName)
 : pgServerObject(databaseFactory, newName) 
 {
+    useServerConnection = true;
     allowConnections = true;
     connected = false;
     conn = NULL;
@@ -260,7 +261,7 @@ void pgDatabase::ShowHint(frmMain *form, bool force)
 
 void pgDatabase::ShowStatistics(frmMain *form, ctlListView *statistics)
 {
-    bool hasSize=GetConnection()->HasFeature(FEATURE_SIZE);
+    bool hasSize=connection()->HasFeature(FEATURE_SIZE);
 
     wxString sql=wxT("SELECT numbackends AS ") + qtIdent(_("Backends")) +
 	      wxT(", xact_commit AS ") + qtIdent(_("Xact Committed")) +
@@ -268,7 +269,7 @@ void pgDatabase::ShowStatistics(frmMain *form, ctlListView *statistics)
 	      wxT(", blks_read AS ") + qtIdent(_("Blocks Read")) +
 	      wxT(", blks_hit AS ") + qtIdent(_("Blocks Hit"));
 
-	if (GetConnection()->BackendMinimumVersion(8,3))
+	if (connection()->BackendMinimumVersion(8,3))
 		sql += wxT(", tup_returned AS ") + qtIdent(_("Tuples Returned")) +
 	      wxT(", tup_fetched AS ") + qtIdent(_("Tuples Fetched")) +
 	      wxT(", tup_inserted AS ") + qtIdent(_("Tuples Inserted")) +
