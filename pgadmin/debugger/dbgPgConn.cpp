@@ -208,6 +208,7 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
     connectParams.Trim(true);
     connectParams.Trim(false);
 
+#ifdef HAVE_CONNINFO_PARSE
     if (!applicationname.IsEmpty())
     {
         // Check connection string with application_name
@@ -224,6 +225,7 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
             connectParams = connectParams_with_applicationname;
         }
     }
+#endif
 	
     m_frame->getStatusBar()->SetStatusText( wxString::Format(_( "Connecting to %s" ), msg.c_str()), 1 );	
     wxCharBuffer cstrUTF=connectParams.mb_str(wxConvUTF8);
