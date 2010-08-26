@@ -2884,7 +2884,7 @@ wxWindow *serverStatusFactory::StartDialog(frmMain *form, pgObject *obj)
 {
 
     pgServer *server=obj->GetServer();
-    wxString applicationname = _("pgAdmin - Server Status");
+    wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Server Status");
 
     pgConn *conn = server->CreateConn(wxEmptyString, 0, applicationname);
     if (conn)

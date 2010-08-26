@@ -47,7 +47,7 @@ END_EVENT_TABLE()
 frmMainConfig::frmMainConfig(frmMain *parent, pgServer *server)
 : frmConfig(parent, BCE_TITLE, 0)
 {
-    wxString applicationname = _("pgAdmin - Configuration Editor");
+    wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Configuration Editor");
     if (server)
         conn = server->CreateConn(wxEmptyString, 0, applicationname);
 

@@ -663,21 +663,21 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 
         if (database.IsEmpty())
         {
-            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, rolename, ssl, 0, _("pgAdmin - Browser"));
+            conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"));
             if (conn->GetStatus() == PGCONN_OK)
                 database=DEFAULT_PG_DATABASE;
             else if (conn->GetStatus() == PGCONN_BAD && conn->GetLastError().Find(
                                 wxT("database \"") DEFAULT_PG_DATABASE wxT("\" does not exist")) >= 0)
             {
                 delete conn;
-                conn = new pgConn(GetName(), wxT("template1"), username, password, port, rolename, ssl, 0, _("pgAdmin - Browser"));
+                conn = new pgConn(GetName(), wxT("template1"), username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"));
                 if (conn && conn->GetStatus() == PGCONN_OK)
                     database=wxT("template1");
             }
         }
         else
         {
-            conn = new pgConn(GetName(), database, username, password, port, rolename, ssl, 0, _("pgAdmin - Browser"));
+            conn = new pgConn(GetName(), database, username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"));
             if (!conn)
             {
                 form->EndMsg(false);

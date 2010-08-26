@@ -982,7 +982,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
         if (rc == wxID_OK)
         {
             bool createdNewConn;
-            wxString applicationname = _("pgAdmin - Query Tool");
+            wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Query Tool");
             conn = dlg.CreateConn(applicationname, createdNewConn);
             if (conn && createdNewConn)
             {
@@ -2965,7 +2965,7 @@ void frmQuery::OnDeleteAll(wxCommandEvent& event)
 wxWindow *queryToolBaseFactory::StartDialogSql(frmMain *form, pgObject *obj, const wxString &sql)
 {
     pgDatabase *db=obj->GetDatabase();
-    wxString applicationname = _("pgAdmin - Query Tool");
+    wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Query Tool");
     pgConn *conn = db->CreateConn(applicationname);
     if (conn)
     {

@@ -435,7 +435,7 @@ bool pgAdmin3::OnInit()
             // -S specified, but not -s. Open the server status window but do *not* open the main window
             pgConn *conn = NULL;
             wxString connstr;
-            wxString applicationname = _("pgAdmin - Server Status");
+            wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Server Status");
 
             if (cmdParser.Found(wxT("S")))
             {
@@ -526,7 +526,7 @@ bool pgAdmin3::OnInit()
             // -q specified, but not -s. Open a query tool but do *not* open the main window
             pgConn *conn = NULL;
             wxString connstr;
-            wxString applicationname = _("pgAdmin - Query Tool");
+            wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Query Tool");
 
 #ifdef __WXMAC__
             if (cmdParser.Found(wxT("q")) || !macFileToOpen.IsEmpty())
@@ -642,7 +642,7 @@ bool pgAdmin3::OnInit()
                 if (srv && cmdParser.Found(wxT("q")))
                 {
                     pgConn *conn;
-                    wxString applicationname = _("pgAdmin - Query Tool");
+                    wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Query Tool");
                     conn = srv->CreateConn(wxEmptyString, 0, applicationname);
                     if (conn)
                     {
