@@ -967,6 +967,7 @@ void frmStatus::OnCopyQuery(wxCommandEvent& ev)
         {
             frmQuery *fq = new frmQuery(mainForm, wxEmptyString, conn, text);
             fq->Go();
+            mainForm->AddFrame(fq);
         }
     }
 }
