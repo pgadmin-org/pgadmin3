@@ -363,43 +363,13 @@ static bool needsQuoting(wxString& value, bool forTypes)
 
     // is it a keyword?
     const ScanKeyword *sk=ScanKeywordLookup(value.ToAscii());
-    if (sk)
-    {
-        if (forTypes)
-        {
-            switch (sk->value)
-            {
-                case ANY:
-                case BIGINT:
-                case BIT:
-                case BOOLEAN_P:
-                case CHAR_P:
-                case CHARACTER:
-                case DECIMAL:
-                case DOUBLE_P:
-                case FLOAT_P:
-                case INT_P:
-                case INTEGER:
-                case INTERVAL:
-                case NUMERIC:
-                case REAL:
-                case SET:
-                case SMALLINT:
-                case TEXT_P:
-                case TIME:
-                case TIMESTAMP:
-                case TRIGGER:
-                case VARCHAR:
-                    break;
-                default:
-                    return true;
-            }
-        }
-        else
-            return true;
-    }
-
-    return false;
+    if (!sk)
+        return false;
+    if (sk->category == UNRESERVED_KEYWORD)
+        return false;
+    if (forTypes && sk->category == COL_NAME_KEYWORD)
+        return false;
+    return true;
 }
 
 
