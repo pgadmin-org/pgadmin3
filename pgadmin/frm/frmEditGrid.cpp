@@ -721,6 +721,14 @@ void frmEditGrid::OnPaste(wxCommandEvent &ev)
                     else
                         boolEd->Set3StateValue(wxCHK_UNDETERMINED);
                 }
+                else if (ed->IsKindOf(CLASSINFO(wxTextCtrl)))
+                {
+                    wxTextCtrl *txtEd = (wxTextCtrl *)ed;
+                    long x, y;
+                    txtEd->GetSelection(&x, &y);
+                    txtEd->Replace(x, y, data.GetText());
+                    //txtEd->SetValue(data.GetText());
+                }
             }  
             wxTheClipboard->Close();
         }
