@@ -25,7 +25,14 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
     needSchema = isDup;
     schema = nsp;
 
-	name = typname;
+    // Above 7.4, format_type also sends the schema name if it's not included
+    // in the search_path, so we need to skip it in the typname
+    if (typname.Contains(schema + wxT("\".")))
+        name = typname.Mid(schema.Len()+3); // "+2" because of the two double quotes
+    else if (typname.Contains(schema + wxT(".")))
+        name = typname.Mid(schema.Len()+1);
+    else
+        name = typname;
 
     if (name.StartsWith(wxT("_")))
     {
@@ -37,8 +44,11 @@ pgDatatype::pgDatatype(const wxString &nsp, const wxString &typname, bool isDup,
 	{
 		if (!numdims)
 			numdims=1;
-		name=name.Left(typname.Len()-2);
+		name=name.Left(name.Len()-2);
 	}
+
+    if (name.StartsWith(wxT("\"")) && name.EndsWith(wxT("\"")))
+        name = name.Mid(1, name.Len()-2);
 
     if (numdims > 0)
     {
