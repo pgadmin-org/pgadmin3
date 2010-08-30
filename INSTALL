@@ -122,6 +122,11 @@ Building:
    If any of the prerequisite components are installed in locations that the 
    configure script cannot find, you may specify their locations on the command
    line. See the configure help (./configure --help) for details.
+
+4) After building pgAdmin, you will need to build an application bundle in
+   order to launch the application.  One way to do this is to execute the
+   script pkg/mac/debug-bundle.sh; you can then launch pgAdmin using the open
+   command (e.g. open pgAdmin3-Debug.app).
    
 Windows
 -------
@@ -136,6 +141,8 @@ You will need:
 - libxml2 2.6.18 or above from http://www.xmlsoft.org/
 - libxslt 1.1.x or above from http://www.xmlsoft.org/
 - iconv 1.9.x or above from http://gnuwin32.sourceforge.net/
+  (note: as of this writing, the correct iconv package to download is
+  the one called "Developer Files")
 - PostgreSQL 8.4 or above from http://www.postgresql.org/
 
 Precompiled XML/XSLT and dependency packages for Windows can be found at 
@@ -146,19 +153,41 @@ Building:
 
 1) Unpack the wxMSW source code to a convenient location pointed to by the 
    %WXWIN% environment variable.
-   
-2) Install PostgreSQL to a convenient location pointed to by the %PGDIR%
+
+2) Build wxMSW.  To do this, first copy the file
+   xtra\wx-build\setup0-msw-2.8.h to the following three locations:
+
+   %WXWIN%\include\wx\setup0.h
+   %WXWIN%\include\wx\setup.h
+   %WXWIN%\include\wx\msw\setup.h
+
+   Next, from within Visual C++, open %WXWIN%\build\msw\wx.dsw and select
+   "Batch Build" from the "Build" menu.  Click on "Configuration" to sort by
+   that column, and check off all projects with configuration "Unicode Debug"
+   and "Unicode Release".  Click "Build".
+
+3) Install PostgreSQL to a convenient location pointed to by the %PGDIR%
    environment variable.
    
-3) Unpack the pgAdmin source code to a convenient location.
+4) Unpack the pgAdmin source code to a convenient location.
 
-4) From a Visual Studio command prompt, run the wxWidgets build script included
-   in the pgAdmin source tree at xtra/wx-build/build-wxmsw.bat
-   
-5) Unpack the libxml2, libxslt and dependency binaries in a directory pointed to
-   by the %PGBUILD% environment variable.
+5) Set up a pgbuild directory in a location of your choice (e.g. C:\pgbuild)
+   and configure the %PGBUILD% environment variable to point to it.  This
+   directory must have subdirectories called libxslt, libxml2, and iconv, each
+   of which must contain the files from the corresponding package.  The
+   archives will probably unpack with some longer name, like
+   libxslt-1.1.26.win32; just rename them to remove the suffix.
+
+   Some versions of the iconv package ship the iconv libraries under different
+   names than what pgAdmin expects.  If pgAdmin can't find the iconv
+   libraries, you may need to rename libiconv.a to iconv_a.lib and
+   libiconv.dll.a to iconv.lib.
    
 6) Start Visual C++ and load the pgAdmin solution file. Build the required 
    targets.
 
+7) To run the resulting executable, you'll need to copy all of the
+   prerequisite DLLs from the PostgreSQL installation and/or the various
+   subdirectories of %PGBUILD% into the directory where the EXE file is
+   located, or have those directories in your path.
 
