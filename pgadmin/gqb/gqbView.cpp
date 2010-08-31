@@ -36,6 +36,7 @@
 #include "images/gqbJoinCursor.xpm"
 
 BEGIN_EVENT_TABLE(gqbView, wxScrolledWindow)
+EVT_SIZE(gqbView::OnSize)
 EVT_PAINT(gqbView::onPaint)
 EVT_MOTION(gqbView::onMotion)
 EVT_LEFT_DOWN(gqbView::onMotion)
@@ -740,17 +741,37 @@ void gqbView::updateModelSize(gqbQueryObject* obj, bool updateAnyWay)
             modelSize.SetHeight(h);
     }
     bool updateView = false;
+    int viewW, viewH;
+    GetSize(&viewW, &viewH);
 
-    if ((modelSize.GetWidth() > GQB_MIN_WIDTH || canvasSize.GetWidth() > GQB_MIN_WIDTH) &&
+    if (viewW < GQB_MIN_WIDTH)
+        viewW = GQB_MIN_WIDTH;
+
+    if (viewH < GQB_MIN_HEIGHT)
+        viewH = GQB_MIN_HEIGHT;
+
+    if ((modelSize.GetWidth() > viewW || canvasSize.GetWidth() > viewW) &&
          modelSize.GetWidth() != canvasSize.GetWidth())
     {
-        canvasSize.SetWidth((modelSize.GetWidth() > GQB_MIN_WIDTH ? modelSize.GetWidth() : GQB_MIN_WIDTH));
+        canvasSize.SetWidth((modelSize.GetWidth() > viewW ? modelSize.GetWidth() : viewW));
         updateView = true;
     }
-    if ((modelSize.GetHeight() > GQB_MIN_HEIGHT || canvasSize.GetHeight() > GQB_MIN_HEIGHT) &&
+    if ((modelSize.GetHeight() > viewH || canvasSize.GetHeight() > viewH ) &&
          modelSize.GetHeight() != canvasSize.GetHeight())
     {
-        canvasSize.SetHeight((modelSize.GetHeight() > GQB_MIN_HEIGHT ? modelSize.GetHeight() : GQB_MIN_HEIGHT));
+        canvasSize.SetHeight((modelSize.GetHeight() > viewH ? modelSize.GetHeight() : viewH));
+        updateView = true;
+    }
+
+    if (canvasSize.GetWidth() < viewW)
+    {
+        canvasSize.SetWidth(viewW);
+        updateView = true;
+    }
+
+    if (canvasSize.GetHeight() < viewH)
+    {
+        canvasSize.SetHeight(viewH);
         updateView = true;
     }
 
@@ -758,6 +779,14 @@ void gqbView::updateModelSize(gqbQueryObject* obj, bool updateAnyWay)
     {
         SetVirtualSize(canvasSize);
     }
+
+    FitInside();
+    Refresh();
+}
+
+void gqbView::OnSize(wxSizeEvent& event)
+{
+    updateModelSize(NULL, true);
 }
 
 

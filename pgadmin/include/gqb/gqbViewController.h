@@ -18,9 +18,6 @@
 #include <wx/dnd.h>
 #include <wx/dataobj.h>
 
-#define GQB_MIN_WIDTH  1280
-#define GQB_MIN_HEIGHT 800
-
 // App headers
 #include "gqb/gqbObject.h"
 #include "gqb/gqbModel.h"
@@ -125,6 +122,7 @@ public:
     void onErase(wxEraseEvent& event);
     void onEraseBackGround(wxEraseEvent& event);
     void OnKeyDown(wxKeyEvent& event);
+    void OnSize(wxSizeEvent& event);
     wxPanel* getColsGridPanel(){ return (wxPanel*)projectionPanel; };
     wxPanel* getCriteriaPanel(){ return (wxPanel*)criteriaPanel; };
     wxPanel* getOrderPanel(){ return (wxPanel*)orderPanel; };
