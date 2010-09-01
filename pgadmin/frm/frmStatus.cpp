@@ -1906,20 +1906,45 @@ void frmStatus::addLogLine(const wxString &str, bool formatted, bool csv_log_for
 {
     int row=logList->GetItemCount();
 
+    int idxTimeStampCol = -1, idxLevelCol = -1;
+    int idxLogEntryCol = 0;
+
+    if (logFormatKnown)
+    {
+        // Known Format first will be level, then Log entry
+        // idxLevelCol : 0, idxLogEntryCol : 1, idxTimeStampCol : -1
+        idxLevelCol++;
+        idxLogEntryCol++;
+        if (logHasTimestamp)
+        {
+            // idxLevelCol : 1, idxLogEntryCol : 2, idxTimeStampCol : 0
+            idxTimeStampCol++;
+            idxLevelCol++;
+            idxLogEntryCol++;
+        }
+    }
+
     if (!logFormatKnown)
         logList->AppendItem(-1, str);
     else if ((!csv_log_format) && str.Find(':') < 0)
     {
         // Must be a continuation of a previous line.
         logList->InsertItem(row, wxEmptyString, -1);
-        logList->SetItem(row, 2, str);
+        logList->SetItem(row, idxLogEntryCol, str);
     }
     else if (!formatted)
     {
         // Not from a log, from pgAdmin itself.
-        logList->InsertItem(row, wxEmptyString, -1);
-        logList->SetItem(row, 1, str.BeforeFirst(':'));
-        logList->SetItem(row, 2, str.AfterFirst(':'));
+        if (logHasTimestamp)
+        {
+            logList->InsertItem(row, wxEmptyString, -1);
+            logList->SetItem(row, idxLevelCol, str.BeforeFirst(':'));
+        }
+        else
+        {
+            logList->InsertItem(row, str.BeforeFirst(':'), -1);
+        }
+        logList->SetItem(row, idxLogEntryCol, str.AfterFirst(':'));
     }
     else // formatted log
     { 
@@ -2164,14 +2189,14 @@ void frmStatus::addLogLine(const wxString &str, bool formatted, bool csv_log_for
 
                     int pos = ts.Find(logFormat.c_str()[logFmtPos+2], true);
                     logList->InsertItem(row, ts.Left(pos), -1);
-                    logList->SetItem(row, 1, ts.Mid(pos + logFormat.Length() - logFmtPos -2));
-                    logList->SetItem(row, 2, rest.Mid(2));
+                    logList->SetItem(row, idxLevelCol, ts.Mid(pos + logFormat.Length() - logFmtPos -2));
+                    logList->SetItem(row, idxLogEntryCol, rest.Mid(2));
                 }
                 else
                 {
                     logList->InsertItem(row, wxEmptyString, -1);
-                    logList->SetItem(row, 1, str.BeforeFirst(':'));
-                    logList->SetItem(row, 2, str.AfterFirst(':').Mid(2));
+                    logList->SetItem(row, idxLevelCol, str.BeforeFirst(':'));
+                    logList->SetItem(row, idxLogEntryCol, str.AfterFirst(':').Mid(2));
                 }
             }
             else
@@ -2188,7 +2213,7 @@ void frmStatus::addLogLine(const wxString &str, bool formatted, bool csv_log_for
                 else
                 {
                     logList->InsertItem(row, rest.BeforeFirst(':'), -1);
-                    logList->SetItem(row, 1, rest.AfterFirst(':').Mid(2));
+                    logList->SetItem(row, idxLogEntryCol, rest.AfterFirst(':').Mid(2));
                 }
             }
         }
