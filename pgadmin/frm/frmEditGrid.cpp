@@ -111,6 +111,9 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     SetStatusBarPane(-1);
 
     sqlGrid = new ctlSQLEditGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
+#ifdef __WXMSW__
+    sqlGrid->SetDefaultRowSize(sqlGrid->GetDefaultRowSize()+2, true);
+#endif
 
     // Set up toolbar
     toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
