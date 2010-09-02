@@ -2570,42 +2570,45 @@ bool sqlTable::StoreLine()
                     + wxT("(") + colList 
                     + wxT(") VALUES (") + valList
                     + wxT(")"));
-                if (set)
+				if (set)
                 {
-                    if (hasOids)
-                        line->cols[0] = NumToStr((long)set->GetInsertedOid());
-                    delete set;
+					if (set->GetInsertedCount() > 0)
+					{
+                        if (hasOids)
+                            line->cols[0] = NumToStr((long)set->GetInsertedOid());
+                        delete set;
 
-                    done=true;
-                    rowsStored++;
-                    ((wxFrame*)GetView()->GetParent())->SetStatusText(wxString::Format(wxT("%d rows."), GetNumberStoredRows()));
-                    if (rowsAdded == rowsStored)
-                        GetView()->AppendRows();
+                        done=true;
+                        rowsStored++;
+                        ((wxFrame*)GetView()->GetParent())->SetStatusText(wxString::Format(wxT("%d rows."), GetNumberStoredRows()));
+                        if (rowsAdded == rowsStored)
+                            GetView()->AppendRows();
 
-                    // Read back what we inserted to get default vals
-                    wxString key=MakeKey(line);
+                        // Read back what we inserted to get default vals
+                        wxString key=MakeKey(line);
 
-                    if (key.IsEmpty())
-                    {
-                        // That's a problem: obviously, the key generated isn't present
-                        // because it's serial or default or otherwise generated in the backend
-                        // we don't get.
-                        // That's why the whole line is declared readonly.
-
-                        line->readOnly=true;
-                    }
-                    else
-                    {
-                        set=connection->ExecuteSet(
-                            wxT("SELECT * FROM ") + tableName + 
-                            wxT(" WHERE ") + key);
-                        if (set)
+                        if (key.IsEmpty())
                         {
-                            for (i=(hasOids?1:0) ; i < nCols ; i++)
+                            // That's a problem: obviously, the key generated isn't present
+                            // because it's serial or default or otherwise generated in the backend
+                            // we don't get.
+                            // That's why the whole line is declared readonly.
+
+                            line->readOnly=true;
+                        }
+                        else
+                        {
+                            set=connection->ExecuteSet(
+                                wxT("SELECT * FROM ") + tableName + 
+                                wxT(" WHERE ") + key);
+                            if (set)
                             {
-                                line->cols[i] = set->GetVal(columns[i].name);
+                                for (i=(hasOids?1:0) ; i < nCols ; i++)
+                                {
+                                    line->cols[i] = set->GetVal(columns[i].name);
+                                }
+                                delete set;
                             }
-                            delete set;
                         }
                     }
                 }
