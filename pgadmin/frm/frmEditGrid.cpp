@@ -845,17 +845,29 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
             {
                 if( keycode!=WXK_NUMPAD_ENTER )
                 {
+                    // if we are at the end of the row
                     if (curcol == sqlGrid->GetNumberCols()-1)
                     {
+                        // we first get to the first column of the next row
                         curcol=0;
                         currow++;
-                        // locate first editable column
-                        while (sqlGrid->IsReadOnly(currow, curcol) && curcol < sqlGrid->GetNumberCols())
-                            curcol++;
-                        // next line is completely read-only
-                        if (curcol == sqlGrid->GetNumberCols())
-                            return;
-
+                        
+                        // * if the displayed object is a table,
+                        //   we first need to make sure that the new selected
+                        //   cell is read/write, otherwise we need to select
+                        //   the next one
+                        // * if the displayed object is not a table (for
+                        //   example, a view), all cells are readonly, so
+                        //   we skip that part
+                        if (relkind == 'r')
+                        {
+                            // locate first editable column
+                            while (curcol < sqlGrid->GetNumberCols() && sqlGrid->IsReadOnly(currow, curcol))
+                                curcol++;
+                            // next line is completely read-only
+                            if (curcol == sqlGrid->GetNumberCols())
+                                return;
+                        }
                     }
                     else
                         curcol++;
