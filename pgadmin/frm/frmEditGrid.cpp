@@ -170,7 +170,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     editMenu->AppendSeparator();
     editMenu->Append(MNU_COPY, _("&Copy\tCtrl-C"),_("Copy selected cells to clipboard."));
     editMenu->Append(MNU_PASTE, _("&Paste\tCtrl-V"),_("Paste data from the clipboard."));
-    editMenu->Append(MNU_DELETE, _("&Delete\tDel"),_("Delete selected rows."));
+    editMenu->Append(MNU_DELETE, _("&Delete"),_("Delete selected rows."));
     editMenu->Enable(MNU_UNDO, false);
     editMenu->Enable(MNU_DELETE, false);
 
@@ -1083,24 +1083,22 @@ void frmEditGrid::OnDelete(wxCommandEvent& event)
             wxStyledTextCtrl *text = (wxStyledTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
             if (text && text->GetCurrentPos() <= text->GetTextLength())
             {
-                int len = text->GetSelectedText().Length();
-                if (len)
-                    text->SetSelection(text->GetCurrentPos(), text->GetCurrentPos() + len);
-                else
-                    text->SetSelection(text->GetCurrentPos(), text->GetCurrentPos() + 1);
-                text->Clear(); 
+                if (text->GetSelectionStart() == text->GetSelectionEnd())
+                    text->SetSelection(text->GetSelectionStart(), text->GetSelectionStart()+1);
+                text->Clear();
             }
         }
         else
         {
             wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
-            if (text && text->GetInsertionPoint() <= text->GetLastPosition())
+            if (text)
             {
-                int len = text->GetStringSelection().Length();
-                if (len)
-                    text->Remove(text->GetInsertionPoint(), text->GetInsertionPoint() + len);
+                long x, y;
+                text->GetSelection(&x, &y);
+                if (x != y)
+                    text->Remove(x, x+y+1);
                 else
-                    text->Remove(text->GetInsertionPoint(), text->GetInsertionPoint() + 1);
+                    text->Remove(x, x+1);
             }
         }
         return;
