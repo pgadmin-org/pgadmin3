@@ -856,7 +856,8 @@ void dlgDirectDbg::OnDebug( wxCommandEvent & event )
 
     m_codeWindow = m_parent->addDebug( *debugProps );
 
-    m_codeWindow->startLocalDebugging();
+    if (m_codeWindow)
+        m_codeWindow->startLocalDebugging();
 
     this->Show( false );
 }
