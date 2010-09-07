@@ -983,10 +983,10 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
         {
             bool createdNewConn;
             wxString applicationname = appearanceFactory->GetLongAppName() + _(" - Query Tool");
-            conn = dlg.CreateConn(applicationname, createdNewConn);
-            if (conn && createdNewConn)
+            pgConn *newconn = dlg.CreateConn(applicationname, createdNewConn);
+            if (newconn && createdNewConn)
             {
-                cbConnection->Insert(conn->GetName(), CreateBitmap(GetServerColour()), sel, (void*)conn);
+                cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour()), sel, (void*)newconn);
                 cbConnection->SetSelection(sel);
                 OnChangeConnection(ev);
             }
