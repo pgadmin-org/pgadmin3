@@ -2286,7 +2286,7 @@ void frmStatus::OnLoadLogfile(wxCommandEvent &event)
         wxDateTime *ts=(wxDateTime*)cbLogfiles->GetClientData(showCurrent ? lastPos : pos);
         wxASSERT(ts != 0);
 
-        if (!logfileTimestamp.IsValid() || *ts != logfileTimestamp)
+        if (ts != NULL && (!logfileTimestamp.IsValid() || *ts != logfileTimestamp))
         {
             logList->DeleteAllItems();
             addLogFile(ts, true);
