@@ -894,6 +894,10 @@ void frmEditGrid::OnKey(wxKeyEvent &event)
 
             break;
 
+        case WXK_ESCAPE:
+            CancelChange();
+            break;
+
         default:
             if (sqlGrid->IsEditable() && keycode >= WXK_SPACE && keycode < WXK_START)
             {
@@ -917,6 +921,11 @@ void frmEditGrid::OnClose(wxCommandEvent& event)
 
 void frmEditGrid::OnCloseWindow(wxCloseEvent& event)
 {
+    // We need to call OnCellChange to check if some cells for the row have been changed
+    wxGridEvent evt;
+    OnCellChange(evt);
+
+    // If MNU_SAVE item is still enabled, we need to ask about the unsaved data
     if (toolBar->GetToolEnabled(MNU_SAVE))
     {
         int flag=wxYES_NO | wxICON_QUESTION;
