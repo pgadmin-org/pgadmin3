@@ -259,7 +259,7 @@ void ctlCodeWindow::OnClose(wxCloseEvent& event)
     m_timer.Stop();
 
 #ifdef __WXGTK__
-    if (m_parent->m_standaloneDirectDbg && m_targetAborted)
+    if (m_parent->m_standaloneDirectDbg && m_targetAborted && !m_targetComplete)
         m_parent->m_standaloneDirectDbg->Close();
 #endif
 
