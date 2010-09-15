@@ -87,9 +87,17 @@ wxString dlgSelectConnection::GetHelpPage() const
 
 void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
 {
+    int item;
+    wxString olddatabase, oldusername;
+    
 	if (!GetServer())
 		return;
 
+    // Keep old value for these comboboxes so that we can restore them if needed
+    olddatabase = cbDatabase->GetValue();
+    oldusername = cbUsername->GetValue();
+    
+    // Clear the comboboxes
     cbDatabase->Clear();
     cbUsername->Clear();
     cbRolename->Clear();
@@ -115,22 +123,32 @@ void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
                 wxT("  FROM pg_database db\n")
                 wxT(" WHERE datallowconn ORDER BY datname"));
 
+            item = 0;
             while(set1.RowsLeft())
+            {
                 cbDatabase->Append(set1.GetVal(wxT("datname")));
+                if (set1.GetVal(wxT("datname")) == olddatabase)
+                    item = cbDatabase->GetCount() - 1;
+            }
 
             if (cbDatabase->GetCount())
-                cbDatabase->SetSelection(0);
+                cbDatabase->SetSelection(item);
 
             pgSetIterator set2(remoteServer->GetConnection(), 
                 wxT("SELECT DISTINCT usename\n")
                 wxT("FROM pg_user db\n")
                 wxT("ORDER BY usename"));
 
+            item = 0;
             while(set2.RowsLeft())
+            {
                 cbUsername->Append(set2.GetVal(wxT("usename")));
+                if (set2.GetVal(wxT("usename")) == oldusername)
+                    item = cbDatabase->GetCount() - 1;
+            }
 
             if (cbUsername->GetCount())
-                cbUsername->SetSelection(0);
+                cbUsername->SetSelection(item);
 
             if (remoteServer->GetConnection()->BackendMinimumVersion(8, 1))
             {
