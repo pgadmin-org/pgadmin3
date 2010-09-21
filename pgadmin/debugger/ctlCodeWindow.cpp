@@ -183,7 +183,7 @@ ctlCodeWindow::ctlCodeWindow( frmDebugger *parent, wxWindowID id, const dbgConnP
 
     // Now (re)load the layout
     wxString perspective;
-    settings->Read(wxT("Debugger/frmDebugger/Perspective-") + VerFromRev(FRMDEBUGGER_PERSPECTIVE_VER), &perspective, FRMDEBUGGER_DEFAULT_PERSPECTIVE);
+    settings->Read(wxT("Debugger/frmDebugger/Perspective-") + wxString(FRMDEBUGGER_PERSPECTIVE_VER), &perspective, FRMDEBUGGER_DEFAULT_PERSPECTIVE);
     m_parent->manager.LoadPerspective(perspective, true);
 
     // And reset the captions

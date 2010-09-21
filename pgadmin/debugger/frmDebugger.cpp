@@ -89,7 +89,7 @@ frmDebugger::frmDebugger(frmMain *parent, const wxString &title)
 
     // Now load the layout
     wxString perspective;
-    settings->Read(wxT("Debugger/frmDebugger/Perspective-") + VerFromRev(FRMDEBUGGER_PERSPECTIVE_VER), &perspective, FRMDEBUGGER_DEFAULT_PERSPECTIVE);
+    settings->Read(wxT("Debugger/frmDebugger/Perspective-") + wxString(FRMDEBUGGER_PERSPECTIVE_VER), &perspective, FRMDEBUGGER_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
     // and reset the captions for the current language
@@ -109,7 +109,7 @@ frmDebugger::~frmDebugger()
     // and the user hit cancel before the main form opened.
     wxAuiPaneInfo& pane = manager.GetPane(wxT("sourcePane"));
     if (pane.IsOk())
-        settings->Write(wxT("Debugger/frmDebugger/Perspective-") + VerFromRev(FRMDEBUGGER_PERSPECTIVE_VER), manager.SavePerspective());
+        settings->Write(wxT("Debugger/frmDebugger/Perspective-") + wxString(FRMDEBUGGER_PERSPECTIVE_VER), manager.SavePerspective());
 
     manager.UnInit();
 

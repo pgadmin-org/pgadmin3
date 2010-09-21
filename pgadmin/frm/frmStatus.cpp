@@ -313,7 +313,7 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
 
     // Now load the layout
     wxString perspective;
-    settings->Read(wxT("frmStatus/Perspective-") + VerFromRev(FRMSTATUS_PERSPECTIVE_VER), &perspective, FRMSTATUS_DEFAULT_PERSPECTIVE);
+    settings->Read(wxT("frmStatus/Perspective-") + wxString(FRMSTATUS_PERSPECTIVE_VER), &perspective, FRMSTATUS_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
     // Reset the captions for the current language
@@ -361,7 +361,7 @@ frmStatus::~frmStatus()
         mainForm->RemoveFrame(this);
 
     // Save the window's position
-    settings->Write(wxT("frmStatus/Perspective-") + VerFromRev(FRMSTATUS_PERSPECTIVE_VER), manager.SavePerspective());
+    settings->Write(wxT("frmStatus/Perspective-") + wxString(FRMSTATUS_PERSPECTIVE_VER), manager.SavePerspective());
     manager.UnInit();
     SavePosition();
 		

@@ -235,7 +235,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
 
     // Now load the layout
     wxString perspective;
-    settings->Read(wxT("frmEditGrid/Perspective-") + VerFromRev(FRMEDITGRID_PERSPECTIVE_VER), &perspective, FRMEDITGRID_DEFAULT_PERSPECTIVE);
+    settings->Read(wxT("frmEditGrid/Perspective-") + wxString(FRMEDITGRID_PERSPECTIVE_VER), &perspective, FRMEDITGRID_DEFAULT_PERSPECTIVE);
     manager.LoadPerspective(perspective, true);
 
     // and reset the captions for the current language
@@ -1431,7 +1431,7 @@ frmEditGrid::~frmEditGrid()
 
     mainForm->RemoveFrame(this);
 
-    settings->Write(wxT("frmEditGrid/Perspective-") + VerFromRev(FRMEDITGRID_PERSPECTIVE_VER), manager.SavePerspective());
+    settings->Write(wxT("frmEditGrid/Perspective-") + wxString(FRMEDITGRID_PERSPECTIVE_VER), manager.SavePerspective());
     manager.UnInit();
 
     if (connection)

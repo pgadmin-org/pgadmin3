@@ -508,7 +508,7 @@ pgsTimer(new pgScriptTimer(this))
 
     // Now load the layout    
     wxString perspective;    
-    settings->Read(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERSPECTIVE_VER), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);    
+    settings->Read(wxT("frmQuery/Perspective-") + wxString(FRMQUERY_PERSPECTIVE_VER), &perspective, FRMQUERY_DEFAULT_PERSPECTIVE);    
     manager.LoadPerspective(perspective, true);
 
     // and reset the captions for the current language
@@ -610,7 +610,7 @@ frmQuery::~frmQuery()
     closing = true;
 
     // Save frmQuery Perspective
-    settings->Write(wxT("frmQuery/Perspective-") + VerFromRev(FRMQUERY_PERSPECTIVE_VER), manager.SavePerspective());
+    settings->Write(wxT("frmQuery/Perspective-") + wxString(FRMQUERY_PERSPECTIVE_VER), manager.SavePerspective());
 
     // Uninitialize wxAUIManager
     manager.UnInit();
