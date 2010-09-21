@@ -426,8 +426,12 @@ pgsTimer(new pgScriptTimer(this))
     wxBoxSizer *boxQuery = new wxBoxSizer(wxVERTICAL);
 
     // Create the inner box sizer
-    // This one will contain the combobox, and the two buttons
+    // This one will contain the label, the combobox, and the two buttons
     wxBoxSizer *boxHistory = new wxBoxSizer(wxHORIZONTAL);
+
+    // Label
+    wxStaticText *label = new wxStaticText(pnlQuery, 0, _("Previous queries"));
+    boxHistory->Add(label, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
     // Query combobox
     sqlQueries = new wxComboBox(pnlQuery, CTL_SQLQUERYCBOX, wxT(""), wxDefaultPosition, wxDefaultSize, NULL, wxCB_DROPDOWN|wxCB_READONLY);
