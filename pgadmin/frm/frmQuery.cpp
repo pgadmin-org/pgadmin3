@@ -430,7 +430,8 @@ pgsTimer(new pgScriptTimer(this))
     wxBoxSizer *boxHistory = new wxBoxSizer(wxHORIZONTAL);
 
     // Query combobox
-    sqlQueries = new wxComboBox(pnlQuery, CTL_SQLQUERYCBOX, wxT(""), wxDefaultPosition, wxDefaultSize, NULL, wxCB_DROPDOWN);
+    sqlQueries = new wxComboBox(pnlQuery, CTL_SQLQUERYCBOX, wxT(""), wxDefaultPosition, wxDefaultSize, NULL, wxCB_DROPDOWN|wxCB_READONLY);
+    sqlQueries->SetToolTip(_("Previous queries"));
     LoadQueries();
     boxHistory->Add(sqlQueries, 1, wxEXPAND | wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
