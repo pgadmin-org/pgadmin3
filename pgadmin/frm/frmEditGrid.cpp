@@ -111,6 +111,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString& _title, pgConn *_conn, p
     SetStatusBarPane(-1);
 
     sqlGrid = new ctlSQLEditGrid(this, CTL_EDITGRID, wxDefaultPosition, wxDefaultSize);
+    sqlGrid->SetTable(0);
 #ifdef __WXMSW__
     sqlGrid->SetDefaultRowSize(sqlGrid->GetDefaultRowSize()+2, true);
 #endif
@@ -1247,6 +1248,7 @@ void frmEditGrid::ShowForm(bool filter)
         if (abort) {
             // Hack to ensure there's a table for ~wxGrid() to delete
             sqlGrid->CreateGrid(0, 0);
+            sqlGrid->SetTable(0);
             Close();
             Destroy();
         } else {
