@@ -1856,10 +1856,13 @@ int dlgDefaultSecurityProperty::Go(bool modal, bool createDefPrivs, const wxStri
 {
     int res = dlgSecurityProperty::Go(modal);
 
-    if (createDefPrivs && connection->BackendMinimumVersion(9, 0))
-        defaultSecurityPage->UpdatePrivilegePages(createDefPrivs, defPrivsOnTables, defPrivsOnSeqs, defPrivsOnFuncs);
-    else if (defaultSecurityPage != NULL)
-        defaultSecurityPage->Enable(false);
+    if (defaultSecurityPage)
+    {
+        if (createDefPrivs && connection->BackendMinimumVersion(9, 0))
+            defaultSecurityPage->UpdatePrivilegePages(createDefPrivs, defPrivsOnTables, defPrivsOnSeqs, defPrivsOnFuncs);
+        else
+            defaultSecurityPage->Enable(false);
+    }
 
     return res;
 }
