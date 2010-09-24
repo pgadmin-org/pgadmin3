@@ -98,9 +98,6 @@ wxString pgTrigger::GetSql(ctlTree *browser)
         sql += wxT("\n  ") + GetFireWhen() 
             + wxT(" ") + GetEvent();
 
-        if (!GetQuotedColumns().IsEmpty())
-            sql += wxT(" OF ") + GetQuotedColumns();
-
         sql += wxT("\n  ON ") + GetQuotedFullTable()
             + wxT("\n  FOR EACH ") + GetForEach();
         
@@ -147,6 +144,8 @@ wxString pgTrigger::GetEvent() const
         if (!event.IsNull())
             event += wxT(" OR ");
         event += wxT("UPDATE");
+        if (!GetQuotedColumns().IsEmpty())
+            event += wxT(" OF ") + GetQuotedColumns();
     }
     if (triggerType & TRIGGER_TYPE_DELETE)
     {
@@ -333,8 +332,10 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
             trigger->iSetLanguage(triggers->GetVal(wxT("lanname")));
             trigger->iSetSource(triggers->GetVal(wxT("prosrc")));
             trigger->iSetQuotedFullTable(collection->GetDatabase()->GetQuotedSchemaPrefix(triggers->GetVal(wxT("nspname"))) + qtIdent(triggers->GetVal(wxT("relname"))));
-            wxString arglist=triggers->GetVal(wxT("tgargs"));
-            wxString args;
+            wxString arglist = wxEmptyString;
+            if (triggers->GetLong(wxT("tgnargs")) > 0)
+                arglist=triggers->GetVal(wxT("tgargs"));
+            wxString args = wxEmptyString;
 
             while (!arglist.IsEmpty())
             {
