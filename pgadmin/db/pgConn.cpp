@@ -180,8 +180,12 @@ bool pgConn::DoConnect()
         connStatus = PGCONN_OK;
         PQsetNoticeProcessor(conn, pgNoticeProcessor, this);
 
-        wxString sql=wxT("SET DateStyle=ISO;SELECT oid, pg_encoding_to_char(encoding) AS encoding, datlastsysoid\n")
-                      wxT("  FROM pg_database WHERE ");
+        wxString sql = wxT("SET DateStyle=ISO;\n");
+        if (BackendMinimumVersion(9, 0))
+            sql += wxT("SET bytea_output=escape;\n");
+
+        sql += wxT("SELECT oid, pg_encoding_to_char(encoding) AS encoding, datlastsysoid\n")
+            wxT("  FROM pg_database WHERE ");
 
         if (save_oid)
             sql += wxT("oid = ") + NumToStr(save_oid);
