@@ -222,7 +222,7 @@ private:
     void OnChangeQuery(wxCommandEvent &event);
 
     wxBitmap CreateBitmap(const wxColour& colour);
-    wxColour GetServerColour();
+    wxColour GetServerColour(pgConn* connection);
 
     wxWindow *currentControl();
     wxMenu *queryMenu;
