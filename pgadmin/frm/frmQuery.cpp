@@ -413,7 +413,7 @@ pgsTimer(new pgScriptTimer(this))
 
     // Add the database selection bar
     cbConnection = new wxBitmapComboBox(this, CTRLID_CONNECTION, wxEmptyString, wxDefaultPosition, wxSize(-1, -1), NULL, wxCB_READONLY|wxCB_DROPDOWN);
-    cbConnection->Append(conn->GetName(), CreateBitmap(GetServerColour()), (void*)conn);
+    cbConnection->Append(conn->GetName(), CreateBitmap(GetServerColour(conn)), (void*)conn);
     cbConnection->Append(_("<new connection>"), wxNullBitmap, (void*)0);
 
     //Create SQL editor notebook
@@ -991,7 +991,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
             pgConn *newconn = dlg.CreateConn(applicationname, createdNewConn);
             if (newconn && createdNewConn)
             {
-                cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour()), sel, (void*)newconn);
+                cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (void*)newconn);
                 cbConnection->SetSelection(sel);
                 OnChangeConnection(ev);
             }
@@ -2778,7 +2778,7 @@ wxBitmap frmQuery::CreateBitmap(const wxColour& colour)
     return bmp;
 }
 
-wxColour frmQuery::GetServerColour()
+wxColour frmQuery::GetServerColour(pgConn* connection)
 {
     wxColour tmp = wxNullColour;
     if (mainForm != NULL)
@@ -2802,8 +2802,8 @@ wxColour frmQuery::GetServerColour()
                     {
                         server = (pgServer *)object;
                         if (server->GetConnected() &&
-                            server->GetConnection()->GetHost() == conn->GetHost() &&
-                            server->GetConnection()->GetPort() == conn->GetPort())
+                            server->GetConnection()->GetHost() == connection->GetHost() &&
+                            server->GetConnection()->GetPort() == connection->GetPort())
                         {
                             tmp = wxColour(server->GetColour());
                         }
