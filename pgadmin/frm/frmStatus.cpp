@@ -1370,43 +1370,53 @@ void frmStatus::OnRefreshLocksTimer(wxTimerEvent &event)
 
     wxCriticalSectionLocker lock(gs_critsect);
 
+    // There are no sort operator for xid before 8.3
+    if (!connection->BackendMinimumVersion(8, 3) && lockSortColumn == 5)
+    {
+        wxLogError(_("You cannot sort by transaction id on your PostgreSQL release. You need at least 8.3."));
+        lockSortColumn = 1;
+    }
+
     long row=0;
     wxString sql;
     if (locks_connection->BackendMinimumVersion(8, 3)) 
     {
-        sql = wxT("SELECT ")
+        sql = wxT("SELECT pg_stat_get_backend_pid(svrid) AS pid, ")
               wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
-              wxT("pgl.relation::regclass AS class, ")
+              wxT("coalesce(pgc.relname, pgl.relation::text) AS class, ")
               wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
-              wxT("pgl.virtualxid, pgl.virtualtransaction AS transaction, pg_stat_get_backend_pid(svrid) AS pid, pgl.mode, pgl.granted, ")
-              wxT("pg_stat_get_backend_activity(svrid) AS current_query, ")
-              wxT("pg_stat_get_backend_activity_start(svrid) AS query_start ")
+              wxT("pgl.virtualxid::text, pgl.virtualtransaction::text AS transaction, pgl.mode, pgl.granted, ")
+              wxT("pg_stat_get_backend_activity_start(svrid) AS query_start, ")
+              wxT("pg_stat_get_backend_activity(svrid) AS current_query ")
               wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
+              wxT("LEFT JOIN pg_class pgc ON pgl.relation=pgc.oid ")
               wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
               wxT("ORDER BY ") + NumToStr((long)lockSortColumn) + wxT(" ") + lockSortOrder;
-    } 
+    }
     else if (locks_connection->BackendMinimumVersion(7, 4)) 
     {
-           sql = wxT("SELECT ")
+           sql = wxT("SELECT pg_stat_get_backend_pid(svrid) AS pid, ")
               wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
-              wxT("pgl.relation::regclass AS class, ")
+              wxT("coalesce(pgc.relname, pgl.relation::text) AS class, ")
               wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
-              wxT("pgl.transaction, pg_stat_get_backend_pid(svrid) AS pid, pgl.mode, pgl.granted, ")
-              wxT("pg_stat_get_backend_activity(svrid) AS current_query, ")
-              wxT("pg_stat_get_backend_activity_start(svrid) AS query_start ")
+              wxT("pgl.transaction, pgl.mode, pgl.granted, ")
+              wxT("pg_stat_get_backend_activity_start(svrid) AS query_start, ")
+              wxT("pg_stat_get_backend_activity(svrid) AS current_query ")
               wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
+              wxT("LEFT JOIN pg_class pgc ON pgl.relation=pgc.oid ")
               wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
               wxT("ORDER BY ") + NumToStr((long)lockSortColumn) + wxT(" ") + lockSortOrder;
     } 
     else 
     {
-        sql = wxT("SELECT ")
+        sql = wxT("SELECT pg_stat_get_backend_pid(svrid) AS pid, ")
               wxT("(SELECT datname FROM pg_database WHERE oid = pgl.database) AS dbname, ")
-              wxT("pgl.relation::regclass AS class, ")
+              wxT("coalesce(pgc.relname, pgl.relation::text) AS class, ")
               wxT("pg_get_userbyid(pg_stat_get_backend_userid(svrid)) as user, ")
-              wxT("pgl.transaction, pg_stat_get_backend_pid(svrid) AS pid, pgl.mode, pgl.granted, ")
+              wxT("pgl.transaction, pgl.mode, pgl.granted, ")
               wxT("pg_stat_get_backend_activity(svrid) AS current_query ")
               wxT("FROM pg_stat_get_backend_idset() svrid, pg_locks pgl ")
+              wxT("LEFT JOIN pg_class pgc ON pgl.relation=pgc.oid ")
               wxT("WHERE pgl.pid = pg_stat_get_backend_pid(svrid) ")
               wxT("ORDER BY ") + NumToStr((long)lockSortColumn) + wxT(" ") + lockSortOrder;
     }
@@ -1494,10 +1504,23 @@ void frmStatus::OnRefreshXactTimer(wxTimerEvent &event)
 
     wxCriticalSectionLocker lock(gs_critsect);
 
+    // There are no sort operator for xid before 8.3
+    if (!connection->BackendMinimumVersion(8, 3) && xactSortColumn == 1)
+    {
+        wxLogError(_("You cannot sort by transaction id on your PostgreSQL release. You need at least 8.3."));
+        xactSortColumn = 2;
+    }
+
     long row=0;
-    wxString sql = wxT("SELECT transaction::text, gid, prepared, owner, database ")
-                   wxT("FROM pg_prepared_xacts ")
-                   wxT("ORDER BY ") + NumToStr((long)xactSortColumn) + wxT(" ") + xactSortOrder;
+    wxString sql;
+    if (connection->BackendMinimumVersion(8, 3))
+        sql = wxT("SELECT transaction::text, gid, prepared, owner, database ")
+              wxT("FROM pg_prepared_xacts ")
+              wxT("ORDER BY ") + NumToStr((long)xactSortColumn) + wxT(" ") + xactSortOrder;
+    else
+        sql = wxT("SELECT transaction, gid, prepared, owner, database ")
+              wxT("FROM pg_prepared_xacts ")
+              wxT("ORDER BY ") + NumToStr((long)xactSortColumn) + wxT(" ") + xactSortOrder;
 
     pgSet *dataSet3=connection->ExecuteSet(sql);
     if (dataSet3)
@@ -2785,9 +2808,9 @@ void frmStatus::OnSortStatusGrid(wxListEvent &event)
 
     // Set the up/down image
     if (statusSortOrder == wxT("ASC"))
-        SetColumnImage(statusList, event.GetColumn(), 0);
+        SetColumnImage(statusList, statusSortColumn - 1, 0);
     else
-        SetColumnImage(statusList, event.GetColumn(), 1);
+        SetColumnImage(statusList, statusSortColumn - 1, 1);
 
     // Refresh grid
     wxTimerEvent evt;
@@ -2811,6 +2834,12 @@ void frmStatus::OnSortLockGrid(wxListEvent &event)
         lockSortOrder = wxT("ASC");
     }
 
+    // There are no sort operator for xid before 8.3
+    if (!connection->BackendMinimumVersion(8, 3) && lockSortColumn == 5)
+    {
+        wxLogError(_("You cannot sort by transaction id on your PostgreSQL release. You need at least 8.3."));
+        lockSortColumn = 1;
+    }
 
     // Re-initialize all columns' image
     for (int i=0; i<lockList->GetColumnCount(); i++)
@@ -2820,9 +2849,9 @@ void frmStatus::OnSortLockGrid(wxListEvent &event)
 
     // Set the up/down image
     if (lockSortOrder == wxT("ASC"))
-        SetColumnImage(lockList, event.GetColumn(), 0);
+        SetColumnImage(lockList, lockSortColumn - 1, 0);
     else
-        SetColumnImage(lockList, event.GetColumn(), 1);
+        SetColumnImage(lockList, lockSortColumn - 1, 1);
 
     // Refresh grid
     wxTimerEvent evt;
@@ -2846,6 +2875,12 @@ void frmStatus::OnSortXactGrid(wxListEvent &event)
         xactSortOrder = wxT("ASC");
     }
 
+    // There are no sort operator for xid before 8.3
+    if (!connection->BackendMinimumVersion(8, 3) && xactSortColumn == 1)
+    {
+        wxLogError(_("You cannot sort by transaction id on your PostgreSQL release. You need at least 8.3."));
+        xactSortColumn = 2;
+    }
 
     // Re-initialize all columns' image
     for (int i=0; i<xactList->GetColumnCount(); i++)
@@ -2855,9 +2890,9 @@ void frmStatus::OnSortXactGrid(wxListEvent &event)
 
     // Set the up/down image
     if (xactSortOrder == wxT("ASC"))
-        SetColumnImage(xactList, event.GetColumn(), 0);
+        SetColumnImage(xactList, xactSortColumn - 1, 0);
     else
-        SetColumnImage(xactList, event.GetColumn(), 1);
+        SetColumnImage(xactList, xactSortColumn - 1, 1);
 
     // Refresh grid
     wxTimerEvent evt;
