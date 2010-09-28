@@ -170,6 +170,7 @@ wxString frmStatus::rateToCboString(int rate)
 
 frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFrame(NULL, _title)
 {
+    wxString initquery;
     bool highlight = false;
 
     dlgName = wxT("frmStatus");
@@ -189,9 +190,12 @@ frmStatus::frmStatus(frmMain *form, const wxString& _title, pgConn *conn) : pgFr
     logFormatKnown = false;
 
     // Make the connection quiet on the logs
-    connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;"),false);
-    locks_connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;"),false);
-
+     if (connection->BackendMinimumVersion(8, 0))
+        initquery = wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;");
+    else
+        initquery = wxT("SET log_statement='off';SET log_duration='off';SET log_min_duration_statement=-1;");
+    connection->ExecuteVoid(initquery,false);
+    
     // Notify wxAUI which frame to use
     manager.SetManagedWindow(this);
     manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
@@ -459,6 +463,8 @@ void frmStatus::OnExit(wxCommandEvent& event)
 
 void frmStatus::OnChangeDatabase(wxCommandEvent &ev)
 {
+    wxString initquery;
+    
     if (locks_connection != connection)
     {
         delete locks_connection;
@@ -468,7 +474,11 @@ void frmStatus::OnChangeDatabase(wxCommandEvent &ev)
       connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetRole(), connection->GetSslMode(),
       0, connection->GetApplicationName());
 
-    locks_connection->ExecuteVoid(wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;"),false);
+    if (connection->BackendMinimumVersion(8, 0))
+        initquery = wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;");
+    else
+        initquery = wxT("SET log_statement='off';SET log_duration='off';SET log_min_duration_statement=-1;");
+    locks_connection->ExecuteVoid(initquery,false);
 }
 
 
