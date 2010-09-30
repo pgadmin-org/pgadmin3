@@ -170,6 +170,11 @@ protected:
     void InitLogger();
     void InitNetwork();
     void InitXml();
+
+#ifdef __WXMSW__
+    void InitLibpq();
+#endif
+
 };
 
 class pgAppearanceFactory

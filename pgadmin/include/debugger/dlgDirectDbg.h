@@ -87,10 +87,6 @@ private:
 	void invokeTargetCallable();
 	void invokeTargetStatement();
 
-#ifdef __WXMSW__
-    void InitLibpq();
-#endif
-
     DECLARE_EVENT_TABLE()
 
 };

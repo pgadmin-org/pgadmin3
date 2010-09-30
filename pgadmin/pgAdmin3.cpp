@@ -114,6 +114,13 @@ bool dialogTestMode=false;
 
 IMPLEMENT_APP(pgAdmin3)
 
+#ifdef __WXMSW__
+// Dynamically loaded EDB functions
+PQGETOUTRESULT PQiGetOutResult;
+PQPREPAREOUT PQiPrepareOut;
+PQSENDQUERYPREPAREDOUT PQiSendQueryPreparedOut;
+#endif
+
 #ifdef __WXGTK__
 
 class pgRendererNative : public wxDelegateRendererNative
@@ -397,6 +404,12 @@ bool pgAdmin3::OnInit()
 #ifndef __WXDEBUG__
     wxTheApp->Yield(true);
     wxSleep(2);
+#endif
+
+#ifdef __WXMSW__
+    // Attempt to dynamically load PGgetOutResult from libpq. this
+    // is only present in EDB versions.
+    InitLibpq();
 #endif
 
     if (configMode)
@@ -1739,3 +1752,33 @@ wxFont pgAppearanceFactory::GetSplashTextFont()
     fnt.SetPointSize(splash_font_size);
     return fnt;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// InitLibpq()
+//
+//    Dynamically load EDB-specific functions from libpq
+
+#ifdef __WXMSW__
+void pgAdmin3::InitLibpq()
+{
+    HINSTANCE hinstLib;
+ 
+    // Get a handle to the DLL module.
+    hinstLib = LoadLibrary(TEXT("libpq")); 
+ 
+    // If the handle is valid, try to get the function address.
+    if (hinstLib != NULL) 
+    { 
+        PQiGetOutResult = (PQGETOUTRESULT) GetProcAddress(hinstLib, "PQgetOutResult"); 
+        PQiPrepareOut = (PQPREPAREOUT) GetProcAddress(hinstLib, "PQprepareOut"); 
+        PQiSendQueryPreparedOut = (PQSENDQUERYPREPAREDOUT) GetProcAddress(hinstLib, "PQsendQueryPreparedOut"); 
+ 
+        // If the function address is valid, call the function.
+        if (PQiGetOutResult != NULL) 
+            wxLogInfo(wxT("Using runtime dynamically linked EDB libpq functions."));
+        else
+            wxLogInfo(wxT("EDB libpq functions are not available."));
+    }
+}
+#endif
+
