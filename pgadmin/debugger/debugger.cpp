@@ -134,6 +134,17 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
                     {
                         if (func->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
                             return true;
+#ifndef EDB_LIBPQ
+#ifdef __WXMSW__
+                        else if (func->GetLanguage() == wxT("edbspl") &&
+                                 obj->GetConnection()->EdbMinimumVersion(8, 4) &&
+                                 !(PQiGetOutResult && PQiPrepareOut && PQiSendQueryPreparedOut))
+                            return false;
+#else
+                        else if (func->GetLanguage() == wxT("edbspl") && obj->GetConnection()->EdbMinimumVersion(8, 4))
+                            return false;
+#endif
+#endif
                         else if (func->GetLanguage() == wxT("edbspl") && obj->GetDatabase()->CanDebugEdbspl())
                             return true;
                         else
@@ -259,6 +270,17 @@ bool breakpointFactory::CheckEnable(pgObject *obj)
 
                     if (func->GetLanguage() == wxT("plpgsql") && obj->GetDatabase()->CanDebugPlpgsql())
                         return true;
+#ifndef EDB_LIBPQ
+#ifdef __WXMSW__
+                        else if (func->GetLanguage() == wxT("edbspl") &&
+                                 obj->GetConnection()->EdbMinimumVersion(8, 4) &&
+                                 !(PQiGetOutResult && PQiPrepareOut && PQiSendQueryPreparedOut))
+                            return false;
+#else
+                        else if (func->GetLanguage() == wxT("edbspl") && obj->GetConnection()->EdbMinimumVersion(8, 4))
+                            return false;
+#endif
+#endif
                     else if (func->GetLanguage() == wxT("edbspl") && obj->GetDatabase()->CanDebugEdbspl())
                         return true;
                     else

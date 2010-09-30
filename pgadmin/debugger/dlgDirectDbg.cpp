@@ -30,13 +30,6 @@
 
 #include <stdexcept>
 
-#ifdef __WXMSW__
-// Dynamically loaded EDB functions
-PQGETOUTRESULT PQiGetOutResult;
-PQPREPAREOUT PQiPrepareOut;
-PQSENDQUERYPREPAREDOUT PQiSendQueryPreparedOut;
-#endif
-
 #define lblMessage                  CTRL_STATIC("lblMessage")
 #define grdParams                   CTRL("grdParams", wxGrid)
 #define chkPkgInit                  CTRL_CHECKBOX("chkPkgInit")
@@ -83,12 +76,6 @@ dlgDirectDbg::dlgDirectDbg( frmDebugger *parent, wxWindowID id, const dbgConnPro
     // Icon
     SetIcon(wxIcon(debugger_xpm));
     RestorePosition();
-
-#ifdef __WXMSW__
-    // Attempt to dynamically load PGgetOutResult from libpq. this
-    // is only present in EDB versions.
-    InitLibpq();
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -259,7 +246,6 @@ void dlgDirectDbg::populateParamGrid( )
             grdParams->SetReadOnly( i, COL_NAME,  true );
             grdParams->SetReadOnly( i, COL_TYPE,  true );
             grdParams->SetReadOnly( i, COL_VALUE, false );
-            grdParams->SetColSize(COL_NAME, 200);
         
             i++;
         }
@@ -639,7 +625,7 @@ void dlgDirectDbg::invokeTargetCallable()
 
             if (i)
                 query += wxT(", ");
-            query += wxString::Format(wxT("$%d"), i + 1);
+            query += wxString::Format(wxT("$%d::"), i + 1) + arg.getType();
 
     }
 
@@ -653,19 +639,23 @@ void dlgDirectDbg::invokeTargetCallable()
 
 void dlgDirectDbg::invokeTargetStatement()
 {
-    wxString query = wxT("SELECT ");
-    wxString declareStatement;
+    wxString query, declareStatement;
+    if (!m_conn->EdbMinimumVersion(8, 4))
+        query = m_targetInfo->getIsFunction() ? wxT( "SELECT " ) : wxT( "EXEC " );
+    else
+    {
+        query = wxT("SELECT");
+        if (!m_targetInfo->getIsFunction())
+            query = wxT("EXEC ");
+        else if (m_targetInfo->getLanguage() == wxT("edbspl"))
+            query = wxT("PERFORM ");
+    }
 
-    if (!m_targetInfo->getIsFunction())
-        query = wxT("EXEC ");
-    else if (m_targetInfo->getLanguage() == wxT("edbspl"))
-        query = wxT("PERFORM ");
-
-    // If this is a function, and the return type is not record, or 
+    // If this is a function, and the return type is not record, or
     // we have at least one OUT/INOUT param, we should select from
     // the function to get a full resultset.
     if (m_targetInfo->getIsFunction() && m_targetInfo->getLanguage() != wxT("edbspl") &&
-        (m_targetInfo->getReturnType() != wxT("record") || 
+        (m_targetInfo->getReturnType() != wxT("record") ||
          m_targetInfo->getArgInOutCount() > 0 ||
          m_targetInfo->getArgOutCount() > 0))
          query.Append(wxT("* FROM "));
@@ -680,14 +670,19 @@ void dlgDirectDbg::invokeTargetStatement()
     {
         wsArgInfo & arg = (*m_targetInfo)[i];
 
-        if(arg.getMode() == wxT("o") || arg.getMode() == wxT("b"))
+        if(arg.getMode() == wxT("o") && !m_conn->EdbMinimumVersion(8, 4))
+        {
+            if (!m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() == wxT("edbspl"))
+                query.Append( wxT("NULL::") + arg.getType() + wxT(", "));
+        }
+        else if (m_conn->EdbMinimumVersion(8, 4) && (arg.getMode() == wxT("o") || arg.getMode() == wxT("b")))
         {
             if (!m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() == wxT("edbspl"))
             {
                 wxString strParam = wxString::Format(wxT("param%d"), i);
                 declareStatement +=  strParam + wxT(" ") + arg.getType();
                 if (arg.getMode() == wxT("b"))
-                  declareStatement += wxT(" := ") + arg.quoteValue() + wxT("::") + arg.getType();
+                    declareStatement += wxT(" := ") + arg.quoteValue() + wxT("::") + arg.getType();
                 declareStatement += wxT(";\n");
                 query.Append(strParam + wxT(", "));
             }
@@ -698,7 +693,6 @@ void dlgDirectDbg::invokeTargetStatement()
             query.Append( arg.getValue() + wxT(", "));
         else
             query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
-			
     }
 
     if (query.EndsWith(wxT(", ")))
@@ -707,17 +701,32 @@ void dlgDirectDbg::invokeTargetStatement()
         query = query.Left(query.Length() - 1);
 
     // And terminate the argument list
-    if( m_targetInfo->getArgInCount() + m_targetInfo->getArgInOutCount() == 0 )
+    if(m_targetInfo->getArgInCount() + m_targetInfo->getArgInOutCount() == 0)
     {
-        if( m_targetInfo->getIsFunction())
-            query.Append( wxT( "()" ));
+        /*
+         * edbspl function/procedure with OUT parameter takes value/variable as an input
+         */
+        if (m_conn->GetIsEdb())
+        {
+            if (m_targetInfo->getArgCount() == 0)
+            {
+                if (m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() != wxT("edbspl"))
+                    query.Append(wxT("()"));
+            }
+            else if (m_targetInfo->getLanguage() != wxT("edbspl"))
+                query.Append(wxT("()"));
+            else
+                query.Append(wxT(")"));
+        }
+        else if (m_targetInfo->getIsFunction())
+            query.Append(wxT("()"));
     }
     else
     {
-        query.Append( wxT( ")" ));
+        query.Append(wxT(")"));
     }
 
-    if (!m_targetInfo->getIsFunction() || m_targetInfo->getLanguage() == wxT("edbspl"))
+    if (m_conn->EdbMinimumVersion(8, 4) && (m_targetInfo->getLanguage() == wxT("edbspl") || !m_targetInfo->getIsFunction()))
     {
         wxString tmpQuery = wxT("DECLARE\n")
                           + declareStatement
@@ -727,8 +736,8 @@ void dlgDirectDbg::invokeTargetStatement()
         query = tmpQuery;
     }
 
-    // And send the completed command to the server - we'll get 
-    // a dbgDbResult event when the command completes (and that 
+    // And send the completed command to the server - we'll get
+    // a dbgDbResult event when the command completes (and that
     // event will get routed to dlgDirectDbg::OnResultReady())
     m_conn->startCommand( query, GetEventHandler(), RESULT_ID_DIRECT_TARGET_COMPLETE );
 }
@@ -869,31 +878,3 @@ dbgBreakPointList & dlgDirectDbg::getBreakpointList()
     return( m_breakpoints ); 
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// InitLibpq()
-//
-//    Dynamically load EDB-specific functions from libpq
-
-#ifdef __WXMSW__
-void dlgDirectDbg::InitLibpq()
-{
-    HINSTANCE hinstLib;
- 
-    // Get a handle to the DLL module.
-    hinstLib = LoadLibrary(TEXT("libpq")); 
- 
-    // If the handle is valid, try to get the function address.
-    if (hinstLib != NULL) 
-    { 
-        PQiGetOutResult = (PQGETOUTRESULT) GetProcAddress(hinstLib, "PQgetOutResult"); 
-        PQiPrepareOut = (PQPREPAREOUT) GetProcAddress(hinstLib, "PQprepareOut"); 
-        PQiSendQueryPreparedOut = (PQSENDQUERYPREPAREDOUT) GetProcAddress(hinstLib, "PQsendQueryPreparedOut"); 
- 
-        // If the function address is valid, call the function.
-        if (PQiGetOutResult != NULL) 
-            wxLogInfo(wxT("Using runtime dynamically linked EDB libpq functions."));
-        else
-            wxLogInfo(wxT("EDB libpq functions are not available."));
-    }
-}
-#endif
