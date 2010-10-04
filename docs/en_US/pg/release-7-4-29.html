@@ -1,0 +1,112 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.71. Release 7.4.29</title>
+<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.18 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release-7-4-30.html" title="E.70. Release 7.4.30">
+<link rel="next" href="release-7-4-28.html" title="E.72. Release 7.4.28">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.71. Release 7.4.29">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-7-4-29">E.71. Release 7.4.29</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2010-05-17</p>
+</div>
+<p>   This release contains a variety of fixes from 7.4.28.
+   For information about new features in the 7.4 major release, see
+   <a class="xref" href="release-7-4.html" title="E.100. Release 7.4">Section E.100, &#8220;Release 7.4&#8221;</a>.
+  </p>
+<p>   The <span class="productname">PostgreSQL</span> community will stop releasing updates
+   for the 7.4.X release series in July 2010.
+   Users are encouraged to update to a newer release branch soon.
+  </p>
+<div class="sect2" title="E.71.1. Migration to Version 7.4.29">
+<div class="titlepage"><div><div><h3 class="title" id="id2912382">E.71.1. Migration to Version 7.4.29</h3></div></div></div>
+<p>    A dump/restore is not required for those running 7.4.X.
+    However, if you are upgrading from a version earlier than 7.4.26,
+    see the release notes for 7.4.26.
+   </p>
+</div>
+<div class="sect2" title="E.71.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2912390">E.71.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<p>      Enforce restrictions in <code class="literal">plperl</code> using an opmask applied to
+      the whole interpreter, instead of using <code class="filename">Safe.pm</code>
+      (Tim Bunce, Andrew Dunstan)
+     </p>
+<p>      Recent developments have convinced us that <code class="filename">Safe.pm</code> is too
+      insecure to rely on for making <code class="literal">plperl</code> trustable.  This
+      change removes use of <code class="filename">Safe.pm</code> altogether, in favor of using
+      a separate interpreter with an opcode mask that is always applied.
+      Pleasant side effects of the change include that it is now possible to
+      use Perl's <code class="literal">strict</code> pragma in a natural way in
+      <code class="literal">plperl</code>, and that Perl's <code class="literal">$a</code> and <code class="literal">$b</code>
+      variables work as expected in sort routines, and that function
+      compilation is significantly faster.  (CVE-2010-1169)
+     </p>
+</li>
+<li class="listitem">
+<p>      Prevent PL/Tcl from executing untrustworthy code from
+      <code class="structname">pltcl_modules</code> (Tom)
+     </p>
+<p>      PL/Tcl's feature for autoloading Tcl code from a database table
+      could be exploited for trojan-horse attacks, because there was no
+      restriction on who could create or insert into that table.  This change
+      disables the feature unless <code class="structname">pltcl_modules</code> is owned by a
+      superuser.  (However, the permissions on the table are not checked, so
+      installations that really need a less-than-secure modules table can
+      still grant suitable privileges to trusted non-superusers.)  Also,
+      prevent loading code into the unrestricted <span class="quote">&#8220;<span class="quote">normal</span>&#8221;</span> Tcl
+      interpreter unless we are really going to execute a <code class="literal">pltclu</code>
+      function.  (CVE-2010-1170)
+     </p>
+</li>
+<li class="listitem">
+<p>      Do not allow an unprivileged user to reset superuser-only parameter
+      settings (Alvaro)
+     </p>
+<p>      Previously, if an unprivileged user ran <code class="literal">ALTER USER ... RESET
+      ALL</code> for himself, or <code class="literal">ALTER DATABASE ... RESET ALL</code> for
+      a database he owns, this would remove all special parameter settings
+      for the user or database, even ones that are only supposed to be
+      changeable by a superuser.  Now, the <code class="command">ALTER</code> will only
+      remove the parameters that the user has permission to change.
+     </p>
+</li>
+<li class="listitem">
+<p>      Avoid possible crash during backend shutdown if shutdown occurs
+      when a <code class="literal">CONTEXT</code> addition would be made to log entries (Tom)
+     </p>
+<p>      In some cases the context-printing function would fail because the
+      current transaction had already been rolled back when it came time
+      to print a log message.
+     </p>
+</li>
+<li class="listitem"><p>      Update pl/perl's <code class="filename">ppport.h</code> for modern Perl versions
+      (Andrew)
+     </p></li>
+<li class="listitem"><p>      Fix assorted memory leaks in pl/python (Andreas Freund, Tom)
+     </p></li>
+<li class="listitem"><p>      Ensure that <code class="filename">contrib/pgstattuple</code> functions respond to cancel
+      interrupts promptly (Tatsuhito Kasahara)
+     </p></li>
+<li class="listitem">
+<p>      Make server startup deal properly with the case that
+      <code class="function">shmget()</code> returns <code class="literal">EINVAL</code> for an existing
+      shared memory segment (Tom)
+     </p>
+<p>      This behavior has been observed on BSD-derived kernels including OS X.
+      It resulted in an entirely-misleading startup failure complaining that
+      the shared memory request size was too large.
+     </p>
+</li>
+</ul></div>
+</div>
+</div></body>
+</html>

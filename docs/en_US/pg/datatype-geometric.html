@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.17 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.18 Documentation">
 <link rel="up" href="datatype.html" title="Chapter 8. Data Types">
 <link rel="prev" href="datatype-boolean.html" title="8.6. Boolean Type">
 <link rel="next" href="datatype-net-types.html" title="8.8. Network Address Types">
@@ -87,13 +87,14 @@
 </table></div>
 </div>
 <br class="table-break"><p>    A rich set of functions and operators is available to perform various geometric
-    operations such as scaling, translation, rotation, and determining 
+    operations such as scaling, translation, rotation, and determining
     intersections.  They are explained in <a class="xref" href="functions-geometry.html" title="9.10. Geometric Functions and Operators">Section 9.10, &#8220;Geometric Functions and Operators&#8221;</a>.
    </p>
 <div class="sect2" title="8.7.1. Points">
 <div class="titlepage"><div><div><h3 class="title" id="id2612173">8.7.1. Points</h3></div></div></div>
-<a name="id2612176"></a><p>     Points are the fundamental two-dimensional building block for geometric types.
-     Values of type <code class="type">point</code> are specified using the following syntax:
+<a name="id2612176"></a><p>     Points are the fundamental two-dimensional building block for geometric
+     types.  Values of type <code class="type">point</code> are specified using either of
+     the following syntaxes:
 
 </p>
 <pre class="synopsis">( <em class="replaceable"><code>x</code></em> , <em class="replaceable"><code>y</code></em> )
@@ -103,15 +104,19 @@
      where <em class="replaceable"><code>x</code></em> and <em class="replaceable"><code>y</code></em> are the respective
      coordinates as floating-point numbers.
     </p>
+<p>     Points are output using the first syntax.
+    </p>
 </div>
 <div class="sect2" title="8.7.2. Line Segments">
-<div class="titlepage"><div><div><h3 class="title" id="id2612217">8.7.2. Line Segments</h3></div></div></div>
-<a name="id2612220"></a><a name="id2612226"></a><p>     Line segments (<code class="type">lseg</code>) are represented by pairs of points.
-     Values of type <code class="type">lseg</code> are specified using the following syntax:
+<div class="titlepage"><div><div><h3 class="title" id="id2612220">8.7.2. Line Segments</h3></div></div></div>
+<a name="id2612224"></a><a name="id2612229"></a><p>     Line segments (<code class="type">lseg</code>) are represented by pairs of points.
+     Values of type <code class="type">lseg</code> are specified using any of the following
+     syntaxes:
 
 </p>
-<pre class="synopsis">( ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ( <em class="replaceable"><code>x2</code></em> , <em class="replaceable"><code>y2</code></em> ) )
-  ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ( <em class="replaceable"><code>x2</code></em> , <em class="replaceable"><code>y2</code></em> )  
+<pre class="synopsis">[ ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ( <em class="replaceable"><code>x2</code></em> , <em class="replaceable"><code>y2</code></em> ) ]
+( ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ( <em class="replaceable"><code>x2</code></em> , <em class="replaceable"><code>y2</code></em> ) )
+  ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ( <em class="replaceable"><code>x2</code></em> , <em class="replaceable"><code>y2</code></em> )
     <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em>   ,   <em class="replaceable"><code>x2</code></em> , <em class="replaceable"><code>y2</code></em></pre>
 <p>
 
@@ -121,16 +126,19 @@
      <code class="literal">(<em class="replaceable"><code>x2</code></em>,<em class="replaceable"><code>y2</code></em>)</code>
      are the end points of the line segment.
     </p>
+<p>     Line segments are output using the first syntax.
+    </p>
 </div>
 <div class="sect2" title="8.7.3. Boxes">
-<div class="titlepage"><div><div><h3 class="title" id="id2612315">8.7.3. Boxes</h3></div></div></div>
-<a name="id2612318"></a><a name="id2612324"></a><p>     Boxes are represented by pairs of points that are opposite
+<div class="titlepage"><div><div><h3 class="title" id="id2612335">8.7.3. Boxes</h3></div></div></div>
+<a name="id2612338"></a><a name="id2612344"></a><p>     Boxes are represented by pairs of points that are opposite
      corners of the box.
-     Values of type <code class="type">box</code> are specified using the following syntax:
+     Values of type <code class="type">box</code> are specified using any of the following
+     syntaxes:
 
 </p>
 <pre class="synopsis">( ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ( <em class="replaceable"><code>x2</code></em> , <em class="replaceable"><code>y2</code></em> ) )
-  ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ( <em class="replaceable"><code>x2</code></em> , <em class="replaceable"><code>y2</code></em> )  
+  ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ( <em class="replaceable"><code>x2</code></em> , <em class="replaceable"><code>y2</code></em> )
     <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em>   ,   <em class="replaceable"><code>x2</code></em> , <em class="replaceable"><code>y2</code></em></pre>
 <p>
 
@@ -140,47 +148,50 @@
      <code class="literal">(<em class="replaceable"><code>x2</code></em>,<em class="replaceable"><code>y2</code></em>)</code>
      are any two opposite corners of the box.
     </p>
-<p>     Boxes are output using the first syntax.
-     The corners are reordered on input to store
-     the upper right corner, then the lower left corner.
-     Other corners of the box can be entered, but the lower
-     left and upper right corners are determined from the input and stored.
+<p>     Boxes are output using the second syntax.
+    </p>
+<p>     Any two opposite corners can be supplied on input, but the values
+     will be reordered as needed to store the
+     upper right and lower left corners, in that order.
     </p>
 </div>
 <div class="sect2" title="8.7.4. Paths">
-<div class="titlepage"><div><div><h3 class="title" id="id2612415">8.7.4. Paths</h3></div></div></div>
-<a name="id2612419"></a><p>     Paths are represented by lists of connected points. Paths can be
+<div class="titlepage"><div><div><h3 class="title" id="id2612436">8.7.4. Paths</h3></div></div></div>
+<a name="id2612440"></a><p>     Paths are represented by lists of connected points. Paths can be
      <em class="firstterm">open</em>, where
      the first and last points in the list are not considered connected, or
      <em class="firstterm">closed</em>,
      where the first and last points are considered connected.
     </p>
-<p>     Values of type <code class="type">path</code> are specified using the following syntax:
+<p>     Values of type <code class="type">path</code> are specified using any of the following
+     syntaxes:
 
 </p>
-<pre class="synopsis">( ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ... , ( <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em> ) )
-[ ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ... , ( <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em> ) ]
-  ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ... , ( <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em> )  
-  ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em>   , ... ,   <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em> )  
-    <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em>   , ... ,   <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em>    </pre>
+<pre class="synopsis">[ ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ... , ( <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em> ) ]
+( ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ... , ( <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em> ) )
+  ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ... , ( <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em> )
+  ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em>   , ... ,   <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em> )
+    <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em>   , ... ,   <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em></pre>
 <p>
 
      where the points are the end points of the line segments
      comprising the path.  Square brackets (<code class="literal">[]</code>) indicate
      an open path, while parentheses (<code class="literal">()</code>) indicate a
-     closed path.
+     closed path.  When the outermost parentheses are omitted, as
+     in the third through fifth syntaxes, a closed path is assumed.
     </p>
 <p>     Paths are output using the first syntax.
     </p>
 </div>
 <div class="sect2" title="8.7.5. Polygons">
-<div class="titlepage"><div><div><h3 class="title" id="id2612536">8.7.5. Polygons</h3></div></div></div>
-<a name="id2612540"></a><p>     Polygons are represented by lists of points (the vertexes of the
+<div class="titlepage"><div><div><h3 class="title" id="id2612558">8.7.5. Polygons</h3></div></div></div>
+<a name="id2612562"></a><p>     Polygons are represented by lists of points (the vertexes of the
      polygon). Polygons should probably be
      considered equivalent to closed paths, but are stored differently 
      and have their own set of support routines.
     </p>
-<p>     Values of type <code class="type">polygon</code> are specified using the following syntax:
+<p>     Values of type <code class="type">polygon</code> are specified using any of the
+     following syntaxes:
 
 </p>
 <pre class="synopsis">( ( <em class="replaceable"><code>x1</code></em> , <em class="replaceable"><code>y1</code></em> ) , ... , ( <em class="replaceable"><code>xn</code></em> , <em class="replaceable"><code>yn</code></em> ) )
@@ -196,9 +207,10 @@
     </p>
 </div>
 <div class="sect2" title="8.7.6. Circles">
-<div class="titlepage"><div><div><h3 class="title" id="id2612623">8.7.6. Circles</h3></div></div></div>
-<a name="id2612627"></a><p>     Circles are represented by a center point and a radius.
-     Values of type <code class="type">circle</code> are specified using the following syntax:
+<div class="titlepage"><div><div><h3 class="title" id="id2612646">8.7.6. Circles</h3></div></div></div>
+<a name="id2612649"></a><p>     Circles are represented by a center point and a radius.
+     Values of type <code class="type">circle</code> are specified using any of the
+     following syntaxes:
 
 </p>
 <pre class="synopsis">&lt; ( <em class="replaceable"><code>x</code></em> , <em class="replaceable"><code>y</code></em> ) , <em class="replaceable"><code>r</code></em> &gt;
@@ -209,7 +221,8 @@
 
      where
      <code class="literal">(<em class="replaceable"><code>x</code></em>,<em class="replaceable"><code>y</code></em>)</code>
-     is the center and <em class="replaceable"><code>r</code></em> is the radius of the circle.
+     is the center and <em class="replaceable"><code>r</code></em> is the radius of the
+     circle.
     </p>
 <p>     Circles are output using the first syntax.
     </p>

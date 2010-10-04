@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.17 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.18 Documentation">
 <link rel="up" href="pltcl.html" title="Chapter 38. PL/Tcl - Tcl Procedural Language">
 <link rel="prev" href="pltcl-trigger.html" title="38.6. Trigger Procedures in PL/Tcl">
 <link rel="next" href="pltcl-procnames.html" title="38.8. Tcl Procedure Names">
@@ -19,8 +19,8 @@
         exists, the module <code class="literal">unknown</code> is fetched from the table
         and loaded into the Tcl interpreter immediately before the first
         execution of a PL/Tcl function in a database session.  (This
-        happens separately for PL/Tcl and PL/TclU, if both are used,
-        because separate interpreters are used for the two languages.)
+        happens separately for each Tcl interpreter, if more than one is
+        used in a session; see <a class="xref" href="pltcl-global.html" title="38.4. Global Data in PL/Tcl">Section 38.4, &#8220;Global Data in PL/Tcl&#8221;</a>.)
        </p>
 <p>        While the <code class="literal">unknown</code> module could actually contain any
         initialization script you need, it normally defines a Tcl

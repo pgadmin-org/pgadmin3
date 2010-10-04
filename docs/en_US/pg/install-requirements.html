@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.17 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.18 Documentation">
 <link rel="up" href="installation.html" title="Chapter 14.  Installation Instructions">
 <link rel="prev" href="installation.html" title="Chapter 14.  Installation Instructions">
 <link rel="next" href="install-getsource.html" title="14.3. Getting The Source">
@@ -27,7 +27,7 @@
    </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-<p>      <a name="id2656254"></a>
+<p>      <a name="id2656275"></a>
 
       <acronym class="acronym">GNU</acronym> <span class="application">make</span> is required; other
       <span class="application">make</span> programs will <span class="emphasis"><em>not</em></span> work.
@@ -52,8 +52,8 @@
       distribution in the first place, in addition to either
       <span class="application">gzip</span> or <span class="application">bzip2</span>.
      </p></li>
-<li class="listitem"><p>      <a name="id2656384"></a>
-      <a name="id2656390"></a>
+<li class="listitem"><p>      <a name="id2656404"></a>
+      <a name="id2656411"></a>
 
       The <acronym class="acronym">GNU</acronym> <span class="productname">Readline</span> library (for
       simple line editing and command history retrieval) is
@@ -71,7 +71,7 @@
       <code class="literal">readline</code> and <code class="literal">readline-devel</code> packages, if 
       those are separate in your distribution.
      </p></li>
-<li class="listitem"><p>      <a name="id2656480"></a>
+<li class="listitem"><p>      <a name="id2656501"></a>
 
       The <span class="productname">zlib</span> compression library will be
       used by default. If you don't want to use it then you must
@@ -80,7 +80,7 @@
       support for compressed archives in <span class="application">pg_dump</span> and
       <span class="application">pg_restore</span>.
      </p></li>
-<li class="listitem"><p>      <a name="id2656521"></a>
+<li class="listitem"><p>      <a name="id2656542"></a>
 
       Additional software is needed to build
       <span class="productname">PostgreSQL</span> on <span class="productname">Windows</span>.
@@ -115,12 +115,17 @@
       <span class="productname">Perl</span> installation, including the
       <code class="filename">libperl</code> library and the header files.
       Since <span class="application">PL/Perl</span> will be a shared
-      library, the <a name="id2656680"></a>
+      library, the <a name="id2656700"></a>
       <code class="filename">libperl</code> library must be a shared library
       also on most platforms.  This appears to be the default in
       recent <span class="productname">Perl</span> versions, but it was not
       in earlier versions, and in any case it is the choice of whomever
       installed Perl at your site.
+      If you intend to make more than incidental use of
+      <span class="application">PL/Perl</span>, you should ensure that the
+      <span class="productname">Perl</span> installation was built with the
+      <code class="literal">usemultiplicity</code> option enabled (<code class="literal">perl -V</code>
+      will show whether this is the case).
      </p>
 <p>      If you don't have the shared library but you need one, a message
       like this will appear during the build to point out this fact:
@@ -149,7 +154,7 @@
       to install it.
      </p>
 <p>      Since <span class="application">PL/Python</span> will be a shared
-      library, the <a name="id2656802"></a>
+      library, the <a name="id2656850"></a>
       <code class="filename">libpython</code> library must be a shared library
       also on most platforms.  This is not the case in a default
       <span class="productname">Python</span> installation.  If after
@@ -198,17 +203,17 @@
 </ul></div>
 <p>
   </p>
-<p>   If you are building from a <acronym class="acronym">CVS</acronym> tree instead of
-   using a released source package, or if you want to do development,
+<p>   If you are building from a <span class="productname">Git</span> tree instead of
+   using a released source package, or if you want to do server development,
    you also need the following packages:
 
    </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>      <a name="id2657008"></a>
-      <a name="id2657014"></a>
-      <a name="id2657021"></a>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>      <a name="id2657058"></a>
+      <a name="id2657065"></a>
+      <a name="id2657072"></a>
 
       GNU <span class="application">Flex</span> and <span class="application">Bison</span>
-      are needed to build a CVS checkout or if you changed the actual
+      are needed to build from a Git checkout, or if you changed the actual
       scanner and parser definition files. If you need them, be sure
       to get <span class="application">Flex</span> 2.5.4 or later and
       <span class="application">Bison</span> 1.875 or later. Other <span class="application">yacc</span>

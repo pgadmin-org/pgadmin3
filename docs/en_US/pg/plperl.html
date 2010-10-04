@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <link rev="made" href="pgsql-docs@postgresql.org">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.17 Documentation">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.18 Documentation">
 <link rel="up" href="server-programming.html" title="Part V. Server Programming">
 <link rel="prev" href="pltcl-procnames.html" title="38.8. Tcl Procedure Names">
 <link rel="next" href="plperl-database.html" title="39.2. Database Access from PL/Perl">
@@ -25,7 +25,7 @@
 <dt><span class="sect1"><a href="plperl-missing.html">39.7. Limitations and Missing Features</a></span></dt>
 </dl>
 </div>
-<a name="id2758750"></a><a name="id2758758"></a><p>   PL/Perl is a loadable procedural language that enables you to write
+<a name="id2758785"></a><a name="id2758793"></a><p>   PL/Perl is a loadable procedural language that enables you to write
    <span class="productname">PostgreSQL</span> functions in the 
    <a class="ulink" href="http://www.perl.com" target="_top">Perl programming language</a>.
   </p>
@@ -46,7 +46,7 @@
 <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;">
 <h3 class="title">Note</h3>
 <p>    Users of source packages must specially enable the build of
-    PL/Perl during the installation process.  (Refer to <a class="xref" href="installation.html#install-short" title="14.1. Short Version">Section 14.1, &#8220;Short Version&#8221;</a> for more information.)  Users of
+    PL/Perl during the installation process.  (Refer to <a class="xref" href="installation.html" title="Chapter 14.  Installation Instructions">Chapter 14, <i>  Installation Instructions</i></a> for more information.)  Users of
     binary packages might find PL/Perl in a separate subpackage.
    </p>
 </div>
@@ -81,7 +81,7 @@ $$ LANGUAGE plperl;</pre>
    the function body to be written as a string constant.  It is usually
    most convenient to use dollar quoting (see <a class="xref" href="sql-syntax.html#sql-syntax-dollar-quoting" title="4.1.2.2. Dollar-Quoted String Constants">Section 4.1.2.2, &#8220;Dollar-Quoted String Constants&#8221;</a>) for the string constant.
    If you choose to use escape string syntax <code class="literal">E''</code>,
-   you must double the single quote marks (<code class="literal">'</code>) and backslashes
+   you must double any single quote marks (<code class="literal">'</code>) and backslashes
    (<code class="literal">\</code>) used in the body of the function 
    (see <a class="xref" href="sql-syntax.html#sql-syntax-strings" title="4.1.2.1. String Constants">Section 4.1.2.1, &#8220;String Constants&#8221;</a>).
   </p>
@@ -100,7 +100,7 @@ $$ LANGUAGE plperl;</pre>
 $$ LANGUAGE plperl;</pre>
 <p>
   </p>
-<p>   If an SQL null value<a name="id2758964"></a> is passed to a function,
+<p>   If an SQL null value<a name="id2758998"></a> is passed to a function,
    the argument value will appear as <span class="quote">&#8220;<span class="quote">undefined</span>&#8221;</span> in Perl.  The
    above function definition will not behave very nicely with null
    inputs (in fact, it will act as though they are zeroes).  We could
