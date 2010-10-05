@@ -132,11 +132,11 @@ wxString pgIndexBase::GetCreate()
 
     str += wxT(")");
 
-    if (GetConnection()->BackendMinimumVersion(8, 0) && tablespace != GetDatabase()->GetDefaultTablespace())
-        str += wxT("\nTABLESPACE ") + qtIdent(tablespace);
-
     if (GetConnection()->BackendMinimumVersion(8, 2) && GetFillFactor().Length() > 0)
         str += wxT("\n  WITH (FILLFACTOR=") + GetFillFactor() + wxT(")");
+
+    if (GetConnection()->BackendMinimumVersion(8, 0) && tablespace != GetDatabase()->GetDefaultTablespace())
+        str += wxT("\nTABLESPACE ") + qtIdent(tablespace);
 
     AppendIfFilled(str, wxT("\n  WHERE "), GetConstraint());
 
