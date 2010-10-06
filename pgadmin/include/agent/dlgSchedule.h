@@ -56,6 +56,13 @@ private:
     void OnRemoveException(wxCommandEvent &ev);
 	const wxString ChkListBox2PgArray(wxCheckListBox *lb);
 	const wxString ChkListBox2StrArray(wxCheckListBox *lb);
+    void OnSelectAll(wxCommandEvent &ev, int origin);
+    void OnSelectAllWeekdays(wxCommandEvent &ev) {OnSelectAll(ev, 1);};
+    void OnSelectAllMonthdays(wxCommandEvent &ev) {OnSelectAll(ev, 2);};
+    void OnSelectAllMonths(wxCommandEvent &ev) {OnSelectAll(ev, 3);};
+    void OnSelectAllHours(wxCommandEvent &ev) {OnSelectAll(ev, 4);};
+    void OnSelectAllMinutes(wxCommandEvent &ev) {OnSelectAll(ev, 5);};
+    void InitSelectAll();
 
     DECLARE_EVENT_TABLE()
 };

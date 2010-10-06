@@ -16,6 +16,9 @@
 #include "agent/dlgSchedule.h"
 #include "agent/pgaSchedule.h"
 
+// image for de/-select all
+#include "images/check.xpm"
+#include "images/uncheck.xpm"
 
 // pointer to controls
 #define	txtID				CTRL_TEXT("txtID")
@@ -35,7 +38,11 @@
 #define btnAddException     CTRL_BUTTON("btnAddException")
 #define btnChangeException  CTRL_BUTTON("btnChangeException")
 #define btnRemoveException  CTRL_BUTTON("btnRemoveException")
-
+#define btnWeekdays  		CTRL_BUTTON("btnWeekdays")
+#define btnMonthdays  		CTRL_BUTTON("btnMonthdays")
+#define btnMonths  		CTRL_BUTTON("btnMonths")
+#define btnHours  			CTRL_BUTTON("btnHours")
+#define btnMinutes  		CTRL_BUTTON("btnMinutes")
 
 BEGIN_EVENT_TABLE(dlgSchedule, dlgAgentProperty)
     EVT_CHECKBOX(XRCID("chkEnabled"),                dlgSchedule::OnChangeCom)
@@ -47,6 +54,11 @@ BEGIN_EVENT_TABLE(dlgSchedule, dlgAgentProperty)
     EVT_BUTTON(XRCID("btnAddException"),             dlgSchedule::OnAddException)
     EVT_BUTTON(XRCID("btnChangeException"),          dlgSchedule::OnChangeException)
     EVT_BUTTON(XRCID("btnRemoveException"),          dlgSchedule::OnRemoveException)
+    EVT_BUTTON(XRCID("btnWeekdays"),        	     dlgSchedule::OnSelectAllWeekdays)
+    EVT_BUTTON(XRCID("btnMonthdays"),		         dlgSchedule::OnSelectAllMonthdays)
+    EVT_BUTTON(XRCID("btnMonths"), 				     dlgSchedule::OnSelectAllMonths)
+    EVT_BUTTON(XRCID("btnHours"),  			         dlgSchedule::OnSelectAllHours)
+    EVT_BUTTON(XRCID("btnMinutes"),			         dlgSchedule::OnSelectAllMinutes)
 	EVT_CHECKLISTBOX(XRCID("chkWeekdays"),           dlgSchedule::OnChangeCom)
 	EVT_CHECKLISTBOX(XRCID("chkMonthdays"),          dlgSchedule::OnChangeCom)
 	EVT_CHECKLISTBOX(XRCID("chkMonths"),             dlgSchedule::OnChangeCom)
@@ -198,6 +210,9 @@ int dlgSchedule::Go(bool modal)
         // create mode
     }
 
+    // setup de-/select buttons
+    InitSelectAll();
+
     returncode = dlgProperty::Go(modal);
 
     SetSqlReadOnly(true);
@@ -218,10 +233,12 @@ void dlgSchedule::OnChangeCal(wxCalendarEvent &ev)
     CheckChange();
 }
 
+
 void dlgSchedule::OnChangeCom(wxCommandEvent &ev)
 {
     CheckChange();
 }
+
 
 void dlgSchedule::CheckChange()
 {
@@ -233,11 +250,15 @@ void dlgSchedule::CheckChange()
 	if (statusBar)
 		statusBar->SetStatusText(wxEmptyString);
 
+	InitSelectAll();
+
     CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 	CheckValid(enable, calStart->GetValue().IsValid(), _("Please specify start date."));
 
 	if (enable)
+	{
 		EnableOK(!GetSql().IsEmpty());
+	}
 	else
 		EnableOK(false);
 }
@@ -618,6 +639,7 @@ wxString dlgSchedule::GetUpdateSql()
     return sql;
 }
 
+
 const wxString dlgSchedule::ChkListBox2PgArray(wxCheckListBox *lb)
 {
 	wxString res = wxT("{");
@@ -637,6 +659,7 @@ const wxString dlgSchedule::ChkListBox2PgArray(wxCheckListBox *lb)
 	return res;
 }
 
+
 const wxString dlgSchedule::ChkListBox2StrArray(wxCheckListBox *lb)
 {
 	wxString res;
@@ -650,4 +673,182 @@ const wxString dlgSchedule::ChkListBox2StrArray(wxCheckListBox *lb)
 	}
 
 	return res;
+}
+
+
+void dlgSchedule::OnSelectAll(wxCommandEvent &ev, int origin)
+{
+	bool check = false;
+	wxBitmapButton *btn;
+	wxCheckListBox *lb;
+	wxString tooltip;
+
+	switch (origin) {
+		case 1:
+			btn = ((wxBitmapButton *)btnWeekdays);
+			lb = chkWeekdays;
+			break;
+		case 2:
+			btn = ((wxBitmapButton *)btnMonthdays);
+			lb = chkMonthdays;
+			break;
+		case 3:
+			btn = ((wxBitmapButton *)btnMonths);
+			lb = chkMonths;
+			break;
+		case 4:
+			btn = ((wxBitmapButton *)btnHours);
+			lb = chkHours;
+			break;
+		case 5:
+			btn = ((wxBitmapButton *)btnMinutes);
+			lb = chkMinutes;
+			break;
+		default:
+			break;
+	}
+
+	for (unsigned int x=0; x < lb->GetCount(); x++)
+	{
+		if (!lb->IsChecked(x))
+		{
+			check = true;
+			break;
+		}
+	}
+	for (unsigned int x=0; x < lb->GetCount(); x++)
+	{
+		lb->Check(x, check);
+	}
+
+	CheckChange();
+}
+
+
+void dlgSchedule::InitSelectAll()
+{
+	bool check = false;
+	wxBitmapButton *btn;
+	wxCheckListBox *lb;
+	wxString tooltip;
+
+	btn = ((wxBitmapButton *)btnWeekdays);
+	lb = chkWeekdays;
+	for (unsigned int x=0; x < lb->GetCount(); x++)
+	{
+		if (!lb->IsChecked(x))
+		{
+			check = true;
+			break;
+		}
+	}
+
+	if (check)
+	{
+		btn->SetBitmapLabel(wxBitmap(check_xpm));
+		tooltip = _("Select all week days");
+	}
+	else
+	{
+		btn->SetBitmapLabel(wxBitmap(uncheck_xpm));
+		tooltip = _("Deselect all week days");
+	}
+	btn->SetToolTip(tooltip);
+
+	check = false;
+	btn = ((wxBitmapButton *)btnMonthdays);
+	lb = chkMonthdays;
+	for (unsigned int x=0; x < lb->GetCount(); x++)
+	{
+		if (!lb->IsChecked(x))
+		{
+			check = true;
+			break;
+		}
+	}
+
+	if (check)
+	{
+		btn->SetBitmapLabel(wxBitmap(check_xpm));
+		tooltip = _("Select all month days");
+	}
+	else
+	{
+		btn->SetBitmapLabel(wxBitmap(uncheck_xpm));
+		tooltip = _("Deselect all month days");
+	}
+	btn->SetToolTip(tooltip);
+
+	check = false;
+	btn = ((wxBitmapButton *)btnMonths);
+	lb = chkMonths;
+	for (unsigned int x=0; x < lb->GetCount(); x++)
+	{
+		if (!lb->IsChecked(x))
+		{
+			check = true;
+			break;
+		}
+	}
+
+	if (check)
+	{
+		btn->SetBitmapLabel(wxBitmap(check_xpm));
+		tooltip = _("Select all months");
+	}
+	else
+	{
+		btn->SetBitmapLabel(wxBitmap(uncheck_xpm));
+		tooltip = _("Deselect all months");
+	}
+	btn->SetToolTip(tooltip);
+
+	check = false;
+	btn = ((wxBitmapButton *)btnHours);
+	lb = chkHours;
+	for (unsigned int x=0; x < lb->GetCount(); x++)
+	{
+		if (!lb->IsChecked(x))
+		{
+			check = true;
+			break;
+		}
+	}
+
+	if (check)
+	{
+		btn->SetBitmapLabel(wxBitmap(check_xpm));
+		tooltip = _("Select all hours");
+	}
+	else
+	{
+		btn->SetBitmapLabel(wxBitmap(uncheck_xpm));
+		tooltip = _("Deselect all hours");
+	}
+	btn->SetToolTip(tooltip);
+
+
+	check = false;
+	btn = ((wxBitmapButton *)btnMinutes);
+	lb = chkMinutes;
+	for (unsigned int x=0; x < lb->GetCount(); x++)
+	{
+		if (!lb->IsChecked(x))
+		{
+			check = true;
+			break;
+		}
+	}
+
+	if (check)
+	{
+		btn->SetBitmapLabel(wxBitmap(check_xpm));
+		tooltip = _("Select all minutes");
+	}
+	else
+	{
+		btn->SetBitmapLabel(wxBitmap(uncheck_xpm));
+		tooltip = _("Deselect all minutes");
+	}
+	btn->SetToolTip(tooltip);
 }
