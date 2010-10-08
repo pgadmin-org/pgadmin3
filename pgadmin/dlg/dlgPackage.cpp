@@ -44,11 +44,16 @@ dlgPackage::dlgPackage(pgaFactory *f, frmMain *frame, edbPackage *node, pgSchema
     schema=sch;
     package=node;
 
-    txtHeader->SetMarginType(1, wxSTC_MARGIN_NUMBER);
-    txtHeader->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
+    bool bVal;
+    settings->Read(wxT("frmQuery/ShowLineNumber"), &bVal, false);
+    if (!bVal)
+    {
+        txtHeader->SetMarginType(1, wxSTC_MARGIN_NUMBER);
+        txtHeader->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
 
-    txtBody->SetMarginType(1, wxSTC_MARGIN_NUMBER);
-    txtBody->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
+        txtBody->SetMarginType(1, wxSTC_MARGIN_NUMBER);
+        txtBody->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
+    }
 }
 
 

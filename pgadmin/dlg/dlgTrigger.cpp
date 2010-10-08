@@ -75,8 +75,13 @@ dlgTrigger::dlgTrigger(pgaFactory *f, frmMain *frame, pgTrigger *node, pgTable *
     table=parentNode;
     wxASSERT(!table || table->GetMetaType() == PGM_TABLE || table->GetMetaType() == GP_PARTITION);
 
-    txtBody->SetMarginType(1, wxSTC_MARGIN_NUMBER);
-    txtBody->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
+    bool bVal;
+    settings->Read(wxT("frmQuery/ShowLineNumber"), &bVal, false);
+    if (!bVal)
+    {
+        txtBody->SetMarginType(1, wxSTC_MARGIN_NUMBER);
+        txtBody->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
+    }
 
     lstColumns->AddColumn(_("Column name"));
 }
