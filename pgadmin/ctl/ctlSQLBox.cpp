@@ -116,6 +116,11 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
 		StyleSetFont(i, fntSQLBox);
 	}
 
+    // Keywords in uppercase?
+
+    if (settings->GetSQLKeywordsInUppercase())
+        StyleSetCase(5, wxSTC_CASE_UPPER);
+
 	// Margin style
 	StyleSetBackground(wxSTC_STYLE_LINENUMBER, settings->GetSQLMarginBackgroundColour());
 

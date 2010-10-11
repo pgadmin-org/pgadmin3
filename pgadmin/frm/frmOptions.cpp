@@ -98,6 +98,7 @@
 #define pickerSQLColour10           CTRL_COLOURPICKER("pickerSQLColour10")
 #define pickerSQLColour11           CTRL_COLOURPICKER("pickerSQLColour11")
 #define pickerSQLCaretColour               CTRL_COLOURPICKER("pickerSQLCaretColour")
+#define chkKeywordsInUppercase      CTRL_CHECKBOX("chkKeywordsInUppercase")
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_MENU(MNU_HELP,                                            frmOptions::OnHelp)
@@ -269,6 +270,8 @@ frmOptions::frmOptions(frmMain *parent)
 	pickerSQLColour7->SetColour(settings->GetSQLBoxColour(7));
 	pickerSQLColour10->SetColour(settings->GetSQLBoxColour(10));
 	pickerSQLColour11->SetColour(settings->GetSQLBoxColour(11));
+
+	chkKeywordsInUppercase->SetValue(settings->GetSQLKeywordsInUppercase());
 
     cbLanguage->Append(_("Default"));
     int sel=0;
@@ -700,6 +703,12 @@ void frmOptions::OnOK(wxCommandEvent &ev)
         changed = true;
     settings->SetSQLBoxColour(11, pickerSQLColour11->GetColourString());
 
+	if (settings->GetSQLKeywordsInUppercase() != chkKeywordsInUppercase->GetValue())
+	{
+		changed = true;
+		settings->SetSQLKeywordsInUppercase(chkKeywordsInUppercase->GetValue());
+	}
+	
     // Change the language last, as it will affect our tests for changes
     // in the display object types.
     int langNo=cbLanguage->GetCurrentSelection();

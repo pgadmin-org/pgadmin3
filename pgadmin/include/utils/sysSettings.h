@@ -164,6 +164,8 @@ public:
 
     wxString GetSQLMarginBackgroundColour() const { wxString s; Read(wxT("ctlSQLBox/MarginBackgroundColour"), &s, wxT("#dddddd")); return s; }
 	void SetSQLMarginBackgroundColour(const wxString &newval) { Write(wxT("ctlSQLBox/MarginBackgroundColour"), newval); }
+    bool GetSQLKeywordsInUppercase() const { bool b; Read(wxT("KeywordsInUppercase"), &b, false); return b; }
+	void SetSQLKeywordsInUppercase(const bool newval) { Write(wxT("KeywordsInUppercase"), newval); }
 
     // Misc options
     long GetAutoRowCountThreshold() const { long l; Read(wxT("AutoRowCount"), &l, 2000L); return l; }
