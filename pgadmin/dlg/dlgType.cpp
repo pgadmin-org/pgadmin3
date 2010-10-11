@@ -45,6 +45,7 @@
 #define lstLabels               CTRL_LISTVIEW("lstLabels")
 #define txtLabel                CTRL_TEXT("txtLabel")
 #define btnAddMember            CTRL_BUTTON("btnAddMember")
+#define btnChangeMember         CTRL_BUTTON("btnChangeMember")
 #define btnRemoveMember         CTRL_BUTTON("btnRemoveMember")
 #define btnAddLabel             CTRL_BUTTON("btnAddLabel")
 #define btnRemoveLabel          CTRL_BUTTON("btnRemoveLabel")
@@ -65,6 +66,7 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
     EVT_CHECKBOX(XRCID("chkVariable"),              dlgProperty::OnChange)
     
     EVT_BUTTON(XRCID("btnAddMember"),               dlgType::OnMemberAdd)
+    EVT_BUTTON(XRCID("btnChangeMember"),            dlgType::OnMemberChange)
     EVT_BUTTON(XRCID("btnRemoveMember"),            dlgType::OnMemberRemove)
     EVT_BUTTON(XRCID("btnAddLabel"),                dlgType::OnLabelAdd)
     EVT_BUTTON(XRCID("btnRemoveLabel"),             dlgType::OnLabelRemove)
@@ -99,9 +101,11 @@ dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
 
 void dlgType::OnChangeMember(wxCommandEvent &ev)
 {
-    btnAddMember->Enable(!type
+    btnAddMember->Enable(
+        ((type && connection->BackendMinimumVersion(9, 1)) || !type)
         && !txtMembername->GetValue().Strip(wxString::both).IsEmpty()
         && cbDatatype->GetGuessedSelection() >= 0);
+    btnChangeMember->Enable(true);
 }
 
 void dlgType::showDefinition(int panel)
@@ -165,28 +169,38 @@ int dlgType::Go(bool modal)
         cbTypmodin->Append(type->GetTypmodinFunction()); cbTypmodin->SetSelection(0); cbTypmodin->Disable();
         cbTypmodout->Append(type->GetTypmodoutFunction()); cbTypmodout->SetSelection(0); cbTypmodout->Disable();
 
-        chkVariable->SetValue(type->GetInternalLength() < 0); chkVariable->Disable();
+        chkVariable->SetValue(type->GetInternalLength() < 0);
+        chkVariable->Disable();
         if (type->GetInternalLength() > 0)
             txtIntLength->SetValue(NumToStr(type->GetInternalLength())); 
         txtIntLength->Disable();
-        txtDefault->SetValue(type->GetDefault()); txtDefault->Disable();
-        cbElement->Append(type->GetElement()); cbElement->SetSelection(0); cbElement->Disable();
-        txtDelimiter->SetValue(type->GetDelimiter()); txtDelimiter->Disable();
-        chkByValue->SetValue(type->GetPassedByValue()); chkByValue->Disable();
-        cbAlignment->SetValue(type->GetAlignment()); cbAlignment->Disable();
-        cbStorage->SetValue(type->GetStorage()); cbStorage->Disable();
+        txtDefault->SetValue(type->GetDefault());
+        txtDefault->Disable();
+        cbElement->Append(type->GetElement());
+        cbElement->SetSelection(0);
+        cbElement->Disable();
+        txtDelimiter->SetValue(type->GetDelimiter());
+        txtDelimiter->Disable();
+        chkByValue->SetValue(type->GetPassedByValue());
+        chkByValue->Disable();
+        cbAlignment->SetValue(type->GetAlignment());
+        cbAlignment->Disable();
+        cbStorage->SetValue(type->GetStorage());
+        cbStorage->Disable();
 
-        txtMembername->Disable();
-        btnAddMember->Disable();
-        btnRemoveMember->Disable();
+        bool changeok = connection->BackendMinimumVersion(9, 1);
+        txtMembername->Enable(changeok);
+        btnAddMember->Enable(changeok);
+        btnChangeMember->Enable(false);
+        btnRemoveMember->Enable(false);
 
-        txtLabel->Disable();
-        btnAddLabel->Disable();
-        btnRemoveLabel->Disable();
+        txtLabel->Enable(changeok);
+        btnAddLabel->Enable(changeok);
+        btnRemoveLabel->Enable(changeok);
 
         wxArrayString elements=type->GetTypesArray();
         wxString fullType, typeName, typeLength, typePrecision;
-        int pos;
+        size_t pos;
         size_t i;
 		for (i=0 ; i < elements.GetCount() ; i+=2)
         {
@@ -223,8 +237,8 @@ int dlgType::Go(bool modal)
             memberPrecisions.Add(typePrecision);
         }
 
-        cbDatatype->Disable();
-        txtLength->Disable();
+        cbDatatype->Enable(changeok);
+        txtLength->Enable(changeok);
 
         // Load the enum labels
         elements=type->GetLabelArray();
@@ -345,9 +359,10 @@ int dlgType::Go(bool modal)
                 delete set;
             }
         }
-
-        txtLength->SetValidator(numericValidator);
     }
+
+    txtLength->SetValidator(numericValidator);
+
     return dlgTypeProperty::Go(modal);
 }
 
@@ -363,7 +378,7 @@ void dlgType::OnSelChangeTyp(wxCommandEvent &ev)
 
 void dlgType::OnSelChangeTypOrLen(wxCommandEvent &ev)
 {
-    if (!type)
+    if ((type && connection->BackendMinimumVersion(9, 1)) || !type)
     {
         CheckLenEnable();
         txtLength->Enable(isVarLen);
@@ -379,7 +394,8 @@ void dlgType::CheckChange()
     if (type)
     {
         EnableOK(txtComment->GetValue() != type->GetComment()
-            || cbOwner->GetValue() != type->GetOwner());
+            || cbOwner->GetValue() != type->GetOwner()
+            || (rdbType->GetSelection() == TYPE_COMPOSITE && GetSqlForTypes() != wxEmptyString));
     }
     else
     {
@@ -417,9 +433,11 @@ void dlgType::OnMemberSelChange(wxListEvent &ev)
         txtMembername->SetValue(lstMembers->GetText(pos));
         cbDatatype->SetValue(memberTypes.Item(pos).AfterFirst(':'));
         txtLength->SetValue(memberLengths.Item(pos));
-        txtLength->Enable(!type && !txtLength->GetValue().IsEmpty());
+        txtLength->Enable(((type && connection->BackendMinimumVersion(9, 1)) || !type) && !txtLength->GetValue().IsEmpty());
         txtPrecision->SetValue(memberPrecisions.Item(pos));
-        txtPrecision->Enable(!type && !txtPrecision->GetValue().IsEmpty());
+        txtPrecision->Enable(((type && connection->BackendMinimumVersion(9, 1)) || !type) && !txtPrecision->GetValue().IsEmpty());
+        btnChangeMember->Enable((type && connection->BackendMinimumVersion(9, 1)) || !type);
+        btnRemoveMember->Enable((type && connection->BackendMinimumVersion(9, 1)) || !type);
     }
 }
 
@@ -440,23 +458,51 @@ void dlgType::OnMemberAdd(wxCommandEvent &ev)
     {
         type += wxT("(") + length;
         if (!precision.IsEmpty())
-            type += wxT(", ") + precision;
+            type += wxT(",") + precision;
         type += wxT(")");
     }
 
     if (!name.IsEmpty())
     {
-        long pos=lstMembers->FindItem(-1, name);
-        if (pos < 0)
+        size_t pos = lstMembers->GetItemCount();
+        lstMembers->InsertItem(pos, name, 0);
+        lstMembers->SetItem(pos, 1, type);
+        memberTypes.Add(GetTypeInfo(cbDatatype->GetGuessedSelection()));
+        memberLengths.Add(length);
+        memberPrecisions.Add(precision);
+    }
+
+    CheckChange();
+}
+
+
+void dlgType::OnMemberChange(wxCommandEvent &ev)
+{
+    wxString name = txtMembername->GetValue().Strip(wxString::both);
+    wxString type = cbDatatype->GetValue();
+    wxString length = wxEmptyString;
+    wxString precision = wxEmptyString;
+
+    if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
+       length = txtLength->GetValue();
+    if (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled())
+       precision = txtPrecision->GetValue();
+
+    if (!length.IsEmpty())
+    {
+        type += wxT("(") + length;
+        if (!precision.IsEmpty())
+            type += wxT(",") + precision;
+        type += wxT(")");
+    }
+
+    if (!name.IsEmpty())
+    {
+        long pos=lstMembers->GetFirstSelected();
+        if (pos >= 0)
         {
-            pos = lstMembers->GetItemCount();
-            lstMembers->InsertItem(pos, name, 0);
-            memberTypes.Add(GetTypeInfo(cbDatatype->GetGuessedSelection()));
-            memberLengths.Add(length);
-            memberPrecisions.Add(precision);
-        }
-        else
-        {
+            lstMembers->SetItem(pos, 0, name);
+            lstMembers->SetItem(pos, 1, type);
             memberTypes.Insert(GetTypeInfo(cbDatatype->GetGuessedSelection()), pos);
             memberLengths.Insert(length, pos);
             memberPrecisions.Insert(precision, pos);
@@ -464,7 +510,6 @@ void dlgType::OnMemberAdd(wxCommandEvent &ev)
             memberLengths.RemoveAt(pos+1);
             memberPrecisions.RemoveAt(pos+1);
         }
-        lstMembers->SetItem(pos, 1, type);
     }
 
     CheckChange();
@@ -542,6 +587,7 @@ wxString dlgType::GetSql()
     {
         // Edit Mode
         AppendOwnerChange(sql, wxT("TYPE ") + type->GetQuotedFullIdentifier());
+        sql += GetSqlForTypes();
     }
     else
     {
@@ -657,10 +703,49 @@ wxString dlgType::GetFullTypeName(int type)
     {
         typname += wxT("(") + memberLengths.Item(type);
         if (!memberPrecisions.Item(type).IsEmpty())
-            typname += wxT(", ") + memberPrecisions.Item(type);
+            typname += wxT(",") + memberPrecisions.Item(type);
         typname += wxT(")");
     }
 
     return typname;
 }
 
+wxString dlgType::GetSqlForTypes()
+{
+    wxString sql = wxEmptyString;
+    wxString old_name, old_type, new_name, new_type;
+    wxArrayString elements=type->GetTypesArray();
+    bool modified = lstMembers->GetItemCount()*2 != elements.GetCount();
+    size_t i;
+
+    // Check if there is a change
+    for (int i=0 ; i < lstMembers->GetItemCount() && !modified; i++)
+    {
+        old_name = elements.Item(i*2);
+        old_type = elements.Item(i*2+1);
+        new_name = lstMembers->GetItemText(i);
+        new_type = GetFullTypeName(i);
+        modified = modified || old_name != new_name || old_type != new_type;
+    }
+
+    if (modified)
+    {
+        // Drop all old attributes
+		for (i=0 ; i < elements.GetCount() ; i+=2)
+        {
+            old_name = elements.Item(i);
+            sql += wxT("ALTER TYPE type DROP ATTRIBUTE ") + old_name + wxT(";\n");
+        }
+
+        // Add all new attributes
+        for (int i=0 ; i < lstMembers->GetItemCount() ; i++)
+        {
+            new_name = lstMembers->GetItemText(i);
+            new_type = GetFullTypeName(i);
+            sql += wxT("ALTER TYPE type ADD ATTRIBUTE ")
+                   + new_name + wxT(" ") + new_type + wxT(";\n");
+        }
+    }
+
+    return sql;
+}

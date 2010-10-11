@@ -24,6 +24,7 @@ public:
 
     void CheckChange();
     wxString GetSql();
+    wxString GetSqlForTypes();
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
@@ -34,6 +35,7 @@ private:
     pgType *type;
     void OnTypeChange(wxCommandEvent &ev);
     void OnMemberAdd(wxCommandEvent &ev);
+    void OnMemberChange(wxCommandEvent &ev);
     void OnMemberRemove(wxCommandEvent &ev);
     void OnMemberSelChange(wxListEvent &ev);
     void OnLabelAdd(wxCommandEvent &ev);
