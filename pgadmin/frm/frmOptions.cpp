@@ -97,6 +97,7 @@
 #define pickerSQLColour7            CTRL_COLOURPICKER("pickerSQLColour7")
 #define pickerSQLColour10           CTRL_COLOURPICKER("pickerSQLColour10")
 #define pickerSQLColour11           CTRL_COLOURPICKER("pickerSQLColour11")
+#define pickerSQLCaretColour               CTRL_COLOURPICKER("pickerSQLCaretColour")
 
 BEGIN_EVENT_TABLE(frmOptions, pgDialog)
     EVT_MENU(MNU_HELP,                                            frmOptions::OnHelp)
@@ -395,6 +396,8 @@ void frmOptions::UpdateColourControls()
 		stSQLCustomForegroundColour->Enable(true);
 	}
 
+	pickerSQLCaretColour->SetColour(settings->GetSQLColourCaret());
+
 	pickerSQLMarginBackgroundColour->SetColour(settings->GetSQLMarginBackgroundColour());
 }
 
@@ -664,6 +667,10 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     if (pickerSQLMarginBackgroundColour->GetColourString() != settings->GetSQLMarginBackgroundColour())
         changed = true;
     settings->SetSQLMarginBackgroundColour(pickerSQLMarginBackgroundColour->GetColourString());
+
+    if (pickerSQLCaretColour->GetColourString() != settings->GetSQLColourCaret())
+        changed = true;
+    settings->SetSQLColourCaret(pickerSQLCaretColour->GetColourString());
 
     if (pickerSQLColour1->GetColourString() != settings->GetSQLBoxColour(1))
         changed = true;

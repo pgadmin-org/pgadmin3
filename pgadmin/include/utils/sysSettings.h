@@ -156,6 +156,9 @@ public:
     wxString GetSQLBoxColourForeground() const { wxString s; Read(wxT("ctlSQLBox/ColourForeground"), &s, wxT("#000000")); return s; }
 	void SetSQLBoxColourForeground(const wxString &newval) { Write(wxT("ctlSQLBox/ColourForeground"), newval); }
 
+    wxString GetSQLColourCaret() const { wxString s; Read(wxT("ctlSQLBox/ColourCaret"), &s, wxT("#000000")); return s; }
+	void SetSQLColourCaret(const wxString &newval) { Write(wxT("ctlSQLBox/ColourCaret"), newval); }
+
     wxString GetSQLBoxColour(int index) const { wxString s; Read(wxString::Format(wxT("ctlSQLBox/Colour%i"), index), &s, getDefaultElementColor(index)); return s; }
 	void SetSQLBoxColour(int index, const wxString &newval) { Write(wxString::Format(wxT("ctlSQLBox/Colour%i"), index), newval); }
 

@@ -99,6 +99,8 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     SetSelBackground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
     SetSelForeground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 
+	SetCaretForeground(settings->GetSQLColourCaret());
+
     SetMarginWidth(1, 0);
     SetTabWidth(settings->GetIndentSpaces());
     SetUseTabs(!settings->GetSpacesForTabs());
