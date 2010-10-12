@@ -1422,6 +1422,10 @@ void frmEditGrid::Go()
 
     if (!hasOids && primaryKeyColNumbers.IsEmpty() && relkind == 'r')
         frmHint::ShowHint(this, HINT_READONLY_NOPK, tableName);
+
+    // Set the thread variable to zero so we don't try to
+    // abort it if the user cancels now.
+    thread = 0;
 }
 
 
@@ -1444,10 +1448,10 @@ void frmEditGrid::Abort()
     if (sqlGrid->GetTable())
     {
         sqlGrid->HideCellEditControl();
-        // thread is owned by table und will be destroyed there
         sqlGrid->SetTable(0);
     }
-    else if (thread)
+
+    if (thread)
     {
         SetStatusText(_("aborting."), 0);
         if (thread->IsRunning())
