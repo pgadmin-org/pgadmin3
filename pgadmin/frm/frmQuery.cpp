@@ -2275,7 +2275,6 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
 		qi->toFileExportForm = new frmExport(this);
 		if (qi->toFileExportForm->ShowModal() != wxID_OK)
 		{
-			delete qi->toFileExportForm;
 			delete qi;
 			setTools(false);
 			aborted = true;
