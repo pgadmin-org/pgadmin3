@@ -317,6 +317,7 @@ void dlgRole::OnChangeSuperuser(wxCommandEvent &ev)
             return;
         }
     }
+    chkUpdateCat->SetValue(chkSuperuser->GetValue());
     CheckChange();
 }
 
