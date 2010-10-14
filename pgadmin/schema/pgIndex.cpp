@@ -671,7 +671,7 @@ void pgIndexBaseCollection::ShowStatistics(frmMain *form, ctlListView *statistic
 		wxT("idx_scan, idx_tup_read, idx_tup_fetch");
 
     if (hasSize)
-        sql += wxT(", pg_size_pretty(pg_relation_size(") + GetOidStr() + wxT(")) AS ") + qtIdent(wxT("size"));
+        sql += wxT(", pg_size_pretty(pg_relation_size(indexrelid)) AS ") + qtIdent(wxT("size"));
 
     sql += wxT("\n")
         wxT("  FROM pg_stat_all_indexes stat\n")
