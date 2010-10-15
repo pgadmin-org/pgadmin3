@@ -36,6 +36,10 @@ void ctlColourPicker::DoProcessLeftClick(wxMouseEvent& event)
 {
     wxColourData clrData;
 
+    // Initialise custom colours
+    for (int index=0; index<16; index++)
+        clrData.SetCustomColour(index, settings->GetCustomColour(index));
+
     // If there is an initial colour, set it for wxColourDialog
     if (m_colour_clr.IsOk())
         clrData.SetColour(m_colour_clr);
@@ -51,6 +55,10 @@ void ctlColourPicker::DoProcessLeftClick(wxMouseEvent& event)
     {
         clrData = dialog.GetColourData();
 		SetColour(clrData.GetColour());
+
+        // Store custom colours
+        for (int index=0; index<16; index++)
+            settings->SetCustomColour(index, clrData.GetCustomColour(index).GetAsString(wxC2S_HTML_SYNTAX));
     }
 }
 

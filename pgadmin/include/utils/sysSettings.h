@@ -135,6 +135,10 @@ public:
 	long  GetHistoryMaxQuerySize() const { long l; Read(wxT("History/MaxQuerySize"), &l, 1024L); return l; }
 	void SetHistoryMaxQuerySize(const long newval) { Write(wxT("History/MaxQuerySize"), newval); }
 
+    // Custom Colours options
+    wxString GetCustomColour(int index) const { wxString s; Read(wxT("CustomColour") + NumToStr((long) index), &s, wxT("#ffffff")); return s; }
+	void SetCustomColour(int index, const wxString &newval) { Write(wxT("CustomColour") + NumToStr((long) index), newval); }
+
     // Status Colours options
     wxString GetIdleProcessColour() const { wxString s; Read(wxT("IdleProcessColour"), &s, wxT("#5fa4d9")); return s; }
 	void SetIdleProcessColour(const wxString &newval) { Write(wxT("IdleProcessColour"), newval); }
