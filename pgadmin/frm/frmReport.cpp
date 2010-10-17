@@ -1435,7 +1435,7 @@ void reportObjectStatisticsFactory::GenerateReport(frmReport *report, pgObject *
 
     int section = report->XmlCreateSection(object->GetTranslatedMessage(OBJSTATISTICS));
 
-    ctlListView *list = GetFrmMain()->GetStatisticsCtl();
+    ctlListView *list = GetFrmMain()->GetStatistics();
     object->ShowStatistics(GetFrmMain(), list);
 
     report->XmlAddSectionTableFromListView(section, list);
@@ -1468,7 +1468,7 @@ void reportObjectDependenciesFactory::GenerateReport(frmReport *report, pgObject
 
     int section = report->XmlCreateSection(object->GetTranslatedMessage(DEPENDENCIES));
 
-    ctlListView *list = GetFrmMain()->GetDependenciesCtl();
+    ctlListView *list = GetFrmMain()->GetDependencies();
     object->ShowDependencies(parent, list);
 
     report->XmlAddSectionTableFromListView(section, list);
@@ -1501,7 +1501,7 @@ void reportObjectDependentsFactory::GenerateReport(frmReport *report, pgObject *
 
     int section = report->XmlCreateSection(object->GetTranslatedMessage(DEPENDENTS));
 
-    ctlListView *list = GetFrmMain()->GetReferencedByCtl();
+    ctlListView *list = GetFrmMain()->GetReferencedBy();
     object->ShowDependents(parent, list);
 
     report->XmlAddSectionTableFromListView(section, list);

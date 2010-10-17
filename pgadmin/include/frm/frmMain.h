@@ -95,18 +95,15 @@ public:
     void execSelChange(wxTreeItemId item, bool currentNode);
     void Refresh(pgObject *data);
     void ExecDrop(bool cascaded);
-    void ShowObjStatistics(pgObject *data, int sel);
+    void ShowObjStatistics(pgObject *data);
 
     wxImageList *GetImageList() { return imageList; }
     ctlTree *GetBrowser() { return browser; }
     ctlSQLBox *GetSqlPane() { return sqlPane; }
     ctlListView *GetProperties() { return properties; }
     ctlListView *GetStatistics();
-    ctlListView *GetStatisticsCtl();
     ctlListView *GetDependencies();
-    ctlListView *GetDependenciesCtl();
     ctlListView *GetReferencedBy();
-    ctlListView *GetReferencedByCtl();
     void SelectStatisticsTab() { listViews->SetSelection(1); };
     void StoreServers();
     int ReconnectServer(pgServer *server, bool restore = true);
@@ -133,7 +130,7 @@ private:
     ctlListView *properties;
     ctlListView *statistics;
     ctlListView *dependents, *dependencies;
-    wxNotebook *listViews;
+    wxAuiNotebook *listViews;
     ctlSQLBox *sqlPane;
     wxMenu *newMenu, *debuggingMenu, *reportMenu, *toolsMenu, *pluginsMenu, *viewMenu, 
           *treeContextMenu, *newContextMenu, *slonyMenu, *scriptingMenu, *viewDataMenu;
@@ -170,9 +167,9 @@ private:
     void OnToggleToolBar(wxCommandEvent& event);
     void OnDefaultView(wxCommandEvent& event);
     void OnAuiUpdate(wxAuiManagerEvent& event);
+	void OnAuiNotebookPageClose(wxAuiNotebookEvent& event);
     void OnContextMenu(wxCommandEvent& event);
 
-    void OnPageChange(wxNotebookEvent& event);
     void OnPropSelChanged(wxListEvent& event);
     void OnPropSelActivated(wxListEvent& event);
     void OnPropRightClick(wxListEvent& event);

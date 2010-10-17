@@ -135,7 +135,7 @@ frmMain::frmMain(const wxString& title)
     browser->SetImageList(imageList);
 
     // Setup the listview
-    listViews = new wxNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize);
+    listViews = new wxAuiNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxAUI_NB_WINDOWLIST_BUTTON | wxAUI_NB_TAB_EXTERNAL_MOVE | wxAUI_NB_DEFAULT_STYLE);
 
     // Switch to the generic list control. Native doesn't play well with
     // multi-row select on Mac.
@@ -145,6 +145,7 @@ frmMain::frmMain(const wxString& title)
 
     properties = new ctlListView(listViews, CTL_PROPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     statistics = new ctlListView(listViews, CTL_STATVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
+	listViews->SetWindowStyle(wxAUI_NB_WINDOWLIST_BUTTON | wxAUI_NB_TAB_EXTERNAL_MOVE | wxAUI_NB_DEFAULT_STYLE);
     dependencies = new ctlListView(listViews, CTL_DEPVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
     dependents = new ctlListView(listViews, CTL_REFVIEW, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER);
 
@@ -704,89 +705,42 @@ bool frmMain::SetCurrentNode(wxTreeItemId node, const wxString &path)
     return false;
 }
 
-void frmMain::ShowObjStatistics(pgObject *data, int sel)
+void frmMain::ShowObjStatistics(pgObject *data)
 {
-    switch (sel)
-    {
-        case NBP_STATISTICS:
-        {
-            statistics->Freeze();
-            statistics->ClearAll();
-            statistics->AddColumn(_("Statistics"), statistics->GetSize().GetWidth() - 10);
-            statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
-            data->ShowStatistics(this, statistics);
-            statistics->Thaw();
-            break;
-        }
-        case NBP_DEPENDENCIES:
-        {
-            dependencies->Freeze();
-            dependencies->DeleteAllItems();
-            data->ShowDependencies(this, dependencies);
-            dependencies->Thaw();
-            break;
-        }
-        case NBP_DEPENDENTS:
-        {
-            dependents->Freeze();
-            dependents->DeleteAllItems();
-            data->ShowDependents(this, dependents);
-            dependents->Thaw();
-            break;
-        }
-        default:
-            break;
-    }
-}
 
+	statistics->Freeze();
+	statistics->ClearAll();
+	statistics->AddColumn(_("Statistics"), statistics->GetSize().GetWidth() - 10);
+	statistics->InsertItem(0, _("No statistics are available for the current selection"), PGICON_STATISTICS);
+	data->ShowStatistics(this, statistics);
+	statistics->Thaw();
 
-void frmMain::OnPageChange(wxNotebookEvent& event)
-{
-    pgObject *data = browser->GetObject(browser->GetSelection());
+	dependencies->Freeze();
+	dependencies->DeleteAllItems();
+	data->ShowDependencies(this, dependencies);
+	dependencies->Thaw();
 
-    if (!data)
-        return;
-
-    ShowObjStatistics(data, event.GetSelection());
+	dependents->Freeze();
+	dependents->DeleteAllItems();
+	data->ShowDependents(this, dependents);
+	dependents->Thaw();
 }
 
 
 ctlListView *frmMain::GetStatistics()
-{
-    if (listViews->GetSelection() == NBP_STATISTICS)
-        return statistics;
-    return 0;
-}
-
-ctlListView *frmMain::GetStatisticsCtl()
 {
     return statistics;
 }
 
 ctlListView *frmMain::GetDependencies()
 {
-    if (listViews->GetSelection() == NBP_DEPENDENCIES)
-        return dependencies;
-    return 0;
-}
-
-ctlListView *frmMain::GetDependenciesCtl()
-{
     return dependencies;
 }
 
 ctlListView *frmMain::GetReferencedBy()
 {
-    if (listViews->GetSelection() == NBP_DEPENDENTS)
-        return dependents;
-    return 0;
-}
-
-ctlListView *frmMain::GetReferencedByCtl()
-{
     return dependents;
 }
-
 
 bool frmMain::CheckAlive()
 {

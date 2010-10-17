@@ -54,7 +54,6 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_MENU(MNU_CHECKALIVE,                frmMain::OnCheckAlive)
     EVT_MENU(MNU_CONTEXTMENU,               frmMain::OnContextMenu) 
 
-    EVT_NOTEBOOK_PAGE_CHANGED(CTL_NOTEBOOK, frmMain::OnPageChange)
     EVT_LIST_ITEM_SELECTED(CTL_PROPVIEW,    frmMain::OnPropSelChanged)
     EVT_LIST_ITEM_ACTIVATED(CTL_PROPVIEW,   frmMain::OnPropSelActivated)
     EVT_LIST_ITEM_RIGHT_CLICK(CTL_PROPVIEW, frmMain::OnPropRightClick)
@@ -70,6 +69,7 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
     EVT_CLOSE(                              frmMain::OnClose)
 
     EVT_AUI_PANE_CLOSE(                     frmMain::OnAuiUpdate)
+    EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY,    frmMain::OnAuiNotebookPageClose)
 
 #ifdef __WXGTK__
     EVT_TREE_KEY_DOWN(CTL_BROWSER,          frmMain::OnTreeKeyDown)
@@ -356,7 +356,7 @@ void frmMain::execSelChange(wxTreeItemId item, bool currentNode)
             properties->Freeze();
             setDisplay(currentObject, properties, sqlPane);
             properties->Thaw();
-            ShowObjStatistics(currentObject, listViews->GetSelection());
+            ShowObjStatistics(currentObject);
         }
         else
             setDisplay(currentObject, 0, 0);
@@ -944,6 +944,19 @@ void frmMain::OnAuiUpdate(wxAuiManagerEvent& event)
         viewMenu->Check(MNU_TOOLBAR, false);
     }
     event.Skip();
+}
+
+void frmMain::OnAuiNotebookPageClose(wxAuiNotebookEvent& event)
+{
+	// Prevent the user closing the four main tabs.
+	if (event.GetSelection() < 4)
+	{
+	    wxMessageBox(_("This tab cannot be closed."), _("Close tab"), wxICON_INFORMATION);
+		event.Veto();
+		return;
+	}
+	
+	event.Skip();
 }
 
 void frmMain::OnDefaultView(wxCommandEvent& event)
