@@ -43,6 +43,7 @@ BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
     EVT_MENU(MNU_AUTOCOMPLETE,ctlSQLBox::OnAutoComplete)
     EVT_KILL_FOCUS(ctlSQLBox::OnKillFocus)
     EVT_STC_UPDATEUI(-1,  ctlSQLBox::OnPositionStc)
+    EVT_STC_MARGINCLICK(-1, ctlSQLBox::OnMarginClick)
 END_EVENT_TABLE()
 
 
@@ -81,54 +82,54 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     extern sysSettings *settings;
     wxFont fntSQLBox = settings->GetSQLFont();
 
-	wxColour bgColor = settings->GetSQLBoxColourBackground();
-	if (settings->GetSQLBoxUseSystemBackground())
-	{
-		bgColor = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW);
-	}
+    wxColour bgColor = settings->GetSQLBoxColourBackground();
+    if (settings->GetSQLBoxUseSystemBackground())
+    {
+        bgColor = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW);
+    }
 
-	wxColour frColor = settings->GetSQLBoxColourForeground();
-	if (settings->GetSQLBoxUseSystemForeground())
-	{
-		frColor = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
-	}
-	StyleSetBackground(wxSTC_STYLE_DEFAULT, bgColor);
-	StyleSetForeground(wxSTC_STYLE_DEFAULT, frColor);
+    wxColour frColor = settings->GetSQLBoxColourForeground();
+    if (settings->GetSQLBoxUseSystemForeground())
+    {
+        frColor = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
+    }
+    StyleSetBackground(wxSTC_STYLE_DEFAULT, bgColor);
+    StyleSetForeground(wxSTC_STYLE_DEFAULT, frColor);
     StyleSetFont(wxSTC_STYLE_DEFAULT, fntSQLBox);
 
     SetSelBackground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
     SetSelForeground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 
-	SetCaretForeground(settings->GetSQLColourCaret());
+    SetCaretForeground(settings->GetSQLColourCaret());
 
     SetMarginWidth(1, 0);
     SetTabWidth(settings->GetIndentSpaces());
     SetUseTabs(!settings->GetSpacesForTabs());
     
     // Setup the different highlight colurs
-	for (int i = 0; i < 34; ++ i )
-	{
-		if (i > 0 && i < 12)
-			StyleSetForeground(i, settings->GetSQLBoxColour(i));
-		else
-			StyleSetForeground(i, frColor);
-		StyleSetBackground(i, bgColor);
-		StyleSetFont(i, fntSQLBox);
-	}
+    for (int i = 0; i < 34; ++ i )
+    {
+        if (i > 0 && i < 12)
+            StyleSetForeground(i, settings->GetSQLBoxColour(i));
+        else
+            StyleSetForeground(i, frColor);
+        StyleSetBackground(i, bgColor);
+        StyleSetFont(i, fntSQLBox);
+    }
 
     // Keywords in uppercase?
 
     if (settings->GetSQLKeywordsInUppercase())
         StyleSetCase(5, wxSTC_CASE_UPPER);
 
-	// Margin style
-	StyleSetBackground(wxSTC_STYLE_LINENUMBER, settings->GetSQLMarginBackgroundColour());
+    // Margin style
+    StyleSetBackground(wxSTC_STYLE_LINENUMBER, settings->GetSQLMarginBackgroundColour());
 
     // Brace maching styles
     StyleSetBackground(34, wxColour(0x99, 0xF9, 0xFF));
     StyleSetBackground(35, wxColour(0xFF, 0xCF, 0x27));
-	StyleSetFont(34, fntSQLBox);
-	StyleSetFont(35, fntSQLBox);
+    StyleSetFont(34, fntSQLBox);
+    StyleSetFont(35, fntSQLBox);
 
     // SQL Lexer and keywords.
     if (sqlKeywords.IsEmpty())
@@ -136,6 +137,26 @@ void ctlSQLBox::Create(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
     SetLexer(wxSTC_LEX_SQL);
     SetKeyWords(0, sqlKeywords + plpgsqlKeywords + ftsKeywords + pgscriptKeywords);
 
+    // Enable folding
+    SetMarginSensitive(2, true);
+ 
+	SetMarginType(2, wxSTC_MARGIN_SYMBOL); // margin 2 for symbols
+	SetMarginMask(2, wxSTC_MASK_FOLDERS);  // set up mask for folding symbols
+	SetMarginSensitive(2, true);           // this one needs to be mouse-aware
+	SetMarginWidth(2, 16);                 // set margin 2 16 px wide
+			
+	MarkerDefine(wxSTC_MARKNUM_FOLDEREND,     wxSTC_MARK_BOXPLUSCONNECTED,  *wxWHITE, *wxBLACK);
+	MarkerDefine(wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUSCONNECTED, *wxWHITE, *wxBLACK);
+	MarkerDefine(wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_TCORNER,  *wxWHITE, *wxBLACK);
+	MarkerDefine(wxSTC_MARKNUM_FOLDERTAIL,    wxSTC_MARK_LCORNER,  *wxWHITE, *wxBLACK);
+	MarkerDefine(wxSTC_MARKNUM_FOLDERSUB,     wxSTC_MARK_VLINE,    *wxWHITE, *wxBLACK);
+	MarkerDefine(wxSTC_MARKNUM_FOLDER,        wxSTC_MARK_BOXPLUS,  *wxWHITE, *wxBLACK);
+	MarkerDefine(wxSTC_MARKNUM_FOLDEROPEN,    wxSTC_MARK_BOXMINUS, *wxWHITE, *wxBLACK);
+			
+    SetProperty(wxT("fold"), wxT("1"));
+    SetFoldFlags(16);
+	
+    // Setup accelerators
     wxAcceleratorEntry entries[2];
     entries[0].Set(wxACCEL_CTRL, (int)'F', MNU_FIND);
     entries[1].Set(wxACCEL_CTRL, (int)' ', MNU_AUTOCOMPLETE);
@@ -528,6 +549,16 @@ void ctlSQLBox::OnPositionStc(wxStyledTextEvent& event)
     
     event.Skip();
 }
+
+
+void ctlSQLBox::OnMarginClick(wxStyledTextEvent& event)
+{
+	if (event.GetMargin() == 2)
+		ToggleFold(LineFromPosition(event.GetPosition()));
+	
+	event.Skip();
+}
+
 
 extern "C" char *tab_complete(const char *allstr, const int startptr, const int endptr, void *dbptr);
 void ctlSQLBox::OnAutoComplete(wxCommandEvent& rev)

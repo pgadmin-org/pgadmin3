@@ -68,6 +68,7 @@ public:
 private:
 
     void OnPositionStc(wxStyledTextEvent& event);
+	void OnMarginClick(wxStyledTextEvent& event);
 
     dlgFindReplace* m_dlgFindReplace;
 	pgConn *m_database;

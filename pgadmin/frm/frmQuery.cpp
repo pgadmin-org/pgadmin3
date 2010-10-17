@@ -339,7 +339,7 @@ pgsTimer(new pgScriptTimer(this))
     viewMenu->Append(MNU_SHOWLINENUMBER, _("&Line number"), _("Enable or disable display of line number"), wxITEM_CHECK);
     viewMenu->AppendSeparator();
     viewMenu->Append(MNU_DEFAULTVIEW, _("&Default view\tCtrl-Alt-V"),     _("Restore the default view."));
-
+	
     menuBar->Append(viewMenu, _("&View"));
 
     wxMenu *helpMenu=new wxMenu();
@@ -861,7 +861,6 @@ void frmQuery::OnShowLineNumber(wxCommandEvent& event)
 
     sqlQuery->UpdateLineNumber();
 }
-
 
 void frmQuery::OnActivate(wxActivateEvent& event)
 {

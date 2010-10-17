@@ -164,8 +164,9 @@ ctlCodeWindow::ctlCodeWindow( frmDebugger *parent, wxWindowID id, const dbgConnP
     m_view->MarkerDefine( MARKER_CURRENT_BG, wxSTC_MARK_BACKGROUND, *wxGREEN, *wxGREEN );
     m_view->MarkerDefine( MARKER_BREAKPOINT, wxSTC_MARK_CIRCLEPLUS, *wxRED, *wxRED );
 
-    m_view->SetMarginWidth(1, ConvertDialogToPixels(wxPoint(16, 0)).x);
-
+    m_view->SetMarginWidth(1, 16);
+	m_view->SetMarginType(1, wxSTC_MARGIN_SYMBOL);
+	
     // Make sure that the text control tells us when the user clicks in the left margin
     m_view->SetMarginSensitive( 0, true );
     m_view->SetMarginSensitive( 1, true );
