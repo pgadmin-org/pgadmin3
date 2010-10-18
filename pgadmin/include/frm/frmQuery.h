@@ -96,7 +96,7 @@ private:
     frmMain *mainForm;
     wxAuiManager manager;
     ctlSQLBox *sqlQuery;
-    wxNotebook *outputPane;
+    wxAuiNotebook *outputPane;
     ctlSQLResult *sqlResult;
     ExplainCanvas *explainCanvas;
     wxTextCtrl *msgResult, *msgHistory;
@@ -119,12 +119,12 @@ private:
     pgScriptTimer * pgsTimer;
 
 	//GQB related
-    void OnChangeNotebook(wxNotebookEvent& event);
+    void OnChangeNotebook(wxAuiNotebookEvent& event);
     void OnAdjustSizesTimer(wxTimerEvent & event);
 	void OnResizeHorizontally(wxSplitterEvent& event);
     void adjustGQBSizes();
 	bool updateFromGqb(bool executing);
-    wxNotebook *sqlNotebook;
+    wxAuiNotebook *sqlNotebook;
     gqbModel *model;
     gqbController *controller;
     bool firstTime;

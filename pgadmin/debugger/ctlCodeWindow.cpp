@@ -156,7 +156,7 @@ ctlCodeWindow::ctlCodeWindow( frmDebugger *parent, wxWindowID id, const dbgConnP
     wxWindowBase::SetFont(settings->GetSystemFont());
 
     m_stackWindow = new ctlStackWindow(parent , WINDOW_ID_STACK,  wxDefaultPosition, wxDefaultSize, 0);
-    m_tabWindow = new ctlTabWindow(parent , WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, 0);
+    m_tabWindow = new ctlTabWindow(parent, WINDOW_ID_TABS, wxDefaultPosition, wxDefaultSize, wxAUI_NB_BOTTOM | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
     m_view = new ctlSQLBox(parent, -1);
 
     // Set up the markers that we use do indicate the current line and a breakpoint

@@ -159,7 +159,7 @@ EVT_TIMER(CTL_TIMERFRM,         frmQuery::OnTimer)
 // These fire when the queries complete
 EVT_MENU(QUERY_COMPLETE,        frmQuery::OnQueryComplete)
 EVT_MENU(PGSCRIPT_COMPLETE,     frmQuery::OnScriptComplete)
-EVT_NOTEBOOK_PAGE_CHANGED(CTL_NTBKCENTER, frmQuery::OnChangeNotebook)
+EVT_AUINOTEBOOK_PAGE_CHANGED(CTL_NTBKCENTER, frmQuery::OnChangeNotebook)
 EVT_SPLITTER_SASH_POS_CHANGED(GQB_HORZ_SASH, frmQuery::OnResizeHorizontally)
 EVT_BUTTON(CTL_DELETECURRENTBTN, frmQuery::OnDeleteCurrent)
 EVT_BUTTON(CTL_DELETEALLBTN,     frmQuery::OnDeleteAll)
@@ -417,7 +417,7 @@ pgsTimer(new pgScriptTimer(this))
     cbConnection->Append(_("<new connection>"), wxNullBitmap, (void*)0);
 
     //Create SQL editor notebook
-    sqlNotebook = new wxNotebook(this, CTL_NTBKCENTER, wxDefaultPosition, wxDefaultSize);
+    sqlNotebook = new wxAuiNotebook(this, CTL_NTBKCENTER, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
 
     // Create panel for query
     wxPanel *pnlQuery = new wxPanel(sqlNotebook);
@@ -470,7 +470,7 @@ pgsTimer(new pgScriptTimer(this))
     boxQuery->Fit(pnlQuery);
 
     // Results pane
-    outputPane = new wxNotebook(this, CTL_NTBKGQB, wxDefaultPosition, wxSize(500, 300));
+    outputPane = new wxAuiNotebook(this, CTL_NTBKGQB, wxDefaultPosition, wxSize(500, 300), wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
     sqlResult = new ctlSQLResult(outputPane, conn, CTL_SQLRESULT, wxDefaultPosition, wxDefaultSize);
     explainCanvas = new ExplainCanvas(outputPane);
     msgResult = new wxTextCtrl(outputPane, CTL_MSGRESULT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxTE_DONTWRAP);
@@ -1126,7 +1126,7 @@ void frmQuery::OnSaveHistory(wxCommandEvent& event)
 
 }
 
-void frmQuery::OnChangeNotebook(wxNotebookEvent& event)
+void frmQuery::OnChangeNotebook(wxAuiNotebookEvent& event)
 {
     if(sqlNotebook && sqlNotebook->GetPageCount() >= 2)
     {

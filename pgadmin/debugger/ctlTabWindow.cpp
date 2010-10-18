@@ -30,7 +30,7 @@ IMPLEMENT_CLASS( ctlTabWindow, wxWindow )
 //
 
 ctlTabWindow::ctlTabWindow( wxWindow * parent, wxWindowID id, const wxPoint & pos, const wxSize & size, long style, const wxString& name )
-  : wxNotebook( parent, id, pos, size, style | wxNB_BOTTOM ),
+  : wxAuiNotebook( parent, id, pos, size, style ),
     m_resultWindow( 0 ),
     m_varWindow( 0 ),
     m_pkgVarWindow( 0 ),

@@ -25,6 +25,7 @@
 #define CTLTABWINDOW_H
 
 #include <wx/notebook.h>
+#include <wx/aui/aui.h>
 
 #include "debugger/ctlVarWindow.h"
 #include "debugger/ctlMessageWindow.h"
@@ -33,7 +34,7 @@
 
 WX_DECLARE_HASH_MAP( int, int, wxIntegerHash, wxIntegerEqual, wsTabHash );
 
-class ctlTabWindow : public wxNotebook
+class ctlTabWindow : public wxAuiNotebook
 {
 	DECLARE_CLASS( ctlTabWindow )
 
