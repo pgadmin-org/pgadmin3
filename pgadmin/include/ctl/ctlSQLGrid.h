@@ -37,6 +37,7 @@ public:
 
 private:
     void OnCopy(wxCommandEvent& event);
+    void OnMouseWheel(wxMouseEvent& event);
 };
 
 #endif

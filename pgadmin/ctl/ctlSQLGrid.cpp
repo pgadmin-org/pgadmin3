@@ -21,8 +21,12 @@
 #include "frm/frmExport.h"
 
 
+#define EXTRAEXTENT_HEIGHT 6
+#define EXTRAEXTENT_WIDTH  6
+
 BEGIN_EVENT_TABLE(ctlSQLGrid, wxGrid)
     EVT_MENU(MNU_COPY, ctlSQLGrid::OnCopy)
+    EVT_MOUSEWHEEL(ctlSQLGrid::OnMouseWheel)
 END_EVENT_TABLE()
 
 IMPLEMENT_DYNAMIC_CLASS(ctlSQLGrid, wxGrid)
@@ -57,6 +61,34 @@ ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, cons
 void ctlSQLGrid::OnCopy(wxCommandEvent& ev)
 {
     Copy();
+}
+
+void ctlSQLGrid::OnMouseWheel(wxMouseEvent& event)
+{
+    if (event.ControlDown())
+    {
+        wxFont fontlabel = GetLabelFont();
+        wxFont fontcells = GetDefaultCellFont();
+        if (event.GetWheelRotation() > 0)
+        {
+            fontlabel.SetPointSize(fontlabel.GetPointSize()-1);
+            fontcells.SetPointSize(fontcells.GetPointSize()-1);
+        }
+        else
+        {
+            fontlabel.SetPointSize(fontlabel.GetPointSize()+1);
+            fontcells.SetPointSize(fontcells.GetPointSize()+1);
+        }
+        SetLabelFont(fontlabel);
+        SetDefaultCellFont(fontcells);
+        SetColLabelSize(fontlabel.GetPointSize() *4);
+        SetDefaultRowSize(fontcells.GetPointSize() *2);
+        for (size_t index = 0; index < GetNumberCols(); index++)
+            SetColSize(index, -1);
+        ForceRefresh();
+    }
+    else
+        event.Skip();
 }
 
 wxString ctlSQLGrid::GetExportLine(int row)
@@ -193,9 +225,6 @@ int ctlSQLGrid::Copy()
 
     return copied;
 }
-
-#define EXTRAEXTENT_HEIGHT 6
-#define EXTRAEXTENT_WIDTH  6
 
 void ctlSQLGrid::OnLabelDoubleClick(wxGridEvent& event)
 {
