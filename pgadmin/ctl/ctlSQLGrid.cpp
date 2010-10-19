@@ -34,6 +34,10 @@ ctlSQLGrid::ctlSQLGrid()
 ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
 : wxGrid(parent, id, pos, size, wxWANTS_CHARS|wxVSCROLL|wxHSCROLL)
 {
+    // Set cells font
+    wxFont fntCells(settings->GetSQLFont());
+    SetDefaultCellFont(fntCells);
+    // Set labels font
     wxFont fntLabel(settings->GetSystemFont());
     fntLabel.SetWeight(wxBOLD);
     SetLabelFont(fntLabel);
