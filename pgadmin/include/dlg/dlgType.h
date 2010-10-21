@@ -44,8 +44,9 @@ private:
     void OnChangeMember(wxCommandEvent &ev);
 
     void showDefinition(int panel);
+    wxString GetFullTypeName(int type);
 
-    wxArrayString memberTypes, memberSizes;
+    wxArrayString memberTypes, memberLengths, memberPrecisions;
 
     DECLARE_EVENT_TABLE()
 };

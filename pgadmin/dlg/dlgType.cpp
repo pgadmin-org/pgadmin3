@@ -74,6 +74,7 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
     EVT_COMBOBOX(XRCID("cbDatatype"),               dlgType::OnSelChangeTyp)
     EVT_TEXT(XRCID("txtMembername"),                dlgType::OnChangeMember)
     EVT_TEXT(XRCID("txtLength"),                    dlgType::OnSelChangeTypOrLen)
+    EVT_TEXT(XRCID("txtPrecision"),                 dlgType::OnSelChangeTypOrLen)
 END_EVENT_TABLE();
 
 
@@ -98,7 +99,8 @@ dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
 
 void dlgType::OnChangeMember(wxCommandEvent &ev)
 {
-    btnAddMember->Enable(!txtMembername->GetValue().Strip(wxString::both).IsEmpty() 
+    btnAddMember->Enable(!type
+        && !txtMembername->GetValue().Strip(wxString::both).IsEmpty()
         && cbDatatype->GetGuessedSelection() >= 0);
 }
 
@@ -145,6 +147,8 @@ int dlgType::Go(bool modal)
 {
     pgSet *set;
 
+    FillDatatype(cbDatatype, cbElement);
+
     if (type)
     {
         // Edit Mode
@@ -181,9 +185,43 @@ int dlgType::Go(bool modal)
         btnRemoveLabel->Disable();
 
         wxArrayString elements=type->GetTypesArray();
+        wxString fullType, typeName, typeLength, typePrecision;
+        int pos;
         size_t i;
 		for (i=0 ; i < elements.GetCount() ; i+=2)
+        {
             lstMembers->AppendItem(0, elements.Item(i), elements.Item(i+1));
+
+            fullType = elements.Item(i+1);
+            typeName = fullType;
+            typeLength = wxEmptyString;
+            typePrecision = wxEmptyString;
+
+            if (fullType.Find(wxT("(")) > 0)
+            {
+                // there is at least a length
+                typeName = fullType.BeforeFirst('(');
+                if (fullType.Find(wxT(",")) > 0)
+                {
+                    // there is also a precision
+                    typeLength = fullType.AfterFirst('(').BeforeFirst(',');
+                    typePrecision = fullType.AfterFirst(',').BeforeFirst(')');
+                }
+                else
+                    typeLength = fullType.AfterFirst('(').BeforeFirst(')');
+            }
+
+            for (pos = 0; pos < cbDatatype->GetCount() - 1; pos++)
+            {
+                if (cbDatatype->GetString(pos) == typeName)
+                {
+                    memberTypes.Add(GetTypeInfo(pos));
+                    break;
+                }
+            }
+            memberLengths.Add(typeLength);
+            memberPrecisions.Add(typePrecision);
+        }
 
         cbDatatype->Disable();
         txtLength->Disable();
@@ -308,7 +346,6 @@ int dlgType::Go(bool modal)
             }
         }
 
-        FillDatatype(cbDatatype, cbElement);
         txtLength->SetValidator(numericValidator);
     }
     return dlgTypeProperty::Go(modal);
@@ -317,6 +354,8 @@ int dlgType::Go(bool modal)
 
 void dlgType::OnSelChangeTyp(wxCommandEvent &ev)
 {
+    txtLength->SetValue(wxEmptyString);
+    txtPrecision->SetValue(wxEmptyString);
     cbDatatype->GuessSelection(ev);
     OnSelChangeTypOrLen(ev);
 }
@@ -376,21 +415,34 @@ void dlgType::OnMemberSelChange(wxListEvent &ev)
     if (pos >= 0)
     {
         txtMembername->SetValue(lstMembers->GetText(pos));
-        cbDatatype->SetValue(lstMembers->GetText(pos, 1));
+        cbDatatype->SetValue(memberTypes.Item(pos).AfterFirst(':'));
+        txtLength->SetValue(memberLengths.Item(pos));
+        txtLength->Enable(!type && !txtLength->GetValue().IsEmpty());
+        txtPrecision->SetValue(memberPrecisions.Item(pos));
+        txtPrecision->Enable(!type && !txtPrecision->GetValue().IsEmpty());
     }
 }
 
 
 void dlgType::OnMemberAdd(wxCommandEvent &ev)
 {
-    wxString name=txtMembername->GetValue().Strip(wxString::both);
+    wxString name = txtMembername->GetValue().Strip(wxString::both);
+    wxString type = cbDatatype->GetValue();
+    wxString length = wxEmptyString;
+    wxString precision = wxEmptyString;
 
-    wxString type=cbDatatype->GetValue();
+    if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
+       length = txtLength->GetValue();
+    if (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled())
+       precision = txtPrecision->GetValue();
 
-    if ((txtLength->GetValue() != wxT("") && txtLength->IsEnabled()) && (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled()))
-        type += wxT("(") + txtLength->GetValue() + wxT(", ") + txtPrecision->GetValue() + wxT(")");
-    else if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
-        type += wxT("(") + txtLength->GetValue() + wxT(")");
+    if (!length.IsEmpty())
+    {
+        type += wxT("(") + length;
+        if (!precision.IsEmpty())
+            type += wxT(", ") + precision;
+        type += wxT(")");
+    }
 
     if (!name.IsEmpty())
     {
@@ -400,26 +452,17 @@ void dlgType::OnMemberAdd(wxCommandEvent &ev)
             pos = lstMembers->GetItemCount();
             lstMembers->InsertItem(pos, name, 0);
             memberTypes.Add(GetTypeInfo(cbDatatype->GetGuessedSelection()));
-
-            if ((txtLength->GetValue() != wxT("") && txtLength->IsEnabled()) && (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled()))
-                memberSizes.Add(wxT("(") + txtLength->GetValue() + wxT(", ") + txtPrecision->GetValue() + wxT(")"));
-            else if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
-                memberSizes.Add(wxT("(") + txtLength->GetValue() + wxT(")"));
-            else
-                memberSizes.Add(wxT(""));
+            memberLengths.Add(length);
+            memberPrecisions.Add(precision);
         }
         else
         {
             memberTypes.Insert(GetTypeInfo(cbDatatype->GetGuessedSelection()), pos);
+            memberLengths.Insert(length, pos);
+            memberPrecisions.Insert(precision, pos);
             memberTypes.RemoveAt(pos+1);
-
-            if ((txtLength->GetValue() != wxT("")  && txtLength->IsEnabled()) && (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled()))
-                memberSizes.Insert(wxT("(") + txtLength->GetValue() + wxT(", ") + txtPrecision->GetValue() + wxT(")"), pos);
-            else if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
-                memberSizes.Insert(wxT("(") + txtLength->GetValue() + wxT(")"), pos);
-            else
-                memberSizes.Insert(wxT(""), pos);
-            memberSizes.RemoveAt(pos+1);
+            memberLengths.RemoveAt(pos+1);
+            memberPrecisions.RemoveAt(pos+1);
         }
         lstMembers->SetItem(pos, 1, type);
     }
@@ -436,7 +479,8 @@ void dlgType::OnMemberRemove(wxCommandEvent &ev)
     {
         lstMembers->DeleteItem(pos);
         memberTypes.RemoveAt(pos);
-        memberSizes.RemoveAt(pos);
+        memberLengths.RemoveAt(pos);
+        memberPrecisions.RemoveAt(pos);
     }
     CheckChange();
 }
@@ -514,8 +558,7 @@ wxString dlgType::GetSql()
                 if (i)
                     sql += wxT(",\n    ");
                 sql += qtIdent(lstMembers->GetItemText(i)) + wxT(" ")
-                    + memberTypes.Item(i).AfterFirst(':')
-                    + memberSizes.Item(i);
+                    + GetFullTypeName(i);
             }
         }
         else if (rdbType->GetSelection() == TYPE_ENUM)
@@ -606,4 +649,18 @@ wxString dlgType::GetSql()
     return sql;
 }
 
+wxString dlgType::GetFullTypeName(int type)
+{
+    wxString typname = memberTypes.Item(type).AfterFirst(':');
+
+    if (!memberLengths.Item(type).IsEmpty())
+    {
+        typname += wxT("(") + memberLengths.Item(type);
+        if (!memberPrecisions.Item(type).IsEmpty())
+            typname += wxT(", ") + memberPrecisions.Item(type);
+        typname += wxT(")");
+    }
+
+    return typname;
+}
 
