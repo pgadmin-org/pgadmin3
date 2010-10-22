@@ -45,10 +45,14 @@ private:
 #define wxLOG_Script (wxLOG_User+4)
 #define wxLOG_ScriptVerbose (wxLOG_User+5)
 
-DECLARE_LOG_FUNCTION(Notice);
-DECLARE_LOG_FUNCTION(Sql);
-DECLARE_LOG_FUNCTION(QuietError);
-DECLARE_LOG_FUNCTION(Script);
-DECLARE_LOG_FUNCTION(ScriptVerbose);
+#define DECLARE_INT_LOG_FUNCTION(level)                                  \
+extern void wxVLog##level(const wxChar *szFormat, va_list argptr);       \
+extern void wxLog##level(const wxChar *szFormat, ...) ATTRIBUTE_PRINTF_1
+
+DECLARE_INT_LOG_FUNCTION(Notice);
+DECLARE_INT_LOG_FUNCTION(Sql);
+DECLARE_INT_LOG_FUNCTION(QuietError);
+DECLARE_INT_LOG_FUNCTION(Script);
+DECLARE_INT_LOG_FUNCTION(ScriptVerbose);
 
 #endif

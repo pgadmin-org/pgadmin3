@@ -14,8 +14,8 @@
 
 wxMBConvUTF16BE wxConvUTF16BE;
 wxMBConvUTF16LE wxConvUTF16LE;
-extern wxMBConvUTF32BE wxConvUTF32BE;
-extern wxMBConvUTF32LE wxConvUTF32LE;
+wxMBConvUTF32BE wxConvUTF32BE;
+wxMBConvUTF32LE wxConvUTF32LE;
 
 // these are the magic characters identifying an Unicode file
 #define BOM_UTF8    "\357\273\277"

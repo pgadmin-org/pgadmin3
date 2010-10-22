@@ -18,7 +18,7 @@
 
 class ctlSecurityPanel;
 
-DECLARE_EVENT_TYPE(EVT_SECURITYPANEL_CHANGE, -1)
+DECLARE_LOCAL_EVENT_TYPE(EVT_SECURITYPANEL_CHANGE, -1)
 
 class frmGrantWizard : public ExecutionDialog
 {

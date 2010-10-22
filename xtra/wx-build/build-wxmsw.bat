@@ -3,7 +3,7 @@
 setlocal
 
 REM Configure which modules should be built
-set WXBASE=adv aui base core html net wxexpat wxjpeg wxpng wxregex wxtiff wxzlib xml xrc
+set WXBASE=wxtiff wxexpat wxjpeg wxpng wxregex wxzlib base core adv aui html net xml xrc
 set WXCONTRIB=ogl stc
 
 REM Location of wxWidgets source
@@ -39,7 +39,7 @@ cd %WX%\build\msw
 for %%b in (Debug Release) do (
    for %%f in (%WXBASE%) do (
       title Building project %%f, config %%b
-      vcbuild /nohtmllog /nologo wx_%%f.vcproj "Unicode %%b"
+      vcbuild /nohtmllog /nologo wx_%%f.vcproj "DLL Unicode %%b"
    )
 )
 cd ..\..\contrib\build
@@ -47,7 +47,7 @@ for %%b in (Debug Release) do (
    for %%f in (%WXCONTRIB%) do (
       cd %%f
       title Building project contrib/%%f, config %%b
-      vcbuild /nohtmllog /nologo %%f.vcproj "Unicode %%b"
+      vcbuild /nohtmllog /nologo %%f.vcproj "DLL Unicode %%b"
       cd ..
    )
 )

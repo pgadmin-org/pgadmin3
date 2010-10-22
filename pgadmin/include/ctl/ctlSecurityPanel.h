@@ -30,7 +30,7 @@ enum
     CTL_PRIVCB          // base for all privilege checkboxes, must be last
 };
 
-DECLARE_EVENT_TYPE(EVT_SECURITYPANEL_CHANGE, -1)
+DECLARE_LOCAL_EVENT_TYPE(EVT_SECURITYPANEL_CHANGE, -1)
 
 class pgConn;
 

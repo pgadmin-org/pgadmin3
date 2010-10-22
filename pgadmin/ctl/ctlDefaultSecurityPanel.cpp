@@ -103,7 +103,7 @@ BEGIN_EVENT_TABLE(ctlDefaultPrivilegesPanel, wxPanel)
     EVT_CHECKBOX(CTL_DEFPRIVCB+16,         ctlDefaultPrivilegesPanel::OnPrivCheck)
 END_EVENT_TABLE();
 
-DEFINE_EVENT_TYPE(EVT_DEFAULTSECURITYPANEL_CHANGE)
+DEFINE_LOCAL_EVENT_TYPE(EVT_DEFAULTSECURITYPANEL_CHANGE)
 
 ctlDefaultPrivilegesPanel::ctlDefaultPrivilegesPanel(ctlDefaultSecurityPanel *defSecurityPanel, wxNotebook *nb,
                                                      defaultPrivilegesOn &privOn, wxImageList *imgList)
