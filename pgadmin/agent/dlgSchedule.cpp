@@ -705,6 +705,7 @@ void dlgSchedule::OnSelectAll(wxCommandEvent &ev, int origin)
 			lb = chkMinutes;
 			break;
 		default:
+                        return;
 			break;
 	}
 
