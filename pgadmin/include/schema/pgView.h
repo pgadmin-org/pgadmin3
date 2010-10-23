@@ -37,6 +37,7 @@ public:
     bool CanDropCascaded() { return !GetSystemObject() && pgSchemaObject::CanDrop(); }
 
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    bool CanCreate() { return GetSchema()->CanCreate(); }
     bool CanView() { return true; }
     bool WantDummyChild() { return true; }
 

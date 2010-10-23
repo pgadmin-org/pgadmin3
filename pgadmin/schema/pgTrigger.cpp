@@ -22,8 +22,8 @@
 #include "schema/pgFunction.h"
 
 
-pgTrigger::pgTrigger(pgTable *newTable, const wxString& newName)
-: pgTableObject(newTable, triggerFactory, newName)
+pgTrigger::pgTrigger(pgSchema *newSchema, const wxString& newName)
+: pgTriggerObject(newSchema, triggerFactory, newName)
 {
     triggerFunction=0;
 }
@@ -195,7 +195,15 @@ wxString pgTrigger::GetSql(ctlTree *browser)
 
 wxString pgTrigger::GetFireWhen() const 
 {
-    return (triggerType & TRIGGER_TYPE_BEFORE) ? wxT("BEFORE") : wxT("AFTER");
+    wxString when = wxEmptyString;
+
+    if (triggerType & TRIGGER_TYPE_BEFORE)
+        when = wxT("BEFORE");
+    else if (triggerType & TRIGGER_TYPE_INSTEAD)
+        when = wxT("INSTEAD OF");
+    else
+        when = wxT("AFTER");
+    return when;
 }
 
 
@@ -348,11 +356,12 @@ pgObject *pgTrigger::Refresh(ctlTree *browser, const wxTreeItemId item)
 
 pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
-    pgTableObjCollection *collection=(pgTableObjCollection*)coll;
+    pgSchemaObjCollection *collection=(pgSchemaObjCollection*)coll;
     pgTrigger *trigger=0;
 
     wxString trig_sql;
-    trig_sql = wxT("SELECT t.oid, t.xmin, t.*, relname, nspname, des.description, l.lanname, p.prosrc, \n")
+    trig_sql = wxT("SELECT t.oid, t.xmin, t.*, relname, CASE WHEN relkind = 'r' THEN TRUE ELSE FALSE END AS parentistable, ")
+        wxT("  nspname, des.description, l.lanname, p.prosrc, \n")
         wxT("  trim(substring(pg_get_triggerdef(t.oid), 'WHEN (.*) EXECUTE PROCEDURE'), '()') AS whenclause\n")
         wxT("  FROM pg_trigger t\n")
         wxT("  JOIN pg_class cl ON cl.oid=tgrelid\n")
@@ -376,7 +385,8 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
     {
         while (!triggers->Eof())
         {
-            trigger = new pgTrigger(collection->GetTable(), triggers->GetVal(wxT("tgname")));
+            // Be careful that the schema of a trigger (and a rule) is the schema of the schema
+            trigger = new pgTrigger(collection->GetSchema()->GetSchema(), triggers->GetVal(wxT("tgname")));
 
             trigger->iSetOid(triggers->GetOid(wxT("oid")));
             trigger->iSetXid(triggers->GetOid(wxT("xmin")));
@@ -394,6 +404,8 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
                 trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
 
             trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));
+            trigger->iSetParentIsTable(triggers->GetBool(wxT("parentistable")));
+            
             trigger->iSetLanguage(triggers->GetVal(wxT("lanname")));
             trigger->iSetSource(triggers->GetVal(wxT("prosrc")));
             trigger->iSetQuotedFullTable(collection->GetDatabase()->GetQuotedSchemaPrefix(triggers->GetVal(wxT("nspname"))) + qtIdent(triggers->GetVal(wxT("relname"))));
@@ -472,7 +484,7 @@ wxString pgTriggerCollection::GetTranslatedMessage(int kindOfMessage) const
 #include "images/triggers.xpm"
 
 pgTriggerFactory::pgTriggerFactory() 
-: pgTableObjFactory(__("Trigger"), __("New Trigger..."), __("Create a new Trigger."), trigger_xpm)
+: pgSchemaObjFactory(__("Trigger"), __("New Trigger..."), __("Create a new Trigger."), trigger_xpm)
 {
     metaType = PGM_TRIGGER;
 }
@@ -503,7 +515,8 @@ wxWindow *enabledisableTriggerFactory::StartDialog(frmMain *form, pgObject *obj)
 bool enabledisableTriggerFactory::CheckEnable(pgObject *obj)
 {
     return obj && obj->IsCreatedBy(triggerFactory) && obj->CanEdit()
-               && ((pgTrigger*)obj)->GetConnection()->BackendMinimumVersion(8, 1);
+               && ((pgTrigger*)obj)->GetConnection()->BackendMinimumVersion(8, 1)
+               && ((pgTrigger*)obj)->GetParentIsTable();
 }
 
 bool enabledisableTriggerFactory::CheckChecked(pgObject *obj)

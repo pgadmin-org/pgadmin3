@@ -71,5 +71,6 @@
 #define TRIGGER_TYPE_DELETE				(1 << 3)
 #define TRIGGER_TYPE_UPDATE				(1 << 4)
 #define TRIGGER_TYPE_TRUNCATE			(1 << 5)
+#define TRIGGER_TYPE_INSTEAD			(1 << 6)
 
 #endif

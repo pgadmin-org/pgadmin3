@@ -200,7 +200,8 @@ pgObject *pgRuleFactory::CreateObjects(pgCollection *collection, ctlTree *browse
     {
         while (!rules->Eof())
         {
-            rule = new pgRule(collection->GetSchema(), rules->GetVal(wxT("rulename")));
+            // Be careful that the schema of a rule (and a trigger) is the schema of the schema
+            rule = new pgRule(collection->GetSchema()->GetSchema(), rules->GetVal(wxT("rulename")));
 
             rule->iSetOid(rules->GetOid(wxT("oid")));
             rule->iSetComment(rules->GetVal(wxT("description")));

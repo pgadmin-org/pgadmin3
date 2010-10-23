@@ -18,6 +18,7 @@
 #include "schema/pgColumn.h"
 #include "schema/pgView.h"
 #include "frm/frmHint.h"
+#include "schema/pgTrigger.h"
 
 
 pgView::pgView(pgSchema *newSchema, const wxString& newName)
@@ -107,8 +108,10 @@ wxMenu *pgView::GetNewMenu()
 {
     wxMenu *menu=pgObject::GetNewMenu();
     if (schema->GetCreatePrivilege())
+    {
         ruleFactory.AppendMenu(menu);
-
+        triggerFactory.AppendMenu(menu);
+    }
     return menu;
 }
 
@@ -172,6 +175,7 @@ wxString pgView::GetSql(ctlTree *browser)
         }
 
         AppendStuff(sql, browser, ruleFactory);
+        AppendStuff(sql, browser, triggerFactory);
     }
     return sql;
 }
@@ -280,6 +284,8 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 				hasDeleteRule = true;
 		}
 
+        if (GetConnection()->BackendMinimumVersion(9, 1))
+		    browser->AppendCollection(this, triggerFactory);
     }
     if (properties)
     {

@@ -1060,11 +1060,11 @@ void dlgProperty::InitDialog(frmMain *frame, pgObject *node)
         case PGM_FOREIGNKEY:
         case PGM_INDEX:
         case PGM_PRIMARYKEY:
-        case PGM_TRIGGER:
         case PGM_UNIQUE:
             owneritem=node->GetTable()->GetId();
             break;
 
+        case PGM_TRIGGER:
         case PGM_RULE: // Rules are technically table objects! Yeuch
         case EDB_PACKAGEFUNCTION:
         case EDB_PACKAGEVARIABLE: 

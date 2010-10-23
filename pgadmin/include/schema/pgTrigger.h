@@ -16,7 +16,22 @@
 
 class pgFunction;
 
-class pgTriggerFactory : public pgTableObjFactory
+class pgTriggerObject : public pgSchemaObject
+{
+public:
+    pgTriggerObject(pgSchema *newSchema, pgaFactory &factory, const wxString& newName=wxEmptyString) : pgSchemaObject(newSchema, factory, newName) {}
+
+    wxString GetFormattedDefinition();
+    wxString GetDefinition() const { return definition; }
+    void iSetDefinition(const wxString& s) { definition=s; }
+
+protected:
+    wxString definition;
+};
+
+
+
+class pgTriggerFactory : public pgSchemaObjFactory
 {
 public:
     pgTriggerFactory();
@@ -26,10 +41,10 @@ public:
 extern pgTriggerFactory triggerFactory;
 
 
-class pgTrigger : public pgTableObject
+class pgTrigger : public pgTriggerObject
 {
 public:
-    pgTrigger(pgTable *newTable, const wxString& newName = wxT(""));
+    pgTrigger(pgSchema *newSchema, const wxString& newName = wxT(""));
     ~pgTrigger();
 
     wxString GetTranslatedMessage(int kindOfMessage) const;
@@ -64,6 +79,8 @@ public:
 	wxArrayString GetColumnList() const { return columnList; }
     long GetColumnCount() const { return columnCount; }
     void iSetColumnCount(const long l) { columnCount=l; }
+    void iSetParentIsTable(const bool b) { parentistable=b; }
+    bool GetParentIsTable() { return parentistable; }
 
     void SetDirty();
 
@@ -87,12 +104,12 @@ private:
     long columnCount;
     OID functionOid;
     long triggerType;
-    bool enabled;
+    bool enabled, parentistable;
     pgFunction *triggerFunction;
 };
 
 
-class pgTriggerCollection : public pgTableObjCollection
+class pgTriggerCollection : public pgSchemaObjCollection
 {
 public:
     pgTriggerCollection(pgaFactory *factory, pgSchema *sch);

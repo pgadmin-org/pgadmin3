@@ -1311,7 +1311,6 @@ void pgSchemaObject::SetSchema(pgSchema *newSchema)
 void pgSchemaObject::UpdateSchema(ctlTree *browser, OID schemaOid)
 {
 	// used e.g. for triggers that use trigger functions from other namespaces
-
 	if (!browser)
 		return;
 

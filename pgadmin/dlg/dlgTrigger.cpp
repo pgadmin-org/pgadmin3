@@ -66,14 +66,13 @@ dlgProperty *pgTriggerFactory::CreateDialog(frmMain *frame, pgObject *node, pgOb
 }
 
 
-
-
 dlgTrigger::dlgTrigger(pgaFactory *f, frmMain *frame, pgTrigger *node, pgTable *parentNode)
 : dlgCollistProperty(f, frame, wxT("dlgTrigger"), parentNode)
 {
     trigger=node;
     table=parentNode;
-    wxASSERT(!table || table->GetMetaType() == PGM_TABLE || table->GetMetaType() == GP_PARTITION);
+    wxASSERT(!table || table->GetMetaType() == PGM_TABLE || table->GetMetaType() == PGM_VIEW
+        || table->GetMetaType() == GP_PARTITION);
 
     bool bVal;
     settings->Read(wxT("frmQuery/ShowLineNumber"), &bVal, false);
@@ -120,7 +119,12 @@ int dlgTrigger::Go(bool modal)
         chkUpdate->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE) != 0);
         chkDelete->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_DELETE) != 0);
 		chkTruncate->SetValue((trigger->GetTriggerType() & TRIGGER_TYPE_TRUNCATE) != 0);
-        rdbFires->SetSelection(trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1);
+        if (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE)
+            rdbFires->SetSelection(0);
+        else if (trigger->GetTriggerType() & TRIGGER_TYPE_INSTEAD)
+            rdbFires->SetSelection(2);
+        else
+            rdbFires->SetSelection(1);
         txtArguments->SetValue(trigger->GetArguments());
         txtWhen->SetValue(trigger->GetWhen());
         if (!connection->BackendMinimumVersion(7, 4))
@@ -196,6 +200,8 @@ int dlgTrigger::Go(bool modal)
 		if (!connection->BackendMinimumVersion(8, 4))
 			chkTruncate->Disable();
 
+		if (!connection->BackendMinimumVersion(9, 1) || table->GetMetaType() != PGM_VIEW)
+			rdbFires->Enable(2, false);
     }
 
     cbColumns->Disable();
@@ -259,15 +265,17 @@ wxString dlgTrigger::GetSql()
         chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||
         chkDelete->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_DELETE ? true : false) ||
 		chkTruncate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_TRUNCATE ? true : false) ||
-        rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1))
+        rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : TRIGGER_TYPE_INSTEAD ? 2 : 1))
     {
         if (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
             sql += wxT("CREATE OR REPLACE TRIGGER ") + qtIdent(name);
         else
             sql += wxT("CREATE TRIGGER ") + qtIdent(name);
 
-        if (rdbFires->GetSelection())
+        if (rdbFires->GetSelection() == 1)
             sql += wxT(" AFTER");
+        else if (rdbFires->GetSelection() == 2)
+            sql += wxT(" INSTEAD OF");
         else
             sql += wxT(" BEFORE");
         int actionCount=0;
@@ -400,14 +408,14 @@ void dlgTrigger::CheckChange()
     wxString name=GetName();
 
 	// We can only have per-statement TRUNCATE triggers
-	if (connection->BackendMinimumVersion(8, 4))
+	if (trigger || connection->BackendMinimumVersion(8, 4))
 	{
 		if (chkRow->GetValue())
 		{
 			chkTruncate->Disable();
 			chkTruncate->SetValue(false);
 		}
-		else
+		else if (connection->EdbMinimumVersion(8,0))
 			chkTruncate->Enable();
 	}
 
@@ -432,7 +440,7 @@ void dlgTrigger::CheckChange()
                  chkUpdate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_UPDATE ? true : false) ||
                  chkDelete->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_DELETE ? true : false) ||
 				 chkTruncate->GetValue() != (trigger->GetTriggerType() & TRIGGER_TYPE_TRUNCATE ? true : false) ||
-                 rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : 1)));
+                 rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : (trigger->GetTriggerType() & TRIGGER_TYPE_INSTEAD ? 2 : 1))));
     }
     else
     {
