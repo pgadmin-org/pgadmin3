@@ -32,6 +32,17 @@ for %%f in (%WXCONTRIB%) do (
    if not exist %%f.vcproj vcbuild /nologo /upgrade %%f.dsp
    cd ..
 )
+
+cd ..\..\utils\hhp2cached
+echo Checking utils\hhp2cached
+del *.vcproj.user 2> NUL
+if not exist hhp2cached.vcproj vcbuild /nologo /upgrade hhp2cached.dsp
+
+cd ..\wxrc
+echo Checking utils\wxrc
+del *.vcproj.user 2> NUL
+if not exist wxrc.vcproj vcbuild /nologo /upgrade wxrc.dsp
+
 cd %HERE%
 
 REM Now build them
@@ -39,6 +50,7 @@ cd %WX%\build\msw
 for %%b in (Debug Release) do (
    for %%f in (%WXBASE%) do (
       title Building project %%f, config %%b
+      vcbuild /nohtmllog /nologo wx_%%f.vcproj "Unicode %%b"
       vcbuild /nohtmllog /nologo wx_%%f.vcproj "DLL Unicode %%b"
    )
 )
@@ -47,10 +59,20 @@ for %%b in (Debug Release) do (
    for %%f in (%WXCONTRIB%) do (
       cd %%f
       title Building project contrib/%%f, config %%b
+      vcbuild /nohtmllog /nologo %%f.vcproj "Unicode %%b"
       vcbuild /nohtmllog /nologo %%f.vcproj "DLL Unicode %%b"
       cd ..
    )
 )
+
+cd ..\..\utils\hhp2cached
+title Building project utils/hhp2cached, config Release
+vcbuild /nohtmllog /nologo hhp2cached.vcproj "Unicode Release"
+
+cd ..\wxrc
+title Building project utils/wxrc, config Release
+vcbuild /nohtmllog /nologo wxrc.vcproj "Unicode Release"
+
 cd %HERE%
 title "build-wx done."
 echo "build-wx done."

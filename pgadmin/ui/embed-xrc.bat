@@ -9,5 +9,5 @@ REM # embed-xrc.bat - convert xrc files to c++ files
 REM #
 REM #######################################################################
 
-wxrc -c -o xrcDialogs.cpp *.xrc
+"%WXWIN%\utils\wxrc\vc_mswu\wxrc" -c -o xrcDialogs.cpp *.xrc
 
