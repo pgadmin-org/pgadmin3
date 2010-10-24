@@ -52,10 +52,10 @@
 #endif
 
 // Supported server minimum and maximum values.
-const short SERVER_MIN_VERSION_N = 0x0703;
-const wxString SERVER_MIN_VERSION_T = wxT("7.3");
-const short SERVER_MAX_VERSION_N = 0x0900;
-const wxString SERVER_MAX_VERSION_T = wxT("9.0");
+const short SERVER_MIN_VERSION_N = 0x0802;
+const wxString SERVER_MIN_VERSION_T = wxT("8.2");
+const short SERVER_MAX_VERSION_N = 0x0901;
+const wxString SERVER_MAX_VERSION_T = wxT("9.1");
 
 // The registry file
 #ifndef __WXMSW__
