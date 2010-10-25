@@ -692,93 +692,87 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
         dbOid = conn->GetDbOid();
 
         // Check the server version
-        if (conn->BackendMinimumVersion(SERVER_MIN_VERSION_N >> 8, SERVER_MIN_VERSION_N & 0x00FF))
+        if (!(conn->BackendMinimumVersion(SERVER_MIN_VERSION_N >> 8, SERVER_MIN_VERSION_N & 0x00FF)) ||
+            (conn->BackendMinimumVersion(SERVER_MAX_VERSION_N >> 8, (SERVER_MAX_VERSION_N & 0x00FF) + 1))) 
+            wxLogWarning(_("The server you are connecting to is not a version that is supported by this release of %s.\n\n%s may not function as expected.\n\nSupported server versions are %s to %s."), 
+                            appearanceFactory->GetLongAppName(), 
+                            appearanceFactory->GetLongAppName(), 
+                            wxString(SERVER_MIN_VERSION_T).c_str(), 
+                            wxString(SERVER_MAX_VERSION_T).c_str());
+
+        connected = true;
+        bool hasUptime=false;
+
+        wxString sql = wxT("SELECT usecreatedb, usesuper");
+        if (conn->BackendMinimumVersion(8, 1))
         {
-            // Warn the user if this is a newer version of PostgreSQL than we know of.
-            if (conn->BackendMinimumVersion(SERVER_MAX_VERSION_N >> 8, (SERVER_MAX_VERSION_N & 0x00FF) + 1))
-                wxLogWarning(_("This version of pgAdmin has only been tested with PostgreSQL version %s and below and may not function correctly with this server. Please upgrade pgAdmin."), wxString(SERVER_MAX_VERSION_T).c_str());
+            hasUptime=true;
+            sql += wxT(", CASE WHEN usesuper THEN pg_postmaster_start_time() ELSE NULL END as upsince");
+        }
+        else if (conn->HasFeature(FEATURE_POSTMASTER_STARTTIME))
+        {
+            hasUptime=true;
+            sql += wxT(", CASE WHEN usesuper THEN pg_postmaster_starttime() ELSE NULL END as upsince");
+        }
+        if (conn->BackendMinimumVersion(8, 4))
+        {
+            sql += wxT(", CASE WHEN usesuper THEN pg_conf_load_time() ELSE NULL END as confloadedsince");
+        }
+        if (conn->BackendMinimumVersion(8, 5))
+        {
+            sql += wxT(", CASE WHEN usesuper THEN pg_is_in_recovery() ELSE NULL END as inrecovery");
+            sql += wxT(", CASE WHEN usesuper THEN pg_last_xlog_receive_location() ELSE NULL END as receiveloc");
+            sql += wxT(", CASE WHEN usesuper THEN pg_last_xlog_replay_location() ELSE NULL END as replayloc");
+        }
 
-            connected = true;
-            bool hasUptime=false;
-
-            wxString sql = wxT("SELECT usecreatedb, usesuper");
-            if (conn->BackendMinimumVersion(8, 1))
-            {
-                hasUptime=true;
-                sql += wxT(", CASE WHEN usesuper THEN pg_postmaster_start_time() ELSE NULL END as upsince");
-            }
-            else if (conn->HasFeature(FEATURE_POSTMASTER_STARTTIME))
-            {
-                hasUptime=true;
-                sql += wxT(", CASE WHEN usesuper THEN pg_postmaster_starttime() ELSE NULL END as upsince");
-            }
+        pgSet *set=ExecuteSet(sql + wxT("\n  FROM pg_user WHERE usename=current_user"));
+        if (set)
+        {
+            iSetCreatePrivilege(set->GetBool(wxT("usecreatedb")));
+            iSetSuperUser(set->GetBool(wxT("usesuper")));
+            if (hasUptime)
+                iSetUpSince(set->GetDateTime(wxT("upsince")));
             if (conn->BackendMinimumVersion(8, 4))
-            {
-                sql += wxT(", CASE WHEN usesuper THEN pg_conf_load_time() ELSE NULL END as confloadedsince");
-            }
+                iSetConfLoadedSince(set->GetDateTime(wxT("confloadedsince")));
             if (conn->BackendMinimumVersion(8, 5))
             {
-                sql += wxT(", CASE WHEN usesuper THEN pg_is_in_recovery() ELSE NULL END as inrecovery");
-                sql += wxT(", CASE WHEN usesuper THEN pg_last_xlog_receive_location() ELSE NULL END as receiveloc");
-                sql += wxT(", CASE WHEN usesuper THEN pg_last_xlog_replay_location() ELSE NULL END as replayloc");
+                iSetInRecovery(set->GetBool(wxT("inrecovery")));
+                iSetReplayLoc(set->GetVal(wxT("replayloc")));
+                iSetReceiveLoc(set->GetVal(wxT("receiveloc")));
             }
+            delete set;
+        }
 
-            pgSet *set=ExecuteSet(sql + wxT("\n  FROM pg_user WHERE usename=current_user"));
+        if (conn->BackendMinimumVersion(8, 1))
+        {
+            set=ExecuteSet(wxT("SELECT rolcreaterole, rolcreatedb FROM pg_roles WHERE rolname = current_user;"));
+
             if (set)
             {
-                iSetCreatePrivilege(set->GetBool(wxT("usecreatedb")));
-                iSetSuperUser(set->GetBool(wxT("usesuper")));
-                if (hasUptime)
-                    iSetUpSince(set->GetDateTime(wxT("upsince")));
-                if (conn->BackendMinimumVersion(8, 4))
-                    iSetConfLoadedSince(set->GetDateTime(wxT("confloadedsince")));
-                if (conn->BackendMinimumVersion(8, 5))
-                {
-                    iSetInRecovery(set->GetBool(wxT("inrecovery")));
-                    iSetReplayLoc(set->GetVal(wxT("replayloc")));
-                    iSetReceiveLoc(set->GetVal(wxT("receiveloc")));
-                }
+                iSetCreatePrivilege(set->GetBool(wxT("rolcreatedb")));
+                iSetCreateRole(set->GetBool(wxT("rolcreaterole")));
                 delete set;
             }
-
-            if (conn->BackendMinimumVersion(8, 1))
-            {
-                set=ExecuteSet(wxT("SELECT rolcreaterole, rolcreatedb FROM pg_roles WHERE rolname = current_user;"));
-    
-                if (set)
-                {
-                    iSetCreatePrivilege(set->GetBool(wxT("rolcreatedb")));
-                    iSetCreateRole(set->GetBool(wxT("rolcreaterole")));
-                    delete set;
-                }
-            }
-            else
-                iSetCreateRole(false);
-
-            wxString version, allVersions;
-            version.Printf(wxT("%d.%d"), conn->GetMajorVersion(), conn->GetMinorVersion());
-            allVersions = settings->Read(wxT("Updates/pgsql-Versions"), wxEmptyString);
-            if (allVersions.Find(version) < 0)
-            {
-                if (!allVersions.IsEmpty())
-                    allVersions += wxT(", ");
-                allVersions += version;
-                settings->Write(wxT("Updates/pgsql-Versions"), allVersions);
-            }
-            if (conn->IsSSLconnected())
-                settings->Write(wxT("Updates/UseSSL"), true);
-
-            UpdateIcon(form->GetBrowser());
-            if (storePassword || forceStorePassword)
-                StorePassword();
         }
         else
-        {
-            error.Printf(_("The server version %s is older than is supported by this release of pgAdmin."), wxString(SERVER_MIN_VERSION_T).c_str());
-            connected = false;
-            status = PGCONN_BAD;
-        }
+            iSetCreateRole(false);
 
+        wxString version, allVersions;
+        version.Printf(wxT("%d.%d"), conn->GetMajorVersion(), conn->GetMinorVersion());
+        allVersions = settings->Read(wxT("Updates/pgsql-Versions"), wxEmptyString);
+        if (allVersions.Find(version) < 0)
+        {
+            if (!allVersions.IsEmpty())
+                allVersions += wxT(", ");
+            allVersions += version;
+            settings->Write(wxT("Updates/pgsql-Versions"), allVersions);
+        }
+        if (conn->IsSSLconnected())
+            settings->Write(wxT("Updates/UseSSL"), true);
+
+        UpdateIcon(form->GetBrowser());
+        if (storePassword || forceStorePassword)
+            StorePassword();
     }
     else
     {
