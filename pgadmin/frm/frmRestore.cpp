@@ -310,6 +310,9 @@ wxString frmRestore::getCmdPart1()
     if (!cbRolename->GetValue().IsEmpty())
          cmd += wxT(" --role ") + commandLineCleanOption(qtIdent(cbRolename->GetValue()));
 
+    if (pgAppMinimumVersion(restoreExecutable, 8, 4))
+        cmd += wxT(" --no-password ");
+
     return cmd;
 }
 

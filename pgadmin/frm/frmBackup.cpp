@@ -331,6 +331,9 @@ wxString frmBackup::getCmdPart1()
     if (!cbRolename->GetValue().IsEmpty())
         cmd += wxT(" --role ") + commandLineCleanOption(qtIdent(cbRolename->GetValue()));
 
+    if (pgAppMinimumVersion(backupExecutable, 8, 4))
+        cmd += wxT(" --no-password ");
+
     if (object->GetConnection()->GetIsGreenplum())
         cmd += wxT(" --gp-syntax ");
     return cmd;

@@ -180,6 +180,9 @@ wxString frmBackupServer::getCmdPart1()
     if (!cbRolename->GetValue().IsEmpty())
         cmd += wxT(" --role ") + commandLineCleanOption(qtIdent(cbRolename->GetValue()));
 
+    if (pgAppMinimumVersion(backupExecutable, 8, 4))
+        cmd += wxT(" --no-password ");
+
     return cmd;
 }
 
