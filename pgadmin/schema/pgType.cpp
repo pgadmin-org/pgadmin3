@@ -198,11 +198,14 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         }
         else if (GetTypeClass() == TYPE_ENUM)
         {
-            pgSet *set=ExecuteSet(
-                wxT("SELECT enumlabel\n")
-                wxT("  FROM pg_enum\n")
-                wxT(" WHERE enumtypid=") + GetOidStr() + wxT("\n")
-                wxT(" ORDER by oid"));
+            wxString query = wxT("SELECT enumlabel\n")
+                             wxT("  FROM pg_enum\n")
+                             wxT(" WHERE enumtypid=") + GetOidStr() + wxT("\n");
+            if (GetConnection()->BackendMinimumVersion(9, 1))
+                query += wxT(" ORDER by enumsortorder");
+            else
+                query += wxT(" ORDER by oid");
+            pgSet *set=ExecuteSet(query);
             if (set)
             {
                 int anzvar=0;

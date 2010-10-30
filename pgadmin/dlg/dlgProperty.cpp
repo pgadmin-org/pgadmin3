@@ -799,6 +799,7 @@ void dlgProperty::ShowObject()
 
 bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
 {
+    wxString tmp;
     pgConn *myConn = connection;
 
     if (GetDisconnectFirst())
@@ -809,37 +810,25 @@ bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
 
     if (!sql.IsEmpty())
     {
-        wxString tmp;
-        if (cbClusterSet && cbClusterSet->GetSelection() > 0)
-        {
-            replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+        wxArrayString queries;
 
-            if (data->majorVer > 1 || (data->majorVer == 1 && data->minorVer >= 2))
-            {
-                tmp = wxT("SELECT ") + qtIdent(data->cluster)
-                    + wxT(".ddlscript_prepare(") + NumToStr(data->setId) + wxT(", 0);\n")
-                    + wxT("SELECT ") + qtIdent(data->cluster)
-                    + wxT(".ddlscript_complete(") + NumToStr(data->setId) + wxT(", ")
-                    + qtDbString(sql) + wxT(", 0);\n");
-            }
-            else
-            {
-                tmp = wxT("SELECT ") + qtIdent(data->cluster)
-                    + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
-                    + qtDbString(sql) + wxT(", 0);\n");
-            }
-        }
+        if (WannaSplitQueries())
+            queries = SplitQueries(BuildSql(sql));
         else
-            tmp = sql;
+            queries.Add(BuildSql(sql));
 
-        if (!myConn->ExecuteVoid(tmp))
+        for (size_t index = 0; index < queries.GetCount(); index++)
         {
-            // error message is displayed inside ExecuteVoid
-            return false;
-        }
+            tmp = queries.Item(index);
+            if (!myConn->ExecuteVoid(tmp))
+            {
+                // error message is displayed inside ExecuteVoid
+                return false;
+            }
 
-        if (database)
-            database->AppendSchemaChange(tmp);
+            if (database)
+                database->AppendSchemaChange(tmp);
+        }
     }
 
     // Process the second SQL statement. This is primarily only used by
@@ -847,28 +836,7 @@ bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
     // PostgreSQL 8.3+
     if (!sql2.IsEmpty())
     {
-        wxString tmp;
-        if (cbClusterSet && cbClusterSet->GetSelection() > 0)
-        {
-            replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
-
-            if (data->majorVer > 1 || (data->majorVer == 1 && data->minorVer >= 2))
-            {
-                tmp = wxT("SELECT ") + qtIdent(data->cluster)
-                    + wxT(".ddlscript_prepare(") + NumToStr(data->setId) + wxT(", 0);\n")
-                    + wxT("SELECT ") + qtIdent(data->cluster)
-                    + wxT(".ddlscript_complete(") + NumToStr(data->setId) + wxT(", ")
-                    + qtDbString(sql2) + wxT(", 0);\n");
-            }
-            else
-            {
-                tmp = wxT("SELECT ") + qtIdent(data->cluster)
-                    + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
-                    + qtDbString(sql2) + wxT(", 0);\n");
-            }
-        }
-        else
-            tmp = sql2;
+        tmp = BuildSql(sql2);
 
         if (!myConn->ExecuteVoid(tmp))
         {
@@ -888,6 +856,86 @@ bool dlgProperty::apply(const wxString &sql, const wxString &sql2)
     ShowObject();
 
     return true;
+}
+
+
+wxString dlgProperty::BuildSql(const wxString &sql)
+{
+    wxString tmp;
+
+    if (cbClusterSet && cbClusterSet->GetSelection() > 0)
+    {
+        replClientData *data=(replClientData*)cbClusterSet->GetClientData(cbClusterSet->GetSelection());
+
+        if (data->majorVer > 1 || (data->majorVer == 1 && data->minorVer >= 2))
+        {
+            tmp = wxT("SELECT ") + qtIdent(data->cluster)
+                + wxT(".ddlscript_prepare(") + NumToStr(data->setId) + wxT(", 0);\n")
+                + wxT("SELECT ") + qtIdent(data->cluster)
+                + wxT(".ddlscript_complete(") + NumToStr(data->setId) + wxT(", ")
+                + qtDbString(sql) + wxT(", 0);\n");
+        }
+        else
+        {
+            tmp = wxT("SELECT ") + qtIdent(data->cluster)
+                + wxT(".ddlscript(") + NumToStr(data->setId) + wxT(", ")
+                + qtDbString(sql) + wxT(", 0);\n");
+        }
+    }
+    else
+        tmp = sql;
+
+    return tmp;
+}
+
+
+wxArrayString dlgProperty::SplitQueries(const wxString &sql)
+{
+    wxArrayString queries;
+    wxString query;
+    wxString c;
+
+    bool antislash = false;
+    bool quote_string = false;
+    bool doublequote_string = false;
+
+    for (size_t item = 0; item < sql.Length(); item++)
+    {
+        c = sql.GetChar(item);
+
+        if (c == wxT("\\"))
+            antislash = true;
+
+        if (c == wxT("'"))
+        {
+            if (antislash)
+                antislash = false;
+            else if (quote_string)
+                quote_string = false;
+            else if (!doublequote_string)
+                quote_string = true;
+        }
+
+        if (c == wxT("\""))
+        {
+            if (antislash)
+                antislash = false;
+            else if (doublequote_string)
+                doublequote_string = false;
+            else if (!quote_string)
+                doublequote_string = true;
+        }
+
+        query = query + c;
+
+        if (c == wxT(";") && !antislash && !quote_string && !doublequote_string)
+        {
+            queries.Add(query);
+            query = wxEmptyString;
+        }
+    }
+
+    return queries;
 }
 
 

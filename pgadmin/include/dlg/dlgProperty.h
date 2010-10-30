@@ -89,6 +89,8 @@ public:
     virtual int Go(bool modal=false);
     virtual void CheckChange() =0;
 
+    virtual bool WannaSplitQueries() { return false; }
+
 protected:
     dlgProperty(pgaFactory *factory, frmMain *frame, const wxString &resName);
     ~dlgProperty();
@@ -161,6 +163,8 @@ protected:
 private:
     bool tryUpdate(wxTreeItemId collectionItem);
     bool apply(const wxString &sql, const wxString &sql2);
+    wxString BuildSql(const wxString &sql);
+    wxArrayString SplitQueries(const wxString &sql);
 
     DECLARE_EVENT_TABLE()
 };

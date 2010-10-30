@@ -28,6 +28,8 @@ public:
     pgObject *CreateObject(pgCollection *collection);
     pgObject *GetObject();
 
+    bool WannaSplitQueries() { return queriesToBeSplitted; }
+
     int Go(bool modal);
 
 private:
@@ -38,7 +40,8 @@ private:
     void OnMemberChange(wxCommandEvent &ev);
     void OnMemberRemove(wxCommandEvent &ev);
     void OnMemberSelChange(wxListEvent &ev);
-    void OnLabelAdd(wxCommandEvent &ev);
+    void OnLabelAddBefore(wxCommandEvent &ev);
+    void OnLabelAddAfter(wxCommandEvent &ev);
     void OnLabelRemove(wxCommandEvent &ev);
     void OnLabelSelChange(wxListEvent &ev);
     void OnSelChangeTyp(wxCommandEvent &ev);
@@ -49,6 +52,7 @@ private:
     wxString GetFullTypeName(int type);
 
     wxArrayString memberTypes, memberLengths, memberPrecisions;
+    bool queriesToBeSplitted;
 
     DECLARE_EVENT_TABLE()
 };

@@ -47,7 +47,8 @@
 #define btnAddMember            CTRL_BUTTON("btnAddMember")
 #define btnChangeMember         CTRL_BUTTON("btnChangeMember")
 #define btnRemoveMember         CTRL_BUTTON("btnRemoveMember")
-#define btnAddLabel             CTRL_BUTTON("btnAddLabel")
+#define btnAddAfterLabel        CTRL_BUTTON("btnAddAfterLabel")
+#define btnAddBeforeLabel       CTRL_BUTTON("btnAddBeforeLabel")
 #define btnRemoveLabel          CTRL_BUTTON("btnRemoveLabel")
 #define pnlDefinition           CTRL_PANEL("pnlDefinition")
 #define pnlDefinitionExtern     CTRL_PANEL("pnlDefinitionExtern")
@@ -68,7 +69,8 @@ BEGIN_EVENT_TABLE(dlgType, dlgTypeProperty)
     EVT_BUTTON(XRCID("btnAddMember"),               dlgType::OnMemberAdd)
     EVT_BUTTON(XRCID("btnChangeMember"),            dlgType::OnMemberChange)
     EVT_BUTTON(XRCID("btnRemoveMember"),            dlgType::OnMemberRemove)
-    EVT_BUTTON(XRCID("btnAddLabel"),                dlgType::OnLabelAdd)
+    EVT_BUTTON(XRCID("btnAddBeforeLabel"),          dlgType::OnLabelAddBefore)
+    EVT_BUTTON(XRCID("btnAddAfterLabel"),           dlgType::OnLabelAddAfter)
     EVT_BUTTON(XRCID("btnRemoveLabel"),             dlgType::OnLabelRemove)
     EVT_LIST_ITEM_SELECTED(XRCID("lstMembers"),     dlgType::OnMemberSelChange)
     EVT_LIST_ITEM_SELECTED(XRCID("lstLabels"),      dlgType::OnLabelSelChange)
@@ -93,6 +95,8 @@ dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
     schema=sch;
     lstMembers->CreateColumns(0, _("Member"), _("Data type"), -1);
     lstLabels->InsertColumn(0, _("Label"), wxLIST_FORMAT_LEFT, GetClientSize().GetWidth());
+
+    queriesToBeSplitted = false;
 
     wxNotifyEvent event;
     OnTypeChange(event);
@@ -194,9 +198,10 @@ int dlgType::Go(bool modal)
         btnChangeMember->Enable(false);
         btnRemoveMember->Enable(false);
 
-        txtLabel->Enable(changeok);
-        btnAddLabel->Enable(changeok);
-        btnRemoveLabel->Enable(changeok);
+        txtLabel->Enable(connection->BackendMinimumVersion(9, 1));
+        btnAddBeforeLabel->Enable(connection->BackendMinimumVersion(9, 1));
+        btnAddAfterLabel->Enable(connection->BackendMinimumVersion(9, 1));
+        btnRemoveLabel->Disable();
 
         wxArrayString elements=type->GetTypesArray();
         wxString fullType, typeName, typeLength, typePrecision;
@@ -395,7 +400,8 @@ void dlgType::CheckChange()
     {
         EnableOK(txtComment->GetValue() != type->GetComment()
             || cbOwner->GetValue() != type->GetOwner()
-            || (rdbType->GetSelection() == TYPE_COMPOSITE && GetSqlForTypes() != wxEmptyString));
+            || (rdbType->GetSelection() == TYPE_COMPOSITE && GetSqlForTypes() != wxEmptyString)
+            || (GetSql().Length() > 0 && connection->BackendMinimumVersion(9, 1)));
     }
     else
     {
@@ -541,7 +547,7 @@ void dlgType::OnLabelSelChange(wxListEvent &ev)
 }
 
 
-void dlgType::OnLabelAdd(wxCommandEvent &ev)
+void dlgType::OnLabelAddBefore(wxCommandEvent &ev)
 {
     wxString label=txtLabel->GetValue().Strip(wxString::both);
 
@@ -550,7 +556,31 @@ void dlgType::OnLabelAdd(wxCommandEvent &ev)
         long pos=lstLabels->FindItem(-1, label);
         if (pos < 0)
         {
-            pos = lstLabels->GetItemCount();
+            if (lstLabels->GetFirstSelected() >= 0)
+                pos = lstLabels->GetFirstSelected();
+            else
+                pos = 0;
+            lstLabels->InsertItem(pos, label, 0);
+        }
+    }
+    txtLabel->SetValue(wxEmptyString);
+    CheckChange();
+}
+
+
+void dlgType::OnLabelAddAfter(wxCommandEvent &ev)
+{
+    wxString label=txtLabel->GetValue().Strip(wxString::both);
+
+    if (!label.IsEmpty())
+    {
+        long pos=lstLabels->FindItem(-1, label);
+        if (pos < 0)
+        {
+            if (lstLabels->GetFirstSelected() >= 0)
+                pos = lstLabels->GetFirstSelected() + 1;
+            else
+                pos = lstLabels->GetItemCount();
             lstLabels->InsertItem(pos, label, 0);
         }
     }
@@ -581,13 +611,44 @@ pgObject *dlgType::CreateObject(pgCollection *collection)
 
 wxString dlgType::GetSql()
 {
-    wxString sql;
+    wxString sql,direction;
+    size_t existingitems_index, listitems_index, offset;
     
     if (type)
     {
         // Edit Mode
         AppendOwnerChange(sql, wxT("TYPE ") + type->GetQuotedFullIdentifier());
         sql += GetSqlForTypes();
+        if (rdbType->GetSelection() == TYPE_ENUM && connection->BackendMinimumVersion(9, 1))
+        {
+            wxArrayString elements=type->GetLabelArray();
+            existingitems_index = 0;
+            for (listitems_index=0 ; listitems_index < (size_t)lstLabels->GetItemCount() ; listitems_index++)
+            {
+                if (existingitems_index >= elements.GetCount() || lstLabels->GetItemText(listitems_index) != elements.Item(existingitems_index))
+                {
+                    queriesToBeSplitted = true;
+                    if (listitems_index == 0)
+                    {
+                        direction = wxT("BEFORE");
+                        offset = 0;
+                    }
+                    else
+                    {
+                        direction = wxT("AFTER");
+                        offset = -1;
+                    }
+
+                    sql += wxT("ALTER TYPE ") + type->GetQuotedFullIdentifier()
+                        +  wxT(" ADD ") + connection->qtDbString(lstLabels->GetItemText(listitems_index))
+                        +  wxT(" ") + direction + wxT(" ")
+                        + connection->qtDbString(elements.Item(existingitems_index + offset))
+                        + wxT(";\n");
+                }
+                else
+                    existingitems_index++;
+            }
+        }
     }
     else
     {
@@ -715,7 +776,7 @@ wxString dlgType::GetSqlForTypes()
     wxString sql = wxEmptyString;
     wxString old_name, old_type, new_name, new_type;
     wxArrayString elements=type->GetTypesArray();
-    bool modified = lstMembers->GetItemCount()*2 != elements.GetCount();
+    bool modified = lstMembers->GetItemCount()*2 != (int)elements.GetCount();
     size_t i;
 
     // Check if there is a change
