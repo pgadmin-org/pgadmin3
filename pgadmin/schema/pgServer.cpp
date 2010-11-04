@@ -695,8 +695,8 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
         if (!(conn->BackendMinimumVersion(SERVER_MIN_VERSION_N >> 8, SERVER_MIN_VERSION_N & 0x00FF)) ||
             (conn->BackendMinimumVersion(SERVER_MAX_VERSION_N >> 8, (SERVER_MAX_VERSION_N & 0x00FF) + 1))) 
             wxLogWarning(_("The server you are connecting to is not a version that is supported by this release of %s.\n\n%s may not function as expected.\n\nSupported server versions are %s to %s."), 
-                            appearanceFactory->GetLongAppName(), 
-                            appearanceFactory->GetLongAppName(), 
+                            appearanceFactory->GetLongAppName().c_str(), 
+                            appearanceFactory->GetLongAppName().c_str(), 
                             wxString(SERVER_MIN_VERSION_T).c_str(), 
                             wxString(SERVER_MAX_VERSION_T).c_str());
 
