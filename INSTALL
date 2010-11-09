@@ -137,7 +137,7 @@ You will need:
 - Microsoft Visual C++ 2008.
 - The Windows 2008 Platform SDK.
 - Windows Installer XML v3.
-- wxMSW 2.8.x from http://www.wxwidgets.org/
+- wxMSW 2.8.11 or above from http://www.wxwidgets.org/
 - libxml2 2.6.18 or above from http://www.xmlsoft.org/
 - libxslt 1.1.x or above from http://www.xmlsoft.org/
 - iconv 1.9.x or above from http://gnuwin32.sourceforge.net/
@@ -154,17 +154,9 @@ Building:
 1) Unpack the wxMSW source code to a convenient location pointed to by the 
    %WXWIN% environment variable.
 
-2) Build wxMSW.  To do this, first copy the file
-   xtra\wx-build\setup0-msw-2.8.h to the following three locations:
-
-   %WXWIN%\include\wx\setup0.h
-   %WXWIN%\include\wx\setup.h
-   %WXWIN%\include\wx\msw\setup.h
-
-   Next, from within Visual C++, open %WXWIN%\build\msw\wx.dsw and select
-   "Batch Build" from the "Build" menu.  Click on "Configuration" to sort by
-   that column, and check off all projects with configuration "Unicode Debug"
-   and "Unicode Release".  Click "Build".
+2) Build wxMSW.  To do this, run the build-wxmsw.bat script from the
+   xtra/wx-build directory in the pgAdmin source tree, in a Visual C++ 
+   command prompt window.
 
 3) Install PostgreSQL to a convenient location pointed to by the %PGDIR%
    environment variable.
@@ -187,7 +179,7 @@ Building:
    targets.
 
 7) To run the resulting executable, you'll need to copy all of the
-   prerequisite DLLs from the PostgreSQL installation and/or the various
-   subdirectories of %PGBUILD% into the directory where the EXE file is
-   located, or have those directories in your path.
+   prerequisite DLLs from the wxWidgets and PostgreSQL installations and the 
+   various subdirectories of %PGBUILD% into the directory where the EXE file
+   is located, or have those directories in your path.
 
