@@ -1263,7 +1263,7 @@ wxString dlgTable::GetSql()
             for (i=0 ; i < lbTables->GetCount() ; i++)
             {
                 if (i)
-                    sql += wxT(" ");
+                    sql += wxT(", ");
                 sql += lbTables->GetString(i);
             }
             sql += wxT(")");
