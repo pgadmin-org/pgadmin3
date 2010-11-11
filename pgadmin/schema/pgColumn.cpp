@@ -479,8 +479,8 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
         wxT("  ty.typstorage AS defaultstorage, cl.relname, na.nspname, att.attstattarget, description, cs.relname AS sername, ns.nspname AS serschema,\n")
         wxT("  (SELECT count(1) FROM pg_type t2 WHERE t2.typname=ty.typname) > 1 AS isdup, indkey,\n")
         wxT("  CASE \n")
-        wxT("       WHEN EXISTS( SELECT inhparent FROM pg_inherits WHERE inhrelid=att.attrelid )\n")
-        wxT("            THEN att.attrelid::regclass\n")
+        wxT("       WHEN inh.inhparent IS NOT NULL AND att.attinhcount>0\n")
+        wxT("            THEN inh.inhparent::regclass\n")
         wxT("       ELSE NULL\n")
         wxT("  END AS inhrelname");
 
@@ -500,6 +500,7 @@ pgObject *pgColumnFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
         wxT("  JOIN pg_namespace tn ON tn.oid=ty.typnamespace\n")
         wxT("  JOIN pg_class cl ON cl.oid=att.attrelid\n")
         wxT("  JOIN pg_namespace na ON na.oid=cl.relnamespace\n")
+        wxT("  LEFT OUTER JOIN pg_inherits inh ON inh.inhrelid=att.attrelid\n")
         wxT("  LEFT OUTER JOIN pg_type et ON et.oid=ty.typelem\n")
         wxT("  LEFT OUTER JOIN pg_attrdef def ON adrelid=att.attrelid AND adnum=att.attnum\n")
         wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=att.attrelid AND des.objsubid=att.attnum\n")
