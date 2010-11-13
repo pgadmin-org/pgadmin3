@@ -80,6 +80,11 @@ dlgColumn::dlgColumn(pgaFactory *f, frmMain *frame, pgColumn *node, pgTable *par
 
     lstVariables->CreateColumns(0, _("Variable"), _("Value"));
 
+    cbStorage->Append(wxT("PLAIN"));
+    cbStorage->Append(wxT("MAIN"));
+    cbStorage->Append(wxT("EXTERNAL"));
+    cbStorage->Append(wxT("EXTENDED"));
+
     /* Column Level Privileges */
     securityChanged=false;
     if (node)

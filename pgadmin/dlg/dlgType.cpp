@@ -96,6 +96,11 @@ dlgType::dlgType(pgaFactory *f, frmMain *frame, pgType *node, pgSchema *sch)
     lstMembers->CreateColumns(0, _("Member"), _("Data type"), -1);
     lstLabels->InsertColumn(0, _("Label"), wxLIST_FORMAT_LEFT, GetClientSize().GetWidth());
 
+    cbStorage->Append(wxT("PLAIN"));
+    cbStorage->Append(wxT("MAIN"));
+    cbStorage->Append(wxT("EXTERNAL"));
+    cbStorage->Append(wxT("EXTENDED"));
+
     queriesToBeSplitted = false;
 
     wxNotifyEvent event;
