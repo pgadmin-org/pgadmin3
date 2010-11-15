@@ -286,3 +286,8 @@ void dlgFindReplace::FindNext()
     }
 }
 
+void dlgFindReplace::SetFindString(const wxString &val)
+{
+	txtFind->SetValue(val);
+}
+

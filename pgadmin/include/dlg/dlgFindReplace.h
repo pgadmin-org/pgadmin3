@@ -24,6 +24,7 @@ public:
     ~dlgFindReplace();
     void FocusSearch();
     void FindNext();
+	void SetFindString(const wxString &val);
 
 private:
 

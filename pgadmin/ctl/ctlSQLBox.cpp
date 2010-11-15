@@ -184,14 +184,20 @@ void ctlSQLBox::OnSearchReplace(wxCommandEvent& ev)
     {
         m_dlgFindReplace = new dlgFindReplace(this);
         m_dlgFindReplace->Show(true);
-        m_dlgFindReplace->FocusSearch();
     }
     else
     {
         m_dlgFindReplace->Show(true);
         m_dlgFindReplace->SetFocus();
-        m_dlgFindReplace->FocusSearch();
     }
+
+	wxString selText = GetSelectedText();
+	if (!selText.IsEmpty())
+	{
+		m_dlgFindReplace->SetFindString(selText);
+	}
+
+    m_dlgFindReplace->FocusSearch();
 }
 
 bool ctlSQLBox::Find(const wxString &find, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse)
