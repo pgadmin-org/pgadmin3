@@ -1265,46 +1265,15 @@ wxString sanitizePath(const wxString &path)
  * FUNCTION: commandLineCleanOption
  * INPUTS:
  *       option       - input string needs to be reformatted
- *       schemaObject - Is this an object related to schema?
  * PURPOSE:
  *  - Fixup a (double-quoted) string for use on the command line
- *
- *    1. Schema objects needs three (slash & double-quote) combination
- *       instead of a double-quote to be used as a command-line option
- *    2. Options other than the schema objects needs (slash & double-quote)
- *       combination instead of a double-quote to be used as a command-line
- *       option.
- *
- *    i.e. CASE: Dump a table named em"p and database name tes"t having username
- *         xy\z. The command-line arguments for these values will be as below:
- *
- *         pg_dump --username "xy\\z" --table public."em\"\"\"p" "tes\"t"
- *
  */
-wxString commandLineCleanOption(const wxString &option, bool schemaObject)
+wxString commandLineCleanOption(const wxString &option)
 {
     wxString tmp = option;
 
-    // Only double-quoted string needs to be formatted
-    if (option.StartsWith(wxT("\"")) && option.EndsWith(wxT("\"")))
-    {
-        tmp = option.AfterFirst((wxChar)'"').BeforeLast((wxChar)'"');
-
-        // Replace single splash to double-splash
-        tmp.Replace(wxT("\\"), wxT("\\\\"));
-
-        // Replace double-quote with slash & double-quote
-        tmp.Replace(wxT("\""), wxT("\\\""));
-
-        if (!schemaObject)
-            // Replace double (slash & double-quote) combination to single (slash & double-quote) combination
-            tmp.Replace(wxT("\\\"\\\""), wxT("\\\""));
-        else
-            // Replace double (slash & double-quote) combination to triple (slash & double-quote) combination
-            tmp.Replace(wxT("\\\"\\\""), wxT("\\\"\\\"\\\""));
-
-        tmp = wxT("\"") + tmp + wxT("\"");
-    }
+	// Replace double-quote with slash & double-quote
+    tmp.Replace(wxT("\""), wxT("\\\""));
 
     return tmp;
 }

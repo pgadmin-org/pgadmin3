@@ -184,10 +184,10 @@ wxString frmBackupGlobals::getCmdPart1()
         cmd += wxT(" --host ") + server->GetName();
 
     cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
-         +  wxT(" --username ") + commandLineCleanOption(qtIdent(server->GetUsername()));
+         +  wxT(" --username \"") + commandLineCleanOption(qtIdent(server->GetUsername())) + wxT("\"");
 
     if (!cbRolename->GetValue().IsEmpty())
-        cmd += wxT(" --role ") + commandLineCleanOption(qtIdent(cbRolename->GetValue()));
+        cmd += wxT(" --role \"") + commandLineCleanOption(qtIdent(cbRolename->GetValue())) + wxT("\"");
 
     if (pgAppMinimumVersion(backupExecutable, 8, 4))
         cmd += wxT(" --no-password ");
