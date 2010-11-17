@@ -298,7 +298,7 @@ wxString frmBackup::getCmdPart1()
         cmd += wxT(" --host ") + server->GetName();
 
     cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
-         +  wxT(" --username ") + commandLineCleanOption(qtIdent(server->GetUsername()));
+         +  wxT(" --username \"") + commandLineCleanOption(qtIdent(server->GetUsername())) + wxT("\"");
 
     if (object->GetConnection()->GetIsGreenplum())
         cmd += wxT(" --gp-syntax ");
@@ -401,15 +401,16 @@ wxString frmBackup::getCmdPart2()
                     // The syntax changed in 8.2 :-(
                     if (pgAppMinimumVersion(backupExecutable, 8, 2))
                     {
-                        tmpTables.Append(wxT(" --table ") + 
-                                    commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema)), true) +
+                        tmpTables.Append(wxT(" --table \"") + 
+                                    commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema))) +
                                     wxT(".") +
-                                    commandLineCleanOption(qtIdent(ctvObjects->GetItemText(table)), true));
+                                    commandLineCleanOption(qtIdent(ctvObjects->GetItemText(table))) +
+                                    wxT("\""));
                     }
                     else
                     {
-                        tmpTables.Append(wxT(" --table ") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(table)), true));
-                        tmpTables.Append(wxT(" --schema ") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema)), true));
+                        tmpTables.Append(wxT(" --table \"") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(table))) + wxT("\""));
+                        tmpTables.Append(wxT(" --schema \"") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema))) + wxT("\""));
                     }
                 }
                 else
@@ -426,7 +427,7 @@ wxString frmBackup::getCmdPart2()
             }
             else
             {
-                cmdSchemas.Append(wxT(" --schema ") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema)), true));
+                cmdSchemas.Append(wxT(" --schema \"") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema))) + wxT("\""));
             }
         }
         else
