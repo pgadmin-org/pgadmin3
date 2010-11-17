@@ -645,7 +645,7 @@ wxString dlgType::GetSql()
                     }
 
                     sql += wxT("ALTER TYPE ") + type->GetQuotedFullIdentifier()
-                        +  wxT(" ADD ") + connection->qtDbString(lstLabels->GetItemText(listitems_index))
+                        +  wxT(" ADD VALUE ") + connection->qtDbString(lstLabels->GetItemText(listitems_index))
                         +  wxT(" ") + direction + wxT(" ")
                         + connection->qtDbString(elements.Item(existingitems_index + offset))
                         + wxT(";\n");
