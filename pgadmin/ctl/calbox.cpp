@@ -426,10 +426,6 @@ void wxCalendarBox::OnSetFocus(wxFocusEvent &ev)
 
 void wxCalendarBox::OnKillFocus(wxFocusEvent &ev)
 {
-#ifdef __WXGTK__
-    ev.Skip();
-#endif
-
     wxDateTime dt;
     dt.ParseFormat(m_txt->GetValue(), m_format);
     if (!dt.IsValid())
