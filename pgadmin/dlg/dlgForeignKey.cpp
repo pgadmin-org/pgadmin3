@@ -82,6 +82,9 @@ dlgForeignKey::dlgForeignKey(pgaFactory *f, frmMain *frame, ctlListView *colList
 
 wxString dlgForeignKey::DefaultIndexName(const wxString &name)
 {
+    if (name.IsEmpty())
+        return wxEmptyString;
+
     if (name.Left(3) == wxT("fk_"))
         return wxT("fki_") + name.Mid(3);
     else if (name.Left(3) == wxT("FK_"))
