@@ -460,6 +460,7 @@ bool ctlSQLBox::BlockComment(bool uncomment)
     }
 
     // Save the start position
+	const wxString comment = wxT("-- ");
     int start = GetSelectionStart();
 
     if (!GetSelectedText().IsEmpty())
@@ -467,20 +468,60 @@ bool ctlSQLBox::BlockComment(bool uncomment)
         wxString selection = GetSelectedText();
         if (!uncomment)
         {
-            selection.Replace(lineEnd, lineEnd + wxT("-- "));
-            selection.Prepend(wxT("-- "));
+            selection.Replace(lineEnd, lineEnd + comment);
+            selection.Prepend(comment);
+			if (selection.EndsWith(comment))
+				selection = selection.Left(selection.Length() - comment.Length());
         }
         else
         {
-            selection.Replace(lineEnd + wxT("-- "), lineEnd);
-            if (selection.StartsWith(wxT("-- ")))
-                selection = selection.Right(selection.Length() - 3);
+            selection.Replace(lineEnd + comment, lineEnd);
+            if (selection.StartsWith(comment))
+                selection = selection.Right(selection.Length() - comment.Length());
         }
         ReplaceSelection(selection);
         SetSelection(start, start + selection.Length());
-        return true;
     }
-    return false;
+	else
+	{
+		// No text selection - (un)comment the current line
+		int column = GetColumn(start);
+		int curLineNum = GetCurrentLine();
+		int pos = PositionFromLine(curLineNum);
+
+		if (!uncomment)
+		{
+			InsertText(pos, comment);
+		}
+		else
+		{
+			wxString t = GetTextRange(pos, pos + comment.Length());
+			if (t == comment)
+			{
+				// The line starts with a comment, so we remove it
+				SetTargetStart(pos);
+				SetTargetEnd(pos + comment.Length());
+				ReplaceTarget(wxT(""));
+			}
+			else
+			{
+				// The line doesn't start with a comment, do nothing
+				return false;
+			}
+		}
+
+		if (GetLineCount() > curLineNum) 
+		{
+			wxString nextLine = GetLine(curLineNum + 1);
+			if (nextLine.EndsWith(lineEnd))
+				nextLine = nextLine.Left(nextLine.Length() - lineEnd.Length());
+
+			int nextColumn = (nextLine.Length() < (unsigned int)column ? nextLine.Length() : column);
+			GotoPos(PositionFromLine(curLineNum + 1) + nextColumn);
+		}
+	}
+
+    return true;
 }
 
 void ctlSQLBox::OnKillFocus(wxFocusEvent& event)
