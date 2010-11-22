@@ -566,7 +566,7 @@
 //
 // Recommended setting: 1
 #ifndef wxUSE_GRAPHICS_CONTEXT
-#define wxUSE_GRAPHICS_CONTEXT 0
+#define wxUSE_GRAPHICS_CONTEXT 1
 #endif
 
 // ----------------------------------------------------------------------------
