@@ -840,6 +840,9 @@ bool frmMain::dropSingleObject(pgObject *data, bool updateFinal, bool cascaded)
 				}
 			}
         }
+
+        // Update the server list, if we dropped a server
+        StoreServers();
     }
     return done;
 }
