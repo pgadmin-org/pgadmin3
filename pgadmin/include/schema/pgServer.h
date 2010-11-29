@@ -92,6 +92,8 @@ public:
     void iSetReceiveLoc(const wxString& s) { receiveLoc=s; }
     wxString GetReplayLoc() const { return replayLoc; }
     void iSetReplayLoc(const wxString& s) { replayLoc=s; }
+    wxString GetReplayTimestamp() const { return replayTimestamp; }
+    void iSetReplayTimestamp(const wxString& s) { replayTimestamp=s; }
 
     pgConn *CreateConn(wxString dbName=wxEmptyString, OID oid=0, wxString applicationname=wxEmptyString);
 
@@ -172,7 +174,7 @@ private:
 	wxString group;
 
     bool inRecovery;
-    wxString receiveLoc, replayLoc;
+    wxString receiveLoc, replayLoc, replayTimestamp;
     wxDateTime confLoadedSince;
 
 #ifdef WIN32

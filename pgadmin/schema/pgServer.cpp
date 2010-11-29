@@ -724,6 +724,10 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
             sql += wxT(", CASE WHEN usesuper THEN pg_last_xlog_receive_location() ELSE NULL END as receiveloc");
             sql += wxT(", CASE WHEN usesuper THEN pg_last_xlog_replay_location() ELSE NULL END as replayloc");
         }
+        if (conn->BackendMinimumVersion(9, 1))
+        {
+            sql += wxT(", CASE WHEN usesuper THEN pg_last_xact_replay_timestamp() ELSE NULL END as replay_timestamp");
+        }
 
         pgSet *set=ExecuteSet(sql + wxT("\n  FROM pg_user WHERE usename=current_user"));
         if (set)
@@ -739,6 +743,10 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
                 iSetInRecovery(set->GetBool(wxT("inrecovery")));
                 iSetReplayLoc(set->GetVal(wxT("replayloc")));
                 iSetReceiveLoc(set->GetVal(wxT("receiveloc")));
+            }
+            if (conn->BackendMinimumVersion(9, 1))
+            {
+                iSetReplayTimestamp(set->GetVal(wxT("replay_timestamp")));
             }
             delete set;
         }
@@ -1028,6 +1036,10 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
                 properties->AppendItem(_("In recovery"), (GetInRecovery() ? _("yes") : _("no")));
                 properties->AppendItem(_("Last XLOG receive location"), GetReceiveLoc());
                 properties->AppendItem(_("Last XLOG replay location"), GetReplayLoc());
+            }
+            if (conn->BackendMinimumVersion(9,1))
+            {
+                properties->AppendItem(_("Last XACT replay timestamp"), GetReplayTimestamp());
             }
         }
         if (GetServerControllable())
