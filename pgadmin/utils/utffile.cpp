@@ -11,6 +11,7 @@
 
 #include "pgAdmin3.h"
 #include "utils/utffile.h"
+#include "utils/sysLogger.h"
 
 wxMBConvUTF16BE wxConvUTF16BE;
 wxMBConvUTF16LE wxConvUTF16LE;
@@ -203,6 +204,9 @@ wxFontEncoding wxUtfFile::GetEncoding()
 
 void wxUtfFile::WriteBOM()
 {
+    if (!settings->GetWriteBOM())
+        return;
+
     wxFile::Seek(0);
     switch (m_encoding)
     {

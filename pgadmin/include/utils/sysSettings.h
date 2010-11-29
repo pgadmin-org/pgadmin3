@@ -88,6 +88,8 @@ public:
     void SetExportQuoting(const int i);
     bool GetExportUnicode() const { bool b; Read(wxT("Export/Unicode"), &b, true); return b; }
 	void SetExportUnicode(const bool newval) { Write(wxT("Export/Unicode"), newval); }
+    bool GetWriteBOM() const { bool b; Read(wxT("Export/WriteBOM"), &b, true); return b; }
+	void SetWriteBOM(const bool newval) { Write(wxT("Export/WriteBOM"), newval); }
 	
     // Explain options
     bool GetExplainVerbose() const { bool b; Read(wxT("frmQuery/ExplainVerbose"), &b, false); return b; }

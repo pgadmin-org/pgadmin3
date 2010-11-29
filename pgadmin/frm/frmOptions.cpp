@@ -52,6 +52,7 @@
 #define txtMaxColSize               CTRL_TEXT("txtMaxColSize")
 #define pickerFont                  CTRL_FONTPICKER("pickerFont")
 #define chkUnicodeFile              CTRL_CHECKBOX("chkUnicodeFile")
+#define chkWriteBOM                 CTRL_CHECKBOX("chkWriteBOM")
 #define chkAskSaveConfirm           CTRL_CHECKBOX("chkAskSaveConfirm")
 #define chkAskDelete                CTRL_CHECKBOX("chkAskDelete")
 #define chkShowUsersForPrivileges   CTRL_CHECKBOX("chkShowUsersForPrivileges")
@@ -237,6 +238,7 @@ frmOptions::frmOptions(frmMain *parent)
     
     txtSystemSchemas->SetValue(settings->GetSystemSchemas());
     chkUnicodeFile->SetValue(settings->GetUnicodeFile());
+    chkWriteBOM->SetValue(settings->GetWriteBOM());
     chkSuppressHints->SetValue(settings->GetSuppressGuruHints());
     pickerSlonyPath->SetPath(settings->GetSlonyPath());
     pickerPostgresqlPath->SetPath(settings->GetPostgresqlPath());
@@ -531,6 +533,7 @@ void frmOptions::OnOK(wxCommandEvent &ev)
     settings->SetAutoRollback(chkAutoRollback->GetValue());
     settings->SetDoubleClickProperties(chkDoubleClickProperties->GetValue());
     settings->SetUnicodeFile(chkUnicodeFile->GetValue());
+    settings->SetWriteBOM(chkWriteBOM->GetValue());
     settings->SetSystemFont(pickerFont->GetSelectedFont());
     settings->SetSQLFont(pickerSqlFont->GetSelectedFont());
     settings->SetSuppressGuruHints(chkSuppressHints->GetValue());
