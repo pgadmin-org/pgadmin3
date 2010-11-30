@@ -83,7 +83,7 @@ void ctlSQLGrid::OnMouseWheel(wxMouseEvent& event)
         SetDefaultCellFont(fontcells);
         SetColLabelSize(fontlabel.GetPointSize() *4);
         SetDefaultRowSize(fontcells.GetPointSize() *2);
-        for (size_t index = 0; index < GetNumberCols(); index++)
+        for (int index = 0; index < GetNumberCols(); index++)
             SetColSize(index, -1);
         ForceRefresh();
     }
