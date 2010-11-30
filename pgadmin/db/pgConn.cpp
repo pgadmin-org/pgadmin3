@@ -40,7 +40,6 @@ typedef u_long in_addr_t;
 #include "utils/sysLogger.h"
 #include "db/pgConn.h"
 #include "utils/misc.h"
-#include "utils/md5.h"
 #include "db/pgSet.h"
 
 double pgConn::libpqVersion=8.0;
@@ -467,11 +466,15 @@ bool pgConn::HasFeature(int featureNo)
 // Encrypt a password using the appropriate encoding conversion
 wxString pgConn::EncryptPassword(const wxString &user, const wxString &password)
 {
-    char hash[MD5_PASSWD_LEN+1];
+    char *chrPassword;
+    wxString strPassword;
 
-    pg_md5_encrypt(password.mb_str(*conv), user.mb_str(*conv), strlen(user.mb_str(*conv)), hash);
+    chrPassword = PQencryptPassword(password.mb_str(*conv), user.mb_str(*conv));
+    strPassword = wxString::FromAscii(chrPassword);
 
-    return wxString::FromAscii(hash);
+    PQfreemem(chrPassword);
+
+    return strPassword;
 }
 
 wxString pgConn::qtDbString(const wxString& value)

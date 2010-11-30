@@ -218,7 +218,6 @@
 #include "utils/factory.h"
 #include "utils/favourites.h"
 #include "utils/macros.h"
-#include "utils/md5.h"
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 #include "utils/pgconfig.h"

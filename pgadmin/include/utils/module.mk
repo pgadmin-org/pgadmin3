@@ -13,7 +13,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/utils/csvfiles.h \
 	$(srcdir)/include/utils/factory.h \
 	$(srcdir)/include/utils/favourites.h \
-	$(srcdir)/include/utils/md5.h \
 	$(srcdir)/include/utils/misc.h \
 	$(srcdir)/include/utils/pgfeatures.h \
 	$(srcdir)/include/utils/pgDefs.h \

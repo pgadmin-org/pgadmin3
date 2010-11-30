@@ -13,7 +13,6 @@ pgadmin3_SOURCES += \
 	$(srcdir)/utils/csvfiles.cpp \
 	$(srcdir)/utils/factory.cpp \
 	$(srcdir)/utils/favourites.cpp \
-	$(srcdir)/utils/md5.cpp \
 	$(srcdir)/utils/misc.cpp \
 	$(srcdir)/utils/pgconfig.cpp \
 	$(srcdir)/utils/registry.cpp \
