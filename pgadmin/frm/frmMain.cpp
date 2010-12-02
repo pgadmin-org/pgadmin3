@@ -211,6 +211,10 @@ frmMain::frmMain(const wxString& title)
     serversObj = new pgServerCollection(serverFactory.GetCollectionFactory());
     wxTreeItemId root = browser->AddRoot(_("Server Groups"), serversObj->GetIconId(), -1, serversObj);
 
+    // Work around a bug in the generic tree control in wxWidgets, 
+    // Per http://trac.wxwidgets.org/ticket/10085
+    browser->SetItemText(root, _("Server Groups"));
+
     // Load servers
     RetrieveServers();
 
