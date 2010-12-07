@@ -344,7 +344,7 @@ wxString frmRestore::getCmdPart2(int step)
             if (chkNoOwner->GetValue())
                 cmd.Append(wxT(" --no-owner"));
             if (chkNoPrivileges->GetValue())
-                cmd.Append(wxT(" --no-priviledges"));
+                cmd.Append(wxT(" --no-privileges"));
             if (chkNoTablespaces->GetValue())
                 cmd.Append(wxT(" --no-tablespaces"));
         }
