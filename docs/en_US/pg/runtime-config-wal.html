@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>17.5. Write Ahead Log</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.18 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.19 Documentation">
 <link rel="up" href="runtime-config.html" title="Chapter 17. Server Configuration">
 <link rel="prev" href="runtime-config-resource.html" title="17.4. Resource Consumption">
 <link rel="next" href="runtime-config-query.html" title="17.6. Query Planning">
@@ -75,17 +75,18 @@
         </p></li>
 <li class="listitem"><p>         <code class="literal">fdatasync</code> (call <code class="function">fdatasync()</code> at each commit)
         </p></li>
-<li class="listitem"><p>         <code class="literal">fsync_writethrough</code> (call <code class="function">fsync()</code> at each commit, forcing write-through of any disk write cache)
-        </p></li>
 <li class="listitem"><p>         <code class="literal">fsync</code> (call <code class="function">fsync()</code> at each commit)
+        </p></li>
+<li class="listitem"><p>         <code class="literal">fsync_writethrough</code> (call <code class="function">fsync()</code> at each commit, forcing write-through of any disk write cache)
         </p></li>
 <li class="listitem"><p>         <code class="literal">open_sync</code> (write WAL files with <code class="function">open()</code> option <code class="symbol">O_SYNC</code>)
         </p></li>
 </ul></div>
-<p>        Not all of these choices are available on all platforms.
+<p>        The <code class="literal">open_</code>* options also use <code class="literal">O_DIRECT</code> if available.
+        Not all of these choices are available on all platforms.
         The default is the first method in the above list that is supported
-        by the platform.
-        The <code class="literal">open_</code>* options also use <code class="literal">O_DIRECT</code> if available.
+        by the platform, except that <code class="literal">fdatasync</code> is the default on
+        Linux.
         This parameter can only be set in the <code class="filename">postgresql.conf</code>
         file or on the server command line.
        </p>

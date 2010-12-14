@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>45.3. Error Message Style Guide</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.18 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.19 Documentation">
 <link rel="up" href="source.html" title="Chapter 45. PostgreSQL Coding Conventions">
 <link rel="prev" href="error-message-reporting.html" title="45.2. Reporting Errors Within the Server">
 <link rel="next" href="nls.html" title="Chapter 46. Native Language Support">
@@ -18,7 +18,7 @@
     <span class="productname">PostgreSQL</span>.
    </p>
 <div class="simplesect" title="What goes where">
-<div class="titlepage"><div><div><h3 class="title" id="id2860065">What goes where</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2864839">What goes where</h3></div></div></div>
 <p>    The primary message should be short, factual, and avoid reference to
     implementation details such as specific function names.
     <span class="quote">&#8220;<span class="quote">Short</span>&#8221;</span> means <span class="quote">&#8220;<span class="quote">should fit on one line under normal
@@ -51,7 +51,7 @@ Hint:       the addendum</pre>
    </p>
 </div>
 <div class="simplesect" title="Formatting">
-<div class="titlepage"><div><div><h3 class="title" id="id2860117">Formatting</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2864890">Formatting</h3></div></div></div>
 <p>    Don't put any specific assumptions about formatting into the message
     texts.  Expect clients and the server log to wrap lines to fit their own
     needs.  In long messages, newline characters (\n) may be used to indicate
@@ -66,7 +66,7 @@ Hint:       the addendum</pre>
    </p>
 </div>
 <div class="simplesect" title="Quotation marks">
-<div class="titlepage"><div><div><h3 class="title" id="id2860136">Quotation marks</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2864909">Quotation marks</h3></div></div></div>
 <p>    English text should use double quotes when quoting is appropriate.
     Text in other languages should consistently use one kind of quotes that is
     consistent with publishing customs and computer output of other programs.
@@ -81,7 +81,7 @@ Hint:       the addendum</pre>
    </p>
 </div>
 <div class="simplesect" title="Use of quotes">
-<div class="titlepage"><div><div><h3 class="title" id="id2860156">Use of quotes</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2864930">Use of quotes</h3></div></div></div>
 <p>    Use quotes always to delimit file names, user-supplied identifiers, and
     other variables that might contain words.  Do not use them to mark up
     variables that will not contain words (for example, operator names).
@@ -97,7 +97,7 @@ Hint:       the addendum</pre>
    </p>
 </div>
 <div class="simplesect" title="Grammar and punctuation">
-<div class="titlepage"><div><div><h3 class="title" id="id2860184">Grammar and punctuation</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2864957">Grammar and punctuation</h3></div></div></div>
 <p>    The rules are different for primary error messages and for detail/hint
     messages:
    </p>
@@ -118,7 +118,7 @@ Hint:       the addendum</pre>
    </p>
 </div>
 <div class="simplesect" title="Upper case vs. lower case">
-<div class="titlepage"><div><div><h3 class="title" id="id2860212">Upper case vs. lower case</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2864986">Upper case vs. lower case</h3></div></div></div>
 <p>    Use lower case for message wording, including the first letter of a
     primary error message.  Use upper case for SQL commands and key words if
     they appear in the message.
@@ -128,7 +128,7 @@ Hint:       the addendum</pre>
    </p>
 </div>
 <div class="simplesect" title="Avoid passive voice">
-<div class="titlepage"><div><div><h3 class="title" id="id2860226">Avoid passive voice</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2865000">Avoid passive voice</h3></div></div></div>
 <p>    Use the active voice.  Use complete sentences when there is an acting
     subject (<span class="quote">&#8220;<span class="quote">A could not do B</span>&#8221;</span>).  Use telegram style without
     subject if the subject would be the program itself; do not use
@@ -138,7 +138,7 @@ Hint:       the addendum</pre>
    </p>
 </div>
 <div class="simplesect" title="Present vs past tense">
-<div class="titlepage"><div><div><h3 class="title" id="id2860246">Present vs past tense</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2865020">Present vs past tense</h3></div></div></div>
 <p>    Use past tense if an attempt to do something failed, but could perhaps
     succeed next time (perhaps after fixing some problem).  Use present tense
     if the failure is certainly permanent. 
@@ -168,7 +168,7 @@ and
    </p>
 </div>
 <div class="simplesect" title="Type of the object">
-<div class="titlepage"><div><div><h3 class="title" id="id2860296">Type of the object</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2865069">Type of the object</h3></div></div></div>
 <p>    When citing the name of an object, state what kind of object it is.
    </p>
 <p>    Rationale: Otherwise no one will know what <span class="quote">&#8220;<span class="quote">foo.bar.baz</span>&#8221;</span>
@@ -176,7 +176,7 @@ and
    </p>
 </div>
 <div class="simplesect" title="Brackets">
-<div class="titlepage"><div><div><h3 class="title" id="id2860310">Brackets</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2865083">Brackets</h3></div></div></div>
 <p>    Square brackets are only to be used (1) in command synopses to denote
     optional arguments, or (2) to denote an array subscript.
    </p>
@@ -185,7 +185,7 @@ and
    </p>
 </div>
 <div class="simplesect" title="Assembling error messages">
-<div class="titlepage"><div><div><h3 class="title" id="id2860322">Assembling error messages</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2865096">Assembling error messages</h3></div></div></div>
 <p>   When a message includes text that is generated elsewhere, embed it in
    this style:
 </p>
@@ -200,7 +200,7 @@ and
    </p>
 </div>
 <div class="simplesect" title="Reasons for errors">
-<div class="titlepage"><div><div><h3 class="title" id="id2860344">Reasons for errors</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2865118">Reasons for errors</h3></div></div></div>
 <p>    Messages should always state the reason why an error occurred.
     For example:
 </p>
@@ -211,7 +211,7 @@ BETTER: could not open file %s (I/O failure)</pre>
    </p>
 </div>
 <div class="simplesect" title="Function names">
-<div class="titlepage"><div><div><h3 class="title" id="id2860359">Function names</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2865133">Function names</h3></div></div></div>
 <p>    Don't include the name of the reporting routine in the error text. We have
     other mechanisms for finding that out when needed, and for most users it's
     not helpful information.  If the error text doesn't make as much sense
@@ -235,7 +235,7 @@ BETTER: could not open file %s: %m</pre>
    </p>
 </div>
 <div class="simplesect" title="Tricky words to avoid">
-<div class="titlepage"><div><div><h3 class="title" id="id2860395">Tricky words to avoid</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2865169">Tricky words to avoid</h3></div></div></div>
 <p title="Unable"><b>Unable. </b>    <span class="quote">&#8220;<span class="quote">Unable</span>&#8221;</span> is nearly the passive voice.  Better use
     <span class="quote">&#8220;<span class="quote">cannot</span>&#8221;</span> or <span class="quote">&#8220;<span class="quote">could not</span>&#8221;</span>, as appropriate.
    </p>
@@ -264,7 +264,7 @@ BETTER: unrecognized node type: 42</pre>
    </p>
 </div>
 <div class="simplesect" title="Proper spelling">
-<div class="titlepage"><div><div><h3 class="title" id="id2860500">Proper spelling</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2865274">Proper spelling</h3></div></div></div>
 <p>    Spell out words in full.  For instance, avoid:
   </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -285,7 +285,7 @@ BETTER: unrecognized node type: 42</pre>
    </p>
 </div>
 <div class="simplesect" title="Localization">
-<div class="titlepage"><div><div><h3 class="title" id="id2860530">Localization</h3></div></div></div>
+<div class="titlepage"><div><div><h3 class="title" id="id2865304">Localization</h3></div></div></div>
 <p>    Keep in mind that error message texts need to be translated into other
     languages.  Follow the guidelines in <a class="xref" href="nls-programmer.html#nls-guidelines" title="46.2.2. Message-writing guidelines">Section 46.2.2, &#8220;Message-writing guidelines&#8221;</a>
     to avoid making life difficult for translators.

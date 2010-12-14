@@ -2,10 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>35.4. Rules and Privileges</title>
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
 <link rev="made" href="pgsql-docs@postgresql.org">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
-<link rel="home" href="index.html" title="PostgreSQL 8.2.18 Documentation">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.19 Documentation">
 <link rel="up" href="rules.html" title="Chapter 35. The Rule System">
 <link rel="prev" href="rules-update.html" title="35.3. Rules on INSERT, UPDATE, and DELETE">
 <link rel="next" href="rules-status.html" title="35.5. Rules and Command Status">
@@ -13,7 +13,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="35.4. Rules and Privileges">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both" id="rules-privileges">35.4. Rules and Privileges</h2></div></div></div>
-<a name="id2747171"></a><a name="id2747186"></a><p>    Due to rewriting of queries by the <span class="productname">PostgreSQL</span>
+<a name="id2751814"></a><a name="id2751829"></a><p>    Due to rewriting of queries by the <span class="productname">PostgreSQL</span>
     rule system, other tables/views than those used in the original
     query get accessed. When update rules are used, this can include write access
     to tables.</p>
@@ -33,18 +33,18 @@
 </p>
 <pre class="programlisting">CREATE TABLE phone_data (person text, phone text, private boolean);
 CREATE VIEW phone_number AS
-    SELECT person, phone FROM phone_data WHERE NOT private;
+    SELECT person, CASE WHEN NOT private THEN phone END AS phone
+    FROM phone_data;
 GRANT SELECT ON phone_number TO secretary;</pre>
 <p>
-    
+
     Nobody except him (and the database superusers) can access the
     <code class="literal">phone_data</code> table. But because of the <code class="command">GRANT</code>,
     the secretary can run a <code class="command">SELECT</code> on the
     <code class="literal">phone_number</code> view. The rule system will rewrite the
     <code class="command">SELECT</code> from <code class="literal">phone_number</code> into a
-    <code class="command">SELECT</code> from <code class="literal">phone_data</code> and add the
-    qualification that only entries where <code class="literal">private</code> is false
-    are wanted. Since the user is the owner of
+    <code class="command">SELECT</code> from <code class="literal">phone_data</code>.
+    Since the user is the owner of
     <code class="literal">phone_number</code> and therefore the owner of the rule, the
     read access to <code class="literal">phone_data</code> is now checked against his
     privileges and the query is permitted. The check for accessing
@@ -69,7 +69,38 @@ GRANT SELECT ON phone_number TO secretary;</pre>
     <code class="command">GRANT</code> command means, <span class="quote">&#8220;<span class="quote">I trust you</span>&#8221;</span>.
     If someone you trust does the thing above, it's time to
     think it over and then use <code class="command">REVOKE</code>.</p>
-<p>    This mechanism also works for update rules. In the examples of
+<p>    Note that while views can be used to hide the contents of certain
+    columns using the technique shown above, they cannot be used to reliably
+    conceal the data in unseen rows.  For example, the following view is
+    insecure:
+</p>
+<pre class="programlisting">CREATE VIEW phone_number AS
+    SELECT person, phone FROM phone_data WHERE phone NOT LIKE '412%';</pre>
+<p>
+    This view might seem secure, since the rule system will rewrite any
+	<code class="command">SELECT</code> from <code class="literal">phone_number</code> into a 
+    <code class="command">SELECT</code> from <code class="literal">phone_data</code> and add the
+    qualification that only entries where <code class="literal">phone</code> does not begin
+    with 412 are wanted.  But if the user can create his or her own functions,
+    it is not difficult to convince the planner to execute the user-defined
+    function prior to the <code class="function">NOT LIKE</code> expression.
+</p>
+<pre class="programlisting">CREATE FUNCTION tricky(text, text) RETURNS bool AS $$
+BEGIN
+    RAISE NOTICE '% =&gt; %', $1, $2;
+    RETURN true;
+END
+$$ LANGUAGE plpgsql COST 0.0000000000000000000001;
+SELECT * FROM phone_number WHERE tricky(person, phone);</pre>
+<p>
+    Every person and phone number in the <code class="literal">phone_data</code> table will be
+    printed as a <code class="literal">NOTICE</code>, because the planner will choose to
+    execute the inexpensive <code class="function">tricky</code> function before the
+    more expensive <code class="function">NOT LIKE</code>.  Even if the user is
+    prevented from defining new functions, built-in functions can be used in
+    similar attacks.  (For example, casting functions include their inputs in
+    the error messages they produce.)</p>
+<p>    Similar considerations apply to update rules. In the examples of
     the previous section, the owner of the tables in the example
     database could grant the privileges <code class="literal">SELECT</code>,
     <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, and <code class="literal">DELETE</code> on
@@ -77,6 +108,10 @@ GRANT SELECT ON phone_number TO secretary;</pre>
     <code class="literal">SELECT</code> on <code class="literal">shoelace_log</code>. The rule action to
     write log entries will still be executed successfully, and that
     other user could see the log entries.  But he cannot create fake
-    entries, nor could he manipulate or remove existing ones.</p>
+    entries, nor could he manipulate or remove existing ones.  In this
+    case, there is no possibility of subverting the rules by convincing
+    the planner to alter the order of operations, because the only rule
+    which references <code class="literal">shoelace_log</code> is an unqualified
+    <code class="literal">INSERT</code>.  This might not be true in more complex scenarios.</p>
 </div></body>
 </html>

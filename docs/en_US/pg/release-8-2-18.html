@@ -1,0 +1,190 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>E.2. Release 8.2.18</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+<link rev="made" href="pgsql-docs@postgresql.org">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="index.html" title="PostgreSQL 8.2.19 Documentation">
+<link rel="up" href="release.html" title="Appendix E. Release Notes">
+<link rel="prev" href="release.html" title="Appendix E. Release Notes">
+<link rel="next" href="release-8-2-17.html" title="E.3. Release 8.2.17">
+<link rel="copyright" href="legalnotice.html" title="Legal Notice">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="sect1" title="E.2. Release 8.2.18">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both" id="release-8-2-18">E.2. Release 8.2.18</h2></div></div></div>
+<div class="note" title="Release date" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Release date</h3>
+<p>2010-10-04</p>
+</div>
+<p>   This release contains a variety of fixes from 8.2.17.
+   For information about new features in the 8.2 major release, see
+   <a class="xref" href="release-8-2.html" title="E.20. Release 8.2">Section E.20, &#8220;Release 8.2&#8221;</a>.
+  </p>
+<div class="sect2" title="E.2.1. Migration to Version 8.2.18">
+<div class="titlepage"><div><div><h3 class="title" id="id2889305">E.2.1. Migration to Version 8.2.18</h3></div></div></div>
+<p>    A dump/restore is not required for those running 8.2.X.
+    However, if you are upgrading from a version earlier than 8.2.14,
+    see the release notes for 8.2.14.
+   </p>
+</div>
+<div class="sect2" title="E.2.2. Changes">
+<div class="titlepage"><div><div><h3 class="title" id="id2889314">E.2.2. Changes</h3></div></div></div>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<p>      Use a separate interpreter for each calling SQL userid in PL/Perl and
+      PL/Tcl (Tom Lane)
+     </p>
+<p>      This change prevents security problems that can be caused by subverting
+      Perl or Tcl code that will be executed later in the same session under
+      another SQL user identity (for example, within a <code class="literal">SECURITY
+      DEFINER</code> function).  Most scripting languages offer numerous ways that
+      that might be done, such as redefining standard functions or operators
+      called by the target function.  Without this change, any SQL user with
+      Perl or Tcl language usage rights can do essentially anything with the
+      SQL privileges of the target function's owner.
+     </p>
+<p>      The cost of this change is that intentional communication among Perl
+      and Tcl functions becomes more difficult.  To provide an escape hatch,
+      PL/PerlU and PL/TclU functions continue to use only one interpreter
+      per session.  This is not considered a security issue since all such
+      functions execute at the trust level of a database superuser already.
+     </p>
+<p>      It is likely that third-party procedural languages that claim to offer
+      trusted execution have similar security issues.  We advise contacting
+      the authors of any PL you are depending on for security-critical
+      purposes.
+     </p>
+<p>      Our thanks to Tim Bunce for pointing out this issue (CVE-2010-3433).
+     </p>
+</li>
+<li class="listitem"><p>      Prevent possible crashes in <code class="function">pg_get_expr()</code> by disallowing
+      it from being called with an argument that is not one of the system
+      catalog columns it's intended to be used with
+      (Heikki Linnakangas, Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Fix Windows shared-memory allocation code
+      (Tsutomu Yamada, Magnus Hagander)
+     </p>
+<p>      This bug led to the often-reported <span class="quote">&#8220;<span class="quote">could not reattach to shared
+      memory</span>&#8221;</span> error message.  This is a back-patch of a fix that was
+      applied to newer branches some time ago.
+     </p>
+</li>
+<li class="listitem">
+<p>      Treat exit code 128 (<code class="literal">ERROR_WAIT_NO_CHILDREN</code>) as non-fatal on
+      Windows (Magnus Hagander)
+     </p>
+<p>      Under high load, Windows processes will sometimes fail at startup with
+      this error code.  Formerly the postmaster treated this as a panic
+      condition and restarted the whole database, but that seems to be
+      an overreaction.
+     </p>
+</li>
+<li class="listitem"><p>      Fix possible duplicate scans of <code class="literal">UNION ALL</code> member relations
+      (Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Fix <span class="quote">&#8220;<span class="quote">cannot handle unplanned sub-select</span>&#8221;</span> error (Tom Lane)
+     </p>
+<p>      This occurred when a sub-select contains a join alias reference that
+      expands into an expression containing another sub-select.
+     </p>
+</li>
+<li class="listitem">
+<p>      Reduce PANIC to ERROR in some occasionally-reported btree failure cases,
+      and provide additional detail in the resulting error messages
+      (Tom Lane)
+     </p>
+<p>      This should improve the system's robustness with corrupted indexes.
+     </p>
+</li>
+<li class="listitem"><p>      Prevent show_session_authorization() from crashing within autovacuum
+      processes (Tom Lane)
+     </p></li>
+<li class="listitem"><p>      Defend against functions returning setof record where not all the
+      returned rows are actually of the same rowtype (Tom Lane)
+     </p></li>
+<li class="listitem"><p>      Fix possible failure when hashing a pass-by-reference function result
+      (Tao Ma, Tom Lane)
+     </p></li>
+<li class="listitem">
+<p>      Take care to fsync the contents of lockfiles (both
+      <code class="filename">postmaster.pid</code> and the socket lockfile) while writing them
+      (Tom Lane)
+     </p>
+<p>      This omission could result in corrupted lockfile contents if the
+      machine crashes shortly after postmaster start.  That could in turn
+      prevent subsequent attempts to start the postmaster from succeeding,
+      until the lockfile is manually removed.
+     </p>
+</li>
+<li class="listitem">
+<p>      Avoid recursion while assigning XIDs to heavily-nested
+      subtransactions (Andres Freund, Robert Haas)
+     </p>
+<p>      The original coding could result in a crash if there was limited
+      stack space.
+     </p>
+</li>
+<li class="listitem"><p>      Fix <code class="varname">log_line_prefix</code>'s <code class="literal">%i</code> escape,
+      which could produce junk early in backend startup (Tom Lane)
+     </p></li>
+<li class="listitem"><p>      Fix possible data corruption in <code class="command">ALTER TABLE ... SET
+      TABLESPACE</code> when archiving is enabled (Jeff Davis)
+     </p></li>
+<li class="listitem"><p>      Allow <code class="command">CREATE DATABASE</code> and <code class="command">ALTER DATABASE ... SET
+      TABLESPACE</code> to be interrupted by query-cancel (Guillaume Lelarge)
+     </p></li>
+<li class="listitem"><p>      In PL/Python, defend against null pointer results from
+      <code class="function">PyCObject_AsVoidPtr</code> and <code class="function">PyCObject_FromVoidPtr</code>
+      (Peter Eisentraut)
+     </p></li>
+<li class="listitem"><p>      Improve <code class="filename">contrib/dblink</code>'s handling of tables containing
+      dropped columns (Tom Lane)
+     </p></li>
+<li class="listitem"><p>      Fix connection leak after <span class="quote">&#8220;<span class="quote">duplicate connection name</span>&#8221;</span>
+      errors in <code class="filename">contrib/dblink</code> (Itagaki Takahiro)
+     </p></li>
+<li class="listitem"><p>      Fix <code class="filename">contrib/dblink</code> to handle connection names longer than
+      62 bytes correctly (Itagaki Takahiro)
+     </p></li>
+<li class="listitem">
+<p>      Add <code class="function">hstore(text, text)</code>
+      function to <code class="filename">contrib/hstore</code> (Robert Haas)
+     </p>
+<p>      This function is the recommended substitute for the now-deprecated
+      <code class="literal">=&gt;</code> operator.  It was back-patched so that future-proofed
+      code can be used with older server versions.  Note that the patch will
+      be effective only after <code class="filename">contrib/hstore</code> is installed or
+      reinstalled in a particular database.  Users might prefer to execute
+      the <code class="command">CREATE FUNCTION</code> command by hand, instead.
+     </p>
+</li>
+<li class="listitem"><p>      Update build infrastructure and documentation to reflect the source code
+      repository's move from CVS to Git (Magnus Hagander and others)
+     </p></li>
+<li class="listitem">
+<p>      Update time zone data files to <span class="application">tzdata</span> release 2010l
+      for DST law changes in Egypt and Palestine; also historical corrections
+      for Finland.
+     </p>
+<p>      This change also adds new names for two Micronesian timezones:
+      Pacific/Chuuk is now preferred over Pacific/Truk (and the preferred
+      abbreviation is CHUT not TRUT) and Pacific/Pohnpei is preferred over
+      Pacific/Ponape.
+     </p>
+</li>
+<li class="listitem">
+<p>      Make Windows' <span class="quote">&#8220;<span class="quote">N. Central Asia Standard Time</span>&#8221;</span> timezone map to
+      Asia/Novosibirsk, not Asia/Almaty (Magnus Hagander)
+     </p>
+<p>      Microsoft changed the DST behavior of this zone in the timezone update
+      from KB976098. Asia/Novosibirsk is a better match to its new behavior.
+     </p>
+</li>
+</ul></div>
+</div>
+</div></body>
+</html>
