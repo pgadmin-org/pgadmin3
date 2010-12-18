@@ -32,6 +32,7 @@ END_EVENT_TABLE()
 #define btnFind			     CTRL_BUTTON("wxID_FIND")
 #define btnReplace		     CTRL_BUTTON("wxID_REPLACE")
 #define btnReplaceAll        CTRL_BUTTON("wxID_REPLACEALL")
+#define btnCancel			 CTRL_BUTTON("wxID_CANCEL")
 #define txtFind		         CTRL_TEXT("txtFind")
 #define txtReplace		     CTRL_TEXT("txtReplace")
 #define rdOriginTop          CTRL_RADIOBUTTON("rdOriginTop")
@@ -112,6 +113,7 @@ pgDialog()
 
     wxCommandEvent ev;
     OnChange(ev);
+	ResetTabOrder();
 }
 
 dlgFindReplace::~dlgFindReplace()
@@ -289,5 +291,13 @@ void dlgFindReplace::FindNext()
 void dlgFindReplace::SetFindString(const wxString &val)
 {
 	txtFind->SetValue(val);
+}
+
+void dlgFindReplace::ResetTabOrder()
+{
+	btnFind->MoveAfterInTabOrder(chkOptionsUseRegexps);
+	btnReplace->MoveAfterInTabOrder(btnFind);
+	btnReplaceAll->MoveAfterInTabOrder(btnReplace);
+	btnCancel->MoveAfterInTabOrder(btnReplaceAll);
 }
 
