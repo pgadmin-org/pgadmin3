@@ -376,7 +376,7 @@ pgsTimer(new pgScriptTimer(this))
 
     queryMenu->Enable(MNU_CANCEL, false);
 
-    int iWidths[6] = {0, -1, 40, 150, 80, 80};
+    int iWidths[6] = {0, -1, 40, 200, 80, 80};
     statusBar=CreateStatusBar(6);
     SetStatusBarPane(-1);
     SetStatusWidths(6, iWidths);
@@ -1601,9 +1601,13 @@ void frmQuery::OnChangeStc(wxStyledTextEvent& event)
 
 void frmQuery::OnPositionStc(wxStyledTextEvent& event)
 {
-    wxString pos;
-    pos.Printf(_("Ln %d Col %d Ch %d"), sqlQuery->LineFromPosition(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetColumn(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetCurrentPos() + 1);
+    int selFrom, selTo;
+	sqlQuery->GetSelection(&selFrom, &selTo);
+
+	wxString pos;
+    pos.Printf(_("Ln %d, Col %d, Ch %d, Sl %d"), sqlQuery->LineFromPosition(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetColumn(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetCurrentPos() + 1, selTo - selFrom);
     SetStatusText(pos, STATUSPOS_POS);
+
 }
 
 
