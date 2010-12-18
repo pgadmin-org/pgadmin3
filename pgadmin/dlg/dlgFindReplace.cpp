@@ -288,11 +288,6 @@ void dlgFindReplace::FindNext()
     }
 }
 
-void dlgFindReplace::SetFindString(const wxString &val)
-{
-	txtFind->SetValue(val);
-}
-
 void dlgFindReplace::ResetTabOrder()
 {
 	btnFind->MoveAfterInTabOrder(chkOptionsUseRegexps);
