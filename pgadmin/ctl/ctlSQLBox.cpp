@@ -204,7 +204,8 @@ bool ctlSQLBox::Find(const wxString &find, bool wholeWord, bool matchCase, bool 
 {
     if (!DoFind(find, wxString(wxEmptyString), false, wholeWord, matchCase, useRegexps, startAtTop, reverse))
     {
-        wxMessageBox(_("Reached the end of the document"), _("Find text"), wxICON_EXCLAMATION | wxOK, this);
+		wxWindow *w = wxWindow::FindFocus();
+        wxMessageBox(_("Reached the end of the document"), _("Find text"), wxICON_EXCLAMATION | wxOK, w);
         return false;
     }
     return true;
@@ -214,7 +215,8 @@ bool ctlSQLBox::Replace(const wxString &find, const wxString &replace, bool whol
 {
     if (!DoFind(find, replace, true, wholeWord, matchCase, useRegexps, startAtTop, reverse))
     {
-        wxMessageBox(_("Reached the end of the document"), _("Replace text"), wxICON_EXCLAMATION | wxOK, this);
+		wxWindow *w = wxWindow::FindFocus();
+        wxMessageBox(_("Reached the end of the document"), _("Replace text"), wxICON_EXCLAMATION | wxOK, w);
         return false;
     }
     return true;
