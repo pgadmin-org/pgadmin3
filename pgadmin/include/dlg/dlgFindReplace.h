@@ -33,6 +33,7 @@ private:
     void OnFind(wxCommandEvent& ev);
     void OnReplace(wxCommandEvent& ev);
     void OnReplaceAll(wxCommandEvent& ev);
+	void ResetTabOrder();
 
     ctlSQLBox *sqlbox;
 
