@@ -497,6 +497,7 @@ pgsTimer(new pgScriptTimer(this))
     outputPane->AddPage(msgHistory, _("History"));
 
     sqlQuery->Connect(wxID_ANY, wxEVT_SET_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
+	sqlQuery->Connect(wxID_ANY, wxEVT_KILL_FOCUS,wxFocusEventHandler(frmQuery::OnFocus));
     sqlResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgResult->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
     msgHistory->Connect(wxID_ANY, wxEVT_SET_FOCUS, wxFocusEventHandler(frmQuery::OnFocus));
@@ -1346,6 +1347,7 @@ void frmQuery::setExtendedTitle()
 void frmQuery::updateMenu(wxObject *obj)
 {
     bool canCut=false;
+	bool canCopy=false;
     bool canPaste=false;
     bool canUndo=false;
     bool canRedo=false;
@@ -1362,23 +1364,22 @@ void frmQuery::updateMenu(wxObject *obj)
     if (closing)
         return;
 
-    if (obj != msgResult && obj != msgHistory)
+	wxWindow *wnd=FindFocus();
+    if (wnd == sqlQuery || wnd == sqlResult || wnd == msgResult || wnd == msgHistory || wnd == scratchPad)
     {
-        if (sqlQuery)
+       if (wnd == sqlQuery)
         {
-            canUndo=sqlQuery->CanUndo();
-            canRedo=sqlQuery->CanRedo();
-            canPaste=sqlQuery->CanPaste();
+            canUndo = sqlQuery->CanUndo();
+            canRedo = sqlQuery->CanRedo();
+            canPaste = sqlQuery->CanPaste();
+	        canFind = true;
             canAddFavourite = (sqlQuery->GetLength() > 0);
         }
-
-        canCut = true;
-        canClear = true;
-        canFind = true;
-    }
-    else if (obj == msgResult || obj == msgHistory)
-    {
-        canClear = true;
+        else if (wnd == scratchPad)
+            canPaste = true;
+		canCopy = true;
+		canCut = true;
+		canClear = true;
     }
 
     canSaveExplain = explainCanvas->GetDiagram()->GetCount() > 0;
@@ -1389,6 +1390,9 @@ void frmQuery::updateMenu(wxObject *obj)
 
     toolBar->EnableTool(MNU_REDO, canRedo);
     editMenu->Enable(MNU_REDO, canRedo);
+
+	toolBar->EnableTool(MNU_COPY, canCopy);
+    editMenu->Enable(MNU_COPY, canCopy);
 
     toolBar->EnableTool(MNU_PASTE, canPaste);
     editMenu->Enable(MNU_PASTE, canPaste);
@@ -1403,7 +1407,6 @@ void frmQuery::updateMenu(wxObject *obj)
     editMenu->Enable(MNU_FIND, canFind);
 
     favouritesMenu->Enable(MNU_FAVOURITES_ADD, canAddFavourite);
-
 }
 
 
