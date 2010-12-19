@@ -99,6 +99,7 @@ public:
 
     
     bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+    bool CanCreate();
     bool CanMaintenance() { return GetConnected(); }
     bool CanBackup() { return connected; }
     bool CanRestore() { return connected; }
