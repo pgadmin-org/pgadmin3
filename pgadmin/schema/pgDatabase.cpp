@@ -863,6 +863,11 @@ wxString pgDatabase::GetDefaultPrivileges(const wxChar& cType, wxString strDefPr
     return strDefPrivsSql;
 }
 
+bool pgDatabase::CanCreate()
+{
+    return GetDatabase()->GetCreatePrivilege();
+}
+
 bool pgDatabase::CanDebugPlpgsql()
 {
     wxString preload_option;
