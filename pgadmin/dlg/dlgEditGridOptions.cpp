@@ -85,6 +85,11 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
     int leftSize = 140, rightSize;
     leftSize = ConvertDialogToPixels(wxPoint(leftSize, 0)).x;
     rightSize = lstSortCols->GetClientSize().GetWidth()-leftSize;
+    // This check is to work around a bug in wxGTK that doesn't set
+    // appropriately the GetClientSize().
+    // Without this workaround, we have an invisible second column.
+    if (rightSize < leftSize)
+        rightSize = leftSize + 1;
     lstSortCols->InsertColumn(0, _("Column name"), wxLIST_FORMAT_LEFT, leftSize);
     lstSortCols->InsertColumn(1, _("Sort order"), wxLIST_FORMAT_LEFT, rightSize);
 
