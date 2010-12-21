@@ -677,7 +677,18 @@ void frmEditGrid::OnCopy(wxCommandEvent &ev)
         {
             if (wxTheClipboard->Open())
             {
-                wxTheClipboard->SetData(new wxTextDataObject(sqlGrid->GetCellEditor(editorCell->GetRow(), editorCell->GetCol())->GetValue()));
+                if (sqlGrid->GetTable()->IsColText(sqlGrid->GetGridCursorCol()))
+                {
+                    wxStyledTextCtrl *text = (wxStyledTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
+                    if (text)
+                        wxTheClipboard->SetData(new wxTextDataObject(text->GetSelectedText()));
+                }
+                else
+                {
+                    wxTextCtrl *text = (wxTextCtrl *)sqlGrid->GetCellEditor(sqlGrid->GetGridCursorRow(), sqlGrid->GetGridCursorCol())->GetControl();
+                    if (text)
+                        wxTheClipboard->SetData(new wxTextDataObject(text->GetStringSelection()));
+                }
                 wxTheClipboard->Close();
             }
         }
