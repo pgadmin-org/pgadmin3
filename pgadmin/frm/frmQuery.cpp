@@ -2302,13 +2302,6 @@ void frmQuery::execQuery(const wxString &query, int resultToRetrieve, bool singl
     Update();
     wxTheApp->Yield(true);
 
-    wxString tmp = query;
-    tmp.Replace(wxT("\n"), wxT(" "));
-    tmp.Replace(wxT("\r"), wxT(" "));
-    sqlQueries->Append(tmp);
-    histoQueries.Add(query);
-    SaveQueries();
-
     startTimeQuery=wxGetLocalTimeMillis();
     timer.Start(10);
 
@@ -2383,12 +2376,6 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
         }
         else
         {
-            // unsuccessfull queries are deleted of the history
-            histoQueries.RemoveAt(sqlQueries->GetCount()-1);
-            sqlQueries->Delete(sqlQueries->GetCount()-1);
-            btnDeleteCurrent->Enable(sqlQueries->GetValue().Length()>0);
-            btnDeleteAll->Enable(sqlQueries->GetCount() > 0);
-
             pgError err = sqlResult->GetResultError();
             wxString errMsg = err.formatted_msg;
             wxLogQuietError(wxT("%s"), conn->GetLastError().Trim().c_str());
@@ -2493,21 +2480,22 @@ void frmQuery::OnQueryComplete(wxCommandEvent &ev)
 
     if (sqlResult->RunStatus() == PGRES_TUPLES_OK || sqlResult->RunStatus() == PGRES_COMMAND_OK)
     {
-        // Delete the current query if its size is bigger than the max allowed
-        if (sqlQueries->GetString(sqlQueries->GetCount() - 1).Len() > (unsigned int)settings->GetHistoryMaxQuerySize())
+        if (sqlQuery->GetText().Len() < (unsigned int)settings->GetHistoryMaxQuerySize())
         {
-	        histoQueries.RemoveAt(sqlQueries->GetCount() - 1);
-            sqlQueries->Delete(sqlQueries->GetCount() - 1);
+            wxString tmp = sqlQuery->GetText();
+            tmp.Replace(wxT("\n"), wxT(" "));
+            tmp.Replace(wxT("\r"), wxT(" "));
+            sqlQueries->Append(tmp);
+            histoQueries.Add(sqlQuery->GetText());
+            SaveQueries();
         }
-        else
+
+        // Delete an old query if it matches the current one
+        unsigned int index = histoQueries.Index(sqlQueries->GetString(sqlQueries->GetCount() - 1), false);
+        if (index != (unsigned int)wxNOT_FOUND && index < ((unsigned int)sqlQueries->GetCount() - 1))
         {
-            // Delete an old query if it matches the current one
-            unsigned int index = histoQueries.Index(sqlQueries->GetString(sqlQueries->GetCount() - 1), false);
-            if (index != (unsigned int)wxNOT_FOUND && index < ((unsigned int)sqlQueries->GetCount() - 1))
-            {
-	            histoQueries.RemoveAt(index);
-                sqlQueries->Delete(index);
-            }
+	        histoQueries.RemoveAt(index);
+            sqlQueries->Delete(index);
         }
     }
 
