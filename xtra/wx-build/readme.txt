@@ -28,8 +28,8 @@ MSW
 
 Download wxMSW to ..\..\..\pgadmin3-deps\wxWidgets
 
-Run "build-wxmsw.bat" to from a Visual Studio 2005 commandprompt to build the 
-required parts of wxWidgets in both release and debug builds (unicode, non-DLL).
+Run "build-wxmsw.bat" to from a Visual Studio 2008 commandprompt to build the 
+required parts of wxWidgets in both release and debug builds (unicode, DLL).
 
 
 Additional tips - VC++
@@ -38,8 +38,8 @@ Additional tips - VC++
 To view wxString and other objects in the VC++ debugger:
 
 1.  Locate and open a file called AUTOEXP.DAT. Its normally in the 
-    \Program Files\Microsoft Visual Studio 8\Common7\Packages\Debugger under 
-    Visual Studio 2005.
+    \Program Files\Microsoft Visual Studio 9.0\Common7\Packages\Debugger under 
+    Visual Studio 2008.
 
 2.  Add the following line to the [autoexpand] section - be careful not to put
     it in the [Visualizer] section which makes up the bulk of the file!:
