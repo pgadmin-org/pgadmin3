@@ -490,7 +490,7 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
     else
         tabname=wxT("pg_roles");
 
-    // In 8.5+, role config options are in pg_db_role_setting
+    // In 9.0+, role config options are in pg_db_role_setting
     if (collection->GetServer()->GetConnection()->BackendMinimumVersion(8, 5))
     {
         query = wxT("SELECT tab.oid, tab.*, pg_catalog.shobj_description(tab.oid, 'pg_authid') AS description, setting.setconfig AS rolconfig");

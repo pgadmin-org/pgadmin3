@@ -32,7 +32,7 @@ public:
 	wxString	m_port;			// Port number
 	wxString	m_debugPort;	// Port number for debugger connection
 	int		    m_sslMode;		// SSL Mode
-	wxString	m_applicationName;	// Application name, only on 8.5
+	wxString	m_applicationName;	// Application name, only on 9.0
 };
 
 #endif
