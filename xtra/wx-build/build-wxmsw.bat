@@ -18,7 +18,7 @@ copy /Y setup0-msw-2.8.h "%WX%\include\wx\setup.h"
 copy /Y setup0-msw-2.8.h "%WX%\include\wx\msw\setup.h"
 
 REM Convert projects if necessary
-cd %WX%\build\msw
+cd /D %WX%\build\msw
 del *.vcproj.user 2> NUL
 for %%f in (%WXBASE%) do (
    echo Checking %%f
@@ -43,10 +43,8 @@ echo Checking utils\wxrc
 del *.vcproj.user 2> NUL
 if not exist wxrc.vcproj vcbuild /nologo /upgrade wxrc.dsp
 
-cd %HERE%
-
 REM Now build them
-cd %WX%\build\msw
+cd /D %WX%\build\msw
 for %%b in (Debug Release) do (
    for %%f in (%WXBASE%) do (
       title Building project %%f, config %%b
@@ -73,7 +71,7 @@ cd ..\wxrc
 title Building project utils/wxrc, config Release
 vcbuild /nohtmllog /nologo wxrc.vcproj "Unicode Release"
 
-cd %HERE%
+cd /D %HERE%
 title "build-wx done."
 echo "build-wx done."
 
