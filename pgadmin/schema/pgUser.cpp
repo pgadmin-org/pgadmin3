@@ -5,7 +5,8 @@
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// pgUser.cpp - PostgreSQL User
+// pgUser.cpp - PostgreSQL User (only used on pre-8.1 versions, pgRole
+//              is used on newer versions).
 //
 //////////////////////////////////////////////////////////////////////////
 
