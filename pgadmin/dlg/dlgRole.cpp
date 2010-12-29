@@ -31,6 +31,7 @@
 #define chkCreateDB     CTRL_CHECKBOX("chkCreateDB")
 #define chkCreateRole   CTRL_CHECKBOX("chkCreateRole")
 #define chkUpdateCat    CTRL_CHECKBOX("chkUpdateCat")
+#define chkReplication  CTRL_CHECKBOX("chkReplication")
 #define txtConnectionLimit CTRL_TEXT("txtConnectionLimit")
 
 #define lbRolesNotIn    CTRL_LISTBOX("lbRolesNotIn")
@@ -73,6 +74,7 @@ BEGIN_EVENT_TABLE(dlgRole, dlgProperty)
     EVT_CHECKBOX(XRCID("chkUpdateCat"),             dlgRole::OnChange)
     EVT_CHECKBOX(XRCID("chkSuperuser"),             dlgRole::OnChangeSuperuser)
     EVT_CHECKBOX(XRCID("chkCreateRole"),            dlgRole::OnChange)
+    EVT_CHECKBOX(XRCID("chkReplication"),           dlgRole::OnChange)
     EVT_TEXT(XRCID("txtConnectionLimit"),           dlgRole::OnChange)
 
     EVT_BUTTON(XRCID("btnAddRole"),                 dlgRole::OnRoleAdd)
@@ -177,6 +179,7 @@ int dlgRole::Go(bool modal)
         chkInherits->SetValue(role->GetInherits());
         chkUpdateCat->SetValue(role->GetUpdateCatalog());
         chkCanLogin->SetValue(role->GetCanLogin());
+        chkReplication->SetValue(role->GetReplication());
         datValidUntil->SetValue(role->GetAccountExpires());
         timValidUntil->SetTime(role->GetAccountExpires());
         txtConnectionLimit->SetValue(NumToStr(role->GetConnectionLimit()));
@@ -199,6 +202,7 @@ int dlgRole::Go(bool modal)
             chkSuperuser->Disable();
             chkInherits->Disable();
             chkUpdateCat->Disable();
+            chkReplication->Disable();
             datValidUntil->Disable();
             timValidUntil->Disable();
             btnAddRole->Disable();
@@ -233,6 +237,13 @@ int dlgRole::Go(bool modal)
     // Role comments are only appropriate in 8.2+
     if (!connection->BackendMinimumVersion(8, 2))
         txtComment->Disable();
+
+    // Replication roles added in 9.1
+    if (!connection->BackendMinimumVersion(9, 1))
+	{
+		chkReplication->Disable();
+	}
+
 
     if (!settings->GetShowUsersForPrivileges())
     {
@@ -505,7 +516,8 @@ wxString dlgRole::GetSql()
          createRole=chkCreateRole->GetValue(),
          superuser=chkSuperuser->GetValue(),
          inherits=chkInherits->GetValue(),
-         canLogin=chkCanLogin->GetValue();
+         canLogin=chkCanLogin->GetValue(),
+         replication=chkReplication->GetValue();
 
     if (role)
     {
@@ -526,7 +538,8 @@ wxString dlgRole::GetSql()
             options += wxT(" ENCRYPTED PASSWORD ") + qtDbString(connection->EncryptPassword(name, passwd));
 
         if (createDB != role->GetCreateDatabase() || createRole != role->GetCreateRole() 
-            || superuser != role->GetSuperuser() || inherits != role->GetInherits())
+            || superuser != role->GetSuperuser() || inherits != role->GetInherits()
+            || replication != role->GetReplication())
         {
             options += wxT("\n ");
         
@@ -557,6 +570,16 @@ wxString dlgRole::GetSql()
                     options += wxT(" CREATEROLE");
                 else
                     options += wxT(" NOCREATEROLE");
+            }
+            if (connection->BackendMinimumVersion(9, 1))
+            {
+                if (replication != role->GetReplication())
+                {
+                    if (replication)
+                        options += wxT(" REPLICATION");
+                    else
+                        options += wxT(" NOREPLICATION");
+                }
             }
         }
         if (DateToStr(datValidUntil->GetValue()) != DateToStr(role->GetAccountExpires()))
@@ -676,6 +699,11 @@ wxString dlgRole::GetSql()
             sql += wxT(" CREATEDB");
         if (createRole)
             sql += wxT(" CREATEROLE");
+        if (connection->BackendMinimumVersion(9, 1))
+        {
+            if (replication)
+                sql += wxT(" REPLICATION");
+        }
         if (datValidUntil->GetValue().IsValid())
             sql += wxT("\n   VALID UNTIL ") + qtDbString(DateToAnsiStr(datValidUntil->GetValue() + timValidUntil->GetValue())); 
         else

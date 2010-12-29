@@ -213,6 +213,11 @@ wxString pgRole::GetSql(ctlTree *browser)
         else                        sql += wxT(" NOCREATEDB");
         if (GetCreateRole())        sql += wxT(" CREATEROLE");
         else                        sql += wxT(" NOCREATEROLE");
+        if (server->GetConnection()->BackendMinimumVersion(9, 1))
+        {
+            if (GetReplication())       sql += wxT(" REPLICATION");
+            else                        sql += wxT(" NOREPLICATION");
+        }
         if (GetConnectionLimit() > 0)
                                     sql += wxT(" CONNECTION LIMIT ") + NumToStr(GetConnectionLimit());
         if (GetAccountExpires().IsValid())
@@ -390,6 +395,10 @@ void pgRole::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
         properties->AppendItem(_("Create roles?"), BoolToYesNo(GetCreateRole()));
         properties->AppendItem(_("Update catalogs?"), BoolToYesNo(GetUpdateCatalog()));
         properties->AppendItem(_("Inherits?"), BoolToYesNo(GetInherits()));
+        if (server->GetConnection()->BackendMinimumVersion(9, 1))
+        {
+            properties->AppendItem(_("Replication?"), BoolToYesNo(GetReplication()));
+        }
 
         wxString strConnLimit;
         strConnLimit.Printf(wxT("%ld"), GetConnectionLimit()); 
@@ -536,6 +545,11 @@ pgObject *pgRoleBaseFactory::CreateObjects(pgCollection *collection, ctlTree *br
             role->iSetPassword(roles->GetVal(wxT("rolpassword")));
             role->iSetComment(roles->GetVal(wxT("description")));
             role->iSetConnectionLimit(roles->GetLong(wxT("rolconnlimit")));
+
+            if (collection->GetServer()->GetConnection()->BackendMinimumVersion(9, 1))
+            {
+                role->iSetReplication(roles->GetBool(wxT("rolreplication")));
+            }
 
             if (collection->GetServer()->GetConnection()->GetIsGreenplum())
             {

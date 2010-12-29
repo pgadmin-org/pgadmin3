@@ -73,6 +73,8 @@ public:
     void iSetSuperuser(const bool b) { superuser=b; }
     bool GetUpdateCatalog() const { return updateCatalog; }
     void iSetUpdateCatalog(const bool b) { updateCatalog=b; }
+    bool GetReplication() const { return replication; }
+    void iSetReplication(const bool b) { replication=b; }
     wxString GetRolQueueName() const { return rolqueuename; }
     void iSetRolQueueName(const wxString& newVal) { rolqueuename = newVal; }
     long GetConnectionLimit() const { return connectionLimit; }
@@ -98,7 +100,7 @@ private:
     wxString password;
     wxString rolqueuename;
     wxDateTime accountExpires;
-    bool superuser, createDatabase, createRole, updateCatalog, inherits, canLogin;
+    bool superuser, createDatabase, createRole, updateCatalog, inherits, canLogin, replication;
     long connectionLimit;
     wxArrayString rolesIn;
     wxArrayString configList;
