@@ -34,6 +34,8 @@
 #include "schema/pgDatatype.h"
 
 
+#define stUnlogged      CTRL_STATIC("stUnlogged")
+#define chkUnlogged     CTRL_CHECKBOX("chkUnlogged")
 #define stHasOids       CTRL_STATIC("stHasOids")
 #define chkHasOids      CTRL_CHECKBOX("chkHasOids")
 #define lbTables        CTRL_LISTBOX("lbTables")
@@ -100,7 +102,7 @@
 
 
 BEGIN_EVENT_TABLE(dlgTable, dlgSecurityProperty)
-	EVT_CHECKBOX(XRCID("chkHasOids"),               dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkUnlogged"),               dlgProperty::OnChange)
 	EVT_TEXT(XRCID("cbTablespace"),                 dlgProperty::OnChange)
 	EVT_COMBOBOX(XRCID("cbTablespace"),             dlgProperty::OnChange)
 	EVT_COMBOBOX(XRCID("cbOfType"),                 dlgTable::OnChangeOfType)
@@ -225,6 +227,7 @@ int dlgTable::Go(bool modal)
 	if (table)
 	{
 		// edit mode
+		chkUnlogged->SetValue(table->GetUnlogged());
 		chkHasOids->SetValue(table->GetHasOids());
 
 		if (table->GetTablespaceOid() != 0)
@@ -246,6 +249,7 @@ int dlgTable::Go(bool modal)
 		btnAddTable->Enable(connection->BackendMinimumVersion(8, 2) && cbTables->GetGuessedSelection() >= 0);
 		lbTables->Enable(connection->BackendMinimumVersion(8, 2));
 		chkHasOids->Enable(table->GetHasOids() && connection->BackendMinimumVersion(8, 0));
+		chkUnlogged->Enable(false);
 		cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
 
 		wxCookieType cookie;
@@ -1216,7 +1220,10 @@ wxString dlgTable::GetSql()
 	else
 	{
 		bool typedTable = cbOfType->GetCurrentSelection() > 0 && cbOfType->GetOIDKey() > 0;
-		sql = wxT("CREATE TABLE ") + tabname;
+		sql = wxT("CREATE ");
+		if (chkUnlogged->GetValue())
+			sql +=  wxT("UNLOGGED ");
+		sql += wxT("TABLE ") + tabname;
 		if (typedTable)
 			sql += wxT("\nOF ") + qtIdent(cbOfType->GetValue());
 

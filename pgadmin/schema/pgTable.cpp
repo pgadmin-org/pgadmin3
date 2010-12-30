@@ -300,7 +300,10 @@ wxString pgTable::GetSql(ctlTree *browser)
 		ShowTreeDetail(browser);
 		sql = wxT("-- Table: ") + GetQuotedFullIdentifier() + wxT("\n\n")
 		      + wxT("-- DROP TABLE ") + GetQuotedFullIdentifier() + wxT(";")
-		      + wxT("\n\nCREATE TABLE ") + GetQuotedFullIdentifier();
+		      + wxT("\n\nCREATE ");
+		if (GetUnlogged())
+			sql +=  wxT("UNLOGGED ");
+		sql += wxT("TABLE ") + GetQuotedFullIdentifier();
 
 		// of type (9.0 material)
 		if (ofTypeOid > 0)
@@ -999,6 +1002,8 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 		properties->AppendItem(_("Inherited tables count"), GetInheritedTableCount());
 		if (GetInheritedTableCount())
 			properties->AppendItem(_("Inherited tables"), GetInheritedTables());
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+			properties->AppendItem(_("Unlogged?"), GetUnlogged());
 		properties->AppendItem(_("Has OIDs?"), GetHasOids());
 		properties->AppendItem(_("System table?"), GetSystemObject());
 
@@ -1401,6 +1406,8 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 		        wxT("                       JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'\n")
 		        wxT("                       JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'\n")
 		        wxT("                     WHERE tgrelid=rel.oid) AS isrepl\n");
+		if (collection->GetConnection()->BackendMinimumVersion(9, 1))
+			query += wxT(", relpersistence \n");
 		if (collection->GetConnection()->BackendMinimumVersion(8, 2))
 			query += wxT(", substring(array_to_string(rel.reloptions, ',') from 'fillfactor=([0-9]*)') AS fillfactor \n");
 		if (collection->GetConnection()->GetIsGreenplum())
@@ -1505,6 +1512,8 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 				table->iSetOfType(wxT(""));
 			}
 			table->iSetComment(tables->GetVal(wxT("description")));
+			if (collection->GetConnection()->BackendMinimumVersion(9, 1))
+				table->iSetUnlogged(tables->GetVal(wxT("relpersistence")) == wxT("u"));
 			table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
 			table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")) * gp_segments);
 			if (collection->GetConnection()->BackendMinimumVersion(8, 2))

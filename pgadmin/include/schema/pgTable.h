@@ -68,6 +68,14 @@ public:
 	{
 		hasOids = b;
 	}
+	bool GetUnlogged() const
+	{
+		return unlogged;
+	}
+	void iSetUnlogged(bool b)
+	{
+		unlogged = b;
+	}
 	wxString GetPrimaryKey() const
 	{
 		return primaryKey;
@@ -560,7 +568,7 @@ private:
 	wxString checksum;
 	wxString partitionDef;
 	bool isPartitioned;
-	bool hasOids, hasSubclass, rowsCounted, isReplicated, showExtendedStatistics, distributionIsRandom;
+	bool hasOids, unlogged, hasSubclass, rowsCounted, isReplicated, showExtendedStatistics, distributionIsRandom;
 
 	wxString toast_fillFactor, toast_autovacuum_vacuum_threshold,
 	         toast_autovacuum_vacuum_scale_factor, toast_autovacuum_analyze_threshold,

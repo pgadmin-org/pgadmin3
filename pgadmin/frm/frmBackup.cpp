@@ -51,17 +51,18 @@
 #define chkUseSetSession        CTRL_CHECKBOX("chkUseSetSession")
 #define chkForceQuoteForIdent   CTRL_CHECKBOX("chkForceQuoteForIdent")
 #define ctvObjects              CTRL_CHECKTREEVIEW("ctvObjects")
+#define chkNoUnloggedTableData  CTRL_CHECKBOX("chkNoUnloggedTableData")
 
 
 BEGIN_EVENT_TABLE(frmBackup, ExternProcessDialog)
-	EVT_TEXT(XRCID("txtFilename"),          frmBackup::OnChange)
-	EVT_BUTTON(XRCID("btnFilename"),        frmBackup::OnSelectFilename)
-	EVT_BUTTON(wxID_OK,                     frmBackup::OnOK)
-	EVT_RADIOBOX(XRCID("rbxFormat"),        frmBackup::OnChangePlain)
-	EVT_CHECKBOX(XRCID("chkOnlyData"),      frmBackup::OnChangePlain)
-	EVT_CHECKBOX(XRCID("chkOnlySchema"),    frmBackup::OnChangePlain)
-	EVT_CHECKBOX(XRCID("chkNoOwner"),       frmBackup::OnChangePlain)
-	EVT_CLOSE(                              ExternProcessDialog::OnClose)
+	EVT_TEXT(XRCID("txtFilename"),                frmBackup::OnChange)
+	EVT_BUTTON(XRCID("btnFilename"),              frmBackup::OnSelectFilename)
+	EVT_BUTTON(wxID_OK,                           frmBackup::OnOK)
+	EVT_RADIOBOX(XRCID("rbxFormat"),              frmBackup::OnChangePlain)
+	EVT_CHECKBOX(XRCID("chkOnlyData"),            frmBackup::OnChangePlain)
+	EVT_CHECKBOX(XRCID("chkOnlySchema"),          frmBackup::OnChangePlain)
+	EVT_CHECKBOX(XRCID("chkNoUnloggedTableData"), frmBackup::OnChangePlain)
+	EVT_CLOSE(                                    ExternProcessDialog::OnClose)
 END_EVENT_TABLE()
 
 
@@ -189,6 +190,7 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 	if (!pgAppMinimumVersion(backupExecutable, 9, 1))
 	{
 		chkForceQuoteForIdent->Disable();
+		chkNoUnloggedTableData->Disable();
 	}
 	if (!pgAppMinimumVersion(backupExecutable, 8, 4))
 	{
@@ -408,6 +410,8 @@ wxString frmBackup::getCmdPart2()
 		cmd.Append(wxT(" --verbose"));
 	if (chkForceQuoteForIdent->GetValue())
 		cmd.Append(wxT(" --quote-all-identifiers"));
+	if (chkNoUnloggedTableData->GetValue())
+		cmd.Append(wxT(" --no-unlogged-table-data"));
 
 	cmd.Append(wxT(" --file \"") + txtFilename->GetValue() + wxT("\""));
 
