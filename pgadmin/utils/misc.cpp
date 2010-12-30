@@ -307,16 +307,16 @@ wxString qtDbStringDollar(const wxString &value)
 void FillKeywords(wxString &str)
 {
     // unfortunately, the keyword list is static. 
-    // If the first or the last word change, these both need to get updated.
-    const ScanKeyword *keyword=ScanKeywordLookup("abort");
-    const ScanKeyword *last=ScanKeywordLookup("zone");
+    int i;
 
-    wxASSERT(keyword && last);
+    str = wxString();
 
-    str = wxString::FromAscii(keyword->name);
-
-    while (keyword++ < last)
-        str += wxT(" ") + wxString::FromAscii(keyword->name);
+    for (i = 0; i < NumScanKeywords; i++) {
+        str += wxT(" ") + wxString::FromAscii(ScanKeywords[i].name);
+    }
+    for (i = 0; i < NumScanKeywordsExtra; i++) {
+        str += wxT(" ") + wxString::FromAscii(ScanKeywordsExtra[i].name);
+    }
 }
 
 
