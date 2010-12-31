@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dbgConnProp.h - debugger 
+// dbgConnProp.h - debugger
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -27,7 +27,7 @@ class dbgConnProp
 public:
 	wxString	m_host;			// Host name (or IP-address)
 	wxString	m_database;		// Database name
-	wxString	m_userName;		// User name	
+	wxString	m_userName;		// User name
 	wxString	m_password;		// Password
 	wxString	m_port;			// Port number
 	wxString	m_debugPort;	// Port number for debugger connection

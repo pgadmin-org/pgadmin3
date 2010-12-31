@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,21 +19,21 @@ class pgsExpressionStmt : public pgsStmt
 
 private:
 
-	const pgsExpression * m_var;
+	const pgsExpression *m_var;
 
 public:
 
-	pgsExpressionStmt(const pgsExpression * var, pgsThread * app = 0);
+	pgsExpressionStmt(const pgsExpression *var, pgsThread *app = 0);
 
 	virtual ~pgsExpressionStmt();
 
-	virtual void eval(pgsVarMap & vars) const;
+	virtual void eval(pgsVarMap &vars) const;
 
 private:
 
-	pgsExpressionStmt(const pgsExpressionStmt & that);
+	pgsExpressionStmt(const pgsExpressionStmt &that);
 
-	pgsExpressionStmt & operator=(const pgsExpressionStmt & that);
+	pgsExpressionStmt &operator=(const pgsExpressionStmt &that);
 
 };
 

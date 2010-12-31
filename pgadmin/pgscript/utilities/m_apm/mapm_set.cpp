@@ -1,5 +1,5 @@
 
-/* 
+/*
  *  M_APM  -  mapm_set.c
  *
  *  Copyright (C) 1999 - 2007   Michael C. Ring
@@ -36,322 +36,322 @@ static  const char *M_set_string_error_msg = "\'m_apm_set_string\', Out of memor
 /****************************************************************************/
 void	M_free_all_set()
 {
-if (M_lbuf != 0)
-  {
-   MAPM_FREE(M_buf);
-   M_buf  = NULL;
-   M_lbuf = 0;
-  }
+	if (M_lbuf != 0)
+	{
+		MAPM_FREE(M_buf);
+		M_buf  = NULL;
+		M_lbuf = 0;
+	}
 }
 /****************************************************************************/
 void	m_apm_set_long(M_APM atmp, long mm)
 {
-int     len, ii, nbytes;
-char	*p, *buf, ch, buf2[64];
+	int     len, ii, nbytes;
+	char	*p, *buf, ch, buf2[64];
 
-/* if zero, return right away */
+	/* if zero, return right away */
 
-if (mm == 0)
-  {
-   M_set_to_zero(atmp);
-   return;
-  }
+	if (mm == 0)
+	{
+		M_set_to_zero(atmp);
+		return;
+	}
 
-M_long_2_ascii(buf2, mm);     /* convert long -> ascii in base 10 */
-buf = buf2;
+	M_long_2_ascii(buf2, mm);     /* convert long -> ascii in base 10 */
+	buf = buf2;
 
-if (mm < 0)
-  {
-   atmp->m_apm_sign = -1;
-   buf++;                     /* get past '-' sign */
-  }
-else
-  {
-   atmp->m_apm_sign = 1;
-  }
+	if (mm < 0)
+	{
+		atmp->m_apm_sign = -1;
+		buf++;                     /* get past '-' sign */
+	}
+	else
+	{
+		atmp->m_apm_sign = 1;
+	}
 
-len = strlen(buf);
-atmp->m_apm_exponent = len;
+	len = strlen(buf);
+	atmp->m_apm_exponent = len;
 
-/* least significant nibble of ODD data-length must be 0 */
+	/* least significant nibble of ODD data-length must be 0 */
 
-if ((len & 1) != 0)
-  {
-   buf[len] = '0';
-  }
+	if ((len & 1) != 0)
+	{
+		buf[len] = '0';
+	}
 
-/* remove any trailing '0' ... */
+	/* remove any trailing '0' ... */
 
-while (TRUE)
-  {
-   if (buf[--len] != '0')
-     break;
-  }
+	while (TRUE)
+	{
+		if (buf[--len] != '0')
+			break;
+	}
 
-atmp->m_apm_datalength = ++len;
+	atmp->m_apm_datalength = ++len;
 
-nbytes = (len + 1) >> 1;
-p = buf;
+	nbytes = (len + 1) >> 1;
+	p = buf;
 
-for (ii=0; ii < nbytes; ii++)
-  {
-   ch = *p++ - '0';
-   atmp->m_apm_data[ii] = 10 * ch + *p++ - '0';
-  }
+	for (ii = 0; ii < nbytes; ii++)
+	{
+		ch = *p++ - '0';
+		atmp->m_apm_data[ii] = 10 * ch + *p++ - '0';
+	}
 }
 /****************************************************************************/
 void	m_apm_set_string(M_APM ctmp, const char *s_in)
 {
-char	ch, *cp, *s, *p;
-void	*vp;
-int	i, j, zflag, exponent, sign;
+	char	ch, *cp, *s, *p;
+	void	*vp;
+	int	i, j, zflag, exponent, sign;
 
-if (M_lbuf == 0)
-  {
-   M_lbuf = 256;
-   if ((M_buf = (char *)MAPM_MALLOC(256)) == NULL)
-     {
-      /* fatal, this does not return */
+	if (M_lbuf == 0)
+	{
+		M_lbuf = 256;
+		if ((M_buf = (char *)MAPM_MALLOC(256)) == NULL)
+		{
+			/* fatal, this does not return */
 
-      M_apm_log_error_msg(M_APM_FATAL, M_set_string_error_msg);
-     }
-  }
+			M_apm_log_error_msg(M_APM_FATAL, M_set_string_error_msg);
+		}
+	}
 
-if ((i = strlen(s_in)) > (M_lbuf - 4))
-  {
-   M_lbuf = i + 32;
-   if ((vp = MAPM_REALLOC(M_buf, M_lbuf)) == NULL)
-     {
-      /* fatal, this does not return */
+	if ((i = strlen(s_in)) > (M_lbuf - 4))
+	{
+		M_lbuf = i + 32;
+		if ((vp = MAPM_REALLOC(M_buf, M_lbuf)) == NULL)
+		{
+			/* fatal, this does not return */
 
-      M_apm_log_error_msg(M_APM_FATAL, M_set_string_error_msg);
-     }
+			M_apm_log_error_msg(M_APM_FATAL, M_set_string_error_msg);
+		}
 
-   M_buf = (char *)vp;
-  }
+		M_buf = (char *)vp;
+	}
 
-s = M_buf;
-strcpy(s,s_in);
+	s = M_buf;
+	strcpy(s, s_in);
 
-/* default == zero ... */
+	/* default == zero ... */
 
-M_set_to_zero(ctmp);
+	M_set_to_zero(ctmp);
 
-p = s;
+	p = s;
 
-while (TRUE)
-  {
-   if (*p == ' ' || *p == '\t')
-     p++;
-   else
-     break;
-  }
+	while (TRUE)
+	{
+		if (*p == ' ' || *p == '\t')
+			p++;
+		else
+			break;
+	}
 
-if (*p == '\0')
-  return;
+	if (*p == '\0')
+		return;
 
-sign = 1;             /* assume number is positive */
+	sign = 1;             /* assume number is positive */
 
-if (*p == '+')        /* scan by optional '+' sign */
-  p++;
-else
-  {
-   if (*p == '-')     /* check if number negative */
-     {
-      sign = -1;
-      p++;
-     }
-  }
+	if (*p == '+')        /* scan by optional '+' sign */
+		p++;
+	else
+	{
+		if (*p == '-')     /* check if number negative */
+		{
+			sign = -1;
+			p++;
+		}
+	}
 
-M_lowercase(p);       /* convert string to lowercase */
-exponent = 0;         /* default */
-   
-if ((cp = strstr(p,"e")) != NULL)
-  {
-   exponent = atoi(cp + sizeof(char));
-   *cp = '\0';          /* erase the exponent now */
-  }
+	M_lowercase(p);       /* convert string to lowercase */
+	exponent = 0;         /* default */
 
-j = M_strposition(p, (char *) ".");        /* is there a decimal point ?? */
-if (j == -1)
-  {
-   strcat(p,".");                /* if not, append one */
-   j = M_strposition(p, (char *) ".");     /* now find it ... */
-  }
+	if ((cp = strstr(p, "e")) != NULL)
+	{
+		exponent = atoi(cp + sizeof(char));
+		*cp = '\0';          /* erase the exponent now */
+	}
 
-if (j > 0)                       /* normalize number and adjust exponent */
-  {
-   exponent += j;
-   memmove((p+1),p,(j * sizeof(char)));
-  }
+	j = M_strposition(p, (char *) ".");        /* is there a decimal point ?? */
+	if (j == -1)
+	{
+		strcat(p, ".");               /* if not, append one */
+		j = M_strposition(p, (char *) ".");     /* now find it ... */
+	}
 
-p++;        /* scan past implied decimal point now in column 1 (index 0) */
+	if (j > 0)                       /* normalize number and adjust exponent */
+	{
+		exponent += j;
+		memmove((p + 1), p, (j * sizeof(char)));
+	}
 
-i = strlen(p);
-ctmp->m_apm_datalength = i;
+	p++;        /* scan past implied decimal point now in column 1 (index 0) */
 
-if ((i & 1) != 0)   /* if odd number of digits, append a '0' to make it even */
-  strcat(p,"0");    
+	i = strlen(p);
+	ctmp->m_apm_datalength = i;
 
-j = strlen(p) >> 1;  /* number of bytes in encoded M_APM number */
+	if ((i & 1) != 0)   /* if odd number of digits, append a '0' to make it even */
+		strcat(p, "0");
 
-/* do we need more memory to hold this number */
+	j = strlen(p) >> 1;  /* number of bytes in encoded M_APM number */
 
-if (j > ctmp->m_apm_malloclength)
-  {
-   if ((vp = MAPM_REALLOC(ctmp->m_apm_data, (j + 32))) == NULL)
-     {
-      /* fatal, this does not return */
+	/* do we need more memory to hold this number */
 
-      M_apm_log_error_msg(M_APM_FATAL, M_set_string_error_msg);
-     }
-  
-   ctmp->m_apm_malloclength = j + 28;
-   ctmp->m_apm_data = (UCHAR *)vp;
-  }
+	if (j > ctmp->m_apm_malloclength)
+	{
+		if ((vp = MAPM_REALLOC(ctmp->m_apm_data, (j + 32))) == NULL)
+		{
+			/* fatal, this does not return */
 
-zflag = TRUE;
+			M_apm_log_error_msg(M_APM_FATAL, M_set_string_error_msg);
+		}
 
-for (i=0; i < j; i++)
-  {
-   ch = *p++ - '0';
-   if ((ch = (10 * ch + *p++ - '0')) != 0)
-     zflag = FALSE;
+		ctmp->m_apm_malloclength = j + 28;
+		ctmp->m_apm_data = (UCHAR *)vp;
+	}
 
-   if (((int)ch & 0xFF) >= 100)
-     {
-      M_apm_log_error_msg(M_APM_RETURN,
-      "\'m_apm_set_string\', Non-digit char found in parse");
+	zflag = TRUE;
 
-      M_apm_log_error_msg(M_APM_RETURN, "Text =");
-      M_apm_log_error_msg(M_APM_RETURN, s_in);
+	for (i = 0; i < j; i++)
+	{
+		ch = *p++ - '0';
+		if ((ch = (10 * ch + *p++ - '0')) != 0)
+			zflag = FALSE;
 
-      M_set_to_zero(ctmp);
-      return;
-     }
+		if (((int)ch & 0xFF) >= 100)
+		{
+			M_apm_log_error_msg(M_APM_RETURN,
+			                    "\'m_apm_set_string\', Non-digit char found in parse");
 
-   ctmp->m_apm_data[i]   = ch;
-   ctmp->m_apm_data[i+1] = 0;
-  }
+			M_apm_log_error_msg(M_APM_RETURN, "Text =");
+			M_apm_log_error_msg(M_APM_RETURN, s_in);
 
-ctmp->m_apm_exponent = exponent;
-ctmp->m_apm_sign     = sign;
+			M_set_to_zero(ctmp);
+			return;
+		}
 
-if (zflag)
-  {
-   ctmp->m_apm_exponent   = 0;
-   ctmp->m_apm_sign       = 0;
-   ctmp->m_apm_datalength = 1;
-  }
-else
-  {
-   M_apm_normalize(ctmp);
-  }
+		ctmp->m_apm_data[i]   = ch;
+		ctmp->m_apm_data[i+1] = 0;
+	}
 
-/*
- *  if our local temp string is getting too big,
- *  release it's memory and start over next time.
- *  (this 1000 byte threshold is quite arbitrary,
- *  it may be more efficient in your app to make
- *  this number bigger).
- */
+	ctmp->m_apm_exponent = exponent;
+	ctmp->m_apm_sign     = sign;
 
-if (M_lbuf > 1000)
-  {
-   MAPM_FREE(M_buf);
-   M_buf  = NULL;
-   M_lbuf = 0;
-  }
+	if (zflag)
+	{
+		ctmp->m_apm_exponent   = 0;
+		ctmp->m_apm_sign       = 0;
+		ctmp->m_apm_datalength = 1;
+	}
+	else
+	{
+		M_apm_normalize(ctmp);
+	}
+
+	/*
+	 *  if our local temp string is getting too big,
+	 *  release it's memory and start over next time.
+	 *  (this 1000 byte threshold is quite arbitrary,
+	 *  it may be more efficient in your app to make
+	 *  this number bigger).
+	 */
+
+	if (M_lbuf > 1000)
+	{
+		MAPM_FREE(M_buf);
+		M_buf  = NULL;
+		M_lbuf = 0;
+	}
 }
 /****************************************************************************/
 void	m_apm_to_string(char *s, int places, M_APM mtmp)
 {
-M_APM   ctmp;
-char	*cp;
-int	i, index, first, max_i, num_digits, dec_places;
-UCHAR	numdiv, numrem;
+	M_APM   ctmp;
+	char	*cp;
+	int	i, index, first, max_i, num_digits, dec_places;
+	UCHAR	numdiv, numrem;
 
-ctmp = M_get_stack_var();
-dec_places = places;
+	ctmp = M_get_stack_var();
+	dec_places = places;
 
-if (dec_places < 0)
-  m_apm_copy(ctmp, mtmp);
-else
-  m_apm_round(ctmp, dec_places, mtmp);
+	if (dec_places < 0)
+		m_apm_copy(ctmp, mtmp);
+	else
+		m_apm_round(ctmp, dec_places, mtmp);
 
-if (ctmp->m_apm_sign == 0)
-  {
-   if (dec_places < 0)
-      strcpy(s,"0.0E+0");
-   else
-     {
-      strcpy(s,"0");
+	if (ctmp->m_apm_sign == 0)
+	{
+		if (dec_places < 0)
+			strcpy(s, "0.0E+0");
+		else
+		{
+			strcpy(s, "0");
 
-      if (dec_places > 0)
-        strcat(s,".");
+			if (dec_places > 0)
+				strcat(s, ".");
 
-      for (i=0; i < dec_places; i++)
-        strcat(s,"0");
+			for (i = 0; i < dec_places; i++)
+				strcat(s, "0");
 
-      strcat(s,"E+0");
-     }
+			strcat(s, "E+0");
+		}
 
-   M_restore_stack(1);
-   return;
-  }
+		M_restore_stack(1);
+		return;
+	}
 
-max_i = (ctmp->m_apm_datalength + 1) >> 1;
+	max_i = (ctmp->m_apm_datalength + 1) >> 1;
 
-if (dec_places < 0)
-  num_digits = ctmp->m_apm_datalength;
-else
-  num_digits = dec_places + 1;
+	if (dec_places < 0)
+		num_digits = ctmp->m_apm_datalength;
+	else
+		num_digits = dec_places + 1;
 
-cp = s;
+	cp = s;
 
-if (ctmp->m_apm_sign == -1)
-  *cp++ = '-';
+	if (ctmp->m_apm_sign == -1)
+		*cp++ = '-';
 
-first = TRUE;
+	first = TRUE;
 
-i = 0;
-index = 0;
+	i = 0;
+	index = 0;
 
-while (TRUE)
-  {
-   if (index >= max_i)
-     {
-      numdiv = 0;
-      numrem = 0;
-     }
-   else
-      M_get_div_rem_10((int)ctmp->m_apm_data[index],&numdiv,&numrem);
+	while (TRUE)
+	{
+		if (index >= max_i)
+		{
+			numdiv = 0;
+			numrem = 0;
+		}
+		else
+			M_get_div_rem_10((int)ctmp->m_apm_data[index], &numdiv, &numrem);
 
-   index++;
+		index++;
 
-   *cp++ = numdiv + '0';
+		*cp++ = numdiv + '0';
 
-   if (++i == num_digits)
-     break;
+		if (++i == num_digits)
+			break;
 
-   if (first)
-     {
-      first = FALSE;
-      *cp++ = '.';
-     }
+		if (first)
+		{
+			first = FALSE;
+			*cp++ = '.';
+		}
 
-   *cp++ = numrem + '0';
+		*cp++ = numrem + '0';
 
-   if (++i == num_digits)
-     break;
-  }
+		if (++i == num_digits)
+			break;
+	}
 
-i = ctmp->m_apm_exponent - 1;
-if (i >= 0)
-  sprintf(cp,"E+%d",i);
-else
-  sprintf(cp,"E%d",i);
+	i = ctmp->m_apm_exponent - 1;
+	if (i >= 0)
+		sprintf(cp, "E+%d", i);
+	else
+		sprintf(cp, "E%d", i);
 
-M_restore_stack(1);
+	M_restore_stack(1);
 }
 /****************************************************************************/

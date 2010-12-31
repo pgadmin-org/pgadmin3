@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,19 +16,19 @@
 
 class pgsParameterException : public pgsException
 {
-	
+
 protected:
-	
+
 	const wxString m_message;
-	
+
 public:
-	
-	pgsParameterException(const wxString & message = wxT("unknown"));
-	
+
+	pgsParameterException(const wxString &message = wxT("unknown"));
+
 	virtual ~pgsParameterException();
-	
+
 	virtual const wxString message() const;
-	
+
 };
 
 #endif /*PGSPARAMETEREXCEPTION_H_*/

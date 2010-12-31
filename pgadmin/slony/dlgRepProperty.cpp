@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,7 +19,7 @@
 
 
 dlgRepProperty::dlgRepProperty(pgaFactory *f, frmMain *frame, slCluster *c, const wxString &resName)
-: dlgProperty(f, frame, resName) 
+	: dlgProperty(f, frame, resName)
 {
-    cluster=c;
+	cluster = c;
 }

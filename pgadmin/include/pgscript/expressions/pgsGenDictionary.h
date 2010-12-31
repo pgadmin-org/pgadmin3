@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,30 +19,30 @@ class pgsGenDictionary : public pgsExpression
 
 private:
 
-	const pgsExpression * m_file_path;
-	const pgsExpression * m_sequence;
-	const pgsExpression * m_seed;
-	const pgsExpression * m_wx_conv;
+	const pgsExpression *m_file_path;
+	const pgsExpression *m_sequence;
+	const pgsExpression *m_seed;
+	const pgsExpression *m_wx_conv;
 
 public:
 
-	pgsGenDictionary(const pgsExpression * file_path,
-			const pgsExpression * sequence,
-			const pgsExpression * seed, const pgsExpression * wx_conv);
+	pgsGenDictionary(const pgsExpression *file_path,
+	                 const pgsExpression *sequence,
+	                 const pgsExpression *seed, const pgsExpression *wx_conv);
 
 	virtual ~pgsGenDictionary();
 
-	virtual pgsExpression * clone() const;
+	virtual pgsExpression *clone() const;
 
-	pgsGenDictionary(const pgsGenDictionary & that);
+	pgsGenDictionary(const pgsGenDictionary &that);
 
-	pgsGenDictionary & operator =(const pgsGenDictionary & that);
+	pgsGenDictionary &operator =(const pgsGenDictionary &that);
 
 public:
 
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
+	virtual pgsOperand eval(pgsVarMap &vars) const;
 
 };
 

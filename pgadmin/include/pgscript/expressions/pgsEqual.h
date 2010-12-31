@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,27 +16,27 @@
 
 class pgsEqual : public pgsOperation
 {
-	
+
 private:
-	
+
 	bool m_case_sensitive;
 
 public:
 
-	pgsEqual(const pgsExpression * left, const pgsExpression * right,
-			bool case_sensitive = true);
+	pgsEqual(const pgsExpression *left, const pgsExpression *right,
+	         bool case_sensitive = true);
 
 	virtual ~pgsEqual();
 
-	virtual pgsExpression * clone() const;
+	virtual pgsExpression *clone() const;
 
-	pgsEqual(const pgsEqual & that);
+	pgsEqual(const pgsEqual &that);
 
-	pgsEqual & operator =(const pgsEqual & that);
+	pgsEqual &operator =(const pgsEqual &that);
 
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
+	virtual pgsOperand eval(pgsVarMap &vars) const;
 
 };
 

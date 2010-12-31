@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgIndexConstraint.h - IndexConstraint property 
+// dlgIndexConstraint.h - IndexConstraint property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -26,62 +26,65 @@ class pgExclude;
 class dlgIndexConstraint : public dlgIndexBase
 {
 protected:
-    dlgIndexConstraint(pgaFactory *factory, frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode);
-    dlgIndexConstraint(pgaFactory *factory, frmMain *frame, const wxString &resName, ctlListView *colList);
+	dlgIndexConstraint(pgaFactory *factory, frmMain *frame, const wxString &resName, pgIndexBase *index, pgTable *parentNode);
+	dlgIndexConstraint(pgaFactory *factory, frmMain *frame, const wxString &resName, ctlListView *colList);
 
 public:
-    ctlListView *columns;
+	ctlListView *columns;
 
 
-    int Go(bool modal);
-    wxString GetDefinition();
-    wxString GetColumns();
-    wxString GetSql();
-    wxString GetHelpPage() const { return wxT("pg/sql-altertable"); }
+	int Go(bool modal);
+	wxString GetDefinition();
+	wxString GetColumns();
+	wxString GetSql();
+	wxString GetHelpPage() const
+	{
+		return wxT("pg/sql-altertable");
+	}
 
 private:
 #ifdef __WXMAC__
-    void OnChangeSize(wxSizeEvent &ev);
+	void OnChangeSize(wxSizeEvent &ev);
 #endif
 
-    void OnAddCol(wxCommandEvent &ev);
-    void OnRemoveCol(wxCommandEvent &ev);
-    void OnSelectType(wxCommandEvent &ev);
-    void OnSelectComboCol(wxCommandEvent &ev);
+	void OnAddCol(wxCommandEvent &ev);
+	void OnRemoveCol(wxCommandEvent &ev);
+	void OnSelectType(wxCommandEvent &ev);
+	void OnSelectComboCol(wxCommandEvent &ev);
 
-    wxString m_previousType;
+	wxString m_previousType;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 
 class dlgPrimaryKey : public dlgIndexConstraint
 {
 public:
-    dlgPrimaryKey(pgaFactory *factory, frmMain *frame, pgPrimaryKey *index, pgTable *parentNode);
-    dlgPrimaryKey(pgaFactory *factory, frmMain *frame, ctlListView *colList);
+	dlgPrimaryKey(pgaFactory *factory, frmMain *frame, pgPrimaryKey *index, pgTable *parentNode);
+	dlgPrimaryKey(pgaFactory *factory, frmMain *frame, ctlListView *colList);
 
-    pgObject *CreateObject(pgCollection *collection);
+	pgObject *CreateObject(pgCollection *collection);
 };
 
 
 class dlgUnique : public dlgIndexConstraint
 {
 public:
-    dlgUnique(pgaFactory *factory, frmMain *frame, pgUnique *index, pgTable *parentNode);
-    dlgUnique(pgaFactory *factory, frmMain *frame, ctlListView *colList);
+	dlgUnique(pgaFactory *factory, frmMain *frame, pgUnique *index, pgTable *parentNode);
+	dlgUnique(pgaFactory *factory, frmMain *frame, ctlListView *colList);
 
-    pgObject *CreateObject(pgCollection *collection);
+	pgObject *CreateObject(pgCollection *collection);
 };
 
 
 class dlgExclude : public dlgIndexConstraint
 {
 public:
-    dlgExclude(pgaFactory *factory, frmMain *frame, pgExclude *index, pgTable *parentNode);
-    dlgExclude(pgaFactory *factory, frmMain *frame, ctlListView *colList);
+	dlgExclude(pgaFactory *factory, frmMain *frame, pgExclude *index, pgTable *parentNode);
+	dlgExclude(pgaFactory *factory, frmMain *frame, ctlListView *colList);
 
-    pgObject *CreateObject(pgCollection *collection);
+	pgObject *CreateObject(pgCollection *collection);
 };
 
 

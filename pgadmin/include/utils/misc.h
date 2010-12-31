@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -32,10 +32,10 @@ typedef unsigned long OID;
 #define atolonglong _atoi64
 #else
 #ifdef __WXMAC__
-#define atolonglong(str) strtoll(str, (char **)NULL, 10) 
+#define atolonglong(str) strtoll(str, (char **)NULL, 10)
 #else
 #ifdef __FreeBSD__
-#define atolonglong(str) strtoll(str, (char **)NULL, 10) 
+#define atolonglong(str) strtoll(str, (char **)NULL, 10)
 #else
 #define atolonglong atoll
 #endif
@@ -99,12 +99,12 @@ extern sysSettings *settings;
 wxString BoolToStr(bool value);         // english; used for config values
 wxString DateToAnsiStr(const wxDateTime &datetime);
 
-bool StrToBool(const wxString& value);  // english
-long StrToLong(const wxString& value);
-double StrToDouble(const wxString& value);
-wxLongLong StrToLongLong(const wxString& value);
+bool StrToBool(const wxString &value);  // english
+long StrToLong(const wxString &value);
+double StrToDouble(const wxString &value);
+wxLongLong StrToLongLong(const wxString &value);
 wxDateTime StrToDateTime(const wxString &value);
-OID StrToOid(const wxString& value);
+OID StrToOid(const wxString &value);
 
 wxString generate_spaces(int length);
 
@@ -118,21 +118,21 @@ wxString DateToStr(const wxDateTime &datetime);
 
 
 // Quoting
-wxString qtConnString(const wxString& value); // connection strings always have single quotes escaped with backslash
+wxString qtConnString(const wxString &value); // connection strings always have single quotes escaped with backslash
 
 #if !defined(PGSCLI)
 
 // check if size/pos have reasonable values
-void CheckOnScreen(wxWindow *win, wxPoint &pos, wxSize &size, const int w0=100, const int h0=70);
+void CheckOnScreen(wxWindow *win, wxPoint &pos, wxSize &size, const int w0 = 100, const int h0 = 70);
 
 // compile ID and Name into one string
 wxString IdAndName(long id, const wxString &name);
 
 // Quoting
-wxString qtIdent(const wxString& value);    // add " if necessary
-wxString qtTypeIdent(const wxString& value);    // add " if necessary
+wxString qtIdent(const wxString &value);    // add " if necessary
+wxString qtTypeIdent(const wxString &value);    // add " if necessary
 wxString qtDbStringDollar(const wxString &value);
-wxString qtStrip(const wxString& value);    // remove \"
+wxString qtStrip(const wxString &value);    // remove \"
 
 
 // string build helper
@@ -152,27 +152,27 @@ void FillArray(wxArrayString &array, const wxString &str);
 class queryTokenizer : public wxStringTokenizer
 {
 public:
-    queryTokenizer(const wxString& str, const wxChar delim=(wxChar)' ');
-    wxString GetNextToken();
+	queryTokenizer(const wxString &str, const wxChar delim = (wxChar)' ');
+	wxString GetNextToken();
 private:
-    char delimiter;
+	char delimiter;
 };
 
 // Get an array from a comma(,) separated list
-bool getArrayFromCommaSeparatedList(const wxString& str, wxArrayString& res);
+bool getArrayFromCommaSeparatedList(const wxString &str, wxArrayString &res);
 
 // File handling including encoding according to sysSettings if format<0,
 // 0-> local charset, 1->utf8
-wxString FileRead(const wxString &filename, int format=-1);
-bool FileWrite(const wxString &filename, const wxString &data, int format=-1);
+wxString FileRead(const wxString &filename, int format = -1);
+bool FileWrite(const wxString &filename, const wxString &data, int format = -1);
 
 typedef enum
 {
-    HELP_PGADMIN,
-    HELP_POSTGRESQL,
-    HELP_ENTERPRISEDB,
-    HELP_GREENPLUM,
-    HELP_SLONY
+	HELP_PGADMIN,
+	HELP_POSTGRESQL,
+	HELP_ENTERPRISEDB,
+	HELP_GREENPLUM,
+	HELP_SLONY
 } HelpType;
 
 wxString CleanHelpPath(const wxString &path);
@@ -196,60 +196,60 @@ bool isPgApp(const wxString &app);
 bool isEdbApp(const wxString &app);
 bool isGpApp(const wxString &app);
 
-enum 
+enum
 {
-    EDB_PACKAGE,
-    EDB_PACKAGEFUNCTION,
-    EDB_PACKAGEVARIABLE,
+	EDB_PACKAGE,
+	EDB_PACKAGEFUNCTION,
+	EDB_PACKAGEVARIABLE,
 
-    PGM_CATALOG,
-    PGM_CATALOGOBJECT,
-    PGM_CHECK,
-    PGM_COLUMN,    
-    PGM_CONSTRAINT,
-    PGM_DATABASE,
-    PGM_EXCLUDE,
-    PGM_FOREIGNKEY,
-    PGM_FUNCTION,
-    PGM_INDEX,
-    PGM_OPCLASS,
-    PGM_OPFAMILY,
-    PGM_PRIMARYKEY,
-    PGM_ROLE,
-    PGM_RULE,
-    PGM_SCHEMA,
-    PGM_SERVER,
-    PGM_SEQUENCE,
-    PGM_TABLE,
-    PGM_TABLESPACE,
-    PGM_TRIGGER,
-    PGM_UNKNOWN,
-    PGM_UNIQUE,
-    PGM_VIEW,
+	PGM_CATALOG,
+	PGM_CATALOGOBJECT,
+	PGM_CHECK,
+	PGM_COLUMN,
+	PGM_CONSTRAINT,
+	PGM_DATABASE,
+	PGM_EXCLUDE,
+	PGM_FOREIGNKEY,
+	PGM_FUNCTION,
+	PGM_INDEX,
+	PGM_OPCLASS,
+	PGM_OPFAMILY,
+	PGM_PRIMARYKEY,
+	PGM_ROLE,
+	PGM_RULE,
+	PGM_SCHEMA,
+	PGM_SERVER,
+	PGM_SEQUENCE,
+	PGM_TABLE,
+	PGM_TABLESPACE,
+	PGM_TRIGGER,
+	PGM_UNKNOWN,
+	PGM_UNIQUE,
+	PGM_VIEW,
 
-    GP_EXTTABLE,
-    GP_RESOURCE_QUEUE,
-    GP_PARTITION,
+	GP_EXTTABLE,
+	GP_RESOURCE_QUEUE,
+	GP_PARTITION,
 
-    PGM_JOB,
-    PGM_SCHEDULE,
-    PGM_STEP,
+	PGM_JOB,
+	PGM_SCHEDULE,
+	PGM_STEP,
 
-    SLM_LISTEN,
-    SLM_NODE,
-    SLM_PATH,
-    SLM_SEQUENCE,
-    SLM_SET,
-    SLM_SUBSCRIPTION,
-    SLM_TABLE
+	SLM_LISTEN,
+	SLM_NODE,
+	SLM_PATH,
+	SLM_SEQUENCE,
+	SLM_SET,
+	SLM_SUBSCRIPTION,
+	SLM_TABLE
 };
 
 
 enum        // depends on pgaFactory::addImage order!
 {
-    PGICON_PROPERTY,
-    PGICON_STATISTICS,
-    PGICON_PUBLIC
+	PGICON_PROPERTY,
+	PGICON_STATISTICS,
+	PGICON_PUBLIC
 };
 
 // File/directory name cleanup

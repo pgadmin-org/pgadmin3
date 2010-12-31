@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -20,30 +20,33 @@ class pgServer;
 class dlgSelectConnection : public DialogWithHelp
 {
 public:
-    dlgSelectConnection(wxWindow *parent, frmMain *form);
-    ~dlgSelectConnection();
-    wxString GetHelpPage() const;
-    pgServer *GetServer() { return remoteServer; }
-	pgConn *CreateConn(wxString& applicationame, bool& createdNew);
-	pgConn *CreateConn(wxString& server, wxString& dbname, wxString& username, int port, wxString& rolename, int sslmode, wxString& applicationame, bool writeMRU = false);
+	dlgSelectConnection(wxWindow *parent, frmMain *form);
+	~dlgSelectConnection();
+	wxString GetHelpPage() const;
+	pgServer *GetServer()
+	{
+		return remoteServer;
+	}
+	pgConn *CreateConn(wxString &applicationame, bool &createdNew);
+	pgConn *CreateConn(wxString &server, wxString &dbname, wxString &username, int port, wxString &rolename, int sslmode, wxString &applicationame, bool writeMRU = false);
 	wxString GetServerName();
-    wxString GetDatabase();
+	wxString GetDatabase();
 
-    int Go(pgConn *conn, wxBitmapComboBox *cb);
-    
+	int Go(pgConn *conn, wxBitmapComboBox *cb);
+
 private:
-    void OnChangeServer(wxCommandEvent& ev);
-    void OnChangeDatabase(wxCommandEvent& ev);
-	void OnTextChange(wxCommandEvent& ev);
-    void OnOK(wxCommandEvent& ev);
-    void OnCancel(wxCommandEvent& ev);
+	void OnChangeServer(wxCommandEvent &ev);
+	void OnChangeDatabase(wxCommandEvent &ev);
+	void OnTextChange(wxCommandEvent &ev);
+	void OnOK(wxCommandEvent &ev);
+	void OnCancel(wxCommandEvent &ev);
 
-    pgServer *remoteServer;
-    wxBitmapComboBox *cbConnection;
+	pgServer *remoteServer;
+	wxBitmapComboBox *cbConnection;
 	ctlComboBoxFix *cbServer;
 	wxComboBox     *cbDatabase, *cbUsername, *cbRolename;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

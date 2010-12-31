@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -20,25 +20,25 @@ class ctlSQLBox;
 class dlgFindReplace : public pgDialog
 {
 public:
-    dlgFindReplace(ctlSQLBox *parent);
-    ~dlgFindReplace();
-    void FocusSearch();
-    void FindNext();
+	dlgFindReplace(ctlSQLBox *parent);
+	~dlgFindReplace();
+	void FocusSearch();
+	void FindNext();
 	void SetFindString(const wxString &val);
 
 private:
 
-    void OnClose(wxCloseEvent &ev);
-    void OnCancel(wxCommandEvent &ev);
-    void OnChange(wxCommandEvent& ev);
-    void OnFind(wxCommandEvent& ev);
-    void OnReplace(wxCommandEvent& ev);
-    void OnReplaceAll(wxCommandEvent& ev);
+	void OnClose(wxCloseEvent &ev);
+	void OnCancel(wxCommandEvent &ev);
+	void OnChange(wxCommandEvent &ev);
+	void OnFind(wxCommandEvent &ev);
+	void OnReplace(wxCommandEvent &ev);
+	void OnReplaceAll(wxCommandEvent &ev);
 	void ResetTabOrder();
 
-    ctlSQLBox *sqlbox;
+	ctlSQLBox *sqlbox;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

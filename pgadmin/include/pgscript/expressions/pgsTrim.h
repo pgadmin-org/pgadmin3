@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,27 +16,27 @@
 
 class pgsTrim : public pgsExpression
 {
-	
+
 private:
-	
-	const pgsExpression * m_exp;
-	
+
+	const pgsExpression *m_exp;
+
 public:
 
-	pgsTrim(const pgsExpression * exp);
+	pgsTrim(const pgsExpression *exp);
 
 	virtual ~pgsTrim();
 
-	pgsTrim(const pgsTrim & that);
+	pgsTrim(const pgsTrim &that);
 
-	pgsTrim & operator=(const pgsTrim & that);
+	pgsTrim &operator=(const pgsTrim &that);
 
-	virtual pgsExpression * clone() const;
-	
+	virtual pgsExpression *clone() const;
+
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
-	
+	virtual pgsOperand eval(pgsVarMap &vars) const;
+
 };
 
 #endif /*PGSTRIM_H_*/

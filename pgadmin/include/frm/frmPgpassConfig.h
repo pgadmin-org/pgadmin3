@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -25,38 +25,38 @@ WX_DECLARE_OBJARRAY(pgPassConfigLine, pgPassConfigLineArray);
 class frmPgpassConfig : public frmConfig
 {
 public:
-    frmPgpassConfig(const wxString& title, const wxString &configFile);
+	frmPgpassConfig(const wxString &title, const wxString &configFile);
 	frmPgpassConfig(frmMain *parent);
-    ~frmPgpassConfig();
+	~frmPgpassConfig();
 
 protected:
-    void DisplayFile(const wxString &str);
-    void WriteFile(pgConn *conn=0);
-    wxString GetHintString();
-    wxString GetHelpPage() const;
+	void DisplayFile(const wxString &str);
+	void WriteFile(pgConn *conn = 0);
+	wxString GetHintString();
+	wxString GetHelpPage() const;
 
 private:
-    void Init();
-    void UpdateDisplay(pgPassConfigLine &line);
+	void Init();
+	void UpdateDisplay(pgPassConfigLine &line);
 
-    void OnContents(wxCommandEvent& event);
-    void OnUndo(wxCommandEvent& event);
-	void OnDelete(wxCommandEvent& event);
-    void OnEditSetting(wxListEvent& event);
-    void OnSelectSetting(wxListEvent& event);
+	void OnContents(wxCommandEvent &event);
+	void OnUndo(wxCommandEvent &event);
+	void OnDelete(wxCommandEvent &event);
+	void OnEditSetting(wxListEvent &event);
+	void OnSelectSetting(wxListEvent &event);
 
-    ctlListView *listEdit;
-    pgPassConfigLineArray lines;
+	ctlListView *listEdit;
+	pgPassConfigLineArray lines;
 
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 class pgpassConfigFileFactory : public actionFactory
 {
 public:
-    pgpassConfigFileFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	pgpassConfigFileFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 #endif

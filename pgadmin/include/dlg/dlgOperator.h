@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgOperator.h - Operator property 
+// dlgOperator.h - Operator property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,27 +21,27 @@ class pgOperator;
 class dlgOperator : public dlgTypeProperty
 {
 public:
-    dlgOperator(pgaFactory *factory, frmMain *frame, pgOperator *op, pgSchema *sch);
-    int Go(bool modal);
+	dlgOperator(pgaFactory *factory, frmMain *frame, pgOperator *op, pgSchema *sch);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
 private:
-    void CheckChangeType();
-    void OnChangeTypeLeft(wxCommandEvent &ev);
-    void OnChangeTypeRight(wxCommandEvent &ev);
-    void OnChangeJoin(wxCommandEvent &ev);
+	void CheckChangeType();
+	void OnChangeTypeLeft(wxCommandEvent &ev);
+	void OnChangeTypeRight(wxCommandEvent &ev);
+	void OnChangeJoin(wxCommandEvent &ev);
 
-    void AppendFilledOperator(wxString &sql, const wxChar *txt, ctlComboBoxFix *cb);
+	void AppendFilledOperator(wxString &sql, const wxChar *txt, ctlComboBoxFix *cb);
 
-    pgSchema *schema;
-    pgOperator *oper;
-    wxArrayString procedures;
+	pgSchema *schema;
+	pgOperator *oper;
+	wxArrayString procedures;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

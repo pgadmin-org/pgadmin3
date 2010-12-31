@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -59,7 +59,7 @@ void queryMacroItem::Update(const wxString &newName, const wxString &newQuery)
 
 queryMacroList::queryMacroList(xmlTextReaderPtr reader)
 {
-	// Element of type <foo />, meaning empty folder 
+	// Element of type <foo />, meaning empty folder
 	if (xmlTextReaderIsEmptyElement(reader))
 		return;
 
@@ -108,7 +108,7 @@ int queryMacroList::AppendAllToMenu(wxMenu *menu, int startId)
 {
 	int id = startId;
 	size_t i;
-	
+
 	for (i = 0; i < macros.GetCount(); i++)
 	{
 		macros.Item(i)->AppendToMenu(menu, id);
@@ -117,7 +117,7 @@ int queryMacroList::AppendAllToMenu(wxMenu *menu, int startId)
 	return id;
 }
 
-void queryMacroList::AddNewMacro(const wxString &key, const wxString &name, const wxString& query)
+void queryMacroList::AddNewMacro(const wxString &key, const wxString &name, const wxString &query)
 {
 	macros.Add(new queryMacroItem(key, name, query));
 }
@@ -138,7 +138,7 @@ void queryMacroList::AddOrUpdateMacro(const wxString &key, const wxString &name,
 bool queryMacroList::DelMacro(int id)
 {
 	size_t i;
-	
+
 	for (i = 0; i < macros.GetCount(); i++)
 	{
 		if (macros.Item(i)->GetId() == id)
@@ -172,13 +172,13 @@ bool queryMacroList::DelMacro(const wxString &key)
 queryMacroItem *queryMacroList::FindMacro(int id)
 {
 	size_t i;
-	
+
 	for (i = 0; i < macros.GetCount(); i++)
 	{
 		if (macros.Item(i)->GetId() == id)
 			return macros.Item(i);
 	}
-	
+
 	return NULL;
 }
 
@@ -198,16 +198,16 @@ queryMacroItem *queryMacroList::FindMacro(const wxString &key)
 void queryMacroList::saveList(xmlTextWriterPtr writer)
 {
 	size_t i;
-	
+
 	for (i = 0; i < macros.GetCount(); i++)
 	{
 		xmlTextWriterStartElement(writer, XML_STR("macro"));
-		xmlTextWriterWriteAttribute(writer, XML_STR("key"), 
-			XML_FROM_WXSTRING(macros.Item(i)->GetKey()));
-		xmlTextWriterWriteAttribute(writer, XML_STR("name"), 
-			XML_FROM_WXSTRING(macros.Item(i)->GetName()));
-		xmlTextWriterWriteString(writer, 
-			XML_FROM_WXSTRING(macros.Item(i)->GetQuery()));
+		xmlTextWriterWriteAttribute(writer, XML_STR("key"),
+		                            XML_FROM_WXSTRING(macros.Item(i)->GetKey()));
+		xmlTextWriterWriteAttribute(writer, XML_STR("name"),
+		                            XML_FROM_WXSTRING(macros.Item(i)->GetName()));
+		xmlTextWriterWriteString(writer,
+		                         XML_FROM_WXSTRING(macros.Item(i)->GetQuery()));
 		xmlTextWriterEndElement(writer);
 	}
 }
@@ -224,7 +224,7 @@ queryMacroList *queryMacroFileProvider::LoadMacros(bool emptyOnFailure)
 	if (!wxFile::Access(settings->GetMacrosFile(), wxFile::read))
 		return emptyOnFailure ? (new queryMacroList()) : NULL;
 
-	reader = xmlReaderForFile((const char *)settings->GetMacrosFile().mb_str(wxConvUTF8),NULL,0);
+	reader = xmlReaderForFile((const char *)settings->GetMacrosFile().mb_str(wxConvUTF8), NULL, 0);
 	if (!reader)
 	{
 		wxMessageBox(_("Failed to load macros file!"));
@@ -251,7 +251,7 @@ void queryMacroFileProvider::SaveMacros(queryMacroList *macros)
 {
 	xmlTextWriterPtr writer;
 
-	writer = xmlNewTextWriterFilename((const char *)settings->GetMacrosFile().mb_str(wxConvUTF8),0);
+	writer = xmlNewTextWriterFilename((const char *)settings->GetMacrosFile().mb_str(wxConvUTF8), 0);
 	if (!writer)
 	{
 		wxMessageBox(_("Failed to open macros file!"));
@@ -260,7 +260,7 @@ void queryMacroFileProvider::SaveMacros(queryMacroList *macros)
 	xmlTextWriterSetIndent(writer, 1);
 
 	if ((xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL) < 0) ||
-		(xmlTextWriterStartElement(writer, XML_STR("macros")) < 0))
+	        (xmlTextWriterStartElement(writer, XML_STR("macros")) < 0))
 	{
 		wxMessageBox(_("Failed to write to macros file!"));
 		xmlFreeTextWriter(writer);

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -27,31 +27,31 @@ public:
 class frmOptions : public pgDialog
 {
 public:
-    frmOptions(frmMain *parent);
-    ~frmOptions();
-    
-private:
-    frmMain *mainForm;
+	frmOptions(frmMain *parent);
+	~frmOptions();
 
-    void OnOK(wxCommandEvent &ev);
-    void OnCancel(wxCommandEvent &ev);
-    void OnHelp(wxCommandEvent &ev);
-    void OnDefault(wxCommandEvent &ev);
-    void OnSuppressHints(wxCommandEvent &ev);
-    void OnResetHints(wxCommandEvent &ev);
+private:
+	frmMain *mainForm;
+
+	void OnOK(wxCommandEvent &ev);
+	void OnCancel(wxCommandEvent &ev);
+	void OnHelp(wxCommandEvent &ev);
+	void OnDefault(wxCommandEvent &ev);
+	void OnSuppressHints(wxCommandEvent &ev);
+	void OnResetHints(wxCommandEvent &ev);
 	void OnChangeCopyQuote(wxCommandEvent &ev);
 	void OnChangeSQLUseCustomColour(wxCommandEvent &ev);
-    wxString CheckColour(wxString colour);
+	wxString CheckColour(wxString colour);
 	void UpdateColourControls();
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 
 class optionsFactory : public actionFactory
 {
 public:
-    optionsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	optionsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
 };
 
 

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,23 +16,23 @@
 
 class pgsNot : public pgsOperation
 {
-	
+
 public:
 
-	pgsNot(const pgsExpression * left);
+	pgsNot(const pgsExpression *left);
 
 	virtual ~pgsNot();
 
-	virtual pgsExpression * clone() const;
+	virtual pgsExpression *clone() const;
 
-	pgsNot(const pgsNot & that);
+	pgsNot(const pgsNot &that);
 
-	pgsNot & operator =(const pgsNot & that);
+	pgsNot &operator =(const pgsNot &that);
 
 	virtual wxString value() const;
-	
-	virtual pgsOperand eval(pgsVarMap & vars) const;
-	
+
+	virtual pgsOperand eval(pgsVarMap &vars) const;
+
 };
 
 #endif /*PGSNOT_H_*/

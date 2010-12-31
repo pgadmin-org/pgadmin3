@@ -31,9 +31,9 @@
 
 typedef struct ScanKeyword
 {
-    const char *name;			/* in lower case */
-    int		value;			/* grammar's token code */
-    int		category;		/* see codes above */
+	const char *name;			/* in lower case */
+	int		value;			/* grammar's token code */
+	int		category;		/* see codes above */
 } ScanKeyword;
 
 extern const ScanKeyword *ScanKeywordLookup(const char *text);

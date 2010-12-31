@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgForeignKey.h - ForeignKey property 
+// dlgForeignKey.h - ForeignKey property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,35 +22,38 @@ class pgTable;
 class dlgForeignKey : public dlgCollistProperty
 {
 public:
-    dlgForeignKey(pgaFactory *factory, frmMain *frame, pgForeignKey *node, pgTable *parentNode);
-    dlgForeignKey(pgaFactory *factory, frmMain *frame, ctlListView *colList);
+	dlgForeignKey(pgaFactory *factory, frmMain *frame, pgForeignKey *node, pgTable *parentNode);
+	dlgForeignKey(pgaFactory *factory, frmMain *frame, ctlListView *colList);
 
-    void CheckChange();
-    wxString GetSql();
-    wxString GetDefinition();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
-    wxString GetHelpPage() const { return wxT("pg/sql-altertable"); }
+	void CheckChange();
+	wxString GetSql();
+	wxString GetDefinition();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
+	wxString GetHelpPage() const
+	{
+		return wxT("pg/sql-altertable");
+	}
 
-    int Go(bool modal);
+	int Go(bool modal);
 
 private:
-    pgForeignKey *foreignKey;
-    wxString savedIndexName, savedFKName;
+	pgForeignKey *foreignKey;
+	wxString savedIndexName, savedFKName;
 
-    wxString DefaultIndexName(const wxString &name);
+	wxString DefaultIndexName(const wxString &name);
 
 #ifdef __WXMAC__
-    void OnChangeSize(wxSizeEvent &ev);
+	void OnChangeSize(wxSizeEvent &ev);
 #endif
-    void OnSelChangeCol(wxListEvent &ev);
-    void OnSelChangeRef(wxCommandEvent &ev);
-    void OnSelChangeRefCol(wxCommandEvent &ev);
-    void OnAddRef(wxCommandEvent &ev);
-    void OnRemoveRef(wxCommandEvent &ev);
-    void OnOK(wxCommandEvent &ev);
+	void OnSelChangeCol(wxListEvent &ev);
+	void OnSelChangeRef(wxCommandEvent &ev);
+	void OnSelChangeRefCol(wxCommandEvent &ev);
+	void OnAddRef(wxCommandEvent &ev);
+	void OnRemoveRef(wxCommandEvent &ev);
+	void OnOK(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

@@ -1,5 +1,5 @@
 
-/* 
+/*
  *  M_APM  -  mapmcnst.c
  *
  *  Copyright (C) 1999 - 2007   Michael C. Ring
@@ -20,7 +20,7 @@
 
 /*
  *
- *      This file contains declarations and initializes the constants 
+ *      This file contains declarations and initializes the constants
  *	used throughout the library.
  *
  */
@@ -63,36 +63,36 @@ M_APM	MM_LOG_2_BASE_E  = NULL;
 M_APM	MM_LOG_3_BASE_E  = NULL;
 
 
-static char MM_cnst_PI[] = 
-"3.1415926535897932384626433832795028841971693993751058209749445923078\
+static char MM_cnst_PI[] =
+    "3.1415926535897932384626433832795028841971693993751058209749445923078\
 1640628620899862803482534211706798214808651328230664709384460955";
 
-static char MM_cnst_E[] = 
-"2.7182818284590452353602874713526624977572470936999595749669676277240\
+static char MM_cnst_E[] =
+    "2.7182818284590452353602874713526624977572470936999595749669676277240\
 76630353547594571382178525166427427466391932003059921817413596629";
 
-static char MM_cnst_log_2[] = 
-"0.6931471805599453094172321214581765680755001343602552541206800094933\
+static char MM_cnst_log_2[] =
+    "0.6931471805599453094172321214581765680755001343602552541206800094933\
 93621969694715605863326996418687542001481020570685733685520235758";
 
-static char MM_cnst_log_3[] = 
-"1.0986122886681096913952452369225257046474905578227494517346943336374\
+static char MM_cnst_log_3[] =
+    "1.0986122886681096913952452369225257046474905578227494517346943336374\
 9429321860896687361575481373208878797002906595786574236800422593";
 
-static char MM_cnst_log_10[] = 
-"2.3025850929940456840179914546843642076011014886287729760333279009675\
+static char MM_cnst_log_10[] =
+    "2.3025850929940456840179914546843642076011014886287729760333279009675\
 7260967735248023599720508959829834196778404228624863340952546508";
 
-static char MM_cnst_1_log_10[] = 
-"0.4342944819032518276511289189166050822943970058036665661144537831658\
+static char MM_cnst_1_log_10[] =
+    "0.4342944819032518276511289189166050822943970058036665661144537831658\
 64649208870774729224949338431748318706106744766303733641679287159";
 
 /*
  *     the following constants have ~520 digits each, if needed
  */
 
-/* 
-static char MM_cnst_PI[] = 
+/*
+static char MM_cnst_PI[] =
 "3.1415926535897932384626433832795028841971693993751058209749445923078\
 164062862089986280348253421170679821480865132823066470938446095505822\
 317253594081284811174502841027019385211055596446229489549303819644288\
@@ -102,7 +102,7 @@ static char MM_cnst_PI[] =
 595919530921861173819326117931051185480744623799627495673518857527248\
 91227938183011949129833673362440656643";
 
-static char MM_cnst_E[] = 
+static char MM_cnst_E[] =
 "2.7182818284590452353602874713526624977572470936999595749669676277240\
 766303535475945713821785251664274274663919320030599218174135966290435\
 729003342952605956307381323286279434907632338298807531952510190115738\
@@ -112,7 +112,7 @@ static char MM_cnst_E[] =
 151086574637721112523897844250569536967707854499699679468644549059879\
 3163688923009879312773617821542499923";
 
-static char MM_cnst_log_2[] = 
+static char MM_cnst_log_2[] =
 "0.6931471805599453094172321214581765680755001343602552541206800094933\
 936219696947156058633269964186875420014810205706857336855202357581305\
 570326707516350759619307275708283714351903070386238916734711233501153\
@@ -122,7 +122,7 @@ static char MM_cnst_log_2[] =
 738737229289564935470257626520988596932019650585547647033067936544325\
 47632744951250406069438147104689946506";
 
-static char MM_cnst_log_3[] = 
+static char MM_cnst_log_3[] =
 "1.0986122886681096913952452369225257046474905578227494517346943336374\
 942932186089668736157548137320887879700290659578657423680042259305198\
 210528018707672774106031627691833813671793736988443609599037425703167\
@@ -132,7 +132,7 @@ static char MM_cnst_log_3[] =
 876474948670796130858294116021661211840014098255143919487688936798494\
 3022557315353296853452952514592138765";
 
-static char MM_cnst_log_10[] = 
+static char MM_cnst_log_10[] =
 "2.3025850929940456840179914546843642076011014886287729760333279009675\
 726096773524802359972050895982983419677840422862486334095254650828067\
 566662873690987816894829072083255546808437998948262331985283935053089\
@@ -142,7 +142,7 @@ static char MM_cnst_log_10[] =
 277502684916746550586856935673420670581136429224554405758925724208241\
 31469568901675894025677631135691929203";
 
-static char MM_cnst_1_log_10[] = 
+static char MM_cnst_1_log_10[] =
 "0.4342944819032518276511289189166050822943970058036665661144537831658\
 646492088707747292249493384317483187061067447663037336416792871589639\
 065692210646628122658521270865686703295933708696588266883311636077384\
@@ -157,135 +157,135 @@ static char MM_cnst_1_log_10[] =
 /****************************************************************************/
 char	*m_apm_lib_version(char *v)
 {
-strcpy(v, MAPM_LIB_VERSION);
-return(v);
+	strcpy(v, MAPM_LIB_VERSION);
+	return(v);
 }
 /****************************************************************************/
 char	*m_apm_lib_short_version(char *v)
 {
-strcpy(v, MAPM_LIB_SHORT_VERSION);
-return(v);
+	strcpy(v, MAPM_LIB_SHORT_VERSION);
+	return(v);
 }
 /****************************************************************************/
 void	M_free_all_cnst()
 {
-if (MM_lc_PI_digits != 0)
-  {
-   m_apm_free(MM_Zero);
-   m_apm_free(MM_One);
-   m_apm_free(MM_Two);
-   m_apm_free(MM_Three);
-   m_apm_free(MM_Four);
-   m_apm_free(MM_Five);
-   m_apm_free(MM_Ten);
-   m_apm_free(MM_0_5);
-   m_apm_free(MM_LOG_2_BASE_E);
-   m_apm_free(MM_LOG_3_BASE_E);
-   m_apm_free(MM_E);
-   m_apm_free(MM_PI);
-   m_apm_free(MM_HALF_PI);
-   m_apm_free(MM_2_PI);
-   m_apm_free(MM_lc_PI);
-   m_apm_free(MM_lc_HALF_PI);
-   m_apm_free(MM_lc_2_PI);
-   m_apm_free(MM_lc_log2);
-   m_apm_free(MM_lc_log10);
-   m_apm_free(MM_lc_log10R);
-   m_apm_free(MM_0_85);
-   m_apm_free(MM_5x_125R);
-   m_apm_free(MM_5x_64R);
-   m_apm_free(MM_5x_256R);
-   m_apm_free(MM_5x_Eight);
-   m_apm_free(MM_5x_Sixteen);
-   m_apm_free(MM_5x_Twenty);
-   m_apm_free(MM_LOG_E_BASE_10);
-   m_apm_free(MM_LOG_10_BASE_E);
+	if (MM_lc_PI_digits != 0)
+	{
+		m_apm_free(MM_Zero);
+		m_apm_free(MM_One);
+		m_apm_free(MM_Two);
+		m_apm_free(MM_Three);
+		m_apm_free(MM_Four);
+		m_apm_free(MM_Five);
+		m_apm_free(MM_Ten);
+		m_apm_free(MM_0_5);
+		m_apm_free(MM_LOG_2_BASE_E);
+		m_apm_free(MM_LOG_3_BASE_E);
+		m_apm_free(MM_E);
+		m_apm_free(MM_PI);
+		m_apm_free(MM_HALF_PI);
+		m_apm_free(MM_2_PI);
+		m_apm_free(MM_lc_PI);
+		m_apm_free(MM_lc_HALF_PI);
+		m_apm_free(MM_lc_2_PI);
+		m_apm_free(MM_lc_log2);
+		m_apm_free(MM_lc_log10);
+		m_apm_free(MM_lc_log10R);
+		m_apm_free(MM_0_85);
+		m_apm_free(MM_5x_125R);
+		m_apm_free(MM_5x_64R);
+		m_apm_free(MM_5x_256R);
+		m_apm_free(MM_5x_Eight);
+		m_apm_free(MM_5x_Sixteen);
+		m_apm_free(MM_5x_Twenty);
+		m_apm_free(MM_LOG_E_BASE_10);
+		m_apm_free(MM_LOG_10_BASE_E);
 
-   MM_lc_PI_digits = 0;
-  }
+		MM_lc_PI_digits = 0;
+	}
 }
 /****************************************************************************/
 void	M_init_trig_globals()
 {
-MM_lc_PI_digits      = VALID_DECIMAL_PLACES;
-MM_lc_log_digits     = VALID_DECIMAL_PLACES;
-MM_cpp_min_precision = 30;
+	MM_lc_PI_digits      = VALID_DECIMAL_PLACES;
+	MM_lc_log_digits     = VALID_DECIMAL_PLACES;
+	MM_cpp_min_precision = 30;
 
-MM_Zero          = m_apm_init();
-MM_One           = m_apm_init();
-MM_Two           = m_apm_init();
-MM_Three         = m_apm_init();
-MM_Four          = m_apm_init();
-MM_Five          = m_apm_init();
-MM_Ten           = m_apm_init();
-MM_0_5           = m_apm_init();
-MM_LOG_2_BASE_E  = m_apm_init();
-MM_LOG_3_BASE_E  = m_apm_init();
-MM_E             = m_apm_init();
-MM_PI            = m_apm_init();
-MM_HALF_PI       = m_apm_init();
-MM_2_PI          = m_apm_init();
-MM_lc_PI         = m_apm_init();
-MM_lc_HALF_PI    = m_apm_init();
-MM_lc_2_PI       = m_apm_init();
-MM_lc_log2       = m_apm_init();
-MM_lc_log10      = m_apm_init();
-MM_lc_log10R     = m_apm_init();
-MM_0_85          = m_apm_init();
-MM_5x_125R       = m_apm_init();
-MM_5x_64R        = m_apm_init();
-MM_5x_256R       = m_apm_init();
-MM_5x_Eight      = m_apm_init();
-MM_5x_Sixteen    = m_apm_init();
-MM_5x_Twenty     = m_apm_init();
-MM_LOG_E_BASE_10 = m_apm_init();
-MM_LOG_10_BASE_E = m_apm_init();
+	MM_Zero          = m_apm_init();
+	MM_One           = m_apm_init();
+	MM_Two           = m_apm_init();
+	MM_Three         = m_apm_init();
+	MM_Four          = m_apm_init();
+	MM_Five          = m_apm_init();
+	MM_Ten           = m_apm_init();
+	MM_0_5           = m_apm_init();
+	MM_LOG_2_BASE_E  = m_apm_init();
+	MM_LOG_3_BASE_E  = m_apm_init();
+	MM_E             = m_apm_init();
+	MM_PI            = m_apm_init();
+	MM_HALF_PI       = m_apm_init();
+	MM_2_PI          = m_apm_init();
+	MM_lc_PI         = m_apm_init();
+	MM_lc_HALF_PI    = m_apm_init();
+	MM_lc_2_PI       = m_apm_init();
+	MM_lc_log2       = m_apm_init();
+	MM_lc_log10      = m_apm_init();
+	MM_lc_log10R     = m_apm_init();
+	MM_0_85          = m_apm_init();
+	MM_5x_125R       = m_apm_init();
+	MM_5x_64R        = m_apm_init();
+	MM_5x_256R       = m_apm_init();
+	MM_5x_Eight      = m_apm_init();
+	MM_5x_Sixteen    = m_apm_init();
+	MM_5x_Twenty     = m_apm_init();
+	MM_LOG_E_BASE_10 = m_apm_init();
+	MM_LOG_10_BASE_E = m_apm_init();
 
-m_apm_set_string(MM_One, "1");
-m_apm_set_string(MM_Two, "2");
-m_apm_set_string(MM_Three, "3");
-m_apm_set_string(MM_Four, "4");
-m_apm_set_string(MM_Five, "5");
-m_apm_set_string(MM_Ten, "10");
-m_apm_set_string(MM_0_5, "0.5");
-m_apm_set_string(MM_0_85, "0.85");
+	m_apm_set_string(MM_One, "1");
+	m_apm_set_string(MM_Two, "2");
+	m_apm_set_string(MM_Three, "3");
+	m_apm_set_string(MM_Four, "4");
+	m_apm_set_string(MM_Five, "5");
+	m_apm_set_string(MM_Ten, "10");
+	m_apm_set_string(MM_0_5, "0.5");
+	m_apm_set_string(MM_0_85, "0.85");
 
-m_apm_set_string(MM_5x_125R, "8.0E-3");
-m_apm_set_string(MM_5x_64R, "1.5625E-2");
-m_apm_set_string(MM_5x_256R, "3.90625E-3");
-m_apm_set_string(MM_5x_Eight, "8");
-m_apm_set_string(MM_5x_Sixteen, "16");
-m_apm_set_string(MM_5x_Twenty, "20");
+	m_apm_set_string(MM_5x_125R, "8.0E-3");
+	m_apm_set_string(MM_5x_64R, "1.5625E-2");
+	m_apm_set_string(MM_5x_256R, "3.90625E-3");
+	m_apm_set_string(MM_5x_Eight, "8");
+	m_apm_set_string(MM_5x_Sixteen, "16");
+	m_apm_set_string(MM_5x_Twenty, "20");
 
-m_apm_set_string(MM_LOG_2_BASE_E, MM_cnst_log_2);
-m_apm_set_string(MM_LOG_3_BASE_E, MM_cnst_log_3);
-m_apm_set_string(MM_LOG_10_BASE_E, MM_cnst_log_10);
-m_apm_set_string(MM_LOG_E_BASE_10, MM_cnst_1_log_10);
+	m_apm_set_string(MM_LOG_2_BASE_E, MM_cnst_log_2);
+	m_apm_set_string(MM_LOG_3_BASE_E, MM_cnst_log_3);
+	m_apm_set_string(MM_LOG_10_BASE_E, MM_cnst_log_10);
+	m_apm_set_string(MM_LOG_E_BASE_10, MM_cnst_1_log_10);
 
-m_apm_set_string(MM_lc_log2, MM_cnst_log_2);
-m_apm_set_string(MM_lc_log10, MM_cnst_log_10);
-m_apm_set_string(MM_lc_log10R, MM_cnst_1_log_10);
+	m_apm_set_string(MM_lc_log2, MM_cnst_log_2);
+	m_apm_set_string(MM_lc_log10, MM_cnst_log_10);
+	m_apm_set_string(MM_lc_log10R, MM_cnst_1_log_10);
 
-m_apm_set_string(MM_E, MM_cnst_E);
-m_apm_set_string(MM_PI, MM_cnst_PI);
-m_apm_multiply(MM_HALF_PI, MM_PI, MM_0_5);
-m_apm_multiply(MM_2_PI, MM_PI, MM_Two);
+	m_apm_set_string(MM_E, MM_cnst_E);
+	m_apm_set_string(MM_PI, MM_cnst_PI);
+	m_apm_multiply(MM_HALF_PI, MM_PI, MM_0_5);
+	m_apm_multiply(MM_2_PI, MM_PI, MM_Two);
 
-m_apm_copy(MM_lc_PI, MM_PI);
-m_apm_copy(MM_lc_HALF_PI, MM_HALF_PI);
-m_apm_copy(MM_lc_2_PI, MM_2_PI);
+	m_apm_copy(MM_lc_PI, MM_PI);
+	m_apm_copy(MM_lc_HALF_PI, MM_HALF_PI);
+	m_apm_copy(MM_lc_2_PI, MM_2_PI);
 }
 /****************************************************************************/
 void	m_apm_cpp_precision(int digits)
 {
-if (MM_lc_PI_digits == 0)
-  {
-   m_apm_free(m_apm_init());
-  }
+	if (MM_lc_PI_digits == 0)
+	{
+		m_apm_free(m_apm_init());
+	}
 
-if (digits >= 2)
-  MM_cpp_min_precision = digits;
-else
-  MM_cpp_min_precision = 2;
+	if (digits >= 2)
+		MM_cpp_min_precision = digits;
+	else
+		MM_cpp_min_precision = 2;
 }
 /****************************************************************************/

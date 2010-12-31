@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -20,15 +20,15 @@
 class gqbDatabase : public gqbObject
 {
 public:
-    gqbDatabase(wxString name, pgConn *connection);
-    void createObjects(gqbBrowser *_tablesBrowser);
+	gqbDatabase(wxString name, pgConn *connection);
+	void createObjects(gqbBrowser *_tablesBrowser);
 
 private:
-    enum typeSchema
-    {
-        GQB_CATALOG,
-        GQB_OTHER
-    };
-    void createSchemas(gqbBrowser *tablesBrowser, wxTreeItemId parentNode,typeSchema MetaType, int indexImage);
+	enum typeSchema
+	{
+		GQB_CATALOG,
+		GQB_OTHER
+	};
+	void createSchemas(gqbBrowser *tablesBrowser, wxTreeItemId parentNode, typeSchema MetaType, int indexImage);
 };
 #endif

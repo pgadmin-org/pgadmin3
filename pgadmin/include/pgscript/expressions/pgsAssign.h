@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -20,23 +20,23 @@ class pgsAssign : public pgsExpression
 protected:
 
 	wxString m_name;
-	const pgsExpression * m_var;
+	const pgsExpression *m_var;
 
 public:
 
-	pgsAssign(const wxString & name, const pgsExpression * var);
+	pgsAssign(const wxString &name, const pgsExpression *var);
 
 	virtual ~pgsAssign();
 
-	pgsAssign(const pgsAssign & that);
+	pgsAssign(const pgsAssign &that);
 
-	pgsAssign & operator=(const pgsAssign & that);
-	
-	virtual pgsExpression * clone() const;
+	pgsAssign &operator=(const pgsAssign &that);
+
+	virtual pgsExpression *clone() const;
 
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
+	virtual pgsOperand eval(pgsVarMap &vars) const;
 
 };
 

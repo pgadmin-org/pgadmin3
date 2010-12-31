@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -28,41 +28,41 @@
 
 enum
 {
-    CTL_RATECBO=250,
-    CTL_REFRESHBTN,
-    CTL_CANCELBTN,
-    CTL_TERMINATEBTN,
-    CTL_COMMITBTN,
-    CTL_ROLLBACKBTN,
-    CTL_LOGCBO,
-    CTL_ROTATEBTN,
-    CTL_STATUSLIST,
-    CTL_LOCKLIST,
-    CTL_XACTLIST,
-    CTL_LOGLIST,
-    MNU_STATUSPAGE,
-    MNU_LOCKPAGE,
-    MNU_XACTPAGE,
-    MNU_LOGPAGE,
-    MNU_TERMINATE,
-    MNU_COMMIT,
-    MNU_ROLLBACK,
+	CTL_RATECBO = 250,
+	CTL_REFRESHBTN,
+	CTL_CANCELBTN,
+	CTL_TERMINATEBTN,
+	CTL_COMMITBTN,
+	CTL_ROLLBACKBTN,
+	CTL_LOGCBO,
+	CTL_ROTATEBTN,
+	CTL_STATUSLIST,
+	CTL_LOCKLIST,
+	CTL_XACTLIST,
+	CTL_LOGLIST,
+	MNU_STATUSPAGE,
+	MNU_LOCKPAGE,
+	MNU_XACTPAGE,
+	MNU_LOGPAGE,
+	MNU_TERMINATE,
+	MNU_COMMIT,
+	MNU_ROLLBACK,
 	MNU_COPY_QUERY,
-    MNU_HIGHLIGHTSTATUS,
-    TIMER_REFRESHUI_ID,
-    TIMER_STATUS_ID,
-    TIMER_LOCKS_ID,
-    TIMER_XACT_ID,
-    TIMER_LOG_ID
+	MNU_HIGHLIGHTSTATUS,
+	TIMER_REFRESHUI_ID,
+	TIMER_STATUS_ID,
+	TIMER_LOCKS_ID,
+	TIMER_XACT_ID,
+	TIMER_LOG_ID
 };
 
 
 enum
 {
-    PANE_STATUS=1,
-    PANE_LOCKS,
-    PANE_XACT,
-    PANE_LOG
+	PANE_STATUS = 1,
+	PANE_LOCKS,
+	PANE_XACT,
+	PANE_LOG
 };
 
 
@@ -90,150 +90,150 @@ static wxCriticalSection gs_critsect;
 class frmStatus : public pgFrame
 {
 public:
-    frmStatus(frmMain *form, const wxString& _title, pgConn *conn);
-    ~frmStatus();
-    void Go();
-    
+	frmStatus(frmMain *form, const wxString &_title, pgConn *conn);
+	~frmStatus();
+	void Go();
+
 private:
-    wxAuiManager manager;
-    
-    frmMain *mainForm;
-    pgConn *connection, *locks_connection;
+	wxAuiManager manager;
 
-    wxString logFormat;
-    bool logHasTimestamp, logFormatKnown;
-    int logFmtPos;
+	frmMain *mainForm;
+	pgConn *connection, *locks_connection;
 
-    wxDateTime logfileTimestamp, latestTimestamp;
-    wxString logDirectory, logfileName;
+	wxString logFormat;
+	bool logHasTimestamp, logFormatKnown;
+	int logFmtPos;
 
-    wxString savedPartialLine;
+	wxDateTime logfileTimestamp, latestTimestamp;
+	wxString logDirectory, logfileName;
 
-    bool showCurrent, isCurrent;
-    
-    long backend_pid;
+	wxString savedPartialLine;
+
+	bool showCurrent, isCurrent;
+
+	long backend_pid;
 
 	bool loaded;
-    long logfileLength;
-    
-    int currentPane;
+	long logfileLength;
 
-    int statusSortColumn;
-    wxString statusSortOrder;
-    int lockSortColumn;
-    wxString lockSortOrder;
-    int xactSortColumn;
-    wxString xactSortOrder;
+	int currentPane;
 
-    wxComboBox    *cbRate;
-    wxComboBox    *cbLogfiles;
-    wxButton      *btnRotateLog;
-    ctlComboBoxFix *cbDatabase;
-    
-    wxTimer *refreshUITimer;
-    wxTimer *statusTimer, *locksTimer, *xactTimer, *logTimer;
-    int statusRate, locksRate, xactRate, logRate;
+	int statusSortColumn;
+	wxString statusSortOrder;
+	int lockSortColumn;
+	wxString lockSortOrder;
+	int xactSortColumn;
+	wxString xactSortOrder;
 
-    ctlListView   *statusList;
-    ctlListView   *lockList;
-    ctlListView   *xactList;
-    ctlListView   *logList;
-    
-    wxMenu        *statusPopupMenu;
-    wxMenu        *lockPopupMenu;
-    wxMenu        *xactPopupMenu;
-    
-    int statusColWidth[10], lockColWidth[10], xactColWidth[5];
-    
-    int cboToRate();
-    wxString rateToCboString(int rate);
+	wxComboBox    *cbRate;
+	wxComboBox    *cbLogfiles;
+	wxButton      *btnRotateLog;
+	ctlComboBoxFix *cbDatabase;
 
-    wxImageList *listimages;
+	wxTimer *refreshUITimer;
+	wxTimer *statusTimer, *locksTimer, *xactTimer, *logTimer;
+	int statusRate, locksRate, xactRate, logRate;
 
-    void AddStatusPane();
-    void AddLockPane();
-    void AddXactPane();
-    void AddLogPane();
+	ctlListView   *statusList;
+	ctlListView   *lockList;
+	ctlListView   *xactList;
+	ctlListView   *logList;
 
-    void OnHelp(wxCommandEvent& ev);
-    void OnExit(wxCommandEvent& event);
-    
-    void OnCopy(wxCommandEvent& ev);
-    void OnCopyQuery(wxCommandEvent& ev);
+	wxMenu        *statusPopupMenu;
+	wxMenu        *lockPopupMenu;
+	wxMenu        *xactPopupMenu;
 
-    void OnToggleStatusPane(wxCommandEvent& event);
-    void OnToggleLockPane(wxCommandEvent& event);
-    void OnToggleXactPane(wxCommandEvent& event);
-    void OnToggleLogPane(wxCommandEvent& event);
-    void OnToggleToolBar(wxCommandEvent& event);
-    void OnDefaultView(wxCommandEvent& event);
-    void OnHighlightStatus(wxCommandEvent& event);
-    
-    void OnRefreshUITimer(wxTimerEvent &event);
-    void OnRefreshStatusTimer(wxTimerEvent &event);
-    void OnRefreshLocksTimer(wxTimerEvent &event);
-    void OnRefreshXactTimer(wxTimerEvent &event);
-    void OnRefreshLogTimer(wxTimerEvent &event);
-    
-    void SetColumnImage(ctlListView *list, int col, int image);
-    void OnSortStatusGrid(wxListEvent &event);
-    void OnSortLockGrid(wxListEvent &event);
-    void OnSortXactGrid(wxListEvent &event);
+	int statusColWidth[10], lockColWidth[10], xactColWidth[5];
 
-    void OnRightClickStatusGrid(wxListEvent &event);
-    void OnRightClickLockGrid(wxListEvent &event);
-    void OnRightClickXactGrid(wxListEvent &event);
-    
-    void OnStatusMenu(wxCommandEvent &event);
-    void OnLockMenu(wxCommandEvent &event);
-    void OnXactMenu(wxCommandEvent &event);
-    
-    void OnChgColSizeStatusGrid(wxListEvent &event);
-    void OnChgColSizeLockGrid(wxListEvent &event);
-    void OnChgColSizeXactGrid(wxListEvent &event);
+	int cboToRate();
+	wxString rateToCboString(int rate);
 
-    void OnRateChange(wxCommandEvent &event);
-    
-    void OnPaneClose(wxAuiManagerEvent& evt);
+	wxImageList *listimages;
 
-    void OnClose(wxCloseEvent &event);
-    void OnRefresh(wxCommandEvent &event);
-    void OnCancelBtn(wxCommandEvent &event);
-    void OnStatusCancelBtn(wxCommandEvent &event);
-    void OnLocksCancelBtn(wxCommandEvent &event);
-    void OnTerminateBtn(wxCommandEvent &event);
-    void OnStatusTerminateBtn(wxCommandEvent &event);
-    void OnLocksTerminateBtn(wxCommandEvent &event);
+	void AddStatusPane();
+	void AddLockPane();
+	void AddXactPane();
+	void AddLogPane();
+
+	void OnHelp(wxCommandEvent &ev);
+	void OnExit(wxCommandEvent &event);
+
+	void OnCopy(wxCommandEvent &ev);
+	void OnCopyQuery(wxCommandEvent &ev);
+
+	void OnToggleStatusPane(wxCommandEvent &event);
+	void OnToggleLockPane(wxCommandEvent &event);
+	void OnToggleXactPane(wxCommandEvent &event);
+	void OnToggleLogPane(wxCommandEvent &event);
+	void OnToggleToolBar(wxCommandEvent &event);
+	void OnDefaultView(wxCommandEvent &event);
+	void OnHighlightStatus(wxCommandEvent &event);
+
+	void OnRefreshUITimer(wxTimerEvent &event);
+	void OnRefreshStatusTimer(wxTimerEvent &event);
+	void OnRefreshLocksTimer(wxTimerEvent &event);
+	void OnRefreshXactTimer(wxTimerEvent &event);
+	void OnRefreshLogTimer(wxTimerEvent &event);
+
+	void SetColumnImage(ctlListView *list, int col, int image);
+	void OnSortStatusGrid(wxListEvent &event);
+	void OnSortLockGrid(wxListEvent &event);
+	void OnSortXactGrid(wxListEvent &event);
+
+	void OnRightClickStatusGrid(wxListEvent &event);
+	void OnRightClickLockGrid(wxListEvent &event);
+	void OnRightClickXactGrid(wxListEvent &event);
+
+	void OnStatusMenu(wxCommandEvent &event);
+	void OnLockMenu(wxCommandEvent &event);
+	void OnXactMenu(wxCommandEvent &event);
+
+	void OnChgColSizeStatusGrid(wxListEvent &event);
+	void OnChgColSizeLockGrid(wxListEvent &event);
+	void OnChgColSizeXactGrid(wxListEvent &event);
+
+	void OnRateChange(wxCommandEvent &event);
+
+	void OnPaneClose(wxAuiManagerEvent &evt);
+
+	void OnClose(wxCloseEvent &event);
+	void OnRefresh(wxCommandEvent &event);
+	void OnCancelBtn(wxCommandEvent &event);
+	void OnStatusCancelBtn(wxCommandEvent &event);
+	void OnLocksCancelBtn(wxCommandEvent &event);
+	void OnTerminateBtn(wxCommandEvent &event);
+	void OnStatusTerminateBtn(wxCommandEvent &event);
+	void OnLocksTerminateBtn(wxCommandEvent &event);
 	void OnSelStatusItem(wxListEvent &event);
 	void OnSelLockItem(wxListEvent &event);
-    void OnSelXactItem(wxListEvent &event);
-    void OnSelLogItem(wxListEvent &event);
+	void OnSelXactItem(wxListEvent &event);
+	void OnSelLogItem(wxListEvent &event);
 	void OnLoadLogfile(wxCommandEvent &event);
-    void OnRotateLogfile(wxCommandEvent &event);
-    void OnCommit(wxCommandEvent &event);
-    void OnRollback(wxCommandEvent &event);
+	void OnRotateLogfile(wxCommandEvent &event);
+	void OnCommit(wxCommandEvent &event);
+	void OnRollback(wxCommandEvent &event);
 
-    void OnChangeDatabase(wxCommandEvent &ev);
+	void OnChangeDatabase(wxCommandEvent &ev);
 
-    int fillLogfileCombo();
-    void emptyLogfileCombo();
+	int fillLogfileCombo();
+	void emptyLogfileCombo();
 
-    void addLogFile(wxDateTime *dt, bool skipFirst);
-    void addLogFile(const wxString &filename, const wxDateTime timestamp, long len, long &read, bool skipFirst);
-    void addLogLine(const wxString &str, bool formatted=true, bool csv_log_format=false);
+	void addLogFile(wxDateTime *dt, bool skipFirst);
+	void addLogFile(const wxString &filename, const wxDateTime timestamp, long len, long &read, bool skipFirst);
+	void addLogLine(const wxString &str, bool formatted = true, bool csv_log_format = false);
 
 	void checkConnection();
-    
-    DECLARE_EVENT_TABLE()
+
+	DECLARE_EVENT_TABLE()
 };
 
 
 class serverStatusFactory : public actionFactory
 {
 public:
-    serverStatusFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
-    bool CheckEnable(pgObject *obj);
+	serverStatusFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
 };
 
 #endif

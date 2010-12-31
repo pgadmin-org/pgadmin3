@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -63,7 +63,7 @@ const wxString SERVER_MAX_VERSION_T = wxT("9.1");
 #endif
 
 // Some redefines for modern Microsoft compilers
-#if defined(_MSC_VER) 
+#if defined(_MSC_VER)
 #define creat _creat
 #define close _close
 #define mkdir _mkdir
@@ -106,10 +106,10 @@ extern wxString gpBackupExecutable;
 extern wxString gpBackupAllExecutable;
 extern wxString gpRestoreExecutable;
 
-// 
+//
 // Support for additional functions included in the EnterpriseDB
 // version of libpq. These are enable via runtime loading of the
-// functions on Windows, and a configure time macro on other 
+// functions on Windows, and a configure time macro on other
 // platforms (EDB_LIBPQ).
 //
 // Currently, these are only use to support EDB callable statements
@@ -118,17 +118,17 @@ extern wxString gpRestoreExecutable;
 //
 #ifdef __WXMSW__
 // Dynamically loaded PQgetOutResult
-typedef PGresult* (*PQGETOUTRESULT)(PGconn*);
+typedef PGresult* (*PQGETOUTRESULT)(PGconn *);
 extern PQGETOUTRESULT PQiGetOutResult;
 #define PQiGetOutResult (PQiGetOutResult)
 
 // Dynamically loaded PQprepareOut
-typedef PGresult* (*PQPREPAREOUT)(PGconn*, const char*, const char*, int, const Oid*, const int*);
+typedef PGresult* (*PQPREPAREOUT)(PGconn *, const char *, const char *, int, const Oid *, const int *);
 extern PQPREPAREOUT PQiPrepareOut;
 #define PQiPrepareOut (PQiPrepareOut)
 
 // Dynamically loaded PQsendQueryPreparedOut
-typedef int (*PQSENDQUERYPREPAREDOUT)(PGconn*, const char*, int, const char *const *, const int *, const int *, int);
+typedef int (*PQSENDQUERYPREPAREDOUT)(PGconn *, const char *, int, const char *const *, const int *, const int *, int);
 extern PQSENDQUERYPREPAREDOUT PQiSendQueryPreparedOut;
 #define PQiSendQueryPreparedOut (PQiSendQueryPreparedOut)
 
@@ -147,32 +147,32 @@ WX_DECLARE_STRING_HASH_MAP(wxString, cacheMap);
 class pgAdmin3 : public wxApp
 {
 public:
-    virtual bool OnInit();
-    virtual int OnExit();
-    
+	virtual bool OnInit();
+	virtual int OnExit();
+
 #ifdef __WXMAC__
-    void MacOpenFile(const wxString &fileName); 
+	void MacOpenFile(const wxString &fileName);
 #endif
 
 private:
-    wxString LocatePath(const wxString &pathToFind, const bool isFile);
-    wxString GenerateHelpPath(const wxString &file, const wxString &current, wxPathList stdPaths, wxPathList dbmsPaths);
-    bool LoadAllXrc(const wxString dir);
+	wxString LocatePath(const wxString &pathToFind, const bool isFile);
+	wxString GenerateHelpPath(const wxString &file, const wxString &current, wxPathList stdPaths, wxPathList dbmsPaths);
+	bool LoadAllXrc(const wxString dir);
 
 #ifdef __WXMAC__
-    wxString macFileToOpen;
+	wxString macFileToOpen;
 #endif
-    
+
 protected:
-    void InitAppPaths();
-    void InitXtraPaths();
-    void InitHelp();
-    void InitLogger();
-    void InitNetwork();
-    void InitXml();
+	void InitAppPaths();
+	void InitXtraPaths();
+	void InitHelp();
+	void InitLogger();
+	void InitNetwork();
+	void InitXml();
 
 #ifdef __WXMSW__
-    void InitLibpq();
+	void InitLibpq();
 #endif
 
 };
@@ -180,31 +180,64 @@ protected:
 class pgAppearanceFactory
 {
 public:
-    pgAppearanceFactory();
+	pgAppearanceFactory();
 
-    void SetIcons(wxDialog *dlg);
-    void SetIcons(wxTopLevelWindow *dlg);
-    wxIcon GetSmallIconImage();
-    wxIcon GetBigIconImage();
-    wxBitmap GetSplashImage() { return wxBitmap(splash_image); };
-    wxFont GetSplashTextFont();
-    wxColour GetSplashTextColour() { return splash_text_colour; };
-    long GetSplashTextOffset() { return splash_pos_offset; };
-    wxPoint GetSplashTextPos() { return wxPoint(splash_pos_x, splash_pos_y); };
-    wxString GetShortAppName() { return short_appname; };
-    wxString GetLongAppName() { return long_appname; };
-    wxString GetWebsiteUrl() { return website_url; };
-    wxColour GetReportKeyColour() { return report_key_colour; };
-    bool GetHideEnterprisedbHelp() { return hide_enterprisedb_help; };
-    bool GetHideGreenplumHelp() { return hide_greenplum_help; };
-    bool IsBranded() { return is_branded; };
+	void SetIcons(wxDialog *dlg);
+	void SetIcons(wxTopLevelWindow *dlg);
+	wxIcon GetSmallIconImage();
+	wxIcon GetBigIconImage();
+	wxBitmap GetSplashImage()
+	{
+		return wxBitmap(splash_image);
+	};
+	wxFont GetSplashTextFont();
+	wxColour GetSplashTextColour()
+	{
+		return splash_text_colour;
+	};
+	long GetSplashTextOffset()
+	{
+		return splash_pos_offset;
+	};
+	wxPoint GetSplashTextPos()
+	{
+		return wxPoint(splash_pos_x, splash_pos_y);
+	};
+	wxString GetShortAppName()
+	{
+		return short_appname;
+	};
+	wxString GetLongAppName()
+	{
+		return long_appname;
+	};
+	wxString GetWebsiteUrl()
+	{
+		return website_url;
+	};
+	wxColour GetReportKeyColour()
+	{
+		return report_key_colour;
+	};
+	bool GetHideEnterprisedbHelp()
+	{
+		return hide_enterprisedb_help;
+	};
+	bool GetHideGreenplumHelp()
+	{
+		return hide_greenplum_help;
+	};
+	bool IsBranded()
+	{
+		return is_branded;
+	};
 
 private:
-    wxString long_appname, short_appname, website_url, icon;
-    wxImage large_icon, small_icon, splash_image;
-    long splash_font_size, splash_pos_x, splash_pos_y, splash_pos_offset;
-    wxColor splash_text_colour, report_key_colour;
-    bool hide_enterprisedb_help, hide_greenplum_help, is_branded;
+	wxString long_appname, short_appname, website_url, icon;
+	wxImage large_icon, small_icon, splash_image;
+	long splash_font_size, splash_pos_x, splash_pos_y, splash_pos_offset;
+	wxColor splash_text_colour, report_key_colour;
+	bool hide_enterprisedb_help, hide_greenplum_help, is_branded;
 };
 
 extern pgAppearanceFactory *appearanceFactory;

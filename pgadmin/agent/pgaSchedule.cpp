@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -25,72 +25,72 @@
 #include "agent/pgaSchedule.h"
 
 
-pgaSchedule::pgaSchedule(pgCollection *_collection, const wxString& newName)
-: pgaJobObject(_collection->GetJob(), scheduleFactory, newName)
+pgaSchedule::pgaSchedule(pgCollection *_collection, const wxString &newName)
+	: pgaJobObject(_collection->GetJob(), scheduleFactory, newName)
 {
 }
 
 wxString pgaSchedule::GetTranslatedMessage(int kindOfMessage) const
 {
-    wxString message = wxEmptyString;
-    
-    switch (kindOfMessage)
-    {
-        case RETRIEVINGDETAILS:
-            message = _("Retrieving details on pgAgent schedule");
-            break;
-        case REFRESHINGDETAILS:
-            message = _("Refreshing pgAgent schedule");
-            break;
-        case PROPERTIESREPORT:
-            message = _("pgAgent schedule properties report");
-            break;
-        case PROPERTIES:
-            message = _("pgAgent schedule properties");
-            break;
-        case DEPENDENCIESREPORT:
-            message = _("pgAgent schedule dependencies report");
-            break;
-        case DEPENDENCIES:
-            message = _("pgAgent schedule dependencies");
-            break;
-        case DEPENDENTSREPORT:
-            message = _("pgAgent schedule dependents report");
-            break;
-        case DEPENDENTS:
-            message = _("pgAgent schedule dependents");
-            break;
-    }
-    
-    if (!message.IsEmpty())
-        message += wxT(" ") + GetName();
+	wxString message = wxEmptyString;
 
-    return message;
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on pgAgent schedule");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing pgAgent schedule");
+			break;
+		case PROPERTIESREPORT:
+			message = _("pgAgent schedule properties report");
+			break;
+		case PROPERTIES:
+			message = _("pgAgent schedule properties");
+			break;
+		case DEPENDENCIESREPORT:
+			message = _("pgAgent schedule dependencies report");
+			break;
+		case DEPENDENCIES:
+			message = _("pgAgent schedule dependencies");
+			break;
+		case DEPENDENTSREPORT:
+			message = _("pgAgent schedule dependents report");
+			break;
+		case DEPENDENTS:
+			message = _("pgAgent schedule dependents");
+			break;
+	}
+
+	if (!message.IsEmpty())
+		message += wxT(" ") + GetName();
+
+	return message;
 }
 
 bool pgaSchedule::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-    return GetConnection()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetRecId()));
+	return GetConnection()->ExecuteVoid(wxT("DELETE FROM pgagent.pga_schedule WHERE jscid=") + NumToStr(GetRecId()));
 }
 
 
 void pgaSchedule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
-    if (!expandedKids)
-    {
-        expandedKids=true;
-    }
+	if (!expandedKids)
+	{
+		expandedKids = true;
+	}
 
-    if (properties)
-    {
-        CreateListColumns(properties);
+	if (properties)
+	{
+		CreateListColumns(properties);
 
-        properties->AppendItem(_("Name"), GetName());
-        properties->AppendItem(_("ID"), GetRecId());
-        properties->AppendItem(_("Enabled"), GetEnabled());
+		properties->AppendItem(_("Name"), GetName());
+		properties->AppendItem(_("ID"), GetRecId());
+		properties->AppendItem(_("Enabled"), GetEnabled());
 
-        properties->AppendItem(_("Start date"), GetStart());
-        properties->AppendItem(_("End date"), GetEnd());
+		properties->AppendItem(_("Start date"), GetStart());
+		properties->AppendItem(_("End date"), GetEnd());
 		properties->AppendItem(_("Minutes"), GetMinutesString());
 		properties->AppendItem(_("Hours"), GetHoursString());
 		properties->AppendItem(_("Weekdays"), GetWeekdaysString());
@@ -98,46 +98,46 @@ void pgaSchedule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 		properties->AppendItem(_("Months"), GetMonthsString());
 		properties->AppendItem(_("Exceptions"), GetExceptionsString());
 
-        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
-    }
+		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+	}
 }
 
 
 
 pgObject *pgaSchedule::Refresh(ctlTree *browser, const wxTreeItemId item)
 {
-    pgObject *schedule=0;
-    
-    pgCollection *coll=browser->GetParentCollection(item);
-    if (coll)
-        schedule = scheduleFactory.CreateObjects(coll, 0, wxT("\n   AND jscid=") + NumToStr(GetRecId()));
+	pgObject *schedule = 0;
 
-    return schedule;
+	pgCollection *coll = browser->GetParentCollection(item);
+	if (coll)
+		schedule = scheduleFactory.CreateObjects(coll, 0, wxT("\n   AND jscid=") + NumToStr(GetRecId()));
+
+	return schedule;
 }
 
 
 
 pgObject *pgaScheduleFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
 {
-    pgaSchedule *schedule=0;
+	pgaSchedule *schedule = 0;
 	wxString tmp;
 
-    pgSet *schedules= collection->GetConnection()->ExecuteSet(
-       wxT("SELECT * FROM pgagent.pga_schedule\n")
-       wxT(" WHERE jscjobid=") + NumToStr(collection->GetJob()->GetRecId()) + wxT("\n")
-       + restriction +
-       wxT(" ORDER BY jscname"));
+	pgSet *schedules = collection->GetConnection()->ExecuteSet(
+	                       wxT("SELECT * FROM pgagent.pga_schedule\n")
+	                       wxT(" WHERE jscjobid=") + NumToStr(collection->GetJob()->GetRecId()) + wxT("\n")
+	                       + restriction +
+	                       wxT(" ORDER BY jscname"));
 
-    if (schedules)
-    {
-        while (!schedules->Eof())
-        {
+	if (schedules)
+	{
+		while (!schedules->Eof())
+		{
 
-            schedule = new pgaSchedule(collection, schedules->GetVal(wxT("jscname")));
-            schedule->iSetRecId(schedules->GetLong(wxT("jscid")));
-            schedule->iSetStart(schedules->GetDateTime(wxT("jscstart")));
-            schedule->iSetEnd(schedules->GetDateTime(wxT("jscend")));
-            schedule->iSetEnabled(schedules->GetBool(wxT("jscenabled")));
+			schedule = new pgaSchedule(collection, schedules->GetVal(wxT("jscname")));
+			schedule->iSetRecId(schedules->GetLong(wxT("jscid")));
+			schedule->iSetStart(schedules->GetDateTime(wxT("jscstart")));
+			schedule->iSetEnd(schedules->GetDateTime(wxT("jscend")));
+			schedule->iSetEnabled(schedules->GetBool(wxT("jscenabled")));
 
 			tmp = schedules->GetVal(wxT("jscminutes"));
 			tmp.Replace(wxT("{"), wxT(""));
@@ -169,14 +169,14 @@ pgObject *pgaScheduleFactory::CreateObjects(pgCollection *collection, ctlTree *b
 			tmp.Replace(wxT(","), wxT(""));
 			schedule->iSetMonths(tmp);
 
-            schedule->iSetComment(schedules->GetVal(wxT("jscdesc")));
+			schedule->iSetComment(schedules->GetVal(wxT("jscdesc")));
 
 			pgSet *exceptions =  collection->GetConnection()->ExecuteSet(
-				wxT("SELECT * FROM pgagent.pga_exception\n")
-				wxT(" WHERE jexscid=") + NumToStr(schedule->GetRecId()) + wxT("\n"));
-	
+			                         wxT("SELECT * FROM pgagent.pga_exception\n")
+			                         wxT(" WHERE jexscid=") + NumToStr(schedule->GetRecId()) + wxT("\n"));
+
 			tmp.Empty();
-		    if (exceptions)
+			if (exceptions)
 			{
 				while (!exceptions->Eof())
 				{
@@ -184,7 +184,7 @@ pgObject *pgaScheduleFactory::CreateObjects(pgCollection *collection, ctlTree *b
 					tmp += wxT("|");
 					tmp += exceptions->GetVal(wxT("jexdate"));
 					tmp += wxT("|");
-				    tmp += exceptions->GetVal(wxT("jextime"));
+					tmp += exceptions->GetVal(wxT("jextime"));
 					tmp += wxT("|");
 
 					exceptions->MoveNext();
@@ -193,18 +193,18 @@ pgObject *pgaScheduleFactory::CreateObjects(pgCollection *collection, ctlTree *b
 			schedule->iSetExceptions(tmp);
 			delete exceptions;
 
-            if (browser)
-            {
-                browser->AppendObject(collection, schedule);
+			if (browser)
+			{
+				browser->AppendObject(collection, schedule);
 				schedules->MoveNext();
-            }
-            else
-                break;
-        }
+			}
+			else
+				break;
+		}
 
 		delete schedules;
-    }
-    return schedule;
+	}
+	return schedule;
 }
 
 wxString pgaSchedule::GetMinutesString()
@@ -213,7 +213,7 @@ wxString pgaSchedule::GetMinutesString()
 	bool isWildcard = true;
 	wxString res, tmp;
 
-	for (x=0; x <= minutes.Length();x++)
+	for (x = 0; x <= minutes.Length(); x++)
 	{
 		if (minutes[x] == 't')
 		{
@@ -229,7 +229,7 @@ wxString pgaSchedule::GetMinutesString()
 	}
 	else
 	{
-		if (res.Length() > 2) 
+		if (res.Length() > 2)
 		{
 			res.RemoveLast();
 			res.RemoveLast();
@@ -245,7 +245,7 @@ wxString pgaSchedule::GetHoursString()
 	bool isWildcard = true;
 	wxString res, tmp;
 
-	for (x=0; x <= hours.Length();x++)
+	for (x = 0; x <= hours.Length(); x++)
 	{
 		if (hours[x] == 't')
 		{
@@ -261,7 +261,7 @@ wxString pgaSchedule::GetHoursString()
 	}
 	else
 	{
-		if (res.Length() > 2) 
+		if (res.Length() > 2)
 		{
 			res.RemoveLast();
 			res.RemoveLast();
@@ -277,7 +277,7 @@ wxString pgaSchedule::GetWeekdaysString()
 	bool isWildcard = true;
 	wxString res;
 
-	for (x=0; x <= weekdays.Length();x++)
+	for (x = 0; x <= weekdays.Length(); x++)
 	{
 		if (weekdays[x] == 't')
 		{
@@ -326,7 +326,7 @@ wxString pgaSchedule::GetWeekdaysString()
 	}
 	else
 	{
-		if (res.Length() > 2) 
+		if (res.Length() > 2)
 		{
 			res.RemoveLast();
 			res.RemoveLast();
@@ -342,7 +342,7 @@ wxString pgaSchedule::GetMonthdaysString()
 	bool isWildcard = true;
 	wxString res, tmp;
 
-	for (x=0; x <= monthdays.Length();x++)
+	for (x = 0; x <= monthdays.Length(); x++)
 	{
 		if (monthdays[x] == 't')
 		{
@@ -366,7 +366,7 @@ wxString pgaSchedule::GetMonthdaysString()
 	}
 	else
 	{
-		if (res.Length() > 2) 
+		if (res.Length() > 2)
 		{
 			res.RemoveLast();
 			res.RemoveLast();
@@ -382,7 +382,7 @@ wxString pgaSchedule::GetMonthsString()
 	bool isWildcard = true;
 	wxString res;
 
-	for (x=0; x <= months.Length();x++)
+	for (x = 0; x <= months.Length(); x++)
 	{
 		if (months[x] == 't')
 		{
@@ -451,7 +451,7 @@ wxString pgaSchedule::GetMonthsString()
 	}
 	else
 	{
-		if (res.Length() > 2) 
+		if (res.Length() > 2)
 		{
 			res.RemoveLast();
 			res.RemoveLast();
@@ -484,23 +484,23 @@ wxString pgaSchedule::GetExceptionsString()
 		if (tkz.HasMoreTokens())
 			timeToken = tkz.GetNextToken();
 
-        if (tmp.IsEmpty())
+		if (tmp.IsEmpty())
 			tmp += wxT("[");
 		else
 			tmp += wxT(", [");
 
-	    if (!dateToken.IsEmpty() && !timeToken.IsEmpty())
+		if (!dateToken.IsEmpty() && !timeToken.IsEmpty())
 		{
 			val.ParseDate(dateToken);
 			val.ParseTime(timeToken);
 			tmp += val.Format();
 		}
-	    else if (!dateToken.IsEmpty() && timeToken.IsEmpty())
+		else if (!dateToken.IsEmpty() && timeToken.IsEmpty())
 		{
 			val.ParseDate(dateToken);
 			tmp += val.FormatDate();
 		}
-	    else if (dateToken.IsEmpty() && !timeToken.IsEmpty())
+		else if (dateToken.IsEmpty() && !timeToken.IsEmpty())
 		{
 			val.ParseTime(timeToken);
 			tmp += val.FormatTime();
@@ -518,19 +518,19 @@ wxString pgaSchedule::GetExceptionsString()
 
 wxString pgaScheduleCollection::GetTranslatedMessage(int kindOfMessage) const
 {
-    wxString message = wxEmptyString;
-    
-    switch (kindOfMessage)
-    {
-        case RETRIEVINGDETAILS:
-            message = _("Retrieving details on pgAgent schedules");
-            break;
-        case REFRESHINGDETAILS:
-            message = _("Refreshing pgAgent schedules");
-            break;
-    }
-    
-    return message;
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on pgAgent schedules");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing pgAgent schedules");
+			break;
+	}
+
+	return message;
 }
 
 /////////////////////////////
@@ -539,10 +539,10 @@ wxString pgaScheduleCollection::GetTranslatedMessage(int kindOfMessage) const
 #include "images/schedule.xpm"
 #include "images/schedules.xpm"
 
-pgaScheduleFactory::pgaScheduleFactory() 
-: pgaJobObjFactory(__("Schedule"), __("New Schedule"), __("Create a new Schedule."), schedule_xpm)
+pgaScheduleFactory::pgaScheduleFactory()
+	: pgaJobObjFactory(__("Schedule"), __("New Schedule"), __("Create a new Schedule."), schedule_xpm)
 {
-    metaType = PGM_SCHEDULE;
+	metaType = PGM_SCHEDULE;
 }
 
 

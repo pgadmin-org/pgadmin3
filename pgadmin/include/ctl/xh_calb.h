@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,14 +16,14 @@
 
 #include "wx/xrc/xmlres.h"
 
-//class WXDLLIMPEXP_XRC 
+//class WXDLLIMPEXP_XRC
 class wxCalendarBoxXmlHandler : public wxXmlResourceHandler
 {
-DECLARE_DYNAMIC_CLASS(wxCalendarBoxXmlHandler)
+	DECLARE_DYNAMIC_CLASS(wxCalendarBoxXmlHandler)
 public:
-    wxCalendarBoxXmlHandler();
-    virtual wxObject *DoCreateResource();
-    virtual bool CanHandle(wxXmlNode *node);
+	wxCalendarBoxXmlHandler();
+	virtual wxObject *DoCreateResource();
+	virtual bool CanHandle(wxXmlNode *node);
 };
 
 

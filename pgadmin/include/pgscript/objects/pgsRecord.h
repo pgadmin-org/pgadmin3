@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -22,36 +22,36 @@ class pgsString;
 
 class pgsRecord : public pgsVariable
 {
-	
+
 public:
-	
-	virtual pgsOperand pgs_plus(const pgsVariable & rhs) const;
-	
-	virtual pgsOperand pgs_minus(const pgsVariable & rhs) const;
-	
-	virtual pgsOperand pgs_times(const pgsVariable & rhs) const;
-	
-	virtual pgsOperand pgs_over(const pgsVariable & rhs) const;
-	
-	virtual pgsOperand pgs_modulo(const pgsVariable & rhs) const;
-	
-	virtual pgsOperand pgs_equal(const pgsVariable & rhs) const;
-	
-	virtual pgsOperand pgs_different(const pgsVariable & rhs) const;
-	
-	virtual pgsOperand pgs_greater(const pgsVariable & rhs) const;
-	
-	virtual pgsOperand pgs_lower(const pgsVariable & rhs) const;
-	
-	virtual pgsOperand pgs_lower_equal(const pgsVariable & rhs) const;
-	
-	virtual pgsOperand pgs_greater_equal(const pgsVariable & rhs) const;
-	
+
+	virtual pgsOperand pgs_plus(const pgsVariable &rhs) const;
+
+	virtual pgsOperand pgs_minus(const pgsVariable &rhs) const;
+
+	virtual pgsOperand pgs_times(const pgsVariable &rhs) const;
+
+	virtual pgsOperand pgs_over(const pgsVariable &rhs) const;
+
+	virtual pgsOperand pgs_modulo(const pgsVariable &rhs) const;
+
+	virtual pgsOperand pgs_equal(const pgsVariable &rhs) const;
+
+	virtual pgsOperand pgs_different(const pgsVariable &rhs) const;
+
+	virtual pgsOperand pgs_greater(const pgsVariable &rhs) const;
+
+	virtual pgsOperand pgs_lower(const pgsVariable &rhs) const;
+
+	virtual pgsOperand pgs_lower_equal(const pgsVariable &rhs) const;
+
+	virtual pgsOperand pgs_greater_equal(const pgsVariable &rhs) const;
+
 	virtual pgsOperand pgs_not() const;
-	
+
 	virtual bool pgs_is_true() const;
-	
-	virtual pgsOperand pgs_almost_equal(const pgsVariable & rhs) const;
+
+	virtual pgsOperand pgs_almost_equal(const pgsVariable &rhs) const;
 
 protected:
 
@@ -61,19 +61,19 @@ protected:
 
 public:
 
-	explicit pgsRecord(const USHORT & nb_columns);
+	explicit pgsRecord(const USHORT &nb_columns);
 
 	virtual ~pgsRecord();
 
-	virtual pgsVariable * clone() const;
+	virtual pgsVariable *clone() const;
 
 	/* pgsRecord(const pgsRecord & that); */
-	
+
 	/* pgsRecord & operator =(const pgsRecord & that); */
 
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
+	virtual pgsOperand eval(pgsVarMap &vars) const;
 
 public:
 
@@ -85,23 +85,23 @@ public:
 	 * Inserts a new element at line.column. If there is something then
 	 * it is deleted before inserting the new element.
 	 */
-	bool insert(const USHORT & line, const USHORT & column,
-			pgsOperand value);
+	bool insert(const USHORT &line, const USHORT &column,
+	            pgsOperand value);
 
 	/**
 	 * Retrieves the element at line.column. If it does not exist it
 	 * returns an empty string.
 	 */
-	pgsOperand get(const USHORT & line,
-			const USHORT & column) const;
-	
-	pgsOperand get_line(const USHORT & line) const;
+	pgsOperand get(const USHORT &line,
+	               const USHORT &column) const;
+
+	pgsOperand get_line(const USHORT &line) const;
 
 	/**
 	 * Sets the name of a column. If the index is too high or if the name
 	 * already exists then false is returned.
 	 */
-	bool set_column_name(const USHORT & column, wxString name);
+	bool set_column_name(const USHORT &column, wxString name);
 
 	/**
 	 * Gets the index of a given column. If this column does not exist then it
@@ -110,7 +110,7 @@ public:
 	 */
 	USHORT get_column(wxString name) const;
 
-	bool remove_line(const USHORT & line);
+	bool remove_line(const USHORT &line);
 
 private:
 
@@ -119,35 +119,35 @@ private:
 	bool valid() const;
 
 public:
-	
-	bool operator==(const pgsRecord & rhs) const;
 
-	bool operator!=(const pgsRecord & rhs) const;
+	bool operator==(const pgsRecord &rhs) const;
 
-	bool operator<(const pgsRecord & rhs) const;
+	bool operator!=(const pgsRecord &rhs) const;
 
-	bool operator>(const pgsRecord & rhs) const;
+	bool operator<(const pgsRecord &rhs) const;
 
-	bool operator<=(const pgsRecord & rhs) const;
+	bool operator>(const pgsRecord &rhs) const;
 
-	bool operator>=(const pgsRecord & rhs) const;
-	
-	bool almost_equal(const pgsRecord & rhs) const;
+	bool operator<=(const pgsRecord &rhs) const;
+
+	bool operator>=(const pgsRecord &rhs) const;
+
+	bool almost_equal(const pgsRecord &rhs) const;
 
 private:
-	
-	bool records_equal(const pgsRecord & lhs, const pgsRecord & rhs,
-			bool case_sensitive = true) const;
 
-	bool lines_equal(const pgsVectorRecordLine & lhs,
-			const pgsVectorRecordLine & rhs, bool case_sensitive = true) const;
-	
+	bool records_equal(const pgsRecord &lhs, const pgsRecord &rhs,
+	                   bool case_sensitive = true) const;
+
+	bool lines_equal(const pgsVectorRecordLine &lhs,
+	                 const pgsVectorRecordLine &rhs, bool case_sensitive = true) const;
+
 public:
-	
+
 	virtual pgsNumber number() const;
-	
+
 	virtual pgsRecord record() const;
-	
+
 	virtual pgsString string() const;
 
 };

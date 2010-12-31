@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -24,18 +24,18 @@ private:
 
 public:
 
-	pgsDeclareRecordStmt(const wxString & rec,
-			const wxArrayString & columns, pgsThread * app = 0);
+	pgsDeclareRecordStmt(const wxString &rec,
+	                     const wxArrayString &columns, pgsThread *app = 0);
 
 	virtual ~pgsDeclareRecordStmt();
 
-	virtual void eval(pgsVarMap & vars) const;
+	virtual void eval(pgsVarMap &vars) const;
 
 private:
 
-	pgsDeclareRecordStmt(const pgsDeclareRecordStmt & that);
+	pgsDeclareRecordStmt(const pgsDeclareRecordStmt &that);
 
-	pgsDeclareRecordStmt & operator=(const pgsDeclareRecordStmt & that);
+	pgsDeclareRecordStmt &operator=(const pgsDeclareRecordStmt &that);
 
 };
 

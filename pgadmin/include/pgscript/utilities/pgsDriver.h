@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -36,12 +36,12 @@ namespace pgscript
  * a parameter. Therefore the driver class contains a reference to the
  * structure into which the parsed data is saved. */
 class pgsDriver
-{	
+{
 public:
 	/// Construct a new parser driver context
-	pgsDriver(class pgsContext & _context, class pgsProgram & _program,
-			class pgsThread & _thread);
-	
+	pgsDriver(class pgsContext &_context, class pgsProgram &_program,
+	          class pgsThread &_thread);
+
 	/// Destroy parser
 	~pgsDriver();
 
@@ -55,13 +55,13 @@ public:
 	 * @param in	input stream
 	 * @return		true if successfully parsed
 	 */
-	bool parse_stream(std::istream & in);
+	bool parse_stream(std::istream &in);
 
 	/** Invoke the scanner and parser on an input string.
 	 * @param input	input string
 	 * @return		true if successfully parsed
 	 */
-	bool parse_string(const wxString & input);
+	bool parse_string(const wxString &input);
 
 	/** Invoke the scanner and parser on a file. Use parse_stream with a
 	 * std::ifstream if detection of file reading errors is required.
@@ -69,7 +69,7 @@ public:
 	 * @param conv  multi-byte string converter
 	 * @return		true if successfully parsed
 	 */
-	bool parse_file(const wxString & filename, wxMBConv & conv = wxConvLocal);
+	bool parse_file(const wxString &filename, wxMBConv &conv = wxConvLocal);
 
 	// To demonstrate pure handling of parse errors, instead of
 	// simply dumping them on the standard error output, we will pass
@@ -77,20 +77,20 @@ public:
 
 	/** Error handling with associated line number. This can be modified to
 	 * output the error e.g. to a dialog box. */
-	void error(const class location & l, const wxString & m);
+	void error(const class location &l, const wxString &m);
 
 	/** Pointer to the current lexer instance, this is used to connect the
 	 * parser to the scanner. It is used in the yylex macro. */
-	class pgsScanner * lexer;
+	class pgsScanner *lexer;
 
 	/** Reference to the context filled during parsing of the expressions. */
-	class pgsContext & context;
-	
+	class pgsContext &context;
+
 	/** Contains the list of statements to execute. */
-	class pgsProgram & program;
-	
+	class pgsProgram &program;
+
 	/** The thread in which this driver is included. */
-	class pgsThread & thread;
+	class pgsThread &thread;
 };
 
 } // namespace pgscript

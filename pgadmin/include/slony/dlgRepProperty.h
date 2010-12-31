@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -20,10 +20,10 @@ class slCluster;
 class dlgRepProperty : public dlgProperty
 {
 public:
-    dlgRepProperty(pgaFactory *f, frmMain *frame, slCluster *c, const wxString &resName);
+	dlgRepProperty(pgaFactory *f, frmMain *frame, slCluster *c, const wxString &resName);
 
 protected:
-    slCluster *cluster;
+	slCluster *cluster;
 };
 
 

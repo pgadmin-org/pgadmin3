@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -11,7 +11,7 @@
 #include "pgAdmin3.h"
 #include "pgscript/statements/pgsStmt.h"
 
-pgsStmt::pgsStmt(pgsThread * app) :
+pgsStmt::pgsStmt(pgsThread *app) :
 	m_line(0), m_app(app)
 {
 

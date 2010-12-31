@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -9,7 +9,7 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "pgAdmin3.h" 
+#include "pgAdmin3.h"
 
 // wxWindows headers
 #include <wx/wx.h>
@@ -24,262 +24,264 @@
 
 #include "utils/sysLogger.h"
 
-wxLogLevel sysLogger::logLevel=LOG_ERRORS;
-wxString sysLogger::logFile=wxT("debug.log");
+wxLogLevel sysLogger::logLevel = LOG_ERRORS;
+wxString sysLogger::logFile = wxT("debug.log");
 
 // IMPLEMENT_LOG_FUNCTION(Sql) from wx../common/log.c
 void wxVLogQuietError(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[8192];
+	static wxChar s_szBuf[8192];
 
-    if (sysLogger::logLevel >= LOG_ERRORS)
-    {
-        wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
-        wxLog::OnLog(wxLOG_QuietError, s_szBuf, time(NULL));
+	if (sysLogger::logLevel >= LOG_ERRORS)
+	{
+		wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
+		wxLog::OnLog(wxLOG_QuietError, s_szBuf, time(NULL));
 
-    }
+	}
 }
 
 void wxLogQuietError(const wxChar *szFormat, ...)
 {
-    va_list argptr;
-    va_start(argptr, szFormat);
-    wxVLogQuietError(szFormat, argptr);
-    va_end(argptr);
+	va_list argptr;
+	va_start(argptr, szFormat);
+	wxVLogQuietError(szFormat, argptr);
+	va_end(argptr);
 }
 
 
 void wxVLogSql(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[8192];
+	static wxChar s_szBuf[8192];
 
-    if (sysLogger::logLevel >= LOG_SQL)
-    {
-        wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
-        wxLog::OnLog(wxLOG_Sql, s_szBuf, time(NULL));
+	if (sysLogger::logLevel >= LOG_SQL)
+	{
+		wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
+		wxLog::OnLog(wxLOG_Sql, s_szBuf, time(NULL));
 
-    }
+	}
 }
 
 void wxLogSql(const wxChar *szFormat, ...)
 {
-    va_list argptr;
-    va_start(argptr, szFormat);
-    wxVLogSql(szFormat, argptr);
-    va_end(argptr);
+	va_list argptr;
+	va_start(argptr, szFormat);
+	wxVLogSql(szFormat, argptr);
+	va_end(argptr);
 }
 
 
 
 void wxVLogNotice(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[8192];
+	static wxChar s_szBuf[8192];
 
-    if (sysLogger::logLevel >= LOG_NOTICE)
-    {
-        wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
-        wxLog::OnLog(wxLOG_Notice, s_szBuf, time(NULL));
-    }
+	if (sysLogger::logLevel >= LOG_NOTICE)
+	{
+		wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
+		wxLog::OnLog(wxLOG_Notice, s_szBuf, time(NULL));
+	}
 }
 
 void wxLogNotice(const wxChar *szFormat, ...)
 {
-    va_list argptr;
-    va_start(argptr, szFormat);
-    wxVLogNotice(szFormat, argptr);
-    va_end(argptr);
+	va_list argptr;
+	va_start(argptr, szFormat);
+	wxVLogNotice(szFormat, argptr);
+	va_end(argptr);
 }
 
 void wxVLogScript(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[8192];
+	static wxChar s_szBuf[8192];
 
-    if (sysLogger::logLevel >= LOG_SQL)
-    {
-        wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
-        wxLog::OnLog(wxLOG_Script, s_szBuf, time(NULL));
-    }
+	if (sysLogger::logLevel >= LOG_SQL)
+	{
+		wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
+		wxLog::OnLog(wxLOG_Script, s_szBuf, time(NULL));
+	}
 }
 
 void wxLogScript(const wxChar *szFormat, ...)
 {
-    va_list argptr;
-    va_start(argptr, szFormat);
-    wxVLogScript(szFormat, argptr);
-    va_end(argptr);
+	va_list argptr;
+	va_start(argptr, szFormat);
+	wxVLogScript(szFormat, argptr);
+	va_end(argptr);
 }
 
 void wxVLogScriptVerbose(const wxChar *szFormat, va_list argptr)
 {
-    static wxChar s_szBuf[8192];
+	static wxChar s_szBuf[8192];
 
-    if (sysLogger::logLevel >= LOG_DEBUG)
-    {
-        wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
-        wxLog::OnLog(wxLOG_ScriptVerbose, s_szBuf, time(NULL));
-    }
+	if (sysLogger::logLevel >= LOG_DEBUG)
+	{
+		wxVsnprintf(s_szBuf, WXSIZEOF(s_szBuf), szFormat, argptr);
+		wxLog::OnLog(wxLOG_ScriptVerbose, s_szBuf, time(NULL));
+	}
 }
 
 void wxLogScriptVerbose(const wxChar *szFormat, ...)
 {
-    va_list argptr;
-    va_start(argptr, szFormat);
-    wxVLogScriptVerbose(szFormat, argptr);
-    va_end(argptr);
+	va_list argptr;
+	va_start(argptr, szFormat);
+	wxVLogScriptVerbose(szFormat, argptr);
+	va_end(argptr);
 }
 
 
 void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 {
-    wxString msgtype, preamble;
-    int icon = 0;
+	wxString msgtype, preamble;
+	int icon = 0;
 
-    switch (level) {
-        case wxLOG_FatalError:
-            msgtype = wxT("FATAL  ");
-            preamble = _("A fatal error has occurred:\n\n");
-            icon = wxICON_ERROR;
-            break;
+	switch (level)
+	{
+		case wxLOG_FatalError:
+			msgtype = wxT("FATAL  ");
+			preamble = _("A fatal error has occurred:\n\n");
+			icon = wxICON_ERROR;
+			break;
 
-        case wxLOG_Error:
-            msgtype = wxT("ERROR  ");
-            preamble = _("An error has occurred:\n\n");
-            icon = wxICON_ERROR;
-            break;
+		case wxLOG_Error:
+			msgtype = wxT("ERROR  ");
+			preamble = _("An error has occurred:\n\n");
+			icon = wxICON_ERROR;
+			break;
 
-        case wxLOG_QuietError:
-            msgtype = wxT("ERROR  ");
-            break;
+		case wxLOG_QuietError:
+			msgtype = wxT("ERROR  ");
+			break;
 
-        case wxLOG_Warning:
-            msgtype = wxT("WARNING");
-            preamble = _("Warning:\n\n");
-            icon = wxICON_EXCLAMATION;
-            break;
+		case wxLOG_Warning:
+			msgtype = wxT("WARNING");
+			preamble = _("Warning:\n\n");
+			icon = wxICON_EXCLAMATION;
+			break;
 
-        case wxLOG_Message:
-            msgtype = wxT("MESSAGE");
-            preamble = wxT("");
-            icon = wxICON_INFORMATION;
-            break;
+		case wxLOG_Message:
+			msgtype = wxT("MESSAGE");
+			preamble = wxT("");
+			icon = wxICON_INFORMATION;
+			break;
 
-        case wxLOG_Info:
-            msgtype = wxT("INFO   ");
-            break;
+		case wxLOG_Info:
+			msgtype = wxT("INFO   ");
+			break;
 
-        case wxLOG_Status:
-            msgtype = wxT("STATUS ");
-            break;
+		case wxLOG_Status:
+			msgtype = wxT("STATUS ");
+			break;
 
-        case wxLOG_Notice:
-            msgtype = wxT("NOTICE ");
-            break;
+		case wxLOG_Notice:
+			msgtype = wxT("NOTICE ");
+			break;
 
-        case wxLOG_Sql:
-            msgtype = wxT("QUERY  ");
-            break;
+		case wxLOG_Sql:
+			msgtype = wxT("QUERY  ");
+			break;
 
-        case wxLOG_Script:
-            msgtype = wxT("SCRIPT ");
-            break;
+		case wxLOG_Script:
+			msgtype = wxT("SCRIPT ");
+			break;
 
-        case wxLOG_ScriptVerbose:
-            msgtype = wxT("SCRIPT ");
-            break;
+		case wxLOG_ScriptVerbose:
+			msgtype = wxT("SCRIPT ");
+			break;
 
-        case wxLOG_Trace:
-            msgtype = wxT("TRACE  ");
-            break;
+		case wxLOG_Trace:
+			msgtype = wxT("TRACE  ");
+			break;
 
-        case wxLOG_Debug:
-            msgtype = wxT("DEBUG  ");
-            break;
+		case wxLOG_Debug:
+			msgtype = wxT("DEBUG  ");
+			break;
 
-        default:
-            msgtype = wxT("UNKNOWN");
-            icon = wxICON_INFORMATION;
-            break;
-    }
+		default:
+			msgtype = wxT("UNKNOWN");
+			icon = wxICON_INFORMATION;
+			break;
+	}
 
-    // Convert the timestamp
-    wxDateTime *time = new wxDateTime(timestamp);
-    wxString fullmsg;
+	// Convert the timestamp
+	wxDateTime *time = new wxDateTime(timestamp);
+	wxString fullmsg;
 
-    // Build the message.
-    fullmsg << time->FormatISODate() << wxT(" ") << 
-		time->FormatISOTime() << wxT(" ") << msgtype << wxT(": ") << msg;
+	// Build the message.
+	fullmsg << time->FormatISODate() << wxT(" ") <<
+	        time->FormatISOTime() << wxT(" ") << msgtype << wxT(": ") << msg;
 
 	// Make sure to delete the time that we allocated
 	delete time;
 
-    // Display the message if required
-    switch (logLevel)
-    {
-        case LOG_NONE:
-            break;
+	// Display the message if required
+	switch (logLevel)
+	{
+		case LOG_NONE:
+			break;
 
-        case LOG_ERRORS:
-            if (level == wxLOG_FatalError || 
-                level == wxLOG_Error ||
-                level == wxLOG_QuietError)
-                WriteLog(fullmsg);
-            break;
+		case LOG_ERRORS:
+			if (level == wxLOG_FatalError ||
+			        level == wxLOG_Error ||
+			        level == wxLOG_QuietError)
+				WriteLog(fullmsg);
+			break;
 
-        case LOG_NOTICE:
-            if (level == wxLOG_FatalError || 
-                level == wxLOG_Error ||
-                level == wxLOG_QuietError ||
-                level == wxLOG_Notice)
-                WriteLog(fullmsg);
-            break;
+		case LOG_NOTICE:
+			if (level == wxLOG_FatalError ||
+			        level == wxLOG_Error ||
+			        level == wxLOG_QuietError ||
+			        level == wxLOG_Notice)
+				WriteLog(fullmsg);
+			break;
 
-        case LOG_SQL:
-            if (level == wxLOG_FatalError ||
-                level == wxLOG_Error ||
-                level == wxLOG_QuietError ||
-                level == wxLOG_Message ||
-                level == wxLOG_Status ||
-                level == wxLOG_Notice ||
-                level == wxLOG_Sql ||
-                level == wxLOG_Script)
-                WriteLog(fullmsg);
-            break;
+		case LOG_SQL:
+			if (level == wxLOG_FatalError ||
+			        level == wxLOG_Error ||
+			        level == wxLOG_QuietError ||
+			        level == wxLOG_Message ||
+			        level == wxLOG_Status ||
+			        level == wxLOG_Notice ||
+			        level == wxLOG_Sql ||
+			        level == wxLOG_Script)
+				WriteLog(fullmsg);
+			break;
 
-        case LOG_DEBUG:
-            WriteLog(fullmsg);
-            break;
-    }
+		case LOG_DEBUG:
+			WriteLog(fullmsg);
+			break;
+	}
 
-    // Display a messagebox if required.
+	// Display a messagebox if required.
 #if !defined(PGSCLI)
-	if (icon != 0 && !SilenceMessage(msg)) 
-        wxMessageBox(preamble + wxGetTranslation(msg), appearanceFactory->GetLongAppName(), wxOK | wxCENTRE | icon);
+	if (icon != 0 && !SilenceMessage(msg))
+		wxMessageBox(preamble + wxGetTranslation(msg), appearanceFactory->GetLongAppName(), wxOK | wxCENTRE | icon);
 #endif // PGSCLI
 }
 
 
-void sysLogger::WriteLog(const wxString& msg)
+void sysLogger::WriteLog(const wxString &msg)
 {
-    wxString pid, logfile;
+	wxString pid, logfile;
 
-    // Disable logging to prevent recursion in the event of a problem
-    wxLogNull foo;
+	// Disable logging to prevent recursion in the event of a problem
+	wxLogNull foo;
 
-    pid.Printf(wxT("%ld"), wxGetProcessId());
-    logfile.Printf(wxT("%s"), logFile.c_str());
-    logfile.Replace(wxT("%ID"), pid);
+	pid.Printf(wxT("%ld"), wxGetProcessId());
+	logfile.Printf(wxT("%s"), logFile.c_str());
+	logfile.Replace(wxT("%ID"), pid);
 
-    wxFFile file(logfile, wxT("a"));
+	wxFFile file(logfile, wxT("a"));
 
 #if !defined(PGSCLI)
-    if (!file.IsOpened()) {
-        wxMessageBox(_("Cannot open the logfile!"), _("FATAL"), wxOK | wxCENTRE | wxICON_ERROR);
-        return;
-    }
+	if (!file.IsOpened())
+	{
+		wxMessageBox(_("Cannot open the logfile!"), _("FATAL"), wxOK | wxCENTRE | wxICON_ERROR);
+		return;
+	}
 #endif // PGSCLI
 
-   file.Write(msg + wxT("\n"));
-   file.Close();
+	file.Write(msg + wxT("\n"));
+	file.Close();
 }
 
 // Check to see if a message should be silenced (because it's meaningless
@@ -287,11 +289,11 @@ void sysLogger::WriteLog(const wxString& msg)
 bool sysLogger::SilenceMessage(const wxString &msg)
 {
 #ifdef __WXMAC__
-    // This one crops up on the Mac and originates from the logging code
-    // for no obviously apparent reason.
-    if (msg.Contains(_("can't flush file descriptor")))
-        return true;
+	// This one crops up on the Mac and originates from the logging code
+	// for no obviously apparent reason.
+	if (msg.Contains(_("can't flush file descriptor")))
+		return true;
 #endif
-    return false;
+	return false;
 }
 

@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgExtTable.h - Greenplum External Table property 
+// dlgExtTable.h - Greenplum External Table property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,26 +22,29 @@ class ctlSQLBox;
 class dlgExtTable : public dlgSecurityProperty
 {
 public:
-    dlgExtTable(pgaFactory *factory, frmMain *frame, gpExtTable *v, pgSchema *sch);
-    int Go(bool modal);
+	dlgExtTable(pgaFactory *factory, frmMain *frame, gpExtTable *v, pgSchema *sch);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
-    void SetObject(pgObject *obj) { extTable = (gpExtTable*)obj; }
+	void SetObject(pgObject *obj)
+	{
+		extTable = (gpExtTable *)obj;
+	}
 
 private:
 
-    virtual bool IsUpToDate();
-    void OnApply(wxCommandEvent &ev);
+	virtual bool IsUpToDate();
+	void OnApply(wxCommandEvent &ev);
 
-    pgSchema *schema;
-    gpExtTable *extTable;
-    wxString oldDefinition;
+	pgSchema *schema;
+	gpExtTable *extTable;
+	wxString oldDefinition;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

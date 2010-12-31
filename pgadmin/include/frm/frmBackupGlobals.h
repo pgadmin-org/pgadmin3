@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -21,35 +21,35 @@ class frmMain;
 class frmBackupGlobals : public ExternProcessDialog
 {
 public:
-    frmBackupGlobals(frmMain *form, pgObject *_object);
-    ~frmBackupGlobals();
+	frmBackupGlobals(frmMain *form, pgObject *_object);
+	~frmBackupGlobals();
 
-    void Go();
-    wxString GetDisplayCmd(int step);
-    wxString GetCmd(int step);
-    
+	void Go();
+	wxString GetDisplayCmd(int step);
+	wxString GetCmd(int step);
+
 private:
-    wxString GetHelpPage() const;
-    void OnChange(wxCommandEvent &ev);
-    void OnSelectFilename(wxCommandEvent &ev);
-    wxString getCmdPart1();
-    wxString getCmdPart2();
-    void OnOK(wxCommandEvent &ev);
+	wxString GetHelpPage() const;
+	void OnChange(wxCommandEvent &ev);
+	void OnSelectFilename(wxCommandEvent &ev);
+	wxString getCmdPart1();
+	wxString getCmdPart2();
+	void OnOK(wxCommandEvent &ev);
 
-    pgObject *object;
-    wxString processedFile;
-    wxString backupExecutable;
+	pgObject *object;
+	wxString processedFile;
+	wxString backupExecutable;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 
 class backupGlobalsFactory : public contextActionFactory
 {
 public:
-    backupGlobalsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
-    bool CheckEnable(pgObject *obj);
+	backupGlobalsFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
 };
 
 #endif

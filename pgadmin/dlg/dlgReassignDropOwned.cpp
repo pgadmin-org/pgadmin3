@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -30,69 +30,69 @@
 #define cbDatabases       CTRL_COMBOBOX("cbDatabases")
 
 BEGIN_EVENT_TABLE(dlgReassignDropOwned, pgDialog)
-    EVT_RADIOBUTTON(XRCID("rbReassignTo"),    dlgReassignDropOwned::OnChange)
-    EVT_RADIOBUTTON(XRCID("rbDrop"),          dlgReassignDropOwned::OnChange)
-    EVT_BUTTON(wxID_OK,                       dlgReassignDropOwned::OnOK)
+	EVT_RADIOBUTTON(XRCID("rbReassignTo"),    dlgReassignDropOwned::OnChange)
+	EVT_RADIOBUTTON(XRCID("rbDrop"),          dlgReassignDropOwned::OnChange)
+	EVT_BUTTON(wxID_OK,                       dlgReassignDropOwned::OnOK)
 END_EVENT_TABLE()
 
 
 dlgReassignDropOwned::dlgReassignDropOwned(frmMain *win, pgConn *conn,
-  pgRole *role, wxString dbrestriction)
+        pgRole *role, wxString dbrestriction)
 {
 	wxString query;
 
-	connection=conn;
-	parent=win;
-	
-	wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(win, wxT("dlgReassignDropOwned"));
-    
-    cbRoles->Clear();
-    query = wxT("SELECT rolname FROM pg_roles WHERE rolname<>") + conn->qtDbString(role->GetName()) + wxT(" ORDER BY rolname");
-    pgSetIterator roles(connection, query);
-    while (roles.RowsLeft())
-    {
-        cbRoles->Append(roles.GetVal(wxT("rolname")));
-    }
-    cbRoles->SetSelection(0);
-    cbRoles->Enable(cbRoles->GetStrings().Count() > 0);
-	
-    cbDatabases->Clear();
-    query = wxT("SELECT DISTINCT datname FROM pg_database WHERE datallowconn");
-    if (!dbrestriction.IsEmpty())
-    {
-        query += wxT(" AND datname NOT IN (") + dbrestriction + wxT(")");
-    }
-    query += wxT(" ORDER BY datname");
+	connection = conn;
+	parent = win;
 
-    pgSetIterator databases(connection, query);
-    while (databases.RowsLeft())
-    {
-        cbDatabases->Append(databases.GetVal(wxT("datname")));
-    }
-    cbDatabases->SetSelection(0);
+	wxWindowBase::SetFont(settings->GetSystemFont());
+	LoadResource(win, wxT("dlgReassignDropOwned"));
+
+	cbRoles->Clear();
+	query = wxT("SELECT rolname FROM pg_roles WHERE rolname<>") + conn->qtDbString(role->GetName()) + wxT(" ORDER BY rolname");
+	pgSetIterator roles(connection, query);
+	while (roles.RowsLeft())
+	{
+		cbRoles->Append(roles.GetVal(wxT("rolname")));
+	}
+	cbRoles->SetSelection(0);
+	cbRoles->Enable(cbRoles->GetStrings().Count() > 0);
+
+	cbDatabases->Clear();
+	query = wxT("SELECT DISTINCT datname FROM pg_database WHERE datallowconn");
+	if (!dbrestriction.IsEmpty())
+	{
+		query += wxT(" AND datname NOT IN (") + dbrestriction + wxT(")");
+	}
+	query += wxT(" ORDER BY datname");
+
+	pgSetIterator databases(connection, query);
+	while (databases.RowsLeft())
+	{
+		cbDatabases->Append(databases.GetVal(wxT("datname")));
+	}
+	cbDatabases->SetSelection(0);
 }
 
 dlgReassignDropOwned::~dlgReassignDropOwned()
 {
-    SavePosition();
+	SavePosition();
 }
 
 
-void dlgReassignDropOwned::OnOK(wxCommandEvent& ev)
+void dlgReassignDropOwned::OnOK(wxCommandEvent &ev)
 {
-    EndModal(wxID_OK);
+	EndModal(wxID_OK);
 }
 
 
-void dlgReassignDropOwned::OnCancel(wxCommandEvent& ev)
+void dlgReassignDropOwned::OnCancel(wxCommandEvent &ev)
 {
-    EndModal(wxID_CANCEL);
+	EndModal(wxID_CANCEL);
 }
 
 void dlgReassignDropOwned::OnChange(wxCommandEvent &ev)
 {
-    cbRoles->Enable(rbReassignTo->GetValue() && cbRoles->GetStrings().Count() > 0);
+	cbRoles->Enable(rbReassignTo->GetValue() && cbRoles->GetStrings().Count() > 0);
 }
 
 wxString dlgReassignDropOwned::GetDatabase()

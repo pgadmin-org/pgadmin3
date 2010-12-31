@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -25,20 +25,20 @@ class pgRole;
 class dlgReassignDropOwned : public pgDialog
 {
 public:
-    dlgReassignDropOwned(frmMain *win, pgConn *conn, pgRole *role, wxString dbrestriction);
-    ~dlgReassignDropOwned();
-    wxString GetDatabase();
-    wxString GetRole();
-    bool IsReassign();
-    
+	dlgReassignDropOwned(frmMain *win, pgConn *conn, pgRole *role, wxString dbrestriction);
+	~dlgReassignDropOwned();
+	wxString GetDatabase();
+	wxString GetRole();
+	bool IsReassign();
+
 private:
-    pgConn *connection;
-    frmMain *parent;
-    
-	void OnOK(wxCommandEvent& ev);
-    void OnCancel(wxCommandEvent& ev);
+	pgConn *connection;
+	frmMain *parent;
+
+	void OnOK(wxCommandEvent &ev);
+	void OnCancel(wxCommandEvent &ev);
 	void OnChange(wxCommandEvent &ev);
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

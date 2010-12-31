@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -30,10 +30,10 @@ class pgaJob;
 class pgTypes
 {
 public:
-    wxChar *typName;
-    long    typeIcon;
-    wxChar *newString;
-    wxChar *newLongString;
+	wxChar *typName;
+	long    typeIcon;
+	wxChar *newString;
+	wxChar *newLongString;
 };
 
 
@@ -42,31 +42,31 @@ class pgaFactory;
 
 enum
 {
-    RETRIEVINGDETAILS=1,
-    REFRESHINGDETAILS,
-    BACKUPGLOBALS,
-    GRANTWIZARDTITLE,
-    MAINTENANCEDIALOGTITLE,
-    BACKUPSERVERTITLE,
-    BACKUPTITLE,
-    RESTORETITLE,
-    CANNOTDROPSYSTEM,
-    DROPINCLUDINGDEPS,
-    DROPEXCLUDINGDEPS,
-    DROPCASCADETITLE,
-    DROPTITLE,
-    PROPERTIESREPORT,
-    PROPERTIES,
-    DDLREPORT,
-    DDL,
-    DATADICTIONNARYREPORT,
-    STATISTICSREPORT,
-    OBJSTATISTICS,
-    DEPENDENCIESREPORT,
-    DEPENDENCIES,
-    DEPENDENTSREPORT,
-    DEPENDENTS,
-    OBJECTSLISTREPORT
+	RETRIEVINGDETAILS = 1,
+	REFRESHINGDETAILS,
+	BACKUPGLOBALS,
+	GRANTWIZARDTITLE,
+	MAINTENANCEDIALOGTITLE,
+	BACKUPSERVERTITLE,
+	BACKUPTITLE,
+	RESTORETITLE,
+	CANNOTDROPSYSTEM,
+	DROPINCLUDINGDEPS,
+	DROPEXCLUDINGDEPS,
+	DROPCASCADETITLE,
+	DROPTITLE,
+	PROPERTIESREPORT,
+	PROPERTIES,
+	DDLREPORT,
+	DDL,
+	DATADICTIONNARYREPORT,
+	STATISTICSREPORT,
+	OBJSTATISTICS,
+	DEPENDENCIESREPORT,
+	DEPENDENCIES,
+	DEPENDENTSREPORT,
+	DEPENDENTS,
+	OBJECTSLISTREPORT
 };
 
 
@@ -74,138 +74,290 @@ enum
 class pgObject : public wxTreeItemData
 {
 protected:
-    pgObject(int newType, const wxString& newName=wxEmptyString);
-    pgObject(pgaFactory &factory, const wxString& newName=wxEmptyString);
+	pgObject(int newType, const wxString &newName = wxEmptyString);
+	pgObject(pgaFactory &factory, const wxString &newName = wxEmptyString);
 
 public:
-    /*
-    *  Except column level privileges, column will be always an empty
-    *  string in any case
-    */
-    static wxString GetPrivileges(const wxString& allPattern,
-                     const wxString& acl, const wxString& grantObject,
-                     const wxString& user, const wxString& column=wxT(""));
+	/*
+	*  Except column level privileges, column will be always an empty
+	*  string in any case
+	*/
+	static wxString GetPrivileges(const wxString &allPattern,
+	                              const wxString &acl, const wxString &grantObject,
+	                              const wxString &user, const wxString &column = wxT(""));
 
-    static wxString GetDefaultPrivileges(const wxString& strType, const wxString& strSupportedPrivs,
-                                         const wxString& strSchema, const wxString& strOrigDefPrivs,
-                                         const wxString& strNewDefPrivs, const wxString& strRole);
-    static wxString GetPrivilegeName(wxChar privilege);
-    static bool     findUserPrivs(wxString& , wxString&, wxString&);
+	static wxString GetDefaultPrivileges(const wxString &strType, const wxString &strSupportedPrivs,
+	                                     const wxString &strSchema, const wxString &strOrigDefPrivs,
+	                                     const wxString &strNewDefPrivs, const wxString &strRole);
+	static wxString GetPrivilegeName(wxChar privilege);
+	static bool     findUserPrivs(wxString & , wxString &, wxString &);
 
-    static int GetTypeId(const wxString &typname);
+	static int GetTypeId(const wxString &typname);
 
-    pgaFactory *GetFactory() { return factory; }
-    bool IsCreatedBy(pgaFactory &f) const { return &f == factory; }
-    bool IsCreatedBy(pgaFactory *f) const { return f == factory; }
-    int GetType() const;
-    int GetMetaType() const;
-    wxString GetTypeName() const;
-    wxString GetTranslatedTypeName() const;
-    wxString GetTranslatedMessage(int kindOfMessage) const;
-    virtual int GetIconId();
-    bool UpdateIcon(ctlTree *browser);
+	pgaFactory *GetFactory()
+	{
+		return factory;
+	}
+	bool IsCreatedBy(pgaFactory &f) const
+	{
+		return &f == factory;
+	}
+	bool IsCreatedBy(pgaFactory *f) const
+	{
+		return f == factory;
+	}
+	int GetType() const;
+	int GetMetaType() const;
+	wxString GetTypeName() const;
+	wxString GetTranslatedTypeName() const;
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+	virtual int GetIconId();
+	bool UpdateIcon(ctlTree *browser);
 
-    virtual void ShowProperties() const {};
-    virtual pgDatabase *GetDatabase() const { return 0; }
-    virtual pgServer *GetServer() const { return 0; }
-    virtual pgSchema *GetSchema() const { return 0; }
-    virtual pgTable *GetTable() const { return 0; }
-    virtual pgaJob *GetJob() const { return 0; }
-    void iSetName(const wxString& newVal) { name = newVal; }
-    wxString GetName() const { return name; }
-    OID GetOid() const { return oid; }
-    wxString GetOidStr() const {return NumToStr(oid) + wxT("::oid"); }
-    void iSetOid(const OID newVal) { oid = newVal; } 
-	void iSetXid(const OID x) { xid = x; };
-	OID GetXid() { return xid; };
-    wxString GetOwner() const { return owner; }
-    void iSetOwner(const wxString& newVal) { owner = newVal; }
-    wxString GetComment() const { return comment; }
-    void iSetComment(const wxString& newVal) { comment = newVal; }
-    wxString GetAcl() const { return acl; }
-    void iSetAcl(const wxString& newVal) { acl = newVal; }
-    virtual bool GetSystemObject() const { return false; }
-    virtual bool IsCollection() const { return false; }
-    virtual void ShowHint(frmMain *form, bool force) {}
+	virtual void ShowProperties() const {};
+	virtual pgDatabase *GetDatabase() const
+	{
+		return 0;
+	}
+	virtual pgServer *GetServer() const
+	{
+		return 0;
+	}
+	virtual pgSchema *GetSchema() const
+	{
+		return 0;
+	}
+	virtual pgTable *GetTable() const
+	{
+		return 0;
+	}
+	virtual pgaJob *GetJob() const
+	{
+		return 0;
+	}
+	void iSetName(const wxString &newVal)
+	{
+		name = newVal;
+	}
+	wxString GetName() const
+	{
+		return name;
+	}
+	OID GetOid() const
+	{
+		return oid;
+	}
+	wxString GetOidStr() const
+	{
+		return NumToStr(oid) + wxT("::oid");
+	}
+	void iSetOid(const OID newVal)
+	{
+		oid = newVal;
+	}
+	void iSetXid(const OID x)
+	{
+		xid = x;
+	};
+	OID GetXid()
+	{
+		return xid;
+	};
+	wxString GetOwner() const
+	{
+		return owner;
+	}
+	void iSetOwner(const wxString &newVal)
+	{
+		owner = newVal;
+	}
+	wxString GetComment() const
+	{
+		return comment;
+	}
+	void iSetComment(const wxString &newVal)
+	{
+		comment = newVal;
+	}
+	wxString GetAcl() const
+	{
+		return acl;
+	}
+	void iSetAcl(const wxString &newVal)
+	{
+		acl = newVal;
+	}
+	virtual bool GetSystemObject() const
+	{
+		return false;
+	}
+	virtual bool IsCollection() const
+	{
+		return false;
+	}
+	virtual void ShowHint(frmMain *form, bool force) {}
 
-    void ShowTree(frmMain *form, ctlTree *browser, ctlListView *properties, ctlSQLBox *sqlPane);
+	void ShowTree(frmMain *form, ctlTree *browser, ctlListView *properties, ctlSQLBox *sqlPane);
 
-    wxTreeItemId AppendBrowserItem(ctlTree *browser, pgObject *object);
-    
-    virtual wxString GetHelpPage(bool forCreate) const;
-    virtual wxString GetFullName() { return name; }
-    virtual wxString GetIdentifier() const { return name; }
-    virtual wxString GetQuotedIdentifier() const { return qtIdent(name); }
-	virtual wxString GetDisplayName() { return GetFullName(); };
+	wxTreeItemId AppendBrowserItem(ctlTree *browser, pgObject *object);
 
-    virtual wxMenu *GetNewMenu();
+	virtual wxString GetHelpPage(bool forCreate) const;
+	virtual wxString GetFullName()
+	{
+		return name;
+	}
+	virtual wxString GetIdentifier() const
+	{
+		return name;
+	}
+	virtual wxString GetQuotedIdentifier() const
+	{
+		return qtIdent(name);
+	}
+	virtual wxString GetDisplayName()
+	{
+		return GetFullName();
+	};
 
-    virtual wxString GetSql(ctlTree *browser) { return wxT(""); }
-    /*
-    *  Except column level privileges, column will be always an empty
-    *  string in any case
-    */
-    wxString GetGrant(const wxString& allPattern, const wxString& grantFor=wxT(""), const wxString& column=wxT(""));
-    wxString GetCommentSql();
-    wxString GetOwnerSql(int major, int minor, wxString objname=wxEmptyString, wxString objtype=wxEmptyString);
-    pgConn *GetConnection() const;
+	virtual wxMenu *GetNewMenu();
 
-    virtual void SetDirty() { sql=wxT(""); expandedKids=false; needReread=true; }
-    virtual wxString GetFullIdentifier() const { return GetName(); }
-    virtual wxString GetQuotedFullIdentifier() const { return qtIdent(name); }
+	virtual wxString GetSql(ctlTree *browser)
+	{
+		return wxT("");
+	}
+	/*
+	*  Except column level privileges, column will be always an empty
+	*  string in any case
+	*/
+	wxString GetGrant(const wxString &allPattern, const wxString &grantFor = wxT(""), const wxString &column = wxT(""));
+	wxString GetCommentSql();
+	wxString GetOwnerSql(int major, int minor, wxString objname = wxEmptyString, wxString objtype = wxEmptyString);
+	pgConn *GetConnection() const;
 
-    virtual void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0)=0;
-    virtual void ShowStatistics(frmMain *form, ctlListView *statistics);
-    virtual void ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &where=wxEmptyString);
-    virtual void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where=wxEmptyString);
-    virtual pgObject *Refresh(ctlTree *browser, const wxTreeItemId item) {return this; }
-    virtual bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded=false) {return false; }
-    virtual bool EditObject(wxFrame *frame, ctlTree *browser) {return false; }
+	virtual void SetDirty()
+	{
+		sql = wxT("");
+		expandedKids = false;
+		needReread = true;
+	}
+	virtual wxString GetFullIdentifier() const
+	{
+		return GetName();
+	}
+	virtual wxString GetQuotedFullIdentifier() const
+	{
+		return qtIdent(name);
+	}
 
-    virtual bool NeedCascadedDrop() { return false; }
-    virtual bool CanCreate() { return false; }
-    virtual bool CanView() { return false; }
-    virtual bool CanEdit() { return false; }
-    virtual bool CanDrop() { return false; }
-    virtual bool CanDropCascaded() { return false; }
-    virtual bool CanMaintenance() { return false; }
-    virtual bool RequireDropConfirm() { return false; }
-    virtual bool WantDummyChild() { return false; }
-    virtual bool CanBackup() { return false; }
-	virtual bool CanBackupGlobals() { return false; }
-    virtual bool CanRestore() { return false; }
-    virtual bool GetCanHint() { return false; }
-    virtual bool HasStats() { return false; }
-    virtual bool HasDepends() { return false; }
-    virtual bool HasReferences() { return false; }
+	virtual void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0) = 0;
+	virtual void ShowStatistics(frmMain *form, ctlListView *statistics);
+	virtual void ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &where = wxEmptyString);
+	virtual void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where = wxEmptyString);
+	virtual pgObject *Refresh(ctlTree *browser, const wxTreeItemId item)
+	{
+		return this;
+	}
+	virtual bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded = false)
+	{
+		return false;
+	}
+	virtual bool EditObject(wxFrame *frame, ctlTree *browser)
+	{
+		return false;
+	}
+
+	virtual bool NeedCascadedDrop()
+	{
+		return false;
+	}
+	virtual bool CanCreate()
+	{
+		return false;
+	}
+	virtual bool CanView()
+	{
+		return false;
+	}
+	virtual bool CanEdit()
+	{
+		return false;
+	}
+	virtual bool CanDrop()
+	{
+		return false;
+	}
+	virtual bool CanDropCascaded()
+	{
+		return false;
+	}
+	virtual bool CanMaintenance()
+	{
+		return false;
+	}
+	virtual bool RequireDropConfirm()
+	{
+		return false;
+	}
+	virtual bool WantDummyChild()
+	{
+		return false;
+	}
+	virtual bool CanBackup()
+	{
+		return false;
+	}
+	virtual bool CanBackupGlobals()
+	{
+		return false;
+	}
+	virtual bool CanRestore()
+	{
+		return false;
+	}
+	virtual bool GetCanHint()
+	{
+		return false;
+	}
+	virtual bool HasStats()
+	{
+		return false;
+	}
+	virtual bool HasDepends()
+	{
+		return false;
+	}
+	virtual bool HasReferences()
+	{
+		return false;
+	}
 
 	wxString qtDbString(const wxString &str);
 
 protected:
-    void CreateList3Columns(ctlListView *properties, const wxString &left=_("Object"), const wxString &middle=_("Owner"), const wxString &right=_("Value"));
-    void CreateListColumns(ctlListView *properties, const wxString &left=_("Property"), const wxString &right=_("Value"));
+	void CreateList3Columns(ctlListView *properties, const wxString &left = _("Object"), const wxString &middle = _("Owner"), const wxString &right = _("Value"));
+	void CreateListColumns(ctlListView *properties, const wxString &left = _("Property"), const wxString &right = _("Value"));
 
-    void AppendMenu(wxMenu *menu, int type=-1);
-    virtual void SetContextInfo(frmMain *form) {}
+	void AppendMenu(wxMenu *menu, int type = -1);
+	virtual void SetContextInfo(frmMain *form) {}
 
-    bool expandedKids, needReread;
-    wxString sql;
-    bool hintShown;
-    pgaFactory *factory;
-    
+	bool expandedKids, needReread;
+	wxString sql;
+	bool hintShown;
+	pgaFactory *factory;
+
 private:
-    /*
-    *  Except column level privileges, column will be always an empty
-    *  string in any case
-    */
-    static void AppendRight(wxString &rights, const wxString& acl, wxChar c, const wxChar *rightName, const wxString& column=wxEmptyString);
-    static wxString GetPrivilegeGrant(const wxString& allPattern, const wxString& acl, const wxString& grantObject, const wxString& user, const wxString& column);
-    void ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query, const wxString &clsOrder);
-    wxString name, owner, comment, acl;
-    int type;
-    OID oid, xid;
+	/*
+	*  Except column level privileges, column will be always an empty
+	*  string in any case
+	*/
+	static void AppendRight(wxString &rights, const wxString &acl, wxChar c, const wxChar *rightName, const wxString &column = wxEmptyString);
+	static wxString GetPrivilegeGrant(const wxString &allPattern, const wxString &acl, const wxString &grantObject, const wxString &user, const wxString &column);
+	void ShowDependency(pgDatabase *db, ctlListView *list, const wxString &query, const wxString &clsOrder);
+	wxString name, owner, comment, acl;
+	int type;
+	OID oid, xid;
 
-    friend class pgaFactory;
+	friend class pgaFactory;
 };
 
 #endif

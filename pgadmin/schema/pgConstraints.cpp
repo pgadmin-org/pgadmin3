@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -22,44 +22,44 @@
 
 
 pgConstraintCollection::pgConstraintCollection(pgaFactory *factory, pgTable *table)
-: pgTableObjCollection(factory, table)
-{ 
+	: pgTableObjCollection(factory, table)
+{
 }
 
 wxMenu *pgConstraintCollection::GetNewMenu()
 {
-    if (!GetSchema()->GetCreatePrivilege())
-        return 0;
+	if (!GetSchema()->GetCreatePrivilege())
+		return 0;
 
-    wxMenu *menu=new wxMenu();
-    if (table->GetPrimaryKey().IsEmpty())
-        primaryKeyFactory.AppendMenu(menu);
-    foreignKeyFactory.AppendMenu(menu);
-    excludeFactory.AppendMenu(menu);
-    uniqueFactory.AppendMenu(menu);
-    checkFactory.AppendMenu(menu);
-    return menu;
+	wxMenu *menu = new wxMenu();
+	if (table->GetPrimaryKey().IsEmpty())
+		primaryKeyFactory.AppendMenu(menu);
+	foreignKeyFactory.AppendMenu(menu);
+	excludeFactory.AppendMenu(menu);
+	uniqueFactory.AppendMenu(menu);
+	checkFactory.AppendMenu(menu);
+	return menu;
 }
 
 
 void pgConstraintCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
-    if (browser->GetChildrenCount(GetId(), false) == 0)
-    {
-        wxTreeItemId id=browser->GetItemParent(GetId());
-        wxASSERT(id);
-        table = (pgTable*)browser->GetObject(id);
-        wxASSERT(table && (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == GP_PARTITION));
+	if (browser->GetChildrenCount(GetId(), false) == 0)
+	{
+		wxTreeItemId id = browser->GetItemParent(GetId());
+		wxASSERT(id);
+		table = (pgTable *)browser->GetObject(id);
+		wxASSERT(table && (table->GetMetaType() == PGM_TABLE || table->GetMetaType() == GP_PARTITION));
 
-        primaryKeyFactory.CreateObjects(this, browser);
-        foreignKeyFactory.CreateObjects(this, browser);
-        excludeFactory.CreateObjects(this, browser);
-        uniqueFactory.CreateObjects(this, browser);
-        checkFactory.CreateObjects(this, browser);
-    }
-    UpdateChildCount(browser);
-    if (properties)
-        ShowList(_("Constraints"), browser, properties);
+		primaryKeyFactory.CreateObjects(this, browser);
+		foreignKeyFactory.CreateObjects(this, browser);
+		excludeFactory.CreateObjects(this, browser);
+		uniqueFactory.CreateObjects(this, browser);
+		checkFactory.CreateObjects(this, browser);
+	}
+	UpdateChildCount(browser);
+	if (properties)
+		ShowList(_("Constraints"), browser, properties);
 }
 
 
@@ -68,15 +68,15 @@ void pgConstraintCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctl
 
 #include "images/constraints.xpm"
 
-pgConstraintFactory::pgConstraintFactory() 
-: pgTableObjFactory(__("Constraint"), 0, 0, 0)
+pgConstraintFactory::pgConstraintFactory()
+	: pgTableObjFactory(__("Constraint"), 0, 0, 0)
 {
-    metaType = PGM_CONSTRAINT;
+	metaType = PGM_CONSTRAINT;
 }
 
 pgCollection *pgConstraintFactory::CreateCollection(pgObject *obj)
 {
-    return new pgConstraintCollection(GetCollectionFactory(), (pgTable*)obj);
+	return new pgConstraintCollection(GetCollectionFactory(), (pgTable *)obj);
 }
 
 

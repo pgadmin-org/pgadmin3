@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -21,9 +21,9 @@
 class debuggerFactory : public actionFactory
 {
 public:
-    debuggerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
-    bool CheckEnable(pgObject *obj);
+	debuggerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
 };
 
 ///////////////////////////////////////////////////
@@ -32,9 +32,9 @@ public:
 class breakpointFactory : public actionFactory
 {
 public:
-    breakpointFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
-    bool CheckEnable(pgObject *obj);
+	breakpointFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
 };
 
 #endif

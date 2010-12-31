@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,25 +19,25 @@ class pgsIdentRecord : public pgsIdent
 
 private:
 
-	const pgsExpression * m_line;
-	const pgsExpression * m_column;
+	const pgsExpression *m_line;
+	const pgsExpression *m_column;
 
 public:
 
-	pgsIdentRecord(const wxString & name, const pgsExpression * line,
-			const pgsExpression * column = 0);
+	pgsIdentRecord(const wxString &name, const pgsExpression *line,
+	               const pgsExpression *column = 0);
 
 	virtual ~pgsIdentRecord();
 
-	pgsIdentRecord(const pgsIdentRecord & that);
+	pgsIdentRecord(const pgsIdentRecord &that);
 
-	pgsIdentRecord & operator=(const pgsIdentRecord & that);
+	pgsIdentRecord &operator=(const pgsIdentRecord &that);
 
-	virtual pgsExpression * clone() const;
-	
+	virtual pgsExpression *clone() const;
+
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
+	virtual pgsOperand eval(pgsVarMap &vars) const;
 
 };
 

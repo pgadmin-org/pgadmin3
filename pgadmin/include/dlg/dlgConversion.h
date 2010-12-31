@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgConversion.h - Conversion property 
+// dlgConversion.h - Conversion property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,20 +21,20 @@ class pgConversion;
 class dlgConversion : public dlgProperty
 {
 public:
-    dlgConversion(pgaFactory *factory, frmMain *frame, pgConversion *cc, pgSchema *sch);
-    int Go(bool modal);
+	dlgConversion(pgaFactory *factory, frmMain *frame, pgConversion *cc, pgSchema *sch);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
 private:
-    pgConversion *conversion;
-    pgSchema *schema;
-    wxArrayString functions;
+	pgConversion *conversion;
+	pgSchema *schema;
+	wxArrayString functions;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

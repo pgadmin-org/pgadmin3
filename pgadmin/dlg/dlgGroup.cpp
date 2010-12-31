@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -31,191 +31,191 @@
 
 dlgProperty *pgGroupFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgGroup(this, frame, (pgGroup*)node);
+	return new dlgGroup(this, frame, (pgGroup *)node);
 }
 
 
 
 BEGIN_EVENT_TABLE(dlgGroup, dlgProperty)
-    EVT_LISTBOX_DCLICK(XRCID("lbUsersNotIn"),       dlgGroup::OnUserAdd)
-    EVT_LISTBOX_DCLICK(XRCID("lbUsersIn"),          dlgGroup::OnUserRemove)
-    EVT_BUTTON(XRCID("btnAddUser"),                 dlgGroup::OnUserAdd)
-    EVT_BUTTON(XRCID("btnDelUser"),                 dlgGroup::OnUserRemove)
+	EVT_LISTBOX_DCLICK(XRCID("lbUsersNotIn"),       dlgGroup::OnUserAdd)
+	EVT_LISTBOX_DCLICK(XRCID("lbUsersIn"),          dlgGroup::OnUserRemove)
+	EVT_BUTTON(XRCID("btnAddUser"),                 dlgGroup::OnUserAdd)
+	EVT_BUTTON(XRCID("btnDelUser"),                 dlgGroup::OnUserRemove)
 END_EVENT_TABLE();
 
 
 
 dlgGroup::dlgGroup(pgaFactory *f, frmMain *frame, pgGroup *node)
-: dlgProperty(f, frame, wxT("dlgGroup"))
+	: dlgProperty(f, frame, wxT("dlgGroup"))
 {
-    group=node;
+	group = node;
 }
 
 
 pgObject *dlgGroup::GetObject()
 {
-    return group;
+	return group;
 }
 
 
 int dlgGroup::Go(bool modal)
 {
-    pgSet *set=connection->ExecuteSet(wxT("SELECT usename FROM pg_user"));
-    if (set)
-    {
-        while (!set->Eof())
-        {
-            wxString userName=set->GetVal(wxT("usename"));
+	pgSet *set = connection->ExecuteSet(wxT("SELECT usename FROM pg_user"));
+	if (set)
+	{
+		while (!set->Eof())
+		{
+			wxString userName = set->GetVal(wxT("usename"));
 
-            if (group && group->GetUsersIn().Index(userName) >= 0)
-                lbUsersIn->Append(userName);
-            else
-                lbUsersNotIn->Append(userName);
+			if (group && group->GetUsersIn().Index(userName) >= 0)
+				lbUsersIn->Append(userName);
+			else
+				lbUsersNotIn->Append(userName);
 
-            set->MoveNext();
-        }
-        delete set;
-    }
+			set->MoveNext();
+		}
+		delete set;
+	}
 
-    if (group)
-    {
-        // Edit Mode
-        readOnly=!group->GetServer()->GetSuperUser();
+	if (group)
+	{
+		// Edit Mode
+		readOnly = !group->GetServer()->GetSuperUser();
 
-        txtID->SetValue(NumToStr(group->GetGroupId()));
-        if (!connection->BackendMinimumVersion(7, 4))
-            txtName->Disable();
-        txtID->Disable();
-        if (readOnly)
-        {
-            btnAddUser->Disable();
-            btnDelUser->Disable();
-        }
-    }
-    else
-    {
-        txtID->SetValidator(numericValidator);
-    }
+		txtID->SetValue(NumToStr(group->GetGroupId()));
+		if (!connection->BackendMinimumVersion(7, 4))
+			txtName->Disable();
+		txtID->Disable();
+		if (readOnly)
+		{
+			btnAddUser->Disable();
+			btnDelUser->Disable();
+		}
+	}
+	else
+	{
+		txtID->SetValidator(numericValidator);
+	}
 
-    return dlgProperty::Go(modal);
+	return dlgProperty::Go(modal);
 }
 
 
 void dlgGroup::CheckChange()
 {
-    if (group)
-    {
-        EnableOK(!GetSql().IsEmpty());
-    }
-    else
-    {
-        wxString name=GetName();
+	if (group)
+	{
+		EnableOK(!GetSql().IsEmpty());
+	}
+	else
+	{
+		wxString name = GetName();
 
-        bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+		bool enable = true;
+		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
 
-        EnableOK(enable);
-    }
+		EnableOK(enable);
+	}
 }
 
 
 void dlgGroup::OnUserAdd(wxCommandEvent &ev)
 {
-    if (!readOnly)
-    {
-        int pos=lbUsersNotIn->GetSelection();
-        if (pos >= 0)
-        {
-            lbUsersIn->Append(lbUsersNotIn->GetString(pos));
-            lbUsersNotIn->Delete(pos);
-        }
-        CheckChange();
-    }
+	if (!readOnly)
+	{
+		int pos = lbUsersNotIn->GetSelection();
+		if (pos >= 0)
+		{
+			lbUsersIn->Append(lbUsersNotIn->GetString(pos));
+			lbUsersNotIn->Delete(pos);
+		}
+		CheckChange();
+	}
 }
 
 
 void dlgGroup::OnUserRemove(wxCommandEvent &ev)
 {
-    if (!readOnly)
-    {
-        int pos=lbUsersIn->GetSelection();
-        if (pos >= 0)
-        {
-            lbUsersNotIn->Append(lbUsersIn->GetString(pos));
-            lbUsersIn->Delete(pos);
-        }
-        CheckChange();
-    }
+	if (!readOnly)
+	{
+		int pos = lbUsersIn->GetSelection();
+		if (pos >= 0)
+		{
+			lbUsersNotIn->Append(lbUsersIn->GetString(pos));
+			lbUsersIn->Delete(pos);
+		}
+		CheckChange();
+	}
 }
 
 
 pgObject *dlgGroup::CreateObject(pgCollection *collection)
 {
-    wxString name=GetName();
+	wxString name = GetName();
 
-    pgObject *obj=groupFactory.CreateObjects(collection, 0, wxT("\n WHERE groname=") + qtDbString(name));
-    return obj;
+	pgObject *obj = groupFactory.CreateObjects(collection, 0, wxT("\n WHERE groname=") + qtDbString(name));
+	return obj;
 }
 
 
 wxString dlgGroup::GetSql()
 {
-    wxString sql;
-    wxString name=GetName();
-    int cnt, pos;
+	wxString sql;
+	wxString name = GetName();
+	int cnt, pos;
 
-    if (group)
-    {
-        // Edit Mode
+	if (group)
+	{
+		// Edit Mode
 
-        AppendNameChange(sql);
-    
-        cnt=lbUsersIn->GetCount();
-        wxArrayString tmpUsers=group->GetUsersIn();
+		AppendNameChange(sql);
 
-        // check for added users
-        for (pos=0 ; pos < cnt ; pos++)
-        {
-            wxString userName=lbUsersIn->GetString(pos);
+		cnt = lbUsersIn->GetCount();
+		wxArrayString tmpUsers = group->GetUsersIn();
 
-            int index=tmpUsers.Index(userName);
-            if (index >= 0)
-                tmpUsers.RemoveAt(index);
-            else
-                sql += wxT("ALTER GROUP ") + qtIdent(name)
-                    +  wxT(" ADD USER ") + qtIdent(userName) + wxT(";\n");
-        }
-        
-        // check for removed users
-        for (pos=0 ; pos < (int)tmpUsers.GetCount() ; pos++)
-        {
-            sql += wxT("ALTER GROUP ") + qtIdent(name)
-                +  wxT(" DROP USER ") + qtIdent(tmpUsers.Item(pos)) + wxT(";\n");
-        }
-    }
-    else
-    {
-        // Create Mode
-        wxString name=GetName();
+		// check for added users
+		for (pos = 0 ; pos < cnt ; pos++)
+		{
+			wxString userName = lbUsersIn->GetString(pos);
 
-        long id=StrToLong(txtID->GetValue());
+			int index = tmpUsers.Index(userName);
+			if (index >= 0)
+				tmpUsers.RemoveAt(index);
+			else
+				sql += wxT("ALTER GROUP ") + qtIdent(name)
+				       +  wxT(" ADD USER ") + qtIdent(userName) + wxT(";\n");
+		}
 
-        sql = wxT(
-            "CREATE GROUP ") + qtIdent(name);
-        if (id)
-            sql += wxT("\n  WITH SYSID ") + NumToStr(id);
-        cnt = lbUsersIn->GetCount();
-        if (cnt)
-            sql += wxT("\n   USER ");
-        for (pos=0 ; pos < cnt ; pos++)
-        {
-            if (pos)
-                sql += wxT(", ");
-            sql += qtIdent(lbUsersIn->GetString(pos));
-        }
-        sql += wxT(";\n");
+		// check for removed users
+		for (pos = 0 ; pos < (int)tmpUsers.GetCount() ; pos++)
+		{
+			sql += wxT("ALTER GROUP ") + qtIdent(name)
+			       +  wxT(" DROP USER ") + qtIdent(tmpUsers.Item(pos)) + wxT(";\n");
+		}
+	}
+	else
+	{
+		// Create Mode
+		wxString name = GetName();
 
-    }
-    return sql;
+		long id = StrToLong(txtID->GetValue());
+
+		sql = wxT(
+		          "CREATE GROUP ") + qtIdent(name);
+		if (id)
+			sql += wxT("\n  WITH SYSID ") + NumToStr(id);
+		cnt = lbUsersIn->GetCount();
+		if (cnt)
+			sql += wxT("\n   USER ");
+		for (pos = 0 ; pos < cnt ; pos++)
+		{
+			if (pos)
+				sql += wxT(", ");
+			sql += qtIdent(lbUsersIn->GetString(pos));
+		}
+		sql += wxT(";\n");
+
+	}
+	return sql;
 }
 

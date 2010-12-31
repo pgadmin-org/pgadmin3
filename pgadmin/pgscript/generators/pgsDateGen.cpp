@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -11,14 +11,14 @@
 #include "pgAdmin3.h"
 #include "pgscript/generators/pgsDateGen.h"
 
-pgsDateGen::pgsDateGen(wxDateTime min, wxDateTime max, const bool & sequence,
-		const long & seed) :
+pgsDateGen::pgsDateGen(wxDateTime min, wxDateTime max, const bool &sequence,
+                       const long &seed) :
 	pgsObjectGen(seed), m_min(min.IsEarlierThan(max) || min.IsEqualTo(max) ? min : max),
-			m_max(max.IsLaterThan(min) || max.IsEqualTo(min) ? max : min),
-			m_range(m_max.Subtract(m_min).GetDays()), m_sequence(sequence)
+	m_max(max.IsLaterThan(min) || max.IsEqualTo(min) ? max : min),
+	m_range(m_max.Subtract(m_min).GetDays()), m_sequence(sequence)
 {
 	m_randomizer = pgsRandomizer(pnew pgsIntegerGen(0, m_range, is_sequence(),
-			m_seed));
+	                             m_seed));
 }
 
 bool pgsDateGen::is_sequence() const
@@ -41,7 +41,7 @@ pgsDateGen::~pgsDateGen()
 
 }
 
-pgsDateGen * pgsDateGen::clone()
+pgsDateGen *pgsDateGen::clone()
 {
 	return pnew pgsDateGen(*this);
 }

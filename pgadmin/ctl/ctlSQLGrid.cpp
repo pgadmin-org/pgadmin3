@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -25,8 +25,8 @@
 #define EXTRAEXTENT_WIDTH  6
 
 BEGIN_EVENT_TABLE(ctlSQLGrid, wxGrid)
-    EVT_MENU(MNU_COPY, ctlSQLGrid::OnCopy)
-    EVT_MOUSEWHEEL(ctlSQLGrid::OnMouseWheel)
+	EVT_MENU(MNU_COPY, ctlSQLGrid::OnCopy)
+	EVT_MOUSEWHEEL(ctlSQLGrid::OnMouseWheel)
 END_EVENT_TABLE()
 
 IMPLEMENT_DYNAMIC_CLASS(ctlSQLGrid, wxGrid)
@@ -35,296 +35,297 @@ ctlSQLGrid::ctlSQLGrid()
 {
 }
 
-ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
-: wxGrid(parent, id, pos, size, wxWANTS_CHARS|wxVSCROLL|wxHSCROLL)
+ctlSQLGrid::ctlSQLGrid(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size)
+	: wxGrid(parent, id, pos, size, wxWANTS_CHARS | wxVSCROLL | wxHSCROLL)
 {
-    // Set cells font
-    wxFont fntCells(settings->GetSQLFont());
-    SetDefaultCellFont(fntCells);
-    // Set labels font
-    wxFont fntLabel(settings->GetSystemFont());
-    fntLabel.SetWeight(wxBOLD);
-    SetLabelFont(fntLabel);
-    SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
-    SetRowLabelSize(50);
-    SetColLabelSize(fntLabel.GetPointSize() *4);
-    SetDefaultCellOverflow(false);
+	// Set cells font
+	wxFont fntCells(settings->GetSQLFont());
+	SetDefaultCellFont(fntCells);
+	// Set labels font
+	wxFont fntLabel(settings->GetSystemFont());
+	fntLabel.SetWeight(wxBOLD);
+	SetLabelFont(fntLabel);
+	SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_CENTER);
+	SetRowLabelSize(50);
+	SetColLabelSize(fntLabel.GetPointSize() * 4);
+	SetDefaultCellOverflow(false);
 
-    wxAcceleratorEntry entries[1];
-    entries[0].Set(wxACCEL_CTRL,                (int)'C',      MNU_COPY);
-    wxAcceleratorTable accel(1, entries);
-    SetAcceleratorTable(accel);
+	wxAcceleratorEntry entries[1];
+	entries[0].Set(wxACCEL_CTRL,                (int)'C',      MNU_COPY);
+	wxAcceleratorTable accel(1, entries);
+	SetAcceleratorTable(accel);
 
-    Connect(wxID_ANY, wxEVT_GRID_LABEL_LEFT_DCLICK, wxGridEventHandler(ctlSQLGrid::OnLabelDoubleClick));
+	Connect(wxID_ANY, wxEVT_GRID_LABEL_LEFT_DCLICK, wxGridEventHandler(ctlSQLGrid::OnLabelDoubleClick));
 }
 
-void ctlSQLGrid::OnCopy(wxCommandEvent& ev)
+void ctlSQLGrid::OnCopy(wxCommandEvent &ev)
 {
-    Copy();
+	Copy();
 }
 
-void ctlSQLGrid::OnMouseWheel(wxMouseEvent& event)
+void ctlSQLGrid::OnMouseWheel(wxMouseEvent &event)
 {
-    if (event.ControlDown())
-    {
-        wxFont fontlabel = GetLabelFont();
-        wxFont fontcells = GetDefaultCellFont();
-        if (event.GetWheelRotation() > 0)
-        {
-            fontlabel.SetPointSize(fontlabel.GetPointSize()-1);
-            fontcells.SetPointSize(fontcells.GetPointSize()-1);
-        }
-        else
-        {
-            fontlabel.SetPointSize(fontlabel.GetPointSize()+1);
-            fontcells.SetPointSize(fontcells.GetPointSize()+1);
-        }
-        SetLabelFont(fontlabel);
-        SetDefaultCellFont(fontcells);
-        SetColLabelSize(fontlabel.GetPointSize() *4);
-        SetDefaultRowSize(fontcells.GetPointSize() *2);
-        for (int index = 0; index < GetNumberCols(); index++)
-            SetColSize(index, -1);
-        ForceRefresh();
-    }
-    else
-        event.Skip();
+	if (event.ControlDown())
+	{
+		wxFont fontlabel = GetLabelFont();
+		wxFont fontcells = GetDefaultCellFont();
+		if (event.GetWheelRotation() > 0)
+		{
+			fontlabel.SetPointSize(fontlabel.GetPointSize() - 1);
+			fontcells.SetPointSize(fontcells.GetPointSize() - 1);
+		}
+		else
+		{
+			fontlabel.SetPointSize(fontlabel.GetPointSize() + 1);
+			fontcells.SetPointSize(fontcells.GetPointSize() + 1);
+		}
+		SetLabelFont(fontlabel);
+		SetDefaultCellFont(fontcells);
+		SetColLabelSize(fontlabel.GetPointSize() * 4);
+		SetDefaultRowSize(fontcells.GetPointSize() * 2);
+		for (int index = 0; index < GetNumberCols(); index++)
+			SetColSize(index, -1);
+		ForceRefresh();
+	}
+	else
+		event.Skip();
 }
 
 wxString ctlSQLGrid::GetExportLine(int row)
 {
-    return GetExportLine(row, 0, GetNumberCols() - 1);
+	return GetExportLine(row, 0, GetNumberCols() - 1);
 }
 
 
 wxString ctlSQLGrid::GetExportLine(int row, int col1, int col2)
 {
-    wxArrayInt cols;
-    wxString str;
-    int i;
+	wxArrayInt cols;
+	wxString str;
+	int i;
 
-    if (col2 < col1)
-        return str;
+	if (col2 < col1)
+		return str;
 
-    cols.Alloc(col2 - col1 + 1);
-    for (i = col1; i <= col2; i++) 
+	cols.Alloc(col2 - col1 + 1);
+	for (i = col1; i <= col2; i++)
 	{
-        cols.Add(i);
-    }
+		cols.Add(i);
+	}
 
-    return GetExportLine(row, cols);
+	return GetExportLine(row, cols);
 }
 
 wxString ctlSQLGrid::GetExportLine(int row, wxArrayInt cols)
 {
-    wxString str;
-    unsigned int col;
+	wxString str;
+	unsigned int col;
 
-    if (GetNumberCols() == 0)
-        return str;
+	if (GetNumberCols() == 0)
+		return str;
 
-    for (col=0 ; col < cols.Count() ; col++)
-    {
-        if (col > 0)
-            str.Append(settings->GetCopyColSeparator());
+	for (col = 0 ; col < cols.Count() ; col++)
+	{
+		if (col > 0)
+			str.Append(settings->GetCopyColSeparator());
 
-        wxString text = GetCellValue(row, cols[col]);
+		wxString text = GetCellValue(row, cols[col]);
 
 		bool needQuote  = false;
 		if (settings->GetCopyQuoting() == 1)
 		{
-            needQuote = IsColText(cols[col]);
+			needQuote = IsColText(cols[col]);
 		}
 		else if (settings->GetCopyQuoting() == 2)
 			/* Quote everything */
 			needQuote = true;
 
 		if (needQuote)
-            str.Append(settings->GetCopyQuoteChar());
-        str.Append(text);
-        if (needQuote)
-            str.Append(settings->GetCopyQuoteChar());
-    }    
-    return str;
+			str.Append(settings->GetCopyQuoteChar());
+		str.Append(text);
+		if (needQuote)
+			str.Append(settings->GetCopyQuoteChar());
+	}
+	return str;
 }
 
 int ctlSQLGrid::Copy()
 {
-    wxString str;
-    int copied = 0;
-    size_t i;
+	wxString str;
+	int copied = 0;
+	size_t i;
 
-    if (GetSelectedRows().GetCount()) 
+	if (GetSelectedRows().GetCount())
 	{
-        wxArrayInt rows = GetSelectedRows();
+		wxArrayInt rows = GetSelectedRows();
 
-        for (i=0 ; i < rows.GetCount() ; i++)
-        {
-            str.Append(GetExportLine(rows.Item(i)));
-    
-            if (rows.GetCount() > 1)
-                str.Append(END_OF_LINE);
-        }
-
-        copied = rows.GetCount();
-    }
-    else if (GetSelectedCols().GetCount()) 
-	{
-        wxArrayInt cols = GetSelectedCols();
-        size_t numRows = GetNumberRows();
-
-        for (i=0 ; i < numRows ; i++)
-        {
-            str.Append(GetExportLine(i, cols));
-    
-            if (numRows > 1)
-                str.Append(END_OF_LINE);
-        }
-
-        copied = numRows;
-    }
-    else if (GetSelectionBlockTopLeft().GetCount() > 0 &&
-        GetSelectionBlockBottomRight().GetCount() > 0) 
-	{
-        unsigned int x1, x2, y1, y2;
-
-        x1 = GetSelectionBlockTopLeft()[0].GetCol();
-        x2 = GetSelectionBlockBottomRight()[0].GetCol();
-        y1 = GetSelectionBlockTopLeft()[0].GetRow();
-        y2 = GetSelectionBlockBottomRight()[0].GetRow();
-
-        for (i = y1; i <= y2; i++) 
+		for (i = 0 ; i < rows.GetCount() ; i++)
 		{
-            str.Append(GetExportLine(i, x1, x2));
+			str.Append(GetExportLine(rows.Item(i)));
 
-            if (y2 > y1)
-                str.Append(END_OF_LINE);
-        }
+			if (rows.GetCount() > 1)
+				str.Append(END_OF_LINE);
+		}
 
-        copied = y2 - y1 + 1;
-    }
-    else 
+		copied = rows.GetCount();
+	}
+	else if (GetSelectedCols().GetCount())
 	{
-        int row, col;
+		wxArrayInt cols = GetSelectedCols();
+		size_t numRows = GetNumberRows();
 
-        row = GetGridCursorRow();
-        col = GetGridCursorCol();
+		for (i = 0 ; i < numRows ; i++)
+		{
+			str.Append(GetExportLine(i, cols));
 
-        str.Append(GetExportLine(row, col, col));
-        copied = 1;
-    }
+			if (numRows > 1)
+				str.Append(END_OF_LINE);
+		}
 
-    if (copied && wxTheClipboard->Open())
-    {
-        wxTheClipboard->SetData(new wxTextDataObject(str));
-        wxTheClipboard->Close();
-    }
-    else {
-        copied = 0;
-    }
+		copied = numRows;
+	}
+	else if (GetSelectionBlockTopLeft().GetCount() > 0 &&
+	         GetSelectionBlockBottomRight().GetCount() > 0)
+	{
+		unsigned int x1, x2, y1, y2;
 
-    return copied;
+		x1 = GetSelectionBlockTopLeft()[0].GetCol();
+		x2 = GetSelectionBlockBottomRight()[0].GetCol();
+		y1 = GetSelectionBlockTopLeft()[0].GetRow();
+		y2 = GetSelectionBlockBottomRight()[0].GetRow();
+
+		for (i = y1; i <= y2; i++)
+		{
+			str.Append(GetExportLine(i, x1, x2));
+
+			if (y2 > y1)
+				str.Append(END_OF_LINE);
+		}
+
+		copied = y2 - y1 + 1;
+	}
+	else
+	{
+		int row, col;
+
+		row = GetGridCursorRow();
+		col = GetGridCursorCol();
+
+		str.Append(GetExportLine(row, col, col));
+		copied = 1;
+	}
+
+	if (copied && wxTheClipboard->Open())
+	{
+		wxTheClipboard->SetData(new wxTextDataObject(str));
+		wxTheClipboard->Close();
+	}
+	else
+	{
+		copied = 0;
+	}
+
+	return copied;
 }
 
-void ctlSQLGrid::OnLabelDoubleClick(wxGridEvent& event)
+void ctlSQLGrid::OnLabelDoubleClick(wxGridEvent &event)
 {
-    int maxHeight, maxWidth;
-    GetClientSize(&maxWidth, &maxHeight);
-    int row = event.GetRow();
-    int col = event.GetCol();
+	int maxHeight, maxWidth;
+	GetClientSize(&maxWidth, &maxHeight);
+	int row = event.GetRow();
+	int col = event.GetCol();
 
-    int extent, extentWant=0;
+	int extent, extentWant = 0;
 
-    if (row >= 0)
-    {
-        for (col=0 ; col < GetNumberCols() ; col++)
-        {
-            extent = GetBestSize(row, col).GetHeight();
-            if (extent > extentWant)
-                extentWant = extent;
-        }
+	if (row >= 0)
+	{
+		for (col = 0 ; col < GetNumberCols() ; col++)
+		{
+			extent = GetBestSize(row, col).GetHeight();
+			if (extent > extentWant)
+				extentWant = extent;
+		}
 
-        extentWant += EXTRAEXTENT_HEIGHT;
-        extentWant = wxMax(extentWant, GetRowMinimalAcceptableHeight());
-        extentWant = wxMin(extentWant, maxHeight*3/4);
-        int currentHeight = GetRowHeight(row);
-            
-        if (currentHeight >= maxHeight*3/4 || currentHeight == extentWant)
-            extentWant = GetRowMinimalAcceptableHeight();
-        else if (currentHeight < maxHeight/4)
-            extentWant = wxMin(maxHeight/4, extentWant);
-        else if (currentHeight < maxHeight/2)
-            extentWant = wxMin(maxHeight/2, extentWant);
-        else if (currentHeight < maxHeight*3/4)
-            extentWant = wxMin(maxHeight*3/4, extentWant);
+		extentWant += EXTRAEXTENT_HEIGHT;
+		extentWant = wxMax(extentWant, GetRowMinimalAcceptableHeight());
+		extentWant = wxMin(extentWant, maxHeight * 3 / 4);
+		int currentHeight = GetRowHeight(row);
 
-        if (extentWant != currentHeight)
-        {
-            BeginBatch();
-            if(IsCellEditControlShown())
-            {
-                HideCellEditControl();
-                SaveEditControlValue();
-            }
+		if (currentHeight >= maxHeight * 3 / 4 || currentHeight == extentWant)
+			extentWant = GetRowMinimalAcceptableHeight();
+		else if (currentHeight < maxHeight / 4)
+			extentWant = wxMin(maxHeight / 4, extentWant);
+		else if (currentHeight < maxHeight / 2)
+			extentWant = wxMin(maxHeight / 2, extentWant);
+		else if (currentHeight < maxHeight * 3 / 4)
+			extentWant = wxMin(maxHeight * 3 / 4, extentWant);
 
-            SetRowHeight(row, extentWant);
-            EndBatch();
-        }
-    }
-    else if (col >= 0)
-    {
-        for (row=0 ; row < GetNumberRows() ; row++)
-        {
-            if (CheckRowPresent(row))
-            {
-                extent = GetBestSize(row, col).GetWidth();
-                if (extent > extentWant)
-                    extentWant=extent;
-            }
-        }
+		if (extentWant != currentHeight)
+		{
+			BeginBatch();
+			if(IsCellEditControlShown())
+			{
+				HideCellEditControl();
+				SaveEditControlValue();
+			}
 
-        extentWant += EXTRAEXTENT_WIDTH;
-        extentWant = wxMax(extentWant, GetColMinimalAcceptableWidth());
-        extentWant = wxMin(extentWant, maxWidth*3/4);
-        int currentWidth=GetColumnWidth(col);
-            
-        if (currentWidth >= maxWidth*3/4 || currentWidth == extentWant)
-            extentWant = GetColMinimalAcceptableWidth();
-        else if (currentWidth < maxWidth/4)
-            extentWant = wxMin(maxWidth/4, extentWant);
-        else if (currentWidth < maxWidth/2)
-            extentWant = wxMin(maxWidth/2, extentWant);
-        else if (currentWidth < maxWidth*3/4)
-            extentWant = wxMin(maxWidth*3/4, extentWant);
+			SetRowHeight(row, extentWant);
+			EndBatch();
+		}
+	}
+	else if (col >= 0)
+	{
+		for (row = 0 ; row < GetNumberRows() ; row++)
+		{
+			if (CheckRowPresent(row))
+			{
+				extent = GetBestSize(row, col).GetWidth();
+				if (extent > extentWant)
+					extentWant = extent;
+			}
+		}
 
-        if (extentWant != currentWidth)
-        {
-            BeginBatch();
-            if(IsCellEditControlShown())
-            {
-                HideCellEditControl();
-                SaveEditControlValue();
-            }
-            SetColumnWidth(col, extentWant);
-            EndBatch();
-        }
-    }
+		extentWant += EXTRAEXTENT_WIDTH;
+		extentWant = wxMax(extentWant, GetColMinimalAcceptableWidth());
+		extentWant = wxMin(extentWant, maxWidth * 3 / 4);
+		int currentWidth = GetColumnWidth(col);
+
+		if (currentWidth >= maxWidth * 3 / 4 || currentWidth == extentWant)
+			extentWant = GetColMinimalAcceptableWidth();
+		else if (currentWidth < maxWidth / 4)
+			extentWant = wxMin(maxWidth / 4, extentWant);
+		else if (currentWidth < maxWidth / 2)
+			extentWant = wxMin(maxWidth / 2, extentWant);
+		else if (currentWidth < maxWidth * 3 / 4)
+			extentWant = wxMin(maxWidth * 3 / 4, extentWant);
+
+		if (extentWant != currentWidth)
+		{
+			BeginBatch();
+			if(IsCellEditControlShown())
+			{
+				HideCellEditControl();
+				SaveEditControlValue();
+			}
+			SetColumnWidth(col, extentWant);
+			EndBatch();
+		}
+	}
 }
 
 wxSize ctlSQLGrid::GetBestSize(int row, int col)
 {
-    wxSize size;
+	wxSize size;
 
-    wxGridCellAttr* attr = GetCellAttr(row, col);
-    wxGridCellRenderer* renderer = attr->GetRenderer(this, row, col);
-    if ( renderer )
-    {
-        wxClientDC dc(GetGridWindow());
-        size = renderer->GetBestSize(*this, *attr, dc, row, col);
-        renderer->DecRef();
-    }
+	wxGridCellAttr *attr = GetCellAttr(row, col);
+	wxGridCellRenderer *renderer = attr->GetRenderer(this, row, col);
+	if ( renderer )
+	{
+		wxClientDC dc(GetGridWindow());
+		size = renderer->GetBestSize(*this, *attr, dc, row, col);
+		renderer->DecRef();
+	}
 
-    attr->DecRef();
+	attr->DecRef();
 
-    return size;
+	return size;
 }

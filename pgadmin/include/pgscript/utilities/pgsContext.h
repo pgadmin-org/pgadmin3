@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -33,74 +33,74 @@ private:
 
 	/** List of temporary statements. */
 	pgsListStmt m_stmts;
-	
+
 public:
-	
+
 	/** For writing to the output. */
-	pgsOutputStream & m_cout;
+	pgsOutputStream &m_cout;
 
 public:
 
 	//////////////////////////////
 	// Constructor & destructor //
 	//////////////////////////////
-	
-	pgsContext(pgsOutputStream & cout);
+
+	pgsContext(pgsOutputStream &cout);
 
 	~pgsContext();
-	
+
 	///////////////////////////////
 	// Methods generating values //
 	///////////////////////////////
 
 	/** Generates a pgsNumber with value '0' and put it on stack. */
-	pgsVariable * zero();
+	pgsVariable *zero();
 
 	/** Generates a pgsNumber with value '0' and put it on stack. */
-	pgsVariable * one();
-	
+	pgsVariable *one();
+
 	/** Generates a pgsNumber with value now() and put it on stack. */
-	pgsVariable * seed();
-	
+	pgsVariable *seed();
+
 	/** Generates a pgsString with the locale encoding and put it on stack. */
-	pgsVariable * encoding();
-	
+	pgsVariable *encoding();
+
 	/** Generates an empty statement list and put it on stack. */
-	pgsStmtList * stmt_list(pgsThread * app = 0);
-	
+	pgsStmtList *stmt_list(pgsThread *app = 0);
+
 	////////////////////////////////////////////////
 	// For managing a new record declaration list //
 	////////////////////////////////////////////////
-	
+
 	/** Adds a column name to the column list. */
-	void add_column(const wxString & column);
+	void add_column(const wxString &column);
 
 	/** Retrieves the column list. */
-	const wxArrayString & columns();
+	const wxArrayString &columns();
 
 	/** Clears the column list. */
 	void clear_columns();
 
-	
+
 	/////////////////////////////////////////////
 	// For managing stacks of temporary values //
 	/////////////////////////////////////////////
-	
+
 	/** Adds a pgsExpression on stack. */
-	void push_var(pgsExpression * var);
+	void push_var(pgsExpression *var);
 
 	/** Removes the last pgsExpression on stack. */
 	void pop_var();
-	
+
 	/** Gives the number of pgsExpression on stack. */
 	size_t size_vars() const;
 
 	/** Adds a pgsStmt on stack. */
-	void push_stmt(pgsStmt * stmt);
+	void push_stmt(pgsStmt *stmt);
 
 	/** Removes the last pgsStmt on stack. */
 	void pop_stmt();
-	
+
 	/** Gives the number of pgsStmt on stack. */
 	size_t size_stmts() const;
 
@@ -110,9 +110,9 @@ public:
 
 private:
 
-	pgsContext(const pgsContext & that);
+	pgsContext(const pgsContext &that);
 
-	pgsContext & operator=(const pgsContext & that);
+	pgsContext &operator=(const pgsContext &that);
 
 };
 

@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgRule.h - Rule property 
+// dlgRule.h - Rule property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,22 +22,22 @@ class ctlSQLBox;
 class dlgRule : public dlgProperty
 {
 public:
-    dlgRule(pgaFactory *factory, frmMain *frame, pgRule *r, pgTable *tab);
-    int Go(bool modal);
+	dlgRule(pgaFactory *factory, frmMain *frame, pgRule *r, pgTable *tab);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
 private:
-    pgTable *table;
-    pgRule *rule;
-    wxString oldDefinition;
+	pgTable *table;
+	pgRule *rule;
+	wxString oldDefinition;
 
-    bool didChange();
+	bool didChange();
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

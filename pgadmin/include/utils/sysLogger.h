@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,24 +19,24 @@
 
 enum LOG_LEVEL
 {
-    LOG_NONE = 0,
-    LOG_ERRORS = 1,
-    LOG_NOTICE = 2,
-    LOG_SQL = 3,
-    LOG_DEBUG = 4
+	LOG_NONE = 0,
+	LOG_ERRORS = 1,
+	LOG_NOTICE = 2,
+	LOG_SQL = 3,
+	LOG_DEBUG = 4
 };
 
 // Class declarations
 class sysLogger : public wxLog
 {
 public:
-    virtual void DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp);
-    static wxLogLevel logLevel;
-    static wxString logFile;
+	virtual void DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp);
+	static wxLogLevel logLevel;
+	static wxString logFile;
 
 private:
-    void WriteLog(const wxString& msg);
-    bool SilenceMessage(const wxString &msg);
+	void WriteLog(const wxString &msg);
+	bool SilenceMessage(const wxString &msg);
 };
 
 #define wxLOG_Notice (wxLOG_User+1)

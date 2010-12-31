@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -15,17 +15,17 @@
 
 class pgsException
 {
-	
+
 protected:
-	
+
 	pgsException();
-	
+
 public:
-	
+
 	virtual ~pgsException();
-	
+
 	virtual const wxString message() const = 0;
-	
+
 };
 
 #endif /*PGSEXCEPTION_H_*/

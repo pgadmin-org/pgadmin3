@@ -1,5 +1,5 @@
 
-/* 
+/*
  *  M_APM  -  mapm_flr.c
  *
  *  Copyright (C) 2001 - 2007   Michael C. Ring
@@ -37,84 +37,84 @@
  */
 
 /****************************************************************************/
-/* 
+/*
  *      return the nearest integer <= input
  */
 void	m_apm_floor(M_APM bb, M_APM aa)
 {
-M_APM	mtmp;
+	M_APM	mtmp;
 
-m_apm_copy(bb, aa);
+	m_apm_copy(bb, aa);
 
-if (m_apm_is_integer(bb))          /* if integer, we're done */
-  return;
+	if (m_apm_is_integer(bb))          /* if integer, we're done */
+		return;
 
-if (bb->m_apm_exponent <= 0)       /* if |bb| < 1, result is -1 or 0 */
-  {
-   if (bb->m_apm_sign < 0)
-     m_apm_negate(bb, MM_One);
-   else
-     M_set_to_zero(bb);
+	if (bb->m_apm_exponent <= 0)       /* if |bb| < 1, result is -1 or 0 */
+	{
+		if (bb->m_apm_sign < 0)
+			m_apm_negate(bb, MM_One);
+		else
+			M_set_to_zero(bb);
 
-   return;
-  }
+		return;
+	}
 
-if (bb->m_apm_sign < 0)
-  {
-   mtmp = M_get_stack_var();
-   m_apm_negate(mtmp, bb);
+	if (bb->m_apm_sign < 0)
+	{
+		mtmp = M_get_stack_var();
+		m_apm_negate(mtmp, bb);
 
-   mtmp->m_apm_datalength = mtmp->m_apm_exponent;
-   M_apm_normalize(mtmp);
+		mtmp->m_apm_datalength = mtmp->m_apm_exponent;
+		M_apm_normalize(mtmp);
 
-   m_apm_add(bb, mtmp, MM_One);
-   bb->m_apm_sign = -1;
-   M_restore_stack(1);
-  }
-else
-  {
-   bb->m_apm_datalength = bb->m_apm_exponent;
-   M_apm_normalize(bb);
-  }
+		m_apm_add(bb, mtmp, MM_One);
+		bb->m_apm_sign = -1;
+		M_restore_stack(1);
+	}
+	else
+	{
+		bb->m_apm_datalength = bb->m_apm_exponent;
+		M_apm_normalize(bb);
+	}
 }
 /****************************************************************************/
-/* 
+/*
  *      return the nearest integer >= input
  */
 void	m_apm_ceil(M_APM bb, M_APM aa)
 {
-M_APM	mtmp;
+	M_APM	mtmp;
 
-m_apm_copy(bb, aa);
+	m_apm_copy(bb, aa);
 
-if (m_apm_is_integer(bb))          /* if integer, we're done */
-  return;
+	if (m_apm_is_integer(bb))          /* if integer, we're done */
+		return;
 
-if (bb->m_apm_exponent <= 0)       /* if |bb| < 1, result is 0 or 1 */
-  {
-   if (bb->m_apm_sign < 0)
-     M_set_to_zero(bb);
-   else
-     m_apm_copy(bb, MM_One);
+	if (bb->m_apm_exponent <= 0)       /* if |bb| < 1, result is 0 or 1 */
+	{
+		if (bb->m_apm_sign < 0)
+			M_set_to_zero(bb);
+		else
+			m_apm_copy(bb, MM_One);
 
-   return;
-  }
+		return;
+	}
 
-if (bb->m_apm_sign < 0)
-  {
-   bb->m_apm_datalength = bb->m_apm_exponent;
-   M_apm_normalize(bb);
-  }
-else
-  {
-   mtmp = M_get_stack_var();
-   m_apm_copy(mtmp, bb);
+	if (bb->m_apm_sign < 0)
+	{
+		bb->m_apm_datalength = bb->m_apm_exponent;
+		M_apm_normalize(bb);
+	}
+	else
+	{
+		mtmp = M_get_stack_var();
+		m_apm_copy(mtmp, bb);
 
-   mtmp->m_apm_datalength = mtmp->m_apm_exponent;
-   M_apm_normalize(mtmp);
+		mtmp->m_apm_datalength = mtmp->m_apm_exponent;
+		M_apm_normalize(mtmp);
 
-   m_apm_add(bb, mtmp, MM_One);
-   M_restore_stack(1);
-  }
+		m_apm_add(bb, mtmp, MM_One);
+		M_restore_stack(1);
+	}
 }
 /****************************************************************************/

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,20 +16,20 @@
 
 class pgsCastException : public pgsException
 {
-	
+
 protected:
-	
+
 	const wxString m_value;
 	const wxString m_type;
-	
+
 public:
-	
-	pgsCastException(const wxString & value, const wxString & type);
-	
+
+	pgsCastException(const wxString &value, const wxString &type);
+
 	virtual ~pgsCastException();
-	
+
 	virtual const wxString message() const;
-	
+
 };
 
 #endif /*PGSCASTEXCEPTION_H_*/

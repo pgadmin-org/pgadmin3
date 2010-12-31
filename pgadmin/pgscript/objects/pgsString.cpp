@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -17,7 +17,7 @@
 #include "pgscript/exceptions/pgsArithmeticException.h"
 #include "pgscript/exceptions/pgsCastException.h"
 
-pgsString::pgsString(const wxString & data) :
+pgsString::pgsString(const wxString &data) :
 	pgsVariable(pgsVariable::pgsTString), m_data(data)
 {
 
@@ -28,7 +28,7 @@ pgsString::~pgsString()
 
 }
 
-pgsVariable * pgsString::clone() const
+pgsVariable *pgsString::clone() const
 {
 	return pnew pgsString(*this);
 }
@@ -38,12 +38,12 @@ wxString pgsString::value() const
 	return m_data;
 }
 
-pgsOperand pgsString::eval(pgsVarMap & vars) const
+pgsOperand pgsString::eval(pgsVarMap &vars) const
 {
 	return this->clone();
 }
 
-pgsOperand pgsString::pgs_plus(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_plus(const pgsVariable &rhs) const
 {
 	if (rhs.is_string())
 	{
@@ -55,27 +55,27 @@ pgsOperand pgsString::pgs_plus(const pgsVariable & rhs) const
 	}
 }
 
-pgsOperand pgsString::pgs_minus(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_minus(const pgsVariable &rhs) const
 {
 	throw pgsArithmeticException(m_data, rhs.value());
 }
 
-pgsOperand pgsString::pgs_times(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_times(const pgsVariable &rhs) const
 {
 	throw pgsArithmeticException(m_data, rhs.value());
 }
 
-pgsOperand pgsString::pgs_over(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_over(const pgsVariable &rhs) const
 {
 	throw pgsArithmeticException(m_data, rhs.value());
 }
 
-pgsOperand pgsString::pgs_modulo(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_modulo(const pgsVariable &rhs) const
 {
 	throw pgsArithmeticException(m_data, rhs.value());
 }
 
-pgsOperand pgsString::pgs_equal(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_equal(const pgsVariable &rhs) const
 {
 	if (rhs.is_string())
 	{
@@ -87,7 +87,7 @@ pgsOperand pgsString::pgs_equal(const pgsVariable & rhs) const
 	}
 }
 
-pgsOperand pgsString::pgs_different(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_different(const pgsVariable &rhs) const
 {
 	if (rhs.is_string())
 	{
@@ -99,7 +99,7 @@ pgsOperand pgsString::pgs_different(const pgsVariable & rhs) const
 	}
 }
 
-pgsOperand pgsString::pgs_greater(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_greater(const pgsVariable &rhs) const
 {
 	if (rhs.is_string())
 	{
@@ -111,7 +111,7 @@ pgsOperand pgsString::pgs_greater(const pgsVariable & rhs) const
 	}
 }
 
-pgsOperand pgsString::pgs_lower(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_lower(const pgsVariable &rhs) const
 {
 	if (rhs.is_string())
 	{
@@ -123,7 +123,7 @@ pgsOperand pgsString::pgs_lower(const pgsVariable & rhs) const
 	}
 }
 
-pgsOperand pgsString::pgs_lower_equal(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_lower_equal(const pgsVariable &rhs) const
 {
 	if (rhs.is_string())
 	{
@@ -135,7 +135,7 @@ pgsOperand pgsString::pgs_lower_equal(const pgsVariable & rhs) const
 	}
 }
 
-pgsOperand pgsString::pgs_greater_equal(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_greater_equal(const pgsVariable &rhs) const
 {
 	if (rhs.is_string())
 	{
@@ -159,12 +159,12 @@ bool pgsString::pgs_is_true() const
 	return (!data.IsEmpty() ? true : false);
 }
 
-pgsOperand pgsString::pgs_almost_equal(const pgsVariable & rhs) const
+pgsOperand pgsString::pgs_almost_equal(const pgsVariable &rhs) const
 {
 	if (rhs.is_string())
 	{
 		return pnew pgsNumber(m_data.CmpNoCase(rhs.value()) == 0
-				? wxT("1") : wxT("0"));
+		                      ? wxT("1") : wxT("0"));
 	}
 	else
 	{
@@ -178,27 +178,27 @@ pgsNumber pgsString::number() const
 	pgsTypes type = pgsNumber::num_type(data);
 	switch (type)
 	{
-	case pgsTInt:
-		return pgsNumber(data, pgsInt);
-	case pgsTReal:
-		return pgsNumber(data, pgsReal);
-	default:
-		throw pgsCastException(data, wxT("number"));
+		case pgsTInt:
+			return pgsNumber(data, pgsInt);
+		case pgsTReal:
+			return pgsNumber(data, pgsReal);
+		default:
+			throw pgsCastException(data, wxT("number"));
 	}
 }
 
 pgsRecord pgsString::record() const
 {
-	pgsRecord * rec = 0;
-	
+	pgsRecord *rec = 0;
+
 	// Try to find the representation of a record in the string
 	{
 		wxString element(wxT("(\"([^\"\\\\]|\\\\.)*\")|((-|[a-zA-Z0-9\\+\\.])+)"));
 		wxString data(m_data);
 		wxRegEx regex1(wxString() << wxT("^[[:space:]]*\\([[:space:]]*(")
-				<< element << wxT(")[[:space:]]*([,][[:space:]]*(")
-				<< element << wxT(")[[:space:]]*)*\\)"), wxRE_DEFAULT | wxRE_ICASE);
-		
+		               << element << wxT(")[[:space:]]*([,][[:space:]]*(")
+		               << element << wxT(")[[:space:]]*)*\\)"), wxRE_DEFAULT | wxRE_ICASE);
+
 		// Find each line
 		size_t line_nb = 0, nb_of_columns = 0;
 		bool count_columns = true;
@@ -220,14 +220,14 @@ pgsRecord pgsString::record() const
 					{
 						wxString value(regex2.GetMatch(line));
 						if (value.StartsWith(wxT("\""))
-								&& value.EndsWith(wxT("\"")))
+						        && value.EndsWith(wxT("\"")))
 						{
 							// This is a string
 							value = value.Mid(1, value.Len() - 2);
 							value.Replace(wxT("\\\""), wxT("\""));
 							value.Replace(wxT("\\\\"), wxT("\\"));
 							rec->insert(line_nb, column_nb,
-									pnew pgsString(value));
+							            pnew pgsString(value));
 						}
 						else
 						{
@@ -235,27 +235,27 @@ pgsRecord pgsString::record() const
 							pgsTypes type = pgsNumber::num_type(value);
 							switch (type)
 							{
-							case pgsTInt:
-								rec->insert(line_nb, column_nb,
-										pnew pgsNumber(value, pgsInt));
-								break;
-							case pgsTReal:
-								rec->insert(line_nb, column_nb,
-										pnew pgsNumber(value, pgsReal));
-								break;
-							default:
-								rec->insert(line_nb, column_nb,
-										pnew pgsString(value));
-								break;
+								case pgsTInt:
+									rec->insert(line_nb, column_nb,
+									            pnew pgsNumber(value, pgsInt));
+									break;
+								case pgsTReal:
+									rec->insert(line_nb, column_nb,
+									            pnew pgsNumber(value, pgsReal));
+									break;
+								default:
+									rec->insert(line_nb, column_nb,
+									            pnew pgsString(value));
+									break;
 							}
 						}
 					}
 					++column_nb;
 				}
-				
+
 				regex2.ReplaceFirst(&line, wxT(""));
 			}
-			
+
 			// If it is the first loop we want to process this line a
 			// second time because the first one was meant to count
 			// the number of columns
@@ -271,7 +271,7 @@ pgsRecord pgsString::record() const
 			}
 		}
 	}
-	
+
 	// Process the case
 	if (rec == 0)
 	{

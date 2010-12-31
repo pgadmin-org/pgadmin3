@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,17 +19,17 @@
 class dlgAddFavourite : public pgDialog
 {
 public:
-    dlgAddFavourite(wxWindow *parent, queryFavouriteFolder *favourites);
-    ~dlgAddFavourite();
+	dlgAddFavourite(wxWindow *parent, queryFavouriteFolder *favourites);
+	~dlgAddFavourite();
 	bool AddFavourite(wxString newtext);
-    
+
 private:
 	queryFavouriteFolder *favourites;
-    void OnOK(wxCommandEvent& ev);
-    void OnCancel(wxCommandEvent& ev);
+	void OnOK(wxCommandEvent &ev);
+	void OnCancel(wxCommandEvent &ev);
 	void OnChange(wxCommandEvent &ev);
 	void OnTreeChange(wxTreeEvent &ev);
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

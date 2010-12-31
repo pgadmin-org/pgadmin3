@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,17 +19,17 @@ class pgsBreakStmt : public pgsStmt
 
 public:
 
-	pgsBreakStmt(pgsThread * app = 0);
+	pgsBreakStmt(pgsThread *app = 0);
 
 	virtual ~pgsBreakStmt();
 
-	virtual void eval(pgsVarMap & vars) const;
-	
-private:
-	
-	pgsBreakStmt(const pgsBreakStmt & that);
+	virtual void eval(pgsVarMap &vars) const;
 
-	pgsBreakStmt & operator=(const pgsBreakStmt & that);
+private:
+
+	pgsBreakStmt(const pgsBreakStmt &that);
+
+	pgsBreakStmt &operator=(const pgsBreakStmt &that);
 
 };
 

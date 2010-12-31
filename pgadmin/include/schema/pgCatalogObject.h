@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -17,9 +17,12 @@
 class pgCatalogObjectFactory : public pgSchemaObjFactory
 {
 public:
-    pgCatalogObjectFactory();
-    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent) { return NULL; };
-    virtual pgObject *CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction);
+	pgCatalogObjectFactory();
+	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+	{
+		return NULL;
+	};
+	virtual pgObject *CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction);
 };
 extern pgCatalogObjectFactory catalogObjectFactory;
 
@@ -28,19 +31,34 @@ extern pgCatalogObjectFactory catalogObjectFactory;
 class pgCatalogObject : public pgSchemaObject
 {
 public:
-    pgCatalogObject(pgSchema *newSchema, const wxString& newName = wxT(""));
+	pgCatalogObject(pgSchema *newSchema, const wxString &newName = wxT(""));
 
-    wxString GetTranslatedMessage(int kindOfMessage) const;
-    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 
-    wxString GetSql(ctlTree *browser);
-    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+	wxString GetSql(ctlTree *browser);
+	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
-    bool HasStats() { return false; }
-    bool HasDepends() { return true; }
-    bool HasReferences() { return true; }
-    bool CanCreate() { return false; }
-    bool CanEdit() { return false; }
+	bool HasStats()
+	{
+		return false;
+	}
+	bool HasDepends()
+	{
+		return true;
+	}
+	bool HasReferences()
+	{
+		return true;
+	}
+	bool CanCreate()
+	{
+		return false;
+	}
+	bool CanEdit()
+	{
+		return false;
+	}
 
 private:
 
@@ -49,8 +67,8 @@ private:
 class pgCatalogObjectCollection : public pgSchemaObjCollection
 {
 public:
-    pgCatalogObjectCollection(pgaFactory *factory, pgSchema *sch);
-    wxString GetTranslatedMessage(int kindOfMessage) const;
+	pgCatalogObjectCollection(pgaFactory *factory, pgSchema *sch);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 
 #endif

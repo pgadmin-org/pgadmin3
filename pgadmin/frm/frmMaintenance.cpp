@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -28,7 +28,7 @@
 
 
 BEGIN_EVENT_TABLE(frmMaintenance, ExecutionDialog)
-    EVT_RADIOBOX(XRCID("rbxAction"),    frmMaintenance::OnAction)
+	EVT_RADIOBOX(XRCID("rbxAction"),    frmMaintenance::OnAction)
 END_EVENT_TABLE()
 
 #define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
@@ -44,147 +44,153 @@ END_EVENT_TABLE()
 
 frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(form, obj)
 {
-    wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(form, wxT("frmMaintenance"));
-    RestorePosition();
+	wxWindowBase::SetFont(settings->GetSystemFont());
+	LoadResource(form, wxT("frmMaintenance"));
+	RestorePosition();
 
-    SetTitle(object->GetTranslatedMessage(MAINTENANCEDIALOGTITLE));
+	SetTitle(object->GetTranslatedMessage(MAINTENANCEDIALOGTITLE));
 
-    txtMessages = CTRL_TEXT("txtMessages");
+	txtMessages = CTRL_TEXT("txtMessages");
 
-    // Icon
-    SetIcon(wxIcon(vacuum_xpm));
+	// Icon
+	SetIcon(wxIcon(vacuum_xpm));
 
-    txtMessages->SetMaxLength(0L);
+	txtMessages->SetMaxLength(0L);
 
-    if (object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_PRIMARYKEY || object->GetMetaType() == PGM_UNIQUE)
-    {
-        rbxAction->SetSelection(2);
-        rbxAction->Enable(0, false);
-        rbxAction->Enable(1, false);
-    }
-    wxCommandEvent ev;
-    OnAction(ev);
+	if (object->GetMetaType() == PGM_INDEX || object->GetMetaType() == PGM_PRIMARYKEY || object->GetMetaType() == PGM_UNIQUE)
+	{
+		rbxAction->SetSelection(2);
+		rbxAction->Enable(0, false);
+		rbxAction->Enable(1, false);
+	}
+	wxCommandEvent ev;
+	OnAction(ev);
 }
 
 
 frmMaintenance::~frmMaintenance()
 {
-    SavePosition();
-    Abort();
+	SavePosition();
+	Abort();
 }
 
 
 wxString frmMaintenance::GetHelpPage() const
 {
-    wxString page;
-    switch ((XRCCTRL(*(frmMaintenance*)this, "rbxAction", wxRadioBox))->GetSelection())
-    {
-        case 0: page = wxT("pg/sql-vacuum"); break;
-        case 1: page = wxT("pg/sql-analyze"); break;
-        case 2: page = wxT("pg/sql-reindex"); break;
-    }
-    return page;
+	wxString page;
+	switch ((XRCCTRL(*(frmMaintenance *)this, "rbxAction", wxRadioBox))->GetSelection())
+	{
+		case 0:
+			page = wxT("pg/sql-vacuum");
+			break;
+		case 1:
+			page = wxT("pg/sql-analyze");
+			break;
+		case 2:
+			page = wxT("pg/sql-reindex");
+			break;
+	}
+	return page;
 }
 
 
 
-void frmMaintenance::OnAction(wxCommandEvent& ev)
+void frmMaintenance::OnAction(wxCommandEvent &ev)
 {
-    bool isVacuum = (rbxAction->GetSelection() == 0);
-    chkFull->Enable(isVacuum);
-    chkFreeze->Enable(isVacuum);
-    chkAnalyze->Enable(isVacuum);
+	bool isVacuum = (rbxAction->GetSelection() == 0);
+	chkFull->Enable(isVacuum);
+	chkFreeze->Enable(isVacuum);
+	chkAnalyze->Enable(isVacuum);
 
-    bool isReindex = (rbxAction->GetSelection() == 2);
-    if (isReindex)
-    {
-        chkVerbose->SetValue(false);
-    }
-    chkVerbose->Enable(!isReindex);
+	bool isReindex = (rbxAction->GetSelection() == 2);
+	if (isReindex)
+	{
+		chkVerbose->SetValue(false);
+	}
+	chkVerbose->Enable(!isReindex);
 }
 
 
 
 wxString frmMaintenance::GetSql()
 {
-    wxString sql;
+	wxString sql;
 
-    switch (rbxAction->GetSelection())
-    {
-        case 0:
-        {
-            sql=wxT("VACUUM ");
+	switch (rbxAction->GetSelection())
+	{
+		case 0:
+		{
+			sql = wxT("VACUUM ");
 
-            if (chkFull->GetValue())
-                sql += wxT("FULL ");
-            if (chkFreeze->GetValue())
-                sql += wxT("FREEZE ");
-            if (chkVerbose->GetValue())
-                sql += wxT("VERBOSE ");
-            if (chkAnalyze->GetValue())
-                sql += wxT("ANALYZE ");
+			if (chkFull->GetValue())
+				sql += wxT("FULL ");
+			if (chkFreeze->GetValue())
+				sql += wxT("FREEZE ");
+			if (chkVerbose->GetValue())
+				sql += wxT("VERBOSE ");
+			if (chkAnalyze->GetValue())
+				sql += wxT("ANALYZE ");
 
-            if (object->GetMetaType() != PGM_DATABASE)
-                sql += object->GetQuotedFullIdentifier();
-            
-            break;
-        }
-        case 1:
-        {
-            sql = wxT("ANALYZE ");
-            if (chkVerbose->GetValue())
-                sql += wxT("VERBOSE ");
-            
-            if (object->GetMetaType() != PGM_DATABASE)
-                sql += object->GetQuotedFullIdentifier();
+			if (object->GetMetaType() != PGM_DATABASE)
+				sql += object->GetQuotedFullIdentifier();
 
-            break;
-        }
-        case 2:
-        {
-            if (object->GetMetaType() == PGM_UNIQUE || object->GetMetaType() == PGM_PRIMARYKEY)
-            {
-                sql = wxT("REINDEX INDEX ") + object->GetQuotedFullIdentifier();
-            }
-            else // Database, Tables, and Index (but not Constraintes ones)
-            {
-                sql = wxT("REINDEX ") + object->GetTypeName().Upper()
-                    + wxT(" ") + object->GetQuotedFullIdentifier();
-            }
-            break;
-        }
-    }
+			break;
+		}
+		case 1:
+		{
+			sql = wxT("ANALYZE ");
+			if (chkVerbose->GetValue())
+				sql += wxT("VERBOSE ");
 
-    return sql;
+			if (object->GetMetaType() != PGM_DATABASE)
+				sql += object->GetQuotedFullIdentifier();
+
+			break;
+		}
+		case 2:
+		{
+			if (object->GetMetaType() == PGM_UNIQUE || object->GetMetaType() == PGM_PRIMARYKEY)
+			{
+				sql = wxT("REINDEX INDEX ") + object->GetQuotedFullIdentifier();
+			}
+			else // Database, Tables, and Index (but not Constraintes ones)
+			{
+				sql = wxT("REINDEX ") + object->GetTypeName().Upper()
+				      + wxT(" ") + object->GetQuotedFullIdentifier();
+			}
+			break;
+		}
+	}
+
+	return sql;
 }
 
 
 
 void frmMaintenance::Go()
 {
-    chkFull->SetFocus();
-    Show(true);
+	chkFull->SetFocus();
+	Show(true);
 }
 
 
 
 maintenanceFactory::maintenanceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
-    mnu->Append(id, _("&Maintenance..."), _("Maintain the current database or table."));
-    toolbar->AddTool(id, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
+	mnu->Append(id, _("&Maintenance..."), _("Maintain the current database or table."));
+	toolbar->AddTool(id, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
 }
 
 
 wxWindow *maintenanceFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmMaintenance *frm=new frmMaintenance(form, obj);
-    frm->Go();
-    return 0;
+	frmMaintenance *frm = new frmMaintenance(form, obj);
+	frm->Go();
+	return 0;
 }
 
 
 bool maintenanceFactory::CheckEnable(pgObject *obj)
 {
-    return obj && obj->CanMaintenance();
+	return obj && obj->CanMaintenance();
 }

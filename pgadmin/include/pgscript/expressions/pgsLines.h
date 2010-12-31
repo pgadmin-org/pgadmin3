@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,14 +16,14 @@
 
 class pgsLines : public pgsExpression
 {
-	
+
 private:
-	
+
 	wxString m_name;
-	
+
 public:
 
-	pgsLines(const wxString & name);
+	pgsLines(const wxString &name);
 
 	virtual ~pgsLines();
 
@@ -31,12 +31,12 @@ public:
 
 	/* pgsLines & operator=(const pgsLines & that); */
 
-	virtual pgsExpression * clone() const;
-	
+	virtual pgsExpression *clone() const;
+
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
-	
+	virtual pgsOperand eval(pgsVarMap &vars) const;
+
 };
 
 #endif /*PGSLINES_H_*/

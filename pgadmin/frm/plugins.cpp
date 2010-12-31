@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -29,23 +29,23 @@
 
 void frmMain::LoadPluginUtilities()
 {
-    if (pluginsDir.IsEmpty())
-        return;
+	if (pluginsDir.IsEmpty())
+		return;
 
-    PluginUtility *util = new PluginUtility;
-    ClearPluginUtility(util);
+	PluginUtility *util = new PluginUtility;
+	ClearPluginUtility(util);
 
 	// Loop through all the ini files we find in the directory.
 	wxString iniFile;
 	wxDir iniDir(pluginsDir);
-	
+
 	if (!iniDir.IsOpened())
 		return;
-	
+
 	wxLogInfo(wxT("Loading plugin ini files from %s"), pluginsDir.c_str());
-	
+
 	bool cont = iniDir.GetFirst(&iniFile, wxT("*.ini"), wxDIR_FILES);
-	
+
 	while(cont)
 	{
 		// Load the config file
@@ -62,7 +62,7 @@ void frmMain::LoadPluginUtilities()
 		wxStringTokenizer tkz(brCfg, wxT("\r\n"));
 
 		// Loop round the lines in the file. Everytime we find a new 'Title' value
-		// we create the current plugin and start a new one 
+		// we create the current plugin and start a new one
 		while(tkz.HasMoreTokens())
 		{
 			wxString token = tkz.GetNextToken();
@@ -163,277 +163,277 @@ void frmMain::LoadPluginUtilities()
 				wxStringTokenizer valueTkz(token.AfterFirst('='), wxT(","));
 
 				while(valueTkz.HasMoreTokens())
-				util->set_env.Add(valueTkz.GetNextToken());
+					util->set_env.Add(valueTkz.GetNextToken());
 			}
 		}
 
 		// Add the last app if required.
 		AddPluginUtility(util);
-		
+
 		// Get the next file
 		cont = iniDir.GetNext(&iniFile);
 	}
 
-    if (util)
-        delete util;
+	if (util)
+		delete util;
 }
 
 // Add a new plugin to the collection.
 void frmMain::AddPluginUtility(PluginUtility *util)
 {
-    // Platform name
+	// Platform name
 #ifdef __WXMSW__
-    wxString thisPlatform = wxT("windows");
+	wxString thisPlatform = wxT("windows");
 #else
 #ifdef __WXGTK__
-    wxString thisPlatform = wxT("unix");
+	wxString thisPlatform = wxT("unix");
 #else
-    wxString thisPlatform = wxT("osx");
+	wxString thisPlatform = wxT("osx");
 #endif
 #endif
 
-    // Only add apps targetted to this, or any platform
-    if (util->platform.Lower() == thisPlatform || util->platform == wxEmptyString)
-    {
-	    // Only add an app with a title and command
-        if (!util->title.IsEmpty() && !util->command.IsEmpty())
-        {
-            // We're only going to add this if the keyfile exists or isn't specified
-            if (util->keyfile.IsEmpty() || wxFileExists(util->keyfile))
-            {
-                CreatePluginUtility(util);
-                ClearPluginUtility(util);
-                pluginUtilityCount++;
-            }
-        }
-    }
+	// Only add apps targetted to this, or any platform
+	if (util->platform.Lower() == thisPlatform || util->platform == wxEmptyString)
+	{
+		// Only add an app with a title and command
+		if (!util->title.IsEmpty() && !util->command.IsEmpty())
+		{
+			// We're only going to add this if the keyfile exists or isn't specified
+			if (util->keyfile.IsEmpty() || wxFileExists(util->keyfile))
+			{
+				CreatePluginUtility(util);
+				ClearPluginUtility(util);
+				pluginUtilityCount++;
+			}
+		}
+	}
 }
 
 // Create a new Plugin utility factory
 void frmMain::CreatePluginUtility(PluginUtility *util)
 {
-    wxLogInfo(wxT("Adding plugin utility: %s"), util->title.c_str());
-    wxLogInfo(wxT("              Command: %s"), util->command.c_str());
-    wxLogInfo(wxT("          Description: %s"), util->description.c_str());
-    wxLogInfo(wxT("            Database?: %s"), util->database ? wxT("Yes") : wxT("No"));
-    wxLogInfo(wxT("        Set Password?: %s"), util->set_password ? wxT("Yes") : wxT("No"));
+	wxLogInfo(wxT("Adding plugin utility: %s"), util->title.c_str());
+	wxLogInfo(wxT("              Command: %s"), util->command.c_str());
+	wxLogInfo(wxT("          Description: %s"), util->description.c_str());
+	wxLogInfo(wxT("            Database?: %s"), util->database ? wxT("Yes") : wxT("No"));
+	wxLogInfo(wxT("        Set Password?: %s"), util->set_password ? wxT("Yes") : wxT("No"));
 
-    new pluginUtilityFactory(menuFactories, pluginsMenu, util);
+	new pluginUtilityFactory(menuFactories, pluginsMenu, util);
 }
 
 // Clear a PluginUtility struct
 void frmMain::ClearPluginUtility(PluginUtility *util)
 {
-    util->title = wxEmptyString;
-    util->command = wxEmptyString;
-    util->description = wxEmptyString;
-    util->keyfile = wxEmptyString;
-    util->platform = wxEmptyString;
-    util->server_types.Clear();
-    util->database = false;
-    util->applies_to.Clear();
-    util->set_password = false;
-    util->set_env.Clear();
+	util->title = wxEmptyString;
+	util->command = wxEmptyString;
+	util->description = wxEmptyString;
+	util->keyfile = wxEmptyString;
+	util->platform = wxEmptyString;
+	util->server_types.Clear();
+	util->database = false;
+	util->applies_to.Clear();
+	util->set_password = false;
+	util->set_env.Clear();
 }
 
 // The actionFactory for the plugin utilities
 pluginUtilityFactory::pluginUtilityFactory(menuFactoryList *list, wxMenu *menu, PluginUtility *util) : actionFactory(list)
 {
-    title = util->title;
-    command = util->command;
-    description = util->description;
-    server_types = util->server_types;
-    database = util->database;
-    applies_to = util->applies_to;
-    set_password = util->set_password;
-    set_env = util->set_env;
+	title = util->title;
+	command = util->command;
+	description = util->description;
+	server_types = util->server_types;
+	database = util->database;
+	applies_to = util->applies_to;
+	set_password = util->set_password;
+	set_env = util->set_env;
 
-    menu->Append(id, title, description);
+	menu->Append(id, title, description);
 }
 
 
 wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    wxString execCmd = command;
-    wxArrayString environment = set_env;
+	wxString execCmd = command;
+	wxArrayString environment = set_env;
 
-    // Remember this as the last plugin used
-    form->SetLastPluginUtility(this);
+	// Remember this as the last plugin used
+	form->SetLastPluginUtility(this);
 
-    // Replace all the place holders with appropriate values
-    if (HaveDatabase(obj))
-    {
-        execCmd.Replace(wxT("$$HOSTNAME"), obj->GetConnection()->GetHostName());
-        execCmd.Replace(wxT("$$HOSTADDR"), obj->GetConnection()->GetHostName());
-        execCmd.Replace(wxT("$$PORT"), NumToStr((long)obj->GetConnection()->GetPort()));
-        execCmd.Replace(wxT("$$SSLMODE"), obj->GetConnection()->GetSslModeName());
-        execCmd.Replace(wxT("$$DATABASE"), obj->GetConnection()->GetDbname());
-        execCmd.Replace(wxT("$$USERNAME"), obj->GetConnection()->GetUser());
-        execCmd.Replace(wxT("$$PASSWORD"), obj->GetConnection()->GetPassword());
+	// Replace all the place holders with appropriate values
+	if (HaveDatabase(obj))
+	{
+		execCmd.Replace(wxT("$$HOSTNAME"), obj->GetConnection()->GetHostName());
+		execCmd.Replace(wxT("$$HOSTADDR"), obj->GetConnection()->GetHostName());
+		execCmd.Replace(wxT("$$PORT"), NumToStr((long)obj->GetConnection()->GetPort()));
+		execCmd.Replace(wxT("$$SSLMODE"), obj->GetConnection()->GetSslModeName());
+		execCmd.Replace(wxT("$$DATABASE"), obj->GetConnection()->GetDbname());
+		execCmd.Replace(wxT("$$USERNAME"), obj->GetConnection()->GetUser());
+		execCmd.Replace(wxT("$$PASSWORD"), obj->GetConnection()->GetPassword());
 
-        // Set the PGPASSWORD variable if required.
-        if (set_password && !obj->GetConnection()->GetPassword().IsEmpty())
-            wxSetEnv(wxT("PGPASSWORD"), obj->GetConnection()->GetPassword());
+		// Set the PGPASSWORD variable if required.
+		if (set_password && !obj->GetConnection()->GetPassword().IsEmpty())
+			wxSetEnv(wxT("PGPASSWORD"), obj->GetConnection()->GetPassword());
 
 		// Pass the SSL mode via the environment
 		wxSetEnv(wxT("PGSSLMODE"), obj->GetConnection()->GetSslModeName());
-    }
-    else
-    {
-        // Blank the rest
-        execCmd.Replace(wxT("$$HOSTNAME"), wxEmptyString);
-        execCmd.Replace(wxT("$$HOSTADDR"), wxEmptyString);
-        execCmd.Replace(wxT("$$PORT"), wxEmptyString);
-        execCmd.Replace(wxT("$$SSLMODE"), wxEmptyString);
-        execCmd.Replace(wxT("$$DATABASE"), wxEmptyString);
-        execCmd.Replace(wxT("$$USERNAME"), wxEmptyString);
-        execCmd.Replace(wxT("$$PASSWORD"), wxEmptyString);
-    }
+	}
+	else
+	{
+		// Blank the rest
+		execCmd.Replace(wxT("$$HOSTNAME"), wxEmptyString);
+		execCmd.Replace(wxT("$$HOSTADDR"), wxEmptyString);
+		execCmd.Replace(wxT("$$PORT"), wxEmptyString);
+		execCmd.Replace(wxT("$$SSLMODE"), wxEmptyString);
+		execCmd.Replace(wxT("$$DATABASE"), wxEmptyString);
+		execCmd.Replace(wxT("$$USERNAME"), wxEmptyString);
+		execCmd.Replace(wxT("$$PASSWORD"), wxEmptyString);
+	}
 
-    // Name
-    if (obj && obj->IsCollection())
-        execCmd.Replace(wxT("$$OBJECTNAME"), wxT("*"));
-    else if (obj)
-        execCmd.Replace(wxT("$$OBJECTNAME"), obj->GetName());
-    else
-        execCmd.Replace(wxT("$$OBJECTNAME"), wxEmptyString);
+	// Name
+	if (obj && obj->IsCollection())
+		execCmd.Replace(wxT("$$OBJECTNAME"), wxT("*"));
+	else if (obj)
+		execCmd.Replace(wxT("$$OBJECTNAME"), obj->GetName());
+	else
+		execCmd.Replace(wxT("$$OBJECTNAME"), wxEmptyString);
 
-    // Object type
-    if (obj && obj->GetFactory())
-        execCmd.Replace(wxT("$$OBJECTTYPE"), wxString(obj->GetFactory()->GetTypeName()).Upper());
-    else
-        execCmd.Replace(wxT("$$OBJECTTYPE"), wxEmptyString);
+	// Object type
+	if (obj && obj->GetFactory())
+		execCmd.Replace(wxT("$$OBJECTTYPE"), wxString(obj->GetFactory()->GetTypeName()).Upper());
+	else
+		execCmd.Replace(wxT("$$OBJECTTYPE"), wxEmptyString);
 
-    // Schema
-    if (obj)
-    {
-        if (obj->GetMetaType() == PGM_SCHEMA)
-            execCmd.Replace(wxT("$$SCHEMA"), obj->GetName());
-        else if (obj->GetSchema())
-            execCmd.Replace(wxT("$$SCHEMA"), obj->GetSchema()->GetName());
-    }
-    else
-        execCmd.Replace(wxT("$$SCHEMA"), wxEmptyString);
+	// Schema
+	if (obj)
+	{
+		if (obj->GetMetaType() == PGM_SCHEMA)
+			execCmd.Replace(wxT("$$SCHEMA"), obj->GetName());
+		else if (obj->GetSchema())
+			execCmd.Replace(wxT("$$SCHEMA"), obj->GetSchema()->GetName());
+	}
+	else
+		execCmd.Replace(wxT("$$SCHEMA"), wxEmptyString);
 
-    // Table
-    if (obj)
-    {
-        if (obj->GetMetaType() == PGM_TABLE || obj->GetMetaType() == GP_PARTITION)
-            execCmd.Replace(wxT("$$TABLE"), obj->GetName());
-        else if (obj->GetTable())
-            execCmd.Replace(wxT("$$TABLE"), obj->GetTable()->GetName());
-    }
-    else
-        execCmd.Replace(wxT("$$TABLE"), wxEmptyString);
+	// Table
+	if (obj)
+	{
+		if (obj->GetMetaType() == PGM_TABLE || obj->GetMetaType() == GP_PARTITION)
+			execCmd.Replace(wxT("$$TABLE"), obj->GetName());
+		else if (obj->GetTable())
+			execCmd.Replace(wxT("$$TABLE"), obj->GetTable()->GetName());
+	}
+	else
+		execCmd.Replace(wxT("$$TABLE"), wxEmptyString);
 
-    // Directory substitutions
-    execCmd.Replace(wxT("$$BINDIR"), loadPath);
-    execCmd.Replace(wxT("$$WORKINGDIR"), wxGetCwd());
-    execCmd.Replace(wxT("$$PGBINDIR"), settings->GetPostgresqlPath());
-    execCmd.Replace(wxT("$$EDBBINDIR"), settings->GetEnterprisedbPath());
-    execCmd.Replace(wxT("$$SLONYBINDIR"), settings->GetSlonyPath());
+	// Directory substitutions
+	execCmd.Replace(wxT("$$BINDIR"), loadPath);
+	execCmd.Replace(wxT("$$WORKINGDIR"), wxGetCwd());
+	execCmd.Replace(wxT("$$PGBINDIR"), settings->GetPostgresqlPath());
+	execCmd.Replace(wxT("$$EDBBINDIR"), settings->GetEnterprisedbPath());
+	execCmd.Replace(wxT("$$SLONYBINDIR"), settings->GetSlonyPath());
 
-    // set Environment variable.
-    for (size_t i=0 ; i < environment.GetCount() ; i++)
-    {
-        wxString str=environment.Item(i);
-        wxSetEnv(str.BeforeFirst('='), str.AfterFirst('='));
-    }
+	// set Environment variable.
+	for (size_t i = 0 ; i < environment.GetCount() ; i++)
+	{
+		wxString str = environment.Item(i);
+		wxSetEnv(str.BeforeFirst('='), str.AfterFirst('='));
+	}
 
-    // Let's go!!
-    if (wxExecute(execCmd) == 0)
-        wxLogError(_("Failed to execute plugin %s (%s)"), title.c_str(), command.c_str());
+	// Let's go!!
+	if (wxExecute(execCmd) == 0)
+		wxLogError(_("Failed to execute plugin %s (%s)"), title.c_str(), command.c_str());
 
-    return 0;
+	return 0;
 }
 
 bool pluginUtilityFactory::CheckEnable(pgObject *obj)
 {
-    // First check that this is one of the supported server types
-    // for this plugin. If none are specified, then anything goes
-    if (database && server_types.Count() > 0)
-    {
-        // If we need a specific server type, we can't enable unless 
-        // we have a connection.
-        if (!obj || !obj->GetConnection()->GetStatus() == PGCONN_OK)
-            return false;
+	// First check that this is one of the supported server types
+	// for this plugin. If none are specified, then anything goes
+	if (database && server_types.Count() > 0)
+	{
+		// If we need a specific server type, we can't enable unless
+		// we have a connection.
+		if (!obj || !obj->GetConnection()->GetStatus() == PGCONN_OK)
+			return false;
 
-        // Get the server type.
-        wxString serverType = wxT("postgresql");
-        if (obj->GetConnection()->GetIsEdb())
-            serverType = wxT("enterprisedb");
+		// Get the server type.
+		wxString serverType = wxT("postgresql");
+		if (obj->GetConnection()->GetIsEdb())
+			serverType = wxT("enterprisedb");
 
-        // Check if it's in the list.
-        if (server_types.Index(serverType) == wxNOT_FOUND)
-            return false;
-    }
+		// Check if it's in the list.
+		if (server_types.Index(serverType) == wxNOT_FOUND)
+			return false;
+	}
 
-    // Now check that this is one of the supported object types
-    // for this plugin. If none are specified, then anything goes
-    if (obj && applies_to.Count() > 0)
-    {
-        if (applies_to.Index(wxString(obj->GetFactory()->GetTypeName()).Lower()) == wxNOT_FOUND)
-            return false;
-    }
+	// Now check that this is one of the supported object types
+	// for this plugin. If none are specified, then anything goes
+	if (obj && applies_to.Count() > 0)
+	{
+		if (applies_to.Index(wxString(obj->GetFactory()->GetTypeName()).Lower()) == wxNOT_FOUND)
+			return false;
+	}
 
-    // If we don't need a database, we're always OK.
-    if (!database)
-        return true;
-   
-    return HaveDatabase(obj);
+	// If we don't need a database, we're always OK.
+	if (!database)
+		return true;
+
+	return HaveDatabase(obj);
 }
 
 bool pluginUtilityFactory::HaveDatabase(pgObject *obj)
 {
-    // We need a good connection and database.
-    if (!obj)
-        return false;
+	// We need a good connection and database.
+	if (!obj)
+		return false;
 
-    if (!obj->GetDatabase())
-        return false;
+	if (!obj->GetDatabase())
+		return false;
 
-    if (!obj->GetDatabase()->GetConnection())
-        return false;
-        
-    if (!obj->GetDatabase()->GetConnection()->GetStatus() == PGCONN_OK)
-        return false;
+	if (!obj->GetDatabase()->GetConnection())
+		return false;
 
-    return true;
+	if (!obj->GetDatabase()->GetConnection()->GetStatus() == PGCONN_OK)
+		return false;
+
+	return true;
 }
 
 // The pluginButtonMenuFactory class manages the toolbar menu button
-// for the plugins. 
+// for the plugins.
 
 #include "images/plugins.xpm"
 pluginButtonMenuFactory::pluginButtonMenuFactory(menuFactoryList *list, wxMenu *popupmenu, ctlMenuToolbar *toolbar, int pluginCount) : actionFactory(list)
 {
-    if (pluginCount)
-        enableButton = true;
-    else
-        enableButton = false;
+	if (pluginCount)
+		enableButton = true;
+	else
+		enableButton = false;
 
-    if (toolbar)
-    {
-        toolbar->AddTool(id, _("Plugins"), wxBitmap(plugins_xpm), _("Execute the last used plugin."));
-        pulldownButton = toolbar->AddMenuPulldownTool(MNU_PLUGINBUTTONLIST, wxT("Execute Plugin"), wxT("Select a plugin."), popupmenu); 
-    }
+	if (toolbar)
+	{
+		toolbar->AddTool(id, _("Plugins"), wxBitmap(plugins_xpm), _("Execute the last used plugin."));
+		pulldownButton = toolbar->AddMenuPulldownTool(MNU_PLUGINBUTTONLIST, wxT("Execute Plugin"), wxT("Select a plugin."), popupmenu);
+	}
 }
 
 // Call the last plugin used, or popup the menu if this is the first time
 wxWindow *pluginButtonMenuFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    if (form->GetLastPluginUtility() && form->GetLastPluginUtility()->CheckEnable(obj))
-        return form->GetLastPluginUtility()->StartDialog(form, obj);
-    else
-    {
-        wxMouseEvent evt;
-        pulldownButton->DoProcessLeftClick(evt);
-    }
+	if (form->GetLastPluginUtility() && form->GetLastPluginUtility()->CheckEnable(obj))
+		return form->GetLastPluginUtility()->StartDialog(form, obj);
+	else
+	{
+		wxMouseEvent evt;
+		pulldownButton->DoProcessLeftClick(evt);
+	}
 
-    return 0;
+	return 0;
 }
 
 bool pluginButtonMenuFactory::CheckEnable(pgObject *obj)
 {
-    return enableButton;
+	return enableButton;
 }

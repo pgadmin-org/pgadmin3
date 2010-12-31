@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -29,37 +29,37 @@
 #define CTRLID_CBROLENAME 4245
 
 BEGIN_EVENT_TABLE(dlgSelectConnection, DialogWithHelp)
-    EVT_COMBOBOX(CTRLID_CBSERVER,      dlgSelectConnection::OnChangeServer) 
-    EVT_COMBOBOX(CTRLID_CBDATABASE,    dlgSelectConnection::OnChangeDatabase) 
+	EVT_COMBOBOX(CTRLID_CBSERVER,      dlgSelectConnection::OnChangeServer)
+	EVT_COMBOBOX(CTRLID_CBDATABASE,    dlgSelectConnection::OnChangeDatabase)
 	EVT_TEXT(CTRLID_CBSERVER,          dlgSelectConnection::OnTextChange)
 	EVT_TEXT(CTRLID_CBDATABASE,        dlgSelectConnection::OnTextChange)
 	EVT_TEXT(CTRLID_CBUSERNAME,        dlgSelectConnection::OnTextChange)
-    EVT_BUTTON (wxID_OK,               dlgSelectConnection::OnOK)
-    EVT_BUTTON (wxID_CANCEL,           dlgSelectConnection::OnCancel)
+	EVT_BUTTON (wxID_OK,               dlgSelectConnection::OnOK)
+	EVT_BUTTON (wxID_CANCEL,           dlgSelectConnection::OnCancel)
 END_EVENT_TABLE()
 
 #define stUsername		CTRL_STATIC("stUsername")
 
 
-dlgSelectConnection::dlgSelectConnection(wxWindow *parent, frmMain *form) : 
-DialogWithHelp(form)
+dlgSelectConnection::dlgSelectConnection(wxWindow *parent, frmMain *form) :
+	DialogWithHelp(form)
 {
-    long style = wxCB_DROPDOWN;
- 	remoteServer = NULL;
+	long style = wxCB_DROPDOWN;
+	remoteServer = NULL;
 
-    wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(parent, wxT("dlgSelectConnection"));
+	wxWindowBase::SetFont(settings->GetSystemFont());
+	LoadResource(parent, wxT("dlgSelectConnection"));
 
-    SetIcon(wxIcon(connect_xpm));
-    RestorePosition();
+	SetIcon(wxIcon(connect_xpm));
+	RestorePosition();
 
-    if (form != NULL)
-        style |= wxCB_READONLY;
+	if (form != NULL)
+		style |= wxCB_READONLY;
 
-	cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65,5)), ConvertDialogToPixels(wxSize(135,12)), style);
-	cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65,20)), ConvertDialogToPixels(wxSize(135,12)), NULL, style);
-	cbUsername = new wxComboBox(this, CTRLID_CBUSERNAME, wxEmptyString, ConvertDialogToPixels(wxPoint(65,35)), ConvertDialogToPixels(wxSize(135,12)), NULL, style);
-	cbRolename = new wxComboBox(this, CTRLID_CBROLENAME, wxEmptyString, ConvertDialogToPixels(wxPoint(65,50)), ConvertDialogToPixels(wxSize(135,12)), NULL, style);
+	cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65, 5)), ConvertDialogToPixels(wxSize(135, 12)), style);
+	cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65, 20)), ConvertDialogToPixels(wxSize(135, 12)), NULL, style);
+	cbUsername = new wxComboBox(this, CTRLID_CBUSERNAME, wxEmptyString, ConvertDialogToPixels(wxPoint(65, 35)), ConvertDialogToPixels(wxSize(135, 12)), NULL, style);
+	cbRolename = new wxComboBox(this, CTRLID_CBROLENAME, wxEmptyString, ConvertDialogToPixels(wxPoint(65, 50)), ConvertDialogToPixels(wxSize(135, 12)), NULL, style);
 
 	if (form == NULL)
 	{
@@ -75,109 +75,109 @@ DialogWithHelp(form)
 
 dlgSelectConnection::~dlgSelectConnection()
 {
-    SavePosition();
+	SavePosition();
 }
 
 
 wxString dlgSelectConnection::GetHelpPage() const
 {
-    return wxT("connect");
+	return wxT("connect");
 }
 
 
-void dlgSelectConnection::OnChangeServer(wxCommandEvent& ev)
+void dlgSelectConnection::OnChangeServer(wxCommandEvent &ev)
 {
-    int item;
-    wxString olddatabase, oldusername;
-    
+	int item;
+	wxString olddatabase, oldusername;
+
 	if (!GetServer())
 		return;
 
-    // Keep old value for these comboboxes so that we can restore them if needed
-    olddatabase = cbDatabase->GetValue();
-    oldusername = cbUsername->GetValue();
-    
-    // Clear the comboboxes
-    cbDatabase->Clear();
-    cbUsername->Clear();
-    cbRolename->Clear();
+	// Keep old value for these comboboxes so that we can restore them if needed
+	olddatabase = cbDatabase->GetValue();
+	oldusername = cbUsername->GetValue();
 
-    int sel=cbServer->GetCurrentSelection();
-    if (sel >= 0)
-    {
-        remoteServer = (pgServer*)cbServer->GetClientData(sel);
+	// Clear the comboboxes
+	cbDatabase->Clear();
+	cbUsername->Clear();
+	cbRolename->Clear();
 
-        if (!remoteServer->GetConnected())
-        {
-            remoteServer->Connect(mainForm, remoteServer->GetStorePwd());
-            if (!remoteServer->GetConnected())
-            {
-                wxLogError(wxT("%s"), remoteServer->GetLastError().c_str());
-                return;
-            }
-        }
-        if (remoteServer->GetConnected())
-        {
-            pgSetIterator set1(remoteServer->GetConnection(), 
-                wxT("SELECT DISTINCT datname\n")
-                wxT("  FROM pg_database db\n")
-                wxT(" WHERE datallowconn ORDER BY datname"));
+	int sel = cbServer->GetCurrentSelection();
+	if (sel >= 0)
+	{
+		remoteServer = (pgServer *)cbServer->GetClientData(sel);
 
-            item = 0;
-            while(set1.RowsLeft())
-            {
-                cbDatabase->Append(set1.GetVal(wxT("datname")));
-                if (set1.GetVal(wxT("datname")) == olddatabase)
-                    item = cbDatabase->GetCount() - 1;
-            }
+		if (!remoteServer->GetConnected())
+		{
+			remoteServer->Connect(mainForm, remoteServer->GetStorePwd());
+			if (!remoteServer->GetConnected())
+			{
+				wxLogError(wxT("%s"), remoteServer->GetLastError().c_str());
+				return;
+			}
+		}
+		if (remoteServer->GetConnected())
+		{
+			pgSetIterator set1(remoteServer->GetConnection(),
+			                   wxT("SELECT DISTINCT datname\n")
+			                   wxT("  FROM pg_database db\n")
+			                   wxT(" WHERE datallowconn ORDER BY datname"));
 
-            if (cbDatabase->GetCount())
-                cbDatabase->SetSelection(item);
+			item = 0;
+			while(set1.RowsLeft())
+			{
+				cbDatabase->Append(set1.GetVal(wxT("datname")));
+				if (set1.GetVal(wxT("datname")) == olddatabase)
+					item = cbDatabase->GetCount() - 1;
+			}
 
-            pgSetIterator set2(remoteServer->GetConnection(), 
-                wxT("SELECT DISTINCT usename\n")
-                wxT("FROM pg_user db\n")
-                wxT("ORDER BY usename"));
+			if (cbDatabase->GetCount())
+				cbDatabase->SetSelection(item);
 
-            item = 0;
-            while(set2.RowsLeft())
-            {
-                cbUsername->Append(set2.GetVal(wxT("usename")));
-                if (set2.GetVal(wxT("usename")) == oldusername)
-                    item = cbDatabase->GetCount() - 1;
-            }
+			pgSetIterator set2(remoteServer->GetConnection(),
+			                   wxT("SELECT DISTINCT usename\n")
+			                   wxT("FROM pg_user db\n")
+			                   wxT("ORDER BY usename"));
 
-            if (cbUsername->GetCount())
-                cbUsername->SetSelection(item);
+			item = 0;
+			while(set2.RowsLeft())
+			{
+				cbUsername->Append(set2.GetVal(wxT("usename")));
+				if (set2.GetVal(wxT("usename")) == oldusername)
+					item = cbDatabase->GetCount() - 1;
+			}
 
-            if (remoteServer->GetConnection()->BackendMinimumVersion(8, 1))
-            {
-                pgSetIterator set3(remoteServer->GetConnection(),
-                    wxT("SELECT DISTINCT rolname\n")
-                    wxT("FROM pg_roles db\n")
-                    wxT("ORDER BY rolname"));
+			if (cbUsername->GetCount())
+				cbUsername->SetSelection(item);
 
-                cbRolename->Append(wxEmptyString);
+			if (remoteServer->GetConnection()->BackendMinimumVersion(8, 1))
+			{
+				pgSetIterator set3(remoteServer->GetConnection(),
+				                   wxT("SELECT DISTINCT rolname\n")
+				                   wxT("FROM pg_roles db\n")
+				                   wxT("ORDER BY rolname"));
 
-                while(set3.RowsLeft())
-                    cbRolename->Append(set3.GetVal(wxT("rolname")));
+				cbRolename->Append(wxEmptyString);
 
-                cbRolename->Enable(true);
-            }
-            else
-                cbRolename->Disable();
+				while(set3.RowsLeft())
+					cbRolename->Append(set3.GetVal(wxT("rolname")));
 
-            cbRolename->SetValue(wxEmptyString);
-        }
+				cbRolename->Enable(true);
+			}
+			else
+				cbRolename->Disable();
 
-    }
-    OnChangeDatabase(ev);
+			cbRolename->SetValue(wxEmptyString);
+		}
+
+	}
+	OnChangeDatabase(ev);
 }
 
 
 wxString dlgSelectConnection::GetDatabase()
 {
-    return cbDatabase->GetValue();
+	return cbDatabase->GetValue();
 }
 
 wxString dlgSelectConnection::GetServerName()
@@ -185,48 +185,48 @@ wxString dlgSelectConnection::GetServerName()
 	return cbServer->GetValue();
 }
 
-void dlgSelectConnection::OnChangeDatabase(wxCommandEvent& ev)
+void dlgSelectConnection::OnChangeDatabase(wxCommandEvent &ev)
 {
 	btnOK->Enable(cbServer->GetValue().Length() > 0 && cbDatabase->GetValue().Length() > 0 && cbUsername->GetValue().Length() > 0);
 }
 
-void dlgSelectConnection::OnTextChange(wxCommandEvent& ev)
+void dlgSelectConnection::OnTextChange(wxCommandEvent &ev)
 {
 	btnOK->Enable(cbServer->GetValue().Length() > 0 && cbDatabase->GetValue().Length() > 0 && cbUsername->GetValue().Length() > 0);
 }
 
-void dlgSelectConnection::OnOK(wxCommandEvent& ev)
+void dlgSelectConnection::OnOK(wxCommandEvent &ev)
 {
 #ifdef __WXGTK__
-    if (!btnOK->IsEnabled())
-        return;
+	if (!btnOK->IsEnabled())
+		return;
 #endif
 
 	if (cbDatabase->GetCurrentSelection() == wxNOT_FOUND ||
-		cbServer->GetCurrentSelection() == wxNOT_FOUND)
+	        cbServer->GetCurrentSelection() == wxNOT_FOUND)
 		remoteServer = NULL;
 
-    EndModal(wxID_OK);
+	EndModal(wxID_OK);
 }
 
 
-void dlgSelectConnection::OnCancel(wxCommandEvent& ev)
+void dlgSelectConnection::OnCancel(wxCommandEvent &ev)
 {
-    EndModal(wxID_CANCEL);
+	EndModal(wxID_CANCEL);
 }
 
-pgConn *dlgSelectConnection::CreateConn(wxString& applicationname, bool& createdNew)
+pgConn *dlgSelectConnection::CreateConn(wxString &applicationname, bool &createdNew)
 {
-    /* gcc requires that we store this in temporary variables for some reason... */
-    wxString serv = cbServer->GetValue();
-    wxString db = cbDatabase->GetValue();
+	/* gcc requires that we store this in temporary variables for some reason... */
+	wxString serv = cbServer->GetValue();
+	wxString db = cbDatabase->GetValue();
 
-    createdNew = true;
+	createdNew = true;
 
 	long port = 0;
 	if (serv.Find(':') > 0)
 	{
-		if (!serv.Mid(serv.Find(':')+1).ToLong(&port))
+		if (!serv.Mid(serv.Find(':') + 1).ToLong(&port))
 		{
 			wxMessageBox(_("Invalid port number specified."));
 			return NULL;
@@ -234,47 +234,47 @@ pgConn *dlgSelectConnection::CreateConn(wxString& applicationname, bool& created
 		serv = serv.Mid(0, serv.Find(':'));
 	}
 
-    wxString user = cbUsername->GetValue();
-    wxString role = cbRolename->GetValue();
+	wxString user = cbUsername->GetValue();
+	wxString role = cbRolename->GetValue();
 
-    if (cbConnection)
-    {
-        /* Check if selected combination already exists */
-        for (unsigned int index = 0; index < cbConnection->GetCount() - 1; index++)
-        {
-            pgConn* conn = (pgConn*)cbConnection->GetClientData(index);
-            if (conn &&
-                conn->GetHost() == serv &&
-                conn->GetPort() == port &&
-                conn->GetUser() == user &&
-                conn->GetRole() == role &&
-                conn->GetDbname() == db)
-            {
-                createdNew = false;
-                return conn;
-            }
-        }
-    }
+	if (cbConnection)
+	{
+		/* Check if selected combination already exists */
+		for (unsigned int index = 0; index < cbConnection->GetCount() - 1; index++)
+		{
+			pgConn *conn = (pgConn *)cbConnection->GetClientData(index);
+			if (conn &&
+			        conn->GetHost() == serv &&
+			        conn->GetPort() == port &&
+			        conn->GetUser() == user &&
+			        conn->GetRole() == role &&
+			        conn->GetDbname() == db)
+			{
+				createdNew = false;
+				return conn;
+			}
+		}
+	}
 
-    
-    int sslmode = remoteServer ? remoteServer->GetSSL() : 0;
 
-    return CreateConn(serv, db, user, port, role, sslmode, applicationname, true);
+	int sslmode = remoteServer ? remoteServer->GetSSL() : 0;
+
+	return CreateConn(serv, db, user, port, role, sslmode, applicationname, true);
 }
 
-pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxString& username, int port, wxString& rolename, int sslmode, wxString& applicationname, bool writeMRU)
+pgConn *dlgSelectConnection::CreateConn(wxString &server, wxString &dbname, wxString &username, int port, wxString &rolename, int sslmode, wxString &applicationname, bool writeMRU)
 {
 	pgConn *newconn;
 	newconn = new pgConn(server, dbname, username, wxT(""), port, rolename, sslmode, 0, applicationname);
 	if (newconn->GetStatus() != PGCONN_OK &&
-		newconn->GetLastError().Cmp(wxString(PQnoPasswordSupplied, wxConvUTF8)) == 0)
+	        newconn->GetLastError().Cmp(wxString(PQnoPasswordSupplied, wxConvUTF8)) == 0)
 	{
 		/* Needs password */
 		delete newconn;
 		newconn = NULL;
 
-        wxString txt;
-        txt.Printf(_("Please enter password for user %s\non server %s"), username.c_str(), server.c_str());
+		wxString txt;
+		txt.Printf(_("Please enter password for user %s\non server %s"), username.c_str(), server.c_str());
 		dlgConnect dlg(NULL, txt, false);
 		if (dlg.Go() != wxID_OK)
 			return NULL;
@@ -303,80 +303,80 @@ pgConn *dlgSelectConnection::CreateConn(wxString& server, wxString& dbname, wxSt
 
 int dlgSelectConnection::Go(pgConn *conn, wxBitmapComboBox *cb)
 {
-    bool foundServer = false;
-    cbConnection=cb;
+	bool foundServer = false;
+	cbConnection = cb;
 	if (mainForm != NULL)
 	{
-        ctlTree *browser = mainForm->GetBrowser();
-        wxTreeItemIdValue foldercookie, servercookie;
-        wxTreeItemId folderitem, serveritem;
-        pgObject *object;
-        pgServer *server;
+		ctlTree *browser = mainForm->GetBrowser();
+		wxTreeItemIdValue foldercookie, servercookie;
+		wxTreeItemId folderitem, serveritem;
+		pgObject *object;
+		pgServer *server;
 
-        folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
-        while (folderitem)
-        {
-            if (browser->ItemHasChildren(folderitem))
-            {
-                serveritem = browser->GetFirstChild(folderitem, servercookie);
-                while (serveritem)
-                {
-                    object = browser->GetObject(serveritem);
-                    if (object->IsCreatedBy(serverFactory))
-                    {
-                        server = (pgServer *)object;
-			            cbServer->Append(server->GetIdentifier(), (void*)server);
-			            if (server->GetConnected() &&
-                            server->GetConnection()->GetHost() == conn->GetHost() &&
-                            server->GetConnection()->GetPort() == conn->GetPort())
-			            {
-			            	 cbServer->SetSelection(cbServer->GetCount()-1);
-			            	 remoteServer = server;
-                             foundServer = true;
-			            }
-                    }
-                    serveritem = browser->GetNextChild(folderitem, servercookie);
-                }
-            }
-            folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
-        }
+		folderitem = browser->GetFirstChild(browser->GetRootItem(), foldercookie);
+		while (folderitem)
+		{
+			if (browser->ItemHasChildren(folderitem))
+			{
+				serveritem = browser->GetFirstChild(folderitem, servercookie);
+				while (serveritem)
+				{
+					object = browser->GetObject(serveritem);
+					if (object->IsCreatedBy(serverFactory))
+					{
+						server = (pgServer *)object;
+						cbServer->Append(server->GetIdentifier(), (void *)server);
+						if (server->GetConnected() &&
+						        server->GetConnection()->GetHost() == conn->GetHost() &&
+						        server->GetConnection()->GetPort() == conn->GetPort())
+						{
+							cbServer->SetSelection(cbServer->GetCount() - 1);
+							remoteServer = server;
+							foundServer = true;
+						}
+					}
+					serveritem = browser->GetNextChild(folderitem, servercookie);
+				}
+			}
+			folderitem = browser->GetNextChild(browser->GetRootItem(), foldercookie);
+		}
 	}
 
-    cbServer->SetFocus();
+	cbServer->SetFocus();
 
-    wxCommandEvent ev;
-    OnChangeServer(ev);
+	wxCommandEvent ev;
+	OnChangeServer(ev);
 
-    if (foundServer)
-    {
+	if (foundServer)
+	{
 
-        unsigned int index = 0;
-        for (;index < cbDatabase->GetCount(); index++)
-        {
-            if (cbDatabase->GetString(index) == conn->GetDbname())
-            {
-                cbDatabase->SetSelection(index);
-                break;
-            }
-        }
-        for (index = 0;index < cbUsername->GetCount(); index++)
-        {
-            if (cbUsername->GetString(index) == conn->GetUser())
-            {
-                cbUsername->SetSelection(index);
-                break;
-            }
-        }
-        for (index = 0;index < cbRolename->GetCount(); index++)
-        {
-            if (cbRolename->GetString(index) == conn->GetRole())
-            {
-                cbRolename->SetSelection(index);
-                break;
-            }
-        }
-    }
+		unsigned int index = 0;
+		for (; index < cbDatabase->GetCount(); index++)
+		{
+			if (cbDatabase->GetString(index) == conn->GetDbname())
+			{
+				cbDatabase->SetSelection(index);
+				break;
+			}
+		}
+		for (index = 0; index < cbUsername->GetCount(); index++)
+		{
+			if (cbUsername->GetString(index) == conn->GetUser())
+			{
+				cbUsername->SetSelection(index);
+				break;
+			}
+		}
+		for (index = 0; index < cbRolename->GetCount(); index++)
+		{
+			if (cbRolename->GetString(index) == conn->GetRole())
+			{
+				cbRolename->SetSelection(index);
+				break;
+			}
+		}
+	}
 
-    return ShowModal();
+	return ShowModal();
 }
 

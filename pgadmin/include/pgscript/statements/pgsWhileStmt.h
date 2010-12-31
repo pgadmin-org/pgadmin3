@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,23 +19,23 @@ class pgsWhileStmt : public pgsStmt
 
 private:
 
-	const pgsExpression * m_cond;
-	const pgsStmt * m_stmt_list;
+	const pgsExpression *m_cond;
+	const pgsStmt *m_stmt_list;
 
 public:
 
-	pgsWhileStmt(const pgsExpression * cond, const pgsStmt * stmt_list,
-			pgsThread * app = 0);
+	pgsWhileStmt(const pgsExpression *cond, const pgsStmt *stmt_list,
+	             pgsThread *app = 0);
 
 	virtual ~pgsWhileStmt();
 
-	virtual void eval(pgsVarMap & vars) const;
+	virtual void eval(pgsVarMap &vars) const;
 
 private:
 
-	pgsWhileStmt(const pgsWhileStmt & that);
+	pgsWhileStmt(const pgsWhileStmt &that);
 
-	pgsWhileStmt & operator=(const pgsWhileStmt & that);
+	pgsWhileStmt &operator=(const pgsWhileStmt &that);
 
 };
 

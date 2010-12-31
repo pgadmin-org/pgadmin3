@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -21,12 +21,14 @@
 #include "dlg/dlgFindReplace.h"
 
 // These structs are from Scintilla.h which isn't easily #included :-(
-struct CharacterRange {
+struct CharacterRange
+{
 	long cpMin;
 	long cpMax;
 };
 
-struct TextToFind {
+struct TextToFind
+{
 	struct CharacterRange chrg;
 	char *lpstrText;
 	struct CharacterRange chrgText;
@@ -35,46 +37,52 @@ struct TextToFind {
 // Class declarations
 class ctlSQLBox : public wxStyledTextCtrl
 {
-    static wxString sqlKeywords;
+	static wxString sqlKeywords;
 
 public:
-    ctlSQLBox(wxWindow *parent, wxWindowID id = -1, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
-    ctlSQLBox();
-    ~ctlSQLBox();
+	ctlSQLBox(wxWindow *parent, wxWindowID id = -1, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, long style = 0);
+	ctlSQLBox();
+	~ctlSQLBox();
 
-    void Create(wxWindow *parent, wxWindowID id = -1, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
+	void Create(wxWindow *parent, wxWindowID id = -1, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, long style = 0);
 
 	void SetDatabase(pgConn *db);
 
-    void OnKeyDown(wxKeyEvent& event);
-	void OnAutoComplete(wxCommandEvent& event);
-    void OnSearchReplace(wxCommandEvent& event);
-	void OnKillFocus(wxFocusEvent& event);
+	void OnKeyDown(wxKeyEvent &event);
+	void OnAutoComplete(wxCommandEvent &event);
+	void OnSearchReplace(wxCommandEvent &event);
+	void OnKillFocus(wxFocusEvent &event);
 
-    bool Find(const wxString &find, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
-    bool Replace(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
-    bool ReplaceAll(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps);
-    bool DoFind(const wxString &find, const wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
-    void SetAutoIndent(bool on) { m_autoIndent = on; }
-    void EnableAutoComp(bool on) { m_autocompDisabled = on; }
-    bool BlockComment(bool uncomment=false);
-    void UpdateLineNumber();
+	bool Find(const wxString &find, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
+	bool Replace(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
+	bool ReplaceAll(const wxString &find, const wxString &replace, bool wholeWord, bool matchCase, bool useRegexps);
+	bool DoFind(const wxString &find, const wxString &replace, bool doReplace, bool wholeWord, bool matchCase, bool useRegexps, bool startAtTop, bool reverse);
+	void SetAutoIndent(bool on)
+	{
+		m_autoIndent = on;
+	}
+	void EnableAutoComp(bool on)
+	{
+		m_autocompDisabled = on;
+	}
+	bool BlockComment(bool uncomment = false);
+	void UpdateLineNumber();
 
-    CharacterRange RegexFindText(int minPos, int maxPos, const wxString& text);
+	CharacterRange RegexFindText(int minPos, int maxPos, const wxString &text);
 
-    DECLARE_DYNAMIC_CLASS(ctlSQLBox)
-    DECLARE_EVENT_TABLE()
-		
+	DECLARE_DYNAMIC_CLASS(ctlSQLBox)
+	DECLARE_EVENT_TABLE()
+
 private:
 
-    void OnPositionStc(wxStyledTextEvent& event);
-	void OnMarginClick(wxStyledTextEvent& event);
+	void OnPositionStc(wxStyledTextEvent &event);
+	void OnMarginClick(wxStyledTextEvent &event);
 
-    dlgFindReplace* m_dlgFindReplace;
+	dlgFindReplace *m_dlgFindReplace;
 	pgConn *m_database;
-    bool m_autoIndent, m_autocompDisabled;
+	bool m_autoIndent, m_autocompDisabled;
 
-    friend class QueryPrintout;
+	friend class QueryPrintout;
 };
 
 #endif
