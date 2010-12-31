@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dbgResultset.cpp - debugger 
+// dbgResultset.cpp - debugger
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,13 +20,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 // dbgResultset constructor
 //
-//    A dbgResultset object encapsulates a result set produced by executing a 
-//  database command. This class is a wrapper around a PGresult handle that 
-//    provides a few convenient member functions.  
+//    A dbgResultset object encapsulates a result set produced by executing a
+//  database command. This class is a wrapper around a PGresult handle that
+//    provides a few convenient member functions.
 //
 
-dbgResultset::dbgResultset( PGresult * handle )
-    : m_handle( handle )
+dbgResultset::dbgResultset( PGresult *handle )
+	: m_handle( handle )
 {
 }
 
@@ -34,79 +34,79 @@ dbgResultset::dbgResultset( PGresult * handle )
 // getString()
 //
 //    This function, given a column number and a row number, returns the value in
-//  that slot in the result set (in the form of a string). 
+//  that slot in the result set (in the form of a string).
 //
 //  Notice that row defaults to 0, which is handy if you have a single-row result
 //    set.
 
 const wxString dbgResultset::getString( int column, int row )
 {
-    return( wxString( PQgetvalue( m_handle, row, column ), wxConvUTF8 ));
+	return( wxString( PQgetvalue( m_handle, row, column ), wxConvUTF8 ));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // getString()
 //
 //    This function, given a column name and a row number, returns the value in
-//  that slot in the result set (in the form of a string). 
+//  that slot in the result set (in the form of a string).
 //
 //  Notice that row defaults to 0.
 
 const wxString dbgResultset::getString( const wxString &columnName, int row )
 {
-    return( getString( PQfnumber( m_handle, columnName.mb_str( wxConvUTF8 )), row ));
+	return( getString( PQfnumber( m_handle, columnName.mb_str( wxConvUTF8 )), row ));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // getLong()
 //
-//    This function, given a column number and a row number, converts the value 
+//    This function, given a column number and a row number, converts the value
 //  in that slot into a long and returns that long.
 //
 //  Notice that row defaults to 0.
 
 long dbgResultset::getLong( int column, int row )
 {
-    return( atoi( PQgetvalue( m_handle, row, column )));
+	return( atoi( PQgetvalue( m_handle, row, column )));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // getLong()
 //
-//    This function, given a column name and a row number, converts the value 
+//    This function, given a column name and a row number, converts the value
 //  in that slot into a long and returns that long.
 //
 //  Notice that row defaults to 0.
 
 long dbgResultset::getLong( const wxString &columnName, int row )
 {
-    return( getLong( PQfnumber( m_handle, columnName.mb_str( wxConvUTF8 )), row ));
+	return( getLong( PQfnumber( m_handle, columnName.mb_str( wxConvUTF8 )), row ));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // getBool()
 //
-//    This function, given a column number and a row number, converts the value 
+//    This function, given a column number and a row number, converts the value
 //  in that slot into a bool.
 //
 //  Notice that row defaults to 0.
 
 bool dbgResultset::getBool( int column, int row )
 {
-    return( PQgetvalue( m_handle, row, column )[0] == 't' ? true : false );
+	return( PQgetvalue( m_handle, row, column )[0] == 't' ? true : false );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // getBool()
 //
-//    This function, given a column name and a row number, converts the value 
+//    This function, given a column name and a row number, converts the value
 //  in that slot into a bool.
 //
 //  Notice that row defaults to 0.
 
 bool dbgResultset::getBool( const wxString &columnName, int row )
 {
-    return( getBool( PQfnumber( m_handle, columnName.mb_str( wxConvUTF8 )), row ));
+	return( getBool( PQfnumber( m_handle, columnName.mb_str( wxConvUTF8 )), row ));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -117,7 +117,7 @@ bool dbgResultset::getBool( const wxString &columnName, int row )
 
 ExecStatusType dbgResultset::getCommandStatus()
 {
-    return( PQresultStatus( m_handle ));
+	return( PQresultStatus( m_handle ));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -127,7 +127,7 @@ ExecStatusType dbgResultset::getCommandStatus()
 
 const wxString dbgResultset::getErrorMessage()
 {
-    return( wxString( PQresultErrorMessage( m_handle ), wxConvUTF8 ));
+	return( wxString( PQresultErrorMessage( m_handle ), wxConvUTF8 ));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -138,9 +138,9 @@ const wxString dbgResultset::getErrorMessage()
 //    Use this variant (as opposed to getErrorMessage()) when you need the error
 //    message in the same character encoding provided by the server
 
-const char * dbgResultset::getRawErrorMessage()
+const char *dbgResultset::getRawErrorMessage()
 {
-    return( PQresultErrorMessage( m_handle ));
+	return( PQresultErrorMessage( m_handle ));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -150,8 +150,8 @@ const char * dbgResultset::getRawErrorMessage()
 
 bool dbgResultset::columnExists(const wxString &columnName)
 {
-    if(PQfnumber(m_handle, columnName.mb_str(wxConvUTF8)) != -1)
-        return(true);
-    else
+	if(PQfnumber(m_handle, columnName.mb_str(wxConvUTF8)) != -1)
+		return(true);
+	else
 		return(false);
 }

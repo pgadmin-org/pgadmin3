@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,23 +16,23 @@
 
 class pgsOr : public pgsOperation
 {
-	
+
 public:
 
-	pgsOr(const pgsExpression * left, const pgsExpression * right);
+	pgsOr(const pgsExpression *left, const pgsExpression *right);
 
 	virtual ~pgsOr();
 
-	virtual pgsExpression * clone() const;
+	virtual pgsExpression *clone() const;
 
-	pgsOr(const pgsOr & that);
+	pgsOr(const pgsOr &that);
 
-	pgsOr & operator =(const pgsOr & that);
+	pgsOr &operator =(const pgsOr &that);
 
 	virtual wxString value() const;
-	
-	virtual pgsOperand eval(pgsVarMap & vars) const;
-	
+
+	virtual pgsOperand eval(pgsVarMap &vars) const;
+
 };
 
 #endif /*PGSOR_H_*/

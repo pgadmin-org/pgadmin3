@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgDomain.h - Domain property 
+// dlgDomain.h - Domain property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,21 +21,21 @@ class pgDomain;
 class dlgDomain : public dlgTypeProperty
 {
 public:
-    dlgDomain(pgaFactory *factory, frmMain *frame, pgDomain *dom, pgSchema *sch);
-    int Go(bool modal);
+	dlgDomain(pgaFactory *factory, frmMain *frame, pgDomain *dom, pgSchema *sch);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
 private:
-    void OnSelChangeTyp(wxCommandEvent &ev);
+	void OnSelChangeTyp(wxCommandEvent &ev);
 
-    pgSchema *schema;
-    pgDomain *domain;
+	pgSchema *schema;
+	pgDomain *domain;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

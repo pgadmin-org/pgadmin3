@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,10 +16,10 @@
 #include "pgscript/expressions/pgsExecute.h"
 #include "pgscript/objects/pgsGenerator.h"
 
-pgsGenReference::pgsGenReference(const pgsExpression * table, const pgsExpression * column,
-		const pgsExpression * sequence, const pgsExpression * seed, pgsThread * app) :
+pgsGenReference::pgsGenReference(const pgsExpression *table, const pgsExpression *column,
+                                 const pgsExpression *sequence, const pgsExpression *seed, pgsThread *app) :
 	pgsExpression(), m_table(table), m_column(column), m_sequence(sequence),
-			m_seed(seed), m_app(app)
+	m_seed(seed), m_app(app)
 {
 
 }
@@ -32,12 +32,12 @@ pgsGenReference::~pgsGenReference()
 	pdelete(m_seed);
 }
 
-pgsExpression * pgsGenReference::clone() const
+pgsExpression *pgsGenReference::clone() const
 {
 	return pnew pgsGenReference(*this);
 }
 
-pgsGenReference::pgsGenReference(const pgsGenReference & that) :
+pgsGenReference::pgsGenReference(const pgsGenReference &that) :
 	pgsExpression(that)
 {
 	m_table = that.m_table->clone();
@@ -47,7 +47,7 @@ pgsGenReference::pgsGenReference(const pgsGenReference & that) :
 	m_app = that.m_app;
 }
 
-pgsGenReference & pgsGenReference::operator =(const pgsGenReference & that)
+pgsGenReference &pgsGenReference::operator =(const pgsGenReference &that)
 {
 	if (this != &that)
 	{
@@ -68,11 +68,11 @@ pgsGenReference & pgsGenReference::operator =(const pgsGenReference & that)
 wxString pgsGenReference::value() const
 {
 	return wxString() << wxT("reference[ table = ") << m_table->value()
-			<< wxT(" column = ")<< m_column->value() << wxT(" sequence = ")
-			<< m_sequence->value()<< wxT(" seed = ") << m_seed->value() << wxT(" ]");
+	       << wxT(" column = ") << m_column->value() << wxT(" sequence = ")
+	       << m_sequence->value() << wxT(" seed = ") << m_seed->value() << wxT(" ]");
 }
 
-pgsOperand pgsGenReference::eval(pgsVarMap & vars) const
+pgsOperand pgsGenReference::eval(pgsVarMap &vars) const
 {
 	// Evaluate parameters
 	pgsOperand table(m_table->eval(vars));
@@ -82,26 +82,26 @@ pgsOperand pgsGenReference::eval(pgsVarMap & vars) const
 
 	// Check parameters and create the generator
 	if (table->is_string() && !table->value().IsEmpty() && column->is_string()
-			&& !column->value().IsEmpty() && sequence->is_integer()
-			&& seed->is_integer())
+	        && !column->value().IsEmpty() && sequence->is_integer()
+	        && seed->is_integer())
 	{
 		// Check wheter the table and the column do exist
 		pgsOperand result = pgsExecute(wxString() << wxT("SELECT 1 FROM ")
-				<< table->value() << wxT(" WHERE ") << column->value()
-				<< wxT(" = ") << column->value(), 0, m_app).eval(vars);
+		                               << table->value() << wxT(" WHERE ") << column->value()
+		                               << wxT(" = ") << column->value(), 0, m_app).eval(vars);
 		if (result->pgs_is_true())
 		{
 			long aux_sequence, aux_seed;
 			sequence->value().ToLong(&aux_sequence);
 			seed->value().ToLong(&aux_seed);
 			return pnew pgsGenerator(pgsVariable::pgsTString,
-					pnew pgsReferenceGen(m_app, table->value(),
-							column->value(), aux_sequence != 0, aux_seed));
+			                         pnew pgsReferenceGen(m_app, table->value(),
+			                                 column->value(), aux_sequence != 0, aux_seed));
 		}
 		else
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\ntable/column does not exist"));
+			                            << wxT(":\ntable/column does not exist"));
 		}
 	}
 	else
@@ -110,22 +110,22 @@ pgsOperand pgsGenReference::eval(pgsVarMap & vars) const
 		if (!table->is_string() || table->value().IsEmpty())
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\ntable should be a non-empty string"));
+			                            << wxT(":\ntable should be a non-empty string"));
 		}
 		else if (!column->is_string() || column->value().IsEmpty())
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\ncolumn should be a non-empty string"));
+			                            << wxT(":\ncolumn should be a non-empty string"));
 		}
 		else if (!sequence->is_integer())
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\nsequence should be an integer"));
+			                            << wxT(":\nsequence should be an integer"));
 		}
 		else
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\nseed should be an integer"));
+			                            << wxT(":\nseed should be an integer"));
 		}
 	}
 }

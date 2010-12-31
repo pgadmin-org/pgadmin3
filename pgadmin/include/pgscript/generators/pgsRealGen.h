@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -37,16 +37,16 @@ public:
 	/**
 	 * Builds a new real number generator. Precision cannot be greater that 255.
 	 */
-	pgsRealGen(const MAPM & min, const MAPM & max, const UCHAR & precision,
-			const bool & sequence = false, const long & seed = wxDateTime::GetTimeNow());
+	pgsRealGen(const MAPM &min, const MAPM &max, const UCHAR &precision,
+	           const bool &sequence = false, const long &seed = wxDateTime::GetTimeNow());
 
 	bool is_sequence() const;
 
 	virtual wxString random();
 
 	virtual ~pgsRealGen();
-	
-	virtual pgsRealGen * clone();
+
+	virtual pgsRealGen *clone();
 
 	/* pgsRealGen & operator =(const pgsRealGen & that); */
 

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -9,7 +9,7 @@
 
 
 
-/* 
+/*
  *  M_APM  -  m_apm_lc.h
  *
  *  Copyright (C) 1999 - 2007   Michael C. Ring
@@ -42,7 +42,7 @@
 #include <math.h>
 #include "m_apm.h"
 
-/* 
+/*
  *   this supports older (and maybe newer?) Borland compilers.
  *   these Borland compilers define __MSDOS__
  */
@@ -53,7 +53,7 @@
 #endif
 #endif
 
-/* 
+/*
  *   this supports some newer Borland compilers (i.e., v5.5).
  */
 
@@ -63,7 +63,7 @@
 #endif
 #endif
 
-/* 
+/*
  *   this supports the LCC-WIN32 compiler
  */
 
@@ -73,7 +73,7 @@
 #endif
 #endif
 
-/* 
+/*
  *   this supports Micro$oft Visual C++ and also possibly older
  *   straight C compilers as well.
  */
@@ -84,7 +84,7 @@
 #endif
 #endif
 
-/* 
+/*
  *   this supports the Metrowerks CodeWarrior 7.0 compiler (I think...)
  */
 
@@ -94,7 +94,7 @@
 #endif
 #endif
 
-/* 
+/*
  *   this supports the MINGW 32 compiler
  */
 
@@ -104,7 +104,7 @@
 #endif
 #endif
 
-/* 
+/*
  *   this supports the Open Watcom 1.0 compiler
  */
 
@@ -114,7 +114,7 @@
 #endif
 #endif
 
-/* 
+/*
  *   this supports the Digital Mars compiler
  */
 
@@ -124,7 +124,7 @@
 #endif
 #endif
 
-/* 
+/*
  *   this supports National Instruments LabWindows CVI
  */
 
@@ -135,8 +135,8 @@
 #endif
 
 /*
- *  If for some reason (RAM limitations, slow floating point, whatever) 
- *  you do NOT want to use the FFT multiply algorithm, un-comment the 
+ *  If for some reason (RAM limitations, slow floating point, whatever)
+ *  you do NOT want to use the FFT multiply algorithm, un-comment the
  *  #define below, delete mapm_fft.c and remove mapm_fft from the build.
  */
 
@@ -254,7 +254,7 @@ extern	void	M_check_log_places(int);
 extern	void	M_log_AGM_R_func(M_APM, int, M_APM, M_APM);
 extern	void	M_init_util_data(void);
 extern	void	M_get_div_rem_addr(UCHAR **, UCHAR **);
-extern	void	M_get_div_rem(int,UCHAR *, UCHAR *);
+extern	void	M_get_div_rem(int, UCHAR *, UCHAR *);
 extern	void	M_get_div_rem_10(int, UCHAR *, UCHAR *);
 extern	void	M_apm_normalize(M_APM);
 extern	void	M_apm_scale(M_APM, int);

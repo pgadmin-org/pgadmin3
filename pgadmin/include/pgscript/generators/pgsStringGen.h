@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -31,15 +31,15 @@ private:
 
 public:
 
-	pgsStringGen(USHORT w_size_min, USHORT w_size_max = 0, const UCHAR & nb_words = 1,
-			const long & seed = wxDateTime::GetTimeNow(),
-			pgsVectorChar characters = pgsVectorChar());
+	pgsStringGen(USHORT w_size_min, USHORT w_size_max = 0, const UCHAR &nb_words = 1,
+	             const long &seed = wxDateTime::GetTimeNow(),
+	             pgsVectorChar characters = pgsVectorChar());
 
 	virtual wxString random();
 
 	virtual ~pgsStringGen();
 
-	virtual pgsStringGen * clone();
+	virtual pgsStringGen *clone();
 
 	/* pgsStringGen & operator =(const pgsStringGen & that); */
 

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -22,63 +22,63 @@
 #include "gqb/gqbBrowser.h"
 
 gqbSchema::gqbSchema(gqbObject *parent, wxString name, pgConn *connection, OID oid)
-: gqbObject(name, parent, connection, oid)
+	: gqbObject(name, parent, connection, oid)
 {
-    setType(GQB_SCHEMA);
+	setType(GQB_SCHEMA);
 }
 
 
 // GQB-TODO: don't declare OID inside gqbBrowsear instead use the pgadmin one
 void gqbSchema::createObjects(gqbBrowser *tablesBrowser, OID oidVal, wxTreeItemId parentNode, int tableImage, int viewImage, int xTableImage)
 {
-    createTables(tablesBrowser, parentNode, oidVal, tableImage, viewImage, xTableImage);
+	createTables(tablesBrowser, parentNode, oidVal, tableImage, viewImage, xTableImage);
 }
 
 void gqbSchema::createTables(gqbBrowser *tablesBrowser, wxTreeItemId parentNode, OID oidVal, int tableImage, int viewImage, int xTableImage)
-{ 
-    wxString query;
-    
-    // Get the child objects.
-    query = wxT("SELECT oid, relname, relkind\n")
-            wxT("  FROM pg_class\n")
-            wxT(" WHERE relkind IN ('r','v','x') AND relnamespace = ") + NumToStr(oidVal) + wxT(";");
+{
+	wxString query;
 
-    pgSet *tables = conn->ExecuteSet(query);
-    wxTreeItemId parent;
+	// Get the child objects.
+	query = wxT("SELECT oid, relname, relkind\n")
+	        wxT("  FROM pg_class\n")
+	        wxT(" WHERE relkind IN ('r','v','x') AND relnamespace = ") + NumToStr(oidVal) + wxT(";");
 
-    if (tables)
-    {
-        while (!tables->Eof())
-        {
-            gqbTable *table = 0;
-            wxString tmpname = tables->GetVal(wxT("relname"));
-            wxString relkind = tables->GetVal(wxT("relkind"));
-            
-            if (relkind == wxT("r")) // Table
-            {
-                table = new gqbTable(this, tmpname, conn, GQB_TABLE, tables->GetOid(wxT("oid")));
-                parent=tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , tableImage, tableImage, table);
-            }
-            else if (relkind == wxT("v"))
-            {
-                table = new gqbTable(this, tmpname, conn, GQB_VIEW, tables->GetOid(wxT("oid")));
-                parent=tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , viewImage, viewImage, table);
-            }
-            else if (relkind == wxT("x"))  // Greenplum external table
-            {
-                table = new gqbTable(this, tmpname, conn, GQB_TABLE, tables->GetOid(wxT("oid")));
-                parent=tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")), xTableImage, xTableImage, table);
-            }
+	pgSet *tables = conn->ExecuteSet(query);
+	wxTreeItemId parent;
 
-            // Create columns inside this table.
-            if (table)
-                table->createObjects(tablesBrowser, conn, tables->GetOid(wxT("oid")), parent);
+	if (tables)
+	{
+		while (!tables->Eof())
+		{
+			gqbTable *table = 0;
+			wxString tmpname = tables->GetVal(wxT("relname"));
+			wxString relkind = tables->GetVal(wxT("relkind"));
 
-            tables->MoveNext();
-        }
+			if (relkind == wxT("r")) // Table
+			{
+				table = new gqbTable(this, tmpname, conn, GQB_TABLE, tables->GetOid(wxT("oid")));
+				parent = tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , tableImage, tableImage, table);
+			}
+			else if (relkind == wxT("v"))
+			{
+				table = new gqbTable(this, tmpname, conn, GQB_VIEW, tables->GetOid(wxT("oid")));
+				parent = tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")) , viewImage, viewImage, table);
+			}
+			else if (relkind == wxT("x"))  // Greenplum external table
+			{
+				table = new gqbTable(this, tmpname, conn, GQB_TABLE, tables->GetOid(wxT("oid")));
+				parent = tablesBrowser->AppendItem(parentNode, tables->GetVal(wxT("relname")), xTableImage, xTableImage, table);
+			}
 
-        delete tables;
-    }
+			// Create columns inside this table.
+			if (table)
+				table->createObjects(tablesBrowser, conn, tables->GetOid(wxT("oid")), parent);
 
-    tablesBrowser->SortChildren(parentNode);
+			tables->MoveNext();
+		}
+
+		delete tables;
+	}
+
+	tablesBrowser->SortChildren(parentNode);
 }

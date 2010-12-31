@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgSequence.h - Sequence property 
+// dlgSequence.h - Sequence property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,25 +21,25 @@ class pgSequence;
 class dlgSequence : public dlgSecurityProperty
 {
 public:
-    dlgSequence(pgaFactory *factory, frmMain *frame, pgSequence *seq, pgSchema *sch);
-    int Go(bool modal);
+	dlgSequence(pgaFactory *factory, frmMain *frame, pgSequence *seq, pgSchema *sch);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
 private:
-    bool doesOverflowBigInt(const wxString &str, bool emptyAllowed);
+	bool doesOverflowBigInt(const wxString &str, bool emptyAllowed);
 
-    pgSchema *schema;
-    pgSequence *sequence;
+	pgSchema *schema;
+	pgSequence *sequence;
 
 #ifdef __WXMAC__
-    void OnChangeSize(wxSizeEvent &ev);
+	void OnChangeSize(wxSizeEvent &ev);
 #endif
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

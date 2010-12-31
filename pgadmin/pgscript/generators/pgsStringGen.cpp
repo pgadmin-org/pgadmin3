@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -15,7 +15,7 @@
 WX_DEFINE_OBJARRAY(pgsVectorChar);
 
 pgsStringGen::pgsStringGen(USHORT w_size_min, USHORT w_size_max,
-		const UCHAR & nb_words, const long & seed, pgsVectorChar characters) :
+                           const UCHAR &nb_words, const long &seed, pgsVectorChar characters) :
 	pgsObjectGen(seed), m_nb_words(nb_words), m_characters(characters)
 {
 	init_characters(); // Initialize vector if it is empty
@@ -26,9 +26,9 @@ pgsStringGen::pgsStringGen(USHORT w_size_min, USHORT w_size_max,
 
 	size_t char_count = m_characters.GetCount();
 	m_w_size_randomizer = pgsRandomizer(pnew pgsIntegerGen(w_size_min,
-			w_size_max, false, seed));
+	                                    w_size_max, false, seed));
 	m_letter_randomizer = pgsRandomizer(pnew pgsIntegerGen(0,
-			wx_static_cast(long, char_count) - 1, false, seed));
+	                                    wx_static_cast(long, char_count) - 1, false, seed));
 }
 
 wxString pgsStringGen::random()
@@ -42,7 +42,7 @@ wxString pgsStringGen::random()
 		for (long j = 0; j < w_size; j++)
 		{
 			str_result.Append(m_characters
-					.Item(m_letter_randomizer->random_long()), 1);
+			                  .Item(m_letter_randomizer->random_long()), 1);
 		}
 		if (w_size > 0 && m_nb_words != (i + 1))
 		{
@@ -77,7 +77,7 @@ void pgsStringGen::init_characters()
 	}
 }
 
-pgsStringGen * pgsStringGen::clone()
+pgsStringGen *pgsStringGen::clone()
 {
 	return pnew pgsStringGen(*this);
 }

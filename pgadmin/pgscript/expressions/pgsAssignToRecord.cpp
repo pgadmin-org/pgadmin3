@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -15,8 +15,8 @@
 #include "pgscript/expressions/pgsIdentRecord.h"
 #include "pgscript/objects/pgsRecord.h"
 
-pgsAssignToRecord::pgsAssignToRecord(const wxString & name, const pgsExpression * line,
-		const pgsExpression * column, const pgsExpression * var) :
+pgsAssignToRecord::pgsAssignToRecord(const wxString &name, const pgsExpression *line,
+                                     const pgsExpression *column, const pgsExpression *var) :
 	pgsAssign(name, var), m_line(line), m_column(column)
 {
 
@@ -28,19 +28,19 @@ pgsAssignToRecord::~pgsAssignToRecord()
 	pdelete(m_column);
 }
 
-pgsExpression * pgsAssignToRecord::clone() const
+pgsExpression *pgsAssignToRecord::clone() const
 {
 	return pnew pgsAssignToRecord(*this);
 }
 
-pgsAssignToRecord::pgsAssignToRecord(const pgsAssignToRecord & that) :
+pgsAssignToRecord::pgsAssignToRecord(const pgsAssignToRecord &that) :
 	pgsAssign(that)
 {
 	m_line = that.m_line->clone();
 	m_column = that.m_column->clone();
 }
 
-pgsAssignToRecord & pgsAssignToRecord::operator =(const pgsAssignToRecord & that)
+pgsAssignToRecord &pgsAssignToRecord::operator =(const pgsAssignToRecord &that)
 {
 	if (this != &that)
 	{
@@ -56,20 +56,20 @@ pgsAssignToRecord & pgsAssignToRecord::operator =(const pgsAssignToRecord & that
 wxString pgsAssignToRecord::value() const
 {
 	return wxString() << wxT("SET ")  << m_name << wxT("[") << m_line->value()
-			<< wxT("]") << wxT("[") << m_column->value() << wxT("]")
-			<< wxT(" = ") << m_var->value();
+	       << wxT("]") << wxT("[") << m_column->value() << wxT("]")
+	       << wxT(" = ") << m_var->value();
 }
 
-pgsOperand pgsAssignToRecord::eval(pgsVarMap & vars) const
+pgsOperand pgsAssignToRecord::eval(pgsVarMap &vars) const
 {
 	if (vars.find(m_name) != vars.end() && vars[m_name]->is_record())
 	{
 		// Get the operand as a record
-		pgsRecord & rec = dynamic_cast<pgsRecord &>(*vars[m_name]);
-		
+		pgsRecord &rec = dynamic_cast<pgsRecord &>(*vars[m_name]);
+
 		// Get the value to assign
 		pgsOperand var(m_var->eval(vars));
-		
+
 		if (!var->is_record())
 		{
 			// Evaluate parameters
@@ -79,11 +79,11 @@ pgsOperand pgsAssignToRecord::eval(pgsVarMap & vars) const
 			{
 				long aux_line;
 				line->value().ToLong(&aux_line);
-	
+
 				if (column->is_integer() || column->is_string())
 				{
 					bool success = false;
-					
+
 					if (column->is_integer())
 					{
 						long aux_column;
@@ -101,32 +101,32 @@ pgsOperand pgsAssignToRecord::eval(pgsVarMap & vars) const
 							success = rec.insert(aux_line, aux_column, var);
 						}
 					}
-					
+
 					if (success == false)
 					{
 						throw pgsParameterException(wxString() << wxT("An error ")
-								<< wxT("occurred in record affectation: ") << value()
-								<< wxT("\n") << wxT("One possible reason is a ")
-								<< wxT("column index out of range"));
+						                            << wxT("occurred in record affectation: ") << value()
+						                            << wxT("\n") << wxT("One possible reason is a ")
+						                            << wxT("column index out of range"));
 					}
 				}
 
 				else
 				{
 					throw pgsParameterException(wxString() << column->value()
-							<< wxT(" is not a valid column number/name"));
+					                            << wxT(" is not a valid column number/name"));
 				}
 			}
 			else
 			{
 				throw pgsParameterException(wxString() << line->value()
-						<< wxT(" is not a valid line number"));
+				                            << wxT(" is not a valid line number"));
 			}
 		}
 		else
 		{
 			throw pgsParameterException(wxString() << wxT("Cannot assign a record")
-					<< wxT(" into a record: right member is a record"));
+			                            << wxT(" into a record: right member is a record"));
 		}
 	}
 	else

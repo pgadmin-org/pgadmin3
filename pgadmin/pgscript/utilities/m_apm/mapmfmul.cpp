@@ -1,5 +1,5 @@
 
-/* 
+/*
  *  M_APM  -  mapmfmul.c
  *
  *  Copyright (C) 1999 - 2007   Michael C. Ring
@@ -19,7 +19,7 @@
  */
 
 /*
- *      This file contains the divide-and-conquer FAST MULTIPLICATION 
+ *      This file contains the divide-and-conquer FAST MULTIPLICATION
  *	function as well as its support functions.
  *
  */
@@ -30,17 +30,17 @@
 static int M_firsttimef = TRUE;
 
 /*
- *      specify the max size the FFT routine can handle 
+ *      specify the max size the FFT routine can handle
  *      (in MAPM, #digits = 2 * #bytes)
  *
  *      this number *must* be an exact power of 2.
  *
  *      **WORST** case input numbers (all 9's) has shown that
- *	the FFT math will overflow if the #define here is 
+ *	the FFT math will overflow if the #define here is
  *      >= 1048576. On my system, 524,288 worked OK. I will
- *      factor down another factor of 2 to safeguard against 
- *	other computers have less precise floating point math. 
- *	If you are confident in your system, 524288 will 
+ *      factor down another factor of 2 to safeguard against
+ *	other computers have less precise floating point math.
+ *	If you are confident in your system, 524288 will
  *	theoretically work fine.
  *
  *      the define here allows the FFT algorithm to multiply two
@@ -60,33 +60,33 @@ static int M_firsttimef = TRUE;
  *        2M            3
  *        4M            4
  *       ...           ...
- *    2.1990E+12       23 
+ *    2.1990E+12       23
  *
- *	the following stack sizes are sized to meet the 
+ *	the following stack sizes are sized to meet the
  *      above 2.199E+12 example, though I wouldn't want to
  *	wait for it to finish...
  *
- *      Each call requires 7 stack variables to be saved so 
+ *      Each call requires 7 stack variables to be saved so
  *	we need a stack depth of 23 * 7 + PAD.  (we use 164)
  *
- *      For 'exp_stack', 3 integers also are required to be saved 
- *      for each recursive call so we need a stack depth of 
+ *      For 'exp_stack', 3 integers also are required to be saved
+ *      for each recursive call so we need a stack depth of
  *      23 * 3 + PAD. (we use 72)
  *
  *
  *      If the FFT multiply is disabled, resize the arrays
  *	as follows:
  *
- *      the following stack sizes are sized to meet the 
- *      worst case expected assuming we are multiplying 
- *      numbers with 2.14E+9 (2 ^ 31) digits. 
+ *      the following stack sizes are sized to meet the
+ *      worst case expected assuming we are multiplying
+ *      numbers with 2.14E+9 (2 ^ 31) digits.
  *
  *      For sizeof(int) == 4 (32 bits) there may be up to 32 recursive
  *      calls. Each call requires 7 stack variables so we need a
  *      stack depth of 32 * 7 + PAD.  (we use 240)
  *
- *      For 'exp_stack', 3 integers also are required to be saved 
- *      for each recursive call so we need a stack depth of 
+ *      For 'exp_stack', 3 integers also are required to be saved
+ *      for each recursive call so we need a stack depth of
  *      32 * 3 + PAD. (we use 100)
  */
 
@@ -105,8 +105,8 @@ static UCHAR  *mul_stack_data[M_STACK_SIZE];
 static int    mul_stack_data_size[M_STACK_SIZE];
 static int    M_mul_stack_ptr;
 
-static UCHAR  *fmul_a1, *fmul_a0, *fmul_a9, *fmul_b1, *fmul_b0, 
-	      *fmul_b9, *fmul_t0;
+static UCHAR  *fmul_a1, *fmul_a0, *fmul_a9, *fmul_b1, *fmul_b0,
+       *fmul_b9, *fmul_t0;
 
 static int    size_flag, bit_limit, stmp, itmp, mii;
 
@@ -135,12 +135,12 @@ extern void   M_fast_mul_fft(UCHAR *, UCHAR *, UCHAR *, int);
  *      the following algorithm is used in this fast multiply routine
  *	(sometimes called the divide-and-conquer technique.)
  *
- *	assume we have 2 numbers (a & b) with 2N digits. 
+ *	assume we have 2 numbers (a & b) with 2N digits.
  *
- *      let : a = (2^N) * A1 + A0 , b = (2^N) * B1 + B0      
+ *      let : a = (2^N) * A1 + A0 , b = (2^N) * B1 + B0
  *
- *	where 'A1' is the 'most significant half' of 'a' and 
- *      'A0' is the 'least significant half' of 'a'. Same for 
+ *	where 'A1' is the 'most significant half' of 'a' and
+ *      'A0' is the 'least significant half' of 'a'. Same for
  *	B1 and B0.
  *
  *	Now use the identity :
@@ -153,7 +153,7 @@ extern void   M_fast_mul_fft(UCHAR *, UCHAR *, UCHAR *, int);
  *	been reduced to 3 multiplications of N digit numbers plus some
  *	additions, subtractions, and shifts.
  *
- *	The fast multiplication algorithm used here uses the above 
+ *	The fast multiplication algorithm used here uses the above
  *	identity in a recursive process. This algorithm results in
  *	O(n ^ 1.585) growth.
  */
@@ -162,144 +162,144 @@ extern void   M_fast_mul_fft(UCHAR *, UCHAR *, UCHAR *, int);
 /****************************************************************************/
 void	M_free_all_fmul()
 {
-int	k;
+	int	k;
 
-if (M_firsttimef == FALSE)
-  {
-   m_apm_free(M_ain);
-   m_apm_free(M_bin);
+	if (M_firsttimef == FALSE)
+	{
+		m_apm_free(M_ain);
+		m_apm_free(M_bin);
 
-   for (k=0; k < M_STACK_SIZE; k++)
-     {
-      if (mul_stack_data_size[k] != 0)
-        {
-         MAPM_FREE(mul_stack_data[k]);
+		for (k = 0; k < M_STACK_SIZE; k++)
+		{
+			if (mul_stack_data_size[k] != 0)
+			{
+				MAPM_FREE(mul_stack_data[k]);
+			}
+		}
+
+		M_firsttimef = TRUE;
 	}
-     }
-
-   M_firsttimef = TRUE;
-  }
 }
 /****************************************************************************/
 void	M_push_mul_int(int val)
 {
-exp_stack[++exp_stack_ptr] = val;
+	exp_stack[++exp_stack_ptr] = val;
 }
 /****************************************************************************/
 int	M_pop_mul_int()
 {
-return(exp_stack[exp_stack_ptr--]);
+	return(exp_stack[exp_stack_ptr--]);
 }
 /****************************************************************************/
 void   	M_fmul_split(UCHAR *x1, UCHAR *x0, UCHAR *xin, int nbytes)
 {
-memcpy(x1, xin, nbytes);
-memcpy(x0, (xin + nbytes), nbytes);
+	memcpy(x1, xin, nbytes);
+	memcpy(x0, (xin + nbytes), nbytes);
 }
 /****************************************************************************/
 void	M_fast_multiply(M_APM rr, M_APM aa, M_APM bb)
 {
-void	*vp;
-int	ii, k, nexp, sign;
+	void	*vp;
+	int	ii, k, nexp, sign;
 
-if (M_firsttimef)
-  {
-   M_firsttimef = FALSE;
+	if (M_firsttimef)
+	{
+		M_firsttimef = FALSE;
 
-   for (k=0; k < M_STACK_SIZE; k++)
-     mul_stack_data_size[k] = 0;
+		for (k = 0; k < M_STACK_SIZE; k++)
+			mul_stack_data_size[k] = 0;
 
-   size_flag = M_get_sizeof_int();
-   bit_limit = 8 * size_flag + 1;
+		size_flag = M_get_sizeof_int();
+		bit_limit = 8 * size_flag + 1;
 
-   M_ain = m_apm_init();
-   M_bin = m_apm_init();
-  }
+		M_ain = m_apm_init();
+		M_bin = m_apm_init();
+	}
 
-exp_stack_ptr   = -1;
-M_mul_stack_ptr = -1;
+	exp_stack_ptr   = -1;
+	M_mul_stack_ptr = -1;
 
-m_apm_copy(M_ain, aa);
-m_apm_copy(M_bin, bb);
+	m_apm_copy(M_ain, aa);
+	m_apm_copy(M_bin, bb);
 
-sign = M_ain->m_apm_sign * M_bin->m_apm_sign;
-nexp = M_ain->m_apm_exponent + M_bin->m_apm_exponent;
+	sign = M_ain->m_apm_sign * M_bin->m_apm_sign;
+	nexp = M_ain->m_apm_exponent + M_bin->m_apm_exponent;
 
-if (M_ain->m_apm_datalength >= M_bin->m_apm_datalength)
-  ii = M_ain->m_apm_datalength;
-else
-  ii = M_bin->m_apm_datalength;
+	if (M_ain->m_apm_datalength >= M_bin->m_apm_datalength)
+		ii = M_ain->m_apm_datalength;
+	else
+		ii = M_bin->m_apm_datalength;
 
-ii = (ii + 1) >> 1;
-ii = M_next_power_of_2(ii);
+	ii = (ii + 1) >> 1;
+	ii = M_next_power_of_2(ii);
 
-/* Note: 'ii' must be >= 4 here. this is guaranteed 
-   by the caller: m_apm_multiply
-*/
+	/* Note: 'ii' must be >= 4 here. this is guaranteed
+	   by the caller: m_apm_multiply
+	*/
 
-k = 2 * ii;                   /* required size of result, in bytes  */
+	k = 2 * ii;                   /* required size of result, in bytes  */
 
-M_apm_pad(M_ain, k);          /* fill out the data so the number of */
-M_apm_pad(M_bin, k);          /* bytes is an exact power of 2       */
+	M_apm_pad(M_ain, k);          /* fill out the data so the number of */
+	M_apm_pad(M_bin, k);          /* bytes is an exact power of 2       */
 
-if (k > rr->m_apm_malloclength)
-  {
-   if ((vp = MAPM_REALLOC(rr->m_apm_data, (k + 32))) == NULL)
-     {
-      /* fatal, this does not return */
+	if (k > rr->m_apm_malloclength)
+	{
+		if ((vp = MAPM_REALLOC(rr->m_apm_data, (k + 32))) == NULL)
+		{
+			/* fatal, this does not return */
 
-      M_apm_log_error_msg(M_APM_FATAL, "\'M_fast_multiply\', Out of memory");
-     }
-  
-   rr->m_apm_malloclength = k + 28;
-   rr->m_apm_data = (UCHAR *)vp;
-  }
+			M_apm_log_error_msg(M_APM_FATAL, "\'M_fast_multiply\', Out of memory");
+		}
+
+		rr->m_apm_malloclength = k + 28;
+		rr->m_apm_data = (UCHAR *)vp;
+	}
 
 #ifdef NO_FFT_MULTIPLY
 
-M_fmul_div_conq(rr->m_apm_data, M_ain->m_apm_data, 
-                                M_bin->m_apm_data, ii);
+	M_fmul_div_conq(rr->m_apm_data, M_ain->m_apm_data,
+	                M_bin->m_apm_data, ii);
 #else
 
-/*
- *     if the numbers are *really* big, use the divide-and-conquer
- *     routine first until the numbers are small enough to be handled 
- *     by the FFT algorithm. If the numbers are already small enough,
- *     call the FFT multiplication now.
- *
- *     Note that 'ii' here is (and must be) an exact power of 2.
- */
+	/*
+	 *     if the numbers are *really* big, use the divide-and-conquer
+	 *     routine first until the numbers are small enough to be handled
+	 *     by the FFT algorithm. If the numbers are already small enough,
+	 *     call the FFT multiplication now.
+	 *
+	 *     Note that 'ii' here is (and must be) an exact power of 2.
+	 */
 
-if (size_flag == 2)   /* if still using 16 bit compilers .... */
-  {
-   M_fast_mul_fft(rr->m_apm_data, M_ain->m_apm_data, 
-                                  M_bin->m_apm_data, ii);
-  }
-else                  /* >= 32 bit compilers */
-  {
-   if (ii > (MAX_FFT_BYTES + 2))
-     {
-      M_fmul_div_conq(rr->m_apm_data, M_ain->m_apm_data, 
-                                      M_bin->m_apm_data, ii);
-     }
-   else
-     {
-      M_fast_mul_fft(rr->m_apm_data, M_ain->m_apm_data, 
-                                     M_bin->m_apm_data, ii);
-     }
-  }
+	if (size_flag == 2)   /* if still using 16 bit compilers .... */
+	{
+		M_fast_mul_fft(rr->m_apm_data, M_ain->m_apm_data,
+		               M_bin->m_apm_data, ii);
+	}
+	else                  /* >= 32 bit compilers */
+	{
+		if (ii > (MAX_FFT_BYTES + 2))
+		{
+			M_fmul_div_conq(rr->m_apm_data, M_ain->m_apm_data,
+			                M_bin->m_apm_data, ii);
+		}
+		else
+		{
+			M_fast_mul_fft(rr->m_apm_data, M_ain->m_apm_data,
+			               M_bin->m_apm_data, ii);
+		}
+	}
 
 #endif
 
-rr->m_apm_sign       = sign;
-rr->m_apm_exponent   = nexp;
-rr->m_apm_datalength = 4 * ii;
+	rr->m_apm_sign       = sign;
+	rr->m_apm_exponent   = nexp;
+	rr->m_apm_datalength = 4 * ii;
 
-M_apm_normalize(rr);
+	M_apm_normalize(rr);
 }
 /****************************************************************************/
 /*
- *      This is the recursive function to perform the multiply. The 
+ *      This is the recursive function to perform the multiply. The
  *      design intent here is to have no local variables. Any local
  *      data that needs to be saved is saved on one of the two stacks.
  */
@@ -308,136 +308,136 @@ void	M_fmul_div_conq(UCHAR *rr, UCHAR *aa, UCHAR *bb, int sz)
 
 #ifdef NO_FFT_MULTIPLY
 
-if (sz == 4)                /* multiply 4x4 yielding an 8 byte result */
-  {
-   M_4_byte_multiply(rr, aa, bb);
-   return;
-  }
+	if (sz == 4)                /* multiply 4x4 yielding an 8 byte result */
+	{
+		M_4_byte_multiply(rr, aa, bb);
+		return;
+	}
 
 #else
 
-/*
- *  if the numbers are now small enough, let the FFT algorithm
- *  finish up.
- */
+	/*
+	 *  if the numbers are now small enough, let the FFT algorithm
+	 *  finish up.
+	 */
 
-if (sz == MAX_FFT_BYTES)     
-  {
-   M_fast_mul_fft(rr, aa, bb, sz);
-   return;
-  }
+	if (sz == MAX_FFT_BYTES)
+	{
+		M_fast_mul_fft(rr, aa, bb, sz);
+		return;
+	}
 
 #endif
 
-memset(rr, 0, (2 * sz));    /* zero out the result */
-mii = sz >> 1;
+	memset(rr, 0, (2 * sz));    /* zero out the result */
+	mii = sz >> 1;
 
-itmp = M_get_stack_ptr(mii);
-M_push_mul_int(itmp);
+	itmp = M_get_stack_ptr(mii);
+	M_push_mul_int(itmp);
 
-fmul_a1 = mul_stack_data[itmp];
+	fmul_a1 = mul_stack_data[itmp];
 
-itmp    = M_get_stack_ptr(mii);
-fmul_a0 = mul_stack_data[itmp];
+	itmp    = M_get_stack_ptr(mii);
+	fmul_a0 = mul_stack_data[itmp];
 
-itmp    = M_get_stack_ptr(2 * sz);
-fmul_a9 = mul_stack_data[itmp];
+	itmp    = M_get_stack_ptr(2 * sz);
+	fmul_a9 = mul_stack_data[itmp];
 
-itmp    = M_get_stack_ptr(mii);
-fmul_b1 = mul_stack_data[itmp];
+	itmp    = M_get_stack_ptr(mii);
+	fmul_b1 = mul_stack_data[itmp];
 
-itmp    = M_get_stack_ptr(mii);
-fmul_b0 = mul_stack_data[itmp];
+	itmp    = M_get_stack_ptr(mii);
+	fmul_b0 = mul_stack_data[itmp];
 
-itmp    = M_get_stack_ptr(2 * sz);
-fmul_b9 = mul_stack_data[itmp];
+	itmp    = M_get_stack_ptr(2 * sz);
+	fmul_b9 = mul_stack_data[itmp];
 
-itmp    = M_get_stack_ptr(2 * sz);
-fmul_t0 = mul_stack_data[itmp];
+	itmp    = M_get_stack_ptr(2 * sz);
+	fmul_t0 = mul_stack_data[itmp];
 
-M_fmul_split(fmul_a1, fmul_a0, aa, mii);
-M_fmul_split(fmul_b1, fmul_b0, bb, mii);
+	M_fmul_split(fmul_a1, fmul_a0, aa, mii);
+	M_fmul_split(fmul_b1, fmul_b0, bb, mii);
 
-stmp  = M_fmul_subtract(fmul_a9, fmul_a1, fmul_a0, mii);
-stmp *= M_fmul_subtract(fmul_b9, fmul_b0, fmul_b1, mii);
+	stmp  = M_fmul_subtract(fmul_a9, fmul_a1, fmul_a0, mii);
+	stmp *= M_fmul_subtract(fmul_b9, fmul_b0, fmul_b1, mii);
 
-M_push_mul_int(stmp);
-M_push_mul_int(mii);
+	M_push_mul_int(stmp);
+	M_push_mul_int(mii);
 
-M_fmul_div_conq(fmul_t0, fmul_a0, fmul_b0, mii);
+	M_fmul_div_conq(fmul_t0, fmul_a0, fmul_b0, mii);
 
-mii  = M_pop_mul_int();
-stmp = M_pop_mul_int();
-itmp = M_pop_mul_int();
+	mii  = M_pop_mul_int();
+	stmp = M_pop_mul_int();
+	itmp = M_pop_mul_int();
 
-M_push_mul_int(itmp);
-M_push_mul_int(stmp);
-M_push_mul_int(mii);
+	M_push_mul_int(itmp);
+	M_push_mul_int(stmp);
+	M_push_mul_int(mii);
 
-/*   to restore all stack variables ...
-fmul_a1 = mul_stack_data[itmp];
-fmul_a0 = mul_stack_data[itmp+1];
-fmul_a9 = mul_stack_data[itmp+2];
-fmul_b1 = mul_stack_data[itmp+3];
-fmul_b0 = mul_stack_data[itmp+4];
-fmul_b9 = mul_stack_data[itmp+5];
-fmul_t0 = mul_stack_data[itmp+6];
-*/
+	/*   to restore all stack variables ...
+	fmul_a1 = mul_stack_data[itmp];
+	fmul_a0 = mul_stack_data[itmp+1];
+	fmul_a9 = mul_stack_data[itmp+2];
+	fmul_b1 = mul_stack_data[itmp+3];
+	fmul_b0 = mul_stack_data[itmp+4];
+	fmul_b9 = mul_stack_data[itmp+5];
+	fmul_t0 = mul_stack_data[itmp+6];
+	*/
 
-fmul_a1 = mul_stack_data[itmp];
-fmul_b1 = mul_stack_data[itmp+3];
-fmul_t0 = mul_stack_data[itmp+6];
+	fmul_a1 = mul_stack_data[itmp];
+	fmul_b1 = mul_stack_data[itmp+3];
+	fmul_t0 = mul_stack_data[itmp+6];
 
-memcpy((rr + sz), fmul_t0, sz);    /* first 'add', result is now zero */
-				   /* so we just copy in the bytes    */
-M_fmul_add(rr, fmul_t0, mii, sz);
+	memcpy((rr + sz), fmul_t0, sz);    /* first 'add', result is now zero */
+	/* so we just copy in the bytes    */
+	M_fmul_add(rr, fmul_t0, mii, sz);
 
-M_fmul_div_conq(fmul_t0, fmul_a1, fmul_b1, mii);
+	M_fmul_div_conq(fmul_t0, fmul_a1, fmul_b1, mii);
 
-mii  = M_pop_mul_int();
-stmp = M_pop_mul_int();
-itmp = M_pop_mul_int();
+	mii  = M_pop_mul_int();
+	stmp = M_pop_mul_int();
+	itmp = M_pop_mul_int();
 
-M_push_mul_int(itmp);
-M_push_mul_int(stmp);
-M_push_mul_int(mii);
+	M_push_mul_int(itmp);
+	M_push_mul_int(stmp);
+	M_push_mul_int(mii);
 
-fmul_a9 = mul_stack_data[itmp+2];
-fmul_b9 = mul_stack_data[itmp+5];
-fmul_t0 = mul_stack_data[itmp+6];
+	fmul_a9 = mul_stack_data[itmp+2];
+	fmul_b9 = mul_stack_data[itmp+5];
+	fmul_t0 = mul_stack_data[itmp+6];
 
-M_fmul_add(rr, fmul_t0, 0, sz);
-M_fmul_add(rr, fmul_t0, mii, sz);
+	M_fmul_add(rr, fmul_t0, 0, sz);
+	M_fmul_add(rr, fmul_t0, mii, sz);
 
-if (stmp != 0)
-  M_fmul_div_conq(fmul_t0, fmul_a9, fmul_b9, mii);
+	if (stmp != 0)
+		M_fmul_div_conq(fmul_t0, fmul_a9, fmul_b9, mii);
 
-mii  = M_pop_mul_int();
-stmp = M_pop_mul_int();
-itmp = M_pop_mul_int();
+	mii  = M_pop_mul_int();
+	stmp = M_pop_mul_int();
+	itmp = M_pop_mul_int();
 
-fmul_t0 = mul_stack_data[itmp+6];
+	fmul_t0 = mul_stack_data[itmp+6];
 
-/*
- *  if the sign of (A1 - A0)(B0 - B1) is positive, ADD to
- *  the result. if it is negative, SUBTRACT from the result.
- */
+	/*
+	 *  if the sign of (A1 - A0)(B0 - B1) is positive, ADD to
+	 *  the result. if it is negative, SUBTRACT from the result.
+	 */
 
-if (stmp < 0)
-  {
-   fmul_a9 = mul_stack_data[itmp+2];
-   fmul_b9 = mul_stack_data[itmp+5];
+	if (stmp < 0)
+	{
+		fmul_a9 = mul_stack_data[itmp+2];
+		fmul_b9 = mul_stack_data[itmp+5];
 
-   memset(fmul_b9, 0, (2 * sz)); 
-   memcpy((fmul_b9 + mii), fmul_t0, sz); 
-   M_fmul_subtract(fmul_a9, rr, fmul_b9, (2 * sz));
-   memcpy(rr, fmul_a9, (2 * sz));
-  }
+		memset(fmul_b9, 0, (2 * sz));
+		memcpy((fmul_b9 + mii), fmul_t0, sz);
+		M_fmul_subtract(fmul_a9, rr, fmul_b9, (2 * sz));
+		memcpy(rr, fmul_a9, (2 * sz));
+	}
 
-if (stmp > 0)
-  M_fmul_add(rr, fmul_t0, mii, sz);
+	if (stmp > 0)
+		M_fmul_add(rr, fmul_t0, mii, sz);
 
-M_mul_stack_ptr -= 7;
+	M_mul_stack_ptr -= 7;
 }
 /****************************************************************************/
 /*
@@ -445,41 +445,41 @@ M_mul_stack_ptr -= 7;
  */
 void    M_fmul_add(UCHAR *r, UCHAR *a, int offset, int sz)
 {
-int	i, j;
-UCHAR   carry;
+	int	i, j;
+	UCHAR   carry;
 
-carry = 0;
-j = offset + sz;
-i = sz;
+	carry = 0;
+	j = offset + sz;
+	i = sz;
 
-while (TRUE)
-  {
-   r[--j] += carry + a[--i];
+	while (TRUE)
+	{
+		r[--j] += carry + a[--i];
 
-   if (r[j] >= 100)
-     {
-      r[j] -= 100;
-      carry = 1;
-     }
-   else
-      carry = 0;
+		if (r[j] >= 100)
+		{
+			r[j] -= 100;
+			carry = 1;
+		}
+		else
+			carry = 0;
 
-   if (i == 0)
-     break;
-  }
+		if (i == 0)
+			break;
+	}
 
-if (carry)
-  {
-   while (TRUE)
-     {
-      r[--j] += 1;
-   
-      if (r[j] < 100)
-        break;
+	if (carry)
+	{
+		while (TRUE)
+		{
+			r[--j] += 1;
 
-      r[j] -= 100;
-     }
-  }
+			if (r[j] < 100)
+				break;
+
+			r[j] -= 100;
+		}
+	}
 }
 /****************************************************************************/
 /*
@@ -487,139 +487,139 @@ if (carry)
  */
 int     M_fmul_subtract(UCHAR *r, UCHAR *a, UCHAR *b, int sz)
 {
-int	k, jtmp, sflag, nb, borrow;
+	int	k, jtmp, sflag, nb, borrow;
 
-nb    = sz;
-sflag = 0;      /* sign flag: assume the numbers are equal */
+	nb    = sz;
+	sflag = 0;      /* sign flag: assume the numbers are equal */
 
-/*
- *   find if a > b (so we perform a-b)
- *   or      a < b (so we perform b-a)
- */
+	/*
+	 *   find if a > b (so we perform a-b)
+	 *   or      a < b (so we perform b-a)
+	 */
 
-for (k=0; k < nb; k++)
-  {
-   if (a[k] < b[k])
-     {
-      sflag = -1;
-      break;
-     }
+	for (k = 0; k < nb; k++)
+	{
+		if (a[k] < b[k])
+		{
+			sflag = -1;
+			break;
+		}
 
-   if (a[k] > b[k])
-     {
-      sflag = 1;
-      break;
-     }
-  }
+		if (a[k] > b[k])
+		{
+			sflag = 1;
+			break;
+		}
+	}
 
-if (sflag == 0)
-  {
-   memset(r, 0, nb);            /* zero out the result */
-  }
-else
-  {
-   k = nb;
-   borrow = 0;
+	if (sflag == 0)
+	{
+		memset(r, 0, nb);            /* zero out the result */
+	}
+	else
+	{
+		k = nb;
+		borrow = 0;
 
-   while (TRUE)
-     {
-      k--;
+		while (TRUE)
+		{
+			k--;
 
-      if (sflag == 1)
-        jtmp = (int)a[k] - ((int)b[k] + borrow);
-      else
-        jtmp = (int)b[k] - ((int)a[k] + borrow);
+			if (sflag == 1)
+				jtmp = (int)a[k] - ((int)b[k] + borrow);
+			else
+				jtmp = (int)b[k] - ((int)a[k] + borrow);
 
-      if (jtmp >= 0)
-        {
-         r[k] = (UCHAR)jtmp;
-         borrow = 0;
-        }
-      else
-        {
-         r[k] = (UCHAR)(100 + jtmp);
-         borrow = 1;
-        }
+			if (jtmp >= 0)
+			{
+				r[k] = (UCHAR)jtmp;
+				borrow = 0;
+			}
+			else
+			{
+				r[k] = (UCHAR)(100 + jtmp);
+				borrow = 1;
+			}
 
-      if (k == 0)
-        break;
-     }
-  }
+			if (k == 0)
+				break;
+		}
+	}
 
-return(sflag);
+	return(sflag);
 }
 /****************************************************************************/
 int     M_next_power_of_2(int n)
 {
-int     ct, k;
+	int     ct, k;
 
-if (n <= 2)
-  return(n);
+	if (n <= 2)
+		return(n);
 
-k  = 2;
-ct = 0;
+	k  = 2;
+	ct = 0;
 
-while (TRUE)
-  {
-   if (k >= n)
-     break;
+	while (TRUE)
+	{
+		if (k >= n)
+			break;
 
-   k = k << 1;
+		k = k << 1;
 
-   if (++ct == bit_limit)
-     {
-      /* fatal, this does not return */
+		if (++ct == bit_limit)
+		{
+			/* fatal, this does not return */
 
-      M_apm_log_error_msg(M_APM_FATAL, 
-               "\'M_next_power_of_2\', ERROR :sizeof(int) too small ??");
-     }
-  }
+			M_apm_log_error_msg(M_APM_FATAL,
+			                    "\'M_next_power_of_2\', ERROR :sizeof(int) too small ??");
+		}
+	}
 
-return(k);
+	return(k);
 }
 /****************************************************************************/
 int	M_get_stack_ptr(int sz)
 {
-int	i, k;
-UCHAR   *cp;
+	int	i, k;
+	UCHAR   *cp;
 
-k = ++M_mul_stack_ptr;
+	k = ++M_mul_stack_ptr;
 
-/* if size is 0, just need to malloc and return */
-if (mul_stack_data_size[k] == 0)
-  {
-   if ((i = sz) < 16)
-     i = 16;
+	/* if size is 0, just need to malloc and return */
+	if (mul_stack_data_size[k] == 0)
+	{
+		if ((i = sz) < 16)
+			i = 16;
 
-   if ((cp = (UCHAR *)MAPM_MALLOC(i + 4)) == NULL)
-     {
-      /* fatal, this does not return */
+		if ((cp = (UCHAR *)MAPM_MALLOC(i + 4)) == NULL)
+		{
+			/* fatal, this does not return */
 
-      M_apm_log_error_msg(M_APM_FATAL, M_stack_ptr_error_msg);
-     }
+			M_apm_log_error_msg(M_APM_FATAL, M_stack_ptr_error_msg);
+		}
 
-   mul_stack_data[k]      = cp;
-   mul_stack_data_size[k] = i;
-  }
-else        /* it has been malloc'ed, see if it's big enough */
-  {
-   if (sz > mul_stack_data_size[k])
-     {
-      cp = mul_stack_data[k];
+		mul_stack_data[k]      = cp;
+		mul_stack_data_size[k] = i;
+	}
+	else        /* it has been malloc'ed, see if it's big enough */
+	{
+		if (sz > mul_stack_data_size[k])
+		{
+			cp = mul_stack_data[k];
 
-      if ((cp = (UCHAR *)MAPM_REALLOC(cp, (sz + 4))) == NULL)
-        {
-         /* fatal, this does not return */
-   
-         M_apm_log_error_msg(M_APM_FATAL, M_stack_ptr_error_msg);
-        }
-   
-      mul_stack_data[k]      = cp;
-      mul_stack_data_size[k] = sz;
-     }
-  }
+			if ((cp = (UCHAR *)MAPM_REALLOC(cp, (sz + 4))) == NULL)
+			{
+				/* fatal, this does not return */
 
-return(k);
+				M_apm_log_error_msg(M_APM_FATAL, M_stack_ptr_error_msg);
+			}
+
+			mul_stack_data[k]      = cp;
+			mul_stack_data_size[k] = sz;
+		}
+	}
+
+	return(k);
 }
 /****************************************************************************/
 
@@ -638,46 +638,46 @@ return(k);
 
 void	M_4_byte_multiply(UCHAR *r, UCHAR *a, UCHAR *b)
 {
-int	      jj;
-unsigned int  *ip, t1, rr[8];
+	int	      jj;
+	unsigned int  *ip, t1, rr[8];
 
-memset(rr, 0, (8 * sizeof(int)));        /* zero out result */
-jj = 3;
-ip = rr + 5;
+	memset(rr, 0, (8 * sizeof(int)));        /* zero out result */
+	jj = 3;
+	ip = rr + 5;
 
-/*
- *   loop for one number [b], un-roll the inner 'loop' [a]
- *
- *   accumulate partial sums in UINT array, release carries 
- *   and convert back to base 100 at the end
- */
+	/*
+	 *   loop for one number [b], un-roll the inner 'loop' [a]
+	 *
+	 *   accumulate partial sums in UINT array, release carries
+	 *   and convert back to base 100 at the end
+	 */
 
-while (1)
-  {
-   t1  = (unsigned int)b[jj];
-   ip += 2;
+	while (1)
+	{
+		t1  = (unsigned int)b[jj];
+		ip += 2;
 
-   *ip-- += t1 * a[3];
-   *ip-- += t1 * a[2];
-   *ip-- += t1 * a[1];
-   *ip   += t1 * a[0];
-   
-   if (jj-- == 0)
-     break;
-  }
+		*ip-- += t1 * a[3];
+		*ip-- += t1 * a[2];
+		*ip-- += t1 * a[1];
+		*ip   += t1 * a[0];
 
-jj = 7;
+		if (jj-- == 0)
+			break;
+	}
 
-while (1)
-  {
-   t1 = rr[jj] / 100;
-   r[jj] = (UCHAR)(rr[jj] - 100 * t1);
+	jj = 7;
 
-   if (jj == 0)
-     break;
+	while (1)
+	{
+		t1 = rr[jj] / 100;
+		r[jj] = (UCHAR)(rr[jj] - 100 * t1);
 
-   rr[--jj] += t1;
-  }
+		if (jj == 0)
+			break;
+
+		rr[--jj] += t1;
+	}
 }
 
 #endif

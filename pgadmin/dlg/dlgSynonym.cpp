@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -30,263 +30,263 @@
 
 dlgProperty *edbSynonymFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgSynonym(this, frame, (edbSynonym*)node);
+	return new dlgSynonym(this, frame, (edbSynonym *)node);
 }
 
 dlgProperty *edbPrivateSynonymFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgSynonym(this, frame, (edbPrivateSynonym*)node, (pgSchema*)parent);
+	return new dlgSynonym(this, frame, (edbPrivateSynonym *)node, (pgSchema *)parent);
 }
 
 
 BEGIN_EVENT_TABLE(dlgSynonym, dlgProperty)
-    EVT_TEXT(XRCID("cbTargetType"),                 dlgSynonym::OnChangeTargetType)
-    EVT_COMBOBOX(XRCID("cbTargetType"),             dlgProperty::OnChange)
-    EVT_TEXT(XRCID("cbTargetSchema"),               dlgSynonym::OnChangeTargetSchema)
-    EVT_COMBOBOX(XRCID("cbTargetSchema"),           dlgProperty::OnChange)
-    EVT_COMBOBOX(XRCID("cbTargetObject"),           dlgProperty::OnChange)
+	EVT_TEXT(XRCID("cbTargetType"),                 dlgSynonym::OnChangeTargetType)
+	EVT_COMBOBOX(XRCID("cbTargetType"),             dlgProperty::OnChange)
+	EVT_TEXT(XRCID("cbTargetSchema"),               dlgSynonym::OnChangeTargetSchema)
+	EVT_COMBOBOX(XRCID("cbTargetSchema"),           dlgProperty::OnChange)
+	EVT_COMBOBOX(XRCID("cbTargetObject"),           dlgProperty::OnChange)
 END_EVENT_TABLE();
 
 
 dlgSynonym::dlgSynonym(pgaFactory *f, frmMain *frame, edbSynonym *node)
-: dlgProperty(f, frame, wxT("dlgSynonym"))
+	: dlgProperty(f, frame, wxT("dlgSynonym"))
 {
-    synonym=node;
-    privSynonym=NULL;
-    synonymSchema=NULL;
-    cbOwner->Disable();
+	synonym = node;
+	privSynonym = NULL;
+	synonymSchema = NULL;
+	cbOwner->Disable();
 
-    cbTargetType->Append(_("Sequence"));
-    cbTargetType->Append(_("Public synonym"));
-    cbTargetType->Append(_("Table"));
-    cbTargetType->Append(_("View"));
+	cbTargetType->Append(_("Sequence"));
+	cbTargetType->Append(_("Public synonym"));
+	cbTargetType->Append(_("Table"));
+	cbTargetType->Append(_("View"));
 }
 
-dlgSynonym::dlgSynonym(edbPrivateSynonymFactory *factory, frmMain *frame, edbPrivateSynonym *syn, pgSchema* schema)
-: dlgProperty((pgaFactory*)factory, frame, wxT("dlgSynonym"))
+dlgSynonym::dlgSynonym(edbPrivateSynonymFactory *factory, frmMain *frame, edbPrivateSynonym *syn, pgSchema *schema)
+	: dlgProperty((pgaFactory *)factory, frame, wxT("dlgSynonym"))
 {
-    synonym=NULL;
-    privSynonym=syn;
-    synonymSchema=schema;
-    cbOwner->Disable();
+	synonym = NULL;
+	privSynonym = syn;
+	synonymSchema = schema;
+	cbOwner->Disable();
 
-    cbTargetType->Append(_("Sequence"));
-    cbTargetType->Append(_("Synonym"));
-    cbTargetType->Append(_("Table"));
-    cbTargetType->Append(_("View"));
+	cbTargetType->Append(_("Sequence"));
+	cbTargetType->Append(_("Synonym"));
+	cbTargetType->Append(_("Table"));
+	cbTargetType->Append(_("View"));
 }
 
 
 pgObject *dlgSynonym::GetObject()
 {
-    if (!synonymSchema)
-        return synonym;
-    return (pgObject *)privSynonym;
+	if (!synonymSchema)
+		return synonym;
+	return (pgObject *)privSynonym;
 }
 
 
 int dlgSynonym::Go(bool modal)
 {
-    if (synonym)
-    {
-        // edit mode
-        txtName->Disable();
+	if (synonym)
+	{
+		// edit mode
+		txtName->Disable();
 
-        cbTargetType->SetSelection(cbTargetType->FindString(synonym->GetTargetType()));
-        ProcessTypeChange();
+		cbTargetType->SetSelection(cbTargetType->FindString(synonym->GetTargetType()));
+		ProcessTypeChange();
 
-        if (cbTargetType->GetValue() != _("Public synonym"))
-        {
-            cbTargetSchema->SetSelection(cbTargetSchema->FindString(synonym->GetTargetSchema()));
-            ProcessSchemaChange();
-        }
-        cbTargetObject->SetSelection(cbTargetObject->FindString(synonym->GetTargetObject()));
-    }
-    else if (privSynonym)
-    {
-        // edit mode
-        txtName->Disable();
+		if (cbTargetType->GetValue() != _("Public synonym"))
+		{
+			cbTargetSchema->SetSelection(cbTargetSchema->FindString(synonym->GetTargetSchema()));
+			ProcessSchemaChange();
+		}
+		cbTargetObject->SetSelection(cbTargetObject->FindString(synonym->GetTargetObject()));
+	}
+	else if (privSynonym)
+	{
+		// edit mode
+		txtName->Disable();
 
-        cbTargetType->SetSelection(cbTargetType->FindString(privSynonym->GetTargetType()));
-        ProcessTypeChange();
+		cbTargetType->SetSelection(cbTargetType->FindString(privSynonym->GetTargetType()));
+		ProcessTypeChange();
 
-        cbTargetSchema->SetSelection(cbTargetSchema->FindString(privSynonym->GetTargetSchema()));
-        ProcessSchemaChange();
+		cbTargetSchema->SetSelection(cbTargetSchema->FindString(privSynonym->GetTargetSchema()));
+		ProcessSchemaChange();
 
-        cbTargetObject->SetSelection(cbTargetObject->FindString(privSynonym->GetTargetObject()));
-    }
-    else
-    {
-        // create mode
-        cbTargetType->Enable();
-        cbTargetSchema->Disable();
-        cbTargetObject->Disable();
-    }
+		cbTargetObject->SetSelection(cbTargetObject->FindString(privSynonym->GetTargetObject()));
+	}
+	else
+	{
+		// create mode
+		cbTargetType->Enable();
+		cbTargetSchema->Disable();
+		cbTargetObject->Disable();
+	}
 
-    txtComment->Disable();
+	txtComment->Disable();
 
-    return dlgProperty::Go(modal);
+	return dlgProperty::Go(modal);
 }
 
 
 pgObject *dlgSynonym::CreateObject(pgCollection *collection)
 {
-    pgObject *obj = NULL;
-    if (!synonymSchema)
-        obj=synonymFactory.CreateObjects(collection, 0,
-              wxT(" WHERE synname = ") + qtDbString(GetName()));
-    else
-        obj=edbPrivFactory.CreateObjects(collection, 0,
-              wxT(" WHERE s.synname=") + qtDbString(GetName()) +
-              wxT(" AND s.synnamespace=") + collection->GetSchema()->GetOidStr() + wxT(" \n"));
+	pgObject *obj = NULL;
+	if (!synonymSchema)
+		obj = synonymFactory.CreateObjects(collection, 0,
+		                                   wxT(" WHERE synname = ") + qtDbString(GetName()));
+	else
+		obj = edbPrivFactory.CreateObjects(collection, 0,
+		                                   wxT(" WHERE s.synname=") + qtDbString(GetName()) +
+		                                   wxT(" AND s.synnamespace=") + collection->GetSchema()->GetOidStr() + wxT(" \n"));
 
-    return obj;
+	return obj;
 }
 
 
 void dlgSynonym::CheckChange()
 {
-    bool enable=true;
-    CheckValid(enable, !txtName->GetValue().IsEmpty(), _("Please specify name."));
-    CheckValid(enable, !cbTargetType->GetValue().IsEmpty(), _("Please select target type."));
-    // Public Synonyms does supported in public only
-    if (!synonymSchema && cbTargetType->GetValue() != _("Public synonym"))
-        CheckValid(enable, !cbTargetSchema->GetValue().IsEmpty(), _("Please select target schema."));
-    CheckValid(enable, !cbTargetObject->GetValue().IsEmpty(), _("Please select target object."));
+	bool enable = true;
+	CheckValid(enable, !txtName->GetValue().IsEmpty(), _("Please specify name."));
+	CheckValid(enable, !cbTargetType->GetValue().IsEmpty(), _("Please select target type."));
+	// Public Synonyms does supported in public only
+	if (!synonymSchema && cbTargetType->GetValue() != _("Public synonym"))
+		CheckValid(enable, !cbTargetSchema->GetValue().IsEmpty(), _("Please select target schema."));
+	CheckValid(enable, !cbTargetObject->GetValue().IsEmpty(), _("Please select target object."));
 
-    if (!enable)
-    {
-        EnableOK(enable);
-        return;
-    }
+	if (!enable)
+	{
+		EnableOK(enable);
+		return;
+	}
 
-    if (synonym)
-        EnableOK(synonym->GetTargetObject() != cbTargetObject->GetValue());
-    else if (privSynonym)
-        EnableOK(privSynonym->GetTargetObject() != cbTargetObject->GetValue());
-    else
-        EnableOK(txtName->GetValue() != wxEmptyString && cbTargetObject->GetValue() != wxEmptyString);
+	if (synonym)
+		EnableOK(synonym->GetTargetObject() != cbTargetObject->GetValue());
+	else if (privSynonym)
+		EnableOK(privSynonym->GetTargetObject() != cbTargetObject->GetValue());
+	else
+		EnableOK(txtName->GetValue() != wxEmptyString && cbTargetObject->GetValue() != wxEmptyString);
 }
 
 void dlgSynonym::ProcessTypeChange()
 {
-    cbTargetSchema->Clear();
-    cbTargetObject->Clear();
-    if (cbTargetType->GetValue() != _("Public synonym"))
-    {
-        pgSet *schemas;
-        if (connection->BackendMinimumVersion(8, 2))
-            schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspparent = 0 AND nspname NOT LIKE E'pg\\_%' AND nspname NOT IN ('pg_catalog', 'sys', 'dbo', 'pgagent', 'information_schema', 'dbms_job_procedure') ORDER BY nspname;"));
-        else if (connection->BackendMinimumVersion(8, 1))
-            schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE E'pg\\_%' ORDER BY nspname;"));
-        else
-            schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE 'pg\\_%' ORDER BY nspname;"));
+	cbTargetSchema->Clear();
+	cbTargetObject->Clear();
+	if (cbTargetType->GetValue() != _("Public synonym"))
+	{
+		pgSet *schemas;
+		if (connection->BackendMinimumVersion(8, 2))
+			schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspparent = 0 AND nspname NOT LIKE E'pg\\_%' AND nspname NOT IN ('pg_catalog', 'sys', 'dbo', 'pgagent', 'information_schema', 'dbms_job_procedure') ORDER BY nspname;"));
+		else if (connection->BackendMinimumVersion(8, 1))
+			schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE E'pg\\_%' ORDER BY nspname;"));
+		else
+			schemas = connection->ExecuteSet(wxT("SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE 'pg\\_%' ORDER BY nspname;"));
 
-        for (int x = 0; x < schemas->NumRows(); x++)
-        {
-            cbTargetSchema->Append(schemas->GetVal(0));
-            schemas->MoveNext();
-        }
-        delete schemas;
+		for (int x = 0; x < schemas->NumRows(); x++)
+		{
+			cbTargetSchema->Append(schemas->GetVal(0));
+			schemas->MoveNext();
+		}
+		delete schemas;
 
-        cbTargetSchema->Enable();
-        cbTargetSchema->SetValue(wxT("public"));
-        ProcessSchemaChange();
-    }
-    else
-    {
-        pgSet *synonyms = connection->ExecuteSet(wxT("SELECT synname FROM pg_synonym ORDER BY synname;"));
-        for (int x = 0; x < synonyms->NumRows(); x++)
-        {
-            cbTargetObject->Append(synonyms->GetVal(0));
-            synonyms->MoveNext();
-        }
-        delete synonyms;
+		cbTargetSchema->Enable();
+		cbTargetSchema->SetValue(wxT("public"));
+		ProcessSchemaChange();
+	}
+	else
+	{
+		pgSet *synonyms = connection->ExecuteSet(wxT("SELECT synname FROM pg_synonym ORDER BY synname;"));
+		for (int x = 0; x < synonyms->NumRows(); x++)
+		{
+			cbTargetObject->Append(synonyms->GetVal(0));
+			synonyms->MoveNext();
+		}
+		delete synonyms;
 
-        cbTargetSchema->Disable();
-        cbTargetObject->Enable();
-    }
+		cbTargetSchema->Disable();
+		cbTargetObject->Enable();
+	}
 }
 
 void dlgSynonym::ProcessSchemaChange()
 {
-    cbTargetObject->Clear();
+	cbTargetObject->Clear();
 
-    wxString restriction;
-    if (cbTargetType->GetValue() == _("Sequence"))
-        restriction = wxT("S");
-    else if (cbTargetType->GetValue() == _("Table"))
-        restriction = wxT("r");
-    else if (cbTargetType->GetValue() == _("View"))
-        restriction = wxT("v");
+	wxString restriction;
+	if (cbTargetType->GetValue() == _("Sequence"))
+		restriction = wxT("S");
+	else if (cbTargetType->GetValue() == _("Table"))
+		restriction = wxT("r");
+	else if (cbTargetType->GetValue() == _("View"))
+		restriction = wxT("v");
 
-    wxString sql;
-    if (cbTargetType->GetValue() == _("Synonym"))
-    {
-        sql = wxT("SELECT synname FROM pg_synonym s JOIN pg_namespace n\n")
-              wxT("  ON s.synnamespace = n.oid AND \n")
-              wxT("     n.nspname = ") + qtDbString(cbTargetSchema->GetValue()) +
-              wxT("  ORDER BY synname;");
-    }
-    else
-    {
-        sql = wxT("SELECT relname FROM pg_class c, pg_namespace n\n")
-              wxT("  WHERE c.relnamespace = n.oid AND\n")
-              wxT("        n.nspname = ") + qtDbString(cbTargetSchema->GetValue()) + wxT(" AND\n")
-              wxT("        c.relkind = '") + restriction + wxT("' ORDER BY relname;");
-    }
+	wxString sql;
+	if (cbTargetType->GetValue() == _("Synonym"))
+	{
+		sql = wxT("SELECT synname FROM pg_synonym s JOIN pg_namespace n\n")
+		      wxT("  ON s.synnamespace = n.oid AND \n")
+		      wxT("     n.nspname = ") + qtDbString(cbTargetSchema->GetValue()) +
+		      wxT("  ORDER BY synname;");
+	}
+	else
+	{
+		sql = wxT("SELECT relname FROM pg_class c, pg_namespace n\n")
+		      wxT("  WHERE c.relnamespace = n.oid AND\n")
+		      wxT("        n.nspname = ") + qtDbString(cbTargetSchema->GetValue()) + wxT(" AND\n")
+		      wxT("        c.relkind = '") + restriction + wxT("' ORDER BY relname;");
+	}
 
-    pgSet *objects = connection->ExecuteSet(sql);
-    for (int x = 0; x < objects->NumRows(); x++)
-    {
-        cbTargetObject->Append(objects->GetVal(0));
-        objects->MoveNext();
-    }
-    delete objects;
+	pgSet *objects = connection->ExecuteSet(sql);
+	for (int x = 0; x < objects->NumRows(); x++)
+	{
+		cbTargetObject->Append(objects->GetVal(0));
+		objects->MoveNext();
+	}
+	delete objects;
 
-    cbTargetObject->Enable();
+	cbTargetObject->Enable();
 }
 
 
 wxString dlgSynonym::GetSql()
 {
-    wxString sql;
+	wxString sql;
 
-    if (!synonymSchema)
-    {
+	if (!synonymSchema)
+	{
 
-        sql = wxT("CREATE OR REPLACE PUBLIC SYNONYM ") + qtIdent(txtName->GetValue()) + wxT("\n FOR ");
+		sql = wxT("CREATE OR REPLACE PUBLIC SYNONYM ") + qtIdent(txtName->GetValue()) + wxT("\n FOR ");
 
-        if (cbTargetSchema->GetValue() != wxEmptyString)
-            sql += qtIdent(cbTargetSchema->GetValue()) + wxT(".");
+		if (cbTargetSchema->GetValue() != wxEmptyString)
+			sql += qtIdent(cbTargetSchema->GetValue()) + wxT(".");
 
-        sql += qtIdent(cbTargetObject->GetValue()) + wxT(";\n");
+		sql += qtIdent(cbTargetObject->GetValue()) + wxT(";\n");
 
-        AppendComment(sql, wxT("PUBLIC SYNONYM ") + qtIdent(txtName->GetValue()), synonym);
-    }
-    else
-    {
-        wxString createSql, commentSql;
-        if (synonymSchema->GetName() == wxT("public"))
-        {
-            createSql = wxT("CREATE OR REPLACE PUBLIC SYNONYM ");
-            commentSql = wxT("PUBLIC SYNONYM ");
-        }
-        else
-        {
-            createSql = wxT("CREATE OR REPLACE SYNONYM ") + qtIdent(synonymSchema->GetName()) + wxT(".");
-            commentSql = wxT("PRIVATE SYNONYM ");
-        }
+		AppendComment(sql, wxT("PUBLIC SYNONYM ") + qtIdent(txtName->GetValue()), synonym);
+	}
+	else
+	{
+		wxString createSql, commentSql;
+		if (synonymSchema->GetName() == wxT("public"))
+		{
+			createSql = wxT("CREATE OR REPLACE PUBLIC SYNONYM ");
+			commentSql = wxT("PUBLIC SYNONYM ");
+		}
+		else
+		{
+			createSql = wxT("CREATE OR REPLACE SYNONYM ") + qtIdent(synonymSchema->GetName()) + wxT(".");
+			commentSql = wxT("PRIVATE SYNONYM ");
+		}
 
-        sql = createSql + qtIdent(txtName->GetValue()) + wxT("\n FOR ");
+		sql = createSql + qtIdent(txtName->GetValue()) + wxT("\n FOR ");
 
-        if (cbTargetSchema->GetValue() != wxEmptyString)
-            sql += qtIdent(cbTargetSchema->GetValue()) + wxT(".");
+		if (cbTargetSchema->GetValue() != wxEmptyString)
+			sql += qtIdent(cbTargetSchema->GetValue()) + wxT(".");
 
-        sql += qtIdent(cbTargetObject->GetValue()) + wxT(";\n");
+		sql += qtIdent(cbTargetObject->GetValue()) + wxT(";\n");
 
-        AppendComment(sql, commentSql + qtIdent(txtName->GetValue()), synonym);
-    }
+		AppendComment(sql, commentSql + qtIdent(txtName->GetValue()), synonym);
+	}
 
-    return sql;
+	return sql;
 }

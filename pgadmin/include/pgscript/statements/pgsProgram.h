@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -23,25 +23,25 @@ class pgsProgram
 
 private:
 
-	pgsVarMap & m_vars;
+	pgsVarMap &m_vars;
 
 public:
 
-	pgsProgram(pgsVarMap & vars);
+	pgsProgram(pgsVarMap &vars);
 
 	~pgsProgram();
 
 	void dump();
 
-	static void dump(const pgsVarMap & vars);
-	
-	void eval(pgsStmtList * stmt_list);
+	static void dump(const pgsVarMap &vars);
+
+	void eval(pgsStmtList *stmt_list);
 
 private:
 
-	pgsProgram(const pgsProgram & that);
+	pgsProgram(const pgsProgram &that);
 
-	pgsProgram & operator=(const pgsProgram & that);
+	pgsProgram &operator=(const pgsProgram &that);
 
 };
 

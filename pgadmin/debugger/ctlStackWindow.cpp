@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ctlStackWindow.cpp - debugger 
+// ctlStackWindow.cpp - debugger
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -26,10 +26,10 @@ IMPLEMENT_CLASS(ctlStackWindow, wxListBox)
 //  Initialize the grid control and clear it out....
 //
 
-ctlStackWindow::ctlStackWindow(wxWindow *parent, wxWindowID id, const wxPoint & pos, const wxSize & size, long style, const wxString &name )
-  : wxListBox(parent , id, pos, size, 0, NULL, style|wxLB_HSCROLL|wxLB_NEEDED_SB )
+ctlStackWindow::ctlStackWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style, const wxString &name )
+	: wxListBox(parent , id, pos, size, 0, NULL, style | wxLB_HSCROLL | wxLB_NEEDED_SB )
 {
-    wxWindowBase::SetFont(settings->GetSystemFont());
+	wxWindowBase::SetFont(settings->GetSystemFont());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@ ctlStackWindow::ctlStackWindow(wxWindow *parent, wxWindowID id, const wxPoint & 
 
 void ctlStackWindow::clear()
 {
-    Set(0, NULL);
+	Set(0, NULL);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,10 +50,10 @@ void ctlStackWindow::clear()
 //
 
 
-void ctlStackWindow::setStack(const wxArrayString & stack )
+void ctlStackWindow::setStack(const wxArrayString &stack )
 {
-    for(size_t i = 0; i < stack.GetCount(); ++i)
-    {
-        Append(stack[i]);
-    }
+	for(size_t i = 0; i < stack.GetCount(); ++i)
+	{
+		Append(stack[i]);
+	}
 }

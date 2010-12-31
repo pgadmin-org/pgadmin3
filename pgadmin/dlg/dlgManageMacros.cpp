@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -39,7 +39,7 @@ BEGIN_EVENT_TABLE(dlgManageMacros, DialogWithHelp)
 END_EVENT_TABLE()
 
 dlgManageMacros::dlgManageMacros(wxWindow *parent, frmMain *form, queryMacroList *macros) :
-DialogWithHelp(form)
+	DialogWithHelp(form)
 {
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	LoadResource(parent, wxT("dlgManageMacros"));
@@ -47,7 +47,7 @@ DialogWithHelp(form)
 	this->macros = macros;
 
 	// Setup list of keys
-    lstKeys->CreateColumns(NULL, _("Key"), _("Name"), 40);
+	lstKeys->CreateColumns(NULL, _("Key"), _("Name"), 40);
 
 	lstKeys->Hide();
 	size_t i;
@@ -55,14 +55,14 @@ DialogWithHelp(form)
 	for (i = 1; i < 13; i++)
 	{
 		wxString key;
-	    key.Printf(wxT("Alt-F%d"), i);
+		key.Printf(wxT("Alt-F%d"), i);
 		AddKeyToList(num++, key);
 	}
 	for (i = 1; i < 11; i++)
 	{
 		wxString key;
-	    key.Printf(wxT("Ctrl-%d"), i%10); // in order of keys 1,2,...,8,9,0
-		AddKeyToList(num++,key);
+		key.Printf(wxT("Ctrl-%d"), i % 10); // in order of keys 1,2,...,8,9,0
+		AddKeyToList(num++, key);
 	}
 	lstKeys->Show();
 
@@ -75,7 +75,7 @@ DialogWithHelp(form)
 	thisMacroChanged = false;
 }
 
-void dlgManageMacros::AddKeyToList(int position, const wxString& key)
+void dlgManageMacros::AddKeyToList(int position, const wxString &key)
 {
 	long tmp = lstKeys->InsertItem(position, key);
 	queryMacroItem *item = macros->FindMacro(key);
@@ -179,7 +179,7 @@ void dlgManageMacros::SetMacro(bool silent)
 	}
 	else
 	{
-		macros->AddOrUpdateMacro(key,Name,query);
+		macros->AddOrUpdateMacro(key, Name, query);
 		anythingChanged = true;
 		thisMacroChanged = false;
 		lstKeys->SetItem(item, 1, Name);
@@ -188,13 +188,13 @@ void dlgManageMacros::SetMacro(bool silent)
 	}
 }
 
-void dlgManageMacros::OnKeySelect(wxListEvent& ev)
+void dlgManageMacros::OnKeySelect(wxListEvent &ev)
 {
 	wxString key;
 	key = ev.GetText();
 
 	queryMacroItem *item = macros->FindMacro(key);
-	if (item != NULL) 
+	if (item != NULL)
 	{
 		appQueryModify = true;
 		txtName->ChangeValue(item->GetName());

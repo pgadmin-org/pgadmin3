@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,23 +16,23 @@
 
 class pgsParenthesis : public pgsOperation
 {
-	
+
 public:
 
-	pgsParenthesis(const pgsExpression * left);
+	pgsParenthesis(const pgsExpression *left);
 
 	virtual ~pgsParenthesis();
 
-	virtual pgsExpression * clone() const;
+	virtual pgsExpression *clone() const;
 
-	pgsParenthesis(const pgsParenthesis & that);
+	pgsParenthesis(const pgsParenthesis &that);
 
-	pgsParenthesis & operator =(const pgsParenthesis & that);
+	pgsParenthesis &operator =(const pgsParenthesis &that);
 
 	virtual wxString value() const;
-	
-	virtual pgsOperand eval(pgsVarMap & vars) const;
-	
+
+	virtual pgsOperand eval(pgsVarMap &vars) const;
+
 };
 
 #endif /*PGSPARENTHESIS_H_*/

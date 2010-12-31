@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -17,10 +17,10 @@
 
 class wxGridSelection
 {
-    wxGridCellCoordsArray dummy1[3];
-    wxArrayInt dummy2[2];
-    void *dummy3;
-    wxGrid::wxGridSelectionModes dummy4;
+	wxGridCellCoordsArray dummy1[3];
+	wxArrayInt dummy2[2];
+	void *dummy3;
+	wxGrid::wxGridSelectionModes dummy4;
 };
 
 #endif

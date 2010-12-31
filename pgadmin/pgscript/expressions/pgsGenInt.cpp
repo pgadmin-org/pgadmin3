@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -15,8 +15,8 @@
 #include "pgscript/generators/pgsDictionaryGen.h"
 #include "pgscript/objects/pgsGenerator.h"
 
-pgsGenInt::pgsGenInt(const pgsExpression * min, const pgsExpression * max,
-		const pgsExpression * sequence, const pgsExpression * seed) :
+pgsGenInt::pgsGenInt(const pgsExpression *min, const pgsExpression *max,
+                     const pgsExpression *sequence, const pgsExpression *seed) :
 	pgsExpression(), m_min(min), m_max(max), m_sequence(sequence), m_seed(seed)
 {
 
@@ -30,12 +30,12 @@ pgsGenInt::~pgsGenInt()
 	pdelete(m_seed);
 }
 
-pgsExpression * pgsGenInt::clone() const
+pgsExpression *pgsGenInt::clone() const
 {
 	return pnew pgsGenInt(*this);
 }
 
-pgsGenInt::pgsGenInt(const pgsGenInt & that) :
+pgsGenInt::pgsGenInt(const pgsGenInt &that) :
 	pgsExpression(that)
 {
 	m_min = that.m_min->clone();
@@ -44,7 +44,7 @@ pgsGenInt::pgsGenInt(const pgsGenInt & that) :
 	m_seed = that.m_seed->clone();
 }
 
-pgsGenInt & pgsGenInt::operator =(const pgsGenInt & that)
+pgsGenInt &pgsGenInt::operator =(const pgsGenInt &that)
 {
 	if (this != &that)
 	{
@@ -64,11 +64,11 @@ pgsGenInt & pgsGenInt::operator =(const pgsGenInt & that)
 wxString pgsGenInt::value() const
 {
 	return wxString() << wxT("integer[ min = ") << m_min->value() << wxT(" max = ")
-			<< m_max->value() << wxT(" sequence = ") << m_sequence->value()
-			<< wxT(" seed = ") << m_seed->value() << wxT(" ]");
+	       << m_max->value() << wxT(" sequence = ") << m_sequence->value()
+	       << wxT(" seed = ") << m_seed->value() << wxT(" ]");
 }
 
-pgsOperand pgsGenInt::eval(pgsVarMap & vars) const
+pgsOperand pgsGenInt::eval(pgsVarMap &vars) const
 {
 	// Evaluate parameters
 	pgsOperand min(m_min->eval(vars));
@@ -78,14 +78,14 @@ pgsOperand pgsGenInt::eval(pgsVarMap & vars) const
 
 	// Check parameters and create the generator
 	if (min->is_integer() && max->is_integer() && sequence->is_integer()
-			&& seed->is_integer())
+	        && seed->is_integer())
 	{
 		long aux_sequence, aux_seed;
 		sequence->value().ToLong(&aux_sequence);
 		seed->value().ToLong(&aux_seed);
 		return pnew pgsGenerator(pgsVariable::pgsTInt,
-				pnew pgsIntegerGen(pgsVariable::num(min), pgsVariable::num(max),
-						aux_sequence != 0, aux_seed));
+		                         pnew pgsIntegerGen(pgsVariable::num(min), pgsVariable::num(max),
+		                                 aux_sequence != 0, aux_seed));
 	}
 	else
 	{
@@ -93,22 +93,22 @@ pgsOperand pgsGenInt::eval(pgsVarMap & vars) const
 		if (!min->is_integer())
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\nmin should be an integer"));
+			                            << wxT(":\nmin should be an integer"));
 		}
 		else if (!max->is_integer())
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\nmax should be an integer"));
+			                            << wxT(":\nmax should be an integer"));
 		}
 		else if (!sequence->is_integer())
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\nsequence should be an integer"));
+			                            << wxT(":\nsequence should be an integer"));
 		}
 		else
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\nseed should be an integer"));
+			                            << wxT(":\nseed should be an integer"));
 		}
 	}
 }

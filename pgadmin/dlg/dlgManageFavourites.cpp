@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -28,8 +28,8 @@
 
 BEGIN_EVENT_TABLE(dlgManageFavourites, pgDialog)
 	EVT_TREE_SEL_CHANGED(XRCID("trLocation"),	dlgManageFavourites::OnTreeChange)
-    EVT_BUTTON (wxID_OK,               dlgManageFavourites::OnOK)
-    EVT_BUTTON (wxID_CANCEL,           dlgManageFavourites::OnCancel)
+	EVT_BUTTON (wxID_OK,               dlgManageFavourites::OnOK)
+	EVT_BUTTON (wxID_CANCEL,           dlgManageFavourites::OnCancel)
 	EVT_BUTTON (XRCID("btnRename"),	   dlgManageFavourites::OnRename)
 	EVT_BUTTON (XRCID("btnDelete"),    dlgManageFavourites::OnDelete)
 	EVT_BUTTON (XRCID("btnNewFolder"), dlgManageFavourites::OnNewFolder)
@@ -43,12 +43,12 @@ END_EVENT_TABLE()
 #define trLocation		CTRL_TREE("trLocation")
 
 
-dlgManageFavourites::dlgManageFavourites(wxWindow *parent, queryFavouriteFolder *favourites) : 
-pgDialog()
+dlgManageFavourites::dlgManageFavourites(wxWindow *parent, queryFavouriteFolder *favourites) :
+	pgDialog()
 {
-    wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(parent, wxT("dlgManageFavourites"));
-    RestorePosition();
+	wxWindowBase::SetFont(settings->GetSystemFont());
+	LoadResource(parent, wxT("dlgManageFavourites"));
+	RestorePosition();
 
 	anythingChanged = false;
 
@@ -60,7 +60,7 @@ pgDialog()
 
 	trLocation->AssignImageList(imgList);
 
-    // Setup the default values
+	// Setup the default values
 	trLocation->AddRoot(_("Favourites"), 1);
 	trLocation->SetItemImage(trLocation->GetRootItem(), 1, wxTreeItemIcon_Normal);
 	trLocation->SelectItem(trLocation->GetRootItem());
@@ -79,25 +79,25 @@ int dlgManageFavourites::ManageFavourites()
 			// Need rollback!
 			return -1;
 		else
-			return 0; 
+			return 0;
 	}
 }
 
 dlgManageFavourites::~dlgManageFavourites()
 {
-    SavePosition();
+	SavePosition();
 }
 
 
-void dlgManageFavourites::OnOK(wxCommandEvent& ev)
+void dlgManageFavourites::OnOK(wxCommandEvent &ev)
 {
-    EndModal(wxID_OK);
+	EndModal(wxID_OK);
 }
 
 
-void dlgManageFavourites::OnCancel(wxCommandEvent& ev)
+void dlgManageFavourites::OnCancel(wxCommandEvent &ev)
 {
-    EndModal(wxID_CANCEL);
+	EndModal(wxID_CANCEL);
 }
 
 void dlgManageFavourites::OnTreeChange(wxTreeEvent &ev)
@@ -120,7 +120,7 @@ void dlgManageFavourites::OnTreeChange(wxTreeEvent &ev)
 	{
 		btnRename->Enable(true);
 		btnDelete->Enable(true);
-		btnNewFolder->Enable(trLocation->GetItemImage(trLocation->GetSelection())==1);
+		btnNewFolder->Enable(trLocation->GetItemImage(trLocation->GetSelection()) == 1);
 	}
 }
 
@@ -128,14 +128,14 @@ void dlgManageFavourites::OnTreeChange(wxTreeEvent &ev)
 void dlgManageFavourites::OnRename(wxCommandEvent &ev)
 {
 	if (!trLocation->GetSelection().IsOk() ||
-		trLocation->GetSelection() == trLocation->GetRootItem())
+	        trLocation->GetSelection() == trLocation->GetRootItem())
 		return;
 
 	queryFavouriteItem *item = favourites->FindTreeItem(trLocation->GetSelection());
 	if (!item)
 		return;
 
-	wxTextEntryDialog dlg(this, _("Enter new name"), (item->GetId()!=-2)?_("Rename favourite"):_("Rename favourites folder"), item->GetTitle());
+	wxTextEntryDialog dlg(this, _("Enter new name"), (item->GetId() != -2) ? _("Rename favourite") : _("Rename favourites folder"), item->GetTitle());
 	if (dlg.ShowModal() != wxID_OK)
 		return;
 
@@ -152,7 +152,7 @@ void dlgManageFavourites::OnDelete(wxCommandEvent &ev)
 	wxString msg;
 
 	if (!trLocation->GetSelection().IsOk() ||
-		trLocation->GetSelection() == trLocation->GetRootItem())
+	        trLocation->GetSelection() == trLocation->GetRootItem())
 		return;
 
 	queryFavouriteItem *item = favourites->FindTreeItem(trLocation->GetSelection());
@@ -187,7 +187,7 @@ void dlgManageFavourites::OnNewFolder(wxCommandEvent &ev)
 	wxTextEntryDialog dlg(this, _("Enter name of new folder"), _("Create new favourites folder"));
 	if (dlg.ShowModal() != wxID_OK)
 		return;
-	
+
 	wxString title = dlg.GetValue().Trim();
 	if (title.IsEmpty())
 		return;

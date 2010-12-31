@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -32,226 +32,226 @@
 
 
 BEGIN_EVENT_TABLE(dlgTextSearchParser, dlgTypeProperty)
-    EVT_TEXT(XRCID("cbStart"),                  dlgTextSearchParser::OnChange)
-    EVT_COMBOBOX(XRCID("cbStart"),              dlgTextSearchParser::OnChange)
-    EVT_TEXT(XRCID("cbGetToken"),               dlgTextSearchParser::OnChange)
-    EVT_COMBOBOX(XRCID("cbGetToken"),           dlgTextSearchParser::OnChange)
-    EVT_TEXT(XRCID("cbEnd"),                    dlgTextSearchParser::OnChange)
-    EVT_COMBOBOX(XRCID("cbEnd"),                dlgTextSearchParser::OnChange)
-    EVT_TEXT(XRCID("cbLextypes"),               dlgTextSearchParser::OnChange)
-    EVT_COMBOBOX(XRCID("cbLextypes"),           dlgTextSearchParser::OnChange)
-    EVT_TEXT(XRCID("cbHeadline"),               dlgTextSearchParser::OnChange)
-    EVT_COMBOBOX(XRCID("cbHeadline"),           dlgTextSearchParser::OnChange)
+	EVT_TEXT(XRCID("cbStart"),                  dlgTextSearchParser::OnChange)
+	EVT_COMBOBOX(XRCID("cbStart"),              dlgTextSearchParser::OnChange)
+	EVT_TEXT(XRCID("cbGetToken"),               dlgTextSearchParser::OnChange)
+	EVT_COMBOBOX(XRCID("cbGetToken"),           dlgTextSearchParser::OnChange)
+	EVT_TEXT(XRCID("cbEnd"),                    dlgTextSearchParser::OnChange)
+	EVT_COMBOBOX(XRCID("cbEnd"),                dlgTextSearchParser::OnChange)
+	EVT_TEXT(XRCID("cbLextypes"),               dlgTextSearchParser::OnChange)
+	EVT_COMBOBOX(XRCID("cbLextypes"),           dlgTextSearchParser::OnChange)
+	EVT_TEXT(XRCID("cbHeadline"),               dlgTextSearchParser::OnChange)
+	EVT_COMBOBOX(XRCID("cbHeadline"),           dlgTextSearchParser::OnChange)
 END_EVENT_TABLE();
 
 
 
 dlgProperty *pgTextSearchParserFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgTextSearchParser(this, frame, (pgTextSearchParser*)node, (pgSchema*)parent);
+	return new dlgTextSearchParser(this, frame, (pgTextSearchParser *)node, (pgSchema *)parent);
 }
 
 dlgTextSearchParser::dlgTextSearchParser(pgaFactory *f, frmMain *frame, pgTextSearchParser *node, pgSchema *sch)
-: dlgTypeProperty(f, frame, wxT("dlgTextSearchParser"))
+	: dlgTypeProperty(f, frame, wxT("dlgTextSearchParser"))
 {
-    schema=sch;
-    parser=node;
+	schema = sch;
+	parser = node;
 }
 
 
 pgObject *dlgTextSearchParser::GetObject()
 {
-    return parser;
+	return parser;
 }
 
 
 int dlgTextSearchParser::Go(bool modal)
 {
-    wxString qry;
-    pgSet *set;
+	wxString qry;
+	pgSet *set;
 
-    qry = wxT("SELECT proname, nspname\n")
-          wxT("  FROM pg_proc\n")
-          wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
-          wxT("  WHERE proargtypes='2281 23'\n")
-          wxT("  ORDER BY proname\n");
+	qry = wxT("SELECT proname, nspname\n")
+	      wxT("  FROM pg_proc\n")
+	      wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+	      wxT("  WHERE proargtypes='2281 23'\n")
+	      wxT("  ORDER BY proname\n");
 
-    set = connection->ExecuteSet(qry);
-    if (set)
-    {
-        while (!set->Eof())
-        {
-            wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
-            cbStart->Append(procname);
-            set->MoveNext();
-        }
-        delete set;
-    }
+	set = connection->ExecuteSet(qry);
+	if (set)
+	{
+		while (!set->Eof())
+		{
+			wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+			cbStart->Append(procname);
+			set->MoveNext();
+		}
+		delete set;
+	}
 
-    qry = wxT("SELECT proname, nspname\n")
-          wxT("  FROM pg_proc\n")
-          wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
-          wxT("  WHERE proargtypes='2281 2281 2281'\n")
-          wxT("  ORDER BY proname\n");
+	qry = wxT("SELECT proname, nspname\n")
+	      wxT("  FROM pg_proc\n")
+	      wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+	      wxT("  WHERE proargtypes='2281 2281 2281'\n")
+	      wxT("  ORDER BY proname\n");
 
-    set = connection->ExecuteSet(qry);
-    if (set)
-    {
-        while (!set->Eof())
-        {
-            wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
-            cbGetToken->Append(procname);
-            set->MoveNext();
-        }
-        delete set;
-    }
+	set = connection->ExecuteSet(qry);
+	if (set)
+	{
+		while (!set->Eof())
+		{
+			wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+			cbGetToken->Append(procname);
+			set->MoveNext();
+		}
+		delete set;
+	}
 
-    qry = wxT("SELECT proname, nspname, prorettype\n")
-          wxT("  FROM pg_proc\n")
-          wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
-          wxT("  WHERE prorettype=2278 AND proargtypes='2281'\n")
-          wxT("  ORDER BY proname\n");
+	qry = wxT("SELECT proname, nspname, prorettype\n")
+	      wxT("  FROM pg_proc\n")
+	      wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+	      wxT("  WHERE prorettype=2278 AND proargtypes='2281'\n")
+	      wxT("  ORDER BY proname\n");
 
-    set = connection->ExecuteSet(qry);
-    if (set)
-    {
-        while (!set->Eof())
-        {
-            wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
-            cbEnd->Append(procname);
-            set->MoveNext();
-        }
-        delete set;
-    }
+	set = connection->ExecuteSet(qry);
+	if (set)
+	{
+		while (!set->Eof())
+		{
+			wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+			cbEnd->Append(procname);
+			set->MoveNext();
+		}
+		delete set;
+	}
 
-    qry = wxT("SELECT proname, nspname, prorettype\n")
-          wxT("  FROM pg_proc\n")
-          wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
-          wxT("  WHERE prorettype=2281 AND proargtypes='2281'\n")
-          wxT("  ORDER BY proname\n");
+	qry = wxT("SELECT proname, nspname, prorettype\n")
+	      wxT("  FROM pg_proc\n")
+	      wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+	      wxT("  WHERE prorettype=2281 AND proargtypes='2281'\n")
+	      wxT("  ORDER BY proname\n");
 
-    set = connection->ExecuteSet(qry);
-    if (set)
-    {
-        while (!set->Eof())
-        {
-            wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
-            cbLextypes->Append(procname);
-            set->MoveNext();
-        }
-        delete set;
-    }
+	set = connection->ExecuteSet(qry);
+	if (set)
+	{
+		while (!set->Eof())
+		{
+			wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+			cbLextypes->Append(procname);
+			set->MoveNext();
+		}
+		delete set;
+	}
 
-    cbHeadline->Append(wxT(""));
+	cbHeadline->Append(wxT(""));
 
-    qry = wxT("SELECT proname, nspname\n")
-          wxT("  FROM pg_proc\n")
-          wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
-          wxT("  WHERE proargtypes='2281 2281 3615'\n")
-          wxT("  ORDER BY proname\n");
+	qry = wxT("SELECT proname, nspname\n")
+	      wxT("  FROM pg_proc\n")
+	      wxT("  JOIN pg_namespace n ON n.oid=pronamespace\n")
+	      wxT("  WHERE proargtypes='2281 2281 3615'\n")
+	      wxT("  ORDER BY proname\n");
 
-    set = connection->ExecuteSet(qry);
-    if (set)
-    {
-        while (!set->Eof())
-        {
-            wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
-            cbHeadline->Append(procname);
-            set->MoveNext();
-        }
-        delete set;
-    }
+	set = connection->ExecuteSet(qry);
+	if (set)
+	{
+		while (!set->Eof())
+		{
+			wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
+			cbHeadline->Append(procname);
+			set->MoveNext();
+		}
+		delete set;
+	}
 
-    if (parser)
-    {
-        // edit mode
-        cbStart->SetValue(parser->GetStart());
-        cbStart->Disable();
-        cbGetToken->SetValue(parser->GetGettoken());
-        cbGetToken->Disable();
-        cbEnd->SetValue(parser->GetEnd());
-        cbEnd->Disable();
-        cbLextypes->SetValue(parser->GetLextypes());
-        cbLextypes->Disable();
-        cbHeadline->SetValue(parser->GetHeadline());
-        cbHeadline->Disable();
-    }
-    else
-    {
-        // create mode
-    }
+	if (parser)
+	{
+		// edit mode
+		cbStart->SetValue(parser->GetStart());
+		cbStart->Disable();
+		cbGetToken->SetValue(parser->GetGettoken());
+		cbGetToken->Disable();
+		cbEnd->SetValue(parser->GetEnd());
+		cbEnd->Disable();
+		cbLextypes->SetValue(parser->GetLextypes());
+		cbLextypes->Disable();
+		cbHeadline->SetValue(parser->GetHeadline());
+		cbHeadline->Disable();
+	}
+	else
+	{
+		// create mode
+	}
 
-    cbOwner->Disable();
+	cbOwner->Disable();
 
-    return dlgProperty::Go(modal);
+	return dlgProperty::Go(modal);
 }
 
 
 pgObject *dlgTextSearchParser::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=textSearchParserFactory.CreateObjects(collection, 0,
-         wxT("\n   AND prs.prsname=") + qtDbString(GetName()) +
-         wxT("\n   AND prs.prsnamespace=") + schema->GetOidStr());
+	pgObject *obj = textSearchParserFactory.CreateObjects(collection, 0,
+	                wxT("\n   AND prs.prsname=") + qtDbString(GetName()) +
+	                wxT("\n   AND prs.prsnamespace=") + schema->GetOidStr());
 
-    return obj;
+	return obj;
 }
 
 
 void dlgTextSearchParser::CheckChange()
 {
-    if (parser)
-    {
-        EnableOK(txtName->GetValue() != parser->GetName()
-            || txtComment->GetValue() != parser->GetComment());
-    }
-    else
-    {
-        wxString name=GetName();
-        bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, cbStart->GetValue().Length() > 0 , _("Please select a start function."));
-        CheckValid(enable, cbGetToken->GetValue().Length() > 0 , _("Please select a gettoken function."));
-        CheckValid(enable, cbEnd->GetValue().Length() > 0 , _("Please select an end function."));
-        CheckValid(enable, cbLextypes->GetValue().Length() > 0 , _("Please select a lextypes function."));
+	if (parser)
+	{
+		EnableOK(txtName->GetValue() != parser->GetName()
+		         || txtComment->GetValue() != parser->GetComment());
+	}
+	else
+	{
+		wxString name = GetName();
+		bool enable = true;
+		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+		CheckValid(enable, cbStart->GetValue().Length() > 0 , _("Please select a start function."));
+		CheckValid(enable, cbGetToken->GetValue().Length() > 0 , _("Please select a gettoken function."));
+		CheckValid(enable, cbEnd->GetValue().Length() > 0 , _("Please select an end function."));
+		CheckValid(enable, cbLextypes->GetValue().Length() > 0 , _("Please select a lextypes function."));
 
-        EnableOK(enable);
-    }
+		EnableOK(enable);
+	}
 }
 
 
 void dlgTextSearchParser::OnChange(wxCommandEvent &ev)
 {
-    CheckChange();
+	CheckChange();
 }
 
 
 wxString dlgTextSearchParser::GetSql()
 {
-    wxString sql;
-    wxString objname=schema->GetQuotedPrefix() + qtIdent(GetName());
+	wxString sql;
+	wxString objname = schema->GetQuotedPrefix() + qtIdent(GetName());
 
-    if (parser)
-    {
-        // edit mode
-        AppendNameChange(sql);
-    }
-    else
-    {
-        // create mode
-        sql = wxT("CREATE TEXT SEARCH PARSER ")
-            + schema->GetQuotedPrefix() + GetName()
-            + wxT(" (")
-            + wxT("\n  START = ") + cbStart->GetValue()
-            + wxT(",\n  GETTOKEN = ") + cbGetToken->GetValue()
-            + wxT(",\n  END = ") + cbEnd->GetValue()
-            + wxT(",\n  LEXTYPES = ") + cbLextypes->GetValue();
-        
-        AppendIfFilled(sql, wxT(",\n   HEADLINE="), cbHeadline->GetValue());
-        
-        sql += wxT("\n);\n");
+	if (parser)
+	{
+		// edit mode
+		AppendNameChange(sql);
+	}
+	else
+	{
+		// create mode
+		sql = wxT("CREATE TEXT SEARCH PARSER ")
+		      + schema->GetQuotedPrefix() + GetName()
+		      + wxT(" (")
+		      + wxT("\n  START = ") + cbStart->GetValue()
+		      + wxT(",\n  GETTOKEN = ") + cbGetToken->GetValue()
+		      + wxT(",\n  END = ") + cbEnd->GetValue()
+		      + wxT(",\n  LEXTYPES = ") + cbLextypes->GetValue();
 
-    }
-    AppendComment(sql, wxT("TEXT SEARCH PARSER ") + objname, parser);
+		AppendIfFilled(sql, wxT(",\n   HEADLINE="), cbHeadline->GetValue());
 
-    return sql;
+		sql += wxT("\n);\n");
+
+	}
+	AppendComment(sql, wxT("TEXT SEARCH PARSER ") + objname, parser);
+
+	return sql;
 }

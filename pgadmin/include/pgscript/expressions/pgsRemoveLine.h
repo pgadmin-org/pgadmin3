@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -20,23 +20,23 @@ class pgsRemoveLine : public pgsExpression
 private:
 
 	wxString m_rec;
-	const pgsExpression * m_line;
+	const pgsExpression *m_line;
 
 public:
 
-	pgsRemoveLine(const wxString & rec, const pgsExpression * line);
+	pgsRemoveLine(const wxString &rec, const pgsExpression *line);
 
 	virtual ~pgsRemoveLine();
 
-	pgsRemoveLine(const pgsRemoveLine & that);
+	pgsRemoveLine(const pgsRemoveLine &that);
 
-	pgsRemoveLine & operator=(const pgsRemoveLine & that);
-	
-	virtual pgsExpression * clone() const;
-	
+	pgsRemoveLine &operator=(const pgsRemoveLine &that);
+
+	virtual pgsExpression *clone() const;
+
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
+	virtual pgsOperand eval(pgsVarMap &vars) const;
 
 };
 

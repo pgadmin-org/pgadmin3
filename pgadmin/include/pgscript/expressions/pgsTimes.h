@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,23 +16,23 @@
 
 class pgsTimes : public pgsOperation
 {
-	
+
 public:
 
-	pgsTimes(const pgsExpression * left, const pgsExpression * right);
+	pgsTimes(const pgsExpression *left, const pgsExpression *right);
 
 	virtual ~pgsTimes();
 
-	virtual pgsExpression * clone() const;
-	
-	pgsTimes(const pgsTimes & that);
+	virtual pgsExpression *clone() const;
 
-	pgsTimes & operator =(const pgsTimes & that);
-	
+	pgsTimes(const pgsTimes &that);
+
+	pgsTimes &operator =(const pgsTimes &that);
+
 	virtual wxString value() const;
-	
-	virtual pgsOperand eval(pgsVarMap & vars) const;
-	
+
+	virtual pgsOperand eval(pgsVarMap &vars) const;
+
 };
 
 #endif /*PGSTIMES_H_*/

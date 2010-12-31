@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dbgTargetInfo.h - debugger 
+// dbgTargetInfo.h - debugger
 //
 //////////////////////////////////////////////////////////////////////////
 #ifndef DBGTARGETINFO_H
@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // class wsArgInfo
 //
-//	A wsArgInfo object contains information about a function (or procedure) 
+//	A wsArgInfo object contains information about a function (or procedure)
 //  argument.  Inside of each wsArgInfo object, we store the name of the argument,
 //	the argument type, and the argument mode (IN (i), OUT (o), or INOUT (b)).
 //
@@ -26,20 +26,38 @@ class wsArgInfo
 public:
 	wsArgInfo( const wxString &argName, const wxString &argType, const wxString &argMode, const wxString &argTypeOid );
 
-	const wxString &getName()    { return m_name; }
-	const wxString &getType()    { return m_type; }
-	const wxString &getMode()    { return m_mode; }
-    const Oid getTypeOid()       { return m_typeOid; }
-  	wxString & getValue()   { return m_value; } // NOTE: non-const, caller may modifiy value
+	const wxString &getName()
+	{
+		return m_name;
+	}
+	const wxString &getType()
+	{
+		return m_type;
+	}
+	const wxString &getMode()
+	{
+		return m_mode;
+	}
+	const Oid getTypeOid()
+	{
+		return m_typeOid;
+	}
+	wxString &getValue()
+	{
+		return m_value;    // NOTE: non-const, caller may modifiy value
+	}
 	const wxString   quoteValue();
-	void  setValue( const wxString &newValue ) { m_value = newValue; }
+	void  setValue( const wxString &newValue )
+	{
+		m_value = newValue;
+	}
 
-private:	
+private:
 	wxString	m_name;
 	wxString	m_type;
 	wxString	m_mode;
 	wxString	m_value;
-    Oid         m_typeOid;
+	Oid         m_typeOid;
 };
 
 WX_DECLARE_OBJARRAY(wsArgInfo, wsArgInfoArray);
@@ -69,25 +87,67 @@ class dbgPgConn;
 class dbgTargetInfo
 {
 public:
-	dbgTargetInfo( const wxString &target, dbgPgConn * conn, char targetType );
+	dbgTargetInfo( const wxString &target, dbgPgConn *conn, char targetType );
 
-	int	getArgInCount() 	{ return( m_argInCount ); }
-	int 	getArgOutCount()   { return( m_argOutCount ); }
-	int 	getArgInOutCount() { return( m_argInOutCount ); }
-	int	getArgCount() 		{ return( m_argInCount + m_argOutCount + m_argInOutCount ); }
+	int	getArgInCount()
+	{
+		return( m_argInCount );
+	}
+	int 	getArgOutCount()
+	{
+		return( m_argOutCount );
+	}
+	int 	getArgInOutCount()
+	{
+		return( m_argInOutCount );
+	}
+	int	getArgCount()
+	{
+		return( m_argInCount + m_argOutCount + m_argInOutCount );
+	}
 
-	const wxString &getLanguage()      { return( m_language ); }
-	const wxString &getSchema()        { return( m_schema ); }
-	const wxString &getName()          { return( m_name ); }
-	const wxString &getFQName()        { return( m_fqName ); } 
-	const wxString &getReturnType()    { return( m_returnType ); }
-	long	getOid()           { return( m_oid ); }
-	long	getPkgOid()        { return( m_pkgOid ); }
-	long	getPkgInitOid()    { return( m_pkgInitOid ); }
-	bool	getIsFunction()    { return( m_isFunction ); } 
-	bool	getReturnsSet()    { return( m_returnsSet ); } 
+	const wxString &getLanguage()
+	{
+		return( m_language );
+	}
+	const wxString &getSchema()
+	{
+		return( m_schema );
+	}
+	const wxString &getName()
+	{
+		return( m_name );
+	}
+	const wxString &getFQName()
+	{
+		return( m_fqName );
+	}
+	const wxString &getReturnType()
+	{
+		return( m_returnType );
+	}
+	long	getOid()
+	{
+		return( m_oid );
+	}
+	long	getPkgOid()
+	{
+		return( m_pkgOid );
+	}
+	long	getPkgInitOid()
+	{
+		return( m_pkgInitOid );
+	}
+	bool	getIsFunction()
+	{
+		return( m_isFunction );
+	}
+	bool	getReturnsSet()
+	{
+		return( m_returnsSet );
+	}
 
-	wsArgInfo & operator[]( int index );
+	wsArgInfo &operator[]( int index );
 
 private:
 	wxString	m_name;		 // Target name (function or procedure)
@@ -98,15 +158,15 @@ private:
 	wxString	m_argTypes;	 // Argument types
 	wxString	m_argTypeOids; // Argument type OIDs
 	wxString	m_fqName;	 // Fully-qualified name (schema.package.func or package.func)
-    wxString    m_returnType;// Return type
+	wxString    m_returnType;// Return type
 	bool	m_isFunction;	 // true->target is a function, false->target is a procedure
-    bool    m_returnsSet;    // Returns a set?
+	bool    m_returnsSet;    // Returns a set?
 	int	m_argInCount;	 // Number of IN arguments
 	int	m_argOutCount;	 // Number of OUT arguments
-	int	m_argInOutCount; // Number of INOUT arguments	
+	int	m_argInOutCount; // Number of INOUT arguments
 	long	m_oid;		 // Target function/procedure OID
 	long	m_pkgOid;	 // Package in which target defined (if non-zero)
-    long    m_pkgInitOid; // OID of the package initializer function.
+	long    m_pkgInitOid; // OID of the package initializer function.
 	wsArgInfoArray	m_argInfo;
 
 };

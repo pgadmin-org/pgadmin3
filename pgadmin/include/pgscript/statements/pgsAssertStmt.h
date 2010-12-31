@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,21 +19,21 @@ class pgsAssertStmt : public pgsStmt
 
 private:
 
-	const pgsExpression * m_cond;
+	const pgsExpression *m_cond;
 
 public:
 
-	pgsAssertStmt(const pgsExpression * cond, pgsThread * app = 0);
+	pgsAssertStmt(const pgsExpression *cond, pgsThread *app = 0);
 
 	virtual ~pgsAssertStmt();
 
-	virtual void eval(pgsVarMap & vars) const;
+	virtual void eval(pgsVarMap &vars) const;
 
 private:
 
-	pgsAssertStmt(const pgsAssertStmt & that);
+	pgsAssertStmt(const pgsAssertStmt &that);
 
-	pgsAssertStmt & operator=(const pgsAssertStmt & that);
+	pgsAssertStmt &operator=(const pgsAssertStmt &that);
 
 };
 

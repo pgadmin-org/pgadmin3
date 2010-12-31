@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -24,7 +24,7 @@ private:
 	class pgsSequentialIntGen : public pgsNumberGen
 	{
 
-private:
+	private:
 
 		MAPM m_state;
 		MAPM m_m;
@@ -36,15 +36,15 @@ private:
 
 		pgsVectorMapm m_buffer;
 
-public:
+	public:
 
-		pgsSequentialIntGen(const MAPM & range, const long & seed);
+		pgsSequentialIntGen(const MAPM &range, const long &seed);
 
 		virtual MAPM random();
 
 		virtual ~pgsSequentialIntGen();
 
-		virtual pgsNumberGen * clone();
+		virtual pgsNumberGen *clone();
 
 		/* pgsSequentialIntGen & operator =(const pgsSequentialIntGen & that); */
 
@@ -54,7 +54,7 @@ public:
 	class pgsNormalIntGen : public pgsNumberGen
 	{
 
-private:
+	private:
 
 		MAPM m_state;
 		MAPM m_top;
@@ -63,15 +63,15 @@ private:
 		static const MAPM arg_c;
 		static const MAPM arg_m;
 
-public:
+	public:
 
-		pgsNormalIntGen(const MAPM & range, const long & seed);
+		pgsNormalIntGen(const MAPM &range, const long &seed);
 
 		virtual MAPM random();
 
 		virtual ~pgsNormalIntGen();
 
-		virtual pgsNumberGen * clone();
+		virtual pgsNumberGen *clone();
 
 		/* pgsNormalIntGen & operator =(const pgsNormalIntGen & that); */
 
@@ -94,8 +94,8 @@ private:
 
 public:
 
-	pgsIntegerGen(const MAPM & min, const MAPM & max,
-			const bool & sequence = false, const long & seed = wxDateTime::GetTimeNow());
+	pgsIntegerGen(const MAPM &min, const MAPM &max,
+	              const bool &sequence = false, const long &seed = wxDateTime::GetTimeNow());
 
 	bool is_sequence() const;
 
@@ -104,8 +104,8 @@ public:
 	long random_long();
 
 	virtual ~pgsIntegerGen();
-	
-	virtual pgsIntegerGen * clone();
+
+	virtual pgsIntegerGen *clone();
 
 	/* pgsIntegerGen & operator =(const pgsIntegerGen & that); */
 

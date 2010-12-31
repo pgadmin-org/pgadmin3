@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -21,21 +21,24 @@ class slPath;
 class dlgRepPath : public dlgRepProperty
 {
 public:
-    dlgRepPath(pgaFactory *factory, frmMain *frame, slPath *p, slNode *n);
-    int Go(bool modal);
-    wxString GetHelpPage() const { return wxT("slony-path"); }
+	dlgRepPath(pgaFactory *factory, frmMain *frame, slPath *p, slNode *n);
+	int Go(bool modal);
+	wxString GetHelpPage() const
+	{
+		return wxT("slony-path");
+	}
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
 private:
 
-    slPath *path;
-    slNode *node;
+	slPath *path;
+	slNode *node;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

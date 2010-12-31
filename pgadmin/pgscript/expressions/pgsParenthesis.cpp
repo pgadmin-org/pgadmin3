@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -13,7 +13,7 @@
 
 #include "pgscript/objects/pgsVariable.h"
 
-pgsParenthesis::pgsParenthesis(const pgsExpression * left) :
+pgsParenthesis::pgsParenthesis(const pgsExpression *left) :
 	pgsOperation(left, 0)
 {
 
@@ -24,18 +24,18 @@ pgsParenthesis::~pgsParenthesis()
 
 }
 
-pgsExpression * pgsParenthesis::clone() const
+pgsExpression *pgsParenthesis::clone() const
 {
 	return pnew pgsParenthesis(*this);
 }
 
-pgsParenthesis::pgsParenthesis(const pgsParenthesis & that) :
+pgsParenthesis::pgsParenthesis(const pgsParenthesis &that) :
 	pgsOperation(that)
 {
 
 }
 
-pgsParenthesis & pgsParenthesis::operator =(const pgsParenthesis & that)
+pgsParenthesis &pgsParenthesis::operator =(const pgsParenthesis &that)
 {
 	if (this != &that)
 	{
@@ -49,11 +49,11 @@ wxString pgsParenthesis::value() const
 	return wxString() << wxT("(") << m_left->value() << wxT(")");
 }
 
-pgsOperand pgsParenthesis::eval(pgsVarMap & vars) const
+pgsOperand pgsParenthesis::eval(pgsVarMap &vars) const
 {
 	// Evaluate operands
 	pgsOperand left(m_left->eval(vars));
-	
+
 	// Return the result
 	return left;
 }

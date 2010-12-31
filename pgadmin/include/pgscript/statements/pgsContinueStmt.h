@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,17 +19,17 @@ class pgsContinueStmt : public pgsStmt
 
 public:
 
-	pgsContinueStmt(pgsThread * app = 0);
+	pgsContinueStmt(pgsThread *app = 0);
 
 	virtual ~pgsContinueStmt();
 
-	virtual void eval(pgsVarMap & vars) const;
-	
-private:
-	
-	pgsContinueStmt(const pgsContinueStmt & that);
+	virtual void eval(pgsVarMap &vars) const;
 
-	pgsContinueStmt & operator=(const pgsContinueStmt & that);
+private:
+
+	pgsContinueStmt(const pgsContinueStmt &that);
+
+	pgsContinueStmt &operator=(const pgsContinueStmt &that);
 
 };
 

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,24 +19,24 @@ class pgsPrintStmt : public pgsStmt
 
 private:
 
-	const pgsExpression * m_var;
-	
-	pgsOutputStream & m_cout;
+	const pgsExpression *m_var;
+
+	pgsOutputStream &m_cout;
 
 public:
 
-	pgsPrintStmt(const pgsExpression * var, pgsOutputStream & cout,
-			pgsThread * app = 0);
+	pgsPrintStmt(const pgsExpression *var, pgsOutputStream &cout,
+	             pgsThread *app = 0);
 
 	virtual ~pgsPrintStmt();
 
-	virtual void eval(pgsVarMap & vars) const;
+	virtual void eval(pgsVarMap &vars) const;
 
 private:
 
-	pgsPrintStmt(const pgsPrintStmt & that);
+	pgsPrintStmt(const pgsPrintStmt &that);
 
-	pgsPrintStmt & operator=(const pgsPrintStmt & that);
+	pgsPrintStmt &operator=(const pgsPrintStmt &that);
 
 };
 

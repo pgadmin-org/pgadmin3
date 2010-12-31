@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,23 +16,23 @@
 
 class pgsAnd : public pgsOperation
 {
-	
+
 public:
 
-	pgsAnd(const pgsExpression * left, const pgsExpression * right);
+	pgsAnd(const pgsExpression *left, const pgsExpression *right);
 
 	virtual ~pgsAnd();
 
-	virtual pgsExpression * clone() const;
+	virtual pgsExpression *clone() const;
 
-	pgsAnd(const pgsAnd & that);
+	pgsAnd(const pgsAnd &that);
 
-	pgsAnd & operator =(const pgsAnd & that);
+	pgsAnd &operator =(const pgsAnd &that);
 
 	virtual wxString value() const;
-	
-	virtual pgsOperand eval(pgsVarMap & vars) const;
-	
+
+	virtual pgsOperand eval(pgsVarMap &vars) const;
+
 };
 
 #endif /*PGSAND_H_*/

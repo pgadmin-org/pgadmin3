@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,21 +19,21 @@
 class gqbCollection : public wxObject
 {
 public:
-    gqbCollection(gqbCollectionBase *collectionBase);
-    virtual ~gqbCollection();
-    void addItem(gqbObject *item);
-    void removeItem(gqbObject *item);
-    void deleteAll();
-    void removeAll();
-    int count();
-    bool existsObject(gqbObject *item);
-    int getIndex(gqbObject *item);
-    gqbObject* getItemAt(int index);
-    void insertAtIndex(gqbObject *item, int index);
-    gqbIteratorBase* createIterator();
-	gqbIteratorBase* createDownIterator();
+	gqbCollection(gqbCollectionBase *collectionBase);
+	virtual ~gqbCollection();
+	void addItem(gqbObject *item);
+	void removeItem(gqbObject *item);
+	void deleteAll();
+	void removeAll();
+	int count();
+	bool existsObject(gqbObject *item);
+	int getIndex(gqbObject *item);
+	gqbObject *getItemAt(int index);
+	void insertAtIndex(gqbObject *item, int index);
+	gqbIteratorBase *createIterator();
+	gqbIteratorBase *createDownIterator();
 
 private:
-    gqbCollectionBase *collection;
+	gqbCollectionBase *collection;
 };
 #endif

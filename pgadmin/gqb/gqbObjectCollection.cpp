@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -22,91 +22,91 @@
 #include "gqb/gqbArrayCollection.h"
 
 gqbObjectCollection::gqbObjectCollection(wxString name, wxTreeItemData *owner, pgConn *connection, OID oid)
-: gqbObject(name, owner, connection, oid)
+	: gqbObject(name, owner, connection, oid)
 {
 	// Create the concrete implementation of the Collection, right now only one implementation not need parameter
-    implementation = new gqbArrayCollection();
+	implementation = new gqbArrayCollection();
 
 	// Create the collection using the concrete implementation
 	// use the array implementation of the collection
-    objectsCollection =  new gqbCollection(implementation);
+	objectsCollection =  new gqbCollection(implementation);
 }
 
 
 gqbObjectCollection::~gqbObjectCollection()
 {
-    if(objectsCollection)  // Implementation is deleted when delete the collection & shouldn't be deleted again
-        delete objectsCollection;
+	if(objectsCollection)  // Implementation is deleted when delete the collection & shouldn't be deleted again
+		delete objectsCollection;
 }
 
 
 void gqbObjectCollection::addObject(gqbObject *object)
 {
-    objectsCollection->addItem(object);
+	objectsCollection->addItem(object);
 }
 
 
 void gqbObjectCollection::removeObject(gqbObject *object)
 {
-    objectsCollection->removeItem(object);
+	objectsCollection->removeItem(object);
 }
 
 
-gqbIteratorBase* gqbObjectCollection::createIterator()
+gqbIteratorBase *gqbObjectCollection::createIterator()
 {
-    return objectsCollection->createIterator();
+	return objectsCollection->createIterator();
 }
 
-gqbIteratorBase* gqbObjectCollection::createDownIterator()
+gqbIteratorBase *gqbObjectCollection::createDownIterator()
 {
-    return objectsCollection->createDownIterator();
+	return objectsCollection->createDownIterator();
 }
 
 int gqbObjectCollection::countObjects()
 {
-    return objectsCollection->count();
+	return objectsCollection->count();
 }
 
 
-gqbObject* gqbObjectCollection::getObjectAtIndex(int index)
+gqbObject *gqbObjectCollection::getObjectAtIndex(int index)
 {
-    return objectsCollection->getItemAt(index);
+	return objectsCollection->getItemAt(index);
 }
 
 
 bool gqbObjectCollection::existsObject(gqbObject *object)
 {
-    return objectsCollection->existsObject(object);
+	return objectsCollection->existsObject(object);
 }
 
 
 // Remove all objects from collection without deleting each one.
 void gqbObjectCollection::removeAll()
 {
-    objectsCollection->removeAll();
+	objectsCollection->removeAll();
 }
 
 
 int gqbObjectCollection::indexObject(gqbObject *object)
 {
-    return  objectsCollection->getIndex(object);
+	return  objectsCollection->getIndex(object);
 }
 
 
 void gqbObjectCollection::insertObjectAt(gqbObject *object, int index)
 {
-    objectsCollection->insertAtIndex(object, index);
+	objectsCollection->insertAtIndex(object, index);
 }
 
 
 int gqbObjectCollection::getCount()
 {
-    return objectsCollection->count();
+	return objectsCollection->count();
 }
 
 
 // Remove & delete all objects
 void gqbObjectCollection::deleteAll()
 {
-    objectsCollection->deleteAll();
+	objectsCollection->deleteAll();
 }

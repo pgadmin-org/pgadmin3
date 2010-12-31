@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,25 +19,25 @@ class pgsAssignToRecord : public pgsAssign
 
 private:
 
-	const pgsExpression * m_line;
-	const pgsExpression * m_column;
+	const pgsExpression *m_line;
+	const pgsExpression *m_column;
 
 public:
 
-	pgsAssignToRecord(const wxString & name, const pgsExpression * line,
-			const pgsExpression * column, const pgsExpression * var);
+	pgsAssignToRecord(const wxString &name, const pgsExpression *line,
+	                  const pgsExpression *column, const pgsExpression *var);
 
 	virtual ~pgsAssignToRecord();
-	
-	pgsAssignToRecord(const pgsAssignToRecord & that);
 
-	pgsAssignToRecord & operator=(const pgsAssignToRecord & that);
-	
-	virtual pgsExpression * clone() const;
+	pgsAssignToRecord(const pgsAssignToRecord &that);
+
+	pgsAssignToRecord &operator=(const pgsAssignToRecord &that);
+
+	virtual pgsExpression *clone() const;
 
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
+	virtual pgsOperand eval(pgsVarMap &vars) const;
 
 };
 

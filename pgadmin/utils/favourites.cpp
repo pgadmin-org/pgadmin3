@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -68,7 +68,7 @@ queryFavouriteFolder::queryFavouriteFolder(xmlTextReaderPtr reader, wxString tit
 {
 	id = -2;
 
-	// Element of type <foo />, meaning empty folder 
+	// Element of type <foo />, meaning empty folder
 	if (xmlTextReaderIsEmptyElement(reader))
 		return;
 
@@ -159,7 +159,7 @@ void queryFavouriteFolder::AppendAllToTree(wxTreeCtrl *tree, const wxTreeItemId 
 		{
 			queryFavouriteFolder *fld = (queryFavouriteFolder *)favourites.Item(i);
 
-			wxTreeItemId newtreeitem = tree->AppendItem(parent, fld->title, onlyfolders?0:1);
+			wxTreeItemId newtreeitem = tree->AppendItem(parent, fld->title, onlyfolders ? 0 : 1);
 			fld->AppendAllToTree(tree, newtreeitem, onlyfolders);
 			tree->Expand(newtreeitem);
 		}
@@ -171,7 +171,7 @@ void queryFavouriteFolder::AppendAllToTree(wxTreeCtrl *tree, const wxTreeItemId 
 	}
 }
 
-bool queryFavouriteFolder::DeleteTreeItem(const wxTreeItemId& treeitem)
+bool queryFavouriteFolder::DeleteTreeItem(const wxTreeItemId &treeitem)
 {
 	if (treeid == treeitem)
 		/* Can't delete ourselves, parent should handle that. */
@@ -210,16 +210,16 @@ queryFavouriteItem *queryFavouriteFolder::FindFavourite(int id)
 			queryFavouriteItem *match = subfolder->FindFavourite(id);
 			if (match != NULL)
 				return match;
-		}	
+		}
 	}
 	return NULL;
 }
 
-queryFavouriteItem *queryFavouriteFolder::FindTreeItem(const wxTreeItemId& treeitem)
+queryFavouriteItem *queryFavouriteFolder::FindTreeItem(const wxTreeItemId &treeitem)
 {
 	if (treeid == treeitem)
 		return this;
-	
+
 	size_t i;
 	for (i = 0; i < favourites.GetCount(); i++)
 	{
@@ -285,20 +285,20 @@ queryFavouriteFolder *queryFavouriteFileProvider::LoadFavourites(bool emptyonfai
 	int ret;
 
 	if (!wxFile::Access(settings->GetFavouritesFile(), wxFile::read))
-		return emptyonfailure?(new queryFavouriteFolder()):NULL;
+		return emptyonfailure ? (new queryFavouriteFolder()) : NULL;
 
-	reader = xmlReaderForFile((const char *)settings->GetFavouritesFile().mb_str(wxConvUTF8),NULL,0);
+	reader = xmlReaderForFile((const char *)settings->GetFavouritesFile().mb_str(wxConvUTF8), NULL, 0);
 	if (!reader)
 	{
 		wxMessageBox(_("Failed to load favourites file!"));
-		return emptyonfailure?(new queryFavouriteFolder()):NULL;
+		return emptyonfailure ? (new queryFavouriteFolder()) : NULL;
 	}
 
 	ret = xmlTextReaderRead(reader);
 	if (ret != 1)
 	{
 		wxMessageBox(_("Failed to read favourites file!"));
-		return emptyonfailure?(new queryFavouriteFolder()):NULL;
+		return emptyonfailure ? (new queryFavouriteFolder()) : NULL;
 	}
 
 	queryFavouriteFolder *f = (queryFavouriteFolder *)(new queryFavouriteFolder(reader, wxT("")));
@@ -314,7 +314,7 @@ void queryFavouriteFileProvider::SaveFavourites(queryFavouriteFolder *favourites
 {
 	xmlTextWriterPtr writer;
 
-	writer = xmlNewTextWriterFilename((const char *)settings->GetFavouritesFile().mb_str(wxConvUTF8),0);
+	writer = xmlNewTextWriterFilename((const char *)settings->GetFavouritesFile().mb_str(wxConvUTF8), 0);
 	if (!writer)
 	{
 		wxMessageBox(_("Failed to write to favourites file!"));
@@ -323,7 +323,7 @@ void queryFavouriteFileProvider::SaveFavourites(queryFavouriteFolder *favourites
 	xmlTextWriterSetIndent(writer, 1);
 
 	if ((xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL) < 0) ||
-		(xmlTextWriterStartElement(writer, XML_STR("favourites")) < 0))
+	        (xmlTextWriterStartElement(writer, XML_STR("favourites")) < 0))
 	{
 		wxMessageBox(_("Failed to write to favourites file!"));
 		xmlFreeTextWriter(writer);

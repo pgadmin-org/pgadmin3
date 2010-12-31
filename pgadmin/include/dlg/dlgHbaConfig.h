@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,29 +19,29 @@
 class dlgHbaConfig : public DialogWithHelp
 {
 public:
-    dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *line, pgConn *_conn);
-    ~dlgHbaConfig();
-    wxString GetHelpPage() const;
+	dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *line, pgConn *_conn);
+	~dlgHbaConfig();
+	wxString GetHelpPage() const;
 
-    int Go();
-    
+	int Go();
+
 private:
-    pgHbaConfigLine *line;
+	pgHbaConfigLine *line;
 
-    void OnOK(wxCommandEvent& ev);
-    void OnCancel(wxCommandEvent& ev);
-    void OnChange(wxCommandEvent& ev);
-    void OnAddDatabase(wxCommandEvent& ev);
-    void OnAddUser(wxCommandEvent& ev);
-    void OnAddValue(wxCommandEvent& ev);
+	void OnOK(wxCommandEvent &ev);
+	void OnCancel(wxCommandEvent &ev);
+	void OnChange(wxCommandEvent &ev);
+	void OnAddDatabase(wxCommandEvent &ev);
+	void OnAddUser(wxCommandEvent &ev);
+	void OnAddValue(wxCommandEvent &ev);
 
-    wxString database, user;
+	wxString database, user;
 
-    bool databaseAdding, userAdding;
+	bool databaseAdding, userAdding;
 
-    pgConn *conn;
+	pgConn *conn;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

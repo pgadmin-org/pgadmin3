@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,31 +19,31 @@ class pgsGenReal : public pgsExpression
 
 private:
 
-	const pgsExpression * m_min;
-	const pgsExpression * m_max;
-	const pgsExpression * m_precision;
-	const pgsExpression * m_sequence;
-	const pgsExpression * m_seed;
+	const pgsExpression *m_min;
+	const pgsExpression *m_max;
+	const pgsExpression *m_precision;
+	const pgsExpression *m_sequence;
+	const pgsExpression *m_seed;
 
 public:
 
-	pgsGenReal(const pgsExpression * min, const pgsExpression * max,
-			const pgsExpression * precision,
-			const pgsExpression * sequence, const pgsExpression * seed);
+	pgsGenReal(const pgsExpression *min, const pgsExpression *max,
+	           const pgsExpression *precision,
+	           const pgsExpression *sequence, const pgsExpression *seed);
 
 	virtual ~pgsGenReal();
 
-	virtual pgsExpression * clone() const;
+	virtual pgsExpression *clone() const;
 
-	pgsGenReal(const pgsGenReal & that);
+	pgsGenReal(const pgsGenReal &that);
 
-	pgsGenReal & operator =(const pgsGenReal & that);
+	pgsGenReal &operator =(const pgsGenReal &that);
 
 public:
 
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
+	virtual pgsOperand eval(pgsVarMap &vars) const;
 
 };
 

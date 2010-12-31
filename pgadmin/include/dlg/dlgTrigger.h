@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgTrigger.h - Trigger property 
+// dlgTrigger.h - Trigger property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,33 +21,36 @@ class pgTable;
 class dlgTrigger : public dlgCollistProperty
 {
 public:
-    dlgTrigger(pgaFactory *factory, frmMain *frame, pgTrigger *trg, pgTable *sch);
-    int Go(bool modal);
+	dlgTrigger(pgaFactory *factory, frmMain *frame, pgTrigger *trg, pgTable *sch);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
-    void SetObject(pgObject *obj) { trigger = (pgTrigger*)obj; }
-    wxString GetColumns();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
+	void SetObject(pgObject *obj)
+	{
+		trigger = (pgTrigger *)obj;
+	}
+	wxString GetColumns();
 
 
 private:
-    pgTable *table;
-    pgTrigger *trigger;
+	pgTable *table;
+	pgTrigger *trigger;
 
-    void OnChange(wxCommandEvent &ev);
-    void OnChangeFunc(wxCommandEvent &ev);
-    void OnSelectComboCol(wxCommandEvent &ev);
-    void OnSelectListCol(wxListEvent &ev);
-    void OnSelectCol();
-    void OnAddCol(wxCommandEvent &ev);
-    void OnRemoveCol(wxCommandEvent &ev);
+	void OnChange(wxCommandEvent &ev);
+	void OnChangeFunc(wxCommandEvent &ev);
+	void OnSelectComboCol(wxCommandEvent &ev);
+	void OnSelectListCol(wxListEvent &ev);
+	void OnSelectCol();
+	void OnAddCol(wxCommandEvent &ev);
+	void OnRemoveCol(wxCommandEvent &ev);
 
 	virtual bool IsUpToDate();
-    void OnApply(wxCommandEvent &ev);
+	void OnApply(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

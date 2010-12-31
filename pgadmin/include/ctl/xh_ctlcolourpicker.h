@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the BSD Licence
 //
@@ -17,15 +17,15 @@
 #include "wx/xrc/xmlres.h"
 #include "wx/xrc/xh_bmpbt.h"
 
-//class WXDLLIMPEXP_XRC 
+//class WXDLLIMPEXP_XRC
 class ctlColourPickerXmlHandler : public wxBitmapButtonXmlHandler
 {
-DECLARE_DYNAMIC_CLASS(ctlColourPickerXmlHandler)
+	DECLARE_DYNAMIC_CLASS(ctlColourPickerXmlHandler)
 public:
-    ctlColourPickerXmlHandler() : wxBitmapButtonXmlHandler() {}
-    virtual wxObject *DoCreateResource();
-    virtual bool CanHandle(wxXmlNode *node);
+	ctlColourPickerXmlHandler() : wxBitmapButtonXmlHandler() {}
+	virtual wxObject *DoCreateResource();
+	virtual bool CanHandle(wxXmlNode *node);
 };
 
 
-#endif 
+#endif

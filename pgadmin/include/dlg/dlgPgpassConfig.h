@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,24 +19,24 @@
 class dlgPgpassConfig : public DialogWithHelp
 {
 public:
-    dlgPgpassConfig(pgFrame *parent, pgPassConfigLine *line);
-    ~dlgPgpassConfig();
-    wxString GetHelpPage() const;
+	dlgPgpassConfig(pgFrame *parent, pgPassConfigLine *line);
+	~dlgPgpassConfig();
+	wxString GetHelpPage() const;
 
-    int Go();
-    
+	int Go();
+
 private:
-    pgPassConfigLine *line;
+	pgPassConfigLine *line;
 
-    void OnOK(wxCommandEvent& ev);
-    void OnCancel(wxCommandEvent& ev);
-    void OnChange(wxCommandEvent& ev);
+	void OnOK(wxCommandEvent &ev);
+	void OnCancel(wxCommandEvent &ev);
+	void OnChange(wxCommandEvent &ev);
 
-    wxString database, user;
+	wxString database, user;
 
-    bool databaseAdding, userAdding;
+	bool databaseAdding, userAdding;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

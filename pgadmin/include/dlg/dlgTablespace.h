@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgTablespace.h - Tablespace property 
+// dlgTablespace.h - Tablespace property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -20,33 +20,33 @@ class pgTablespace;
 class dlgTablespace : public dlgSecurityProperty
 {
 public:
-    dlgTablespace(pgaFactory *factory, frmMain *frame, pgTablespace *node=0);
+	dlgTablespace(pgaFactory *factory, frmMain *frame, pgTablespace *node = 0);
 
-    void CheckChange();
-    wxString GetSql();
-    wxString GetSql2();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
-    wxString GetHelpPage() const;
+	void CheckChange();
+	wxString GetSql();
+	wxString GetSql2();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
+	wxString GetHelpPage() const;
 
-    int Go(bool modal);
+	int Go(bool modal);
 
 private:
-    pgTablespace *tablespace;
-    wxArrayString varInfo;
+	pgTablespace *tablespace;
+	wxArrayString varInfo;
 	bool dirtyVars;
 
 #ifdef __WXMAC__
-    void OnChangeSize(wxSizeEvent &ev);
+	void OnChangeSize(wxSizeEvent &ev);
 #endif
 
-    void OnVarAdd(wxCommandEvent &ev);
-    void OnVarRemove(wxCommandEvent &ev);
-    void OnVarSelChange(wxListEvent &ev);
-    void OnVarnameSelChange(wxCommandEvent &ev);
-    void SetupVarEditor(int var);
+	void OnVarAdd(wxCommandEvent &ev);
+	void OnVarRemove(wxCommandEvent &ev);
+	void OnVarSelChange(wxListEvent &ev);
+	void OnVarnameSelChange(wxCommandEvent &ev);
+	void SetupVarEditor(int var);
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

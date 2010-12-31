@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgView.h - View property 
+// dlgView.h - View property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,26 +22,29 @@ class ctlSQLBox;
 class dlgView : public dlgSecurityProperty
 {
 public:
-    dlgView(pgaFactory *factory, frmMain *frame, pgView *v, pgSchema *sch);
-    int Go(bool modal);
+	dlgView(pgaFactory *factory, frmMain *frame, pgView *v, pgSchema *sch);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
-    void SetObject(pgObject *obj) { view = (pgView*)obj; }
+	void SetObject(pgObject *obj)
+	{
+		view = (pgView *)obj;
+	}
 
 private:
 
-    virtual bool IsUpToDate();
-    void OnApply(wxCommandEvent &ev);
+	virtual bool IsUpToDate();
+	void OnApply(wxCommandEvent &ev);
 
-    pgSchema *schema;
-    pgView *view;
-    wxString oldDefinition;
+	pgSchema *schema;
+	pgView *view;
+	wxString oldDefinition;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

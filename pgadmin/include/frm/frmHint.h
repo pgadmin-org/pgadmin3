@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -37,39 +37,39 @@ class frmMain;
 class frmHint : public DialogWithHelp
 {
 public:
-    static int ShowHint(wxWindow *fr,  const wxString &hint, const wxString &info=wxEmptyString, bool force=false);
-    static int ShowHint(wxWindow *fr,  const wxArrayString &hints, const wxString &info=wxEmptyString, bool force=false);
-    static bool WantHint(const wxString &hint);
-    static void ResetHints();
+	static int ShowHint(wxWindow *fr,  const wxString &hint, const wxString &info = wxEmptyString, bool force = false);
+	static int ShowHint(wxWindow *fr,  const wxArrayString &hints, const wxString &info = wxEmptyString, bool force = false);
+	static bool WantHint(const wxString &hint);
+	static void ResetHints();
 
-    void SetHint(int hint, const wxString &info);
-    void SetHint(const wxArrayInt &hintnos, const wxString &info);
+	void SetHint(int hint, const wxString &info);
+	void SetHint(const wxArrayInt &hintnos, const wxString &info);
 
 private:
-    frmHint(wxWindow *fr, bool force);
-    ~frmHint();
+	frmHint(wxWindow *fr, bool force);
+	~frmHint();
 
-    void SetHint(const wxString &info);
-    void OnFix(wxCommandEvent &ev);
-    static int GetHintNo(const wxString &hint);
-    static bool WantHint(int hintno);
-    wxString GetPage(const wxChar *hintpage);
-    wxString GetHelpPage() const;
+	void SetHint(const wxString &info);
+	void OnFix(wxCommandEvent &ev);
+	static int GetHintNo(const wxString &hint);
+	static bool WantHint(int hintno);
+	wxString GetPage(const wxChar *hintpage);
+	wxString GetHelpPage() const;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 
-    wxArrayInt hintnos;
-    int currentHint;
-    bool force;
+	wxArrayInt hintnos;
+	int currentHint;
+	bool force;
 };
 
 
 class hintFactory : public actionFactory
 {
 public:
-    hintFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigTool);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
-    bool CheckEnable(pgObject *obj);
+	hintFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigTool);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
 };
 
 

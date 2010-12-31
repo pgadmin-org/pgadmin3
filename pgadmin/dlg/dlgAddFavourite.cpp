@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -29,8 +29,8 @@
 BEGIN_EVENT_TABLE(dlgAddFavourite, pgDialog)
 	EVT_TEXT(XRCID("txtTitle"),			dlgAddFavourite::OnChange)
 	EVT_TREE_SEL_CHANGED(XRCID("trLocation"),	dlgAddFavourite::OnTreeChange)
-    EVT_BUTTON (wxID_OK,               dlgAddFavourite::OnOK)
-    EVT_BUTTON (wxID_CANCEL,           dlgAddFavourite::OnCancel)
+	EVT_BUTTON (wxID_OK,               dlgAddFavourite::OnOK)
+	EVT_BUTTON (wxID_CANCEL,           dlgAddFavourite::OnCancel)
 END_EVENT_TABLE()
 
 
@@ -39,12 +39,12 @@ END_EVENT_TABLE()
 #define trLocation		CTRL_TREE("trLocation")
 
 
-dlgAddFavourite::dlgAddFavourite(wxWindow *parent, queryFavouriteFolder *favourites) : 
-pgDialog()
+dlgAddFavourite::dlgAddFavourite(wxWindow *parent, queryFavouriteFolder *favourites) :
+	pgDialog()
 {
-    wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(parent, wxT("dlgAddFavourite"));
-    RestorePosition();
+	wxWindowBase::SetFont(settings->GetSystemFont());
+	LoadResource(parent, wxT("dlgAddFavourite"));
+	RestorePosition();
 
 	this->favourites = favourites;
 
@@ -82,23 +82,23 @@ bool dlgAddFavourite::AddFavourite(wxString newtext)
 
 dlgAddFavourite::~dlgAddFavourite()
 {
-    SavePosition();
+	SavePosition();
 }
 
 
-void dlgAddFavourite::OnOK(wxCommandEvent& ev)
+void dlgAddFavourite::OnOK(wxCommandEvent &ev)
 {
 #ifdef __WXGTK__
-    if (!btnOK->IsEnabled())
-        return;
+	if (!btnOK->IsEnabled())
+		return;
 #endif
-    EndModal(wxID_OK);
+	EndModal(wxID_OK);
 }
 
 
-void dlgAddFavourite::OnCancel(wxCommandEvent& ev)
+void dlgAddFavourite::OnCancel(wxCommandEvent &ev)
 {
-    EndModal(wxID_CANCEL);
+	EndModal(wxID_CANCEL);
 }
 
 void dlgAddFavourite::OnChange(wxCommandEvent &ev)

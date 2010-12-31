@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -11,8 +11,8 @@
 #include "pgAdmin3.h"
 #include "pgscript/generators/pgsIntegerGen.h"
 
-pgsIntegerGen::pgsSequentialIntGen::pgsSequentialIntGen(const MAPM & range,
-		const long & seed) :
+pgsIntegerGen::pgsSequentialIntGen::pgsSequentialIntGen(const MAPM &range,
+        const long &seed) :
 	pgsNumberGen(range), m_state(seed), m_m(2), m_remainder(m_range)
 {
 	MAPM _2 = 2;
@@ -30,7 +30,7 @@ MAPM pgsIntegerGen::pgsSequentialIntGen::random()
 	{
 		// Calculate the number of elements to bufferize
 		MAPM min = wxMin(m_remainder, MAPM(BUFFER_SIZE));
-		
+
 		// Generate those elements
 		for (MAPM i = 0; i < min; i = i + 1)
 		{
@@ -43,30 +43,30 @@ MAPM pgsIntegerGen::pgsSequentialIntGen::random()
 			m_buffer.Add(m_state);
 			m_remainder -= 1;
 		}
-		
+
 		class pgsRandInt
 		{
-			
+
 		private:
-			
+
 			long m_state;
-			
+
 		public:
-			
+
 			pgsRandInt(long n)
 				: m_state(n)
 			{
-				
+
 			}
-			
+
 			long rand()
 			{
 				m_state = (1103515245L * m_state + 12345L) % 2147483647L;
 				return m_state;
 			}
-			
+
 		};
-		
+
 		// Shuffle the vector of generated values
 		pgsRandInt rand_int(BUFFER_SIZE);
 		for (size_t i = 0; i < m_buffer.GetCount(); i++)
@@ -96,7 +96,7 @@ pgsIntegerGen::pgsSequentialIntGen::~pgsSequentialIntGen()
 
 }
 
-pgsNumberGen * pgsIntegerGen::pgsSequentialIntGen::clone()
+pgsNumberGen *pgsIntegerGen::pgsSequentialIntGen::clone()
 {
 	return pnew pgsIntegerGen::pgsSequentialIntGen(*this);
 }
@@ -104,8 +104,8 @@ pgsNumberGen * pgsIntegerGen::pgsSequentialIntGen::clone()
 const MAPM pgsIntegerGen::pgsSequentialIntGen::arg_a = 5;
 const MAPM pgsIntegerGen::pgsSequentialIntGen::arg_c = 1;
 
-pgsIntegerGen::pgsNormalIntGen::pgsNormalIntGen(const MAPM & range,
-		const long & seed) :
+pgsIntegerGen::pgsNormalIntGen::pgsNormalIntGen(const MAPM &range,
+        const long &seed) :
 	pgsNumberGen(range), m_state(seed), m_top(arg_m - 1)
 {
 	for (int i = 0; i < 10; i++)
@@ -124,7 +124,7 @@ pgsIntegerGen::pgsNormalIntGen::~pgsNormalIntGen()
 
 }
 
-pgsNumberGen * pgsIntegerGen::pgsNormalIntGen::clone()
+pgsNumberGen *pgsIntegerGen::pgsNormalIntGen::clone()
 {
 	return pnew pgsIntegerGen::pgsNormalIntGen(*this);
 }
@@ -133,14 +133,14 @@ const MAPM pgsIntegerGen::pgsNormalIntGen::arg_a = 16807L;
 const MAPM pgsIntegerGen::pgsNormalIntGen::arg_c = 0;
 const MAPM pgsIntegerGen::pgsNormalIntGen::arg_m = 2147483647L;
 
-pgsIntegerGen::pgsIntegerGen(const MAPM & min, const MAPM & max,
-		const bool & sequence, const long & seed) :
+pgsIntegerGen::pgsIntegerGen(const MAPM &min, const MAPM &max,
+                             const bool &sequence, const long &seed) :
 	pgsObjectGen(seed), m_min(wxMin(min, max)), m_max(wxMax(min, max)),
-		m_range(m_max - m_min + 1), m_sequence(sequence)
+	m_range(m_max - m_min + 1), m_sequence(sequence)
 {
 	m_randomizer = is_sequence()
-			? pgsRandomizer(pnew pgsSequentialIntGen(m_range, m_seed))
-			: pgsRandomizer(pnew pgsNormalIntGen(m_range, m_seed));
+	               ? pgsRandomizer(pnew pgsSequentialIntGen(m_range, m_seed))
+	               : pgsRandomizer(pnew pgsNormalIntGen(m_range, m_seed));
 }
 
 bool pgsIntegerGen::is_sequence() const
@@ -168,7 +168,7 @@ pgsIntegerGen::~pgsIntegerGen()
 
 }
 
-pgsIntegerGen * pgsIntegerGen::clone()
+pgsIntegerGen *pgsIntegerGen::clone()
 {
 	return pnew pgsIntegerGen(*this);
 }

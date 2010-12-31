@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgRole.h - Role property 
+// dlgRole.h - Role property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -22,44 +22,44 @@ class pgRole;
 class dlgRole : public dlgProperty
 {
 public:
-    dlgRole(pgaFactory *factory, frmMain *frame, pgRole *node=0, bool chkLogin=false);
+	dlgRole(pgaFactory *factory, frmMain *frame, pgRole *node = 0, bool chkLogin = false);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
-    wxString GetHelpPage() const;
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
+	wxString GetHelpPage() const;
 
-    int Go(bool modal);
+	int Go(bool modal);
 
 private:
-    pgRole *role;
-    wxArrayString varInfo;
+	pgRole *role;
+	wxArrayString varInfo;
 
-    void OnOK(wxCommandEvent &ev);
-    void OnChangeSuperuser(wxCommandEvent &ev);
-    void OnChangeSpin(wxSpinEvent &ev);
-    void OnChangeCal(wxCalendarEvent &ev);
-    void OnChangeDate(wxDateEvent &ev);
-    void OnRoleAdd(wxCommandEvent &ev);
-    void OnRoleRemove(wxCommandEvent &ev);
+	void OnOK(wxCommandEvent &ev);
+	void OnChangeSuperuser(wxCommandEvent &ev);
+	void OnChangeSpin(wxSpinEvent &ev);
+	void OnChangeCal(wxCalendarEvent &ev);
+	void OnChangeDate(wxDateEvent &ev);
+	void OnRoleAdd(wxCommandEvent &ev);
+	void OnRoleRemove(wxCommandEvent &ev);
 
 #ifdef __WXMAC__
-    void OnChangeSize(wxSizeEvent &ev);
+	void OnChangeSize(wxSizeEvent &ev);
 #endif
 
-    void OnVarAdd(wxCommandEvent &ev);
-    void OnVarRemove(wxCommandEvent &ev);
-    void OnVarSelChange(wxListEvent &ev);
+	void OnVarAdd(wxCommandEvent &ev);
+	void OnVarRemove(wxCommandEvent &ev);
+	void OnVarSelChange(wxListEvent &ev);
 
-    void OnVarnameSelChange(wxCommandEvent &ev);
-    void OnChangePasswd(wxCommandEvent &ev);
+	void OnVarnameSelChange(wxCommandEvent &ev);
+	void OnChangePasswd(wxCommandEvent &ev);
 
-    void SetupVarEditor(int var);
+	void SetupVarEditor(int var);
 
-    wxArrayString groupsIn;
+	wxArrayString groupsIn;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

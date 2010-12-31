@@ -1,5 +1,5 @@
 
-/* 
+/*
  *  M_APM  -  mapmutil.c
  *
  *  Copyright (C) 1999 - 2007   Michael C. Ring
@@ -20,7 +20,7 @@
 
 /*
  *
- *      This file contains various utility functions needed by the 
+ *      This file contains various utility functions needed by the
  *	library in addition to some basic user callable functions.
  */
 
@@ -43,71 +43,71 @@ static  const char    *M_init_error_msg = "\'m_apm_init\', Out of memory";
 /****************************************************************************/
 M_APM	m_apm_init()
 {
-M_APM	atmp;
+	M_APM	atmp;
 
-if (M_firsttime3)
-  {
-   M_firsttime3 = FALSE;
-   M_init_util_data();
-   M_init_trig_globals();
-  }
+	if (M_firsttime3)
+	{
+		M_firsttime3 = FALSE;
+		M_init_util_data();
+		M_init_trig_globals();
+	}
 
-if ((atmp = (M_APM)MAPM_MALLOC(sizeof(M_APM_struct))) == NULL)
-  {
-   /* fatal, this does not return */
+	if ((atmp = (M_APM)MAPM_MALLOC(sizeof(M_APM_struct))) == NULL)
+	{
+		/* fatal, this does not return */
 
-   M_apm_log_error_msg(M_APM_FATAL, M_init_error_msg);
-  }
+		M_apm_log_error_msg(M_APM_FATAL, M_init_error_msg);
+	}
 
-atmp->m_apm_id           = M_APM_IDENT;
-atmp->m_apm_malloclength = 80;
-atmp->m_apm_datalength   = 1;
-atmp->m_apm_refcount     = 1;           /* not for us, for MAPM C++ class */
-atmp->m_apm_exponent     = 0;
-atmp->m_apm_sign         = 0;
+	atmp->m_apm_id           = M_APM_IDENT;
+	atmp->m_apm_malloclength = 80;
+	atmp->m_apm_datalength   = 1;
+	atmp->m_apm_refcount     = 1;           /* not for us, for MAPM C++ class */
+	atmp->m_apm_exponent     = 0;
+	atmp->m_apm_sign         = 0;
 
-if ((atmp->m_apm_data = (UCHAR *)MAPM_MALLOC(84)) == NULL)
-  {
-   /* fatal, this does not return */
+	if ((atmp->m_apm_data = (UCHAR *)MAPM_MALLOC(84)) == NULL)
+	{
+		/* fatal, this does not return */
 
-   M_apm_log_error_msg(M_APM_FATAL, M_init_error_msg);
-  }
+		M_apm_log_error_msg(M_APM_FATAL, M_init_error_msg);
+	}
 
-atmp->m_apm_data[0] = 0;
-return(atmp);
+	atmp->m_apm_data[0] = 0;
+	return(atmp);
 }
 /****************************************************************************/
 void	m_apm_free(M_APM atmp)
 {
-if (atmp->m_apm_id == M_APM_IDENT)
-  {
-   atmp->m_apm_id = 0x0FFFFFF0L;
-   MAPM_FREE(atmp->m_apm_data);
-   MAPM_FREE(atmp);
-  }
-else
-  {
-   M_apm_log_error_msg(M_APM_RETURN, "\'m_apm_free\', Invalid M_APM variable");
-  }
+	if (atmp->m_apm_id == M_APM_IDENT)
+	{
+		atmp->m_apm_id = 0x0FFFFFF0L;
+		MAPM_FREE(atmp->m_apm_data);
+		MAPM_FREE(atmp);
+	}
+	else
+	{
+		M_apm_log_error_msg(M_APM_RETURN, "\'m_apm_free\', Invalid M_APM variable");
+	}
 }
 /****************************************************************************/
 void	M_free_all_util()
 {
-if (M_util_firsttime == FALSE)
-  {
-   m_apm_free(M_work_0_5);
-   M_util_firsttime = TRUE;
-  }
+	if (M_util_firsttime == FALSE)
+	{
+		m_apm_free(M_work_0_5);
+		M_util_firsttime = TRUE;
+	}
 
-if (M_firsttime3 == FALSE)
-  {
-   MAPM_FREE(M_mul_div);
-   MAPM_FREE(M_mul_rem);
-  
-   M_mul_div    = NULL;
-   M_mul_rem    = NULL;
-   M_firsttime3 = TRUE;
-  }
+	if (M_firsttime3 == FALSE)
+	{
+		MAPM_FREE(M_mul_div);
+		MAPM_FREE(M_mul_rem);
+
+		M_mul_div    = NULL;
+		M_mul_rem    = NULL;
+		M_firsttime3 = TRUE;
+	}
 }
 /****************************************************************************/
 /*
@@ -115,348 +115,349 @@ if (M_firsttime3 == FALSE)
  */
 int 	M_get_sizeof_int()
 {
-return(sizeof(int));
+	return(sizeof(int));
 }
 /****************************************************************************/
 void	M_init_util_data()
 {
-int	k;
-UCHAR   ndiv, nrem;
+	int	k;
+	UCHAR   ndiv, nrem;
 
-if (M_mul_div != NULL)
-  return;
+	if (M_mul_div != NULL)
+		return;
 
-M_mul_div = (UCHAR *)MAPM_MALLOC(10000 * sizeof(UCHAR));
-M_mul_rem = (UCHAR *)MAPM_MALLOC(10000 * sizeof(UCHAR));
+	M_mul_div = (UCHAR *)MAPM_MALLOC(10000 * sizeof(UCHAR));
+	M_mul_rem = (UCHAR *)MAPM_MALLOC(10000 * sizeof(UCHAR));
 
-if (M_mul_div == NULL || M_mul_rem == NULL)
-  {
-   /* fatal, this does not return */
+	if (M_mul_div == NULL || M_mul_rem == NULL)
+	{
+		/* fatal, this does not return */
 
-   M_apm_log_error_msg(M_APM_FATAL, "\'M_init_util_data\', Out of memory");
-  }
+		M_apm_log_error_msg(M_APM_FATAL, "\'M_init_util_data\', Out of memory");
+	}
 
-ndiv = 0;
-nrem = 0;
+	ndiv = 0;
+	nrem = 0;
 
-for (k=0; k < 100; k++)
-  {
-   M_mul_div_10[k] = ndiv;
-   M_mul_rem_10[k] = nrem;
+	for (k = 0; k < 100; k++)
+	{
+		M_mul_div_10[k] = ndiv;
+		M_mul_rem_10[k] = nrem;
 
-   if (++nrem == 10)
-     {
-      nrem = 0;
-      ndiv++;
-     }
-  }
+		if (++nrem == 10)
+		{
+			nrem = 0;
+			ndiv++;
+		}
+	}
 
-ndiv = 0;
-nrem = 0;
+	ndiv = 0;
+	nrem = 0;
 
-for (k=0; k < 10000; k++)
-  {
-   M_mul_div[k] = ndiv;
-   M_mul_rem[k] = nrem;
+	for (k = 0; k < 10000; k++)
+	{
+		M_mul_div[k] = ndiv;
+		M_mul_rem[k] = nrem;
 
-   if (++nrem == 100)
-     {
-      nrem = 0;
-      ndiv++;
-     }
-  }
+		if (++nrem == 100)
+		{
+			nrem = 0;
+			ndiv++;
+		}
+	}
 }
 /****************************************************************************/
 void	M_get_div_rem_addr(UCHAR **ndivp, UCHAR **nremp)
 {
-*ndivp = M_mul_div;
-*nremp = M_mul_rem;
+	*ndivp = M_mul_div;
+	*nremp = M_mul_rem;
 }
 /****************************************************************************/
 void	M_get_div_rem(int tbl_lookup, UCHAR *ndiv, UCHAR *nrem)
 {
-*ndiv = M_mul_div[tbl_lookup];
-*nrem = M_mul_rem[tbl_lookup];
+	*ndiv = M_mul_div[tbl_lookup];
+	*nrem = M_mul_rem[tbl_lookup];
 }
 /****************************************************************************/
 void	M_get_div_rem_10(int tbl_lookup, UCHAR *ndiv, UCHAR *nrem)
 {
-*ndiv = M_mul_div_10[tbl_lookup];
-*nrem = M_mul_rem_10[tbl_lookup];
+	*ndiv = M_mul_div_10[tbl_lookup];
+	*nrem = M_mul_rem_10[tbl_lookup];
 }
 /****************************************************************************/
-void	m_apm_round(M_APM btmp, int places, M_APM atmp) 
+void	m_apm_round(M_APM btmp, int places, M_APM atmp)
 {
-int	ii;
+	int	ii;
 
-if (M_util_firsttime)
-  {
-   M_util_firsttime = FALSE;
+	if (M_util_firsttime)
+	{
+		M_util_firsttime = FALSE;
 
-   M_work_0_5 = m_apm_init();
-   m_apm_set_string(M_work_0_5, "5");
-  }
+		M_work_0_5 = m_apm_init();
+		m_apm_set_string(M_work_0_5, "5");
+	}
 
-ii = places + 1;
+	ii = places + 1;
 
-if (atmp->m_apm_datalength <= ii)
-  {
-   m_apm_copy(btmp,atmp);
-   return;
-  }
+	if (atmp->m_apm_datalength <= ii)
+	{
+		m_apm_copy(btmp, atmp);
+		return;
+	}
 
-M_work_0_5->m_apm_exponent = atmp->m_apm_exponent - ii;
+	M_work_0_5->m_apm_exponent = atmp->m_apm_exponent - ii;
 
-if (atmp->m_apm_sign > 0)
-  m_apm_add(btmp, atmp, M_work_0_5);
-else
-  m_apm_subtract(btmp, atmp, M_work_0_5);
+	if (atmp->m_apm_sign > 0)
+		m_apm_add(btmp, atmp, M_work_0_5);
+	else
+		m_apm_subtract(btmp, atmp, M_work_0_5);
 
-btmp->m_apm_datalength = ii;
-M_apm_normalize(btmp);
+	btmp->m_apm_datalength = ii;
+	M_apm_normalize(btmp);
 }
 /****************************************************************************/
 void	M_apm_normalize(M_APM atmp)
 {
-int	i, index, datalength, exponent;
-UCHAR   *ucp, numdiv, numrem, numrem2;
+	int	i, index, datalength, exponent;
+	UCHAR   *ucp, numdiv, numrem, numrem2;
 
-if (atmp->m_apm_sign == 0)
-  return;
+	if (atmp->m_apm_sign == 0)
+		return;
 
-datalength = atmp->m_apm_datalength;
-exponent   = atmp->m_apm_exponent;
+	datalength = atmp->m_apm_datalength;
+	exponent   = atmp->m_apm_exponent;
 
-/* make sure trailing bytes/chars are 0                */
-/* the following function will adjust the 'datalength' */
-/* we want the original value and will fix it later    */
+	/* make sure trailing bytes/chars are 0                */
+	/* the following function will adjust the 'datalength' */
+	/* we want the original value and will fix it later    */
 
-M_apm_pad(atmp, (datalength + 3));
+	M_apm_pad(atmp, (datalength + 3));
 
-while (TRUE)			/* remove lead-in '0' if any */
-  {
-   M_get_div_rem_10((int)atmp->m_apm_data[0], &numdiv, &numrem);
+	while (TRUE)			/* remove lead-in '0' if any */
+	{
+		M_get_div_rem_10((int)atmp->m_apm_data[0], &numdiv, &numrem);
 
-   if (numdiv >= 1)      /* number is normalized, done here */
-     break;
+		if (numdiv >= 1)      /* number is normalized, done here */
+			break;
 
-   index = (datalength + 1) >> 1;
+		index = (datalength + 1) >> 1;
 
-   if (numrem == 0)      /* both nibbles are 0, we can move full bytes */
-     {
-      i = 0;
-      ucp = atmp->m_apm_data;
+		if (numrem == 0)      /* both nibbles are 0, we can move full bytes */
+		{
+			i = 0;
+			ucp = atmp->m_apm_data;
 
-      while (TRUE)	 /* find out how many '00' bytes we can move */
-        {
-	 if (*ucp != 0)
-	   break;
+			while (TRUE)	 /* find out how many '00' bytes we can move */
+			{
+				if (*ucp != 0)
+					break;
 
-         ucp++;
-	 i++;
+				ucp++;
+				i++;
+			}
+
+			memmove(atmp->m_apm_data, ucp, (index + 1 - i));
+			datalength -= 2 * i;
+			exponent -= 2 * i;
+		}
+		else
+		{
+			for (i = 0; i < index; i++)
+			{
+				M_get_div_rem_10((int)atmp->m_apm_data[i+1], &numdiv, &numrem2);
+				atmp->m_apm_data[i] = 10 * numrem + numdiv;
+				numrem = numrem2;
+			}
+
+			datalength--;
+			exponent--;
+		}
 	}
 
-      memmove(atmp->m_apm_data, ucp, (index + 1 - i));
-      datalength -= 2 * i;
-      exponent -= 2 * i;
-     }
-   else
-     {
-      for (i=0; i < index; i++)
-        {
-         M_get_div_rem_10((int)atmp->m_apm_data[i+1], &numdiv, &numrem2);
-         atmp->m_apm_data[i] = 10 * numrem + numdiv;
-	 numrem = numrem2;
-        }
-   
-      datalength--;
-      exponent--;
-     }
-  }
+	while (TRUE)			/* remove trailing '0' if any */
+	{
+		index = ((datalength + 1) >> 1) - 1;
 
-while (TRUE)			/* remove trailing '0' if any */
-  {
-   index = ((datalength + 1) >> 1) - 1;
+		if ((datalength & 1) == 0)   /* back-up full bytes at a time if the */
+		{
+			/* current length is an even number    */
+			ucp = atmp->m_apm_data + index;
+			if (*ucp == 0)
+			{
+				while (TRUE)
+				{
+					datalength -= 2;
+					index--;
+					ucp--;
 
-   if ((datalength & 1) == 0)   /* back-up full bytes at a time if the */
-     {				/* current length is an even number    */
-      ucp = atmp->m_apm_data + index;
-      if (*ucp == 0)
-        {
-	 while (TRUE)
-	   {
-	    datalength -= 2;
-	    index--;
-	    ucp--;
+					if (*ucp != 0)
+						break;
+				}
+			}
+		}
 
-	    if (*ucp != 0)
-	      break;
-	   }
+		M_get_div_rem_10((int)atmp->m_apm_data[index], &numdiv, &numrem);
+
+		if (numrem != 0)		/* last digit non-zero, all done */
+			break;
+
+		if ((datalength & 1) != 0)   /* if odd, then first char must be non-zero */
+		{
+			if (numdiv != 0)
+				break;
+		}
+
+		if (datalength == 1)
+		{
+			atmp->m_apm_sign = 0;
+			exponent = 0;
+			break;
+		}
+
+		datalength--;
 	}
-     }
 
-   M_get_div_rem_10((int)atmp->m_apm_data[index], &numdiv, &numrem);
-
-   if (numrem != 0)		/* last digit non-zero, all done */
-     break;
-
-   if ((datalength & 1) != 0)   /* if odd, then first char must be non-zero */
-     {
-      if (numdiv != 0)
-        break;
-     }
-
-   if (datalength == 1)
-     {
-      atmp->m_apm_sign = 0;
-      exponent = 0;
-      break;
-     }
-     
-   datalength--;
-  }
-
-atmp->m_apm_datalength = datalength;
-atmp->m_apm_exponent   = exponent;
+	atmp->m_apm_datalength = datalength;
+	atmp->m_apm_exponent   = exponent;
 }
 /****************************************************************************/
 void	M_apm_scale(M_APM ctmp, int count)
 {
-int	ii, numb, ct;
-UCHAR	*chp, numdiv, numdiv2, numrem;
-void	*vp;
+	int	ii, numb, ct;
+	UCHAR	*chp, numdiv, numdiv2, numrem;
+	void	*vp;
 
-ct = count;
+	ct = count;
 
-ii = (ctmp->m_apm_datalength + ct + 1) >> 1;
-if (ii > ctmp->m_apm_malloclength)
-  {
-   if ((vp = MAPM_REALLOC(ctmp->m_apm_data, (ii + 32))) == NULL)
-     {
-      /* fatal, this does not return */
+	ii = (ctmp->m_apm_datalength + ct + 1) >> 1;
+	if (ii > ctmp->m_apm_malloclength)
+	{
+		if ((vp = MAPM_REALLOC(ctmp->m_apm_data, (ii + 32))) == NULL)
+		{
+			/* fatal, this does not return */
 
-      M_apm_log_error_msg(M_APM_FATAL, "\'M_apm_scale\', Out of memory");
-     }
-   
-   ctmp->m_apm_malloclength = ii + 28;
-   ctmp->m_apm_data = (UCHAR *)vp;
-  }
+			M_apm_log_error_msg(M_APM_FATAL, "\'M_apm_scale\', Out of memory");
+		}
 
-if ((ct & 1) != 0)          /* move odd number first */
-  {
-   ct--;
-   chp = ctmp->m_apm_data;
-   ii  = ((ctmp->m_apm_datalength + 1) >> 1) - 1;
-
-   if ((ctmp->m_apm_datalength & 1) == 0)
-     {
-      /*
-       *   original datalength is even:
-       *
-       *   uv  wx  yz   becomes  -->   0u  vw  xy  z0
-       */
-
-      numdiv = 0;
-
-      while (TRUE)
-        {
-         M_get_div_rem_10((int)chp[ii], &numdiv2, &numrem);
-
-	 chp[ii + 1] = 10 * numrem + numdiv;
-	 numdiv = numdiv2;
-
-	 if (ii == 0)
-	   break;
-
-         ii--;
+		ctmp->m_apm_malloclength = ii + 28;
+		ctmp->m_apm_data = (UCHAR *)vp;
 	}
 
-      chp[0] = numdiv2;
-     }
-   else
-     {
-      /*
-       *   original datalength is odd:
-       *
-       *   uv  wx  y0   becomes  -->   0u  vw  xy
-       */
+	if ((ct & 1) != 0)          /* move odd number first */
+	{
+		ct--;
+		chp = ctmp->m_apm_data;
+		ii  = ((ctmp->m_apm_datalength + 1) >> 1) - 1;
 
-      M_get_div_rem_10((int)chp[ii], &numdiv2, &numrem);
+		if ((ctmp->m_apm_datalength & 1) == 0)
+		{
+			/*
+			 *   original datalength is even:
+			 *
+			 *   uv  wx  yz   becomes  -->   0u  vw  xy  z0
+			 */
 
-      if (ii == 0)
-        {
-         chp[0] = numdiv2;
-        }
-      else
-        {
-         while (TRUE)
-           {
-            M_get_div_rem_10((int)chp[ii - 1], &numdiv, &numrem);
+			numdiv = 0;
 
-	    chp[ii] = 10 * numrem + numdiv2;
-	    numdiv2 = numdiv;
+			while (TRUE)
+			{
+				M_get_div_rem_10((int)chp[ii], &numdiv2, &numrem);
 
-	    if (--ii == 0)
-	      break;
-	   }
+				chp[ii + 1] = 10 * numrem + numdiv;
+				numdiv = numdiv2;
 
-         chp[0] = numdiv;
-        }
-     }
+				if (ii == 0)
+					break;
 
-   ctmp->m_apm_exponent++;
-   ctmp->m_apm_datalength++;
-  }
+				ii--;
+			}
 
-/* ct is even here */
+			chp[0] = numdiv2;
+		}
+		else
+		{
+			/*
+			 *   original datalength is odd:
+			 *
+			 *   uv  wx  y0   becomes  -->   0u  vw  xy
+			 */
 
-if (ct > 0)
-  {
-   numb = (ctmp->m_apm_datalength + 1) >> 1;
-   ii   = ct >> 1;
-   
-   memmove((ctmp->m_apm_data + ii), ctmp->m_apm_data, numb);
-   memset(ctmp->m_apm_data, 0, ii);
-   
-   ctmp->m_apm_datalength += ct;
-   ctmp->m_apm_exponent += ct;
-  }
+			M_get_div_rem_10((int)chp[ii], &numdiv2, &numrem);
+
+			if (ii == 0)
+			{
+				chp[0] = numdiv2;
+			}
+			else
+			{
+				while (TRUE)
+				{
+					M_get_div_rem_10((int)chp[ii - 1], &numdiv, &numrem);
+
+					chp[ii] = 10 * numrem + numdiv2;
+					numdiv2 = numdiv;
+
+					if (--ii == 0)
+						break;
+				}
+
+				chp[0] = numdiv;
+			}
+		}
+
+		ctmp->m_apm_exponent++;
+		ctmp->m_apm_datalength++;
+	}
+
+	/* ct is even here */
+
+	if (ct > 0)
+	{
+		numb = (ctmp->m_apm_datalength + 1) >> 1;
+		ii   = ct >> 1;
+
+		memmove((ctmp->m_apm_data + ii), ctmp->m_apm_data, numb);
+		memset(ctmp->m_apm_data, 0, ii);
+
+		ctmp->m_apm_datalength += ct;
+		ctmp->m_apm_exponent += ct;
+	}
 }
 /****************************************************************************/
 void	M_apm_pad(M_APM ctmp, int new_length)
 {
-int	num1, numb, ct;
-UCHAR	numdiv, numrem;
-void	*vp;
+	int	num1, numb, ct;
+	UCHAR	numdiv, numrem;
+	void	*vp;
 
-ct = new_length;
-if (ctmp->m_apm_datalength >= ct)
-  return;
-  
-numb = (ct + 1) >> 1;
-if (numb > ctmp->m_apm_malloclength)
-  {
-   if ((vp = MAPM_REALLOC(ctmp->m_apm_data, (numb + 32))) == NULL)
-     {
-      /* fatal, this does not return */
+	ct = new_length;
+	if (ctmp->m_apm_datalength >= ct)
+		return;
 
-      M_apm_log_error_msg(M_APM_FATAL, "\'M_apm_pad\', Out of memory");
-     }
-   
-   ctmp->m_apm_malloclength = numb + 28;
-   ctmp->m_apm_data = (UCHAR *)vp;
-  }
+	numb = (ct + 1) >> 1;
+	if (numb > ctmp->m_apm_malloclength)
+	{
+		if ((vp = MAPM_REALLOC(ctmp->m_apm_data, (numb + 32))) == NULL)
+		{
+			/* fatal, this does not return */
 
-num1 = (ctmp->m_apm_datalength + 1) >> 1;
+			M_apm_log_error_msg(M_APM_FATAL, "\'M_apm_pad\', Out of memory");
+		}
 
-if ((ctmp->m_apm_datalength & 1) != 0)
-  {
-   M_get_div_rem_10((int)ctmp->m_apm_data[num1 - 1], &numdiv, &numrem);
-   ctmp->m_apm_data[num1 - 1] = 10 * numdiv;
-  }
+		ctmp->m_apm_malloclength = numb + 28;
+		ctmp->m_apm_data = (UCHAR *)vp;
+	}
 
-memset((ctmp->m_apm_data + num1), 0, (numb - num1));
-ctmp->m_apm_datalength = ct;
+	num1 = (ctmp->m_apm_datalength + 1) >> 1;
+
+	if ((ctmp->m_apm_datalength & 1) != 0)
+	{
+		M_get_div_rem_10((int)ctmp->m_apm_data[num1 - 1], &numdiv, &numrem);
+		ctmp->m_apm_data[num1 - 1] = 10 * numdiv;
+	}
+
+	memset((ctmp->m_apm_data + num1), 0, (numb - num1));
+	ctmp->m_apm_datalength = ct;
 }
 /****************************************************************************/
 

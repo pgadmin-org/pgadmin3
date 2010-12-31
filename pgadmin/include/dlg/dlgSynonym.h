@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgSynonym.h - EnterpriseDB Synonym property 
+// dlgSynonym.h - EnterpriseDB Synonym property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -23,28 +23,37 @@ class pgSchema;
 class dlgSynonym : public dlgProperty
 {
 public:
-    dlgSynonym(pgaFactory *factory, frmMain *frame, edbSynonym *sy);
-    dlgSynonym(edbPrivateSynonymFactory *factory, frmMain *frame, edbPrivateSynonym *syn, pgSchema *schema);
-    int Go(bool modal);
+	dlgSynonym(pgaFactory *factory, frmMain *frame, edbSynonym *sy);
+	dlgSynonym(edbPrivateSynonymFactory *factory, frmMain *frame, edbPrivateSynonym *syn, pgSchema *schema);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
-    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createpubsynonym"); }
+	wxString GetHelpPage(bool forCreate) const
+	{
+		return wxT("pg/sql-createpubsynonym");
+	}
 
 private:
-    void OnChangeTargetType(wxCommandEvent &ev) { ProcessTypeChange(); };
-    void OnChangeTargetSchema(wxCommandEvent &ev) { ProcessSchemaChange(); };
-    void ProcessTypeChange();
-    void ProcessSchemaChange();
+	void OnChangeTargetType(wxCommandEvent &ev)
+	{
+		ProcessTypeChange();
+	};
+	void OnChangeTargetSchema(wxCommandEvent &ev)
+	{
+		ProcessSchemaChange();
+	};
+	void ProcessTypeChange();
+	void ProcessSchemaChange();
 
-    edbSynonym        *synonym;
-    edbPrivateSynonym *privSynonym;
-    pgSchema          *synonymSchema;
+	edbSynonym        *synonym;
+	edbPrivateSynonym *privSynonym;
+	pgSchema          *synonymSchema;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 
