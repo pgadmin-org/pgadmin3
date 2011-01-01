@@ -96,9 +96,11 @@ wxString pgForeignKey::GetTranslatedMessage(int kindOfMessage) const
 
 bool pgForeignKey::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	return GetDatabase()->ExecuteVoid(wxT(
-	                                      "ALTER TABLE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(fkTable)
-	                                  + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier());
+	wxString sql = wxT("ALTER TABLE ") + this->GetSchema()->GetQuotedIdentifier() + wxT(".") + qtIdent(fkTable)
+	               + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier();
+	if (cascaded)
+		sql += wxT(" CASCADE");
+	return GetDatabase()->ExecuteVoid(sql);
 }
 
 
