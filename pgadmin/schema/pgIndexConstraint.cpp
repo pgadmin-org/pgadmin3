@@ -22,9 +22,11 @@
 
 bool pgIndexConstraint::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
-	return GetDatabase()->ExecuteVoid(wxT(
-	                                      "ALTER TABLE ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
-	                                  + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier() + wxT(";"));
+	wxString sql = wxT("ALTER TABLE ") + qtIdent(GetIdxSchema()) + wxT(".") + qtIdent(GetIdxTable())
+	               + wxT(" DROP CONSTRAINT ") + GetQuotedIdentifier();
+	if (cascaded)
+		sql += wxT(" CASCADE");
+	return GetDatabase()->ExecuteVoid(sql);
 }
 
 
