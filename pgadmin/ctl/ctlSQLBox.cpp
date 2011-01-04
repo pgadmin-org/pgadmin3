@@ -42,7 +42,7 @@ BEGIN_EVENT_TABLE(ctlSQLBox, wxStyledTextCtrl)
 	EVT_MENU(MNU_FIND, ctlSQLBox::OnSearchReplace)
 	EVT_MENU(MNU_AUTOCOMPLETE, ctlSQLBox::OnAutoComplete)
 	EVT_KILL_FOCUS(ctlSQLBox::OnKillFocus)
-	EVT_STC_UPDATEUI(-1,  ctlSQLBox::OnPositionStc)
+	EVT_STC_PAINTED(-1,  ctlSQLBox::OnPositionStc)
 	EVT_STC_MARGINCLICK(-1, ctlSQLBox::OnMarginClick)
 END_EVENT_TABLE()
 
@@ -542,7 +542,10 @@ void ctlSQLBox::UpdateLineNumber()
 		long int width = TextWidth(wxSTC_STYLE_LINENUMBER,
 		                           wxT(" ") + NumToStr((long int)GetLineCount()) + wxT(" "));
 		if (width != GetMarginWidth(0))
+		{
 			SetMarginWidth(0, width);
+			Update();
+		}
 	}
 	else
 	{
