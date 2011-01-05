@@ -72,6 +72,7 @@ install-data-hook:
 # * -S - indent switches
 # * -t4 - intent with tabs, 4 of them
 # * -k3 - align pointer or reference operators
+# * -z2 - Unix style line endings
 # Also add the -n to make it not save .orig files (we have git for that)
 style:
-	astyle -n -p -b -S -t4 -k3  `find . -name "*.cpp" -o -name "*.h" | egrep -v "(wx-build|xrcDialogs|pgscript/test)"`
+	astyle -n -p -b -S -t4 -k3 -z2 `find . -name "*.cpp" -o -name "*.h" | egrep -v "(wx-build|xrcDialogs|pgscript/test)"`
