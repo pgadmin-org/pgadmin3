@@ -298,7 +298,7 @@ wxString frmBackup::getCmdPart1()
 		cmd += wxT(" --host ") + server->GetName();
 
 	cmd +=  wxT(" --port ") + NumToStr((long)server->GetPort())
-	        +  wxT(" --username \"") + commandLineCleanOption(qtIdent(server->GetUsername())) + wxT("\"");
+	        +  wxT(" --username ") + commandLineCleanOption(qtIdent(server->GetUsername()));
 
 	if (object->GetConnection()->GetIsGreenplum())
 		cmd += wxT(" --gp-syntax ");
@@ -402,15 +402,15 @@ wxString frmBackup::getCmdPart2()
 					if (pgAppMinimumVersion(backupExecutable, 8, 2))
 					{
 						tmpTables.Append(wxT(" --table \"") +
-						                 commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema))) +
+						                 commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema)), true) +
 						                 wxT(".") +
-						                 commandLineCleanOption(qtIdent(ctvObjects->GetItemText(table))) +
+						                 commandLineCleanOption(qtIdent(ctvObjects->GetItemText(table)), true) +
 						                 wxT("\""));
 					}
 					else
 					{
-						tmpTables.Append(wxT(" --table \"") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(table))) + wxT("\""));
-						tmpTables.Append(wxT(" --schema \"") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema))) + wxT("\""));
+						tmpTables.Append(wxT(" --table \"") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(table)), true) + wxT("\""));
+						tmpTables.Append(wxT(" --schema \"") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema)), true) + wxT("\""));
 					}
 				}
 				else
@@ -427,7 +427,7 @@ wxString frmBackup::getCmdPart2()
 			}
 			else
 			{
-				cmdSchemas.Append(wxT(" --schema \"") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema))) + wxT("\""));
+				cmdSchemas.Append(wxT(" --schema \"") + commandLineCleanOption(qtIdent(ctvObjects->GetItemText(schema)), true) + wxT("\""));
 			}
 		}
 		else
