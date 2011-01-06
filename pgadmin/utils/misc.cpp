@@ -1283,15 +1283,37 @@ wxString sanitizePath(const wxString &path)
  * FUNCTION: commandLineCleanOption
  * INPUTS:
  *       option       - input string needs to be reformatted
+ *       schemaObject - Is this an object related to schema?
  * PURPOSE:
  *  - Fixup a (double-quoted) string for use on the command line
  */
-wxString commandLineCleanOption(const wxString &option)
+wxString commandLineCleanOption(const wxString &option, bool schemaObject)
 {
 	wxString tmp = option;
 
-	// Replace double-quote with slash & double-quote
-	tmp.Replace(wxT("\""), wxT("\\\""));
+	if (schemaObject)
+	{
+		// Replace double-quote with slash & double-quote
+		tmp.Replace(wxT("\""), wxT("\\\""));
+	}
+	else
+	{
+		// If required, clean the string to know the real object name
+		if (option.StartsWith(wxT("\"")) && option.EndsWith(wxT("\"")))
+			tmp = option.AfterFirst((wxChar)'"').BeforeLast((wxChar)'"');
+
+		// Replace single splash to double-splash
+		tmp.Replace(wxT("\\"), wxT("\\\\"));
+
+		// Replace double-quote with slash & double-quote
+		tmp.Replace(wxT("\""), wxT("\\\""));
+
+		// Replace double (slash & double-quote) combination to single (slash & double-quote) combination
+		tmp.Replace(wxT("\\\"\\\""), wxT("\\\""));
+
+        // Add the double quotes
+		tmp = wxT("\"") + tmp + wxT("\"");
+	}
 
 	return tmp;
 }

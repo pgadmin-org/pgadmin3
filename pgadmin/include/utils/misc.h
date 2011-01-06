@@ -254,7 +254,7 @@ enum        // depends on pgaFactory::addImage order!
 
 // File/directory name cleanup
 wxString sanitizePath(const wxString &path);
-wxString commandLineCleanOption(const wxString &option);
+wxString commandLineCleanOption(const wxString &option, bool schemaObject = false);
 #endif // PGSCLI
 
 #endif

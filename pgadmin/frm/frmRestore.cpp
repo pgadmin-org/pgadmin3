@@ -304,7 +304,7 @@ wxString frmRestore::getCmdPart1()
 		cmd += wxT(" --host ") + server->GetName();
 
 	cmd += wxT(" --port ") + NumToStr((long)server->GetPort())
-	       + wxT(" --username ") + qtIdent(server->GetUsername())
+	       + wxT(" --username ") + commandLineCleanOption(qtIdent(server->GetUsername()))
 	       + wxT(" --dbname ") + commandLineCleanOption(object->GetDatabase()->GetQuotedIdentifier());
 
 	if (!cbRolename->GetValue().IsEmpty())
@@ -444,24 +444,24 @@ wxString frmRestore::getCmdPart2(int step)
 			switch (object->GetMetaType())
 			{
 				case PGM_FUNCTION:
-					cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(object->GetFullName())));
+					cmd.Append(wxT(" --function ") + commandLineCleanOption(qtIdent(object->GetFullName()), true));
 					break;
 				case PGM_INDEX:
-					cmd.Append(wxT(" --index ") + commandLineCleanOption(object->GetQuotedIdentifier()));
+					cmd.Append(wxT(" --index ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
 					break;
 				case PGM_TABLE:
-					cmd.Append(wxT(" --table ") + commandLineCleanOption(object->GetQuotedIdentifier()));
+					cmd.Append(wxT(" --table ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
 					break;
 				case PGM_TRIGGER:
-					cmd.Append(wxT(" --trigger ") + commandLineCleanOption(object->GetQuotedIdentifier()));
+					cmd.Append(wxT(" --trigger ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
 					break;
 				default:
 					break;
 			}
 			if (object->GetMetaType() == PGM_SCHEMA)
-				cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetQuotedIdentifier()));
+				cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetQuotedIdentifier(), true));
 			else if (pgAppMinimumVersion(restoreExecutable, 8, 2))
-				cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetSchema()->GetQuotedIdentifier()));
+				cmd.Append(wxT(" --schema ") + commandLineCleanOption(object->GetSchema()->GetQuotedIdentifier(), true));
 		}
 
 		if (settings->GetIgnoreVersion())
