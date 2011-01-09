@@ -1514,6 +1514,8 @@ pgObject *pgTableFactory::CreateObjects(pgCollection *collection, ctlTree *brows
 			table->iSetComment(tables->GetVal(wxT("description")));
 			if (collection->GetConnection()->BackendMinimumVersion(9, 1))
 				table->iSetUnlogged(tables->GetVal(wxT("relpersistence")) == wxT("u"));
+            else
+				table->iSetUnlogged(false);
 			table->iSetHasOids(tables->GetBool(wxT("relhasoids")));
 			table->iSetEstimatedRows(tables->GetDouble(wxT("reltuples")) * gp_segments);
 			if (collection->GetConnection()->BackendMinimumVersion(8, 2))
