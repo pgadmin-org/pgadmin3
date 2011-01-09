@@ -134,7 +134,7 @@ wxString dlgView::GetSql()
 		}
 	}
 
-	if (!view || txtSqlBox->GetText() != oldDefinition)
+	if (!view || txtSqlBox->GetText().Trim(true).Trim(false) != oldDefinition.Trim(true).Trim(false))
 	{
 		sql += wxT("CREATE OR REPLACE VIEW ") + schema->GetQuotedPrefix() + qtIdent(name) + wxT(" AS\n")
 		       + txtSqlBox->GetText().Trim(true).Trim(false)
