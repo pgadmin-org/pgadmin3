@@ -15,7 +15,7 @@
 ///////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin note: This file is based on src/include/parser/keywords.h from
-//               PostgreSQL.
+//               PostgreSQL, but with the token code entry removed.
 //
 //               This file is under the BSD licence, per PostgreSQL.
 ///////////////////////////////////////////////////////////////////////////
@@ -32,7 +32,6 @@
 typedef struct ScanKeyword
 {
 	const char *name;			/* in lower case */
-	int		value;			/* grammar's token code */
 	int		category;		/* see codes above */
 } ScanKeyword;
 

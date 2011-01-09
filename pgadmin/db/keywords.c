@@ -26,49 +26,9 @@
 #include "parser/keywords.h"
 
 /*
- * Load the yytokentype list of symbols from PostgreSQL
- */
-#undef YYTOKENTYPE
-#include <server/parser/gram.h>
-
-/*
- * For non-PostgreSQL types, define an enumb with their values here
- * NOTE! Make sure the value doesn't conflict with what's in
- * server/parser/gram.h - as the PostgreSQL parser grows larger the
- * highest numbers will increase.
- */
-enum yytokentype_extra {
- /* The following additions are keywords in EnterpriseDB */
- CONNECT_EDB = 800,
- CONVERT_EDB = 801,
- MINUS_EDB = 802,
- NUMBER_EDB = 803,
- PACKAGE_EDB = 804,
- SMALLDATETIME_EDB = 805,
- SMALLFLOAT_EDB = 806,
- SMALLMONEY_EDB = 807,
- TINYINT_EDB = 808,
- TINYTEXT_EDB = 809,
- VARCHAR2_EDB = 810,
- EXEC_EDB = 811,
- LONG_EDB = 812,
- NOCACHE_EDB = 813,
- PLS_INTEGER_EDB = 814,
- RAW_EDB = 815,
- RETURN_EDB = 816,
- SYSDATE_EDB = 817,
- SYSTIMESTAMP_EDB = 818,
-
- /* The following additions are keywords in Greenplum Database */
- DISTRIBUTED_GP = 900,
- LOG_P_GP = 901
-};
-
-
-/*
  * List of (keyword-name, keyword-token-value) pairs.
  */
-#define PG_KEYWORD(a,b,c) {a,b,c},
+#define PG_KEYWORD(a,b,c) {a,c},
 const ScanKeyword ScanKeywords[] = {
 #include <server/parser/kwlist.h>
 };
@@ -81,28 +41,29 @@ const int NumScanKeywords = lengthof(ScanKeywords);
  * !!WARNING!!: This list must be sorted, because binary
  *              search is used to locate entries.
  */
+#define PG_KEYWORD2(a,b) {a,b},
 const ScanKeyword ScanKeywordsExtra[] = {
-	PG_KEYWORD("connect", CONNECT_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("convert", CONVERT_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("distributed", DISTRIBUTED_GP, UNRESERVED_KEYWORD)
-	PG_KEYWORD("exec", EXEC_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("log", LOG_P_GP, UNRESERVED_KEYWORD)
-	PG_KEYWORD("long", LONG_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("minus", MINUS_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("nocache", NOCACHE_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("number", NUMBER_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("package", PACKAGE_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("pls_integer", PLS_INTEGER_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("raw", RAW_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("return", RETURN_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("smalldatetime", SMALLDATETIME_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("smallfloat", SMALLFLOAT_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("smallmoney", SMALLMONEY_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("sysdate", SYSDATE_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("systimestap", SYSTIMESTAMP_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("tinyint", TINYINT_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("tinytext", TINYTEXT_EDB, RESERVED_KEYWORD)
-	PG_KEYWORD("varchar2", VARCHAR2_EDB, RESERVED_KEYWORD)
+	PG_KEYWORD2("connect", RESERVED_KEYWORD)
+	PG_KEYWORD2("convert", RESERVED_KEYWORD)
+	PG_KEYWORD2("distributed", UNRESERVED_KEYWORD)
+	PG_KEYWORD2("exec", RESERVED_KEYWORD)
+	PG_KEYWORD2("log", UNRESERVED_KEYWORD)
+	PG_KEYWORD2("long", RESERVED_KEYWORD)
+	PG_KEYWORD2("minus", RESERVED_KEYWORD)
+	PG_KEYWORD2("nocache", RESERVED_KEYWORD)
+	PG_KEYWORD2("number", RESERVED_KEYWORD)
+	PG_KEYWORD2("package", RESERVED_KEYWORD)
+	PG_KEYWORD2("pls_integer", RESERVED_KEYWORD)
+	PG_KEYWORD2("raw", RESERVED_KEYWORD)
+	PG_KEYWORD2("return", RESERVED_KEYWORD)
+	PG_KEYWORD2("smalldatetime", RESERVED_KEYWORD)
+	PG_KEYWORD2("smallfloat", RESERVED_KEYWORD)
+	PG_KEYWORD2("smallmoney", RESERVED_KEYWORD)
+	PG_KEYWORD2("sysdate", RESERVED_KEYWORD)
+	PG_KEYWORD2("systimestap", RESERVED_KEYWORD)
+	PG_KEYWORD2("tinyint", RESERVED_KEYWORD)
+	PG_KEYWORD2("tinytext", RESERVED_KEYWORD)
+	PG_KEYWORD2("varchar2", RESERVED_KEYWORD)
 };
 const int NumScanKeywordsExtra = lengthof(ScanKeywordsExtra);
 
