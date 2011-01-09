@@ -1311,7 +1311,7 @@ wxString commandLineCleanOption(const wxString &option, bool schemaObject)
 		// Replace double (slash & double-quote) combination to single (slash & double-quote) combination
 		tmp.Replace(wxT("\\\"\\\""), wxT("\\\""));
 
-        // Add the double quotes
+		// Add the double quotes
 		tmp = wxT("\"") + tmp + wxT("\"");
 	}
 
