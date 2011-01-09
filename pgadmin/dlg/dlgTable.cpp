@@ -249,7 +249,6 @@ int dlgTable::Go(bool modal)
 		btnAddTable->Enable(connection->BackendMinimumVersion(8, 2) && cbTables->GetGuessedSelection() >= 0);
 		lbTables->Enable(connection->BackendMinimumVersion(8, 2));
 		chkHasOids->Enable(table->GetHasOids() && connection->BackendMinimumVersion(8, 0));
-		chkUnlogged->Enable(false);
 		cbTablespace->Enable(connection->BackendMinimumVersion(7, 5));
 
 		wxCookieType cookie;
@@ -381,6 +380,7 @@ int dlgTable::Go(bool modal)
 		cbTablespace->SetSelection(0);
 	}
 
+	chkUnlogged->Enable(connection->BackendMinimumVersion(9, 1) && !table);
 	cbOfType->Enable(connection->BackendMinimumVersion(9, 0) && !table);
 	cbTables->Enable(connection->BackendMinimumVersion(8, 2) && cbOfType->GetCurrentSelection() == 0);
 
