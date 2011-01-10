@@ -1643,7 +1643,10 @@ void frmQuery::OpenLastFile()
 		setExtendedTitle();
 		SetLineEndingStyle();
 		UpdateRecentFiles(true);
-		mainForm->UpdateAllRecentFiles();
+		if(mainForm != NULL)
+		{
+			mainForm->UpdateAllRecentFiles();
+		}
 	}
 }
 
