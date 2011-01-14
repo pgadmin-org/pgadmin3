@@ -438,7 +438,7 @@ void pgHbaConfigLine::Init(const wxString &line)
 		if (!quoted && IsSpaceChar(*p2))
 			break;
 		if (*p2 == '"')
-			quoted ^= quoted;
+			quoted = !quoted;
 		p2++;
 	}
 
@@ -454,7 +454,7 @@ void pgHbaConfigLine::Init(const wxString &line)
 		if (!quoted && IsSpaceChar(*p3))
 			break;
 		if (*p3 == '"')
-			quoted ^= quoted;
+			quoted = !quoted;
 		p3++;
 	}
 
