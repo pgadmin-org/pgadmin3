@@ -131,8 +131,8 @@ void	M_fast_mul_fft(UCHAR *ww, UCHAR *uu, UCHAR *vv, int nbytes)
 	i = 0;
 	for (j = 0; j < nn2; j++)
 	{
-		a[j] = (double)((int)uu[i] * 100 + uu[i+1]);
-		b[j] = (double)((int)vv[i] * 100 + vv[i+1]);
+		a[j] = (double)((int)uu[i] * 100 + uu[i + 1]);
+		b[j] = (double)((int)vv[i] * 100 + vv[i + 1]);
 		i += 2;
 	}
 
@@ -156,9 +156,9 @@ void	M_fast_mul_fft(UCHAR *ww, UCHAR *uu, UCHAR *vv, int nbytes)
 
 	for (j = 3; j <= nn; j += 2)
 	{
-		dtemp  = b[j-1];
-		b[j-1] = dtemp * a[j-1] - b[j] * a[j];
-		b[j]   = dtemp * a[j] + b[j] * a[j-1];
+		dtemp  = b[j - 1];
+		b[j - 1] = dtemp * a[j - 1] - b[j] * a[j];
+		b[j]   = dtemp * a[j] + b[j] * a[j - 1];
 	}
 
 	/* perform the inverse transform on the result */

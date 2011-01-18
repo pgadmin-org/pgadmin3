@@ -209,10 +209,10 @@ PHASE2:
 			if (ii == 0)
 			{
 				m_apm_copy(tmp1, array[ii]);
-				m_apm_multiply(array[jj], tmp1, array[ii+1]);
+				m_apm_multiply(array[jj], tmp1, array[ii + 1]);
 			}
 			else
-				m_apm_multiply(array[jj], array[ii], array[ii+1]);
+				m_apm_multiply(array[jj], array[ii], array[ii + 1]);
 
 			if (++jj == nmul)
 				break;

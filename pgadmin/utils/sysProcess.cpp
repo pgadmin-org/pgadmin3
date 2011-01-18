@@ -88,7 +88,7 @@ wxString sysProcess::ReadStream(wxInputStream *input)
 {
 	wxString str;
 
-	char buffer[1000+1];
+	char buffer[1000 + 1];
 	size_t size = 1;
 	while (size && !input->Eof())
 	{

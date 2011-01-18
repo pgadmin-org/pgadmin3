@@ -2545,23 +2545,23 @@ wxString sqlTable::MakeKey(cacheLine *line)
 			cn = StrToLong(collist.GetNextToken());
 
 			// Translate the column location to the real location in the actual columns still present
-			cn = colMap[cn-1];
+			cn = colMap[cn - 1];
 
-			wxString colval = line->cols[cn-offset];
+			wxString colval = line->cols[cn - offset];
 			if (colval.IsEmpty())
 				return wxEmptyString;
 
-			if (colval == wxT("''") && columns[cn-offset].typeName == wxT("text"))
+			if (colval == wxT("''") && columns[cn - offset].typeName == wxT("text"))
 				colval = wxEmptyString;
 
 			if (!whereClause.IsEmpty())
 				whereClause += wxT(" AND ");
-			whereClause += qtIdent(columns[cn-offset].name) + wxT(" = ") + connection->qtDbString(colval);
+			whereClause += qtIdent(columns[cn - offset].name) + wxT(" = ") + connection->qtDbString(colval);
 
-			if (columns[cn-offset].typeName != wxT(""))
+			if (columns[cn - offset].typeName != wxT(""))
 			{
 				whereClause += wxT("::");
-				whereClause += columns[cn-offset].displayTypeName;
+				whereClause += columns[cn - offset].displayTypeName;
 			}
 		}
 	}
@@ -2877,7 +2877,7 @@ bool sqlTable::DeleteRows(size_t pos, size_t rows)
 			{
 				rowsDeleted++;
 				if ((int)pos < nRows - rowsDeleted)
-					memmove(lineIndex + pos, lineIndex + pos + 1, sizeof(cacheLine *)*(nRows - rowsDeleted - pos));
+					memmove(lineIndex + pos, lineIndex + pos + 1, sizeof(cacheLine *) * (nRows - rowsDeleted - pos));
 			}
 			else
 			{
@@ -2963,7 +2963,7 @@ bool sqlTable::Paste()
 		}
 
 		if (inQuotes && text[pos] == quoteChar &&
-		        text[pos+1] == colSep)
+		        text[pos + 1] == colSep)
 		{
 			data.Add(text.Mid(start, pos - start));
 			start = (pos += 2);
@@ -2982,7 +2982,7 @@ bool sqlTable::Paste()
 	}
 	if (start < pos)
 	{
-		if (inQuotes && text[pos-1] == quoteChar)
+		if (inQuotes && text[pos - 1] == quoteChar)
 			data.Add(text.Mid(start, pos - start - 1));
 		else
 			data.Add(text.Mid(start, pos - start));
@@ -3143,7 +3143,7 @@ void cacheLinePool::Delete(int lineNo)
 		ptr[0] = ptr[1];
 		ptr[1] = c;
 #endif
-		ptr[anzLines-1] = 0;
+		ptr[anzLines - 1] = 0;
 	}
 }
 

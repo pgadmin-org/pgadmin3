@@ -74,7 +74,7 @@ extern "C++" {
 
 		virtual void
 		yy_switch_to_buffer( struct yy_buffer_state *new_buffer ) = 0;
-		virtual struct yy_buffer_state*
+		virtual struct yy_buffer_state *
 		yy_create_buffer( FLEX_STD istream *s, int size ) = 0;
 		virtual void yy_delete_buffer( struct yy_buffer_state *b ) = 0;
 		virtual void yyrestart( FLEX_STD istream *s ) = 0;

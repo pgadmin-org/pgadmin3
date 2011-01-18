@@ -822,7 +822,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 						        nArgsIN < (size_t)function->GetArgDefValCount())
 						{
 							if (argDefValArray[currINindex++] != wxT("-"))
-								function->iAddArgDef(argDefValArray[currINindex-1]);
+								function->iAddArgDef(argDefValArray[currINindex - 1]);
 							else
 								function->iAddArgDef(wxT(""));
 						}

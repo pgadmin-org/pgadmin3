@@ -1665,8 +1665,8 @@ wxString pgObject::qtDbString(const wxString &str)
 }
 
 wxString pgObject::GetDefaultPrivileges(const wxString &strType, const wxString &strSupportedPrivs,
-const wxString &strSchema, const wxString &strOrigDefPrivs,
-const wxString &strNewDefPrivs, const wxString &strRole)
+                                        const wxString &strSchema, const wxString &strOrigDefPrivs,
+                                        const wxString &strNewDefPrivs, const wxString &strRole)
 {
 	wxString strDefPrivs, strGrant, strRevoke, strGrantOption, strRevokeGrantOption;
 	int privilegeCount = strSupportedPrivs.Length();
@@ -1680,7 +1680,7 @@ const wxString &strNewDefPrivs, const wxString &strRole)
 		{
 			inOrigPriv =  true;
 			if ((unsigned int)privAt < strOrigDefPrivs.Length() - 1 &&
-			strOrigDefPrivs.GetChar(privAt + 1) == wxT('*'))
+			        strOrigDefPrivs.GetChar(privAt + 1) == wxT('*'))
 				grantOptInOrigPriv = true;
 		}
 
@@ -1689,7 +1689,7 @@ const wxString &strNewDefPrivs, const wxString &strRole)
 		{
 			inNewPriv =  true;
 			if ((unsigned int)privAt < strNewDefPrivs.Length() - 1 &&
-			strNewDefPrivs.GetChar(privAt + 1) == wxT('*'))
+			        strNewDefPrivs.GetChar(privAt + 1) == wxT('*'))
 				grantOptInNewPriv = true;
 		}
 		if (inOrigPriv || inNewPriv || grantOptInOrigPriv || grantOptInNewPriv)
@@ -1732,16 +1732,16 @@ const wxString &strNewDefPrivs, const wxString &strRole)
 		isModified = true;
 		strRevoke = strRevoke.SubString(0, strRevoke.Length() - 3);
 		strDefPrivs += strAltDefPriv +
-		wxT("\n    REVOKE ") + strRevoke + wxT(" ON ") + strType +
-		wxT("\n    FROM ") + strRole + wxT(";\n");
+		               wxT("\n    REVOKE ") + strRevoke + wxT(" ON ") + strType +
+		               wxT("\n    FROM ") + strRole + wxT(";\n");
 	}
 	if (!strRevokeGrantOption.IsEmpty())
 	{
 		isModified = true;
 		strRevokeGrantOption = strRevokeGrantOption.SubString(0, strRevokeGrantOption.Length() - 3);
 		strDefPrivs += strAltDefPriv +
-		wxT("\n    REVOKE GRANT OPTION FOR ") + strRevokeGrantOption + wxT(" ON ") + strType +
-		wxT("\n    FROM ") + strRole + wxT(";\n");
+		               wxT("\n    REVOKE GRANT OPTION FOR ") + strRevokeGrantOption + wxT(" ON ") + strType +
+		               wxT("\n    FROM ") + strRole + wxT(";\n");
 	}
 	if (!strGrant.IsEmpty())
 	{
@@ -1749,16 +1749,16 @@ const wxString &strNewDefPrivs, const wxString &strRole)
 
 		strGrant = strGrant.SubString(0, strGrant.Length() - 3);
 		strDefPrivs += strAltDefPriv +
-		wxT("\n    GRANT ") + strGrant + wxT(" ON ") + strType +
-		wxT("\n    TO ") + strRole + wxT(";\n");
+		               wxT("\n    GRANT ") + strGrant + wxT(" ON ") + strType +
+		               wxT("\n    TO ") + strRole + wxT(";\n");
 	}
 	if (!strGrantOption.IsEmpty())
 	{
 		isModified = true;
 		strGrantOption = strGrantOption.SubString(0, strGrantOption.Length() - 3);
 		strDefPrivs += strAltDefPriv +
-		wxT("\n    GRANT ") + strGrantOption + wxT(" ON ") + strType +
-		wxT("\n    TO ") + strRole + wxT(" WITH GRANT OPTION;\n");
+		               wxT("\n    GRANT ") + strGrantOption + wxT(" ON ") + strType +
+		               wxT("\n    TO ") + strRole + wxT(" WITH GRANT OPTION;\n");
 	}
 	if (isModified)
 		return strDefPrivs + wxT("\n");

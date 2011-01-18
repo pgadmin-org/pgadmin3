@@ -385,8 +385,8 @@ void	M_fmul_div_conq(UCHAR *rr, UCHAR *aa, UCHAR *bb, int sz)
 	*/
 
 	fmul_a1 = mul_stack_data[itmp];
-	fmul_b1 = mul_stack_data[itmp+3];
-	fmul_t0 = mul_stack_data[itmp+6];
+	fmul_b1 = mul_stack_data[itmp + 3];
+	fmul_t0 = mul_stack_data[itmp + 6];
 
 	memcpy((rr + sz), fmul_t0, sz);    /* first 'add', result is now zero */
 	/* so we just copy in the bytes    */
@@ -402,9 +402,9 @@ void	M_fmul_div_conq(UCHAR *rr, UCHAR *aa, UCHAR *bb, int sz)
 	M_push_mul_int(stmp);
 	M_push_mul_int(mii);
 
-	fmul_a9 = mul_stack_data[itmp+2];
-	fmul_b9 = mul_stack_data[itmp+5];
-	fmul_t0 = mul_stack_data[itmp+6];
+	fmul_a9 = mul_stack_data[itmp + 2];
+	fmul_b9 = mul_stack_data[itmp + 5];
+	fmul_t0 = mul_stack_data[itmp + 6];
 
 	M_fmul_add(rr, fmul_t0, 0, sz);
 	M_fmul_add(rr, fmul_t0, mii, sz);
@@ -416,7 +416,7 @@ void	M_fmul_div_conq(UCHAR *rr, UCHAR *aa, UCHAR *bb, int sz)
 	stmp = M_pop_mul_int();
 	itmp = M_pop_mul_int();
 
-	fmul_t0 = mul_stack_data[itmp+6];
+	fmul_t0 = mul_stack_data[itmp + 6];
 
 	/*
 	 *  if the sign of (A1 - A0)(B0 - B1) is positive, ADD to
@@ -425,8 +425,8 @@ void	M_fmul_div_conq(UCHAR *rr, UCHAR *aa, UCHAR *bb, int sz)
 
 	if (stmp < 0)
 	{
-		fmul_a9 = mul_stack_data[itmp+2];
-		fmul_b9 = mul_stack_data[itmp+5];
+		fmul_a9 = mul_stack_data[itmp + 2];
+		fmul_b9 = mul_stack_data[itmp + 5];
 
 		memset(fmul_b9, 0, (2 * sz));
 		memcpy((fmul_b9 + mii), fmul_t0, sz);

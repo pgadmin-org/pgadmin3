@@ -69,7 +69,7 @@ ctlSecurityPanel::ctlSecurityPanel(wxNotebook *nb, const wxString &privList, con
 	if (privilegeCount)
 	{
 		bool needAll = (privilegeCount > 1);
-		privCheckboxes = new wxCheckBox*[privilegeCount*2];
+		privCheckboxes = new wxCheckBox*[privilegeCount * 2];
 		int i = 0;
 
 		wxFlexGridSizer *itemSizer1 = new wxFlexGridSizer(1, 1, 5, 5);
@@ -241,21 +241,21 @@ void ctlSecurityPanel::OnPrivCheckAll(wxCommandEvent &ev)
 		{
 			// We use the Name property of the checkboxes as a flag to note if that
 			// box should remain disabled (eg. CONNECT for a DB on PG < 8.2
-			if (privCheckboxes[i*2]->GetName() != wxT("DISABLE"))
+			if (privCheckboxes[i * 2]->GetName() != wxT("DISABLE"))
 			{
-				privCheckboxes[i*2]->SetValue(true);
-				privCheckboxes[i*2]->Disable();
-				privCheckboxes[i*2+1]->Disable();
+				privCheckboxes[i * 2]->SetValue(true);
+				privCheckboxes[i * 2]->Disable();
+				privCheckboxes[i * 2 + 1]->Disable();
 				allPrivilegesGrant->Enable(GrantAllowed());
 			}
 		}
 		else
 		{
-			if (privCheckboxes[i*2]->GetName() != wxT("DISABLE"))
+			if (privCheckboxes[i * 2]->GetName() != wxT("DISABLE"))
 			{
 				allPrivilegesGrant->Disable();
 				allPrivilegesGrant->SetValue(false);
-				privCheckboxes[i*2]->Enable();
+				privCheckboxes[i * 2]->Enable();
 				CheckGrantOpt(i);
 			}
 		}
@@ -269,7 +269,7 @@ void ctlSecurityPanel::OnPrivCheckAllGrant(wxCommandEvent &ev)
 	bool grant = allPrivilegesGrant->GetValue();
 	int i;
 	for (i = 0 ; i < privilegeCount ; i++)
-		privCheckboxes[i*2+1]->SetValue(grant);
+		privCheckboxes[i * 2 + 1]->SetValue(grant);
 }
 
 
@@ -282,13 +282,13 @@ void ctlSecurityPanel::OnPrivCheck(wxCommandEvent &ev)
 
 void ctlSecurityPanel::CheckGrantOpt(int id)
 {
-	bool canGrant = (GrantAllowed() && privCheckboxes[id*2]->GetValue());
+	bool canGrant = (GrantAllowed() && privCheckboxes[id * 2]->GetValue());
 	if (canGrant)
-		privCheckboxes[id*2+1]->Enable();
+		privCheckboxes[id * 2 + 1]->Enable();
 	else
 	{
-		privCheckboxes[id*2+1]->SetValue(false);
-		privCheckboxes[id*2+1]->Disable();
+		privCheckboxes[id * 2 + 1]->SetValue(false);
+		privCheckboxes[id * 2 + 1]->Disable();
 	}
 }
 
@@ -329,10 +329,10 @@ void ctlSecurityPanel::OnAddPriv(wxCommandEvent &ev)
 	int i;
 	for (i = 0 ; i < privilegeCount ; i++)
 	{
-		if (privCheckboxes[i*2]->GetValue())
+		if (privCheckboxes[i * 2]->GetValue())
 		{
 			value += privilegeChars[i];
-			if (privCheckboxes[i*2+1]->GetValue())
+			if (privCheckboxes[i * 2 + 1]->GetValue())
 				value += '*';
 		}
 	}
@@ -373,17 +373,17 @@ void ctlSecurityPanel::OnPrivSelChange(wxListEvent &ev)
 		int i;
 		for (i = 0 ; i < privilegeCount ; i++)
 		{
-			if (privCheckboxes[i*2]->GetName() != wxT("DISABLE"))
+			if (privCheckboxes[i * 2]->GetName() != wxT("DISABLE"))
 			{
-				privCheckboxes[i*2]->Enable();
+				privCheckboxes[i * 2]->Enable();
 				int index = value.Find(privilegeChars[i]);
 				if (index >= 0)
 				{
-					privCheckboxes[i*2]->SetValue(true);
-					privCheckboxes[i*2+1]->SetValue(value.Mid(index + 1, 1) == wxT("*"));
+					privCheckboxes[i * 2]->SetValue(true);
+					privCheckboxes[i * 2 + 1]->SetValue(value.Mid(index + 1, 1) == wxT("*"));
 				}
 				else
-					privCheckboxes[i*2]->SetValue(false);
+					privCheckboxes[i * 2]->SetValue(false);
 			}
 			CheckGrantOpt(i);
 		}
@@ -413,11 +413,11 @@ bool ctlSecurityPanel::DisablePrivilege(const wxString &priv)
 {
 	for (int i = 0; i < privilegeCount; i++)
 	{
-		if (privCheckboxes[i*2]->GetLabel() == priv)
+		if (privCheckboxes[i * 2]->GetLabel() == priv)
 		{
 			// Use the Name property as a flag so we don't accidently reenable the control later
-			privCheckboxes[i*2]->SetName(wxT("DISABLE"));
-			privCheckboxes[i*2]->Disable();
+			privCheckboxes[i * 2]->SetName(wxT("DISABLE"));
+			privCheckboxes[i * 2]->Disable();
 			return true;
 		}
 	}

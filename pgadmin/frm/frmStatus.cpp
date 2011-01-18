@@ -2079,7 +2079,7 @@ void frmStatus::addLogLine(const wxString &str, bool formatted, bool csv_log_for
 					// If we are reading the masterDB log only, the logSegment won't
 					// have anything useful in it.  Look in the logMessage, and see if the
 					// segment info exists in there.  It will always be at the end.
-					if (logMessage.length() > 0 && logMessage[logMessage.length()-1] == wxT(')'))
+					if (logMessage.length() > 0 && logMessage[logMessage.length() - 1] == wxT(')'))
 					{
 						int segpos = -1;
 						segpos = logMessage.Find(wxT("(seg"));
@@ -2185,7 +2185,7 @@ void frmStatus::addLogLine(const wxString &str, bool formatted, bool csv_log_for
 				rest = rest.AfterFirst(':').Mid(2);
 			}
 
-			wxString ts = str.BeforeFirst(logFormat.c_str()[logFmtPos+2]);
+			wxString ts = str.BeforeFirst(logFormat.c_str()[logFmtPos + 2]);
 			if (ts.Length() < 20  || (logHasTimestamp && (ts.Left(2) != wxT("20") || str.Find(':') < 0)))
 			{
 				// No Timestamp?  Must be a continuation of a previous line?
@@ -2220,7 +2220,7 @@ void frmStatus::addLogLine(const wxString &str, bool formatted, bool csv_log_for
 					rest = str.Mid(logFmtPos + 22).AfterFirst(':');
 					wxString ts = str.Mid(logFmtPos, str.Length() - rest.Length() - logFmtPos - 1);
 
-					int pos = ts.Find(logFormat.c_str()[logFmtPos+2], true);
+					int pos = ts.Find(logFormat.c_str()[logFmtPos + 2], true);
 					logList->InsertItem(row, ts.Left(pos), -1);
 					logList->SetItem(row, idxLevelCol, ts.Mid(pos + logFormat.Length() - logFmtPos - 2));
 					logList->SetItem(row, idxLogEntryCol, rest.Mid(2));

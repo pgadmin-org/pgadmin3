@@ -123,7 +123,7 @@ ctlDefaultPrivilegesPanel::ctlDefaultPrivilegesPanel(ctlDefaultSecurityPanel *de
 	item0->AddGrowableCol(0);
 	item0->AddGrowableRow(0);
 
-	privCheckboxes = new wxCheckBox*[privilegeCount*2];
+	privCheckboxes = new wxCheckBox*[privilegeCount * 2];
 
 	wxFlexGridSizer *itemSizer1 = new wxFlexGridSizer(1, 1, 5, 5);
 	itemSizer1->AddGrowableCol(0);
@@ -222,9 +222,9 @@ bool ctlDefaultPrivilegesPanel::PrivCheckBoxUpdate(wxString &strRole)
 		allPrivilegesGrant->Enable(canGrant);
 		for (; index < privilegeCount; index++)
 		{
-			privCheckboxes[index*2]->Enable();
-			privCheckboxes[index*2]->SetValue(true);
-			privCheckboxes[index*2 + 1]->Enable(canGrant);
+			privCheckboxes[index * 2]->Enable();
+			privCheckboxes[index * 2]->SetValue(true);
+			privCheckboxes[index * 2 + 1]->Enable(canGrant);
 		}
 		return false;
 	}
@@ -243,18 +243,18 @@ bool ctlDefaultPrivilegesPanel::PrivCheckBoxUpdate(wxString &strRole)
 		int privAt = currentPrivileges.Find(m_privilegeType.m_privileges.GetChar(index));
 		if (privAt != wxNOT_FOUND)
 		{
-			privCheckboxes[index*2]->SetValue(true);
-			privCheckboxes[index*2 + 1]->Enable(canGrant);
+			privCheckboxes[index * 2]->SetValue(true);
+			privCheckboxes[index * 2 + 1]->Enable(canGrant);
 			if (canGrant && (unsigned int)privAt < currentPrivileges.Length() - 1 && currentPrivileges.GetChar(privAt + 1) == wxT('*'))
-				privCheckboxes[index*2 + 1]->SetValue(true);
+				privCheckboxes[index * 2 + 1]->SetValue(true);
 			else
-				privCheckboxes[index*2 + 1]->SetValue(false);
+				privCheckboxes[index * 2 + 1]->SetValue(false);
 		}
 		else
 		{
-			privCheckboxes[index*2]->SetValue(false);
-			privCheckboxes[index*2 + 1]->SetValue(false);
-			privCheckboxes[index*2 + 1]->Disable();
+			privCheckboxes[index * 2]->SetValue(false);
+			privCheckboxes[index * 2 + 1]->SetValue(false);
+			privCheckboxes[index * 2 + 1]->Disable();
 		}
 	}
 	return false;
@@ -289,7 +289,7 @@ void ctlDefaultPrivilegesPanel::OnPrivCheckAll(wxCommandEvent &ev)
 
 	for (int i = 0; i < privilegeCount; i++)
 	{
-		privCheckboxes[i*2]->SetValue(all);
+		privCheckboxes[i * 2]->SetValue(all);
 		CheckGrantOpt(i);
 	}
 }
@@ -298,7 +298,7 @@ void ctlDefaultPrivilegesPanel::OnPrivCheckAllGrant(wxCommandEvent &ev)
 {
 	bool grant = allPrivilegesGrant->GetValue();
 	for (int i = 0 ; i < privilegeCount ; i++)
-		privCheckboxes[i*2+1]->SetValue(grant);
+		privCheckboxes[i * 2 + 1]->SetValue(grant);
 }
 
 
@@ -307,20 +307,20 @@ void ctlDefaultPrivilegesPanel::OnPrivCheck(wxCommandEvent &ev)
 	int id = (ev.GetId() - CTL_DEFPRIVCB) / 2;
 	CheckGrantOpt(id);
 	btnAddPriv->Enable();
-	if (!privCheckboxes[id*2]->GetValue())
+	if (!privCheckboxes[id * 2]->GetValue())
 		allPrivileges->SetValue(false);
 }
 
 
 void ctlDefaultPrivilegesPanel::CheckGrantOpt(int id)
 {
-	bool canGrant = (privCheckboxes[id*2]->GetValue() && CanGrant());
+	bool canGrant = (privCheckboxes[id * 2]->GetValue() && CanGrant());
 	if (canGrant)
-		privCheckboxes[id*2+1]->Enable(true);
+		privCheckboxes[id * 2 + 1]->Enable(true);
 	else
 	{
-		privCheckboxes[id*2+1]->SetValue(false);
-		privCheckboxes[id*2+1]->Disable();
+		privCheckboxes[id * 2 + 1]->SetValue(false);
+		privCheckboxes[id * 2 + 1]->Disable();
 	}
 	btnAddPriv->Enable();
 }
@@ -384,10 +384,10 @@ void ctlDefaultPrivilegesPanel::OnAddPriv(wxCommandEvent &ev)
 	{
 		for (int index = 0; index < privilegeCount; index++)
 		{
-			if (privCheckboxes[index*2]->GetValue())
+			if (privCheckboxes[index * 2]->GetValue())
 			{
 				strPriv += m_privilegeType.m_privileges.GetChar(index);
-				if(privCheckboxes[index*2 + 1]->IsEnabled() && privCheckboxes[index*2 + 1]->GetValue())
+				if(privCheckboxes[index * 2 + 1]->IsEnabled() && privCheckboxes[index * 2 + 1]->GetValue())
 					strPriv += wxT('*');
 			}
 		}

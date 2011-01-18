@@ -50,7 +50,7 @@ off_t wxUtfFile::Read(wxString &str, off_t nCount)
 	if (!nCount)
 		return 0;
 
-	char *buffer = new char[nCount+4];
+	char *buffer = new char[nCount + 4];
 	// on some systems, len returned from wxFile::read might not reflect the number of bytes written
 	// to the buffer, but the bytes read from file. In case of CR/LF translation, this is not the same.
 	memset(buffer, 0, nCount + 4);

@@ -86,7 +86,7 @@ bool dlgRepClusterBase::AddScript(wxString &sql, const wxString &fn)
 	char *buffer;
 	size_t done;
 
-	buffer = new char[file.Length()+1];
+	buffer = new char[file.Length() + 1];
 	done = file.Read(buffer, file.Length());
 	buffer[done] = 0;
 	sql += wxTextBuffer::Translate(wxString::FromAscii(buffer), wxTextFileType_Unix);
@@ -847,7 +847,7 @@ void AppendBuf(wxChar* &buf, int &buflen, int &len, const wxChar *str, int slen 
 	if (buflen < len + slen)
 	{
 		buflen = (len + slen) * 6 / 5;
-		wxChar *tmp = new wxChar[buflen+1];
+		wxChar *tmp = new wxChar[buflen + 1];
 		memcpy(tmp, buf, len * sizeof(wxChar));
 		delete[] buf;
 		buf = tmp;
@@ -862,7 +862,7 @@ wxString ReplaceString(const wxString &str, const wxString &oldStr, const wxStri
 	int buflen = str.Length() + 100;
 	int len = 0;
 
-	wxChar *buf = new wxChar[buflen+1];
+	wxChar *buf = new wxChar[buflen + 1];
 
 	const wxChar *ptrIn = str.c_str();
 	const wxChar *ptrFound = wxStrstr(ptrIn, oldStr.c_str());
