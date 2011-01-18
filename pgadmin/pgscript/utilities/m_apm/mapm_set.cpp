@@ -231,7 +231,7 @@ void	m_apm_set_string(M_APM ctmp, const char *s_in)
 		}
 
 		ctmp->m_apm_data[i]   = ch;
-		ctmp->m_apm_data[i+1] = 0;
+		ctmp->m_apm_data[i + 1] = 0;
 	}
 
 	ctmp->m_apm_exponent = exponent;

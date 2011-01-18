@@ -264,7 +264,7 @@ void	M_apm_normalize(M_APM atmp)
 		{
 			for (i = 0; i < index; i++)
 			{
-				M_get_div_rem_10((int)atmp->m_apm_data[i+1], &numdiv, &numrem2);
+				M_get_div_rem_10((int)atmp->m_apm_data[i + 1], &numdiv, &numrem2);
 				atmp->m_apm_data[i] = 10 * numrem + numdiv;
 				numrem = numrem2;
 			}

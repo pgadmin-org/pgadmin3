@@ -31,9 +31,9 @@ createPaddedCopyWithLength(uint8 *b, uint32 *l)
 	uint8	   *ret;
 	uint32		q;
 	uint32		len,
-	         newLen448;
+	            newLen448;
 	uint32		len_high,
-	         len_low;		/* 64-bit value split into 32-bit sections */
+	            len_low;		/* 64-bit value split into 32-bit sections */
 
 	len = ((b == NULL) ? 0 : *l);
 	newLen448 = len + 64 - (len % 64) - 8;
@@ -87,9 +87,9 @@ static void
 doTheRounds(uint32 X[16], uint32 state[4])
 {
 	uint32		a,
-	         b,
-	         c,
-	         d;
+	            b,
+	            c,
+	            d;
 
 	a = state[0];
 	b = state[1];
@@ -185,7 +185,7 @@ calculateDigestFromBuffer(uint8 *b, uint32 len, uint8 sum[16])
 	uint8	   *input;
 	register uint32 *wbp;
 	uint32		workBuff[16],
-	         state[4];
+	            state[4];
 
 	l = len;
 
@@ -239,7 +239,7 @@ bytesToHex(uint8 b[16], char *s)
 {
 	static const char *hex = "0123456789abcdef";
 	int			q,
-	        w;
+	            w;
 
 	for (q = 0, w = 0; q < 16; q++)
 	{

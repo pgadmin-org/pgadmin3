@@ -816,7 +816,7 @@ void frmReport::XmlSetSectionTableHeader(const int section, int columns, const w
 
 	va_end(ap);
 
-	sectionTableHeader[section-1] = data;
+	sectionTableHeader[section - 1] = data;
 }
 
 void frmReport::XmlAddSectionTableRow(const int section, int number, int columns, const wxChar *value, ...)
@@ -848,7 +848,7 @@ void frmReport::XmlAddSectionTableRow(const int section, int number, int columns
 
 	va_end(ap);
 
-	sectionTableRows[section-1] += data;
+	sectionTableRows[section - 1] += data;
 }
 
 void frmReport::XmlAddSectionTableFromListView(const int section, ctlListView *list)
@@ -873,7 +873,7 @@ void frmReport::XmlAddSectionTableFromListView(const int section, ctlListView *l
 		data += HtmlEntities(label);
 		data += wxT("\" />\n");
 	}
-	sectionTableHeader[section-1] = data;
+	sectionTableHeader[section - 1] = data;
 
 	// Build the rows
 	int rows = list->GetItemCount();
@@ -895,7 +895,7 @@ void frmReport::XmlAddSectionTableFromListView(const int section, ctlListView *l
 			data += wxT("\"");
 		}
 		data += wxT(" />\n");
-		sectionTableRows[section-1] += data;
+		sectionTableRows[section - 1] += data;
 	}
 }
 
@@ -922,7 +922,7 @@ void frmReport::XmlAddSectionTableFromGrid(const int section, ctlSQLResult *grid
 		data += HtmlEntities(label);
 		data += wxT("\" />\n");
 	}
-	sectionTableHeader[section-1] = data;
+	sectionTableHeader[section - 1] = data;
 
 	// Build the rows
 	int rows = grid->NumRows();
@@ -944,15 +944,15 @@ void frmReport::XmlAddSectionTableFromGrid(const int section, ctlSQLResult *grid
 			data += wxT("\"");
 		}
 		data += wxT(" />\n");
-		sectionTableRows[section-1] += data;
+		sectionTableRows[section - 1] += data;
 	}
 }
 
 void frmReport::XmlSetSectionSql(int section, const wxString &sql)
 {
-	sectionSql[section-1] = HtmlEntities(sql);
+	sectionSql[section - 1] = HtmlEntities(sql);
 
-	if (!sectionSql[section-1].IsEmpty())
+	if (!sectionSql[section - 1].IsEmpty())
 		chkSql->Enable();
 	else
 		chkSql->Disable();
@@ -960,7 +960,7 @@ void frmReport::XmlSetSectionSql(int section, const wxString &sql)
 
 void frmReport::XmlAddSectionValue(const int section, const wxString &name, const wxString &value)
 {
-	sectionData[section-1] += wxT("    <") + HtmlEntities(name) + wxT(">") + HtmlEntities(value) + wxT("</") + HtmlEntities(name) + wxT(">\n");
+	sectionData[section - 1] += wxT("    <") + HtmlEntities(name) + wxT(">") + HtmlEntities(value) + wxT("</") + HtmlEntities(name) + wxT(">\n");
 }
 
 wxString frmReport::GetSectionTableColumns(const int section)
@@ -968,7 +968,7 @@ wxString frmReport::GetSectionTableColumns(const int section)
 	wxString data;
 
 	data  = wxT("      <columns>\n");
-	data += sectionTableHeader[section-1];
+	data += sectionTableHeader[section - 1];
 	data += wxT("      </columns>\n");
 
 	return data;
@@ -979,7 +979,7 @@ wxString frmReport::GetSectionTableRows(const int section)
 	wxString data;
 
 	data  = wxT("      <rows>\n");
-	data += sectionTableRows[section-1];
+	data += sectionTableRows[section - 1];
 	data += wxT("      </rows>\n");
 
 	return data;
@@ -993,10 +993,10 @@ wxString frmReport::GetSectionTable(const int section)
 	data += GetSectionTableColumns(section);
 	data += GetSectionTableRows(section);
 
-	if (!sectionTableInfo[section-1].IsEmpty())
+	if (!sectionTableInfo[section - 1].IsEmpty())
 	{
 		data += wxT("      <info>");
-		data += sectionTableInfo[section-1];
+		data += sectionTableInfo[section - 1];
 		data += wxT("</info>\n");
 	}
 
@@ -1014,19 +1014,19 @@ wxString frmReport::GetSection(const int section)
 	data += wxT("\" number=\"");
 	data += NumToStr((long)section);
 	data += wxT("\" name=\"");
-	data += sectionName[section-1];
+	data += sectionName[section - 1];
 	data += wxT("\">\n");
 	data += GetSectionTable(section);
 
 
-	if (chkSql->GetValue() && !sectionSql[section-1].IsEmpty())
+	if (chkSql->GetValue() && !sectionSql[section - 1].IsEmpty())
 	{
 		data += wxT("    <sql>");
-		data += sectionSql[section-1];
+		data += sectionSql[section - 1];
 		data += wxT("</sql>\n");
 	}
 
-	data += sectionData[section-1];
+	data += sectionData[section - 1];
 	data += wxT("  </section>\n");
 
 	return data;

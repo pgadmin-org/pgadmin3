@@ -118,12 +118,12 @@ extern wxString gpRestoreExecutable;
 //
 #ifdef __WXMSW__
 // Dynamically loaded PQgetOutResult
-typedef PGresult* (*PQGETOUTRESULT)(PGconn *);
+typedef PGresult *(*PQGETOUTRESULT)(PGconn *);
 extern PQGETOUTRESULT PQiGetOutResult;
 #define PQiGetOutResult (PQiGetOutResult)
 
 // Dynamically loaded PQprepareOut
-typedef PGresult* (*PQPREPAREOUT)(PGconn *, const char *, const char *, int, const Oid *, const int *);
+typedef PGresult *(*PQPREPAREOUT)(PGconn *, const char *, const char *, int, const Oid *, const int *);
 extern PQPREPAREOUT PQiPrepareOut;
 #define PQiPrepareOut (PQiPrepareOut)
 

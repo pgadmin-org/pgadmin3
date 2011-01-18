@@ -472,7 +472,7 @@ bool pgConn::HasFeature(int featureNo)
 // Encrypt a password using the appropriate encoding conversion
 wxString pgConn::EncryptPassword(const wxString &user, const wxString &password)
 {
-	char hash[MD5_PASSWD_LEN+1];
+	char hash[MD5_PASSWD_LEN + 1];
 
 	pg_md5_encrypt(password.mb_str(*conv), user.mb_str(*conv), strlen(user.mb_str(*conv)), hash);
 

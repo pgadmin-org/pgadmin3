@@ -317,7 +317,7 @@ void pgFrame::UpdateRecentFiles(bool updatefile)
 	if (recentIndex > 1 && !lastPath.IsNull() && updatefile)
 	{
 		for (i = recentIndex ; i > 1 ; i--)
-			lastFiles[i] = lastFiles[i-1];
+			lastFiles[i] = lastFiles[i - 1];
 		lastFiles[1] = lastPath;
 	}
 
