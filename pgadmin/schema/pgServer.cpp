@@ -186,7 +186,7 @@ pgConn *pgServer::CreateConn(wxString dbName, OID oid, wxString applicationname)
 		dbName = GetDatabaseName();
 		oid = dbOid;
 	}
-	pgConn *conn = new pgConn(GetName(), dbName, username, password, port, rolename, ssl, oid, applicationname);
+	pgConn *conn = new pgConn(GetName(), dbName, username, password, port, rolename, ssl, oid, applicationname, sslcert, sslkey, sslrootcert, sslcrl);
 
 	if (conn && conn->GetStatus() != PGCONN_OK)
 	{
@@ -663,21 +663,21 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 
 		if (database.IsEmpty())
 		{
-			conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"));
+			conn = new pgConn(GetName(), DEFAULT_PG_DATABASE, username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"), sslcert, sslkey, sslrootcert, sslcrl);
 			if (conn->GetStatus() == PGCONN_OK)
 				database = DEFAULT_PG_DATABASE;
 			else if (conn->GetStatus() == PGCONN_BAD && conn->GetLastError().Find(
 			             wxT("database \"") DEFAULT_PG_DATABASE wxT("\" does not exist")) >= 0)
 			{
 				delete conn;
-				conn = new pgConn(GetName(), wxT("template1"), username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"));
+				conn = new pgConn(GetName(), wxT("template1"), username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"), sslcert, sslkey, sslrootcert, sslcrl);
 				if (conn && conn->GetStatus() == PGCONN_OK)
 					database = wxT("template1");
 			}
 		}
 		else
 		{
-			conn = new pgConn(GetName(), database, username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"));
+			conn = new pgConn(GetName(), database, username, password, port, rolename, ssl, 0, appearanceFactory->GetLongAppName() + _(" - Browser"), sslcert, sslkey, sslrootcert, sslcrl);
 			if (!conn)
 			{
 				form->EndMsg(false);
@@ -1017,6 +1017,10 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 					properties->AppendItem(_("SSL Mode"), sslMode);
 				}
 			}
+			properties->AppendItem(_("SSL Certificate File"), GetSSLCert());
+			properties->AppendItem(_("SSL Key File"), GetSSLKey());
+			properties->AppendItem(_("SSL Root Certificate File"), GetSSLRootCert());
+			properties->AppendItem(_("SSL Certificate Revocation List"), GetSSLCrl());
 #endif
 		}
 		if (!serviceId.IsEmpty())
@@ -1216,7 +1220,9 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 	long numServers = settings->Read(wxT("Servers/Count"), 0L);
 
 	long loop, port, ssl = 0;
-	wxString key, servername, description, database, username, lastDatabase, lastSchema, storePwd, rolename, restore, serviceID, discoveryID, dbRestriction, colour, group;
+	wxString key, servername, description, database, username, lastDatabase, lastSchema;
+	wxString storePwd, rolename, restore, serviceID, discoveryID, dbRestriction, colour;
+	wxString group, sslcert, sslkey, sslrootcert, sslcrl;
 	pgServer *server = 0;
 
 	wxArrayString discoveredServers;
@@ -1248,6 +1254,10 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 		settings->Read(key + wxT("DbRestriction"), &dbRestriction, wxEmptyString);
 		settings->Read(key + wxT("Colour"), &colour, wxEmptyString);
 		settings->Read(key + wxT("Group"), &group, wxT("Servers"));
+		settings->Read(key + wxT("SSLCert"), &sslcert, wxEmptyString);
+		settings->Read(key + wxT("SSLKey"), &sslkey, wxEmptyString);
+		settings->Read(key + wxT("SSLRootCert"), &sslrootcert, wxEmptyString);
+		settings->Read(key + wxT("SSLCrl"), &sslcrl, wxEmptyString);
 
 		// Sanitize the colour
 		colour = colour.Trim();
@@ -1292,6 +1302,10 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 		server->iSetColour(colour);
 		server->iSetGroup(group);
 		server->iSetServerIndex(loop);
+		server->SetSSLCert(sslcert);
+		server->SetSSLKey(sslkey);
+		server->SetSSLRootCert(sslrootcert);
+		server->SetSSLCrl(sslcrl);
 
 		found = false;
 		if (browser->ItemHasChildren(obj->GetId()))

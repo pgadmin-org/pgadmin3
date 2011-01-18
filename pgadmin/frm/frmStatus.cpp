@@ -472,7 +472,7 @@ void frmStatus::OnChangeDatabase(wxCommandEvent &ev)
 
 	locks_connection = new pgConn(connection->GetHostName(), cbDatabase->GetValue(),
 	                              connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetRole(), connection->GetSslMode(),
-	                              0, connection->GetApplicationName());
+	                              0, connection->GetApplicationName(), connection->GetSSLCert(), connection->GetSSLKey(), connection->GetSSLRootCert(), connection->GetSSLCrl());
 
 	if (connection->BackendMinimumVersion(8, 0))
 		initquery = wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;");
@@ -972,7 +972,8 @@ void frmStatus::OnCopyQuery(wxCommandEvent &ev)
 		pgConn *conn = new pgConn(connection->GetHostName(), dbname,
 		                          connection->GetUser(), connection->GetPassword(),
 		                          connection->GetPort(), connection->GetRole(), connection->GetSslMode(), connection->GetDbOid(),
-		                          connection->GetApplicationName());
+		                          connection->GetApplicationName(),
+		                          connection->GetSSLCert(), connection->GetSSLKey(), connection->GetSSLRootCert(), connection->GetSSLCrl());
 		if (conn)
 		{
 			frmQuery *fq = new frmQuery(mainForm, wxEmptyString, conn, text);
@@ -2578,7 +2579,11 @@ void frmStatus::OnCommit(wxCommandEvent &event)
 			                             connection->GetRole(),
 			                             connection->GetSslMode(),
 			                             0,
-			                             connection->GetApplicationName());
+			                             connection->GetApplicationName(),
+			                             connection->GetSSLCert(),
+			                             connection->GetSSLKey(),
+			                             connection->GetSSLRootCert(),
+			                             connection->GetSSLCrl());
 			if (tmpConn)
 			{
 				if (tmpConn->GetStatus() != PGCONN_OK)
@@ -2629,7 +2634,11 @@ void frmStatus::OnRollback(wxCommandEvent &event)
 			                             connection->GetRole(),
 			                             connection->GetSslMode(),
 			                             0,
-			                             connection->GetApplicationName());
+			                             connection->GetApplicationName(),
+			                             connection->GetSSLCert(),
+			                             connection->GetSSLKey(),
+			                             connection->GetSSLRootCert(),
+			                             connection->GetSSLCrl());
 			if (tmpConn)
 			{
 				if (tmpConn->GetStatus() != PGCONN_OK)

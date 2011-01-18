@@ -362,6 +362,40 @@ public:
 		return conn;
 	}
 
+
+	wxString GetSSLCert() const
+	{
+		return sslcert;
+	}
+	void SetSSLCert(const wxString &s)
+	{
+		sslcert = s;
+	}
+	wxString GetSSLKey() const
+	{
+		return sslkey;
+	}
+	void SetSSLKey(const wxString &s)
+	{
+		sslkey = s;
+	}
+	wxString GetSSLRootCert() const
+	{
+		return sslrootcert;
+	}
+	void SetSSLRootCert(const wxString &s)
+	{
+		sslrootcert = s;
+	}
+	wxString GetSSLCrl() const
+	{
+		return sslcrl;
+	}
+	void SetSSLCrl(const wxString &s)
+	{
+		sslcrl = s;
+	}
+
 	void ShowDependencies(frmMain *form, ctlListView *Dependencies, const wxString &where = wxEmptyString);
 	void ShowDependents(frmMain *form, ctlListView *referencedBy, const wxString &where = wxEmptyString);
 
@@ -382,6 +416,7 @@ private:
 	wxString dbRestriction;
 	wxString colour;
 	wxString group;
+	wxString sslcert, sslkey, sslrootcert, sslcrl;
 
 	bool inRecovery;
 	wxString receiveLoc, replayLoc, replayTimestamp;

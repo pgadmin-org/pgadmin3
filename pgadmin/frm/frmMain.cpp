@@ -1136,6 +1136,10 @@ void frmMain::StoreServers()
 					settings->Write(key + wxT("Colour"), server->GetColour());
 					settings->Write(key + wxT("SSL"), server->GetSSL());
 					settings->Write(key + wxT("Group"), server->GetGroup());
+					settings->Write(key + wxT("SSLCert"), server->GetSSLCert());
+					settings->Write(key + wxT("SSLKey"), server->GetSSLKey());
+					settings->Write(key + wxT("SSLRootCert"), server->GetSSLRootCert());
+					settings->Write(key + wxT("SSLCrl"), server->GetSSLCrl());
 
 					pgCollection *coll = browser->FindCollection(databaseFactory, server->GetId());
 					if (coll)

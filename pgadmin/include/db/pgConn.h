@@ -83,7 +83,10 @@ typedef struct pgError
 class pgConn
 {
 public:
-	pgConn(const wxString &server = wxT(""), const wxString &database = wxT(""), const wxString &username = wxT(""), const wxString &password = wxT(""), int port = 5432, const wxString &rolename = wxT(""), int sslmode = 0, OID oid = 0, const wxString &applicationname = wxT("pgAdmin"));
+	pgConn(const wxString &server = wxT(""), const wxString &database = wxT(""), const wxString &username = wxT(""), const wxString &password = wxT(""),
+	       int port = 5432, const wxString &rolename = wxT(""), int sslmode = 0, OID oid = 0,
+	       const wxString &applicationname = wxT("pgAdmin"),
+	       const wxString &sslcert = wxT(""), const wxString &sslkey = wxT(""), const wxString &sslrootcert = wxT(""), const wxString &sslcrl = wxT(""));
 	~pgConn();
 
 	bool HasPrivilege(const wxString &objTyp, const wxString &objName, const wxString &priv);
@@ -149,6 +152,22 @@ public:
 	wxString GetApplicationName() const
 	{
 		return save_applicationname;
+	}
+	wxString GetSSLCert() const
+	{
+		return save_sslcert;
+	}
+	wxString GetSSLKey() const
+	{
+		return save_sslkey;
+	}
+	wxString GetSSLRootCert() const
+	{
+		return save_sslrootcert;
+	}
+	wxString GetSSLCrl() const
+	{
+		return save_sslcrl;
 	}
 	wxString GetName() const;
 	bool GetNeedUtfConnectString()
@@ -250,6 +269,7 @@ private:
 	wxString connstr;
 
 	wxString save_server, save_database, save_username, save_password, save_rolename, save_applicationname;
+	wxString save_sslcert, save_sslkey, save_sslrootcert, save_sslcrl;
 	int save_port, save_sslmode;
 	OID save_oid;
 };

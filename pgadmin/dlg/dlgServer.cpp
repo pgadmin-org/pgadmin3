@@ -18,6 +18,7 @@
 // Must be after pgAdmin3.h or MSVC++ complains
 #include <wx/colordlg.h>
 #include <wx/clrpicker.h>
+#include <wx/filepicker.h>
 
 // Other app headers
 #include "utils/misc.h"
@@ -27,44 +28,52 @@
 #include "schema/pgDatabase.h"
 
 // pointer to controls
-#define txtDescription  CTRL_TEXT("txtDescription")
-#define txtService      CTRL_TEXT("txtService")
-#define cbDatabase      CTRL_COMBOBOX("cbDatabase")
-#define txtPort         CTRL_TEXT("txtPort")
-#define cbSSL           CTRL_COMBOBOX("cbSSL")
-#define txtUsername     CTRL_TEXT("txtUsername")
-#define stTryConnect    CTRL_STATIC("stTryConnect")
-#define chkTryConnect   CTRL_CHECKBOX("chkTryConnect")
-#define stStorePwd      CTRL_STATIC("stStorePwd")
-#define chkStorePwd     CTRL_CHECKBOX("chkStorePwd")
-#define txtRolename     CTRL_TEXT("txtRolename")
-#define stRestore       CTRL_STATIC("stRestore")
-#define chkRestore      CTRL_CHECKBOX("chkRestore")
-#define stPassword      CTRL_STATIC("stPassword")
-#define txtPassword     CTRL_TEXT("txtPassword")
-#define txtDbRestriction CTRL_TEXT("txtDbRestriction")
-#define colourPicker    CTRL_COLOURPICKER("colourPicker")
-#define cbGroup         CTRL_COMBOBOX("cbGroup")
+#define txtDescription    CTRL_TEXT("txtDescription")
+#define txtService        CTRL_TEXT("txtService")
+#define cbDatabase        CTRL_COMBOBOX("cbDatabase")
+#define txtPort           CTRL_TEXT("txtPort")
+#define cbSSL             CTRL_COMBOBOX("cbSSL")
+#define txtUsername       CTRL_TEXT("txtUsername")
+#define stTryConnect      CTRL_STATIC("stTryConnect")
+#define chkTryConnect     CTRL_CHECKBOX("chkTryConnect")
+#define stStorePwd        CTRL_STATIC("stStorePwd")
+#define chkStorePwd       CTRL_CHECKBOX("chkStorePwd")
+#define txtRolename       CTRL_TEXT("txtRolename")
+#define stRestore         CTRL_STATIC("stRestore")
+#define chkRestore        CTRL_CHECKBOX("chkRestore")
+#define stPassword        CTRL_STATIC("stPassword")
+#define txtPassword       CTRL_TEXT("txtPassword")
+#define txtDbRestriction  CTRL_TEXT("txtDbRestriction")
+#define colourPicker      CTRL_COLOURPICKER("colourPicker")
+#define cbGroup           CTRL_COMBOBOX("cbGroup")
+#define pickerSSLCert     CTRL_FILEPICKER("pickerSSLCert")
+#define pickerSSLKey      CTRL_FILEPICKER("pickerSSLKey")
+#define pickerSSLRootCert CTRL_FILEPICKER("pickerSSLRootCert")
+#define pickerSSLCrl      CTRL_FILEPICKER("pickerSSLCrl")
 
 
 BEGIN_EVENT_TABLE(dlgServer, dlgProperty)
-	EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),  dlgServer::OnPageSelect)
-	EVT_TEXT(XRCID("txtDescription"),               dlgProperty::OnChange)
-	EVT_TEXT(XRCID("txtService"),                   dlgProperty::OnChange)
-	EVT_TEXT(XRCID("cbDatabase"),                   dlgProperty::OnChange)
-	EVT_COMBOBOX(XRCID("cbDatabase"),               dlgProperty::OnChange)
-	EVT_TEXT(XRCID("txtPort")  ,                    dlgProperty::OnChange)
-	EVT_TEXT(XRCID("txtUsername"),                  dlgProperty::OnChange)
-	EVT_TEXT(XRCID("txtRolename"),                  dlgProperty::OnChange)
-	EVT_TEXT(XRCID("txtDbRestriction"),             dlgServer::OnChangeRestr)
-	EVT_COMBOBOX(XRCID("cbSSL"),                    dlgProperty::OnChange)
-	EVT_CHECKBOX(XRCID("chkStorePwd"),              dlgProperty::OnChange)
-	EVT_CHECKBOX(XRCID("chkRestore"),               dlgProperty::OnChange)
-	EVT_CHECKBOX(XRCID("chkTryConnect"),            dlgServer::OnChangeTryConnect)
-	EVT_COLOURPICKER_CHANGED(XRCID("colourPicker"), dlgServer::OnChangeColour)
-	EVT_TEXT(XRCID("cbGroup"),                      dlgProperty::OnChange)
-	EVT_COMBOBOX(XRCID("cbGroup"),                  dlgProperty::OnChange)
-	EVT_BUTTON(wxID_OK,                             dlgServer::OnOK)
+	EVT_NOTEBOOK_PAGE_CHANGED(XRCID("nbNotebook"),     dlgServer::OnPageSelect)
+	EVT_TEXT(XRCID("txtDescription"),                  dlgProperty::OnChange)
+	EVT_TEXT(XRCID("txtService"),                      dlgProperty::OnChange)
+	EVT_TEXT(XRCID("cbDatabase"),                      dlgProperty::OnChange)
+	EVT_COMBOBOX(XRCID("cbDatabase"),                  dlgProperty::OnChange)
+	EVT_TEXT(XRCID("txtPort")  ,                       dlgProperty::OnChange)
+	EVT_TEXT(XRCID("txtUsername"),                     dlgProperty::OnChange)
+	EVT_TEXT(XRCID("txtRolename"),                     dlgProperty::OnChange)
+	EVT_TEXT(XRCID("txtDbRestriction"),                dlgServer::OnChangeRestr)
+	EVT_COMBOBOX(XRCID("cbSSL"),                       dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkStorePwd"),                 dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkRestore"),                  dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkTryConnect"),               dlgServer::OnChangeTryConnect)
+	EVT_COLOURPICKER_CHANGED(XRCID("colourPicker"),    dlgServer::OnChangeColour)
+	EVT_FILEPICKER_CHANGED(XRCID("pickerSSLCert"),     dlgServer::OnChangeFile)
+	EVT_FILEPICKER_CHANGED(XRCID("pickerSSLKey"),      dlgServer::OnChangeFile)
+	EVT_FILEPICKER_CHANGED(XRCID("pickerSSLRootCert"), dlgServer::OnChangeFile)
+	EVT_FILEPICKER_CHANGED(XRCID("pickerSSLCrl"),      dlgServer::OnChangeFile)
+	EVT_TEXT(XRCID("cbGroup"),                         dlgProperty::OnChange)
+	EVT_COMBOBOX(XRCID("cbGroup"),                     dlgProperty::OnChange)
+	EVT_BUTTON(wxID_OK,                                dlgServer::OnOK)
 END_EVENT_TABLE();
 
 
@@ -175,6 +184,10 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 		server->iSetStorePwd(chkStorePwd->GetValue());
 		server->iSetRestore(chkRestore->GetValue());
 		server->iSetDbRestriction(txtDbRestriction->GetValue().Trim());
+		server->SetSSLCert(pickerSSLCert->GetPath());
+		server->SetSSLKey(pickerSSLKey->GetPath());
+		server->SetSSLRootCert(pickerSSLRootCert->GetPath());
+		server->SetSSLCrl(pickerSSLCrl->GetPath());
 		wxColour colour = colourPicker->GetColour();
 		wxString sColour = colour.GetAsString(wxC2S_HTML_SYNTAX);
 		server->iSetColour(sColour);
@@ -205,6 +218,10 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 			newserver->iSetDbRestriction(server->GetDbRestriction().Trim());
 			newserver->iSetServiceID(server->GetServiceID().Trim());
 			newserver->iSetDiscoveryID(server->GetDiscoveryID().Trim());
+			newserver->SetSSLCert(server->GetSSLCert());
+			newserver->SetSSLKey(server->GetSSLKey());
+			newserver->SetSSLRootCert(server->GetSSLRootCert());
+			newserver->SetSSLCrl(server->GetSSLCrl());
 
 			// Drop the old item
 			// (will also take care of dropping the pgServer item)
@@ -277,6 +294,12 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 
 
 void dlgServer::OnChangeColour(wxColourPickerEvent &ev)
+{
+	dlgProperty::OnChange(ev);
+}
+
+
+void dlgServer::OnChangeFile(wxFileDirPickerEvent &ev)
 {
 	dlgProperty::OnChange(ev);
 }
@@ -361,6 +384,11 @@ int dlgServer::Go(bool modal)
 		txtDbRestriction->SetValue(server->GetDbRestriction());
 		colourPicker->SetColour(server->GetColour());
 		cbGroup->SetValue(server->GetGroup());
+
+		pickerSSLCert->SetPath(server->GetSSLCert());
+		pickerSSLKey->SetPath(server->GetSSLKey());
+		pickerSSLRootCert->SetPath(server->GetSSLRootCert());
+		pickerSSLCrl->SetPath(server->GetSSLCrl());
 
 		stPassword->Disable();
 		txtPassword->Disable();
@@ -459,7 +487,11 @@ void dlgServer::CheckChange()
 		          || chkRestore->GetValue() != server->GetRestore()
 		          || txtDbRestriction->GetValue() != server->GetDbRestriction()
 		          || sColour != sColour2
-		          || cbGroup->GetValue() != server->GetGroup();
+		          || cbGroup->GetValue() != server->GetGroup()
+		          || pickerSSLCert->GetPath() != server->GetSSLCert()
+		          || pickerSSLKey->GetPath() != server->GetSSLKey()
+		          || pickerSSLRootCert->GetPath() != server->GetSSLRootCert()
+		          || pickerSSLCrl->GetPath() != server->GetSSLCrl();
 	}
 
 #ifdef __WXMSW__

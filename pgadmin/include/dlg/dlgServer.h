@@ -15,6 +15,7 @@
 
 #include "dlg/dlgProperty.h"
 #include <wx/clrpicker.h>
+#include <wx/filepicker.h>
 
 class pgServer;
 
@@ -44,6 +45,7 @@ private:
 	void OnChangeTryConnect(wxCommandEvent &ev);
 	void OnPageSelect(wxNotebookEvent &event);
 	void OnChangeColour(wxColourPickerEvent &ev);
+	void OnChangeFile(wxFileDirPickerEvent &ev);
 
 	DECLARE_EVENT_TABLE()
 };
