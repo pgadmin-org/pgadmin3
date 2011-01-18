@@ -42,6 +42,10 @@
 // App headers
 #include "frm/frmMain.h"
 
+wxImageList *imageList = 0;
+
+#endif // PGSCLI
+
 extern "C"
 {
 #define YYSTYPE_IS_DECLARED
@@ -49,10 +53,6 @@ extern "C"
 	typedef int YYSTYPE;
 #include "parser/keywords.h"
 }
-
-wxImageList *imageList = 0;
-
-#endif // PGSCLI
 
 // we dont have an appropriate wxLongLong method
 #ifdef __WIN32__
@@ -332,6 +332,7 @@ void FillKeywords(wxString &str)
 	}
 }
 
+#endif // PGSCLI
 
 static bool needsQuoting(wxString &value, bool forTypes)
 {
@@ -385,7 +386,6 @@ static bool needsQuoting(wxString &value, bool forTypes)
 	return true;
 }
 
-
 wxString qtTypeIdent(const wxString &value)
 {
 	if (value.Length() == 0)
@@ -419,6 +419,7 @@ wxString qtIdent(const wxString &value)
 		return result;
 }
 
+#if !defined(PGSCLI)
 
 wxString qtStrip(const wxString &str)
 {

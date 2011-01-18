@@ -129,8 +129,6 @@ void CheckOnScreen(wxWindow *win, wxPoint &pos, wxSize &size, const int w0 = 100
 wxString IdAndName(long id, const wxString &name);
 
 // Quoting
-wxString qtIdent(const wxString &value);    // add " if necessary
-wxString qtTypeIdent(const wxString &value);    // add " if necessary
 wxString qtDbStringDollar(const wxString &value);
 wxString qtStrip(const wxString &value);    // remove \"
 
@@ -256,6 +254,10 @@ enum        // depends on pgaFactory::addImage order!
 wxString sanitizePath(const wxString &path);
 wxString commandLineCleanOption(const wxString &option, bool schemaObject = false);
 #endif // PGSCLI
+
+// Quoting
+wxString qtIdent(const wxString &value);    // add " if necessary
+wxString qtTypeIdent(const wxString &value);    // add " if necessary
 
 #endif
 

@@ -11,7 +11,7 @@ noinst_LIBRARIES = libpgs.a
 
 nodist_libpgs_a_SOURCES = $(srcdir)/../../../pgadmin/utils/sysLogger.cpp \
 	$(srcdir)/../../../pgadmin/utils/misc.cpp \
-	$(srcdir)/../../../pgadmin/utils/md5.cpp \
+	$(srcdir)/../../../pgadmin/db/keywords.c \
 	$(srcdir)/../../../pgadmin/pgscript/utilities/pgsUtilities.cpp \
 	$(srcdir)/../../../pgadmin/pgscript/utilities/pgsThread.cpp \
 	$(srcdir)/../../../pgadmin/pgscript/utilities/pgsMapm.cpp \
