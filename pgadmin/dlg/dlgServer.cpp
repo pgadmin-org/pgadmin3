@@ -261,7 +261,8 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 		}
 		server->iSetGroup(cbGroup->GetValue());
 
-		wxMessageBox(_("Note: some changes to server settings may only take effect the next time pgAdmin connects to the server."), _("Server settings"), wxICON_INFORMATION);
+        if (connection)
+		    wxMessageBox(_("Note: some changes to server settings may only take effect the next time pgAdmin connects to the server."), _("Server settings"), wxICON_INFORMATION);
 
 		mainForm->execSelChange(server->GetId(), true);
 		mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
@@ -463,7 +464,7 @@ void dlgServer::CheckChange()
 	CheckValid(enable, !name.IsEmpty(), _("Please specify address."));
 #else
 	bool isPipe = (name.IsEmpty() || name.StartsWith(wxT("/")));
-	cbSSL->Enable(!isPipe);
+	cbSSL->Enable(!isPipe && !connection);
 #endif
 	CheckValid(enable, !txtDescription->GetValue().IsEmpty(), _("Please specify description."));
 	CheckValid(enable, StrToLong(txtPort->GetValue()) > 0, _("Please specify port."));
