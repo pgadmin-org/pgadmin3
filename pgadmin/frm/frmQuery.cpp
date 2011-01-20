@@ -379,10 +379,10 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	queryMenu->Enable(MNU_CANCEL, false);
 
-	int iWidths[6] = {0, -1, 40, 200, 80, 80};
-	statusBar = CreateStatusBar(6);
+	int iWidths[7] = {0, -1, 40, 200, 80, 80, 80};
+	statusBar = CreateStatusBar(7);
 	SetStatusBarPane(-1);
-	SetStatusWidths(6, iWidths);
+	SetStatusWidths(7, iWidths);
 	SetStatusText(_("ready"), STATUSPOS_MSGS);
 
 	toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
@@ -1619,8 +1619,15 @@ void frmQuery::OnPositionStc(wxStyledTextEvent &event)
 	sqlQuery->GetSelection(&selFrom, &selTo);
 
 	wxString pos;
-	pos.Printf(_("Ln %d, Col %d, Ch %d, Sl %d"), sqlQuery->LineFromPosition(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetColumn(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetCurrentPos() + 1, selTo - selFrom);
+	pos.Printf(_("Ln %d, Col %d, Ch %d"), sqlQuery->LineFromPosition(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetColumn(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetCurrentPos() + 1);
 	SetStatusText(pos, STATUSPOS_POS);
+    if (selTo - selFrom == 1)
+	    pos.Printf(_("%d char"), selTo - selFrom);
+    else if (selTo - selFrom > 1)
+	    pos.Printf(_("%d chars"), selTo - selFrom);
+    else
+        pos = wxEmptyString;
+	SetStatusText(pos, STATUSPOS_SEL);
 
 }
 
