@@ -146,6 +146,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 	if (!btnOK->IsEnabled())
 		return;
 #endif
+
 	// Display the 'save password' hint if required
 	if(chkStorePwd->GetValue())
 	{
@@ -154,9 +155,7 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 	}
 
 	// notice: changes active after reconnect
-
 	EnableOK(false);
-
 
 	if (server)
 	{
@@ -260,9 +259,6 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 			item = serveritem;
 		}
 		server->iSetGroup(cbGroup->GetValue());
-
-        if (connection)
-		    wxMessageBox(_("Note: some changes to server settings may only take effect the next time pgAdmin connects to the server."), _("Server settings"), wxICON_INFORMATION);
 
 		mainForm->execSelChange(server->GetId(), true);
 		mainForm->GetBrowser()->SetItemText(item, server->GetFullName());
@@ -370,6 +366,8 @@ int dlgServer::Go(bool modal)
 		txtPassword->Disable();
 		if (connection)
 		{
+			txtDescription->Disable();
+			txtService->Disable();
 			txtName->Disable();
 			cbDatabase->Disable();
 			txtPort->Disable();
@@ -377,6 +375,11 @@ int dlgServer::Go(bool modal)
 			txtUsername->Disable();
 			chkStorePwd->Disable();
 			txtRolename->Disable();
+			chkRestore->Disable();
+			txtDbRestriction->Disable();
+			colourPicker->Disable();
+			cbGroup->Disable();
+			EnableOK(false);
 		}
 	}
 	else
@@ -421,8 +424,8 @@ pgObject *dlgServer::CreateObject(pgCollection *collection)
 
 void dlgServer::OnChangeTryConnect(wxCommandEvent &ev)
 {
-	chkStorePwd->Enable(chkTryConnect->GetValue());
-	txtPassword->Enable(chkTryConnect->GetValue());
+	chkStorePwd->Enable(chkTryConnect->GetValue() && !connection);
+	txtPassword->Enable(chkTryConnect->GetValue() && !connection);
 	OnChange(ev);
 }
 
@@ -459,7 +462,6 @@ void dlgServer::CheckChange()
 		          || cbGroup->GetValue() != server->GetGroup();
 	}
 
-
 #ifdef __WXMSW__
 	CheckValid(enable, !name.IsEmpty(), _("Please specify address."));
 #else
@@ -471,7 +473,7 @@ void dlgServer::CheckChange()
 	CheckValid(enable, !txtUsername->GetValue().IsEmpty(), _("Please specify user name"));
 	CheckValid(enable, dbRestrictionOk, _("Restriction not valid."));
 
-	EnableOK(enable);
+	EnableOK(enable && !connection);
 }
 
 
