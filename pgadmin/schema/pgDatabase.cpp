@@ -276,10 +276,20 @@ void pgDatabase::ShowStatistics(frmMain *form, ctlListView *statistics)
 		       wxT(", tup_updated AS ") + qtIdent(_("Tuples Updated")) +
 		       wxT(", tup_deleted AS ") + qtIdent(_("Tuples Deleted"));
 
-	if (hasSize)
-		sql += wxT(", pg_size_pretty(pg_database_size(datid)) AS ") + qtIdent(_("Size"));
+	if (connection()->BackendMinimumVersion(9, 1))
+		sql += wxT(", slave.confl_tablespace AS ") + qtIdent(_("Tablespace conflicts")) +
+		       wxT(", slave.confl_lock AS ") + qtIdent(_("Lock conflicts")) +
+		       wxT(", slave.confl_snapshot AS ") + qtIdent(_("Snapshot conflicts")) +
+		       wxT(", slave.confl_bufferpin AS ") + qtIdent(_("Bufferpin conflicts")) +
+		       wxT(", slave.confl_deadlock AS ") + qtIdent(_("Deadlock conflicts"));
 
-	sql += wxT("\n  FROM pg_stat_database db WHERE datname=") + qtDbString(GetName());
+	if (hasSize)
+		sql += wxT(", pg_size_pretty(pg_database_size(db.datid)) AS ") + qtIdent(_("Size"));
+
+	sql += wxT("\n  FROM pg_stat_database db");
+	if (connection()->BackendMinimumVersion(9, 1))
+		sql += wxT(" JOIN pg_stat_database_conflicts slave ON db.datid=slave.datid");
+	sql += wxT(" WHERE db.datname=") + qtDbString(GetName());
 
 	// DisplayStatistics is not available for this object
 
@@ -1026,21 +1036,26 @@ void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 	if (!GetServer()->GetDbRestriction().IsEmpty())
 	{
 		if (restr.IsEmpty())
-			restr = wxT(" WHERE datname IN (");
+			restr = wxT(" WHERE db.datname IN (");
 		else
-			restr = wxT("   AND datname IN (");
+			restr = wxT("   AND db.datname IN (");
 
 		restr += GetServer()->GetDbRestriction() + wxT(")\n");
 	}
 
-	wxString sql = wxT("SELECT datid, datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit");
+	wxString sql = wxT("SELECT db.datid, db.datname, numbackends, xact_commit, xact_rollback, blks_read, blks_hit");
 
 	if (GetConnection()->BackendMinimumVersion(8, 3))
 		sql += wxT(", tup_returned, tup_fetched, tup_inserted, tup_updated, tup_deleted");
+	if (GetConnection()->BackendMinimumVersion(9, 1))
+		sql += wxT(", slave.confl_tablespace, slave.confl_lock, slave.confl_snapshot, slave.confl_bufferpin, slave.confl_deadlock");
 	if (hasSize)
-		sql += wxT(", pg_size_pretty(pg_database_size(datid)) as size");
+		sql += wxT(", pg_size_pretty(pg_database_size(db.datid)) as size");
 
-	sql += wxT("\n  FROM pg_stat_database db\n") + restr + wxT(" ORDER BY datname");
+	sql += wxT("\n  FROM pg_stat_database db\n");
+	if (GetConnection()->BackendMinimumVersion(9, 1))
+		sql += wxT("  JOIN pg_stat_database_conflicts slave ON db.datid=slave.datid\n");
+	sql += restr + wxT(" ORDER BY db.datname");
 
 	// Add the statistics view columns
 	statistics->ClearAll();
@@ -1059,6 +1074,14 @@ void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 		statistics->AddColumn(_("Tuples Inserted"), 60);
 		statistics->AddColumn(_("Tuples Updated"), 60);
 		statistics->AddColumn(_("Tuples Deleted"), 60);
+	}
+	if (GetConnection()->BackendMinimumVersion(9, 1))
+	{
+		statistics->AddColumn(_("Tablespace conflicts"), 60);
+		statistics->AddColumn(_("Lock conflicts"), 60);
+		statistics->AddColumn(_("Snapshot conflicts"), 60);
+		statistics->AddColumn(_("Bufferpin conflicts"), 60);
+		statistics->AddColumn(_("Deadlock conflicts"), 60);
 	}
 
 	bool sysobj;
@@ -1089,6 +1112,14 @@ void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 					statistics->SetItem(statistics->GetItemCount() - 1, 8 + (hasSize ? 1 : 0), stats->GetVal(wxT("tup_inserted")));
 					statistics->SetItem(statistics->GetItemCount() - 1, 9 + (hasSize ? 1 : 0), stats->GetVal(wxT("tup_updated")));
 					statistics->SetItem(statistics->GetItemCount() - 1, 10 + (hasSize ? 1 : 0), stats->GetVal(wxT("tup_deleted")));
+				}
+				if (GetConnection()->BackendMinimumVersion(9, 1))
+				{
+					statistics->SetItem(statistics->GetItemCount() - 1, 11 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_tablespace")));
+					statistics->SetItem(statistics->GetItemCount() - 1, 12 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_lock")));
+					statistics->SetItem(statistics->GetItemCount() - 1, 13 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_snapshot")));
+					statistics->SetItem(statistics->GetItemCount() - 1, 14 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_bufferpin")));
+					statistics->SetItem(statistics->GetItemCount() - 1, 15 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_deadlock")));
 				}
 			}
 			stats->MoveNext();
