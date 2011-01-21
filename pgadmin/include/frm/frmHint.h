@@ -19,6 +19,7 @@
 #define HINT_PRIMARYKEY         wxT("pk")
 #define HINT_FKINDEX            wxT("fki")
 #define HINT_VACUUM             wxT("vacuum")
+#define HINT_VACUUM_FULL        wxT("vacuum-full")
 #define HINT_QUERYRUNTIME       wxT("query-runtime")
 #define HINT_INSTRUMENTATION    wxT("instrumentation")
 #define HINT_ENCODING_ASCII     wxT("encoding-ascii")
