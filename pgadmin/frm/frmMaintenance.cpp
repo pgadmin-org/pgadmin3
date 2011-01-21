@@ -18,6 +18,7 @@
 // App headers
 #include "pgAdmin3.h"
 #include "ctl/ctlMenuToolbar.h"
+#include "frm/frmHint.h"
 #include "frm/frmMaintenance.h"
 #include "frm/frmMain.h"
 #include "utils/sysLogger.h"
@@ -120,6 +121,13 @@ wxString frmMaintenance::GetSql()
 	{
 		case 0:
 		{
+			/* Warn about VACUUM FULL on < 9.0 */
+			if (chkFull->GetValue() &&
+				!conn->BackendMinimumVersion(9, 0))
+			{
+				if (frmHint::ShowHint(this, HINT_VACUUM_FULL) == wxID_CANCEL)
+					return wxEmptyString;
+			}
 			sql = wxT("VACUUM ");
 
 			if (chkFull->GetValue())

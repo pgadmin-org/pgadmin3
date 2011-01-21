@@ -93,6 +93,13 @@ hintArray[] =
 		HINT_CANSUPPRESS | HINT_CANFIX
 	},
 	{
+		HINT_VACUUM_FULL,
+		__("Running VACUUM FULL not recommended"),
+		__("VACUUM FULL"),
+		wxT("pg/sql-vacuum"),
+		HINT_CANSUPPRESS | HINT_CANABORT
+	},
+	{
 		HINT_QUERYRUNTIME,
 		__("Query took a long time to complete"),
 		0,
