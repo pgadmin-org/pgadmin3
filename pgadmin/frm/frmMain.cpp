@@ -225,6 +225,9 @@ frmMain::frmMain(const wxString &title)
 
 frmMain::~frmMain()
 {
+	// Store the servers, to ensure we store the last database/schema etc
+	StoreServers();
+
 	settings->Write(wxT("frmMain/Perspective-") + wxString(FRMMAIN_PERSPECTIVE_VER), manager.SavePerspective());
 	manager.UnInit();
 
