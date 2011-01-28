@@ -96,7 +96,10 @@ dlgMainConfig::dlgMainConfig(pgFrame *parent, pgSettingItem *_item) :
 		if (item->orgLine)
 			item->newLine = new pgConfigLine(item->orgLine);
 		else
+		{
 			item->newLine = new pgConfigLine();
+			item->newLine->item = item;
+		}
 	}
 
 	chkEnabled->SetValue(!item->newLine->isComment);
