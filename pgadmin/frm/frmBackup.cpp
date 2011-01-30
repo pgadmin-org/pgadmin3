@@ -32,7 +32,7 @@
 #define btnFilename             CTRL_BUTTON("btnFilename")
 #define txtCompressRatio        CTRL_TEXT("txtCompressRatio")
 #define cbEncoding              CTRL_COMBOBOX("cbEncoding")
-#define rbxFormat               CTRL_RADIOBOX("rbxFormat")
+#define cbFormat                CTRL_COMBOBOX("cbFormat")
 #define cbRolename              CTRL_COMBOBOX("cbRolename")
 #define chkBlobs                CTRL_CHECKBOX("chkBlobs")
 #define chkOid                  CTRL_CHECKBOX("chkOid")
@@ -58,7 +58,7 @@ BEGIN_EVENT_TABLE(frmBackup, ExternProcessDialog)
 	EVT_TEXT(XRCID("txtFilename"),                frmBackup::OnChange)
 	EVT_BUTTON(XRCID("btnFilename"),              frmBackup::OnSelectFilename)
 	EVT_BUTTON(wxID_OK,                           frmBackup::OnOK)
-	EVT_RADIOBOX(XRCID("rbxFormat"),              frmBackup::OnChangePlain)
+	EVT_COMBOBOX(XRCID("cbFormat"),               frmBackup::OnChangePlain)
 	EVT_CHECKBOX(XRCID("chkOnlyData"),            frmBackup::OnChangePlain)
 	EVT_CHECKBOX(XRCID("chkOnlySchema"),          frmBackup::OnChangePlain)
 	EVT_CHECKBOX(XRCID("chkNoUnloggedTableData"), frmBackup::OnChangePlain)
@@ -239,6 +239,12 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 		cbEncoding->Disable();
 	}
 
+	cbFormat->Append(_("Custom"));
+	cbFormat->Append(_("Tar"));
+	cbFormat->Append(_("Plain"));
+	if (pgAppMinimumVersion(backupExecutable, 9, 1))
+		cbFormat->Append(_("Directory"));
+
 	wxCommandEvent ev;
 	OnChangePlain(ev);
 }
@@ -262,7 +268,7 @@ void frmBackup::OnSelectFilename(wxCommandEvent &ev)
 {
 	wxString title, prompt, FilenameOnly;
 
-	if (rbxFormat->GetSelection() == 2) // plain
+	if (cbFormat->GetSelection() == 2) // plain
 	{
 		title  = _("Select output file");
 #ifdef __WXMSW__
@@ -301,7 +307,9 @@ void frmBackup::OnChange(wxCommandEvent &ev)
 
 void frmBackup::OnChangePlain(wxCommandEvent &ev)
 {
-	bool isPlain = (rbxFormat->GetSelection() == 2);
+	bool isPlain = (cbFormat->GetSelection() == 2);
+	bool isDirectory = (cbFormat->GetSelection() == 3);
+
 	chkBlobs->Enable(canBlob && !isPlain);
 	chkOnlyData->Enable(isPlain && !chkOnlySchema->GetValue());
 	if (isPlain)
@@ -312,6 +320,8 @@ void frmBackup::OnChangePlain(wxCommandEvent &ev)
 	chkDropDb->Enable(isPlain);
 	chkCreateDb->Enable(isPlain);
 	chkDisableTrigger->Enable(chkOnlyData->GetValue());
+
+	btnFilename->Enable(!isDirectory);
 
 	wxCommandEvent nullEvent;
 	OnChange(nullEvent);
@@ -362,7 +372,7 @@ wxString frmBackup::getCmdPart2()
 {
 	wxString cmd;
 
-	switch (rbxFormat->GetSelection())
+	switch (cbFormat->GetSelection())
 	{
 		case 0: // compressed
 		{
@@ -380,7 +390,7 @@ wxString frmBackup::getCmdPart2()
 				cmd.Append(wxT(" --blobs"));
 			break;
 		}
-		case 2:
+		case 2: // plain
 		{
 			cmd.Append(wxT(" --format plain"));
 			if (chkOnlyData->GetValue())
@@ -400,6 +410,11 @@ wxString frmBackup::getCmdPart2()
 				if (chkDropDb->GetValue())
 					cmd.Append(wxT(" --clean"));
 			}
+			break;
+		}
+		case 3: // directory
+		{
+			cmd.Append(wxT(" --format directory"));
 			break;
 		}
 	}

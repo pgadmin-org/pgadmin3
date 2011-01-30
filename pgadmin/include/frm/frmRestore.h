@@ -34,6 +34,7 @@ private:
 	void OnSelectFilename(wxCommandEvent &ev);
 	void OnView(wxCommandEvent &ev);
 	void OnOK(wxCommandEvent &ev);
+	void OnChangeFormat(wxCommandEvent &ev);
 	void OnChangeData(wxCommandEvent &ev);
 	void OnChangeSchema(wxCommandEvent &ev);
 	void OnChangeList(wxListEvent &ev);

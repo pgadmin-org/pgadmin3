@@ -14,6 +14,7 @@
 #include <wx/settings.h>
 #include <wx/process.h>
 #include <wx/textbuf.h>
+#include <wx/dir.h>
 #include <wx/file.h>
 #include <wx/filename.h>
 
@@ -37,6 +38,7 @@
 #define nbNotebook               CTRL_NOTEBOOK("nbNotebook")
 #define txtFilename              CTRL_TEXT("txtFilename")
 #define btnFilename              CTRL_BUTTON("btnFilename")
+#define cbFormat                 CTRL_COMBOBOX("cbFormat")
 #define cbRolename               CTRL_COMBOBOX("cbRolename")
 #define chkOnlyData              CTRL_CHECKBOX("chkOnlyData")
 #define chkOnlySchema            CTRL_CHECKBOX("chkOnlySchema")
@@ -60,6 +62,7 @@
 
 BEGIN_EVENT_TABLE(frmRestore, ExternProcessDialog)
 	EVT_TEXT(XRCID("txtFilename"),               frmRestore::OnChangeName)
+	EVT_COMBOBOX(XRCID("cbFormat"),              frmRestore::OnChangeFormat)
 	EVT_CHECKBOX(XRCID("chkOnlyData"),           frmRestore::OnChangeData)
 	EVT_CHECKBOX(XRCID("chkOnlySchema"),         frmRestore::OnChangeSchema)
 	EVT_BUTTON(XRCID("btnFilename"),             frmRestore::OnSelectFilename)
@@ -170,6 +173,11 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 		chkExitOnError->Disable();
 	}
 
+	cbFormat->Append(_("Custom or tar"));
+	if (pgAppMinimumVersion(restoreExecutable, 9, 1))
+		cbFormat->Append(_("Directory"));
+	cbFormat->SetSelection(0);
+
 	wxCommandEvent ev;
 	OnChangeName(ev);
 }
@@ -191,23 +199,40 @@ wxString frmRestore::GetHelpPage() const
 
 void frmRestore::OnSelectFilename(wxCommandEvent &ev)
 {
-
-	wxString FilenameOnly;
-	wxFileName::SplitPath(txtFilename->GetValue(), NULL, NULL, &FilenameOnly, NULL);
+	if (cbFormat->GetSelection() == 0) // custom or tar
+	{
+		wxString FilenameOnly;
+		wxFileName::SplitPath(txtFilename->GetValue(), NULL, NULL, &FilenameOnly, NULL);
 
 #ifdef __WXMSW__
-	wxFileDialog file(this, _("Select backup filename"), ::wxPathOnly(txtFilename->GetValue()), FilenameOnly,
-	                  _("Backup files (*.backup)|*.backup|All files (*.*)|*.*"));
+		wxFileDialog file(this, _("Select backup filename"), ::wxPathOnly(txtFilename->GetValue()), FilenameOnly,
+		                  _("Backup files (*.backup)|*.backup|All files (*.*)|*.*"));
 #else
-	wxFileDialog file(this, _("Select backup filename"), ::wxPathOnly(txtFilename->GetValue()), FilenameOnly,
-	                  _("Backup files (*.backup)|*.backup|All files (*)|*"));
+		wxFileDialog file(this, _("Select backup filename"), ::wxPathOnly(txtFilename->GetValue()), FilenameOnly,
+		                  _("Backup files (*.backup)|*.backup|All files (*)|*"));
 #endif
 
-	if (file.ShowModal() == wxID_OK)
-	{
-		txtFilename->SetValue(file.GetPath());
-		OnChange(ev);
+		if (file.ShowModal() == wxID_OK)
+		{
+			txtFilename->SetValue(file.GetPath());
+			OnChange(ev);
+		}
 	}
+	else
+	{
+		wxDirDialog dir(this, _("Select the backup directory"), txtFilename->GetValue());
+		if (dir.ShowModal() == wxID_OK)
+		{
+			txtFilename->SetValue(dir.GetPath());
+			OnChange(ev);
+		}
+	}
+}
+
+
+void frmRestore::OnChangeFormat(wxCommandEvent &ev)
+{
+	btnView->Enable(cbFormat->GetSelection() == 0);
 }
 
 
@@ -242,31 +267,38 @@ void frmRestore::OnChangeSchema(wxCommandEvent &ev)
 void frmRestore::OnChangeName(wxCommandEvent &ev)
 {
 	wxString name = txtFilename->GetValue();
-	if (name.IsEmpty() || !wxFile::Exists(name))
-		filenameValid = false;
-	else
-	{
-		wxFile file(name, wxFile::read);
-		if (file.IsOpened())
-		{
-			char buffer[8];
-			off_t size = file.Read(buffer, 8);
-			if (size == 8)
-			{
-				if (memcmp(buffer, "PGDMP", 5) && !memcmp(buffer, "toc.dat", 8))
-				{
-					// tar format?
-					file.Seek(512);
-					size = file.Read(buffer, 8);
-				}
-				if (size == 8 && !memcmp(buffer, "PGDMP", 5))
-				{
-					// check version here?
-					filenameValid = true;
-				}
-			}
-		}
-	}
+    if (cbFormat->GetSelection() == 0)
+    {
+        if (name.IsEmpty() || !wxFile::Exists(name))
+            filenameValid = false;
+        else
+        {
+            wxFile file(name, wxFile::read);
+            if (file.IsOpened())
+            {
+                char buffer[8];
+                off_t size = file.Read(buffer, 8);
+                if (size == 8)
+                {
+                    if (memcmp(buffer, "PGDMP", 5) && !memcmp(buffer, "toc.dat", 8))
+                    {
+                        // tar format?
+                        file.Seek(512);
+                        size = file.Read(buffer, 8);
+                    }
+                    if (size == 8 && !memcmp(buffer, "PGDMP", 5))
+                    {
+                        // check version here?
+                        filenameValid = true;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        filenameValid = wxDir::Exists(name);
+    }
 	OnChange(ev);
 }
 
@@ -335,6 +367,11 @@ wxString frmRestore::getCmdPart2(int step)
 	}
 	else
 	{
+		if (cbFormat->GetSelection() == 1) // directory
+		{
+			cmd.Append(wxT(" --format directory"));
+		}
+
 		if (chkOnlyData->GetValue())
 		{
 			cmd.Append(wxT(" --data-only"));
