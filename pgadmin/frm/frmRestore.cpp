@@ -558,7 +558,14 @@ void frmRestore::OnEndProcess(wxProcessEvent &ev)
 			// First interesting information: object's type
 			wxString type = col.GetNextToken();
 
-			if (type == wxT("PROCEDURAL"))
+			if (type == wxT("DATABASE"))
+			{
+				// We are restoring a database, not creating one. So ignore
+				// this line as there is no valid schema info and move on
+				// to the next object
+				continue;
+			}
+			else  if (type == wxT("PROCEDURAL"))
 			{
 				// type for a PL is PROCEDURAL LANGUAGE
 				// we'll keep the next column for the object's type
