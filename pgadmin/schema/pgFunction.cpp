@@ -648,7 +648,14 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 			wxString typname = functions->GetVal(wxT("typname"));
 
 			// Is this an EDB Stored Procedure?
-			if (obj->GetConnection()->EdbMinimumVersion(8, 0) && lanname == wxT("edbspl") && typname == wxT("void"))
+			if (obj->GetConnection()->EdbMinimumVersion(8, 1))
+			{
+				wxString protype = functions->GetVal(wxT("protype"));
+				if (protype == wxT("1"))
+					isProcedure = true;
+			}
+			else if (obj->GetConnection()->EdbMinimumVersion(8, 0) &&
+					 lanname == wxT("edbspl") && typname == wxT("void"))
 				isProcedure = true;
 
 			// Create the new object
@@ -950,7 +957,9 @@ pgObject *pgFunctionFactory::CreateObjects(pgCollection *collection, ctlTree *br
 	                               " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid())
 	                           + wxT("::oid\n   AND typname <> 'trigger'\n");
 
-	if (collection->GetConnection()->EdbMinimumVersion(8, 0))
+	if (collection->GetConnection()->EdbMinimumVersion(8, 1))
+		funcRestriction += wxT("   AND NOT (lanname = 'edbspl' AND protype = 1)\n");
+	else if (collection->GetConnection()->EdbMinimumVersion(8, 0))
 		funcRestriction += wxT("   AND NOT (lanname = 'edbspl' AND typname = 'void')\n");
 
 	// Get the Functions
@@ -979,7 +988,12 @@ pgObject *pgProcedureFactory::CreateObjects(pgCollection *collection, ctlTree *b
 {
 	wxString funcRestriction = wxT(
 	                               " WHERE proisagg = FALSE AND pronamespace = ") + NumToStr(collection->GetSchema()->GetOid())
-	                           + wxT("::oid AND lanname = 'edbspl' AND typname = 'void'\n");
+	                           + wxT("::oid AND lanname = 'edbspl'\n");
+
+	if (collection->GetConnection()->EdbMinimumVersion(8, 1))
+		funcRestriction += wxT("   AND protype = 1\n");
+	else
+		funcRestriction += wxT("   AND typname = 'void'\n");
 
 	// Get the Functions
 	return AppendFunctions(collection, collection->GetSchema(), browser, funcRestriction);
