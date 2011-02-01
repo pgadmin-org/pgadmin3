@@ -682,6 +682,7 @@ public:
 	{
 		return wxConfig::Write(key, value);
 	}
+	bool Write(const wxString &key, bool value);
 	bool Write(const wxString &key, const wxPoint &value);
 	bool Write(const wxString &key, const wxSize &value);
 	bool Write(const wxString &key, const wxSize &size, const wxPoint &point)

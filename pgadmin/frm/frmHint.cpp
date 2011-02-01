@@ -360,7 +360,7 @@ void frmHint::ResetHints()
 	int hintno = 0;
 	while (hintArray[hintno].hintPage)
 	{
-		settings->Write(wxString(wxT("Hints/")) + hintArray[hintno].hintPage, wxEmptyString);
+		settings->Write(wxString(wxT("Hints/")) + hintArray[hintno].hintPage, wxString(wxEmptyString));
 		hintno++;
 	}
 }
