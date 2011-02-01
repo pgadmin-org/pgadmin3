@@ -373,7 +373,7 @@ wxSize sysSettings::Read(const wxString &key, const wxSize &defaultVal) const
 // Write a boolean value
 bool sysSettings::Write(const wxString &key, bool value)
 {
-       return Write(key, BoolToStr(value));
+	return Write(key, BoolToStr(value));
 }
 
 // Write a point value

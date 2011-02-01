@@ -1915,8 +1915,8 @@ public:
 	virtual void BeginEdit(int row, int col, wxGrid *grid);
 
 #if wxCHECK_VERSION(2, 9, 0)
-	virtual void ApplyEdit(int row, int col, wxGrid* grid); // pure virtual in wx 2.9+, doesn't exist in prior versions
-	virtual bool EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*);
+	virtual void ApplyEdit(int row, int col, wxGrid *grid); // pure virtual in wx 2.9+, doesn't exist in prior versions
+	virtual bool EndEdit(int row, int col, const wxGrid *grid, const wxString &, wxString *);
 #else
 	virtual bool EndEdit(int row, int col, wxGrid *grid);
 #endif
@@ -2060,10 +2060,10 @@ void sqlGridBoolEditor::BeginEdit(int row, int col, wxGrid *grid)
 				grid->GetTable()->SetValue(row, col, wxEmptyString);\
 				break;\
 }\
-
+ 
 #if wxCHECK_VERSION(2, 9, 0)
 // pure virtual in 2.9+, doesn't exist in prior versions
-void sqlGridBoolEditor::ApplyEdit(int row, int col, wxGrid* grid)
+void sqlGridBoolEditor::ApplyEdit(int row, int col, wxGrid *grid)
 {
 	wxCheckBoxState value = CBox()->Get3StateValue();
 	BOOL_EDIT_SWITCH
@@ -2071,7 +2071,7 @@ void sqlGridBoolEditor::ApplyEdit(int row, int col, wxGrid* grid)
 #endif
 
 #if wxCHECK_VERSION(2, 9, 0)
-bool sqlGridBoolEditor::EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*)
+bool sqlGridBoolEditor::EndEdit(int row, int col, const wxGrid *grid, const wxString &, wxString *)
 #else
 bool sqlGridBoolEditor::EndEdit(int row, int col, wxGrid *grid)
 #endif
@@ -2083,7 +2083,7 @@ bool sqlGridBoolEditor::EndEdit(int row, int col, wxGrid *grid)
 	if ( value != m_startValue )
 		changed = true;
 
-#if !wxCHECK_VERSION(2, 9, 0)	
+#if !wxCHECK_VERSION(2, 9, 0)
 	if ( changed )
 	{
 		BOOL_EDIT_SWITCH

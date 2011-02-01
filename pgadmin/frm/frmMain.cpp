@@ -1085,7 +1085,7 @@ void frmMain::ReportConnError(pgServer *server)
 		wantHint = reportError(error, __("Translator attention: must match backend translation!no pg_hba.conf entry for"), HINT_MISSINGHBA);
 	}
 	if (!wantHint)
-	{	
+	{
 		wantHint = reportError(error, __("Translator attention: must match backend translation!Ident authentication failed"), HINT_MISSINGIDENT);
 	}
 	if (!wantHint)

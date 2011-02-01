@@ -61,9 +61,9 @@ long pgsDictionaryGen::count_lines()
 #endif
 			wxString line;
 			while (!(line = text.ReadLine()).IsEmpty() && !input.Eof())
- 			{
- 				++result;
- 			}
+			{
+				++result;
+			}
 		}
 	}
 

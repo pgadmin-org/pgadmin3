@@ -1621,12 +1621,12 @@ void frmQuery::OnPositionStc(wxStyledTextEvent &event)
 	wxString pos;
 	pos.Printf(_("Ln %d, Col %d, Ch %d"), sqlQuery->LineFromPosition(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetColumn(sqlQuery->GetCurrentPos()) + 1, sqlQuery->GetCurrentPos() + 1);
 	SetStatusText(pos, STATUSPOS_POS);
-    if (selTo - selFrom == 1)
-	    pos.Printf(_("%d char"), selTo - selFrom);
-    else if (selTo - selFrom > 1)
-	    pos.Printf(_("%d chars"), selTo - selFrom);
-    else
-        pos = wxEmptyString;
+	if (selTo - selFrom == 1)
+		pos.Printf(_("%d char"), selTo - selFrom);
+	else if (selTo - selFrom > 1)
+		pos.Printf(_("%d chars"), selTo - selFrom);
+	else
+		pos = wxEmptyString;
 	SetStatusText(pos, STATUSPOS_SEL);
 
 }

@@ -344,7 +344,7 @@ wxWindow *pluginUtilityFactory::StartDialog(frmMain *form, pgObject *obj)
 	if (wxExecute(execCmd) == 0)
 	{
 		wxLogError(_("Failed to execute plugin %s (%s)"), title.c_str(), command.c_str());
-	}	
+	}
 
 	return 0;
 }

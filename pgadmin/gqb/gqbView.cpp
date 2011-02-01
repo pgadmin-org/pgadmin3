@@ -108,7 +108,7 @@ gqbView::gqbView(wxWindow *gqbParent, wxAuiNotebook *gridParent, wxSize size, gq
 
 #if !wxCHECK_VERSION(2, 9, 0)
 	// does nothing in 2.9+
-	SetVirtualSizeHints(size);			
+	SetVirtualSizeHints(size);
 #endif
 
 }

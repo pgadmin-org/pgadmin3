@@ -198,7 +198,7 @@ int wxTimeSpinCtrl::GetTimePart()
 {
 	wxString strAfter = m_txt->GetRange(m_txt->GetInsertionPoint(), 9999);
 	int cnt = 0;
-	const wxChar *p = (const wxChar*)strAfter;
+	const wxChar *p = (const wxChar *)strAfter;
 	while (*p)
 	{
 		if (*p++ == ':')

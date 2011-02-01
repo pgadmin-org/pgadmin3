@@ -382,7 +382,7 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 
 	if (costPos > 0)
 	{
-		wxChar *cl = const_cast<wxChar*>((const wxChar*)str + costPos + 6);
+		wxChar *cl = const_cast<wxChar *>((const wxChar *)str + costPos + 6);
 		wxChar *ch = wxStrstr(cl, wxT(".."));
 		if (ch)
 		{

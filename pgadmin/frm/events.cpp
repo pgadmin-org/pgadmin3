@@ -439,7 +439,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 #else
 				wxString lab = menuItem->GetLabel(); // deprecated
 #endif
-			
+
 				newMenu->Append(menuItem->GetId(), lab, menuItem->GetHelp());
 				newContextMenu->Append(menuItem->GetId(), lab, menuItem->GetHelp());
 			}

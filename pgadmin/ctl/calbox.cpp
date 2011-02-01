@@ -271,7 +271,7 @@ bool wxCalendarBox::SetFormat(const wxChar *fmt)
 	wxDateTime dt;
 	dt.ParseFormat(wxT("2003-10-13"), wxT("%Y-%m-%d"));
 	wxString str = dt.Format(fmt);
-	const wxChar *p = (const wxChar*) str;
+	const wxChar *p = (const wxChar *) str;
 
 	m_format = wxEmptyString;
 
@@ -303,7 +303,7 @@ bool wxCalendarBox::SetFormat(const wxChar *fmt)
 		wxChar c;
 		for (c = '0'; c <= '9'; c++)
 			valArray.Add(wxString(c, 1));
-		const wxChar *p = (const wxChar*) m_format;
+		const wxChar *p = (const wxChar *) m_format;
 		while (*p)
 		{
 			if (*p == '%')

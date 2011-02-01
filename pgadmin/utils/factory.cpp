@@ -321,7 +321,7 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 						wxString lab = menuItem->GetItemLabelText();
 #else
 						wxString lab = menuItem->GetLabel(); // deprecated
-#endif				
+#endif
 						lastItem = treeContextMenu->Append(id, lab, menuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
 						if (menuItem->IsCheckable() && menuItem->IsChecked())
 							treeContextMenu->FindItem(id)->Check();

@@ -262,7 +262,7 @@ bool pgAdmin3::OnInit()
 
 	static const wxCmdLineEntryDesc cmdLineDesc[] =
 	{
-#if wxCHECK_VERSION(2, 9, 0)	
+#if wxCHECK_VERSION(2, 9, 0)
 		// wxCmdLineEntryDesc is one of the few places in 2.9 where wxT()s have any effect...they break the build
 		{wxCMD_LINE_SWITCH, "h", "help", _("show this help message"), wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP },
 		{wxCMD_LINE_OPTION, "s", "server", _("auto-connect to specified server"), wxCMD_LINE_VAL_STRING},

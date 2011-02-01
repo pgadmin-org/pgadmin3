@@ -655,7 +655,7 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 					isProcedure = true;
 			}
 			else if (obj->GetConnection()->EdbMinimumVersion(8, 0) &&
-					 lanname == wxT("edbspl") && typname == wxT("void"))
+			         lanname == wxT("edbspl") && typname == wxT("void"))
 				isProcedure = true;
 
 			// Create the new object
