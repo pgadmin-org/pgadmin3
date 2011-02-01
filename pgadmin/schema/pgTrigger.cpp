@@ -329,8 +329,8 @@ void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 			properties->AppendItem(_("Function"), GetFunction() + wxT("(") + GetArguments() + wxT(")"));
 		if (GetConnection()->BackendMinimumVersion(8, 5))
 			properties->AppendItem(_("When?"), GetWhen());
-		properties->AppendItem(_("Enabled?"), GetEnabled());
-		properties->AppendItem(_("System trigger?"), GetSystemObject());
+		properties->AppendYesNoItem(_("Enabled?"), GetEnabled());
+		properties->AppendYesNoItem(_("System trigger?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

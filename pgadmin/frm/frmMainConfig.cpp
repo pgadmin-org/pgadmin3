@@ -240,7 +240,6 @@ void frmMainConfig::OnUndo(wxCommandEvent &ev)
 	if (!name.IsEmpty())
 	{
 		pgSettingItem *item = options[name];
-		wxASSERT(name);
 		if (item->newLine)
 		{
 			delete item->newLine;
@@ -258,7 +257,6 @@ void frmMainConfig::UpdateLine(int pos)
 	if (!name.IsEmpty())
 	{
 		pgSettingItem *item = options[name];
-		wxASSERT(name);
 
 		pgConfigLine *line = item->newLine;
 		if (!line)

@@ -388,7 +388,7 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		if (!GetIsProcedure())
 			properties->AppendItem(_("Return type"), GetReturnType());
 		properties->AppendItem(_("Language"), GetLanguage());
-		properties->AppendItem(_("Returns a set?"), GetReturnAsSet());
+		properties->AppendYesNoItem(_("Returns a set?"), GetReturnAsSet());
 		if (GetLanguage().IsSameAs(wxT("C"), false))
 		{
 			properties->AppendItem(_("Object file"), GetBin());
@@ -405,10 +405,10 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		}
 
 		properties->AppendItem(_("Volatility"), GetVolatility());
-		properties->AppendItem(_("Security of definer?"), GetSecureDefiner());
-		properties->AppendItem(_("Strict?"), GetIsStrict());
+		properties->AppendYesNoItem(_("Security of definer?"), GetSecureDefiner());
+		properties->AppendYesNoItem(_("Strict?"), GetIsStrict());
 		if (GetConnection()->BackendMinimumVersion(8, 4))
-			properties->AppendItem(_("Window?"), GetIsWindow());
+			properties->AppendYesNoItem(_("Window?"), GetIsWindow());
 
 		size_t i;
 		for (i = 0 ; i < configList.GetCount() ; i++)
@@ -418,7 +418,7 @@ void pgFunction::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		}
 
 		properties->AppendItem(_("ACL"), GetAcl());
-		properties->AppendItem(_("System function?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System function?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

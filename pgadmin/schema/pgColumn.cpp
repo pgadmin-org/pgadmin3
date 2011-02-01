@@ -402,9 +402,9 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 			{
 				properties->AppendItem(_("Sequence"), database->GetSchemaPrefix(GetSerialSchema()) + GetSerialSequence());
 
-				properties->AppendItem(_("Not NULL?"), GetNotNull());
-				properties->AppendItem(_("Primary key?"), GetIsPK());
-				properties->AppendItem(_("Foreign key?"), GetIsFK());
+				properties->AppendYesNoItem(_("Not NULL?"), GetNotNull());
+				properties->AppendYesNoItem(_("Primary key?"), GetIsPK());
+				properties->AppendYesNoItem(_("Foreign key?"), GetIsFK());
 				properties->AppendItem(_("Storage"), GetStorage());
 				if (GetInheritedCount() != 0)
 				{
@@ -413,7 +413,7 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 				}
 				else
 				{
-					properties->AppendItem(_("Inherited"), false);
+					properties->AppendYesNoItem(_("Inherited"), false);
 				}
 				properties->AppendItem(_("Statistics"), GetAttstattarget());
 				size_t i;
@@ -422,7 +422,7 @@ void pgColumn::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 					wxString item = variables.Item(i);
 					properties->AppendItem(item.BeforeFirst('='), item.AfterFirst('='));
 				}
-				properties->AppendItem(_("System column?"), GetSystemObject());
+				properties->AppendYesNoItem(_("System column?"), GetSystemObject());
 			}
 		}
 		if (GetDatabase()->BackendMinimumVersion(8, 4))

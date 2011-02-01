@@ -301,7 +301,7 @@ void pgRole::ShowDependents(frmMain *form, ctlListView *referencedBy, const wxSt
 			{
 				if (set->GetBool(wxT("datallowconn")))
 					dblist.Add(name);
-				if (GetOidStr() == set->GetLong(wxT("datdba")))
+				if (GetOidStr() == set->GetVal(wxT("datdba")))
 					referencedBy->AppendItem(databaseFactory.GetIconId(), _("Database"), name);
 			}
 			else

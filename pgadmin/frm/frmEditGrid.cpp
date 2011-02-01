@@ -143,9 +143,9 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString &_title, pgConn *_conn, p
 
 	// Setup the limit bar
 #ifndef __WXMAC__
-	cbLimit = new wxComboBox(this, CTRLID_LIMITCOMBO, wxEmptyString, wxPoint(0, 0), wxSize(GetCharWidth() * 12, -1), NULL, wxCB_DROPDOWN);
+	cbLimit = new wxComboBox(this, CTRLID_LIMITCOMBO, wxEmptyString, wxPoint(0, 0), wxSize(GetCharWidth() * 12, -1), wxArrayString(), wxCB_DROPDOWN);
 #else
-	cbLimit = new wxComboBox(this, CTRLID_LIMITCOMBO, wxEmptyString, wxPoint(0, 0), wxSize(GetCharWidth() * 24, -1), NULL, wxCB_DROPDOWN);
+	cbLimit = new wxComboBox(this, CTRLID_LIMITCOMBO, wxEmptyString, wxPoint(0, 0), wxSize(GetCharWidth() * 24, -1), wxArrayString(), wxCB_DROPDOWN);
 #endif
 	cbLimit->Append(_("No limit"));
 	cbLimit->Append(_("1000 rows"));
@@ -1913,7 +1913,13 @@ public:
 
 	virtual bool IsAcceptedKey(wxKeyEvent &event);
 	virtual void BeginEdit(int row, int col, wxGrid *grid);
+
+#if wxCHECK_VERSION(2, 9, 0)
+	virtual void ApplyEdit(int row, int col, wxGrid* grid); // pure virtual in wx 2.9+, doesn't exist in prior versions
+	virtual bool EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*);
+#else
 	virtual bool EndEdit(int row, int col, wxGrid *grid);
+#endif
 
 	virtual void Reset();
 	virtual void StartingClick();
@@ -2042,7 +2048,33 @@ void sqlGridBoolEditor::BeginEdit(int row, int col, wxGrid *grid)
 	CBox()->SetFocus();
 }
 
+#define BOOL_EDIT_SWITCH switch (value) \
+{ \
+			case wxCHK_UNCHECKED:\
+				grid->GetTable()->SetValue(row, col, wxT("FALSE"));\
+				break;\
+			case wxCHK_CHECKED:\
+				grid->GetTable()->SetValue(row, col, wxT("TRUE"));\
+				break;\
+			case wxCHK_UNDETERMINED:\
+				grid->GetTable()->SetValue(row, col, wxEmptyString);\
+				break;\
+}\
+
+#if wxCHECK_VERSION(2, 9, 0)
+// pure virtual in 2.9+, doesn't exist in prior versions
+void sqlGridBoolEditor::ApplyEdit(int row, int col, wxGrid* grid)
+{
+	wxCheckBoxState value = CBox()->Get3StateValue();
+	BOOL_EDIT_SWITCH
+}
+#endif
+
+#if wxCHECK_VERSION(2, 9, 0)
+bool sqlGridBoolEditor::EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*)
+#else
 bool sqlGridBoolEditor::EndEdit(int row, int col, wxGrid *grid)
+#endif
 {
 	wxASSERT_MSG(m_control, wxT("The sqlGridBoolEditor must be Created first!"));
 
@@ -2051,21 +2083,12 @@ bool sqlGridBoolEditor::EndEdit(int row, int col, wxGrid *grid)
 	if ( value != m_startValue )
 		changed = true;
 
+#if !wxCHECK_VERSION(2, 9, 0)	
 	if ( changed )
 	{
-		switch (value)
-		{
-			case wxCHK_UNCHECKED:
-				grid->GetTable()->SetValue(row, col, wxT("FALSE"));
-				break;
-			case wxCHK_CHECKED:
-				grid->GetTable()->SetValue(row, col, wxT("TRUE"));
-				break;
-			case wxCHK_UNDETERMINED:
-				grid->GetTable()->SetValue(row, col, wxEmptyString);
-				break;
-		}
+		BOOL_EDIT_SWITCH
 	}
+#endif
 
 	return changed;
 }

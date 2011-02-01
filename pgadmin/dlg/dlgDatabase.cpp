@@ -323,7 +323,9 @@ int dlgDatabase::Go(bool modal)
 	{
 		// Disable the checkbox
 		if (!DisablePrivilege(wxT("CONNECT")))
+		{
 			wxLogError(_("Failed to disable the CONNECT privilege checkbox!"));
+		}
 	}
 
 	return dlgDefaultSecurityProperty::Go(modal, createDefPriv, strDefPrivsOnTables, strDefPrivsOnSeqs, strDefPrivsOnFuncs);

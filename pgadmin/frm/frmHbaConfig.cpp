@@ -189,7 +189,7 @@ void frmHbaConfig::DisplayFile(const wxString &str)
 	{
 		pgHbaConfigLine *line = new pgHbaConfigLine();
 		lines.Add(line);
-		line->item = listEdit->AppendItem(0, wxEmptyString);
+		line->item = listEdit->AppendItem(0, wxString(wxEmptyString));
 	}
 }
 
@@ -328,7 +328,7 @@ void frmHbaConfig::OnEditSetting(wxListEvent &event)
 
 				if (isLastLine)
 				{
-					long pos = listEdit->AppendItem(0, wxEmptyString);
+					long pos = listEdit->AppendItem(0, wxString(wxEmptyString));
 					pgHbaConfigLine *line = new pgHbaConfigLine();
 					line->item = pos;
 					lines.Add(line);

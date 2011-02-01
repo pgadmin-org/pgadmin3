@@ -43,7 +43,7 @@ wxString ctlListView::GetText(long row, long col)
 };
 
 
-void ctlListView::AddColumn(const wxChar *text, int size, int format)
+void ctlListView::AddColumn(const wxString &text, int size, int format)
 {
 	if (size == wxLIST_AUTOSIZE || size == wxLIST_AUTOSIZE_USEHEADER)
 	{
@@ -56,14 +56,14 @@ void ctlListView::AddColumn(const wxChar *text, int size, int format)
 }
 
 
-long ctlListView::AppendItem(int icon, const wxChar *val, const wxChar *val2, const wxChar *val3, const wxChar *val4)
+long ctlListView::AppendItem(int icon, const wxString &val, const wxString &val2, const wxString &val3, const wxString &val4)
 {
 	long pos = InsertItem(GetItemCount(), val, icon);
-	if (val2 && *val2)
+	if (!val2.IsEmpty())
 		SetItem(pos, 1, val2);
-	if (val3 && *val3)
+	if (!val3.IsEmpty())
 		SetItem(pos, 2, val3);
-	if (val4 && *val4)
+	if (!val4.IsEmpty())
 		SetItem(pos, 3, val4);
 
 	return pos;

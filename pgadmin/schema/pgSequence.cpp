@@ -179,9 +179,9 @@ void pgSequence::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		properties->AppendItem(_("Maximum"), GetMaxValue());
 		properties->AppendItem(_("Increment"), GetIncrement());
 		properties->AppendItem(_("Cache"), GetCacheValue());
-		properties->AppendItem(_("Cycled?"), GetCycled());
-		properties->AppendItem(_("Called?"), GetCalled());
-		properties->AppendItem(_("System sequence?"), GetSystemObject());
+		properties->AppendYesNoItem(_("Cycled?"), GetCycled());
+		properties->AppendYesNoItem(_("Called?"), GetCalled());
+		properties->AppendYesNoItem(_("System sequence?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

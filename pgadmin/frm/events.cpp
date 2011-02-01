@@ -434,8 +434,14 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 			for (i = 0 ; i < indivMenu->GetMenuItemCount() ; i++)
 			{
 				menuItem = indivMenu->GetMenuItems().Item(i)->GetData();
-				newMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
-				newContextMenu->Append(menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+#if wxCHECK_VERSION(2, 9, 0)
+				wxString lab = menuItem->GetItemLabelText();
+#else
+				wxString lab = menuItem->GetLabel(); // deprecated
+#endif
+			
+				newMenu->Append(menuItem->GetId(), lab, menuItem->GetHelp());
+				newContextMenu->Append(menuItem->GetId(), lab, menuItem->GetHelp());
 			}
 		}
 		delete indivMenu;
@@ -518,17 +524,29 @@ void frmMain::doPopup(wxWindow *win, wxPoint point, pgObject *object)
 			wxMenu *indivMenu = object->GetNewMenu();
 			if (indivMenu)
 			{
+
 				if (indivMenu->GetMenuItemCount() > 1)
 				{
 					wxMenuItem *menuItem = menuBar->FindItem(newMenuFactory->GetId());
-					treeContextMenu->Insert(newItemPos, newMenuFactory->GetId(), menuItem->GetLabel(), indivMenu, menuItem->GetHelp());
+#if wxCHECK_VERSION(2, 9, 0)
+					wxString lab = menuItem->GetItemLabelText();
+#else
+					wxString lab = menuItem->GetLabel(); // deprecated
+#endif
+
+					treeContextMenu->Insert(newItemPos, newMenuFactory->GetId(), lab, indivMenu, menuItem->GetHelp());
 				}
 				else
 				{
 					if (indivMenu->GetMenuItemCount() == 1)
 					{
 						wxMenuItem *menuItem = indivMenu->GetMenuItems().Item(0)->GetData();
-						treeContextMenu->Insert(newItemPos, menuItem->GetId(), menuItem->GetLabel(), menuItem->GetHelp());
+#if wxCHECK_VERSION(2, 9, 0)
+						wxString lab = menuItem->GetItemLabelText();
+#else
+						wxString lab = menuItem->GetLabel(); // deprecated
+#endif
+						treeContextMenu->Insert(newItemPos, menuItem->GetId(), lab, menuItem->GetHelp());
 					}
 					delete indivMenu;
 				}
@@ -896,7 +914,9 @@ void frmMain::OnSaveDefinition(wxCommandEvent &event)
 	{
 		// Write the file
 		if (!FileWrite(filename.GetPath(), sqlPane->GetText()))
+		{
 			wxLogError(__("Could not write the file %s: Errcode=%d."), filename.GetPath().c_str(), wxSysErrorCode());
+		}
 	}
 	else
 	{

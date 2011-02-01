@@ -77,7 +77,9 @@ int dlgView::Go(bool modal)
 	{
 		// Disable the checkbox
 		if (!DisablePrivilege(wxT("RULE")))
+		{
 			wxLogError(_("Failed to disable the RULE privilege checkbox!"));
+		}
 	}
 
 	return dlgSecurityProperty::Go(modal);
@@ -96,7 +98,7 @@ pgObject *dlgView::CreateObject(pgCollection *collection)
 void dlgView::CheckChange()
 {
 	wxString name = GetName();
-	if (name)
+	if(!name.IsEmpty())
 	{
 		bool enable = true;
 		if (view)

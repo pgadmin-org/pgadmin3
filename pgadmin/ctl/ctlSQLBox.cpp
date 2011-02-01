@@ -703,14 +703,13 @@ char *pg_query_to_single_ordered_string(char *query, void *dbptr)
 }
 
 
-
 // Find some text in the document.
 CharacterRange ctlSQLBox::RegexFindText(int minPos, int maxPos, const wxString &text)
 {
 	TextToFind  ft;
 	ft.chrg.cpMin = minPos;
 	ft.chrg.cpMax = maxPos;
-	wxWX2MBbuf buf = (wxWX2MBbuf)wx2stc(text);
+	wxWX2MBbuf buf = text.mb_str(wxConvUTF8);
 	ft.lpstrText = (char *)(const char *)buf;
 
 	if (SendMsg(2150, wxSTC_FIND_REGEXP, (long)&ft) == -1)
@@ -721,3 +720,4 @@ CharacterRange ctlSQLBox::RegexFindText(int minPos, int maxPos, const wxString &
 
 	return ft.chrgText;
 }
+

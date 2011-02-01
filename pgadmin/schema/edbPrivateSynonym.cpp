@@ -75,7 +75,7 @@ void edbPrivateSynonym::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListV
 		properties->AppendItem(_("Target type"), GetTargetType());
 		properties->AppendItem(_("Target schema"), GetTargetSchema());
 		properties->AppendItem(_("Target object"), GetTargetObject());
-		properties->AppendItem(_("System synonym?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System synonym?"), GetSystemObject());
 	}
 }
 

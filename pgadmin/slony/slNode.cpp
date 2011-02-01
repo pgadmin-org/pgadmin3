@@ -227,11 +227,11 @@ void slNode::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("ID"), GetSlId());
 		if (GetCluster()->GetLocalNodeID() == GetSlId())
-			properties->AppendItem(_("Local node"), true);
-		properties->AppendItem(_("Active"), GetActive());
+			properties->AppendYesNoItem(_("Local node"), true);
+		properties->AppendYesNoItem(_("Active"), GetActive());
 		if (GetCluster()->ClusterMinimumVersion(1, 1))
-			properties->AppendItem(_("Log spooler"), GetSpool());
-		properties->AppendItem(_("Connected"), conn != NULL);
+			properties->AppendYesNoItem(_("Log spooler"), GetSpool());
+		properties->AppendYesNoItem(_("Connected"), conn != NULL);
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 
 		if (conn && pid < 0)

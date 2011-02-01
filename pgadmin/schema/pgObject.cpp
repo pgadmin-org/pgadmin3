@@ -443,7 +443,7 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
 
 				wxString typestr = set->GetVal(wxT("type"));
 				pgaFactory *depFactory = 0;
-				switch (typestr.c_str()[0])
+				switch ((wxChar)typestr.c_str()[0])
 				{
 					case 'c':
 					case 's':   // we don't know these; internally handled
@@ -495,7 +495,7 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
 					}
 					case 'C':
 					{
-						switch (typestr.c_str()[1])
+						switch ((wxChar)typestr.c_str()[1])
 						{
 							case 'c':
 								depFactory = &checkFactory;
@@ -554,7 +554,7 @@ void pgObject::ShowDependency(pgDatabase *db, ctlListView *list, const wxString 
 
 				wxString deptype;
 
-				switch (set->GetVal(wxT("deptype")).c_str()[0])
+				switch ( (wxChar) set->GetVal(wxT("deptype")).c_str()[0])
 				{
 					case 'n':
 						deptype = wxT("normal");
@@ -1236,7 +1236,7 @@ void pgServerObject::FillOwned(ctlTree *browser, ctlListView *referencedBy, cons
 					relname += qtIdent(set->GetVal(wxT("relname")));
 					pgaFactory *ownerFactory = 0;
 
-					switch (set->GetVal(wxT("relkind")).c_str()[0])
+					switch ( (wxChar)set->GetVal(wxT("relkind")).c_str()[0])
 					{
 						case 'r':
 							ownerFactory = &tableFactory;

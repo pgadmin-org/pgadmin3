@@ -198,7 +198,7 @@ int wxTimeSpinCtrl::GetTimePart()
 {
 	wxString strAfter = m_txt->GetRange(m_txt->GetInsertionPoint(), 9999);
 	int cnt = 0;
-	wxChar *p = (wxChar *)strAfter.c_str();
+	const wxChar *p = (const wxChar*)strAfter;
 	while (*p)
 	{
 		if (*p++ == ':')
@@ -304,7 +304,12 @@ void wxTimeSpinCtrl::DoSpin(int diff)
 		wxSpinEvent ev;
 		ev.SetEventObject(this);
 		ev.SetId(GetId());
+
+#if wxCHECK_VERSION(2, 9, 0)
+		GetParent()->GetEventHandler()->ProcessEvent(ev);
+#else
 		GetParent()->ProcessEvent(ev);
+#endif
 	}
 }
 
@@ -317,7 +322,11 @@ void wxTimeSpinCtrl::OnText(wxCommandEvent &ev)
 		spinValue = time;
 		ev.SetEventObject(this);
 		ev.SetId(GetId());
+#if wxCHECK_VERSION(2, 9, 0)
+		GetParent()->GetEventHandler()->ProcessEvent(ev);
+#else
 		GetParent()->ProcessEvent(ev);
+#endif
 	}
 }
 

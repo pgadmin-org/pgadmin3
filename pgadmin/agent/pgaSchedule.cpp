@@ -87,7 +87,7 @@ void pgaSchedule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("ID"), GetRecId());
-		properties->AppendItem(_("Enabled"), GetEnabled());
+		properties->AppendYesNoItem(_("Enabled"), GetEnabled());
 
 		properties->AppendItem(_("Start date"), GetStart());
 		properties->AppendItem(_("End date"), GetEnd());

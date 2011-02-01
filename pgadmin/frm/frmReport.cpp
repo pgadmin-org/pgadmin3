@@ -1289,7 +1289,7 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
 	// Columns
 	int section = report->XmlCreateSection(_("Columns"));
 
-	report->XmlSetSectionTableHeader(section, 6, _("Name"), _("Data type"), _("Not Null?"), _("Primary key?"), _("Default"), _("Comment"));
+	report->XmlSetSectionTableHeader(section, 6, (const wxChar*) _("Name"), (const wxChar*) _("Data type"), (const wxChar*) _("Not Null?"), (const wxChar*) _("Primary key?"), (const wxChar*) _("Default"), (const wxChar*) _("Comment"));
 
 	ctlTree *browser = GetFrmMain()->GetBrowser();
 	pgCollection *columns = table->GetColumnCollection(browser);
@@ -1312,14 +1312,14 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
 			}
 
 			report->XmlAddSectionTableRow(section,
-			                              column->GetColNumber(),
-			                              6,
-			                              colName.c_str(),
-			                              column->GetVarTypename().c_str(),
-			                              BoolToYesNo(column->GetNotNull()).c_str(),
-			                              BoolToYesNo(column->GetIsPK()).c_str(),
-			                              column->GetDefault().c_str(),
-			                              column->GetComment().c_str());
+							column->GetColNumber(),
+							6,
+							(const wxChar*) colName,
+							(const wxChar*) column->GetVarTypename(),
+							(const wxChar*) BoolToYesNo(column->GetNotNull()),
+							(const wxChar*) BoolToYesNo(column->GetIsPK()),
+							(const wxChar*) column->GetDefault(),
+							(const wxChar*) column->GetComment());
 		}
 	}
 	if (haveInherit)
@@ -1342,7 +1342,7 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
 		if (x == 1)
 		{
 			section = report->XmlCreateSection(_("Constraints"));
-			report->XmlSetSectionTableHeader(section, 4, _("Name"), _("Type"), _("Definition"), _("Comment"));
+			report->XmlSetSectionTableHeader(section, 4, (const wxChar*) _("Name"), (const wxChar*) _("Type"), (const wxChar*) _("Definition"), (const wxChar*) _("Comment"));
 		}
 
 		constraint->ShowTreeDetail(browser);
@@ -1372,12 +1372,12 @@ void reportObjectDataDictionaryFactory::GenerateReport(frmReport *report, pgObje
 		}
 
 		report->XmlAddSectionTableRow(section,
-		                              x,
-		                              4,
-		                              constraint->GetName().c_str(),
-		                              type.c_str(),
-		                              definition.c_str(),
-		                              constraint->GetComment().c_str());
+						x,
+						4,
+						(const wxChar*) constraint->GetName(),
+						(const wxChar*) type,
+						(const wxChar*) definition,
+						(const wxChar*) constraint->GetComment());
 		x++;
 	}
 }

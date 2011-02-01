@@ -13,6 +13,13 @@
 #define _WX_CALBOX_H_
 
 #include "wx/calctrl.h"
+// pgCompatCalendarCtrl is a typedef for either wxGenericCalendarCtrl or wxCalendarCtrl
+#if wxCHECK_VERSION(2, 9, 0)
+#include "wx/generic/calctrlg.h"
+typedef wxGenericCalendarCtrl pgCompatCalendarCtrl;
+#else
+typedef wxCalendarCtrl pgCompatCalendarCtrl;
+#endif
 
 class wxCalendarBox : public wxControl
 {
@@ -88,7 +95,7 @@ public:
 private:
 	wxDialog *m_dlg;
 	wxTextCtrl *m_txt;
-	wxCalendarCtrl *m_cal;
+	pgCompatCalendarCtrl *m_cal;
 	wxButton *m_btn;
 	wxString m_format;
 

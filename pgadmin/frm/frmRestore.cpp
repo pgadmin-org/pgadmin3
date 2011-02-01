@@ -430,7 +430,9 @@ wxString frmRestore::getCmdPart2(int step)
 				if (restoreStrings[i] != wxEmptyString)
 				{
 					if (!tocFile.Write(restoreStrings[i] + wxT("\n")))
+					{
 						wxLogError(_("Error writing to the temporary file ") + restoreTOCFilename);
+					}
 				}
 			}
 
@@ -667,7 +669,9 @@ void frmRestore::OnEndProcess(wxProcessEvent &ev)
 					// if we are treating a comment, we use the schema of its
 					// object (ie, the previous line)
 					else if (type != wxT("COMMENT"))
+					{	
 						wxLogError(_("Schema node not found for object ") + type + wxT(" ") + name + wxT(" [") + _("owner") + wxT(": ") + owner + wxT("]"));
+					}
 				}
 				lastItem = ctvObjects->AppendItem(currentSchemaNode, type + wxT(" ") + name + wxT(" [") + _("owner") + wxT(": ") + owner + wxT("]"), 1);
 			}

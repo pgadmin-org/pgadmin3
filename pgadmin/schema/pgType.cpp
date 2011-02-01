@@ -271,7 +271,7 @@ void pgType::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 			}
 			properties->AppendItem(_("Storage"), GetStorage());
 		}
-		properties->AppendItem(_("System type?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System type?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

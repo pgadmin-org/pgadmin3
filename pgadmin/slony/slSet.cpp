@@ -112,7 +112,7 @@ void slSet::ShowDependencies(frmMain *form, ctlListView *list, const wxString &w
 			wxString comment = set->GetVal(wxT("comment"));
 			wxString typname;
 			int icon = -1;
-			switch (typestr.c_str()[0])
+			switch ( (wxChar)typestr.c_str()[0])
 			{
 				case 'S':
 					typname = _("Sequence");

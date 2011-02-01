@@ -392,7 +392,7 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 		properties->AppendItem(_("Default function ACL"), m_defPrivsOnFuncs);
 
 		if (GetMetaType() != PGM_CATALOG)
-			properties->AppendItem(_("System schema?"), GetSystemObject());
+			properties->AppendYesNoItem(_("System schema?"), GetSystemObject());
 
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}

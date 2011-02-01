@@ -133,7 +133,7 @@ void pgCast::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		else
 			properties->AppendItem(_("Function"), GetCastFunction() + wxT("(") + GetSourceType() + wxT(")"));
 		properties->AppendItem(_("Context"), GetCastContext());
-		properties->AppendItem(_("System cast?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System cast?"), GetSystemObject());
 		if (GetConnection()->BackendMinimumVersion(7, 5))
 			properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}

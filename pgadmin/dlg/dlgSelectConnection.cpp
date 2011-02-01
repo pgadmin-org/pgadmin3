@@ -57,9 +57,9 @@ dlgSelectConnection::dlgSelectConnection(wxWindow *parent, frmMain *form) :
 		style |= wxCB_READONLY;
 
 	cbServer = new ctlComboBoxFix(this, CTRLID_CBSERVER, ConvertDialogToPixels(wxPoint(65, 5)), ConvertDialogToPixels(wxSize(135, 12)), style);
-	cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65, 20)), ConvertDialogToPixels(wxSize(135, 12)), NULL, style);
-	cbUsername = new wxComboBox(this, CTRLID_CBUSERNAME, wxEmptyString, ConvertDialogToPixels(wxPoint(65, 35)), ConvertDialogToPixels(wxSize(135, 12)), NULL, style);
-	cbRolename = new wxComboBox(this, CTRLID_CBROLENAME, wxEmptyString, ConvertDialogToPixels(wxPoint(65, 50)), ConvertDialogToPixels(wxSize(135, 12)), NULL, style);
+	cbDatabase = new wxComboBox(this, CTRLID_CBDATABASE, wxEmptyString, ConvertDialogToPixels(wxPoint(65, 20)), ConvertDialogToPixels(wxSize(135, 12)), wxArrayString(), style);
+	cbUsername = new wxComboBox(this, CTRLID_CBUSERNAME, wxEmptyString, ConvertDialogToPixels(wxPoint(65, 35)), ConvertDialogToPixels(wxSize(135, 12)), wxArrayString(), style);
+	cbRolename = new wxComboBox(this, CTRLID_CBROLENAME, wxEmptyString, ConvertDialogToPixels(wxPoint(65, 50)), ConvertDialogToPixels(wxSize(135, 12)), wxArrayString(), style);
 
 	if (form == NULL)
 	{

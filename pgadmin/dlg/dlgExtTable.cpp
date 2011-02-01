@@ -101,7 +101,7 @@ pgObject *dlgExtTable::CreateObject(pgCollection *collection)
 void dlgExtTable::CheckChange()
 {
 	wxString name = GetName();
-	if (name)
+	if(!name.IsEmpty())
 	{
 		if (extTable)
 			EnableOK(txtComment->GetValue() != extTable->GetComment()

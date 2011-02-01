@@ -271,7 +271,9 @@ bool pgConn::DoConnect()
 
 			wxLogInfo(wxT("Setting client_encoding to '%s'"), encoding.c_str());
 			if (PQsetClientEncoding(conn, encoding.ToAscii()))
+			{
 				wxLogError(wxT("%s"), GetLastError().c_str());
+			}
 
 			delete set;
 

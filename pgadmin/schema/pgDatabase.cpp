@@ -644,15 +644,15 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 				// but if we want this, how will we display that?
 			}
 		}
-		properties->AppendItem(_("Allow connections?"), GetAllowConnections());
-		properties->AppendItem(_("Connected?"), GetConnected());
+		properties->AppendYesNoItem(_("Allow connections?"), GetAllowConnections());
+		properties->AppendYesNoItem(_("Connected?"), GetConnected());
 		if (GetConnection() && GetConnection()->BackendMinimumVersion(8, 1))
 		{
 			wxString strConnLimit;
 			strConnLimit.Printf(wxT("%ld"), GetConnectionLimit());
 			properties->AppendItem(_("Connection limit"), strConnLimit);
 		}
-		properties->AppendItem(_("System database?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System database?"), GetSystemObject());
 		if (GetMissingFKs())
 			properties->AppendItem(_("Old style FKs"), GetMissingFKs());
 		if (!GetSchemaRestriction().IsEmpty())

@@ -162,8 +162,8 @@ void pgDomain::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 			properties->AppendItem(_("Dimensions"), GetDimensions());
 		properties->AppendItem(_("Default"), GetDefault());
 		properties->AppendItem(_("Check"), GetCheck());
-		properties->AppendItem(_("Not NULL?"), GetNotNull());
-		properties->AppendItem(_("System domain?"), GetSystemObject());
+		properties->AppendYesNoItem(_("Not NULL?"), GetNotNull());
+		properties->AppendYesNoItem(_("System domain?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

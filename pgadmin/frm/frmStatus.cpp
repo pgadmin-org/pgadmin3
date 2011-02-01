@@ -267,7 +267,7 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 	btnRotateLog = new wxButton(toolBar, CTL_ROTATEBTN, _("Rotate"));
 	toolBar->AddControl(btnRotateLog);
 	toolBar->AddSeparator();
-	cbRate = new wxComboBox(toolBar, CTL_RATECBO, wxEmptyString, wxDefaultPosition, wxSize(-1, -1), NULL, wxCB_READONLY | wxCB_DROPDOWN);
+	cbRate = new wxComboBox(toolBar, CTL_RATECBO, wxEmptyString, wxDefaultPosition, wxSize(-1, -1), wxArrayString(), wxCB_READONLY | wxCB_DROPDOWN);
 	toolBar->AddControl(cbRate);
 	toolBar->AddSeparator();
 	cbDatabase = new ctlComboBoxFix(toolBar, CTRLID_DATABASE, wxDefaultPosition, wxSize(-1, -1), wxCB_READONLY | wxCB_DROPDOWN);
@@ -963,7 +963,9 @@ void frmStatus::OnCopyQuery(wxCommandEvent &ev)
 	}
 
 	if (text.Length() == maxlength)
+	{
 		wxLogError(_("The query you copied is at the maximum length.\nIt may have been truncated."));
+	}
 
 	// If we have some real query, launch the query tool
 	if (text.Length() > 0 && dbname.Length() > 0
@@ -1632,9 +1634,9 @@ void frmStatus::OnRefreshLogTimer(wxTimerEvent &event)
 		{
 			logDirectory = wxT("-");
 			if (connection->BackendMinimumVersion(8, 3))
-				logList->AppendItem(-1, _("logging_collector not enabled or log_filename misconfigured"));
+				logList->AppendItem(-1, wxString(_("logging_collector not enabled or log_filename misconfigured")));
 			else
-				logList->AppendItem(-1, _("redirect_stderr not enabled or log_filename misconfigured"));
+				logList->AppendItem(-1, wxString(_("redirect_stderr not enabled or log_filename misconfigured")));
 			cbLogfiles->Disable();
 			btnRotateLog->Disable();
 		}
@@ -1812,8 +1814,8 @@ void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp,
 		read += strlen(raw);
 
 		wxString str;
-		if (wxString(wxString(raw, wxConvLibc), wxConvUTF8).Len() > 0)
-			str = line + wxString(wxString(raw, wxConvLibc), wxConvUTF8);
+		if (wxString(wxString(raw, wxConvLibc).wx_str(), wxConvUTF8).Len() > 0)
+			str = line + wxString(wxString(raw, wxConvLibc).wx_str(), wxConvUTF8);
 		else
 			str = line + wxTextBuffer::Translate(wxString(raw, set->GetConversion()), wxTextFileType_Unix);
 
@@ -1874,7 +1876,7 @@ void frmStatus::addLogFile(const wxString &filename, const wxDateTime timestamp,
 					if (str.length() > 5 && str.Left(4) != wxT("2009") && str.Left(3) != wxT("201") && str.Left(3) != wxT("202"))
 					{
 						// BUG:  We are out of sync on the log
-						wxLogNotice(wxT("Log line does not start with timestamp: %s\n"), str.c_str());;
+						wxLogNotice(wxT("Log line does not start with timestamp: %s\n"), str.c_str());
 					}
 					else if (str.length() < 20)
 					{

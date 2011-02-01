@@ -159,11 +159,11 @@ void pgRule::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Event"), GetEvent());
 		properties->AppendItem(_("Condition"), GetCondition());
-		properties->AppendItem(_("Do instead?"), GetDoInstead());
+		properties->AppendYesNoItem(_("Do instead?"), GetDoInstead());
 		properties->AppendItem(_("Definition"), firstLineOnly(def));
 		if (this->GetDatabase()->connection()->BackendMinimumVersion(8, 3))
-			properties->AppendItem(_("Enabled?"), GetEnabled());
-		properties->AppendItem(_("System rule?"), GetSystemObject());
+			properties->AppendYesNoItem(_("Enabled?"), GetEnabled());
+		properties->AppendYesNoItem(_("System rule?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

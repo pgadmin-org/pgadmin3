@@ -208,7 +208,8 @@ void gqbGridPanel::OnButtonUp(wxCommandEvent &)
 	allowSelCells = false;
 	if((selTop >= 0 && selBottom == -1) || (selTop == selBottom))
 	{
-		gModel->changesPositions(selTop, selTop--);
+		--selTop;
+		gModel->changesPositions(selTop, selTop + 1);
 		if(selTop < 0)
 		{
 			selTop = 0;
@@ -289,7 +290,8 @@ void gqbGridPanel::OnButtonDown(wxCommandEvent &)
 	// A single row is selected
 	if((selTop >= 0 && selBottom == -1) || (selTop == selBottom))
 	{
-		gModel->changesPositions(selTop, selTop++);
+		++selTop;
+		gModel->changesPositions(selTop, selTop - 1);
 
 		// Adjust selection when selected item it's last item.
 		if(selTop == gModel->GetNumberRows())
@@ -1130,7 +1132,8 @@ void gqbOrderPanel::OnButtonUp(wxCommandEvent &)
 	allowSelCells = false;
 	if((selRightTop >= 0 && selRightBottom == -1) || (selRightTop == selRightBottom))
 	{
-		tableRight->changesPositions(selRightTop, selRightTop--);
+		--selRightTop;
+		tableRight->changesPositions(selRightTop, selRightTop + 1);
 		if(selRightTop < 0)
 		{
 			selRightTop = 0;
@@ -1211,7 +1214,8 @@ void gqbOrderPanel::OnButtonDown(wxCommandEvent &)
 	// A single row is selected
 	if((selRightTop >= 0 && selRightBottom == -1) || (selRightTop == selRightBottom))
 	{
-		tableRight->changesPositions(selRightTop, selRightTop++);
+		++selRightTop;
+		tableRight->changesPositions(selRightTop, selRightTop - 1);
 
 		// Adjust selection when selected item it's last item.
 		if(selRightTop == tableRight->GetNumberRows())

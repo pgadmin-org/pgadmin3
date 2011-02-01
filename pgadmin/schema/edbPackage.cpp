@@ -194,7 +194,7 @@ void edbPackage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		properties->AppendItem(_("Header"), firstLineOnly(GetHeader()));
 		properties->AppendItem(_("Body"), firstLineOnly(GetBody()));
 		properties->AppendItem(_("ACL"), GetAcl());
-		properties->AppendItem(_("System package?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System package?"), GetSystemObject());
 		if (GetConnection()->EdbMinimumVersion(8, 2))
 			properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}

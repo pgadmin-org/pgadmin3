@@ -538,10 +538,14 @@ void ExecutionDialog::OnOK(wxCommandEvent &ev)
 			bool isOk = (thread->ReturnCode() == PGRES_COMMAND_OK || thread->ReturnCode() == PGRES_TUPLES_OK);
 
 			if (txtMessages)
+			{
 				txtMessages->AppendText(thread->GetMessagesAndClear());
+			}
 
 			if (thread->DataSet() != NULL)
+			{
 				wxLogInfo(wxString::Format(wxT("%d rows."), thread->DataSet()->NumRows()));
+			}
 
 			if (isOk)
 			{

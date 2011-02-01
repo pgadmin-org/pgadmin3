@@ -127,10 +127,10 @@ void pgLanguage::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		if (GetConnection()->BackendMinimumVersion(8, 3))
 			properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("ACL"), GetAcl());
-		properties->AppendItem(_("Trusted?"), GetTrusted());
+		properties->AppendYesNoItem(_("Trusted?"), GetTrusted());
 		properties->AppendItem(_("Handler"), GetHandlerProc());
 		properties->AppendItem(_("Validator"), GetValidatorProc());
-		properties->AppendItem(_("System language?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System language?"), GetSystemObject());
 		if (GetConnection()->BackendMinimumVersion(7, 5))
 			properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}

@@ -145,7 +145,7 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
 		connectParams.Append(hostip);
 	}
 
-	if( port.Length())
+	if(port.Length())
 	{
 		connectParams += wxT(" port=");
 		connectParams += port;
@@ -155,7 +155,7 @@ void dbgPgConn::Init( const wxString &server, const wxString &database, const wx
 	}
 
 
-	if( database.Length())
+	if(database.Length())
 	{
 		connectParams.Append(wxT(" dbname="));
 		connectParams.Append(qtConnString(database));

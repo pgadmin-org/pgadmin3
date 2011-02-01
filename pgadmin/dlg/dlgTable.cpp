@@ -738,7 +738,9 @@ int dlgTable::Go(bool modal)
 	{
 		// Disable the checkbox
 		if (!DisablePrivilege(wxT("RULE")))
+		{
 			wxLogError(_("Failed to disable the RULE privilege checkbox!"));
+		}
 
 		if (table)
 		{

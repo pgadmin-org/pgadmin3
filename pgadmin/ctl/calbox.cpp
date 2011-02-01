@@ -114,7 +114,7 @@ bool wxCalendarBox::Create(wxWindow *parent,
 	m_dlg->SetFont(GetFont());
 
 	wxPanel *panel = new wxPanel(m_dlg, CTRLID_PAN, wxPoint(0, 0), wxDefaultSize, wxSUNKEN_BORDER | wxCLIP_CHILDREN);
-	m_cal = new wxCalendarCtrl(panel, CTRLID_CAL, wxDefaultDateTime, wxPoint(0, 0), wxDefaultSize, wxSUNKEN_BORDER);
+	m_cal = new pgCompatCalendarCtrl(panel, CTRLID_CAL, wxDefaultDateTime, wxPoint(0, 0), wxDefaultSize, wxSUNKEN_BORDER);
 	m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_SEL_CHANGED, wxCalendarEventHandler(wxCalendarBox::OnSelChange), 0, this);
 	m_cal->Connect(wxID_ANY, wxID_ANY, wxEVT_KEY_DOWN, wxKeyEventHandler(wxCalendarBox::OnCalKey), 0, this);
 	m_cal->Connect(CTRLID_CAL, CTRLID_CAL, wxEVT_CALENDAR_DOUBLECLICKED, wxCalendarEventHandler(wxCalendarBox::OnSelChange), 0, this);
@@ -271,7 +271,7 @@ bool wxCalendarBox::SetFormat(const wxChar *fmt)
 	wxDateTime dt;
 	dt.ParseFormat(wxT("2003-10-13"), wxT("%Y-%m-%d"));
 	wxString str = dt.Format(fmt);
-	wxChar *p = (wxChar *)str.c_str();
+	const wxChar *p = (const wxChar*) str;
 
 	m_format = wxEmptyString;
 
@@ -303,7 +303,7 @@ bool wxCalendarBox::SetFormat(const wxChar *fmt)
 		wxChar c;
 		for (c = '0'; c <= '9'; c++)
 			valArray.Add(wxString(c, 1));
-		wxChar *p = (wxChar *)m_format.c_str();
+		const wxChar *p = (const wxChar*) m_format;
 		while (*p)
 		{
 			if (*p == '%')
@@ -448,7 +448,13 @@ void wxCalendarBox::OnSelChange(wxCalendarEvent &ev)
 	}
 	ev.SetEventObject(this);
 	ev.SetId(GetId());
+
+#if wxCHECK_VERSION(2, 9, 0)
+	GetParent()->GetEventHandler()->ProcessEvent(ev);
+#else
 	GetParent()->ProcessEvent(ev);
+#endif
+
 }
 
 
@@ -456,21 +462,35 @@ void wxCalendarBox::OnText(wxCommandEvent &ev)
 {
 	ev.SetEventObject(this);
 	ev.SetId(GetId());
+
+#if wxCHECK_VERSION(2, 9, 0)
+	GetParent()->GetEventHandler()->ProcessEvent(ev);
+#else
 	GetParent()->ProcessEvent(ev);
+#endif
 
 	// We'll create an additional event if the date is valid.
-	// If the date isn't valid, the user's probable in the middle of typing
+	// If the date isn't valid, the user's probably in the middle of typing
 	wxString txt = m_txt->GetValue();
 	wxDateTime dt;
 	if (!txt.IsEmpty())
 		dt.ParseFormat(txt, m_format);
 
+#if wxCHECK_VERSION(2, 9, 0)
+	wxCalendarEvent cev(m_cal, dt, wxEVT_CALENDAR_SEL_CHANGED);
+#else
 	wxCalendarEvent cev(m_cal, wxEVT_CALENDAR_SEL_CHANGED);
+	cev.SetDate(dt);
+#endif
 	cev.SetEventObject(this);
 	cev.SetId(GetId());
-	cev.SetDate(dt);
 
+#if wxCHECK_VERSION(2, 9, 0)
+	GetParent()->GetEventHandler()->ProcessEvent(cev);
+#else
 	GetParent()->ProcessEvent(cev);
+#endif
+
 }
 
 

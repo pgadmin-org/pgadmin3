@@ -186,12 +186,12 @@ void pgIndexConstraint::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListV
 			properties->AppendItem(_("Procedure "), GetSchemaPrefix(GetProcNamespace()) + GetProcName() + wxT("(") + GetTypedColumns() + wxT(")"));
 			properties->AppendItem(_("Operator classes"), GetOperatorClasses());
 		}
-		properties->AppendItem(_("Unique?"), GetIsUnique());
-		properties->AppendItem(_("Primary?"), GetIsPrimary());
-		properties->AppendItem(_("Clustered?"), GetIsClustered());
+		properties->AppendYesNoItem(_("Unique?"), GetIsUnique());
+		properties->AppendYesNoItem(_("Primary?"), GetIsPrimary());
+		properties->AppendYesNoItem(_("Clustered?"), GetIsClustered());
 		properties->AppendItem(_("Access method"), GetIndexType());
 		properties->AppendItem(_("Constraint"), GetConstraint());
-		properties->AppendItem(_("System index?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System index?"), GetSystemObject());
 		if (GetConnection()->BackendMinimumVersion(8, 2))
 			properties->AppendItem(_("Fill factor"), GetFillFactor());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));

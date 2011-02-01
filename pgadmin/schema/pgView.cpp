@@ -298,7 +298,7 @@ void pgView::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 		properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("ACL"), GetAcl());
 		properties->AppendItem(_("Definition"), def);
-		properties->AppendItem(_("System view?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System view?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

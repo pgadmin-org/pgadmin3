@@ -107,20 +107,32 @@ int dlgSequence::Go(bool modal)
 	{
 		// Disable the checkbox
 		if (!DisablePrivilege(wxT("USAGE")))
+		{
 			wxLogError(_("Failed to disable the USAGE privilege checkbox!"));
+		}
 	}
 	else
 	{
 		if (!DisablePrivilege(wxT("INSERT")))
+		{
 			wxLogError(_("Failed to disable the INSERT privilege checkbox!"));
+		}
 		if (!DisablePrivilege(wxT("DELETE")))
+		{
 			wxLogError(_("Failed to disable the DELETE privilege checkbox!"));
+		}
 		if (!DisablePrivilege(wxT("RULE")))
+		{
 			wxLogError(_("Failed to disable the RULE privilege checkbox!"));
+		}
 		if (!DisablePrivilege(wxT("REFERENCES")))
+		{
 			wxLogError(_("Failed to disable the REFERENCES privilege checkbox!"));
+		}
 		if (!DisablePrivilege(wxT("TRIGGER")))
+		{
 			wxLogError(_("Failed to disable the TRIGGER privilege checkbox!"));
+		}
 	}
 
 	return dlgSecurityProperty::Go(modal);

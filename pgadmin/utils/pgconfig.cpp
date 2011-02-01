@@ -207,7 +207,7 @@ pgSettingFileReader::pgSettingFileReader(bool localized)
 		buffer = wxTextBuffer::Translate(buffer, wxTextFileType_Unix);
 
 		columnNames = buffer.BeforeFirst('\n');
-		bp = (wxChar *)buffer.c_str() + columnNames.Length() + 1;
+		bp = const_cast<wxChar*>((const wxChar*)buffer + columnNames.Length() + 1);
 	}
 }
 

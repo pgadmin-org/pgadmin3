@@ -106,7 +106,11 @@ gqbView::gqbView(wxWindow *gqbParent, wxAuiNotebook *gridParent, wxSize size, gq
 	this->orderByRGridTable = new gqbGridOrderTable(2, model->getOrdByColumns(), model->getOrdByParents(), model->getOrdByKind());
 	this->orderPanel = new gqbOrderPanel(controller->getTabs(), orderByLGridTable, orderByRGridTable);
 
-	SetVirtualSizeHints(size);
+#if !wxCHECK_VERSION(2, 9, 0)
+	// does nothing in 2.9+
+	SetVirtualSizeHints(size);			
+#endif
+
 }
 
 

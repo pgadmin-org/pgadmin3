@@ -415,7 +415,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	toolBar->Realize();
 
 	// Add the database selection bar
-	cbConnection = new wxBitmapComboBox(this, CTRLID_CONNECTION, wxEmptyString, wxDefaultPosition, wxSize(-1, -1), NULL, wxCB_READONLY | wxCB_DROPDOWN);
+	cbConnection = new wxBitmapComboBox(this, CTRLID_CONNECTION, wxEmptyString, wxDefaultPosition, wxSize(-1, -1), wxArrayString(), wxCB_READONLY | wxCB_DROPDOWN);
 	cbConnection->Append(conn->GetName(), CreateBitmap(GetServerColour(conn)), (void *)conn);
 	cbConnection->Append(_("<new connection>"), wxNullBitmap, (void *)0);
 
@@ -437,7 +437,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 	boxHistory->Add(label, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
 
 	// Query combobox
-	sqlQueries = new wxComboBox(pnlQuery, CTL_SQLQUERYCBOX, wxT(""), wxDefaultPosition, wxDefaultSize, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	sqlQueries = new wxComboBox(pnlQuery, CTL_SQLQUERYCBOX, wxT(""), wxDefaultPosition, wxDefaultSize, wxArrayString(), wxCB_DROPDOWN | wxCB_READONLY);
 	sqlQueries->SetToolTip(_("Previous queries"));
 	LoadQueries();
 	boxHistory->Add(sqlQueries, 1, wxEXPAND | wxALL | wxALIGN_CENTER_VERTICAL, 1);

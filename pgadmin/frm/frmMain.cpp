@@ -1081,12 +1081,17 @@ void frmMain::ReportConnError(pgServer *server)
 
 	wantHint = reportError(error, __("Translator attention: must match libpq translation!Is the server running on host"), HINT_CONNECTSERVER);
 	if (!wantHint)
+	{
 		wantHint = reportError(error, __("Translator attention: must match backend translation!no pg_hba.conf entry for"), HINT_MISSINGHBA);
+	}
 	if (!wantHint)
+	{	
 		wantHint = reportError(error, __("Translator attention: must match backend translation!Ident authentication failed"), HINT_MISSINGIDENT);
-
+	}
 	if (!wantHint)
+	{
 		wxLogError(__("Error connecting to the server: %s"), error.c_str());
+	}
 }
 
 

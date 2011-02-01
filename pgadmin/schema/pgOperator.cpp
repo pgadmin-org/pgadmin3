@@ -200,9 +200,9 @@ void pgOperator::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 			properties->AppendItem(_("Greater than operator"), GetGreaterOperator());
 		}
 
-		properties->AppendItem(_("Supports hash?"), GetHashJoins());
-		properties->AppendItem(_("Supports merge?"), GetMergeJoins());
-		properties->AppendItem(_("System operator?"), GetSystemObject());
+		properties->AppendYesNoItem(_("Supports hash?"), GetHashJoins());
+		properties->AppendYesNoItem(_("Supports merge?"), GetMergeJoins());
+		properties->AppendYesNoItem(_("System operator?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

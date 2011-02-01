@@ -29,40 +29,40 @@ public:
 	void CreateColumns(wxImageList *images, const wxString &left, const wxString &right, int leftSize = 60);
 	void CreateColumns(wxImageList *images, const wxString &str1, const wxString &str2, const wxString &str3, int leftSize = 60);
 
-	void AddColumn(const wxChar *text, int size = wxLIST_AUTOSIZE_USEHEADER, int format = wxLIST_FORMAT_LEFT);
+	void AddColumn(const wxString &text, int size = wxLIST_AUTOSIZE_USEHEADER, int format = wxLIST_FORMAT_LEFT);
 
-	long AppendItem(int icon, const wxChar *val, const wxChar *val2 = 0, const wxChar *val3 = 0, const wxChar *val4 = 0);
-	long AppendItem(const wxChar *val, const wxChar *val2 = 0, const wxChar *val3 = 0)
+	long AppendItem(int icon, const wxString &val, const wxString &val2 = wxString(), const wxString &val3 = wxString(), const wxString &val4 = wxString());
+	long AppendItem(const wxString &val, const wxString &val2 = wxString(), const wxString &val3 = wxString())
 	{
 		return AppendItem(PGICON_PROPERTY, val, val2, val3);
 	}
-	void AppendItem(const wxChar *str, const long l)
+	void AppendItem(const wxString &str, long l)
 	{
 		AppendItem(str, NumToStr(l));
 	}
-	void AppendItem(const wxChar *str, const bool b)
-	{
-		AppendItem(str, BoolToYesNo(b));
-	}
-	void AppendItem(const wxChar *str, const double d)
+	void AppendItem(const wxString &str, double d)
 	{
 		AppendItem(str, NumToStr(d));
 	}
-	void AppendItem(const wxChar *str, const OID o)
+	void AppendItem(const wxString &str, OID o)
 	{
 		AppendItem(str, NumToStr(o));
 	}
-	void AppendItem(const wxChar *str, const wxDateTime &d)
+	void AppendItem(const wxString &str, const wxDateTime &d)
 	{
 		AppendItem(str, DateToStr(d));
 	}
-	void AppendItem(const wxChar *str, const wxLongLong &l)
+	void AppendItem(const wxString &str, const wxLongLong &l)
 	{
 		AppendItem(str, l.ToString());
 	}
-	void AppendItem(const wxChar *str, const wxULongLong &l)
+	void AppendItem(const wxString &str, const wxULongLong &l)
 	{
 		AppendItem(str, l.ToString());
+	}
+	void AppendYesNoItem(const wxString &str, bool b)
+	{
+		AppendItem(str, BoolToYesNo(b));
 	}
 
 	void DeleteCurrentItem()

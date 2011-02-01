@@ -452,7 +452,7 @@ void gpExtTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("ACL"), GetAcl());
-		properties->AppendItem(_("System Table?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System Table?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

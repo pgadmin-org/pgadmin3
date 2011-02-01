@@ -129,8 +129,8 @@ void pgConversion::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 		properties->AppendItem(_("From"), GetForEncoding());
 		properties->AppendItem(_("To"), GetToEncoding());
 		properties->AppendItem(_("Function"), GetSchemaPrefix(GetProcNamespace()) + GetProc());
-		properties->AppendItem(_("Default?"), GetDefaultConversion());
-		properties->AppendItem(_("System conversion?"), GetSystemObject());
+		properties->AppendYesNoItem(_("Default?"), GetDefaultConversion());
+		properties->AppendYesNoItem(_("System conversion?"), GetSystemObject());
 		if (GetConnection()->BackendMinimumVersion(7, 5))
 			properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}

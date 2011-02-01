@@ -80,7 +80,9 @@ wxString CSVTokenizer::GetNextToken()
 		token.assign(m_string, m_pos, pos - m_pos);
 
 	if (quoted_string && inquote)
+	{
 		wxLogNotice(wxT("unterminated double quoted string: %s\n"), token.c_str());
+	}
 
 	m_pos = pos + 1;    // Skip token and delimiter
 

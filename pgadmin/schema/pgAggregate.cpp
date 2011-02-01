@@ -194,7 +194,7 @@ void pgAggregate::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 		else
 			properties->AppendItem(_("Initial condition"), GetInitialCondition());
 
-		properties->AppendItem(_("System aggregate?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System aggregate?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

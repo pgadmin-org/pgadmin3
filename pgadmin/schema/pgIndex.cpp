@@ -351,12 +351,12 @@ void pgIndexBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 			properties->AppendItem(_("Columns"), GetColumns());
 
 		properties->AppendItem(_("Operator classes"), GetOperatorClasses());
-		properties->AppendItem(_("Unique?"), GetIsUnique());
-		properties->AppendItem(_("Primary?"), GetIsPrimary());
-		properties->AppendItem(_("Clustered?"), GetIsClustered());
+		properties->AppendYesNoItem(_("Unique?"), GetIsUnique());
+		properties->AppendYesNoItem(_("Primary?"), GetIsPrimary());
+		properties->AppendYesNoItem(_("Clustered?"), GetIsClustered());
 		properties->AppendItem(_("Access method"), GetIndexType());
 		properties->AppendItem(_("Constraint"), GetConstraint());
-		properties->AppendItem(_("System index?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System index?"), GetSystemObject());
 		if (GetConnection()->BackendMinimumVersion(8, 2))
 			properties->AppendItem(_("Fill factor"), GetFillFactor());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
@@ -518,7 +518,7 @@ pgObject *pgIndexBaseFactory::CreateObjects(pgCollection *coll, ctlTree *browser
 	{
 		while (!indexes->Eof())
 		{
-			switch (indexes->GetVal(wxT("contype"))[0U])
+			switch ( (wxChar)indexes->GetVal(wxT("contype"))[0U])
 			{
 				case 0:
 					index = new pgIndex(collection->GetTable(), indexes->GetVal(wxT("idxname")));

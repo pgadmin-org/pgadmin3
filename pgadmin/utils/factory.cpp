@@ -317,7 +317,12 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 				{
 					if (!menuItem->IsSubMenu())
 					{
-						lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), menuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
+#if wxCHECK_VERSION(2, 9, 0)
+						wxString lab = menuItem->GetItemLabelText();
+#else
+						wxString lab = menuItem->GetLabel(); // deprecated
+#endif				
+						lastItem = treeContextMenu->Append(id, lab, menuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
 						if (menuItem->IsCheckable() && menuItem->IsChecked())
 							treeContextMenu->FindItem(id)->Check();
 					}
@@ -335,7 +340,12 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 							wxMenuItem *oldMenuItem = oldSubMenu->FindItemByPosition(i);
 							if (oldMenuItem->IsEnabled())
 							{
-								newSubMenu->Append(oldMenuItem->GetId(), oldMenuItem->GetLabel(), oldMenuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
+#if wxCHECK_VERSION(2, 9, 0)
+								wxString oldLab = oldMenuItem->GetItemLabelText();
+#else
+								wxString oldLab = oldMenuItem->GetLabel(); // deprecated
+#endif
+								newSubMenu->Append(oldMenuItem->GetId(), oldLab, oldMenuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
 								if (oldMenuItem->IsCheckable() && oldMenuItem->IsChecked())
 									newSubMenu->FindItem(oldMenuItem->GetId())->Check();
 
@@ -344,13 +354,25 @@ void menuFactoryList::AppendEnabledMenus(wxMenuBar *menuBar, wxMenu *treeContext
 							}
 						}
 						if (itemCount > 1)
-							lastItem = treeContextMenu->Append(id, menuItem->GetLabel(), newSubMenu);
+						{
+#if wxCHECK_VERSION(2, 9, 0)
+							wxString lab = menuItem->GetItemLabelText();
+#else
+							wxString lab = menuItem->GetLabel(); // deprecated
+#endif
+							lastItem = treeContextMenu->Append(id, lab, newSubMenu);
+						}
 						else
 						{
 							delete newSubMenu;
 							if (itemCount)
 							{
-								lastItem = treeContextMenu->Append(singleMenuItem->GetId(), singleMenuItem->GetLabel(), singleMenuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
+#if wxCHECK_VERSION(2, 9, 0)
+								wxString lab = singleMenuItem->GetItemLabelText();
+#else
+								wxString lab = singleMenuItem->GetLabel(); // deprecated
+#endif
+								lastItem = treeContextMenu->Append(singleMenuItem->GetId(), lab, singleMenuItem->GetHelp(), menuItem->IsCheckable() ? wxITEM_CHECK : wxITEM_NORMAL);
 								if (singleMenuItem->IsCheckable() && singleMenuItem->IsChecked())
 									treeContextMenu->FindItem(singleMenuItem->GetId())->Check();
 							}

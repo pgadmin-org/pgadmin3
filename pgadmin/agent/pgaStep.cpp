@@ -92,7 +92,7 @@ void pgaStep::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("ID"), GetRecId());
-		properties->AppendItem(_("Enabled"), GetEnabled());
+		properties->AppendYesNoItem(_("Enabled"), GetEnabled());
 		properties->AppendItem(_("Kind"), GetKind());
 		if (GetConnStr().IsEmpty())
 			properties->AppendItem(_("Database"), GetDbname());

@@ -209,7 +209,9 @@ int pgSet::ColNumber(const wxString &colname) const
 		col = PQfnumber(res, colname.mb_str(conv));
 
 	if (col < 0)
+	{
 		wxLogError(__("Column not found in pgSet: %s"), colname.c_str());
+	}
 	return col;
 }
 

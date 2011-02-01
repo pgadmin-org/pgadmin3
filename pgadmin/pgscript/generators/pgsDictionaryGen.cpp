@@ -60,10 +60,10 @@ long pgsDictionaryGen::count_lines()
 			wxTextInputStream text(input, wxT(" \t"));
 #endif
 			wxString line;
-			while ((line = text.ReadLine()) && !input.Eof())
-			{
-				++result;
-			}
+			while (!(line = text.ReadLine()).IsEmpty() && !input.Eof())
+ 			{
+ 				++result;
+ 			}
 		}
 	}
 

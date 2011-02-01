@@ -274,7 +274,7 @@ void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Owner"), GetOwner());
-		properties->AppendItem(_("Default?"), GetOpcDefault());
+		properties->AppendYesNoItem(_("Default?"), GetOpcDefault());
 		properties->AppendItem(_("For type"), GetInType());
 		properties->AppendItem(_("Access method"), GetAccessMethod());
 		if (GetConnection()->BackendMinimumVersion(8, 3))
@@ -287,7 +287,7 @@ void pgOperatorClass::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
 			properties->AppendItem(wxT("OPERATOR"), operators.Item(i));
 		for (i = 0 ; i < functions.Count() ; i++)
 			properties->AppendItem(wxT("FUNCTION"), functions.Item(i));
-		properties->AppendItem(_("System operator class?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System operator class?"), GetSystemObject());
 		if (GetConnection()->BackendMinimumVersion(7, 5))
 			properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}

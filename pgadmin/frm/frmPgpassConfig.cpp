@@ -162,7 +162,7 @@ void frmPgpassConfig::DisplayFile(const wxString &str)
 	{
 		pgPassConfigLine *line = new pgPassConfigLine();
 		lines.Add(line);
-		line->item = listEdit->AppendItem(0, wxEmptyString);
+		line->item = listEdit->AppendItem(0, wxString(wxEmptyString));
 	}
 }
 
@@ -300,7 +300,7 @@ void frmPgpassConfig::OnEditSetting(wxListEvent &event)
 
 				if (isLastLine)
 				{
-					long pos = listEdit->AppendItem(0, wxEmptyString);
+					long pos = listEdit->AppendItem(0, wxString(wxEmptyString));
 					pgPassConfigLine *line = new pgPassConfigLine();
 					line->item = pos;
 					lines.Add(line);

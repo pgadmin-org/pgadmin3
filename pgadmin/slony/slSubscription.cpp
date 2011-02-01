@@ -119,10 +119,10 @@ void slSubscription::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 		properties->AppendItem(_("Receiver ID"), GetReceiverId());
 		properties->AppendItem(_("Receiver Name"), GetReceiverNode());
 
-		properties->AppendItem(_("Active"), GetActive());
-		properties->AppendItem(_("May forward"), GetForward());
+		properties->AppendYesNoItem(_("Active"), GetActive());
+		properties->AppendYesNoItem(_("May forward"), GetForward());
 		if (GetForward())
-			properties->AppendItem(_("Is forwarded"), GetIsSubscribed());
+			properties->AppendYesNoItem(_("Is forwarded"), GetIsSubscribed());
 	}
 }
 

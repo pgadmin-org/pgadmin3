@@ -51,7 +51,12 @@ gqbGraphSimple::gqbGraphSimple()
 // (2)Need to set a font for the device context before get font metrics with GetTextExtent
 void gqbGraphSimple::drawTable(wxMemoryDC &bdc, wxPoint *origin, gqbQueryObject *queryTable)
 {
+
+#if wxCHECK_VERSION(2, 9, 0)
+	wxCoord  w = 0, h = 0, height = 0, width = 0, margin = 5;
+#else
 	long  w = 0, h = 0, height = 0, width = 0, margin = 5;
+#endif
 
 	// Get Value for row Height
 	if(!rowHeight)

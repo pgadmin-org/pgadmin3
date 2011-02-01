@@ -694,11 +694,13 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 		// Check the server version
 		if (!(conn->BackendMinimumVersion(SERVER_MIN_VERSION_N >> 8, SERVER_MIN_VERSION_N & 0x00FF)) ||
 		        (conn->BackendMinimumVersion(SERVER_MAX_VERSION_N >> 8, (SERVER_MAX_VERSION_N & 0x00FF) + 1)))
+		{
 			wxLogWarning(_("The server you are connecting to is not a version that is supported by this release of %s.\n\n%s may not function as expected.\n\nSupported server versions are %s to %s."),
 			             appearanceFactory->GetLongAppName().c_str(),
 			             appearanceFactory->GetLongAppName().c_str(),
 			             wxString(SERVER_MIN_VERSION_T).c_str(),
 			             wxString(SERVER_MAX_VERSION_T).c_str());
+		}
 
 		connected = true;
 		bool hasUptime = false;
@@ -1030,15 +1032,15 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 		properties->AppendItem(_("Username"), GetUsername());
 		if (!GetRolename().IsEmpty())
 			properties->AppendItem(_("Default role"), GetRolename());
-		properties->AppendItem(_("Store password?"), GetStorePwd());
-		properties->AppendItem(_("Restore environment?"), GetRestore());
+		properties->AppendYesNoItem(_("Store password?"), GetStorePwd());
+		properties->AppendYesNoItem(_("Restore environment?"), GetRestore());
 		if (GetConnected())
 		{
 			properties->AppendItem(_("Version string"), GetVersionString());
 			properties->AppendItem(_("Version number"), GetVersionNumber());
 			properties->AppendItem(_("Last system OID"), GetLastSystemOID());
 		}
-		properties->AppendItem(_("Connected?"), GetConnected());
+		properties->AppendYesNoItem(_("Connected?"), GetConnected());
 		if (GetConnected())
 		{
 			if (GetUpSince().IsValid())
@@ -1059,7 +1061,7 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 			}
 		}
 		if (GetServerControllable())
-			properties->AppendItem(_("Running?"), GetServerRunning());
+			properties->AppendYesNoItem(_("Running?"), GetServerRunning());
 
 		if (!GetDbRestriction().IsEmpty())
 			properties->AppendItem(_("DB restriction"), GetDbRestriction());

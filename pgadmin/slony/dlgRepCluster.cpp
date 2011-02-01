@@ -865,14 +865,14 @@ wxString ReplaceString(const wxString &str, const wxString &oldStr, const wxStri
 	wxChar *buf = new wxChar[buflen + 1];
 
 	const wxChar *ptrIn = str.c_str();
-	const wxChar *ptrFound = wxStrstr(ptrIn, oldStr.c_str());
+	const wxChar *ptrFound = wxStrstr(ptrIn, oldStr);
 
 	while (ptrFound)
 	{
 		AppendBuf(buf, buflen, len, ptrIn, ptrFound - ptrIn);
 		AppendBuf(buf, buflen, len, newStr.c_str());
 		ptrIn = ptrFound + oldStr.Length();
-		ptrFound = wxStrstr(ptrIn, oldStr.c_str());
+		ptrFound = wxStrstr(ptrIn, oldStr);
 	}
 
 	AppendBuf(buf, buflen, len, ptrIn);

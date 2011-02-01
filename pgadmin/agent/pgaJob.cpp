@@ -114,7 +114,7 @@ void pgaJob::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *proper
 
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("ID"), GetRecId());
-		properties->AppendItem(_("Enabled"), GetEnabled());
+		properties->AppendYesNoItem(_("Enabled"), GetEnabled());
 		properties->AppendItem(_("Host agent"), GetHostAgent());
 		properties->AppendItem(_("Job class"), GetJobclass());
 		properties->AppendItem(_("Created"), GetCreated());
@@ -349,7 +349,9 @@ runNowFactory::runNowFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar 
 wxWindow *runNowFactory::StartDialog(frmMain *form, pgObject *obj)
 {
 	if (!((pgaJob *)(obj))->RunNow())
+	{
 		wxLogError(_("Failed to reschedule the job."));
+	}
 
 	form->Refresh(obj);
 

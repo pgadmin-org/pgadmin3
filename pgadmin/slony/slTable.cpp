@@ -84,7 +84,7 @@ void slTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("ID"), GetSlId());
 		properties->AppendItem(_("Index Name"), GetIndexName());
-		properties->AppendItem(_("Altered"), GetAltered());
+		properties->AppendYesNoItem(_("Altered"), GetAltered());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 		if (triggers.GetCount() > 0)
 		{

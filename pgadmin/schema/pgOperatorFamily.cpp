@@ -122,7 +122,7 @@ void pgOperatorFamily::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVi
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("Access method"), GetAccessMethod());
-		properties->AppendItem(_("System operator family?"), GetSystemObject());
+		properties->AppendYesNoItem(_("System operator family?"), GetSystemObject());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }

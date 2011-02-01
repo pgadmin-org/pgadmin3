@@ -670,7 +670,7 @@ public:
 	}
 
 	// Functions for storing settings
-	bool Write(const wxString &key, const wxChar *value)
+	bool Write(const wxString &key, const wxString &value)
 	{
 		return wxConfig::Write(key, value);
 	}
@@ -682,7 +682,6 @@ public:
 	{
 		return wxConfig::Write(key, value);
 	}
-	bool Write(const wxString &key, bool value);
 	bool Write(const wxString &key, const wxPoint &value);
 	bool Write(const wxString &key, const wxSize &value);
 	bool Write(const wxString &key, const wxSize &size, const wxPoint &point)
@@ -709,7 +708,6 @@ public:
 	static wxString GetConfigFile(configFileName cfgname);
 
 private:
-
 	static const wxString &getDefaultElementColor(int index)
 	{
 		static const wxString colors[] =

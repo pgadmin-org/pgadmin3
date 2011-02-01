@@ -150,7 +150,12 @@ void pgsApplication::Complete()
 	if (m_caller != 0)
 	{
 		wxCommandEvent resultEvent(wxEVT_COMMAND_MENU_SELECTED, m_event_id);
+
+#if wxCHECK_VERSION(2, 9, 0)
+		m_caller->GetEventHandler()->AddPendingEvent(resultEvent);
+#else
 		m_caller->AddPendingEvent(resultEvent);
+#endif
 	}
 #endif // PGSCLI
 

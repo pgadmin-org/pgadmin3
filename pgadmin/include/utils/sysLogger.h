@@ -45,6 +45,16 @@ private:
 #define wxLOG_Script (wxLOG_User+4)
 #define wxLOG_ScriptVerbose (wxLOG_User+5)
 
+#if wxCHECK_VERSION(2, 9, 0)
+
+#define wxLogNotice wxDO_LOG(Notice)
+#define wxLogSql wxDO_LOG(Sql)
+#define wxLogQuietError wxDO_LOG(QuietError)
+#define wxLogScript wxDO_LOG(Script)
+#define wxLogScriptVerbose wxDO_LOG(ScriptVerbose)
+
+#else
+
 #define DECLARE_INT_LOG_FUNCTION(level)                                  \
 extern void wxVLog##level(const wxChar *szFormat, va_list argptr);       \
 extern void wxLog##level(const wxChar *szFormat, ...) ATTRIBUTE_PRINTF_1
@@ -56,3 +66,7 @@ DECLARE_INT_LOG_FUNCTION(Script);
 DECLARE_INT_LOG_FUNCTION(ScriptVerbose);
 
 #endif
+
+
+#endif // SYSLOGGER_H
+

@@ -998,14 +998,14 @@ void pgTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prope
 		if (!repString.IsEmpty())
 			properties->AppendItem(repString, clusterInfo);
 
-		properties->AppendItem(_("Inherits tables"), GetHasSubclass());
+		properties->AppendYesNoItem(_("Inherits tables"), GetHasSubclass());
 		properties->AppendItem(_("Inherited tables count"), GetInheritedTableCount());
 		if (GetInheritedTableCount())
 			properties->AppendItem(_("Inherited tables"), GetInheritedTables());
 		if (GetConnection()->BackendMinimumVersion(9, 1))
-			properties->AppendItem(_("Unlogged?"), GetUnlogged());
-		properties->AppendItem(_("Has OIDs?"), GetHasOids());
-		properties->AppendItem(_("System table?"), GetSystemObject());
+			properties->AppendYesNoItem(_("Unlogged?"), GetUnlogged());
+		properties->AppendYesNoItem(_("Has OIDs?"), GetHasOids());
+		properties->AppendYesNoItem(_("System table?"), GetSystemObject());
 
 		/* Custom AutoVacuum Settings */
 		if (GetConnection()->BackendMinimumVersion(8, 4) && GetCustomAutoVacuumEnabled())

@@ -197,7 +197,12 @@ int pgQueryThread::raiseEvent(int retval)
 #if !defined(PGSCLI)
 		wxCommandEvent resultEvent(wxEVT_COMMAND_MENU_SELECTED, eventId);
 		resultEvent.SetClientData(data);
+#if wxCHECK_VERSION(2, 9, 0)
+		caller->GetEventHandler()->AddPendingEvent(resultEvent);
+#else
 		caller->AddPendingEvent(resultEvent);
+#endif
+
 #endif
 	}
 	return retval;

@@ -66,7 +66,7 @@ void slSequence::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("ID"), GetSlId());
-		properties->AppendItem(_("Active"), GetActive());
+		properties->AppendYesNoItem(_("Active"), GetActive());
 	}
 }
 
