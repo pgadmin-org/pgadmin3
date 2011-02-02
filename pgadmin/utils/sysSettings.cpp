@@ -609,7 +609,7 @@ void sysSettings::SetSystemFont(const wxFont &font)
 	wxString fontName = font.GetNativeFontInfoDesc();
 
 	if (fontName == wxSystemSettings::GetFont(wxSYS_ICONTITLE_FONT).GetNativeFontInfoDesc())
-		Write(wxT("Font"), wxEmptyString);
+		Write(wxT("Font"), wxString(wxEmptyString));
 	else
 		Write(wxT("Font"), fontName);
 }

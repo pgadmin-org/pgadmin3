@@ -362,7 +362,7 @@ void dlgDirectDbg::saveSettings()
 		{
 			settings->Write( wxString::Format( wxT( "Debugger/Proc/argName%d" ), ++count ), arg.getName());
 			settings->Write( wxString::Format( wxT( "Debugger/Proc/argType%d" ),   count ), arg.getType());
-			settings->Write( wxString::Format( wxT( "Debugger/Proc/argValue%d" ),  count ), (arg.getValue() == wxT("NULL") ? wxEmptyString : arg.getValue().c_str()));
+			settings->Write( wxString::Format( wxT( "Debugger/Proc/argValue%d" ),  count ), (arg.getValue() == wxT("NULL") ? wxString(wxEmptyString) : arg.getValue().c_str()));
 		}
 	}
 }
