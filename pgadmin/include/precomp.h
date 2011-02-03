@@ -23,6 +23,7 @@
 #include "agent/pgaStep.h"
 
 #include "ctl/calbox.h"
+#include "ctl/ctlAuiNotebook.h"
 #include "ctl/ctlCheckTreeView.h"
 #include "ctl/ctlColourPicker.h"
 #include "ctl/ctlComboBox.h"

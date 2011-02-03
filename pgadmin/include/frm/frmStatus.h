@@ -21,10 +21,10 @@
 
 // wxAUI
 #include <wx/aui/aui.h>
-#include <wx/aui/auibook.h>
 
 #include "dlg/dlgClasses.h"
 #include "utils/factory.h"
+#include "ctl/ctlAuiNotebook.h"
 
 enum
 {

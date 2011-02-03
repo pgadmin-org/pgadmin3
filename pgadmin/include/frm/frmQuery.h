@@ -12,6 +12,7 @@
 #ifndef __FRM_QUERY_H
 #define __FRM_QUERY_H
 
+#include "ctl/ctlAuiNotebook.h"
 #include "dlg/dlgClasses.h"
 #include "gqb/gqbViewController.h"
 #include "gqb/gqbModel.h"
@@ -110,7 +111,7 @@ private:
 	frmMain *mainForm;
 	wxAuiManager manager;
 	ctlSQLBox *sqlQuery;
-	wxAuiNotebook *outputPane;
+	ctlAuiNotebook *outputPane;
 	ctlSQLResult *sqlResult;
 	ExplainCanvas *explainCanvas;
 	wxTextCtrl *msgResult, *msgHistory;
@@ -138,7 +139,7 @@ private:
 	void OnResizeHorizontally(wxSplitterEvent &event);
 	void adjustGQBSizes();
 	bool updateFromGqb(bool executing);
-	wxAuiNotebook *sqlNotebook;
+	ctlAuiNotebook *sqlNotebook;
 	gqbModel *model;
 	gqbController *controller;
 	bool firstTime;

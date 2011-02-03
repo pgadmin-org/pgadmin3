@@ -20,6 +20,7 @@
 #include <wx/aui/aui.h>
 
 // App headers
+#include "ctl/ctlAuiNotebook.h"
 #include "gqb/gqbObject.h"
 #include "gqb/gqbModel.h"
 #include "gqb/gqbQueryObjs.h"
@@ -75,7 +76,7 @@ enum tabsIndex
 class gqbController: public wxObject
 {
 public:
-	gqbController(gqbModel *_model, wxWindow *gqbParent, wxAuiNotebook *gridParent, wxSize size);
+	gqbController(gqbModel *_model, wxWindow *gqbParent, ctlAuiNotebook *gridParent, wxSize size);
 	~gqbController();
 	gqbQueryObject *addTableToModel(gqbTable *table, wxPoint p);
 	gqbQueryJoin *addJoin(gqbQueryObject *sTable, gqbColumn *sColumn, gqbQueryObject *dTable, gqbColumn *dColumn, type_Join kind);
@@ -135,7 +136,7 @@ protected:
 class gqbView: public wxScrolledWindow
 {
 public:
-	gqbView(wxWindow *gqbParent, wxAuiNotebook *gridParent, wxSize size, gqbController *controller, gqbModel *model);
+	gqbView(wxWindow *gqbParent, ctlAuiNotebook *gridParent, wxSize size, gqbController *controller, gqbModel *model);
 	~gqbView();
 	void SaveAsImage(const wxString &path, wxBitmapType imgType);
 	bool canSaveAsImage();

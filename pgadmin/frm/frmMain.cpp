@@ -135,7 +135,7 @@ frmMain::frmMain(const wxString &title)
 	browser->SetImageList(imageList);
 
 	// Setup the listview
-	listViews = new wxAuiNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
+	listViews = new ctlAuiNotebook(this, CTL_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_WINDOWLIST_BUTTON);
 
 	// Switch to the generic list control. Native doesn't play well with
 	// multi-row select on Mac.
@@ -570,65 +570,43 @@ void frmMain::Refresh(pgObject *data)
 
 void frmMain::OnCopy(wxCommandEvent &ev)
 {
-	for (unsigned int i = 0; i < manager.GetAllPanes().GetCount(); i++)
+	wxString text;
+
+	// Attempt to copy from the current object
+
+	// Listview
+	ctlListView *lv = dynamic_cast<ctlListView *>(currentControl);
+	if (lv)
 	{
-		wxAuiPaneInfo &pane = manager.GetAllPanes()[i];
-		if (pane.HasFlag(wxAuiPaneInfo::optionActive))
+		int row = lv->GetFirstSelected();
+
+		while (row >= 0)
 		{
-			if (pane.name == wxT("sqlPane"))
+			for (int col = 0; col < lv->GetColumnCount(); col++)
 			{
-				sqlPane->Copy();
+				text.Append(lv->GetText(row, col) + wxT("\t"));
 			}
-			else
-			{
-				ctlListView *list;
-				int row, col;
-				wxString text;
-
-				switch(listViews->GetSelection())
-				{
-					case NBP_PROPERTIES:
-						list = properties;
-						break;
-					case NBP_STATISTICS:
-						list = statistics;
-						break;
-					case NBP_DEPENDENCIES:
-						list = dependencies;
-						break;
-					case NBP_DEPENDENTS:
-						list = dependents;
-						break;
-					default:
-						// This shouldn't happen.
-						// If it does, it's no big deal, we just need to get out.
-						return;
-						break;
-				}
-
-				row = list->GetFirstSelected();
-
-				while (row >= 0)
-				{
-					for (col = 0; col < list->GetColumnCount(); col++)
-					{
-						text.Append(list->GetText(row, col) + wxT("\t"));
-					}
 #ifdef __WXMSW__
-					text.Append(wxT("\r\n"));
+			text.Append(wxT("\r\n"));
 #else
-					text.Append(wxT("\n"));
+			text.Append(wxT("\n"));
 #endif
-					row = list->GetNextSelected(row);
-				}
-
-				if (text.Length() > 0 && wxTheClipboard->Open())
-				{
-					wxTheClipboard->SetData(new wxTextDataObject(text));
-					wxTheClipboard->Close();
-				}
-			}
+			row = lv->GetNextSelected(row);
 		}
+	}
+
+	// ctlSQLBox
+	ctlSQLBox *sb = dynamic_cast<ctlSQLBox *>(currentControl);
+	if (sb)
+	{
+		text = sb->GetSelectedText();
+	}
+
+	// Set the clipboard text
+	if (text.Length() > 0 && wxTheClipboard->Open())
+	{
+		wxTheClipboard->SetData(new wxTextDataObject(text));
+		wxTheClipboard->Close();
 	}
 }
 

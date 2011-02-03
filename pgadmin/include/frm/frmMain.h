@@ -161,7 +161,7 @@ private:
 	ctlListView *properties;
 	ctlListView *statistics;
 	ctlListView *dependents, *dependencies;
-	wxAuiNotebook *listViews;
+	ctlAuiNotebook *listViews;
 	ctlSQLBox *sqlPane;
 	wxMenu *newMenu, *debuggingMenu, *reportMenu, *toolsMenu, *pluginsMenu, *viewMenu,
 	       *treeContextMenu, *newContextMenu, *slonyMenu, *scriptingMenu, *viewDataMenu;
@@ -183,7 +183,9 @@ private:
 
 	wxTreeItemId denyCollapseItem;
 	pgObject *currentObject;
+	wxControl *currentControl;
 
+	void OnChildFocus(wxChildFocusEvent &event);
 	void OnEraseBackground(wxEraseEvent &event);
 	void OnSize(wxSizeEvent &event);
 	void OnSelectItem(wxListEvent &event);

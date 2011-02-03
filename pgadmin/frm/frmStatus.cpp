@@ -21,7 +21,6 @@
 
 // wxAUI
 #include <wx/aui/aui.h>
-#include <wx/aui/auibook.h>
 
 // App headers
 #include "frm/frmStatus.h"
@@ -32,6 +31,7 @@
 #include "utils/pgfeatures.h"
 #include "schema/pgServer.h"
 #include "ctl/ctlMenuToolbar.h"
+#include "ctl/ctlAuiNotebook.h"
 #include "utils/csvfiles.h"
 
 // Icons

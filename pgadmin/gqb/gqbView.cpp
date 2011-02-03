@@ -51,7 +51,7 @@ BEGIN_EVENT_TABLE(gqbView, wxScrolledWindow)
 	EVT_MENU(GQB_REFRESH,           gqbView::OnRefresh)
 END_EVENT_TABLE()
 
-gqbView::gqbView(wxWindow *gqbParent, wxAuiNotebook *gridParent, wxSize size, gqbController *controller, gqbModel *model)
+gqbView::gqbView(wxWindow *gqbParent, ctlAuiNotebook *gridParent, wxSize size, gqbController *controller, gqbModel *model)
 	: wxScrolledWindow(gqbParent, wxID_ANY, wxPoint(201, 0), size,
 	                   wxHSCROLL | wxVSCROLL | wxBORDER | wxRETAINED)
 {

@@ -29,7 +29,7 @@
 
 wxWindowID CTL_NTBKPANELS = ::wxNewId();
 
-gqbController::gqbController(gqbModel *_model, wxWindow *gqbParent, wxAuiNotebook *gridParent, wxSize size = wxSize(GQB_MIN_WIDTH, GQB_MIN_HEIGHT))
+gqbController::gqbController(gqbModel *_model, wxWindow *gqbParent, ctlAuiNotebook *gridParent, wxSize size = wxSize(GQB_MIN_WIDTH, GQB_MIN_HEIGHT))
 	: wxObject()
 {
 	pparent = gqbParent;

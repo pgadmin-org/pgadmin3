@@ -10,7 +10,8 @@
 #######################################################################
 
 pgadmin3_SOURCES += \
-	$(srcdir)/ctl/calbox.cpp \
+		$(srcdir)/ctl/calbox.cpp \
+        $(srcdir)/ctl/ctlAuiNotebook.cpp \
         $(srcdir)/ctl/ctlCheckTreeView.cpp \
         $(srcdir)/ctl/ctlColourPicker.cpp \
         $(srcdir)/ctl/ctlComboBox.cpp \

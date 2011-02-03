@@ -40,11 +40,12 @@
 
 // Event table
 BEGIN_EVENT_TABLE(frmMain, pgFrame)
+	EVT_CHILD_FOCUS(			frmMain::OnChildFocus)
 	EVT_ERASE_BACKGROUND(                   frmMain::OnEraseBackground)
 	EVT_SIZE(                               frmMain::OnSize)
 	EVT_MENU(MNU_ACTION,                    frmMain::OnAction)
 
-	EVT_MENU(MNU_COPY,						frmMain::OnCopy)
+	EVT_MENU(MNU_COPY,			frmMain::OnCopy)
 	EVT_MENU(MNU_DELETE,                    frmMain::OnDelete)
 	EVT_MENU(MNU_SAVEDEFINITION,            frmMain::OnSaveDefinition)
 	EVT_MENU(MNU_SQLPANE,                   frmMain::OnToggleSqlPane)
@@ -75,6 +76,34 @@ BEGIN_EVENT_TABLE(frmMain, pgFrame)
 	EVT_TREE_KEY_DOWN(CTL_BROWSER,          frmMain::OnTreeKeyDown)
 #endif
 END_EVENT_TABLE()
+
+void frmMain::OnChildFocus(wxChildFocusEvent &event)
+{
+	// Grab the focussed control and stash it away for later use
+	currentControl = dynamic_cast<wxControl *>(event.GetEventObject());
+
+	// Setup the menu controls according to the control that's selected
+	// and it's status.
+
+	// Defaults.
+	editMenu->Enable(MNU_COPY, false);
+
+	// ctlSQLBox?
+	ctlSQLBox *sb = dynamic_cast<ctlSQLBox *>(event.GetEventObject());
+	if (sb)
+	{
+		// Copy
+		editMenu->Enable(MNU_COPY, !sb->GetSelectedText().IsEmpty());
+	}
+
+	// Listview?
+	wxListView *lv = dynamic_cast<wxListView *>(event.GetEventObject());
+	if (lv)
+	{
+		// Copy
+		editMenu->Enable(MNU_COPY, lv->GetSelectedItemCount() > 0);
+	}
+}
 
 void frmMain::OnEraseBackground(wxEraseEvent &event)
 {
@@ -267,10 +296,6 @@ void frmMain::OnPropSelChanged(wxListEvent &event)
 	}
 
 	editMenu->Enable(MNU_COPY, properties->GetSelectedItemCount() > 0);
-	if(properties->GetSelectedItemCount() > 0)
-	{
-		manager.GetPane(wxT("listViews")).SetFlag(wxAuiPaneInfo::optionActive, true);
-	}
 }
 
 
@@ -297,10 +322,6 @@ void frmMain::OnSelectItem(wxListEvent &event)
 	}
 
 	editMenu->Enable(MNU_COPY, list->GetSelectedItemCount() > 0);
-	if(list->GetSelectedItemCount() > 0)
-	{
-		manager.GetPane(wxT("listViews")).SetFlag(wxAuiPaneInfo::optionActive, true);
-	}
 }
 
 void frmMain::OnPropSelActivated(wxListEvent &event)

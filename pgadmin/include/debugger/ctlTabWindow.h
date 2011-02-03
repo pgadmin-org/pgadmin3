@@ -34,7 +34,7 @@
 
 WX_DECLARE_HASH_MAP( int, int, wxIntegerHash, wxIntegerEqual, wsTabHash );
 
-class ctlTabWindow : public wxAuiNotebook
+class ctlTabWindow : public ctlAuiNotebook
 {
 	DECLARE_CLASS( ctlTabWindow )
 
