@@ -1,15 +1,15 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 // md5.cpp - MD5 password encryption functions
 //
-// Note: These functions are lifted shamelessly from libpq with minor 
-//       C++ related tweaks. As of PG8.2 PQencryptPassword will be 
-//       exported from libpq, but let's not force everyone to upgrade 
+// Note: These functions are lifted shamelessly from libpq with minor
+//       C++ related tweaks. As of PG8.2 PQencryptPassword will be
+//       exported from libpq, but let's not force everyone to upgrade
 //       their libpq just yet.
 //////////////////////////////////////////////////////////////////////////
 
@@ -31,9 +31,9 @@ createPaddedCopyWithLength(uint8 *b, uint32 *l)
 	uint8	   *ret;
 	uint32		q;
 	uint32		len,
-				newLen448;
+	            newLen448;
 	uint32		len_high,
-				len_low;		/* 64-bit value split into 32-bit sections */
+	            len_low;		/* 64-bit value split into 32-bit sections */
 
 	len = ((b == NULL) ? 0 : *l);
 	newLen448 = len + 64 - (len % 64) - 8;
@@ -87,9 +87,9 @@ static void
 doTheRounds(uint32 X[16], uint32 state[4])
 {
 	uint32		a,
-				b,
-				c,
-				d;
+	            b,
+	            c,
+	            d;
 
 	a = state[0];
 	b = state[1];
@@ -178,14 +178,14 @@ static int
 calculateDigestFromBuffer(uint8 *b, uint32 len, uint8 sum[16])
 {
 	register uint32 i,
-				j,
-				k,
-				newI;
+	         j,
+	         k,
+	         newI;
 	uint32		l;
 	uint8	   *input;
 	register uint32 *wbp;
 	uint32		workBuff[16],
-				state[4];
+	            state[4];
 
 	l = len;
 
@@ -239,7 +239,7 @@ bytesToHex(uint8 b[16], char *s)
 {
 	static const char *hex = "0123456789abcdef";
 	int			q,
-				w;
+	            w;
 
 	for (q = 0, w = 0; q < 16; q++)
 	{
@@ -304,7 +304,7 @@ pg_md5_hash(const void *buff, size_t len, char *hexsum)
  */
 bool
 pg_md5_encrypt(const char *passwd, const char *salt, size_t salt_len,
-			   char *buf)
+               char *buf)
 {
 	size_t		passwd_len = strlen(passwd);
 	char	    *crypt_buf = (char *)malloc(passwd_len + salt_len);

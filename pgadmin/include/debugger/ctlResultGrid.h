@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ctlResultGrid.h - debugger 
+// ctlResultGrid.h - debugger
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -25,12 +25,12 @@
 
 class ctlResultGrid : public wxGrid
 {
-    DECLARE_CLASS( ctlResultGrid )
+	DECLARE_CLASS( ctlResultGrid )
 
 public:
-	ctlResultGrid( wxWindow * parent, wxWindowID id );
+	ctlResultGrid( wxWindow *parent, wxWindowID id );
 
-	void	fillGrid( PGresult * result );	// Copy a result set into the grid
+	void	fillGrid( PGresult *result );	// Copy a result set into the grid
 };
 
 #endif

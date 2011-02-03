@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -35,19 +35,19 @@
 
 
 BEGIN_EVENT_TABLE(dlgTextSearchConfiguration, dlgTypeProperty)
-    EVT_TEXT(XRCID("cbParser"),                 dlgTextSearchConfiguration::OnChange)
-    EVT_COMBOBOX(XRCID("cbParser"),             dlgTextSearchConfiguration::OnChange)
-    EVT_TEXT(XRCID("cbCopy"),                   dlgTextSearchConfiguration::OnChange)
-    EVT_COMBOBOX(XRCID("cbCopy"),               dlgTextSearchConfiguration::OnChange)
-    EVT_LIST_ITEM_SELECTED(XRCID("lstTokens"),  dlgTextSearchConfiguration::OnSelChangeToken)
-    EVT_TEXT(XRCID("cbToken"),                  dlgTextSearchConfiguration::OnChangeCbToken)
-    EVT_COMBOBOX(XRCID("cbToken"),              dlgTextSearchConfiguration::OnChangeCbToken)
-    EVT_TEXT(XRCID("txtDictionary"),            dlgTextSearchConfiguration::OnChangeTxtDictionary)
-    EVT_CHOICE(XRCID("cbDictionary"),           dlgTextSearchConfiguration::OnChangeCbDictionary)
-    EVT_BUTTON(wxID_ADD,                        dlgTextSearchConfiguration::OnAddToken)
-    EVT_BUTTON(wxID_REMOVE,                     dlgTextSearchConfiguration::OnRemoveToken)
+	EVT_TEXT(XRCID("cbParser"),                 dlgTextSearchConfiguration::OnChange)
+	EVT_COMBOBOX(XRCID("cbParser"),             dlgTextSearchConfiguration::OnChange)
+	EVT_TEXT(XRCID("cbCopy"),                   dlgTextSearchConfiguration::OnChange)
+	EVT_COMBOBOX(XRCID("cbCopy"),               dlgTextSearchConfiguration::OnChange)
+	EVT_LIST_ITEM_SELECTED(XRCID("lstTokens"),  dlgTextSearchConfiguration::OnSelChangeToken)
+	EVT_TEXT(XRCID("cbToken"),                  dlgTextSearchConfiguration::OnChangeCbToken)
+	EVT_COMBOBOX(XRCID("cbToken"),              dlgTextSearchConfiguration::OnChangeCbToken)
+	EVT_TEXT(XRCID("txtDictionary"),            dlgTextSearchConfiguration::OnChangeTxtDictionary)
+	EVT_CHOICE(XRCID("cbDictionary"),           dlgTextSearchConfiguration::OnChangeCbDictionary)
+	EVT_BUTTON(wxID_ADD,                        dlgTextSearchConfiguration::OnAddToken)
+	EVT_BUTTON(wxID_REMOVE,                     dlgTextSearchConfiguration::OnRemoveToken)
 #ifdef __WXMAC__
-    EVT_SIZE(                                   dlgTextSearchConfiguration::OnChangeSize)
+	EVT_SIZE(                                   dlgTextSearchConfiguration::OnChangeSize)
 #endif
 END_EVENT_TABLE();
 
@@ -55,138 +55,138 @@ END_EVENT_TABLE();
 
 dlgProperty *pgTextSearchConfigurationFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-    return new dlgTextSearchConfiguration(this, frame, (pgTextSearchConfiguration*)node, (pgSchema*)parent);
+	return new dlgTextSearchConfiguration(this, frame, (pgTextSearchConfiguration *)node, (pgSchema *)parent);
 }
 
 dlgTextSearchConfiguration::dlgTextSearchConfiguration(pgaFactory *f, frmMain *frame, pgTextSearchConfiguration *node, pgSchema *sch)
-: dlgTypeProperty(f, frame, wxT("dlgTextSearchConfiguration"))
+	: dlgTypeProperty(f, frame, wxT("dlgTextSearchConfiguration"))
 {
-    schema=sch;
-    config=node;
-    dirtyTokens = false;
+	schema = sch;
+	config = node;
+	dirtyTokens = false;
 
-    lstTokens->CreateColumns(0, _("Token"), _("Dictionaries"));
+	lstTokens->CreateColumns(0, _("Token"), _("Dictionaries"));
 
-    cbCopy->Disable();
+	cbCopy->Disable();
 }
 
 
 pgObject *dlgTextSearchConfiguration::GetObject()
 {
-    return config;
+	return config;
 }
 
 
 int dlgTextSearchConfiguration::Go(bool modal)
 {
-    wxString qry;
-    pgSet *set;
+	wxString qry;
+	pgSet *set;
 
-    cbParser->Append(wxT(""));
+	cbParser->Append(wxT(""));
 
-    qry = wxT("SELECT prsname, nspname\n")
-          wxT("  FROM pg_ts_parser\n")
-          wxT("  JOIN pg_namespace n ON n.oid=prsnamespace\n")
-          wxT("  ORDER BY prsname\n");
+	qry = wxT("SELECT prsname, nspname\n")
+	      wxT("  FROM pg_ts_parser\n")
+	      wxT("  JOIN pg_namespace n ON n.oid=prsnamespace\n")
+	      wxT("  ORDER BY prsname\n");
 
-    set = connection->ExecuteSet(qry);
-    if (set)
-    {
-        while (!set->Eof())
-        {
-            wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("prsname"));
-            cbParser->Append(procname);
-            set->MoveNext();
-        }
-        delete set;
-    }
+	set = connection->ExecuteSet(qry);
+	if (set)
+	{
+		while (!set->Eof())
+		{
+			wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("prsname"));
+			cbParser->Append(procname);
+			set->MoveNext();
+		}
+		delete set;
+	}
 
-    cbCopy->Append(wxT(""));
+	cbCopy->Append(wxT(""));
 
-    qry = wxT("SELECT cfgname, nspname\n")
-          wxT("  FROM pg_ts_config\n")
-          wxT("  JOIN pg_namespace n ON n.oid=cfgnamespace\n")
-          wxT("  ORDER BY nspname, cfgname\n");
+	qry = wxT("SELECT cfgname, nspname\n")
+	      wxT("  FROM pg_ts_config\n")
+	      wxT("  JOIN pg_namespace n ON n.oid=cfgnamespace\n")
+	      wxT("  ORDER BY nspname, cfgname\n");
 
-    set = connection->ExecuteSet(qry);
-    if (set)
-    {
-        cbCopy->Enable();
-        while (!set->Eof())
-        {
-            wxString configname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("cfgname"));
-            cbCopy->Append(configname);
-            set->MoveNext();
-        }
-        delete set;
-    }
+	set = connection->ExecuteSet(qry);
+	if (set)
+	{
+		cbCopy->Enable();
+		while (!set->Eof())
+		{
+			wxString configname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("cfgname"));
+			cbCopy->Append(configname);
+			set->MoveNext();
+		}
+		delete set;
+	}
 
-    if (config)
-    {
-        // edit mode
-        cbParser->SetValue(config->GetParser());
-        cbCopy->Disable();
+	if (config)
+	{
+		// edit mode
+		cbParser->SetValue(config->GetParser());
+		cbCopy->Disable();
 
-        // second tab handling
-        size_t i;
-        for (i=0 ; i < config->GetTokens().GetCount() ; i++)
-        {
-            wxString token=config->GetTokens().Item(i);
-            lstTokens->AppendItem(token.BeforeFirst('/'), token.AfterFirst('/'));
-        }
+		// second tab handling
+		size_t i;
+		for (i = 0 ; i < config->GetTokens().GetCount() ; i++)
+		{
+			wxString token = config->GetTokens().Item(i);
+			lstTokens->AppendItem(token.BeforeFirst('/'), token.AfterFirst('/'));
+		}
 
-        pgSet *tokens;
-        tokens = connection->ExecuteSet(
-            wxT("SELECT alias FROM ts_token_type(")
-            + config->GetParserOidStr()
-            + wxT(") ORDER BY alias"));
+		pgSet *tokens;
+		tokens = connection->ExecuteSet(
+		             wxT("SELECT alias FROM ts_token_type(")
+		             + config->GetParserOidStr()
+		             + wxT(") ORDER BY alias"));
 
-        if (tokens)
-        {
-            while (!tokens->Eof())
-            {
-                cbToken->Append(tokens->GetVal(wxT("alias")));
-                tokens->MoveNext();
-            }
-            delete tokens;
-        }
+		if (tokens)
+		{
+			while (!tokens->Eof())
+			{
+				cbToken->Append(tokens->GetVal(wxT("alias")));
+				tokens->MoveNext();
+			}
+			delete tokens;
+		}
 
-        pgSet *dictionaries;
-        dictionaries = connection->ExecuteSet(
-          wxT("SELECT dictname FROM pg_ts_dict ORDER BY dictname"));
+		pgSet *dictionaries;
+		dictionaries = connection->ExecuteSet(
+		                   wxT("SELECT dictname FROM pg_ts_dict ORDER BY dictname"));
 
-        if (dictionaries)
-        {
-            while (!dictionaries->Eof())
-            {
-                cbDictionary->Append(dictionaries->GetVal(wxT("dictname")));
-                dictionaries->MoveNext();
-            }
-            delete dictionaries;
-        }
+		if (dictionaries)
+		{
+			while (!dictionaries->Eof())
+			{
+				cbDictionary->Append(dictionaries->GetVal(wxT("dictname")));
+				dictionaries->MoveNext();
+			}
+			delete dictionaries;
+		}
 
-        if (!connection->BackendMinimumVersion(8, 0))
-            cbOwner->Disable();
-    }
-    else
-    {
-        // create mode
-    }
+		if (!connection->BackendMinimumVersion(8, 0))
+			cbOwner->Disable();
+	}
+	else
+	{
+		// create mode
+	}
 
-    btnAdd->Disable();
-    btnRemove->Disable();
+	btnAdd->Disable();
+	btnRemove->Disable();
 
-    return dlgProperty::Go(modal);
+	return dlgProperty::Go(modal);
 }
 
 
 pgObject *dlgTextSearchConfiguration::CreateObject(pgCollection *collection)
 {
-    pgObject *obj=textSearchConfigurationFactory.CreateObjects(collection, 0,
-         wxT("\n   AND cfg.cfgname=") + qtDbString(GetName()) +
-         wxT("\n   AND cfg.cfgnamespace=") + schema->GetOidStr());
+	pgObject *obj = textSearchConfigurationFactory.CreateObjects(collection, 0,
+	                wxT("\n   AND cfg.cfgname=") + qtDbString(GetName()) +
+	                wxT("\n   AND cfg.cfgnamespace=") + schema->GetOidStr());
 
-    return obj;
+	return obj;
 }
 
 
@@ -194,237 +194,237 @@ pgObject *dlgTextSearchConfiguration::CreateObject(pgCollection *collection)
 void dlgTextSearchConfiguration::OnChangeSize(wxSizeEvent &ev)
 {
 	lstTokens->SetSize(wxDefaultCoord, wxDefaultCoord,
-	    ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
-    if (GetAutoLayout())
-    {
-        Layout();
-    }
+	                   ev.GetSize().GetWidth(), ev.GetSize().GetHeight() - 350);
+	if (GetAutoLayout())
+	{
+		Layout();
+	}
 }
 #endif
 
 
 void dlgTextSearchConfiguration::CheckChange()
 {
-    if (config)
-    {
-        EnableOK(txtName->GetValue() != config->GetName()
-            || txtComment->GetValue() != config->GetComment()
-            || cbOwner->GetValue() != config->GetOwner()
-            || dirtyTokens);
-    }
-    else
-    {
-        wxString name=GetName();
-        bool enable=true;
-        CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
-        CheckValid(enable, cbParser->GetGuessedSelection()>0 || cbCopy->GetGuessedSelection() > 0 , _("Please select a parser or a configuration to copy."));
+	if (config)
+	{
+		EnableOK(txtName->GetValue() != config->GetName()
+		         || txtComment->GetValue() != config->GetComment()
+		         || cbOwner->GetValue() != config->GetOwner()
+		         || dirtyTokens);
+	}
+	else
+	{
+		wxString name = GetName();
+		bool enable = true;
+		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+		CheckValid(enable, cbParser->GetGuessedSelection() > 0 || cbCopy->GetGuessedSelection() > 0 , _("Please select a parser or a configuration to copy."));
 
-        EnableOK(enable);
-    }
+		EnableOK(enable);
+	}
 }
 
 
 void dlgTextSearchConfiguration::OnChange(wxCommandEvent &ev)
 {
-    cbParser->Enable(cbCopy->GetValue().Length() == 0);
-    cbCopy->Enable(cbParser->GetValue().Length() == 0);
+	cbParser->Enable(cbCopy->GetValue().Length() == 0);
+	cbCopy->Enable(cbParser->GetValue().Length() == 0);
 
-    CheckChange();
+	CheckChange();
 }
 
 void dlgTextSearchConfiguration::OnChangeCbToken(wxCommandEvent &ev)
 {
-    bool found = false;
+	bool found = false;
 
-    for (int pos = 0 ; pos < lstTokens->GetItemCount() ; pos++)
-    {
-        if (lstTokens->GetText(pos).IsSameAs(cbToken->GetValue(), false))
-        {
-            lstTokens->Select(pos);
-            found = true;
-            break;
-        }
-    }
+	for (int pos = 0 ; pos < lstTokens->GetItemCount() ; pos++)
+	{
+		if (lstTokens->GetText(pos).IsSameAs(cbToken->GetValue(), false))
+		{
+			lstTokens->Select(pos);
+			found = true;
+			break;
+		}
+	}
 
-    btnAdd->Enable(cbToken->GetValue().Length() > 0);
+	btnAdd->Enable(cbToken->GetValue().Length() > 0);
 }
 
 
 void dlgTextSearchConfiguration::OnChangeCbDictionary(wxCommandEvent &ev)
 {
-    if (!txtDictionary->GetValue().Matches(wxT("*") + cbDictionary->GetStringSelection() + wxT("*")))
-    {
-        wxString dicts = txtDictionary->GetValue();
-        if (dicts.Length() > 0)
-            dicts += wxT(",");
-        dicts += cbDictionary->GetStringSelection();
+	if (!txtDictionary->GetValue().Matches(wxT("*") + cbDictionary->GetStringSelection() + wxT("*")))
+	{
+		wxString dicts = txtDictionary->GetValue();
+		if (dicts.Length() > 0)
+			dicts += wxT(",");
+		dicts += cbDictionary->GetStringSelection();
 
-        txtDictionary->SetValue(dicts);
-    }
-    btnAdd->Enable(cbToken->GetValue().Length() > 0);
+		txtDictionary->SetValue(dicts);
+	}
+	btnAdd->Enable(cbToken->GetValue().Length() > 0);
 }
 
 
 void dlgTextSearchConfiguration::OnChangeTxtDictionary(wxCommandEvent &ev)
 {
-    btnAdd->Enable(cbToken->GetValue().Length() > 0);
+	btnAdd->Enable(cbToken->GetValue().Length() > 0);
 }
 
 
 void dlgTextSearchConfiguration::OnSelChangeToken(wxListEvent &ev)
 {
-    int row=lstTokens->GetSelection();
-    if (row >= 0)
-    {
-        cbToken->SetValue(lstTokens->GetText(row, 0));
-        txtDictionary->SetValue(lstTokens->GetText(row, 1));
-    }
+	int row = lstTokens->GetSelection();
+	if (row >= 0)
+	{
+		cbToken->SetValue(lstTokens->GetText(row, 0));
+		txtDictionary->SetValue(lstTokens->GetText(row, 1));
+	}
 
-    btnAdd->Enable(cbToken->GetValue().Length() > 0);
-    btnRemove->Enable(row >= 0);
+	btnAdd->Enable(cbToken->GetValue().Length() > 0);
+	btnRemove->Enable(row >= 0);
 }
 
 
 void dlgTextSearchConfiguration::OnAddToken(wxCommandEvent &ev)
 {
-    bool found = false;
+	bool found = false;
 
-    for (int pos = 0 ; pos < lstTokens->GetItemCount() ; pos++)
-    {
-        if (lstTokens->GetText(pos).IsSameAs(cbToken->GetValue(), false))
-        {
-            lstTokens->SetItem(pos, 1, txtDictionary->GetValue());
-            found = true;
-            break;
-        }
-    }
+	for (int pos = 0 ; pos < lstTokens->GetItemCount() ; pos++)
+	{
+		if (lstTokens->GetText(pos).IsSameAs(cbToken->GetValue(), false))
+		{
+			lstTokens->SetItem(pos, 1, txtDictionary->GetValue());
+			found = true;
+			break;
+		}
+	}
 
-    if (!found)
-    {
-        lstTokens->AppendItem(cbToken->GetValue(), txtDictionary->GetValue());
-    }
+	if (!found)
+	{
+		lstTokens->AppendItem(cbToken->GetValue(), txtDictionary->GetValue());
+	}
 
-    btnAdd->Disable();
+	btnAdd->Disable();
 
-    dirtyTokens = true;
+	dirtyTokens = true;
 
-    CheckChange();
+	CheckChange();
 }
 
 
 void dlgTextSearchConfiguration::OnRemoveToken(wxCommandEvent &ev)
 {
-    for (int pos = 0 ; pos < lstTokens->GetItemCount() ; pos++)
-    {
-        if (lstTokens->GetText(pos).IsSameAs(cbToken->GetValue(), false))
-        {
-            lstTokens->DeleteItem(pos);
-            break;
-        }
-    }
+	for (int pos = 0 ; pos < lstTokens->GetItemCount() ; pos++)
+	{
+		if (lstTokens->GetText(pos).IsSameAs(cbToken->GetValue(), false))
+		{
+			lstTokens->DeleteItem(pos);
+			break;
+		}
+	}
 
-    cbToken->SetValue(wxT(""));
-    txtDictionary->SetValue(wxT(""));
+	cbToken->SetValue(wxT(""));
+	txtDictionary->SetValue(wxT(""));
 
-    btnRemove->Disable();
+	btnRemove->Disable();
 
-    dirtyTokens = true;
+	dirtyTokens = true;
 
-    CheckChange();
+	CheckChange();
 }
 
 
 wxString dlgTextSearchConfiguration::GetSql()
 {
-    wxString sql;
-    wxString objname=schema->GetQuotedPrefix() + qtIdent(GetName());
+	wxString sql;
+	wxString objname = schema->GetQuotedPrefix() + qtIdent(GetName());
 
-    if (config)
-    {
-        // edit mode
-        AppendNameChange(sql);
-        AppendOwnerChange(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname);
-    }
-    else
-    {
-        // create mode
-        sql = wxT("CREATE TEXT SEARCH CONFIGURATION ")
-            + schema->GetQuotedPrefix() + GetName()
-            + wxT(" (");
-        
-        AppendIfFilled(sql, wxT("\n   PARSER="), cbParser->GetValue());
-        AppendIfFilled(sql, wxT("\n   COPY="), cbCopy->GetValue());
-        
-        sql += wxT("\n);\n");
+	if (config)
+	{
+		// edit mode
+		AppendNameChange(sql);
+		AppendOwnerChange(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname);
+	}
+	else
+	{
+		// create mode
+		sql = wxT("CREATE TEXT SEARCH CONFIGURATION ")
+		      + schema->GetQuotedPrefix() + GetName()
+		      + wxT(" (");
 
-    }
+		AppendIfFilled(sql, wxT("\n   PARSER="), cbParser->GetValue());
+		AppendIfFilled(sql, wxT("\n   COPY="), cbCopy->GetValue());
 
-    if (cbParser->GetValue().Length() > 0)
-    {
-        wxArrayString toks;
-        size_t index;
+		sql += wxT("\n);\n");
 
-        if (config)
-        {
-            for (index = 0 ; index < config->GetTokens().GetCount() ; index++)
-                toks.Add(config->GetTokens().Item(index));
-        }
+	}
 
-        int cnt=lstTokens->GetItemCount();
-        int pos;
+	if (cbParser->GetValue().Length() > 0)
+	{
+		wxArrayString toks;
+		size_t index;
 
-        // check for changed or added tokens
-        for (pos=0 ; pos < cnt ; pos++)
-        {
-            wxString newTok=lstTokens->GetText(pos);
-            wxString newVal=lstTokens->GetText(pos, 1);
+		if (config)
+		{
+			for (index = 0 ; index < config->GetTokens().GetCount() ; index++)
+				toks.Add(config->GetTokens().Item(index));
+		}
 
-            wxString oldVal;
+		int cnt = lstTokens->GetItemCount();
+		int pos;
 
-            for (index=0 ; index < toks.GetCount() ; index++)
-            {
-                wxString tok=toks.Item(index);
-                if (tok.BeforeFirst('/').IsSameAs(newTok, false))
-                {
-                    oldVal = tok.Mid(newTok.Length()+1);
-                    toks.RemoveAt(index);
-                    break;
-                }
-            }
-            if (oldVal != newVal)
-            {
-                if (oldVal.Length() == 0)
-                {
-                    sql += wxT("ALTER TEXT SEARCH CONFIGURATION ") + objname
-                        +  wxT(" ADD MAPPING FOR ") + newTok
-                        +  wxT(" WITH ") + newVal
-                        +  wxT(";\n");
-                }
-                else
-                {
-                    sql += wxT("ALTER TEXT SEARCH CONFIGURATION ") + objname
-                        +  wxT(" ALTER MAPPING FOR ") + newTok
-                        + wxT(" WITH ") + newVal
-                        +  wxT(";\n");
-                }
-            }
-        }
-        
-        // check for removed tokens
-        wxString oldTok;
-        for (pos=0 ; pos < (int)toks.GetCount() ; pos++)
-        {
-            if (!toks.Item(pos).BeforeFirst('/').IsSameAs(oldTok, false))
-            {
-                oldTok = toks.Item(pos).BeforeFirst('/');
-                sql += wxT("ALTER TEXT SEARCH CONFIGURATION ") + objname
-                    +  wxT(" DROP MAPPING FOR ") + oldTok
-                    + wxT(";\n");
-            }
-        }
-    }
+		// check for changed or added tokens
+		for (pos = 0 ; pos < cnt ; pos++)
+		{
+			wxString newTok = lstTokens->GetText(pos);
+			wxString newVal = lstTokens->GetText(pos, 1);
 
-    AppendComment(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname, config);
+			wxString oldVal;
 
-    return sql;
+			for (index = 0 ; index < toks.GetCount() ; index++)
+			{
+				wxString tok = toks.Item(index);
+				if (tok.BeforeFirst('/').IsSameAs(newTok, false))
+				{
+					oldVal = tok.Mid(newTok.Length() + 1);
+					toks.RemoveAt(index);
+					break;
+				}
+			}
+			if (oldVal != newVal)
+			{
+				if (oldVal.Length() == 0)
+				{
+					sql += wxT("ALTER TEXT SEARCH CONFIGURATION ") + objname
+					       +  wxT(" ADD MAPPING FOR ") + newTok
+					       +  wxT(" WITH ") + newVal
+					       +  wxT(";\n");
+				}
+				else
+				{
+					sql += wxT("ALTER TEXT SEARCH CONFIGURATION ") + objname
+					       +  wxT(" ALTER MAPPING FOR ") + newTok
+					       + wxT(" WITH ") + newVal
+					       +  wxT(";\n");
+				}
+			}
+		}
+
+		// check for removed tokens
+		wxString oldTok;
+		for (pos = 0 ; pos < (int)toks.GetCount() ; pos++)
+		{
+			if (!toks.Item(pos).BeforeFirst('/').IsSameAs(oldTok, false))
+			{
+				oldTok = toks.Item(pos).BeforeFirst('/');
+				sql += wxT("ALTER TEXT SEARCH CONFIGURATION ") + objname
+				       +  wxT(" DROP MAPPING FOR ") + oldTok
+				       + wxT(";\n");
+			}
+		}
+	}
+
+	AppendComment(sql, wxT("TEXT SEARCH CONFIGURATION ") + objname, config);
+
+	return sql;
 }

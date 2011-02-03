@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -18,9 +18,9 @@
 class edbPrivateSynonymFactory : public pgSchemaObjFactory
 {
 public:
-    edbPrivateSynonymFactory();
-    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+	edbPrivateSynonymFactory();
+	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
 private:
 };
 extern edbPrivateSynonymFactory edbPrivFactory;
@@ -28,39 +28,72 @@ extern edbPrivateSynonymFactory edbPrivFactory;
 class edbPrivateSynonym  : public pgSchemaObject
 {
 public:
-    edbPrivateSynonym(pgSchema *newSchema, const wxString& newName = wxT(""));
+	edbPrivateSynonym(pgSchema *newSchema, const wxString &newName = wxT(""));
 
-    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 
-    virtual wxString GetSql(ctlTree *browser);
+	virtual wxString GetSql(ctlTree *browser);
 
-    bool DropObject(wxFrame*, ctlTree*, bool);
-    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+	bool DropObject(wxFrame *, ctlTree *, bool);
+	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
-    bool HasStats() { return false; }
-    bool HasDepends() { return true; }
-    bool HasReferences() { return true; }
-    bool GetSystemObject() const { return GetSchema()->GetSystemObject(); }
+	bool HasStats()
+	{
+		return false;
+	}
+	bool HasDepends()
+	{
+		return true;
+	}
+	bool HasReferences()
+	{
+		return true;
+	}
+	bool GetSystemObject() const
+	{
+		return GetSchema()->GetSystemObject();
+	}
 
-    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createpubsynonym"); }
+	wxString GetHelpPage(bool forCreate) const
+	{
+		return wxT("pg/sql-createpubsynonym");
+	}
 
-    wxString GetTargetType() const { return targetType; }
-    void iSetTargetType(const wxString& s) { targetType=s; }
-    wxString GetTargetSchema() const { return targetSchema; }
-    void iSetTargetSchema(const wxString& s) { targetSchema=s; }
-    wxString GetTargetObject() const { return targetObject; }
-    void iSetTargetObject(const wxString& s) { targetObject=s; }
+	wxString GetTargetType() const
+	{
+		return targetType;
+	}
+	void iSetTargetType(const wxString &s)
+	{
+		targetType = s;
+	}
+	wxString GetTargetSchema() const
+	{
+		return targetSchema;
+	}
+	void iSetTargetSchema(const wxString &s)
+	{
+		targetSchema = s;
+	}
+	wxString GetTargetObject() const
+	{
+		return targetObject;
+	}
+	void iSetTargetObject(const wxString &s)
+	{
+		targetObject = s;
+	}
 
 private:
-    wxString targetType, targetSchema, targetObject;
-    bool isPublic;
+	wxString targetType, targetSchema, targetObject;
+	bool isPublic;
 };
 
 #endif // EDBPRIVATESYNONYM_H
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -77,10 +110,10 @@ private:
 class edbPrivateSynonymFactory : public pgSchemaObjFactory
 {
 public:
-    edbPrivateSynonymFactory();
-    virtual ~edbPrivateSynonymFactory();
-    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+	edbPrivateSynonymFactory();
+	virtual ~edbPrivateSynonymFactory();
+	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
 private:
 };
 extern edbPrivateSynonymFactory edbPrivFactory;
@@ -88,32 +121,65 @@ extern edbPrivateSynonymFactory edbPrivFactory;
 class edbPrivateSynonym  : public pgSchemaObject
 {
 public:
-    edbPrivateSynonym(pgSchema *newSchema, const wxString& newName = wxT(""));
+	edbPrivateSynonym(pgSchema *newSchema, const wxString &newName = wxT(""));
 
-    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 
-    virtual wxString GetSql(ctlTree *browser);
+	virtual wxString GetSql(ctlTree *browser);
 
-    bool DropObject(wxFrame*, ctlTree*, bool);
-    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+	bool DropObject(wxFrame *, ctlTree *, bool);
+	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
-    bool HasStats() { return false; }
-    bool HasDepends() { return true; }
-    bool HasReferences() { return true; }
-    bool GetSystemObject() const { return GetSchema()->GetSystemObject(); }
+	bool HasStats()
+	{
+		return false;
+	}
+	bool HasDepends()
+	{
+		return true;
+	}
+	bool HasReferences()
+	{
+		return true;
+	}
+	bool GetSystemObject() const
+	{
+		return GetSchema()->GetSystemObject();
+	}
 
-    wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createpubsynonym"); }
+	wxString GetHelpPage(bool forCreate) const
+	{
+		return wxT("pg/sql-createpubsynonym");
+	}
 
-    wxString GetTargetType() const { return targetType; }
-    void iSetTargetType(const wxString& s) { targetType=s; }
-    wxString GetTargetSchema() const { return targetSchema; }
-    void iSetTargetSchema(const wxString& s) { targetSchema=s; }
-    wxString GetTargetObject() const { return targetObject; }
-    void iSetTargetObject(const wxString& s) { targetObject=s; }
+	wxString GetTargetType() const
+	{
+		return targetType;
+	}
+	void iSetTargetType(const wxString &s)
+	{
+		targetType = s;
+	}
+	wxString GetTargetSchema() const
+	{
+		return targetSchema;
+	}
+	void iSetTargetSchema(const wxString &s)
+	{
+		targetSchema = s;
+	}
+	wxString GetTargetObject() const
+	{
+		return targetObject;
+	}
+	void iSetTargetObject(const wxString &s)
+	{
+		targetObject = s;
+	}
 
 private:
-    wxString targetType, targetSchema, targetObject;
-    bool isPublic;
+	wxString targetType, targetSchema, targetObject;
+	bool isPublic;
 };
 
 #endif // EDBPRIVATESYNONYM_H

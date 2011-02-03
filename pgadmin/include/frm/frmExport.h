@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -22,21 +22,21 @@ class pgSet;
 class frmExport : public pgDialog
 {
 public:
-    frmExport(wxWindow *parent);
-    ~frmExport();
+	frmExport(wxWindow *parent);
+	~frmExport();
 
-    bool Export(pgSet *set);
-    
+	bool Export(pgSet *set);
+
 private:
-    void OnChange(wxCommandEvent &ev);
-    void OnHelp(wxCommandEvent& ev);
-    void OnOK(wxCommandEvent &ev);
-    void OnCancel(wxCommandEvent &ev);
-    void OnBrowseFile(wxCommandEvent &ev);
+	void OnChange(wxCommandEvent &ev);
+	void OnHelp(wxCommandEvent &ev);
+	void OnOK(wxCommandEvent &ev);
+	void OnCancel(wxCommandEvent &ev);
+	void OnBrowseFile(wxCommandEvent &ev);
 
-    wxWindow *parent;
+	wxWindow *parent;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

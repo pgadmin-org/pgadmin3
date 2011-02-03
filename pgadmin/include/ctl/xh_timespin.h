@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,14 +16,14 @@
 
 #include "wx/xrc/xmlres.h"
 
-//class WXDLLIMPEXP_XRC 
+//class WXDLLIMPEXP_XRC
 class wxTimeSpinXmlHandler : public wxXmlResourceHandler
 {
-DECLARE_DYNAMIC_CLASS(wxTimeSpinXmlHandler)
+	DECLARE_DYNAMIC_CLASS(wxTimeSpinXmlHandler)
 public:
-    wxTimeSpinXmlHandler();
-    virtual wxObject *DoCreateResource();
-    virtual bool CanHandle(wxXmlNode *node);
+	wxTimeSpinXmlHandler();
+	virtual wxObject *DoCreateResource();
+	virtual bool CanHandle(wxXmlNode *node);
 };
 
 

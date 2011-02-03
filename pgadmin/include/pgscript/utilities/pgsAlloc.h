@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,7 +19,7 @@
 
 struct pgsMallocInfo
 {
-	const void * ptr;
+	const void *ptr;
 	size_t size;
 	wxString filename;
 	size_t line_nb;
@@ -31,37 +31,37 @@ class pgsAlloc
 {
 
 protected:
-	
+
 	pgsAlloc();
 
 	pgsMallocInfoMap m_malloc_info;
 
 private:
 
-	void add_malloc(const pgsMallocInfo & malloc_info);
-	
-	void rm_malloc(const void * ptr);
-			
+	void add_malloc(const pgsMallocInfo &malloc_info);
+
+	void rm_malloc(const void *ptr);
+
 public:
-	
-	void * pmalloc(size_t size, const char * filename, size_t line_nb);
-	
+
+	void *pmalloc(size_t size, const char *filename, size_t line_nb);
+
 	void dump();
-	
-	void pfree(void * ptr);
-	
-	static pgsAlloc & instance();
-	
+
+	void pfree(void *ptr);
+
+	static pgsAlloc &instance();
+
 };
 
-void * operator new(size_t size) throw (std::bad_alloc);
-void * operator new[](size_t size) throw (std::bad_alloc);
-void * operator new(size_t size, const char * filename, size_t line_nb)
-	throw (std::bad_alloc);
-void * operator new[](size_t size, const char * filename, size_t line_nb)
-	throw (std::bad_alloc);
-void operator delete(void * ptr) throw ();
-void operator delete[](void * ptr) throw ();
+void *operator new(size_t size) throw (std::bad_alloc);
+void *operator new[](size_t size) throw (std::bad_alloc);
+void *operator new(size_t size, const char *filename, size_t line_nb)
+throw (std::bad_alloc);
+void *operator new[](size_t size, const char *filename, size_t line_nb)
+throw (std::bad_alloc);
+void operator delete(void *ptr) throw ();
+void operator delete[](void *ptr) throw ();
 
 #define pnew new(__FILE__, __LINE__)
 

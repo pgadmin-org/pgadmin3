@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -18,19 +18,19 @@
 class dlgConnect : public DialogWithHelp
 {
 public:
-    dlgConnect(frmMain *form, const wxString& description, bool needPwd);
-    ~dlgConnect();
-    wxString GetHelpPage() const;
+	dlgConnect(frmMain *form, const wxString &description, bool needPwd);
+	~dlgConnect();
+	wxString GetHelpPage() const;
 
 
-    wxString GetPassword();
-    bool GetStorePwd();
-    int Go();
-    
+	wxString GetPassword();
+	bool GetStorePwd();
+	int Go();
+
 private:
-    void OnOK(wxCommandEvent& ev);
-    void OnCancel(wxCommandEvent& ev);
-    DECLARE_EVENT_TABLE()
+	void OnOK(wxCommandEvent &ev);
+	void OnCancel(wxCommandEvent &ev);
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

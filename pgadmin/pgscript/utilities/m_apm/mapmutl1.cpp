@@ -1,5 +1,5 @@
 
-/* 
+/*
  *  M_APM  -  mapmutl1.c
  *
  *  Copyright (C) 2003 - 2007   Michael C. Ring
@@ -33,15 +33,15 @@
 /****************************************************************************/
 void	M_apm_log_error_msg(int fatal, const char *message)
 {
-if (fatal)
-  {
-   fprintf(stderr, "MAPM Error: %s\n", message);
-   exit(100);
-  }
-else
-  {
-   fprintf(stderr, "MAPM Warning: %s\n", message);
-  }
+	if (fatal)
+	{
+		fprintf(stderr, "MAPM Error: %s\n", message);
+		exit(100);
+	}
+	else
+	{
+		fprintf(stderr, "MAPM Warning: %s\n", message);
+	}
 }
 /****************************************************************************/
 

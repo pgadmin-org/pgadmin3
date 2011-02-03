@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -21,21 +21,24 @@ class slListen;
 class dlgRepListen : public dlgRepProperty
 {
 public:
-    dlgRepListen(pgaFactory *factory, frmMain *frame, slListen *l, slNode *n);
-    int Go(bool modal);
-    wxString GetHelpPage() const { return wxT("slony-path#listen"); }
+	dlgRepListen(pgaFactory *factory, frmMain *frame, slListen *l, slNode *n);
+	int Go(bool modal);
+	wxString GetHelpPage() const
+	{
+		return wxT("slony-path#listen");
+	}
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
 private:
 
-    slListen *listen;
-    slNode *node;
+	slListen *listen;
+	slNode *node;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

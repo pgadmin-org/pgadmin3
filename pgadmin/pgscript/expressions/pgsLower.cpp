@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -13,29 +13,29 @@
 
 #include "pgscript/objects/pgsVariable.h"
 
-pgsLower::pgsLower(const pgsExpression * left, const pgsExpression * right) :
+pgsLower::pgsLower(const pgsExpression *left, const pgsExpression *right) :
 	pgsOperation(left, right)
 {
-	
+
 }
 
 pgsLower::~pgsLower()
 {
-	
+
 }
 
-pgsExpression * pgsLower::clone() const
+pgsExpression *pgsLower::clone() const
 {
 	return pnew pgsLower(*this);
 }
 
-pgsLower::pgsLower(const pgsLower & that) :
+pgsLower::pgsLower(const pgsLower &that) :
 	pgsOperation(that)
 {
 
 }
 
-pgsLower & pgsLower::operator =(const pgsLower & that)
+pgsLower &pgsLower::operator =(const pgsLower &that)
 {
 	if (this != &that)
 	{
@@ -49,12 +49,12 @@ wxString pgsLower::value() const
 	return wxString() << m_left->value() << wxT(" < ") << m_right->value();
 }
 
-pgsOperand pgsLower::eval(pgsVarMap & vars) const
+pgsOperand pgsLower::eval(pgsVarMap &vars) const
 {
 	// Evaluate operands
 	pgsOperand left(m_left->eval(vars));
 	pgsOperand right(m_right->eval(vars));
-	
+
 	// Return the result
 	return (*left < *right);
 }

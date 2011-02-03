@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -21,27 +21,30 @@ class slTable;
 class dlgRepTable : public dlgRepProperty
 {
 public:
-    dlgRepTable(pgaFactory *factory, frmMain *frame, slTable *tab, slSet *s);
-    int Go(bool modal);
-    wxString GetHelpPage() const { return wxT("slony-set#table"); }
+	dlgRepTable(pgaFactory *factory, frmMain *frame, slTable *tab, slSet *s);
+	int Go(bool modal);
+	wxString GetHelpPage() const
+	{
+		return wxT("slony-set#table");
+	}
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
 private:
 
-    slTable *table;
-    slSet *set;
-    long lastTableSelection;
+	slTable *table;
+	slSet *set;
+	long lastTableSelection;
 
-    void LoadTrigger(OID relid);
+	void LoadTrigger(OID relid);
 
-    void OnChangeTable(wxCommandEvent &ev);
-    void OnChangeTableSel(wxCommandEvent &ev);
+	void OnChangeTable(wxCommandEvent &ev);
+	void OnChangeTableSel(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

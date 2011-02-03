@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -27,89 +27,91 @@
 
 
 BEGIN_EVENT_TABLE(frmPassword, pgDialog)
-    EVT_BUTTON (wxID_HELP,            frmPassword::OnHelp)
-    EVT_BUTTON (wxID_OK,              frmPassword::OnOK)
-    EVT_BUTTON (wxID_CANCEL,          frmPassword::OnCancel)
+	EVT_BUTTON (wxID_HELP,            frmPassword::OnHelp)
+	EVT_BUTTON (wxID_OK,              frmPassword::OnOK)
+	EVT_BUTTON (wxID_CANCEL,          frmPassword::OnCancel)
 END_EVENT_TABLE()
 
 
 frmPassword::frmPassword(wxFrame *parent, pgObject *obj)
 {
-    wxWindowBase::SetFont(settings->GetSystemFont());
-    LoadResource(parent, wxT("frmPassword")); 
-    RestorePosition();
+	wxWindowBase::SetFont(settings->GetSystemFont());
+	LoadResource(parent, wxT("frmPassword"));
+	RestorePosition();
 
-    server = obj->GetServer();
-    // Icon
-    SetIcon(wxIcon(connect_xpm));
+	server = obj->GetServer();
+	// Icon
+	SetIcon(wxIcon(connect_xpm));
 }
 
 frmPassword::~frmPassword()
 {
-    SavePosition();
+	SavePosition();
 }
 
 
 void frmPassword::OnHelp(wxCommandEvent &ev)
 {
-    DisplayHelp(wxT("password"), HELP_PGADMIN);
+	DisplayHelp(wxT("password"), HELP_PGADMIN);
 }
 
 
-void frmPassword::OnOK(wxCommandEvent& event)
+void frmPassword::OnOK(wxCommandEvent &event)
 {
 
-    // Is the old password right?
-    if (txtCurrent->GetValue() != server->GetPassword()) {
-        wxLogError(__("Incorrect password!"));
-        return;
-    }
+	// Is the old password right?
+	if (txtCurrent->GetValue() != server->GetPassword())
+	{
+		wxLogError(__("Incorrect password!"));
+		return;
+	}
 
-    // Did we confirm the password OK?
-    if (txtNew->GetValue() != txtConfirm->GetValue()) {
-        wxLogError(__("Passwords do not match!"));
-        return;
-    }
+	// Did we confirm the password OK?
+	if (txtNew->GetValue() != txtConfirm->GetValue())
+	{
+		wxLogError(__("Passwords do not match!"));
+		return;
+	}
 
-    // Set the new password
-    if (!server->SetPassword(txtNew->GetValue()))
-    {
-        wxLogError(__("The password could not be changed!"));
-        return;
-    }
+	// Set the new password
+	if (!server->SetPassword(txtNew->GetValue()))
+	{
+		wxLogError(__("The password could not be changed!"));
+		return;
+	}
 
-    // All must have gone well!
-    wxLogMessage(__("Password successfully changed!"));
-    this->Destroy();
+	// All must have gone well!
+	wxLogMessage(__("Password successfully changed!"));
+	this->Destroy();
 }
 
 
-void frmPassword::OnCancel(wxCommandEvent& event)
+void frmPassword::OnCancel(wxCommandEvent &event)
 {
-    Destroy();
+	Destroy();
 }
 
 
 passwordFactory::passwordFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
-    mnu->Append(id, _("C&hange Password..."), _("Change your password."));
+	mnu->Append(id, _("C&hange Password..."), _("Change your password."));
 }
 
 
 wxWindow *passwordFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-    frmPassword *frm=new frmPassword((pgFrame*)form, obj);
-    frm->Show();
-    return 0;
+	frmPassword *frm = new frmPassword((pgFrame *)form, obj);
+	frm->Show();
+	return 0;
 }
 
 
 bool passwordFactory::CheckEnable(pgObject *obj)
 {
-    if (obj)
-    {
-        pgServer *server = obj->GetServer();
-        return server && server->GetConnected();
-    }
-    return false;
+	if (obj)
+	{
+		pgServer *server = obj->GetServer();
+		return server && server->GetConnected();
+	}
+	return false;
 }

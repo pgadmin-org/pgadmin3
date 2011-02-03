@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -21,23 +21,26 @@ class slSequence;
 class dlgRepSequence : public dlgRepProperty
 {
 public:
-    dlgRepSequence(pgaFactory *factory, frmMain *frame, slSequence *tab, slSet *s);
-    int Go(bool modal);
-    wxString GetHelpPage() const { return wxT("slony-set#sequence"); }
+	dlgRepSequence(pgaFactory *factory, frmMain *frame, slSequence *tab, slSet *s);
+	int Go(bool modal);
+	wxString GetHelpPage() const
+	{
+		return wxT("slony-set#sequence");
+	}
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
 private:
 
-    void OnChangeSel(wxCommandEvent &ev);
+	void OnChangeSel(wxCommandEvent &ev);
 
-    slSequence *sequence;
-    slSet *set;
+	slSequence *sequence;
+	slSet *set;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

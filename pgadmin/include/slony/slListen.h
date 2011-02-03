@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -18,9 +18,9 @@
 class slListenFactory : public slNodeObjFactory
 {
 public:
-    slListenFactory();
-    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+	slListenFactory();
+	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
 };
 extern slListenFactory listenFactory;
 
@@ -28,24 +28,42 @@ extern slListenFactory listenFactory;
 class slListen : public slNodeObject
 {
 public:
-    slListen(slNode *n, const wxString& newName = wxT(""));
+	slListen(slNode *n, const wxString &newName = wxT(""));
 
-    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
+	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 
-    long GetProviderId() const { return providerId; }
-    void iSetProviderId(long l) { providerId = l; }
-    wxString GetProviderName() const { return providerName; }
-    void iSetProviderName(const wxString &s) { providerName = s; }
-    wxString GetOriginName() const { return originName; }
-    void iSetOriginName(const wxString &s) { originName = s; }
+	long GetProviderId() const
+	{
+		return providerId;
+	}
+	void iSetProviderId(long l)
+	{
+		providerId = l;
+	}
+	wxString GetProviderName() const
+	{
+		return providerName;
+	}
+	void iSetProviderName(const wxString &s)
+	{
+		providerName = s;
+	}
+	wxString GetOriginName() const
+	{
+		return originName;
+	}
+	void iSetOriginName(const wxString &s)
+	{
+		originName = s;
+	}
 
-    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
-    wxString GetSql(ctlTree *browser);
-    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+	wxString GetSql(ctlTree *browser);
+	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
 private:
-    long providerId;
-    wxString providerName, originName;
+	long providerId;
+	wxString providerName, originName;
 };
 
 #endif

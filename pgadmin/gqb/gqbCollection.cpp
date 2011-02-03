@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -21,78 +21,78 @@
 
 gqbCollection::gqbCollection(gqbCollectionBase *collectionBase)
 {
-    collection=collectionBase;
+	collection = collectionBase;
 }
 
 
 gqbCollection::~gqbCollection()
 {
-    if(collection)
-        delete collection;
+	if(collection)
+		delete collection;
 }
 
 
 void gqbCollection::addItem(gqbObject *item)
 {
-    collection->addItem(item);
+	collection->addItem(item);
 }
 
 
 void gqbCollection::removeItem(gqbObject *item)
 {
-    collection->removeItem(item);
+	collection->removeItem(item);
 }
 
 
-gqbIteratorBase* gqbCollection::createIterator()
+gqbIteratorBase *gqbCollection::createIterator()
 {
-    return collection->createIterator();
+	return collection->createIterator();
 }
 
-gqbIteratorBase* gqbCollection::createDownIterator()
+gqbIteratorBase *gqbCollection::createDownIterator()
 {
-    return collection->createDownIterator();
+	return collection->createDownIterator();
 }
 
 
 int gqbCollection::count()
 {
-    return collection->count();
+	return collection->count();
 }
 
 
 bool gqbCollection::existsObject(gqbObject *item)
 {
-    return collection->existsObject(item);
+	return collection->existsObject(item);
 }
 
 
-gqbObject* gqbCollection::getItemAt(int index)
+gqbObject *gqbCollection::getItemAt(int index)
 {
-    return collection->getItemAt(index);
+	return collection->getItemAt(index);
 }
 
 
 // Remove all items from collection without deleting each one.
 void gqbCollection::removeAll()
 {
-    collection->removeAll();
+	collection->removeAll();
 }
 
 
 void gqbCollection::deleteAll()
 {
-    collection->deleteAll();
+	collection->deleteAll();
 }
 
 
 int gqbCollection::getIndex(gqbObject *item)
 {
-    return collection->getIndex(item);
+	return collection->getIndex(item);
 }
 
 
 void gqbCollection::insertAtIndex(gqbObject *item, int index)
 {
-    collection->insertAtIndex(item,index);
+	collection->insertAtIndex(item, index);
 }

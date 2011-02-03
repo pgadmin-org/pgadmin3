@@ -1,18 +1,18 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ctlVarWindow.h - debugger 
+// ctlVarWindow.h - debugger
 //
 //////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 //	class ctlVarWindow
 //
-//	This class implements the window that displays PL variable values at the 
+//	This class implements the window that displays PL variable values at the
 //  bottom of the debugger window.  When we create a ctlVarWindow, the parent
 //	is a ctlTabWindow (the ctlVarWindow becomes a tab in a tab control).
 //
@@ -35,10 +35,10 @@
 
 class ctlVarWindow : public wxGrid
 {
-    DECLARE_CLASS( ctlVarWindow )
+	DECLARE_CLASS( ctlVarWindow )
 
 public:
-	ctlVarWindow( wxWindow * parent, wxWindowID id );
+	ctlVarWindow( wxWindow *parent, wxWindowID id );
 
 	void	addVar( wxString name, wxString value, wxString type, bool readOnly );	// Add a variable to the window
 	void	delVar( wxString name = wxEmptyString);								    // Remove a variable from the window
@@ -49,12 +49,12 @@ private:
 
 	// The content of a grid cell is defined by the gridCell structure
 
-    typedef struct
-    {
-	int		m_row;	 // Row number for this variable/grid cell
-	wxString	m_value; // Variable value
-	wxString	m_type;	 // Variable type
-    } gridCell;
+	typedef struct
+	{
+		int		m_row;	 // Row number for this variable/grid cell
+		wxString	m_value; // Variable value
+		wxString	m_type;	 // Variable type
+	} gridCell;
 
 	enum
 	{
@@ -65,7 +65,7 @@ private:
 
 	// The m_cells hash translates variable names into gridCell references
 public:
-    WX_DECLARE_STRING_HASH_MAP( gridCell, wsCellHash );
+	WX_DECLARE_STRING_HASH_MAP( gridCell, wsCellHash );
 	WX_DECLARE_HASH_SET( wxString, wxStringHash, wxStringEqual, wsStringSet );
 
 private:

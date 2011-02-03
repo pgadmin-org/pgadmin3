@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -31,16 +31,16 @@ private:
 
 public:
 
-	pgsDateTimeGen(wxDateTime min, wxDateTime max, const bool & sequence,
-			const long & seed = wxDateTime::GetTimeNow());
-	
+	pgsDateTimeGen(wxDateTime min, wxDateTime max, const bool &sequence,
+	               const long &seed = wxDateTime::GetTimeNow());
+
 	bool is_sequence() const;
 
 	virtual wxString random();
 
 	virtual ~pgsDateTimeGen();
 
-	virtual pgsDateTimeGen * clone();
+	virtual pgsDateTimeGen *clone();
 
 	/* pgsDateTimeGen & operator =(const pgsDateTimeGen & that); */
 

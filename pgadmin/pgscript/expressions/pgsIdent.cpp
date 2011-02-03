@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -17,7 +17,7 @@
 
 const wxString pgsIdent::m_now = wxT("@NOW");
 
-pgsIdent::pgsIdent(const wxString & name) :
+pgsIdent::pgsIdent(const wxString &name) :
 	pgsExpression(), m_name(name)
 {
 
@@ -28,7 +28,7 @@ pgsIdent::~pgsIdent()
 
 }
 
-pgsExpression * pgsIdent::clone() const
+pgsExpression *pgsIdent::clone() const
 {
 	return pnew pgsIdent(*this);
 }
@@ -38,11 +38,11 @@ wxString pgsIdent::value() const
 	return m_name;
 }
 
-pgsOperand pgsIdent::eval(pgsVarMap & vars) const
+pgsOperand pgsIdent::eval(pgsVarMap &vars) const
 {
 	if (vars.find(m_name) != vars.end())
 	{
-		return vars[m_name]; 
+		return vars[m_name];
 	}
 	else if (m_name == m_now)
 	{

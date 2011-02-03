@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -20,34 +20,34 @@
 class CSVTokenizer : public wxObject
 {
 public:
-    CSVTokenizer(const wxString& str): m_string(str), m_pos(0) { }
+	CSVTokenizer(const wxString &str): m_string(str), m_pos(0) { }
 
-    bool HasMoreTokens() const;
+	bool HasMoreTokens() const;
 
-    // Get the next token (CSV field). Will return empty string if !HasMoreTokens()
-    wxString GetNextToken();
+	// Get the next token (CSV field). Will return empty string if !HasMoreTokens()
+	wxString GetNextToken();
 
 protected:
 
-    const wxString m_string;        // the string we tokenize into fields
-    size_t   m_pos;                 // the current position in m_string
+	const wxString m_string;        // the string we tokenize into fields
+	size_t   m_pos;                 // the current position in m_string
 };
 
 class CSVLineTokenizer : public wxObject
 {
 public:
-    CSVLineTokenizer(const wxString& str): m_string(str), m_pos(0) { }
+	CSVLineTokenizer(const wxString &str): m_string(str), m_pos(0) { }
 
-    bool HasMoreLines() const;
+	bool HasMoreLines() const;
 
-    // Get the next line.  Will return empty string if !HasMoreLines().
-    // partial is set "true" if the last line returned was not a complete
-    // line (no newline char at end).
-    wxString GetNextLine(bool & partial);
+	// Get the next line.  Will return empty string if !HasMoreLines().
+	// partial is set "true" if the last line returned was not a complete
+	// line (no newline char at end).
+	wxString GetNextLine(bool &partial);
 
 protected:
 
-    const wxString m_string;        // the string we tokenize into lines
-    size_t   m_pos;                 // the current position in m_string
+	const wxString m_string;        // the string we tokenize into lines
+	size_t   m_pos;                 // the current position in m_string
 };
 #endif

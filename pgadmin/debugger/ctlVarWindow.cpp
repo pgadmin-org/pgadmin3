@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ctlVarWindow.cpp - debugger 
+// ctlVarWindow.cpp - debugger
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -26,36 +26,36 @@ IMPLEMENT_CLASS( ctlVarWindow, wxGrid )
 //  Initialize the grid control and clear it out....
 //
 
-ctlVarWindow::ctlVarWindow( wxWindow * parent, wxWindowID id )
-    : wxGrid( parent, id ),
-      m_cells( NULL ),
-      m_nameFont( GetDefaultCellFont())
+ctlVarWindow::ctlVarWindow( wxWindow *parent, wxWindowID id )
+	: wxGrid( parent, id ),
+	  m_cells( NULL ),
+	  m_nameFont( GetDefaultCellFont())
 {
-    wxWindowBase::SetFont(settings->GetSystemFont());
+	wxWindowBase::SetFont(settings->GetSystemFont());
 
-    // Create the grid control
-    CreateGrid( 0, 0 );
-    SetRowLabelSize( 0 );	// Turn off the row labels
+	// Create the grid control
+	CreateGrid( 0, 0 );
+	SetRowLabelSize( 0 );	// Turn off the row labels
 
-    // Set up three columns: name, value, and data type
-    AppendCols( 3 );
-    SetColLabelValue( COL_NAME,  _( "Name" ));
-    SetColLabelValue( COL_TYPE,  _( "Type" ));
-    SetColLabelValue( COL_VALUE, _( "Value" ));
+	// Set up three columns: name, value, and data type
+	AppendCols( 3 );
+	SetColLabelValue( COL_NAME,  _( "Name" ));
+	SetColLabelValue( COL_TYPE,  _( "Type" ));
+	SetColLabelValue( COL_VALUE, _( "Value" ));
 
-    EnableDragGridSize( true );
+	EnableDragGridSize( true );
 
-    // EDB wants to hide certain PL variables.  To do that, we 
-    // keep a hash of hidden names and a hash of hidden types...
-    m_hiddenNames.insert( wxT( "found" ));
-    m_hiddenNames.insert( wxT( "rowcount" ));
-    m_hiddenNames.insert( wxT( "sqlcode" ));
-    m_hiddenNames.insert( wxT( "sqlerrm" ));
-    m_hiddenNames.insert( wxT( "_found" ));
-    m_hiddenNames.insert( wxT( "_rowcount" ));
-    m_hiddenNames.insert( wxT( "sqlstate" ));
+	// EDB wants to hide certain PL variables.  To do that, we
+	// keep a hash of hidden names and a hash of hidden types...
+	m_hiddenNames.insert( wxT( "found" ));
+	m_hiddenNames.insert( wxT( "rowcount" ));
+	m_hiddenNames.insert( wxT( "sqlcode" ));
+	m_hiddenNames.insert( wxT( "sqlerrm" ));
+	m_hiddenNames.insert( wxT( "_found" ));
+	m_hiddenNames.insert( wxT( "_rowcount" ));
+	m_hiddenNames.insert( wxT( "sqlstate" ));
 
-    m_hiddenTypes.insert( wxT( "refcursor" ));
+	m_hiddenTypes.insert( wxT( "refcursor" ));
 
 }
 
@@ -69,77 +69,77 @@ ctlVarWindow::ctlVarWindow( wxWindow * parent, wxWindowID id )
 
 void ctlVarWindow::addVar( wxString name, wxString value, wxString type, bool readOnly )
 {
-    // If this is a 'hidden' variable, just ignore it
+	// If this is a 'hidden' variable, just ignore it
 
-    if( m_hiddenNames.find( name ) != m_hiddenNames.end())
-    	return;
+	if( m_hiddenNames.find( name ) != m_hiddenNames.end())
+		return;
 
-    if( m_hiddenTypes.find( type ) != m_hiddenTypes.end())
-    	return;
+	if( m_hiddenTypes.find( type ) != m_hiddenTypes.end())
+		return;
 
-    if( m_cells == NULL )
-    {
-    	// This is the first variable we're adding to this grid,
-    	// layout the grid and set the column headers.
+	if( m_cells == NULL )
+	{
+		// This is the first variable we're adding to this grid,
+		// layout the grid and set the column headers.
 
-    	m_cells = new wsCellHash;
-    }
+		m_cells = new wsCellHash;
+	}
 
-    // Try to find an existing grid cell for this variable...
-    wxString	key( name );
+	// Try to find an existing grid cell for this variable...
+	wxString	key( name );
 
-    wsCellHash::iterator cell = m_cells->find( key );
+	wsCellHash::iterator cell = m_cells->find( key );
 
-    if( cell == m_cells->end())
-    {
-    	// Can't find this variable in the grid, go ahead and add it
+	if( cell == m_cells->end())
+	{
+		// Can't find this variable in the grid, go ahead and add it
 
-    	gridCell	newCell;
+		gridCell	newCell;
 
-    	newCell.m_row   = m_cells->size();
-    	newCell.m_type  = type;
-    	newCell.m_value = value;
+		newCell.m_row   = m_cells->size();
+		newCell.m_type  = type;
+		newCell.m_value = value;
 
-    	AppendRows( 1 );
+		AppendRows( 1 );
 
-    	SetRowLabelValue( newCell.m_row, key );
+		SetRowLabelValue( newCell.m_row, key );
 
-    	SetCellValue( newCell.m_row, COL_NAME,  key );
-    	SetCellValue( newCell.m_row, COL_TYPE,  type );
-    	SetCellValue( newCell.m_row, COL_VALUE, value );
+		SetCellValue( newCell.m_row, COL_NAME,  key );
+		SetCellValue( newCell.m_row, COL_TYPE,  type );
+		SetCellValue( newCell.m_row, COL_VALUE, value );
 
-    	SetCellFont( newCell.m_row, COL_NAME, m_nameFont );
+		SetCellFont( newCell.m_row, COL_NAME, m_nameFont );
 
-    	SetReadOnly( newCell.m_row, COL_NAME,  true );
-    	SetReadOnly( newCell.m_row, COL_TYPE,  true );
-    	SetReadOnly( newCell.m_row, COL_VALUE, readOnly );
+		SetReadOnly( newCell.m_row, COL_NAME,  true );
+		SetReadOnly( newCell.m_row, COL_TYPE,  true );
+		SetReadOnly( newCell.m_row, COL_VALUE, readOnly );
 
-    	(*m_cells)[key] = newCell;
-    }
-    else
-    {
-    	// This variable is already in the grid, update the value
-    	// and hilite it so the user knows that it has changed.
+		(*m_cells)[key] = newCell;
+	}
+	else
+	{
+		// This variable is already in the grid, update the value
+		// and hilite it so the user knows that it has changed.
 
-    	cell->second.m_value = value;
+		cell->second.m_value = value;
 
-    	if( GetCellValue( cell->second.m_row, COL_VALUE ).IsSameAs( value ))
-    		SetCellTextColour( cell->second.m_row, COL_VALUE, *wxBLACK );
-    	else
-    		SetCellTextColour( cell->second.m_row, COL_VALUE, *wxRED );
-    		
-    	SetCellValue( cell->second.m_row, COL_VALUE, value );
+		if( GetCellValue( cell->second.m_row, COL_VALUE ).IsSameAs( value ))
+			SetCellTextColour( cell->second.m_row, COL_VALUE, *wxBLACK );
+		else
+			SetCellTextColour( cell->second.m_row, COL_VALUE, *wxRED );
 
-    	// FIXME: why is this part conditional? 
-    	// FIXME: why do we need this code? can the type ever change?
+		SetCellValue( cell->second.m_row, COL_VALUE, value );
 
-    	if( GetCellValue( cell->second.m_row, COL_TYPE) == wxT( "" ))
-    	{
-    		SetCellValue( cell->second.m_row, COL_TYPE, type );
-    	}
-    }
+		// FIXME: why is this part conditional?
+		// FIXME: why do we need this code? can the type ever change?
 
-    // AutoSizeColumns( false );
+		if( GetCellValue( cell->second.m_row, COL_TYPE) == wxT( "" ))
+		{
+			SetCellValue( cell->second.m_row, COL_TYPE, type );
+		}
+	}
+
+	// AutoSizeColumns( false );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -150,28 +150,28 @@ void ctlVarWindow::addVar( wxString name, wxString value, wxString type, bool re
 
 void ctlVarWindow::delVar( wxString name )
 {
-    if( name.IsEmpty())
-    {
-    	delete m_cells;
-    	m_cells = NULL;
+	if( name.IsEmpty())
+	{
+		delete m_cells;
+		m_cells = NULL;
 
-    	if( GetNumberRows())
-    		DeleteRows( 0, GetNumberRows());
-    }
-    else
-    {
+		if( GetNumberRows())
+			DeleteRows( 0, GetNumberRows());
+	}
+	else
+	{
 
-    }
+	}
 }
 
 
 wxString ctlVarWindow::getVarName( int row )
 {
-    return( GetCellValue( row, COL_NAME ));
+	return( GetCellValue( row, COL_NAME ));
 
 }
 
 wxString ctlVarWindow::getVarValue( int row )
 {
-    return( GetCellValue( row, COL_VALUE ));
+	return( GetCellValue( row, COL_VALUE ));
 }

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -20,28 +20,34 @@ class edbPackage;
 class dlgPackage : public dlgSecurityProperty
 {
 public:
-    dlgPackage(pgaFactory *f, frmMain *frame, edbPackage *node, pgSchema *sch);
-    int Go(bool modal);
+	dlgPackage(pgaFactory *f, frmMain *frame, edbPackage *node, pgSchema *sch);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
-    void SetObject(pgObject *obj) { package = (edbPackage*)obj; }
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
+	void SetObject(pgObject *obj)
+	{
+		package = (edbPackage *)obj;
+	}
 
-    wxString GetHelpPage(bool forCreate) const { return wxT("pg/packages-create"); }
+	wxString GetHelpPage(bool forCreate) const
+	{
+		return wxT("pg/packages-create");
+	}
 
 private:
-    edbPackage *package;
-    pgSchema *schema;
+	edbPackage *package;
+	pgSchema *schema;
 
 	virtual bool IsUpToDate();
-    void OnApply(wxCommandEvent &ev);
+	void OnApply(wxCommandEvent &ev);
 #ifdef __WXMAC__
-    void OnChangeSize(wxSizeEvent &ev);
+	void OnChangeSize(wxSizeEvent &ev);
 #endif
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

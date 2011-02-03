@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -16,15 +16,15 @@
 
 class pgsInterruptException : public pgsException
 {
-	
+
 public:
-	
+
 	pgsInterruptException();
-	
+
 	virtual ~pgsInterruptException();
-	
+
 	virtual const wxString message() const;
-	
+
 };
 
 #endif /*PGSINTERRUPTEXCEPTION_H_*/

@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -15,13 +15,13 @@
 #include <wx/wfstream.h>
 #include <wx/filename.h>
 
-pgsDictionaryGen::pgsDictionaryGen(const wxString & file_path,
-		const bool & sequence, const long & seed, wxCSConv conv) :
+pgsDictionaryGen::pgsDictionaryGen(const wxString &file_path,
+                                   const bool &sequence, const long &seed, wxCSConv conv) :
 	pgsObjectGen(seed), m_file_path(file_path), m_conv(conv)
 {
 	m_nb_lines = this->count_lines();
 	m_randomizer = pgsRandomizer(pnew pgsIntegerGen(1, m_nb_lines,
-			sequence, seed));
+	                             sequence, seed));
 }
 
 wxString pgsDictionaryGen::random()
@@ -34,12 +34,12 @@ pgsDictionaryGen::~pgsDictionaryGen()
 
 }
 
-pgsDictionaryGen * pgsDictionaryGen::clone()
+pgsDictionaryGen *pgsDictionaryGen::clone()
 {
 	return pnew pgsDictionaryGen(*this);
 }
 
-const long & pgsDictionaryGen::nb_lines() const
+const long &pgsDictionaryGen::nb_lines() const
 {
 	return m_nb_lines;
 }
@@ -47,7 +47,7 @@ const long & pgsDictionaryGen::nb_lines() const
 long pgsDictionaryGen::count_lines()
 {
 	long result = 0;
-	
+
 	wxFileName file_path(m_file_path);
 	if (file_path.FileExists() && file_path.IsFileReadable())
 	{
@@ -66,7 +66,7 @@ long pgsDictionaryGen::count_lines()
 			}
 		}
 	}
-	
+
 	if (result < 0) result = 0;
 	wxASSERT(result >= 0);
 	return result;
@@ -75,7 +75,7 @@ long pgsDictionaryGen::count_lines()
 wxString pgsDictionaryGen::get_line(long line_nb)
 {
 	long current_line = 1;
-	
+
 	if (m_nb_lines > 0)
 	{
 		wxFFileInputStream input(m_file_path);
@@ -94,6 +94,6 @@ wxString pgsDictionaryGen::get_line(long line_nb)
 			return text.ReadLine();
 		}
 	}
-	
+
 	return wxString();
 }

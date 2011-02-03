@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,26 +19,26 @@ class pgsGenRegex : public pgsExpression
 
 private:
 
-	const pgsExpression * m_regex;
-	const pgsExpression * m_seed;
+	const pgsExpression *m_regex;
+	const pgsExpression *m_seed;
 
 public:
 
-	pgsGenRegex(const pgsExpression * regex, const pgsExpression * seed);
+	pgsGenRegex(const pgsExpression *regex, const pgsExpression *seed);
 
 	virtual ~pgsGenRegex();
 
-	virtual pgsExpression * clone() const;
+	virtual pgsExpression *clone() const;
 
-	pgsGenRegex(const pgsGenRegex & that);
+	pgsGenRegex(const pgsGenRegex &that);
 
-	pgsGenRegex & operator =(const pgsGenRegex & that);
+	pgsGenRegex &operator =(const pgsGenRegex &that);
 
 public:
 
 	virtual wxString value() const;
 
-	virtual pgsOperand eval(pgsVarMap & vars) const;
+	virtual pgsOperand eval(pgsVarMap &vars) const;
 
 };
 

@@ -1,23 +1,23 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// ctlStackWindow.h - debugger 
+// ctlStackWindow.h - debugger
 //
 //////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
 //	class ctlStackWindow
 //
-//	This class implements the window that displays the current call stack at 
+//	This class implements the window that displays the current call stack at
 //  bottom of the debugger window.  When we create a ctlStackWindow, the parent
 //	is a ctlTabWindow (the ctlStackWindow becomes a tab in a tab control).
 //
 //	It is a simple grid control - the grid contains two columns:
-//		the RowLabel column displays the stack level 
+//		the RowLabel column displays the stack level
 //		column 0 displays the function name, line number and argument list
 //
 ////////////////////////////////////////////////////////////////////////////////
@@ -31,13 +31,13 @@
 
 class ctlStackWindow : public wxListBox
 {
-    DECLARE_CLASS( ctlVarWindow )
+	DECLARE_CLASS( ctlVarWindow )
 
 public:
 
-	ctlStackWindow(wxWindow *parent, wxWindowID id, const wxPoint & pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxCLIP_CHILDREN | wxSW_3D, const wxString& name = wxT( "stackWindow" ));
+	ctlStackWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, long style = wxCLIP_CHILDREN | wxSW_3D, const wxString &name = wxT( "stackWindow" ));
 	void clear();											// Remove all frames from the stack trace
-	void setStack(const wxArrayString &stack);			// Add an array of frames to the stack trace 
+	void setStack(const wxArrayString &stack);			// Add an array of frames to the stack trace
 };
 
 #endif

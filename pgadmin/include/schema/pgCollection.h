@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -25,33 +25,61 @@ class pgSchema;
 class pgCollection : public pgObject
 {
 public:
-    pgCollection(pgaFactory *factory);
+	pgCollection(pgaFactory *factory);
 
-    virtual bool IsCollection() const { return true; }
-    bool IsCollectionForType(const int type);
-    bool IsCollectionFor(pgObject *obj);
+	virtual bool IsCollection() const
+	{
+		return true;
+	}
+	bool IsCollectionForType(const int type);
+	bool IsCollectionFor(pgObject *obj);
 
-    pgServer *GetServer() const { return server; }
-    pgDatabase *GetDatabase() const { return database; }
-    pgSchema *GetSchema() const { return schema; }
-	pgaJob *GetJob() const { return job; }
+	pgServer *GetServer() const
+	{
+		return server;
+	}
+	pgDatabase *GetDatabase() const
+	{
+		return database;
+	}
+	pgSchema *GetSchema() const
+	{
+		return schema;
+	}
+	pgaJob *GetJob() const
+	{
+		return job;
+	}
 
-    int GetIconId();
-    pgaFactory *GetItemFactory() { if (factory) return ((pgaCollectionFactory*)factory)->GetItemFactory(); else return NULL; }
-    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    void ShowList(const wxString& name, ctlTree *browser, ctlListView *properties);
-    void ShowList(ctlTree *browser, ctlListView *properties);
-    void UpdateChildCount(ctlTree *browser, int substract=0);
-    pgObject *FindChild(ctlTree *browser, const int index);
+	int GetIconId();
+	pgaFactory *GetItemFactory()
+	{
+		if (factory) return ((pgaCollectionFactory *)factory)->GetItemFactory();
+		else return NULL;
+	}
+	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
+	void ShowList(const wxString &name, ctlTree *browser, ctlListView *properties);
+	void ShowList(ctlTree *browser, ctlListView *properties);
+	void UpdateChildCount(ctlTree *browser, int substract = 0);
+	pgObject *FindChild(ctlTree *browser, const int index);
 
-    bool HasStats() { return false; }
-    bool HasDepends() { return false; }
-    bool HasReferences() { return false; }
+	bool HasStats()
+	{
+		return false;
+	}
+	bool HasDepends()
+	{
+		return false;
+	}
+	bool HasReferences()
+	{
+		return false;
+	}
 
 protected:
-    pgServer *server;
-    pgDatabase *database;
-    pgSchema *schema;
+	pgServer *server;
+	pgDatabase *database;
+	pgSchema *schema;
 	pgaJob *job;
 };
 

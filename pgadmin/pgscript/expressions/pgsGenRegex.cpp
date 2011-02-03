@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -15,10 +15,10 @@
 #include "pgscript/generators/pgsRegexGen.h"
 #include "pgscript/objects/pgsGenerator.h"
 
-pgsGenRegex::pgsGenRegex(const pgsExpression * regex, const pgsExpression * seed) :
+pgsGenRegex::pgsGenRegex(const pgsExpression *regex, const pgsExpression *seed) :
 	pgsExpression(), m_regex(regex), m_seed(seed)
 {
-	
+
 }
 
 pgsGenRegex::~pgsGenRegex()
@@ -27,19 +27,19 @@ pgsGenRegex::~pgsGenRegex()
 	pdelete(m_seed);
 }
 
-pgsExpression * pgsGenRegex::clone() const
+pgsExpression *pgsGenRegex::clone() const
 {
 	return pnew pgsGenRegex(*this);
 }
 
-pgsGenRegex::pgsGenRegex(const pgsGenRegex & that) :
+pgsGenRegex::pgsGenRegex(const pgsGenRegex &that) :
 	pgsExpression(that)
 {
 	m_regex = that.m_regex->clone();
 	m_seed = that.m_seed->clone();
 }
 
-pgsGenRegex & pgsGenRegex::operator =(const pgsGenRegex & that)
+pgsGenRegex &pgsGenRegex::operator =(const pgsGenRegex &that)
 {
 	if (this != &that)
 	{
@@ -55,10 +55,10 @@ pgsGenRegex & pgsGenRegex::operator =(const pgsGenRegex & that)
 wxString pgsGenRegex::value() const
 {
 	return wxString() << wxT("string[ regex = ") << m_regex->value()
-			<< wxT(" seed = ") << m_seed->value() << wxT(" ]");
+	       << wxT(" seed = ") << m_seed->value() << wxT(" ]");
 }
 
-pgsOperand pgsGenRegex::eval(pgsVarMap & vars) const
+pgsOperand pgsGenRegex::eval(pgsVarMap &vars) const
 {
 	// Evaluate parameters
 	pgsOperand regex(m_regex->eval(vars));
@@ -69,12 +69,12 @@ pgsOperand pgsGenRegex::eval(pgsVarMap & vars) const
 	{
 		long aux_seed;
 		seed->value().ToLong(&aux_seed);
-		pgsRegexGen * gen = pnew pgsRegexGen(regex->value(), aux_seed);
+		pgsRegexGen *gen = pnew pgsRegexGen(regex->value(), aux_seed);
 		if (!gen->is_valid())
 		{
 			pdelete(gen);
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\nregex is not a valid regular expression"));
+			                            << wxT(":\nregex is not a valid regular expression"));
 		}
 		else
 		{
@@ -87,12 +87,12 @@ pgsOperand pgsGenRegex::eval(pgsVarMap & vars) const
 		if (!regex->is_string())
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\nregex should be a string"));
+			                            << wxT(":\nregex should be a string"));
 		}
 		else
 		{
 			throw pgsParameterException(wxString() << value()
-					<< wxT(":\nseed should be an integer"));
+			                            << wxT(":\nseed should be an integer"));
 		}
 	}
 }

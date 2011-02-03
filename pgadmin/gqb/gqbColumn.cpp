@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -23,7 +23,7 @@
 #include "gqb/gqbArrayCollection.h"
 
 gqbColumn::gqbColumn(gqbObject *parent, wxString name, pgConn *connection):
-gqbObject(name, parent, connection)
+	gqbObject(name, parent, connection)
 {
-    setType(GQB_COLUMN);
+	setType(GQB_COLUMN);
 }

@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgTextSearchTemplate.h - Text Search Template property 
+// dlgTextSearchTemplate.h - Text Search Template property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,22 +21,25 @@ class pgTextSearchTemplate;
 class dlgTextSearchTemplate : public dlgTypeProperty
 {
 public:
-    dlgTextSearchTemplate(pgaFactory *factory, frmMain *frame, pgTextSearchTemplate *cfg, pgSchema *sch);
-    int Go(bool modal);
+	dlgTextSearchTemplate(pgaFactory *factory, frmMain *frame, pgTextSearchTemplate *cfg, pgSchema *sch);
+	int Go(bool modal);
 
-    void CheckChange();
-    wxString GetSql();
-    virtual wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtstemplate"); }
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
+	void CheckChange();
+	wxString GetSql();
+	virtual wxString GetHelpPage(bool forCreate) const
+	{
+		return wxT("pg/sql-createtstemplate");
+	}
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
 
 private:
-    void OnChange(wxCommandEvent &ev);
+	void OnChange(wxCommandEvent &ev);
 
-    pgSchema *schema;
-    pgTextSearchTemplate *tmpl;
+	pgSchema *schema;
+	pgTextSearchTemplate *tmpl;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

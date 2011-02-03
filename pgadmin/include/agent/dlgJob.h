@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -20,38 +20,41 @@ class pgaJob;
 class dlgJob : public dlgAgentProperty
 {
 public:
-    dlgJob(pgaFactory *factory, frmMain *frame, pgaJob *j);
+	dlgJob(pgaFactory *factory, frmMain *frame, pgaJob *j);
 
-    void CheckChange();
-    int Go(bool modal);
+	void CheckChange();
+	int Go(bool modal);
 
-    wxString GetUpdateSql();
-    wxString GetInsertSql();
-    pgObject *CreateObject(pgCollection *collection);
-    pgObject *GetObject();
-    
-    wxString GetHelpPage(bool forCreate) const { return wxT("pgagent-jobs"); }
+	wxString GetUpdateSql();
+	wxString GetInsertSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
+
+	wxString GetHelpPage(bool forCreate) const
+	{
+		return wxT("pgagent-jobs");
+	}
 
 private:
-    pgaJob *job;
+	pgaJob *job;
 
-    wxArrayString previousSteps, previousSchedules;
+	wxArrayString previousSteps, previousSchedules;
 
 #ifdef __WXMAC__
-    void OnChangeSize(wxSizeEvent &ev);
+	void OnChangeSize(wxSizeEvent &ev);
 #endif
 
-    void OnSelChangeStep(wxListEvent &ev);
-    void OnChangeStep(wxCommandEvent &ev);
-    void OnAddStep(wxCommandEvent &ev);
-    void OnRemoveStep(wxCommandEvent &ev);
+	void OnSelChangeStep(wxListEvent &ev);
+	void OnChangeStep(wxCommandEvent &ev);
+	void OnAddStep(wxCommandEvent &ev);
+	void OnRemoveStep(wxCommandEvent &ev);
 
-    void OnSelChangeSchedule(wxListEvent &ev);
-    void OnChangeSchedule(wxCommandEvent &ev);
-    void OnAddSchedule(wxCommandEvent &ev);
-    void OnRemoveSchedule(wxCommandEvent &ev);
+	void OnSelChangeSchedule(wxListEvent &ev);
+	void OnChangeSchedule(wxCommandEvent &ev);
+	void OnAddSchedule(wxCommandEvent &ev);
+	void OnRemoveSchedule(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 

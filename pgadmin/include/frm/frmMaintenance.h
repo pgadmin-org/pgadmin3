@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,26 +19,26 @@
 class frmMaintenance : public ExecutionDialog
 {
 public:
-    frmMaintenance(frmMain *form, pgObject *_object);
-    ~frmMaintenance();
-    wxString GetSql();
+	frmMaintenance(frmMain *form, pgObject *_object);
+	~frmMaintenance();
+	wxString GetSql();
 
-    void Go();
-    
+	void Go();
+
 private:
-    wxString GetHelpPage() const;
-    void OnAction(wxCommandEvent& ev);
+	wxString GetHelpPage() const;
+	void OnAction(wxCommandEvent &ev);
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 
 class maintenanceFactory : public contextActionFactory
 {
 public:
-    maintenanceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
-    wxWindow *StartDialog(frmMain *form, pgObject *obj);
-    bool CheckEnable(pgObject *obj);
+	maintenanceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
 };
 
 

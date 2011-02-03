@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -18,26 +18,26 @@ template <typename T> class pgsCopiedPtr
 
 private:
 
-	T * p;
+	T *p;
 
 public:
 
-	pgsCopiedPtr(T * p) :
+	pgsCopiedPtr(T *p) :
 		p(p)
 	{
-		
+
 	}
 
 	pgsCopiedPtr() :
 		p(0)
 	{
-		
+
 	}
 
-	pgsCopiedPtr(const pgsCopiedPtr & that) :
+	pgsCopiedPtr(const pgsCopiedPtr &that) :
 		p(that.p == 0 ? 0 : that.p->clone())
 	{
-		
+
 	}
 
 	~pgsCopiedPtr()
@@ -45,33 +45,33 @@ public:
 		pdelete(p);
 	}
 
-	pgsCopiedPtr & operator =(pgsCopiedPtr that)
+	pgsCopiedPtr &operator =(pgsCopiedPtr that)
 	{
 		std::swap(p, that.p);
 		return (*this);
 	}
 
-	T & operator *()
+	T &operator *()
 	{
 		return *p;
 	}
 
-	const T & operator *() const
+	const T &operator *() const
 	{
 		return *p;
 	}
 
-	T * operator ->()
+	T *operator ->()
 	{
 		return p;
 	}
 
-	const T * operator ->() const
+	const T *operator ->() const
 	{
 		return p;
 	}
 
-	const T * get() const
+	const T *get() const
 	{
 		return p;
 	}

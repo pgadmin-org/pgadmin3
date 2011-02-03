@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -24,18 +24,21 @@ class dlgSelDBNode : public wxTreeItemData
 {
 
 public:
-    dlgSelDBNode(pgServer* server, const wxString& dbname=wxEmptyString);
-    dlgSelDBNode* createChild(const wxString& dbName);
+	dlgSelDBNode(pgServer *server, const wxString &dbname = wxEmptyString);
+	dlgSelDBNode *createChild(const wxString &dbName);
 
-    wxString getDatabase() { return dbname; }
-    wxString getConnectionString();
+	wxString getDatabase()
+	{
+		return dbname;
+	}
+	wxString getConnectionString();
 
 private:
-    pgServer*        server;  // Do not remove it, not owned by this
-    wxString         dbname;
+	pgServer        *server;  // Do not remove it, not owned by this
+	wxString         dbname;
 
-    friend class dlgSelectDatabase;
-   
+	friend class dlgSelectDatabase;
+
 };
 
 
@@ -43,20 +46,20 @@ class dlgSelectDatabase: public wxDialog
 {
 
 public:
-    dlgSelectDatabase(wxWindow* parent, int id, const wxPoint& pos=wxDefaultPosition, const wxSize& size=wxDefaultSize, long style=wxCLOSE_BOX);
+	dlgSelectDatabase(wxWindow *parent, int id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, long style = wxCLOSE_BOX);
 
-    wxString getConnInfo();
-    static bool getValidConnectionString(wxString connStr, wxString& resultStr);
+	wxString getConnInfo();
+	static bool getValidConnectionString(wxString connStr, wxString &resultStr);
 
 protected:
-    void Initialize();
-    void OnSelect(wxTreeEvent& ev);
-    void OnSelActivate(wxTreeEvent& ev);
+	void Initialize();
+	void OnSelect(wxTreeEvent &ev);
+	void OnSelActivate(wxTreeEvent &ev);
 
-    wxTreeCtrl *tcServers;
-    dlgSelDBNode *selectedConn;
+	wxTreeCtrl *tcServers;
+	dlgSelDBNode *selectedConn;
 
-    DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

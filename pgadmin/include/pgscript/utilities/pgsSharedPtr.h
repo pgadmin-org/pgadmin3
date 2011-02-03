@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,13 +19,13 @@ private:
 	struct count
 	{
 		long c;
-		
-		T * q;
 
-		count(T * q) :
+		T *q;
+
+		count(T *q) :
 			c(1), q(q)
 		{
-			
+
 		}
 
 		~count()
@@ -34,23 +34,23 @@ private:
 		}
 	};
 
-	count * p;
+	count *p;
 
 public:
 
-	pgsSharedPtr(T * q) :
+	pgsSharedPtr(T *q) :
 		p(pnew count(q))
 	{
 
 	}
-	
+
 	pgsSharedPtr() :
 		p(pnew count(0))
 	{
 
 	}
 
-	pgsSharedPtr(const pgsSharedPtr & that) :
+	pgsSharedPtr(const pgsSharedPtr &that) :
 		p(that.p)
 	{
 		++p->c;
@@ -64,33 +64,33 @@ public:
 		}
 	}
 
-	pgsSharedPtr & operator =(pgsSharedPtr that)
+	pgsSharedPtr &operator =(pgsSharedPtr that)
 	{
 		std::swap(p, that.p);
 		return (*this);
 	}
 
-	T & operator *()
+	T &operator *()
 	{
 		return *(p->q);
 	}
 
-	const T & operator *() const
+	const T &operator *() const
 	{
 		return *(p->q);
 	}
 
-	T * operator ->()
+	T *operator ->()
 	{
 		return p->q;
 	}
 
-	const T * operator ->() const
+	const T *operator ->() const
 	{
 		return p->q;
 	}
 
-	const T * get() const
+	const T *get() const
 	{
 		return p->q;
 	}

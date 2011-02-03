@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgAdmin III - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -19,38 +19,68 @@
 class pgTextSearchDictionaryFactory : public pgSchemaObjFactory
 {
 public:
-    pgTextSearchDictionaryFactory();
-    virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
-    virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr=wxEmptyString);
+	pgTextSearchDictionaryFactory();
+	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
+	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
 };
 extern pgTextSearchDictionaryFactory textSearchDictionaryFactory;
 
 class pgTextSearchDictionary : public pgSchemaObject
 {
 public:
-    pgTextSearchDictionary(pgSchema *newSchema, const wxString& newName = wxT(""));
-    ~pgTextSearchDictionary();
+	pgTextSearchDictionary(pgSchema *newSchema, const wxString &newName = wxT(""));
+	~pgTextSearchDictionary();
 
-    void ShowTreeDetail(ctlTree *browser, frmMain *form=0, ctlListView *properties=0, ctlSQLBox *sqlPane=0);
-    virtual wxString GetQuotedIdentifier() const { return GetName(); }
-    bool CanDropCascaded() { return GetSchema()->GetMetaType() != PGM_CATALOG; }
+	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
+	virtual wxString GetQuotedIdentifier() const
+	{
+		return GetName();
+	}
+	bool CanDropCascaded()
+	{
+		return GetSchema()->GetMetaType() != PGM_CATALOG;
+	}
 
-    wxString GetTemplate() const { return tmpl; }
-    void iSetTemplate(const wxString& s) { tmpl=s; }
-    wxString GetOptions() const { return options; }
-    void iSetOptions(const wxString& s) { options=s; }
-    virtual wxString GetHelpPage(bool forCreate) const { return wxT("pg/sql-createtsdictionary"); }
+	wxString GetTemplate() const
+	{
+		return tmpl;
+	}
+	void iSetTemplate(const wxString &s)
+	{
+		tmpl = s;
+	}
+	wxString GetOptions() const
+	{
+		return options;
+	}
+	void iSetOptions(const wxString &s)
+	{
+		options = s;
+	}
+	virtual wxString GetHelpPage(bool forCreate) const
+	{
+		return wxT("pg/sql-createtsdictionary");
+	}
 
-    bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
-    wxString GetSql(ctlTree *browser);
-    pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
+	bool DropObject(wxFrame *frame, ctlTree *browser, bool cascaded);
+	wxString GetSql(ctlTree *browser);
+	pgObject *Refresh(ctlTree *browser, const wxTreeItemId item);
 
-    bool HasStats() { return false; }
-    bool HasDepends() { return true; }
-    bool HasReferences() { return true; }
+	bool HasStats()
+	{
+		return false;
+	}
+	bool HasDepends()
+	{
+		return true;
+	}
+	bool HasReferences()
+	{
+		return true;
+	}
 
 private:
-    wxString tmpl, options;
+	wxString tmpl, options;
 };
 
 #endif

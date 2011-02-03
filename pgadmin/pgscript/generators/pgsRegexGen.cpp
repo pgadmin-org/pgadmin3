@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // pgScript - PostgreSQL Tools
-// 
+//
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
@@ -18,73 +18,73 @@
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(pgsVectorStringGen);
 
-pgsRegexGen::pgsRegex::pgsRegex(const pgsVectorChar & characters,
-		const long & first, const long & second) :
+pgsRegexGen::pgsRegex::pgsRegex(const pgsVectorChar &characters,
+                                const long &first, const long &second) :
 	m_characters(characters), m_first(wxMin(first, second)),
-			m_second(wxMax(first, second))
+	m_second(wxMax(first, second))
 {
-	
+
 }
 
 pgsRegexGen::pgsRegex::pgsRegex() :
 	m_characters(pgsVectorChar()), m_first(0), m_second(0)
 {
-	
+
 }
 
 pgsRegexGen::pgsRegex::~pgsRegex()
 {
-	
+
 }
 
-pgsRegexGen::pgsRegex * pgsRegexGen::pgsRegex::clone()
+pgsRegexGen::pgsRegex *pgsRegexGen::pgsRegex::clone()
 {
 	return pnew pgsRegexGen::pgsRegex(*this);
 }
 
-void pgsRegexGen::pgsRegex::set_characters(const pgsVectorChar & characters)
+void pgsRegexGen::pgsRegex::set_characters(const pgsVectorChar &characters)
 {
 	m_characters = characters;
 }
 
-void pgsRegexGen::pgsRegex::add_character(const wxChar & c)
+void pgsRegexGen::pgsRegex::add_character(const wxChar &c)
 {
 	m_characters.Add(c);
 }
 
-void pgsRegexGen::pgsRegex::set_first(const long & first)
+void pgsRegexGen::pgsRegex::set_first(const long &first)
 {
 	m_first = first;
 	m_second = first;
 }
 
-void pgsRegexGen::pgsRegex::set_second(const long & second)
+void pgsRegexGen::pgsRegex::set_second(const long &second)
 {
 	long first = m_first;
 	m_first = wxMin(first, second);
 	m_second = wxMax(first, second);
 }
 
-const pgsVectorChar & pgsRegexGen::pgsRegex::get_characters() const
+const pgsVectorChar &pgsRegexGen::pgsRegex::get_characters() const
 {
 	return m_characters;
 }
 
-const long & pgsRegexGen::pgsRegex::get_first() const
+const long &pgsRegexGen::pgsRegex::get_first() const
 {
 	return m_first;
 }
 
-const long & pgsRegexGen::pgsRegex::get_second() const
+const long &pgsRegexGen::pgsRegex::get_second() const
 {
 	return m_second;
 }
 
-pgsRegexGen::pgsRegexGen(const wxString & regex, const long & seed) :
+pgsRegexGen::pgsRegexGen(const wxString &regex, const long &seed) :
 	pgsObjectGen(seed), m_regex(regex), m_valid(true), m_string_gens(pgsVectorStringGen())
 {
 	wxLogScriptVerbose(wxT("REGEXGEN: %s"), m_regex.c_str());
-	
+
 	// Transform regular expression into XML structure
 	bool escape = false, first_regex = true, list = false;
 	wxString result = wxT("<regexpressions>\n");
@@ -161,15 +161,15 @@ pgsRegexGen::pgsRegexGen(const wxString & regex, const long & seed) :
 				result.Append(wxT("</characters>\n"));
 			}
 		}
-		
+
 		++i;
 	}
 	if (result != wxT("<regexpressions>\n"))
 		result.Append(wxT(" </regex>\n"));
 	result.Append(wxT("</regexpressions>\n"));
-	
+
 	wxLogScriptVerbose(wxT("REGEXGEN: %s"), result.c_str());
-	
+
 	// Load this XML structure with the wxXmlDocument from wxWidgets
 	wxStringInputStream input(result);
 	wxXmlDocument doc;
@@ -187,16 +187,16 @@ pgsRegexGen::pgsRegexGen(const wxString & regex, const long & seed) :
 		else
 		{
 			// Go through XML nodes
-			wxXmlNode * xml_regexpressions = doc.GetRoot()->GetChildren();
+			wxXmlNode *xml_regexpressions = doc.GetRoot()->GetChildren();
 			while (xml_regexpressions && m_valid)
 			{
 				if (xml_regexpressions->GetName() == wxT("regex"))
 				{
-					wxXmlNode * xml_regex = xml_regexpressions->GetChildren();
-					
+					wxXmlNode *xml_regex = xml_regexpressions->GetChildren();
+
 					pgsRegex regex;
 					regex.set_first(1);
-					
+
 					while (xml_regex && m_valid)
 					{
 						if (xml_regex->GetName() == wxT("characters"))
@@ -230,15 +230,15 @@ pgsRegexGen::pgsRegexGen(const wxString & regex, const long & seed) :
 								// m_valid = false;
 							}
 						}
-						
+
 						xml_regex = xml_regex->GetNext();
 					}
-					
+
 					m_string_gens.Add(pgsStringGen(regex.get_first(),
-							regex.get_second(), 1, seed,
-							regex.get_characters()));
+					                               regex.get_second(), 1, seed,
+					                               regex.get_characters()));
 				}
-				
+
 				xml_regexpressions = xml_regexpressions->GetNext();
 			}
 		}
@@ -255,7 +255,7 @@ wxString pgsRegexGen::random()
 	return result;
 }
 
-const pgsVectorStringGen & pgsRegexGen::string_gens() const
+const pgsVectorStringGen &pgsRegexGen::string_gens() const
 {
 	return m_string_gens;
 }
@@ -265,12 +265,12 @@ size_t pgsRegexGen::string_gens_size() const
 	return m_string_gens.size();
 }
 
-const bool & pgsRegexGen::is_valid() const
+const bool &pgsRegexGen::is_valid() const
 {
 	return m_valid;
 }
 
-wxString pgsRegexGen::espace_xml_char(const wxChar & c)
+wxString pgsRegexGen::espace_xml_char(const wxChar &c)
 {
 	if (c == wxT('<'))
 		return wxT("&lt;");
@@ -285,7 +285,7 @@ wxString pgsRegexGen::espace_xml_char(const wxChar & c)
 	else return wxString(c);
 }
 
-wxString pgsRegexGen::char_range(const wxChar & b, const wxChar & c)
+wxString pgsRegexGen::char_range(const wxChar &b, const wxChar &c)
 {
 	wxChar min = wxMin(b, c);
 	++min;
@@ -303,7 +303,7 @@ pgsRegexGen::~pgsRegexGen()
 
 }
 
-pgsRegexGen * pgsRegexGen::clone()
+pgsRegexGen *pgsRegexGen::clone()
 {
 	return pnew pgsRegexGen(*this);
 }
