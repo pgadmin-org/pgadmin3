@@ -97,7 +97,7 @@ void frmMain::OnChildFocus(wxChildFocusEvent &event)
 	}
 
 	// Listview?
-	wxListView *lv = dynamic_cast<wxListView *>(event.GetEventObject());
+	ctlListView *lv = dynamic_cast<ctlListView *>(event.GetEventObject());
 	if (lv)
 	{
 		// Copy
@@ -296,6 +296,15 @@ void frmMain::OnPropSelChanged(wxListEvent &event)
 	}
 
 	editMenu->Enable(MNU_COPY, properties->GetSelectedItemCount() > 0);
+
+// The generic list view control on the Mac doesn't fire focus events
+// as it should, so we set currentControl here instead of relying on
+// the ChildFocusEvent. The native list view does fire the events, but
+// does weird things with multi-select items so we currently disable
+// it (see the creation of the listviews in frmMain.cpp).
+#ifdef __WXMAC__
+	currentControl = properties;
+#endif
 }
 
 
@@ -322,6 +331,15 @@ void frmMain::OnSelectItem(wxListEvent &event)
 	}
 
 	editMenu->Enable(MNU_COPY, list->GetSelectedItemCount() > 0);
+
+// The generic list view control on the Mac doesn't fire focus events
+// as it should, so we set currentControl here instead of relying on
+// the ChildFocusEvent. The native list view does fire the events, but
+// does weird things with multi-select items so we currently disable
+// it (see the creation of the listviews in frmMain.cpp).
+#ifdef __WXMAC__
+        currentControl = list;
+#endif
 }
 
 void frmMain::OnPropSelActivated(wxListEvent &event)
