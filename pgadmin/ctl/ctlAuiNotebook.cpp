@@ -19,13 +19,16 @@
 #include <wx/wx.h>
 #include <wx/aui/auibook.h>
 
+// App headers
+#include <ctl/ctlAuiNotebook.h>
+
 BEGIN_EVENT_TABLE(ctlAuiNotebook, wxAuiNotebook)
 	EVT_CHILD_FOCUS(ctlAuiNotebook::OnChildFocus)
 END_EVENT_TABLE()
 
 // Handle, and pass up child focus events
 void ctlAuiNotebook::OnChildFocus(wxChildFocusEvent &event)
-{ 
-	wxAuiNotebook::OnChildFocus(event); 
+{
+	wxAuiNotebook::OnChildFocus(event);
 	GetParent()->AddPendingEvent(event);
 }

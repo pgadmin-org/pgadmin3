@@ -16,6 +16,7 @@
 #include <wx/thread.h>
 
 // App headers
+#include "ctl/ctlAuiNotebook.h"
 #include "debugger/ctlTabWindow.h"
 #include "debugger/dbgConst.h"
 

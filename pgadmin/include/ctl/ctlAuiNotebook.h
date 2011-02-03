@@ -23,7 +23,7 @@
 class ctlAuiNotebook : public wxAuiNotebook
 {
 public:
-	ctlAuiNotebook(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxAUI_NB_DEFAULT_STYLE) :
+	ctlAuiNotebook(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize, long style = wxAUI_NB_DEFAULT_STYLE) :
 		wxAuiNotebook(parent, id, pos, size, style) { }
 
 protected:
