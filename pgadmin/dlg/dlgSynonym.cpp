@@ -55,11 +55,21 @@ dlgSynonym::dlgSynonym(pgaFactory *f, frmMain *frame, edbSynonym *node)
 	privSynonym = NULL;
 	synonymSchema = NULL;
 	cbOwner->Disable();
+	pgConn *conn = synonym->GetConnection();
 
 	cbTargetType->Append(_("Sequence"));
 	cbTargetType->Append(_("Public synonym"));
 	cbTargetType->Append(_("Table"));
 	cbTargetType->Append(_("View"));
+
+	// Functions and Procedures are available 8.4 onwards. So check for the
+	// same. Unfortunately we need a connection object for that and so we
+	// re-use an existing one..
+	if (conn && conn->BackendMinimumVersion(8, 4))
+	{
+		cbTargetType->Append(_("Function"));
+		cbTargetType->Append(_("Procedure"));
+	}
 }
 
 dlgSynonym::dlgSynonym(edbPrivateSynonymFactory *factory, frmMain *frame, edbPrivateSynonym *syn, pgSchema *schema)
@@ -69,11 +79,21 @@ dlgSynonym::dlgSynonym(edbPrivateSynonymFactory *factory, frmMain *frame, edbPri
 	privSynonym = syn;
 	synonymSchema = schema;
 	cbOwner->Disable();
+	pgConn *conn = synonymSchema->GetConnection();
 
 	cbTargetType->Append(_("Sequence"));
 	cbTargetType->Append(_("Synonym"));
 	cbTargetType->Append(_("Table"));
 	cbTargetType->Append(_("View"));
+
+	// Functions and Procedures are available 8.4 onwards. So check for the
+	// same. Unfortunately we need a connection object for that and so we
+	// re-use an existing one..
+	if (conn && conn->BackendMinimumVersion(8, 4))
+	{
+		cbTargetType->Append(_("Function"));
+		cbTargetType->Append(_("Procedure"));
+	}
 }
 
 
@@ -219,6 +239,10 @@ void dlgSynonym::ProcessSchemaChange()
 		restriction = wxT("r");
 	else if (cbTargetType->GetValue() == _("View"))
 		restriction = wxT("v");
+	else if (cbTargetType->GetValue() == _("Function"))
+		restriction = wxT("0");
+	else if (cbTargetType->GetValue() == _("Procedure"))
+		restriction = wxT("1");
 
 	wxString sql;
 	if (cbTargetType->GetValue() == _("Synonym"))
@@ -227,6 +251,15 @@ void dlgSynonym::ProcessSchemaChange()
 		      wxT("  ON s.synnamespace = n.oid AND \n")
 		      wxT("     n.nspname = ") + qtDbString(cbTargetSchema->GetValue()) +
 		      wxT("  ORDER BY synname;");
+	}
+	else if (cbTargetType->GetValue() == _("Function") ||
+			 cbTargetType->GetValue() == _("Procedure"))
+	{
+		// "protype" is available, no need to check for version again here..
+		sql = wxT("SELECT proname from pg_proc p, pg_namespace n\n")
+			  wxT("  WHERE p.pronamespace = n.oid AND\n")
+		      wxT("        n.nspname = ") + qtDbString(cbTargetSchema->GetValue()) + wxT(" AND\n")
+		      wxT("        p.protype  = '") + restriction + wxT("' ORDER BY proname;");
 	}
 	else
 	{
