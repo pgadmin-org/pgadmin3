@@ -153,6 +153,8 @@ ctlDefaultPrivilegesPanel::ctlDefaultPrivilegesPanel(ctlDefaultSecurityPanel *de
 	stGroup = new wxStaticText(this, CTL_DEFSTATICGROUP, strGroupLabel);
 	itemSizer4a->Add(stGroup, 0, wxEXPAND | wxALIGN_CENTRE_VERTICAL | wxTOP | wxLEFT | wxRIGHT, 4);
 	cbGroups = new ctlComboBox(this, CTL_DEFCBGROUP, wxDefaultPosition, wxDefaultSize);
+	cbGroups->Append(wxT("public"));
+	cbGroups->SetSelection(0);
 	itemSizer4a->Add(cbGroups, wxEXPAND | wxALIGN_CENTRE_VERTICAL | wxTOP | wxLEFT | wxRIGHT);
 	itemSizer3->Add(itemSizer4a, 0, wxEXPAND | wxALL, 0);
 
