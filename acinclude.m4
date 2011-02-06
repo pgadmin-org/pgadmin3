@@ -20,45 +20,6 @@ AC_DEFUN([CHECK_CPP_COMPILER],
 	fi
 ])
 
-###########################################
-# Check if we can use precompiled headers #
-###########################################
-
-AC_DEFUN([CHECK_PRECOMP_HEADERS],
-[
-	AC_MSG_CHECKING([whether to use precompiled headers])
-	USE_PRECOMP=""
-	AC_ARG_ENABLE(precomp, [  --enable-precomp	Use precompiled headers], USE_PRECOMP="$enableval")
-
-	if test -z "$USE_PRECOMP"; then
-		if test "X$GCC" = Xyes; then
-			if gcc_version=`$CC -dumpversion` > /dev/null 2>&1; then
-				major=`echo $gcc_version | cut -d. -f1`
-				minor=`echo $gcc_version | sed "s/@<:@-,a-z,A-Z@:>@.*//" | cut -d. -f2`
-				if test -z "$major" || test -z "$minor"; then
-					USE_PRECOMP=no
-				elif test "$major" -ge 4; then
-					USE_PRECOMP=yes
-				elif test "$major" -ge 3 && test "$minor" -ge 4; then
-					USE_PRECOMP=yes
-				else
-					USE_PRECOMP=no
-				fi
-			else
-				USE_PRECOMP=no
-			fi
-		else
-			USE_PRECOMP=no
-		fi
-	fi
-	if test "x$USE_PRECOMP" = "xyes"; then
-		AC_MSG_RESULT([yes])
-	else
-		AC_MSG_RESULT([no])
-	fi
-])
-AC_SUBST(USE_PRECOMP)
-
 #################################
 # Check this is SUN compiler #
 #################################
@@ -86,7 +47,7 @@ AC_DEFUN([CHECK_SUN_COMPILER],
 #############################
 AC_DEFUN([SET_WX_VERSION],
 [
-	AC_ARG_WITH(wx-version, [  --with-wx-version=<version number>  the wxWidgets version in major.minor format (default: 2.8)],
+	AC_ARG_WITH(wx-version, [  --with-wx-version=<version>	the wxWidgets version in major.minor format (default: 2.8)],
 	[
 		if test "$withval" = yes; then
 			AC_MSG_ERROR([you must specify a version number when using --with-wx-version=<version number>])
@@ -108,15 +69,15 @@ AC_DEFUN([SET_WX_VERSION],
 ####################
 AC_DEFUN([LOCATE_WXWIDGETS],
 [
-	AC_ARG_WITH(wx, [  --with-wx=DIR	   root directory for wxWidgets installation],
+	AC_ARG_WITH(wx, [  --with-wx=DIR		root directory for wxWidgets installation],
 	[
 		if test "$withval" != no
 		then
 			WX_HOME="$withval"
-						if test ! -f "${WX_HOME}/bin/wx-config"
-						then
-								AC_MSG_ERROR([Could not find your wxWidgets installation in ${WX_HOME}])
-						fi
+			if test ! -f "${WX_HOME}/bin/wx-config"
+			then
+				AC_MSG_ERROR([Could not find your wxWidgets installation in ${WX_HOME}])
+			fi
 
 		fi
 		WX_CONFIG=${WX_HOME}/bin/wx-config
@@ -177,7 +138,7 @@ AC_DEFUN([CHECK_WXWIDGETS],
 #####################
 AC_DEFUN([LOCATE_LIBXML2],
 [
-	AC_ARG_WITH(libxml2, [  --with-libxml2=DIR  root directory for libxml2 installation],
+	AC_ARG_WITH(libxml2, [  --with-libxml2=DIR	root directory for libxml2 installation],
 	[
 	  if test "$withval" != no
 	  then
@@ -245,7 +206,7 @@ AC_DEFUN([CHECK_LIBXML2],
 #####################
 AC_DEFUN([LOCATE_LIBXSLT],
 [
-	AC_ARG_WITH(libxslt, [  --with-libxslt=DIR  root directory for libxslt installation],
+	AC_ARG_WITH(libxslt, [  --with-libxslt=DIR	root directory for libxslt installation],
 	[
 	  if test "$withval" != no
 	  then
@@ -331,7 +292,7 @@ AC_DEFUN([LOCATE_POSTGRESQL],
 ###########################
 AC_DEFUN([ENABLE_DEBUG],
 [
-	AC_ARG_ENABLE(debug, [  --enable-debug	   build a debug version of pgAdmin3],
+	AC_ARG_ENABLE(debug, [  --enable-debug	build a debug version of pgAdmin3],
 	[
 		if test "$enableval" = yes
 		then
@@ -351,7 +312,7 @@ AC_SUBST(BUILD_DEBUG)
 ############################
 AC_DEFUN([ENABLE_STATIC],
 [
-	AC_ARG_ENABLE(static, [  --enable-static	  build a statically linked version of pgAdmin3],
+	AC_ARG_ENABLE(static, [  --enable-static	build a statically linked version of pgAdmin3],
 	[
 		if test "$enableval" = yes
 		then
@@ -371,26 +332,42 @@ AC_DEFUN([ENABLE_STATIC],
 #################################
 # Override the OSX architecture #
 #################################
-AC_DEFUN([SETUP_OSX_ARCH],
+AC_DEFUN([SETUP_ARCH_I386],
 [
-	AC_ARG_WITH(osxarch, [  --with-osxarch=<arch>	  specify the Mac OS X architecture to build (ppc, i386, x86_64)],
+	AC_ARG_WITH(arch-i386, [  --with-arch-i386	include an i386 image in an OS X Universal build],
 	[
-		if test "$withval" = "ppc"
+		if test "$withval" = "yes"
 		then
-			OSX_ARCH="-arch ppc"
-		elif test "$withval" = "i386"
- 		then
-			OSX_ARCH="-arch i386"
-		elif test "$withval" = "x86_64"
-		then
-			OSX_ARCH="-arch x86_64"
-		else
-			AC_MSG_ERROR([Invalid Max OS X architecture specified: $withval])
+			OSX_ARCH="$OSX_ARCH -arch i386"
 		fi
-	],
-	[
-		OSX_ARCH=""
 	])
+])
+AC_DEFUN([SETUP_ARCH_X86_64],
+[        AC_ARG_WITH(arch-x86_64, [  --with-arch-x86_64	include an x86_64 image in an OS X Universal build],
+        [
+                if test "$withval" = "yes"
+                then
+                        OSX_ARCH="$OSX_ARCH -arch x86_64"
+                fi
+        ])
+])
+AC_DEFUN([SETUP_ARCH_PPC],
+[        AC_ARG_WITH(arch-ppc, [  --with-arch-ppc	include a PPC image in an OS X Universal build],
+        [
+                if test "$withval" = "yes"
+                then
+                        OSX_ARCH="$OSX_ARCH -arch ppc"
+                fi
+        ])
+])
+AC_DEFUN([SETUP_ARCH_PPC64],
+[        AC_ARG_WITH(arch-ppc64, [  --with-arch-ppc64	include a PPC64 image in an OS X Universal build],
+        [
+                if test "$withval" = "yes"
+                then
+                        OSX_ARCH="$OSX_ARCH -arch ppc64"
+                fi
+        ])
 ])
 
 ##########################
@@ -398,7 +375,7 @@ AC_DEFUN([SETUP_OSX_ARCH],
 ##########################
 AC_DEFUN([ENABLE_APPBUNDLE],
 [
-	AC_ARG_ENABLE(appbundle, [  --enable-appbundle   Build a Mac OS X appbundle],
+	AC_ARG_ENABLE(appbundle, [  --enable-appbundle	Build a Mac OS X appbundle],
 	[
 		if test "$enableval" = yes
 		then
@@ -706,38 +683,25 @@ AC_DEFUN([SETUP_WXWIDGETS],
 		case "${host}" in
 			*-apple-darwin*)
 
-				LDFLAGS="$LDFLAGS -headerpad_max_install_names"
-				CPPFLAGS="$CPPFLAGS -no-cpp-precomp"
-
+				# Use the default arch if none is specified.
 				if test "$OSX_ARCH" = ""
 				then
- 	 				MAC_PPC=`${WX_CONFIG} --libs | grep -c "arch ppc"`
-					MAC_I386=`${WX_CONFIG} --libs | grep -c "arch i386"`
-					MAC_X86_64=`${WX_CONFIG} --libs | grep -c "arch x86_64"`
-	
-					if test "$MAC_PPC" != "0"
-					then
-						CPPFLAGS="$CPPFLAGS -arch ppc"
-					fi
-	       				if test "$MAC_I386" != "0"
-	       				then
-						CPPFLAGS="$CPPFLAGS -arch i386"
-					fi
-					if test "$MAC_X86_64" != "0"
-					then
-						CPPFLAGS="$CPPFLAGS -arch x86_64"
-					fi
-				else
-					CPPFLAGS="$CPPFLAGS $OSX_ARCH"
-
-					# Strip any existing arch flags from LDFLAGS and add the desired ones
-					pgadmin3_LDADD=`echo $pgadmin3_LDADD | sed -e "s/-arch ppc//g" -e "s/-arch i386//g" -e "s/-arch x86_64//g"` 
-					pgadmin3_LDADD="$pgadmin3_LDADD $OSX_ARCH"
-                                        pgsTest_LDADD=`echo $pgsTest_LDADD | sed -e "s/-arch ppc//g" -e "s/-arch i386//g" -e "s/-arch x86_64//g"`
-                                        pgsTest_LDADD="$pgsTest_LDADD $OSX_ARCH"
-                                        pgScript_LDADD=`echo $pgScript_LDADD | sed -e "s/-arch ppc//g" -e "s/-arch i386//g" -e "s/-arch x86_64//g"`
-                                        pgScript_LDADD="$pgScript_LDADD $OSX_ARCH"
+					OSX_ARCH="-arch `uname -p`"
 				fi
+
+				LDFLAGS="$LDFLAGS -headerpad_max_install_names"
+				CPPFLAGS="$CPPFLAGS -no-cpp-precomp $OSX_ARCH" 
+
+				# Strip any existing arch flags from LDFLAGS and add the desired ones
+				# This is required as wxWidgets 2.8 (but not 2.9) includes the arch flags
+				# in it's --libs output.
+				pgadmin3_LDADD=`echo $pgadmin3_LDADD | sed -e "s/-arch ppc//g" -e "s/-arch i386//g" -e "s/-arch x86_64//g" -e "s/-arch ppc64//g"` 
+				pgadmin3_LDADD="$pgadmin3_LDADD $OSX_ARCH"
+				pgsTest_LDADD=`echo $pgsTest_LDADD | sed -e "s/-arch ppc//g" -e "s/-arch i386//g" -e "s/-arch x86_64//g" -e "s/-arch ppc64//g"`
+				pgsTest_LDADD="$pgsTest_LDADD $OSX_ARCH"
+				pgScript_LDADD=`echo $pgScript_LDADD | sed -e "s/-arch ppc//g" -e "s/-arch i386//g" -e "s/-arch x86_64//g" -e "s/-arch ppc64//g"`
+				pgScript_LDADD="$pgScript_LDADD $OSX_ARCH"
+
 				;;
 			*solaris*)
 				LDFLAGS="$LDFLAGS -lnsl"
