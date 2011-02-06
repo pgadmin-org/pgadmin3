@@ -107,6 +107,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/file_open.xpm \
 	$(srcdir)/include/images/file_save.xpm \
 	$(srcdir)/include/images/folder.xpm \
+	$(srcdir)/include/images/foreigndatawrapper.xpm \
 	$(srcdir)/include/images/foreignkey.xpm \
 	$(srcdir)/include/images/forward.xpm \
 	$(srcdir)/include/images/function.xpm \

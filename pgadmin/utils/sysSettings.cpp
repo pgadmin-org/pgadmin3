@@ -84,6 +84,11 @@ bool sysSettings::GetDisplayOption(const wxString &objtype, bool GetDefault)
 		engtype = wxT("Casts");
 		def = false;
 	}
+    else if (objtype == _("Foreign Data Wrappers")) 
+    {
+        engtype = wxT("Foreign Data Wrappers");
+        def = false;
+    }
 	else if (objtype == _("Languages"))
 	{
 		engtype = wxT("Languages");
@@ -173,6 +178,7 @@ void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
 	else if (objtype == _("Resource Queues")) engtype = wxT("Resource Queues");
 	else if (objtype == _("Catalogs")) engtype = wxT("Catalogs");
 	else if (objtype == _("Casts")) engtype = wxT("Casts");
+    else if (objtype == _("Foreign Data Wrappers")) engtype = wxT("Foreign Data Wrappers");
 	else if (objtype == _("Languages")) engtype = wxT("Languages");
 	else if (objtype == _("Synonyms")) engtype = wxT("Synonyms");
 	else if (objtype == _("Schemas")) engtype = wxT("Schemas");

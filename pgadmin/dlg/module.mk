@@ -22,6 +22,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dlg/dlgDomain.cpp \
 	$(srcdir)/dlg/dlgEditGridOptions.cpp \
 	$(srcdir)/dlg/dlgFindReplace.cpp \
+	$(srcdir)/dlg/dlgForeignDataWrapper.cpp \
 	$(srcdir)/dlg/dlgForeignKey.cpp \
 	$(srcdir)/dlg/dlgFunction.cpp \
 	$(srcdir)/dlg/dlgGroup.cpp \

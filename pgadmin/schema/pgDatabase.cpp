@@ -19,6 +19,7 @@
 #include "frm/frmMain.h"
 #include "schema/edbSynonym.h"
 #include "schema/pgCast.h"
+#include "schema/pgForeignDataWrapper.h"
 #include "schema/pgLanguage.h"
 #include "schema/pgSchema.h"
 #include "slony/slCluster.h"
@@ -130,6 +131,8 @@ wxMenu *pgDatabase::GetNewMenu()
 	{
 		if (settings->GetDisplayOption(_("Casts")))
 			castFactory.AppendMenu(menu);
+        if (settings->GetDisplayOption(_("Foreign Data Wrappers")))
+            foreignDataWrapperFactory.AppendMenu(menu);
 		if (settings->GetDisplayOption(_("Languages")))
 			languageFactory.AppendMenu(menu);
 		if (settings->GetDisplayOption(_("Synonyms")) && GetConnection()->EdbMinimumVersion(8, 0))
@@ -560,6 +563,8 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 				browser->AppendCollection(this, catalogFactory);
 			if (settings->GetDisplayOption(_("Casts")))
 				browser->AppendCollection(this, castFactory);
+			if (settings->GetDisplayOption(_("Foreign Data Wrappers")))
+				browser->AppendCollection(this, foreignDataWrapperFactory);
 			if (settings->GetDisplayOption(_("Languages")))
 				browser->AppendCollection(this, languageFactory);
 			if (settings->GetDisplayOption(_("Synonyms")) && connection()->EdbMinimumVersion(8, 0))

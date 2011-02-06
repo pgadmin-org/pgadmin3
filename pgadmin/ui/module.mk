@@ -26,6 +26,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgEditGridOptions.xrc \
 	$(srcdir)/ui/dlgExtTable.xrc \
 	$(srcdir)/ui/dlgFindReplace.xrc \
+	$(srcdir)/ui/dlgForeignDataWrapper.xrc \
 	$(srcdir)/ui/dlgForeignKey.xrc \
 	$(srcdir)/ui/dlgFunction.xrc \
 	$(srcdir)/ui/dlgGroup.xrc \
