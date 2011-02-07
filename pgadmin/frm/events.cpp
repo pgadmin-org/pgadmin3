@@ -338,7 +338,7 @@ void frmMain::OnSelectItem(wxListEvent &event)
 // does weird things with multi-select items so we currently disable
 // it (see the creation of the listviews in frmMain.cpp).
 #ifdef __WXMAC__
-        currentControl = list;
+	currentControl = list;
 #endif
 }
 
