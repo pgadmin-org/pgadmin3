@@ -657,14 +657,18 @@ AC_DEFUN([SETUP_WXWIDGETS],
 		if test "$BUILD_DEBUG" = yes
 		then
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
-			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -g -O0"
+			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS"
+			CFLAGS=`echo $CFLAGS | sed -e "s/-O2/-O0/g"`
+			CXXFLAGS=`echo $CXXFLAGS | sed -e "s/-O2/-O0/g"`
 			
 			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			pgsTest_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			pgScript_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 		else
 			WX_NEW_CPPFLAGS=`${WX_CONFIG} --cppflags --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
-			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -O2 -DEMBED_XRC"
+			CPPFLAGS="$CPPFLAGS $WX_NEW_CPPFLAGS -DEMBED_XRC"
+			CFLAGS=`echo $CFLAGS | sed -e "s/-g //g"`
+			CXXFLAGS=`echo $CXXFLAGS | sed -e "s/-g //g"`
 		
 			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			pgsTest_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
@@ -690,7 +694,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 				fi
 
 				LDFLAGS="$LDFLAGS -headerpad_max_install_names"
-				CPPFLAGS="$CPPFLAGS -no-cpp-precomp $OSX_ARCH" 
+				CPPFLAGS="$CPPFLAGS $OSX_ARCH" 
 
 				# Strip any existing arch flags from LDFLAGS and add the desired ones
 				# This is required as wxWidgets 2.8 (but not 2.9) includes the arch flags
@@ -763,16 +767,6 @@ AC_DEFUN([SETUP_LIBXSLT],
 ])
 AC_SUBST(XSLT_CONFIG)
 AC_SUBST(pgadmin3_LDADD)
-
-###########
-# Cleanup #
-###########
-AC_DEFUN([CLEANUP],
-[
-	# CFLAGS/CXXFLAGS may well contain unwanted settings, so clear them.
-	CFLAGS=""
-	CXXFLAGS=""
-])
 
 #########################
 # Configuration summary #
