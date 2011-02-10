@@ -277,7 +277,8 @@ void pgDatabase::ShowStatistics(frmMain *form, ctlListView *statistics)
 		       wxT(", tup_deleted AS ") + qtIdent(_("Tuples Deleted"));
 
 	if (connection()->BackendMinimumVersion(9, 1))
-		sql += wxT(", slave.confl_tablespace AS ") + qtIdent(_("Tablespace conflicts")) +
+		sql += wxT(", stats_reset AS ") + qtIdent(_("Last statistics reset")) +
+		       wxT(", slave.confl_tablespace AS ") + qtIdent(_("Tablespace conflicts")) +
 		       wxT(", slave.confl_lock AS ") + qtIdent(_("Lock conflicts")) +
 		       wxT(", slave.confl_snapshot AS ") + qtIdent(_("Snapshot conflicts")) +
 		       wxT(", slave.confl_bufferpin AS ") + qtIdent(_("Bufferpin conflicts")) +
@@ -1048,7 +1049,7 @@ void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 	if (GetConnection()->BackendMinimumVersion(8, 3))
 		sql += wxT(", tup_returned, tup_fetched, tup_inserted, tup_updated, tup_deleted");
 	if (GetConnection()->BackendMinimumVersion(9, 1))
-		sql += wxT(", slave.confl_tablespace, slave.confl_lock, slave.confl_snapshot, slave.confl_bufferpin, slave.confl_deadlock");
+		sql += wxT(", stats_reset, slave.confl_tablespace, slave.confl_lock, slave.confl_snapshot, slave.confl_bufferpin, slave.confl_deadlock");
 	if (hasSize)
 		sql += wxT(", pg_size_pretty(pg_database_size(db.datid)) as size");
 
@@ -1077,6 +1078,7 @@ void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 	}
 	if (GetConnection()->BackendMinimumVersion(9, 1))
 	{
+		statistics->AddColumn(_("Last statistics reset"), 60);
 		statistics->AddColumn(_("Tablespace conflicts"), 60);
 		statistics->AddColumn(_("Lock conflicts"), 60);
 		statistics->AddColumn(_("Snapshot conflicts"), 60);
@@ -1115,11 +1117,12 @@ void pgDatabaseCollection::ShowStatistics(frmMain *form, ctlListView *statistics
 				}
 				if (GetConnection()->BackendMinimumVersion(9, 1))
 				{
-					statistics->SetItem(statistics->GetItemCount() - 1, 11 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_tablespace")));
-					statistics->SetItem(statistics->GetItemCount() - 1, 12 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_lock")));
-					statistics->SetItem(statistics->GetItemCount() - 1, 13 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_snapshot")));
-					statistics->SetItem(statistics->GetItemCount() - 1, 14 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_bufferpin")));
-					statistics->SetItem(statistics->GetItemCount() - 1, 15 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_deadlock")));
+					statistics->SetItem(statistics->GetItemCount() - 1, 11 + (hasSize ? 1 : 0), stats->GetVal(wxT("stats_reset")));
+					statistics->SetItem(statistics->GetItemCount() - 1, 12 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_tablespace")));
+					statistics->SetItem(statistics->GetItemCount() - 1, 13 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_lock")));
+					statistics->SetItem(statistics->GetItemCount() - 1, 14 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_snapshot")));
+					statistics->SetItem(statistics->GetItemCount() - 1, 15 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_bufferpin")));
+					statistics->SetItem(statistics->GetItemCount() - 1, 16 + (hasSize ? 1 : 0), stats->GetVal(wxT("confl_deadlock")));
 				}
 			}
 			stats->MoveNext();
