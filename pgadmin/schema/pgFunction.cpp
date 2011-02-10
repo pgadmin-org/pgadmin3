@@ -958,7 +958,7 @@ pgObject *pgFunctionFactory::CreateObjects(pgCollection *collection, ctlTree *br
 	                           + wxT("::oid\n   AND typname <> 'trigger'\n");
 
 	if (collection->GetConnection()->EdbMinimumVersion(8, 1))
-		funcRestriction += wxT("   AND NOT (lanname = 'edbspl' AND protype = 1)\n");
+		funcRestriction += wxT("   AND NOT (lanname = 'edbspl' AND protype = '1')\n");
 	else if (collection->GetConnection()->EdbMinimumVersion(8, 0))
 		funcRestriction += wxT("   AND NOT (lanname = 'edbspl' AND typname = 'void')\n");
 
@@ -991,7 +991,7 @@ pgObject *pgProcedureFactory::CreateObjects(pgCollection *collection, ctlTree *b
 	                           + wxT("::oid AND lanname = 'edbspl'\n");
 
 	if (collection->GetConnection()->EdbMinimumVersion(8, 1))
-		funcRestriction += wxT("   AND protype = 1\n");
+		funcRestriction += wxT("   AND protype = '1'\n");
 	else
 		funcRestriction += wxT("   AND typname = 'void'\n");
 
