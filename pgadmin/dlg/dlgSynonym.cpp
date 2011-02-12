@@ -253,11 +253,11 @@ void dlgSynonym::ProcessSchemaChange()
 		      wxT("  ORDER BY synname;");
 	}
 	else if (cbTargetType->GetValue() == _("Function") ||
-			 cbTargetType->GetValue() == _("Procedure"))
+	         cbTargetType->GetValue() == _("Procedure"))
 	{
 		// "protype" is available, no need to check for version again here..
 		sql = wxT("SELECT proname from pg_proc p, pg_namespace n\n")
-			  wxT("  WHERE p.pronamespace = n.oid AND\n")
+		      wxT("  WHERE p.pronamespace = n.oid AND\n")
 		      wxT("        n.nspname = ") + qtDbString(cbTargetSchema->GetValue()) + wxT(" AND\n")
 		      wxT("        p.protype  = '") + restriction + wxT("' ORDER BY proname;");
 	}

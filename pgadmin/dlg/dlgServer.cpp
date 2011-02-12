@@ -257,8 +257,8 @@ void dlgServer::OnOK(wxCommandEvent &ev)
 		}
 		server->iSetGroup(cbGroup->GetValue());
 
-        if (connection)
-		    wxMessageBox(_("Note: some changes to server settings may only take effect the next time pgAdmin connects to the server."), _("Server settings"), wxICON_INFORMATION);
+		if (connection)
+			wxMessageBox(_("Note: some changes to server settings may only take effect the next time pgAdmin connects to the server."), _("Server settings"), wxICON_INFORMATION);
 
 		mainForm->execSelChange(server->GetId(), true);
 		mainForm->GetBrowser()->SetItemText(item, server->GetFullName());

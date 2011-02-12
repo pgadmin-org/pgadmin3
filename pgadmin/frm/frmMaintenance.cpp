@@ -123,7 +123,7 @@ wxString frmMaintenance::GetSql()
 		{
 			/* Warn about VACUUM FULL on < 9.0 */
 			if (chkFull->GetValue() &&
-				!conn->BackendMinimumVersion(9, 0))
+			        !conn->BackendMinimumVersion(9, 0))
 			{
 				if (frmHint::ShowHint(this, HINT_VACUUM_FULL) == wxID_CANCEL)
 					return wxEmptyString;
