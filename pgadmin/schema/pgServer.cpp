@@ -1082,7 +1082,7 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 	if (conn)
 	{
 		wxString sql;
-        wxString replication_query = wxT("state || ' (' || sent_location || ' sent, ' || write_location || ' written, ' || flush_location || ' flushed, ' || apply_location || ' applied)'");
+		wxString replication_query = wxT("state || ' (' || sent_location || ' sent, ' || write_location || ' written, ' || flush_location || ' flushed, ' || apply_location || ' applied)'");
 		wxLogInfo(wxT("Displaying statistics for server %s"), GetIdentifier().c_str());
 
 		// Add the statistics view columns
@@ -1099,11 +1099,11 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 
 		sql = wxT("SELECT procpid, usename, datname, backend_start, client_addr, client_port, current_query FROM pg_stat_activity\n");
 		if (GetConnection()->BackendMinimumVersion(9, 1))
-        {
+		{
 			sql += wxT("UNION\n")
 			       wxT("SELECT procpid, usename, '' AS datname, backend_start, client_addr, client_port, ")
-                   + replication_query + wxT(" AS current_query FROM pg_stat_replication");
-        }
+			       + replication_query + wxT(" AS current_query FROM pg_stat_replication");
+		}
 
 		pgSet *stats = ExecuteSet(sql);
 		if (stats)
