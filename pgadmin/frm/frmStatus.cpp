@@ -2287,7 +2287,10 @@ int frmStatus::fillLogfileCombo()
 	if (set)
 	{
 		if (set->NumRows() <= count)
+		{
+			delete set;
 			return 0;
+		}
 
 		set->Locate(count + 1);
 		count = 0;
