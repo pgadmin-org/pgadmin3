@@ -8,7 +8,7 @@ E	[e-eE-E][+-]?{D}+
 //
 // pgScript - PostgreSQL Tools
 // 
-// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+// Copyright (C) 2002 - 2011, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
 //////////////////////////////////////////////////////////////////////////
