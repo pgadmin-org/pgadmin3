@@ -994,7 +994,7 @@ void frmQuery::OnChangeConnection(wxCommandEvent &ev)
 			pgConn *newconn = dlg.CreateConn(applicationname, createdNewConn);
 			if (newconn && createdNewConn)
 			{
-				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (wxClientData *)newconn);
+				cbConnection->Insert(newconn->GetName(), CreateBitmap(GetServerColour(newconn)), sel, (void *)newconn);
 				cbConnection->SetSelection(sel);
 				OnChangeConnection(ev);
 			}
