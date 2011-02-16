@@ -10,6 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
+#include "utils/pgDefs.h"
 
 // wxWindows headers
 #include <wx/wx.h>
@@ -32,6 +33,7 @@ WX_DEFINE_OBJARRAY( wsArgInfoArray );
 #define COL_ARG_MODES    	"argmodes"
 #define COL_ARG_TYPES    	"argtypenames"
 #define COL_ARG_TYPEOIDS    "argtypeoids"
+#define COL_ARG_DEFVALS     "argdefvals"
 #define COL_IS_FUNCTION    	"isfunc"
 #define COL_TARGET_OID    	"target"
 #define COL_PACKAGE_OID    	"pkg"
@@ -86,6 +88,10 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn *conn, char tar
 	m_argTypes 	 = result->getString( wxString(COL_ARG_TYPES, wxConvUTF8));
 	m_argTypeOids = result->getString( wxString(COL_ARG_TYPEOIDS, wxConvUTF8));
 
+	// get arg defvals if they exist
+	if (result->columnExists(wxString(COL_ARG_DEFVALS, wxConvUTF8)))
+		m_argDefVals = result->getString( wxString(COL_ARG_DEFVALS, wxConvUTF8));
+
 	if (result->columnExists(wxString(COL_PACKAGE_OID, wxConvUTF8)))
 		m_isFunction = result->getBool( wxString(COL_IS_FUNCTION, wxConvUTF8));
 	else
@@ -112,6 +118,7 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn *conn, char tar
 	wxStringTokenizer types(m_argTypes, wxT( ",{}" ), wxTOKEN_STRTOK);
 	wxStringTokenizer typeOids(m_argTypeOids, wxT( ",{}" ), wxTOKEN_STRTOK);
 	wxStringTokenizer modes(m_argModes, wxT( ",{}" ), wxTOKEN_STRTOK);
+	wxStringTokenizer defvals(m_argDefVals, wxT( ",{}" ), wxTOKEN_STRTOK);
 
 	// Create one wsArgInfo for each target argument
 
@@ -123,6 +130,7 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn *conn, char tar
 		argCount++;
 
 		wxString	argName = names.GetNextToken();
+		wxString    defVal;
 
 		if( argName.IsEmpty())
 			argName.Printf( wxT( "$%d" ), argCount );
@@ -135,6 +143,14 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn *conn, char tar
 			m_argOutCount++;
 		else if( argInfo.getMode() == wxT( "b" ))
 			m_argInOutCount++;
+
+		// see if this arg has a def value and add if so. If we see an empty
+		// string "", what should we do? Infact "" might be a valid default
+		// value in some cases, so for now store "" too. Note that we will
+		// store the "" only if this is stringlike type and nothing otherwise..
+		defVal = (defvals.GetNextToken()).Strip ( wxString::both );
+		if (argInfo.isValidDefVal(defVal))
+			argInfo.setValue(defVal);
 
 		m_argInfo.Add( argInfo );
 	}
@@ -218,4 +234,40 @@ const wxString wsArgInfo::quoteValue()
 		return (m_value);
 	else
 		return(wxString(wxT("'") + m_value + wxT("'")));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// isValidDefVal()
+//
+//    This function checks if the passed in defvalue is sane or not. If it is
+//    empty, nothing needs to be done. However if the backend returns "", then
+//    we need to entertain this as valid input only for stringlike types. Else
+//    we ignore. Obviously if defval is anything other than "", we need to
+//    honor it
+//
+
+bool wsArgInfo::isValidDefVal(const wxString defValue)
+{
+	if (defValue.IsEmpty())
+		return false;
+
+	if (defValue != wxT("\"\""))
+		return true;
+	else
+	{
+		// return true only if the type is a stringlike type..
+		switch (getTypeOid())
+		{
+			case PGOID_TYPE_CHAR:
+			case PGOID_TYPE_NAME:
+			case PGOID_TYPE_TEXT:
+			case PGOID_TYPE_BPCHAR:
+			case PGOID_TYPE_VARCHAR:
+			case PGOID_TYPE_CSTRING:
+				return true;
+
+			default:
+				return false;
+		}
+	}
 }

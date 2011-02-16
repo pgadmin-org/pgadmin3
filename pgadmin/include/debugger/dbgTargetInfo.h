@@ -47,6 +47,7 @@ public:
 		return m_value;    // NOTE: non-const, caller may modifiy value
 	}
 	const wxString   quoteValue();
+	bool isValidDefVal( const wxString defvalue );
 	void  setValue( const wxString &newValue )
 	{
 		m_value = newValue;
@@ -157,6 +158,7 @@ private:
 	wxString	m_argModes;	 // Argument modes
 	wxString	m_argTypes;	 // Argument types
 	wxString	m_argTypeOids; // Argument type OIDs
+	wxString	m_argDefVals;  // Argument default values
 	wxString	m_fqName;	 // Fully-qualified name (schema.package.func or package.func)
 	wxString    m_returnType;// Return type
 	bool	m_isFunction;	 // true->target is a function, false->target is a procedure
