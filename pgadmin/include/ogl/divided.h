@@ -23,7 +23,7 @@
  */
 
 extern wxFont *g_oglNormalFont;
-class WXDLLIMPEXP_OGL wxDividedShape: public wxRectangleShape
+class wxDividedShape: public wxRectangleShape
 {
  DECLARE_DYNAMIC_CLASS(wxDividedShape)
 

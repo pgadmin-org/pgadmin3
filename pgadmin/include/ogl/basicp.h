@@ -14,7 +14,7 @@
 
 #define CONTROL_POINT_SIZE       6
 
-class WXDLLIMPEXP_OGL wxShapeTextLine: public wxObject
+class wxShapeTextLine: public wxObject
 {
  DECLARE_DYNAMIC_CLASS(wxShapeTextLine)
 public:
@@ -36,13 +36,13 @@ protected:
    double        m_y;
 };
 
-//class WXDLLIMPEXP_OGL wxShape;
-class WXDLLIMPEXP_OGL wxControlPoint: public wxRectangleShape
+//class wxShape;
+class wxControlPoint: public wxRectangleShape
 {
  DECLARE_DYNAMIC_CLASS(wxControlPoint)
 
- friend class WXDLLIMPEXP_OGL wxShapeEvtHandler;
- friend class WXDLLIMPEXP_OGL wxShape;
+ friend class wxShapeEvtHandler;
+ friend class wxShape;
 
  public:
   wxControlPoint(wxShapeCanvas *the_canvas = NULL, wxShape *object = NULL, double size = 0.0, double the_xoffset = 0.0,
@@ -84,11 +84,11 @@ public:
   static double sm_controlPointDragPosY;
 };
 
-class WXDLLIMPEXP_OGL wxPolygonShape;
-class WXDLLIMPEXP_OGL wxPolygonControlPoint: public wxControlPoint
+class wxPolygonShape;
+class wxPolygonControlPoint: public wxControlPoint
 {
  DECLARE_DYNAMIC_CLASS(wxPolygonControlPoint)
-  friend class WXDLLIMPEXP_OGL wxPolygonShape;
+  friend class wxPolygonShape;
  public:
   wxPolygonControlPoint(wxShapeCanvas *the_canvas = NULL, wxShape *object = NULL, double size = 0.0, wxRealPoint *vertex = NULL,
     double the_xoffset = 0.0, double the_yoffset = 0.0);
@@ -119,7 +119,7 @@ public:
  *
  */
 
-class WXDLLIMPEXP_OGL wxShapeRegion: public wxObject
+class wxShapeRegion: public wxObject
 {
  DECLARE_DYNAMIC_CLASS(wxShapeRegion)
 
@@ -197,7 +197,7 @@ public:
  * User-defined attachment point
  */
 
-class WXDLLIMPEXP_OGL wxAttachmentPoint: public wxObject
+class wxAttachmentPoint: public wxObject
 {
  DECLARE_DYNAMIC_CLASS(wxAttachmentPoint)
 

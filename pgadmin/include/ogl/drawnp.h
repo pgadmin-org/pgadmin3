@@ -49,7 +49,7 @@
  *
  */
 
-class WXDLLIMPEXP_OGL wxDrawOp: public wxObject
+class wxDrawOp: public wxObject
 {
 public:
   inline wxDrawOp(int theOp) { m_op = theOp; }
@@ -87,7 +87,7 @@ protected:
  *
  */
 
-class WXDLLIMPEXP_OGL wxOpSetGDI: public wxDrawOp
+class wxOpSetGDI: public wxDrawOp
 {
  public:
   wxOpSetGDI(int theOp, wxPseudoMetaFile *theImage, int theGdiIndex, int theMode = 0);
@@ -112,7 +112,7 @@ public:
  *
  */
 
-class WXDLLIMPEXP_OGL wxOpSetClipping: public wxDrawOp
+class wxOpSetClipping: public wxDrawOp
 {
 public:
   wxOpSetClipping(int theOp, double theX1, double theY1, double theX2, double theY2);
@@ -137,7 +137,7 @@ public:
  *
  */
 
-class WXDLLIMPEXP_OGL wxOpDraw: public wxDrawOp
+class wxOpDraw: public wxDrawOp
 {
  public:
   wxOpDraw(int theOp, double theX1, double theY1, double theX2, double theY2,
@@ -170,7 +170,7 @@ public:
  *
  */
 
-class WXDLLIMPEXP_OGL wxOpPolyDraw: public wxDrawOp
+class wxOpPolyDraw: public wxDrawOp
 {
 public:
   wxOpPolyDraw(int theOp, int n, wxRealPoint *thePoints);

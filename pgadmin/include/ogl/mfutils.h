@@ -359,7 +359,7 @@
   #define HS_DIAGCROSS        5
 #endif
 
-class WXDLLIMPEXP_OGL wxMetaRecord: public wxObject
+class wxMetaRecord: public wxObject
 {
   public:
   int metaFunction;
@@ -382,7 +382,7 @@ class WXDLLIMPEXP_OGL wxMetaRecord: public wxObject
   ~wxMetaRecord(void);
 };
 
-class WXDLLIMPEXP_OGL wxXMetaFile: public wxObject
+class wxXMetaFile: public wxObject
 {
  public:
   double lastX;

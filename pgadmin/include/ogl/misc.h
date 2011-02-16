@@ -23,51 +23,51 @@ extern wxList oglObjectCopyMapping;
 
 // Centres the given list of wxShapeTextLine strings in the given box
 // (changing the positions in situ). Doesn't actually draw into the DC.
-WXDLLIMPEXP_OGL void oglCentreText(wxDC& dc, wxList *text, double m_xpos, double m_ypos,
+void oglCentreText(wxDC& dc, wxList *text, double m_xpos, double m_ypos,
                 double width, double height,
                 int formatMode = FORMAT_CENTRE_HORIZ | FORMAT_CENTRE_VERT);
 
 // Given a string, returns a list of strings that fit within the given
 // width of box. Height is ignored.
-WXDLLIMPEXP_OGL wxArrayString* oglFormatText(wxDC& dc, const wxString& text, double width, double height, int formatMode = 0);
+wxArrayString* oglFormatText(wxDC& dc, const wxString& text, double width, double height, int formatMode = 0);
 
 // Centres the list of wxShapeTextLine strings, doesn't clip.
 // Doesn't actually draw into the DC.
-WXDLLIMPEXP_OGL void oglCentreTextNoClipping(wxDC& dc, wxList *text_list,
+void oglCentreTextNoClipping(wxDC& dc, wxList *text_list,
                               double m_xpos, double m_ypos, double width, double height);
 
 // Gets the maximum width and height of the given list of wxShapeTextLines.
-WXDLLIMPEXP_OGL void oglGetCentredTextExtent(wxDC& dc, wxList *text_list,
+void oglGetCentredTextExtent(wxDC& dc, wxList *text_list,
                               double m_xpos, double m_ypos, double width, double height,
                               double *actual_width, double *actual_height);
 
 // Actually draw the preformatted list of wxShapeTextLines.
-WXDLLIMPEXP_OGL void oglDrawFormattedText(wxDC& context, wxList *text_list,
+void oglDrawFormattedText(wxDC& context, wxList *text_list,
                        double m_xpos, double m_ypos, double width, double height,
                        int formatMode = FORMAT_CENTRE_HORIZ | FORMAT_CENTRE_VERT);
 
 // Give it a list of points, finds the centre.
-WXDLLIMPEXP_OGL void oglFindPolylineCentroid(wxList *points, double *x, double *y);
+void oglFindPolylineCentroid(wxList *points, double *x, double *y);
 
-WXDLLIMPEXP_OGL void oglCheckLineIntersection(double x1, double y1, double x2, double y2,
+void oglCheckLineIntersection(double x1, double y1, double x2, double y2,
                              double x3, double y3, double x4, double y4,
                              double *ratio1, double *ratio2);
 
-WXDLLIMPEXP_OGL void oglFindEndForPolyline(double n, double xvec[], double yvec[],
+void oglFindEndForPolyline(double n, double xvec[], double yvec[],
                            double x1, double y1, double x2, double y2, double *x3, double *y3);
 
 
-WXDLLIMPEXP_OGL void oglFindEndForBox(double width, double height,
+void oglFindEndForBox(double width, double height,
                       double x1, double y1,         // Centre of box (possibly)
                       double x2, double y2,         // other end of line
                       double *x3, double *y3);      // End on box edge
 
-WXDLLIMPEXP_OGL void oglFindEndForCircle(double radius,
+void oglFindEndForCircle(double radius,
                          double x1, double y1,  // Centre of circle
                          double x2, double y2,  // Other end of line
                          double *x3, double *y3);
 
-WXDLLIMPEXP_OGL void oglGetArrowPoints(double x1, double y1, double x2, double y2,
+void oglGetArrowPoints(double x1, double y1, double x2, double y2,
                       double length, double width,
                       double *tip_x, double *tip_y,
                       double *side1_x, double *side1_y,
@@ -84,10 +84,10 @@ WXDLLIMPEXP_OGL void oglGetArrowPoints(double x1, double y1, double x2, double y
  * Author: Ian Harrison
  */
 
-WXDLLIMPEXP_OGL void oglDrawArcToEllipse(double x1, double y1, double a1, double b1, double x2, double y2, double x3, double y3,
+void oglDrawArcToEllipse(double x1, double y1, double a1, double b1, double x2, double y2, double x3, double y3,
   double *x4, double *y4);
 
-WXDLLIMPEXP_OGL bool oglRoughlyEqual(double val1, double val2, double tol = 0.00001);
+bool oglRoughlyEqual(double val1, double val2, double tol = 0.00001);
 
 extern wxFont*          g_oglNormalFont;
 extern wxPen*           g_oglBlackPen;

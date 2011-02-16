@@ -12,15 +12,15 @@
 #ifndef _OGL_COMPOSIT_H_
 #define _OGL_COMPOSIT_H_
 
-class WXDLLIMPEXP_OGL wxDivisionShape;
-class WXDLLIMPEXP_OGL wxOGLConstraint;
+class wxDivisionShape;
+class wxOGLConstraint;
 
 /*
  * A composite object is an invisible rectangle surrounding all children
  *
  */
 
-class WXDLLIMPEXP_OGL wxCompositeShape: public wxRectangleShape
+class wxCompositeShape: public wxRectangleShape
 {
  DECLARE_DYNAMIC_CLASS(wxCompositeShape)
 public:
@@ -117,7 +117,7 @@ protected:
 #define DIVISION_SIDE_RIGHT     3
 #define DIVISION_SIDE_BOTTOM    4
 
-class WXDLLIMPEXP_OGL wxDivisionShape: public wxCompositeShape
+class wxDivisionShape: public wxCompositeShape
 {
  DECLARE_DYNAMIC_CLASS(wxDivisionShape)
  public:

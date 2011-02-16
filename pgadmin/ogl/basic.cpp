@@ -9,7 +9,7 @@
 // Licence:   	wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 
-#include "ogl/oglprec.h"
+#include "pgAdmin3.h"
 
 #include <stdio.h>
 #include <ctype.h>

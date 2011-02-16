@@ -12,15 +12,6 @@
 #ifndef _OGL_OGL_H_
 #define _OGL_OGL_H_
 
-#ifdef WXMAKINGDLL_OGL
-    #define WXDLLIMPEXP_OGL WXEXPORT
-#elif defined(WXUSINGDLL)
-    #define WXDLLIMPEXP_OGL WXIMPORT
-#else // not making nor using DLL
-    #define WXDLLIMPEXP_OGL
-#endif
-
-
 #include "ogl/basic.h"      // Basic shapes
 #include "ogl/basicp.h"
 #include "ogl/lines.h"      // Lines and splines
@@ -38,8 +29,8 @@
 #include "ogl/misc.h"
 
 // TODO: replace with wxModule implementation
-extern WXDLLIMPEXP_OGL void wxOGLInitialize();
-extern WXDLLIMPEXP_OGL void wxOGLCleanUp();
+extern void wxOGLInitialize();
+extern void wxOGLCleanUp();
 
 #endif
  // _OGL_OGL_H_

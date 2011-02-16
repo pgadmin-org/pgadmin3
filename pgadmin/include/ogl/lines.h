@@ -12,9 +12,9 @@
 #ifndef _OGL_LINES_H_
 #define _OGL_LINES_H_
 
-class WXDLLIMPEXP_OGL wxLabelShape;
-class WXDLLIMPEXP_OGL wxPseudoMetaFile;
-class WXDLLIMPEXP_OGL wxLineControlPoint;
+class wxLabelShape;
+class wxPseudoMetaFile;
+class wxLineControlPoint;
 /*
  * Arcs with multiple arrowheads
  *
@@ -42,7 +42,7 @@ class WXDLLIMPEXP_OGL wxLineControlPoint;
 #define LINE_ALIGNMENT_TO_NEXT_HANDLE     2
 #define LINE_ALIGNMENT_NONE               0
 
-class WXDLLIMPEXP_OGL wxArrowHead: public wxObject
+class wxArrowHead: public wxObject
 {
  DECLARE_DYNAMIC_CLASS(wxArrowHead)
 
@@ -84,8 +84,8 @@ class WXDLLIMPEXP_OGL wxArrowHead: public wxObject
 };
 
 // Line object
-class WXDLLIMPEXP_OGL wxLabelShape;
-class WXDLLIMPEXP_OGL wxLineShape: public wxShape
+class wxLabelShape;
+class wxLineShape: public wxShape
 {
  DECLARE_DYNAMIC_CLASS(wxLineShape)
 

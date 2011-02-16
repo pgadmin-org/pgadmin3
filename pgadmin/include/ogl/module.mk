@@ -18,7 +18,6 @@ pgadmin3_SOURCES += \
         $(srcdir)/include/ogl/linesp.h \
         $(srcdir)/include/ogl/misc.h \
         $(srcdir)/include/ogl/ogl.h \
-        $(srcdir)/include/ogl/oglprec.h \
         $(srcdir)/include/ogl/basicp.h \
         $(srcdir)/include/ogl/canvas.h \
         $(srcdir)/include/ogl/constrnt.h \

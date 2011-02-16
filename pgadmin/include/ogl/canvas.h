@@ -26,13 +26,13 @@
 #endif
 
 
-WXDLLIMPEXP_OGL extern const wxChar* wxShapeCanvasNameStr;
+extern const wxChar* wxShapeCanvasNameStr;
 
 // When drag_count reaches 0, process drag message
 
-class WXDLLIMPEXP_OGL wxDiagram;
+class wxDiagram;
 
-class WXDLLIMPEXP_OGL wxShapeCanvas: public wxScrolledWindow
+class wxShapeCanvas: public wxScrolledWindow
 {
  DECLARE_DYNAMIC_CLASS(wxShapeCanvas)
  public:

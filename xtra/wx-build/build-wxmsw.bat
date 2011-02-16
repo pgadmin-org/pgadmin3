@@ -4,7 +4,7 @@ setlocal
 
 REM Configure which modules should be built
 set WXBASE=wxtiff wxexpat wxjpeg wxpng wxregex wxzlib base core adv aui html net xml xrc
-set WXCONTRIB=ogl stc
+set WXCONTRIB=stc
 
 REM Location of wxWidgets source
 set WX=%WXWIN%

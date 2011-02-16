@@ -19,7 +19,7 @@
 #endif
 
 
-class WXDLLIMPEXP_OGL wxDiagram: public wxObject
+class wxDiagram: public wxObject
 {
  DECLARE_DYNAMIC_CLASS(wxDiagram)
 
@@ -94,7 +94,7 @@ protected:
   wxList*               m_shapeList;
 };
 
-class WXDLLIMPEXP_OGL wxLineCrossing: public wxObject
+class wxLineCrossing: public wxObject
 {
 public:
     wxLineCrossing() { m_lineShape1 = NULL; m_lineShape2 = NULL; }
@@ -107,7 +107,7 @@ public:
     wxLineShape*    m_lineShape2;
 };
 
-class WXDLLIMPEXP_OGL wxLineCrossings: public wxObject
+class wxLineCrossings: public wxObject
 {
 public:
     wxLineCrossings();
