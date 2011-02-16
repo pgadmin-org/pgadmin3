@@ -661,7 +661,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 			CFLAGS=`echo $CFLAGS | sed -e "s/-O2/-O0/g"`
 			CXXFLAGS=`echo $CXXFLAGS | sed -e "s/-O2/-O0/g"`
 			
-			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
+			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl,aui --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			pgsTest_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 			pgScript_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=yes --version=${WX_VERSION} 2> /dev/null`
 		else
@@ -670,7 +670,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 			CFLAGS=`echo $CFLAGS | sed -e "s/-g //g"`
 			CXXFLAGS=`echo $CXXFLAGS | sed -e "s/-g //g"`
 		
-			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
+			pgadmin3_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs std,stc,ogl,aui --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			pgsTest_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 			pgScript_LDADD=`${WX_CONFIG} ${WX_STATIC} --libs base,core,xml --unicode=yes --debug=no --version=${WX_VERSION} 2> /dev/null`
 		fi

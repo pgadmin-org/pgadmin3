@@ -27,6 +27,8 @@
 wxLogLevel sysLogger::logLevel = LOG_ERRORS;
 wxString sysLogger::logFile = wxT("debug.log");
 
+#if !wxCHECK_VERSION(2, 9, 0)
+
 // IMPLEMENT_LOG_FUNCTION(Sql) from wx../common/log.c
 void wxVLogQuietError(const wxChar *szFormat, va_list argptr)
 {
@@ -128,6 +130,7 @@ void wxLogScriptVerbose(const wxChar *szFormat, ...)
 	va_end(argptr);
 }
 
+#endif
 
 void sysLogger::DoLog(wxLogLevel level, const wxChar *msg, time_t timestamp)
 {
