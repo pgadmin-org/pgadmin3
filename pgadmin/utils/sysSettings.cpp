@@ -370,12 +370,6 @@ wxSize sysSettings::Read(const wxString &key, const wxSize &defaultVal) const
 	              wxConfig::Read(key + wxT("/Height"), actualDefault.y));
 }
 
-// Write a boolean value
-bool sysSettings::Write(const wxString &key, bool value)
-{
-	return Write(key, BoolToStr(value));
-}
-
 // Write a point value
 bool sysSettings::Write(const wxString &key, const wxPoint &value)
 {
@@ -392,6 +386,12 @@ bool sysSettings::Write(const wxString &key, const wxSize &value)
 	if (rc)
 		rc = wxConfig::Write(key + wxT("/Height"), value.y);
 	return rc;
+}
+
+// Write a boolean value
+bool sysSettings::WriteBool(const wxString &key, bool value)
+{
+	return Write(key, BoolToStr(value));
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -139,7 +139,7 @@ protected:
 	wxString ExecuteScalar(const wxString &sql) const;
 	wxMBConv &conv;
 	bool needColQuoting;
-	wxArrayString colTypes, colFullTypes;
+	mutable wxArrayString colTypes, colFullTypes;
 	wxArrayInt colClasses;
 };
 

@@ -33,4 +33,5 @@ include $(srcdir)/include/schema/module.mk
 include $(srcdir)/include/slony/module.mk
 include $(srcdir)/include/gqb/module.mk
 include $(srcdir)/include/utils/module.mk
+include $(srcdir)/include/ogl/module.mk
 

@@ -408,7 +408,7 @@ void frmMain::setDisplay(pgObject *data, ctlListView *props, ctlSQLBox *sqlbox)
 	pgServer *server = 0;
 
 
-	bool showTree;
+	bool showTree = false;
 
 	pgaFactory *factory = data->GetFactory();
 	if (factory)

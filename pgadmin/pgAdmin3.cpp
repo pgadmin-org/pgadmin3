@@ -24,11 +24,13 @@
 #include <wx/imaggif.h>
 #include <wx/imagpng.h>
 #include <wx/fs_zip.h>
-#include <wx/ogl/ogl.h>
 #include <wx/socket.h>
 #include <wx/stdpaths.h>
 #include <wx/clipbrd.h>
 #include <wx/sysopt.h>
+
+// wxOGL
+#include <ogl/ogl.h>
 
 // Windows headers
 #ifdef __WXMSW__

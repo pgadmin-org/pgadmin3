@@ -586,16 +586,21 @@ BEGIN_EVENT_TABLE(gqbSplitter, wxSplitterWindow)
 END_EVENT_TABLE()
 
 gqbSplitter::gqbSplitter(wxWindow *parent, wxWindowID id, const wxPoint &point, const wxSize &size, long style)
-	: wxSplitterWindow(parent, id, point, size, style)
+	: wxSplitterWindow(parent, id, point, size, style),
+		tablesBrowser(NULL),
+		browserPanel(NULL)
 {
 }
 
 
 void gqbSplitter::onVerticalSashResize(wxSplitterEvent &event)
 {
-	wxSize s = tablesBrowser->GetSize();
-	s.SetWidth(event.GetSashPosition());
-	browserPanel->SetSize(s);
-	tablesBrowser->SetSize(s);
-	// GQB-TODO: Set a minimun value
+	if(tablesBrowser != NULL && browserPanel != NULL)
+	{
+		wxSize s = tablesBrowser->GetSize();
+		s.SetWidth(event.GetSashPosition());
+		browserPanel->SetSize(s);
+		tablesBrowser->SetSize(s);
+		// GQB-TODO: Set a minimun value
+	}
 }

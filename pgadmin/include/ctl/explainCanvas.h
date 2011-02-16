@@ -12,7 +12,7 @@
 #ifndef EXPLAINCANVAS_H
 #define EXPLAINCANVAS_H
 
-#include <wx/ogl/ogl.h>
+#include <ogl/ogl.h>
 
 
 #if wxUSE_DEPRECATED
