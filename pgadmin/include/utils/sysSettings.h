@@ -670,6 +670,10 @@ public:
 	}
 
 	// Functions for storing settings
+	bool Write(const wxString &key, const wxChar *value)
+	{
+		return wxConfig::Write(key, wxString(value));
+	}
 	bool Write(const wxString &key, const wxString &value)
 	{
 		return wxConfig::Write(key, value);
@@ -682,7 +686,7 @@ public:
 	{
 		return wxConfig::Write(key, value);
 	}
-	bool WriteBool(const wxString &key, bool value);
+	bool Write(const wxString &key, bool value);
 	bool Write(const wxString &key, const wxPoint &value);
 	bool Write(const wxString &key, const wxSize &value);
 	bool Write(const wxString &key, const wxSize &size, const wxPoint &point)
