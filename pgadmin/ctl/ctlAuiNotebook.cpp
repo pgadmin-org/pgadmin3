@@ -29,7 +29,7 @@ END_EVENT_TABLE()
 // Handle, and pass up child focus events
 void ctlAuiNotebook::OnChildFocus(wxChildFocusEvent &event)
 {
-	
+
 #if wxCHECK_VERSION(2, 9, 0)
 	wxAuiNotebook::OnChildFocusNotebook(event);
 	GetParent()->GetEventHandler()->AddPendingEvent(event);

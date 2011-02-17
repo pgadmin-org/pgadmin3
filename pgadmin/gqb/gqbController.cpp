@@ -587,8 +587,8 @@ END_EVENT_TABLE()
 
 gqbSplitter::gqbSplitter(wxWindow *parent, wxWindowID id, const wxPoint &point, const wxSize &size, long style)
 	: wxSplitterWindow(parent, id, point, size, style),
-		tablesBrowser(NULL),
-		browserPanel(NULL)
+	  tablesBrowser(NULL),
+	  browserPanel(NULL)
 {
 }
 

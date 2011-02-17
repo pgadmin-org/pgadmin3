@@ -25,47 +25,47 @@
 extern wxFont *g_oglNormalFont;
 class wxDividedShape: public wxRectangleShape
 {
- DECLARE_DYNAMIC_CLASS(wxDividedShape)
+	DECLARE_DYNAMIC_CLASS(wxDividedShape)
 
- public:
-  wxDividedShape(double w = 0.0, double h = 0.0);
-  ~wxDividedShape();
+public:
+	wxDividedShape(double w = 0.0, double h = 0.0);
+	~wxDividedShape();
 
-  void OnDraw(wxDC& dc);
-  void OnDrawContents(wxDC& dc);
+	void OnDraw(wxDC &dc);
+	void OnDrawContents(wxDC &dc);
 
-  void SetSize(double w, double h, bool recursive = TRUE);
+	void SetSize(double w, double h, bool recursive = TRUE);
 
-  void MakeControlPoints();
-  void ResetControlPoints();
+	void MakeControlPoints();
+	void ResetControlPoints();
 
-  void MakeMandatoryControlPoints();
-  void ResetMandatoryControlPoints();
+	void MakeMandatoryControlPoints();
+	void ResetMandatoryControlPoints();
 
 #if wxUSE_PROLOGIO
-  void WriteAttributes(wxExpr *clause);
-  void ReadAttributes(wxExpr *clause);
+	void WriteAttributes(wxExpr *clause);
+	void ReadAttributes(wxExpr *clause);
 #endif
 
-  void Copy(wxShape &copy);
+	void Copy(wxShape &copy);
 
-  // Set all region sizes according to proportions and
-  // this object total size
-  void SetRegionSizes();
+	// Set all region sizes according to proportions and
+	// this object total size
+	void SetRegionSizes();
 
-  // Edit region colours/styles
-  void EditRegions();
+	// Edit region colours/styles
+	void EditRegions();
 
-  // Attachment points correspond to regions in the divided box
-  bool GetAttachmentPosition(int attachment, double *x, double *y,
-                                     int nth = 0, int no_arcs = 1, wxLineShape *line = NULL);
-  bool AttachmentIsValid(int attachment) const;
-  int GetNumberOfAttachments() const;
+	// Attachment points correspond to regions in the divided box
+	bool GetAttachmentPosition(int attachment, double *x, double *y,
+	                           int nth = 0, int no_arcs = 1, wxLineShape *line = NULL);
+	bool AttachmentIsValid(int attachment) const;
+	int GetNumberOfAttachments() const;
 
-  // Invoke editor on CTRL-right click
-  void OnRightClick(double x, double y, int keys = 0, int attachment = 0);
+	// Invoke editor on CTRL-right click
+	void OnRightClick(double x, double y, int keys = 0, int attachment = 0);
 };
 
 #endif
-    // _OGL_DIVIDED_H_
+// _OGL_DIVIDED_H_
 

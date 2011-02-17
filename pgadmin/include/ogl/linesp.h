@@ -15,32 +15,32 @@
 class wxLineShape;
 class wxLineControlPoint: public wxControlPoint
 {
-  DECLARE_DYNAMIC_CLASS(wxLineControlPoint)
-  friend class wxLineShape;
- public:
+	DECLARE_DYNAMIC_CLASS(wxLineControlPoint)
+	friend class wxLineShape;
+public:
 
-  wxLineControlPoint(wxShapeCanvas *the_canvas = NULL, wxShape *object = NULL, double size = 0.0,
-     double x = 0.0, double y = 0.0, int the_type = 0);
-  ~wxLineControlPoint();
+	wxLineControlPoint(wxShapeCanvas *the_canvas = NULL, wxShape *object = NULL, double size = 0.0,
+	                   double x = 0.0, double y = 0.0, int the_type = 0);
+	~wxLineControlPoint();
 
-  void OnDraw(wxDC& dc);
-  void OnDragLeft(bool draw, double x, double y, int keys=0, int attachment = 0);
-  void OnBeginDragLeft(double x, double y, int keys=0, int attachment = 0);
-  void OnEndDragLeft(double x, double y, int keys=0, int attachment = 0);
+	void OnDraw(wxDC &dc);
+	void OnDragLeft(bool draw, double x, double y, int keys = 0, int attachment = 0);
+	void OnBeginDragLeft(double x, double y, int keys = 0, int attachment = 0);
+	void OnEndDragLeft(double x, double y, int keys = 0, int attachment = 0);
 
-  // Obsolete (left-dragging now moves attachment point to new relative position OR new
-  // attachment id)
+	// Obsolete (left-dragging now moves attachment point to new relative position OR new
+	// attachment id)
 #if 0
-  void OnDragRight(bool draw, double x, double y, int keys=0, int attachment = 0);
-  void OnBeginDragRight(double x, double y, int keys=0, int attachment = 0);
-  void OnEndDragRight(double x, double y, int keys=0, int attachment = 0);
+	void OnDragRight(bool draw, double x, double y, int keys = 0, int attachment = 0);
+	void OnBeginDragRight(double x, double y, int keys = 0, int attachment = 0);
+	void OnEndDragRight(double x, double y, int keys = 0, int attachment = 0);
 #endif
 
 public:
 
-  int           m_type;
-  wxRealPoint*  m_point;  // Line point
-  wxRealPoint   m_originalPos;
+	int           m_type;
+	wxRealPoint  *m_point;  // Line point
+	wxRealPoint   m_originalPos;
 
 };
 
@@ -50,24 +50,24 @@ public:
 
 class wxLabelShape: public wxRectangleShape
 {
-  DECLARE_DYNAMIC_CLASS(wxLabelShape)
-
- public:
-  wxLabelShape(wxLineShape *parent = NULL, wxShapeRegion *region = NULL, double w = 0.0, double h = 0.0);
-  ~wxLabelShape();
-
-  void OnDraw(wxDC& dc);
-  void OnDrawContents(wxDC& dc);
-  void OnLeftClick(double x, double y, int keys = 0, int attachment = 0);
-  void OnRightClick(double x, double y, int keys = 0, int attachment = 0);
-  void OnDragLeft(bool draw, double x, double y, int keys=0, int attachment = 0);
-  void OnBeginDragLeft(double x, double y, int keys=0, int attachment = 0);
-  void OnEndDragLeft(double x, double y, int keys=0, int attachment = 0);
-  bool OnMovePre(double x, double y, double old_x, double old_y, bool display = TRUE);
+	DECLARE_DYNAMIC_CLASS(wxLabelShape)
 
 public:
-  wxLineShape*      m_lineShape;
-  wxShapeRegion*    m_shapeRegion;
+	wxLabelShape(wxLineShape *parent = NULL, wxShapeRegion *region = NULL, double w = 0.0, double h = 0.0);
+	~wxLabelShape();
+
+	void OnDraw(wxDC &dc);
+	void OnDrawContents(wxDC &dc);
+	void OnLeftClick(double x, double y, int keys = 0, int attachment = 0);
+	void OnRightClick(double x, double y, int keys = 0, int attachment = 0);
+	void OnDragLeft(bool draw, double x, double y, int keys = 0, int attachment = 0);
+	void OnBeginDragLeft(double x, double y, int keys = 0, int attachment = 0);
+	void OnEndDragLeft(double x, double y, int keys = 0, int attachment = 0);
+	bool OnMovePre(double x, double y, double old_x, double old_y, bool display = TRUE);
+
+public:
+	wxLineShape      *m_lineShape;
+	wxShapeRegion    *m_shapeRegion;
 
 };
 
@@ -81,5 +81,5 @@ void GetPointOnLine(double x1, double y1, double x2, double y2,
                     double length, double *x, double *y);
 
 #endif
-    // _OGL_LINESP_H_
+// _OGL_LINESP_H_
 

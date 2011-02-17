@@ -19,20 +19,20 @@
 
 class wxOGLConstraintType: public wxObject
 {
- DECLARE_DYNAMIC_CLASS(wxOGLConstraintType)
+	DECLARE_DYNAMIC_CLASS(wxOGLConstraintType)
 public:
-  wxOGLConstraintType(int type = 0, const wxString& name = wxEmptyString,
-                      const wxString& phrase = wxEmptyString);
-  ~wxOGLConstraintType();
+	wxOGLConstraintType(int type = 0, const wxString &name = wxEmptyString,
+	                    const wxString &phrase = wxEmptyString);
+	~wxOGLConstraintType();
 
 public:
-  int           m_type;     // E.g. gyCONSTRAINT_CENTRED_VERTICALLY
-  wxString      m_name;     // E.g. "Centre vertically"
-  wxString      m_phrase;   // E.g. "centred vertically with respect to", "left of"
+	int           m_type;     // E.g. gyCONSTRAINT_CENTRED_VERTICALLY
+	wxString      m_name;     // E.g. "Centre vertically"
+	wxString      m_phrase;   // E.g. "centred vertically with respect to", "left of"
 
 };
 
-extern wxList* wxOGLConstraintTypes;
+extern wxList *wxOGLConstraintTypes;
 
 #define gyCONSTRAINT_CENTRED_VERTICALLY   1
 #define gyCONSTRAINT_CENTRED_HORIZONTALLY 2
@@ -55,27 +55,36 @@ extern wxList* wxOGLConstraintTypes;
 
 class wxOGLConstraint: public wxObject
 {
- DECLARE_DYNAMIC_CLASS(wxOGLConstraint)
- public:
-  wxOGLConstraint() {
-     m_xSpacing = 0.0; m_ySpacing = 0.0; m_constraintType = 0;
-     m_constraintName = wxEmptyString; m_constraintId = 0;
-     m_constrainingObject = NULL; }
-  wxOGLConstraint(int type, wxShape *constraining, wxList& constrained);
-  ~wxOGLConstraint();
+	DECLARE_DYNAMIC_CLASS(wxOGLConstraint)
+public:
+	wxOGLConstraint()
+	{
+		m_xSpacing = 0.0;
+		m_ySpacing = 0.0;
+		m_constraintType = 0;
+		m_constraintName = wxEmptyString;
+		m_constraintId = 0;
+		m_constrainingObject = NULL;
+	}
+	wxOGLConstraint(int type, wxShape *constraining, wxList &constrained);
+	~wxOGLConstraint();
 
-  // Returns TRUE if anything changed
-  bool Evaluate();
-  inline void SetSpacing(double x, double y) { m_xSpacing = x; m_ySpacing = y; };
-  bool Equals(double a, double b);
+	// Returns TRUE if anything changed
+	bool Evaluate();
+	inline void SetSpacing(double x, double y)
+	{
+		m_xSpacing = x;
+		m_ySpacing = y;
+	};
+	bool Equals(double a, double b);
 
-  double         m_xSpacing;
-  double         m_ySpacing;
-  int           m_constraintType;
-  wxString      m_constraintName;
-  long          m_constraintId;
-  wxShape*      m_constrainingObject;
-  wxList        m_constrainedObjects;
+	double         m_xSpacing;
+	double         m_ySpacing;
+	int           m_constraintType;
+	wxString      m_constraintName;
+	long          m_constraintId;
+	wxShape      *m_constrainingObject;
+	wxList        m_constrainedObjects;
 
 };
 
@@ -83,4 +92,4 @@ void OGLInitializeConstraintTypes();
 void OGLCleanUpConstraintTypes();
 
 #endif
- // _OGL_CONSTRNT_H_
+// _OGL_CONSTRNT_H_

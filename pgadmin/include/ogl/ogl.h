@@ -33,4 +33,4 @@ extern void wxOGLInitialize();
 extern void wxOGLCleanUp();
 
 #endif
- // _OGL_OGL_H_
+// _OGL_OGL_H_
