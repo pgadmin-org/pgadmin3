@@ -412,9 +412,9 @@ void frmReport::OnOK(wxCommandEvent &ev)
 	settings->Write(wxT("Reports/LastHtmlFile"), txtHtmlFile->GetValue());
 	settings->Write(wxT("Reports/LastXmlFile"), txtXmlFile->GetValue());
 
-	settings->Write(wxT("Reports/IncludeSQL"), chkSql->GetValue());
+	settings->WriteBool(wxT("Reports/IncludeSQL"), chkSql->GetValue());
 
-	settings->Write(wxT("Reports/OpenInBrowser"), chkBrowser->GetValue());
+	settings->WriteBool(wxT("Reports/OpenInBrowser"), chkBrowser->GetValue());
 
 	// Now go away
 	if (IsModal())

@@ -788,7 +788,7 @@ void frmQuery::OnAutoRollback(wxCommandEvent &event)
 {
 	queryMenu->Check(MNU_AUTOROLLBACK, event.IsChecked());
 
-	settings->Write(wxT("frmQuery/AutoRollback"), queryMenu->IsChecked(MNU_AUTOROLLBACK));
+	settings->WriteBool(wxT("frmQuery/AutoRollback"), queryMenu->IsChecked(MNU_AUTOROLLBACK));
 }
 
 
@@ -796,7 +796,7 @@ void frmQuery::OnAutoIndent(wxCommandEvent &event)
 {
 	editMenu->Check(MNU_AUTOINDENT, event.IsChecked());
 
-	settings->Write(wxT("frmQuery/AutoIndent"), editMenu->IsChecked(MNU_AUTOINDENT));
+	settings->WriteBool(wxT("frmQuery/AutoIndent"), editMenu->IsChecked(MNU_AUTOINDENT));
 
 	if (editMenu->IsChecked(MNU_AUTOINDENT))
 		sqlQuery->SetAutoIndent(true);
@@ -809,7 +809,7 @@ void frmQuery::OnWordWrap(wxCommandEvent &event)
 {
 	viewMenu->Check(MNU_WORDWRAP, event.IsChecked());
 
-	settings->Write(wxT("frmQuery/WordWrap"), viewMenu->IsChecked(MNU_WORDWRAP));
+	settings->WriteBool(wxT("frmQuery/WordWrap"), viewMenu->IsChecked(MNU_WORDWRAP));
 
 	if (viewMenu->IsChecked(MNU_WORDWRAP))
 		sqlQuery->SetWrapMode(wxSTC_WRAP_WORD);
@@ -822,7 +822,7 @@ void frmQuery::OnShowIndentGuides(wxCommandEvent &event)
 {
 	viewMenu->Check(MNU_SHOWINDENTGUIDES, event.IsChecked());
 
-	settings->Write(wxT("frmQuery/ShowIndentGuides"), viewMenu->IsChecked(MNU_SHOWINDENTGUIDES));
+	settings->WriteBool(wxT("frmQuery/ShowIndentGuides"), viewMenu->IsChecked(MNU_SHOWINDENTGUIDES));
 
 	if (viewMenu->IsChecked(MNU_SHOWINDENTGUIDES))
 		sqlQuery->SetIndentationGuides(true);
@@ -835,7 +835,7 @@ void frmQuery::OnShowWhitespace(wxCommandEvent &event)
 {
 	viewMenu->Check(MNU_SHOWWHITESPACE, event.IsChecked());
 
-	settings->Write(wxT("frmQuery/ShowWhitespace"), viewMenu->IsChecked(MNU_SHOWWHITESPACE));
+	settings->WriteBool(wxT("frmQuery/ShowWhitespace"), viewMenu->IsChecked(MNU_SHOWWHITESPACE));
 
 	if (viewMenu->IsChecked(MNU_SHOWWHITESPACE))
 		sqlQuery->SetViewWhiteSpace(wxSTC_WS_VISIBLEALWAYS);
@@ -848,7 +848,7 @@ void frmQuery::OnShowLineEnds(wxCommandEvent &event)
 {
 	viewMenu->Check(MNU_SHOWLINEENDS, event.IsChecked());
 
-	settings->Write(wxT("frmQuery/ShowLineEnds"), viewMenu->IsChecked(MNU_SHOWLINEENDS));
+	settings->WriteBool(wxT("frmQuery/ShowLineEnds"), viewMenu->IsChecked(MNU_SHOWLINEENDS));
 
 	if (viewMenu->IsChecked(MNU_SHOWLINEENDS))
 		sqlQuery->SetViewEOL(1);
@@ -861,7 +861,7 @@ void frmQuery::OnShowLineNumber(wxCommandEvent &event)
 {
 	viewMenu->Check(MNU_SHOWLINENUMBER, event.IsChecked());
 
-	settings->Write(wxT("frmQuery/ShowLineNumber"), viewMenu->IsChecked(MNU_SHOWLINENUMBER));
+	settings->WriteBool(wxT("frmQuery/ShowLineNumber"), viewMenu->IsChecked(MNU_SHOWLINENUMBER));
 
 	sqlQuery->UpdateLineNumber();
 }

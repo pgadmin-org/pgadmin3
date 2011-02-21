@@ -370,16 +370,16 @@ frmStatus::~frmStatus()
 	SavePosition();
 
 	// Save the highlight status checkbox
-	settings->Write(wxT("frmStatus/HighlightStatus"), viewMenu->IsChecked(MNU_HIGHLIGHTSTATUS));
+	settings->WriteBool(wxT("frmStatus/HighlightStatus"), viewMenu->IsChecked(MNU_HIGHLIGHTSTATUS));
 
 	// For each current page, save the slider's position and delete the timer
-	settings->Write(wxT("frmStatus/RefreshStatusRate"), statusRate);
+	settings->WriteInt(wxT("frmStatus/RefreshStatusRate"), statusRate);
 	delete statusTimer;
-	settings->Write(wxT("frmStatus/RefreshLockRate"), locksRate);
+	settings->WriteInt(wxT("frmStatus/RefreshLockRate"), locksRate);
 	delete locksTimer;
 	if (viewMenu->IsEnabled(MNU_XACTPAGE))
 	{
-		settings->Write(wxT("frmStatus/RefreshXactRate"), xactRate);
+		settings->WriteInt(wxT("frmStatus/RefreshXactRate"), xactRate);
 		if (xactTimer)
 		{
 			delete xactTimer;
@@ -388,7 +388,7 @@ frmStatus::~frmStatus()
 	}
 	if (viewMenu->IsEnabled(MNU_LOGPAGE))
 	{
-		settings->Write(wxT("frmStatus/RefreshLogRate"), logRate);
+		settings->WriteInt(wxT("frmStatus/RefreshLogRate"), logRate);
 		emptyLogfileCombo();
 		if (logTimer)
 		{
@@ -2494,10 +2494,10 @@ void frmStatus::OnStatusMenu(wxCommandEvent &event)
 		wxListItem column;
 		statusList->GetColumn(i, column);
 		if (column.GetWidth() > 0)
-			settings->Write(wxT("frmStatus/StatusPane_") + column.GetText() + wxT("_Width"),
+			settings->WriteInt(wxT("frmStatus/StatusPane_") + column.GetText() + wxT("_Width"),
 			                statusColWidth[i]);
 		else
-			settings->Write(wxT("frmStatus/StatusPane_") + column.GetText() + wxT("_Width"),
+			settings->WriteInt(wxT("frmStatus/StatusPane_") + column.GetText() + wxT("_Width"),
 			                -statusColWidth[i]);
 	}
 }
@@ -2522,10 +2522,10 @@ void frmStatus::OnLockMenu(wxCommandEvent &event)
 		wxListItem column;
 		lockList->GetColumn(i, column);
 		if (column.GetWidth() > 0)
-			settings->Write(wxT("frmStatus/LockPane_") + column.GetText() + wxT("_Width"),
+			settings->WriteInt(wxT("frmStatus/LockPane_") + column.GetText() + wxT("_Width"),
 			                lockColWidth[i]);
 		else
-			settings->Write(wxT("frmStatus/LockPane_") + column.GetText() + wxT("_Width"),
+			settings->WriteInt(wxT("frmStatus/LockPane_") + column.GetText() + wxT("_Width"),
 			                -lockColWidth[i]);
 	}
 }
@@ -2550,10 +2550,10 @@ void frmStatus::OnXactMenu(wxCommandEvent &event)
 		wxListItem column;
 		xactList->GetColumn(i, column);
 		if (column.GetWidth() > 0)
-			settings->Write(wxT("frmStatus/XactPane_") + column.GetText() + wxT("_Width"),
+			settings->WriteInt(wxT("frmStatus/XactPane_") + column.GetText() + wxT("_Width"),
 			                xactColWidth[i]);
 		else
-			settings->Write(wxT("frmStatus/XactPane_") + column.GetText() + wxT("_Width"),
+			settings->WriteInt(wxT("frmStatus/XactPane_") + column.GetText() + wxT("_Width"),
 			                -xactColWidth[i]);
 	}
 }

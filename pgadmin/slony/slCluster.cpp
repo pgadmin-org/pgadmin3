@@ -274,7 +274,7 @@ void slCluster::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 			{
 				adminNodeID = set->GetLong(wxT("no_id"));
 				adminNodeName = set->GetVal(wxT("no_comment"));
-				settings->Write(wxT("Replication/") + GetName() + wxT("/AdminNode"), adminNodeID);
+				settings->WriteLong(wxT("Replication/") + GetName() + wxT("/AdminNode"), adminNodeID);
 			}
 			delete set;
 		}

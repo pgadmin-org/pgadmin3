@@ -904,7 +904,7 @@ wxString dlgRepCluster::GetSql()
 		{
 			long id = (long)cbAdminNode->GetClientData(sel);
 			if (id != cluster->GetAdminNodeID())
-				settings->Write(wxT("Replication/") + cluster->GetName() + wxT("/AdminNode"), id);
+				settings->WriteLong(wxT("Replication/") + cluster->GetName() + wxT("/AdminNode"), id);
 		}
 	}
 	else

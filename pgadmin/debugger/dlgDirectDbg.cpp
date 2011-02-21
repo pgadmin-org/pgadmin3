@@ -350,7 +350,7 @@ void dlgDirectDbg::loadSettings()
 
 void dlgDirectDbg::saveSettings()
 {
-	settings->Write( wxT( "Debugger/Proc/OID" ), m_targetInfo->getOid());
+	settings->WriteLong( wxT( "Debugger/Proc/OID" ), m_targetInfo->getOid());
 
 	int    count = 0;
 

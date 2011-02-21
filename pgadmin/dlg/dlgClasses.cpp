@@ -163,7 +163,7 @@ void pgDialog::RestorePosition(int defaultX, int defaultY, int defaultW, int def
 void pgDialog::SavePosition()
 {
 	if (!IsIconized())
-		settings->Write(dlgName, GetSize(), GetPosition());
+		settings->WriteSizePoint(dlgName, GetSize(), GetPosition());
 }
 
 void pgDialog::LoadResource(wxWindow *parent, const wxChar *name)
@@ -370,8 +370,8 @@ void pgFrame::SavePosition()
 	if (!IsIconized())
 	{
 #endif
-		settings->Write(dlgName, GetSize(), GetPosition());
-		settings->Write(dlgName + wxT("/Maximized"), IsMaximized());
+		settings->WriteSizePoint(dlgName, GetSize(), GetPosition());
+		settings->WriteBool(dlgName + wxT("/Maximized"), IsMaximized());
 #ifndef __WXGTK__
 	}
 #endif

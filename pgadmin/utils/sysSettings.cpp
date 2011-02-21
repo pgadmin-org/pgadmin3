@@ -197,7 +197,7 @@ void sysSettings::SetDisplayOption(const wxString &objtype, bool display)
 	else if (objtype == _("Views")) engtype = wxT("Views");
 	else if (objtype == _("External Tables")) engtype = wxT("External Tables");
 
-	Write(wxT("Display/") + engtype, display);
+	WriteBool(wxT("Display/") + engtype, display);
 }
 
 bool sysSettings::moveStringValue(const wxChar *oldKey, const wxChar *newKey, int index)
@@ -246,7 +246,7 @@ bool sysSettings::moveLongValue(const wxChar *oldKey, const wxChar *newKey, int 
 	{
 		long value;
 		Read(k1, &value, 0L);
-		Write(k2, value);
+		WriteLong(k2, value);
 
 		return true;
 	}
@@ -371,13 +371,13 @@ wxSize sysSettings::Read(const wxString &key, const wxSize &defaultVal) const
 }
 
 // Write a boolean value
-bool sysSettings::Write(const wxString &key, bool value)
+bool sysSettings::WriteBool(const wxString &key, bool value)
 {
 	return Write(key, BoolToStr(value));
 }
 
 // Write a point value
-bool sysSettings::Write(const wxString &key, const wxPoint &value)
+bool sysSettings::WritePoint(const wxString &key, const wxPoint &value)
 {
 	bool rc = wxConfig::Write(key + wxT("/Left"), value.x);
 	if (rc)
@@ -386,7 +386,7 @@ bool sysSettings::Write(const wxString &key, const wxPoint &value)
 }
 
 // Write a size value
-bool sysSettings::Write(const wxString &key, const wxSize &value)
+bool sysSettings::WriteSize(const wxString &key, const wxSize &value)
 {
 	bool rc = wxConfig::Write(key + wxT("/Width"), value.x);
 	if (rc)
@@ -675,7 +675,7 @@ void sysSettings::SetCanonicalLanguage(const wxLanguage &lang)
 			}
 #endif
 			locale->AddCatalog(wxT("pgadmin3"));
-			settings->Write(wxT("LanguageId"), (long)lang);
+			settings->WriteLong(wxT("LanguageId"), (long)lang);
 		}
 	}
 }

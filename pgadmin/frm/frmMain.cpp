@@ -1108,17 +1108,17 @@ void frmMain::StoreServers()
 					settings->Write(key + wxT("Description"), server->GetDescription());
 					settings->Write(key + wxT("ServiceID"), server->GetServiceID());
 					settings->Write(key + wxT("DiscoveryID"), server->GetDiscoveryID());
-					settings->Write(key + wxT("Port"), server->GetPort());
-					settings->Write(key + wxT("StorePwd"), server->GetStorePwd());
+					settings->WriteInt(key + wxT("Port"), server->GetPort());
+					settings->WriteBool(key + wxT("StorePwd"), server->GetStorePwd());
 					settings->Write(key + wxT("Rolename"), server->GetRolename());
-					settings->Write(key + wxT("Restore"), server->GetRestore());
+					settings->WriteBool(key + wxT("Restore"), server->GetRestore());
 					settings->Write(key + wxT("Database"), server->GetDatabaseName());
 					settings->Write(key + wxT("Username"), server->GetUsername());
 					settings->Write(key + wxT("LastDatabase"), server->GetLastDatabase());
 					settings->Write(key + wxT("LastSchema"), server->GetLastSchema());
 					settings->Write(key + wxT("DbRestriction"), server->GetDbRestriction());
 					settings->Write(key + wxT("Colour"), server->GetColour());
-					settings->Write(key + wxT("SSL"), server->GetSSL());
+					settings->WriteInt(key + wxT("SSL"), server->GetSSL());
 					settings->Write(key + wxT("Group"), server->GetGroup());
 					settings->Write(key + wxT("SSLCert"), server->GetSSLCert());
 					settings->Write(key + wxT("SSLKey"), server->GetSSLKey());
@@ -1142,7 +1142,7 @@ void frmMain::StoreServers()
 	}
 
 	// Write the server count
-	settings->Write(wxT("Servers/Count"), numServers);
+	settings->WriteInt(wxT("Servers/Count"), numServers);
 	wxLogInfo(wxT("Stored %d servers."), numServers);
 }
 

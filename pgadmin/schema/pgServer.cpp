@@ -778,7 +778,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 			settings->Write(wxT("Updates/pgsql-Versions"), allVersions);
 		}
 		if (conn->IsSSLconnected())
-			settings->Write(wxT("Updates/UseSSL"), true);
+			settings->WriteBool(wxT("Updates/UseSSL"), true);
 
 		UpdateIcon(form->GetBrowser());
 		if (storePassword || forceStorePassword)

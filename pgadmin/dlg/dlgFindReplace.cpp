@@ -143,9 +143,9 @@ void dlgFindReplace::OnClose(wxCloseEvent &ev)
 	else
 		settings->Write(wxT("FindReplace/Direction"), wxT("f"));
 
-	settings->Write(wxT("FindReplace/WholeWord"), chkOptionsWholeWord->GetValue());
-	settings->Write(wxT("FindReplace/MatchCase"), chkOptionsMatchCase->GetValue());
-	settings->Write(wxT("FindReplace/UseRegexps"), chkOptionsUseRegexps->GetValue());
+	settings->WriteBool(wxT("FindReplace/WholeWord"), chkOptionsWholeWord->GetValue());
+	settings->WriteBool(wxT("FindReplace/MatchCase"), chkOptionsMatchCase->GetValue());
+	settings->WriteBool(wxT("FindReplace/UseRegexps"), chkOptionsUseRegexps->GetValue());
 
 	this->Hide();
 	if (ev.CanVeto())

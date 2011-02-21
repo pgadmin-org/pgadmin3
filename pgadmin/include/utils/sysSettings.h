@@ -44,7 +44,7 @@ public:
 	}
 	void SetLogLevel(const int newval)
 	{
-		Write(wxT("LogLevel"), newval);
+		WriteInt(wxT("LogLevel"), newval);
 		sysLogger::logLevel = newval;
 	}
 
@@ -97,7 +97,7 @@ public:
 	}
 	void SetLastPort(const int newval)
 	{
-		Write(wxT("LastPort"), newval);
+		WriteInt(wxT("LastPort"), newval);
 	}
 	int GetLastSSL() const
 	{
@@ -107,7 +107,7 @@ public:
 	}
 	void SetLastSSL(const int newval)
 	{
-		Write(wxT("LastSSL"), newval);
+		WriteInt(wxT("LastSSL"), newval);
 	}
 
 	// Helper paths
@@ -231,7 +231,7 @@ public:
 	}
 	void SetExportUnicode(const bool newval)
 	{
-		Write(wxT("Export/Unicode"), newval);
+		WriteBool(wxT("Export/Unicode"), newval);
 	}
 	bool GetWriteBOM() const
 	{
@@ -241,7 +241,7 @@ public:
 	}
 	void SetWriteBOM(const bool newval)
 	{
-		Write(wxT("Export/WriteBOM"), newval);
+		WriteBool(wxT("Export/WriteBOM"), newval);
 	}
 
 	// Explain options
@@ -253,7 +253,7 @@ public:
 	}
 	void SetExplainVerbose(const bool newval)
 	{
-		Write(wxT("frmQuery/ExplainVerbose"), newval);
+		WriteBool(wxT("frmQuery/ExplainVerbose"), newval);
 	}
 	bool GetExplainCosts() const
 	{
@@ -263,7 +263,7 @@ public:
 	}
 	void SetExplainCosts(const bool newval)
 	{
-		Write(wxT("frmQuery/ExplainCosts"), newval);
+		WriteBool(wxT("frmQuery/ExplainCosts"), newval);
 	}
 	bool GetExplainBuffers() const
 	{
@@ -273,7 +273,7 @@ public:
 	}
 	void SetExplainBuffers(const bool newval)
 	{
-		Write(wxT("frmQuery/ExplainBuffers"), newval);
+		WriteBool(wxT("frmQuery/ExplainBuffers"), newval);
 	}
 
 	// Display options
@@ -295,7 +295,7 @@ public:
 	}
 	void SetShowUsersForPrivileges(const bool newval)
 	{
-		Write(wxT("ShowUsersForPrivileges"), newval);
+		WriteBool(wxT("ShowUsersForPrivileges"), newval);
 	}
 	bool GetShowSystemObjects() const
 	{
@@ -305,7 +305,7 @@ public:
 	}
 	void SetShowSystemObjects(const bool newval)
 	{
-		Write(wxT("ShowSystemObjects"), newval);
+		WriteBool(wxT("ShowSystemObjects"), newval);
 	}
 
 	// Editor options
@@ -317,7 +317,7 @@ public:
 	}
 	void SetSpacesForTabs(const bool newval)
 	{
-		Write(wxT("SpacesForTabs"), newval);
+		WriteBool(wxT("SpacesForTabs"), newval);
 	}
 	long GetIndentSpaces() const
 	{
@@ -327,7 +327,7 @@ public:
 	}
 	void SetIndentSpaces(const long newval)
 	{
-		Write(wxT("IndentSpaces"), newval);
+		WriteLong(wxT("IndentSpaces"), newval);
 	}
 	bool GetIndicateNull() const
 	{
@@ -337,7 +337,7 @@ public:
 	}
 	void SetIndicateNull(const bool newval)
 	{
-		Write(wxT("frmQuery/IndicateNull"), newval);
+		WriteBool(wxT("frmQuery/IndicateNull"), newval);
 	}
 	bool GetAutoRollback() const
 	{
@@ -347,7 +347,7 @@ public:
 	}
 	void SetAutoRollback(const bool newval)
 	{
-		Write(wxT("frmQuery/AutoRollback"), newval);
+		WriteBool(wxT("frmQuery/AutoRollback"), newval);
 	}
 	bool GetLineNumber() const
 	{
@@ -357,7 +357,7 @@ public:
 	}
 	void SetLineNumber(const bool newval)
 	{
-		Write(wxT("ShowLineNumber"), newval);
+		WriteBool(wxT("ShowLineNumber"), newval);
 	}
 	bool GetUnicodeFile() const
 	{
@@ -367,7 +367,7 @@ public:
 	}
 	void SetUnicodeFile(const bool newval)
 	{
-		Write(wxT("WriteUnicodeFile"), newval);
+		WriteBool(wxT("WriteUnicodeFile"), newval);
 	}
 	wxFont GetSystemFont();
 	void SetSystemFont(const wxFont &font);
@@ -381,7 +381,7 @@ public:
 	}
 	void SetLineEndingType(const int newval)
 	{
-		Write(wxT("LineEndingType"), newval);
+		WriteInt(wxT("LineEndingType"), newval);
 	}
 	wxString GetFavouritesFile();
 	void SetFavouritesFile(const wxString &newval)
@@ -406,7 +406,7 @@ public:
 	}
 	void SetHistoryMaxQueries(const long newval)
 	{
-		Write(wxT("History/MaxQueries"), newval);
+		WriteLong(wxT("History/MaxQueries"), newval);
 	}
 	long  GetHistoryMaxQuerySize() const
 	{
@@ -416,7 +416,7 @@ public:
 	}
 	void SetHistoryMaxQuerySize(const long newval)
 	{
-		Write(wxT("History/MaxQuerySize"), newval);
+		WriteLong(wxT("History/MaxQuerySize"), newval);
 	}
 
 	// Custom Colours options
@@ -482,7 +482,7 @@ public:
 	}
 	void SetSQLBoxUseSystemBackground(const bool newval)
 	{
-		Write(wxT("ctlSQLBox/UseSystemBackground"), newval);
+		WriteBool(wxT("ctlSQLBox/UseSystemBackground"), newval);
 	}
 	bool GetSQLBoxUseSystemForeground() const
 	{
@@ -492,7 +492,7 @@ public:
 	}
 	void SetSQLBoxUseSystemForeground(const bool newval)
 	{
-		Write(wxT("ctlSQLBox/UseSystemForeground"), newval);
+		WriteBool(wxT("ctlSQLBox/UseSystemForeground"), newval);
 	}
 
 	wxString GetSQLBoxColourBackground() const
@@ -556,7 +556,7 @@ public:
 	}
 	void SetSQLKeywordsInUppercase(const bool newval)
 	{
-		Write(wxT("KeywordsInUppercase"), newval);
+		WriteBool(wxT("KeywordsInUppercase"), newval);
 	}
 
 	// Misc options
@@ -568,7 +568,7 @@ public:
 	}
 	void SetAutoRowCountThreshold(const long newval)
 	{
-		Write(wxT("AutoRowCount"), newval);
+		WriteLong(wxT("AutoRowCount"), newval);
 	}
 	bool GetStickySql() const
 	{
@@ -578,7 +578,7 @@ public:
 	}
 	void SetStickySql(const bool newval)
 	{
-		Write(wxT("StickySql"), newval);
+		WriteBool(wxT("StickySql"), newval);
 	}
 	bool GetDoubleClickProperties() const
 	{
@@ -588,7 +588,7 @@ public:
 	}
 	void SetDoubleClickProperties(const bool newval)
 	{
-		Write(wxT("DoubleClickProperties"), newval);
+		WriteBool(wxT("DoubleClickProperties"), newval);
 	}
 	long GetMaxServerLogSize() const
 	{
@@ -598,7 +598,7 @@ public:
 	}
 	void SetMaxServerLogSize(const long newval)
 	{
-		Write(wxT("MaxServerLogSize"), newval);
+		WriteLong(wxT("MaxServerLogSize"), newval);
 	}
 	bool GetSuppressGuruHints() const
 	{
@@ -608,7 +608,7 @@ public:
 	}
 	void SetSuppressGuruHints(const bool newval)
 	{
-		Write(wxT("SuppressGuruHints"), newval);
+		WriteBool(wxT("SuppressGuruHints"), newval);
 	}
 	long GetMaxRows() const
 	{
@@ -618,7 +618,7 @@ public:
 	}
 	void SetMaxRows(const long newval)
 	{
-		Write(wxT("frmQuery/MaxRows"), newval);
+		WriteLong(wxT("frmQuery/MaxRows"), newval);
 	}
 	long GetMaxColSize() const
 	{
@@ -628,7 +628,7 @@ public:
 	}
 	void SetMaxColSize(const long newval)
 	{
-		Write(wxT("frmQuery/MaxColSize"), newval);
+		WriteLong(wxT("frmQuery/MaxColSize"), newval);
 	}
 	bool GetAskSaveConfirmation() const
 	{
@@ -638,7 +638,7 @@ public:
 	}
 	void SetAskSaveConfirmation(const bool newval)
 	{
-		Write(wxT("AskSaveConfirmation"), newval);
+		WriteBool(wxT("AskSaveConfirmation"), newval);
 	}
 	bool GetConfirmDelete() const
 	{
@@ -648,7 +648,7 @@ public:
 	}
 	void SetConfirmDelete(const bool newval)
 	{
-		Write(wxT("ConfirmDelete"), newval);
+		WriteBool(wxT("ConfirmDelete"), newval);
 	}
 	wxString GetCanonicalLanguageName();
 	wxLanguage GetCanonicalLanguage() const
@@ -666,33 +666,29 @@ public:
 	}
 	void SetIgnoreVersion(const bool newval)
 	{
-		Write(wxT("IgnoreVersion"), newval);
+		WriteBool(wxT("IgnoreVersion"), newval);
 	}
 
 	// Functions for storing settings
-	bool Write(const wxString &key, const wxChar *value)
-	{
-		return wxConfig::Write(key, wxString(value));
-	}
 	bool Write(const wxString &key, const wxString &value)
 	{
 		return wxConfig::Write(key, value);
 	}
-	bool Write(const wxString &key, long value)
+	bool WriteLong(const wxString &key, long value)
 	{
 		return wxConfig::Write(key, value);
 	}
-	bool Write(const wxString &key, int value)
+	bool WriteInt(const wxString &key, int value)
 	{
 		return wxConfig::Write(key, value);
 	}
-	bool Write(const wxString &key, bool value);
-	bool Write(const wxString &key, const wxPoint &value);
-	bool Write(const wxString &key, const wxSize &value);
-	bool Write(const wxString &key, const wxSize &size, const wxPoint &point)
+	bool WriteBool(const wxString &key, bool value);
+	bool WritePoint(const wxString &key, const wxPoint &value);
+	bool WriteSize(const wxString &key, const wxSize &value);
+	bool WriteSizePoint(const wxString &key, const wxSize &size, const wxPoint &point)
 	{
-		Write(key, point);
-		Write(key, size);
+		WritePoint(key, point);
+		WriteSize(key, size);
 		return true;
 	}
 

@@ -153,10 +153,10 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
 dlgProperty::~dlgProperty()
 {
 	wxString prop = wxT("Properties/") + wxString(factory->GetTypeName());
-	settings->Write(prop, GetPosition());
+	settings->WritePoint(prop, GetPosition());
 
 	if (GetWindowStyle() & wxRESIZE_BORDER)
-		settings->Write(prop, GetSize());
+		settings->WriteSize(prop, GetSize());
 }
 
 
