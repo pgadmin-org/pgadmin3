@@ -547,8 +547,8 @@ void dlgDirectDbg::invokeTarget()
 	// us to retrieve the OUT/INOUT parameter results.
 	// Otherwise, just SELECT/EXEC it as per normal.
 #ifdef __WXMSW__
-	if (!m_conn->EdbMinimumVersion(9,0) &&
-			!m_targetInfo->getIsFunction() &&
+	if (!m_conn->EdbMinimumVersion(9, 0) &&
+	        !m_targetInfo->getIsFunction() &&
 	        PQiGetOutResult &&
 	        PQiPrepareOut &&
 	        PQiSendQueryPreparedOut)
@@ -556,8 +556,8 @@ void dlgDirectDbg::invokeTarget()
 	else
 #else
 #ifdef EDB_LIBPQ
-	if (!m_conn->EdbMinimumVersion(9,0) &&
-			!m_targetInfo->getIsFunction())
+	if (!m_conn->EdbMinimumVersion(9, 0) &&
+	        !m_targetInfo->getIsFunction())
 		invokeTargetCallable();
 	else
 #endif
@@ -710,7 +710,8 @@ void dlgDirectDbg::invokeTargetStatement()
 		}
 		else if(arg.getMode() == wxT("v"))
 			query.Append( arg.getValue() + wxT(", "));
-		else {
+		else
+		{
 			if (!arg.quoteValue().Contains(wxT("::")))
 				query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
 			else
