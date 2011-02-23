@@ -2495,10 +2495,10 @@ void frmStatus::OnStatusMenu(wxCommandEvent &event)
 		statusList->GetColumn(i, column);
 		if (column.GetWidth() > 0)
 			settings->WriteInt(wxT("frmStatus/StatusPane_") + column.GetText() + wxT("_Width"),
-			                statusColWidth[i]);
+			                   statusColWidth[i]);
 		else
 			settings->WriteInt(wxT("frmStatus/StatusPane_") + column.GetText() + wxT("_Width"),
-			                -statusColWidth[i]);
+			                   -statusColWidth[i]);
 	}
 }
 
@@ -2523,10 +2523,10 @@ void frmStatus::OnLockMenu(wxCommandEvent &event)
 		lockList->GetColumn(i, column);
 		if (column.GetWidth() > 0)
 			settings->WriteInt(wxT("frmStatus/LockPane_") + column.GetText() + wxT("_Width"),
-			                lockColWidth[i]);
+			                   lockColWidth[i]);
 		else
 			settings->WriteInt(wxT("frmStatus/LockPane_") + column.GetText() + wxT("_Width"),
-			                -lockColWidth[i]);
+			                   -lockColWidth[i]);
 	}
 }
 
@@ -2551,10 +2551,10 @@ void frmStatus::OnXactMenu(wxCommandEvent &event)
 		xactList->GetColumn(i, column);
 		if (column.GetWidth() > 0)
 			settings->WriteInt(wxT("frmStatus/XactPane_") + column.GetText() + wxT("_Width"),
-			                xactColWidth[i]);
+			                   xactColWidth[i]);
 		else
 			settings->WriteInt(wxT("frmStatus/XactPane_") + column.GetText() + wxT("_Width"),
-			                -xactColWidth[i]);
+			                   -xactColWidth[i]);
 	}
 }
 

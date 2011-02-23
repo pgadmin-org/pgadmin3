@@ -578,7 +578,7 @@ wxString pgFunction::GetArgSigList(const bool forScript)
 		else
 		{
 			if (GetLanguage() == wxT("edbspl") && argModesArray.Item(i) != wxT("TABLE") &&
-									!this->GetConnection()->EdbMinimumVersion(9, 0))
+			        !this->GetConnection()->EdbMinimumVersion(9, 0))
 			{
 				if (args.Length() > 0)
 				{
