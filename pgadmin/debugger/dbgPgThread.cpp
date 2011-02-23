@@ -119,11 +119,16 @@ void *dbgPgThread::Entry( void )
 #if defined (__WXMSW__) || (EDB_LIBPQ)
 		// If we have a set of params, and we have the required functions...
 		dbgPgParams *params = m_currentCommand->getParams();
+		bool use_callable = true;
+
+		// we do not need all of PQi stuff AS90 onwards
+		if (m_owner.EdbMinimumVersion(9, 0))
+			use_callable = false;
 
 #ifdef EDB_LIBPQ
-		if (params)
+		if (params && use_callable)
 #else
-		if (PQiGetOutResult && PQiPrepareOut && PQiSendQueryPreparedOut && params)
+		if (PQiGetOutResult && PQiPrepareOut && PQiSendQueryPreparedOut && params && use_callable)
 #endif
 		{
 			wxLogInfo(wxT("Using an EnterpriseDB callable statement"));

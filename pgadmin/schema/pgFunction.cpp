@@ -558,7 +558,8 @@ wxString pgFunction::GetArgSigList(const bool forScript)
 
 	for (unsigned int i = 0; i < argTypesArray.Count(); i++)
 	{
-		// OUT parameters are not considered part of the signature, except for EDB-SPL
+		// OUT parameters are not considered part of the signature, except for EDB-SPL,
+		// although this is not true for EDB AS90 onwards..
 		if (argModesArray.Item(i) != wxT("OUT") && argModesArray.Item(i) != wxT("TABLE"))
 		{
 			if (args.Length() > 0)
@@ -576,7 +577,8 @@ wxString pgFunction::GetArgSigList(const bool forScript)
 		}
 		else
 		{
-			if (GetLanguage() == wxT("edbspl") && argModesArray.Item(i) != wxT("TABLE"))
+			if (GetLanguage() == wxT("edbspl") && argModesArray.Item(i) != wxT("TABLE") &&
+									!this->GetConnection()->EdbMinimumVersion(9, 0))
 			{
 				if (args.Length() > 0)
 				{
@@ -733,10 +735,6 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
 			while (argTypesTkz.HasMoreTokens())
 			{
-				// Add the arg type. This is a type oid, so
-				// look it up in the hashmap
-				type = argTypesTkz.GetNextToken();
-				function->iAddArgType(typeCache[type]);
 
 				// Now add the name, stripping the quotes and \" if
 				// necessary.
@@ -746,10 +744,36 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 					if (name[0] == '"')
 						name = name.Mid(1, name.Length() - 2);
 					name.Replace(wxT("\\\""), wxT("\""));
+
+					// In EDBAS 90, if an SPL-function has both an OUT-parameter
+					// and a return value (which is not possible on PostgreSQL otherwise),
+					// the return value is transformed into an extra OUT-parameter
+					// named "_retval_"
+					if (obj->GetConnection()->EdbMinimumVersion(9, 0))
+					{
+						if (name == wxT("_retval_"))
+						{
+							type = argTypesTkz.GetNextToken();
+							// this will be the return type for this object
+							function->iSetReturnType(typeCache[type]);
+
+							// consume uniformly, mode will definitely be "OUT"
+							mode = argModesTkz.GetNextToken();
+							// no defvals..
+							if (!hasDefValSupport)
+								def = argDefsTkz.GetNextToken();
+							continue;
+						}
+					}
 					function->iAddArgName(name);
 				}
 				else
 					function->iAddArgName(wxEmptyString);
+
+				// Add the arg type. This is a type oid, so
+				// look it up in the hashmap
+				type = argTypesTkz.GetNextToken();
+				function->iAddArgType(typeCache[type]);
 
 				// Now the mode
 				mode = argModesTkz.GetNextToken();
@@ -858,12 +882,17 @@ pgFunction *pgFunctionFactory::AppendFunctions(pgObject *obj, pgSchema *schema, 
 
 			function->iSetOwner(functions->GetVal(wxT("funcowner")));
 			function->iSetAcl(functions->GetVal(wxT("proacl")));
-			wxString strType = functions->GetVal(wxT("typname"));
-			if (strType.Lower() == wxT("record") && !strReturnTableArgs.IsEmpty())
+
+			// set the return type only if not already set..
+			if (function->GetReturnType().IsEmpty())
 			{
-				strType = wxT("TABLE(") + strReturnTableArgs + wxT(")");
+				wxString strType = functions->GetVal(wxT("typname"));
+				if (strType.Lower() == wxT("record") && !strReturnTableArgs.IsEmpty())
+				{
+					strType = wxT("TABLE(") + strReturnTableArgs + wxT(")");
+				}
+				function->iSetReturnType(strType);
 			}
-			function->iSetReturnType(strType);
 			function->iSetComment(functions->GetVal(wxT("description")));
 
 			function->iSetLanguage(lanname);

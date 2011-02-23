@@ -150,7 +150,11 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn *conn, char tar
 		// store the "" only if this is stringlike type and nothing otherwise..
 		defVal = (defvals.GetNextToken()).Strip ( wxString::both );
 		if (argInfo.isValidDefVal(defVal))
+		{
+			// remove starting/trailing quotes
+			defVal.Replace( wxT( "\"" ), wxT( "" ));
 			argInfo.setValue(defVal);
+		}
 
 		m_argInfo.Add( argInfo );
 	}
