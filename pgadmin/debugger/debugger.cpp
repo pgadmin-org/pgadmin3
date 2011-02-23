@@ -138,6 +138,7 @@ bool debuggerFactory::CheckEnable(pgObject *obj)
 #ifdef __WXMSW__
 					else if (func->GetLanguage() == wxT("edbspl") &&
 					         obj->GetConnection()->EdbMinimumVersion(8, 4) &&
+					         !obj->GetConnection()->EdbMinimumVersion(9, 0) &&
 					         !(PQiGetOutResult && PQiPrepareOut && PQiSendQueryPreparedOut))
 						return false;
 #else

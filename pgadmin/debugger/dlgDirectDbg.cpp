@@ -547,7 +547,8 @@ void dlgDirectDbg::invokeTarget()
 	// us to retrieve the OUT/INOUT parameter results.
 	// Otherwise, just SELECT/EXEC it as per normal.
 #ifdef __WXMSW__
-	if (!m_targetInfo->getIsFunction() &&
+	if (!m_conn->EdbMinimumVersion(9,0) &&
+			!m_targetInfo->getIsFunction() &&
 	        PQiGetOutResult &&
 	        PQiPrepareOut &&
 	        PQiSendQueryPreparedOut)
@@ -555,7 +556,8 @@ void dlgDirectDbg::invokeTarget()
 	else
 #else
 #ifdef EDB_LIBPQ
-	if (!m_targetInfo->getIsFunction())
+	if (!m_conn->EdbMinimumVersion(9,0) &&
+			!m_targetInfo->getIsFunction())
 		invokeTargetCallable();
 	else
 #endif
@@ -690,17 +692,30 @@ void dlgDirectDbg::invokeTargetStatement()
 				wxString strParam = wxString::Format(wxT("param%d"), i);
 				declareStatement +=  strParam + wxT(" ") + arg.getType();
 				if (arg.getMode() == wxT("b"))
-					declareStatement += wxT(" := ") + arg.quoteValue() + wxT("::") + arg.getType();
+				{
+					declareStatement += wxT(" := ") + arg.quoteValue();
+					if (!arg.quoteValue().Contains(wxT("::")))
+						declareStatement += wxT("::") + arg.getType();
+				}
 				declareStatement += wxT(";\n");
 				query.Append(strParam + wxT(", "));
 			}
 			else if (arg.getMode() != wxT("o"))
-				query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
+			{
+				if (!arg.quoteValue().Contains(wxT("::")))
+					query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
+				else
+					query.Append( arg.quoteValue() + wxT(", "));
+			}
 		}
 		else if(arg.getMode() == wxT("v"))
 			query.Append( arg.getValue() + wxT(", "));
-		else
-			query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
+		else {
+			if (!arg.quoteValue().Contains(wxT("::")))
+				query.Append( arg.quoteValue() + wxT("::") + arg.getType() + wxT(", "));
+			else
+				query.Append( arg.quoteValue() + wxT(", "));
+		}
 	}
 
 	if (query.EndsWith(wxT(", ")))
