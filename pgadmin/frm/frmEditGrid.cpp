@@ -1611,7 +1611,14 @@ public:
 	}
 	void Create(wxWindow *parent, wxWindowID id, wxEvtHandler *evtHandler);
 	void BeginEdit(int row, int col, wxGrid *grid);
+
+
+#if wxCHECK_VERSION(2, 9, 0)	
+	void ApplyEdit(int row, int col, wxGrid *grid);
+	bool EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*);
+#else
 	bool EndEdit(int row, int col, wxGrid *grid);
+#endif
 	wxString GetValue() const;
 	virtual void Reset()
 	{
@@ -1663,7 +1670,20 @@ void sqlGridTextEditor::DoBeginEdit(const wxString &startValue)
 	Text()->SetFocus();
 }
 
+#if wxCHECK_VERSION(2, 9, 0)
+// pure virtual in 2.9+, doesn't exist in prior versions
+void sqlGridTextEditor::ApplyEdit(int row, int col, wxGrid *grid)
+{
+	wxString value = Text()->GetText();
+	grid->GetTable()->SetValue(row, col, value);
+}
+#endif
+
+#if wxCHECK_VERSION(2, 9, 0)
+bool sqlGridTextEditor::EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*)
+#else
 bool sqlGridTextEditor::EndEdit(int row, int col, wxGrid *grid)
+#endif
 {
 	bool changed = false;
 	wxString value = Text()->GetText();
@@ -1671,8 +1691,10 @@ bool sqlGridTextEditor::EndEdit(int row, int col, wxGrid *grid)
 	if (value != m_startValue)
 		changed = true;
 
+#if !wxCHECK_VERSION(2, 9, 0)
 	if (changed)
 		grid->GetTable()->SetValue(row, col, value);
+#endif
 
 	return changed;
 }
@@ -1723,7 +1745,12 @@ public:
 
 	virtual bool IsAcceptedKey(wxKeyEvent &event);
 	virtual void BeginEdit(int row, int col, wxGrid *grid);
-	virtual bool EndEdit(int row, int col, wxGrid *grid);
+#if wxCHECK_VERSION(2, 9, 0)	
+	void ApplyEdit(int row, int col, wxGrid *grid); // pure virtual in wx 2.9+, doesn't exist in prior versions
+	bool EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*);
+#else
+	bool EndEdit(int row, int col, wxGrid *grid);
+#endif
 
 	virtual void Reset()
 	{
@@ -1836,9 +1863,22 @@ void sqlGridNumericEditor::BeginEdit(int row, int col, wxGrid *grid)
 	DoBeginEdit(value);
 }
 
+#if wxCHECK_VERSION(2, 9, 0)
+// pure virtual in 2.9+, doesn't exist in prior versions
+void sqlGridNumericEditor::ApplyEdit(int row, int col, wxGrid *grid)
+{
+	wxString value = Text()->GetValue();
+	grid->GetTable()->SetValue(row, col, value);
+	m_startValue = wxEmptyString;
+	Text()->SetValue(m_startValue);
+}
+#endif
 
-
+#if wxCHECK_VERSION(2, 9, 0)
+bool sqlGridNumericEditor::EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*)
+#else
 bool sqlGridNumericEditor::EndEdit(int row, int col, wxGrid *grid)
+#endif
 {
 	wxASSERT_MSG(m_control,
 	             wxT("The sqlGridNumericEditor must be Created first!"));
@@ -1851,12 +1891,13 @@ bool sqlGridNumericEditor::EndEdit(int row, int col, wxGrid *grid)
 	if (value != m_startValue)
 		changed = true;
 
+#if !wxCHECK_VERSION(2, 9, 0)
 	if (changed)
 		grid->GetTable()->SetValue(row, col, value);
 
 	m_startValue = wxEmptyString;
 	Text()->SetValue(m_startValue);
-
+#endif
 	return changed;
 }
 
