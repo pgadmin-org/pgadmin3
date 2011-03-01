@@ -260,6 +260,12 @@ bool wxCalendarBox::Enable(bool enable)
 		if (m_cal)
 			m_cal->Hide();
 	}
+	else
+	{
+		if (m_cal)
+			m_cal->Show();
+	}
+
 	if (m_btn)
 		m_btn->Enable(enable);
 	return true;
