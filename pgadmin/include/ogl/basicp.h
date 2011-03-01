@@ -1,13 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        basicp.h
-// Purpose:     Private OGL classes and definitions
-// Author:      Julian Smart
-// Modified by:
-// Created:     12/07/98
-// RCS-ID:      $Id: basicp.h,v 1.3 2007/10/23 18:17:17 anthemion Exp $
-// Copyright:   (c) Julian Smart
-// Licence:   	wxWindows licence
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+//
+// Portions Copyright (C) 1998 - 2011, Julian Smart
+// Portions Copyright (C) 2011, The pgAdmin Development Team
+// This software is released under the PostgreSQL Licence
+//
+// basicp.h - Private OGL classes and definitions
+//
+//////////////////////////////////////////////////////////////////////////
 
 #ifndef _OGL_BASICP_H_
 #define _OGL_BASICP_H_

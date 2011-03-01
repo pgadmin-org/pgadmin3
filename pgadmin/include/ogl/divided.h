@@ -1,13 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        divided.h
-// Purpose:     wxDividedShape
-// Author:      Julian Smart
-// Modified by:
-// Created:     12/07/98
-// RCS-ID:      $Id: divided.h,v 1.2 2007/02/02 15:56:37 anthemion Exp $
-// Copyright:   (c) Julian Smart
-// Licence:   	wxWindows licence
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+//
+// Portions Copyright (C) 1998 - 2011, Julian Smart
+// Portions Copyright (C) 2011, The pgAdmin Development Team
+// This software is released under the PostgreSQL Licence
+//
+// divided.h - wxDividedShape
+//
+//////////////////////////////////////////////////////////////////////////
 
 #ifndef _OGL_DIVIDED_H_
 #define _OGL_DIVIDED_H_

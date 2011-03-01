@@ -1,13 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        basic.h
-// Purpose:     Basic OGL classes and definitions
-// Author:      Julian Smart
-// Modified by:
-// Created:     12/07/98
-// RCS-ID:      $Id: basic.h,v 1.2 2007/02/02 15:56:37 anthemion Exp $
-// Copyright:   (c) Julian Smart
-// Licence:   	wxWindows licence
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+//
+// Portions Copyright (C) 1998 - 2011, Julian Smart
+// Portions Copyright (C) 2011, The pgAdmin Development Team
+// This software is released under the PostgreSQL Licence
+//
+// basic.h - Basic OGL classes and definitions
+//
+//////////////////////////////////////////////////////////////////////////
 
 #ifndef _OGL_BASIC_H_
 #define _OGL_BASIC_H_

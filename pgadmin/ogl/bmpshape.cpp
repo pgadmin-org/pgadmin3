@@ -1,13 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        bmpshape.cpp
-// Purpose:     Bitmap shape class
-// Author:      Julian Smart
-// Modified by:
-// Created:     12/07/98
-// RCS-ID:      $Id: bmpshape.cpp,v 1.3 2007/01/16 02:36:41 anthemion Exp $
-// Copyright:   (c) Julian Smart
-// Licence:   	wxWindows licence
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+//
+// Portions Copyright (C) 1998 - 2011, Julian Smart
+// Portions Copyright (C) 2011, The pgAdmin Development Team
+// This software is released under the PostgreSQL Licence
+//
+// bmpshape.cpp - Bitmap shape class
+//
+//////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
 

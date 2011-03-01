@@ -1,13 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        basic2.cpp
-// Purpose:     Basic OGL classes (2)
-// Author:      Julian Smart
-// Modified by:
-// Created:     12/07/98
-// RCS-ID:      $Id: basic2.cpp,v 1.4 2007/10/23 18:17:16 anthemion Exp $
-// Copyright:   (c) Julian Smart
-// Licence:   	wxWindows licence
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+//
+// Portions Copyright (C) 1998 - 2011, Julian Smart
+// Portions Copyright (C) 2011, The pgAdmin Development Team
+// This software is released under the PostgreSQL Licence
+//
+// basic2.cpp - Basic OGL classes (2)
+//
+//////////////////////////////////////////////////////////////////////////
 
 #include "pgAdmin3.h"
 

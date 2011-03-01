@@ -1,13 +1,14 @@
-/////////////////////////////////////////////////////////////////////////////
-// Name:        composit.h
-// Purpose:     wxCompositeShape
-// Author:      Julian Smart
-// Modified by:
-// Created:     12/07/98
-// RCS-ID:      $Id: composit.h,v 1.2 2007/02/03 01:52:55 anthemion Exp $
-// Copyright:   (c) Julian Smart
-// Licence:   	wxWindows licence
-/////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+//
+// Portions Copyright (C) 1998 - 2011, Julian Smart
+// Portions Copyright (C) 2011, The pgAdmin Development Team
+// This software is released under the PostgreSQL Licence
+//
+// composit.h - wxCompositeShape
+//
+//////////////////////////////////////////////////////////////////////////
 
 #ifndef _OGL_COMPOSIT_H_
 #define _OGL_COMPOSIT_H_

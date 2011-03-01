@@ -1671,7 +1671,6 @@ void sqlGridTextEditor::DoBeginEdit(const wxString &startValue)
 }
 
 #if wxCHECK_VERSION(2, 9, 0)
-// pure virtual in 2.9+, doesn't exist in prior versions
 void sqlGridTextEditor::ApplyEdit(int row, int col, wxGrid *grid)
 {
 	wxString value = Text()->GetText();
@@ -1745,8 +1744,8 @@ public:
 
 	virtual bool IsAcceptedKey(wxKeyEvent &event);
 	virtual void BeginEdit(int row, int col, wxGrid *grid);
-#if wxCHECK_VERSION(2, 9, 0)	
-	void ApplyEdit(int row, int col, wxGrid *grid); // pure virtual in wx 2.9+, doesn't exist in prior versions
+#if wxCHECK_VERSION(2, 9, 0)
+	void ApplyEdit(int row, int col, wxGrid *grid);
 	bool EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*);
 #else
 	bool EndEdit(int row, int col, wxGrid *grid);
@@ -1864,7 +1863,6 @@ void sqlGridNumericEditor::BeginEdit(int row, int col, wxGrid *grid)
 }
 
 #if wxCHECK_VERSION(2, 9, 0)
-// pure virtual in 2.9+, doesn't exist in prior versions
 void sqlGridNumericEditor::ApplyEdit(int row, int col, wxGrid *grid)
 {
 	wxString value = Text()->GetValue();
