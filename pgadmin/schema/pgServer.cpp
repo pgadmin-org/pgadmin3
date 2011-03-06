@@ -1082,7 +1082,7 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 	if (conn)
 	{
 		wxString sql;
-		wxString replication_query = wxT("state || ' (' || sent_location || ' sent, ' || write_location || ' written, ' || flush_location || ' flushed, ' || apply_location || ' applied)'");
+		wxString replication_query = wxT("state || ' (' || sent_location || ' sent, ' || write_location || ' written, ' || flush_location || ' flushed, ' || replay_location || ' applied)'");
 		wxLogInfo(wxT("Displaying statistics for server %s"), GetIdentifier().c_str());
 
 		// Add the statistics view columns

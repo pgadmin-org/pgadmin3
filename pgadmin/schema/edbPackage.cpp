@@ -228,7 +228,7 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 
 	if (collection->GetConnection()->EdbMinimumVersion(9, 0))
 		pkgsrc = wxT("pg_catalog.edb_get_packagebodydef(nsp.oid) AS pkgbodysrc, ")
-			 wxT("pg_catalog.edb_get_packageheaddef(nsp.oid) AS pkgheadsrc,\n");
+		         wxT("pg_catalog.edb_get_packageheaddef(nsp.oid) AS pkgheadsrc,\n");
 	else if (collection->GetConnection()->EdbMinimumVersion(8, 2))
 		pkgsrc = wxT("nspbodysrc AS pkgbodysrc, nspheadsrc AS pkgheadsrc,\n");
 

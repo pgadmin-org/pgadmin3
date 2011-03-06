@@ -1613,9 +1613,9 @@ public:
 	void BeginEdit(int row, int col, wxGrid *grid);
 
 
-#if wxCHECK_VERSION(2, 9, 0)	
+#if wxCHECK_VERSION(2, 9, 0)
 	void ApplyEdit(int row, int col, wxGrid *grid);
-	bool EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*);
+	bool EndEdit(int row, int col, const wxGrid *grid, const wxString &, wxString *);
 #else
 	bool EndEdit(int row, int col, wxGrid *grid);
 #endif
@@ -1679,7 +1679,7 @@ void sqlGridTextEditor::ApplyEdit(int row, int col, wxGrid *grid)
 #endif
 
 #if wxCHECK_VERSION(2, 9, 0)
-bool sqlGridTextEditor::EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*)
+bool sqlGridTextEditor::EndEdit(int row, int col, const wxGrid *grid, const wxString &, wxString *)
 #else
 bool sqlGridTextEditor::EndEdit(int row, int col, wxGrid *grid)
 #endif
@@ -1746,7 +1746,7 @@ public:
 	virtual void BeginEdit(int row, int col, wxGrid *grid);
 #if wxCHECK_VERSION(2, 9, 0)
 	void ApplyEdit(int row, int col, wxGrid *grid);
-	bool EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*);
+	bool EndEdit(int row, int col, const wxGrid *grid, const wxString &, wxString *);
 #else
 	bool EndEdit(int row, int col, wxGrid *grid);
 #endif
@@ -1873,7 +1873,7 @@ void sqlGridNumericEditor::ApplyEdit(int row, int col, wxGrid *grid)
 #endif
 
 #if wxCHECK_VERSION(2, 9, 0)
-bool sqlGridNumericEditor::EndEdit(int row, int col, const wxGrid *grid, const wxString&, wxString*)
+bool sqlGridNumericEditor::EndEdit(int row, int col, const wxGrid *grid, const wxString &, wxString *)
 #else
 bool sqlGridNumericEditor::EndEdit(int row, int col, wxGrid *grid)
 #endif
