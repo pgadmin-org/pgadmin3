@@ -27,6 +27,7 @@
 #define chkDeferred     CTRL_CHECKBOX("chkDeferred")
 #define cbReferences    CTRL_COMBOBOX("cbReferences")
 #define chkMatchFull    CTRL_CHECKBOX("chkMatchFull")
+#define chkDontValidate CTRL_CHECKBOX("chkDontValidate")
 
 #define chkAutoIndex    CTRL_CHECKBOX("chkAutoIndex")
 #define txtIndexName    CTRL_TEXT("txtIndexName")
@@ -44,6 +45,7 @@ BEGIN_EVENT_TABLE(dlgForeignKey, dlgProperty)
 	EVT_CHECKBOX(XRCID("chkAutoIndex") ,        dlgProperty::OnChange)
 	EVT_TEXT(XRCID("txtIndexName"),             dlgProperty::OnChange)
 
+	EVT_CHECKBOX(XRCID("chkDontValidate"),      dlgForeignKey::OnChangeValidate)
 	EVT_LIST_ITEM_SELECTED(XRCID("lstColumns"), dlgForeignKey::OnSelChangeCol)
 	EVT_TEXT(XRCID("cbReferences"),             dlgForeignKey::OnSelChangeRef)
 	EVT_COMBOBOX(XRCID("cbReferences"),         dlgForeignKey::OnSelChangeRef)
@@ -195,6 +197,10 @@ void dlgForeignKey::CheckChange()
 		}
 		else
 			enable = txtComment->GetValue() != foreignKey->GetComment();
+
+		if (connection->BackendMinimumVersion(9, 1) && !foreignKey->GetValid() && !chkDontValidate->GetValue())
+            enable = true;
+
 		EnableOK(enable);
 	}
 	else
@@ -207,6 +213,12 @@ void dlgForeignKey::CheckChange()
 		EnableOK(enable);
 	}
 
+}
+
+
+void dlgForeignKey::OnChangeValidate(wxCommandEvent &ev)
+{
+	CheckChange();
 }
 
 
@@ -348,9 +360,12 @@ int dlgForeignKey::Go(bool modal)
 		chkDeferrable->SetValue(foreignKey->GetDeferrable());
 		chkDeferred->SetValue(foreignKey->GetDeferred());
 		chkMatchFull->SetValue(foreignKey->GetMatch() == wxT("FULL"));
+		if (connection->BackendMinimumVersion(9, 1))
+		    chkDontValidate->SetValue(!foreignKey->GetValid());
 		chkDeferrable->Disable();
 		chkDeferred->Disable();
 		chkMatchFull->Disable();
+		chkDontValidate->Enable(connection->BackendMinimumVersion(9, 1));
 
 		rbOnUpdate->SetStringSelection(foreignKey->GetOnUpdate());
 		rbOnDelete->SetStringSelection(foreignKey->GetOnDelete());
@@ -391,6 +406,8 @@ int dlgForeignKey::Go(bool modal)
 	{
 		// create mode
 		txtComment->Disable();
+
+		chkDontValidate->Enable(connection->BackendMinimumVersion(9, 1));
 
 		wxString systemRestriction;
 		if (!settings->GetShowSystemObjects())
@@ -451,6 +468,12 @@ wxString dlgForeignKey::GetSql()
 		sql += wxT(" FOREIGN KEY ") + GetDefinition()
 		       + wxT(";\n");
 	}
+    else if (!chkDontValidate->GetValue())
+    {
+		sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
+		      + wxT(" VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
+    }
+
 	if (!name.IsEmpty())
 		AppendComment(sql, wxT("CONSTRAINT ") + qtIdent(name)
 		              + wxT(" ON ") + table->GetQuotedFullIdentifier(), foreignKey);
@@ -511,5 +534,9 @@ wxString dlgForeignKey::GetDefinition()
 		sql += wxT("\n   DEFERRABLE");
 	if (chkDeferred->GetValue())
 		sql += wxT(" INITIALLY DEFERRED");
+
+	if (chkDontValidate->GetValue())
+		sql += wxT("\n   NOT VALID");
+
 	return sql;
 }

@@ -76,6 +76,7 @@
 #include "schema/pgServer.h"
 #include "slony/slCluster.h"
 #include "slony/slSet.h"
+#include "schema/pgForeignKey.h"
 
 
 #if wxDIALOG_UNIT_COMPATIBILITY
@@ -289,6 +290,7 @@ void frmMain::CreateMenus()
 	new enabledisableTriggerFactory(menuFactories, toolsMenu, 0);
 	new disableAllTriggersFactory(menuFactories, toolsMenu, 0);
 	new enableAllTriggersFactory(menuFactories, toolsMenu, 0);
+	new validateForeignKeyFactory(menuFactories, toolsMenu, 0);
 	toolsMenu->AppendSeparator();
 
 	//--------------------------

@@ -20,6 +20,14 @@ public:
 	pgForeignKeyFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+
+    int GetClosedIconId()
+    {
+        return closedId;
+    }
+
+protected:
+    int closedId;
 };
 extern pgForeignKeyFactory foreignKeyFactory;
 
@@ -28,6 +36,8 @@ class pgForeignKey : public pgTableObject
 public:
 	pgForeignKey(pgTable *newTable, const wxString &newName = wxT(""));
 	~pgForeignKey();
+
+    int GetIconId();
 
 	wxString GetDefinition();
 	wxString GetFullName();
@@ -124,6 +134,14 @@ public:
 	{
 		match = s;
 	}
+	bool GetValid() const
+	{
+		return valid;
+	}
+	void iSetValid(const bool b)
+	{
+		valid = b;
+	}
 	wxString GetRelTableOidStr() const
 	{
 		return NumToStr(relTableOid) + wxT("::oid");
@@ -179,12 +197,13 @@ public:
 	{
 		return true;
 	}
+    void Validate(frmMain *form);
 
 private:
 	wxString onUpdate, onDelete, conkey, confkey,
 	         fkTable, fkSchema, references, refSchema;
 	wxString fkColumns, refColumns, quotedFkColumns, quotedRefColumns, coveringIndex, match;
-	bool deferrable, deferred;
+	bool deferrable, deferred, valid;
 	OID relTableOid;
 };
 
@@ -193,6 +212,14 @@ class pgForeignKeyCollection : public pgSchemaObjCollection
 public:
 	pgForeignKeyCollection(pgaFactory *factory, pgSchema *sch);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
+};
+
+class validateForeignKeyFactory : public contextActionFactory
+{
+public:
+	validateForeignKeyFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
 };
 
 #endif

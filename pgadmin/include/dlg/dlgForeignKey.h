@@ -46,6 +46,7 @@ private:
 #ifdef __WXMAC__
 	void OnChangeSize(wxSizeEvent &ev);
 #endif
+	void OnChangeValidate(wxCommandEvent &ev);
 	void OnSelChangeCol(wxListEvent &ev);
 	void OnSelChangeRef(wxCommandEvent &ev);
 	void OnSelChangeRefCol(wxCommandEvent &ev);
