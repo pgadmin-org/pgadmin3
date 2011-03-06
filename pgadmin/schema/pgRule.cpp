@@ -94,6 +94,15 @@ wxString pgRule::GetTranslatedMessage(int kindOfMessage) const
 }
 
 
+int pgRule::GetIconId()
+{
+    if (GetEnabled())
+        return ruleFactory.GetIconId();
+    else
+        return ruleFactory.GetClosedIconId();
+}
+
+
 bool pgRule::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
 	wxString sql = wxT("DROP RULE ") + GetQuotedIdentifier() + wxT(" ON ") + GetQuotedFullTable();
@@ -103,7 +112,7 @@ bool pgRule::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
-void pgRule::SetEnabled(const bool b)
+void pgRule::SetEnabled(ctlTree *browser, const bool b)
 {
 	if (GetQuotedFullTable().Len() > 0 && ((enabled && !b) || (!enabled && b)))
 	{
@@ -117,6 +126,7 @@ void pgRule::SetEnabled(const bool b)
 	}
 
 	enabled = b;
+    UpdateIcon(browser);
 }
 
 
@@ -273,12 +283,14 @@ wxString pgRuleCollection::GetTranslatedMessage(int kindOfMessage) const
 /////////////////////////////
 
 #include "images/rule.xpm"
+#include "images/rulebad.xpm"
 #include "images/rules.xpm"
 
 pgRuleFactory::pgRuleFactory()
 	: pgSchemaObjFactory(__("Rule"), __("New Rule..."), __("Create a new Rule."), rule_xpm)
 {
 	metaType = PGM_RULE;
+    closedId = addIcon(rulebad_xpm);
 }
 
 
@@ -294,7 +306,7 @@ enabledisableRuleFactory::enabledisableRuleFactory(menuFactoryList *list, wxMenu
 
 wxWindow *enabledisableRuleFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	((pgRule *)obj)->SetEnabled(!((pgRule *)obj)->GetEnabled());
+	((pgRule *)obj)->SetEnabled(form->GetBrowser(), !((pgRule *)obj)->GetEnabled());
 
 	wxTreeItemId item = form->GetBrowser()->GetSelection();
 	if (obj == form->GetBrowser()->GetObject(item))

@@ -45,6 +45,14 @@ public:
 	pgRuleFactory();
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
+
+    int GetClosedIconId()
+    {
+        return closedId;
+    }
+
+protected:
+    int closedId;
 };
 extern pgRuleFactory ruleFactory;
 
@@ -54,6 +62,8 @@ class pgRule : public pgRuleObject
 public:
 	pgRule(pgSchema *newSchema, const wxString &newName = wxT(""));
 	~pgRule();
+
+    int GetIconId();
 
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
@@ -98,7 +108,7 @@ public:
 	{
 		return enabled;
 	}
-	void SetEnabled(const bool b);
+	void SetEnabled(ctlTree *browser, const bool b);
 	void iSetEnabled(const bool b)
 	{
 		enabled = b;
