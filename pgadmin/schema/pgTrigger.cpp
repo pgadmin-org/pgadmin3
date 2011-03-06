@@ -104,6 +104,15 @@ wxString pgTrigger::GetTranslatedMessage(int kindOfMessage) const
 	return message;
 }
 
+int pgTrigger::GetIconId()
+{
+	if (GetEnabled())
+		return triggerFactory.GetIconId();
+	else
+		return triggerFactory.GetClosedIconId();
+}
+
+
 bool pgTrigger::IsUpToDate()
 {
 	wxString sql = wxT("SELECT xmin FROM pg_trigger WHERE oid = ") + this->GetOidStr();
@@ -122,7 +131,7 @@ bool pgTrigger::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 }
 
 
-void pgTrigger::SetEnabled(const bool b)
+void pgTrigger::SetEnabled(ctlTree *browser, const bool b)
 {
 	if (GetQuotedFullTable().Len() > 0 && ((enabled && !b) || (!enabled && b)))
 	{
@@ -134,8 +143,8 @@ void pgTrigger::SetEnabled(const bool b)
 		sql += wxT(" TRIGGER ") + GetQuotedIdentifier();
 		GetDatabase()->ExecuteVoid(sql);
 	}
-
 	enabled = b;
+	UpdateIcon(browser);
 }
 
 
@@ -481,12 +490,14 @@ wxString pgTriggerCollection::GetTranslatedMessage(int kindOfMessage) const
 /////////////////////////////
 
 #include "images/trigger.xpm"
+#include "images/triggerbad.xpm"
 #include "images/triggers.xpm"
 
 pgTriggerFactory::pgTriggerFactory()
 	: pgSchemaObjFactory(__("Trigger"), __("New Trigger..."), __("Create a new Trigger."), trigger_xpm)
 {
 	metaType = PGM_TRIGGER;
+	closedId = addIcon(triggerbad_xpm);
 }
 
 
@@ -501,7 +512,7 @@ enabledisableTriggerFactory::enabledisableTriggerFactory(menuFactoryList *list, 
 
 wxWindow *enabledisableTriggerFactory::StartDialog(frmMain *form, pgObject *obj)
 {
-	((pgTrigger *)obj)->SetEnabled(!((pgTrigger *)obj)->GetEnabled());
+	((pgTrigger *)obj)->SetEnabled(form->GetBrowser(), !((pgTrigger *)obj)->GetEnabled());
 
 	wxTreeItemId item = form->GetBrowser()->GetSelection();
 	if (obj == form->GetBrowser()->GetObject(item))

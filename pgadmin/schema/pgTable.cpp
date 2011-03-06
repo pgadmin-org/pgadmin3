@@ -1156,7 +1156,7 @@ void pgTable::iSetTriggersEnabled(ctlTree *browser, bool enable)
 		pgTrigger *trigger;
 		while ((trigger = (pgTrigger *)trgIt.GetNextObject()) != 0)
 		{
-			trigger->iSetEnabled(enable);
+			trigger->SetEnabled(browser, enable);
 		}
 	}
 }
