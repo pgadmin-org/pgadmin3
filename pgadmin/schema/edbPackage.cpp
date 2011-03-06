@@ -224,11 +224,17 @@ pgObject *edbPackageFactory::CreateObjects(pgCollection *collection, ctlTree *br
 {
 	edbPackage *package = 0;
 
-	wxString sql;
+	wxString sql, pkgsrc;
+
+	if (collection->GetConnection()->EdbMinimumVersion(9, 0))
+		pkgsrc = wxT("pg_catalog.edb_get_packagebodydef(nsp.oid) AS pkgbodysrc, ")
+			 wxT("pg_catalog.edb_get_packageheaddef(nsp.oid) AS pkgheadsrc,\n");
+	else if (collection->GetConnection()->EdbMinimumVersion(8, 2))
+		pkgsrc = wxT("nspbodysrc AS pkgbodysrc, nspheadsrc AS pkgheadsrc,\n");
 
 	if (collection->GetConnection()->EdbMinimumVersion(8, 2))
 	{
-		sql = wxT("SELECT nsp.oid, nsp.xmin, nspname AS pkgname, nspbodysrc AS pkgbodysrc, nspheadsrc AS pkgheadsrc,\n")
+		sql = wxT("SELECT nsp.oid, nsp.xmin, nspname AS pkgname,\n") + pkgsrc +
 		      wxT("       nspacl AS pkgacl, pg_get_userbyid(nspowner) AS owner, description\n")
 		      wxT("  FROM pg_namespace nsp")
 		      wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=nsp.oid\n")
