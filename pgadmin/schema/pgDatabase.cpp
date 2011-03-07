@@ -131,8 +131,8 @@ wxMenu *pgDatabase::GetNewMenu()
 	{
 		if (settings->GetDisplayOption(_("Casts")))
 			castFactory.AppendMenu(menu);
-        if (settings->GetDisplayOption(_("Foreign Data Wrappers")))
-            foreignDataWrapperFactory.AppendMenu(menu);
+		if (settings->GetDisplayOption(_("Foreign Data Wrappers")))
+			foreignDataWrapperFactory.AppendMenu(menu);
 		if (settings->GetDisplayOption(_("Languages")))
 			languageFactory.AppendMenu(menu);
 		if (settings->GetDisplayOption(_("Synonyms")) && GetConnection()->EdbMinimumVersion(8, 0))

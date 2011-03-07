@@ -96,10 +96,10 @@ wxString pgRule::GetTranslatedMessage(int kindOfMessage) const
 
 int pgRule::GetIconId()
 {
-    if (GetEnabled())
-        return ruleFactory.GetIconId();
-    else
-        return ruleFactory.GetClosedIconId();
+	if (GetEnabled())
+		return ruleFactory.GetIconId();
+	else
+		return ruleFactory.GetClosedIconId();
 }
 
 
@@ -126,7 +126,7 @@ void pgRule::SetEnabled(ctlTree *browser, const bool b)
 	}
 
 	enabled = b;
-    UpdateIcon(browser);
+	UpdateIcon(browser);
 }
 
 
@@ -290,7 +290,7 @@ pgRuleFactory::pgRuleFactory()
 	: pgSchemaObjFactory(__("Rule"), __("New Rule..."), __("Create a new Rule."), rule_xpm)
 {
 	metaType = PGM_RULE;
-    closedId = addIcon(rulebad_xpm);
+	closedId = addIcon(rulebad_xpm);
 }
 
 

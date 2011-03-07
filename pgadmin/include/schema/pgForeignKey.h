@@ -21,13 +21,13 @@ public:
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
 
-    int GetClosedIconId()
-    {
-        return closedId;
-    }
+	int GetClosedIconId()
+	{
+		return closedId;
+	}
 
 protected:
-    int closedId;
+	int closedId;
 };
 extern pgForeignKeyFactory foreignKeyFactory;
 
@@ -37,7 +37,7 @@ public:
 	pgForeignKey(pgTable *newTable, const wxString &newName = wxT(""));
 	~pgForeignKey();
 
-    int GetIconId();
+	int GetIconId();
 
 	wxString GetDefinition();
 	wxString GetFullName();
@@ -197,7 +197,7 @@ public:
 	{
 		return true;
 	}
-    void Validate(frmMain *form);
+	void Validate(frmMain *form);
 
 private:
 	wxString onUpdate, onDelete, conkey, confkey,

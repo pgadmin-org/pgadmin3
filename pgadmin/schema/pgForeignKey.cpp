@@ -97,10 +97,10 @@ wxString pgForeignKey::GetTranslatedMessage(int kindOfMessage) const
 
 int pgForeignKey::GetIconId()
 {
-    if (!GetDatabase()->BackendMinimumVersion(9, 1) || GetValid())
-        return foreignKeyFactory.GetIconId();
-    else
-        return foreignKeyFactory.GetClosedIconId();
+	if (!GetDatabase()->BackendMinimumVersion(9, 1) || GetValid())
+		return foreignKeyFactory.GetIconId();
+	else
+		return foreignKeyFactory.GetClosedIconId();
 }
 
 
@@ -245,8 +245,8 @@ void pgForeignKey::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 		if (GetDeferrable())
 			properties->AppendItem(_("Initially?"),
 			                       GetDeferred() ? wxT("DEFERRED") : wxT("IMMEDIATE"));
-	    if (GetDatabase()->BackendMinimumVersion(9, 1))
-            properties->AppendItem(_("Valid?"), BoolToYesNo(GetValid()));
+		if (GetDatabase()->BackendMinimumVersion(9, 1))
+			properties->AppendItem(_("Valid?"), BoolToYesNo(GetValid()));
 		properties->AppendItem(_("System foreign key?"), BoolToYesNo(GetSystemObject()));
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
@@ -268,17 +268,17 @@ pgObject *pgForeignKey::Refresh(ctlTree *browser, const wxTreeItemId item)
 void pgForeignKey::Validate(frmMain *form)
 {
 	wxString sql = wxT("ALTER TABLE ") + GetQuotedSchemaPrefix(fkSchema) + qtIdent(fkTable)
-	      + wxT("\n  VALIDATE CONSTRAINT ") + GetQuotedIdentifier();
+	               + wxT("\n  VALIDATE CONSTRAINT ") + GetQuotedIdentifier();
 	GetDatabase()->ExecuteVoid(sql);
 
 	iSetValid(true);
-    UpdateIcon(form->GetBrowser());
+	UpdateIcon(form->GetBrowser());
 }
 
 
 pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browser, const wxString &restriction)
 {
-    wxString sql;
+	wxString sql;
 	pgTableObjCollection *collection = (pgTableObjCollection *)coll;
 	pgForeignKey *foreignKey = 0;
 
@@ -286,16 +286,16 @@ pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 	      wxT("conkey, confkey, confrelid, nl.nspname as fknsp, cl.relname as fktab, ")
 	      wxT("nr.nspname as refnsp, cr.relname as reftab, description");
 	if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
-        sql += wxT(", convalidated");
+		sql += wxT(", convalidated");
 	sql += wxT("\n  FROM pg_constraint ct\n")
-	      wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
-	      wxT("  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n")
-	      wxT("  JOIN pg_class cr ON cr.oid=confrelid\n")
-	      wxT("  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n")
-	      wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=ct.oid\n")
-	      wxT(" WHERE contype='f' AND conrelid = ") + collection->GetOidStr()
-	      + restriction + wxT("\n")
-	      wxT(" ORDER BY conname");
+	       wxT("  JOIN pg_class cl ON cl.oid=conrelid\n")
+	       wxT("  JOIN pg_namespace nl ON nl.oid=cl.relnamespace\n")
+	       wxT("  JOIN pg_class cr ON cr.oid=confrelid\n")
+	       wxT("  JOIN pg_namespace nr ON nr.oid=cr.relnamespace\n")
+	       wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=ct.oid\n")
+	       wxT(" WHERE contype='f' AND conrelid = ") + collection->GetOidStr()
+	       + restriction + wxT("\n")
+	       wxT(" ORDER BY conname");
 
 	pgSet *foreignKeys = collection->GetDatabase()->ExecuteSet(sql);
 
@@ -312,8 +312,8 @@ pgObject *pgForeignKeyFactory::CreateObjects(pgCollection *coll, ctlTree *browse
 			foreignKey->iSetFkTable(foreignKeys->GetVal(wxT("fktab")));
 			foreignKey->iSetRefSchema(foreignKeys->GetVal(wxT("refnsp")));
 			foreignKey->iSetReferences(foreignKeys->GetVal(wxT("reftab")));
-	        if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
-			    foreignKey->iSetValid(foreignKeys->GetBool(wxT("convalidated")));
+			if (collection->GetDatabase()->BackendMinimumVersion(9, 1))
+				foreignKey->iSetValid(foreignKeys->GetBool(wxT("convalidated")));
 			wxString onUpd = foreignKeys->GetVal(wxT("confupdtype"));
 			wxString onDel = foreignKeys->GetVal(wxT("confdeltype"));
 			wxString match = foreignKeys->GetVal(wxT("confmatchtype"));
@@ -390,7 +390,7 @@ pgForeignKeyFactory::pgForeignKeyFactory()
 {
 	metaType = PGM_FOREIGNKEY;
 	collectionFactory = &constraintCollectionFactory;
-    closedId = addIcon(foreignkeybad_xpm);
+	closedId = addIcon(foreignkeybad_xpm);
 }
 
 
@@ -405,13 +405,13 @@ validateForeignKeyFactory::validateForeignKeyFactory(menuFactoryList *list, wxMe
 wxWindow *validateForeignKeyFactory::StartDialog(frmMain *form, pgObject *obj)
 {
 	((pgForeignKey *)obj)->Validate(form);
-    ((pgForeignKey *)obj)->SetDirty();
+	((pgForeignKey *)obj)->SetDirty();
 
 	wxTreeItemId item = form->GetBrowser()->GetSelection();
 	if (obj == form->GetBrowser()->GetObject(item))
-    {
+	{
 		obj->ShowTreeDetail(form->GetBrowser(), 0, form->GetProperties());
-    }
+	}
 	form->GetMenuFactories()->CheckMenu(obj, form->GetMenuBar(), (ctlMenuToolbar *)form->GetToolBar());
 
 	return 0;

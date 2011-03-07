@@ -199,7 +199,7 @@ void dlgForeignKey::CheckChange()
 			enable = txtComment->GetValue() != foreignKey->GetComment();
 
 		if (connection->BackendMinimumVersion(9, 1) && !foreignKey->GetValid() && !chkDontValidate->GetValue())
-            enable = true;
+			enable = true;
 
 		EnableOK(enable);
 	}
@@ -361,7 +361,7 @@ int dlgForeignKey::Go(bool modal)
 		chkDeferred->SetValue(foreignKey->GetDeferred());
 		chkMatchFull->SetValue(foreignKey->GetMatch() == wxT("FULL"));
 		if (connection->BackendMinimumVersion(9, 1))
-		    chkDontValidate->SetValue(!foreignKey->GetValid());
+			chkDontValidate->SetValue(!foreignKey->GetValid());
 		chkDeferrable->Disable();
 		chkDeferred->Disable();
 		chkMatchFull->Disable();
@@ -468,11 +468,11 @@ wxString dlgForeignKey::GetSql()
 		sql += wxT(" FOREIGN KEY ") + GetDefinition()
 		       + wxT(";\n");
 	}
-    else if (!chkDontValidate->GetValue())
-    {
+	else if (!chkDontValidate->GetValue())
+	{
 		sql = wxT("ALTER TABLE ") + table->GetQuotedFullIdentifier()
 		      + wxT(" VALIDATE CONSTRAINT ") + qtIdent(name) + wxT(";\n");
-    }
+	}
 
 	if (!name.IsEmpty())
 		AppendComment(sql, wxT("CONSTRAINT ") + qtIdent(name)

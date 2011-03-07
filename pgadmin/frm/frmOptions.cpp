@@ -327,7 +327,7 @@ frmOptions::frmOptions(frmMain *parent)
 	lstDisplay->Append(_("Resource Queues"));
 	lstDisplay->Append(_("Catalogs"));
 	lstDisplay->Append(_("Casts"));
-    lstDisplay->Append(_("Foreign Data Wrappers"));
+	lstDisplay->Append(_("Foreign Data Wrappers"));
 	lstDisplay->Append(_("Languages"));
 	lstDisplay->Append(_("Synonyms"));
 	lstDisplay->Append(_("Schemas"));
