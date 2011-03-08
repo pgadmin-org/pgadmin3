@@ -205,11 +205,11 @@ pgObject *pgOperatorFamilyFactory::CreateObjects(pgCollection *collection, ctlTr
 }
 
 
-#include "images/operatorfamily.xpm"
-#include "images/operatorfamilies.xpm"
+#include "images/operatorfamily.pngc"
+#include "images/operatorfamilies.pngc"
 
 pgOperatorFamilyFactory::pgOperatorFamilyFactory()
-	: pgSchemaObjFactory(__("Operator Family"), __("New Operator Family..."), __("Create a new Operator Family."), operatorfamily_xpm)
+	: pgSchemaObjFactory(__("Operator Family"), __("New Operator Family..."), __("Create a new Operator Family."), operatorfamily_png_img)
 {
 	metaType = PGM_OPFAMILY;
 }
@@ -220,4 +220,4 @@ dlgProperty *pgOperatorFamilyFactory::CreateDialog(frmMain *frame, pgObject *nod
 }
 
 pgOperatorFamilyFactory operatorFamilyFactory;
-static pgaCollectionFactory cf(&operatorFamilyFactory, __("Operator Families"), operatorfamilies_xpm);
+static pgaCollectionFactory cf(&operatorFamilyFactory, __("Operator Families"), operatorfamilies_png_img);

@@ -264,14 +264,14 @@ pgObject *slSetFactory::CreateObjects(pgCollection *coll, ctlTree *browser, cons
 
 //////////////////////////////////////////////////
 
-#include "images/slset.xpm"
-#include "images/slset2.xpm"
-#include "images/slsets.xpm"
+#include "images/slset.pngc"
+#include "images/slset2.pngc"
+#include "images/slsets.pngc"
 
 slSetFactory::slSetFactory()
-	: slObjFactory(__("Set"), __("New Replication Set"), __("Create a new Replication Set."), slset2_xpm)
+	: slObjFactory(__("Set"), __("New Replication Set"), __("Create a new Replication Set."), slset2_png_img)
 {
-	exportedIconId = addIcon(slset_xpm);
+	exportedIconId = addIcon(slset_png_img);
 	metaType = SLM_SET;
 }
 
@@ -347,7 +347,7 @@ pgCollection *slSetObjFactory::CreateCollection(pgObject *obj)
 }
 
 slSetFactory setFactory;
-static pgaCollectionFactory cf(&setFactory, __("Replication Sets"), slsets_xpm);
+static pgaCollectionFactory cf(&setFactory, __("Replication Sets"), slsets_png_img);
 
 ////////////////////////////////////////////////////////////
 

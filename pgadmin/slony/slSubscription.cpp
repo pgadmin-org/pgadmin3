@@ -192,15 +192,15 @@ pgObject *slSubscriptionFactory::CreateObjects(pgCollection *coll, ctlTree *brow
 
 ///////////////////////////////////////////////////
 
-#include "images/slsubscription.xpm"
-#include "images/slsubscriptions.xpm"
+#include "images/slsubscription.pngc"
+#include "images/slsubscriptions.pngc"
 
 slSubscriptionFactory::slSubscriptionFactory()
-	: slSetObjFactory(__("Subscription"), __("New Subscription"), __("Create a new Subscription."), slsubscription_xpm)
+	: slSetObjFactory(__("Subscription"), __("New Subscription"), __("Create a new Subscription."), slsubscription_png_img)
 {
 	metaType = SLM_SUBSCRIPTION;
 }
 
 
 slSubscriptionFactory subscriptionFactory;
-static pgaCollectionFactory cf(&subscriptionFactory, __("Subscriptions"), slsubscriptions_xpm);
+static pgaCollectionFactory cf(&subscriptionFactory, __("Subscriptions"), slsubscriptions_png_img);

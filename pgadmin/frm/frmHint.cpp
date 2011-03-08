@@ -29,8 +29,8 @@
 #include "utils/utffile.h"
 
 // Icons
-#include "images/hint.xpm"
-#include "images/hint2.xpm"
+#include "images/hint.pngc"
+#include "images/hint2.pngc"
 
 
 
@@ -183,7 +183,7 @@ frmHint::frmHint(wxWindow *fr, bool _force) : DialogWithHelp(0)
 	if (force)
 		btnCancel->Disable();
 
-	SetIcon(wxIcon(hint_xpm));
+	SetIcon(*hint_png_ico);
 }
 
 
@@ -469,8 +469,8 @@ hintFactory::hintFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *too
 	mnu->Append(id, _("Hints"), _("Display helpful hints on current object."));
 	if (toolbar)
 	{
-		const char **img = (bigTool ? hint_xpm : hint2_xpm);
-		toolbar->AddTool(id, _("Hints"), wxBitmap(img), _("Display helpful hints on current object."));
+		const wxBitmap &bmp = (bigTool ? *hint_png_bmp : *hint2_png_bmp);
+		toolbar->AddTool(id, _("Hints"), bmp, _("Display helpful hints on current object."));
 	}
 }
 

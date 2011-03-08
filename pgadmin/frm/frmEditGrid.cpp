@@ -36,15 +36,15 @@
 #include <wx/aui/aui.h>
 
 // Icons
-#include "images/viewdata.xpm"
-#include "images/storedata.xpm"
-#include "images/readdata.xpm"
-#include "images/delete.xpm"
-#include "images/edit_undo.xpm"
-#include "images/sortfilter.xpm"
-#include "images/help.xpm"
-#include "images/clip_copy.xpm"
-#include "images/clip_paste.xpm"
+#include "images/viewdata.pngc"
+#include "images/storedata.pngc"
+#include "images/readdata.pngc"
+#include "images/delete.pngc"
+#include "images/edit_undo.pngc"
+#include "images/sortfilter.pngc"
+#include "images/help.pngc"
+#include "images/clip_copy.pngc"
+#include "images/clip_paste.pngc"
 
 #define CTRLID_LIMITCOMBO       4226
 
@@ -89,7 +89,7 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString &_title, pgConn *_conn, p
 {
 	closing = false;
 
-	SetIcon(wxIcon(viewdata_xpm));
+	SetIcon(*viewdata_png_ico);
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	dlgName = wxT("frmEditGrid");
 	RestorePosition(-1, -1, 600, 500, 300, 350);
@@ -120,21 +120,21 @@ frmEditGrid::frmEditGrid(frmMain *form, const wxString &_title, pgConn *_conn, p
 	toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 	toolBar->SetToolBitmapSize(wxSize(16, 16));
 
-	toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(storedata_xpm), _("Save the changed row."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_SAVE, _("Save"), *storedata_png_bmp, _("Save the changed row."), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(readdata_xpm), _("Refresh."), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo change of data."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_REFRESH, _("Refresh"), *readdata_png_bmp, _("Refresh."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_UNDO, _("Undo"), *edit_undo_png_bmp, _("Undo change of data."), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_COPY, _("Copy"), wxBitmap(clip_copy_xpm), _("Copy selected lines to clipboard."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_COPY, _("Copy"), *clip_copy_png_bmp, _("Copy selected lines to clipboard."), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_PASTE, _("Paste"), wxBitmap(clip_paste_xpm), _("Paste data from the clipboard."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_PASTE, _("Paste"), *clip_paste_png_bmp, _("Paste data from the clipboard."), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete selected rows."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_DELETE, _("Delete"), *delete_png_bmp, _("Delete selected rows."), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 
-	toolBar->AddTool(MNU_OPTIONS, _("Options"), wxBitmap(sortfilter_xpm), _("Sort/filter options."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_OPTIONS, _("Options"), *sortfilter_png_bmp, _("Sort/filter options."), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_HELP, _("Edit grid help"), wxBitmap(help_xpm), _("Display help on this window."));
+	toolBar->AddTool(MNU_HELP, _("Edit grid help"), *help_png_bmp, _("Display help on this window."));
 
 	toolBar->Realize();
 	toolBar->EnableTool(MNU_SAVE, false);
@@ -3291,7 +3291,7 @@ wxWindow *editGridFactoryBase::ViewData(frmMain *form, pgObject *obj, bool filte
 editGridFactory::editGridFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : editGridFactoryBase(list)
 {
 	mnu->Append(id, _("View &All Rows\tCtrl-D"), _("View the data in the selected object."));
-	toolbar->AddTool(id, _("View All Rows\tCtrl-D"), wxBitmap(viewdata_xpm), _("View the data in the selected object."), wxITEM_NORMAL);
+	toolbar->AddTool(id, _("View All Rows\tCtrl-D"), *viewdata_png_bmp, _("View the data in the selected object."), wxITEM_NORMAL);
 	context = false;
 }
 
@@ -3302,11 +3302,11 @@ wxWindow *editGridFactory::StartDialog(frmMain *form, pgObject *obj)
 }
 
 
-#include "images/viewfiltereddata.xpm"
+#include "images/viewfiltereddata.pngc"
 editGridFilteredFactory::editGridFilteredFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : editGridFactoryBase(list)
 {
 	mnu->Append(id, _("View F&iltered Rows...\tCtrl-G"), _("Apply a filter and view the data in the selected object."));
-	toolbar->AddTool(id, _("View Filtered Rows\tCtrl-G"), wxBitmap(viewfiltereddata_xpm), _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
+	toolbar->AddTool(id, _("View Filtered Rows\tCtrl-G"), *viewfiltereddata_png_bmp, _("Apply a filter and view the data in the selected object."), wxITEM_NORMAL);
 	context = false;
 }
 

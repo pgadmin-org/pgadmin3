@@ -55,26 +55,26 @@
 #include "pgscript/pgsApplication.h"
 
 // Icons
-#include "images/sql-32.xpm"
+#include "images/sql-32.pngc"
 
 // Bitmaps
-#include "images/file_new.xpm"
-#include "images/file_open.xpm"
-#include "images/file_save.xpm"
-#include "images/clip_cut.xpm"
-#include "images/clip_copy.xpm"
-#include "images/clip_paste.xpm"
-#include "images/edit_clear.xpm"
-#include "images/edit_find.xpm"
-#include "images/edit_undo.xpm"
-#include "images/edit_redo.xpm"
-#include "images/query_execute.xpm"
-#include "images/query_pgscript.xpm"
-#include "images/query_execfile.xpm"
-#include "images/query_explain.xpm"
-#include "images/query_cancel.xpm"
-#include "images/help.xpm"
-#include "images/gqbJoin.xpm"
+#include "images/file_new.pngc"
+#include "images/file_open.pngc"
+#include "images/file_save.pngc"
+#include "images/clip_cut.pngc"
+#include "images/clip_copy.pngc"
+#include "images/clip_paste.pngc"
+#include "images/edit_clear.pngc"
+#include "images/edit_find.pngc"
+#include "images/edit_undo.pngc"
+#include "images/edit_redo.pngc"
+#include "images/query_execute.pngc"
+#include "images/query_pgscript.pngc"
+#include "images/query_execfile.pngc"
+#include "images/query_explain.pngc"
+#include "images/query_cancel.pngc"
+#include "images/help.pngc"
+#include "images/gqbJoin.pngc"
 
 #define CTRLID_CONNECTION       4200
 #define CTRLID_DATABASELABEL    4201
@@ -236,7 +236,7 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	SetMinSize(wxSize(450, 300));
 
-	SetIcon(wxIcon(sql_32_xpm));
+	SetIcon(*sql_32_png_ico);
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	menuBar = new wxMenuBar();
 
@@ -389,29 +389,29 @@ frmQuery::frmQuery(frmMain *form, const wxString &_title, pgConn *_conn, const w
 
 	toolBar->SetToolBitmapSize(wxSize(16, 16));
 
-	toolBar->AddTool(MNU_NEW, _("New"), wxBitmap(file_new_xpm), _("New window"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_OPEN, _("Open"), wxBitmap(file_open_xpm), _("Open file"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(file_save_xpm), _("Save file"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_NEW, _("New"), *file_new_png_bmp, _("New window"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_OPEN, _("Open"), *file_open_png_bmp, _("Open file"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_SAVE, _("Save"), *file_save_png_bmp, _("Save file"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_CUT, _("Cut"), wxBitmap(clip_cut_xpm), _("Cut selected text to clipboard"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_COPY, _("Copy"), wxBitmap(clip_copy_xpm), _("Copy selected text to clipboard"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_PASTE, _("Paste"), wxBitmap(clip_paste_xpm), _("Paste selected text from clipboard"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_CLEAR, _("Clear window"), wxBitmap(edit_clear_xpm), _("Clear edit window"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_CUT, _("Cut"), *clip_cut_png_bmp, _("Cut selected text to clipboard"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_COPY, _("Copy"), *clip_copy_png_bmp, _("Copy selected text to clipboard"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_PASTE, _("Paste"), *clip_paste_png_bmp, _("Paste selected text from clipboard"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_CLEAR, _("Clear window"), *edit_clear_png_bmp, _("Clear edit window"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo last action"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_REDO, _("Redo"), wxBitmap(edit_redo_xpm), _("Redo last action"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_UNDO, _("Undo"), *edit_undo_png_bmp, _("Undo last action"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_REDO, _("Redo"), *edit_redo_png_bmp, _("Redo last action"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_FIND, _("Find"), wxBitmap(edit_find_xpm), _("Find and replace text"), wxITEM_NORMAL);
-	toolBar->AddSeparator();
-
-	toolBar->AddTool(MNU_EXECUTE, _("Execute"), wxBitmap(query_execute_xpm), _("Execute query"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_EXECPGS, _("Execute pgScript"), wxBitmap(query_pgscript_xpm), _("Execute pgScript"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_EXECFILE, _("Execute to file"), wxBitmap(query_execfile_xpm), _("Execute query, write result to file"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_EXPLAIN, _("Explain"), wxBitmap(query_explain_xpm), _("Explain query"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_FIND, _("Find"), *edit_find_png_bmp, _("Find and replace text"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 
-	toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm), _("Display help on SQL commands."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_EXECUTE, _("Execute"), *query_execute_png_bmp, _("Execute query"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_EXECPGS, _("Execute pgScript"), *query_pgscript_png_bmp, _("Execute pgScript"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_EXECFILE, _("Execute to file"), *query_execfile_png_bmp, _("Execute query, write result to file"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_EXPLAIN, _("Explain"), *query_explain_png_bmp, _("Explain query"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_CANCEL, _("Cancel"), *query_cancel_png_bmp, _("Cancel query"), wxITEM_NORMAL);
+	toolBar->AddSeparator();
+
+	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp, _("Display help on SQL commands."), wxITEM_NORMAL);
 	toolBar->Realize();
 
 	// Add the database selection bar
@@ -3012,7 +3012,7 @@ bool queryToolDataFactory::CheckEnable(pgObject *obj)
 queryToolFactory::queryToolFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : queryToolBaseFactory(list)
 {
 	mnu->Append(id, _("&Query tool\tCtrl-E"), _("Execute arbitrary SQL queries."));
-	toolbar->AddTool(id, _("Query tool\tCtrl-E"), wxBitmap(sql_32_xpm), _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
+	toolbar->AddTool(id, _("Query tool\tCtrl-E"), *sql_32_png_bmp, _("Execute arbitrary SQL queries."), wxITEM_NORMAL);
 }
 
 
@@ -3029,7 +3029,7 @@ queryToolSqlFactory::queryToolSqlFactory(menuFactoryList *list, wxMenu *mnu, ctl
 {
 	mnu->Append(id, _("CREATE script"), _("Start Query tool with CREATE script."));
 	if (toolbar)
-		toolbar->AddTool(id, _("CREATE script"), wxBitmap(sql_32_xpm), _("Start query tool with CREATE script."), wxITEM_NORMAL);
+		toolbar->AddTool(id, _("CREATE script"), *sql_32_png_bmp, _("Start query tool with CREATE script."), wxITEM_NORMAL);
 }
 
 

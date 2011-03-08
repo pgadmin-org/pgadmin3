@@ -226,14 +226,14 @@ pgObject *pgTextSearchParserFactory::CreateObjects(pgCollection *collection, ctl
 }
 
 
-#include "images/parser.xpm"
-#include "images/parsers.xpm"
+#include "images/parser.pngc"
+#include "images/parsers.pngc"
 
 pgTextSearchParserFactory::pgTextSearchParserFactory()
-	: pgSchemaObjFactory(__("FTS Parser"), __("New FTS Parser..."), __("Create a new FTS Parser."), parser_xpm)
+	: pgSchemaObjFactory(__("FTS Parser"), __("New FTS Parser..."), __("Create a new FTS Parser."), parser_png_img)
 {
 }
 
 
 pgTextSearchParserFactory textSearchParserFactory;
-static pgaCollectionFactory cf(&textSearchParserFactory, __("FTS Parsers"), parsers_xpm);
+static pgaCollectionFactory cf(&textSearchParserFactory, __("FTS Parsers"), parsers_png_img);

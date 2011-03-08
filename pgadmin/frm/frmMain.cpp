@@ -91,7 +91,7 @@ frmMain::frmMain(const wxString &title)
 	pluginUtilityCount = 0;
 
 	dlgName = wxT("frmMain");
-	SetMinSize(wxSize(400, 300));
+	SetMinSize(wxSize(600, 450));
 	RestorePosition(50, 50, 750, 550, 600, 450);
 
 	wxWindowBase::SetFont(settings->GetSystemFont());
@@ -123,8 +123,6 @@ frmMain::frmMain(const wxString &title)
 	// notify wxAUI which frame to use
 	manager.SetManagedWindow(this);
 	manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG | wxAUI_MGR_ALLOW_ACTIVE_PANE);
-
-	SetMinSize(wxSize(600, 450));
 
 	// wxGTK needs this deferred
 	pgaFactory::RealizeImages();
@@ -1299,17 +1297,17 @@ wxWindow *faqFactory::StartDialog(frmMain *form, pgObject *obj)
 	return 0;
 }
 
-#include "images/help.xpm"
-#include "images/help2.xpm"
+#include "images/help.pngc"
+#include "images/help2.pngc"
 pgsqlHelpFactory::pgsqlHelpFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar, bool bigIcon) : actionFactory(list)
 {
 	mnu->Append(id, _("&PostgreSQL Help"), _("Display help on the PostgreSQL database system."));
 	if (toolbar)
 	{
 		if (bigIcon)
-			toolbar->AddTool(id, _("SQL Help"), wxBitmap(help2_xpm), _("Display help on SQL commands."));
+			toolbar->AddTool(id, _("SQL Help"), *help2_png_bmp, _("Display help on SQL commands."));
 		else
-			toolbar->AddTool(id, _("SQL Help"), wxBitmap(help_xpm), _("Display help on SQL commands."));
+			toolbar->AddTool(id, _("SQL Help"), *help_png_bmp, _("Display help on SQL commands."));
 	}
 }
 

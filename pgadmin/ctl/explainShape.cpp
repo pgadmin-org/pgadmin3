@@ -20,51 +20,51 @@
 
 #include <wx/docview.h>
 
-#include "images/ex_aggregate.xpm"
-#include "images/ex_append.xpm"
-#include "images/ex_bmp_heap.xpm"
-#include "images/ex_bmp_index.xpm"
-#include "images/ex_cte_scan.xpm"
-#include "images/ex_group.xpm"
-#include "images/ex_hash.xpm"
-#include "images/ex_hash_anti_join.xpm"
-#include "images/ex_hash_semi_join.xpm"
-#include "images/ex_hash_setop_except.xpm"
-#include "images/ex_hash_setop_except_all.xpm"
-#include "images/ex_hash_setop_intersect.xpm"
-#include "images/ex_hash_setop_intersect_all.xpm"
-#include "images/ex_hash_setop_unknown.xpm"
-#include "images/ex_index_scan.xpm"
-#include "images/ex_join.xpm"
-#include "images/ex_limit.xpm"
-#include "images/ex_materialize.xpm"
-#include "images/ex_merge.xpm"
-#include "images/ex_merge_anti_join.xpm"
-#include "images/ex_merge_semi_join.xpm"
-#include "images/ex_nested.xpm"
-#include "images/ex_nested_loop_anti_join.xpm"
-#include "images/ex_nested_loop_semi_join.xpm"
-#include "images/ex_recursive_union.xpm"
-#include "images/ex_result.xpm"
-#include "images/ex_scan.xpm"
-#include "images/ex_seek.xpm"
-#include "images/ex_setop.xpm"
-#include "images/ex_sort.xpm"
-#include "images/ex_subplan.xpm"
-#include "images/ex_tid_scan.xpm"
-#include "images/ex_unique.xpm"
-#include "images/ex_unknown.xpm"
-#include "images/ex_window_aggregate.xpm"
-#include "images/ex_worktable_scan.xpm"
+#include "images/ex_aggregate.pngc"
+#include "images/ex_append.pngc"
+#include "images/ex_bmp_heap.pngc"
+#include "images/ex_bmp_index.pngc"
+#include "images/ex_cte_scan.pngc"
+#include "images/ex_group.pngc"
+#include "images/ex_hash.pngc"
+#include "images/ex_hash_anti_join.pngc"
+#include "images/ex_hash_semi_join.pngc"
+#include "images/ex_hash_setop_except.pngc"
+#include "images/ex_hash_setop_except_all.pngc"
+#include "images/ex_hash_setop_intersect.pngc"
+#include "images/ex_hash_setop_intersect_all.pngc"
+#include "images/ex_hash_setop_unknown.pngc"
+#include "images/ex_index_scan.pngc"
+#include "images/ex_join.pngc"
+#include "images/ex_limit.pngc"
+#include "images/ex_materialize.pngc"
+#include "images/ex_merge.pngc"
+#include "images/ex_merge_anti_join.pngc"
+#include "images/ex_merge_semi_join.pngc"
+#include "images/ex_nested.pngc"
+#include "images/ex_nested_loop_anti_join.pngc"
+#include "images/ex_nested_loop_semi_join.pngc"
+#include "images/ex_recursive_union.pngc"
+#include "images/ex_result.pngc"
+#include "images/ex_scan.pngc"
+#include "images/ex_seek.pngc"
+#include "images/ex_setop.pngc"
+#include "images/ex_sort.pngc"
+#include "images/ex_subplan.pngc"
+#include "images/ex_tid_scan.pngc"
+#include "images/ex_unique.pngc"
+#include "images/ex_unknown.pngc"
+#include "images/ex_window_aggregate.pngc"
+#include "images/ex_worktable_scan.pngc"
 
 // Greenplum images
-#include "images/ex_broadcast_motion.xpm"
-#include "images/ex_redistribute_motion.xpm"
-#include "images/ex_gather_motion.xpm"
+#include "images/ex_broadcast_motion.pngc"
+#include "images/ex_redistribute_motion.pngc"
+#include "images/ex_gather_motion.pngc"
 
 #define BMP_BORDER 3
 
-ExplainShape::ExplainShape(const char *bmp[], const wxString &description, long tokenNo, long detailNo)
+ExplainShape::ExplainShape(const wxImage &bmp, const wxString &description, long tokenNo, long detailNo)
 {
 	SetBitmap(wxBitmap(bmp));
 	SetLabel(description, tokenNo, detailNo);
@@ -187,8 +187,8 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 	else if (token == wxT("Settings:"))		return 0;		/* Greenplum */
 	else if (token == wxT("Slice"))			return 0;		/* Greenplum */
 	else if (token.Mid(0, 6) == wxT("(slice"))	return 0;	/* Greenplum */
-	else if (token == wxT("Result"))        s = new ExplainShape(ex_result_xpm, descr);
-	else if (token == wxT("Append"))        s = new ExplainShape(ex_append_xpm, descr);
+	else if (token == wxT("Result"))        s = new ExplainShape(*ex_result_png_img, descr);
+	else if (token == wxT("Append"))        s = new ExplainShape(*ex_append_png_img, descr);
 	else if (token == wxT("Nested"))
 	{
 		if (token2 == wxT("Loop") && token4 == wxT("Join"))
@@ -196,16 +196,16 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 			// Nested Loop Anti Join
 			if (token3 == wxT("Anti"))
 			{
-				s = new ExplainShape(ex_nested_loop_anti_join_xpm, descr);
+				s = new ExplainShape(*ex_nested_loop_anti_join_png_img, descr);
 			}
 			// Nested Loop Semi Join
 			else
 			{
-				s = new ExplainShape(ex_nested_loop_semi_join_xpm, descr);
+				s = new ExplainShape(*ex_nested_loop_semi_join_png_img, descr);
 			}
 		}
 		if (!s)
-			s = new ExplainShape(ex_nested_xpm, descr);
+			s = new ExplainShape(*ex_nested_png_img, descr);
 	}
 	else if (token == wxT("Merge"))
 	{
@@ -214,24 +214,24 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 			// Merge Anti Join
 			if (token2 == wxT("Anti"))
 			{
-				s = new ExplainShape(ex_merge_anti_join_xpm, descr);
+				s = new ExplainShape(*ex_merge_anti_join_png_img, descr);
 			}
 			// Merge Semi Join
 			else
 			{
-				s = new ExplainShape(ex_merge_semi_join_xpm, descr);
+				s = new ExplainShape(*ex_merge_semi_join_png_img, descr);
 			}
 		}
 		else
 		{
-			s = new ExplainShape(ex_merge_xpm, descr);
+			s = new ExplainShape(*ex_merge_png_img, descr);
 		}
 	}
 	else if (token == wxT("Hash"))
 	{
 		if (token2 == wxT("Join"))
 		{
-			s = new ExplainShape(ex_join_xpm, descr);
+			s = new ExplainShape(*ex_join_png_img, descr);
 		}
 		else
 		{
@@ -240,21 +240,21 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 				// Hash Anti Join
 				if (token2 == wxT("Anti"))
 				{
-					s = new ExplainShape(ex_hash_anti_join_xpm, descr);
+					s = new ExplainShape(*ex_hash_anti_join_png_img, descr);
 				}
 				// Hash Semi Join
 				else if (token2 == wxT("Semi"))
 				{
-					s = new ExplainShape(ex_hash_semi_join_xpm, descr);
+					s = new ExplainShape(*ex_hash_semi_join_png_img, descr);
 				}
 				else
 				{
-					s = new ExplainShape(ex_hash_xpm, descr);
+					s = new ExplainShape(*ex_hash_png_img, descr);
 				}
 			}
 			else
 			{
-				s = new ExplainShape(ex_hash_xpm, descr);
+				s = new ExplainShape(*ex_hash_png_img, descr);
 			}
 		}
 	}
@@ -265,12 +265,12 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 			// HashSetOp Except ALL
 			if (token3 == wxT("ALL"))
 			{
-				s = new ExplainShape(ex_hash_setop_except_all_xpm, descr);
+				s = new ExplainShape(*ex_hash_setop_except_all_png_img, descr);
 			}
 			// HashSetOp Except
 			else
 			{
-				s = new ExplainShape(ex_hash_setop_except_xpm, descr);
+				s = new ExplainShape(*ex_hash_setop_except_png_img, descr);
 			}
 		}
 		else if (token2 == wxT("Intersect"))
@@ -278,72 +278,72 @@ ExplainShape *ExplainShape::Create(long level, ExplainShape *last, const wxStrin
 			// HashSetOp Intersect ALL
 			if (token3 == wxT("ALL"))
 			{
-				s = new ExplainShape(ex_hash_setop_intersect_all_xpm, descr);
+				s = new ExplainShape(*ex_hash_setop_intersect_all_png_img, descr);
 			}
 			// HashSetOp Intersect
 			else
 			{
-				s = new ExplainShape(ex_hash_setop_intersect_xpm, descr);
+				s = new ExplainShape(*ex_hash_setop_intersect_png_img, descr);
 			}
 		}
 		else
 		{
 			// HashSetOp ???
-			s = new ExplainShape(ex_hash_setop_unknown_xpm, descr);
+			s = new ExplainShape(*ex_hash_setop_unknown_png_img, descr);
 		}
 	}
-	else if (token == wxT("Subquery"))      s = new ExplainShape(ex_subplan_xpm, descr, 0, 2);
-	else if (token == wxT("Function"))      s = new ExplainShape(ex_result_xpm, descr, 0, 2);
-	else if (token == wxT("Materialize"))   s = new ExplainShape(ex_materialize_xpm, descr);
-	else if (token == wxT("Sort"))          s = new ExplainShape(ex_sort_xpm, descr);
-	else if (token == wxT("Group"))         s = new ExplainShape(ex_group_xpm, descr);
+	else if (token == wxT("Subquery"))      s = new ExplainShape(*ex_subplan_png_img, descr, 0, 2);
+	else if (token == wxT("Function"))      s = new ExplainShape(*ex_result_png_img, descr, 0, 2);
+	else if (token == wxT("Materialize"))   s = new ExplainShape(*ex_materialize_png_img, descr);
+	else if (token == wxT("Sort"))          s = new ExplainShape(*ex_sort_png_img, descr);
+	else if (token == wxT("Group"))         s = new ExplainShape(*ex_group_png_img, descr);
 	else if (token == wxT("Aggregate") || token == wxT("GroupAggregate") || token == wxT("HashAggregate"))
-		s = new ExplainShape(ex_aggregate_xpm, descr);
-	else if (token == wxT("Unique"))        s = new ExplainShape(ex_unique_xpm, descr);
-	else if (token == wxT("SetOp"))         s = new ExplainShape(ex_setop_xpm, descr);
-	else if (token == wxT("Limit"))         s = new ExplainShape(ex_limit_xpm, descr);
+		s = new ExplainShape(*ex_aggregate_png_img, descr);
+	else if (token == wxT("Unique"))        s = new ExplainShape(*ex_unique_png_img, descr);
+	else if (token == wxT("SetOp"))         s = new ExplainShape(*ex_setop_png_img, descr);
+	else if (token == wxT("Limit"))         s = new ExplainShape(*ex_limit_png_img, descr);
 	else if (token == wxT("Bitmap"))
 	{
-		if (token2 == wxT("Index"))         s = new ExplainShape(ex_bmp_index_xpm, descr, 4, 3);
-		else                                s = new ExplainShape(ex_bmp_heap_xpm, descr, 4, 3);
+		if (token2 == wxT("Index"))         s = new ExplainShape(*ex_bmp_index_png_img, descr, 4, 3);
+		else                                s = new ExplainShape(*ex_bmp_heap_png_img, descr, 4, 3);
 	}
 	else if (token2 == wxT("Scan"))
 	{
 		if (token == wxT("Index"))
 			// Scan Index Backword
 			if (token3 == wxT("Backward"))
-				s = new ExplainShape(ex_index_scan_xpm, descr, 4, 3);
+				s = new ExplainShape(*ex_index_scan_png_img, descr, 4, 3);
 			else
-				s = new ExplainShape(ex_index_scan_xpm, descr, 3, 2);
+				s = new ExplainShape(*ex_index_scan_png_img, descr, 3, 2);
 		// Tid Scan
 		else if (token == wxT("Tid"))
-			s = new ExplainShape(ex_tid_scan_xpm, descr, 3, 2);
+			s = new ExplainShape(*ex_tid_scan_png_img, descr, 3, 2);
 		// WorkTable scan
 		else if (token == wxT("WorkTable"))
-			s = new ExplainShape(ex_worktable_scan_xpm, descr, 3, 2);
+			s = new ExplainShape(*ex_worktable_scan_png_img, descr, 3, 2);
 		// CTE Scan
 		else if (token == wxT("CTE"))
-			s = new ExplainShape(ex_cte_scan_xpm, descr, 3, 2);
+			s = new ExplainShape(*ex_cte_scan_png_img, descr, 3, 2);
 		else
-			s = new ExplainShape(ex_scan_xpm, descr, 3, 2);
+			s = new ExplainShape(*ex_scan_png_img, descr, 3, 2);
 	}
-	else if (token2 == wxT("Seek"))         s = new ExplainShape(ex_seek_xpm, descr, 3, 2);
+	else if (token2 == wxT("Seek"))         s = new ExplainShape(*ex_seek_png_img, descr, 3, 2);
 	// Recursive Union
 	else if (token == wxT("Recursive") && token2 == wxT("Union"))
-		s = new ExplainShape(ex_recursive_union_xpm, descr);
+		s = new ExplainShape(*ex_recursive_union_png_img, descr);
 	else if (token == wxT("WindowAgg"))
-		s = new ExplainShape(ex_window_aggregate_xpm, descr);
+		s = new ExplainShape(*ex_window_aggregate_png_img, descr);
 
 	// Greenplum additions
 	else if (token == wxT("Gather") && token2 == wxT("Motion"))
-		s = new ExplainShape(ex_gather_motion_xpm, descr);
+		s = new ExplainShape(*ex_gather_motion_png_img, descr);
 	else if (token == wxT("Broadcast") && token2 == wxT("Motion"))
-		s = new ExplainShape(ex_broadcast_motion_xpm, descr);
+		s = new ExplainShape(*ex_broadcast_motion_png_img, descr);
 	else if (token == wxT("Redistribute") && token2 == wxT("Motion"))
-		s = new ExplainShape(ex_redistribute_motion_xpm, descr);
+		s = new ExplainShape(*ex_redistribute_motion_png_img, descr);
 
 	if (!s)
-		s = new ExplainShape(ex_unknown_xpm, descr);
+		s = new ExplainShape(*ex_unknown_png_img, descr);
 
 	s->SetDraggable(false);
 

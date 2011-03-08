@@ -246,10 +246,10 @@ pgObject *pgExcludeFactory::CreateObjects(pgCollection *collection, ctlTree *bro
 }
 
 
-#include "images/primarykey.xpm"
+#include "images/primarykey.pngc"
 
 pgPrimaryKeyFactory::pgPrimaryKeyFactory()
-	: pgIndexBaseFactory(__("Primary Key"), __("New Primary Key..."), __("Create a new Primary Key constraint."), primarykey_xpm)
+	: pgIndexBaseFactory(__("Primary Key"), __("New Primary Key..."), __("Create a new Primary Key constraint."), primarykey_png_img)
 {
 	metaType = PGM_PRIMARYKEY;
 	collectionFactory = &constraintCollectionFactory;
@@ -258,10 +258,10 @@ pgPrimaryKeyFactory::pgPrimaryKeyFactory()
 
 pgPrimaryKeyFactory primaryKeyFactory;
 
-#include "images/unique.xpm"
+#include "images/unique.pngc"
 
 pgUniqueFactory::pgUniqueFactory()
-	: pgIndexBaseFactory(__("Unique"), __("New Unique Constraint..."), __("Create a new Unique constraint."), unique_xpm)
+	: pgIndexBaseFactory(__("Unique"), __("New Unique Constraint..."), __("Create a new Unique constraint."), unique_png_img)
 {
 	metaType = PGM_UNIQUE;
 	collectionFactory = &constraintCollectionFactory;
@@ -271,10 +271,10 @@ pgUniqueFactory::pgUniqueFactory()
 pgUniqueFactory uniqueFactory;
 
 
-#include "images/exclude.xpm"
+#include "images/exclude.pngc"
 
 pgExcludeFactory::pgExcludeFactory()
-	: pgIndexBaseFactory(__("Exclude"), __("New Exclusion Constraint..."), __("Create a new Exclusion constraint."), exclude_xpm)
+	: pgIndexBaseFactory(__("Exclude"), __("New Exclusion Constraint..."), __("Create a new Exclusion constraint."), exclude_png_img)
 {
 	metaType = PGM_EXCLUDE;
 	collectionFactory = &constraintCollectionFactory;

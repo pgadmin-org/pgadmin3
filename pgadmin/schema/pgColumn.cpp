@@ -617,16 +617,16 @@ wxString pgColumnCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/column.xpm"
-#include "images/column-sm.xpm"
-#include "images/columns.xpm"
+#include "images/column.pngc"
+#include "images/column-sm.pngc"
+#include "images/columns.pngc"
 
 pgColumnFactory::pgColumnFactory()
-	: pgTableObjFactory(__("Column"), __("New Column..."), __("Create a new Column."), column_xpm, column_sm_xpm)
+	: pgTableObjFactory(__("Column"), __("New Column..."), __("Create a new Column."), column_png_img, column_sm_png_img)
 {
 	metaType = PGM_COLUMN;
 }
 
 
 pgColumnFactory columnFactory;
-static pgaCollectionFactory cf(&columnFactory, __("Columns"), columns_xpm);
+static pgaCollectionFactory cf(&columnFactory, __("Columns"), columns_png_img);

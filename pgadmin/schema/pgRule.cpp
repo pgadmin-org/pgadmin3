@@ -282,20 +282,20 @@ wxString pgRuleCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/rule.xpm"
-#include "images/rulebad.xpm"
-#include "images/rules.xpm"
+#include "images/rule.pngc"
+#include "images/rulebad.pngc"
+#include "images/rules.pngc"
 
 pgRuleFactory::pgRuleFactory()
-	: pgSchemaObjFactory(__("Rule"), __("New Rule..."), __("Create a new Rule."), rule_xpm)
+	: pgSchemaObjFactory(__("Rule"), __("New Rule..."), __("Create a new Rule."), rule_png_img)
 {
 	metaType = PGM_RULE;
-	closedId = addIcon(rulebad_xpm);
+	closedId = addIcon(rulebad_png_img);
 }
 
 
 pgRuleFactory ruleFactory;
-static pgaCollectionFactory cf(&ruleFactory, __("Rules"), rules_xpm);
+static pgaCollectionFactory cf(&ruleFactory, __("Rules"), rules_png_img);
 
 
 enabledisableRuleFactory::enabledisableRuleFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)

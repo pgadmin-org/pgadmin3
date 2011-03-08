@@ -23,13 +23,13 @@
 #include "debugger/dlgDirectDbg.h"
 #include "ctl/ctlMenuToolbar.h"
 
-#include "images/debugger.xpm"
-#include "images/clearAll.xpm"
-#include "images/continue.xpm"
-#include "images/setBreak.xpm"
-#include "images/stepOver.xpm"
-#include "images/stepInto.xpm"
-#include "images/stop.xpm"
+#include "images/debugger.pngc"
+#include "images/clearAll.pngc"
+#include "images/continue.pngc"
+#include "images/setBreak.pngc"
+#include "images/stepOver.pngc"
+#include "images/stepInto.pngc"
+#include "images/stop.pngc"
 
 IMPLEMENT_CLASS( frmDebugger, pgFrame  )
 
@@ -78,7 +78,7 @@ frmDebugger::frmDebugger(frmMain *parent, const wxString &title)
 	manager.SetFlags(wxAUI_MGR_DEFAULT | wxAUI_MGR_TRANSPARENT_DRAG);
 
 	// Define the icon for this window
-	SetIcon(wxIcon(debugger_xpm));
+	SetIcon(*debugger_png_ico);
 
 	// Create (and configure) the menu bar, toolbar, and status bar
 	m_menuBar   = setupMenuBar();
@@ -256,21 +256,21 @@ ctlMenuToolbar *frmDebugger::setupToolBar( void )
 
 	m_toolBar->SetToolBitmapSize( wxSize( 16, 16 ));
 
-	m_toolBar->AddTool( MENU_ID_STEP_INTO,    	 _( "Step into" ),    		 wxBitmap(stepInto_xpm), _( "Step into" ));
-	m_toolBar->AddTool( MENU_ID_STEP_OVER,    	 _( "Step over" ),    		 wxBitmap(stepOver_xpm), _( "Step over" ));
-	m_toolBar->AddTool( MENU_ID_CONTINUE,    	 _( "Continue" ),    		 wxBitmap(continue_xpm), _( "Continue" ));
+	m_toolBar->AddTool( MENU_ID_STEP_INTO,    	_( "Step into" ),    		*stepInto_png_bmp, _( "Step into" ));
+	m_toolBar->AddTool( MENU_ID_STEP_OVER,    	_( "Step over" ),    		*stepOver_png_bmp, _( "Step over" ));
+	m_toolBar->AddTool( MENU_ID_CONTINUE,    	_( "Continue" ),    		*continue_png_bmp, _( "Continue" ));
 	m_toolBar->AddSeparator();
-	m_toolBar->AddTool( MENU_ID_TOGGLE_BREAK,     _( "Toggle breakpoint" ),   wxBitmap(setBreak_xpm), _( "Toggle breakpoint" ));
-	m_toolBar->AddTool( MENU_ID_CLEAR_ALL_BREAK, _( "Clear all breakpoints" ), wxBitmap(clearAll_xpm), _( "Clear all breakpoints" ));
+	m_toolBar->AddTool( MENU_ID_TOGGLE_BREAK,	_( "Toggle breakpoint" ),	*setBreak_png_bmp, _( "Toggle breakpoint" ));
+	m_toolBar->AddTool( MENU_ID_CLEAR_ALL_BREAK,	_( "Clear all breakpoints" ),	*clearAll_png_bmp, _( "Clear all breakpoints" ));
 	m_toolBar->AddSeparator();
-	m_toolBar->AddTool( MENU_ID_STOP,          	 _( "Stop debugging" ),    	 wxBitmap(stop_xpm), _( "Stop debugging" ));
+	m_toolBar->AddTool( MENU_ID_STOP,          	_( "Stop debugging" ),    	*stop_png_bmp, _( "Stop debugging" ));
 
-	m_toolBar->EnableTool(MENU_ID_STEP_INTO,           false);
-	m_toolBar->EnableTool(MENU_ID_STEP_OVER,           false);
-	m_toolBar->EnableTool(MENU_ID_CONTINUE,            false);
-	m_toolBar->EnableTool(MENU_ID_TOGGLE_BREAK,       false);
+	m_toolBar->EnableTool(MENU_ID_STEP_INTO,        false);
+	m_toolBar->EnableTool(MENU_ID_STEP_OVER,        false);
+	m_toolBar->EnableTool(MENU_ID_CONTINUE,         false);
+	m_toolBar->EnableTool(MENU_ID_TOGGLE_BREAK,     false);
 	m_toolBar->EnableTool(MENU_ID_CLEAR_ALL_BREAK,  false);
-	m_toolBar->EnableTool(MENU_ID_STOP,    		    false);
+	m_toolBar->EnableTool(MENU_ID_STOP,    		false);
 
 	m_toolBar->Realize();
 

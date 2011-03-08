@@ -19,7 +19,7 @@
 #include "db/pgSet.h"
 
 // Icons
-#include "images/property.xpm"
+#include "images/property.pngc"
 
 
 
@@ -63,7 +63,7 @@ dlgHbaConfig::dlgHbaConfig(pgFrame *parent, pgHbaConfigLine *_line, pgConn *_con
 	userAdding = databaseAdding = false;
 
 	// Icon
-	SetIcon(wxIcon(property_xpm));
+	SetIcon(*property_png_ico);
 	RestorePosition();
 
 	line = _line;

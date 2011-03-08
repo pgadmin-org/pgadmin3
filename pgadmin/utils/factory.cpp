@@ -23,7 +23,7 @@ wxArrayPtrVoid *factoryArray = 0;
 
 #define FACTORY_OFFSET 100
 
-pgaFactory::pgaFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img, const char **smImg)
+pgaFactory::pgaFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img, wxImage *imgSm)
 {
 	if (!factoryArray)
 		factoryArray = new wxArrayPtrVoid;
@@ -41,12 +41,13 @@ pgaFactory::pgaFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, co
 	else
 		newLongString = newString;
 	metaType = PGM_UNKNOWN;
-	image = img;
-	if (image)
+
+	if (img && img->IsOk())
 	{
-		iconId = addIcon(image);
-		if (smImg)
-			smallIconId = addIcon(smImg);
+		image = *img;
+		iconId = addIcon(img);
+		if (imgSm && imgSm->IsOk())
+			smallIconId = addIcon(imgSm);
 	}
 	else
 		iconId = -1;
@@ -107,13 +108,12 @@ pgaFactory *pgaFactory::GetFactoryByMetaType(const int type)
 }
 
 
-#include "images/property.xpm"
-#include "images/statistics.xpm"
-
+#include "images/property.pngc"
+#include "images/statistics.pngc"
 
 wxArrayPtrVoid *deferredImagesArray = 0;
 
-int pgaFactory::addIcon(const char **img)
+int pgaFactory::addIcon(wxImage *img)
 {
 	if (!imageList)
 	{
@@ -122,8 +122,8 @@ int pgaFactory::addIcon(const char **img)
 			//Setup the global imagelist
 			deferredImagesArray = new wxArrayPtrVoid;
 
-			deferredImagesArray->Add(property_xpm);
-			deferredImagesArray->Add(statistics_xpm);
+			deferredImagesArray->Add(property_png_img);
+			deferredImagesArray->Add(statistics_png_img);
 		}
 
 		deferredImagesArray->Add(img);
@@ -131,9 +131,13 @@ int pgaFactory::addIcon(const char **img)
 		return deferredImagesArray->GetCount() - 1;
 	}
 	else
-		return imageList->Add(wxIcon(img));
+	{
+		wxBitmap bmp(*img);
+		wxIcon *ico = new wxIcon();
+		ico->CopyFromBitmap(bmp);
+		return imageList->Add(*ico);
+	}
 }
-
 
 void pgaFactory::RealizeImages()
 {
@@ -142,13 +146,18 @@ void pgaFactory::RealizeImages()
 		imageList = new wxImageList(16, 16, true, deferredImagesArray->GetCount());
 		size_t i;
 		for (i = 0 ; i < deferredImagesArray->GetCount() ; i++)
-			imageList->Add(wxIcon((char **)deferredImagesArray->Item(i)));
+		{
+			wxImage *img = (wxImage *)deferredImagesArray->Item(i);
+			wxBitmap bmp(*img);
+			wxIcon *ico = new wxIcon();
+			ico->CopyFromBitmap(bmp);
+			imageList->Add(*ico);
+		}
 
 		delete deferredImagesArray;
 		deferredImagesArray = 0;
 	}
 }
-
 
 void pgaFactory::RegisterMenu(wxWindow *w, wxObjectEventFunction func)
 {
@@ -163,7 +172,7 @@ void pgaFactory::AppendMenu(wxMenu *menu)
 	if (menu && GetNewString())
 	{
 		wxMenuItem *item = menu->Append(MNU_NEW + GetId(), wxGetTranslation(GetNewString()), wxGetTranslation(GetNewLongString()));
-		if (image)
+		if (image.IsOk())
 		{
 			(void)item;
 			// doesn't work?
@@ -181,16 +190,16 @@ int pgaFactory::GetMetaType()
 }
 
 
-pgaCollectionFactory::pgaCollectionFactory(pgaFactory *f, const wxChar *tn, const char **img, const char **imgSm)
+pgaCollectionFactory::pgaCollectionFactory(pgaFactory *f, const wxChar *tn, wxImage *img, wxImage *imgSm)
 	: pgaFactory(tn, f->GetNewString(), f->GetNewLongString())
 {
 	itemFactory = f;
 	f->collectionFactory = this;
-	if (img)
+	if (img && img->IsOk())
 	{
-		image = img;
-		iconId = addIcon(image);
-		if (imgSm)
+		image = *img;
+		iconId = addIcon(img);
+		if (imgSm && imgSm->IsOk())
 			smallIconId = addIcon(imgSm);
 	}
 	else

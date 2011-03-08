@@ -24,7 +24,7 @@
 #include "ctl/ctlCheckTreeView.h"
 
 // Icons
-#include "images/backup.xpm"
+#include "images/backup.pngc"
 
 
 #define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
@@ -99,7 +99,7 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 	environment.Add(wxT("PGSSLMODE=") + object->GetServer()->GetConnection()->GetSslModeName());
 
 	// Icon
-	SetIcon(wxIcon(backup_xpm));
+	SetIcon(*backup_png_ico);
 
 	// fix translation problem
 	wxString dollarLabel = wxGetTranslation(_("$$ quoting"));

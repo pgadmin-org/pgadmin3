@@ -17,8 +17,8 @@
 #include "agent/pgaSchedule.h"
 
 // image for de/-select all
-#include "images/check.xpm"
-#include "images/uncheck.xpm"
+#include "images/check.pngc"
+#include "images/uncheck.pngc"
 
 // pointer to controls
 #define	txtID				CTRL_TEXT("txtID")
@@ -747,12 +747,12 @@ void dlgSchedule::InitSelectAll()
 
 	if (check)
 	{
-		btn->SetBitmapLabel(wxBitmap(check_xpm));
+		btn->SetBitmapLabel(*check_png_bmp);
 		tooltip = _("Select all week days");
 	}
 	else
 	{
-		btn->SetBitmapLabel(wxBitmap(uncheck_xpm));
+		btn->SetBitmapLabel(*uncheck_png_bmp);
 		tooltip = _("Deselect all week days");
 	}
 	btn->SetToolTip(tooltip);
@@ -771,12 +771,12 @@ void dlgSchedule::InitSelectAll()
 
 	if (check)
 	{
-		btn->SetBitmapLabel(wxBitmap(check_xpm));
+		btn->SetBitmapLabel(*check_png_bmp);
 		tooltip = _("Select all month days");
 	}
 	else
 	{
-		btn->SetBitmapLabel(wxBitmap(uncheck_xpm));
+		btn->SetBitmapLabel(*uncheck_png_bmp);
 		tooltip = _("Deselect all month days");
 	}
 	btn->SetToolTip(tooltip);
@@ -795,12 +795,12 @@ void dlgSchedule::InitSelectAll()
 
 	if (check)
 	{
-		btn->SetBitmapLabel(wxBitmap(check_xpm));
+		btn->SetBitmapLabel(*check_png_bmp);
 		tooltip = _("Select all months");
 	}
 	else
 	{
-		btn->SetBitmapLabel(wxBitmap(uncheck_xpm));
+		btn->SetBitmapLabel(*uncheck_png_bmp);
 		tooltip = _("Deselect all months");
 	}
 	btn->SetToolTip(tooltip);
@@ -819,12 +819,12 @@ void dlgSchedule::InitSelectAll()
 
 	if (check)
 	{
-		btn->SetBitmapLabel(wxBitmap(check_xpm));
+		btn->SetBitmapLabel(*check_png_bmp);
 		tooltip = _("Select all hours");
 	}
 	else
 	{
-		btn->SetBitmapLabel(wxBitmap(uncheck_xpm));
+		btn->SetBitmapLabel(*uncheck_png_bmp);
 		tooltip = _("Deselect all hours");
 	}
 	btn->SetToolTip(tooltip);
@@ -844,12 +844,12 @@ void dlgSchedule::InitSelectAll()
 
 	if (check)
 	{
-		btn->SetBitmapLabel(wxBitmap(check_xpm));
+		btn->SetBitmapLabel(*check_png_bmp);
 		tooltip = _("Select all minutes");
 	}
 	else
 	{
-		btn->SetBitmapLabel(wxBitmap(uncheck_xpm));
+		btn->SetBitmapLabel(*uncheck_png_bmp);
 		tooltip = _("Deselect all minutes");
 	}
 	btn->SetToolTip(tooltip);

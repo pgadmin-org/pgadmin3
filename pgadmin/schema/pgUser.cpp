@@ -374,14 +374,14 @@ pgObject *pgUserFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 }
 
 
-#include "images/user.xpm"
-#include "images/users.xpm"
+#include "images/user.pngc"
+#include "images/users.pngc"
 
 pgUserFactory::pgUserFactory()
-	: pgServerObjFactory(__("User"), __("New User..."), __("Create a new User."), user_xpm)
+	: pgServerObjFactory(__("User"), __("New User..."), __("Create a new User."), user_png_img)
 {
 }
 
 
 pgUserFactory userFactory;
-static pgaCollectionFactory cf(&userFactory, __("Users"), users_xpm);
+static pgaCollectionFactory cf(&userFactory, __("Users"), users_png_img);

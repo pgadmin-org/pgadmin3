@@ -403,14 +403,14 @@ pgObject *pgTypeFactory::CreateObjects(pgCollection *collection, ctlTree *browse
 }
 
 
-#include "images/type.xpm"
-#include "images/types.xpm"
+#include "images/type.pngc"
+#include "images/types.pngc"
 
 pgTypeFactory::pgTypeFactory()
-	: pgSchemaObjFactory(__("Type"), __("New Type..."), __("Create a new Type."), type_xpm)
+	: pgSchemaObjFactory(__("Type"), __("New Type..."), __("Create a new Type."), type_png_img)
 {
 }
 
 
 pgTypeFactory typeFactory;
-static pgaCollectionFactory cf(&typeFactory, __("Types"), types_xpm);
+static pgaCollectionFactory cf(&typeFactory, __("Types"), types_png_img);

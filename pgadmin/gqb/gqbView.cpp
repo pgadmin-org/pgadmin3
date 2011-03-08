@@ -33,7 +33,7 @@
 #include "gqb/gqbObjectCollection.h"
 
 // Image
-#include "images/gqbJoinCursor.xpm"
+#include "images/gqbJoinCursor.pngc"
 
 BEGIN_EVENT_TABLE(gqbView, wxScrolledWindow)
 	EVT_SIZE(gqbView::OnSize)
@@ -70,7 +70,7 @@ gqbView::gqbView(wxWindow *gqbParent, ctlAuiNotebook *gridParent, wxSize size, g
 	refreshRate = 3;
 	iterator = NULL;
 	mode = pt_normal;
-	joinCursorImage = wxBitmap(gqbJoinCursor_xpm).ConvertToImage();
+	joinCursorImage = *gqbJoinCursor_png_img;
 	joinCursor = wxCursor(joinCursorImage);
 	m_rightJoins = NULL;
 	m_rightTables = NULL;

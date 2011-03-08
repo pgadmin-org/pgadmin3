@@ -20,7 +20,7 @@
 #include "utils/sysLogger.h"
 #include "ctl/ctlTree.h"
 
-#include "images/folder.xpm"
+#include "images/folder.pngc"
 
 #include "utils/favourites.h"
 
@@ -49,7 +49,7 @@ dlgAddFavourite::dlgAddFavourite(wxWindow *parent, queryFavouriteFolder *favouri
 	this->favourites = favourites;
 
 	wxImageList *imgList = new wxImageList(16, 16, true, 2);
-	imgList->Add(wxIcon(folder_xpm));
+	imgList->Add(*folder_png_ico);
 	trLocation->AssignImageList(imgList);
 
 	trLocation->AddRoot(_("Favourites"), 0);

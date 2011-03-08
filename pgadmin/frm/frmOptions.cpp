@@ -34,7 +34,7 @@
 // Must be after pgAdmin3.h or MSVC++ complains
 #include <wx/colordlg.h>
 
-#include "images/properties.xpm"
+#include "images/properties.pngc"
 
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
 #define txtPgHelpPath               CTRL_TEXT("txtPgHelpPath")
@@ -210,7 +210,7 @@ frmOptions::frmOptions(frmMain *parent)
 	LoadResource(parent, wxT("frmOptions"));
 
 	// Icon
-	SetIcon(wxIcon(properties_xpm));
+	SetIcon(*properties_png_ico);
 	RestorePosition();
 
 	wxAcceleratorEntry entries[1];

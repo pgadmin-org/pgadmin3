@@ -366,12 +366,12 @@ wxString pgAggregateCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/aggregate.xpm"
-#include "images/aggregate-sm.xpm"
-#include "images/aggregates.xpm"
+#include "images/aggregate.pngc"
+#include "images/aggregate-sm.pngc"
+#include "images/aggregates.pngc"
 
 pgAggregateFactory::pgAggregateFactory()
-	: pgaFactory(__("Aggregate"), __("New Aggregate..."), __("Create a new Aggregate."), aggregate_xpm, aggregate_sm_xpm)
+	: pgaFactory(__("Aggregate"), __("New Aggregate..."), __("Create a new Aggregate."), aggregate_png_img, aggregate_sm_png_img)
 {
 }
 
@@ -381,4 +381,4 @@ pgCollection *pgAggregateFactory::CreateCollection(pgObject *obj)
 }
 
 pgAggregateFactory aggregateFactory;
-static pgaCollectionFactory cf(&aggregateFactory, __("Aggregates"), aggregates_xpm);
+static pgaCollectionFactory cf(&aggregateFactory, __("Aggregates"), aggregates_png_img);

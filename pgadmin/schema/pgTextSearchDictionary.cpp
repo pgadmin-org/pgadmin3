@@ -214,14 +214,14 @@ pgObject *pgTextSearchDictionaryFactory::CreateObjects(pgCollection *collection,
 }
 
 
-#include "images/dictionary.xpm"
-#include "images/dictionaries.xpm"
+#include "images/dictionary.pngc"
+#include "images/dictionaries.pngc"
 
 pgTextSearchDictionaryFactory::pgTextSearchDictionaryFactory()
-	: pgSchemaObjFactory(__("FTS Dictionary"), __("New FTS Dictionary..."), __("Create a new FTS Dictionary."), dictionary_xpm)
+	: pgSchemaObjFactory(__("FTS Dictionary"), __("New FTS Dictionary..."), __("Create a new FTS Dictionary."), dictionary_png_img)
 {
 }
 
 
 pgTextSearchDictionaryFactory textSearchDictionaryFactory;
-static pgaCollectionFactory cf(&textSearchDictionaryFactory, __("FTS Dictionaries"), dictionaries_xpm);
+static pgaCollectionFactory cf(&textSearchDictionaryFactory, __("FTS Dictionaries"), dictionaries_png_img);

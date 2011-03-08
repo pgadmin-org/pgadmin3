@@ -26,7 +26,7 @@ enum
 class pgSchemaBaseFactory : public pgDatabaseObjFactory
 {
 public:
-	pgSchemaBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img, const char **imgSm = 0);
+	pgSchemaBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img, wxImage *imgSm = 0);
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
 };
@@ -194,7 +194,7 @@ public:
 class pgSchemaObjFactory : public pgDatabaseObjFactory
 {
 public:
-	pgSchemaObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img, const char **imgSm = 0)
+	pgSchemaObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img, wxImage *imgSm = 0)
 		: pgDatabaseObjFactory(tn, ns, nls, img, imgSm) {}
 	virtual pgCollection *CreateCollection(pgObject *obj);
 };

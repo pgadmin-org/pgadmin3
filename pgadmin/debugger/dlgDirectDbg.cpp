@@ -26,7 +26,7 @@
 #include "debugger/dbgDbResult.h"
 #include "debugger/ctlCodeWindow.h"
 
-#include "images/debugger.xpm"
+#include "images/debugger.pngc"
 
 #include <stdexcept>
 
@@ -74,7 +74,7 @@ dlgDirectDbg::dlgDirectDbg( frmDebugger *parent, wxWindowID id, const dbgConnPro
 	LoadResource(m_parent, wxT("dlgDirectDbg"));
 
 	// Icon
-	SetIcon(wxIcon(debugger_xpm));
+	SetIcon(*debugger_png_ico);
 	RestorePosition();
 }
 

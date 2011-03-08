@@ -20,9 +20,9 @@
 
 // App headers
 #include "ctl/ctlCheckTreeView.h"
-#include "images/checked.xpm"
-#include "images/disabled.xpm"
-#include "images/unchecked.xpm"
+#include "images/checked.pngc"
+#include "images/disabled.pngc"
+#include "images/unchecked.pngc"
 
 BEGIN_EVENT_TABLE(ctlCheckTreeView, wxTreeCtrl)
 	EVT_LEFT_DOWN(                            ctlCheckTreeView::OnLeftClick)
@@ -33,9 +33,9 @@ ctlCheckTreeView::ctlCheckTreeView(wxWindow *parent, wxWindowID id, const wxPoin
 	: wxTreeCtrl(parent, id, pos, size, style)
 {
 	wxImageList *treeimages = new wxImageList(16, 16, true, 3);
-	treeimages->Add(wxIcon(unchecked_xpm));
-	treeimages->Add(wxIcon(checked_xpm));
-	treeimages->Add(wxIcon(disabled_xpm));
+	treeimages->Add(*unchecked_png_img);
+	treeimages->Add(*checked_png_img);
+	treeimages->Add(*disabled_png_img);
 	SetImageList(treeimages);
 }
 

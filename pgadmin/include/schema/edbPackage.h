@@ -181,7 +181,7 @@ protected:
 class edbPackageObjFactory : public pgSchemaObjFactory
 {
 public:
-	edbPackageObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img, const char **imgSm = 0)
+	edbPackageObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img, wxImage *imgSm = 0)
 		: pgSchemaObjFactory(tn, ns, nls, img, imgSm) {}
 	virtual pgCollection *CreateCollection(pgObject *obj);
 };

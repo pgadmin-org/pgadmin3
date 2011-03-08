@@ -1645,20 +1645,20 @@ bool pgTableObjCollection::CanCreate()
 }
 
 
-#include "images/table.xpm"
-#include "images/table-repl.xpm"
-#include "images/table-repl-sm.xpm"
-#include "images/table-sm.xpm"
-#include "images/tables.xpm"
+#include "images/table.pngc"
+#include "images/table-repl.pngc"
+#include "images/table-repl-sm.pngc"
+#include "images/table-sm.pngc"
+#include "images/tables.pngc"
 
 pgTableFactory::pgTableFactory()
-	: pgSchemaObjFactory(__("Table"), __("New Table..."), __("Create a new Table."), table_xpm, table_sm_xpm)
+	: pgSchemaObjFactory(__("Table"), __("New Table..."), __("Create a new Table."), table_png_img, table_sm_png_img)
 {
 	metaType = PGM_TABLE;
 	if (WantSmallIcon())
-		replicatedIconId = addIcon(table_repl_sm_xpm);
+		replicatedIconId = addIcon(table_repl_sm_png_img);
 	else
-		replicatedIconId = addIcon(table_repl_xpm);
+		replicatedIconId = addIcon(table_repl_png_img);
 }
 
 pgCollection *pgTableFactory::CreateCollection(pgObject *obj)
@@ -1667,7 +1667,7 @@ pgCollection *pgTableFactory::CreateCollection(pgObject *obj)
 }
 
 pgTableFactory tableFactory;
-static pgaCollectionFactory cf(&tableFactory, __("Tables"), tables_xpm);
+static pgaCollectionFactory cf(&tableFactory, __("Tables"), tables_png_img);
 
 
 pgCollection *pgTableObjFactory::CreateCollection(pgObject *obj)

@@ -217,12 +217,12 @@ void gpPartitionFactory::AppendMenu(wxMenu *menu)
 {
 }
 
-#include "images/table.xpm"
-#include "images/table-sm.xpm"
-#include "images/tables.xpm"
+#include "images/table.pngc"
+#include "images/table-sm.pngc"
+#include "images/tables.pngc"
 
 gpPartitionFactory::gpPartitionFactory()
-	: pgTableObjFactory(__("Partition"), __("New Partition..."), __("Create a new Partition."), table_xpm, table_sm_xpm)
+	: pgTableObjFactory(__("Partition"), __("New Partition..."), __("Create a new Partition."), table_png_img, table_sm_png_img)
 {
 	metaType = GP_PARTITION;
 }
@@ -233,6 +233,6 @@ pgCollection *gpPartitionFactory::CreateCollection(pgObject *obj)
 }
 
 gpPartitionFactory partitionFactory;
-static pgaCollectionFactory cf(&partitionFactory, __("Partitions"), tables_xpm);
+static pgaCollectionFactory cf(&partitionFactory, __("Partitions"), tables_png_img);
 
 

@@ -7,6 +7,6 @@
 # Makefile - Makefile for *nix systems
 ##############################################################################
 
-DIST_SUBDIRS = pgscript wx-build
+DIST_SUBDIRS = png2c pgscript wx-build
 SUBDIRS = wx-build
 

@@ -28,22 +28,22 @@
 #include "gqb/gqbGridJoinTable.h"
 
 // Images
-#include "images/gqbUp.xpm"
-#include "images/gqbUpTop.xpm"
-#include "images/gqbDown.xpm"
-#include "images/gqbDownBottom.xpm"
-#include "images/gqbOrderAddAll.xpm"
-#include "images/gqbOrderRemoveAll.xpm"
-#include "images/gqbOrderRemove.xpm"
-#include "images/gqbOrderAdd.xpm"
-#include "images/gqbAddRest.xpm"
-#include "images/gqbRemoveRest.xpm"
-#include "images/tables.xpm"
-#include "images/table-sm.xpm"
-#include "images/column-sm.xpm"
-#include "images/view-sm.xpm"
-#include "images/gqbAdd.xpm"
-#include "images/gqbRemove.xpm"
+#include "images/gqbUp.pngc"
+#include "images/gqbUpTop.pngc"
+#include "images/gqbDown.pngc"
+#include "images/gqbDownBottom.pngc"
+#include "images/gqbOrderAddAll.pngc"
+#include "images/gqbOrderRemoveAll.pngc"
+#include "images/gqbOrderRemove.pngc"
+#include "images/gqbOrderAdd.pngc"
+#include "images/gqbAddRest.pngc"
+#include "images/gqbRemoveRest.pngc"
+#include "images/tables.pngc"
+#include "images/table-sm.pngc"
+#include "images/column-sm.pngc"
+#include "images/view-sm.pngc"
+#include "images/gqbAdd.pngc"
+#include "images/gqbRemove.pngc"
 
 // Get available ID for Criteria & Joins Panel
 long CRITERIA_PANEL_RESTRICTION_GRID_ID = ::wxNewId();
@@ -69,10 +69,10 @@ gqbGridPanel::gqbGridPanel(wxWindow *parent, wxWindowID id = wxID_ANY, gqbGridPr
 	allowSelCells = true;
 	selTop = -1;
 	selBottom = -1;
-	upBitmap = wxBitmap(gqbUp_xpm);
-	upTopBitmap = wxBitmap(gqbUpTop_xpm);
-	downBitmap = wxBitmap(gqbDown_xpm);
-	downBottomBitmap = wxBitmap(gqbDownBottom_xpm);
+	upBitmap = *gqbUp_png_bmp;
+	upTopBitmap = *gqbUpTop_png_bmp;
+	downBitmap = *gqbDown_png_bmp;
+	downBottomBitmap = *gqbDownBottom_png_bmp;
 
 	buttonUp = new wxBitmapButton( this, GQB_COLS_UP_BUTTON_ID,  upBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Up") );
 	buttonUp->SetToolTip(_("Move the selected column up"));
@@ -377,10 +377,10 @@ gqbColsTree::gqbColsTree(wxWindow *parent, wxWindowID id, const wxPoint &pos, co
 	: wxTreeCtrl(parent, id, pos, size, style)
 {
 	wxImageList *imageList = new wxImageList(16, 16);
-	imageList->Add(wxIcon(tables_xpm));
-	imageList->Add(wxIcon(table_sm_xpm));
-	imageList->Add(wxIcon(column_sm_xpm));
-	imageList->Add(wxIcon(view_sm_xpm));
+	imageList->Add(*tables_png_ico);
+	imageList->Add(*table_sm_png_ico);
+	imageList->Add(*column_sm_png_ico);
+	imageList->Add(*view_sm_png_ico);
 	this->AssignImageList(imageList);
 	wxString a = _("Select column");
 	createRoot(a);
@@ -609,8 +609,8 @@ gqbCriteriaPanel::gqbCriteriaPanel(wxWindow *parent, gqbModel *_model, gqbGridRe
 	this->Connect(CRITERIA_PANEL_RESTRICTION_GRID_ID, wxEVT_GRID_CELL_LEFT_CLICK, (wxObjectEventFunction) (wxEventFunction) (wxGridEventFunction) &gqbCriteriaPanel::OnCellLeftClick);
 	// GQB-TODO: in a future implement OnMouseWheel
 
-	addBitmap = wxBitmap(gqbAddRest_xpm);
-	dropBitmap = wxBitmap(gqbRemoveRest_xpm);
+	addBitmap = *gqbAddRest_png_bmp;
+	dropBitmap = *gqbRemoveRest_png_bmp;
 	buttonAdd = new wxBitmapButton( this, GQB_COLS_ADD_BUTTON_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add"));
 	buttonAdd->SetToolTip(_("Add a new criteria line"));
 	buttonDrop = new wxBitmapButton( this, GQB_COLS_DROP_BUTTON_ID,  dropBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove"));
@@ -869,10 +869,10 @@ gqbOrderPanel::gqbOrderPanel(wxWindow *parent, gqbGridOrderTable *gridTableLeft,
 	tableRight = gridTableRight;
 	allowSelCells = true;
 
-	addBitmap = wxBitmap(gqbOrderAdd_xpm);
-	addAllBitmap = wxBitmap(gqbOrderAddAll_xpm);
-	removeBitmap = wxBitmap(gqbOrderRemove_xpm);
-	removeAllBitmap = wxBitmap(gqbOrderRemoveAll_xpm);
+	addBitmap = *gqbOrderAdd_png_bmp;
+	addAllBitmap = *gqbOrderAddAll_png_bmp;
+	removeBitmap = *gqbOrderRemove_png_bmp;
+	removeAllBitmap = *gqbOrderRemoveAll_png_bmp;
 
 	buttonAdd = new wxBitmapButton( this, GQB_ORDER_ADD_BUTTON_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add Column") );
 	buttonAdd->SetToolTip(_("Add the selected column"));
@@ -883,10 +883,10 @@ gqbOrderPanel::gqbOrderPanel(wxWindow *parent, gqbGridOrderTable *gridTableLeft,
 	buttonRemoveAll = new wxBitmapButton( this, GQB_ORDER_DROP_ALL_BUTTON_ID,  removeAllBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove All Columns") );
 	buttonRemoveAll->SetToolTip(_("Remove all columns"));
 
-	upBitmap = wxBitmap(gqbUp_xpm);
-	upTopBitmap = wxBitmap(gqbUpTop_xpm);
-	downBitmap = wxBitmap(gqbDown_xpm);
-	downBottomBitmap = wxBitmap(gqbDownBottom_xpm);
+	upBitmap = *gqbUp_png_bmp;
+	upTopBitmap = *gqbUpTop_png_bmp;
+	downBitmap = *gqbDown_png_bmp;
+	downBottomBitmap = *gqbDownBottom_png_bmp;
 
 	buttonUp = new wxBitmapButton( this, GQB_ORDER_UP_BUTTON_ID,  upBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Up") );
 	buttonUp->SetToolTip(_("Move the selected column up"));
@@ -1506,8 +1506,8 @@ gqbJoinsPanel::gqbJoinsPanel(wxWindow *parent, gqbModel *_model, gqbGridJoinTabl
 	this->Connect(JOINS_PANEL_GRID_ID, wxEVT_GRID_CELL_LEFT_CLICK, (wxObjectEventFunction) (wxEventFunction) (wxGridEventFunction) &gqbJoinsPanel::OnCellLeftClick);
 	// GQB-TODO: in a future implement OnMouseWheel
 
-	addBitmap = wxBitmap(gqbAdd_xpm);
-	dropBitmap = wxBitmap(gqbRemove_xpm);
+	addBitmap = *gqbAdd_png_bmp;
+	dropBitmap = *gqbRemove_png_bmp;
 	buttonAdd = new wxBitmapButton( this, GQB_JOIN_COLS_ADD_BUTTON_ID,  addBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Add"));
 	buttonAdd->SetToolTip(_("Add a new join"));
 	buttonDrop = new wxBitmapButton( this, GQB_JOIN_COLS_DELETE_BUTTON_ID,  dropBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, wxT("Remove"));

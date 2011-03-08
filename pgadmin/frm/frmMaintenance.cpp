@@ -25,7 +25,7 @@
 #include "schema/pgIndex.h"
 
 // Icons
-#include "images/vacuum.xpm"
+#include "images/vacuum.pngc"
 
 
 BEGIN_EVENT_TABLE(frmMaintenance, ExecutionDialog)
@@ -54,7 +54,7 @@ frmMaintenance::frmMaintenance(frmMain *form, pgObject *obj) : ExecutionDialog(f
 	txtMessages = CTRL_TEXT("txtMessages");
 
 	// Icon
-	SetIcon(wxIcon(vacuum_xpm));
+	SetIcon(*vacuum_png_ico);
 
 	txtMessages->SetMaxLength(0L);
 
@@ -186,7 +186,7 @@ void frmMaintenance::Go()
 maintenanceFactory::maintenanceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
 	mnu->Append(id, _("&Maintenance..."), _("Maintain the current database or table."));
-	toolbar->AddTool(id, _("Maintenance"), wxBitmap(vacuum_xpm), _("Maintain the current database or table."), wxITEM_NORMAL);
+	toolbar->AddTool(id, _("Maintenance"), *vacuum_png_bmp, _("Maintain the current database or table."), wxITEM_NORMAL);
 }
 
 

@@ -23,7 +23,7 @@
 #include "schema/pgTable.h"
 
 // Icons
-#include "images/backup.xpm"
+#include "images/backup.pngc"
 
 
 #define nbNotebook              CTRL_NOTEBOOK("nbNotebook")
@@ -91,7 +91,7 @@ frmBackupServer::frmBackupServer(frmMain *form, pgObject *obj) : ExternProcessDi
 	environment.Add(wxT("PGSSLMODE=") + server->GetConnection()->GetSslModeName());
 
 	// Icon
-	SetIcon(wxIcon(backup_xpm));
+	SetIcon(*backup_png_ico);
 
 	txtMessages = CTRL_TEXT("txtMessages");
 	txtMessages->SetMaxLength(0L);

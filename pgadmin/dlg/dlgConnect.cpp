@@ -20,7 +20,7 @@
 #include "schema/pgServer.h"
 #include "utils/sysLogger.h"
 
-#include "images/connect.xpm"
+#include "images/connect.pngc"
 
 
 
@@ -42,7 +42,7 @@ dlgConnect::dlgConnect(frmMain *form, const wxString &description, bool storePwd
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	LoadResource((wxWindow *)form, wxT("dlgConnect"));
 
-	SetIcon(wxIcon(connect_xpm));
+	SetIcon(*connect_png_ico);
 	RestorePosition();
 
 	// Setup the default values

@@ -19,7 +19,7 @@ class pgFunction;
 class pgFunctionFactory : public pgSchemaObjFactory
 {
 public:
-	pgFunctionFactory(const wxChar *tn = 0, const wxChar *ns = 0, const wxChar *nls = 0, const char **img = 0);
+	pgFunctionFactory(const wxChar *tn = 0, const wxChar *ns = 0, const wxChar *nls = 0, wxImage *img = 0);
 	virtual dlgProperty *CreateDialog(frmMain *frame, pgObject *node, pgObject *parent);
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
 	virtual pgCollection *CreateCollection(pgObject *obj);

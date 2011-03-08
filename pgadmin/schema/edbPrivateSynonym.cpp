@@ -150,14 +150,14 @@ pgObject *edbPrivateSynonymFactory::CreateObjects(pgCollection *collection, ctlT
 
 /////////////////////////////
 
-#include "images/synonym.xpm"
-#include "images/synonyms.xpm"
+#include "images/synonym.pngc"
+#include "images/synonyms.pngc"
 
 edbPrivateSynonymFactory::edbPrivateSynonymFactory()
-	: pgSchemaObjFactory(__("Synonym"), __("New Synonym..."), __("Create a new Synonym."), synonym_xpm)
+	: pgSchemaObjFactory(__("Synonym"), __("New Synonym..."), __("Create a new Synonym."), synonym_png_img)
 {}
 
 edbPrivateSynonymFactory edbPrivFactory;
 
-static pgaCollectionFactory cf(&edbPrivFactory, __("Synonyms"), synonyms_xpm);
+static pgaCollectionFactory cf(&edbPrivFactory, __("Synonyms"), synonyms_png_img);
 

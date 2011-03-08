@@ -79,22 +79,23 @@ public:
 
 	int GetIconId();
 	static void RegisterMenu(wxWindow *w, wxObjectEventFunction func);
-	static void RealizeImages();
-	const char **GetImage() const
+	const wxImage &GetImage() const
 	{
 		return image;
 	}
 
-protected:
-	pgaFactory(const wxChar *tn = 0, const wxChar *ns = 0, const wxChar *nls = 0, const char **img = 0, const char **smImg = 0);
+	static void RealizeImages();
 
-	int addIcon(const char **img);
+protected:
+	pgaFactory(const wxChar *tn = 0, const wxChar *ns = 0, const wxChar *nls = 0, wxImage *img = 0, wxImage *imgSm = 0);
+
+	int addIcon(wxImage *img);
 
 	int id, metaType;
 	wxChar *typeName;
 	wxChar *newString, *newLongString;
 	int iconId, smallIconId;
-	const char **image;
+	wxImage image;
 
 	pgaCollectionFactory *collectionFactory;
 	friend class pgaCollectionFactory;
@@ -104,7 +105,7 @@ protected:
 class pgaCollectionFactory : public pgaFactory
 {
 public:
-	pgaCollectionFactory(pgaFactory *f, const wxChar *tn = 0, const char **img = 0, const char **imgSm = 0);
+	pgaCollectionFactory(pgaFactory *f, const wxChar *tn = 0, wxImage *img = 0, wxImage *imgSm = 0);
 	wxChar *GetItemTypeName()
 	{
 		return itemFactory->GetTypeName();

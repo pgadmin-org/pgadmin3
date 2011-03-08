@@ -406,7 +406,7 @@ bool pluginUtilityFactory::HaveDatabase(pgObject *obj)
 // The pluginButtonMenuFactory class manages the toolbar menu button
 // for the plugins.
 
-#include "images/plugins.xpm"
+#include "images/plugins.pngc"
 pluginButtonMenuFactory::pluginButtonMenuFactory(menuFactoryList *list, wxMenu *popupmenu, ctlMenuToolbar *toolbar, int pluginCount) : actionFactory(list)
 {
 	if (pluginCount)
@@ -416,7 +416,7 @@ pluginButtonMenuFactory::pluginButtonMenuFactory(menuFactoryList *list, wxMenu *
 
 	if (toolbar)
 	{
-		toolbar->AddTool(id, _("Plugins"), wxBitmap(plugins_xpm), _("Execute the last used plugin."));
+		toolbar->AddTool(id, _("Plugins"), *plugins_png_bmp, _("Execute the last used plugin."));
 		pulldownButton = toolbar->AddMenuPulldownTool(MNU_PLUGINBUTTONLIST, wxT("Execute Plugin"), wxT("Select a plugin."), popupmenu);
 	}
 }

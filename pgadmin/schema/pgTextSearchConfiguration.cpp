@@ -257,14 +257,14 @@ pgObject *pgTextSearchConfigurationFactory::CreateObjects(pgCollection *collecti
 }
 
 
-#include "images/configuration.xpm"
-#include "images/configurations.xpm"
+#include "images/configuration.pngc"
+#include "images/configurations.pngc"
 
 pgTextSearchConfigurationFactory::pgTextSearchConfigurationFactory()
-	: pgSchemaObjFactory(__("FTS Configuration"), __("New FTS Configuration..."), __("Create a new FTS Configuration."), configuration_xpm)
+	: pgSchemaObjFactory(__("FTS Configuration"), __("New FTS Configuration..."), __("Create a new FTS Configuration."), configuration_png_img)
 {
 }
 
 
 pgTextSearchConfigurationFactory textSearchConfigurationFactory;
-static pgaCollectionFactory cf(&textSearchConfigurationFactory, __("FTS Configurations"), configurations_xpm);
+static pgaCollectionFactory cf(&textSearchConfigurationFactory, __("FTS Configurations"), configurations_png_img);

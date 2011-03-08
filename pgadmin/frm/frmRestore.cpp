@@ -31,7 +31,7 @@
 #include "ctl/ctlCheckTreeView.h"
 
 // Icons
-#include "images/restore.xpm"
+#include "images/restore.pngc"
 
 
 #define nbNotebook               CTRL_NOTEBOOK("nbNotebook")
@@ -120,7 +120,7 @@ frmRestore::frmRestore(frmMain *_form, pgObject *obj) : ExternProcessDialog(form
 	txtFilename->SetValue(val);
 
 	// Icon
-	SetIcon(wxIcon(restore_xpm));
+	SetIcon(*restore_png_ico);
 
 	txtMessages = CTRL_TEXT("txtMessages");
 	txtMessages->SetMaxLength(0L);

@@ -393,11 +393,11 @@ pgObject *pgOperatorClassFactory::CreateObjects(pgCollection *collection, ctlTre
 }
 
 
-#include "images/operatorclass.xpm"
-#include "images/operatorclasses.xpm"
+#include "images/operatorclass.pngc"
+#include "images/operatorclasses.pngc"
 
 pgOperatorClassFactory::pgOperatorClassFactory()
-	: pgSchemaObjFactory(__("Operator Class"), __("New Operator Class..."), __("Create a new Operator Class."), operatorclass_xpm)
+	: pgSchemaObjFactory(__("Operator Class"), __("New Operator Class..."), __("Create a new Operator Class."), operatorclass_png_img)
 {
 	metaType = PGM_OPCLASS;
 }
@@ -408,4 +408,4 @@ dlgProperty *pgOperatorClassFactory::CreateDialog(frmMain *frame, pgObject *node
 }
 
 pgOperatorClassFactory operatorClassFactory;
-static pgaCollectionFactory cf(&operatorClassFactory, __("Operator Classes"), operatorclasses_xpm);
+static pgaCollectionFactory cf(&operatorClassFactory, __("Operator Classes"), operatorclasses_png_img);

@@ -489,20 +489,20 @@ wxString pgTriggerCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/trigger.xpm"
-#include "images/triggerbad.xpm"
-#include "images/triggers.xpm"
+#include "images/trigger.pngc"
+#include "images/triggerbad.pngc"
+#include "images/triggers.pngc"
 
 pgTriggerFactory::pgTriggerFactory()
-	: pgSchemaObjFactory(__("Trigger"), __("New Trigger..."), __("Create a new Trigger."), trigger_xpm)
+	: pgSchemaObjFactory(__("Trigger"), __("New Trigger..."), __("Create a new Trigger."), trigger_png_img)
 {
 	metaType = PGM_TRIGGER;
-	closedId = addIcon(triggerbad_xpm);
+	closedId = addIcon(triggerbad_png_img);
 }
 
 
 pgTriggerFactory triggerFactory;
-static pgaCollectionFactory cf(&triggerFactory, __("Triggers"), triggers_xpm);
+static pgaCollectionFactory cf(&triggerFactory, __("Triggers"), triggers_png_img);
 
 enabledisableTriggerFactory::enabledisableTriggerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {

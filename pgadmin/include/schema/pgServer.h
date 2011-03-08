@@ -446,7 +446,7 @@ public:
 class pgServerObjFactory : public pgaFactory
 {
 public:
-	pgServerObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img, const char **imgSm = 0)
+	pgServerObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img, wxImage *imgSm = 0)
 		: pgaFactory(tn, ns, nls, img, imgSm) {}
 	virtual pgCollection *CreateCollection(pgObject *obj);
 };

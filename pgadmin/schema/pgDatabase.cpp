@@ -1158,18 +1158,18 @@ bool pgDatabaseObjCollection::CanCreate()
 }
 
 
-#include "images/database.xpm"
-#include "images/database-sm.xpm"
-#include "images/databases.xpm"
-#include "images/closeddatabase.xpm"
-#include "images/closeddatabase-sm.xpm"
+#include "images/database.pngc"
+#include "images/database-sm.pngc"
+#include "images/databases.pngc"
+#include "images/closeddatabase.pngc"
+#include "images/closeddatabase-sm.pngc"
 
 pgDatabaseFactory::pgDatabaseFactory()
-	: pgServerObjFactory(__("Database"), __("New Database..."), __("Create a new Database."), database_xpm, database_sm_xpm)
+	: pgServerObjFactory(__("Database"), __("New Database..."), __("Create a new Database."), database_png_img, database_sm_png_img)
 {
 	metaType = PGM_DATABASE;
-	closedId = addIcon(closeddatabase_xpm);
-	smallClosedId = addIcon(closeddatabase_sm_xpm);
+	closedId = addIcon(closeddatabase_png_img);
+	smallClosedId = addIcon(closeddatabase_sm_png_img);
 }
 
 pgCollection *pgDatabaseFactory::CreateCollection(pgObject *obj)
@@ -1184,7 +1184,7 @@ pgCollection *pgDatabaseObjFactory::CreateCollection(pgObject *obj)
 
 
 pgDatabaseFactory databaseFactory;
-static pgaCollectionFactory cf(&databaseFactory, __("Databases"), databases_xpm);
+static pgaCollectionFactory cf(&databaseFactory, __("Databases"), databases_png_img);
 
 
 disconnectDatabaseFactory::disconnectDatabaseFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)

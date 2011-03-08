@@ -356,16 +356,16 @@ void slNodeCollection::ShowStatistics(frmMain *form, ctlListView *statistics)
 
 ///////////////////////////////////////////////////
 
-#include "images/slnode.xpm"
-#include "images/slnode-local.xpm"
-#include "images/slnode-disabled.xpm"
-#include "images/slnodes.xpm"
+#include "images/slnode.pngc"
+#include "images/slnode-local.pngc"
+#include "images/slnode-disabled.pngc"
+#include "images/slnodes.pngc"
 
 slNodeFactory::slNodeFactory()
-	: slObjFactory(__("Node"), __("New Node"), __("Create a new Node."), slnode_xpm)
+	: slObjFactory(__("Node"), __("New Node"), __("Create a new Node."), slnode_png_img)
 {
-	localIconId = addIcon(slnode_local_xpm);
-	disabledIconId = addIcon(slnode_disabled_xpm);
+	localIconId = addIcon(slnode_local_png_img);
+	disabledIconId = addIcon(slnode_disabled_png_img);
 	metaType = SLM_NODE;
 }
 
@@ -396,4 +396,4 @@ pgCollection *slNodeObjFactory::CreateCollection(pgObject *obj)
 
 
 slNodeFactory nodeFactory;
-static pgaCollectionFactory cf(&nodeFactory, __("Nodes"), slnodes_xpm);
+static pgaCollectionFactory cf(&nodeFactory, __("Nodes"), slnodes_png_img);

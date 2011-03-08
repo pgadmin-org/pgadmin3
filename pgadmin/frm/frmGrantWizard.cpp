@@ -28,7 +28,7 @@
 #include "schema/gpExtTable.h"
 
 // Icons
-#include "images/index.xpm"
+#include "images/index.pngc"
 
 
 #define chkList     CTRL_CHECKLISTBOX("chkList")
@@ -54,7 +54,7 @@ frmGrantWizard::frmGrantWizard(frmMain *form, pgObject *obj) : ExecutionDialog(f
 	SetTitle(object->GetTranslatedMessage(GRANTWIZARDTITLE));
 
 	// Icon
-	SetIcon(wxIcon(index_xpm));
+	SetIcon(*index_png_ico);
 	nbNotebook = CTRL_NOTEBOOK("nbNotebook");
 	sqlPane = 0;
 

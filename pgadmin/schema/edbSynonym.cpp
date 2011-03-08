@@ -216,14 +216,14 @@ wxString edbSynonymCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/synonym.xpm"
-#include "images/synonyms.xpm"
+#include "images/synonym.pngc"
+#include "images/synonyms.pngc"
 
 edbSynonymFactory::edbSynonymFactory()
-	: pgDatabaseObjFactory(__("Public Synonym"), __("New Public Synonym..."), __("Create a new Public Synonym."), synonym_xpm)
+	: pgDatabaseObjFactory(__("Public Synonym"), __("New Public Synonym..."), __("Create a new Public Synonym."), synonym_png_img)
 {
 }
 
 
 edbSynonymFactory synonymFactory;
-static pgaCollectionFactory cf(&synonymFactory, __("Public Synonyms"), synonyms_xpm);
+static pgaCollectionFactory cf(&synonymFactory, __("Public Synonyms"), synonyms_png_img);

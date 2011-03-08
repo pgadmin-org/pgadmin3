@@ -155,15 +155,15 @@ wxString pgForeignDataWrapper::GetCreateOptions()
 
 ///////////////////////////////////////////////////
 
-#include "images/foreigndatawrapper.xpm"
-#include "images/foreigndatawrapper-sm.xpm"
-#include "images/foreigndatawrappers.xpm"
+#include "images/foreigndatawrapper.pngc"
+#include "images/foreigndatawrapper-sm.pngc"
+#include "images/foreigndatawrappers.pngc"
 
 pgForeignDataWrapperFactory::pgForeignDataWrapperFactory()
-	: pgDatabaseObjFactory(__("Foreign Data Wrapper"), __("New Foreign Data Wrapper..."), __("Create a new Foreign Data Wrapper."), foreigndatawrapper_xpm, foreigndatawrapper_sm_xpm)
+	: pgDatabaseObjFactory(__("Foreign Data Wrapper"), __("New Foreign Data Wrapper..."), __("Create a new Foreign Data Wrapper."), foreigndatawrapper_png_img, foreigndatawrapper_sm_png_img)
 {
 }
 
 
 pgForeignDataWrapperFactory foreignDataWrapperFactory;
-static pgaCollectionFactory cf(&foreignDataWrapperFactory, __("Foreign Data Wrappers"), foreigndatawrappers_xpm);
+static pgaCollectionFactory cf(&foreignDataWrapperFactory, __("Foreign Data Wrappers"), foreigndatawrappers_png_img);

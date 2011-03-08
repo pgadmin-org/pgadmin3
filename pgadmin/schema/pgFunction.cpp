@@ -1029,40 +1029,40 @@ pgObject *pgProcedureFactory::CreateObjects(pgCollection *collection, ctlTree *b
 }
 
 
-#include "images/function.xpm"
-#include "images/functions.xpm"
+#include "images/function.pngc"
+#include "images/functions.pngc"
 
-pgFunctionFactory::pgFunctionFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img)
+pgFunctionFactory::pgFunctionFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img)
 	: pgSchemaObjFactory(tn, ns, nls, img)
 {
 	metaType = PGM_FUNCTION;
 }
 
-pgFunctionFactory functionFactory(__("Function"), __("New Function..."), __("Create a new Function."), function_xpm);
-static pgaCollectionFactory cf(&functionFactory, __("Functions"), functions_xpm);
+pgFunctionFactory functionFactory(__("Function"), __("New Function..."), __("Create a new Function."), function_png_img);
+static pgaCollectionFactory cf(&functionFactory, __("Functions"), functions_png_img);
 
 
-#include "images/triggerfunction.xpm"
-#include "images/triggerfunctions.xpm"
+#include "images/triggerfunction.pngc"
+#include "images/triggerfunctions.pngc"
 
 pgTriggerFunctionFactory::pgTriggerFunctionFactory()
-	: pgFunctionFactory(__("Trigger Function"), __("New Trigger Function..."), __("Create a new Trigger Function."), triggerfunction_xpm)
+	: pgFunctionFactory(__("Trigger Function"), __("New Trigger Function..."), __("Create a new Trigger Function."), triggerfunction_png_img)
 {
 }
 
 pgTriggerFunctionFactory triggerFunctionFactory;
-static pgaCollectionFactory cft(&triggerFunctionFactory, __("Trigger Functions"), triggerfunctions_xpm);
+static pgaCollectionFactory cft(&triggerFunctionFactory, __("Trigger Functions"), triggerfunctions_png_img);
 
-#include "images/procedure.xpm"
-#include "images/procedures.xpm"
+#include "images/procedure.pngc"
+#include "images/procedures.pngc"
 
 pgProcedureFactory::pgProcedureFactory()
-	: pgFunctionFactory(__("Procedure"), __("New Procedure"), __("Create a new Procedure."), procedure_xpm)
+	: pgFunctionFactory(__("Procedure"), __("New Procedure"), __("Create a new Procedure."), procedure_png_img)
 {
 }
 
 pgProcedureFactory procedureFactory;
-static pgaCollectionFactory cfp(&procedureFactory, __("Procedures"), procedures_xpm);
+static pgaCollectionFactory cfp(&procedureFactory, __("Procedures"), procedures_png_img);
 
 pgFunctionCollection::pgFunctionCollection(pgaFactory *factory, pgSchema *sch)
 	: pgSchemaObjCollection(factory, sch)

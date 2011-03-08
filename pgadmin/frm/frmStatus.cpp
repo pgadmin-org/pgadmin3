@@ -35,14 +35,14 @@
 #include "utils/csvfiles.h"
 
 // Icons
-#include "images/clip_copy.xpm"
-#include "images/readdata.xpm"
-#include "images/query_cancel.xpm"
-#include "images/terminate_backend.xpm"
-#include "images/delete.xpm"
-#include "images/storedata.xpm"
-#include "images/down.xpm"
-#include "images/up.xpm"
+#include "images/clip_copy.pngc"
+#include "images/readdata.pngc"
+#include "images/query_cancel.pngc"
+#include "images/terminate_backend.pngc"
+#include "images/delete.pngc"
+#include "images/storedata.pngc"
+#include "images/down.pngc"
+#include "images/up.pngc"
 
 
 #include "db/pgConn.h"
@@ -251,15 +251,15 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 	// Set up toolbar
 	toolBar = new ctlMenuToolbar(this, -1, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_NODIVIDER);
 	toolBar->SetToolBitmapSize(wxSize(16, 16));
-	toolBar->AddTool(MNU_REFRESH, _("Refresh"), wxBitmap(readdata_xpm), _("Refresh"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_REFRESH, _("Refresh"), *readdata_png_bmp, _("Refresh"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_COPY, _("Copy"), wxBitmap(clip_copy_xpm), _("Copy selected text to clipboard"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_COPY_QUERY, _("Open query tool"), wxBitmap(clip_copy_xpm), _("Open the query tool with the selected query"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_COPY, _("Copy"), *clip_copy_png_bmp, _("Copy selected text to clipboard"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_COPY_QUERY, _("Open query tool"), *clip_copy_png_bmp, _("Open the query tool with the selected query"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
-	toolBar->AddTool(MNU_CANCEL, _("Cancel"), wxBitmap(query_cancel_xpm), _("Cancel query"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_TERMINATE, _("Terminate"), wxBitmap(terminate_backend_xpm), _("Terminate backend"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_COMMIT, _("Commit"), wxBitmap(storedata_xpm), _("Commit transaction"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_ROLLBACK, _("Rollback"), wxBitmap(delete_xpm), _("Rollback transaction"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_CANCEL, _("Cancel"), *query_cancel_png_bmp, _("Cancel query"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_TERMINATE, _("Terminate"), *terminate_backend_png_bmp, _("Terminate backend"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_COMMIT, _("Commit"), *storedata_png_bmp, _("Commit transaction"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_ROLLBACK, _("Rollback"), *delete_png_bmp, _("Rollback transaction"), wxITEM_NORMAL);
 	toolBar->AddSeparator();
 	cbLogfiles = new wxComboBox(toolBar, CTL_LOGCBO, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL,
 	                            wxCB_READONLY | wxCB_DROPDOWN);
@@ -305,8 +305,8 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 
 	// Image list for all listviews
 	listimages = new wxImageList(13, 8, true, 2);
-	listimages->Add(wxIcon(down_xpm));
-	listimages->Add(wxIcon(up_xpm));
+	listimages->Add(*down_png_ico);
+	listimages->Add(*up_png_ico);
 
 	// Create panel
 	AddStatusPane();

@@ -549,16 +549,16 @@ wxString gpExtTableCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/exttable.xpm"
-#include "images/exttable-sm.xpm"
-#include "images/exttables.xpm"
+#include "images/exttable.pngc"
+#include "images/exttable-sm.pngc"
+#include "images/exttables.pngc"
 
 gpExtTableFactory::gpExtTableFactory()
-	: pgSchemaObjFactory(__("External Table"), __("New External Table..."), __("Create a new External Table."), exttable_xpm, exttable_sm_xpm)
+	: pgSchemaObjFactory(__("External Table"), __("New External Table..."), __("Create a new External Table."), exttable_png_img, exttable_sm_png_img)
 {
 	metaType = GP_EXTTABLE;
 }
 
 
 gpExtTableFactory extTableFactory;
-static pgaCollectionFactory cf(&extTableFactory, __("External Tables"), exttables_xpm);
+static pgaCollectionFactory cf(&extTableFactory, __("External Tables"), exttables_png_img);

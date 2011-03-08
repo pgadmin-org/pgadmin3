@@ -19,7 +19,7 @@
 #include "db/pgSet.h"
 
 // Icons
-#include "images/property.xpm"
+#include "images/property.pngc"
 
 
 
@@ -55,7 +55,7 @@ dlgPgpassConfig::dlgPgpassConfig(pgFrame *parent, pgPassConfigLine *_line) :
 	userAdding = databaseAdding = false;
 
 	// Icon
-	SetIcon(wxIcon(property_xpm));
+	SetIcon(*property_png_ico);
 	RestorePosition();
 	line = _line;
 

@@ -24,15 +24,15 @@
 #include "gqb/gqbViewController.h"
 
 // Images
-#include "images/table-sm.xpm"
-#include "images/view-sm.xpm"
-#include "images/namespace-sm.xpm"
-#include "images/namespaces.xpm"
-#include "images/database-sm.xpm"
-#include "images/catalog-sm.xpm"
-#include "images/catalogs.xpm"
-#include "images/catalogobject-sm.xpm"
-#include "images/exttable-sm.xpm"	// Greenplum external tables
+#include "images/table-sm.pngc"
+#include "images/view-sm.pngc"
+#include "images/namespace-sm.pngc"
+#include "images/namespaces.pngc"
+#include "images/database-sm.pngc"
+#include "images/catalog-sm.pngc"
+#include "images/catalogs.pngc"
+#include "images/catalogobject-sm.pngc"
+#include "images/exttable-sm.pngc"	// Greenplum external tables
 
 BEGIN_EVENT_TABLE(gqbBrowser, wxTreeCtrl)
 	EVT_TREE_ITEM_ACTIVATED(GQB_BROWSER, gqbBrowser::OnItemActivated)
@@ -48,15 +48,15 @@ gqbBrowser::gqbBrowser(wxWindow *parent, wxWindowID id, const wxPoint &pos, cons
 	// Create normal images list of browser
 	// Remember to update enum gqbImages in gqbBrowser.h if changing the images!!
 	imageList = new wxImageList(16, 16);
-	imageList->Add(wxIcon(database_sm_xpm));
-	imageList->Add(wxIcon(namespace_sm_xpm));
-	imageList->Add(wxIcon(table_sm_xpm));
-	imageList->Add(wxIcon(namespaces_xpm));
-	imageList->Add(wxIcon(catalogs_xpm));
-	imageList->Add(wxIcon(catalog_sm_xpm));
-	imageList->Add(wxIcon(catalogobject_sm_xpm));
-	imageList->Add(wxIcon(view_sm_xpm));
-	imageList->Add(wxIcon(exttable_sm_xpm));
+	imageList->Add(*database_sm_png_ico);
+	imageList->Add(*namespace_sm_png_ico);
+	imageList->Add(*table_sm_png_ico);
+	imageList->Add(*namespaces_png_ico);
+	imageList->Add(*catalogs_png_ico);
+	imageList->Add(*catalog_sm_png_ico);
+	imageList->Add(*catalogobject_sm_png_ico);
+	imageList->Add(*view_sm_png_ico);
+	imageList->Add(*exttable_sm_png_ico);
 	this->AssignImageList(imageList);
 }
 

@@ -362,12 +362,12 @@ wxString pgTablespaceCollection::GetTranslatedMessage(int kindOfMessage) const
 }
 
 
-#include "images/tablespace.xpm"
-#include "images/tablespaces.xpm"
+#include "images/tablespace.pngc"
+#include "images/tablespaces.pngc"
 
 
 pgTablespaceFactory::pgTablespaceFactory()
-	: pgServerObjFactory(__("Tablespace"), __("New Tablespace..."), __("Create a new Tablespace."), tablespace_xpm)
+	: pgServerObjFactory(__("Tablespace"), __("New Tablespace..."), __("Create a new Tablespace."), tablespace_png_img)
 {
 	metaType = PGM_TABLESPACE;
 }
@@ -379,4 +379,4 @@ pgCollection *pgTablespaceFactory::CreateCollection(pgObject *obj)
 }
 
 pgTablespaceFactory tablespaceFactory;
-static pgaCollectionFactory cf(&tablespaceFactory, __("Tablespaces"), tablespaces_xpm);
+static pgaCollectionFactory cf(&tablespaceFactory, __("Tablespaces"), tablespaces_png_img);

@@ -215,14 +215,14 @@ pgObject *pgTextSearchTemplateFactory::CreateObjects(pgCollection *collection, c
 }
 
 
-#include "images/template.xpm"
-#include "images/templates.xpm"
+#include "images/template.pngc"
+#include "images/templates.pngc"
 
 pgTextSearchTemplateFactory::pgTextSearchTemplateFactory()
-	: pgSchemaObjFactory(__("FTS Template"), __("New FTS Template..."), __("Create a new FTS Template."), template_xpm)
+	: pgSchemaObjFactory(__("FTS Template"), __("New FTS Template..."), __("Create a new FTS Template."), template_png_img)
 {
 }
 
 
 pgTextSearchTemplateFactory textSearchTemplateFactory;
-static pgaCollectionFactory cf(&textSearchTemplateFactory, __("FTS Templates"), templates_xpm);
+static pgaCollectionFactory cf(&textSearchTemplateFactory, __("FTS Templates"), templates_png_img);

@@ -66,7 +66,7 @@ void pgConstraintCollection::ShowTreeDetail(ctlTree *browser, frmMain *form, ctl
 
 /////////////////////////////
 
-#include "images/constraints.xpm"
+#include "images/constraints.pngc"
 
 pgConstraintFactory::pgConstraintFactory()
 	: pgTableObjFactory(__("Constraint"), 0, 0, 0)
@@ -81,6 +81,6 @@ pgCollection *pgConstraintFactory::CreateCollection(pgObject *obj)
 
 
 pgConstraintFactory constraintFactory;
-pgaCollectionFactory constraintCollectionFactory(&constraintFactory, __("Constraints"), constraints_xpm);
+pgaCollectionFactory constraintCollectionFactory(&constraintFactory, __("Constraints"), constraints_png_img);
 
 

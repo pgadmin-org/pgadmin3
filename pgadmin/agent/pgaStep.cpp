@@ -286,15 +286,15 @@ wxString pgaStepCollection::GetTranslatedMessage(int kindOfMessage) const
 /////////////////////////////
 
 
-#include "images/step.xpm"
-#include "images/steps.xpm"
+#include "images/step.pngc"
+#include "images/steps.pngc"
 
 pgaStepFactory::pgaStepFactory()
-	: pgaJobObjFactory(__("Step"), __("New Step"), __("Create a new Step."), step_xpm)
+	: pgaJobObjFactory(__("Step"), __("New Step"), __("Create a new Step."), step_png_img)
 {
 	metaType = PGM_STEP;
 }
 
 
 pgaStepFactory stepFactory;
-static pgaCollectionFactory cf(&stepFactory, __("Steps"), steps_xpm);
+static pgaCollectionFactory cf(&stepFactory, __("Steps"), steps_png_img);

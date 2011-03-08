@@ -220,14 +220,14 @@ wxString pgGroupCollection::GetTranslatedMessage(int kindOfMessage) const
 	return message;
 }
 
-#include "images/group.xpm"
-#include "images/groups.xpm"
+#include "images/group.pngc"
+#include "images/groups.pngc"
 
 pgGroupFactory::pgGroupFactory()
-	: pgServerObjFactory(__("Group"), __("New Group..."), __("Create a new Group."), group_xpm)
+	: pgServerObjFactory(__("Group"), __("New Group..."), __("Create a new Group."), group_png_img)
 {
 }
 
 
 pgGroupFactory groupFactory;
-static pgaCollectionFactory cf(&groupFactory, __("Groups"), groups_xpm);
+static pgaCollectionFactory cf(&groupFactory, __("Groups"), groups_png_img);

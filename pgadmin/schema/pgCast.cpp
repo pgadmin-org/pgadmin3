@@ -243,15 +243,15 @@ wxString pgCastCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/cast.xpm"
-#include "images/cast-sm.xpm"
-#include "images/casts.xpm"
+#include "images/cast.pngc"
+#include "images/cast-sm.pngc"
+#include "images/casts.pngc"
 
 pgCastFactory::pgCastFactory()
-	: pgDatabaseObjFactory(__("Cast"), __("New Cast..."), __("Create a new Cast."), cast_xpm, cast_sm_xpm)
+	: pgDatabaseObjFactory(__("Cast"), __("New Cast..."), __("Create a new Cast."), cast_png_img, cast_sm_png_img)
 {
 }
 
 
 pgCastFactory castFactory;
-static pgaCollectionFactory cf(&castFactory, __("Casts"), casts_xpm);
+static pgaCollectionFactory cf(&castFactory, __("Casts"), casts_png_img);

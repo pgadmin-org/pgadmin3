@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VisualStudioToolFile
+	Name="png2c Compiler"
+	Version="8.00"
+	>
+	<Rules>
+		<CustomBuildRule
+			Name="png2c"
+			DisplayName="PNG Compiler"
+			CommandLine="&quot;$(SolutionDir)xtra\png2c\$(ConfigurationName)\png2c.exe&quot; [AllOptions] [AdditionalOptions] &quot;$(InputPath)&quot; &quot;$(InputPath)c&quot;"
+			Outputs="$(InputPath)c"
+			FileExtensions="*.png"
+			ExecutionDescription="Compiling PNG ($(InputPath))..."
+			>
+			<Properties>
+				<BooleanProperty
+					Name="ConstKeyword"
+					DisplayName="Const keyword?"
+					PropertyPageName="Options"
+					Description="Add the &apos;const&apos; keyword to the definition of the image."
+					Switch="-c"
+				/>
+				<BooleanProperty
+					Name="ZeroTerminate"
+					DisplayName="Zero terminate?"
+					PropertyPageName="Options"
+					Description="Terminate the array with a zero (NULL)."
+					Switch="-z"
+				/>
+			</Properties>
+		</CustomBuildRule>
+	</Rules>
+</VisualStudioToolFile>

@@ -287,15 +287,15 @@ pgObject *pgSequenceFactory::CreateObjects(pgCollection *collection, ctlTree *br
 }
 
 
-#include "images/sequence.xpm"
-#include "images/sequences.xpm"
+#include "images/sequence.pngc"
+#include "images/sequences.pngc"
 
 pgSequenceFactory::pgSequenceFactory()
-	: pgSchemaObjFactory(__("Sequence"), __("New Sequence..."), __("Create a new Sequence."), sequence_xpm)
+	: pgSchemaObjFactory(__("Sequence"), __("New Sequence..."), __("Create a new Sequence."), sequence_png_img)
 {
 	metaType = PGM_SEQUENCE;
 }
 
 
 pgSequenceFactory sequenceFactory;
-static pgaCollectionFactory cf(&sequenceFactory, __("Sequences"), sequences_xpm);
+static pgaCollectionFactory cf(&sequenceFactory, __("Sequences"), sequences_png_img);

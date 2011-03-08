@@ -1549,18 +1549,18 @@ pgObject *pgServerFactory::CreateObjects(pgCollection *obj, ctlTree *browser, co
 	return server;
 }
 
-#include "images/servers.xpm"
-#include "images/server.xpm"
-#include "images/server-sm.xpm"
-#include "images/serverbad.xpm"
-#include "images/serverbad-sm.xpm"
+#include "images/servers.pngc"
+#include "images/server.pngc"
+#include "images/server-sm.pngc"
+#include "images/serverbad.pngc"
+#include "images/serverbad-sm.pngc"
 
 pgServerFactory::pgServerFactory()
-	: pgaFactory(__("Server"), __("New Server Registration"), __("Create a new Server registration."), server_xpm, server_sm_xpm)
+	: pgaFactory(__("Server"), __("New Server Registration"), __("Create a new Server registration."), server_png_img, server_sm_png_img)
 {
 	metaType = PGM_SERVER;
-	closedId = addIcon(serverbad_xpm);
-	smallClosedId = addIcon(serverbad_sm_xpm);
+	closedId = addIcon(serverbad_png_img);
+	smallClosedId = addIcon(serverbad_sm_png_img);
 }
 
 pgCollection *pgServerFactory::CreateCollection(pgObject *obj)
@@ -1574,13 +1574,13 @@ pgCollection *pgServerObjFactory::CreateCollection(pgObject *obj)
 }
 
 pgServerFactory serverFactory;
-static pgaCollectionFactory cf(&serverFactory, __("Servers"), servers_xpm);
+static pgaCollectionFactory cf(&serverFactory, __("Servers"), servers_png_img);
 
-#include "images/connect.xpm"
+#include "images/connect.pngc"
 addServerFactory::addServerFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
 	mnu->Append(id, _("&Add Server..."), _("Add a connection to a server."));
-	toolbar->AddTool(id, _("Add Server"), wxBitmap(connect_xpm), _("Add a connection to a server."), wxITEM_NORMAL);
+	toolbar->AddTool(id, _("Add Server"), *connect_png_bmp, _("Add a connection to a server."), wxITEM_NORMAL);
 }
 
 

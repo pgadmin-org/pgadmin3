@@ -679,27 +679,27 @@ wxString pgCatalogObjCollection::GetTranslatedMessage(int kindOfMessage) const
 }
 
 
-#include "images/namespace.xpm"
-#include "images/namespace-sm.xpm"
-#include "images/namespaces.xpm"
-#include "images/catalog.xpm"
-#include "images/catalog-sm.xpm"
-#include "images/catalogs.xpm"
+#include "images/namespace.pngc"
+#include "images/namespace-sm.pngc"
+#include "images/namespaces.pngc"
+#include "images/catalog.pngc"
+#include "images/catalog-sm.pngc"
+#include "images/catalogs.pngc"
 
-pgSchemaBaseFactory::pgSchemaBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img, const char **imgSm)
+pgSchemaBaseFactory::pgSchemaBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img, wxImage *imgSm)
 	: pgDatabaseObjFactory(tn, ns, nls, img, imgSm)
 {
 
 }
 
 pgSchemaFactory::pgSchemaFactory()
-	: pgSchemaBaseFactory(__("Schema"), __("New Schema..."), __("Create a new Schema."), namespace_xpm, namespace_sm_xpm)
+	: pgSchemaBaseFactory(__("Schema"), __("New Schema..."), __("Create a new Schema."), namespace_png_img, namespace_sm_png_img)
 {
 	metaType = PGM_SCHEMA;
 }
 
 pgCatalogFactory::pgCatalogFactory()
-	: pgSchemaBaseFactory(__("Catalog"), __("New Catalog..."), __("Create a new Catalog."), catalog_xpm, catalog_sm_xpm)
+	: pgSchemaBaseFactory(__("Catalog"), __("New Catalog..."), __("Create a new Catalog."), catalog_png_img, catalog_sm_png_img)
 {
 	metaType = PGM_CATALOG;
 }
@@ -711,7 +711,7 @@ pgCollection *pgSchemaObjFactory::CreateCollection(pgObject *obj)
 
 
 pgSchemaFactory schemaFactory;
-static pgaCollectionFactory scf(&schemaFactory, __("Schemas"), namespaces_xpm);
+static pgaCollectionFactory scf(&schemaFactory, __("Schemas"), namespaces_png_img);
 
 pgCatalogFactory catalogFactory;
-static pgaCollectionFactory ccf(&catalogFactory, __("Catalogs"), catalogs_xpm);
+static pgaCollectionFactory ccf(&catalogFactory, __("Catalogs"), catalogs_png_img);

@@ -142,15 +142,15 @@ pgObject *slListenFactory::CreateObjects(pgCollection *coll, ctlTree *browser, c
 
 ///////////////////////////////////////////////////
 
-#include "images/sllisten.xpm"
-#include "images/sllistens.xpm"
+#include "images/sllisten.pngc"
+#include "images/sllistens.pngc"
 
 slListenFactory::slListenFactory()
-	: slNodeObjFactory(__("Listen"), __("New Listen"), __("Create a new Listen."), sllisten_xpm)
+	: slNodeObjFactory(__("Listen"), __("New Listen"), __("Create a new Listen."), sllisten_png_img)
 {
 	metaType = SLM_LISTEN;
 }
 
 
 slListenFactory listenFactory;
-static pgaCollectionFactory cf(&listenFactory, __("listens"), sllistens_xpm);
+static pgaCollectionFactory cf(&listenFactory, __("listens"), sllistens_png_img);

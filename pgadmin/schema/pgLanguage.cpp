@@ -223,15 +223,15 @@ wxString pgLanguageCollection::GetTranslatedMessage(int kindOfMessage) const
 
 ///////////////////////////////////////////////////
 
-#include "images/language.xpm"
-#include "images/language-sm.xpm"
-#include "images/languages.xpm"
+#include "images/language.pngc"
+#include "images/language-sm.pngc"
+#include "images/languages.pngc"
 
 pgLanguageFactory::pgLanguageFactory()
-	: pgDatabaseObjFactory(__("Language"), __("New Language..."), __("Create a new Language."), language_xpm, language_sm_xpm)
+	: pgDatabaseObjFactory(__("Language"), __("New Language..."), __("Create a new Language."), language_png_img, language_sm_png_img)
 {
 }
 
 
 pgLanguageFactory languageFactory;
-static pgaCollectionFactory cf(&languageFactory, __("Languages"), languages_xpm);
+static pgaCollectionFactory cf(&languageFactory, __("Languages"), languages_png_img);

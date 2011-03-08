@@ -536,15 +536,15 @@ wxString pgaScheduleCollection::GetTranslatedMessage(int kindOfMessage) const
 /////////////////////////////
 
 
-#include "images/schedule.xpm"
-#include "images/schedules.xpm"
+#include "images/schedule.pngc"
+#include "images/schedules.pngc"
 
 pgaScheduleFactory::pgaScheduleFactory()
-	: pgaJobObjFactory(__("Schedule"), __("New Schedule"), __("Create a new Schedule."), schedule_xpm)
+	: pgaJobObjFactory(__("Schedule"), __("New Schedule"), __("Create a new Schedule."), schedule_png_img)
 {
 	metaType = PGM_SCHEDULE;
 }
 
 
 pgaScheduleFactory scheduleFactory;
-static pgaCollectionFactory cf(&scheduleFactory, __("Schedules"), schedules_xpm);
+static pgaCollectionFactory cf(&scheduleFactory, __("Schedules"), schedules_png_img);

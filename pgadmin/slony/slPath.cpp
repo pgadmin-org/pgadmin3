@@ -134,15 +134,15 @@ pgObject *slPathFactory::CreateObjects(pgCollection *coll, ctlTree *browser, con
 
 ///////////////////////////////////////////////////
 
-#include "images/slpath.xpm"
-#include "images/slpaths.xpm"
+#include "images/slpath.pngc"
+#include "images/slpaths.pngc"
 
 slPathFactory::slPathFactory()
-	: slNodeObjFactory(__("Path"), __("New Path"), __("Create a new Path."), slpath_xpm)
+	: slNodeObjFactory(__("Path"), __("New Path"), __("Create a new Path."), slpath_png_img)
 {
 	metaType = SLM_PATH;
 }
 
 
 slPathFactory pathFactory;
-static pgaCollectionFactory cf(&pathFactory, __("Paths"), slpaths_xpm);
+static pgaCollectionFactory cf(&pathFactory, __("Paths"), slpaths_png_img);

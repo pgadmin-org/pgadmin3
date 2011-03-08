@@ -158,16 +158,16 @@ pgObject *slSlTableFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 
 ///////////////////////////////////////////////////
 
-#include "images/table-repl.xpm"
-#include "images/table-repl-sm.xpm"
-#include "images/tables.xpm"
+#include "images/table-repl.pngc"
+#include "images/table-repl-sm.pngc"
+#include "images/tables.pngc"
 
 slSlTableFactory::slSlTableFactory()
-	: slSetObjFactory(__("Table"), __("New Table"), __("Create a new Table."), table_repl_xpm, table_repl_sm_xpm)
+	: slSetObjFactory(__("Table"), __("New Table"), __("Create a new Table."), table_repl_png_img, table_repl_sm_png_img)
 {
 	metaType = SLM_TABLE;
 }
 
 
 slSlTableFactory slTableFactory;
-static pgaCollectionFactory cf(&slTableFactory, __("Tables"), tables_xpm);
+static pgaCollectionFactory cf(&slTableFactory, __("Tables"), tables_png_img);

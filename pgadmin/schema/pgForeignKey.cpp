@@ -381,16 +381,16 @@ wxString pgForeignKeyCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/foreignkey.xpm"
-#include "images/foreignkeybad.xpm"
+#include "images/foreignkey.pngc"
+#include "images/foreignkeybad.pngc"
 
 
 pgForeignKeyFactory::pgForeignKeyFactory()
-	: pgTableObjFactory(__("Foreign Key"), __("New Foreign Key..."), __("Create a new Foreign Key constraint."), foreignkey_xpm)
+	: pgTableObjFactory(__("Foreign Key"), __("New Foreign Key..."), __("Create a new Foreign Key constraint."), foreignkey_png_img)
 {
 	metaType = PGM_FOREIGNKEY;
 	collectionFactory = &constraintCollectionFactory;
-	closedId = addIcon(foreignkeybad_xpm);
+	closedId = addIcon(foreignkeybad_png_img);
 }
 
 

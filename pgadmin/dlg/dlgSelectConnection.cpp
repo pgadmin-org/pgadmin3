@@ -21,7 +21,7 @@
 #include "dlg/dlgSelectConnection.h"
 #include "dlg/dlgConnect.h"
 #include "schema/pgServer.h"
-#include "images/connect.xpm"
+#include "images/connect.pngc"
 
 #define CTRLID_CBSERVER 4242
 #define CTRLID_CBDATABASE 4243
@@ -50,7 +50,7 @@ dlgSelectConnection::dlgSelectConnection(wxWindow *parent, frmMain *form) :
 	wxWindowBase::SetFont(settings->GetSystemFont());
 	LoadResource(parent, wxT("dlgSelectConnection"));
 
-	SetIcon(wxIcon(connect_xpm));
+	SetIcon(*connect_png_ico);
 	RestorePosition();
 
 	if (form != NULL)

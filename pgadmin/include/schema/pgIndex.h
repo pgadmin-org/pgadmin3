@@ -280,7 +280,7 @@ public:
 	virtual pgObject *CreateObjects(pgCollection *obj, ctlTree *browser, const wxString &restr = wxEmptyString);
 	virtual pgCollection *CreateCollection(pgObject *obj);
 protected:
-	pgIndexBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img) : pgTableObjFactory(tn, ns, nls, img) {}
+	pgIndexBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img = 0) : pgTableObjFactory(tn, ns, nls, img) {}
 };
 
 class pgIndexFactory : public pgIndexBaseFactory

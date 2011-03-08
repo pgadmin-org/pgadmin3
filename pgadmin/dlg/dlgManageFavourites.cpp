@@ -19,8 +19,8 @@
 #include "schema/pgServer.h"
 #include "utils/sysLogger.h"
 
-#include "images/folder.xpm"
-#include "images/favourite.xpm"
+#include "images/folder.pngc"
+#include "images/favourite.pngc"
 
 #include "utils/favourites.h"
 
@@ -55,8 +55,8 @@ dlgManageFavourites::dlgManageFavourites(wxWindow *parent, queryFavouriteFolder 
 	this->favourites = favourites;
 
 	wxImageList *imgList = new wxImageList(16, 16, true, 2);
-	imgList->Add(wxIcon(favourite_xpm));
-	imgList->Add(wxIcon(folder_xpm));
+	imgList->Add(*favourite_png_ico);
+	imgList->Add(*folder_png_ico);
 
 	trLocation->AssignImageList(imgList);
 

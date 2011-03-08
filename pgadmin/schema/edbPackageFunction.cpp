@@ -383,32 +383,32 @@ pgObject *edbPackageProcedureFactory::CreateObjects(pgCollection *collection, ct
 	return AppendFunctions(collection, ((edbPackageObjCollection *)collection)->GetPackage(), browser, restr);
 }
 
-#include "images/function.xpm"
-#include "images/functions.xpm"
+#include "images/function.pngc"
+#include "images/functions.pngc"
 
-edbPackageFunctionFactory::edbPackageFunctionFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img)
+edbPackageFunctionFactory::edbPackageFunctionFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img)
 	: edbPackageObjFactory(tn, ns, nls, img)
 {
 	metaType = EDB_PACKAGEFUNCTION;
 }
 
-edbPackageFunctionFactory packageFunctionFactory(__("Function"), __("New Function..."), __("Create a new Function."), function_xpm);
-static pgaCollectionFactory cff(&packageFunctionFactory, __("Functions"), functions_xpm);
+edbPackageFunctionFactory packageFunctionFactory(__("Function"), __("New Function..."), __("Create a new Function."), function_png_img);
+static pgaCollectionFactory cff(&packageFunctionFactory, __("Functions"), functions_png_img);
 
 pgCollection *edbPackageObjFactory::CreateCollection(pgObject *obj)
 {
 	return new edbPackageObjCollection(GetCollectionFactory(), (edbPackage *)obj);
 }
 
-#include "images/procedure.xpm"
-#include "images/procedures.xpm"
+#include "images/procedure.pngc"
+#include "images/procedures.pngc"
 
 edbPackageProcedureFactory::edbPackageProcedureFactory()
-	: edbPackageFunctionFactory(__("Procedure"), __("New Procedure..."), __("Create a new Procedure."), procedure_xpm)
+	: edbPackageFunctionFactory(__("Procedure"), __("New Procedure..."), __("Create a new Procedure."), procedure_png_img)
 {
 }
 
 edbPackageProcedureFactory packageProcedureFactory;
-static pgaCollectionFactory cfp(&packageProcedureFactory, __("Procedures"), procedures_xpm);
+static pgaCollectionFactory cfp(&packageProcedureFactory, __("Procedures"), procedures_png_img);
 
 

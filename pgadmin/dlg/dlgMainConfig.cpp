@@ -18,7 +18,7 @@
 
 
 // Icons
-#include "images/property.xpm"
+#include "images/property.pngc"
 
 
 
@@ -79,7 +79,7 @@ dlgMainConfig::dlgMainConfig(pgFrame *parent, pgSettingItem *_item) :
 	LoadResource((wxWindow *)parent, wxT("dlgMainConfig"));
 
 	// Icon
-	SetIcon(wxIcon(property_xpm));
+	SetIcon(*property_png_ico);
 	RestorePosition();
 
 	item = _item;

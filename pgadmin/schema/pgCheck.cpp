@@ -224,10 +224,10 @@ wxString pgCheckCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/check.xpm"
+#include "images/check.pngc"
 
 pgCheckFactory::pgCheckFactory()
-	: pgTableObjFactory(__("Check"), __("New Check..."), __("Create a new Check constraint."), check_xpm)
+	: pgTableObjFactory(__("Check"), __("New Check..."), __("Create a new Check constraint."), check_png_img)
 {
 	metaType = PGM_CHECK;
 	collectionFactory = &constraintCollectionFactory;

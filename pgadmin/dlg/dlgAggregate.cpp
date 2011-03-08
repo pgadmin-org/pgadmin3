@@ -22,6 +22,8 @@
 #include "schema/pgAggregate.h"
 #include "schema/pgDatatype.h"
 
+#include "images/aggregate.pngc"
+
 // Images
 
 
@@ -62,7 +64,7 @@ dlgProperty *pgAggregateFactory::CreateDialog(frmMain *frame, pgObject *node, pg
 dlgAggregate::dlgAggregate(pgaFactory *f, frmMain *frame, pgAggregate *node, pgSchema *sch)
 	: dlgTypeProperty(f, frame, wxT("dlgAggregate"))
 {
-	SetIcon(wxIcon(aggregateFactory.GetImage()));
+	SetIcon(*aggregate_png_ico);
 	schema = sch;
 	aggregate = node;
 }

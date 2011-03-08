@@ -182,16 +182,16 @@ wxString pgCatalogObjectCollection::GetTranslatedMessage(int kindOfMessage) cons
 
 /////////////////////////////
 
-#include "images/catalogobject.xpm"
-#include "images/catalogobject-sm.xpm"
-#include "images/catalogobjects.xpm"
+#include "images/catalogobject.pngc"
+#include "images/catalogobject-sm.pngc"
+#include "images/catalogobjects.pngc"
 
 pgCatalogObjectFactory::pgCatalogObjectFactory()
-	: pgSchemaObjFactory(__("Catalog Object"), __("New Catalog Object..."), __("Create a new Catalog Object."), catalogobject_xpm, catalogobject_sm_xpm)
+	: pgSchemaObjFactory(__("Catalog Object"), __("New Catalog Object..."), __("Create a new Catalog Object."), catalogobject_png_img, catalogobject_sm_png_img)
 {
 	metaType = PGM_CATALOGOBJECT;
 }
 
 
 pgCatalogObjectFactory catalogObjectFactory;
-static pgaCollectionFactory cf(&catalogObjectFactory, __("Catalog Objects"), catalogobjects_xpm);
+static pgaCollectionFactory cf(&catalogObjectFactory, __("Catalog Objects"), catalogobjects_png_img);

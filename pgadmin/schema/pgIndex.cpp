@@ -632,18 +632,18 @@ wxString pgIndexBaseCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/index.xpm"
-#include "images/indexes.xpm"
+#include "images/index.pngc"
+#include "images/indexes.pngc"
 
 pgIndexFactory::pgIndexFactory()
-	: pgIndexBaseFactory(__("Index"), __("New Index..."), __("Create a new Index."), index_xpm)
+	: pgIndexBaseFactory(__("Index"), __("New Index..."), __("Create a new Index."), index_png_img)
 {
 	metaType = PGM_INDEX;
 }
 
 
 pgIndexFactory indexFactory;
-static pgaCollectionFactory cf(&indexFactory, __("Indexes"), indexes_xpm);
+static pgaCollectionFactory cf(&indexFactory, __("Indexes"), indexes_png_img);
 
 
 pgIndexBaseCollection::pgIndexBaseCollection(pgaFactory *factory, pgTable *tbl)

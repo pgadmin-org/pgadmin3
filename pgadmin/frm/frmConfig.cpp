@@ -32,15 +32,15 @@
 #include "frm/menu.h"
 #include "utils/pgfeatures.h"
 
-#include "images/file_open.xpm"
-#include "images/file_save.xpm"
-#include "images/edit_undo.xpm"
-#include "images/delete.xpm"
-#include "images/help.xpm"
-#include "images/hint2.xpm"
-#include "images/checked.xpm"
-#include "images/unchecked.xpm"
-#include "images/query_execute.xpm"
+#include "images/file_open.pngc"
+#include "images/file_save.pngc"
+#include "images/edit_undo.pngc"
+#include "images/delete.pngc"
+#include "images/help.pngc"
+#include "images/hint2.pngc"
+#include "images/checked.pngc"
+#include "images/unchecked.pngc"
+#include "images/query_execute.pngc"
 
 
 BEGIN_EVENT_TABLE(frmConfig, pgFrame)
@@ -92,8 +92,8 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	if (!configImageList)
 	{
 		configImageList = new wxImageList(16, 16, true, 2);
-		configImageList->Add(wxIcon(unchecked_xpm));
-		configImageList->Add(wxIcon(checked_xpm));
+		configImageList->Add(*unchecked_png_ico);
+		configImageList->Add(*checked_png_ico);
 	}
 
 	menuFactories = new menuFactoryList();
@@ -109,10 +109,10 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	recentFileMenu = new wxMenu();
 
 	fileMenu->Append(MNU_OPEN, _("&Open...\tCtrl-O"),   _("Open a query file"));
-	toolBar->AddTool(MNU_OPEN, _("Open"), wxBitmap(file_open_xpm), _("Open file"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_OPEN, _("Open"), *file_open_png_bmp, _("Open file"), wxITEM_NORMAL);
 
 	fileMenu->Append(MNU_SAVE, _("&Save\tCtrl-S"),      _("Save current file"));
-	toolBar->AddTool(MNU_SAVE, _("Save"), wxBitmap(file_save_xpm), _("Save file"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_SAVE, _("Save"), *file_save_png_bmp, _("Save file"), wxITEM_NORMAL);
 
 	fileMenu->Append(MNU_SAVEAS, _("Save &as..."),      _("Save file under new name"));
 
@@ -122,7 +122,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	// File Menu
 
 	fileMenu->Append(MNU_EXECUTE, _("Reload server"),   _("Reload Server to apply configuration changes."));
-	toolBar->AddTool(MNU_EXECUTE, _("Reload server"), wxBitmap(query_execute_xpm), _("Reload Server to apply configuration changes."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_EXECUTE, _("Reload server"), *query_execute_png_bmp, _("Reload Server to apply configuration changes."), wxITEM_NORMAL);
 
 	fileMenu->AppendSeparator();
 	toolBar->AddSeparator();
@@ -131,10 +131,10 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	fileMenu->Append(MNU_EXIT, _("E&xit\tCtrl-W"), _("Exit configuration tool"));
 
 	editMenu->Append(MNU_UNDO, _("&Undo\tCtrl-Z"), _("Undo last action"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_UNDO, _("Undo"), wxBitmap(edit_undo_xpm), _("Undo last action"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_UNDO, _("Undo"), *edit_undo_png_bmp, _("Undo last action"), wxITEM_NORMAL);
 	editMenu->AppendSeparator();
 	editMenu->Append(MNU_DELETE, _("&Delete\tDEL"), _("Delete current row"), wxITEM_NORMAL);
-	toolBar->AddTool(MNU_DELETE, _("Delete"), wxBitmap(delete_xpm), _("Delete current row"), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_DELETE, _("Delete"), *delete_png_bmp, _("Delete current row"), wxITEM_NORMAL);
 
 	toolBar->AddSeparator();
 
@@ -142,7 +142,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	helpMenu->Append(MNU_CONTENTS, _("&Help"),                 _("Open the helpfile."));
 
 	helpMenu->Append(MNU_HINT, _("Hints"), _("Display helpful hints on current object."));
-	toolBar->AddTool(MNU_HINT, _("Hints"), wxBitmap(hint2_xpm),   _("Display helpful hints on current object."));
+	toolBar->AddTool(MNU_HINT, _("Hints"), *hint2_png_bmp,   _("Display helpful hints on current object."));
 	helpMenu->Append(MNU_HELP, _("&Configuration Help\tF1"),      _("Display help on configuration options."));
 	helpMenu->AppendSeparator();
 
@@ -173,7 +173,7 @@ void frmConfig::InitFrame(const wxChar *frameName)
 	wxAcceleratorTable accel(3, entries);
 	SetAcceleratorTable(accel);
 
-	toolBar->AddTool(MNU_HELP, _("Help"), wxBitmap(help_xpm),      _("Display help on configuration options."), wxITEM_NORMAL);
+	toolBar->AddTool(MNU_HELP, _("Help"), *help_png_bmp,      _("Display help on configuration options."), wxITEM_NORMAL);
 	toolBar->Realize();
 
 	UpdateRecentFiles();

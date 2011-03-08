@@ -221,14 +221,14 @@ wxString pgConversionCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/conversion.xpm"
-#include "images/conversions.xpm"
+#include "images/conversion.pngc"
+#include "images/conversions.pngc"
 
 pgConversionFactory::pgConversionFactory()
-	: pgSchemaObjFactory(__("Conversion"), __("New Conversion..."), __("Create a new Conversion."), conversion_xpm)
+	: pgSchemaObjFactory(__("Conversion"), __("New Conversion..."), __("Create a new Conversion."), conversion_png_img)
 {
 }
 
 
 pgConversionFactory conversionFactory;
-static pgaCollectionFactory cf(&conversionFactory, __("Conversions"), conversions_xpm);
+static pgaCollectionFactory cf(&conversionFactory, __("Conversions"), conversions_png_img);

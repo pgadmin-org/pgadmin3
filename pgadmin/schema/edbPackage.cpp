@@ -325,15 +325,15 @@ wxString edbPackageCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/package.xpm"
-#include "images/packages.xpm"
+#include "images/package.pngc"
+#include "images/packages.pngc"
 
 edbPackageFactory::edbPackageFactory()
-	: pgSchemaObjFactory(__("Package"), __("New Package..."), __("Create a new package."), package_xpm)
+	: pgSchemaObjFactory(__("Package"), __("New Package..."), __("Create a new package."), package_png_img)
 {
 	metaType = EDB_PACKAGE;
 }
 
 
 edbPackageFactory packageFactory;
-static pgaCollectionFactory cf(&packageFactory, __("Packages"), packages_xpm);
+static pgaCollectionFactory cf(&packageFactory, __("Packages"), packages_png_img);

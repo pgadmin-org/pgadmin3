@@ -27,7 +27,7 @@
 #include "schema/pgView.h"
 
 // Icons
-#include "images/sortfilter.xpm"
+#include "images/sortfilter.pngc"
 
 #define nbOptions                   CTRL_NOTEBOOK("nbOptions")
 #define btnAsc                      CTRL_BUTTON("btnAsc")
@@ -66,7 +66,7 @@ dlgEditGridOptions::dlgEditGridOptions(frmEditGrid *win, pgConn *conn, const wxS
 	conv = conn->GetConv();
 
 	// Icon
-	SetIcon(wxIcon(sortfilter_xpm));
+	SetIcon(*sortfilter_png_ico);
 	RestorePosition();
 
 	int cols = grid->GetNumberCols();

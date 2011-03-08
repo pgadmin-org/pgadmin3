@@ -9,7 +9,7 @@
 
 AUTOMAKE_OPTIONS = foreign
 
-SUBDIRS = branding i18n plugins.d pgadmin xtra pkg
+SUBDIRS = xtra/png2c branding i18n plugins.d pgadmin xtra pkg
 
 EXTRA_DIST = \
 	$(top_srcdir)/BUGS \

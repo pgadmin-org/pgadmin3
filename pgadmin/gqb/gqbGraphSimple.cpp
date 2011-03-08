@@ -21,8 +21,8 @@
 #include "gqb/gqbGraphSimple.h"
 #include "gqb/gqbQueryObjs.h"
 // GQB Images
-#include "images/gqbColNotSel.xpm"
-#include "images/gqbColSel.xpm"
+#include "images/gqbColNotSel.pngc"
+#include "images/gqbColSel.pngc"
 
 gqbGraphSimple::gqbGraphSimple()
 {
@@ -41,8 +41,8 @@ gqbGraphSimple::gqbGraphSimple()
 	lineClickThreshold = 7;
 	selectedPen = wxPen(wxColour(0, 146, 195), 2, wxSOLID);
 	selectedBrush = wxBrush(wxColour(0, 146, 195), wxSOLID);
-	imgSelBoxEmpty = wxBitmap(gqbColNotSel_xpm);
-	imgSelBoxSelected = wxBitmap(gqbColSel_xpm);
+	imgSelBoxEmpty = *gqbColNotSel_png_bmp;
+	imgSelBoxSelected = *gqbColSel_png_bmp;
 
 }
 

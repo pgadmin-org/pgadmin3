@@ -271,15 +271,15 @@ wxString pgDomainCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/domain.xpm"
-#include "images/domain-sm.xpm"
-#include "images/domains.xpm"
+#include "images/domain.pngc"
+#include "images/domain-sm.pngc"
+#include "images/domains.pngc"
 
 pgDomainFactory::pgDomainFactory()
-	: pgSchemaObjFactory(__("Domain"), __("New Domain..."), __("Create a new Domain."), domain_xpm, domain_sm_xpm)
+	: pgSchemaObjFactory(__("Domain"), __("New Domain..."), __("Create a new Domain."), domain_png_img, domain_sm_png_img)
 {
 }
 
 
 pgDomainFactory domainFactory;
-static pgaCollectionFactory cf(&domainFactory, __("Domains"), domains_xpm);
+static pgaCollectionFactory cf(&domainFactory, __("Domains"), domains_png_img);

@@ -25,7 +25,7 @@
 #include "ctl/ctlDefaultSecurityPanel.h"
 
 // Images
-#include "images/properties.xpm"
+#include "images/properties.pngc"
 
 #include "frm/frmMain.h"
 #include "frm/frmHint.h"
@@ -126,7 +126,12 @@ dlgProperty::dlgProperty(pgaFactory *f, frmMain *frame, const wxString &resName)
 		wxMessageBox(wxString::Format(_("Problem with resource %s: Notebook not found.\nPrepare to crash!"), resName.c_str()));
 		return;
 	}
-	SetIcon(wxIcon(factory->GetImage()));
+
+	// Set the icon
+	wxBitmap bm(factory->GetImage());
+	wxIcon ico;
+	ico.CopyFromBitmap(bm);
+	SetIcon(ico);
 
 	txtName = CTRL_TEXT("txtName");
 	txtOid = CTRL_TEXT("txtOID");
@@ -2094,7 +2099,7 @@ propertyFactory::propertyFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuTool
 	else
 		context = false;
 	if (toolbar)
-		toolbar->AddTool(id, _("Properties"), wxBitmap(properties_xpm), _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
+		toolbar->AddTool(id, _("Properties"), *properties_png_bmp, _("Display/edit the properties of the selected object."), wxITEM_NORMAL);
 }
 
 
@@ -2113,11 +2118,11 @@ bool propertyFactory::CheckEnable(pgObject *obj)
 }
 
 
-#include "images/create.xpm"
+#include "images/create.pngc"
 createFactory::createFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : actionFactory(list)
 {
 	mnu->Append(id, _("&Create..."),  _("Create a new object of the same type as the selected object."));
-	toolbar->AddTool(id, _("Create"), wxBitmap(create_xpm), _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
+	toolbar->AddTool(id, _("Create"), *create_png_bmp, _("Create a new object of the same type as the selected object."), wxITEM_NORMAL);
 }
 
 
@@ -2136,11 +2141,11 @@ bool createFactory::CheckEnable(pgObject *obj)
 }
 
 
-#include "images/drop.xpm"
+#include "images/drop.pngc"
 dropFactory::dropFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
 	mnu->Append(id, _("&Delete/Drop...\tDel"),  _("Delete/Drop the selected object."));
-	toolbar->AddTool(id, _("Drop..."), wxBitmap(drop_xpm), _("Drop the currently selected object."), wxITEM_NORMAL);
+	toolbar->AddTool(id, _("Drop..."), *drop_png_bmp, _("Drop the currently selected object."), wxITEM_NORMAL);
 }
 
 
@@ -2176,7 +2181,7 @@ bool dropCascadedFactory::CheckEnable(pgObject *obj)
 }
 
 
-#include "images/refresh.xpm"
+#include "images/refresh.pngc"
 refreshFactory::refreshFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
 	if (mnu)
@@ -2184,7 +2189,7 @@ refreshFactory::refreshFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolba
 	else
 		context = false;
 	if (toolbar)
-		toolbar->AddTool(id, _("Refresh"), wxBitmap(refresh_xpm), _("Refresh the selected object."), wxITEM_NORMAL);
+		toolbar->AddTool(id, _("Refresh"), *refresh_png_bmp, _("Refresh the selected object."), wxITEM_NORMAL);
 }
 
 

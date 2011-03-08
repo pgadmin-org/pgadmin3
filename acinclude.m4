@@ -705,6 +705,7 @@ AC_DEFUN([SETUP_WXWIDGETS],
 				pgsTest_LDADD="$pgsTest_LDADD $OSX_ARCH"
 				pgScript_LDADD=`echo $pgScript_LDADD | sed -e "s/-arch ppc//g" -e "s/-arch i386//g" -e "s/-arch x86_64//g" -e "s/-arch ppc64//g"`
 				pgScript_LDADD="$pgScript_LDADD $OSX_ARCH"
+				png2c_LDADD="$OSX_ARCH"
 
 				;;
 			*solaris*)
@@ -719,6 +720,7 @@ AC_SUBST(WX_CONFIG)
 AC_SUBST(pgadmin3_LDADD)
 AC_SUBST(pgsTest_LDADD)
 AC_SUBST(pgScript_LDADD)
+AC_SUBST(png2c_LDADD)
 
 #########################
 # Setup libxml2 headers #

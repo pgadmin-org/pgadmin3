@@ -639,34 +639,34 @@ pgObject *pgGroupRoleFactory::CreateObjects(pgCollection *collection, ctlTree *b
 }
 
 
-#include "images/user.xpm"
-#include "images/group.xpm"
-#include "images/roles.xpm"
-#include "images/loginroles.xpm"
+#include "images/user.pngc"
+#include "images/group.pngc"
+#include "images/roles.pngc"
+#include "images/loginroles.pngc"
 
 
-pgRoleBaseFactory::pgRoleBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, const char **img)
+pgRoleBaseFactory::pgRoleBaseFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img)
 	: pgServerObjFactory(tn, ns, nls, img)
 {
 	metaType = PGM_ROLE;
 }
 
 pgLoginRoleFactory::pgLoginRoleFactory()
-	: pgRoleBaseFactory(__("Login Role"), __("New Login Role..."), __("Create a new Login Role."), user_xpm)
+	: pgRoleBaseFactory(__("Login Role"), __("New Login Role..."), __("Create a new Login Role."), user_png_img)
 {
 }
 
 pgLoginRoleFactory loginRoleFactory;
-static pgaCollectionFactory lcf(&loginRoleFactory, __("Login Roles"), loginroles_xpm);
+static pgaCollectionFactory lcf(&loginRoleFactory, __("Login Roles"), loginroles_png_img);
 
 
 pgGroupRoleFactory::pgGroupRoleFactory()
-	: pgRoleBaseFactory(__("Group Role"), __("New Group Role..."), __("Create a new Group Role."), group_xpm)
+	: pgRoleBaseFactory(__("Group Role"), __("New Group Role..."), __("Create a new Group Role."), group_png_img)
 {
 }
 
 pgGroupRoleFactory groupRoleFactory;
-static pgaCollectionFactory gcf(&groupRoleFactory, __("Group Roles"), roles_xpm);
+static pgaCollectionFactory gcf(&groupRoleFactory, __("Group Roles"), roles_png_img);
 
 
 reassignDropOwnedFactory::reassignDropOwnedFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)

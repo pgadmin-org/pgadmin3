@@ -325,20 +325,20 @@ wxString pgaJobObjCollection::GetTranslatedMessage(int kindOfMessage) const
 /////////////////////////////
 
 
-#include "images/job.xpm"
-#include "images/jobs.xpm"
-#include "images/jobdisabled.xpm"
+#include "images/job.pngc"
+#include "images/jobs.pngc"
+#include "images/jobdisabled.pngc"
 
 pgaJobFactory::pgaJobFactory()
-	: pgServerObjFactory(__("pgAgent Job"), __("New Job"), __("Create a new Job."), job_xpm)
+	: pgServerObjFactory(__("pgAgent Job"), __("New Job"), __("Create a new Job."), job_png_img)
 {
 	metaType = PGM_JOB;
-	disabledId = addIcon(jobdisabled_xpm);
+	disabledId = addIcon(jobdisabled_png_img);
 }
 
 
 pgaJobFactory jobFactory;
-static pgaCollectionFactory cf(&jobFactory, __("Jobs"), jobs_xpm);
+static pgaCollectionFactory cf(&jobFactory, __("Jobs"), jobs_png_img);
 
 runNowFactory::runNowFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {

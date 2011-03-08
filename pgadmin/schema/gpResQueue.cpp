@@ -270,19 +270,19 @@ wxString gpResQueueCollection::GetTranslatedMessage(int kindOfMessage) const
 
 /////////////////////////////
 
-#include "images/group.xpm"
-#include "images/roles.xpm"
+#include "images/group.pngc"
+#include "images/roles.pngc"
 
 
 gpResQueueFactory::gpResQueueFactory()
-	: pgServerObjFactory(__("Resource Queue"), __("New Resource Queue..."), __("Create a new Resource Queue."), group_xpm)
+	: pgServerObjFactory(__("Resource Queue"), __("New Resource Queue..."), __("Create a new Resource Queue."), group_png_img)
 {
 	metaType = GP_RESOURCE_QUEUE;
 }
 
 
 gpResQueueFactory resQueueFactory;
-static pgaCollectionFactory lcf(&resQueueFactory, __("Resource Queues"), roles_xpm);
+static pgaCollectionFactory lcf(&resQueueFactory, __("Resource Queues"), roles_png_img);
 
 
 dlgProperty *gpResQueueFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)

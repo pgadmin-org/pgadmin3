@@ -351,14 +351,14 @@ pgObject *pgOperatorFactory::CreateObjects(pgCollection *collection, ctlTree *br
 }
 
 
-#include "images/operator.xpm"
-#include "images/operators.xpm"
+#include "images/operator.pngc"
+#include "images/operators.pngc"
 
 pgOperatorFactory::pgOperatorFactory()
-	: pgSchemaObjFactory(__("Operator"), __("New Operator..."), __("Create a new Operator."), operator_xpm)
+	: pgSchemaObjFactory(__("Operator"), __("New Operator..."), __("Create a new Operator."), operator_png_img)
 {
 }
 
 
 pgOperatorFactory operatorFactory;
-static pgaCollectionFactory cf(&operatorFactory, __("Operators"), operators_xpm);
+static pgaCollectionFactory cf(&operatorFactory, __("Operators"), operators_png_img);

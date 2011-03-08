@@ -100,3 +100,13 @@ install-exec-hook:
 	fi
 
 endif
+
+# Convert images to an embeddable format
+BUILT_SOURCES = $(patsubst %.png,%.pngc,$(wildcard include/images/*.png))
+
+%.pngc: %.png
+	../xtra/png2c/png2c -c -z $^ $@
+
+clean-local:
+	rm -f include/images/*.pngc
+
