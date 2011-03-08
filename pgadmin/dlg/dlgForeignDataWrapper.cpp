@@ -100,7 +100,7 @@ int dlgForeignDataWrapper::Go(bool modal)
 		wxString val = fdw->GetValidatorProc();
 		if (!val.IsEmpty())
 		{
-			for (int i = 0 ; i < cbValidator->GetCount() ; i++)
+			for (unsigned int i = 0 ; i < cbValidator->GetCount() ; i++)
 			{
 				if (cbValidator->GetString(i) == val)
 					cbValidator->SetSelection(i);
