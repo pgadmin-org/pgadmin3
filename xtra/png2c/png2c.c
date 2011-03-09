@@ -1,188 +1,185 @@
-//////////////////////////////////////////////////////////////////////////
-//
-// pgAdmin III - PostgreSQL Tools
-//
-// Copyright (C) 2002 - 2011, The pgAdmin Development Team
-// This software is released under the PostgreSQL Licence
-//
-// png2c - Converts a PNG image into a C vector, and adds an accessor
-//         function that returns a static instance of the image.
-//
-// Adapted from Sandro Sigala's bin2c program, as permitted by the licence
-// text below.
-//
-//////////////////////////////////////////////////////////////////////////
+/*************************************************************************
+ *
+ * pgAdmin III - PostgreSQL Tools
+ *
+ * Copyright (C) 2002 - 2011, The pgAdmin Development Team
+ * This software is released under the PostgreSQL Licence
+ *
+ * png2c - Converts a PNG image into a C vector, and adds accessor
+ *         functions that returns a static instances of the image in 
+ *         different formats.
+ *
+ *************************************************************************/
 
-// bin2c.c
-//
-// convert a binary file into a C source vector
-//
-// THE "BEER-WARE LICENSE" (Revision 3.1415):
-// sandro AT sigala DOT it wrote this file. As long as you retain this notice you can do
-// whatever you want with this stuff.	If we meet some day, and you think this stuff is
-// worth it, you can buy me a beer in return.	Sandro Sigala
-//
-// syntax:	bin2c [-c] [-z] <input_file> <output_file>
-//
-//					-c		add the "const" keyword to definition
-//					-z		terminate the array with a zero (useful for embedded C strings)
-//
-// examples:
-//		 bin2c -c myimage.png myimage_png.cpp
-//		 bin2c -z sometext.txt sometext_txt.cpp
- 
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
  
-#ifndef PATH_MAX
-#define PATH_MAX 1024
-#endif
- 
-int useconst = 0;
-int zeroterminated = 0;
- 
-int myfgetc(FILE *f)
+char *to_upper(const char *istr)
 {
-	int c = fgetc(f);
-	if (c == EOF && zeroterminated) {
-		zeroterminated = 0;
-		return 0;
-	}
-	return c;
-}
- 
- 
-char* str2upr(char *s)
-{
-	char * r = (char *) calloc(strlen(s)+1, sizeof(char));
+	size_t len;
+	char *ostr;
+	unsigned int x;
 	
-	int i = 0;
-	while(*s)
-		{
-			r[i] = toupper(*s);
-			++i;
-			++s;
-		}
-	return r;
-} 
- 
- 
- 
-void process(const char *ifname, const char *ofname)
+	len = strlen(istr);
+	ostr = (char *)calloc(len * sizeof(char), sizeof(char));
+
+	for(x = 0; x < len; x++)
+		ostr[x] = toupper(istr[x]);
+
+	ostr[x] = 0;
+
+	return ostr;
+}
+
+char *get_filename(const char *istr)
 {
-	FILE *ifile, *ofile;
+	size_t len;
+	char *ostr, *p, *c;
+	int x = 0;
+	
+	len = strlen(istr);
+	ostr = (char *)calloc(len * sizeof(char), sizeof(char));
 
-	char buf[PATH_MAX], *p;
-	const char *cp;
+	/* Get the position of the last path separator */
+	p = strrchr(istr, '/');
+	if (!p)
+		p = strrchr(istr, '\\');
 
-	int c, col = 1;
+	if (p)
+		p++;
 
-	ifile = fopen(ifname, "rb");
-	if (ifile == NULL) {
-		fprintf(stderr, "cannot open %s for reading\n", ifname);
-		exit(1);
+	/* Loop through the remaining characters and return the filename */
+
+	for (c = p; *c != '\0'; c++)
+	{
+		ostr[x] = *c;
+		x++;
 	}
-	ofile = fopen(ofname, "wb");
-	if (ofile == NULL) {
-		fprintf(stderr, "cannot open %s for writing\n", ofname);
-		exit(1);
-	}
+	ostr[x] = 0;
 
-	if ((cp = strrchr(ifname, '/')) != NULL)
-		++cp;
-	else {
-		if ((cp = strrchr(ifname, '\\')) != NULL)
-			++cp;
+	return ostr;
+}
+
+char *clean_name(const char *istr)
+{
+	size_t len;
+	char *ostr;
+	unsigned int x;
+	
+	len = strlen(istr);
+	ostr = (char *)calloc(len * sizeof(char), sizeof(char));
+
+	for (x = 0; x < len; x++)
+	{
+		if (!isalnum(istr[x]))
+			ostr[x] = '_';
 		else
-			cp = ifname;
+			ostr[x] = istr[x];
 	}
-	strcpy(buf, cp);
-	for (p = buf; *p != '\0'; ++p)
-		if (!isalnum(*p))
-			*p = '_';
-	fprintf(ofile, "#ifndef %s_H\n#define %s_H\nstatic %sunsigned char %s_data[] = {\n",
-				 str2upr(buf), str2upr(buf), useconst ? "const " : "", buf);
+	ostr[x] = 0;
 
-	while ((c = myfgetc(ifile)) != EOF) {
-		if (col >= 78 - 6) {
-			fputc('\n', ofile);
+	return ostr;
+}
+
+int main(int argc, char *argv[])
+{
+	FILE *ipf, *opf;
+	char *lname, *uname;
+	int ch, col;
+
+	/* Check the command line */
+	if (argc != 3) 
+	{
+		fprintf(stderr, "Usage:\n\n%s <input file> <output file>\n", argv[0]);
+		exit(1);
+	}
+
+	/* Open the input and output files */
+	ipf = fopen(argv[1], "rb");
+	if (!ipf) 
+	{
+		fprintf(stderr, "Failed to open input file: %s\n", argv[1]);
+		exit(1);
+	}
+
+	opf = fopen(argv[2], "wb");
+	if (!opf) 
+	{
+		fprintf(stderr, "Failed to open input file: %s\n", argv[1]);
+		exit(1);
+	}
+
+	// Get the inclusion guard and variable base names
+	lname = clean_name(get_filename(argv[1]));
+	uname = to_upper(lname);
+
+	fprintf(opf, "#ifndef %s_H\n", uname);
+	fprintf(opf, "#define %s_H\n\n", uname);
+	
+	fprintf(opf, "static const unsigned char %s_data[] = {\n", lname);
+
+	/* Loop through each input byte and write it to the vector   */
+	/* Stick a \n in once we get to a suitable point (8 bytes). */
+	col = 1;
+	while ((ch = fgetc(ipf)) != EOF) 
+	{
+		if (col >= 48) 
+		{
+			fputc('\n', opf);
 			col = 1;
 		}
-		fprintf(ofile, "0x%.2x, ", c);
+		fprintf(opf, "0x%.2x, ", ch);
 		col += 6;
  
 	}
-	fprintf(ofile, "\n};\n\n");
+	fprintf(opf, "\n");
+	fprintf(opf, "};\n\n");
 
-	// Include an accessor function
-	fprintf(ofile, "#include \"wx/mstream.h\"\n");
-	fprintf(ofile, "static wxImage *%s_img()\n", buf);
-	fprintf(ofile, "{\n");
-	fprintf(ofile, "	if (!wxImage::FindHandler(wxT(\"PNG file\")))\n");
-	fprintf(ofile, "		wxImage::AddHandler(new wxPNGHandler());\n");
-	fprintf(ofile, "	static wxImage *img_%s = new wxImage();\n", buf);
-	fprintf(ofile, "	if (!img_%s || !img_%s->IsOk())\n", buf, buf);
-	fprintf(ofile, "	{\n");
-	fprintf(ofile, "		wxMemoryInputStream img_%sIS(%s_data, sizeof(%s_data));\n", buf, buf, buf);
-	fprintf(ofile, "		img_%s->LoadFile(img_%sIS, wxBITMAP_TYPE_PNG);\n", buf, buf);
-	fprintf(ofile, "	}\n");
-	fprintf(ofile, "	return img_%s;\n", buf);
-	fprintf(ofile, "}\n\n");
-	fprintf(ofile, "#define %s_img %s_img()\n\n", buf, buf);
+	/* wxImage accessor */
+	fprintf(opf, "#include \"wx/mstream.h\"\n\n");
+	fprintf(opf, "static wxImage *%s_img()\n", lname);
+	fprintf(opf, "{\n");
+	fprintf(opf, "	if (!wxImage::FindHandler(wxT(\"PNG file\")))\n");
+	fprintf(opf, "		wxImage::AddHandler(new wxPNGHandler());\n");
+	fprintf(opf, "	static wxImage *img_%s = new wxImage();\n", lname);
+	fprintf(opf, "	if (!img_%s || !img_%s->IsOk())\n", lname, lname);
+	fprintf(opf, "	{\n");
+	fprintf(opf, "		wxMemoryInputStream img_%sIS(%s_data, sizeof(%s_data));\n", lname, lname, lname);
+	fprintf(opf, "		img_%s->LoadFile(img_%sIS, wxBITMAP_TYPE_PNG);\n", lname, lname);
+	fprintf(opf, "	}\n");
+	fprintf(opf, "	return img_%s;\n", lname);
+	fprintf(opf, "}\n");
+	fprintf(opf, "#define %s_img %s_img()\n\n", lname, lname);
 
-	fprintf(ofile, "static wxBitmap *%s_bmp()\n", buf);
-	fprintf(ofile, "{\n");
-	fprintf(ofile, "	static wxBitmap *bmp_%s;\n", buf);
-	fprintf(ofile, "	if (!bmp_%s || !bmp_%s->IsOk())\n", buf, buf);
-	fprintf(ofile, "		bmp_%s = new wxBitmap(*%s_img);\n", buf, buf);
-	fprintf(ofile, "	return bmp_%s;\n", buf);
-	fprintf(ofile, "}\n\n");
-	fprintf(ofile, "#define %s_bmp %s_bmp()\n\n", buf, buf);
+	/* wxBitmap accessor */
+	fprintf(opf, "static wxBitmap *%s_bmp()\n", lname);
+	fprintf(opf, "{\n");
+	fprintf(opf, "	static wxBitmap *bmp_%s;\n", lname);
+	fprintf(opf, "	if (!bmp_%s || !bmp_%s->IsOk())\n", lname, lname);
+	fprintf(opf, "		bmp_%s = new wxBitmap(*%s_img);\n", lname, lname);
+	fprintf(opf, "	return bmp_%s;\n", lname);
+	fprintf(opf, "}\n");
+	fprintf(opf, "#define %s_bmp %s_bmp()\n\n", lname, lname);
 
-	fprintf(ofile, "static wxIcon *%s_ico()\n", buf);
-	fprintf(ofile, "{\n");
-	fprintf(ofile, "	static wxIcon *ico_%s;\n", buf);
-	fprintf(ofile, "	if (!ico_%s || !ico_%s->IsOk())\n", buf, buf);
-	fprintf(ofile, "	{\n");
-	fprintf(ofile, "		ico_%s = new wxIcon();\n", buf);
-	fprintf(ofile, "		ico_%s->CopyFromBitmap(*%s_bmp);\n", buf, buf);
-	fprintf(ofile, "	}\n");
-	fprintf(ofile, "	return ico_%s;\n", buf);
-	fprintf(ofile, "}\n\n");
-	fprintf(ofile, "#define %s_ico %s_ico()\n\n", buf, buf);
+	/* wxIcon accessor */
+	fprintf(opf, "static wxIcon *%s_ico()\n", lname);
+	fprintf(opf, "{\n");
+	fprintf(opf, "	static wxIcon *ico_%s;\n", lname);
+	fprintf(opf, "	if (!ico_%s || !ico_%s->IsOk())\n", lname, lname);
+	fprintf(opf, "	{\n");
+	fprintf(opf, "		ico_%s = new wxIcon();\n", lname);
+	fprintf(opf, "		ico_%s->CopyFromBitmap(*%s_bmp);\n", lname, lname);
+	fprintf(opf, "	}\n");
+	fprintf(opf, "	return ico_%s;\n", lname);
+	fprintf(opf, "}\n");
+	fprintf(opf, "#define %s_ico %s_ico()\n\n", lname, lname);
 
-	fprintf(ofile, "\n#endif\n");
+	fprintf(opf, "#endif // %s_H\n", uname);
  
-	fclose(ifile);
-	fclose(ofile);
-}
- 
-void usage(void)
-{
-	fprintf(stderr, "usage: bin2c [-cz] <input_file> <output_file>\n");
-	exit(1);
-}
- 
-int main(int argc, char **argv)
-{
-	while (argc > 3) {
-		if (!strcmp(argv[1], "-c")) {
-			useconst = 1;
-			--argc;
-			++argv;
-		} else if (!strcmp(argv[1], "-z")) {
-			zeroterminated = 1;
-			--argc;
-			++argv;
-		} else {
-			usage();
-		}
-	}
-	if (argc != 3) {
-		usage();
-	}
-	process(argv[1], argv[2]);
-	return 0;
+	fclose(ipf);
+	fclose(opf);
+	
+	exit(0);
 }

@@ -105,7 +105,7 @@ endif
 BUILT_SOURCES = $(patsubst %.png,%.pngc,$(wildcard include/images/*.png))
 
 %.pngc: %.png
-	../xtra/png2c/png2c -c -z $^ $@
+	../xtra/png2c/png2c $^ $@
 
 clean-local:
 	rm -f include/images/*.pngc
