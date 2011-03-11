@@ -102,6 +102,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/ex_unknown.png \
 	$(srcdir)/include/images/ex_window_aggregate.png \
 	$(srcdir)/include/images/ex_worktable_scan.png \
+	$(srcdir)/include/images/exclude.png \
 	$(srcdir)/include/images/favourite.png \
 	$(srcdir)/include/images/file_new.png \
 	$(srcdir)/include/images/file_open.png \
