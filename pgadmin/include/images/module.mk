@@ -240,6 +240,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/triggers.png \
 	$(srcdir)/include/images/type.png \
 	$(srcdir)/include/images/types.png \
+	$(srcdir)/include/images/uncheck.png \
 	$(srcdir)/include/images/unchecked.png \
 	$(srcdir)/include/images/unique.png \
 	$(srcdir)/include/images/up.png \
