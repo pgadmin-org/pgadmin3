@@ -156,7 +156,15 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 				}
 				else
 				{
-					checked = true;
+					if (object->GetMetaType() == PGM_TABLE || object->GetMetaType() == GP_PARTITION)
+					{
+						checked = ((pgTable *)object)->GetSchema()->GetIdentifier() == currentSchema
+						          || (object->GetMetaType() != PGM_TABLE && object->GetMetaType() != GP_PARTITION);
+					}
+					else
+					{
+						checked = object->GetMetaType() != PGM_TABLE && object->GetMetaType() != GP_PARTITION;
+					}
 				}
 				currentSchemaNode = ctvObjects->AppendItem(db, currentSchema, checked ? 1 : 0);
 			}
@@ -175,7 +183,15 @@ frmBackup::frmBackup(frmMain *form, pgObject *obj) : ExternProcessDialog(form)
 					}
 					else
 					{
-						checked = true;
+						if (object->GetMetaType() == PGM_TABLE || object->GetMetaType() == GP_PARTITION)
+						{
+							checked = ((pgTable *)object)->GetSchema()->GetIdentifier() == currentSchema
+							          || (object->GetMetaType() != PGM_TABLE && object->GetMetaType() != GP_PARTITION);
+						}
+						else
+						{
+							checked = object->GetMetaType() != PGM_TABLE && object->GetMetaType() != GP_PARTITION;
+						}
 					}
 				}
 				ctvObjects->AppendItem(currentSchemaNode, objects->GetVal(wxT("relname")), checked ? 1 : 0);
