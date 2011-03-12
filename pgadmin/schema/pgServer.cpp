@@ -1097,11 +1097,14 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 		}
 		statistics->AddColumn(_("Current Query"), 300);
 
-		sql = wxT("SELECT procpid, usename, datname, backend_start, client_addr, client_port, current_query FROM pg_stat_activity\n");
+		sql = wxT("SELECT procpid, usename, datname, backend_start, client_addr, ");
+		if (GetConnection()->BackendMinimumVersion(9, 1))
+            sql += wxT("client_hostname, ");
+        sql += wxT("client_port, current_query FROM pg_stat_activity\n");
 		if (GetConnection()->BackendMinimumVersion(9, 1))
 		{
 			sql += wxT("UNION\n")
-			       wxT("SELECT procpid, usename, '' AS datname, backend_start, client_addr, client_port, ")
+			       wxT("SELECT procpid, usename, '' AS datname, backend_start, client_addr, client_hostname, client_port, ")
 			       + replication_query + wxT(" AS current_query FROM pg_stat_replication");
 		}
 
@@ -1118,7 +1121,11 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 				if (GetConnection()->BackendMinimumVersion(8, 1))
 				{
 					statistics->SetItem(pos, colpos++, stats->GetVal(wxT("backend_start")));
-					wxString client = stats->GetVal(wxT("client_addr")) + wxT(":") + stats->GetVal(wxT("client_port"));
+					wxString client;
+				    if (GetConnection()->BackendMinimumVersion(9, 1) && !stats->GetVal(wxT("client_hostname")).IsEmpty())
+                        client = stats->GetVal(wxT("client_hostname")) + wxT(":") + stats->GetVal(wxT("client_port"));
+                    else
+                        client = stats->GetVal(wxT("client_addr")) + wxT(":") + stats->GetVal(wxT("client_port"));
 					if (client == wxT(":-1"))
 						client = _("local pipe");
 					statistics->SetItem(pos, colpos++, client);
