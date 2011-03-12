@@ -53,10 +53,10 @@ void ctlCheckTreeView::OnLeftClick(wxMouseEvent &evt)
 		else if (GetItemImage(node) == 1)
 			newimage = 0;
 
-		if (GetItemImage(node) == 0 || GetItemImage(node) == 1)
-		{
+		if (newimage == 0 || newimage == 1)
 			SetParentAndChildImage(node, newimage);
-		}
+		if (newimage == 1)
+			SetParentImage(node, newimage);
 	}
 
 	evt.Skip();
@@ -71,6 +71,15 @@ void ctlCheckTreeView::SetParentAndChildImage(wxTreeItemId node, int newimage)
 	{
 		SetParentAndChildImage(child, newimage);
 		child = GetNextChild(node, childData);
+	}
+}
+
+void ctlCheckTreeView::SetParentImage(wxTreeItemId node, int newimage)
+{
+	if (node.IsOk())
+	{
+		SetItemImage(node, newimage);
+		SetParentImage(GetItemParent(node), newimage);
 	}
 }
 
