@@ -729,6 +729,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 		if (conn->BackendMinimumVersion(9, 1))
 		{
 			sql += wxT(", CASE WHEN usesuper THEN pg_last_xact_replay_timestamp() ELSE NULL END as replay_timestamp");
+			sql += wxT(", CASE WHEN usesuper AND pg_is_in_recovery() THEN pg_is_xlog_replay_paused() ELSE NULL END as isreplaypaused");
 		}
 
 		pgSet *set = ExecuteSet(sql + wxT("\n  FROM pg_user WHERE usename=current_user"));
@@ -749,6 +750,7 @@ int pgServer::Connect(frmMain *form, bool askPassword, const wxString &pwd, bool
 			if (conn->BackendMinimumVersion(9, 1))
 			{
 				iSetReplayTimestamp(set->GetVal(wxT("replay_timestamp")));
+				SetReplayPaused(set->GetBool(wxT("isreplaypaused")));
 			}
 			delete set;
 		}
@@ -1058,6 +1060,10 @@ void pgServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *prop
 			if (conn->BackendMinimumVersion(9, 1))
 			{
 				properties->AppendItem(_("Last XACT replay timestamp"), GetReplayTimestamp());
+				if (GetInRecovery())
+					properties->AppendItem(_("Replay paused"), (GetReplayPaused() ? _("paused") : _("running")));
+				else
+					properties->AppendItem(_("Replay paused"), wxEmptyString);
 			}
 		}
 		if (GetServerControllable())
@@ -1158,9 +1164,26 @@ void pgServer::ShowDependents(frmMain *form, ctlListView *referencedBy, const wx
 	referencedBy->AddColumn(_("Restriction"), 50);
 }
 
+
 bool pgServer::ReloadConfiguration()
 {
 	wxString sql = wxT("select pg_reload_conf()");
+	return conn->ExecuteVoid(sql);
+}
+
+
+bool pgServer::PauseReplay()
+{
+	SetReplayPaused(true);
+	wxString sql = wxT("SELECT pg_xlog_replay_pause()");
+	return conn->ExecuteVoid(sql);
+}
+
+
+bool pgServer::ResumeReplay()
+{
+	SetReplayPaused(false);
+	wxString sql = wxT("SELECT pg_xlog_replay_resume()");
 	return conn->ExecuteVoid(sql);
 }
 
@@ -1833,6 +1856,64 @@ bool reloadconfServiceFactory::CheckEnable(pgObject *obj)
 	{
 		pgServer *server = (pgServer *)obj;
 		return server->GetConnected() && server->connection()->BackendMinimumVersion(8, 1);
+	}
+	return false;
+}
+
+pausereplayServiceFactory::pausereplayServiceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+	mnu->Append(id, _("Pause replay of WAL"), _("Pause replay of WAL"));
+}
+
+
+wxWindow *pausereplayServiceFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	pgServer *server = (pgServer *)obj;
+	form->StartMsg(_("Pausing replay of WAL"));
+	bool rc = server->PauseReplay();
+	form->EndMsg(rc);
+	return 0;
+}
+
+
+bool pausereplayServiceFactory::CheckEnable(pgObject *obj)
+{
+	if (obj && obj->IsCreatedBy(serverFactory))
+	{
+		pgServer *server = (pgServer *)obj;
+		return server->GetConnected() &&
+               server->connection()->BackendMinimumVersion(9, 1) &&
+               server->GetInRecovery() &&
+			   !server->GetReplayPaused();
+	}
+	return false;
+}
+
+resumereplayServiceFactory::resumereplayServiceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+	mnu->Append(id, _("Resume replay of WAL"), _("Resume replay of WAL"));
+}
+
+
+wxWindow *resumereplayServiceFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	pgServer *server = (pgServer *)obj;
+	form->StartMsg(_("Resuming replay of WAL"));
+	bool rc = server->ResumeReplay();
+	form->EndMsg(rc);
+	return 0;
+}
+
+
+bool resumereplayServiceFactory::CheckEnable(pgObject *obj)
+{
+	if (obj && obj->IsCreatedBy(serverFactory))
+	{
+		pgServer *server = (pgServer *)obj;
+		return server->GetConnected() &&
+               server->connection()->BackendMinimumVersion(9, 1) &&
+               server->GetInRecovery() &&
+			   server->GetReplayPaused();
 	}
 	return false;
 }

@@ -64,6 +64,9 @@ public:
 	bool GetServerRunning();
 	bool GetServerControllable();
 	bool ReloadConfiguration();
+	bool IsReplayPaused();
+	bool PauseReplay();
+	bool ResumeReplay();
 
 	pgServer *GetServer() const;
 
@@ -151,6 +154,14 @@ public:
 	void iSetInRecovery(const bool b)
 	{
 		inRecovery = b;
+	}
+	bool GetReplayPaused() const
+	{
+		return replayPaused;
+	}
+	void SetReplayPaused(const bool b)
+	{
+		replayPaused = b;
 	}
 	wxDateTime GetConfLoadedSince()
 	{
@@ -418,7 +429,7 @@ private:
 	wxString group;
 	wxString sslcert, sslkey, sslrootcert, sslcrl;
 
-	bool inRecovery;
+	bool inRecovery, replayPaused;
 	wxString receiveLoc, replayLoc, replayTimestamp;
 	wxDateTime confLoadedSince;
 
@@ -536,6 +547,22 @@ class reloadconfServiceFactory : public contextActionFactory
 {
 public:
 	reloadconfServiceFactory (menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
+};
+
+class pausereplayServiceFactory : public contextActionFactory
+{
+public:
+	pausereplayServiceFactory (menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
+};
+
+class resumereplayServiceFactory : public contextActionFactory
+{
+public:
+	resumereplayServiceFactory (menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
 	wxWindow *StartDialog(frmMain *form, pgObject *obj);
 	bool CheckEnable(pgObject *obj);
 };
