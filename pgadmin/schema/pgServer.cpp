@@ -1188,6 +1188,14 @@ bool pgServer::ResumeReplay()
 }
 
 
+bool pgServer::AddNamedRestorePoint()
+{
+    wxString namedrestorepoint = wxGetTextFromUser(_("Enter the name of the restore point to add"), _("Restore point name"));
+	wxString sql = wxT("select pg_create_restore_point(") + qtDbString(namedrestorepoint) + wxT(")");
+	return conn->ExecuteVoid(sql);
+}
+
+
 pgServerCollection::pgServerCollection(pgaFactory *factory)
 	: pgCollection(factory)
 {
@@ -1860,6 +1868,7 @@ bool reloadconfServiceFactory::CheckEnable(pgObject *obj)
 	return false;
 }
 
+
 pausereplayServiceFactory::pausereplayServiceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
 	mnu->Append(id, _("Pause replay of WAL"), _("Pause replay of WAL"));
@@ -1888,6 +1897,7 @@ bool pausereplayServiceFactory::CheckEnable(pgObject *obj)
 	}
 	return false;
 }
+
 
 resumereplayServiceFactory::resumereplayServiceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
 {
@@ -1918,3 +1928,28 @@ bool resumereplayServiceFactory::CheckEnable(pgObject *obj)
 	return false;
 }
 
+
+addnamedrestorepointServiceFactory::addnamedrestorepointServiceFactory(menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar) : contextActionFactory(list)
+{
+	mnu->Append(id, _("Add named restore point"), _("Add named restore point"));
+}
+
+
+wxWindow *addnamedrestorepointServiceFactory::StartDialog(frmMain *form, pgObject *obj)
+{
+	pgServer *server = (pgServer *)obj;
+	form->StartMsg(_("Add named restore point"));
+	bool rc = server->AddNamedRestorePoint();
+	form->EndMsg(rc);
+	return 0;
+}
+
+
+bool addnamedrestorepointServiceFactory::CheckEnable(pgObject *obj)
+{
+	if (obj && obj->IsCreatedBy(serverFactory))
+	{
+		return server->GetConnected() && server->connection()->BackendMinimumVersion(9, 1);
+	}
+	return false;
+}

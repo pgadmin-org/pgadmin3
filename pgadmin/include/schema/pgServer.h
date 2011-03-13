@@ -67,6 +67,7 @@ public:
 	bool IsReplayPaused();
 	bool PauseReplay();
 	bool ResumeReplay();
+	bool AddNamedRestorePoint();
 
 	pgServer *GetServer() const;
 
@@ -563,6 +564,14 @@ class resumereplayServiceFactory : public contextActionFactory
 {
 public:
 	resumereplayServiceFactory (menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
+	wxWindow *StartDialog(frmMain *form, pgObject *obj);
+	bool CheckEnable(pgObject *obj);
+};
+
+class addnamedrestorepointServiceFactory : public contextActionFactory
+{
+public:
+	addnamedrestorepointServiceFactory (menuFactoryList *list, wxMenu *mnu, ctlMenuToolbar *toolbar);
 	wxWindow *StartDialog(frmMain *form, pgObject *obj);
 	bool CheckEnable(pgObject *obj);
 };
