@@ -102,7 +102,7 @@ install-exec-hook:
 endif
 
 # Convert images to an embeddable format
-BUILT_SOURCES = $(patsubst %.png,%.pngc,$(wildcard include/images/*.png))
+BUILT_SOURCES = $(patsubst %.png,%.pngc,$(wildcard $(top_srcdir)/pgadmin/include/images/*.png))
 
 %.pngc: %.png
 	../xtra/png2c/png2c $^ $@
