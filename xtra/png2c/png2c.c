@@ -23,7 +23,7 @@ char *to_upper(const char *istr)
 	unsigned int x;
 	
 	len = strlen(istr);
-	ostr = (char *)calloc(len * sizeof(char), sizeof(char));
+	ostr = (char *)calloc((len * sizeof(char)) + 1, sizeof(char));
 
 	for(x = 0; x < len; x++)
 		ostr[x] = toupper(istr[x]);
@@ -40,7 +40,7 @@ char *get_filename(const char *istr)
 	int x = 0;
 	
 	len = strlen(istr);
-	ostr = (char *)calloc(len * sizeof(char), sizeof(char));
+	ostr = (char *)calloc((len * sizeof(char)) + 1, sizeof(char));
 
 	/* Get the position of the last path separator */
 	p = strrchr(istr, '/');
@@ -69,7 +69,7 @@ char *clean_name(const char *istr)
 	unsigned int x;
 	
 	len = strlen(istr);
-	ostr = (char *)calloc(len * sizeof(char), sizeof(char));
+	ostr = (char *)calloc((len * sizeof(char)) + 1, sizeof(char));
 
 	for (x = 0; x < len; x++)
 	{
