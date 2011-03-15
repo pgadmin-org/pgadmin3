@@ -1354,6 +1354,16 @@ void frmQuery::setExtendedTitle()
 	}
 }
 
+bool frmQuery::relatesToWindow(wxWindow *which, wxWindow *related)
+{
+    while (which != NULL) {
+        if (which == related)
+            return true;
+        else
+            which = which->GetParent();
+    }
+    return false;
+}
 
 void frmQuery::updateMenu(wxObject *obj)
 {
@@ -1375,23 +1385,29 @@ void frmQuery::updateMenu(wxObject *obj)
 	if (closing)
 		return;
 
-	wxWindow *wnd = FindFocus();
-	if (wnd == sqlQuery || wnd == sqlResult || wnd == msgResult || wnd == msgHistory || wnd == scratchPad)
-	{
-		if (wnd == sqlQuery)
-		{
-			canUndo = sqlQuery->CanUndo();
-			canRedo = sqlQuery->CanRedo();
-			canPaste = sqlQuery->CanPaste();
-			canFind = true;
-			canAddFavourite = (sqlQuery->GetLength() > 0);
-		}
-		else if (wnd == scratchPad)
-			canPaste = true;
-		canCopy = true;
-		canCut = true;
-		canClear = true;
-	}
+	wxWindow *wnd = currentControl();
+	if (wnd != NULL) {
+	    if (   relatesToWindow(wnd, sqlQuery)
+	        || relatesToWindow(wnd, sqlResult)
+	        || relatesToWindow(wnd, msgResult)
+	        || relatesToWindow(wnd, msgHistory)
+	        || relatesToWindow(wnd, scratchPad)   )
+	    {
+		    if (relatesToWindow(wnd, sqlQuery))
+		    {
+			    canUndo = sqlQuery->CanUndo();
+			    canRedo = sqlQuery->CanRedo();
+			    canPaste = sqlQuery->CanPaste();
+			    canFind = true;
+			    canAddFavourite = (sqlQuery->GetLength() > 0);
+		    }
+		    else if (relatesToWindow(wnd, scratchPad))
+			    canPaste = true;
+		    canCopy = true;
+		    canCut = true;
+		    canClear = true;
+	    }
+    }
 
 	canSaveExplain = explainCanvas->GetDiagram()->GetCount() > 0;
 	canSaveGQB = controller->getView()->canSaveAsImage();
