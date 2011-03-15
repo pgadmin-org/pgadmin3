@@ -1263,8 +1263,8 @@ void frmStatus::OnRefreshStatusTimer(wxTimerEvent &event)
 	if (connection->BackendMinimumVersion(8, 1))
 	{
 		q += wxT(",\nCASE WHEN client_port=-1 THEN 'local pipe' ");
-	    if (connection->BackendMinimumVersion(8, 1))
-		     q += wxT("        WHEN client_hostname IS NOT NULL THEN client_hostname||':'||client_port ");
+		if (connection->BackendMinimumVersion(8, 1))
+			q += wxT("        WHEN client_hostname IS NOT NULL THEN client_hostname||':'||client_port ");
 		q += wxT("     ELSE textin(inet_out(client_addr))||':'||client_port END AS client, ")
 		     wxT("backend_start");
 	}

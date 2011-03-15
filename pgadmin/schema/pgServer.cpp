@@ -1105,8 +1105,8 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 
 		sql = wxT("SELECT procpid, usename, datname, backend_start, client_addr, ");
 		if (GetConnection()->BackendMinimumVersion(9, 1))
-            sql += wxT("client_hostname, ");
-        sql += wxT("client_port, current_query FROM pg_stat_activity\n");
+			sql += wxT("client_hostname, ");
+		sql += wxT("client_port, current_query FROM pg_stat_activity\n");
 		if (GetConnection()->BackendMinimumVersion(9, 1))
 		{
 			sql += wxT("UNION\n")
@@ -1128,10 +1128,10 @@ void pgServer::ShowStatistics(frmMain *form, ctlListView *statistics)
 				{
 					statistics->SetItem(pos, colpos++, stats->GetVal(wxT("backend_start")));
 					wxString client;
-				    if (GetConnection()->BackendMinimumVersion(9, 1) && !stats->GetVal(wxT("client_hostname")).IsEmpty())
-                        client = stats->GetVal(wxT("client_hostname")) + wxT(":") + stats->GetVal(wxT("client_port"));
-                    else
-                        client = stats->GetVal(wxT("client_addr")) + wxT(":") + stats->GetVal(wxT("client_port"));
+					if (GetConnection()->BackendMinimumVersion(9, 1) && !stats->GetVal(wxT("client_hostname")).IsEmpty())
+						client = stats->GetVal(wxT("client_hostname")) + wxT(":") + stats->GetVal(wxT("client_port"));
+					else
+						client = stats->GetVal(wxT("client_addr")) + wxT(":") + stats->GetVal(wxT("client_port"));
 					if (client == wxT(":-1"))
 						client = _("local pipe");
 					statistics->SetItem(pos, colpos++, client);
@@ -1190,7 +1190,7 @@ bool pgServer::ResumeReplay()
 
 bool pgServer::AddNamedRestorePoint()
 {
-    wxString namedrestorepoint = wxGetTextFromUser(_("Enter the name of the restore point to add"), _("Restore point name"));
+	wxString namedrestorepoint = wxGetTextFromUser(_("Enter the name of the restore point to add"), _("Restore point name"));
 	wxString sql = wxT("select pg_create_restore_point(") + qtDbString(namedrestorepoint) + wxT(")");
 	return conn->ExecuteVoid(sql);
 }
@@ -1891,9 +1891,9 @@ bool pausereplayServiceFactory::CheckEnable(pgObject *obj)
 	{
 		pgServer *server = (pgServer *)obj;
 		return server->GetConnected() &&
-               server->connection()->BackendMinimumVersion(9, 1) &&
-               server->GetInRecovery() &&
-			   !server->GetReplayPaused();
+		       server->connection()->BackendMinimumVersion(9, 1) &&
+		       server->GetInRecovery() &&
+		       !server->GetReplayPaused();
 	}
 	return false;
 }
@@ -1921,9 +1921,9 @@ bool resumereplayServiceFactory::CheckEnable(pgObject *obj)
 	{
 		pgServer *server = (pgServer *)obj;
 		return server->GetConnected() &&
-               server->connection()->BackendMinimumVersion(9, 1) &&
-               server->GetInRecovery() &&
-			   server->GetReplayPaused();
+		       server->connection()->BackendMinimumVersion(9, 1) &&
+		       server->GetInRecovery() &&
+		       server->GetReplayPaused();
 	}
 	return false;
 }

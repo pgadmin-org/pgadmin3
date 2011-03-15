@@ -267,38 +267,38 @@ void frmRestore::OnChangeSchema(wxCommandEvent &ev)
 void frmRestore::OnChangeName(wxCommandEvent &ev)
 {
 	wxString name = txtFilename->GetValue();
-    if (cbFormat->GetSelection() == 0)
-    {
-        if (name.IsEmpty() || !wxFile::Exists(name))
-            filenameValid = false;
-        else
-        {
-            wxFile file(name, wxFile::read);
-            if (file.IsOpened())
-            {
-                char buffer[8];
-                off_t size = file.Read(buffer, 8);
-                if (size == 8)
-                {
-                    if (memcmp(buffer, "PGDMP", 5) && !memcmp(buffer, "toc.dat", 8))
-                    {
-                        // tar format?
-                        file.Seek(512);
-                        size = file.Read(buffer, 8);
-                    }
-                    if (size == 8 && !memcmp(buffer, "PGDMP", 5))
-                    {
-                        // check version here?
-                        filenameValid = true;
-                    }
-                }
-            }
-        }
-    }
-    else
-    {
-        filenameValid = wxDir::Exists(name);
-    }
+	if (cbFormat->GetSelection() == 0)
+	{
+		if (name.IsEmpty() || !wxFile::Exists(name))
+			filenameValid = false;
+		else
+		{
+			wxFile file(name, wxFile::read);
+			if (file.IsOpened())
+			{
+				char buffer[8];
+				off_t size = file.Read(buffer, 8);
+				if (size == 8)
+				{
+					if (memcmp(buffer, "PGDMP", 5) && !memcmp(buffer, "toc.dat", 8))
+					{
+						// tar format?
+						file.Seek(512);
+						size = file.Read(buffer, 8);
+					}
+					if (size == 8 && !memcmp(buffer, "PGDMP", 5))
+					{
+						// check version here?
+						filenameValid = true;
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		filenameValid = wxDir::Exists(name);
+	}
 	OnChange(ev);
 }
 

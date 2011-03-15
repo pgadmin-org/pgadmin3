@@ -239,7 +239,7 @@ private:
 	wxBitmap CreateBitmap(const wxColour &colour);
 	wxColour GetServerColour(pgConn *connection);
 
-    bool relatesToWindow(wxWindow *which, wxWindow *related);
+	bool relatesToWindow(wxWindow *which, wxWindow *related);
 
 	wxWindow *currentControl();
 	wxMenu *queryMenu;

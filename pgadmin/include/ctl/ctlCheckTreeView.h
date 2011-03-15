@@ -28,7 +28,7 @@ public:
 private:
 	void OnLeftClick(wxMouseEvent &evt);
 	void SetParentAndChildImage(wxTreeItemId node, int newimage);
-    void SetParentImage(wxTreeItemId node, int newimage);
+	void SetParentImage(wxTreeItemId node, int newimage);
 
 	DECLARE_EVENT_TABLE()
 };
