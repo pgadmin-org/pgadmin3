@@ -1949,6 +1949,7 @@ bool addnamedrestorepointServiceFactory::CheckEnable(pgObject *obj)
 {
 	if (obj && obj->IsCreatedBy(serverFactory))
 	{
+		pgServer *server = (pgServer *)obj;
 		return server->GetConnected() && server->connection()->BackendMinimumVersion(9, 1);
 	}
 	return false;
