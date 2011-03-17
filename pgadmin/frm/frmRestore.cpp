@@ -9,6 +9,8 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include "pgAdmin3.h"
+
 // wxWindows headers
 #include <wx/wx.h>
 #include <wx/settings.h>
@@ -20,7 +22,6 @@
 
 
 // App headers
-#include "pgAdmin3.h"
 #include "frm/frmRestore.h"
 #include "frm/frmMain.h"
 #include "utils/sysLogger.h"
