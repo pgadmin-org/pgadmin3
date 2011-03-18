@@ -343,31 +343,31 @@ AC_DEFUN([SETUP_ARCH_I386],
 	])
 ])
 AC_DEFUN([SETUP_ARCH_X86_64],
-[        AC_ARG_WITH(arch-x86_64, [  --with-arch-x86_64	include an x86_64 image in an OS X Universal build],
-        [
-                if test "$withval" = "yes"
-                then
-                        OSX_ARCH="$OSX_ARCH -arch x86_64"
-                fi
-        ])
+[	AC_ARG_WITH(arch-x86_64, [  --with-arch-x86_64	include an x86_64 image in an OS X Universal build],
+	[
+		if test "$withval" = "yes"
+		then
+			OSX_ARCH="$OSX_ARCH -arch x86_64"
+		fi
+	])
 ])
 AC_DEFUN([SETUP_ARCH_PPC],
-[        AC_ARG_WITH(arch-ppc, [  --with-arch-ppc	include a PPC image in an OS X Universal build],
-        [
-                if test "$withval" = "yes"
-                then
-                        OSX_ARCH="$OSX_ARCH -arch ppc"
-                fi
-        ])
+[	AC_ARG_WITH(arch-ppc, [  --with-arch-ppc	include a PPC image in an OS X Universal build],
+	[
+		if test "$withval" = "yes"
+		then
+			OSX_ARCH="$OSX_ARCH -arch ppc"
+		fi
+	])
 ])
 AC_DEFUN([SETUP_ARCH_PPC64],
-[        AC_ARG_WITH(arch-ppc64, [  --with-arch-ppc64	include a PPC64 image in an OS X Universal build],
-        [
-                if test "$withval" = "yes"
-                then
-                        OSX_ARCH="$OSX_ARCH -arch ppc64"
-                fi
-        ])
+[	AC_ARG_WITH(arch-ppc64, [  --with-arch-ppc64	include a PPC64 image in an OS X Universal build],
+	[
+		if test "$withval" = "yes"
+		then
+			OSX_ARCH="$OSX_ARCH -arch ppc64"
+		fi
+	])
 ])
 
 ##########################
@@ -433,7 +433,7 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		esac
 
 		
-                # Check for PQexec (basic sanity check!)
+		# Check for PQexec (basic sanity check!)
 		if test "$BUILD_STATIC" = "yes"
 		then
 			AC_MSG_CHECKING(for PQexec in libpq.a)
@@ -452,24 +452,24 @@ AC_DEFUN([SETUP_POSTGRESQL],
 			AC_LANG_RESTORE	 
 		fi
 
-                # Check for PQconninfoParse
-                if test "$BUILD_STATIC" = "yes"
-                then
-                        AC_MSG_CHECKING(for PQconninfoParse in libpq.a)
-                        if test "$(nm ${PG_LIB}/libpq.a | grep -c PQconninfoParse)" -gt 0
-                        then
-                                AC_MSG_RESULT(present)
-                                HAVE_CONNINFO_PARSE="yes"
-                        else
-                                AC_MSG_RESULT(not present)
-                                HAVE_CONNINFO_PARSE="no"
-                        fi
-                else
-                        AC_LANG_SAVE
-                        AC_LANG_C
-                        AC_CHECK_LIB(pq, PQconninfoParse, [HAVE_CONNINFO_PARSE=yes], [HAVE_CONNINFO_PARSE=no])
-                        AC_LANG_RESTORE
-                fi
+		# Check for PQconninfoParse
+		if test "$BUILD_STATIC" = "yes"
+		then
+			AC_MSG_CHECKING(for PQconninfoParse in libpq.a)
+			if test "$(nm ${PG_LIB}/libpq.a | grep -c PQconninfoParse)" -gt 0
+			then
+				AC_MSG_RESULT(present)
+				HAVE_CONNINFO_PARSE="yes"
+			else
+				AC_MSG_RESULT(not present)
+				HAVE_CONNINFO_PARSE="no"
+			fi
+		else
+			AC_LANG_SAVE
+			AC_LANG_C
+			AC_CHECK_LIB(pq, PQconninfoParse, [HAVE_CONNINFO_PARSE=yes], [HAVE_CONNINFO_PARSE=no])
+			AC_LANG_RESTORE
+		fi
 
 		AC_LANG_SAVE
 		AC_LANG_C
@@ -613,6 +613,20 @@ AC_DEFUN([SETUP_POSTGRESQL],
 		if test "$HAVE_CONNINFO_PARSE" = "yes"
 		then
 			CPPFLAGS="$CPPFLAGS -DHAVE_CONNINFO_PARSE"
+		fi
+
+		# Avoid linking with things we don't need. Really this is a hack
+		# to prevent png2c linking with libpq with gcc on non-OSX OSs
+		if test "$SUN_CC_COMPILER" != "yes"
+		then
+			case "${host}" in
+				*-apple-darwin*)
+					;;
+ 
+				*)
+					LDFLAGS="$LDFLAGS -Wl,-as-needed"
+					;;
+			esac
 		fi
 	fi
 ])
