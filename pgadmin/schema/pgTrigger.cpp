@@ -165,15 +165,26 @@ wxString pgTrigger::GetSql(ctlTree *browser)
 		      + wxT(" ON ") + GetQuotedFullTable() + wxT(";\n\n");
 
 		if (GetLanguage() == wxT("edbspl"))
-			sql += wxT("CREATE OR REPLACE TRIGGER ") + qtIdent(GetName());
+			sql += wxT("CREATE OR REPLACE TRIGGER ");
+		else if (GetConnection()->BackendMinimumVersion(8, 2) && GetIsConstraint())
+			sql += wxT("CREATE CONSTRAINT TRIGGER ");
 		else
-			sql += wxT("CREATE TRIGGER ") + qtIdent(GetName());
+			sql += wxT("CREATE TRIGGER ");
 
-		sql += wxT("\n  ") + GetFireWhen()
+		sql += qtIdent(GetName()) + wxT("\n  ")
+		       + GetFireWhen()
 		       + wxT(" ") + GetEvent();
 
-		sql += wxT("\n  ON ") + GetQuotedFullTable()
-		       + wxT("\n  FOR EACH ") + GetForEach();
+		sql += wxT("\n  ON ") + GetQuotedFullTable();
+		if (GetDeferrable())
+		{
+			sql += wxT("\n  DEFERRABLE INITIALLY ");
+			if (GetDeferred())
+				sql += wxT("DEFERRED");
+			else
+				sql += wxT("IMMEDIATE");
+		}
+		sql += wxT("\n  FOR EACH ") + GetForEach();
 
 		if (GetConnection()->BackendMinimumVersion(8, 5)
 		        && !GetWhen().IsEmpty())
@@ -327,6 +338,8 @@ void pgTrigger::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pro
 
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("OID"), GetOid());
+		if (GetConnection()->BackendMinimumVersion(8, 2))
+			properties->AppendYesNoItem(_("Constraint?"), GetIsConstraint());
 		properties->AppendItem(_("Fires"), GetFireWhen());
 		properties->AppendItem(_("Event"), GetEvent());
 		if (!GetQuotedColumns().IsEmpty())
@@ -411,6 +424,19 @@ pgObject *pgTriggerFactory::CreateObjects(pgCollection *coll, ctlTree *browser, 
 			}
 			else
 				trigger->iSetEnabled(triggers->GetBool(wxT("tgenabled")));
+
+			if (collection->GetDatabase()->connection()->BackendMinimumVersion(8, 2))
+			{
+				trigger->SetIsConstraint(triggers->GetLong(wxT("tgconstraint")) > 0);
+				trigger->iSetDeferrable(triggers->GetBool(wxT("tgdeferrable")));
+				trigger->iSetDeferred(triggers->GetBool(wxT("tginitdeferred")));
+			}
+			else
+			{
+				trigger->SetIsConstraint(false);
+				trigger->iSetDeferrable(false);
+				trigger->iSetDeferred(false);
+			}
 
 			trigger->iSetTriggerType(triggers->GetLong(wxT("tgtype")));
 			trigger->iSetParentIsTable(triggers->GetBool(wxT("parentistable")));

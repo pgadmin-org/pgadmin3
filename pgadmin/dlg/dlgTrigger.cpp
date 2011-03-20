@@ -26,6 +26,9 @@
 
 // pointer to controls
 #define chkRow          CTRL_CHECKBOX("chkRow")
+#define chkConstraint   CTRL_CHECKBOX("chkConstraint")
+#define chkDeferrable   CTRL_CHECKBOX("chkDeferrable")
+#define chkDeferred     CTRL_CHECKBOX("chkDeferred")
 #define cbFunction      CTRL_COMBOBOX2("cbFunction")
 #define txtArguments    CTRL_TEXT("txtArguments")
 #define rdbFires        CTRL_RADIOBOX("rdbFires")
@@ -42,6 +45,8 @@
 
 BEGIN_EVENT_TABLE(dlgTrigger, dlgCollistProperty)
 	EVT_RADIOBOX(XRCID("rdbFires"),                 dlgProperty::OnChange)
+	EVT_CHECKBOX(XRCID("chkConstraint"),            dlgTrigger::OnChangeConstraint)
+	EVT_CHECKBOX(XRCID("chkDeferrable"),            dlgProperty::OnChange)
 	EVT_CHECKBOX(XRCID("chkRow"),                   dlgProperty::OnChange)
 	EVT_CHECKBOX(XRCID("chkInsert"),                dlgProperty::OnChange)
 	EVT_CHECKBOX(XRCID("chkUpdate"),                dlgTrigger::OnChange)
@@ -164,6 +169,16 @@ int dlgTrigger::Go(bool modal)
 		{
 			lstColumns->InsertItem(colIdx, colsArr.Item(colIdx));
 		}
+
+		if (connection->BackendMinimumVersion(8, 2))
+		{
+			chkConstraint->SetValue(trigger->GetIsConstraint());
+			chkDeferrable->SetValue(trigger->GetDeferrable());
+			chkDeferred->SetValue(trigger->GetDeferred());
+		}
+		chkConstraint->Enable(false);
+		chkDeferrable->Enable(false);
+		chkDeferred->Enable(false);
 	}
 	else
 	{
@@ -202,6 +217,10 @@ int dlgTrigger::Go(bool modal)
 
 		if (!connection->BackendMinimumVersion(9, 1) || table->GetMetaType() != PGM_VIEW)
 			rdbFires->Enable(2, false);
+
+		chkConstraint->Enable(connection->BackendMinimumVersion(8, 2));
+		chkDeferrable->Disable();
+		chkDeferred->Disable();
 	}
 
 	cbColumns->Disable();
@@ -268,9 +287,12 @@ wxString dlgTrigger::GetSql()
 	        rdbFires->GetSelection() != (trigger->GetTriggerType() & TRIGGER_TYPE_BEFORE ? 0 : TRIGGER_TYPE_INSTEAD ? 2 : 1))
 	{
 		if (cbFunction->GetValue() == wxString::Format(wxT("<%s>"), _("Inline EDB-SPL")))
-			sql += wxT("CREATE OR REPLACE TRIGGER ") + qtIdent(name);
+			sql += wxT("CREATE OR REPLACE TRIGGER ");
+		else if (chkConstraint->GetValue())
+			sql += wxT("CREATE CONSTRAINT TRIGGER ");
 		else
-			sql += wxT("CREATE TRIGGER ") + qtIdent(name);
+			sql += wxT("CREATE TRIGGER ");
+		sql += qtIdent(name);
 
 		if (rdbFires->GetSelection() == 1)
 			sql += wxT(" AFTER");
@@ -305,8 +327,14 @@ wxString dlgTrigger::GetSql()
 				sql += wxT(" OR");
 			sql += wxT(" TRUNCATE");
 		}
-		sql += wxT("\n   ON ") + table->GetQuotedFullIdentifier()
-		       + wxT(" FOR EACH ");
+		sql += wxT("\n   ON ") + table->GetQuotedFullIdentifier();
+		if (chkDeferrable->GetValue())
+		{
+			sql += wxT(" DEFERRABLE");
+			if (chkDeferred->GetValue())
+				sql += wxT(" INITIALLY DEFERRED");
+		}
+		sql += wxT(" FOR EACH ");
 		if (chkRow->GetValue())
 			sql += wxT("ROW");
 		else
@@ -394,6 +422,29 @@ void dlgTrigger::OnChangeFunc(wxCommandEvent &ev)
 	{
 		txtArguments->Enable();
 		txtBody->Disable();
+	}
+
+	CheckChange();
+}
+
+
+void dlgTrigger::OnChangeConstraint(wxCommandEvent &ev)
+{
+	if (chkConstraint->GetValue())
+	{
+		rdbFires->SetSelection(1);
+		rdbFires->Disable();
+		chkRow->SetValue(true);
+		chkRow->Disable();
+		chkDeferrable->Enable();
+		chkDeferred->Enable();
+	}
+	else
+	{
+		rdbFires->Enable();
+		chkRow->Enable();
+		chkDeferrable->Disable();
+		chkDeferred->Disable();
 	}
 
 	CheckChange();

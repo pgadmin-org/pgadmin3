@@ -41,6 +41,7 @@ private:
 
 	void OnChange(wxCommandEvent &ev);
 	void OnChangeFunc(wxCommandEvent &ev);
+	void OnChangeConstraint(wxCommandEvent &ev);
 	void OnSelectComboCol(wxCommandEvent &ev);
 	void OnSelectListCol(wxListEvent &ev);
 	void OnSelectCol();

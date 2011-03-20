@@ -97,6 +97,30 @@ public:
 	{
 		return when;
 	}
+	bool GetIsConstraint() const
+	{
+		return isconstraint;
+	}
+	void SetIsConstraint(const bool b)
+	{
+		isconstraint = b;
+	}
+	bool GetDeferrable() const
+	{
+		return deferrable;
+	}
+	void iSetDeferrable(const bool b)
+	{
+		deferrable = b;
+	}
+	bool GetDeferred() const
+	{
+		return deferred;
+	}
+	void iSetDeferred(const bool b)
+	{
+		deferred = b;
+	}
 	wxString GetLanguage() const
 	{
 		return language;
@@ -213,7 +237,7 @@ private:
 	long columnCount;
 	OID functionOid;
 	long triggerType;
-	bool enabled, parentistable;
+	bool enabled, parentistable, isconstraint, deferrable, deferred;
 	pgFunction *triggerFunction;
 };
 
