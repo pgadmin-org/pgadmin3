@@ -28,6 +28,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgFindReplace.xrc \
 	$(srcdir)/ui/dlgForeignDataWrapper.xrc \
 	$(srcdir)/ui/dlgForeignKey.xrc \
+	$(srcdir)/ui/dlgForeignServer.xrc \
 	$(srcdir)/ui/dlgFunction.xrc \
 	$(srcdir)/ui/dlgGroup.xrc \
 	$(srcdir)/ui/dlgHbaConfig.xrc \

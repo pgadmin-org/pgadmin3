@@ -24,6 +24,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlg/dlgFindReplace.h \
 	$(srcdir)/include/dlg/dlgForeignDataWrapper.h \
 	$(srcdir)/include/dlg/dlgForeignKey.h \
+	$(srcdir)/include/dlg/dlgForeignServer.h \
 	$(srcdir)/include/dlg/dlgFunction.h \
 	$(srcdir)/include/dlg/dlgGroup.h \
 	$(srcdir)/include/dlg/dlgHbaConfig.h \

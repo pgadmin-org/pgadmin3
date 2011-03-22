@@ -20,6 +20,7 @@ class pgServer;
 class pgDatabase;
 class pgaJob;
 class pgSchema;
+class pgForeignDataWrapper;
 
 // Class declarations
 class pgCollection : public pgObject
@@ -45,6 +46,10 @@ public:
 	pgSchema *GetSchema() const
 	{
 		return schema;
+	}
+	pgForeignDataWrapper *GetForeignDataWrapper() const
+	{
+		return fdw;
 	}
 	pgaJob *GetJob() const
 	{
@@ -81,6 +86,7 @@ protected:
 	pgDatabase *database;
 	pgSchema *schema;
 	pgaJob *job;
+	pgForeignDataWrapper *fdw;
 };
 
 

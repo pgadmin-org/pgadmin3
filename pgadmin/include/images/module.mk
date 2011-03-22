@@ -113,6 +113,9 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/foreigndatawrappers.png \
 	$(srcdir)/include/images/foreignkey.png \
 	$(srcdir)/include/images/foreignkeybad.png \
+	$(srcdir)/include/images/foreignserver.png \
+	$(srcdir)/include/images/foreignserver-sm.png \
+	$(srcdir)/include/images/foreignservers.png \
 	$(srcdir)/include/images/forward.png \
 	$(srcdir)/include/images/function.png \
 	$(srcdir)/include/images/functions.png \

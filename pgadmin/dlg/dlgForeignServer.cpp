@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgForeignDataWrapper.cpp - PostgreSQL ForeignDataWrapper Property
+// dlgForeignServer.cpp - PostgreSQL Foreign Server Property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,73 +17,77 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
-#include "dlg/dlgForeignDataWrapper.h"
-#include "schema/pgForeignDataWrapper.h"
+#include "dlg/dlgForeignServer.h"
+#include "schema/pgForeignServer.h"
 
 
 // pointer to controls
-#define cbValidator     CTRL_COMBOBOX("cbValidator")
-#define lstOptions          CTRL_LISTVIEW("lstOptions")
-#define txtOption           CTRL_TEXT("txtOption")
-#define txtValue            CTRL_TEXT("txtValue")
-#define btnAdd              CTRL_BUTTON("wxID_ADD")
-#define btnRemove           CTRL_BUTTON("wxID_REMOVE")
+#define cbForeignDataWrapper CTRL_COMBOBOX("cbForeignDataWrapper")
+#define txtType              CTRL_TEXT("txtType")
+#define txtVersion           CTRL_TEXT("txtVersion")
+#define lstOptions           CTRL_LISTVIEW("lstOptions")
+#define txtOption            CTRL_TEXT("txtOption")
+#define txtValue             CTRL_TEXT("txtValue")
+#define btnAdd               CTRL_BUTTON("wxID_ADD")
+#define btnRemove            CTRL_BUTTON("wxID_REMOVE")
 
 
-dlgProperty *pgForeignDataWrapperFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgForeignServerFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-	return new dlgForeignDataWrapper(this, frame, (pgForeignDataWrapper *)node);
+	return new dlgForeignServer(this, frame, (pgForeignServer *)node);
 }
 
 
-BEGIN_EVENT_TABLE(dlgForeignDataWrapper, dlgSecurityProperty)
-	EVT_TEXT(XRCID("cbValidator"),              dlgProperty::OnChange)
-	EVT_COMBOBOX(XRCID("cbValidator"),          dlgProperty::OnChange)
-	EVT_LIST_ITEM_SELECTED(XRCID("lstOptions"), dlgForeignDataWrapper::OnSelChangeOption)
-	EVT_TEXT(XRCID("txtOption"),                dlgForeignDataWrapper::OnChangeOptionName)
-	EVT_BUTTON(wxID_ADD,                        dlgForeignDataWrapper::OnAddOption)
-	EVT_BUTTON(wxID_REMOVE,                     dlgForeignDataWrapper::OnRemoveOption)
+BEGIN_EVENT_TABLE(dlgForeignServer, dlgSecurityProperty)
+	EVT_TEXT(XRCID("cbForeignDataWrapper"),     dlgForeignServer::OnChange)
+	EVT_COMBOBOX(XRCID("cbForeignDataWrapper"), dlgForeignServer::OnChange)
+	EVT_LIST_ITEM_SELECTED(XRCID("lstOptions"), dlgForeignServer::OnSelChangeOption)
+	EVT_TEXT(XRCID("txtOption"),                dlgForeignServer::OnChangeOptionName)
+	EVT_BUTTON(wxID_ADD,                        dlgForeignServer::OnAddOption)
+	EVT_BUTTON(wxID_REMOVE,                     dlgForeignServer::OnRemoveOption)
 END_EVENT_TABLE();
 
 
-dlgForeignDataWrapper::dlgForeignDataWrapper(pgaFactory *f, frmMain *frame, pgForeignDataWrapper *node)
-	: dlgSecurityProperty(f, frame, node, wxT("dlgForeignDataWrapper"), wxT("USAGE"), "U")
+dlgForeignServer::dlgForeignServer(pgaFactory *f, frmMain *frame, pgForeignServer *node)
+	: dlgSecurityProperty(f, frame, node, wxT("dlgForeignServer"), wxT("USAGE"), "U")
 {
-	fdw = node;
+	foreignserver = node;
 }
 
 
-pgObject *dlgForeignDataWrapper::GetObject()
+pgObject *dlgForeignServer::GetObject()
 {
-	return fdw;
+	return foreignserver;
 }
 
 
-int dlgForeignDataWrapper::Go(bool modal)
+int dlgForeignServer::Go(bool modal)
 {
+	if (!foreignserver)
+		cbOwner->Append(wxT(""));
+
 	// Fill owner combobox
 	AddGroups();
 	AddUsers(cbOwner);
 
 	// Fill validator combobox
-	cbValidator->Append(wxT(""));
+	if (!foreignserver)
+		cbForeignDataWrapper->Append(wxT(""));
 	pgSet *set = connection->ExecuteSet(
-	                 wxT("SELECT nspname, proname\n")
-	                 wxT("  FROM pg_proc p\n")
-	                 wxT("  JOIN pg_namespace nsp ON nsp.oid=pronamespace\n")
-	                 wxT(" WHERE proargtypes[0]=") + NumToStr(PGOID_TYPE_TEXT_ARRAY) +
-	                 wxT(" AND proargtypes[1]=") + NumToStr(PGOID_TYPE_OID));
+	                 wxT("SELECT fdwname\n")
+	                 wxT("  FROM pg_foreign_data_wrapper\n")
+	                 wxT("  ORDER BY fdwname"));
 	if (set)
 	{
 		while (!set->Eof())
 		{
-			wxString procname = database->GetSchemaPrefix(set->GetVal(wxT("nspname"))) + set->GetVal(wxT("proname"));
-			cbValidator->Append(procname);
+			wxString fdwname = set->GetVal(wxT("fdwname"));
+			cbForeignDataWrapper->Append(fdwname);
 			set->MoveNext();
 		}
 		delete set;
 	}
-	cbValidator->SetSelection(0);
+	cbForeignDataWrapper->SetSelection(0);
 
 	// Initialize options listview and buttons
 	lstOptions->AddColumn(_("Option"), 80);
@@ -93,21 +97,18 @@ int dlgForeignDataWrapper::Go(bool modal)
 	btnAdd->Disable();
 	btnRemove->Disable();
 
-	if (fdw)
+	if (foreignserver)
 	{
 		// edit mode
 		txtName->Disable();
-		wxString val = fdw->GetValidatorProc();
-		if (!val.IsEmpty())
-		{
-			for (unsigned int i = 0 ; i < cbValidator->GetCount() ; i++)
-			{
-				if (cbValidator->GetString(i) == val)
-					cbValidator->SetSelection(i);
-			}
-		}
+		txtType->Disable();
 
-		wxString options = fdw->GetOptions();
+		txtType->SetValue(foreignserver->GetType());
+		txtVersion->SetValue(foreignserver->GetVersion());
+
+		cbForeignDataWrapper->SetValue(foreignserver->GetFdw());
+
+		wxString options = foreignserver->GetOptions();
 		wxString option, optionname, optionvalue;
 		while (options.Length() > 0)
 		{
@@ -129,25 +130,27 @@ int dlgForeignDataWrapper::Go(bool modal)
 }
 
 
-pgObject *dlgForeignDataWrapper::CreateObject(pgCollection *collection)
+pgObject *dlgForeignServer::CreateObject(pgCollection *collection)
 {
 	wxString name = txtName->GetValue();
 
-	pgObject *obj = foreignDataWrapperFactory.CreateObjects(collection, 0, wxT("\n   AND fdwname ILIKE ") + qtDbString(name));
+	pgObject *obj = foreignServerFactory.CreateObjects(collection, 0, wxT("\n   AND srvname ILIKE ") + qtDbString(name));
 	return obj;
 }
 
 
-void dlgForeignDataWrapper::CheckChange()
+void dlgForeignServer::CheckChange()
 {
 	bool didChange = true;
 	wxString name = txtName->GetValue();
-	if (fdw)
+	if (foreignserver)
 	{
-		didChange = name != fdw->GetName()
-		            || cbOwner->GetValue() != fdw->GetOwner()
-		            || cbValidator->GetValue() != fdw->GetValidatorProc()
-		            || GetOptionsSql().Length() > 0;
+		didChange = name != foreignserver->GetName()
+		            || txtComment->GetValue() != foreignserver->GetComment()
+		            || cbOwner->GetValue() != foreignserver->GetOwner()
+		            || txtType->GetValue() != foreignserver->GetType()
+		            || txtVersion->GetValue() != foreignserver->GetVersion()
+		            || cbForeignDataWrapper->GetValue() != foreignserver->GetFdw();
 		EnableOK(didChange);
 	}
 	else
@@ -155,19 +158,26 @@ void dlgForeignDataWrapper::CheckChange()
 		bool enable = true;
 
 		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+		CheckValid(enable, !cbForeignDataWrapper->GetValue().IsEmpty(), _("Please specify foreign data wrapper."));
 		EnableOK(enable);
 	}
 }
 
 
 
-void dlgForeignDataWrapper::OnChangeOptionName(wxCommandEvent &ev)
+void dlgForeignServer::OnChange(wxCommandEvent &ev)
+{
+	CheckChange();
+}
+
+
+void dlgForeignServer::OnChangeOptionName(wxCommandEvent &ev)
 {
 	btnAdd->Enable(txtOption->GetValue().Length() > 0);
 }
 
 
-void dlgForeignDataWrapper::OnSelChangeOption(wxListEvent &ev)
+void dlgForeignServer::OnSelChangeOption(wxListEvent &ev)
 {
 	int row = lstOptions->GetSelection();
 	if (row >= 0)
@@ -180,7 +190,7 @@ void dlgForeignDataWrapper::OnSelChangeOption(wxListEvent &ev)
 }
 
 
-void dlgForeignDataWrapper::OnAddOption(wxCommandEvent &ev)
+void dlgForeignServer::OnAddOption(wxCommandEvent &ev)
 {
 	bool found = false;
 
@@ -207,7 +217,7 @@ void dlgForeignDataWrapper::OnAddOption(wxCommandEvent &ev)
 }
 
 
-void dlgForeignDataWrapper::OnRemoveOption(wxCommandEvent &ev)
+void dlgForeignServer::OnRemoveOption(wxCommandEvent &ev)
 {
 	int sel = lstOptions->GetSelection();
 	lstOptions->DeleteItem(sel);
@@ -220,9 +230,9 @@ void dlgForeignDataWrapper::OnRemoveOption(wxCommandEvent &ev)
 }
 
 
-wxString dlgForeignDataWrapper::GetOptionsSql()
+wxString dlgForeignServer::GetOptionsSql()
 {
-	wxString options = fdw->GetOptions();
+	wxString options = foreignserver->GetOptions();
 	wxString option, optionname, optionvalue, sqloptions;
 	bool found;
 	int pos;
@@ -262,7 +272,7 @@ wxString dlgForeignDataWrapper::GetOptionsSql()
 
 	for (pos = 0 ; pos < lstOptions->GetItemCount() ; pos++)
 	{
-		options = fdw->GetOptions();
+		options = foreignserver->GetOptions();
 		found = false;
 
 		while (options.Length() > 0 && !found)
@@ -287,35 +297,38 @@ wxString dlgForeignDataWrapper::GetOptionsSql()
 }
 
 
-wxString dlgForeignDataWrapper::GetSql()
+wxString dlgForeignServer::GetSql()
 {
 	wxString sql, name;
 	name = txtName->GetValue();
 
-	if (fdw)
+	if (foreignserver)
 	{
 		// edit mode
-		if (cbValidator->GetValue() != fdw->GetValidatorProc())
+		if (txtVersion->GetValue() != foreignserver->GetVersion())
 		{
-			sql = wxT("ALTER FOREIGN DATA WRAPPER ") + qtIdent(name)
-			      + wxT("\n   VALIDATOR ") + qtIdent(cbValidator->GetValue())
-			      + wxT(";\n");
+			sql = wxT("ALTER SERVER ") + qtIdent(name)
+			      + wxT(" VERSION ") + qtDbString(txtVersion->GetValue()) + wxT(";\n");
 		}
 
 		wxString sqloptions = GetOptionsSql();
 		if (sqloptions.Length() > 0)
 		{
-			sql += wxT("ALTER FOREIGN DATA WRAPPER ") + name
-			       + wxT(" OPTIONS (") + sqloptions + wxT(");");
+			sql += wxT("ALTER SERVER ") + name
+			       + wxT(" OPTIONS (") + sqloptions + wxT(");\n");
 		}
 
-		AppendOwnerChange(sql, wxT("FOREIGN DATA WRAPPER ") + qtIdent(name));
+		AppendOwnerChange(sql, wxT("SERVER ") + qtIdent(name));
 	}
 	else
 	{
 		// create mode
-		sql = wxT("CREATE FOREIGN DATA WRAPPER ") + qtIdent(name);
-		AppendIfFilled(sql, wxT("\n   VALIDATOR "), qtIdent(cbValidator->GetValue()));
+		sql = wxT("CREATE SERVER ") + qtIdent(name);
+		if (!(txtType->GetValue()).IsEmpty())
+			sql += wxT("\n   TYPE ") + qtDbString(txtType->GetValue());
+		if (!(txtVersion->GetValue()).IsEmpty())
+			sql += wxT("\n   VERSION ") + qtDbString(txtVersion->GetValue());
+		sql += wxT("\n   FOREIGN DATA WRAPPER ") + qtIdent(cbForeignDataWrapper->GetValue());
 
 		// check for options
 		if (lstOptions->GetItemCount() > 0)
@@ -333,12 +346,13 @@ wxString dlgForeignDataWrapper::GetSql()
 		}
 
 		sql += wxT(";\n");
-		AppendOwnerNew(sql, wxT("FOREIGN DATA WRAPPER ") + qtIdent(name));
+		AppendOwnerNew(sql, wxT("SERVER ") + qtIdent(name));
 	}
 
-	sql += GetGrant(wxT("U"), wxT("FOREIGN DATA WRAPPER ") + qtIdent(name));
+	sql += GetGrant(wxT("U"), wxT("SERVER ") + qtIdent(name));
 
 	return sql;
 }
+
 
 

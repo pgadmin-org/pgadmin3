@@ -40,6 +40,8 @@
 #include "schema/pgCheck.h"
 #include "schema/pgIndexConstraint.h"
 #include "schema/pgForeignKey.h"
+#include "schema/pgForeignDataWrapper.h"
+#include "schema/pgForeignServer.h"
 #include "schema/pgRule.h"
 #include "schema/pgRole.h"
 #include "schema/pgCast.h"
@@ -118,6 +120,10 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		message = ((gpExtTable *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("ForeignKey"))
 		message = ((pgForeignKey *)this)->GetTranslatedMessage(kindOfMessage);
+	else if (type == wxT("Foreign Data Wrapper"))
+		message = ((pgForeignDataWrapper *)this)->GetTranslatedMessage(kindOfMessage);
+	else if (type == wxT("Foreign Server"))
+		message = ((pgForeignServer *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("FTS Configuration"))
 		message = ((pgTextSearchConfiguration *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("FTS Dictionary"))
@@ -209,6 +215,10 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 			message = ((gpExtTableCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("ForeignKeys"))
 			message = ((pgForeignKeyCollection *)this)->GetTranslatedMessage(kindOfMessage);
+		else if (type == wxT("Foreign Data Wrappers"))
+			message = ((pgForeignDataWrapperObjCollection *)this)->GetTranslatedMessage(kindOfMessage);
+		else if (type == wxT("Foreign Servers"))
+			message = ((pgForeignServerCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("FTS Configurations"))
 			message = ((pgTextSearchConfigurationCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("FTS Dictionaries"))

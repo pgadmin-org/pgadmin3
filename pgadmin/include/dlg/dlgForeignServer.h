@@ -1,0 +1,51 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// pgAdmin III - PostgreSQL Tools
+// RCS-ID:      $Id$
+// Copyright (C) 2002 - 2010, The pgAdmin Development Team
+// This software is released under the PostgreSQL Licence
+//
+// dlgForeignServer.h - Foreign Server property
+//
+//////////////////////////////////////////////////////////////////////////
+
+
+#ifndef __DLG_FOREIGNSERVERPROP
+#define __DLG_FOREIGNSERVERPROP
+
+#include "dlg/dlgProperty.h"
+
+class pgForeignServer;
+
+class dlgForeignServer : public dlgSecurityProperty
+{
+public:
+	dlgForeignServer(pgaFactory *factory, frmMain *frame, pgForeignServer *_foreignserver);
+	int Go(bool modal);
+
+	void CheckChange();
+	wxString GetSql();
+	pgObject *CreateObject(pgCollection *collection);
+	pgObject *GetObject();
+
+private:
+	pgForeignServer *foreignserver;
+
+#ifdef __WXMAC__
+	void OnChangeSize(wxSizeEvent &ev);
+#endif
+
+	void OnSelChangeOption(wxListEvent &ev);
+	void OnChange(wxCommandEvent &ev);
+	void OnChangeOptionName(wxCommandEvent &ev);
+	void OnAddOption(wxCommandEvent &ev);
+	void OnChangeOption(wxCommandEvent &ev);
+	void OnRemoveOption(wxCommandEvent &ev);
+
+	wxString GetOptionsSql();
+
+	DECLARE_EVENT_TABLE()
+};
+
+
+#endif

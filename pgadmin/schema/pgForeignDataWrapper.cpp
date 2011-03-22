@@ -16,12 +16,48 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "schema/pgForeignDataWrapper.h"
+#include "schema/pgForeignServer.h"
 
 
 pgForeignDataWrapper::pgForeignDataWrapper(const wxString &newName)
 	: pgDatabaseObject(foreignDataWrapperFactory, newName)
 {
 }
+
+
+wxString pgForeignDataWrapper::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on foreign data wrapper");
+			message += wxT(" ") + GetName();
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing foreign data wrapper");
+			message += wxT(" ") + GetName();
+			break;
+		case DROPINCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop foreign data wrapper \"%s\" including all objects that depend on it?"),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPEXCLUDINGDEPS:
+			message = wxString::Format(_("Are you sure you wish to drop foreign data wrapper \"%s?\""),
+			                           GetFullIdentifier().c_str());
+			break;
+		case DROPCASCADETITLE:
+			message = _("Drop foreign data wrapper cascaded?");
+			break;
+		case DROPTITLE:
+			message = _("Drop foreign data wrapper?");
+			break;
+	}
+
+	return message;
+}
+
 
 bool pgForeignDataWrapper::DropObject(wxFrame *frame, ctlTree *browser, bool cascaded)
 {
@@ -57,6 +93,18 @@ wxString pgForeignDataWrapper::GetSql(ctlTree *browser)
 
 void pgForeignDataWrapper::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
+	if (!expandedKids)
+	{
+		expandedKids = true;
+
+		browser->RemoveDummyChild(this);
+
+		// Log
+		wxLogInfo(wxT("Adding child object to foreign data wrapper %s"), GetIdentifier().c_str());
+
+		browser->AppendCollection(this, foreignServerFactory);
+	}
+
 	if (properties)
 	{
 		CreateListColumns(properties);
@@ -67,7 +115,6 @@ void pgForeignDataWrapper::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlLi
 		properties->AppendItem(_("ACL"), GetAcl());
 		properties->AppendItem(_("Validator"), GetValidatorProc());
 		properties->AppendItem(_("Options"), GetOptions());
-		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }
 
@@ -83,6 +130,17 @@ pgObject *pgForeignDataWrapper::Refresh(ctlTree *browser, const wxTreeItemId ite
 	return fdw;
 }
 
+
+
+wxMenu *pgForeignDataWrapper::GetNewMenu()
+{
+	wxMenu *menu = pgObject::GetNewMenu();
+	if (database->GetCreatePrivilege())
+	{
+		foreignServerFactory.AppendMenu(menu);
+	}
+	return menu;
+}
 
 
 pgObject *pgForeignDataWrapperFactory::CreateObjects(pgCollection *collection, ctlTree *browser, const wxString &restriction)
@@ -110,7 +168,6 @@ pgObject *pgForeignDataWrapperFactory::CreateObjects(pgCollection *collection, c
 			fdw->iSetOid(fdws->GetOid(wxT("oid")));
 			fdw->iSetOwner(fdws->GetVal(wxT("fdwowner")));
 			fdw->iSetAcl(fdws->GetVal(wxT("fdwacl")));
-			fdw->iSetComment(fdws->GetVal(wxT("description")));
 			fdw->iSetValidatorProc(fdws->GetVal(wxT("fdwval")));
 			fdw->iSetOptions(fdws->GetVal(wxT("fdwoptions")));
 
@@ -150,6 +207,89 @@ wxString pgForeignDataWrapper::GetCreateOptions()
 	}
 
 	return options_create;
+}
+
+
+///////////////////////////////////////////////////////////////
+
+void pgForeignDataWrapperObject::SetForeignDataWrapper(pgForeignDataWrapper *newForeignDataWrapper)
+{
+	fdw = newForeignDataWrapper;
+	database = fdw->GetDatabase();
+}
+
+bool pgForeignDataWrapperObject::CanDrop()
+{
+	return true; //fdw->GetCreatePrivilege();
+}
+
+
+bool pgForeignDataWrapperObject::CanCreate()
+{
+	return true; //fdw->GetCreatePrivilege();
+}
+
+
+void pgForeignDataWrapperObject::SetContextInfo(frmMain *form)
+{
+}
+
+
+pgSet *pgForeignDataWrapperObject::ExecuteSet(const wxString &sql)
+{
+	return fdw->GetDatabase()->ExecuteSet(sql);
+}
+
+wxString pgForeignDataWrapperObject::ExecuteScalar(const wxString &sql)
+{
+	return fdw->GetDatabase()->ExecuteScalar(sql);
+}
+
+
+bool pgForeignDataWrapperObject::ExecuteVoid(const wxString &sql)
+{
+	return fdw->GetDatabase()->ExecuteVoid(sql);
+}
+
+
+/////////////////////////////////////////////////////
+
+pgForeignDataWrapperObjCollection::pgForeignDataWrapperObjCollection(pgaFactory *factory, pgForeignDataWrapper *newfdw)
+	: pgCollection(factory)
+{
+	fdw = newfdw;
+	database = fdw->GetDatabase();
+	server = database->GetServer();
+	iSetOid(fdw->GetOid());
+}
+
+
+wxString pgForeignDataWrapperObjCollection::GetTranslatedMessage(int kindOfMessage) const
+{
+	wxString message = wxEmptyString;
+
+	switch (kindOfMessage)
+	{
+		case RETRIEVINGDETAILS:
+			message = _("Retrieving details on foreign data wrappers");
+			break;
+		case REFRESHINGDETAILS:
+			message = _("Refreshing foreign data wrappers");
+			break;
+	}
+
+	return message;
+}
+
+bool pgForeignDataWrapperObjCollection::CanCreate()
+{
+	return GetDatabase()->GetCreatePrivilege();
+}
+
+
+pgCollection *pgForeignDataWrapperObjFactory::CreateCollection(pgObject *obj)
+{
+	return new pgForeignDataWrapperObjCollection(GetCollectionFactory(), (pgForeignDataWrapper *)obj);
 }
 
 

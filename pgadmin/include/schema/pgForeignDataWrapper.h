@@ -28,12 +28,14 @@ class pgForeignDataWrapper : public pgDatabaseObject
 {
 public:
 	pgForeignDataWrapper(const wxString &newName = wxT(""));
+	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
 	bool CanDropCascaded()
 	{
 		return true;
 	}
+	wxMenu *GetNewMenu();
 
 	wxString GetValidatorProc() const
 	{
@@ -72,6 +74,62 @@ public:
 
 private:
 	wxString validatorProc, options;
+};
+
+class pgForeignDataWrapperObjFactory : public pgDatabaseObjFactory
+{
+public:
+	pgForeignDataWrapperObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img, wxImage *imgSm = 0)
+		: pgDatabaseObjFactory(tn, ns, nls, img, imgSm) {}
+	virtual pgCollection *CreateCollection(pgObject *obj);
+};
+
+
+// Object that lives in a foreign data wrapper
+class pgForeignDataWrapperObject : public pgDatabaseObject
+{
+public:
+	pgForeignDataWrapperObject(pgForeignDataWrapper *newForeignDataWrapper, pgaFactory &factory, const wxString &newName = wxEmptyString) : pgDatabaseObject(factory, newName)
+	{
+		SetForeignDataWrapper(newForeignDataWrapper);
+	}
+	pgForeignDataWrapperObject(pgForeignDataWrapper *newForeignDataWrapper, int newType, const wxString &newName = wxT("")) : pgDatabaseObject(newType, newName)
+	{
+		SetForeignDataWrapper(newForeignDataWrapper);
+	}
+
+	bool CanDrop();
+	bool CanEdit()
+	{
+		return true;
+	}
+	bool CanCreate();
+
+	void SetForeignDataWrapper(pgForeignDataWrapper *newForeignDataWrapper);
+	virtual pgForeignDataWrapper *GetForeignDataWrapper() const
+	{
+		return fdw;
+	}
+	pgSet *ExecuteSet(const wxString &sql);
+	wxString ExecuteScalar(const wxString &sql);
+	bool ExecuteVoid(const wxString &sql);
+
+
+protected:
+	virtual void SetContextInfo(frmMain *form);
+
+	pgForeignDataWrapper *fdw;
+};
+
+
+
+// collection of pgForeignDataWrapperObject
+class pgForeignDataWrapperObjCollection : public pgCollection
+{
+public:
+	pgForeignDataWrapperObjCollection(pgaFactory *factory, pgForeignDataWrapper *fdw);
+	wxString GetTranslatedMessage(int kindOfMessage) const;
+	virtual bool CanCreate();
 };
 
 #endif
