@@ -104,8 +104,13 @@ endif
 # Convert images to an embeddable format
 BUILT_SOURCES = $(patsubst %.png,%.pngc,$(wildcard $(top_srcdir)/pgadmin/include/images/*.png))
 
+$(top_srcdir)/xtra/png2c/png2c:
+	(cd $(top_srcdir)/xtra/png2c && $(MAKE) $(AM_MAKEFLAGS) png2c)
+
+$(BUILT_SOURCES): $(top_srcdir)/xtra/png2c/png2c
+
 %.pngc: %.png
-	../xtra/png2c/png2c $^ $@
+	$(top_srcdir)/xtra/png2c/png2c $< $@
 
 clean-local:
 	rm -f include/images/*.pngc
