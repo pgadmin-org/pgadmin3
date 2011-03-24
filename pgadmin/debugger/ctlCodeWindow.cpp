@@ -116,7 +116,7 @@ wxString ctlCodeWindow::m_commandSetBreakpointV2(wxT("SELECT * FROM pldbg_set_br
 wxString ctlCodeWindow::m_commandClearBreakpointV1(wxT("SELECT * FROM pldbg_drop_breakpoint(%s,%s,%s,%d)"));
 wxString ctlCodeWindow::m_commandClearBreakpointV2(wxT("SELECT * FROM pldbg_drop_breakpoint(%s,%s,%d)"));
 wxString ctlCodeWindow::m_commandSelectFrame(wxT("SELECT * FROM pldbg_select_frame(%s,%d)"));
-wxString ctlCodeWindow::m_commandDepositValue(wxT("SELECT * FROM pldbg_deposit_value(%s,'%s',%d,'%s')"));
+wxString ctlCodeWindow::m_commandDepositValue(wxT("SELECT * FROM pldbg_deposit_value(%s,%s,%d,%s)"));
 wxString ctlCodeWindow::m_commandAbortTarget(wxT("SELECT * FROM pldbg_abort_target(%s)"));
 wxString ctlCodeWindow::m_commandAddBreakpointEDB(wxT("SELECT * FROM pldbg_set_global_breakpoint(%s, %s, %s, %s, %s)"));
 wxString ctlCodeWindow::m_commandAddBreakpointPG(wxT("SELECT * FROM pldbg_set_global_breakpoint(%s, %s, %s, %s)"));
@@ -1303,7 +1303,7 @@ void ctlCodeWindow::OnVarChange( wxGridEvent &event )
 	if( event.GetId() == ID_PKGVARGRID )
 		varName.Prepend( wxT( "@" ));
 
-	m_dbgConn->startCommand( wxString::Format( m_commandDepositValue, m_sessionHandle.c_str(), varName.c_str(), -1, varValue.c_str()), GetEventHandler(), RESULT_ID_DEPOSIT_VALUE );
+	m_dbgConn->startCommand( wxString::Format( m_commandDepositValue, m_sessionHandle.c_str(), m_dbgConn->qtDbString(varName.c_str()), -1, m_dbgConn->qtDbString(varValue.c_str())), GetEventHandler(), RESULT_ID_DEPOSIT_VALUE );
 
 
 }

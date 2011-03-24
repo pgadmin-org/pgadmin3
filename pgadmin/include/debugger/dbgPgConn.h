@@ -68,6 +68,7 @@ public:
 	bool EdbMinimumVersion(int major, int minor);
 	bool GetIsEdb();
 	bool GetIsGreenplum();
+	wxString qtDbString(const wxString &value);
 	DebuggerApiVersions DebuggerApiVersion();
 	wxString GetVersionString();
 	bool isConnected() const;               // Returns true if the connection attempt succeeded

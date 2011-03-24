@@ -522,5 +522,23 @@ bool dbgPgConn::GetIsGreenplum()
 	return m_isGreenplum;
 }
 
+wxString dbgPgConn::qtDbString(const wxString &value)
+{
+	wxString result = value;
 
+	result.Replace(wxT("\\"), wxT("\\\\"));
+	result.Replace(wxT("'"), wxT("''"));
+	result.Append(wxT("'"));
 
+	if (BackendMinimumVersion(8, 1))
+	{
+		if (result.Contains(wxT("\\")))
+			result.Prepend(wxT("E'"));
+		else
+			result.Prepend(wxT("'"));
+	}
+	else
+		result.Prepend(wxT("'"));
+
+	return result;
+}
