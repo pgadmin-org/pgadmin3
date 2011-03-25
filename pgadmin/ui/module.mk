@@ -73,6 +73,7 @@ TMP_ui += \
 	$(srcdir)/ui/dlgTrigger.xrc \
 	$(srcdir)/ui/dlgType.xrc \
 	$(srcdir)/ui/dlgUser.xrc \
+	$(srcdir)/ui/dlgUserMapping.xrc \
 	$(srcdir)/ui/dlgView.xrc \
 	$(srcdir)/ui/frmBackup.xrc \
 	$(srcdir)/ui/frmBackupGlobals.xrc \

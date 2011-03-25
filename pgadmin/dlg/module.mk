@@ -55,6 +55,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dlg/dlgTrigger.cpp \
 	$(srcdir)/dlg/dlgType.cpp \
 	$(srcdir)/dlg/dlgUser.cpp \
+	$(srcdir)/dlg/dlgUserMapping.cpp \
 	$(srcdir)/dlg/dlgView.cpp \
 	$(srcdir)/dlg/dlgManageMacros.cpp \
 	$(srcdir)/dlg/dlgExtTable.cpp \

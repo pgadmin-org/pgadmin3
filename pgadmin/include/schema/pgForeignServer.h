@@ -15,7 +15,6 @@
 #include "pgForeignDataWrapper.h"
 
 class pgCollection;
-
 class pgForeignServerFactory : public pgForeignDataWrapperObjFactory
 {
 public:
@@ -33,6 +32,7 @@ public:
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 
 	void ShowTreeDetail(ctlTree *browser, frmMain *form = 0, ctlListView *properties = 0, ctlSQLBox *sqlPane = 0);
+	wxMenu *GetNewMenu();
 	bool CanDropCascaded()
 	{
 		return true;
@@ -40,15 +40,6 @@ public:
 	bool CanCreate()
 	{
 		return true;
-	}
-
-	wxString GetFdw() const
-	{
-		return fdw;
-	}
-	void iSetFdw(const wxString &s)
-	{
-		fdw = s;
 	}
 	wxString GetType() const
 	{
@@ -94,13 +85,60 @@ public:
 	}
 
 private:
-	wxString fdw, type, version, options;
+	wxString type, version, options;
 };
 
-class pgForeignServerCollection : public pgForeignDataWrapperObjCollection
+
+class pgForeignServerObjFactory : public pgForeignDataWrapperObjFactory
 {
 public:
-	pgForeignServerCollection(pgaFactory *factory, pgSchema *sch);
+	pgForeignServerObjFactory(const wxChar *tn, const wxChar *ns, const wxChar *nls, wxImage *img, wxImage *imgSm = 0)
+		: pgForeignDataWrapperObjFactory(tn, ns, nls, img, imgSm) {}
+	virtual pgCollection *CreateCollection(pgObject *obj);
+};
+
+
+// Object that lives in a foreign server
+class pgForeignServerObject : public pgForeignDataWrapperObject
+{
+public:
+	pgForeignServerObject(pgForeignServer *newForeignServer, pgaFactory &factory, const wxString &newName = wxEmptyString) : pgForeignDataWrapperObject(newForeignServer->GetForeignDataWrapper(), factory, newName)
+	{
+		SetForeignServer(newForeignServer);
+	}
+	pgForeignServerObject(pgForeignServer *newForeignServer, int newType, const wxString &newName = wxT("")) : pgForeignDataWrapperObject(newForeignServer->GetForeignDataWrapper(), newType, newName)
+	{
+		SetForeignServer(newForeignServer);
+	}
+
+	bool CanDrop();
+	bool CanEdit()
+	{
+		return true;
+	}
+	bool CanCreate();
+
+	void SetForeignServer(pgForeignServer *newForeignServer);
+	virtual pgForeignServer *GetForeignServer() const
+	{
+		return srv;
+	}
+	pgSet *ExecuteSet(const wxString &sql);
+	wxString ExecuteScalar(const wxString &sql);
+	bool ExecuteVoid(const wxString &sql);
+
+
+protected:
+	virtual void SetContextInfo(frmMain *form);
+
+	pgForeignServer *srv;
+};
+
+
+class pgForeignServerObjCollection : public pgCollection
+{
+public:
+	pgForeignServerObjCollection(pgaFactory *factory, pgForeignServer *newsrv);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 };
 

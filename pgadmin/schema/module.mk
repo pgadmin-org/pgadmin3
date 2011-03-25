@@ -55,6 +55,7 @@ pgadmin3_SOURCES += \
         $(subdir)/pgTrigger.cpp \
         $(subdir)/pgType.cpp \
         $(subdir)/pgUser.cpp \
+        $(subdir)/pgUserMapping.cpp \
         $(subdir)/pgView.cpp \
         $(subdir)/gpExtTable.cpp \
         $(subdir)/gpResQueue.cpp \

@@ -16,6 +16,7 @@
 #include "pgAdmin3.h"
 #include "utils/misc.h"
 #include "schema/pgForeignServer.h"
+#include "schema/pgUserMapping.h"
 #include "schema/pgDatatype.h"
 
 
@@ -75,7 +76,7 @@ wxString pgForeignServer::GetSql(ctlTree *browser)
 		sql = wxT("-- Server: ") + GetQuotedFullIdentifier() + wxT("\n\n")
 		      + wxT("-- DROP SERVER ") + GetQuotedFullIdentifier() + wxT(";")
 		      + wxT("\n\nCREATE SERVER ") + GetName()
-		      + wxT("\n   FOREIGN DATA WRAPPER ") + qtIdent(GetFdw());
+		      + wxT("\n   FOREIGN DATA WRAPPER ") + qtIdent(GetForeignDataWrapper()->GetName());
 
 		if (!GetType().IsEmpty())
 			sql += wxT("\n  TYPE ") + qtDbString(GetType());
@@ -96,6 +97,18 @@ wxString pgForeignServer::GetSql(ctlTree *browser)
 
 void pgForeignServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
+	if (!expandedKids)
+	{
+		expandedKids = true;
+
+		browser->RemoveDummyChild(this);
+
+		// Log
+		wxLogInfo(wxT("Adding child object to foreign server %s"), GetIdentifier().c_str());
+
+		browser->AppendCollection(this, userMappingFactory);
+	}
+
 	if (properties)
 	{
 		CreateListColumns(properties);
@@ -104,7 +117,6 @@ void pgForeignServer::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListVie
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("ACL"), GetAcl());
-		properties->AppendItem(_("Foreign Data Wrapper"), GetFdw());
 		properties->AppendItem(_("Type"), GetType());
 		properties->AppendItem(_("Version"), GetVersion());
 		properties->AppendItem(_("Options"), GetOptions());
@@ -118,9 +130,20 @@ pgObject *pgForeignServer::Refresh(ctlTree *browser, const wxTreeItemId item)
 	pgObject *fs = 0;
 	pgCollection *coll = browser->GetParentCollection(item);
 	if (coll)
-		fs = foreignServerFactory.CreateObjects(coll, 0, wxT("\n WHERE srv.oid=") + GetOidStr());
+		fs = foreignServerFactory.CreateObjects(coll, 0, wxT(" AND srv.oid=") + GetOidStr());
 
 	return fs;
+}
+
+
+wxMenu *pgForeignServer::GetNewMenu()
+{
+	wxMenu *menu = pgObject::GetNewMenu();
+	if (database->GetCreatePrivilege())
+	{
+		userMappingFactory.AppendMenu(menu);
+	}
+	return menu;
 }
 
 
@@ -138,6 +161,7 @@ pgObject *pgForeignServerFactory::CreateObjects(pgCollection *collection, ctlTre
 	      wxT("  FROM pg_foreign_server srv\n")
 	      wxT("  LEFT OUTER JOIN pg_foreign_data_wrapper fdw on fdw.oid=srvfdw\n")
 	      wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=srv.oid AND des.objsubid=0\n")
+          wxT(" WHERE srvfdw = ") + collection->GetOidStr()
 	      + restriction + wxT("\n")
 	      wxT(" ORDER BY srvname");
 	pgSet *foreignservers = collection->GetDatabase()->ExecuteSet(sql);
@@ -148,7 +172,6 @@ pgObject *pgForeignServerFactory::CreateObjects(pgCollection *collection, ctlTre
 			fs = new pgForeignServer(collection->GetForeignDataWrapper(), foreignservers->GetVal(wxT("srvname")));
 			fs->iSetOid(foreignservers->GetOid(wxT("oid")));
 			fs->iSetOwner(foreignservers->GetVal(wxT("srvowner")));
-			fs->iSetFdw(foreignservers->GetVal(wxT("fdwname")));
 			fs->iSetAcl(foreignservers->GetVal(wxT("srvacl")));
 			fs->iSetComment(foreignservers->GetVal(wxT("description")));
 			fs->iSetType(foreignservers->GetVal(wxT("srvtype")));
@@ -196,7 +219,18 @@ wxString pgForeignServer::GetCreateOptions()
 
 /////////////////////////////
 
-wxString pgForeignServerCollection::GetTranslatedMessage(int kindOfMessage) const
+pgForeignServerObjCollection::pgForeignServerObjCollection(pgaFactory *factory, pgForeignServer *newsrv)
+	: pgCollection(factory)
+{
+    fsrv = newsrv;
+	fdw = fsrv->GetForeignDataWrapper();
+	database = fdw->GetDatabase();
+	server = database->GetServer();
+	iSetOid(fsrv->GetOid());
+}
+
+
+wxString pgForeignServerObjCollection::GetTranslatedMessage(int kindOfMessage) const
 {
 	wxString message = wxEmptyString;
 
@@ -212,6 +246,54 @@ wxString pgForeignServerCollection::GetTranslatedMessage(int kindOfMessage) cons
 
 	return message;
 }
+
+pgCollection *pgForeignServerObjFactory::CreateCollection(pgObject *obj)
+{
+	return new pgForeignServerObjCollection(GetCollectionFactory(), (pgForeignServer *)obj);
+}
+
+
+///////////////////////////////////////////////////////////////
+
+void pgForeignServerObject::SetForeignServer(pgForeignServer *newForeignServer)
+{
+	srv = newForeignServer;
+	database = fdw->GetDatabase();
+}
+
+bool pgForeignServerObject::CanDrop()
+{
+	return true; //fdw->GetCreatePrivilege();
+}
+
+
+bool pgForeignServerObject::CanCreate()
+{
+	return true; //fdw->GetCreatePrivilege();
+}
+
+
+void pgForeignServerObject::SetContextInfo(frmMain *form)
+{
+}
+
+
+pgSet *pgForeignServerObject::ExecuteSet(const wxString &sql)
+{
+	return srv->GetDatabase()->ExecuteSet(sql);
+}
+
+wxString pgForeignServerObject::ExecuteScalar(const wxString &sql)
+{
+	return srv->GetDatabase()->ExecuteScalar(sql);
+}
+
+
+bool pgForeignServerObject::ExecuteVoid(const wxString &sql)
+{
+	return srv->GetDatabase()->ExecuteVoid(sql);
+}
+
 
 ///////////////////////////////////////////////////
 

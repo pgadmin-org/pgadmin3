@@ -55,6 +55,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlg/dlgTrigger.h \
 	$(srcdir)/include/dlg/dlgType.h \
 	$(srcdir)/include/dlg/dlgUser.h \
+	$(srcdir)/include/dlg/dlgUserMapping.h \
 	$(srcdir)/include/dlg/dlgView.h \
 	$(srcdir)/include/dlg/dlgManageMacros.h \
 	$(srcdir)/include/dlg/dlgExtTable.h \

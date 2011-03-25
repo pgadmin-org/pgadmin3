@@ -21,6 +21,8 @@ class pgDatabase;
 class pgaJob;
 class pgSchema;
 class pgForeignDataWrapper;
+class pgForeignServer;
+class pgUserMapping;
 
 // Class declarations
 class pgCollection : public pgObject
@@ -50,6 +52,14 @@ public:
 	pgForeignDataWrapper *GetForeignDataWrapper() const
 	{
 		return fdw;
+	}
+	pgForeignServer *GetForeignServer() const
+	{
+		return fsrv;
+	}
+	pgUserMapping *GetUserMapping() const
+	{
+		return um;
 	}
 	pgaJob *GetJob() const
 	{
@@ -87,6 +97,8 @@ protected:
 	pgSchema *schema;
 	pgaJob *job;
 	pgForeignDataWrapper *fdw;
+    pgForeignServer *fsrv;
+    pgUserMapping *um;
 };
 
 

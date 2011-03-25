@@ -25,7 +25,9 @@
 pgCollection::pgCollection(pgaFactory *factory)
 	: pgObject(*factory)
 {
-	fdw = 0;
+    um = 0;
+	fsrv = 0;
+    fdw = 0;
 	job = 0;
 	schema = 0;
 	database = 0;

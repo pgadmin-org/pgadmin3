@@ -5,23 +5,23 @@
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgForeignServer.h - Foreign Server property
+// dlgUserMapping.h - User Mapping property
 //
 //////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __DLG_FOREIGNSERVERPROP
-#define __DLG_FOREIGNSERVERPROP
+#ifndef __DLG_USERMAPPINGPROP
+#define __DLG_USERMAPPINGPROP
 
 #include "dlg/dlgProperty.h"
 
-class pgForeignDataWrapper;
 class pgForeignServer;
+class pgUserMapping;
 
-class dlgForeignServer : public dlgSecurityProperty
+class dlgUserMapping : public dlgProperty
 {
 public:
-	dlgForeignServer(pgaFactory *factory, frmMain *frame, pgForeignServer *node, pgForeignDataWrapper *parent);
+	dlgUserMapping(pgaFactory *factory, frmMain *frame, pgUserMapping *node, pgForeignServer *parent);
 	int Go(bool modal);
 
 	void CheckChange();
@@ -30,8 +30,8 @@ public:
 	pgObject *GetObject();
 
 private:
-    pgForeignDataWrapper *foreigndatawrapper;
-	pgForeignServer *foreignserver;
+    pgForeignServer *foreignserver;
+	pgUserMapping *usermapping;
 
 #ifdef __WXMAC__
 	void OnChangeSize(wxSizeEvent &ev);

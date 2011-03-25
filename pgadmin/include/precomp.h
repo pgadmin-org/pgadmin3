@@ -111,6 +111,7 @@
 #include "dlg/dlgTrigger.h"
 #include "dlg/dlgType.h"
 #include "dlg/dlgUser.h"
+#include "dlg/dlgUserMapping.h"
 #include "dlg/dlgView.h"
 #include "dlg/dlgExtTable.h"
 
@@ -212,6 +213,7 @@
 #include "schema/pgTrigger.h"
 #include "schema/pgType.h"
 #include "schema/pgUser.h"
+#include "schema/pgUserMapping.h"
 #include "schema/pgView.h"
 #include "schema/gpExtTable.h"
 #include "schema/gpPartition.h"

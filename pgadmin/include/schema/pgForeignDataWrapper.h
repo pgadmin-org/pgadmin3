@@ -89,7 +89,7 @@ public:
 class pgForeignDataWrapperObject : public pgDatabaseObject
 {
 public:
-	pgForeignDataWrapperObject(pgForeignDataWrapper *newForeignDataWrapper, pgaFactory &factory, const wxString &newName = wxEmptyString) : pgDatabaseObject(factory, newName)
+    pgForeignDataWrapperObject(pgForeignDataWrapper *newForeignDataWrapper, pgaFactory &factory, const wxString &newName = wxEmptyString) : pgDatabaseObject(factory, newName)
 	{
 		SetForeignDataWrapper(newForeignDataWrapper);
 	}
@@ -127,7 +127,7 @@ protected:
 class pgForeignDataWrapperObjCollection : public pgCollection
 {
 public:
-	pgForeignDataWrapperObjCollection(pgaFactory *factory, pgForeignDataWrapper *fdw);
+	pgForeignDataWrapperObjCollection(pgaFactory *factory, pgForeignDataWrapper *newfdw);
 	wxString GetTranslatedMessage(int kindOfMessage) const;
 	virtual bool CanCreate();
 };

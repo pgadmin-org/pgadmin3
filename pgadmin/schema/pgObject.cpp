@@ -35,6 +35,7 @@
 #include "schema/pgTablespace.h"
 #include "schema/pgGroup.h"
 #include "schema/pgUser.h"
+#include "schema/pgUserMapping.h"
 #include "schema/pgIndex.h"
 #include "schema/pgTrigger.h"
 #include "schema/pgCheck.h"
@@ -187,6 +188,8 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		message = ((pgType *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("User"))
 		message = ((pgUser *)this)->GetTranslatedMessage(kindOfMessage);
+	else if (type == wxT("User Mapping"))
+		message = ((pgUserMapping *)this)->GetTranslatedMessage(kindOfMessage);
 	else if (type == wxT("View"))
 		message = ((pgView *)this)->GetTranslatedMessage(kindOfMessage);
 
@@ -218,7 +221,7 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 		else if (type == wxT("Foreign Data Wrappers"))
 			message = ((pgForeignDataWrapperObjCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Foreign Servers"))
-			message = ((pgForeignServerCollection *)this)->GetTranslatedMessage(kindOfMessage);
+			message = ((pgForeignServerObjCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("FTS Configurations"))
 			message = ((pgTextSearchConfigurationCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("FTS Dictionaries"))
@@ -282,6 +285,8 @@ wxString pgObject::GetTranslatedMessage(int kindOfMessage) const
 			message = ((pgTypeCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Users"))
 			message = ((pgUserCollection *)this)->GetTranslatedMessage(kindOfMessage);
+		else if (type == wxT("User Mappings"))
+			message = ((pgUserMappingCollection *)this)->GetTranslatedMessage(kindOfMessage);
 		else if (type == wxT("Views"))
 			message = ((pgViewCollection *)this)->GetTranslatedMessage(kindOfMessage);
 	}

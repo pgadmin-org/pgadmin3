@@ -5,7 +5,7 @@
 // Copyright (C) 2002 - 2010, The pgAdmin Development Team
 // This software is released under the PostgreSQL Licence
 //
-// dlgForeignServer.cpp - PostgreSQL Foreign Server Property
+// dlgUserMapping.cpp - PostgreSQL User Mapping Property
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,14 +17,12 @@
 #include "utils/misc.h"
 #include "utils/pgDefs.h"
 
-#include "dlg/dlgForeignServer.h"
-#include "schema/pgForeignServer.h"
+#include "dlg/dlgUserMapping.h"
+#include "schema/pgUserMapping.h"
 
 
 // pointer to controls
-#define cbForeignDataWrapper CTRL_COMBOBOX("cbForeignDataWrapper")
-#define txtType              CTRL_TEXT("txtType")
-#define txtVersion           CTRL_TEXT("txtVersion")
+#define cbUser               CTRL_COMBOBOX("cbUser")
 #define lstOptions           CTRL_LISTVIEW("lstOptions")
 #define txtOption            CTRL_TEXT("txtOption")
 #define txtValue             CTRL_TEXT("txtValue")
@@ -32,42 +30,56 @@
 #define btnRemove            CTRL_BUTTON("wxID_REMOVE")
 
 
-dlgProperty *pgForeignServerFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
+dlgProperty *pgUserMappingFactory::CreateDialog(frmMain *frame, pgObject *node, pgObject *parent)
 {
-	return new dlgForeignServer(this, frame, (pgForeignServer *)node, (pgForeignDataWrapper *)parent);
+	return new dlgUserMapping(this, frame, (pgUserMapping *)node, (pgForeignServer *)parent);
 }
 
 
-BEGIN_EVENT_TABLE(dlgForeignServer, dlgSecurityProperty)
-	EVT_LIST_ITEM_SELECTED(XRCID("lstOptions"), dlgForeignServer::OnSelChangeOption)
-	EVT_TEXT(XRCID("txtOption"),                dlgForeignServer::OnChangeOptionName)
-	EVT_BUTTON(wxID_ADD,                        dlgForeignServer::OnAddOption)
-	EVT_BUTTON(wxID_REMOVE,                     dlgForeignServer::OnRemoveOption)
+BEGIN_EVENT_TABLE(dlgUserMapping, dlgProperty)
+	EVT_TEXT(XRCID("cbUser"),                   dlgUserMapping::OnChange)
+	EVT_COMBOBOX(XRCID("cbUser"),               dlgUserMapping::OnChange)
+	EVT_LIST_ITEM_SELECTED(XRCID("lstOptions"), dlgUserMapping::OnSelChangeOption)
+	EVT_TEXT(XRCID("txtOption"),                dlgUserMapping::OnChangeOptionName)
+	EVT_BUTTON(wxID_ADD,                        dlgUserMapping::OnAddOption)
+	EVT_BUTTON(wxID_REMOVE,                     dlgUserMapping::OnRemoveOption)
 END_EVENT_TABLE();
 
 
-dlgForeignServer::dlgForeignServer(pgaFactory *f, frmMain *frame, pgForeignServer *node, pgForeignDataWrapper *parent)
-	: dlgSecurityProperty(f, frame, node, wxT("dlgForeignServer"), wxT("USAGE"), "U")
+dlgUserMapping::dlgUserMapping(pgaFactory *f, frmMain *frame, pgUserMapping *node, pgForeignServer *parent)
+	: dlgProperty(f, frame, wxT("dlgUserMapping"))
 {
-    foreigndatawrapper = parent;
-	foreignserver = node;
+    foreignserver = parent;
+	usermapping = node;
 }
 
 
-pgObject *dlgForeignServer::GetObject()
+pgObject *dlgUserMapping::GetObject()
 {
-	return foreignserver;
+	return usermapping;
 }
 
 
-int dlgForeignServer::Go(bool modal)
+int dlgUserMapping::Go(bool modal)
 {
-	if (!foreignserver)
-		cbOwner->Append(wxT(""));
-
-	// Fill owner combobox
-	AddGroups();
-	AddUsers(cbOwner);
+	// Fill user combobox
+	cbUser->Append(wxT("CURRENT_USER"));
+	cbUser->Append(wxT("PUBLIC"));
+	pgSet *set = connection->ExecuteSet(
+	                 wxT("SELECT rolname\n")
+	                 wxT("  FROM pg_roles\n")
+	                 wxT("  ORDER BY rolname"));
+	if (set)
+	{
+		while (!set->Eof())
+		{
+			wxString rolname = set->GetVal(wxT("rolname"));
+			cbUser->Append(rolname);
+			set->MoveNext();
+		}
+		delete set;
+	}
+	cbUser->SetSelection(0);
 
 	// Initialize options listview and buttons
 	lstOptions->AddColumn(_("Option"), 80);
@@ -77,16 +89,13 @@ int dlgForeignServer::Go(bool modal)
 	btnAdd->Disable();
 	btnRemove->Disable();
 
-	if (foreignserver)
+	if (usermapping)
 	{
 		// edit mode
-		txtName->Disable();
-		txtType->Disable();
+		cbUser->SetValue(usermapping->GetUsr());
+        cbUser->Disable();
 
-		txtType->SetValue(foreignserver->GetType());
-		txtVersion->SetValue(foreignserver->GetVersion());
-
-		wxString options = foreignserver->GetOptions();
+		wxString options = usermapping->GetOptions();
 		wxString option, optionname, optionvalue;
 		while (options.Length() > 0)
 		{
@@ -104,57 +113,49 @@ int dlgForeignServer::Go(bool modal)
 
 	txtComment->Disable();
 
-	return dlgSecurityProperty::Go(modal);
+	return dlgProperty::Go(modal);
 }
 
 
-pgObject *dlgForeignServer::CreateObject(pgCollection *collection)
+pgObject *dlgUserMapping::CreateObject(pgCollection *collection)
 {
-	wxString name = txtName->GetValue();
-
-	pgObject *obj = foreignServerFactory.CreateObjects(collection, 0, wxT("\n   AND srvname ILIKE ") + qtDbString(name));
+	pgObject *obj = userMappingFactory.CreateObjects(collection, 0, wxT("\n   AND true")); //srvname ILIKE ") + qtDbString(name));
 	return obj;
 }
 
 
-void dlgForeignServer::CheckChange()
+void dlgUserMapping::CheckChange()
 {
 	bool didChange = true;
-	wxString name = txtName->GetValue();
-	if (foreignserver)
+	if (usermapping)
 	{
-		didChange = name != foreignserver->GetName()
-		            || txtComment->GetValue() != foreignserver->GetComment()
-		            || cbOwner->GetValue() != foreignserver->GetOwner()
-		            || txtType->GetValue() != foreignserver->GetType()
-		            || txtVersion->GetValue() != foreignserver->GetVersion()
-		            || GetOptionsSql().Length() > 0;
+		didChange = GetOptionsSql().Length() > 0;
 		EnableOK(didChange);
 	}
 	else
 	{
 		bool enable = true;
 
-		CheckValid(enable, !name.IsEmpty(), _("Please specify name."));
+		CheckValid(enable, !cbUser->GetValue().IsEmpty(), _("Please specify user."));
 		EnableOK(enable);
 	}
 }
 
 
 
-void dlgForeignServer::OnChange(wxCommandEvent &ev)
+void dlgUserMapping::OnChange(wxCommandEvent &ev)
 {
 	CheckChange();
 }
 
 
-void dlgForeignServer::OnChangeOptionName(wxCommandEvent &ev)
+void dlgUserMapping::OnChangeOptionName(wxCommandEvent &ev)
 {
 	btnAdd->Enable(txtOption->GetValue().Length() > 0);
 }
 
 
-void dlgForeignServer::OnSelChangeOption(wxListEvent &ev)
+void dlgUserMapping::OnSelChangeOption(wxListEvent &ev)
 {
 	int row = lstOptions->GetSelection();
 	if (row >= 0)
@@ -167,7 +168,7 @@ void dlgForeignServer::OnSelChangeOption(wxListEvent &ev)
 }
 
 
-void dlgForeignServer::OnAddOption(wxCommandEvent &ev)
+void dlgUserMapping::OnAddOption(wxCommandEvent &ev)
 {
 	bool found = false;
 
@@ -194,7 +195,7 @@ void dlgForeignServer::OnAddOption(wxCommandEvent &ev)
 }
 
 
-void dlgForeignServer::OnRemoveOption(wxCommandEvent &ev)
+void dlgUserMapping::OnRemoveOption(wxCommandEvent &ev)
 {
 	int sel = lstOptions->GetSelection();
 	lstOptions->DeleteItem(sel);
@@ -207,9 +208,9 @@ void dlgForeignServer::OnRemoveOption(wxCommandEvent &ev)
 }
 
 
-wxString dlgForeignServer::GetOptionsSql()
+wxString dlgUserMapping::GetOptionsSql()
 {
-	wxString options = foreignserver->GetOptions();
+	wxString options = usermapping->GetOptions();
 	wxString option, optionname, optionvalue, sqloptions;
 	bool found;
 	int pos;
@@ -249,7 +250,7 @@ wxString dlgForeignServer::GetOptionsSql()
 
 	for (pos = 0 ; pos < lstOptions->GetItemCount() ; pos++)
 	{
-		options = foreignserver->GetOptions();
+		options = usermapping->GetOptions();
 		found = false;
 
 		while (options.Length() > 0 && !found)
@@ -274,38 +275,24 @@ wxString dlgForeignServer::GetOptionsSql()
 }
 
 
-wxString dlgForeignServer::GetSql()
+wxString dlgUserMapping::GetSql()
 {
-	wxString sql, name;
-	name = txtName->GetValue();
+	wxString sql;
 
-	if (foreignserver)
+	if (usermapping)
 	{
 		// edit mode
-		if (txtVersion->GetValue() != foreignserver->GetVersion())
-		{
-			sql = wxT("ALTER SERVER ") + qtIdent(name)
-			      + wxT(" VERSION ") + qtDbString(txtVersion->GetValue()) + wxT(";\n");
-		}
-
 		wxString sqloptions = GetOptionsSql();
 		if (sqloptions.Length() > 0)
 		{
-			sql += wxT("ALTER SERVER ") + name
+			sql += wxT("ALTER USER MAPPING FOR ") + usermapping->GetUsr() + wxT(" SERVER ") + foreignserver->GetName()
 			       + wxT(" OPTIONS (") + sqloptions + wxT(");\n");
 		}
-
-		AppendOwnerChange(sql, wxT("SERVER ") + qtIdent(name));
 	}
 	else
 	{
 		// create mode
-		sql = wxT("CREATE SERVER ") + qtIdent(name);
-		if (!(txtType->GetValue()).IsEmpty())
-			sql += wxT("\n   TYPE ") + qtDbString(txtType->GetValue());
-		if (!(txtVersion->GetValue()).IsEmpty())
-			sql += wxT("\n   VERSION ") + qtDbString(txtVersion->GetValue());
-		sql += wxT("\n   FOREIGN DATA WRAPPER ") + qtIdent(foreigndatawrapper->GetName());
+		sql = wxT("CREATE USER MAPPING FOR ") + cbUser->GetValue() + wxT(" SERVER ") + foreignserver->GetName();
 
 		// check for options
 		if (lstOptions->GetItemCount() > 0)
@@ -323,10 +310,7 @@ wxString dlgForeignServer::GetSql()
 		}
 
 		sql += wxT(";\n");
-		AppendOwnerNew(sql, wxT("SERVER ") + qtIdent(name));
 	}
-
-	sql += GetGrant(wxT("U"), wxT("SERVER ") + qtIdent(name));
 
 	return sql;
 }
