@@ -58,6 +58,9 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/domain-sm.png \
 	$(srcdir)/include/images/domain.png \
 	$(srcdir)/include/images/domains.png \
+	$(srcdir)/include/images/extension-sm.png \
+	$(srcdir)/include/images/extension.png \
+	$(srcdir)/include/images/extensions.png \
 	$(srcdir)/include/images/down.png \
 	$(srcdir)/include/images/drop.png \
 	$(srcdir)/include/images/edit_clear.png \

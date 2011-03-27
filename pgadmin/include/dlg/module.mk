@@ -20,6 +20,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/dlg/dlgConversion.h \
 	$(srcdir)/include/dlg/dlgDatabase.h \
 	$(srcdir)/include/dlg/dlgDomain.h \
+	$(srcdir)/include/dlg/dlgExtension.h \
 	$(srcdir)/include/dlg/dlgEditGridOptions.h \
 	$(srcdir)/include/dlg/dlgFindReplace.h \
 	$(srcdir)/include/dlg/dlgForeignDataWrapper.h \

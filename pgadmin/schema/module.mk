@@ -28,6 +28,7 @@ pgadmin3_SOURCES += \
         $(subdir)/pgDatabase.cpp \
         $(subdir)/pgDatatype.cpp \
         $(subdir)/pgDomain.cpp \
+        $(subdir)/pgExtension.cpp \
         $(subdir)/pgForeignDataWrapper.cpp \
         $(subdir)/pgForeignKey.cpp \
         $(subdir)/pgForeignServer.cpp \

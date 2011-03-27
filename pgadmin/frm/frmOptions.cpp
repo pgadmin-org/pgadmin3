@@ -335,6 +335,7 @@ frmOptions::frmOptions(frmMain *parent)
 	lstDisplay->Append(_("Aggregates"));
 	lstDisplay->Append(_("Conversions"));
 	lstDisplay->Append(_("Domains"));
+	lstDisplay->Append(_("Extensions"));
 	lstDisplay->Append(_("Functions"));
 	lstDisplay->Append(_("Trigger Functions"));
 	lstDisplay->Append(_("Packages"));

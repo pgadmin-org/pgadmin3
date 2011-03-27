@@ -19,6 +19,7 @@
 #include "frm/frmMain.h"
 #include "schema/edbSynonym.h"
 #include "schema/pgCast.h"
+#include "schema/pgExtension.h"
 #include "schema/pgForeignDataWrapper.h"
 #include "schema/pgLanguage.h"
 #include "schema/pgSchema.h"
@@ -131,6 +132,8 @@ wxMenu *pgDatabase::GetNewMenu()
 	{
 		if (settings->GetDisplayOption(_("Casts")))
 			castFactory.AppendMenu(menu);
+		if (settings->GetDisplayOption(_("Extensions")))
+			extensionFactory.AppendMenu(menu);
 		if (settings->GetDisplayOption(_("Foreign Data Wrappers")))
 			foreignDataWrapperFactory.AppendMenu(menu);
 		if (settings->GetDisplayOption(_("Languages")))
@@ -563,6 +566,8 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 				browser->AppendCollection(this, catalogFactory);
 			if (settings->GetDisplayOption(_("Casts")))
 				browser->AppendCollection(this, castFactory);
+			if (settings->GetDisplayOption(_("Extensions")))
+				browser->AppendCollection(this, extensionFactory);
 			if (settings->GetDisplayOption(_("Foreign Data Wrappers")))
 				browser->AppendCollection(this, foreignDataWrapperFactory);
 			if (settings->GetDisplayOption(_("Languages")))
