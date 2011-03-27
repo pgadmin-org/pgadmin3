@@ -24,6 +24,7 @@
 
 
 #define cbTablespace    CTRL_COMBOBOX("cbTablespace")
+#define cbIndex         CTRL_COMBOBOX("cbIndex")
 #define cbType          CTRL_COMBOBOX("cbType")
 #define txtFillFactor   CTRL_TEXT("txtFillFactor")
 #define txtWhere        CTRL_TEXT("txtWhere")
@@ -42,6 +43,7 @@ BEGIN_EVENT_TABLE(dlgIndexConstraint, dlgIndexBase)
 #ifdef __WXMAC__
 	EVT_SIZE(                                       dlgIndexConstraint::OnChangeSize)
 #endif
+	EVT_COMBOBOX(XRCID("cbIndex"),                  dlgIndexConstraint::OnChangeIndex)
 	EVT_COMBOBOX(XRCID("cbType"),                   dlgIndexConstraint::OnSelectType)
 	EVT_COMBOBOX(XRCID("cbColumns"),                dlgIndexConstraint::OnSelectComboCol)
 END_EVENT_TABLE();
@@ -108,8 +110,13 @@ int dlgIndexConstraint::Go(bool modal)
 
 	PrepareTablespace(cbTablespace);
 
-	if (wxString(factory->GetTypeName()).Upper() != wxT("EXCLUDE"))
+	if (wxString(factory->GetTypeName()).Upper() == wxT("EXCLUDE"))
 	{
+		cbIndex->Disable();
+	}
+	else
+	{
+		cbIndex->Enable(connection->BackendMinimumVersion(9, 1));
 		cbType->Disable();
 		txtWhere->Disable();
 		cbOpClass->Disable();
@@ -246,6 +253,20 @@ int dlgIndexConstraint::Go(bool modal)
 		{
 			cbClusterSet->Disable();
 			cbClusterSet = 0;
+		}
+
+		// Add the indexes
+		cbIndex->Append(wxT(""));
+		set = connection->ExecuteSet(
+		          wxT("SELECT relname FROM pg_class, pg_index WHERE pg_class.oid=indexrelid AND indrelid=") + table->GetOidStr());
+		if (set)
+		{
+			while (!set->Eof())
+			{
+				cbIndex->Append(set->GetVal(0));
+				set->MoveNext();
+			}
+			delete set;
 		}
 
 		// Add the default tablespace
@@ -394,6 +415,29 @@ void dlgIndexConstraint::OnSelectComboCol(wxCommandEvent &ev)
 }
 
 
+void dlgIndexConstraint::OnChangeIndex(wxCommandEvent &ev)
+{
+	bool indexselected = cbIndex->GetCurrentSelection() > 0;
+	bool btreeindex = cbType->GetValue() == wxT("btree") || cbType->GetValue() == wxEmptyString;
+	bool excludeconstraint = wxString(factory->GetTypeName()).Upper() == wxT("EXCLUDE");
+
+	cbTablespace->Enable(!indexselected && connection->BackendMinimumVersion(8, 0));
+	cbType->Enable(!indexselected && excludeconstraint);
+	txtFillFactor->Enable(!indexselected && connection->BackendMinimumVersion(8, 2));
+	txtWhere->Enable(!indexselected && excludeconstraint);
+	chkDeferrable->Enable(!indexselected && connection->BackendMinimumVersion(9, 0));
+	chkDeferred->Enable(!indexselected && connection->BackendMinimumVersion(9, 0));
+	cbOpClass->Enable(!indexselected && excludeconstraint && btreeindex);
+	chkDesc->Enable(!indexselected && excludeconstraint && btreeindex);
+	rdbNullsFirst->Enable(!indexselected && excludeconstraint && btreeindex);
+	rdbNullsLast->Enable(!indexselected && excludeconstraint && btreeindex);
+	cbOperator->Enable(!indexselected && excludeconstraint);
+	cbColumns->Enable(!indexselected);
+	btnAddCol->Enable(!indexselected);
+	btnRemoveCol->Enable(!indexselected);
+}
+
+
 void dlgIndexConstraint::OnSelectType(wxCommandEvent &ev)
 {
 	// The column options available change depending on the
@@ -447,33 +491,49 @@ void dlgIndexConstraint::OnSelectType(wxCommandEvent &ev)
 }
 
 
+void dlgIndexConstraint::CheckChange()
+{
+	if (cbIndex->GetCurrentSelection() > 0)
+		EnableOK(true);
+	else
+		dlgIndexBase::CheckChange();
+}
+
+
 wxString dlgIndexConstraint::GetDefinition()
 {
 	wxString sql = wxEmptyString;
 
-	if (cbType->GetCurrentSelection() > 0)
-		AppendIfFilled(sql, wxT(" USING "), cbType->GetValue());
-
-	sql += wxT("(") + GetColumns() + wxT(")");
-
-	if (txtFillFactor)
+	if (cbIndex->GetCurrentSelection() > 0)
 	{
-		if (connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
-			sql += wxT("\n  WITH (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(")");
+		sql += wxT(" USING INDEX ") + qtIdent(cbIndex->GetValue());
 	}
-
-	if (cbTablespace->GetOIDKey() > 0)
-		sql += wxT(" USING INDEX TABLESPACE ") + qtIdent(cbTablespace->GetValue());
-
-	if (chkDeferrable->GetValue())
+	else
 	{
-		sql += wxT(" DEFERRABLE");
-		if (chkDeferred->GetValue())
-			sql += wxT(" INITIALLY DEFERRED");
-	}
+		if (cbType->GetCurrentSelection() > 0)
+			AppendIfFilled(sql, wxT(" USING "), cbType->GetValue());
 
-	if (txtWhere->GetValue().Length() > 0)
-		sql += wxT(" WHERE (") + txtWhere->GetValue() + wxT(")");
+		sql += wxT("(") + GetColumns() + wxT(")");
+
+		if (txtFillFactor)
+		{
+			if (connection->BackendMinimumVersion(8, 2) && txtFillFactor->GetValue().Length() > 0)
+				sql += wxT("\n  WITH (FILLFACTOR=") + txtFillFactor->GetValue() + wxT(")");
+		}
+
+		if (cbTablespace->GetOIDKey() > 0)
+			sql += wxT(" USING INDEX TABLESPACE ") + qtIdent(cbTablespace->GetValue());
+
+		if (chkDeferrable->GetValue())
+		{
+			sql += wxT(" DEFERRABLE");
+			if (chkDeferred->GetValue())
+				sql += wxT(" INITIALLY DEFERRED");
+		}
+
+		if (txtWhere->GetValue().Length() > 0)
+			sql += wxT(" WHERE (") + txtWhere->GetValue() + wxT(")");
+	}
 
 	return sql;
 }

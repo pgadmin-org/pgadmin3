@@ -34,6 +34,7 @@ public:
 
 
 	int Go(bool modal);
+	void CheckChange();
 	wxString GetDefinition();
 	wxString GetColumns();
 	wxString GetSql();
@@ -51,6 +52,7 @@ private:
 	void OnRemoveCol(wxCommandEvent &ev);
 	void OnSelectType(wxCommandEvent &ev);
 	void OnSelectComboCol(wxCommandEvent &ev);
+	void OnChangeIndex(wxCommandEvent &ev);
 
 	wxString m_previousType;
 
