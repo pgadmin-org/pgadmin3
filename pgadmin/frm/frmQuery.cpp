@@ -45,6 +45,7 @@
 #include "schema/pgDatabase.h"
 #include "schema/pgFunction.h"
 #include "schema/pgTable.h"
+#include "schema/pgForeignTable.h"
 #include "schema/pgView.h"
 #include "schema/gpExtTable.h"
 #include "schema/pgServer.h"
@@ -3071,7 +3072,7 @@ queryToolSelectFactory::queryToolSelectFactory(menuFactoryList *list, wxMenu *mn
 bool queryToolSelectFactory::CheckEnable(pgObject *obj)
 {
 	return queryToolBaseFactory::CheckEnable(obj) && !obj->IsCollection() &&
-	       (obj->IsCreatedBy(tableFactory) || obj->IsCreatedBy(viewFactory) || obj->IsCreatedBy(functionFactory));
+	       (obj->IsCreatedBy(tableFactory) || obj->IsCreatedBy(foreignTableFactory) || obj->IsCreatedBy(viewFactory) || obj->IsCreatedBy(functionFactory));
 }
 
 wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
@@ -3095,6 +3096,11 @@ wxWindow *queryToolSelectFactory::StartDialog(frmMain *form, pgObject *obj)
 	{
 		pgFunction *function = (pgFunction *)obj;
 		return StartDialogSql(form, obj, function->GetSelectSql(form->GetBrowser()));
+	}
+	else if (obj->IsCreatedBy(foreignTableFactory))
+	{
+		pgForeignTable *foreigntable = (pgForeignTable *)obj;
+		return StartDialogSql(form, obj, foreigntable->GetSelectSql(form->GetBrowser()));
 	}
 	return 0;
 }

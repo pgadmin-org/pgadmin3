@@ -32,6 +32,7 @@ pgadmin3_SOURCES += \
         $(subdir)/pgForeignDataWrapper.cpp \
         $(subdir)/pgForeignKey.cpp \
         $(subdir)/pgForeignServer.cpp \
+        $(subdir)/pgForeignTable.cpp \
         $(subdir)/pgFunction.cpp \
         $(subdir)/pgGroup.cpp \
         $(subdir)/pgIndex.cpp \

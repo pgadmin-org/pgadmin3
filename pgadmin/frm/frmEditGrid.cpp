@@ -29,6 +29,7 @@
 #include "frm/frmHint.h"
 #include "schema/pgCatalogObject.h"
 #include "schema/pgTable.h"
+#include "schema/pgForeignTable.h"
 #include "schema/pgView.h"
 #include "schema/gpExtTable.h"
 
@@ -1278,7 +1279,7 @@ void frmEditGrid::ShowForm(bool filter)
 {
 	bool abort = false;
 
-	if (relkind == 'r' || relkind == 'v' || relkind == 'x')
+	if (relkind == 'r' || relkind == 'v' || relkind == 'x' || relkind == 'f')
 	{
 		if (filter)
 		{
@@ -3257,7 +3258,7 @@ bool editGridFactoryBase::CheckEnable(pgObject *obj)
 	if (obj)
 	{
 		pgaFactory *factory = obj->GetFactory();
-		return factory == &tableFactory || factory == &viewFactory || factory == &extTableFactory || factory == &catalogObjectFactory;
+		return factory == &tableFactory || factory == &foreignTableFactory || factory == &viewFactory || factory == &extTableFactory || factory == &catalogObjectFactory;
 	}
 	return false;
 }

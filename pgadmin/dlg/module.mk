@@ -26,6 +26,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/dlg/dlgForeignDataWrapper.cpp \
 	$(srcdir)/dlg/dlgForeignKey.cpp \
 	$(srcdir)/dlg/dlgForeignServer.cpp \
+	$(srcdir)/dlg/dlgForeignTable.cpp \
 	$(srcdir)/dlg/dlgFunction.cpp \
 	$(srcdir)/dlg/dlgGroup.cpp \
 	$(srcdir)/dlg/dlgHbaConfig.cpp \

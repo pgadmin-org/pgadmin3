@@ -23,6 +23,7 @@
 #include "schema/pgDomain.h"
 #include "schema/pgAggregate.h"
 #include "schema/pgConversion.h"
+#include "schema/pgForeignTable.h"
 #include "schema/pgFunction.h"
 #include "schema/pgOperator.h"
 #include "schema/pgOperatorClass.h"
@@ -238,6 +239,15 @@ wxMenu *pgSchemaBase::GetNewMenu()
 			if (GetConnection()->BackendMinimumVersion(8, 3))
 				textSearchConfigurationFactory.AppendMenu(menu);
 		}
+        /*
+		if (settings->GetDisplayOption(_("Foreign Tables")))
+		{
+        */
+			if (GetConnection()->BackendMinimumVersion(9, 1))
+				foreignTableFactory.AppendMenu(menu);
+		/*
+        }
+        */
 		if (settings->GetDisplayOption(_("Trigger Functions")))
 			triggerFunctionFactory.AppendMenu(menu);
 		if (settings->GetDisplayOption(_("Types")))
@@ -313,6 +323,8 @@ void pgSchemaBase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *
 				browser->AppendCollection(this, conversionFactory);
 			if (settings->GetDisplayOption(_("Domains")))
 				browser->AppendCollection(this, domainFactory);
+			if (settings->GetDisplayOption(_("Foreign Tables")))
+				browser->AppendCollection(this, foreignTableFactory);
 			if (settings->GetDisplayOption(_("FTS Configurations")))
 			{
 				if (GetConnection()->BackendMinimumVersion(8, 3))

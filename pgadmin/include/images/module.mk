@@ -119,6 +119,8 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/foreignserver.png \
 	$(srcdir)/include/images/foreignserver-sm.png \
 	$(srcdir)/include/images/foreignservers.png \
+	$(srcdir)/include/images/foreigntable.png \
+	$(srcdir)/include/images/foreigntables.png \
 	$(srcdir)/include/images/forward.png \
 	$(srcdir)/include/images/function.png \
 	$(srcdir)/include/images/functions.png \
