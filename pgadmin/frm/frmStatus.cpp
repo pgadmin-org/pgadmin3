@@ -30,6 +30,7 @@
 #include "frm/frmQuery.h"
 #include "utils/pgfeatures.h"
 #include "schema/pgServer.h"
+#include "schema/pgUser.h"
 #include "ctl/ctlMenuToolbar.h"
 #include "ctl/ctlAuiNotebook.h"
 #include "utils/csvfiles.h"
@@ -189,12 +190,21 @@ frmStatus::frmStatus(frmMain *form, const wxString &_title, pgConn *conn) : pgFr
 	logHasTimestamp = false;
 	logFormatKnown = false;
 
-	// Make the connection quiet on the logs
-	if (connection->BackendMinimumVersion(8, 0))
-		initquery = wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;");
-	else
-		initquery = wxT("SET log_statement='off';SET log_duration='off';SET log_min_duration_statement=-1;");
-	connection->ExecuteVoid(initquery, false);
+    // Only superusers can set these parameters...
+    pgUser *user = new pgUser(connection->GetUser());
+    if (user)
+    {
+        if (user->GetSuperuser())
+        {
+	        // Make the connection quiet on the logs
+	        if (connection->BackendMinimumVersion(8, 0))
+	        	initquery = wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;");
+	        else
+	        	initquery = wxT("SET log_statement='off';SET log_duration='off';SET log_min_duration_statement=-1;");
+	        connection->ExecuteVoid(initquery, false);
+        }
+        delete user;
+    }
 
 	// Notify wxAUI which frame to use
 	manager.SetManagedWindow(this);
@@ -474,11 +484,19 @@ void frmStatus::OnChangeDatabase(wxCommandEvent &ev)
 	                              connection->GetUser(), connection->GetPassword(), connection->GetPort(), connection->GetRole(), connection->GetSslMode(),
 	                              0, connection->GetApplicationName(), connection->GetSSLCert(), connection->GetSSLKey(), connection->GetSSLRootCert(), connection->GetSSLCrl());
 
-	if (connection->BackendMinimumVersion(8, 0))
-		initquery = wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;");
-	else
-		initquery = wxT("SET log_statement='off';SET log_duration='off';SET log_min_duration_statement=-1;");
-	locks_connection->ExecuteVoid(initquery, false);
+    pgUser *user = new pgUser(locks_connection->GetUser());
+    if (user)
+    {
+        if (user->GetSuperuser())
+        {
+	        if (locks_connection->BackendMinimumVersion(8, 0))
+	        	initquery = wxT("SET log_statement='none';SET log_duration='off';SET log_min_duration_statement=-1;");
+	        else
+	        	initquery = wxT("SET log_statement='off';SET log_duration='off';SET log_min_duration_statement=-1;");
+	        locks_connection->ExecuteVoid(initquery, false);
+        }
+        delete user;
+    }
 }
 
 
