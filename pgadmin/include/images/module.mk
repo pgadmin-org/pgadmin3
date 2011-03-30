@@ -237,6 +237,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/template.png \
 	$(srcdir)/include/images/templates.png \
 	$(srcdir)/include/images/terminate_backend.png \
+	$(srcdir)/include/images/textsearch.png \
 	$(srcdir)/include/images/trigger.png \
 	$(srcdir)/include/images/triggerbad.png \
 	$(srcdir)/include/images/triggerfunction.png \
