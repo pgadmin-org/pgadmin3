@@ -28,7 +28,7 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/schema/pgDomain.h \
 	$(srcdir)/include/schema/pgForeignDataWrapper.h \
 	$(srcdir)/include/schema/pgForeignKey.h \
-	$(subdir)/include/schema/pgForeignServer.h \
+	$(srcdir)/include/schema/pgForeignServer.h \
 	$(srcdir)/include/schema/pgFunction.h \
 	$(srcdir)/include/schema/pgGroup.h \
 	$(srcdir)/include/schema/pgIndex.h \
