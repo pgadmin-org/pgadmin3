@@ -255,6 +255,9 @@ pgadmin3_SOURCES += \
 	$(srcdir)/include/images/unique.png \
 	$(srcdir)/include/images/up.png \
 	$(srcdir)/include/images/user.png \
+	$(srcdir)/include/images/usermapping.png \
+	$(srcdir)/include/images/usermapping-sm.png \
+	$(srcdir)/include/images/usermappings.png \
 	$(srcdir)/include/images/users.png \
 	$(srcdir)/include/images/vacuum.png \
 	$(srcdir)/include/images/variable.png \
