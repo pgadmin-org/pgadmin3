@@ -97,8 +97,8 @@ protected:
 	pgSchema *schema;
 	pgaJob *job;
 	pgForeignDataWrapper *fdw;
-    pgForeignServer *fsrv;
-    pgUserMapping *um;
+	pgForeignServer *fsrv;
+	pgUserMapping *um;
 };
 
 

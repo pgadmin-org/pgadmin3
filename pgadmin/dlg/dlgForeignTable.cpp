@@ -51,7 +51,7 @@ BEGIN_EVENT_TABLE(dlgForeignTable, dlgTypeProperty)
 	EVT_TEXT(XRCID("txtLength"),                    dlgForeignTable::OnSelChangeTypOrLen)
 	EVT_TEXT(XRCID("txtPrecision"),                 dlgForeignTable::OnSelChangeTypOrLen)
 	EVT_CHECKBOX(XRCID("chkNotNull"),               dlgForeignTable::OnChangeMember)
-    EVT_LIST_ITEM_SELECTED(XRCID("lstOptions"),     dlgForeignTable::OnSelChangeOption)
+	EVT_LIST_ITEM_SELECTED(XRCID("lstOptions"),     dlgForeignTable::OnSelChangeOption)
 	EVT_TEXT(XRCID("txtOption"),                    dlgForeignTable::OnChangeOptionName)
 	EVT_BUTTON(wxID_ADD,                            dlgForeignTable::OnAddOption)
 	EVT_BUTTON(wxID_REMOVE,                         dlgForeignTable::OnRemoveOption)
@@ -69,7 +69,7 @@ dlgForeignTable::dlgForeignTable(pgaFactory *f, frmMain *frame, pgForeignTable *
 {
 	foreigntable = node;
 	schema = sch;
-    
+
 	lstMembers->CreateColumns(0, _("Member"), _("Data type"), _("Constraint"), -1);
 
 	queriesToBeSplitted = false;
@@ -98,7 +98,7 @@ int dlgForeignTable::Go(bool modal)
 	// Fill owner combobox
 	AddGroups();
 	AddUsers(cbOwner);
-    // Fill datatype combobox
+	// Fill datatype combobox
 	FillDatatype(cbDatatype);
 
 	// Initialize options listview and buttons
@@ -112,9 +112,9 @@ int dlgForeignTable::Go(bool modal)
 	if (foreigntable)
 	{
 		// Edit Mode
-        cbForeignServer->SetValue(foreigntable->GetForeignServer());
-        cbForeignServer->Disable();
-        
+		cbForeignServer->SetValue(foreigntable->GetForeignServer());
+		cbForeignServer->Disable();
+
 		txtMembername->Enable(true);
 		btnAddMember->Enable(true);
 		btnChangeMember->Enable(false);
@@ -157,7 +157,7 @@ int dlgForeignTable::Go(bool modal)
 			}
 			memberLengths.Add(typeLength);
 			memberPrecisions.Add(typePrecision);
-            memberNotNulls.Add(elements.Item(i + 2));
+			memberNotNulls.Add(elements.Item(i + 2));
 		}
 
 		cbDatatype->Enable();
@@ -179,22 +179,22 @@ int dlgForeignTable::Go(bool modal)
 		// Create mode
 		cbOwner->Append(wxEmptyString);
 		cbOwner->Disable();
-        
-        pgSet *set = connection->ExecuteSet(
-                         wxT("SELECT srvname\n")
-                         wxT("  FROM pg_foreign_server\n")
-                         wxT("  ORDER BY srvname"));
-        if (set)
-        {
-            while (!set->Eof())
-            {
-                wxString srvname = set->GetVal(wxT("srvname"));
-                cbForeignServer->Append(srvname);
-                set->MoveNext();
-            }
-            delete set;
-        }
-        cbForeignServer->SetSelection(0);
+
+		pgSet *set = connection->ExecuteSet(
+		                 wxT("SELECT srvname\n")
+		                 wxT("  FROM pg_foreign_server\n")
+		                 wxT("  ORDER BY srvname"));
+		if (set)
+		{
+			while (!set->Eof())
+			{
+				wxString srvname = set->GetVal(wxT("srvname"));
+				cbForeignServer->Append(srvname);
+				set->MoveNext();
+			}
+			delete set;
+		}
+		cbForeignServer->SetSelection(0);
 	}
 
 	txtLength->SetValidator(numericValidator);
@@ -208,7 +208,7 @@ void dlgForeignTable::OnSelChangeTyp(wxCommandEvent &ev)
 	txtLength->SetValue(wxEmptyString);
 	txtPrecision->SetValue(wxEmptyString);
 	cbDatatype->GuessSelection(ev);
-    chkNotNull->SetValue(false);
+	chkNotNull->SetValue(false);
 	OnSelChangeTypOrLen(ev);
 }
 
@@ -216,10 +216,10 @@ void dlgForeignTable::OnSelChangeTyp(wxCommandEvent &ev)
 void dlgForeignTable::OnSelChangeTypOrLen(wxCommandEvent &ev)
 {
 	CheckLenEnable();
-    txtLength->Enable(isVarLen);
-    txtPrecision->Enable(isVarPrec);
-    CheckChange();
-    OnChangeMember(ev);
+	txtLength->Enable(isVarLen);
+	txtPrecision->Enable(isVarPrec);
+	CheckChange();
+	OnChangeMember(ev);
 }
 
 
@@ -255,8 +255,8 @@ void dlgForeignTable::OnMemberSelChange(wxListEvent &ev)
 		txtLength->Enable(!txtLength->GetValue().IsEmpty());
 		txtPrecision->SetValue(memberPrecisions.Item(pos));
 		txtPrecision->Enable(!txtPrecision->GetValue().IsEmpty());
-        chkNotNull->SetValue(memberNotNulls.Item(pos) == wxT("NOT NULL"));
-        chkNotNull->Enable();
+		chkNotNull->SetValue(memberNotNulls.Item(pos) == wxT("NOT NULL"));
+		chkNotNull->Enable();
 		btnChangeMember->Enable();
 		btnRemoveMember->Enable();
 	}
@@ -269,13 +269,13 @@ void dlgForeignTable::OnMemberAdd(wxCommandEvent &ev)
 	wxString type = cbDatatype->GetValue();
 	wxString length = wxEmptyString;
 	wxString precision = wxEmptyString;
-    wxString notnull = wxEmptyString;
+	wxString notnull = wxEmptyString;
 
 	if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
 		length = txtLength->GetValue();
 	if (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled())
 		precision = txtPrecision->GetValue();
-    notnull = chkNotNull->GetValue() ? wxT("NOT NULL") : wxEmptyString;
+	notnull = chkNotNull->GetValue() ? wxT("NOT NULL") : wxEmptyString;
 
 	if (!length.IsEmpty())
 	{
@@ -294,7 +294,7 @@ void dlgForeignTable::OnMemberAdd(wxCommandEvent &ev)
 		memberTypes.Add(GetTypeInfo(cbDatatype->GetGuessedSelection()));
 		memberLengths.Add(length);
 		memberPrecisions.Add(precision);
-        memberNotNulls.Add(notnull);
+		memberNotNulls.Add(notnull);
 	}
 
 	CheckChange();
@@ -307,13 +307,13 @@ void dlgForeignTable::OnMemberChange(wxCommandEvent &ev)
 	wxString type = cbDatatype->GetValue();
 	wxString length = wxEmptyString;
 	wxString precision = wxEmptyString;
-    wxString notnull = wxEmptyString;
+	wxString notnull = wxEmptyString;
 
 	if (txtLength->GetValue() != wxT("") && txtLength->IsEnabled())
 		length = txtLength->GetValue();
 	if (txtPrecision->GetValue() != wxT("") && txtPrecision->IsEnabled())
 		precision = txtPrecision->GetValue();
-    notnull = chkNotNull->GetValue() ? wxT("NOT NULL") : wxEmptyString;
+	notnull = chkNotNull->GetValue() ? wxT("NOT NULL") : wxEmptyString;
 
 	if (!length.IsEmpty())
 	{
@@ -330,15 +330,15 @@ void dlgForeignTable::OnMemberChange(wxCommandEvent &ev)
 		{
 			lstMembers->SetItem(pos, 0, name);
 			lstMembers->SetItem(pos, 1, type);
-            lstMembers->SetItem(pos, 2, notnull);
+			lstMembers->SetItem(pos, 2, notnull);
 			memberTypes.Insert(GetTypeInfo(cbDatatype->GetGuessedSelection()), pos);
 			memberLengths.Insert(length, pos);
 			memberPrecisions.Insert(precision, pos);
-            memberNotNulls.Insert(notnull, pos);
+			memberNotNulls.Insert(notnull, pos);
 			memberTypes.RemoveAt(pos + 1);
 			memberLengths.RemoveAt(pos + 1);
 			memberPrecisions.RemoveAt(pos + 1);
-            memberNotNulls.RemoveAt(pos + 1);
+			memberNotNulls.RemoveAt(pos + 1);
 		}
 	}
 
@@ -506,9 +506,9 @@ wxString dlgForeignTable::GetSql()
 	{
 		// Edit Mode
 		AppendOwnerChange(sql, wxT("FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier());
-        
+
 		sql += GetSqlForTypes();
-        
+
 		wxString sqloptions = GetOptionsSql();
 		if (sqloptions.Length() > 0)
 		{
@@ -522,17 +522,17 @@ wxString dlgForeignTable::GetSql()
 		sql = wxT("CREATE FOREIGN TABLE ") + schema->GetQuotedPrefix() + qtIdent(GetName());
 		sql += wxT(" (");
 
-        int i;
-        for (i = 0 ; i < lstMembers->GetItemCount() ; i++)
-        {
-            if (i)
-                sql += wxT(",\n    ");
-            sql += qtIdent(lstMembers->GetItemText(i)) + wxT(" ")
-                   + GetFullTypeName(i);
-        }
+		int i;
+		for (i = 0 ; i < lstMembers->GetItemCount() ; i++)
+		{
+			if (i)
+				sql += wxT(",\n    ");
+			sql += qtIdent(lstMembers->GetItemText(i)) + wxT(" ")
+			       + GetFullTypeName(i);
+		}
 
 		sql += wxT(") SERVER ") + cbForeignServer->GetValue();
-        
+
 		// check for options
 		if (lstOptions->GetItemCount() > 0)
 		{
@@ -566,8 +566,8 @@ wxString dlgForeignTable::GetFullTypeName(int type)
 			typname += wxT(",") + memberPrecisions.Item(type);
 		typname += wxT(")");
 	}
-    
-    typname += wxT(" ") + memberNotNulls.Item(type);
+
+	typname += wxT(" ") + memberNotNulls.Item(type);
 
 	return typname;
 }
@@ -577,7 +577,7 @@ wxString dlgForeignTable::GetSqlForTypes()
 	wxString sql = wxEmptyString;
 	wxString old_name, old_type, new_name, new_type;
 	wxArrayString elements = foreigntable->GetTypesArray();
-	bool modified = lstMembers->GetItemCount()*3 != (int)elements.GetCount();
+	bool modified = lstMembers->GetItemCount() * 3 != (int)elements.GetCount();
 	size_t i;
 
 	// Check if there is a change
@@ -597,7 +597,7 @@ wxString dlgForeignTable::GetSqlForTypes()
 		{
 			old_name = elements.Item(i);
 			sql += wxT("ALTER FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier()
-                + wxT(" DROP COLUMN ") + old_name + wxT(";\n");
+			       + wxT(" DROP COLUMN ") + old_name + wxT(";\n");
 		}
 
 		// Add all new attributes
@@ -606,7 +606,7 @@ wxString dlgForeignTable::GetSqlForTypes()
 			new_name = lstMembers->GetItemText(i);
 			new_type = GetFullTypeName(i);
 			sql += wxT("ALTER FOREIGN TABLE ") + foreigntable->GetQuotedFullIdentifier()
-                + wxT(" ADD COLUMN ") + new_name + wxT(" ") + new_type + wxT(";\n");
+			       + wxT(" ADD COLUMN ") + new_name + wxT(" ") + new_type + wxT(";\n");
 		}
 	}
 

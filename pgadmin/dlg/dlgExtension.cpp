@@ -60,52 +60,52 @@ int dlgExtension::Go(bool modal)
 {
 	txtComment->Disable();
 
-    // add all schemas
-    cbSchema->Append(wxEmptyString);
-    pgSetIterator schemas(connection,
-                            wxT("SELECT nspname FROM pg_namespace\n")
-                            wxT(" ORDER BY nspname"));
+	// add all schemas
+	cbSchema->Append(wxEmptyString);
+	pgSetIterator schemas(connection,
+	                      wxT("SELECT nspname FROM pg_namespace\n")
+	                      wxT(" ORDER BY nspname"));
 
-    while (schemas.RowsLeft())
-        cbSchema->Append(schemas.GetVal(wxT("nspname")));
-    cbSchema->SetSelection(0);
+	while (schemas.RowsLeft())
+		cbSchema->Append(schemas.GetVal(wxT("nspname")));
+	cbSchema->SetSelection(0);
 
 	if (extension)
 	{
 		// edit mode
-        cbName->Append(extension->GetName());
-        cbName->SetSelection(0);
-        cbName->Disable();
-        
-        cbSchema->SetValue(extension->GetSchemaStr());
-        cbSchema->Enable(extension->GetIsRelocatable());
-        
-        // add all versions
-        cbVersion->Clear();
-        cbVersion->Append(wxEmptyString);
-        pgSetIterator versions(connection,
-                                wxT("SELECT version, relocatable FROM pg_available_extension_versions\n")
-                                wxT(" WHERE name=") + qtDbString(cbName->GetValue()) + wxT(" ")
-                                wxT(" ORDER BY version"));
+		cbName->Append(extension->GetName());
+		cbName->SetSelection(0);
+		cbName->Disable();
 
-        while (versions.RowsLeft())
-            cbVersion->Append(versions.GetVal(wxT("version")));
-        cbVersion->SetValue(extension->GetVersion());
+		cbSchema->SetValue(extension->GetSchemaStr());
+		cbSchema->Enable(extension->GetIsRelocatable());
+
+		// add all versions
+		cbVersion->Clear();
+		cbVersion->Append(wxEmptyString);
+		pgSetIterator versions(connection,
+		                       wxT("SELECT version, relocatable FROM pg_available_extension_versions\n")
+		                       wxT(" WHERE name=") + qtDbString(cbName->GetValue()) + wxT(" ")
+		                       wxT(" ORDER BY version"));
+
+		while (versions.RowsLeft())
+			cbVersion->Append(versions.GetVal(wxT("version")));
+		cbVersion->SetValue(extension->GetVersion());
 	}
 	else
 	{
 		// create mode
-        
-        // add available extensions (but not the installed ones)
-        cbName->Append(wxEmptyString);
-        pgSetIterator extensions(connection,
-                                wxT("SELECT name FROM pg_available_extensions\n")
-                                wxT(" WHERE installed_version IS NULL\n")
-                                wxT(" ORDER BY name"));
 
-        while (extensions.RowsLeft())
-            cbName->Append(extensions.GetVal(wxT("name")));
-        cbName->SetSelection(0);
+		// add available extensions (but not the installed ones)
+		cbName->Append(wxEmptyString);
+		pgSetIterator extensions(connection,
+		                         wxT("SELECT name FROM pg_available_extensions\n")
+		                         wxT(" WHERE installed_version IS NULL\n")
+		                         wxT(" ORDER BY name"));
+
+		while (extensions.RowsLeft())
+			cbName->Append(extensions.GetVal(wxT("name")));
+		cbName->SetSelection(0);
 	}
 
 	return dlgProperty::Go(modal);
@@ -123,32 +123,32 @@ pgObject *dlgExtension::CreateObject(pgCollection *collection)
 
 void dlgExtension::OnChangeName(wxCommandEvent &ev)
 {
-    bool relocatable;
-    
-    // add all versions
-    cbVersion->Clear();
-    cbVersion->Append(wxEmptyString);
-    pgSetIterator versions(connection,
-                            wxT("SELECT version, relocatable FROM pg_available_extension_versions\n")
-                            wxT(" WHERE name=") + qtDbString(cbName->GetValue()) + wxT(" ")
-                            wxT(" ORDER BY version"));
+	bool relocatable;
 
-    while (versions.RowsLeft())
-    {
-        relocatable = versions.GetBool(wxT("relocatable"));
-        cbVersion->Append(versions.GetVal(wxT("version")));
-    }
-    cbVersion->SetSelection(0);
-    
-    if (relocatable)
-    {
-        cbSchema->Enable();
-    }
-    else
-    {
-        cbSchema->SetSelection(0);
-        cbSchema->Disable();
-    }
+	// add all versions
+	cbVersion->Clear();
+	cbVersion->Append(wxEmptyString);
+	pgSetIterator versions(connection,
+	                       wxT("SELECT version, relocatable FROM pg_available_extension_versions\n")
+	                       wxT(" WHERE name=") + qtDbString(cbName->GetValue()) + wxT(" ")
+	                       wxT(" ORDER BY version"));
+
+	while (versions.RowsLeft())
+	{
+		relocatable = versions.GetBool(wxT("relocatable"));
+		cbVersion->Append(versions.GetVal(wxT("version")));
+	}
+	cbVersion->SetSelection(0);
+
+	if (relocatable)
+	{
+		cbSchema->Enable();
+	}
+	else
+	{
+		cbSchema->SetSelection(0);
+		cbSchema->Disable();
+	}
 
 	OnChange(ev);
 }
@@ -160,7 +160,7 @@ void dlgExtension::CheckChange()
 	if (extension)
 	{
 		didChange = cbSchema->GetValue() != extension->GetSchemaStr()
-                    || cbVersion->GetValue() != extension->GetVersion();
+		            || cbVersion->GetValue() != extension->GetVersion();
 		EnableOK(didChange);
 	}
 	else
@@ -189,10 +189,10 @@ wxString dlgExtension::GetSql()
 	}
 	else
 	{
-        sql = wxT("CREATE EXTENSION ") + qtIdent(cbName->GetValue());
-        AppendIfFilled(sql, wxT("\n   SCHEMA "), qtIdent(cbSchema->GetValue()));
-        AppendIfFilled(sql, wxT("\n   VERSION "), qtIdent(cbVersion->GetValue()));
+		sql = wxT("CREATE EXTENSION ") + qtIdent(cbName->GetValue());
+		AppendIfFilled(sql, wxT("\n   SCHEMA "), qtIdent(cbSchema->GetValue()));
+		AppendIfFilled(sql, wxT("\n   VERSION "), qtIdent(cbVersion->GetValue()));
 	}
-    
+
 	return sql;
 }

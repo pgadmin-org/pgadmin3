@@ -121,11 +121,11 @@ void pgExtension::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *p
 
 		properties->AppendItem(_("Name"), GetName());
 		properties->AppendItem(_("OID"), GetOid());
-        properties->AppendItem(_("Owner"), GetOwner());
+		properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("Schema"), GetSchemaStr());
 		properties->AppendYesNoItem(_("Relocatable?"), GetIsRelocatable());
 		properties->AppendItem(_("Version"), GetVersion());
-        properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
+		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }
 
@@ -149,12 +149,12 @@ pgObject *pgExtensionFactory::CreateObjects(pgCollection *collection, ctlTree *b
 	pgExtension *extension = 0;
 
 	sql = wxT("select x.oid, x.extname, r.rolname, n.nspname, x.extrelocatable, x.extversion, e.comment")
-           wxT("  FROM pg_extension x\n")
-	       wxT("  JOIN pg_roles r on x.extowner=r.oid \n")
-	       wxT("  JOIN pg_namespace n on x.extnamespace=n.oid\n")
-           wxT("  join pg_available_extensions() e(name, default_version, comment) ON x.extname=e.name\n")
-	       + restriction + wxT("\n")
-	       wxT(" ORDER BY x.extname");
+	      wxT("  FROM pg_extension x\n")
+	      wxT("  JOIN pg_roles r on x.extowner=r.oid \n")
+	      wxT("  JOIN pg_namespace n on x.extnamespace=n.oid\n")
+	      wxT("  join pg_available_extensions() e(name, default_version, comment) ON x.extname=e.name\n")
+	      + restriction + wxT("\n")
+	      wxT(" ORDER BY x.extname");
 	pgSet *extensions = collection->GetDatabase()->ExecuteSet(sql);
 
 	if (extensions)

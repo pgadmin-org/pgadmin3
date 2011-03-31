@@ -122,10 +122,10 @@ pgObject *pgUserMappingFactory::CreateObjects(pgCollection *collection, ctlTree 
 
 	sql = wxT("SELECT u.oid AS um_oid,\n")
 	      wxT("CASE WHEN u.umuser = 0::oid THEN 'public'::name ELSE a.rolname END AS usr_name,\n")
-          wxT("array_to_string(u.umoptions, ',') AS um_options\n")
+	      wxT("array_to_string(u.umoptions, ',') AS um_options\n")
 	      wxT("FROM pg_user_mapping u\n")
 	      wxT("  LEFT JOIN pg_authid a ON a.oid = u.umuser\n")
-          wxT(" WHERE u.umserver = ") + collection->GetOidStr()
+	      wxT(" WHERE u.umserver = ") + collection->GetOidStr()
 	      + restriction + wxT("\n")
 	      wxT("ORDER BY 2");
 	pgSet *usermappings = collection->GetDatabase()->ExecuteSet(sql);
@@ -188,8 +188,8 @@ pgCollection *pgUserMappingObjFactory::CreateCollection(pgObject *obj)
 pgUserMappingCollection::pgUserMappingCollection(pgaFactory *factory, pgUserMapping *newum)
 	: pgCollection(factory)
 {
-    um = newum;
-    fsrv = um->GetForeignServer();
+	um = newum;
+	fsrv = um->GetForeignServer();
 	fdw = fsrv->GetForeignDataWrapper();
 	database = fdw->GetDatabase();
 	server = database->GetServer();
@@ -222,7 +222,7 @@ wxString pgUserMappingCollection::GetTranslatedMessage(int kindOfMessage) const
 
 pgUserMappingFactory::pgUserMappingFactory()
 	: pgForeignServerObjFactory(__("User Mapping"), __("New User Mapping..."),
-	                                 __("Create a new User Mapping."), usermapping_png_img, usermapping_sm_png_img)
+	                            __("Create a new User Mapping."), usermapping_png_img, usermapping_sm_png_img)
 {
 }
 

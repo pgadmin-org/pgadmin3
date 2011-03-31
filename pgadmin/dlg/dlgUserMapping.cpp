@@ -49,7 +49,7 @@ END_EVENT_TABLE();
 dlgUserMapping::dlgUserMapping(pgaFactory *f, frmMain *frame, pgUserMapping *node, pgForeignServer *parent)
 	: dlgProperty(f, frame, wxT("dlgUserMapping"))
 {
-    foreignserver = parent;
+	foreignserver = parent;
 	usermapping = node;
 }
 
@@ -93,7 +93,7 @@ int dlgUserMapping::Go(bool modal)
 	{
 		// edit mode
 		cbUser->SetValue(usermapping->GetUsr());
-        cbUser->Disable();
+		cbUser->Disable();
 
 		wxString options = usermapping->GetOptions();
 		wxString option, optionname, optionvalue;

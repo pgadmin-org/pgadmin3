@@ -30,7 +30,7 @@ public:
 	pgObject *GetObject();
 
 private:
-    pgForeignDataWrapper *foreigndatawrapper;
+	pgForeignDataWrapper *foreigndatawrapper;
 	pgForeignServer *foreignserver;
 
 #ifdef __WXMAC__

@@ -80,7 +80,7 @@ public:
 
 private:
 	wxString schema, version;
-    bool isrelocatable;
+	bool isrelocatable;
 };
 
 class pgExtensionCollection : public pgDatabaseObjCollection

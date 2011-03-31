@@ -105,15 +105,15 @@ wxString pgForeignTable::GetSql(ctlTree *browser)
 		sql = wxT("-- Foreign Table: ") + GetQuotedFullIdentifier() + wxT("\n\n")
 		      + wxT("-- DROP FOREIGN TABLE ") + GetQuotedFullIdentifier() + wxT(";")
 		      + wxT("\n\nCREATE FOREIGN TABLE ") + GetQuotedFullIdentifier()
-              + wxT("\n   (") + GetQuotedTypesList()
-              + wxT(")\n   SERVER ") + GetForeignServer();
+		      + wxT("\n   (") + GetQuotedTypesList()
+		      + wxT(")\n   SERVER ") + GetForeignServer();
 
-        if (!GetOptions().IsEmpty())
-            sql += wxT("\n   OPTIONS (") + GetOptions() + wxT(")");
-              
-        sql += wxT(";\n")
-              + GetOwnerSql(9, 1)
-              + GetCommentSql();
+		if (!GetOptions().IsEmpty())
+			sql += wxT("\n   OPTIONS (") + GetOptions() + wxT(")");
+
+		sql += wxT(";\n")
+		       + GetOwnerSql(9, 1)
+		       + GetCommentSql();
 	}
 
 	return sql;
@@ -123,52 +123,52 @@ wxString pgForeignTable::GetSql(ctlTree *browser)
 
 void pgForeignTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *properties, ctlSQLBox *sqlPane)
 {
-    wxString constraint;
-    
+	wxString constraint;
+
 	if (!expandedKids)
 	{
 		expandedKids = true;
-        pgSet *set = ExecuteSet(
-                         wxT("SELECT attname, format_type(t.oid,NULL) AS typname, attndims, atttypmod, nspname, attnotnull,\n")
-                         wxT("       (SELECT COUNT(1) from pg_type t2 WHERE t2.typname=t.typname) > 1 AS isdup\n")
-                         wxT("  FROM pg_attribute att\n")
-                         wxT("  JOIN pg_type t ON t.oid=atttypid\n")
-                         wxT("  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n")
-                         wxT("  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n")
-                         wxT(" WHERE att.attrelid=") + GetOidStr() + wxT("\n")
-                         wxT(" AND attnum>0\n")
-                         wxT(" ORDER by attnum"));
-        if (set)
-        {
-            int anzvar = 0;
-            while (!set->Eof())
-            {
-                pgDatatype dt(set->GetVal(wxT("nspname")), set->GetVal(wxT("typname")),
-                              set->GetBool(wxT("isdup")), set->GetLong(wxT("attndims")) > 0, set->GetLong(wxT("atttypmod")));
-                constraint = set->GetBool(wxT("attnotnull")) ? wxT("NOT NULL") : wxT("");
+		pgSet *set = ExecuteSet(
+		                 wxT("SELECT attname, format_type(t.oid,NULL) AS typname, attndims, atttypmod, nspname, attnotnull,\n")
+		                 wxT("       (SELECT COUNT(1) from pg_type t2 WHERE t2.typname=t.typname) > 1 AS isdup\n")
+		                 wxT("  FROM pg_attribute att\n")
+		                 wxT("  JOIN pg_type t ON t.oid=atttypid\n")
+		                 wxT("  JOIN pg_namespace nsp ON t.typnamespace=nsp.oid\n")
+		                 wxT("  LEFT OUTER JOIN pg_type b ON t.typelem=b.oid\n")
+		                 wxT(" WHERE att.attrelid=") + GetOidStr() + wxT("\n")
+		                 wxT(" AND attnum>0\n")
+		                 wxT(" ORDER by attnum"));
+		if (set)
+		{
+			int anzvar = 0;
+			while (!set->Eof())
+			{
+				pgDatatype dt(set->GetVal(wxT("nspname")), set->GetVal(wxT("typname")),
+				              set->GetBool(wxT("isdup")), set->GetLong(wxT("attndims")) > 0, set->GetLong(wxT("atttypmod")));
+				constraint = set->GetBool(wxT("attnotnull")) ? wxT("NOT NULL") : wxT("");
 
-                if (anzvar++)
-                {
-                    typesList += wxT(", ");
-                    quotedTypesList += wxT(",\n    ");
-                }
+				if (anzvar++)
+				{
+					typesList += wxT(", ");
+					quotedTypesList += wxT(",\n    ");
+				}
 
-                typesList += set->GetVal(wxT("attname")) + wxT(" ")
-                            + dt.GetSchemaPrefix(GetDatabase()) + dt.FullName() + wxT(" ")
-                            + constraint;
+				typesList += set->GetVal(wxT("attname")) + wxT(" ")
+				             + dt.GetSchemaPrefix(GetDatabase()) + dt.FullName() + wxT(" ")
+				             + constraint;
 
-                quotedTypesList += qtIdent(set->GetVal(wxT("attname"))) + wxT(" ")
-                            + dt.GetQuotedSchemaPrefix(GetDatabase()) + dt.QuotedFullName() + wxT(" ")
-                            + constraint;
+				quotedTypesList += qtIdent(set->GetVal(wxT("attname"))) + wxT(" ")
+				                   + dt.GetQuotedSchemaPrefix(GetDatabase()) + dt.QuotedFullName() + wxT(" ")
+				                   + constraint;
 
-                typesArray.Add(set->GetVal(wxT("attname")));
-                typesArray.Add(dt.GetSchemaPrefix(GetDatabase()) + dt.FullName());
-                typesArray.Add(constraint);
+				typesArray.Add(set->GetVal(wxT("attname")));
+				typesArray.Add(dt.GetSchemaPrefix(GetDatabase()) + dt.FullName());
+				typesArray.Add(constraint);
 
-                set->MoveNext();
-            }
-            delete set;
-        }
+				set->MoveNext();
+			}
+			delete set;
+		}
 	}
 
 	if (properties)
@@ -179,8 +179,8 @@ void pgForeignTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 		properties->AppendItem(_("OID"), GetOid());
 		properties->AppendItem(_("Owner"), GetOwner());
 		properties->AppendItem(_("Server"), GetForeignServer());
-        properties->AppendItem(_("Columns"), GetTypesList());
-        properties->AppendItem(_("Options"), GetOptions());
+		properties->AppendItem(_("Columns"), GetTypesList());
+		properties->AppendItem(_("Options"), GetOptions());
 		properties->AppendItem(_("Comment"), firstLineOnly(GetComment()));
 	}
 }
@@ -188,16 +188,16 @@ void pgForeignTable::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView
 
 wxString pgForeignTable::GetSelectSql(ctlTree *browser)
 {
-    
+
 	wxString columns = wxEmptyString;
-    wxArrayString elements = GetTypesArray();
-    size_t i;
-    for (i = 0 ; i < elements.GetCount() ; i += 3)
-    {
-        if (!columns.IsEmpty())
-            columns += wxT(", ");
-        columns += elements.Item(i);
-    }
+	wxArrayString elements = GetTypesArray();
+	size_t i;
+	for (i = 0 ; i < elements.GetCount() ; i += 3)
+	{
+		if (!columns.IsEmpty())
+			columns += wxT(", ");
+		columns += elements.Item(i);
+	}
 
 	wxString sql =
 	    wxT("SELECT ") + columns + wxT("\n")
@@ -246,14 +246,14 @@ pgObject *pgForeignTableFactory::CreateObjects(pgCollection *collection, ctlTree
 	pgForeignTable *foreigntable = 0;
 
 	wxString sql =	wxT("SELECT c.oid AS ftoid, c.relname AS ftrelname, pg_get_userbyid(relowner) AS ftowner, ")
-                    wxT("array_to_string(ftoptions, ',') AS ftoptions, srvname AS ftsrvname, description\n")
+	                wxT("array_to_string(ftoptions, ',') AS ftoptions, srvname AS ftsrvname, description\n")
 	                wxT("  FROM pg_class c\n")
 	                wxT("  JOIN pg_foreign_table ft ON c.oid=ft.ftrelid\n")
 	                wxT("  LEFT OUTER JOIN pg_foreign_server fs ON ft.ftserver=fs.oid\n")
 	                wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=c.oid\n")
-                    wxT(" WHERE c.relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
-                    + restriction +
-                    wxT(" ORDER BY c.relname");
+	                wxT(" WHERE c.relnamespace = ") + collection->GetSchema()->GetOidStr() + wxT("\n")
+	                + restriction +
+	                wxT(" ORDER BY c.relname");
 
 	pgSet *foreigntables = collection->GetDatabase()->ExecuteSet(sql);
 

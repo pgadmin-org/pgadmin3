@@ -89,7 +89,7 @@ public:
 class pgForeignDataWrapperObject : public pgDatabaseObject
 {
 public:
-    pgForeignDataWrapperObject(pgForeignDataWrapper *newForeignDataWrapper, pgaFactory &factory, const wxString &newName = wxEmptyString) : pgDatabaseObject(factory, newName)
+	pgForeignDataWrapperObject(pgForeignDataWrapper *newForeignDataWrapper, pgaFactory &factory, const wxString &newName = wxEmptyString) : pgDatabaseObject(factory, newName)
 	{
 		SetForeignDataWrapper(newForeignDataWrapper);
 	}

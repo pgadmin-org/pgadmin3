@@ -161,7 +161,7 @@ pgObject *pgForeignServerFactory::CreateObjects(pgCollection *collection, ctlTre
 	      wxT("  FROM pg_foreign_server srv\n")
 	      wxT("  LEFT OUTER JOIN pg_foreign_data_wrapper fdw on fdw.oid=srvfdw\n")
 	      wxT("  LEFT OUTER JOIN pg_description des ON des.objoid=srv.oid AND des.objsubid=0\n")
-          wxT(" WHERE srvfdw = ") + collection->GetOidStr()
+	      wxT(" WHERE srvfdw = ") + collection->GetOidStr()
 	      + restriction + wxT("\n")
 	      wxT(" ORDER BY srvname");
 	pgSet *foreignservers = collection->GetDatabase()->ExecuteSet(sql);
@@ -222,7 +222,7 @@ wxString pgForeignServer::GetCreateOptions()
 pgForeignServerObjCollection::pgForeignServerObjCollection(pgaFactory *factory, pgForeignServer *newsrv)
 	: pgCollection(factory)
 {
-    fsrv = newsrv;
+	fsrv = newsrv;
 	fdw = fsrv->GetForeignDataWrapper();
 	database = fdw->GetDatabase();
 	server = database->GetServer();

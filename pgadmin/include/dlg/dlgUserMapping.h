@@ -30,7 +30,7 @@ public:
 	pgObject *GetObject();
 
 private:
-    pgForeignServer *foreignserver;
+	pgForeignServer *foreignserver;
 	pgUserMapping *usermapping;
 
 #ifdef __WXMAC__

@@ -38,7 +38,7 @@ public:
 private:
 	pgSchema *schema;
 	pgForeignTable *foreigntable;
-    
+
 	void OnMemberAdd(wxCommandEvent &ev);
 	void OnMemberChange(wxCommandEvent &ev);
 	void OnMemberRemove(wxCommandEvent &ev);
@@ -46,8 +46,8 @@ private:
 	void OnSelChangeTyp(wxCommandEvent &ev);
 	void OnSelChangeTypOrLen(wxCommandEvent &ev);
 	void OnChangeMember(wxCommandEvent &ev);
-    
-    void OnSelChangeOption(wxListEvent &ev);
+
+	void OnSelChangeOption(wxListEvent &ev);
 	void OnChangeOptionName(wxCommandEvent &ev);
 	void OnAddOption(wxCommandEvent &ev);
 	void OnChangeOption(wxCommandEvent &ev);

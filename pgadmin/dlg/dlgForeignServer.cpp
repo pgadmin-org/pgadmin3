@@ -49,7 +49,7 @@ END_EVENT_TABLE();
 dlgForeignServer::dlgForeignServer(pgaFactory *f, frmMain *frame, pgForeignServer *node, pgForeignDataWrapper *parent)
 	: dlgSecurityProperty(f, frame, node, wxT("dlgForeignServer"), wxT("USAGE"), "U")
 {
-    foreigndatawrapper = parent;
+	foreigndatawrapper = parent;
 	foreignserver = node;
 }
 
