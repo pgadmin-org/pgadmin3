@@ -49,6 +49,8 @@ char *get_filename(const char *istr)
 
 	if (p)
 		p++;
+	else
+		p = (char *)istr;
 
 	/* Loop through the remaining characters and return the filename */
 
