@@ -796,7 +796,9 @@ wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
 				args += qtIdent(lstArguments->GetText(i, 2)) + wxT(" ");
 
 			// edbspl functions should list OUT params, but only by type.
-			if (!inOnly || !isEdbspl || lstArguments->GetText(i, 1) != wxT("OUT"))
+			// although this is not true for EDB AS90 onwards..
+			if (!inOnly || !isEdbspl || lstArguments->GetText(i, 1) != wxT("OUT") ||
+			        connection->EdbMinimumVersion(9, 0))
 			{
 				if (lstArguments->GetText(i, 1) != wxEmptyString)
 					args += lstArguments->GetText(i, 1) + wxT(" ");
@@ -807,7 +809,9 @@ wxString dlgFunction::GetArgs(const bool withNames, const bool inOnly)
 		else
 		{
 			// edbspl functions should list OUT params, but only by type.
-			if (!inOnly || !isEdbspl || lstArguments->GetText(i, 1) != wxT("OUT"))
+			// although this is not true for EDB AS90 onwards..
+			if (!inOnly || !isEdbspl || lstArguments->GetText(i, 1) != wxT("OUT") ||
+			        connection->EdbMinimumVersion(9, 0))
 			{
 				if (connection->BackendMinimumVersion(8, 1) && lstArguments->GetText(i, 1) != wxEmptyString)
 					args += lstArguments->GetText(i, 1) + wxT(" ");
