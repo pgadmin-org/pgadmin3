@@ -93,8 +93,6 @@ pgObject *dlgForeignTable::GetObject()
 
 int dlgForeignTable::Go(bool modal)
 {
-	pgSet *set;
-
 	// Fill owner combobox
 	AddGroups();
 	AddUsers(cbOwner);
@@ -500,7 +498,6 @@ wxString dlgForeignTable::GetOptionsSql()
 wxString dlgForeignTable::GetSql()
 {
 	wxString sql, direction;
-	size_t existingitems_index, listitems_index, offset;
 
 	if (foreigntable)
 	{
