@@ -132,9 +132,9 @@ wxMenu *pgDatabase::GetNewMenu()
 	{
 		if (settings->GetDisplayOption(_("Casts")))
 			castFactory.AppendMenu(menu);
-		if (settings->GetDisplayOption(_("Extensions")))
+		if (settings->GetDisplayOption(_("Extensions")) && GetConnection()->BackendMinimumVersion(9, 1))
 			extensionFactory.AppendMenu(menu);
-		if (settings->GetDisplayOption(_("Foreign Data Wrappers")))
+		if (settings->GetDisplayOption(_("Foreign Data Wrappers")) && GetConnection()->BackendMinimumVersion(8, 4))
 			foreignDataWrapperFactory.AppendMenu(menu);
 		if (settings->GetDisplayOption(_("Languages")))
 			languageFactory.AppendMenu(menu);
@@ -566,9 +566,9 @@ void pgDatabase::ShowTreeDetail(ctlTree *browser, frmMain *form, ctlListView *pr
 				browser->AppendCollection(this, catalogFactory);
 			if (settings->GetDisplayOption(_("Casts")))
 				browser->AppendCollection(this, castFactory);
-			if (settings->GetDisplayOption(_("Extensions")))
+			if (settings->GetDisplayOption(_("Extensions")) && GetConnection()->BackendMinimumVersion(9, 1))
 				browser->AppendCollection(this, extensionFactory);
-			if (settings->GetDisplayOption(_("Foreign Data Wrappers")))
+			if (settings->GetDisplayOption(_("Foreign Data Wrappers")) && GetConnection()->BackendMinimumVersion(8, 4))
 				browser->AppendCollection(this, foreignDataWrapperFactory);
 			if (settings->GetDisplayOption(_("Languages")))
 				browser->AppendCollection(this, languageFactory);
