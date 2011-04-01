@@ -135,6 +135,23 @@ dbgTargetInfo::dbgTargetInfo( const wxString &target,  dbgPgConn *conn, char tar
 		if( argName.IsEmpty())
 			argName.Printf( wxT( "$%d" ), argCount );
 
+		// In EDBAS 90, if an SPL-function has both an OUT-parameter
+		// and a return value (which is not possible on PostgreSQL otherwise),
+		// the return value is transformed into an extra OUT-parameter
+		// named "_retval_"
+		if (argName == wxT("_retval_") && conn->EdbMinimumVersion(9, 0))
+		{
+			// this will be the return type for this object
+			m_returnType = types.GetNextToken();
+
+			// consume uniformly, mode will definitely be "OUT"
+			modes.GetNextToken();
+
+			// ignore OID also..
+			typeOids.GetNextToken();
+			continue;
+		}
+
 		wsArgInfo	argInfo( argName, types.GetNextToken(), modes.GetNextToken(), typeOids.GetNextToken());
 
 		if( argInfo.getMode() == wxT( "i" ))
